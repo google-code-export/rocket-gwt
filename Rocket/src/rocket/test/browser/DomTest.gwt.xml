@@ -1,0 +1,7 @@
+<module>
+	<inherits name='com.google.gwt.junit.JUnit'/>
+	<inherits name='rocket.User'/>
+
+	<source path="client"/>
+	<source path="test"/>
+</module>
