@@ -107,8 +107,8 @@ public class ObjectHelper extends SystemHelper {
     }
 
     /**
-     * A null safe equals that checks that both objects are not null and then invokes first.equals( second ). If one parmeter is not null it
-     * cannot return true if the other parameter is null.
+     * A null safe identity that checks that both objects are not null and then invokes does a first == second. 
+     * If one parmeter is not null it cannot return true if the other parameter is null.
      *
      * @param first
      *            Object
@@ -189,7 +189,23 @@ public class ObjectHelper extends SystemHelper {
     public static void handleNonNullEncountered(String name, String message) {
         handleAssertFailure(name, message);
     }
-
+    
+    /**
+     * Asserts that the two objects are in fact the equal.
+     *
+     * @param firstName
+     * @param firstObject
+     * @param secondName
+     * @param secondObject
+     */
+    public static void checkEquals(final String firstName, final Object firstObject, final String secondName,
+            final Object secondObject) {
+        if (false == nullSafeEquals(firstObject, secondObject)) {
+            SystemHelper.handleUnsupportedOperation("The " + firstName + " is not equal to "
+                    + secondName + " firstObject: " + firstObject + ", secondObject: " + secondObject);
+        }
+    }
+    
     protected ObjectHelper() {
     }
 }
