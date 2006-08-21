@@ -182,7 +182,7 @@ public class ObjectHelper extends SystemHelper {
 
     public static void checkNull(final String name, final Object object) {
         if (object != null) {
-            handleNonNullEncountered(name, "The " + name + " must be null.");
+            handleNonNullEncountered(name, "The " + name + " must be null. name: " + object);
         }
     }
 
@@ -191,7 +191,7 @@ public class ObjectHelper extends SystemHelper {
     }
     
     /**
-     * Asserts that the two objects are in fact the equal.
+     * Asserts that the two objects are in fact the equal or both are null.
      *
      * @param firstName
      * @param firstObject
