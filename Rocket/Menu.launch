@@ -11,7 +11,7 @@
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry externalArchive=&quot;C:/java-libraries/gwt-windows-1.0.21/gwt-dev-windows.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-out www rocket.test.widget.menu.Menu/Menu.html&#13;&#10;-style DETAILED"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Common"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Rocket"/>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
