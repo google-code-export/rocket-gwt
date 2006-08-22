@@ -223,7 +223,7 @@ public class BrowserHelper extends ObjectHelper {
 	 * @param cookie
 	 */
 	public native static void setCookie(final String cookie)/*-{
-	 return $doc.cookie = cookie;
+	 	$doc.cookie = cookie;
 	 }-*/;
 
 	/**
