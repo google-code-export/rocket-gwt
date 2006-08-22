@@ -291,25 +291,37 @@ public class StringHelperTestCase extends TestCase {
 		final String second = "quick";
 		final String third = "brown";
 
+		final String delimiter = " ";
+		final String input = first + delimiter + second + delimiter + third
+				+ delimiter;
+		boolean ignoreDelimiters = false;
+
+		final String[] tokens = StringHelper.split(input, delimiter,
+				ignoreDelimiters);
+		assertNotNull("The returned tokens array should not be null", tokens);
+		assertEquals("There should be 7 tokens, input[" + input + "]", 7, tokens.length);
+
+		assertEquals("The first token should be", first, tokens[0]);
+		assertEquals("The second token should be", delimiter, tokens[1]);
+		assertEquals("The third token should be", second, tokens[2]);
+		assertEquals("The fourth token should be", delimiter, tokens[3]);
+		assertEquals("The fifth token should be", third, tokens[4]);
+		assertEquals("The sixth token should be", delimiter, tokens[5]);
+		assertEquals("The seventh token should be", "", tokens[6]);
+	}
+
+	public void testSplit6WhereSourceStringIsEmpty() {
 		final String delimiters = " ";
-		final String input = first + delimiters + second + delimiters + third
-				+ delimiters;
+		final String input = "";
 		boolean ignoreDelimiters = false;
 
 		final String[] tokens = StringHelper.split(input, delimiters,
 				ignoreDelimiters);
 		assertNotNull("The returned tokens array should not be null", tokens);
-		assertEquals("There should be 7 tokens", 7, tokens.length);
-
-		assertEquals("The first token should be", first, tokens[0]);
-		assertEquals("The second token should be", delimiters, tokens[1]);
-		assertEquals("The third token should be", second, tokens[2]);
-		assertEquals("The fourth token should be", delimiters, tokens[3]);
-		assertEquals("The fifth token should be", third, tokens[4]);
-		assertEquals("The sixth token should be", delimiters, tokens[5]);
-		assertEquals("The seventh token should be", "", tokens[6]);
+		assertEquals("There should be 0 tokens", 0, tokens.length);
 	}
 
+	
 	public void testStartsWithIgnoringCaseWhichSucceeds() {
 		final String first = "green.apple";
 		final String second = "green";
