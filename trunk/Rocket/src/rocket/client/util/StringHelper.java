@@ -263,39 +263,34 @@ public class StringHelper extends ObjectHelper {
 		StringHelper.checkNotEmpty("parameter:delimiter", delimiter);
 
 		final List tokens = new ArrayList();
+		final int stringLength = input.length();
+		if (stringLength > 0) {
+			final char[] chars = input.toCharArray();
 
-		final char[] chars = input.toCharArray();
-		final int stringLength = chars.length;
-		int firstChar = 0;
+			int firstChar = 0;
 
-		for (int i = 0; i < stringLength; i++) {
-			final char c = chars[i];
-			final int isTokenTest = delimiter.indexOf(c);
+			for (int i = 0; i < stringLength; i++) {
+				final char c = chars[i];
+				final int isTokenTest = delimiter.indexOf(c);
 
-			/* token found! */
-			if (isTokenTest != -1) {
-				/* special test if input starts with delimiter */
-				//            	if( i == 0 & ignoreDelimiters ){
-				//            		firstChar = i + 1;
-				//            		continue;
-				//            	}
-				/* add the string only if its not empty */
-				tokens.add(input.substring(firstChar, i));
+				/* token found! */
+				if (isTokenTest != -1) {
+					tokens.add(input.substring(firstChar, i));
 
-				/* include delimiters in the output */
-				if (false == ignoreDelimiters) {
-					tokens.add(String.valueOf(c));
+					/* include delimiter in the output ??? */
+					if (false == ignoreDelimiters) {
+						tokens.add(String.valueOf(c));
+					}
+
+					/* mark the beginning of the next token... */
+					firstChar = i + 1;
+					continue;
 				}
+			} // for each char
 
-				/* mark the beginning of the next token... */
-				firstChar = i + 1;
-			}
-		} // for each char
-
-		/* the last token will not be terminated.. check and add if necessary */
-		//if (firstChar != stringLength) {
-		tokens.add(input.substring(firstChar));
-		//}
+			/* the last token will not be terminated.. add */
+			tokens.add(input.substring(firstChar));
+		}// if
 
 		/* copy the splitted strings into a String array */
 		final String[] array = new String[tokens.size()];
