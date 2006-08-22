@@ -41,6 +41,8 @@ public interface MenuList extends HasWidgets {
 
     void close();
 
+    AbstractMenu getMenu();
+    
     void setMenu(AbstractMenu menu);
 
     MenuList getParentMenuList();

@@ -91,7 +91,7 @@ public abstract class AbstractMenuList extends Composite implements MenuList {
 
     protected void onAttach() {
         super.onAttach();
-        this.sinkEvents(Event.BUTTON_LEFT | Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.MOUSEEVENTS);
+        this.sinkEvents(Event.ONCLICK | Event.ONMOUSEOVER | Event.ONMOUSEOUT );
         DOM.setEventListener(this.getElement(), this);
     }
 
@@ -182,7 +182,6 @@ public abstract class AbstractMenuList extends Composite implements MenuList {
 
         final MenuWidget menuWidget = (MenuWidget) widget;
         menuWidget.setParentMenuList(this);
-        menuWidget.setMenu(this.getMenu());
     }
 
     protected void afterRemove(final Widget widget) {
@@ -207,13 +206,28 @@ public abstract class AbstractMenuList extends Composite implements MenuList {
             final MenuWidget menuWidget = (MenuWidget) widget;
             menuWidget.close();
         }
-    }
-
+    }    
+    
+    /**
+     * If this is the topmost menuList this property will be set otherwise children will need to check their parent until the
+     * top is reached.
+     */
     private AbstractMenu menu;
 
-    protected AbstractMenu getMenu() {
-        ObjectHelper.checkNotNull("field:menu", menu);
-        return this.menu;
+    public AbstractMenu getMenu() {
+    	AbstractMenu menu = this.menu;
+    	
+    	// if this widget doesnt have a menu property set check its parent...
+    	if( false == this.hasMenu() ){
+    		menu = this.getParentMenuList().getMenu();
+    	}
+    	
+        ObjectHelper.checkNotNull("menu", menu);
+        return menu;
+    }
+    
+    protected boolean hasMenu(){
+    	return null != this.menu;
     }
 
     public void setMenu(final AbstractMenu menu) {
@@ -221,6 +235,9 @@ public abstract class AbstractMenuList extends Composite implements MenuList {
         this.menu = menu;
     }
 
+    /**
+     * All menuLists will have a parent except if they have been added to a menu.
+     */
     private MenuList parentMenuList;
 
     public MenuList getParentMenuList() {

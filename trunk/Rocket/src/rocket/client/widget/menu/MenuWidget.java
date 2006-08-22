@@ -32,6 +32,4 @@ public interface MenuWidget {
     boolean isAlwaysShown();
 
     void setParentMenuList(MenuList parentMenuList);
-
-    void setMenu(AbstractMenu menu);
 }

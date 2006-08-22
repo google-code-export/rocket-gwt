@@ -38,7 +38,7 @@ public class SubMenuItem extends AbstractMenuWidget implements MenuWidget {
     // MENU WIDGET :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     public void open() {
-        final AbstractMenu menu = this.getMenu();
+        final AbstractMenu menu = this.getMenuList().getMenu();
         final MenuListenerCollection listeners = menu.getMenuListeners();
         if (listeners.fireBeforeMenuOpened(this)) {
         	// calculate the coordinates of the subMenuList...
@@ -90,11 +90,6 @@ public class SubMenuItem extends AbstractMenuWidget implements MenuWidget {
         }
     }
 
-    public void setMenu(AbstractMenu menu) {
-        super.setMenu(menu);
-        this.getMenuList().setMenu(menu);
-    }
-
     // PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     public boolean add(final Widget widget) {
@@ -141,6 +136,15 @@ public class SubMenuItem extends AbstractMenuWidget implements MenuWidget {
         return list;
     }
 
+    /**
+     * In addition to updating the parentMenuList property for this widget the menuList property
+     * for the internal MenuList is also updated.
+     */
+    public void setParentMenuList(MenuList parentMenuList) {
+        super.setParentMenuList( parentMenuList );
+        this.getMenuList().setParentMenuList( parentMenuList );
+    }
+    
     // COMPOSITE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public String getText() {
         return this.getHtml().getText();

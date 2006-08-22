@@ -42,16 +42,9 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class MenuTest implements EntryPoint {
 	public void onModuleLoad() {
-		this.createMenuBarButton();
-	}
-
-	/**
-	 * The created button creates a menu and adds it to the dom so that it is displayed.
-	 *
-	 */
-	protected void createMenuBarButton() {
 		GWT.setUncaughtExceptionHandler( new UncaughtExceptionHandler(){
 			public void onUncaughtException(final Throwable caught ){
+				caught.printStackTrace();
 				Window.alert( "" + caught );
 			}
 		});
@@ -192,6 +185,8 @@ public class MenuTest implements EntryPoint {
 		contextMenu.setWidget(new HTML("ContextMenu"));
 		contextMenu.addStyleName("contextMenuWidget");
 		contextMenu.setListLimit(listLimit);
+		contextMenu.setWidth( "1px");
+		
 		for (int i = 0; i < 10; i++) {
 			final String text = "contextMenu/" + i;
 			final boolean disabled = i > 5;

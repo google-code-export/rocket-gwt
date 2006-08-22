@@ -85,18 +85,6 @@ public class AbstractMenuWidget extends Composite {
         this.parentMenuList = parentMenuList;
     }
 
-    private AbstractMenu menu;
-
-    protected AbstractMenu getMenu() {
-        ObjectHelper.checkNotNull("field:menu", menu);
-        return this.menu;
-    }
-
-    public void setMenu(AbstractMenu menu) {
-        ObjectHelper.checkNotNull("topmost:menu", menu);
-        this.menu = menu;
-    }
-
     public String toString() {
         return super.toString() + ", priority: " + priority + ", alwaysShown: " + alwaysShown + ", disabled: "
                 + disabled;

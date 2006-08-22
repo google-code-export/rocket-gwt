@@ -98,7 +98,7 @@ public abstract class AbstractMenu extends Composite implements HasWidgets {
     }
 
     /**
-     * A menuList is used as the container for all child widgets.
+     * A menuList is used as the container for all child menu widgets.
      */
     private MenuList menuList;
 
@@ -114,6 +114,7 @@ public abstract class AbstractMenu extends Composite implements HasWidgets {
     protected void setMenuList(final MenuList menuList) {
         ObjectHelper.checkNotNull("parameter:menuList", menuList);
         this.menuList = menuList;
+        menuList.setMenu( this );
     }
 
     // MENU LISTENER HANDLING ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
