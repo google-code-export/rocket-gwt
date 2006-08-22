@@ -65,12 +65,22 @@ public class BrowserHelper {
 		return url;
 	}
 
+	/**
+	 * Tests if the browser making the request is capable of making displaying images with data urls.
+	 * @param request
+	 * @return
+	 */
 	public static boolean canImageTakeDataUrls(final HttpServletRequest request) {
 		ObjectHelper.checkNotNull("parameter:request", request);
 
 		return isFireFox1x(request);
 	}
 
+	/**
+	 * Tests if the browser making the request is Internet Explorer 6.0.
+	 * @param request
+	 * @return
+	 */
 	public static boolean isInternetExplorer6(final HttpServletRequest request) {
 		ObjectHelper.checkNotNull("parameter:request", request);
 
@@ -78,6 +88,11 @@ public class BrowserHelper {
 				BrowserConstants.INTERNET_EXPLORER_6) != -1;
 	}
 
+	/**
+	 * Tests if the browser making the request is FireFox 1.x
+	 * @param request
+	 * @return
+	 */
 	public static boolean isFireFox1x(final HttpServletRequest request) {
 		ObjectHelper.checkNotNull("parameter:request", request);
 
