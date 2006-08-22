@@ -17,6 +17,7 @@ package rocket.client.browser;
 
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
+import rocket.client.util.SystemHelper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -27,6 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * A collection of useful browser application related methods.
+ * JSNI is heavily used to query or modify values somewhere in the DOM.
  *
  * @author Miroslav Pokorny (mP)
  */
@@ -161,11 +163,43 @@ public class BrowserHelper extends ObjectHelper {
 	 $doc.title = title;
 	 }-*/;
 
-	public static native boolean isInternetExplorer6()/*-{
-	 return $wnd.navigator.userAgent.indexOf( "MSIE" ) != -1;
+	public static boolean isInternetExplorer6(){
+		return getUserAgent().indexOf( BrowserConstants.INTERNET_EXPLORER_USER_AGENT ) != -1;
+	}
+	
+	public static boolean isFireFox(){
+		return getUserAgent().indexOf( BrowserConstants.FIREFOX_USER_AGENT ) != -1;
+	}
+	
+	/**
+	 * Retrieves the userAgent or browser identifying string using JSNI.
+	 * @return
+	 */
+	public static native String getUserAgent()/*-{
+	 return $wnd.navigator.userAgent;
 	 }-*/;
+	
+	/**
+	 * Checks and throws an exception if the given cookieName is not valid.
+	 * @param name
+	 * @param cookieName
+	 */
+	 public static void checkCookieName(final String name, final String cookieName) {
+	        StringHelper.checkNotEmpty(name, cookieName);
 
-	public static native boolean isFireFox()/*-{
-	 return $wnd.navigator.userAgent.indexOf( "FireFox" ) != -1;
-	 }-*/;
+	        final int length = cookieName.length();
+	        for (int i = 0; i < length; i++) {
+	            final char c = cookieName.charAt(i);
+
+	            if (i == 0 && c == '$') {
+	                SystemHelper.handleAssertFailure(name, "The " + name + " cannot begin with a $, " + name + "[" + cookieName + "]");
+	            }
+
+	            if (Character.isSpace(c) || c == BrowserConstants.COOKIE_ATTRIBUTE_SEPARATOR || c == BrowserConstants.COOKIE_SEPARATOR) {
+	                SystemHelper.handleAssertFailure(name,
+	                                               "The " + name + " contains an invalid character [" + c + "], " + name + "[" +
+	                                               cookieName + "]");
+	            }
+	        }
+	    }	 
 }
