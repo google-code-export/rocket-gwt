@@ -319,6 +319,10 @@ public abstract class SortableTable extends ZebraFlexTable{
         PrimitiveHelper.checkBetween( name, column, 0, this.getColumnCount() );
     }
 
+    /**
+     * This flag controls whether this table is repainted each time a new row is added or removed etc.
+     * if set to false the user must call {@link #redraw} themselves.
+     */
     private boolean autoRedraw;
 
     public boolean isAutoRedraw(){
@@ -336,6 +340,7 @@ public abstract class SortableTable extends ZebraFlexTable{
 
     protected void redraw() {
         final List sorted = this.sortRows();
+        removeUnneecessaryTableRows();
         this.repaintRows(sorted);
     }
 
@@ -396,11 +401,26 @@ public abstract class SortableTable extends ZebraFlexTable{
     }
 
     /**
-     *
+     * This method removes any excess rows from the table widget.
+     */
+    protected void removeUnneecessaryTableRows(){    	
+    	final int rowObjectCount = this.getRows().size() - 1;
+    	final int tableRowCount = this.getRowCount();
+    	
+    	int i = tableRowCount;
+    	i--;
+    	
+    	while( i > rowObjectCount && i > 0){
+    		super.removeRow( i );
+    		i--;
+    	}
+    }
+    
+    /**
+     * Creates the widget that will house the header cell
      * @param text
      * @param index
      * @return
-     * @todo test if column is sortable.
      */
     protected Widget createHeader(final String text, final int index) {
         final HorizontalPanel panel = new HorizontalPanel();
@@ -421,6 +441,10 @@ public abstract class SortableTable extends ZebraFlexTable{
         return label;
     }
 
+    /**
+     * Handles whenever a header is clicked (this should only be possible with sortable headers).
+     * @param widget
+     */
     protected void onHeaderClick(final Widget widget) {
         final int column = this.getColumnIndex(widget);
         if( this.isColumnSortable( column )){

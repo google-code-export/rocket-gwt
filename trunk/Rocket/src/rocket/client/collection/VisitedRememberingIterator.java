@@ -40,6 +40,7 @@ public class VisitedRememberingIterator extends AbstractIteratorWrapper implemen
 
     public void remove() {
         this.getIterator().remove();
+        this.clearLastVisited();
     }
 
     // IMPL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

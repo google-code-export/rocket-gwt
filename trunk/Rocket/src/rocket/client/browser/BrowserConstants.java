@@ -22,23 +22,21 @@ import java.util.Date;
 public class BrowserConstants {
     public final static String IMAGES = "/images";
 
+    // BROWSER VERSION DETECTION ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::";
     public final static String INTERNET_EXPLORER_USER_AGENT = "MSIE";
     public final static String FIREFOX_USER_AGENT = "Firefox";
 
-    
-    // COOKIE CONSTANTS ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static char COOKIE_SEPARATOR = ',';
+    // COOKIE CONSTANTS ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::";
+    public final static char COOKIE_SEPARATOR = ';';
     public final static String COOKIE_SEPARATOR_STRING = "" + COOKIE_SEPARATOR;
-    public final static char COOKIE_ATTRIBUTE_SEPARATOR = ';';
-    public final static String COOKIE_ATTRIBUTE_SEPARATOR_STRING = "" + COOKIE_ATTRIBUTE_SEPARATOR;
-    public final static char COOKIE_ATTRIBUTE_NAME_VALUE_SEPARATOR = '=';
+    public final static char COOKIE_NAME_VALUE_SEPARATOR = '=';
 
-    public final static String COOKIE_COMMENT = "comment";
-    public final static String COOKIE_DOMAIN = "domain";
-    public final static String COOKIE_EXPIRES = "max-age";
-    public final static String COOKIE_PATH = "path";
-    public final static String COOKIE_SECURE = "secure";
-    public final static String COOKIE_VERSION = "version";
+    public final static String COOKIE_COMMENT = "; comment=";
+    public final static String COOKIE_DOMAIN = "; domain=";
+    public final static String COOKIE_EXPIRES = "; expires=";
+    public final static String COOKIE_PATH = "; path=";
+    public final static String COOKIE_SECURE = "; secure";
+    public final static String COOKIE_VERSION = "; version=";
     
-	final static String REMOVE_COOKIE_EXPIRES_DATE = new Date( 0 ).toGMTString();
+    public final static String COOKIE_REMOVE_SUFFIX = "=; expires=" + new Date( System.currentTimeMillis() - 24*60*60*1000 ).toGMTString();
 }
