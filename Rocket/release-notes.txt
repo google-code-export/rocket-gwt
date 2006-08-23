@@ -2,7 +2,7 @@ ROCKET GWT FRAMEWORK
 --------------------
 
 The ROCKET GWT library contains a number of widgets, GWT core library fixes as well other useful stuff extract from another project for an inhouse application at work. 
-respository: 
+respository: http://code.google.com/p/rocket-gwt/
 blog: http://rocket-gwt.blogspot.com/index.html
 forum: http://groups.google.com/group/rocket-gwt?lnk=li
 email: miroslav <dot> pokorny <at> gmail <dot> com
