@@ -1,3 +1,0 @@
-23 August 2006
-UPGRADE: Next release will be updated to work with GWT 1.1.
-WIDGET: Plan to create a slider like widget.

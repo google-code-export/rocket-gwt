@@ -1,1 +1,0 @@
-@java -cp "%~dp0\src;c:/workspace/Rocket/Java Source;%~dp0\bin;C:/java-libraries/gwt-windows-1.0.21/gwt-user.jar;C:/java-libraries/gwt-windows-1.0.21/gwt-dev-windows.jar" com.google.gwt.dev.GWTShell -out "%~dp0\www" %* rocket.test.widget.breadcrumbpanel.BreadcrumbPanel/BreadcrumbPanel.html
