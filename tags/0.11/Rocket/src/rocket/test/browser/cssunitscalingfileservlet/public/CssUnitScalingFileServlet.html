@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>CssUnitScalingFileServlet</title>
+<meta name='gwt:module' content='rocket.test.browser.cssunitscalingfileservlet.CssUnitScalingFileServlet'>
+<script language="javascript" src="gwt.js"></script>
+<link
+	title="larger.css"
+	id="cssLink" type="text/css"
+	rel="stylesheet"
+	disabled="false"
+	href="larger.css?test.css=x&scalingFactor=3.0">
+</link>
+<link
+	title="normal(no css)"
+	id="cssLink" type="text/css"
+	rel="stylesheet"
+	disabled="false"
+	href="x">
+</link>
+<link
+	title="normal #2(no css)"
+	id="cssLink" type="text/css"
+	rel="stylesheet"
+	disabled="true"
+	href="x">
+</link>
+<link
+	title="normal #3(no css)"
+	id="cssLink" type="text/css"
+	rel="stylesheet"
+	disabled="true"
+	href="x">
+</link>
+<link
+	title="smaller.css"
+	id="cssLink" type="text/css"
+	rel="stylesheet"
+	disabled="false"
+	href="smaller.css?test.css&scalingFactor=0.67">
+</link>
+<style>
+.cssPicker-horizontalPanel{
+background-color: #dddddd;
+border-color: black;
+border-style: dotted;
+border-width: 1px;
+}
+
+.cssPicker-item{
+background-color: #ffffff;
+color: #000000;
+border-color: black;
+border-style: dotted;
+border-width: 1px;
+
+margin: 4px;
+}
+
+.cssPicker-item-selected{
+background-color: #000000;
+color: #ffffff;
+border-color: black;
+border-style: dotted;
+border-width: 1px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="reference" style="font-size: 15px;">
+The text within this div should be 15px in size (using style=&quot;font-size: 15px;&quot; ).
+
+The image that follows is 32x20 (using style=&quot;width: 32px; height: 20px;&quot;)
+<img src="image.jpg" style="width: 32px; height: 20px;"/>
+</div>
+
+<br/>
+
+<div class="scaled">
+This text should be scaled to 30px from an initial size of 15px.<br/>
+
+The image that follows is actually 32x20 pixels but should be scaled to 96x60 by the css.
+<img src="image.jpg" >
+</div>
+
+<br/>
+
+
+<h3>Original CSS File contents</h3>
+<pre>
+BODY{
+	background-color: #cccccc;
+}
+
+DIV.scaled, DIV.reference{
+	background-color: #ffffff;
+}
+
+DIV.scaled{
+	font-size: 15px;
+}
+
+IMG{
+	width: 32px;
+	height: 20px;
+}
+
+PRE{
+	background-color: #dddddd;
+}
+</pre>
+
+</body>
+</html>
