@@ -196,17 +196,10 @@ public class BrowserHelper extends ObjectHelper {
 			final char c = cookieName.charAt(i);
 
 			if (i == 0 && c == '$') {
-				SystemHelper.handleAssertFailure(name, "The " + name
-						+ " cannot begin with a $, " + name + "[" + cookieName
-						+ "]");
+				SystemHelper.handleAssertFailure(name, "The " + name + " cannot begin with a $, " + name + "[" + cookieName + "]");
 			}
-
-			if (Character.isSpace(c)
-					|| c == BrowserConstants.COOKIE_ATTRIBUTE_SEPARATOR
-					|| c == BrowserConstants.COOKIE_SEPARATOR) {
-				SystemHelper.handleAssertFailure(name, "The " + name
-						+ " contains an invalid character [" + c + "], " + name
-						+ "[" + cookieName + "]");
+			if( c == ' ' || c == ';'){
+				SystemHelper.handleAssertFailure(name, "The " + name + " cannot include a space or semicolon, " + name + "[" + cookieName + "]");
 			}
 		}
 	}
@@ -215,7 +208,11 @@ public class BrowserHelper extends ObjectHelper {
 	 * JSNI method which returns all cookies for this browser as a single String.
 	 */
 	public native static String getCookies()/*-{
-	 return $doc.cookie;
+	 var cookies = $doc.cookie;
+	 if( ! cookies ){
+	   cookies = "";
+	 }
+	 return cookies;
 	 }-*/;
 
 	/**
@@ -232,10 +229,6 @@ public class BrowserHelper extends ObjectHelper {
 	 * @param name
 	 */
 	public static void removeCookie(String name) {
-		setCookie(name + BrowserConstants.COOKIE_ATTRIBUTE_NAME_VALUE_SEPARATOR
-				+ BrowserConstants.COOKIE_ATTRIBUTE_SEPARATOR_STRING
-				+ BrowserConstants.COOKIE_EXPIRES
-				+ BrowserConstants.COOKIE_ATTRIBUTE_SEPARATOR_STRING
-				+ BrowserConstants.REMOVE_COOKIE_EXPIRES_DATE);
+		setCookie(name + BrowserConstants.COOKIE_REMOVE_SUFFIX);
 	}
 }
