@@ -60,3 +60,10 @@ DOC MenuListener - Added javadoc describing class in detail.
 ADD Cookie/CookieMap - Added new CookieMap class which provides a Map view of the browsers current cookies. Refer to accompanying TestCase for notes.
 FIX StringHelper.split - fixed handling of attempt to split empty string with delimiters.
 NOTE: Still works only with GWT 1.0.21 has not yet been upgraded to 1.1. Some minor changes will result due to changes in various GWT classes/interfaces.
+
+0.12  26 August 2006
+--------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.12/Rocket-0.12.zip
+
+FIX StringHelper.indexOfIgnoreCase - wasnt finding strings at the boundaries(ones that started at the beginning / end of the string to be searched). 
+ADD Throttler - A simple class which allows throttling or funnelling of multiple requests allowing only one within a short of period of time.

@@ -379,4 +379,16 @@ public class StringHelperTestCase extends TestCase {
 
 		assertEquals(-1, StringHelper.indexOfIgnoringCase(string, search));
 	}
+	public void testIndexOfIgnoringCase4MatchesWordAtStart() {
+		final String string = "apple banana carrot";
+		final String search = "ApPlE";
+
+		assertEquals(0, StringHelper.indexOfIgnoringCase(string, search));
+	}	
+	public void testIndexOfIgnoringCase5MatchesWordAtEnd() {
+		final String string = "apple banana carrot";
+		final String search = "CARROT";
+
+		assertEquals("apple banana ".length(), StringHelper.indexOfIgnoringCase(string, search));
+	}	
 }

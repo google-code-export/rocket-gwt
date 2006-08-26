@@ -295,6 +295,19 @@ public abstract class SortableTable extends ZebraFlexTable{
     }
 
     /**
+     * Removes all row value objects from this table.
+     * This method does not turn auto redrawing off to improve batch modifications operations nor
+     * does it address any need to request a repaint.
+     */
+    public void removeAllRows(){
+		int rowCount = this.getRows().size();
+		while( rowCount > 0 ){
+			rowCount--;
+			this.removeRow( rowCount );
+		}
+    }
+
+    /**
      * This method must be implemented by sub-classes. It provides a method of addressing properties for an object using an index. These
      * details are implemented by the sub-class.
      *
@@ -338,7 +351,7 @@ public abstract class SortableTable extends ZebraFlexTable{
         }
     }
 
-    protected void redraw() {
+    public void redraw() {
         final List sorted = this.sortRows();
         removeUnneecessaryTableRows();
         this.repaintRows(sorted);
@@ -403,19 +416,19 @@ public abstract class SortableTable extends ZebraFlexTable{
     /**
      * This method removes any excess rows from the table widget.
      */
-    protected void removeUnneecessaryTableRows(){    	
+    protected void removeUnneecessaryTableRows(){
     	final int rowObjectCount = this.getRows().size() - 1;
     	final int tableRowCount = this.getRowCount();
-    	
+
     	int i = tableRowCount;
     	i--;
-    	
+
     	while( i > rowObjectCount && i > 0){
     		super.removeRow( i );
     		i--;
     	}
     }
-    
+
     /**
      * Creates the widget that will house the header cell
      * @param text

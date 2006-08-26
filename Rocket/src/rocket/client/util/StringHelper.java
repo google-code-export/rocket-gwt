@@ -220,9 +220,8 @@ public class StringHelper extends ObjectHelper {
 		final int stringLength = string.length();
 		final int testLength = search.length();
 		if (stringLength > 1 || testLength > 1) {
-			final char firstCharOfTest = Character
-					.toLowerCase(search.charAt(0));
-			final int lastStringCharacterToCheck = stringLength - testLength;
+			final char firstCharOfTest = Character.toLowerCase(search.charAt(0));
+			final int lastStringCharacterToCheck = stringLength - testLength + 1;
 
 			for (int i = 0; i < lastStringCharacterToCheck; i++) {
 				if (firstCharOfTest == Character.toLowerCase(string.charAt(i))) {
@@ -230,11 +229,13 @@ public class StringHelper extends ObjectHelper {
 					for (int j = 1; j < testLength; j++) {
 						final char c = string.charAt(i + j);
 						final char otherChar = search.charAt(j);
-						if (Character.toLowerCase(c) != Character
-								.toLowerCase(otherChar)) {
+						if (Character.toLowerCase(c) != Character.toLowerCase(otherChar)) {
 							index = -1;
 							break;
 						}
+					}
+					if( -1 != index ){
+						break;
 					}
 				}
 			}
