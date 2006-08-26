@@ -1,0 +1,1 @@
+@set GWTLIBRARIES=C:/java-libraries/gwt-windows-1.0.21/gwt-user.jar;C:/java-libraries/gwt-windows-1.0.21/gwt-dev-windows.jar
