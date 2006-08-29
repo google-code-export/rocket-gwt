@@ -67,3 +67,11 @@ Download from http://rocket-gwt.googlecode.com/svn/tags/0.12/Rocket-0.12.zip
 
 FIX StringHelper.indexOfIgnoreCase - wasnt finding strings at the boundaries(ones that started at the beginning / end of the string to be searched). 
 ADD Throttler - A simple class which allows throttling or funnelling of multiple requests allowing only one within a short of period of time.
+
+0.13  30 August 2006
+--------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.13/Rocket-0.13.zip
+
+ADD Tree - Added a new Tree which takes any widget (eg CheckBoxes, Labels etc) as its children. TreeItems may be permanently kept expanded with the expander control hidden.
+    Listener events are fired before and after each of the tree events with the before events being vetoable. Iterators are also provided that not only visit the current nodes           children but also provides the capability to visit all descendants of the node in question. 
+ADD TreeDemo/Test included.
