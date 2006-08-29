@@ -28,5 +28,8 @@
 @call TabPanel-compile.cmd
 @echo .
 
+@call Tree-compile.cmd
+@echo .
+
 @call ZebraFlexTable-compile.cmd
 @echo .
