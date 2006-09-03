@@ -32,7 +32,7 @@ public abstract class AbstractPanel extends Composite implements HasWidgets, Pan
     protected AbstractPanel(){
     }
 
-    public abstract boolean add( Widget widget );
+    public abstract void add( Widget widget );
     public abstract boolean remove( Widget widget );
     public abstract Iterator iterator();
 

@@ -32,18 +32,15 @@ import com.google.gwt.user.client.ui.Widget;
 public class HorizontalMenuList extends AbstractMenuList implements MenuList {
 
     public HorizontalMenuList() {
-        this.setWidget(this.createHorizontalPanel());
+    	this.initWidget(this.createHorizontalPanel());
     }
 
     // PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    public boolean insert(final Widget widget, final int beforeIndex) {
-        final boolean inserted = this.getHorizontalPanel().insert(widget, beforeIndex);
-        if (inserted) {
-            this.afterInsert(widget);
-        }
-        return inserted;
+    public void insert(final Widget widget, final int beforeIndex) {
+        this.getHorizontalPanel().insert(widget, beforeIndex);
+        this.afterInsert(widget);
     }
+    
 
     public boolean remove(final Widget widget) {
         final boolean removed = this.getHorizontalPanel().remove(widget);

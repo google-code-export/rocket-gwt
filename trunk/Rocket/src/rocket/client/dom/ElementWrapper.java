@@ -27,60 +27,100 @@ import com.google.gwt.user.client.Element;
  * @author Miroslav Pokorny (mP)
  */
 public abstract class ElementWrapper {
-	 /**
-     * The DOM element being wrapped
-     */
-    private Element element;
+	public String getId() {
+		return this.getProperty(DomConstants.ID_ATTRIBUTE);
+	}
 
-    public Element getElement(){
-        ObjectHelper.checkNotNull( "field:element", element);
-        return element;
-    }
+	public boolean hasId() {
+		return this.hasProperty(DomConstants.ID_ATTRIBUTE);
+	}
 
-    public void setElement(final Element element){
-        ObjectHelper.checkNotNull( "parameter:element", element);
-        this.element = element;
-    }
+	public void setId(final String id) {
+		this.setProperty(DomConstants.ID_ATTRIBUTE, id);
+	}
 
-    public int hashCode(){
-    	return System.identityHashCode( this.getElement());
-    }
+	public String getName() {
+		return this.getProperty(DomConstants.NAME_ATTRIBUTE);
+	}
 
-    public boolean equals( final Object other ){
-    	boolean same = false;
-    	if( null != other ){
-    		final ElementWrapper otherWrapper =(ElementWrapper ) other;
-    		same = this.getElement() == otherWrapper.getElement();
-    	}
-    	return same;
-    }
-    protected boolean hasProperty( final String name ){
-    	return DomHelper.hasProperty( this.getElement(), name );
-    }
-    protected String getProperty( final String name ){
-    	return DomHelper.getProperty( this.getElement(), name );
-    }
-    protected boolean getBooleanProperty( final String name ){
-    	return DomHelper.getBooleanProperty( this.getElement(), name );
-    }
+	public boolean hasName() {
+		return this.hasProperty(DomConstants.NAME_ATTRIBUTE);
+	}
 
-    protected int getIntProperty( final String name ){
-    	return DomHelper.getIntProperty( this.getElement(), name );
-    }
+	public void setName(final String name) {
+		this.setProperty(DomConstants.NAME_ATTRIBUTE, name);
+	}
 
-    protected void setProperty( final String name, final boolean booleanValue ){
-    	DomHelper.setProperty( this.getElement(), name, booleanValue );
-    }
+	public String getTitle() {
+		return this.getProperty(DomConstants.TITLE_ATTRIBUTE);
+	}
 
-    protected void setProperty( final String name, final int intValue ){
-    	DomHelper.setProperty( this.getElement(), name, intValue );
-    }
+	public boolean hasTitle() {
+		return this.hasProperty(DomConstants.TITLE_ATTRIBUTE);
+	}
 
-    protected void setProperty( final String name, final String value ){
-    	DomHelper.setProperty( this.getElement(), name, value );
-    }
+	public void setTitle(final String title) {
+		this.setProperty(DomConstants.TITLE_ATTRIBUTE, title);
+	}
 
-    public String toString(){
-        return super.toString() + ", element[" + DOM.getAttribute(element, "outerHTML" ) + "]";
-    }
+	/**
+	 * The DOM element being wrapped
+	 */
+	private Element element;
+
+	public Element getElement() {
+		ObjectHelper.checkNotNull("field:element", element);
+		return element;
+	}
+
+	public void setElement(final Element element) {
+		ObjectHelper.checkNotNull("parameter:element", element);
+		this.element = element;
+	}
+
+	public int hashCode() {
+		return System.identityHashCode(this.getElement());
+	}
+
+	public boolean equals(final Object other) {
+		boolean same = false;
+		if (null != other) {
+			final ElementWrapper otherWrapper = (ElementWrapper) other;
+			same = this.getElement() == otherWrapper.getElement();
+		}
+		return same;
+	}
+
+	protected boolean hasProperty(final String name) {
+		return DomHelper.hasProperty(this.getElement(), name);
+	}
+
+	protected String getProperty(final String name) {
+		return DomHelper.getProperty(this.getElement(), name);
+	}
+
+	protected boolean getBooleanProperty(final String name) {
+		return DomHelper.getBooleanProperty(this.getElement(), name);
+	}
+
+	protected int getIntProperty(final String name) {
+		return DomHelper.getIntProperty(this.getElement(), name);
+	}
+
+	protected void setProperty(final String name, final boolean booleanValue) {
+		DomHelper.setProperty(this.getElement(), name, booleanValue);
+	}
+
+	protected void setProperty(final String name, final int intValue) {
+		DomHelper.setProperty(this.getElement(), name, intValue);
+	}
+
+	protected void setProperty(final String name, final String value) {
+		DomHelper.setProperty(this.getElement(), name, value);
+	}
+
+	public String toString() {
+		return super.toString() + ", element["
+				+ DOM.getAttribute(element, "outerHTML") + "]";
+	}
 }

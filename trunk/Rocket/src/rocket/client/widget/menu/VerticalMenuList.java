@@ -39,7 +39,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class VerticalMenuList extends AbstractMenuList implements MenuList {
 
     public VerticalMenuList() {
-        this.setWidget(this.createVerticalPanel());
+    	this.initWidget(this.createVerticalPanel());
     }
 
     public void open() {
@@ -157,14 +157,10 @@ public class VerticalMenuList extends AbstractMenuList implements MenuList {
 
     // PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    public boolean insert(final Widget widget, final int beforeIndex) {
-        final boolean inserted = this.getVerticalPanel().insert(widget, beforeIndex);
-        if (inserted) {
-            this.afterInsert(widget);
-        }
-        return inserted;
+    public void insert(final Widget widget, final int beforeIndex) {
+        this.getVerticalPanel().insert(widget, beforeIndex);
+           this.afterInsert(widget);
     }
-
     public boolean remove(final Widget widget) {
         final boolean removed = this.getVerticalPanel().remove(widget);
         if (removed) {

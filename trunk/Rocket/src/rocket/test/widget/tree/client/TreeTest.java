@@ -76,8 +76,8 @@ public class TreeTest implements EntryPoint {
 			rootPanel.add(new HTML("<hr/>"));
 
 			final Tree tree = new TestTreeWidget();
-			tree.setCollapserImageUrl("/tree/collapser.gif");
-			tree.setExpanderImageUrl("/tree/expander.gif");
+			tree.setCollapserImageUrl("collapser.gif");
+			tree.setExpanderImageUrl("expander.gif");
 			tree.addTreeListener(new TreeListener() {
 				public boolean onBeforeCollapse(Widget widget) {
 					feedback.setHTML(feedback.getHTML()
@@ -108,7 +108,7 @@ public class TreeTest implements EntryPoint {
 				}
 
 				public String toString(final TreeItem treeItem) {
-					return DOM.getInnerText(treeItem.getMainWidget()
+					return DOM.getInnerText(treeItem.getWidget()
 							.getElement());
 				}
 			});
@@ -116,14 +116,14 @@ public class TreeTest implements EntryPoint {
 			rootPanel.add(tree);
 
 			final TreeItem grandChildren = new TestTreeItem();
-			grandChildren.setMainWidget(new HTML("GrandChild"));
+			grandChildren.setWidget(new HTML("GrandChild"));
 
 			grandChildren.add(new HTML("grandChild #1"));
 			grandChildren.add(new HTML("grandChild #2"));
 			grandChildren.add(new HTML("grandChild #3"));
 
 			final TreeItem root = tree.getTreeItem();
-			root.setMainWidget(new HTML("Root"));
+			root.setWidget(new HTML("Root"));
 
 			root.add(new HTML("child #1"));
 			root.add(grandChildren);
@@ -219,16 +219,16 @@ public class TreeTest implements EntryPoint {
 	 */
 	class TestTreeItem extends TreeItem {
 
-		public Widget getMainWidget(){
-			final HorizontalPanel wrapper = (HorizontalPanel)super.getMainWidget();
+		public Widget getWidget(){
+			final HorizontalPanel wrapper = (HorizontalPanel)super.getWidget();
 			return wrapper.getWidget( 0 );
 		}
 		
-		public void setMainWidget(final Widget mainWidget) {
+		public void setWidget(final Widget widget) {
 			final TestTreeItem that = this;
 			
 			final HorizontalPanel wrapper = new HorizontalPanel();
-			wrapper.add( mainWidget );
+			wrapper.add( widget );
 			
 			final Button addHtmlChild = new Button("addHtmlChild");
 			addHtmlChild.addClickListener(new ClickListener() {
@@ -242,7 +242,7 @@ public class TreeTest implements EntryPoint {
 			addTreeItemChild.addClickListener(new ClickListener() {
 				public void onClick(final Widget widget) {
 					final TestTreeItem newChildTreeItem = new TestTreeItem();
-					newChildTreeItem.setMainWidget(new HTML("TreeItem-"+ System.currentTimeMillis()));
+					newChildTreeItem.setWidget(new HTML("TreeItem-"+ System.currentTimeMillis()));
 					that.add(newChildTreeItem);
 				}
 			});
@@ -264,7 +264,7 @@ public class TreeTest implements EntryPoint {
 			});
 			wrapper.add(alwaysExpanded);
 
-			super.setMainWidget(wrapper);
+			super.setWidget(wrapper);
 		}
 
 		public void insert(final Widget widget, final int beforeIndex) {
@@ -297,7 +297,7 @@ public class TreeTest implements EntryPoint {
 				public void onClick(final Widget widget) {
 					final int index = that.getIndex(wrapper);
 					final TestTreeItem newChild = new TestTreeItem();
-					newChild.setMainWidget(new HTML("TreeItem-"
+					newChild.setWidget(new HTML("TreeItem-"
 							+ System.currentTimeMillis()));
 					that.insert(newChild, index);
 				}
@@ -318,7 +318,7 @@ public class TreeTest implements EntryPoint {
 			insertTreeItemAfter.addClickListener(new ClickListener() {
 				public void onClick(final Widget widget) {
 					final TestTreeItem newChild = new TestTreeItem();
-					newChild.setMainWidget(new HTML("TreeItem-"
+					newChild.setWidget(new HTML("TreeItem-"
 							+ System.currentTimeMillis()));
 
 					final int index = that.getIndex(wrapper);

@@ -34,17 +34,16 @@ import com.google.gwt.user.client.ui.Widget;
 public class Card extends AbstractPanel {
 
     public Card() {
-        this.setWidget( this.createFlexTable() );
+    	this.initWidget( this.createFlexTable() ); 
     }
 
-    public boolean add(final Widget widget) {
+    public void add(final Widget widget) {
         ObjectHelper.checkNotNull("parameter:widget", widget);
 
         final FlexTable table = this.getTitleFlexTable();
         final int column = table.getCellCount(WidgetConstants.CARD_TITLE_ROW);
         table.setWidget(WidgetConstants.CARD_TITLE_ROW, column, widget);
         table.getCellFormatter().setStyleName( WidgetConstants.CARD_TITLE_ROW, column, WidgetConstants.CARD_TITLE_WIDGET_STYLE);
-        return true;
     }
 
     public boolean remove(final Widget widget) {
@@ -174,7 +173,7 @@ public class Card extends AbstractPanel {
 
         image.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                that.getParent().remove(that);
+            	that.removeFromParent();
             }
         });
 

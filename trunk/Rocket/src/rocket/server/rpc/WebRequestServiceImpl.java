@@ -23,6 +23,8 @@ import rocket.client.rpc.WebRequest;
 import rocket.client.rpc.WebRequestService;
 import rocket.client.rpc.WebResponse;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 
 
 /**

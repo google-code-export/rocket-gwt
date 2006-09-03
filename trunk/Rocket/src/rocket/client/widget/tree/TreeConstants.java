@@ -26,7 +26,7 @@ public class TreeConstants {
 	public final static String TREE_EXPANDER_COLLAPSER_STYLE = StyleHelper
 			.buildCompound(TREE_ITEM_STYLE, "expanderCollapser");
 
-	public final static String TREE_MAIN_WIDGET_STYLE = StyleHelper
+	public final static String TREE_WIDGET_STYLE = StyleHelper
 			.buildCompound(TREE_ITEM_STYLE, "widget");
 
 	public final static String TREE_CHILDREN_STYLE = StyleHelper.buildCompound(

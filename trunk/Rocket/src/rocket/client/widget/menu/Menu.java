@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class Menu extends AbstractMenu {
 
     public Menu() {
-        this.setWidget(this.createMenuList());
+    	this.initWidget(this.createMenuList());
         this.sinkEvents(Event.BUTTON_LEFT | Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.MOUSEEVENTS);
     }
 

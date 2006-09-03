@@ -38,7 +38,8 @@ import com.google.gwt.user.client.ui.Widget;
 public class Spinner extends AbstractNumberHolder implements NumberHolder {
 
     public Spinner() {
-        this.setWidget( this.createPanel() );
+    	this.initWidget( this.createPanel() );
+    	
         this.setDownImageUrl(WidgetConstants.SPINNER_DOWN_IMAGE_URL);
         this.setUpImageUrl(WidgetConstants.SPINNER_UP_IMAGE_URL);
         this.setDelta(1);

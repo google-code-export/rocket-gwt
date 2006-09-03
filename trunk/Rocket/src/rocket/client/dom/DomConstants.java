@@ -31,4 +31,27 @@ public class DomConstants {
     public final static String ID_ATTRIBUTE = "id";
     public final static String DISABLED_ATTRIBUTE = "disabled";
     public final static String STYLE_SHEET = "stylesheet";
+    
+    public final static String NAME_ATTRIBUTE = "name";
+        
+	public final static String OBJECT_TAG = "OBJECT";
+	public final static String ALIGN_ATTRIBUTE = "align";
+	public final static String ARCHIVE_ATTRIBUTE = "archive";
+	public final static String BORDER_ATTRIBUTE = "border";
+	public final static String CLASS_ID_ATTRIBUTE = "classId";
+	public final static String CODEBASE_ATTRIBUTE = "codeBase";
+	public final static String CODETYPE_ATTRIBUTE = "codeType";
+	public final static String DATA_ATTRIBUTE = "data";
+	public final static String DECLARE_ATTRIBUTE = "declare";
+	public final static String HEIGHT_ATTRIBUTE = "height";
+	public final static String HSPACE_ATTRIBUTE = "hspace";
+	public final static String MIME_TYPE_ATTRIBUTE = "type";
+	public final static String STANDBY_ATTRIBUTE = "standyBy";
+	public final static String USEMAP_ATTRIBUTE = "usemap";
+	public final static String VSPACE_ATTRIBUTE = "vspace";
+	public final static String WIDTH_ATTRIBUTE = "width";
+
+	public final static String PARAM_TAG = "PARAM";
+	public final static String VALUE_ATTRIBUTE = "value";
+
 }

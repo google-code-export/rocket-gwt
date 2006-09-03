@@ -30,8 +30,7 @@ public class SubMenuItem extends AbstractMenuWidget implements MenuWidget {
 
     public SubMenuItem() {
         super();
-
-        this.setWidget(this.createHtml());
+        this.initWidget(this.createHtml());
         this.createMenuList();
     }
 
@@ -91,17 +90,21 @@ public class SubMenuItem extends AbstractMenuWidget implements MenuWidget {
     }
 
     // PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+  public void add(final Widget widget) {
+  this.insert(widget, this.getCount());
+}
 
-    public boolean add(final Widget widget) {
-        return this.insert(widget, this.getCount());
-    }
-
-    public boolean insert(final Widget widget, final int beforeIndex) {
-        return this.getMenuList().insert(widget, beforeIndex);
-    }
+public void insert(final Widget widget, final int beforeIndex) {
+	this.getMenuList().insert(widget, beforeIndex);
+}
 
     public boolean remove(final Widget widget) {
         return this.getMenuList().remove(widget);
+    }
+    
+    public void clear(){
+    	this.getMenuList().clear();
     }
 
     public int getCount() {

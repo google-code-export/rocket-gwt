@@ -20,7 +20,6 @@ import rocket.client.widget.WidgetHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -31,12 +30,13 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Miroslav Pokorny (mP)
  */
 public class ContextMenu extends AbstractMenu {
-    public ContextMenu() {
-        this.setWidget(new HTML(""));
-        this.sinkEvents( Event.MOUSEEVENTS | Event.ONCLICK | Event.ONMOUSEOVER | Event.ONMOUSEOUT);
+	
+	public ContextMenu(final Widget widget) {
+  	this.initWidget(widget);
+      this.sinkEvents( Event.MOUSEEVENTS | Event.ONCLICK | Event.ONMOUSEOVER | Event.ONMOUSEOUT);
 
-        this.createMenuList();
-    }
+      this.createMenuList();
+  }
 
     // COMPOSITE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
@@ -44,7 +44,7 @@ public class ContextMenu extends AbstractMenu {
      */
     protected void onAttach() {
         super.onAttach();
-        DOM.setEventListener(this.getWidget().getElement(), this);
+        DOM.setEventListener(this.getElement(), this);        
     }
 
     /**
@@ -73,26 +73,5 @@ public class ContextMenu extends AbstractMenu {
 
         this.setMenuList(list);
         return list;
-    }
-
-    /**
-     * The widget which when right mouse clicked activates the context menu.
-     */
-    private Widget widget;
-
-    public Widget getWidget() {
-        ObjectHelper.checkNotNull("field:widget", widget);
-        return widget;
-    }
-
-    public boolean hasWidget() {
-        return null != widget;
-    }
-
-    public void setWidget(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-
-        super.setWidget(widget);
-        this.widget = widget;
-    }
+    }    
 }

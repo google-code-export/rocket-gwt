@@ -102,7 +102,7 @@ public class BlockyPixelTest implements EntryPoint {
             this.setCounter(counter + 1);
         }
 
-        public void scheduleRepeating(long interval) {
+        public void scheduleRepeating(int interval) {
             setStartTime(System.currentTimeMillis());
             super.scheduleRepeating(interval);
         }

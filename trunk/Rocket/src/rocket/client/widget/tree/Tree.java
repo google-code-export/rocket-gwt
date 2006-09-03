@@ -34,7 +34,7 @@ public class Tree extends Composite {
 
 	public Tree() {
 		this.createTreeListenerCollection();
-		this.setWidget(this.createTreeItem());
+		this.initWidget(this.createTreeItem());
 	}
 
 	/**

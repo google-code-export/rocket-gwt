@@ -180,9 +180,10 @@ public class MenuTest implements EntryPoint {
 
 		rootPanel.add(new HTML("<br/><br/><br/>"));
 
-		final ContextMenu contextMenu = new ContextMenu();
+		final Widget contextMenuParentWidget = new HTML("ContextMenu");
+		
+		final ContextMenu contextMenu = new ContextMenu( contextMenuParentWidget );
 		contextMenu.setAutoOpen(false);
-		contextMenu.setWidget(new HTML("ContextMenu"));
 		contextMenu.addStyleName("contextMenuWidget");
 		contextMenu.setListLimit(listLimit);
 		contextMenu.setWidth( "1px");
@@ -201,7 +202,6 @@ public class MenuTest implements EntryPoint {
 				contextMenu.add(spacer);
 			}
 		}
-
 		rootPanel.add(contextMenu);
 
 		rootPanel.add(new HTML("<br/><br/><br/>"));

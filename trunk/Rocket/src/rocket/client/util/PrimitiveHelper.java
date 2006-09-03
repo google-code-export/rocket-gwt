@@ -36,10 +36,10 @@ public class PrimitiveHelper {
         }
     }
 
-    public static void checkGreaterThanOrEqual(final String name, final long longValue, final long greaterThan) {
-        if (false == (longValue >= greaterThan)) {
+    public static void checkGreaterThanOrEqual(final String name, final long longValue, final long greaterThanOrEqual) {
+        if (false == (longValue >= greaterThanOrEqual)) {
             SystemHelper.handleAssertFailure(name, "The " + name + " value of " + longValue
-                    + " must be greater than or equal to " + greaterThan);
+                    + " must be greater than or equal to " + greaterThanOrEqual);
         }
     }
 
@@ -50,10 +50,10 @@ public class PrimitiveHelper {
         }
     }
 
-    public static void checkLessThanOrEqual(final String name, final long longValue, final long lessThan) {
-        if (false == (longValue <= lessThan)) {
+    public static void checkLessThanOrEqual(final String name, final long longValue, final long lessThanOrEqual) {
+        if (false == (longValue <= lessThanOrEqual)) {
             SystemHelper.handleAssertFailure(name, "The " + name + " value of " + longValue
-                    + " must be less than or equal to " + lessThan);
+                    + " must be less than or equal to " + lessThanOrEqual);
         }
     }
 
@@ -120,10 +120,10 @@ public class PrimitiveHelper {
         }
     }
 
-    public static void checkGreaterThanOrEqual(final String name, final double doubleValue, final double greaterThan) {
-        if (false == (doubleValue >= greaterThan)) {
+    public static void checkGreaterThanOrEqual(final String name, final double doubleValue, final double greaterThanOrEqual) {
+        if (false == (doubleValue >= greaterThanOrEqual)) {
             SystemHelper.handleAssertFailure(name, "The " + name + " value of " + doubleValue
-                    + " must be greater than or equal to " + greaterThan);
+                    + " must be greater than or equal to " + greaterThanOrEqual);
         }
     }
 
@@ -134,10 +134,10 @@ public class PrimitiveHelper {
         }
     }
 
-    public static void checkLessThanOrEqual(final String name, final double doubleValue, final double lessThan) {
-        if (false == (doubleValue <= lessThan)) {
+    public static void checkLessThanOrEqual(final String name, final double doubleValue, final double lessThanOrEqual) {
+        if (false == (doubleValue <= lessThanOrEqual)) {
             SystemHelper.handleAssertFailure(name, "The " + name + " value of " + doubleValue
-                    + " must be less than or equal to " + lessThan);
+                    + " must be less than or equal to " + lessThanOrEqual);
         }
     }
 
