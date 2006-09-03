@@ -1,4 +1,9 @@
-<html><head><script>
+<html>
+<head><script>
+var $wnd = parent;
+var $doc = $wnd.document;
+var $moduleName = null;
+
 
 window["provider$user.agent"] = function() {
   var ua = navigator.userAgent.toLowerCase();
@@ -11,35 +16,37 @@ window["provider$user.agent"] = function() {
    else if (ua.indexOf('msie 6.0') != -1 || ua.indexOf('msie 7.0') != -1) {
     return 'ie6';
   }
-   else if (ua.indexOf('mozilla') != -1) {
-    var geckoIdx = ua.indexOf('gecko/');
-    if (geckoIdx == -1) 
-      return 'oldmoz';
-    var spaceIdx = ua.indexOf(' ', geckoIdx);
-    if (spaceIdx == -1) 
-      spaceIdx = ua.length;
-    var version = parseInt(ua.substring(geckoIdx + 6, spaceIdx));
-    if (version < 20051107) 
-      return 'oldmoz';
-    return 'moz';
+   else if (ua.indexOf('gecko') != -1) {
+    var result = /rv:([0-9]+)\.([0-9]+)/.exec(ua);
+    if (result && result.length == 3) {
+      var version = parseInt(result[1]) * 10 + parseInt(result[2]);
+      if (version >= 18)
+        return 'gecko1_8';
+    }
+    return 'gecko';
   }
   return 'unknown';
 }
 ;
 
+window["values$user.agent"] = {
+"gecko": 0, 
+"gecko1_8": 1, 
+"ie6": 2, 
+"opera": 3, 
+"safari": 4
+};
+
 window["prop$user.agent"] = function() {
   var v = window["provider$user.agent"]();
-  switch (v) {
-    case "ie6":
-    case "moz":
-    case "oldmoz":
-    case "opera":
-    case "safari":
-      return v;
-    default:
-      parent.__gwt_onBadProperty("rocket.test.widget.blockypixel.BlockyPixel", "user.agent", ['"ie6"', '"moz"', '"oldmoz"', '"opera"', '"safari"'], v);
-      throw null;
-  }
+  var ok = window["values$user.agent"];
+  if (v in ok)
+    return v;
+  var a = new Array(5);
+  for (var k in ok)
+    a[ok[k]] = k;
+  $wnd.__gwt_onBadProperty("rocket.test.widget.blockypixel.BlockyPixel", "user.agent", a, v);
+  if (arguments.length > 0) throw null; else return null;
 };
 
 function O(a,v) {
@@ -56,21 +63,43 @@ function O(a,v) {
 }
 O.answers = [];
 
+
 function selectScript() {
   try {
     var F;
-    var I = ["true", (F=window["prop$user.agent"],F())];
+    var I = ["true", (F=window["prop$user.agent"],F(1))];
 
-    O(["true","safari"],"0851799D6D1AB01723B3A1EBA2426E9C");
-    O(["true","opera"],"5948658AEF58C704D997BA1C3F9D3EBC");
-    O(["true","moz"],"9A4ADAF7FC60A0D2FC25663293EAA601");
-    O(["true","oldmoz"],"9A4ADAF7FC60A0D2FC25663293EAA601");
-    O(["true","ie6"],"BE69A2398FE77CD05A618673614E5016");
+    O(["true","gecko"],"31CFF73932C2DEAFF7E5BE8B21466FEB");
+    O(["true","gecko1_8"],"31CFF73932C2DEAFF7E5BE8B21466FEB");
+    O(["true","opera"],"89432DAE0241895A23DA0520D032F682");
+    O(["true","ie6"],"A37E1540C0FACD6DB3E5F9AA2564F386");
+    O(["true","safari"],"EF4C82DF2E4F88509B8963D7288D99DB");
 
     var strongName = O.answers[I[0]][I[1]];
-    location.replace(strongName + '.cache.html');
+    var query = location.search;
+    query = query.substring(0, query.indexOf('&'));
+    var newUrl = strongName + '.cache.html' + query;
+    location.replace(newUrl);
   } catch (e) {
     // intentionally silent on property failure
   }
 }
-</script></head><body onload='if (parent && parent.__gwt_webModeFrameOnLoad) selectScript()'><font face='arial' size='-1'>This script is part of module</font> <code>rocket.test.widget.blockypixel.BlockyPixel</code></body></html>
+
+function onLoad() {
+  if (!$wnd.__gwt_isHosted) return;
+  if (!$wnd.__gwt_isHosted()) {
+    selectScript();
+  }
+  else {
+    var mcb = $wnd.__gwt_tryGetModuleControlBlock(location.search);
+    if (mcb) {
+      $moduleName = mcb.getName();
+      mcb.compilationLoaded(window);
+    }
+  }
+}
+</script></head>
+<body onload='onLoad()'>
+<font face='arial' size='-1'>This script is part of module</font> <code>rocket.test.widget.blockypixel.BlockyPixel</code>
+</body>
+</html>
