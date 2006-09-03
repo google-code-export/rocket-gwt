@@ -1,0 +1,76 @@
+<html><head><script>
+
+window["provider$user.agent"] = function() {
+  var ua = navigator.userAgent.toLowerCase();
+  if (ua.indexOf('opera') != -1) {
+    return 'opera';
+  }
+   else if (ua.indexOf('safari') != -1) {
+    return 'safari';
+  }
+   else if (ua.indexOf('msie 6.0') != -1 || ua.indexOf('msie 7.0') != -1) {
+    return 'ie6';
+  }
+   else if (ua.indexOf('mozilla') != -1) {
+    var geckoIdx = ua.indexOf('gecko/');
+    if (geckoIdx == -1) 
+      return 'oldmoz';
+    var spaceIdx = ua.indexOf(' ', geckoIdx);
+    if (spaceIdx == -1) 
+      spaceIdx = ua.length;
+    var version = parseInt(ua.substring(geckoIdx + 6, spaceIdx));
+    if (version < 20051107) 
+      return 'oldmoz';
+    return 'moz';
+  }
+  return 'unknown';
+}
+;
+
+window["prop$user.agent"] = function() {
+  var v = window["provider$user.agent"]();
+  switch (v) {
+    case "ie6":
+    case "moz":
+    case "oldmoz":
+    case "opera":
+    case "safari":
+      return v;
+    default:
+      parent.__gwt_onBadProperty("rocket.test.widget.card.Card", "user.agent", ['"ie6"', '"moz"', '"oldmoz"', '"opera"', '"safari"'], v);
+      throw null;
+  }
+};
+
+function O(a,v) {
+  var answer = O.answers;
+  var i = -1;
+  var n = a.length - 1;
+  while (++i < n) {
+    if (!(a[i] in answer)) {
+      answer[a[i]] = [];
+    }
+    answer = answer[a[i]];
+  }
+  answer[a[n]] = v;
+}
+O.answers = [];
+
+function selectScript() {
+  try {
+    var F;
+    var I = ["true", (F=window["prop$user.agent"],F())];
+
+    O(["true","opera"],"370494378B6C0C41BF786B63F12873EF");
+    O(["true","ie6"],"42CE1D39C32CD3A3CAC32F5D61072A2D");
+    O(["true","oldmoz"],"4C2212D4055CA64CC1BAFF9CE9F665EA");
+    O(["true","moz"],"4C2212D4055CA64CC1BAFF9CE9F665EA");
+    O(["true","safari"],"E62C6CCC5A793CA691E7650A1B838163");
+
+    var strongName = O.answers[I[0]][I[1]];
+    location.replace(strongName + '.cache.html');
+  } catch (e) {
+    // intentionally silent on property failure
+  }
+}
+</script></head><body onload='if (parent && parent.__gwt_webModeFrameOnLoad) selectScript()'><font face='arial' size='-1'>This script is part of module</font> <code>rocket.test.widget.card.Card</code></body></html>
