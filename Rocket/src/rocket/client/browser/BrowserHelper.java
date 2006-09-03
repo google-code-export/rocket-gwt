@@ -43,11 +43,19 @@ public class BrowserHelper extends ObjectHelper {
 	 }-*/;
 
 	public static native int getScrollX()/*-{
-	 return $wnd.scrollX;
+	 var x = $wnd.scrollX;
+	 if(! x ){
+	  x = 0;
+	 }
+	 return x;
 	 }-*/;
 
 	public static native int getScrollY()/*-{
-	 return $wnd.scrollY;
+	 var y = $wnd.scrollY;
+	 if(! y ){
+	  y = 0;
+	 }
+	 return y;
 	 }-*/;
 
 	/**

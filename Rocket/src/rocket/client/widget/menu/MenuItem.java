@@ -25,7 +25,7 @@ public class MenuItem extends AbstractMenuWidget implements MenuWidget {
     public MenuItem() {
         super();
 
-        this.setWidget(this.createHtml());
+         this.initWidget(this.createHtml());
     }
 
     // MENU WIDGET ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

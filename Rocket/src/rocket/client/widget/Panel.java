@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public interface Panel {
 
-	boolean add( Widget widget );
+	void add( Widget widget );
 	void clear();
 	boolean remove( Widget widget );
 	int getCount();

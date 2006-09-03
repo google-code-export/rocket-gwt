@@ -44,7 +44,7 @@ public class TreeItem extends Composite {
 	public TreeItem() {
 		super();
 
-		this.setWidget(this.createFlexTable());
+		this.initWidget(this.createFlexTable());
 		this.setExpanded(false);
 	}
 
@@ -195,25 +195,25 @@ public class TreeItem extends Composite {
 	/**
 	 * The main or parent widget
 	 */
-	private Widget mainWidget;
+	private Widget widget;
 
-	public Widget getMainWidget() {
-		ObjectHelper.checkNotNull("field:mainWidget", mainWidget);
-		return mainWidget;
+	public Widget getWidget() {
+		ObjectHelper.checkNotNull("field:widget", widget);
+		return widget;
 	}
 
-	public boolean hasMainWidget() {
-		return null != this.mainWidget;
+	public boolean hasWidget() {
+		return null != this.widget;
 	}
 
-	public void setMainWidget(final Widget mainWidget) {
-		ObjectHelper.checkNotNull("parameter:mainWidget", mainWidget);
+	public void setWidget(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-		mainWidget.addStyleName(TreeConstants.TREE_MAIN_WIDGET_STYLE);
-		this.mainWidget = mainWidget;
+		widget.addStyleName(TreeConstants.TREE_WIDGET_STYLE);
+		this.widget = widget;
 
 		final FlexTable table = this.getFlexTable();
-		table.setWidget(0, table.getCellCount(0) == 0 ? 0 : 1, mainWidget);
+		table.setWidget(0, table.getCellCount(0) == 0 ? 0 : 1, widget);
 	}
 
 	// COLLAPSE / EXPAND
@@ -487,7 +487,6 @@ public class TreeItem extends Composite {
 	}
 
 	public String toString() {
-		return super.toString() + ", mainWidget: " + mainWidget
-				+ ", children: " + this.children;
+		return super.toString() + ", widget: " + widget + ", children: " + this.children;
 	}
 }

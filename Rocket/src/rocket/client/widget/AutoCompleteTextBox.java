@@ -116,7 +116,7 @@ public class AutoCompleteTextBox extends TextBox {
 
     protected void handleTextBoxKeyUp(final Event event) {
         while (true) {
-            final char key = DOM.eventGetKeyCode(event);
+            final char key = (char)DOM.eventGetKeyCode(event);
 
             if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_CANCEL_KEY) {
                 this.cancelDropDown();

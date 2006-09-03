@@ -46,7 +46,7 @@ public class CssPicker extends Composite {
 	public CssPicker() {
 		this.setLabel(WidgetConstants.CSS_PICKER_LABEL_TEXT);
 		this.setMappings(new HashMap());
-		this.setWidget( this.createHorizontalPanel() );
+		this.initWidget( this.createHorizontalPanel() );
 	}
 
 	/**

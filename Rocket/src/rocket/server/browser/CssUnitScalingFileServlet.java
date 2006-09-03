@@ -83,11 +83,8 @@ public class CssUnitScalingFileServlet extends HttpServlet {
                 }
 
                 writer = response.getWriter();
-                writer
-                        .println("/* only pixel units (px) scaled, scalingFactor: "
-                                + scalingFactor + "*/");
-                this.visitFile(
-                        new BufferedReader(new InputStreamReader(input)),
+                writer.println("/* only pixel units (px) scaled, scalingFactor: " + scalingFactor + "*/");
+                this.visitFile(new BufferedReader(new InputStreamReader(input)),
                         scalingFactor, writer);
                 writer.flush();
                 break;
@@ -106,14 +103,12 @@ public class CssUnitScalingFileServlet extends HttpServlet {
 
         float scalingFactor = Float.NaN;
         while (true) {
-            final String scalingFactorParameterName = this
-                    .getScalingFactorParameterName();
-            final String scalingFactorString = request
-                    .getParameter(scalingFactorParameterName);
+        	final String parameterName = BrowserConstants.CSS_SCALING_FACTOR;
+            final String scalingFactorString = request.getParameter(parameterName);
             if (StringHelper.isNullOrEmpty(scalingFactorString)) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "The scalingFactor parameter["
-                                + scalingFactorParameterName
+                                + parameterName
                                 + "] is missing, requestUrl["
                                 + request.getRequestURL() + "]");
                 break;
@@ -124,7 +119,7 @@ public class CssUnitScalingFileServlet extends HttpServlet {
             } catch (final NumberFormatException bad) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "The scalingFactor parameter["
-                                + scalingFactorParameterName + "]=["
+                                + parameterName + "]=["
                                 + scalingFactorString
                                 + ", is not a valid number.");
             }
@@ -138,7 +133,7 @@ public class CssUnitScalingFileServlet extends HttpServlet {
         ObjectHelper.checkNotNull("parameter:request", request);
         ObjectHelper.checkNotNull("parameter:response", response);
 
-        final String parameterName = this.getFilenameParameterName();
+        final String parameterName = BrowserConstants.CSS_FILENAME;
         final String filename = request.getParameter(parameterName);
         if (StringHelper.isNullOrEmpty(filename)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -284,7 +279,7 @@ public class CssUnitScalingFileServlet extends HttpServlet {
             buf.append('?');
 
             // filename
-            buf.append(this.getFilenameParameterName());
+            buf.append( BrowserConstants.CSS_FILENAME);
             buf.append('=');
             //buf.append( contextPath );
             buf.append(url); // FIX urlEncode
@@ -292,7 +287,7 @@ public class CssUnitScalingFileServlet extends HttpServlet {
             buf.append('&');
 
             // scalingFactor
-            buf.append(this.getScalingFactorParameterName());
+            buf.append( BrowserConstants.CSS_SCALING_FACTOR);
             buf.append('=');
             buf.append(scalingFactor);
             buf.append(");");
@@ -370,67 +365,4 @@ public class CssUnitScalingFileServlet extends HttpServlet {
 
         return visited;
     }
-
-    public void init() throws ServletException {
-        final String scalingFactorParameterName = this
-                .getInitParameter(BrowserConstants.SCALING_FACTOR_PARAMETER_NAME);
-        if (StringHelper.isNullOrEmpty(scalingFactorParameterName)) {
-            throw new ServletException("The servlet[" + this.getServletName()
-                    + "]init-parameter["
-                    + BrowserConstants.SCALING_FACTOR_PARAMETER_NAME
-                    + ") is missing or empty.");
-        }
-        this.setScalingFactorParameterName(scalingFactorParameterName);
-
-        final String filenameParameterName = this
-                .getInitParameter(BrowserConstants.CSS_FILENAME_PARAMETER_NAME);
-        if (StringHelper.isNullOrEmpty(filenameParameterName)) {
-            throw new ServletException("The servlet[" + this.getServletName()
-                    + "]init-parameter["
-                    + BrowserConstants.CSS_FILENAME_PARAMETER_NAME
-                    + ") is missing or empty.");
-        }
-        this.setFilenameParameterName(filenameParameterName);
-    }
-
-    /**
-     * The name of the queryParameter which contains the scaling factor
-     */
-    private String scalingFactorParameterName;
-
-    protected String getScalingFactorParameterName() {
-        StringHelper.checkNotEmpty("field:scalingFactorParameterName",
-                scalingFactorParameterName);
-        return this.scalingFactorParameterName;
-    }
-
-    protected void setScalingFactorParameterName(
-            final String scalingFactorParameterName) {
-        StringHelper.checkNotEmpty("parameter:scalingFactorParameterName",
-                scalingFactorParameterName);
-        this.scalingFactorParameterName = scalingFactorParameterName;
-    }
-
-    /**
-     * The name of the queryParameter which contains the filename of the css to be served
-     */
-    private String filenameParameterName;
-
-    protected String getFilenameParameterName() {
-        StringHelper.checkNotEmpty("field:filenameParameterName",
-                filenameParameterName);
-        return this.filenameParameterName;
-    }
-
-    protected void setFilenameParameterName(final String filenameParameterName) {
-        StringHelper.checkNotEmpty("parameter:filenameParameterName",
-                filenameParameterName);
-        this.filenameParameterName = filenameParameterName;
-    }
-
-    public String toString() {
-        return super.toString() + ", scalingFactorParameterName["
-                + scalingFactorParameterName + "], filenameParameterName["
-                + filenameParameterName + "]";
-    }
-}
+ }

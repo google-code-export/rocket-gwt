@@ -24,11 +24,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 public interface MenuList extends HasWidgets {
     // PANEL ::::::::::::::::::::::::::::::::::::::::::::::
+    void add(final Widget widget);
 
-    boolean add(final Widget widget);
-
-    boolean insert(final Widget widget, final int beforeIndex);
-
+    void insert(final Widget widget, final int beforeIndex);
+	
     boolean remove(final Widget widget);
 
     int getCount();

@@ -21,8 +21,8 @@ package rocket.server.browser;
  */
 public class BrowserConstants {
 
-    static String SCALING_FACTOR_PARAMETER_NAME = "scaling-factor-parameter-name";
-    static String CSS_FILENAME_PARAMETER_NAME = "filename-parameter-name";
+    static String CSS_SCALING_FACTOR = "scalingFactor";
+    static String CSS_FILENAME = "filename";
 
     static String PIXEL_UNIT = "px";
     static String IMPORT_DIRECTIVE = "@import";

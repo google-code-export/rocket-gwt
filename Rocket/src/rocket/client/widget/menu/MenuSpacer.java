@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class MenuSpacer extends AbstractMenuWidget implements MenuWidget {
     public MenuSpacer() {
-        this.setWidget(this.createWidget());
+    	this.initWidget(this.createWidget());
     }
 
     // COMPOSITE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

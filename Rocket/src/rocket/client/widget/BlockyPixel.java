@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.Grid;
 public class BlockyPixel extends Composite implements PixelGrid {
 
 	public BlockyPixel() {
-		this.setWidget(this.createGrid());
+		this.initWidget(this.createGrid());
 	}
 
 	/**

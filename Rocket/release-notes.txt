@@ -75,3 +75,16 @@ Download from http://rocket-gwt.googlecode.com/svn/tags/0.13/Rocket-0.13.zip
 ADD Tree - Added a new Tree which takes any widget (eg CheckBoxes, Labels etc) as its children. TreeItems may be permanently kept expanded with the expander control hidden.
     Listener events are fired before and after each of the tree events with the before events being vetoable. Iterators are also provided that not only visit the current nodes           children but also provides the capability to visit all descendants of the node in question. 
 ADD TreeDemo/Test included.
+
+
+0.14  3 September 2006
+----------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.14/Rocket-0.14.zip
+
+MOD Upgraded to GWT release 1.1.10, Changes listed below
+MOD return type of add( Widget) and insert( Widget) from boolean to void
+MOD argument of Timer.scheduleRepeating() from long to int
+MOD return type of DOM.eventGetCharCode() from char to int
+MOD Updated *.launch *.cmd to use new library release
+DEL Deleted DeckPanel
+MOD CssUnitScalingFileServlet query parameter names are no longer set via init-parameters but use values from **.server.BrowserConstants.

@@ -115,7 +115,7 @@ public class LifeTest implements EntryPoint {
             this.setCounter(this.getCounter() + 1);
         }
 
-        public void scheduleRepeating(long interval) {
+        public void scheduleRepeating(int interval) {
             setStartTime(System.currentTimeMillis());
             super.scheduleRepeating(interval);
         }

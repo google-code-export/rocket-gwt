@@ -24,6 +24,7 @@ import rocket.client.util.StringHelper;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -48,7 +49,7 @@ public class TabPanel extends Composite {
     public TabPanel() {
         super();
 
-        this.createPanel();
+        this.initWidget( this.createPanel());
         this.createTabListeners();
     }
 
@@ -202,7 +203,7 @@ public class TabPanel extends Composite {
             final DeckPanel contentPanel = this.getContentPanel();
 
             // find the previously selected tab. and unselect it.
-            final int previousIndex = contentPanel.getWidgetIndex( contentPanel.getVisibleWidget());
+            final int previousIndex = contentPanel.getVisibleWidget();
             if (-1 != previousIndex) {
                 final Panel tab = this.getTabPanel(previousIndex);
                 tab.removeStyleName(WidgetConstants.TAB_BAR_ITEM_SELECTED_STYLE);
@@ -308,8 +309,7 @@ public class TabPanel extends Composite {
     }
 
     public int getSelectedTabIndex() {
-        final DeckPanel contentPanel = this.getContentPanel();
-        return contentPanel.getWidgetIndex( contentPanel.getVisibleWidget() );
+        return this.getContentPanel().getVisibleWidget();
     }
 
     /**
@@ -341,10 +341,7 @@ public class TabPanel extends Composite {
 
         final Widget contentPanel = this.createContentPanel();
         panel.add(contentPanel);
-        panel.setCellHeight(contentPanel, "100%");
-
-        this.setWidget( panel);
-
+        panel.setCellHeight(contentPanel, "100%");       
         return panel;
     }
 

@@ -56,19 +56,6 @@ public class StyleSheet extends ElementWrapper {
 	public void setHref(final String href) {
 		this.setProperty(DomConstants.HREF_ATTRIBUTE, href);
 	}
-
-	public String getTitle() {
-		return (String) this.getProperty(DomConstants.TITLE_ATTRIBUTE);
-	}
-
-	public boolean hasTitle() {
-		return this.hasProperty(DomConstants.TITLE_ATTRIBUTE);
-	}
-
-	public void setTitle(final String title) {
-		this.setProperty(DomConstants.TITLE_ATTRIBUTE, title);
-	}
-
 	public String getType() {
 		return (String) this.getProperty(DomConstants.TYPE_ATTRIBUTE);
 	}
@@ -80,19 +67,6 @@ public class StyleSheet extends ElementWrapper {
 	public void setType(final String type) {
 		this.setProperty(DomConstants.TYPE_ATTRIBUTE, type);
 	}
-
-	public String getId() {
-		return (String) this.getProperty(DomConstants.ID_ATTRIBUTE);
-	}
-
-	public boolean hasId() {
-		return this.hasProperty(DomConstants.ID_ATTRIBUTE);
-	}
-
-	public void setId(final String id) {
-		this.setProperty(DomConstants.ID_ATTRIBUTE, id);
-	}
-
 	public boolean isDisabled() {
 		return this.hasProperty(DomConstants.DISABLED_ATTRIBUTE) ? this
 				.getBooleanProperty(DomConstants.DISABLED_ATTRIBUTE)

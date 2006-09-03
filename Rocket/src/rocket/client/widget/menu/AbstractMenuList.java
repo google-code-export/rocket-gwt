@@ -173,10 +173,10 @@ public abstract class AbstractMenuList extends Composite implements MenuList {
 
     // MENU LIST :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    public boolean add(final Widget widget) {
-        return this.insert(widget, this.getCount());
+    public void add(final Widget widget) {
+        this.insert(widget, this.getCount());
     }
-
+    
     protected void afterInsert(final Widget widget) {
         ObjectHelper.checkNotNull("parameter:widget", widget);
 

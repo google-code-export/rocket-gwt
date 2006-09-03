@@ -73,14 +73,14 @@ public abstract class AbstractMenu extends Composite implements HasWidgets {
         this.close();
     }
 
-    public boolean add(final Widget widget) {
-        return this.insert(widget, this.getCount());
+    public void add(final Widget widget) {
+        this.insert(widget, this.getCount());
     }
 
-    public boolean insert(final Widget widget, final int beforeIndex) {
-        return this.getMenuList().insert(widget, beforeIndex);
+    public void insert(final Widget widget, final int beforeIndex) {
+        this.getMenuList().insert(widget, beforeIndex);
     }
-
+    
     public boolean remove(final Widget widget) {
         return this.getMenuList().remove(widget);
     }

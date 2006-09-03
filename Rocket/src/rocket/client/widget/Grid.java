@@ -35,7 +35,7 @@ public class Grid extends Composite{
 
     public Grid(){
         this.setAutoRedraw( false );
-        this.setWidget( this.createFlexTable() );
+        this.initWidget( this.createFlexTable() );
     }
 
     // GRID :::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -19,7 +19,6 @@ import java.util.Iterator;
 
 import rocket.client.collection.IteratorView;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -28,13 +27,9 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Miroslav Pokorny (mP)
  */
 public class VerticalPanel extends com.google.gwt.user.client.ui.VerticalPanel {
-
-    public boolean insert( final Widget widget, final int beforeIndex ){
-        final boolean inserted = super.insert( widget, beforeIndex );
-        if( inserted ){
-            this.incrementModificationCounter();
-        }
-        return inserted;
+    public void insert( final Widget widget, final int beforeIndex ){
+        super.insert( widget, beforeIndex );
+        this.incrementModificationCounter();
     }
 
     public boolean remove( final Widget widget ){
@@ -48,61 +43,65 @@ public class VerticalPanel extends com.google.gwt.user.client.ui.VerticalPanel {
     public Iterator iterator(){
         final VerticalPanel that = this;
 
+        final Iterator wrapped = super.iterator();
         final IteratorView iterator = new IteratorView() {
             // ITERATOR VIEW :::::::::::::::::::::::::::::::::::::::::::::::
             protected boolean hasNext0() {
-                return this.getIndex() < that.getWidgetCount();
+//                return this.getIndex() < that.getWidgetCount();
+            	return wrapped.hasNext();
             }
 
             protected Object next0(int type) {
-                final Widget widget = that.getWidget( this.getIndex() );
-                this.setLastVisited( widget );
-                return widget;
+//                final Widget widget = that.getWidget( this.getIndex() );
+//                this.setLastVisited( widget );
+//                return widget;
+            	return wrapped.next();
             }
 
             protected void leavingNext() {
-                this.setIndex( this.getIndex() + 1 );
+                //this.setIndex( this.getIndex() + 1 );
             }
 
             protected void remove0() {
-                if( ! this.hasLastVisited() ){
-                    throw new UnsupportedOperationException("Attempt to remove before calling next()");
-                }
-                if( ! that.remove( this.getLastVisited())){
-                    throw new RuntimeException( "Unable to remove widget from " + GWT.getTypeName( that ));
-                }
-                this.clearLastVisited();
-
-                this.setIndex( this.getIndex() - 1 );
+//                if( ! this.hasLastVisited() ){
+//                    throw new UnsupportedOperationException("Attempt to remove before calling next()");
+//                }
+//                if( ! that.remove( this.getLastVisited())){
+//                    throw new RuntimeException( "Unable to remove widget from " + GWT.getTypeName( that ));
+//                }
+//                this.clearLastVisited();
+//
+//                this.setIndex( this.getIndex() - 1 );
+            	wrapped.remove();
             }
 
             protected int getParentModificationCounter() {
                 return that.getModificationCounter();
             }
             // IMPL
-            protected int index;
-
-            protected int getIndex(){
-                return index;
-            }
-            protected void setIndex( final int index ){
-                this.index = index;
-            }
-
-            Widget lastVisited;
-
-            protected Widget getLastVisited(){
-                return lastVisited;
-            }
-            protected boolean hasLastVisited(){
-                return null != lastVisited;
-            }
-            protected void setLastVisited( final Widget lastVisited ){
-                this.lastVisited = lastVisited;
-            }
-            protected void clearLastVisited(){
-                this.lastVisited = null;
-            }
+//            protected int index;
+//
+//            protected int getIndex(){
+//                return index;
+//            }
+//            protected void setIndex( final int index ){
+//                this.index = index;
+//            }
+//
+//            Widget lastVisited;
+//
+//            protected Widget getLastVisited(){
+//                return lastVisited;
+//            }
+//            protected boolean hasLastVisited(){
+//                return null != lastVisited;
+//            }
+//            protected void setLastVisited( final Widget lastVisited ){
+//                this.lastVisited = lastVisited;
+//            }
+//            protected void clearLastVisited(){
+//                this.lastVisited = null;
+//            }
         };
 
         iterator.syncModificationCounters();

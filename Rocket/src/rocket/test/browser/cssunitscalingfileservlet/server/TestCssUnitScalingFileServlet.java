@@ -23,9 +23,6 @@ import rocket.server.browser.CssUnitScalingFileServlet;
  * @author Miroslav Pokorny (mP)
  */
 public class TestCssUnitScalingFileServlet extends CssUnitScalingFileServlet {
-	public void init(){
-		this.setScalingFactorParameterName( "scalingFactor");
-	}
 
     protected InputStream locateFile( final String path ){
     	return this.getClass().getResourceAsStream( path );
