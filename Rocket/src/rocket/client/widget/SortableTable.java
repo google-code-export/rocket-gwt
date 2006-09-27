@@ -50,7 +50,7 @@ public abstract class SortableTable extends ZebraFlexTable{
 
     public SortableTable() {
         super();
-        this.addStyleName( WidgetConstants.SORTED_TABLE_STYLE );
+        this.addStyleName( WidgetConstants.SORTABLE_TABLE_STYLE );
         this.setColumnComparators(new ArrayList());
         this.setRows(new ArrayList());
         this.setAutoRedraw( true );
@@ -92,10 +92,12 @@ public abstract class SortableTable extends ZebraFlexTable{
         this.getColumnComparators().add(column, sorting);
 
         final HorizontalPanel panel = (HorizontalPanel) this.getWidget(0, column);
-        Image image = null;
-
+        final Label label = (Label) panel.getWidget( 0 );
+        Image image = null;        
+        
         if (panel.getWidgetCount() == 1) {
-            image = this.createSortImage();
+        	label.addStyleName( WidgetConstants.SORTABLE_TABLE_SORTABLE_COLUMN_HEADER_STYLE );        	
+            image = this.createSortDirectionImage();
 
             final SortableTable that = this;
             image.addClickListener(new ClickListener() {
@@ -105,6 +107,7 @@ public abstract class SortableTable extends ZebraFlexTable{
             });
             panel.add(image);
         } else {
+        	label.removeStyleName( WidgetConstants.SORTABLE_TABLE_SORTABLE_COLUMN_HEADER_STYLE );
             image = (Image) panel.getWidget(1);
         }
         final String url = ascending ? this.getAscendingSortImageSource() : this.getDescendingSortImageSource();
@@ -235,7 +238,7 @@ public abstract class SortableTable extends ZebraFlexTable{
         final FlexTable.FlexCellFormatter formatter = this.getFlexCellFormatter();
         final int rowCount = this.getRowCount();
         for( int i = 0; i < rowCount; i++ ){
-            formatter.addStyleName( i, column, WidgetConstants.SORTED_COLUMN_STYLE );
+            formatter.addStyleName( i, column, WidgetConstants.SORTABLE_TABLE_SORTED_COLUMN_STYLE );
         }
     }
 
@@ -245,7 +248,7 @@ public abstract class SortableTable extends ZebraFlexTable{
         final FlexTable.FlexCellFormatter formatter = this.getFlexCellFormatter();
         final int rowCount = this.getRowCount();
         for( int i = 0; i < rowCount; i++ ){
-            formatter.removeStyleName( i, column, WidgetConstants.SORTED_COLUMN_STYLE );
+            formatter.removeStyleName( i, column, WidgetConstants.SORTABLE_TABLE_SORTED_COLUMN_STYLE );
         }
     }
 
@@ -445,6 +448,7 @@ public abstract class SortableTable extends ZebraFlexTable{
         StringHelper.checkNotEmpty("parameter:text", text);
 
         final Label label = new Label();
+        label.addStyleName( WidgetConstants.SORTABLE_TABLE_COLUMN_HEADER_STYLE );
         label.setText(text);
         label.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
@@ -466,8 +470,9 @@ public abstract class SortableTable extends ZebraFlexTable{
         }
     }
 
-    protected Image createSortImage() {
+    protected Image createSortDirectionImage() {
         final Image image = new Image();
+        image.addStyleName( WidgetConstants.SORTABLE_TABLE_SORT_DIRECTIONS_ARROWS_STYLE );
         image.setUrl(this.getAscendingSortImageSource());
         return image;
     }

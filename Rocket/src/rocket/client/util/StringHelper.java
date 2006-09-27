@@ -290,7 +290,9 @@ public class StringHelper extends ObjectHelper {
 			} // for each char
 
 			/* the last token will not be terminated.. add */
-			tokens.add(input.substring(firstChar));
+			 if (firstChar != stringLength) {
+				 tokens.add(input.substring(firstChar));
+			 }
 		}// if
 
 		/* copy the splitted strings into a String array */
@@ -372,6 +374,68 @@ public class StringHelper extends ObjectHelper {
 		}
 	}
 
+	/**
+	 * Builds a new string substituting the placeholders within messages with values from values.
+	 * @param message
+	 * @param values
+	 * @return
+	 */
+	public static String format( final String message, final Object[] values ){
+		StringHelper.checkNotNull("parameter:message", message );
+		ObjectHelper.checkNotNull("parameter:values", values );
+		
+		final StringBuffer buf = new StringBuffer();
+		int i = 0;
+		final int messageLength = message.length();
+		while( i < messageLength ){
+			// find the start placeholder
+			final int placeHolderStartIndex = message.indexOf( '{', i );
+			if( -1 == placeHolderStartIndex ){
+				buf.append( message.substring( i, messageLength ));
+				break;
+			}
+			buf.append( message.substring( i, placeHolderStartIndex ));
+			
+			// find the end placeholder
+			final int placeHolderEndIndex = message.indexOf( '}', placeHolderStartIndex + 1 );
+			if( -1 == placeHolderEndIndex ){
+				StringHelper.handleAssertFailure( "Unable to find placeholder end after finding start, [" + message.substring( i, messageLength - i ) + "]");
+			}
+			
+			// extract the index in between...
+			String placeHolderIndex = message.substring( 1 + placeHolderStartIndex, placeHolderEndIndex );
+			try{
+				final int index = Integer.parseInt( placeHolderIndex );
+				final String value = String.valueOf( values[ index ]);
+				buf.append( value );
+				i = placeHolderEndIndex + 1;
+				
+			} catch ( final NumberFormatException badIndex ){
+				StringHelper.handleAssertFailure( "Placeholder index does not contain a number [" + placeHolderIndex + "]");
+			}
+		}
+		return buf.toString();
+	}
+	
+	/**
+	 * Takes the given input(it assumes its a single word) and camel cases it... that is the first letter is capitalized with the remainder converted to
+	 * lower case.
+	 * @param in
+	 * @return
+	 */
+	public static String camelCase( final String in ){
+		String out = "";
+		final int length = in.length();
+		if( length > 0 ){
+			out = in.substring( 0, 1 ).toUpperCase();
+			if( length > 1 ){
+				out = out + in.substring( 1 ).toLowerCase();
+			}
+		}
+		
+		return out;
+	}
+	
 	/**
 	 * Private so that creating instances are not possible
 	 */

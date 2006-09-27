@@ -22,7 +22,6 @@ import rocket.client.util.SystemHelper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -43,21 +42,42 @@ public class BrowserHelper extends ObjectHelper {
 	 }-*/;
 
 	public static native int getScrollX()/*-{
-	 var x = $wnd.scrollX;
-	 if(! x ){
-	  x = 0;
-	 }
-	 return x;
-	 }-*/;
+	var x = 0;
 
+	if( $wnd.scrollX ){
+		x = $wnd.scrollX;
+	} else {
+		var documentElement = $doc.documentElement;
+		if( documentElement && documentElement.scrollLeft ){
+			x = documentElement.scrollLeft;
+		} else {
+			if( $doc.body ){
+				x = $doc.body.scrollLeft;
+			}
+		}
+	}
+
+	return x;
+	 }-*/;
+	
 	public static native int getScrollY()/*-{
-	 var y = $wnd.scrollY;
-	 if(! y ){
-	  y = 0;
-	 }
-	 return y;
-	 }-*/;
+	var y = 0;
 
+	if( $wnd.scrollY ){
+		y = $wnd.scrollY;
+	} else {
+		var documentElement = $doc.documentElement;
+		if( documentElement && documentElement.scrollTop ){
+			y = documentElement.scrollTop;
+		} else {
+			if( $doc.body ){
+				y = $doc.body.scrollTop;
+			}
+		}
+	}
+
+	return y;
+	 }-*/;
 	/**
 	 * Scrolls the top left of the window to the position denoted by the given
 	 * x/y coordinates
@@ -77,7 +97,7 @@ public class BrowserHelper extends ObjectHelper {
 	public static String getContextPath() {
 		String url = GWT.getModuleBaseURL();
 		if (GWT.isScript()) {
-			final String location = BrowserHelper.location();
+			final String location = BrowserHelper.getLocation();
 			final int afterScheme = location.indexOf("//");
 			final int webContextStart = location.indexOf('/', afterScheme + 3);
 			final int webContextEnd = location
@@ -106,10 +126,20 @@ public class BrowserHelper extends ObjectHelper {
 	 *
 	 * @return
 	 */
-	public static native String location()/*-{
+	public static native String getLocation()/*-{
 	 return $wnd.location.href;
 	 }-*/;
+	
+	public static void setLocation( final String location ){
+		StringHelper.checkNotEmpty("parameter:location", location );
+		
+		setLocation0( location );
+	}
 
+	protected static native String setLocation0( final String location )/*-{
+	 	$wnd.location.href = location;
+	 }-*/;
+	
 	/**
 	 * because of a bug in some browsers the reported width and height of the popup panel is incorrect
 	 * before the initial setPopupPosition. THe initial width actually matches the window width.
@@ -129,8 +159,8 @@ public class BrowserHelper extends ObjectHelper {
 		final int width = popupPanel.getOffsetWidth();
 		final int height = popupPanel.getOffsetHeight();
 
-		final int browserWidth = Window.getClientWidth();
-		final int browserHeight = Window.getClientHeight();
+		final int browserWidth = getClientWidth();
+		final int browserHeight = getClientHeight();
 
 		final int left = browserWidth / 2 - width / 2;
 		final int top = browserHeight / 2 - height / 2;
@@ -151,8 +181,8 @@ public class BrowserHelper extends ObjectHelper {
 		final int width = widget.getOffsetWidth();
 		final int height = widget.getOffsetHeight();
 
-		final int browserWidth = Window.getClientWidth();
-		final int browserHeight = Window.getClientHeight();
+		final int browserWidth = getClientWidth();
+		final int browserHeight = getClientHeight();
 
 		final int left = browserWidth / 2 - width / 2;
 		final int top = browserHeight / 2 - height / 2;
@@ -161,6 +191,50 @@ public class BrowserHelper extends ObjectHelper {
 		DOM.setStyleAttribute(element, "left", String.valueOf(left));
 		DOM.setStyleAttribute(element, "top", String.valueOf(top));
 	}
+	
+	/**
+	 * Returns the available screen area within the browser, width in pixels
+	 * @return
+	 */
+	public native static int getAvailableScreenWidth()/*-{
+	 	return $wnd.screen.availWidth;
+	 }-*/;
+
+	/**
+	 * Returns the available screen area within the browser, height in pixels
+	 * @return
+	 */
+	public native static int getAvailableScreenHeight()/*-{
+ 	return $wnd.screen.availHeight;
+ 	}-*/;	
+	
+	public native static int getClientWidth()/*-{
+ 		var width = 0;
+ 		if( $wnd.innerWidth ){
+ 			width = $wnd.innerWidth;
+ 		} else {
+ 			if( $doc.documentElement ){
+ 				width = $doc.documentElement.clientWidth
+ 			} else {
+ 				width = $doc.body.clientWidth;
+ 			}
+ 		}
+ 		return width;
+ 	}-*/;			
+	
+	public native static int getClientHeight()/*-{
+		var height = 0;
+		if( $wnd.innerHeight ){
+			height = $wnd.innerHeight;
+		} else {
+			if( $doc.documentElement ){
+				height = $doc.documentElement.clientHeight
+			} else {
+				height = $doc.body.clientHeight;
+			}
+		}
+		return height;
+	}-*/;	
 
 	/**
 	 * THis method uses embedded javascript to update the title of the browser.

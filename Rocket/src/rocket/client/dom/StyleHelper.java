@@ -73,7 +73,6 @@ public class StyleHelper{
 	 * @param prefix
 	 * @param suffix
 	 * @return
-	 * TODO rename to buildCompound()
 	 */
     public static String buildCompound(final String prefix, final String suffix) {
 		return prefix + COMPOUND + suffix;

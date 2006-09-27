@@ -21,8 +21,11 @@ import rocket.client.dom.StyleHelper;
 import com.google.gwt.user.client.ui.KeyboardListener;
 
 public class WidgetConstants {
+	
+	public final static String ROCKET = "rocket";
+	
     // AUTO COMPLETE TEXT BOX :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String AUTO_COMPLETE_TEXT_BOX_STYLE = "autoCompleteTextBox";
+    public final static String AUTO_COMPLETE_TEXT_BOX_STYLE = StyleHelper.buildCompound( ROCKET, "autoCompleteTextBox" );
     public final static String AUTO_COMPLETE_TEXT_BOX_TEXT_BOX_STYLE = StyleHelper.buildCompound( AUTO_COMPLETE_TEXT_BOX_STYLE, "textBox" );
     public final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE = StyleHelper.buildCompound( AUTO_COMPLETE_TEXT_BOX_STYLE, "dropDownList" );
     public final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = StyleHelper.buildCompound( AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE, "selected" );
@@ -33,14 +36,14 @@ public class WidgetConstants {
     public final static char AUTO_COMPLETE_TEXT_BOX_UP_KEY = KeyboardListener.KEY_UP;
 
 	// BLOCKY PIXEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	public final static String BLOCKY_GRID_STYLE = "blockyGrid";
+	public final static String BLOCKY_GRID_STYLE = StyleHelper.buildCompound( ROCKET, "blockyGrid" );
     public final static int TRANSPARENT = -1;
 
 	// LIFE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	public final static String LIFE_STYLE = "life";
+	public final static String LIFE_STYLE = StyleHelper.buildCompound( ROCKET, "life" );
 
 	// CSS PICKER ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String CSS_PICKER_STYLE = "cssPicker";
+    public final static String CSS_PICKER_STYLE = StyleHelper.buildCompound( ROCKET, "cssPicker" );
     public final static String CSS_PICKER_HORIZONTAL_PANEL_STYLE = StyleHelper.buildCompound( CSS_PICKER_STYLE, "horizontalPanel" );
     public final static String CSS_PICKER_LABEL_STYLE = StyleHelper.buildCompound( CSS_PICKER_STYLE, "label" );
     public final static String CSS_PICKER_LABEL_TEXT = "Text Size";
@@ -49,7 +52,7 @@ public class WidgetConstants {
 
 
 	// CARD ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String CARD_STYLE = "card";
+    public final static String CARD_STYLE = StyleHelper.buildCompound( ROCKET, "card" );
     public final static String CARD_FLEXTABLE_STYLE = StyleHelper.buildCompound( CARD_STYLE, "flexTable" );
 
     public final static String CARD_TITLE_STYLE = StyleHelper.buildCompound( CARD_STYLE, "title" );
@@ -68,7 +71,7 @@ public class WidgetConstants {
     public final static String CARD_CLOSE_IMAGE_URL = BrowserHelper.buildImageUrl( "/card/close.gif");
 
 	// BREADCRUMB ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String BREADCRUMBS_STYLE = "breadcrumbs";
+    public final static String BREADCRUMBS_STYLE = StyleHelper.buildCompound( ROCKET, "breadcrumbs" );
 
     public final static String BREADCRUMB_ITEM_STYLE = StyleHelper.buildCompound( BREADCRUMBS_STYLE, "item" );
     public final static String BREADCRUMB_LAST_ITEM_STYLE = StyleHelper.buildCompound( BREADCRUMB_ITEM_STYLE, "last" );
@@ -77,27 +80,31 @@ public class WidgetConstants {
     public final static String BREADCRUMB_SEPARATOR_STYLE = StyleHelper.buildCompound( BREADCRUMBS_STYLE, "separator");
 
 	// GRID ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String GRID_STYLE = "grid";
+    public final static String GRID_STYLE = StyleHelper.buildCompound( ROCKET, "grid" );
     public final static String GRID_FLEXTABLE_STYLE = StyleHelper.buildCompound( GRID_STYLE, "flexTable" );
     public final static String GRID_CELL_STYLE = StyleHelper.buildCompound( GRID_STYLE, "cell" );
     public final static String GRID_FILLER_STYLE = StyleHelper.buildCompound( GRID_CELL_STYLE, "filler" );
 
 	// SORTED TABLE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String SORTED_TABLE_STYLE ="sortedTable";
-    public final static String SORTED_COLUMN_STYLE = StyleHelper.buildCompound( SORTED_TABLE_STYLE, "sortedColumn" );
+    public final static String SORTABLE_TABLE_STYLE =StyleHelper.buildCompound( ROCKET, "sortableTable" );    
+    public final static String SORTABLE_TABLE_COLUMN_HEADER_STYLE = StyleHelper.buildCompound( SORTABLE_TABLE_STYLE, "columnHeader" );
+    public final static String SORTABLE_TABLE_SORTABLE_COLUMN_HEADER_STYLE = StyleHelper.buildCompound( SORTABLE_TABLE_COLUMN_HEADER_STYLE, "sortable" );
+    public final static String SORTABLE_TABLE_SORTED_COLUMN_HEADER_STYLE = StyleHelper.buildCompound( SORTABLE_TABLE_COLUMN_HEADER_STYLE, "sorted" );
+    public final static String SORTABLE_TABLE_SORTED_COLUMN_STYLE = StyleHelper.buildCompound( SORTABLE_TABLE_STYLE, "sortedColumn" );
+    public final static String SORTABLE_TABLE_SORT_DIRECTIONS_ARROWS_STYLE = StyleHelper.buildCompound( SORTABLE_TABLE_STYLE, "sortDirectionArrows" );
 
 	// ZEBRA ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String ZEBRA_FLEX_TABLE_STYLE ="zebraFlexTable";
+    public final static String ZEBRA_FLEX_TABLE_STYLE =StyleHelper.buildCompound( ROCKET, "zebraFlexTable" );
     public final static String ZEBRA_FLEX_TABLE_HEADING_STYLE = StyleHelper.buildCompound( ZEBRA_FLEX_TABLE_STYLE, "heading" );
     public final static String ZEBRA_FLEX_TABLE_ODD_ROW_STYLE =StyleHelper.buildCompound( ZEBRA_FLEX_TABLE_STYLE, "oddRow" );
     public final static String ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE =StyleHelper.buildCompound( ZEBRA_FLEX_TABLE_STYLE, "evenRow" );
 
     // NUMBER BOX ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String NUMBER_TEXTBOX_STYLE = "numberTextBox";
-    public final static String TEXTBOX_STYLE = "textBox";
+    public final static String NUMBER_TEXTBOX_STYLE = StyleHelper.buildCompound( ROCKET, "numberTextBox" );
+    public final static String TEXTBOX_STYLE = StyleHelper.buildCompound( ROCKET, "textBox" );
 
 	// SPINNER ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String SPINNER_STYLE = "spinner";
+    public final static String SPINNER_STYLE = StyleHelper.buildCompound( ROCKET, "spinner" );
     public final static String SPINNER_VERTICAL_PANEL_STYLE = StyleHelper.buildCompound( SPINNER_STYLE, "verticalPanel" );
     public final static String SPINNER_UP_STYLE = StyleHelper.buildCompound( SPINNER_STYLE, "up" );
     public final static String SPINNER_DOWN_STYLE = StyleHelper.buildCompound( SPINNER_STYLE, "down" );
@@ -106,44 +113,32 @@ public class WidgetConstants {
     public final static String SPINNER_DOWN_IMAGE_URL = SPINNER_BASE_URL + "/down.gif";
 
 	// SUPER SPINNER ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String SUPER_SPINNER_STYLE = "superSpinner";
+    public final static String SUPER_SPINNER_STYLE = StyleHelper.buildCompound( ROCKET, "superSpinner" );
     public final static String SUPER_SPINNER_HORIZONTAL_PANEL = StyleHelper.buildCompound( SUPER_SPINNER_STYLE, "horizontalPanel" );
     public final static String SUPER_SPINNER_UP_STYLE = StyleHelper.buildCompound( SUPER_SPINNER_STYLE, "up" );
-
     public final static String SUPER_SPINNER_DOWN_STYLE = StyleHelper.buildCompound( SUPER_SPINNER_STYLE, "down" );
-
     public final static String SUPER_SPINNER_BIG_UP_STYLE = StyleHelper.buildCompound( SUPER_SPINNER_STYLE, "bigUp" );
-
     public final static String SUPER_SPINNER_BIG_DOWN_STYLE = StyleHelper.buildCompound( SUPER_SPINNER_STYLE, "bigDown" );
-
     public final static String SUPER_SPINNER_BASE_URL = BrowserHelper.buildImageUrl("/superSpinner" );
-
     public final static String SUPER_SPINNER_UP_IMAGE_URL = SUPER_SPINNER_BASE_URL + "/up.gif";
-
     public final static String SUPER_SPINNER_DOWN_IMAGE_URL = SUPER_SPINNER_BASE_URL + "/down.gif";
-
     public final static String SUPER_SPINNER_BIG_UP_IMAGE_URL = SUPER_SPINNER_BASE_URL + "/bigUp.gif";
-
     public final static String SUPER_SPINNER_BIG_DOWN_IMAGE_URL = SUPER_SPINNER_BASE_URL + "/bigDown.gif";
 
     // PAGER ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String PAGER_STYLE = "pager";
-
+    public final static String PAGER_STYLE = StyleHelper.buildCompound( ROCKET, "pager" );
     public final static String PAGER_HORIZONTAL_PANEL_STYLE = PAGER_STYLE;
-
     public final static String PAGER_PREVIOUS_BUTTON_TEXT = "Previous";
     public final static String PAGER_PREVIOUS_BUTTON_STYLE = StyleHelper.buildCompound( PAGER_STYLE, "previous" );
-
     public final static String PAGER_NEXT_BUTTON_TEXT = "Next";
     public final static String PAGER_NEXT_BUTTON_STYLE = StyleHelper.buildCompound( PAGER_STYLE, "next" );
-
     public final static String PAGER_GOTO_PAGE_STYLE = StyleHelper.buildCompound( PAGER_STYLE, "goto" );
     public final static String PAGER_CURRENT_PAGE_STYLE = StyleHelper.buildCompound( PAGER_STYLE, "current" );
 
 	// TAB :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public final static String TAB_CLOSE_BUTTON_IMAGE_URL = BrowserHelper.buildImageUrl("/tab/close.gif");
 
-    public final static String TAB_PANEL_STYLE = "tabPanel";
+    public final static String TAB_PANEL_STYLE = StyleHelper.buildCompound( ROCKET, "tabPanel" );
 
     public final static String TAB_PANEL_VERTICAL_PANEL_STYLE = TAB_PANEL_STYLE;
 

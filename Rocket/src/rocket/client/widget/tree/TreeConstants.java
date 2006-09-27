@@ -17,18 +17,17 @@
 package rocket.client.widget.tree;
 
 import rocket.client.dom.StyleHelper;
+import rocket.client.widget.WidgetConstants;
 
-public class TreeConstants {
-	public final static String TREE_STYLE = "tree";
+public class TreeConstants extends WidgetConstants{
+	
+	public final static String TREE_STYLE = StyleHelper.buildCompound( ROCKET, "tree" );
 
-	public final static String TREE_ITEM_STYLE = "treeItem";
+	public final static String TREE_ITEM_STYLE = StyleHelper.buildCompound( ROCKET, "treeItem" );
 
-	public final static String TREE_EXPANDER_COLLAPSER_STYLE = StyleHelper
-			.buildCompound(TREE_ITEM_STYLE, "expanderCollapser");
+	public final static String TREE_EXPANDER_COLLAPSER_STYLE = StyleHelper.buildCompound(TREE_ITEM_STYLE, "expanderCollapser");
 
-	public final static String TREE_WIDGET_STYLE = StyleHelper
-			.buildCompound(TREE_ITEM_STYLE, "widget");
+	public final static String TREE_WIDGET_STYLE = StyleHelper.buildCompound(TREE_ITEM_STYLE, "widget");
 
-	public final static String TREE_CHILDREN_STYLE = StyleHelper.buildCompound(
-			TREE_ITEM_STYLE, "children");
+	public final static String TREE_CHILDREN_STYLE = StyleHelper.buildCompound(TREE_ITEM_STYLE, "children");
 }

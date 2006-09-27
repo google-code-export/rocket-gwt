@@ -22,6 +22,7 @@ import rocket.client.dom.DomConstants;
 import rocket.client.dom.DomHelper;
 import rocket.client.util.HttpHelper;
 import rocket.client.util.ObjectHelper;
+import rocket.client.util.StringHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -135,7 +136,7 @@ public class FormHelper extends DomHelper{
     			return nextt;
     		}
 
-    		protected native Object next0( final Element form, final int index )/*-{
+    		protected native Element next0( final Element form, final int index )/*-{
 				return form.elements[ index ];
     		}-*/;
 
@@ -154,4 +155,23 @@ public class FormHelper extends DomHelper{
     		}
     	};
     }
+    
+    /**
+     * Helper which attempts to find and fetch an element belonging to the given form by name. 
+     * @param form
+     * @param elementName
+     * @return
+     */
+    public static Element findElement( final Element form, final String elementName ){
+    	ObjectHelper.checkNotNull("parameter:form", form );
+    	StringHelper.checkNotEmpty( "parameter:elementName", elementName );    	
+    	
+    	return findElement0( form, elementName );
+    }
+
+    protected static native Element findElement0( final Element form, final String elementName )/*-{
+    	var element = null;
+
+		element = form.elements[ elementName ];
+		return element ? element : null;}-*/;      
 }

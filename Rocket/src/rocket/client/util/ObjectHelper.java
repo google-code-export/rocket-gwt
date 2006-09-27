@@ -164,6 +164,14 @@ public class ObjectHelper extends SystemHelper {
         }
     }
 
+    public static void checkNotSame(final String firstName, final Object firstObject, final String secondName,
+            final Object secondObject) {
+        if (nullSafeIdentity(firstObject, secondObject)) {
+            SystemHelper.handleUnsupportedOperation("The " + firstName + " is the same object object as "
+                    + secondName + " firstObject: " + firstObject + ", secondObject: " + secondObject);
+        }
+    }
+    
     /**
      * Asserts that the two objects are in fact different objects.
      *

@@ -43,7 +43,7 @@ public class SortableTableTest implements EntryPoint {
     public void onModuleLoad() {
         try {
         	final RootPanel rootPanel = RootPanel.get();
-        	
+
             final SortableFileTable table = new SortableFileTable();
             table.setAscendingSortImageSource(GWT.getModuleBaseURL() + "/up.gif");
             table.setDescendingSortImageSource(GWT.getModuleBaseURL() + "/down.gif");
@@ -61,6 +61,7 @@ public class SortableTableTest implements EntryPoint {
             table.makeColumnUnsortable(3);
             table.makeColumnUnsortable(4);
             table.makeColumnUnsortable(5);
+            table.makeColumnUnsortable(6);
 
             table.setSortedColumn(1);
 
@@ -95,29 +96,29 @@ public class SortableTableTest implements EntryPoint {
             file3.setServerId("file://huge.txt");
             file3.setSize(123456789);
             table.addDownloadFile(file3);
-            
+
             rootPanel.add( new HTML("<br>"));
-            
+
             rootPanel.add( new Label( "Description"));
             final TextBox description = new TextBox();
             description.setText( "Description goes in here...");
             rootPanel.add( description );
-            
+
             rootPanel.add( new Label( "Filename"));
             final TextBox filename = new TextBox();
             filename.setText( "file://" + Random.nextInt(1357913579) + ".txt");
             rootPanel.add( filename );
-            
+
             rootPanel.add( new Label( "ServerId"));
             final TextBox serverId = new TextBox();
             serverId.setText( "id-" + Random.nextInt( 246802468 ) );
             rootPanel.add( serverId );
-            
+
             rootPanel.add( new Label( "Size"));
             final TextBox size = new TextBox();
             size.setText( "" + Random.nextInt( 1234567890 ));
-            rootPanel.add( size );     
-            
+            rootPanel.add( size );
+
             rootPanel.add( new HTML("<br>"));
             final Button adder = new Button( "Add new File" );
             adder.addClickListener( new ClickListener(){
@@ -130,12 +131,12 @@ public class SortableTableTest implements EntryPoint {
             		newFile.setSize( Integer.parseInt( size.getText() ));
             		newFile.setCreateDate( new Date() );
             		table.addDownloadFile( newFile );
-            		
+
             		description.setText( "Description goes in here...");
                     filename.setText( "file://" + Random.nextInt( 1357913579 ) + ".txt");
                     serverId.setText( "id-" + Random.nextInt( 246802468 ) );
                     size.setText( "" + Random.nextInt( 1234567890 ));
-            		
+
             		} catch ( Exception caught ){
             			caught.printStackTrace();
             			Window.alert( "" + caught );
@@ -143,22 +144,22 @@ public class SortableTableTest implements EntryPoint {
             	}
             });
             rootPanel.add( adder );
-            
+
             rootPanel.add( new HTML("<br>"));
 
             final TextBox removeFileIndex = new TextBox();
             removeFileIndex.setText( "0");
             rootPanel.add( removeFileIndex );
-            
+
             rootPanel.add( new HTML("<br>"));
-            
-            final Button remover = new Button( "Remove an existing File" );            
+
+            final Button remover = new Button( "Remove an existing File" );
             rootPanel.add( remover );
             remover.addClickListener( new ClickListener(){
             	public void onClick( final Widget ignore ){
             		try{
             		table.removeRow( Integer.parseInt( removeFileIndex.getText()) );
-            			
+
             		} catch ( Exception caught ){
             			caught.printStackTrace();
             			Window.alert( "" + caught );

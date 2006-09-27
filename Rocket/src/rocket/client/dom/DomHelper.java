@@ -369,6 +369,21 @@ public class DomHelper extends ObjectHelper {
      }
      }-*/;
 
+	/**
+	 * Requests the browser to set focus on the given element.
+	 * @param focusElement the element to receive focus.
+	 */
+	public static void setFocus( final Element focusElement ){
+		ObjectHelper.checkNotNull("paraemter:focusElement", focusElement );
+
+		setFocus0( focusElement );
+	}
+	public native static void setFocus0( final Element element )/*-{
+	 if( element.focus ){
+	 	element.focus();
+	 };
+	 }-*/;
+
     public static String toString( Element element ){
         return element == null ? "null" : DOM.getAttribute( element, "OuterHTML");
     }
