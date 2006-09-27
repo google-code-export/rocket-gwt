@@ -21,7 +21,9 @@ import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
 
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -31,7 +33,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Miroslav Pokorny (mP)
  */
-public class Card extends AbstractPanel {
+public class Card extends Composite implements HasWidgets{
 
     public Card() {
     	this.initWidget( this.createFlexTable() ); 
@@ -60,6 +62,29 @@ public class Card extends AbstractPanel {
     public Widget getWidget( final int index ){
         return this.getTitleFlexTable().getWidget( 0, index + 1 );
     }
+    
+    public int getIndex( final Widget widget ){
+        ObjectHelper.checkNotNull( "parameter:widget", widget );
+        int index = -1;
+        final Iterator iterator = this.iterator();
+        int i = 0;
+        while( iterator.hasNext() ){
+            final Widget otherWidget = (Widget) iterator.next();
+            if( widget == otherWidget ){
+                index = i;
+                break;
+            }
+            i++;
+        }
+        return index;
+    }
+
+    public void clear(){
+        final Iterator iterator = this.iterator();
+        while( iterator.hasNext() ){
+            this.remove( (Widget) iterator.next() );
+        }
+    }
 
     public Iterator iterator() {
         return this.getTitleFlexTable().iterator();
@@ -67,6 +92,20 @@ public class Card extends AbstractPanel {
 
     // IMPL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+    /**
+     * This counter should be incremented each time a modification is made to this container.
+     * It exists to help any iterators fail fast.
+     */
+    private int modificationCount;
+
+    protected int getModificationCount() {
+        return this.modificationCount;
+    }
+
+    public void setModificationCount(final int modificationCount) {
+        this.modificationCount = modificationCount;
+    }
+    
     /**
      * This flexTable contains the title and the contents.
      */

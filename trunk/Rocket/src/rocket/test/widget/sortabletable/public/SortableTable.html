@@ -9,28 +9,43 @@ BODY, TABLE{
 	font-size: 11px;
 }
 
-.sortedTable{
+.rocket-sortableTable{
 	background-color: #eeeeee;
 }
-.sortedTable-heading{
-	background-color: #111111;
-	color: #eeeeee;
-}
-.zebraFlexTable-oddRow{
+.rocket-zebraFlexTable-oddRow{
 	background-color: #cccccc;
 	color: #444444;
 }
 
-.zebraFlexTable-evenRow{
+.rocket-zebraFlexTable-evenRow{
 	background-color: #aaaaaa;
 	color: #666666;
 }
 
-.sortedTable-sortedColumn {
+.rocket-sortableTable-columnHeader {
+	font-weight: bold;
+	
+	background-color: #111111;
+	color: #eeeeee;
+}
+
+.rocket-sortableTable-columnHeader-sortable {
+	cursor: pointer;
+}
+.rocket-sortableTable-columnHeader-sorted {
+	cursor: default;
+	font-weight: bold;
+	
 	color: #ff0000;
 	background-color: #bbbbff;
 }
+.rocket-sortableTable-sortedColumn {
+	cursor: default;
+}
 
+.rocket-sortableTable-sortDirectionArrows {
+	cursor: pointer;
+}
 </style>
 </head>
 

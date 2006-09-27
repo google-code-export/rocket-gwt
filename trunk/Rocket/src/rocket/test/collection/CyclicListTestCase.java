@@ -3,8 +3,8 @@ package rocket.test.collection;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.client.collection.CyclicList;
 import junit.framework.TestCase;
+import rocket.client.collection.CyclicList;
 
 public class CyclicListTestCase extends TestCase {
 	public void testAdd0WithoutOverflowing(){
@@ -215,7 +215,6 @@ public class CyclicListTestCase extends TestCase {
 		list.add( second );
 		list.add( third );
 		
-		int i = 0;
 		assertFalse( list.contains( "fourth" ));
 		assertTrue( list.contains( first ));
 		assertTrue( list.contains( second ));

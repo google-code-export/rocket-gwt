@@ -244,11 +244,26 @@ public class TabPanel extends Composite {
         return (HorizontalPanel) this.getTabsPanel().getWidget(index + 1);// SKIP the leading Label.
     }
 
-    public String getTabTitle(final int index) {
-        final HorizontalPanel panel = this.getTabPanel(index);
-        final Label label = (Label) panel.getWidget(0);
-        return label.getText();
-    }
+
+	public String getTabTitle(final int index) {
+		final Label label = this.getTabTitleLabel(index);
+		return label.getText();
+	}
+
+	public void setTabTitle(final int index, final String title) {
+		StringHelper.checkNotEmpty("parameter:title", title);
+
+		final Label label = this.getTabTitleLabel(index);
+		label.setText(title);
+	}
+
+	protected Label getTabTitleLabel(final int index) {
+		final HorizontalPanel panel = this.getTabPanel(index);
+		final Label label = (Label) panel.getWidget(0);
+		return label;
+	}
+
+
 
     public Widget getContent(final int index) {
         return (Widget) this.getContentPanel().getWidget(index);
@@ -341,7 +356,7 @@ public class TabPanel extends Composite {
 
         final Widget contentPanel = this.createContentPanel();
         panel.add(contentPanel);
-        panel.setCellHeight(contentPanel, "100%");       
+        panel.setCellHeight(contentPanel, "100%");
         return panel;
     }
 

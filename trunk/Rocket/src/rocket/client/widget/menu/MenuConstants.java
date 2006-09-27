@@ -17,12 +17,13 @@ package rocket.client.widget.menu;
 
 import rocket.client.browser.BrowserHelper;
 import rocket.client.dom.StyleHelper;
+import rocket.client.widget.WidgetConstants;
 
 /**
  * @author Miroslav Pokorny (mP)
  */
-public class MenuConstants {
-    public final static String MENU_STYLE = "menu";
+public class MenuConstants extends WidgetConstants{
+    public final static String MENU_STYLE = StyleHelper.buildCompound( ROCKET, "menu" );
 
     final static String SELECTED = "selected";
 
