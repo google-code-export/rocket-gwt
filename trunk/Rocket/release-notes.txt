@@ -91,7 +91,7 @@ MOD CssUnitScalingFileServlet query parameter names are no longer set via init-p
 
 0.15  27 September 2006
 -----------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.14/Rocket-0.14.zip
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.15/Rocket-0.15.zip
 
 FIX FormHelper. fixed non public method within getFormElements(Element) iterator to avoid ClassCastExceptions being thrown.
 ADD FormHelper.findElement( elementName )
