@@ -88,3 +88,22 @@ MOD return type of DOM.eventGetCharCode() from char to int
 MOD Updated *.launch *.cmd to use new library release
 DEL Deleted DeckPanel
 MOD CssUnitScalingFileServlet query parameter names are no longer set via init-parameters but use values from **.server.BrowserConstants.
+
+0.15  27 September 2006
+-----------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.14/Rocket-0.14.zip
+
+FIX FormHelper. fixed non public method within getFormElements(Element) iterator to avoid ClassCastExceptions being thrown.
+ADD FormHelper.findElement( elementName )
+DEL Panel/AbstractPanel reworked Card to remove dependencies from deleted classes.
+ADD ObjectHelper - Added checkNotSame().
+FIX StringHelper.split() & changed tests
+ADD DomHelper - Added setFocus()
+ADD TabPanel - added methods to set a tab's title previously only gettin was possible was provided.
+ADD BrowserHelper - added getClientXXX where XXX = width/height which retrieves correct values for IE6 in strict mode.
+ADD BrowserHelper - added getAvailableClientXXX where XXX = width/height
+ENH SortableTable - assigned styleName(css classes) to different components within the table.
+ADD css - Added project name "rocket-" to all widget style/class names.
+
+TODO Need to fix x/y calculation of child list within SubMenuItem.open(). I think its related to broken Element.getAbsoluteXXX where XXX = X/Y.
+
