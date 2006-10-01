@@ -112,25 +112,89 @@ public class DomHelper extends ObjectHelper {
         return found;
     }
 
+    /**
+     * Converts a cssPropertyName into a javascript propertyName. eg 
+     * <pre>
+     * String css = "background-color";
+     * String js = toJavascriptPropertyName( css );
+     * System.out.println( css + ">" + js ); // prints [[[background-color > backgroundColor.]]] without the brackets. 
+     * </pre>
+     * 
+     * @param cssPropertyName
+     * @return
+     */
+    public static String toJavascriptPropertyName( final String cssPropertyName ){
+    	final StringBuffer buf = new StringBuffer();
+    	final int length = cssPropertyName.length();
+    	boolean capitalizeNext = false;
+    	
+    	for( int i = 0; i < length; i++ ){
+    		char c = cssPropertyName.charAt( i );
+    		if( '-' == c ){
+    			capitalizeNext = true;
+    			continue;
+    		}
+    		if( capitalizeNext ){
+    			c = Character.toUpperCase( c );
+    			capitalizeNext = false;
+    		}
+    		buf.append( c );
+    	}
+    	return buf.toString();
+    }
+    
 	/**
-	 * Handy method for retrieving any style property value in a browser independent manner. Has been tested against IE 6.0 and Firefox 1.5.
+	 * Handy method for retrieving any style property value in a browser independent manner.
 	 *
 	 * @param element
-	 * @param stylePropertyName
-	 * @return
+	 * @param propertyName The css property name (background-color) NOT the javascript version (backgroundColour).
+	 * @return The String value of the property or null if it wasnt found.
 	 */
-	public static native String getCurrentStyleProperty(final Element element, final String stylePropertyName)/*-{
-	 @rocket.client.util.ObjectHelper::checkNotNull(Ljava/lang/String;Ljava/lang/Object;)("parameter:element", element );
-	 @rocket.client.util.StringHelper::checkNotEmpty(Ljava/lang/String;Ljava/lang/String;)("parameter:stylePropertyName", stylePropertyName);
-
+	public static String getCurrentStyleProperty(final Element element, final String propertyName){
+		ObjectHelper.checkNotNull("parameter:element", element );
+		StringHelper.checkNotEmpty("parameter:propertyName", propertyName );
+		
+		return getCurrentStylePropertyName0( element, propertyName );
+	}
+	
+	private static native String getCurrentStylePropertyName0( final Element element, final String propertyName )/*-{
 	 var value = null;
-	 if( $wnd.getComputedStyle ) {
-	 value = $wnd.getComputedStyle(element,null)[ stylePropertyName ];
-	 } else if( element.currentStyle ) {
-	 value = element.currentStyle[ stylePropertyName ];
+	 
+	 while( true ){
+	 	// firefox ......................................................................................
+	 	if( $wnd.getComputedStyle ) {
+	 		var element0 = element;
+	 		while( element0 ){
+	 			value = $wnd.getComputedStyle(element0,null).getPropertyValue( propertyName );
+	 			if( value != "transparent" ){
+	 				break;
+	 			}
+	 			element0 = element0.parentNode;
+	 		}
+	 		break;
+	 	}	
+	 	
+	 	// internet explorer ..................................................................................
+	 	if( element.currentStyle ){
+	 		// translate css property name into a javascript property name...
+	 		var propertyName0 = @rocket.client.style.StyleHelper::toJavascriptPropertyName(Ljava/lang/String;)(propertyName);
+	 		
+	 		// loop until non transparent value found or root of document is found.
+	 		var element0 = element;
+	 		while( element0 ){
+	 			value = element0.currentStyle[ propertyName0 ];
+	 			if( value != "transparent" ){
+	 				break;
+	 			}
+	 			element0 = element0.parentNode;
+	 		}
+	 		break;
+	 	} 
+	 	
+	 	break;
 	 }
-
-	 return value;
+	 
+	 return value ? value : null;
 	 }-*/;
 
     /**

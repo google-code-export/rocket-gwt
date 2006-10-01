@@ -1,5 +1,4 @@
-3 Sept August 2006
-WIDGET: Plan - Need HorizontalSlider and VerticalSlider widgets.
+30 Sept August 2006
 WIDGET: Plan - DatePicker using DropDownLists and another that uses TextBoxes.(WIP)
 WIDGET: Plan - Possible GestureWatcher with events being fired whenever gestures are matched.
 

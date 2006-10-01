@@ -22,6 +22,9 @@
 @call Pager-compile.cmd
 @echo .
 
+@call Slider-compile.cmd
+@echo .
+
 @call SortableTable-compile.cmd
 @echo .
 

@@ -36,7 +36,7 @@ public class WidgetConstants {
     public final static char AUTO_COMPLETE_TEXT_BOX_UP_KEY = KeyboardListener.KEY_UP;
 
 	// BLOCKY PIXEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	public final static String BLOCKY_GRID_STYLE = StyleHelper.buildCompound( ROCKET, "blockyGrid" );
+	public final static String BLOCKY_PIXEL_STYLE = StyleHelper.buildCompound( ROCKET, "blockyPixel" );
     public final static int TRANSPARENT = -1;
 
 	// LIFE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -134,27 +134,4 @@ public class WidgetConstants {
     public final static String PAGER_NEXT_BUTTON_STYLE = StyleHelper.buildCompound( PAGER_STYLE, "next" );
     public final static String PAGER_GOTO_PAGE_STYLE = StyleHelper.buildCompound( PAGER_STYLE, "goto" );
     public final static String PAGER_CURRENT_PAGE_STYLE = StyleHelper.buildCompound( PAGER_STYLE, "current" );
-
-	// TAB :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String TAB_CLOSE_BUTTON_IMAGE_URL = BrowserHelper.buildImageUrl("/tab/close.gif");
-
-    public final static String TAB_PANEL_STYLE = StyleHelper.buildCompound( ROCKET, "tabPanel" );
-
-    public final static String TAB_PANEL_VERTICAL_PANEL_STYLE = TAB_PANEL_STYLE;
-
-    public final static String TAB_BAR_STYLE = StyleHelper.buildCompound( TAB_PANEL_STYLE, "tabBar" );
-
-    public final static String TAB_BAR_FIRST_STYLE = StyleHelper.buildCompound( TAB_BAR_STYLE, "first" );
-
-    public final static String TAB_BAR_REST_STYLE = StyleHelper.buildCompound( TAB_BAR_STYLE, "rest" );
-
-    public final static String TAB_BAR_ITEM_STYLE = StyleHelper.buildCompound( TAB_BAR_STYLE, "item" );
-
-    public final static String TAB_BAR_ITEM_LABEL_STYLE = StyleHelper.buildCompound( TAB_BAR_ITEM_STYLE, "label" );
-
-    public final static String TAB_BAR_ITEM_CLOSE_BUTTON_STYLE = StyleHelper.buildCompound( TAB_BAR_ITEM_STYLE, "closeButton" );
-
-    public final static String TAB_BAR_ITEM_SELECTED_STYLE = StyleHelper.buildCompound( TAB_BAR_ITEM_STYLE ,"selected" );
-
-    public final static String TAB_CONTENT_STYLE = StyleHelper.buildCompound( TAB_PANEL_STYLE ,"content" );
 }

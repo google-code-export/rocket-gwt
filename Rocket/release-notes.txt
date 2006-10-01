@@ -107,3 +107,15 @@ ADD css - Added project name "rocket-" to all widget style/class names.
 
 TODO Need to fix x/y calculation of child list within SubMenuItem.open(). I think its related to broken Element.getAbsoluteXXX where XXX = X/Y.
 
+0.16  2 October 2006
+-----------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.16/Rocket-0.16.zip
+
+ADD FormHelper.isInputTypeElement() 
+ADD 4 new TabPanels were added namely describing the positioning of the tab titles themselves top(the original TabPanel), right, bottom and left.
+MOD Moved Tab* classes from widget to widget.tab. TabPanel is now abstract with 4 new concrete sub-classes.
+MOD Changed Tab style constants. 
+ADD HorizontalSlider & VerticalSlider widgets with tests.
+FIX BlockyPixel style was "blockyGrid" now "blockyPixel"
+ADD BrowserHelper.prompt()
+ADD DomHelper.toJavascriptPropertyName() - will move in next release to StyleHelper.

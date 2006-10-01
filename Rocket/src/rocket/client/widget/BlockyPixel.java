@@ -132,7 +132,7 @@ public class BlockyPixel extends Composite implements PixelGrid {
 		WidgetHelper.checkNotAlreadyCreated("grid", this.hasGrid());
 
 		final Grid grid = new Grid();
-		grid.addStyleName(WidgetConstants.BLOCKY_GRID_STYLE);
+		grid.addStyleName(WidgetConstants.BLOCKY_PIXEL_STYLE);
 		grid.setCellPadding(0);
 		grid.setCellSpacing(0);
 		this.setGrid(grid);
