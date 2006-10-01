@@ -17,8 +17,14 @@ package rocket.test.widget.tabpanel.client;
 
 import java.util.Iterator;
 
-import rocket.client.widget.TabListener;
-import rocket.client.widget.TabPanel;
+import rocket.client.util.ObjectHelper;
+import rocket.client.widget.tab.BottomTabPanel;
+import rocket.client.widget.tab.LeftTabPanel;
+import rocket.client.widget.tab.RightTabPanel;
+import rocket.client.widget.tab.TabConstants;
+import rocket.client.widget.tab.TabListener;
+import rocket.client.widget.tab.TabPanel;
+import rocket.client.widget.tab.TopTabPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -37,24 +43,22 @@ import com.google.gwt.user.client.ui.Widget;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class TabPanelTest implements EntryPoint {
-
+	
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
         try {
             final RootPanel root = RootPanel.get();
-
-            final HTML feedback = new HTML();
-            feedback.addStyleName( "feedback");
-            root.add( feedback );
-
+            root.add( createFeedback() );
+            root.add( createTopTabPanelButton() );
+            root.add( createBottomTabPanelButton() );
+            root.add( createLeftTabPanelButton() );
+            root.add( createRightTabPanelButton() );
+                        
             final Button adder = new Button("Add panel with a randomly generated title.");
             root.add(adder);
             root.add( new HTML( "<br/>"));
-
-            final TabPanel tabPanel = new TabPanel();
-            tabPanel.setCloseButtonImageUrl( GWT.getModuleBaseURL() + "/close.gif");
 
             final TextBox newTabTitle = new TextBox();
             newTabTitle.addKeyboardListener( new KeyboardListenerAdapter(){
@@ -64,8 +68,8 @@ public class TabPanelTest implements EntryPoint {
             			if( title.length() == 0 ) {
             				Window.alert( "TabTitle is empty.");
             			} else{
-            				tabPanel.addTab( title, true,new HTML(createContent()));
-                            feedback.setText( "Tab created with a title of [" + title + "]");
+            				getTabPanel().addTab( title, true,new HTML(createContent()));
+                            getFeedback().setText( "Tab created with a title of [" + title + "]");
             			}
             		}
             	}
@@ -75,44 +79,19 @@ public class TabPanelTest implements EntryPoint {
             root.add( newTabTitle );
             root.add( new HTML( "<br/>"));
 
-            root.add(tabPanel);
-
-            final HTML firstTabContents = new HTML( "First<br/>" + createContent());
-            firstTabContents.setSize("100%", "100%");
-
-            tabPanel.addTab("First", false,  firstTabContents );
-            tabPanel.addTab("2222222222222222", true, new HTML(createContent( "second tab contents ")));
-            tabPanel.addTab("3333333333333333", true, new HTML(createContent( "third tab contents ")));
-            tabPanel.selectTab( 0 );
-
             adder.addClickListener(new ClickListener() {
                 public void onClick(final Widget sender) {
                     final String title = "tab-" + System.currentTimeMillis();
-                    tabPanel.addTab( title, true, new HTML(createContent() ));
-                    feedback.setText( "tabPanel.addTab title[" + title + "]");
+                    getTabPanel().addTab( title, true, new HTML(createContent() ));
+                    getFeedback().setText( "tabPanel.addTab title[" + title + "]");
                 }
             });
 
-            tabPanel.addTabListener( new TabListener(){
-                public boolean onBeforeTabSelected(String title, final Widget widget ){
-                    return Window.confirm( "tabSelected title[" + title + "]\nwidget: " + widget + "\n ? Cancel=vetoes");
-                }
-                public void onTabSelected(final String title, final Widget widget){
-                    feedback.setText( "tabSelected [" + title + "], widget: " + widget );
-                }
-                public boolean onBeforeTabClosed(final String title, final Widget widget ){
-                    return Window.confirm( "beforeTabClosed title[" + title + "]\nwidget: " + widget + "\n ? Cancel=vetoes");
-                }
-                public void onTabClosed(final String title, final Widget widget){
-                    feedback.setText("tabClosed [" + title + "], widget: " + widget);
-                }
-            });
-
-            final Button createContentIterator = new Button("tabPanel.getTabContents()");
+            final Button createContentIterator = new Button("tabPanel.tabContentsIterator()");
             createContentIterator.addClickListener( new ClickListener() {
                 public void onClick( Widget ignored ){
-                    TabPanelTest.contentIterator = tabPanel.getTabContents();
-                    feedback.setText( "TabContentsIterator created.");
+                    TabPanelTest.contentIterator = tabPanel.tabContentsIterator();
+                    getFeedback().setText( "TabContentsIterator created.");
                 }
             });
             root.add( createContentIterator );
@@ -120,10 +99,11 @@ public class TabPanelTest implements EntryPoint {
             final Button contentIteratorHasNext = new Button("tabContentIterator.hasNext()");
             contentIteratorHasNext.addClickListener( new ClickListener() {
                 public void onClick( Widget ignored ){
+                	final HTML feedback = getFeedback();
                     try{
-                        feedback.setText( "contentIterator.hasNext() ->" + contentIterator.hasNext() );
+                    	feedback.setText( "contentIterator.hasNext() ->" + contentIterator.hasNext() );
                     } catch ( Exception caught ){
-                        feedback.setText( "contentIterator.hasNext() threw " + caught );
+                    	feedback.setText( "contentIterator.hasNext() threw " + caught );
                     }
                 }
             });
@@ -132,6 +112,7 @@ public class TabPanelTest implements EntryPoint {
             final Button contentIteratorNext = new Button("tabContentIterator.next()");
             contentIteratorNext.addClickListener( new ClickListener() {
                 public void onClick( Widget ignored ){
+                	final HTML feedback = getFeedback();
                     try{
                         feedback.setText( "contentIterator.next() ->" + contentIterator.next() );
                     } catch ( Exception caught ){
@@ -145,6 +126,7 @@ public class TabPanelTest implements EntryPoint {
             final Button contentIteratorRemoved = new Button("tabContentIterator.remove()");
             contentIteratorRemoved.addClickListener( new ClickListener() {
                 public void onClick( Widget ignored ){
+                	final HTML feedback = getFeedback();
                     try{
                         final int beforeSelectedIndex = tabPanel.getSelectedTabIndex();
                         contentIterator.remove();
@@ -162,7 +144,110 @@ public class TabPanelTest implements EntryPoint {
             t.printStackTrace();
         }
     }
+ 
+    /**
+     * The feedback widget is a recipient for messages.
+     */
+    HTML feedback;
+    
+    HTML getFeedback(){
+    	return feedback;
+    }
+    
+    void setFeedback( final HTML feedback ){
+    	this.feedback = feedback;
+    }
+    
+    HTML createFeedback(){
+    final HTML feedback = new HTML();
+    feedback.addStyleName( "feedback");
+    this.setFeedback( feedback );
+    
+    return feedback;
+}
+    
+    /**
+     * The tabPanel being tested.
+     */
+	TabPanel tabPanel = null;
+	
+	TabPanel getTabPanel(){
+		ObjectHelper.checkNotNull("field:tabPanel", tabPanel);
+		return tabPanel;
+	}
+    
+    void setTabPanel( final TabPanel tabPanel ){
+    	ObjectHelper.checkNotNull("parameter:tabPanel", tabPanel );
+    	this.tabPanel = tabPanel;
+    	
+    	tabPanel.setCloseButtonImageUrl( "close.gif" );
+    	
+        final HTML firstTabContents = new HTML( "First<br/>" + createContent());
+        firstTabContents.setSize("100%", "100%");
 
+        tabPanel.addTab("First", false,  firstTabContents );
+        tabPanel.addTab("2222222222222222", true, new HTML(createContent( "second tab contents ")));
+        tabPanel.addTab("3333333333333333", true, new HTML(createContent( "third tab contents ")));
+        tabPanel.selectTab( 0 );
+        
+        tabPanel.addTabListener( new TabListener(){
+            public boolean onBeforeTabSelected(String title, final Widget widget ){
+                return Window.confirm( "tabSelected title[" + title + "]\nwidget: " + widget + "\n ? Cancel=vetoes");
+            }
+            public void onTabSelected(final String title, final Widget widget){
+                getFeedback().setText( "tabSelected [" + title + "], widget: " + widget );
+            }
+            public boolean onBeforeTabClosed(final String title, final Widget widget ){
+                return Window.confirm( "beforeTabClosed title[" + title + "]\nwidget: " + widget + "\n ? Cancel=vetoes");
+            }
+            public void onTabClosed(final String title, final Widget widget){
+            	getFeedback().setText("tabClosed [" + title + "], widget: " + widget);
+            }
+        });
+        
+        RootPanel.get().add( tabPanel );
+    }
+
+    protected Button createTopTabPanelButton(){
+        final Button button = new Button( "Create TopTabPanel");
+        button.addClickListener( new ClickListener(){
+        	public void onClick( final Widget ignored ){
+        		setTabPanel( new TopTabPanel() );
+        	}
+        });
+        return button;
+    }
+    
+    protected Button createBottomTabPanelButton(){
+        final Button button = new Button( "Create BottomTabPanel");
+        button.addClickListener( new ClickListener(){
+        	public void onClick( final Widget ignored ){
+        		setTabPanel( new BottomTabPanel() );
+        	}
+        });
+        return button;
+    }
+    
+    protected Button createLeftTabPanelButton(){
+        final Button button = new Button( "Create LeftTabPanel");
+        button.addClickListener( new ClickListener(){
+        	public void onClick( final Widget ignored ){
+        		setTabPanel( new LeftTabPanel() );
+        	}
+        });
+        return button;
+    }
+    
+    protected Button createRightTabPanelButton(){
+        final Button button = new Button( "Create RightTabPanel");
+        button.addClickListener( new ClickListener(){
+        	public void onClick( final Widget ignored ){
+        		setTabPanel( new RightTabPanel() );
+        	}
+        });
+        return button;
+    }
+    
     static Iterator contentIterator;
 
     final static String createContent() {

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.client.widget;
+package rocket.client.widget.tab;
 
 import com.google.gwt.user.client.ui.Widget;
 

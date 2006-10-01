@@ -28,6 +28,9 @@ import com.google.gwt.user.client.Element;
  * their composite widgets/elements.
  *
  * @author Miroslav Pokorny (mP)
+ * 
+ * TODO Move/merge with rocket.client.style.StyleHelper
+ * TODO Might be able to simply - ie get rid of pointless methods.
  */
 public class StyleHelper{
 

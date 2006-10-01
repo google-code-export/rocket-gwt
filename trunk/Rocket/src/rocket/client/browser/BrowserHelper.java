@@ -33,6 +33,23 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class BrowserHelper extends ObjectHelper {
 
+	/**
+	 * Prompts the user for a string allowing an initial value which may in turn be modified by the user.
+	 * @param message
+	 * @param initialValue
+	 * @return
+	 */
+	public static String prompt( final String message, final String initialValue ){
+		StringHelper.checkNotEmpty("parameter:message", message );
+		StringHelper.checkNotNull("parameter:initialValue", initialValue );
+		
+		return prompt0( message, initialValue );
+	}
+
+	protected static native String prompt0(final String message, final String initialValue )/*-{
+	  return $wnd.prompt( message, initialValue );
+	 }-*/;
+	
 	public static native String getStatus()/*-{
 	 return $wnd.status;
 	 }-*/;
