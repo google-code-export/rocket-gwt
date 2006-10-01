@@ -1,0 +1,5 @@
+<module>
+	<inherits name="rocket.User" />	
+	<entry-point class='rocket.test.widget.menu.client.MenuTest' />
+	<servlet path="/menu" class="rocket.test.widget.menu.server.MockMenuServiceImpl" />
+</module>
