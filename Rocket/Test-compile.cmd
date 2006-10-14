@@ -10,13 +10,25 @@
 @call Card-compile.cmd
 @echo .
 
+@call DivPanel-compile.cmd
+@echo .
+
 @call Grid-compile.cmd
+@echo .
+
+@call InteractiveList-compile.cmd
+@echo .
+
+@call InteractivePanel-compile.cmd
 @echo .
 
 @call Life-compile.cmd
 @echo .
 
 @call Menu-compile.cmd
+@echo .
+
+@call OrderedList-compile.cmd
 @echo .
 
 @call Pager-compile.cmd
@@ -28,10 +40,16 @@
 @call SortableTable-compile.cmd
 @echo .
 
+@call SpanPanel-compile.cmd
+@echo .
+
 @call TabPanel-compile.cmd
 @echo .
 
 @call Tree-compile.cmd
+@echo .
+
+@call UnorderedList-compile.cmd
 @echo .
 
 @call ZebraFlexTable-compile.cmd
