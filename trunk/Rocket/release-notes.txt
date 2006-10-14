@@ -119,3 +119,41 @@ ADD HorizontalSlider & VerticalSlider widgets with tests.
 FIX BlockyPixel style was "blockyGrid" now "blockyPixel"
 ADD BrowserHelper.prompt()
 ADD DomHelper.toJavascriptPropertyName() - will move in next release to StyleHelper.
+
+
+0.17 14 October 2006
+--------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.17/Rocket-0.17.zip
+
+ADD ObjectWrapper which is similar to ElementWrapper but wraps any DOM object.
+MOD ElementWrapper refactored to extend ObjectWrapper. removed duplicate methods already present in new super class.
+MOD Renamed AbstractElementList DomCollectionList. changed references from Element to JavaScriptObject, changed     visitWrappedElement() to unwrapWrapper(). Renamed test *.launch/*.cmd files, removed methods which duplicated     those already found in AbstractList which it inherits.
+MOD Moved StyleHelper,StyleSheet and style constants from rocket.client.dom to rocket.client.style.
+MOD StylesheetCollection is no longer a public class and has made into an inner class of StyleHelper.
+FIX DomHelper.castToElement() Changed argument from Object to JavaScriptObject.
+FIX DomHelper.setProperty( XXX ) removed check that validates that property was actually updated.
+FIX (Issue#6) Relating to handle dragging and slider clicking not working correctly when the browser has been scrolled.
+ADD DomHelper.getAbsoluteXXX() where XXX is Top/Left. The GWT code found in DOM is broken for strict mode IE this     is also used by Widget.getAbsoluteXXX(). Changed various references to DOM
+ADD DomHelper.setAbsolutePosition( Element, x, y );
+FIX DomHelper.hasProperty() & DomHelper.getProperty() and DomHelper.getXXXProperty() where XXX is 
+    Boolean/Int/AsJavaScriptObject which was not handling undefined and null values correctly.
+ADD WidgetHelper.getAbsoluteXXX() where XXX is Top/Left.
+ADD WidgetHelper.setAbsolutePosition( Widget, x, y );
+ADD StyleConstants added constants for all css properties.
+ADD SpanPanel a panel which uses spans(SPAN) to house individual widgets rather than a table.
+ADD DivPanel a panel that uses divs(DIV) to house widgets rather than a table.
+ADD OrderedListPanel a panel that uses an ordered list(OL) to house widgets rather than a table.
+ADD UnorderedListPanel a panel that uses an unordered list(UL) to house widgets rather than a table.
+ADD MenuLists can now be opened up/down/right/left directions relative to their parent SubMenuItem.
+DEL Removed support for expandable vertical menu lists, use VerticalMenuList instead.
+FIX (Issue#) Fixed issue where by menu lists where not being positioned correctly when the browser client area     had been scrolled.
+ENH Moved autoOpen from Menu to SubMenuItem
+FIX Life removed stray print statement.
+FIX SortableTable.removeUnnecessaryTableRows() fixed typo in method name.
+ADD SortableTable added feature to retrieve row given a table row index.
+ADD SortableTable added clear() which empties the table.
+ADD DomHelper.eventGetToElement() includes a test to read the correct property for FF as the GWT impl was reading the wrong event property.
+ADD InteractiveList
+ADD InteractivePanel and reworked previous panel tests to use the widget.
+ADD DomObjectPropertyList, DomObjectPropertyListElement list implementation which wraps and unwraps when writing/reading to a dom object's property.
+REF Renamed AbstractIteratorWrapper to IteratorWrapper
