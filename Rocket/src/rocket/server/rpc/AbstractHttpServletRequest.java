@@ -32,171 +32,176 @@ import rocket.server.util.ObjectHelper;
 
 /**
  * This Request supports the ability to capture output from included/forwarded web resources.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public abstract class AbstractHttpServletRequest extends HttpServletRequestWrapper implements HttpServletRequest {
 
-	protected AbstractHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers) {
-		super(request);
+    protected AbstractHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers) {
+        super(request);
 
-		this.setUrl(url);
-		this.setHeaders(headers);
-	}
+        this.setUrl(url);
+        this.setHeaders(headers);
+    }
 
-	/**
-	 * The url of the
-	 */
-	private String url;
+    /**
+     * The url of the
+     */
+    private String url;
 
-	protected String getUrl() {
-		StringHelper.checkNotEmpty("field:url", url);
-		return url;
-	}
+    protected String getUrl() {
+        StringHelper.checkNotEmpty("field:url", url);
+        return url;
+    }
 
-	protected void setUrl(final String url) {
-		StringHelper.checkNotEmpty("parameter:url", url);
-		this.url = url;
-	}
+    protected void setUrl(final String url) {
+        StringHelper.checkNotEmpty("parameter:url", url);
+        this.url = url;
+    }
 
-	private Headers headers;
+    private Headers headers;
 
-	public Headers getHeaders() {
-		ObjectHelper.checkNotNull("field:headers", headers);
-		return this.headers;
-	}
+    public Headers getHeaders() {
+        ObjectHelper.checkNotNull("field:headers", headers);
+        return this.headers;
+    }
 
-	public void setHeaders(final Headers headers) {
-		ObjectHelper.checkNotNull("parameter:headers", headers);
-		this.headers = headers;
-	}
+    public void setHeaders(final Headers headers) {
+        ObjectHelper.checkNotNull("parameter:headers", headers);
+        this.headers = headers;
+    }
 
-//	public String getQueryString() {
-//		final String url = this.getUrl();
-//		final int queryStringIndex = url.indexOf('?');
-//
-//		return queryStringIndex == -1 ? url : url.substring(queryStringIndex + 1);
-//	}
-//
-//	public String getRequestURI() {
-//		return this.getUrl();
-//	}
-//
-//	public StringBuffer getRequestURL() {
-//		return new StringBuffer(this.getUrl());
-//	}
-//
-//	public String getPathInfo() {
-//		String pathInfo = null;
-//		if (this.hasServletPath()) {
-//			pathInfo = this.getUrl().substring(this.getServletPath().length());
-//		}
-//		return pathInfo;
-//	}
-//
-//	public String getPathTranslated() {
-//		return this.hasServletPath() ? super.getRealPath(this.getServletPath()) : null;
-//	}
-//
-//	protected boolean hasServletPath() {
-//		return false;
-//	}
+    // public String getQueryString() {
+    // final String url = this.getUrl();
+    // final int queryStringIndex = url.indexOf('?');
+    //
+    // return queryStringIndex == -1 ? url : url.substring(queryStringIndex +
+    // 1);
+    // }
+    //
+    // public String getRequestURI() {
+    // return this.getUrl();
+    // }
+    //
+    // public StringBuffer getRequestURL() {
+    // return new StringBuffer(this.getUrl());
+    // }
+    //
+    // public String getPathInfo() {
+    // String pathInfo = null;
+    // if (this.hasServletPath()) {
+    // pathInfo = this.getUrl().substring(this.getServletPath().length());
+    // }
+    // return pathInfo;
+    // }
+    //
+    // public String getPathTranslated() {
+    // return this.hasServletPath() ? super.getRealPath(this.getServletPath()) :
+    // null;
+    // }
+    //
+    // protected boolean hasServletPath() {
+    // return false;
+    // }
 
-	private String characterEncoding;
+    private String characterEncoding;
 
-	public String getCharacterEncoding() {
-		return characterEncoding;
-	}
+    public String getCharacterEncoding() {
+        return characterEncoding;
+    }
 
-	public void setCharacterEncoding(final String characterEncoding) throws UnsupportedEncodingException {
-		this.characterEncoding = characterEncoding;
-	}
+    public void setCharacterEncoding(final String characterEncoding) throws UnsupportedEncodingException {
+        this.characterEncoding = characterEncoding;
+    }
 
-	/**
-	 * A container for request parameters taken from a url.
-	 */
-	private RequestParameters requestParameters;
+    /**
+     * A container for request parameters taken from a url.
+     */
+    private RequestParameters requestParameters;
 
-	protected RequestParameters getRequestParameters() {
-		ObjectHelper.checkNotNull("field:requestParameters", this.requestParameters);
-		return this.requestParameters;
-	}
+    protected RequestParameters getRequestParameters() {
+        ObjectHelper.checkNotNull("field:requestParameters", this.requestParameters);
+        return this.requestParameters;
+    }
 
-	protected boolean hasRequestParameters() {
-		return null != this.requestParameters;
-	}
+    protected boolean hasRequestParameters() {
+        return null != this.requestParameters;
+    }
 
-	protected void setRequestParameters(final RequestParameters requestParameters) {
-		ObjectHelper.checkNotNull("parameter:requestParameters", requestParameters);
-		this.requestParameters = requestParameters;
-	}
+    protected void setRequestParameters(final RequestParameters requestParameters) {
+        ObjectHelper.checkNotNull("parameter:requestParameters", requestParameters);
+        this.requestParameters = requestParameters;
+    }
 
-	public String getParameter(final String name) {
-		return this.getRequestParameters().getValue(name);
-	}
+    public String getParameter(final String name) {
+        return this.getRequestParameters().getValue(name);
+    }
 
-	public Enumeration getParameterNames() {
-		final Iterator iterator = this.getRequestParameters().names();
-		return new Enumeration() {
-			public boolean hasMoreElements() {
-				return iterator.hasNext();
-			}
+    public Enumeration getParameterNames() {
+        final Iterator iterator = this.getRequestParameters().names();
+        return new Enumeration() {
+            public boolean hasMoreElements() {
+                return iterator.hasNext();
+            }
 
-			public Object nextElement() {
-				return iterator.next();
-			}
-		};
-	}
+            public Object nextElement() {
+                return iterator.next();
+            }
+        };
+    }
 
-	public String[] getParameterValues(final String name) {
-		return this.getRequestParameters().getValues(name);
-	}
+    public String[] getParameterValues(final String name) {
+        return this.getRequestParameters().getValues(name);
+    }
 
-	/**
-	 * A read only view of this map is used by getParameterMap();
-	 */
-	private Map parameterMap;
-	/**
-	 * Uses a lazy approach to creating a map with keys/values ( as String arrays ).
-	 *
-	 * @todo prolly not worth the effort to create a view of request parameters
-	 * @return
-	 */
-	public Map getParameterMap() {
-		if( false == this.hasParameterMap() ){
-			this.createParameterMap();
-		}
+    /**
+     * A read only view of this map is used by getParameterMap();
+     */
+    private Map parameterMap;
 
-		ObjectHelper.checkNotNull( "field:parameterMap", parameterMap );
-		return this.parameterMap;
-	}
+    /**
+     * Uses a lazy approach to creating a map with keys/values ( as String arrays ).
+     * 
+     * TODO prolly not worth the effort to create a view of request parameters
+     * 
+     * @return
+     */
+    public Map getParameterMap() {
+        if (false == this.hasParameterMap()) {
+            this.createParameterMap();
+        }
 
-	protected boolean hasParameterMap(){
-		return this.parameterMap != null;
-	}
+        ObjectHelper.checkNotNull("field:parameterMap", parameterMap);
+        return this.parameterMap;
+    }
 
-	protected void setParameterMap( final Map parameterMap ){
-		ObjectHelper.checkNotNull( "parameter:parameterMap", parameterMap );
-		this.parameterMap = parameterMap;
-	}
+    protected boolean hasParameterMap() {
+        return this.parameterMap != null;
+    }
 
-	protected void createParameterMap(){
-		ObjectHelper.checkPropertyNotSet( "parameterMap", this, this.hasParameterMap() );
+    protected void setParameterMap(final Map parameterMap) {
+        ObjectHelper.checkNotNull("parameter:parameterMap", parameterMap);
+        this.parameterMap = parameterMap;
+    }
 
-		final Map view = new HashMap();
-		final RequestParameters parameters = this.getRequestParameters();
-		final Iterator keys = parameters.names();
+    protected void createParameterMap() {
+        ObjectHelper.checkPropertyNotSet("parameterMap", this, this.hasParameterMap());
 
-		while (keys.hasNext()) {
-			final String key = (String) keys.next();
-			final String[] value = parameters.getValues(key);
-			view.put(key, value);
-		}
+        final Map view = new HashMap();
+        final RequestParameters parameters = this.getRequestParameters();
+        final Iterator keys = parameters.names();
 
-		this.setParameterMap( Collections.unmodifiableMap( view ));
-	}
+        while (keys.hasNext()) {
+            final String key = (String) keys.next();
+            final String[] value = parameters.getValues(key);
+            view.put(key, value);
+        }
 
-	public String toString() {
-		return super.toString() + ", url[" + url + "], headers: " + headers + ", requestParameters:" + requestParameters;
-	}
+        this.setParameterMap(Collections.unmodifiableMap(view));
+    }
+
+    public String toString() {
+        return super.toString() + ", url[" + url + "], headers: " + headers + ", requestParameters:"
+                + requestParameters;
+    }
 }

@@ -30,143 +30,144 @@ import rocket.server.util.ObjectHelper;
 
 /**
  * This request supports simulating posting of data from the client using rpc eventually making a regular POSt to a local web app resource.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class PostHttpServletRequest extends AbstractHttpServletRequest implements HttpServletRequest {
 
-	public PostHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers,
-			final RequestParameters parameters) {
-		super(request, url, headers);
+    public PostHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers,
+            final RequestParameters parameters) {
+        super(request, url, headers);
 
-		this.setRequestParameters(parameters);
-	}
+        this.setRequestParameters(parameters);
+    }
 
-	public PostHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers, final byte[] data) {
-		super(request, url, headers);
+    public PostHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers,
+            final byte[] data) {
+        super(request, url, headers);
 
-		this.setData(data);
-	}
+        this.setData(data);
+    }
 
-	/**
-	 * The bytes that are the post data.
-	 */
-	private byte[] data;
+    /**
+     * The bytes that are the post data.
+     */
+    private byte[] data;
 
-	public byte[] getData() {
-		if (this.hasRequestParameters()) {
-			throw new IllegalStateException("Parameters have been read post data may not be read.");
-		}
+    public byte[] getData() {
+        if (this.hasRequestParameters()) {
+            throw new IllegalStateException("Parameters have been read post data may not be read.");
+        }
 
-		if (false == this.hasData()) {
-			throw new IllegalStateException("This request was created without any post data");
-		}
-		return this.data;
-	}
+        if (false == this.hasData()) {
+            throw new IllegalStateException("This request was created without any post data");
+        }
+        return this.data;
+    }
 
-	protected boolean hasData() {
-		return this.data != null;
-	}
+    protected boolean hasData() {
+        return this.data != null;
+    }
 
-	protected void setData(final byte[] data) {
-		StringHelper.checkNotNull("parameter:data", data);
-		this.data = data;
-	}
+    protected void setData(final byte[] data) {
+        StringHelper.checkNotNull("parameter:data", data);
+        this.data = data;
+    }
 
-	public String getMethod() {
-		return "POST";
-	}
+    public String getMethod() {
+        return "POST";
+    }
 
-	public int getContentLength() {
-		return this.getData().length;
-	}
+    public int getContentLength() {
+        return this.getData().length;
+    }
 
-	/**
-	 * An inputStream being used to read the post data from this request. There can only ever be either an inputStream or reader active
-	 * never both.
-	 */
-	private ServletInputStream inputStream;
+    /**
+     * An inputStream being used to read the post data from this request. There can only ever be either an inputStream or reader active
+     * never both.
+     */
+    private ServletInputStream inputStream;
 
-	public ServletInputStream getInputStream() throws IOException {
-		if (false == this.hasInputStream()) {
-			this.createInputStream();
-		}
+    public ServletInputStream getInputStream() throws IOException {
+        if (false == this.hasInputStream()) {
+            this.createInputStream();
+        }
 
-		ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
-		return this.inputStream;
-	}
+        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
+        return this.inputStream;
+    }
 
-	protected boolean hasInputStream() {
-		return null != this.inputStream;
-	}
+    protected boolean hasInputStream() {
+        return null != this.inputStream;
+    }
 
-	protected void setInputStream(final ServletInputStream inputStream) {
-		ObjectHelper.checkNotNull("parameter:inputStream", inputStream);
-		ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
-		ObjectHelper.checkPropertySet("reader", this, this.hasReader());
+    protected void setInputStream(final ServletInputStream inputStream) {
+        ObjectHelper.checkNotNull("parameter:inputStream", inputStream);
+        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
+        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
 
-		this.inputStream = inputStream;
-	}
+        this.inputStream = inputStream;
+    }
 
-	protected void createInputStream() {
-		ObjectHelper.checkNotNull("parameter:inputStream", inputStream);
-		ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
-		ObjectHelper.checkPropertySet("reader", this, this.hasReader());
+    protected void createInputStream() {
+        ObjectHelper.checkNotNull("parameter:inputStream", inputStream);
+        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
+        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
 
-		this.setInputStream(new ByteArrayServletInputStream(this.getData()));
-	}
+        this.setInputStream(new ByteArrayServletInputStream(this.getData()));
+    }
 
-	/**
-	 * An BufferedReader being used to read the post data from this request. There can only ever be either an inputStream or reader
-	 * active never both.
-	 */
-	private BufferedReader reader;
+    /**
+     * An BufferedReader being used to read the post data from this request. There can only ever be either an inputStream or reader active
+     * never both.
+     */
+    private BufferedReader reader;
 
-	public BufferedReader getReader() throws IOException {
-		if (false == this.hasReader()) {
-			this.createReader();
-		}
+    public BufferedReader getReader() throws IOException {
+        if (false == this.hasReader()) {
+            this.createReader();
+        }
 
-		ObjectHelper.checkPropertySet("reader", this, this.hasReader());
-		return this.reader;
-	}
+        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
+        return this.reader;
+    }
 
-	protected boolean hasReader() {
-		return null != this.reader;
-	}
+    protected boolean hasReader() {
+        return null != this.reader;
+    }
 
-	protected void setReader(final BufferedReader reader) {
-		ObjectHelper.checkNotNull("parameter:reader", reader);
-		ObjectHelper.checkPropertySet("reader", this, this.hasReader());
-		ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
+    protected void setReader(final BufferedReader reader) {
+        ObjectHelper.checkNotNull("parameter:reader", reader);
+        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
+        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
 
-		this.reader = reader;
-	}
+        this.reader = reader;
+    }
 
-	protected void createReader() {
-		ObjectHelper.checkPropertySet("reader", this, this.hasReader());
-		ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
-		this.reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(this.getData())));
-		;
-	}
+    protected void createReader() {
+        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
+        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
+        this.reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(this.getData())));
+        ;
+    }
 
-	protected RequestParameters getRequestParameters() {
-		if (false == this.hasRequestParameters()) {
-			this.createRequestParameters();
-		}
+    protected RequestParameters getRequestParameters() {
+        if (false == this.hasRequestParameters()) {
+            this.createRequestParameters();
+        }
 
-		return super.getRequestParameters();
-	}
+        return super.getRequestParameters();
+    }
 
-	protected void createRequestParameters() {
-		final String postData = new String(this.getData());
+    protected void createRequestParameters() {
+        final String postData = new String(this.getData());
 
-		final RequestParameters parameters = new RequestParameters();
-		parameters.buildFromQueryString( postData );
-		this.setRequestParameters(parameters);
-	}
+        final RequestParameters parameters = new RequestParameters();
+        parameters.buildFromQueryString(postData);
+        this.setRequestParameters(parameters);
+    }
 
-	public String toString() {
-		return super.toString() + ", data: " + data + ", inputStream: " + inputStream + ", reader: " + reader;
-	}
+    public String toString() {
+        return super.toString() + ", data: " + data + ", inputStream: " + inputStream + ", reader: " + reader;
+    }
 }

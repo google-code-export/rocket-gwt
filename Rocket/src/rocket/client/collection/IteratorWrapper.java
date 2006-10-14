@@ -14,14 +14,17 @@
  * the License.
  */
 package rocket.client.collection;
+
 import java.util.Iterator;
 
 import rocket.client.util.ObjectHelper;
+
 /**
-* Useful base class for any iterator is actually a view around another Iterator
-* @author Miroslav Pokorny
-*/
-public abstract class AbstractIteratorWrapper implements Iterator{
+ * Useful base class for any iterator is actually a view around another Iterator
+ * 
+ * @author Miroslav Pokorny
+ */
+public abstract class IteratorWrapper implements Iterator {
     /**
      * The iterator being wrapped.
      */
@@ -37,7 +40,7 @@ public abstract class AbstractIteratorWrapper implements Iterator{
         this.iterator = iterator;
     }
 
-    public String toString(){
+    public String toString() {
         return super.toString() + ", iterator: " + iterator;
     }
 }

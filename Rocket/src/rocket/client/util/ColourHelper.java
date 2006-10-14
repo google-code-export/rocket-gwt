@@ -21,7 +21,7 @@ import com.google.gwt.user.client.Random;
 
 /**
  * A helper which assists with the management of colours
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class ColourHelper extends PrimitiveHelper {
@@ -99,21 +99,21 @@ public class ColourHelper extends PrimitiveHelper {
         return string;
     }
 
-    public static int mix( final int colour, final int otherColour, final float mixRatio ){
-        final int red = getRed( colour );
-        final int green = getGreen( colour );
-        final int blue = getBlue( colour );
+    public static int mix(final int colour, final int otherColour, final float mixRatio) {
+        final int red = getRed(colour);
+        final int green = getGreen(colour);
+        final int blue = getBlue(colour);
 
-        final int otherRed = getRed( otherColour );
-        final int otherGreen = getGreen( otherColour );
-        final int otherBlue = getBlue( otherColour );
+        final int otherRed = getRed(otherColour);
+        final int otherGreen = getGreen(otherColour);
+        final int otherBlue = getBlue(otherColour);
 
         final float otherRatio = 1.0f - mixRatio;
 
-        final int mixedRed = (int)(red * mixRatio + otherRed * otherRatio );
-        final int mixedGreen = (int)(green * mixRatio + otherGreen * otherRatio );
-        final int mixedBlue = (int)(blue * mixRatio + otherBlue * otherRatio );
+        final int mixedRed = (int) (red * mixRatio + otherRed * otherRatio);
+        final int mixedGreen = (int) (green * mixRatio + otherGreen * otherRatio);
+        final int mixedBlue = (int) (blue * mixRatio + otherBlue * otherRatio);
 
-        return makeColour( mixedRed, mixedGreen, mixedBlue );
+        return makeColour(mixedRed, mixedGreen, mixedBlue);
     }
 }

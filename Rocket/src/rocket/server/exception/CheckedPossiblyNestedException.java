@@ -15,26 +15,24 @@
  */
 package rocket.server.exception;
 
-public class CheckedPossiblyNestedException extends
-		AbstractPossiblyNestedCheckedException {
+public class CheckedPossiblyNestedException extends AbstractPossiblyNestedCheckedException {
 
-	public CheckedPossiblyNestedException() {
-	}
+    public CheckedPossiblyNestedException() {
+    }
 
-	public CheckedPossiblyNestedException(final Throwable cause) {
-		super(cause);
-	}
+    public CheckedPossiblyNestedException(final Throwable cause) {
+        super(cause);
+    }
 
-	public CheckedPossiblyNestedException(final String message) {
-		super(message);
-	}
+    public CheckedPossiblyNestedException(final String message) {
+        super(message);
+    }
 
-	public CheckedPossiblyNestedException(final String message,
-			final Throwable cause) {
-		super(message, cause);
-	}
+    public CheckedPossiblyNestedException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
-	protected final boolean mustHaveCause() {
-		return false;
-	}
+    protected final boolean mustHaveCause() {
+        return false;
+    }
 }

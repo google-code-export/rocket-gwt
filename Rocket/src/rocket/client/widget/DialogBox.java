@@ -22,36 +22,34 @@ import com.google.gwt.user.client.DeferredCommand;
 
 /**
  * This dialogBox exists primarily to fix several bugs within the GWT DialogBox class.
- *
- * GWT forgot to set the style for DialogBoxes within the IE6 DialogBox class.
- * ANother bug involves the browser jumping to include the DIV that is the DialogBox.
- * After the DIV is absolutely positioned the browser remains scrolled down showing an ugly black box
- * where the div used to be.
- * The show() method uses a timer to wait a second and then scrolls the window back to its original position.
- * This should be long enough to allow the browser to settle after its jump.
+ * 
+ * GWT forgot to set the style for DialogBoxes within the IE6 DialogBox class. ANother bug involves the browser jumping to include the DIV
+ * that is the DialogBox. After the DIV is absolutely positioned the browser remains scrolled down showing an ugly black box where the div
+ * used to be. The show() method uses a timer to wait a second and then scrolls the window back to its original position. This should be
+ * long enough to allow the browser to settle after its jump.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class DialogBox extends com.google.gwt.user.client.ui.DialogBox {
-	/**
-	 * GWT forgot to set the style for IE6 DialogBoxes.
-	 */
-	public DialogBox() {
-		if (BrowserHelper.isInternetExplorer6()) {
-			this.addStyleName("gwt-DialogBox");
-		}
-	}
+    /**
+     * GWT forgot to set the style for IE6 DialogBoxes.
+     */
+    public DialogBox() {
+        if (BrowserHelper.isInternetExplorer6()) {
+            this.addStyleName("gwt-DialogBox");
+        }
+    }
 
-	public void show(){
-		final int x = BrowserHelper.getScrollX();
-		final int y = BrowserHelper.getScrollY();
+    public void show() {
+        final int x = BrowserHelper.getScrollX();
+        final int y = BrowserHelper.getScrollY();
 
-		super.show();
+        super.show();
 
-		DeferredCommand.add( new Command(){
-			public void execute(){
-				BrowserHelper.scrollTo( x, y );
-			}
-		}
-		);
-	}
+        DeferredCommand.add(new Command() {
+            public void execute() {
+                BrowserHelper.scrollTo(x, y);
+            }
+        });
+    }
 }

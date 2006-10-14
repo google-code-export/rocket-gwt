@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Represents a container or panel that houses other widgets
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public interface Container {

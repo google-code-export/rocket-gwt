@@ -16,9 +16,10 @@
 package rocket.client.util;
 
 /**
-* A variety of check / assertion methods for primitive types.
-* @author Miroslav Pokorny (mP)
-*/
+ * A variety of check / assertion methods for primitive types.
+ * 
+ * @author Miroslav Pokorny (mP)
+ */
 public class PrimitiveHelper {
 
     public static void checkBetween(final String name, final long longValue, final long lowerBounds,
@@ -120,7 +121,8 @@ public class PrimitiveHelper {
         }
     }
 
-    public static void checkGreaterThanOrEqual(final String name, final double doubleValue, final double greaterThanOrEqual) {
+    public static void checkGreaterThanOrEqual(final String name, final double doubleValue,
+            final double greaterThanOrEqual) {
         if (false == (doubleValue >= greaterThanOrEqual)) {
             SystemHelper.handleAssertFailure(name, "The " + name + " value of " + doubleValue
                     + " must be greater than or equal to " + greaterThanOrEqual);

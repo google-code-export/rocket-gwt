@@ -23,8 +23,8 @@ import com.google.gwt.user.client.ui.Composite;
 
 public abstract class AbstractNumberHolder extends Composite implements NumberHolder {
 
-    protected AbstractNumberHolder(){
-        this.setChangeListenerCollection( new ChangeListenerCollection() );
+    protected AbstractNumberHolder() {
+        this.setChangeListenerCollection(new ChangeListenerCollection());
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class AbstractNumberHolder extends Composite implements NumberHo
         this.getChangeListenerCollection().remove(changeListener);
     }
 
-    protected void fireValueChanged(){
-        this.getChangeListenerCollection().fireChange( this );
+    protected void fireValueChanged() {
+        this.getChangeListenerCollection().fireChange(this);
     }
 }

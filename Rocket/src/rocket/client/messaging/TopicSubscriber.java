@@ -17,7 +17,7 @@ package rocket.client.messaging;
 
 /**
  * IMplemented in order to receive messages.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public interface TopicSubscriber {

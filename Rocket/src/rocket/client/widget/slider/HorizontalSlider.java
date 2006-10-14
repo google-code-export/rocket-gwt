@@ -15,7 +15,9 @@
  */
 package rocket.client.widget.slider;
 
+import rocket.client.browser.BrowserHelper;
 import rocket.client.util.ObjectHelper;
+import rocket.client.widget.WidgetHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -23,70 +25,69 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A HorizontalSlider is a widget which allows a user to manipulate number value
- * by clicking on different areas of the widget along the x-axis.
+ * A HorizontalSlider is a widget which allows a user to manipulate number value by clicking on different areas of the widget along the
+ * x-axis.
  * 
  * @author Miroslav (mP)
  */
 public class HorizontalSlider extends AbstractSlider {
-	public HorizontalSlider() {
-		super();
+    public HorizontalSlider() {
+        super();
 
-		this.initWidget(this.createPanel());
-		this.addStyleName(SliderConstants.HORIZONTAL_SLIDER_STYLE);
-		
-		DOM.setEventListener(this.getElement(), this);
-		this.sinkEvents(Event.ONMOUSEDOWN);
-	}
+        this.initWidget(this.createPanel());
+        this.addStyleName(SliderConstants.HORIZONTAL_SLIDER_STYLE);
 
-	/**
-	 * Calculates and sets the relative position of the thumb widget according
-	 * to the value of this slider.
-	 */
-	protected void updateWidget() {
-		final int sliderWidth = this.getOffsetWidth();
-		final Widget thumb = this.getWidget();
-		final int thumbWidth = thumb.getOffsetWidth();
-		final int spacerWidth = sliderWidth - thumbWidth;
+        DOM.setEventListener(this.getElement(), this);
+        this.sinkEvents(Event.ONMOUSEDOWN);
+    }
 
-		final float ratio = (float) this.getValue() / this.getMaximumValue();
-		final int newLeft = (int) (ratio * spacerWidth);
+    /**
+     * Calculates and sets the relative position of the thumb widget according to the value of this slider.
+     */
+    protected void updateWidget() {
+        final int sliderWidth = this.getOffsetWidth();
+        final Widget thumb = this.getWidget();
+        final int thumbWidth = thumb.getOffsetWidth();
+        final int spacerWidth = sliderWidth - thumbWidth;
 
-		final Element thumbElement = thumb.getElement();
-		DOM.setStyleAttribute(thumbElement, "position", "relative");
-		DOM.setStyleAttribute(thumbElement, "left", newLeft + "px");
-	}
+        final float ratio = (float) this.getValue() / this.getMaximumValue();
+        final int newLeft = (int) (ratio * spacerWidth);
 
-	protected String getSliderDraggingStyleName(){
-		return SliderConstants.HORIZONTAL_SLIDER_DRAGGING_STYLE;
-	}
-	
-	/**
-	 * Tests if the mouse click occured in the slider area before or after the
-	 * thumb widget.
-	 * 
-	 * @param event
-	 */
-	protected void handleBackgroundClick(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+        final Element thumbElement = thumb.getElement();
+        DOM.setStyleAttribute(thumbElement, "position", "relative");
+        DOM.setStyleAttribute(thumbElement, "left", newLeft + "px");
+    }
 
-		final int mouseX = DOM.eventGetClientX(event);
-		final int widgetX = this.getWidget().getAbsoluteLeft();
-		this.handleBackgroundClick( mouseX, widgetX );
-	}
-	
-	/**
-	 * Interprets any dragging mouse movements updating the thumb accordingly.
-	 * @param event
-	 */
-	protected void handleMouseMove(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+    protected String getSliderDraggingStyleName() {
+        return SliderConstants.HORIZONTAL_SLIDER_DRAGGING_STYLE;
+    }
 
-		final int widgetX = this.getAbsoluteLeft();
-		final int mouseX = DOM.eventGetClientX( event );
-		final int sliderWidth = this.getOffsetWidth();
-		final int thumbWidth = this.getWidget().getOffsetWidth();
-		
-		this.handleMouseMove( widgetX, mouseX, sliderWidth, thumbWidth );
-	}	
+    /**
+     * Tests if the mouse click occured in the slider area before or after the thumb widget.
+     * 
+     * @param event
+     */
+    protected void handleBackgroundClick(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
+
+        final int mouseX = DOM.eventGetClientX(event) + BrowserHelper.getScrollX();
+        final int widgetX = WidgetHelper.getAbsoluteLeft(this.getWidget());
+        this.handleBackgroundClick(mouseX, widgetX);
+    }
+
+    /**
+     * Interprets any dragging mouse movements updating the thumb accordingly.
+     * 
+     * @param event
+     */
+    protected void handleMouseMove(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
+
+        final int widgetX = WidgetHelper.getAbsoluteLeft(this);
+        final int mouseX = DOM.eventGetClientX(event) + BrowserHelper.getScrollX();
+        final int sliderWidth = this.getOffsetWidth();
+        final int thumbWidth = this.getWidget().getOffsetWidth();
+
+        this.handleMouseMove(widgetX, mouseX, sliderWidth, thumbWidth);
+    }
 }

@@ -24,37 +24,40 @@ import rocket.client.util.HttpHelper;
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 /**
-* A variety of methods that deal with submitting of forms using RPC, and other useful use cases.
-* @author Miroslav Pokorny (mP)
-*/
-public class FormHelper extends DomHelper{
+ * A variety of methods that deal with submitting of forms using RPC, and other useful use cases.
+ * 
+ * @author Miroslav Pokorny (mP)
+ */
+public class FormHelper extends DomHelper {
     /**
-     * Populates the given map with the values of the elements belonging to the given form.
-     * The element name becomes the key and teh value the entry value.
+     * Populates the given map with the values of the elements belonging to the given form. The element name becomes the key and teh value
+     * the entry value.
+     * 
      * @param map
      * @param form
      */
     public static void populateMapFromForm(final Map map, final Element form) {
-        ObjectHelper.checkNotNull( "parameter:map", map );
-        ObjectHelper.checkNotNull( "parameter:form", form );
+        ObjectHelper.checkNotNull("parameter:map", map);
+        ObjectHelper.checkNotNull("parameter:form", form);
 
-        final Iterator formElements = FormHelper.getFormElements( form );
-        while( formElements.hasNext() ){
-        	final Element formElement = (Element) castToElement( formElements.next() );
-        	final String name = DOM.getAttribute( formElement, DomConstants.NAME );
-        	final String value = FormHelper.getFormSubmitValue( formElement );
+        final Iterator formElements = FormHelper.getFormElements(form);
+        while (formElements.hasNext()) {
+            final Element formElement = (Element) castToElement((JavaScriptObject) formElements.next());
+            final String name = DOM.getAttribute(formElement, DomConstants.NAME);
+            final String value = FormHelper.getFormSubmitValue(formElement);
 
-        	map.put( name, value );
+            map.put(name, value);
         }
     }
 
     /**
      * Encodes all the elements belonging to form into a url encoded safe String.
-     *
+     * 
      * @param form
      * @return
      */
@@ -64,114 +67,118 @@ public class FormHelper extends DomHelper{
         final StringBuffer urlEncoded = new StringBuffer();
         boolean addSeparator = false;
 
-        final Iterator formElements = FormHelper.getFormElements( form );
-        while( formElements.hasNext() ){
-        	if( addSeparator ){
-        		urlEncoded.append( '&');
-        	}
+        final Iterator formElements = FormHelper.getFormElements(form);
+        while (formElements.hasNext()) {
+            if (addSeparator) {
+                urlEncoded.append('&');
+            }
 
-        	final Element formElement = (Element) castToElement( formElements.next() );
-        	final String name = DomHelper.getProperty( formElement, DomConstants.NAME );
-        	final String value = HttpHelper.urlEncode( FormHelper.getFormSubmitValue( formElement ));
-        	urlEncoded.append( name );
-        	urlEncoded.append( '=' );
-        	urlEncoded.append( value );
+            final Element formElement = (Element) castToElement((JavaScriptObject) formElements.next());
+            final String name = DomHelper.getProperty(formElement, DomConstants.NAME);
+            final String value = HttpHelper.urlEncode(FormHelper.getFormSubmitValue(formElement));
+            urlEncoded.append(name);
+            urlEncoded.append('=');
+            urlEncoded.append(value);
 
-        	addSeparator = true;
+            addSeparator = true;
         }
 
         return urlEncoded.toString();
     }
-	/**
-     * This method is smart in that it tests the tag type of the given element and reads the appropriate attribute
-     * that contains the textual value of this element.
-     * This is the value that would have been submitted for this field if its parent
-     * form was submitted.
+
+    /**
+     * This method is smart in that it tests the tag type of the given element and reads the appropriate attribute that contains the textual
+     * value of this element. This is the value that would have been submitted for this field if its parent form was submitted.
+     * 
      * @param element
      * @return
      */
-    public static String getFormSubmitValue( final Element element ){
-    	ObjectHelper.checkNotNull( "parameter:element", element );
+    public static String getFormSubmitValue(final Element element) {
+        ObjectHelper.checkNotNull("parameter:element", element);
 
-    	String value = null;
-    	while( true ){
-            if( isTag( element, FormConstants.LIST_TAG) ){
-                value = DOM.getAttribute( element, DomConstants.VALUE);
+        String value = null;
+        while (true) {
+            if (isTag(element, FormConstants.LIST_TAG)) {
+                value = DOM.getAttribute(element, DomConstants.VALUE);
                 break;
             }
-    		if( isTag( element, FormConstants.TEXTAREA_TAG) ){
-    			value = DOM.getInnerText( element );
-    			break;
-    		}
+            if (isTag(element, FormConstants.TEXTAREA_TAG)) {
+                value = DOM.getInnerText(element);
+                break;
+            }
 
-    		if( DomHelper.isTag( element, DomConstants.INPUT_TAG)){
-    			value = DOM.getAttribute( element, DomConstants.VALUE);
-    			break;
-    		}
+            if (DomHelper.isTag(element, DomConstants.INPUT_TAG)) {
+                value = DOM.getAttribute(element, DomConstants.VALUE);
+                break;
+            }
 
-    		throw new UnsupportedOperationException( "Cannot get the formSubmitValue for the element, element: " + toString( element ));
-    	}
+            throw new UnsupportedOperationException("Cannot get the formSubmitValue for the element, element: "
+                    + toString(element));
+        }
 
-    	return value;
+        return value;
     }
 
     /**
-     * Returns an iterator which may be used to visit all the elements for a particular form.
-     * Because form.elements are cannot have elements added / removed this iterator is read only(aka the remove() ) doesnt work.
+     * Returns an iterator which may be used to visit all the elements for a particular form. Because the form.elements collection cannot
+     * have elements added / removed this iterator is read only(aka the remove() ) doesnt work. The iterator is also not fail safe.
+     * 
      * @param form
      * @return
      */
-    public static Iterator getFormElements( final Element form ){
-    	DomHelper.checkTagName("parameter:form", form, DomConstants.FORM_TAG);
+    public static Iterator getFormElements(final Element form) {
+        DomHelper.checkTagName("parameter:form", form, DomConstants.FORM_TAG);
 
-    	return new Iterator(){
-    		public boolean hasNext(){
-    			return this.getIndex() < DOM.getIntAttribute( form, DomConstants.LENGTH_PROPERTY);
-    		}
+        return new Iterator() {
+            public boolean hasNext() {
+                return this.getIndex() < DOM.getIntAttribute(form, DomConstants.LENGTH_PROPERTY);
+            }
 
-    		public Object next(){
-    			final int index = this.getIndex();
-    			final Object nextt = this.next0( form, index );
-    			this.setIndex( index+ 1);
-    			return nextt;
-    		}
+            public Object next() {
+                final int index = this.getIndex();
+                final Object nextt = this.next0(form, index);
+                this.setIndex(index + 1);
+                return nextt;
+            }
 
-    		protected native Element next0( final Element form, final int index )/*-{
-				return form.elements[ index ];
-    		}-*/;
+            protected native Element next0(final Element form, final int index)/*-{
+             return form.elements[ index ];
+             }-*/;
 
-    		public void remove(){
-    			throw new UnsupportedOperationException("Unable to remove a form element from a FormIterator");
-    		}
+            public void remove() {
+                throw new UnsupportedOperationException("Form elements may not be removed using this iterator. this: "
+                        + this);
+            }
 
-    		int index = 0;
+            int index = 0;
 
-    		int getIndex(){
-    			return index;
-    		}
+            int getIndex() {
+                return index;
+            }
 
-    		void setIndex( final int index ){
-    			this.index = index;
-    		}
-    	};
+            void setIndex(final int index) {
+                this.index = index;
+            }
+        };
     }
-    
+
     /**
-     * Helper which attempts to find and fetch an element belonging to the given form by name. 
+     * Helper which attempts to find and fetch an element belonging to the given form by name.
+     * 
      * @param form
      * @param elementName
      * @return
      */
-    public static Element findElement( final Element form, final String elementName ){
-    	ObjectHelper.checkNotNull("parameter:form", form );
-    	StringHelper.checkNotEmpty( "parameter:elementName", elementName );    	
-    	
-    	return findElement0( form, elementName );
+    public static Element findElement(final Element form, final String elementName) {
+        ObjectHelper.checkNotNull("parameter:form", form);
+        StringHelper.checkNotEmpty("parameter:elementName", elementName);
+
+        return findElement0(form, elementName);
     }
 
-    protected static native Element findElement0( final Element form, final String elementName )/*-{
-    	var element = null;
+    protected static native Element findElement0(final Element form, final String elementName)/*-{
+     var element = null;
 
-		element = form.elements[ elementName ];
-		return element ? element : null;}-*/;      
+     element = form.elements[ elementName ];
+     return element ? element : null;}-*/;
 }

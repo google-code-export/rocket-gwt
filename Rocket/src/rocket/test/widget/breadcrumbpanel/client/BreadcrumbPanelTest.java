@@ -36,53 +36,53 @@ public class BreadcrumbPanelTest implements EntryPoint {
         try {
             final RootPanel rootPanel = RootPanel.get();
             final BreadcrumbPanel breadcrumbs = new BreadcrumbPanel();
-            breadcrumbs.push( "First", new ClickListener(){
-            	public void onClick( final Widget sender ){
-            		Window.alert( "First breadcrumb clicked");
-            	}
+            breadcrumbs.push("First", new ClickListener() {
+                public void onClick(final Widget sender) {
+                    Window.alert("First breadcrumb clicked");
+                }
             });
 
-            breadcrumbs.push( "Second", new ClickListener(){
-            	public void onClick( final Widget sender ){
-            		Window.alert( "Second breadcrumb clicked");
-            	}
+            breadcrumbs.push("Second", new ClickListener() {
+                public void onClick(final Widget sender) {
+                    Window.alert("Second breadcrumb clicked");
+                }
             });
-            breadcrumbs.push( "Third", new ClickListener(){
-            	public void onClick( final Widget sender ){
-            		Window.alert( "Third breadcrumb clicked");
-            	}
+            breadcrumbs.push("Third", new ClickListener() {
+                public void onClick(final Widget sender) {
+                    Window.alert("Third breadcrumb clicked");
+                }
             });
-            rootPanel.add( breadcrumbs);
+            rootPanel.add(breadcrumbs);
 
-            final Button push = new Button( "Push another breadcrumb onto the panel.");
-            push.addClickListener( new ClickListener(){
-            	public void onClick( final Widget ignore ){
-            		final String text = "breadcrumb-" + System.currentTimeMillis();
+            final Button push = new Button("Push another breadcrumb onto the panel.");
+            push.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    final String text = "breadcrumb-" + System.currentTimeMillis();
 
-            		breadcrumbs.push( text, new ClickListener(){
-                       	public void onClick( final Widget sender ){
-                    		Window.alert( "breadcrumb [" + text + "]clicked");
-                    	}
-            		});
-            	}
+                    breadcrumbs.push(text, new ClickListener() {
+                        public void onClick(final Widget sender) {
+                            Window.alert("breadcrumb [" + text + "]clicked");
+                        }
+                    });
+                }
             });
-            rootPanel.add( push );
+            rootPanel.add(push);
 
-            final Button pop = new Button( "Pop last breadcrumb");
-            pop.addClickListener( new ClickListener(){
-                public void onClick( final Widget ignore ){
+            final Button pop = new Button("Pop last breadcrumb");
+            pop.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
                     breadcrumbs.pop();
                 }
             });
-            rootPanel.add( pop );
+            rootPanel.add(pop);
 
-            final Button clear = new Button( "Clear all breadcrumbs");
-            clear.addClickListener( new ClickListener(){
-                public void onClick( final Widget ignore ){
+            final Button clear = new Button("Clear all breadcrumbs");
+            clear.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
                     breadcrumbs.clear();
                 }
             });
-            rootPanel.add( clear );
+            rootPanel.add(clear);
 
         } catch (Throwable t) {
             t.printStackTrace();

@@ -25,7 +25,7 @@ public class SystemHelper {
 
     /**
      * Convenience method which builds the appropriate exception includes the message and throws the excection
-     *
+     * 
      * @param name
      *            The name of the varible
      * @param message
@@ -50,7 +50,7 @@ public class SystemHelper {
     /**
      * This should be fired whenever a method is not supported or perhaps inappropriate for a particular class. Examples include the set or
      * other mutator methods for a read only List.
-     *
+     * 
      * @param message
      *            A detailed messsage.
      */

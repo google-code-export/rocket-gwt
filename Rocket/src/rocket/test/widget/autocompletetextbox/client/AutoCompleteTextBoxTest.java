@@ -38,8 +38,9 @@ public class AutoCompleteTextBoxTest implements EntryPoint {
             final RootPanel rootPanel = RootPanel.get();
 
             final List matchCandidates = Arrays.asList(new String[] { "Red square", "Red star", "Red apple",
-                    "Red baron", "Red", "New York", "New York state", "New Zealand", "New Jersey", "New Mexico", "New South Wales", "New South Wales government",
-                    "New England", "Zebra", "Zebra crossing", "ZebraFlexTable" });
+                    "Red baron", "Red", "New York", "New York state", "New Zealand", "New Jersey", "New Mexico",
+                    "New South Wales", "New South Wales government", "New England", "Zebra", "Zebra crossing",
+                    "ZebraFlexTable" });
 
             final StringBuffer buf = new StringBuffer();
             buf.append("<br/>");
@@ -57,7 +58,7 @@ public class AutoCompleteTextBoxTest implements EntryPoint {
             rootPanel.add(new HTML(buf.toString()));
 
             final AutoCompleteTextBox autoCompleteTextBox = new AutoCompleteTextBox();
-            autoCompleteTextBox.setWidth( "200px");
+            autoCompleteTextBox.setWidth("200px");
             rootPanel.add(autoCompleteTextBox);
             autoCompleteTextBox.setFocus(true);
             autoCompleteTextBox.addKeyboardListener(new KeyboardListenerAdapter() {

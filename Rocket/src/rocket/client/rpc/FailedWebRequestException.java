@@ -27,11 +27,11 @@ public class FailedWebRequestException extends RuntimeException implements IsSer
         super(message);
     }
 
-    public FailedWebRequestException(final String message, final Throwable caught ) {
-        super(message, caught );
+    public FailedWebRequestException(final String message, final Throwable caught) {
+        super(message, caught);
     }
 
-    public FailedWebRequestException( final Throwable caught ) {
+    public FailedWebRequestException(final Throwable caught) {
         super(caught);
     }
 }

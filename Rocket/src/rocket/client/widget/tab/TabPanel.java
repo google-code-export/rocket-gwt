@@ -18,34 +18,28 @@ package rocket.client.widget.tab;
 import java.util.Iterator;
 
 import rocket.client.collection.IteratorView;
-import rocket.client.dom.StyleHelper;
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
-import rocket.client.widget.WidgetConstants;
 
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.IndexedPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A TabPanel provides the capability to manage a number of tabs along with providing listeners for the major events that may
- * occur to an individual tab, selection and closing/removal.
- *
- * This class combines a DeckPanel to hold tab contents and a HorizontalPanel to hold the tabs themselves.
- * This class is a rewrite of the GWT provided one adding a few features and fixing bugs.
- *
+ * A TabPanel provides the capability to manage a number of tabs along with providing listeners for the major events that may occur to an
+ * individual tab, selection and closing/removal.
+ * 
+ * This class combines a DeckPanel to hold tab contents and a HorizontalPanel to hold the tabs themselves. This class is a rewrite of the
+ * GWT provided one adding a few features and fixing bugs.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public abstract class TabPanel extends Composite {
@@ -53,12 +47,13 @@ public abstract class TabPanel extends Composite {
     public TabPanel() {
         super();
 
-        this.initWidget( (Widget) this.createPanel());
+        this.initWidget((Widget) this.createPanel());
         this.createTabListeners();
     }
 
     /**
      * Returns the number of tabs currently contained.
+     * 
      * @return
      */
     public int getTabCount() {
@@ -73,7 +68,7 @@ public abstract class TabPanel extends Composite {
     }
 
     public void insertTab(final String title, final boolean closable, final Widget content, final int beforeIndex) {
-    	StringHelper.checkNotEmpty("parameter:title", title);
+        StringHelper.checkNotEmpty("parameter:title", title);
         ObjectHelper.checkNotNull("parameter:content", content);
 
         final Widget tab = this.createTab(title, closable);
@@ -82,7 +77,7 @@ public abstract class TabPanel extends Composite {
 
         // if first tab auto select it...
         if (this.getTabCount() == 1) {
-            this.selectTab( 0 );
+            this.selectTab(0);
         }
 
         this.increaseModificationCount();
@@ -90,23 +85,26 @@ public abstract class TabPanel extends Composite {
 
     /**
      * Factory method which creates the widget that will appear within the tabs title.
-     * @param title The title
-     * @param closableA flag indicating whether or not a close button will appear within the tab.
+     * 
+     * @param title
+     *            The title
+     * @param closable
+     *            A flag indicating whether or not a close button will appear within the tab.
      * @return The created widget
      */
     protected Widget createTab(final String title, final boolean closable) {
         StringHelper.checkNotEmpty("parameter:title", title);
 
         final HorizontalPanel panel = new HorizontalPanel();
-        panel.setVerticalAlignment( HasVerticalAlignment.ALIGN_BOTTOM );
-        panel.addStyleName( this.getTabBarItemStyleName() );
+        panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
+        panel.addStyleName(this.getTabBarItemStyleName());
 
         final TabPanel that = this;
 
         final Label label = (Label) this.createLabel(title);
         label.addClickListener(new ClickListener() {
             public void onClick(final Widget widget) {
-                that.selectTab( that.getIndex( label.getText() ));
+                that.selectTab(that.getIndex(label.getText()));
             }
         });
         panel.add(label);
@@ -118,36 +116,36 @@ public abstract class TabPanel extends Composite {
             final Image closeButton = this.createCloseButton();
             closeButton.addClickListener(new ClickListener() {
                 public void onClick(final Widget sender) {
-                    that.removeTab(that.getIndex( label.getText() ));
+                    that.removeTab(that.getIndex(label.getText()));
                 }
             });
             panel.add(closeButton);
         }
         return panel;
     }
-    
+
     protected abstract String getTabBarItemStyleName();
 
     protected Widget createLabel(final String text) {
         StringHelper.checkNotEmpty("parameter:text", text);
 
         final Label label = new Label(text);
-        label.addStyleName( this.getTabBarItemLabelStyleName() );
+        label.addStyleName(this.getTabBarItemLabelStyleName());
         return label;
     }
-    
+
     protected abstract String getTabBarItemLabelStyleName();
 
     protected Image createCloseButton() {
         final Image image = new Image();
-        image.addStyleName( this.getTabBarItemWidgetStyleName() );
+        image.addStyleName(this.getTabBarItemWidgetStyleName());
 
         image.setUrl(this.getCloseButtonImageUrl());
         return image;
     }
 
     protected abstract String getTabBarItemWidgetStyleName();
-    
+
     /**
      * . The url of the up icon
      */
@@ -165,7 +163,7 @@ public abstract class TabPanel extends Composite {
 
     public void removeTab(final int index) {
         final String title = this.getTabTitle(index);
-        final Widget content = this.getContent( index );
+        final Widget content = this.getContent(index);
 
         final TabListenerCollection listeners = this.getTabListeners();
         if (listeners.fireBeforeTabClosed(title, content)) {
@@ -190,7 +188,7 @@ public abstract class TabPanel extends Composite {
 
             this.increaseModificationCount();
 
-            listeners.fireTabClosed( title, content );
+            listeners.fireTabClosed(title, content);
         } // if
     }
 
@@ -198,11 +196,11 @@ public abstract class TabPanel extends Composite {
         final String title = this.getTabTitle(index);
         final TabListenerCollection listeners = this.getTabListeners();
 
-        final Widget content = this.getContent( index );
+        final Widget content = this.getContent(index);
         if (listeners.fireBeforeTabSelected(title, content)) {
-        	final String selectedStyle = this.getTabBarItemSelectedStyleName();
-        	
-        	final DeckPanel contentPanel = this.getContentPanel();
+            final String selectedStyle = this.getTabBarItemSelectedStyleName();
+
+            final DeckPanel contentPanel = this.getContentPanel();
 
             // find the previously selected tab. and unselect it.
             final int previousIndex = contentPanel.getVisibleWidget();
@@ -219,12 +217,12 @@ public abstract class TabPanel extends Composite {
             // tell the deckPanel to select a new sub-widget.
             contentPanel.showWidget(newIndex);
 
-            listeners.fireTabSelected( title, content );
+            listeners.fireTabSelected(title, content);
         }
     }
 
     protected abstract String getTabBarItemSelectedStyleName();
-    
+
     protected int getTabIndex(final String title) {
         StringHelper.checkNotEmpty("parameter:title", title);
 
@@ -245,35 +243,37 @@ public abstract class TabPanel extends Composite {
     }
 
     protected HorizontalPanel getTabPanel(final int index) {
-        return (HorizontalPanel) this.getTabBarPanel().getWidget(index + 1);// SKIP the leading Label.
+        return (HorizontalPanel) this.getTabBarPanel().getWidget(index + 1);// SKIP
+        // the
+        // leading
+        // Label.
     }
 
+    public String getTabTitle(final int index) {
+        final Label label = this.getTabTitleLabel(index);
+        return label.getText();
+    }
 
-	public String getTabTitle(final int index) {
-		final Label label = this.getTabTitleLabel(index);
-		return label.getText();
-	}
+    public void setTabTitle(final int index, final String title) {
+        StringHelper.checkNotEmpty("parameter:title", title);
 
-	public void setTabTitle(final int index, final String title) {
-		StringHelper.checkNotEmpty("parameter:title", title);
+        final Label label = this.getTabTitleLabel(index);
+        label.setText(title);
+    }
 
-		final Label label = this.getTabTitleLabel(index);
-		label.setText(title);
-	}
-
-	protected Label getTabTitleLabel(final int index) {
-		final HorizontalPanel panel = this.getTabPanel(index);
-		final Label label = (Label) panel.getWidget(0);
-		return label;
-	}
-
-
+    protected Label getTabTitleLabel(final int index) {
+        final HorizontalPanel panel = this.getTabPanel(index);
+        final Label label = (Label) panel.getWidget(0);
+        return label;
+    }
 
     public Widget getContent(final int index) {
         return (Widget) this.getContentPanel().getWidget(index);
     }
+
     /**
      * Retrieves the index of a tab given its title.
+     * 
      * @param title
      * @return The index of the tab if it is found or -1 if one wasnt.
      */
@@ -295,34 +295,22 @@ public abstract class TabPanel extends Composite {
         }
         return index;
     }
+
     /**
      * Retrieves the index of a tab given its widget.
+     * 
      * @param content
      * @return
      */
-    public int getIndex( final Widget content ){
-    	ObjectHelper.checkNotNull( "parameter:content", content );
+    public int getIndex(final Widget content) {
+        ObjectHelper.checkNotNull("parameter:content", content);
 
-    	return this.getContentPanel().getWidgetIndex( content );
-// TODO fix    	
-//        int index = -1;
-//
-//        final Iterator contents = this.tabContentsIterator();
-//        int i = 0;
-//
-//        while (contents.hasNext()) {
-//            final Widget otherWidget = (Widget) contents.next();
-//            if (content == otherWidget) {
-//                index = i;
-//                break;
-//            }
-//            i++;
-//        }
-//        return index;
+        return this.getContentPanel().getWidgetIndex(content);
     }
 
     /**
      * Returns the title of the selected tab.
+     * 
      * @return
      */
     public String getSelectedTabTitle() {
@@ -353,7 +341,7 @@ public abstract class TabPanel extends Composite {
     }
 
     protected abstract HorizontalOrVerticalPanel createPanel();
-        
+
     /**
      * This panel is used to house tab title widgets.
      */
@@ -372,8 +360,7 @@ public abstract class TabPanel extends Composite {
     protected abstract HorizontalOrVerticalPanel createTabBarPanel();
 
     /**
-     * A DeckPanel is used to house all tab content.
-     * The selected tab selects the appropriate item from the deckPanel to be visible.
+     * A DeckPanel is used to house all tab content. The selected tab selects the appropriate item from the deckPanel to be visible.
      */
     private DeckPanel contentPanel;
 
@@ -394,11 +381,12 @@ public abstract class TabPanel extends Composite {
         panel.addStyleName(getContentPanelStyleName());
         return panel;
     }
-    
+
     protected abstract String getContentPanelStyleName();
 
-    // LISTENERS :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    
+    // LISTENERS
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     /**
      * A collection of TabListeners who will in turn be notified of all TabListener events.
      */
@@ -427,8 +415,8 @@ public abstract class TabPanel extends Composite {
         this.getTabListeners().remove(listener);
     }
 
-    
-    // ITERATORS :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // ITERATORS
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     public Iterator tabPanelsIterator() {
         final TabPanelIterator iterator = new TabPanelIterator();
@@ -453,7 +441,7 @@ public abstract class TabPanel extends Composite {
         iterator.setViewType(TabConstants.ITERATOR_CONTENTS_VIEW);
         return iterator;
     }
-    
+
     /**
      * Helps keep track of concurrent modification of the parent.
      */
@@ -470,9 +458,10 @@ public abstract class TabPanel extends Composite {
     protected void increaseModificationCount() {
         this.setModificationCounter(this.getModificationCounter() + 1);
     }
-    
+
     /**
      * This iterator provides a view of a TabPanel.
+     * 
      * @author Miroslav Pokorny (mP)
      */
     class TabPanelIterator extends IteratorView {
@@ -510,9 +499,9 @@ public abstract class TabPanel extends Composite {
 
         protected void remove0() {
             final TabPanel parent = this.getTabPanel();
-            final int index = this.getIndex() -1;
+            final int index = this.getIndex() - 1;
             parent.removeTab(index);
-            this.setIndex( index );
+            this.setIndex(index);
         }
 
         protected int getParentModificationCounter() {
@@ -551,24 +540,32 @@ public abstract class TabPanel extends Composite {
 
     /**
      * This interface includes the common public methods from the HorizontalPanel and VerticalPanel classes.
+     * 
      * @author mP
      */
-    interface HorizontalOrVerticalPanel{
-    	void add(Widget widget);
-    	void insert(Widget widget, int beforeIndex);
-    	Widget getWidget(int index);
-    	int getWidgetCount();
-    	int getWidgetIndex(Widget child);
-    	boolean remove(int index);
-    	boolean remove(Widget widget);
+    interface HorizontalOrVerticalPanel {
+        void add(Widget widget);
+
+        void insert(Widget widget, int beforeIndex);
+
+        Widget getWidget(int index);
+
+        int getWidgetCount();
+
+        int getWidgetIndex(Widget child);
+
+        boolean remove(int index);
+
+        boolean remove(Widget widget);
     }
+
     /**
      * This class is necessary so that HorizontalPanel and VerticalPanel can share a common interface.
      */
-	class HorizontalPanelImpl extends HorizontalPanel implements HorizontalOrVerticalPanel{	
-	}
-	
-	class VerticalPanelImpl extends VerticalPanel implements HorizontalOrVerticalPanel{
-		
-	}
+    class HorizontalPanelImpl extends HorizontalPanel implements HorizontalOrVerticalPanel {
+    }
+
+    class VerticalPanelImpl extends VerticalPanel implements HorizontalOrVerticalPanel {
+
+    }
 }

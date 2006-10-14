@@ -17,10 +17,12 @@ package rocket.client.widget.tab;
 
 import com.google.gwt.user.client.ui.Widget;
 
-
 public interface TabListener {
-    boolean onBeforeTabSelected(String title, Widget content );
+    boolean onBeforeTabSelected(String title, Widget content);
+
     void onTabSelected(String title, Widget content);
-    boolean onBeforeTabClosed(String title,Widget content );
+
+    boolean onBeforeTabClosed(String title, Widget content);
+
     void onTabClosed(String title, Widget content);
 }

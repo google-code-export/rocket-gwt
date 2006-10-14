@@ -17,28 +17,25 @@ package rocket.server.exception;
 
 /**
  * This base exception class provides support for wrapping exceptions.
- *
+ * 
  * <h3>PrintStackTrace and getMessage</h3>
- * The {@link #printStackTrace }method has been overridden to show the wrapped
- * exceptions stack trace combined with the stack of this exception. This
- * general purpose class should be extended by application exceptions that wish
- * to wrap other possible checked exceptions.
- *
+ * The {@link #printStackTrace }method has been overridden to show the wrapped exceptions stack trace combined with the stack of this
+ * exception. This general purpose class should be extended by application exceptions that wish to wrap other possible checked exceptions.
+ * 
  * @author Miroslav Pokorny
  * @version 1.0
  */
-public class CheckedNestedException extends
-		AbstractPossiblyNestedCheckedException {
+public class CheckedNestedException extends AbstractPossiblyNestedCheckedException {
 
-	public CheckedNestedException(final Throwable cause) {
-		super(cause);
-	}
+    public CheckedNestedException(final Throwable cause) {
+        super(cause);
+    }
 
-	public CheckedNestedException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    public CheckedNestedException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
-	public final boolean mustHaveCause() {
-		return true;
-	}
+    public final boolean mustHaveCause() {
+        return true;
+    }
 }

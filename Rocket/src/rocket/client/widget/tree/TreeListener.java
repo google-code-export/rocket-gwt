@@ -18,28 +18,28 @@ package rocket.client.widget.tree;
 import com.google.gwt.user.client.ui.Widget;
 
 public interface TreeListener {
-	/**
-	 * Called when a requested to collapse a particular node.
-	 * 
-	 * @return False cancels the collapse, true lets it continue
-	 */
-	boolean onBeforeCollapse(Widget widget);
+    /**
+     * Called when a requested to collapse a particular node.
+     * 
+     * @return False cancels the collapse, true lets it continue
+     */
+    boolean onBeforeCollapse(Widget widget);
 
-	/**
-	 * Called after a node has finished collapsing.
-	 */
-	void onCollapse(Widget widget);
+    /**
+     * Called after a node has finished collapsing.
+     */
+    void onCollapse(Widget widget);
 
-	/**
-	 * Called when a request comes thru to expand a particular node.
-	 * 
-	 * @return False cancels the expand, true lets it continue
-	 */
-	boolean onBeforeExpand(Widget widget);
+    /**
+     * Called when a request comes thru to expand a particular node.
+     * 
+     * @return False cancels the expand, true lets it continue
+     */
+    boolean onBeforeExpand(Widget widget);
 
-	/**
-	 * Called after a node has finished expanding
-	 * 
-	 */
-	void onExpand(Widget widget);
+    /**
+     * Called after a node has finished expanding
+     * 
+     */
+    void onExpand(Widget widget);
 }

@@ -33,12 +33,12 @@ import rocket.server.util.IoHelper;
 
 /**
  * This file servlet supports scaling of numeric values found within a css.
- *
+ * 
  * The scaling factor is passed as a queryParameter, the pathInfo locates the css file. An initParameter is used to select which properties
  * are checked and possibly scaled.
- *
+ * 
  * Pixel values (pxs) scaling are the only values which may be scaled. All other unit types are ignored and served unchanged.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class CssUnitScalingFileServlet extends HttpServlet {
@@ -54,8 +54,7 @@ public class CssUnitScalingFileServlet extends HttpServlet {
         this.request.set(request);
     }
 
-    public void doGet(final HttpServletRequest request,
-            final HttpServletResponse response) throws ServletException,
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException,
             IOException {
         this.setRequest(request);
 
@@ -71,21 +70,18 @@ public class CssUnitScalingFileServlet extends HttpServlet {
 
                 input = locateFile(filename);
                 if (null == input) {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                            "file[" + filename + "]");
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "file[" + filename + "]");
                     break;
                 }
 
-                final float scalingFactor = this.getScalingFactor(request,
-                        response);
+                final float scalingFactor = this.getScalingFactor(request, response);
                 if (scalingFactor == Float.NaN) {
                     break;
                 }
 
                 writer = response.getWriter();
                 writer.println("/* only pixel units (px) scaled, scalingFactor: " + scalingFactor + "*/");
-                this.visitFile(new BufferedReader(new InputStreamReader(input)),
-                        scalingFactor, writer);
+                this.visitFile(new BufferedReader(new InputStreamReader(input)), scalingFactor, writer);
                 writer.flush();
                 break;
 
@@ -96,75 +92,64 @@ public class CssUnitScalingFileServlet extends HttpServlet {
         } // while
     }
 
-    protected float getScalingFactor(final HttpServletRequest request,
-            final HttpServletResponse response) throws IOException {
+    protected float getScalingFactor(final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
         ObjectHelper.checkNotNull("parameter:request", request);
         ObjectHelper.checkNotNull("parameter:response", response);
 
         float scalingFactor = Float.NaN;
         while (true) {
-        	final String parameterName = BrowserConstants.CSS_SCALING_FACTOR;
+            final String parameterName = BrowserConstants.CSS_SCALING_FACTOR;
             final String scalingFactorString = request.getParameter(parameterName);
             if (StringHelper.isNullOrEmpty(scalingFactorString)) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "The scalingFactor parameter["
-                                + parameterName
-                                + "] is missing, requestUrl["
-                                + request.getRequestURL() + "]");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "The scalingFactor parameter[" + parameterName
+                        + "] is missing, requestUrl[" + request.getRequestURL() + "]");
                 break;
             }
 
             try {
                 scalingFactor = Float.parseFloat(scalingFactorString);
             } catch (final NumberFormatException bad) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "The scalingFactor parameter["
-                                + parameterName + "]=["
-                                + scalingFactorString
-                                + ", is not a valid number.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "The scalingFactor parameter[" + parameterName
+                        + "]=[" + scalingFactorString + ", is not a valid number.");
             }
             break;
         }
         return scalingFactor;
     }
 
-    protected String getFilename(final HttpServletRequest request,
-            final HttpServletResponse response) throws IOException {
+    protected String getFilename(final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
         ObjectHelper.checkNotNull("parameter:request", request);
         ObjectHelper.checkNotNull("parameter:response", response);
 
         final String parameterName = BrowserConstants.CSS_FILENAME;
         final String filename = request.getParameter(parameterName);
         if (StringHelper.isNullOrEmpty(filename)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "The filename parameter[" + parameterName
-                            + "] is missing, url[" + request.getRequestURI()
-                            + '?' + request.getQueryString() + "]");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "The filename parameter[" + parameterName
+                    + "] is missing, url[" + request.getRequestURI() + '?' + request.getQueryString() + "]");
         }
         return filename;
     }
 
     protected InputStream locateFile(final String path) {
-        return this.getServletConfig().getServletContext().getResourceAsStream(
-                path);
+        return this.getServletConfig().getServletContext().getResourceAsStream(path);
     }
 
     /**
      * Reads the css file line by line scanning for css properties.
-     *
+     * 
      * It is not smart enough to skip the processing of comments.
-     *
+     * 
      * @param reader
      * @param scalingFactor
      * @param writer
      * @throws IOException
      */
-    protected void visitFile(final BufferedReader reader,
-            final float scalingFactor, final PrintWriter writer)
+    protected void visitFile(final BufferedReader reader, final float scalingFactor, final PrintWriter writer)
             throws IOException {
         ObjectHelper.checkNotNull("parameter:reader", reader);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:scalingFactor",
-                scalingFactor, 0.0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:scalingFactor", scalingFactor, 0.0);
         ObjectHelper.checkNotNull("parameter:writer", writer);
 
         boolean ignoreBlankLine = false;
@@ -189,9 +174,9 @@ public class CssUnitScalingFileServlet extends HttpServlet {
 
     /**
      * To be recognized as a property with a numeric value that may be scaled the line must be correctly formed. name <colon> value "px"<semicolon>.
-     *
+     * 
      * Whitespace is not significant and is ignored.
-     *
+     * 
      * @param line
      * @param scalingFactor
      *            the scaling factor that is applied to any px units.
@@ -199,22 +184,21 @@ public class CssUnitScalingFileServlet extends HttpServlet {
      */
     protected String visitLine(final String line, final float scalingFactor) {
         StringHelper.checkNotNull("parameter:line", line);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:scalingFactor",
-                scalingFactor, 0.0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:scalingFactor", scalingFactor, 0.0);
 
         String visited = null;
         while (true) {
-            /* fuirst check if the current line contains an import statement and url */
-            final String afterImportVisit = this.visitImportStatement(line,
-                    scalingFactor);
+            /*
+             * fuirst check if the current line contains an import statement and url
+             */
+            final String afterImportVisit = this.visitImportStatement(line, scalingFactor);
             if (null != afterImportVisit) {
                 visited = afterImportVisit;
                 break;
             }
 
             // now check if the line contains a property value,
-            final String afterPropertyEntryVisit = this.visitPropertyEntry(
-                    line, scalingFactor);
+            final String afterPropertyEntryVisit = this.visitPropertyEntry(line, scalingFactor);
             if (null != afterPropertyEntryVisit) {
                 visited = afterPropertyEntryVisit;
                 break;
@@ -230,15 +214,14 @@ public class CssUnitScalingFileServlet extends HttpServlet {
 
     /**
      * Attempts to rewrite the given line if an import with a url is found.
+     * 
      * @param line
      * @param scalingFactor
      * @return null if the line didnt contain an import statement otherwise returns the line untouched or possibly the modified import/url
      */
-    protected String visitImportStatement(final String line,
-            final float scalingFactor) {
+    protected String visitImportStatement(final String line, final float scalingFactor) {
         StringHelper.checkNotNull("parameter:line", line);
-        PrimitiveHelper.checkGreaterThan("parameter:scalingFactor",
-                scalingFactor, 0);
+        PrimitiveHelper.checkGreaterThan("parameter:scalingFactor", scalingFactor, 0);
 
         String visited = null;
         while (true) {
@@ -272,22 +255,22 @@ public class CssUnitScalingFileServlet extends HttpServlet {
             buf.append(" url(");
 
             final HttpServletRequest request = this.getRequest();
-            final String contextPath =request.getContextPath();
+            final String contextPath = request.getContextPath();
             buf.append(contextPath);
             buf.append(request.getServletPath());
 
             buf.append('?');
 
             // filename
-            buf.append( BrowserConstants.CSS_FILENAME);
+            buf.append(BrowserConstants.CSS_FILENAME);
             buf.append('=');
-            //buf.append( contextPath );
+            // buf.append( contextPath );
             buf.append(url); // FIX urlEncode
 
             buf.append('&');
 
             // scalingFactor
-            buf.append( BrowserConstants.CSS_SCALING_FACTOR);
+            buf.append(BrowserConstants.CSS_SCALING_FACTOR);
             buf.append('=');
             buf.append(scalingFactor);
             buf.append(");");
@@ -300,14 +283,12 @@ public class CssUnitScalingFileServlet extends HttpServlet {
 
     /**
      * Checks and attempts to modify the property entry present within the given line.
-     *
+     * 
      * @return null if the line did not contain a propertyEntry, otherwise it contains the property entry which may have been modified.
      */
-    protected String visitPropertyEntry(final String line,
-            final float scalingFactor) {
+    protected String visitPropertyEntry(final String line, final float scalingFactor) {
         StringHelper.checkNotNull("parameter:line", line);
-        PrimitiveHelper.checkGreaterThan("parameter:scalingFactor",
-                scalingFactor, 0);
+        PrimitiveHelper.checkGreaterThan("parameter:scalingFactor", scalingFactor, 0);
 
         String visited = null;
         while (true) {
@@ -328,23 +309,20 @@ public class CssUnitScalingFileServlet extends HttpServlet {
             }
 
             // ensure that a value is present.
-            final String propertyValue = line.substring(colon + 1, semiColon)
-                    .trim();
+            final String propertyValue = line.substring(colon + 1, semiColon).trim();
             if (StringHelper.isNullOrEmpty(propertyValue)) {
                 break;
             }
 
             // make sure the value is a pixel unit.
-            if (false == StringHelper.endsWithIgnoringCase(propertyValue,
-                    BrowserConstants.PIXEL_UNIT)) {
+            if (false == StringHelper.endsWithIgnoringCase(propertyValue, BrowserConstants.PIXEL_UNIT)) {
                 visited = line.trim();
                 break;
             }
 
             // extract the numeric value itself.
-            final String numberValueString = propertyValue.substring(0,
-                    propertyValue.length()
-                            - BrowserConstants.PIXEL_UNIT.length());
+            final String numberValueString = propertyValue.substring(0, propertyValue.length()
+                    - BrowserConstants.PIXEL_UNIT.length());
 
             // check that numberValue is in fact a positive integer number.
             float numberValue = Float.NaN;
@@ -358,11 +336,10 @@ public class CssUnitScalingFileServlet extends HttpServlet {
             final int integerValue = (int) (0.5 + (numberValue * scalingFactor));
 
             // format and write out the line.
-            visited = "   " + propertyName + ": " + integerValue
-                    + BrowserConstants.PIXEL_UNIT + ";";
+            visited = "   " + propertyName + ": " + integerValue + BrowserConstants.PIXEL_UNIT + ";";
             break;
         }
 
         return visited;
     }
- }
+}

@@ -18,6 +18,7 @@ package rocket.test.widget.sortabletable.client;
 import java.util.Comparator;
 import java.util.Date;
 
+import rocket.client.browser.BrowserHelper;
 import rocket.client.util.StringComparator;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -42,13 +43,13 @@ public class SortableTableTest implements EntryPoint {
      */
     public void onModuleLoad() {
         try {
-        	final RootPanel rootPanel = RootPanel.get();
+            final RootPanel rootPanel = RootPanel.get();
 
             final SortableFileTable table = new SortableFileTable();
             table.setAscendingSortImageSource(GWT.getModuleBaseURL() + "/up.gif");
             table.setDescendingSortImageSource(GWT.getModuleBaseURL() + "/down.gif");
             rootPanel.add(table);
-            table.setColumnComparator( StringComparator.IGNORE_CASE_COMPARATOR, 0, true);
+            table.setColumnComparator(StringComparator.IGNORE_CASE_COMPARATOR, 0, true);
 
             table.setColumnComparator(new Comparator() {
                 public int compare(Object first, Object second) {
@@ -97,74 +98,87 @@ public class SortableTableTest implements EntryPoint {
             file3.setSize(123456789);
             table.addDownloadFile(file3);
 
-            rootPanel.add( new HTML("<br>"));
+            rootPanel.add(new HTML("<br>"));
 
-            rootPanel.add( new Label( "Description"));
+            rootPanel.add(new Label("Description"));
             final TextBox description = new TextBox();
-            description.setText( "Description goes in here...");
-            rootPanel.add( description );
+            description.setText("Description goes in here...");
+            rootPanel.add(description);
 
-            rootPanel.add( new Label( "Filename"));
+            rootPanel.add(new Label("Filename"));
             final TextBox filename = new TextBox();
-            filename.setText( "file://" + Random.nextInt(1357913579) + ".txt");
-            rootPanel.add( filename );
+            filename.setText("file://" + Random.nextInt(1357913579) + ".txt");
+            rootPanel.add(filename);
 
-            rootPanel.add( new Label( "ServerId"));
+            rootPanel.add(new Label("ServerId"));
             final TextBox serverId = new TextBox();
-            serverId.setText( "id-" + Random.nextInt( 246802468 ) );
-            rootPanel.add( serverId );
+            serverId.setText("id-" + Random.nextInt(246802468));
+            rootPanel.add(serverId);
 
-            rootPanel.add( new Label( "Size"));
+            rootPanel.add(new Label("Size"));
             final TextBox size = new TextBox();
-            size.setText( "" + Random.nextInt( 1234567890 ));
-            rootPanel.add( size );
+            size.setText("" + Random.nextInt(1234567890));
+            rootPanel.add(size);
 
-            rootPanel.add( new HTML("<br>"));
-            final Button adder = new Button( "Add new File" );
-            adder.addClickListener( new ClickListener(){
-            	public void onClick( final Widget ignore ){
-            		try{
-            		final File newFile = new File();
-            		newFile.setDescription( description.getText() );
-            		newFile.setFilename( filename.getText() );
-            		newFile.setServerId( serverId.getText() );
-            		newFile.setSize( Integer.parseInt( size.getText() ));
-            		newFile.setCreateDate( new Date() );
-            		table.addDownloadFile( newFile );
+            rootPanel.add(new HTML("<br>"));
+            final Button adder = new Button("Add new File");
+            adder.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    try {
+                        final File newFile = new File();
+                        newFile.setDescription(description.getText());
+                        newFile.setFilename(filename.getText());
+                        newFile.setServerId(serverId.getText());
+                        newFile.setSize(Integer.parseInt(size.getText()));
+                        newFile.setCreateDate(new Date());
+                        table.addDownloadFile(newFile);
 
-            		description.setText( "Description goes in here...");
-                    filename.setText( "file://" + Random.nextInt( 1357913579 ) + ".txt");
-                    serverId.setText( "id-" + Random.nextInt( 246802468 ) );
-                    size.setText( "" + Random.nextInt( 1234567890 ));
+                        description.setText("Description goes in here...");
+                        filename.setText("file://" + Random.nextInt(1357913579) + ".txt");
+                        serverId.setText("id-" + Random.nextInt(246802468));
+                        size.setText("" + Random.nextInt(1234567890));
 
-            		} catch ( Exception caught ){
-            			caught.printStackTrace();
-            			Window.alert( "" + caught );
-            		}
-            	}
+                    } catch (Exception caught) {
+                        caught.printStackTrace();
+                        Window.alert("" + caught);
+                    }
+                }
             });
-            rootPanel.add( adder );
+            rootPanel.add(adder);
 
-            rootPanel.add( new HTML("<br>"));
+            rootPanel.add(new HTML("<br>"));
 
-            final TextBox removeFileIndex = new TextBox();
-            removeFileIndex.setText( "0");
-            rootPanel.add( removeFileIndex );
+            final Button remover = new Button("Remove an existing File");
+            rootPanel.add(remover);
+            remover.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    try {
+                        final int row = Integer.parseInt(BrowserHelper.prompt("Remove index", "0"));
+                        table.removeRow(row);
 
-            rootPanel.add( new HTML("<br>"));
+                    } catch (Exception caught) {
+                        caught.printStackTrace();
+                        Window.alert("" + caught);
+                    }
+                }
+            });
 
-            final Button remover = new Button( "Remove an existing File" );
-            rootPanel.add( remover );
-            remover.addClickListener( new ClickListener(){
-            	public void onClick( final Widget ignore ){
-            		try{
-            		table.removeRow( Integer.parseInt( removeFileIndex.getText()) );
+            rootPanel.add(new HTML("<br>"));
 
-            		} catch ( Exception caught ){
-            			caught.printStackTrace();
-            			Window.alert( "" + caught );
-            		}
-            	}
+            final Button tableRowGetter = new Button("Get row object");
+            rootPanel.add(tableRowGetter);
+            tableRowGetter.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    try {
+                        final int row = Integer.parseInt(BrowserHelper.prompt("Row index", "0"));
+                        final Object file = table.getTableRow(row);
+                        Window.alert("row: " + row + "\n" + file);
+
+                    } catch (Exception caught) {
+                        caught.printStackTrace();
+                        Window.alert("" + caught);
+                    }
+                }
             });
         } catch (Throwable t) {
             t.printStackTrace();

@@ -36,313 +36,305 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * This TreeTest tests all aspects of the Tree and TreeItem widgets.
  * 
- * It also includes an interactive set of buttons that creates an iterator, queries if the iterator hasNext, visits the next element from the iterator and removes the last visited element.
- * A small area on the page is allocated to provide feedback of not only the iterator but any of the other buttons that modify the tree/treeItems.
+ * It also includes an interactive set of buttons that creates an iterator, queries if the iterator hasNext, visits the next element from
+ * the iterator and removes the last visited element. A small area on the page is allocated to provide feedback of not only the iterator but
+ * any of the other buttons that modify the tree/treeItems.
+ * 
  * @author (Miroslav Pokorny) mP
- *
+ * 
  */
 public class TreeTest implements EntryPoint {
 
-	static Widget lastClicked = null;
+    static Widget lastClicked = null;
 
-	static TreeItem lastTreeItem = null;
+    static TreeItem lastTreeItem = null;
 
-	static Iterator iterator = null;
-	/**
-	 * This is the entry point method.
-	 */
-	public void onModuleLoad() {
-		try {
-			final RootPanel rootPanel = RootPanel.get();
+    static Iterator iterator = null;
 
-			final HTML feedback = new HTML();
-			rootPanel.add(feedback);
-			rootPanel.add(new HTML("<br/>"));
+    /**
+     * This is the entry point method.
+     */
+    public void onModuleLoad() {
+        try {
+            final RootPanel rootPanel = RootPanel.get();
 
-			final Button clearFeedback = new Button("Clear");
-			clearFeedback.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					feedback.setHTML("");
-				}
-			});
-			rootPanel.add(clearFeedback);
+            final HTML feedback = new HTML();
+            rootPanel.add(feedback);
+            rootPanel.add(new HTML("<br/>"));
 
-			rootPanel.add(new HTML("<hr/>"));
+            final Button clearFeedback = new Button("Clear");
+            clearFeedback.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    feedback.setHTML("");
+                }
+            });
+            rootPanel.add(clearFeedback);
 
-			final CheckBox veto = new CheckBox(
-					"confirm prompts - onBeforeCollapse() and onBeforeExpand()");
-			rootPanel.add(veto);
+            rootPanel.add(new HTML("<hr/>"));
 
-			rootPanel.add(new HTML("<hr/>"));
+            final CheckBox veto = new CheckBox("confirm prompts - onBeforeCollapse() and onBeforeExpand()");
+            rootPanel.add(veto);
 
-			final Tree tree = new TestTreeWidget();
-			tree.setCollapserImageUrl("collapser.gif");
-			tree.setExpanderImageUrl("expander.gif");
-			tree.addTreeListener(new TreeListener() {
-				public boolean onBeforeCollapse(Widget widget) {
-					feedback.setHTML(feedback.getHTML()
-							+ "onBeforeCollapse&nbsp;"
-							+ toString((TreeItem) widget) + "<br/>");
-					return veto.isChecked() ? Window.confirm("Collapse ?")
-							: true;
-				}
+            rootPanel.add(new HTML("<hr/>"));
 
-				public void onCollapse(Widget widget) {
-					feedback.setHTML(feedback.getHTML() + "onCollapse&nbsp;"
-							+ toString((TreeItem) widget) + "<br/>");
-					TreeTest.lastTreeItem = (TreeItem) widget;
-				}
+            final Tree tree = new TestTreeWidget();
+            tree.setCollapserImageUrl("collapser.gif");
+            tree.setExpanderImageUrl("expander.gif");
+            tree.addTreeListener(new TreeListener() {
+                public boolean onBeforeCollapse(Widget widget) {
+                    feedback.setHTML(feedback.getHTML() + "onBeforeCollapse&nbsp;" + toString((TreeItem) widget)
+                            + "<br/>");
+                    return veto.isChecked() ? Window.confirm("Collapse ?") : true;
+                }
 
-				public boolean onBeforeExpand(Widget widget) {
-					feedback.setHTML(feedback.getHTML()
-							+ "onBeforeExpand&nbsp;"
-							+ toString((TreeItem) widget) + "<br/>");
+                public void onCollapse(Widget widget) {
+                    feedback.setHTML(feedback.getHTML() + "onCollapse&nbsp;" + toString((TreeItem) widget) + "<br/>");
+                    TreeTest.lastTreeItem = (TreeItem) widget;
+                }
 
-					return veto.isChecked() ? Window.confirm("Expand ?") : true;
-				}
+                public boolean onBeforeExpand(Widget widget) {
+                    feedback.setHTML(feedback.getHTML() + "onBeforeExpand&nbsp;" + toString((TreeItem) widget)
+                            + "<br/>");
 
-				public void onExpand(Widget widget) {
-					feedback.setHTML(feedback.getHTML() + "onExpand&nbsp;"
-							+ toString((TreeItem) widget) + "<br/>");
-					TreeTest.lastTreeItem = (TreeItem) widget;
-				}
+                    return veto.isChecked() ? Window.confirm("Expand ?") : true;
+                }
 
-				public String toString(final TreeItem treeItem) {
-					return DOM.getInnerText(treeItem.getWidget()
-							.getElement());
-				}
-			});
+                public void onExpand(Widget widget) {
+                    feedback.setHTML(feedback.getHTML() + "onExpand&nbsp;" + toString((TreeItem) widget) + "<br/>");
+                    TreeTest.lastTreeItem = (TreeItem) widget;
+                }
 
-			rootPanel.add(tree);
+                public String toString(final TreeItem treeItem) {
+                    return DOM.getInnerText(treeItem.getWidget().getElement());
+                }
+            });
 
-			final TreeItem grandChildren = new TestTreeItem();
-			grandChildren.setWidget(new HTML("GrandChild"));
+            rootPanel.add(tree);
 
-			grandChildren.add(new HTML("grandChild #1"));
-			grandChildren.add(new HTML("grandChild #2"));
-			grandChildren.add(new HTML("grandChild #3"));
+            final TreeItem grandChildren = new TestTreeItem();
+            grandChildren.setWidget(new HTML("GrandChild"));
 
-			final TreeItem root = tree.getTreeItem();
-			root.setWidget(new HTML("Root"));
+            grandChildren.add(new HTML("grandChild #1"));
+            grandChildren.add(new HTML("grandChild #2"));
+            grandChildren.add(new HTML("grandChild #3"));
 
-			root.add(new HTML("child #1"));
-			root.add(grandChildren);
-			root.add(new HTML("child #3"));
+            final TreeItem root = tree.getTreeItem();
+            root.setWidget(new HTML("Root"));
 
-			rootPanel.add(new HTML("<br/>"));
-			
-			final Button createIterator = new Button( "create Iterator");
-			createIterator.addClickListener( new ClickListener(){
-				public void onClick( final Widget ignored ){
-					TreeTest.iterator = tree.getTreeItem().iterator( Window.confirm( "Visit Descendants ?"));
-					feedback.setHTML( feedback.getHTML() + "<br/>iterator created: " + iterator );
-				}
-			});
-			rootPanel.add( createIterator );
+            root.add(new HTML("child #1"));
+            root.add(grandChildren);
+            root.add(new HTML("child #3"));
 
-			final Button iteratorHasNext = new Button("iterator.hasNext()");
-			iteratorHasNext.addClickListener( new ClickListener(){
-				public void onClick( final Widget ignored ){
-					Iterator iterator = TreeTest.iterator;
-					if( null != iterator ){
-						String append = null;
-						try{
-							append = "iterator.hasNext() returned " + iterator.hasNext();
-						} catch ( final Exception caught ){
-							append = "iterator.hasNext() threw " + caught;
-						}
-						feedback.setHTML( feedback.getHTML() + "<br/>" + append );
-					}
-				}
-			});
-			rootPanel.add( iteratorHasNext );
+            rootPanel.add(new HTML("<br/>"));
 
-			final Button iteratorNext = new Button("Iterator.next()");
-			iteratorNext.addClickListener( new ClickListener(){
-				public void onClick( final Widget ignored ){
-					Iterator iterator = TreeTest.iterator;
-					if( null != iterator ){
-						String append = null;
-						try{
-							append = "iterator.next() returned " + iterator.next();
-						} catch ( final Exception caught ){
-							append = "iterator.next() threw " + caught;
-						}
-						feedback.setHTML( feedback.getHTML() + "<br/>" + append );
-					}
-				}
-			});
-			rootPanel.add( iteratorNext );
-			
-			final Button iteratorRemove = new Button("Iterator.remove()");
-			iteratorRemove.addClickListener( new ClickListener(){
-				public void onClick( final Widget ignored ){
-					Iterator iterator = TreeTest.iterator;
-					if( null != iterator ){
-						String append = null;
-						try{
-							iterator.remove();
-							append = "iterator.removed() successful.";
-						} catch ( final Exception caught ){
-							append = "iterator.removed() threw " + caught;
-						}
-						feedback.setHTML( feedback.getHTML() + "<br/>" + append );
-					}
-				}
-			});
-			rootPanel.add( iteratorRemove );
-			
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-	}
+            final Button createIterator = new Button("create Iterator");
+            createIterator.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignored) {
+                    TreeTest.iterator = tree.getTreeItem().iterator(Window.confirm("Visit Descendants ?"));
+                    feedback.setHTML(feedback.getHTML() + "<br/>iterator created: " + iterator);
+                }
+            });
+            rootPanel.add(createIterator);
 
-	/**
-	 * This Tree creates a TestTreeItem as its root TreeItem
-	 * @author Miroslav Pokorny (mP)
-	 */
-	class TestTreeWidget extends Tree {
-		protected TreeItem createTreeItem() {
-			WidgetHelper.checkNotAlreadyCreated("treeItem", this.hasTreeItem());
+            final Button iteratorHasNext = new Button("iterator.hasNext()");
+            iteratorHasNext.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignored) {
+                    Iterator iterator = TreeTest.iterator;
+                    if (null != iterator) {
+                        String append = null;
+                        try {
+                            append = "iterator.hasNext() returned " + iterator.hasNext();
+                        } catch (final Exception caught) {
+                            append = "iterator.hasNext() threw " + caught;
+                        }
+                        feedback.setHTML(feedback.getHTML() + "<br/>" + append);
+                    }
+                }
+            });
+            rootPanel.add(iteratorHasNext);
 
-			final TestTreeItem treeItem = new TestTreeItem();
-			this.setTreeItem(treeItem);
-			treeItem.setTree(this);
-			return treeItem;
-		}
-	}
+            final Button iteratorNext = new Button("Iterator.next()");
+            iteratorNext.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignored) {
+                    Iterator iterator = TreeTest.iterator;
+                    if (null != iterator) {
+                        String append = null;
+                        try {
+                            append = "iterator.next() returned " + iterator.next();
+                        } catch (final Exception caught) {
+                            append = "iterator.next() threw " + caught;
+                        }
+                        feedback.setHTML(feedback.getHTML() + "<br/>" + append);
+                    }
+                }
+            });
+            rootPanel.add(iteratorNext);
 
-	/**
-	 * A specialised TreeItem that adds various buttons to each newly added child widget each when clicked add siblings either before or after or 
-	 * remove the current node from its parent
-	 * @author Miroslav Pokorny (mP)
-	 */
-	class TestTreeItem extends TreeItem {
+            final Button iteratorRemove = new Button("Iterator.remove()");
+            iteratorRemove.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignored) {
+                    Iterator iterator = TreeTest.iterator;
+                    if (null != iterator) {
+                        String append = null;
+                        try {
+                            iterator.remove();
+                            append = "iterator.removed() successful.";
+                        } catch (final Exception caught) {
+                            append = "iterator.removed() threw " + caught;
+                        }
+                        feedback.setHTML(feedback.getHTML() + "<br/>" + append);
+                    }
+                }
+            });
+            rootPanel.add(iteratorRemove);
 
-		public Widget getWidget(){
-			final HorizontalPanel wrapper = (HorizontalPanel)super.getWidget();
-			return wrapper.getWidget( 0 );
-		}
-		
-		public void setWidget(final Widget widget) {
-			final TestTreeItem that = this;
-			
-			final HorizontalPanel wrapper = new HorizontalPanel();
-			wrapper.add( widget );
-			
-			final Button addHtmlChild = new Button("addHtmlChild");
-			addHtmlChild.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					that.add(new HTML("Html-"+ System.currentTimeMillis()));
-				}
-			});
-			wrapper.add(addHtmlChild);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
 
-			final Button addTreeItemChild = new Button("addTreeItemChild");
-			addTreeItemChild.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					final TestTreeItem newChildTreeItem = new TestTreeItem();
-					newChildTreeItem.setWidget(new HTML("TreeItem-"+ System.currentTimeMillis()));
-					that.add(newChildTreeItem);
-				}
-			});
-			wrapper.add(addTreeItemChild);
+    /**
+     * This Tree creates a TestTreeItem as its root TreeItem
+     * 
+     * @author Miroslav Pokorny (mP)
+     */
+    class TestTreeWidget extends Tree {
+        protected TreeItem createTreeItem() {
+            WidgetHelper.checkNotAlreadyCreated("treeItem", this.hasTreeItem());
 
-			final Button remove = new Button("remove");
-			remove.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					that.getParentTreeItem().remove(that);
-				}
-			});
-			wrapper.add(remove);
+            final TestTreeItem treeItem = new TestTreeItem();
+            this.setTreeItem(treeItem);
+            treeItem.setTree(this);
+            return treeItem;
+        }
+    }
 
-			final CheckBox alwaysExpanded = new CheckBox("alwaysExpanded");
-			alwaysExpanded.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					that.setAlwaysExpanded(alwaysExpanded.isChecked());
-				}
-			});
-			wrapper.add(alwaysExpanded);
+    /**
+     * A specialised TreeItem that adds various buttons to each newly added child widget each when clicked add siblings either before or
+     * after or remove the current node from its parent
+     * 
+     * @author Miroslav Pokorny (mP)
+     */
+    class TestTreeItem extends TreeItem {
 
-			super.setWidget(wrapper);
-		}
+        public Widget getWidget() {
+            final HorizontalPanel wrapper = (HorizontalPanel) super.getWidget();
+            return wrapper.getWidget(0);
+        }
 
-		public void insert(final Widget widget, final int beforeIndex) {
-			if (widget instanceof TreeItem) {
-				this.insertTreeItem((TreeItem) widget, beforeIndex);
-			} else {
-				this.insertWidget(widget, beforeIndex);
-			}
-		}
+        public void setWidget(final Widget widget) {
+            final TestTreeItem that = this;
 
-		protected void insertWidget(final Widget widget, final int beforeIndex) {
-			final TestTreeItem that = this;
+            final HorizontalPanel wrapper = new HorizontalPanel();
+            wrapper.add(widget);
 
-			final HorizontalPanel wrapper = new HorizontalPanel();
-			wrapper.add(widget);
+            final Button addHtmlChild = new Button("addHtmlChild");
+            addHtmlChild.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    that.add(new HTML("Html-" + System.currentTimeMillis()));
+                }
+            });
+            wrapper.add(addHtmlChild);
 
-			final Button insertHtmlBefore = new Button("insertHtmlBefore");
-			insertHtmlBefore.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					final int index = that.getIndex(wrapper);
-					that.insert(new HTML("Html-" + System.currentTimeMillis()),
-							index);
-				}
-			});
-			wrapper.add(insertHtmlBefore);
+            final Button addTreeItemChild = new Button("addTreeItemChild");
+            addTreeItemChild.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    final TestTreeItem newChildTreeItem = new TestTreeItem();
+                    newChildTreeItem.setWidget(new HTML("TreeItem-" + System.currentTimeMillis()));
+                    that.add(newChildTreeItem);
+                }
+            });
+            wrapper.add(addTreeItemChild);
 
-			final Button insertTreeItemBefore = new Button(
-					"insertTreeItemBefore");
-			insertTreeItemBefore.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					final int index = that.getIndex(wrapper);
-					final TestTreeItem newChild = new TestTreeItem();
-					newChild.setWidget(new HTML("TreeItem-"
-							+ System.currentTimeMillis()));
-					that.insert(newChild, index);
-				}
-			});
-			wrapper.add(insertTreeItemBefore);
+            final Button remove = new Button("remove");
+            remove.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    that.getParentTreeItem().remove(that);
+                }
+            });
+            wrapper.add(remove);
 
-			final Button insertHtmlAfter = new Button("insertHtmlAfter");
-			insertHtmlAfter.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					final int index = that.getIndex(wrapper);
-					that.insert(new HTML("Html-" + System.currentTimeMillis()),
-							index + 1);
-				}
-			});
-			wrapper.add(insertHtmlAfter);
+            final CheckBox alwaysExpanded = new CheckBox("alwaysExpanded");
+            alwaysExpanded.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    that.setAlwaysExpanded(alwaysExpanded.isChecked());
+                }
+            });
+            wrapper.add(alwaysExpanded);
 
-			final Button insertTreeItemAfter = new Button("insertTreeItemAfter");
-			insertTreeItemAfter.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					final TestTreeItem newChild = new TestTreeItem();
-					newChild.setWidget(new HTML("TreeItem-"
-							+ System.currentTimeMillis()));
+            super.setWidget(wrapper);
+        }
 
-					final int index = that.getIndex(wrapper);
-					that.insert(newChild, index + 1);
-				}
-			});
-			wrapper.add(insertTreeItemAfter);
+        public void insert(final Widget widget, final int beforeIndex) {
+            if (widget instanceof TreeItem) {
+                this.insertTreeItem((TreeItem) widget, beforeIndex);
+            } else {
+                this.insertWidget(widget, beforeIndex);
+            }
+        }
 
-			final Button remove = new Button("remove");
-			remove.addClickListener(new ClickListener() {
-				public void onClick(final Widget widget) {
-					that.remove(wrapper);
-				}
-			});
-			wrapper.add(remove);
+        protected void insertWidget(final Widget widget, final int beforeIndex) {
+            final TestTreeItem that = this;
 
-			super.insert(wrapper, beforeIndex);
-		}
+            final HorizontalPanel wrapper = new HorizontalPanel();
+            wrapper.add(widget);
 
-		public void insertTreeItem(final TreeItem childTreeItem,
-				final int beforeIndex) {
-			childTreeItem.setParentTreeItem(this);
-			super.insert(childTreeItem, beforeIndex);
-		}
+            final Button insertHtmlBefore = new Button("insertHtmlBefore");
+            insertHtmlBefore.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    final int index = that.getIndex(wrapper);
+                    that.insert(new HTML("Html-" + System.currentTimeMillis()), index);
+                }
+            });
+            wrapper.add(insertHtmlBefore);
 
-	}
+            final Button insertTreeItemBefore = new Button("insertTreeItemBefore");
+            insertTreeItemBefore.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    final int index = that.getIndex(wrapper);
+                    final TestTreeItem newChild = new TestTreeItem();
+                    newChild.setWidget(new HTML("TreeItem-" + System.currentTimeMillis()));
+                    that.insert(newChild, index);
+                }
+            });
+            wrapper.add(insertTreeItemBefore);
+
+            final Button insertHtmlAfter = new Button("insertHtmlAfter");
+            insertHtmlAfter.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    final int index = that.getIndex(wrapper);
+                    that.insert(new HTML("Html-" + System.currentTimeMillis()), index + 1);
+                }
+            });
+            wrapper.add(insertHtmlAfter);
+
+            final Button insertTreeItemAfter = new Button("insertTreeItemAfter");
+            insertTreeItemAfter.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    final TestTreeItem newChild = new TestTreeItem();
+                    newChild.setWidget(new HTML("TreeItem-" + System.currentTimeMillis()));
+
+                    final int index = that.getIndex(wrapper);
+                    that.insert(newChild, index + 1);
+                }
+            });
+            wrapper.add(insertTreeItemAfter);
+
+            final Button remove = new Button("remove");
+            remove.addClickListener(new ClickListener() {
+                public void onClick(final Widget widget) {
+                    that.remove(wrapper);
+                }
+            });
+            wrapper.add(remove);
+
+            super.insert(wrapper, beforeIndex);
+        }
+
+        public void insertTreeItem(final TreeItem childTreeItem, final int beforeIndex) {
+            childTreeItem.setParentTreeItem(this);
+            super.insert(childTreeItem, beforeIndex);
+        }
+
+    }
 }

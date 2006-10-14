@@ -23,9 +23,9 @@ import rocket.client.util.StringHelper;
 
 /**
  * Represents a single file on the server.
- *
+ * 
  * @author Miroslav Pokorny (mP)
- *
+ * 
  */
 public class File {
 

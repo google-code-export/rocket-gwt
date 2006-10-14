@@ -15,7 +15,9 @@
  */
 package rocket.client.widget.slider;
 
+import rocket.client.browser.BrowserHelper;
 import rocket.client.util.ObjectHelper;
+import rocket.client.widget.WidgetHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -23,70 +25,69 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A VerticalSlider is a widget which allows a user to manipulate number value
- * by clicking on different areas of the widget moving along the y-axis.
+ * A VerticalSlider is a widget which allows a user to manipulate number value by clicking on different areas of the widget moving along the
+ * y-axis.
  * 
  * @author Miroslav (mP)
  */
 public class VerticalSlider extends AbstractSlider {
-	public VerticalSlider() {
-		super();
+    public VerticalSlider() {
+        super();
 
-		this.initWidget(this.createPanel());
-		this.addStyleName(SliderConstants.VERTICAL_SLIDER_STYLE);
-		
-		DOM.setEventListener(this.getElement(), this);
-		this.sinkEvents(Event.ONMOUSEDOWN);
-	}
+        this.initWidget(this.createPanel());
+        this.addStyleName(SliderConstants.VERTICAL_SLIDER_STYLE);
 
-	/**
-	 * Calculates and sets the relative position of the thumb widget according
-	 * to the value of this slider.
-	 */
-	protected void updateWidget() {
-		final int sliderHeight = this.getOffsetHeight();
-		final Widget thumb = this.getWidget();
-		final int thumbHeight = thumb.getOffsetHeight();
-		final int spacerHeight = sliderHeight - thumbHeight;
+        DOM.setEventListener(this.getElement(), this);
+        this.sinkEvents(Event.ONMOUSEDOWN);
+    }
 
-		final float ratio = (float) this.getValue() / this.getMaximumValue();
-		final int newTop = (int) (ratio * spacerHeight);
+    /**
+     * Calculates and sets the relative position of the thumb widget according to the value of this slider.
+     */
+    protected void updateWidget() {
+        final int sliderHeight = this.getOffsetHeight();
+        final Widget thumb = this.getWidget();
+        final int thumbHeight = thumb.getOffsetHeight();
+        final int spacerHeight = sliderHeight - thumbHeight;
 
-		final Element thumbElement = thumb.getElement();
-		DOM.setStyleAttribute(thumbElement, "position", "relative");
-		DOM.setStyleAttribute(thumbElement, "top", newTop + "px");
-	}
-	
-	protected String getSliderDraggingStyleName(){
-		return SliderConstants.VERTICAL_SLIDER_DRAGGING_STYLE;
-	}	
+        final float ratio = (float) this.getValue() / this.getMaximumValue();
+        final int newTop = (int) (ratio * spacerHeight);
 
-	/**
-	 * Tests if the mouse click occured in the slider area before or after the
-	 * thumb widget.
-	 * 
-	 * @param event
-	 */
-	protected void handleBackgroundClick(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+        final Element thumbElement = thumb.getElement();
+        DOM.setStyleAttribute(thumbElement, "position", "relative");
+        DOM.setStyleAttribute(thumbElement, "top", newTop + "px");
+    }
 
-		final int mouseY = DOM.eventGetClientY(event);
-		final int widgetY = this.getWidget().getAbsoluteTop();
-		this.handleBackgroundClick( mouseY, widgetY );
-	}
+    protected String getSliderDraggingStyleName() {
+        return SliderConstants.VERTICAL_SLIDER_DRAGGING_STYLE;
+    }
 
-	/**
-	 * Interprets any dragging mouse movements updating the thumb accordingly.
-	 * @param event
-	 */
-	protected void handleMouseMove(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+    /**
+     * Tests if the mouse click occured in the slider area before or after the thumb widget.
+     * 
+     * @param event
+     */
+    protected void handleBackgroundClick(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
 
-		final int widgetY = this.getAbsoluteTop();
-		final int mouseY = DOM.eventGetClientY( event );
-		final int sliderHeight = this.getOffsetHeight();
-		final int thumbHeight = this.getWidget().getOffsetHeight();
-		
-		this.handleMouseMove( widgetY, mouseY, sliderHeight, thumbHeight );
-	}
+        final int mouseY = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();
+        final int widgetY = WidgetHelper.getAbsoluteTop(this.getWidget());
+        this.handleBackgroundClick(mouseY, widgetY);
+    }
+
+    /**
+     * Interprets any dragging mouse movements updating the thumb accordingly.
+     * 
+     * @param event
+     */
+    protected void handleMouseMove(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
+
+        final int widgetY = WidgetHelper.getAbsoluteTop(this);
+        final int mouseY = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();
+        final int sliderHeight = this.getOffsetHeight();
+        final int thumbHeight = this.getWidget().getOffsetHeight();
+
+        this.handleMouseMove(widgetY, mouseY, sliderHeight, thumbHeight);
+    }
 }

@@ -31,9 +31,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * This table is displays all download files, it may be sorted and also includes actions such as downloading or removing a file.
- *
+ * 
  * @author Miroslav Pokorny (mP)
- *
+ * 
  */
 public class SortableFileTable extends SortableTable {
 
@@ -46,7 +46,7 @@ public class SortableFileTable extends SortableTable {
 
     protected Object getValue(final Object row, final int column) {
         ObjectHelper.checkNotNull("parameter:row", row);
-        this.checkColumn( "parameter:column", column );
+        this.checkColumn("parameter:column", column);
 
         final File downloadFile = (File) row;
 
@@ -78,7 +78,7 @@ public class SortableFileTable extends SortableTable {
 
     protected Widget getWidget(final Object value, final int column) {
         ObjectHelper.checkNotNull("parameter:value", value);
-        this.checkColumn( "parameter:column", column );
+        this.checkColumn("parameter:column", column);
 
         final File file = (File) value;
         Widget widget = null;

@@ -194,8 +194,9 @@ public class SkippingIteratorTestCase extends TestCase {
 
     /**
      * This iterator skips objects that are not of type String.
+     * 
      * @author Miroslav Pokorny (mP)
-     *
+     * 
      */
     class TestSkippingIterator extends SkippingIterator {
         public boolean skip(final Object visit) {

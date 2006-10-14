@@ -15,31 +15,34 @@
  */
 package rocket.client.widget.form;
 
-import rocket.client.dom.AbstractElementList;
+import rocket.client.dom.DomCollectionList;
 import rocket.client.dom.DomHelper;
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.SystemHelper;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * This list provides a view of a live form and its elements returning the appropriate widget
- * rather than elements given an index.
+ * This list provides a view of a live form and its elements returning the appropriate widget rather than elements given an index.
+ * 
  * @author Miroslav Pokorny (mP)
  */
-public class FormElementsList extends AbstractElementList {
+public class FormElementsList extends DomCollectionList {
 
     protected void checkElementType(Object wrapper) {
     }
 
-    protected Object createWrapper(Element element) {
-        return this.visitElement(element);
+    protected Object createWrapper(final JavaScriptObject object) {
+        return this.visitElement((Element) object);
     }
 
     /**
      * This method dispatches to the appropriate factory method depending on the type of element passed.
+     * 
      * @param element
      * @return
      */
@@ -189,10 +192,11 @@ public class FormElementsList extends AbstractElementList {
             this.setElement(element);
         }
 
-        //        protected void setElement( final Element element ){
-        //            DomHelper.checkInputElement( "parameter:element", element, FormConstants.CHECKBOX_TYPE);
-        //            super.setElement( element );
-        //        }
+        // protected void setElement( final Element element ){
+        // DomHelper.checkInputElement( "parameter:element", element,
+        // FormConstants.CHECKBOX_TYPE);
+        // super.setElement( element );
+        // }
     }
 
     protected Widget visitButton(final Element element) {
@@ -226,10 +230,11 @@ public class FormElementsList extends AbstractElementList {
             this.setElement(element);
         }
 
-        //        protected void setElement( final Element element ){
-        //            DomHelper.checkTagName( "parameter:element", element, FormConstants.LIST_TAG);
-        //            super.setElement( element );
-        //        }
+        // protected void setElement( final Element element ){
+        // DomHelper.checkTagName( "parameter:element", element,
+        // FormConstants.LIST_TAG);
+        // super.setElement( element );
+        // }
     }
 
     protected Widget visitSubmitButton(final Element element) {
@@ -240,5 +245,17 @@ public class FormElementsList extends AbstractElementList {
     protected Widget visitResetButton(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new ResetButton(element);
+    }
+
+    protected void add0(final JavaScriptObject collection, final JavaScriptObject element) {
+        throw new UnsupportedOperationException(GWT.getTypeName(this) + "add0()");
+    }
+
+    protected void insert0(final JavaScriptObject collection, final int index, final JavaScriptObject element) {
+        throw new UnsupportedOperationException(GWT.getTypeName(this) + "insert0()");
+    }
+
+    protected JavaScriptObject remove0(final JavaScriptObject collection, final int index) {
+        throw new UnsupportedOperationException(GWT.getTypeName(this) + "remove0()");
     }
 }

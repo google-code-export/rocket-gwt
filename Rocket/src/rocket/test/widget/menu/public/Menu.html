@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <html>
 <head>
@@ -6,83 +6,76 @@
 <meta name='gwt:module' content='rocket.test.widget.menu.Menu'>
 <script language="javascript" src="gwt.js"></script>
 <style>
-	BODY, TABLE{
+	BODY, TABLE, DIV{
 		font-family: Verdana, Arial, Helvetica, sans-serif;
 		font-size: 11px;
 	}
-
-	.rocket-menu-menuBar, .rocket-menu-menuList, .rocket-menu-horizontalMenuList, .rocket-menu-verticalMenuList,
-	.rocket-menu-menuItem, .rocket-menu-subMenuItem, .rocket-menu-menuSpacer, .rocket-menu-verticalMenuListExpander, .rocket-menu-contextMenu{
-		padding-top: 4px;
-		padding-right: 2px;
-		padding-bottom: 4px;
-		padding-left: 2px;
-
-		left-margin: 2px;
-		right-margin: 2px;
-		top-margin: 0px;
-		bottom-margin: 0px;
-
-		white-space: nowrap;
-		color: #cccccc;
-	}
-	.rocket-menu-horizontalMenuList, TABLE.rocket-menu-horizontalMenuList, .rocket-menu-verticalMenuList{
-		border-color: #cccccc;
-		border-width: 1px;
-		border-style: solid;
-		cursor: default;
-	}
-	.rocket-menu-horizontalMenuList, .rocket-menu-verticalMenuList, .rocket-menu-contextMenu{
-		color: #000000;
-		background-color: #cccccc;
-		padding-top: 0px;
-		padding-left: 0px;
-		padding-right: 0px;
-		padding-bottom: 2px;
-	}
-	.rocket-menu-horizontalMenuList{
-		padding-right: 8px;
-	}
-	.rocket-menu-menuItem, .rocket-menu-subMenuItem{
-		color: #000000;
-		background-color: #cccccc;
-		border-width: 0px;
-		cursor: hand;
-	}
-	.rocket-menu-menuItem-selected, .rocket-menu-subMenuItem-selected{
-		color: #ffffff;
-		background-color: #000000;
-		cursor: hand;
-	}
-	.rocket-menu-menuItem-disabled, .rocket-menu-subMenuItem-disabled{
-		color: #888888;
-		cursor: notAllowed;
-	}
-	.rocket-menu-menuSpacer{
-		padding-left: 8px;
-		padding-top: 0px;
-		padding-right: 8px;
-		padding-bottom: 0px;
-	}
-
-	.rocket-menu-verticalMenuListExpander{
+	
+	DIV{
+		margin: 0px;
 		padding: 0px;
+	}
+	
+	BUTTON{
+		margin: 4px;
+	}
+
+	.rocket-menu-horizontalMenuBar, 
+	.rocket-menu-verticalMenuBar, 
+	.rocket-menu-contextMenu, 
+	.rocket-menu-horizontalMenuList,
+	.rocket-menu-verticalMenuList {
+		margin: 0px;
+		padding: 0px;
+		background-color: #dddddd;
+		background-image: none;
+		color: #222222;
+		border-style: none;
 		border-width: 0px;
-		height: 1em;
+		white-space: nowrap;
+		
+		cursor: pointer;
+	}
+	
+	/* the width property must be set to 100% for the widget to work correctly */
+	DIV.rocket-menu-menuItem,
+	DIV.rocket-menu-subMenuItem,
+	DIV.rocket-menu-menuSpacer {
+		margin: 0px;
+		padding-left: 5px;
+		padding-top: 5px;
+		padding-right: 5px;
+		padding-bottom: 5px;
+		border-style: none;
+		white-space: nowrap;
+		xwidth: 100%;
+		background-color: #dddddd;
+	}
+	/* unfortunately IE only seems to accept positionX/Y values if the shortcut background entry is used */
+	xDIV.rocket-menu-subMenuItem {
+		background-image: url( "sub-menu-arrow.gif" );
+		background-positionX: right;
+		background-positionY: center;
+		background-repeat: no-repeat;
+		background-color: #dddddd;
+	}
+	
+	DIV.rocket-menu-subMenuItem {
+		background: url( "sub-menu-arrow.gif" ) no-repeat center right;
+		background-color: #dddddd;
+	}
+	
+	DIV.rocket-menu-menuItem-selected,
+	DIV.rocket-menu-subMenuItem-selected{
+		background-color: #444444;
+		color: #bbbbbb;
 	}
 
-	IMG.rocket-menu-menuListExpander{
-		border-width: 0px;
-		width: auto;
+	.rocket-menu-menuItem-disabled,
+	.rocket-menu-subMenuItem-disabled{
+		color: #888888;
 	}
-
-	.rocket-contextMenuWidget{
-		background-color: #ffffcc;
-		border-color: #ffddaa;
-		border-width: 1px;
-		border-style: dotted;
-	}
-
+	
 	.feedback{
 		border-width: 1px;
 		border-style: dotted;
@@ -94,11 +87,10 @@
 		height: 1 em;
 		font-size: 10px;
 		color: #444444;
-		background-color: #dddddd;
+		background-color: #eeeeee;
 	}
 </style>
 </head>
-<body oncontextmenu="return false;">
-
+<body oncontextmenu="return false">
 </body>
 </html>

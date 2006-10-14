@@ -22,14 +22,15 @@ import java.util.List;
 import rocket.client.util.ObjectHelper;
 
 /**
-* A collection of methods that are often used when working with Collections.
-* @author Miroslav Pokorny (mP)
-*/
+ * A collection of methods that are often used when working with Collections.
+ * 
+ * @author Miroslav Pokorny (mP)
+ */
 public class CollectionHelper {
-    public static void removeAll( final Iterator iterator ){
-        ObjectHelper.checkNotNull( "parameter:iterator", iterator );
+    public static void removeAll(final Iterator iterator) {
+        ObjectHelper.checkNotNull("parameter:iterator", iterator);
 
-        while( iterator.hasNext() ){
+        while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
@@ -37,30 +38,32 @@ public class CollectionHelper {
 
     /**
      * Copies all the elements from the iterator into an array.
+     * 
      * @param iterator
      * @return
      */
-    public static Object[] toArray( final Iterator iterator ){
-        ObjectHelper.checkNotNull( "parameter:iterator", iterator );
+    public static Object[] toArray(final Iterator iterator) {
+        ObjectHelper.checkNotNull("parameter:iterator", iterator);
 
         final List list = new ArrayList();
-        while( iterator.hasNext() ){
-            list.add( iterator.next() );
+        while (iterator.hasNext()) {
+            list.add(iterator.next());
         }
         return list.toArray();
     }
 
     /**
      * Copies all the elements from the iterator into a List
+     * 
      * @param iterator
      * @return
      */
-    public static List toList( final Iterator iterator ){
-        ObjectHelper.checkNotNull( "parameter:iterator", iterator );
+    public static List toList(final Iterator iterator) {
+        ObjectHelper.checkNotNull("parameter:iterator", iterator);
 
         final List list = new ArrayList();
-        while( iterator.hasNext() ){
-            list.add( iterator.next() );
+        while (iterator.hasNext()) {
+            list.add(iterator.next());
         }
         return list;
     }

@@ -17,19 +17,29 @@ package rocket.client.widget.form;
 
 import rocket.client.dom.DomConstants;
 
-public class FormConstants extends DomConstants{
+public class FormConstants extends DomConstants {
 
     public final static String HIDDEN_TYPE = "HIDDEN";
+
     public final static String TEXT_TYPE = "text";
+
     public final static String PASSWORD_TYPE = "password";
+
     public final static String RADIO_BUTTON_TYPE = "radio";
+
     public final static String RESET_BUTTON_TYPE = "reset";
+
     public final static String SUBMIT_BUTTON_TYPE = "submit";
 
     public final static String TEXTAREA_TAG = "TEXTAREA";
+
     public final static String BUTTON_TAG = "button";
+
     public final static String CHECKBOX_TYPE = "checkbox";
+
     public final static String LIST_TAG = "select";
+
     public final static String OPTIONS_TAG = "options";
+
     public final static String OPTION_TAG = "option";
 }

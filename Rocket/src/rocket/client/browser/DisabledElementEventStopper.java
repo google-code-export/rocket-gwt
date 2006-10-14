@@ -25,10 +25,10 @@ import com.google.gwt.user.client.EventPreview;
 /**
  * This listener listens to all global events and cancels any events that are directed towards an element that is disabled or has a disabled
  * ancestor.
- *
+ * 
  * Unfortunately it seems that the disabled attribute only works on form elements, and it would be nice to have it working for all elements.
  * This class solves that problem.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class DisabledElementEventStopper implements EventPreview {

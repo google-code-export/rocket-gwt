@@ -24,25 +24,26 @@ import rocket.client.collection.VisitedRememberingIterator;
 
 /**
  * A series of unit tests for the VisitedRememberingIterator Iterator
+ * 
  * @author Miroslav Pokorny (mP)
- *
+ * 
  */
 public class VisitRememberingIteratorTestCase extends TestCase {
-    public void test0(){
-        final List list = Arrays.asList( new Object[]{ "first", "second", "third", "fourth" });
+    public void test0() {
+        final List list = Arrays.asList(new Object[] { "first", "second", "third", "fourth" });
         final Iterator controlIterator = list.iterator();
 
         final VisitedRememberingIterator iterator = new VisitedRememberingIterator();
-        iterator.setIterator( list.iterator());
+        iterator.setIterator(list.iterator());
 
-        while( controlIterator.hasNext() ){
-            assertEquals( controlIterator.hasNext(), iterator.hasNext() );
+        while (controlIterator.hasNext()) {
+            assertEquals(controlIterator.hasNext(), iterator.hasNext());
             final Object listVisited = controlIterator.next();
             final Object visited = iterator.next();
             final Object lastVisited = iterator.getLastVisited();
 
-            assertEquals( listVisited, visited );
-            assertEquals( visited, lastVisited );
+            assertEquals(listVisited, visited);
+            assertEquals(visited, lastVisited);
         }
 
     }

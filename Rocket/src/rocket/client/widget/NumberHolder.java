@@ -17,11 +17,12 @@ package rocket.client.widget;
 
 /**
  * Instances of concrete classes typically are widgets that allow the user to modify a number value.
+ * 
  * @author Miroslav Pokorny (mP)
- *
+ * 
  */
 public interface NumberHolder {
-	int getValue();
+    int getValue();
 
-	void setValue( int value );
+    void setValue(int value);
 }

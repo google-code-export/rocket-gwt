@@ -18,11 +18,11 @@ package rocket.server.util;
 import rocket.server.exception.UncheckedNestedException;
 
 public class UncheckedIOException extends UncheckedNestedException {
-	public UncheckedIOException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    public UncheckedIOException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
-	public UncheckedIOException(final Throwable cause) {
-		super(cause);
-	}
+    public UncheckedIOException(final Throwable cause) {
+        super(cause);
+    }
 }

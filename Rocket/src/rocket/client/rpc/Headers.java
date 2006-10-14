@@ -26,7 +26,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * A simple implementation container for headers.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class Headers implements IsSerializable {

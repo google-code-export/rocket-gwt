@@ -15,63 +15,207 @@
  */
 package rocket.client.widget.menu;
 
+import rocket.client.dom.DomHelper;
 import rocket.client.util.ObjectHelper;
+import rocket.client.widget.SpanPanel;
 import rocket.client.widget.WidgetHelper;
 
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A contextMenu is a vertical list of menu items possibly with subMenuItems etc that is activated whenever the user right moust clicks on
- * the targetted widget.
- *
+ * Context menus are a simple panel that includes a single widget. When a right mouse click occurs on this widget the menu is activated. A
+ * context menu displays a VerticalMenuList with the immediate child items when right mouse clicked.
+ * 
+ * The only reliable way to stop the default browser behaviour( in IE6 and FF) seems to be to add a oncontextmenu=return false as part of
+ * the body tag of the application's start page.
+ * 
  * @author Miroslav Pokorny (mP)
  */
-public class ContextMenu extends AbstractMenu {
-	
-	public ContextMenu(final Widget widget) {
-  	this.initWidget(widget);
-      this.sinkEvents( Event.MOUSEEVENTS | Event.ONCLICK | Event.ONMOUSEOVER | Event.ONMOUSEOUT);
+public class ContextMenu extends Menu {
 
-      this.createMenuList();
-  }
+    public ContextMenu() {
+        super();
 
-    // COMPOSITE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        this.initWidget(this.createWidget());
+        this.addStyleName(MenuConstants.CONTEXT_MENU_STYLE);
+    }
+
+    // COMPOSITE :::::::::::::::::::::::::::::::::::::::::
+
     /**
-     * Re-registers the eventListener for this widget
+     * Factory method which eventually creates the VerticalMenuList.
+     * 
+     * @return
      */
-    protected void onAttach() {
-        super.onAttach();
-        DOM.setEventListener(this.getElement(), this);        
+    protected Widget createWidget() {
+        final SpanPanel panel = new SpanPanel();
+        panel.add(new HTML(""));
+        panel.add(this.createMenuList());
+        this.setPanel(panel);
+        return panel;
     }
 
     /**
-     * This method handles behaviour reaction to various events that may occur upon a Menu.
+     * A simplepanel is used as the destination panel which wraps the given wrapped Widget. The first slot contains the widget and the
+     * second slot is used to house the menuList.
      */
-    public void onBrowserEvent(Event event) {
-        ObjectHelper.checkNotNull("parameter:event", event);
+    private SpanPanel panel;
 
-        if ( DOM.eventGetType( event ) == Event.ONMOUSEDOWN && DOM.eventGetButton(event) == Event.BUTTON_RIGHT || this.isAutoOpen()
-                && DOM.eventGetType(event) == Event.ONMOUSEOVER) {
-            final MenuList menuList = this.getMenuList();
-            final int top = this.getAbsoluteTop() + this.getOffsetHeight() - MenuConstants.DOWN_OVERLAP;
-            final int left = this.getAbsoluteLeft() + 3;
+    protected SpanPanel getPanel() {
+        ObjectHelper.checkNotNull("field:panel", panel);
+        return panel;
+    }
 
-            RootPanel.get().add((Widget) menuList, left, top);
-
-            menuList.open();
-        }
+    protected void setPanel(final SpanPanel panel) {
+        ObjectHelper.checkNotNull("parameter:panel", panel);
+        this.panel = panel;
     }
 
     protected Widget createMenuList() {
         WidgetHelper.checkNotAlreadyCreated("menuList", this.hasMenuList());
         final VerticalMenuList list = new VerticalMenuList();
         list.addStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
+        list.setHideable(true);
         list.setMenu(this);
+        list.setOpenDirection(MenuListOpenDirection.DOWN);
+        list.hide();
 
         this.setMenuList(list);
         return list;
-    }    
+    }
+
+    /**
+     * Retrieves the widget being wrapped by this menu.
+     * 
+     * @return
+     */
+    public Widget getWidget() {
+        final SpanPanel panel = this.getPanel();
+        return panel.get(0);
+    }
+
+    public void setWidget(final Widget widget) {
+        ObjectHelper.checkNotNull("parameter:widget", widget);
+
+        final SpanPanel panel = this.getPanel();
+        panel.remove(0);
+        panel.insert(widget, 0);
+    }
+
+    // COMPOSITE
+    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * Re-registers the eventListener for this widget
+     */
+    protected void onAttach() {
+        super.onAttach();
+        this.registerEvents();
+    }
+
+    protected void registerEvents() {
+        this.sinkEvents(Event.ONMOUSEDOWN);
+        DOM.setEventListener(this.getElement(), this);
+    }
+
+    /**
+     * Dispatches to the appropriate method depending on the event type.
+     * 
+     * @param event
+     */
+    public void onBrowserEvent(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
+
+        while (true) {
+            final int eventType = DOM.eventGetType(event);
+            if (Event.ONMOUSEDOWN == eventType && DOM.eventGetButton(event) == Event.BUTTON_RIGHT) {
+                this.handleMouseDown(event);
+                break;
+            }
+            if (Event.ONMOUSEOUT == eventType) {
+                this.handleMouseOut(event);
+                break;
+            }
+            break;
+        }
+    }
+
+    /**
+     * This method is fired whenever this menu widget receives a mouse out event
+     * 
+     * @param event
+     */
+    protected void handleMouseDown(final Event event) {
+        this.open();
+        DOM.eventCancelBubble(event, true);
+    }
+
+    /**
+     * This method is fired whenever this menu widget receives a mouse out event
+     * 
+     * @param event
+     */
+    protected void handleMouseOut(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
+
+        while (true) {
+            final Element targetElement = DomHelper.eventGetToElement(event);
+            if (DOM.isOrHasChild(this.getElement(), targetElement)) {
+                DOM.eventCancelBubble(event, true);
+                break;
+            }
+            this.hide();
+            break;
+        }
+    }
+
+    /**
+     * Opens and positions the context menu relative to the widget being wrapped.
+     */
+    public void open() {
+        final MenuList menuList = this.getMenuList();
+        final Menu menu = this;
+        final MenuListenerCollection listeners = menu.getMenuListeners();
+        if (listeners.fireBeforeMenuOpened(this)) {
+            menuList.open();
+
+            // Must set absolute coordinates in order to read the coordinates of
+            // element accurately IE6 bug
+            final Element menuListElement = menuList.getElement();
+            DomHelper.setAbsolutePosition(menuListElement, 0, 0);
+
+            final Widget widget = this.getWidget();
+            final Element element = widget.getElement();
+            int x = DomHelper.getParentContainerLeft(element);
+            int y = DomHelper.getParentContainerTop(element);
+
+            while (true) {
+                final MenuListOpenDirection openDirection = menuList.getOpenDirection();
+
+                if (MenuListOpenDirection.LEFT == openDirection) {
+                    x = x - menuList.getOffsetWidth() + 1;
+                    break;
+                }
+                if (MenuListOpenDirection.UP == openDirection) {
+                    y = y - menuList.getOffsetHeight() + 1;
+                    break;
+                }
+                if (MenuListOpenDirection.RIGHT == openDirection) {
+                    x = x + widget.getOffsetWidth() - 1;
+                    break;
+                }
+                if (MenuListOpenDirection.DOWN == openDirection) {
+                    y = y + widget.getOffsetHeight() - 1;
+                    break;
+                }
+                WidgetHelper.handleAssertFailure("Unknown openDirection, " + openDirection);
+            }
+            DomHelper.setAbsolutePosition(menuListElement, x, y);
+
+            listeners.fireMenuOpened(this);
+        }
+    }
 }

@@ -15,15 +15,19 @@
  */
 package rocket.client.widget.slider;
 
-import rocket.client.dom.StyleHelper;
+import rocket.client.style.StyleHelper;
 import rocket.client.widget.WidgetConstants;
 
-public class SliderConstants extends WidgetConstants{
+public class SliderConstants extends WidgetConstants {
     // SLIDER :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String HORIZONTAL_SLIDER_STYLE = StyleHelper.buildCompound( ROCKET, "horizontalSlider" );
-    public final static String HORIZONTAL_SLIDER_DRAGGING_STYLE = StyleHelper.buildCompound( HORIZONTAL_SLIDER_STYLE, "dragging" );
-    
-    public final static String VERTICAL_SLIDER_STYLE = StyleHelper.buildCompound( ROCKET, "verticalSlider" );
-    public final static String VERTICAL_SLIDER_DRAGGING_STYLE = StyleHelper.buildCompound( VERTICAL_SLIDER_STYLE, "dragging" );
+    public final static String HORIZONTAL_SLIDER_STYLE = StyleHelper.buildCompound(ROCKET, "horizontalSlider");
+
+    public final static String HORIZONTAL_SLIDER_DRAGGING_STYLE = StyleHelper.buildCompound(HORIZONTAL_SLIDER_STYLE,
+            "dragging");
+
+    public final static String VERTICAL_SLIDER_STYLE = StyleHelper.buildCompound(ROCKET, "verticalSlider");
+
+    public final static String VERTICAL_SLIDER_DRAGGING_STYLE = StyleHelper.buildCompound(VERTICAL_SLIDER_STYLE,
+            "dragging");
 
 }
