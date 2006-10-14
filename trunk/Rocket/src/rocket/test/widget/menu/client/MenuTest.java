@@ -15,12 +15,18 @@
  */
 package rocket.test.widget.menu.client;
 
+import rocket.client.util.ObjectHelper;
+import rocket.client.widget.VerticalPanel;
 import rocket.client.widget.menu.ContextMenu;
+import rocket.client.widget.menu.HorizontalMenuBar;
 import rocket.client.widget.menu.Menu;
 import rocket.client.widget.menu.MenuItem;
+import rocket.client.widget.menu.MenuListOpenDirection;
 import rocket.client.widget.menu.MenuListener;
 import rocket.client.widget.menu.MenuSpacer;
 import rocket.client.widget.menu.SubMenuItem;
+import rocket.client.widget.menu.VerticalMenuBar;
+import rocket.client.widget.menu.VerticalMenuList;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -29,314 +35,358 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.KeyboardListener;
-import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class MenuTest implements EntryPoint {
-	public void onModuleLoad() {
-		GWT.setUncaughtExceptionHandler( new UncaughtExceptionHandler(){
-			public void onUncaughtException(final Throwable caught ){
-				caught.printStackTrace();
-				Window.alert( "" + caught );
-			}
-		});
 
-		final RootPanel rootPanel = RootPanel.get();
+    public void onModuleLoad() {
+        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            public void onUncaughtException(final Throwable caught) {
+                caught.printStackTrace();
+                Window.alert("" + caught);
+            }
+        });
 
-		final int listLimit = 5;
+        final RootPanel rootPanel = RootPanel.get();
+        final DockPanel dockPanel = new DockPanel();
+        final VerticalPanel centerPanel = new VerticalPanel();
 
-		final Menu menu = new Menu();
-		menu.setAutoOpen(false);
-		menu.setListLimit(listLimit);
-		rootPanel.add(menu);
+        final CheckBox autoOpen = new CheckBox("Auto open?");
+        this.setAutoOpen(autoOpen);
+        centerPanel.add(autoOpen);
 
-		final SubMenuItem fruits = new SubMenuItem();
-		fruits.setText("menu/fruits(subMenu)");
-		fruits.setDisabled(false);
-		fruits.setPriority(0);
-		menu.add(fruits);
+        final CheckBox openDownwards = new CheckBox(
+                "VerticalMenuLists hanging off HorizontalMenuLists open downwards ?");
+        openDownwards.setChecked(true);
+        this.setOpenDownwards(openDownwards);
+        centerPanel.add(openDownwards);
 
-		final SubMenuItem apples = new SubMenuItem();
-		apples.setText("menu/fruits/apples(subMenu)");
-		apples.setDisabled(false);
-		apples.setPriority(0);
-		fruits.add(apples);
+        final CheckBox openRightwards = new CheckBox(
+                "VerticalMenuLists hanging off other VerticalMenuLists open rightwards ?");
+        openRightwards.setChecked(true);
+        this.setOpenRightwards(openRightwards);
+        centerPanel.add(openRightwards);
 
-		for (int i = 0; i < 10; i++) {
-			final String text = "menu/fruits/apples/" + i;
-			final boolean disabled = i < 3;
-			final int priority = 100 - i;
-			final boolean alwaysShown = i == 0;
-			apples.add(createMenuItem(text, disabled, priority, alwaysShown));
+        final HTML feedback = new HTML("");
+        feedback.setSize("100%", "200px");
+        feedback.addStyleName("feedback");
 
-			if (i % 4 == 3) {
-				final MenuSpacer spacer = new MenuSpacer();
-				spacer.setPriority(priority);
-				apples.add(spacer);
-			}
-		}
-
-		final SubMenuItem bananas = new SubMenuItem();
-		bananas.setText("menu/fruits/bananas(subMenu)");
-		bananas.setDisabled(false);
-		bananas.setPriority(0);
-		fruits.add(bananas);
-
-		final SubMenuItem yellows = new SubMenuItem();
-		yellows.setText("menu/fruits/bananas/yellows");
-		yellows.setDisabled(false);
-		yellows.setPriority(0);
-		bananas.add(yellows);
-
-		for (int i = 0; i < 10; i++) {
-			final String text = "menu/fruits/bananas/yellows/" + i;
-			final boolean disabled = i > 5;
-			final int priority = 100 - i;
-			final boolean alwaysShown = i == 9;
-			yellows.add(createMenuItem(text, disabled, priority, alwaysShown));
-
-			if (i % 4 == 3) {
-				final MenuSpacer spacer = new MenuSpacer();
-				spacer.setPriority(priority);
-				yellows.add(spacer);
-			}
-		}
-
-		final SubMenuItem oranges = new SubMenuItem();
-		oranges.setText("menu/fruits/bananas/oranges");
-		oranges.setDisabled(false);
-		oranges.setPriority(0);
-		bananas.add(oranges);
-
-		for (int i = 0; i < 10; i++) {
-			final String text = "menu/fruits/bananas/oranges/" + i;
-			final boolean disabled = i > 5;
-			final int priority = 100 - i;
-			final boolean alwaysShown = i == 0;
-			oranges.add(createMenuItem(text, disabled, priority, alwaysShown));
-
-			if (i % 4 == 3) {
-				final MenuSpacer spacer = new MenuSpacer();
-				spacer.setPriority(priority);
-				oranges.add(spacer);
-			}
-		}
-
-		final SubMenuItem carrots = new SubMenuItem();
-		carrots.setText("menu/fruits/carrots(subMenu)");
-		carrots.setDisabled(false);
-		carrots.setPriority(0);
-		fruits.add(carrots);
-
-		final MenuItem orange = new MenuItem();
-		orange.setDisabled(true);
-		orange.setText("menu/vegetables/carrots/orange(disabled)");
-		orange.setPriority(0);
-		carrots.add(orange);
-
-		final MenuItem purple = new MenuItem();
-		purple.setDisabled(true);
-		purple.setText("menu/vegetables/carrots/purple(disabled)");
-		purple.setPriority(0);
-		carrots.add(purple);
-
-		final SubMenuItem vegetables = new SubMenuItem();
-		vegetables.setDisabled(false);
-		vegetables.setText("menu/vegetables(SubMenu)");
-		vegetables.setPriority(0);
-		menu.add(vegetables);
-
-		final MenuItem potato = new MenuItem();
-		potato.setDisabled(true);
-		potato.setText("menu/vegetables/potato");
-		potato.setPriority(0);
-		vegetables.add(potato);
-
-		final SubMenuItem leaves = new SubMenuItem();
-		leaves.setDisabled(true);
-		leaves.setText("menu/leaves(disabled SubMenu)");
-		leaves.setPriority(0);
-		menu.add(leaves);
-
-		final MenuItem bush = new MenuItem();
-		bush.setDisabled(false);
-		bush.setText("menu/bush(MenuItem)");
-		bush.setPriority(0);
-		menu.add(bush);
-
-		final MenuItem tree = new MenuItem();
-		tree.setDisabled(true);
-		tree.setText("menu/tree(disabled MenuItem)");
-		tree.setPriority(0);
-		menu.add(tree);
-
-		rootPanel.add(new HTML("<br/><br/><br/>"));
-
-		final Widget contextMenuParentWidget = new HTML("ContextMenu");
-		
-		final ContextMenu contextMenu = new ContextMenu( contextMenuParentWidget );
-		contextMenu.setAutoOpen(false);
-		contextMenu.addStyleName("contextMenuWidget");
-		contextMenu.setListLimit(listLimit);
-		contextMenu.setWidth( "1px");
-		
-		for (int i = 0; i < 10; i++) {
-			final String text = "contextMenu/" + i;
-			final boolean disabled = i > 5;
-			final int priority = 100 - i;
-			final boolean alwaysShown = i == 0;
-			contextMenu.add(createMenuItem(text, disabled, priority,
-					alwaysShown));
-
-			if (i % 4 == 3) {
-				final MenuSpacer spacer = new MenuSpacer();
-				spacer.setPriority(priority);
-				contextMenu.add(spacer);
-			}
-		}
-		rootPanel.add(contextMenu);
-
-		rootPanel.add(new HTML("<br/><br/><br/>"));
-
-		final Label feedback = new Label("Nothing");
-		feedback.addStyleName("feedback");
-		rootPanel.add(feedback);
-
-		rootPanel.add(new HTML("<br/>"));
-
-		final CheckBox autoOpen = new CheckBox("Auto open ?");
-		autoOpen.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				final boolean newAutoOpen = autoOpen.isChecked();
-				menu.setAutoOpen(newAutoOpen);
-				contextMenu.setAutoOpen(newAutoOpen);
-
-				feedback.setText("Menu autoOpen property changed to " + newAutoOpen);
-			}
-		});
-		rootPanel.add(autoOpen);
-		rootPanel.add(new HTML("<br/>"));
-
-		rootPanel.add(new HTML("ListLimit"));
-
-		final TextBox listLimitTextBox = new TextBox();
-		listLimitTextBox.setText("" + listLimit);
-		listLimitTextBox.addKeyboardListener(new KeyboardListenerAdapter() {
-			public void onKeyPress(final Widget sender, final char keyCode,
-					final int modifiers) {
-				if (keyCode == KeyboardListener.KEY_ENTER) {
-					final int newListLimit = Integer.parseInt(listLimitTextBox
-							.getText());
-					menu.setListLimit(newListLimit);
-					System.out.println("Menu - setting listLimit: "
-							+ newListLimit);
-				}
-			}
-		});
-		rootPanel.add(listLimitTextBox);
-		rootPanel.add(new HTML("<br/>"));
-
-		final Button menuBarAdder = new Button("Add top level menus");
-		menuBarAdder.addClickListener(new ClickListener() {
-			public void onClick(final Widget widget) {
-				for (int i = 0; i < 3; i++) {
-					final SubMenuItem subMenu = new SubMenuItem();
-					subMenu.setText( "menu/number-" + i + "(subMenu)" );
-					subMenu.setDisabled(false);
-					subMenu.setPriority(0);
-					menu.add(subMenu);
-
-					for (int j = 0; j < 3; j++) {
-						final SubMenuItem subSubMenuItem = new SubMenuItem();
-						subSubMenuItem.setText( "menu/number-" + i + "/"  + j + "(subMenu)");
-						subSubMenuItem.setDisabled(false);
-						subSubMenuItem.setPriority(0);
-						subMenu.add(subSubMenuItem);
-
-						for (int k = 0; k < 3; k++) {
-							final MenuItem menuItem = new MenuItem();
-							menuItem.setText( "menu/number-" + i + "/"  + j + "/" + k );
-							menuItem.setDisabled(false);
-							menuItem.setPriority(0);
-							subSubMenuItem.add(menuItem);
-						}
-					}
-				}
-			}
-		});
-
-
-        final CheckBox cancelOpenEvents = new CheckBox("Cancel beforeMenuOpen events ?");
-        rootPanel.add(cancelOpenEvents);
-        rootPanel.add(new HTML("<br/>"));
-
-		final MenuListener listener = new MenuListener() {
-            public void onMenuCancelled(final Widget widget) {
-                feedback.setText("MenuCancelled: " + widget);
+        final MenuListener listener = new MenuListener() {
+            public void onMenuCancelled(Widget widget) {
+                System.err.println("menu cancelled widget[" + ObjectHelper.defaultToString(widget) + "]");
+                feedback.setText("menu cancelled widget[" + ObjectHelper.defaultToString(widget) + "]");
             }
 
+            public boolean onBeforeMenuOpened(Widget widget) {
+                System.err.println("" + System.currentTimeMillis());
+                System.err.println("menu about to be opened widget[" + widget + "]");
+                feedback.setText("menu about to be opened widget[" + widget + "]");
+                return true;
+            }
 
-			public boolean onBeforeMenuOpened(final Widget widget) {
-				String text = null;
-				if (widget instanceof MenuItem) {
-					text = ((MenuItem) widget).getText();
-				}
-				if (widget instanceof SubMenuItem) {
-					text = ((SubMenuItem) widget).getText();
-				}
+            public void onMenuOpened(Widget widget) {
+                System.err.println("menu opened...widget[" + widget + "]");
+                feedback.setText("menu opened widget[" + widget + "]");
+            }
+        };
 
-                final boolean cancelOpenEvent = cancelOpenEvents.isChecked();
-                feedback.setText("BeforeMenuOpened: " + (cancelOpenEvent ? "cancelling " : "opening ") + text );
-				return !cancelOpenEvent;
-			}
+        final Button createHorizontalMenuBar = new Button("Create HorizontalMenuBar");
+        createHorizontalMenuBar.addClickListener(new ClickListener() {
+            public void onClick(final Widget sender) {
+                try {
+                    final HorizontalMenuBar horizontalMenuBar = createHorizontalMenuBar();
+                    horizontalMenuBar.addMenuListener(listener);
+                    dockPanel
+                            .add(horizontalMenuBar, getOpenDownwards().isChecked() ? DockPanel.NORTH : DockPanel.SOUTH);
+                } catch (final Exception caught) {
+                    Window.alert("" + caught);
+                    caught.printStackTrace();
+                }
+            }
+        });
+        centerPanel.add(createHorizontalMenuBar);
 
-			public void onMenuOpened(final Widget widget) {
-				String text = null;
-				if (widget instanceof MenuItem) {
-					text = ((MenuItem) widget).getText();
-				}
-				if (widget instanceof SubMenuItem) {
-					text = ((SubMenuItem) widget).getText();
-				}
-				feedback.setText("MenuOpened: " + text);
-			}
-		};
+        final Button createVerticalMenuBar = new Button("Create VerticalMenuBar");
+        createVerticalMenuBar.addClickListener(new ClickListener() {
+            public void onClick(final Widget sender) {
+                try {
+                    final VerticalMenuBar verticalMenuBar = createVerticalMenuBar();
+                    verticalMenuBar.addMenuListener(listener);
+                    dockPanel.add(verticalMenuBar, getOpenRightwards().isChecked() ? DockPanel.WEST : DockPanel.EAST);
+                } catch (final Exception caught) {
+                    Window.alert("" + caught);
+                    caught.printStackTrace();
+                }
+            }
+        });
+        centerPanel.add(createVerticalMenuBar);
 
-		menu.addMenuListener(listener);
-		contextMenu.addMenuListener(listener);
+        final Button createContextMenu = new Button("Create Widget with ContextMenu");
+        createContextMenu.addClickListener(new ClickListener() {
+            public void onClick(final Widget sender) {
+                try {
+                    final Widget contextMenuCandidate = new HTML("[ Widget with context menu ]");
+                    contextMenuCandidate.setTitle("Right mouse click here to view context menu...");
+                    final ContextMenu contextMenu = createContextMenu(contextMenuCandidate);
+                    contextMenu.addMenuListener(listener);
+                    dockPanel.add(contextMenu, getOpenRightwards().isChecked() ? DockPanel.WEST : DockPanel.EAST);
 
-		rootPanel.add(menuBarAdder);
-		rootPanel.add(new HTML("<br/>"));
+                } catch (final Exception caught) {
+                    Window.alert("" + caught);
+                    caught.printStackTrace();
+                }
+            }
+        });
+        centerPanel.add(createContextMenu);
 
-		final Button menuBarClearer = new Button(
-				"Clear both menuBar & contextMenu");
-		menuBarClearer.addClickListener(new ClickListener() {
-			public void onClick(final Widget widget) {
-				menu.clear();
-				contextMenu.clear();
-			}
-		});
-		rootPanel.add(menuBarClearer);
-		rootPanel.add(new HTML("<br/>"));
+        // REMAINING...
+        centerPanel.add(feedback);
+        dockPanel.add(centerPanel, DockPanel.CENTER);
 
-		rootPanel.add(new HTML("<br/><hr/><br/>"));
-	}
+        rootPanel.add(dockPanel);
+    }
 
-	static MenuItem createMenuItem(final String text, final boolean disabled,
-			final int priority, final boolean alwaysShown) {
-		final MenuItem menuItem = new MenuItem();
-		menuItem.setDisabled(disabled);
-		menuItem.setAlwaysShown(alwaysShown);
-		menuItem.setText(text + '[' + (disabled ? "disabled " : "")+ " priority:" + priority + (alwaysShown ? " alwaysShown" : "")+ ']');
-		menuItem.setPriority(priority);
-		return menuItem;
-	}
+    ContextMenu createContextMenu(final Widget widget) {
+        final ContextMenu menu = new ContextMenu();
+        final MenuListOpenDirection openDirection = this.getOpenRightwards().isChecked() ? MenuListOpenDirection.RIGHT
+                : MenuListOpenDirection.LEFT;
+        this.addItems(menu, openDirection);
+        menu.setWidget(widget);
+        return menu;
+    }
+
+    HorizontalMenuBar createHorizontalMenuBar() {
+        final HorizontalMenuBar menuBar = new HorizontalMenuBar();
+        final MenuListOpenDirection openDirection = this.getOpenDownwards().isChecked() ? MenuListOpenDirection.DOWN
+                : MenuListOpenDirection.UP;
+        this.addItems(menuBar, openDirection);
+        return menuBar;
+    }
+
+    VerticalMenuList createVerticalMenuList(final boolean hideable, final MenuListOpenDirection openDirection) {
+        final VerticalMenuList list = new VerticalMenuList();
+        list.setHideable(hideable);
+        list.setOpenDirection(openDirection);
+        return list;
+    }
+
+    VerticalMenuBar createVerticalMenuBar() {
+        final VerticalMenuBar menuBar = new VerticalMenuBar();
+        final MenuListOpenDirection openDirection = this.getOpenRightwards().isChecked() ? MenuListOpenDirection.RIGHT
+                : MenuListOpenDirection.LEFT;
+        this.addItems(menuBar, openDirection);
+        return menuBar;
+    }
+
+    protected void addItems(final Menu menuBar, final MenuListOpenDirection openDirection) {
+        ObjectHelper.checkNotNull("parameter:menuBar", menuBar);
+        ObjectHelper.checkNotNull("parameter:openDirection", openDirection);
+
+        final boolean autoOpen = this.getAutoOpen().isChecked();
+
+        final SubMenuItem apples = new SubMenuItem();
+        apples.setText("apples(subMenu)");
+        apples.setDisabled(false);
+        apples.setAutoOpen(autoOpen);
+        apples.setMenuList(createVerticalMenuList(true, openDirection));
+        this.addItems(apples);
+        menuBar.add(apples);
+
+        final SubMenuItem bananas = new SubMenuItem();
+        bananas.setText("bananas(subMenu) disabled");
+        bananas.setDisabled(true);
+        bananas.setAutoOpen(autoOpen);
+        bananas.setMenuList(createVerticalMenuList(true, openDirection));
+        menuBar.add(bananas);
+
+        final MenuItem carrots = new MenuItem();
+        carrots.setText("carrots(menuItem)");
+        carrots.setDisabled(false);
+        menuBar.add(carrots);
+
+        final MenuItem dog = new MenuItem();
+        dog.setText("dog(menuItem) disabled");
+        dog.setDisabled(true);
+        menuBar.add(dog);
+    }
+
+    protected void addItems(final SubMenuItem subMenu) {
+        ObjectHelper.checkNotNull("parameter:subMenu", subMenu);
+
+        final String prefix = subMenu.getText();
+        final MenuListOpenDirection openDirection = this.getOpenRightwards().isChecked() ? MenuListOpenDirection.RIGHT
+                : MenuListOpenDirection.LEFT;
+        final boolean autoOpen = this.getAutoOpen().isChecked();
+
+        final SubMenuItem green = new SubMenuItem();
+        green.setText(prefix + "-green(subMenu)");
+        green.setDisabled(false);
+        green.setAutoOpen(autoOpen);
+        green.setMenuList(createVerticalMenuList(true, openDirection));
+        subMenu.add(green);
+
+        this.addMoreItems(green);
+
+        subMenu.add(new MenuSpacer());
+
+        final SubMenuItem yellow = new SubMenuItem();
+        yellow.setText(prefix + "-yellow(subMenu)");
+        yellow.setDisabled(false);
+        yellow.setAutoOpen(autoOpen);
+        yellow.setMenuList(createVerticalMenuList(true, openDirection));
+        this.addMoreItems(yellow);
+        subMenu.add(yellow);
+
+        final SubMenuItem purple = new SubMenuItem();
+        purple.setText(prefix + "-purple(subMenu)");
+        purple.setDisabled(false);
+        purple.setAutoOpen(autoOpen);
+        purple.setMenuList(createVerticalMenuList(true, openDirection));
+        this.addMoreItems(purple);
+        subMenu.add(purple);
+
+        final SubMenuItem blue = new SubMenuItem();
+        blue.setText(prefix + "-blue(subMenu) disabled");
+        blue.setDisabled(true);
+        blue.setAutoOpen(autoOpen);
+        blue.setMenuList(createVerticalMenuList(true, openDirection));
+        subMenu.add(blue);
+
+        // subMenu.add( new MenuSpacer() );
+
+        final MenuItem red = new MenuItem();
+        red.setText(prefix + "-red(menuItem)");
+        red.setDisabled(false);
+        subMenu.add(red);
+
+        final MenuItem orange = new MenuItem();
+        orange.setText(prefix + "-orange(menuItem) disabled");
+        orange.setDisabled(true);
+        subMenu.add(orange);
+    }
+
+    protected void addMoreItems(final SubMenuItem subMenu) {
+        ObjectHelper.checkNotNull("parameter:subMenu", subMenu);
+
+        final String prefix = subMenu.getText();
+
+        final MenuListOpenDirection openDirection = this.getOpenRightwards().isChecked() ? MenuListOpenDirection.RIGHT
+                : MenuListOpenDirection.LEFT;
+        final boolean autoOpen = this.getAutoOpen().isChecked();
+
+        final SubMenuItem big = new SubMenuItem();
+        big.setText(prefix + "-big(subMenu)");
+        big.setDisabled(false);
+        big.setAutoOpen(autoOpen);
+        big.setMenuList(createVerticalMenuList(true, openDirection));
+
+        this.addMoreMoreItems(big);
+
+        subMenu.add(big);
+
+        final SubMenuItem veryBig = new SubMenuItem();
+        veryBig.setText(prefix + "-veryBig(subMenu) disabled");
+        veryBig.setDisabled(true);
+        veryBig.setAutoOpen(autoOpen);
+        veryBig.setMenuList(createVerticalMenuList(true, openDirection));
+        subMenu.add(veryBig);
+
+        final MenuItem small = new MenuItem();
+        small.setText(prefix + "-small(menuItem)");
+        small.setDisabled(false);
+        subMenu.add(small);
+
+        final MenuItem medium = new MenuItem();
+        medium.setText(prefix + "-medium(menuItem) disabled");
+        medium.setDisabled(true);
+        subMenu.add(medium);
+    }
+
+    protected void addMoreMoreItems(final SubMenuItem subMenu) {
+        ObjectHelper.checkNotNull("parameter:subMenu", subMenu);
+
+        final String prefix = subMenu.getText();
+        final MenuListOpenDirection openDirection = this.getOpenDownwards().isChecked() ? MenuListOpenDirection.DOWN
+                : MenuListOpenDirection.UP;
+
+        final SubMenuItem one = new SubMenuItem();
+        one.setText(prefix + "-1(subMenu) disabled");
+        one.setDisabled(true);
+        one.setMenuList(createVerticalMenuList(true, openDirection));
+        subMenu.add(one);
+
+        final SubMenuItem two = new SubMenuItem();
+        two.setText(prefix + "-2(subMenu) disabled");
+        two.setDisabled(true);
+        two.setMenuList(createVerticalMenuList(true, openDirection));
+        subMenu.add(two);
+
+        final MenuItem three = new MenuItem();
+        three.setText(prefix + "-3(menuItem)");
+        three.setDisabled(false);
+        subMenu.add(three);
+
+        final MenuItem four = new MenuItem();
+        four.setText(prefix + "-4(menuItem) disabled");
+        four.setDisabled(true);
+        subMenu.add(four);
+
+        for (int i = 5; i < 15; i++) {
+            final MenuItem item = new MenuItem();
+            item.setText(prefix + "-" + i + "(menuItem)");
+            item.setDisabled(false);
+            subMenu.add(item);
+        }
+    }
+
+    /**
+     * When ticked any new SubMenu's will auto open when hovered over.
+     */
+    private CheckBox autoOpen;
+
+    CheckBox getAutoOpen() {
+        ObjectHelper.checkNotNull("field:autoOpen", autoOpen);
+        return autoOpen;
+    }
+
+    void setAutoOpen(final CheckBox autoOpen) {
+        ObjectHelper.checkNotNull("parameter:autoOpen", autoOpen);
+        this.autoOpen = autoOpen;
+    }
+
+    /**
+     * VerticalMenuLists hanging off HorizontalMenuLists open downwards when this is true...
+     */
+    private CheckBox openDownwards;
+
+    CheckBox getOpenDownwards() {
+        ObjectHelper.checkNotNull("field:openDownwards", openDownwards);
+        return openDownwards;
+    }
+
+    void setOpenDownwards(final CheckBox openDownwards) {
+        ObjectHelper.checkNotNull("parameter:openDownwards", openDownwards);
+        this.openDownwards = openDownwards;
+    }
+
+    /**
+     * VerticalMenuLists hanging off other VerticalMenuLists open to the right when this is true...
+     */
+    private CheckBox openRightwards;
+
+    CheckBox getOpenRightwards() {
+        ObjectHelper.checkNotNull("field:openRightwards", openRightwards);
+        return openRightwards;
+    }
+
+    void setOpenRightwards(final CheckBox openRightwards) {
+        ObjectHelper.checkNotNull("parameter:openRightwards", openRightwards);
+        this.openRightwards = openRightwards;
+    }
 }

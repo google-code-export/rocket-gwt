@@ -16,35 +16,32 @@
 package rocket.client.widget.menu;
 
 import rocket.client.browser.BrowserHelper;
-import rocket.client.dom.StyleHelper;
+import rocket.client.style.StyleHelper;
 import rocket.client.widget.WidgetConstants;
 
 /**
  * @author Miroslav Pokorny (mP)
  */
-public class MenuConstants extends WidgetConstants{
-    public final static String MENU_STYLE = StyleHelper.buildCompound( ROCKET, "menu" );
+public class MenuConstants extends WidgetConstants {
+    public final static String MENU_STYLE = StyleHelper.buildCompound(ROCKET, "menu");
 
     final static String SELECTED = "selected";
 
     final static String DISABLED = "disabled";
 
-    public final static String MENU_BAR_STYLE = StyleHelper.buildCompound(MENU_STYLE, "menuBar");
+    // menu bars...
+    public final static String HORIZONTAL_MENU_BAR_STYLE = StyleHelper.buildCompound(MENU_STYLE, "horizontalMenuBar");
 
+    public final static String VERTICAL_MENU_BAR_STYLE = StyleHelper.buildCompound(MENU_STYLE, "verticalMenuBar");
+
+    public final static String CONTEXT_MENU_STYLE = StyleHelper.buildCompound(MENU_STYLE, "contextMenu");
+
+    // menu widgets...
     public final static String SUB_MENU_ITEM_STYLE = StyleHelper.buildCompound(MENU_STYLE, "subMenuItem");
 
     public final static String SUB_MENU_ITEM_SELECTED_STYLE = StyleHelper.buildCompound(SUB_MENU_ITEM_STYLE, SELECTED);
 
     public final static String SUB_MENU_ITEM_DISABLED_STYLE = StyleHelper.buildCompound(SUB_MENU_ITEM_STYLE, DISABLED);
-
-    public final static String HORIZONTAL_MENU_LIST_STYLE = StyleHelper.buildCompound(MENU_STYLE, "horizontalMenuList");
-
-    public final static String VERTICAL_MENU_LIST_STYLE = StyleHelper.buildCompound(MENU_STYLE, "verticalMenuList");
-
-    public final static String VERTICAL_MENU_LIST_EXPANDER_STYLE = StyleHelper.buildCompound(MENU_STYLE,
-            "verticalMenuListExpander");
-
-    public final static String EXPANDER_IMAGE_URL = BrowserHelper.buildImageUrl("/menu/expander.gif");
 
     public final static String MENU_ITEM_STYLE = StyleHelper.buildCompound(MENU_STYLE, "menuItem");
 
@@ -54,9 +51,25 @@ public class MenuConstants extends WidgetConstants{
 
     public final static String SPACER_STYLE = StyleHelper.buildCompound(MENU_STYLE, "menuSpacer");
 
-    public final static String CONTEXT_MENU_STYLE = StyleHelper.buildCompound(MENU_STYLE, "contextMenu");
+    public final static String SPACER_HTML = "<hr>";
 
-    public final static int DOWN_OVERLAP = 6;
+    // menu lists....
+    public final static String HORIZONTAL_MENU_LIST_STYLE = StyleHelper.buildCompound(MENU_STYLE, "horizontalMenuList");
 
-    public final static int RIGHT_OVERLAP = 6;
+    public final static String VERTICAL_MENU_LIST_STYLE = StyleHelper.buildCompound(MENU_STYLE, "verticalMenuList");
+
+    public final static String VERTICAL_MENU_LIST_EXPANDER_STYLE = StyleHelper.buildCompound(MENU_STYLE,
+            "verticalMenuListExpander");
+
+    public final static String EXPANDER_IMAGE_URL = BrowserHelper.buildImageUrl("/menu/expander.gif");
+
+    public final static int DOWN_OVERLAP = -1;
+
+    public final static int RIGHT_OVERLAP = -1;
+
+    /**
+     * This message is shown within an alert whenever the ContextMenu class is unable to setup a function to return false to override the
+     * default behaviour of the browser for oncontextmenu events.
+     */
+    static final String UNABLE_INSTALL_ONCONTEXTMENU_EVENT_DIVERTER = "Unable to divert oncontextmenu event to GWT.";
 }

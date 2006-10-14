@@ -43,33 +43,33 @@ public class LifeTest implements EntryPoint {
         try {
             final RootPanel panel = RootPanel.get();
 
-            panel.add( new Label( "Interval"));
+            panel.add(new Label("Interval"));
             final TextBox interval = new TextBox();
             interval.setText("1000");
             panel.add(interval);
-            panel.add( new HTML( "<br/>"));
+            panel.add(new HTML("<br/>"));
 
-            panel.add( new Label( "Rows"));
+            panel.add(new Label("Rows"));
             final TextBox rows = new TextBox();
             rows.setText("30");
             panel.add(rows);
-            panel.add( new HTML( "<br/>"));
+            panel.add(new HTML("<br/>"));
 
-            panel.add( new Label( "Columns"));
+            panel.add(new Label("Columns"));
             final TextBox columns = new TextBox();
             columns.setText("30");
             panel.add(columns);
-            panel.add( new HTML( "<br/>"));
+            panel.add(new HTML("<br/>"));
 
-            panel.add( new Label( "CellBias (higher creates more live cells)"));
+            panel.add(new Label("CellBias (higher creates more live cells)"));
             final TextBox cellBias = new TextBox();
-            cellBias.setText( "-123456789" );
+            cellBias.setText("-123456789");
             panel.add(cellBias);
-            panel.add( new HTML( "<br/>"));
+            panel.add(new HTML("<br/>"));
 
             final Button button = new Button("Start");
             panel.add(button);
-            panel.add( new HTML( "<br/>"));
+            panel.add(new HTML("<br/>"));
 
             button.addClickListener(new ClickListener() {
                 public void onClick(final Widget ignore) {
@@ -77,14 +77,14 @@ public class LifeTest implements EntryPoint {
                     pixels.setRows(Integer.parseInt(rows.getText()));
                     pixels.setColumns(Integer.parseInt(columns.getText()));
                     pixels.setSize("90%", "75%");
-                    pixels.clear( 0xdddddd );
+                    pixels.clear(0xdddddd);
                     panel.add(pixels);
 
                     final Life life = new Life();
-                    life.setDeadCellColour( 0xdddddd );
-                    life.setLiveCellColour( 0xbbbbbb );
-                    life.setPixelGrid( pixels );
-                    life.createCells( Integer.parseInt( cellBias.getText()) );
+                    life.setDeadCellColour(0xdddddd);
+                    life.setLiveCellColour(0xbbbbbb);
+                    life.setPixelGrid(pixels);
+                    life.createCells(Integer.parseInt(cellBias.getText()));
 
                     final TestTimer timer = new TestTimer();
                     timer.setCounter(0);
@@ -135,11 +135,11 @@ public class LifeTest implements EntryPoint {
         }
 
         public void update() {
-        	final Life life = this.getLife();
-        	if( life.update() == 0 ){
-        		life.createCells( -1234567890 );
-        		life.update();
-        	}
+            final Life life = this.getLife();
+            if (life.update() == 0) {
+                life.createCells(-1234567890);
+                life.update();
+            }
         }
 
         private Life life;

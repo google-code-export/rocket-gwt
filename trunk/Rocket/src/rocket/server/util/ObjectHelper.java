@@ -17,32 +17,30 @@ package rocket.server.util;
 
 /**
  * A collection of useful methods when working with objects in general.
- *
+ * 
  * @author Miroslav Pokorny
  * @version 1.0
  */
 public class ObjectHelper extends rocket.client.util.ObjectHelper {
 
+    /**
+     * Return the default java.lang.Object.toString() for the given object.
+     * 
+     * @param object
+     *            The object to format
+     * @return String the default format representation of the given object. className - the at sign - the Objects hashcode ( in hex form
+     *         without the leading '0x' ) java.lang.Object@123def
+     */
+    public static String defaultToString(final Object object) {
+        return object == null ?
+        /* handle null */
+        String.valueOf(object) :
+        /* class name including the leading package name */
+        object.getClass().getName() + '@' +
+        /* hashcode */
+        Integer.toHexString(System.identityHashCode(object));
+    } // defaultToString
 
-	/**
-	 * Return the default java.lang.Object.toString() for the given object.
-	 *
-	 * @param object
-	 *            The object to format
-	 * @return String the default format representation of the given object.
-	 *         className - the at sign - the Objects hashcode ( in hex form
-	 *         without the leading '0x' ) java.lang.Object@123def
-	 */
-	public static String defaultToString(final Object object) {
-		return object == null ?
-		/* handle null */
-		String.valueOf(object) :
-		/* class name including the leading package name */
-		object.getClass().getName() + '@' +
-		/* hashcode */
-		Integer.toHexString(System.identityHashCode(object));
-	} // defaultToString
-
-	protected ObjectHelper() {
-	}
+    protected ObjectHelper() {
+    }
 }

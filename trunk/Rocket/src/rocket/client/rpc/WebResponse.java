@@ -24,7 +24,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 /**
  * A value object that contains the result of a request for a web resource done via rpc. In keeping with limitations and uselessness of
  * having a byte array in javascript only text response bodies are supported.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class WebResponse implements IsSerializable {

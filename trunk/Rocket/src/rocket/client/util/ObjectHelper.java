@@ -18,16 +18,15 @@ package rocket.client.util;
 import com.google.gwt.core.client.GWT;
 
 /**
- * A collection of useful methods when working with objects in general.
- * Primarily this class includes static check(assert) methods.
- *
+ * A collection of useful methods when working with objects in general. Primarily this class includes static check(assert) methods.
+ * 
  * @author Miroslav Pokorny
  * @version 1.0
  */
 public class ObjectHelper extends SystemHelper {
     /**
      * This helper should be used primarily by beans when verifying their state.
-     *
+     * 
      * @param propertyName
      *            The name of the property
      * @param bean
@@ -51,7 +50,7 @@ public class ObjectHelper extends SystemHelper {
 
     /**
      * This helper should be used primarily by beans when verifying their state.
-     *
+     * 
      * @param propertyName
      *            The name of the property
      * @param bean
@@ -76,7 +75,7 @@ public class ObjectHelper extends SystemHelper {
     /**
      * A null safe equals that checks that both objects are not null and then invokes first.equals( second ). If one parmeter is not null it
      * cannot return true if the other parameter is null.
-     *
+     * 
      * @param first
      *            Object
      * @param second
@@ -107,9 +106,9 @@ public class ObjectHelper extends SystemHelper {
     }
 
     /**
-     * A null safe identity that checks that both objects are not null and then invokes does a first == second. 
-     * If one parmeter is not null it cannot return true if the other parameter is null.
-     *
+     * A null safe identity that checks that both objects are not null and then invokes does a first == second. If one parmeter is not null
+     * it cannot return true if the other parameter is null.
+     * 
      * @param first
      *            Object
      * @param second
@@ -122,7 +121,7 @@ public class ObjectHelper extends SystemHelper {
 
     /**
      * Return the default java.lang.Object.toString() for the given object.
-     *
+     * 
      * @param object
      *            The object to format
      * @return String the default format representation of the given object. className - the at sign - the Objects hashcode ( in hex form
@@ -150,7 +149,7 @@ public class ObjectHelper extends SystemHelper {
 
     /**
      * Asserts that the two objects are in fact the same.
-     *
+     * 
      * @param firstName
      * @param firstObject
      * @param secondName
@@ -167,14 +166,14 @@ public class ObjectHelper extends SystemHelper {
     public static void checkNotSame(final String firstName, final Object firstObject, final String secondName,
             final Object secondObject) {
         if (nullSafeIdentity(firstObject, secondObject)) {
-            SystemHelper.handleUnsupportedOperation("The " + firstName + " is the same object object as "
-                    + secondName + " firstObject: " + firstObject + ", secondObject: " + secondObject);
+            SystemHelper.handleUnsupportedOperation("The " + firstName + " is the same object object as " + secondName
+                    + " firstObject: " + firstObject + ", secondObject: " + secondObject);
         }
     }
-    
+
     /**
      * Asserts that the two objects are in fact different objects.
-     *
+     * 
      * @param firstName
      * @param firstObject
      * @param secondName
@@ -197,10 +196,10 @@ public class ObjectHelper extends SystemHelper {
     public static void handleNonNullEncountered(String name, String message) {
         handleAssertFailure(name, message);
     }
-    
+
     /**
      * Asserts that the two objects are in fact the equal or both are null.
-     *
+     * 
      * @param firstName
      * @param firstObject
      * @param secondName
@@ -209,11 +208,11 @@ public class ObjectHelper extends SystemHelper {
     public static void checkEquals(final String firstName, final Object firstObject, final String secondName,
             final Object secondObject) {
         if (false == nullSafeEquals(firstObject, secondObject)) {
-            SystemHelper.handleUnsupportedOperation("The " + firstName + " is not equal to "
-                    + secondName + " firstObject: " + firstObject + ", secondObject: " + secondObject);
+            SystemHelper.handleUnsupportedOperation("The " + firstName + " is not equal to " + secondName
+                    + " firstObject: " + firstObject + ", secondObject: " + secondObject);
         }
     }
-    
+
     protected ObjectHelper() {
     }
 }

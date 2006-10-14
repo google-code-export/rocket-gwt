@@ -30,16 +30,16 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * This particular panel allows widgets (which should be links) automatically creating a breadcrumb illusion. Whenever a new breadcrumb is
  * added it becomes the new last breadcrumb and as such is made disabled.
- *
+ * 
  * This panel functions as a stack of breadcrumbs, thus breadcrumbs must be pushed or popped and cannot be inserted in the middle of the
  * chain.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class BreadcrumbPanel extends Composite {
 
     public BreadcrumbPanel() {
-    	this.initWidget(this.createHorizontalPanel());
+        this.initWidget(this.createHorizontalPanel());
     }
 
     /**
@@ -72,7 +72,7 @@ public class BreadcrumbPanel extends Composite {
 
     /**
      * Adds a new breadcrumb to the panel. The given clickListener will be notified whenever the user selects the corresponding breadcrumb.
-     *
+     * 
      * @param add
      *            The text that appears within the hyper link
      * @param clickListener
@@ -84,7 +84,8 @@ public class BreadcrumbPanel extends Composite {
 
         final HorizontalPanel panel = this.getHorizontalPanel();
 
-        // change the old last breadcrumb to be clickable as it is no longer the last breadcrumb.
+        // change the old last breadcrumb to be clickable as it is no longer the
+        // last breadcrumb.
         final int widgetCount = panel.getWidgetCount();
         if (widgetCount > 0) {
             this.updateFormerLastBreadcrumb();
@@ -115,12 +116,13 @@ public class BreadcrumbPanel extends Composite {
         return breadcrumb;
     }
 
-    class Breadcrumb extends Hyperlink{
+    class Breadcrumb extends Hyperlink {
 
         public void onBrowserEvent(final Event event) {
             ObjectHelper.checkNotNull("parameter:event", event);
 
-            // if this breadcrumb is the last or disabled cancel any click events.
+            // if this breadcrumb is the last or disabled cancel any click
+            // events.
             if (false == this.isDisabled() && false == this.getBreadcrumbPanel().isLastBreadcrumb(this)) {
                 super.onBrowserEvent(event);
             }
@@ -196,25 +198,25 @@ public class BreadcrumbPanel extends Composite {
 
     protected void updateFormerLastBreadcrumb() {
         final HorizontalPanel panel = this.getHorizontalPanel();
-        final int index = panel.getWidgetCount() -1 - 1;
-        if( index >= 0 ){
-        	final Widget breadcrumb = panel.getWidget(index);
-        	breadcrumb.removeStyleName(WidgetConstants.BREADCRUMB_LAST_ITEM_STYLE);
+        final int index = panel.getWidgetCount() - 1 - 1;
+        if (index >= 0) {
+            final Widget breadcrumb = panel.getWidget(index);
+            breadcrumb.removeStyleName(WidgetConstants.BREADCRUMB_LAST_ITEM_STYLE);
 
-        	final Widget spacer = panel.getWidget(index + 1);
-        	spacer.setVisible(true);
+            final Widget spacer = panel.getWidget(index + 1);
+            spacer.setVisible(true);
         }
     }
 
     protected void updateLastBreadcrumb() {
         final HorizontalPanel panel = this.getHorizontalPanel();
         final int index = panel.getWidgetCount() - 1 - 1;
-        if( index >= 0 ){
-        	final Widget breadcrumb = panel.getWidget( index );
-        	breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_LAST_ITEM_STYLE);
+        if (index >= 0) {
+            final Widget breadcrumb = panel.getWidget(index);
+            breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_LAST_ITEM_STYLE);
 
-        	final Widget spacer = panel.getWidget( index + 1 );
-        	spacer.setVisible( false );
+            final Widget spacer = panel.getWidget(index + 1);
+            spacer.setVisible(false);
         }
     }
 

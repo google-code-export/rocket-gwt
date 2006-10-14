@@ -15,21 +15,83 @@
  */
 package rocket.client.widget.menu;
 
-public interface MenuWidget {
+import rocket.client.util.ObjectHelper;
 
-    void open();
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.Composite;
 
-    void close();
+/**
+ * Base class for all Menu widgets including Menus(Menu,ContextMenu), MenuItems(MenuItem, SubMenuItem, MenuSpacer) and
+ * MenuLists(HorizontalMenuList, VerticalMenuList).
+ * 
+ * @author Miroslav Pokorny (mP)
+ */
+public abstract class MenuWidget extends Composite {
 
-    void select();
+    protected MenuWidget() {
+        super();
+    }
 
-    void unselect();
+    // ACTION :::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    boolean isDisabled();
+    public abstract void hide();
 
-    int getPriority();
+    // WIDGET LIFECYCLE :::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    boolean isAlwaysShown();
+    protected void onAttach() {
+        super.onAttach();
 
-    void setParentMenuList(MenuList parentMenuList);
+        this.sinkEvents(Event.ONCLICK | Event.ONMOUSEOVER | Event.ONMOUSEOUT);
+        DOM.setEventListener(this.getElement(), this);
+    }
+
+    // EVENT HANDLING ::::::::::::::::::::::::::::::::::::::::::
+
+    /**
+     * Dispatches to the appropriate method depending on the event type.
+     * 
+     * @param event
+     */
+    public void onBrowserEvent(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
+
+        while (true) {
+            final int eventType = DOM.eventGetType(event);
+            if (Event.ONCLICK == eventType) {
+                this.handleMouseClick(event);
+                break;
+            }
+            if (Event.ONMOUSEOVER == eventType) {
+                this.handleMouseOver(event);
+                break;
+            }
+            if (Event.ONMOUSEOUT == eventType) {
+                this.handleMouseOut(event);
+                break;
+            }
+            break;
+        }
+    }
+
+    /**
+     * This method is fired whenever a menuWidget receives a mouse click
+     * 
+     * @param event
+     */
+    protected abstract void handleMouseClick(final Event event);
+
+    /**
+     * This method is fired whenever this menu widget receives a mouse over event
+     * 
+     * @param event
+     */
+    protected abstract void handleMouseOver(final Event event);
+
+    /**
+     * This method is fired whenever this menu widget receives a mouse out event
+     * 
+     * @param event
+     */
+    protected abstract void handleMouseOut(final Event event);
 }

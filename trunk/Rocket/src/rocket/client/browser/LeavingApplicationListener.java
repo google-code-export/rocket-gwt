@@ -23,7 +23,7 @@ import com.google.gwt.user.client.WindowCloseListener;
 /**
  * This listener performs two tasks. If the user tries to navigate a way a confirmation is poppped up confirming they wish to leave. This
  * should never happen if the application is started without the browser address bar etc. The other event listener merely says goodbye!
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class LeavingApplicationListener implements WindowCloseListener {

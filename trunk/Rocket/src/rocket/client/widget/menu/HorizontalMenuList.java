@@ -17,7 +17,6 @@ package rocket.client.widget.menu;
 
 import java.util.Iterator;
 
-import rocket.client.collection.CollectionHelper;
 import rocket.client.collection.SkippingIterator;
 import rocket.client.util.ObjectHelper;
 import rocket.client.widget.HorizontalPanel;
@@ -26,50 +25,48 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
-* A horizontalMenuList provides the widget that implements a menubar.
-* @author Miroslav Pokorny (mP)
-*/
-public class HorizontalMenuList extends AbstractMenuList implements MenuList {
+ * A HorizontalMenuList contains menu items that grow across the screen. HorizontalMenuLists are mostly only used as the MenuList for Menu
+ * widgets.
+ * 
+ * @author Miroslav Pokorny (mP)
+ */
+public class HorizontalMenuList extends MenuList {
 
     public HorizontalMenuList() {
-    	this.initWidget(this.createHorizontalPanel());
+        super();
+
+        this.initWidget(this.createHorizontalPanel());
     }
 
-    // PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // PANEL
+    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    public Widget get(final int index) {
+        return this.getHorizontalPanel().getWidget(index);
+    }
+
     public void insert(final Widget widget, final int beforeIndex) {
         this.getHorizontalPanel().insert(widget, beforeIndex);
         this.afterInsert(widget);
     }
-    
 
-    public boolean remove(final Widget widget) {
-        final boolean removed = this.getHorizontalPanel().remove(widget);
-        if (removed) {
-            afterRemove(widget);
-        }
-        return removed;
+    protected boolean remove0(final Widget widget) {
+        return this.getHorizontalPanel().remove(widget);
     }
 
-    public int getCount() {
+    public int getWidgetCount() {
         return this.getHorizontalPanel().getWidgetCount() - 1;
     }
 
     public Iterator iterator() {
-        final HorizontalPanel panel = this.getHorizontalPanel();
-        final Widget padder = panel.getWidget(panel.getWidgetCount() - 1);
-
-        // create a skippingIterator which returns all of horizontalPanel's widgets except for the expander.
+        // create a skippingIterator which returns all of horizontalPanel's
+        // widgets except for the padder.
         final SkippingIterator iterator = new SkippingIterator() {
             protected boolean skip(final Object object) {
-                return padder == object;
+                return getPadder() == object;
             }
         };
-        iterator.setIterator(panel.iterator());
+        iterator.setIterator(this.getHorizontalPanel().iterator());
         return iterator;
-    }
-
-    public void clear() {
-        CollectionHelper.removeAll(this.iterator());
     }
 
     /**
@@ -89,18 +86,35 @@ public class HorizontalMenuList extends AbstractMenuList implements MenuList {
 
     protected HorizontalPanel createHorizontalPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
-        panel.setWidth( "100%");
+        panel.setWidth("100%");
         panel.addStyleName(MenuConstants.HORIZONTAL_MENU_LIST_STYLE);
 
-        final Widget rightmost = new HTML("&nbsp;");
-        panel.add(rightmost);
-        panel.setCellWidth(rightmost, "100%");
+        final Widget padder = this.createPadder();
+        panel.add(padder);
+        panel.setCellWidth(padder, "100%");
 
         this.setHorizontalPanel(panel);
         return panel;
     }
 
-    public boolean isHorizontalLayout() {
-        return true;
+    /**
+     * An extra padding widget is added as the last item in the HorizontalPanel.
+     */
+    private Widget padder;
+
+    protected Widget getPadder() {
+        ObjectHelper.checkNotNull("field:padder", padder);
+        return padder;
+    }
+
+    protected void setPadder(final Widget padder) {
+        ObjectHelper.checkNotNull("parameter:padder", padder);
+        this.padder = padder;
+    }
+
+    protected Widget createPadder() {
+        final Widget padder = new HTML("&nbsp;");
+        this.setPadder(padder);
+        return padder;
     }
 }

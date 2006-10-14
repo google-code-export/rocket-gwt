@@ -28,18 +28,18 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * A spinner is a simple widget which allows a user to increase or decrease a number keeping it within a defined range. Two methods are
  * available if sub-classes wish to handle the clicking of either the up or down control
- *
- * To display the value a separate Label needs to be created and a listener registered to receive NumberValueChanged events. It is
- * thus possible to also create a separate text field and have it also update the spinner and vice versa. This widget only includes and
- * controls the up/down htmls.
- *
+ * 
+ * To display the value a separate Label needs to be created and a listener registered to receive NumberValueChanged events. It is thus
+ * possible to also create a separate text field and have it also update the spinner and vice versa. This widget only includes and controls
+ * the up/down htmls.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class Spinner extends AbstractNumberHolder implements NumberHolder {
 
     public Spinner() {
-    	this.initWidget( this.createPanel() );
-    	
+        this.initWidget(this.createPanel());
+
         this.setDownImageUrl(WidgetConstants.SPINNER_DOWN_IMAGE_URL);
         this.setUpImageUrl(WidgetConstants.SPINNER_UP_IMAGE_URL);
         this.setDelta(1);
@@ -111,7 +111,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
 
         final Image image = new Image();
         image.setUrl(this.getUpImageUrl());
-        image.addStyleName( WidgetConstants.SPINNER_UP_STYLE);
+        image.addStyleName(WidgetConstants.SPINNER_UP_STYLE);
         image.addClickListener(new ClickListener() {
 
             public void onClick(final Widget widget) {
@@ -178,7 +178,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
         final Spinner that = this;
 
         final Image image = new Image();
-        image.addStyleName( WidgetConstants.SPINNER_DOWN_STYLE);
+        image.addStyleName(WidgetConstants.SPINNER_DOWN_STYLE);
         image.setUrl(this.getDownImageUrl());
 
         image.addClickListener(new ClickListener() {
@@ -213,7 +213,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
 
     /**
      * Clicking on the down html decreass the value.
-     *
+     * 
      */
     protected void onDownClick() {
         final int value = this.getValue() - this.getDelta();
@@ -225,7 +225,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
 
     /**
      * Updates both the value and the label showing the value to the user.
-     *
+     * 
      * @param value
      */
     protected void updateValue(int value) {
@@ -267,15 +267,15 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
 
     /**
      * Creates a new panel and positions the valueLabel, and the two htmls.
-     *
+     * 
      * @return
      */
     public Panel createPanel() {
-    	WidgetHelper.checkNotAlreadyCreated( "panel", this.hasPanel() );
+        WidgetHelper.checkNotAlreadyCreated("panel", this.hasPanel());
 
         final VerticalPanel panel = new VerticalPanel();
-        panel.addStyleName( WidgetConstants.SPINNER_STYLE );
-        panel.addStyleName( WidgetConstants.SPINNER_VERTICAL_PANEL_STYLE );
+        panel.addStyleName(WidgetConstants.SPINNER_STYLE);
+        panel.addStyleName(WidgetConstants.SPINNER_VERTICAL_PANEL_STYLE);
         this.setPanel(panel);
 
         panel.add(this.createUpWidget());
@@ -307,6 +307,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
     public String toString() {
         return super.toString() + ", value: " + value + ", lowerBounds: " + lowerBounds + ", upperBounds: "
                 + upperBounds + ", upDown: " + upWidget + ", downWidget:" + downWidget + ", panel: " + this.panel
-                + ", delta: " + delta + ", deltaSet: " + deltaSet + ", upImageUrl[" + upImageUrl + "], downImageUrl[" + downImageUrl + "]";
+                + ", delta: " + delta + ", deltaSet: " + deltaSet + ", upImageUrl[" + upImageUrl + "], downImageUrl["
+                + downImageUrl + "]";
     }
 }

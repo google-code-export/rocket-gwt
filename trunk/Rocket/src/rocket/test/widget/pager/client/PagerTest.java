@@ -58,7 +58,7 @@ public class PagerTest implements EntryPoint {
             }
         });
 
-         rootPanel.add( label );
+        rootPanel.add(label);
         rootPanel.add(pager);
         pager.redraw();
     }

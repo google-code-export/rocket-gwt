@@ -22,35 +22,34 @@ import rocket.client.util.ObjectHelper;
 
 /**
  * An assortment of useful methods relating to a map.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class MapHelper {
 
-	/**
-	 * Searches the given map for the key that contains the value
-	 * parameter:value.
-	 *
-	 * @param map
-	 * @param value
-	 * @return The key or null if value is not present in the parameter:map
-	 */
-	public static Object getKey(final Map map, final Object value) {
-		ObjectHelper.checkNotNull("parameter:map", map);
-		ObjectHelper.checkNotNull("parameter:value", value);
+    /**
+     * Searches the given map for the key that contains the value parameter:value.
+     * 
+     * @param map
+     * @param value
+     * @return The key or null if value is not present in the parameter:map
+     */
+    public static Object getKey(final Map map, final Object value) {
+        ObjectHelper.checkNotNull("parameter:map", map);
+        ObjectHelper.checkNotNull("parameter:value", value);
 
-		Object key = null;
-		final Iterator entries = map.entrySet().iterator();
-		while (entries.hasNext()) {
-			final Map.Entry entry = (Map.Entry) entries.next();
-			if (value == entry.getValue()) {
-				key = entry.getKey();
-				break;
-			}
-		}
-		return key;
-	}
+        Object key = null;
+        final Iterator entries = map.entrySet().iterator();
+        while (entries.hasNext()) {
+            final Map.Entry entry = (Map.Entry) entries.next();
+            if (value == entry.getValue()) {
+                key = entry.getKey();
+                break;
+            }
+        }
+        return key;
+    }
 
-	private MapHelper() {
-	}
+    private MapHelper() {
+    }
 }

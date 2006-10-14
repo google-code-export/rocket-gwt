@@ -20,20 +20,19 @@ import java.util.Date;
 
 /**
  * This helper contains a variety of useful stuff related to person photos.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class DateHelper {
 
-	/**
-	 * This formatter is used to output dates in an consistant manner.
-	 */
-	private final static SimpleDateFormat dateFormatter = new SimpleDateFormat(
-			"dd/MM/yyyy");
+    /**
+     * This formatter is used to output dates in an consistant manner.
+     */
+    private final static SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
-	public static String formatDate(final Date date) {
-		ObjectHelper.checkNotNull("parameter:date", date);
+    public static String formatDate(final Date date) {
+        ObjectHelper.checkNotNull("parameter:date", date);
 
-		return DateHelper.dateFormatter.format(date);
-	}
+        return DateHelper.dateFormatter.format(date);
+    }
 }

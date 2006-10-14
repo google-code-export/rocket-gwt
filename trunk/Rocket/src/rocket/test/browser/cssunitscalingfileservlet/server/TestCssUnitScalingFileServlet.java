@@ -24,8 +24,8 @@ import rocket.server.browser.CssUnitScalingFileServlet;
  */
 public class TestCssUnitScalingFileServlet extends CssUnitScalingFileServlet {
 
-    protected InputStream locateFile( final String path ){
-    	return this.getClass().getResourceAsStream( path );
+    protected InputStream locateFile(final String path) {
+        return this.getClass().getResourceAsStream(path);
     }
 
 }

@@ -138,44 +138,52 @@ public class ColourHelperTestCase extends TestCase {
                 expected, out);
     }
 
-    public void testMix0(){
+    public void testMix0() {
         final int colour = 0x12345;
-        final int otherColour =  0x67890a;
+        final int otherColour = 0x67890a;
         final float mixRatio = 1.0f;
 
-        final int mixedColour = ColourHelper.mix( colour, otherColour, mixRatio );
+        final int mixedColour = ColourHelper.mix(colour, otherColour, mixRatio);
         final int expectedColour = colour;
-        assertEquals( expectedColour, mixedColour );
+        assertEquals(expectedColour, mixedColour);
     }
-    public void testMix1(){
+
+    public void testMix1() {
         final int colour = 0x12345;
-        final int otherColour =  0x67890a;
+        final int otherColour = 0x67890a;
         final float mixRatio = 0.0f;
 
-        final int mixedColour = ColourHelper.mix( colour, otherColour, mixRatio );
+        final int mixedColour = ColourHelper.mix(colour, otherColour, mixRatio);
         final int expectedColour = otherColour;
-        assertEquals( "colour: 0x" + Integer.toHexString(colour )+ ", otherColour: 0x" + Integer.toHexString(otherColour) + ", mixRatio: " + mixRatio +
-                ", mixedColour: 0x" + Integer.toHexString( mixedColour ) + ", expectedColour: 0x" + Integer.toHexString( expectedColour ), expectedColour, mixedColour );
+        assertEquals("colour: 0x" + Integer.toHexString(colour) + ", otherColour: 0x"
+                + Integer.toHexString(otherColour) + ", mixRatio: " + mixRatio + ", mixedColour: 0x"
+                + Integer.toHexString(mixedColour) + ", expectedColour: 0x" + Integer.toHexString(expectedColour),
+                expectedColour, mixedColour);
     }
-    public void testMix2(){
+
+    public void testMix2() {
         final int colour = 0x222222;
-        final int otherColour =  0x444444;
+        final int otherColour = 0x444444;
         final float mixRatio = 0.5f;
 
-        final int mixedColour = ColourHelper.mix( colour, otherColour, mixRatio );
+        final int mixedColour = ColourHelper.mix(colour, otherColour, mixRatio);
         final int expectedColour = 0x333333;
-        assertEquals( "colour: 0x" + Integer.toHexString(colour )+ ", otherColour: 0x" + Integer.toHexString(otherColour) + ", mixRatio: " + mixRatio +
-                ", mixedColour: 0x" + Integer.toHexString( mixedColour ) + ", expectedColour: 0x" + Integer.toHexString( expectedColour ), expectedColour, mixedColour );
+        assertEquals("colour: 0x" + Integer.toHexString(colour) + ", otherColour: 0x"
+                + Integer.toHexString(otherColour) + ", mixRatio: " + mixRatio + ", mixedColour: 0x"
+                + Integer.toHexString(mixedColour) + ", expectedColour: 0x" + Integer.toHexString(expectedColour),
+                expectedColour, mixedColour);
     }
 
-    public void testMix3(){
+    public void testMix3() {
         final int colour = 0x001234;
-        final int otherColour =  0xff1234;
+        final int otherColour = 0xff1234;
         final float mixRatio = 0.75f;
 
-        final int mixedColour = ColourHelper.mix( colour, otherColour, mixRatio );
+        final int mixedColour = ColourHelper.mix(colour, otherColour, mixRatio);
         final int expectedColour = 0x3f1234;
-        assertEquals( "colour: 0x" + Integer.toHexString(colour )+ ", otherColour: 0x" + Integer.toHexString(otherColour) + ", mixRatio: " + mixRatio +
-                ", mixedColour: 0x" + Integer.toHexString( mixedColour ) + ", expectedColour: 0x" + Integer.toHexString( expectedColour ), expectedColour, mixedColour );
+        assertEquals("colour: 0x" + Integer.toHexString(colour) + ", otherColour: 0x"
+                + Integer.toHexString(otherColour) + ", mixRatio: " + mixRatio + ", mixedColour: 0x"
+                + Integer.toHexString(mixedColour) + ", expectedColour: 0x" + Integer.toHexString(expectedColour),
+                expectedColour, mixedColour);
     }
 }

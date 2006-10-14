@@ -33,9 +33,9 @@ public class CssUnitScalingFileServletTest implements EntryPoint {
             final RootPanel rootPanel = RootPanel.get();
 
             final CssPicker picker = new CssPicker();
-            picker.setLabel( "Text Size");
-            rootPanel.add( picker );
-            picker.selectStyleSheet( 3 );
+            picker.setLabel("Text Size");
+            rootPanel.add(picker);
+            picker.selectStyleSheet(3);
 
         } catch (Throwable t) {
             t.printStackTrace();

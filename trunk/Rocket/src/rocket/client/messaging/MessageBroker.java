@@ -28,7 +28,7 @@ import com.google.gwt.user.client.Window;
 
 /**
  * Takes one or more messages and publishes them to their respective consumers
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class MessageBroker {
@@ -99,7 +99,7 @@ public class MessageBroker {
 
     /**
      * Registers or adds a new Subsriber to the registry.
-     *
+     * 
      * @param name
      * @param subscriber
      */

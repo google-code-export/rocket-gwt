@@ -24,27 +24,27 @@ import rocket.client.util.StringHelper;
 
 /**
  * A collection of helpful servlet methods
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class ServletHelper {
-	public static void writeBytes(final String mimeType, final byte[] image,
-			final HttpServletResponse response) throws IOException {
-		StringHelper.checkNotEmpty("parameter:mimeType", mimeType);
-		ObjectHelper.checkNotNull("parameter:image", image);
-		ObjectHelper.checkNotNull("parameter:response", response);
+    public static void writeBytes(final String mimeType, final byte[] image, final HttpServletResponse response)
+            throws IOException {
+        StringHelper.checkNotEmpty("parameter:mimeType", mimeType);
+        ObjectHelper.checkNotNull("parameter:image", image);
+        ObjectHelper.checkNotNull("parameter:response", response);
 
-		OutputStream out = null;
+        OutputStream out = null;
 
-		try {
-			response.setContentType(mimeType);
-			response.setContentLength(image.length);
+        try {
+            response.setContentType(mimeType);
+            response.setContentLength(image.length);
 
-			out = response.getOutputStream();
-			out.write(image);
-			out.flush();
-		} finally {
-			IoHelper.closeIfNecessary(out);
-		}
-	}
+            out = response.getOutputStream();
+            out.write(image);
+            out.flush();
+        } finally {
+            IoHelper.closeIfNecessary(out);
+        }
+    }
 }

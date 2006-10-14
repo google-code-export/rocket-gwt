@@ -30,319 +30,316 @@ import com.google.gwt.user.client.ui.Widget;
  * Common base class for both the Horizontal and Vertical Slider widgets.
  * 
  * It contains both common properties and behaviour with sub-classes required to implement a bare minimum.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public abstract class AbstractSlider extends AbstractNumberHolder {
 
-	protected void onAttach(){
-		super.onAttach();
-		DOM.setEventListener(this.getElement(), this);
-		this.updateWidget();
-	}
+    protected void onAttach() {
+        super.onAttach();
+        DOM.setEventListener(this.getElement(), this);
+        this.updateWidget();
+    }
 
-	/**
-	 * Sub-classes need to override this method to update the coordinates of the thumb widget based on the sliders value.
-	 *
-	 */
-	protected abstract void updateWidget();
+    /**
+     * Sub-classes need to override this method to update the coordinates of the thumb widget based on the sliders value.
+     * 
+     */
+    protected abstract void updateWidget();
 
-	// EVENT HANDLING
-	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // EVENT HANDLING
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void onBrowserEvent(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+    public void onBrowserEvent(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
 
-		while (true) {
-			final int eventType = DOM.eventGetType(event);
-			if (eventType == Event.ONMOUSEDOWN) {
-				handleMouseClick(event);
-				break;
-			}
-			break;
-		}
-	}
+        while (true) {
+            final int eventType = DOM.eventGetType(event);
+            if (eventType == Event.ONMOUSEDOWN) {
+                handleMouseClick(event);
+                break;
+            }
+            break;
+        }
+    }
 
-	/**
-	 * Dispatches the event to the respective handler depending on whether the
-	 * thumb or the slider background was clicked.
-	 * 
-	 * @param event
-	 */
-	protected void handleMouseClick(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+    /**
+     * Dispatches the event to the respective handler depending on whether the thumb or the slider background was clicked.
+     * 
+     * @param event
+     */
+    protected void handleMouseClick(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
 
-		while (true) {
-			final Element target = DOM.eventGetTarget(event);
+        while (true) {
+            final Element target = DOM.eventGetTarget(event);
 
-			// check if the thumb widget has been clicked...
-			if (DOM.isOrHasChild(this.getWidget().getElement(), target)) {
-				this.handleThumbClick(event);
-				break;
-			}
+            // check if the thumb widget has been clicked...
+            if (DOM.isOrHasChild(this.getWidget().getElement(), target)) {
+                this.handleThumbClick(event);
+                break;
+            }
 
-			// was the slider background itself clicked ?
-			if (DOM.isOrHasChild(this.getElement(), target)) {
-				this.handleBackgroundClick(event);
-				break;
-			}
+            // was the slider background itself clicked ?
+            if (DOM.isOrHasChild(this.getElement(), target)) {
+                this.handleBackgroundClick(event);
+                break;
+            }
 
-			// unknown target do nothing...
-			break;
-		}
-	}
+            // unknown target do nothing...
+            break;
+        }
+    }
 
-	protected abstract void handleBackgroundClick(Event event);
+    protected abstract void handleBackgroundClick(Event event);
 
-	/**
-	 * Initiates the dragging of the thumb until it is released.
-	 * 
-	 * @param event
-	 */
-	protected void handleThumbClick(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+    /**
+     * Initiates the dragging of the thumb until it is released.
+     * 
+     * @param event
+     */
+    protected void handleThumbClick(final Event event) {
+        ObjectHelper.checkNotNull("parameter:event", event);
 
-		if (false == this.hasDraggingEventPreview()) {
-			DOM.addEventPreview(this.createDraggingEventPreview());
-			this.getWidget().addStyleName(this.getSliderDraggingStyleName());
-		}
-	}
+        if (false == this.hasDraggingEventPreview()) {
+            DOM.addEventPreview(this.createDraggingEventPreview());
+            this.getWidget().addStyleName(this.getSliderDraggingStyleName());
+        }
+    }
 
-	/**
-	 * The EventPreview object that is following the thumb whilst it is being dragged.
-	 */
-	private EventPreview draggingEventPreview;
+    /**
+     * The EventPreview object that is following the thumb whilst it is being dragged.
+     */
+    private EventPreview draggingEventPreview;
 
-	protected EventPreview getDraggingEventPreview() {
-		ObjectHelper.checkNotNull("field:draggingEventPreview",
-				draggingEventPreview);
-		return this.draggingEventPreview;
-	}
+    protected EventPreview getDraggingEventPreview() {
+        ObjectHelper.checkNotNull("field:draggingEventPreview", draggingEventPreview);
+        return this.draggingEventPreview;
+    }
 
-	protected boolean hasDraggingEventPreview() {
-		return null != this.draggingEventPreview;
-	}
+    protected boolean hasDraggingEventPreview() {
+        return null != this.draggingEventPreview;
+    }
 
-	protected void setDraggingEventPreview(
-			final EventPreview draggingEventPreview) {
-		ObjectHelper.checkNotNull("parameter:draggingEventPreview",
-				draggingEventPreview);
-		this.draggingEventPreview = draggingEventPreview;
-	}
+    protected void setDraggingEventPreview(final EventPreview draggingEventPreview) {
+        ObjectHelper.checkNotNull("parameter:draggingEventPreview", draggingEventPreview);
+        this.draggingEventPreview = draggingEventPreview;
+    }
 
-	protected void clearDraggingEventPreview() {
-		this.draggingEventPreview = null;
-	}
+    protected void clearDraggingEventPreview() {
+        this.draggingEventPreview = null;
+    }
 
-	/**
-	 * This EventPreview anonymous class merely delegates to {@link #handleDraggingEventPreview(Event)}
-	 * @return
-	 */
-	protected EventPreview createDraggingEventPreview() {
-		final EventPreview draggingEventPreview = new EventPreview() {
-			public boolean onEventPreview(final Event event) {
-				return handleDraggingEventPreview(event);
-			}
-		};
-		this.setDraggingEventPreview(draggingEventPreview);
-		return draggingEventPreview;
-	}
+    /**
+     * This EventPreview anonymous class merely delegates to {@link #handleDraggingEventPreview(Event)}
+     * 
+     * @return
+     */
+    protected EventPreview createDraggingEventPreview() {
+        final EventPreview draggingEventPreview = new EventPreview() {
+            public boolean onEventPreview(final Event event) {
+                return handleDraggingEventPreview(event);
+            }
+        };
+        this.setDraggingEventPreview(draggingEventPreview);
+        return draggingEventPreview;
+    }
 
-	/**
-	 * Manages the event type removing the EventPreview when the mouse button is released and updating the
-	 * thumb via {@link #handleMouseMove(Event)}
-	 * @param event
-	 */
-	protected boolean handleDraggingEventPreview(final Event event) {
-		boolean cancelEvent = true;
+    /**
+     * Manages the event type removing the EventPreview when the mouse button is released and updating the thumb via
+     * {@link #handleMouseMove(Event)}
+     * 
+     * @param event
+     */
+    protected boolean handleDraggingEventPreview(final Event event) {
+        boolean cancelEvent = true;
 
-		while (true) {
-			final int type = DOM.eventGetType(event);
-			if (type == Event.ONMOUSEMOVE) {
-				handleMouseMove(event);
-				cancelEvent = true;
-				break;
-			}
-			if (type == Event.ONMOUSEUP || type == Event.ONMOUSEDOWN) {
-				DOM.removeEventPreview(this.getDraggingEventPreview());
-				this.getWidget().removeStyleName(
-						this.getSliderDraggingStyleName());
-				this.clearDraggingEventPreview();
-				cancelEvent = false;
-				break;
-			}
-			cancelEvent = true;
-			break;
-		}
-		return !cancelEvent;
-	}
+        while (true) {
+            final int type = DOM.eventGetType(event);
+            if (type == Event.ONMOUSEMOVE) {
+                handleMouseMove(event);
+                cancelEvent = true;
+                break;
+            }
+            if (type == Event.ONMOUSEUP || type == Event.ONMOUSEDOWN) {
+                DOM.removeEventPreview(this.getDraggingEventPreview());
+                this.getWidget().removeStyleName(this.getSliderDraggingStyleName());
+                this.clearDraggingEventPreview();
+                cancelEvent = false;
+                break;
+            }
+            cancelEvent = true;
+            break;
+        }
+        return !cancelEvent;
+    }
 
-	/**
-	 * Sub-classes need to return the style that is added to the thumb widget when it is being dragged or removed when the dragging
-	 * is stopped.
-	 * @return
-	 */
-	protected abstract String getSliderDraggingStyleName();
+    /**
+     * Sub-classes need to return the style that is added to the thumb widget when it is being dragged or removed when the dragging is
+     * stopped.
+     * 
+     * @return
+     */
+    protected abstract String getSliderDraggingStyleName();
 
-	protected abstract void handleMouseMove(Event event);
+    protected abstract void handleMouseMove(Event event);
 
-	protected void handleMouseMove( final int widgetCoordinate, final int mouseCoordinate, final int sliderLength, final int thumbLength ){
-		final int range = sliderLength - thumbLength;
+    protected void handleMouseMove(final int widgetCoordinate, final int mouseCoordinate, final int sliderLength,
+            final int thumbLength) {
+        final int range = sliderLength - thumbLength;
 
-		int value = mouseCoordinate - widgetCoordinate;
-		if (value < 0) {
-			value = 0;
-		}
-		if (value > range) {
-			value = range;
-		}	
-		
-		final float value0 = (float) value / range * this.getMaximumValue()+ 0.5f;
-		final int delta = this.getDelta();
-		value = (int) value0 / delta * delta;
-		
-		this.setValue( value );		
-	}
-	
-	protected void handleBackgroundClick( final int mouseCoordinate, final int widgetCoordinate ){
-		if (mouseCoordinate < widgetCoordinate) {
-			this.handleBeforeThumbClick();
-		} else {
-			this.handleAfterThumbClick();
-		}
-	}
-	
-	/**
-	 * Decreases the value of this slider ensuring that it does not underflow the minimum value of this slider.
-	 */
-	protected void handleBeforeThumbClick() {
-		int newValue = this.getValue() - this.getBigDelta();
-		if (newValue < 0) {
-			newValue = 0;
-		}
-		this.setValue(newValue);
-	}
+        int value = mouseCoordinate - widgetCoordinate;
+        if (value < 0) {
+            value = 0;
+        }
+        if (value > range) {
+            value = range;
+        }
 
-	/**
-	 * Increases the value of this slider ensuring that it does not exceed the maximum value of this slider.
-	 */
-	protected void handleAfterThumbClick() {
-		int newValue = this.getValue() + this.getBigDelta();
-		final int maximumValue = this.getMaximumValue();
-		if (newValue > maximumValue) {
-			newValue = maximumValue;
-		}
-		this.setValue(newValue);
-	}
+        final float value0 = (float) value / range * this.getMaximumValue() + 0.5f;
+        final int delta = this.getDelta();
+        value = (int) value0 / delta * delta;
 
-	// WIDGET :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        this.setValue(value);
+    }
 
-	/**
-	 * A non pubic is used to hold both the sliders element and house the thumb widget.
-	 */
-	private SimplePanel panel;
+    protected void handleBackgroundClick(final int mouseCoordinate, final int widgetCoordinate) {
+        if (mouseCoordinate < widgetCoordinate) {
+            this.handleBeforeThumbClick();
+        } else {
+            this.handleAfterThumbClick();
+        }
+    }
 
-	public SimplePanel getPanel() {
-		ObjectHelper.checkNotNull("field:panel", panel);
-		return panel;
-	}
+    /**
+     * Decreases the value of this slider ensuring that it does not underflow the minimum value of this slider.
+     */
+    protected void handleBeforeThumbClick() {
+        int newValue = this.getValue() - this.getBigDelta();
+        if (newValue < 0) {
+            newValue = 0;
+        }
+        this.setValue(newValue);
+    }
 
-	protected boolean hasPanel() {
-		return null != this.panel;
-	}
+    /**
+     * Increases the value of this slider ensuring that it does not exceed the maximum value of this slider.
+     */
+    protected void handleAfterThumbClick() {
+        int newValue = this.getValue() + this.getBigDelta();
+        final int maximumValue = this.getMaximumValue();
+        if (newValue > maximumValue) {
+            newValue = maximumValue;
+        }
+        this.setValue(newValue);
+    }
 
-	protected void setPanel(final SimplePanel panel) {
-		ObjectHelper.checkNotNull("parameter:panel", panel);
+    // WIDGET :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-		this.panel = panel;
-	}
-	
-	protected SimplePanel createPanel(){
-		final SimplePanel panel = new SimplePanel();
-		this.setPanel( panel );
-		return panel;
-	}
-	
-	public Widget getWidget(){
-		return this.getPanel().getWidget();
-	}
-	
-	public void setWidget( final Widget widget ){
-		ObjectHelper.checkNotNull("parameter:widget", widget );
-		this.getPanel().setWidget( widget );
-	}
-		
-	// SLIDER ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * A non pubic is used to hold both the sliders element and house the thumb widget.
+     */
+    private SimplePanel panel;
 
-	/**
-	 * The current value of the slider
-	 */
-	private int value;
+    public SimplePanel getPanel() {
+        ObjectHelper.checkNotNull("field:panel", panel);
+        return panel;
+    }
 
-	public int getValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual( "field:value", value, 0 );
-		return this.value;
-	}
+    protected boolean hasPanel() {
+        return null != this.panel;
+    }
 
-	public void setValue(int value) {
-		PrimitiveHelper.checkGreaterThanOrEqual( "parameter:value", value, 0 );
-		this.value = value;
-		this.updateWidget();
-		this.fireValueChanged();
-	}
+    protected void setPanel(final SimplePanel panel) {
+        ObjectHelper.checkNotNull("parameter:panel", panel);
 
-	/**
-	 * The maximum value of the slider.
-	 * The minimum value is defaulted to 0. Clients must adjust this value if they wish to use
-	 * a different range of values. 
-	 */
-	private int maximumValue;
+        this.panel = panel;
+    }
 
-	public int getMaximumValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual( "field:maximumValue", maximumValue, 0 );
-		return this.maximumValue;
-	}
+    protected SimplePanel createPanel() {
+        final SimplePanel panel = new SimplePanel();
+        this.setPanel(panel);
+        return panel;
+    }
 
-	public void setMaximumValue(int maximumValue) {
-		PrimitiveHelper.checkGreaterThanOrEqual( "parameter:maximumValue", maximumValue, 0 );
-		this.maximumValue = maximumValue;
-	}
+    public Widget getWidget() {
+        return this.getPanel().getWidget();
+    }
 
-	/**
-	 * The amount the value jumps. The value must be 1 or more.
-	 */
-	private int delta;
+    public void setWidget(final Widget widget) {
+        ObjectHelper.checkNotNull("parameter:widget", widget);
+        this.getPanel().setWidget(widget);
+    }
 
-	public int getDelta() {
-		PrimitiveHelper.checkGreaterThan( "field:delta", delta, 0 );
-		return this.delta;
-	}
+    // SLIDER ::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void setDelta(int delta) {
-		PrimitiveHelper.checkGreaterThan( "parameter:delta", delta, 0 );
-		this.delta = delta;
-	}
+    /**
+     * The current value of the slider
+     */
+    private int value;
 
-	/**
-	 * The amount the slider value jumps when the mouse is clicked on the area before or after the
-	 * thumb thingo.
-	 * 
-	 * This value is typically larger than delta.
-	 */
-	private int bigDelta;
+    public int getValue() {
+        PrimitiveHelper.checkGreaterThanOrEqual("field:value", value, 0);
+        return this.value;
+    }
 
-	public int getBigDelta() {
-		PrimitiveHelper.checkGreaterThan( "field:bigDelta", bigDelta, 0 );
-		return this.bigDelta;
-	}
+    public void setValue(int value) {
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:value", value, 0);
+        this.value = value;
+        this.updateWidget();
+        this.fireValueChanged();
+    }
 
-	public void setBigDelta(int bigDelta) {
-		PrimitiveHelper.checkGreaterThan( "parameter:bigDelta", bigDelta, 0 );
-		this.bigDelta = bigDelta;
-	}
+    /**
+     * The maximum value of the slider. The minimum value is defaulted to 0. Clients must adjust this value if they wish to use a different
+     * range of values.
+     */
+    private int maximumValue;
 
-	public String toString() {
-		return super.toString() + ", value: " + value + ", maximumValue: "
-				+ maximumValue + ", delta: " + delta + ", bigDelta: "
-				+ bigDelta;
-	}
+    public int getMaximumValue() {
+        PrimitiveHelper.checkGreaterThanOrEqual("field:maximumValue", maximumValue, 0);
+        return this.maximumValue;
+    }
+
+    public void setMaximumValue(int maximumValue) {
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumValue", maximumValue, 0);
+        this.maximumValue = maximumValue;
+    }
+
+    /**
+     * The amount the value jumps. The value must be 1 or more.
+     */
+    private int delta;
+
+    public int getDelta() {
+        PrimitiveHelper.checkGreaterThan("field:delta", delta, 0);
+        return this.delta;
+    }
+
+    public void setDelta(int delta) {
+        PrimitiveHelper.checkGreaterThan("parameter:delta", delta, 0);
+        this.delta = delta;
+    }
+
+    /**
+     * The amount the slider value jumps when the mouse is clicked on the area before or after the thumb thingo.
+     * 
+     * This value is typically larger than delta.
+     */
+    private int bigDelta;
+
+    public int getBigDelta() {
+        PrimitiveHelper.checkGreaterThan("field:bigDelta", bigDelta, 0);
+        return this.bigDelta;
+    }
+
+    public void setBigDelta(int bigDelta) {
+        PrimitiveHelper.checkGreaterThan("parameter:bigDelta", bigDelta, 0);
+        this.bigDelta = bigDelta;
+    }
+
+    public String toString() {
+        return super.toString() + ", value: " + value + ", maximumValue: " + maximumValue + ", delta: " + delta
+                + ", bigDelta: " + bigDelta;
+    }
 }

@@ -22,7 +22,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * A value object used to transmit messages between two points.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class Message implements IsSerializable {

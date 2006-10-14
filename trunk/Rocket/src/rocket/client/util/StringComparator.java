@@ -18,40 +18,43 @@ package rocket.client.util;
 import java.util.Comparator;
 
 /**
- * Unfortunately the GWT.String class does not include a String comparator. This class provides both a
- * normal exact case comparator as well as a case ignorant one.
+ * Unfortunately the GWT.String class does not include a String comparator. This class provides both a normal exact case comparator as well
+ * as a case ignorant one.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class StringComparator implements Comparator {
 
-	public final static StringComparator COMPARATOR = new StringComparator( true );
-	public final static StringComparator IGNORE_CASE_COMPARATOR = new StringComparator( true );
+    public final static StringComparator COMPARATOR = new StringComparator(true);
 
-	protected StringComparator( final boolean ignoreCase ){
-		super();
+    public final static StringComparator IGNORE_CASE_COMPARATOR = new StringComparator(true);
 
-		this.setIgnoreCase( ignoreCase );
-	}
+    protected StringComparator(final boolean ignoreCase) {
+        super();
+
+        this.setIgnoreCase(ignoreCase);
+    }
 
     public int compare(final Object object, final Object otherObject) {
-        return this.compare( (String) object, (String) otherObject );
+        return this.compare((String) object, (String) otherObject);
     }
 
-    public int compare( final String string, final String otherString ){
-    	return this.isIgnoreCase() ? string.toLowerCase().compareTo( otherString.toLowerCase() ) : string.compareTo( otherString );
+    public int compare(final String string, final String otherString) {
+        return this.isIgnoreCase() ? string.toLowerCase().compareTo(otherString.toLowerCase()) : string
+                .compareTo(otherString);
     }
 
-	private boolean ignoreCase;
+    private boolean ignoreCase;
 
-	public void setIgnoreCase( final boolean ignoreCase ){
-		this.ignoreCase = ignoreCase;
-	}
+    public void setIgnoreCase(final boolean ignoreCase) {
+        this.ignoreCase = ignoreCase;
+    }
 
-	public boolean isIgnoreCase(){
-		return this.ignoreCase;
-	}
+    public boolean isIgnoreCase() {
+        return this.ignoreCase;
+    }
 
-	public String toString(){
-		return super.toString() + ", ignoreCase: " + ignoreCase;
-	}
+    public String toString() {
+        return super.toString() + ", ignoreCase: " + ignoreCase;
+    }
 }

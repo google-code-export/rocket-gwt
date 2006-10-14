@@ -15,31 +15,70 @@
  */
 package rocket.client.widget.menu;
 
+import rocket.client.util.ObjectHelper;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * This widget represents a menuSpacer within a menulist.
- *
+ * Menu spacers may be used to add a break within a menu list.
+ * 
  * @author Miroslav Pokorny (mP)
  */
-public class MenuSpacer extends AbstractMenuWidget implements MenuWidget {
+public class MenuSpacer extends AbstractMenuItem {
     public MenuSpacer() {
-    	this.initWidget(this.createWidget());
+        this.initWidget(this.createWidget());
     }
 
-    // COMPOSITE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // EVENT HANDLING............................
+
+    protected void handleMouseClick(final Event event) {
+    }
+
+    protected void handleMouseOver(final Event event) {
+    }
+
+    protected void handleMouseOut(final Event event) {
+    }
+
+    // ACTIONS
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    public void open() {
+        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".open()");
+    }
 
     /**
-     * Simply ignores all browser events.
+     * MenuSpacers do nothing when asked to hide...
      */
-    public void onBrowserEvent(final Event event) {
+    public void hide() {
+    }
+
+    protected void addHighlight() {
+        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".addHighlight()");
+    }
+
+    protected void removeHighlight() {
+        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".removeHighlight()");
+    }
+
+    protected String getSelectedStyle() {
+        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".getSelectedStyle()");
+    }
+
+    protected String getDisabledStyle() {
+        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".getDisabledStyle()");
     }
 
     protected Widget createWidget() {
-        final HTML html = new HTML("<hr/>");
+        final HTML html = new HTML(MenuConstants.SPACER_HTML);
         html.addStyleName(MenuConstants.SPACER_STYLE);
         return html;
+    }
+
+    public String toString() {
+        return ObjectHelper.defaultToString(this);
     }
 }

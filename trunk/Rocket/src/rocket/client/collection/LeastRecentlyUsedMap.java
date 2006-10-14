@@ -25,99 +25,91 @@ import rocket.client.util.SystemHelper;
 
 /**
  * A special type of map that only keeps at a maximum a set number of entries.
- *
- * It automatically removes the oldest item when the map becomes full and a new
- * item is added.
- *
- * NB Both the keySet and entrySet Sets are not ordered using the key addition
- * order.
- *
+ * 
+ * It automatically removes the oldest item when the map becomes full and a new item is added.
+ * 
+ * NB Both the keySet and entrySet Sets are not ordered using the key addition order.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class LeastRecentlyUsedMap extends HashMap {
 
-	public LeastRecentlyUsedMap(final int maximumSize) {
-		this.setMaximumSize(maximumSize);
-		this.setOrder(new Vector());
-	}
+    public LeastRecentlyUsedMap(final int maximumSize) {
+        this.setMaximumSize(maximumSize);
+        this.setOrder(new Vector());
+    }
 
-	public Object remove(final Object key) {
-		ObjectHelper.checkNotNull("parameter:key", key);
-		this.getOrder().remove(key);
+    public Object remove(final Object key) {
+        ObjectHelper.checkNotNull("parameter:key", key);
+        this.getOrder().remove(key);
 
-		return super.remove(key);
-	}
+        return super.remove(key);
+    }
 
-	public Object put(final Object key, final Object value) {
-		ObjectHelper.checkNotNull("parameter:key", key);
+    public Object put(final Object key, final Object value) {
+        ObjectHelper.checkNotNull("parameter:key", key);
 
-		Object replaced = null;
-		final int maximumSize = this.getMaximumSize();
-		if (0 != maximumSize) {
+        Object replaced = null;
+        final int maximumSize = this.getMaximumSize();
+        if (0 != maximumSize) {
 
-			final List order = this.getOrder();
+            final List order = this.getOrder();
 
-			if (this.containsKey(key)) {
-				order.remove(key);
-			} else {
-				// if the map is full removed teh oldest item.
-				if (order.size() == maximumSize) {
-					order.remove(0);
-				}
-			}
+            if (this.containsKey(key)) {
+                order.remove(key);
+            } else {
+                // if the map is full removed teh oldest item.
+                if (order.size() == maximumSize) {
+                    order.remove(0);
+                }
+            }
 
-			// the most recent put always gets append on the end...
-			order.add(key);
+            // the most recent put always gets append on the end...
+            order.add(key);
 
-			replaced = super.put(key, value);
-		}
-		return replaced;
-	}
+            replaced = super.put(key, value);
+        }
+        return replaced;
+    }
 
-	/**
-	 * This list contains the keys of the added items, older items appear at the
-	 * ffront of the list, the newest is the last item.
-	 */
-	private List order;
+    /**
+     * This list contains the keys of the added items, older items appear at the ffront of the list, the newest is the last item.
+     */
+    private List order;
 
-	public List getOrder() {
-		ObjectHelper.checkNotNull("field:order", this.order);
-		return this.order;
-	}
+    public List getOrder() {
+        ObjectHelper.checkNotNull("field:order", this.order);
+        return this.order;
+    }
 
-	public void setOrder(final List order) {
-		ObjectHelper.checkNotNull("parameter:order", order);
-		this.order = order;
-	}
+    public void setOrder(final List order) {
+        ObjectHelper.checkNotNull("parameter:order", order);
+        this.order = order;
+    }
 
-	/**
-	 * This value is the maximum size of this map. When the size of the map is
-	 * equal to the map the oldest item is dropped.
-	 */
-	private int maximumSize;
+    /**
+     * This value is the maximum size of this map. When the size of the map is equal to the map the oldest item is dropped.
+     */
+    private int maximumSize;
 
-	private boolean maximumSizeSet;
+    private boolean maximumSizeSet;
 
-	public int getMaximumSize() {
-		if (false == maximumSizeSet) {
-			SystemHelper.handleAssertFailure("field:maximumSize",
-					"The field:maximumSize hass not yet been set, this: "
-							+ this);
-		}
-		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumSize",
-				maximumSize, 0);
-		return this.maximumSize;
-	}
+    public int getMaximumSize() {
+        if (false == maximumSizeSet) {
+            SystemHelper.handleAssertFailure("field:maximumSize", "The field:maximumSize hass not yet been set, this: "
+                    + this);
+        }
+        PrimitiveHelper.checkGreaterThanOrEqual("field:maximumSize", maximumSize, 0);
+        return this.maximumSize;
+    }
 
-	public void setMaximumSize(final int maximumSize) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumSize",
-				maximumSize, 0);
-		this.maximumSize = maximumSize;
-		this.maximumSizeSet = true;
-	}
+    public void setMaximumSize(final int maximumSize) {
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumSize", maximumSize, 0);
+        this.maximumSize = maximumSize;
+        this.maximumSizeSet = true;
+    }
 
-	public String toString() {
-		return super.toString() + ", maximumSize: " + maximumSize + ", order: "
-				+ order;
-	}
+    public String toString() {
+        return super.toString() + ", maximumSize: " + maximumSize + ", order: " + order;
+    }
 }

@@ -17,16 +17,16 @@ package rocket.server.browser;
 
 /**
  * This interface describes any possible source for a html image.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public interface ImageSource {
 
-	String getMimeType();
+    String getMimeType();
 
-	byte[] getImage();
+    byte[] getImage();
 
-	String getUrl();
+    String getUrl();
 
-	String getQueryString();
+    String getQueryString();
 }

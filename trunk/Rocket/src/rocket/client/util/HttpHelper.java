@@ -19,14 +19,14 @@ import com.google.gwt.user.client.Element;
 
 /**
  * This helper includes a collection of miscellaneous useful methods relating to HTTP.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class HttpHelper extends SystemHelper {
 
     /**
      * This takes an string and encodes it so that it contains valid url characters.
-     *
+     * 
      * @param input
      * @return
      */
@@ -71,7 +71,7 @@ public class HttpHelper extends SystemHelper {
 
     /**
      * Encodes all the elements belonging to form into a url encoded safe String.
-     *
+     * 
      * @param form
      * @return
      */
@@ -85,7 +85,7 @@ public class HttpHelper extends SystemHelper {
      * Loops thru all the elements belonging to form. Had to be done this way because I am unsure how to return form.elements. Attempting to
      * return an array of Elements causes the compiler to generate broken javascript. This method currently only encodes INPUT tags by
      * reading their VALUE attribute.
-     *
+     * 
      * @todo read and encoded selected fields etc.
      * @param form
      * @return

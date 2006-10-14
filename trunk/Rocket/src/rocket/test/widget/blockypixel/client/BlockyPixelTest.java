@@ -42,23 +42,23 @@ public class BlockyPixelTest implements EntryPoint {
         try {
             final RootPanel panel = RootPanel.get();
 
-            panel.add( new HTML("Interval between repaints(ms)"));
+            panel.add(new HTML("Interval between repaints(ms)"));
             final TextBox interval = new TextBox();
             interval.setText("100");
             panel.add(interval);
-            panel.add( new HTML("<br/>"));
+            panel.add(new HTML("<br/>"));
 
-            panel.add( new HTML("Rows"));
+            panel.add(new HTML("Rows"));
             final TextBox rows = new TextBox();
             rows.setText("10");
             panel.add(rows);
-            panel.add( new HTML("<br/>"));
+            panel.add(new HTML("<br/>"));
 
-            panel.add( new HTML("Columns"));
+            panel.add(new HTML("Columns"));
             final TextBox columns = new TextBox();
             columns.setText("10");
             panel.add(columns);
-            panel.add( new HTML("<br/>"));
+            panel.add(new HTML("<br/>"));
 
             final Button button = new Button("Start");
             panel.add(button);
@@ -129,7 +129,7 @@ public class BlockyPixelTest implements EntryPoint {
             final int columns = grid.getColumns();
 
             for (int x = 0; x < columns; x++) {
-                //final int red = (int)(( x / (float)( columns + 1 ) ) * 255);
+                // final int red = (int)(( x / (float)( columns + 1 ) ) * 255);
                 final int red = (int) ((float) x * 255 / columns);
 
                 for (int y = 0; y < rows; y++) {

@@ -24,9 +24,10 @@ import rocket.client.util.ObjectHelper;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TabListenerCollection {
-    public TabListenerCollection(){
-        this.setListeners( new ArrayList() );
+    public TabListenerCollection() {
+        this.setListeners(new ArrayList());
     }
+
     /**
      * A list containing listeners to the various page change events.
      */
@@ -54,14 +55,13 @@ public class TabListenerCollection {
         this.getListeners().remove(tabListener);
     }
 
-
     public boolean fireBeforeTabSelected(final String title, final Widget widget) {
         boolean doSelect = true;
         final Iterator listeners = this.getListeners().iterator();
 
         while (listeners.hasNext()) {
             final TabListener listener = (TabListener) listeners.next();
-            if (!listener.onBeforeTabSelected(title, widget )) {
+            if (!listener.onBeforeTabSelected(title, widget)) {
                 doSelect = false;
                 break;
             }

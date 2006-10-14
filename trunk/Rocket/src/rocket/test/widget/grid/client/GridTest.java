@@ -65,7 +65,7 @@ public class GridTest implements EntryPoint {
                     return image;
                 }
             });
-            grid.setAutoRedraw( true );
+            grid.setAutoRedraw(true);
             grid.redraw();
 
             final TextBox rows = new TextBox();
@@ -88,8 +88,8 @@ public class GridTest implements EntryPoint {
             rootPanel.add(cursor);
 
             final Button update = new Button("Update grid");
-            update.addClickListener( new ClickListener(){
-            	public void onClick( Widget ignored ){
+            update.addClickListener(new ClickListener() {
+                public void onClick(Widget ignored) {
                     final String rowsText = rows.getText();
                     try {
                         grid.setRows(Integer.parseInt(rowsText));
@@ -111,9 +111,9 @@ public class GridTest implements EntryPoint {
                         Window.alert("cursor textBox contains an invalid number [" + cursorText + "]");
                     }
 
-            	}
+                }
             });
-            rootPanel.add( update );
+            rootPanel.add(update);
 
             rootPanel.add(grid);
         } catch (Throwable t) {

@@ -15,7 +15,7 @@
  */
 package rocket.client.widget;
 
-import rocket.client.dom.StyleHelper;
+import rocket.client.style.StyleHelper;
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
 import rocket.client.util.SystemHelper;
@@ -28,9 +28,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * An extension of a regular spinner that includes two extra buttons to assist with modifying the value.
- *
+ * 
  * @author Miroslav Pokorny (mP)
- *
+ * 
  */
 public class SuperSpinner extends Spinner {
 
@@ -177,7 +177,7 @@ public class SuperSpinner extends Spinner {
 
     /**
      * Creates a new HorizontalPanel and fills it with various clickable widgets which may be used adjust the value.
-     *
+     * 
      * @return
      */
     public Panel createPanel() {
@@ -186,7 +186,8 @@ public class SuperSpinner extends Spinner {
         }
 
         final HorizontalPanel panel = new HorizontalPanel();
-        panel.addStyleName( StyleHelper.buildCompound( WidgetConstants.SUPER_SPINNER_STYLE, WidgetConstants.SUPER_SPINNER_HORIZONTAL_PANEL));
+        panel.addStyleName(StyleHelper.buildCompound(WidgetConstants.SUPER_SPINNER_STYLE,
+                WidgetConstants.SUPER_SPINNER_HORIZONTAL_PANEL));
         this.setPanel(panel);
 
         panel.add(this.createDownWidget());

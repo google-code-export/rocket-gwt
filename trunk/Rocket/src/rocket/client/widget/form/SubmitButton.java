@@ -15,7 +15,6 @@
  */
 package rocket.client.widget.form;
 
-
 import rocket.client.dom.DomHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -29,23 +28,22 @@ public class SubmitButton extends ButtonBase {
         sinkEvents(Event.ONCLICK);
     }
 
-    static Element createElement(){
-        final Element element = DOM.createElement( FormConstants.INPUT_TAG );
-        DOM.setAttribute( element, FormConstants.INPUT_TAG_TYPE, FormConstants.SUBMIT_BUTTON_TYPE );
+    static Element createElement() {
+        final Element element = DOM.createElement(FormConstants.INPUT_TAG);
+        DOM.setAttribute(element, FormConstants.INPUT_TAG_TYPE, FormConstants.SUBMIT_BUTTON_TYPE);
         return element;
     }
 
-    public SubmitButton(){
-        this( createElement() );
+    public SubmitButton() {
+        this(createElement());
     }
 
+    protected void setElement(final Element element) {
+        DomHelper.checkInputElement("parameter:element", element, FormConstants.SUBMIT_BUTTON_TYPE);
+        super.setElement(element);
+    }
 
-    protected void setElement( final Element element ){
-    DomHelper.checkInputElement( "parameter:element", element, FormConstants.SUBMIT_BUTTON_TYPE);
-    super.setElement( element );
-  }
-
-    public void submit(){
+    public void submit() {
 
     }
 }

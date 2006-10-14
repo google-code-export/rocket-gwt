@@ -17,7 +17,7 @@ package rocket.client.messaging;
 
 /**
  * Container for a single String
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class StringPayload implements Payload {

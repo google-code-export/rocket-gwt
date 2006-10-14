@@ -9,233 +9,239 @@ import rocket.client.util.StringHelper;
 /**
  * Represents a single browser cookie.
  * 
- * Note that setting any of the methods does not actually update the corresponding browser cookie.
- * To update the browsers cookies this cookie must be re-put into a CookieMap.
+ * Note that setting any of the methods does not actually update the corresponding browser cookie. To update the browsers cookies this
+ * cookie must be re-put into a CookieMap.
  * 
- * Note that some properties (all except for name/value) are lost when the cookie Object is not created
- * by the user but created as part of an enquiry using a cookie name.
+ * Note that some properties (all except for name/value) are lost when the cookie Object is not created by the user but created as part of
+ * an enquiry using a cookie name.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class Cookie {
 
-	public Cookie() {
-	}
+    public Cookie() {
+    }
 
-	/**
-	 * The name of the cookie.
-	 */
-	private String name;
+    /**
+     * The name of the cookie.
+     */
+    private String name;
 
-	public String getName() {
-		BrowserHelper.checkCookieName("field:name", this.name);
+    public String getName() {
+        BrowserHelper.checkCookieName("field:name", this.name);
 
-		return this.name;
-	}
+        return this.name;
+    }
 
-	public boolean hasName() {
-		return this.name != null;
-	}
+    public boolean hasName() {
+        return this.name != null;
+    }
 
-	public void setName(final String name) {
-		BrowserHelper.checkCookieName("parameter:name", name);
+    public void setName(final String name) {
+        BrowserHelper.checkCookieName("parameter:name", name);
 
-		this.name = name;
-	}
+        this.name = name;
+    }
 
-	/**
-	 * The cookie value 
-	 */
-	private String value;
+    /**
+     * The cookie value
+     */
+    private String value;
 
-	public String getValue() {
-		StringHelper.checkNotEmpty("field:value", this.value);
+    public String getValue() {
+        StringHelper.checkNotEmpty("field:value", this.value);
 
-		return this.value;
-	}
+        return this.value;
+    }
 
-	public boolean hasValue() {
-		return this.value != null;
-	}
+    public boolean hasValue() {
+        return this.value != null;
+    }
 
-	public void setValue(final String value) {
-		StringHelper.checkNotEmpty("parameter:value", value);
+    public void setValue(final String value) {
+        StringHelper.checkNotEmpty("parameter:value", value);
 
-		this.value = value;
-	}
+        this.value = value;
+    }
 
-	/**
-	 * Any comment that may be attached with the cookie
-	 */
-	private String comment;
+    /**
+     * Any comment that may be attached with the cookie
+     */
+    private String comment;
 
-	public String getComment() {
-		StringHelper.checkNotEmpty("field:comment", this.comment);
+    public String getComment() {
+        StringHelper.checkNotEmpty("field:comment", this.comment);
 
-		return this.comment;
-	}
+        return this.comment;
+    }
 
-	public boolean hasComment() {
-		return this.comment != null;
-	}
+    public boolean hasComment() {
+        return this.comment != null;
+    }
 
-	public void setComment(final String comment) {
-		StringHelper.checkNotEmpty("parameter:comment", comment);
+    public void setComment(final String comment) {
+        StringHelper.checkNotEmpty("parameter:comment", comment);
 
-		this.comment = comment;
-	}
+        this.comment = comment;
+    }
 
-	public void clearComment() {
-		this.comment = null;
-	}
+    public void clearComment() {
+        this.comment = null;
+    }
 
-	private String domain;
+    private String domain;
 
-	public String getDomain() {
-		StringHelper.checkNotEmpty("field:domain", this.domain);
+    public String getDomain() {
+        StringHelper.checkNotEmpty("field:domain", this.domain);
 
-		return this.domain;
-	}
+        return this.domain;
+    }
 
-	public boolean hasDomain() {
-		return this.domain != null;
-	}
+    public boolean hasDomain() {
+        return this.domain != null;
+    }
 
-	public void setDomain(final String domain) {
-		StringHelper.checkNotEmpty("parameter:domain", domain);
+    public void setDomain(final String domain) {
+        StringHelper.checkNotEmpty("parameter:domain", domain);
 
-		this.domain = domain;
-	}
+        this.domain = domain;
+    }
 
-	public void clearDomain() {
-		this.domain = null;
-	}
+    public void clearDomain() {
+        this.domain = null;
+    }
 
-	/**
-	 * When the cookie expires which should be a ISO formatted date.
-	 */
-	private Date expires;
-	public Date getExpires() {
-		ObjectHelper.checkNotNull( "field:expires", expires );
-		return this.expires;
-	}
+    /**
+     * When the cookie expires which should be a ISO formatted date.
+     */
+    private Date expires;
 
-	public boolean hasExpires() {
-		return null != this.expires;
-	}
+    public Date getExpires() {
+        ObjectHelper.checkNotNull("field:expires", expires);
+        return this.expires;
+    }
 
-	public void setExpires(final Date expires) {
-		ObjectHelper.checkNotNull( "parameter:expires", expires );
-		this.expires = expires;
-	}
+    public boolean hasExpires() {
+        return null != this.expires;
+    }
 
-	private String path;
+    public void setExpires(final Date expires) {
+        ObjectHelper.checkNotNull("parameter:expires", expires);
+        this.expires = expires;
+    }
 
-	public String getPath() {
-		HttpHelper.checkPath("field:path", this.path);
+    private String path;
 
-		return this.path;
-	}
+    public String getPath() {
+        HttpHelper.checkPath("field:path", this.path);
 
-	public boolean hasPath() {
-		return this.path != null;
-	}
+        return this.path;
+    }
 
-	public void setPath(final String path) {
-		HttpHelper.checkPath("parameter:path", path);
+    public boolean hasPath() {
+        return this.path != null;
+    }
 
-		this.path = path;
-	}
+    public void setPath(final String path) {
+        HttpHelper.checkPath("parameter:path", path);
 
-	public void clearPath() {
-		this.path = null;
-	}
+        this.path = path;
+    }
 
-	private boolean secure;
-	private boolean secureSet;
+    public void clearPath() {
+        this.path = null;
+    }
 
-	public boolean isSecure() {
-		ObjectHelper.checkPropertySet("field:secure", this, this.hasSecure());
+    private boolean secure;
 
-		return this.secure;
-	}
+    private boolean secureSet;
 
-	public boolean hasSecure() {
-		return secureSet;
-	}
+    public boolean isSecure() {
+        ObjectHelper.checkPropertySet("field:secure", this, this.hasSecure());
 
-	public void setSecure(final boolean secure) {
-		this.secure = secure;
-		this.secureSet = true;
-	}
+        return this.secure;
+    }
 
-	private int version = Integer.MIN_VALUE;
-	private boolean versionSet;
+    public boolean hasSecure() {
+        return secureSet;
+    }
 
-	public int getVersion() {
-		ObjectHelper.checkPropertySet("field:version", this, this.hasVersion());
-		return this.version;
-	}
+    public void setSecure(final boolean secure) {
+        this.secure = secure;
+        this.secureSet = true;
+    }
 
-	public boolean hasVersion() {
-		return this.versionSet;
-	}
+    private int version = Integer.MIN_VALUE;
 
-	public void setVersion(final int version) {
-		this.version = version;
-		this.versionSet = true;
-	}
-	public void clearVersion(){
-		this.versionSet = false;
-	}
+    private boolean versionSet;
 
-	/**
-	 * Converts this cookie into its string form.
-	 * @return String
-	 */
-	public String toCookieString() {
-		final StringBuffer buffer = new StringBuffer();
+    public int getVersion() {
+        ObjectHelper.checkPropertySet("field:version", this, this.hasVersion());
+        return this.version;
+    }
 
-		buffer.append(this.getName());
-		buffer.append('=');
-		buffer.append(this.getValue());
+    public boolean hasVersion() {
+        return this.versionSet;
+    }
 
-		if (this.hasComment()) {
-			buffer.append(BrowserConstants.COOKIE_COMMENT);
-			buffer.append(this.getComment());
-		}
-		if (this.hasDomain()) {
-			buffer.append(BrowserConstants.COOKIE_DOMAIN);
-			buffer.append(this.getDomain());
-		}
-		if (this.hasExpires()) {
-			buffer.append(BrowserConstants.COOKIE_EXPIRES);
-			buffer.append( this.getExpires().toGMTString() );
-		}
-		if (this.hasPath()) {
-			buffer.append(BrowserConstants.COOKIE_PATH);
-			buffer.append(this.getPath());
-		}
-		if (this.hasSecure()) {
-			if( this.isSecure() ){
-			buffer.append(BrowserConstants.COOKIE_SECURE);
-			}
-		}
-		if (this.hasVersion()) {
-			buffer.append(BrowserConstants.COOKIE_VERSION);
-			buffer.append(this.getVersion());
-		}
+    public void setVersion(final int version) {
+        this.version = version;
+        this.versionSet = true;
+    }
 
-		return buffer.toString();
-	}
+    public void clearVersion() {
+        this.versionSet = false;
+    }
 
-	/* OBJECT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /**
+     * Converts this cookie into its string form.
+     * 
+     * @return String
+     */
+    public String toCookieString() {
+        final StringBuffer buffer = new StringBuffer();
 
-	public String toString() {
-		return super.toString() + ", name[" + name + "], value[" + value
-				+ "], comment[" + comment + "], domain[" + domain
-				+ "], expires: " + expires + ", path: [" + path + "], secure: " + secure + ", secureSet: " + secureSet + ", version: "
-				+ version;
-	}
+        buffer.append(this.getName());
+        buffer.append('=');
+        buffer.append(this.getValue());
+
+        if (this.hasComment()) {
+            buffer.append(BrowserConstants.COOKIE_COMMENT);
+            buffer.append(this.getComment());
+        }
+        if (this.hasDomain()) {
+            buffer.append(BrowserConstants.COOKIE_DOMAIN);
+            buffer.append(this.getDomain());
+        }
+        if (this.hasExpires()) {
+            buffer.append(BrowserConstants.COOKIE_EXPIRES);
+            buffer.append(this.getExpires().toGMTString());
+        }
+        if (this.hasPath()) {
+            buffer.append(BrowserConstants.COOKIE_PATH);
+            buffer.append(this.getPath());
+        }
+        if (this.hasSecure()) {
+            if (this.isSecure()) {
+                buffer.append(BrowserConstants.COOKIE_SECURE);
+            }
+        }
+        if (this.hasVersion()) {
+            buffer.append(BrowserConstants.COOKIE_VERSION);
+            buffer.append(this.getVersion());
+        }
+
+        return buffer.toString();
+    }
+
+    /*
+     * OBJECT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+     */
+
+    public String toString() {
+        return super.toString() + ", name[" + name + "], value[" + value + "], comment[" + comment + "], domain["
+                + domain + "], expires: " + expires + ", path: [" + path + "], secure: " + secure + ", secureSet: "
+                + secureSet + ", version: " + version;
+    }
 
 }

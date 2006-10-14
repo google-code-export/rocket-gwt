@@ -20,173 +20,149 @@ import rocket.client.util.StringHelper;
 
 /**
  * A series of unit tests for public methods of StringHelper.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class StringHelperTestCase extends TestCase {
 
-	public void testIsNullOrEmpty0() {
-		final String in = "a";
-		final boolean expected = false;
-		final boolean actual = StringHelper.isNullOrEmpty(in);
-		assertEquals("StringHelper.isNullOrEmpty( [" + in + "] )", expected,
-				actual);
-	}
+    public void testIsNullOrEmpty0() {
+        final String in = "a";
+        final boolean expected = false;
+        final boolean actual = StringHelper.isNullOrEmpty(in);
+        assertEquals("StringHelper.isNullOrEmpty( [" + in + "] )", expected, actual);
+    }
 
-	public void testIsNullOrEmpty1() {
-		final String in = "";
-		final boolean expected = true;
-		final boolean actual = StringHelper.isNullOrEmpty(in);
-		assertEquals("StringHelper.isNullOrEmpty( [" + in + "] )", expected,
-				actual);
-	}
+    public void testIsNullOrEmpty1() {
+        final String in = "";
+        final boolean expected = true;
+        final boolean actual = StringHelper.isNullOrEmpty(in);
+        assertEquals("StringHelper.isNullOrEmpty( [" + in + "] )", expected, actual);
+    }
 
-	public void testIsNullOrEmpty2() {
-		final String in = null;
-		final boolean expected = true;
-		final boolean actual = StringHelper.isNullOrEmpty(in);
-		assertEquals("StringHelper.isNullOrEmpty( [" + in + "] )", expected,
-				actual);
-	}
+    public void testIsNullOrEmpty2() {
+        final String in = null;
+        final boolean expected = true;
+        final boolean actual = StringHelper.isNullOrEmpty(in);
+        assertEquals("StringHelper.isNullOrEmpty( [" + in + "] )", expected, actual);
+    }
 
-	public void testPadLeft0() {
-		final String in = "apple";
-		final int paddedLength = 8;
-		final char c = '.';
-		final String actual = StringHelper.padLeft(in, paddedLength, c);
-		final String expected = "..." + in;
-		assertEquals("StringHelper.padLeft( [" + in + "]" + paddedLength
-				+ ", [" + c + "] )", expected, actual);
-	}
+    public void testPadLeft0() {
+        final String in = "apple";
+        final int paddedLength = 8;
+        final char c = '.';
+        final String actual = StringHelper.padLeft(in, paddedLength, c);
+        final String expected = "..." + in;
+        assertEquals("StringHelper.padLeft( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+    }
 
-	public void testPadLeft1() {
-		final String in = "apple";
-		final int paddedLength = 5;
-		final char c = '.';
-		final String actual = StringHelper.padLeft(in, paddedLength, c);
-		final String expected = in;
-		assertEquals("StringHelper.padLeft( [" + in + "]" + paddedLength
-				+ ", [" + c + "] )", expected, actual);
-	}
+    public void testPadLeft1() {
+        final String in = "apple";
+        final int paddedLength = 5;
+        final char c = '.';
+        final String actual = StringHelper.padLeft(in, paddedLength, c);
+        final String expected = in;
+        assertEquals("StringHelper.padLeft( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+    }
 
-	public void testPadLeft2() {
-		final String in = "apple";
-		final int paddedLength = 10;
-		final char c = '.';
-		final String actual = StringHelper.padLeft(in, paddedLength, c);
-		final String expected = "....." + in;
-		assertEquals("StringHelper.padLeft( [" + in + "]" + paddedLength
-				+ ", [" + c + "] )", expected, actual);
-	}
+    public void testPadLeft2() {
+        final String in = "apple";
+        final int paddedLength = 10;
+        final char c = '.';
+        final String actual = StringHelper.padLeft(in, paddedLength, c);
+        final String expected = "....." + in;
+        assertEquals("StringHelper.padLeft( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+    }
 
-	public void testPadRight0() {
-		final String in = "apple";
-		final int paddedLength = 8;
-		final char c = '.';
-		final String actual = StringHelper.padRight(in, paddedLength, c);
-		final String expected = in + "...";
-		assertEquals("StringHelper.padRight( [" + in + "]" + paddedLength
-				+ ", [" + c + "] )", expected, actual);
-	}
+    public void testPadRight0() {
+        final String in = "apple";
+        final int paddedLength = 8;
+        final char c = '.';
+        final String actual = StringHelper.padRight(in, paddedLength, c);
+        final String expected = in + "...";
+        assertEquals("StringHelper.padRight( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+    }
 
-	public void testPadRight1() {
-		final String in = "apple";
-		final int paddedLength = 5;
-		final char c = '.';
-		final String actual = StringHelper.padRight(in, paddedLength, c);
-		final String expected = in;
-		assertEquals("StringHelper.padRight( [" + in + "]" + paddedLength
-				+ ", [" + c + "] )", expected, actual);
-	}
+    public void testPadRight1() {
+        final String in = "apple";
+        final int paddedLength = 5;
+        final char c = '.';
+        final String actual = StringHelper.padRight(in, paddedLength, c);
+        final String expected = in;
+        assertEquals("StringHelper.padRight( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+    }
 
-	public void testPadRight2() {
-		final String in = "apple";
-		final int paddedLength = 10;
-		final char c = '.';
-		final String actual = StringHelper.padRight(in, paddedLength, c);
-		final String expected = in + ".....";
-		assertEquals("StringHelper.padRight( [" + in + "]" + paddedLength
-				+ ", [" + c + "] )", expected, actual);
-	}
+    public void testPadRight2() {
+        final String in = "apple";
+        final int paddedLength = 10;
+        final char c = '.';
+        final String actual = StringHelper.padRight(in, paddedLength, c);
+        final String expected = in + ".....";
+        assertEquals("StringHelper.padRight( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+    }
 
-	public void testStartsWithIgnoreCase0() {
-		final String test = "apple";
-		final String startsWith = "ap";
-		final boolean actual = StringHelper.startsWithIgnoringCase(test,
-				startsWith);
-		final boolean expected = true;
-		assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}"
-				+ startsWith + "])", expected, actual);
-	}
+    public void testStartsWithIgnoreCase0() {
+        final String test = "apple";
+        final String startsWith = "ap";
+        final boolean actual = StringHelper.startsWithIgnoringCase(test, startsWith);
+        final boolean expected = true;
+        assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}" + startsWith + "])", expected, actual);
+    }
 
-	public void testStartsWithIgnoreCase1() {
-		final String test = "apple";
-		final String startsWith = "AP";
-		final boolean actual = StringHelper.startsWithIgnoringCase(test,
-				startsWith);
-		final boolean expected = true;
-		assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}"
-				+ startsWith + "])", expected, actual);
-	}
+    public void testStartsWithIgnoreCase1() {
+        final String test = "apple";
+        final String startsWith = "AP";
+        final boolean actual = StringHelper.startsWithIgnoringCase(test, startsWith);
+        final boolean expected = true;
+        assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}" + startsWith + "])", expected, actual);
+    }
 
-	public void testStartsWithIgnoreCase2() {
-		final String test = "Apple";
-		final String startsWith = "aP";
-		final boolean actual = StringHelper.startsWithIgnoringCase(test,
-				startsWith);
-		final boolean expected = true;
-		assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}"
-				+ startsWith + "])", expected, actual);
-	}
+    public void testStartsWithIgnoreCase2() {
+        final String test = "Apple";
+        final String startsWith = "aP";
+        final boolean actual = StringHelper.startsWithIgnoringCase(test, startsWith);
+        final boolean expected = true;
+        assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}" + startsWith + "])", expected, actual);
+    }
 
-	public void testStartsWithIgnoreCase3() {
-		final String test = "Apple";
-		final String startsWith = test + "Banana";
-		final boolean actual = StringHelper.startsWithIgnoringCase(test,
-				startsWith);
-		final boolean expected = false;
-		assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}"
-				+ startsWith + "])", expected, actual);
-	}
+    public void testStartsWithIgnoreCase3() {
+        final String test = "Apple";
+        final String startsWith = test + "Banana";
+        final boolean actual = StringHelper.startsWithIgnoringCase(test, startsWith);
+        final boolean expected = false;
+        assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}" + startsWith + "])", expected, actual);
+    }
 
-	public void testEndsWithIgnoreCase0() {
-		final String test = "apple";
-		final String endsWith = "le";
-		final boolean actual = StringHelper
-				.endsWithIgnoringCase(test, endsWith);
-		final boolean expected = true;
-		assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}"
-				+ endsWith + "])", expected, actual);
-	}
+    public void testEndsWithIgnoreCase0() {
+        final String test = "apple";
+        final String endsWith = "le";
+        final boolean actual = StringHelper.endsWithIgnoringCase(test, endsWith);
+        final boolean expected = true;
+        assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}" + endsWith + "])", expected, actual);
+    }
 
-	public void testEndsWithIgnoreCase1() {
-		final String test = "apple";
-		final String endsWith = "LE";
-		final boolean actual = StringHelper
-				.endsWithIgnoringCase(test, endsWith);
-		final boolean expected = true;
-		assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}"
-				+ endsWith + "])", expected, actual);
-	}
+    public void testEndsWithIgnoreCase1() {
+        final String test = "apple";
+        final String endsWith = "LE";
+        final boolean actual = StringHelper.endsWithIgnoringCase(test, endsWith);
+        final boolean expected = true;
+        assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}" + endsWith + "])", expected, actual);
+    }
 
-	public void testEndsWithIgnoreCase2() {
-		final String test = "Apple";
-		final String endsWith = "LE";
-		final boolean actual = StringHelper
-				.endsWithIgnoringCase(test, endsWith);
-		final boolean expected = true;
-		assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}"
-				+ endsWith + "])", expected, actual);
-	}
+    public void testEndsWithIgnoreCase2() {
+        final String test = "Apple";
+        final String endsWith = "LE";
+        final boolean actual = StringHelper.endsWithIgnoringCase(test, endsWith);
+        final boolean expected = true;
+        assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}" + endsWith + "])", expected, actual);
+    }
 
-	public void testEndsWithIgnoreCase3() {
-		final String test = "Apple";
-		final String endsWith = "Banana" + test;
-		final boolean actual = StringHelper
-				.endsWithIgnoringCase(test, endsWith);
-		final boolean expected = false;
-		assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}"
-				+ endsWith + "])", expected, actual);
-	}
+    public void testEndsWithIgnoreCase3() {
+        final String test = "Apple";
+        final String endsWith = "Banana" + test;
+        final boolean actual = StringHelper.endsWithIgnoringCase(test, endsWith);
+        final boolean expected = false;
+        assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}" + endsWith + "])", expected, actual);
+    }
 
     public void testSplit0IgnoringDelimiters() {
         final String first = "the";
@@ -260,7 +236,7 @@ public class StringHelperTestCase extends TestCase {
         assertEquals("The second token should be", second, tokens[1]);
         assertEquals("The third token should be", third, tokens[2]);
     }
-    
+
     public void testSplit4UsingDifferentDelimitersIgnoringDelimitersWithTrailingDelimiter() {
         final String first = "the";
         final String second = "quick";
@@ -320,147 +296,154 @@ public class StringHelperTestCase extends TestCase {
         assertEquals("The fifth token should be", third, tokens[4]);
         assertEquals("The sixth token should be", delimiters, tokens[5]);
     }
-    
-	public void testStartsWithIgnoringCaseWhichSucceeds() {
-		final String first = "green.apple";
-		final String second = "green";
 
-		assertTrue(
-				"StringHelper.startsWithIgnoringCase() should return true when querying if ["
-						+ first + "] starts with [" + second + "]",
-				StringHelper.startsWithIgnoringCase(first, second));
-	}
+    public void testStartsWithIgnoringCaseWhichSucceeds() {
+        final String first = "green.apple";
+        final String second = "green";
 
-	public void testStartsWithIgnoringCaseWhichFails() {
-		final String first = "green.apple";
-		final String second = "zebra";
+        assertTrue("StringHelper.startsWithIgnoringCase() should return true when querying if [" + first
+                + "] starts with [" + second + "]", StringHelper.startsWithIgnoringCase(first, second));
+    }
 
-		assertFalse(
-				"StringHelper.startsWithIgnoringCase() should return true when querying if ["
-						+ first + "] starts with [" + second + "]",
-				StringHelper.startsWithIgnoringCase(first, second));
-	}
+    public void testStartsWithIgnoringCaseWhichFails() {
+        final String first = "green.apple";
+        final String second = "zebra";
 
-	public void testStartsWithIgnoringCaseWhichFailsBecauseSecondIsLongerThanFirst() {
-		final String first = "green.apple";
-		final String second = "green.apple.big";
+        assertFalse("StringHelper.startsWithIgnoringCase() should return true when querying if [" + first
+                + "] starts with [" + second + "]", StringHelper.startsWithIgnoringCase(first, second));
+    }
 
-		assertFalse(
-				"StringHelper.startsWithIgnoringCase() should return true when querying if ["
-						+ first + "] starts with [" + second + "]",
-				StringHelper.startsWithIgnoringCase(first, second));
-	}
+    public void testStartsWithIgnoringCaseWhichFailsBecauseSecondIsLongerThanFirst() {
+        final String first = "green.apple";
+        final String second = "green.apple.big";
 
-	public void testIndexOfIgnoringCase0WhichFails() {
-		final String string = "apple";
-		final String search = "banana";
+        assertFalse("StringHelper.startsWithIgnoringCase() should return true when querying if [" + first
+                + "] starts with [" + second + "]", StringHelper.startsWithIgnoringCase(first, second));
+    }
 
-		assertEquals(-1, StringHelper.indexOfIgnoringCase(string, search));
-	}
+    public void testIndexOfIgnoringCase0WhichFails() {
+        final String string = "apple";
+        final String search = "banana";
 
-	public void testIndexOfIgnoringCase1WhichMatchesWhereCasesAreIdentical() {
-		final String string = "apple banana carrot";
-		final String search = "banana";
+        assertEquals(-1, StringHelper.indexOfIgnoringCase(string, search));
+    }
 
-		assertEquals(6, StringHelper.indexOfIgnoringCase(string, search));
-	}
+    public void testIndexOfIgnoringCase1WhichMatchesWhereCasesAreIdentical() {
+        final String string = "apple banana carrot";
+        final String search = "banana";
 
-	public void testIndexOfIgnoringCase2WhichMatchesButCasesAreDifferent() {
-		final String string = "apple banana carrot";
-		final String search = "BANAna";
+        assertEquals(6, StringHelper.indexOfIgnoringCase(string, search));
+    }
 
-		assertEquals(6, StringHelper.indexOfIgnoringCase(string, search));
-	}
+    public void testIndexOfIgnoringCase2WhichMatchesButCasesAreDifferent() {
+        final String string = "apple banana carrot";
+        final String search = "BANAna";
 
-	public void testIndexOfIgnoringCase3WhichFailsEvenThoughPartialMatchExists() {
-		final String string = "apple banana carrot";
-		final String search = "BANANARAMAMA";
+        assertEquals(6, StringHelper.indexOfIgnoringCase(string, search));
+    }
 
-		assertEquals(-1, StringHelper.indexOfIgnoringCase(string, search));
-	}
-	public void testIndexOfIgnoringCase4MatchesWordAtStart() {
-		final String string = "apple banana carrot";
-		final String search = "ApPlE";
+    public void testIndexOfIgnoringCase3WhichFailsEvenThoughPartialMatchExists() {
+        final String string = "apple banana carrot";
+        final String search = "BANANARAMAMA";
 
-		assertEquals(0, StringHelper.indexOfIgnoringCase(string, search));
-	}	
-	public void testIndexOfIgnoringCase5MatchesWordAtEnd() {
-		final String string = "apple banana carrot";
-		final String search = "CARROT";
+        assertEquals(-1, StringHelper.indexOfIgnoringCase(string, search));
+    }
 
-		assertEquals("apple banana ".length(), StringHelper.indexOfIgnoringCase(string, search));
-	}	
-	
-	public void testFormat0NoPlaceholders(){
-		final String message = "The quick brown fox jumped over the lazy dog";
-		final Object[] values = new Object[0];
-		final String expected = message;
-		final String actual = StringHelper.format( message, values );
-		assertEquals( expected, actual );
-	}
-	public void testFormat1WithSingleValue(){
-		final String message = "The quick {0} fox jumped over the lazy dog.";
-		final Object[] values = new Object[]{ "BROWN" };
-		final String expected = "The quick BROWN fox jumped over the lazy dog.";
-		final String actual = StringHelper.format( message, values );
-		assertEquals( expected, actual );
-	}
-	public void testFormat2WithSingleValueUsedTwice(){
-		final String message = "The quick {0} fox jumped over the {0} lazy dog.";
-		final Object[] values = new Object[]{ "BROWN" };
-		final String expected = "The quick BROWN fox jumped over the BROWN lazy dog.";
-		final String actual = StringHelper.format( message, values );
-		assertEquals( expected, actual );
-	}
-	public void testFormat3WithTwoValuesSubstitutedTwice(){
-		final String message = "The {1} quick {0} fox jumped over the {1}{0} lazy dog.";
-		final Object[] values = new Object[]{ "BROWN", "GREEN" };
-		final String expected = "The GREEN quick BROWN fox jumped over the GREENBROWN lazy dog.";
-		final String actual = StringHelper.format( message, values );
-		assertEquals( expected, actual );
-	}
-	public void testFormat4WithPlaceHolderAtTheEndOfFormatString(){
-		final String message = "The quick brown fox jumped over the lazy {0}";
-		final Object[] values = new Object[]{ "DOG!" };
-		final String expected = "The quick brown fox jumped over the lazy DOG!";
-		final String actual = StringHelper.format( message, values );
-		assertEquals( expected, actual );
-	}
-	public void testFormat5WithPlaceHolderAtTheStartOfFormatString(){
-		final String message = "{0} quick brown fox jumped over the lazy dog!";
-		final Object[] values = new Object[]{ "THE" };
-		final String expected = "THE quick brown fox jumped over the lazy dog!";
-		final String actual = StringHelper.format( message, values );
-		assertEquals( expected, actual );
-	}
-	public void testFormat6WithBrokenFormatString(){
-		final String message = "The {1} quick {0}{";
-		final Object[] values = new Object[]{ "BROWN", "GREEN" };
-		try{
-			final String returned = StringHelper.format( message, values );
-			fail( "An exception should have been thrown when formatting message[" + message + "] values[" + values + "] but returned [" + returned + "]");
-		} catch ( final Throwable expected){
-			
-		}
-	}
-	public void testFormat7WithInvalidAlphaPlaceHolderIndex(){
-		final String message = "The quick brown fox jumped over the lazy {NOTANINDEX}";
-		final Object[] values = new Object[]{ "BROWN", "GREEN" };
-		try{
-			final String returned = StringHelper.format( message, values );
-			fail( "An exception should have been thrown when formatting message[" + message + "] values[" + values + "] but returned [" + returned + "]");
-		} catch ( final Throwable expected){
-			
-		}
-	}
-	public void testFormat8WithInvalidNumberPlaceHolderIndex(){
-		final String message = "The quick brown fox jumped over the lazy {3}";
-		final Object[] values = new Object[]{ "BROWN", "GREEN" };
-		try{
-			final String returned = StringHelper.format( message, values );
-			fail( "An exception should have been thrown when formatting message[" + message + "] values[" + values + "] but returned [" + returned + "]");
-		} catch ( final Throwable expected){
-			
-		}
-	}
+    public void testIndexOfIgnoringCase4MatchesWordAtStart() {
+        final String string = "apple banana carrot";
+        final String search = "ApPlE";
+
+        assertEquals(0, StringHelper.indexOfIgnoringCase(string, search));
+    }
+
+    public void testIndexOfIgnoringCase5MatchesWordAtEnd() {
+        final String string = "apple banana carrot";
+        final String search = "CARROT";
+
+        assertEquals("apple banana ".length(), StringHelper.indexOfIgnoringCase(string, search));
+    }
+
+    public void testFormat0NoPlaceholders() {
+        final String message = "The quick brown fox jumped over the lazy dog";
+        final Object[] values = new Object[0];
+        final String expected = message;
+        final String actual = StringHelper.format(message, values);
+        assertEquals(expected, actual);
+    }
+
+    public void testFormat1WithSingleValue() {
+        final String message = "The quick {0} fox jumped over the lazy dog.";
+        final Object[] values = new Object[] { "BROWN" };
+        final String expected = "The quick BROWN fox jumped over the lazy dog.";
+        final String actual = StringHelper.format(message, values);
+        assertEquals(expected, actual);
+    }
+
+    public void testFormat2WithSingleValueUsedTwice() {
+        final String message = "The quick {0} fox jumped over the {0} lazy dog.";
+        final Object[] values = new Object[] { "BROWN" };
+        final String expected = "The quick BROWN fox jumped over the BROWN lazy dog.";
+        final String actual = StringHelper.format(message, values);
+        assertEquals(expected, actual);
+    }
+
+    public void testFormat3WithTwoValuesSubstitutedTwice() {
+        final String message = "The {1} quick {0} fox jumped over the {1}{0} lazy dog.";
+        final Object[] values = new Object[] { "BROWN", "GREEN" };
+        final String expected = "The GREEN quick BROWN fox jumped over the GREENBROWN lazy dog.";
+        final String actual = StringHelper.format(message, values);
+        assertEquals(expected, actual);
+    }
+
+    public void testFormat4WithPlaceHolderAtTheEndOfFormatString() {
+        final String message = "The quick brown fox jumped over the lazy {0}";
+        final Object[] values = new Object[] { "DOG!" };
+        final String expected = "The quick brown fox jumped over the lazy DOG!";
+        final String actual = StringHelper.format(message, values);
+        assertEquals(expected, actual);
+    }
+
+    public void testFormat5WithPlaceHolderAtTheStartOfFormatString() {
+        final String message = "{0} quick brown fox jumped over the lazy dog!";
+        final Object[] values = new Object[] { "THE" };
+        final String expected = "THE quick brown fox jumped over the lazy dog!";
+        final String actual = StringHelper.format(message, values);
+        assertEquals(expected, actual);
+    }
+
+    public void testFormat6WithBrokenFormatString() {
+        final String message = "The {1} quick {0}{";
+        final Object[] values = new Object[] { "BROWN", "GREEN" };
+        try {
+            final String returned = StringHelper.format(message, values);
+            fail("An exception should have been thrown when formatting message[" + message + "] values[" + values
+                    + "] but returned [" + returned + "]");
+        } catch (final Throwable expected) {
+
+        }
+    }
+
+    public void testFormat7WithInvalidAlphaPlaceHolderIndex() {
+        final String message = "The quick brown fox jumped over the lazy {NOTANINDEX}";
+        final Object[] values = new Object[] { "BROWN", "GREEN" };
+        try {
+            final String returned = StringHelper.format(message, values);
+            fail("An exception should have been thrown when formatting message[" + message + "] values[" + values
+                    + "] but returned [" + returned + "]");
+        } catch (final Throwable expected) {
+
+        }
+    }
+
+    public void testFormat8WithInvalidNumberPlaceHolderIndex() {
+        final String message = "The quick brown fox jumped over the lazy {3}";
+        final Object[] values = new Object[] { "BROWN", "GREEN" };
+        try {
+            final String returned = StringHelper.format(message, values);
+            fail("An exception should have been thrown when formatting message[" + message + "] values[" + values
+                    + "] but returned [" + returned + "]");
+        } catch (final Throwable expected) {
+
+        }
+    }
 }

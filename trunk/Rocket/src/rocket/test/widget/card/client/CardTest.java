@@ -38,71 +38,73 @@ public class CardTest implements EntryPoint {
         try {
             final RootPanel rootPanel = RootPanel.get();
 
-            final Button addRedTextStyle = new Button( "add redText style");
-            rootPanel.add( addRedTextStyle );
-            final Button setRedTextStyle = new Button( "set redText style");
-            rootPanel.add( setRedTextStyle );
-            final Button removeRedTextStyle = new Button( "remove redText style");
-            rootPanel.add( removeRedTextStyle );
-            final Button removeCardStyle = new Button( "remove card style");
-            rootPanel.add( removeCardStyle );
-            rootPanel.add( new HTML("<br/>"));
+            final Button addRedTextStyle = new Button("add redText style");
+            rootPanel.add(addRedTextStyle);
+            final Button setRedTextStyle = new Button("set redText style");
+            rootPanel.add(setRedTextStyle);
+            final Button removeRedTextStyle = new Button("remove redText style");
+            rootPanel.add(removeRedTextStyle);
+            final Button removeCardStyle = new Button("remove card style");
+            rootPanel.add(removeCardStyle);
+            rootPanel.add(new HTML("<br/>"));
 
             final Card card = new Card();
-            card.setTitle( "***Title***");
+            card.setTitle("***Title***");
 
-            card.add( card.createMinimize() );
-            card.add( card.createMaximize() );
-            card.add( card.createClose() );
+            card.add(card.createMinimize());
+            card.add(card.createMaximize());
+            card.add(card.createClose());
 
             final FlowPanel content = new FlowPanel();
-            content.add( new HTML( "<span style='background-color: #ffeedd'> The quick\nbrown fox jumped over\nthe lazy dog!</span>" ));
+            content.add(new HTML(
+                    "<span style='background-color: #ffeedd'> The quick\nbrown fox jumped over\nthe lazy dog!</span>"));
 
             final Button button = new Button("click me!");
-            button.addClickListener( new ClickListener(){
-            	public void onClick( final Widget ignore ){
-            		Window.alert("clicked!");
-            	}
+            button.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    Window.alert("clicked!");
+                }
             });
-            content.add( button );
-            content.add( new HTML( "<span style='background-color: #ddeeff'> The quick\nbrown fox jumped over\nthe lazy dog!</span>" ));
+            content.add(button);
+            content.add(new HTML(
+                    "<span style='background-color: #ddeeff'> The quick\nbrown fox jumped over\nthe lazy dog!</span>"));
 
-            card.setContent( content );
+            card.setContent(content);
             rootPanel.add(card);
 
-            final Button showContent = new Button( "ShowContent");
-            showContent.addClickListener( new ClickListener(){
-               public void onClick( final Widget ignore ){
-                   card.showContent();
-               };
+            final Button showContent = new Button("ShowContent");
+            showContent.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    card.showContent();
+                };
             });
 
-            final Button hideContent = new Button( "HideContent");
-            hideContent.addClickListener( new ClickListener(){
-               public void onClick( final Widget ignore ){
-                   card.hideContent();
-               };
+            final Button hideContent = new Button("HideContent");
+            hideContent.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    card.hideContent();
+                };
             });
 
-            addRedTextStyle.addClickListener( new ClickListener(){
-            	public void onClick( final Widget ignore ){
-            		card.addStyleName( "redText");
-            	}
+            addRedTextStyle.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    card.addStyleName("redText");
+                }
             });
-            setRedTextStyle.addClickListener( new ClickListener(){
-            	public void onClick( final Widget ignore ){
-            		card.setStyleName( "redText");
-            	}
+            setRedTextStyle.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    card.setStyleName("redText");
+                }
             });
-            removeRedTextStyle.addClickListener( new ClickListener(){
-            	public void onClick( final Widget ignore ){
-            		card.removeStyleName( "redText");
-            	}
+            removeRedTextStyle.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    card.removeStyleName("redText");
+                }
             });
-            removeCardStyle.addClickListener( new ClickListener(){
-            	public void onClick( final Widget ignore ){
-            		card.removeStyleName( "card");
-            	}
+            removeCardStyle.addClickListener(new ClickListener() {
+                public void onClick(final Widget ignore) {
+                    card.removeStyleName("card");
+                }
             });
 
         } catch (Throwable t) {

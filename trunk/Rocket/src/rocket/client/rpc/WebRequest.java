@@ -23,10 +23,9 @@ import rocket.client.util.SystemHelper;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
- * Used to package a web request for a servlet or other web resource with the same web application.
- * This is particularly useful when integrating with third party jsps/tags or servlets that produce output that cannot
- * be gathered in another way.
- *
+ * Used to package a web request for a servlet or other web resource with the same web application. This is particularly useful when
+ * integrating with third party jsps/tags or servlets that produce output that cannot be gathered in another way.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class WebRequest implements IsSerializable {

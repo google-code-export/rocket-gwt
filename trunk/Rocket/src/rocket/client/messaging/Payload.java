@@ -19,7 +19,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * The payload of a message
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public interface Payload extends IsSerializable {

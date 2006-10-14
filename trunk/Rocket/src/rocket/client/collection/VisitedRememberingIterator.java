@@ -20,14 +20,15 @@ import java.util.Iterator;
 import rocket.client.util.ObjectHelper;
 
 /**
- * This iterator provides automatic support that may be queried for the last element to visited via {@link #next}.
- * This is particularly useful within the a subclass implementation of {@link #remove}.
- *
+ * This iterator provides automatic support that may be queried for the last element to visited via {@link #next}. This is particularly
+ * useful within the a subclass implementation of {@link #remove}.
+ * 
  * @author Miroslav Pokorny (mP)
  */
-public class VisitedRememberingIterator extends AbstractIteratorWrapper implements Iterator {
+public class VisitedRememberingIterator extends IteratorWrapper implements Iterator {
 
-    //  ITERATOR :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // ITERATOR
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public boolean hasNext() {
         return this.getIterator().hasNext();
     }
@@ -43,19 +44,21 @@ public class VisitedRememberingIterator extends AbstractIteratorWrapper implemen
         this.clearLastVisited();
     }
 
-    // IMPL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // IMPL
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
      * The object that was last visited ie the object returned by the last call to {@link #next}
      */
     private Object lastVisited;
+
     private boolean lastVisitedSet;
 
     public Object getLastVisited() {
-        ObjectHelper.checkPropertySet( "lastVisited", this, this.lastVisitedSet );
+        ObjectHelper.checkPropertySet("lastVisited", this, this.lastVisitedSet);
         return lastVisited;
     }
 
-    public boolean hasLastVisited(){
+    public boolean hasLastVisited() {
         return this.lastVisitedSet;
     }
 
@@ -64,7 +67,7 @@ public class VisitedRememberingIterator extends AbstractIteratorWrapper implemen
         this.lastVisitedSet = true;
     }
 
-    public void clearLastVisited(){
+    public void clearLastVisited() {
         this.lastVisited = null;
         this.lastVisitedSet = false;
     }

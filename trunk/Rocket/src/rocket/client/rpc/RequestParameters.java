@@ -27,7 +27,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * A simple implementation container for request parameters
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class RequestParameters implements IsSerializable {
@@ -115,7 +115,7 @@ public class RequestParameters implements IsSerializable {
 
     /**
      * Converts the parameters within this object into a post data equivalent ie array of bytes.
-     *
+     * 
      * @return
      */
     public String asString() {

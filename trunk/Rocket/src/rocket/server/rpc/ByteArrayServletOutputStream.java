@@ -25,159 +25,161 @@ import rocket.server.util.ObjectHelper;
 
 /**
  * This ServletOutputStream supports capturing any bytes written to it. These may be retrieved later using toByteArray();
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class ByteArrayServletOutputStream extends ServletOutputStream {
 
-	public ByteArrayServletOutputStream(final int bufferSize) {
-		this.setBufferSize(bufferSize);
-		this.createByteArrayOutputStream();
-	}
+    public ByteArrayServletOutputStream(final int bufferSize) {
+        this.setBufferSize(bufferSize);
+        this.createByteArrayOutputStream();
+    }
 
-	private int bufferSize;
+    private int bufferSize;
 
-	protected int getBufferSize() {
-		PrimitiveHelper.checkGreaterThan("field:bufferSize", this.bufferSize, 0);
-		return this.bufferSize;
-	}
+    protected int getBufferSize() {
+        PrimitiveHelper.checkGreaterThan("field:bufferSize", this.bufferSize, 0);
+        return this.bufferSize;
+    }
 
-	protected void setBufferSize(final int bufferSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:bufferSize", bufferSize, 0);
-		this.bufferSize = bufferSize;
-	}
+    protected void setBufferSize(final int bufferSize) {
+        PrimitiveHelper.checkGreaterThan("parameter:bufferSize", bufferSize, 0);
+        this.bufferSize = bufferSize;
+    }
 
-	private final String NULL = "null";
+    private final String NULL = "null";
 
-	public void print( final String string ) throws IOException{
-		final String write = string == null ? NULL : string;
-		this.getByteArrayOutputStream().write( write.getBytes() );
-	}
+    public void print(final String string) throws IOException {
+        final String write = string == null ? NULL : string;
+        this.getByteArrayOutputStream().write(write.getBytes());
+    }
 
-	public void print( final boolean b ) throws IOException{
-		this.print( String.valueOf( b ));
-	}
+    public void print(final boolean b) throws IOException {
+        this.print(String.valueOf(b));
+    }
 
-	public void print( final char c )throws IOException{
-		this.print( String.valueOf( c ));
-	}
+    public void print(final char c) throws IOException {
+        this.print(String.valueOf(c));
+    }
 
-	public void print( final int intValue )throws IOException{
-		this.print( String.valueOf( intValue ));
-	}
+    public void print(final int intValue) throws IOException {
+        this.print(String.valueOf(intValue));
+    }
 
-	public void print( final long longValue )throws IOException{
-		this.print( String.valueOf( longValue ));
-	}
+    public void print(final long longValue) throws IOException {
+        this.print(String.valueOf(longValue));
+    }
 
-	public void print( final float floatValue )throws IOException{
-		this.print( String.valueOf( floatValue ));
-	}
-	public void print( final double doubleValue )throws IOException{
-		this.print( String.valueOf( doubleValue ));
-	}
+    public void print(final float floatValue) throws IOException {
+        this.print(String.valueOf(floatValue));
+    }
 
-	static final String EOL = System.getProperty( "line.separator");
+    public void print(final double doubleValue) throws IOException {
+        this.print(String.valueOf(doubleValue));
+    }
 
-	public void println()throws IOException{
-		this.print( EOL );
-	}
+    static final String EOL = System.getProperty("line.separator");
 
-	public void println( final String string )throws IOException{
-		this.print( string );
-		this.println();
-	}
+    public void println() throws IOException {
+        this.print(EOL);
+    }
 
-	public void println( final boolean b ) throws IOException{
-		this.println( String.valueOf( b ));
-	}
+    public void println(final String string) throws IOException {
+        this.print(string);
+        this.println();
+    }
 
-	public void println( final char c )throws IOException{
-		this.println( String.valueOf( c ));
-	}
+    public void println(final boolean b) throws IOException {
+        this.println(String.valueOf(b));
+    }
 
-	public void println( final int intValue )throws IOException{
-		this.println( String.valueOf( intValue ));
-	}
+    public void println(final char c) throws IOException {
+        this.println(String.valueOf(c));
+    }
 
-	public void println( final long longValue )throws IOException{
-		this.println( String.valueOf( longValue ));
-	}
+    public void println(final int intValue) throws IOException {
+        this.println(String.valueOf(intValue));
+    }
 
-	public void println( final float floatValue )throws IOException{
-		this.println( String.valueOf( floatValue ));
-	}
-	public void println( final double doubleValue )throws IOException{
-		this.println( String.valueOf( doubleValue ));
-	}
+    public void println(final long longValue) throws IOException {
+        this.println(String.valueOf(longValue));
+    }
 
-	public void write(final int intValue)throws IOException {
-		this.getByteArrayOutputStream().write(intValue);
-	}
+    public void println(final float floatValue) throws IOException {
+        this.println(String.valueOf(floatValue));
+    }
 
-	public void write( final byte[] bytes )throws IOException{
-		ObjectHelper.checkNotNull( "parameter:bytes", bytes );
-		this.write( bytes, 0, bytes.length );
-	}
+    public void println(final double doubleValue) throws IOException {
+        this.println(String.valueOf(doubleValue));
+    }
 
-	public void write( final byte[] bytes, final int offset, final int length )throws IOException{
-		ObjectHelper.checkNotNull( "parameter:bytes", bytes );
-		final int bytesCount = bytes.length;
-		PrimitiveHelper.checkBetween( "parameter:offset", offset, 0,bytesCount );
-		PrimitiveHelper.checkBetween( "parameter:length", length, offset, bytesCount - offset + 1);
+    public void write(final int intValue) throws IOException {
+        this.getByteArrayOutputStream().write(intValue);
+    }
 
-		this.getByteArrayOutputStream().write( bytes, offset, length );
-	}
+    public void write(final byte[] bytes) throws IOException {
+        ObjectHelper.checkNotNull("parameter:bytes", bytes);
+        this.write(bytes, 0, bytes.length);
+    }
 
-	public void reset() {
-		if (this.isCommitted()) {
-			throw new IllegalStateException("Unable to reset because buffer has already been committed.");
-		}
-		this.getByteArrayOutputStream().reset();
-	}
+    public void write(final byte[] bytes, final int offset, final int length) throws IOException {
+        ObjectHelper.checkNotNull("parameter:bytes", bytes);
+        final int bytesCount = bytes.length;
+        PrimitiveHelper.checkBetween("parameter:offset", offset, 0, bytesCount);
+        PrimitiveHelper.checkBetween("parameter:length", length, offset, bytesCount - offset + 1);
 
-	public void flush() throws IOException {
-		this.setCommitted(true);
-		this.getByteArrayOutputStream().flush();
-	}
+        this.getByteArrayOutputStream().write(bytes, offset, length);
+    }
 
-	private boolean committed = false;
+    public void reset() {
+        if (this.isCommitted()) {
+            throw new IllegalStateException("Unable to reset because buffer has already been committed.");
+        }
+        this.getByteArrayOutputStream().reset();
+    }
 
-	public boolean isCommitted() {
-		return committed || this.getByteArrayOutputStream().size() > this.getBufferSize();
-	}
+    public void flush() throws IOException {
+        this.setCommitted(true);
+        this.getByteArrayOutputStream().flush();
+    }
 
-	protected void setCommitted(final boolean committed) {
-		this.committed = committed;
-	}
+    private boolean committed = false;
 
-	public byte[] toByteArray() {
-		return this.getByteArrayOutputStream().toByteArray();
-	}
+    public boolean isCommitted() {
+        return committed || this.getByteArrayOutputStream().size() > this.getBufferSize();
+    }
 
-	/**
-	 * The byte array that is written too. When either flush or the size of the buffer exceeds bufferSize it is deemed to have been
-	 * committed.
-	 */
-	private ByteArrayOutputStream byteArrayOutputStream;
+    protected void setCommitted(final boolean committed) {
+        this.committed = committed;
+    }
 
-	protected ByteArrayOutputStream getByteArrayOutputStream() {
-		ObjectHelper.checkNotNull("field:byteArrayOutputStream", byteArrayOutputStream);
-		return this.byteArrayOutputStream;
-	}
+    public byte[] toByteArray() {
+        return this.getByteArrayOutputStream().toByteArray();
+    }
 
-	protected void setByteArrayOutputStream(final ByteArrayOutputStream byteArrayOutputStream) {
-		ObjectHelper.checkNotNull("parameter:byteArrayOutputStream", byteArrayOutputStream);
-		this.byteArrayOutputStream = byteArrayOutputStream;
-	}
+    /**
+     * The byte array that is written too. When either flush or the size of the buffer exceeds bufferSize it is deemed to have been
+     * committed.
+     */
+    private ByteArrayOutputStream byteArrayOutputStream;
 
-	protected void createByteArrayOutputStream(){
-		final ByteArrayOutputStream baos = new ByteArrayOutputStream( this.getBufferSize() );
-		this.setByteArrayOutputStream(baos);
-	}
+    protected ByteArrayOutputStream getByteArrayOutputStream() {
+        ObjectHelper.checkNotNull("field:byteArrayOutputStream", byteArrayOutputStream);
+        return this.byteArrayOutputStream;
+    }
 
-	public String toString() {
-		return super.toString() + ", byteArrayOutputStream: " + byteArrayOutputStream + ", committed: " + committed + ", bufferSize: "
-				+ bufferSize;
-	}
+    protected void setByteArrayOutputStream(final ByteArrayOutputStream byteArrayOutputStream) {
+        ObjectHelper.checkNotNull("parameter:byteArrayOutputStream", byteArrayOutputStream);
+        this.byteArrayOutputStream = byteArrayOutputStream;
+    }
+
+    protected void createByteArrayOutputStream() {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream(this.getBufferSize());
+        this.setByteArrayOutputStream(baos);
+    }
+
+    public String toString() {
+        return super.toString() + ", byteArrayOutputStream: " + byteArrayOutputStream + ", committed: " + committed
+                + ", bufferSize: " + bufferSize;
+    }
 }

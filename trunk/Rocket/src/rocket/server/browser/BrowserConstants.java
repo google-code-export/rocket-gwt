@@ -17,27 +17,31 @@ package rocket.server.browser;
 
 /**
  * Repository of constants used throughout the browser package.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class BrowserConstants {
 
     static String CSS_SCALING_FACTOR = "scalingFactor";
+
     static String CSS_FILENAME = "filename";
 
     static String PIXEL_UNIT = "px";
+
     static String IMPORT_DIRECTIVE = "@import";
+
     static String SCALABLE_CSS_PROPERTIES = "scalable-css-properties";
 
-	static String USER_AGENT = "User-agent";
+    static String USER_AGENT = "User-agent";
 
-	static String FIREFOX_1_X = "Firefox/1.";
+    static String FIREFOX_1_X = "Firefox/1.";
 
-	static String INTERNET_EXPLORER_6 = "MSIE 6.0";
+    static String INTERNET_EXPLORER_6 = "MSIE 6.0";
 
-	static String INTERNET_EXPLORER_5 = "MSIE 5.0";
+    static String INTERNET_EXPLORER_5 = "MSIE 5.0";
 
-	final static char[] START_SCRIPT = "script".toCharArray();
+    final static char[] START_SCRIPT = "script".toCharArray();
 
-	final static char[] END_SCRIPT = "/script".toCharArray();
+    final static char[] END_SCRIPT = "/script".toCharArray();
 
 }

@@ -158,7 +158,7 @@ public class FormElementsListTestCase extends GWTTestCase {
 
     /**
      * Factory which creates a form with three elements.
-     *
+     * 
      * @return
      */
     static JavaScriptObject getFormElements() {

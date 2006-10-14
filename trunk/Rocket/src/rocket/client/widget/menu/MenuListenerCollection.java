@@ -25,8 +25,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class MenuListenerCollection {
 
-    public MenuListenerCollection(){
-        this.setListeners( new ArrayList() );
+    public MenuListenerCollection() {
+        this.setListeners(new ArrayList());
     }
 
     /**
@@ -56,26 +56,28 @@ public class MenuListenerCollection {
         this.getListeners().remove(verticalListListener);
     }
 
-    public void fireMenuCancelled( final Widget widget){
-        ObjectHelper.checkNotNull( "parameter:widget", widget );
+    // FIRE EVENTS ::::::::::::::::::::::::::::::::::::::
+
+    public void fireMenuCancelled(final Widget widget) {
+        ObjectHelper.checkNotNull("parameter:widget", widget);
 
         final Iterator listeners = this.getListeners().iterator();
 
-        while( listeners.hasNext() ){
-            final MenuListener listener = ( MenuListener ) listeners.next();
-            listener.onMenuCancelled( widget );
+        while (listeners.hasNext()) {
+            final MenuListener listener = (MenuListener) listeners.next();
+            listener.onMenuCancelled(widget);
         }
     }
 
-    public boolean fireBeforeMenuOpened( final Widget widget){
-        ObjectHelper.checkNotNull( "parameter:widget", widget );
+    public boolean fireBeforeMenuOpened(final Widget widget) {
+        ObjectHelper.checkNotNull("parameter:widget", widget);
 
         final Iterator listeners = this.getListeners().iterator();
         boolean open = true;
 
-        while( listeners.hasNext() ){
-            final MenuListener listener = ( MenuListener ) listeners.next();
-            if( !listener.onBeforeMenuOpened( widget )){
+        while (listeners.hasNext()) {
+            final MenuListener listener = (MenuListener) listeners.next();
+            if (!listener.onBeforeMenuOpened(widget)) {
                 open = false;
                 break;
             }
@@ -83,14 +85,14 @@ public class MenuListenerCollection {
         return open;
     }
 
-    public void fireMenuOpened( final Widget widget){
-        ObjectHelper.checkNotNull( "parameter:widget", widget );
+    public void fireMenuOpened(final Widget widget) {
+        ObjectHelper.checkNotNull("parameter:widget", widget);
 
         final Iterator listeners = this.getListeners().iterator();
 
-        while( listeners.hasNext() ){
-            final MenuListener listener = ( MenuListener ) listeners.next();
-            listener.onMenuOpened( widget );
+        while (listeners.hasNext()) {
+            final MenuListener listener = (MenuListener) listeners.next();
+            listener.onMenuOpened(widget);
         }
     }
 

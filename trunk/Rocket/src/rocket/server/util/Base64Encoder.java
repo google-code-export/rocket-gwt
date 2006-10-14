@@ -15,17 +15,16 @@
  */
 package rocket.server.util;
 
-
 /**
  * This class may be used to encode a byte array into a String.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class Base64Encoder {
 
     /**
      * Takes an array of bytes and builds a string that is base 64 encoded.
-     *
+     * 
      * @param bytes
      * @return
      */
@@ -89,7 +88,7 @@ public class Base64Encoder {
     }
 
     /**
-     *
+     * 
      * @param in
      * @return
      */
