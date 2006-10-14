@@ -28,7 +28,7 @@
 @call Menu-compile.cmd
 @echo .
 
-@call OrderedList-compile.cmd
+@call OrderedListPanel-compile.cmd
 @echo .
 
 @call Pager-compile.cmd
@@ -49,7 +49,7 @@
 @call Tree-compile.cmd
 @echo .
 
-@call UnorderedList-compile.cmd
+@call UnorderedListPanel-compile.cmd
 @echo .
 
 @call ZebraFlexTable-compile.cmd
