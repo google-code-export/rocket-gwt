@@ -1,0 +1,20 @@
+BODY{
+	background-color: #cccccc;
+}
+
+DIV.scaled, DIV.reference{
+	background-color: #ffffff;
+}
+
+DIV.scaled{
+	font-size: 5px;
+}
+
+IMG{
+	width: 16px;
+	height: 10px;	
+}
+
+PRE{
+	background-color: #dddddd;
+}
