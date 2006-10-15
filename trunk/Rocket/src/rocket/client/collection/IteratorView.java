@@ -16,6 +16,7 @@
 package rocket.client.collection;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * This iterator provides a fast failsafe view of another collection. It lso provides automatic support for switching based the type of view
@@ -41,6 +42,10 @@ public abstract class IteratorView implements Iterator {
 
     public Object next() {
         this.modificationGuard();
+        if (false == this.hasNext()) {
+            throw new NoSuchElementException();
+        }
+
         final Object nexted = this.next0(this.getViewType());
         this.leavingNext();
         this.syncModificationCounters();

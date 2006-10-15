@@ -52,7 +52,6 @@ public class LeftTabPanel extends VerticalTabPanel {
         this.setTabBarPanel(panel);
 
         panel.addStyleName(this.getTabBarStyleName());
-        panel.sinkEvents(Event.ONCLICK);
         panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 
         final Widget first = this.createTabBarBeforeSpacer();

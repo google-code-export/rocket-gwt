@@ -15,7 +15,9 @@
  */
 package rocket.client.widget.tab;
 
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 
 /**
  * A BottomTabPanel arranges its tab titles along the bottom edge with the remainder allocated to the tab contents of the active tab.
@@ -40,6 +42,10 @@ public class BottomTabPanel extends HorizonalTabPanel {
 
         panel.add((Widget) this.createTabBarPanel());
         return panel;
+    }
+
+    protected TabPanel.HorizontalOrVerticalPanel createTabBarPanel() {
+        return this.createTabBarPanel(HasVerticalAlignment.ALIGN_TOP);
     }
 
     protected String getPanelStyleName() {

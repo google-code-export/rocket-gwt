@@ -15,11 +15,14 @@
  */
 package rocket.client.widget.tab;
 
+import rocket.client.util.ObjectHelper;
+
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 
 /**
  * The HorizontalTabPanel class is the base class for both the TopTabPanel and BottomTabPanel classes.
@@ -32,13 +35,14 @@ public abstract class HorizonalTabPanel extends TabPanel {
         super();
     }
 
-    protected HorizontalOrVerticalPanel createTabBarPanel() {
+    protected HorizontalOrVerticalPanel createTabBarPanel(final VerticalAlignmentConstant alignment) {
+        ObjectHelper.checkNotNull("parameter:alignment", alignment);
+
         final HorizontalPanelImpl panel = new HorizontalPanelImpl();
         this.setTabBarPanel(panel);
 
         panel.addStyleName(this.getTabBarStyleName());
-        panel.sinkEvents(Event.ONCLICK);
-        panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
+        panel.setVerticalAlignment(alignment);
 
         final Widget first = this.createTabBarBeforeSpacer();
         final Widget rest = this.createTabBarAfterSpacer();

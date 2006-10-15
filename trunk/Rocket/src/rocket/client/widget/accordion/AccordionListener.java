@@ -13,16 +13,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.client.widget.tab;
+package rocket.client.widget.accordion;
 
 import com.google.gwt.user.client.ui.Widget;
 
-public interface TabListener {
-    boolean onBeforeTabSelected(TabItem item);
+public interface AccordionListener {
+    boolean onBeforeItemSelected(AccordionItem item);
 
-    void onTabSelected(TabItem item);
-
-    boolean onBeforeTabClosed(TabItem item);
-
-    void onTabClosed(TabItem item);
+    void onItemSelected(AccordionItem item);
 }
