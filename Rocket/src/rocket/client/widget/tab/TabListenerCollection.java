@@ -55,13 +55,15 @@ public class TabListenerCollection {
         this.getListeners().remove(tabListener);
     }
 
-    public boolean fireBeforeTabSelected(final String title, final Widget widget) {
+    public boolean fireBeforeTabSelected(final TabItem item) {
+        ObjectHelper.checkNotNull("parameter:item", item);
+
         boolean doSelect = true;
         final Iterator listeners = this.getListeners().iterator();
 
         while (listeners.hasNext()) {
             final TabListener listener = (TabListener) listeners.next();
-            if (!listener.onBeforeTabSelected(title, widget)) {
+            if (!listener.onBeforeTabSelected(item)) {
                 doSelect = false;
                 break;
             }
@@ -69,35 +71,40 @@ public class TabListenerCollection {
         return doSelect;
     }
 
-    public void fireTabSelected(final String title, final Widget widget) {
+    public void fireTabSelected(final TabItem item) {
+        ObjectHelper.checkNotNull("parameter:item", item);
         final Iterator listeners = this.getListeners().iterator();
 
         while (listeners.hasNext()) {
             final TabListener listener = (TabListener) listeners.next();
-            listener.onTabSelected(title, widget);
+            listener.onTabSelected(item);
         }
     }
 
-    public boolean fireBeforeTabClosed(final String title, final Widget widget) {
-        boolean removeTab = true;
+    public boolean fireBeforeTabClosed(final TabItem item) {
+        ObjectHelper.checkNotNull("parameter:item", item);
+
+        boolean removed = true;
         final Iterator listeners = this.getListeners().iterator();
 
         while (listeners.hasNext()) {
             final TabListener listener = (TabListener) listeners.next();
-            if (!listener.onBeforeTabClosed(title, widget)) {
-                removeTab = false;
+            if (!listener.onBeforeTabClosed(item)) {
+                removed = false;
                 break;
             }
         }
-        return removeTab;
+        return removed;
     }
 
-    public void fireTabClosed(final String title, final Widget widget) {
+    public void fireTabClosed(final TabItem item) {
+        ObjectHelper.checkNotNull("parameter:item", item);
+
         final Iterator listeners = this.getListeners().iterator();
 
         while (listeners.hasNext()) {
             final TabListener listener = (TabListener) listeners.next();
-            listener.onTabClosed(title, widget);
+            listener.onTabClosed(item);
         }
     }
 }
