@@ -157,3 +157,15 @@ ADD InteractiveList
 ADD InteractivePanel and reworked previous panel tests to use the widget.
 ADD DomObjectPropertyList, DomObjectPropertyListElement list implementation which wraps and unwraps when writing/reading to a dom object's property.
 REF Renamed AbstractIteratorWrapper to IteratorWrapper
+
+0.18 15 October 2006
+--------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.18/Rocket-0.18.zip
+
+FIX Added strict HTML doctype to all test html pages.
+ENH Changed cursor styles within Slider test.html 
+FIX IteratorView.next() so it now throws NoSuchElementException if the iterator has been exhausted rather than generic Exception.
+FIX InteractiveList clicking on the IteratorRemoveButton was calling iterator.next() not interator.remove()
+FIX InteractiveList fixed logging of caught exceptions during attempted list operations.
+ENH Changed public methods of TabPanel to accept TabItem which contains handles to the caption and content widgets. Also simplified/shortened public method names to longer include "Tab".
+ADD AccordionPanel widget with 3 different flavours (VerticalAccordionPanel, LeftSideAccordionPanel, RightSideAccordionPanel).

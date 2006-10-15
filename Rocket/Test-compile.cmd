@@ -1,3 +1,6 @@
+@call AccordionPanel-compile.cmd
+@echo .
+
 @call AutoCompleteTextBox-compile.cmd
 @echo .
 
