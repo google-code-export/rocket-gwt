@@ -46,6 +46,12 @@
 @call SpanPanel-compile.cmd
 @echo .
 
+@call Style-compile.cmd
+@echo .
+
+@call StyleSheetPicker-compile.cmd
+@echo .
+
 @call TabPanel-compile.cmd
 @echo .
 
