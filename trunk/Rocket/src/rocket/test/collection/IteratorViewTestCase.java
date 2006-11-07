@@ -153,18 +153,18 @@ public class IteratorViewTestCase extends TestCase {
                     return wrapped.hasNext();
                 }
 
-                protected Object next0(int type) {
+                protected Object next0() {
                     return wrapped.next();
                 }
 
-                protected void leavingNext() {
+                protected void afterNext() {
                 }
 
                 protected void remove0() {
                     wrapped.remove();
                 }
 
-                protected int getParentModificationCounter() {
+                protected int getModificationCounter() {
                     return that.getModificationCounter();
                 }
             };

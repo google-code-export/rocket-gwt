@@ -23,6 +23,9 @@ import rocket.client.util.ObjectHelper;
 import rocket.client.util.SystemHelper;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -32,13 +35,15 @@ public class InteractiveListTest implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        try {
-            final RootPanel rootPanel = RootPanel.get();
-            rootPanel.add(new InteractiveList());
+        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            public void onUncaughtException(final Throwable caught) {
+                caught.printStackTrace();
+                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+            }
+        });
 
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+        final RootPanel rootPanel = RootPanel.get();
+        rootPanel.add(new InteractiveList());
     }
 
     public class InteractiveList extends rocket.client.widget.test.InteractiveList {

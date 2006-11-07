@@ -20,6 +20,8 @@ import rocket.client.widget.Grid;
 import rocket.client.widget.WidgetProvider;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -37,87 +39,90 @@ public class GridTest implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        try {
-            final RootPanel rootPanel = RootPanel.get();
-            final Grid grid = new Grid();
-            grid.setColumns(1);
-            grid.setCursor(0);
-            grid.setRows(1);
-            grid.setFiller("<span style='background-color: #eeeeee'></span>");
-            grid.setWidgetProvider(new WidgetProvider() {
-                public int getFirst() {
-                    return 0;
-                }
+        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            public void onUncaughtException(final Throwable caught) {
+                caught.printStackTrace();
+                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+            }
+        });
 
-                public int getLast() {
-                    return 10;
-                }
+        final RootPanel rootPanel = RootPanel.get();
+        final Grid grid = new Grid();
+        grid.setColumns(1);
+        grid.setCursor(0);
+        grid.setRows(1);
+        grid.setFiller("<span style='background-color: #eeeeee'></span>");
+        grid.setWidgetProvider(new WidgetProvider() {
+            public int getFirst() {
+                return 0;
+            }
 
-                public int getCount() {
-                    return this.getLast() - getFirst();
-                }
+            public int getLast() {
+                return 10;
+            }
 
-                public Widget getWidget(final int index) {
-                    PrimitiveHelper.checkBetween("parameter:index", index, this.getFirst(), this.getLast());
+            public int getCount() {
+                return this.getLast() - getFirst();
+            }
 
-                    final Image image = new Image();
-                    image.setUrl("image-" + index + ".JPG");
-                    return image;
-                }
-            });
-            grid.setAutoRedraw(true);
-            grid.redraw();
+            public Widget getWidget(final int index) {
+                PrimitiveHelper.checkBetween("parameter:index", index, this.getFirst(), this.getLast());
 
-            final TextBox rows = new TextBox();
-            rootPanel.add(new Label("Rows: "));
-            rootPanel.add(rows);
+                final Image image = new Image();
+                image.setUrl("image-" + index + ".JPG");
+                return image;
+            }
+        });
+        grid.setAutoRedraw(true);
+        grid.redraw();
 
-            final TextBox columns = new TextBox();
-            columns.addKeyboardListener(new KeyboardListenerAdapter() {
-                public void onKeyDown(final Widget sender, final char key, final int modifier) {
-                    if (key == KeyboardListener.KEY_ENTER) {
+        final TextBox rows = new TextBox();
+        rootPanel.add(new Label("Rows: "));
+        rootPanel.add(rows);
 
-                    }
-                }
-            });
-            rootPanel.add(new Label("Columns: "));
-            rootPanel.add(columns);
-
-            final TextBox cursor = new TextBox();
-            rootPanel.add(new Label("Cursor: "));
-            rootPanel.add(cursor);
-
-            final Button update = new Button("Update grid");
-            update.addClickListener(new ClickListener() {
-                public void onClick(Widget ignored) {
-                    final String rowsText = rows.getText();
-                    try {
-                        grid.setRows(Integer.parseInt(rowsText));
-                    } catch (final NumberFormatException nfe) {
-                        Window.alert("rows textBox contains an invalid number [" + rowsText + "]");
-                    }
-
-                    final String columnsText = columns.getText();
-                    try {
-                        grid.setColumns(Integer.parseInt(columnsText));
-                    } catch (final NumberFormatException nfe) {
-                        Window.alert("columns textBox contains an invalid number [" + columnsText + "]");
-                    }
-
-                    final String cursorText = cursor.getText();
-                    try {
-                        grid.setCursor(Integer.parseInt(cursorText));
-                    } catch (final NumberFormatException nfe) {
-                        Window.alert("cursor textBox contains an invalid number [" + cursorText + "]");
-                    }
+        final TextBox columns = new TextBox();
+        columns.addKeyboardListener(new KeyboardListenerAdapter() {
+            public void onKeyDown(final Widget sender, final char key, final int modifier) {
+                if (key == KeyboardListener.KEY_ENTER) {
 
                 }
-            });
-            rootPanel.add(update);
+            }
+        });
+        rootPanel.add(new Label("Columns: "));
+        rootPanel.add(columns);
 
-            rootPanel.add(grid);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+        final TextBox cursor = new TextBox();
+        rootPanel.add(new Label("Cursor: "));
+        rootPanel.add(cursor);
+
+        final Button update = new Button("Update grid");
+        update.addClickListener(new ClickListener() {
+            public void onClick(Widget ignored) {
+                final String rowsText = rows.getText();
+                try {
+                    grid.setRows(Integer.parseInt(rowsText));
+                } catch (final NumberFormatException nfe) {
+                    Window.alert("rows textBox contains an invalid number [" + rowsText + "]");
+                }
+
+                final String columnsText = columns.getText();
+                try {
+                    grid.setColumns(Integer.parseInt(columnsText));
+                } catch (final NumberFormatException nfe) {
+                    Window.alert("columns textBox contains an invalid number [" + columnsText + "]");
+                }
+
+                final String cursorText = cursor.getText();
+                try {
+                    grid.setCursor(Integer.parseInt(cursorText));
+                } catch (final NumberFormatException nfe) {
+                    Window.alert("cursor textBox contains an invalid number [" + cursorText + "]");
+                }
+
+            }
+        });
+        rootPanel.add(update);
+
+        rootPanel.add(grid);
     }
 }

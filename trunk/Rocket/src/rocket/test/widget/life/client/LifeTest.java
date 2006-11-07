@@ -19,10 +19,13 @@ import rocket.client.widget.BlockyPixel;
 import rocket.client.widget.Life;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
@@ -40,73 +43,74 @@ public class LifeTest implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        try {
-            final RootPanel panel = RootPanel.get();
+        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            public void onUncaughtException(final Throwable caught) {
+                caught.printStackTrace();
+                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+            }
+        });
+        final RootPanel panel = RootPanel.get();
 
-            panel.add(new Label("Interval"));
-            final TextBox interval = new TextBox();
-            interval.setText("1000");
-            panel.add(interval);
-            panel.add(new HTML("<br/>"));
+        panel.add(new Label("Interval"));
+        final TextBox interval = new TextBox();
+        interval.setText("1000");
+        panel.add(interval);
+        panel.add(new HTML("<br/>"));
 
-            panel.add(new Label("Rows"));
-            final TextBox rows = new TextBox();
-            rows.setText("30");
-            panel.add(rows);
-            panel.add(new HTML("<br/>"));
+        panel.add(new Label("Rows"));
+        final TextBox rows = new TextBox();
+        rows.setText("30");
+        panel.add(rows);
+        panel.add(new HTML("<br/>"));
 
-            panel.add(new Label("Columns"));
-            final TextBox columns = new TextBox();
-            columns.setText("30");
-            panel.add(columns);
-            panel.add(new HTML("<br/>"));
+        panel.add(new Label("Columns"));
+        final TextBox columns = new TextBox();
+        columns.setText("30");
+        panel.add(columns);
+        panel.add(new HTML("<br/>"));
 
-            panel.add(new Label("CellBias (higher creates more live cells)"));
-            final TextBox cellBias = new TextBox();
-            cellBias.setText("-123456789");
-            panel.add(cellBias);
-            panel.add(new HTML("<br/>"));
+        panel.add(new Label("CellBias (higher creates more live cells)"));
+        final TextBox cellBias = new TextBox();
+        cellBias.setText("-123456789");
+        panel.add(cellBias);
+        panel.add(new HTML("<br/>"));
 
-            final Button button = new Button("Start");
-            panel.add(button);
-            panel.add(new HTML("<br/>"));
+        final Button button = new Button("Start");
+        panel.add(button);
+        panel.add(new HTML("<br/>"));
 
-            button.addClickListener(new ClickListener() {
-                public void onClick(final Widget ignore) {
-                    final BlockyPixel pixels = new BlockyPixel();
-                    pixels.setRows(Integer.parseInt(rows.getText()));
-                    pixels.setColumns(Integer.parseInt(columns.getText()));
-                    pixels.setSize("90%", "75%");
-                    pixels.clear(0xdddddd);
-                    panel.add(pixels);
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignore) {
+                final BlockyPixel pixels = new BlockyPixel();
+                pixels.setRows(Integer.parseInt(rows.getText()));
+                pixels.setColumns(Integer.parseInt(columns.getText()));
+                pixels.setSize("90%", "75%");
+                pixels.clear(0xdddddd);
+                panel.add(pixels);
 
-                    final Life life = new Life();
-                    life.setDeadCellColour(0xdddddd);
-                    life.setLiveCellColour(0xbbbbbb);
-                    life.setPixelGrid(pixels);
-                    life.createCells(Integer.parseInt(cellBias.getText()));
+                final Life life = new Life();
+                life.setDeadCellColour(0xdddddd);
+                life.setLiveCellColour(0xbbbbbb);
+                life.setPixelGrid(pixels);
+                life.createCells(Integer.parseInt(cellBias.getText()));
 
-                    final TestTimer timer = new TestTimer();
-                    timer.setCounter(0);
-                    timer.setLife(life);
-                    timer.scheduleRepeating(Integer.parseInt(interval.getText()));
+                final TestTimer timer = new TestTimer();
+                timer.setCounter(0);
+                timer.setLife(life);
+                timer.scheduleRepeating(Integer.parseInt(interval.getText()));
 
-                    DOM.addEventPreview(new EventPreview() {
-                        public boolean onEventPreview(final Event event) {
-                            if (DOM.eventGetType(event) == Event.ONCLICK) {
-                                timer.cancel();
+                DOM.addEventPreview(new EventPreview() {
+                    public boolean onEventPreview(final Event event) {
+                        if (DOM.eventGetType(event) == Event.ONCLICK) {
+                            timer.cancel();
 
-                                DOM.removeEventPreview(this);
-                            }
-                            return true;
+                            DOM.removeEventPreview(this);
                         }
-                    });
-                }
-            });
-
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+                        return true;
+                    }
+                });
+            }
+        });
     }
 
     class TestTimer extends Timer {

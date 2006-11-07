@@ -17,7 +17,8 @@ package rocket.test.dom.domcollectionlist.test;
 
 import rocket.client.dom.DomCollectionList;
 import rocket.client.dom.DomHelper;
-import rocket.client.dom.ElementWrapper;
+import rocket.client.dom.ElementWrapperImpl;
+import rocket.client.util.ObjectHelper;
 import rocket.client.util.SystemHelper;
 
 import com.google.gwt.core.client.GWT;
@@ -55,14 +56,14 @@ public class DomCollectionListTestCase extends GWTTestCase {
     }
 
     public void testSize0() {
-        final TestAbstractDomElementList list = new TestAbstractDomElementList();
+        final TestDomCollectionList list = new TestDomCollectionList();
         list.setCollection(getFormElements());
 
         assertEquals("list.size", 3, list.size());
     }
 
     public void testGet0OnlyTestsForNotNull() {
-        final TestAbstractDomElementList list = new TestAbstractDomElementList();
+        final TestDomCollectionList list = new TestDomCollectionList();
         list.setCollection(getFormElements());
 
         final Object firstWrapper = list.get(0);
@@ -76,7 +77,7 @@ public class DomCollectionListTestCase extends GWTTestCase {
     }
 
     public void testGet1WithCasts() {
-        final TestAbstractDomElementList list = new TestAbstractDomElementList();
+        final TestDomCollectionList list = new TestDomCollectionList();
         list.setCollection(getFormElements());
 
         final TestDomElementWrapper firstWrapper = (TestDomElementWrapper) list.get(0);
@@ -90,7 +91,7 @@ public class DomCollectionListTestCase extends GWTTestCase {
     }
 
     public void testGet2WithCastsAndChecksIsCorrectElement() {
-        final TestAbstractDomElementList list = new TestAbstractDomElementList();
+        final TestDomCollectionList list = new TestDomCollectionList();
         list.setCollection(getFormElements());
 
         final TestDomElementWrapper firstWrapper = (TestDomElementWrapper) list.get(0);
@@ -106,20 +107,8 @@ public class DomCollectionListTestCase extends GWTTestCase {
         assertEquals("list.get(2).value", THIRD_VALUE, thirdWrapper.getValue());
     }
 
-    public void testGet3VerifiesSameWrapperIsReturnedWhenSameIndexIsUsed() {
-        final TestAbstractDomElementList list = new TestAbstractDomElementList();
-        list.setCollection(getFormElements());
-
-        assertSame("list.get(0)", list.get(0), list.get(0));
-        assertSame("list.get(1)", list.get(1), list.get(1));
-        assertSame("list.get(2)", list.get(2), list.get(2));
-        assertSame("list.get(0)", list.get(0), list.get(0));
-        assertSame("list.get(1)", list.get(1), list.get(1));
-        assertSame("list.get(2)", list.get(2), list.get(2));
-    }
-
     public void testSet0WhichTestsReplacedElement() {
-        final TestAbstractDomElementList list = new TestAbstractDomElementList();
+        final TestDomCollectionList list = new TestDomCollectionList();
         list.setCollection(getFormElements());
 
         final TestDomElementWrapper originalFirstWrapper = (TestDomElementWrapper) list.get(0);
@@ -166,13 +155,13 @@ public class DomCollectionListTestCase extends GWTTestCase {
         DOM.setAttribute(third, VALUE, THIRD_VALUE);
         DOM.appendChild(form, third);
 
-        return DomHelper.getPropertyAsJavaScriptObject(form, "elements");
+        return ObjectHelper.getObject(ObjectHelper.castFromElement(form), "elements");
     }
 
-    class TestAbstractDomElementList extends DomCollectionList {
+    class TestDomCollectionList extends DomCollectionList {
 
         protected Object createWrapper(final JavaScriptObject object) {
-            final Element element = DomHelper.castToElement(object);
+            final Element element = ObjectHelper.castToElement(object);
             DomHelper.checkTagName("parameter:element", element, "INPUT");
 
             final TestDomElementWrapper wrapper = new TestDomElementWrapper();
@@ -186,22 +175,38 @@ public class DomCollectionListTestCase extends GWTTestCase {
             }
         }
 
-        protected void add0(final JavaScriptObject collection, final JavaScriptObject element) {
+        protected void add1(final JavaScriptObject collection, final JavaScriptObject element) {
             throw new UnsupportedOperationException("add");
         }
 
-        protected void insert0(final JavaScriptObject collection, final int index, final JavaScriptObject element) {
+        protected void insert1(final JavaScriptObject collection, final int index, final JavaScriptObject element) {
             throw new UnsupportedOperationException("insert");
         }
 
         protected JavaScriptObject remove0(final JavaScriptObject collection, final int index) {
             throw new UnsupportedOperationException("remove");
         }
+
+        /**
+         * Does nothing
+         * 
+         * @param object
+         */
+        protected void adopt(final Object object) {
+        }
+
+        /**
+         * Does nothing
+         * 
+         * @param object
+         */
+        protected void disown(final Object object) {
+        }
     }
 
-    class TestDomElementWrapper extends ElementWrapper {
+    class TestDomElementWrapper extends ElementWrapperImpl {
         public String getValue() {
-            return this.getProperty(VALUE);
+            return this.getString(VALUE);
         }
     }
 
