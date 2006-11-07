@@ -265,7 +265,7 @@ public class CssUnitScalingFileServlet extends HttpServlet {
             buf.append(BrowserConstants.CSS_FILENAME);
             buf.append('=');
             // buf.append( contextPath );
-            buf.append(url); // FIX urlEncode
+            buf.append(url);
 
             buf.append('&');
 

@@ -162,8 +162,6 @@ public abstract class AbstractHttpServletRequest extends HttpServletRequestWrapp
     /**
      * Uses a lazy approach to creating a map with keys/values ( as String arrays ).
      * 
-     * TODO prolly not worth the effort to create a view of request parameters
-     * 
      * @return
      */
     public Map getParameterMap() {

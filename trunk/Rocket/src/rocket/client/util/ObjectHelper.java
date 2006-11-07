@@ -16,6 +16,8 @@
 package rocket.client.util;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.Element;
 
 /**
  * A collection of useful methods when working with objects in general. Primarily this class includes static check(assert) methods.
@@ -142,6 +144,22 @@ public class ObjectHelper extends SystemHelper {
             handleNullEncountered(name, "The " + name + " must not be null.");
         }
     }
+    
+    /**
+     * This method is only included because calls to {@link #checkNotNull(String, Object)} result in the compiled javascript including a call 
+     * to a function which attempts to modify the object's prototype. This fails for certain native objects that have unmodifiable prototypes.
+     * 
+     * {@see http://code.google.com/p/google-web-toolkit/issues/detail?id=304}
+     * @param name
+     * @param object
+     * 
+     * @deprecated This method will be removed when the GWT issue is fixed. 
+     */
+    public static void checkNotNull(final String name, final JavaScriptObject object) {
+        if (object == null) {
+            handleNullEncountered(name, "The " + name + " must not be null.");
+        }
+    }    
 
     public static void handleNullEncountered(String name, String message) {
         handleAssertFailure(name, message);
@@ -150,40 +168,32 @@ public class ObjectHelper extends SystemHelper {
     /**
      * Asserts that the two objects are in fact the same.
      * 
-     * @param firstName
-     * @param firstObject
-     * @param secondName
-     * @param secondObject
+     * @param message
+     * @param object
+     * @param otherObject
      */
-    public static void checkSame(final String firstName, final Object firstObject, final String secondName,
-            final Object secondObject) {
-        if (false == nullSafeIdentity(firstObject, secondObject)) {
-            SystemHelper.handleUnsupportedOperation("The " + firstName + " is not the same object object as "
-                    + secondName + " firstObject: " + firstObject + ", secondObject: " + secondObject);
+    public static void checkSame(final String message, final Object object, final Object otherObject) {
+        if (false == nullSafeIdentity(object, otherObject)) {
+            SystemHelper.handleAssertFailure( message + ", object: " + object );            
         }
     }
 
-    public static void checkNotSame(final String firstName, final Object firstObject, final String secondName,
-            final Object secondObject) {
-        if (nullSafeIdentity(firstObject, secondObject)) {
-            SystemHelper.handleUnsupportedOperation("The " + firstName + " is the same object object as " + secondName
-                    + " firstObject: " + firstObject + ", secondObject: " + secondObject);
+    public static void checkNotSame(final String message, final Object object, final Object otherObject) {
+        if (nullSafeIdentity(object, otherObject)) {
+            SystemHelper.handleAssertFailure( message );
         }
     }
 
     /**
      * Asserts that the two objects are in fact different objects.
      * 
-     * @param firstName
-     * @param firstObject
-     * @param secondName
-     * @param secondObject
+     * @param message
+     * @param object
+     * @param otherObject
      */
-    public static void checkDifferent(final String firstName, final Object firstObject, final String secondName,
-            final Object secondObject) {
-        if (nullSafeIdentity(firstObject, secondObject)) {
-            SystemHelper.handleUnsupportedOperation("The " + firstName + " is the same object object as " + secondName
-                    + " firstObject: " + firstObject + ", secondObject: " + secondObject);
+    public static void checkDifferent(final String message, final Object object, final Object otherObject) {
+        if (nullSafeIdentity(object, otherObject)) {
+            SystemHelper.handleAssertFailure( message );
         }
     }
 
@@ -200,18 +210,503 @@ public class ObjectHelper extends SystemHelper {
     /**
      * Asserts that the two objects are in fact the equal or both are null.
      * 
-     * @param firstName
-     * @param firstObject
-     * @param secondName
-     * @param secondObject
+     * @param message
+     * @param object
+     * @param otherObject
      */
-    public static void checkEquals(final String firstName, final Object firstObject, final String secondName,
-            final Object secondObject) {
-        if (false == nullSafeEquals(firstObject, secondObject)) {
-            SystemHelper.handleUnsupportedOperation("The " + firstName + " is not equal to " + secondName
-                    + " firstObject: " + firstObject + ", secondObject: " + secondObject);
+    public static void checkEquals(final String message, final Object object, final Object otherObject) {
+        if (false == nullSafeEquals(object, otherObject)) {
+            SystemHelper.handleAssertFailure( message );            
         }
     }
+
+    /**
+     * Tests if a particular property is present on the given object.
+     * 
+     * @param object
+     * @param propertyName
+     * @return
+     */
+    public static boolean hasProperty(final JavaScriptObject object, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return hasProperty0(object, propertyName);
+    }
+
+    protected static native boolean hasProperty0(final JavaScriptObject object, final String propertyName)/*-{
+     var value = object[ propertyName ];
+     
+     return typeof( value ) != "undefined"; 
+     }-*/;
+
+    public static boolean hasProperty(final JavaScriptObject object, final int index) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return hasProperty0(object, index);
+    }
+
+    protected static native boolean hasProperty0(final JavaScriptObject object, final int index)/*-{
+     var value = object[ index ];
+     
+     return typeof( value ) != "undefined"; 
+     }-*/;
+
+    /**
+     * Retrieves an object property as a String.
+     * 
+     * @param object
+     * @param propertyName
+     * @return
+     */
+    public static String getString(final JavaScriptObject object, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return getString0(object, propertyName);
+    }
+
+    protected static native String getString0(final JavaScriptObject object, final String propertyName)/*-{
+     var value = object[ propertyName ];
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
+     }
+     return value;
+     }-*/;
+
+    public static String getString(final JavaScriptObject object, final int index) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return getString0(object, index);
+    }
+
+    protected static native String getString0(final JavaScriptObject object, final int index)/*-{
+     var value = object[ index ];
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + index + "], object: " + object; 
+     }
+     return value;
+     }-*/;
+
+    /**
+     * Writes a String value to an Object's property
+     * 
+     * @param object
+     * @param propertyName
+     * @param value
+     * @return
+     */
+    public static Object setString(final JavaScriptObject object, final String propertyName, final String value) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return setString0(object, propertyName, value);
+    }
+
+    protected static native String setString0(final JavaScriptObject object, final String propertyName,
+            final String value)/*-{
+     var previousValue = object[ propertyName ];
+     object[ propertyName ] = value;
+     return previousValue ? previousValue : null;
+     }-*/;
+
+    public static Object setString(final JavaScriptObject object, final int index, final String value) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return setString0(object, index, value);
+    }
+
+    protected static native String setString0(final JavaScriptObject object, final int index, final String value)/*-{
+     var previousValue = object[ index ];
+     object[ index ] = value;
+     return previousValue ? previousValue : null;
+     }-*/;
+
+    /**
+     * Reads an object's property as a double.
+     * 
+     * @param object
+     * @param propertyName
+     * @return
+     */
+    public static double getDouble(final JavaScriptObject object, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return getDouble0(object, propertyName);
+    }
+
+    public native static double getDouble0(final JavaScriptObject object, final String propertyName)/*-{
+     var value = object[ propertyName ];
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
+     }
+     return value;
+     }-*/;
+
+    public static double getDouble(final JavaScriptObject object, final int index) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return getDouble0(object, index);
+    }
+
+    public native static double getDouble0(final JavaScriptObject object, final int index)/*-{
+     var value = object[ index ];
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + index + "], object: " + object; 
+     }
+     return value;
+     }-*/;
+
+    /**
+     * Writes a double value to an object's property
+     * 
+     * @param object
+     * @param propertyName
+     * @param value
+     * @return
+     */
+    public static double setDouble(final JavaScriptObject object, final String propertyName, final double value) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return setDouble0(object, propertyName, value);
+    }
+
+    protected static native double setDouble0(final JavaScriptObject object, final String propertyName,
+            final double value)/*-{
+     var previousValue = object[ propertyName ];
+     object[ propertyName ] = value;
+     return previousValue ? previousValue : 0.0;
+     }-*/;
+
+    public static double setDouble(final JavaScriptObject object, final int index, final double value) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return setDouble0(object, index, value);
+    }
+
+    protected static native double setDouble0(final JavaScriptObject object, final int index, final double value)/*-{
+     var previousValue = object[ index ];
+     object[ index ] = value;
+     return previousValue ? previousValue : 0.0;
+     }-*/;
+
+    /**
+     * Reads an object's property as a boolean value.
+     * 
+     * @param object
+     * @param propertyName
+     * @return
+     */
+    public static boolean getBoolean(final JavaScriptObject object, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return getBoolean0(object, propertyName);
+    }
+
+    protected native static boolean getBoolean0(final JavaScriptObject object, final String propertyName)/*-{
+     var value = object[ propertyName ];
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
+     }
+     return value;
+     }-*/;
+
+    public static boolean getBoolean(final JavaScriptObject object, final int index) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return getBoolean0(object, index);
+    }
+
+    protected native static boolean getBoolean0(final JavaScriptObject object, final int index)/*-{
+     var value = object[ index ];
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + index + "], object: " + object; 
+     }
+     return value;
+     }-*/;
+
+    /**
+     * Writes a boolean value to an object's property.
+     * 
+     * @param object
+     * @param propertyName
+     * @param booleanValue
+     */
+    public static void setBoolean(final JavaScriptObject object, final String propertyName, final boolean booleanValue) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        setBoolean0(object, propertyName, booleanValue);
+    }
+
+    protected static native boolean setBoolean0(final JavaScriptObject object, final String propertyName,
+            final boolean booleanValue)/*-{
+     var previousValue = object[ propertyName ];
+     object[ propertyName ] = booleanValue;
+     return previousValue ? true : false;
+     }-*/;
+
+    public static void setBoolean(final JavaScriptObject object, final int index, final boolean booleanValue) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        setBoolean0(object, index, booleanValue);
+    }
+
+    protected static native boolean setBoolean0(final JavaScriptObject object, final int index,
+            final boolean booleanValue)/*-{
+     var previousValue = object[ index ];
+     object[ index ] = booleanValue;
+     return previousValue ? true : false;
+     }-*/;
+
+    /**
+     * Reads an object's property as an integer value.
+     * 
+     * @param object
+     * @param propertyName
+     * @return
+     */
+    public static int getInteger(final JavaScriptObject object, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return getInteger0(object, propertyName);
+    }
+
+    public native static int getInteger0(final JavaScriptObject object, final String propertyName)/*-{
+     var value = object[ propertyName ];
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
+     }
+     return value;
+     }-*/;
+
+    public static int getInteger(final JavaScriptObject object, final int index) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return getInteger0(object, index);
+    }
+
+    public native static int getInteger0(final JavaScriptObject object, final int index)/*-{
+     var value = object[ index ];
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + index + "], object: " + object; 
+     }
+     return value;
+     }-*/;
+
+    /**
+     * Writes an integer value to an object's property
+     * 
+     * @param object
+     * @param propertyName
+     * @param intValue
+     * @return
+     */
+    public static int setInteger(final JavaScriptObject object, final String propertyName, final int intValue) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return setInteger0(object, propertyName, intValue);
+    }
+
+    protected static native int setInteger0(final JavaScriptObject object, final String propertyName, final int intValue)/*-{
+     var previousValue = object[ propertyName ];
+     object[ propertyName ] = intValue;
+     return previousValue;
+     }-*/;
+
+    public static int setInteger(final JavaScriptObject object, final int index, final int intValue) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return setInteger0(object, index, intValue);
+    }
+
+    protected static native int setInteger0(final JavaScriptObject object, final int index, final int intValue)/*-{
+     var previousValue = object[ index ];
+     object[ index ] = intValue;
+     return previousValue;
+     }-*/;
+
+    /**
+     * Reads an object's property as an Object
+     * 
+     * @param object
+     * @param propertyName
+     * @return
+     */
+    public static JavaScriptObject getObject(final JavaScriptObject object, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return getObject0(object, propertyName);
+    }
+
+    protected static native JavaScriptObject getObject0(final JavaScriptObject object, final String propertyName)/*-{
+     var value = object[ propertyName ];
+     // value shouldnt be undefined or null.
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + propertyName + "], object: " + object;      
+     }
+     return value;
+     }-*/;
+
+    public static JavaScriptObject getObject(final JavaScriptObject object, final int index) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return getObject0(object, index);
+    }
+
+    protected static native JavaScriptObject getObject0(final JavaScriptObject object, final int index)/*-{
+     var value = object[ index ];
+     // value shouldnt be undefined or null.
+     if( typeof( value ) == "undefined" ){
+     throw "The object does not contain a property called [" + index + "], object: " + object;      
+     }
+     return value;
+     }-*/;
+
+    /**
+     * Writes an object to an object's property.
+     * 
+     * @param object
+     * @param propertyName
+     * @param value
+     * @return
+     */
+    public static JavaScriptObject setObject(final JavaScriptObject object, final String propertyName,
+            final JavaScriptObject value) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return setObject0(object, propertyName, value);
+    }
+
+    protected static native JavaScriptObject setObject0(final JavaScriptObject object, final String propertyName,
+            final JavaScriptObject value)/*-{
+     var previousValue = object[ propertyName ];
+     object[ propertyName ] = value;
+     return previousValue ? previousValue : null;
+     }-*/;
+
+    public static JavaScriptObject setObject(final JavaScriptObject object, final int index,
+            final JavaScriptObject value) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return setObject0(object, index, value);
+    }
+
+    protected static native JavaScriptObject setObject0(final JavaScriptObject object, final int index,
+            final JavaScriptObject value)/*-{
+     var previousValue = object[ index ];
+     object[ index ] = value;
+     return previousValue ? previousValue : null;
+     }-*/;
+
+    /**
+     * Removes or deletes a property from the given object.
+     * 
+     * @param object
+     * @param propertyName
+     * @return The properties previous value.
+     */
+    public static JavaScriptObject removeProperty(final JavaScriptObject object, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return removeProperty0(object, propertyName);
+    }
+
+    protected static native JavaScriptObject removeProperty0(final JavaScriptObject object, final String propertyName)/*-{
+     var previousValue = object[ propertyName ];
+     delete object[ propertyName ];
+     return previousValue ? previousValue : null;
+     }-*/;
+
+    public static JavaScriptObject removeProperty(final JavaScriptObject object, final int index) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return removeProperty0(object, index);
+    }
+
+    protected static native JavaScriptObject removeProperty0(final JavaScriptObject object, final int index)/*-{
+     var previousValue = object[ index ];
+     delete object[ index ];
+     return previousValue ? previousValue : null;
+     }-*/;
+
+    /**
+     * Retrieves the actual javascript type for the property value.
+     * 
+     * @param object
+     * @param propertyName
+     * @return
+     */
+    public static String getType(final JavaScriptObject object, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return ObjectHelper.getType0(object, propertyName);
+    }
+
+    native protected static String getType0(final JavaScriptObject object, final String propertyName)/*-{
+     return typeof( object[ propertyName ] );
+     }-*/;
+
+    /**
+     * Retrieves the actual javascript type for the property value at the given slot.
+     * 
+     * @param object
+     * @param index
+     * @return
+     */
+    public static String getType(final JavaScriptObject object, final int index) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return ObjectHelper.getType0(object, index);
+    }
+
+    native protected static String getType0(final JavaScriptObject object, final int index)/*-{
+     return typeof( object[ index ] );
+     }-*/;
+
+    public static int getPropertyCount(final JavaScriptObject object) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+
+        return getPropertyCount0(object);
+    }
+
+    /**
+     * Retrieves the property count for the given native object. If the length property is present that value is returned otherwise a for
+     * each loop is used to count all the properties
+     * 
+     * @param nativeObject
+     * @return
+     */
+    native protected static int getPropertyCount0(final JavaScriptObject nativeObject)/*-{
+     var propertyCount = nativeObject.length;
+     if( typeof( propertyCount ) != "number" ){
+     
+     // length not found need to count properties...
+     propertyCount = 0;
+     for( propertyName in nativeObject ){
+     propertyCount++;
+     }
+     }
+     return propertyCount;
+     }-*/;
+
+    /**
+     * Convenience method which takes a JavaScriptObject and casts it to an Element.
+     * 
+     * This is provided purely as a mechanism to make a JSO reference into an Element.
+     * 
+     * @param object
+     * @return
+     */
+    public native static Element castToElement(final JavaScriptObject object)/*-{
+     return object;
+     }-*/;
+
+    /**
+     * Convenience method which takes a Element and returns a JavaScriptObject
+     * 
+     * @param object
+     * @return
+     */
+    public native static JavaScriptObject castFromElement(final Element element)/*-{
+     return element;
+     }-*/;
 
     protected ObjectHelper() {
     }

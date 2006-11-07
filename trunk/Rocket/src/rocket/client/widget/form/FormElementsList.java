@@ -37,7 +37,7 @@ public class FormElementsList extends DomCollectionList {
     }
 
     protected Object createWrapper(final JavaScriptObject object) {
-        return this.visitElement((Element) object);
+        return this.visitElement(DomHelper.castToElement(object));
     }
 
     /**
@@ -124,6 +124,10 @@ public class FormElementsList extends DomCollectionList {
             DomHelper.checkInputElement("parameter:element", element, FormConstants.TEXT_TYPE);
             super.setElement(element);
         }
+
+        public boolean equals(final Object other) {
+            return other instanceof TextBox && DOM.compare(this.getElement(), ((TextBox) other).getElement());
+        }
     }
 
     protected Widget visitPasswordTextBox(final Element element) {
@@ -141,6 +145,10 @@ public class FormElementsList extends DomCollectionList {
         protected void setElement(final Element element) {
             DomHelper.checkInputElement("parameter:element", element, FormConstants.PASSWORD_TYPE);
             super.setElement(element);
+        }
+
+        public boolean equals(final Object other) {
+            return other instanceof Password && DOM.compare(this.getElement(), ((Password) other).getElement());
         }
     }
 
@@ -160,6 +168,10 @@ public class FormElementsList extends DomCollectionList {
             DomHelper.checkTagName("parameter:element", element, FormConstants.TEXTAREA_TAG);
             super.setElement(element);
         }
+
+        public boolean equals(final Object other) {
+            return other instanceof TextArea && DOM.compare(this.getElement(), ((TextArea) other).getElement());
+        }
     }
 
     protected Widget visitHidden(final Element element) {
@@ -177,6 +189,10 @@ public class FormElementsList extends DomCollectionList {
             super("mP");
 
             this.setElement(element);
+        }
+
+        public boolean equals(final Object other) {
+            return other instanceof RadioButton && DOM.compare(this.getElement(), ((RadioButton) other).getElement());
         }
     }
 
@@ -197,6 +213,9 @@ public class FormElementsList extends DomCollectionList {
         // FormConstants.CHECKBOX_TYPE);
         // super.setElement( element );
         // }
+        public boolean equals(final Object other) {
+            return other instanceof CheckBox && DOM.compare(this.getElement(), ((CheckBox) other).getElement());
+        }
     }
 
     protected Widget visitButton(final Element element) {
@@ -214,6 +233,10 @@ public class FormElementsList extends DomCollectionList {
         protected void setElement(final Element element) {
             DomHelper.checkTagName("parameter:element", element, FormConstants.BUTTON_TAG);
             super.setElement(element);
+        }
+
+        public boolean equals(final Object other) {
+            return other instanceof Button && DOM.compare(this.getElement(), ((Button) other).getElement());
         }
     }
 
@@ -235,6 +258,9 @@ public class FormElementsList extends DomCollectionList {
         // FormConstants.LIST_TAG);
         // super.setElement( element );
         // }
+        public boolean equals(final Object other) {
+            return other instanceof ListBox && DOM.compare(this.getElement(), ((ListBox) other).getElement());
+        }
     }
 
     protected Widget visitSubmitButton(final Element element) {
@@ -247,15 +273,23 @@ public class FormElementsList extends DomCollectionList {
         return new ResetButton(element);
     }
 
-    protected void add0(final JavaScriptObject collection, final JavaScriptObject element) {
+    // DOM COLLECTION LIST ::::::::::::::::::::::
+
+    protected void add1(final JavaScriptObject collection, final JavaScriptObject element) {
         throw new UnsupportedOperationException(GWT.getTypeName(this) + "add0()");
     }
 
-    protected void insert0(final JavaScriptObject collection, final int index, final JavaScriptObject element) {
+    protected void insert1(final JavaScriptObject collection, final int index, final JavaScriptObject element) {
         throw new UnsupportedOperationException(GWT.getTypeName(this) + "insert0()");
     }
 
     protected JavaScriptObject remove0(final JavaScriptObject collection, final int index) {
         throw new UnsupportedOperationException(GWT.getTypeName(this) + "remove0()");
+    }
+
+    protected void adopt(final Object object) {
+    }
+
+    protected void disown(final Object object) {
     }
 }

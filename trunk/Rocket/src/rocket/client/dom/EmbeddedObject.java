@@ -11,7 +11,7 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class EmbeddedObject extends ElementWrapper {
+public class EmbeddedObject extends ElementWrapperImpl implements ElementWrapper {
     public EmbeddedObject() {
         this.createElement();
     }
@@ -21,7 +21,7 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public String getAlign() {
-        return this.getProperty(DomConstants.ALIGN_ATTRIBUTE);
+        return this.getString(DomConstants.ALIGN_ATTRIBUTE);
     }
 
     public boolean hasAlign() {
@@ -29,11 +29,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setAlign(final String mimeType) {
-        this.setProperty(DomConstants.ALIGN_ATTRIBUTE, mimeType);
+        this.setString(DomConstants.ALIGN_ATTRIBUTE, mimeType);
     }
 
     public String getArchive() {
-        return this.getProperty(DomConstants.ARCHIVE_ATTRIBUTE);
+        return this.getString(DomConstants.ARCHIVE_ATTRIBUTE);
     }
 
     public boolean hasArchive() {
@@ -41,11 +41,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setArchive(final String archive) {
-        this.setProperty(DomConstants.ARCHIVE_ATTRIBUTE, archive);
+        this.setString(DomConstants.ARCHIVE_ATTRIBUTE, archive);
     }
 
     public int getBorder() {
-        return this.getIntProperty(DomConstants.BORDER_ATTRIBUTE);
+        return this.getInteger(DomConstants.BORDER_ATTRIBUTE);
     }
 
     public boolean hasBorder() {
@@ -53,11 +53,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setBorder(final int border) {
-        this.setProperty(DomConstants.BORDER_ATTRIBUTE, border);
+        this.setInteger(DomConstants.BORDER_ATTRIBUTE, border);
     }
 
     public String getClassId() {
-        return this.getProperty(DomConstants.CLASS_ID_ATTRIBUTE);
+        return this.getString(DomConstants.CLASS_ID_ATTRIBUTE);
     }
 
     public boolean hasClassId() {
@@ -65,11 +65,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setClassId(final String classId) {
-        this.setProperty(DomConstants.CLASS_ID_ATTRIBUTE, classId);
+        this.setString(DomConstants.CLASS_ID_ATTRIBUTE, classId);
     }
 
     public String getCodeBase() {
-        return this.getProperty(DomConstants.CODEBASE_ATTRIBUTE);
+        return this.getString(DomConstants.CODEBASE_ATTRIBUTE);
     }
 
     public boolean hasCodeBase() {
@@ -77,11 +77,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setCodeBase(final String codeBase) {
-        this.setProperty(DomConstants.CODEBASE_ATTRIBUTE, codeBase);
+        this.setString(DomConstants.CODEBASE_ATTRIBUTE, codeBase);
     }
 
     public String getCodeType() {
-        return this.getProperty(DomConstants.CODETYPE_ATTRIBUTE);
+        return this.getString(DomConstants.CODETYPE_ATTRIBUTE);
     }
 
     public boolean hasCodeType() {
@@ -89,11 +89,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setCodeType(final String codeType) {
-        this.setProperty(DomConstants.CODETYPE_ATTRIBUTE, codeType);
+        this.setString(DomConstants.CODETYPE_ATTRIBUTE, codeType);
     }
 
     public String getData() {
-        return this.getProperty(DomConstants.DATA_ATTRIBUTE);
+        return this.getString(DomConstants.DATA_ATTRIBUTE);
     }
 
     public boolean hasData() {
@@ -101,11 +101,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setData(final String data) {
-        this.setProperty(DomConstants.DATA_ATTRIBUTE, data);
+        this.setString(DomConstants.DATA_ATTRIBUTE, data);
     }
 
     public String getDeclare() {
-        return this.getProperty(DomConstants.DECLARE_ATTRIBUTE);
+        return this.getString(DomConstants.DECLARE_ATTRIBUTE);
     }
 
     public boolean hasDeclare() {
@@ -113,11 +113,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setDeclare(final String declare) {
-        this.setProperty(DomConstants.DECLARE_ATTRIBUTE, declare);
+        this.setString(DomConstants.DECLARE_ATTRIBUTE, declare);
     }
 
     public int getHeight() {
-        return this.getIntProperty(DomConstants.HEIGHT_ATTRIBUTE);
+        return this.getInteger(DomConstants.HEIGHT_ATTRIBUTE);
     }
 
     public boolean hasHeight() {
@@ -125,11 +125,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setHeight(final int height) {
-        this.setProperty(DomConstants.HEIGHT_ATTRIBUTE, height);
+        this.setInteger(DomConstants.HEIGHT_ATTRIBUTE, height);
     }
 
     public int getHSpace() {
-        return this.getIntProperty(DomConstants.HSPACE_ATTRIBUTE);
+        return this.getInteger(DomConstants.HSPACE_ATTRIBUTE);
     }
 
     public boolean hasHSpace() {
@@ -137,7 +137,7 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setHSpace(final int hspace) {
-        this.setProperty(DomConstants.HSPACE_ATTRIBUTE, hspace);
+        this.setInteger(DomConstants.HSPACE_ATTRIBUTE, hspace);
     }
 
     public String getInnerHtml() {
@@ -150,7 +150,7 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public String getMimeType() {
-        return this.getProperty(DomConstants.MIME_TYPE_ATTRIBUTE);
+        return this.getString(DomConstants.MIME_TYPE_ATTRIBUTE);
     }
 
     public boolean hasMimeType() {
@@ -158,11 +158,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setMimeType(final String mimeType) {
-        this.setProperty(DomConstants.MIME_TYPE_ATTRIBUTE, mimeType);
+        this.setString(DomConstants.MIME_TYPE_ATTRIBUTE, mimeType);
     }
 
     public String getStandby() {
-        return this.getProperty(DomConstants.STANDBY_ATTRIBUTE);
+        return this.getString(DomConstants.STANDBY_ATTRIBUTE);
     }
 
     public boolean hasStandby() {
@@ -170,11 +170,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setStandby(final String standby) {
-        this.setProperty(DomConstants.STANDBY_ATTRIBUTE, standby);
+        this.setString(DomConstants.STANDBY_ATTRIBUTE, standby);
     }
 
     public String getUsemap() {
-        return this.getProperty(DomConstants.USEMAP_ATTRIBUTE);
+        return this.getString(DomConstants.USEMAP_ATTRIBUTE);
     }
 
     public boolean hasUsemap() {
@@ -182,11 +182,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setUsemap(final String useMap) {
-        this.setProperty(DomConstants.USEMAP_ATTRIBUTE, useMap);
+        this.setString(DomConstants.USEMAP_ATTRIBUTE, useMap);
     }
 
     public int getVSpace() {
-        return this.getIntProperty(DomConstants.VSPACE_ATTRIBUTE);
+        return this.getInteger(DomConstants.VSPACE_ATTRIBUTE);
     }
 
     public boolean hasVSpace() {
@@ -194,11 +194,11 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setVSpace(final int hspace) {
-        this.setProperty(DomConstants.VSPACE_ATTRIBUTE, hspace);
+        this.setInteger(DomConstants.VSPACE_ATTRIBUTE, hspace);
     }
 
     public int getWidth() {
-        return this.getIntProperty(DomConstants.WIDTH_ATTRIBUTE);
+        return this.getInteger(DomConstants.WIDTH_ATTRIBUTE);
     }
 
     public boolean hasWidth() {
@@ -206,7 +206,7 @@ public class EmbeddedObject extends ElementWrapper {
     }
 
     public void setWidth(final int width) {
-        this.setProperty(DomConstants.WIDTH_ATTRIBUTE, width);
+        this.setInteger(DomConstants.WIDTH_ATTRIBUTE, width);
     }
 
     /**

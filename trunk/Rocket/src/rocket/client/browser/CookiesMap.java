@@ -10,7 +10,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import rocket.client.collection.CollectionHelper;
 import rocket.client.collection.VisitedRememberingIterator;
+import rocket.client.dom.Destroyable;
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
 
@@ -31,8 +33,10 @@ import com.google.gwt.core.client.GWT;
  * resynchronise its internal map as part of its staleness check {@link #checkIfStaleAndUpdateIfNecessary()}.
  * 
  * @author Miroslav Pokorny (mP)
+ * 
+ * TODO add destroy
  */
-public class CookiesMap extends AbstractMap {
+public class CookiesMap extends AbstractMap implements Destroyable{
 
     public CookiesMap() {
         this.createMap();
@@ -85,11 +89,7 @@ public class CookiesMap extends AbstractMap {
      * Removes all cookies from the browser.
      */
     public void clear() {
-        final Iterator cookieNames = this.keySet().iterator();
-        while (cookieNames.hasNext()) {
-            cookieNames.next();
-            cookieNames.remove();
-        }
+        CollectionHelper.removeAll( this.keySet().iterator() );
     }
 
     // SETS VIEWS
@@ -97,24 +97,21 @@ public class CookiesMap extends AbstractMap {
     public Set keySet() {
         this.checkIfStaleAndUpdateIfNecessary();
 
-        final CookiesMap that = this;
-
         return new AbstractSet() {
             public int size() {
-                return that.size();
+                return CookiesMap.this.size();
             }
 
             public boolean contains(final Object cookieName) {
-                return that.containsKey(cookieName);
+                return CookiesMap.this.containsKey(cookieName);
             }
 
             public boolean add(final Object cookieName) {
-                throw new UnsupportedOperationException("Cannot call add() upon a " + GWT.getTypeName(that)
-                        + ".keySet() Set");
+                throw new UnsupportedOperationException("Add is not supported for " + GWT.getTypeName(CookiesMap.this) + " keySet.");
             }
 
             public boolean remove(final Object cookieName) {
-                return null != that.remove(cookieName);
+                return null != CookiesMap.this.remove(cookieName);
             }
 
             public Iterator iterator() {
@@ -129,7 +126,7 @@ public class CookiesMap extends AbstractMap {
                         this.clearLastVisited();
                     }
                 };
-                iterator.setIterator(that.getMap().keySet().iterator());
+                iterator.setIterator(CookiesMap.this.getMap().keySet().iterator());
 
                 return iterator;
             }
@@ -139,13 +136,10 @@ public class CookiesMap extends AbstractMap {
     public Collection values() {
         this.checkIfStaleAndUpdateIfNecessary();
 
-        final CookiesMap that = this;
-
         return new AbstractCollection() {
 
             public boolean add(final Object cookie) {
-                throw new UnsupportedOperationException("Cannot call add() upon a " + GWT.getTypeName(that)
-                        + ".values() Collection");
+                throw new UnsupportedOperationException("Add is not supported for " + GWT.getTypeName(CookiesMap.this) + " values collection.");
             }
 
             public Iterator iterator() {
@@ -158,7 +152,7 @@ public class CookiesMap extends AbstractMap {
                         this.clearLastVisited();
                     }
                 };
-                wrapper.setIterator(that.getMap().values().iterator());
+                wrapper.setIterator(CookiesMap.this.getMap().values().iterator());
 
                 return wrapper;
             }
@@ -167,14 +161,14 @@ public class CookiesMap extends AbstractMap {
                 boolean removed = false;
                 if (cookie instanceof Cookie) {
                     final Cookie cookie0 = (Cookie) cookie;
-                    final Object removedCookie = that.remove(cookie0.getName());
+                    final Object removedCookie = CookiesMap.this.remove(cookie0.getName());
                     removed = (null != removedCookie);
                 }
                 return removed;
             }
 
             public int size() {
-                return that.size();
+                return CookiesMap.this.size();
             }
         };
     }
@@ -182,24 +176,21 @@ public class CookiesMap extends AbstractMap {
     public Set entrySet() {
         this.checkIfStaleAndUpdateIfNecessary();
 
-        final CookiesMap that = this;
-
         return new AbstractSet() {
             public int size() {
-                return that.size();
+                return CookiesMap.this.size();
             }
 
             public boolean contains(final Object cookieName) {
-                return that.containsKey(cookieName);
+                return CookiesMap.this.containsKey(cookieName);
             }
 
             public boolean add(final Object cookieName) {
-                throw new UnsupportedOperationException("Cannot call add() upon a " + GWT.getTypeName(that)
-                        + ".entrySet() Set");
+                throw new UnsupportedOperationException("Cannot call add() upon a " + GWT.getTypeName(CookiesMap.this) + ".entrySet() Set");
             }
 
             public boolean remove(final Object cookieName) {
-                return null != that.remove(cookieName);
+                return null != CookiesMap.this.remove(cookieName);
             }
 
             public Iterator iterator() {
@@ -214,7 +205,7 @@ public class CookiesMap extends AbstractMap {
                         this.clearLastVisited();
                     }
                 };
-                iterator.setIterator(that.getMap().entrySet().iterator());
+                iterator.setIterator(CookiesMap.this.getMap().entrySet().iterator());
 
                 return iterator;
             }
@@ -284,7 +275,6 @@ public class CookiesMap extends AbstractMap {
 
             final String name = browserCookie.getName();
             final Cookie mapCookie = (Cookie) mapCookies.get(name);
-            // System.out.println( "\tmapCookie[" + mapCookie + "]");
             if (null == mapCookie) {
                 continue;
             }
@@ -417,6 +407,18 @@ public class CookiesMap extends AbstractMap {
 
     protected void createMap() {
         this.setMap(new HashMap());
+    }
+
+    protected void clearMap() {
+        this.map = null;
+    }
+
+    /**
+     * Destroys the cache of Cookie wrappers. After calling this method this CookiesMap
+     * should be considered invalid and no longer used.
+     */
+    public void destroy() {
+        this.clearMap();
     }
 
     public String toString() {

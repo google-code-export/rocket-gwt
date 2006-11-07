@@ -15,16 +15,12 @@
  */
 package rocket.client.style;
 
-import java.util.Collection;
 import java.util.List;
 
 import rocket.client.browser.BrowserHelper;
-import rocket.client.dom.DomCollectionList;
-import rocket.client.dom.DomHelper;
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
 
@@ -37,77 +33,59 @@ import com.google.gwt.user.client.Element;
  * @author Miroslav Pokorny (mP)
  */
 public class StyleHelper extends ObjectHelper {
-
+    
     /**
-     * Singleton containing the StyleSheetCollection.
+     * A cached copy of the StyleSheetList.
      */
-    private static Collection styleSheetsCollection;
-
-    public static Collection getStyleSheetsCollection() {
-        if (false == StyleHelper.hasStyleSheetsCollection()) {
-            StyleHelper.setStyleSheetsCollection(new StyleSheetsCollection());
-        }
-        ObjectHelper.checkNotNull("styleSheetsCollection", StyleHelper.styleSheetsCollection);
-        return StyleHelper.styleSheetsCollection;
-    }
-
-    protected static boolean hasStyleSheetsCollection() {
-        return null != StyleHelper.styleSheetsCollection;
-    }
-
-    protected static void setStyleSheetsCollection(final Collection styleSheetsCollection) {
-        ObjectHelper.checkNotNull("parameter:styleSheetsCollection", styleSheetsCollection);
-        StyleHelper.styleSheetsCollection = styleSheetsCollection;
-    }
-
+    private static StyleSheetList styleSheetList;
     /**
-     * Package private class which provides a collection view of all stylesheets currently available.
+     * Factory method which creates a StyleSheetCollection.
      * 
-     * @author Miroslav Pokorny (mP)
+     * @return
      */
-    static class StyleSheetsCollection extends DomCollectionList implements List {
-
-        StyleSheetsCollection() {
-            super();
-
-            this.setCollection(DomHelper.getStyleSheetsCollection());
-        }
-
-        /**
-         * Creates the StyleSheet wrapper that matches the give element.
-         * 
-         * It uses a cache of styleSheet objects.
-         */
-        protected Object createWrapper(final JavaScriptObject element) {
-            ObjectHelper.checkNotNull("parameter:element", element);
-
-            final StyleSheet styleSheet = new StyleSheet();
-            styleSheet.setElement((Element) element);
-            return styleSheet;
-        }
-
-        protected void checkElementType(final Object wrapper) {
-            ObjectHelper.checkNotNull("parameter:wrapper", wrapper);
-            if (false == (wrapper instanceof StyleSheet)) {
-                BrowserHelper.handleAssertFailure("parameter:wrapper",
-                        "All elements of this List must be of StyleSheet and not elementType["
-                                + GWT.getTypeName(wrapper));
+    public static List getStyleSheets() {
+        StyleSheetList styleSheets = null;
+        if( StyleHelper.hasStyleSheets() ){
+            styleSheets = StyleHelper.styleSheetList;
+        } else {
+            styleSheets = new StyleSheetList();
+            final JavaScriptObject nativeStyleSheets = StyleHelper.getStyleSheets0();
+            if( null == nativeStyleSheets ){
+                throw new UnsupportedOperationException( BrowserHelper.getUserAgent() + " doesnt support StyleSheets");
             }
+            styleSheets.setObject( nativeStyleSheets );
+            StyleHelper.setStyleSheets( styleSheets );
         }
+        return styleSheets;
+    }
 
-        protected void add0(final JavaScriptObject collection, final JavaScriptObject element) {
-            throw new UnsupportedOperationException(GWT.getTypeName(this) + "add0()");
+    protected static native JavaScriptObject getStyleSheets0()/*-{
+    var styleSheet = $doc.styleSheets;
+    return styleSheet ? styleSheet : null;
+    }-*/;
+
+    
+    protected static boolean hasStyleSheets(){
+        return null != styleSheetList;
+    }
+    
+    protected static void setStyleSheets( final StyleSheetList styleSheetList ){
+        ObjectHelper.checkNotNull( "parameter:styleSheetList", styleSheetList );
+        StyleHelper.styleSheetList = styleSheetList;
+    }
+
+    /**
+     * Verifies that the given selectorText contains only a single selector.
+     * 
+     * @param name
+     * @param selectorText
+     */
+    public static void checkSelector(final String name, final String selectorText) {
+        if (StringHelper.isNullOrEmpty(selectorText) | -1 != selectorText.indexOf(StyleConstants.SELECTOR_SEPARATOR)) {
+            StyleHelper.handleAssertFailure("The " + name + " contains more than one selector, selectorText["
+                    + selectorText + "]");
         }
-
-        protected void insert0(final JavaScriptObject collection, final int index, final JavaScriptObject element) {
-            throw new UnsupportedOperationException(GWT.getTypeName(this) + "insert0()");
-        }
-
-        protected JavaScriptObject remove0(final JavaScriptObject collection, final int index) {
-            throw new UnsupportedOperationException(GWT.getTypeName(this) + "remove0()");
-        }
-
-    }// StyleSheetsCollection
+    }
 
     /**
      * Concatenates or builds a complete stylename given a prefix and a suffix.
@@ -185,7 +163,7 @@ public class StyleHelper extends ObjectHelper {
      element0 = element0.parentNode;
      }
      break;
-     }	
+     }  
      
      // internet explorer ..................................................................................
      if( element.currentStyle ){
@@ -208,25 +186,5 @@ public class StyleHelper extends ObjectHelper {
      }
      
      return value ? value : null;
-     }-*/;
-
-    public static void handleDisconnected(final String name) {
-        StyleHelper.handleAssertFailure("The " + name + " disconnected from parent Rule.");
-    }
-
-    /**
-     * Retrieves the rules array of Rules objects from the given object in a browser independent manner.
-     * 
-     * @param object
-     * @return
-     */
-    public static JavaScriptObject getRules(final JavaScriptObject object) {
-        final JavaScriptObject rules = DomHelper.hasProperty(object, StyleConstants.CSS_RULES_PROPERTY_NAME) ? DomHelper
-                .getPropertyAsJavaScriptObject(object, StyleConstants.CSS_RULES_PROPERTY_NAME)
-                : DomHelper.getPropertyAsJavaScriptObject(object,
-                        StyleConstants.CSS_RULES_INTERNET_EXPLORER_6_PROPERTY_NAME);
-
-        ObjectHelper.checkNotNull("rules", rules);
-        return rules;
-    }
+     }-*/;    
 }

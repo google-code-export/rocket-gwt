@@ -63,7 +63,7 @@ public class SuperSpinner extends Spinner {
     }
 
     public Widget createBigDownWidget() {
-        WidgetHelper.checkNotAlreadyCreated("bigDownWidget", this.hasBigDownWidget());
+        ObjectHelper.checkPropertyNotSet("bigDownWidget", this, this.hasBigDownWidget());
 
         final SuperSpinner that = this;
 
@@ -125,7 +125,7 @@ public class SuperSpinner extends Spinner {
     }
 
     public Widget createBigUpWidget() {
-        WidgetHelper.checkNotAlreadyCreated("bigUpWidget", this.hasBigUpWidget());
+        ObjectHelper.checkPropertyNotSet("bigUpWidget", this, this.hasBigUpWidget());
 
         final SuperSpinner that = this;
 

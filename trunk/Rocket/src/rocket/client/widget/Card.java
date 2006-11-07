@@ -37,6 +37,7 @@ public class Card extends Composite implements HasWidgets {
 
     public Card() {
         this.initWidget(this.createFlexTable());
+        this.addStyleName(WidgetConstants.CARD_STYLE);
     }
 
     public void add(final Widget widget) {
@@ -132,10 +133,9 @@ public class Card extends Composite implements HasWidgets {
      * @return
      */
     protected FlexTable createFlexTable() {
-        WidgetHelper.checkNotAlreadyCreated("flexTable", this.hasFlexTable());
+        ObjectHelper.checkPropertyNotSet("flexTable", this, this.hasFlexTable());
 
         final FlexTable table = new FlexTable();
-        table.addStyleName(WidgetConstants.CARD_STYLE);
         table.addStyleName(WidgetConstants.CARD_FLEXTABLE_STYLE);
 
         this.setFlexTable(table);

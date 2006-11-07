@@ -1,4 +1,15 @@
+
 <module>
 	<inherits name="com.google.gwt.core.Core" />
 	<inherits name='com.google.gwt.user.User' />
+
+
+	<replace-with class="rocket.client.style.impl.RuleListInternetExplorer6Impl">
+		<when-type-is class="rocket.client.style.impl.RuleListImpl"/>
+		<when-property-is name="user.agent" value="ie6"/>
+	</replace-with>
+  	<replace-with class="rocket.client.style.impl.RuleListOpera9Impl">
+		<when-type-is class="rocket.client.style.impl.RuleListImpl"/>
+		<when-property-is name="user.agent" value="opera"/>
+	</replace-with>	
 </module>

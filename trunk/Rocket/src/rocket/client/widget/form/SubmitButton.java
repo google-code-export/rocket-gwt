@@ -44,6 +44,14 @@ public class SubmitButton extends ButtonBase {
     }
 
     public void submit() {
+        this.submit0(this.getElement());
+    }
 
+    protected native void submit0(final Element element)/*-{
+     element.submit();
+     }-*/;
+
+    public boolean equals(final Object other) {
+        return other instanceof SubmitButton && DOM.compare(this.getElement(), ((SubmitButton) other).getElement());
     }
 }

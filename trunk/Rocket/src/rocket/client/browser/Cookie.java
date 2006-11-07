@@ -237,7 +237,6 @@ public class Cookie {
     /*
      * OBJECT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
      */
-
     public String toString() {
         return super.toString() + ", name[" + name + "], value[" + value + "], comment[" + comment + "], domain["
                 + domain + "], expires: " + expires + ", path: [" + path + "], secure: " + secure + ", secureSet: "

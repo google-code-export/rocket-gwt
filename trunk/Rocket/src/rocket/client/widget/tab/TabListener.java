@@ -15,8 +15,6 @@
  */
 package rocket.client.widget.tab;
 
-import com.google.gwt.user.client.ui.Widget;
-
 public interface TabListener {
     boolean onBeforeTabSelected(TabItem item);
 

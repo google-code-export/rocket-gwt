@@ -125,7 +125,7 @@ public class BlockyPixel extends Composite implements PixelGrid {
     }
 
     protected Grid createGrid() {
-        WidgetHelper.checkNotAlreadyCreated("grid", this.hasGrid());
+        ObjectHelper.checkPropertyNotSet("grid", this, this.hasGrid());
 
         final Grid grid = new Grid();
         grid.addStyleName(WidgetConstants.BLOCKY_PIXEL_STYLE);

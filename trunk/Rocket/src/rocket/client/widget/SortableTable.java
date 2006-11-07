@@ -76,7 +76,7 @@ public abstract class SortableTable extends ZebraFlexTable {
     }
 
     /**
-     * TODO remove unsroted style / set style
+     * TODO remove unsorted style / set style
      * 
      * @param columnComparator
      * @param column
@@ -151,7 +151,7 @@ public abstract class SortableTable extends ZebraFlexTable {
     }
 
     /**
-     * TODO set style
+     * Marks a particular column as not being sortable.
      * 
      * @param column
      */

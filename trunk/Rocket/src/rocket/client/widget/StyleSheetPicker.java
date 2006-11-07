@@ -15,12 +15,13 @@
  */
 package rocket.client.widget;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import rocket.client.style.StyleHelper;
 import rocket.client.style.StyleSheet;
-import rocket.client.style.StyleSheetsCollection;
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.PrimitiveHelper;
 import rocket.client.util.StringHelper;
@@ -39,12 +40,23 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class CssPicker extends Composite {
+public class StyleSheetPicker extends Composite {
 
-    public CssPicker() {
-        this.setLabel(WidgetConstants.CSS_PICKER_LABEL_TEXT);
+    public StyleSheetPicker() {
+        super();
+        
         this.setMappings(new HashMap());
         this.initWidget(this.createHorizontalPanel());
+        this.setText(WidgetConstants.STYLESHEET_PICKER_LABEL_TEXT);
+    }
+    
+    public String getText() {       
+        return this.getLabel().getText();
+    }
+
+    public void setText(final String text) {
+        StringHelper.checkNotEmpty("parameter:text", text);
+        this.getLabel().setText( text );
     }
 
     /**
@@ -69,12 +81,11 @@ public class CssPicker extends Composite {
     protected HorizontalPanel createHorizontalPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
         this.setHorizontalPanel(panel);
-        panel.addStyleName(WidgetConstants.CSS_PICKER_STYLE);
-        panel.addStyleName(WidgetConstants.CSS_PICKER_HORIZONTAL_PANEL_STYLE);
+        panel.addStyleName(WidgetConstants.STYLESHEET_PICKER_STYLE);
+        panel.addStyleName(WidgetConstants.STYLESHEET_PICKER_HORIZONTAL_PANEL_STYLE);
 
         final Widget label = this.createLabel();
-        panel.add(label);
-        panel.setCellVerticalAlignment(label, HasVerticalAlignment.ALIGN_BOTTOM);
+        panel.add(label);        
 
         this.createButtons(panel);
         this.selectStyleSheet(this.getButton(0));
@@ -82,36 +93,36 @@ public class CssPicker extends Composite {
     }
 
     /**
+     * The label container for the picker text. 
+     */
+    private Label label;
+
+    public Label getLabel() {
+        ObjectHelper.checkNotNull("field:label", label);
+        return label;
+    }
+
+    public void setLabel(final Label label) {
+        ObjectHelper.checkNotNull("parameter:label", label);
+        this.label = label;
+    }
+    
+    /**
      * Creates the label that preceeds the available css stylesheet boxes/buttons
      * 
      * @return
      */
     protected Widget createLabel() {
-        final Label label = new Label(this.getLabel());
-        label.addStyleName(WidgetConstants.CSS_PICKER_LABEL_STYLE);
+        final Label label = new Label("");
+        label.addStyleName(WidgetConstants.STYLESHEET_PICKER_LABEL_STYLE);
+        this.setLabel( label );
         return label;
-    }
-
-    /**
-     * This text is used as the preceeding label for this css picker. It must be set before an attempt is made to fetch or create the
-     * associated widget.
-     */
-    private String label;
-
-    public String getLabel() {
-        StringHelper.checkNotEmpty("field:label", label);
-        return label;
-    }
-
-    public void setLabel(final String label) {
-        StringHelper.checkNotEmpty("parameter:label", label);
-        this.label = label;
     }
 
     protected void createButtons(final HorizontalPanel panel) {
         ObjectHelper.checkNotNull("parameter:panel", panel);
 
-        final StyleSheetsCollection styleSheets = new StyleSheetsCollection();
+        final Collection styleSheets = StyleHelper.getStyleSheets();
 
         // loop thru creating a button for each available stylesheet.
         final Iterator iterator = styleSheets.iterator();
@@ -130,20 +141,11 @@ public class CssPicker extends Composite {
 
     public Button getButton(final int index) {
         PrimitiveHelper.checkIsPositive("parameter:index", index);
-        return (Button) this.getHorizontalPanel().getWidget(index + 1);// skip
-        // the
-        // first
-        // Label
-        // widget
+        return (Button) this.getHorizontalPanel().getWidget(index + 1);// skip the first Label widget
     }
 
     public int getButtonCount() {
-        return this.getHorizontalPanel().getWidgetCount() - 1; // less 1
-        // because the
-        // count
-        // shouldnt
-        // include the
-        // Label widget
+        return this.getHorizontalPanel().getWidgetCount() - 1; // less 1 because the count shouldnt include the Label widget
     }
 
     /**
@@ -189,9 +191,9 @@ public class CssPicker extends Composite {
         StringHelper.checkNotNull("parameter:title", title);
 
         final Button button = new Button(title);
-        button.addStyleName(WidgetConstants.CSS_ITEM_STYLE);
+        button.addStyleName(WidgetConstants.STYLESHEET_ITEM_STYLE);
 
-        final CssPicker that = this;
+        final StyleSheetPicker that = this;
 
         button.addClickListener(new ClickListener() {
             public void onClick(final Widget ignored) {
@@ -215,7 +217,7 @@ public class CssPicker extends Composite {
         ObjectHelper.checkNotNull("parameter:button", button);
 
         this.unselectAllStyleSheets();
-        button.addStyleName(WidgetConstants.CSS_ITEM_SELECTED_STYLE);
+        button.addStyleName(WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE);
 
         final StyleSheet styleSheet = this.getStyleSheet(button);
         styleSheet.setDisabled(false);
@@ -223,7 +225,6 @@ public class CssPicker extends Composite {
 
     /**
      * Unselects all stylesheets and deselects their corresponding button
-     * 
      */
     protected void unselectAllStyleSheets() {
         final Iterator iterator = this.getMappings().keySet().iterator();
@@ -241,7 +242,7 @@ public class CssPicker extends Composite {
     protected void unselectStyleSheet(final Button button) {
         ObjectHelper.checkNotNull("parameter:button", button);
 
-        button.removeStyleName(WidgetConstants.CSS_ITEM_SELECTED_STYLE);
+        button.removeStyleName(WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE);
 
         final StyleSheet styleSheet = this.getStyleSheet(button);
         styleSheet.setDisabled(true);

@@ -225,7 +225,7 @@ public class AutoCompleteTextBox extends TextBox {
     }
 
     protected VerticalPanel createDropDownList() {
-        WidgetHelper.checkNotAlreadyCreated("dropDownList", this.hasDropDownList());
+        ObjectHelper.checkPropertyNotSet("dropDownList", this, this.hasDropDownList());
 
         final VerticalPanel list = new VerticalPanel();
         list.setVisible(false);
@@ -255,7 +255,7 @@ public class AutoCompleteTextBox extends TextBox {
     }
 
     protected EventPreview createEventPreviewer() {
-        WidgetHelper.checkNotAlreadyCreated("eventPreviewer", this.hasEventPreviewer());
+        ObjectHelper.checkPropertyNotSet("eventPreviewer", this, this.hasEventPreviewer());
 
         final AutoCompleteTextBox that = this;
         final EventPreview watcher = new EventPreview() {

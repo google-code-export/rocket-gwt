@@ -15,8 +15,6 @@
  */
 package rocket.client.widget.accordion;
 
-import com.google.gwt.user.client.ui.Widget;
-
 public interface AccordionListener {
     boolean onBeforeItemSelected(AccordionItem item);
 

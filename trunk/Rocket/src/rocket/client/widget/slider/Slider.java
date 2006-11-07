@@ -23,6 +23,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -33,16 +34,17 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class AbstractSlider extends AbstractNumberHolder {
+public abstract class Slider extends AbstractNumberHolder {
 
     protected void onAttach() {
         super.onAttach();
         DOM.setEventListener(this.getElement(), this);
+        this.sinkEvents( Event.ONMOUSEDOWN | Event.ONMOUSEUP | Event.ONMOUSEOUT | Event.ONMOUSEMOVE );
         this.updateWidget();
     }
 
     /**
-     * Sub-classes need to override this method to update the coordinates of the thumb widget based on the sliders value.
+     * Sub-classes need to override this method to update the coordinates of the handle widget based on the sliders value.
      * 
      */
     protected abstract void updateWidget();
@@ -50,6 +52,9 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
     // EVENT HANDLING
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+    /**
+     * Dispatches to the appropriate method depending on the event type.
+     */
     public void onBrowserEvent(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
@@ -59,12 +64,30 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
                 handleMouseClick(event);
                 break;
             }
+            
+            if( eventType == Event.ONMOUSEOUT ){
+                this.handleMouseOut( event );
+                break;
+            }
             break;
         }
     }
 
     /**
-     * Dispatches the event to the respective handler depending on whether the thumb or the slider background was clicked.
+     * If the mouse has moved away from the slider cancel any active timer.
+     * @param event
+     */
+    protected void handleMouseOut( final Event event ){
+        ObjectHelper.checkNotNull("parameter:event", event);
+        
+        if( this.hasTimer() ){
+            this.getTimer().cancel();
+        }
+        this.clearTimer();
+    }
+    
+    /**
+     * Dispatches the event to the respective handler depending on whether the handle or the slider background was clicked.
      * 
      * @param event
      */
@@ -74,9 +97,9 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
         while (true) {
             final Element target = DOM.eventGetTarget(event);
 
-            // check if the thumb widget has been clicked...
-            if (DOM.isOrHasChild(this.getWidget().getElement(), target)) {
-                this.handleThumbClick(event);
+            // check if the handle widget has been clicked...
+            if (DOM.isOrHasChild(this.getHandle().getElement(), target)) {
+                this.handleHandleClick(event);
                 break;
             }
 
@@ -94,21 +117,21 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
     protected abstract void handleBackgroundClick(Event event);
 
     /**
-     * Initiates the dragging of the thumb until it is released.
+     * Initiates the dragging of the handle until it is released.
      * 
      * @param event
      */
-    protected void handleThumbClick(final Event event) {
+    protected void handleHandleClick(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         if (false == this.hasDraggingEventPreview()) {
             DOM.addEventPreview(this.createDraggingEventPreview());
-            this.getWidget().addStyleName(this.getSliderDraggingStyleName());
+            this.getHandle().addStyleName(this.getSliderDraggingStyleName());
         }
     }
 
     /**
-     * The EventPreview object that is following the thumb whilst it is being dragged.
+     * The EventPreview object that is following the handle whilst it is being dragged.
      */
     private EventPreview draggingEventPreview;
 
@@ -146,7 +169,7 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
     }
 
     /**
-     * Manages the event type removing the EventPreview when the mouse button is released and updating the thumb via
+     * Manages the event type removing the EventPreview when the mouse button is released and updating the handle via
      * {@link #handleMouseMove(Event)}
      * 
      * @param event
@@ -161,9 +184,11 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
                 cancelEvent = true;
                 break;
             }
-            if (type == Event.ONMOUSEUP || type == Event.ONMOUSEDOWN) {
-                DOM.removeEventPreview(this.getDraggingEventPreview());
-                this.getWidget().removeStyleName(this.getSliderDraggingStyleName());
+            //if (type == Event.ONMOUSEUP || type == Event.ONMOUSEDOWN) {
+            if (type == Event.ONMOUSEUP ) {
+                this.getHandle().removeStyleName(this.getSliderDraggingStyleName());
+                
+                DOM.removeEventPreview(this.getDraggingEventPreview());                
                 this.clearDraggingEventPreview();
                 cancelEvent = false;
                 break;
@@ -175,7 +200,7 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
     }
 
     /**
-     * Sub-classes need to return the style that is added to the thumb widget when it is being dragged or removed when the dragging is
+     * Sub-classes need to return the style that is added to the handle widget when it is being dragged or removed when the dragging is
      * stopped.
      * 
      * @return
@@ -185,8 +210,8 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
     protected abstract void handleMouseMove(Event event);
 
     protected void handleMouseMove(final int widgetCoordinate, final int mouseCoordinate, final int sliderLength,
-            final int thumbLength) {
-        final int range = sliderLength - thumbLength;
+            final int handleLength) {
+        final int range = sliderLength - handleLength;
 
         int value = mouseCoordinate - widgetCoordinate;
         if (value < 0) {
@@ -205,39 +230,101 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
 
     protected void handleBackgroundClick(final int mouseCoordinate, final int widgetCoordinate) {
         if (mouseCoordinate < widgetCoordinate) {
-            this.handleBeforeThumbClick();
+            this.handleBeforeHandleClick();
         } else {
-            this.handleAfterThumbClick();
+            this.handleAfterHandleClick();
         }
     }
 
     /**
      * Decreases the value of this slider ensuring that it does not underflow the minimum value of this slider.
      */
-    protected void handleBeforeThumbClick() {
+    protected void handleBeforeHandleClick() {
         int newValue = this.getValue() - this.getBigDelta();
         if (newValue < 0) {
             newValue = 0;
         }
         this.setValue(newValue);
+        
+        // if a timer is not already running create one...
+        if( false == this.hasTimer() ){
+            final Timer timer = new Timer(){
+                public void run(){
+                    Slider.this.handleBeforeHandleClick();
+                }
+            }; 
+            timer.scheduleRepeating( Slider.this.getMouseDownRepeatRate() );
+            Slider.this.setTimer( timer );
+        }
     }
 
     /**
      * Increases the value of this slider ensuring that it does not exceed the maximum value of this slider.
      */
-    protected void handleAfterThumbClick() {
+    protected void handleAfterHandleClick() {
         int newValue = this.getValue() + this.getBigDelta();
         final int maximumValue = this.getMaximumValue();
         if (newValue > maximumValue) {
             newValue = maximumValue;
         }
         this.setValue(newValue);
+        
+        
+        // if a timer is not already running create one...
+        if( false == this.hasTimer() ){
+            final Timer timer = new Timer(){
+                public void run(){
+                    Slider.this.handleAfterHandleClick();
+                }
+            }; 
+            timer.scheduleRepeating( Slider.this.getMouseDownRepeatRate() );
+            Slider.this.setTimer( timer );
+        }
     }
 
+    /**
+     * A timer is used to simulate multiple clicks when holding down the mouse button
+     */
+    private Timer timer;
+    
+    protected Timer getTimer(){
+        ObjectHelper.checkNotNull( "field:timer", timer );
+        return timer;
+    }
+    
+    protected boolean hasTimer(){
+        return null != this.timer;
+    }
+    
+    protected void setTimer( final Timer timer ){
+        ObjectHelper.checkNotNull( "parameter:timer", timer );
+        this.timer = timer;
+    }
+    
+    protected void clearTimer(){
+        this.timer = null;
+    }
+    
+    /**
+     * This value in milliseconds controls the repetition of mouse down events within the
+     * background area of the slider.  
+     */
+    private int mouseDownRepeatRate;
+    
+    public int getMouseDownRepeatRate(){
+        PrimitiveHelper.checkGreaterThan( "field:mouseDownRepeatRate", mouseDownRepeatRate, 0  );
+        return this.mouseDownRepeatRate;
+    }
+    
+    public void setMouseDownRepeatRate( final int mouseDownRepeatRate ){
+        PrimitiveHelper.checkGreaterThan( "parameter:mouseDownRepeatRate", mouseDownRepeatRate, 0  );
+        this.mouseDownRepeatRate = mouseDownRepeatRate;
+    }
+    
     // WIDGET :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
-     * A non pubic is used to hold both the sliders element and house the thumb widget.
+     * A non pubic is used to hold both the sliders element and house the handle widget.
      */
     private SimplePanel panel;
 
@@ -262,13 +349,13 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
         return panel;
     }
 
-    public Widget getWidget() {
+    public Widget getHandle() {
         return this.getPanel().getWidget();
     }
 
-    public void setWidget(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-        this.getPanel().setWidget(widget);
+    public void setHandle(final Widget handle) {
+        ObjectHelper.checkNotNull("parameter:handle", handle);
+        this.getPanel().setWidget(handle);
     }
 
     // SLIDER ::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -279,12 +366,12 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
     private int value;
 
     public int getValue() {
-        PrimitiveHelper.checkGreaterThanOrEqual("field:value", value, 0);
+        PrimitiveHelper.checkBetween("field:value", value, 0, this.maximumValue + 1);
         return this.value;
     }
 
-    public void setValue(int value) {
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:value", value, 0);
+    public void setValue(final int value) {
+        PrimitiveHelper.checkBetween("parameter:value", value, 0, this.maximumValue + 1 );
         this.value = value;
         this.updateWidget();
         this.fireValueChanged();
@@ -322,7 +409,7 @@ public abstract class AbstractSlider extends AbstractNumberHolder {
     }
 
     /**
-     * The amount the slider value jumps when the mouse is clicked on the area before or after the thumb thingo.
+     * The amount the slider value jumps when the mouse is clicked on the area before or after the handle thingo.
      * 
      * This value is typically larger than delta.
      */

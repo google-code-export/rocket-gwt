@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav (mP)
  */
-public class HorizontalSlider extends AbstractSlider {
+public class HorizontalSlider extends Slider {
     public HorizontalSlider() {
         super();
 
@@ -42,20 +42,20 @@ public class HorizontalSlider extends AbstractSlider {
     }
 
     /**
-     * Calculates and sets the relative position of the thumb widget according to the value of this slider.
+     * Calculates and sets the relative position of the handle widget according to the value of this slider.
      */
     protected void updateWidget() {
         final int sliderWidth = this.getOffsetWidth();
-        final Widget thumb = this.getWidget();
-        final int thumbWidth = thumb.getOffsetWidth();
-        final int spacerWidth = sliderWidth - thumbWidth;
+        final Widget handle = this.getHandle();
+        final int handleWidth = handle.getOffsetWidth();
+        final int spacerWidth = sliderWidth - handleWidth;
 
         final float ratio = (float) this.getValue() / this.getMaximumValue();
         final int newLeft = (int) (ratio * spacerWidth);
 
-        final Element thumbElement = thumb.getElement();
-        DOM.setStyleAttribute(thumbElement, "position", "relative");
-        DOM.setStyleAttribute(thumbElement, "left", newLeft + "px");
+        final Element handleElement = handle.getElement();
+        DOM.setStyleAttribute(handleElement, "position", "relative");
+        DOM.setStyleAttribute(handleElement, "left", newLeft + "px");
     }
 
     protected String getSliderDraggingStyleName() {
@@ -63,7 +63,7 @@ public class HorizontalSlider extends AbstractSlider {
     }
 
     /**
-     * Tests if the mouse click occured in the slider area before or after the thumb widget.
+     * Tests if the mouse click occured in the slider area before or after the handle widget.
      * 
      * @param event
      */
@@ -71,12 +71,12 @@ public class HorizontalSlider extends AbstractSlider {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         final int mouseX = DOM.eventGetClientX(event) + BrowserHelper.getScrollX();
-        final int widgetX = WidgetHelper.getAbsoluteLeft(this.getWidget());
+        final int widgetX = WidgetHelper.getAbsoluteLeft(this.getHandle());
         this.handleBackgroundClick(mouseX, widgetX);
     }
 
     /**
-     * Interprets any dragging mouse movements updating the thumb accordingly.
+     * Interprets any dragging mouse movements updating the handle accordingly.
      * 
      * @param event
      */
@@ -86,8 +86,8 @@ public class HorizontalSlider extends AbstractSlider {
         final int widgetX = WidgetHelper.getAbsoluteLeft(this);
         final int mouseX = DOM.eventGetClientX(event) + BrowserHelper.getScrollX();
         final int sliderWidth = this.getOffsetWidth();
-        final int thumbWidth = this.getWidget().getOffsetWidth();
+        final int handleWidth = this.getHandle().getOffsetWidth();
 
-        this.handleMouseMove(widgetX, mouseX, sliderWidth, thumbWidth);
+        this.handleMouseMove(widgetX, mouseX, sliderWidth, handleWidth);
     }
 }

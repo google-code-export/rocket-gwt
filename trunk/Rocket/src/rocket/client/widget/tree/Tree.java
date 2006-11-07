@@ -22,7 +22,8 @@ import rocket.client.widget.WidgetHelper;
 import com.google.gwt.user.client.ui.Composite;
 
 /**
- * TreeItems house a widget themselves and other TreeItems. TreeItem may be added to other TreeItems or the Tree themselves.
+ * A tree is the base container for more TreeItems which may be arranged in a hierarchical fashion. TreeItems themselves may host regular
+ * widgets.
  * 
  * To find out if a particular treeNode has been clicked ClickListeners must be added to the widget themselves.
  * 
@@ -33,6 +34,7 @@ public class Tree extends Composite {
     public Tree() {
         this.createTreeListenerCollection();
         this.initWidget(this.createTreeItem());
+        this.addStyleName(TreeConstants.TREE_STYLE);
     }
 
     /**
@@ -55,13 +57,11 @@ public class Tree extends Composite {
     }
 
     protected TreeItem createTreeItem() {
-        WidgetHelper.checkNotAlreadyCreated("treeItem", this.hasTreeItem());
+        ObjectHelper.checkPropertyNotSet("treeItem", this, this.hasTreeItem());
 
         final TreeItem treeItem = new TreeItem();
         this.setTreeItem(treeItem);
         treeItem.setTree(this);
-
-        this.addStyleName(TreeConstants.TREE_STYLE);
         return treeItem;
     }
 

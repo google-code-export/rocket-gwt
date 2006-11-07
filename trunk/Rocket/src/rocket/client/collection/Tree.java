@@ -188,7 +188,7 @@ public class Tree {
             return !this.getUnvisited().isEmpty();
         }
 
-        protected Object next0(final int viewType) {
+        protected Object next0() {
             if (!this.hasNext0()) {
                 throw new NoSuchElementException();
             }
@@ -200,6 +200,7 @@ public class Tree {
 
             Object nextValue = null;
             while (true) {
+                final int viewType = this.getViewType();
                 if (viewType == PATH) {
                     nextValue = branch.getPath();
                     break;
@@ -230,7 +231,7 @@ public class Tree {
             return nextValue;
         }
 
-        protected void leavingNext() {
+        protected void afterNext() {
         }
 
         protected void remove0() {
@@ -332,6 +333,9 @@ public class Tree {
             this.lastVisited = null;
         }
 
+        /**
+         * When true this flag indicates that branches with children should also be visited.
+         */
         boolean visitSubBranches;
 
         boolean isVisitSubBranches() {
@@ -342,8 +346,18 @@ public class Tree {
             this.visitSubBranches = visitSubBranches;
         }
 
-        protected int getParentModificationCounter() {
+        protected int getModificationCounter() {
             return this.getTree().getModificationCounter();
+        }
+
+        int viewType;
+
+        int getViewType() {
+            return this.viewType;
+        }
+
+        void setViewType(final int viewType) {
+            this.viewType = viewType;
         }
     }
 

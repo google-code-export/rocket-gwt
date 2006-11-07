@@ -76,7 +76,7 @@ public class ContextMenu extends Menu {
     }
 
     protected Widget createMenuList() {
-        WidgetHelper.checkNotAlreadyCreated("menuList", this.hasMenuList());
+        ObjectHelper.checkPropertyNotSet("menuList", this, this.hasMenuList());
         final VerticalMenuList list = new VerticalMenuList();
         list.addStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
         list.setHideable(true);

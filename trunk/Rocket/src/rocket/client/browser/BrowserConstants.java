@@ -26,6 +26,10 @@ public class BrowserConstants {
 
     public final static String FIREFOX_USER_AGENT = "Firefox";
 
+    public final static String OPERA8_USER_AGENT = "Opera/8";
+
+    public final static String OPERA9_USER_AGENT = "Opera/9";
+
     // COOKIE CONSTANTS
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::";
     public final static char COOKIE_SEPARATOR = ';';

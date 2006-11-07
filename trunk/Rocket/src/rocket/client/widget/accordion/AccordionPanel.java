@@ -21,12 +21,7 @@ import java.util.List;
 
 import rocket.client.collection.IteratorView;
 import rocket.client.util.ObjectHelper;
-import rocket.client.widget.AbstractPanel;
-import rocket.client.widget.tab.TabListener;
-import rocket.client.widget.tab.TabListenerCollection;
-import rocket.client.widget.tab.TabPanel;
 
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Composite;
 
 /**
@@ -183,12 +178,12 @@ public abstract class AccordionPanel extends Composite {
                 return this.getIndex() < AccordionPanel.this.getCount();
             }
 
-            protected Object next0(final int type) {
+            protected Object next0() {
                 final int index = this.getIndex();
                 return get(index);
             }
 
-            protected void leavingNext() {
+            protected void afterNext() {
                 this.setIndex(this.getIndex() + 1);
             }
 
@@ -198,7 +193,7 @@ public abstract class AccordionPanel extends Composite {
                 this.setIndex(index);
             }
 
-            protected int getParentModificationCounter() {
+            protected int getModificationCounter() {
                 return AccordionPanel.this.getModificationCounter();
             }
 

@@ -55,20 +55,19 @@ public class WidgetConstants {
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public final static String LIFE_STYLE = StyleHelper.buildCompound(ROCKET, "life");
 
-    // CSS PICKER
+    // STYLESHEET PICKER
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String CSS_PICKER_STYLE = StyleHelper.buildCompound(ROCKET, "cssPicker");
+    public final static String STYLESHEET_PICKER_STYLE = StyleHelper.buildCompound(ROCKET, "styleSheetPicker");
 
-    public final static String CSS_PICKER_HORIZONTAL_PANEL_STYLE = StyleHelper.buildCompound(CSS_PICKER_STYLE,
-            "horizontalPanel");
+    public final static String STYLESHEET_PICKER_HORIZONTAL_PANEL_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE,"horizontalPanel");
 
-    public final static String CSS_PICKER_LABEL_STYLE = StyleHelper.buildCompound(CSS_PICKER_STYLE, "label");
+    public final static String STYLESHEET_PICKER_LABEL_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE, "label");
 
-    public final static String CSS_PICKER_LABEL_TEXT = "Text Size";
+    public final static String STYLESHEET_PICKER_LABEL_TEXT = "Text Size";
 
-    public final static String CSS_ITEM_STYLE = StyleHelper.buildCompound(CSS_PICKER_STYLE, "item");
+    public final static String STYLESHEET_ITEM_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE, "item");
 
-    public final static String CSS_ITEM_SELECTED_STYLE = StyleHelper.buildCompound(CSS_ITEM_STYLE, "selected");
+    public final static String STYLESHEET_ITEM_SELECTED_STYLE = StyleHelper.buildCompound(STYLESHEET_ITEM_STYLE, "selected");
 
     // CARD
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

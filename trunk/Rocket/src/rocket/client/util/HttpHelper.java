@@ -31,7 +31,7 @@ public class HttpHelper extends SystemHelper {
      * @return
      */
     public static String urlEncode(final String input) {
-        ObjectHelper.checkNotNull("field:input", input);
+        ObjectHelper.checkNotNull("parameter:input", input);
 
         final StringBuffer encoded = new StringBuffer();
         final char[] chars = input.toCharArray();

@@ -44,6 +44,14 @@ public class ResetButton extends ButtonBase {
     }
 
     public void reset() {
+        this.reset0(this.getElement());
+    }
 
+    protected native void reset0(final Element element)/*-{
+     element.reset();
+     }-*/;
+
+    public boolean equals(final Object other) {
+        return other instanceof ResetButton && DOM.compare(this.getElement(), ((ResetButton) other).getElement());
     }
 }

@@ -308,14 +308,12 @@ public class StringHelper extends ObjectHelper {
     /**
      * Helper which may be used to assert that a string is not or empty.
      * 
-     * @param name
-     *            The name of the string
+     * @param message
      * @param string
-     *            The string value being tested.
      */
-    public static void checkNotEmpty(final String name, final String string) {
+    public static void checkNotEmpty(final String message, final String string) {
         if (isNullOrEmpty(string)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " must not be null or empty.");
+            SystemHelper.handleAssertFailure( message + " is null or empty." );
         }
     }
 
@@ -328,16 +326,6 @@ public class StringHelper extends ObjectHelper {
      */
     public static boolean isNullOrEmpty(final String string) {
         return string == null || string.length() == 0;
-    }
-
-    public static void checkIndex(final String name, final int index, final String string) {
-        checkNotNull("assert:string", string);
-
-        final int length = string.length();
-        if (index < 0 || index > length) {
-            handleAssertFailure(name, "The " + name + " must be between 0 and the length (" + length
-                    + " )of the string, index: " + index + ", string: " + string);
-        }
     }
 
     /**
@@ -404,6 +392,20 @@ public class StringHelper extends ObjectHelper {
         }
 
         return out;
+    }
+
+    /**
+     * Asserts that the two strings are in fact the equal or both are null.
+     * 
+     * @param actualStringName
+     * @param actual
+     * @param expectedStringName
+     * @param expected
+     */
+    public static void checkEquals(final String message, final String actual, final String expected) {
+        if (false == nullSafeEquals(actual, expected)) {
+            SystemHelper.handleAssertFailure( message + ", got[" + actual + "], expected[" + expected + "]");
+        }
     }
 
     /**

@@ -36,12 +36,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class WidgetHelper extends SystemHelper {
 
-    public static void checkNotAlreadyCreated(final String name, final boolean exists) {
-        if (exists) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " widget has already been previously created");
-        }
-    }
-
     /**
      * Given an element attempts to find which widget it is a child of. This is particularly useful when a panel contains many widgets which
      * in themselves are made up of many elements and one needs to determine which widget the event belongs too.
@@ -143,7 +137,7 @@ public class WidgetHelper extends SystemHelper {
     }
 
     /**
-     * Retrieves the absolute left or X coordinates for this widget.
+     * Retrieves the absolute left or X coordinates for given widget.
      * 
      * @param widget
      * @return
@@ -154,7 +148,7 @@ public class WidgetHelper extends SystemHelper {
     }
 
     /**
-     * Retrieves the absolute top or y coordinates for this widget.
+     * Retrieves the absolute top or y coordinates for given widget.
      * 
      * @param widget
      * @return

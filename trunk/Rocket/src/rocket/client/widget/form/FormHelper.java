@@ -24,7 +24,6 @@ import rocket.client.util.HttpHelper;
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
 
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -38,8 +37,12 @@ public class FormHelper extends DomHelper {
      * Populates the given map with the values of the elements belonging to the given form. The element name becomes the key and teh value
      * the entry value.
      * 
+     * FormElements without a name are skipped.
+     * 
      * @param map
+     *            The destination map
      * @param form
+     *            The form containing the elements.
      */
     public static void populateMapFromForm(final Map map, final Element form) {
         ObjectHelper.checkNotNull("parameter:map", map);
@@ -47,8 +50,11 @@ public class FormHelper extends DomHelper {
 
         final Iterator formElements = FormHelper.getFormElements(form);
         while (formElements.hasNext()) {
-            final Element formElement = (Element) castToElement((JavaScriptObject) formElements.next());
+            final Element formElement = (Element) formElements.next();
             final String name = DOM.getAttribute(formElement, DomConstants.NAME);
+            if (null == name) {
+                continue;
+            }
             final String value = FormHelper.getFormSubmitValue(formElement);
 
             map.put(name, value);
@@ -56,7 +62,7 @@ public class FormHelper extends DomHelper {
     }
 
     /**
-     * Encodes all the elements belonging to form into a url encoded safe String.
+     * Encodes all the elements belonging to form into a safe url encoded String.
      * 
      * @param form
      * @return
@@ -73,8 +79,8 @@ public class FormHelper extends DomHelper {
                 urlEncoded.append('&');
             }
 
-            final Element formElement = (Element) castToElement((JavaScriptObject) formElements.next());
-            final String name = DomHelper.getProperty(formElement, DomConstants.NAME);
+            final Element formElement = (Element) formElements.next();
+            final String name = DomHelper.getString(DomHelper.castFromElement(formElement), DomConstants.NAME);
             final String value = HttpHelper.urlEncode(FormHelper.getFormSubmitValue(formElement));
             urlEncoded.append(name);
             urlEncoded.append('=');
@@ -131,18 +137,19 @@ public class FormHelper extends DomHelper {
 
         return new Iterator() {
             public boolean hasNext() {
-                return this.getIndex() < DOM.getIntAttribute(form, DomConstants.LENGTH_PROPERTY);
+                return this.getCursor() < DOM.getIntAttribute(form, DomConstants.LENGTH_PROPERTY);
             }
 
             public Object next() {
-                final int index = this.getIndex();
-                final Object nextt = this.next0(form, index);
-                this.setIndex(index + 1);
-                return nextt;
+                final int cursor = this.getCursor();
+                final Object object = this.next0(form, cursor);
+                this.setCursor(cursor + 1);
+                return object;
             }
 
             protected native Element next0(final Element form, final int index)/*-{
-             return form.elements[ index ];
+             var element = form.elements[ index ];
+             return element ? element : null;
              }-*/;
 
             public void remove() {
@@ -150,14 +157,14 @@ public class FormHelper extends DomHelper {
                         + this);
             }
 
-            int index = 0;
+            int cursor = 0;
 
-            int getIndex() {
-                return index;
+            int getCursor() {
+                return cursor;
             }
 
-            void setIndex(final int index) {
-                this.index = index;
+            void setCursor(final int cursor) {
+                this.cursor = cursor;
             }
         };
     }

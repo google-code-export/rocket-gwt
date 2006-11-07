@@ -112,7 +112,7 @@ public class Pager extends AbstractNumberHolder implements NumberHolder {
     }
 
     protected HorizontalPanel createHorizontalPanel() {
-        WidgetHelper.checkNotAlreadyCreated("field:horizontalPanel", this.hasHorizontalPanel());
+        ObjectHelper.checkPropertyNotSet("field:horizontalPanel", this, this.hasHorizontalPanel());
 
         final HorizontalPanel panel = new HorizontalPanel();
         panel.addStyleName(WidgetConstants.PAGER_STYLE);
