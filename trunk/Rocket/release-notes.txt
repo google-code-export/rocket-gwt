@@ -169,3 +169,64 @@ FIX InteractiveList clicking on the IteratorRemoveButton was calling iterator.ne
 FIX InteractiveList fixed logging of caught exceptions during attempted list operations.
 ENH Changed public methods of TabPanel to accept TabItem which contains handles to the caption and content widgets. Also simplified/shortened public method names to longer include "Tab".
 ADD AccordionPanel widget with 3 different flavours (VerticalAccordionPanel, LeftSideAccordionPanel, RightSideAccordionPanel).
+
+0.19 7 November 2006
+--------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.19/Rocket-0.19.zip
+
+rocket.client.browser.*
+ADD BrowserHelper.isOpera8(), isOpera9() and getOperatingSystem()
+
+rocket.client.dom.*
+ENH DomCollectionList added adopt()/disown() methods and calls them each time an element is added or removed.
+ENH Added delegating method between add(Object), add(int,Object), remove(int) and target method.
+ADD Added destroy() to DomCollectionList/ObjectWrapper/DomObjectPropertyList/DomObjectPropertyListElement to break cyclic references between wrappers and dom objects.
+REF DomObjectPropertyListElement refactored XXXValueQuickly to XXXCacheValue where XXX is set/get.
+ADD DomHelper.removeProperty()
+FIX DomHelper.findAllChildrenOfType() now returns an unmodifiable List.
+REF ObjectWrapper.toStringObject() -> toStringWrapped.
+REF ObjectWrapper Removed "Property" from typed convenience getters/setters
+FIX removed wrapper cache of DomCollectionList
+REF Moved DomHelper.XXXProperty setters/getters to ObjectHelper. Removed "Property" from typed convenience getters/setters
+ADD DomHelper.XXXProperty added overloaded methods to use index rather than propertyName
+ADD DomObjectMap, DomObjectMapValue
+ADD DomObjectList, DomObjectListElement
+
+rocket.client.style.*
+REF Renamed StyleHelper.getStyleSheetsCollection() to StyleHelper.getStyleSheets()
+ADD StyleSheet which provides a List like view of a native StyleSheet object.
+ADD Rule which provides an bean like view of a native Rule object
+ADD Style which provides a Map like view of a native Style object.
+ADD StylePropertyValue which provides a bean like view of a single Style object property value
+
+rocket.client.util.*
+ADD ColourHelper.getColour( name )using standard web colour names.
+ADD CollectionHelper.unmodifiableList()
+ADD PrimitiveHelper.checkEquals(), checkNotEquals(), checkBoolean()
+REF Made ObjectWrapper into an interface and moved abstract ObjectWrapper class to ObjectWrapperImpl
+ADD ObjectWrapper.removeProperty();
+MOD ObjectHelper.setXXX() where XXX is the type now returns the replaced value.
+MOD ObjectHelper.checkXXX() to only accept a message and not multiple strings naming parameters.
+ADD StringHelper.checkEquals();
+REF IteratorView, removed viewType argument from next0(), renamed getParentModificationCount() to getModificationCount, renamed modificationCounter to expectedModificationCount
+
+rocket.client.widget
+REF Renamed CssPicker to StyleSheetPicker. Also added test. also renamed setLabel()/getLabel get/setText.
+
+rocket.client.widget.form.*
+ADD Added equals() to all rocket.client.widget.form.* widgets.
+FIX ResetButton.reset() implemented.
+FIX SubmitButton.submit() implemented.
+REF Renamed FormElementsListTestCase to FormElementListTestCase
+
+rocket.client.widget.slider.*
+REF Renamed AbstractSlider to Slider
+FIX Slider.setValue accepted values greater than maximum value...
+ADD Added clickRepeatRate to slider allowing repetition of mouse down events before/after the handle.
+
+ECLIPSE project files
+ADD Added -style DETAILED argument to all *.launch / *-compile.cmd files resulting in all generated javascript containing source and not obsfucated symbols.
+
+GWT fixes
+DomHelper.eventGetToElement() replaces DOM.eventGetToElement()  http://code.google.com/p/google-web-toolkit/issues/detail?id=229
+PrimitiveHelper.characterDigit() http://code.google.com/p/google-web-toolkit/issues/detail?id=302
