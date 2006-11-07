@@ -186,4 +186,36 @@ public class ColourHelperTestCase extends TestCase {
                 + Integer.toHexString(mixedColour) + ", expectedColour: 0x" + Integer.toHexString(expectedColour),
                 expectedColour, mixedColour);
     }
+
+    public void testGetNamedColour0() {
+        final String namedColour = "red";
+        final int actual = ColourHelper.getColour(namedColour);
+        final int expected = 0xff0000;
+
+        assertEquals(expected, actual);
+    }
+
+    public void testGetNamedColour1() {
+        final String namedColour = "Aquamarine";
+        final int actual = ColourHelper.getColour(namedColour);
+        final int expected = 0x7FFFD4;
+
+        assertEquals(expected, actual);
+    }
+
+    public void testGetNamedColour2() {
+        final String namedColour = "GhostWhite";
+        final int actual = ColourHelper.getColour(namedColour);
+        final int expected = 0xF8F8FF;
+
+        assertEquals(expected, actual);
+    }
+
+    public void testGetNamedColour3() {
+        final String namedColour = "OLIVE";
+        final int actual = ColourHelper.getColour(namedColour);
+        final int expected = 0x808000;
+
+        assertEquals(expected, actual);
+    }
 }

@@ -15,17 +15,16 @@
  */
 package rocket.test.widget.accordionpanel.client;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 import rocket.client.util.ObjectHelper;
-import rocket.client.util.StringHelper;
 import rocket.client.util.SystemHelper;
-import rocket.client.widget.*;
-import rocket.client.widget.accordion.*;
-import rocket.test.widget.accordionpanel.client.AccordionPanelTest;
-import rocket.test.widget.accordionpanel.client.AccordionPanelTest.InterativeList;
+import rocket.client.widget.accordion.AccordionItem;
+import rocket.client.widget.accordion.AccordionListener;
+import rocket.client.widget.accordion.AccordionPanel;
+import rocket.client.widget.accordion.LeftSideAccordionPanel;
+import rocket.client.widget.accordion.RightSideAccordionPanel;
+import rocket.client.widget.accordion.VerticalAccordionPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Random;
@@ -33,7 +32,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 

@@ -15,7 +15,7 @@
  */
 package rocket.test.browser.cssunitscalingfileservlet.client;
 
-import rocket.client.widget.CssPicker;
+import rocket.client.widget.StyleSheetPicker;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -32,8 +32,8 @@ public class CssUnitScalingFileServletTest implements EntryPoint {
         try {
             final RootPanel rootPanel = RootPanel.get();
 
-            final CssPicker picker = new CssPicker();
-            picker.setLabel("Text Size");
+            final StyleSheetPicker picker = new StyleSheetPicker();
+            picker.setText("Text Size");
             rootPanel.add(picker);
             picker.selectStyleSheet(3);
 

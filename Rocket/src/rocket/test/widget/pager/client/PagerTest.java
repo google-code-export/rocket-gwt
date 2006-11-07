@@ -18,6 +18,9 @@ package rocket.test.widget.pager.client;
 import rocket.client.widget.Pager;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -32,13 +35,16 @@ public class PagerTest implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        try {
-            this.createPager(1, 20, 1, 7);
-            this.createPager(1, 20, 10, 7);
-            this.createPager(1, 20, 19, 7);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            public void onUncaughtException(final Throwable caught) {
+                caught.printStackTrace();
+                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+            }
+        });
+
+        this.createPager(1, 20, 1, 7);
+        this.createPager(1, 20, 10, 7);
+        this.createPager(1, 20, 19, 7);
     }
 
     protected void createPager(final int first, final int last, final int currentPage, final int inBetweenCount) {

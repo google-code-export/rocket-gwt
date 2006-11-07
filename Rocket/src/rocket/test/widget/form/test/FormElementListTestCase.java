@@ -17,7 +17,6 @@ package rocket.test.widget.form.test;
 
 import java.util.Iterator;
 
-import rocket.client.dom.DomHelper;
 import rocket.client.widget.form.FormConstants;
 import rocket.client.widget.form.FormElementsList;
 import rocket.client.widget.form.HiddenFormField;
@@ -41,7 +40,7 @@ import com.google.gwt.user.client.ui.TextBox;
 /**
  * Tests for FormElementsList a list view of an elements form.
  */
-public class FormElementsListTestCase extends GWTTestCase {
+public class FormElementListTestCase extends GWTTestCase {
 
     final static String NAME = "name";
 
@@ -51,7 +50,7 @@ public class FormElementsListTestCase extends GWTTestCase {
      * Must refer to a valid module that inherits from com.google.gwt.junit.JUnit
      */
     public String getModuleName() {
-        return "rocket.test.form.FormTest";
+        return "rocket.test.widget.form.Test";
     }
 
     public void testSize() {
@@ -73,19 +72,7 @@ public class FormElementsListTestCase extends GWTTestCase {
         }
     }
 
-    public void testGet1ReturnsSameWrapperEachTime() {
-        final FormElementsList list = new FormElementsList();
-        list.setCollection(getFormElements());
-
-        for (int i = 0; i < 10; i++) {
-            this.addCheckpoint("element: " + i);
-
-            final Object element = list.get(i);
-            assertSame("get(" + i + ")[" + element + "]", element, list.get(i));
-        }
-    }
-
-    public void testGet2TestsElementType() {
+    public void testGet1TestsElementType() {
         final FormElementsList list = new FormElementsList();
         list.setCollection(getFormElements());
 
@@ -147,12 +134,10 @@ public class FormElementsListTestCase extends GWTTestCase {
 
             final Object element = iterator.next();
             final Object expectedElement = list.get(i);
-            assertSame("element:" + i, expectedElement, element);
+            assertEquals("element:" + i, expectedElement, element);
             i++;
         }
 
-        assertFalse("Iterator.hasNext() should return false", iterator.hasNext());
-        assertFalse("Iterator.hasNext() should return false", iterator.hasNext());
         assertFalse("Iterator.hasNext() should return false", iterator.hasNext());
     }
 
@@ -212,6 +197,15 @@ public class FormElementsListTestCase extends GWTTestCase {
         DOM.appendChild(options, DOM.createElement(FormConstants.OPTION_TAG));
         DOM.appendChild(form, list);
 
-        return DomHelper.getPropertyAsJavaScriptObject(form, "elements");
+        return formElements();
     }
+
+    /**
+     * Provides a safe reliable way to return a form without using a JavaScriptObject.
+     * 
+     * @return
+     */
+    native static JavaScriptObject formElements()/*-{
+     return $doc.forms[ 0 ].elements;
+     }-*/;
 }

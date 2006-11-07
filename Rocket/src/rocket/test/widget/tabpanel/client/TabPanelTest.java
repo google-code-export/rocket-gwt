@@ -15,14 +15,10 @@
  */
 package rocket.test.widget.tabpanel.client;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import rocket.client.util.ObjectHelper;
-import rocket.client.util.StringHelper;
 import rocket.client.util.SystemHelper;
-import rocket.client.widget.VerticalPanel;
 import rocket.client.widget.tab.BottomTabPanel;
 import rocket.client.widget.tab.LeftTabPanel;
 import rocket.client.widget.tab.RightTabPanel;
@@ -30,20 +26,16 @@ import rocket.client.widget.tab.TabItem;
 import rocket.client.widget.tab.TabListener;
 import rocket.client.widget.tab.TabPanel;
 import rocket.client.widget.tab.TopTabPanel;
-import rocket.client.widget.test.InteractiveList;
-import rocket.client.widget.test.InteractivePanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.KeyboardListener;
-import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -55,16 +47,18 @@ public class TabPanelTest implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        try {
-            final RootPanel rootPanel = RootPanel.get();
-            rootPanel.add(createTopTabPanelButton());
-            rootPanel.add(createBottomTabPanelButton());
-            rootPanel.add(createLeftTabPanelButton());
-            rootPanel.add(createRightTabPanelButton());
+        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            public void onUncaughtException(final Throwable caught) {
+                caught.printStackTrace();
+                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+            }
+        });
 
-        } catch (final Throwable caught) {
-            caught.printStackTrace();
-        }
+        final RootPanel rootPanel = RootPanel.get();
+        rootPanel.add(createTopTabPanelButton());
+        rootPanel.add(createBottomTabPanelButton());
+        rootPanel.add(createLeftTabPanelButton());
+        rootPanel.add(createRightTabPanelButton());
     }
 
     protected Button createTopTabPanelButton() {

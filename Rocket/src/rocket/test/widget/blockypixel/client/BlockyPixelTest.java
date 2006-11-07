@@ -19,10 +19,13 @@ import rocket.client.util.ColourHelper;
 import rocket.client.widget.BlockyPixel;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
@@ -39,59 +42,60 @@ public class BlockyPixelTest implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        try {
-            final RootPanel panel = RootPanel.get();
+        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            public void onUncaughtException(final Throwable caught) {
+                caught.printStackTrace();
+                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+            }
+        });
+        final RootPanel panel = RootPanel.get();
 
-            panel.add(new HTML("Interval between repaints(ms)"));
-            final TextBox interval = new TextBox();
-            interval.setText("100");
-            panel.add(interval);
-            panel.add(new HTML("<br/>"));
+        panel.add(new HTML("Interval between repaints(ms)"));
+        final TextBox interval = new TextBox();
+        interval.setText("100");
+        panel.add(interval);
+        panel.add(new HTML("<br/>"));
 
-            panel.add(new HTML("Rows"));
-            final TextBox rows = new TextBox();
-            rows.setText("10");
-            panel.add(rows);
-            panel.add(new HTML("<br/>"));
+        panel.add(new HTML("Rows"));
+        final TextBox rows = new TextBox();
+        rows.setText("10");
+        panel.add(rows);
+        panel.add(new HTML("<br/>"));
 
-            panel.add(new HTML("Columns"));
-            final TextBox columns = new TextBox();
-            columns.setText("10");
-            panel.add(columns);
-            panel.add(new HTML("<br/>"));
+        panel.add(new HTML("Columns"));
+        final TextBox columns = new TextBox();
+        columns.setText("10");
+        panel.add(columns);
+        panel.add(new HTML("<br/>"));
 
-            final Button button = new Button("Start");
-            panel.add(button);
+        final Button button = new Button("Start");
+        panel.add(button);
 
-            button.addClickListener(new ClickListener() {
-                public void onClick(final Widget ignore) {
-                    final BlockyPixel grid = new BlockyPixel();
-                    grid.setRows(Integer.parseInt(rows.getText()));
-                    grid.setColumns(Integer.parseInt(columns.getText()));
-                    grid.setSize("90%", "75%");
-                    panel.add(grid);
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignore) {
+                final BlockyPixel grid = new BlockyPixel();
+                grid.setRows(Integer.parseInt(rows.getText()));
+                grid.setColumns(Integer.parseInt(columns.getText()));
+                grid.setSize("90%", "75%");
+                panel.add(grid);
 
-                    final TestTimer timer = new TestTimer();
-                    timer.setCounter(0);
-                    timer.setGrid(grid);
-                    timer.scheduleRepeating(Integer.parseInt(interval.getText()));
+                final TestTimer timer = new TestTimer();
+                timer.setCounter(0);
+                timer.setGrid(grid);
+                timer.scheduleRepeating(Integer.parseInt(interval.getText()));
 
-                    DOM.addEventPreview(new EventPreview() {
-                        public boolean onEventPreview(final Event event) {
-                            if (DOM.eventGetType(event) == Event.ONCLICK) {
-                                timer.cancel();
+                DOM.addEventPreview(new EventPreview() {
+                    public boolean onEventPreview(final Event event) {
+                        if (DOM.eventGetType(event) == Event.ONCLICK) {
+                            timer.cancel();
 
-                                DOM.removeEventPreview(this);
-                            }
-                            return true;
+                            DOM.removeEventPreview(this);
                         }
-                    });
-                }
-            });
-
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+                        return true;
+                    }
+                });
+            }
+        });
     }
 
     class TestTimer extends Timer {

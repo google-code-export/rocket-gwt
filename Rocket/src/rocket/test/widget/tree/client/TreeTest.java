@@ -17,6 +17,7 @@ package rocket.test.widget.tree.client;
 
 import java.util.Iterator;
 
+import rocket.client.util.ObjectHelper;
 import rocket.client.widget.HorizontalPanel;
 import rocket.client.widget.WidgetHelper;
 import rocket.client.widget.tree.Tree;
@@ -24,6 +25,8 @@ import rocket.client.widget.tree.TreeItem;
 import rocket.client.widget.tree.TreeListener;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -55,142 +58,142 @@ public class TreeTest implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        try {
-            final RootPanel rootPanel = RootPanel.get();
+        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            public void onUncaughtException(final Throwable caught) {
+                caught.printStackTrace();
+                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+            }
+        });
 
-            final HTML feedback = new HTML();
-            rootPanel.add(feedback);
-            rootPanel.add(new HTML("<br/>"));
+        final RootPanel rootPanel = RootPanel.get();
 
-            final Button clearFeedback = new Button("Clear");
-            clearFeedback.addClickListener(new ClickListener() {
-                public void onClick(final Widget widget) {
-                    feedback.setHTML("");
-                }
-            });
-            rootPanel.add(clearFeedback);
+        final HTML feedback = new HTML();
+        rootPanel.add(feedback);
+        rootPanel.add(new HTML("<br/>"));
 
-            rootPanel.add(new HTML("<hr/>"));
+        final Button clearFeedback = new Button("Clear");
+        clearFeedback.addClickListener(new ClickListener() {
+            public void onClick(final Widget widget) {
+                feedback.setHTML("");
+            }
+        });
+        rootPanel.add(clearFeedback);
 
-            final CheckBox veto = new CheckBox("confirm prompts - onBeforeCollapse() and onBeforeExpand()");
-            rootPanel.add(veto);
+        rootPanel.add(new HTML("<hr/>"));
 
-            rootPanel.add(new HTML("<hr/>"));
+        final CheckBox veto = new CheckBox("confirm prompts - onBeforeCollapse() and onBeforeExpand()");
+        rootPanel.add(veto);
 
-            final Tree tree = new TestTreeWidget();
-            tree.setCollapserImageUrl("collapser.gif");
-            tree.setExpanderImageUrl("expander.gif");
-            tree.addTreeListener(new TreeListener() {
-                public boolean onBeforeCollapse(Widget widget) {
-                    feedback.setHTML(feedback.getHTML() + "onBeforeCollapse&nbsp;" + toString((TreeItem) widget)
-                            + "<br/>");
-                    return veto.isChecked() ? Window.confirm("Collapse ?") : true;
-                }
+        rootPanel.add(new HTML("<hr/>"));
 
-                public void onCollapse(Widget widget) {
-                    feedback.setHTML(feedback.getHTML() + "onCollapse&nbsp;" + toString((TreeItem) widget) + "<br/>");
-                    TreeTest.lastTreeItem = (TreeItem) widget;
-                }
+        final Tree tree = new TestTreeWidget();
+        tree.setCollapserImageUrl("collapser.gif");
+        tree.setExpanderImageUrl("expander.gif");
+        tree.addTreeListener(new TreeListener() {
+            public boolean onBeforeCollapse(Widget widget) {
+                feedback.setHTML(feedback.getHTML() + "onBeforeCollapse&nbsp;" + toString((TreeItem) widget) + "<br/>");
+                return veto.isChecked() ? Window.confirm("Collapse ?") : true;
+            }
 
-                public boolean onBeforeExpand(Widget widget) {
-                    feedback.setHTML(feedback.getHTML() + "onBeforeExpand&nbsp;" + toString((TreeItem) widget)
-                            + "<br/>");
+            public void onCollapse(Widget widget) {
+                feedback.setHTML(feedback.getHTML() + "onCollapse&nbsp;" + toString((TreeItem) widget) + "<br/>");
+                TreeTest.lastTreeItem = (TreeItem) widget;
+            }
 
-                    return veto.isChecked() ? Window.confirm("Expand ?") : true;
-                }
+            public boolean onBeforeExpand(Widget widget) {
+                feedback.setHTML(feedback.getHTML() + "onBeforeExpand&nbsp;" + toString((TreeItem) widget) + "<br/>");
 
-                public void onExpand(Widget widget) {
-                    feedback.setHTML(feedback.getHTML() + "onExpand&nbsp;" + toString((TreeItem) widget) + "<br/>");
-                    TreeTest.lastTreeItem = (TreeItem) widget;
-                }
+                return veto.isChecked() ? Window.confirm("Expand ?") : true;
+            }
 
-                public String toString(final TreeItem treeItem) {
-                    return DOM.getInnerText(treeItem.getWidget().getElement());
-                }
-            });
+            public void onExpand(Widget widget) {
+                feedback.setHTML(feedback.getHTML() + "onExpand&nbsp;" + toString((TreeItem) widget) + "<br/>");
+                TreeTest.lastTreeItem = (TreeItem) widget;
+            }
 
-            rootPanel.add(tree);
+            public String toString(final TreeItem treeItem) {
+                return DOM.getInnerText(treeItem.getWidget().getElement());
+            }
+        });
 
-            final TreeItem grandChildren = new TestTreeItem();
-            grandChildren.setWidget(new HTML("GrandChild"));
+        rootPanel.add(tree);
 
-            grandChildren.add(new HTML("grandChild #1"));
-            grandChildren.add(new HTML("grandChild #2"));
-            grandChildren.add(new HTML("grandChild #3"));
+        final TreeItem grandChildren = new TestTreeItem();
+        grandChildren.setWidget(new HTML("GrandChild"));
 
-            final TreeItem root = tree.getTreeItem();
-            root.setWidget(new HTML("Root"));
+        grandChildren.add(new HTML("grandChild #1"));
+        grandChildren.add(new HTML("grandChild #2"));
+        grandChildren.add(new HTML("grandChild #3"));
 
-            root.add(new HTML("child #1"));
-            root.add(grandChildren);
-            root.add(new HTML("child #3"));
+        final TreeItem root = tree.getTreeItem();
+        root.setWidget(new HTML("Root"));
 
-            rootPanel.add(new HTML("<br/>"));
+        root.add(new HTML("child #1"));
+        root.add(grandChildren);
+        root.add(new HTML("child #3"));
 
-            final Button createIterator = new Button("create Iterator");
-            createIterator.addClickListener(new ClickListener() {
-                public void onClick(final Widget ignored) {
-                    TreeTest.iterator = tree.getTreeItem().iterator(Window.confirm("Visit Descendants ?"));
-                    feedback.setHTML(feedback.getHTML() + "<br/>iterator created: " + iterator);
-                }
-            });
-            rootPanel.add(createIterator);
+        rootPanel.add(new HTML("<br/>"));
 
-            final Button iteratorHasNext = new Button("iterator.hasNext()");
-            iteratorHasNext.addClickListener(new ClickListener() {
-                public void onClick(final Widget ignored) {
-                    Iterator iterator = TreeTest.iterator;
-                    if (null != iterator) {
-                        String append = null;
-                        try {
-                            append = "iterator.hasNext() returned " + iterator.hasNext();
-                        } catch (final Exception caught) {
-                            append = "iterator.hasNext() threw " + caught;
-                        }
-                        feedback.setHTML(feedback.getHTML() + "<br/>" + append);
+        final Button createIterator = new Button("create Iterator");
+        createIterator.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignored) {
+                TreeTest.iterator = tree.getTreeItem().iterator(Window.confirm("Visit Descendants ?"));
+                feedback.setHTML(feedback.getHTML() + "<br/>iterator created: " + iterator);
+            }
+        });
+        rootPanel.add(createIterator);
+
+        final Button iteratorHasNext = new Button("iterator.hasNext()");
+        iteratorHasNext.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignored) {
+                Iterator iterator = TreeTest.iterator;
+                if (null != iterator) {
+                    String append = null;
+                    try {
+                        append = "iterator.hasNext() returned " + iterator.hasNext();
+                    } catch (final Exception caught) {
+                        append = "iterator.hasNext() threw " + caught;
                     }
+                    feedback.setHTML(feedback.getHTML() + "<br/>" + append);
                 }
-            });
-            rootPanel.add(iteratorHasNext);
+            }
+        });
+        rootPanel.add(iteratorHasNext);
 
-            final Button iteratorNext = new Button("Iterator.next()");
-            iteratorNext.addClickListener(new ClickListener() {
-                public void onClick(final Widget ignored) {
-                    Iterator iterator = TreeTest.iterator;
-                    if (null != iterator) {
-                        String append = null;
-                        try {
-                            append = "iterator.next() returned " + iterator.next();
-                        } catch (final Exception caught) {
-                            append = "iterator.next() threw " + caught;
-                        }
-                        feedback.setHTML(feedback.getHTML() + "<br/>" + append);
+        final Button iteratorNext = new Button("Iterator.next()");
+        iteratorNext.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignored) {
+                Iterator iterator = TreeTest.iterator;
+                if (null != iterator) {
+                    String append = null;
+                    try {
+                        append = "iterator.next() returned " + iterator.next();
+                    } catch (final Exception caught) {
+                        append = "iterator.next() threw " + caught;
                     }
+                    feedback.setHTML(feedback.getHTML() + "<br/>" + append);
                 }
-            });
-            rootPanel.add(iteratorNext);
+            }
+        });
+        rootPanel.add(iteratorNext);
 
-            final Button iteratorRemove = new Button("Iterator.remove()");
-            iteratorRemove.addClickListener(new ClickListener() {
-                public void onClick(final Widget ignored) {
-                    Iterator iterator = TreeTest.iterator;
-                    if (null != iterator) {
-                        String append = null;
-                        try {
-                            iterator.remove();
-                            append = "iterator.removed() successful.";
-                        } catch (final Exception caught) {
-                            append = "iterator.removed() threw " + caught;
-                        }
-                        feedback.setHTML(feedback.getHTML() + "<br/>" + append);
+        final Button iteratorRemove = new Button("Iterator.remove()");
+        iteratorRemove.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignored) {
+                Iterator iterator = TreeTest.iterator;
+                if (null != iterator) {
+                    String append = null;
+                    try {
+                        iterator.remove();
+                        append = "iterator.removed() successful.";
+                    } catch (final Exception caught) {
+                        append = "iterator.removed() threw " + caught;
                     }
+                    feedback.setHTML(feedback.getHTML() + "<br/>" + append);
                 }
-            });
-            rootPanel.add(iteratorRemove);
-
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+            }
+        });
+        rootPanel.add(iteratorRemove);
     }
 
     /**
@@ -200,7 +203,7 @@ public class TreeTest implements EntryPoint {
      */
     class TestTreeWidget extends Tree {
         protected TreeItem createTreeItem() {
-            WidgetHelper.checkNotAlreadyCreated("treeItem", this.hasTreeItem());
+            ObjectHelper.checkPropertyNotSet("treeItem", this, this.hasTreeItem());
 
             final TestTreeItem treeItem = new TestTreeItem();
             this.setTreeItem(treeItem);
