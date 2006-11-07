@@ -15,7 +15,9 @@
  */
 package rocket.client.collection;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,6 +29,11 @@ import rocket.client.util.ObjectHelper;
  * @author Miroslav Pokorny (mP)
  */
 public class CollectionHelper {
+    /**
+     * Visits all elements returns by the given iterator removing each one.
+     * 
+     * @param iterator
+     */
     public static void removeAll(final Iterator iterator) {
         ObjectHelper.checkNotNull("parameter:iterator", iterator);
 
@@ -66,5 +73,91 @@ public class CollectionHelper {
             list.add(iterator.next());
         }
         return list;
+    }
+
+    /**
+     * Returns an unmodifiable view of a List. Using this reference the given list may not be modified in any manner, with its references
+     * remaining constant and with the list only being modifiable using the original list reference.
+     * 
+     * @param list
+     * @return The read only list. Attempts to modify will throw UnsupportedOperationException...
+     */
+    public static List unmodifiableList(final List list) {
+        return new AbstractList() {
+
+            // LIST MODIFIERS ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+            public boolean add(Object element) {
+                throw new UnsupportedOperationException("An unmodifable List may not have an element add(Object)");
+            }
+
+            public void add(int arg0, Object element) {
+                throw new UnsupportedOperationException("An unmodifable List may not have an element add(int,Object)");
+            }
+
+            public Object set(final int index, final Object element) {
+                throw new UnsupportedOperationException("An unmodifable List may not have an element set()");
+            }
+
+            public Object remove(final int index) {
+                throw new UnsupportedOperationException("An unmodifable List may not have an element removed(index)");
+            }
+
+            public boolean remove(final Object element) {
+                throw new UnsupportedOperationException("An unmodifable List may not have an element removed(Object)");
+            }
+
+            public Iterator iterator() {
+                final Iterator iterator = list.iterator();
+                return new Iterator() {
+                    public boolean hasNext() {
+                        return iterator.hasNext();
+                    }
+
+                    public Object next() {
+                        return iterator.next();
+                    }
+
+                    public void remove() {
+                        throw new UnsupportedOperationException(
+                                "An unmodifable List's iterator may not have an element removed()");
+                    }
+                };
+            }
+
+            // DELEGATE TO ENCAPSULATED LIST::::::::::::::::::
+
+            public int size() {
+                return list.size();
+            }
+
+            public boolean contains(final Object object) {
+                return list.contains(object);
+            }
+
+            public Object[] toArray() {
+                return list.toArray();
+            }
+
+            public boolean containsAll(final Collection collection) {
+                return list.containsAll(collection);
+            }
+
+            public boolean retainAll(Collection collection) {
+                return list.containsAll(collection);
+            }
+
+            public Object get(final int index) {
+                return list.get(index);
+            }
+
+            public int indexOf(final Object object) {
+                return list.indexOf(object);
+            }
+
+            public int lastIndexOf(Object object) {
+                return list.lastIndexOf(object);
+            }
+        };
     }
 }

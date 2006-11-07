@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav (mP)
  */
-public class VerticalSlider extends AbstractSlider {
+public class VerticalSlider extends Slider {
     public VerticalSlider() {
         super();
 
@@ -42,20 +42,20 @@ public class VerticalSlider extends AbstractSlider {
     }
 
     /**
-     * Calculates and sets the relative position of the thumb widget according to the value of this slider.
+     * Calculates and sets the relative position of the handle widget according to the value of this slider.
      */
     protected void updateWidget() {
         final int sliderHeight = this.getOffsetHeight();
-        final Widget thumb = this.getWidget();
-        final int thumbHeight = thumb.getOffsetHeight();
-        final int spacerHeight = sliderHeight - thumbHeight;
+        final Widget handle = this.getHandle();
+        final int handleHeight = handle.getOffsetHeight();
+        final int spacerHeight = sliderHeight - handleHeight;
 
         final float ratio = (float) this.getValue() / this.getMaximumValue();
         final int newTop = (int) (ratio * spacerHeight);
 
-        final Element thumbElement = thumb.getElement();
-        DOM.setStyleAttribute(thumbElement, "position", "relative");
-        DOM.setStyleAttribute(thumbElement, "top", newTop + "px");
+        final Element handleElement = handle.getElement();
+        DOM.setStyleAttribute(handleElement, "position", "relative");
+        DOM.setStyleAttribute(handleElement, "top", newTop + "px");
     }
 
     protected String getSliderDraggingStyleName() {
@@ -63,7 +63,7 @@ public class VerticalSlider extends AbstractSlider {
     }
 
     /**
-     * Tests if the mouse click occured in the slider area before or after the thumb widget.
+     * Tests if the mouse click occured in the slider area before or after the handle widget.
      * 
      * @param event
      */
@@ -71,12 +71,12 @@ public class VerticalSlider extends AbstractSlider {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         final int mouseY = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();
-        final int widgetY = WidgetHelper.getAbsoluteTop(this.getWidget());
+        final int widgetY = WidgetHelper.getAbsoluteTop(this.getHandle());
         this.handleBackgroundClick(mouseY, widgetY);
     }
 
     /**
-     * Interprets any dragging mouse movements updating the thumb accordingly.
+     * Interprets any dragging mouse movements updating the handle accordingly.
      * 
      * @param event
      */
@@ -86,8 +86,8 @@ public class VerticalSlider extends AbstractSlider {
         final int widgetY = WidgetHelper.getAbsoluteTop(this);
         final int mouseY = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();
         final int sliderHeight = this.getOffsetHeight();
-        final int thumbHeight = this.getWidget().getOffsetHeight();
+        final int handleHeight = this.getHandle().getOffsetHeight();
 
-        this.handleMouseMove(widgetY, mouseY, sliderHeight, thumbHeight);
+        this.handleMouseMove(widgetY, mouseY, sliderHeight, handleHeight);
     }
 }

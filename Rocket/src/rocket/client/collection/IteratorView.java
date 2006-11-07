@@ -46,28 +46,15 @@ public abstract class IteratorView implements Iterator {
             throw new NoSuchElementException();
         }
 
-        final Object nexted = this.next0(this.getViewType());
-        this.leavingNext();
+        final Object nexted = this.next0();
+        this.afterNext();
         this.syncModificationCounters();
         return nexted;
     }
 
-    protected abstract Object next0(final int type);
+    protected abstract Object next0();
 
-    protected abstract void leavingNext();
-
-    /**
-     * This enum keeps track of whether keys/views or entries are being viewed.
-     */
-    private int viewType;
-
-    public int getViewType() {
-        return this.viewType;
-    }
-
-    public void setViewType(final int viewType) {
-        this.viewType = viewType;
-    }
+    protected abstract void afterNext();
 
     public void remove() {
         modificationGuard();
@@ -80,29 +67,29 @@ public abstract class IteratorView implements Iterator {
     /**
      * Helps keep track of concurrent modification of the parent.
      */
-    private int modificationCounter;
+    private int expectedModificationCount;
 
-    protected int getModificationCounter() {
-        return this.modificationCounter;
+    protected int getExpectedModificationCount() {
+        return this.expectedModificationCount;
     }
 
-    public void setModificationCounter(final int modificationCounter) {
-        this.modificationCounter = modificationCounter;
+    public void setExpectedModificationCount(final int modificationCounter) {
+        this.expectedModificationCount = modificationCounter;
     }
 
     protected void modificationGuard() {
-        if (this.getParentModificationCounter() != this.getModificationCounter()) {
-            throw new RuntimeException("ConcurrentModification");
+        if (this.getModificationCounter() != this.getExpectedModificationCount()) {
+            throw new RuntimeException("ConcurrentModification detected.");
         }
     }
 
     public void syncModificationCounters() {
-        this.setModificationCounter(this.getParentModificationCounter());
+        this.setExpectedModificationCount(this.getModificationCounter());
     }
 
-    protected abstract int getParentModificationCounter();
+    protected abstract int getModificationCounter();
 
     public String toString() {
-        return super.toString() + ", modificationCounter: " + modificationCounter + ", viewType: " + viewType;
+        return super.toString() + ", modificationCounter: " + expectedModificationCount;
     }
 }

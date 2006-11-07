@@ -10,10 +10,14 @@ import rocket.client.util.StringHelper;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class DomObjectPropertyListElement {
+public abstract class DomObjectPropertyListElement implements Destroyable {
 
     protected DomObjectPropertyListElement() {
         super();
+    }
+
+    public void destroy() {
+        this.clearList();
     }
 
     /**
@@ -48,11 +52,11 @@ public abstract class DomObjectPropertyListElement {
         if (this.hasList()) {
             this.getList().stalenessGuard();
         }
-        return this.getValueQuickly();
+        return this.getCacheValue();
     }
 
     public void setValue(final String value) {
-        this.setValueQuickly(value);
+        this.setCacheValue(value);
         if (this.hasList()) {
             this.getList().updateObjectPropertyValue();
         }
@@ -63,7 +67,7 @@ public abstract class DomObjectPropertyListElement {
      * 
      * @return
      */
-    protected String getValueQuickly() {
+    protected String getCacheValue() {
         StringHelper.checkNotEmpty("field:value", value);
         return value;
     }
@@ -75,13 +79,13 @@ public abstract class DomObjectPropertyListElement {
      * 
      * @param value
      */
-    protected void setValueQuickly(final String value) {
+    protected void setCacheValue(final String value) {
         StringHelper.checkNotEmpty("parameter:value", value);
         this.value = value;
     }
 
     public int hashCode() {
-        return this.getValueQuickly().hashCode();
+        return this.getCacheValue().hashCode();
     }
 
     public boolean equals(final Object other) {
@@ -91,7 +95,7 @@ public abstract class DomObjectPropertyListElement {
 
     public boolean equals(final DomObjectPropertyListElement other) {
         ObjectHelper.checkNotNull("parameter:other", other);
-        return this.getValueQuickly().equals(other.getValueQuickly());
+        return this.getCacheValue().equals(other.getCacheValue());
     }
 
     public String toString() {

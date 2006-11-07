@@ -42,7 +42,6 @@ public class VerticalPanel extends com.google.gwt.user.client.ui.VerticalPanel {
     }
 
     public Iterator iterator() {
-        final VerticalPanel that = this;
 
         final Iterator wrapped = super.iterator();
         final IteratorView iterator = new IteratorView() {
@@ -52,14 +51,14 @@ public class VerticalPanel extends com.google.gwt.user.client.ui.VerticalPanel {
                 return wrapped.hasNext();
             }
 
-            protected Object next0(int type) {
+            protected Object next0() {
                 // final Widget widget = that.getWidget( this.getIndex() );
                 // this.setLastVisited( widget );
                 // return widget;
                 return wrapped.next();
             }
 
-            protected void leavingNext() {
+            protected void afterNext() {
                 // this.setIndex( this.getIndex() + 1 );
             }
 
@@ -78,8 +77,8 @@ public class VerticalPanel extends com.google.gwt.user.client.ui.VerticalPanel {
                 wrapped.remove();
             }
 
-            protected int getParentModificationCounter() {
-                return that.getModificationCounter();
+            protected int getModificationCounter() {
+                return VerticalPanel.this.getModificationCounter();
             }
             // IMPL
             // protected int index;

@@ -105,7 +105,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
     }
 
     public Widget createUpWidget() {
-        WidgetHelper.checkNotAlreadyCreated("upWidget", this.hasUpWidget());
+        ObjectHelper.checkPropertyNotSet("upWidget", this, this.hasUpWidget());
 
         final Spinner that = this;
 
@@ -173,7 +173,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
     }
 
     public Widget createDownWidget() {
-        WidgetHelper.checkNotAlreadyCreated("downWidget", this.hasDownWidget());
+        ObjectHelper.checkPropertyNotSet("downWidget", this, this.hasDownWidget());
 
         final Spinner that = this;
 
@@ -271,7 +271,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
      * @return
      */
     public Panel createPanel() {
-        WidgetHelper.checkNotAlreadyCreated("panel", this.hasPanel());
+        ObjectHelper.checkPropertyNotSet("panel", this, this.hasPanel());
 
         final VerticalPanel panel = new VerticalPanel();
         panel.addStyleName(WidgetConstants.SPINNER_STYLE);

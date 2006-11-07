@@ -19,9 +19,11 @@ import com.google.gwt.core.client.JavaScriptObject;
  * Sub-classes are required to override the various wrapping/unwrapping methods that convert between string tokens and wrappers and vice
  * versa.
  * 
+ * When the list is no longer being used the {@link #destroy} must be called to release browser object references.
+ * 
  * @author Miroslv Pokorny (mP)
  */
-public abstract class DomObjectPropertyList extends AbstractList {
+public abstract class DomObjectPropertyList extends AbstractList implements Destroyable {
     protected DomObjectPropertyList() {
         super();
 
@@ -107,7 +109,7 @@ public abstract class DomObjectPropertyList extends AbstractList {
             }
 
             final DomObjectPropertyListElement wrapper = (DomObjectPropertyListElement) element;
-            wrapper.setValueQuickly(newValue);
+            wrapper.setCacheValue(newValue);
         }
 
         // need to either save extra tokens or delete extra elements...
@@ -173,7 +175,7 @@ public abstract class DomObjectPropertyList extends AbstractList {
             }
 
             final DomObjectPropertyListElement wrapper = (DomObjectPropertyListElement) element;
-            buf.append(wrapper.getValueQuickly());
+            buf.append(wrapper.getCacheValue());
         }
 
         return buf.toString();
@@ -212,12 +214,6 @@ public abstract class DomObjectPropertyList extends AbstractList {
         this.increaseModificationCounter();
     }
 
-    protected void adopt(final DomObjectPropertyListElement element) {
-        ObjectHelper.checkNotNull("parameter:element", element);
-
-        element.setList(this);
-    }
-
     public Object remove(final int index) {
         this.stalenessGuard();
 
@@ -242,12 +238,6 @@ public abstract class DomObjectPropertyList extends AbstractList {
         return removed;
     }
 
-    protected void disown(final DomObjectPropertyListElement element) {
-        ObjectHelper.checkNotNull("parameter:element", element);
-
-        element.clearList();
-    }
-
     public Object get(final int index) {
         PrimitiveHelper.checkBetween("parameter:index", index, 0, size());
 
@@ -262,7 +252,7 @@ public abstract class DomObjectPropertyList extends AbstractList {
             if (value instanceof String) {
                 final DomObjectPropertyListElement wrapper = this.createWrapper();
                 this.adopt(wrapper);
-                wrapper.setValueQuickly((String) value);
+                wrapper.setCacheValue((String) value);
 
                 value = wrapper;
                 list.set(index, value);
@@ -293,45 +283,45 @@ public abstract class DomObjectPropertyList extends AbstractList {
 
         final IteratorView iterator = new IteratorView() {
             protected boolean hasNext0() {
-                final int index = this.getIndex();
+                final int cursor = this.getCursor();
                 final int size = size();
-                return index < size;
+                return cursor < size;
             }
 
-            protected Object next0(final int type) {
-                final int index = this.getIndex();
+            protected Object next0() {
+                final int index = this.getCursor();
                 return get(index);
             }
 
-            protected void leavingNext() {
-                this.setIndex(this.getIndex() + 1);
+            protected void afterNext() {
+                this.setCursor(this.getCursor() + 1);
             }
 
             protected void remove0() {
                 // because index was advanced by next() finishes the actual
                 // index is the one before the current.
-                final int index = this.getIndex() - 1;
-                DomObjectPropertyList.this.remove(index);
+                final int cursor = this.getCursor() - 1;
+                DomObjectPropertyList.this.remove(cursor);
 
                 // because element was removed need to take one from index.
-                this.setIndex(index);
+                this.setCursor(cursor);
             }
 
-            protected int getParentModificationCounter() {
+            protected int getModificationCounter() {
                 return DomObjectPropertyList.this.getModificationCounter();
             }
 
             /**
              * This index points to the element within the parent list pointed to by this iterator.
              */
-            int index;
+            int cursor;
 
-            int getIndex() {
-                return index;
+            int getCursor() {
+                return cursor;
             }
 
-            void setIndex(final int index) {
-                this.index = index;
+            void setCursor(final int cursor) {
+                this.cursor = cursor;
             }
         };
 
@@ -359,7 +349,7 @@ public abstract class DomObjectPropertyList extends AbstractList {
     // PROPERTIES :::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
-     * The javascript object containing the property.
+     * The native object containing the property.
      */
     private JavaScriptObject object;
 
@@ -371,6 +361,10 @@ public abstract class DomObjectPropertyList extends AbstractList {
     public void setObject(final JavaScriptObject object) {
         ObjectHelper.checkNotNull("parameter:object", object);
         this.object = object;
+    }
+
+    protected void clearObject() {
+        this.object = null;
     }
 
     /**
@@ -408,11 +402,11 @@ public abstract class DomObjectPropertyList extends AbstractList {
     }
 
     protected String getObjectPropertyValue() {
-        return DomHelper.getProperty(this.getObject(), this.getPropertyName());
+        return ObjectHelper.getString(this.getObject(), this.getPropertyName());
     }
 
     protected void setObjectPropertyValue(final String objectPropertyValue) {
-        DomHelper.setProperty(this.getObject(), this.getPropertyName(), objectPropertyValue);
+        ObjectHelper.setString(this.getObject(), this.getPropertyName(), objectPropertyValue);
         this.increaseModificationCounter();
     }
 
@@ -433,6 +427,39 @@ public abstract class DomObjectPropertyList extends AbstractList {
 
     protected void createList() {
         this.setList(new ArrayList());
+    }
+
+    // LIFECYCLE MANAGEMENT:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    protected void adopt(final DomObjectPropertyListElement element) {
+        ObjectHelper.checkNotNull("parameter:element", element);
+
+        element.setList(this);
+    }
+
+    protected void disown(final DomObjectPropertyListElement element) {
+        ObjectHelper.checkNotNull("parameter:element", element);
+
+        element.destroy();
+    }
+
+    /**
+     * Releases all references to browser objects. After invoking this method this list is in an invalid state and should not be used.
+     */
+    public void destroy() {
+        final List list = this.getList();
+        final Iterator children = list.iterator();
+        while (children.hasNext()) {
+            final Object child = children.next();
+            if (false == (child instanceof DomObjectPropertyListElement)) {
+                continue;
+            }
+
+            this.disown((DomObjectPropertyListElement) child);
+        }
+
+        list.clear();
+        this.clearObject();
     }
 
     public String toString() {

@@ -54,14 +54,14 @@ public class HorizontalPanel extends com.google.gwt.user.client.ui.HorizontalPan
                 return wrapped.hasNext();
             }
 
-            protected Object next0(int type) {
+            protected Object next0() {
                 // final Widget widget = that.getWidget( this.getIndex() );
                 // this.setLastVisited( widget );
                 // return widget;
                 return wrapped.next();
             }
 
-            protected void leavingNext() {
+            protected void afterNext() {
                 // this.setIndex( this.getIndex() + 1 );
             }
 
@@ -79,7 +79,7 @@ public class HorizontalPanel extends com.google.gwt.user.client.ui.HorizontalPan
                 // this.setIndex( this.getIndex() - 1 );
             }
 
-            protected int getParentModificationCounter() {
+            protected int getModificationCounter() {
                 return that.getModificationCounter();
             }
             // // IMPL

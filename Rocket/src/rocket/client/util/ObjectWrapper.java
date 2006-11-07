@@ -1,79 +1,41 @@
+/*
+ * Copyright 2006 NSW Police Government Australia
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package rocket.client.util;
 
-import rocket.client.dom.DomHelper;
+import rocket.client.dom.Destroyable;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * Convenient base class for any JavascriptObject wrapper. It provides typed methods that make it easy to read or write to object
- * properties.
+ * This interface defines a number of common methods for any java object that wishes to
+ * wrap a native object.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class ObjectWrapper {
+public interface ObjectWrapper extends Destroyable{
 
-    protected ObjectWrapper() {
-    }
+    boolean equals(Object otherObject);
+    
+    boolean equals(ObjectWrapper otherObjectWrapper);
 
-    /**
-     * The javascript object being wrapped
-     */
-    private JavaScriptObject object;
+    JavaScriptObject getObject();
 
-    public JavaScriptObject getObject() {
-        ObjectHelper.checkNotNull("field:object", object);
-        return object;
-    }
-
-    public boolean hasObject() {
-        return null != this.object;
-    }
-
-    public void setObject(final JavaScriptObject object) {
-        ObjectHelper.checkNotNull("parameter:object", object);
-        this.object = object;
-    }
-
-    /**
-     * Returns the string form of the object being wrapped.
-     * 
-     * @return
-     */
-    protected native String toStringObject()/*-{
-     return object ? object.toString() : "null";
-     }-*/;
-
-    // A VARIETY OF CONVENIENT TYPED PROPERTY METHODS.
-
-    protected boolean hasProperty(final String name) {
-        return DomHelper.hasProperty(this.getObject(), name);
-    }
-
-    protected String getProperty(final String name) {
-        return DomHelper.getProperty(this.getObject(), name);
-    }
-
-    protected boolean getBooleanProperty(final String name) {
-        return DomHelper.getBooleanProperty(this.getObject(), name);
-    }
-
-    protected int getIntProperty(final String name) {
-        return DomHelper.getIntProperty(this.getObject(), name);
-    }
-
-    protected void setProperty(final String name, final boolean booleanValue) {
-        DomHelper.setProperty(this.getObject(), name, booleanValue);
-    }
-
-    protected void setProperty(final String name, final int intValue) {
-        DomHelper.setProperty(this.getObject(), name, intValue);
-    }
-
-    protected void setProperty(final String name, final String value) {
-        DomHelper.setProperty(this.getObject(), name, value);
-    }
-
-    public String toString() {
-        return super.toString() + ", object[" + this.toStringObject() + "]";
-    }
+    boolean hasObject();
+    
+    void setObject(JavaScriptObject object);
+    
+    void clearObject();
 }

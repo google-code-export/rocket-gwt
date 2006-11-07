@@ -213,8 +213,8 @@ public class BrowserHelper extends ObjectHelper {
         final int top = browserHeight / 2 - height / 2;
 
         final Element element = widget.getElement();
-        DOM.setStyleAttribute(element, "left", String.valueOf(left));
-        DOM.setStyleAttribute(element, "top", String.valueOf(top));
+        DOM.setStyleAttribute(element, "left", String.valueOf(left) + "px");
+        DOM.setStyleAttribute(element, "top", String.valueOf(top) + "px");
     }
 
     /**
@@ -280,6 +280,14 @@ public class BrowserHelper extends ObjectHelper {
         return getUserAgent().indexOf(BrowserConstants.FIREFOX_USER_AGENT) != -1;
     }
 
+    public static boolean isOpera8() {
+        return getUserAgent().indexOf(BrowserConstants.OPERA8_USER_AGENT) != -1;
+    }
+
+    public static boolean isOpera9() {
+        return getUserAgent().indexOf(BrowserConstants.OPERA9_USER_AGENT) != -1;
+    }
+
     /**
      * Retrieves the userAgent or browser identifying string using JSNI.
      * 
@@ -288,6 +296,18 @@ public class BrowserHelper extends ObjectHelper {
     public static native String getUserAgent()/*-{
      return $wnd.navigator.userAgent;
      }-*/;
+
+    /**
+     * Returns the host operating system that the browser is running under.
+     * 
+     * @return
+     */
+    public static String getOperatingSystem() {
+        final String userAgent = BrowserHelper.getUserAgent();
+        final int leftParenthesis = userAgent.indexOf('(');
+        final int semiColon = userAgent.indexOf(leftParenthesis, ';');
+        return userAgent.substring(leftParenthesis + 1, semiColon);
+    }
 
     // COOKIES
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

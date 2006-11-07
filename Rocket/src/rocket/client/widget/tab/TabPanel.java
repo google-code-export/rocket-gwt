@@ -22,7 +22,6 @@ import java.util.List;
 import rocket.client.collection.IteratorView;
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
-import rocket.client.widget.accordion.AccordionItem;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -31,8 +30,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -147,12 +144,12 @@ public abstract class TabPanel extends Composite {
                 return this.getIndex() < TabPanel.this.getCount();
             }
 
-            protected Object next0(final int type) {
+            protected Object next0() {
                 final int index = this.getIndex();
                 return get(index);
             }
 
-            protected void leavingNext() {
+            protected void afterNext() {
                 this.setIndex(this.getIndex() + 1);
             }
 
@@ -162,7 +159,7 @@ public abstract class TabPanel extends Composite {
                 this.setIndex(index);
             }
 
-            protected int getParentModificationCounter() {
+            protected int getModificationCounter() {
                 return TabPanel.this.getModificationCounter();
             }
 

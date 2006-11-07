@@ -142,35 +142,35 @@ public abstract class AbstractPanel extends Panel implements HasWidgets {
         final IteratorView iterator = new IteratorView() {
 
             protected boolean hasNext0() {
-                return this.getIndex() < that.getWidgetCount();
+                return this.getCursor() < that.getWidgetCount();
             }
 
-            protected Object next0(int type) {
-                return that.get(this.getIndex());
+            protected Object next0() {
+                return that.get(this.getCursor());
             }
 
-            protected void leavingNext() {
-                this.setIndex(this.getIndex() + 1);
+            protected void afterNext() {
+                this.setCursor(this.getCursor() + 1);
             }
 
             protected void remove0() {
-                final int index = this.getIndex() - 1;
+                final int index = this.getCursor() - 1;
                 that.remove(index);
-                this.setIndex(index);
+                this.setCursor(index);
             }
 
-            protected int getParentModificationCounter() {
+            protected int getModificationCounter() {
                 return that.getModificationCounter();
             }
 
-            int index;
+            int cursor;
 
-            int getIndex() {
-                return this.index;
+            int getCursor() {
+                return this.cursor;
             }
 
-            void setIndex(final int index) {
-                this.index = index;
+            void setCursor(final int cursor) {
+                this.cursor = cursor;
             }
         };
 

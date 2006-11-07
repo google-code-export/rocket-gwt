@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  * 
- * TODO Iterator when visiting descendants does not fail fast.
+ * FIX Iterator when visiting descendants does not fail fast.
  */
 public class TreeItem extends Composite {
 
@@ -52,12 +52,12 @@ public class TreeItem extends Composite {
      */
     private FlexTable flexTable;
 
-    public FlexTable getFlexTable() {
+    protected FlexTable getFlexTable() {
         ObjectHelper.checkNotNull("field:flexTable", flexTable);
         return flexTable;
     }
 
-    public void setFlexTable(final FlexTable flexTable) {
+    protected void setFlexTable(final FlexTable flexTable) {
         ObjectHelper.checkNotNull("parameter:flexTable", flexTable);
         this.flexTable = flexTable;
     }
@@ -259,7 +259,7 @@ public class TreeItem extends Composite {
     }
 
     protected VerticalPanel createChildren() {
-        WidgetHelper.checkNotAlreadyCreated("children", this.hasChildren());
+        ObjectHelper.checkPropertyNotSet("children", this, this.hasChildren());
 
         final VerticalPanel panel = new VerticalPanel();
         panel.addStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);

@@ -15,7 +15,6 @@
  */
 package rocket.client.widget.tab;
 
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 

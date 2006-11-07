@@ -21,8 +21,6 @@ import java.util.List;
 
 import rocket.client.util.ObjectHelper;
 
-import com.google.gwt.user.client.ui.Widget;
-
 public class AccordionListenerCollection {
     public AccordionListenerCollection() {
         this.setListeners(new ArrayList());

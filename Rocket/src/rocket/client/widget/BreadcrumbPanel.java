@@ -62,7 +62,7 @@ public class BreadcrumbPanel extends Composite {
     }
 
     protected HorizontalPanel createHorizontalPanel() {
-        WidgetHelper.checkNotAlreadyCreated("horizontalPanel", this.hasHorizontalPanel());
+        ObjectHelper.checkPropertyNotSet("horizontalPanel", this, this.hasHorizontalPanel());
 
         final HorizontalPanel panel = new HorizontalPanel();
         panel.addStyleName(WidgetConstants.BREADCRUMBS_STYLE);

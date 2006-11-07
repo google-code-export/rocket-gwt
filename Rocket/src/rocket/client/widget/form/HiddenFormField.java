@@ -56,4 +56,9 @@ public class HiddenFormField extends Widget {
         StringHelper.checkNotNull("parameter:value", value);
         DOM.setAttribute(this.getElement(), "value", value);
     }
+
+    public boolean equals(final Object other) {
+        return other instanceof HiddenFormField
+                && DOM.compare(this.getElement(), ((HiddenFormField) other).getElement());
+    }
 }

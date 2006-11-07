@@ -14,6 +14,7 @@ import rocket.client.util.SystemHelper;
  * @author Miroslav Pokorny (mP)
  * 
  * TODO list.add( index, Object ) AND UNIT TEST
+ * TODO This list should promote items that are getted and become a LeastRecentlyUsedList.
  */
 public class CyclicList extends AbstractList implements List {
 
@@ -222,42 +223,40 @@ public class CyclicList extends AbstractList implements List {
      */
     public Iterator iterator() {
 
-        final CyclicList that = this;
-
         final IteratorView iterator = new IteratorView() {
             protected boolean hasNext0() {
-                return this.getIndex() < that.size();
+                return this.getCursor() < CyclicList.this.size();
             }
 
-            protected Object next0(final int ignored) {
-                return that.get(this.getIndex());
+            protected Object next0() {
+                return CyclicList.this.get(this.getCursor());
             }
 
-            protected void leavingNext() {
-                this.setIndex(this.getIndex() + 1);
+            protected void afterNext() {
+                this.setCursor(this.getCursor() + 1);
             }
 
             protected void remove0() {
-                final int index = this.getIndex() - 1;
-                that.removeByIndexWithoutConcurrentModificationCheck(index);
-                this.setIndex(index);
+                final int index = this.getCursor() - 1;
+                CyclicList.this.removeByIndexWithoutConcurrentModificationCheck(index);
+                this.setCursor(index);
             }
 
             /**
              * A pointer to the next element.
              */
-            int index;
+            int cursor;
 
-            int getIndex() {
-                return index;
+            int getCursor() {
+                return cursor;
             }
 
-            void setIndex(final int index) {
-                this.index = index;
+            void setCursor(final int cursor) {
+                this.cursor = cursor;
             }
 
-            protected int getParentModificationCounter() {
-                return that.getModificationCounter();
+            protected int getModificationCounter() {
+                return CyclicList.this.getModificationCounter();
             }
         };
 

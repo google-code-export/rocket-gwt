@@ -68,13 +68,13 @@ public abstract class MenuList extends MenuWidget implements HasWidgets {
 
     public void open() {
         if (this.isHideable()) {
-            DOM.setStyleAttribute(this.getElement(), StyleConstants.CSS_DISPLAY, "block");
+            DOM.setStyleAttribute(this.getElement(), StyleConstants.DISPLAY, "block");
         }
     }
 
     public void hide() {
         if (this.isHideable()) {
-            DOM.setStyleAttribute(this.getElement(), StyleConstants.CSS_DISPLAY, "none");
+            DOM.setStyleAttribute(this.getElement(), StyleConstants.DISPLAY, "none");
         }
         this.hideOpened();
     }

@@ -20,7 +20,7 @@ import java.util.Iterator;
 import rocket.client.util.ObjectHelper;
 
 /**
- * Useful base class for any iterator is actually a view around another Iterator
+ * Useful base class for any iterator which is actually a view around another Iterator
  * 
  * @author Miroslav Pokorny
  */

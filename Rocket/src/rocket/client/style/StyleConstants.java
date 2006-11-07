@@ -1,6 +1,19 @@
+/*
+ * Copyright 2006 NSW Police Government Australia
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package rocket.client.style;
-
-import rocket.client.dom.DomConstants;
 
 /**
  * A collection of constants used within the this style package.
@@ -12,437 +25,261 @@ public class StyleConstants {
 
     // style
     // attributes...........................................................................................
-    public final static String TYPE_ATTRIBUTE = DomConstants.TYPE_ATTRIBUTE;
-
-    public final static String HREF_ATTRIBUTE = DomConstants.HREF_ATTRIBUTE;
-
     public final static String DISABLED_ATTRIBUTE = "disabled";
 
     public final static String STYLE_SHEET = "stylesheet";
 
     public final static String SELECTOR_TEXT_PROPERTY_NAME = "selectorText";
+    public final static String SELECTOR_SEPARATOR = ",";
+    
+    /**
+     * Each rule has a style object which contains a read/writable cssText property.
+     */
+    public final static String STYLE_TEXT_PROPERTY_NAME = "cssText";
 
-    public final static String CSS_RULES_PROPERTY_NAME = "cssRules";
+    public final static String RULE_STYLE_OBJECT = "style";
 
-    public final static String CSS_RULES_INTERNET_EXPLORER_6_PROPERTY_NAME = "cssRules";
+    public static final String AZIMUTH = "azimuth";
 
-    // css unit
-    // types..........................................................................................
+    public static final String BACKGROUND = "background";
 
-    public final static int UNKNOWN = 0;
+    public static final String BACKGROUND_ATTACHMENT = "backgroundAttachment";
 
-    public final static int NUMBER = 1;
+    public static final String BACKGROUND_COLOR = "backgroundColor";
 
-    // relative units
-    public final static int PERCENTAGE = 2;
+    public static final String BACKGROUND_IMAGE = "backgroundImage";
 
-    public final static int EMS = 3;
+    public static final String BACKGROUND_POSITION = "backgroundPosition";
 
-    public final static int EXS = 4;
+    public static final String BACKGROUND_REPEAT = "backgroundRepeat";
 
-    public final static int PX = 5;
+    public static final String BORDER = "border";
 
-    // absolute units
-    public final static int CM = 6;
+    public static final String BORDER_COLLAPSE = "borderCollapse";
 
-    public final static int MM = 7;
+    public static final String BORDER_COLOR = "borderColor";
 
-    public final static int INCH = 8;
+    public static final String BORDER_SPACING = "borderSpacing";
 
-    public final static int POINT = 9;
+    public static final String BORDER_STYLE = "borderStyle";
 
-    public final static int PICA = 10;
+    public static final String BORDER_TOP = "borderTop";
 
-    // angles
-    public final static int DEG = 11;
+    public static final String BORDER_RIGHT = "borderRight";
 
-    public final static int RAD = 12;
+    public static final String BORDER_BOTTOM = "borderBottom";
 
-    public final static int GRAD = 13;
+    public static final String BORDER_LEFT = "borderLeft";
 
-    // time
-    public final static int MS = 14;
+    public static final String BORDER_TOP_COLOR = "borderTopColor";
 
-    public final static int S = 15;
+    public static final String BORDER_RIGHT_COLOR = "borderRightColor";
 
-    // frequencies
-    public final static int HZ = 16;
+    public static final String BORDER_BOTTOM_COLOR = "borderBottomColor";
 
-    public final static int KHZ = 17;
+    public static final String BORDER_LEFT_COLOR = "borderLeftColor";
 
-    // dimension, string, uri, ident, attr
-    public final static int DIMENSION = 18;
+    public static final String BORDER_TOP_STYLE = "borderTopStyle";
 
-    public final static int STRING = 19;
+    public static final String BORDER_RIGHT_STYLE = "borderRightStyle";
 
-    public final static int URI = 20;
+    public static final String BORDER_BOTTOM_STYLE = "borderBottomStyle";
 
-    public final static int IDENT = 21;
+    public static final String BORDER_LEFT_STYLE = "borderLeftStyle";
 
-    public final static int ATTR = 22;
+    public static final String BORDER_TOP_WIDTH = "borderTopWidth";
 
-    public final static int COUNTER = 23;
+    public static final String BORDER_RIGHT_WIDTH = "borderRightWidth";
 
-    // rect
-    public final static int RECT = 24;
+    public static final String BORDER_BOTTOM_WIDTH = "borderBottomWidth";
 
-    // rgbcolor.
-    public final static int RGBCOLOR = 25;
+    public static final String BORDER_LEFT_WIDTH = "borderLeftWidth";
 
-    // css unit
-    // description..........................................................................................
+    public static final String BORDER_WIDTH = "borderWidth";
 
-    public final static String UNKNOWN_DESCRIPTION = "Unknown";
+    public static final String BOTTOM = "bottom";
 
-    public final static String NUMBER_DESCRIPTION = "Number";
+    public static final String CAPTION_SIDE = "captionSide";
 
-    // relative units
-    public final static String PERCENTAGE_DESCRIPTION = "Percentage";
+    public static final String CLEAR = "clear";
 
-    public final static String EMS_DESCRIPTION = "Ems";
+    public static final String CLIP = "clip";
 
-    public final static String EXS_DESCRIPTION = "Exs";
+    public static final String COLOR = "color";
 
-    public final static String PX_DESCRIPTION = "Pixels";
+    public static final String CONTENT = "content";
 
-    public final static String CM_DESCRIPTION = "Cms";
+    public static final String COUNTER_INCREMENT = "counterIncrement";
 
-    public final static String MM_DESCRIPTION = "Mms";
+    public static final String COUNTER_RESET = "counterReset";
 
-    public final static String INCH_DESCRIPTION = "Inches";
+    public static final String CUE = "cue";
 
-    public final static String POINT_DESCRIPTION = "Points";
+    public static final String CUE_AFTER = "cueAfter";
 
-    public final static String PICA_DESCRIPTION = "Picas";
+    public static final String CUE_BEFORE = "cueBefore";
 
-    // angles
-    public final static String DEG_DESCRIPTION = "Degrees";
+    public static final String CURSOR = "cursor";
 
-    public final static String RAD_DESCRIPTION = "Radians";
+    public static final String DIRECTION = "direction";
 
-    public final static String GRAD_DESCRIPTION = "Gradians";
+    public static final String DISPLAY = "display";
 
-    // time
-    public final static String MS_DESCRIPTION = "Milliseconds";
+    public static final String ELEVATION = "elevation";
 
-    public final static String S_DESCRIPTION = "Seconds";
+    public static final String EMPTY_CELLS = "emptyCells";
 
-    // frequencies
-    public final static String HZ_DESCRIPTION = "Hertz";
+    public static final String FLOAT = "cssFloat";
 
-    public final static String KHZ_DESCRIPTION = "KiloHertz";
+    public static final String FONT = "font";
 
-    // dimension, string, uri, ident, attr
-    public final static String DIMENSION_DESCRIPTION = "Dimension";
+    public static final String FONT_FAMiLY = "fontFamily";
 
-    public final static String STRING_DESCRIPTION = "String";
+    public static final String FONT_SIZE = "fontSize";
 
-    public final static String URI_DESCRIPTION = "Uri";
+    public static final String FONT_SIZE_ADJUSTED = "fontSizeAdjust";
 
-    public final static String IDENT_DESCRIPTION = "Ident";
+    public static final String FONT_STRETCH = "fontStretch";
 
-    public final static String ATTR_DESCRIPTION = "Attribute";
+    public static final String FONT_STYLE = "fontStyle";
 
-    public final static String COUNTER_DESCRIPTION = "Counter";
+    public static final String FONT_VARIANT = "fontVariant";
 
-    // rect
-    public final static String RECT_DESCRIPTION = "Rectangle";
+    public static final String FONT_WEIGHT = "fontWeight";
 
-    // rgbcolor.
-    public final static String RGBCOLOR_DESCRIPTION = "RgbColour";
+    public static final String HEIGHT = "height";
 
-    // unit
-    // suffixes..............................................................................................................
-    public final static String PERCENTAGE_UNIT = "px";
+    public static final String LEFT = "left";
 
-    public final static String EMS_UNIT = "ems";
+    public static final String LETTER_SPACING = "letterSpacing";
 
-    public final static String EX_UNIT = "ex";
+    public static final String LINE_HEIGHT = "lineHeight";
 
-    public final static String PIXEL_UNIT = "px";
+    public static final String LIST_STYLE = "listStyle";
 
-    public final static String CM_SUFFIX = "cm";
+    public static final String LIST_IMAGE = "listStyleImage";
 
-    public final static String MM_SUFFIX = "mm";
+    public static final String LIST_STYLE_POSITION = "listStylePosition";
 
-    public final static String INCH_SUFFIX = "in";
+    public static final String LIST_STYLE_TYPE = "listStyleType";
 
-    public final static String POINT_SUFFIX = "pt";
+    public static final String MARGIN = "margin";
 
-    public final static String PICA_SUFFIX = "pc";
+    public static final String MARGIN_TOP = "marginTop";
 
-    // angles
-    public final static String DEG_SUFFIX = "deg";
+    public static final String MARGIN_RIGHT = "marginRight";
 
-    public final static String RAD_SUFFIX = "rad";
+    public static final String MARGIN_BOTTOM = "marginBottom";
 
-    public final static String GRAD_SUFFIX = "grad";
+    public static final String MARGIN_LEFT = "marginLeft";
 
-    // time
-    public final static String MS_SUFFIX = "ms";
+    public static final String MARKER_OFFSET = "markerOffset";
 
-    public final static String S_SUFFIX = "s";
+    public static final String MARKS = "marks";
 
-    // frequencies
-    public final static String HZ_SUFFIX = "hz";
+    public static final String MAX_HEIGHT = "maxHeight";
 
-    public final static String KHZ_SUFFIX = "khz";
+    public static final String MAX_WIDTH = "maxWidth";
 
-    // conversion
-    // factors.....................................................................................................
-    public final static float CM_TO_MM = 10f;
+    public static final String MIN_HEIGHT = "minHeight";
 
-    public final static float INCHES_TO_MM = 25.4f;
+    public static final String MIN_WIDTH = "minWidth";
 
-    public final static float POINT_TO_MM = INCHES_TO_MM / 72f;
+    public static final String ORPHANS = "orphans";
 
-    public final static float PICA_TO_MM = 4.23333333f;
+    public static final String OUTLINE = "outline";
 
-    public final static float RAD_TO_DEG = 2 * 3.1415926535897932384626433832795f / 360;
+    public static final String OUTLINE_COLOR = "outlineColor";
 
-    public final static float GRAD_TO_DEG = 400f / 360f;
+    public static final String OUTLINE_STYLE = "outlineStyle";
 
-    public static final String CSS_AZIMUTH = "azimuth";
+    public static final String OUTLINE_WIDTH = "outlineWidth";
 
-    public static final String CSS_BACKGROUND = "background";
+    public static final String OVERFLOW = "overflow";
 
-    public static final String CSS_BACKGROUND_ATTACHMENT = "backgroundAttachment";
+    public static final String PADDING = "padding";
 
-    public static final String CSS_BACKGROUND_COLOR = "backgroundColor";
+    public static final String PADDING_TOP = "paddingTop";
 
-    public static final String CSS_BACKGROUND_IMAGE = "backgroundImage";
+    public static final String PADDING_RIGHT = "paddingRight";
 
-    public static final String CSS_BACKGROUND_POSITION = "backgroundPosition";
+    public static final String PADDING_BOTTOM = "paddingBottom";
 
-    public static final String CSS_BACKGROUND_REPEAT = "backgroundRepeat";
+    public static final String PADDING_LEFT = "paddingLeft";
 
-    public static final String CSS_BORDER = "border";
+    public static final String PAGE = "page";
 
-    public static final String CSS_BORDER_COLLAPSE = "borderCollapse";
+    public static final String BREAK_AFTER = "pageBreakAfter";
 
-    public static final String CSS_BORDER_COLOR = "borderColor";
+    public static final String BREAK_BEFORE = "pageBreakBefore";
 
-    public static final String CSS_BORDER_SPACING = "borderSpacing";
+    public static final String BREAK_INSIIDE = "pageBreakInside";
 
-    public static final String CSS_BORDER_STYLE = "borderStyle";
+    public static final String PAUSE = "pause";
 
-    public static final String CSS_BORDER_TOP = "borderTop";
+    public static final String PAUSE_AFTER = "pauseAfter";
 
-    public static final String CSS_BORDER_RIGHT = "borderRight";
+    public static final String PAUSE_BEFORE = "pauseBefore";
 
-    public static final String CSS_BORDER_BOTTOM = "borderBottom";
+    public static final String PITCH = "pitch";
 
-    public static final String CSS_BORDER_LEFT = "borderLeft";
+    public static final String PITCH_RANGE = "pitchRange";
 
-    public static final String CSS_BORDER_TOP_COLOR = "borderTopColor";
+    public static final String PLAY_DURING = "playDuring";
 
-    public static final String CSS_BORDER_RIGHT_COLOR = "borderRightColor";
+    public static final String POSITION = "position";
 
-    public static final String CSS_BORDER_BOTTOM_COLOR = "borderBottomColor";
+    public static final String QUOTES = "quotes";
 
-    public static final String CSS_BORDER_LEFT_COLOR = "borderLeftColor";
+    public static final String RICHNESS = "richness";
 
-    public static final String CSS_BORDER_TOP_STYLE = "borderTopStyle";
+    public static final String RIGHT = "right";
 
-    public static final String CSS_BORDER_RIGHT_STYLE = "borderRightStyle";
+    public static final String SIZE = "size";
 
-    public static final String CSS_BORDER_BOTTOM_STYLE = "borderBottomStyle";
+    public static final String SPEAK = "speak";
 
-    public static final String CSS_BORDER_LEFT_STYLE = "borderLeftStyle";
+    public static final String SPEAK_HEADER = "speakHeader";
 
-    public static final String CSS_BORDER_TOP_WIDTH = "borderTopWidth";
+    public static final String SPEAK_NUMERICAL = "speakNumeral";
 
-    public static final String CSS_BORDER_RIGHT_WIDTH = "borderRightWidth";
+    public static final String SPEAK_PUNCTUATION = "speakPunctuation";
 
-    public static final String CSS_BORDER_BOTTOM_WIDTH = "borderBottomWidth";
+    public static final String SPEECH_RATE = "speechRate";
 
-    public static final String CSS_BORDER_LEFT_WIDTH = "borderLeftWidth";
+    public static final String STRESS = "stress";
 
-    public static final String CSS_BORDER_WIDTH = "borderWidth";
+    public static final String TABLE_LAYOUT = "tableLayout";
 
-    public static final String CSS_BOTTOM = "bottom";
+    public static final String TEXT_ALIGN = "textAlign";
 
-    public static final String CSS_CAPTION_SIDE = "captionSide";
+    public static final String TEXT_DECORATION = "textDecoration";
 
-    public static final String CSS_CLEAR = "clear";
+    public static final String TEXT_INDENT = "textIndent";
 
-    public static final String CSS_CLIP = "clip";
+    public static final String TEXT_SHADOW = "textShadow";
 
-    public static final String CSS_COLOR = "color";
+    public static final String TEXT_TRANSFORM = "textTransform";
 
-    public static final String CSS_CONTENT = "content";
+    public static final String TOP = "top";
 
-    public static final String CSS_COUNTER_INCREMENT = "counterIncrement";
+    public static final String UNICODE_BIDI = "unicodeBidi";
 
-    public static final String CSS_COUNTER_RESET = "counterReset";
+    public static final String VERTICAL_ALIGN = "verticalAlign";
 
-    public static final String CSS_CUE = "cue";
+    public static final String VISIBILITY = "visibility";
 
-    public static final String CSS_CUE_AFTER = "cueAfter";
+    public static final String VOICE_FAMILY = "voiceFamily";
 
-    public static final String CSS_CUE_BEFORE = "cueBefore";
+    public static final String VOLUME = "volume";
 
-    public static final String CSS_CURSOR = "cursor";
+    public static final String WHITE_SPACE = "whiteSpace";
 
-    public static final String CSS_DIRECTION = "direction";
+    public static final String WIDOWS = "widows";
 
-    public static final String CSS_DISPLAY = "display";
+    public static final String WIDTH = "width";
 
-    public static final String CSS_ELEVATION = "elevation";
+    public static final String WORD_SPACING = "wordSpacing";
 
-    public static final String CSS_EMPTY_CELLS = "emptyCells";
-
-    public static final String CSS_FLOAT = "cssFloat";
-
-    public static final String CSS_FONT = "font";
-
-    public static final String CSS_FONT_FAMiLY = "fontFamily";
-
-    public static final String CSS_FONT_SIZE = "fontSize";
-
-    public static final String CSS_FONT_SIZE_ADJUSTED = "fontSizeAdjust";
-
-    public static final String CSS_FONT_STRETCH = "fontStretch";
-
-    public static final String CSS_FONT_STYLE = "fontStyle";
-
-    public static final String CSS_FONT_VARIANT = "fontVariant";
-
-    public static final String CSS_FONT_WEIGHT = "fontWeight";
-
-    public static final String CSS_HEIGHT = "height";
-
-    public static final String CSS_LEFT = "left";
-
-    public static final String CSS_LETTER_SPACING = "letterSpacing";
-
-    public static final String CSS_LINE_HEIGHT = "lineHeight";
-
-    public static final String CSS_LIST_STYLE = "listStyle";
-
-    public static final String CSS_LIST_IMAGE = "listStyleImage";
-
-    public static final String CSS_LIST_STYLE_POSITION = "listStylePosition";
-
-    public static final String CSS_LIST_STYLE_TYPE = "listStyleType";
-
-    public static final String CSS_MARGIN = "margin";
-
-    public static final String CSS_MARGIN_TOP = "marginTop";
-
-    public static final String CSS_MARGIN_RIGHT = "marginRight";
-
-    public static final String CSS_MARGIN_BOTTOM = "marginBottom";
-
-    public static final String CSS_MARGIN_LEFT = "marginLeft";
-
-    public static final String CSS_MARKER_OFFSET = "markerOffset";
-
-    public static final String CSS_MARKS = "marks";
-
-    public static final String CSS_MAX_HEIGHT = "maxHeight";
-
-    public static final String CSS_MAX_WIDTH = "maxWidth";
-
-    public static final String CSS_MIN_HEIGHT = "minHeight";
-
-    public static final String CSS_MIN_WIDTH = "minWidth";
-
-    public static final String CSS_ORPHANS = "orphans";
-
-    public static final String CSS_OUTLINE = "outline";
-
-    public static final String CSS_OUTLINE_COLOR = "outlineColor";
-
-    public static final String CSS_OUTLINE_STYLE = "outlineStyle";
-
-    public static final String CSS_OUTLINE_WIDTH = "outlineWidth";
-
-    public static final String CSS_OVERFLOW = "overflow";
-
-    public static final String CSS_PADDING = "padding";
-
-    public static final String CSS_PADDING_TOP = "paddingTop";
-
-    public static final String CSS_PADDING_RIGHT = "paddingRight";
-
-    public static final String CSS_PADDING_BOTTOM = "paddingBottom";
-
-    public static final String CSS_PADDING_LEFT = "paddingLeft";
-
-    public static final String CSS_PAGE = "page";
-
-    public static final String CSS_BREAK_AFTER = "pageBreakAfter";
-
-    public static final String CSS_BREAK_BEFORE = "pageBreakBefore";
-
-    public static final String CSS_BREAK_INSIIDE = "pageBreakInside";
-
-    public static final String CSS_PAUSE = "pause";
-
-    public static final String CSS_PAUSE_AFTER = "pauseAfter";
-
-    public static final String CSS_PAUSE_BEFORE = "pauseBefore";
-
-    public static final String CSS_PITCH = "pitch";
-
-    public static final String CSS_PITCH_RANGE = "pitchRange";
-
-    public static final String CSS_PLAY_DURING = "playDuring";
-
-    public static final String CSS_POSITION = "position";
-
-    public static final String CSS_QUOTES = "quotes";
-
-    public static final String CSS_RICHNESS = "richness";
-
-    public static final String CSS_RIGHT = "right";
-
-    public static final String CSS_SIZE = "size";
-
-    public static final String CSS_SPEAK = "speak";
-
-    public static final String CSS_SPEAK_HEADER = "speakHeader";
-
-    public static final String CSS_SPEAK_NUMERICAL = "speakNumeral";
-
-    public static final String CSS_SPEAK_PUNCTUATION = "speakPunctuation";
-
-    public static final String CSS_SPEECH_RATE = "speechRate";
-
-    public static final String CSS_STRESS = "stress";
-
-    public static final String CSS_TABLE_LAYOUT = "tableLayout";
-
-    public static final String CSS_TEXT_ALIGN = "textAlign";
-
-    public static final String CSS_TEXT_DECORATION = "textDecoration";
-
-    public static final String CSS_TEXT_INDENT = "textIndent";
-
-    public static final String CSS_TEXT_SHADOW = "textShadow";
-
-    public static final String CSS_TEXT_TRANSFORM = "textTransform";
-
-    public static final String CSS_TOP = "top";
-
-    public static final String CSS_UNICODE_BIDI = "unicodeBidi";
-
-    public static final String CSS_VERTICAL_ALIGN = "verticalAlign";
-
-    public static final String CSS_VISIBILITY = "visibility";
-
-    public static final String CSS_VOICE_FAMILY = "voiceFamily";
-
-    public static final String CSS_VOLUME = "volume";
-
-    public static final String CSS_WHITE_SPACE = "whiteSpace";
-
-    public static final String CSS_WIDOWS = "widows";
-
-    public static final String CSS_WIDTH = "width";
-
-    public static final String CSS_WORD_SPACING = "wordSpacing";
-
-    public static final String CSS_Z_INDEX = "zIndex";
+    public static final String Z_INDEX = "zIndex";
 }
