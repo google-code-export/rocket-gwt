@@ -46,6 +46,9 @@
 @call SpanPanel-compile.cmd
 @echo .
 
+@call SplitterPanel-compile.cmd
+@echo .
+
 @call Style-compile.cmd
 @echo .
 
