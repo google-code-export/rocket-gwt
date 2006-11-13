@@ -27,7 +27,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * This list provides a view of a live form and its elements returning the appropriate widget rather than elements given an index.
+ * This list provides a view of a live form and its elements returning the appropriate widget rather than elements given an cursor.
  * 
  * @author Miroslav Pokorny (mP)
  */

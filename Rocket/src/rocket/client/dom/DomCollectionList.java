@@ -31,8 +31,8 @@ import com.google.gwt.core.client.JavaScriptObject;
  * This base class is used to build a list view of a DomCollection with various list methods working with ObjectWrapper implementations
  * which in turn wrap an element belonging to the wrapped DomCollection.
  * 
- * Client code must take care of destroying any returned elements when they are no longer needed to break / release cyclic browser object references
- * between the wrapper and the native object.
+ * Client code must take care of destroying any returned elements when they are no longer needed to break / release cyclic browser object
+ * references between the wrapper and the native object.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -88,18 +88,18 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
         this.checkElementType(object);
 
         final ObjectWrapper wrapper = (ObjectWrapper) object;
-        return wrapper.hasObject() ?  this.indexOf0(this.getCollection(), wrapper.getObject()) : -1;
+        return wrapper.hasObject() ? this.indexOf0(this.getCollection(), wrapper.getObject()) : -1;
     }
 
     protected native int indexOf0(final JavaScriptObject collection, final JavaScriptObject element)/*-{
-     var index = -1;
+     var cursor = -1;
      for( var i = 0; i < collection.length; i++ ){
      if( collection[ i ] == element ){
-     index = i;
+     cursor = i;
      break;
      }
      }
-     return index;    
+     return cursor;    
      }-*/;
 
     public int lastIndexOf(final Object object) {
@@ -110,18 +110,18 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
     }
 
     protected native int lastIndexOf0(final JavaScriptObject collection, final JavaScriptObject element)/*-{
-     var index = -1;
+     var cursor = -1;
      for( var i = collection.length -1; i >= 0; i-- ){
      if( collection[ i ] == element ){
-     index = i;
+     cursor = i;
      break;
      }
      }
-     return index;    
+     return cursor;    
      }-*/;
 
     public Object get(final int index) {
-        PrimitiveHelper.checkBetween("parameter:index", index, 0, size());
+        PrimitiveHelper.checkBetween("parameter:cursor", index, 0, size());
 
         Object wrapper = null;
 
@@ -139,7 +139,7 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
     }
 
     protected native JavaScriptObject get1(final JavaScriptObject collection, final int index)/*-{
-     var element = collection[ index ];
+     var element = collection[ cursor ];
      return element ? element : 0;
      }-*/;
 
@@ -165,7 +165,7 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
      * Delegates to a javascript method to do the actual set after preparing parameters.
      * 
      * @param wrapper
-     * @param index
+     * @param cursor
      * @return
      */
     protected JavaScriptObject set0(final ObjectWrapper wrapper, final int index) {
@@ -179,16 +179,16 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
      * 
      * @param element
      * @param collection
-     * @param index
+     * @param cursor
      * @return
      */
     protected native JavaScriptObject set1(final JavaScriptObject element, final JavaScriptObject collection,
             final int index)/*-{
-     var previousElement = collection[ index ];
-     collection[ index ] = element;
+     var previousElement = collection[ cursor ];
+     collection[ cursor ] = element;
 
-     if( collection[ index ] != element ){
-     throw "Failed to update collection element at index " + index;
+     if( collection[ cursor ] != element ){
+     throw "Failed to update collection element at cursor " + cursor;
      }
      return previousElement ? previousElement : null;
      }-*/;
@@ -239,7 +239,7 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
      * Sub-classes typically escape to javascript code to insert a new element to the collection.
      * 
      * @param collection
-     * @param index
+     * @param cursor
      * @param element
      */
     protected abstract void insert1(final JavaScriptObject collection, final int index, final JavaScriptObject element);
@@ -249,31 +249,31 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
         final boolean removable = index != -1;
         if (removable) {
             this.disown(element);
-            final JavaScriptObject removed = this.remove0( this.getCollection(), index );
+            final JavaScriptObject removed = this.remove0(this.getCollection(), index);
             this.incrementModificationCounter();
         }
         return removable;
     }
 
-//    protected void remove0(final int index) {
-//        this.remove1(this.getCollection(), index);        
-//    }
+    // protected void remove0(final int cursor) {
+    // this.remove1(this.getCollection(), cursor);
+    // }
 
-    public Object remove( final int index ){
-        final JavaScriptObject removed = this.remove0( this.getCollection(), index );
-        
+    public Object remove(final int index) {
+        final JavaScriptObject removed = this.remove0(this.getCollection(), index);
+
         // create a dettached wrapper...
-        final Object wrapper = this.createWrapper( removed );
-        this.disown( wrapper );
+        final Object wrapper = this.createWrapper(removed);
+        this.disown(wrapper);
         this.incrementModificationCounter();
         return wrapper;
     }
-    
+
     /**
      * Sub-classes typically escape to javascript code to remove an existing element belonging to this collection.
      * 
      * @param collection
-     * @param index
+     * @param cursor
      * @param element
      * @return The element just removed.
      */
@@ -371,7 +371,7 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
             Object object = null;
             try {
                 object = iterator.next();
-                all = all | this.contains( object );
+                all = all | this.contains(object);
             } finally {
                 DomHelper.destroyIfNecessary(object);
             }
@@ -384,45 +384,46 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
 
         boolean modified = false;
         final Iterator iterator = this.iterator();
-        
+
         while (iterator.hasNext()) {
             Object object = null;
-            try{
+            try {
                 object = iterator.next();
-                if( this.contains( object )){
+                if (this.contains(object)) {
                     iterator.remove();
                     modified = true;
                 }
             } finally {
-                DomHelper.destroyIfNecessary( object );
+                DomHelper.destroyIfNecessary(object);
             }
-        }        
+        }
         return modified;
     }
-    
+
     public boolean retainAll(final Collection otherCollection) {
         ObjectHelper.checkNotNull("parameter:otherCollection", otherCollection);
 
         boolean modified = false;
         final Iterator iterator = this.iterator();
-        
+
         while (iterator.hasNext()) {
             Object object = null;
-            try{
+            try {
                 object = iterator.next();
-                if( false == this.contains( object )){
+                if (false == this.contains(object)) {
                     iterator.remove();
                     modified = true;
                 }
             } finally {
-                DomHelper.destroyIfNecessary( object );
+                DomHelper.destroyIfNecessary(object);
             }
-        }        
+        }
         return modified;
     }
 
     /**
      * Adds all the element from the given collection to this list.
+     * 
      * @param otherCollection
      * @return
      */
@@ -438,23 +439,23 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
 
         while (iterator.hasNext()) {
             Object object = null;
-            try{
+            try {
                 object = iterator.next();
                 this.add(index, object);
                 index0++;
             } finally {
-                DomHelper.destroyIfNecessary( object );
+                DomHelper.destroyIfNecessary(object);
             }
         }
         return index0 != index;
     }
-    
+
     /**
      * Returns all the native objects belonging to this list.
      */
-    public Object[] toArray(){
+    public Object[] toArray() {
         final List list = new ArrayList();
-        list.addAll( this );
+        list.addAll(this);
         return list.toArray();
     }
 
@@ -475,7 +476,7 @@ public abstract class DomCollectionList extends AbstractList implements Destroya
     protected abstract void disown(final Object object);
 
     // DESTROYABLE :::::::::::::::::::::::::::::::::
-    
+
     /**
      * Requests that this collection or list view releases all handles to native objects.
      */

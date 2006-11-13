@@ -44,19 +44,19 @@ public class StyleSheetPicker extends Composite {
 
     public StyleSheetPicker() {
         super();
-        
+
         this.setMappings(new HashMap());
         this.initWidget(this.createHorizontalPanel());
         this.setText(WidgetConstants.STYLESHEET_PICKER_LABEL_TEXT);
     }
-    
-    public String getText() {       
+
+    public String getText() {
         return this.getLabel().getText();
     }
 
     public void setText(final String text) {
         StringHelper.checkNotEmpty("parameter:text", text);
-        this.getLabel().setText( text );
+        this.getLabel().setText(text);
     }
 
     /**
@@ -85,7 +85,7 @@ public class StyleSheetPicker extends Composite {
         panel.addStyleName(WidgetConstants.STYLESHEET_PICKER_HORIZONTAL_PANEL_STYLE);
 
         final Widget label = this.createLabel();
-        panel.add(label);        
+        panel.add(label);
 
         this.createButtons(panel);
         this.selectStyleSheet(this.getButton(0));
@@ -93,7 +93,7 @@ public class StyleSheetPicker extends Composite {
     }
 
     /**
-     * The label container for the picker text. 
+     * The label container for the picker text.
      */
     private Label label;
 
@@ -106,7 +106,7 @@ public class StyleSheetPicker extends Composite {
         ObjectHelper.checkNotNull("parameter:label", label);
         this.label = label;
     }
-    
+
     /**
      * Creates the label that preceeds the available css stylesheet boxes/buttons
      * 
@@ -115,7 +115,7 @@ public class StyleSheetPicker extends Composite {
     protected Widget createLabel() {
         final Label label = new Label("");
         label.addStyleName(WidgetConstants.STYLESHEET_PICKER_LABEL_STYLE);
-        this.setLabel( label );
+        this.setLabel(label);
         return label;
     }
 
@@ -140,7 +140,7 @@ public class StyleSheetPicker extends Composite {
     }
 
     public Button getButton(final int index) {
-        PrimitiveHelper.checkIsPositive("parameter:index", index);
+        PrimitiveHelper.checkIsPositive("parameter:cursor", index);
         return (Button) this.getHorizontalPanel().getWidget(index + 1);// skip the first Label widget
     }
 

@@ -24,20 +24,27 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public interface ElementWrapper extends ObjectWrapper{
+public interface ElementWrapper extends ObjectWrapper {
 
     String getId();
-    boolean hasId();    
+
+    boolean hasId();
+
     void setId(String id);
-        
+
     String getName();
+
     boolean hasName();
+
     void setName(String name);
-    
+
     String getTitle();
+
     boolean hasTitle();
+
     void setTitle(String title);
-    
+
     Element getElement();
+
     void setElement(Element element);
 }

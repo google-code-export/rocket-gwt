@@ -36,7 +36,7 @@ import com.google.gwt.core.client.GWT;
  * 
  * TODO add destroy
  */
-public class CookiesMap extends AbstractMap implements Destroyable{
+public class CookiesMap extends AbstractMap implements Destroyable {
 
     public CookiesMap() {
         this.createMap();
@@ -89,7 +89,7 @@ public class CookiesMap extends AbstractMap implements Destroyable{
      * Removes all cookies from the browser.
      */
     public void clear() {
-        CollectionHelper.removeAll( this.keySet().iterator() );
+        CollectionHelper.removeAll(this.keySet().iterator());
     }
 
     // SETS VIEWS
@@ -107,7 +107,8 @@ public class CookiesMap extends AbstractMap implements Destroyable{
             }
 
             public boolean add(final Object cookieName) {
-                throw new UnsupportedOperationException("Add is not supported for " + GWT.getTypeName(CookiesMap.this) + " keySet.");
+                throw new UnsupportedOperationException("Add is not supported for " + GWT.getTypeName(CookiesMap.this)
+                        + " keySet.");
             }
 
             public boolean remove(final Object cookieName) {
@@ -139,7 +140,8 @@ public class CookiesMap extends AbstractMap implements Destroyable{
         return new AbstractCollection() {
 
             public boolean add(final Object cookie) {
-                throw new UnsupportedOperationException("Add is not supported for " + GWT.getTypeName(CookiesMap.this) + " values collection.");
+                throw new UnsupportedOperationException("Add is not supported for " + GWT.getTypeName(CookiesMap.this)
+                        + " values collection.");
             }
 
             public Iterator iterator() {
@@ -186,7 +188,8 @@ public class CookiesMap extends AbstractMap implements Destroyable{
             }
 
             public boolean add(final Object cookieName) {
-                throw new UnsupportedOperationException("Cannot call add() upon a " + GWT.getTypeName(CookiesMap.this) + ".entrySet() Set");
+                throw new UnsupportedOperationException("Cannot call add() upon a " + GWT.getTypeName(CookiesMap.this)
+                        + ".entrySet() Set");
             }
 
             public boolean remove(final Object cookieName) {
@@ -414,8 +417,7 @@ public class CookiesMap extends AbstractMap implements Destroyable{
     }
 
     /**
-     * Destroys the cache of Cookie wrappers. After calling this method this CookiesMap
-     * should be considered invalid and no longer used.
+     * Destroys the cache of Cookie wrappers. After calling this method this CookiesMap should be considered invalid and no longer used.
      */
     public void destroy() {
         this.clearMap();

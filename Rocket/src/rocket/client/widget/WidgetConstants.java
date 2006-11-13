@@ -26,6 +26,9 @@ public class WidgetConstants {
 
     // AUTO COMPLETE TEXT BOX
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a AutoCompleteTextBox {@see AutoCompleteTextBox}
+     */
     public final static String AUTO_COMPLETE_TEXT_BOX_STYLE = StyleHelper.buildCompound(ROCKET, "autoCompleteTextBox");
 
     public final static String AUTO_COMPLETE_TEXT_BOX_TEXT_BOX_STYLE = StyleHelper.buildCompound(
@@ -59,18 +62,24 @@ public class WidgetConstants {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public final static String STYLESHEET_PICKER_STYLE = StyleHelper.buildCompound(ROCKET, "styleSheetPicker");
 
-    public final static String STYLESHEET_PICKER_HORIZONTAL_PANEL_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE,"horizontalPanel");
+    public final static String STYLESHEET_PICKER_HORIZONTAL_PANEL_STYLE = StyleHelper.buildCompound(
+            STYLESHEET_PICKER_STYLE, "horizontalPanel");
 
-    public final static String STYLESHEET_PICKER_LABEL_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE, "label");
+    public final static String STYLESHEET_PICKER_LABEL_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE,
+            "label");
 
     public final static String STYLESHEET_PICKER_LABEL_TEXT = "Text Size";
 
     public final static String STYLESHEET_ITEM_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE, "item");
 
-    public final static String STYLESHEET_ITEM_SELECTED_STYLE = StyleHelper.buildCompound(STYLESHEET_ITEM_STYLE, "selected");
+    public final static String STYLESHEET_ITEM_SELECTED_STYLE = StyleHelper.buildCompound(STYLESHEET_ITEM_STYLE,
+            "selected");
 
     // CARD
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a CardPanel {@see Card}
+     */
     public final static String CARD_STYLE = StyleHelper.buildCompound(ROCKET, "card");
 
     public final static String CARD_FLEXTABLE_STYLE = StyleHelper.buildCompound(CARD_STYLE, "flexTable");
@@ -99,6 +108,9 @@ public class WidgetConstants {
 
     // BREADCRUMB
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a BreadcrumbPanel {@see BreadcrumbPanel}
+     */
     public final static String BREADCRUMBS_STYLE = StyleHelper.buildCompound(ROCKET, "breadcrumbs");
 
     public final static String BREADCRUMB_ITEM_STYLE = StyleHelper.buildCompound(BREADCRUMBS_STYLE, "item");
@@ -111,6 +123,9 @@ public class WidgetConstants {
 
     // GRID
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a Grid {@see Grid}
+     */
     public final static String GRID_STYLE = StyleHelper.buildCompound(ROCKET, "grid");
 
     public final static String GRID_FLEXTABLE_STYLE = StyleHelper.buildCompound(GRID_STYLE, "flexTable");
@@ -121,6 +136,9 @@ public class WidgetConstants {
 
     // SORTABLD TABLE
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a SortableTable {@see SortableTable}
+     */
     public final static String SORTABLE_TABLE_STYLE = StyleHelper.buildCompound(ROCKET, "sortableTable");
 
     public final static String SORTABLE_TABLE_COLUMN_HEADER_STYLE = StyleHelper.buildCompound(SORTABLE_TABLE_STYLE,
@@ -140,6 +158,9 @@ public class WidgetConstants {
 
     // ZEBRA
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a ZebraFlexTable
+     */
     public final static String ZEBRA_FLEX_TABLE_STYLE = StyleHelper.buildCompound(ROCKET, "zebraFlexTable");
 
     public final static String ZEBRA_FLEX_TABLE_HEADING_STYLE = StyleHelper.buildCompound(ZEBRA_FLEX_TABLE_STYLE,
@@ -159,6 +180,9 @@ public class WidgetConstants {
 
     // SPINNER
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a SpinnerWidget
+     */
     public final static String SPINNER_STYLE = StyleHelper.buildCompound(ROCKET, "spinner");
 
     public final static String SPINNER_VERTICAL_PANEL_STYLE = StyleHelper.buildCompound(SPINNER_STYLE, "verticalPanel");
@@ -175,6 +199,9 @@ public class WidgetConstants {
 
     // SUPER SPINNER
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a SuperSpinnerWidget
+     */
     public final static String SUPER_SPINNER_STYLE = StyleHelper.buildCompound(ROCKET, "superSpinner");
 
     public final static String SUPER_SPINNER_HORIZONTAL_PANEL = StyleHelper.buildCompound(SUPER_SPINNER_STYLE,
@@ -200,28 +227,61 @@ public class WidgetConstants {
 
     // PAGER
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a Pager widget {@see rocket.client.widget.Pager}
+     */
     public final static String PAGER_STYLE = StyleHelper.buildCompound(ROCKET, "pager");
 
     public final static String PAGER_HORIZONTAL_PANEL_STYLE = PAGER_STYLE;
 
+    /**
+     * The default text that appears on the previous button
+     */
     public final static String PAGER_PREVIOUS_BUTTON_TEXT = "Previous";
 
+    /**
+     * This style is applied to the previous button
+     */
     public final static String PAGER_PREVIOUS_BUTTON_STYLE = StyleHelper.buildCompound(PAGER_STYLE, "previous");
 
+    /**
+     * The default text that appears on the next button.
+     */
     public final static String PAGER_NEXT_BUTTON_TEXT = "Next";
 
+    /**
+     * This style is applied to the next button
+     */
     public final static String PAGER_NEXT_BUTTON_STYLE = StyleHelper.buildCompound(PAGER_STYLE, "next");
 
+    /**
+     * This style is applied to each of the page buttons that appear along the pager widget
+     */
     public final static String PAGER_GOTO_PAGE_STYLE = StyleHelper.buildCompound(PAGER_STYLE, "goto");
 
+    /**
+     * This style is applied to the current page.
+     */
     public final static String PAGER_CURRENT_PAGE_STYLE = StyleHelper.buildCompound(PAGER_STYLE, "current");
 
+    /**
+     * This style is applied to the container SPAN element of a SpanPanel {@see rocket.client.widget.SpanPanel}
+     */
     public final static String SPAN_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "spanPanel");
 
+    /**
+     * This style is applied to the container DIV element of a DivPanel {@see rocket.client.widget.DivPanel}
+     */
     public final static String DIV_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "divPanel");
 
+    /**
+     * This style is applied to the container OL element of a OrderedListPanel {@see rocket.client.widget.OrderedListPanel}
+     */
     public final static String ORDERED_LIST_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "orderedListPanel");
 
+    /**
+     * This style is applied to the container UL element of a UnOrderedListPanel {@see rocket.client.widget.UnorderedListPanel}
+     */
     public final static String UNORDERED_LIST_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "unorderedListPanel");
 
     final static String LIST_ITEM = "li";

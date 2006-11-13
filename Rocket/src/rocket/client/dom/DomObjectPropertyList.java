@@ -1,3 +1,18 @@
+/*
+ * Copyright 2006 NSW Police Government Australia
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package rocket.client.dom;
 
 import java.util.AbstractList;
@@ -239,7 +254,7 @@ public abstract class DomObjectPropertyList extends AbstractList implements Dest
     }
 
     public Object get(final int index) {
-        PrimitiveHelper.checkBetween("parameter:index", index, 0, size());
+        PrimitiveHelper.checkBetween("parameter:cursor", index, 0, size());
 
         this.stalenessGuard();
 
@@ -298,12 +313,12 @@ public abstract class DomObjectPropertyList extends AbstractList implements Dest
             }
 
             protected void remove0() {
-                // because index was advanced by next() finishes the actual
-                // index is the one before the current.
+                // because cursor was advanced by next() finishes the actual
+                // cursor is the one before the current.
                 final int cursor = this.getCursor() - 1;
                 DomObjectPropertyList.this.remove(cursor);
 
-                // because element was removed need to take one from index.
+                // because element was removed need to take one from cursor.
                 this.setCursor(cursor);
             }
 
@@ -312,7 +327,7 @@ public abstract class DomObjectPropertyList extends AbstractList implements Dest
             }
 
             /**
-             * This index points to the element within the parent list pointed to by this iterator.
+             * This cursor points to the element within the parent list pointed to by this iterator.
              */
             int cursor;
 

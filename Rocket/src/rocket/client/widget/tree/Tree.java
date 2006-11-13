@@ -17,7 +17,6 @@ package rocket.client.widget.tree;
 
 import rocket.client.util.ObjectHelper;
 import rocket.client.util.StringHelper;
-import rocket.client.widget.WidgetHelper;
 
 import com.google.gwt.user.client.ui.Composite;
 

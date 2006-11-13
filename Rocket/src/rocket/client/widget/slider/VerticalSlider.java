@@ -67,7 +67,7 @@ public class VerticalSlider extends Slider {
      * 
      * @param event
      */
-    protected void handleBackgroundClick(final Event event) {
+    protected void handleBackgroundMouseDown(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         final int mouseY = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();

@@ -20,13 +20,12 @@ import rocket.client.dom.Destroyable;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * Convenient base class for any native object wrapper. 
- * It provides typed methods that make it easy to read or write to object properties.
+ * Convenient base class for any native object wrapper. It provides typed methods that make it easy to read or write to object properties.
  * properties.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class ObjectWrapperImpl implements ObjectWrapper, Destroyable{
+public abstract class ObjectWrapperImpl implements ObjectWrapper, Destroyable {
 
     protected ObjectWrapperImpl() {
         super();
@@ -48,15 +47,14 @@ public abstract class ObjectWrapperImpl implements ObjectWrapper, Destroyable{
 
             // if other rule hasnt got a native rule object it cant be equal...
             if (false == otherObjectWrapper.hasObject()) {
-                break;  
+                break;
             }
 
-            same = this.getObject().equals( otherObjectWrapper.getObject());
+            same = this.getObject().equals(otherObjectWrapper.getObject());
             break;
         }
         return same;
     }
-
 
     /**
      * Releases reference to the dom object being wrapped.

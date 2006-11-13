@@ -15,6 +15,7 @@
  */
 package rocket.test.widget.accordionpanel.client;
 
+import java.util.Date;
 import java.util.Iterator;
 
 import rocket.client.util.ObjectHelper;
@@ -122,7 +123,12 @@ public class AccordionPanelTest implements EntryPoint {
     }
 
     final static String createContent() {
-        StringBuffer buf = new StringBuffer();
+        final StringBuffer buf = new StringBuffer();
+
+        buf.append("<b>");
+        buf.append(new Date());
+        buf.append("</b> ");
+
         for (int i = 0; i < 1000; i++) {
             if ((i % 128) == 0) {
                 buf.append("<br/>");
@@ -137,7 +143,12 @@ public class AccordionPanelTest implements EntryPoint {
     }
 
     final static String createContent(final String text) {
-        StringBuffer buf = new StringBuffer();
+        final StringBuffer buf = new StringBuffer();
+
+        buf.append("<b>");
+        buf.append(new Date());
+        buf.append("</b> ");
+
         for (int i = 0; i < 20; i++) {
             buf.append(text);
             buf.append("<br/>");
@@ -188,7 +199,7 @@ public class AccordionPanelTest implements EntryPoint {
 
         protected Object createElement() {
             final AccordionItem item = new AccordionItem();
-            item.setCaption("" + System.currentTimeMillis());
+            item.setCaption("" + new Date());
             item.setContent(new HTML(AccordionPanelTest.createContent()));
             return item;
         }

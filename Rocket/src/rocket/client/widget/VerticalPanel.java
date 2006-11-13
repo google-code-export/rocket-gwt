@@ -81,13 +81,13 @@ public class VerticalPanel extends com.google.gwt.user.client.ui.VerticalPanel {
                 return VerticalPanel.this.getModificationCounter();
             }
             // IMPL
-            // protected int index;
+            // protected int cursor;
             //
             // protected int getIndex(){
-            // return index;
+            // return cursor;
             // }
-            // protected void setIndex( final int index ){
-            // this.index = index;
+            // protected void setIndex( final int cursor ){
+            // this.index = cursor;
             // }
             //
             // Widget lastVisited;

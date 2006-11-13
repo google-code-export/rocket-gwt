@@ -39,7 +39,7 @@ public abstract class Slider extends AbstractNumberHolder {
     protected void onAttach() {
         super.onAttach();
         DOM.setEventListener(this.getElement(), this);
-        this.sinkEvents( Event.ONMOUSEDOWN | Event.ONMOUSEUP | Event.ONMOUSEOUT | Event.ONMOUSEMOVE );
+        this.sinkEvents(Event.ONMOUSEDOWN | Event.ONMOUSEUP | Event.ONMOUSEOUT | Event.ONMOUSEMOVE);
         this.updateWidget();
     }
 
@@ -61,12 +61,12 @@ public abstract class Slider extends AbstractNumberHolder {
         while (true) {
             final int eventType = DOM.eventGetType(event);
             if (eventType == Event.ONMOUSEDOWN) {
-                handleMouseClick(event);
+                handleMouseDown(event);
                 break;
             }
-            
-            if( eventType == Event.ONMOUSEOUT ){
-                this.handleMouseOut( event );
+
+            if (eventType == Event.ONMOUSEOUT) {
+                this.handleMouseOut(event);
                 break;
             }
             break;
@@ -75,23 +75,24 @@ public abstract class Slider extends AbstractNumberHolder {
 
     /**
      * If the mouse has moved away from the slider cancel any active timer.
+     * 
      * @param event
      */
-    protected void handleMouseOut( final Event event ){
+    protected void handleMouseOut(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
-        
-        if( this.hasTimer() ){
+
+        if (this.hasTimer()) {
             this.getTimer().cancel();
         }
         this.clearTimer();
     }
-    
+
     /**
      * Dispatches the event to the respective handler depending on whether the handle or the slider background was clicked.
      * 
      * @param event
      */
-    protected void handleMouseClick(final Event event) {
+    protected void handleMouseDown(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         while (true) {
@@ -99,13 +100,13 @@ public abstract class Slider extends AbstractNumberHolder {
 
             // check if the handle widget has been clicked...
             if (DOM.isOrHasChild(this.getHandle().getElement(), target)) {
-                this.handleHandleClick(event);
+                this.handleHandleMouseDown(event);
                 break;
             }
 
             // was the slider background itself clicked ?
             if (DOM.isOrHasChild(this.getElement(), target)) {
-                this.handleBackgroundClick(event);
+                this.handleBackgroundMouseDown(event);
                 break;
             }
 
@@ -114,14 +115,14 @@ public abstract class Slider extends AbstractNumberHolder {
         }
     }
 
-    protected abstract void handleBackgroundClick(Event event);
+    protected abstract void handleBackgroundMouseDown(Event event);
 
     /**
      * Initiates the dragging of the handle until it is released.
      * 
      * @param event
      */
-    protected void handleHandleClick(final Event event) {
+    protected void handleHandleMouseDown(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         if (false == this.hasDraggingEventPreview()) {
@@ -184,11 +185,11 @@ public abstract class Slider extends AbstractNumberHolder {
                 cancelEvent = true;
                 break;
             }
-            //if (type == Event.ONMOUSEUP || type == Event.ONMOUSEDOWN) {
-            if (type == Event.ONMOUSEUP ) {
+            // if (type == Event.ONMOUSEUP || type == Event.ONMOUSEDOWN) {
+            if (type == Event.ONMOUSEUP) {
                 this.getHandle().removeStyleName(this.getSliderDraggingStyleName());
-                
-                DOM.removeEventPreview(this.getDraggingEventPreview());                
+
+                DOM.removeEventPreview(this.getDraggingEventPreview());
                 this.clearDraggingEventPreview();
                 cancelEvent = false;
                 break;
@@ -245,16 +246,16 @@ public abstract class Slider extends AbstractNumberHolder {
             newValue = 0;
         }
         this.setValue(newValue);
-        
+
         // if a timer is not already running create one...
-        if( false == this.hasTimer() ){
-            final Timer timer = new Timer(){
-                public void run(){
+        if (false == this.hasTimer()) {
+            final Timer timer = new Timer() {
+                public void run() {
                     Slider.this.handleBeforeHandleClick();
                 }
-            }; 
-            timer.scheduleRepeating( Slider.this.getMouseDownRepeatRate() );
-            Slider.this.setTimer( timer );
+            };
+            timer.scheduleRepeating(Slider.this.getMouseDownRepeatRate());
+            Slider.this.setTimer(timer);
         }
     }
 
@@ -268,17 +269,16 @@ public abstract class Slider extends AbstractNumberHolder {
             newValue = maximumValue;
         }
         this.setValue(newValue);
-        
-        
+
         // if a timer is not already running create one...
-        if( false == this.hasTimer() ){
-            final Timer timer = new Timer(){
-                public void run(){
+        if (false == this.hasTimer()) {
+            final Timer timer = new Timer() {
+                public void run() {
                     Slider.this.handleAfterHandleClick();
                 }
-            }; 
-            timer.scheduleRepeating( Slider.this.getMouseDownRepeatRate() );
-            Slider.this.setTimer( timer );
+            };
+            timer.scheduleRepeating(Slider.this.getMouseDownRepeatRate());
+            Slider.this.setTimer(timer);
         }
     }
 
@@ -286,41 +286,40 @@ public abstract class Slider extends AbstractNumberHolder {
      * A timer is used to simulate multiple clicks when holding down the mouse button
      */
     private Timer timer;
-    
-    protected Timer getTimer(){
-        ObjectHelper.checkNotNull( "field:timer", timer );
+
+    protected Timer getTimer() {
+        ObjectHelper.checkNotNull("field:timer", timer);
         return timer;
     }
-    
-    protected boolean hasTimer(){
+
+    protected boolean hasTimer() {
         return null != this.timer;
     }
-    
-    protected void setTimer( final Timer timer ){
-        ObjectHelper.checkNotNull( "parameter:timer", timer );
+
+    protected void setTimer(final Timer timer) {
+        ObjectHelper.checkNotNull("parameter:timer", timer);
         this.timer = timer;
     }
-    
-    protected void clearTimer(){
+
+    protected void clearTimer() {
         this.timer = null;
     }
-    
+
     /**
-     * This value in milliseconds controls the repetition of mouse down events within the
-     * background area of the slider.  
+     * This value in milliseconds controls the repetition of mouse down events within the background area of the slider.
      */
     private int mouseDownRepeatRate;
-    
-    public int getMouseDownRepeatRate(){
-        PrimitiveHelper.checkGreaterThan( "field:mouseDownRepeatRate", mouseDownRepeatRate, 0  );
+
+    public int getMouseDownRepeatRate() {
+        PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", mouseDownRepeatRate, 0);
         return this.mouseDownRepeatRate;
     }
-    
-    public void setMouseDownRepeatRate( final int mouseDownRepeatRate ){
-        PrimitiveHelper.checkGreaterThan( "parameter:mouseDownRepeatRate", mouseDownRepeatRate, 0  );
+
+    public void setMouseDownRepeatRate(final int mouseDownRepeatRate) {
+        PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", mouseDownRepeatRate, 0);
         this.mouseDownRepeatRate = mouseDownRepeatRate;
     }
-    
+
     // WIDGET :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
@@ -371,7 +370,7 @@ public abstract class Slider extends AbstractNumberHolder {
     }
 
     public void setValue(final int value) {
-        PrimitiveHelper.checkBetween("parameter:value", value, 0, this.maximumValue + 1 );
+        PrimitiveHelper.checkBetween("parameter:value", value, 0, this.maximumValue + 1);
         this.value = value;
         this.updateWidget();
         this.fireValueChanged();

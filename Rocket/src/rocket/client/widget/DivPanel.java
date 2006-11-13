@@ -15,7 +15,6 @@
  */
 package rocket.client.widget;
 
-import rocket.client.dom.DomHelper;
 import rocket.client.util.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -32,28 +31,46 @@ public class DivPanel extends AbstractPanel implements HasWidgets {
     public DivPanel() {
         super();
 
-        this.setElement(this.createElement());
+        this.setElement(this.createPanelElement());
         this.addStyleName(WidgetConstants.DIV_PANEL_STYLE);
+    }
+
+    /**
+     * Factory method which creates the parent DIV element for this entire panel
+     * 
+     * @return
+     */
+    protected Element createPanelElement() {
+        return DOM.createDiv();
+    }
+
+    /**
+     * Returns the element which will house each of the new widget's elements.
+     * 
+     * @return
+     */
+    public Element getParentElement() {
+        return this.getElement();
+    }
+
+    protected Element insert0(final Element element, final int indexBefore) {
+        ObjectHelper.checkNotNull("parameter:element", element);
+
+        final Element child = this.createElement();
+        DOM.insertChild(this.getParentElement(), child, indexBefore);
+        DOM.appendChild(child, element);
+        return child;
     }
 
     protected Element createElement() {
         return DOM.createDiv();
     }
 
-    protected Element insert0(final Element element, final int indexBefore) {
-        ObjectHelper.checkNotNull("parameter:element", element);
-
-        final Element child = DOM.createDiv();
-        DOM.insertChild(this.getElement(), child, indexBefore);
-        DOM.appendChild(child, element);
-        return child;
-    }
-
     protected void remove0(final Element element, final int index) {
         ObjectHelper.checkNotNull("parameter:element", element);
 
-        final Element child = DOM.getChild(this.getElement(), index);
-        DomHelper.isTag(child, "div");
-        DOM.removeChild(this.getElement(), child);
+        final Element parent = this.getParentElement();
+        final Element child = DOM.getChild(parent, index);
+        DOM.removeChild(parent, child);
     }
 }

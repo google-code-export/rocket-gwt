@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * A powerful easy sortable table to use. The basic idea is to provide value objects one for each row. THe main purpose of the sub-class is
- * to provide a switch statement that returns values from a value object aka the row given an index ( the column). Once the table has been
+ * to provide a switch statement that returns values from a value object aka the row given an cursor ( the column). Once the table has been
  * sorted based on the current sort column the sub-class is again queried for the widget that should be present at a particular cell. This
  * allows one to sort based on a particular value but to present another to the client. THe entire redraw lifecycle and selection of what
  * value object appears on what row and so on is managed by the widget.
@@ -346,7 +346,7 @@ public abstract class SortableTable extends ZebraFlexTable {
     }
 
     /**
-     * Retrieves the value object associated with a given table row index.
+     * Retrieves the value object associated with a given table row cursor.
      * 
      * @param row
      * @return
@@ -357,7 +357,7 @@ public abstract class SortableTable extends ZebraFlexTable {
     }
 
     /**
-     * This method must be implemented by sub-classes. It provides a method of addressing properties for an object using an index. These
+     * This method must be implemented by sub-classes. It provides a method of addressing properties for an object using an cursor. These
      * details are implemented by the sub-class.
      * 
      * @param row
@@ -488,7 +488,7 @@ public abstract class SortableTable extends ZebraFlexTable {
      * Creates the widget that will house the header cell
      * 
      * @param text
-     * @param index
+     * @param cursor
      * @return
      */
     protected Widget createHeader(final String text, final int index) {

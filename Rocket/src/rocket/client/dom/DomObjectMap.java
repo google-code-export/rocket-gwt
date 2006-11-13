@@ -1,3 +1,18 @@
+/*
+ * Copyright 2006 NSW Police Government Australia
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package rocket.client.dom;
 
 import java.util.AbstractCollection;
@@ -63,13 +78,13 @@ public abstract class DomObjectMap extends AbstractMap implements Destroyable {
      * 
      * @param value
      */
-    protected void checkValueType(final Object value){
-        if( false == this.isValidValueType( value )){
-            SystemHelper.handleAssertFailure( "parameter:key", "Invalid value type " + GWT.getTypeName( value ));
+    protected void checkValueType(final Object value) {
+        if (false == this.isValidValueType(value)) {
+            SystemHelper.handleAssertFailure("parameter:key", "Invalid value type " + GWT.getTypeName(value));
         }
     }
-    
-    protected abstract boolean isValidValueType( final Object value );
+
+    protected abstract boolean isValidValueType(final Object value);
 
     /**
      * Sub-classes must create the wrapper object for a particular value on demand.
@@ -88,11 +103,11 @@ public abstract class DomObjectMap extends AbstractMap implements Destroyable {
      */
     public void destroy() {
         this.clearObject();
-        this.clearWrappers();        
+        this.clearWrappers();
     }
 
     // MAP ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    
+
     public int size() {
         return ObjectHelper.getPropertyCount(this.getObject());
     }
@@ -118,15 +133,15 @@ public abstract class DomObjectMap extends AbstractMap implements Destroyable {
                 break;
             }
             final Map wrappers = this.getWrappers();
-            value = (DomObjectMapValue) wrappers.get( propertyName );
-            if( null != value ){
+            value = (DomObjectMapValue) wrappers.get(propertyName);
+            if (null != value) {
                 break;
             }
-            
+
             // not found in the cache create wrapper.
             value = this.createValueWrapper(propertyName);
             this.adopt(propertyName, value);
-            wrappers.put( propertyName, value );
+            wrappers.put(propertyName, value);
             break;
         }
         return value;
@@ -147,7 +162,7 @@ public abstract class DomObjectMap extends AbstractMap implements Destroyable {
 
         // use get to fetch the value being replaced.
         final Map wrappers = this.getWrappers();
-        final DomObjectMapValue replaced = (DomObjectMapValue)wrappers.put(key, value );
+        final DomObjectMapValue replaced = (DomObjectMapValue) wrappers.put(key, value);
 
         // disown the replaced object...
         if (null != replaced) {
@@ -190,13 +205,13 @@ public abstract class DomObjectMap extends AbstractMap implements Destroyable {
         ObjectHelper.removeProperty(this.getObject(), propertyName);
     }
 
-//    public void clear() {
-//        final Iterator iterator = this.keySet().iterator();
-//        while (iterator.hasNext()) {
-//            iterator.next();
-//            iterator.remove();
-//        }
-//    }
+    // public void clear() {
+    // final Iterator iterator = this.keySet().iterator();
+    // while (iterator.hasNext()) {
+    // iterator.next();
+    // iterator.remove();
+    // }
+    // }
 
     // SETS VIEWS
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -282,7 +297,7 @@ public abstract class DomObjectMap extends AbstractMap implements Destroyable {
     }
 
     /**
-     * Returns a read only set that includes all the entries for this Map. 
+     * Returns a read only set that includes all the entries for this Map.
      */
     public Set entrySet() {
         return new AbstractSet() {
@@ -352,29 +367,29 @@ public abstract class DomObjectMap extends AbstractMap implements Destroyable {
     public void clearObject() {
         this.object = null;
     }
-    
+
     /**
      * This map is used to cache wrappers for values belonging to this map.
      */
     private Map wrappers;
-    
-    protected Map getWrappers(){
-        ObjectHelper.checkNotNull( "field:wrappers", this.wrappers );
+
+    protected Map getWrappers() {
+        ObjectHelper.checkNotNull("field:wrappers", this.wrappers);
         return this.wrappers;
     }
-    
-    protected void setWrappers( final Map wrappers ){
-        ObjectHelper.checkNotNull( "parameter:wrappers", wrappers );
+
+    protected void setWrappers(final Map wrappers) {
+        ObjectHelper.checkNotNull("parameter:wrappers", wrappers);
         this.wrappers = wrappers;
     }
-    
-    protected void createWrappers(){
-        this.setWrappers( new HashMap() );
+
+    protected void createWrappers() {
+        this.setWrappers(new HashMap());
     }
-    
-    protected void clearWrappers(){
+
+    protected void clearWrappers() {
         final Iterator values = this.getWrappers().values().iterator();
-        while( values.hasNext() ){
+        while (values.hasNext()) {
             final DomObjectMapValue wrapper = (DomObjectMapValue) values.next();
             wrapper.destroy();
             values.remove();
@@ -442,7 +457,7 @@ public abstract class DomObjectMap extends AbstractMap implements Destroyable {
         }
 
         protected void remove0() {
-            final int index = this.getCursor() - 1;// necessary because next advances index by 1
+            final int index = this.getCursor() - 1;// necessary because next advances cursor by 1
             final String propertyName = this.getPropertyNames()[index];
             DomObjectMap.this.remove(propertyName);
         }

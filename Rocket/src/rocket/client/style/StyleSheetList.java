@@ -1,4 +1,3 @@
-package rocket.client.style;
 /*
  * Copyright 2006 NSW Police Government Australia
  *
@@ -14,26 +13,28 @@ package rocket.client.style;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+package rocket.client.style;
 
 import rocket.client.dom.DomObjectList;
 import rocket.client.dom.DomObjectListElement;
 
 /**
  * Provides a list view of a native StyleSheet list.
+ * 
  * @author Miroslav Pokorny (mP)
  */
-public class StyleSheetList extends DomObjectList{
-    
-    protected StyleSheetList(){
+public class StyleSheetList extends DomObjectList {
+
+    protected StyleSheetList() {
         super();
     }
-    
+
     // DOM OBJECT LIST :::::::::::::::::::::::::::::::::::::::::::::::::
-    
+
     protected DomObjectListElement createWrapper(final int index) {
         final StyleSheet styleSheet = new StyleSheet();
-        styleSheet.setParent( this );
-        styleSheet.setIndex( index );
+        styleSheet.setParent(this);
+        styleSheet.setIndex(index);
         return styleSheet;
     }
 
@@ -47,24 +48,26 @@ public class StyleSheetList extends DomObjectList{
     protected void disown(final DomObjectListElement object) {
     }
 
-    public boolean add( final Object element ){
+    public boolean add(final Object element) {
         throw new UnsupportedOperationException("A StyleSheetList is read only.");
     }
-   
-    public void add( final int index, final Object element ){
+
+    public void add(final int index, final Object element) {
         throw new UnsupportedOperationException("A StyleSheetList is read only.");
     }
-    public Object remove( final int index ){
+
+    public Object remove(final int index) {
         throw new UnsupportedOperationException("A StyleSheetList is read only.");
     }
-    public boolean remove( final Object object ){
+
+    public boolean remove(final Object object) {
         throw new UnsupportedOperationException("A StyleSheetList is read only.");
     }
-    
-    public Object set( final int index, final Object element ){
+
+    public Object set(final int index, final Object element) {
         throw new UnsupportedOperationException("A StyleSheetList is read only.");
     }
-    
+
     protected void add0(final DomObjectListElement element) {
         throw new UnsupportedOperationException();
     }

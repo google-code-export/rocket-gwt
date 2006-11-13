@@ -16,7 +16,7 @@
 package rocket.client.style;
 
 /**
- * A collection of constants used within the this style package.
+ * A collection of constants used within the this style package and css in general.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -30,8 +30,9 @@ public class StyleConstants {
     public final static String STYLE_SHEET = "stylesheet";
 
     public final static String SELECTOR_TEXT_PROPERTY_NAME = "selectorText";
+
     public final static String SELECTOR_SEPARATOR = ",";
-    
+
     /**
      * Each rule has a style object which contains a read/writable cssText property.
      */
@@ -213,7 +214,7 @@ public class StyleConstants {
 
     public static final String BREAK_BEFORE = "pageBreakBefore";
 
-    public static final String BREAK_INSIIDE = "pageBreakInside";
+    public static final String BREAK_INSIDE = "pageBreakInside";
 
     public static final String PAUSE = "pause";
 

@@ -13,8 +13,7 @@ import rocket.client.util.SystemHelper;
  * 
  * @author Miroslav Pokorny (mP)
  * 
- * TODO list.add( index, Object ) AND UNIT TEST
- * TODO This list should promote items that are getted and become a LeastRecentlyUsedList.
+ * TODO list.add( cursor, Object ) AND UNIT TEST TODO This list should promote items that are getted and become a LeastRecentlyUsedList.
  */
 public class CyclicList extends AbstractList implements List {
 
@@ -82,7 +81,7 @@ public class CyclicList extends AbstractList implements List {
 
     public void add(final int index, final Object element) {
         int size = this.size();
-        PrimitiveHelper.checkBetween("parameter:index", index, 0, size + 1);
+        PrimitiveHelper.checkBetween("parameter:cursor", index, 0, size + 1);
 
         // if list is full cant add(insert).
         final int capacity = this.getCapacity();
@@ -192,10 +191,10 @@ public class CyclicList extends AbstractList implements List {
     }
 
     /**
-     * This remove method removes and shuffles the internal elements array of the element pointed to by the parameter:index. It does not
+     * This remove method removes and shuffles the internal elements array of the element pointed to by the parameter:cursor. It does not
      * update the modification counter enabling it to be used by iterator.remove().
      * 
-     * @param index
+     * @param cursor
      * @return
      */
     protected Object removeByIndexWithoutConcurrentModificationCheck(final int index) {
@@ -287,7 +286,7 @@ public class CyclicList extends AbstractList implements List {
     }
 
     protected void checkIndex(final int index) {
-        PrimitiveHelper.checkBetween("parameter:index", index, 0, this.size());
+        PrimitiveHelper.checkBetween("parameter:cursor", index, 0, this.size());
     }
 
     protected int advanceIndexForward(final int index) {
@@ -314,7 +313,7 @@ public class CyclicList extends AbstractList implements List {
     }
 
     /**
-     * THis index points to the first element or start of the list.
+     * THis cursor points to the first element or start of the list.
      */
     private int firstIndex;
 
@@ -327,7 +326,7 @@ public class CyclicList extends AbstractList implements List {
     }
 
     /**
-     * THis index points to the last element or end of the list.
+     * THis cursor points to the last element or end of the list.
      */
     private int lastIndex;
 

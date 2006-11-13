@@ -211,7 +211,7 @@ public abstract class AccordionPanel extends Composite {
             }
 
             public String toString() {
-                return super.toString() + ", index: " + index;
+                return super.toString() + ", cursor: " + index;
             }
         };
 

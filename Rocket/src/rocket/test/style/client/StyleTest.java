@@ -65,7 +65,7 @@ public class StyleTest implements EntryPoint {
     final static String BANANA_TEXT = "This area is styled with the \"banana\" class...";
 
     /*
-     * The BANANA_RULES index will become 5 when it is added to the end of the RulesCollection
+     * The BANANA_RULES cursor will become 5 when it is added to the end of the RulesCollection
      */
     final static int BANANA_RULE_INDEX = 5;
 
@@ -220,9 +220,9 @@ public class StyleTest implements EntryPoint {
     protected void testStyleSheets() {
         final List styleSheets = StyleHelper.getStyleSheets();
         PrimitiveHelper.checkEquals("StyleSheetsCollection.size", 1, styleSheets.size());
-        
+
         final List styleSheets0 = StyleHelper.getStyleSheets();
-        ObjectHelper.checkSame( "repeated styleSheets.get(0)", styleSheets, styleSheets0);
+        ObjectHelper.checkSame("repeated styleSheets.get(0)", styleSheets, styleSheets0);
 
         // test all public methods of the StyleSheets list.
 
@@ -253,13 +253,13 @@ public class StyleTest implements EntryPoint {
         this.log("PASS StyleSheets.get( 0 )");
 
         final StyleSheet styleSheet0 = (StyleSheet) styleSheets.get(0);
-        ObjectHelper.checkSame("repeated StyleSheets.get(0)", styleSheet, styleSheet0 );
+        ObjectHelper.checkSame("repeated StyleSheets.get(0)", styleSheet, styleSheet0);
         this.log("PASS StyleSheets.get( 0 ) returns same wrapper");
-        
+
         try {
             final StyleSheet styleSheet100 = (StyleSheet) styleSheets.get(100);
             SystemHelper
-                    .handleAssertFailure("StyleSheet.get(100) should have thrown an exception because the index value is invalid...and not returned "
+                    .handleAssertFailure("StyleSheet.get(100) should have thrown an exception because the cursor value is invalid...and not returned "
                             + styleSheet100);
         } catch (final Exception expected) {
         }
@@ -292,8 +292,8 @@ public class StyleTest implements EntryPoint {
      */
     protected void testStyleSheet() {
         final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
-        this.log( "DEBUG got stylesheet");
-        
+        this.log("DEBUG got stylesheet");
+
         final List rules = styleSheet.getRules();
         ObjectHelper.checkNotNull("styleSheet.rules", rules);
         this.log("PASS StyleSheet.getRules()");
@@ -305,10 +305,10 @@ public class StyleTest implements EntryPoint {
      */
     protected void testRules() {
         final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
-        this.log( "DEBUG got stylesheet");
+        this.log("DEBUG got stylesheet");
         final List rules = styleSheet.getRules();
-        this.log( "DEBUG got rules");
-        
+        this.log("DEBUG got rules");
+
         this.testRulesSize(rules);
         this.testRulesIsEmpty(rules);
         this.testRulesGet0(rules);
@@ -350,7 +350,7 @@ public class StyleTest implements EntryPoint {
         try {
             final Rule someRule = (Rule) rules.get(100);
             SystemHelper
-                    .handleAssertFailure("An exception should have been thrown when attempting to retrieving a Rule using an invalid index and not: "
+                    .handleAssertFailure("An exception should have been thrown when attempting to retrieving a Rule using an invalid cursor and not: "
                             + someRule);
         } catch (final Exception expected) {
         }
@@ -406,21 +406,21 @@ public class StyleTest implements EntryPoint {
      */
     protected void testRule() {
         final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
-        this.log( "DEBUG got stylesheet");
+        this.log("DEBUG got stylesheet");
         final List rules = styleSheet.getRules();
-        this.log( "DEBUG got rules");
-        
+        this.log("DEBUG got rules");
+
         // Rules.add
         final Rule rule = new Rule();
         rule.setSelector("." + BANANA_CLASS_NAME);
         rules.add(rule);
 
-        this.log( "DEBUG rule added");
-        
+        this.log("DEBUG rule added");
+
         // test that the rule size has increased by one...
         PrimitiveHelper.checkEquals("rules", rules.size(), RULE_COUNT + 1);
 
-        // verify that it was appended by checking bananaRules index.
+        // verify that it was appended by checking bananaRules cursor.
         final int index = rules.indexOf(rule);
         PrimitiveHelper.checkEquals("bananaRule indexOf ", index, RULE_COUNT);
 
@@ -428,8 +428,8 @@ public class StyleTest implements EntryPoint {
         final Style style = rule.getStyle();
         style.setCssText("color: orange; background-color: purple;");
 
-        this.log( "DEBUG style.cssText set.");
-        
+        this.log("DEBUG style.cssText set.");
+
         // ask the user to confirm that the banana widget now has orange text on a purple background...
         final RootPanel rootPanel = RootPanel.get();
         final Button continueButton = new Button("Continue");
@@ -464,7 +464,7 @@ public class StyleTest implements EntryPoint {
         // test that the rule size has returned back to normal.
         PrimitiveHelper.checkEquals("rules", rules.size(), RULE_COUNT);
 
-        // verify that it was appended by checking bananaRules index.
+        // verify that it was appended by checking bananaRules cursor.
         final int index = rules.indexOf(rule);
         PrimitiveHelper.checkEquals("indexOf( bananaRule ) should return to -1 because the rule was removed... ",
                 index, -1);
@@ -495,14 +495,14 @@ public class StyleTest implements EntryPoint {
 
     protected void testRuleGetSelector() {
         final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
-        this.log( "DEBUG got stylesheet");
-        
+        this.log("DEBUG got stylesheet");
+
         final List rules = styleSheet.getRules();
-        this.log( "DEBUG got rules");
-        
+        this.log("DEBUG got rules");
+
         final Rule rule = (Rule) rules.get(APPLE_RULE_INDEX);
-        this.log( "DEBUG got rule");
-        
+        this.log("DEBUG got rule");
+
         final String selectorValue = rule.getSelector();
         StringHelper.checkEquals("rule.selector", selectorValue, "." + APPLE_CLASS_NAME);
 
@@ -511,26 +511,27 @@ public class StyleTest implements EntryPoint {
 
     protected void testRuleSetSelector0() {
         final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
-        this.log( "DEBUG got stylesheet");
-        
+        this.log("DEBUG got stylesheet");
+
         final List rules = styleSheet.getRules();
-        this.log( "DEBUG got rules");
-        
+        this.log("DEBUG got rules");
+
         final Rule rule = (Rule) rules.get(APPLE_RULE_INDEX);
-        this.log( "DEBUG got rule");
-        
+        this.log("DEBUG got rule");
+
         // change the selector text from to carrot.
         rule.setSelector("." + CARROT_CLASS_NAME);
-        this.log("DEBUG Changed apple rule selector from \"." + APPLE_CLASS_NAME + "\" to \"" + CARROT_CLASS_NAME + "\"");
+        this.log("DEBUG Changed apple rule selector from \"." + APPLE_CLASS_NAME + "\" to \"" + CARROT_CLASS_NAME
+                + "\"");
 
         // rule size shouldnt have changed...
         PrimitiveHelper.checkEquals("rules", rules.size(), RULE_COUNT);
         this.log("PASS rule count has not changed.");
 
-        // index should not have changed...
+        // cursor should not have changed...
         final int index = rules.indexOf(rule);
-        PrimitiveHelper.checkEquals("The index of rule", index, APPLE_RULE_INDEX);
-        this.log("PASS rule index remains constant.");
+        PrimitiveHelper.checkEquals("The cursor of rule", index, APPLE_RULE_INDEX);
+        this.log("PASS rule cursor remains constant.");
 
         // prompt the user to confirm that the selector was updated...
         final RootPanel rootPanel = RootPanel.get();
@@ -573,17 +574,17 @@ public class StyleTest implements EntryPoint {
      */
     protected void testRuleStyle() {
         final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
-        this.log( "DEBUG got stylesheet");
-        
+        this.log("DEBUG got stylesheet");
+
         final List rules = styleSheet.getRules();
-        this.log( "DEBUG got rules");
-        
+        this.log("DEBUG got rules");
+
         final Rule rule = (Rule) rules.get(APPLE_RULE_INDEX);
-        this.log( "DEBUG got rule");
-        
+        this.log("DEBUG got rule");
+
         final Style style = rule.getStyle();
-        this.log( "DEBUG got style");
-        
+        this.log("DEBUG got style");
+
         this.testRuleStyleContainsKey0(style);
         this.testRuleStyleContainsKey1(style);
         this.testRuleStyleContainsValue0(style);
@@ -603,7 +604,7 @@ public class StyleTest implements EntryPoint {
         this.testRuleStyleValuesContains1(values);
         this.testRuleStyleValuesIterator(values);
 
-        this.testRuleStylePutAndRemove0(style);       
+        this.testRuleStylePutAndRemove0(style);
     }
 
     protected void testRuleStyleContainsKey0(final Style style) {
@@ -843,20 +844,20 @@ public class StyleTest implements EntryPoint {
     protected void testRuleStyleValuesCollectionIteratorRemove0(final Style style) {
         ObjectHelper.checkNotNull("parameter:style", style);
 
-            final StylePropertyValue value = new StylePropertyValue();
-            value.setString(FONT_SIZE_VALUE);
-            style.put(FONT_SIZE, value);
-            this.log("DEBUG Added style[" + FONT_SIZE + "]=[" + FONT_SIZE_VALUE + "]");
+        final StylePropertyValue value = new StylePropertyValue();
+        value.setString(FONT_SIZE_VALUE);
+        style.put(FONT_SIZE, value);
+        this.log("DEBUG Added style[" + FONT_SIZE + "]=[" + FONT_SIZE_VALUE + "]");
 
         final Iterator values = style.values().iterator();
         while (values.hasNext()) {
             final StylePropertyValue iteratorValue = (StylePropertyValue) values.next();
-            try{
+            try {
                 if (iteratorValue.getPropertyName().equals(FONT_SIZE)) {
-                    values.remove();                
+                    values.remove();
                     break;
-                }   
-            }finally {
+                }
+            } finally {
                 iteratorValue.destroy();
             }
         }
@@ -881,23 +882,23 @@ public class StyleTest implements EntryPoint {
 
     protected void testRuleStyleValuesCollectionIteratorRemove1(final Style style) {
         ObjectHelper.checkNotNull("parameter:style", style);
-        
-        this.log( "SUCCESS Style");
+
+        this.log("SUCCESS Style");
     }
 
     protected void testStylePropertyValueGetColour() {
         final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
-        this.log( "DEBUG got stylesheet");
-        
+        this.log("DEBUG got stylesheet");
+
         final List rules = styleSheet.getRules();
-        this.log( "DEBUG got rules");
-        
+        this.log("DEBUG got rules");
+
         final Rule rule = (Rule) rules.get(APPLE_RULE_INDEX);
-        this.log( "DEBUG got rule");
-        
+        this.log("DEBUG got rule");
+
         final Style style = rule.getStyle();
-        this.log( "DEBUG got style");
-        
+        this.log("DEBUG got style");
+
         this.testRuleStyleGetColourHashRGB0(style);
         this.testRuleStyleGetColourHashRGB1(style);
         this.testRuleStyleGetColourHashRRGGBB0(style);

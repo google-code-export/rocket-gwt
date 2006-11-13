@@ -21,7 +21,6 @@ import java.util.Stack;
 
 import rocket.client.util.ObjectHelper;
 import rocket.client.widget.VerticalPanel;
-import rocket.client.widget.WidgetHelper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;

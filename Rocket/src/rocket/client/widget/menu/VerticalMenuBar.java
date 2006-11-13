@@ -16,7 +16,6 @@
 package rocket.client.widget.menu;
 
 import rocket.client.util.ObjectHelper;
-import rocket.client.widget.WidgetHelper;
 
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;

@@ -75,7 +75,7 @@ public class Base64Encoder {
             buf.append(translateByte((byte) (bb | z)));
             buf.append(translateByte((byte) (c & 0x3f)));
 
-            // increment the index
+            // increment the cursor
             i = i + 3;
 
             carriageReturnCountdown--;

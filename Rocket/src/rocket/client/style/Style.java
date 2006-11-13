@@ -34,24 +34,24 @@ public class Style extends DomObjectMap {
         super();
     }
 
-    public boolean hasObject(){
+    public boolean hasObject() {
         boolean has = false;
-        if( this.hasRule() ){
+        if (this.hasRule()) {
             final Rule rule = this.getRule();
             has = rule.hasParent() && rule.hasIndex();
         }
-        
+
         return has;
     }
-    
-    public JavaScriptObject getObject(){
-        return ObjectHelper.getObject( this.getRule().getObject(), StyleConstants.RULE_STYLE_OBJECT );
+
+    public JavaScriptObject getObject() {
+        return ObjectHelper.getObject(this.getRule().getObject(), StyleConstants.RULE_STYLE_OBJECT);
     }
-    
+
     /**
      * Asserts that a Map value is a StylePropertyValue instance.
      */
-    protected boolean isValidValueType( final Object value ){
+    protected boolean isValidValueType(final Object value) {
         return value instanceof StylePropertyValue;
     }
 
@@ -112,24 +112,24 @@ public class Style extends DomObjectMap {
 
         wrapper.destroy();
     }
-    
+
     /**
      * Caches the cssText value whilst the Style or parent Rule is disconnected.
      */
     private String cssText;
 
     public String getCssText() {
-        if( this.hasObject() ){
+        if (this.hasObject()) {
             this.cssText = ObjectHelper.getString(this.getObject(), StyleConstants.STYLE_TEXT_PROPERTY_NAME);
         }
-        if( null == this.cssText ){
+        if (null == this.cssText) {
             this.cssText = "";
         }
         return this.cssText;
     }
 
     public void setCssText(final String cssText) {
-        if( this.hasObject() ){
+        if (this.hasObject()) {
             ObjectHelper.setString(this.getObject(), StyleConstants.STYLE_TEXT_PROPERTY_NAME, cssText);
         }
         this.cssText = cssText;
@@ -157,8 +157,8 @@ public class Style extends DomObjectMap {
     protected void clearRule() {
         this.rule = null;
     }
-    
-    public void destroy(){
+
+    public void destroy() {
         this.clearRule();
         super.destroy();
     }

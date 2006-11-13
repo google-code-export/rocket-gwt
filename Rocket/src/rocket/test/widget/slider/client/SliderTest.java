@@ -46,7 +46,7 @@ public class SliderTest implements EntryPoint {
     final int VALUE = 50;
 
     final int MAXIMUM_VALUE = 100;
-    
+
     final int MOUSEDOWN_REPEAT_RATE = 500;
 
     public void onModuleLoad() {
@@ -55,8 +55,8 @@ public class SliderTest implements EntryPoint {
                 caught.printStackTrace();
                 Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
             }
-        });        
-        
+        });
+
         final RootPanel panel = RootPanel.get();
         final Label horizontalSliderValue = new Label(String.valueOf(VALUE));
 
@@ -78,7 +78,7 @@ public class SliderTest implements EntryPoint {
             }
         });
         horizontalSlider.setValue(VALUE);
-        horizontalSlider.setMouseDownRepeatRate( MOUSEDOWN_REPEAT_RATE );
+        horizontalSlider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
 
         final Label verticalSliderValue = new Label(String.valueOf(VALUE));
 
@@ -93,8 +93,8 @@ public class SliderTest implements EntryPoint {
         verticalSlider.setMaximumValue(MAXIMUM_VALUE);
         verticalSlider.setHandle(verticalSliderHandle);
         verticalSlider.setValue(VALUE);
-        verticalSlider.setMouseDownRepeatRate( MOUSEDOWN_REPEAT_RATE );
-        
+        verticalSlider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
+
         DOM.setStyleAttribute(verticalSliderHandle.getElement(), "left", "1px");
 
         verticalSlider.addChangeListener(new ChangeListener() {
@@ -104,7 +104,7 @@ public class SliderTest implements EntryPoint {
         });
 
         panel.add(new HTML("Value<br>"));
-        
+
         final TextBox value = new TextBox();
         value.setText(String.valueOf(VALUE));
         value.addKeyboardListener(new KeyboardListenerAdapter() {
@@ -115,7 +115,7 @@ public class SliderTest implements EntryPoint {
                     verticalSlider.setValue(newValue);
                 }
             }
-        });       
+        });
         panel.add(value);
 
         panel.add(new HTML("Big Delta<br>"));
@@ -129,7 +129,7 @@ public class SliderTest implements EntryPoint {
                     verticalSlider.setBigDelta(newBigDelta);
                 }
             }
-        });        
+        });
         panel.add(bigDelta);
 
         panel.add(new HTML("Delta<br>"));
@@ -145,11 +145,11 @@ public class SliderTest implements EntryPoint {
             }
         });
         panel.add(delta);
-        
+
         panel.add(new HTML("MouseDownRepeatRate<br>"));
 
         final TextBox mouseDownRepeatRate = new TextBox();
-        mouseDownRepeatRate.setText(String.valueOf( MOUSEDOWN_REPEAT_RATE ));
+        mouseDownRepeatRate.setText(String.valueOf(MOUSEDOWN_REPEAT_RATE));
         mouseDownRepeatRate.addKeyboardListener(new KeyboardListenerAdapter() {
             public void onKeyDown(Widget sender, char keyCode, int modifiers) {
                 if (KeyboardListener.KEY_ENTER == keyCode) {
@@ -159,8 +159,8 @@ public class SliderTest implements EntryPoint {
                 }
             }
         });
-        panel.add(mouseDownRepeatRate );
-        
+        panel.add(mouseDownRepeatRate);
+
         panel.add(new HTML("MaximumValue<br>"));
 
         final TextBox maximumValue = new TextBox();
