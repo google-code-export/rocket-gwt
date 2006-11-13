@@ -139,11 +139,11 @@ public class DomHelper extends ObjectHelper {
      var element0 = element;
      while( element0 ){
      // stop if this element is absolutely positioned.
-     if( "absolute" == element0.style[ "position" ].toLowerCase() ){
+     if( "absolute" == element0.style.position.toLowerCase() ){
      break;
      }
-     left = left + element0[ "offsetLeft" ];
-     element0 = element0[ "offsetParent" ];
+     left = left + element0.offsetLeft;
+     element0 = element0.offsetParent;
      }
      return left;
      }-*/;
@@ -165,11 +165,11 @@ public class DomHelper extends ObjectHelper {
      var element0 = element;
      while( element0 ){
      // stop if this element is absolutely positioned. 
-     if( "absolute" == element0.style[ "position" ].toLowerCase() ){
+     if( "absolute" == element0.style.position.toLowerCase() ){
      break;
      }
-     top = top + element0[ "offsetTop" ];
-     element0 = element0[ "offsetParent" ];
+     top = top + element0.offsetTop;
+     element0 = element0.offsetParent;
      }
      return top;
      }-*/;

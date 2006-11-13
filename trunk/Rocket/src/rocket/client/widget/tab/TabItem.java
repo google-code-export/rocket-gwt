@@ -44,6 +44,7 @@ public class TabItem {
                     "This tabItem cannot be removed because it has not yet been added to a TabPanel");
         }
         this.getTabPanel().remove(this);
+        this.clearTabPanel();
     }
 
     /**

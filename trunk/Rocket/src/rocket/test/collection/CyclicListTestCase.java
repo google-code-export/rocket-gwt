@@ -161,7 +161,7 @@ public class CyclicListTestCase extends TestCase {
         final List list = new CyclicList(3);
         try {
             list.add(2, "shouldFail");
-            fail("An exception should have been thrown when attempting to add(insert) with an index after the current size");
+            fail("An exception should have been thrown when attempting to add(insert) with an cursor after the current size");
         } catch (final Exception expected) {
 
         }
@@ -250,7 +250,7 @@ public class CyclicListTestCase extends TestCase {
 
         try {
             list.set(0, "overflowCulprit");
-            fail("Setting the cyclic with an index greater than its capacity should throw an exception, list: " + list);
+            fail("Setting the cyclic with an cursor greater than its capacity should throw an exception, list: " + list);
         } catch (final Exception expected) {
 
         }

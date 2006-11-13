@@ -18,7 +18,7 @@ package rocket.client.widget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Represents an class that can provide widgets via an index.
+ * Represents an class that can provide widgets via an cursor.
  * 
  * @author Miroslav Pokorny (mP)
  * 
@@ -26,14 +26,14 @@ import com.google.gwt.user.client.ui.Widget;
 public interface WidgetProvider {
 
     /**
-     * Returns the index of the first widget
+     * Returns the cursor of the first widget
      * 
      * @return
      */
     int getFirst();
 
     /**
-     * Returns the index of the last widget(exclusive)
+     * Returns the cursor of the last widget(exclusive)
      * 
      * @return
      */
@@ -49,7 +49,7 @@ public interface WidgetProvider {
     /**
      * Retrieves the widget at the given spot.
      * 
-     * @param index
+     * @param cursor
      * @return
      */
     Widget getWidget(int index);

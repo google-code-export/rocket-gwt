@@ -67,7 +67,7 @@ public class HorizontalSlider extends Slider {
      * 
      * @param event
      */
-    protected void handleBackgroundClick(final Event event) {
+    protected void handleBackgroundMouseDown(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         final int mouseX = DOM.eventGetClientX(event) + BrowserHelper.getScrollX();

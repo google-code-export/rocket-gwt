@@ -381,7 +381,7 @@ public class AutoCompleteTextBox extends TextBox {
     }
 
     /**
-     * This method is used to select another widget and usually occurs whenever the user moves the select index via the keyboard or a mouse
+     * This method is used to select another widget and usually occurs whenever the user moves the select cursor via the keyboard or a mouse
      * over. Listeners are notified prior to changing the selected item.
      * 
      * @param widget

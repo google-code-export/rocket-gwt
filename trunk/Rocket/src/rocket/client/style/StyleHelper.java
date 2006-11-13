@@ -33,11 +33,12 @@ import com.google.gwt.user.client.Element;
  * @author Miroslav Pokorny (mP)
  */
 public class StyleHelper extends ObjectHelper {
-    
+
     /**
      * A cached copy of the StyleSheetList.
      */
     private static StyleSheetList styleSheetList;
+
     /**
      * Factory method which creates a StyleSheetCollection.
      * 
@@ -45,32 +46,31 @@ public class StyleHelper extends ObjectHelper {
      */
     public static List getStyleSheets() {
         StyleSheetList styleSheets = null;
-        if( StyleHelper.hasStyleSheets() ){
+        if (StyleHelper.hasStyleSheets()) {
             styleSheets = StyleHelper.styleSheetList;
         } else {
             styleSheets = new StyleSheetList();
             final JavaScriptObject nativeStyleSheets = StyleHelper.getStyleSheets0();
-            if( null == nativeStyleSheets ){
-                throw new UnsupportedOperationException( BrowserHelper.getUserAgent() + " doesnt support StyleSheets");
+            if (null == nativeStyleSheets) {
+                throw new UnsupportedOperationException(BrowserHelper.getUserAgent() + " doesnt support StyleSheets");
             }
-            styleSheets.setObject( nativeStyleSheets );
-            StyleHelper.setStyleSheets( styleSheets );
+            styleSheets.setObject(nativeStyleSheets);
+            StyleHelper.setStyleSheets(styleSheets);
         }
         return styleSheets;
     }
 
     protected static native JavaScriptObject getStyleSheets0()/*-{
-    var styleSheet = $doc.styleSheets;
-    return styleSheet ? styleSheet : null;
-    }-*/;
+     var styleSheet = $doc.styleSheets;
+     return styleSheet ? styleSheet : null;
+     }-*/;
 
-    
-    protected static boolean hasStyleSheets(){
+    protected static boolean hasStyleSheets() {
         return null != styleSheetList;
     }
-    
-    protected static void setStyleSheets( final StyleSheetList styleSheetList ){
-        ObjectHelper.checkNotNull( "parameter:styleSheetList", styleSheetList );
+
+    protected static void setStyleSheets(final StyleSheetList styleSheetList) {
+        ObjectHelper.checkNotNull("parameter:styleSheetList", styleSheetList);
         StyleHelper.styleSheetList = styleSheetList;
     }
 
@@ -186,5 +186,5 @@ public class StyleHelper extends ObjectHelper {
      }
      
      return value ? value : null;
-     }-*/;    
+     }-*/;
 }

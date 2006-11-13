@@ -19,7 +19,6 @@ import java.util.Iterator;
 
 import rocket.client.util.ObjectHelper;
 import rocket.client.widget.HorizontalPanel;
-import rocket.client.widget.WidgetHelper;
 import rocket.client.widget.tree.Tree;
 import rocket.client.widget.tree.TreeItem;
 import rocket.client.widget.tree.TreeListener;

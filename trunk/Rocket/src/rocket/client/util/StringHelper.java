@@ -185,7 +185,7 @@ public class StringHelper extends ObjectHelper {
      * @param string
      * @param search
      *            If test is empty -1 is always returned.
-     * @return -1 if the string was not found or the index of the first matching character
+     * @return -1 if the string was not found or the cursor of the first matching character
      */
     public static int indexOfIgnoringCase(final String string, final String search) {
         ObjectHelper.checkNotNull("parameter:string", string);
@@ -313,7 +313,7 @@ public class StringHelper extends ObjectHelper {
      */
     public static void checkNotEmpty(final String message, final String string) {
         if (isNullOrEmpty(string)) {
-            SystemHelper.handleAssertFailure( message + " is null or empty." );
+            SystemHelper.handleAssertFailure(message + " is null or empty.");
         }
     }
 
@@ -358,7 +358,7 @@ public class StringHelper extends ObjectHelper {
                         + message.substring(i, messageLength - i) + "]");
             }
 
-            // extract the index in between...
+            // extract the cursor in between...
             String placeHolderIndex = message.substring(1 + placeHolderStartIndex, placeHolderEndIndex);
             try {
                 final int index = Integer.parseInt(placeHolderIndex);
@@ -367,7 +367,7 @@ public class StringHelper extends ObjectHelper {
                 i = placeHolderEndIndex + 1;
 
             } catch (final NumberFormatException badIndex) {
-                StringHelper.handleAssertFailure("Placeholder index does not contain a number [" + placeHolderIndex
+                StringHelper.handleAssertFailure("Placeholder cursor does not contain a number [" + placeHolderIndex
                         + "]");
             }
         }
@@ -404,7 +404,7 @@ public class StringHelper extends ObjectHelper {
      */
     public static void checkEquals(final String message, final String actual, final String expected) {
         if (false == nullSafeEquals(actual, expected)) {
-            SystemHelper.handleAssertFailure( message + ", got[" + actual + "], expected[" + expected + "]");
+            SystemHelper.handleAssertFailure(message + ", got[" + actual + "], expected[" + expected + "]");
         }
     }
 

@@ -137,7 +137,7 @@ public class WidgetHelper extends SystemHelper {
     }
 
     /**
-     * Retrieves the absolute left or X coordinates for given widget.
+     * Retrieves the absolute left or X coordinates for the given widget.
      * 
      * @param widget
      * @return
@@ -148,7 +148,7 @@ public class WidgetHelper extends SystemHelper {
     }
 
     /**
-     * Retrieves the absolute top or y coordinates for given widget.
+     * Retrieves the absolute top or y coordinates for the given widget.
      * 
      * @param widget
      * @return

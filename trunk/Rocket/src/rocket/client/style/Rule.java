@@ -24,14 +24,15 @@ import rocket.client.util.StringHelper;
  * Each instance of the Rule class represents a handle to a rule belonging to a styleSheet.
  * 
  * Methods are available to set/get the selector and style.
+ * 
  * @author Miroslav Pokorny (mP)
- *
+ * 
  */
 public class Rule extends DomObjectListElement {
     public Rule() {
         super();
-        
-        this.setStyle( this.createStyle() );
+
+        this.setStyle(this.createStyle());
     }
 
     // SELECTOR ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -44,10 +45,10 @@ public class Rule extends DomObjectListElement {
     public String getSelector() {
         String selector = this.selector;
 
-        if (this.hasParent() && this.hasIndex() ) {
-            selector = ObjectHelper.getString( this.getObject(), StyleConstants.SELECTOR_TEXT_PROPERTY_NAME);
+        if (this.hasParent() && this.hasIndex()) {
+            selector = ObjectHelper.getString(this.getObject(), StyleConstants.SELECTOR_TEXT_PROPERTY_NAME);
 
-            selector = StringHelper.nullToEmpty( selector );
+            selector = StringHelper.nullToEmpty(selector);
         }
 
         StyleHelper.checkSelector("field:selector", selector);
@@ -60,22 +61,22 @@ public class Rule extends DomObjectListElement {
         this.selector = selector;
 
         // if the actual Rule object is present recreate Rule...
-        if (this.hasParent() & this.hasIndex() ) { 
+        if (this.hasParent() & this.hasIndex()) {
             final RuleListImpl rules = (RuleListImpl) this.getParent();
-            
-            // get this rules index...
-            final int index = this.getIndex(); 
-            
+
+            // get this rules cursor...
+            final int index = this.getIndex();
+
             final Style style = this.getStyle();
-            final String styleText = style.getCssText(); 
-            
+            final String styleText = style.getCssText();
+
             // remove this rule from its parent...
-            rules.remove( this );
-            
+            rules.remove(this);
+
             // insert it back in its original position...
-            this.setIndex( index );
-            style.setCssText( styleText );
-            rules.add( index, this );
+            this.setIndex(index);
+            style.setCssText(styleText);
+            rules.add(index, this);
         }
     }
 
@@ -115,15 +116,15 @@ public class Rule extends DomObjectListElement {
      * @return Returns null if this Rule does not belong to a RuleList.
      */
     public String getStyleText() {
-        return this.hasParent() ? 
-                ObjectHelper.getString( this.getObject(), StyleConstants.STYLE_TEXT_PROPERTY_NAME) : "";
+        return this.hasParent() ? ObjectHelper.getString(this.getObject(), StyleConstants.STYLE_TEXT_PROPERTY_NAME)
+                : "";
     }
 
     public void destroy() {
         if (this.hasStyle()) {
             this.getStyle().destroy();
         }
-     
+
         super.destroy();
     }
 }

@@ -148,7 +148,7 @@ public class FormHelper extends DomHelper {
             }
 
             protected native Element next0(final Element form, final int index)/*-{
-             var element = form.elements[ index ];
+             var element = form.elements[ cursor ];
              return element ? element : null;
              }-*/;
 

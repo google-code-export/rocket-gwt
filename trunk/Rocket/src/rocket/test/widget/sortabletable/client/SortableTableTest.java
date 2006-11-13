@@ -160,7 +160,7 @@ public class SortableTableTest implements EntryPoint {
         remover.addClickListener(new ClickListener() {
             public void onClick(final Widget ignore) {
                 try {
-                    final int row = Integer.parseInt(BrowserHelper.prompt("Remove index", "0"));
+                    final int row = Integer.parseInt(BrowserHelper.prompt("Remove cursor", "0"));
                     table.removeRow(row);
 
                 } catch (Exception caught) {
@@ -177,7 +177,7 @@ public class SortableTableTest implements EntryPoint {
         tableRowGetter.addClickListener(new ClickListener() {
             public void onClick(final Widget ignore) {
                 try {
-                    final int row = Integer.parseInt(BrowserHelper.prompt("Row index", "0"));
+                    final int row = Integer.parseInt(BrowserHelper.prompt("Row cursor", "0"));
                     final Object file = table.getTableRow(row);
                     Window.alert("row: " + row + "\n" + file);
 

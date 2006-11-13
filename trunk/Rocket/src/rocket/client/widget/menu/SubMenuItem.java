@@ -152,8 +152,7 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
     protected void handleMouseClick(final Event event) {
         // ignore event if menu list is already opened...
         if (false == this.isDisabled()) {
-            if (DOM.getStyleAttribute(this.getMenuList().getElement(), StyleConstants.DISPLAY).equalsIgnoreCase(
-                    "none")) {
+            if (DOM.getStyleAttribute(this.getMenuList().getElement(), StyleConstants.DISPLAY).equalsIgnoreCase("none")) {
                 this.open();
             }
         }

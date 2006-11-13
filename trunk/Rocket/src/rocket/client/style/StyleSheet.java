@@ -24,16 +24,17 @@ import rocket.client.util.ObjectWrapper;
 import rocket.client.util.StringHelper;
 
 /**
- * Each instance of StyleSheet represents a handle to a StyleSheet.
- * Methods are available to retrieve the Rules list associated with the stylesheet instance.
+ * Each instance of StyleSheet represents a handle to a StyleSheet. Methods are available to retrieve the Rules list associated with the
+ * stylesheet instance.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class StyleSheet extends DomObjectListElement {
-    
-    public StyleSheet(){
+
+    public StyleSheet() {
         super();
-    }    
-    
+    }
+
     /**
      * A list containing all the rules associated with this StyleSheet.
      */
@@ -61,33 +62,34 @@ public class StyleSheet extends DomObjectListElement {
      * Creates a new RuleList.
      */
     protected void createRules() {
-        final RuleList rules = new RuleList();        
-        rules.setStyleSheet(this);       
-        //rules.setObject(this.getRules(this.getObject()));
+        final RuleList rules = new RuleList();
+        rules.setStyleSheet(this);
+        // rules.setObject(this.getRules(this.getObject()));
         rules.afterPropertiesSet();
         this.setRules(rules);
     }
-//TDO DELETE
-//    /**
-//     * Retrieves the rules array of Rules objects from the given styleSheet in a browser independent manner.
-//     * 
-//     * @param styleSheet
-//     * @return
-//     */
-//    protected static JavaScriptObject getRules(final JavaScriptObject styleSheet) {
-//        ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
-//        return getRules0(styleSheet);
-//    }
-//
-//    protected native static JavaScriptObject getRules0(final JavaScriptObject styleSheet)/*-{
-//        // ie6 uses rules whilst the standard mandates cssRules...
-//         var rules = styleSheet.rules;
-//         if( ! rules ){
-//             rules = styleSheet.cssRules;
-//         }
-//         return rules ? rules : null; 
-//     }-*/;
-    
+
+    // TDO DELETE
+    // /**
+    // * Retrieves the rules array of Rules objects from the given styleSheet in a browser independent manner.
+    // *
+    // * @param styleSheet
+    // * @return
+    // */
+    // protected static JavaScriptObject getRules(final JavaScriptObject styleSheet) {
+    // ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
+    // return getRules0(styleSheet);
+    // }
+    //
+    // protected native static JavaScriptObject getRules0(final JavaScriptObject styleSheet)/*-{
+    // // ie6 uses rules whilst the standard mandates cssRules...
+    // var rules = styleSheet.rules;
+    // if( ! rules ){
+    // rules = styleSheet.cssRules;
+    // }
+    // return rules ? rules : null;
+    // }-*/;
+
     // STYLESHEET ELEMENT :::::::::::::::::::::::::::::::::
     /**
      * Tests if this style sheet was loaded from an external file.
@@ -136,15 +138,16 @@ public class StyleSheet extends DomObjectListElement {
     }
 
     public boolean isDisabled() {
-        return this.hasProperty(StyleConstants.DISABLED_ATTRIBUTE) ? this.getBoolean(StyleConstants.DISABLED_ATTRIBUTE) : false;
+        return this.hasProperty(StyleConstants.DISABLED_ATTRIBUTE) ? this.getBoolean(StyleConstants.DISABLED_ATTRIBUTE)
+                : false;
     }
 
     public void setDisabled(final boolean disabled) {
         this.setBoolean(StyleConstants.DISABLED_ATTRIBUTE, disabled);
     }
-    
+
     // OBJECT WRAPPER IMPL :::::::::::::::::::::
-    
+
     public String getId() {
         return this.getString(DomConstants.ID_ATTRIBUTE);
     }
@@ -180,7 +183,7 @@ public class StyleSheet extends DomObjectListElement {
     public void setTitle(final String title) {
         this.setString(DomConstants.TITLE_ATTRIBUTE, title);
     }
-    
+
     // A VARIETY OF CONVENIENT TYPED PROPERTY METHODS.
 
     protected boolean hasProperty(final String propertyName) {
@@ -197,7 +200,7 @@ public class StyleSheet extends DomObjectListElement {
     protected void setBoolean(final String propertyName, final boolean value) {
         ObjectHelper.setBoolean(this.getObject(), propertyName, value);
     }
-    
+
     // STRING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     protected String getString(final String propertyName) {
@@ -211,7 +214,7 @@ public class StyleSheet extends DomObjectListElement {
     protected void removeProperty(final String propertyName) {
         ObjectHelper.removeProperty(this.getObject(), propertyName);
     }
-    
+
     public boolean equals(final Object otherObject) {
         return otherObject instanceof ObjectWrapper ? this.equals((ObjectWrapper) otherObject) : false;
     }
@@ -228,10 +231,10 @@ public class StyleSheet extends DomObjectListElement {
 
             // if other rule hasnt got a native rule object it cant be equal...
             if (false == otherWrapper.hasObject()) {
-                break;  
+                break;
             }
 
-            same = this.getObject().equals( otherWrapper.getObject());
+            same = this.getObject().equals(otherWrapper.getObject());
             break;
         }
         return same;

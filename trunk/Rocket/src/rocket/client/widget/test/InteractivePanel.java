@@ -42,6 +42,7 @@ public abstract class InteractivePanel extends Composite {
 
     public InteractivePanel() {
         this.initWidget(this.createWidget());
+        this.setStyleName(TestConstants.INTERACTIVE_PANEL_STYLE);
     }
 
     protected Widget createWidget() {
@@ -133,7 +134,7 @@ public abstract class InteractivePanel extends Composite {
     protected abstract void panelAdd(Widget widget);
 
     protected Button createPanelInsertButton() {
-        final Button button = new Button("panel.add(int)");
+        final Button button = new Button("panel.insert(int)");
         button.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
                 onPanelInsertClick();
@@ -177,7 +178,7 @@ public abstract class InteractivePanel extends Composite {
         String message = "panel.get(";
         int index = -1;
         try {
-            index = Integer.parseInt(BrowserHelper.prompt("get index", "0"));
+            index = Integer.parseInt(BrowserHelper.prompt("get cursor", "0"));
             final Widget widget = this.panelGet(index);
             this.checkType(widget);
             message = message + index + ") returned " + this.toString(widget);
@@ -207,7 +208,7 @@ public abstract class InteractivePanel extends Composite {
         String message = "panel.remove(";
         int index = -1;
         try {
-            index = Integer.parseInt(BrowserHelper.prompt("remove index", "0"));
+            index = Integer.parseInt(BrowserHelper.prompt("remove cursor", "0"));
             this.panelRemove(this.panelGet(index));
             message = message + index + ") returned";
         } catch (final Exception caught) {
@@ -374,6 +375,7 @@ public abstract class InteractivePanel extends Composite {
         final VerticalPanel panel = new VerticalPanel();
         panel.setWidth("100%");
         DOM.setStyleAttribute(panel.getElement(), "white-space", "nowrap");
+        panel.setStyleName(TestConstants.INTERACTIVE_PANEL_WIDGET_LOG_STYLE);
         this.setMessages(panel);
         return panel;
     }

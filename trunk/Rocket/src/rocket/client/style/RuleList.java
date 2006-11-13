@@ -31,99 +31,101 @@ import com.google.gwt.core.client.JavaScriptObject;
  * @author Miroslav Pokorny (mP)
  */
 public class RuleList extends AbstractList {
-    
-    public RuleList(){
+
+    public RuleList() {
         super();
-        
+
         this.createImplementation();
-    }    
-    
+    }
+
     /**
-     * The browser aware implementation that takes care of browser difference nasties.
-     * All List methods are delegates to the implementation.
+     * The browser aware implementation that takes care of browser difference nasties. All List methods are delegates to the implementation.
      */
     private RuleListImpl implementation;
-    
-    protected RuleListImpl getImplementation(){
-        ObjectHelper.checkNotNull( "field:implementation", this.implementation );
+
+    protected RuleListImpl getImplementation() {
+        ObjectHelper.checkNotNull("field:implementation", this.implementation);
         return implementation;
     }
-    protected void setImplementation( final RuleListImpl implementation ){
-        ObjectHelper.checkNotNull( "parameter:implementation", implementation );
+
+    protected void setImplementation(final RuleListImpl implementation) {
+        ObjectHelper.checkNotNull("parameter:implementation", implementation);
         this.implementation = implementation;
     }
-    
-    protected void createImplementation(){
-        this.setImplementation( (RuleListImpl) GWT.create( RuleListImpl.class ));
+
+    protected void createImplementation() {
+        this.setImplementation((RuleListImpl) GWT.create(RuleListImpl.class));
     }
-    
+
     protected StyleSheet getStyleSheet() {
         return this.getImplementation().getStyleSheet();
     }
 
     protected void setStyleSheet(final StyleSheet styleSheet) {
-        this.getImplementation().setStyleSheet( styleSheet );
+        this.getImplementation().setStyleSheet(styleSheet);
     }
-    
+
     protected JavaScriptObject getObject() {
         return this.getImplementation().getObject();
     }
 
     protected void setObject(final JavaScriptObject object) {
-        this.getImplementation().setObject( object );
+        this.getImplementation().setObject(object);
     }
-    
-    protected void afterPropertiesSet(){
+
+    protected void afterPropertiesSet() {
         this.getImplementation().afterPropertiesSet();
     }
-    
+
     // read only operations....................
-    
+
     public int size() {
         return this.getImplementation().size();
     }
-    
-    public boolean contains( final Object object ){
-        return this.getImplementation().contains( object );
-    }
-    
-    public int indexOf( final Object object ){
-        return this.getImplementation().indexOf( object );
+
+    public boolean contains(final Object object) {
+        return this.getImplementation().contains(object);
     }
 
-    public int lastIndexOf( final Object object ){
-        return this.getImplementation().lastIndexOf( object );
+    public int indexOf(final Object object) {
+        return this.getImplementation().indexOf(object);
     }
-    
+
+    public int lastIndexOf(final Object object) {
+        return this.getImplementation().lastIndexOf(object);
+    }
+
     public Object get(int index) {
-        return this.getImplementation().get( index );
+        return this.getImplementation().get(index);
     }
-    
+
     // modifying operations ..........................
-    
-    public boolean add( final Object object ){
-        return this.getImplementation().add( object );
+
+    public boolean add(final Object object) {
+        return this.getImplementation().add(object);
     }
-    public void add( final int index, final Object object ){
-        this.getImplementation().add( index, object );
+
+    public void add(final int index, final Object object) {
+        this.getImplementation().add(index, object);
     }
-    
-    public Object set( final int index, final Object object ){
-        return this.getImplementation().set( index, object );
+
+    public Object set(final int index, final Object object) {
+        return this.getImplementation().set(index, object);
     }
+
     // removal
-    
-    public Object remove( final int index ){
-        return this.getImplementation().remove( index );
+
+    public Object remove(final int index) {
+        return this.getImplementation().remove(index);
     }
-    
-    public boolean remove( final Object object ){
-        return this.getImplementation().remove( object );
+
+    public boolean remove(final Object object) {
+        return this.getImplementation().remove(object);
     }
-            
+
     // DESTROYABLE ::::::::::::::::::::::::::::::::::::::
-    
-    public void destroy(){
+
+    public void destroy() {
         this.getImplementation().destroy();
     }
 }

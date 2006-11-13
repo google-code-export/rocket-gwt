@@ -141,22 +141,22 @@ public abstract class TabPanel extends Composite {
         final IteratorView iterator = new IteratorView() {
 
             protected boolean hasNext0() {
-                return this.getIndex() < TabPanel.this.getCount();
+                return this.getCursor() < TabPanel.this.getCount();
             }
 
             protected Object next0() {
-                final int index = this.getIndex();
+                final int index = this.getCursor();
                 return get(index);
             }
 
             protected void afterNext() {
-                this.setIndex(this.getIndex() + 1);
+                this.setCursor(this.getCursor() + 1);
             }
 
             protected void remove0() {
-                final int index = this.getIndex() - 1;
+                final int index = this.getCursor() - 1;
                 TabPanel.this.remove(index);
-                this.setIndex(index);
+                this.setCursor(index);
             }
 
             protected int getModificationCounter() {
@@ -166,18 +166,18 @@ public abstract class TabPanel extends Composite {
             /**
              * A pointer to the next tab item within the parent TabPanel
              */
-            int index;
+            int cursor;
 
-            int getIndex() {
-                return index;
+            int getCursor() {
+                return cursor;
             }
 
-            void setIndex(final int index) {
-                this.index = index;
+            void setCursor(final int cursor) {
+                this.cursor = cursor;
             }
 
             public String toString() {
-                return super.toString() + ", index: " + index;
+                return super.toString() + ", cursor: " + cursor;
             }
         };
 
@@ -285,7 +285,7 @@ public abstract class TabPanel extends Composite {
     }
 
     /**
-     * Retrieves the index of the currently selected tab.
+     * Retrieves the cursor of the currently selected tab.
      */
     public int getSelectedIndex() {
         return this.getContentPanel().getVisibleWidget();

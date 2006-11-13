@@ -2,6 +2,7 @@ package rocket.client.widget;
 
 import java.util.Iterator;
 
+import rocket.client.collection.CollectionHelper;
 import rocket.client.collection.IteratorView;
 import rocket.client.util.ObjectHelper;
 
@@ -31,10 +32,14 @@ public abstract class AbstractPanel extends Panel implements HasWidgets {
         return this.getWidgetCollection().size();
     }
 
+    public int indexOf(final Widget widget) {
+        return this.getWidgetCollection().indexOf(widget);
+    }
+
     /**
      * Retrieves a widget within this panel.
      * 
-     * @param index
+     * @param cursor
      * @return
      */
     public Widget get(final int index) {
@@ -44,7 +49,7 @@ public abstract class AbstractPanel extends Panel implements HasWidgets {
     /**
      * Adds a new widget to the end of this panel.
      */
-    public void add(Widget widget) {
+    public void add(final Widget widget) {
         this.insert(widget, this.getWidgetCount());
     }
 
@@ -54,7 +59,7 @@ public abstract class AbstractPanel extends Panel implements HasWidgets {
      * @param widget
      * @param indexBefore
      */
-    public void insert(Widget widget, int indexBefore) {
+    public void insert(final Widget widget, int indexBefore) {
         final Element parentElement = this.insert0(widget, indexBefore);
         this.adopt(widget, parentElement);
         this.getWidgetCollection().insert(widget, indexBefore);
@@ -94,20 +99,6 @@ public abstract class AbstractPanel extends Panel implements HasWidgets {
         return removed;
     }
 
-    protected void remove0(final Widget widget, final int index) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-        this.remove0(widget.getElement(), index);
-        this.incrementModificationCounter();
-    }
-
-    /**
-     * Cleanup opportunity for sub-classes to remove other outstanding elements from the dom.
-     * 
-     * @param element
-     * @param index
-     */
-    protected abstract void remove0(Element element, int index);
-
     /**
      * Removes the widget at the given slot.
      * 
@@ -117,21 +108,31 @@ public abstract class AbstractPanel extends Panel implements HasWidgets {
         final WidgetCollection widgets = this.getWidgetCollection();
 
         final Widget widget = widgets.get(index);
-        this.disown(widget);
         this.remove0(widget.getElement(), index);// cleanup opportunity
-        // container elements etc.
+        this.disown(widget);
         widgets.remove(index);
+
+        this.incrementModificationCounter();
     }
+
+    protected void remove0(final Widget widget, final int index) {
+        ObjectHelper.checkNotNull("parameter:widget", widget);
+        this.remove0(widget.getElement(), index);
+    }
+
+    /**
+     * Cleanup opportunity for sub-classes to remove other outstanding elements from the dom.
+     * 
+     * @param element
+     * @param cursor
+     */
+    protected abstract void remove0(Element element, int index);
 
     /**
      * Clears or removes all widgets from this panel.
      */
     public void clear() {
-        final Iterator iterator = this.iterator();
-        while (iterator.hasNext()) {
-            iterator.next();
-            iterator.remove();
-        }
+        CollectionHelper.removeAll(this.iterator());
     }
 
     /**

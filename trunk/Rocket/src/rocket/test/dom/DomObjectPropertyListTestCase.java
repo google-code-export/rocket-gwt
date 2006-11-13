@@ -80,7 +80,7 @@ public class DomObjectPropertyListTestCase extends TestCase {
 
         try {
             final Object returned = list.get(-1);
-            fail("An exception should have been thrown by list.get() using an invalid index and not returning "
+            fail("An exception should have been thrown by list.get() using an invalid cursor and not returning "
                     + returned);
         } catch (final Exception expected) {
 
@@ -93,7 +93,7 @@ public class DomObjectPropertyListTestCase extends TestCase {
 
         try {
             final Object returned = list.get(100);
-            fail("An exception should have been thrown by list.get() using an invalid index and not returning "
+            fail("An exception should have been thrown by list.get() using an invalid cursor and not returning "
                     + returned);
         } catch (final Exception expected) {
 
@@ -161,7 +161,7 @@ public class DomObjectPropertyListTestCase extends TestCase {
         element.setValue("dog");
         try {
             list.set(-1, element);
-            fail("An exception should have been thrown when attempting to set using an invalid index");
+            fail("An exception should have been thrown when attempting to set using an invalid cursor");
         } catch (final Exception caught) {
         }
         final String actual = list.getObjectPropertyValue();
@@ -177,7 +177,7 @@ public class DomObjectPropertyListTestCase extends TestCase {
         element.setValue("dog");
         try {
             list.set(123, element);
-            fail("An exception should have been thrown when attempting to set using an invalid index");
+            fail("An exception should have been thrown when attempting to set using an invalid cursor");
         } catch (final Exception caught) {
         }
         final String actual = list.getObjectPropertyValue();

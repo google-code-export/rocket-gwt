@@ -15,6 +15,8 @@
  */
 package rocket.test.widget.breadcrumbpanel.client;
 
+import java.util.Date;
+
 import rocket.client.widget.BreadcrumbPanel;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -65,7 +67,7 @@ public class BreadcrumbPanelTest implements EntryPoint {
         final Button push = new Button("Push another breadcrumb onto the panel.");
         push.addClickListener(new ClickListener() {
             public void onClick(final Widget ignore) {
-                final String text = "breadcrumb-" + System.currentTimeMillis();
+                final String text = "breadcrumb-" + new Date();
 
                 breadcrumbs.push(text, new ClickListener() {
                     public void onClick(final Widget sender) {

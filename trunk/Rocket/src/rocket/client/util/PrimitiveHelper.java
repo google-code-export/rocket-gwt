@@ -191,33 +191,34 @@ public class PrimitiveHelper extends SystemHelper {
 
     /**
      * Fix for the GWT implementation of Character.digit( char, int ).
+     * 
      * @param c
      * @param radix
      * @return
      * 
      * @deprecated use until fixed and released by GWT. {@see http://code.google.com/p/google-web-toolkit/issues/detail?id=302}
      */
-    public static int characterDigit( final char c, final int radix ){
+    public static int characterDigit(final char c, final int radix) {
         int value = -1;
-        while( true ){
+        while (true) {
             // if not in script mode use java's Character.digit()
-            if( ! GWT.isScript() ){
-                value = Character.digit( c, radix );
+            if (!GWT.isScript()) {
+                value = Character.digit(c, radix);
                 break;
             }
-            
-            if( radix < 2 || radix > 36 ){
+
+            if (radix < 2 || radix > 36) {
                 break;
             }
-            if( c >= '0' && c <= '9'){
+            if (c >= '0' && c <= '9') {
                 value = c - '0';
                 break;
             }
-            if( c >='a' && c < ( 'a' + radix )){
+            if (c >= 'a' && c < ('a' + radix)) {
                 value = 10 + c - 'a';
                 break;
             }
-            if( c >='A' && c < ( 'A' + radix )){
+            if (c >= 'A' && c < ('A' + radix)) {
                 value = 10 + c - 'A';
                 break;
             }
@@ -225,7 +226,7 @@ public class PrimitiveHelper extends SystemHelper {
         }
         return value;
     }
-    
+
     public PrimitiveHelper() {
     }
 }

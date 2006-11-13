@@ -144,22 +144,24 @@ public class ObjectHelper extends SystemHelper {
             handleNullEncountered(name, "The " + name + " must not be null.");
         }
     }
-    
+
     /**
-     * This method is only included because calls to {@link #checkNotNull(String, Object)} result in the compiled javascript including a call 
-     * to a function which attempts to modify the object's prototype. This fails for certain native objects that have unmodifiable prototypes.
+     * This method is only included because calls to {@link #checkNotNull(String, Object)} result in the compiled javascript including a
+     * call to a function which attempts to modify the object's prototype. This fails for certain native objects that have unmodifiable
+     * prototypes.
      * 
      * {@see http://code.google.com/p/google-web-toolkit/issues/detail?id=304}
+     * 
      * @param name
      * @param object
      * 
-     * @deprecated This method will be removed when the GWT issue is fixed. 
+     * @deprecated This method will be removed when the GWT issue is fixed.
      */
     public static void checkNotNull(final String name, final JavaScriptObject object) {
         if (object == null) {
             handleNullEncountered(name, "The " + name + " must not be null.");
         }
-    }    
+    }
 
     public static void handleNullEncountered(String name, String message) {
         handleAssertFailure(name, message);
@@ -174,13 +176,13 @@ public class ObjectHelper extends SystemHelper {
      */
     public static void checkSame(final String message, final Object object, final Object otherObject) {
         if (false == nullSafeIdentity(object, otherObject)) {
-            SystemHelper.handleAssertFailure( message + ", object: " + object );            
+            SystemHelper.handleAssertFailure(message + ", object: " + object);
         }
     }
 
     public static void checkNotSame(final String message, final Object object, final Object otherObject) {
         if (nullSafeIdentity(object, otherObject)) {
-            SystemHelper.handleAssertFailure( message );
+            SystemHelper.handleAssertFailure(message);
         }
     }
 
@@ -193,7 +195,7 @@ public class ObjectHelper extends SystemHelper {
      */
     public static void checkDifferent(final String message, final Object object, final Object otherObject) {
         if (nullSafeIdentity(object, otherObject)) {
-            SystemHelper.handleAssertFailure( message );
+            SystemHelper.handleAssertFailure(message);
         }
     }
 
@@ -216,7 +218,7 @@ public class ObjectHelper extends SystemHelper {
      */
     public static void checkEquals(final String message, final Object object, final Object otherObject) {
         if (false == nullSafeEquals(object, otherObject)) {
-            SystemHelper.handleAssertFailure( message );            
+            SystemHelper.handleAssertFailure(message);
         }
     }
 
@@ -241,12 +243,12 @@ public class ObjectHelper extends SystemHelper {
 
     public static boolean hasProperty(final JavaScriptObject object, final int index) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return hasProperty0(object, index);
     }
 
     protected static native boolean hasProperty0(final JavaScriptObject object, final int index)/*-{
-     var value = object[ index ];
+     var value = object[ cursor ];
      
      return typeof( value ) != "undefined"; 
      }-*/;
@@ -274,14 +276,14 @@ public class ObjectHelper extends SystemHelper {
 
     public static String getString(final JavaScriptObject object, final int index) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return getString0(object, index);
     }
 
     protected static native String getString0(final JavaScriptObject object, final int index)/*-{
-     var value = object[ index ];
+     var value = object[ cursor ];
      if( typeof( value ) == "undefined" ){
-     throw "The object does not contain a property called [" + index + "], object: " + object; 
+     throw "The object does not contain a property called [" + cursor + "], object: " + object; 
      }
      return value;
      }-*/;
@@ -309,13 +311,13 @@ public class ObjectHelper extends SystemHelper {
 
     public static Object setString(final JavaScriptObject object, final int index, final String value) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return setString0(object, index, value);
     }
 
     protected static native String setString0(final JavaScriptObject object, final int index, final String value)/*-{
-     var previousValue = object[ index ];
-     object[ index ] = value;
+     var previousValue = object[ cursor ];
+     object[ cursor ] = value;
      return previousValue ? previousValue : null;
      }-*/;
 
@@ -342,14 +344,14 @@ public class ObjectHelper extends SystemHelper {
 
     public static double getDouble(final JavaScriptObject object, final int index) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return getDouble0(object, index);
     }
 
     public native static double getDouble0(final JavaScriptObject object, final int index)/*-{
-     var value = object[ index ];
+     var value = object[ cursor ];
      if( typeof( value ) == "undefined" ){
-     throw "The object does not contain a property called [" + index + "], object: " + object; 
+     throw "The object does not contain a property called [" + cursor + "], object: " + object; 
      }
      return value;
      }-*/;
@@ -377,13 +379,13 @@ public class ObjectHelper extends SystemHelper {
 
     public static double setDouble(final JavaScriptObject object, final int index, final double value) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return setDouble0(object, index, value);
     }
 
     protected static native double setDouble0(final JavaScriptObject object, final int index, final double value)/*-{
-     var previousValue = object[ index ];
-     object[ index ] = value;
+     var previousValue = object[ cursor ];
+     object[ cursor ] = value;
      return previousValue ? previousValue : 0.0;
      }-*/;
 
@@ -410,14 +412,14 @@ public class ObjectHelper extends SystemHelper {
 
     public static boolean getBoolean(final JavaScriptObject object, final int index) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return getBoolean0(object, index);
     }
 
     protected native static boolean getBoolean0(final JavaScriptObject object, final int index)/*-{
-     var value = object[ index ];
+     var value = object[ cursor ];
      if( typeof( value ) == "undefined" ){
-     throw "The object does not contain a property called [" + index + "], object: " + object; 
+     throw "The object does not contain a property called [" + cursor + "], object: " + object; 
      }
      return value;
      }-*/;
@@ -444,14 +446,14 @@ public class ObjectHelper extends SystemHelper {
 
     public static void setBoolean(final JavaScriptObject object, final int index, final boolean booleanValue) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         setBoolean0(object, index, booleanValue);
     }
 
     protected static native boolean setBoolean0(final JavaScriptObject object, final int index,
             final boolean booleanValue)/*-{
-     var previousValue = object[ index ];
-     object[ index ] = booleanValue;
+     var previousValue = object[ cursor ];
+     object[ cursor ] = booleanValue;
      return previousValue ? true : false;
      }-*/;
 
@@ -478,14 +480,14 @@ public class ObjectHelper extends SystemHelper {
 
     public static int getInteger(final JavaScriptObject object, final int index) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return getInteger0(object, index);
     }
 
     public native static int getInteger0(final JavaScriptObject object, final int index)/*-{
-     var value = object[ index ];
+     var value = object[ cursor ];
      if( typeof( value ) == "undefined" ){
-     throw "The object does not contain a property called [" + index + "], object: " + object; 
+     throw "The object does not contain a property called [" + cursor + "], object: " + object; 
      }
      return value;
      }-*/;
@@ -512,13 +514,13 @@ public class ObjectHelper extends SystemHelper {
 
     public static int setInteger(final JavaScriptObject object, final int index, final int intValue) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return setInteger0(object, index, intValue);
     }
 
     protected static native int setInteger0(final JavaScriptObject object, final int index, final int intValue)/*-{
-     var previousValue = object[ index ];
-     object[ index ] = intValue;
+     var previousValue = object[ cursor ];
+     object[ cursor ] = intValue;
      return previousValue;
      }-*/;
 
@@ -546,15 +548,15 @@ public class ObjectHelper extends SystemHelper {
 
     public static JavaScriptObject getObject(final JavaScriptObject object, final int index) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return getObject0(object, index);
     }
 
     protected static native JavaScriptObject getObject0(final JavaScriptObject object, final int index)/*-{
-     var value = object[ index ];
+     var value = object[ cursor ];
      // value shouldnt be undefined or null.
      if( typeof( value ) == "undefined" ){
-     throw "The object does not contain a property called [" + index + "], object: " + object;      
+     throw "The object does not contain a property called [" + cursor + "], object: " + object;      
      }
      return value;
      }-*/;
@@ -584,14 +586,14 @@ public class ObjectHelper extends SystemHelper {
     public static JavaScriptObject setObject(final JavaScriptObject object, final int index,
             final JavaScriptObject value) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return setObject0(object, index, value);
     }
 
     protected static native JavaScriptObject setObject0(final JavaScriptObject object, final int index,
             final JavaScriptObject value)/*-{
-     var previousValue = object[ index ];
-     object[ index ] = value;
+     var previousValue = object[ cursor ];
+     object[ cursor ] = value;
      return previousValue ? previousValue : null;
      }-*/;
 
@@ -616,13 +618,13 @@ public class ObjectHelper extends SystemHelper {
 
     public static JavaScriptObject removeProperty(final JavaScriptObject object, final int index) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return removeProperty0(object, index);
     }
 
     protected static native JavaScriptObject removeProperty0(final JavaScriptObject object, final int index)/*-{
-     var previousValue = object[ index ];
-     delete object[ index ];
+     var previousValue = object[ cursor ];
+     delete object[ cursor ];
      return previousValue ? previousValue : null;
      }-*/;
 
@@ -647,17 +649,17 @@ public class ObjectHelper extends SystemHelper {
      * Retrieves the actual javascript type for the property value at the given slot.
      * 
      * @param object
-     * @param index
+     * @param cursor
      * @return
      */
     public static String getType(final JavaScriptObject object, final int index) {
         ObjectHelper.checkNotNull("parameter:object", object);
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:cursor", index, 0);
         return ObjectHelper.getType0(object, index);
     }
 
     native protected static String getType0(final JavaScriptObject object, final int index)/*-{
-     return typeof( object[ index ] );
+     return typeof( object[ cursor ] );
      }-*/;
 
     public static int getPropertyCount(final JavaScriptObject object) {

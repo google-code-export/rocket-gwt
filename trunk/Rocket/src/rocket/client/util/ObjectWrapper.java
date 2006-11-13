@@ -20,22 +20,21 @@ import rocket.client.dom.Destroyable;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * This interface defines a number of common methods for any java object that wishes to
- * wrap a native object.
+ * This interface defines a number of common methods for any java object that wishes to wrap a native object.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public interface ObjectWrapper extends Destroyable{
+public interface ObjectWrapper extends Destroyable {
 
     boolean equals(Object otherObject);
-    
+
     boolean equals(ObjectWrapper otherObjectWrapper);
 
     JavaScriptObject getObject();
 
     boolean hasObject();
-    
+
     void setObject(JavaScriptObject object);
-    
+
     void clearObject();
 }

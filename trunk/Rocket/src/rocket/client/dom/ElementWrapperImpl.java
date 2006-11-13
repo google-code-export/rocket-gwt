@@ -29,12 +29,12 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class ElementWrapperImpl extends ObjectWrapperImpl implements ElementWrapper{
+public abstract class ElementWrapperImpl extends ObjectWrapperImpl implements ElementWrapper {
 
-    protected ElementWrapperImpl(){
+    protected ElementWrapperImpl() {
         super();
     }
-    
+
     public String getId() {
         return this.getString(DomConstants.ID_ATTRIBUTE);
     }

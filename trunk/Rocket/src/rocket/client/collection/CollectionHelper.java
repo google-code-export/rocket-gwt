@@ -100,7 +100,7 @@ public class CollectionHelper {
             }
 
             public Object remove(final int index) {
-                throw new UnsupportedOperationException("An unmodifable List may not have an element removed(index)");
+                throw new UnsupportedOperationException("An unmodifable List may not have an element removed(cursor)");
             }
 
             public boolean remove(final Object element) {

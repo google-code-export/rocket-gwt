@@ -42,6 +42,7 @@ public abstract class InteractiveList extends Composite {
 
     public InteractiveList() {
         this.initWidget(this.createWidget());
+        this.setStyleName(TestConstants.INTERACTIVE_LIST_STYLE);
     }
 
     protected Widget createWidget() {
@@ -182,7 +183,7 @@ public abstract class InteractiveList extends Composite {
         int index = -1;
         Object element = null;
         try {
-            index = Integer.parseInt(BrowserHelper.prompt("add index", "0"));
+            index = Integer.parseInt(BrowserHelper.prompt("add cursor", "0"));
             element = this.createElement();
             this.listInsert(index, element);
             message = message + index + ", " + this.toString(element) + ") returned";
@@ -213,7 +214,7 @@ public abstract class InteractiveList extends Composite {
         String message = "list.get(";
         int index = -1;
         try {
-            index = Integer.parseInt(BrowserHelper.prompt("get index", "0"));
+            index = Integer.parseInt(BrowserHelper.prompt("get cursor", "0"));
             final Object element = this.listGet(index);
             this.checkType(element);
             message = message + index + ") returned " + this.toString(element);
@@ -243,7 +244,7 @@ public abstract class InteractiveList extends Composite {
         String message = "list.remove(";
         int index = -1;
         try {
-            index = Integer.parseInt(BrowserHelper.prompt("remove index", "0"));
+            index = Integer.parseInt(BrowserHelper.prompt("remove cursor", "0"));
             final Object element = this.listRemove(index);
             this.checkType(element);
             message = message + index + ") returned " + this.toString(element);
@@ -274,7 +275,7 @@ public abstract class InteractiveList extends Composite {
         int index = -1;
         Object element = null;
         try {
-            index = Integer.parseInt(BrowserHelper.prompt("set index", "0"));
+            index = Integer.parseInt(BrowserHelper.prompt("set cursor", "0"));
             element = this.createElement();
             final Object previous = this.listSet(index, element);
             this.checkType(previous);
@@ -445,6 +446,7 @@ public abstract class InteractiveList extends Composite {
         panel.setWidth("100%");
         DOM.setStyleAttribute(panel.getElement(), "white-space", "nowrap");
         this.setMessages(panel);
+        panel.setStyleName(TestConstants.INTERACTIVE_LIST_WIDGET_LOG_STYLE);
         return panel;
     }
 

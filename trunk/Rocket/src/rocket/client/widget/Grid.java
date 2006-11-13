@@ -211,7 +211,7 @@ public class Grid extends Composite {
 
     /**
      * Because a grid may be larger than the number of widgets that may be supplied by a WIdgetProvider this method provides a means of
-     * knowing the true actual last valid index.
+     * knowing the true actual last valid cursor.
      */
     private int lastValidIndex;
 
