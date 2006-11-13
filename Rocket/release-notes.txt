@@ -1,3 +1,4 @@
+
 ROCKET GWT FRAMEWORK
 --------------------
 
@@ -230,3 +231,19 @@ ADD Added -style DETAILED argument to all *.launch / *-compile.cmd files resulti
 GWT fixes
 DomHelper.eventGetToElement() replaces DOM.eventGetToElement()  http://code.google.com/p/google-web-toolkit/issues/detail?id=229
 PrimitiveHelper.characterDigit() http://code.google.com/p/google-web-toolkit/issues/detail?id=302
+
+0.20 13 November 2006
+---------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.20/Rocket-0.20.zip
+
+rocket.client.browser.*
+DEL DisabledElementEventStopper, LeavingApplicationListener
+
+rocket.client.widget.*
+ADD AbstractPanel Added indexOf( Widget) method.
+ENH Added getParentElement() to DivPanel, OrderedListPanel, SpanPanel, UnorderedListPanel.
+FIX AbstractPanel.remove(int) call remove0() before disowning widget. This gives an opportunity for sub-classes to use a valid connected element.
+REF DivPanel, OrderedListPanel, SpanPanel, UnorderedListPanel, Refactored createElement() to createParentElement()
+
+rocket.client.widget.splitter.*
+ADD Splitter widget in two flavours HorizontalSplitter & VerticalSplitter.
