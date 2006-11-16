@@ -1,0 +1,54 @@
+/*
+ * Copyright 2006 NSW Police Government Australia
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package rocket.server.rpc;
+
+import java.io.ByteArrayInputStream;
+
+import javax.servlet.ServletInputStream;
+
+import rocket.server.util.ObjectHelper;
+
+/**
+ * This class provides a ServletInputStream of an array of bytes.
+ * 
+ * @author Miroslav Pokorny (mP)
+ */
+public class ByteArrayServletInputStream extends ServletInputStream {
+
+    public ByteArrayServletInputStream(final byte[] bytes) {
+        this.setByteArrayInputStream(new ByteArrayInputStream(bytes));
+    }
+
+    public int read() {
+        return 0;
+    }
+
+    private ByteArrayInputStream byteArrayInputStream;
+
+    protected ByteArrayInputStream getByteArrayInputStream() {
+        ObjectHelper.checkNotNull("field:byteArrayInputStream", byteArrayInputStream);
+        return this.byteArrayInputStream;
+    }
+
+    protected void setByteArrayInputStream(final ByteArrayInputStream byteArrayInputStream) {
+        ObjectHelper.checkNotNull("parameter:byteArrayInputStream", byteArrayInputStream);
+        this.byteArrayInputStream = byteArrayInputStream;
+    }
+
+    public String toString() {
+        return super.toString() + ", byteArrayInputStream: " + byteArrayInputStream;
+    }
+}
