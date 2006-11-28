@@ -10,7 +10,10 @@
 @call BreadcrumbPanel-compile.cmd
 @echo .
 
-@call Card-compile.cmd
+@call CollapsablePanel-compile.cmd
+@echo .
+
+@call Comet-compile.cmd
 @echo .
 
 @call DivPanel-compile.cmd

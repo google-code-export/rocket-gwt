@@ -1,1 +1,1 @@
-@java -cp "%~dp0\src;%~dp0\bin;c:\java-libraries\junit\3.8\junit.jar;C:/java-libraries/gwt-windows-1.1.10/gwt-user.jar;C:/java-libraries/gwt-windows-1.1.10/gwt-dev-windows.jar" junit.textui.TestRunner rocket.test.AbstractElementListTestCase %*  -style DETAILED
+@java -cp "%~dp0\src;%~dp0\bin;c:\java-libraries\junit\3.8\junit.jar;C:/java-libraries/gwt-windows-1.2.22/gwt-user.jar;C:/java-libraries/gwt-windows-1.2.22/gwt-dev-windows.jar" junit.textui.TestRunner rocket.browser.test.cookiemap.test.CookieMapTestCase %*  -style DETAILED
