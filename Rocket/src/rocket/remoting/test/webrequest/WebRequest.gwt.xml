@@ -1,9 +1,0 @@
-<module>
-	<inherits name="rocket.User" />	
-	<entry-point class='rocket.remoting.test.webrequest.client.WebRequestTest' />
-	
-<servlet path="/requestParameterEchoServlet" class="rocket.remoting.test.webrequest.server.RequestParametersEchoServlet" />
-<servlet path="/postDataEchoServlet" class="rocket.remoting.test.webrequest.server.BinaryEchoServlet" />
-<servlet path="/webRequestRpc" class="rocket.remoting.server.WebRequestServiceImpl" />
-
-</module>

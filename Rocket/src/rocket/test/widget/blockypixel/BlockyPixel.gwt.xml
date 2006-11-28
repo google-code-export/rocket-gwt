@@ -1,4 +1,0 @@
-<module>
-	<inherits name="rocket.User" />	
-	<entry-point class='rocket.test.widget.blockypixel.client.BlockyPixelTest' />
-</module>
