@@ -18,10 +18,10 @@ package rocket.server.exception;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import rocket.client.util.ObjectHelper;
-import rocket.client.util.StringHelper;
-import rocket.client.util.SystemHelper;
-import rocket.server.util.IoHelper;
+import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
+import rocket.util.client.SystemHelper;
+import rocket.util.server.IoHelper;
 
 /**
  * A variety of helper and assertions relating to working with Throwable objects.

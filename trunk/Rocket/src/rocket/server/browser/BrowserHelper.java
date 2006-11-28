@@ -17,8 +17,8 @@ package rocket.server.browser;
 
 import javax.servlet.http.HttpServletRequest;
 
-import rocket.server.util.Base64Encoder;
-import rocket.server.util.ObjectHelper;
+import rocket.util.server.Base64Encoder;
+import rocket.util.server.ObjectHelper;
 
 /**
  * A variety of methods that help detect what browser is running, creating of absolute urls as well as testing if the browser can take data

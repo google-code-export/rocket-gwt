@@ -13,24 +13,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.server.browser;
+package rocket.remoting.client;
 
-/**
- * Repository of constants used throughout the browser package.
- * 
- * @author Miroslav Pokorny (mP)
- */
-public class BrowserConstants {
-    static String USER_AGENT = "User-agent";
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-    static String FIREFOX_1_X = "Firefox/1.";
+public class FailedWebRequestException extends RuntimeException implements IsSerializable {
 
-    static String INTERNET_EXPLORER_6 = "MSIE 6.0";
+    public FailedWebRequestException() {
+        super();
+    }
 
-    static String INTERNET_EXPLORER_5 = "MSIE 5.0";
+    public FailedWebRequestException(final String message) {
+        super(message);
+    }
 
-    final static char[] START_SCRIPT = "script".toCharArray();
+    public FailedWebRequestException(final String message, final Throwable caught) {
+        super(message, caught);
+    }
 
-    final static char[] END_SCRIPT = "/script".toCharArray();
-
+    public FailedWebRequestException(final Throwable caught) {
+        super(caught);
+    }
 }

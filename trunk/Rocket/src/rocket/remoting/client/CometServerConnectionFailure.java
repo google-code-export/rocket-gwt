@@ -13,24 +13,29 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.server.browser;
+package rocket.remoting.client;
+
 
 /**
- * Repository of constants used throughout the browser package.
- * 
+ * This exception is thrown when the hidden iframe used by the CometClient fails to connect to the server component.
  * @author Miroslav Pokorny (mP)
+ *
  */
-public class BrowserConstants {
-    static String USER_AGENT = "User-agent";
+public class CometServerConnectionFailure extends RuntimeException {
+    public CometServerConnectionFailure() {
+        super();
+    }
 
-    static String FIREFOX_1_X = "Firefox/1.";
+    public CometServerConnectionFailure(final String message) {
+        super(message);
+    }
 
-    static String INTERNET_EXPLORER_6 = "MSIE 6.0";
+    public CometServerConnectionFailure(final String message, final Throwable caught) {
+        super(message, caught);
+    }
 
-    static String INTERNET_EXPLORER_5 = "MSIE 5.0";
+    public CometServerConnectionFailure(final Throwable caught) {
+        super(caught);
+    }
+    }
 
-    final static char[] START_SCRIPT = "script".toCharArray();
-
-    final static char[] END_SCRIPT = "/script".toCharArray();
-
-}

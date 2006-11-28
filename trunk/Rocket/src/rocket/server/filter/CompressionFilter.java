@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import rocket.server.util.UncheckedIOException;
+import rocket.util.server.UncheckedIOException;
 
 /**
  * This filter detects if the browser supports gzip compressed output substituting a new HttpServletResponse implementation if required.

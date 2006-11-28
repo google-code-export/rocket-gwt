@@ -13,24 +13,34 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.server.browser;
+package rocket.messaging.client;
 
 /**
- * Repository of constants used throughout the browser package.
+ * Container for a single String
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class BrowserConstants {
-    static String USER_AGENT = "User-agent";
+public class StringPayload implements Payload {
 
-    static String FIREFOX_1_X = "Firefox/1.";
+    public StringPayload() {
 
-    static String INTERNET_EXPLORER_6 = "MSIE 6.0";
+    }
 
-    static String INTERNET_EXPLORER_5 = "MSIE 5.0";
+    public StringPayload(final String string) {
+        this.setString(string);
+    }
 
-    final static char[] START_SCRIPT = "script".toCharArray();
+    private String string;
 
-    final static char[] END_SCRIPT = "/script".toCharArray();
+    public String getString() {
+        return string;
+    }
 
+    public void setString(final String string) {
+        this.string = string;
+    }
+
+    public String toString() {
+        return super.toString();
+    }
 }
