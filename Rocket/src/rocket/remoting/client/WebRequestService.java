@@ -13,24 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.server.browser;
+package rocket.remoting.client;
 
-/**
- * Repository of constants used throughout the browser package.
- * 
- * @author Miroslav Pokorny (mP)
- */
-public class BrowserConstants {
-    static String USER_AGENT = "User-agent";
+import com.google.gwt.user.client.rpc.RemoteService;
 
-    static String FIREFOX_1_X = "Firefox/1.";
+public interface WebRequestService extends RemoteService {
 
-    static String INTERNET_EXPLORER_6 = "MSIE 6.0";
-
-    static String INTERNET_EXPLORER_5 = "MSIE 5.0";
-
-    final static char[] START_SCRIPT = "script".toCharArray();
-
-    final static char[] END_SCRIPT = "/script".toCharArray();
-
+    WebResponse doRequest(WebRequest request) throws FailedWebRequestException;
 }

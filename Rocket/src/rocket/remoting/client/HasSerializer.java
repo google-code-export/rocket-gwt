@@ -13,24 +13,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.server.browser;
+package rocket.remoting.client;
 
+import com.google.gwt.user.client.rpc.impl.Serializer;
 /**
- * Repository of constants used throughout the browser package.
- * 
+ * THis interface is implemented by the customized ProxyCreator and added to all generated proxy classes
+ * adding a new method allowing access to the accompanying Serializer.
+ * Without this new feature it was a pain to get the Serializer accompanying a Service. 
  * @author Miroslav Pokorny (mP)
  */
-public class BrowserConstants {
-    static String USER_AGENT = "User-agent";
-
-    static String FIREFOX_1_X = "Firefox/1.";
-
-    static String INTERNET_EXPLORER_6 = "MSIE 6.0";
-
-    static String INTERNET_EXPLORER_5 = "MSIE 5.0";
-
-    final static char[] START_SCRIPT = "script".toCharArray();
-
-    final static char[] END_SCRIPT = "/script".toCharArray();
-
+public interface HasSerializer {
+    Serializer getSerializer();
 }

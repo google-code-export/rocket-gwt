@@ -18,9 +18,9 @@ package rocket.server.exception;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-import rocket.client.util.ObjectHelper;
-import rocket.client.util.StringHelper;
-import rocket.client.util.SystemHelper;
+import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
+import rocket.util.client.SystemHelper;
 
 /**
  * This class is identical to AbstractPossiblyNestedCheckedException except it extends RuntimeException and not Exception.

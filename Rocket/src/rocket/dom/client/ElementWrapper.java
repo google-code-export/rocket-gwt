@@ -13,24 +13,38 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.server.browser;
+package rocket.dom.client;
+
+import rocket.util.client.ObjectWrapper;
+
+import com.google.gwt.user.client.Element;
 
 /**
- * Repository of constants used throughout the browser package.
+ * Represents a handle to a single DOM element and a number of common attributes.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class BrowserConstants {
-    static String USER_AGENT = "User-agent";
+public interface ElementWrapper extends ObjectWrapper {
 
-    static String FIREFOX_1_X = "Firefox/1.";
+    String getId();
 
-    static String INTERNET_EXPLORER_6 = "MSIE 6.0";
+    boolean hasId();
 
-    static String INTERNET_EXPLORER_5 = "MSIE 5.0";
+    void setId(String id);
 
-    final static char[] START_SCRIPT = "script".toCharArray();
+    String getName();
 
-    final static char[] END_SCRIPT = "/script".toCharArray();
+    boolean hasName();
 
+    void setName(String name);
+
+    String getTitle();
+
+    boolean hasTitle();
+
+    void setTitle(String title);
+
+    Element getElement();
+
+    void setElement(Element element);
 }
