@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Comet</title>
+<meta name='gwt:module' content='rocket.remoting.test.comet.Comet'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+BODY, TABLE{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+BUTTON{
+	margin: 4px;
+}
+</style>
+</head>
+
+<body>
+	<div>
+	The START and STOP buttons may be used to control a COMET streaming session.
+	<br>
+	An additional test is performed upon each received/stream object (which includes a Date object) to verify the difference of the server's time against the browser time.
+	</div>
+	<div><b>Log</b></div>
+	<div
+		id="log"
+		style="border-color: black; border-style: solid; border-width: 1px; padding: 4px; background-color: #eeeeee; width: 95%; height: 500px; overflow: scroll">
+	</div>
+</body>
+</html>
