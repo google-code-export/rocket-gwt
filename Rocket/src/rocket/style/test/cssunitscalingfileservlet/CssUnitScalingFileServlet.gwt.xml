@@ -1,0 +1,6 @@
+<module>
+
+	<inherits name="rocket.User" />	
+	<entry-point class='rocket.test.browser.cssunitscalingfileservlet.client.CssUnitScalingFileServletTest' />	
+	<servlet path="*.css" class="rocket.test.browser.cssunitscalingfileservlet.server.TestCssUnitScalingFileServlet"/>
+</module>
