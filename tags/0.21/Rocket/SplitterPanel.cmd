@@ -1,0 +1,1 @@
+@java -cp "%~dp0\src;c:/workspace/Rocket/Java Source;%~dp0\bin;C:/java-libraries/gwt-windows-1.2.22/gwt-user.jar;C:/java-libraries/gwt-windows-1.2.22/gwt-dev-windows.jar" com.google.gwt.dev.GWTShell -out "%~dp0\www" %*  -style DETAILED rocket.widget.test.splitterpanel.SplitterPanel/SplitterPanel.html
