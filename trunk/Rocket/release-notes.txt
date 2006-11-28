@@ -200,7 +200,7 @@ ADD Rule which provides an bean like view of a native Rule object
 ADD Style which provides a Map like view of a native Style object.
 ADD StylePropertyValue which provides a bean like view of a single Style object property value
 
-rocket.client.util.*
+rocket.util.client.*
 ADD ColourHelper.getColour( name )using standard web colour names.
 ADD CollectionHelper.unmodifiableList()
 ADD PrimitiveHelper.checkEquals(), checkNotEquals(), checkBoolean()
@@ -247,3 +247,47 @@ REF DivPanel, OrderedListPanel, SpanPanel, UnorderedListPanel, Refactored create
 
 rocket.client.widget.splitter.*
 ADD Splitter widget in two flavours HorizontalSplitter & VerticalSplitter.
+
+0.21 28 November 2006
+---------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.21/Rocket-0.21.zip
+
+Upgraded to latest GWT release 1.2.22.
+
+Refactored different areas within rocket, this basically means that rocket.client.package becomes rocket.package.client.*
+allowing better organisation and grouping of client/server/test packages.
+
+REF rocket.(client|server|test).rpc.* becomes rocket.remoting.(client|server|test)
+REF rocket.(client|server|test).util.* becomes rocket.util.(client|server|test)
+REF rocket.client.messaging.* becomes rocket.messaging.client
+REF rocket.(client|test).collection.* becomes rocket.collection.(client|test).*
+	REF Moved MapHelper.getKey() into CollectionHelper, deleted MapHelper
+REF rocket.(client|test).widget.* becomes rocket.widget.(client|test).*
+	REF rocket.client.test becomes rocket.widget.testing.*
+REF rocket.(client|test|server).style.* becomes rocket.style.(client|server|test).*
+	REF Moved CssUnitScaling from rocket.server.browser to rocket.style.server.*
+REF rocket.(client|test|server).browser.* becomes rocket.browser.(client|server|test).*
+    REF CookiesMap becomes CookieMap
+REF rocket.(client|test).dom.* becomes rocket.dom.(client|test).*
+
+rocket.browser.client.*
+ADD BrowserHelper added getDocument() and getWindow()
+FIX CookiesMap.keySet().iterator();
+
+rocket.dom.client.*
+FIX DomHelper.getParentContainerLeft/getParentContainerTop was not stopping at an ancestor with position:relative. (http://code.google.com/p/rocket-gwt/issues/detail?id=12&can=2&q=)
+
+rocket.remoting.*
+ADD Created new Comet infrastructure which includes client/server side components.(rocket.remoting.*)
+
+rocket.util.client.*
+ADD HttpHelper added urlDecode().
+ADD StringHelper added htmlEncode() and htmlDecode()
+
+rocket.widget.client.*
+FIX MenuList when showing a menu list a zindex (with a big)value is also set to ensure it appears in front of other widgets.
+REF Renamed Card to CollapsablePanel, changed accompanying styles and constants etc.
+
+DEPRECATED
+DEL PrimitiveHelper.characterDigit removed due to Character.digit() being fixed by GWT 1.2.22. (http://code.google.com/p/google-web-toolkit/issues/detail?id=302&can=1&q=)
+DEL DomHelper.eventGetToElement removed due to being fixed by GWT 1.2.22 (http://code.google.com/p/google-web-toolkit/issues/detail?id=229&can=1&q=)

@@ -1,5 +1,7 @@
 @echo compiling StyleSheetPicker demo
 
 @call setEnv.cmd
-@java -cp "%~dp0\src;%GWTLIBRARIES%" com.google.gwt.dev.GWTCompiler -out "%~dp0\www" %*  -style DETAILED rocket.test.widget.stylesheetpicker.StyleSheetPicker
+@java -cp "%~dp0\src;%GWTLIBRARIES%" com.google.gwt.dev.GWTCompiler -out "%~dp0\www" %*  -style DETAILED rocket.widget.test.stylesheetpicker.StyleSheetPicker
 
+
+@del www\rocket.widget.test.stylesheetpicker.StyleSheetPicker\tree*.gif
