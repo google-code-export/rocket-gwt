@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -29,7 +29,6 @@ import rocket.util.client.SystemHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
 
 /**
  * A collection of useful methods relating to manipulating the DOM
@@ -139,7 +138,7 @@ public class DomHelper extends ObjectHelper {
      var element0 = element;
      while( element0 ){
      // stop if this element is absolutely/relative positioned. 
-      var position = element0.style.position.toLowerCase();
+     var position = element0.style.position.toLowerCase();
      if( "absolute" == position || "relative" == position ){
      break;
      }
@@ -166,7 +165,7 @@ public class DomHelper extends ObjectHelper {
      var element0 = element;
      while( element0 ){
      // stop if this element is absolutely/relative positioned. 
-      var position = element0.style.position.toLowerCase();
+     var position = element0.style.position.toLowerCase();
      if( "absolute" == position || "relative" == position ){
      break;
      }
@@ -446,4 +445,25 @@ public class DomHelper extends ObjectHelper {
             destroyable.destroy();
         }
     }
+
+    /**
+     * Makes a clone of the given element.
+     * 
+     * @param element
+     * @param deepCopy
+     *            When true performs a deep copy (ie children are also cloned).
+     * @return
+     */
+    public static Element cloneElement(final Element element, final boolean deepCopy) {
+        DomHelper.checkNotNull("parameter:element", element);
+        return cloneElement0(element, deepCopy);
+    }
+
+    native protected static Element cloneElement0(final Element element, final boolean deepCopy)/*-{
+     return element.cloneNode( deepCopy );
+     }-*/;
+
+    native public static Element getBody()/*-{
+     return $doc.body;
+     }-*/;
 }

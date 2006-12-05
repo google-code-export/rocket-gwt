@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -121,15 +121,15 @@ public class BlockyPixelTest implements EntryPoint {
 
                 final float fps = counter * 1000 / (float) timeTaken;
                 log("<b>Test Finished</b><br/>TimeTaken: " + timeTaken + " millis<br/>redraws: " + counter
-                                + "<br/>fps: " + fps);
+                        + "<br/>fps: " + fps);
             }
         }
 
-        void log( final String message ){
-            Element log = DOM.getElementById( "log");
-            DOM.setInnerHTML( log, DOM.getInnerHTML( log ) + message + "<br>");
+        void log(final String message) {
+            Element log = DOM.getElementById("log");
+            DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
         }
-        
+
         public void update(final float whiteMix) {
             final BlockyPixel grid = this.getGrid();
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,6 +15,7 @@
  */
 package rocket.collection.client;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -79,7 +80,7 @@ public abstract class IteratorView implements Iterator {
 
     protected void modificationGuard() {
         if (this.getModificationCounter() != this.getExpectedModificationCount()) {
-            throw new RuntimeException("ConcurrentModification detected.");
+            throw new ConcurrentModificationException();
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -112,8 +112,8 @@ public class SplitterItem {
         this.getSplitterPanel().remove(this);
         this.clearSplitterPanel();
     }
-    
-    public String toString(){
+
+    public String toString() {
         return super.toString() + ", minimumSize: " + minimumSize + ", sizeShare: " + sizeShare + ", widget: " + widget;
     }
 }

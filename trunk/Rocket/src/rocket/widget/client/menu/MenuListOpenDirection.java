@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -33,7 +33,7 @@ public class MenuListOpenDirection {
 
     public final static MenuListOpenDirection DOWN = new MenuListOpenDirection("DOWN");
 
-    public final static MenuListOpenDirection LEFT = new MenuListOpenDirection("LEFT");
+    public final static MenuListOpenDirection LEFT = new MenuListOpenDirection("MOVE_ZONE_LEFT");
 
     /**
      * Private constructor to control instance creation.

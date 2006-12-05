@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -26,6 +26,7 @@ public class HttpHelper extends SystemHelper {
 
     /**
      * Takes a url encoded string and returns the decoded form.
+     * 
      * @param encoded
      * @return
      */
@@ -48,11 +49,11 @@ public class HttpHelper extends SystemHelper {
                 continue;
             }
 
-            final int hi = Character.digit( encoded.charAt( i ), 16 );
+            final int hi = Character.digit(encoded.charAt(i), 16);
             i++;
-            final int lo = Character.digit( encoded.charAt( i ), 16 );
+            final int lo = Character.digit(encoded.charAt(i), 16);
             i++;
-            decoded.append((char) ( hi * 16 + lo ));
+            decoded.append((char) (hi * 16 + lo));
         }
 
         return decoded.toString();

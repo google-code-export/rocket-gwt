@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -134,9 +134,10 @@ public abstract class SplitterPanel extends Composite {
         this.layoutWidgets();
         this.increaseModificationCount();
     }
-    
+
     /**
      * Factory method which creates the splitter widget that is used to divide widgets appearing within this panel.
+     * 
      * @return
      */
     protected abstract Widget createSplitter();
@@ -195,7 +196,6 @@ public abstract class SplitterPanel extends Composite {
 
     protected abstract void layoutWidgets0();
 
-
     /**
      * Loops thru all added items summing their weights and returning that value.
      * 
@@ -210,7 +210,7 @@ public abstract class SplitterPanel extends Composite {
         }
         return weightSum;
     }
-    
+
     /**
      * This list contains the individual items
      */
@@ -406,9 +406,8 @@ public abstract class SplitterPanel extends Composite {
         }
 
         /**
-         * Installs a EventPreview which will exist until the mouse button is let go.
-         * The primary purpose of this EventPreview is to delegate to SplitterPanel to handle dragging of the selected
-         * splitter.
+         * Installs a EventPreview which will exist until the mouse button is let go. The primary purpose of this EventPreview is to
+         * delegate to SplitterPanel to handle dragging of the selected splitter.
          * 
          * @param event
          */
@@ -436,8 +435,9 @@ public abstract class SplitterPanel extends Composite {
         }
 
         /**
-         * This EventPreview dispatches to the either {@link #handleMouseMove(Event)} or {@link #handleMouseUp(Event)}
-         * depending on the event type.
+         * This EventPreview dispatches to the either {@link #handleMouseMove(Event)} or {@link #handleMouseUp(Event)} depending on the
+         * event type.
+         * 
          * @return
          */
         protected EventPreview createEventPreview() {

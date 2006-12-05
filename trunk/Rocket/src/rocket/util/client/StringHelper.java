@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -407,40 +407,42 @@ public class StringHelper extends ObjectHelper {
             SystemHelper.handleAssertFailure(message + ", got[" + actual + "], expected[" + expected + "]");
         }
     }
+
     /**
      * Accepts a plain string escaping various characters so that the given string is html encoded.
+     * 
      * @param plainText
      * @return
      */
-    public static String htmlEncode( final String plainText ){
-        StringHelper.checkNotNull( "parameter:plainText", plainText );
-        
-        final StringBuffer buf = new StringBuffer();        
-        final int length = plainText.length();
-        for( int i = 0; i < length; i++ ){
-            final char c = plainText.charAt( i );
+    public static String htmlEncode(final String plainText) {
+        StringHelper.checkNotNull("parameter:plainText", plainText);
 
-            if( '<' == c ){
-                buf.append( "&lt;");
+        final StringBuffer buf = new StringBuffer();
+        final int length = plainText.length();
+        for (int i = 0; i < length; i++) {
+            final char c = plainText.charAt(i);
+
+            if ('<' == c) {
+                buf.append("&lt;");
                 continue;
             }
-            if( '>' == c ){
-                buf.append( "&gt;");
+            if ('>' == c) {
+                buf.append("&gt;");
                 continue;
             }
-            if( '&' == c ){
-                buf.append( "&amp;");
+            if ('&' == c) {
+                buf.append("&amp;");
                 continue;
             }
-            if( '\'' == c ){
-                buf.append( "&apos;");
+            if ('\'' == c) {
+                buf.append("&apos;");
                 continue;
             }
-            if( '"' == c ){
-                buf.append( "&quot;");
+            if ('"' == c) {
+                buf.append("&quot;");
                 continue;
             }
-            buf.append( c );
+            buf.append(c);
         }
 
         return buf.toString();
@@ -448,48 +450,49 @@ public class StringHelper extends ObjectHelper {
 
     /**
      * Accepts a encoded string and returns the original decoded value.
+     * 
      * @param htmlEncodedText
      * @return
      */
-    public static String htmlDecode( final String htmlEncodedText ){
-        StringHelper.checkNotNull( "parameter:htmlEncodedText", htmlEncodedText );
-        
+    public static String htmlDecode(final String htmlEncodedText) {
+        StringHelper.checkNotNull("parameter:htmlEncodedText", htmlEncodedText);
+
         final StringBuffer buf = new StringBuffer();
         final int length = htmlEncodedText.length();
-        for( int i = 0; i < length; ){
-            final char c = htmlEncodedText.charAt( i );
+        for (int i = 0; i < length;) {
+            final char c = htmlEncodedText.charAt(i);
             i++;
 
-            if( '&' == c ){
-                final int semiColon = htmlEncodedText.indexOf( ';', i );
-                final String entity = htmlEncodedText.substring( i, semiColon );
+            if ('&' == c) {
+                final int semiColon = htmlEncodedText.indexOf(';', i);
+                final String entity = htmlEncodedText.substring(i, semiColon);
                 i = semiColon + 1;
 
-                if( entity.equals("lt")){
-                    buf.append( "<");
+                if (entity.equals("lt")) {
+                    buf.append("<");
                     continue;
                 }
 
-                if( entity.equals("gt")){
-                    buf.append( ">");
+                if (entity.equals("gt")) {
+                    buf.append(">");
                     continue;
                 }
 
-                if( entity.equals("amp")){
-                    buf.append( "&");
+                if (entity.equals("amp")) {
+                    buf.append("&");
                     continue;
                 }
-                if( entity.equals("apos")){
-                    buf.append( '\'');
+                if (entity.equals("apos")) {
+                    buf.append('\'');
                     continue;
                 }
-                if( entity.equals("quot")){
-                    buf.append( '"');
+                if (entity.equals("quot")) {
+                    buf.append('"');
                     continue;
                 }
                 throw new RuntimeException("Unknown/unsupported html entity &" + entity + ";");
             }
-            buf.append( c );
+            buf.append(c);
         }
 
         return buf.toString();

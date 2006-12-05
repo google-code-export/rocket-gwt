@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -34,9 +34,8 @@ import com.google.gwt.user.server.rpc.impl.ServerSerializableTypeOracleImpl;
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamWriter;
 
 /**
- * This servlet provides a mechanism to write objects to the client aka COMET.
- * Sub-classes need to implement {@link #queryObjectSource()} which may block for a short period of time
- * to check if a new object should be streamed.
+ * This servlet provides a mechanism to write objects to the client aka COMET. Sub-classes need to implement {@link #queryObjectSource()}
+ * which may block for a short period of time to check if a new object should be streamed.
  * 
  * This servlet uses two strategies to determine when a connect should be dropped,
  * <ul>
@@ -60,7 +59,8 @@ public abstract class CometServerServlet extends HttpServlet {
      */
     public void init() throws ServletException {
         // read and save the maximumBytesWritten init parameter...
-        final String maximumBytesWritten = this.getInitParameter(RemotingConstants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER);
+        final String maximumBytesWritten = this
+                .getInitParameter(RemotingConstants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER);
         if (StringHelper.isNullOrEmpty(maximumBytesWritten)) {
             throw new ServletException("The servlet [" + this.getServletName() + "] init parameter ["
                     + RemotingConstants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER + "] is required and missing.");
@@ -104,8 +104,7 @@ public abstract class CometServerServlet extends HttpServlet {
     }
 
     /**
-     * This servlet will drop the connection when the connection has been open for more than this amount of time
-     * in milliseconds.
+     * This servlet will drop the connection when the connection has been open for more than this amount of time in milliseconds.
      */
     private int connectionTimeout;
 
@@ -124,18 +123,20 @@ public abstract class CometServerServlet extends HttpServlet {
      */
     private ServerSerializableTypeOracle serializableTypeOracle;
 
-    protected ServerSerializableTypeOracle getSerializableTypeOracle(){
-        ObjectHelper.checkNotNull("field:serializableTypeOracle", serializableTypeOracle );
+    protected ServerSerializableTypeOracle getSerializableTypeOracle() {
+        ObjectHelper.checkNotNull("field:serializableTypeOracle", serializableTypeOracle);
         return this.serializableTypeOracle;
     }
-    protected void setSerializableTypeOracle(final ServerSerializableTypeOracle serializableTypeOracle ){
-        ObjectHelper.checkNotNull("parameter:serializableTypeOracle", serializableTypeOracle );
+
+    protected void setSerializableTypeOracle(final ServerSerializableTypeOracle serializableTypeOracle) {
+        ObjectHelper.checkNotNull("parameter:serializableTypeOracle", serializableTypeOracle);
         this.serializableTypeOracle = serializableTypeOracle;
     }
 
-    protected void createSerializableTypeOracle(){
-        this.setSerializableTypeOracle( new ServerSerializableTypeOracleImpl(getPackagePaths()));
+    protected void createSerializableTypeOracle() {
+        this.setSerializableTypeOracle(new ServerSerializableTypeOracleImpl(getPackagePaths()));
     }
+
     /**
      * Obtain the special package-prefixes we use to check for custom serializers that would like to live in a package that they cannot. For
      * example, "java.util.ArrayList" is in a sealed package, so instead we use this prefix to check for a custom serializer in
@@ -150,6 +151,7 @@ public abstract class CometServerServlet extends HttpServlet {
      * This abstract method must be implemented by sub-classes in which they check and possibly return any candidate object to be streamed.
      * 
      * Sub-classes may wait/block for short periods of time before retuning a result.
+     * 
      * @return An object to be written or null if none exists.
      */
     protected abstract Object queryObjectSource();
@@ -158,22 +160,22 @@ public abstract class CometServerServlet extends HttpServlet {
      * Post requests are not supported by this servlet, this method responds with a METHOD NOT ALLOWED error code.
      */
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws IOException,
-    ServletException {
+            ServletException {
         response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
     }
 
     /**
-     * Handles any get requests.
-     * This method enteres a loop which polls the {@link #queryObjectSource()} method to determine if
-     * more objects should be sent to the client. WHen the bytes written or connection open time
-     * threashholds have been reached the connection is dropped.
+     * Handles any get requests. This method enteres a loop which polls the {@link #queryObjectSource()} method to determine if more objects
+     * should be sent to the client. WHen the bytes written or connection open time threashholds have been reached the connection is
+     * dropped.
+     * 
      * @param request
      * @param response
      * @throws IOException
      * @throws ServletException
      */
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException,
-    ServletException {
+            ServletException {
         perThreadRequest.set(request);
         perThreadResponse.set(response);
         ServletOutputStream output = null;
@@ -194,7 +196,7 @@ public abstract class CometServerServlet extends HttpServlet {
             bytesWritten = bytesWritten + before.length();
 
             while (true) {
-                // check if this connection should be dropped... 
+                // check if this connection should be dropped...
                 if (bytesWritten > byteWriteLimit) {
                     break;
                 }
@@ -235,9 +237,9 @@ public abstract class CometServerServlet extends HttpServlet {
             }
 
         } finally {
-            try{
-                output.print( this.getDocumentEndHtml() );
-            } catch ( final IOException ignored ){
+            try {
+                output.print(this.getDocumentEndHtml());
+            } catch (final IOException ignored) {
 
             }
             IoHelper.closeIfNecessary(output);
@@ -246,6 +248,7 @@ public abstract class CometServerServlet extends HttpServlet {
 
     /**
      * This method is called before any payloads are written.
+     * 
      * @return
      */
     protected String getDocumentStartHtml() {
@@ -254,15 +257,17 @@ public abstract class CometServerServlet extends HttpServlet {
 
     /**
      * This method is called just before the server side socket is closed.
+     * 
      * @return
      */
-    protected String getDocumentEndHtml(){
+    protected String getDocumentEndHtml() {
         return RemotingConstants.DOCUMENT_END_HTML;
     }
 
     /**
-     * Uses the GWT serialization sub-system to convert the given object into a String.
-     * This same object will be deserialized on the client using the GWT deserialization sub-system. 
+     * Uses the GWT serialization sub-system to convert the given object into a String. This same object will be deserialized on the client
+     * using the GWT deserialization sub-system.
+     * 
      * @param object
      * @return
      */
@@ -279,8 +284,9 @@ public abstract class CometServerServlet extends HttpServlet {
     }
 
     /**
-     * This step generates the script tag within embedded javascript that will written to the client 
-     * and then executed. The client will need to unescape the encoded String prior to deserializing.
+     * This step generates the script tag within embedded javascript that will written to the client and then executed. The client will need
+     * to unescape the encoded String prior to deserializing.
+     * 
      * @param isException
      * @param serializedForm
      * @return
@@ -288,7 +294,8 @@ public abstract class CometServerServlet extends HttpServlet {
     protected String preparePayload(final boolean isException, final String serializedForm) {
         final String serializedForm0 = StringHelper.htmlEncode(serializedForm);
 
-        return "<script>window.parent.__cometDispatch('" + (isException ? "{EX}" : "{OK}")+ serializedForm0 + "')</script>\n";
+        return "<script>window.parent.__cometDispatch('" + (isException ? "{EX}" : "{OK}") + serializedForm0
+                + "')</script>\n";
     }
 
     /**
@@ -309,6 +316,6 @@ public abstract class CometServerServlet extends HttpServlet {
 
     private final ThreadLocal perThreadRequest = new ThreadLocal();
 
-    private final ThreadLocal perThreadResponse = new ThreadLocal();   
+    private final ThreadLocal perThreadResponse = new ThreadLocal();
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,7 +16,8 @@
 package rocket.widget.test.menu.client;
 
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.VerticalPanel;
+import rocket.util.client.StringHelper;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import rocket.widget.client.menu.ContextMenu;
 import rocket.widget.client.menu.HorizontalMenuBar;
 import rocket.widget.client.menu.Menu;
@@ -31,6 +32,8 @@ import rocket.widget.client.menu.VerticalMenuList;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -73,26 +76,22 @@ public class MenuTest implements EntryPoint {
         this.setOpenRightwards(openRightwards);
         centerPanel.add(openRightwards);
 
-        final HTML feedback = new HTML("");
-        feedback.setSize("100%", "200px");
-        feedback.addStyleName("feedback");
-
         final MenuListener listener = new MenuListener() {
             public void onMenuCancelled(Widget widget) {
                 System.err.println("menu cancelled widget[" + ObjectHelper.defaultToString(widget) + "]");
-                feedback.setText("menu cancelled widget[" + ObjectHelper.defaultToString(widget) + "]");
+                log("<b>onMenuCancelled</b> widget[" + StringHelper.htmlEncode(widget.toString()) + "]");
             }
 
             public boolean onBeforeMenuOpened(Widget widget) {
                 System.err.println("" + System.currentTimeMillis());
                 System.err.println("menu about to be opened widget[" + widget + "]");
-                feedback.setText("menu about to be opened widget[" + widget + "]");
+                log("<b>onBeforeMenuOpened</b> widget[" + StringHelper.htmlEncode(widget.toString()) + "]");
                 return true;
             }
 
             public void onMenuOpened(Widget widget) {
                 System.err.println("menu opened...widget[" + widget + "]");
-                feedback.setText("menu opened widget[" + widget + "]");
+                log("<b>onMenuOpened</b> widget[" + StringHelper.htmlEncode(widget.toString()) + "]");
             }
         };
 
@@ -146,10 +145,17 @@ public class MenuTest implements EntryPoint {
         centerPanel.add(createContextMenu);
 
         // REMAINING...
-        centerPanel.add(feedback);
+        // centerPanel.add(feedback);
         dockPanel.add(centerPanel, DockPanel.CENTER);
 
         rootPanel.add(dockPanel);
+    }
+
+    static void log(final String message) {
+        StringHelper.checkNotNull("parameter:message", message);
+
+        final Element log = DOM.getElementById("log");
+        DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
     }
 
     ContextMenu createContextMenu(final Widget widget) {

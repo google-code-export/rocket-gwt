@@ -1,3 +1,18 @@
+/*
+ * Copyright Miroslav Pokorny
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package rocket.browser.client;
 
 import java.util.AbstractCollection;
@@ -19,8 +34,8 @@ import rocket.util.client.StringHelper;
 import com.google.gwt.core.client.GWT;
 
 /**
- * A live cache of all cookies that are currently visible to the browser. Individual cookies must be re-put into this cache to be reattached to
- * the browser itself.
+ * A live cache of all cookies that are currently visible to the browser. Individual cookies must be re-put into this cache to be reattached
+ * to the browser itself.
  * 
  * TODO All Google Collection Iterators dont fail fast resulting in the iterators for this class also not failing fast.
  * 
@@ -114,11 +129,11 @@ public class CookieMap extends AbstractMap implements Destroyable {
             }
 
             public Iterator iterator() {
-                
+
                 final VisitedRememberingIterator iterator = new VisitedRememberingIterator() {
                     public void remove() {
                         final String cookieName = (String) this.getLastVisited();
-                        this.getIterator().remove();                        
+                        this.getIterator().remove();
                         BrowserHelper.removeCookie(cookieName);
                         this.clearLastVisited();
                     }
@@ -227,7 +242,8 @@ public class CookieMap extends AbstractMap implements Destroyable {
     }
 
     /**
-     * Repopulates the cache with Cookie objects. If a cookie Object already exists that object has its attributes (bean properties) updated.
+     * Repopulates the cache with Cookie objects. If a cookie Object already exists that object has its attributes (bean properties)
+     * updated.
      */
     protected void syncWithBrowserCookies() {
         final Cookie[] cookies = this.mergeBrowserCookiesWithMap();
@@ -370,8 +386,8 @@ public class CookieMap extends AbstractMap implements Destroyable {
     }
 
     /**
-     * A cached copy of the documents cookie string when the cache was last updated. If this property doesnt match the actual browsers cookies
-     * String the cache must be resynched.
+     * A cached copy of the documents cookie string when the cache was last updated. If this property doesnt match the actual browsers
+     * cookies String the cache must be resynched.
      */
     private String cookieStringSnapshot;
 

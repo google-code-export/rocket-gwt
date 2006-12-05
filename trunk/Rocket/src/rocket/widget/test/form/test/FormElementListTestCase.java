@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -93,7 +93,8 @@ public class FormElementListTestCase extends GWTTestCase {
         }
         {
             final Object element = list.get(4);
-            assertTrue("get(4) should be a HiddenFormField type: " + GWT.getTypeName(element),GWT.getTypeName( element ).indexOf("HiddenFormField") != -1 );
+            assertTrue("get(4) should be a HiddenFormField type: " + GWT.getTypeName(element), GWT.getTypeName(element)
+                    .indexOf("HiddenFormField") != -1);
         }
         {
             final Object element = list.get(5);
@@ -105,11 +106,13 @@ public class FormElementListTestCase extends GWTTestCase {
         }
         {
             final Object element = list.get(7);
-            assertTrue("get(7) should be a ResetButton type: " + GWT.getTypeName(element), GWT.getTypeName( element ).indexOf("ResetButton") != -1 );
+            assertTrue("get(7) should be a ResetButton type: " + GWT.getTypeName(element), GWT.getTypeName(element)
+                    .indexOf("ResetButton") != -1);
         }
         {
             final Object element = list.get(8);
-            assertTrue("get(8) should be a SubmitButton type: " + GWT.getTypeName(element),GWT.getTypeName( element ).indexOf("SubmitButton") != -1 );
+            assertTrue("get(8) should be a SubmitButton type: " + GWT.getTypeName(element), GWT.getTypeName(element)
+                    .indexOf("SubmitButton") != -1);
         }
         {
             final Object element = list.get(9);

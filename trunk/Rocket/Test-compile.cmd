@@ -1,3 +1,9 @@
+@rem
+@rem This batch file compiles all tests/demos converting java and related resources to javascript etc.
+@rem
+@rem @author Miroslav Pokorny (mP)
+@rem 
+
 @call AccordionPanel-compile.cmd
 @echo .
 
@@ -17,6 +23,9 @@
 @echo .
 
 @call DivPanel-compile.cmd
+@echo .
+
+@call DragNDrop-compile.cmd
 @echo .
 
 @call Grid-compile.cmd
@@ -50,6 +59,9 @@
 @echo .
 
 @call SplitterPanel-compile.cmd
+@echo .
+
+@call StackTraceHelper-compile.cmd
 @echo .
 
 @call Style-compile.cmd

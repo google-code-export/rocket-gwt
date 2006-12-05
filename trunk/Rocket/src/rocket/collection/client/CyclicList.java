@@ -191,8 +191,8 @@ public class CyclicList extends AbstractList implements List {
     }
 
     /**
-     * This remove method removes and shuffles the internal elements array of the element pointed to by the parameter:index. 
-     * It does not update the modification counter enabling it to be used by iterator.remove().
+     * This remove method removes and shuffles the internal elements array of the element pointed to by the parameter:index. It does not
+     * update the modification counter enabling it to be used by iterator.remove().
      * 
      * @param index
      * @return

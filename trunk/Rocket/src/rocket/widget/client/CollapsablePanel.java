@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -140,9 +140,10 @@ public class CollapsablePanel extends Composite implements HasWidgets {
 
         this.setFlexTable(table);
 
-        table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN, this.createTitleFlexTable());
-        table.getFlexCellFormatter()
-                .setWidth(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN, "100%");
+        table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN,
+                this.createTitleFlexTable());
+        table.getFlexCellFormatter().setWidth(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW,
+                WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN, "100%");
         return table;
     }
 
@@ -160,17 +161,20 @@ public class CollapsablePanel extends Composite implements HasWidgets {
     }
 
     public String getTitle() {
-        return this.getTitleFlexTable().getText(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN);
+        return this.getTitleFlexTable().getText(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW,
+                WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN);
     }
 
     public void setTitle(final String title) {
         StringHelper.checkNotEmpty("parameter:title", title);
 
-        this.getTitleFlexTable().setText(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN, title);
+        this.getTitleFlexTable().setText(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW,
+                WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN, title);
     }
 
     public Widget getContent() {
-        return this.getFlexTable().getWidget(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW, WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN);
+        return this.getFlexTable().getWidget(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW,
+                WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN);
     }
 
     public boolean hasContent() {
@@ -183,10 +187,11 @@ public class CollapsablePanel extends Composite implements HasWidgets {
         ObjectHelper.checkNotNull("parameter:content", content);
 
         final FlexTable table = this.getFlexTable();
-        table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW, WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN, content);
+        table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW,
+                WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN, content);
         final FlexTable.FlexCellFormatter formatter = table.getFlexCellFormatter();
-        formatter.addStyleName(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW, WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN,
-                WidgetConstants.COLLAPSABLE_PANEL_CONTENT_STYLE);
+        formatter.addStyleName(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW,
+                WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN, WidgetConstants.COLLAPSABLE_PANEL_CONTENT_STYLE);
     }
 
     public void clearContent() {
@@ -202,8 +207,8 @@ public class CollapsablePanel extends Composite implements HasWidgets {
     }
 
     /**
-     * Creates a widget(actually an Image) so that when clicked it will close this CollapsablePanel. The widget however must be added to the card via
-     * {@link #add}
+     * Creates a widget(actually an Image) so that when clicked it will close this CollapsablePanel. The widget however must be added to the
+     * card via {@link #add}
      * 
      * @return
      */
@@ -223,8 +228,8 @@ public class CollapsablePanel extends Composite implements HasWidgets {
     }
 
     /**
-     * Creates a widget(actually an Image) so that when clicked it will minimize this CollapsablePanel. The widget however must be added to the card via
-     * {@link #add}
+     * Creates a widget(actually an Image) so that when clicked it will minimize this CollapsablePanel. The widget however must be added to
+     * the card via {@link #add}
      * 
      * @return
      */
@@ -244,8 +249,8 @@ public class CollapsablePanel extends Composite implements HasWidgets {
     }
 
     /**
-     * Creates a widget(actually an Image) so that when clicked it will maximize this CollapsablePanel. The widget however must be added to the card via
-     * {@link #add}
+     * Creates a widget(actually an Image) so that when clicked it will maximize this CollapsablePanel. The widget however must be added to
+     * the card via {@link #add}
      * 
      * @return
      */

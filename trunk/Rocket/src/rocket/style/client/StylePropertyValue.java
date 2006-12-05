@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -18,11 +18,9 @@ package rocket.style.client;
 import rocket.dom.client.DomObjectMapValue;
 import rocket.util.client.ColourHelper;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.Window;
 
 /**
  * A StylePropertyValue represents a single property value belonging to a style.

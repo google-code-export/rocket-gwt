@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -18,7 +18,7 @@ package rocket.widget.test.tree.client;
 import java.util.Iterator;
 
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.HorizontalPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import rocket.widget.client.tree.Tree;
 import rocket.widget.client.tree.TreeItem;
 import rocket.widget.client.tree.TreeListener;
@@ -76,23 +76,23 @@ public class TreeTest implements EntryPoint {
         tree.setExpanderImageUrl("expander.gif");
         tree.addTreeListener(new TreeListener() {
             public boolean onBeforeCollapse(Widget widget) {
-                log( "onBeforeCollapse&nbsp;" + toString((TreeItem) widget));
+                log("onBeforeCollapse&nbsp;" + toString((TreeItem) widget));
                 return veto.isChecked() ? Window.confirm("Collapse ?") : true;
             }
 
             public void onCollapse(Widget widget) {
-                log( "onCollapse&nbsp;" + toString((TreeItem) widget));
+                log("onCollapse&nbsp;" + toString((TreeItem) widget));
                 TreeTest.lastTreeItem = (TreeItem) widget;
             }
 
             public boolean onBeforeExpand(Widget widget) {
-                log( "onBeforeExpand&nbsp;" + toString((TreeItem) widget));
+                log("onBeforeExpand&nbsp;" + toString((TreeItem) widget));
 
                 return veto.isChecked() ? Window.confirm("Expand ?") : true;
             }
 
             public void onExpand(Widget widget) {
-                log( "onExpand&nbsp;" + toString((TreeItem) widget));
+                log("onExpand&nbsp;" + toString((TreeItem) widget));
                 TreeTest.lastTreeItem = (TreeItem) widget;
             }
 
@@ -139,7 +139,7 @@ public class TreeTest implements EntryPoint {
                     } catch (final Exception caught) {
                         append = "iterator.hasNext() threw " + caught;
                     }
-                    log( append);
+                    log(append);
                 }
             }
         });
@@ -156,7 +156,7 @@ public class TreeTest implements EntryPoint {
                     } catch (final Exception caught) {
                         append = "iterator.next() threw " + caught;
                     }
-                    log( append);
+                    log(append);
                 }
             }
         });
@@ -174,18 +174,18 @@ public class TreeTest implements EntryPoint {
                     } catch (final Exception caught) {
                         append = "iterator.removed() threw " + caught;
                     }
-                    log( append);
+                    log(append);
                 }
             }
         });
         rootPanel.add(iteratorRemove);
     }
 
-    static void log( final String message ){
-        final Element log = DOM.getElementById( "log");
-        DOM.setInnerHTML( log, DOM.getInnerHTML( log ) + message + "<br>");
+    static void log(final String message) {
+        final Element log = DOM.getElementById("log");
+        DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
     }
-    
+
     /**
      * This Tree creates a TestTreeItem as its root TreeItem
      * 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,11 +15,11 @@
  */
 package rocket.remoting.client;
 
-
 /**
  * This exception is thrown when the hidden iframe used by the CometClient fails to connect to the server component.
+ * 
  * @author Miroslav Pokorny (mP)
- *
+ * 
  */
 public class CometServerConnectionFailure extends RuntimeException {
     public CometServerConnectionFailure() {
@@ -37,5 +37,4 @@ public class CometServerConnectionFailure extends RuntimeException {
     public CometServerConnectionFailure(final Throwable caught) {
         super(caught);
     }
-    }
-
+}
