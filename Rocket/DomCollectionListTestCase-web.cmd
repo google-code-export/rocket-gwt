@@ -1,1 +1,0 @@
-@java -Dgwt.hybrid -cp "%~dp0\src;%~dp0\bin;c:\java-libraries\junit\3.8\junit.jar;C:/java-libraries/gwt-windows-1.2.22/gwt-user.jar;C:/java-libraries/gwt-windows-1.2.22/gwt-dev-windows.jar" junit.textui.TestRunner rocket.dom.test.domcollectionlist.test.DomCollectionListTestCase %*  -style DETAILED
