@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -18,7 +18,7 @@ package rocket.widget.client.menu;
 import java.util.Iterator;
 
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.VerticalPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 import com.google.gwt.user.client.ui.Widget;
 

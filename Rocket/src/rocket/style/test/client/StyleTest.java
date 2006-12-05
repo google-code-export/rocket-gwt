@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -43,10 +43,10 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * An interactive test which includes many buttons which the user may then use to
+ * A test which contains series of buttons which when clicked perform some tests related to the style package. Some tests require the user
+ * to verify certain styles have been correctly updated.
  * 
  * @author Miroslav Pokorny (mP)
- * 
  */
 public class StyleTest implements EntryPoint {
 

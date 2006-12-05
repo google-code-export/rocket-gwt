@@ -4,14 +4,15 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Convenient base class that implements all {@see MenuListener} methods with do nothing methods.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public abstract class MenuListenerImpl implements MenuListener {
 
-    protected MenuListenerImpl(){
+    protected MenuListenerImpl() {
         super();
     }
-    
+
     public void onMenuCancelled(final Widget widget) {
     }
 

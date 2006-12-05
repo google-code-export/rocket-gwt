@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -140,24 +140,6 @@ public class ObjectHelper extends SystemHelper {
     } // defaultToString
 
     public static void checkNotNull(final String name, final Object object) {
-        if (object == null) {
-            handleNullEncountered(name, "The " + name + " must not be null.");
-        }
-    }
-
-    /**
-     * This method is only included because calls to {@link #checkNotNull(String, Object)} result in the compiled javascript including a
-     * call to a function which attempts to modify the object's prototype. This fails for certain native objects that have unmodifiable
-     * prototypes.
-     * 
-     * {@see http://code.google.com/p/google-web-toolkit/issues/detail?id=304}
-     * 
-     * @param name
-     * @param object
-     * 
-     * @deprecated This method will be removed when the GWT issue is fixed.
-     */
-    public static void checkNotNull(final String name, final JavaScriptObject object) {
         if (object == null) {
             handleNullEncountered(name, "The " + name + " must not be null.");
         }

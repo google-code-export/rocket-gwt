@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -20,8 +20,18 @@ import rocket.style.client.StyleHelper;
 
 import com.google.gwt.user.client.ui.KeyboardListener;
 
+/**
+ * This class contains primarily constants related to Widgets. Most constants here are the names of various styles for the available
+ * widgets.
+ * 
+ * @author Miroslav Pokorny (mP)
+ * 
+ */
 public class WidgetConstants {
 
+    /**
+     * The top level (project name) that prefixes all widget classNames.
+     */
     public final static String ROCKET = "rocket";
 
     // AUTO COMPLETE TEXT BOX
@@ -82,9 +92,11 @@ public class WidgetConstants {
      */
     public final static String COLLAPSABLE_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "collapsablePanel");
 
-    public final static String COLLAPSABLE_PANEL_FLEXTABLE_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE, "flexTable");
+    public final static String COLLAPSABLE_PANEL_FLEXTABLE_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE,
+            "flexTable");
 
-    public final static String COLLAPSABLE_PANEL_TITLE_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE, "title");
+    public final static String COLLAPSABLE_PANEL_TITLE_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE,
+            "title");
 
     public final static int COLLAPSABLE_PANEL_TITLE_ROW = 0;
 
@@ -92,19 +104,24 @@ public class WidgetConstants {
 
     public final static String COLLAPSABLE_PANEL_TITLE_FLEXTABLE_STYLE = COLLAPSABLE_PANEL_TITLE_STYLE;
 
-    public final static String COLLAPSABLE_PANEL_CONTENT_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE, "content");
+    public final static String COLLAPSABLE_PANEL_CONTENT_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE,
+            "content");
 
     public final static int COLLAPSABLE_PANEL_CONTENT_ROW = COLLAPSABLE_PANEL_TITLE_ROW + 1;
 
     public final static int COLLAPSABLE_PANEL_CONTENT_COLUMN = 0;
 
-    public final static String COLLAPSABLE_PANEL_TITLE_WIDGET_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE, "titleWidget");
+    public final static String COLLAPSABLE_PANEL_TITLE_WIDGET_STYLE = StyleHelper.buildCompound(
+            COLLAPSABLE_PANEL_STYLE, "titleWidget");
 
-    public final static String COLLAPSABLE_PANEL_MINIMIZE_IMAGE_URL = BrowserHelper.buildImageUrl("/collapsablePanel/minimize.gif");
+    public final static String COLLAPSABLE_PANEL_MINIMIZE_IMAGE_URL = BrowserHelper
+            .buildImageUrl("/collapsablePanel/minimize.gif");
 
-    public final static String COLLAPSABLE_PANEL_MAXIMIZE_IMAGE_URL = BrowserHelper.buildImageUrl("/collapsablePanel/maximize.gif");
+    public final static String COLLAPSABLE_PANEL_MAXIMIZE_IMAGE_URL = BrowserHelper
+            .buildImageUrl("/collapsablePanel/maximize.gif");
 
-    public final static String COLLAPSABLE_PANEL_CLOSE_IMAGE_URL = BrowserHelper.buildImageUrl("/collapsablePanel/close.gif");
+    public final static String COLLAPSABLE_PANEL_CLOSE_IMAGE_URL = BrowserHelper
+            .buildImageUrl("/collapsablePanel/close.gif");
 
     // BREADCRUMB
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -264,33 +281,50 @@ public class WidgetConstants {
      */
     public final static String PAGER_CURRENT_PAGE_STYLE = StyleHelper.buildCompound(PAGER_STYLE, "current");
 
+    // SPAN PANEL
+    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     /**
      * This style is applied to the container SPAN element of a SpanPanel {@see rocket.widget.client.SpanPanel}
      */
     public final static String SPAN_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "spanPanel");
+
+    // DIV PANEL
+    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
      * This style is applied to the container DIV element of a DivPanel {@see rocket.widget.client.DivPanel}
      */
     public final static String DIV_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "divPanel");
 
+    // ORDERED LIST PANEL
+    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     /**
      * This style is applied to the container OL element of a OrderedListPanel {@see rocket.widget.client.OrderedListPanel}
      */
     public final static String ORDERED_LIST_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "orderedListPanel");
+
+    public final static String ORDERED_LIST = "ol";
+
+    public final static String ORDERED_LIST_ITEM = "li";
+
+    // UNORDERED LIST PANEL
+    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
      * This style is applied to the container UL element of a UnOrderedListPanel {@see rocket.widget.client.UnorderedListPanel}
      */
     public final static String UNORDERED_LIST_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "unorderedListPanel");
 
-    final static String LIST_ITEM = "li";
-
     public final static String UNORDERED_LIST = "ul";
 
-    public final static String UNORDERED_LIST_ITEM = LIST_ITEM;
+    public final static String UNORDERED_LIST_ITEM = "li";
 
-    public final static String ORDERED_LIST = "ol";
-
-    public final static String ORDERED_LIST_ITEM = LIST_ITEM;
+    // HYPERLINK PANEL
+    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**
+     * This style is applied to the container element of a HyperlinkPanel widget {@see rocket.widget.client.HyperlinkPanel}
+     */
+    public final static String HYPERLINK_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "hyperlinkPanel");
 }

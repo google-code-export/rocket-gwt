@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -50,5 +50,6 @@ public class BrowserConstants {
 
     public final static String COOKIE_VERSION = "; version=";
 
-    public final static String COOKIE_REMOVE_SUFFIX = "=; expires=" + new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000).toGMTString();
+    public final static String COOKIE_REMOVE_SUFFIX = "=; expires="
+            + new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000).toGMTString();
 }

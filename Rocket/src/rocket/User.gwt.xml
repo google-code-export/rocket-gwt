@@ -5,6 +5,7 @@
 		
 	<inherits name='rocket.browser.Browser' />
 	<inherits name='rocket.collection.Collection' />		
+	<inherits name='rocket.dragndrop.DragNDrop' />
 	<inherits name='rocket.dom.Dom' />
 	<inherits name='rocket.messaging.Messaging' />
 	<inherits name='rocket.remoting.Remoting' />

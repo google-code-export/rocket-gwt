@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -30,7 +30,7 @@ public class MenuListenerCollection {
     }
 
     /**
-     * A list containing listeners to the various page change events.
+     * A list containing listeners to the various menu change events.
      */
     private List listeners;
 
@@ -44,16 +44,16 @@ public class MenuListenerCollection {
         this.listeners = listeners;
     }
 
-    public void add(final MenuListener verticalListListener) {
-        ObjectHelper.checkNotNull("parameter:verticalListListener", verticalListListener);
+    public void add(final MenuListener menuListener) {
+        ObjectHelper.checkNotNull("parameter:menuListener", menuListener);
 
-        this.getListeners().add(verticalListListener);
+        this.getListeners().add(menuListener);
     }
 
-    public void remove(final MenuListener verticalListListener) {
-        ObjectHelper.checkNotNull("parameter:verticalListListener", verticalListListener);
+    public void remove(final MenuListener menuListener) {
+        ObjectHelper.checkNotNull("parameter:menuListener", menuListener);
 
-        this.getListeners().remove(verticalListListener);
+        this.getListeners().remove(menuListener);
     }
 
     // FIRE EVENTS ::::::::::::::::::::::::::::::::::::::

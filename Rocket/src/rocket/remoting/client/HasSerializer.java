@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,10 +16,11 @@
 package rocket.remoting.client;
 
 import com.google.gwt.user.client.rpc.impl.Serializer;
+
 /**
- * THis interface is implemented by the customized ProxyCreator and added to all generated proxy classes
- * adding a new method allowing access to the accompanying Serializer.
- * Without this new feature it was a pain to get the Serializer accompanying a Service. 
+ * THis interface is implemented by the customized ProxyCreator and added to all generated proxy classes adding a new method allowing access
+ * to the accompanying Serializer. Without this new feature it was a pain to get the Serializer accompanying a Service.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public interface HasSerializer {

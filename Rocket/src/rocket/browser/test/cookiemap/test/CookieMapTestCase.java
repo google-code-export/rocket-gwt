@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -43,7 +43,7 @@ import com.google.gwt.user.client.Window;
  * to figure things out.
  * 
  * This TestCase exhibits strange behaviour in hosted mode(cookies dont get deleted when they should etc) and thus should be run in web mode
- * to properly test. 
+ * to properly test.
  * 
  * @author Miroslav Pokorny (mP)
  */

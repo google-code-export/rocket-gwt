@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -18,7 +18,6 @@ package rocket.widget.client.menu;
 import java.util.Iterator;
 
 import rocket.collection.client.CollectionHelper;
-import rocket.dom.client.DomHelper;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 
@@ -70,7 +69,7 @@ public abstract class MenuList extends MenuWidget implements HasWidgets {
         if (this.isHideable()) {
             final Element element = this.getElement();
             DOM.setStyleAttribute(element, StyleConstants.DISPLAY, "block");
-            DOM.setIntStyleAttribute( element, StyleConstants.Z_INDEX, MenuConstants.MENU_LIST_Z_INDEX );
+            DOM.setIntStyleAttribute(element, StyleConstants.Z_INDEX, MenuConstants.MENU_LIST_Z_INDEX);
         }
     }
 

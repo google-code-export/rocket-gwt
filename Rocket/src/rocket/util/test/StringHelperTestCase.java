@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -446,41 +446,46 @@ public class StringHelperTestCase extends TestCase {
 
         }
     }
-    
-    public void testHtmlEncode0(){
+
+    public void testHtmlEncode0() {
         final String plainText = "abc";
-        final String actual = StringHelper.htmlEncode( plainText );
+        final String actual = StringHelper.htmlEncode(plainText);
         final String expected = plainText;
-        assertEquals( expected, actual );
-    }    
-    public void testHtmlEncode1(){
-        final String plainText = "123";
-        final String actual = StringHelper.htmlEncode( plainText );
-        final String expected = plainText;
-        assertEquals( expected, actual );
+        assertEquals(expected, actual);
     }
-    public void testHtmlEncode2(){
+
+    public void testHtmlEncode1() {
+        final String plainText = "123";
+        final String actual = StringHelper.htmlEncode(plainText);
+        final String expected = plainText;
+        assertEquals(expected, actual);
+    }
+
+    public void testHtmlEncode2() {
         final String plainText = "<>'\"&";
-        final String actual = StringHelper.htmlEncode( plainText );
+        final String actual = StringHelper.htmlEncode(plainText);
         final String expected = "&lt;&gt;&apos;&quot;&amp;";
-            assertEquals( expected, actual );
+        assertEquals(expected, actual);
     }
-    public void testHtmlDecode0(){
+
+    public void testHtmlDecode0() {
         final String plainText = "abc";
-        final String actual = StringHelper.htmlDecode( plainText );
+        final String actual = StringHelper.htmlDecode(plainText);
         final String expected = plainText;
-        assertEquals( expected, actual );
-    }    
-    public void testHtmlDecode1(){
-        final String plainText = "123";
-        final String actual = StringHelper.htmlDecode( plainText );
-        final String expected = plainText;
-        assertEquals( expected, actual );
+        assertEquals(expected, actual);
     }
-    public void testHtmlDecode2(){
+
+    public void testHtmlDecode1() {
+        final String plainText = "123";
+        final String actual = StringHelper.htmlDecode(plainText);
+        final String expected = plainText;
+        assertEquals(expected, actual);
+    }
+
+    public void testHtmlDecode2() {
         final String plainText = "&lt;&gt;&apos;&quot;&amp;";
-        final String actual = StringHelper.htmlDecode( plainText );
+        final String actual = StringHelper.htmlDecode(plainText);
         final String expected = "<>'\"&";
-            assertEquals( expected, actual );
+        assertEquals(expected, actual);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,6 +16,7 @@
 package rocket.collection.test;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -106,7 +107,7 @@ public class IteratorViewTestCase extends TestCase {
         try {
             final Object visited = iterator.next();
             fail("Iterator.next should have thrown an Exception and not returned [" + visited + "]");
-        } catch (Exception caught) {
+        } catch (ConcurrentModificationException expected) {
         }
     }
 
@@ -130,7 +131,7 @@ public class IteratorViewTestCase extends TestCase {
         try {
             iterator.remove();
             fail("Iterator.remove() should have thrown an Exception, container: " + container);
-        } catch (Exception caught) {
+        } catch (ConcurrentModificationException expected) {
         }
     }
 

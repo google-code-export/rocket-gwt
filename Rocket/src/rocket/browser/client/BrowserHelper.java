@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -34,20 +34,22 @@ import com.google.gwt.user.client.ui.Widget;
 public class BrowserHelper extends ObjectHelper {
     /**
      * Retrieves the document object for the current page
+     * 
      * @return
      */
     public static native JavaScriptObject getDocument() /*-{
-        return $doc;
-    }-*/;
-    
+     return $doc;
+     }-*/;
+
     /**
      * Retrieves the window object for the current page.
+     * 
      * @return
      */
     public static native JavaScriptObject getWindow() /*-{
-        return $wnd;
-    }-*/;
-    
+     return $wnd;
+     }-*/;
+
     /**
      * Retrieves the current window status.
      * 

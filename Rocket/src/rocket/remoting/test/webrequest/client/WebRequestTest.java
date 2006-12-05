@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -257,10 +257,10 @@ public class WebRequestTest implements EntryPoint {
         log("FAILED: " + testName + ", cause: " + cause);
         throw new TestAssertionFailedException();
     }
-    
-    static void log( final String message){
-        final Element log = DOM.getElementById( "log");
-        DOM.setInnerHTML( log, DOM.getInnerHTML( log ) + message + "<br>");
+
+    static void log(final String message) {
+        final Element log = DOM.getElementById("log");
+        DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
     }
 
     static class TestAssertionFailedException extends RuntimeException {

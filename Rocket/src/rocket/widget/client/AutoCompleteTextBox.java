@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -39,9 +40,8 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  * 
- * FIX Attempting to select the text within the TextBox when the dropdown list is down is not possible.
- * The selection is cancelled and the cursor reset to its original position.
- * {@see http://code.google.com/p/rocket-gwt/issues/detail?id=14&can=2&q=} 
+ * FIX Attempting to select the text within the TextBox when the dropdown list is down is not possible. The selection is cancelled and the
+ * cursor reset to its original position. {@see http://code.google.com/p/rocket-gwt/issues/detail?id=14&can=2&q=}
  */
 public class AutoCompleteTextBox extends TextBox {
 
@@ -233,7 +233,7 @@ public class AutoCompleteTextBox extends TextBox {
 
         final VerticalPanel list = new VerticalPanel();
         list.setVisible(false);
-        list.addStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE);
+        list.setStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE);
         this.setDropDownList(list);
         this.createEventPreviewer();
         return list;

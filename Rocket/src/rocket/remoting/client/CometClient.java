@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,7 +15,7 @@
  */
 package rocket.remoting.client;
 
-import rocket.browser.client.BrowserHelper;
+import rocket.dom.client.DomHelper;
 import rocket.remoting.client.impl.CometImpl;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
@@ -30,13 +30,11 @@ import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 
 /**
- * There should only ever be one instance of this class which is used to received streamed objects from the
- * server.
- *
- * The only requirement is that the {@link #createProxy() } is implemented to request for the runtime to
- * create a Proxy for a service that declares a return type that covers objects returned by the server side component.
- * This new feature is provided by the embedded/customised ProxyCreator. For GWT to use the modified ProxyCreator
- * rocket.jar must appear before any gwt-user.jar in all class paths.
+ * There should only ever be one instance of this class which is used to received streamed objects from the server.
+ * 
+ * The only requirement is that the {@link #createProxy() } is implemented to request for the runtime to create a Proxy for a service that
+ * declares a return type that covers objects returned by the server side component. This new feature is provided by the embedded/customised
+ * ProxyCreator. For GWT to use the modified ProxyCreator rocket.jar must appear before any gwt-user.jar in all class paths.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -44,7 +42,7 @@ public abstract class CometClient {
 
     public CometClient() {
         super();
-        
+
         this.createImplementation();
     }
 
@@ -66,51 +64,54 @@ public abstract class CometClient {
     protected void createImplementation() {
         this.setImplementation((CometImpl) GWT.create(CometImpl.class));
     }
-       
+
     /**
      * Stops or closes the connection between the client and the server.
-     *
+     * 
      */
     public void stop() {
-        if( this.hasFrame() ){
+        if (this.hasFrame()) {
             final Element frame = this.getFrame();
-            DOM.removeChild(DOM.getParent(frame), frame);            
+            DOM.removeChild(DOM.getParent(frame), frame);
             this.clearFrame();
             this.getImplementation().stop(this, frame);
         }
     }
-    
+
     /**
-     * Invoking this method opens the channel betweeen the client and the server.
-     * The server will periodicly continue to send objects to the client.
+     * Invoking this method opens the channel betweeen the client and the server. The server will periodicly continue to send objects to the
+     * client.
      */
     public void start() {
         this.createFrame();
         final Element frame = this.getFrame();
-        this.getImplementation().start(this, frame );
+        this.getImplementation().start(this, frame);
 
-        // the reason for the query string is to avoid caching problems...the src attribute is set before the frame is attached this also avoids the nasty clicking noises in ie.
+        // the reason for the query string is to avoid caching problems...the src attribute is set before the frame is attached this also
+        // avoids the nasty clicking noises in ie.
         DOM.setAttribute(frame, "src", this.getUrl() + '?' + System.currentTimeMillis());
 
-        final Element body = ObjectHelper.castToElement(ObjectHelper.getObject(BrowserHelper.getDocument(), "body"));
+        final Element body = DomHelper.getBody();
         DOM.appendChild(body, frame);
     }
-    
+
     /**
-     * This method is called by whenever a iframe finishes loading its document.
-     * This may be caused by the server dropping its connect or failing the locate a CometServer.
+     * This method is called by whenever a iframe finishes loading its document. This may be caused by the server dropping its connect or
+     * failing the locate a CometServer.
+     * 
      * @param thisInstance
      */
-    public static void onDisconnect(final CometClient thisInstance ) {
-        ObjectHelper.checkNotNull( "parameter:thisInstance", thisInstance );
-        
+    public static void onDisconnect(final CometClient thisInstance) {
+        ObjectHelper.checkNotNull("parameter:thisInstance", thisInstance);
+
         // checks if the iframe has its connected flag set.. if not report connection failure...
-        if( false == DOM.getBooleanAttribute( thisInstance.getFrame(), "__connected" )){
-            thisInstance.getCallback().onFailure( new CometServerConnectionFailure("Unable to connect to [" + thisInstance.getUrl() + "]") );
+        if (false == DOM.getBooleanAttribute(thisInstance.getFrame(), "__connected")) {
+            thisInstance.getCallback().onFailure(
+                    new CometServerConnectionFailure("Unable to connect to [" + thisInstance.getUrl() + "]"));
         } else {
             thisInstance.restart();
         }
-    }    
+    }
 
     /**
      * Restarts or recreates the connection between this client and the server.
@@ -121,8 +122,8 @@ public abstract class CometClient {
     }
 
     /**
-     * This function is invoked from the hidden frame and takes care of eventually dispatching the object
-     * to the registered callback.
+     * This function is invoked from the hidden frame and takes care of eventually dispatching the object to the registered callback.
+     * 
      * @param c
      * @param serializedForm
      * @throws SerializationException
@@ -147,7 +148,7 @@ public abstract class CometClient {
 
     /**
      * Deserializes the Object and its graph which are encoded within the given String.
-     *
+     * 
      * @param serializedForm
      * @return
      * @throws SerializationException
@@ -156,11 +157,11 @@ public abstract class CometClient {
         StringHelper.checkNotEmpty("parameter:serializedForm", serializedForm);
 
         final Object proxy = this.createProxy();
-        final HasSerializer serializerHost = (HasSerializer) proxy; 
+        final HasSerializer serializerHost = (HasSerializer) proxy;
         final Serializer serializer = serializerHost.getSerializer();
 
         final ClientSerializationStreamReader deserializer = new ClientSerializationStreamReader(serializer);
-        deserializer.prepareToRead(serializedForm);        
+        deserializer.prepareToRead(serializedForm);
         return deserializer.readObject();
     }
 
@@ -168,14 +169,16 @@ public abstract class CometClient {
      * Sub-classes must override this method to create the ServiceProxy using defered binding.
      * 
      * <pre>
-     * return GWT.create( INSERT SERVICE CLASS.class );
+     *  return GWT.create( INSERT SERVICE CLASS.class );
      * </pre>
+     * 
      * @return
      */
     protected abstract Object createProxy();
+
     /**
-     * A reference to the hidden iframe which is used to make a connection which is kept open for a long time.
-     * The server will periodically write objects within a script tag to the client(iframe).
+     * A reference to the hidden iframe which is used to make a connection which is kept open for a long time. The server will periodically
+     * write objects within a script tag to the client(iframe).
      */
     private Element frame;
 

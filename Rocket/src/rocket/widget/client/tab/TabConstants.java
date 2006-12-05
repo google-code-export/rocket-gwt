@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 NSW Police Government Australia
+ * Copyright Miroslav Pokorny
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -42,7 +42,7 @@ public class TabConstants {
 
     final static String CONTENT_STYLE = "content";
 
-    // TOP :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // MOVE_ZONE_TOP :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public final static String TOP_TAB_PANEL_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "topTabPanel");
 
     public final static String TOP_TAB_BAR_STYLE = StyleHelper.buildCompound(TOP_TAB_PANEL_STYLE, TAB_BAR_STYLE);
@@ -94,7 +94,7 @@ public class TabConstants {
 
     public final static String BOTTOM_TAB_CONTENT_STYLE = StyleHelper.buildCompound(BOTTOM_TAB_PANEL_STYLE, "content");
 
-    // LEFT
+    // MOVE_ZONE_LEFT
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public final static String LEFT_TAB_PANEL_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "leftTabPanel");
 

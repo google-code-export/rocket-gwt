@@ -275,7 +275,7 @@ ADD BrowserHelper added getDocument() and getWindow()
 FIX CookiesMap.keySet().iterator();
 
 rocket.dom.client.*
-FIX DomHelper.getParentContainerLeft/getParentContainerTop was not stopping at an ancestor with position:relative. (http://code.google.com/p/rocket-gwt/issues/detail?id=12&can=2&q=)
+FIX DomHelper.getParentContainerLeft/getParentContainerTop was not stopping at an ancestor with position:relative. (http://code.google.com/p/rocket-gwt/issues/detail?id=12)
 
 rocket.remoting.*
 ADD Created new Comet infrastructure which includes client/server side components.(rocket.remoting.*)
@@ -289,5 +289,47 @@ FIX MenuList when showing a menu list a zindex (with a big)value is also set to 
 REF Renamed Card to CollapsablePanel, changed accompanying styles and constants etc.
 
 DEPRECATED
-DEL PrimitiveHelper.characterDigit removed due to Character.digit() being fixed by GWT 1.2.22. (http://code.google.com/p/google-web-toolkit/issues/detail?id=302&can=1&q=)
+DEL PrimitiveHelper.characterDigit removed due to Character.digit() being fixed by GWT 1.2.22. (http://code.google.com/p/google-web-toolkit/issues/detail?id=302)
 DEL DomHelper.eventGetToElement removed due to being fixed by GWT 1.2.22 (http://code.google.com/p/google-web-toolkit/issues/detail?id=229&can=1&q=)
+
+0.22 5 December 2006
+--------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.22/Rocket-0.22.zip
+
+rocket.collection.client.*
+MOD IteratorView now throws ConcurrentModificationException when structural changes to the parent collection.
+
+rocket.dom.client.*
+ADD DomHelper.getBody()
+ADD DomHelper.clone()
+
+rocket.dragndrop.*
+ADD New drag n drop functionality.
+
+rocket.util.*
+ADD StackTraceHelper - Throwable.getStackTraceElement() now returns an array of StackTraceElements that may be examined to walk the callstack in web mode.
+ADD StackTraceHelper.getStackTraceAsString() returns a String that looks like the output of regular java's Throwable.printStackTrace().
+TIP The outputted stacktrace is very similar to that of java with some minor changes.
+    StackTraces are only meaningful when the translated javascript code is not obsfucated (eg style=PRETTY/DETAILED);
+    Within a printed stacktrace package.className(filename:linenumber) the bit in between brackets is replaced with the arguments of the method if available.
+    Because the this argument is sometimes a parameter translated javascript it will also appear in the argument list.
+	The stacktrace will potentially contain extra stack frames showing the internal constructor calls within the newly created Throwable object -ignore these.    
+    
+rocket.widget.client.*
+ADD HyperlinkPanel A new panel which is functions like a hyperlink with a twist. All widgets that are added do not receive events.
+DEL HorizontalPanel - no longer required due to WidgetCollection fix
+DEL VerticalPanel - no longer required due to WidgetCollection fix
+
+DEPRECATED
+DEL ObjectHelper.checkNotNull( String JavaScriptObject ); no longer needed due to fix in emulated Cast class
+
+GWT
+ENH com.google.gwt.emul.java.lang.Throwable modified to enable capturing of the current call stack when the Throwable is created, as well as lazily creating StackTraceElements.
+ENH com.google.gwt.emul.java.lang.StackTraceElement modified to support include all internal fields are parameters to the constructor.
+FIX com.google.gwt.lang.Cast.wrapJSO() Added try/catch to avoid javascript host exceptions when attempting to copy properties to a immutable native object. (http://code.google.com/p/google-web-toolkit/issues/detail?id=304)
+    The Cast class actually lives in gwt-dev-XXX.jar (where XXX is the appropriate platform eg "windows") at /com/google/gwt/dev/jjs/intrinsic/com/google/gwt/lang/.
+FIX com.google.gwt.user.client.ui.WidgetCollection's iterator() has been modified to fail fast.
+ENH com.google.gwt.emu.java.util.ConcurrentModificationException This exception is now available to be thrown by iterators detecting concurrent modification of the parent collection
+
+TODO Need to make GWT emulated collection class iterators fail fast and throw ConcurrentModificationExceptions.
+TODO Serialize/Deserialize stacktraces between client/server.
