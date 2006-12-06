@@ -332,4 +332,18 @@ FIX com.google.gwt.user.client.ui.WidgetCollection's iterator() has been modifie
 ENH com.google.gwt.emu.java.util.ConcurrentModificationException This exception is now available to be thrown by iterators detecting concurrent modification of the parent collection
 
 TODO Need to make GWT emulated collection class iterators fail fast and throw ConcurrentModificationExceptions.
-TODO Serialize/Deserialize stacktraces between client/server.
+
+0.23 6 December 2006
+--------------------
+Download from http://rocket-gwt.googlecode.com/svn/tags/0.23/Rocket-0.23.zip
+
+Minor release that addresses a silly bug within IE6.X
+NB Unfortunately stacktraces are not supported by Opera,Safari,Konqueror as they do not expose the necessary javascript
+functionality to make this possible.
+
+rocket.util.StackTraceHelper
+FIX Stopped infinite loop that was occuring in Internet Explorer 6.x
+ADD Added test to show server side stacktraces are not lost and show up in client side stacktraces.
+MOD StackTraceHelper-compile.cmd to output the same translated javascript using all three styles: OBS/PRETTY/DETAILED to individual sub directories under the 
+    www/rocket.util.test.stacktracehelper.StackTraceHelper directory.(To properly test serverside stacktraces run the StackTraceHelper hosted mode followed by
+    clicking on the appropriate www/rocket.util.test.stacktracehelper.StackTraceHelper/XXX demo.

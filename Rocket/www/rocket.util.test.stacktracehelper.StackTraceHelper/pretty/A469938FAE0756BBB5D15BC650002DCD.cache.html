@@ -1,0 +1,5297 @@
+<html>
+<head><script>
+var $wnd = parent;
+var $doc = $wnd.document;
+var $moduleName = "rocket.util.test.stacktracehelper.StackTraceHelper";
+</script></head>
+<body>
+<font face='arial' size='-1'>This script is part of module</font>
+<code>rocket.util.test.stacktracehelper.StackTraceHelper</code>
+<script><!--
+function _nullMethod(){
+  return window;
+}
+
+function _toString(){
+  return _$toString(this);
+}
+
+function _equals(_other){
+  return this === _other;
+}
+
+function _hashCode(){
+  return _identityHashCode(this);
+}
+
+function _$toString(_this$static){
+  return _this$static._typeName + '@' + _this$static._hashCode0();
+}
+
+function _Object(){
+}
+
+_ = _Object.prototype = {};
+_._toString0 = _toString;
+_._equals0 = _equals;
+_._hashCode0 = _hashCode;
+_.toString = function(){
+  return this._toString0();
+}
+;
+_._typeName = 'java.lang.Object';
+_._typeId = 1;
+function _setUncaughtExceptionHandler(_handler){
+  _sUncaughtExceptionHandler = _handler;
+}
+
+function _getTypeName(_o){
+  return _o == null?null:_o._typeName;
+}
+
+_sUncaughtExceptionHandler = null;
+function _getNextHashId(){
+  return ++_sNextHashId;
+}
+
+function _getHashCode(_o){
+  return _o == null?0:_o.$H?_o.$H:(_o.$H = _getNextHashId());
+}
+
+function _getHashCode0(_o){
+  return _o == null?0:_o.$H?_o.$H:(_o.$H = _getNextHashId());
+}
+
+_sNextHashId = 0;
+function _getCause(){
+  return this._fCause;
+}
+
+function _getMessage(){
+  return this._fMessage;
+}
+
+function _toString1(){
+  var _className, _msg;
+  _className = _getTypeName(this);
+  _msg = this._getMessage0();
+  if (_msg !== null) {
+    return _className + ': ' + _msg;
+  }
+   else {
+    return _className;
+  }
+}
+
+function _setCallStack0(_array){
+  _array.shift();
+  _array.shift();
+  return _array;
+}
+
+function _$Throwable(_this$static, _message, _cause){
+  _this$static._fCause = _cause;
+  _this$static._fMessage = _message;
+  _$saveCallStack(_this$static);
+  return _this$static;
+}
+
+function _$Throwable0(_this$static){
+  _$saveCallStack(_this$static);
+  return _this$static;
+}
+
+function _$Throwable1(_this$static, _message){
+  _this$static._fMessage = _message;
+  _$saveCallStack(_this$static);
+  return _this$static;
+}
+
+function _$saveCallStack(_this$static){
+  _$setCallStack(_this$static, _this$static._setCallStack00(_getCallStackFunctions()));
+}
+
+function _$getCallStack(_this$static){
+  _checkNotNull('field:callStack', _wrapJSO(_this$static._callStack, _JavaScriptObject));
+  return _this$static._callStack;
+}
+
+function _$setCallStack(_this$static, _callStack){
+  _checkNotNull('parameter:callStack', _wrapJSO(_callStack, _JavaScriptObject));
+  _this$static._callStack = _callStack;
+}
+
+function _$getStackTrace(_this$static){
+  var _functionNames;
+  if (_this$static._stackTrace === null) {
+    _functionNames = _getCallStackFunctionNames(_$getCallStack(_this$static));
+    _this$static._stackTrace = _buildStackTraceElements(_functionNames);
+  }
+  return _this$static._stackTrace;
+}
+
+function _$printStackTrace(_this$static){
+  var _msg, _currentCause, _causeMessage;
+  _msg = _$StringBuffer(new _StringBuffer());
+  _currentCause = _this$static;
+  while (_currentCause !== null) {
+    _causeMessage = _currentCause._getMessage0();
+    if (_currentCause !== _this$static)
+      _msg._append('Caused by: ');
+    _msg._append(_currentCause._typeName);
+    _msg._append(': ');
+    _msg._append(_causeMessage === null?'(No exception detail)':_causeMessage);
+    _msg._append('\n');
+    _currentCause = _currentCause._getCause0();
+  }
+  _$clinit()._err;
+}
+
+function _Throwable(){
+}
+
+_ = _Throwable.prototype = new _Object();
+_._getCause0 = _getCause;
+_._getMessage0 = _getMessage;
+_._toString0 = _toString1;
+_._setCallStack00 = _setCallStack0;
+_._typeName = 'java.lang.Throwable';
+_._typeId = 2;
+_._stackTrace = null;
+_._fCause = null;
+_._fMessage = null;
+_._callStack = null;
+function _$Exception(_this$static){
+  _$Throwable0(_this$static);
+  return _this$static;
+}
+
+function _$Exception0(_this$static, _message){
+  _$Throwable1(_this$static, _message);
+  return _this$static;
+}
+
+function _$Exception1(_this$static, _message, _cause){
+  _$Throwable(_this$static, _message, _cause);
+  return _this$static;
+}
+
+function _Exception(){
+}
+
+_ = _Exception.prototype = new _Throwable();
+_._typeName = 'java.lang.Exception';
+_._typeId = 3;
+function _$RuntimeException(_this$static, _message){
+  _$Exception0(_this$static, _message);
+  return _this$static;
+}
+
+function _$RuntimeException0(_this$static, _message, _cause){
+  _$Exception1(_this$static, _message, _cause);
+  return _this$static;
+}
+
+function _$RuntimeException1(_this$static){
+  _$Exception(_this$static);
+  return _this$static;
+}
+
+function _RuntimeException(){
+}
+
+_ = _RuntimeException.prototype = new _Exception();
+_._typeName = 'java.lang.RuntimeException';
+_._typeId = 4;
+function _$JavaScriptException(_this$static, _name, _description){
+  _$RuntimeException(_this$static, 'JavaScript ' + _name + ' exception: ' + _description);
+  _this$static._name = _name;
+  _this$static._description = _description;
+  return _this$static;
+}
+
+function _JavaScriptException(){
+}
+
+_ = _JavaScriptException.prototype = new _RuntimeException();
+_._typeName = 'com.google.gwt.core.client.JavaScriptException';
+_._typeId = 5;
+_._name = null;
+_._description = null;
+function _toString2(){
+  return _toStringImpl(this);
+}
+
+function _equals1(_other){
+  return _$equals(this, _other);
+}
+
+function _hashCode1(){
+  return _$hashCode(this);
+}
+
+function _toStringImpl(_o){
+  if (_o.toString)
+    return _o.toString();
+  return '[object]';
+}
+
+function _equalsImpl(_o, _other){
+  return _o === _other;
+}
+
+function _$equals(_this$static, _other){
+  if (!_instanceOf(_other, 1))
+    return false;
+  return _equalsImpl(_this$static, _dynamicCast(_other, 1));
+}
+
+function _$hashCode(_this$static){
+  return _getHashCode(_this$static);
+}
+
+function _JavaScriptObject(){
+}
+
+_ = _JavaScriptObject.prototype = new _Object();
+_._toString0 = _toString2;
+_._equals0 = _equals1;
+_._hashCode0 = _hashCode1;
+_._typeName = 'com.google.gwt.core.client.JavaScriptObject';
+_._typeId = 6;
+function _initDims(_typeName, _typeIdExprs, _queryIdExprs, _dimExprs, _defaultValue){
+  return _initDims0(_typeName, _typeIdExprs, _queryIdExprs, _dimExprs, 0, _getValueCount(_dimExprs), _defaultValue);
+}
+
+function _initDims0(_typeName, _typeIdExprs, _queryIdExprs, _dimExprs, _index, _count, _defaultValue){
+  var _length, _result, _i, _i;
+  if ((_length = _getIntValue(_dimExprs, _index))< 0)
+    throw _$NegativeArraySizeException(new _NegativeArraySizeException());
+  _result = _$Array(new _Array(), _length, _getIntValue(_typeIdExprs, _index), _getIntValue(_queryIdExprs, _index), _typeName);
+  ++_index;
+  if (_index < _count) {
+    _typeName = _typeName._substring(1);
+    for (_i = 0; _i < _length; ++_i)
+      __set(_result, _i, _initDims0(_typeName, _typeIdExprs, _queryIdExprs, _dimExprs, _index, _count, _defaultValue));
+  }
+   else {
+    for (_i = 0; _i < _length; ++_i)
+      __set(_result, _i, _defaultValue);
+  }
+  return _result;
+}
+
+function _initValues(_typeName, _typeId, _queryId, _values){
+  var _length, _result, _i;
+  _length = _getValueCount(_values);
+  _result = _$Array(new _Array(), _length, _typeId, _queryId, _typeName);
+  for (_i = 0; _i < _length; ++_i)
+    __set(_result, _i, _getValue(_values, _i));
+  return _result;
+}
+
+function _setCheck(_array, _index, _value){
+  if (_value !== null && _array._queryId != 0 && !_instanceOf(_value, _array._queryId))
+    throw _$ArrayStoreException(new _ArrayStoreException());
+  return __set(_array, _index, _value);
+}
+
+function __set(_array, _index, _value){
+  return _array[_index] = _value;
+}
+
+function _getValueCount(_values){
+  return _values.length;
+}
+
+function _getValue(_values, _index){
+  return _values[_index];
+}
+
+function _getIntValue(_values, _index){
+  return _values[_index];
+}
+
+function _$Array(_this$static, _length, _typeId, _queryId, _typeName){
+  _this$static._length = _length;
+  _this$static._typeName = _typeName;
+  _this$static._typeId = _typeId;
+  _this$static._queryId = _queryId;
+  return _this$static;
+}
+
+function _Array(){
+}
+
+_ = _Array.prototype = new _Object();
+_._typeName = 'com.google.gwt.lang.Array';
+_._typeId = 7;
+function _dynamicCast(_src, _dstId){
+  if (_src != null)
+    _canCast(_src._typeId, _dstId) || _throwClassCastException();
+  return _src;
+}
+
+function _instanceOf(_src, _dstId){
+  if (_src == null)
+    return false;
+  return _canCast(_src._typeId, _dstId);
+}
+
+function _throwClassCastExceptionUnlessNull(_o){
+  if (_o !== null)
+    throw _$ClassCastException(new _ClassCastException());
+  return null;
+}
+
+function _canCast(_srcId, _dstId){
+  if (!_srcId)
+    return false;
+  return !(!_typeIdArray[_srcId][_dstId]);
+}
+
+function _wrapJSO(_jso, _seed){
+  _ = _seed.prototype;
+  if (_jso && !(_jso._typeId >= _._typeId)) {
+    try {
+      for (var _i in _) {
+        _jso[_i] = _[_i];
+      }
+    }
+     catch (_e) {
+    }
+  }
+  return _jso;
+}
+
+function _narrow_int(_x){
+  return ~(~_x);
+}
+
+function _round_int(_x){
+  if (_x > _MAX_VALUE)
+    return _MAX_VALUE;
+  if (_x < _MIN_VALUE)
+    return _MIN_VALUE;
+  return _x >= 0?Math.floor(_x):Math.ceil(_x);
+}
+
+function _caught(_e){
+  if (_instanceOf(_e, 2))
+    return _e;
+  return _$JavaScriptException(new _JavaScriptException(), _javaScriptExceptionName(_e), _javaScriptExceptionDescription(_e));
+}
+
+function _javaScriptExceptionName(_e){
+  return _e.name;
+}
+
+function _javaScriptExceptionDescription(_e){
+  return _e.message;
+}
+
+function _throwClassCastException(){
+  throw _$ClassCastException(new _ClassCastException());
+}
+
+function _$clinit0(){
+  _$clinit0 = _nullMethod;
+  _sEventPreviewStack = _$Vector(new _Vector());
+  {
+    _impl = new _DOMImplSafari();
+    _impl._init();
+  }
+  return window;
+}
+
+function _appendChild(_parent, _child){
+  _$clinit0();
+  _impl._appendChild0(_parent, _child);
+}
+
+function _compare(_elem1, _elem2){
+  _$clinit0();
+  return _impl._compare0(_elem1, _elem2);
+}
+
+function _createButton(){
+  _$clinit0();
+  return _impl._createElement('button');
+}
+
+function _createDiv(){
+  _$clinit0();
+  return _impl._createElement('div');
+}
+
+function _eventCancelBubble(_evt, _cancel){
+  _$clinit0();
+  _impl._eventCancelBubble0(_evt, _cancel);
+}
+
+function _eventGetType(_evt){
+  _$clinit0();
+  return _impl._eventGetTypeInt(_evt);
+}
+
+function _eventPreventDefault(_evt){
+  _$clinit0();
+  _impl._eventPreventDefault0(_evt);
+}
+
+function _eventToString(_evt){
+  _$clinit0();
+  return _impl._eventToString0(_evt);
+}
+
+function _getElementById(_id){
+  _$clinit0();
+  return _impl._getElementById0(_id);
+}
+
+function _getEventsSunk(_elem){
+  _$clinit0();
+  return _impl._getEventsSunk0(_elem);
+}
+
+function _getInnerHTML(_elem){
+  _$clinit0();
+  return _impl._getInnerHTML0(_elem);
+}
+
+function _getParent(_elem){
+  _$clinit0();
+  return _impl._getParent0(_elem);
+}
+
+function _removeChild(_parent, _child){
+  _$clinit0();
+  _impl._removeChild0(_parent, _child);
+}
+
+function _setAttribute(_elem, _attr, _value){
+  _$clinit0();
+  _impl._setAttribute0(_elem, _attr, _value);
+}
+
+function _setEventListener(_elem, _listener){
+  _$clinit0();
+  _impl._setEventListener0(_elem, _listener);
+}
+
+function _setInnerHTML(_elem, _html){
+  _$clinit0();
+  _impl._setInnerHTML0(_elem, _html);
+}
+
+function _setStyleAttribute(_elem, _attr, _value){
+  _$clinit0();
+  _impl._setStyleAttribute0(_elem, _attr, _value);
+}
+
+function _sinkEvents(_elem, _eventBits){
+  _$clinit0();
+  _impl._sinkEvents0(_elem, _eventBits);
+}
+
+function _toString3(_elem){
+  _$clinit0();
+  return _impl._toString4(_elem);
+}
+
+function _dispatchEvent(_evt, _elem, _listener){
+  _$clinit0();
+  var _handler;
+  _handler = _sUncaughtExceptionHandler;
+  if (_handler !== null)
+    _dispatchEventAndCatch(_evt, _elem, _listener, _handler);
+  else 
+    _dispatchEventImpl(_evt, _elem, _listener);
+}
+
+function _previewEvent(_evt){
+  _$clinit0();
+  var _ret, _preview;
+  _ret = true;
+  if (_sEventPreviewStack._size() > 0) {
+    _preview = _throwClassCastExceptionUnlessNull(_$get(_sEventPreviewStack, _sEventPreviewStack._size() - 1));
+    if (!(_ret = null._nullMethod0())) {
+      _eventCancelBubble(_evt, true);
+      _eventPreventDefault(_evt);
+    }
+  }
+  return _ret;
+}
+
+function _dispatchEventAndCatch(_evt, _elem, _listener, _handler){
+  _$clinit0();
+  var _e, _$e0;
+  try {
+    _dispatchEventImpl(_evt, _elem, _listener);
+  }
+   catch (_$e0) {
+    _$e0 = _caught(_$e0);
+    if (_instanceOf(_$e0, 2)) {
+      _e = _$e0;
+      _$onUncaughtException(_handler, _e);
+    }
+     else 
+      throw _$e0;
+  }
+}
+
+function _dispatchEventImpl(_evt, _elem, _listener){
+  _$clinit0();
+  if (_elem === _sCaptureElem) {
+    if (_eventGetType(_evt) == 8192)
+      _sCaptureElem = null;
+  }
+  _listener._onBrowserEvent(_evt);
+}
+
+_impl = null;
+_sCaptureElem = null;
+function _equals2(_other){
+  if (_instanceOf(_other, 3))
+    return _compare(this, _dynamicCast(_other, 3));
+  return _$equals(_wrapJSO(this, _Element), _other);
+}
+
+function _hashCode2(){
+  return _$hashCode(_wrapJSO(this, _Element));
+}
+
+function _toString5(){
+  return _toString3(this);
+}
+
+function _Element(){
+}
+
+_ = _Element.prototype = new _JavaScriptObject();
+_._equals0 = _equals2;
+_._hashCode0 = _hashCode2;
+_._toString0 = _toString5;
+_._typeName = 'com.google.gwt.user.client.Element';
+_._typeId = 10;
+function _equals3(_other){
+  return _$equals(_wrapJSO(this, _Event), _other);
+}
+
+function _hashCode3(){
+  return _$hashCode(_wrapJSO(this, _Event));
+}
+
+function _toString6(){
+  return _eventToString(this);
+}
+
+function _Event(){
+}
+
+_ = _Event.prototype = new _JavaScriptObject();
+_._equals0 = _equals3;
+_._hashCode0 = _hashCode3;
+_._toString0 = _toString6;
+_._typeName = 'com.google.gwt.user.client.Event';
+_._typeId = 11;
+function _$clinit1(){
+  _$clinit1 = _nullMethod;
+  _httpRequest = new _HTTPRequestImpl();
+  return window;
+}
+
+function _asyncPost(_url, _postData, _handler){
+  _$clinit1();
+  return _$asyncPost(_httpRequest, _url, _postData, _handler);
+}
+
+function _$clinit2(){
+  _$clinit2 = _nullMethod;
+  _closingListeners = _$Vector(new _Vector());
+  _resizeListeners = _$Vector(new _Vector());
+  {
+    _init0();
+  }
+  return window;
+}
+
+function _addWindowCloseListener(_listener){
+  _$clinit2();
+  _closingListeners._add(_listener);
+}
+
+function _onClosed(){
+  _$clinit2();
+  var _handler;
+  _handler = _sUncaughtExceptionHandler;
+  if (_handler !== null)
+    _fireClosedAndCatch(_handler);
+  else 
+    _fireClosedImpl();
+}
+
+function _onClosing(){
+  _$clinit2();
+  var _handler;
+  _handler = _sUncaughtExceptionHandler;
+  if (_handler !== null)
+    return _fireClosingAndCatch(_handler);
+  else 
+    return _fireClosingImpl();
+}
+
+function _onResize(){
+  _$clinit2();
+  var _handler;
+  _handler = _sUncaughtExceptionHandler;
+  if (_handler !== null)
+    _fireResizedAndCatch(_handler);
+  else 
+    _fireResizedImpl();
+}
+
+function _fireClosedAndCatch(_handler){
+  _$clinit2();
+  var _e, _$e0;
+  try {
+    _fireClosedImpl();
+  }
+   catch (_$e0) {
+    _$e0 = _caught(_$e0);
+    if (_instanceOf(_$e0, 2)) {
+      _e = _$e0;
+      _$onUncaughtException(_handler, _e);
+    }
+     else 
+      throw _$e0;
+  }
+}
+
+function _fireClosedImpl(){
+  _$clinit2();
+  var _it, _listener;
+  for (_it = _closingListeners._iterator(); _it._hasNext();) {
+    _listener = _dynamicCast(_it._next(), 4);
+    _listener._onWindowClosed();
+  }
+}
+
+function _fireClosingAndCatch(_handler){
+  _$clinit2();
+  var _e, _$e0;
+  try {
+    return _fireClosingImpl();
+  }
+   catch (_$e0) {
+    _$e0 = _caught(_$e0);
+    if (_instanceOf(_$e0, 2)) {
+      _e = _$e0;
+      _$onUncaughtException(_handler, _e);
+      return null;
+    }
+     else 
+      throw _$e0;
+  }
+}
+
+function _fireClosingImpl(){
+  _$clinit2();
+  var _ret, _it, _listener, _msg;
+  _ret = null;
+  for (_it = _closingListeners._iterator(); _it._hasNext();) {
+    _listener = _dynamicCast(_it._next(), 4);
+    _msg = _listener._onWindowClosing();
+    if (_ret === null)
+      _ret = _msg;
+  }
+  return _ret;
+}
+
+function _fireResizedAndCatch(_handler){
+  _$clinit2();
+  var _e, _$e0;
+  try {
+    _fireResizedImpl();
+  }
+   catch (_$e0) {
+    _$e0 = _caught(_$e0);
+    if (_instanceOf(_$e0, 2)) {
+      _e = _$e0;
+      _$onUncaughtException(_handler, _e);
+    }
+     else 
+      throw _$e0;
+  }
+}
+
+function _fireResizedImpl(){
+  _$clinit2();
+  var _it, _listener;
+  for (_it = _resizeListeners._iterator(); _it._hasNext();) {
+    _listener = _throwClassCastExceptionUnlessNull(_it._next());
+    null._nullMethod0();
+  }
+}
+
+function _init0(){
+  _$clinit2();
+  $wnd.__gwt_initHandlers(function(){
+    _onResize();
+  }
+  , function(){
+    return _onClosing();
+  }
+  , function(){
+    _onClosed();
+    $wnd.onresize = null;
+    $wnd.onbeforeclose = null;
+    $wnd.onclose = null;
+  }
+  );
+}
+
+function _appendChild1(_parent, _child){
+  _parent.appendChild(_child);
+}
+
+function _createElement0(_tag){
+  return $doc.createElement(_tag);
+}
+
+function _eventCancelBubble1(_evt, _cancel){
+  _evt.cancelBubble = _cancel;
+}
+
+function _eventGetTypeInt0(_evt){
+  switch (_evt.type) {
+    case 'blur':
+      return 4096;
+    case 'change':
+      return 1024;
+    case 'click':
+      return 1;
+    case 'dblclick':
+      return 2;
+    case 'focus':
+      return 2048;
+    case 'keydown':
+      return 128;
+    case 'keypress':
+      return 256;
+    case 'keyup':
+      return 512;
+    case 'load':
+      return 32768;
+    case 'losecapture':
+      return 8192;
+    case 'mousedown':
+      return 4;
+    case 'mousemove':
+      return 64;
+    case 'mouseout':
+      return 32;
+    case 'mouseover':
+      return 16;
+    case 'mouseup':
+      return 8;
+    case 'scroll':
+      return 16384;
+    case 'error':
+      return 65536;
+  }
+}
+
+function _getElementById1(_id){
+  var _elem = $doc.getElementById(_id);
+  return _elem?_elem:null;
+}
+
+function _getEventsSunk1(_elem){
+  return _elem.__eventBits?_elem.__eventBits:0;
+}
+
+function _getInnerHTML1(_elem){
+  var _ret = _elem.innerHTML;
+  return _ret == null?null:_ret;
+}
+
+function _removeChild1(_parent, _child){
+  _parent.removeChild(_child);
+}
+
+function _setAttribute1(_elem, _attr, _value){
+  _elem[_attr] = _value;
+}
+
+function _setEventListener1(_elem, _listener){
+  _elem.__listener = _listener;
+}
+
+function _setInnerHTML1(_elem, _html){
+  if (!_html) {
+    _html = '';
+  }
+  _elem.innerHTML = _html;
+}
+
+function _setStyleAttribute1(_elem, _attr, _value){
+  _elem.style[_attr] = _value;
+}
+
+function _DOMImpl(){
+}
+
+_ = _DOMImpl.prototype = new _Object();
+_._appendChild0 = _appendChild1;
+_._createElement = _createElement0;
+_._eventCancelBubble0 = _eventCancelBubble1;
+_._eventGetTypeInt = _eventGetTypeInt0;
+_._getElementById0 = _getElementById1;
+_._getEventsSunk0 = _getEventsSunk1;
+_._getInnerHTML0 = _getInnerHTML1;
+_._removeChild0 = _removeChild1;
+_._setAttribute0 = _setAttribute1;
+_._setEventListener0 = _setEventListener1;
+_._setInnerHTML0 = _setInnerHTML1;
+_._setStyleAttribute0 = _setStyleAttribute1;
+_._typeName = 'com.google.gwt.user.client.impl.DOMImpl';
+_._typeId = 12;
+function _compare1(_elem1, _elem2){
+  return _elem1 == _elem2;
+}
+
+function _eventPreventDefault1(_evt){
+  _evt.preventDefault();
+}
+
+function _eventToString1(_evt){
+  return _evt.toString();
+}
+
+function _getParent1(_elem){
+  var _parent = _elem.parentNode;
+  if (_parent == null) {
+    return null;
+  }
+  if (_parent.nodeType != 1)
+    _parent = null;
+  return _parent?_parent:null;
+}
+
+function _init1(){
+  $wnd.__dispatchCapturedMouseEvent = function(_evt){
+    if ($wnd.__dispatchCapturedEvent(_evt)) {
+      var _cap = $wnd.__captureElem;
+      if (_cap && _cap.__listener) {
+        _dispatchEvent(_evt, _cap, _cap.__listener);
+        _evt.stopPropagation();
+      }
+    }
+  }
+  ;
+  $wnd.__dispatchCapturedEvent = function(_evt){
+    if (!_previewEvent(_evt)) {
+      _evt.stopPropagation();
+      _evt.preventDefault();
+      return false;
+    }
+    return true;
+  }
+  ;
+  $wnd.addEventListener('mouseout', function(_evt){
+    var _cap = $wnd.__captureElem;
+    if (_cap) {
+      if (!_evt.relatedTarget) {
+        $wnd.__captureElem = null;
+        if (_cap.__listener) {
+          var _lcEvent = $doc.createEvent('UIEvent');
+          _lcEvent.initUIEvent('losecapture', false, false, $wnd, 0);
+          _dispatchEvent(_lcEvent, _cap, _cap.__listener);
+        }
+      }
+    }
+  }
+  , true);
+  $wnd.addEventListener('click', $wnd.__dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('dblclick', $wnd.__dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('mousedown', $wnd.__dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('mouseup', $wnd.__dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('mousemove', $wnd.__dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('keydown', $wnd.__dispatchCapturedEvent, true);
+  $wnd.addEventListener('keyup', $wnd.__dispatchCapturedEvent, true);
+  $wnd.addEventListener('keypress', $wnd.__dispatchCapturedEvent, true);
+  $wnd.__dispatchEvent = function(_evt){
+    var _listener, _curElem = this;
+    while (_curElem && !(_listener = _curElem.__listener))
+      _curElem = _curElem.parentNode;
+    if (_curElem && _curElem.nodeType != 1)
+      _curElem = null;
+    if (_listener)
+      _dispatchEvent(_evt, _curElem, _listener);
+  }
+  ;
+  $wnd.__captureElem = null;
+}
+
+function _sinkEvents1(_elem, _bits){
+  _elem.__eventBits = _bits;
+  _elem.onclick = _bits & 1?$wnd.__dispatchEvent:null;
+  _elem.ondblclick = _bits & 2?$wnd.__dispatchEvent:null;
+  _elem.onmousedown = _bits & 4?$wnd.__dispatchEvent:null;
+  _elem.onmouseup = _bits & 8?$wnd.__dispatchEvent:null;
+  _elem.onmouseover = _bits & 16?$wnd.__dispatchEvent:null;
+  _elem.onmouseout = _bits & 32?$wnd.__dispatchEvent:null;
+  _elem.onmousemove = _bits & 64?$wnd.__dispatchEvent:null;
+  _elem.onkeydown = _bits & 128?$wnd.__dispatchEvent:null;
+  _elem.onkeypress = _bits & 256?$wnd.__dispatchEvent:null;
+  _elem.onkeyup = _bits & 512?$wnd.__dispatchEvent:null;
+  _elem.onchange = _bits & 1024?$wnd.__dispatchEvent:null;
+  _elem.onfocus = _bits & 2048?$wnd.__dispatchEvent:null;
+  _elem.onblur = _bits & 4096?$wnd.__dispatchEvent:null;
+  _elem.onlosecapture = _bits & 8192?$wnd.__dispatchEvent:null;
+  _elem.onscroll = _bits & 16384?$wnd.__dispatchEvent:null;
+  _elem.onload = _bits & 32768?$wnd.__dispatchEvent:null;
+  _elem.onerror = _bits & 65536?$wnd.__dispatchEvent:null;
+}
+
+function _toString7(_elem){
+  var _temp = _elem.cloneNode(true);
+  var _tempDiv = $doc.createElement('DIV');
+  _tempDiv.appendChild(_temp);
+  outer = _tempDiv.innerHTML;
+  _temp.innerHTML = '';
+  return outer;
+}
+
+function _DOMImplStandard(){
+}
+
+_ = _DOMImplStandard.prototype = new _DOMImpl();
+_._compare0 = _compare1;
+_._eventPreventDefault0 = _eventPreventDefault1;
+_._eventToString0 = _eventToString1;
+_._getParent0 = _getParent1;
+_._init = _init1;
+_._sinkEvents0 = _sinkEvents1;
+_._toString4 = _toString7;
+_._typeName = 'com.google.gwt.user.client.impl.DOMImplStandard';
+_._typeId = 13;
+function _DOMImplSafari(){
+}
+
+_ = _DOMImplSafari.prototype = new _DOMImplStandard();
+_._typeName = 'com.google.gwt.user.client.impl.DOMImplSafari';
+_._typeId = 14;
+function _doCreateXmlHTTPRequest(){
+  return new XMLHttpRequest();
+}
+
+function _asyncPostImpl(_user, _pwd, _url, _postData, _handler){
+  var _xmlHttp = this._doCreateXmlHTTPRequest0();
+  try {
+    _xmlHttp.open('POST', _url, true);
+    _xmlHttp.setRequestHeader('Content-Type', 'text/plain; charset=utf-8');
+    _xmlHttp.onreadystatechange = function(){
+      if (_xmlHttp.readyState == 4) {
+        delete(_xmlHttp.onreadystatechange);
+        var _localHandler = _handler;
+        var _responseText = _xmlHttp.responseText;
+        _handler = null;
+        _xmlHttp = null;
+        _localHandler._onCompletion(_responseText);
+      }
+    }
+    ;
+    _xmlHttp.send(_postData);
+    return true;
+  }
+   catch (_e) {
+    delete(_xmlHttp.onreadystatechange);
+    _handler = null;
+    _xmlHttp = null;
+    return false;
+  }
+}
+
+function _$asyncPost(_this$static, _url, _postData, _handler){
+  return _$asyncPost0(_this$static, null, null, _url, _postData, _handler);
+}
+
+function _$asyncPost0(_this$static, _user, _pwd, _url, _postData, _handler){
+  return _this$static._asyncPostImpl0(_user, _pwd, _url, _postData, _handler);
+}
+
+function _HTTPRequestImpl(){
+}
+
+_ = _HTTPRequestImpl.prototype = new _Object();
+_._doCreateXmlHTTPRequest0 = _doCreateXmlHTTPRequest;
+_._asyncPostImpl0 = _asyncPostImpl;
+_._typeName = 'com.google.gwt.user.client.impl.HTTPRequestImpl';
+_._typeId = 15;
+function _$InvocationException(_this$static, _s){
+  _$RuntimeException0(_this$static, _s, null);
+  return _this$static;
+}
+
+function _InvocationException(){
+}
+
+_ = _InvocationException.prototype = new _RuntimeException();
+_._typeName = 'com.google.gwt.user.client.rpc.InvocationException';
+_._typeId = 16;
+function _getCause1(){
+  return null;
+}
+
+function _getMessage1(){
+  return this._msg;
+}
+
+function _$SerializableException(_this$static){
+  _$Exception(_this$static);
+  return _this$static;
+}
+
+function _SerializableException(){
+}
+
+_ = _SerializableException.prototype = new _Exception();
+_._getCause0 = _getCause1;
+_._getMessage0 = _getMessage1;
+_._typeName = 'com.google.gwt.user.client.rpc.SerializableException';
+_._typeId = 17;
+_._msg = null;
+function _getMsg(_instance){
+  return _instance._msg;
+}
+
+function _setMsg(_instance, _value){
+  _instance._msg = _value;
+}
+
+function _serialize(_streamWriter, _instance){
+  _streamWriter._writeString(_getMsg(_instance));
+}
+
+function _deserialize(_streamReader, _instance){
+  _setMsg(_instance, _streamReader._readString());
+}
+
+function _$SerializationException(_this$static, _msg){
+  _$Exception0(_this$static, _msg);
+  return _this$static;
+}
+
+function _SerializationException(){
+}
+
+_ = _SerializationException.prototype = new _Exception();
+_._typeName = 'com.google.gwt.user.client.rpc.SerializationException';
+_._typeId = 18;
+function _$ServiceDefTarget$NoServiceEntryPointSpecifiedException(_this$static){
+  _$InvocationException(_this$static, 'Service implementation URL not specified');
+  return _this$static;
+}
+
+function _ServiceDefTarget$NoServiceEntryPointSpecifiedException(){
+}
+
+_ = _ServiceDefTarget$NoServiceEntryPointSpecifiedException.prototype = new _InvocationException();
+_._typeName = 'com.google.gwt.user.client.rpc.ServiceDefTarget$NoServiceEntryPointSpecifiedException';
+_._typeId = 19;
+function _deserialize0(_streamReader, _instance){
+}
+
+function _instantiate(_streamReader){
+  return _valueOf(_streamReader._readBoolean());
+}
+
+function _serialize0(_streamWriter, _instance){
+  _streamWriter._writeBoolean(_instance._fValue);
+}
+
+function _deserialize1(_streamReader, _instance){
+}
+
+function _instantiate0(_streamReader){
+  return _$Byte(new _Byte(), _streamReader._readByte());
+}
+
+function _serialize1(_streamWriter, _instance){
+  _streamWriter._writeByte(_instance._fValue);
+}
+
+function _deserialize2(_streamReader, _instance){
+}
+
+function _instantiate1(_streamReader){
+  return _$Character(new _Character(), _streamReader._readChar());
+}
+
+function _serialize2(_streamWriter, _instance){
+  _streamWriter._writeChar(_instance._fValue);
+}
+
+function _deserialize3(_streamReader, _instance){
+}
+
+function _instantiate2(_streamReader){
+  return _$Double(new _Double(), _streamReader._readDouble());
+}
+
+function _serialize3(_streamWriter, _instance){
+  _streamWriter._writeDouble(_instance._fValue);
+}
+
+function _deserialize4(_streamReader, _instance){
+}
+
+function _instantiate3(_streamReader){
+  return _$Float(new _Float(), _streamReader._readFloat());
+}
+
+function _serialize4(_streamWriter, _instance){
+  _streamWriter._writeFloat(_instance._fValue);
+}
+
+function _deserialize5(_streamReader, _instance){
+}
+
+function _instantiate4(_streamReader){
+  return _$Integer(new _Integer(), _streamReader._readInt());
+}
+
+function _serialize5(_streamWriter, _instance){
+  _streamWriter._writeInt(_instance._fValue);
+}
+
+function _deserialize6(_streamReader, _instance){
+}
+
+function _instantiate5(_streamReader){
+  return _$Long(new _Long(), _streamReader._readLong());
+}
+
+function _serialize6(_streamWriter, _instance){
+  _streamWriter._writeLong(_instance._fValue);
+}
+
+function _deserialize7(_streamReader, _instance){
+  var _itemIndex;
+  for (_itemIndex = 0; _itemIndex < _instance._length; ++_itemIndex) {
+    _setCheck(_instance, _itemIndex, _streamReader._readObject());
+  }
+}
+
+function _serialize7(_streamWriter, _instance){
+  var _itemCount, _itemIndex;
+  _itemCount = _instance._length;
+  _streamWriter._writeInt(_itemCount);
+  for (_itemIndex = 0; _itemIndex < _itemCount; ++_itemIndex) {
+    _streamWriter._writeObject(_instance[_itemIndex]);
+  }
+}
+
+function _deserialize8(_streamReader, _instance){
+}
+
+function _instantiate6(_streamReader){
+  return _$Short(new _Short(), _streamReader._readShort());
+}
+
+function _serialize8(_streamWriter, _instance){
+  _streamWriter._writeShort(_instance._fValue);
+}
+
+function _deserialize9(_streamReader, _instance){
+}
+
+function _instantiate7(_streamReader){
+  return _streamReader._readString();
+}
+
+function _serialize9(_streamWriter, _instance){
+  _streamWriter._writeString(_instance);
+}
+
+function _deserialize10(_streamReader, _instance){
+  var _itemIndex;
+  for (_itemIndex = 0; _itemIndex < _instance._length; ++_itemIndex) {
+    _instance[_itemIndex] = _streamReader._readBoolean();
+  }
+}
+
+function _serialize10(_streamWriter, _instance){
+  var _itemCount, _itemIndex;
+  _itemCount = _instance._length;
+  _streamWriter._writeInt(_itemCount);
+  for (_itemIndex = 0; _itemIndex < _itemCount; ++_itemIndex) {
+    _streamWriter._writeBoolean(_instance[_itemIndex]);
+  }
+}
+
+function _deserialize11(_streamReader, _instance){
+  var _itemIndex;
+  for (_itemIndex = 0; _itemIndex < _instance._length; ++_itemIndex) {
+    _instance[_itemIndex] = _streamReader._readInt();
+  }
+}
+
+function _serialize11(_streamWriter, _instance){
+  var _itemCount, _itemIndex;
+  _itemCount = _instance._length;
+  _streamWriter._writeInt(_itemCount);
+  for (_itemIndex = 0; _itemIndex < _itemCount; ++_itemIndex) {
+    _streamWriter._writeInt(_instance[_itemIndex]);
+  }
+}
+
+function _deserialize12(_streamReader, _instance){
+  var _size, _i, _obj;
+  _size = _streamReader._readInt();
+  for (_i = 0; _i < _size; ++_i) {
+    _obj = _streamReader._readObject();
+    _$add(_instance, _obj);
+  }
+}
+
+function _serialize12(_streamWriter, _instance){
+  var _size, _iter, _obj;
+  _size = _$size(_instance);
+  _streamWriter._writeInt(_size);
+  _iter = _$iterator(_instance);
+  while (_iter._hasNext()) {
+    _obj = _iter._next();
+    _streamWriter._writeObject(_obj);
+  }
+}
+
+function _deserialize13(_streamReader, _instance){
+}
+
+function _instantiate8(_streamReader){
+  return _$Date(new _Date(), _streamReader._readLong());
+}
+
+function _serialize13(_streamWriter, _instance){
+  _streamWriter._writeLong(_instance._getTime());
+}
+
+function _deserialize14(_streamReader, _instance){
+  var _size, _i, _key, _value;
+  _size = _streamReader._readInt();
+  for (_i = 0; _i < _size; ++_i) {
+    _key = _streamReader._readObject();
+    _value = _streamReader._readObject();
+    _$put(_instance, _key, _value);
+  }
+}
+
+function _serialize14(_streamWriter, _instance){
+  var _size, _entrySet, _iter, _entry;
+  _size = _instance._fullSlots;
+  _streamWriter._writeInt(_size);
+  _entrySet = _$entrySet(_instance);
+  _iter = _$iterator0(_entrySet);
+  while (_$hasNext(_iter)) {
+    _entry = _$next(_iter);
+    _streamWriter._writeObject(_entry._key);
+    _streamWriter._writeObject(_entry._value);
+  }
+}
+
+function _deserialize15(_streamReader, _instance){
+  var _size, _i;
+  _size = _streamReader._readInt();
+  for (_i = 0; _i < _size; ++_i) {
+    _$add0(_instance, _streamReader._readObject());
+  }
+}
+
+function _serialize15(_streamWriter, _instance){
+  var _iter;
+  _streamWriter._writeInt(_instance._fMap._fullSlots);
+  for (_iter = _$iterator1(_instance); _$hasNext0(_iter);) {
+    _streamWriter._writeObject(_$next0(_iter));
+  }
+}
+
+function _deserialize16(_streamReader, _instance){
+  var _size, _i, _obj;
+  _size = _streamReader._readInt();
+  for (_i = 0; _i < _size; ++_i) {
+    _obj = _streamReader._readObject();
+    _instance._add(_obj);
+  }
+}
+
+function _serialize16(_streamWriter, _instance){
+  var _size, _iter, _obj;
+  _size = _instance._size();
+  _streamWriter._writeInt(_size);
+  _iter = _instance._iterator();
+  while (_iter._hasNext()) {
+    _obj = _iter._next();
+    _streamWriter._writeObject(_obj);
+  }
+}
+
+function _$setVersion(_this$static, _version){
+  _this$static._version = _version;
+}
+
+function _$setFlags(_this$static, _flags){
+  _this$static._flags = _flags;
+}
+
+function _AbstractSerializationStream(){
+}
+
+_ = _AbstractSerializationStream.prototype = new _Object();
+_._typeName = 'com.google.gwt.user.client.rpc.impl.AbstractSerializationStream';
+_._typeId = 20;
+_._flags = 0;
+_._version = 0;
+function _readObject0(){
+  return _$readObject(this);
+}
+
+function _$$init(_this$static){
+  _this$static._fSeenArray = _$ArrayList(new _ArrayList());
+}
+
+function _$AbstractSerializationStreamReader(_this$static){
+  _$$init(_this$static);
+  return _this$static;
+}
+
+function _$prepareToRead(_this$static, _encoded){
+  _$clear(_this$static._fSeenArray);
+  _$setVersion(_this$static, _this$static._readInt());
+  _$setFlags(_this$static, _this$static._readInt());
+}
+
+function _$rememberDecodedObject(_this$static, _o){
+  _$add(_this$static._fSeenArray, _o);
+}
+
+function _$readObject(_this$static){
+  var _token, _typeSignature;
+  _token = _this$static._readInt();
+  if (_token < 0) {
+    return _$get0(_this$static._fSeenArray, -(_token + 1));
+  }
+  _typeSignature = _this$static._getString(_token);
+  if (_typeSignature === null) {
+    return null;
+  }
+  return _this$static._deserialize17(_typeSignature);
+}
+
+function _AbstractSerializationStreamReader(){
+}
+
+_ = _AbstractSerializationStreamReader.prototype = new _AbstractSerializationStream();
+_._readObject = _readObject0;
+_._typeName = 'com.google.gwt.user.client.rpc.impl.AbstractSerializationStreamReader';
+_._typeId = 21;
+function _writeBoolean0(_fieldValue){
+  this._append(_fieldValue?'1':'0');
+}
+
+function _writeByte0(_fieldValue){
+  this._append(_valueOf0(_fieldValue));
+}
+
+function _writeChar0(_ch){
+  this._append(_valueOf0(_ch));
+}
+
+function _writeDouble0(_fieldValue){
+  this._append(_valueOf1(_fieldValue));
+}
+
+function _writeFloat0(_fieldValue){
+  this._append(_valueOf2(_fieldValue));
+}
+
+function _writeInt0(_fieldValue){
+  _$writeInt(this, _fieldValue);
+}
+
+function _writeLong0(_fieldValue){
+  this._append(_valueOf3(_fieldValue));
+}
+
+function _writeObject0(_instance){
+  _$writeObject(this, _instance);
+}
+
+function _writeShort0(_value){
+  this._append(_valueOf0(_value));
+}
+
+function _writeString0(_value){
+  _$writeString(this, _value);
+}
+
+function _$writeString(_this$static, _value){
+  _$writeInt(_this$static, _this$static._addString(_value));
+}
+
+function _$writeInt(_this$static, _fieldValue){
+  _this$static._append(_valueOf0(_fieldValue));
+}
+
+function _$writeObject(_this$static, _instance){
+  var _objIndex, _typeSignature;
+  if (_instance === null) {
+    _$writeString(_this$static, null);
+    return ;
+  }
+  _objIndex = _this$static._getIndexForObject(_instance);
+  if (_objIndex >= 0) {
+    _$writeInt(_this$static, -(_objIndex + 1));
+    return ;
+  }
+  _this$static._saveIndexForObject(_instance);
+  _typeSignature = _this$static._getObjectTypeSignature(_instance);
+  _$writeString(_this$static, _typeSignature);
+  _this$static._serialize17(_instance, _typeSignature);
+}
+
+function _AbstractSerializationStreamWriter(){
+}
+
+_ = _AbstractSerializationStreamWriter.prototype = new _AbstractSerializationStream();
+_._writeBoolean = _writeBoolean0;
+_._writeByte = _writeByte0;
+_._writeChar = _writeChar0;
+_._writeDouble = _writeDouble0;
+_._writeFloat = _writeFloat0;
+_._writeInt = _writeInt0;
+_._writeLong = _writeLong0;
+_._writeObject = _writeObject0;
+_._writeShort = _writeShort0;
+_._writeString = _writeString0;
+_._typeName = 'com.google.gwt.user.client.rpc.impl.AbstractSerializationStreamWriter';
+_._typeId = 22;
+function _eval(_encoded){
+  return eval(_encoded);
+}
+
+function _getLength(_array){
+  return _array.length;
+}
+
+function _readBoolean0(){
+  return !(!this._results[--this._index]);
+}
+
+function _readByte0(){
+  return this._results[--this._index];
+}
+
+function _readChar0(){
+  return this._results[--this._index];
+}
+
+function _readDouble0(){
+  return this._results[--this._index];
+}
+
+function _readFloat0(){
+  return this._results[--this._index];
+}
+
+function _readInt0(){
+  return this._results[--this._index];
+}
+
+function _readLong0(){
+  return this._results[--this._index];
+}
+
+function _readShort0(){
+  return this._results[--this._index];
+}
+
+function _readString0(){
+  return this._getString(this._readInt());
+}
+
+function _deserialize18(_typeSignature){
+  var _instance;
+  _instance = this._serializer._instantiate9(this, _typeSignature);
+  _$rememberDecodedObject(this, _instance);
+  this._serializer._deserialize19(this, _instance, _typeSignature);
+  return _instance;
+}
+
+function _getString0(_index){
+  if (!_index) {
+    return null;
+  }
+  return this._stringTable[_index - 1];
+}
+
+function _readJavaScriptObject(){
+  return this._results[--this._index];
+}
+
+function _$ClientSerializationStreamReader(_this$static, _serializer){
+  _$AbstractSerializationStreamReader(_this$static);
+  _this$static._serializer = _serializer;
+  return _this$static;
+}
+
+function _$prepareToRead0(_this$static, _encoded){
+  _this$static._results = _eval(_encoded);
+  _this$static._index = _getLength(_this$static._results);
+  _$prepareToRead(_this$static, _encoded);
+  _this$static._stringTable = _this$static._readJavaScriptObject0();
+}
+
+function _ClientSerializationStreamReader(){
+}
+
+_ = _ClientSerializationStreamReader.prototype = new _AbstractSerializationStreamReader();
+_._readBoolean = _readBoolean0;
+_._readByte = _readByte0;
+_._readChar = _readChar0;
+_._readDouble = _readDouble0;
+_._readFloat = _readFloat0;
+_._readInt = _readInt0;
+_._readLong = _readLong0;
+_._readShort = _readShort0;
+_._readString = _readString0;
+_._deserialize17 = _deserialize18;
+_._getString = _getString0;
+_._readJavaScriptObject0 = _readJavaScriptObject;
+_._typeName = 'com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader';
+_._typeId = 23;
+_._index = 0;
+_._results = null;
+_._stringTable = null;
+_._serializer = null;
+function _append0(_sb, _token){
+  _sb._append(_token);
+  _$append(_sb, 65535);
+}
+
+function _createJavaScriptObject(){
+  return {};
+}
+
+function _toString8(){
+  return _$toString0(this);
+}
+
+function _addString0(_string){
+  var _index;
+  if (_string === null) {
+    return 0;
+  }
+  _index = this._getIntForString(_string);
+  if (_index > 0) {
+    return _index;
+  }
+  _$add(this._stringTable, _string);
+  _index = _$size(this._stringTable);
+  this._setIntForString(_string, _index);
+  return _index;
+}
+
+function _append1(_token){
+  _append0(this._encodeBuffer, _token);
+}
+
+function _getIndexForObject0(_instance){
+  return this._getIntForInt(_identityHashCode(_instance));
+}
+
+function _getObjectTypeSignature0(_o){
+  var _typeName, _serializationSignature;
+  _typeName = _getTypeName(_o);
+  _serializationSignature = this._serializer._getSerializationSignature(_typeName);
+  if (_serializationSignature !== null) {
+    _typeName += '/' + _serializationSignature;
+  }
+  return _typeName;
+}
+
+function _saveIndexForObject0(_instance){
+  this._setIntForInt(_identityHashCode(_instance), this._objectCount++);
+}
+
+function _serialize18(_instance, _typeSignature){
+  this._serializer._serialize19(this, _instance, _typeSignature);
+}
+
+function _getIntForInt0(_key){
+  var _result = this._objectMap[_key];
+  return _result == null?-1:_result;
+}
+
+function _getIntForString0(_key){
+  var _result = this._stringMap[_key];
+  return _result == null?0:_result;
+}
+
+function _setIntForInt0(_key, _value){
+  this._objectMap[_key] = _value;
+}
+
+function _setIntForString0(_key, _value){
+  this._stringMap[_key] = _value;
+}
+
+function _$$init0(_this$static){
+  _this$static._stringTable = _$ArrayList(new _ArrayList());
+}
+
+function _$writeHeader(_this$static, _buffer){
+  _append0(_buffer, _valueOf0(2));
+  _append0(_buffer, _valueOf0(_this$static._flags));
+}
+
+function _$writeStringTable(_this$static, _buffer){
+  var _stringTableSize, _i;
+  _stringTableSize = _$size(_this$static._stringTable);
+  _append0(_buffer, _valueOf0(_stringTableSize));
+  for (_i = 0; _i < _stringTableSize; ++_i) {
+    _append0(_buffer, _dynamicCast(_$get0(_this$static._stringTable, _i), 5));
+  }
+  return _buffer;
+}
+
+function _$writePayload(_this$static, _buffer){
+  _buffer._append(_this$static._encodeBuffer._toString0());
+}
+
+function _$prepareToWrite(_this$static){
+  _this$static._objectCount = 0;
+  _this$static._objectMap = _createJavaScriptObject();
+  _this$static._stringMap = _createJavaScriptObject();
+  _$clear(_this$static._stringTable);
+  _this$static._encodeBuffer = _$StringBuffer(new _StringBuffer());
+}
+
+function _$ClientSerializationStreamWriter(_this$static, _serializer){
+  _$$init0(_this$static);
+  _this$static._serializer = _serializer;
+  return _this$static;
+}
+
+function _$toString0(_this$static){
+  var _buffer;
+  _buffer = _$StringBuffer(new _StringBuffer());
+  _$writeHeader(_this$static, _buffer);
+  _$writeStringTable(_this$static, _buffer);
+  _$writePayload(_this$static, _buffer);
+  return _buffer._toString0();
+}
+
+function _ClientSerializationStreamWriter(){
+}
+
+_ = _ClientSerializationStreamWriter.prototype = new _AbstractSerializationStreamWriter();
+_._toString0 = _toString8;
+_._addString = _addString0;
+_._append = _append1;
+_._getIndexForObject = _getIndexForObject0;
+_._getObjectTypeSignature = _getObjectTypeSignature0;
+_._saveIndexForObject = _saveIndexForObject0;
+_._serialize17 = _serialize18;
+_._getIntForInt = _getIntForInt0;
+_._getIntForString = _getIntForString0;
+_._setIntForInt = _setIntForInt0;
+_._setIntForString = _setIntForString0;
+_._typeName = 'com.google.gwt.user.client.rpc.impl.ClientSerializationStreamWriter';
+_._typeId = 24;
+_._objectMap = null;
+_._stringMap = null;
+_._encodeBuffer = null;
+_._objectCount = 0;
+_._serializer = null;
+function _toString9(){
+  if (this._element === null) {
+    return '(null handle)';
+  }
+  return _toString3(this._element);
+}
+
+function _$setElement(_this$static, _elem){
+  _this$static._element = _elem;
+}
+
+function _$setStyleName(_this$static, _style){
+  if (_this$static._element === null) {
+    throw _$RuntimeException(new _RuntimeException(), 'Null widget handle.  If you are creating a composite, ensure that initWidget() has been called.');
+  }
+  _setAttribute(_this$static._element, 'className', _style);
+}
+
+function _$sinkEvents(_this$static, _eventBitsToAdd){
+  _sinkEvents(_this$static._element, _eventBitsToAdd | _getEventsSunk(_this$static._element));
+}
+
+function _UIObject(){
+}
+
+_ = _UIObject.prototype = new _Object();
+_._toString0 = _toString9;
+_._typeName = 'com.google.gwt.user.client.ui.UIObject';
+_._typeId = 25;
+_._element = null;
+function _onBrowserEvent0(_event){
+}
+
+function _onAttach(){
+  _$onAttach(this);
+}
+
+function _onDetach(){
+  _$onDetach(this);
+}
+
+function _$removeFromParent(_this$static){
+  if (_this$static._parent !== null) {
+    _$remove(_this$static._parent, _this$static);
+  }
+   else if (_this$static._parent !== null) {
+    throw _$IllegalStateException(new _IllegalStateException(), "This widget's parent does not implement HasWidgets");
+  }
+}
+
+function _$setParent(_this$static, _parent){
+  _this$static._parent = _parent;
+  if (_parent === null)
+    _this$static._onDetach0();
+  else if (_parent._attached)
+    _this$static._onAttach0();
+}
+
+function _$onAttach(_this$static){
+  if (_this$static._attached)
+    return ;
+  _this$static._attached = true;
+  _setEventListener(_this$static._element, _this$static);
+}
+
+function _$onDetach(_this$static){
+  if (!_this$static._attached)
+    return ;
+  _this$static._attached = false;
+  _setEventListener(_this$static._element, null);
+}
+
+function _Widget(){
+}
+
+_ = _Widget.prototype = new _UIObject();
+_._onBrowserEvent = _onBrowserEvent0;
+_._onAttach0 = _onAttach;
+_._onDetach0 = _onDetach;
+_._typeName = 'com.google.gwt.user.client.ui.Widget';
+_._typeId = 26;
+_._attached = false;
+_._parent = null;
+function _onAttach1(){
+  _$onAttach0(this);
+}
+
+function _onDetach1(){
+  _$onDetach0(this);
+}
+
+function _$disown(_this$static, _w){
+  var _elem;
+  if (_w._parent !== _this$static) {
+    throw _$IllegalArgumentException(new _IllegalArgumentException(), 'w is not a child of this panel');
+  }
+  _elem = _w._element;
+  _$setParent(_w, null);
+  _removeChild(_getParent(_elem), _elem);
+}
+
+function _$adopt(_this$static, _w, _container){
+  _$removeFromParent(_w);
+  if (_container !== null)
+    _appendChild(_container, _w._element);
+  _$setParent(_w, _this$static);
+}
+
+function _$onAttach0(_this$static){
+  var _it, _child;
+  _$onAttach(_this$static);
+  for (_it = _this$static._iterator(); _$hasNext1(_it);) {
+    _child = _$next1(_it);
+    _child._onAttach0();
+  }
+}
+
+function _$onDetach0(_this$static){
+  var _it, _child;
+  _$onDetach(_this$static);
+  for (_it = _this$static._iterator(); _$hasNext1(_it);) {
+    _child = _$next1(_it);
+    _child._onDetach0();
+  }
+}
+
+function _Panel(){
+}
+
+_ = _Panel.prototype = new _Widget();
+_._onAttach0 = _onAttach1;
+_._onDetach0 = _onDetach1;
+_._typeName = 'com.google.gwt.user.client.ui.Panel';
+_._typeId = 27;
+function _iterator0(){
+  return _$iterator2(this._children);
+}
+
+function _$ComplexPanel(_this$static){
+  _$$init1(_this$static);
+  return _this$static;
+}
+
+function _$add1(_this$static, _w, _container){
+  _$insert(_this$static, _w, _container, _this$static._children._size0);
+}
+
+function _$$init1(_this$static){
+  _this$static._children = _$WidgetCollection(new _WidgetCollection(), _this$static);
+}
+
+function _$insert(_this$static, _w, _container, _beforeIndex){
+  if (_w._parent === _this$static)
+    return ;
+  _$adopt(_this$static, _w, _container);
+  _$insert0(_this$static._children, _w, _beforeIndex);
+}
+
+function _$remove(_this$static, _w){
+  if (!_$contains(_this$static._children, _w))
+    return false;
+  _$disown(_this$static, _w);
+  _$remove0(_this$static._children, _w);
+  return true;
+}
+
+function _ComplexPanel(){
+}
+
+_ = _ComplexPanel.prototype = new _Panel();
+_._iterator = _iterator0;
+_._typeName = 'com.google.gwt.user.client.ui.ComplexPanel';
+_._typeId = 28;
+function _$AbsolutePanel(_this$static){
+  _$ComplexPanel(_this$static);
+  _$setElement(_this$static, _createDiv());
+  _setStyleAttribute(_this$static._element, 'position', 'relative');
+  _setStyleAttribute(_this$static._element, 'overflow', 'hidden');
+  return _this$static;
+}
+
+function _$add2(_this$static, _w){
+  _$add1(_this$static, _w, _this$static._element);
+}
+
+function _AbsolutePanel(){
+}
+
+_ = _AbsolutePanel.prototype = new _ComplexPanel();
+_._typeName = 'com.google.gwt.user.client.ui.AbsolutePanel';
+_._typeId = 29;
+function _$clinit3(){
+  _$clinit3 = _nullMethod;
+  _impl0 = new _FocusImpl();
+  return window;
+}
+
+function _onBrowserEvent1(_event){
+  switch (_eventGetType(_event)) {
+    case 1:
+      if (this._clickListeners !== null)
+        _$fireClick(this._clickListeners, this);
+      break;
+    case 4096:
+    case 2048:
+      if (this._focusListeners !== null)
+        null._nullMethod0();
+      break;
+    case 128:
+    case 512:
+    case 256:
+      if (this._keyboardListeners !== null)
+        null._nullMethod0();
+      break;
+  }
+}
+
+function _$FocusWidget(_this$static, _elem){
+  _$clinit3();
+  _$setElement(_this$static, _elem);
+  _$sinkEvents(_this$static, 7041);
+  return _this$static;
+}
+
+function _$addClickListener(_this$static, _listener){
+  if (_this$static._clickListeners === null)
+    _this$static._clickListeners = _$ClickListenerCollection(new _ClickListenerCollection());
+  _this$static._clickListeners._add(_listener);
+}
+
+function _FocusWidget(){
+}
+
+_ = _FocusWidget.prototype = new _Widget();
+_._onBrowserEvent = _onBrowserEvent1;
+_._typeName = 'com.google.gwt.user.client.ui.FocusWidget';
+_._typeId = 30;
+_._clickListeners = null;
+_._focusListeners = null;
+_._keyboardListeners = null;
+function _$ButtonBase(_this$static, _elem){
+  _$FocusWidget(_this$static, _elem);
+  return _this$static;
+}
+
+function _$setHTML(_this$static, _html){
+  _setInnerHTML(_this$static._element, _html);
+}
+
+function _ButtonBase(){
+}
+
+_ = _ButtonBase.prototype = new _FocusWidget();
+_._typeName = 'com.google.gwt.user.client.ui.ButtonBase';
+_._typeId = 31;
+function _adjustType(_button){
+  if (_button.type == 'submit') {
+    try {
+      _button.setAttribute('type', 'button');
+    }
+     catch (_e) {
+    }
+  }
+}
+
+function _$Button(_this$static){
+  _$ButtonBase(_this$static, _createButton());
+  _adjustType(_this$static._element);
+  _$setStyleName(_this$static, 'gwt-Button');
+  return _this$static;
+}
+
+function _$Button0(_this$static, _html){
+  _$Button(_this$static);
+  _$setHTML(_this$static, _html);
+  return _this$static;
+}
+
+function _Button(){
+}
+
+_ = _Button.prototype = new _ButtonBase();
+_._typeName = 'com.google.gwt.user.client.ui.Button';
+_._typeId = 32;
+function _contains(_o){
+  var _iter;
+  _iter = _$advanceToFind(this, this._iterator(), _o);
+  return _iter === null?false:true;
+}
+
+function _toString10(){
+  return _$toString1(this);
+}
+
+function _$advanceToFind(_this$static, _iter, _o){
+  var _t;
+  while (_iter._hasNext()) {
+    _t = _iter._next();
+    if (_o === null?_t === null:_o._equals0(_t))
+      return _iter;
+  }
+  return null;
+}
+
+function _$toString1(_this$static){
+  var _sb, _comma, _iter;
+  _sb = _$StringBuffer(new _StringBuffer());
+  _comma = null;
+  _sb._append('[');
+  _iter = _this$static._iterator();
+  while (_iter._hasNext()) {
+    if (_comma !== null)
+      _sb._append(_comma);
+    else 
+      _comma = ', ';
+    _sb._append(_valueOf4(_iter._next()));
+  }
+  _sb._append(']');
+  return _sb._toString0();
+}
+
+function _AbstractCollection(){
+}
+
+_ = _AbstractCollection.prototype = new _Object();
+_._contains0 = _contains;
+_._toString0 = _toString10;
+_._typeName = 'java.util.AbstractCollection';
+_._typeId = 33;
+function _equals4(_o){
+  return _$equals0(this, _o);
+}
+
+function _hashCode4(){
+  return _$hashCode0(this);
+}
+
+function _iterator1(){
+  return _$AbstractList$IteratorImpl(new _AbstractList$IteratorImpl(), this);
+}
+
+function _$equals0(_this$static, _o){
+  var _other, _iter, _iterOther, _elem, _elemOther;
+  if (_o === _this$static)
+    return true;
+  if (!_instanceOf(_o, 25))
+    return false;
+  _other = _dynamicCast(_o, 25);
+  if (_this$static._size() != _other._size())
+    return false;
+  _iter = _this$static._iterator();
+  _iterOther = _other._iterator();
+  while (_iter._hasNext()) {
+    _elem = _iter._next();
+    _elemOther = _iterOther._next();
+    if (!(_elem === null?_elemOther === null:_elem._equals0(_elemOther)))
+      return false;
+  }
+  return true;
+}
+
+function _$hashCode0(_this$static){
+  var _k, _iter, _obj;
+  _k = 1;
+  _iter = _this$static._iterator();
+  while (_iter._hasNext()) {
+    _obj = _iter._next();
+    _k = 31 * _k +(_obj === null?0:_obj._hashCode0());
+  }
+  return _k;
+}
+
+function _AbstractList(){
+}
+
+_ = _AbstractList.prototype = new _AbstractCollection();
+_._equals0 = _equals4;
+_._hashCode0 = _hashCode4;
+_._iterator = _iterator1;
+_._typeName = 'java.util.AbstractList';
+_._typeId = 34;
+function _equals5(_a, _b){
+  return _a === null?_b === null:_a._equals0(_b);
+}
+
+function _add0(_o){
+  var _a = this.array;
+  _a[_a.length] = _o;
+  return true;
+}
+
+function _clear(){
+  this.array.length = 0;
+}
+
+function _contains1(_o){
+  return _$contains0(this, _o);
+}
+
+function _equals6(_o){
+  return _$equals0(this, _o);
+}
+
+function _get(_index){
+  return _$get(this, _index);
+}
+
+function _hashCode5(){
+  return _$hashCode0(this);
+}
+
+function _indexOf(_o, _startIndex){
+  var _a = this.array;
+  var _i = _startIndex - 1;
+  var _n = _a.length;
+  while (++_i < _n) {
+    if (_equals5(_a[_i], _o))
+      return _i;
+  }
+  return -1;
+}
+
+function _size1(){
+  return this.array.length;
+}
+
+function _toString11(){
+  return _$toString1(this);
+}
+
+function __get(_index){
+  return this.array[_index];
+}
+
+function _initArray(){
+  this.array = new Array();
+}
+
+function _$Vector(_this$static){
+  _this$static._initArray0();
+  return _this$static;
+}
+
+function _$get(_this$static, _index){
+  if (_index < 0 || _index >= _this$static._size())
+    throw _$NoSuchElementException(new _NoSuchElementException());
+  return _this$static.__get0(_index);
+}
+
+function _$contains0(_this$static, _o){
+  return _$indexOf(_this$static, _o) != (-1);
+}
+
+function _$indexOf(_this$static, _o){
+  return _this$static._indexOf0(_o, 0);
+}
+
+function _Vector(){
+}
+
+_ = _Vector.prototype = new _AbstractList();
+_._add = _add0;
+_._clear0 = _clear;
+_._contains0 = _contains1;
+_._equals0 = _equals6;
+_._get0 = _get;
+_._hashCode0 = _hashCode5;
+_._indexOf0 = _indexOf;
+_._size = _size1;
+_._toString0 = _toString11;
+_.__get0 = __get;
+_._initArray0 = _initArray;
+_._typeName = 'java.util.Vector';
+_._typeId = 35;
+function _$ClickListenerCollection(_this$static){
+  _$Vector(_this$static);
+  return _this$static;
+}
+
+function _$fireClick(_this$static, _sender){
+  var _it, _listener;
+  for (_it = _this$static._iterator(); _it._hasNext();) {
+    _listener = _dynamicCast(_it._next(), 15);
+    _listener._onClick(_sender);
+  }
+}
+
+function _ClickListenerCollection(){
+}
+
+_ = _ClickListenerCollection.prototype = new _Vector();
+_._typeName = 'com.google.gwt.user.client.ui.ClickListenerCollection';
+_._typeId = 36;
+function _$clinit4(){
+  _$clinit4 = _nullMethod;
+  _rootPanels = _$HashMap(new _HashMap());
+  return window;
+}
+
+function _get1(){
+  _$clinit4();
+  return _get2(null);
+}
+
+function _get2(_id){
+  _$clinit4();
+  var _gwt, _elem;
+  _gwt = _dynamicCast(_$get1(_rootPanels, _id), 16);
+  if (_gwt !== null)
+    return _gwt;
+  _elem = null;
+  if (_id !== null) {
+    if (null ===(_elem = _getElementById(_id)))
+      return null;
+  }
+  if (_rootPanels._fullSlots == 0)
+    _hookWindowClosing();
+  _$put(_rootPanels, _id, _gwt = _$RootPanel(new _RootPanel(), _elem));
+  return _gwt;
+}
+
+function _getBodyElement(){
+  _$clinit4();
+  return $doc.body;
+}
+
+function _hookWindowClosing(){
+  _$clinit4();
+  _addWindowCloseListener(new _RootPanel$1());
+}
+
+function _$RootPanel(_this$static, _elem){
+  _$clinit4();
+  _$AbsolutePanel(_this$static);
+  if (_elem === null) {
+    _elem = _getBodyElement();
+  }
+  _$setElement(_this$static, _elem);
+  _$onAttach0(_this$static);
+  return _this$static;
+}
+
+function _RootPanel(){
+}
+
+_ = _RootPanel.prototype = new _AbsolutePanel();
+_._typeName = 'com.google.gwt.user.client.ui.RootPanel';
+_._typeId = 37;
+function _onWindowClosed0(){
+  var _it, _gwt;
+  for (_it = _$iterator3(_$values(_$clinit4()._rootPanels)); _$hasNext2(_it);) {
+    _gwt = _dynamicCast(_$next2(_it), 16);
+    _$onDetach0(_gwt);
+  }
+}
+
+function _onWindowClosing0(){
+  return null;
+}
+
+function _RootPanel$1(){
+}
+
+_ = _RootPanel$1.prototype = new _Object();
+_._onWindowClosed = _onWindowClosed0;
+_._onWindowClosing = _onWindowClosing0;
+_._typeName = 'com.google.gwt.user.client.ui.RootPanel$1';
+_._typeId = 38;
+function _$WidgetCollection(_this$static, _parent){
+  _this$static._parent = _parent;
+  _this$static._array = _initDims('[Lcom.google.gwt.user.client.ui.Widget;', [105], [7], [4], null);
+  _$setModificationCounter(_this$static, 0);
+  return _this$static;
+}
+
+function _$iterator2(_this$static){
+  var _wrapped, _iterator;
+  _wrapped = _$WidgetCollection$WidgetIterator(new _WidgetCollection$WidgetIterator(), _this$static);
+  _iterator = _$WidgetCollection$1(new _WidgetCollection$1(), _this$static, _wrapped);
+  _$syncModificationCounters(_iterator);
+  return _iterator;
+}
+
+function _$contains(_this$static, _w){
+  return _$indexOf0(_this$static, _w) != (-1);
+}
+
+function _$remove0(_this$static, _w){
+  var _index;
+  _index = _$indexOf0(_this$static, _w);
+  if (_index == (-1))
+    throw _$NoSuchElementException(new _NoSuchElementException());
+  _$remove1(_this$static, _index);
+}
+
+function _$insert0(_this$static, _w, _beforeIndex){
+  var _newArray, _i, _i;
+  if (_beforeIndex < 0 || _beforeIndex > _this$static._size0)
+    throw _$IndexOutOfBoundsException(new _IndexOutOfBoundsException());
+  if (_this$static._size0 == _this$static._array._length) {
+    _newArray = _initDims('[Lcom.google.gwt.user.client.ui.Widget;', [105], [7], [_this$static._array._length * 2], null);
+    for (_i = 0; _i < _this$static._array._length; ++_i)
+      _setCheck(_newArray, _i, _this$static._array[_i]);
+    _this$static._array = _newArray;
+  }
+  ++_this$static._size0;
+  for (_i = _this$static._size0 - 1; _i > _beforeIndex; --_i) {
+    _setCheck(_this$static._array, _i, _this$static._array[_i - 1]);
+  }
+  _setCheck(_this$static._array, _beforeIndex, _w);
+  _$incrementModificationCounter(_this$static);
+}
+
+function _$setModificationCounter(_this$static, _modificationCounter){
+  _this$static._modificationCounter = _modificationCounter;
+}
+
+function _$indexOf0(_this$static, _w){
+  var _i;
+  for (_i = 0; _i < _this$static._size0; ++_i) {
+    if (_this$static._array[_i] === _w)
+      return _i;
+  }
+  return (-1);
+}
+
+function _$incrementModificationCounter(_this$static){
+  _$setModificationCounter(_this$static, _this$static._modificationCounter + 1);
+}
+
+function _$remove1(_this$static, _index){
+  var _i;
+  if (_index < 0 || _index >= _this$static._size0)
+    throw _$IndexOutOfBoundsException(new _IndexOutOfBoundsException());
+  --_this$static._size0;
+  for (_i = _index; _i < _this$static._size0; ++_i) {
+    _setCheck(_this$static._array, _i, _this$static._array[_i + 1]);
+  }
+  _setCheck(_this$static._array, _this$static._size0, null);
+  _$incrementModificationCounter(_this$static);
+}
+
+function _WidgetCollection(){
+}
+
+_ = _WidgetCollection.prototype = new _Object();
+_._typeName = 'com.google.gwt.user.client.ui.WidgetCollection';
+_._typeId = 39;
+_._array = null;
+_._parent = null;
+_._size0 = 0;
+_._modificationCounter = 0;
+function _hasNext0(){
+  return _$hasNext1(this);
+}
+
+function _next0(){
+  return _$next1(this);
+}
+
+function _toString12(){
+  return _$toString(this) + ', modificationCounter: ' + this._expectedModificationCount;
+}
+
+function _$syncModificationCounters(_this$static){
+  _$setExpectedModificationCount(_this$static, _this$static._getModificationCounter());
+}
+
+function _$modificationGuard(_this$static){
+  if (_this$static._getModificationCounter() != _this$static._expectedModificationCount) {
+    throw _$ConcurrentModificationException(new _ConcurrentModificationException());
+  }
+}
+
+function _$hasNext1(_this$static){
+  _$modificationGuard(_this$static);
+  return _this$static._hasNext00();
+}
+
+function _$setExpectedModificationCount(_this$static, _modificationCounter){
+  _this$static._expectedModificationCount = _modificationCounter;
+}
+
+function _$next1(_this$static){
+  var _nexted;
+  _$modificationGuard(_this$static);
+  if (false == _$hasNext1(_this$static)) {
+    throw _$NoSuchElementException(new _NoSuchElementException());
+  }
+  _nexted = _this$static._next00();
+  _this$static._afterNext();
+  _$syncModificationCounters(_this$static);
+  return _nexted;
+}
+
+function _IteratorView(){
+}
+
+_ = _IteratorView.prototype = new _Object();
+_._hasNext = _hasNext0;
+_._next = _next0;
+_._toString0 = _toString12;
+_._typeName = 'rocket.collection.client.IteratorView';
+_._typeId = 40;
+_._expectedModificationCount = 0;
+function _hasNext01(){
+  return _$hasNext3(this._val$wrapped);
+}
+
+function _next01(){
+  return _$next3(this._val$wrapped);
+}
+
+function _afterNext0(){
+}
+
+function _getModificationCounter0(){
+  return this._this$0._modificationCounter;
+}
+
+function _$WidgetCollection$1(_this$static, _this$0, _val$wrapped){
+  _this$static._this$0 = _this$0;
+  _this$static._val$wrapped = _val$wrapped;
+  return _this$static;
+}
+
+function _WidgetCollection$1(){
+}
+
+_ = _WidgetCollection$1.prototype = new _IteratorView();
+_._hasNext00 = _hasNext01;
+_._next00 = _next01;
+_._afterNext = _afterNext0;
+_._getModificationCounter = _getModificationCounter0;
+_._typeName = 'com.google.gwt.user.client.ui.WidgetCollection$1';
+_._typeId = 41;
+function _hasNext1(){
+  return _$hasNext3(this);
+}
+
+function _next1(){
+  return _$next3(this);
+}
+
+function _$WidgetCollection$WidgetIterator(_this$static, _this$0){
+  _this$static._this$0 = _this$0;
+  return _this$static;
+}
+
+function _$hasNext3(_this$static){
+  return _this$static._index < _this$static._this$0._size0 - 1;
+}
+
+function _$next3(_this$static){
+  if (_this$static._index >= _this$static._this$0._size0)
+    throw _$NoSuchElementException(new _NoSuchElementException());
+  return _this$static._this$0._array[++_this$static._index];
+}
+
+function _WidgetCollection$WidgetIterator(){
+}
+
+_ = _WidgetCollection$WidgetIterator.prototype = new _Object();
+_._hasNext = _hasNext1;
+_._next = _next1;
+_._typeName = 'com.google.gwt.user.client.ui.WidgetCollection$WidgetIterator';
+_._typeId = 42;
+_._index = (-1);
+function _FocusImpl(){
+}
+
+_ = _FocusImpl.prototype = new _Object();
+_._typeName = 'com.google.gwt.user.client.ui.impl.FocusImpl';
+_._typeId = 43;
+function _OutputStream(){
+}
+
+_ = _OutputStream.prototype = new _Object();
+_._typeName = 'java.io.OutputStream';
+_._typeId = 44;
+function _FilterOutputStream(){
+}
+
+_ = _FilterOutputStream.prototype = new _OutputStream();
+_._typeName = 'java.io.FilterOutputStream';
+_._typeId = 45;
+function _PrintStream(){
+}
+
+_ = _PrintStream.prototype = new _FilterOutputStream();
+_._typeName = 'java.io.PrintStream';
+_._typeId = 46;
+function _$ArrayStoreException(_this$static){
+  _$RuntimeException1(_this$static);
+  return _this$static;
+}
+
+function _ArrayStoreException(){
+}
+
+_ = _ArrayStoreException.prototype = new _RuntimeException();
+_._typeName = 'java.lang.ArrayStoreException';
+_._typeId = 47;
+function _$Error(_this$static, _message, _cause){
+  _$Throwable(_this$static, _message, _cause);
+  return _this$static;
+}
+
+function _Error(){
+}
+
+_ = _Error.prototype = new _Throwable();
+_._typeName = 'java.lang.Error';
+_._typeId = 48;
+function _$AssertionError(_this$static, _message){
+  _$Error(_this$static, _valueOf4(_message), false?_throwClassCastExceptionUnlessNull(_message):null);
+  return _this$static;
+}
+
+function _AssertionError(){
+}
+
+_ = _AssertionError.prototype = new _Error();
+_._typeName = 'java.lang.AssertionError';
+_._typeId = 49;
+function _$clinit5(){
+  _$clinit5 = _nullMethod;
+  _FALSE = _$Boolean(new _Boolean(), false);
+  _TRUE = _$Boolean(new _Boolean(), true);
+  return window;
+}
+
+function _hashCode6(){
+  return this._fValue?1231:1237;
+}
+
+function _equals7(_o){
+  return _instanceOf(_o, 17) && _dynamicCast(_o, 17)._fValue == this._fValue;
+}
+
+function _toString13(){
+  return this._fValue?'true':'false';
+}
+
+function _valueOf(_b){
+  _$clinit5();
+  return _b?_TRUE:_FALSE;
+}
+
+function _$Boolean(_this$static, _value){
+  _$clinit5();
+  _this$static._fValue = _value;
+  return _this$static;
+}
+
+function _Boolean(){
+}
+
+_ = _Boolean.prototype = new _Object();
+_._hashCode0 = _hashCode6;
+_._equals0 = _equals7;
+_._toString0 = _toString13;
+_._typeName = 'java.lang.Boolean';
+_._typeId = 50;
+_._fValue = false;
+function _$clinit6(){
+  _$clinit6 = _nullMethod;
+  ___hexDigits = _initValues('[Ljava.lang.String;', 103, 5, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']);
+  return window;
+}
+
+function _$Number(_this$static){
+  _$clinit6();
+  return _this$static;
+}
+
+function _Number(){
+}
+
+_ = _Number.prototype = new _Object();
+_._typeName = 'java.lang.Number';
+_._typeId = 51;
+function _hashCode7(){
+  return this._fValue;
+}
+
+function _equals8(_o){
+  return _instanceOf(_o, 18) && _dynamicCast(_o, 18)._fValue == this._fValue;
+}
+
+function _toString14(_b){
+  return _valueOf0(_b);
+}
+
+function _toString15(){
+  return _toString14(this._fValue);
+}
+
+function _$Byte(_this$static, _value){
+  _$Number(_this$static);
+  _this$static._fValue = _value;
+  return _this$static;
+}
+
+function _Byte(){
+}
+
+_ = _Byte.prototype = new _Number();
+_._hashCode0 = _hashCode7;
+_._equals0 = _equals8;
+_._toString0 = _toString15;
+_._typeName = 'java.lang.Byte';
+_._typeId = 52;
+_._fValue = 0;
+function _toUpperCase(_c){
+  return String.fromCharCode(_c).toUpperCase().charCodeAt(0);
+}
+
+function _hashCode8(){
+  return this._fValue;
+}
+
+function _equals9(_o){
+  return _instanceOf(_o, 19) && _dynamicCast(_o, 19)._fValue == this._fValue;
+}
+
+function _toString16(){
+  return _valueOf5(this._fValue);
+}
+
+function _$Character(_this$static, _value){
+  _this$static._fValue = _value;
+  return _this$static;
+}
+
+function _Character(){
+}
+
+_ = _Character.prototype = new _Object();
+_._hashCode0 = _hashCode8;
+_._equals0 = _equals9;
+_._toString0 = _toString16;
+_._typeName = 'java.lang.Character';
+_._typeId = 53;
+_._fValue = 0;
+function _$ClassCastException(_this$static){
+  _$RuntimeException1(_this$static);
+  return _this$static;
+}
+
+function _ClassCastException(){
+}
+
+_ = _ClassCastException.prototype = new _RuntimeException();
+_._typeName = 'java.lang.ClassCastException';
+_._typeId = 54;
+function _hashCode9(){
+  return _round_int(this._fValue);
+}
+
+function _equals10(_o){
+  return _instanceOf(_o, 20) && _dynamicCast(_o, 20)._fValue == this._fValue;
+}
+
+function _toString17(_b){
+  return _valueOf1(_b);
+}
+
+function _toString18(){
+  return _toString17(this._fValue);
+}
+
+function _$Double(_this$static, _value){
+  _$Number(_this$static);
+  _this$static._fValue = _value;
+  return _this$static;
+}
+
+function _Double(){
+}
+
+_ = _Double.prototype = new _Number();
+_._hashCode0 = _hashCode9;
+_._equals0 = _equals10;
+_._toString0 = _toString18;
+_._typeName = 'java.lang.Double';
+_._typeId = 55;
+_._fValue = 0.0;
+function _hashCode10(){
+  return _round_int(this._fValue);
+}
+
+function _equals11(_o){
+  return _instanceOf(_o, 21) && _dynamicCast(_o, 21)._fValue == this._fValue;
+}
+
+function _toString19(_b){
+  return _valueOf2(_b);
+}
+
+function _toString20(){
+  return _toString19(this._fValue);
+}
+
+function _$Float(_this$static, _value){
+  _$Number(_this$static);
+  _this$static._fValue = _value;
+  return _this$static;
+}
+
+function _Float(){
+}
+
+_ = _Float.prototype = new _Number();
+_._hashCode0 = _hashCode10;
+_._equals0 = _equals11;
+_._toString0 = _toString20;
+_._typeName = 'java.lang.Float';
+_._typeId = 56;
+_._fValue = 0.0;
+function _$IllegalArgumentException(_this$static, _message){
+  _$RuntimeException(_this$static, _message);
+  return _this$static;
+}
+
+function _IllegalArgumentException(){
+}
+
+_ = _IllegalArgumentException.prototype = new _RuntimeException();
+_._typeName = 'java.lang.IllegalArgumentException';
+_._typeId = 57;
+function _$IllegalStateException(_this$static, _s){
+  _$RuntimeException(_this$static, _s);
+  return _this$static;
+}
+
+function _$IllegalStateException0(_this$static){
+  _$RuntimeException1(_this$static);
+  return _this$static;
+}
+
+function _IllegalStateException(){
+}
+
+_ = _IllegalStateException.prototype = new _RuntimeException();
+_._typeName = 'java.lang.IllegalStateException';
+_._typeId = 58;
+function _$IndexOutOfBoundsException(_this$static){
+  _$RuntimeException1(_this$static);
+  return _this$static;
+}
+
+function _IndexOutOfBoundsException(){
+}
+
+_ = _IndexOutOfBoundsException.prototype = new _RuntimeException();
+_._typeName = 'java.lang.IndexOutOfBoundsException';
+_._typeId = 59;
+function _hashCode11(){
+  return this._fValue;
+}
+
+function _equals12(_o){
+  return _instanceOf(_o, 22) && _dynamicCast(_o, 22)._fValue == this._fValue;
+}
+
+function _toString21(_b){
+  return _valueOf0(_b);
+}
+
+function _toString22(){
+  return _toString21(this._fValue);
+}
+
+function _$Integer(_this$static, _value){
+  _$Number(_this$static);
+  _this$static._fValue = _value;
+  return _this$static;
+}
+
+function _Integer(){
+}
+
+_ = _Integer.prototype = new _Number();
+_._hashCode0 = _hashCode11;
+_._equals0 = _equals12;
+_._toString0 = _toString22;
+_._typeName = 'java.lang.Integer';
+_._typeId = 60;
+_MIN_VALUE = (-2147483648);
+_MAX_VALUE = 2147483647;
+_._fValue = 0;
+function _hashCode12(){
+  return _narrow_int(this._fValue);
+}
+
+function _equals13(_o){
+  return _instanceOf(_o, 23) && _dynamicCast(_o, 23)._fValue == this._fValue;
+}
+
+function _toString23(_b){
+  return _valueOf3(_b);
+}
+
+function _toString24(){
+  return _toString23(this._fValue);
+}
+
+function _toHexString(_x){
+  var _hexStr, _nibble;
+  if (_x == 0)
+    return '0';
+  _hexStr = '';
+  while (_x != 0) {
+    _nibble = _narrow_int(_x) & 15;
+    _hexStr = _$clinit6().___hexDigits[_nibble] + _hexStr;
+    _x = _x >>> 4;
+  }
+  return _hexStr;
+}
+
+function _$Long(_this$static, _value){
+  _$Number(_this$static);
+  _this$static._fValue = _value;
+  return _this$static;
+}
+
+function _Long(){
+}
+
+_ = _Long.prototype = new _Number();
+_._hashCode0 = _hashCode12;
+_._equals0 = _equals13;
+_._toString0 = _toString24;
+_._typeName = 'java.lang.Long';
+_._typeId = 61;
+_._fValue = 0;
+function _$NegativeArraySizeException(_this$static){
+  _$RuntimeException1(_this$static);
+  return _this$static;
+}
+
+function _NegativeArraySizeException(){
+}
+
+_ = _NegativeArraySizeException.prototype = new _RuntimeException();
+_._typeName = 'java.lang.NegativeArraySizeException';
+_._typeId = 62;
+function _hashCode13(){
+  return this._fValue;
+}
+
+function _equals14(_o){
+  return _instanceOf(_o, 24) && _dynamicCast(_o, 24)._fValue == this._fValue;
+}
+
+function _toString25(_b){
+  return _valueOf0(_b);
+}
+
+function _toString26(){
+  return _toString25(this._fValue);
+}
+
+function _$Short(_this$static, _value){
+  _$Number(_this$static);
+  _this$static._fValue = _value;
+  return _this$static;
+}
+
+function _Short(){
+}
+
+_ = _Short.prototype = new _Number();
+_._hashCode0 = _hashCode13;
+_._equals0 = _equals14;
+_._toString0 = _toString26;
+_._typeName = 'java.lang.Short';
+_._typeId = 64;
+_._fValue = 0;
+function _$setClassName(_this$static, _className){
+  _this$static._className = _className;
+}
+
+function _$setMethodName(_this$static, _methodName){
+  _this$static._methodName = _methodName;
+}
+
+function _$setFileName(_this$static, _fileName){
+  _this$static._fileName = _fileName;
+}
+
+function _$setLineNumber(_this$static, _lineNumber){
+  _this$static._lineNumber = _lineNumber;
+}
+
+function _$StackTraceElement(_this$static, _declaringClass, _methodName, _fileName, _lineNumber){
+  _$setClassName(_this$static, _declaringClass);
+  _$setMethodName(_this$static, _methodName);
+  _$setFileName(_this$static, _fileName);
+  _$setLineNumber(_this$static, _lineNumber);
+  return _this$static;
+}
+
+function _StackTraceElement(){
+}
+
+_ = _StackTraceElement.prototype = new _Object();
+_._typeName = 'java.lang.StackTraceElement';
+_._typeId = 65;
+_._className = null;
+_._fileName = null;
+_._lineNumber = 0;
+_._methodName = null;
+function _$clinit7(){
+  _$clinit7 = _nullMethod;
+  {
+    ___initHashCache();
+  }
+  return window;
+}
+
+function _valueOf5(_x){
+  _$clinit7();
+  return String.fromCharCode(_x);
+}
+
+function _valueOf1(_x){
+  _$clinit7();
+  return _x.toString();
+}
+
+function _valueOf2(_x){
+  _$clinit7();
+  return _x.toString();
+}
+
+function _valueOf0(_x){
+  _$clinit7();
+  return _x.toString();
+}
+
+function _valueOf3(_x){
+  _$clinit7();
+  return _x.toString();
+}
+
+function _valueOf4(_x){
+  _$clinit7();
+  return _x !== null?_x._toString0():'null';
+}
+
+function ___translateReplaceString(_replaceStr){
+  _$clinit7();
+  var _pos;
+  _pos = 0;
+  while (0 <=(_pos = _replaceStr._indexOf1('\\', _pos))) {
+    if (_replaceStr._charAt(_pos + 1) == 36) {
+      _replaceStr = _replaceStr._substring0(0, _pos) + '$' + _replaceStr._substring(++_pos);
+    }
+     else {
+      _replaceStr = _replaceStr._substring0(0, _pos) + _replaceStr._substring(++_pos);
+    }
+  }
+  return _replaceStr;
+}
+
+function ___equals(_me, _other){
+  _$clinit7();
+  return _me.toString() == _other;
+}
+
+function ___hashCode(_me){
+  _$clinit7();
+  var _hashCode0 = _hashCache[_me];
+  if (_hashCode0) {
+    return _hashCode0;
+  }
+  _hashCode0 = 0;
+  var _len = _me.length;
+  var _i = _len;
+  while (--_i >= 0) {
+    _hashCode0 <<= 1;
+    _hashCode0 += _me.charCodeAt(_i);
+  }
+  _hashCache[_me] = _hashCode0;
+  return _hashCode0;
+}
+
+function ___initHashCache(){
+  _$clinit7();
+  _hashCache = {};
+}
+
+function _charAt0(_index){
+  return this.charCodeAt(_index);
+}
+
+function _endsWith(_suffix){
+  return this.lastIndexOf(_suffix) != -1 && this.lastIndexOf(_suffix) == this.length - _suffix.length;
+}
+
+function _equals15(_other){
+  return _$equals1(this, _other);
+}
+
+function _hashCode14(){
+  return ___hashCode(this);
+}
+
+function _indexOf2(_ch){
+  return this.indexOf(String.fromCharCode(_ch));
+}
+
+function _indexOf3(_str){
+  return this.indexOf(_str);
+}
+
+function _indexOf4(_other, _startIndex){
+  return this.indexOf(_other, _startIndex);
+}
+
+function _lastIndexOf(_ch){
+  return this.lastIndexOf(String.fromCharCode(_ch));
+}
+
+function _length0(){
+  return this.length;
+}
+
+function _replace(_from, _to){
+  var _code = _toHexString(_from);
+  return this.replace(RegExp('\\x' + _code, 'g'), String.fromCharCode(_to));
+}
+
+function _replaceAll(_regex, _replace0){
+  _replace0 = ___translateReplaceString(_replace0);
+  return this.replace(RegExp(_regex, 'g'), _replace0);
+}
+
+function _substring1(_beginIndex){
+  return this.substr(_beginIndex, this.length - _beginIndex);
+}
+
+function _substring2(_beginIndex, _endIndex){
+  return this.substr(_beginIndex, _endIndex - _beginIndex);
+}
+
+function _toString27(){
+  return this;
+}
+
+function _$equals1(_this$static, _other){
+  if (!_instanceOf(_other, 5))
+    return false;
+  return ___equals(_this$static, _other);
+}
+
+function _$toCharArray(_this$static){
+  var _n, _charArr, _i;
+  _n = _this$static._length1();
+  _charArr = _initDims('[C', [107], [(-1)], [_n], 0);
+  for (_i = 0; _i < _n; ++_i)
+    _charArr[_i] = _this$static._charAt(_i);
+  return _charArr;
+}
+
+function _$startsWith(_this$static, _prefix){
+  return _this$static._indexOf5(_prefix) == 0;
+}
+
+_ = String.prototype;
+_._charAt = _charAt0;
+_._endsWith0 = _endsWith;
+_._equals0 = _equals15;
+_._hashCode0 = _hashCode14;
+_._indexOf6 = _indexOf2;
+_._indexOf5 = _indexOf3;
+_._indexOf1 = _indexOf4;
+_._lastIndexOf0 = _lastIndexOf;
+_._length1 = _length0;
+_._replace0 = _replace;
+_._replaceAll0 = _replaceAll;
+_._substring = _substring1;
+_._substring0 = _substring2;
+_._toString0 = _toString27;
+_._typeName = 'java.lang.String';
+_._typeId = 66;
+_hashCache = null;
+function _append2(_toAppend){
+  var _last = this.js.length - 1;
+  var _lastLength = this.js[_last].length;
+  if (this.length > _lastLength * _lastLength) {
+    this.js[_last] = this.js[_last] + _toAppend;
+  }
+   else {
+    this.js.push(_toAppend);
+  }
+  this.length += _toAppend.length;
+  return this;
+}
+
+function _toString28(){
+  this._normalize();
+  return this.js[0];
+}
+
+function _normalize0(){
+  if (this.js.length > 1) {
+    this.js = [this.js.join('')];
+    this.length = this.js[0].length;
+  }
+}
+
+function _assign(_s){
+  this.js = [_s];
+  this.length = _s.length;
+}
+
+function _$append(_this$static, _x){
+  return _this$static._append(_valueOf5(_x));
+}
+
+function _$StringBuffer(_this$static){
+  _$assign(_this$static);
+  return _this$static;
+}
+
+function _$assign(_this$static){
+  _this$static._assign0('');
+}
+
+function _$append0(_this$static, _x){
+  return _this$static._append(_valueOf0(_x));
+}
+
+function _StringBuffer(){
+}
+
+_ = _StringBuffer.prototype = new _Object();
+_._append = _append2;
+_._toString0 = _toString28;
+_._normalize = _normalize0;
+_._assign0 = _assign;
+_._typeName = 'java.lang.StringBuffer';
+_._typeId = 67;
+function _$clinit(){
+  _$clinit = _nullMethod;
+  _err = new _PrintStream();
+  _out = new _PrintStream();
+  return window;
+}
+
+function _identityHashCode(_o){
+  _$clinit();
+  return _getHashCode0(_o);
+}
+
+function _hasNext2(){
+  return _$hasNext4(this);
+}
+
+function _next2(){
+  if (!_$hasNext4(this)) {
+    throw _$NoSuchElementException(new _NoSuchElementException());
+  }
+  return this._this$0._get0(this._last = this._i++);
+}
+
+function _$AbstractList$IteratorImpl(_this$static, _this$0){
+  _this$static._this$0 = _this$0;
+  return _this$static;
+}
+
+function _$hasNext4(_this$static){
+  return _this$static._i < _this$static._this$0._size();
+}
+
+function _AbstractList$IteratorImpl(){
+}
+
+_ = _AbstractList$IteratorImpl.prototype = new _Object();
+_._hasNext = _hasNext2;
+_._next = _next2;
+_._typeName = 'java.util.AbstractList$IteratorImpl';
+_._typeId = 68;
+_._i = 0;
+_._last = (-1);
+function _containsKey(_key){
+  return _$implFindEntry(this, _key, false) !== null;
+}
+
+function _equals16(_obj){
+  var _otherMap, _keys, _otherKeys, _iter, _key, _value, _otherValue;
+  if (_obj === this)
+    return true;
+  if (!_instanceOf(_obj, 26))
+    return false;
+  _otherMap = _dynamicCast(_obj, 26);
+  _keys = this._keySet();
+  _otherKeys = _otherMap._keySet();
+  if (!_$equals2(_keys, _otherKeys))
+    return false;
+  for (_iter = _$iterator4(_keys); _$hasNext0(_iter);) {
+    _key = _$next0(_iter);
+    _value = this._get3(_key);
+    _otherValue = _otherMap._get3(_key);
+    if (_value === null?_otherValue !== null:!_value._equals0(_otherValue))
+      return false;
+  }
+  return true;
+}
+
+function _get4(_key){
+  var _entry;
+  _entry = _$implFindEntry(this, _key, false);
+  return _entry === null?null:_entry._value;
+}
+
+function _hashCode15(){
+  var _hashCode0, _iter, _entry;
+  _hashCode0 = 0;
+  for (_iter = _$iterator0(this._entrySet()); _$hasNext(_iter);) {
+    _entry = _$next(_iter);
+    _hashCode0 += _$hashCode1(_entry);
+  }
+  return _hashCode0;
+}
+
+function _keySet0(){
+  return _$keySet(this);
+}
+
+function _toString29(){
+  var _s, _comma, _iter, _entry;
+  _s = '{';
+  _comma = false;
+  for (_iter = _$iterator0(this._entrySet()); _$hasNext(_iter);) {
+    _entry = _$next(_iter);
+    if (_comma)
+      _s += ', ';
+    else 
+      _comma = true;
+    _s += _valueOf4(_entry._key);
+    _s += '=';
+    _s += _valueOf4(_entry._value);
+  }
+  return _s + '}';
+}
+
+function _$values(_this$static){
+  var _entrySet;
+  _entrySet = _$entrySet(_this$static);
+  return _$AbstractMap$3(new _AbstractMap$3(), _this$static, _entrySet);
+}
+
+function _$implFindEntry(_this$static, _key, _remove){
+  var _iter, _entry, _k;
+  for (_iter = _$iterator0(_this$static._entrySet()); _$hasNext(_iter);) {
+    _entry = _$next(_iter);
+    _k = _entry._key;
+    if (_key === null?_k === null:_key._equals0(_k)) {
+      if (_remove)
+        _$remove2(_iter);
+      return _entry;
+    }
+  }
+  return null;
+}
+
+function _$containsValue(_this$static, _value){
+  var _iter, _entry, _v;
+  for (_iter = _$iterator0(_$entrySet(_this$static)); _$hasNext(_iter);) {
+    _entry = _$next(_iter);
+    _v = _entry._value;
+    if (_value === null?_v === null:_value._equals0(_v))
+      return true;
+  }
+  return false;
+}
+
+function _$keySet(_this$static){
+  var _entrySet;
+  _entrySet = _this$static._entrySet();
+  return _$AbstractMap$1(new _AbstractMap$1(), _this$static, _entrySet);
+}
+
+function _AbstractMap(){
+}
+
+_ = _AbstractMap.prototype = new _Object();
+_._containsKey0 = _containsKey;
+_._equals0 = _equals16;
+_._get3 = _get4;
+_._hashCode0 = _hashCode15;
+_._keySet = _keySet0;
+_._toString0 = _toString29;
+_._typeName = 'java.util.AbstractMap';
+_._typeId = 69;
+function _equals17(_o){
+  return _$equals2(this, _o);
+}
+
+function _hashCode16(){
+  var _hashCode0, _iter, _next;
+  _hashCode0 = 0;
+  for (_iter = this._iterator(); _iter._hasNext();) {
+    _next = _iter._next();
+    if (_next !== null) {
+      _hashCode0 += _next._hashCode0();
+    }
+  }
+  return _hashCode0;
+}
+
+function _$equals2(_this$static, _o){
+  var _other, _iter, _otherItem;
+  if (_o === _this$static)
+    return true;
+  if (!_instanceOf(_o, 27))
+    return false;
+  _other = _dynamicCast(_o, 27);
+  if (_other._size() != _this$static._size())
+    return false;
+  for (_iter = _other._iterator(); _iter._hasNext();) {
+    _otherItem = _iter._next();
+    if (!_this$static._contains0(_otherItem))
+      return false;
+  }
+  return true;
+}
+
+function _AbstractSet(){
+}
+
+_ = _AbstractSet.prototype = new _AbstractCollection();
+_._equals0 = _equals17;
+_._hashCode0 = _hashCode16;
+_._typeName = 'java.util.AbstractSet';
+_._typeId = 70;
+function _contains2(_key){
+  return this._this$0._containsKey0(_key);
+}
+
+function _iterator2(){
+  return _$iterator4(this);
+}
+
+function _size2(){
+  return this._val$entrySet._this$0._fullSlots;
+}
+
+function _$AbstractMap$1(_this$static, _this$0, _val$entrySet){
+  _this$static._this$0 = _this$0;
+  _this$static._val$entrySet = _val$entrySet;
+  return _this$static;
+}
+
+function _$iterator4(_this$static){
+  var _outerIter;
+  _outerIter = _$iterator0(_this$static._val$entrySet);
+  return _$AbstractMap$2(new _AbstractMap$2(), _this$static, _outerIter);
+}
+
+function _AbstractMap$1(){
+}
+
+_ = _AbstractMap$1.prototype = new _AbstractSet();
+_._contains0 = _contains2;
+_._iterator = _iterator2;
+_._size = _size2;
+_._typeName = 'java.util.AbstractMap$1';
+_._typeId = 71;
+function _hasNext3(){
+  return _$hasNext0(this);
+}
+
+function _next3(){
+  return _$next0(this);
+}
+
+function _$AbstractMap$2(_this$static, _this$1, _val$outerIter){
+  _this$static._this$1 = _this$1;
+  _this$static._val$outerIter = _val$outerIter;
+  return _this$static;
+}
+
+function _$hasNext0(_this$static){
+  return _$hasNext(_this$static._val$outerIter);
+}
+
+function _$next0(_this$static){
+  var _entry;
+  _entry = _$next(_this$static._val$outerIter);
+  return _entry._key;
+}
+
+function _AbstractMap$2(){
+}
+
+_ = _AbstractMap$2.prototype = new _Object();
+_._hasNext = _hasNext3;
+_._next = _next3;
+_._typeName = 'java.util.AbstractMap$2';
+_._typeId = 72;
+function _contains3(_value){
+  return _$containsValue0(this._this$0, _value);
+}
+
+function _iterator3(){
+  return _$iterator3(this);
+}
+
+function _size3(){
+  return this._val$entrySet._this$0._fullSlots;
+}
+
+function _$AbstractMap$3(_this$static, _this$0, _val$entrySet){
+  _this$static._this$0 = _this$0;
+  _this$static._val$entrySet = _val$entrySet;
+  return _this$static;
+}
+
+function _$iterator3(_this$static){
+  var _outerIter;
+  _outerIter = _$iterator0(_this$static._val$entrySet);
+  return _$AbstractMap$4(new _AbstractMap$4(), _this$static, _outerIter);
+}
+
+function _AbstractMap$3(){
+}
+
+_ = _AbstractMap$3.prototype = new _AbstractCollection();
+_._contains0 = _contains3;
+_._iterator = _iterator3;
+_._size = _size3;
+_._typeName = 'java.util.AbstractMap$3';
+_._typeId = 73;
+function _hasNext4(){
+  return _$hasNext2(this);
+}
+
+function _next4(){
+  return _$next2(this);
+}
+
+function _$AbstractMap$4(_this$static, _this$1, _val$outerIter){
+  _this$static._this$1 = _this$1;
+  _this$static._val$outerIter = _val$outerIter;
+  return _this$static;
+}
+
+function _$hasNext2(_this$static){
+  return _$hasNext(_this$static._val$outerIter);
+}
+
+function _$next2(_this$static){
+  var _value;
+  _value = _$next(_this$static._val$outerIter)._value;
+  return _value;
+}
+
+function _AbstractMap$4(){
+}
+
+_ = _AbstractMap$4.prototype = new _Object();
+_._hasNext = _hasNext4;
+_._next = _next4;
+_._typeName = 'java.util.AbstractMap$4';
+_._typeId = 74;
+function _contains4(_elem){
+  return _$contains0(this._fVec, _elem);
+}
+
+function _get5(_index){
+  return _$get0(this, _index);
+}
+
+function _iterator4(){
+  return _$iterator(this);
+}
+
+function _size4(){
+  return _$size(this);
+}
+
+function _$add(_this$static, _o){
+  return _this$static._fVec._add(_o);
+}
+
+function _$size(_this$static){
+  return _this$static._fVec._size();
+}
+
+function _$iterator(_this$static){
+  return _this$static._fVec._iterator();
+}
+
+function _$ArrayList(_this$static){
+  _this$static._fVec = _$Vector(new _Vector());
+  return _this$static;
+}
+
+function _$clear(_this$static){
+  _this$static._fVec._clear0();
+}
+
+function _$get0(_this$static, _index){
+  return _$get(_this$static._fVec, _index);
+}
+
+function _ArrayList(){
+}
+
+_ = _ArrayList.prototype = new _AbstractList();
+_._contains0 = _contains4;
+_._get0 = _get5;
+_._iterator = _iterator4;
+_._size = _size4;
+_._typeName = 'java.util.ArrayList';
+_._typeId = 75;
+_._fVec = null;
+function _$ConcurrentModificationException(_this$static){
+  _$RuntimeException1(_this$static);
+  return _this$static;
+}
+
+function _ConcurrentModificationException(){
+}
+
+_ = _ConcurrentModificationException.prototype = new _RuntimeException();
+_._typeName = 'java.util.ConcurrentModificationException';
+_._typeId = 76;
+function _equals18(_obj){
+  return _instanceOf(_obj, 28) && this._getTime() == _dynamicCast(_obj, 28)._getTime();
+}
+
+function _getTime0(){
+  return this.jsdate.getTime();
+}
+
+function _toString30(){
+  return this.jsdate.toString();
+}
+
+function _init2(_date){
+  this.jsdate = new Date(_date);
+}
+
+function _hashCode17(){
+  return _narrow_int(this._getTime() ^ this._getTime() >>> 32);
+}
+
+function _$Date(_this$static, _date){
+  _this$static._init3(_date);
+  return _this$static;
+}
+
+function _Date(){
+}
+
+_ = _Date.prototype = new _Object();
+_._equals0 = _equals18;
+_._getTime = _getTime0;
+_._toString0 = _toString30;
+_._init3 = _init2;
+_._hashCode0 = _hashCode17;
+_._typeName = 'java.util.Date';
+_._typeId = 77;
+function _containsKey1(_key){
+  return _$containsKey(this, _key);
+}
+
+function _entrySet0(){
+  return _$entrySet(this);
+}
+
+function _get6(_key){
+  return _$get1(this, _key);
+}
+
+function _hashCode18(){
+  var _accum, _elements;
+  _accum = 0;
+  _elements = _$iterator0(_$entrySet(this));
+  while (_$hasNext(_elements)) {
+    _accum += _$hashCode1(_$next(_elements));
+  }
+  return _accum;
+}
+
+function _keySet1(){
+  return _$keySet0(this);
+}
+
+function _$put(_this$static, _key, _value){
+  if (_this$static._entries._length - _this$static._emptySlots >= _this$static._threshold)
+    _$implRehash(_this$static);
+  return _$implPutNoRehash(_this$static, _key, _value);
+}
+
+function _$entrySet(_this$static){
+  return _$HashMap$1(new _HashMap$1(), _this$static);
+}
+
+function _$HashMap(_this$static){
+  _$HashMap0(_this$static, 16);
+  return _this$static;
+}
+
+function _$get1(_this$static, _key){
+  var _i, _entry;
+  _i = _$implFindSlot(_this$static, _key);
+  if (_i >= 0) {
+    _entry = _this$static._entries[_i];
+    if (_entry !== null && _entry._inUse)
+      return _entry._value;
+  }
+  return null;
+}
+
+function _$HashMap0(_this$static, _initialCapacity){
+  _$HashMap1(_this$static, _initialCapacity, 0.75);
+  return _this$static;
+}
+
+function _$HashMap1(_this$static, _initialCapacity, _loadFactor){
+  if (_initialCapacity < 0 || _loadFactor <= 0)
+    throw _$IllegalArgumentException(new _IllegalArgumentException(), 'initial capacity was negative or load factor was non-positive');
+  if (_initialCapacity == 0) {
+    _initialCapacity = 1;
+  }
+  if (_loadFactor > 0.9) {
+    _loadFactor = 0.9;
+  }
+  _this$static._loadFactor = _loadFactor;
+  _$realloc(_this$static, _initialCapacity);
+  return _this$static;
+}
+
+function _$realloc(_this$static, _capacity){
+  _this$static._threshold = _round_int(_capacity * _this$static._loadFactor);
+  _this$static._emptySlots = _capacity - _this$static._fullSlots;
+  _this$static._entries = _initDims('[Ljava.util.HashMap$ImplMapEntry;', [108], [9], [_capacity], null);
+}
+
+function _$implFindSlot(_this$static, _key){
+  var _hashCode0, _capacity, _startIndex, _slotIndex, _stopIndex, _i, _entry, _testKey;
+  _hashCode0 = _key !== null?_key._hashCode0():7919;
+  _hashCode0 = _hashCode0 < 0?-_hashCode0:_hashCode0;
+  _capacity = _this$static._entries._length;
+  _startIndex = _hashCode0 % _capacity;
+  _slotIndex = _startIndex;
+  _stopIndex = _capacity;
+  for (_i = 0; _i < 2; ++_i) {
+    for (; _slotIndex < _stopIndex; ++_slotIndex) {
+      _entry = _this$static._entries[_slotIndex];
+      if (_entry === null)
+        return _slotIndex;
+      _testKey = _entry._key;
+      if (_key === null?_testKey === null:_key._equals0(_testKey))
+        return _slotIndex;
+    }
+    _slotIndex = 0;
+    _stopIndex = _startIndex;
+  }
+  return (-1);
+}
+
+function _$implRehash(_this$static){
+  var _oldEntries, _capacity, _i, _n, _oldEntry, _slot;
+  _oldEntries = _this$static._entries;
+  _capacity = _oldEntries._length;
+  if (_this$static._fullSlots > _this$static._threshold)
+    _capacity *= 2;
+  _$realloc(_this$static, _capacity);
+  for (_i = 0 , _n = _oldEntries._length; _i < _n; ++_i) {
+    _oldEntry = _oldEntries[_i];
+    if (_oldEntry !== null && _oldEntry._inUse) {
+      _slot = _$implFindSlot(_this$static, _oldEntry._key);
+      _this$static._entries[_slot] = _oldEntry;
+    }
+  }
+}
+
+function _$implPutNoRehash(_this$static, _key, _value){
+  var _i, _entry, _old, _entry;
+  _i = _$implFindSlot(_this$static, _key);
+  if (_this$static._entries[_i] !== null) {
+    _entry = _this$static._entries[_i];
+    _old = null;
+    if (_entry._inUse)
+      _old = _entry._value;
+    else 
+      ++_this$static._fullSlots;
+    _entry._value = _value;
+    _entry._inUse = true;
+    return _old;
+  }
+   else {
+    ++_this$static._fullSlots;
+    --_this$static._emptySlots;
+    _entry = new _HashMap$ImplMapEntry();
+    _entry._key = _key;
+    _entry._value = _value;
+    _entry._inUse = true;
+    _this$static._entries[_i] = _entry;
+    return null;
+  }
+}
+
+function _$containsKey(_this$static, _key){
+  var _i, _entry;
+  _i = _$implFindSlot(_this$static, _key);
+  if (_i >= 0) {
+    _entry = _this$static._entries[_i];
+    if (_entry !== null && _entry._inUse)
+      return true;
+  }
+  return false;
+}
+
+function _$keySet0(_this$static){
+  return _$keySet(_this$static);
+}
+
+function _$containsValue0(_this$static, _value){
+  return _$containsValue(_this$static, _value);
+}
+
+function _HashMap(){
+}
+
+_ = _HashMap.prototype = new _AbstractMap();
+_._containsKey0 = _containsKey1;
+_._entrySet = _entrySet0;
+_._get3 = _get6;
+_._hashCode0 = _hashCode18;
+_._keySet = _keySet1;
+_._typeName = 'java.util.HashMap';
+_._typeId = 78;
+_._emptySlots = 0;
+_._entries = null;
+_._fullSlots = 0;
+_._loadFactor = 0.0;
+_._threshold = 0;
+function _iterator5(){
+  return _$iterator0(this);
+}
+
+function _size5(){
+  return this._this$0._fullSlots;
+}
+
+function _$HashMap$1(_this$static, _this$0){
+  _this$static._this$0 = _this$0;
+  return _this$static;
+}
+
+function _$iterator0(_this$static){
+  return _$HashMap$ImplMapEntryIterator(new _HashMap$ImplMapEntryIterator(), _this$static._this$0);
+}
+
+function _HashMap$1(){
+}
+
+_ = _HashMap$1.prototype = new _AbstractSet();
+_._iterator = _iterator5;
+_._size = _size5;
+_._typeName = 'java.util.HashMap$1';
+_._typeId = 79;
+function _equals19(_a){
+  var _s;
+  if (_instanceOf(_a, 12)) {
+    _s = _dynamicCast(_a, 12);
+    if (_$equalsWithNullCheck(this, this._key, _s._getKey()) && _$equalsWithNullCheck(this, this._value, _s._getValue0())) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function _getKey0(){
+  return this._key;
+}
+
+function _getValue1(){
+  return this._value;
+}
+
+function _hashCode19(){
+  return _$hashCode1(this);
+}
+
+function _$equalsWithNullCheck(_this$static, _a, _b){
+  if (_a === _b) {
+    return true;
+  }
+   else if (_a === null) {
+    return false;
+  }
+   else {
+    return _a._equals0(_b);
+  }
+}
+
+function _$hashCode1(_this$static){
+  var _keyHash, _valueHash;
+  _keyHash = 0;
+  _valueHash = 0;
+  if (_this$static._key !== null) {
+    _keyHash = _this$static._key._hashCode0();
+  }
+  if (_this$static._value !== null) {
+    _valueHash = _this$static._value._hashCode0();
+  }
+  return _keyHash ^ _valueHash;
+}
+
+function _HashMap$ImplMapEntry(){
+}
+
+_ = _HashMap$ImplMapEntry.prototype = new _Object();
+_._equals0 = _equals19;
+_._getKey = _getKey0;
+_._getValue0 = _getValue1;
+_._hashCode0 = _hashCode19;
+_._typeName = 'java.util.HashMap$ImplMapEntry';
+_._typeId = 80;
+_._inUse = false;
+_._key = null;
+_._value = null;
+function _hasNext5(){
+  return _$hasNext(this);
+}
+
+function _next5(){
+  return _$next(this);
+}
+
+function _$HashMap$ImplMapEntryIterator(_this$static, _this$0){
+  _this$static._this$0 = _this$0;
+  _$maybeAdvanceToFullSlot(_this$static);
+  return _this$static;
+}
+
+function _$maybeAdvanceToFullSlot(_this$static){
+  for (; _this$static._i < _this$static._this$0._entries._length; ++_this$static._i) {
+    if (_this$static._this$0._entries[_this$static._i] !== null && _this$static._this$0._entries[_this$static._i]._inUse)
+      return ;
+  }
+}
+
+function _$hasNext(_this$static){
+  return _this$static._i < _this$static._this$0._entries._length;
+}
+
+function _$next(_this$static){
+  if (!_$hasNext(_this$static)) {
+    throw _$NoSuchElementException(new _NoSuchElementException());
+  }
+  _this$static._last = _this$static._i++;
+  _$maybeAdvanceToFullSlot(_this$static);
+  return _this$static._this$0._entries[_this$static._last];
+}
+
+function _$remove2(_this$static){
+  if (_this$static._last < 0) {
+    throw _$IllegalStateException0(new _IllegalStateException());
+  }
+  _this$static._this$0._entries[_this$static._last]._inUse = false;
+  --_this$static._this$0._fullSlots;
+  _this$static._last = (-1);
+}
+
+function _HashMap$ImplMapEntryIterator(){
+}
+
+_ = _HashMap$ImplMapEntryIterator.prototype = new _Object();
+_._hasNext = _hasNext5;
+_._next = _next5;
+_._typeName = 'java.util.HashMap$ImplMapEntryIterator';
+_._typeId = 81;
+_._i = 0;
+_._last = (-1);
+function _contains5(_o){
+  return _$containsKey(this._fMap, _o);
+}
+
+function _iterator6(){
+  return _$iterator1(this);
+}
+
+function _size6(){
+  return this._fMap._fullSlots;
+}
+
+function _toString31(){
+  return _$keySet0(this._fMap)._toString0();
+}
+
+function _$add0(_this$static, _o){
+  var _old;
+  _old = _$put(_this$static._fMap, _o, _$Boolean(new _Boolean(), true));
+  return _old === null;
+}
+
+function _$iterator1(_this$static){
+  return _$iterator4(_$keySet0(_this$static._fMap));
+}
+
+function _$HashSet(_this$static){
+  _this$static._fMap = _$HashMap(new _HashMap());
+  return _this$static;
+}
+
+function _HashSet(){
+}
+
+_ = _HashSet.prototype = new _AbstractSet();
+_._contains0 = _contains5;
+_._iterator = _iterator6;
+_._size = _size6;
+_._toString0 = _toString31;
+_._typeName = 'java.util.HashSet';
+_._typeId = 82;
+_._fMap = null;
+function _$NoSuchElementException(_this$static){
+  _$RuntimeException1(_this$static);
+  return _this$static;
+}
+
+function _NoSuchElementException(){
+}
+
+_ = _NoSuchElementException.prototype = new _RuntimeException();
+_._typeName = 'java.util.NoSuchElementException';
+_._typeId = 83;
+function _toString32(){
+  return _$toString(this) + ', map: ' + this._map;
+}
+
+function _$setMap(_this$static, _map){
+  _checkNotNull('parameter:map', _map);
+  _this$static._map = _map;
+}
+
+function _$MultiValueMap(_this$static){
+  _$setMap(_this$static, _$HashMap(new _HashMap()));
+  return _this$static;
+}
+
+function _MultiValueMap(){
+}
+
+_ = _MultiValueMap.prototype = new _Object();
+_._toString0 = _toString32;
+_._typeName = 'rocket.collection.client.MultiValueMap';
+_._typeId = 84;
+_._map = null;
+function _getMap(_instance){
+  return _instance._map;
+}
+
+function _setMap(_instance, _value){
+  _instance._map = _value;
+}
+
+function _serialize20(_streamWriter, _instance){
+  _streamWriter._writeObject(_getMap(_instance));
+}
+
+function _deserialize20(_streamReader, _instance){
+  _setMap(_instance, _dynamicCast(_streamReader._readObject(), 26));
+}
+
+function _toString33(){
+  return _$toString(this) + ', destination[' + this._destination + '], payload: ' + this._payload;
+}
+
+function _Message(){
+}
+
+_ = _Message.prototype = new _Object();
+_._toString0 = _toString33;
+_._typeName = 'rocket.messaging.client.Message';
+_._typeId = 85;
+_._destination = null;
+_._payload = null;
+function _serialize21(_streamWriter, _instance){
+  _streamWriter._writeString(_instance._destination);
+  _streamWriter._writeObject(_instance._payload);
+}
+
+function _deserialize21(_streamReader, _instance){
+  _instance._destination = _streamReader._readString();
+  _instance._payload = _dynamicCast(_streamReader._readObject(), 29);
+}
+
+function _toString34(){
+  return _$toString(this);
+}
+
+function _StringPayload(){
+}
+
+_ = _StringPayload.prototype = new _Object();
+_._toString0 = _toString34;
+_._typeName = 'rocket.messaging.client.StringPayload';
+_._typeId = 86;
+_._string = null;
+function _getString1(_instance){
+  return _instance._string;
+}
+
+function _setString(_instance, _value){
+  _instance._string = _value;
+}
+
+function _serialize22(_streamWriter, _instance){
+  _streamWriter._writeString(_getString1(_instance));
+}
+
+function _deserialize22(_streamReader, _instance){
+  _setString(_instance, _streamReader._readString());
+}
+
+function _$FailedWebRequestException(_this$static){
+  _$RuntimeException1(_this$static);
+  return _this$static;
+}
+
+function _FailedWebRequestException(){
+}
+
+_ = _FailedWebRequestException.prototype = new _RuntimeException();
+_._typeName = 'rocket.remoting.client.FailedWebRequestException';
+_._typeId = 87;
+function _serialize23(_streamWriter, _instance){
+}
+
+function _deserialize23(_streamReader, _instance){
+}
+
+function _toString35(){
+  return _$toString(this) + ', multiValueMap:' + this._multiValueMap;
+}
+
+function _$setMultiValueMap(_this$static, _multiValueMap){
+  _checkNotNull('parameter:multiValueMap', _multiValueMap);
+  _this$static._multiValueMap = _multiValueMap;
+}
+
+function _$Headers(_this$static){
+  _$setMultiValueMap(_this$static, _$MultiValueMap(new _MultiValueMap()));
+  return _this$static;
+}
+
+function _Headers(){
+}
+
+_ = _Headers.prototype = new _Object();
+_._toString0 = _toString35;
+_._typeName = 'rocket.remoting.client.Headers';
+_._typeId = 88;
+_._multiValueMap = null;
+function _getMultiValueMap(_instance){
+  return _instance._multiValueMap;
+}
+
+function _setMultiValueMap(_instance, _value){
+  _instance._multiValueMap = _value;
+}
+
+function _serialize24(_streamWriter, _instance){
+  _streamWriter._writeObject(_getMultiValueMap(_instance));
+}
+
+function _deserialize24(_streamReader, _instance){
+  _setMultiValueMap(_instance, _dynamicCast(_streamReader._readObject(), 30));
+}
+
+function _toString36(){
+  return _$toString(this) + ', multiValueMap:' + this._multiValueMap;
+}
+
+function _$setMultiValueMap0(_this$static, _multiValueMap){
+  _checkNotNull('parameter:multiValueMap', _multiValueMap);
+  _this$static._multiValueMap = _multiValueMap;
+}
+
+function _$RequestParameters(_this$static){
+  _$setMultiValueMap0(_this$static, _$MultiValueMap(new _MultiValueMap()));
+  return _this$static;
+}
+
+function _RequestParameters(){
+}
+
+_ = _RequestParameters.prototype = new _Object();
+_._toString0 = _toString36;
+_._typeName = 'rocket.remoting.client.RequestParameters';
+_._typeId = 89;
+_._multiValueMap = null;
+function _getMultiValueMap0(_instance){
+  return _instance._multiValueMap;
+}
+
+function _setMultiValueMap0(_instance, _value){
+  _instance._multiValueMap = _value;
+}
+
+function _serialize25(_streamWriter, _instance){
+  _streamWriter._writeObject(_getMultiValueMap0(_instance));
+}
+
+function _deserialize25(_streamReader, _instance){
+  _setMultiValueMap0(_instance, _dynamicCast(_streamReader._readObject(), 30));
+}
+
+function _toString37(){
+  return _$toString(this) + ', method[' + this._method + '], url[' + this._url + '], headers: ' + this._headers + ', parameters:' + this._parameters + ', data: ' + this._data;
+}
+
+function _WebRequest(){
+}
+
+_ = _WebRequest.prototype = new _Object();
+_._toString0 = _toString37;
+_._typeName = 'rocket.remoting.client.WebRequest';
+_._typeId = 90;
+_._url = null;
+_._parameters = null;
+_._headers = null;
+_._data = null;
+_._method = null;
+function _getData(_instance){
+  return _instance._data;
+}
+
+function _setData(_instance, _value){
+  _instance._data = _value;
+}
+
+function _getHeaders(_instance){
+  return _instance._headers;
+}
+
+function _setHeaders(_instance, _value){
+  _instance._headers = _value;
+}
+
+function _getMethod(_instance){
+  return _instance._method;
+}
+
+function _setMethod(_instance, _value){
+  _instance._method = _value;
+}
+
+function _getParameters(_instance){
+  return _instance._parameters;
+}
+
+function _setParameters(_instance, _value){
+  _instance._parameters = _value;
+}
+
+function _getUrl(_instance){
+  return _instance._url;
+}
+
+function _setUrl(_instance, _value){
+  _instance._url = _value;
+}
+
+function _serialize26(_streamWriter, _instance){
+  _streamWriter._writeString(_getData(_instance));
+  _streamWriter._writeObject(_getHeaders(_instance));
+  _streamWriter._writeString(_getMethod(_instance));
+  _streamWriter._writeObject(_getParameters(_instance));
+  _streamWriter._writeString(_getUrl(_instance));
+}
+
+function _deserialize26(_streamReader, _instance){
+  _setData(_instance, _streamReader._readString());
+  _setHeaders(_instance, _dynamicCast(_streamReader._readObject(), 31));
+  _setMethod(_instance, _streamReader._readString());
+  _setParameters(_instance, _dynamicCast(_streamReader._readObject(), 32));
+  _setUrl(_instance, _streamReader._readString());
+}
+
+function _toString38(){
+  return _$toString(this) + ', code: ' + this._code + ', message[' + this._message + '], headers: ' + this._headers + ', body[' + this._body + ']';
+}
+
+function _WebResponse(){
+}
+
+_ = _WebResponse.prototype = new _Object();
+_._toString0 = _toString38;
+_._typeName = 'rocket.remoting.client.WebResponse';
+_._typeId = 91;
+_._code = (-1);
+_._message = null;
+_._headers = null;
+_._body = null;
+function _getBody(_instance){
+  return _instance._body;
+}
+
+function _setBody(_instance, _value){
+  _instance._body = _value;
+}
+
+function _getCode(_instance){
+  return _instance._code;
+}
+
+function _setCode(_instance, _value){
+  _instance._code = _value;
+}
+
+function _getHeaders0(_instance){
+  return _instance._headers;
+}
+
+function _setHeaders0(_instance, _value){
+  _instance._headers = _value;
+}
+
+function _getMessage2(_instance){
+  return _instance._message;
+}
+
+function _setMessage(_instance, _value){
+  _instance._message = _value;
+}
+
+function _serialize27(_streamWriter, _instance){
+  _streamWriter._writeString(_getBody(_instance));
+  _streamWriter._writeInt(_getCode(_instance));
+  _streamWriter._writeObject(_getHeaders0(_instance));
+  _streamWriter._writeString(_getMessage2(_instance));
+}
+
+function _deserialize27(_streamReader, _instance){
+  _setBody(_instance, _streamReader._readString());
+  _setCode(_instance, _streamReader._readInt());
+  _setHeaders0(_instance, _dynamicCast(_streamReader._readObject(), 31));
+  _setMessage(_instance, _streamReader._readString());
+}
+
+function _handleAssertFailure(_name, _message){
+  if (_name !== null) {
+    if (_$startsWith(_name, 'parameter:')) {
+      throw _$IllegalArgumentException(new _IllegalArgumentException(), _message);
+    }
+    if (_$startsWith(_name, 'field:')) {
+      throw _$IllegalStateException(new _IllegalStateException(), _message);
+    }
+  }
+  throw _$AssertionError(new _AssertionError(), _message);
+}
+
+function _handleAssertFailure0(_message){
+  throw _$AssertionError(new _AssertionError(), _message);
+}
+
+function _checkNotNull(_name, _object){
+  if (_object === null) {
+    _handleNullEncountered(_name, 'The ' + _name + ' must not be null.');
+  }
+}
+
+function _handleNullEncountered(_name, _message){
+  _handleAssertFailure(_name, _message);
+}
+
+function _getCallStackFunctionNames(_callStackFunctions){
+  var _functionNames;
+  _checkNotNull('parameter:callStackFunctions', _wrapJSO(_callStackFunctions, _JavaScriptObject));
+  _functionNames = _getCallStackFunctionNames0(_callStackFunctions);
+  return _split(_functionNames, ',', true);
+}
+
+function _getCallStackFunctionNames0(_functions){
+  var _names = '';
+  for (var _i = 0; _i < _functions.length; _i++) {
+    var _s = _functions[_i];
+    var _n = null;
+    while (true) {
+      if (_s.name) {
+        _n = _s.name;
+        break;
+      }
+      _n = _s.toString().match(/function ([$\w]*)/);
+      if (!_n) {
+        _n = 'anonymous';
+        break;
+      }
+      _n = _n[1];
+      if (!_n) {
+        _n = 'anonymous';
+        break;
+      }
+      break;
+    }
+    if (_names.length > 0) {
+      _names = _names + ',';
+    }
+    _names = _names + _n;
+  }
+  return _names;
+}
+
+function _getCallStackFunctions(){
+  var _elements = [];
+  var _i = 0;
+  var _context = _getCallStackFunctions;
+  while (true) {
+    _elements[_i++] = _context;
+    var _parent = _context.caller;
+    if (!_parent) {
+      break;
+    }
+    var _j = _elements.length;
+    while (_j >= 0) {
+      _j--;
+      if (_parent == _elements[_j]) {
+        _parent = null;
+        break;
+      }
+    }
+    if (!_parent) {
+      break;
+    }
+    _context = _parent;
+  }
+  return _elements;
+}
+
+function _getStackTraceAsString(_throwable){
+  var _buf, _message, _elements, _i, _element, _methodName, _fileName, _lineNumber;
+  _checkNotNull('parameter:throwable ', _throwable);
+  _buf = _$StringBuffer(new _StringBuffer());
+  _buf._append(_getTypeName(_throwable));
+  _$append(_buf, 58);
+  _message = _throwable._getMessage0();
+  if (!_isNullOrEmpty(_message)) {
+    _$append(_buf, 32);
+    _buf._append(_throwable._getMessage0());
+  }
+  _$append(_buf, 10);
+  _elements = _$getStackTrace(_throwable);
+  for (_i = 0; _i < _elements._length; _i++) {
+    _buf._append('\tat ');
+    _element = _elements[_i];
+    _buf._append(_element._className);
+    _methodName = _element._methodName;
+    if (_methodName._length1() > 0) {
+      _$append(_buf, 46);
+      _buf._append(_methodName);
+    }
+    _$append(_buf, 40);
+    _fileName = _element._fileName;
+    if (null === _fileName) {
+      _fileName = 'unknown';
+    }
+    _buf._append(_fileName);
+    _lineNumber = _element._lineNumber;
+    if (false ==(_$equals1(_fileName, 'unknown') || _$equals1(_fileName, 'native'))) {
+      if ((-1) != _lineNumber) {
+        _$append0(_$append(_buf, 58), _lineNumber);
+      }
+    }
+    _buf._append(')\n');
+  }
+  return _buf._toString0();
+}
+
+function _buildStackTraceElements(_functionNames){
+  var _count, _elements, _i, _declaringClass, _methodName, _fileName, _lineNumber, _arguments, _functionName, _argumentStartIndex, _classNameStart, _firstLetterOfClassName, _convertedFunctionName, _classAndMethodNameCompound, _methodNameStart, _staticMethod, _unconvertedArguments, _convertedArguments, _j, _c, _typeName, _endOfTypeName, _swap;
+  _checkNotNull('parameter:functionNames', _functionNames);
+  _count = _functionNames._length;
+  _elements = _initDims('[Ljava.lang.StackTraceElement;', [106], [8], [_count], null);
+  for (_i = 0; _i < _count; _i++) {
+    _declaringClass = null;
+    _methodName = null;
+    _fileName = '';
+    _lineNumber = (-1);
+    _arguments = '';
+    while (true) {
+      _functionName = _functionNames[_i];
+      _fileName = _functionName;
+      if (_$equals1(_functionName, 'anonymous')) {
+        _declaringClass = 'anonymous';
+        _methodName = '';
+        _arguments = 'unknown';
+        break;
+      }
+      _argumentStartIndex = _functionName._indexOf5('__');
+      if ((-1) == _argumentStartIndex) {
+        _declaringClass = _functionName;
+        _methodName = '';
+        _classNameStart = _functionName._lastIndexOf0(95);
+        if ((-1) == _classNameStart) {
+          break;
+        }
+        _firstLetterOfClassName = _functionName._charAt(_classNameStart + 1);
+        if (_toUpperCase(_firstLetterOfClassName) != _firstLetterOfClassName) {
+          break;
+        }
+        _declaringClass = _functionName._replace0(95, 46);
+        _methodName = '';
+        _arguments = '';
+        break;
+      }
+      _argumentStartIndex = _argumentStartIndex + 2;
+      if (_functionName._charAt(_argumentStartIndex + 2) == 95) {
+        _argumentStartIndex++;
+      }
+      _convertedFunctionName = _functionName._replace0(95, 46);
+      _classAndMethodNameCompound = _convertedFunctionName._substring0(0, _argumentStartIndex - 2);
+      _methodNameStart = _classAndMethodNameCompound._lastIndexOf0(46);
+      if ((-1) == _methodNameStart) {
+        _declaringClass = _functionName;
+        _methodName = '';
+        _arguments = 'unknown';
+        break;
+      }
+      _declaringClass = _classAndMethodNameCompound._substring0(0, _methodNameStart);
+      _staticMethod = 36 == _classAndMethodNameCompound._charAt(_methodNameStart + 1);
+      if (_staticMethod) {
+        _methodNameStart++;
+      }
+      _methodName = _classAndMethodNameCompound._substring(_methodNameStart + 1);
+      if (_staticMethod && _$equals1(_methodName, 'clint')) {
+        _methodName = '<clint>';
+        _arguments = '';
+        break;
+      }
+      if (_convertedFunctionName._length1() == _argumentStartIndex) {
+        break;
+      }
+      _unconvertedArguments = _convertedFunctionName._substring(_argumentStartIndex);
+      _convertedArguments = _$StringBuffer(new _StringBuffer());
+      _j = 0;
+      while (_j < _unconvertedArguments._length1()) {
+        _c = _unconvertedArguments._charAt(_j++);
+        _typeName = null;
+        while (true) {
+          if (_c == 91) {
+            _typeName = '[]';
+            break;
+          }
+          if (_c == 76) {
+            _endOfTypeName = _unconvertedArguments._indexOf1('.2', _j + 1);
+            if ((-1) == _endOfTypeName) {
+              _endOfTypeName = _unconvertedArguments._length1();
+            }
+            _typeName = _unconvertedArguments._substring0(_j, _endOfTypeName);
+            _j = _endOfTypeName + 2;
+            break;
+          }
+          if (_c == 90) {
+            _typeName = 'boolean';
+            break;
+          }
+          if (_c == 66) {
+            _typeName = 'byte';
+            break;
+          }
+          if (_c == 67) {
+            _typeName = 'char';
+            break;
+          }
+          if (_c == 83) {
+            _typeName = 'short';
+            break;
+          }
+          if (_c == 73) {
+            _typeName = 'int';
+            break;
+          }
+          if (_c == 74) {
+            _typeName = 'long';
+            break;
+          }
+          if (_c == 70) {
+            _typeName = 'float';
+            break;
+          }
+          if (_c == 68) {
+            _typeName = 'double';
+            break;
+          }
+          _typeName = '?';
+          _j = 2147483647;
+          break;
+        }
+        _convertedArguments._append(_typeName);
+        if (_j < _unconvertedArguments._length1()) {
+          _$append(_convertedArguments, 44);
+        }
+      }
+      _arguments = _convertedArguments._toString0();
+      break;
+    }
+    if (_declaringClass._endsWith0(_methodName)) {
+      _methodName = '';
+    }
+    if (_declaringClass._length1() == 0) {
+      _swap = _methodName;
+      _methodName = _declaringClass;
+      _declaringClass = _swap;
+    }
+    _fileName = _arguments;
+    _elements[_i] = _$StackTraceElement(new _StackTraceElement(), _declaringClass, _methodName, _fileName, _lineNumber);
+  }
+  return _elements;
+}
+
+function _split(_input, _delimiter, _ignoreDelimiters){
+  var _tokens, _stringLength, _chars, _firstChar, _i, _c, _isTokenTest, _array, _i;
+  _checkNotNull('parameter:input', _input);
+  _checkNotEmpty('parameter:delimiter', _delimiter);
+  _tokens = _$ArrayList(new _ArrayList());
+  _stringLength = _input._length1();
+  if (_stringLength > 0) {
+    _chars = _$toCharArray(_input);
+    _firstChar = 0;
+    for (_i = 0; _i < _stringLength; _i++) {
+      _c = _chars[_i];
+      _isTokenTest = _delimiter._indexOf6(_c);
+      if (_isTokenTest != (-1)) {
+        _$add(_tokens, _input._substring0(_firstChar, _i));
+        if (false == _ignoreDelimiters) {
+          _$add(_tokens, _valueOf5(_c));
+        }
+        _firstChar = _i + 1;
+        continue;
+      }
+    }
+    if (_firstChar != _stringLength) {
+      _$add(_tokens, _input._substring(_firstChar));
+    }
+  }
+  _array = _initDims('[Ljava.lang.String;', [103], [5], [_$size(_tokens)], null);
+  for (_i = 0; _i < _array._length; _i++) {
+    _array[_i] = _dynamicCast(_$get0(_tokens, _i), 5);
+  }
+  return _array;
+}
+
+function _checkNotEmpty(_message, _string){
+  if (_isNullOrEmpty(_string)) {
+    _handleAssertFailure0(_message + ' is null or empty.');
+  }
+}
+
+function _isNullOrEmpty(_string){
+  return _string === null || _string._length1() == 0;
+}
+
+function _$onModuleLoad(_this$static){
+  var _rootPanel, _throwCatchAndPrintStackTrace, _testThrowableSerialization, _clearLog;
+  _setUncaughtExceptionHandler(_$StackTraceHelperTest$1(new _StackTraceHelperTest$1(), _this$static));
+  _rootPanel = _get1();
+  _throwCatchAndPrintStackTrace = _$Button0(new _Button(), 'Throw,Catch and PrintStackTrace');
+  _$addClickListener(_throwCatchAndPrintStackTrace, _$StackTraceHelperTest$2(new _StackTraceHelperTest$2(), _this$static));
+  _$add2(_rootPanel, _throwCatchAndPrintStackTrace);
+  _testThrowableSerialization = _$Button0(new _Button(), 'Invoke server service which throws Exception');
+  _$addClickListener(_testThrowableSerialization, _$StackTraceHelperTest$3(new _StackTraceHelperTest$3(), _this$static));
+  _$add2(_rootPanel, _testThrowableSerialization);
+  _clearLog = _$Button0(new _Button(), 'ClearLog');
+  _$addClickListener(_clearLog, _$StackTraceHelperTest$4(new _StackTraceHelperTest$4(), _this$static));
+  _$add2(_rootPanel, _clearLog);
+}
+
+function _$log(_this$static, _object){
+  var _log, _string;
+  _log = _getElementById('log');
+  _string = _valueOf4(_object)._replaceAll0('\n', '<br>')._replaceAll0('\t', '&nbsp;&nbsp;&nbsp;&nbsp;');
+  _setInnerHTML(_log, _getInnerHTML(_log) + _string + '<br>');
+}
+
+function _$twoFramesAwayFromMethodWhichThrowsException(_this$static){
+  _$oneFrameAwayFromMethodWhichThrowsException(_this$static);
+}
+
+function _$oneFrameAwayFromMethodWhichThrowsException(_this$static){
+  _$throwRuntimeException(_this$static);
+}
+
+function _$throwRuntimeException(_this$static){
+  throw _$RuntimeException1(new _RuntimeException());
+}
+
+function _$throwCatchAndPrintStackTrace(_this$static){
+  var _caught0, _className, _expectedStackTrace, _expected, _stackTrace, _$e0;
+  _caught0 = null;
+  try {
+    _$log(_this$static, '<b>Expected stacktrace</b>');
+    _className = _getTypeName(_this$static);
+    _expectedStackTrace = 'java.lang.RuntimeException:\n\tat ' + _className + '.throwRuntimeException()\n' + '\tat ' + _className + '.twoFramesAwayFromMethodWhichThrowsException()\n' + '\tat ' + _className + '.oneFrameAwayFromMethodWhichThrowsException()\n' + '\tat ' + _className + '.throwCatchAndPrintStackTrace()\n' + '\tmore...';
+    _$log(_this$static, _expectedStackTrace);
+    _$log(_this$static, 'About to throw a RuntimeException.');
+    _$twoFramesAwayFromMethodWhichThrowsException(_this$static);
+  }
+   catch (_$e0) {
+    _$e0 = _caught(_$e0);
+    if (_instanceOf(_$e0, 33)) {
+      _expected = _$e0;
+      _caught0 = _expected;
+      _$printStackTrace(_expected);
+    }
+     else 
+      throw _$e0;
+  }
+  _stackTrace = _getStackTraceAsString(_caught0);
+  _$log(_this$static, '<b>StackTraceHelper.getStackTraceAsString()</b>');
+  _$log(_this$static, _stackTrace);
+  _$log(_this$static, '---END OF STACKTRACE---');
+}
+
+function _$invokeServiceServiceWhichThrowsException(_this$static){
+  var _service, _endpoint, _exception;
+  _service = _$StackTraceHelperTestService_Proxy(new _StackTraceHelperTestService_Proxy());
+  _endpoint = _service;
+  _$setServiceEntryPoint(_endpoint, 'http://localhost:8888/rocket.util.test.stacktracehelper.StackTraceHelper/serviceWhichThrowsAnException');
+  _exception = _$Exception0(new _Exception(), 'created on client.');
+  _$invoke(_service, null, _$StackTraceHelperTest$5(new _StackTraceHelperTest$5(), _this$static));
+}
+
+function _$handleUnexpectedResult(_this$static, _result){
+  _$log(_this$static, 'Service unexpectedly returned ' + _getTypeName(_result));
+}
+
+function _$handleExpectedException(_this$static, _throwable){
+  var _className, _expectedStackTrace, _stackTrace;
+  _$log(_this$static, 'Service returned ' + _getTypeName(_throwable));
+  _$log(_this$static, '<b>StackTraceHelper.getStackTraceAsString()</b>');
+  _className = 'rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet';
+  _expectedStackTrace = 'java.lang.Exception:\n\tat rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet.throwException()\n\tat rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet.twoFramesAwayFromMethodWhichThrowsException()\n\tat rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet.oneFrameAwayFromMethodWhichThrowsException()\n\tmore...';
+  _$log(_this$static, 'java.lang.Exception:\n\tat rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet.throwException()\n\tat rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet.twoFramesAwayFromMethodWhichThrowsException()\n\tat rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet.oneFrameAwayFromMethodWhichThrowsException()\n\tmore...');
+  _stackTrace = _getStackTraceAsString(_throwable);
+  _$log(_this$static, _stackTrace);
+  _$log(_this$static, '---END OF STACKTRACE---');
+}
+
+function _StackTraceHelperTest(){
+}
+
+_ = _StackTraceHelperTest.prototype = new _Object();
+_._typeName = 'rocket.util.test.stacktracehelper.client.StackTraceHelperTest';
+_._typeId = 92;
+function _$StackTraceHelperTest$1(_this$static, _this$0){
+  _this$static._this$0 = _this$0;
+  return _this$static;
+}
+
+function _$onUncaughtException(_this$static, _caught0){
+  _$clinit()._err , 'caught:' + _caught0._getMessage0();
+  _$printStackTrace(_caught0);
+}
+
+function _StackTraceHelperTest$1(){
+}
+
+_ = _StackTraceHelperTest$1.prototype = new _Object();
+_._typeName = 'rocket.util.test.stacktracehelper.client.StackTraceHelperTest$1';
+_._typeId = 93;
+function _onClick0(_sender){
+  _$throwCatchAndPrintStackTrace(this._this$0);
+}
+
+function _$StackTraceHelperTest$2(_this$static, _this$0){
+  _this$static._this$0 = _this$0;
+  return _this$static;
+}
+
+function _StackTraceHelperTest$2(){
+}
+
+_ = _StackTraceHelperTest$2.prototype = new _Object();
+_._onClick = _onClick0;
+_._typeName = 'rocket.util.test.stacktracehelper.client.StackTraceHelperTest$2';
+_._typeId = 94;
+function _onClick1(_sender){
+  _$invokeServiceServiceWhichThrowsException(this._this$0);
+}
+
+function _$StackTraceHelperTest$3(_this$static, _this$0){
+  _this$static._this$0 = _this$0;
+  return _this$static;
+}
+
+function _StackTraceHelperTest$3(){
+}
+
+_ = _StackTraceHelperTest$3.prototype = new _Object();
+_._onClick = _onClick1;
+_._typeName = 'rocket.util.test.stacktracehelper.client.StackTraceHelperTest$3';
+_._typeId = 95;
+function _onClick2(_sender){
+  _setInnerHTML(_getElementById('log'), '');
+}
+
+function _$StackTraceHelperTest$4(_this$static, _this$0){
+  _this$static._this$0 = _this$0;
+  return _this$static;
+}
+
+function _StackTraceHelperTest$4(){
+}
+
+_ = _StackTraceHelperTest$4.prototype = new _Object();
+_._onClick = _onClick2;
+_._typeName = 'rocket.util.test.stacktracehelper.client.StackTraceHelperTest$4';
+_._typeId = 96;
+function _$StackTraceHelperTest$5(_this$static, _this$0){
+  _this$static._this$0 = _this$0;
+  return _this$static;
+}
+
+function _$onFailure(_this$static, _expected){
+  _$handleExpectedException(_this$static._this$0, _expected);
+}
+
+function _$onSuccess(_this$static, _result){
+  _$handleUnexpectedResult(_this$static._this$0, _result);
+}
+
+function _StackTraceHelperTest$5(){
+}
+
+_ = _StackTraceHelperTest$5.prototype = new _Object();
+_._typeName = 'rocket.util.test.stacktracehelper.client.StackTraceHelperTest$5';
+_._typeId = 97;
+function _$clinit8(){
+  _$clinit8 = _nullMethod;
+  _SERIALIZER = _$StackTraceHelperTestService_TypeSerializer(new _StackTraceHelperTestService_TypeSerializer());
+  return window;
+}
+
+function _$StackTraceHelperTestService_Proxy(_this$static){
+  _$clinit8();
+  return _this$static;
+}
+
+function _$__invoke(_this$static, _streamWriter, _exception){
+  if (_this$static._fServiceEntryPoint === null)
+    throw _$ServiceDefTarget$NoServiceEntryPointSpecifiedException(new _ServiceDefTarget$NoServiceEntryPointSpecifiedException());
+  _$prepareToWrite(_streamWriter);
+  _$writeString(_streamWriter, 'rocket.util.test.stacktracehelper.client.StackTraceHelperTestService');
+  _$writeString(_streamWriter, 'invoke');
+  _$writeInt(_streamWriter, 1);
+  _$writeString(_streamWriter, 'java.lang.Exception');
+  _$writeObject(_streamWriter, _exception);
+}
+
+function _$invoke(_this$static, _exception, _callback){
+  var _streamReader, _streamWriter, _e, _handler, _$e0;
+  _streamReader = _$ClientSerializationStreamReader(new _ClientSerializationStreamReader(), _SERIALIZER);
+  _streamWriter = _$ClientSerializationStreamWriter(new _ClientSerializationStreamWriter(), _SERIALIZER);
+  try {
+    _$__invoke(_this$static, _streamWriter, _exception);
+  }
+   catch (_$e0) {
+    _$e0 = _caught(_$e0);
+    if (_instanceOf(_$e0, 34)) {
+      _e = _$e0;
+      _$onFailure(_callback, _$InvocationException(new _InvocationException(), _e._getMessage0()));
+      return ;
+    }
+     else 
+      throw _$e0;
+  }
+  _handler = _$StackTraceHelperTestService_Proxy$1(new _StackTraceHelperTestService_Proxy$1(), _this$static, _streamReader, _callback);
+  if (!_asyncPost(_this$static._fServiceEntryPoint, _$toString0(_streamWriter), _handler))
+    _$onFailure(_callback, _$InvocationException(new _InvocationException(), 'Unable to initiate the asynchronous service invocation -- check the network connection'));
+}
+
+function _$setServiceEntryPoint(_this$static, _s){
+  _this$static._fServiceEntryPoint = _s;
+}
+
+function _StackTraceHelperTestService_Proxy(){
+}
+
+_ = _StackTraceHelperTestService_Proxy.prototype = new _Object();
+_._typeName = 'rocket.util.test.stacktracehelper.client.StackTraceHelperTestService_Proxy';
+_._typeId = 98;
+_._fServiceEntryPoint = null;
+function _onCompletion0(_encodedResponse){
+  var _handler;
+  _handler = _sUncaughtExceptionHandler;
+  if (_handler !== null)
+    _$onCompletionAndCatch(this, _encodedResponse, _handler);
+  else 
+    _$onCompletionImpl(this, _encodedResponse);
+}
+
+function _$StackTraceHelperTestService_Proxy$1(_this$static, _this$0, _val$streamReader, _val$callback){
+  _this$static._this$0 = _this$0;
+  _this$static._val$streamReader = _val$streamReader;
+  _this$static._val$callback = _val$callback;
+  return _this$static;
+}
+
+function _$onCompletionAndCatch(_this$static, _encodedResponse, _handler){
+  var _e, _$e0;
+  try {
+    _$onCompletionImpl(_this$static, _encodedResponse);
+  }
+   catch (_$e0) {
+    _$e0 = _caught(_$e0);
+    if (_instanceOf(_$e0, 2)) {
+      _e = _$e0;
+      _$onUncaughtException(_handler, _e);
+    }
+     else 
+      throw _$e0;
+  }
+}
+
+function _$onCompletionImpl(_this$static, _encodedResponse){
+  var _result, _caught0, _e, _$e0;
+  _result = null;
+  _caught0 = null;
+  try {
+    if (_$startsWith(_encodedResponse, '{OK}')) {
+      _$prepareToRead0(_this$static._val$streamReader, _encodedResponse._substring(4));
+      _result = null;
+    }
+     else if (_$startsWith(_encodedResponse, '{EX}')) {
+      _$prepareToRead0(_this$static._val$streamReader, _encodedResponse._substring(4));
+      _caught0 = _dynamicCast(_$readObject(_this$static._val$streamReader), 2);
+    }
+     else {
+      _caught0 = _$InvocationException(new _InvocationException(), _encodedResponse);
+    }
+  }
+   catch (_$e0) {
+    _$e0 = _caught(_$e0);
+    if (_instanceOf(_$e0, 2)) {
+      _e = _$e0;
+      _caught0 = _e;
+    }
+     else 
+      throw _$e0;
+  }
+  if (_caught0 === null)
+    _$onSuccess(_this$static._val$callback, _result);
+  else 
+    _$onFailure(_this$static._val$callback, _caught0);
+}
+
+function _StackTraceHelperTestService_Proxy$1(){
+}
+
+_ = _StackTraceHelperTestService_Proxy$1.prototype = new _Object();
+_._onCompletion = _onCompletion0;
+_._typeName = 'rocket.util.test.stacktracehelper.client.StackTraceHelperTestService_Proxy$1';
+_._typeId = 99;
+function _$clinit9(){
+  _$clinit9 = _nullMethod;
+  _methodMap = _createMethodMap();
+  _signatureMap = _createSignatureMap();
+  return window;
+}
+
+function _create_boolean_Array_Rank_1(_streamReader){
+  _$clinit9();
+  var _rank;
+  _rank = _streamReader._readInt();
+  return _initDims('[Z', [101], [(-1)], [_rank], false);
+}
+
+function _create_com_google_gwt_user_client_rpc_SerializableException_FieldSerializer(_streamReader){
+  _$clinit9();
+  return _$SerializableException(new _SerializableException());
+}
+
+function _create_int_Array_Rank_1(_streamReader){
+  _$clinit9();
+  var _rank;
+  _rank = _streamReader._readInt();
+  return _initDims('[I', [102], [(-1)], [_rank], 0);
+}
+
+function _create_java_lang_String_Array_Rank_1(_streamReader){
+  _$clinit9();
+  var _rank;
+  _rank = _streamReader._readInt();
+  return _initDims('[Ljava.lang.String;', [103], [5], [_rank], null);
+}
+
+function _create_com_google_gwt_user_client_rpc_core_java_util_ArrayList_CustomFieldSerializer(_streamReader){
+  _$clinit9();
+  return _$ArrayList(new _ArrayList());
+}
+
+function _create_com_google_gwt_user_client_rpc_core_java_util_HashMap_CustomFieldSerializer(_streamReader){
+  _$clinit9();
+  return _$HashMap(new _HashMap());
+}
+
+function _create_com_google_gwt_user_client_rpc_core_java_util_HashSet_CustomFieldSerializer(_streamReader){
+  _$clinit9();
+  return _$HashSet(new _HashSet());
+}
+
+function _create_com_google_gwt_user_client_rpc_core_java_util_Vector_CustomFieldSerializer(_streamReader){
+  _$clinit9();
+  return _$Vector(new _Vector());
+}
+
+function _create_rocket_collection_client_MultiValueMap_FieldSerializer(_streamReader){
+  _$clinit9();
+  return _$MultiValueMap(new _MultiValueMap());
+}
+
+function _create_rocket_messaging_client_Message_FieldSerializer(_streamReader){
+  _$clinit9();
+  return new _Message();
+}
+
+function _create_rocket_messaging_client_StringPayload_FieldSerializer(_streamReader){
+  _$clinit9();
+  return new _StringPayload();
+}
+
+function _create_rocket_remoting_client_FailedWebRequestException_FieldSerializer(_streamReader){
+  _$clinit9();
+  return _$FailedWebRequestException(new _FailedWebRequestException());
+}
+
+function _create_rocket_remoting_client_Headers_FieldSerializer(_streamReader){
+  _$clinit9();
+  return _$Headers(new _Headers());
+}
+
+function _create_rocket_remoting_client_RequestParameters_FieldSerializer(_streamReader){
+  _$clinit9();
+  return _$RequestParameters(new _RequestParameters());
+}
+
+function _create_rocket_remoting_client_WebRequest_FieldSerializer(_streamReader){
+  _$clinit9();
+  return new _WebRequest();
+}
+
+function _create_rocket_remoting_client_WebResponse_FieldSerializer(_streamReader){
+  _$clinit9();
+  return new _WebResponse();
+}
+
+function _createMethodMap(){
+  _$clinit9();
+  return {'[Z/2810793373':[function(_x){
+    return _create_boolean_Array_Rank_1(_x);
+  }
+  , function(_x, _y){
+    _deserialize10(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize10(_x, _y);
+  }
+  ], 'com.google.gwt.user.client.rpc.SerializableException/4171780864':[function(_x){
+    return _create_com_google_gwt_user_client_rpc_SerializableException_FieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize(_x, _y);
+  }
+  ], '[I/1586289025':[function(_x){
+    return _create_int_Array_Rank_1(_x);
+  }
+  , function(_x, _y){
+    _deserialize11(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize11(_x, _y);
+  }
+  ], 'java.lang.Boolean/476441737':[function(_x){
+    return _instantiate(_x);
+  }
+  , function(_x, _y){
+    _deserialize0(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize0(_x, _y);
+  }
+  ], 'java.lang.Byte/1571082439':[function(_x){
+    return _instantiate0(_x);
+  }
+  , function(_x, _y){
+    _deserialize1(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize1(_x, _y);
+  }
+  ], 'java.lang.Character/2663399736':[function(_x){
+    return _instantiate1(_x);
+  }
+  , function(_x, _y){
+    _deserialize2(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize2(_x, _y);
+  }
+  ], 'java.lang.Double/858496421':[function(_x){
+    return _instantiate2(_x);
+  }
+  , function(_x, _y){
+    _deserialize3(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize3(_x, _y);
+  }
+  ], 'java.lang.Float/1718559123':[function(_x){
+    return _instantiate3(_x);
+  }
+  , function(_x, _y){
+    _deserialize4(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize4(_x, _y);
+  }
+  ], 'java.lang.Integer/3438268394':[function(_x){
+    return _instantiate4(_x);
+  }
+  , function(_x, _y){
+    _deserialize5(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize5(_x, _y);
+  }
+  ], 'java.lang.Long/4227064769':[function(_x){
+    return _instantiate5(_x);
+  }
+  , function(_x, _y){
+    _deserialize6(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize6(_x, _y);
+  }
+  ], 'java.lang.Short/551743396':[function(_x){
+    return _instantiate6(_x);
+  }
+  , function(_x, _y){
+    _deserialize8(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize8(_x, _y);
+  }
+  ], 'java.lang.String/2004016611':[function(_x){
+    return _instantiate7(_x);
+  }
+  , function(_x, _y){
+    _deserialize9(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize9(_x, _y);
+  }
+  ], '[Ljava.lang.String;/2364883620':[function(_x){
+    return _create_java_lang_String_Array_Rank_1(_x);
+  }
+  , function(_x, _y){
+    _deserialize7(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize7(_x, _y);
+  }
+  ], 'java.util.ArrayList/3821976829':[function(_x){
+    return _create_com_google_gwt_user_client_rpc_core_java_util_ArrayList_CustomFieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize12(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize12(_x, _y);
+  }
+  ], 'java.util.Date/1659716317':[function(_x){
+    return _instantiate8(_x);
+  }
+  , function(_x, _y){
+    _deserialize13(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize13(_x, _y);
+  }
+  ], 'java.util.HashMap/962170901':[function(_x){
+    return _create_com_google_gwt_user_client_rpc_core_java_util_HashMap_CustomFieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize14(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize14(_x, _y);
+  }
+  ], 'java.util.HashSet/1594477813':[function(_x){
+    return _create_com_google_gwt_user_client_rpc_core_java_util_HashSet_CustomFieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize15(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize15(_x, _y);
+  }
+  ], 'java.util.Vector/3125574444':[function(_x){
+    return _create_com_google_gwt_user_client_rpc_core_java_util_Vector_CustomFieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize16(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize16(_x, _y);
+  }
+  ], 'rocket.collection.client.MultiValueMap/480890195':[function(_x){
+    return _create_rocket_collection_client_MultiValueMap_FieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize20(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize20(_x, _y);
+  }
+  ], 'rocket.messaging.client.Message/1160194504':[function(_x){
+    return _create_rocket_messaging_client_Message_FieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize21(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize21(_x, _y);
+  }
+  ], 'rocket.messaging.client.StringPayload/801892873':[function(_x){
+    return _create_rocket_messaging_client_StringPayload_FieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize22(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize22(_x, _y);
+  }
+  ], 'rocket.remoting.client.FailedWebRequestException/4025787213':[function(_x){
+    return _create_rocket_remoting_client_FailedWebRequestException_FieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize23(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize23(_x, _y);
+  }
+  ], 'rocket.remoting.client.Headers/3509595800':[function(_x){
+    return _create_rocket_remoting_client_Headers_FieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize24(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize24(_x, _y);
+  }
+  ], 'rocket.remoting.client.RequestParameters/2825584475':[function(_x){
+    return _create_rocket_remoting_client_RequestParameters_FieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize25(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize25(_x, _y);
+  }
+  ], 'rocket.remoting.client.WebRequest/338919099':[function(_x){
+    return _create_rocket_remoting_client_WebRequest_FieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize26(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize26(_x, _y);
+  }
+  ], 'rocket.remoting.client.WebResponse/3045473397':[function(_x){
+    return _create_rocket_remoting_client_WebResponse_FieldSerializer(_x);
+  }
+  , function(_x, _y){
+    _deserialize27(_x, _y);
+  }
+  , function(_x, _y){
+    _serialize27(_x, _y);
+  }
+  ]};
+}
+
+function _createSignatureMap(){
+  _$clinit9();
+  return {'[Z':'2810793373', 'com.google.gwt.user.client.rpc.SerializableException':'4171780864', '[I':'1586289025', 'java.lang.Boolean':'476441737', 'java.lang.Byte':'1571082439', 'java.lang.Character':'2663399736', 'java.lang.Double':'858496421', 'java.lang.Float':'1718559123', 'java.lang.Integer':'3438268394', 'java.lang.Long':'4227064769', 'java.lang.Short':'551743396', 'java.lang.String':'2004016611', '[Ljava.lang.String;':'2364883620', 'java.util.ArrayList':'3821976829', 'java.util.Date':'1659716317', 'java.util.HashMap':'962170901', 'java.util.HashSet':'1594477813', 'java.util.Vector':'3125574444', 'rocket.collection.client.MultiValueMap':'480890195', 'rocket.messaging.client.Message':'1160194504', 'rocket.messaging.client.StringPayload':'801892873', 'rocket.remoting.client.FailedWebRequestException':'4025787213', 'rocket.remoting.client.Headers':'3509595800', 'rocket.remoting.client.RequestParameters':'2825584475', 'rocket.remoting.client.WebRequest':'338919099', 'rocket.remoting.client.WebResponse':'3045473397'};
+}
+
+function _raiseSerializationException(_msg){
+  _$clinit9();
+  throw _$SerializationException(new _SerializationException(), _msg);
+}
+
+function _deserialize28(_streamReader, _instance, _typeSignature){
+  var _methodTable = _methodMap[_typeSignature];
+  if (!_methodTable) {
+    _raiseSerializationException(_typeSignature);
+  }
+  _methodTable[1](_streamReader, _instance);
+}
+
+function _getSerializationSignature0(_typeName){
+  var _signature = _signatureMap[_typeName];
+  if (!_signature) {
+    _raiseSerializationException(_typeName);
+  }
+  return _signature;
+}
+
+function _instantiate10(_streamReader, _typeSignature){
+  var _methodTable = _methodMap[_typeSignature];
+  if (!_methodTable) {
+    _raiseSerializationException(_typeSignature);
+  }
+  return _methodTable[0](_streamReader);
+}
+
+function _serialize28(_streamWriter, _instance, _typeSignature){
+  var _methodTable = _methodMap[_typeSignature];
+  if (!_methodTable) {
+    _raiseSerializationException(_typeSignature);
+  }
+  _methodTable[2](_streamWriter, _instance);
+}
+
+function _$StackTraceHelperTestService_TypeSerializer(_this$static){
+  _$clinit9();
+  return _this$static;
+}
+
+function _StackTraceHelperTestService_TypeSerializer(){
+}
+
+_ = _StackTraceHelperTestService_TypeSerializer.prototype = new _Object();
+_._deserialize19 = _deserialize28;
+_._getSerializationSignature = _getSerializationSignature0;
+_._instantiate9 = _instantiate10;
+_._serialize19 = _serialize28;
+_._typeName = 'rocket.util.test.stacktracehelper.client.StackTraceHelperTestService_TypeSerializer';
+_._typeId = 100;
+function _init4(){
+  _$onModuleLoad(new _StackTraceHelperTest());
+}
+
+function gwtOnLoad(_errFn, _modName){
+  if (_errFn)
+    try {
+      _init4();
+    }
+     catch (_e) {
+      _errFn(_modName);
+    }
+   else {
+    _init4();
+  }
+}
+
+_typeIdArray = [{}, {6:1}, {2:1, 6:1}, {2:1, 6:1}, {2:1, 6:1, 33:1}, {2:1, 6:1, 33:1}, {1:1, 6:1}, {6:1}, {6:1}, {6:1}, {1:1, 3:1, 6:1}, {1:1, 6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {2:1, 6:1, 33:1}, {2:1, 6:1}, {2:1, 6:1, 34:1}, {2:1, 6:1, 33:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1, 13:1}, {6:1, 7:1, 13:1, 14:1}, {6:1, 7:1, 13:1, 14:1}, {6:1, 7:1, 13:1, 14:1}, {6:1, 7:1, 13:1, 14:1}, {6:1, 7:1, 13:1, 14:1}, {6:1, 7:1, 13:1, 14:1}, {6:1, 7:1, 13:1, 14:1}, {6:1}, {6:1, 25:1}, {6:1, 25:1}, {6:1, 25:1}, {6:1, 7:1, 13:1, 14:1, 16:1}, {4:1, 6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {2:1, 6:1, 33:1}, {2:1, 6:1}, {2:1, 6:1}, {6:1, 17:1}, {6:1}, {6:1, 10:1, 18:1}, {6:1, 19:1}, {2:1, 6:1, 33:1}, {6:1, 10:1, 20:1}, {6:1, 10:1, 21:1}, {2:1, 6:1, 33:1}, {2:1, 6:1, 33:1}, {2:1, 6:1, 33:1}, {6:1, 10:1, 22:1}, {6:1, 10:1, 23:1}, {2:1, 6:1, 33:1}, {2:1, 6:1, 33:1}, {6:1, 10:1, 24:1}, {6:1, 8:1}, {5:1, 6:1, 10:1, 11:1}, {6:1, 11:1}, {6:1}, {6:1, 26:1}, {6:1, 27:1}, {6:1, 27:1}, {6:1}, {6:1}, {6:1}, {6:1, 25:1}, {2:1, 6:1, 33:1}, {6:1, 10:1, 28:1}, {6:1, 26:1}, {6:1, 27:1}, {6:1, 9:1, 12:1}, {6:1}, {6:1, 27:1}, {2:1, 6:1, 33:1}, {6:1, 30:1}, {6:1}, {6:1, 29:1}, {2:1, 6:1, 33:1}, {6:1, 31:1}, {6:1, 32:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1, 15:1}, {6:1, 15:1}, {6:1, 15:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}, {6:1}];
+
+if ($wnd.__gwt_tryGetModuleControlBlock) {
+  var $mcb = $wnd.__gwt_tryGetModuleControlBlock(location.search);
+  if ($mcb) $mcb.compilationLoaded(window);
+}
+--></script></body></html>

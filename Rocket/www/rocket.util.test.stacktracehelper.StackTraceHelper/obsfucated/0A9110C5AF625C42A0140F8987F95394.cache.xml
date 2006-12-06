@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cache-entry>
+	<generated-type-hash class="rocket.messaging.client.StringPayload_FieldSerializer" hash="FB6DA614F6030D9AC8B03D9DBB6F5C35"/>
+	<generated-type-hash class="rocket.collection.client.MultiValueMap_FieldSerializer" hash="256E1BE67F7A06629775EB01A3548CF4"/>
+	<generated-type-hash class="rocket.remoting.client.RequestParameters_FieldSerializer" hash="4C537D6C9C1C42110B80D664E9FF24EC"/>
+	<generated-type-hash class="rocket.util.test.stacktracehelper.client.StackTraceHelperTestService_Proxy" hash="923370ACB2064203FBCF4F0EFE69330C"/>
+	<generated-type-hash class="rocket.util.test.stacktracehelper.client.StackTraceHelperTestService_TypeSerializer" hash="C3BE6E0D1433B468E02794EEC2FC9DC8"/>
+	<generated-type-hash class="rocket.remoting.client.Headers_FieldSerializer" hash="779599CE59CB9DD81870DE37ED0BE506"/>
+	<generated-type-hash class="com.google.gwt.user.client.rpc.SerializableException_FieldSerializer" hash="1CB9B63ABEC9BE7E663F6C56AA395208"/>
+	<generated-type-hash class="rocket.remoting.client.WebResponse_FieldSerializer" hash="0CF8A6C12AC0A6290C3535D48159E1C7"/>
+	<generated-type-hash class="rocket.messaging.client.Message_FieldSerializer" hash="7F0F466B4EE4C365F3EF6302324E7845"/>
+	<generated-type-hash class="rocket.remoting.client.FailedWebRequestException_FieldSerializer" hash="78721F61F78DB3ACE6F80913EC972C3D"/>
+	<generated-type-hash class="rocket.remoting.client.WebRequest_FieldSerializer" hash="512BFE73D8D7806F6752D4BAA1208BBE"/>
+	<rebind-decision in="com.google.gwt.user.client.ui.impl.TextBoxImpl" out="com.google.gwt.user.client.ui.impl.TextBoxImpl"/>
+	<rebind-decision in="rocket.util.test.stacktracehelper.client.StackTraceHelperTest" out="rocket.util.test.stacktracehelper.client.StackTraceHelperTest"/>
+	<rebind-decision in="com.google.gwt.user.client.ui.impl.FormPanelImpl" out="com.google.gwt.user.client.ui.impl.FormPanelImplOpera"/>
+	<rebind-decision in="com.google.gwt.user.client.impl.HistoryImpl" out="com.google.gwt.user.client.impl.HistoryImplStandard"/>
+	<rebind-decision in="rocket.util.test.stacktracehelper.client.StackTraceHelperTestService" out="rocket.util.test.stacktracehelper.client.StackTraceHelperTestService_Proxy"/>
+	<rebind-decision in="com.google.gwt.user.client.impl.HTTPRequestImpl" out="com.google.gwt.user.client.impl.HTTPRequestImpl"/>
+	<rebind-decision in="com.google.gwt.user.client.impl.DOMImpl" out="com.google.gwt.user.client.impl.DOMImplOpera"/>
+</cache-entry>
