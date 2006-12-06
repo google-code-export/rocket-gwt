@@ -1,0 +1,11 @@
+<module>
+
+	<replace-with class="rocket.style.client.impl.InternetExplorer6RuleListImpl">
+		<when-type-is class="rocket.style.client.impl.RuleListImpl"/>
+		<when-property-is name="user.agent" value="ie6"/>
+	</replace-with>
+  	<replace-with class="rocket.style.client.impl.Opera9RuleListImpl">
+		<when-type-is class="rocket.style.client.impl.RuleListImpl"/>
+		<when-property-is name="user.agent" value="opera"/>
+	</replace-with>	
+</module>

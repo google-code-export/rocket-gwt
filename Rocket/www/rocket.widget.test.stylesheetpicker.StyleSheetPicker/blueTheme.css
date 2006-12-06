@@ -1,0 +1,31 @@
+BODY, TABLE{
+	font-family: courier;
+	font-size: 11px;
+	
+	color: #4169e1;
+	background-color: #87ceeb;
+}
+
+H1{
+	font-size: 23px;
+}
+
+H2 {
+	font-size: 21px;
+}
+
+H3 {
+	font-size: 19px;
+}
+
+H4 {
+	font-size: 17px;
+}
+
+H5 {
+	font-size: 15px;
+}
+
+H6 {
+	font-size: 13px;
+}
