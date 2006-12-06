@@ -5,7 +5,7 @@ package java.util;
  * 
  * @author Miroslav Pokorny (mP)
  * 
- * TODO need to modify Vector/List/HashMap etc to throw ConcurrentModificationException.
+ * TODO need to modify emulated Vector/List/HashMap etc to throw ConcurrentModificationException.
  */
 public class ConcurrentModificationException extends RuntimeException {
     public ConcurrentModificationException() {
