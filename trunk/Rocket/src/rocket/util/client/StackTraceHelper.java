@@ -55,7 +55,7 @@ public class StackTraceHelper {
      break;
      }
 
-     n = s.toString().match(/function (\w*)/);
+     n = s.toString().match(/function ([$\w]*)/);
      if( ! n ){
      n = "anonymous";
      break;
@@ -101,7 +101,7 @@ public class StackTraceHelper {
 
      // search the array backwards - if we are stuck in a recursive loop then the same function will the last element in the array
      var j = elements.length;
-     while( 0 > j ){
+     while( j >= 0 ){
      j--;
      if( parent == elements[ j ]){
      parent = null;
@@ -145,10 +145,12 @@ public class StackTraceHelper {
 
             final StackTraceElement element = elements[i];
             buf.append(element.getClassName());
-            buf.append('.');
 
             final String methodName = element.getMethodName();
-            buf.append(methodName);
+            if( methodName.length() > 0 ){
+                buf.append('.');
+                buf.append(methodName);
+            }
             buf.append('(');
 
             String fileName = element.getFileName();
@@ -163,9 +165,6 @@ public class StackTraceHelper {
                     buf.append(':').append(lineNumber);
                 }
             }
-            // if( false == methodName.endsWith( ")") ){
-            // buf.append("()");
-            // }
             buf.append(")\n");
         }
         return buf.toString();
@@ -194,7 +193,8 @@ public class StackTraceHelper {
 
             while (true) {
                 String functionName = functionNames[i];
-
+                fileName = functionName;
+                
                 // special test for unnamed or anonymous methods...
                 if (functionName.equals("anonymous")) {
                     declaringClass = "anonymous";
@@ -228,7 +228,12 @@ public class StackTraceHelper {
                     arguments = "";
                     break;
                 }
+                
+                // sometimes three _ separate class/method from the argument list...
                 argumentStartIndex = argumentStartIndex + 2;
+                if( functionName.charAt( argumentStartIndex + 2 ) == '_'){
+                    argumentStartIndex++;
+                }
 
                 // convert _ into <dots>
                 final String convertedFunctionName = functionName.replace('_', '.');
@@ -265,25 +270,28 @@ public class StackTraceHelper {
                 if (convertedFunctionName.length() == argumentStartIndex) {
                     break;
                 }
+                
                 String unconvertedArguments = convertedFunctionName.substring(argumentStartIndex);
                 final StringBuffer convertedArguments = new StringBuffer();
-
+                
                 int j = 0;
                 while (j < unconvertedArguments.length()) {
                     final char c = unconvertedArguments.charAt(j++);
 
-                    // array
-                    if (c == '[') {
-                        convertedArguments.append("[]");
-                        continue;
-                    }
-
                     String typeName = null;
                     while (true) {
+                        if( c == '['){
+                            typeName = "[]";
+                            break;
+                        }
                         if (c == 'L') {
                             // Ljava_lang_Object_2
-                            final int endOfTypeName = unconvertedArguments.indexOf(".2", j);
-                            typeName = unconvertedArguments.substring(j, endOfTypeName);
+                            int endOfTypeName = unconvertedArguments.indexOf(".2", j+1);
+                            if( -1 == endOfTypeName ){
+                                endOfTypeName = unconvertedArguments.length();
+                            }
+                            
+                            typeName = unconvertedArguments.substring(j, endOfTypeName);                            
                             j = endOfTypeName + 2;
                             break;
                         }
@@ -319,7 +327,8 @@ public class StackTraceHelper {
                             typeName = "double";
                             break;
                         }
-                        typeName = "unknownType[" + c + "]";
+                        typeName = "?";
+                        j = Integer.MAX_VALUE;
                         break;
                     }
                     convertedArguments.append(typeName);
@@ -328,7 +337,6 @@ public class StackTraceHelper {
                     }
                 }
 
-                // hide arguments within the fileName property for now.
                 arguments = convertedArguments.toString();
                 break;
             }
@@ -337,7 +345,11 @@ public class StackTraceHelper {
             if (declaringClass.endsWith(methodName)) {
                 methodName = "";
             }
-
+            if( declaringClass.length() == 0 ){
+                final String swap = methodName;
+                methodName = declaringClass;
+                declaringClass = swap;
+            }
             fileName = arguments;
             elements[i] = new StackTraceElement(declaringClass, methodName, fileName, lineNumber);
         }

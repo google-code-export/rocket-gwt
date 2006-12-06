@@ -75,9 +75,6 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
         return this.getHeaders().contains(name);
     }
 
-    /**
-     * TODO not implemented properly.
-     */
     public void addDateHeader(final String name, final long date) {
         this.addHeader(name, WebHelper.toString(date));
     }

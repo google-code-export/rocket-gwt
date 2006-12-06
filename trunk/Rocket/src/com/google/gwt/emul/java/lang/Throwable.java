@@ -134,7 +134,7 @@ public class Throwable {
     /**
      * An array of populated StackTraceElements
      */
-    private StackTraceElement[] stackTrace;
+    transient private StackTraceElement[] stackTrace;
 
     public String toString() {
         String className = GWT.getTypeName(this);
@@ -173,7 +173,7 @@ public class Throwable {
     /**
      * This field holds the callStack object of the function that created this exception.
      */
-    private JavaScriptObject callStack;
+    transient private JavaScriptObject callStack;
 
     private JavaScriptObject getCallStack() {
         ObjectHelper.checkNotNull("field:callStack", callStack);
