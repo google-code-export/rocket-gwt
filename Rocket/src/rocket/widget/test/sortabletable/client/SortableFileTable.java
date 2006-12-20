@@ -22,6 +22,7 @@ import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 import rocket.util.client.SystemHelper;
 import rocket.widget.client.SortableTable;
+import rocket.widget.client.ZebraFlexTable;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -33,7 +34,6 @@ import com.google.gwt.user.client.ui.Widget;
  * This table is displays all download files, it may be sorted and also includes actions such as downloading or removing a file.
  * 
  * @author Miroslav Pokorny (mP)
- * 
  */
 public class SortableFileTable extends SortableTable {
 
@@ -41,7 +41,8 @@ public class SortableFileTable extends SortableTable {
         super();
 
         this.setHeadings();
-        this.addHeadingStyleToFirstRow();
+        final ZebraFlexTable table = (ZebraFlexTable) this.getFlexTable();
+        table.addHeadingStyleToFirstRow();
     }
 
     protected Object getValue(final Object row, final int column) {
@@ -69,8 +70,7 @@ public class SortableFileTable extends SortableTable {
             break;
         }
         default: {
-            SystemHelper.handleAssertFailure("parameter:column",
-                    "The parameter:column contains an invalid value. row: " + row);
+            SystemHelper.fail("parameter:column", "The parameter:column contains an invalid value. row: " + row);
         }
         }
         return value;
@@ -113,8 +113,7 @@ public class SortableFileTable extends SortableTable {
             break;
         }
         default: {
-            SystemHelper.handleAssertFailure("parameter:column",
-                    "The parameter:column contains an invalid value. column: " + column);
+            SystemHelper.fail("parameter:column", "The parameter:column contains an invalid value. column: " + column);
         }
         }
         return widget;
@@ -141,29 +140,6 @@ public class SortableFileTable extends SortableTable {
 
     protected int getColumnCount() {
         return 7;
-    }
-
-    public void addDownloadFile(final File downloadFile) {
-        ObjectHelper.checkNotNull("parameter:downloadFile", downloadFile);
-        this.getRows().add(downloadFile);
-
-        this.redrawIfAutoEnabled();
-    }
-
-    public void removeDownloadFile(final File downloadFile) {
-        ObjectHelper.checkNotNull("parameter:downloadFile", downloadFile);
-        this.getRows().remove(downloadFile);
-
-        this.redrawIfAutoEnabled();
-    }
-
-    public File getDownloadFile(final int index) {
-        return (File) this.getRows().get(index);
-    }
-
-    public int getIndex(final File downloadFile) {
-        ObjectHelper.checkNotNull("parameter:downloadFile", downloadFile);
-        return this.getRows().indexOf(downloadFile);
     }
 
     protected Hyperlink createDownloadLink(final String serverId) {
