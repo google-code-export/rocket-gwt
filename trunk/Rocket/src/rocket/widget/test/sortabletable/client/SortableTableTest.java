@@ -15,8 +15,10 @@
  */
 package rocket.widget.test.sortabletable.client;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import rocket.browser.client.BrowserHelper;
 import rocket.util.client.StringComparator;
@@ -28,10 +30,7 @@ import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -53,8 +52,8 @@ public class SortableTableTest implements EntryPoint {
         final RootPanel rootPanel = RootPanel.get();
 
         final SortableFileTable table = new SortableFileTable();
-        table.setAscendingSortImageSource(GWT.getModuleBaseURL() + "/up.gif");
-        table.setDescendingSortImageSource(GWT.getModuleBaseURL() + "/down.gif");
+        table.setAscendingSortImageSource("./up.gif");
+        table.setDescendingSortImageSource("./down.gif");
         rootPanel.add(table);
         table.setColumnComparator(StringComparator.IGNORE_CASE_COMPARATOR, 0, true);
 
@@ -73,13 +72,15 @@ public class SortableTableTest implements EntryPoint {
 
         table.setSortedColumn(1);
 
+        final List files = table.getRows();
+
         final File file0 = new File();
         file0.setCreateDate(new Date());
         file0.setDescription("none");
         file0.setFilename("apple.txt");
         file0.setServerId("file://apple.txt");
         file0.setSize(1000);
-        table.addDownloadFile(file0);
+        files.add(file0);
 
         final File file1 = new File();
         file1.setCreateDate(new Date());
@@ -87,7 +88,7 @@ public class SortableTableTest implements EntryPoint {
         file1.setFilename("big.txt");
         file1.setServerId("file://big.txt");
         file1.setSize(123456);
-        table.addDownloadFile(file1);
+        files.add(file1);
 
         final File file2 = new File();
         file2.setCreateDate(new Date());
@@ -95,7 +96,7 @@ public class SortableTableTest implements EntryPoint {
         file2.setFilename("small.txt");
         file2.setServerId("file://small.txt");
         file2.setSize(12);
-        table.addDownloadFile(file2);
+        files.add(file2);
 
         final File file3 = new File();
         file3.setCreateDate(new Date());
@@ -103,47 +104,28 @@ public class SortableTableTest implements EntryPoint {
         file3.setFilename("huge.txt");
         file3.setServerId("file://huge.txt");
         file3.setSize(123456789);
-        table.addDownloadFile(file3);
+        files.add(file3);
 
-        rootPanel.add(new HTML("<br>"));
-
-        rootPanel.add(new Label("Description"));
-        final TextBox description = new TextBox();
-        description.setText("Description goes in here...");
-        rootPanel.add(description);
-
-        rootPanel.add(new Label("Filename"));
-        final TextBox filename = new TextBox();
-        filename.setText("file://" + Random.nextInt(1357913579) + ".txt");
-        rootPanel.add(filename);
-
-        rootPanel.add(new Label("ServerId"));
-        final TextBox serverId = new TextBox();
-        serverId.setText("id-" + Random.nextInt(246802468));
-        rootPanel.add(serverId);
-
-        rootPanel.add(new Label("Size"));
-        final TextBox size = new TextBox();
-        size.setText("" + Random.nextInt(1234567890));
-        rootPanel.add(size);
-
-        rootPanel.add(new HTML("<br>"));
         final Button adder = new Button("Add new File");
         adder.addClickListener(new ClickListener() {
             public void onClick(final Widget ignore) {
                 try {
                     final File newFile = new File();
-                    newFile.setDescription(description.getText());
-                    newFile.setFilename(filename.getText());
-                    newFile.setServerId(serverId.getText());
-                    newFile.setSize(Integer.parseInt(size.getText()));
-                    newFile.setCreateDate(new Date());
-                    table.addDownloadFile(newFile);
 
-                    description.setText("Description goes in here...");
-                    filename.setText("file://" + Random.nextInt(1357913579) + ".txt");
-                    serverId.setText("id-" + Random.nextInt(246802468));
-                    size.setText("" + Random.nextInt(1234567890));
+                    final String description = BrowserHelper.prompt("File description", "{description}");
+                    newFile.setDescription(description);
+
+                    final Date now = new Date();
+                    String filename = now.getYear() + now.getMonth() + now.getDay() + now.getHours() + now.getMinutes()
+                            + now.getSeconds() + ".bin";
+                    filename = BrowserHelper.prompt("Filename", filename);
+                    newFile.setFilename(filename);
+                    newFile.setServerId(filename);
+
+                    final String size = BrowserHelper.prompt("File size", "" + Random.nextInt(123456789));
+                    newFile.setSize(Integer.parseInt(size));
+                    newFile.setCreateDate(new Date());
+                    files.add(newFile);
 
                 } catch (Exception caught) {
                     caught.printStackTrace();
@@ -153,15 +135,13 @@ public class SortableTableTest implements EntryPoint {
         });
         rootPanel.add(adder);
 
-        rootPanel.add(new HTML("<br>"));
-
-        final Button remover = new Button("Remove an existing File");
-        rootPanel.add(remover);
-        remover.addClickListener(new ClickListener() {
+        final Button removeFile = new Button("Remove File");
+        rootPanel.add(removeFile);
+        removeFile.addClickListener(new ClickListener() {
             public void onClick(final Widget ignore) {
                 try {
-                    final int row = Integer.parseInt(BrowserHelper.prompt("Remove cursor", "0"));
-                    table.removeRow(row);
+                    final int index = Integer.parseInt(BrowserHelper.prompt("File index", "0"));
+                    table.getRows().remove(index);
 
                 } catch (Exception caught) {
                     caught.printStackTrace();
@@ -170,15 +150,44 @@ public class SortableTableTest implements EntryPoint {
             }
         });
 
-        rootPanel.add(new HTML("<br>"));
+        final Button removeRow = new Button("Remove Row");
+        rootPanel.add(removeRow);
+        removeRow.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignore) {
+                try {
+                    final int index = Integer.parseInt(BrowserHelper.prompt("Remove row", "0"));
+                    table.getRows().remove(index);
 
-        final Button tableRowGetter = new Button("Get row object");
+                } catch (Exception caught) {
+                    caught.printStackTrace();
+                    Window.alert("" + caught);
+                }
+            }
+        });
+
+        final Button fileGetter = new Button("Get File");
+        rootPanel.add(fileGetter);
+        fileGetter.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignore) {
+                try {
+                    final int index = Integer.parseInt(BrowserHelper.prompt("File index", "0"));
+                    final Object file = table.getRows().get(index);
+                    Window.alert("File Index: " + index + "\n" + file);
+
+                } catch (Exception caught) {
+                    caught.printStackTrace();
+                    Window.alert("" + caught);
+                }
+            }
+        });
+
+        final Button tableRowGetter = new Button("Get Table Row");
         rootPanel.add(tableRowGetter);
         tableRowGetter.addClickListener(new ClickListener() {
             public void onClick(final Widget ignore) {
                 try {
-                    final int row = Integer.parseInt(BrowserHelper.prompt("Row cursor", "0"));
-                    final Object file = table.getTableRow(row);
+                    final int row = Integer.parseInt(BrowserHelper.prompt("Table row", "0"));
+                    final Object file = table.getTableRows().get(row);
                     Window.alert("row: " + row + "\n" + file);
 
                 } catch (Exception caught) {
@@ -187,5 +196,46 @@ public class SortableTableTest implements EntryPoint {
                 }
             }
         });
+
+        final Button bulkAdder = new Button("Add n files");
+        rootPanel.add(bulkAdder);
+        bulkAdder.addClickListener(new ClickListener() {
+            public void onClick(final Widget sender) {
+                final String countString = BrowserHelper.prompt("Enter the number of files to add", "10");
+                try {
+                    final int count = Integer.parseInt(countString.trim());
+                    final List newFiles = SortableTableTest.this.generateFiles(count);
+                    final long start = System.currentTimeMillis();
+                    table.getRows().addAll(newFiles);
+                    final long end = System.currentTimeMillis();
+
+                    Window.alert(count + " files added to table in " + (end - start) + " milliseconds. Table now has "
+                            + table.getRows().size() + " rows ");
+
+                } catch (final Exception caught) {
+                    caught.printStackTrace();
+                    Window.alert("" + caught);
+                }
+            }
+        });
+    }
+
+    protected List generateFiles(final int count) {
+        final List newFiles = new ArrayList();
+
+        final Date now = new Date();
+        final String filenamePrefix = "" + now.getYear() + now.getMonth() + now.getDay() + now.getHours()
+                + now.getMinutes() + now.getSeconds();
+
+        for (int i = 0; i < count; i++) {
+            final File newFile = new File();
+            newFile.setDescription("generated file " + i);
+            newFile.setFilename(filenamePrefix + i + ".bin");
+            newFile.setServerId("unknown");
+            newFile.setSize(Math.abs(Random.nextInt()));
+            newFile.setCreateDate(new Date());
+            newFiles.add(newFile);
+        }
+        return newFiles;
     }
 }
