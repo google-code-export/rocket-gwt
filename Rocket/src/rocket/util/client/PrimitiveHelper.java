@@ -24,143 +24,161 @@ public class PrimitiveHelper extends SystemHelper {
 
     public static void checkBoolean(final String name, final boolean value, final boolean expectedValue) {
         if (value != expectedValue) {
-            SystemHelper.handleAssertFailure("The " + name + " value of " + value + " should be equal to "
-                    + expectedValue);
+            SystemHelper.fail("The " + name + " value of " + value + " should be equal to " + expectedValue);
+        }
+    }
+
+    /**
+     * Checks that the test boolean value is true otherwise an assertion failure is reported.
+     * 
+     * @param message
+     * @param booleanValue
+     */
+    public static void checkTrue(final String message, final boolean booleanValue) {
+        if (!booleanValue) {
+            fail(message);
+        }
+    }
+
+    /**
+     * Checks that the test boolean value is false otherwise an assertion failure is reported.
+     * 
+     * @param message
+     * @param booleanValue
+     */
+    public static void checkFalse(final String message, final boolean booleanValue) {
+        if (booleanValue) {
+            fail(message);
         }
     }
 
     public static void checkEquals(final String name, final long value, final long expectedValue) {
         if (value != expectedValue) {
-            SystemHelper.handleAssertFailure("The " + name + " value of " + value + " should be equal to "
-                    + expectedValue);
+            SystemHelper.fail("The " + name + " value of " + value + " should be equal to " + expectedValue);
         }
     }
 
     public static void checkNotEquals(final String name, final long value, final long expectedValue) {
         if (value == expectedValue) {
-            SystemHelper.handleAssertFailure("The " + name + " value of " + value + " should not be equal to "
-                    + expectedValue);
+            SystemHelper.fail("The " + name + " value of " + value + " should not be equal to " + expectedValue);
         }
     }
 
     public static void checkBetween(final String name, final long longValue, final long lowerBounds,
             final long upperBounds) {
         if (longValue < lowerBounds || longValue >= upperBounds) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + longValue + " must be between "
-                    + lowerBounds + " and " + upperBounds);
+            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be between " + lowerBounds
+                    + " and " + upperBounds);
         }
     }
 
     public static void checkGreaterThan(final String name, final long longValue, final long greaterThan) {
         if (false == (longValue > greaterThan)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + longValue + " must be greater than "
-                    + greaterThan);
+            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be greater than " + greaterThan);
         }
     }
 
     public static void checkGreaterThanOrEqual(final String name, final long longValue, final long greaterThanOrEqual) {
         if (false == (longValue >= greaterThanOrEqual)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + longValue
-                    + " must be greater than or equal to " + greaterThanOrEqual);
+            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be greater than or equal to "
+                    + greaterThanOrEqual);
         }
     }
 
     public static void checkLessThan(final String name, final long longValue, final long lessThan) {
         if (false == (longValue < lessThan)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + longValue + " must be less than "
-                    + lessThan);
+            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be less than " + lessThan);
         }
     }
 
     public static void checkLessThanOrEqual(final String name, final long longValue, final long lessThanOrEqual) {
         if (false == (longValue <= lessThanOrEqual)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + longValue
-                    + " must be less than or equal to " + lessThanOrEqual);
+            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be less than or equal to "
+                    + lessThanOrEqual);
         }
     }
 
     public static void checkNotZero(final String name, final long longValue) {
         if (longValue == 0) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " must not be zero");
+            SystemHelper.fail(name, "The " + name + " must not be zero");
         }
     }
 
     public static void checkIsZero(final String name, final long longValue) {
         if (longValue != 0) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " must not be zero");
+            SystemHelper.fail(name, "The " + name + " must not be zero");
         }
     }
 
     public static void checkIsNegative(final String name, final long longValue) {
         if (longValue < 0) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " must not be zero");
+            SystemHelper.fail(name, "The " + name + " must not be zero");
         }
     }
 
     public static void checkIsPositive(final String name, final long longValue) {
         if (longValue < 0) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " must not be zero");
+            SystemHelper.fail(name, "The " + name + " must not be zero");
         }
     }
 
     public static void checkNotZero(final String name, final double doubleValue) {
         if (doubleValue == 0) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " must not be zero");
+            SystemHelper.fail(name, "The " + name + " must not be zero");
         }
     }
 
     public static void checkIsZero(final String name, final double doubleValue) {
         if (doubleValue != 0) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " must not be zero");
+            SystemHelper.fail(name, "The " + name + " must not be zero");
         }
     }
 
     public static void checkIsNegative(final String name, final double doubleValue) {
         if (doubleValue < 0) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " must not be zero");
+            SystemHelper.fail(name, "The " + name + " must not be zero");
         }
     }
 
     public static void checkIsPositive(final String name, final double doubleValue) {
         if (doubleValue < 0) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " must not be zero");
+            SystemHelper.fail(name, "The " + name + " must not be zero");
         }
     }
 
     public static void checkBetween(final String name, final double doubleValue, final double lowerBounds,
             final double upperBounds) {
         if (doubleValue < lowerBounds || doubleValue >= upperBounds) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + doubleValue + " must be between "
-                    + lowerBounds + " and " + upperBounds);
+            SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be between " + lowerBounds
+                    + " and " + upperBounds);
         }
     }
 
     public static void checkGreaterThan(final String name, final double doubleValue, final double greaterThan) {
         if (false == (doubleValue > greaterThan)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + doubleValue
-                    + " must be greater than " + greaterThan);
+            SystemHelper
+                    .fail(name, "The " + name + " value of " + doubleValue + " must be greater than " + greaterThan);
         }
     }
 
     public static void checkGreaterThanOrEqual(final String name, final double doubleValue,
             final double greaterThanOrEqual) {
         if (false == (doubleValue >= greaterThanOrEqual)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + doubleValue
-                    + " must be greater than or equal to " + greaterThanOrEqual);
+            SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be greater than or equal to "
+                    + greaterThanOrEqual);
         }
     }
 
     public static void checkLessThan(final String name, final double doubleValue, final double lessThan) {
         if (false == (doubleValue < lessThan)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + doubleValue + " must be less than "
-                    + lessThan);
+            SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be less than " + lessThan);
         }
     }
 
     public static void checkLessThanOrEqual(final String name, final double doubleValue, final double lessThanOrEqual) {
         if (false == (doubleValue <= lessThanOrEqual)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " value of " + doubleValue
-                    + " must be less than or equal to " + lessThanOrEqual);
+            SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be less than or equal to "
+                    + lessThanOrEqual);
         }
     }
 

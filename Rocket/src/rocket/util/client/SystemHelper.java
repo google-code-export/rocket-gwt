@@ -15,12 +15,11 @@
  */
 package rocket.util.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-
+/**
+ * The common base class for all helpers regardless of their categorised type.
+ * 
+ * @author Miroslav Pokorny (mP)
+ */
 public class SystemHelper {
 
     final static String PARAMETER = "parameter:";
@@ -33,11 +32,11 @@ public class SystemHelper {
      * Convenience method which builds the appropriate exception includes the message and throws the excection
      * 
      * @param name
-     *            The name of the varible
+     *            The name of the variable. This is used to construct the error message of the built exception
      * @param message
      *            The message
      */
-    public static void handleAssertFailure(final String name, final String message) {
+    public static void fail(final String name, final String message) {
         if (name != null) {
             if (name.startsWith(PARAMETER)) {
                 throw new IllegalArgumentException(message);
@@ -49,20 +48,8 @@ public class SystemHelper {
         throw new AssertionError(message);
     }
 
-    public static void handleAssertFailure(final String message) {
+    public static void fail(final String message) {
         throw new AssertionError(message);
-    }
-
-    /**
-     * This should be fired whenever a method is not supported or perhaps inappropriate for a particular class. Examples include the set or
-     * other mutator methods for a read only List.
-     * 
-     * @param message
-     *            A detailed messsage.
-     */
-    public static void handleUnsupportedOperation(final String message) {
-        StringHelper.checkNotEmpty("parameter:message", message);
-        throw new UnsupportedOperationException(message);
     }
 
     protected SystemHelper() {

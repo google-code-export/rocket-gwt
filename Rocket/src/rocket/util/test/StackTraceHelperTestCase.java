@@ -14,11 +14,8 @@
  * the License.
  */package rocket.util.test;
 
-import com.google.gwt.core.client.GWT;
-
-import rocket.util.client.StackTraceHelper;
-import rocket.util.client.StringHelper;
 import junit.framework.TestCase;
+import rocket.util.client.StackTraceHelper;
 
 /**
  * This testcase is designed to only test portions of StackTraceHelper that do not have any dependencies on JSNI.
@@ -151,66 +148,4 @@ public class StackTraceHelperTestCase extends TestCase {
         // assertEquals( "fileName(aka argumentList when in webmode)", "java.lang.String,boolean,byte,char,short,int,long,float,[][]double",
         // element.getFileName());
     }
-
-    // /**
-    // * TODO move this to GWTTestCase.
-    // *
-    // */
-    // public void testGetStackTraceAsString(){
-    // RuntimeException runtimeException = null;
-    // try{
-    // third();
-    // }catch ( final RuntimeException expected ){
-    // runtimeException = expected;
-    // }
-    // assertTrue( runtimeException instanceof RuntimeException);
-    //        
-    // final String stackTrace = StackTraceHelper.getStackTraceAsString( runtimeException );
-    // System.out.println( stackTrace );
-    // assertTrue( stackTrace.length() > 0 );
-    //        
-    // final String[] lines = StringHelper.split( stackTrace, "\n", true );
-    // assertTrue( lines.length > 5 );
-    //        
-    // final String thisClassName = this.getClass().getName();
-    //        
-    // int i = 0;
-    // final String topLine = lines[ i++ ];
-    // //assertTrue( topLine, -1 != topLine.indexOf( thisClassName ));
-    //
-    // final String topMostElement = lines[ i++ ];
-    // assertTrue( stackTrace + "\n" + topMostElement, -1 != topMostElement.indexOf( "at"));
-    // assertTrue( stackTrace + "\n" + topMostElement, -1 != topMostElement.indexOf( "throwRuntimeException"));
-    //        
-    // final String firstStackElement = lines[ i++ ];
-    // assertTrue( stackTrace + "\n" + firstStackElement, -1 != firstStackElement.indexOf( "at"));
-    // assertTrue( stackTrace + "\n" + firstStackElement, -1 != firstStackElement.indexOf( "first"));
-    //        
-    // final String secondStackElement = lines[ i++ ];
-    // assertTrue( stackTrace + "\n" + secondStackElement, -1 != secondStackElement.indexOf( "at"));
-    // assertTrue( stackTrace + "\n" + secondStackElement, -1 != secondStackElement.indexOf( thisClassName + ".second"));
-    //        
-    // final String thirdStackElement = lines[ i++ ];
-    // assertTrue( stackTrace + "\n" + thirdStackElement, -1 != thirdStackElement.indexOf( "at"));
-    // assertTrue( stackTrace + "\n" + thirdStackElement, -1 != thirdStackElement.indexOf( thisClassName + ".third"));
-    //        
-    // final String fourthStackElement = lines[ i++ ];
-    // assertTrue( stackTrace + "\n" + fourthStackElement, -1 != fourthStackElement.indexOf( "at"));
-    // assertTrue( stackTrace + "\n" + fourthStackElement, -1 != fourthStackElement.indexOf( thisClassName + ".testGetStackTraceAsString"));
-    // }
-    //    
-    // static void third(){
-    // second();
-    // }
-    // static void second(){
-    // first();
-    // }
-    // static void first(){
-    // throwRuntimeException();
-    // }
-    // static void throwRuntimeException(){
-    // final RuntimeException exception = new RuntimeException();
-    // exception.fillInStackTrace();
-    // throw exception;
-    // }
 }

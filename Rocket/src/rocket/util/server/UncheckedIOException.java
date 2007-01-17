@@ -15,9 +15,7 @@
  */
 package rocket.util.server;
 
-import rocket.server.exception.UncheckedNestedException;
-
-public class UncheckedIOException extends UncheckedNestedException {
+public class UncheckedIOException extends RuntimeException {
     public UncheckedIOException(final String message, final Throwable cause) {
         super(message, cause);
     }

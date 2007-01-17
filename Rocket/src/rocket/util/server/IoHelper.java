@@ -152,7 +152,7 @@ public class IoHelper {
     public static void mustBeSerializable(final String name, final Object object) {
         ObjectHelper.checkNotNull(name, object);
         if (false == (object instanceof java.io.Serializable)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " is not serializable, object: " + object);
+            SystemHelper.fail(name, "The " + name + " is not serializable, object: " + object);
         }
     }
 

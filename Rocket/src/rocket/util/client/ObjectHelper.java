@@ -27,54 +27,6 @@ import com.google.gwt.user.client.Element;
  */
 public class ObjectHelper extends SystemHelper {
     /**
-     * This helper should be used primarily by beans when verifying their state.
-     * 
-     * @param propertyName
-     *            The name of the property
-     * @param bean
-     *            The bean itself
-     * @param set
-     *            A indicates that the property is set, false indicates it wiring etc failed.
-     */
-    public static void checkPropertyNotSet(final String propertyName, final Object bean, final boolean set) {
-        if (set) {
-            handlePropertySet(propertyName, bean);
-        }
-    }
-
-    public static void handlePropertySet(final String propertyName, final Object bean) {
-        StringHelper.checkNotEmpty("assert:propertyName", propertyName);
-        ObjectHelper.checkNotNull("assert:bean", bean);
-
-        SystemHelper.handleAssertFailure(propertyName, "The property [" + propertyName + "] should not be set, bean: "
-                + bean);
-    }
-
-    /**
-     * This helper should be used primarily by beans when verifying their state.
-     * 
-     * @param propertyName
-     *            The name of the property
-     * @param bean
-     *            The bean itself
-     * @param missing
-     *            A indicates that the property is set, false indicates it wiring etc failed.
-     */
-    public static void checkPropertySet(final String propertyName, final Object bean, final boolean set) {
-        if (false == set) {
-            handlePropertyMissing(propertyName, bean);
-        }
-    }
-
-    public static void handlePropertyMissing(final String propertyName, final Object bean) {
-        StringHelper.checkNotEmpty("assert:propertyName", propertyName);
-        ObjectHelper.checkNotNull("assert:bean", bean);
-
-        SystemHelper.handleAssertFailure(propertyName, "The property [" + propertyName
-                + "] has not been set, typically indicating a wiring problem, bean: " + bean);
-    }
-
-    /**
      * A null safe equals that checks that both objects are not null and then invokes first.equals( second ). If one parmeter is not null it
      * cannot return true if the other parameter is null.
      * 
@@ -146,7 +98,7 @@ public class ObjectHelper extends SystemHelper {
     }
 
     public static void handleNullEncountered(String name, String message) {
-        handleAssertFailure(name, message);
+        fail(name, message);
     }
 
     /**
@@ -158,13 +110,13 @@ public class ObjectHelper extends SystemHelper {
      */
     public static void checkSame(final String message, final Object object, final Object otherObject) {
         if (false == nullSafeIdentity(object, otherObject)) {
-            SystemHelper.handleAssertFailure(message + ", object: " + object);
+            fail(message + ", object: " + object);
         }
     }
 
     public static void checkNotSame(final String message, final Object object, final Object otherObject) {
         if (nullSafeIdentity(object, otherObject)) {
-            SystemHelper.handleAssertFailure(message);
+            fail(message);
         }
     }
 
@@ -177,7 +129,7 @@ public class ObjectHelper extends SystemHelper {
      */
     public static void checkDifferent(final String message, final Object object, final Object otherObject) {
         if (nullSafeIdentity(object, otherObject)) {
-            SystemHelper.handleAssertFailure(message);
+            fail(message);
         }
     }
 
@@ -188,7 +140,7 @@ public class ObjectHelper extends SystemHelper {
     }
 
     public static void handleNonNullEncountered(String name, String message) {
-        handleAssertFailure(name, message);
+        fail(name, message);
     }
 
     /**
@@ -200,7 +152,7 @@ public class ObjectHelper extends SystemHelper {
      */
     public static void checkEquals(final String message, final Object object, final Object otherObject) {
         if (false == nullSafeEquals(object, otherObject)) {
-            SystemHelper.handleAssertFailure(message);
+            SystemHelper.fail(message);
         }
     }
 
@@ -217,19 +169,26 @@ public class ObjectHelper extends SystemHelper {
         return hasProperty0(object, propertyName);
     }
 
-    protected static native boolean hasProperty0(final JavaScriptObject object, final String propertyName)/*-{
+    private static native boolean hasProperty0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
      
      return typeof( value ) != "undefined"; 
      }-*/;
 
+    /**
+     * Tests if the given javascript object has a property at the given slot
+     * 
+     * @param object
+     * @param index
+     * @return
+     */
     public static boolean hasProperty(final JavaScriptObject object, final int index) {
         ObjectHelper.checkNotNull("parameter:object", object);
         PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
         return hasProperty0(object, index);
     }
 
-    protected static native boolean hasProperty0(final JavaScriptObject object, final int index)/*-{
+    private static native boolean hasProperty0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];     
      return typeof( value ) != "undefined"; 
      }-*/;
@@ -247,12 +206,9 @@ public class ObjectHelper extends SystemHelper {
         return getString0(object, propertyName);
     }
 
-    protected static native String getString0(final JavaScriptObject object, final String propertyName)/*-{
+    private static native String getString0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
-     if( typeof( value ) == "undefined" ){
-     throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
-     }
-     return value;
+     return value ? value : null;
      }-*/;
 
     public static String getString(final JavaScriptObject object, final int index) {
@@ -261,12 +217,9 @@ public class ObjectHelper extends SystemHelper {
         return getString0(object, index);
     }
 
-    protected static native String getString0(final JavaScriptObject object, final int index)/*-{
+    private static native String getString0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];
-     if( typeof( value ) == "undefined" ){
-     throw "The object does not contain a property called [" + index + "], object: " + object; 
-     }
-     return value;
+     return value ? value : null;
      }-*/;
 
     /**
@@ -283,7 +236,7 @@ public class ObjectHelper extends SystemHelper {
         return setString0(object, propertyName, value);
     }
 
-    protected static native String setString0(final JavaScriptObject object, final String propertyName,
+    private static native String setString0(final JavaScriptObject object, final String propertyName,
             final String value)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = value;
@@ -296,7 +249,7 @@ public class ObjectHelper extends SystemHelper {
         return setString0(object, index, value);
     }
 
-    protected static native String setString0(final JavaScriptObject object, final int index, final String value)/*-{
+    private static native String setString0(final JavaScriptObject object, final int index, final String value)/*-{
      var previousValue = object[ index ];
      object[ index ] = value;
      return previousValue ? previousValue : null;
@@ -315,7 +268,7 @@ public class ObjectHelper extends SystemHelper {
         return getDouble0(object, propertyName);
     }
 
-    public native static double getDouble0(final JavaScriptObject object, final String propertyName)/*-{
+    private native static double getDouble0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
      if( typeof( value ) == "undefined" ){
      throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
@@ -329,7 +282,7 @@ public class ObjectHelper extends SystemHelper {
         return getDouble0(object, index);
     }
 
-    public native static double getDouble0(final JavaScriptObject object, final int index)/*-{
+    private native static double getDouble0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];
      if( typeof( value ) == "undefined" ){
      throw "The object does not contain a property called [" + index + "], object: " + object; 
@@ -351,7 +304,7 @@ public class ObjectHelper extends SystemHelper {
         return setDouble0(object, propertyName, value);
     }
 
-    protected static native double setDouble0(final JavaScriptObject object, final String propertyName,
+    private static native double setDouble0(final JavaScriptObject object, final String propertyName,
             final double value)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = value;
@@ -364,7 +317,7 @@ public class ObjectHelper extends SystemHelper {
         return setDouble0(object, index, value);
     }
 
-    protected static native double setDouble0(final JavaScriptObject object, final int index, final double value)/*-{
+    private static native double setDouble0(final JavaScriptObject object, final int index, final double value)/*-{
      var previousValue = object[ index ];
      object[ index ] = value;
      return previousValue ? previousValue : 0.0;
@@ -383,7 +336,7 @@ public class ObjectHelper extends SystemHelper {
         return getBoolean0(object, propertyName);
     }
 
-    protected native static boolean getBoolean0(final JavaScriptObject object, final String propertyName)/*-{
+    private native static boolean getBoolean0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
      if( typeof( value ) == "undefined" ){
      throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
@@ -397,7 +350,7 @@ public class ObjectHelper extends SystemHelper {
         return getBoolean0(object, index);
     }
 
-    protected native static boolean getBoolean0(final JavaScriptObject object, final int index)/*-{
+    private native static boolean getBoolean0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];
      if( typeof( value ) == "undefined" ){
      throw "The object does not contain a property called [" + index + "], object: " + object; 
@@ -418,7 +371,7 @@ public class ObjectHelper extends SystemHelper {
         setBoolean0(object, propertyName, booleanValue);
     }
 
-    protected static native boolean setBoolean0(final JavaScriptObject object, final String propertyName,
+    private static native boolean setBoolean0(final JavaScriptObject object, final String propertyName,
             final boolean booleanValue)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = booleanValue;
@@ -431,7 +384,7 @@ public class ObjectHelper extends SystemHelper {
         setBoolean0(object, index, booleanValue);
     }
 
-    protected static native boolean setBoolean0(final JavaScriptObject object, final int index,
+    private static native boolean setBoolean0(final JavaScriptObject object, final int index,
             final boolean booleanValue)/*-{
      var previousValue = object[ index ];
      object[ index ] = booleanValue;
@@ -451,7 +404,7 @@ public class ObjectHelper extends SystemHelper {
         return getInteger0(object, propertyName);
     }
 
-    public native static int getInteger0(final JavaScriptObject object, final String propertyName)/*-{
+    private  native static int getInteger0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
      if( typeof( value ) == "undefined" ){
      throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
@@ -465,7 +418,7 @@ public class ObjectHelper extends SystemHelper {
         return getInteger0(object, index);
     }
 
-    public native static int getInteger0(final JavaScriptObject object, final int index)/*-{
+    private  native static int getInteger0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];
      if( typeof( value ) == "undefined" ){
      throw "The object does not contain a property called [" + index + "], object: " + object; 
@@ -487,7 +440,7 @@ public class ObjectHelper extends SystemHelper {
         return setInteger0(object, propertyName, intValue);
     }
 
-    protected static native int setInteger0(final JavaScriptObject object, final String propertyName, final int intValue)/*-{
+    private static native int setInteger0(final JavaScriptObject object, final String propertyName, final int intValue)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = intValue;
      return previousValue;
@@ -499,7 +452,7 @@ public class ObjectHelper extends SystemHelper {
         return setInteger0(object, index, intValue);
     }
 
-    protected static native int setInteger0(final JavaScriptObject object, final int index, final int intValue)/*-{
+    private static native int setInteger0(final JavaScriptObject object, final int index, final int intValue)/*-{
      var previousValue = object[ index ];
      object[ index ] = intValue;
      return previousValue;
@@ -518,13 +471,9 @@ public class ObjectHelper extends SystemHelper {
         return getObject0(object, propertyName);
     }
 
-    protected static native JavaScriptObject getObject0(final JavaScriptObject object, final String propertyName)/*-{
+    native private static JavaScriptObject getObject0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
-     // value shouldnt be undefined or null.
-     if( typeof( value ) == "undefined" ){
-     throw "The object does not contain a property called [" + propertyName + "], object: " + object;      
-     }
-     return value;
+     return value ? value : null;
      }-*/;
 
     public static JavaScriptObject getObject(final JavaScriptObject object, final int index) {
@@ -533,13 +482,9 @@ public class ObjectHelper extends SystemHelper {
         return getObject0(object, index);
     }
 
-    protected static native JavaScriptObject getObject0(final JavaScriptObject object, final int index)/*-{
+    native private static JavaScriptObject getObject0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];
-     // value shouldnt be undefined or null.
-     if( typeof( value ) == "undefined" ){
-     throw "The object does not contain a property called [" + index + "], object: " + object;      
-     }
-     return value;
+     return value ? value : null;
      }-*/;
 
     /**
@@ -557,7 +502,7 @@ public class ObjectHelper extends SystemHelper {
         return setObject0(object, propertyName, value);
     }
 
-    protected static native JavaScriptObject setObject0(final JavaScriptObject object, final String propertyName,
+    native private static JavaScriptObject setObject0(final JavaScriptObject object, final String propertyName,
             final JavaScriptObject value)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = value;
@@ -571,7 +516,7 @@ public class ObjectHelper extends SystemHelper {
         return setObject0(object, index, value);
     }
 
-    protected static native JavaScriptObject setObject0(final JavaScriptObject object, final int index,
+    native private static JavaScriptObject setObject0(final JavaScriptObject object, final int index,
             final JavaScriptObject value)/*-{
      var previousValue = object[ index ];
      object[ index ] = value;
@@ -591,7 +536,7 @@ public class ObjectHelper extends SystemHelper {
         return removeProperty0(object, propertyName);
     }
 
-    protected static native JavaScriptObject removeProperty0(final JavaScriptObject object, final String propertyName)/*-{
+    native private static JavaScriptObject removeProperty0(final JavaScriptObject object, final String propertyName)/*-{
      var previousValue = object[ propertyName ];
      delete object[ propertyName ];
      return previousValue ? previousValue : null;
@@ -603,7 +548,7 @@ public class ObjectHelper extends SystemHelper {
         return removeProperty0(object, index);
     }
 
-    protected static native JavaScriptObject removeProperty0(final JavaScriptObject object, final int index)/*-{
+    native private static JavaScriptObject removeProperty0(final JavaScriptObject object, final int index)/*-{
      var previousValue = object[ index ];
      delete object[ index ];
      return previousValue ? previousValue : null;
@@ -643,6 +588,12 @@ public class ObjectHelper extends SystemHelper {
      return typeof( object[ index ] );
      }-*/;
 
+    /**
+     * Retrieves the property count for the given javascript object.
+     * 
+     * @param object
+     * @return
+     */
     public static int getPropertyCount(final JavaScriptObject object) {
         ObjectHelper.checkNotNull("parameter:object", object);
 
@@ -689,6 +640,62 @@ public class ObjectHelper extends SystemHelper {
      */
     public native static JavaScriptObject castFromElement(final Element element)/*-{
      return element;
+     }-*/;
+
+    /**
+     * Calls the destroy method on the given object if it is destroyable.
+     * 
+     * @param object
+     */
+    public static void destroyIfNecessary(final Object object) {
+        if (object instanceof Destroyable) {
+            final Destroyable destroyable = (Destroyable) object;
+            destroyable.destroy();
+        }
+    }
+
+    /**
+     * Searches the given array for an element returning the index of the first match
+     * 
+     * @param object
+     * @param element
+     * @return
+     */
+    public static int indexOf(final JavaScriptObject array, final JavaScriptObject element) {
+        return ObjectHelper.indexOf(array, element);
+    }
+
+    native protected static int indexOf0(final JavaScriptObject array, final JavaScriptObject element)/*-{
+     var index = -1;
+     for( var i = 0; i < array.length; i++ ){
+     if( array[ i ] == element ){
+     index = i;
+     break;
+     }
+     }
+     return index;    
+     }-*/;
+
+    /**
+     * Searches the given array for an element starting with the last element until a match is found and then returns that index.
+     * 
+     * @param array
+     * @param element
+     * @return
+     */
+    public static int lastIndexOf(final JavaScriptObject array, final JavaScriptObject element) {
+        return ObjectHelper.lastIndexOf0(array, element);
+    }
+
+    native protected static int lastIndexOf0(final JavaScriptObject array, final JavaScriptObject element)/*-{
+     var index = -1;
+     for( var i = array.length -1; i >= 0; i-- ){
+     if( array[ i ] == element ){
+     index = i;
+     break;
+     }
+     }
+     return index;    
      }-*/;
 
     protected ObjectHelper() {
