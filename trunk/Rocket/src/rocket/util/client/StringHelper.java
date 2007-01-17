@@ -18,6 +18,8 @@ package rocket.util.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import rocket.style.client.StyleHelper;
+
 /**
  * A variety of useful String manipulating methods including assertion checks and general utility methods.
  * 
@@ -45,12 +47,12 @@ public class StringHelper extends ObjectHelper {
      * @return
      */
     public static String padLeft(final String text, final int length, final char pad) {
-        StringHelper.checkNotNull("parameter:text", text);
+        ObjectHelper.checkNotNull("parameter:text", text);
 
         final int textLength = text.length();
         final int requiredPadding = length - textLength;
         if (requiredPadding < 0) {
-            SystemHelper.handleAssertFailure("parameter:text",
+            fail("parameter:text",
                     "THe parameter:text is longer than the given lineLength which is used to determine the required padding, text["
                             + text + "], text.length: " + textLength + ", length: " + length);
         }
@@ -85,12 +87,12 @@ public class StringHelper extends ObjectHelper {
      * @return
      */
     public static String padRight(final String text, final int length, final char pad) {
-        StringHelper.checkNotNull("parameter:text", text);
+        ObjectHelper.checkNotNull("parameter:text", text);
 
         final int textLength = text.length();
         final int requiredPadding = length - textLength;
         if (requiredPadding < 0) {
-            SystemHelper.handleAssertFailure("parameter:text",
+            StringHelper.fail("parameter:text",
                     "THe parameter:text is longer than the given lineLength which is used to determine the required padding, text["
                             + text + "], text.length: " + textLength + ", length: " + length);
         }
@@ -284,8 +286,8 @@ public class StringHelper extends ObjectHelper {
      * @return
      */
     public static String join(final String[] array, final String separator) {
-        StringHelper.checkNotNull("parameter:array", array);
-        StringHelper.checkNotNull("parameter:separator", separator);
+        ObjectHelper.checkNotNull("parameter:array", array);
+        ObjectHelper.checkNotNull("parameter:separator", separator);
 
         final StringBuffer buf = new StringBuffer();
         boolean addSeparator = false;
@@ -313,7 +315,7 @@ public class StringHelper extends ObjectHelper {
      */
     public static void checkNotEmpty(final String message, final String string) {
         if (isNullOrEmpty(string)) {
-            SystemHelper.handleAssertFailure(message + " is null or empty.");
+            StringHelper.fail(message + " is null or empty.");
         }
     }
 
@@ -354,7 +356,7 @@ public class StringHelper extends ObjectHelper {
             // find the end placeholder
             final int placeHolderEndIndex = message.indexOf('}', placeHolderStartIndex + 1);
             if (-1 == placeHolderEndIndex) {
-                StringHelper.handleAssertFailure("Unable to find placeholder end after finding start, ["
+                StringHelper.fail("Unable to find placeholder end after finding start, ["
                         + message.substring(i, messageLength - i) + "]");
             }
 
@@ -367,31 +369,10 @@ public class StringHelper extends ObjectHelper {
                 i = placeHolderEndIndex + 1;
 
             } catch (final NumberFormatException badIndex) {
-                StringHelper.handleAssertFailure("Placeholder index does not contain a number [" + placeHolderIndex
-                        + "]");
+                StringHelper.fail("Placeholder index does not contain a number [" + placeHolderIndex + "]");
             }
         }
         return buf.toString();
-    }
-
-    /**
-     * Takes the given input(it assumes its a single word) and camel cases it... that is the first letter is capitalized with the remainder
-     * converted to lower case.
-     * 
-     * @param in
-     * @return
-     */
-    public static String camelCase(final String in) {
-        String out = "";
-        final int length = in.length();
-        if (length > 0) {
-            out = in.substring(0, 1).toUpperCase();
-            if (length > 1) {
-                out = out + in.substring(1).toLowerCase();
-            }
-        }
-
-        return out;
     }
 
     /**
@@ -404,7 +385,7 @@ public class StringHelper extends ObjectHelper {
      */
     public static void checkEquals(final String message, final String actual, final String expected) {
         if (false == nullSafeEquals(actual, expected)) {
-            SystemHelper.handleAssertFailure(message + ", got[" + actual + "], expected[" + expected + "]");
+            fail(message + ", got[" + actual + "], expected[" + expected + "]");
         }
     }
 
@@ -415,7 +396,7 @@ public class StringHelper extends ObjectHelper {
      * @return
      */
     public static String htmlEncode(final String plainText) {
-        StringHelper.checkNotNull("parameter:plainText", plainText);
+        ObjectHelper.checkNotNull("parameter:plainText", plainText);
 
         final StringBuffer buf = new StringBuffer();
         final int length = plainText.length();
@@ -455,7 +436,7 @@ public class StringHelper extends ObjectHelper {
      * @return
      */
     public static String htmlDecode(final String htmlEncodedText) {
-        StringHelper.checkNotNull("parameter:htmlEncodedText", htmlEncodedText);
+        ObjectHelper.checkNotNull("parameter:htmlEncodedText", htmlEncodedText);
 
         final StringBuffer buf = new StringBuffer();
         final int length = htmlEncodedText.length();
@@ -497,6 +478,53 @@ public class StringHelper extends ObjectHelper {
 
         return buf.toString();
     }
+
+    /**
+     * Converts a cssPropertyName into a javascript propertyName. eg
+     * 
+     * <pre>
+     * String css = &quot;background-color&quot;;
+     * String js = toJavascriptPropertyName(css);
+     * System.out.println(css + &quot;&gt;&quot; + js); // prints [[[background-color &gt; backgroundColor.]]] without the brackets. 
+     * </pre>
+     * 
+     * @param cssPropertyName
+     * @return
+     */
+    public static String toCamelCase(final String cssPropertyName) {
+        StyleHelper.checkPropertyName("parameter:cssPropertyName", cssPropertyName);
+
+        String propertyName = cssPropertyName;
+        int i = 0;
+        while (true) {
+            final int nextDash = propertyName.indexOf('-', i);
+            if (-1 == nextDash) {
+                break;
+            }
+            final char charAfterDash = propertyName.charAt(nextDash + 1);
+            propertyName = propertyName.substring(0, nextDash) + Character.toUpperCase(charAfterDash)
+                    + propertyName.substring(nextDash + 2);
+            i = nextDash + 2;
+        }
+
+        return propertyName;
+    }
+
+    /**
+     * Takes a javascript styled propertyName and converts it into a css styled propertyName. eg backgroundColor becomes background-color
+     * 
+     * @param propertyName
+     * @return
+     */
+    public static String toCssPropertyName(final String propertyName) {
+        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+
+        return toCssPropertyName0(propertyName);
+    }
+
+    native private static String toCssPropertyName0(final String propertyName)/*-{
+     return propertyName.replace(/([A-Z])/g, "-$1" ).toLowerCase()
+     }-*/;
 
     /**
      * Private so that creating instances are not possible

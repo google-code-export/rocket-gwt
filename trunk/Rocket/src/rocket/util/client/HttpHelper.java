@@ -22,7 +22,7 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class HttpHelper extends SystemHelper {
+public class HttpHelper {
 
     /**
      * Takes a url encoded string and returns the decoded form.
@@ -154,25 +154,24 @@ public class HttpHelper extends SystemHelper {
         ObjectHelper.checkNotNull("parameter:path", path);
 
         if (path.length() > 0 && path.charAt(0) != HttpConstants.PATH_SEPARATOR) {
-            HttpHelper.handleAssertFailure(name, "The " + name + " if not empty must start with a '/', path: [" + path
-                    + "]");
+            SystemHelper.fail(name, "The " + name + " if not empty must start with a '/', path: [" + path + "]");
         }
         if (path.indexOf(HttpConstants.QUERY_STRING) != -1 || path.indexOf(HttpConstants.ANCHOR) != -1) {
-            HttpHelper.handleAssertFailure(name, "The " + name + " if not empty must not include a '?' or '#', path: ["
-                    + path + "]");
+            SystemHelper
+                    .fail(name, "The " + name + " if not empty must not include a '?' or '#', path: [" + path + "]");
         }
     }
 
     public static void checkPortNumber(final String name, final int port) {
         if (port < 0 || port > 65536) {
-            HttpHelper.handleAssertFailure(name, "The " + name + " must be between 0 and port, port: " + port);
+            SystemHelper.fail(name, "The " + name + " must be between 0 and port, port: " + port);
         }
     }
 
     public static void checkProtocol(final String name, final String protocol) {
         ObjectHelper.checkNotNull(name, protocol);
         if (false == isHttp(protocol) && false == isHttps(protocol)) {
-            HttpHelper.handleAssertFailure(name, "The " + name + " is not a protocol (" + HttpConstants.HTTP + ','
+            SystemHelper.fail(name, "The " + name + " is not a protocol (" + HttpConstants.HTTP + ','
                     + HttpConstants.HTTPS + "), protocol[" + protocol + "]");
         }
     }
@@ -199,8 +198,8 @@ public class HttpHelper extends SystemHelper {
 
     public static void checkMethod(final String name, final String method) {
         if (false == isGet(method) && false == isPost(method)) {
-            HttpHelper.handleAssertFailure(name, "The " + name + " is not a method (" + HttpConstants.GET + ','
-                    + HttpConstants.POST + "), method[" + method + "]");
+            SystemHelper.fail(name, "The " + name + " is not a method (" + HttpConstants.GET + ',' + HttpConstants.POST
+                    + "), method[" + method + "]");
         }
     }
 

@@ -15,8 +15,6 @@
  */
 package rocket.util.client;
 
-import rocket.dom.client.Destroyable;
-
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**

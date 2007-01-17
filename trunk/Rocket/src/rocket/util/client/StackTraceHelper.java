@@ -42,7 +42,7 @@ public class StackTraceHelper {
         return StringHelper.split(functionNames, ",", true);
     }
 
-    native protected static String getCallStackFunctionNames0(final JavaScriptObject functions)/*-{
+    native private static String getCallStackFunctionNames0(final JavaScriptObject functions)/*-{
      var names = "";
 
      for( var i = 0; i < functions.length; i++ ){
@@ -147,7 +147,7 @@ public class StackTraceHelper {
             buf.append(element.getClassName());
 
             final String methodName = element.getMethodName();
-            if( methodName.length() > 0 ){
+            if (methodName.length() > 0) {
                 buf.append('.');
                 buf.append(methodName);
             }
@@ -194,7 +194,7 @@ public class StackTraceHelper {
             while (true) {
                 String functionName = functionNames[i];
                 fileName = functionName;
-                
+
                 // special test for unnamed or anonymous methods...
                 if (functionName.equals("anonymous")) {
                     declaringClass = "anonymous";
@@ -228,10 +228,10 @@ public class StackTraceHelper {
                     arguments = "";
                     break;
                 }
-                
+
                 // sometimes three _ separate class/method from the argument list...
                 argumentStartIndex = argumentStartIndex + 2;
-                if( functionName.charAt( argumentStartIndex + 2 ) == '_'){
+                if (functionName.charAt(argumentStartIndex + 2) == '_') {
                     argumentStartIndex++;
                 }
 
@@ -270,28 +270,28 @@ public class StackTraceHelper {
                 if (convertedFunctionName.length() == argumentStartIndex) {
                     break;
                 }
-                
+
                 String unconvertedArguments = convertedFunctionName.substring(argumentStartIndex);
                 final StringBuffer convertedArguments = new StringBuffer();
-                
+
                 int j = 0;
                 while (j < unconvertedArguments.length()) {
                     final char c = unconvertedArguments.charAt(j++);
 
                     String typeName = null;
                     while (true) {
-                        if( c == '['){
+                        if (c == '[') {
                             typeName = "[]";
                             break;
                         }
                         if (c == 'L') {
                             // Ljava_lang_Object_2
-                            int endOfTypeName = unconvertedArguments.indexOf(".2", j+1);
-                            if( -1 == endOfTypeName ){
+                            int endOfTypeName = unconvertedArguments.indexOf(".2", j + 1);
+                            if (-1 == endOfTypeName) {
                                 endOfTypeName = unconvertedArguments.length();
                             }
-                            
-                            typeName = unconvertedArguments.substring(j, endOfTypeName);                            
+
+                            typeName = unconvertedArguments.substring(j, endOfTypeName);
                             j = endOfTypeName + 2;
                             break;
                         }
@@ -345,7 +345,7 @@ public class StackTraceHelper {
             if (declaringClass.endsWith(methodName)) {
                 methodName = "";
             }
-            if( declaringClass.length() == 0 ){
+            if (declaringClass.length() == 0) {
                 final String swap = methodName;
                 methodName = declaringClass;
                 declaringClass = swap;

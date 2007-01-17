@@ -32,6 +32,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class StackTraceHelperTest implements EntryPoint {
 
     final static String SERVICE_WHICH_THROWS_EXCEPTION_URL = "http://localhost:8888/rocket.util.test.stacktracehelper.StackTraceHelper/serviceWhichThrowsAnException";
+
     public void onModuleLoad() {
         GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
             public void onUncaughtException(final Throwable caught) {
@@ -57,7 +58,7 @@ public class StackTraceHelperTest implements EntryPoint {
             }
         });
         rootPanel.add(testThrowableSerialization);
-        
+
         final Button clearLog = new Button("ClearLog");
         clearLog.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
@@ -66,44 +67,42 @@ public class StackTraceHelperTest implements EntryPoint {
         });
         rootPanel.add(clearLog);
     }
-    
-    protected void invokeServiceServiceWhichThrowsException(){
-        final StackTraceHelperTestServiceAsync service = (StackTraceHelperTestServiceAsync) GWT.create( StackTraceHelperTestService.class );
+
+    protected void invokeServiceServiceWhichThrowsException() {
+        final StackTraceHelperTestServiceAsync service = (StackTraceHelperTestServiceAsync) GWT
+                .create(StackTraceHelperTestService.class);
         final ServiceDefTarget endpoint = (ServiceDefTarget) service;
-        endpoint.setServiceEntryPoint(SERVICE_WHICH_THROWS_EXCEPTION_URL );
-        
-        final Exception exception = new Exception("created on client.");
-        service.invoke( null, new AsyncCallback(){
-            public void onSuccess( Object result ){
-                StackTraceHelperTest.this.handleUnexpectedResult( result );
+        endpoint.setServiceEntryPoint(SERVICE_WHICH_THROWS_EXCEPTION_URL);
+
+        service.invoke(null, new AsyncCallback() {
+            public void onSuccess(final Object result) {
+                StackTraceHelperTest.this.handleUnexpectedResult(result);
             }
-            public void onFailure( Throwable expected ){
-                StackTraceHelperTest.this.handleExpectedException( expected );
+
+            public void onFailure(final Throwable expected) {
+                StackTraceHelperTest.this.handleExpectedException(expected);
             }
         });
     }
 
-    protected void handleUnexpectedResult( final Object result  ){
-        this.log( "Service unexpectedly returned " + GWT.getTypeName( result ));        
+    protected void handleUnexpectedResult(final Object result) {
+        this.log("Service unexpectedly returned " + GWT.getTypeName(result));
     }
 
-    
-    protected void handleExpectedException( final Throwable throwable ){
-        this.log( "Service returned " + GWT.getTypeName( throwable ));
-        
-        this.log("<b>StackTraceHelper.getStackTraceAsString()</b>");        
+    protected void handleExpectedException(final Throwable throwable) {
+        this.log("Service returned " + GWT.getTypeName(throwable));
+
+        this.log("<b>StackTraceHelper.getStackTraceAsString()</b>");
         final String className = "rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet";
-        
-        final String expectedStackTrace = "java.lang.Exception:\n" + "\tat " + className
-                + ".throwException()\n" + "\tat " + className
-                + ".twoFramesAwayFromMethodWhichThrowsException()\n" + "\tat " + className
-                + ".oneFrameAwayFromMethodWhichThrowsException()\n" + 
-                "\tmore...";
+
+        final String expectedStackTrace = "java.lang.Exception:\n" + "\tat " + className + ".throwException()\n"
+                + "\tat " + className + ".twoFramesAwayFromMethodWhichThrowsException()\n" + "\tat " + className
+                + ".oneFrameAwayFromMethodWhichThrowsException()\n" + "\tmore...";
         this.log(expectedStackTrace);
 
-    final String stackTrace = StackTraceHelper.getStackTraceAsString(throwable);
-    this.log(stackTrace);
-    this.log( "---END OF STACKTRACE---");
+        final String stackTrace = StackTraceHelper.getStackTraceAsString(throwable);
+        this.log(stackTrace);
+        this.log("---END OF STACKTRACE---");
     }
 
     protected void throwCatchAndPrintStackTrace() {
@@ -130,7 +129,7 @@ public class StackTraceHelperTest implements EntryPoint {
         final String stackTrace = StackTraceHelper.getStackTraceAsString(caught);
         this.log("<b>StackTraceHelper.getStackTraceAsString()</b>");
         this.log(stackTrace);
-        this.log( "---END OF STACKTRACE---");
+        this.log("---END OF STACKTRACE---");
     }
 
     protected void twoFramesAwayFromMethodWhichThrowsException() {

@@ -23,13 +23,13 @@ import rocket.util.client.StringHelper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.junit.client.GWTTestCase;
-import com.google.gwt.user.client.Window;
 
 /**
  * A series of tests that verify the functionality of the introduced support for StackTraceElements in web mode.
  * 
- * Some of the tests below fail because GwtTestCases appear to compile java to javascript in obsfucated mode meaning
- * that function names are lost. I am unable to fix this :(
+ * Some of the tests below fail because GwtTestCases appear to compile java to javascript in obsfucated mode meaning that function names are
+ * lost. I am unable to fix this :(
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class StackTraceHelperGwtTestCase extends GWTTestCase {
@@ -38,7 +38,7 @@ public class StackTraceHelperGwtTestCase extends GWTTestCase {
      * Must refer to a valid module that sources this class.
      */
     public String getModuleName() {
-        return "rocket.util.test.stacktracehelper.StackTraceHelperGwtTestCase";
+        return "rocket.util.test.stacktracehelper.test.StackTraceHelperGwtTestCase";
     }
 
     /**
@@ -81,7 +81,7 @@ public class StackTraceHelperGwtTestCase extends GWTTestCase {
         assertNotNull("secondTopStackElement", secondTopStackElement);
     }
 
-    native protected JavaScriptObject nativeMethod()/*-{
+    native private JavaScriptObject nativeMethod()/*-{
      var a = this.@rocket.util.test.stacktracehelper.test.StackTraceHelperGwtTestCase::javaMethod()();
      return a;
      }-*/;
@@ -106,15 +106,23 @@ public class StackTraceHelperGwtTestCase extends GWTTestCase {
 
         assertTrue("functionNames.length: " + functionNames.length, functionNames.length > 3);
 
-        final String topMostFunctionName = functionNames[0];
-        assertNotNull("topMostFunctionName", topMostFunctionName);
-        assertTrue( "topMostFunctionName[" + topMostFunctionName + "]", -1 != topMostFunctionName.indexOf( "javaFunctionNames"));
-        assertTrue("topMostFunctionName[" + topMostFunctionName + "]", topMostFunctionName.length() > 0);
+        // scan thru functionNames for "topMostFunctionName"
+        int foundIndex = -1;
+        int i = 0;
+        while (true) {
+            final String functionName = functionNames[i];
+            if (-1 != "topMostFunctionName".indexOf(functionName)) {
+                foundIndex = i;
+                break;
+            }
+            i++;
+        }
 
-        // final String secondTopMostFunctionName = functionNames[ 0 ];
-        // assertNotNull("secondTopMostFunctionName", secondTopMostFunctionName );
-        // assertTrue( "secondTopMostFunctionName[" + secondTopMostFunctionName + "]", -1 != secondTopMostFunctionName.indexOf(
-        // "nativeFunctionNames"));
+        assertTrue("topMostFunctionName", foundIndex != -1);
+
+        final String secondTopMostFunctionName = functionNames[foundIndex + 1];
+        assertTrue("secondTopMostFunctionName[" + secondTopMostFunctionName + "]", -1 != secondTopMostFunctionName
+                .indexOf("nativeFunctionNames"));
     }
 
     protected String[] javaFunctionNames() {
