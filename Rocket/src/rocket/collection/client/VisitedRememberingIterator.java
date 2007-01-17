@@ -17,7 +17,7 @@ package rocket.collection.client;
 
 import java.util.Iterator;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.PrimitiveHelper;
 
 /**
  * This iterator provides automatic support that may be queried for the last element to visited via {@link #next}. This is particularly
@@ -46,29 +46,35 @@ public class VisitedRememberingIterator extends IteratorWrapper implements Itera
 
     // IMPL
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    /**
+     * This senitel value is used to detect if the lastVisited field is unset.
+     */
+    final Object LAST_VISITED_SET = "{lastVisitedNotSet}";
+
     /**
      * The object that was last visited ie the object returned by the last call to {@link #next}
      */
-    private Object lastVisited;
-
-    private boolean lastVisitedSet;
+    private Object lastVisited = LAST_VISITED_SET;
 
     public Object getLastVisited() {
-        ObjectHelper.checkPropertySet("lastVisited", this, this.lastVisitedSet);
+        PrimitiveHelper.checkTrue("lastVisited", LAST_VISITED_SET != this.lastVisited);
         return lastVisited;
     }
 
     public boolean hasLastVisited() {
-        return this.lastVisitedSet;
+        return this.lastVisited == LAST_VISITED_SET;
     }
 
     public void setLastVisited(final Object lastVisited) {
         this.lastVisited = lastVisited;
-        this.lastVisitedSet = true;
     }
 
     public void clearLastVisited() {
-        this.lastVisited = null;
-        this.lastVisitedSet = false;
+        this.lastVisited = LAST_VISITED_SET;
+    }
+
+    public String toString() {
+        return super.toString() + ", lastVisited: " + lastVisited;
     }
 }

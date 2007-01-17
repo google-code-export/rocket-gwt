@@ -48,9 +48,10 @@ public class DraggablePanel extends SimplePanel {
 
     protected void onAttach() {
         super.onAttach();
-        DOM.setEventListener(this.getElement(), this);
+
         this.unsinkEvents(Event.FOCUSEVENTS | Event.KEYEVENTS | Event.MOUSEEVENTS);
         this.sinkEvents(Event.ONMOUSEDOWN);
+        DOM.setEventListener(this.getElement(), this);
     }
 
     // DND LISTENER HANDLING
@@ -380,8 +381,8 @@ public class DraggablePanel extends SimplePanel {
          * @param event
          */
         void followMouse(final Event event) {
-            final int mouseX = DOM.eventGetClientX(event) + BrowserHelper.getScrollX();
-            final int mouseY = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();
+            final int mouseX = DOM.eventGetClientX(event);
+            final int mouseY = DOM.eventGetClientY(event);
 
             final int newX = mouseX - this.getXOffset();
             final int newY = mouseY - this.getYOffset();

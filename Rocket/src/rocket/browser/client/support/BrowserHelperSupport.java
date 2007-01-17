@@ -13,14 +13,27 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.dom.client;
+package rocket.browser.client.support;
 
 /**
- * This interface indicates that the given instance should be destroyed() by calling {@link #destroy} when the reference is no longer
- * needed.
+ * This class provides the support that a standards based browser following w3c specifications would require.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public interface Destroyable {
-    void destroy();
+public class BrowserHelperSupport {
+    native public int getScrollX()/*-{
+     return $wnd.scrollX;
+     }-*/;
+
+    native public int getScrollY()/*-{
+     return $wnd.scrollY;
+     }-*/;
+
+    native public int getClientWidth()/*-{
+     return $wnd.innerWidth;
+     }-*/;
+
+    native public int getClientHeight()/*-{
+     return $wnd.innerHeight;
+     }-*/;
 }

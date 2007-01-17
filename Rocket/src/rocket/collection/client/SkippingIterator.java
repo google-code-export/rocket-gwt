@@ -18,7 +18,7 @@ package rocket.collection.client;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.PrimitiveHelper;
 
 import com.google.gwt.core.client.GWT;
 
@@ -88,32 +88,34 @@ public abstract class SkippingIterator extends IteratorWrapper implements Iterat
     }
 
     /**
+     * This senitel is placed in the cache field to mark that is not set.
+     */
+    final static Object CACHE_NOT_SET = new Object();
+
+    /**
      * This property keeps a cached copy of the element that will be returned by {@link #next()}. This is necessary as {@link #hasNext()}
      * reads ahead finding an element that should not be skipped and stores its value here ready for {@link #next()}.
      */
-    private Object cache;
-
-    private boolean cacheSet;
+    private Object cache = CACHE_NOT_SET;
 
     protected Object getCache() {
-        ObjectHelper.checkPropertySet("cache", this, cacheSet);
+        PrimitiveHelper.checkTrue("cache", cache != CACHE_NOT_SET);
         return cache;
     }
 
     protected boolean hasCache() {
-        return cacheSet;
+        return cache != CACHE_NOT_SET;
     }
 
     protected void setCache(Object cache) {
         this.cache = cache;
-        cacheSet = true;
     }
 
     protected void clearCache() {
-        this.cacheSet = false;
+        this.cache = CACHE_NOT_SET;
     }
 
     public String toString() {
-        return super.toString() + ", cache: " + cache + ", cacheSet: " + cacheSet;
+        return super.toString() + ", cache: " + cache;
     }
 }

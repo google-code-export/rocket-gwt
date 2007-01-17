@@ -15,9 +15,9 @@
  */
 package rocket.browser.client;
 
+import rocket.browser.client.support.BrowserHelperSupport;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -31,7 +31,18 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class BrowserHelper extends ObjectHelper {
+public class BrowserHelper {
+
+    /**
+     * A BrowserHelperSupport class is used to implement several BrowserHelper methods where different browsers have different mechanisms
+     * supporting that feature.
+     */
+    private final static BrowserHelperSupport support = (BrowserHelperSupport) GWT.create(BrowserHelperSupport.class);
+
+    protected static BrowserHelperSupport getSupport() {
+        return support;
+    }
+
     /**
      * Retrieves the document object for the current page
      * 
@@ -82,47 +93,17 @@ public class BrowserHelper extends ObjectHelper {
         return prompt0(message, initialValue);
     }
 
-    protected static native String prompt0(final String message, final String initialValue)/*-{
+    private static native String prompt0(final String message, final String initialValue)/*-{
      return $wnd.prompt( message, initialValue );
      }-*/;
 
-    public static native int getScrollX()/*-{
-     var x = 0;
+    public static int getScrollX() {
+        return BrowserHelper.getSupport().getScrollX();
+    }
 
-     if( $wnd.scrollX ){
-     x = $wnd.scrollX;
-     } else {
-     var documentElement = $doc.documentElement;
-     if( documentElement && documentElement.scrollLeft ){
-     x = documentElement.scrollLeft;
-     } else {
-     if( $doc.body ){
-     x = $doc.body.scrollLeft;
-     }
-     }
-     }
-
-     return x;
-     }-*/;
-
-    public static native int getScrollY()/*-{
-     var y = 0;
-
-     if( $wnd.scrollY ){
-     y = $wnd.scrollY;
-     } else {
-     var documentElement = $doc.documentElement;
-     if( documentElement && documentElement.scrollTop ){
-     y = documentElement.scrollTop;
-     } else {
-     if( $doc.body ){
-     y = $doc.body.scrollTop;
-     }
-     }
-     }
-
-     return y;
-     }-*/;
+    public static int getScrollY() {
+        return BrowserHelper.getSupport().getScrollY();
+    }
 
     /**
      * Scrolls the top left of the window to the position denoted by the given x/y coordinates
@@ -179,7 +160,7 @@ public class BrowserHelper extends ObjectHelper {
         setLocation0(location);
     }
 
-    protected static native String setLocation0(final String location)/*-{
+    private static native String setLocation0(final String location)/*-{
      $wnd.location.href = location;
      }-*/;
 
@@ -253,33 +234,13 @@ public class BrowserHelper extends ObjectHelper {
      return $wnd.screen.availHeight;
      }-*/;
 
-    private native static int getClientWidth()/*-{
-     var width = 0;
-     if( $wnd.innerWidth ){
-     width = $wnd.innerWidth;
-     } else {
-     if( $doc.documentElement ){
-     width = $doc.documentElement.clientWidth
-     } else {
-     width = $doc.body.clientWidth;
-     }
-     }
-     return width;
-     }-*/;
+    protected static int getClientWidth() {
+        return BrowserHelper.getSupport().getClientWidth();
+    }
 
-    private native static int getClientHeight()/*-{
-     var height = 0;
-     if( $wnd.innerHeight ){
-     height = $wnd.innerHeight;
-     } else {
-     if( $doc.documentElement ){
-     height = $doc.documentElement.clientHeight
-     } else {
-     height = $doc.body.clientHeight;
-     }
-     }
-     return height;
-     }-*/;
+    protected static int getClientHeight() {
+        return BrowserHelper.getSupport().getClientHeight();
+    }
 
     /**
      * THis method uses embedded javascript to update the title of the browser.
@@ -325,59 +286,5 @@ public class BrowserHelper extends ObjectHelper {
         final int leftParenthesis = userAgent.indexOf('(');
         final int semiColon = userAgent.indexOf(leftParenthesis, ';');
         return userAgent.substring(leftParenthesis + 1, semiColon);
-    }
-
-    // COOKIES
-    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    /**
-     * Checks and throws an exception if the given cookieName is not valid.
-     * 
-     * @param name
-     * @param cookieName
-     */
-    public static void checkCookieName(final String name, final String cookieName) {
-        StringHelper.checkNotEmpty(name, cookieName);
-
-        final int length = cookieName.length();
-        for (int i = 0; i < length; i++) {
-            final char c = cookieName.charAt(i);
-
-            if (i == 0 && c == '$') {
-                SystemHelper.handleAssertFailure(name, "The " + name + " cannot begin with a $, " + name + "["
-                        + cookieName + "]");
-            }
-            if (c == ' ' || c == ';') {
-                SystemHelper.handleAssertFailure(name, "The " + name + " cannot include a space or semicolon, " + name
-                        + "[" + cookieName + "]");
-            }
-        }
-    }
-
-    /**
-     * JSNI method which returns all cookies for this browser as a single String.
-     */
-    public native static String getCookies()/*-{
-     var cookies = $doc.cookie;
-     return cookies ? cookies : "";
-     }-*/;
-
-    /**
-     * JSNI method which updates the browser cookie collection.
-     * 
-     * @param cookie
-     */
-    public native static void setCookie(final String cookie)/*-{
-     $doc.cookie = cookie;
-     }-*/;
-
-    /**
-     * JSNI method which removes a cookie from the browser's cookie collection. This achieved by setting a cookie with an expires Date
-     * attribute set to 1970.
-     * 
-     * @param name
-     */
-    public static void removeCookie(String name) {
-        setCookie(name + BrowserConstants.COOKIE_REMOVE_SUFFIX);
     }
 }

@@ -20,7 +20,7 @@ import rocket.util.client.ObjectWrapper;
 import com.google.gwt.user.client.Element;
 
 /**
- * Represents a handle to a single DOM element and a number of common attributes.
+ * Represents a handle to a single DOM element with a number of common attributes.
  * 
  * @author Miroslav Pokorny (mP)
  */

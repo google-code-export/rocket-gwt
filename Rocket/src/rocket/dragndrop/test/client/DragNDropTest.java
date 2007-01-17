@@ -53,10 +53,10 @@ public class DragNDropTest implements EntryPoint {
 
         final RootPanel rootPanel = RootPanel.get();
 
-        final CheckBox stopWidgetDrag = new CheckBox("Cancel any widget drag starts");
+        final CheckBox stopWidgetDrag = new CheckBox("Cancel any drag starts");
         rootPanel.add(stopWidgetDrag);
 
-        final CheckBox stopWidgetDrops = new CheckBox("Cancel any widget drops");
+        final CheckBox stopWidgetDrops = new CheckBox("Cancel any drops");
         rootPanel.add(stopWidgetDrops);
 
         final CheckBox limitDragToMoveZone = new CheckBox(

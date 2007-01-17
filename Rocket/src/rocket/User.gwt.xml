@@ -5,11 +5,13 @@
 		
 	<inherits name='rocket.browser.Browser' />
 	<inherits name='rocket.collection.Collection' />		
+	<inherits name='rocket.cookie.Cookie' />
 	<inherits name='rocket.dragndrop.DragNDrop' />
 	<inherits name='rocket.dom.Dom' />
 	<inherits name='rocket.messaging.Messaging' />
 	<inherits name='rocket.remoting.Remoting' />
-	<inherits name='rocket.style.Style' />			
+	<inherits name='rocket.style.Style' />	
+	<inherits name='rocket.testing.Testing'/>		
 	<inherits name='rocket.util.Util' />
 	<inherits name='rocket.widget.Widget' />		
 </module>

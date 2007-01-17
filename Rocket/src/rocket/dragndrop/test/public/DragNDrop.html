@@ -6,10 +6,15 @@
 <script language="javascript" src="gwt.js"></script>
 <style>
 
-BODY, table {
+BODY, TABLE, BUTTON {
 	margin: 4px;
-	font: verdana;
-	font-size: 13px;
+	font-family: verdana;
+	font-size: 10px;
+}
+
+BUTTON{
+	margin: 4px;
+	width: 100px;
 }
 
 .rocket-dragNDrop-widget {
@@ -66,6 +71,19 @@ function clearLog(){
 </head>
 
 <body>
+
+<p>
+This test involves creating a single object that may be dragged and dropped upon two targets.
+</p>
+<ul>
+<li>Drag the blue coloured box onto the green coloured box.</li>
+<li>Drag the red coloured box onto the green coloured box which should result in a invalid drop</li>
+<li>Any attempts to start any dragging operation may be cancelled via a DND listener which watches the <b>CANCEL ANY DRAG START</b> checkbox.
+    A message </li>
+<li>Limit any dragging of the blue box within the yellow box via a DND listener which watches the <b>CANCEL ANY DRAG START</b> checkbox.</li>
+<li>Dont forget to resize the window so that scrollbars appear and scroll the viewport and run tests again.</li>
+</ul>
+
 <div>
 <button id="clearLog" onclick="clearLog();" >Clear log</button>
 </div>
@@ -75,6 +93,7 @@ function clearLog(){
 	id="log" 
 	style="height: 25em; overflow: scroll; border-width: 1px; border-style: dotted; border-color: #888888; margin: 4px; padding: 4px; background-color: #eeeeee; font-size: 10px;">
 </div>
+
 </body>
 </html>
 

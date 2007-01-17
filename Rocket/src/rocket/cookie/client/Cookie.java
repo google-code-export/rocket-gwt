@@ -13,19 +13,20 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.browser.client;
+package rocket.cookie.client;
 
 import java.util.Date;
 
 import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
 /**
  * Represents a single browser cookie.
  * 
  * Note that setting any of the methods does not actually update the corresponding browser cookie. To update the browsers cookies this
- * cookie must be re-put into a CookieMap.
+ * cookie must be re-put back into the Cookies Map
  * 
  * Note that some properties (all except for name/value) are lost when the cookie Object is not created by the user but created as part of
  * an enquiry using a cookie name.
@@ -43,7 +44,7 @@ public class Cookie {
     private String name;
 
     public String getName() {
-        BrowserHelper.checkCookieName("field:name", this.name);
+        CookieHelper.checkCookieName("field:name", this.name);
 
         return this.name;
     }
@@ -53,7 +54,7 @@ public class Cookie {
     }
 
     public void setName(final String name) {
-        BrowserHelper.checkCookieName("parameter:name", name);
+        CookieHelper.checkCookieName("parameter:name", name);
 
         this.name = name;
     }
@@ -172,8 +173,7 @@ public class Cookie {
     private boolean secureSet;
 
     public boolean isSecure() {
-        ObjectHelper.checkPropertySet("field:secure", this, this.hasSecure());
-
+        PrimitiveHelper.checkBoolean("field:secure", this.hasSecure(), true);
         return this.secure;
     }
 
@@ -191,7 +191,7 @@ public class Cookie {
     private boolean versionSet;
 
     public int getVersion() {
-        ObjectHelper.checkPropertySet("field:version", this, this.hasVersion());
+        PrimitiveHelper.checkBoolean("field:version", this.hasVersion(), true);
         return this.version;
     }
 
@@ -221,32 +221,40 @@ public class Cookie {
         buffer.append(this.getValue());
 
         if (this.hasComment()) {
-            buffer.append(BrowserConstants.COOKIE_COMMENT);
+            buffer.append(CookieConstants.COOKIE_COMMENT);
             buffer.append(this.getComment());
         }
         if (this.hasDomain()) {
-            buffer.append(BrowserConstants.COOKIE_DOMAIN);
+            buffer.append(CookieConstants.COOKIE_DOMAIN);
             buffer.append(this.getDomain());
         }
         if (this.hasExpires()) {
-            buffer.append(BrowserConstants.COOKIE_EXPIRES);
+            buffer.append(CookieConstants.COOKIE_EXPIRES);
             buffer.append(this.getExpires().toGMTString());
         }
         if (this.hasPath()) {
-            buffer.append(BrowserConstants.COOKIE_PATH);
+            buffer.append(CookieConstants.COOKIE_PATH);
             buffer.append(this.getPath());
         }
         if (this.hasSecure()) {
             if (this.isSecure()) {
-                buffer.append(BrowserConstants.COOKIE_SECURE);
+                buffer.append(CookieConstants.COOKIE_SECURE);
             }
         }
         if (this.hasVersion()) {
-            buffer.append(BrowserConstants.COOKIE_VERSION);
+            buffer.append(CookieConstants.COOKIE_VERSION);
             buffer.append(this.getVersion());
         }
 
         return buffer.toString();
+    }
+
+    public boolean equals(final Object otherObject) {
+        return otherObject instanceof Cookie ? this.equals((Cookie) otherObject) : false;
+    }
+
+    public boolean equals(final Cookie otherCookie) {
+        return this.getName().equals(otherCookie.getName()) && this.getValue().equals(otherCookie.getValue());
     }
 
     /*
