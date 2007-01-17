@@ -22,7 +22,6 @@ import java.util.List;
 import rocket.browser.client.BrowserHelper;
 import rocket.collection.client.CollectionHelper;
 import rocket.style.client.StyleConstants;
-import rocket.util.client.ColourHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.util.client.SystemHelper;
@@ -35,7 +34,7 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class DomHelper extends ObjectHelper {
+public class DomHelper {
     /**
      * Removes all the child Elements belonging to the given element.
      * 
@@ -76,10 +75,9 @@ public class DomHelper extends ObjectHelper {
      * @return
      */
     public static String changeNonBreakingSpaceToSpace(final String text) {
+        StringHelper.checkNotEmpty("parameter:text", text);
         return text.replaceAll("&nbsp;", " ");
     }
-
-    // CSS POSITIONING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
      * Retrieve the absolute left or x coordinates for the given element
@@ -92,7 +90,7 @@ public class DomHelper extends ObjectHelper {
         return getAbsoluteLeft0(element) + BrowserHelper.getScrollX();
     }
 
-    protected static native int getAbsoluteLeft0(final Element element) /*-{
+    private static native int getAbsoluteLeft0(final Element element) /*-{
      var left = 0;
      while (element) {
      left += element.offsetLeft - element.scrollLeft;
@@ -112,7 +110,7 @@ public class DomHelper extends ObjectHelper {
         return getAbsoluteTop0(element) + BrowserHelper.getScrollY();
     }
 
-    protected static native int getAbsoluteTop0(final Element element) /*-{
+    private static native int getAbsoluteTop0(final Element element) /*-{
      var top = 0;
      while (element) {
      top += element.offsetTop - element.scrollTop;
@@ -122,18 +120,45 @@ public class DomHelper extends ObjectHelper {
      }-*/;
 
     /**
+     * Retrieves the container element which contains this child element. This is particularly useful when calculating coordinates for
+     * positioned element.
+     * 
+     * @param element
+     * @return
+     */
+    public static Element getContainer(final Element element) {
+        ObjectHelper.checkNotNull("parameter:element", element);
+        return DomHelper.getContainer0(element);
+    }
+
+    private static native Element getContainer0(final Element element)/*-{
+     var container = null;
+     var element0 = element;
+     while( element0 ){
+     // stop if this element is absolutely/relative positioned. 
+     var position = element0.style.position.toLowerCase();
+     if( "absolute" == position || "relative" == position ){
+     container = element0;
+     break;
+     }             
+     element0 = element0.offsetParent;
+     }
+     return container;    
+     }-*/;
+
+    /**
      * Retrieves the relative x/left coordinates of the given element relative to its parent container element. This is particularly useful
      * if one wishes to absolutely position a widget having added it to the dom.
      * 
      * @param element
      * @return The pixel value
      */
-    public static int getParentContainerLeft(final Element element) {
+    public static int getContainerLeftOffset(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
-        return getParentContainerLeft0(element);
+        return getContainerLeftOffset0(element);
     }
 
-    protected static native int getParentContainerLeft0(final Element element) /*-{
+    private static native int getContainerLeftOffset0(final Element element) /*-{
      var left = 0;
      var element0 = element;
      while( element0 ){
@@ -155,12 +180,12 @@ public class DomHelper extends ObjectHelper {
      * @param element
      * @return The pixel value
      */
-    public static int getParentContainerTop(final Element element) {
+    public static int getContainerTopOffset(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
-        return getParentContainerTop0(element);
+        return getContainerTopOffset0(element);
     }
 
-    protected static native int getParentContainerTop0(final Element element) /*-{
+    private static native int getContainerTopOffset0(final Element element) /*-{
      var top = 0;
      var element0 = element;
      while( element0 ){
@@ -217,19 +242,41 @@ public class DomHelper extends ObjectHelper {
         StringHelper.checkNotEmpty(name, expectedTagName);
 
         if (false == isTag(element, expectedTagName)) {
-            SystemHelper.handleAssertFailure(name, "The " + name + " is not of the expected tag type, expected["
-                    + expectedTagName + "], got[" + getTagName(element) + "]");
+            SystemHelper.fail(name, "The " + name + " is not of the expected tag type, expected[" + expectedTagName
+                    + "], got[" + getTagName(element) + "]");
         }
     }
 
-    public static void checkInputElement(final String name, final Element element, final String type) {
-        checkTagName(name, element, DomConstants.INPUT_TAG);
-        final String actualType = DOM.getAttribute(element, DomConstants.INPUT_TAG_TYPE);
-        if (false == type.equalsIgnoreCase(actualType)) {
-            SystemHelper.handleAssertFailure("parameter:element",
+    public static void checkInput(final String name, final Element element, final String type) {
+        if (isInput(element, type)) {
+            SystemHelper.fail("parameter:element",
                     "The input field parameter:element is not of the expected type, type[" + type + "], element: "
                             + toString(element));
         }
+    }
+
+    /**
+     * Tests if the given element is an INPUT tag of the requested type.
+     * 
+     * @param element
+     * @param type
+     * @return
+     */
+    public static boolean isInput(final Element element, final String type) {
+        ObjectHelper.checkNotNull("parameter:element", element);
+        StringHelper.checkNotEmpty("parameter:type", type);
+
+        boolean is = false;
+        while (true) {
+            if (false == isTag(element, DomConstants.INPUT_TAG)) {
+                is = false;
+                break;
+            }
+
+            final String actualType = DOM.getAttribute(element, DomConstants.INPUT_TAG_TYPE);
+            return type.equalsIgnoreCase(actualType);
+        }
+        return is;
     }
 
     public static boolean compareTagNames(final String tagName, final String otherTagName) {
@@ -289,114 +336,6 @@ public class DomHelper extends ObjectHelper {
     }
 
     /**
-     * Converts a cssPropertyName into a javascript propertyName. eg
-     * 
-     * <pre>
-     * String css = &quot;background-color&quot;;
-     * String js = toJavascriptPropertyName(css);
-     * System.out.println(css + &quot;&gt;&quot; + js); // prints [[[background-color &gt; backgroundColor.]]] without the brackets. 
-     * </pre>
-     * 
-     * @param cssPropertyName
-     * @return
-     */
-    public static String toJavascriptPropertyName(final String cssPropertyName) {
-        final StringBuffer buf = new StringBuffer();
-        final int length = cssPropertyName.length();
-        boolean capitalizeNext = false;
-
-        for (int i = 0; i < length; i++) {
-            char c = cssPropertyName.charAt(i);
-            if ('-' == c) {
-                capitalizeNext = true;
-                continue;
-            }
-            if (capitalizeNext) {
-                c = Character.toUpperCase(c);
-                capitalizeNext = false;
-            }
-            buf.append(c);
-        }
-        return buf.toString();
-    }
-
-    /**
-     * Handy method for retrieving any style property value in a browser independent manner.
-     * 
-     * @param element
-     * @param propertyName
-     *            The css property name (background-color) NOT the javascript version (backgroundColour).
-     * @return The String value of the property or null if it wasnt found.
-     */
-    public static String getCurrentStyleProperty(final Element element, final String propertyName) {
-        ObjectHelper.checkNotNull("parameter:element", element);
-        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
-
-        return getCurrentStylePropertyName0(element, propertyName);
-    }
-
-    private static native String getCurrentStylePropertyName0(final Element element, final String propertyName)/*-{
-     var value = null;
-     
-     while( true ){
-     // firefox ......................................................................................
-     if( $wnd.getComputedStyle ) {
-     var element0 = element;
-     while( element0 ){
-     value = $wnd.getComputedStyle(element0,null).getPropertyValue( propertyName );
-     if( value != "transparent" ){
-     break;
-     }
-     element0 = element0.parentNode;
-     }
-     break;
-     }	
-     
-     // internet explorer ..................................................................................
-     if( element.currentStyle ){
-     // translate css property name into a javascript property name...
-     var propertyName0 = @rocket.style.client.StyleHelper::toJavascriptPropertyName(Ljava/lang/String;)(propertyName);
-     
-     // loop until non transparent value found or root of document is found.
-     var element0 = element;
-     while( element0 ){
-     value = element0.currentStyle[ propertyName0 ];
-     if( value != "transparent" ){
-     break;
-     }
-     element0 = element0.parentNode;
-     }
-     break;
-     } 
-     
-     break;
-     }
-     
-     return value ? value : null;
-     }-*/;
-
-    // TODO Should probably be deprecated when rocket.style.client.* is completed.
-    final static String BACKGROUND_COLOUR_ATTRIBUTE = "backgroundColor";
-
-    public static int getBackgroundColour(final Element element) {
-        ObjectHelper.checkNotNull("parameter:element", element);
-
-        final String stringValue = DOM.getStyleAttribute(element, BACKGROUND_COLOUR_ATTRIBUTE);
-        return stringValue == null ? 0 : 0xffffff & Integer.parseInt(stringValue.substring(1), 16);
-    }
-
-    public static void setBackgroundColour(final Element element, final int colour) {
-        ObjectHelper.checkNotNull("parameter:element", element);
-
-        DOM.setStyleAttribute(element, BACKGROUND_COLOUR_ATTRIBUTE, ColourHelper.toCssColour(colour));
-    }
-
-    public static void removeBackgroundColour(final Element element) {
-        ObjectHelper.checkNotNull("parameter:element", element);
-        DOM.setStyleAttribute(element, BACKGROUND_COLOUR_ATTRIBUTE, "");
-    };
-
-    /**
      * Requests the browser to set focus on the given element.
      * 
      * @param focusElement
@@ -408,7 +347,7 @@ public class DomHelper extends ObjectHelper {
         setFocus0(focusElement);
     }
 
-    public native static void setFocus0(final Element element)/*-{
+    private native static void setFocus0(final Element element)/*-{
      if( element.focus ){
      element.focus();
      };
@@ -435,18 +374,6 @@ public class DomHelper extends ObjectHelper {
     }
 
     /**
-     * Calls the destroy method on the given object if it is destroyable.
-     * 
-     * @param object
-     */
-    public static void destroyIfNecessary(final Object object) {
-        if (object instanceof Destroyable) {
-            final Destroyable destroyable = (Destroyable) object;
-            destroyable.destroy();
-        }
-    }
-
-    /**
      * Makes a clone of the given element.
      * 
      * @param element
@@ -455,15 +382,80 @@ public class DomHelper extends ObjectHelper {
      * @return
      */
     public static Element cloneElement(final Element element, final boolean deepCopy) {
-        DomHelper.checkNotNull("parameter:element", element);
+        ObjectHelper.checkNotNull("parameter:element", element);
         return cloneElement0(element, deepCopy);
     }
 
-    native protected static Element cloneElement0(final Element element, final boolean deepCopy)/*-{
+    native private static Element cloneElement0(final Element element, final boolean deepCopy)/*-{
      return element.cloneNode( deepCopy );
      }-*/;
 
+    /**
+     * Retrieves the body of the current document.
+     * 
+     * @return
+     */
     native public static Element getBody()/*-{
      return $doc.body;
      }-*/;
+
+    /**
+     * Retrieves the x offset between a child and its parent container in pixels
+     * 
+     * @param element
+     * @return
+     */
+    public static int getOffsetLeft(final Element element) {
+        return ObjectHelper.getInteger(element, "offsetLeft");
+    }
+
+    /**
+     * Retrieves the y offset between a child and its parent container in pixels
+     * 
+     * @param element
+     * @return
+     */
+    public static int getOffsetTop(final Element element) {
+        return ObjectHelper.getInteger(element, "offsetTop");
+    }
+
+    /**
+     * Retrieves the x offset between a child and its parent container in pixels
+     * 
+     * @param element
+     * @return
+     */
+    public static int getClientLeft(final Element element) {
+        return ObjectHelper.getInteger(element, "clientLeft");
+    }
+
+    /**
+     * Retrieves the y offset between a child and its parent container in pixels
+     * 
+     * @param element
+     * @return
+     */
+    public static int getClientTop(final Element element) {
+        return ObjectHelper.getInteger(element, "clientTop");
+    }
+
+    /**
+     * Retrieves the client width of the given element. This is width in pixels less any decorations such as border or margins.
+     * 
+     * @param element
+     * @return
+     */
+    public static int getClientWidth(final Element element) {
+        return ObjectHelper.getInteger(element, "clientWidth");
+    }
+
+    /**
+     * Retrieves the client height of the given element. This is height in pixels less any decorations such as border or margins.
+     * 
+     * @param element
+     * @return
+     */
+    public static int getClientHeight(final Element element) {
+        return ObjectHelper.getInteger(element, "clientHeight");
+    }
 }
