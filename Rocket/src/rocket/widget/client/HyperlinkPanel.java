@@ -25,7 +25,12 @@ public class HyperlinkPanel extends AbstractPanel {
         this.setElement(this.createPanelElement());
         this.addStyleName(WidgetConstants.HYPERLINK_PANEL_STYLE);
         this.createClickListeners();
+    }
 
+    public void onAttach() {
+        super.onAttach();
+
+        this.unsinkEvents(-1);
         this.sinkEvents(Event.ONCLICK);
         DOM.setEventListener(this.getParentElement(), this);
     }

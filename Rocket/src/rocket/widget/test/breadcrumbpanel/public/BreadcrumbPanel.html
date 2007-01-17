@@ -5,31 +5,31 @@
 <meta name='gwt:module' content='rocket.widget.test.breadcrumbpanel.BreadcrumbPanel'>
 <script language="javascript" src="gwt.js"></script>
 <style>
-BODY, TABLE{
+BODY, TABLE, DIV{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 10px;
 }
-.rocket-breadcrumbs{
+.rocket-breadcrumbPanel{
 	background-color: #eeeeee;
 }
 
-.rocket-breadcrumbs-item{
+.rocket-breadcrumbPanel-item{
 	color: blue;
 	text-decoration: underline;
 	cursor: hand;
 }
 
-.rocket-breadcrumbs-item:hover{
+.rocket-breadcrumbPanel-item:hover{
 	color: red;
 }
 
-.rocket-breadcrumbs-item-last{
+.rocket-breadcrumbPanel-item-last{
 	color: #888888;
 	cursor: notAllowed;
 	text-decoration: plain;
 }
 
-.rocket-breadcrumbs-separator{
+.rocket-breadcrumbPanel-separator{
 	padding-left: 4px;
 	padding-right: 4px;
 	color: #444444;
@@ -37,10 +37,12 @@ BODY, TABLE{
 
 BUTTON{
 	margin: 4px;
+	width: 100px;
 }
 </style>
 </head>
 
 <body>
+Use the buttons below to push new breadcrumbs or pop existing ones.
 </body>
 </html>

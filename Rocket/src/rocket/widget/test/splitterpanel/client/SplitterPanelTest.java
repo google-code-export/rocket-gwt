@@ -19,12 +19,12 @@ import java.util.Date;
 import java.util.Iterator;
 
 import rocket.browser.client.BrowserHelper;
+import rocket.testing.client.InteractiveList;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.SystemHelper;
 import rocket.widget.client.splitter.HorizontalSplitterPanel;
 import rocket.widget.client.splitter.SplitterItem;
 import rocket.widget.client.splitter.VerticalSplitterPanel;
-import rocket.widget.client.testing.InteractiveList;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -140,7 +140,7 @@ public class SplitterPanelTest implements EntryPoint {
 
             protected void checkType(Object element) {
                 if (false == (element instanceof SplitterItem)) {
-                    SystemHelper.handleAssertFailure("");
+                    SystemHelper.fail("");
                 }
             }
 
@@ -240,7 +240,7 @@ public class SplitterPanelTest implements EntryPoint {
 
             protected void checkType(Object element) {
                 if (false == (element instanceof SplitterItem)) {
-                    SystemHelper.handleAssertFailure("");
+                    SystemHelper.fail("");
                 }
             }
 
@@ -260,7 +260,7 @@ public class SplitterPanelTest implements EntryPoint {
     }
 
     /**
-     * Factory method which creates a HTML widget full of 200 jibberish words
+     * Factory method which creates a TEXT widget full of 200 jibberish words
      * 
      * @return
      */

@@ -15,7 +15,7 @@
  */
 package rocket.widget.client;
 
-import rocket.util.client.ColourHelper;
+import rocket.util.client.Colour;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.Random;
@@ -33,26 +33,30 @@ public class Life {
     /**
      * The colour used to paint blocks that represent live cells
      */
-    private int liveCellColour;
+    private Colour liveCellColour;
 
-    public int getLiveCellColour() {
+    public Colour getLiveCellColour() {
+        ObjectHelper.checkNotNull("field:liveCellColour", liveCellColour);
         return this.liveCellColour;
     }
 
-    public void setLiveCellColour(final int liveCellColour) {
+    public void setLiveCellColour(final Colour liveCellColour) {
+        ObjectHelper.checkNotNull("parameter:liveCellColour", liveCellColour);
         this.liveCellColour = liveCellColour;
     }
 
     /**
      * The colour used to paint background / dead cells
      */
-    private int deadCellColour;
+    private Colour deadCellColour;
 
-    public int getDeadCellColour() {
+    public Colour getDeadCellColour() {
+        ObjectHelper.checkNotNull("field:deadCellColour", deadCellColour);
         return this.deadCellColour;
     }
 
-    public void setDeadCellColour(final int deadCellColour) {
+    public void setDeadCellColour(final Colour deadCellColour) {
+        ObjectHelper.checkNotNull("parameter:deadCellColour", deadCellColour);
         this.deadCellColour = deadCellColour;
     }
 
@@ -263,7 +267,6 @@ public class Life {
 
     public String toString() {
         return super.toString() + ", pixelGrid: " + pixelGrid + ", cells: " + cells + ", liveCellColour: "
-                + ColourHelper.toCssColour(liveCellColour) + ", deadCellColour: "
-                + ColourHelper.toCssColour(deadCellColour);
+                + liveCellColour + ", deadCellColour: " + deadCellColour;
     }
 }

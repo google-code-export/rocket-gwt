@@ -17,7 +17,6 @@ package rocket.widget.test.menu.client;
 
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import rocket.widget.client.menu.ContextMenu;
 import rocket.widget.client.menu.HorizontalMenuBar;
 import rocket.widget.client.menu.Menu;
@@ -41,6 +40,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -78,19 +78,15 @@ public class MenuTest implements EntryPoint {
 
         final MenuListener listener = new MenuListener() {
             public void onMenuCancelled(Widget widget) {
-                System.err.println("menu cancelled widget[" + ObjectHelper.defaultToString(widget) + "]");
                 log("<b>onMenuCancelled</b> widget[" + StringHelper.htmlEncode(widget.toString()) + "]");
             }
 
             public boolean onBeforeMenuOpened(Widget widget) {
-                System.err.println("" + System.currentTimeMillis());
-                System.err.println("menu about to be opened widget[" + widget + "]");
                 log("<b>onBeforeMenuOpened</b> widget[" + StringHelper.htmlEncode(widget.toString()) + "]");
                 return true;
             }
 
             public void onMenuOpened(Widget widget) {
-                System.err.println("menu opened...widget[" + widget + "]");
                 log("<b>onMenuOpened</b> widget[" + StringHelper.htmlEncode(widget.toString()) + "]");
             }
         };
@@ -143,9 +139,6 @@ public class MenuTest implements EntryPoint {
             }
         });
         centerPanel.add(createContextMenu);
-
-        // REMAINING...
-        // centerPanel.add(feedback);
         dockPanel.add(centerPanel, DockPanel.CENTER);
 
         rootPanel.add(dockPanel);

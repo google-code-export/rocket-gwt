@@ -15,6 +15,9 @@
  */
 package rocket.widget.client.slider;
 
+import rocket.dom.client.DomHelper;
+import rocket.dragndrop.client.DragNDropHelper;
+import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.widget.client.AbstractNumberHolder;
@@ -38,14 +41,15 @@ public abstract class Slider extends AbstractNumberHolder {
 
     protected void onAttach() {
         super.onAttach();
+
         DOM.setEventListener(this.getElement(), this);
+        this.unsinkEvents(-1);
         this.sinkEvents(Event.ONMOUSEDOWN | Event.ONMOUSEUP | Event.ONMOUSEOUT | Event.ONMOUSEMOVE);
         this.updateWidget();
     }
 
     /**
      * Sub-classes need to override this method to update the coordinates of the handle widget based on the sliders value.
-     * 
      */
     protected abstract void updateWidget();
 
@@ -79,11 +83,6 @@ public abstract class Slider extends AbstractNumberHolder {
      * @param event
      */
     protected void handleMouseOut(final Event event) {
-        ObjectHelper.checkNotNull("parameter:event", event);
-
-        if (this.hasTimer()) {
-            this.getTimer().cancel();
-        }
         this.clearTimer();
     }
 
@@ -126,6 +125,8 @@ public abstract class Slider extends AbstractNumberHolder {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         if (false == this.hasDraggingEventPreview()) {
+            DragNDropHelper.clearAnySelectedText();
+            DragNDropHelper.disableTextSelection(DomHelper.getBody());
             DOM.addEventPreview(this.createDraggingEventPreview());
             this.getHandle().addStyleName(this.getSliderDraggingStyleName());
         }
@@ -171,7 +172,7 @@ public abstract class Slider extends AbstractNumberHolder {
 
     /**
      * Manages the event type removing the EventPreview when the mouse button is released and updating the handle via
-     * {@link #handleMouseMove(Event)}
+     * {@link #handleHandleMouseMove(Event)}
      * 
      * @param event
      */
@@ -181,16 +182,12 @@ public abstract class Slider extends AbstractNumberHolder {
         while (true) {
             final int type = DOM.eventGetType(event);
             if (type == Event.ONMOUSEMOVE) {
-                handleMouseMove(event);
+                handleHandleMouseMove(event);
                 cancelEvent = true;
                 break;
             }
-            // if (type == Event.ONMOUSEUP || type == Event.ONMOUSEDOWN) {
             if (type == Event.ONMOUSEUP) {
-                this.getHandle().removeStyleName(this.getSliderDraggingStyleName());
-
-                DOM.removeEventPreview(this.getDraggingEventPreview());
-                this.clearDraggingEventPreview();
+                this.handleHandleMouseUp(event);
                 cancelEvent = false;
                 break;
             }
@@ -201,6 +198,19 @@ public abstract class Slider extends AbstractNumberHolder {
     }
 
     /**
+     * This method is called when the mouse button is let go whilst dragging the slider handle.
+     * 
+     * @param event
+     */
+    protected void handleHandleMouseUp(final Event event) {
+        this.getHandle().removeStyleName(this.getSliderDraggingStyleName());
+
+        DOM.removeEventPreview(this.getDraggingEventPreview());
+        this.clearDraggingEventPreview();
+        DragNDropHelper.enableTextSelection(DomHelper.getBody());
+    }
+
+    /**
      * Sub-classes need to return the style that is added to the handle widget when it is being dragged or removed when the dragging is
      * stopped.
      * 
@@ -208,7 +218,7 @@ public abstract class Slider extends AbstractNumberHolder {
      */
     protected abstract String getSliderDraggingStyleName();
 
-    protected abstract void handleMouseMove(Event event);
+    protected abstract void handleHandleMouseMove(Event event);
 
     protected void handleMouseMove(final int widgetCoordinate, final int mouseCoordinate, final int sliderLength,
             final int handleLength) {
@@ -301,7 +311,13 @@ public abstract class Slider extends AbstractNumberHolder {
         this.timer = timer;
     }
 
+    /**
+     * Clears any active timer.
+     */
     protected void clearTimer() {
+        if (this.hasTimer()) {
+            this.timer.cancel();
+        }
         this.timer = null;
     }
 
@@ -323,11 +339,11 @@ public abstract class Slider extends AbstractNumberHolder {
     // WIDGET :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
-     * A non pubic is used to hold both the sliders element and house the handle widget.
+     * A panel is used to hold both the sliders element and house the handle widget.
      */
     private SimplePanel panel;
 
-    public SimplePanel getPanel() {
+    protected SimplePanel getPanel() {
         ObjectHelper.checkNotNull("field:panel", panel);
         return panel;
     }
@@ -344,6 +360,10 @@ public abstract class Slider extends AbstractNumberHolder {
 
     protected SimplePanel createPanel() {
         final SimplePanel panel = new SimplePanel();
+        final Element element = panel.getElement();
+        DOM.setStyleAttribute(element, StyleConstants.POSITION, "relative");
+        DOM.setStyleAttribute(element, StyleConstants.LEFT, "0px");
+        DOM.setStyleAttribute(element, StyleConstants.TOP, "0px");
         this.setPanel(panel);
         return panel;
     }

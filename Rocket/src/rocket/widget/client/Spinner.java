@@ -16,8 +16,8 @@
 package rocket.widget.client;
 
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Image;
@@ -105,17 +105,13 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
     }
 
     public Widget createUpWidget() {
-        ObjectHelper.checkPropertyNotSet("upWidget", this, this.hasUpWidget());
-
-        final Spinner that = this;
-
         final Image image = new Image();
         image.setUrl(this.getUpImageUrl());
         image.addStyleName(WidgetConstants.SPINNER_UP_STYLE);
         image.addClickListener(new ClickListener() {
 
             public void onClick(final Widget widget) {
-                that.onUpClick();
+                Spinner.this.onUpClick();
             }
         });
         this.setUpWidget(image);
@@ -173,10 +169,6 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
     }
 
     public Widget createDownWidget() {
-        ObjectHelper.checkPropertyNotSet("downWidget", this, this.hasDownWidget());
-
-        final Spinner that = this;
-
         final Image image = new Image();
         image.addStyleName(WidgetConstants.SPINNER_DOWN_STYLE);
         image.setUrl(this.getDownImageUrl());
@@ -184,7 +176,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
         image.addClickListener(new ClickListener() {
 
             public void onClick(final Widget widget) {
-                that.onDownClick();
+                Spinner.this.onDownClick();
             }
         });
         this.setDownWidget(image);
@@ -271,8 +263,6 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
      * @return
      */
     public Panel createPanel() {
-        ObjectHelper.checkPropertyNotSet("panel", this, this.hasPanel());
-
         final VerticalPanel panel = new VerticalPanel();
         panel.addStyleName(WidgetConstants.SPINNER_STYLE);
         panel.addStyleName(WidgetConstants.SPINNER_VERTICAL_PANEL_STYLE);
@@ -293,9 +283,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
     private boolean deltaSet;
 
     public int getDelta() {
-        if (false == deltaSet) {
-            SystemHelper.handleAssertFailure("field:delta", "The field:delta has not been set, this: " + this);
-        }
+        PrimitiveHelper.checkTrue("field:delta not set", this.deltaSet);
         return this.delta;
     }
 

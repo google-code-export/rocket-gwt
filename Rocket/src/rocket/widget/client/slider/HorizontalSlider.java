@@ -16,8 +16,8 @@
 package rocket.widget.client.slider;
 
 import rocket.browser.client.BrowserHelper;
+import rocket.dom.client.DomHelper;
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.WidgetHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -35,10 +35,7 @@ public class HorizontalSlider extends Slider {
         super();
 
         this.initWidget(this.createPanel());
-        this.addStyleName(SliderConstants.HORIZONTAL_SLIDER_STYLE);
-
-        DOM.setEventListener(this.getElement(), this);
-        this.sinkEvents(Event.ONMOUSEDOWN);
+        this.setStyleName(SliderConstants.HORIZONTAL_SLIDER_STYLE);
     }
 
     /**
@@ -51,10 +48,10 @@ public class HorizontalSlider extends Slider {
         final int spacerWidth = sliderWidth - handleWidth;
 
         final float ratio = (float) this.getValue() / this.getMaximumValue();
-        final int newLeft = (int) (ratio * spacerWidth);
+        final int newLeft = (int) (ratio * spacerWidth) + BrowserHelper.getScrollX();
 
         final Element handleElement = handle.getElement();
-        DOM.setStyleAttribute(handleElement, "position", "relative");
+        DOM.setStyleAttribute(handleElement, "position", "absolute");
         DOM.setStyleAttribute(handleElement, "left", newLeft + "px");
     }
 
@@ -70,8 +67,8 @@ public class HorizontalSlider extends Slider {
     protected void handleBackgroundMouseDown(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
-        final int mouseX = DOM.eventGetClientX(event) + BrowserHelper.getScrollX();
-        final int widgetX = WidgetHelper.getAbsoluteLeft(this.getHandle());
+        final int mouseX = DOM.eventGetClientX(event);
+        final int widgetX = DomHelper.getAbsoluteLeft(this.getHandle().getElement());
         this.handleBackgroundClick(mouseX, widgetX);
     }
 
@@ -80,11 +77,11 @@ public class HorizontalSlider extends Slider {
      * 
      * @param event
      */
-    protected void handleMouseMove(final Event event) {
+    protected void handleHandleMouseMove(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
-        final int widgetX = WidgetHelper.getAbsoluteLeft(this);
-        final int mouseX = DOM.eventGetClientX(event) + BrowserHelper.getScrollX();
+        final int widgetX = DomHelper.getAbsoluteLeft(this.getElement());
+        final int mouseX = DOM.eventGetClientX(event);
         final int sliderWidth = this.getOffsetWidth();
         final int handleWidth = this.getHandle().getOffsetWidth();
 

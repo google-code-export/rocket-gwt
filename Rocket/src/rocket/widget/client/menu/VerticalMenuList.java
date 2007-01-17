@@ -18,8 +18,8 @@ package rocket.widget.client.menu;
 import java.util.Iterator;
 
 import rocket.util.client.ObjectHelper;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**

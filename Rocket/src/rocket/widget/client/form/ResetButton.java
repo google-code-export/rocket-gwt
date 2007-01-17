@@ -22,7 +22,12 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ButtonBase;
 
-class ResetButton extends ButtonBase {
+/**
+ * The ResetButton widget represents a button abstraction of a Reset button that is typically part of a form.
+ * 
+ * @author Miroslav Pokorny (mP)
+ */
+public class ResetButton extends ButtonBase {
     public ResetButton(final Element element) {
         super(element);
         sinkEvents(Event.ONCLICK);
@@ -39,7 +44,7 @@ class ResetButton extends ButtonBase {
     }
 
     protected void setElement(final Element element) {
-        DomHelper.checkInputElement("parameter:element", element, FormConstants.RESET_BUTTON_TYPE);
+        DomHelper.checkInput("parameter:element", element, FormConstants.RESET_BUTTON_TYPE);
         super.setElement(element);
     }
 
@@ -47,11 +52,15 @@ class ResetButton extends ButtonBase {
         this.reset0(this.getElement());
     }
 
-    protected native void reset0(final Element element)/*-{
+    native private void reset0(final Element element)/*-{
      element.reset();
      }-*/;
 
     public boolean equals(final Object other) {
         return other instanceof ResetButton && DOM.compare(this.getElement(), ((ResetButton) other).getElement());
+    }
+
+    public int hashCode() {
+        return this.getElement().hashCode();
     }
 }

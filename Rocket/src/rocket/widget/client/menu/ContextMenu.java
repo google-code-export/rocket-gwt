@@ -76,7 +76,6 @@ public class ContextMenu extends Menu {
     }
 
     protected Widget createMenuList() {
-        ObjectHelper.checkPropertyNotSet("menuList", this, this.hasMenuList());
         final VerticalMenuList list = new VerticalMenuList();
         list.addStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
         list.setHideable(true);
@@ -117,6 +116,7 @@ public class ContextMenu extends Menu {
     }
 
     protected void registerEvents() {
+        this.unsinkEvents(-1);
         this.sinkEvents(Event.ONMOUSEDOWN);
         DOM.setEventListener(this.getElement(), this);
     }
@@ -189,8 +189,8 @@ public class ContextMenu extends Menu {
 
             final Widget widget = this.getWidget();
             final Element element = widget.getElement();
-            int x = DomHelper.getParentContainerLeft(element);
-            int y = DomHelper.getParentContainerTop(element);
+            int x = DomHelper.getContainerLeftOffset(element);
+            int y = DomHelper.getContainerTopOffset(element);
 
             while (true) {
                 final MenuListOpenDirection openDirection = menuList.getOpenDirection();
@@ -211,7 +211,7 @@ public class ContextMenu extends Menu {
                     y = y + widget.getOffsetHeight() - 1;
                     break;
                 }
-                WidgetHelper.handleAssertFailure("Unknown openDirection, " + openDirection);
+                WidgetHelper.fail("Unknown openDirection, " + openDirection);
             }
             DomHelper.setAbsolutePosition(menuListElement, x, y);
 

@@ -22,7 +22,12 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ButtonBase;
 
-class SubmitButton extends ButtonBase {
+/**
+ * The SubmitButton widget represents a button abstraction of a Submit button that is typically part of a form.
+ * 
+ * @author Miroslav Pokorny (mP)
+ */
+public class SubmitButton extends ButtonBase {
     public SubmitButton(final Element element) {
         super(element);
         sinkEvents(Event.ONCLICK);
@@ -39,7 +44,7 @@ class SubmitButton extends ButtonBase {
     }
 
     protected void setElement(final Element element) {
-        DomHelper.checkInputElement("parameter:element", element, FormConstants.SUBMIT_BUTTON_TYPE);
+        DomHelper.checkInput("parameter:element", element, FormConstants.SUBMIT_BUTTON_TYPE);
         super.setElement(element);
     }
 
@@ -47,11 +52,15 @@ class SubmitButton extends ButtonBase {
         this.submit0(this.getElement());
     }
 
-    protected native void submit0(final Element element)/*-{
+    native private void submit0(final Element element)/*-{
      element.submit();
      }-*/;
 
     public boolean equals(final Object other) {
         return other instanceof SubmitButton && DOM.compare(this.getElement(), ((SubmitButton) other).getElement());
+    }
+
+    public int hashCode() {
+        return this.getElement().hashCode();
     }
 }

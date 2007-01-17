@@ -19,13 +19,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.browser.client.BrowserHelper;
+import rocket.dom.client.DomHelper;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.WidgetHelper;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -92,7 +93,7 @@ public class VerticalSplitterPanel extends SplitterPanel {
         while (true) {
             // need to figure out if mouse has moved to the right or left...
             final int mouseY = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();
-            final int splitterY = WidgetHelper.getAbsoluteTop(splitter);
+            final int splitterY = DomHelper.getAbsoluteTop(splitter.getElement());
 
             // if the mouse has not moved vertically but vertically so exit...
             int delta = mouseY - splitterY;
@@ -152,8 +153,9 @@ public class VerticalSplitterPanel extends SplitterPanel {
     }
 
     protected void adjustYCoordinate(final Widget widget, final int delta) {
-        final int y = DOM.getIntStyleAttribute(widget.getElement(), StyleConstants.TOP);
-        WidgetHelper.setAbsolutePosition(widget, 0, y + delta);
+        final Element element = widget.getElement();
+        final int y = DOM.getIntStyleAttribute(element, StyleConstants.TOP);
+        DomHelper.setAbsolutePosition(element, 0, y + delta);
     }
 
     /**
@@ -180,10 +182,11 @@ public class VerticalSplitterPanel extends SplitterPanel {
             final SplitterItem item = (SplitterItem) items.next();
 
             // set the widget position...
-            WidgetHelper.setAbsolutePosition(widget, 0, top);
+            final Element widgetElement = widget.getElement();
+            DomHelper.setAbsolutePosition(widgetElement, 0, top);
 
             // overflow...
-            DOM.setStyleAttribute(widget.getElement(), StyleConstants.OVERFLOW, "hidden");
+            DOM.setStyleAttribute(widgetElement, StyleConstants.OVERFLOW, "hidden");
 
             // set the size(width/height)...
             widget.setWidth("100%");
@@ -204,10 +207,10 @@ public class VerticalSplitterPanel extends SplitterPanel {
             final Widget splitter = (Widget) widgets.next();
 
             // set the splitter position...
-            WidgetHelper.setAbsolutePosition(splitter, 0, top);
+            DomHelper.setAbsolutePosition(splitter.getElement(), 0, top);
 
             // overflow...
-            DOM.setStyleAttribute(widget.getElement(), StyleConstants.OVERFLOW, "hidden");
+            DOM.setStyleAttribute(widgetElement, StyleConstants.OVERFLOW, "hidden");
 
             // set the splitters size...
             splitter.setWidth("100%");

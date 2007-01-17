@@ -20,6 +20,7 @@ import java.util.Map;
 
 import rocket.dom.client.DomConstants;
 import rocket.dom.client.DomHelper;
+import rocket.util.client.Destroyable;
 import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -80,7 +81,7 @@ public class FormHelper extends DomHelper {
             }
 
             final Element formElement = (Element) formElements.next();
-            final String name = DomHelper.getString(DomHelper.castFromElement(formElement), DomConstants.NAME);
+            final String name = ObjectHelper.getString(ObjectHelper.castFromElement(formElement), DomConstants.NAME);
             final String value = HttpHelper.urlEncode(FormHelper.getFormSubmitValue(formElement));
             urlEncoded.append(name);
             urlEncoded.append('=');
@@ -135,38 +136,64 @@ public class FormHelper extends DomHelper {
     public static Iterator getFormElements(final Element form) {
         DomHelper.checkTagName("parameter:form", form, DomConstants.FORM_TAG);
 
-        return new Iterator() {
-            public boolean hasNext() {
-                return this.getCursor() < DOM.getIntAttribute(form, DomConstants.LENGTH_PROPERTY);
-            }
+        final FormElementsIterator iterator = new FormElementsIterator();
+        iterator.setForm(form);
+        return iterator;
+    }
 
-            public Object next() {
-                final int cursor = this.getCursor();
-                final Object object = this.next0(form, cursor);
-                this.setCursor(cursor + 1);
-                return object;
-            }
+    /**
+     * This iterator also implements Destroyable. This faciliates allowing the user to cleanup once the iterator has been used/exhausted.
+     */
+    static class FormElementsIterator implements Iterator, Destroyable {
 
-            protected native Element next0(final Element form, final int index)/*-{
-             var element = form.elements[ index ];
-             return element ? element : null;
-             }-*/;
+        public boolean hasNext() {
+            return this.getCursor() < DOM.getIntAttribute(this.getForm(), DomConstants.LENGTH_PROPERTY);
+        }
 
-            public void remove() {
-                throw new UnsupportedOperationException("Form elements may not be removed using this iterator. this: "
-                        + this);
-            }
+        public Object next() {
+            final int cursor = this.getCursor();
+            final Object object = this.next0(this.getForm(), cursor);
+            this.setCursor(cursor + 1);
+            return object;
+        }
 
-            int cursor = 0;
+        native private Element next0(final Element form, final int index)/*-{
+         var element = form.elements[ index ];
+         return element ? element : null;
+         }-*/;
 
-            int getCursor() {
-                return cursor;
-            }
+        public void remove() {
+            throw new UnsupportedOperationException("Form elements may not be removed using this iterator. this: "
+                    + this);
+        }
 
-            void setCursor(final int cursor) {
-                this.cursor = cursor;
-            }
-        };
+        public void destroy() {
+            this.clearForm();
+        }
+
+        Element form;
+
+        Element getForm() {
+            return form;
+        }
+
+        void setForm(final Element form) {
+            this.form = form;
+        }
+
+        void clearForm() {
+            this.form = null;
+        }
+
+        int cursor = 0;
+
+        int getCursor() {
+            return cursor;
+        }
+
+        void setCursor(final int cursor) {
+            this.cursor = cursor;
+        }
     }
 
     /**
@@ -183,7 +210,7 @@ public class FormHelper extends DomHelper {
         return findElement0(form, elementName);
     }
 
-    protected static native Element findElement0(final Element form, final String elementName)/*-{
+    native private static Element findElement0(final Element form, final String elementName)/*-{
      var element = null;
 
      element = form.elements[ elementName ];

@@ -13,10 +13,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.widget.test.form.test;
+package rocket.widget.test.form;
 
 import java.util.Iterator;
 
+import rocket.browser.client.BrowserHelper;
+import rocket.util.client.ObjectHelper;
 import rocket.widget.client.form.FormConstants;
 import rocket.widget.client.form.FormElementsList;
 
@@ -35,31 +37,30 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 
 /**
- * Tests for FormElementsList a list view of an elements form.
+ * A set of tests for the FormElementList class.
+ * 
+ * @author Miroslav Pokorny (mP)
  */
-public class FormElementListTestCase extends GWTTestCase {
+public class FormElementListGwtTestCase extends GWTTestCase {
 
     final static String NAME = "name";
 
     final static String VALUE = "value";
 
-    /**
-     * Must refer to a valid module that inherits from com.google.gwt.junit.JUnit
-     */
     public String getModuleName() {
-        return "rocket.widget.test.form.Test";
+        return "rocket.widget.test.form.FormElementListGwtTestCase";
     }
 
     public void testSize() {
-        final FormElementsList list = new FormElementsList();
-        list.setCollection(getFormElements());
+        final TestFormElementsList list = new TestFormElementsList();
+        list.setForm( getForm() );
 
         assertEquals(10, list.size());
     }
 
     public void testGet0OnlyTestsNotNull() {
-        final FormElementsList list = new FormElementsList();
-        list.setCollection(getFormElements());
+        final TestFormElementsList list = new TestFormElementsList();
+        list.setForm( getForm() );
 
         for (int i = 0; i < 10; i++) {
             this.addCheckpoint("element: " + i);
@@ -70,8 +71,8 @@ public class FormElementListTestCase extends GWTTestCase {
     }
 
     public void testGet1TestsElementType() {
-        final FormElementsList list = new FormElementsList();
-        list.setCollection(getFormElements());
+        final TestFormElementsList list = new TestFormElementsList();
+        list.setForm( getForm() );
 
         {
             final Object element = list.get(0);
@@ -121,8 +122,8 @@ public class FormElementListTestCase extends GWTTestCase {
     }
 
     public void testIterator() {
-        final FormElementsList list = new FormElementsList();
-        list.setCollection(getFormElements());
+        final TestFormElementsList list = new TestFormElementsList();
+        list.setForm( getForm() );
 
         final Iterator iterator = list.iterator();
         int i = 0;
@@ -194,15 +195,22 @@ public class FormElementListTestCase extends GWTTestCase {
         DOM.appendChild(options, DOM.createElement(FormConstants.OPTION_TAG));
         DOM.appendChild(form, list);
 
-        return formElements();
+        return getForm();
     }
 
     /**
-     * Provides a safe reliable way to return a form without using a JavaScriptObject.
+     * Convenient method to get
      * 
      * @return
      */
-    native static JavaScriptObject formElements()/*-{
-     return $doc.forms[ 0 ].elements;
-     }-*/;
+    static JavaScriptObject getForm(){
+        final JavaScriptObject forms = ObjectHelper.getObject( BrowserHelper.getDocument(), "form");
+        return ObjectHelper.getObject( forms, 0 );
+    }
+    
+    class TestFormElementsList extends FormElementsList{
+        public void setForm( final JavaScriptObject form ){
+            super.setForm( form );
+        }
+    }
 }

@@ -17,8 +17,6 @@ package rocket.widget.test.tree.client;
 
 import java.util.Iterator;
 
-import rocket.util.client.ObjectHelper;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import rocket.widget.client.tree.Tree;
 import rocket.widget.client.tree.TreeItem;
 import rocket.widget.client.tree.TreeListener;
@@ -33,6 +31,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -193,8 +192,6 @@ public class TreeTest implements EntryPoint {
      */
     class TestTreeWidget extends Tree {
         protected TreeItem createTreeItem() {
-            ObjectHelper.checkPropertyNotSet("treeItem", this, this.hasTreeItem());
-
             final TestTreeItem treeItem = new TestTreeItem();
             this.setTreeItem(treeItem);
             treeItem.setTree(this);

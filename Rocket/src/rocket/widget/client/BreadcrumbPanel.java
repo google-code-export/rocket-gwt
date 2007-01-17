@@ -62,10 +62,8 @@ public class BreadcrumbPanel extends Composite {
     }
 
     protected HorizontalPanel createHorizontalPanel() {
-        ObjectHelper.checkPropertyNotSet("horizontalPanel", this, this.hasHorizontalPanel());
-
         final HorizontalPanel panel = new HorizontalPanel();
-        panel.addStyleName(WidgetConstants.BREADCRUMBS_STYLE);
+        panel.addStyleName(WidgetConstants.BREADCRUMB_PANEL_STYLE);
         this.setHorizontalPanel(panel);
         return panel;
     }
@@ -112,7 +110,7 @@ public class BreadcrumbPanel extends Composite {
 
         final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.setText(text);
-        breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_ITEM_STYLE);
+        breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_PANEL_ITEM_STYLE);
         return breadcrumb;
     }
 
@@ -156,8 +154,8 @@ public class BreadcrumbPanel extends Composite {
     }
 
     protected Widget createSpacer() {
-        final HTML spacer = new HTML(WidgetConstants.BREADCRUMB_SEPARATOR_HTML);
-        spacer.addStyleName(WidgetConstants.BREADCRUMB_SEPARATOR_STYLE);
+        final HTML spacer = new HTML(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_HTML);
+        spacer.addStyleName(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_STYLE);
         spacer.setVisible(false);
         return spacer;
     }
@@ -182,7 +180,7 @@ public class BreadcrumbPanel extends Composite {
         final HorizontalPanel panel = this.getHorizontalPanel();
         final int widgetCount = panel.getWidgetCount();
         if (widgetCount == 0) {
-            SystemHelper.handleAssertFailure("Unable to pop a breadcrumb - this breadcrumb panel is already empty");
+            SystemHelper.fail("Unable to pop a breadcrumb - this breadcrumb panel is already empty");
         }
 
         // remove the breadcrumb and then the spacer.
@@ -201,7 +199,7 @@ public class BreadcrumbPanel extends Composite {
         final int index = panel.getWidgetCount() - 1 - 1;
         if (index >= 0) {
             final Widget breadcrumb = panel.getWidget(index);
-            breadcrumb.removeStyleName(WidgetConstants.BREADCRUMB_LAST_ITEM_STYLE);
+            breadcrumb.removeStyleName(WidgetConstants.BREADCRUMB_PANEL_LAST_ITEM_STYLE);
 
             final Widget spacer = panel.getWidget(index + 1);
             spacer.setVisible(true);
@@ -213,7 +211,7 @@ public class BreadcrumbPanel extends Composite {
         final int index = panel.getWidgetCount() - 1 - 1;
         if (index >= 0) {
             final Widget breadcrumb = panel.getWidget(index);
-            breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_LAST_ITEM_STYLE);
+            breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_PANEL_LAST_ITEM_STYLE);
 
             final Widget spacer = panel.getWidget(index + 1);
             spacer.setVisible(false);

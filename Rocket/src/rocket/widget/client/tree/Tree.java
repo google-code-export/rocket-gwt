@@ -56,8 +56,6 @@ public class Tree extends Composite {
     }
 
     protected TreeItem createTreeItem() {
-        ObjectHelper.checkPropertyNotSet("treeItem", this, this.hasTreeItem());
-
         final TreeItem treeItem = new TreeItem();
         this.setTreeItem(treeItem);
         treeItem.setTree(this);

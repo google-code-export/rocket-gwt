@@ -128,15 +128,17 @@ public class WidgetConstants {
     /**
      * This style is applied to the container element of a BreadcrumbPanel {@see BreadcrumbPanel}
      */
-    public final static String BREADCRUMBS_STYLE = StyleHelper.buildCompound(ROCKET, "breadcrumbs");
+    public final static String BREADCRUMB_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "breadcrumbPanel");
 
-    public final static String BREADCRUMB_ITEM_STYLE = StyleHelper.buildCompound(BREADCRUMBS_STYLE, "item");
+    public final static String BREADCRUMB_PANEL_ITEM_STYLE = StyleHelper.buildCompound(BREADCRUMB_PANEL_STYLE, "item");
 
-    public final static String BREADCRUMB_LAST_ITEM_STYLE = StyleHelper.buildCompound(BREADCRUMB_ITEM_STYLE, "last");
+    public final static String BREADCRUMB_PANEL_LAST_ITEM_STYLE = StyleHelper.buildCompound(
+            BREADCRUMB_PANEL_ITEM_STYLE, "last");
 
-    public final static String BREADCRUMB_SEPARATOR_HTML = ">";
+    public final static String BREADCRUMB_PANEL_SEPARATOR_HTML = ">";
 
-    public final static String BREADCRUMB_SEPARATOR_STYLE = StyleHelper.buildCompound(BREADCRUMBS_STYLE, "separator");
+    public final static String BREADCRUMB_PANEL_SEPARATOR_STYLE = StyleHelper.buildCompound(BREADCRUMB_PANEL_STYLE,
+            "separator");
 
     // GRID
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -327,4 +329,37 @@ public class WidgetConstants {
      * This style is applied to the container element of a HyperlinkPanel widget {@see rocket.widget.client.HyperlinkPanel}
      */
     public final static String HYPERLINK_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "hyperlinkPanel");
+
+    /**
+     * This style is applied to the container element of a ResizablePanel widget {@see rocket.widget.client.ResizablePanel}
+     */
+    public final static String RESIZABLE_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "resizablePanel");
+
+    public final static String RESIZABLE_PANEL_EAST_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE,
+            "eastHandle");
+
+    public final static String RESIZABLE_PANEL_NORTHEAST_HANDLE_STYLE = StyleHelper.buildCompound(
+            RESIZABLE_PANEL_STYLE, "northEastHandle");
+
+    public final static String RESIZABLE_PANEL_NORTH_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE,
+            "northHandle");
+
+    public final static String RESIZABLE_PANEL_NORTHWEST_HANDLE_STYLE = StyleHelper.buildCompound(
+            RESIZABLE_PANEL_STYLE, "northWestHandle");
+
+    public final static String RESIZABLE_PANEL_WEST_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE,
+            "leftHandle");
+
+    public final static String RESIZABLE_PANEL_SOUTHEAST_HANDLE_STYLE = StyleHelper.buildCompound(
+            RESIZABLE_PANEL_STYLE, "southEastHandle");
+
+    public final static String RESIZABLE_PANEL_SOUTH_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE,
+            "southHandle");
+
+    public final static String RESIZABLE_PANEL_SOUTHWEST_HANDLE_STYLE = StyleHelper.buildCompound(
+            RESIZABLE_PANEL_STYLE, "southWestHandle");
+
+    public final static String RESIZABLE_PANEL_HANDLE_SELECTED_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE,
+            "selected");
+
 }

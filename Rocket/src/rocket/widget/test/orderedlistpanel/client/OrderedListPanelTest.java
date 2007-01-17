@@ -17,9 +17,9 @@ package rocket.widget.test.orderedlistpanel.client;
 
 import java.util.Iterator;
 
+import rocket.testing.client.InteractivePanel;
 import rocket.util.client.SystemHelper;
 import rocket.widget.client.OrderedListPanel;
-import rocket.widget.client.testing.InteractivePanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -80,7 +80,7 @@ public class OrderedListPanelTest implements EntryPoint {
 
             protected void checkType(Object element) {
                 if (false == (element instanceof HTML)) {
-                    SystemHelper.handleAssertFailure("Unknown element type type:" + GWT.getTypeName(element));
+                    SystemHelper.fail("Unknown element type type:" + GWT.getTypeName(element));
                 }
             }
 

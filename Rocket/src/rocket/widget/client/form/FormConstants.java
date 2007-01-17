@@ -31,6 +31,8 @@ public class FormConstants extends DomConstants {
 
     public final static String SUBMIT_BUTTON_TYPE = "submit";
 
+    public final static String FILE_TYPE = "file";
+
     public final static String TEXTAREA_TAG = "TEXTAREA";
 
     public final static String BUTTON_TAG = "button";

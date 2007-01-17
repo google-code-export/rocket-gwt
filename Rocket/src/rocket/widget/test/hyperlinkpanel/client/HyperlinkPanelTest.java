@@ -17,14 +17,13 @@ package rocket.widget.test.hyperlinkpanel.client;
 
 import java.util.Iterator;
 
+import rocket.testing.client.InteractivePanel;
 import rocket.util.client.SystemHelper;
 import rocket.widget.client.HyperlinkPanel;
-import rocket.widget.client.testing.InteractivePanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
@@ -88,7 +87,7 @@ public class HyperlinkPanelTest implements EntryPoint {
 
             protected void checkType(Object element) {
                 if (false == (element instanceof HTML)) {
-                    SystemHelper.handleAssertFailure("Unknown element type type:" + GWT.getTypeName(element));
+                    SystemHelper.fail("Unknown element type type:" + GWT.getTypeName(element));
                 }
             }
 

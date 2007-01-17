@@ -19,9 +19,9 @@ import java.util.Iterator;
 
 import rocket.collection.client.SkippingIterator;
 import rocket.util.client.ObjectHelper;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
