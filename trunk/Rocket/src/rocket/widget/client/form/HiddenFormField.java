@@ -27,7 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-class HiddenFormField extends Widget {
+public class HiddenFormField extends Widget {
     public HiddenFormField(final Element element) {
         super();
 
@@ -35,7 +35,7 @@ class HiddenFormField extends Widget {
     }
 
     protected void setElement(final Element element) {
-        DomHelper.checkInputElement("parameter:element", element, FormConstants.HIDDEN_TYPE);
+        DomHelper.checkInput("parameter:element", element, FormConstants.HIDDEN_TYPE);
         super.setElement(element);
     }
 
@@ -60,5 +60,9 @@ class HiddenFormField extends Widget {
     public boolean equals(final Object other) {
         return other instanceof HiddenFormField
                 && DOM.compare(this.getElement(), ((HiddenFormField) other).getElement());
+    }
+
+    public int hashCode() {
+        return this.getElement().hashCode();
     }
 }

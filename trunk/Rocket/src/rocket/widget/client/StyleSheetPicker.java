@@ -171,7 +171,7 @@ public class StyleSheetPicker extends Composite {
         ObjectHelper.checkNotNull("parameter:button", button);
         final StyleSheet styleSheet = (StyleSheet) this.getMappings().get(button);
         if (null == styleSheet) {
-            ObjectHelper.handleAssertFailure("parameter:button", "Unable find the styleSheet for the parameter:button");
+            ObjectHelper.fail("parameter:button", "Unable find the styleSheet for the parameter:button");
         }
         return styleSheet;
     }
@@ -182,7 +182,7 @@ public class StyleSheetPicker extends Composite {
 
         final Map mappings = this.getMappings();
         if (mappings.containsKey(button)) {
-            ObjectHelper.handleAssertFailure("parameter:button", "The parameter:button has already been mapped.");
+            ObjectHelper.fail("parameter:button", "The parameter:button has already been mapped.");
         }
         mappings.put(button, styleSheet);
     }

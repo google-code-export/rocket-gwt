@@ -1,114 +1,141 @@
-/*
- * Copyright Miroslav Pokorny
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package rocket.widget.client.form;
 
-import rocket.dom.client.DomCollectionList;
+import java.util.AbstractList;
+import java.util.HashMap;
+import java.util.Map;
+
 import rocket.dom.client.DomHelper;
+import rocket.util.client.Destroyable;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.SystemHelper;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
-
 /**
- * This list provides a view of a live form and its elements returning the appropriate widget rather than elements given an index.
+ * Provides a list view of all a form's elements. It also includes a centralised factory method
+ * which creates various widgets depending on which tag was encountered.
+ * 
+ * Because the form elements array is read only this list is also read only and any attempts to use
+ * any of Lists modifying methods which result in an exception being thrown.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class FormElementsList extends DomCollectionList {
+public class FormElementsList extends AbstractList implements Destroyable{
 
-    protected void checkElementType(Object wrapper) {
+    public int size() {
+        return ObjectHelper.getPropertyCount( this.getFormElements());
     }
 
-    protected Object createWrapper(final JavaScriptObject object) {
-        return this.visitElement(DomHelper.castToElement(object));
+    public Object get(final int index) {
+        Widget widget = null;
+
+        while( true ){
+            final Element element = (Element) ObjectHelper.getObject( this.getFormElements(), index );
+
+            // check cache...
+            final Map widgets = this.getWidgets();
+            widget = (Widget) widgets.get( element );
+            if( null != widget ){
+                break;
+            }
+
+            widget = this.createWidget( element );
+            widgets.put( element, widget );
+            break;
+        }
+
+        return widget;
+    }    
+
+    /**
+     * Factory method which creates a Widget from the given Element.
+     * @param element
+     * @return
+     */
+    protected Widget createWidget( final Element element ){
+        Widget widget = null;
+
+        while( true ){                
+            if( DomHelper.isTag(element, FormConstants.INPUT_TAG)){
+                final String type = DOM.getAttribute(element, FormConstants.INPUT_TAG_TYPE);
+                if (FormConstants.TEXT_TYPE.equalsIgnoreCase(type)) {
+                    widget = createTextBox(element);
+                    break;
+                }
+                if (FormConstants.PASSWORD_TYPE.equalsIgnoreCase(type)) {
+                    widget = this.createPasswordTextBox(element);
+                    break;
+                }
+                if (FormConstants.HIDDEN_TYPE.equalsIgnoreCase(type)) {
+                    widget = createHidden(element);
+                    break;
+                }
+                if (FormConstants.RADIO_BUTTON_TYPE.equalsIgnoreCase(type)) {
+                    widget = createRadioButton(element);
+                    break;
+                }
+                if (FormConstants.CHECKBOX_TYPE.equalsIgnoreCase(type)) {
+                    widget = createCheckBox(element);
+                    break;
+                }
+                if (FormConstants.SUBMIT_BUTTON_TYPE.equalsIgnoreCase(type)) {
+                    widget = createSubmitButton(element);
+                    break;
+                }
+                if (FormConstants.RESET_BUTTON_TYPE.equalsIgnoreCase(type)) {
+                    widget = createResetButton(element);
+                    break;
+                }
+                // unknown input type.
+                this.createUnknownInputType(element);
+                break;
+            }
+            if (DomHelper.isTag(element, FormConstants.BUTTON_TAG)) {
+                widget = createButton(element);
+                break;
+            }
+            if (DomHelper.isTag(element, FormConstants.TEXTAREA_TAG)) {
+                widget = createTextArea(element);
+                break;
+            }
+            if (DomHelper.isTag(element, FormConstants.LIST_TAG)) {
+                widget = this.createList(element);
+                break;
+            }
+            this.createUnknownElementType(element);
+            break;
+        }
+
+        return widget;
+    }
+    /**
+     * This method is called whenever an unknown/unhandled input element is encountered.
+     * 
+     * @param element
+     */
+    protected void createUnknownInputType(final Element element) {
+        final String type = DOM.getAttribute(element, FormConstants.INPUT_TAG_TYPE);
+        SystemHelper.fail("parameter:element", "Unknown input type [" + type + "] found within form collection.");
     }
 
     /**
-     * This method dispatches to the appropriate factory method depending on the type of element passed.
+     * This method is called whenever an unknown/unhandled element is encountered.
+     * 
+     * @param element
+     */
+    protected void createUnknownElementType(final Element element) {
+        SystemHelper.fail("parameter:element", "Unknown element found within form collection, element: " + element);
+    }
+
+    /**
+     * Factory method which creates a TextBox given a input element of type text.
      * 
      * @param element
      * @return
      */
-    protected Widget visitElement(final Element element) {
-        Widget widget = null;
-        while (true) {
-            if (DomHelper.isTag(element, FormConstants.INPUT_TAG)) {
-                final String type = DOM.getAttribute(element, FormConstants.INPUT_TAG_TYPE);
-                if (FormConstants.TEXT_TYPE.equalsIgnoreCase(type)) {
-                    widget = visitTextBox(element);
-                    break;
-                }
-                if (FormConstants.PASSWORD_TYPE.equalsIgnoreCase(type)) {
-                    widget = this.visitPasswordTextBox(element);
-                    break;
-                }
-                if (FormConstants.HIDDEN_TYPE.equalsIgnoreCase(type)) {
-                    widget = visitHidden(element);
-                    break;
-                }
-                if (FormConstants.RADIO_BUTTON_TYPE.equalsIgnoreCase(type)) {
-                    widget = visitRadioButton(element);
-                    break;
-                }
-                if (FormConstants.CHECKBOX_TYPE.equalsIgnoreCase(type)) {
-                    widget = visitCheckBox(element);
-                    break;
-                }
-                if (FormConstants.LIST_TAG.equalsIgnoreCase(type)) {
-                    widget = visitList(element);
-                    break;
-                }
-                if (FormConstants.SUBMIT_BUTTON_TYPE.equalsIgnoreCase(type)) {
-                    widget = visitSubmitButton(element);
-                    break;
-                }
-                if (FormConstants.RESET_BUTTON_TYPE.equalsIgnoreCase(type)) {
-                    widget = visitResetButton(element);
-                    break;
-                }
-                // unknown input type.
-
-                break;
-            }
-
-            if (DomHelper.isTag(element, FormConstants.BUTTON_TAG)) {
-                widget = visitButton(element);
-                break;
-            }
-            if (DomHelper.isTag(element, FormConstants.TEXTAREA_TAG)) {
-                widget = visitTextArea(element);
-                break;
-            }
-            if (DomHelper.isTag(element, FormConstants.LIST_TAG)) {
-                widget = this.visitList(element);
-                break;
-            }
-        }
-
-        if (null == widget) {
-            SystemHelper.handleAssertFailure("Widget not created for unknown element " + DomHelper.toString(element));
-        }
-        return widget;
-    }
-
-    protected Widget visitTextBox(final Element element) {
+    protected Widget createTextBox(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new TextBox(element);
     }
@@ -121,7 +148,7 @@ public class FormElementsList extends DomCollectionList {
         }
 
         protected void setElement(final Element element) {
-            DomHelper.checkInputElement("parameter:element", element, FormConstants.TEXT_TYPE);
+            DomHelper.checkInput("parameter:element", element, FormConstants.TEXT_TYPE);
             super.setElement(element);
         }
 
@@ -130,7 +157,13 @@ public class FormElementsList extends DomCollectionList {
         }
     }
 
-    protected Widget visitPasswordTextBox(final Element element) {
+    /**
+     * Factory method which creates a PasswordTextBox given a input element of type password.
+     * 
+     * @param element
+     * @return
+     */
+    protected Widget createPasswordTextBox(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new Password(element);
     }
@@ -143,7 +176,7 @@ public class FormElementsList extends DomCollectionList {
         }
 
         protected void setElement(final Element element) {
-            DomHelper.checkInputElement("parameter:element", element, FormConstants.PASSWORD_TYPE);
+            DomHelper.checkInput("parameter:element", element, FormConstants.PASSWORD_TYPE);
             super.setElement(element);
         }
 
@@ -152,7 +185,13 @@ public class FormElementsList extends DomCollectionList {
         }
     }
 
-    protected Widget visitTextArea(final Element element) {
+    /**
+     * Factory method which creates a TextArea given a text area element
+     * 
+     * @param element
+     * @return
+     */
+    protected Widget createTextArea(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new TextArea(element);
     }
@@ -174,12 +213,18 @@ public class FormElementsList extends DomCollectionList {
         }
     }
 
-    protected Widget visitHidden(final Element element) {
+    protected Widget createHidden(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new HiddenFormField(element);
     }
 
-    protected Widget visitRadioButton(final Element element) {
+    /**
+     * Factory method which creates a RadioButton given a radio button element.
+     * 
+     * @param element
+     * @return
+     */
+    protected Widget createRadioButton(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new RadioButton(element);
     }
@@ -196,7 +241,13 @@ public class FormElementsList extends DomCollectionList {
         }
     }
 
-    protected Widget visitCheckBox(final Element element) {
+    /**
+     * Factory method which creates a CheckBox given a checkBox element
+     * 
+     * @param element
+     * @return
+     */
+    protected Widget createCheckBox(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new CheckBox(element);
     }
@@ -209,7 +260,7 @@ public class FormElementsList extends DomCollectionList {
         }
 
         // protected void setElement( final Element element ){
-        // DomHelper.checkInputElement( "parameter:element", element,
+        // DomHelper.checkInput( "parameter:element", element,
         // FormConstants.CHECKBOX_TYPE);
         // super.setElement( element );
         // }
@@ -218,7 +269,13 @@ public class FormElementsList extends DomCollectionList {
         }
     }
 
-    protected Widget visitButton(final Element element) {
+    /**
+     * Factory method which creates a Button given a button element.
+     * 
+     * @param element
+     * @return
+     */
+    protected Widget createButton(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new Button(element);
     }
@@ -240,7 +297,13 @@ public class FormElementsList extends DomCollectionList {
         }
     }
 
-    protected Widget visitList(final Element element) {
+    /**
+     * Factory method which creates a ListBox given a list element.
+     * 
+     * @param element
+     * @return
+     */
+    protected Widget createList(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
 
         return new ListBox(element);
@@ -263,33 +326,56 @@ public class FormElementsList extends DomCollectionList {
         }
     }
 
-    protected Widget visitSubmitButton(final Element element) {
+    protected Widget createSubmitButton(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new SubmitButton(element);
     }
 
-    protected Widget visitResetButton(final Element element) {
+    protected Widget createResetButton(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
         return new ResetButton(element);
     }
 
-    // DOM COLLECTION LIST ::::::::::::::::::::::
+    /**
+     * A cache that maps form elements to widgets
+     */
+    private Map widgets;
 
-    protected void add1(final JavaScriptObject collection, final JavaScriptObject element) {
-        throw new UnsupportedOperationException(GWT.getTypeName(this) + "add0()");
+    protected Map getWidgets(){
+        ObjectHelper.checkNotNull("field:widgets", widgets);
+        return this.widgets;
+    }
+    protected void setWidgets( final Map widgets ){
+        ObjectHelper.checkNotNull("parameter:widgets", widgets);
+        this.widgets = widgets;
+    }
+    protected Map createWidgets(){
+        return new HashMap();
     }
 
-    protected void insert1(final JavaScriptObject collection, final int index, final JavaScriptObject element) {
-        throw new UnsupportedOperationException(GWT.getTypeName(this) + "insert0()");
+    /**
+     * The form whose collection is being viewed as a List
+     */
+    private JavaScriptObject form;
+
+    public JavaScriptObject getForm(){
+        ObjectHelper.checkNotNull("field:form", form );
+        return form;
+    }
+    protected void setForm( final JavaScriptObject form ){
+        ObjectHelper.checkNotNull("parameter:form", form );
+        this.form = form;
     }
 
-    protected JavaScriptObject remove0(final JavaScriptObject collection, final int index) {
-        throw new UnsupportedOperationException(GWT.getTypeName(this) + "remove0()");
+    protected void clearForm(){
+        this.form = null;
     }
-
-    protected void adopt(final Object object) {
+    
+    protected JavaScriptObject getFormElements(){
+        return ObjectHelper.getObject( this.getForm(), "elements");
     }
-
-    protected void disown(final Object object) {
+          
+    public void destroy(){
+        this.clearForm();
     }
 }

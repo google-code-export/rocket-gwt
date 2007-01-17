@@ -96,8 +96,8 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
             DomHelper.setAbsolutePosition(menuListElement, 0, 0);
 
             final Element element = this.getElement();
-            int x = DomHelper.getParentContainerLeft(element);
-            int y = DomHelper.getParentContainerTop(element);
+            int x = DomHelper.getContainerLeftOffset(element);
+            int y = DomHelper.getContainerTopOffset(element);
 
             while (true) {
                 final MenuListOpenDirection openDirection = menuList.getOpenDirection();
@@ -119,7 +119,7 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
                     y = y + parentMenuList.getOffsetHeight() - 1;
                     break;
                 }
-                WidgetHelper.handleAssertFailure("Unknown openDirection, " + openDirection);
+                WidgetHelper.fail("Unknown openDirection, " + openDirection);
             }
             DomHelper.setAbsolutePosition(menuListElement, x, y);
 
@@ -227,7 +227,7 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
     }
 
     /**
-     * A HTML widget contains the text or label of this item.
+     * A TEXT widget contains the text or label of this item.
      */
     private HTML html;
 

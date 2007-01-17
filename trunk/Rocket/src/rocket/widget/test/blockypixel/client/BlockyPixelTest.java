@@ -15,7 +15,10 @@
  */
 package rocket.widget.test.blockypixel.client;
 
-import rocket.util.client.ColourHelper;
+import java.util.Date;
+
+import rocket.style.client.StyleConstants;
+import rocket.util.client.Colour;
 import rocket.widget.client.BlockyPixel;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -34,14 +37,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * Entry point classes define <code>onModuleLoad()</code>.
- */
 public class BlockyPixelTest implements EntryPoint {
 
-    /**
-     * This is the entry point method.
-     */
     public void onModuleLoad() {
         GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
             public void onUncaughtException(final Throwable caught) {
@@ -78,12 +75,23 @@ public class BlockyPixelTest implements EntryPoint {
                 grid.setRows(Integer.parseInt(rows.getText()));
                 grid.setColumns(Integer.parseInt(columns.getText()));
                 grid.setSize("90%", "75%");
-                panel.add(grid);
+
+                DOM.setIntStyleAttribute(grid.getElement(), StyleConstants.Z_INDEX, 100);
+                panel.add(grid, 0, 0);
+
+                // DOM.scrollIntoView(grid.getElement());
 
                 final TestTimer timer = new TestTimer();
                 timer.setCounter(0);
                 timer.setGrid(grid);
                 timer.scheduleRepeating(Integer.parseInt(interval.getText()));
+
+                log("<b>Test started</b>");
+
+                final int columns = grid.getColumns();
+                final int rows = grid.getRows();
+                log("columns: " + columns + ", rows: " + rows);
+                log("time: " + new Date() + "</b>");
 
                 DOM.addEventPreview(new EventPreview() {
                     public boolean onEventPreview(final Event event) {
@@ -99,6 +107,16 @@ public class BlockyPixelTest implements EntryPoint {
         });
     }
 
+    void log(final String message) {
+        Element log = DOM.getElementById("log");
+        DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
+    }
+
+    /**
+     * This timer is in charge of periodically updating the colours appearing in the grid as well as updating counters.
+     * 
+     * @author mP
+     */
     class TestTimer extends Timer {
         public void run() {
             final int counter = this.getCounter();
@@ -120,14 +138,12 @@ public class BlockyPixelTest implements EntryPoint {
                 final long timeTaken = System.currentTimeMillis() - this.getStartTime();
 
                 final float fps = counter * 1000 / (float) timeTaken;
-                log("<b>Test Finished</b><br/>TimeTaken: " + timeTaken + " millis<br/>redraws: " + counter
-                        + "<br/>fps: " + fps);
-            }
-        }
+                log("<b>Test stopped</b>");
+                log("time: " + new Date());
+                log("timeTaken: " + timeTaken + "millis, redraws: " + counter + ", frames per second: " + fps);
 
-        void log(final String message) {
-            Element log = DOM.getElementById("log");
-            DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
+                RootPanel.get().remove(this.getGrid());
+            }
         }
 
         public void update(final float whiteMix) {
@@ -137,14 +153,13 @@ public class BlockyPixelTest implements EntryPoint {
             final int columns = grid.getColumns();
 
             for (int x = 0; x < columns; x++) {
-                // final int red = (int)(( x / (float)( columns + 1 ) ) * 255);
                 final int red = (int) ((float) x * 255 / columns);
 
                 for (int y = 0; y < rows; y++) {
                     final int green = (int) ((float) y * 255 / rows);
                     final int blue = (red ^ green);
-                    final int rgb = ColourHelper.makeLighter(ColourHelper.makeColour(red, green, blue), whiteMix);
-                    grid.setColour(x, y, rgb);
+                    final Colour colour = new Colour(red, green, blue).makeLighter(whiteMix);
+                    grid.setColour(x, y, colour);
                 }
             }
         }
@@ -169,6 +184,9 @@ public class BlockyPixelTest implements EntryPoint {
             return this.startTime;
         }
 
+        /**
+         * The number of redraws
+         */
         private int counter;
 
         public void setCounter(final int counter) {

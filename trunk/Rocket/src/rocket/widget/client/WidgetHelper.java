@@ -17,8 +17,7 @@ package rocket.widget.client;
 
 import java.util.Iterator;
 
-import rocket.dom.client.DomHelper;
-import rocket.util.client.ColourHelper;
+import rocket.util.client.Colour;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.SystemHelper;
 
@@ -67,19 +66,21 @@ public class WidgetHelper extends SystemHelper {
      * @param top
      * @param right
      * @param bottom
-     * @param topColour
-     * @param bottomColour
+     * @param fromColour
+     * @param toColour
      */
     public static void verticalGradientFill(final PixelGrid grid, final int left, final int top, final int right,
-            final int bottom, final int topColour, final int bottomColour) {
+            final int bottom, final Colour fromColour, final Colour toColour) {
         ObjectHelper.checkNotNull("parameter:grid", grid);
+        ObjectHelper.checkNotNull("parameter:fromColour", fromColour);
+        ObjectHelper.checkNotNull("parameter:bottom", toColour);
 
         final int rowsBetween = bottom - top;
         final float rowColourMixDelta = -1.0f / rowsBetween;
         float rowColourMixRatio = 1.0f + rowColourMixDelta / 2;
 
         for (int y = top; y < bottom; y++) {
-            final int rowColour = ColourHelper.mix(topColour, bottomColour, rowColourMixRatio);
+            final Colour rowColour = fromColour.mix(toColour, rowColourMixRatio);
 
             for (int x = left; x < right; x++) {
                 grid.setColour(x, y, rowColour);
@@ -90,7 +91,7 @@ public class WidgetHelper extends SystemHelper {
     }
 
     public static void horizontalGradientFill(final PixelGrid grid, final int left, final int top, final int right,
-            final int bottom, final int fromColour, final int toColour) {
+            final int bottom, final Colour fromColour, final Colour toColour) {
         gradientFill(grid, left, top, right, bottom, fromColour, toColour, fromColour, toColour);
     }
 
@@ -108,8 +109,8 @@ public class WidgetHelper extends SystemHelper {
      * @param bottomRightColour
      */
     public static void gradientFill(final PixelGrid grid, final int left, final int top, final int right,
-            final int bottom, final int topLeftColour, final int topRightColour, final int bottomLeftColour,
-            final int bottomRightColour) {
+            final int bottom, final Colour topLeftColour, final Colour topRightColour, final Colour bottomLeftColour,
+            final Colour bottomRightColour) {
 
         ObjectHelper.checkNotNull("parameter:grid", grid);
 
@@ -121,13 +122,13 @@ public class WidgetHelper extends SystemHelper {
         final float columnDelta = -1.0f / columnsAcross;
 
         for (int y = top; y < bottom; y++) {
-            final int leftEdgeColour = ColourHelper.mix(topLeftColour, bottomLeftColour, rowColourMixRatio);
-            final int rightEdgeColour = ColourHelper.mix(topRightColour, bottomRightColour, rowColourMixRatio);
+            final Colour leftEdgeColour = topLeftColour.mix(bottomLeftColour, rowColourMixRatio);
+            final Colour rightEdgeColour = topRightColour.mix(bottomRightColour, rowColourMixRatio);
 
             float columnColourMixRatio = 1.0f + columnDelta / 2;
 
             for (int x = left; x < right; x++) {
-                final int cellColour = ColourHelper.mix(leftEdgeColour, rightEdgeColour, columnColourMixRatio);
+                final Colour cellColour = leftEdgeColour.mix(rightEdgeColour, columnColourMixRatio);
                 grid.setColour(x, y, cellColour);
 
                 columnColourMixRatio = columnColourMixRatio + columnDelta;
@@ -135,40 +136,4 @@ public class WidgetHelper extends SystemHelper {
             rowColourMixRatio = rowColourMixRatio + rowColourMixDelta;
         }
     }
-
-    /**
-     * Retrieves the absolute left or X coordinates for the given widget.
-     * 
-     * @param widget
-     * @return
-     */
-    public static int getAbsoluteLeft(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-        return DomHelper.getAbsoluteLeft(widget.getElement());
-    }
-
-    /**
-     * Retrieves the absolute top or y coordinates for the given widget.
-     * 
-     * @param widget
-     * @return
-     */
-    public static int getAbsoluteTop(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-        return DomHelper.getAbsoluteTop(widget.getElement());
-    }
-
-    /**
-     * Positions the given widget absolutely relative to its parent container element.
-     * {@see rocket.dom.client.DomHelper#setAbsolutePosition(Element, int, int)}
-     * 
-     * @param widget
-     * @param x
-     * @param y
-     */
-    public static void setAbsolutePosition(final Widget widget, final int x, final int y) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-        DomHelper.setAbsolutePosition(widget.getElement(), x, y);
-    }
-
 }

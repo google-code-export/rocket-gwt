@@ -7,7 +7,7 @@
 <style>
 BODY, TABLE{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 10px;
 }
 TABLE{
 	background-color: #eeeeee;
@@ -21,20 +21,28 @@ TD{
 	border-width: 0px;
 	padding: 0px;
 }
+
+BUTTON {
+	width: 100px;
+}
 </style>
 </head>
 
 <body>
 
-<div 
-	style="margin: 4px; padding: 4px; border-color: black; border-width: 1px; border-style: solid; background-color: #eeeeee;">
-	Once a test is starting click anywhere to stop the test after which some statistics will be written.
-</div>
+<h6>Things to todo</h6>
+<ul>
+<li>Change either the row/columns of the grid by entering new values in either textbox.</li>
+<li>Change the gap or interval between attempts to repaint by changing the interval textbox.</li>
+<li>Start a new test by clicking the <b>START</b> button.</li>
+<li>Stop an already running test by clicking anywhere</li>
+<li>Increase/decrease both row/column values and start a new test by clicking the <b>START</b> button.</li>
+</ul>
 
 <b>Log</b>
 <div 
 	id="log" 
-	style="margin: 4px; padding: 4px; border-color: black; border-width: 1px; border-style: solid; background-color: #eeeeee;">
+	style="margin: 4px; padding: 4px; border-color: black; border-width: 1px; border-style: solid; background-color: #eeeeee; height: 20em; overflow: scroll;">
 </b>
 	
 </body>

@@ -229,8 +229,6 @@ public class AutoCompleteTextBox extends TextBox {
     }
 
     protected VerticalPanel createDropDownList() {
-        ObjectHelper.checkPropertyNotSet("dropDownList", this, this.hasDropDownList());
-
         final VerticalPanel list = new VerticalPanel();
         list.setVisible(false);
         list.setStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE);
@@ -259,12 +257,9 @@ public class AutoCompleteTextBox extends TextBox {
     }
 
     protected EventPreview createEventPreviewer() {
-        ObjectHelper.checkPropertyNotSet("eventPreviewer", this, this.hasEventPreviewer());
-
-        final AutoCompleteTextBox that = this;
         final EventPreview watcher = new EventPreview() {
             public boolean onEventPreview(final Event event) {
-                return that.onEventPreview(event);
+                return AutoCompleteTextBox.this.onEventPreview(event);
             }
         };
         this.setEventPreviewer(watcher);

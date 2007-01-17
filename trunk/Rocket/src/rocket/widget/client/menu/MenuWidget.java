@@ -42,6 +42,7 @@ public abstract class MenuWidget extends Composite {
     protected void onAttach() {
         super.onAttach();
 
+        this.unsinkEvents(-1);
         this.sinkEvents(Event.ONCLICK | Event.ONMOUSEOVER | Event.ONMOUSEOUT);
         DOM.setEventListener(this.getElement(), this);
     }

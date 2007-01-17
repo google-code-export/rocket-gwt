@@ -100,7 +100,7 @@ public class MenuItem extends AbstractMenuItem {
     }
 
     /**
-     * A HTML widget contains the text or label for this item.
+     * A TEXT widget contains the text or label for this item.
      */
     private HTML html;
 

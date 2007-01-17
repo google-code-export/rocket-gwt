@@ -77,7 +77,7 @@ public class AccordionItem {
 
         // if it was already attached remove it first...
         if (this.hasAccordionPanel()) {
-            WidgetHelper.handleAssertFailure("This AccordionItem already belongs to a AccordionPanel, accordionPanel: "
+            WidgetHelper.fail("This AccordionItem already belongs to a AccordionPanel, accordionPanel: "
                     + accordionPanel);
         }
 

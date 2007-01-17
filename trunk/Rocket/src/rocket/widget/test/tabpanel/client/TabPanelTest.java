@@ -179,7 +179,7 @@ public class TabPanelTest implements EntryPoint {
         return buf.toString();
     }
 
-    class InterativeList extends rocket.widget.client.testing.InteractiveList {
+    class InterativeList extends rocket.testing.client.InteractiveList {
         InterativeList() {
             super();
         }
@@ -237,7 +237,7 @@ public class TabPanelTest implements EntryPoint {
 
         protected void checkType(Object element) {
             if (false == (element instanceof TabItem)) {
-                SystemHelper.handleAssertFailure("Unknown element type. element ");
+                SystemHelper.fail("Unknown element type. element ");
             }
         }
 

@@ -15,7 +15,9 @@
  */
 package rocket.widget.client;
 
-import rocket.dom.client.DomHelper;
+import rocket.style.client.StyleConstants;
+import rocket.style.client.StyleHelper;
+import rocket.util.client.Colour;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.Element;
@@ -41,7 +43,9 @@ public class BlockyPixel extends Composite implements PixelGrid {
      * 
      * @param colour
      */
-    public void clear(final int colour) {
+    public void clear(final Colour colour) {
+        ObjectHelper.checkNotNull("parameter:colour", colour);
+        
         final int rows = this.getRows();
         final int columns = this.getColumns();
         for (int x = 0; x < columns; x++) {
@@ -54,14 +58,14 @@ public class BlockyPixel extends Composite implements PixelGrid {
     /**
      * A cache of all the colours currently within the table that is the blocky pixels.
      */
-    private int[] colours;
+    private Colour[] colours;
 
-    protected int[] getColours() {
+    protected Colour[] getColours() {
         ObjectHelper.checkNotNull("parameter:colours", colours);
         return this.colours;
     }
 
-    protected void setColours(final int[] colours) {
+    protected void setColours(final Colour[] colours) {
         ObjectHelper.checkNotNull("parameter:colours", colours);
         this.colours = colours;
     }
@@ -77,7 +81,7 @@ public class BlockyPixel extends Composite implements PixelGrid {
      * @param y
      * @return
      */
-    public int getColour(final int x, final int y) {
+    public Colour getColour(final int x, final int y) {
         return getColours()[x + y * this.getColumns()];
     }
 
@@ -90,16 +94,11 @@ public class BlockyPixel extends Composite implements PixelGrid {
      * @param y
      * @param colour
      */
-    public void setColour(final int x, final int y, final int colour) {
-        final int previousColour = this.getColour(x, y);
+    public void setColour(final int x, final int y, final Colour colour) {
+        final Colour previousColour = this.getColour(x, y);
         if (previousColour != colour) {
             final Element cell = getCell(x, y);
-            if (colour == WidgetConstants.TRANSPARENT) {
-                DomHelper.removeBackgroundColour(cell);
-            } else {
-                DomHelper.setBackgroundColour(cell, colour);
-            }
-
+            StyleHelper.setInlineStyleProperty(cell, StyleConstants.BACKGROUND_COLOR, colour.toCssColour());
             getColours()[x + y * this.getColumns()] = colour;
         }
     }
@@ -125,8 +124,6 @@ public class BlockyPixel extends Composite implements PixelGrid {
     }
 
     protected Grid createGrid() {
-        ObjectHelper.checkPropertyNotSet("grid", this, this.hasGrid());
-
         final Grid grid = new Grid();
         grid.addStyleName(WidgetConstants.BLOCKY_PIXEL_STYLE);
         grid.setCellPadding(0);
@@ -142,7 +139,7 @@ public class BlockyPixel extends Composite implements PixelGrid {
     public void setColumns(final int columns) {
         this.getGrid().resizeColumns(columns);
 
-        this.setColours(new int[columns * this.getRows()]);
+        this.setColours(new Colour[columns * this.getRows()]);
     }
 
     public int getRows() {
@@ -152,7 +149,7 @@ public class BlockyPixel extends Composite implements PixelGrid {
     public void setRows(final int rows) {
         this.getGrid().resizeRows(rows);
 
-        this.setColours(new int[rows * this.getColumns()]);
+        this.setColours(new Colour[rows * this.getColumns()]);
     }
 
     public String toString() {

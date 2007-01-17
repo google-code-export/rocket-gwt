@@ -37,41 +37,34 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A powerful easy to use table that includes support for sorting individual columns using Comparators provided by the user.
- * This class uses the template approach to facilitate mapping between value objects and columns.
+ * A powerful easy to use table that includes support for sorting individual columns using Comparators provided by the user. This class uses
+ * the template approach to facilitate mapping between value objects and columns.
  * 
- * The {@link #getValue(Object, int)} method is required to return the value for a particular column for the given row.
- * The {@link #getWidget(Object, int)} method is required to return the Widget that will appear at the given column for the given row.
+ * The {@link #getValue(Object, int)} method is required to return the value for a particular column for the given row. The
+ * {@link #getWidget(Object, int)} method is required to return the Widget that will appear at the given column for the given row.
  * 
  * <h6>Gotchas</h6>
  * <ul>
  * 
  * <li>Column comparators should be set before adding any headers. Once headers have been created it is possible to set the order
  * (ascending/descending) for any sortable column Refer to the bundle test that shows how simple it is to subclass and use this
- * implementation.
- * </li>
+ * implementation. </li>
  * 
- * <li>
- * if autoRedraw (which may be set via {@link #setAutoRedraw(boolean)}) is true the table will be redrawn each time the rows list is modified.
- * </li>
+ * <li> if autoRedraw (which may be set via {@link #setAutoRedraw(boolean)}) is true the table will be redrawn each time the rows list is
+ * modified. </li>
  * 
- * <li>
- * if autoRedraw (which may be set via {@link #setAutoRedraw(boolean)}) is false the user must force redraws using {@link #redraw() } 
+ * <li> if autoRedraw (which may be set via {@link #setAutoRedraw(boolean)}) is false the user must force redraws using {@link #redraw() }
  * </li>
  * 
  * </ul>
- * {@link #redrawIfAutoEnabled()} and {@link #redrawIfAutoEnabled()} 
- * </li>
+ * {@link #redrawIfAutoEnabled()} and {@link #redrawIfAutoEnabled()} </li>
  * 
- * <li>
- * User code should not use the {@link #insertRow(int)} and {@link #removeRow(int)} methods as they potentially may corrupt the SortableTable.
- * </li>
+ * <li> User code should not use the {@link #insertRow(int)} and {@link #removeRow(int)} methods as they potentially may corrupt the
+ * SortableTable. </li>
  * 
  * </ul>
  * 
  * @author Miroslav Pokorny (mP)
- * 
- * TODO make composite. instead of extending ZebraFlexTable make composite.
  */
 public abstract class SortableTable extends Composite {
 
@@ -87,8 +80,7 @@ public abstract class SortableTable extends Composite {
     }
 
     /**
-     * A FlexTable or sub-class is the target table that is used to house
-     * the sorted table
+     * A FlexTable or sub-class is the target table that is used to house the sorted table
      */
     private FlexTable flexTable;
 
@@ -340,8 +332,7 @@ public abstract class SortableTable extends Composite {
     }
 
     /**
-     * This factory returns a list that automatically takes care of updating the table
-     * as rows are added, removed etc.
+     * This factory returns a list that automatically takes care of updating the table as rows are added, removed etc.
      */
     protected RowsList createRows() {
         final RowsList rows = new RowsList();
@@ -351,8 +342,8 @@ public abstract class SortableTable extends Composite {
 
     /**
      * Returns a list view that doesnt accept adds of the sorted rows.
+     * 
      * @return
-     * FIX return a list that doesnt take adds but accepts removes.
      */
     public List getTableRows() {
         final RowsList rows = this.getRowsList();
@@ -657,8 +648,7 @@ public abstract class SortableTable extends Composite {
         }
 
         /**
-         * This flag indicates that the sorted list is out of sync with
-         * the rows belonging to this list.
+         * This flag indicates that the sorted list is out of sync with the rows belonging to this list.
          */
         boolean unsorted = true;
 
@@ -757,7 +747,7 @@ public abstract class SortableTable extends Composite {
         public Object set(final int index, final Object element) {
             final Object replaced = super.set(index, element);
 
-            // the list has changed so the sorted list must now be unsorted. 
+            // the list has changed so the sorted list must now be unsorted.
             this.setUnsorted(false);
             return replaced;
         }

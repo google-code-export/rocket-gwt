@@ -66,7 +66,7 @@ public class TabItem {
 
         // if it was already attached remove it first...
         if (this.hasTabPanel()) {
-            WidgetHelper.handleAssertFailure("This TabItem already belongs to a TabPanel, tabPanel: " + tabPanel);
+            WidgetHelper.fail("This TabItem already belongs to a TabPanel, tabPanel: " + tabPanel);
         }
 
         this.tabPanel = tabPanel;

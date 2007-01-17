@@ -15,9 +15,8 @@
  */
 package rocket.widget.client.slider;
 
-import rocket.browser.client.BrowserHelper;
+import rocket.dom.client.DomHelper;
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.WidgetHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -35,10 +34,7 @@ public class VerticalSlider extends Slider {
         super();
 
         this.initWidget(this.createPanel());
-        this.addStyleName(SliderConstants.VERTICAL_SLIDER_STYLE);
-
-        DOM.setEventListener(this.getElement(), this);
-        this.sinkEvents(Event.ONMOUSEDOWN);
+        this.setStyleName(SliderConstants.VERTICAL_SLIDER_STYLE);
     }
 
     /**
@@ -54,7 +50,7 @@ public class VerticalSlider extends Slider {
         final int newTop = (int) (ratio * spacerHeight);
 
         final Element handleElement = handle.getElement();
-        DOM.setStyleAttribute(handleElement, "position", "relative");
+        DOM.setStyleAttribute(handleElement, "position", "absolute");
         DOM.setStyleAttribute(handleElement, "top", newTop + "px");
     }
 
@@ -70,8 +66,8 @@ public class VerticalSlider extends Slider {
     protected void handleBackgroundMouseDown(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
-        final int mouseY = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();
-        final int widgetY = WidgetHelper.getAbsoluteTop(this.getHandle());
+        final int mouseY = DOM.eventGetClientY(event);
+        final int widgetY = DomHelper.getAbsoluteTop(this.getHandle().getElement());
         this.handleBackgroundClick(mouseY, widgetY);
     }
 
@@ -80,11 +76,12 @@ public class VerticalSlider extends Slider {
      * 
      * @param event
      */
-    protected void handleMouseMove(final Event event) {
+    protected void handleHandleMouseMove(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
-        final int widgetY = WidgetHelper.getAbsoluteTop(this);
-        final int mouseY = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();
+        final int widgetY = DomHelper.getAbsoluteTop(this.getElement());
+        final int mouseY = DOM.eventGetClientY(event);
+
         final int sliderHeight = this.getOffsetHeight();
         final int handleHeight = this.getHandle().getOffsetHeight();
 

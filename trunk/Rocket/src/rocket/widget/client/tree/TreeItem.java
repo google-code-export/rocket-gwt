@@ -20,13 +20,13 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 
 import rocket.util.client.ObjectHelper;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -258,8 +258,6 @@ public class TreeItem extends Composite {
     }
 
     protected VerticalPanel createChildren() {
-        ObjectHelper.checkPropertyNotSet("children", this, this.hasChildren());
-
         final VerticalPanel panel = new VerticalPanel();
         panel.addStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);
         this.setChildren(panel);
@@ -375,7 +373,7 @@ public class TreeItem extends Composite {
 
             public void remove() {
                 if (!this.hasRemoveIterator()) {
-                    throw new RuntimeException(GWT.getTypeName(this) + ".remove() called with previous next()");
+                    throw new RuntimeException(GWT.getTypeName(this) + ".remove() called without previous next()");
                 }
 
                 this.getRemoveIterator().remove();

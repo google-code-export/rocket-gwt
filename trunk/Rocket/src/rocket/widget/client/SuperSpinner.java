@@ -63,10 +63,6 @@ public class SuperSpinner extends Spinner {
     }
 
     public Widget createBigDownWidget() {
-        ObjectHelper.checkPropertyNotSet("bigDownWidget", this, this.hasBigDownWidget());
-
-        final SuperSpinner that = this;
-
         final Image image = new Image();
         image.setUrl(this.getBigDownImageUrl());
         image.addStyleName(WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE);
@@ -74,7 +70,7 @@ public class SuperSpinner extends Spinner {
         image.addClickListener(new ClickListener() {
 
             public void onClick(final Widget widget) {
-                that.onBigDownClick();
+                SuperSpinner.this.onBigDownClick();
             }
         });
         this.setBigDownWidget(image);
@@ -125,10 +121,6 @@ public class SuperSpinner extends Spinner {
     }
 
     public Widget createBigUpWidget() {
-        ObjectHelper.checkPropertyNotSet("bigUpWidget", this, this.hasBigUpWidget());
-
-        final SuperSpinner that = this;
-
         final Image image = new Image();
         image.setUrl(this.getBigUpImageUrl());
         image.addStyleName(WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE);
@@ -136,7 +128,7 @@ public class SuperSpinner extends Spinner {
         image.addClickListener(new ClickListener() {
 
             public void onClick(final Widget widget) {
-                that.onBigUpClick();
+                SuperSpinner.this.onBigUpClick();
             }
         });
         this.setBigUpWidget(image);
@@ -182,7 +174,7 @@ public class SuperSpinner extends Spinner {
      */
     public Panel createPanel() {
         if (this.hasPanel()) {
-            SystemHelper.handleAssertFailure("An flexTable has already been created, this: " + this);
+            SystemHelper.fail("An flexTable has already been created, this: " + this);
         }
 
         final HorizontalPanel panel = new HorizontalPanel();
@@ -210,7 +202,7 @@ public class SuperSpinner extends Spinner {
 
     public int getBigDelta() {
         if (false == bigDeltaSet) {
-            SystemHelper.handleAssertFailure("field:bigDelta", "The field:bigDelta has not been set, this: " + this);
+            SystemHelper.fail("field:bigDelta", "The field:bigDelta has not been set, this: " + this);
         }
         return this.bigDelta;
     }

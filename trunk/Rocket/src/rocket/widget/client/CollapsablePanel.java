@@ -133,8 +133,6 @@ public class CollapsablePanel extends Composite implements HasWidgets {
      * @return
      */
     protected FlexTable createFlexTable() {
-        ObjectHelper.checkPropertyNotSet("flexTable", this, this.hasFlexTable());
-
         final FlexTable table = new FlexTable();
         table.addStyleName(WidgetConstants.COLLAPSABLE_PANEL_FLEXTABLE_STYLE);
 

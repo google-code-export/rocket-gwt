@@ -17,9 +17,9 @@ package rocket.widget.client.accordion;
 
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.DivPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 
 import com.google.gwt.user.client.ui.DeckPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**

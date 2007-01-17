@@ -15,6 +15,7 @@
  */
 package rocket.widget.test.life.client;
 
+import rocket.util.client.Colour;
 import rocket.widget.client.BlockyPixel;
 import rocket.widget.client.Life;
 
@@ -85,12 +86,12 @@ public class LifeTest implements EntryPoint {
                 pixels.setRows(Integer.parseInt(rows.getText()));
                 pixels.setColumns(Integer.parseInt(columns.getText()));
                 pixels.setSize("90%", "75%");
-                pixels.clear(0xdddddd);
+                pixels.clear(new Colour( 0xdddddd));
                 panel.add(pixels);
 
                 final Life life = new Life();
-                life.setDeadCellColour(0xdddddd);
-                life.setLiveCellColour(0xbbbbbb);
+                life.setDeadCellColour(new Colour( 0xdddddd));
+                life.setLiveCellColour(new Colour( 0xbbbbbb));
                 life.setPixelGrid(pixels);
                 life.createCells(Integer.parseInt(cellBias.getText()));
 

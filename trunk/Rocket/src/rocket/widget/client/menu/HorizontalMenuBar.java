@@ -15,8 +15,6 @@
  */
 package rocket.widget.client.menu;
 
-import rocket.util.client.ObjectHelper;
-
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -39,8 +37,6 @@ public class HorizontalMenuBar extends Menu {
     }
 
     protected Widget createMenuList() {
-        ObjectHelper.checkPropertyNotSet("menuList", this, this.hasMenuList());
-
         final HorizontalMenuList list = new HorizontalMenuList();
         list.addStyleName(MenuConstants.HORIZONTAL_MENU_BAR_STYLE);
         list.setHideable(false);
