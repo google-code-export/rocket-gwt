@@ -63,7 +63,7 @@ public class WebHelper {
             final ContentCapturingResponse response0 = new ContentCapturingResponse(response);
             response0.setBufferSize(response.getBufferSize());
 
-            final RequestDispatcher dispatcher = request0.getRequestDispatcher(url);
+            final RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.include(request0, response0);
             response0.flushBuffer();
 
@@ -76,7 +76,7 @@ public class WebHelper {
             final byte[] bytes = response0.toByteArray();
             final String characterEncoding = response0.getCharacterEncoding();
             final String text = null == characterEncoding ? new String(bytes) : new String(bytes, characterEncoding);
-            webResponse.setBody(text); // was text @todo
+            webResponse.setBody(text);
             return webResponse;
         } catch (final Exception caught) {
             caught.printStackTrace();

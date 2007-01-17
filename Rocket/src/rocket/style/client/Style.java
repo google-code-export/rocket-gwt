@@ -1,165 +1,176 @@
-/*
- * Copyright Miroslav Pokorny
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package rocket.style.client;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
-import rocket.dom.client.DomObjectMap;
-import rocket.dom.client.DomObjectMapValue;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.ObjectWrapper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
-
 /**
- * A Style instance represents a handle to a native Style object as a Map of StylePropertyValue objects.
- * 
+ * A common base class for any map view of a set of styles.
  * @author Miroslav Pokorny (mP)
  */
-public class Style extends DomObjectMap {
+abstract public class Style extends AbstractMap{
 
-    protected Style() {
-        super();
+
+    public String getCssText(){
+        return ObjectHelper.getString( this.getStyle(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME );
     }
-
-    public boolean hasObject() {
-        boolean has = false;
-        if (this.hasRule()) {
-            final Rule rule = this.getRule();
-            has = rule.hasParent() && rule.hasIndex();
-        }
-
-        return has;
+    
+    public void setCssText( final String cssText ){
+        ObjectHelper.setString( this.getStyle(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME, cssText );        
     }
+    
+    abstract protected JavaScriptObject getStyle();
+    
+    public abstract int size();
 
-    public JavaScriptObject getObject() {
-        return ObjectHelper.getObject(this.getRule().getObject(), StyleConstants.RULE_STYLE_OBJECT);
-    }
-
-    /**
-     * Asserts that a Map value is a StylePropertyValue instance.
-     */
-    protected boolean isValidValueType(final Object value) {
-        return value instanceof StylePropertyValue;
+    public Object get( final Object key ){
+        return this.getStylePropertyValue((String) key );
     }
 
     /**
-     * Only properties which are not empty strings are considered values. All other propertyValue types are ignored.
-     * 
+     * Factory method which creates a new StylePropertyValue and populates it with a string value if the inline style property is available.
      * @param propertyName
      * @return
      */
-    protected boolean hasProperty(final String propertyName) {
-        return this.hasProperty0(this.getObject(), propertyName);
-    }
-
-    native protected boolean hasProperty0(final JavaScriptObject object, final String propertyName)/*-{
-     var propertyValue = object[ propertyName ];
-     
-     return typeof( propertyValue ) == "string" && propertyValue.length > 0 ;
-     }-*/;
-
-    /**
-     * Because it is not possible to remove style properties the only option is too logically delete them by setting their value to "".
-     */
-    protected void removeProperty(final String propertyName) {
-        ObjectHelper.setString(this.getObject(), propertyName, "");
-    }
-
-    /**
-     * This factory method creates a StylePropertyValue object which is a handle to a single Style property value.
-     */
-    protected DomObjectMapValue createValueWrapper(final String propertyName) {
-        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
-
-        final StylePropertyValue wrapper = new StylePropertyValue();
-        wrapper.setObject(this.getObject());
-        wrapper.setPropertyName(propertyName);
-        return wrapper;
-    }
-
-    /**
-     * As part of the adoption process the propertyName and nativeObject are written to the value wrapper. THe wrapper should then write to
-     * the nativeObject property when its own nativeObject reference is set.
-     */
-    protected void adopt(final String propertyName, final ObjectWrapper stylePropertyValue) {
-        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
-        ObjectHelper.checkNotNull("parameter:stylePropertyValue", stylePropertyValue);
-
-        final StylePropertyValue stylePropertyValue0 = (StylePropertyValue) stylePropertyValue;
-        stylePropertyValue0.setPropertyName(propertyName);
-        stylePropertyValue0.setObject(this.getObject());
-    }
-
-    /**
-     * Simply destroys the wrapper breaking any cyclic references. The StylePropertyValue is now disconnected and any updates will not
-     * update the parent native Style object.
-     */
-    protected void disown(ObjectWrapper wrapper) {
-        ObjectHelper.checkNotNull("parameter:wrapper", wrapper);
-
-        wrapper.destroy();
-    }
-
-    /**
-     * Caches the cssText value whilst the Style or parent Rule is disconnected.
-     */
-    private String cssText;
-
-    public String getCssText() {
-        if (this.hasObject()) {
-            this.cssText = ObjectHelper.getString(this.getObject(), StyleConstants.STYLE_TEXT_PROPERTY_NAME);
+    protected StylePropertyValue getStylePropertyValue( final String propertyName ){
+        StylePropertyValue value = null;
+        String stringValue =this.getValue( propertyName );
+        if( false == StringHelper.isNullOrEmpty( stringValue )){
+            value = new StylePropertyValue();
+            value.setString( stringValue );
         }
-        if (null == this.cssText) {
-            this.cssText = "";
-        }
-        return this.cssText;
+        return value;
     }
 
-    public void setCssText(final String cssText) {
-        if (this.hasObject()) {
-            ObjectHelper.setString(this.getObject(), StyleConstants.STYLE_TEXT_PROPERTY_NAME, cssText);
+    abstract String getValue( String propertyName );
+
+    public boolean containsKey( final Object key ){
+        return null != this.get( key );
+    }
+
+    public Object put( final Object key, final Object value ){
+        return this.putStyle((String) key, (StylePropertyValue)value);
+    }
+
+    protected StylePropertyValue putStyle( final String propertyName, final StylePropertyValue newValue ){
+        final StylePropertyValue replaced = this.getStylePropertyValue(propertyName);
+
+        final String propertyValue = newValue.getString();
+        this.putValue( propertyName, propertyValue);
+
+        return replaced;
+    }
+
+    abstract protected void putValue( String propertyName, String propertyValue );
+
+    public Object remove( final Object key ){
+        return this.removeStyle( (String) key );
+    }
+
+    protected StylePropertyValue removeStyle( final String propertyName ){
+        final StylePropertyValue removed = this.getStylePropertyValue(propertyName);
+        this.removeValue( propertyName);
+        return removed;
+    }
+
+    abstract protected void removeValue( final String propertyName );
+
+    public Set entrySet() {
+        return new StyleEntrySet();
+    }
+    /**
+     * Implements a Set view of all the inline styles belonging to an Element.
+     */
+    class StyleEntrySet extends AbstractSet{
+        public int size(){
+            return Style.this.size();
         }
-        this.cssText = cssText;
+        public Iterator iterator(){
+            return new StyleEntrySetIterator();
+        }
     }
 
     /**
-     * The rule that this style belongs too.
+     * This iterator may be used to visit all inline style entries.
      */
-    private Rule rule;
+    class StyleEntrySetIterator implements Iterator {
 
-    protected Rule getRule() {
-        ObjectHelper.checkNotNull("field:rule", rule);
-        return rule;
-    }
+        public boolean hasNext(){
+            return this.getCursor() < this.getPropertyNames().length;
+        }
+        public Object next(){
+            final int cursor = this.getCursor();
+            final String[] propertyNames = this.getPropertyNames();
+            if( cursor >= propertyNames.length ){
+                throw new NoSuchElementException();
+            }
+            final String key = propertyNames[ cursor ];
+            final Object value = Style.this.get( key );
+            this.setCursor( cursor + 1 );
+            return new Map.Entry(){
+                public Object getKey(){
+                    return key;
+                }
+                public Object getValue(){
+                    return value;
+                }
+                public Object setValue( final Object newValue ){
+                    return Style.this.put( key, newValue);
+                }
+            };
+        }
+        public void remove(){
+            final int cursor = this.getCursor() - 1;
+            final String[] propertyNames = this.getPropertyNames();
+            final String propertyName = propertyNames[ cursor ];
+            if( null == propertyName ){
+                throw new IllegalStateException();
+            }
 
-    protected boolean hasRule() {
-        return null != rule;
-    }
+            Style.this.remove( propertyName );
+            propertyNames[ cursor ] = null;// mark that its already been deleted.
+        }
 
-    public void setRule(final Rule rule) {
-        ObjectHelper.checkNotNull("parameter:rule", rule);
-        this.rule = rule;
-    }
+        /**
+         * An array containing all the property names for the native object.
+         */
+        String[] propertyNames;
 
-    protected void clearRule() {
-        this.rule = null;
-    }
+        String[] getPropertyNames() {
+            if (false == this.hasPropertyNames()) {
+                final String commaSeparatedList = Style.this.getPropertyNames();
+                this.setPropertyNames( StringHelper.split( commaSeparatedList, ",", true));
+            }
+            return this.propertyNames;
+        }
 
-    public void destroy() {
-        this.clearRule();
-        super.destroy();
+        boolean hasPropertyNames() {
+            return null != this.propertyNames;
+        }
+
+        void setPropertyNames(final String[] propertyNames) {
+            this.propertyNames = propertyNames;
+        }
+
+        /**
+         * This cursor points to the next visitable element.
+         */
+        int cursor = 0;
+
+        int getCursor() {
+            return this.cursor;
+        }
+
+        void setCursor(final int cursor) {
+            this.cursor = cursor;
+        }
     }
+    
+    abstract String getPropertyNames();
 }

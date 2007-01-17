@@ -56,7 +56,7 @@ public class WebRequest implements IsSerializable {
     public void setParameters(final RequestParameters parameters) {
         ObjectHelper.checkNotNull("parameter:parameters", parameters);
         if (this.hasData()) {
-            SystemHelper.handleAssertFailure("Data has already been set, parameters cannot also be set.");
+            SystemHelper.fail("Data has already been set, parameters cannot also be set.");
         }
 
         this.parameters = parameters;
@@ -88,7 +88,7 @@ public class WebRequest implements IsSerializable {
     public void setData(final String data) {
         StringHelper.checkNotNull("parameter:data", data);
         if (false == HttpHelper.isPost(this.getMethod())) {
-            SystemHelper.handleAssertFailure("ContentType/Data may only be set on a POST WebRequest");
+            SystemHelper.fail("ContentType/Data may only be set on a POST WebRequest");
         }
         this.data = data;
     }

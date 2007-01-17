@@ -1,131 +1,253 @@
-/*
- * Copyright Miroslav Pokorny
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package rocket.style.client;
 
 import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 
-import rocket.style.client.impl.RuleListImpl;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * A RuleList instance provides a list view of the rules belonging to a single StyleSheet.
- * 
- * Once a RuleList is no longer used it should be destroyed by calling {@link #destroy()}.
- * 
+ * Represents a list view of all the rules belonging to a single stylesheet.
  * @author Miroslav Pokorny (mP)
  */
-public class RuleList extends AbstractList {
+class RuleList extends AbstractList {
 
-    public RuleList() {
+    public RuleList(){
         super();
 
-        this.createImplementation();
+        this.setWrappers( this.createWrappers() );
     }
 
     /**
-     * The browser aware implementation that takes care of browser difference nasties. All List methods are delegates to the implementation.
+     * A copy of the parent stylesheet that this list belongs too.
      */
-    private RuleListImpl implementation;
+    private StyleSheet styleSheet;
 
-    protected RuleListImpl getImplementation() {
-        ObjectHelper.checkNotNull("field:implementation", this.implementation);
-        return implementation;
+    protected StyleSheet getStyleSheet(){
+        ObjectHelper.checkNotNull( "field:styleSheet", styleSheet );
+        return this.styleSheet;
+    }
+    protected void setStyleSheet(final StyleSheet styleSheet ){
+        ObjectHelper.checkNotNull( "parameter:styleSheet", styleSheet );
+        this.styleSheet = styleSheet;
     }
 
-    protected void setImplementation(final RuleListImpl implementation) {
-        ObjectHelper.checkNotNull("parameter:implementation", implementation);
-        this.implementation = implementation;
+    /**
+     * Helper which retrieves the native rules collection that this instance is presenting as a List
+     * @return
+     */
+    protected JavaScriptObject getRulesCollection(){
+        final JavaScriptObject styleSheet = this.getStyleSheet().getStyleSheet();
+        if( false == this.isAlreadyNormalized() ){
+            StyleHelper.normalize( styleSheet );
+            this.setAlreadyNormalized(true);
+        }
+
+        final JavaScriptObject rulesCollection = StyleHelper.getRules(styleSheet );
+        return rulesCollection;
     }
 
-    protected void createImplementation() {
-        this.setImplementation((RuleListImpl) GWT.create(RuleListImpl.class));
-    }
+    /**
+     * This flag keeps track of whether or not the rules have been normalized.
+     */
+    private boolean alreadyNormalized;
 
-    protected StyleSheet getStyleSheet() {
-        return this.getImplementation().getStyleSheet();
+    protected boolean isAlreadyNormalized(){
+        return this.alreadyNormalized;
     }
-
-    protected void setStyleSheet(final StyleSheet styleSheet) {
-        this.getImplementation().setStyleSheet(styleSheet);
+    protected void setAlreadyNormalized( final boolean alreadyNormalized){
+        this.alreadyNormalized = alreadyNormalized;
     }
-
-    protected JavaScriptObject getObject() {
-        return this.getImplementation().getObject();
-    }
-
-    protected void setObject(final JavaScriptObject object) {
-        this.getImplementation().setObject(object);
-    }
-
-    protected void afterPropertiesSet() {
-        this.getImplementation().afterPropertiesSet();
-    }
-
-    // read only operations....................
 
     public int size() {
-        return this.getImplementation().size();
+        return ObjectHelper.getPropertyCount(this.getRulesCollection() );
     }
 
-    public boolean contains(final Object object) {
-        return this.getImplementation().contains(object);
+    /**
+     * A cache of all the Rule wrappers belonging to this List.
+     */
+    private List wrappers;
+
+    protected List getWrappers(){
+        ObjectHelper.checkNotNull( "field:wrappers", this.wrappers );
+        return this.wrappers;
+    }
+    protected void setWrappers( final List wrappers ){
+        ObjectHelper.checkNotNull( "parameter:wrappers", wrappers );
+        this.wrappers = wrappers;
     }
 
-    public int indexOf(final Object object) {
-        return this.getImplementation().indexOf(object);
+    protected List createWrappers(){
+        return new ArrayList();
     }
 
-    public int lastIndexOf(final Object object) {
-        return this.getImplementation().lastIndexOf(object);
+    public Object get(final int index) {        
+        return this.getRule( index );
     }
 
-    public Object get(int index) {
-        return this.getImplementation().get(index);
+    protected Rule getRule( final int index ){
+        this.checkIndex( index );
+
+        final List wrappers = this.getWrappers();            
+        Rule rule = (Rule) wrappers.get( index );
+        if( null == rule ){
+            rule = new Rule();
+            rule.setIndex( index );
+            rule.setRuleList( this );
+
+            wrappers.set( index, rule );
+        }
+        return rule;
     }
 
-    // modifying operations ..........................
-
-    public boolean add(final Object object) {
-        return this.getImplementation().add(object);
+    public int indexOf( final Object object ){
+        int index = -1;
+        if( object instanceof Rule ){
+            final Rule rule = (Rule)object;
+            if( rule.hasRuleList() && rule.getRuleList() == this ){
+                index = rule.getIndex();
+            }
+        }
+        return index;
     }
 
-    public void add(final int index, final Object object) {
-        this.getImplementation().add(index, object);
+    public boolean add(final Object newRule ) {
+        final Rule rule = (Rule) newRule;
+        this.checkNotAlreadyAttached( rule );      
+
+        // prepare to adopt the rule...
+        final int index = this.size();
+        
+        this.addRule( rule );
+        
+        // adopt...
+        rule.setIndex( index );
+        rule.setRuleList( this );
+
+        // save the wrapper...
+        this.checkIndex( index );
+        final List wrappers = this.getWrappers();
+        wrappers.set(index, rule );
+        return true;
+    }
+
+    protected void addRule(final Rule newRule) {
+        final Rule rule = (Rule)newRule;
+        this.checkNotAlreadyAttached( rule );
+        
+        final JavaScriptObject styleSheet = this.getStyleSheet().getStyleSheet();
+        final String selector = rule.getSelector();
+        final String style = "";
+
+        StyleHelper.addRule(styleSheet, selector, style);
+    }
+
+    public void add(final int index, final Object newRule) {
+        this.checkIndex( index );
+        final Rule rule = (Rule)newRule;
+        this.checkNotAlreadyAttached( rule );
+        
+        this.insertRule( index, rule);
+
+        // adopt the rule...
+        rule.setIndex( index );
+        rule.setRuleList( this );
+
+        // save the wrapper...
+        final int size = this.size();
+        final List wrappers = this.getWrappers();
+
+        // insert(save) the rule wrapper...
+        wrappers.add( index, rule );
+
+        // update the index of the wrappers after $index.
+        for( int i = index + 1; i < size; i++ ){
+            final Rule previousRule = (Rule)wrappers.get( i );
+            if( null == previousRule ){
+                continue;
+            }
+            previousRule.setIndex( i );
+        }
+    }
+    protected void insertRule(final int index, final Rule rule) {
+        this.checkNotAlreadyAttached( rule );
+        
+        final JavaScriptObject styleSheet = this.getStyleSheet().getStyleSheet();
+        final String selector = rule.getSelector();
+        final RuleStyle ruleStyle = (RuleStyle) rule.getStyle();
+        final String style = ruleStyle.getCssText();
+
+        StyleHelper.insertRule(styleSheet, index, selector, style);
     }
 
     public Object set(final int index, final Object object) {
-        return this.getImplementation().set(index, object);
+        this.checkIndex( index );
+        
+        final Rule rule = (Rule)object;
+        this.checkNotAlreadyAttached( rule );
+        
+        return null;
     }
-
-    // removal
-
+    
     public Object remove(final int index) {
-        return this.getImplementation().remove(index);
+        this.checkIndex( index );
+
+        final Rule rule = this.getRule( index );
+        this.removeRule( rule );
+
+        // fix up the indexes of the rules after $index.
+        final List wrappers = this.getWrappers();
+        final int wrapperSize = wrappers.size();
+        for( int i = index; i < wrapperSize; i++ ){
+            final Rule otherRule = (Rule)wrappers.get(i );
+            if( null == otherRule){
+                continue;
+            }
+            otherRule.setIndex( i );
+        }
+        return rule;
     }
 
-    public boolean remove(final Object object) {
-        return this.getImplementation().remove(object);
+
+    protected void removeRule(final Rule rule) {
+        ObjectHelper.checkNotNull("parameter:rule", rule );
+
+        if( rule.hasRuleList() ){
+            final JavaScriptObject styleSheet = this.getStyleSheet().getStyleSheet();
+            final int index = rule.getIndex();
+
+            StyleHelper.removeRule(styleSheet, index);
+            rule.clearRule();
+        }
     }
 
-    // DESTROYABLE ::::::::::::::::::::::::::::::::::::::
+    /**
+     * Performs two tasks, verifies that the index is valid (it throws an exception if its not) and
+     * also expands the wrappers list to have enough elements to match the passed index.
+     * @param index
+     */
+    protected void checkIndex( final int index ){
+        if( index < 0 || index > this.size() ){
+            throw new IndexOutOfBoundsException();
+        }
+        final List wrappers = this.getWrappers();
 
-    public void destroy() {
-        this.getImplementation().destroy();
+        final int append = index - wrappers.size() + 1;
+        for( int i = 0; i < append; i++ ){
+            wrappers.add( null );
+        }
+    }
+
+    /**
+     * Checks that the rule parameter is not null and that it is not already attached to a RuleList
+     * @param rule
+     */
+    protected void checkNotAlreadyAttached( final Rule rule ){
+        ObjectHelper.checkNotNull( "parameter:rule", rule );
+        if( rule.hasRuleList() ){
+            throw new IllegalArgumentException("The parameter:rule has already been added to a List.");
+        }
     }
 }

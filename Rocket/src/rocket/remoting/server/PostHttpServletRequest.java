@@ -25,8 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import rocket.remoting.client.Headers;
 import rocket.remoting.client.RequestParameters;
+import rocket.util.client.ObjectHelper;
+import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
-import rocket.util.server.ObjectHelper;
 
 /**
  * This request supports simulating posting of data from the client using rpc eventually making a regular POSt to a local web app resource.
@@ -56,7 +57,7 @@ public class PostHttpServletRequest extends AbstractHttpServletRequest implement
 
     public byte[] getData() {
         if (this.hasRequestParameters()) {
-            throw new IllegalStateException("Parameters have been read post data may not be read.");
+            throw new IllegalStateException("Cannot retrieve Post data as request parameters have already been read.");
         }
 
         if (false == this.hasData()) {
@@ -93,7 +94,7 @@ public class PostHttpServletRequest extends AbstractHttpServletRequest implement
             this.createInputStream();
         }
 
-        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
+        ObjectHelper.checkNotNull("inputStream", this.inputStream);
         return this.inputStream;
     }
 
@@ -103,17 +104,14 @@ public class PostHttpServletRequest extends AbstractHttpServletRequest implement
 
     protected void setInputStream(final ServletInputStream inputStream) {
         ObjectHelper.checkNotNull("parameter:inputStream", inputStream);
-        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
-        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
+        PrimitiveHelper.checkTrue("existing inputStream", this.hasInputStream());
+        PrimitiveHelper.checkFalse("existing reader", this.hasReader());
 
         this.inputStream = inputStream;
     }
 
     protected void createInputStream() {
         ObjectHelper.checkNotNull("parameter:inputStream", inputStream);
-        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
-        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
-
         this.setInputStream(new ByteArrayServletInputStream(this.getData()));
     }
 
@@ -128,7 +126,7 @@ public class PostHttpServletRequest extends AbstractHttpServletRequest implement
             this.createReader();
         }
 
-        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
+        ObjectHelper.checkNotNull("field:reader", this.reader);
         return this.reader;
     }
 
@@ -138,17 +136,16 @@ public class PostHttpServletRequest extends AbstractHttpServletRequest implement
 
     protected void setReader(final BufferedReader reader) {
         ObjectHelper.checkNotNull("parameter:reader", reader);
-        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
-        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
+        PrimitiveHelper.checkFalse("reader", this.hasReader());
+        PrimitiveHelper.checkFalse("inputStream", this.hasInputStream());
 
         this.reader = reader;
     }
 
     protected void createReader() {
-        ObjectHelper.checkPropertySet("reader", this, this.hasReader());
-        ObjectHelper.checkPropertySet("inputStream", this, this.hasInputStream());
-        this.reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(this.getData())));
-        ;
+        final BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new ByteArrayInputStream(this.getData())));
+        this.setReader(reader);
     }
 
     protected RequestParameters getRequestParameters() {

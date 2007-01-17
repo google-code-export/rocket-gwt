@@ -15,14 +15,26 @@
  */
 package rocket.remoting.client;
 
-import com.google.gwt.user.client.rpc.impl.Serializer;
-
 /**
- * THis interface is implemented by the customized ProxyCreator and is added to all generated proxy classes. This provides a mechanism to
- * access the Serializer for a given Service.
+ * This exception is thrown when the hidden iframe used by the CometClient fails to connect to the server component.
  * 
  * @author Miroslav Pokorny (mP)
+ * 
  */
-public interface HasSerializer {
-    Serializer getSerializer();
+public class CometServerConnectionFailureException extends RuntimeException {
+    public CometServerConnectionFailureException() {
+        super();
+    }
+
+    public CometServerConnectionFailureException(final String message) {
+        super(message);
+    }
+
+    public CometServerConnectionFailureException(final String message, final Throwable caught) {
+        super(message, caught);
+    }
+
+    public CometServerConnectionFailureException(final Throwable caught) {
+        super(caught);
+    }
 }
