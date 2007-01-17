@@ -1,94 +1,79 @@
-/*
- * Copyright Miroslav Pokorny
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package rocket.style.client;
 
 import java.util.List;
 
 import rocket.dom.client.DomConstants;
-import rocket.dom.client.DomObjectListElement;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.ObjectWrapper;
 import rocket.util.client.StringHelper;
 
+import com.google.gwt.core.client.JavaScriptObject;
 /**
- * Each instance of StyleSheet represents a handle to a StyleSheet. Methods are available to retrieve the Rules list associated with the
- * stylesheet instance.
- * 
+ * Each instance represents a single stylesheet attached to the document.
  * @author Miroslav Pokorny (mP)
  */
-public class StyleSheet extends DomObjectListElement {
+public class StyleSheet {
 
-    public StyleSheet() {
-        super();
+    /**
+     * Helper which retrieves the native stylesheet object
+     * @return
+     */
+    protected JavaScriptObject getStyleSheet(){
+        return this.getStyleSheets().getStyleSheet( this.getIndex() );
+    }
+    /**
+     * A cache of the parent StyleSheetList that this list belongs too.
+     */
+    private StyleSheetList styleSheetList;
+
+    protected StyleSheetList getStyleSheets(){
+        ObjectHelper.checkNotNull( "field:styleSheetList", styleSheetList );
+        return this.styleSheetList;
+    }
+
+    protected void setStyleSheetList( final StyleSheetList styleSheetList ){
+        ObjectHelper.checkNotNull( "parameter:styleSheetList", styleSheetList );
+        this.styleSheetList = styleSheetList;
     }
 
     /**
-     * A list containing all the rules associated with this StyleSheet.
+     * The index of the native StyleSheet within the StyleSheet collection.
      */
-    private List rules;
+    private int index;
 
-    public List getRules() {
-        if (false == this.hasRules()) {
-            this.createRules();
+    protected int getIndex(){
+        return index;
+    }
+    protected void setIndex( final int index ){
+        this.index = index;
+    }
+
+    /**
+     * A copy of the rules list belonging to this stylesheet
+     */
+    private RuleList ruleList;
+
+    protected RuleList getRuleList(){
+        if( false == this.hasRuleList() ){
+            this.setRuleList( this.createRuleList() );
         }
-
-        ObjectHelper.checkNotNull("field:rules", rules);
-        return this.rules;
+        ObjectHelper.checkNotNull( "field:ruleList", ruleList );
+        return this.ruleList;
     }
-
-    public boolean hasRules() {
-        return null != this.rules;
+    protected boolean hasRuleList(){
+        return null != this.ruleList;
     }
-
-    protected void setRules(final List rules) {
-        ObjectHelper.checkNotNull("parameter:rules", rules);
-        this.rules = rules;
+    protected void setRuleList( final RuleList ruleList ){
+        ObjectHelper.checkNotNull( "parameter:ruleList", ruleList );
+        this.ruleList = ruleList;
     }
-
-    /**
-     * Creates a new RuleList.
-     */
-    protected void createRules() {
-        final RuleList rules = new RuleList();
-        rules.setStyleSheet(this);
-        // rules.setObject(this.getRules(this.getObject()));
-        rules.afterPropertiesSet();
-        this.setRules(rules);
+    protected RuleList createRuleList(){
+        final RuleList list = new RuleList ();
+        list.setStyleSheet( this );
+        return list;
     }
-
-    // TDO DELETE
-    // /**
-    // * Retrieves the rules array of Rules objects from the given styleSheet in a browser independent manner.
-    // *
-    // * @param styleSheet
-    // * @return
-    // */
-    // protected static JavaScriptObject getRules(final JavaScriptObject styleSheet) {
-    // ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
-    // return getRules0(styleSheet);
-    // }
-    //
-    // protected native static JavaScriptObject getRules0(final JavaScriptObject styleSheet)/*-{
-    // // ie6 uses rules whilst the standard mandates cssRules...
-    // var rules = styleSheet.rules;
-    // if( ! rules ){
-    // rules = styleSheet.cssRules;
-    // }
-    // return rules ? rules : null;
-    // }-*/;
+    public List getRules(){
+        return this.getRuleList();
+    }
 
     // STYLESHEET ELEMENT :::::::::::::::::::::::::::::::::
     /**
@@ -187,56 +172,30 @@ public class StyleSheet extends DomObjectListElement {
     // A VARIETY OF CONVENIENT TYPED PROPERTY METHODS.
 
     protected boolean hasProperty(final String propertyName) {
-        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
-        return ObjectHelper.hasProperty(this.getObject(), propertyName);
+        return ObjectHelper.hasProperty(this.getStyleSheet(), propertyName);
     }
 
     // BOOLEAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     protected boolean getBoolean(final String propertyName) {
-        return ObjectHelper.getBoolean(this.getObject(), propertyName);
+        return ObjectHelper.getBoolean(this.getStyleSheet(), propertyName);
     }
 
     protected void setBoolean(final String propertyName, final boolean value) {
-        ObjectHelper.setBoolean(this.getObject(), propertyName, value);
+        ObjectHelper.setBoolean(this.getStyleSheet(), propertyName, value);
     }
 
     // STRING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     protected String getString(final String propertyName) {
-        return ObjectHelper.getString(this.getObject(), propertyName);
+        return ObjectHelper.getString(this.getStyleSheet(), propertyName);
     }
 
     protected void setString(final String propertyName, final String value) {
-        ObjectHelper.setString(this.getObject(), propertyName, value);
+        ObjectHelper.setString(this.getStyleSheet(), propertyName, value);
     }
 
     protected void removeProperty(final String propertyName) {
-        ObjectHelper.removeProperty(this.getObject(), propertyName);
-    }
-
-    public boolean equals(final Object otherObject) {
-        return otherObject instanceof ObjectWrapper ? this.equals((ObjectWrapper) otherObject) : false;
-    }
-
-    public boolean equals(final ObjectWrapper otherWrapper) {
-        ObjectHelper.checkNotNull("parameter:otherWrapper", otherWrapper);
-
-        boolean same = false;
-        while (true) {
-            // if nativeObjectWrapper is missing cant be equal to anything...
-            if (false == this.hasObject()) {
-                break;
-            }
-
-            // if other rule hasnt got a native rule object it cant be equal...
-            if (false == otherWrapper.hasObject()) {
-                break;
-            }
-
-            same = this.getObject().equals(otherWrapper.getObject());
-            break;
-        }
-        return same;
+        ObjectHelper.removeProperty(this.getStyleSheet(), propertyName);
     }
 }

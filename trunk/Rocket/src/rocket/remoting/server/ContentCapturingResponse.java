@@ -206,7 +206,7 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
     protected void setByteArrayServletOutputStream(final ByteArrayServletOutputStream byteArrayServletOutputStream) {
         ObjectHelper.checkNotNull("parameter:byteArrayServletOutputStream", byteArrayServletOutputStream);
         if (this.hasByteArrayServletOutputStream()) {
-            SystemHelper.handleAssertFailure("parameter:byteArrayServletOutputStream",
+            SystemHelper.fail("parameter:byteArrayServletOutputStream",
                     "The field:outputStream has previously been set.");
         }
         this.byteArrayServletOutputStream = byteArrayServletOutputStream;
@@ -241,7 +241,7 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
     protected void setWriter(final PrintWriter writer) {
         ObjectHelper.checkNotNull("parameter:writer", writer);
         if (this.hasWriter()) {
-            SystemHelper.handleAssertFailure("parameter:writer", "The field:writer has previously been set.");
+            SystemHelper.fail("parameter:writer", "The field:writer has previously been set.");
         }
         this.writer = writer;
     }

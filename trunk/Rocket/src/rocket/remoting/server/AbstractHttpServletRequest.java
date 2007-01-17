@@ -183,8 +183,6 @@ public abstract class AbstractHttpServletRequest extends HttpServletRequestWrapp
     }
 
     protected void createParameterMap() {
-        ObjectHelper.checkPropertyNotSet("parameterMap", this, this.hasParameterMap());
-
         final Map view = new HashMap();
         final RequestParameters parameters = this.getRequestParameters();
         final Iterator keys = parameters.names();

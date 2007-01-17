@@ -64,9 +64,6 @@ public class GetHttpServletRequest extends AbstractHttpServletRequest implements
         throw new UnsupportedOperationException("getContentType() is not supported for GET requests");
     }
 
-    /**
-     * TODO Might be the wrong behaviour might need to throw an exception.
-     */
     public ServletInputStream getInputStream() throws IOException {
         throw new UnsupportedOperationException("getInputStream() is not supported for GET requests");
     }

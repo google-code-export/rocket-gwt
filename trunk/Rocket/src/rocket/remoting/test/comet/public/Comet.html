@@ -7,21 +7,31 @@
 <style>
 BODY, TABLE{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 10px;
 }
 
 BUTTON{
 	margin: 4px;
+	width: 250px;
 }
 </style>
 </head>
 
 <body>
-	<div>
-	The START and STOP buttons may be used to control a COMET streaming session.
-	<br>
-	An additional test is performed upon each received/stream object (which includes a Date object) to verify the difference of the server's time against the browser time.
-	</div>
+	<p>
+	This test involves creating a CometClient which queries a mock CometServer servlet. 
+	The <b>START</b> and <b>STOP</b> buttons may be used to start or stop a comet session.
+	</p>
+	
+	<h6>Things being tested</h6>
+	<ul>
+	<li>Starting a comet session (by clicking on the <b>START</b> button)</li>
+	<li>Starting a comet session with an invalid url (by clicking on the <b>START USING BAD URL</b> button)which should result in a CometServerConnectionFailureExcecption
+	(This is caught by the test)</li>
+	<li>Stopping a current comet session - by clicking on the <b>STOP</b> button. It should be possible to restart a session at any time</li>
+	<li>Each object streamed from the server is successfully deserialized</li>
+	<li>That there is no buffering between the server and client - uses a Date object with the server timestamp which is verified on the client.</li>
+	</ul>
 	<div><b>Log</b></div>
 	<div
 		id="log"

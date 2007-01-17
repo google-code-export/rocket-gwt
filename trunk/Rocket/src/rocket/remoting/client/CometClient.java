@@ -16,7 +16,7 @@
 package rocket.remoting.client;
 
 import rocket.dom.client.DomHelper;
-import rocket.remoting.client.impl.CometImpl;
+import rocket.remoting.client.support.CometSupport;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -30,11 +30,14 @@ import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 
 /**
- * There should only ever be one instance of this class which is used to received streamed objects from the server.
+ * There should only ever be one instance of this class which is used to receive streamed objects from a server.
  * 
- * The only requirement is that the {@link #createProxy() } is implemented to request for the runtime to create a Proxy for a service that
- * declares a return type that covers objects returned by the server side component. This new feature is provided by the embedded/customised
- * ProxyCreator. For GWT to use the modified ProxyCreator rocket.jar must appear before any gwt-user.jar in all class paths.
+ * <h6>Gotchas</h6>
+ * <ul>
+ * <li> The only requirement is that the {@link #createProxy() } method is implemented to request for the runtime to create a Proxy for a
+ * service that declares a return type that covers objects returned by the server side component. </li>
+ * <li> When compiling/translated to javascript the Rocket.jar must be included in the classpath before any google classes so that the
+ * custom ProxyGenerator is used instead of the regular class. </li>
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -43,26 +46,26 @@ public abstract class CometClient {
     public CometClient() {
         super();
 
-        this.createImplementation();
+        this.createSupport();
     }
 
     /**
-     * The browser aware implementation that takes care of browser difference nasties.
+     * The browser aware support that takes care of browser difference nasties.
      */
-    private CometImpl implementation;
+    private CometSupport support;
 
-    protected CometImpl getImplementation() {
-        ObjectHelper.checkNotNull("field:implementation", this.implementation);
-        return implementation;
+    protected CometSupport getSupport() {
+        ObjectHelper.checkNotNull("field:support", this.support);
+        return support;
     }
 
-    protected void setImplementation(final CometImpl implementation) {
-        ObjectHelper.checkNotNull("parameter:implementation", implementation);
-        this.implementation = implementation;
+    protected void setSupport(final CometSupport support) {
+        ObjectHelper.checkNotNull("parameter:support", support);
+        this.support = support;
     }
 
-    protected void createImplementation() {
-        this.setImplementation((CometImpl) GWT.create(CometImpl.class));
+    protected void createSupport() {
+        this.setSupport((CometSupport) GWT.create(CometSupport.class));
     }
 
     /**
@@ -74,7 +77,7 @@ public abstract class CometClient {
             final Element frame = this.getFrame();
             DOM.removeChild(DOM.getParent(frame), frame);
             this.clearFrame();
-            this.getImplementation().stop(this, frame);
+            this.getSupport().stop(this, frame);
         }
     }
 
@@ -85,7 +88,7 @@ public abstract class CometClient {
     public void start() {
         this.createFrame();
         final Element frame = this.getFrame();
-        this.getImplementation().start(this, frame);
+        this.getSupport().start(this, frame);
 
         // the reason for the query string is to avoid caching problems...the src attribute is set before the frame is attached this also
         // avoids the nasty clicking noises in ie.
@@ -107,7 +110,7 @@ public abstract class CometClient {
         // checks if the iframe has its connected flag set.. if not report connection failure...
         if (false == DOM.getBooleanAttribute(thisInstance.getFrame(), "__connected")) {
             thisInstance.getCallback().onFailure(
-                    new CometServerConnectionFailure("Unable to connect to [" + thisInstance.getUrl() + "]"));
+                    new CometServerConnectionFailureException("Unable to connect to [" + thisInstance.getUrl() + "]"));
         } else {
             thisInstance.restart();
         }
@@ -169,7 +172,7 @@ public abstract class CometClient {
      * Sub-classes must override this method to create the ServiceProxy using defered binding.
      * 
      * <pre>
-     *  return GWT.create( INSERT SERVICE CLASS.class );
+     *   return GWT.create( INSERT SERVICE CLASS.class );
      * </pre>
      * 
      * @return

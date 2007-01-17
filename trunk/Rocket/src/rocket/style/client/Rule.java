@@ -1,130 +1,116 @@
-/*
- * Copyright Miroslav Pokorny
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package rocket.style.client;
 
-import rocket.dom.client.DomObjectListElement;
-import rocket.style.client.impl.RuleListImpl;
+import java.util.Map;
+
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
+import com.google.gwt.core.client.JavaScriptObject;
+
 /**
- * Each instance of the Rule class represents a handle to a rule belonging to a styleSheet.
- * 
- * Methods are available to set/get the selector and style.
- * 
+ * Each instance of this class represents a single Rule belonging to a StyleSheet
  * @author Miroslav Pokorny (mP)
- * 
  */
-public class Rule extends DomObjectListElement {
-    public Rule() {
-        super();
-
-        this.setStyle(this.createStyle());
-    }
-
-    // SELECTOR ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+public class Rule {
 
     /**
-     * This property caches the selectorText value of this rule until it is added to a RuleList which is turn belongs too a StyleSheet
+     * A cached copy of the selector belonging to this rule.
      */
-    private String selector;
+    private String selector = "";
 
-    public String getSelector() {
+    public String getSelector(){
         String selector = this.selector;
-
-        if (this.hasParent() && this.hasIndex()) {
-            selector = ObjectHelper.getString(this.getObject(), StyleConstants.SELECTOR_TEXT_PROPERTY_NAME);
-
-            selector = StringHelper.nullToEmpty(selector);
+        if( this.hasRuleList() ){
+            final JavaScriptObject rule = this.getRule();
+            selector = ObjectHelper.getString( rule , StyleConstants.SELECTOR_TEXT_PROPERTY_NAME );
         }
-
-        StyleHelper.checkSelector("field:selector", selector);
         return selector;
     }
 
-    public void setSelector(final String selector) {
-        StyleHelper.checkSelector("parameter:selector", selector);
+    public void setSelector( final String selector ){
+        StringHelper.checkNotEmpty( "parameter:selector", selector );
 
-        this.selector = selector;
-
-        // if the actual Rule object is present recreate Rule...
-        if (this.hasParent() & this.hasIndex()) {
-            final RuleListImpl rules = (RuleListImpl) this.getParent();
-
-            // get this rules index...
+        if( this.hasRuleList() ){
+            // remove this rule from its parent and reinsert it at the same spot.
+            final RuleList ruleList = this.getRuleList();
+            final JavaScriptObject styleSheet = ruleList.getStyleSheet().getStyleSheet();
             final int index = this.getIndex();
 
-            final Style style = this.getStyle();
-            final String styleText = style.getCssText();
+            final RuleStyle style = (RuleStyle)this.getStyle();
+            final JavaScriptObject nativeStyle = style.getStyle();
+            final String styleText = ObjectHelper.getString( nativeStyle, StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME );
 
-            // remove this rule from its parent...
-            rules.remove(this);
-
-            // insert it back in its original position...
-            this.setIndex(index);
-            style.setCssText(styleText);
-            rules.add(index, this);
+            // remove and reinser the rule...
+            StyleHelper.removeRule(styleSheet, index);
+            StyleHelper.insertRule(styleSheet, index, selector, styleText );
         }
+        this.selector = selector;
     }
-
-    // STYLE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
-     * The style accompanying this Rule
+     * A cached copy of the map view of the style object belonging to this Rule
      */
-    private Style style;
+    private Map style;
 
-    public Style getStyle() {
-        ObjectHelper.checkNotNull("field:style", style);
+    public Map getStyle(){
+        if( false == this.hasStyle() ){
+            this.setStyle( this.createStyle() );
+        }
         return this.style;
     }
-
-    protected boolean hasStyle() {
+    protected boolean hasStyle(){
         return null != this.style;
     }
 
-    protected void setStyle(final Style style) {
-        ObjectHelper.checkNotNull("parameter:style", style);
+    protected void setStyle( final Map style ){
+        ObjectHelper.checkNotNull( "parameter:style", style );
         this.style = style;
     }
 
-    /**
-     * Factory method which creates the style accompanying this Rule.
-     */
-    protected Style createStyle() {
-        final Style style = new Style();
-        style.setRule(this);
+    protected Map createStyle(){
+        final RuleStyle style = new RuleStyle();
+        style.setRule( this );
         return style;
     }
 
     /**
-     * Reads the style text property of this rule.
-     * 
-     * @return Returns null if this Rule does not belong to a RuleList.
+     * Helper that gets the native rule object.
+     * @return
      */
-    public String getStyleText() {
-        return this.hasParent() ? ObjectHelper.getString(this.getObject(), StyleConstants.STYLE_TEXT_PROPERTY_NAME)
-                : "";
+    protected JavaScriptObject getRule(){
+        return ObjectHelper.getObject( this.getRuleList().getRulesCollection(), this.getIndex() );
     }
 
-    public void destroy() {
-        if (this.hasStyle()) {
-            this.getStyle().destroy();
-        }
+    /**
+     * A copy of the parent ruleList that this rule belongs too.
+     */
+    private RuleList ruleList;
 
-        super.destroy();
+    protected RuleList getRuleList(){
+        ObjectHelper.checkNotNull( "field:ruleList", ruleList );
+        return this.ruleList;
     }
+    protected boolean hasRuleList(){
+        return null != ruleList;
+    }
+    protected void setRuleList(final RuleList ruleList ){
+        ObjectHelper.checkNotNull( "parameter:ruleList", ruleList );
+        this.ruleList = ruleList;
+    }
+    protected void clearRule(){
+        this.ruleList = null;
+    }
+
+    /**
+     * The index of the native StyleSheet within the StyleSheet collection.
+     */
+    private int index;
+
+    protected int getIndex(){
+        return index;
+    }
+    protected void setIndex( final int index ){
+        this.index = index;
+    }
+
 }

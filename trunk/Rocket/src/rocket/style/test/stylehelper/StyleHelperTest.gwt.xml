@@ -1,0 +1,4 @@
+<module>
+	<inherits name='Rocket.User'/>
+	<entry-point class='rocket.style.test.stylehelper.client.StyleHelperTest'/>  
+</module>

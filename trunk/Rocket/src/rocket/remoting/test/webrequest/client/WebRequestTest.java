@@ -15,20 +15,29 @@
  */
 package rocket.remoting.test.webrequest.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import rocket.dom.client.DomHelper;
 import rocket.remoting.client.Headers;
 import rocket.remoting.client.RequestParameters;
 import rocket.remoting.client.WebRequest;
 import rocket.remoting.client.WebRequestService;
 import rocket.remoting.client.WebRequestServiceAsync;
 import rocket.remoting.client.WebResponse;
+import rocket.testing.client.Test;
+import rocket.testing.client.TestBuilder;
+import rocket.testing.client.TestRunner;
+import rocket.testing.client.WebPageTestRunner;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Unfortunately the bundled tomcat doesnt seem to support includes with custom HttpServletRequest and HttpServletResponse which means the
@@ -36,69 +45,121 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * 
  * The actual classes themselves do work in a real container.
  * 
- * FIX doenst work inside hosted mode browser.
+ * <h6>Gotchas</h6> 
+ * This test fails as it appears the attempt to include another resource via the RequestDispatcher always fails because
+ * because the service servlet is called again rather than the actual target resource. This is evident
+ * as the stacktrace reveals methods from the rpc service servlet.
+ * 
+ * The strange thing is any attempt to access the resource by changing to the appropriate url in the hosted mode
+ * browser works! 
  */
-public class WebRequestTest implements EntryPoint {
+public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 
-    /**
-     * This is the entry point method.
-     */
+    static final String REQUEST_PARAMETER_ECHO_SERVLET_URL = "/requestParameterEchoServlet";
+
+    static final String POST_DATA_ECHO_SERVLET_URL = "/postDataEchoServlet";
+
+    static final String WEB_REQUEST_SERVICE_ENTRY_POINT_URL = "webRequestRpc";
+    
     public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                if (false == (caught instanceof TestAssertionFailedException)) {
-                    addFailure("Uncaught exception", caught);
-                }
+        final Button button = new Button("Run Tests");
+        button.addClickListener( new ClickListener(){
+            public void onClick( final Widget sender ){
+                WebRequestTest.this.executeTests( new WebRequestTestBuilder() );
             }
         });
+        RootPanel.get().add( button );
 
-        this.testGet0WithNoRequestParameters();
-        this.testGet1WithRequestParameters();
-        this.testGet2ANonExistingUrlWhichShouldReturnA404();
-        this.testPost0WithNoRequestParameters();
-        this.testPost1WithRequestParameters();
+        DomHelper.setFocus( button.getElement() );
     }
 
-    static final String REQUEST_PARAMETER_ECHO_SERVLET_URL = "./requestParameterEchoServlet";
+    class WebRequestTestBuilder implements TestBuilder{
+        public List buildCandidates(){
+            final List tests = new ArrayList();
+            tests.add( new Test() {
+                public String getName(){
+                    return "testGetWithNoRequestParameters";
+                }
 
-    static final String POST_DATA_ECHO_SERVLET_URL = "./postDataEchoServlet";
+                public void execute() {
+                    WebRequestTest.this.testGetWithNoRequestParameters();
+                }
+            });
+            tests.add( new Test() {
+                public String getName(){
+                    return "testGetWithRequestParameters";
+                }
 
-    static final String WEB_REQUEST_SERVICE_ENTRY_POINT_URL = "./webRequestRpc";
+                public void execute() {
+                    WebRequestTest.this.testGetWithRequestParameters();
+                }
+            });
+            tests.add( new Test() {
+                public String getName(){
+                    return "testGetANonExistingUrlWhichShouldReturnA404";
+                }
 
-    public void testGet0WithNoRequestParameters() {
+                public void execute() {
+                    WebRequestTest.this.testGetANonExistingUrlWhichShouldReturnA404();
+                }
+            });
+            tests.add( new Test() {
+                public String getName(){
+                    return "testPostWithNoRequestParameters";
+                }
+
+                public void execute() {
+                    WebRequestTest.this.testPostWithNoRequestParameters();
+                }
+            });
+            tests.add( new Test() {
+                public String getName(){
+                    return "testPostWithRequestParameters";
+                }
+
+                public void execute() {
+                    WebRequestTest.this.testPostWithRequestParameters();
+                }
+            });
+            return tests;
+        }
+    }
+
+    public void testGetWithNoRequestParameters() {
         final WebRequest request = new WebRequest();
         request.setHeaders(new Headers());
         request.setMethod("GET");
         request.setUrl(REQUEST_PARAMETER_ECHO_SERVLET_URL);
         request.setParameters(new RequestParameters());
 
+        TestRunner.postponeCurrentTest( 5* 1000 );
+
         final WebRequestServiceAsync service = this.createService();
         service.doRequest(request, new AsyncCallback() {
             public void onFailure(final Throwable caught) {
-                addFailure("testGet0WithRequestParameters", caught);
+                Test.fail("testGetWithRequestParameters", caught);
             }
 
             public void onSuccess(final Object result) {
                 final WebResponse response = (WebResponse) result;
                 final int code = response.getCode();
-                if (200 != code) {
-                    addFailure("The response returned an incorrect code, code:" + code);
-                }
+                Test.assertEquals("The response returned an incorrect code, response: " + response, 200, code);
+
                 final String message = response.getMessage();
-                if (!"OK".equals(message)) {
-                    addFailure("The response returned an incorrect message, message[" + code + "]");
-                }
+                Test.assertEquals("The response returned an incorrect message, code: " + code, "OK", message );
+
                 final String actualBody = response.getBody();
                 final String expectedBody = "";
                 if (!expectedBody.equals(expectedBody)) {
-                    addFailure("The response returned an incorrect content, expected[" + expectedBody + "], actual["
+                    Test.fail("The response returned an incorrect content, expected[" + expectedBody + "], actual["
                             + actualBody + "]");
                 }
+                TestRunner.finishTest();
             }
         });
     }
 
-    public void testGet1WithRequestParameters() {
+    public void testGetWithRequestParameters() {
         final WebRequest request = new WebRequest();
         request.setHeaders(new Headers());
         request.setMethod("GET");
@@ -115,89 +176,95 @@ public class WebRequestTest implements EntryPoint {
 
         request.setParameters(parameters);
 
+        TestRunner.postponeCurrentTest( 5* 1000 );
+
         final WebRequestServiceAsync service = this.createService();
         service.doRequest(request, new AsyncCallback() {
             public void onFailure(final Throwable caught) {
-                addFailure("testGet0WithRequestParameters", caught);
+                Test.fail("testGetWithRequestParameters", caught);
             }
 
             public void onSuccess(final Object result) {
                 final WebResponse response = (WebResponse) result;
+
                 final int code = response.getCode();
-                if (200 != code) {
-                    addFailure("The response returned an incorrect code, code:" + code);
-                }
+                Test.assertEquals("The response returned an incorrect code, response: " + response, 200, code);
+
                 final String message = response.getMessage();
-                if (!"OK".equals(message)) {
-                    addFailure("The response returned an incorrect message, message[" + code + "]");
-                }
+                Test.assertEquals("The response returned an incorrect message, code: " + code, "OK", message );            
+
                 final String actualBody = response.getBody();
                 final String expectedBody = NAME0 + '=' + VALUE0 + "&" + NAME1 + '=' + VALUE1;
                 if (!expectedBody.equals(expectedBody)) {
-                    addFailure("The response returned an incorrect content, expected[" + expectedBody + "], actual["
+                    Test.fail("The response returned an incorrect content, expected[" + expectedBody + "], actual["
                             + actualBody + "]");
                 }
+
+                TestRunner.finishTest();
             }
         });
     }
 
-    public void testGet2ANonExistingUrlWhichShouldReturnA404() {
+    public void testGetANonExistingUrlWhichShouldReturnA404() {
         final WebRequest request = new WebRequest();
         request.setHeaders(new Headers());
         request.setMethod("GET");
         request.setUrl("/InvokingThisUrlShouldResultInA404");
         request.setParameters(new RequestParameters());
 
+        TestRunner.postponeCurrentTest( 5* 1000 );
+
         final WebRequestServiceAsync service = this.createService();
         service.doRequest(request, new AsyncCallback() {
             public void onFailure(final Throwable caught) {
-                addFailure("testGet0WithRequestParameters", caught);
+                Test.fail("testGetWithRequestParameters", caught);
             }
 
             public void onSuccess(final Object result) {
-                final WebResponse response = (WebResponse) result;
+                final WebResponse response = (WebResponse) result;                
                 final int code = response.getCode();
-                if (404 != code) {
-                    addFailure("The response returned an incorrect code, code:" + code + ", response: " + response);
-                }
+                Test.assertEquals("The response returned an incorrect code, response: " + response, 404, code);
+
+                TestRunner.finishTest();
             }
         });
     }
 
-    public void testPost0WithNoRequestParameters() {
+    public void testPostWithNoRequestParameters() {
         final WebRequest request = new WebRequest();
         request.setHeaders(new Headers());
         request.setMethod("POST");
         request.setUrl(REQUEST_PARAMETER_ECHO_SERVLET_URL);
         request.setParameters(new RequestParameters());
 
+        TestRunner.postponeCurrentTest( 5000 );
+
         final WebRequestServiceAsync service = this.createService();
         service.doRequest(request, new AsyncCallback() {
             public void onFailure(final Throwable caught) {
-                addFailure("testPost0WithRequestParameters", caught);
+                Test.fail("testPostWithRequestParameters", caught);
             }
 
             public void onSuccess(final Object result) {
                 final WebResponse response = (WebResponse) result;
                 final int code = response.getCode();
-                if (200 != code) {
-                    addFailure("The response returned an incorrect code, code:" + code);
-                }
+                Test.assertEquals("The response returned an incorrect code, response: " + response, 200, code);
+
                 final String message = response.getMessage();
-                if (!"OK".equals(message)) {
-                    addFailure("The response returned an incorrect message, message[" + code + "]");
-                }
+                Test.assertEquals("The response returned an incorrect message, code: " + code, "OK", message );
+
                 final String actualBody = response.getBody();
                 final String expectedBody = "";
                 if (!expectedBody.equals(expectedBody)) {
-                    addFailure("The response returned an incorrect content, expected[" + expectedBody + "], actual["
+                    Test.fail("The response returned an incorrect content, expected[" + expectedBody + "], actual["
                             + actualBody + "]");
                 }
+                TestRunner.finishTest();
             }
         });
     }
 
-    public void testPost1WithRequestParameters() {
+    public void testPostWithRequestParameters() {
         final WebRequest request = new WebRequest();
         request.setHeaders(new Headers());
         request.setMethod("POST");
@@ -211,27 +278,30 @@ public class WebRequestTest implements EntryPoint {
         request.setParameters(parameters);
 
         final WebRequestServiceAsync service = this.createService();
+
+        TestRunner.postponeCurrentTest( 5* 1000 );
+
         service.doRequest(request, new AsyncCallback() {
             public void onFailure(final Throwable caught) {
-                addFailure("testPost0WithRequestParameters", caught);
+                Test.fail("testPostWithRequestParameters", caught);
             }
 
             public void onSuccess(final Object result) {
                 final WebResponse response = (WebResponse) result;
+
                 final int code = response.getCode();
-                if (200 != code) {
-                    addFailure("The response returned an incorrect code, code:" + code);
-                }
+                Test.assertEquals("The response returned an incorrect code, response: " + response, 200, code);
+
                 final String message = response.getMessage();
-                if (!"OK".equals(message)) {
-                    addFailure("The response returned an incorrect message, message[" + code + "]");
-                }
+                Test.assertEquals("The response returned an incorrect message, code: " + code, "OK", message );
+
                 final String actualBody = response.getBody();
                 final String expectedBody = NAME + '=' + VALUE;
                 if (!expectedBody.equals(expectedBody)) {
-                    addFailure("The response returned an incorrect content, expected[" + expectedBody + "], actual["
+                    Test.fail("The response returned an incorrect content, expected[" + expectedBody + "], actual["
                             + actualBody + "]");
                 }
+                TestRunner.finishTest();
             }
         });
     }
@@ -242,30 +312,4 @@ public class WebRequestTest implements EntryPoint {
         endpoint.setServiceEntryPoint(WEB_REQUEST_SERVICE_ENTRY_POINT_URL);
         return service;
     }
-
-    static void addPass(final String testName) {
-        log("PASS: " + testName);
-    }
-
-    static void addFailure(final String testName) {
-        log("FAILED: " + testName);
-        throw new TestAssertionFailedException();
-    }
-
-    static void addFailure(final String testName, final Throwable cause) {
-        cause.printStackTrace();
-        log("FAILED: " + testName + ", cause: " + cause);
-        throw new TestAssertionFailedException();
-    }
-
-    static void log(final String message) {
-        final Element log = DOM.getElementById("log");
-        DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
-    }
-
-    static class TestAssertionFailedException extends RuntimeException {
-        TestAssertionFailedException() {
-        }
-    }
-
 }
