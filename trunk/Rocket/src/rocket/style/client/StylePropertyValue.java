@@ -6,6 +6,7 @@ import rocket.util.client.StringHelper;
 
 /**
  * Each instance represents the value of a Style regardless of source eg, rule, inline or computed.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class StylePropertyValue {
@@ -16,18 +17,18 @@ public class StylePropertyValue {
     private String string;
 
     public String getString() {
-        StringHelper.checkNotEmpty( "field:string", string);
+        StringHelper.checkNotEmpty("field:string", string);
         return this.string;
     }
 
     public void setString(final String string) {
-        StringHelper.checkNotEmpty( "parameter:string", string);
+        StringHelper.checkNotEmpty("parameter:string", string);
         this.string = string;
     }
 
     /**
      * Extracts the number portion of the string by dropping the units.
-     *
+     * 
      * @return
      */
     protected String extractNumber(final String value) {
@@ -57,7 +58,6 @@ public class StylePropertyValue {
         return number;
     }
 
-
     public double getDouble(final CssUnit unit) {
         final String value = this.getString();
         return StyleHelper.convertValue(value, unit);
@@ -75,7 +75,7 @@ public class StylePropertyValue {
 
     public int getInteger(final CssUnit unit) {
         final String value = this.getString();
-        return Math.round( StyleHelper.convertValue( value, unit));
+        return Math.round(StyleHelper.convertValue(value, unit));
     }
 
     public void setInteger(final int intValue, final CssUnit unit) {
@@ -86,7 +86,7 @@ public class StylePropertyValue {
 
     /**
      * Reads a property that contains a rgb value as a Colour object.
-     *
+     * 
      * @return The colour value.
      */
     public Colour getColour() {
@@ -94,7 +94,7 @@ public class StylePropertyValue {
     }
 
     public void setColour(final Colour colour) {
-        ObjectHelper.checkNotNull( "parameter:colour", colour);
+        ObjectHelper.checkNotNull("parameter:colour", colour);
         this.setString(colour.toCssColour());
     }
 
@@ -102,26 +102,28 @@ public class StylePropertyValue {
         return StyleHelper.getUnit(this.getString());
     }
 
-    public String getUrl(){
-        return StyleHelper.getUrl( this.getString() );
-    }
-    public void setUrl( final String url ){
-        StringHelper.checkNotEmpty( "parameter:url", url );
-        this.setString( "url('" + url + "')");
+    public String getUrl() {
+        return StyleHelper.getUrl(this.getString());
     }
 
-    public int hashCode(){
+    public void setUrl(final String url) {
+        StringHelper.checkNotEmpty("parameter:url", url);
+        this.setString("url('" + url + "')");
+    }
+
+    public int hashCode() {
         return this.getString().hashCode();
     }
 
-    public boolean equals( final Object otherObject ){
-        return otherObject instanceof StylePropertyValue ? this.equals( (StylePropertyValue) otherObject ) : false;
-    }
-    public boolean equals( final StylePropertyValue otherStylePropertyValue ){
-        return this.getString().equals( otherStylePropertyValue.getString() );
+    public boolean equals(final Object otherObject) {
+        return otherObject instanceof StylePropertyValue ? this.equals((StylePropertyValue) otherObject) : false;
     }
 
-    public String toString(){
+    public boolean equals(final StylePropertyValue otherStylePropertyValue) {
+        return this.getString().equals(otherStylePropertyValue.getString());
+    }
+
+    public String toString() {
         return super.toString() + ", string[" + string + "]";
     }
 }

@@ -153,7 +153,7 @@ public class StyleHelperSupport {
                 propertyValue = this.translateBorderWidthValue(propertyValue) + "px";
                 break;
             }
-            if( StyleConstants.FONT_WEIGHT.equals( propertyName )){
+            if (StyleConstants.FONT_WEIGHT.equals(propertyName)) {
                 propertyValue = "" + this.getComputedFontWeight(element);
                 break;
             }
@@ -164,10 +164,10 @@ public class StyleHelperSupport {
         return this.translateNoneValuesToNull(propertyValue);
     }
 
-    protected String getComputedStyleProperty0(final Element element, final String propertyName){
-        return this.getComputedStyleProperty1( element, propertyName );
+    protected String getComputedStyleProperty0(final Element element, final String propertyName) {
+        return this.getComputedStyleProperty1(element, propertyName);
     }
-    
+
     private native String getComputedStyleProperty1(final Element element, final String propertyName)/*-{
      var value = null;
 
@@ -193,7 +193,7 @@ public class StyleHelperSupport {
      }-*/;
 
     /**
-     * Helper which tests if the given propertyName is one of the border XXX width properties.
+     * Helper which tests if the given propertyName is one of the border xxx width properties.
      * 
      * @param propertyName
      * @return
@@ -308,15 +308,16 @@ public class StyleHelperSupport {
         }
         return namesArray;
     }
-    
+
     /**
      * Calculates the font weight for the given element translating named values into numeric values.
+     * 
      * @param element
      * @return
      */
-    protected int getComputedFontWeight( final Element element ){
+    protected int getComputedFontWeight(final Element element) {
         int weight = -1;
-        
+
         while (true) {
             final String propertyValue = getComputedStyleProperty0(element, StyleConstants.FONT_WEIGHT);
             if (StringHelper.isNullOrEmpty(propertyValue)) {
@@ -334,23 +335,23 @@ public class StyleHelperSupport {
             }
             // relative weights...
             if (StyleSupportConstants.FONT_WEIGHT_BOLDER.equals(propertyValue)) {
-                final Element parent = DOM.getParent( element );
-                final int parentWeight = this.getComputedFontWeight( parent  );
-                weight = parentWeight + 300; 
+                final Element parent = DOM.getParent(element);
+                final int parentWeight = this.getComputedFontWeight(parent);
+                weight = parentWeight + 300;
                 break;
             }
             if (StyleSupportConstants.FONT_WEIGHT_LIGHTER.equals(propertyValue)) {
-                final Element parent = DOM.getParent( element );
-                final int parentWeight = this.getComputedFontWeight( parent  );
-                weight = parentWeight - 300; 
+                final Element parent = DOM.getParent(element);
+                final int parentWeight = this.getComputedFontWeight(parent);
+                weight = parentWeight - 300;
                 break;
             }
-            weight = Integer.parseInt( propertyValue );
+            weight = Integer.parseInt(propertyValue);
             break;
         }
-        return weight;        
+        return weight;
     }
-    
+
     /**
      * Retrieves the computed font weight for the parent of the given element.
      * 

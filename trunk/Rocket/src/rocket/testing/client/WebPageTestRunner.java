@@ -23,112 +23,117 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * This test runner outputs results of running a suite of tests to a table.
  * 
- * If elements must be added a methods are provided to add the test name across the screen {@link #addTestNameDivider()} 
- * and another to add the element {@link #addElement(Element)} 
+ * If elements must be added a methods are provided to add the test name across the screen {@link #addTestNameDivider()} and another to add
+ * the element {@link #addElement(Element)}
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class WebPageTestRunner extends TestRunner{
+public class WebPageTestRunner extends TestRunner {
 
-    public WebPageTestRunner(){
+    public WebPageTestRunner() {
         super();
 
         RootPanel.get().add(this.createTable());
     }
+
     /**
      * A div panel is used to host any added Elements.
      */
     private DivPanel divPanel;
-    
-    DivPanel getDivPanel(){
-        if( false == this.hasDivPanel() ){
-            RootPanel.get().add( this.createDivPanel() );
+
+    DivPanel getDivPanel() {
+        if (false == this.hasDivPanel()) {
+            RootPanel.get().add(this.createDivPanel());
         }
-        
-        ObjectHelper.checkNotNull( "field:divPanel", divPanel );
+
+        ObjectHelper.checkNotNull("field:divPanel", divPanel);
         return divPanel;
     }
-    boolean hasDivPanel(){
+
+    boolean hasDivPanel() {
         return null != this.divPanel;
     }
-    void setDivPanel( final DivPanel divPanel ){
-        ObjectHelper.checkNotNull( "parameter:divPanel", divPanel );
+
+    void setDivPanel(final DivPanel divPanel) {
+        ObjectHelper.checkNotNull("parameter:divPanel", divPanel);
         this.divPanel = divPanel;
     }
-    DivPanel createDivPanel(){
+
+    DivPanel createDivPanel() {
         final DivPanel panel = new DivPanel();
-        this.setDivPanel( panel );
+        this.setDivPanel(panel);
         return panel;
     }
-            
+
     /**
-     * This method is typically called before any attempt is made to add an element that should be
-     * visible.
-     * This typically is achieved by overriding onTestStarted() calling super.onTestStarted() followed by
-     * a call to this method.
+     * This method is typically called before any attempt is made to add an element that should be visible. This typically is achieved by
+     * overriding onTestStarted() calling super.onTestStarted() followed by a call to this method.
      */
-    protected void addTestNameDivider(){
+    protected void addTestNameDivider() {
         final HTML html = new HTML();
         final Element element = html.getElement();
-        DOM.setStyleAttribute( element, StyleConstants.WIDTH, "100%");
-        DOM.setStyleAttribute( element, StyleConstants.HEIGHT, "1em");
-        DOM.setStyleAttribute( element, StyleConstants.MARGIN, "4px");
-        DOM.setStyleAttribute( element, StyleConstants.COLOR, "black");
-        DOM.setStyleAttribute( element, StyleConstants.BACKGROUND_COLOR, "skyBlue");
-        html.setText( this.getCurrentTestName() );
-        this.addWidget( html );
+        DOM.setStyleAttribute(element, StyleConstants.WIDTH, "100%");
+        DOM.setStyleAttribute(element, StyleConstants.HEIGHT, "1em");
+        DOM.setStyleAttribute(element, StyleConstants.MARGIN, "4px");
+        DOM.setStyleAttribute(element, StyleConstants.COLOR, "black");
+        DOM.setStyleAttribute(element, StyleConstants.BACKGROUND_COLOR, "skyBlue");
+        html.setText(this.getCurrentTestName());
+        this.addWidget(html);
     }
-    
+
     /**
      * Adds an element to the document.
+     * 
      * @param element
      */
-    protected void addElement( final Element element ){            
-        this.addWidget(new ElementWidget( element ));
+    protected void addElement(final Element element) {
+        this.addWidget(new ElementWidget(element));
     }
+
     /**
      * A simple widget that takes an Element and makes it its own.
      */
-    static class ElementWidget extends SimplePanel{
-        public ElementWidget( final Element element ){
-            super( element );
+    static class ElementWidget extends SimplePanel {
+        public ElementWidget(final Element element) {
+            super(element);
         }
     }
-    
-    protected void addWidget( final Widget widget ){
-        this.getDivPanel().add( widget );
+
+    protected void addWidget(final Widget widget) {
+        this.getDivPanel().add(widget);
     }
 
-    protected void onTestStarted( final Test test ){
-        ObjectHelper.checkNotNull( "parameter:test", test);
+    protected void onTestStarted(final Test test) {
+        ObjectHelper.checkNotNull("parameter:test", test);
 
         final FlexTable table = this.getTable();
         final String testName = test.getName();
 
         final int row = table.getRowCount();
         table.setText(row, 0, testName);
-        table.setWidget(row, 1, new HTML( "<span style=\"color: blue;\">starting</span>"));
+        table.setWidget(row, 1, new HTML("<span style=\"color: blue;\">starting</span>"));
         table.setText(row, 2, "N/A");
     }
 
-    protected void onTestPassed( final Test test ){
-        ObjectHelper.checkNotNull( "parameter:test", test); 
+    protected void onTestPassed(final Test test) {
+        ObjectHelper.checkNotNull("parameter:test", test);
 
         final FlexTable table = this.getTable();
         final int row = table.getRowCount() - 1;
-        
+
         final Widget widget = new HTML("<span style=\"color: green;\">passed</span>");
-        table.setWidget( row, 1, widget );
+        table.setWidget(row, 1, widget);
 
         final long start = test.getStartTimestap();
         final long end = test.getEndTimestap();
         final long timeTaken = end - start;
-        table.setText( row, 2, "" + timeTaken );  
-        
+        table.setText(row, 2, "" + timeTaken);
+
         this.scrollToBottom();
     }
-    protected void onTestFailed( final Test test ){
-        ObjectHelper.checkNotNull( "parameter:test", test);
+
+    protected void onTestFailed(final Test test) {
+        ObjectHelper.checkNotNull("parameter:test", test);
 
         final Throwable cause = test.getThrowable();
 
@@ -136,59 +141,59 @@ public class WebPageTestRunner extends TestRunner{
         final int row = table.getRowCount() - 1;
 
         final HTML html = new HTML();
-        html.setHTML( "<span style=\"color: red;\">failed</span> " + cause.getMessage() );
+        html.setHTML("<span style=\"color: red;\">failed</span> " + cause.getMessage());
         html.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                Window.alert( WebPageTestRunner.this.buildFailedTestSummary(test));
+                Window.alert(WebPageTestRunner.this.buildFailedTestSummary(test));
             }
-        });        
-        table.setWidget( row, 1, html );
+        });
+        table.setWidget(row, 1, html);
 
         final long start = test.getStartTimestap();
         final long end = test.getEndTimestap();
         final long timeTaken = end - start;
-        table.setText( row, 2, "" + timeTaken );
-        
+        table.setText(row, 2, "" + timeTaken);
+
         this.scrollToBottom();
     }
-    
-    protected void scrollToBottom(){
+
+    protected void scrollToBottom() {
         final Element body = DomHelper.getBody();
-        final int childCount = DOM.getChildCount( body );
-        final Element element = DOM.getChild( body, childCount - 1 );
-        DOM.scrollIntoView( element );
-        DomHelper.setFocus( element );
+        final int childCount = DOM.getChildCount(body);
+        final Element element = DOM.getChild(body, childCount - 1);
+        DOM.scrollIntoView(element);
+        DomHelper.setFocus(element);
     }
 
-    protected String buildFailedTestSummary( final Test test ){
+    protected String buildFailedTestSummary(final Test test) {
         ObjectHelper.checkNotNull("parameter:test", test);
 
         final StringBuffer buf = new StringBuffer();
 
-        buf.append( "TEST\n");
-        buf.append( test.getName() );
-        buf.append( "\n");
+        buf.append("TEST\n");
+        buf.append(test.getName());
+        buf.append("\n");
 
         final List messages = test.getMessages();
-        if( false ==messages.isEmpty() ){
-            buf.append( "\nMESSAGES LOGGED BEFORE FAILURE\n");
+        if (false == messages.isEmpty()) {
+            buf.append("\nMESSAGES LOGGED BEFORE FAILURE\n");
             final Iterator messagesIterator = test.getMessages().iterator();
-            while( messagesIterator.hasNext() ){
-                final String message = (String)messagesIterator.next();
-                buf.append( message );
-                buf.append( "\n" );
+            while (messagesIterator.hasNext()) {
+                final String message = (String) messagesIterator.next();
+                buf.append(message);
+                buf.append("\n");
             }
         }
 
-        buf.append( "\nCAUSE\n");
+        buf.append("\nCAUSE\n");
         final Throwable cause = test.getThrowable();
-        buf.append(StackTraceHelper.getStackTraceAsString(cause) );              
+        buf.append(StackTraceHelper.getStackTraceAsString(cause));
 
         return buf.toString();
     }
 
-    protected void onTestAborted( final Test test ){
-        ObjectHelper.checkNotNull( "parameter:test", test);
+    protected void onTestAborted(final Test test) {
+        ObjectHelper.checkNotNull("parameter:test", test);
 
         final Throwable cause = test.getThrowable();
 
@@ -196,23 +201,24 @@ public class WebPageTestRunner extends TestRunner{
         final int row = table.getRowCount() - 1;
 
         final HTML html = new HTML();
-        html.setHTML( "<span style=\"color: red;\">failed</span> " + cause.getMessage() );
+        html.setHTML("<span style=\"color: red;\">failed</span> " + cause.getMessage());
         html.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                Window.alert( WebPageTestRunner.this.buildFailedTestSummary(test));
+                Window.alert(WebPageTestRunner.this.buildFailedTestSummary(test));
             }
-        });        
-        table.setWidget( row, 1, html );
+        });
+        table.setWidget(row, 1, html);
 
         final long start = test.getStartTimestap();
         final long end = test.getEndTimestap();
         final long timeTaken = end - start;
-        table.setText( row, 2, "" + timeTaken );   
+        table.setText(row, 2, "" + timeTaken);
     }
 
-    protected void onCompletion(final int started, final int passed, final int failed, final int aborted ){
+    protected void onCompletion(final int started, final int passed, final int failed, final int aborted) {
         final int skipped = started - passed - failed - aborted;
-        Window.alert("Completed!\nStarted:\t" + started + "\nPassed:\t" + passed + "\nFailed:\t" + failed + "\nAborted:\t" + aborted + "\nSkipped:\t" + skipped );
+        Window.alert("Completed!\nStarted:\t" + started + "\nPassed:\t" + passed + "\nFailed:\t" + failed
+                + "\nAborted:\t" + aborted + "\nSkipped:\t" + skipped);
     }
 
     /**

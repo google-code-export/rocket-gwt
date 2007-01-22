@@ -7,31 +7,35 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
+
 /**
  * Each instance represents a single stylesheet attached to the document.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class StyleSheet {
 
     /**
      * Helper which retrieves the native stylesheet object
+     * 
      * @return
      */
-    protected JavaScriptObject getStyleSheet(){
-        return this.getStyleSheets().getStyleSheet( this.getIndex() );
+    protected JavaScriptObject getStyleSheet() {
+        return this.getStyleSheets().getStyleSheet(this.getIndex());
     }
+
     /**
      * A cache of the parent StyleSheetList that this list belongs too.
      */
     private StyleSheetList styleSheetList;
 
-    protected StyleSheetList getStyleSheets(){
-        ObjectHelper.checkNotNull( "field:styleSheetList", styleSheetList );
+    protected StyleSheetList getStyleSheets() {
+        ObjectHelper.checkNotNull("field:styleSheetList", styleSheetList);
         return this.styleSheetList;
     }
 
-    protected void setStyleSheetList( final StyleSheetList styleSheetList ){
-        ObjectHelper.checkNotNull( "parameter:styleSheetList", styleSheetList );
+    protected void setStyleSheetList(final StyleSheetList styleSheetList) {
+        ObjectHelper.checkNotNull("parameter:styleSheetList", styleSheetList);
         this.styleSheetList = styleSheetList;
     }
 
@@ -40,10 +44,11 @@ public class StyleSheet {
      */
     private int index;
 
-    protected int getIndex(){
+    protected int getIndex() {
         return index;
     }
-    protected void setIndex( final int index ){
+
+    protected void setIndex(final int index) {
         this.index = index;
     }
 
@@ -52,26 +57,30 @@ public class StyleSheet {
      */
     private RuleList ruleList;
 
-    protected RuleList getRuleList(){
-        if( false == this.hasRuleList() ){
-            this.setRuleList( this.createRuleList() );
+    protected RuleList getRuleList() {
+        if (false == this.hasRuleList()) {
+            this.setRuleList(this.createRuleList());
         }
-        ObjectHelper.checkNotNull( "field:ruleList", ruleList );
+        ObjectHelper.checkNotNull("field:ruleList", ruleList);
         return this.ruleList;
     }
-    protected boolean hasRuleList(){
+
+    protected boolean hasRuleList() {
         return null != this.ruleList;
     }
-    protected void setRuleList( final RuleList ruleList ){
-        ObjectHelper.checkNotNull( "parameter:ruleList", ruleList );
+
+    protected void setRuleList(final RuleList ruleList) {
+        ObjectHelper.checkNotNull("parameter:ruleList", ruleList);
         this.ruleList = ruleList;
     }
-    protected RuleList createRuleList(){
-        final RuleList list = new RuleList ();
-        list.setStyleSheet( this );
+
+    protected RuleList createRuleList() {
+        final RuleList list = new RuleList();
+        list.setStyleSheet(this);
         return list;
     }
-    public List getRules(){
+
+    public List getRules() {
         return this.getRuleList();
     }
 

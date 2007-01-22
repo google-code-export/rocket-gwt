@@ -31,7 +31,7 @@ import com.google.gwt.user.client.Element;
 
 /**
  * A series of unit tests for the ComputedStyle class.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class ComputedStyleGwtTestCase extends GWTTestCase {
@@ -40,7 +40,7 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         return "rocket.style.test.computedstyle.ComputedStyleGwtTestCase";
     }
 
-    public void testSize(){
+    public void testSize() {
         final String propertyName = "margin";
         final String propertyValue = "1px";
 
@@ -50,7 +50,7 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         final Map map = StyleHelper.getComputedStyle(element);
         TestCase.assertNotNull(element);
         final int size = map.size();
-        TestCase.assertTrue( "" + size, size > 0 );
+        TestCase.assertTrue("" + size, size > 0);
     }
 
     public void testGetExistingComputedProperty() {
@@ -86,6 +86,7 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         final StylePropertyValue mapPropertyValue = (StylePropertyValue) map.get(propertyName);
         TestCase.assertNull(mapPropertyValue);
     }
+
     public void testGetExistingInheritedProperty() {
         final String propertyName = "backgroundColor";
         final String propertyValue = "#000000";
@@ -123,8 +124,8 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         final Map map = StyleHelper.getComputedStyle(element);
         TestCase.assertNotNull(element);
 
-        final boolean actual = map.containsKey( propertyName );
-        TestCase.assertTrue( actual );
+        final boolean actual = map.containsKey(propertyName);
+        TestCase.assertTrue(actual);
     }
 
     public void testContainsExistingValue() {
@@ -138,9 +139,9 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         TestCase.assertNotNull(element);
 
         final StylePropertyValue value = new StylePropertyValue();
-        value.setString( propertyValue );
-        final boolean actual = map.containsValue( value );
-        TestCase.assertTrue( actual );
+        value.setString(propertyValue);
+        final boolean actual = map.containsValue(value);
+        TestCase.assertTrue(actual);
     }
 
     public void testKeySetAdd() {
@@ -148,10 +149,10 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         final Map map = StyleHelper.getComputedStyle(element);
         TestCase.assertNotNull(element);
 
-        try{
+        try {
             final Set keySet = map.keySet();
-            keySet.add( "ExpectingException");
-        } catch ( final Exception expected ){
+            keySet.add("ExpectingException");
+        } catch (final Exception expected) {
 
         }
     }
@@ -172,8 +173,8 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         TestCase.assertNotNull(element);
 
         final Set keySet = map.keySet();
-        final boolean actual = keySet.contains( "marginTop" );
-        TestCase.assertTrue( actual );
+        final boolean actual = keySet.contains("marginTop");
+        TestCase.assertTrue(actual);
     }
 
     public void testKeySetIterator() {
@@ -195,14 +196,14 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
 
         boolean found = false;
         final Iterator iterator = keySet.iterator();
-        while( iterator.hasNext() ){
-            if( propertyName.equals(iterator.next() )){
+        while (iterator.hasNext()) {
+            if (propertyName.equals(iterator.next())) {
                 found = true;
                 break;
             }
         }
 
-        TestCase.assertTrue( "keySet.iterator find", found );
+        TestCase.assertTrue("keySet.iterator find", found);
     }
 
     public void testValuesCollectionAdd() {
@@ -210,10 +211,10 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         final Map map = StyleHelper.getComputedStyle(element);
         TestCase.assertNotNull(element);
 
-        try{
+        try {
             final Collection values = map.values();
-            values.add( "ExpectingException");
-        } catch ( final Exception expected ){
+            values.add("ExpectingException");
+        } catch (final Exception expected) {
 
         }
     }
@@ -228,10 +229,10 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         TestCase.assertNotNull(element);
 
         final StylePropertyValue value = new StylePropertyValue();
-        value.setString( propertyValue );
+        value.setString(propertyValue);
         final Collection values = map.values();
-        final boolean actual = values.contains( value );
-        TestCase.assertTrue( actual );
+        final boolean actual = values.contains(value);
+        TestCase.assertTrue(actual);
     }
 
     public void testValuesIterator() {
@@ -244,21 +245,21 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         TestCase.assertNotNull(element);
 
         final StylePropertyValue value = new StylePropertyValue();
-        value.setString( propertyValue );
+        value.setString(propertyValue);
 
         final Collection values = map.values();
         boolean found = false;
 
         final Iterator iterator = values.iterator();
-        while( iterator.hasNext() ){
+        while (iterator.hasNext()) {
             final Object otherValue = iterator.next();
-            if( value.equals( otherValue )){
+            if (value.equals(otherValue)) {
                 found = true;
                 break;
             }
         }
 
-        TestCase.assertTrue( "values.iterator find", found );
+        TestCase.assertTrue("values.iterator find", found);
     }
 
     public void testPut() {
@@ -287,15 +288,14 @@ public class ComputedStyleGwtTestCase extends GWTTestCase {
         }
     }
 
-
     /**
      * Factory method which creates and adds a new div element to the document's body.
-     *
+     * 
      * @return
      */
     protected Element createElementAndAddToDocument() {
         final Element element = DOM.createDiv();
-        DOM.appendChild( DomHelper.getBody(), element );
+        DOM.appendChild(DomHelper.getBody(), element);
         return element;
     }
 }

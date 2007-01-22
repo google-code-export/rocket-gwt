@@ -86,16 +86,17 @@ public class StyleSupportConstants {
      * A variety of named font weight constants.
      */
     public final static String FONT_WEIGHT_NORMAL = "normal";
+
     public final static int FONT_WEIGHT_NORMAL_VALUE = 400;
-    
+
     public final static String FONT_WEIGHT_BOLD = "bold";
+
     public final static int FONT_WEIGHT_BOLD_VALUE = 700;
-    
+
     public final static String FONT_WEIGHT_BOLDER = "bolder";
+
     public final static String FONT_WEIGHT_LIGHTER = "lighter";
-    
-    
-    
+
     public final static String BACKGROUND_POSITION_X_IE6 = "backgroundPositionX";
 
     public final static String BACKGROUND_POSITION_Y_IE6 = "backgroundPositionY";

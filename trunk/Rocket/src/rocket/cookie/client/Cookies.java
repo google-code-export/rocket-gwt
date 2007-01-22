@@ -15,15 +15,15 @@ import rocket.util.client.StringHelper;
 import rocket.util.client.SystemHelper;
 
 /**
- * Represents a Map view of the cookies belonging to this browser.
- * All map keys are of type String and the values are Cookie 
+ * Represents a Map view of the cookies belonging to this browser. All map keys are of type String and the values are Cookie
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class Cookies extends AbstractMap {
 
     /**
-     * Helper which creates a Cookie object to represent a cookie with the given name if one
-     * is found.
+     * Helper which creates a Cookie object to represent a cookie with the given name if one is found.
+     * 
      * @param cookieName
      * @return The corresponding cookie object or null if one was not found.
      */
@@ -96,41 +96,40 @@ public class Cookies extends AbstractMap {
         return cookie;
     }
 
-    
-    public int size(){
+    public int size() {
         return this.createTokens().length;
     }
 
-    public Object get( final Object key ){
-        return this.getCookie( (String) key );
-    }
-    
-    public Object put( final Object key, final Object value ){
-        return this.putCookie( (String) key, (Cookie) value); 
+    public Object get(final Object key) {
+        return this.getCookie((String) key);
     }
 
-    protected Cookie putCookie( final String cookieName, final Cookie cookie ){
-        final Cookie replaced = this.getCookie( cookieName );
+    public Object put(final Object key, final Object value) {
+        return this.putCookie((String) key, (Cookie) value);
+    }
+
+    protected Cookie putCookie(final String cookieName, final Cookie cookie) {
+        final Cookie replaced = this.getCookie(cookieName);
         CookieHelper.setCookie(cookie.toCookieString());
         return replaced;
     }
 
-    public Object remove( final Object key ){
-        return this.removeCookie( (String) key );
+    public Object remove(final Object key) {
+        return this.removeCookie((String) key);
     }
-    
-    protected Cookie removeCookie( final String cookieName ){
+
+    protected Cookie removeCookie(final String cookieName) {
         final Cookie removed = this.getCookie(cookieName);
         CookieHelper.removeCookie(cookieName);
         return removed;
     }
-    
-    public Set entrySet(){
+
+    public Set entrySet() {
         final CookieEntrySet set = new CookieEntrySet();
-        set.setCookies( this );
+        set.setCookies(this);
         return set;
     }
-    
+
     /**
      * Represents an entryset view of this Cookies Map
      */

@@ -34,11 +34,12 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * This test creates a number of buttons which run a set of related tests.
+ * 
  * @author Miroslav Pokorny (mP)
  */
-public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
+public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
-    public void onModuleLoad(){
+    public void onModuleLoad() {
         this.createTestLabels();
         this.addButtons();
     }
@@ -82,13 +83,14 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
 
     final String FONT_SIZE_VALUE = "40px";
 
-    protected void createTestLabels(){
+    protected void createTestLabels() {
         final RootPanel rootPanel = RootPanel.get();
 
         rootPanel.add(this.createLabel(APPLE_TEXT, APPLE_CLASS_NAME));
         rootPanel.add(this.createLabel(BANANA_TEXT, BANANA_CLASS_NAME));
         rootPanel.add(this.createLabel(CARROT_TEXT, CARROT_CLASS_NAME));
     }
+
     /**
      * Factory method which creates a label that will be assigned a style and some text.
      * 
@@ -109,13 +111,13 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         return label;
     }
 
-    protected void addButtons(){
+    protected void addButtons() {
         final RootPanel rootPanel = RootPanel.get();
 
         final Button testStyleSheets = new Button("StyleSheets(List)");
         testStyleSheets.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                StyleSheetTest.this.executeTests( new StyleSheetsTestBuilder() );
+                StyleSheetTest.this.executeTests(new StyleSheetsTestBuilder());
             }
         });
         rootPanel.add(testStyleSheets);
@@ -123,7 +125,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final Button testStyleSheet = new Button("StyleSheet");
         testStyleSheet.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                StyleSheetTest.this.executeTests( new StyleSheetTestBuilder() );
+                StyleSheetTest.this.executeTests(new StyleSheetTestBuilder());
             }
         });
         rootPanel.add(testStyleSheet);
@@ -131,7 +133,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final Button testRuleList = new Button("Rules(List)");
         testRuleList.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                StyleSheetTest.this.executeTests( new RulesTestBuilder() );
+                StyleSheetTest.this.executeTests(new RulesTestBuilder());
             }
         });
         rootPanel.add(testRuleList);
@@ -139,7 +141,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final Button testRule = new Button("Rule");
         testRule.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                StyleSheetTest.this.executeTests( new RuleTestBuilder() );
+                StyleSheetTest.this.executeTests(new RuleTestBuilder());
             }
         });
         rootPanel.add(testRule);
@@ -147,7 +149,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final Button testSelector = new Button("Selector");
         testSelector.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                StyleSheetTest.this.executeTests( new SelectorTestBuilder() );
+                StyleSheetTest.this.executeTests(new SelectorTestBuilder());
             }
         });
         rootPanel.add(testSelector);
@@ -155,7 +157,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final Button testRuleStyle = new Button("Style(Map)");
         testRuleStyle.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                StyleSheetTest.this.executeTests( new StyleTestBuilder() );
+                StyleSheetTest.this.executeTests(new StyleTestBuilder());
             }
         });
         rootPanel.add(testRuleStyle);
@@ -163,131 +165,144 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final Button testStylePropertyValue = new Button("StylePropertyValue");
         testStylePropertyValue.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
-                StyleSheetTest.this.executeTests( new StylePropertyValueTestBuilder() );
+                StyleSheetTest.this.executeTests(new StylePropertyValueTestBuilder());
             }
         });
         rootPanel.add(testStylePropertyValue);
     }
 
-    protected void onTestFailed( final Test test ){
-        if( Window.confirm( "Skip remaining tests")){
-        TestRunner.skipRemainingTests();
+    protected void onTestFailed(final Test test) {
+        if (Window.confirm("Skip remaining tests")) {
+            TestRunner.skipRemainingTests();
         }
-        super.onTestFailed( test );
+        super.onTestFailed(test);
     }
 
-    protected void onTestAborted( final Test test ){
-        if( Window.confirm( "Skip remaining tests")){
+    protected void onTestAborted(final Test test) {
+        if (Window.confirm("Skip remaining tests")) {
             TestRunner.skipRemainingTests();
-            }
-        super.onTestAborted( test );
+        }
+        super.onTestAborted(test);
     }
-    class StyleSheetsTestBuilder implements TestBuilder{
-        public List buildCandidates(){
-            final List tests = new ArrayList();                      
+
+    class StyleSheetsTestBuilder implements TestBuilder {
+        public List buildCandidates() {
+            final List tests = new ArrayList();
 
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testGetStyleSheetList";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testGetStyleSheetList();
                 }
             });
 
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListCached";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListCached();
                 }
             });
 
-            tests.add( new Test() {
-                public String getName(){
+            tests.add(new Test() {
+                public String getName() {
                     return "testStyleSheetListSize";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListSize();
                 }
             });
 
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListIsEmpty";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListIsEmpty();
                 }
             });
 
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListAddObject";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListAddObject();
                 }
             });
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListAddIntObject";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListAddIntObject();
                 }
             });
 
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListGet";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListGet();
                 }
             });
 
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListRepeatedGet";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListRepeatedGet();
                 }
             });
 
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListGetWithInvalidIndex";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListGetWithInvalidIndex();
                 }
             });
 
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListSet";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListSet();
                 }
             });
 
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListRemoveInt";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListRemoveInt();
                 }
             });
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetListRemoveObject";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetListRemoveObject();
                 }
@@ -383,30 +398,31 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
     protected void testStyleSheetListRemoveObject() {
         final List styleSheets = StyleHelper.getStyleSheets();
         try {
-            final Object styleSheet = styleSheets.get( 0 );
-            styleSheets.remove( styleSheet );
+            final Object styleSheet = styleSheets.get(0);
+            styleSheets.remove(styleSheet);
             Test.fail("StyleSheets.remove(Object) should have thrown an exception...");
         } catch (final Exception expected) {
         }
     }
 
-    class StyleSheetTestBuilder implements TestBuilder{
-        public List buildCandidates(){
-            final List tests = new ArrayList();                      
+    class StyleSheetTestBuilder implements TestBuilder {
+        public List buildCandidates() {
+            final List tests = new ArrayList();
 
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleSheetGetRules";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSheetGetRules();
                 }
             });
 
             return tests;
-        }       
-    } 
+        }
+    }
 
     protected void testStyleSheetGetRules() {
         final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
@@ -414,15 +430,16 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         Test.assertNotNull(rules);
     }
 
-    class RulesTestBuilder implements TestBuilder{
-        public List buildCandidates(){
-            final List tests = new ArrayList();                      
+    class RulesTestBuilder implements TestBuilder {
+        public List buildCandidates() {
+            final List tests = new ArrayList();
 
-            tests.add( new Test() {
+            tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testRulesSize";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testRulesSize();
                 }
@@ -430,58 +447,64 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
 
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testRulesIsEmpty";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testRulesIsEmpty();
                 }
             });
 
-            tests.add( new Test() {
-                public String getName(){
+            tests.add(new Test() {
+                public String getName() {
                     return "testRulesGet0";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testRulesGet0();
                 }
             });
 
-            tests.add( new Test() {
-                public String getName(){
+            tests.add(new Test() {
+                public String getName() {
                     return "testRulesGet1";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testRulesGet1();
                 }
             });
 
-            tests.add( new Test() {
-                public String getName(){
+            tests.add(new Test() {
+                public String getName() {
                     return "testRulesContains";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testRulesContains();
                 }
             });
 
-            tests.add( new Test() {
-                public String getName(){
+            tests.add(new Test() {
+                public String getName() {
                     return "testRulesIndexOf";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testRulesIndexOf();
                 }
             });
 
-            tests.add( new Test() {
-                public String getName(){
+            tests.add(new Test() {
+                public String getName() {
                     return "testRulesIterator";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testRulesIterator();
                 }
-            });           
+            });
 
             return tests;
         }
@@ -509,8 +532,9 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
 
         try {
             final Rule someRule = (Rule) rules.get(100);
-            Test.fail("An exception should have been thrown when attempting to retrieving a Rule using an invalid index and not: "
-                    + someRule);
+            Test
+                    .fail("An exception should have been thrown when attempting to retrieving a Rule using an invalid index and not: "
+                            + someRule);
         } catch (final Exception expected) {
         }
     }
@@ -552,15 +576,16 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         Test.assertEquals("rules.iterator.hasNext() for exhausted iterator", iterator.hasNext(), false);
     }
 
-    class RuleTestBuilder implements TestBuilder{
-        public List buildCandidates(){
-            final List tests = new ArrayList();                      
+    class RuleTestBuilder implements TestBuilder {
+        public List buildCandidates() {
+            final List tests = new ArrayList();
 
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testRuleAddAndRemove";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testRuleAddAndRemove();
                 }
@@ -599,24 +624,25 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
 
         // verify that it was appended by checking bananaRules index.
         final int indexOfRemovedRule = rules.indexOf(rule);
-        Test.assertEquals("indexOf( bananaRule ) should be -1 after removing the newRule",
-                indexOfRemovedRule, -1);
+        Test.assertEquals("indexOf( bananaRule ) should be -1 after removing the newRule", indexOfRemovedRule, -1);
 
         if (false == Window
                 .confirm("Has banana area has reverted back to black text on a white background (inherited from body)?")) {
-            Test.fail("The banana area did not revert back to black text on a white background after removing the newly added rule.");
+            Test
+                    .fail("The banana area did not revert back to black text on a white background after removing the newly added rule.");
         }
     }
 
-    class SelectorTestBuilder implements TestBuilder{
-        public List buildCandidates(){
-            final List tests = new ArrayList();                      
+    class SelectorTestBuilder implements TestBuilder {
+        public List buildCandidates() {
+            final List tests = new ArrayList();
 
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testSelectorGet";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testSelectorGet();
                 }
@@ -624,9 +650,10 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
 
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testSelectorSet";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testSelectorSet();
                 }
@@ -672,203 +699,226 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
             Test.fail("The apple carrot does not have black text on white background.");
         }
     }
-    class StyleTestBuilder implements TestBuilder{
-        public List buildCandidates(){
-            final List tests = new ArrayList();                      
+
+    class StyleTestBuilder implements TestBuilder {
+        public List buildCandidates() {
+            final List tests = new ArrayList();
 
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleSize";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleSize();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleIsEmpty";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleIsEmpty();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleContainsKey0";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleContainsKey0();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleContainsKey1";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleContainsKey1();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleContainsValue0";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleContainsValue0();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleContainsValue1";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleContainsValue1();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleGetStyle0";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleGetStyle0();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleGetStyle1";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleGetStyle1();
                 }
             });
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStylePutStyle0";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStylePutStyle0();
                 }
             });
             tests.add(new Test() {
-                public String getName(){
+                public String getName() {
                     return "testStylePutStyle1";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStylePutStyle1();
                 }
             });
-            
+
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleRemoveStyle0";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleRemoveStyle0();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleRemoveStyle1";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleRemoveStyle1();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleKeySetSize";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleKeySetSize();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleKeySetIsEmpty";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleKeySetIsEmpty();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleKeySetContains0";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleKeySetContains0();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleKeySetContains1";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleKeySetContains1();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleKeySetIterator";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleKeySetIterator();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleValuesCollectionSize";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleValuesCollectionSize();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleValuesCollectionIsEmpty";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleValuesCollectionIsEmpty();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleValuesCollectionContains0";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleValuesCollectionContains0();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleValuesCollectionContains1";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleValuesCollectionContains1();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStyleValuesCollectionIterator";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStyleValuesCollectionIterator();
                 }
@@ -876,11 +926,12 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
             return tests;
         }
     }
+
     protected void testStyleSize() {
         final Map style = this.getAppleRuleStyle();
 
         final int size = style.size();
-        Test.assertTrue( size + " > 5", size > 5);
+        Test.assertTrue(size + " > 5", size > 5);
     }
 
     protected void testStyleIsEmpty() {
@@ -914,17 +965,17 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
 
         final StylePropertyValue value = new StylePropertyValue();
         value.setString(PADDING_VALUE);
-        style.put(StyleConstants.PADDING_RIGHT, value );
-        
+        style.put(StyleConstants.PADDING_RIGHT, value);
+
         final boolean containsValue = style.containsValue(value);
         Test.assertTrue("Map.containsValue(\"" + PADDING_VALUE + "\")", containsValue);
     }
 
     protected void testStyleContainsValue1() {
         final Map style = this.getAppleRuleStyle();
-                
+
         final StylePropertyValue value = new StylePropertyValue();
-        value.setString( "xxx");
+        value.setString("xxx");
 
         final boolean containsValue = style.containsValue(value);
         Test.assertFalse("Map.containsValue(\"xxx\")", containsValue);
@@ -964,8 +1015,8 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final StylePropertyValue value = new StylePropertyValue();
         value.setString("underline");
         final StylePropertyValue replaced0 = (StylePropertyValue) style.put(TEXT_DECORATION_PROPERTY, value);
-        Test.assertNull( replaced0 );
-        
+        Test.assertNull(replaced0);
+
         final StylePropertyValue replaced1 = (StylePropertyValue) style.put(TEXT_DECORATION_PROPERTY, value);
         Test.assertNotNull(replaced1);
 
@@ -979,7 +1030,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
 
         final Object removed = style.remove(TEXT_DECORATION_PROPERTY);
     }
-    
+
     protected void testStyleRemoveStyle0() {
         final Map style = this.getAppleRuleStyle();
         final int sizeBefore = style.size();
@@ -994,7 +1045,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
 
         final int sizeAfter = style.size();
         Test.assertTrue("Size should have decreased by at least one, sizeBefore: " + sizeBefore + ", sizeAfter: "
-                + sizeAfter, sizeBefore > sizeAfter || sizeBefore == sizeAfter );
+                + sizeAfter, sizeBefore > sizeAfter || sizeBefore == sizeAfter);
         // restore
         style.put(BACKGROUND_COLOUR_PROPERTY, value);
     }
@@ -1003,11 +1054,11 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final Map style = this.getAppleRuleStyle();
         final int sizeBefore = style.size();
 
-        //final Object removed = style.remove(ZEBRA_PROPERTY + System.currentTimeMillis() );
-        //Test.assertNull(removed);
+        // final Object removed = style.remove(ZEBRA_PROPERTY + System.currentTimeMillis() );
+        // Test.assertNull(removed);
 
-        //final int sizeAfter = style.size();
-        //Test.assertEquals("size should not have changed", sizeAfter, sizeBefore);
+        // final int sizeAfter = style.size();
+        // Test.assertEquals("size should not have changed", sizeAfter, sizeBefore);
     }
 
     protected void testStyleKeySetSize() {
@@ -1071,7 +1122,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
 
         final StylePropertyValue value = new StylePropertyValue();
         value.setString(PADDING_VALUE);
-        style.put( StyleConstants.PADDING , value);
+        style.put(StyleConstants.PADDING, value);
 
         final boolean contains = values.contains(value);
         Test.assertTrue("StyleValuesCollection.contains( \"" + value + "\" )", contains);
@@ -1082,8 +1133,8 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final Collection values = style.values();
 
         final StylePropertyValue value = new StylePropertyValue();
-        value.setString( "" + System.currentTimeMillis() );
-        
+        value.setString("" + System.currentTimeMillis());
+
         final boolean contains = values.contains(value);
         Test.assertFalse("StyleValuesCollection.contains( \"" + value + "\" )", contains);
     }
@@ -1101,43 +1152,46 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         Test.assertEquals("StyleValuesCollection iterator", countedSize, expectedCount);
     }
 
-
-    class StylePropertyValueTestBuilder implements TestBuilder{
-        public List buildCandidates(){
-            final List tests = new ArrayList();                      
+    class StylePropertyValueTestBuilder implements TestBuilder {
+        public List buildCandidates() {
+            final List tests = new ArrayList();
 
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStylePropertyValueGetValue";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStylePropertyValueGetValue();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStylePropertyValueGetColour";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStylePropertyValueGetColour();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStylePropertyValueSetValue";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStylePropertyValueSetValue();
                 }
             });
             tests.add(new Test() {
 
-                public String getName(){
+                public String getName() {
                     return "testStylePropertyValueGetUnit";
                 }
+
                 public void execute() {
                     StyleSheetTest.this.testStylePropertyValueGetUnit();
                 }
@@ -1160,7 +1214,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         Test.assertNotNull(value);
 
         final Colour colour = value.getColour();
-        final Colour expectedColour = new Colour( 0xffff00);
+        final Colour expectedColour = new Colour(0xffff00);
         Test.assertEquals("apple rule style backgroundColour(should be yellow)", colour, expectedColour);
     }
 
@@ -1175,14 +1229,14 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint{
         final Map inlineStyles = this.getAppleRuleStyle();
         final int newFontSizeValue = 40;
         value.setInteger(newFontSizeValue, CssUnit.PX);
-        inlineStyles.put( FONT_SIZE, value);
-        
+        inlineStyles.put(FONT_SIZE, value);
+
         if (false == Window.confirm("The apple area should now have text that is " + newFontSizeValue
                 + "px in size (was " + originalFontSize + "px)")) {
             Test.fail("The apple area text fontSize is not " + newFontSizeValue + "px");
         }
         value.setInteger(originalFontSize, CssUnit.PX);
-        inlineStyles.put( FONT_SIZE, value);
+        inlineStyles.put(FONT_SIZE, value);
     }
 
     protected void testStylePropertyValueGetUnit() {

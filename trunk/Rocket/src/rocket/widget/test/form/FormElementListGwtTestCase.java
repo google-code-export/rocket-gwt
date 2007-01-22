@@ -53,14 +53,14 @@ public class FormElementListGwtTestCase extends GWTTestCase {
 
     public void testSize() {
         final TestFormElementsList list = new TestFormElementsList();
-        list.setForm( getForm() );
+        list.setForm(getForm());
 
         assertEquals(10, list.size());
     }
 
     public void testGet0OnlyTestsNotNull() {
         final TestFormElementsList list = new TestFormElementsList();
-        list.setForm( getForm() );
+        list.setForm(getForm());
 
         for (int i = 0; i < 10; i++) {
             this.addCheckpoint("element: " + i);
@@ -72,7 +72,7 @@ public class FormElementListGwtTestCase extends GWTTestCase {
 
     public void testGet1TestsElementType() {
         final TestFormElementsList list = new TestFormElementsList();
-        list.setForm( getForm() );
+        list.setForm(getForm());
 
         {
             final Object element = list.get(0);
@@ -123,7 +123,7 @@ public class FormElementListGwtTestCase extends GWTTestCase {
 
     public void testIterator() {
         final TestFormElementsList list = new TestFormElementsList();
-        list.setForm( getForm() );
+        list.setForm(getForm());
 
         final Iterator iterator = list.iterator();
         int i = 0;
@@ -203,14 +203,14 @@ public class FormElementListGwtTestCase extends GWTTestCase {
      * 
      * @return
      */
-    static JavaScriptObject getForm(){
-        final JavaScriptObject forms = ObjectHelper.getObject( BrowserHelper.getDocument(), "form");
-        return ObjectHelper.getObject( forms, 0 );
+    static JavaScriptObject getForm() {
+        final JavaScriptObject forms = ObjectHelper.getObject(BrowserHelper.getDocument(), "form");
+        return ObjectHelper.getObject(forms, 0);
     }
-    
-    class TestFormElementsList extends FormElementsList{
-        public void setForm( final JavaScriptObject form ){
-            super.setForm( form );
+
+    class TestFormElementsList extends FormElementsList {
+        public void setForm(final JavaScriptObject form) {
+            super.setForm(form);
         }
     }
 }

@@ -18,45 +18,45 @@ package java.lang;
 import java.io.PrintStream;
 
 public final class System {
-  
-  /**
-   * Does nothing in web mode. To get output in web mode, subclass PrintStream
-   * and call {@link #setErr(PrintStream)}.
-   */
-  public static final PrintStream err = new PrintStream(null);
 
-  /**
-   * Does nothing in web mode. To get output in web mode, subclass
-   * {@link PrintStream} and call {@link #setOut(PrintStream)}.
-   */
-  public static final PrintStream out = new PrintStream(null);
+    /**
+     * Does nothing in web mode. To get output in web mode, subclass PrintStream and call {@link #setErr(PrintStream)}.
+     */
+    public static final PrintStream err = new PrintStream(null);
 
-  /**
-   * Has no effect; just here for source compatibility.
-   * @skip
-   */
-  public static native void gc()  /*-{
-  }-*/;
+    /**
+     * Does nothing in web mode. To get output in web mode, subclass {@link PrintStream} and call {@link #setOut(PrintStream)}.
+     */
+    public static final PrintStream out = new PrintStream(null);
 
-  public static native long currentTimeMillis() /*-{
-    return (new Date()).getTime();
-  }-*/;
+    /**
+     * Has no effect; just here for source compatibility.
+     * 
+     * @skip
+     */
+    public static native void gc() /*-{
+     }-*/;
 
-  public static native int identityHashCode(Object o) /*-{
-    return @com.google.gwt.core.client.Impl::getHashCode(Ljava/lang/Object;)(o);
-  }-*/;
-  
-  public static native void setErr(PrintStream err) /*-{
-    @java.lang.System::err = err;
-  }-*/;
+    public static native long currentTimeMillis() /*-{
+     return (new Date()).getTime();
+     }-*/;
 
-  public static native void setOut(PrintStream out) /*-{
-    @java.lang.System::out = out;
-  }-*/;
+    public static native int identityHashCode(Object o) /*-{
+     return @com.google.gwt.core.client.Impl::getHashCode(Ljava/lang/Object;)(o);
+     }-*/;
 
-  public static void arraycopy( final Object[] source, final int sourceIndex, final Object[] destination, final int destinationIndex, final int count ){
-      for( int i = 0; i < count; i++ ){
-          destination[i + destinationIndex ] = source[ i + sourceIndex ]; 
-      }
-  }
+    public static native void setErr(PrintStream err) /*-{
+     @java.lang.System::err = err;
+     }-*/;
+
+    public static native void setOut(PrintStream out) /*-{
+     @java.lang.System::out = out;
+     }-*/;
+
+    public static void arraycopy(final Object[] source, final int sourceIndex, final Object[] destination,
+            final int destinationIndex, final int count) {
+        for (int i = 0; i < count; i++) {
+            destination[i + destinationIndex] = source[i + sourceIndex];
+        }
+    }
 }

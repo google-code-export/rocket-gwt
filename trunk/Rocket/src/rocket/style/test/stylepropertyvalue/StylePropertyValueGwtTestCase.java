@@ -31,7 +31,7 @@ public class StylePropertyValueGwtTestCase extends GWTTestCase {
     public String getModuleName() {
         return "rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase";
     }
-    
+
     public void testGetNumber() {
         final StylePropertyValue value = new StylePropertyValue();
         value.setString("123px");

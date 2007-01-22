@@ -172,7 +172,7 @@ public abstract class CometClient {
      * Sub-classes must override this method to create the ServiceProxy using defered binding.
      * 
      * <pre>
-     *   return GWT.create( INSERT SERVICE CLASS.class );
+     *    return GWT.create( INSERT SERVICE CLASS.class );
      * </pre>
      * 
      * @return

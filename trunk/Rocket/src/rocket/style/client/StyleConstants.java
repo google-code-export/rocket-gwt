@@ -24,8 +24,9 @@ public class StyleConstants {
     public final static char COMPOUND = '-';
 
     public final static String RULES_LIST_PROPERTY = "cssRules";
+
     public final static String RULES_LIST_PROPERTY_IE6 = "rules";
-    
+
     // style
     // attributes...........................................................................................
     public final static String DISABLED_ATTRIBUTE = "disabled";
@@ -35,7 +36,6 @@ public class StyleConstants {
     public final static String SELECTOR_TEXT_PROPERTY_NAME = "selectorText";
 
     public final static String SELECTOR_SEPARATOR = ",";
-
 
     /**
      * Each rule has a style object which contains a read/writable cssText property.
@@ -289,6 +289,7 @@ public class StyleConstants {
     public static final String WORD_SPACING = "wordSpacing";
 
     public static final String Z_INDEX = "zIndex";
+
     /**
      * THe w3c name for the opacity property.
      */
@@ -297,18 +298,23 @@ public class StyleConstants {
     /**
      * A scaling factor that may be used to convert inches into pixels
      */
-    public final static float IN_TO_PX = 1/96f;
-    public final static float PX_TO_IN = 1/IN_TO_PX; 
-        
+    public final static float IN_TO_PX = 1 / 96f;
+
+    public final static float PX_TO_IN = 1 / IN_TO_PX;
+
     public final static float CM_TO_PX = IN_TO_PX * 2.54f;
-    public final static float PX_TO_CM = 1/CM_TO_PX;    
-    
+
+    public final static float PX_TO_CM = 1 / CM_TO_PX;
+
     public final static float MM_TO_PX = 10f * CM_TO_PX;
-    public final static float PX_TO_MM = 1/MM_TO_PX;
-    
+
+    public final static float PX_TO_MM = 1 / MM_TO_PX;
+
     public final static float PC_TO_PX = 16f;
-    public final static float PX_TO_PC = 1/PC_TO_PX;
-    
+
+    public final static float PX_TO_PC = 1 / PC_TO_PX;
+
     public final static float PT_TO_PX = 96f / 72f;
-    public final static float PX_TO_PT = 1/PT_TO_PX;
+
+    public final static float PX_TO_PT = 1 / PT_TO_PX;
 }

@@ -379,5 +379,11 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.24.zip
 GWT
 FIX com/google/gwt/emul/java/lang/Character.digit(char,index) was failing when converting A-F and a-f from hex to decimal.
     (http://code.google.com/p/google-web-toolkit/issues/detail?id=302)
-****************************** REMINDERS TODO FIX ************************
-TODO need to double check that setEventListener is not set in any widget constructors. it should only be set in onAttach
+
+0.25 22 January 2007
+--------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.25.zip
+
+* Added ResizablePanel widget which accepts a child widget and adds handles so that the user may resize the child. It is possible to
+  set the min/max width and height. Events are also fired whenever the size of the panel changes due to handle dragging.
+* Also fixed outstanding AutoCompleteTextBox issue

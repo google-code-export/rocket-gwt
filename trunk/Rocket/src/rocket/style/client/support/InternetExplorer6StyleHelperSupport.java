@@ -245,8 +245,8 @@ public class InternetExplorer6StyleHelperSupport extends StyleHelperSupport {
                 }
                 break;
             }
-            if( propertyName.equals( StyleConstants.FONT_WEIGHT )){
-                propertyValue = "" + this.getComputedFontWeight( element );
+            if (propertyName.equals(StyleConstants.FONT_WEIGHT)) {
+                propertyValue = "" + this.getComputedFontWeight(element);
                 break;
             }
 
@@ -269,6 +269,11 @@ public class InternetExplorer6StyleHelperSupport extends StyleHelperSupport {
                 if (propertyValue.endsWith("%") || StyleSupportConstants.AUTO.equals(propertyValue)) {
                     propertyValue = this.getComputedHeight(element) + "px";
                 }
+                break;
+            }
+            // if MARGIN and value == "auto" needs to calculate margin value.
+            if (propertyValue.equals(StyleSupportConstants.AUTO)) {
+                propertyValue = "0px";
                 break;
             }
 
@@ -449,7 +454,7 @@ public class InternetExplorer6StyleHelperSupport extends StyleHelperSupport {
 
         return value;
     }
-    
+
     /**
      * Retrieves the computed font size for the given element taking care of absolute and relative sizes.
      * 
@@ -509,8 +514,8 @@ public class InternetExplorer6StyleHelperSupport extends StyleHelperSupport {
     /**
      * Retrieves the computed font size for the parent of the given element.
      * 
-     * This method should only be called by {@link #getComputedFontSize(Element)} when it encounters a font-size of larger or smaller. 
-     * This method will then attempt to locate a pixel value for the font-size property of a parent(ancestor if recursive). This parent value is
+     * This method should only be called by {@link #getComputedFontSize(Element)} when it encounters a font-size of larger or smaller. This
+     * method will then attempt to locate a pixel value for the font-size property of a parent(ancestor if recursive). This parent value is
      * then multiplied against the scalingFactor to give the final value.
      * 
      * @param element
