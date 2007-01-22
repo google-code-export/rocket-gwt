@@ -24,7 +24,7 @@ import java.util.Map;
  * @author Miroslav Pokorny (mP)
  */
 public class Colour {
-   
+
     /**
      * Accepts a colour value as a string and attempts to convert it into an integer value. Currently supported formats include
      * <ul>
@@ -101,9 +101,9 @@ public class Colour {
      */
     static Colour parseHashRrggbb(final String value) {
         StringHelper.checkNotEmpty("parameter:value", value);
-        
+
         final int redGreenBlue = Integer.parseInt(value.substring(1, 1 + 6), 16);
-        return new Colour( redGreenBlue );
+        return new Colour(redGreenBlue);
     }
 
     /**
@@ -117,17 +117,16 @@ public class Colour {
 
         int red = Character.digit(value.charAt(1), 16);
         red = red * 17;
-        
+
         int green = Character.digit(value.charAt(2), 16);
         green = green * 17;
-        
+
         int blue = Character.digit(value.charAt(3), 16);
         blue = blue * 17;
-        
+
         return new Colour(red, green, blue);
     }
 
-    
     /**
      * THis map is used to lookup rgb values for a colour using its name. THe key is the lowercased form of the colour name.
      */
@@ -306,28 +305,26 @@ public class Colour {
         return (Colour) Colour.namedColours.get(namedColour.toLowerCase());
     }
 
-    public Colour( final int colour ){
-        this( (colour >> 16 ) & 0xff,( colour >> 8 ) &0xff, colour & 0x0ff );
+    public Colour(final int colour) {
+        this((colour >> 16) & 0xff, (colour >> 8) & 0xff, colour & 0x0ff);
     }
-    
-    public Colour( final int red, final int green, final int blue ){
+
+    public Colour(final int red, final int green, final int blue) {
         super();
-        this.setRed( red );
-        this.setGreen( green );
-        this.setBlue( blue );
-    }       
-    
+        this.setRed(red);
+        this.setGreen(green);
+        this.setBlue(blue);
+    }
+
     public String toCssColour() {
-        final int rgb = this.getRed() * 0x10000 +
-        this.getGreen() * 0x100 +
-        this.getBlue();
-        
+        final int rgb = this.getRed() * 0x10000 + this.getGreen() * 0x100 + this.getBlue();
+
         final String rgbHexString = Integer.toHexString(rgb);
         final String string = '#' + StringHelper.padLeft(rgbHexString, 6, '0');
         return string;
     }
 
-    public Colour makeLighter( final float whiteness) {
+    public Colour makeLighter(final float whiteness) {
         final int red = getRed();
         final int green = getGreen();
         final int blue = getBlue();
@@ -358,11 +355,10 @@ public class Colour {
 
         return new Colour(darkerRed1, darkerGreen1, darkerBlue1);
     }
-    
 
     public Colour mix(final Colour otherColour, final float mixRatio) {
-        ObjectHelper.checkNotNull( "parameter:otherColour", otherColour);
-        
+        ObjectHelper.checkNotNull("parameter:otherColour", otherColour);
+
         final int red = getRed();
         final int green = getGreen();
         final int blue = getBlue();
@@ -380,51 +376,53 @@ public class Colour {
         return new Colour(mixedRed, mixedGreen, mixedBlue);
     }
 
-    
     private int red;
-    
-    public int getRed(){
+
+    public int getRed() {
         return this.red;
     }
-    void setRed( final int red ){
+
+    void setRed(final int red) {
         this.red = red;
     }
-    
+
     private int green;
-    public int getGreen(){
+
+    public int getGreen() {
         return this.green;
     }
-    void setGreen( final int green ){
+
+    void setGreen(final int green) {
         this.green = green;
     }
-    
+
     private int blue;
-    public int getBlue(){
+
+    public int getBlue() {
         return this.blue;
     }
-    void setBlue( final int blue ){
+
+    void setBlue(final int blue) {
         this.blue = blue;
     }
-    
-   public String toString(){
-       return //super.toString() + ", colour: 
-       "0x" + 
-       StringHelper.padLeft( Integer.toHexString( red ), 2, '0' )+
-       StringHelper.padLeft( Integer.toHexString( green ), 2, '0' )+
-       StringHelper.padLeft( Integer.toHexString( blue ), 2, '0' );
-   }
-   
-   public boolean equals( final Object otherObject ){
-       return otherObject instanceof Colour ? this.equals( (Colour) otherObject ) : false;
-   }
-   
-   public boolean equals( final Colour otherColour ){
-       return this.getRed() == otherColour.getRed() &&
-       this.getGreen() == otherColour.getGreen() &&
-       this.getBlue() == otherColour.getBlue();
-   }
-   
-   public int hashCode(){
-       return this.getRed() << 16 | this.getGreen() << 8 | this.getBlue(); 
-   }
+
+    public String toString() {
+        return // super.toString() + ", colour:
+        "0x" + StringHelper.padLeft(Integer.toHexString(red), 2, '0')
+                + StringHelper.padLeft(Integer.toHexString(green), 2, '0')
+                + StringHelper.padLeft(Integer.toHexString(blue), 2, '0');
+    }
+
+    public boolean equals(final Object otherObject) {
+        return otherObject instanceof Colour ? this.equals((Colour) otherObject) : false;
+    }
+
+    public boolean equals(final Colour otherColour) {
+        return this.getRed() == otherColour.getRed() && this.getGreen() == otherColour.getGreen()
+                && this.getBlue() == otherColour.getBlue();
+    }
+
+    public int hashCode() {
+        return this.getRed() << 16 | this.getGreen() << 8 | this.getBlue();
+    }
 }

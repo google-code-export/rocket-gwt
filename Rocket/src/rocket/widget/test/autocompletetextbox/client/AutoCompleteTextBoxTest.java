@@ -16,6 +16,7 @@
 package rocket.widget.test.autocompletetextbox.client;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,13 +30,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class AutoCompleteTextBoxTest implements EntryPoint {
 
-    /**
-     * This is the entry point method.
-     */
     public void onModuleLoad() {
         GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
             public void onUncaughtException(final Throwable caught) {
@@ -44,23 +43,22 @@ public class AutoCompleteTextBoxTest implements EntryPoint {
             }
         });
         final RootPanel rootPanel = RootPanel.get();
+        rootPanel.add(new TextBox());
 
-        final List matchCandidates = Arrays.asList(new String[] { "Red square", "Red star", "Red apple", "Red baron",
-                "Red", "New York", "New York state", "New Zealand", "New Jersey", "New Mexico", "New South Wales",
-                "New South Wales government", "New England", "Zebra", "Zebra crossing", "ZebraFlexTable" });
+        final List matchCandidates = Arrays.asList(new String[] { "New England", "New Jersey", "New Mexico",
+                "New South Wales", "New York", "New York state", "New Zealand", "Red", "Red apple", "Red baron",
+                "Red square", "Red star", "Zebra", "Zebra crossing", "Zebra stripe" });
 
         final StringBuffer buf = new StringBuffer();
-        buf.append("<br/>");
-        boolean addSeparator = false;
+        buf.append("<ul>");
+
         final Iterator iterator = matchCandidates.iterator();
         while (iterator.hasNext()) {
-            if (addSeparator) {
-                buf.append(", ");
-            }
-            addSeparator = true;
+            buf.append("<li>");
             buf.append(iterator.next());
+            buf.append("</li>");
         }
-        buf.append("<hr/>");
+        buf.append("</ul>");
 
         rootPanel.add(new HTML(buf.toString()));
 
@@ -71,8 +69,8 @@ public class AutoCompleteTextBoxTest implements EntryPoint {
         autoCompleteTextBox.addKeyboardListener(new KeyboardListenerAdapter() {
             public void onKeyUp(final Widget sender, final char keyCode, final int modifiers) {
                 final String text = autoCompleteTextBox.getText();
-
                 autoCompleteTextBox.clear();
+
                 if (text.length() > 0) {
                     final Iterator iterator = matchCandidates.iterator();
                     while (iterator.hasNext()) {

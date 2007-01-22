@@ -9,6 +9,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * Each instance of this class represents a single Rule belonging to a StyleSheet
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class Rule {
@@ -18,31 +19,31 @@ public class Rule {
      */
     private String selector = "";
 
-    public String getSelector(){
+    public String getSelector() {
         String selector = this.selector;
-        if( this.hasRuleList() ){
+        if (this.hasRuleList()) {
             final JavaScriptObject rule = this.getRule();
-            selector = ObjectHelper.getString( rule , StyleConstants.SELECTOR_TEXT_PROPERTY_NAME );
+            selector = ObjectHelper.getString(rule, StyleConstants.SELECTOR_TEXT_PROPERTY_NAME);
         }
         return selector;
     }
 
-    public void setSelector( final String selector ){
-        StringHelper.checkNotEmpty( "parameter:selector", selector );
+    public void setSelector(final String selector) {
+        StringHelper.checkNotEmpty("parameter:selector", selector);
 
-        if( this.hasRuleList() ){
+        if (this.hasRuleList()) {
             // remove this rule from its parent and reinsert it at the same spot.
             final RuleList ruleList = this.getRuleList();
             final JavaScriptObject styleSheet = ruleList.getStyleSheet().getStyleSheet();
             final int index = this.getIndex();
 
-            final RuleStyle style = (RuleStyle)this.getStyle();
+            final RuleStyle style = (RuleStyle) this.getStyle();
             final JavaScriptObject nativeStyle = style.getStyle();
-            final String styleText = ObjectHelper.getString( nativeStyle, StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME );
+            final String styleText = ObjectHelper.getString(nativeStyle, StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
 
             // remove and reinser the rule...
             StyleHelper.removeRule(styleSheet, index);
-            StyleHelper.insertRule(styleSheet, index, selector, styleText );
+            StyleHelper.insertRule(styleSheet, index, selector, styleText);
         }
         this.selector = selector;
     }
@@ -52,33 +53,35 @@ public class Rule {
      */
     private Map style;
 
-    public Map getStyle(){
-        if( false == this.hasStyle() ){
-            this.setStyle( this.createStyle() );
+    public Map getStyle() {
+        if (false == this.hasStyle()) {
+            this.setStyle(this.createStyle());
         }
         return this.style;
     }
-    protected boolean hasStyle(){
+
+    protected boolean hasStyle() {
         return null != this.style;
     }
 
-    protected void setStyle( final Map style ){
-        ObjectHelper.checkNotNull( "parameter:style", style );
+    protected void setStyle(final Map style) {
+        ObjectHelper.checkNotNull("parameter:style", style);
         this.style = style;
     }
 
-    protected Map createStyle(){
+    protected Map createStyle() {
         final RuleStyle style = new RuleStyle();
-        style.setRule( this );
+        style.setRule(this);
         return style;
     }
 
     /**
      * Helper that gets the native rule object.
+     * 
      * @return
      */
-    protected JavaScriptObject getRule(){
-        return ObjectHelper.getObject( this.getRuleList().getRulesCollection(), this.getIndex() );
+    protected JavaScriptObject getRule() {
+        return ObjectHelper.getObject(this.getRuleList().getRulesCollection(), this.getIndex());
     }
 
     /**
@@ -86,18 +89,21 @@ public class Rule {
      */
     private RuleList ruleList;
 
-    protected RuleList getRuleList(){
-        ObjectHelper.checkNotNull( "field:ruleList", ruleList );
+    protected RuleList getRuleList() {
+        ObjectHelper.checkNotNull("field:ruleList", ruleList);
         return this.ruleList;
     }
-    protected boolean hasRuleList(){
+
+    protected boolean hasRuleList() {
         return null != ruleList;
     }
-    protected void setRuleList(final RuleList ruleList ){
-        ObjectHelper.checkNotNull( "parameter:ruleList", ruleList );
+
+    protected void setRuleList(final RuleList ruleList) {
+        ObjectHelper.checkNotNull("parameter:ruleList", ruleList);
         this.ruleList = ruleList;
     }
-    protected void clearRule(){
+
+    protected void clearRule() {
         this.ruleList = null;
     }
 
@@ -106,10 +112,11 @@ public class Rule {
      */
     private int index;
 
-    protected int getIndex(){
+    protected int getIndex() {
         return index;
     }
-    protected void setIndex( final int index ){
+
+    protected void setIndex(final int index) {
         this.index = index;
     }
 

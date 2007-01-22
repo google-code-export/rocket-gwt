@@ -45,7 +45,7 @@ public class BlockyPixel extends Composite implements PixelGrid {
      */
     public void clear(final Colour colour) {
         ObjectHelper.checkNotNull("parameter:colour", colour);
-        
+
         final int rows = this.getRows();
         final int columns = this.getColumns();
         for (int x = 0; x < columns; x++) {

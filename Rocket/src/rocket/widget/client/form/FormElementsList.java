@@ -13,52 +13,54 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
+
 /**
- * Provides a list view of all a form's elements. It also includes a centralised factory method
- * which creates various widgets depending on which tag was encountered.
+ * Provides a list view of all a form's elements. It also includes a centralised factory method which creates various widgets depending on
+ * which tag was encountered.
  * 
- * Because the form elements array is read only this list is also read only and any attempts to use
- * any of Lists modifying methods which result in an exception being thrown.
+ * Because the form elements array is read only this list is also read only and any attempts to use any of Lists modifying methods which
+ * result in an exception being thrown.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class FormElementsList extends AbstractList implements Destroyable{
+public class FormElementsList extends AbstractList implements Destroyable {
 
     public int size() {
-        return ObjectHelper.getPropertyCount( this.getFormElements());
+        return ObjectHelper.getPropertyCount(this.getFormElements());
     }
 
     public Object get(final int index) {
         Widget widget = null;
 
-        while( true ){
-            final Element element = (Element) ObjectHelper.getObject( this.getFormElements(), index );
+        while (true) {
+            final Element element = (Element) ObjectHelper.getObject(this.getFormElements(), index);
 
             // check cache...
             final Map widgets = this.getWidgets();
-            widget = (Widget) widgets.get( element );
-            if( null != widget ){
+            widget = (Widget) widgets.get(element);
+            if (null != widget) {
                 break;
             }
 
-            widget = this.createWidget( element );
-            widgets.put( element, widget );
+            widget = this.createWidget(element);
+            widgets.put(element, widget);
             break;
         }
 
         return widget;
-    }    
+    }
 
     /**
      * Factory method which creates a Widget from the given Element.
+     * 
      * @param element
      * @return
      */
-    protected Widget createWidget( final Element element ){
+    protected Widget createWidget(final Element element) {
         Widget widget = null;
 
-        while( true ){                
-            if( DomHelper.isTag(element, FormConstants.INPUT_TAG)){
+        while (true) {
+            if (DomHelper.isTag(element, FormConstants.INPUT_TAG)) {
                 final String type = DOM.getAttribute(element, FormConstants.INPUT_TAG_TYPE);
                 if (FormConstants.TEXT_TYPE.equalsIgnoreCase(type)) {
                     widget = createTextBox(element);
@@ -110,6 +112,7 @@ public class FormElementsList extends AbstractList implements Destroyable{
 
         return widget;
     }
+
     /**
      * This method is called whenever an unknown/unhandled input element is encountered.
      * 
@@ -341,15 +344,17 @@ public class FormElementsList extends AbstractList implements Destroyable{
      */
     private Map widgets;
 
-    protected Map getWidgets(){
+    protected Map getWidgets() {
         ObjectHelper.checkNotNull("field:widgets", widgets);
         return this.widgets;
     }
-    protected void setWidgets( final Map widgets ){
+
+    protected void setWidgets(final Map widgets) {
         ObjectHelper.checkNotNull("parameter:widgets", widgets);
         this.widgets = widgets;
     }
-    protected Map createWidgets(){
+
+    protected Map createWidgets() {
         return new HashMap();
     }
 
@@ -358,24 +363,25 @@ public class FormElementsList extends AbstractList implements Destroyable{
      */
     private JavaScriptObject form;
 
-    public JavaScriptObject getForm(){
-        ObjectHelper.checkNotNull("field:form", form );
+    public JavaScriptObject getForm() {
+        ObjectHelper.checkNotNull("field:form", form);
         return form;
     }
-    protected void setForm( final JavaScriptObject form ){
-        ObjectHelper.checkNotNull("parameter:form", form );
+
+    protected void setForm(final JavaScriptObject form) {
+        ObjectHelper.checkNotNull("parameter:form", form);
         this.form = form;
     }
 
-    protected void clearForm(){
+    protected void clearForm() {
         this.form = null;
     }
-    
-    protected JavaScriptObject getFormElements(){
-        return ObjectHelper.getObject( this.getForm(), "elements");
+
+    protected JavaScriptObject getFormElements() {
+        return ObjectHelper.getObject(this.getForm(), "elements");
     }
-          
-    public void destroy(){
+
+    public void destroy() {
         this.clearForm();
     }
 }

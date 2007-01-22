@@ -47,6 +47,12 @@ public class WidgetConstants {
     public final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE = StyleHelper.buildCompound(
             AUTO_COMPLETE_TEXT_BOX_STYLE, "dropDownList");
 
+    public final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE = StyleHelper.buildCompound(
+            AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE, "oddRow");
+
+    public final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE = StyleHelper.buildCompound(
+            AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE, "evenRow");
+
     public final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = StyleHelper.buildCompound(
             AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE, "selected");
 

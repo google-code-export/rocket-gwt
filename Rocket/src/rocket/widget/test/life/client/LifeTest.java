@@ -86,12 +86,12 @@ public class LifeTest implements EntryPoint {
                 pixels.setRows(Integer.parseInt(rows.getText()));
                 pixels.setColumns(Integer.parseInt(columns.getText()));
                 pixels.setSize("90%", "75%");
-                pixels.clear(new Colour( 0xdddddd));
+                pixels.clear(new Colour(0xdddddd));
                 panel.add(pixels);
 
                 final Life life = new Life();
-                life.setDeadCellColour(new Colour( 0xdddddd));
-                life.setLiveCellColour(new Colour( 0xbbbbbb));
+                life.setDeadCellColour(new Colour(0xdddddd));
+                life.setLiveCellColour(new Colour(0xbbbbbb));
                 life.setPixelGrid(pixels);
                 life.createCells(Integer.parseInt(cellBias.getText()));
 

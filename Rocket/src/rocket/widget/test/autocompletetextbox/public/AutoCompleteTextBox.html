@@ -5,10 +5,20 @@
 <meta name='gwt:module' content='rocket.widget.test.autocompletetextbox.AutoCompleteTextBox'>
 <script language="javascript" src="gwt.js"></script>
 <style>
-BODY, TABLE{
+BODY, TABLE, INPUT{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
 }
+
+INPUT {
+	border-width: 1px;
+	border-color: #000;
+	border-style: solid;
+	
+	background-color: #eee;
+	padding: 2px;
+}
+
 .rocket-autoCompleteTextBox-textBox{
 	background-color: #eeeeee;
 	border-width: 1px;
@@ -19,19 +29,43 @@ BODY, TABLE{
 }
 
 .rocket-autoCompleteTextBox-dropDownList{
-	background-color: #dddddd;
+	background-color: #aaf;
 	color: #000000;
 
 	border-width: 1px;
 	border-color: black;
 	border-style: solid;
 
+	padding: 2px;
+
 	cursor: hand;
 }
 
+.rocket-autoCompleteTextBox-dropDownList-oddRow{
+	color: #000;
+	background-color: #eef;	
+}
+
+.rocket-autoCompleteTextBox-dropDownList-evenRow{
+	color: #000;
+	background-color: #ddf;
+}
+
+.rocket-autoCompleteTextBox-dropDownList-oddRow, .rocket-autoCompleteTextBox-dropDownList-evenRow{
+	margin-top: 4px;
+	margin-bottom: 4px;
+	margin-left: 1px;
+	margin-right: 1px;
+	
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 2px;
+	padding-right: 2px;	
+}
+
 .rocket-autoCompleteTextBox-dropDownList-selected{
-	color: #dddddd;
-	background-color: #000000;
+	color: #ddd;
+	background-color: #000;
 }
 
 

@@ -32,9 +32,9 @@ import com.google.gwt.user.client.Element;
 
 /**
  * A series of unit tests that test the InlineStyle class.
- *
+ * 
  * For the sake of brevity and simplicity none of the tests below attempt to destroy any of the referenced Style objects.
- *
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class InlineStyleGwtTestCase extends GWTTestCase {
@@ -43,7 +43,7 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
         return "rocket.style.test.inlinestyle.InlineStyleGwtTestCase";
     }
 
-    public void testSize(){
+    public void testSize() {
         final String propertyName = StyleConstants.OVERFLOW_X;
         final String propertyValue = "scroll";
 
@@ -55,7 +55,7 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
         final int actualSize = map.size();
         final int expectedSize = size + 1;
 
-        TestCase.assertEquals(expectedSize, actualSize );
+        TestCase.assertEquals(expectedSize, actualSize);
     }
 
     public void testGetExistingInlineProperty() {
@@ -101,8 +101,8 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
         final Map map = StyleHelper.getInlineStyle(element);
         TestCase.assertNotNull(element);
 
-        final boolean actual = map.containsKey( propertyName );
-        TestCase.assertTrue( actual );
+        final boolean actual = map.containsKey(propertyName);
+        TestCase.assertTrue(actual);
     }
 
     public void testContainsExistingValue() {
@@ -116,9 +116,9 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
         TestCase.assertNotNull(element);
 
         final StylePropertyValue value = new StylePropertyValue();
-        value.setString( propertyValue );
-        final boolean actual = map.containsValue( value );
-        TestCase.assertTrue( actual );
+        value.setString(propertyValue);
+        final boolean actual = map.containsValue(value);
+        TestCase.assertTrue(actual);
     }
 
     public void testKeySetAdd() {
@@ -126,10 +126,10 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
         final Map map = StyleHelper.getInlineStyle(element);
         TestCase.assertNotNull(element);
 
-        try{
+        try {
             final Set keySet = map.keySet();
-            keySet.add( "ExpectingException");
-        } catch ( final Exception expected ){
+            keySet.add("ExpectingException");
+        } catch (final Exception expected) {
 
         }
     }
@@ -145,8 +145,8 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
         TestCase.assertNotNull(element);
 
         final Set keySet = map.keySet();
-        final boolean actual = keySet.contains( "marginTop" );
-        TestCase.assertTrue( actual );
+        final boolean actual = keySet.contains("marginTop");
+        TestCase.assertTrue(actual);
     }
 
     public void testKeySetIterator() {
@@ -168,14 +168,14 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
 
         boolean found = false;
         final Iterator iterator = keySet.iterator();
-        while( iterator.hasNext() ){
-            if( propertyName.equals(iterator.next() )){
+        while (iterator.hasNext()) {
+            if (propertyName.equals(iterator.next())) {
                 found = true;
                 break;
             }
         }
 
-        TestCase.assertTrue( "keySet.iterator find", found );
+        TestCase.assertTrue("keySet.iterator find", found);
     }
 
     public void testValuesCollectionAdd() {
@@ -183,10 +183,10 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
         final Map map = StyleHelper.getInlineStyle(element);
         TestCase.assertNotNull(element);
 
-        try{
+        try {
             final Collection values = map.values();
-            values.add( "ExpectingException");
-        } catch ( final Exception expected ){
+            values.add("ExpectingException");
+        } catch (final Exception expected) {
 
         }
     }
@@ -201,10 +201,10 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
         TestCase.assertNotNull(element);
 
         final StylePropertyValue value = new StylePropertyValue();
-        value.setString( propertyValue );
+        value.setString(propertyValue);
         final Collection values = map.values();
-        final boolean actual = values.contains( value );
-        TestCase.assertTrue( actual );
+        final boolean actual = values.contains(value);
+        TestCase.assertTrue(actual);
     }
 
     public void testValuesIterator() {
@@ -217,21 +217,21 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
         TestCase.assertNotNull(element);
 
         final StylePropertyValue value = new StylePropertyValue();
-        value.setString( propertyValue );
+        value.setString(propertyValue);
 
         final Collection values = map.values();
         boolean found = false;
 
         final Iterator iterator = values.iterator();
-        while( iterator.hasNext() ){
+        while (iterator.hasNext()) {
             final Object otherValue = iterator.next();
-            if( value.equals( otherValue )){
+            if (value.equals(otherValue)) {
                 found = true;
                 break;
             }
         }
 
-        TestCase.assertTrue( "values.iterator find", found );
+        TestCase.assertTrue("values.iterator find", found);
     }
 
     public void testPutWhichReplaces() {
@@ -241,21 +241,21 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
 
         final String propertyName = StyleConstants.MARGIN_LEFT;
         final String propertyValue = "12px";
-        DOM.setStyleAttribute( element, propertyName, propertyValue );
+        DOM.setStyleAttribute(element, propertyName, propertyValue);
 
         final String newPropertyValue = "34px";
-            final StylePropertyValue value = new StylePropertyValue();
-            value.setString( newPropertyValue );
+        final StylePropertyValue value = new StylePropertyValue();
+        value.setString(newPropertyValue);
 
-            final StylePropertyValue replaced = (StylePropertyValue) map.put(propertyName, value);
-TestCase.assertNotNull(replaced );
+        final StylePropertyValue replaced = (StylePropertyValue) map.put(propertyName, value);
+        TestCase.assertNotNull(replaced);
 
-            final String actual = DOM.getStyleAttribute( element, propertyName );
-            final String expected = value.getString();
-            TestCase.assertEquals( expected, actual );
+        final String actual = DOM.getStyleAttribute(element, propertyName);
+        final String expected = value.getString();
+        TestCase.assertEquals(expected, actual);
 
-            TestCase.assertNotNull( replaced );
-            TestCase.assertEquals( propertyValue, replaced.getString() );
+        TestCase.assertNotNull(replaced);
+        TestCase.assertEquals(propertyValue, replaced.getString());
     }
 
     public void testPutWhichSets() {
@@ -266,15 +266,15 @@ TestCase.assertNotNull(replaced );
         final String propertyName = StyleConstants.MARGIN_LEFT;
         final String propertyValue = "12px";
 
-            final StylePropertyValue value = new StylePropertyValue();
-            value.setString( propertyValue );
+        final StylePropertyValue value = new StylePropertyValue();
+        value.setString(propertyValue);
 
-            final Object replaced = map.put(propertyName, value);
-            TestCase.assertNull( replaced );
+        final Object replaced = map.put(propertyName, value);
+        TestCase.assertNull(replaced);
 
-            final String actual = DOM.getStyleAttribute( element, propertyName );
-            final String expected = value.getString();
-            TestCase.assertEquals( expected, actual );
+        final String actual = DOM.getStyleAttribute(element, propertyName);
+        final String expected = value.getString();
+        TestCase.assertEquals(expected, actual);
     }
 
     public void testRemoveExisting() {
@@ -282,14 +282,13 @@ TestCase.assertNotNull(replaced );
         final Map map = StyleHelper.getInlineStyle(element);
         TestCase.assertNotNull(element);
 
-
         final String propertyName = StyleConstants.MARGIN_LEFT;
         final String propertyValue = "123px";
-        DOM.setStyleAttribute( element, propertyName, propertyValue );
+        DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-        final StylePropertyValue value = (StylePropertyValue) map.remove( propertyName );
-        TestCase.assertNotNull( value );
-        TestCase.assertEquals( propertyValue, value.getString() );
+        final StylePropertyValue value = (StylePropertyValue) map.remove(propertyName);
+        TestCase.assertNotNull(value);
+        TestCase.assertEquals(propertyValue, value.getString());
     }
 
     public void testRemoveNonExisting() {
@@ -298,20 +297,18 @@ TestCase.assertNotNull(replaced );
         TestCase.assertNotNull(element);
 
         final String propertyName = StyleConstants.MARGIN_LEFT;
-        final StylePropertyValue value = (StylePropertyValue) map.remove( propertyName );
-        TestCase.assertNull( value );
+        final StylePropertyValue value = (StylePropertyValue) map.remove(propertyName);
+        TestCase.assertNull(value);
     }
-
-
 
     /**
      * Factory method which creates and adds a new div element to the document's body.
-     *
+     * 
      * @return
      */
     protected Element createElementAndAddToDocument() {
         final Element element = DOM.createDiv();
-        DOM.appendChild( DomHelper.getBody(), element );
+        DOM.appendChild(DomHelper.getBody(), element);
         return element;
     }
 }

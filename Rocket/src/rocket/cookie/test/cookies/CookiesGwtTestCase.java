@@ -195,9 +195,9 @@ public class CookiesGwtTestCase extends GWTTestCase {
 
         final Cookies cookies = new Cookies();
         final Cookie cookie = (Cookie) cookies.get(appleName);
-        assertNotNull( "cookie:" + cookie, cookie );
+        assertNotNull("cookie:" + cookie, cookie);
 
-        assertTrue("cookie map should contain recently fetched cookie", cookies.containsValue( cookie ));
+        assertTrue("cookie map should contain recently fetched cookie", cookies.containsValue(cookie));
     }
 
     public void testContainsValueSearchingForThreeValuesThatExistAndOneThatDoesnt() {
@@ -218,9 +218,8 @@ public class CookiesGwtTestCase extends GWTTestCase {
         assertTrue(cookies.containsValue(cookies.get(appleName)));
         assertTrue(cookies.containsValue(cookies.get(bananaName)));
         assertTrue(cookies.containsValue(cookies.get(carrotName)));
-        assertFalse(cookies.containsValue(NAME_OF_COOKIE_WHICH_DOESNT_EXIST));      
+        assertFalse(cookies.containsValue(NAME_OF_COOKIE_WHICH_DOESNT_EXIST));
     }
-
 
     public void testPutWhichAddsANewCookie() {
         removeAllCookies();
@@ -268,7 +267,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
         carrotCookie.setValue(carrotValue);
         final Object replacedByCarrotCookie = cookies.put(carrotName, carrotCookie);
 
-        assertNull(replacedByCarrotCookie);     
+        assertNull(replacedByCarrotCookie);
     }
 
     public void testPutWhichAddsANewCookieAndThenReplacesIt() {
@@ -287,7 +286,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
         assertNull(replacedByAppleCookie);
 
         final Object replacedByAppleCookie2 = cookies.put(appleName, appleCookie);
-        assertEquals(appleCookie, replacedByAppleCookie2);        
+        assertEquals(appleCookie, replacedByAppleCookie2);
     }
 
     public void testRemoveWhichAttemptsToRemoveANonExistingCookie() {
@@ -354,10 +353,10 @@ public class CookiesGwtTestCase extends GWTTestCase {
         appleCookie.setValue(appleValue);
         cookies.put(appleName, appleCookie);
 
-        assertEquals( CookieHelper.getCookies(), 1, cookies.size());
+        assertEquals(CookieHelper.getCookies(), 1, cookies.size());
 
         cookies.put(appleName, appleCookie);
-        assertEquals( CookieHelper.getCookies(), 1, cookies.size());
+        assertEquals(CookieHelper.getCookies(), 1, cookies.size());
     }
 
     public void testIsEmpty() {
@@ -411,7 +410,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
         carrotCookie.setName(carrotName);
         carrotCookie.setValue(carrotValue);
         cookies.put(carrotName, carrotCookie);
-        assertEquals(CookieHelper.getCookies(), 3, values.size());        
+        assertEquals(CookieHelper.getCookies(), 3, values.size());
     }
 
     public void testValuesCollectionIsEmpty() {
@@ -568,7 +567,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
     }
 
     // public void testValuesCollectionToArrayPassingArray(){
-    //  removeAllCookies();
+    // removeAllCookies();
     // final String appleName = APPLE;
     // final String appleValue = "Green";
     // final String bananaName = BANANA;
@@ -758,7 +757,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
         assertTrue(iterator.hasNext());
         assertTrue(control.remove(iterator.next()));
 
-        assertFalse(iterator.hasNext());        
+        assertFalse(iterator.hasNext());
     }
 
     public void testValuesCollectionIteratorCallingExtraNextAfterIteratorIsExhaustedThrowsException() {
@@ -988,7 +987,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
         cookies.put(carrotName, carrotCookie);
         assertFalse(set.contains(carrotName));
 
-        assertFalse(set.contains(NAME_OF_COOKIE_WHICH_DOESNT_EXIST));       
+        assertFalse(set.contains(NAME_OF_COOKIE_WHICH_DOESNT_EXIST));
     }
 
     public void testEntrySetAddThrowsException() {
@@ -1009,7 +1008,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
             fail("An exception should be thrown when attempting to Cookies.entrySet().add()");
         } catch (final Exception expected) {
 
-        }        
+        }
     }
 
     public void testEntrySetAddAllThrowsException() {
@@ -1199,7 +1198,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
         assertTrue(control.remove(third.getKey()));
 
         assertFalse(iterator.hasNext());
-        assertFalse(iterator.hasNext());       
+        assertFalse(iterator.hasNext());
     }
 
     public void testEntrySetIteratorCallingExtraNextAfterIteratorIsExhaustedThrowsException() {
@@ -1241,7 +1240,6 @@ public class CookiesGwtTestCase extends GWTTestCase {
         } catch (final Exception expected) {
 
         }
-
 
     }
 
@@ -1286,7 +1284,6 @@ public class CookiesGwtTestCase extends GWTTestCase {
 
     public void testEntrySetIteratorRemove() {
         removeAllCookies();
-
 
         final String appleName = APPLE;
         final String appleValue = "Green";
@@ -1370,7 +1367,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
     }
 
     public void testKeySetSize() {
-        removeAllCookies();      
+        removeAllCookies();
 
         final String appleName = APPLE;
         final String appleValue = "Green";
@@ -1434,7 +1431,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
         cookies.put(carrotName, carrotCookie);
         assertTrue(set.contains(carrotName));
 
-        assertFalse(set.contains(NAME_OF_COOKIE_WHICH_DOESNT_EXIST));    
+        assertFalse(set.contains(NAME_OF_COOKIE_WHICH_DOESNT_EXIST));
     }
 
     public void testKeySetAddThrowsException() {
@@ -1465,7 +1462,6 @@ public class CookiesGwtTestCase extends GWTTestCase {
 
         final String appleName = APPLE;
         final String appleValue = "Green";
-
 
         final Cookies cookies = new Cookies();
         final Set set = cookies.keySet();
@@ -1517,7 +1513,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
 
         assertFalse(values.remove(appleName));
 
-        assertFalse(cookies.isEmpty());        
+        assertFalse(cookies.isEmpty());
     }
 
     public void testKeySetClear() {
@@ -1550,7 +1546,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
 
         set.clear();
 
-        assertTrue(cookies.isEmpty());        
+        assertTrue(cookies.isEmpty());
     }
 
     public void testKeySetIteratorVisitAllUsingHasNextAndNext() {
@@ -1596,7 +1592,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
         assertTrue(iterator.hasNext());
         assertTrue(control.remove(iterator.next()));
 
-        assertFalse(iterator.hasNext());        
+        assertFalse(iterator.hasNext());
     }
 
     public void testKeySetIteratorVisitAllUsingOnlyNext() {
@@ -1769,14 +1765,15 @@ public class CookiesGwtTestCase extends GWTTestCase {
         assertEquals("Cookies:" + cookies, 0, cookies.size());
     }
 
-    static void removeAllCookies(){
+    static void removeAllCookies() {
         final String cookiesString = CookieHelper.getCookies();
-        final String[] cookies = StringHelper.split( cookiesString, CookieConstants.COOKIE_SEPARATOR_STRING, true);
-        for( int i = 0; i < cookies.length; i++ ){
-            final String cookieString = cookies[ i ];
-            final String[] components = StringHelper.split( cookieString , "" + CookieConstants.COOKIE_NAME_VALUE_SEPARATOR, true );
-            final String name = components[ 0 ];
-            CookieHelper.removeCookie( name );
+        final String[] cookies = StringHelper.split(cookiesString, CookieConstants.COOKIE_SEPARATOR_STRING, true);
+        for (int i = 0; i < cookies.length; i++) {
+            final String cookieString = cookies[i];
+            final String[] components = StringHelper.split(cookieString, ""
+                    + CookieConstants.COOKIE_NAME_VALUE_SEPARATOR, true);
+            final String name = components[0];
+            CookieHelper.removeCookie(name);
         }
     }
 

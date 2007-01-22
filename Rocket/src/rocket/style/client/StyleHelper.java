@@ -32,14 +32,13 @@ import com.google.gwt.user.client.Element;
  * This helper provides support for changing styles/classes for widgets that use a heirarchical manner to name their composite
  * widgets/elements.
  * 
- * The {@link #getComputedStyleProperty(Element, String) and {@link #getInlineStyleProperty(Element, String)}
- * methods return null rather than none when the value indicates a particular property is missing.
+ * The {@link #getComputedStyleProperty(Element, String) and {@link #getInlineStyleProperty(Element, String)} methods return null rather
+ * than none when the value indicates a particular property is missing.
  * 
  * @author Miroslav Pokorny (mP)
  * 
- * TODO add support to converting % values into pixels and other absolute units. 
- *   Would require multiplying % value again contentbox width/height
- *   This is definitely needed for IE.
+ * TODO add support to converting % values into pixels and other absolute units. Would require multiplying % value again contentbox
+ * width/height This is definitely needed for IE.
  */
 public class StyleHelper {
 
@@ -72,11 +71,11 @@ public class StyleHelper {
         }
         return styleSheets;
     }
-    
-    public static JavaScriptObject getStyleSheetCollection(){
+
+    public static JavaScriptObject getStyleSheetCollection() {
         return StyleHelper.getSupport().getStyleSheetCollection();
     }
-    
+
     protected static boolean hasStyleSheets() {
         return null != styleSheetList;
     }
@@ -167,7 +166,7 @@ public class StyleHelper {
      */
     static public Map getInlineStyle(final Element element) {
         final InlineStyle style = new InlineStyle();
-        style.setElement( element );
+        style.setElement(element);
         return style;
     }
 
@@ -177,9 +176,9 @@ public class StyleHelper {
      * @param element
      * @param name
      * @return
-     */    
-    static public String getInlineStyleProperty( final Element element, final String name ){
-        return StyleHelper.getSupport().getInlineStyleProperty( element, name );
+     */
+    static public String getInlineStyleProperty(final Element element, final String name) {
+        return StyleHelper.getSupport().getInlineStyleProperty(element, name);
     }
 
     /**
@@ -189,10 +188,11 @@ public class StyleHelper {
      * @param propertyName
      * @param propertyValue
      */
-    static public void setInlineStyleProperty(final Element element, final String propertyName, final String propertyValue) {
+    static public void setInlineStyleProperty(final Element element, final String propertyName,
+            final String propertyValue) {
         StyleHelper.getSupport().setInlineStyleProperty(element, propertyName, propertyValue);
     }
-    
+
     /**
      * This helper may be used to remove an existing Style's property. If the property does not exist nothing happens.
      * 
@@ -203,16 +203,15 @@ public class StyleHelper {
         StyleHelper.getSupport().removeInlineStyleProperty(element, propertyName);
     }
 
-
     /**
      * Retrieves an inline style property by name.
      * 
      * @param rule
      * @param name
      * @return
-     */    
-    static public String getRuleStyleProperty( final JavaScriptObject rule, final String name ){
-        return StyleHelper.getSupport().getRuleStyleProperty( rule, name );
+     */
+    static public String getRuleStyleProperty(final JavaScriptObject rule, final String name) {
+        return StyleHelper.getSupport().getRuleStyleProperty(rule, name);
     }
 
     /**
@@ -222,10 +221,11 @@ public class StyleHelper {
      * @param propertyName
      * @param propertyValue
      */
-    static public void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName, final String propertyValue) {
+    static public void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName,
+            final String propertyValue) {
         StyleHelper.getSupport().setRuleStyleProperty(rule, propertyName, propertyValue);
     }
-    
+
     /**
      * This helper may be used to remove an existing Style's property. If the property does not exist nothing happens.
      * 
@@ -238,24 +238,26 @@ public class StyleHelper {
 
     /**
      * Retrieves the names of all the computed styles available for the given element.
+     * 
      * @param element
      * @return
      */
-    static public String[] getComputedStylePropertyNames( final Element element ){
-        return StyleHelper.getSupport().getComputedStylePropertyNames( element );
+    static public String[] getComputedStylePropertyNames(final Element element) {
+        return StyleHelper.getSupport().getComputedStylePropertyNames(element);
     }
-    
+
     /**
      * Extracts the unit portion as a CssUnit instance given a length.
      * 
-     * @param If value is empty or null null will be returned.
-     * @return 
+     * @param If
+     *            value is empty or null null will be returned.
+     * @return
      */
     static public CssUnit getUnit(final String value) {
         CssUnit unit = CssUnit.NONE;
         while (true) {
             // defensive test.
-            if( StringHelper.isNullOrEmpty( value ) ){
+            if (StringHelper.isNullOrEmpty(value)) {
                 break;
             }
 
@@ -281,117 +283,124 @@ public class StyleHelper {
         }
         return unit;
     }
-    
+
     /**
      * Attempts to translate a length with units into another unit.
      * 
-     * Relative units such as em/ex and percentage will fail and result in a 
-     * {@link java.lang.UnsupportedOperationExceptions} being thrown.
+     * Relative units such as em/ex and percentage will fail and result in a {@link java.lang.UnsupportedOperationExceptions} being thrown.
      * 
      * @param value
      * @param targetUnit
      * @return
      */
-    static public float convertValue( final String value, final CssUnit targetUnit ){
-        StringHelper.checkNotEmpty( "parameter:value", value );
-        ObjectHelper.checkNotNull( "parameter:targetUnit", targetUnit);
-        
+    static public float convertValue(final String value, final CssUnit targetUnit) {
+        StringHelper.checkNotEmpty("parameter:value", value);
+        ObjectHelper.checkNotNull("parameter:targetUnit", targetUnit);
+
         float length = 0;
-        while( true ){
-            if( value.equals("0")){
+        while (true) {
+            if (value.equals("0")) {
                 break;
             }
-            
-            final CssUnit unit = StyleHelper.getUnit( value );
-            final String numberString = value.substring( 0, value.length() - unit.getValue().length() );
-                        
+
+            final CssUnit unit = StyleHelper.getUnit(value);
+            final String numberString = value.substring(0, value.length() - unit.getValue().length());
+
             // convert value into a number
-            length = Float.parseFloat( numberString );
-            
+            length = Float.parseFloat(numberString);
+
             // if the unit and target unit are the same do nothing...
-            if( unit == targetUnit ){
+            if (unit == targetUnit) {
                 break;
             }
-            
-            length = unit.toPixels( length );
-            length = targetUnit.fromPixels( length );
+
+            length = unit.toPixels(length);
+            length = targetUnit.fromPixels(length);
             break;
         }
 
         return length;
     }
-    
+
     /**
      * Helper which removes the decorating url, brackets and quotes from a string returning just the url.
+     * 
      * @param value
      * @return
      */
-    static public String getUrl( final String value ){
+    static public String getUrl(final String value) {
         String url = value;
-        if( null != url ){
+        if (null != url) {
             int first = "url(".length();
-            int last = url.length() - 1 -1;
-            if( url.charAt( first ) == '\''){
+            int last = url.length() - 1 - 1;
+            if (url.charAt(first) == '\'') {
                 first++;
             }
-            if( url.charAt( first ) == '"'){
+            if (url.charAt(first) == '"') {
                 first++;
             }
-            if( url.charAt( last ) == '\''){
+            if (url.charAt(last) == '\'') {
                 last--;
             }
-            if( url.charAt( last ) == '"'){
+            if (url.charAt(last) == '"') {
                 last--;
             }
-            url = url.substring( first, last + 1 );
+            url = url.substring(first, last + 1);
         }
         return url;
     }
-    
-    /**
-     * Adds a new rule to the given stylesheet.
-     * @param styleSheet
-     * @param selectorText
-     * @param styleText
-     */
-    static public void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText){
-        StyleHelper.getSupport().addRule( styleSheet, selectorText, styleText );
-    }
-    
-    /**
-     * Inserts a new rule at the given slot in the given stylesheet
-     * @param styleSheet
-     * @param index
-     * @param selectorText
-     * @param styleText
-     */
-    static public void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText){
-        StyleHelper.getSupport().insertRule( styleSheet, index, selectorText, styleText );    
-    }
-    
-    /**
-     * Removes an existing rule from the given stylesheet
-     * @param styleSheet
-     * @param index
-     */
-    static public void removeRule( final JavaScriptObject styleSheet, final int index ){
-        StyleHelper.getSupport().removeRule( styleSheet, index );
-}
 
     /**
-     * Normalizes all the rules belonging to the given stylesheet.
-     * Normalizing is the process whereby any rules with more than one selector are duplicated so that each rule has only one selector.
+     * Adds a new rule to the given stylesheet.
+     * 
+     * @param styleSheet
+     * @param selectorText
+     * @param styleText
+     */
+    static public void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText) {
+        StyleHelper.getSupport().addRule(styleSheet, selectorText, styleText);
+    }
+
+    /**
+     * Inserts a new rule at the given slot in the given stylesheet
+     * 
+     * @param styleSheet
+     * @param index
+     * @param selectorText
+     * @param styleText
+     */
+    static public void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText,
+            final String styleText) {
+        StyleHelper.getSupport().insertRule(styleSheet, index, selectorText, styleText);
+    }
+
+    /**
+     * Removes an existing rule from the given stylesheet
+     * 
+     * @param styleSheet
+     * @param index
+     */
+    static public void removeRule(final JavaScriptObject styleSheet, final int index) {
+        StyleHelper.getSupport().removeRule(styleSheet, index);
+    }
+
+    /**
+     * Normalizes all the rules belonging to the given stylesheet. Normalizing is the process whereby any rules with more than one selector
+     * are duplicated so that each rule has only one selector.
+     * 
      * @param styleSheet
      */
-    static public void normalize(final JavaScriptObject styleSheet ){
-        StyleHelper.getSupport().normalize( styleSheet );
+    static public void normalize(final JavaScriptObject styleSheet) {
+        StyleHelper.getSupport().normalize(styleSheet);
     }
+
     /**
      * Retrieves the collection of rules belonging to a stylesheet.
+     * 
      * @param styleSheet
      * @return
      */
-    static public JavaScriptObject getRules( final JavaScriptObject styleSheet ){
+    static public JavaScriptObject getRules(final JavaScriptObject styleSheet) {
         return StyleHelper.getSupport().getRulesCollection(styleSheet);
     }
 }

@@ -23,23 +23,23 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class WebPageTestRunnerTest extends WebPageTestRunner implements EntryPoint {
 
-    public WebPageTestRunnerTest(){
+    public WebPageTestRunnerTest() {
         super();
     }
 
-    public void onModuleLoad(){
+    public void onModuleLoad() {
         final Button button = new Button("Run Tests");
-        button.addClickListener( new ClickListener(){
-            public void onClick( final Widget sender ){
-                WebPageTestRunnerTest.this.executeTests( WebPageTestRunnerTest.this.getTestBuilder() );
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget sender) {
+                WebPageTestRunnerTest.this.executeTests(WebPageTestRunnerTest.this.getTestBuilder());
             }
         });
-        RootPanel.get().add( button );
+        RootPanel.get().add(button);
     }
 
-    protected TestBuilder getTestBuilder(){
-        final TestBuilder builder = new TestBuilder(){
-            public List buildCandidates(){
+    protected TestBuilder getTestBuilder() {
+        final TestBuilder builder = new TestBuilder() {
+            public List buildCandidates() {
                 return WebPageTestRunnerTest.this.buildCandidates();
             }
         };
@@ -49,8 +49,8 @@ public class WebPageTestRunnerTest extends WebPageTestRunner implements EntryPoi
     protected List buildCandidates() {
         final List tests = new ArrayList();
 
-        tests.add( new Test() {
-            public String getName(){
+        tests.add(new Test() {
+            public String getName() {
                 return "testWhichPasses";
             }
 
@@ -61,8 +61,8 @@ public class WebPageTestRunnerTest extends WebPageTestRunner implements EntryPoi
             }
         });
 
-        tests.add( new Test() {
-            public String getName(){
+        tests.add(new Test() {
+            public String getName() {
                 return "testWhichPassesAfterBeingBusyFor100ms";
             }
 
@@ -76,29 +76,29 @@ public class WebPageTestRunnerTest extends WebPageTestRunner implements EntryPoi
             }
         });
 
-        tests.add( new Test() {
-            public String getName(){
+        tests.add(new Test() {
+            public String getName() {
                 return "testWhichFailsAnAssertEquals";
             }
 
             public void execute() {
-                Test.assertEquals( 1, 2 );
+                Test.assertEquals(1, 2);
             }
         });
 
-        tests.add( new Test() {
-            public String getName(){
+        tests.add(new Test() {
+            public String getName() {
                 return "testWhichFailsBecauseItThrowsARuntimeExceptionAfterLoggingAMessage";
             }
 
             public void execute() {
-                this.log( "About to throw a RuntimeException...");
+                this.log("About to throw a RuntimeException...");
                 throw new RuntimeException("RuntimeException thrown.");
             }
         });
 
-        tests.add( new Test() {
-            public String getName(){
+        tests.add(new Test() {
+            public String getName() {
                 return "testWhichFailsBecauseItThrowsAnException";
             }
 
@@ -107,36 +107,36 @@ public class WebPageTestRunnerTest extends WebPageTestRunner implements EntryPoi
             }
         });
 
-        tests.add( new Test() {
-            public String getName(){
+        tests.add(new Test() {
+            public String getName() {
                 return "testWhichPostponesItsFinishAndThenPasses";
             }
 
             public void execute() throws Exception {
-                this.log( "about to postpone finish for 1000ms");
+                this.log("about to postpone finish for 1000ms");
                 this.postponeFinish(10000);
 
                 final Test thisTest = this;
 
                 final Timer timer = new Timer() {
                     public void run() {
-                        log( "continuing...");
+                        log("continuing...");
                         Window.alert("an alert within the postponed code!");
                         thisTest.finish();
                     }
                 };
                 timer.schedule(500);
-                this.log( "timer scheduled to run in 500ms.");
+                this.log("timer scheduled to run in 500ms.");
             }
         });
 
-        tests.add( new Test() {
-            public String getName(){
+        tests.add(new Test() {
+            public String getName() {
                 return "testWhichPostponesItsFinishAndThenFails";
             }
 
             public void execute() throws Exception {
-                this.log( "about to postpone finish for 1000ms");
+                this.log("about to postpone finish for 1000ms");
                 this.postponeFinish(10000000);
                 final Timer timer = new Timer() {
                     public void run() {
@@ -144,43 +144,43 @@ public class WebPageTestRunnerTest extends WebPageTestRunner implements EntryPoi
                     }
                 };
                 timer.schedule(500);
-                this.log( "timer scheduled to run in 500ms.");
+                this.log("timer scheduled to run in 500ms.");
             }
         });
 
-        tests.add( new Test() {
-            public String getName(){
+        tests.add(new Test() {
+            public String getName() {
                 return "testWhichSetsSkipRemainingTests";
             }
 
             public void execute() throws Exception {
-                this.log( "about to skip remaining");
+                this.log("about to skip remaining");
                 TestRunner.skipRemainingTests();
             }
         });
 
-        tests.add( new Test() {
-            public String getName(){
+        tests.add(new Test() {
+            public String getName() {
                 return "testWhichShouldHaveBeenSkipped";
             }
 
             public void execute() throws Exception {
-                fail( "This test should *NOT* have been executed it should have been skipped");
+                fail("This test should *NOT* have been executed it should have been skipped");
             }
-        });        
+        });
 
         return tests;
     }
 
     /**
-     * If the test name includes the word stop(the second last one does) ask the TestRunner
-     * to skip remaining tests.
+     * If the test name includes the word stop(the second last one does) ask the TestRunner to skip remaining tests.
+     * 
      * @param test
      */
-    protected void onFailed( final Test test ) {
-        super.onTestFailed( test );
+    protected void onFailed(final Test test) {
+        super.onTestFailed(test);
 
-        if( test.getName().indexOf( "Skip") != -1 ){
+        if (test.getName().indexOf("Skip") != -1) {
             TestRunner.skipRemainingTests();
         }
     }

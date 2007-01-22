@@ -236,8 +236,7 @@ public class ObjectHelper extends SystemHelper {
         return setString0(object, propertyName, value);
     }
 
-    private static native String setString0(final JavaScriptObject object, final String propertyName,
-            final String value)/*-{
+    private static native String setString0(final JavaScriptObject object, final String propertyName, final String value)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = value;
      return previousValue ? previousValue : null;
@@ -304,8 +303,7 @@ public class ObjectHelper extends SystemHelper {
         return setDouble0(object, propertyName, value);
     }
 
-    private static native double setDouble0(final JavaScriptObject object, final String propertyName,
-            final double value)/*-{
+    private static native double setDouble0(final JavaScriptObject object, final String propertyName, final double value)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = value;
      return previousValue ? previousValue : 0.0;
@@ -384,8 +382,7 @@ public class ObjectHelper extends SystemHelper {
         setBoolean0(object, index, booleanValue);
     }
 
-    private static native boolean setBoolean0(final JavaScriptObject object, final int index,
-            final boolean booleanValue)/*-{
+    private static native boolean setBoolean0(final JavaScriptObject object, final int index, final boolean booleanValue)/*-{
      var previousValue = object[ index ];
      object[ index ] = booleanValue;
      return previousValue ? true : false;
@@ -404,7 +401,7 @@ public class ObjectHelper extends SystemHelper {
         return getInteger0(object, propertyName);
     }
 
-    private  native static int getInteger0(final JavaScriptObject object, final String propertyName)/*-{
+    private native static int getInteger0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
      if( typeof( value ) == "undefined" ){
      throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
@@ -418,7 +415,7 @@ public class ObjectHelper extends SystemHelper {
         return getInteger0(object, index);
     }
 
-    private  native static int getInteger0(final JavaScriptObject object, final int index)/*-{
+    private native static int getInteger0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];
      if( typeof( value ) == "undefined" ){
      throw "The object does not contain a property called [" + index + "], object: " + object; 
