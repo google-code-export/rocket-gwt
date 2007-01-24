@@ -61,6 +61,60 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 
         tests.add(new Test() {
             public String getName() {
+                return "testHasClass0";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testHasClass0();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testHasClass1";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testAddClass1();
+            }
+        });        
+        tests.add(new Test() {
+            public String getName() {
+                return "testAddClass0";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testAddClass0();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testAddClass1";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testAddClass1();
+            }
+        });        
+        tests.add(new Test() {
+            public String getName() {
+                return "testRemoveClass0";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testRemoveClass0();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testRemoveClass1";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testRemoveClass1();
+            }
+        });        
+        tests.add(new Test() {
+            public String getName() {
                 return "testConvertPixelsToPixels";
             }
 
@@ -544,7 +598,58 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         return tests;
 
     }
-
+    
+    protected void testHasClass0(){
+        final Element element = this.createDivAndAddToDocument();
+        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
+        
+        final boolean found = StyleHelper.hasClass(element, "car" );
+        Test.assertFalse( found );
+    }
+    
+    protected void testHasClass1(){
+        final Element element = this.createDivAndAddToDocument();
+        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
+        
+        final boolean found = StyleHelper.hasClass(element, "banana" );
+        Test.assertTrue( found );
+    }
+    
+    protected void testAddClass0(){
+        final Element element = this.createDivAndAddToDocument();
+        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
+        
+        StyleHelper.addClass(element, "banana" );
+        
+        Test.assertEquals( "apple banana carrot", DOM.getAttribute( element, StyleConstants.CLASS_NAME));        
+    }
+    
+    protected void testAddClass1(){
+        final Element element = this.createDivAndAddToDocument();
+        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
+        
+        StyleHelper.addClass(element, "dog" );
+        
+        Test.assertEquals( "apple banana carrot dog", DOM.getAttribute( element, StyleConstants.CLASS_NAME));        
+    }
+    
+    protected void testRemoveClass0(){
+        final Element element = this.createDivAndAddToDocument();
+        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
+        
+        StyleHelper.removeClass(element, "banana" );
+        
+        Test.assertEquals( "apple carrot", DOM.getAttribute( element, StyleConstants.CLASS_NAME));   
+    }
+    protected void testRemoveClass1(){
+        final Element element = this.createDivAndAddToDocument();
+        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
+        
+        StyleHelper.removeClass(element, "dog" );
+        
+        Test.assertEquals( "apple banana carrot", DOM.getAttribute( element, StyleConstants.CLASS_NAME));
+    }
+    
     protected void testGetInlineStylePropertyValue() {
         final Element element = this.createDivAndAddToDocument();
         final String propertyName = StyleConstants.BACKGROUND_COLOR;
