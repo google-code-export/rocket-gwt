@@ -1,22 +1,4 @@
 <module>
-	<!--
-		*** RULE LIST ***
-		
-		TODO delete when rules stuff is completed.
-	-->
-	
-	<replace-with class="rocket.style.client.support.InternetExplorer6RuleListSupport">
-		<when-type-is class="rocket.style.client.support.RuleListSupport"/>
-		<when-property-is name="user.agent" value="ie6"/>
-	</replace-with>
-  	<replace-with class="rocket.style.client.support.Opera9RuleListSupport">
-		<when-type-is class="rocket.style.client.support.RuleListSupport"/>
-		<when-property-is name="user.agent" value="opera"/>
-	</replace-with>	
-	
-	<!--
-	*** STYLEHELPER ***
-	-->
 	<replace-with class="rocket.style.client.support.InternetExplorer6StyleHelperSupport">
 		<when-type-is class="rocket.style.client.support.StyleHelperSupport"/>
 		<when-property-is name="user.agent" value="ie6"/>
