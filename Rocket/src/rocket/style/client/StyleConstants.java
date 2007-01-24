@@ -21,6 +21,8 @@ package rocket.style.client;
  * @author Miroslav Pokorny (mP)
  */
 public class StyleConstants {
+    public final static String CLASS_NAME = "className";
+    
     public final static char COMPOUND = '-';
 
     public final static String RULES_LIST_PROPERTY = "cssRules";
