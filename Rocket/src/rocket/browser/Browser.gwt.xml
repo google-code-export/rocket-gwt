@@ -1,11 +1,11 @@
 <module>
-	<replace-with class="rocket.browser.client.support.InternetExplorer6BrowserHelperSupport">
-		<when-type-is class="rocket.browser.client.support.BrowserHelperSupport"/>
+	<replace-with class="rocket.browser.client.support.InternetExplorer6BrowserSupport">
+		<when-type-is class="rocket.browser.client.support.BrowserSupport"/>
 		<when-property-is name="user.agent" value="ie6"/>
 	</replace-with>
 	
-	<replace-with class="rocket.browser.client.support.OperaBrowserHelperSupport">
-		<when-type-is class="rocket.browser.client.support.BrowserHelperSupport"/>
+	<replace-with class="rocket.browser.client.support.OperaBrowserSupport">
+		<when-type-is class="rocket.browser.client.support.BrowserSupport"/>
 		<when-property-is name="user.agent" value="opera"/>
 	</replace-with>	
 </module>

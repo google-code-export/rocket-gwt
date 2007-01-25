@@ -34,7 +34,7 @@ import com.google.gwt.user.client.Element;
  * 
  * FIX add special case for weight / normal = 400 / bold = 700 / lighter/bolder.
  */
-public class InternetExplorer6StyleHelperSupport extends StyleHelperSupport {
+public class InternetExplorer6StyleSupport extends StyleSupport {
 
     /**
      * Retrieves a style property from the given style
@@ -412,7 +412,7 @@ public class InternetExplorer6StyleHelperSupport extends StyleHelperSupport {
 
 
      if( isNaN( width )){
-     value = this.@rocket.style.client.support.StyleHelperSupport::translateBorderWidthValue(Ljava/lang/String;)( width );
+     value = this.@rocket.style.client.support.StyleSupport::translateBorderWidthValue(Ljava/lang/String;)( width );
      break;
      }
 

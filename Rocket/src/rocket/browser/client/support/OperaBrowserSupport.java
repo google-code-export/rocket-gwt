@@ -16,24 +16,17 @@
 package rocket.browser.client.support;
 
 /**
- * This class provides the support that a standards based browser following w3c specifications would require.
+ * Provides support for the Opera browser where it defers from the standard support.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class BrowserHelperSupport {
+public class OperaBrowserSupport extends BrowserSupport {
+
     native public int getScrollX()/*-{
-     return $wnd.scrollX;
+     return $doc.body.scrollLeft;
      }-*/;
 
     native public int getScrollY()/*-{
-     return $wnd.scrollY;
-     }-*/;
-
-    native public int getClientWidth()/*-{
-     return $wnd.innerWidth;
-     }-*/;
-
-    native public int getClientHeight()/*-{
-     return $wnd.innerHeight;
+     return $doc.body.scrollTop;
      }-*/;
 }

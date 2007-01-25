@@ -24,7 +24,7 @@ import com.google.gwt.core.client.GWT;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class InternetExplorer6BrowserHelperSupport extends BrowserHelperSupport {
+public class InternetExplorer6BrowserSupport extends BrowserSupport {
 
     /**
      * Only warn the user if in hosted mode and the
@@ -36,7 +36,7 @@ public class InternetExplorer6BrowserHelperSupport extends BrowserHelperSupport 
     }
 
     static void warnIfInternetExplorerQuirksMode() {
-        if (InternetExplorer6BrowserHelperSupport.isInInternetExplorerQuirksMode()) {
+        if (InternetExplorer6BrowserSupport.isInInternetExplorerQuirksMode()) {
             GWT.log(BrowserConstants.INTERNET_EXPLORER_QUIRKS_MODE_WARNING, null);
         }
     }
