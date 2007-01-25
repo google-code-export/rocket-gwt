@@ -20,11 +20,11 @@ import rocket.style.client.StyleConstants;
 import com.google.gwt.user.client.Element;
 
 /**
- * A specialised StyleHelperSupport that caters for some FireFox quirks.
+ * A specialised StyleSupport that caters for some FireFox quirks.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class FireFoxStyleHelperSupport extends StyleHelperSupport {
+public class FireFoxStyleSupport extends StyleSupport {
 
     /**
      * Computes the value of the requested propertyName for the given element

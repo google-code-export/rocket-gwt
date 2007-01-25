@@ -18,7 +18,7 @@ package rocket.style.client;
 import java.util.List;
 import java.util.Map;
 
-import rocket.style.client.support.StyleHelperSupport;
+import rocket.style.client.support.StyleSupport;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -43,11 +43,11 @@ import com.google.gwt.user.client.Element;
 public class StyleHelper {
 
     /**
-     * An StyleHelperSupport instance is used to provide support of Browser specific features.
+     * An StyleSupport instance is used to provide support of Browser specific features.
      */
-    private static final StyleHelperSupport support = (StyleHelperSupport) GWT.create(StyleHelperSupport.class);
+    private static final StyleSupport support = (StyleSupport) GWT.create(StyleSupport.class);
 
-    protected static StyleHelperSupport getSupport() {
+    protected static StyleSupport getSupport() {
         return StyleHelper.support;
     }
 
@@ -403,7 +403,7 @@ public class StyleHelper {
     static public JavaScriptObject getRules(final JavaScriptObject styleSheet) {
         return StyleHelper.getSupport().getRulesCollection(styleSheet);
     }
-    
+
     /**
      * Adds a new class (styleName) to the given element only if it is not present.
      * @param element
@@ -412,7 +412,7 @@ public class StyleHelper {
     static public void addClass( final Element element, final String className ){
         ObjectHelper.checkNotNull("parameter:element", element );
         StyleHelper.checkClass( "parameter:className", className );
-        
+
         // only add if not already present.
         if( false == hasClass( element, className )){
             String newValue = ObjectHelper.getString( element, StyleConstants.CLASS_NAME );
@@ -422,9 +422,9 @@ public class StyleHelper {
             newValue = newValue + className;
             ObjectHelper.setString( element, StyleConstants.CLASS_NAME, newValue );
         }
-        
+
     }    
-    
+
     /**
      * Tests if the given element already has the given class.
      * @param element
@@ -434,7 +434,7 @@ public class StyleHelper {
     static public boolean hasClass( final Element element, final String className ){
         return -1 != indexOfClass(element, className);
     }
-    
+
     /**
      * Helper method used internally to locate an existing classname within an existing classname.
      * @param element
@@ -444,13 +444,13 @@ public class StyleHelper {
     static int indexOfClass( final Element element, final String className ){
         ObjectHelper.checkNotNull("parameter:element", element );
         StyleHelper.checkClass( "parameter:className", className );
-        
+
         int found = -1;
-        
+
         final String classNameAttribute = ObjectHelper.getString( element, StyleConstants.CLASS_NAME );
         final String[] classNames = StringHelper.split( classNameAttribute, " ", true );
         int index = 0;
-        
+
         for( int i = 0; i < classNames.length; i++ ){
             final String otherClassName = classNames[ i ];
             if( className.equals( otherClassName )){
@@ -459,10 +459,10 @@ public class StyleHelper {
             }
             index = index + otherClassName.length();
         }
-        
+
         return found;
     }
-    
+
     /**
      * Removes an existing class(styleName) from the given element.
      * @param element
@@ -472,21 +472,21 @@ public class StyleHelper {
         final int index = indexOfClass( element, className );
         if( -1 != index ){
             String classes = ObjectHelper.getString( element, StyleConstants.CLASS_NAME);
-            
+
             int beforeIndex = index;
             int afterIndex = index + className.length();
-                        
+
             // if NOT first remove the space before...
             if( index > 0 ){
                 afterIndex++;
             }
-            
+
             // if className is the last remove the space before...
             classes = classes.substring( 0, beforeIndex ) + classes.substring( afterIndex );            
             ObjectHelper.setString( element, StyleConstants.CLASS_NAME, classes );    
         }        
-     }
-    
+    }
+
     /**
      * Verifies that the given class name is valid.
      * @param name

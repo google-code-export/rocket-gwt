@@ -15,7 +15,7 @@
  */
 package rocket.browser.client;
 
-import rocket.browser.client.support.BrowserHelperSupport;
+import rocket.browser.client.support.BrowserSupport;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -37,9 +37,9 @@ public class BrowserHelper {
      * A BrowserHelperSupport class is used to implement several BrowserHelper methods where different browsers have different mechanisms
      * supporting that feature.
      */
-    private final static BrowserHelperSupport support = (BrowserHelperSupport) GWT.create(BrowserHelperSupport.class);
+    private final static BrowserSupport support = (BrowserSupport) GWT.create(BrowserSupport.class);
 
-    protected static BrowserHelperSupport getSupport() {
+    protected static BrowserSupport getSupport() {
         return support;
     }
 

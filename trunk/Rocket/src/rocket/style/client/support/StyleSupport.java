@@ -46,9 +46,9 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class StyleHelperSupport {
+public class StyleSupport {
 
-    public StyleHelperSupport() {
+    public StyleSupport() {
         super();
     }
 

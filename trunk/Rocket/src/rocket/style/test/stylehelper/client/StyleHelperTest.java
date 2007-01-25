@@ -305,7 +305,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         // return "testGetComputedWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent";
         // }
         // public void execute() {
-        // StyleHelperSupportTest.this.testGetComputedWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent();
+        // StyleSupportTest.this.testGetComputedWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent();
         // }
         // });
 
@@ -344,7 +344,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         // return "testGetComputedHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent";
         // }
         // public void execute() {
-        // StyleHelperSupportTest.this.testGetComputedHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent();
+        // StyleSupportTest.this.testGetComputedHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent();
         // }
         // });
 

@@ -29,7 +29,7 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class OperaStyleHelperSupport extends StyleHelperSupport {
+public class OperaStyleSupport extends StyleSupport {
 
     /**
      * Retrieves the computed style property value.
