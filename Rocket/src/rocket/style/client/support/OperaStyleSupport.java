@@ -59,7 +59,6 @@ public class OperaStyleSupport extends StyleSupport {
                 break;
             }
             value = super.getComputedStyleProperty(element, propertyName);
-            value = this.translateNoneValuesToNull(value);
             break;
         }
         return value;

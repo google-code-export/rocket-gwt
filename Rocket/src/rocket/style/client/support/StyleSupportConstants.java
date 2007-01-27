@@ -105,4 +105,9 @@ public class StyleSupportConstants {
 
     public final static String DEFAULT_BACKGROUND_POSITION_Y_IE6 = "center";
 
+    static final String FIREFOX_USER_TEXT_SELECT = "MozUserSelect";
+
+    static final String SAFARI_USER_TEXT_SELECT = "KhtmlUserSelect";
+
+    static final String TEXT_SELECTION = "UserSelect";
 }

@@ -19,4 +19,8 @@
 		<when-property-is name="user.agent" value="opera"/>
 	</replace-with>
 
+	<replace-with class="rocket.style.client.support.SafariStyleSupport">
+		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+		<when-property-is name="user.agent" value="safari"/>
+	</replace-with>
 </module>

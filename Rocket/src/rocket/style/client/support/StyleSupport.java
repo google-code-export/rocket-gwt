@@ -46,7 +46,7 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class StyleSupport {
+abstract public class StyleSupport {
 
     public StyleSupport() {
         super();
@@ -68,14 +68,12 @@ public class StyleSupport {
      * @param element
      * @param propertyName
      * @return
-     * 
-     * FIX check not sure why was converting to cssPropertyName.. prolly can delete.
      */
     public String getRuleStyleProperty(final JavaScriptObject rule, final String propertyName) {
         ObjectHelper.checkNotNull("parameter:rule", rule);
 
-        final String value = ObjectHelper.getString(this.getStyle(rule), propertyName);
-        return this.translateNoneValuesToNull(value);
+        final String value = ObjectHelper.getString(this.getStyle(rule), this.toCssPropertyName(propertyName));
+        return this.translateNoneValuesToNull(propertyName, value);
     }
 
     /**
@@ -86,7 +84,9 @@ public class StyleSupport {
      * @param propertyValue
      */
     public void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName, final String propertyValue) {
-        ObjectHelper.setString(this.getStyle(rule), propertyName, StringHelper.toCssPropertyName(propertyName));
+        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+
+        ObjectHelper.setString(this.getStyle(rule), this.toCssPropertyName(propertyName), propertyValue);
     }
 
     /**
@@ -96,10 +96,10 @@ public class StyleSupport {
      * @param propertyName
      */
     public void removeRuleStyleProperty(final JavaScriptObject rule, final String propertyName) {
-        this.removeRuleStyleProperty0(rule, StringHelper.toCssPropertyName(propertyName));
+        this.removeRuleStyleProperty0(rule, this.toCssPropertyName(propertyName));
     }
 
-    private native void removeRuleStyleProperty0(final JavaScriptObject rule, final String propertyName)/*-{
+    native private void removeRuleStyleProperty0(final JavaScriptObject rule, final String propertyName)/*-{
      rule.style.removeProperty( propertyName );
      }-*/;
 
@@ -114,8 +114,38 @@ public class StyleSupport {
         ObjectHelper.checkNotNull("parameter:element", element);
         StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
 
-        final String value = ObjectHelper.getString(this.getStyle(element), propertyName);
-        return this.translateNoneValuesToNull(value);
+        String propertyValue = null;
+        while (true) {
+            if (propertyName.startsWith("border") && propertyName.endsWith("Width")) {
+                propertyValue = this.getInlineBorderWidth(element, propertyName);
+                break;
+            }
+            if (StyleConstants.USER_SELECT.equals(propertyName)) {
+                propertyValue = this.getInlineUserSelect(element);
+                break;
+            }
+            propertyValue = this.getInlineStyleProperty0(element, propertyName);
+            propertyValue = this.translateNoneValuesToNull(propertyName, propertyValue);
+            break;
+        }
+
+        return propertyValue;
+    }
+
+    protected String getInlineStyleProperty0(final Element element, final String propertyName) {
+        final JavaScriptObject style = this.getStyle(element);
+        return ObjectHelper.getString(style, propertyName);
+    }
+
+    protected String getInlineBorderWidth(final Element element, final String propertyName) {
+        final String propertyValue = this.getInlineStyleProperty0(element, propertyName);
+        return propertyValue == null ? null : this.translateBorderWidthValue(propertyValue) + "px";
+    }
+
+    protected String getInlineUserSelect(final Element element) {
+        final String propertyName = this.getUserSelectPropertyName();
+        final String propertyValue = this.getInlineStyleProperty0(element, propertyName);
+        return "auto".equals(propertyValue) ? null : propertyValue;
     }
 
     /**
@@ -126,11 +156,29 @@ public class StyleSupport {
      * @param propertyValue
      */
     public void setInlineStyleProperty(final Element element, final String propertyName, final String propertyValue) {
-        ObjectHelper.setString(this.getStyle(element), propertyName, propertyValue);
+        while (true) {
+            if (StyleConstants.USER_SELECT.equals(propertyName)) {
+                this.setInlineUserSelect(element, propertyValue);
+                break;
+            }
+
+            this.setInlineStyleProperty0(element, propertyName, propertyValue);
+            break;
+        }
+    }
+
+    protected void setInlineUserSelect(final Element element, final String propertyValue) {
+        final String propertyName0 = this.getUserSelectPropertyName();
+        this.setInlineStyleProperty0(element, propertyName0, propertyValue);
+    }
+
+    protected void setInlineStyleProperty0(final Element element, final String propertyName, final String propertyValue) {
+        final JavaScriptObject style = this.getStyle(element);
+        ObjectHelper.setString(style, propertyName, propertyValue);
     }
 
     public void removeInlineStyleProperty(final Element element, final String propertyName) {
-        this.removeInlineStyleProperty0(element, StringHelper.toCssPropertyName(propertyName));
+        this.removeInlineStyleProperty0(element, this.toCssPropertyName(propertyName));
     }
 
     private native void removeInlineStyleProperty0(final Element element, final String propertyName)/*-{
@@ -147,25 +195,38 @@ public class StyleSupport {
     public String getComputedStyleProperty(final Element element, final String propertyName) {
         String propertyValue = null;
         while (true) {
-            propertyValue = this.getComputedStyleProperty0(element, StringHelper.toCssPropertyName(propertyName));
-
-            if (this.isBorderPropertyName(propertyName)) {
-                propertyValue = this.translateBorderWidthValue(propertyValue) + "px";
+            if (propertyName.startsWith("border") && propertyName.endsWith("Width")) {
+                propertyValue = this.getComputedBorderWidth(element, propertyName);
                 break;
             }
             if (StyleConstants.FONT_WEIGHT.equals(propertyName)) {
                 propertyValue = "" + this.getComputedFontWeight(element);
                 break;
             }
+            if (StyleConstants.USER_SELECT.equals(propertyName)) {
+                propertyValue = this.getComputedUserSelect(element);
+                break;
+            }
 
+            propertyValue = this.getComputedStyleProperty0(element, propertyName);
+            propertyValue = this.translateNoneValuesToNull(propertyName, propertyValue);
             break;
         }
 
-        return this.translateNoneValuesToNull(propertyValue);
+        return propertyValue;
     }
 
+    /**
+     * Returns the computed style property for a given element
+     * 
+     * @param element
+     *            The css property name being queried.
+     * @param propertyName
+     * @return
+     */
     protected String getComputedStyleProperty0(final Element element, final String propertyName) {
-        return this.getComputedStyleProperty1(element, propertyName);
+        final String propertyName0 = this.toCssPropertyName(propertyName);
+        return this.getComputedStyleProperty1(element, propertyName0);
     }
 
     private native String getComputedStyleProperty1(final Element element, final String propertyName)/*-{
@@ -192,121 +253,9 @@ public class StyleSupport {
      return value;
      }-*/;
 
-    /**
-     * Helper which tests if the given propertyName is one of the border xxx width properties.
-     * 
-     * @param propertyName
-     * @return
-     */
-    protected boolean isBorderPropertyName(final String propertyName) {
-        return StyleConstants.BORDER_RIGHT_WIDTH.equals(propertyName)
-                || StyleConstants.BORDER_TOP_WIDTH.equals(propertyName)
-                || StyleConstants.BORDER_LEFT_WIDTH.equals(propertyName)
-                || StyleConstants.BORDER_BOTTOM_WIDTH.equals(propertyName);
-    }
-
-    /**
-     * Translate one of the three word border values into a string containing the pixel value
-     * 
-     * @param value
-     * @return
-     */
-    protected int translateBorderWidthValue(final String value) {
-        StringHelper.checkNotEmpty("parameter:value", value);
-
-        int number = 0;
-        while (true) {
-            if (StyleSupportConstants.BORDER_WIDTH_THIN.equals(value)) {
-                number = this.getBorderWidthThin();
-                break;
-            }
-            if (StyleSupportConstants.BORDER_WIDTH_MEDIUM.equals(value)) {
-                number = this.getBorderWidthMedium();
-                break;
-            }
-            if (StyleSupportConstants.BORDER_WIDTH_THICK.equals(value)) {
-                number = this.getBorderWidthThick();
-                break;
-            }
-            number = Integer.parseInt(value.endsWith("px") ? value.substring(0, value.length() - 2) : value);
-            break;
-        }
-        return number;
-    }
-
-    /**
-     * The three methods below are overridden in the InternetExplorer implementation as the three constants have different pixel values.
-     * 
-     * @return
-     */
-    protected int getBorderWidthThin() {
-        return StyleSupportConstants.BORDER_WIDTH_THIN_PX;
-    }
-
-    protected int getBorderWidthMedium() {
-        return StyleSupportConstants.BORDER_WIDTH_MEDIUM_PX;
-    }
-
-    protected int getBorderWidthThick() {
-        return StyleSupportConstants.BORDER_WIDTH_THICK_PX;
-    }
-
-    /**
-     * This method transforms any none values into null. Many image related properties such as
-     * <ul>
-     * <li>background-image</li>
-     * <li>list-image</li>
-     * </ul>
-     * return none when the property is not set.
-     * 
-     * @param value
-     * @return
-     */
-    protected String translateNoneValuesToNull(final String value) {
-        return "none".equals(value) ? null : value;
-    }
-
-    /**
-     * Helper which retrieves the style object belonging to an Element or Rule.
-     * 
-     * @param elementOrRule
-     * @return
-     */
-    protected JavaScriptObject getStyle(final JavaScriptObject elementOrRule) {
-        return ObjectHelper.getObject(elementOrRule, "style");
-    }
-
-    /**
-     * Retrieves the names of all the computed styles available for the given element.
-     * 
-     * @param element
-     * @return
-     */
-    public String[] getComputedStylePropertyNames(final Element element) {
-        final JavaScriptObject style = this.getStyle(element);
-        final String cssText = ObjectHelper.getString(style, "cssText");
-
-        // remove any quotes...
-        final List names = new ArrayList();
-        final String[] tokens = StringHelper.split(cssText, " ", false);
-
-        for (int i = 0; i < tokens.length; i++) {
-            final String property = tokens[i];
-            if (property.endsWith(":")) {
-                final String nameLessColon = property.substring(0, property.length() - 1);
-                names.add(StringHelper.toCamelCase(nameLessColon));
-            }
-        }
-
-        // copy from the list into an array.
-        final String[] namesArray = new String[names.size()];
-        final Iterator iterator = names.iterator();
-        int i = 0;
-        while (iterator.hasNext()) {
-            namesArray[i] = (String) iterator.next();
-            i++;
-        }
-        return namesArray;
+    protected String getComputedBorderWidth(final Element element, final String propertyName) {
+        final String propertyValue = this.getComputedStyleProperty0(element, propertyName);
+        return propertyValue == null ? null : this.translateBorderWidthValue(propertyValue) + "px";
     }
 
     /**
@@ -365,6 +314,144 @@ public class StyleSupport {
 
         Element parent = DOM.getParent(element);
         return this.getComputedFontWeight(parent);
+    }
+
+    /**
+     * @param element
+     * @return
+     */
+    protected String getComputedUserSelect(final Element element) {
+        final String propertyName = this.getUserSelectPropertyName();
+        final String propertyValue = this.getComputedStyleProperty0(element, propertyName);
+        return "auto".equals(propertyValue) ? null : propertyValue;
+    }
+
+    /**
+     * Retrieves the names of all the computed styles available for the given element.
+     * 
+     * @param element
+     * @return
+     */
+    public String[] getComputedStylePropertyNames(final Element element) {
+        final JavaScriptObject style = this.getStyle(element);
+        final String cssText = ObjectHelper.getString(style, "cssText");
+
+        // remove any quotes...
+        final List names = new ArrayList();
+        final String[] tokens = StringHelper.split(cssText, " ", false);
+
+        for (int i = 0; i < tokens.length; i++) {
+            final String property = tokens[i];
+            if (property.endsWith(":")) {
+                final String nameLessColon = property.substring(0, property.length() - 1);
+                names.add(StringHelper.toCamelCase(nameLessColon));
+            }
+        }
+
+        // copy from the list into an array.
+        final String[] namesArray = new String[names.size()];
+        final Iterator iterator = names.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            namesArray[i] = (String) iterator.next();
+            i++;
+        }
+        return namesArray;
+    }
+
+    /**
+     * Translate one of the three word border values into a string containing the pixel value
+     * 
+     * @param value
+     * @return
+     */
+    protected int translateBorderWidthValue(final String value) {
+        StringHelper.checkNotEmpty("parameter:value", value);
+
+        int number = 0;
+        while (true) {
+            if (StyleSupportConstants.BORDER_WIDTH_THIN.equals(value)) {
+                number = this.getBorderWidthThin();
+                break;
+            }
+            if (StyleSupportConstants.BORDER_WIDTH_MEDIUM.equals(value)) {
+                number = this.getBorderWidthMedium();
+                break;
+            }
+            if (StyleSupportConstants.BORDER_WIDTH_THICK.equals(value)) {
+                number = this.getBorderWidthThick();
+                break;
+            }
+            number = Integer.parseInt(value.endsWith("px") ? value.substring(0, value.length() - 2) : value);
+            break;
+        }
+        return number;
+    }
+
+    /**
+     * The three methods below are overridden in the InternetExplorer implementation as the three constants have different pixel values.
+     * 
+     * @return
+     */
+    protected int getBorderWidthThin() {
+        return StyleSupportConstants.BORDER_WIDTH_THIN_PX;
+    }
+
+    protected int getBorderWidthMedium() {
+        return StyleSupportConstants.BORDER_WIDTH_MEDIUM_PX;
+    }
+
+    protected int getBorderWidthThick() {
+        return StyleSupportConstants.BORDER_WIDTH_THICK_PX;
+    }
+
+    /**
+     * This method transforms any none values into null. Many image related properties such as
+     * <ul>
+     * <li>background-image</li>
+     * <li>list-image</li>
+     * </ul>
+     * return none when the property is not set.
+     * 
+     * @param name
+     *            The name of the property
+     * @param value
+     * @return
+     */
+    protected String translateNoneValuesToNull(final String name, final String value) {
+        // if value== none and not usertextselect return null else return value.
+        return false == StyleConstants.USER_SELECT.equals(name) && "none".equals(value) ? null : value;
+    }
+
+    /**
+     * Helper which retrieves the style object belonging to an Element or Rule.
+     * 
+     * @param elementOrRule
+     * @return
+     */
+    protected JavaScriptObject getStyle(final JavaScriptObject elementOrRule) {
+        return ObjectHelper.getObject(elementOrRule, "style");
+    }
+
+    /**
+     * This method takes care of translating a javascript styled propertyName into a css property name.
+     * 
+     * It also translates the non standard UserSelect property into the appropriate value for each respective browser.
+     * 
+     * @param propertyName
+     * @return
+     */
+    protected String toCssPropertyName(final String propertyName) {
+        return StringHelper.toCssPropertyName(propertyName);
+    }
+
+    /**
+     * Sub-classes will need to override this method to return the css property name for their respective browser.
+     * 
+     * @return
+     */
+    protected String getUserSelectPropertyName() {
+        return StyleConstants.USER_SELECT;
     }
 
     /**
@@ -450,5 +537,4 @@ public class StyleSupport {
      } // for j
      } // while
      }-*/;
-
 }

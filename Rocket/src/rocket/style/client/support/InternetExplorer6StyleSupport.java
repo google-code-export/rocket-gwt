@@ -30,11 +30,21 @@ import com.google.gwt.user.client.Element;
  * 
  * Each of the public getters/setters include workarounds to successfully/accurately retrieve a particular value.
  * 
+ * <h6>Gotchas</h6>
+ * <ul>
+ * <li> In order to simulate the UserSelect css property text selection is disabled by controlling an elements ondrag and onselectstart
+ * event listeners. </li>
+ * </ul>
+ * 
  * @author Miroslav Pokorny (mP)
  * 
  * FIX add special case for weight / normal = 400 / bold = 700 / lighter/bolder.
  */
 public class InternetExplorer6StyleSupport extends StyleSupport {
+
+    protected String getUserSelectPropertyName() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Retrieves a style property from the given style
@@ -47,35 +57,57 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 
         String propertyValue = null;
         while (true) {
-            // special case if property name is opacity
-            final JavaScriptObject style = this.getStyle(rule);
-            // special case to handle opacity values
-            if (propertyName.equals(StyleConstants.OPACITY)) {
-                propertyValue = ObjectHelper.getString(style, StyleSupportConstants.FILTER);
-                propertyValue = this.translateFromOpacity(propertyValue);
+            if (StyleConstants.OPACITY.equals(propertyName)) {
+                propertyValue = this.getRuleOpacity(rule);
+                break;
+            }
+            if (StyleConstants.USER_SELECT.equals(propertyName)) {
+                propertyValue = this.getRuleUserSelect(rule);
                 break;
             }
 
-            propertyValue = ObjectHelper.getString(style, propertyName);
-            if (StringHelper.isNullOrEmpty(propertyValue)) {
-                propertyValue = null;
-                break;
-            }
-
-            if (this.isBorderPropertyName(propertyName)) {
-                propertyValue = this.translateBorderWidthValue(propertyValue) + "px";
-                break;
-            }
-            // return all other values as is...
-
-            propertyValue = this.translateNoneValuesToNull(propertyValue);
+            propertyValue = super.getRuleStyleProperty(rule, propertyName);
             break;
         }
         return propertyValue;
     }
 
+    protected String getRuleOpacity(final JavaScriptObject rule) {
+        return this.getStyleOpacity(this.getStyle(rule));
+    }
+
+    protected String getRuleUserSelect(final JavaScriptObject rule) {
+        throw new UnsupportedOperationException();
+    }
+
     public void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName, final String propertyValue) {
-        this.setStyleProperty(this.getStyle(rule), propertyName, propertyValue);
+        while (true) {
+            if (StyleConstants.BACKGROUND_IMAGE.equals(propertyName)) {
+                this.setRuleBackgroundImage(rule, propertyValue);
+                break;
+            }
+            if (StyleConstants.OPACITY.equals(propertyName)) {
+                this.setRuleOpacity(rule, propertyValue);
+                break;
+            }
+            if (StyleConstants.USER_SELECT.equals(propertyName)) {
+                this.setRuleUserSelect(rule, propertyValue);
+                break;
+            }
+            super.setRuleStyleProperty(rule, propertyName, propertyValue);
+        }
+    }
+
+    protected void setRuleBackgroundImage(final JavaScriptObject rule, final String value) {
+        this.setStyleBackgroundImage(this.getStyle(rule), value);
+    }
+
+    protected void setRuleOpacity(final JavaScriptObject rule, final String value) {
+        this.setStyleOpacity(this.getStyle(rule), value);
+    }
+
+    protected void setRuleUserSelect(final JavaScriptObject rule, final String value) {
+        throw new UnsupportedOperationException("It is not possible to control user select from a rule in IE");
     }
 
     /**
@@ -85,10 +117,8 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      * @param propertyName
      */
     public void removeRuleStyleProperty(final JavaScriptObject rule, final String propertyName) {
-        ObjectHelper.checkNotNull("parameter:rule", rule);
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
-
-        ObjectHelper.setString(this.getStyle(rule), propertyName, "");
+        final JavaScriptObject nativeRule = this.getStyle(rule);
+        ObjectHelper.setString(nativeRule, propertyName, "");
     }
 
     /**
@@ -102,31 +132,36 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 
         String propertyValue = null;
         while (true) {
-            final JavaScriptObject style = this.getStyle(element);
-
-            // special case to handle opacity values
-            if (propertyName.equals(StyleConstants.OPACITY)) {
-                propertyValue = ObjectHelper.getString(style, StyleSupportConstants.FILTER);
-                if (false == StringHelper.isNullOrEmpty(propertyValue)) {
-                    propertyValue = this.translateFromOpacity(propertyValue);
-                }
+            if (StyleConstants.OPACITY.equals(propertyName)) {
+                propertyValue = this.getInlineOpacity(element);
                 break;
             }
 
-            propertyValue = ObjectHelper.getString(style, propertyName);
-
-            // an empty string or null counts as null
-            if (StringHelper.isNullOrEmpty(propertyValue)) {
-                propertyValue = null;
-                break;
-            }
-
-            // return all other values as is...
-            propertyValue = this.translateNoneValuesToNull(propertyValue);
+            propertyValue = super.getInlineStyleProperty(element, propertyName);
             break;
         }
         return propertyValue;
     }
+
+    protected String getInlineOpacity(final Element element) {
+        return this.getStyleOpacity(this.getStyle(element));
+    }
+
+    protected String getInlineUserSelect(final Element element) {
+        return this.getInlineUserSelect0(element);
+    }
+
+    native String getInlineUserSelect0(final Element element)/*-{
+     var result = true;
+     
+     var f = element.ondrag;
+     if( f ){
+     result = f();
+     }
+     
+     // disabled == "none" // enabled = null
+     return result ? null : "none";        
+     }-*/;
 
     public void setInlineStyleProperty(final Element element, final String propertyName, final String propertyValue) {
         while (true) {
@@ -134,9 +169,38 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
                 this.setInlineBackgroundImage(element, propertyValue);
                 break;
             }
-            ObjectHelper.setString(this.getStyle(element), propertyName, propertyValue);
+            if (StyleConstants.OPACITY.equals(propertyName)) {
+                this.setInlineOpacity(element, propertyValue);
+                break;
+            }
+
+            super.setInlineStyleProperty(element, propertyName, propertyValue);
             break;
         }
+    }
+
+    protected void setInlineBackgroundImage(final Element element, final String value) {
+        this.setStyleBackgroundImage(this.getStyle(element), value);
+    }
+
+    protected void setInlineOpacity(final Element element, final String value) {
+        this.setStyleOpacity(this.getStyle(element), value);
+    }
+
+    protected void setInlineUserSelect(final Element element, final String value) {
+        final boolean enable = false == "none".equals(value);
+        this.setInlineUserSelect0(element, enable);
+    }
+
+    native private void setInlineUserSelect0(final Element element, final boolean enable)/*-{    
+     var f = function(){ return enable };
+     element.ondrag = f;
+     element.onselectstart = f;
+     }-*/;
+
+    protected String getStyleOpacity(final JavaScriptObject style) {
+        final String propertyValue = ObjectHelper.getString(style, StyleSupportConstants.FILTER);
+        return this.translateFromOpacity(propertyValue);
     }
 
     /**
@@ -145,66 +209,54 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      * @param element
      * @param url
      */
-    protected void setInlineBackgroundImage(final Element element, final String url) {
-        ObjectHelper.checkNotNull("parameter:element", element);
+    protected void setStyleBackgroundImage(final JavaScriptObject style, final String url) {
+        ObjectHelper.checkNotNull("parameter:style", style);
         StringHelper.checkNotEmpty("parameter:url", url);
 
-        final StringBuffer arguments = new StringBuffer();
-        arguments.append(url);
-        arguments.append(' ');
+        // backup other background properties that will get lost when background shortcut with image is written.
+        final String colour = ObjectHelper.getString(style, StyleConstants.BACKGROUND_COLOR);
+        final String attachment = ObjectHelper.getString(style, StyleConstants.BACKGROUND_ATTACHMENT);
+        final String position = ObjectHelper.getString(style, StyleConstants.BACKGROUND_POSITION);
+        final String repeat = ObjectHelper.getString(style, StyleConstants.BACKGROUND_REPEAT);
 
-        final String colour = this.getInlineStyleProperty(element, StyleConstants.BACKGROUND_COLOR);
+        ObjectHelper.setString(style, StyleConstants.BACKGROUND, url);
+
+        // restore other background properties...
         if (false == StringHelper.isNullOrEmpty(colour)) {
-            arguments.append(colour);
-            arguments.append(" ");
+            ObjectHelper.setString(style, StyleConstants.BACKGROUND_COLOR, colour);
         }
-
-        final String attachment = this.getInlineStyleProperty(element, StyleConstants.BACKGROUND_ATTACHMENT);
         if (false == StringHelper.isNullOrEmpty(attachment)) {
-            arguments.append(attachment);
-            arguments.append(" ");
+            ObjectHelper.setString(style, StyleConstants.BACKGROUND_ATTACHMENT, attachment);
         }
-
-        final String position = this.getInlineStyleProperty(element, StyleConstants.BACKGROUND_POSITION);
         if (false == StringHelper.isNullOrEmpty(position)) {
-            arguments.append(position);
-            arguments.append(" ");
+            ObjectHelper.setString(style, StyleConstants.BACKGROUND_POSITION, position);
         }
-
-        final String repeat = this.getInlineStyleProperty(element, StyleConstants.BACKGROUND_REPEAT);
         if (false == StringHelper.isNullOrEmpty(repeat)) {
-            arguments.append(repeat);
-            arguments.append(" ");
+            ObjectHelper.setString(style, StyleConstants.BACKGROUND_REPEAT, repeat);
         }
+    }
 
-        this.setInlineStyleProperty(element, StyleConstants.BACKGROUND, arguments.toString());
+    protected void setStyleOpacity(final JavaScriptObject style, final String value) {
+        final String propertyName0 = StyleSupportConstants.FILTER;
+        final String propertyValue0 = this.translateToOpacity(value);
+
+        ObjectHelper.setString(style, propertyName0, propertyValue0);
     }
 
     /**
-     * Sets a new value upon a style property.
+     * Translates an css opacity value to an InternetExplorer 6.x filter style property. Does the opposite of
+     * {@link #translateFromOpacity(String)} an opacity value.
      * 
-     * A test is also made to handle the setting of opacity values using the Internet Explorer filter mechanism.
-     * 
-     * @param style
-     * @param propertyName
-     * @param propertyValue
+     * @param value
+     * @return
      */
-    protected void setStyleProperty(final JavaScriptObject style, final String propertyName, final String propertyValue) {
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+    protected String translateToOpacity(final String value) {
+        StringHelper.checkNotEmpty("parameter:value", value);
 
-        String propertyName0 = propertyName;
-        String propertyValue0 = propertyValue;
+        final double doubleValue = Double.parseDouble(value);
+        final int percentageValue = (int) (doubleValue * 100);
 
-        while (true) {
-            if (propertyName.equals(StyleConstants.OPACITY)) {
-                propertyName0 = StyleSupportConstants.FILTER;
-                propertyValue0 = this.translateToOpacity(propertyValue0);
-                break;
-            }
-            break;
-        }
-
-        ObjectHelper.setString(style, propertyName0, propertyValue0);
+        return "alpha(opacity=" + percentageValue + ")";
     }
 
     /**
@@ -220,24 +272,10 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
     public String getComputedStyleProperty(final Element element, final String propertyName) {
         String propertyValue = null;
         while (true) {
-            // opacity is a special case...
-            if (propertyName.equals(StyleConstants.OPACITY)) {
-                propertyValue = this.getComputedStyleProperty0(element, StyleSupportConstants.FILTER);
-                if (null != propertyValue) {
-                    propertyValue = this.translateFromOpacity(propertyValue);
-                }
+            if (StyleConstants.BACKGROUND_POSITION.equals(propertyName)) {
+                propertyValue = this.getComputedBackgroundPosition(element);
                 break;
             }
-            // special case for any of the borderXXXWidth values...
-            if (propertyName.equals(StyleConstants.BORDER_RIGHT_WIDTH)
-                    || propertyName.equals(StyleConstants.BORDER_TOP_WIDTH)
-                    || propertyName.equals(StyleConstants.BORDER_LEFT_WIDTH)
-                    || propertyName.equals(StyleConstants.BORDER_BOTTOM_WIDTH)) {
-
-                propertyValue = this.getBorderWidthValue(element, propertyName) + "px";
-                break;
-            }
-
             if (propertyName.equals(StyleConstants.FONT_SIZE)) {
                 final int fontSize = this.getComputedFontSize(element);
                 if (-1 != fontSize) {
@@ -245,39 +283,21 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
                 }
                 break;
             }
-            if (propertyName.equals(StyleConstants.FONT_WEIGHT)) {
-                propertyValue = "" + this.getComputedFontWeight(element);
+            if (StyleConstants.HEIGHT.equals(propertyName)) {
+                propertyValue = this.getComputedHeight(element);
+                break;
+            }
+            // opacity is a special case...
+            if (StyleConstants.OPACITY.equals(propertyName)) {
+                propertyValue = this.getComputedOpacity(element);
+                break;
+            }
+            if (StyleConstants.WIDTH.equals(propertyName)) {
+                propertyValue = this.getComputedWidth(element);
                 break;
             }
 
-            if (propertyName.equals(StyleConstants.BACKGROUND_POSITION)) {
-                propertyValue = this.getComputedBackgroundPosition(element);
-                break;
-            }
-
-            propertyValue = this.getComputedStyleProperty0(element, propertyName);
-            if (StringHelper.isNullOrEmpty(propertyValue)) {
-                break;
-            }
-            if (propertyName.equals(StyleConstants.WIDTH)) {
-                if (propertyValue.endsWith("%") || StyleSupportConstants.AUTO.equals(propertyValue)) {
-                    propertyValue = this.getComputedWidth(element) + "px";
-                }
-                break;
-            }
-            if (propertyName.equals(StyleConstants.HEIGHT)) {
-                if (propertyValue.endsWith("%") || StyleSupportConstants.AUTO.equals(propertyValue)) {
-                    propertyValue = this.getComputedHeight(element) + "px";
-                }
-                break;
-            }
-            // if MARGIN and value == "auto" needs to calculate margin value.
-            if (propertyValue.equals(StyleSupportConstants.AUTO)) {
-                propertyValue = "0px";
-                break;
-            }
-
-            propertyValue = this.translateNoneValuesToNull(propertyValue);
+            propertyValue = super.getComputedStyleProperty(element, propertyName);
             break;
         }
 
@@ -321,6 +341,39 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      return value ? value : null;
      }-*/;
 
+    protected String getComputedOpacity(final Element element) {
+        String value = this.getComputedStyleProperty0(element, StyleSupportConstants.FILTER);
+        if (null != value) {
+            value = this.translateFromOpacity(value);
+        }
+        return value;
+    }
+
+    /**
+     * @param element
+     * @return
+     */
+    protected String getComputedUserSelect(final Element element) {
+        return this.getComputedUserSelect0(element);
+    }
+
+    native private String getComputedUserSelect0(final Element element)/*-{
+     var result = true;
+     
+     var element0 = element;
+     while( null != element0 ){
+     var f = element0.ondrag;
+     if( f ){
+     result = f();
+     break;
+     }
+     
+     element0 = element.parentNode;
+     }
+     // enabled = null // disabled = "none"
+     return result ? null : "none";
+     }-*/;
+
     /**
      * Retrieves the content width of the given element
      * 
@@ -331,18 +384,30 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      * @param element
      * @return
      */
-    protected int getComputedWidth(final Element element) {
+    protected String getComputedWidth(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
 
-        final int offsetWidth = ObjectHelper.getInteger(element, "offsetWidth");
+        String value = null;
+        while (true) {
+            value = this.getComputedStyleProperty0(element, StyleConstants.WIDTH);
+            // if a % or auto must calculate...
+            if (false == (value.endsWith("%") || StyleSupportConstants.AUTO.equals(value))) {
+                break;
+            }
 
-        final int borderLeft = this.getBorderWidthValue(element, StyleConstants.BORDER_LEFT_WIDTH);
-        final int borderRight = this.getBorderWidthValue(element, StyleConstants.BORDER_RIGHT_WIDTH);
+            final int offsetWidth = ObjectHelper.getInteger(element, "offsetWidth");
 
-        final int paddingLeft = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_LEFT);
-        final int paddingRight = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_RIGHT);
+            final int borderLeft = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_LEFT_WIDTH);
+            final int borderRight = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_RIGHT_WIDTH);
 
-        return offsetWidth - borderLeft - borderRight - paddingLeft - paddingRight;
+            final int paddingLeft = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_LEFT);
+            final int paddingRight = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_RIGHT);
+
+            final int width = offsetWidth - borderLeft - borderRight - paddingLeft - paddingRight;
+            value = width + "px";
+            break;
+        }
+        return value;
     }
 
     /**
@@ -351,31 +416,32 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      * @param element
      * @return
      */
-    protected int getComputedHeight(final Element element) {
+    protected String getComputedHeight(final Element element) {
         ObjectHelper.checkNotNull("parameter:element", element);
 
-        final int offsetHeight = ObjectHelper.getInteger(element, "offsetHeight");
+        String value = null;
+        while (true) {
+            value = this.getComputedStyleProperty0(element, StyleConstants.HEIGHT);
+            // if a % or auto must calculate...
+            if (false == (value.endsWith("%") || StyleSupportConstants.AUTO.equals(value))) {
+                break;
+            }
 
-        final int borderTop = this.getBorderWidthValue(element, StyleConstants.BORDER_TOP_WIDTH);
-        final int borderBottom = this.getBorderWidthValue(element, StyleConstants.BORDER_BOTTOM_WIDTH);
+            final int offsetHeight = ObjectHelper.getInteger(element, "offsetHeight");
 
-        final int paddingTop = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_TOP);
-        final int paddingBottom = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_BOTTOM);
+            final int borderTop = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_TOP_WIDTH);
+            final int borderBottom = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_BOTTOM_WIDTH);
 
-        return offsetHeight - borderTop - borderBottom - paddingTop - paddingBottom;
+            final int paddingTop = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_TOP);
+            final int paddingBottom = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_BOTTOM);
+
+            final int height = offsetHeight - borderTop - borderBottom - paddingTop - paddingBottom;
+            value = height + "px";
+            break;
+        }
+
+        return value;
     }
-
-    protected int getComputedStylePropertyInPixels(final Element element, final String propertyName) {
-        ObjectHelper.checkNotNull("parameter:element", element);
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
-
-        return this.getComputedStylePropertyInPixels0(element, propertyName);
-    }
-
-    native private int getComputedStylePropertyInPixels0(final Element element, final String propertyName)/*-{
-     var value = element.currentStyle[ propertyName ];
-     return isNaN( value ) ? parseInt( value ) : 0;
-     }-*/;
 
     /**
      * This method covers a special case only returning non zero values if a border style is also applicable.
@@ -384,14 +450,14 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      * @param propertyName
      * @return
      */
-    protected int getBorderWidthValue(final Element element, final String propertyName) {
+    protected int getComputedBorderWidthInPixels(final Element element, final String propertyName) {
         ObjectHelper.checkNotNull("parameter:element", element);
         StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
 
-        return this.getBorderWidthValue0(element, propertyName);
+        return this.getComputedBorderWidthInPixels0(element, propertyName);
     }
 
-    native private int getBorderWidthValue0(final Element element, final String propertyName)/*-{
+    native private int getComputedBorderWidthInPixels0(final Element element, final String propertyName)/*-{
      var value = 0;
 
      while( true ){
@@ -416,12 +482,22 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      break;
      }
 
-     alert( "width[" + width + "]borderstyle[" + borderStyle + "] styleName[" + styleName + "] propertyName[" + propertyName + "]");
-
      value = 0 + width;
      break;
      }
      return value;
+     }-*/;
+
+    protected int getComputedStylePropertyInPixels(final Element element, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:element", element);
+        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+
+        return this.getComputedStylePropertyInPixels0(element, propertyName);
+    }
+
+    native private int getComputedStylePropertyInPixels0(final Element element, final String propertyName)/*-{
+     var value = element.currentStyle[ propertyName ];
+     return isNaN( value ) ? parseInt( value ) : 0;
      }-*/;
 
     /**
@@ -542,47 +618,32 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
         ObjectHelper.checkNotNull("parameter:element", element);
         StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
 
-        final JavaScriptObject style = ObjectHelper.getObject(element, "style");
-        final String propertyName0 = propertyName.equals(StyleConstants.OPACITY) ? StyleSupportConstants.FILTER
-                : propertyName;
-        ObjectHelper.setString(style, propertyName0, "");
-    }
-
-    /**
-     * Translates an InternetExplorer 6.x filter style property from alpha(opacity=xxx) to an opacity value.
-     * 
-     * This is necessary in order to present a w3c standards compatible view of all browsers including Internet Explorer.
-     * 
-     * @param value
-     * @return
-     */
-    protected String translateFromOpacity(final String value) {
-        StringHelper.checkNotEmpty("parameter:value", value);
-
-        String number = value.substring("alpha(opacity=".length(), value.length() - 1);
-        if (number.length() < 3) {
-            number = "0." + number;
-        } else {
-            number = number.substring(0, 1) + '.' + number.substring(1, 3);
+        while (true) {
+            if (StyleConstants.OPACITY.equals(propertyName)) {
+                this.removeOpacity(element);
+                break;
+            }
+            if (StyleConstants.USER_SELECT.equals(propertyName)) {
+                this.removeInlineUserSelect(element);
+                break;
+            }
+            ObjectHelper.setString(this.getStyle(element), propertyName, "");
+            break;
         }
-        return number;
     }
 
-    /**
-     * Translates an css opacity value to an InternetExplorer 6.x filter style property. Does the opposite of
-     * {@link #translateFromOpacity(String)} an opacity value.
-     * 
-     * @param value
-     * @return
-     */
-    protected String translateToOpacity(final String value) {
-        StringHelper.checkNotEmpty("parameter:value", value);
-
-        final double doubleValue = Double.parseDouble(value);
-        final int percentageValue = (int) (doubleValue * 100);
-
-        return "alpha(opacity=" + percentageValue + ")";
+    protected void removeOpacity(final Element element) {
+        ObjectHelper.setString(this.getStyle(element), StyleSupportConstants.FILTER, "");
     }
+
+    protected void removeInlineUserSelect(final Element element) {
+        this.removeInlineUserSelect0(element);
+    }
+
+    native protected void removeInlineUserSelect0(final Element element)/*-{
+     element.ondrag=null;
+     element.onselectstart=null;
+     }-*/;
 
     protected int getBorderWidthThin() {
         return StyleSupportConstants.BORDER_WIDTH_THIN_PX_IE6;
@@ -594,6 +655,28 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 
     protected int getBorderWidthThick() {
         return StyleSupportConstants.BORDER_WIDTH_THICK_PX_IE6;
+    }
+
+    /**
+     * Translates an InternetExplorer 6.x filter style property from alpha(opacity=xxx) to an opacity value.
+     * 
+     * This is necessary in order to present a w3c standards compatible view of all browsers including Internet Explorer.
+     * 
+     * @param value
+     * @return
+     */
+    protected String translateFromOpacity(final String value) {
+        String number = null;
+        if (false == StringHelper.isNullOrEmpty(value)) {
+
+            number = value.substring("alpha(opacity=".length(), value.length() - 1);
+            if (number.length() < 3) {
+                number = "0." + number;
+            } else {
+                number = number.substring(0, 1) + '.' + number.substring(1, 3);
+            }
+        }
+        return number;
     }
 
     /**
@@ -681,5 +764,4 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 
     public void normalize(final JavaScriptObject styleSheet) {
     }
-
 }
