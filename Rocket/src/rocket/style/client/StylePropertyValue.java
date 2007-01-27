@@ -67,8 +67,9 @@ public class StylePropertyValue {
         ObjectHelper.checkNotNull("parameter:unit", unit);
 
         // drop any trailing decimal 0's.
-        final String stringForm = Math.round(doubleValue) == doubleValue ? String.valueOf((int) doubleValue) : String
-                .valueOf(doubleValue);
+        final String stringForm = Math.round(doubleValue) == doubleValue ? 
+                String.valueOf((int) doubleValue) : 
+                String.valueOf(doubleValue);
 
         this.setString(stringForm + unit.getValue());
     }
