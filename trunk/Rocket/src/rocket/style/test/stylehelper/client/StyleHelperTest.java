@@ -40,6 +40,8 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 
     final String FILTER = "filter";
 
+    final int POSTPONE_DELAY = 10 * 60 * 1000;
+    
     public void onModuleLoad() {
         final Button button = new Button("Run Tests");
         button.addClickListener(new ClickListener() {
@@ -214,365 +216,364 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         });
         tests.add(new Test() {
             public String getName() {
-                return "testGetInlineStylePropertyValue";
+                return "testInlineGetStylePropertyValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetInlineStylePropertyValue();
+                StyleHelperTest.this.testInlineGetStylePropertyValue();
             }
         });
         tests.add(new Test() {
             public String getName() {
-                return "testSetInlineStylePropertyValue";
+                return "testInlineSetStylePropertyValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testSetInlineStylePropertyValue();
+                StyleHelperTest.this.testInlineSetStylePropertyValue();
             }
         });
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedPropertyValue";
+                return "testComputedGetPropertyValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedPropertyValue();
-            }
-        });
-
-        tests.add(new Test() {
-            public String getName() {
-                return "testGetInlineOpacity";
-            }
-
-            public void execute() {
-                StyleHelperTest.this.testGetInlineOpacity();
-            }
-        });
-        tests.add(new Test() {
-            public String getName() {
-                return "testGetComputedOpacity";
-            }
-
-            public void execute() {
-                StyleHelperTest.this.testGetComputedOpacity();
+                StyleHelperTest.this.testComputedGetPropertyValue();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testSetInlineOpacity";
+                return "testInlineGetOpacity";
             }
 
             public void execute() {
-                StyleHelperTest.this.testSetInlineOpacity();
+                StyleHelperTest.this.testInlineGetOpacity();
             }
         });
-
         tests.add(new Test() {
-
             public String getName() {
-                return "testGetComputedWidthWhereDivHasInlineWidthAndNoBorderOrPadding";
+                return "testComputedGetOpacity";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedWidthWhereDivHasInlineWidthAndNoBorderOrPadding();
+                StyleHelperTest.this.testComputedGetOpacity();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedWidthWhereDivInheritsBorderPaddingWidthFromParent0";
+                return "testInlineSetOpacity";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedWidthWhereDivInheritsBorderPaddingWidthFromParent0();
+                StyleHelperTest.this.testInlineSetOpacity();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedWidthWhereDivInheritsBorderPaddingWidthFromParent1";
+                return "testComputedGetWidthWhereDivHasInlineWidthAndNoBorderOrPadding";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedWidthWhereDivInheritsBorderPaddingWidthFromParent1();
+                StyleHelperTest.this.testComputedGetWidthWhereDivHasInlineWidthAndNoBorderOrPadding();
             }
         });
 
-        // tests.add("testGetComputedWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent", new Test() {
+        tests.add(new Test() {
+            public String getName() {
+                return "testComputedGetWidthWhereDivInheritsBorderPaddingWidthFromParent0";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testComputedGetWidthWhereDivInheritsBorderPaddingWidthFromParent0();
+            }
+        });
+
+        tests.add(new Test() {
+            public String getName() {
+                return "testComputedGetWidthWhereDivInheritsBorderPaddingWidthFromParent1";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testComputedGetWidthWhereDivInheritsBorderPaddingWidthFromParent1();
+            }
+        });
+
+        // tests.add("testComputedGetWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent", new Test() {
         // public String getName(){
-        // return "testGetComputedWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent";
+        // return "testComputedGetWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent";
         // }
         // public void execute() {
-        // StyleSupportTest.this.testGetComputedWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent();
+        // StyleSupportTest.this.testComputedGetWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent();
         // }
         // });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedHeightWhereDivHasInlineHeightAndNoBorderOrPadding";
+                return "testComputedGetHeightWhereDivHasInlineHeightAndNoBorderOrPadding";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedHeightWhereDivHasInlineHeightAndNoBorderOrPadding();
+                StyleHelperTest.this.testComputedGetHeightWhereDivHasInlineHeightAndNoBorderOrPadding();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedHeightWhereDivInheritsBorderPaddingHeightFromParent0";
+                return "testComputedGetHeightWhereDivInheritsBorderPaddingHeightFromParent0";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedHeightWhereDivInheritsBorderPaddingHeightFromParent0();
+                StyleHelperTest.this.testComputedGetHeightWhereDivInheritsBorderPaddingHeightFromParent0();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedHeightWhereDivInheritsBorderPaddingHeightFromParent1";
+                return "testComputedGetHeightWhereDivInheritsBorderPaddingHeightFromParent1";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedHeightWhereDivInheritsBorderPaddingHeightFromParent1();
+                StyleHelperTest.this.testComputedGetHeightWhereDivInheritsBorderPaddingHeightFromParent1();
             }
         });
 
         // tests.add( new Test() {
         // public String getName(){
-        // return "testGetComputedHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent";
+        // return "testComputedGetHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent";
         // }
         // public void execute() {
-        // StyleSupportTest.this.testGetComputedHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent();
+        // StyleSupportTest.this.testComputedGetHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent();
         // }
         // });
 
         tests.add(new Test() {
             public String getName() {
-                return "testSetInlineBackgroundImage";
+                return "testInlineSetBackgroundImage";
             }
 
             public void execute() {
-                StyleHelperTest.this.testSetInlineBackgroundImage();
+                StyleHelperTest.this.testInlineSetBackgroundImage();
             }
         });
         tests.add(new Test() {
             public String getName() {
-                return "testSetInlineBackgroundImageWithElementAlsoContainingABackgroundColour";
+                return "testInlineSetBackgroundImageWithElementAlsoContainingABackgroundColour";
             }
 
             public void execute() {
-                StyleHelperTest.this.testSetInlineBackgroundImageWithElementAlsoContainingABackgroundColour();
-            }
-        });
-
-        tests.add(new Test() {
-            public String getName() {
-                return "testGetComputedBackgroundPositionWhenNoValueIsSet";
-            }
-
-            public void execute() {
-                StyleHelperTest.this.testGetComputedBackgroundPositionWhenNoValueIsSet();
+                StyleHelperTest.this.testInlineSetBackgroundImageWithElementAlsoContainingABackgroundColour();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedBackgroundPosition";
+                return "testComputedGetBackgroundPositionWhenNoValueIsSet";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedBackgroundPosition();
+                StyleHelperTest.this.testComputedGetBackgroundPositionWhenNoValueIsSet();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedBackgroundPositionWithElementThatIncludesAllTheOtherBackgroundProperties";
+                return "testComputedGetBackgroundPosition";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testComputedGetBackgroundPosition();
+            }
+        });
+
+        tests.add(new Test() {
+            public String getName() {
+                return "testComputedGetBackgroundPositionWithElementThatIncludesAllTheOtherBackgroundProperties";
             }
 
             public void execute() {
                 StyleHelperTest.this
-                        .testGetComputedBackgroundPositionWithElementThatIncludesAllTheOtherBackgroundProperties();
+                        .testComputedGetBackgroundPositionWithElementThatIncludesAllTheOtherBackgroundProperties();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontSizeSetToXSmallValue";
+                return "testComputedGetFontSizeSetToXSmallValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontSizeSetToXSmallValue();
+                StyleHelperTest.this.testComputedGetFontSizeSetToXSmallValue();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontSizeSetToSmallValue";
+                return "testComputedGetFontSizeSetToSmallValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontSizeSetToSmallValue();
+                StyleHelperTest.this.testComputedGetFontSizeSetToSmallValue();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontSizeSetToMediumValue";
+                return "testComputedGetFontSizeSetToMediumValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontSizeSetToMediumValue();
+                StyleHelperTest.this.testComputedGetFontSizeSetToMediumValue();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontSizeSetToLargeValue";
+                return "testComputedGetFontSizeSetToLargeValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontSizeSetToLargeValue();
+                StyleHelperTest.this.testComputedGetFontSizeSetToLargeValue();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontSizeSetToXLargeValue";
+                return "testComputedGetFontSizeSetToXLargeValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontSizeSetToXLargeValue();
+                StyleHelperTest.this.testComputedGetFontSizeSetToXLargeValue();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontSizeSetToXXLargeValue";
+                return "testComputedGetFontSizeSetToXXLargeValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontSizeSetToXXLargeValue();
+                StyleHelperTest.this.testComputedGetFontSizeSetToXXLargeValue();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontSizeSetToSmaller";
+                return "testComputedGetFontSizeSetToSmaller";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontSizeSetToSmaller();
+                StyleHelperTest.this.testComputedGetFontSizeSetToSmaller();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontSizeSetToLarger";
+                return "testComputedGetFontSizeSetToLarger";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontSizeSetToLarger();
+                StyleHelperTest.this.testComputedGetFontSizeSetToLarger();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontWeightWithMissingPropertyValue";
+                return "testComputedGetFontWeightWithMissingPropertyValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontWeightWithMissingPropertyValue();
+                StyleHelperTest.this.testComputedGetFontWeightWithMissingPropertyValue();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontWeightWithNumberPropertyValue";
+                return "testComputedGetFontWeightWithNumberPropertyValue";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontWeightWithNumberPropertyValue();
+                StyleHelperTest.this.testComputedGetFontWeightWithNumberPropertyValue();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontWeightSetToNormal";
+                return "testComputedGetFontWeightSetToNormal";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontWeightSetToNormal();
+                StyleHelperTest.this.testComputedGetFontWeightSetToNormal();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontWeightSetToBold";
+                return "testComputedGetFontWeightSetToBold";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontWeightSetToBold();
+                StyleHelperTest.this.testComputedGetFontWeightSetToBold();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontWeightSetToLighter";
+                return "testComputedGetFontWeightSetToLighter";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontWeightSetToLighter();
+                StyleHelperTest.this.testComputedGetFontWeightSetToLighter();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedFontWeightSetToBolder";
+                return "testComputedGetFontWeightSetToBolder";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedFontWeightSetToBolder();
+                StyleHelperTest.this.testComputedGetFontWeightSetToBolder();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedBorderWidthThin";
+                return "testComputedGetBorderWidthThin";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedBorderWidthThin();
+                StyleHelperTest.this.testComputedGetBorderWidthThin();
             }
         });
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedBorderWidthMedium";
+                return "testComputedGetBorderWidthMedium";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedBorderWidthMedium();
+                StyleHelperTest.this.testComputedGetBorderWidthMedium();
             }
         });
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedBorderWidthThick";
+                return "testComputedGetBorderWidthThick";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedBorderWidthThick();
+                StyleHelperTest.this.testComputedGetBorderWidthThick();
             }
         });
 
         tests.add(new Test() {
             public String getName() {
-                return "testGetComputedOpacity";
+                return "testComputedGetOpacity";
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedBorderWidthThick();
+                StyleHelperTest.this.testComputedGetBorderWidthThick();
             }
         });
 
@@ -582,7 +583,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedStylePropertyNames0();
+                StyleHelperTest.this.testComputedGetStylePropertyNames0();
             }
         });
         tests.add(new Test() {
@@ -591,12 +592,47 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
             }
 
             public void execute() {
-                StyleHelperTest.this.testGetComputedStylePropertyNames1();
+                StyleHelperTest.this.testComputedGetStylePropertyNames1();
             }
         });
 
-        return tests;
+        tests.add(new Test() {
+            public String getName() {
+                return "testInlineSetUserSelectionTextSelectionDisabled";
+            }
 
+            public void execute() {
+                StyleHelperTest.this.testInlineSetUserSelectionTextSelectionDisabled();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testInlineSetUserSelectionTextSelectionEnabled";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testInlineSetUserSelectionTextSelectionEnabled();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testInlineGetUserSelection";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testInlineGetUserSelection();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testComputedGetUserSelection";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testComputedGetUserSelection();
+            }
+        });
+        return tests;
     }
     
     protected void testHasClass0(){
@@ -650,7 +686,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals( "apple banana carrot", DOM.getAttribute( element, StyleConstants.CLASS_NAME));
     }
     
-    protected void testGetInlineStylePropertyValue() {
+    protected void testInlineGetStylePropertyValue() {
         final Element element = this.createDivAndAddToDocument();
         final String propertyName = StyleConstants.BACKGROUND_COLOR;
         final String propertyValue = Colour.getColour("yellow").toCssColour();
@@ -664,7 +700,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expectedPropertyValue, actualPropertyValue);
     }
 
-    protected void testSetInlineStylePropertyValue() {
+    protected void testInlineSetStylePropertyValue() {
         final Element element = this.createDivAndAddToDocument();
         final String propertyValue = Colour.getColour("aquamarine").toCssColour();
 
@@ -673,7 +709,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         StyleHelper.setInlineStyleProperty(element, StyleConstants.HEIGHT, HEIGHT + "px");
 
         this.scrollIntoView(element);
-        TestRunner.postponeCurrentTest(60 * 1000);
+        TestRunner.postponeCurrentTest(POSTPONE_DELAY);
 
         DeferredCommand.add(new Command() {
             public void execute() {
@@ -685,19 +721,19 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         });
     }
 
-    protected void testGetComputedPropertyValue() {
+    protected void testComputedGetPropertyValue() {
         final Element element = this.createDivAndAddToDocument();
         final String propertyName = StyleConstants.BACKGROUND_COLOR;
         final String propertyValue = Colour.getColour("yellow").toCssColour();
         DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-        String actualPropertyValue = StyleHelper.getInlineStyleProperty(element, propertyName);
+        String actualPropertyValue = StyleHelper.getComputedStyleProperty(element, propertyName);
         actualPropertyValue = Colour.parse(actualPropertyValue).toCssColour();
         final String expectedPropertyValue = propertyValue;
         Test.assertEquals(expectedPropertyValue, actualPropertyValue);
     }
 
-    protected void testGetInlineOpacity() {
+    protected void testInlineGetOpacity() {
         final Element containerElement = this.createDivAndAddToDocument();
         DOM.setStyleAttribute(containerElement, StyleConstants.WIDTH, WIDTH + "px");
         DOM.setStyleAttribute(containerElement, StyleConstants.HEIGHT, HEIGHT + "px");
@@ -722,7 +758,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
                 .parseDouble(expectedOpacity), Double.parseDouble(actualOpacity), 0.5);
     }
 
-    protected void testGetComputedOpacity() {
+    protected void testComputedGetOpacity() {
         final Element containerElement = this.createDivAndAddToDocument();
         DOM.setStyleAttribute(containerElement, StyleConstants.WIDTH, WIDTH + "px");
         DOM.setStyleAttribute(containerElement, StyleConstants.HEIGHT, HEIGHT + "px");
@@ -747,7 +783,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
                 .parseDouble(expectedOpacity), Double.parseDouble(actualOpacity), 0.5);
     }
 
-    protected void testSetInlineOpacity() {
+    protected void testInlineSetOpacity() {
         final Element containerElement = this.createDivAndAddToDocument();
         DOM.setStyleAttribute(containerElement, StyleConstants.WIDTH, WIDTH + "px");
         DOM.setStyleAttribute(containerElement, StyleConstants.HEIGHT, HEIGHT + "px");
@@ -763,7 +799,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         DOM.setStyleAttribute(childElement, StyleConstants.BACKGROUND_COLOR, "blue");
 
         this.scrollIntoView(childElement);
-        TestRunner.postponeCurrentTest(60 * 1000);
+        TestRunner.postponeCurrentTest(POSTPONE_DELAY);
 
         DeferredCommand.add(new Command() {
             public void execute() {
@@ -786,7 +822,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         });
     }
 
-    protected void testGetComputedWidthWhereDivHasInlineWidthAndNoBorderOrPadding() {
+    protected void testComputedGetWidthWhereDivHasInlineWidthAndNoBorderOrPadding() {
         final int borderLeftWidth = 0;
         final int borderRightWidth = 0;
         final int paddingLeft = 0;
@@ -811,7 +847,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expectedContentWidth, actualContentWidth);
     }
 
-    protected void testGetComputedWidthWhereDivInheritsBorderPaddingWidthFromParent0() {
+    protected void testComputedGetWidthWhereDivInheritsBorderPaddingWidthFromParent0() {
         final int borderLeftWidth = 0;
         final int borderRightWidth = 0;
         final int paddingLeft = 0;
@@ -837,7 +873,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expectedContentWidth, actualContentWidth);
     }
 
-    protected void testGetComputedWidthWhereDivInheritsBorderPaddingWidthFromParent1() {
+    protected void testComputedGetWidthWhereDivInheritsBorderPaddingWidthFromParent1() {
         final int borderLeftWidth = 11;
         final int borderRightWidth = 12;
         final int paddingLeft = 13;
@@ -868,7 +904,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expectedContentWidth, actualContentWidth);
     }
 
-    protected void testGetComputedWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent() {
+    protected void testComputedGetWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent() {
         final int borderLeftWidth = 11;
         final int borderRightWidth = 12;
         final int paddingLeft = 13;
@@ -894,14 +930,14 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         DOM.appendChild(parent, child);
         DOM
                 .setInnerHTML(child,
-                        "CHILDtestGetComputedWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent");
+                        "CHILDtestComputedGetWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent");
 
         final String actualContentWidth = StyleHelper.getComputedStyleProperty(child, StyleConstants.WIDTH);
         final String expectedContentWidth = WIDTH + "px";
         Test.assertEquals(expectedContentWidth, actualContentWidth);
     }
 
-    protected void testGetComputedHeightWhereDivHasInlineHeightAndNoBorderOrPadding() {
+    protected void testComputedGetHeightWhereDivHasInlineHeightAndNoBorderOrPadding() {
         final int borderTopWidth = 0;
         final int borderBottomWidth = 0;
         final int paddingTop = 0;
@@ -924,7 +960,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expectedContentHeight, actualContentHeight);
     }
 
-    protected void testGetComputedHeightWhereDivInheritsBorderPaddingHeightFromParent0() {
+    protected void testComputedGetHeightWhereDivInheritsBorderPaddingHeightFromParent0() {
         final int height = 100;
         final int borderTopWidth = 0;
         final int borderBottomWidth = 0;
@@ -956,7 +992,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expectedContentHeight, actualContentHeight);
     }
 
-    protected void testGetComputedHeightWhereDivInheritsBorderPaddingHeightFromParent1() {
+    protected void testComputedGetHeightWhereDivInheritsBorderPaddingHeightFromParent1() {
         final int height = 100;
         final int borderTopWidth = 11;
         final int borderBottomWidth = 12;
@@ -991,7 +1027,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expectedContentHeight, actualContentHeight);
     }
 
-    protected void testGetComputedHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent() {
+    protected void testComputedGetHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent() {
         final int borderTopWidth = 11;
         final int borderBottomWidth = 12;
         final int paddingTop = 13;
@@ -1016,7 +1052,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         DOM.setStyleAttribute(child, StyleConstants.BACKGROUND_COLOR, "lightGreen");
         DOM.appendChild(parent, child);
         DOM.setInnerHTML(child,
-                "CHILDtestGetComputedHeightWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent");
+                "CHILDtestComputedGetHeightWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent");
 
         final String actualContentHeight = StyleHelper.getComputedStyleProperty(child, StyleConstants.HEIGHT);
         final String expectedContentHeight = HEIGHT + "px";
@@ -1100,7 +1136,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expected, actual, 0.75f);
     }
 
-    public void testSetInlineBackgroundImage() {
+    public void testInlineSetBackgroundImage() {
         final String propertyName = StyleConstants.BACKGROUND_IMAGE;
         final String propertyValue = "image.gif";
 
@@ -1114,7 +1150,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertTrue("actual[" + actual + "], expected[" + expected + "]", actual.indexOf(expected) != -1);
     }
 
-    public void testSetInlineBackgroundImageWithElementAlsoContainingABackgroundColour() {
+    public void testInlineSetBackgroundImageWithElementAlsoContainingABackgroundColour() {
         final String propertyName = StyleConstants.BACKGROUND_IMAGE;
         final String propertyValue = "image.gif";
         final Colour colour = Colour.getColour("red");
@@ -1129,16 +1165,16 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         final String actual = DOM.getStyleAttribute(element, propertyName);
         Test.assertTrue("actual [" + actual + "] expected[" + expected + "]", actual.indexOf(expected) != -1);
 
-        final String backgroundColour = StyleHelper.getComputedStyleProperty(element, StyleConstants.BACKGROUND_COLOR);
+        final String backgroundColour = StyleHelper.getInlineStyleProperty(element, StyleConstants.BACKGROUND_COLOR);
         final String expectedBackgroundColour = colour.toCssColour();
-        Test.assertEquals(Colour.parse(expectedBackgroundColour), Colour.parse(backgroundColour));
+        Test.assertEquals("backgroundColor", Colour.parse(expectedBackgroundColour), Colour.parse(backgroundColour));
 
         final Colour actualColour = Colour.parse(backgroundColour);
         final Colour expectedColour = colour;
         Test.assertEquals(expectedColour, actualColour);
     }
 
-    public void testGetComputedBackgroundPositionWhenNoValueIsSet() {
+    public void testComputedGetBackgroundPositionWhenNoValueIsSet() {
         final String propertyName = StyleConstants.BACKGROUND_POSITION;
 
         final Element element = this.createDivAndAddToDocument();
@@ -1148,7 +1184,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
                 || actual.equals("left left") || actual.equals("0px 0px"));
     }
 
-    public void testGetComputedBackgroundPosition() {
+    public void testComputedGetBackgroundPosition() {
         final String propertyName = StyleConstants.BACKGROUND_POSITION;
         final String propertyValue = "0px 0px";
 
@@ -1162,7 +1198,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expected, actual);
     }
 
-    public void testGetComputedBackgroundPositionWithElementThatIncludesAllTheOtherBackgroundProperties() {
+    public void testComputedGetBackgroundPositionWithElementThatIncludesAllTheOtherBackgroundProperties() {
         final String propertyName = StyleConstants.BACKGROUND_POSITION;
         final String propertyValue = "0px 0px";
 
@@ -1175,7 +1211,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(backgroundProperty, expected, actual);
     }
 
-    public void testGetComputedFontSizeSetToXSmallValue() {
+    public void testComputedGetFontSizeSetToXSmallValue() {
         final String propertyName = StyleConstants.FONT_SIZE;
         final String propertyValue = "x-small";
 
@@ -1188,7 +1224,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expected, actual);
     }
 
-    public void testGetComputedFontSizeSetToSmallValue() {
+    public void testComputedGetFontSizeSetToSmallValue() {
         final String propertyName = StyleConstants.FONT_SIZE;
         final String propertyValue = "small";
 
@@ -1201,7 +1237,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expected, actual);
     }
 
-    public void testGetComputedFontSizeSetToMediumValue() {
+    public void testComputedGetFontSizeSetToMediumValue() {
         final String propertyName = StyleConstants.FONT_SIZE;
         final String propertyValue = "medium";
 
@@ -1214,7 +1250,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expected, actual);
     }
 
-    public void testGetComputedFontSizeSetToLargeValue() {
+    public void testComputedGetFontSizeSetToLargeValue() {
         final String propertyName = StyleConstants.FONT_SIZE;
         final String propertyValue = "large";
 
@@ -1227,7 +1263,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expected, actual);
     }
 
-    public void testGetComputedFontSizeSetToXLargeValue() {
+    public void testComputedGetFontSizeSetToXLargeValue() {
         final String propertyName = StyleConstants.FONT_SIZE;
         final String propertyValue = "x-large";
 
@@ -1240,7 +1276,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expected, actual);
     }
 
-    public void testGetComputedFontSizeSetToXXLargeValue() {
+    public void testComputedGetFontSizeSetToXXLargeValue() {
         final String propertyName = StyleConstants.FONT_SIZE;
         final String propertyValue = "xx-large";
 
@@ -1253,7 +1289,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals(expected, actual);
     }
 
-    public void testGetComputedFontSizeSetToSmaller() {
+    public void testComputedGetFontSizeSetToSmaller() {
         final String propertyName = StyleConstants.FONT_SIZE;
         final String propertyValue = "smaller";
         final int parentFontSize = 13;
@@ -1278,7 +1314,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals("actual[" + actual + "] expected[" + expected + "]", expected, actual, 2.5f);
     }
 
-    public void testGetComputedFontSizeSetToLarger() {
+    public void testComputedGetFontSizeSetToLarger() {
         final String propertyName = StyleConstants.FONT_SIZE;
         final String propertyValue = "larger";
         final int parentFontSize = 13;
@@ -1303,7 +1339,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals("actual[" + actual + "] expected[" + expected + "]", expected, actual, 2.5f);
     }
 
-    public void testGetComputedFontWeightWithMissingPropertyValue() {
+    public void testComputedGetFontWeightWithMissingPropertyValue() {
         final String propertyName = StyleConstants.FONT_WEIGHT;
 
         final Element element = this.createDivAndAddToDocument();
@@ -1313,7 +1349,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals("" + element, "400", actual);
     }
 
-    public void testGetComputedFontWeightWithNumberPropertyValue() {
+    public void testComputedGetFontWeightWithNumberPropertyValue() {
         final String propertyName = StyleConstants.FONT_WEIGHT;
 
         final Element element = this.createDivAndAddToDocument();
@@ -1324,7 +1360,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals("" + element, "700", actual);
     }
 
-    public void testGetComputedFontWeightSetToNormal() {
+    public void testComputedGetFontWeightSetToNormal() {
         final String propertyName = StyleConstants.FONT_WEIGHT;
 
         final Element element = this.createDivAndAddToDocument();
@@ -1335,7 +1371,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals("" + element, "400", actual);
     }
 
-    public void testGetComputedFontWeightSetToBold() {
+    public void testComputedGetFontWeightSetToBold() {
         final String propertyName = StyleConstants.FONT_WEIGHT;
 
         final Element element = this.createDivAndAddToDocument();
@@ -1346,15 +1382,18 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals("" + element, "700", actual);
     }
 
-    public void testGetComputedFontWeightSetToLighter() {
+    public void testComputedGetFontWeightSetToLighter() {
         final String propertyName = StyleConstants.FONT_WEIGHT;
 
         final Element parent = this.createDivAndAddToDocument();
         DOM.setStyleAttribute(parent, StyleConstants.FONT_FAMILY, "Times");
+        DOM.setStyleAttribute(parent, StyleConstants.FONT_SIZE, "20pt");
         DOM.setStyleAttribute(parent, propertyName, "bold");
 
         final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "CHILD");
         DOM.setStyleAttribute(child, StyleConstants.FONT_FAMILY, "Times");
+        DOM.setStyleAttribute(child, StyleConstants.FONT_SIZE, "20pt");
         DOM.setStyleAttribute(child, propertyName, "lighter");
         DOM.appendChild(parent, child);
 
@@ -1362,15 +1401,18 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals("" + child, "400", actual);
     }
 
-    public void testGetComputedFontWeightSetToBolder() {
+    public void testComputedGetFontWeightSetToBolder() {
         final String propertyName = StyleConstants.FONT_WEIGHT;
 
         final Element parent = this.createDivAndAddToDocument();
         DOM.setStyleAttribute(parent, StyleConstants.FONT_FAMILY, "Times");
+        DOM.setStyleAttribute(parent, StyleConstants.FONT_SIZE, "20pt");
         DOM.setStyleAttribute(parent, propertyName, "normal");
 
         final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "CHILD");
         DOM.setStyleAttribute(child, StyleConstants.FONT_FAMILY, "Times");
+        DOM.setStyleAttribute(child, StyleConstants.FONT_SIZE, "20pt");
         DOM.setStyleAttribute(child, propertyName, "bolder");
         DOM.appendChild(parent, child);
 
@@ -1381,7 +1423,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         Test.assertEquals("" + child, "700", actual);
     }
 
-    public void testGetComputedBorderWidthThin() {
+    public void testComputedGetBorderWidthThin() {
         final String propertyName = StyleConstants.BORDER_LEFT_WIDTH;
         final String propertyValue = "thin";
 
@@ -1398,7 +1440,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
                 || number == StyleSupportConstants.BORDER_WIDTH_THIN_PX_IE6);
     }
 
-    public void testGetComputedBorderWidthMedium() {
+    public void testComputedGetBorderWidthMedium() {
         final String propertyName = StyleConstants.BORDER_LEFT_WIDTH;
         final String propertyValue = "medium";
 
@@ -1414,7 +1456,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
                 || number == StyleSupportConstants.BORDER_WIDTH_MEDIUM_PX_IE6);
     }
 
-    public void testGetComputedBorderWidthThick() {
+    public void testComputedGetBorderWidthThick() {
         final String propertyName = StyleConstants.BORDER_LEFT_WIDTH;
         final String propertyValue = "thick";
 
@@ -1430,7 +1472,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
                 || number == StyleSupportConstants.BORDER_WIDTH_THICK_PX_IE6);
     }
 
-    public void testGetComputedStylePropertyNames0() {
+    public void testComputedGetStylePropertyNames0() {
         final Element element = this.createDivAndAddToDocument();
         DOM.setStyleAttribute(element, StyleConstants.CURSOR, "move");
         DOM.setStyleAttribute(element, StringHelper.toCamelCase(StyleConstants.BACKGROUND_COLOR), "aquamarine");
@@ -1449,7 +1491,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
                 .toCamelCase(StyleConstants.BACKGROUND_COLOR)));
     }
 
-    public void testGetComputedStylePropertyNames1() {
+    public void testComputedGetStylePropertyNames1() {
         final Element element = this.createDivAndAddToDocument();
         DOM.setStyleAttribute(element, StyleConstants.CURSOR, "move");
         DOM.setStyleAttribute(element, StringHelper.toCamelCase(StyleConstants.BACKGROUND), "url('image .gif')");
@@ -1465,10 +1507,98 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         list.addAll(Arrays.asList(propertyNames));
 
         Test.assertTrue(StyleConstants.CURSOR + ", list: " + list, list.contains(StyleConstants.CURSOR));
-        Test.assertTrue(StyleConstants.BACKGROUND_IMAGE + ", list: " + list, list.contains(StringHelper
-                .toCamelCase(StyleConstants.BACKGROUND_IMAGE)));
+//        Test.assertTrue(StyleConstants.BACKGROUND_IMAGE + ", list: " + list, list.contains(StringHelper.toCamelCase(StyleConstants.BACKGROUND_IMAGE)));
     }
 
+    protected void testInlineSetUserSelectionTextSelectionDisabled(){
+        final Element element = DomHelper.getBody();
+        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, "none");
+
+        // ask the user to attempt to select some text ?
+        final Button button = new Button( "Continue");
+        button.addClickListener( new ClickListener(){
+            public void onClick( final Widget ignored ){
+                button.removeFromParent();
+
+                final boolean passed = Window.confirm( "Was it impossible to select text anywhere within the document ?");
+                if( false == passed ){                   
+                    Test.fail( "User confirmed that text selection was still possible even though selection had been disabled for the document.");                   
+                }
+
+                StyleHelperTest.finishTest();
+            }
+        });
+        RootPanel.get().add( button );
+
+        Window.alert( "Text selection has been disabled, try and select text anywhere and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest( POSTPONE_DELAY );
+    }
+
+    protected void testInlineSetUserSelectionTextSelectionEnabled(){
+        final Element element = DomHelper.getBody();
+        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, "");
+
+        // ask the user to attempt to select some text ?
+        final Button button = new Button( "Continue");
+        button.addClickListener( new ClickListener(){
+            public void onClick( final Widget ignored ){
+                button.removeFromParent();
+
+                final boolean passed = Window.confirm( "Was it possible to select text anywhere within the document ?");
+                if( false == passed ){                
+                    Test.fail( "User confirmed that text selection was NOT still possible even though selection had been enabled for the document.");
+                }
+                StyleHelperTest.finishTest();
+            }
+        });
+        RootPanel.get().add( button );
+
+        Window.alert( "Text selection has been enabled, try and select text anywhere and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest( POSTPONE_DELAY );        
+    }
+
+    protected void testInlineGetUserSelection(){
+        final Element element = DomHelper.getBody();
+        final String propertyName  = StyleConstants.USER_SELECT;
+
+        StyleHelper.setInlineStyleProperty(element, propertyName, ""); // enable
+        final String value0 = StyleHelper.getInlineStyleProperty(element, propertyName);
+        Test.assertFalse( "selection should be enabled. [" + value0 + "]", "none".equals( value0 ));
+
+        StyleHelper.setInlineStyleProperty(element, propertyName, "none"); // disable        
+        final String value1 = StyleHelper.getInlineStyleProperty(element, propertyName);
+        Test.assertEquals( "selection should be disabled. [" + value1 + "]", "none", value1 );
+
+        StyleHelper.setInlineStyleProperty(element, propertyName, ""); // enable
+        final String value2 = StyleHelper.getInlineStyleProperty(element, propertyName);
+        Test.assertFalse( "selection should be enabled. [" + value2 + "]", "none".equals( value2 ));
+
+        StyleHelper.setInlineStyleProperty(element, propertyName, "none"); // disable
+        final String value3 = StyleHelper.getInlineStyleProperty(element, propertyName);
+        Test.assertEquals( "selection should be disabled. [" + value3 + "]", "none", value3 );
+     }
+
+    protected void testComputedGetUserSelection(){
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.getChild( DomHelper.getBody(), 0 );
+        final String propertyName  = StyleConstants.USER_SELECT;
+
+        StyleHelper.setInlineStyleProperty(parent, propertyName, ""); // enable
+        final String value0 = StyleHelper.getComputedStyleProperty(child, propertyName);
+        Test.assertNull( "selection should be enabled. [" + value0 + "]", value0 );
+
+        StyleHelper.setInlineStyleProperty(parent, propertyName, "none"); // disable        
+        final String value1 = StyleHelper.getComputedStyleProperty(child, propertyName);
+        Test.assertNotNull( "selection should be disabled. [" + value1 + "]", value1 );
+
+        StyleHelper.setInlineStyleProperty(parent, propertyName, ""); // enable
+        final String value2 = StyleHelper.getComputedStyleProperty(child, propertyName);
+        Test.assertNull( "selection should be enabled. [" + value2 + "]", value2 );
+
+        StyleHelper.setInlineStyleProperty(parent, propertyName, "none"); // disable
+        final String value3 = StyleHelper.getComputedStyleProperty(child, propertyName);
+        Test.assertNotNull( "selection should be disabled. [" + value3 + "]", value3 );
+    }
     /**
      * Creates a new div and adds it to the document. No style properties or any other values are set.
      * 

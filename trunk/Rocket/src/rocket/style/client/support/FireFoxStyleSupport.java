@@ -67,4 +67,8 @@ public class FireFoxStyleSupport extends StyleSupport {
         }
         return value;
     }
+
+    protected String getUserSelectPropertyName() {
+        return StyleSupportConstants.FIREFOX_USER_TEXT_SELECT;
+    }
 }
