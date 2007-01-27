@@ -18,8 +18,6 @@ package rocket.util.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import rocket.style.client.StyleHelper;
-
 /**
  * A variety of useful String manipulating methods including assertion checks and general utility methods.
  * 
@@ -484,7 +482,7 @@ public class StringHelper extends ObjectHelper {
      * 
      * <pre>
      * String css = &quot;background-color&quot;;
-     * String js = toJavascriptPropertyName(css);
+     * String js = toCamelCase(css);
      * System.out.println(css + &quot;&gt;&quot; + js); // prints [[[background-color &gt; backgroundColor.]]] without the brackets. 
      * </pre>
      * 
@@ -492,7 +490,7 @@ public class StringHelper extends ObjectHelper {
      * @return
      */
     public static String toCamelCase(final String cssPropertyName) {
-        StyleHelper.checkPropertyName("parameter:cssPropertyName", cssPropertyName);
+        StringHelper.checkNotEmpty("parameter:cssPropertyName", cssPropertyName);
 
         String propertyName = cssPropertyName;
         int i = 0;
@@ -517,7 +515,7 @@ public class StringHelper extends ObjectHelper {
      * @return
      */
     public static String toCssPropertyName(final String propertyName) {
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
 
         return toCssPropertyName0(propertyName);
     }
