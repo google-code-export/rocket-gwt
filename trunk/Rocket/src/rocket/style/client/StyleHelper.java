@@ -73,7 +73,7 @@ public class StyleHelper {
         return styleSheets;
     }
 
-    public static JavaScriptObject getStyleSheetCollection() {
+    static JavaScriptObject getStyleSheetCollection() {
         return StyleHelper.getSupport().getStyleSheetCollection();
     }
 
@@ -92,7 +92,7 @@ public class StyleHelper {
      * @param name
      * @param selectorText
      */
-    public static void checkSelector(final String name, final String selectorText) {
+    static void checkSelector(final String name, final String selectorText) {
         if (StringHelper.isNullOrEmpty(selectorText) | -1 != selectorText.indexOf(StyleConstants.SELECTOR_SEPARATOR)) {
             ObjectHelper.fail("The " + name + " contains more than one selector, selectorText[" + selectorText + "]");
         }
@@ -110,26 +110,6 @@ public class StyleHelper {
         StringHelper.checkNotEmpty("parameter:suffix", suffix);
 
         return prefix + StyleConstants.COMPOUND + suffix;
-    }
-
-    /**
-     * Checks and that the given style property name is valid, throwing an exception if it is not
-     * 
-     * @param name
-     * @param propertyName
-     */
-    public static void checkPropertyName(final String name, final String propertyName) {
-        StringHelper.checkNotEmpty(name, propertyName);
-    }
-
-    /**
-     * Checks that the style property value is valid, throwing an exception if it is not
-     * 
-     * @param name
-     * @param propertyValue
-     */
-    public static void checkPropertyValue(final String name, final String propertyValue) {
-        StringHelper.checkNotNull(name, propertyValue);
     }
 
     /**
@@ -288,7 +268,7 @@ public class StyleHelper {
      * @param name
      * @return
      */
-    static public String getRuleStyleProperty(final JavaScriptObject rule, final String name) {
+    static String getRuleStyleProperty(final JavaScriptObject rule, final String name) {
         return StyleHelper.getSupport().getRuleStyleProperty(rule, name);
     }
 
@@ -299,7 +279,7 @@ public class StyleHelper {
      * @param propertyName
      * @param propertyValue
      */
-    static public void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName,
+    static void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName,
             final String propertyValue) {
         StyleHelper.getSupport().setRuleStyleProperty(rule, propertyName, propertyValue);
     }
@@ -406,7 +386,7 @@ public class StyleHelper {
      * @param value
      * @return
      */
-    static public String getUrl(final String value) {
+    static String getUrl(final String value) {
         String url = value;
         if (null != url) {
             int first = "url(".length();
@@ -435,7 +415,7 @@ public class StyleHelper {
      * @param selectorText
      * @param styleText
      */
-    static public void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText) {
+    static void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText) {
         StyleHelper.getSupport().addRule(styleSheet, selectorText, styleText);
     }
 
@@ -447,7 +427,7 @@ public class StyleHelper {
      * @param selectorText
      * @param styleText
      */
-    static public void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText,
+    static void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText,
             final String styleText) {
         StyleHelper.getSupport().insertRule(styleSheet, index, selectorText, styleText);
     }
@@ -458,7 +438,7 @@ public class StyleHelper {
      * @param styleSheet
      * @param index
      */
-    static public void removeRule(final JavaScriptObject styleSheet, final int index) {
+    static void removeRule(final JavaScriptObject styleSheet, final int index) {
         StyleHelper.getSupport().removeRule(styleSheet, index);
     }
 
@@ -468,7 +448,7 @@ public class StyleHelper {
      * 
      * @param styleSheet
      */
-    static public void normalize(final JavaScriptObject styleSheet) {
+    static void normalize(final JavaScriptObject styleSheet) {
         StyleHelper.getSupport().normalize(styleSheet);
     }
 
@@ -478,7 +458,7 @@ public class StyleHelper {
      * @param styleSheet
      * @return
      */
-    static public JavaScriptObject getRules(final JavaScriptObject styleSheet) {
+    static JavaScriptObject getRules(final JavaScriptObject styleSheet) {
         return StyleHelper.getSupport().getRulesCollection(styleSheet);
     }
 
