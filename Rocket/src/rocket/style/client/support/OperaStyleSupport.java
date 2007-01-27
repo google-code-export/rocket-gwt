@@ -110,7 +110,7 @@ public class OperaStyleSupport extends StyleSupport {
 
     protected int getComputedStyleInPixels(final Element element, final String propertyName) {
         ObjectHelper.checkNotNull("parameter:element", element);
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        this.checkPropertyName("parameter:propertyName", propertyName);
 
         final String value = this.getComputedStyleProperty(element, propertyName);
         return (int) StyleHelper.convertValue(value, CssUnit.PX);

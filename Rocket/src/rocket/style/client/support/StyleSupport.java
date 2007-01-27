@@ -84,7 +84,7 @@ abstract public class StyleSupport {
      * @param propertyValue
      */
     public void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName, final String propertyValue) {
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        this.checkPropertyName("parameter:propertyName", propertyName);
 
         ObjectHelper.setString(this.getStyle(rule), this.toCssPropertyName(propertyName), propertyValue);
     }
@@ -112,7 +112,7 @@ abstract public class StyleSupport {
      */
     public String getInlineStyleProperty(final Element element, final String propertyName) {
         ObjectHelper.checkNotNull("parameter:element", element);
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        this.checkPropertyName("parameter:propertyName", propertyName);
 
         String propertyValue = null;
         while (true) {
@@ -537,4 +537,25 @@ abstract public class StyleSupport {
      } // for j
      } // while
      }-*/;
+    
+    /**
+     * Checks and that the given style property name is valid, throwing an exception if it is not
+     * 
+     * @param name
+     * @param propertyName
+     */
+    protected void checkPropertyName(final String name, final String propertyName) {
+        StringHelper.checkNotEmpty(name, propertyName);
+    }
+
+    /**
+     * Checks that the style property value is valid, throwing an exception if it is not
+     * 
+     * @param name
+     * @param propertyValue
+     */
+    protected void checkPropertyValue(final String name, final String propertyValue) {
+        StringHelper.checkNotNull(name, propertyValue);
+    }
+
 }

@@ -53,7 +53,7 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      * @param propertyName
      */
     public String getRuleStyleProperty(final JavaScriptObject rule, final String propertyName) {
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        this.checkPropertyName("parameter:propertyName", propertyName);
 
         String propertyValue = null;
         while (true) {
@@ -128,7 +128,7 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      * @param propertyName
      */
     public String getInlineStyleProperty(final Element element, final String propertyName) {
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        this.checkPropertyName("parameter:propertyName", propertyName);
 
         String propertyValue = null;
         while (true) {
@@ -306,7 +306,7 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 
     protected String getComputedStyleProperty0(final Element element, final String propertyName) {
         ObjectHelper.checkNotNull("parameter:element", element);
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        this.checkPropertyName("parameter:propertyName", propertyName);
 
         return this.getComputedStyleProperty1(element, propertyName);
     }
@@ -452,7 +452,7 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      */
     protected int getComputedBorderWidthInPixels(final Element element, final String propertyName) {
         ObjectHelper.checkNotNull("parameter:element", element);
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        this.checkPropertyName("parameter:propertyName", propertyName);
 
         return this.getComputedBorderWidthInPixels0(element, propertyName);
     }
@@ -490,7 +490,7 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 
     protected int getComputedStylePropertyInPixels(final Element element, final String propertyName) {
         ObjectHelper.checkNotNull("parameter:element", element);
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        this.checkPropertyName("parameter:propertyName", propertyName);
 
         return this.getComputedStylePropertyInPixels0(element, propertyName);
     }
@@ -616,7 +616,7 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      */
     public void removeInlineStyleProperty(final Element element, final String propertyName) {
         ObjectHelper.checkNotNull("parameter:element", element);
-        StyleHelper.checkPropertyName("parameter:propertyName", propertyName);
+        this.checkPropertyName("parameter:propertyName", propertyName);
 
         while (true) {
             if (StyleConstants.OPACITY.equals(propertyName)) {
