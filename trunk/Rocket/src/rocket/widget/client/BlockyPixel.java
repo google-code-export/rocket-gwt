@@ -98,7 +98,7 @@ public class BlockyPixel extends Composite implements PixelGrid {
         final Colour previousColour = this.getColour(x, y);
         if (previousColour != colour) {
             final Element cell = getCell(x, y);
-            StyleHelper.setInlineStyleProperty(cell, StyleConstants.BACKGROUND_COLOR, colour.toCssColour());
+            StyleHelper.setInlineColourStyleProperty(cell, StyleConstants.BACKGROUND_COLOR, colour);
             getColours()[x + y * this.getColumns()] = colour;
         }
     }
