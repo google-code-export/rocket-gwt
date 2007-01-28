@@ -368,7 +368,7 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
      break;
      }
      
-     element0 = element.parentNode;
+     element0 = element0.parentNode;
      }
      // enabled = null // disabled = "none"
      return result ? null : "none";
