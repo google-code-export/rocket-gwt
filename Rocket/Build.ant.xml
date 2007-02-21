@@ -8,11 +8,12 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.25"/>
+	<property name="version" value="0.26"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
 	<property name="bin-dir" location="${basedir}/bin"/>
+	<property name="lib-dir" location="c:/java-libraries/"/>
 	<property name="release-dir" location="${basedir}/release"/>
 	<property name="txt-dir" location="${basedir}/txt"/>
 	<property name="www-dir" location="${basedir}/www"/>
@@ -21,14 +22,17 @@
 		<pathelement path="${src-dir}"/>
 		<pathelement path="${bin-dir}"/>
 		<pathelement path="${java.class.path}/"/>
-		<pathelement location="C:/java-libraries/gwt-windows-1.2.22"/>
-		<pathelement path="C:/java-libraries/gwt-windows-1.2.22/gwt-user.jar"/>
-		<pathelement path="C:/java-libraries/gwt-windows-1.2.22/gwt-dev-windows.jar"/>
-		<pathelement path="C:/java-libraries/junit/3.8/junit.jar"/>
+		<pathelement location="${lib-dir}/gwt-windows-1.3.3"/>
+		<pathelement path="${lib-dir}/gwt-windows-1.3.3/gwt-user.jar"/>
+		<pathelement path="${lib-dir}/gwt-windows-1.3.3/gwt-dev-windows.jar"/>
+		<pathelement path="${lib-dir}/junit/3.8/junit.jar"/>
 	</path>
 
 	<target name="compile" description="Compile src to bin">
-		<javac srcdir="${src-dir}" destdir="${bin-dir}" includes="**" debug="on" debuglevel="lines,vars,source" source="1.4">
+		<javac srcdir="${src-dir}" destdir="${bin-dir}" includes="**" excludes="com.google.gwt.emul.java.lang.StackTraceElement,com.google.gwt.emul.java.lang.Throwable,rocket.util.client.StackHelper" debug="on" debuglevel="lines,vars,source" source="1.3">
+			<classpath refid="project.class.path"/>
+		</javac>
+		<javac srcdir="${src-dir}" destdir="${bin-dir}" includes="com.google.gwt.emul.java.lang.StackTraceElement,com.google.gwt.emul.java.lang.Throwable,rocket.util.client.StackHelper" debug="on" debuglevel="lines,vars,source" source="1.4">
 			<classpath refid="project.class.path"/>
 		</javac>
 	</target>
@@ -109,33 +113,33 @@
 		</jar>
 	</target>
 
-	<target name="generateJavaDoc" depends="compile" description="Create javadoc">
+	<target name="javadoc" depends="compile" description="Create javadoc">
 		<javadoc access="private"
   	         author="yes"
   	         destdir="${doc-dir}"
-	  		 doctitle="Rocket GWT {$version} Javadoc"
+	  		 doctitle="Rocket GWT ${version} Javadoc"
 		     noindex="yes"
 		     serialwarn="no"  	
   	         sourcepath="${src-dir}"
   	         splitindex="no"
   			packagenames="rocket.browser.client,
-  		              rocket.collection.client,
-  		              rocket.cookie.client,
-  		              rocket.dom.client,
-  		              rocket.dragndrop.client,
-  		              rocket.messaging.client,
-  		              rocket.remoting.client, rocket.remoting.server,
-  		              rocket.style.client, 
-  		              rocket.util.client, 
-  		              rocket.widget.client, 
-  						rocket.widget.client.accordion,
-						rocket.widget.client.form,  		
-						rocket.widget.client.menu,  		
-  						rocket.widget.client.slider,
-  		       			rocket.widget.client.splitter,
-  		 				rocket.widget.client.tab,
-  						rocket.widget.client.testing,
-  						rocket.widget.client.tree"
+              rocket.collection.client,
+              rocket.cookie.client,
+              rocket.dom.client,
+              rocket.dragndrop.client,
+              rocket.messaging.client,
+              rocket.remoting.client, rocket.remoting.server,
+              rocket.style.client, 
+              rocket.util.client, 
+              rocket.widget.client, 
+				rocket.widget.client.accordion,
+				rocket.widget.client.form,  		
+				rocket.widget.client.menu,  		
+				rocket.widget.client.slider,
+       			rocket.widget.client.splitter,
+ 				rocket.widget.client.tab,
+				rocket.widget.client.testing,
+				rocket.widget.client.tree"
   	         verbose="no">
 		</javadoc>
 	</target>
@@ -286,7 +290,7 @@
 
 	<target 	
 			name="packageRelease"
-    		depends="runTests,translateAllModules,packageArchive,generateJavaDoc"     			
+    		depends="test,translateAllModules,packageArchive,javadoc"     			
     		description="Package a release including compiled classes, source files, javadoc and generated html.">
 
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>
@@ -315,7 +319,7 @@
 			</fileset>
 		</zip>
 	</target>
-
+<!--
 	<target name="runGwtTests" depends="compile" description="Runs all GWT Unit test cases(incomplete)">
 		<echo>About to run all GWT test cases - TODO make this TASK work</echo>
 		<junit	fork="yes"		
@@ -332,8 +336,8 @@
 			<test name="rocket.cookie.test.cookies.CookiesGwtTestCase" todir="${test-dir}" />
 		</junit>
 	</target>
-
-	<target name="runTests" depends="compile" description="Runs all Unit test cases">
+-->
+	<target name="test" depends="compile" description="Runs all Unit test cases">
 		<echo>About to run all test cases</echo>
 
 		<junit	fork="yes"		

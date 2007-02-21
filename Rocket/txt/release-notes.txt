@@ -387,3 +387,10 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.25.zip
 * Added ResizablePanel widget which accepts a child widget and adds handles so that the user may resize the child. It is possible to
   set the min/max width and height. Events are also fired whenever the size of the panel changes due to handle dragging.
 * Also fixed outstanding AutoCompleteTextBox issue
+
+0.26 22 February 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.26.zip
+* Added add/has/removeClass names from an Element
+* Improved, fixed a number of inline,computed style properties.
+* Fixed building of rocket.jar and rocket-stacktrace.jar to avoid reported jdk class version problems.
