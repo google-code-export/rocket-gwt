@@ -178,12 +178,24 @@ abstract public class StyleSupport {
     }
 
     public void removeInlineStyleProperty(final Element element, final String propertyName) {
-        this.removeInlineStyleProperty0(element, this.toCssPropertyName(propertyName));
+        while( true ){
+            if( StyleConstants.USER_SELECT.equals(propertyName)){
+                this.removeInlineUserSelect( element );
+                break;
+            }
+            this.removeInlineStyleProperty0(element, this.toCssPropertyName(propertyName));
+            break;
+        }        
     }
 
     private native void removeInlineStyleProperty0(final Element element, final String propertyName)/*-{
      element.style.removeProperty( propertyName );
      }-*/;
+    
+    protected void removeInlineUserSelect( final Element element ){
+        final String propertyName = this.toCssPropertyName(this.getUserSelectPropertyName());
+        this.removeInlineStyleProperty0(element, propertyName);
+    }
 
     /**
      * Computes the value of the requested propertyName for the given element
