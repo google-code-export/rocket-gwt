@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="Rocket" default="packageRelease" basedir=".">
+	<description>
+		This build file may be used to generate all the outputs from the rocket source including
+		javadoc
+		test web pages
+		jar file archives
+		release archives
+	</description>
+
+	<property name="version" value="0.27"/>
+	<property name="test-dir" location="${basedir}/test"/>
+	<property name="src-dir" location="${basedir}/src"/>
+	<property name="doc-dir" location="${basedir}/doc"/>
+	<property name="bin-dir" location="${basedir}/bin"/>
+	<property name="lib-dir" location="c:/java-libraries/"/>
+	<property name="release-dir" location="${basedir}/release"/>
+	<property name="txt-dir" location="${basedir}/txt"/>
+	<property name="www-dir" location="${basedir}/www"/>
+
+	<path id="project.class.path">
+		<pathelement path="${src-dir}"/>
+		<pathelement path="${bin-dir}"/>
+		<pathelement path="${java.class.path}/"/>
+		<pathelement location="${lib-dir}/gwt-windows-1.4.3"/>
+		<pathelement path="${lib-dir}/gwt-windows-1.4.3/gwt-user.jar"/>
+		<pathelement path="${lib-dir}/gwt-windows-1.4.3/gwt-dev-windows.jar"/>
+		<pathelement path="${lib-dir}/junit/3.8/junit.jar"/>
+	</path>
+
+	<target name="compile" description="Compile src to bin">
+		<delete failonerror="yes">
+			<fileset dir="${bin-dir}">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
+		
+		<javac srcdir="${src-dir}" destdir="${bin-dir}" 
+				includes="**" 
+				excludes="com.google.gwt.emul.java.lang.StackTraceElement,com.google.gwt.emul.java.lang.Throwable,rocket.util.client.StackHelper" 
+				debug="on" debuglevel="lines,vars,source" source="1.4" target="1.4">
+			<classpath refid="project.class.path"/>
+		</javac>
+<!--
+		<javac srcdir="${src-dir}" destdir="${bin-dir}" 
+			includes="com.google.gwt.emul.java.lang.StackTraceElement,com.google.gwt.emul.java.lang.Throwable,rocket.util.client.StackHelper" 
+			debug="on" debuglevel="lines,vars,source" source="1.4" target="1.4">
+			<classpath refid="project.class.path"/>
+		</javac>
+-->		
+	</target>
+
+	<target 
+  	name="packageArchive" 
+  	depends="compile" 
+  	description="Create a release archive and secondary optional archives. 
+  	Rocket.jar contains everything, 
+  	Rocket-stacktrace.jar includes only the classes required to support javascript stacktraces(requires jdk1.5+).">
+
+		<mkdir dir="${release-dir}"/>
+
+		<delete failonerror="no">
+			<fileset dir="${release-dir}">
+				<include name="Rocket.jar"/>
+				<include name="Rocket-test.jar"/>
+				<include name="Rocket-stacktrace.jar"/>
+			</fileset>
+		</delete>
+
+		<jar destfile="${release-dir}/Rocket.jar">
+			<fileset dir="${bin-dir}">
+				<exclude name="org/w3c/tools/codec/*.class"/>
+				<exclude name="com/google/gwt/emul/java/lang/StackTraceElement.class"/>
+				<exclude name="com/google/gwt/emul/java/lang/Throwable.class"/>
+				<exclude name="rocket/util/client/StackTraceHelper.class"/>
+				<exclude name="**/test/**/*.*"/>
+				<include name="**/*.class"/>
+			</fileset>
+			<fileset dir="${src-dir}">
+				<exclude name="org/w3c/tools/codec/*.java"/>
+				<exclude name="com/google/gwt/emul/java/lang/StackTraceElement.java"/>
+				<exclude name="com/google/gwt/emul/java/lang/Throwable.java"/>
+				<exclude name="rocket/util/client/StackTraceHelper.java"/>
+				<exclude name="**/test/**/*.*"/>
+				<include name="**"/>
+			</fileset>
+			<fileset dir="${txt-dir}">
+				<include name="release-notes.txt"/>
+				<include name="Rocket-jar-readme.txt"/>
+				<include name="license.txt"/>
+			</fileset>
+		</jar>
+
+		<jar destfile="${release-dir}/Rocket-test.jar">
+			<fileset dir="${bin-dir}">
+				<include name="org/w3c/tools/codec/*.*"/>
+				<include name="**/test/**/*.*"/>
+			</fileset>
+			<fileset dir="${src-dir}">
+				<include name="org/w3c/tools/codec/*.*"/>
+				<include name="**/test/**/*.*"/>
+			</fileset>
+			<fileset dir="${txt-dir}">
+				<include name="release-notes.txt"/>
+				<include name="Rocket-test-jar-readme.txt"/>
+				<include name="license.txt"/>
+			</fileset>
+		</jar>
+
+		<jar destfile="${release-dir}/Rocket-stacktrace.jar">
+			<fileset dir="${bin-dir}">
+				<include name="com/google/gwt/emul/java/lang/StackTraceElement.class"/>
+				<include name="com/google/gwt/emul/java/lang/Throwable.class"/>
+				<include name="rocket/util/client/StackTraceHelper.class"/>
+			</fileset>
+			<fileset dir="${src-dir}">
+				<include name="com/google/gwt/emul/java/lang/StackTraceElement.java"/>
+				<include name="com/google/gwt/emul/java/lang/Throwable.java"/>
+				<include name="rocket/util/client/StackTraceHelper.java"/>
+			</fileset>
+			<fileset dir="${txt-dir}">
+				<include name="release-notes.txt"/>
+				<include name="Rocket-stacktrace-jar-readme.txt"/>
+				<include name="license.txt"/>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="javadoc" depends="compile" description="Create javadoc">
+		<javadoc access="private"
+  	         author="yes"
+  	         destdir="${doc-dir}"
+	  		 doctitle="Rocket GWT ${version} Javadoc"
+		     noindex="yes"
+		     serialwarn="no"  	
+  	         sourcepath="${src-dir}"
+  	         splitindex="no"
+  			packagenames="rocket.browser.client,
+              rocket.collection.client,
+              rocket.cookie.client,
+              rocket.dom.client,
+              rocket.dragndrop.client,
+              rocket.messaging.client,
+              rocket.remoting.client, rocket.remoting.server,
+              rocket.style.client, 
+              rocket.util.client, 
+              rocket.widget.client, 
+				rocket.widget.client.accordion,
+				rocket.widget.client.form,  		
+				rocket.widget.client.menu,  		
+				rocket.widget.client.slider,
+       			rocket.widget.client.splitter,
+ 				rocket.widget.client.tab,
+				rocket.widget.client.testing,
+				rocket.widget.client.tree"
+  	         verbose="no">
+		</javadoc>
+	</target>
+
+	<target name="translateAllModules" depends="compile" description="Generates the html pages for all demos">
+		<echo>About to generate ALL demos!</echo>
+		
+		<antcall target="translateModule">
+			<param name="module" value="rocket.dragndrop.test.DragNDrop"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.remoting.test.comet.Comet"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.selection.test.selection.Selection"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.style.test.stylesheet.StyleSheet"/>
+		</antcall>
+
+		<antcall target="translateModule">
+			<param name="module" value="rocket.testing.test.webpagetestrunner.WebPageTestRunnerTest"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.testing.test.interactivelist.InteractiveList"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.testing.test.interactivepanel.InteractivePanel"/>
+		</antcall>
+		
+		<antcall target="translateModule">
+			<param name="module" value="rocket.util.test.stacktracehelper.StackTraceHelper"/>
+		</antcall>
+
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.accordionpanel.AccordionPanel"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.autocompletetextbox.AutoCompleteTextBox"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.blockypixel.BlockyPixel"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.breadcrumbpanel.BreadcrumbPanel"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.collapsablepanel.CollapsablePanel"/>
+		</antcall>
+
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.divpanel.DivPanel"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.grid.Grid"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.hyperlinkpanel.HyperLinkPanel"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.life.Life"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.menu.Menu"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.orderedlistpanel.OrderedListPanel"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.pager.Pager"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.slider.Slider"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.sortabletable.SortableTable"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.splitterpanel.SplitterPanel"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.stylesheetpicker.StyleSheetPicker"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.tabpanel.TabPanel"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.tree.Tree"/>
+			<param name="delete-gwt-tree-gifs" value="delete-gwt-tree-gifs"/>
+		</antcall>		
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.unorderedlistpanel.UnorderedListPanel"/>
+		</antcall>
+		<antcall target="translateModule">
+			<param name="module" value="rocket.widget.test.zebraflextable.ZebraFlexTable"/>
+		</antcall>
+	</target>
+
+	<target name="translateModule" depends="" description="Translates a module to javascript and html pages.">
+		<echo>Compiling ${module}...</echo>
+		<delete failonerror="no">
+			<fileset dir="${www-dir}/${module}">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
+		<java
+			maxmemory="256M"			
+			failonerror="yes"
+			classname="com.google.gwt.dev.GWTCompiler"
+			fork="yes">
+			<classpath refid="project.class.path">
+			</classpath>
+			<arg value="-out" />
+			<arg value="${www-dir}" />
+			<arg value="-style" />
+			<arg value="DETAILED" />
+			<arg value="${module}" />
+		</java>
+
+		<antcall target="deleteGwtTreeGifs">
+			<param name="module" value="${module}"/>
+		</antcall>
+		<antcall target="deleteHistory">
+			<param name="module" value="${module}"/>
+		</antcall>
+	</target>
+
+	<target name="deleteGwtTreeGifs" 
+		unless="delete-gwt-tree-gifs"
+		description="Deletes the three tree.gifs that are always copied over with each module is compiled by the gwt compiler">
+		<echo>Removing tree gifs from ${module}...</echo>
+		<delete failonerror="no">
+			<fileset dir="${www-dir}/${module}">
+				<include name="tree_open.gif"/>
+				<include name="tree_closed.gif"/>
+				<include name="tree_white.gif"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="deleteHistory" 
+		unless="delete-history"
+		description="Deletes the three tree.gifs">
+		<echo>Removing history.html from ${module}...</echo>
+		<delete failonerror="no">
+			<fileset dir="${www-dir}/${module}">
+				<include name="history.html"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target 	
+			name="packageRelease"
+			depends="test,translateAllModules,packageArchive,javadoc,packageArchive"     			
+    		description="Package a release including compiled classes, source files, javadoc and generated html.">
+
+		<property name="release-archive-name" value="Rocket-${version}.zip"/>
+
+		<delete failonerror="no">
+			<fileset dir="${release-dir}">
+				<include name="${release-archive-name}"/>
+			</fileset>
+		</delete>
+
+		<zip destfile="${basedir}/../${release-archive-name}">
+			<fileset dir="${basedir}/..">
+				<include name="Rocket/bin/**/*.class"/>
+				<include name="Rocket/src/**/*.*"/>
+				<include name="Rocket/doc/**/*.*"/>
+				<include name="Rocket/release/*.jar"/>
+				<include name="Rocket/www/**/*.*"/>
+				<include name="Rocket/*.*"/>
+				<exclude name="${release}/${release-archive-name}"/>
+			</fileset>
+
+			<fileset dir="${txt-dir}">
+				<include name="*.jar"/>
+				<include name="release-notes.txt"/>
+				<include name="license.txt"/>
+			</fileset>
+		</zip>
+	</target>
+<!--
+	<target name="runGwtTests" depends="compile" description="Runs all GWT Unit test cases(incomplete)">
+		<echo>About to run all GWT test cases - TODO make this TASK work</echo>
+		<junit	fork="yes"		
+				haltonerror="no" 
+				haltonfailure="no" 
+				printsummary="yes" 
+				showoutput="yes"			
+			>
+			<formatter type="plain" />
+			<classpath>
+				<path refid="project.class.path" />
+				<pathelement path="${bin-dir}/" />
+			</classpath>
+			<test name="rocket.cookie.test.cookies.CookiesGwtTestCase" todir="${test-dir}" />
+		</junit>
+	</target>
+-->
+	<target name="test" depends="compile" description="Runs all Unit test cases">
+		<echo>About to run all test cases</echo>
+
+		<junit	fork="yes"		
+			haltonerror="no" 
+			haltonfailure="no" 
+			printsummary="yes" 
+			showoutput="yes"
+			clonevm="yes"
+		>
+			<formatter type="plain" />
+			<classpath>
+				<path refid="project.class.path" />
+				<pathelement location="${basedir}/bin/" />
+			</classpath>
+
+			<test name="rocket.collection.test.IteratorViewTestCase" todir="${test-dir}" />
+			<test name="rocket.collection.test.SkippingIteratorTestCase" todir="${test-dir}" />
+			<test name="rocket.collection.test.VisitRememberingIteratorTestCase" todir="${test-dir}" />
+
+			<test name="rocket.util.test.Base64EncoderTestCase" todir="${test-dir}" />
+			<test name="rocket.util.test.ColourTestCase" todir="${test-dir}" />
+			<test name="rocket.util.test.HttpHelperTestCase" todir="${test-dir}" />
+			<test name="rocket.util.test.StackTraceHelperTestCase" todir="${test-dir}" />
+		</junit>
+	</target>
+
+	<target name="clean">
+		<delete>
+			<fileset dir="." includes="Rocket*.jar"/>
+			<fileset dir="." includes="Rocket*.zip"/>
+			<fileset dir="bin" includes="**/*.class"/>
+			<fileset dir="doc" includes="**/*"/>
+			<fileset dir="test" includes="*"/>
+			<fileset dir="www" includes="**/*"/>
+		</delete>
+	</target>
+
+</project>
