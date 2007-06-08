@@ -21,6 +21,7 @@ import java.util.Map;
 import rocket.browser.client.BrowserHelper;
 import rocket.dom.client.DomHelper;
 import rocket.dragndrop.client.DragNDropHelper;
+import rocket.selection.client.SelectionHelper;
 import rocket.style.client.CssUnit;
 import rocket.style.client.StyleConstants;
 import rocket.style.client.StyleHelper;
@@ -1050,8 +1051,8 @@ public class ResizablePanel extends Composite {
             this.setWidth(ResizablePanel.this.getOffsetWidth());
             this.setHeight(ResizablePanel.this.getOffsetHeight());
 
-            DragNDropHelper.disableTextSelection(DomHelper.getBody());
-            DragNDropHelper.clearAnySelectedText();
+            SelectionHelper.disableTextSelection(DomHelper.getBody());
+            SelectionHelper.clearAnySelectedText();
 
             DOM.addEventPreview(this);
             this.getWidget().addStyleName(WidgetConstants.RESIZABLE_PANEL_HANDLE_SELECTED_STYLE);
@@ -1082,8 +1083,8 @@ public class ResizablePanel extends Composite {
          */
         protected void handleMouseUp() {
             DOM.removeEventPreview(this);
-            DragNDropHelper.enableTextSelection(DomHelper.getBody());
-            DragNDropHelper.clearAnySelectedText();
+            SelectionHelper.enableTextSelection(DomHelper.getBody());
+            SelectionHelper.clearAnySelectedText();
             this.getWidget().removeStyleName(WidgetConstants.RESIZABLE_PANEL_HANDLE_SELECTED_STYLE);
         }
 

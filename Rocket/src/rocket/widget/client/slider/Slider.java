@@ -17,6 +17,7 @@ package rocket.widget.client.slider;
 
 import rocket.dom.client.DomHelper;
 import rocket.dragndrop.client.DragNDropHelper;
+import rocket.selection.client.SelectionHelper;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
@@ -125,8 +126,8 @@ public abstract class Slider extends AbstractNumberHolder {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         if (false == this.hasDraggingEventPreview()) {
-            DragNDropHelper.clearAnySelectedText();
-            DragNDropHelper.disableTextSelection(DomHelper.getBody());
+            SelectionHelper.clearAnySelectedText();
+            SelectionHelper.disableTextSelection(DomHelper.getBody());
             DOM.addEventPreview(this.createDraggingEventPreview());
             this.getHandle().addStyleName(this.getSliderDraggingStyleName());
         }
@@ -207,7 +208,7 @@ public abstract class Slider extends AbstractNumberHolder {
 
         DOM.removeEventPreview(this.getDraggingEventPreview());
         this.clearDraggingEventPreview();
-        DragNDropHelper.enableTextSelection(DomHelper.getBody());
+        SelectionHelper.enableTextSelection(DomHelper.getBody());
     }
 
     /**

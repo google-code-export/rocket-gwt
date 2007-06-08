@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.widget.client.tab;
+package rocket.widget.client.tabpanel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -75,7 +75,7 @@ public abstract class TabPanel extends Composite {
 
         final Widget content = item.getContent();
 
-        final Widget tab = this.createTabBarItemWidget(item, closable);
+        final Widget tab = this.getTabBarItemWidget(item, closable);
         this.getTabBarPanel().insert(tab, 1 + beforeIndex);
         this.getContentPanel().insert(content, beforeIndex);
         this.getItems().add(beforeIndex, item);
@@ -89,6 +89,37 @@ public abstract class TabPanel extends Composite {
         this.increaseModificationCount();
     }
 
+
+    /**
+     * Factory method which creates the widget that will appear within the tabbar
+     * 
+     * @param item
+     *            The item
+     * @param closable
+     *            A flag indicating whether or not a close button will appear within the tab.
+     * @return The created widget
+     */
+    protected Widget getTabBarItemWidget(final TabItem item, final boolean closable) {
+        ObjectHelper.checkNotNull("parameter:item", item);
+
+        final HorizontalPanel panel = item.getTabWidgetPanel();        
+        panel.addStyleName(this.getTabBarItemStyleName());
+
+        if (closable) {
+            panel.add( new HTML("&nbsp;") );            
+            
+            final Image closeButton = this.createCloseButton();
+            closeButton.addClickListener(new ClickListener() {
+                public void onClick(final Widget sender) {
+                    TabPanel.this.remove(item);
+                }
+            });
+            panel.add( closeButton );
+        }
+        return panel;
+    }
+
+    
     public void remove(final int index) {
         final TabListenerCollection listeners = this.getTabListeners();
         final TabItem item = this.get(index);
@@ -220,39 +251,6 @@ public abstract class TabPanel extends Composite {
     protected void createItems() {
         final List list = new ArrayList();
         this.setItems(list);
-    }
-
-    /**
-     * Factory method which creates the widget that will appear within the tabbar
-     * 
-     * @param item
-     *            The item
-     * @param closable
-     *            A flag indicating whether or not a close button will appear within the tab.
-     * @return The created widget
-     */
-    protected Widget createTabBarItemWidget(final TabItem item, final boolean closable) {
-        ObjectHelper.checkNotNull("parameter:item", item);
-
-        final HorizontalPanel panel = new HorizontalPanel();
-        panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
-        panel.addStyleName(this.getTabBarItemStyleName());
-
-        panel.add(item.getCaptionWidget());
-
-        if (closable) {
-            final HTML spacer = new HTML("&nbsp;");
-            panel.add(spacer);
-
-            final Image closeButton = this.createCloseButton();
-            closeButton.addClickListener(new ClickListener() {
-                public void onClick(final Widget sender) {
-                    TabPanel.this.remove(item);
-                }
-            });
-            panel.add(closeButton);
-        }
-        return panel;
     }
 
     protected abstract String getTabBarItemStyleName();

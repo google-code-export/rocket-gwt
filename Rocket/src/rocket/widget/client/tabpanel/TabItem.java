@@ -1,17 +1,24 @@
-package rocket.widget.client.tab;
+package rocket.widget.client.tabpanel;
 
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.StringHelper;
 import rocket.widget.client.WidgetHelper;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * A tab item contains all aspects related to a tab item including its caption and content.
  * 
  * The content widget must be set before adding a TabItem to a TabPanel.
+ * 
+ * The {@link #addTabWidgetBeforeCaption(Widget)} and {@link #addTabWidgetAfterCaption(Widget)} methods may be used to add additional widgets such as Spinners to a tab item. 
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -20,7 +27,7 @@ public class TabItem {
     public TabItem() {
         super();
 
-        this.createCaptionWidget();
+        this.createTabWidgetPanel();
     }
 
     /**
@@ -91,7 +98,7 @@ public class TabItem {
         this.captionWidget = captionWidget;
     }
 
-    protected void createCaptionWidget() {
+    protected Widget createCaptionWidget() {
         final HTML html = new HTML();
         html.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
@@ -99,6 +106,7 @@ public class TabItem {
             }
         });
         this.setCaptionWidget(html);
+        return html;
     }
 
     public String getCaption() {
@@ -136,4 +144,58 @@ public class TabItem {
 
         this.content = content;
     }
-}
+    
+    /**
+     * This panel holds all the widgets that have been added to the tab including the label holding the tab text.
+     */
+    private HorizontalPanel tabWidgetPanel;
+    
+    protected HorizontalPanel getTabWidgetPanel(){
+        ObjectHelper.checkNotNull( "field:tabWidgetPanel", tabWidgetPanel );
+        return this.tabWidgetPanel;
+    }
+    
+    protected void setTabWidgetPanel(final HorizontalPanel tabWidgetPanel ){
+        ObjectHelper.checkNotNull( "parameter:tabWidgetPanel", tabWidgetPanel );
+        this.tabWidgetPanel = tabWidgetPanel;
+    }
+    
+    protected HorizontalPanel createTabWidgetPanel(){
+        final HorizontalPanel panel = new HorizontalPanel();
+        panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
+        this.setTabWidgetPanel(panel);
+        
+        panel.add( this.createCaptionWidget() );
+        
+        return panel;
+    }
+    
+    /**
+     * Adds a widget so that it appears to the left of the caption widget 
+     * @param widget
+     * @param before When true adds the widget just before the caption otherwise the widget is added just after.
+     */
+    public void addTabWidget( final Widget widget, final boolean before ){
+        this.insertTabWidget(widget, before ? 0 : + 1 );
+    }    
+    
+        
+    /**
+     * Inserts a widget before the widget 
+     * @param widget
+     * @param index A positive value inserts the widget after the caption whilst a negative value positions the new widget
+     * before the widget. A value of 0 is illegal.
+     */
+    public void insertTabWidget( final Widget widget, final int index ){
+        final HorizontalPanel tabPanel = this.getTabWidgetPanel(); 
+        final int captionIndex = tabPanel.getWidgetIndex( this.getCaptionWidget() );
+        tabPanel.insert( widget, captionIndex + index );   
+    }    
+    /**
+     * Removes a previously added tab widget
+     * @param widget
+     */
+    public boolean removeTabWidget( final Widget widget ){
+        return this.getTabWidgetPanel().remove( widget );
+    }
+  }

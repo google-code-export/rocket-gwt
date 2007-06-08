@@ -1512,7 +1512,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 
     protected void testInlineSetUserSelectionTextSelectionDisabled(){
         final Element element = DomHelper.getBody();
-        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, "none");
+        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED );
 
         // ask the user to attempt to select some text ?
         final Button button = new Button( "Continue");
@@ -1536,7 +1536,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 
     protected void testInlineSetUserSelectionTextSelectionEnabled(){
         final Element element = DomHelper.getBody();
-        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, "");
+        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_ENABLED );
 
         // ask the user to attempt to select some text ?
         final Button button = new Button( "Continue");

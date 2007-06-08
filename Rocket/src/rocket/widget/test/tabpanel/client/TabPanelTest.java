@@ -19,13 +19,13 @@ import java.util.Iterator;
 
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.SystemHelper;
-import rocket.widget.client.tab.BottomTabPanel;
-import rocket.widget.client.tab.LeftTabPanel;
-import rocket.widget.client.tab.RightTabPanel;
-import rocket.widget.client.tab.TabItem;
-import rocket.widget.client.tab.TabListener;
-import rocket.widget.client.tab.TabPanel;
-import rocket.widget.client.tab.TopTabPanel;
+import rocket.widget.client.tabpanel.BottomTabPanel;
+import rocket.widget.client.tabpanel.LeftTabPanel;
+import rocket.widget.client.tabpanel.RightTabPanel;
+import rocket.widget.client.tabpanel.TabItem;
+import rocket.widget.client.tabpanel.TabListener;
+import rocket.widget.client.tabpanel.TabPanel;
+import rocket.widget.client.tabpanel.TopTabPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -86,6 +86,11 @@ public class TabPanelTest implements EntryPoint {
         final TabItem item = new TabItem();
         item.setCaption("Unremovable TabItem");
         item.setContent(new HTML(TabPanelTest.createContent()));
+        item.addTabWidget( new HTML( "1A"), false);
+        item.addTabWidget( new HTML( "2A"), false);
+        item.addTabWidget( new HTML( "1B"), true);
+        item.addTabWidget( new HTML( "2B"), true);
+        
         tabPanel.add(item, false);
         tabPanel.select(0);
 
@@ -228,6 +233,12 @@ public class TabPanelTest implements EntryPoint {
             final TabItem item = new TabItem();
             item.setCaption("" + System.currentTimeMillis());
             item.setContent(new HTML(TabPanelTest.createContent()));
+
+            item.addTabWidget( new HTML( "A1"),false);
+            item.addTabWidget( new HTML( "A2"), false );
+            item.addTabWidget( new HTML( "B1"), true);
+            item.addTabWidget( new HTML( "B2"), true);
+
             return item;
         }
 

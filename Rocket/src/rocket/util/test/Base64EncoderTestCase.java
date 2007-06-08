@@ -39,7 +39,7 @@ public class Base64EncoderTestCase extends TestCase {
         final char[] chars = in.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             final char c = chars[i];
-            if (false == Character.isWhitespace(c)) {
+            if (false == Character.isSpace(c)) {
                 buf.append(c);
             }
         }

@@ -13,15 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.messaging.client;
+package rocket.selection.client.support;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * The payload of a message
- * 
+ * A specialised SelectionSupport class that is adapted to handle FireFox differences from the standard implementation. 
  * @author Miroslav Pokorny (mP)
  */
-public interface Payload extends java.io.Serializable {
-
+public class FireFoxSelectionSupport extends SelectionSupport {
+    
+    native protected JavaScriptObject getNativeSelection()/*-{
+        return $wnd.getSelection();
+    }-*/;
 }
