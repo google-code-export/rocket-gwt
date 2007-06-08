@@ -26,30 +26,6 @@ import com.google.gwt.core.client.GWT;
  */
 public class InternetExplorer6BrowserSupport extends BrowserSupport {
 
-    /**
-     * Only warn the user if in hosted mode and the
-     */
-    static {
-        if (false == GWT.isScript()) {
-            warnIfInternetExplorerQuirksMode();
-        }
-    }
-
-    static void warnIfInternetExplorerQuirksMode() {
-        if (InternetExplorer6BrowserSupport.isInInternetExplorerQuirksMode()) {
-            GWT.log(BrowserConstants.INTERNET_EXPLORER_QUIRKS_MODE_WARNING, null);
-        }
-    }
-
-    /**
-     * This method tests if the browser is InternetExplorer in quirks mode.
-     * 
-     * @return
-     */
-    native static boolean isInInternetExplorerQuirksMode()/*-{        
-     return "BackCompat" == $doc.compatMode;
-     }-*/;
-
     native public int getScrollX()/*-{
      return $doc.documentElement ? $doc.documentElement.scrollLeft: $doc.body.scrollLeft;
      }-*/;

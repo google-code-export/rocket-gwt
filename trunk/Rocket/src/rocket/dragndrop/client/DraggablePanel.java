@@ -19,6 +19,7 @@ import java.util.Iterator;
 
 import rocket.browser.client.BrowserHelper;
 import rocket.dom.client.DomHelper;
+import rocket.selection.client.SelectionHelper;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -118,8 +119,8 @@ public class DraggablePanel extends SimplePanel {
                 // create the widget that will be handle that follows the moving mouse...
                 this.createDragHandle(event);
 
-                DragNDropHelper.disableTextSelection(DomHelper.getBody());
-                DragNDropHelper.clearAnySelectedText();
+                SelectionHelper.disableTextSelection(DomHelper.getBody());
+                SelectionHelper.clearAnySelectedText();
 
                 // register an EventPreview listener to follow the mouse...
                 final EventPreview preview = this.createDraggingEventPreview();
@@ -289,8 +290,8 @@ public class DraggablePanel extends SimplePanel {
         DOM.removeEventPreview(this.getDraggingEventPreview());
         this.clearDraggingEventPreview();
 
-        DragNDropHelper.enableTextSelection(DomHelper.getBody());
-        DragNDropHelper.clearAnySelectedText();
+        SelectionHelper.enableTextSelection(DomHelper.getBody());
+        SelectionHelper.clearAnySelectedText();
     }
 
     /**

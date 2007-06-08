@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.widget.client.tab;
+package rocket.widget.client.tabpanel;
 
 public interface TabListener {
     boolean onBeforeTabSelected(TabItem item);

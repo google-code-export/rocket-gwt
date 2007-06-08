@@ -13,15 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.messaging.client;
+package rocket.selection.client.support;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+public class SelectionSupportConstants {
+    final static String ANCHOR_NODE = "anchorNode";
+    final static String ANCHOR_OFFSET = "anchorOffset";
 
-/**
- * The payload of a message
- * 
- * @author Miroslav Pokorny (mP)
- */
-public interface Payload extends java.io.Serializable {
-
+    final static String FOCUS_NODE = "focusNode";
+    final static String FOCUS_OFFSET = "focusOffset";
+    
+    final static String IS_COLLAPSED = "isCollapsed";
+    
+    final static String IE_SELECTION = "selection";
 }

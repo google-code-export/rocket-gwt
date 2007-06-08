@@ -24,8 +24,6 @@ import java.util.Map;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.client.Window;
-
 /**
  * Takes one or more messages and publishes them to their respective consumers
  * 
@@ -54,17 +52,11 @@ public class MessageBroker {
     public void publishMessages(final List messages) {
         ObjectHelper.checkNotNull("parameter:messages", messages);
 
-        String topic = null;
-        try {
             final Iterator iterator = messages.iterator();
             while (iterator.hasNext()) {
                 final Message message = (Message) iterator.next();
-                topic = message.getDestination();
                 this.publish(message);
             }
-        } catch (final Exception caught) {
-            Window.alert("Error occured while processing topic[" + topic + "], exception:" + caught.getMessage());
-        }
     }
 
     public void publish(final Message message) {

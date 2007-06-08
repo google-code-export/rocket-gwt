@@ -13,15 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.messaging.client;
+package rocket.selection.client.support;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
+import com.google.gwt.core.client.JavaScriptObject;
 /**
- * The payload of a message
- * 
+ * A specialised SelectionSupport class that is adapted to handle Safari differences from the standard implementation. 
  * @author Miroslav Pokorny (mP)
  */
-public interface Payload extends java.io.Serializable {
-
+public class SafariSelectionSupport extends SelectionSupport {
+    native protected JavaScriptObject getNativeSelection()/*-{
+    return $wnd.selection;
+}-*/;
+    
+    public void clear(){
+        final JavaScriptObject selection = this.getNativeSelection();
+        this.clear0( selection );
+     }
+     
+     native private void clear0( final JavaScriptObject selection )/*-{
+         selection.collapse();
+     }-*/;
 }

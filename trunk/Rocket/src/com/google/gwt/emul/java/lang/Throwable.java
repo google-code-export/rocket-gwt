@@ -113,9 +113,10 @@ public class Throwable {
         Throwable currentCause = this;
         while (currentCause != null) {
             String causeMessage = currentCause.getMessage();
-            if (currentCause != this)
+            if (currentCause != this){
                 msg.append("Caused by: ");
-            msg.append(currentCause.typeName);
+            }
+            msg.append( GWT.getTypeName(currentCause));
             msg.append(": ");
             msg.append(causeMessage == null ? "(No exception detail)" : causeMessage);
             msg.append("\n");

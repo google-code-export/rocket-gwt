@@ -27,14 +27,13 @@ import com.google.gwt.user.client.Element;
  */
 public class ObjectHelper extends SystemHelper {
     /**
-     * A null safe equals that checks that both objects are not null and then invokes first.equals( second ). If one parmeter is not null it
-     * cannot return true if the other parameter is null.
+     * A safe way of checking if both objects are equal or both are null.
      * 
      * @param first
      *            Object
      * @param second
      *            Object
-     * @return True if both objects are equal or both are null
+     * @return True if they are both null or equal.
      */
     public static boolean nullSafeEquals(final Object first, final Object second) {
 
@@ -456,7 +455,7 @@ public class ObjectHelper extends SystemHelper {
      }-*/;
 
     /**
-     * Reads an object's property as an Object
+     * Reads an object given a property and returns it as a JavaScriptObject
      * 
      * @param object
      * @param propertyName
@@ -520,6 +519,36 @@ public class ObjectHelper extends SystemHelper {
      return previousValue ? previousValue : null;
      }-*/;
 
+    /**
+     * Reads an object given a property and returns it as a Element
+     * 
+     * @param object
+     * @param propertyName
+     * @return
+     */
+    public static Element getElement(final JavaScriptObject object, final String propertyName) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+        return getElement0(object, propertyName);
+    }
+
+    native private static Element getElement0(final JavaScriptObject object, final String propertyName)/*-{
+     var value = object[ propertyName ];
+     return value ? value : null;
+     }-*/;
+
+    public static Element getElement(final JavaScriptObject object, final int index) {
+        ObjectHelper.checkNotNull("parameter:object", object);
+        PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+        return getElement0(object, index);
+    }
+
+    native private static Element getElement0(final JavaScriptObject object, final int index)/*-{
+     var value = object[ index ];
+     return value ? value : null;
+     }-*/;
+
+    
     /**
      * Removes or deletes a property from the given object.
      * 

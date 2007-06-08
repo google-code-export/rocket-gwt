@@ -394,3 +394,19 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.26.zip
 * Added add/has/removeClass names from an Element
 * Improved, fixed a number of inline,computed style properties.
 * Fixed building of rocket.jar and rocket-stacktrace.jar to avoid reported jdk class version problems.
+
+0.27 8 June 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.27.zip
+This release requires JDK 1.4 and any GWT 1.4 RC.
+* Updated a few customized gwt classes (com.google.*) to continue with functionality.
+* Fixed BrowserHelper.getContextPath() to never return with a trailing slash "/" mimicing HttpServletRequest.getContextPath().
+* Removed try/catch which showed exception inside an alert within MessageBroker.publishMessages( List )
+* Move enableTextSelection(), disableTextSelection, clearTextSelection from DragNDropHelper to SelectionHelper.
+* Fixed handling of text selection enabling/disabling.
+* Added ability to add widgets to a TabItem in two forms before and after the caption. This allows easy addition of spinners etc.
+* Renamed (corrected) package name rocket.widget.client.tab to rocket.widget.client.tabpanel
+* Added opposites for all the assertEquals() methods for the Test class.
+* Added getters to retrieve Element's from a JavaScriptObject using an index or propertyname (String).
+* Added ability to query for user selected and programmatically create or change selection end points.
+* Added ability to test if browser is in quirks mode BrowserHelper.isQuirksMode()
