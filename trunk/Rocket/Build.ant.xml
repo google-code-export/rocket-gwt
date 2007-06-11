@@ -8,7 +8,7 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.27"/>
+	<property name="version" value="0.28"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
@@ -28,6 +28,9 @@
 		<pathelement path="${lib-dir}/junit/3.8/junit.jar"/>
 	</path>
 
+	<!--
+	Compiles the source to class files.
+	-->
 	<target name="compile" description="Compile src to bin">
 		<delete failonerror="yes">
 			<fileset dir="${bin-dir}">
@@ -50,6 +53,9 @@
 -->		
 	</target>
 
+	<!--
+	Packages the three jar files that make up the rocket library.
+	-->
 	<target 
   	name="packageArchive" 
   	depends="compile" 
@@ -69,18 +75,18 @@
 
 		<jar destfile="${release-dir}/Rocket.jar">
 			<fileset dir="${bin-dir}">
-				<exclude name="org/w3c/tools/codec/*.class"/>
 				<exclude name="com/google/gwt/emul/java/lang/StackTraceElement.class"/>
 				<exclude name="com/google/gwt/emul/java/lang/Throwable.class"/>
-				<exclude name="rocket/util/client/StackTraceHelper.class"/>
+				<exclude name="java/**/*.*"/>
+				<exclude name="rocket/util/client/ThrowableHelper.class"/>
 				<exclude name="**/test/**/*.*"/>
 				<include name="**/*.class"/>
 			</fileset>
 			<fileset dir="${src-dir}">
-				<exclude name="org/w3c/tools/codec/*.java"/>
 				<exclude name="com/google/gwt/emul/java/lang/StackTraceElement.java"/>
 				<exclude name="com/google/gwt/emul/java/lang/Throwable.java"/>
-				<exclude name="rocket/util/client/StackTraceHelper.java"/>
+				<exclude name="java/**/*.*"/>				
+				<exclude name="rocket/util/client/ThrowableHelper.java"/>
 				<exclude name="**/test/**/*.*"/>
 				<include name="**"/>
 			</fileset>
@@ -93,11 +99,9 @@
 
 		<jar destfile="${release-dir}/Rocket-test.jar">
 			<fileset dir="${bin-dir}">
-				<include name="org/w3c/tools/codec/*.*"/>
 				<include name="**/test/**/*.*"/>
 			</fileset>
 			<fileset dir="${src-dir}">
-				<include name="org/w3c/tools/codec/*.*"/>
 				<include name="**/test/**/*.*"/>
 			</fileset>
 			<fileset dir="${txt-dir}">
@@ -111,12 +115,12 @@
 			<fileset dir="${bin-dir}">
 				<include name="com/google/gwt/emul/java/lang/StackTraceElement.class"/>
 				<include name="com/google/gwt/emul/java/lang/Throwable.class"/>
-				<include name="rocket/util/client/StackTraceHelper.class"/>
+				<include name="rocket/util/client/ThrowableHelper.class"/>
 			</fileset>
 			<fileset dir="${src-dir}">
 				<include name="com/google/gwt/emul/java/lang/StackTraceElement.java"/>
 				<include name="com/google/gwt/emul/java/lang/Throwable.java"/>
-				<include name="rocket/util/client/StackTraceHelper.java"/>
+				<include name="rocket/util/client/ThrowableHelper.java"/>				
 			</fileset>
 			<fileset dir="${txt-dir}">
 				<include name="release-notes.txt"/>
@@ -126,6 +130,9 @@
 		</jar>
 	</target>
 
+	<!--
+	Creates the javadoc for all classes
+	-->
 	<target name="javadoc" depends="compile" description="Create javadoc">
 		<javadoc access="private"
   	         author="yes"
@@ -141,7 +148,9 @@
               rocket.dom.client,
               rocket.dragndrop.client,
               rocket.messaging.client,
-              rocket.remoting.client, rocket.remoting.server,
+              rocket.remoting.client, 
+			  rocket.remoting.server,
+			  rocket.selection.client, 
               rocket.style.client, 
               rocket.util.client, 
               rocket.widget.client, 
@@ -157,6 +166,9 @@
 		</javadoc>
 	</target>
 
+	<!--
+	Translates all modules into javascript.
+	-->
 	<target name="translateAllModules" depends="compile" description="Generates the html pages for all demos">
 		<echo>About to generate ALL demos!</echo>
 		
@@ -251,6 +263,9 @@
 		</antcall>
 	</target>
 
+	<!--
+	Invokes the GWT compiler and translate a single module into javascript.
+	-->
 	<target name="translateModule" depends="" description="Translates a module to javascript and html pages.">
 		<echo>Compiling ${module}...</echo>
 		<delete failonerror="no">
@@ -304,6 +319,10 @@
 		</delete>
 	</target>
 
+	<!--
+	Zips up the entire project skipping a number of directories but including important files such as the
+	built jar files.
+	-->
 	<target 	
 			name="packageRelease"
 			depends="test,translateAllModules,packageArchive,javadoc,packageArchive"     			
@@ -353,6 +372,9 @@
 		</junit>
 	</target>
 -->
+	<!--
+	Runs all the unit test cases
+	-->
 	<target name="test" depends="compile" description="Runs all Unit test cases">
 		<echo>About to run all test cases</echo>
 
@@ -372,14 +394,19 @@
 			<test name="rocket.collection.test.IteratorViewTestCase" todir="${test-dir}" />
 			<test name="rocket.collection.test.SkippingIteratorTestCase" todir="${test-dir}" />
 			<test name="rocket.collection.test.VisitRememberingIteratorTestCase" todir="${test-dir}" />
-
+			
+			<test name="rocket.style.test.dynamicexpression.DynamicExpressionTestCase" todir="${test-dir}" />			
+			
 			<test name="rocket.util.test.Base64EncoderTestCase" todir="${test-dir}" />
 			<test name="rocket.util.test.ColourTestCase" todir="${test-dir}" />
 			<test name="rocket.util.test.HttpHelperTestCase" todir="${test-dir}" />
-			<test name="rocket.util.test.StackTraceHelperTestCase" todir="${test-dir}" />
+			<test name="rocket.util.test.ThrowableHelperTestCase" todir="${test-dir}" />						
 		</junit>
 	</target>
 
+	<!--
+	Cleans all the directories that hold files that are generated as part of the build process
+	-->
 	<target name="clean">
 		<delete>
 			<fileset dir="." includes="Rocket*.jar"/>
