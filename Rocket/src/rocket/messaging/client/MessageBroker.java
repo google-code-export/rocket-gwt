@@ -52,11 +52,11 @@ public class MessageBroker {
     public void publishMessages(final List messages) {
         ObjectHelper.checkNotNull("parameter:messages", messages);
 
-            final Iterator iterator = messages.iterator();
-            while (iterator.hasNext()) {
-                final Message message = (Message) iterator.next();
-                this.publish(message);
-            }
+        final Iterator iterator = messages.iterator();
+        while (iterator.hasNext()) {
+            final Message message = (Message) iterator.next();
+            this.publish(message);
+        }
     }
 
     public void publish(final Message message) {
