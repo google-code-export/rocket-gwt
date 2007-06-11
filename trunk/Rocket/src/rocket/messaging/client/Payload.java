@@ -15,8 +15,6 @@
  */
 package rocket.messaging.client;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
 /**
  * The payload of a message
  * 
