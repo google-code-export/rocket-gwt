@@ -110,4 +110,33 @@ public class StyleSupportConstants {
     static final String SAFARI_USER_TEXT_SELECT = "KhtmlUserSelect";
 
     static final String TEXT_SELECTION = "UserSelect";
+
+    /**
+     * The constants below relate to using dynamic expressions to simulate a fixed position.
+     */
+    final static char DYNAMIC_EXPRESSION_PLACEHOLDER = '#';
+
+    final static String ABSOLUTE_POSITION = "absolute";
+
+    final static String FIXED_POSITION = "fixed";
+
+    final static int RECALC_REFRESH_IN_MILLIS = 50;
+
+    final static String FIXED_POSITION_EXPRESSION = "'absolute'";
+
+    final static String FIXED_POSITION_LEFT_EXPRESSION = "#+(document?document.documentElement?document.documentElement.scrollLeft:0:0)+'px'";
+
+    final static String FIXED_POSITION_LEFT_QUIRKSMODE_EXPRESSION = "#+(document?document.body?document.body.scrollLeft:0:0)+'px'";
+
+    final static String FIXED_POSITION_RIGHT_EXPRESSION = "#-(document?document.documentElement?document.documentElement.scrollLeft:0:0)+'px'";
+
+    final static String FIXED_POSITION_RIGHT_QUIRKSMODE_EXPRESSION = "#-(document?document.body?document.body.scrollLeft:0:0)+'px'";
+
+    final static String FIXED_POSITION_TOP_EXPRESSION = "#+(document?document.documentElement?document.documentElement.scrollTop:0:0)+'px'";
+
+    final static String FIXED_POSITION_TOP_QUIRKSMODE_EXPRESSION = "#+(document?document.body?document.body.scrollTop:0:0)+'px'";
+
+    final static String FIXED_POSITION_BOTTOM_EXPRESSION = "#-(document?document.documentElement?document.documentElement.scrollTop:0:0)+'px'";
+
+    final static String FIXED_POSITION_BOTTOM_QUIRKSMODE_EXPRESSION = "#-(document?document.body?document.body.scrollTop:0:0)+'px'";
 }

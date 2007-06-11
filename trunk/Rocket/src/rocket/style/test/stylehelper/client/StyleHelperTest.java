@@ -41,8 +41,16 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
     final String FILTER = "filter";
 
     final int POSTPONE_DELAY = 10 * 60 * 1000;
-    
+
     public void onModuleLoad() {
+        // GWT.setUncaughtExceptionHandler( new GWT.UncaughtExceptionHandler(){
+        // public void onUncaughtException(final Throwable caught){
+        // caught.printStackTrace();
+        // Window.alert( StackTraceHelper.getStackTraceAsString(caught));
+        // //Window.alert( "" + caught );
+        // }
+        // });
+
         final Button button = new Button("Run Tests");
         button.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
@@ -78,7 +86,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
             public void execute() {
                 StyleHelperTest.this.testAddClass1();
             }
-        });        
+        });
         tests.add(new Test() {
             public String getName() {
                 return "testAddClass0";
@@ -96,7 +104,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
             public void execute() {
                 StyleHelperTest.this.testAddClass1();
             }
-        });        
+        });
         tests.add(new Test() {
             public String getName() {
                 return "testRemoveClass0";
@@ -114,7 +122,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
             public void execute() {
                 StyleHelperTest.this.testRemoveClass1();
             }
-        });        
+        });
         tests.add(new Test() {
             public String getName() {
                 return "testConvertPixelsToPixels";
@@ -339,15 +347,6 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
                 StyleHelperTest.this.testComputedGetHeightWhereDivInheritsBorderPaddingHeightFromParent1();
             }
         });
-
-        // tests.add( new Test() {
-        // public String getName(){
-        // return "testComputedGetHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent";
-        // }
-        // public void execute() {
-        // StyleSupportTest.this.testComputedGetHeightWhereDivHasScrollBarsAndInheritsBorderPaddingHeightFromParent();
-        // }
-        // });
 
         tests.add(new Test() {
             public String getName() {
@@ -579,7 +578,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 
         tests.add(new Test() {
             public String getName() {
-                return "getComputedStylePropertyNames0";
+                return "testGetComputedStylePropertyNames0";
             }
 
             public void execute() {
@@ -588,7 +587,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         });
         tests.add(new Test() {
             public String getName() {
-                return "getComputedStylePropertyNames1";
+                return "testGetComputedStylePropertyNames1";
             }
 
             public void execute() {
@@ -632,60 +631,164 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
                 StyleHelperTest.this.testComputedGetUserSelection();
             }
         });
+
+        tests.add(new Test() {
+            public String getName() {
+                return "testSetAbsolutePositionLeftTop";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testSetAbsolutePositionLeftTop();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testGetAbsolutePositionLeftTop";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testGetAbsolutePositionLeftTop();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testSetAbsolutePositionRightBottom";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testSetAbsolutePositionRightBottom();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testGetAbsolutePositionRightBottom";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testGetAbsolutePositionRightBottom();
+            }
+        });
+
+        tests.add(new Test() {
+            public String getName() {
+                return "testSetFixedPositionLeftTop";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testSetFixedPositionLeftTop();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testGetFixedPositionLeftTop";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testGetFixedPositionLeftTop();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testSetFixedPositionRightBottom";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testSetFixedPositionRightBottom();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testGetFixedPositionRightBottom";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testGetFixedPositionRightBottom();
+            }
+        });
+
+        tests.add(new Test() {
+            public String getName() {
+                return "testSetFixedPositionRightBottomThenSetAbsolutePosition";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testSetFixedPositionRightBottomThenSetAbsolutePosition();
+            }
+        });
+
+        tests.add(new Test() {
+            public String getName() {
+                return "testSetFixedPositionThenSetCoordinates";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testSetFixedPositionThenSetCoordinates();
+            }
+        });
+        tests.add(new Test() {
+            public String getName() {
+                return "testSetPositionAndChangeCoordinatesTwice";
+            }
+
+            public void execute() {
+                StyleHelperTest.this.testSetPositionAndChangeCoordinatesTwice();
+            }
+        });
         return tests;
     }
-    
-    protected void testHasClass0(){
+
+    protected void testHasClass0() {
         final Element element = this.createDivAndAddToDocument();
-        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
-        
-        final boolean found = StyleHelper.hasClass(element, "car" );
-        Test.assertFalse( found );
+        DOM.setAttribute(element, StyleConstants.CLASS_NAME, "apple banana carrot");
+
+        final boolean found = StyleHelper.hasClass(element, "car");
+        Test.assertFalse(found);
     }
-    
-    protected void testHasClass1(){
+
+    protected void testHasClass1() {
         final Element element = this.createDivAndAddToDocument();
-        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
-        
-        final boolean found = StyleHelper.hasClass(element, "banana" );
-        Test.assertTrue( found );
+        DOM.setAttribute(element, StyleConstants.CLASS_NAME, "apple banana carrot");
+
+        final boolean found = StyleHelper.hasClass(element, "banana");
+        Test.assertTrue(found);
     }
-    
-    protected void testAddClass0(){
+
+    protected void testAddClass0() {
         final Element element = this.createDivAndAddToDocument();
-        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
-        
-        StyleHelper.addClass(element, "banana" );
-        
-        Test.assertEquals( "apple banana carrot", DOM.getAttribute( element, StyleConstants.CLASS_NAME));        
+        DOM.setAttribute(element, StyleConstants.CLASS_NAME, "apple banana carrot");
+
+        StyleHelper.addClass(element, "banana");
+
+        Test.assertEquals("apple banana carrot", DOM.getAttribute(element, StyleConstants.CLASS_NAME));
     }
-    
-    protected void testAddClass1(){
+
+    protected void testAddClass1() {
         final Element element = this.createDivAndAddToDocument();
-        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
-        
-        StyleHelper.addClass(element, "dog" );
-        
-        Test.assertEquals( "apple banana carrot dog", DOM.getAttribute( element, StyleConstants.CLASS_NAME));        
+        DOM.setAttribute(element, StyleConstants.CLASS_NAME, "apple banana carrot");
+
+        StyleHelper.addClass(element, "dog");
+
+        Test.assertEquals("apple banana carrot dog", DOM.getAttribute(element, StyleConstants.CLASS_NAME));
     }
-    
-    protected void testRemoveClass0(){
+
+    protected void testRemoveClass0() {
         final Element element = this.createDivAndAddToDocument();
-        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
-        
-        StyleHelper.removeClass(element, "banana" );
-        
-        Test.assertEquals( "apple carrot", DOM.getAttribute( element, StyleConstants.CLASS_NAME));   
+        DOM.setAttribute(element, StyleConstants.CLASS_NAME, "apple banana carrot");
+
+        StyleHelper.removeClass(element, "banana");
+
+        Test.assertEquals("apple carrot", DOM.getAttribute(element, StyleConstants.CLASS_NAME));
     }
-    protected void testRemoveClass1(){
+
+    protected void testRemoveClass1() {
         final Element element = this.createDivAndAddToDocument();
-        DOM.setAttribute( element, StyleConstants.CLASS_NAME, "apple banana carrot");
-        
-        StyleHelper.removeClass(element, "dog" );
-        
-        Test.assertEquals( "apple banana carrot", DOM.getAttribute( element, StyleConstants.CLASS_NAME));
+        DOM.setAttribute(element, StyleConstants.CLASS_NAME, "apple banana carrot");
+
+        StyleHelper.removeClass(element, "dog");
+
+        Test.assertEquals("apple banana carrot", DOM.getAttribute(element, StyleConstants.CLASS_NAME));
     }
-    
+
     protected void testInlineGetStylePropertyValue() {
         final Element element = this.createDivAndAddToDocument();
         final String propertyName = StyleConstants.BACKGROUND_COLOR;
@@ -1507,98 +1610,466 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         list.addAll(Arrays.asList(propertyNames));
 
         Test.assertTrue(StyleConstants.CURSOR + ", list: " + list, list.contains(StyleConstants.CURSOR));
-//        Test.assertTrue(StyleConstants.BACKGROUND_IMAGE + ", list: " + list, list.contains(StringHelper.toCamelCase(StyleConstants.BACKGROUND_IMAGE)));
+        // Test.assertTrue(StyleConstants.BACKGROUND_IMAGE + ", list: " + list,
+        // list.contains(StringHelper.toCamelCase(StyleConstants.BACKGROUND_IMAGE)));
     }
 
-    protected void testInlineSetUserSelectionTextSelectionDisabled(){
+    protected void testInlineSetUserSelectionTextSelectionDisabled() {
         final Element element = DomHelper.getBody();
-        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED );
+        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED);
 
         // ask the user to attempt to select some text ?
-        final Button button = new Button( "Continue");
-        button.addClickListener( new ClickListener(){
-            public void onClick( final Widget ignored ){
+        final Button button = new Button("Continue");
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignored) {
                 button.removeFromParent();
 
-                final boolean passed = Window.confirm( "Was it impossible to select text anywhere within the document ?");
-                if( false == passed ){                   
-                    Test.fail( "User confirmed that text selection was still possible even though selection had been disabled for the document.");                   
+                final boolean passed = Window
+                        .confirm("Was it impossible to select text anywhere within the document ?");
+                if (false == passed) {
+                    Test
+                            .fail("User confirmed that text selection was still possible even though selection had been disabled for the document.");
                 }
 
                 StyleHelperTest.finishTest();
             }
         });
-        RootPanel.get().add( button );
+        RootPanel.get().add(button);
 
-        Window.alert( "Text selection has been disabled, try and select text anywhere and then click on CONTINUE...");
-        StyleHelperTest.postponeCurrentTest( POSTPONE_DELAY );
+        Window.alert("Text selection has been disabled, try and select text anywhere and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
     }
 
-    protected void testInlineSetUserSelectionTextSelectionEnabled(){
+    protected void testInlineSetUserSelectionTextSelectionEnabled() {
         final Element element = DomHelper.getBody();
-        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_ENABLED );
+        StyleHelper.setInlineStyleProperty(element, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_ENABLED);
 
         // ask the user to attempt to select some text ?
-        final Button button = new Button( "Continue");
-        button.addClickListener( new ClickListener(){
-            public void onClick( final Widget ignored ){
+        final Button button = new Button("Continue");
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignored) {
                 button.removeFromParent();
 
-                final boolean passed = Window.confirm( "Was it possible to select text anywhere within the document ?");
-                if( false == passed ){                
-                    Test.fail( "User confirmed that text selection was NOT still possible even though selection had been enabled for the document.");
+                final boolean passed = Window.confirm("Was it possible to select text anywhere within the document ?");
+                if (false == passed) {
+                    Test
+                            .fail("User confirmed that text selection was NOT still possible even though selection had been enabled for the document.");
                 }
                 StyleHelperTest.finishTest();
             }
         });
-        RootPanel.get().add( button );
+        RootPanel.get().add(button);
 
-        Window.alert( "Text selection has been enabled, try and select text anywhere and then click on CONTINUE...");
-        StyleHelperTest.postponeCurrentTest( POSTPONE_DELAY );        
+        Window.alert("Text selection has been enabled, try and select text anywhere and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
     }
 
-    protected void testInlineGetUserSelection(){
+    protected void testInlineGetUserSelection() {
         final Element element = DomHelper.getBody();
-        final String propertyName  = StyleConstants.USER_SELECT;
+        final String propertyName = StyleConstants.USER_SELECT;
 
         StyleHelper.setInlineStyleProperty(element, propertyName, ""); // enable
         final String value0 = StyleHelper.getInlineStyleProperty(element, propertyName);
-        Test.assertFalse( "selection should be enabled. [" + value0 + "]", "none".equals( value0 ));
+        Test.assertFalse("selection should be enabled. [" + value0 + "]", "none".equals(value0));
 
-        StyleHelper.setInlineStyleProperty(element, propertyName, "none"); // disable        
+        StyleHelper.setInlineStyleProperty(element, propertyName, "none"); // disable
         final String value1 = StyleHelper.getInlineStyleProperty(element, propertyName);
-        Test.assertEquals( "selection should be disabled. [" + value1 + "]", "none", value1 );
+        Test.assertEquals("selection should be disabled. [" + value1 + "]", "none", value1);
 
         StyleHelper.setInlineStyleProperty(element, propertyName, ""); // enable
         final String value2 = StyleHelper.getInlineStyleProperty(element, propertyName);
-        Test.assertFalse( "selection should be enabled. [" + value2 + "]", "none".equals( value2 ));
+        Test.assertFalse("selection should be enabled. [" + value2 + "]", "none".equals(value2));
 
         StyleHelper.setInlineStyleProperty(element, propertyName, "none"); // disable
         final String value3 = StyleHelper.getInlineStyleProperty(element, propertyName);
-        Test.assertEquals( "selection should be disabled. [" + value3 + "]", "none", value3 );
-     }
+        Test.assertEquals("selection should be disabled. [" + value3 + "]", "none", value3);
+    }
 
-    protected void testComputedGetUserSelection(){
+    protected void testComputedGetUserSelection() {
         final Element parent = DomHelper.getBody();
-        final Element child = DOM.getChild( DomHelper.getBody(), 0 );
-        final String propertyName  = StyleConstants.USER_SELECT;
+        final Element child = DOM.getChild(DomHelper.getBody(), 0);
+        final String propertyName = StyleConstants.USER_SELECT;
 
         StyleHelper.setInlineStyleProperty(parent, propertyName, ""); // enable
         final String value0 = StyleHelper.getComputedStyleProperty(child, propertyName);
-        Test.assertNull( "selection should be enabled. [" + value0 + "]", value0 );
+        Test.assertNull("selection should be enabled. [" + value0 + "]", value0);
 
-        StyleHelper.setInlineStyleProperty(parent, propertyName, "none"); // disable        
+        StyleHelper.setInlineStyleProperty(parent, propertyName, "none"); // disable
         final String value1 = StyleHelper.getComputedStyleProperty(child, propertyName);
-        Test.assertNotNull( "selection should be disabled. [" + value1 + "]", value1 );
+        Test.assertNotNull("selection should be disabled. [" + value1 + "]", value1);
 
         StyleHelper.setInlineStyleProperty(parent, propertyName, ""); // enable
         final String value2 = StyleHelper.getComputedStyleProperty(child, propertyName);
-        Test.assertNull( "selection should be enabled. [" + value2 + "]", value2 );
+        Test.assertNull("selection should be enabled. [" + value2 + "]", value2);
 
         StyleHelper.setInlineStyleProperty(parent, propertyName, "none"); // disable
         final String value3 = StyleHelper.getComputedStyleProperty(child, propertyName);
-        Test.assertNotNull( "selection should be disabled. [" + value3 + "]", value3 );
+        Test.assertNotNull("selection should be disabled. [" + value3 + "]", value3);
     }
+
+    protected void testSetAbsolutePositionLeftTop() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testSetAbsolutePositionLeftTop");
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "orange");
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.LEFT, "12px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.TOP, "34px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "absolute");
+
+        DOM.appendChild(parent, child);
+        DOM.scrollIntoView(child);
+
+        // ask the user to scroll and verify child is always correctly positioned...
+        final Button button = new Button("Continue");
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignored) {
+                button.removeFromParent();
+
+                final boolean passed = Window
+                        .confirm("Did the absolute positioned orange element remain stuck to the top/left corner of the client window when scrolled ?");
+                if (false == passed) {
+                    Test
+                            .fail("User confirmed that absolute position element was not stuck to the top/left corner of the client window when it was scrolled.");
+                }
+                StyleHelperTest.finishTest();
+            }
+        });
+        RootPanel.get().add(button);
+
+        Window
+                .alert("An element with a orange background has been absolutely positioned to the top/left, try scrolling and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
+    }
+
+    protected void testGetAbsolutePositionLeftTop() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testGetAbsolutePositionLeftTop");
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.LEFT, "123px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.TOP, "45px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "absolute");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "red");
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+
+        DOM.appendChild(parent, child);
+
+        final int left = StyleHelper.getInlineIntegerStyleProperty(child, StyleConstants.LEFT, CssUnit.PX, 0);
+        Test.assertEquals("" + child, 123, left);
+
+        final int top = StyleHelper.getInlineIntegerStyleProperty(child, StyleConstants.TOP, CssUnit.PX, 0);
+        Test.assertEquals("" + child, 45, top);
+
+        final String position = StyleHelper.getInlineStyleProperty(child, StyleConstants.POSITION);
+        Test.assertEquals("" + child, "absolute", position);
+    }
+
+    protected void testSetAbsolutePositionRightBottom() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testSetAbsolutePositionRightBottom");
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.RIGHT, "123px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BOTTOM, "56px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "absolute");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "green");
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+
+        DOM.appendChild(parent, child);
+
+        DOM.scrollIntoView(child);
+
+        // ask the user to scroll and verify child is always correctly positioned...
+        final Button button = new Button("Continue");
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignoyellow) {
+                button.removeFromParent();
+
+                final boolean passed = Window
+                        .confirm("Did the absolute positioned green element remain stuck to the bottom/right corner of the client window when scrolled ?");
+                if (false == passed) {
+                    Test
+                            .fail("User confirmed that absolute position element was not stuck to the bottom/right corner of the client window when it was scrolled.");
+                }
+                StyleHelperTest.finishTest();
+            }
+        });
+        RootPanel.get().add(button);
+
+        Window
+                .alert("An element with a green background has been absolutely positioned to the bottom/right, try scrolling and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
+    }
+
+    protected void testGetAbsolutePositionRightBottom() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testGetAbsolutePositionRightBottom");
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.RIGHT, "123px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BOTTOM, "56px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "absolute");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "yellow");
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+
+        DOM.appendChild(parent, child);
+
+        final int right = StyleHelper.getInlineIntegerStyleProperty(child, StyleConstants.RIGHT, CssUnit.PX, 0);
+        Test.assertEquals("" + child, 123, right);
+
+        final int bottom = StyleHelper.getInlineIntegerStyleProperty(child, StyleConstants.BOTTOM, CssUnit.PX, 0);
+        Test.assertEquals("" + child, 56, bottom);
+
+        final String position = StyleHelper.getInlineStyleProperty(child, StyleConstants.POSITION);
+        Test.assertEquals("" + child, "absolute", position);
+    }
+
+    protected void testSetFixedPositionLeftTop() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testSetFixedPositionLeftTop");
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.COLOR, "blue");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.LEFT, "12px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.TOP, "34px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "fixed");
+
+        DOM.appendChild(parent, child);
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "red");
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+
+        DOM.scrollIntoView(child);
+
+        // ask the user to scroll and verify child is always correctly positioned...
+        final Button button = new Button("Continue");
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignored) {
+                button.removeFromParent();
+
+                final boolean passed = Window
+                        .confirm("Did the red element remain fixed to the top/left corner of the client window when it was scrolled?");
+                if (false == passed) {
+                    Test
+                            .fail("User confirmed that fixed position element did not remain fixed to the top/left corner of the client window when it was scrolled.");
+                }
+                StyleHelperTest.finishTest();
+            }
+        });
+        RootPanel.get().add(button);
+
+        Window
+                .alert("An element with a red background has been fixed to the top/left, try scrolling and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
+    }
+
+    protected void testGetFixedPositionLeftTop() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testGetFixedPositionLeftTop");
+
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.LEFT, "123px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.TOP, "45px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "fixed");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "red");
+
+        DOM.appendChild(parent, child);
+
+        final int left = StyleHelper.getInlineIntegerStyleProperty(child, StyleConstants.LEFT, CssUnit.NONE, 0);
+        Test.assertEquals("" + child, 123, left);
+
+        final int top = StyleHelper.getInlineIntegerStyleProperty(child, StyleConstants.TOP, CssUnit.NONE, 0);
+        Test.assertEquals("" + child, 45, top);
+
+        final String position = StyleHelper.getInlineStyleProperty(child, StyleConstants.POSITION);
+        Test.assertEquals("" + child, "fixed", position);
+    }
+
+    protected void testSetFixedPositionRightBottom() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testSetFixedPositionRightBottom");
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.RIGHT, "12px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BOTTOM, "34px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "fixed");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "yellow");
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+
+        DOM.appendChild(parent, child);
+
+        DOM.scrollIntoView(child);
+
+        // ask the user to scroll and verify child is always correctly positioned...
+        final Button button = new Button("Continue");
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignoyellow) {
+                button.removeFromParent();
+
+                final boolean passed = Window
+                        .confirm("Did the yellow element remain fixed to the bottom/right corner of the client window when it was scrolled?");
+                if (false == passed) {
+                    Test
+                            .fail("User confirmed that fixed position element did not remain fixed to the bottom/right corner of the client window when it was scrolled.");
+                }
+                StyleHelperTest.finishTest();
+            }
+        });
+        RootPanel.get().add(button);
+
+        Window
+                .alert("An element with a yellow background has been fixed to the bottom/right, try scrolling and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
+    }
+
+    protected void testGetFixedPositionRightBottom() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testGetFixedPositionRightBottom");
+
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.RIGHT, "123px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BOTTOM, "45px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "fixed");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "yellow");
+
+        DOM.appendChild(parent, child);
+
+        final int right = StyleHelper.getInlineIntegerStyleProperty(child, StyleConstants.RIGHT, CssUnit.NONE, 0);
+        Test.assertEquals("" + child, 123, right);
+
+        final int bottom = StyleHelper.getInlineIntegerStyleProperty(child, StyleConstants.BOTTOM, CssUnit.NONE, 0);
+        Test.assertEquals("" + child, 45, bottom);
+
+        final String position = StyleHelper.getInlineStyleProperty(child, StyleConstants.POSITION);
+        Test.assertEquals("" + child, "fixed", position);
+    }
+
+    protected void testSetFixedPositionRightBottomThenSetAbsolutePosition() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child,
+                "testSetFixedPositionRightBottomThenSetAbsolutePosition - bottom right fixed positioned");
+
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.RIGHT, "234px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BOTTOM, "56px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "fixed");
+
+        DeferredCommand.add(new Command() {
+            public void execute() {
+                StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "absolute");
+                DOM.setInnerHTML(child,
+                        "testSetFixedPositionRightBottomThenSetAbsolutePosition - bottom right absolute positioned");
+            }
+        });
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "lightBlue");
+
+        DOM.appendChild(parent, child);
+
+        // ask the user to scroll and verify child is always correctly positioned...
+        final Button button = new Button("Continue");
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignore) {
+                button.removeFromParent();
+
+                final boolean passed = Window
+                        .confirm("Did the lightBlue element remain stuck to the bottom/right of the browser when it was scrolled?");
+                if (false == passed) {
+                    Test
+                            .fail("User confirmed that absolute position element did not remain stuck to the bottom/right corner of the browser when it was scrolled.");
+                }
+                StyleHelperTest.finishTest();
+            };
+        });
+        RootPanel.get().add(button);
+
+        Window
+                .alert("An element with a lightBlue background has been absolute positioned to the bottom/right, try scrolling and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
+    }
+
+    protected void testSetFixedPositionThenSetCoordinates() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testSetFixedPositionThenSetCoordinates");
+
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "fixed");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.LEFT, "345px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.TOP, "67px");
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "olive");
+
+        DOM.appendChild(parent, child);
+
+        // ask the user to scroll and verify child is always correctly positioned...
+        final Button button = new Button("Continue");
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignore) {
+                button.removeFromParent();
+
+                final boolean passed = Window
+                        .confirm("Did the olive element remain fixed to the top/left corner of the client window when it was scrolled?");
+                if (false == passed) {
+                    Test
+                            .fail("User confirmed that fixed position element did not remain stuck to the top/left corner of the client window when it was scrolled.");
+                }
+                StyleHelperTest.finishTest();
+            };
+        });
+        RootPanel.get().add(button);
+
+        Window
+                .alert("An element with a olive background has been fixed to the top/left try scrolling and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
+    }
+
+    protected void testSetPositionAndChangeCoordinatesTwice() {
+        final Element parent = DomHelper.getBody();
+        final Element child = DOM.createSpan();
+        DOM.setInnerHTML(child, "testSetPositionAndChangeCoordinatesTwice");
+
+        StyleHelper.setInlineIntegerStyleProperty(child, StyleConstants.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.POSITION, "fixed");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.LEFT, "34px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BOTTOM, "89px");
+        StyleHelper.removeInlineStyleProperty(child, StyleConstants.LEFT);
+        StyleHelper.removeInlineStyleProperty(child, StyleConstants.BOTTOM);
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.RIGHT, "34px");
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.TOP, "89px");
+
+        StyleHelper.setInlineStyleProperty(child, StyleConstants.BACKGROUND_COLOR, "wheat");
+
+        DOM.appendChild(parent, child);
+
+        // ask the user to scroll and verify child is always correctly positioned...
+        final Button button = new Button("Continue");
+        button.addClickListener(new ClickListener() {
+            public void onClick(final Widget ignore) {
+                button.removeFromParent();
+
+                final boolean passed = Window
+                        .confirm("Did the wheat element remain fixed to the top/right corner of the client window when it was scrolled?");
+                if (false == passed) {
+                    Test
+                            .fail("User confirmed that fixed position element did not remain stuck to the top/right corner of the client window when it was scrolled.");
+                }
+                StyleHelperTest.finishTest();
+            };
+        });
+        RootPanel.get().add(button);
+
+        Window
+                .alert("An element with a wheat background has been fixed to the top/right try scrolling and then click on CONTINUE...");
+        StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
+    }
+
     /**
      * Creates a new div and adds it to the document. No style properties or any other values are set.
      * 
@@ -1623,5 +2094,15 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
         if (false == this.getCurrentTestName().startsWith("testConvert")) {
             this.addTestNameDivider();
         }
+    }
+
+    /**
+     * This zIndex is used to ensure new absolutely or fixed positioned elements float above the remainder of the document.
+     */
+    int zIndex = 100;
+
+    int nextZIndex() {
+        this.zIndex++;
+        return this.zIndex;
     }
 }

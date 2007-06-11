@@ -34,9 +34,11 @@ public class StyleConstants {
      * element is possible.
      */
     public final static String USER_SELECT = "UserSelect";
+
     public final static String USER_SELECT_DISABLED = "none";
+
     public final static String USER_SELECT_ENABLED = "";
-    
+
     // style
     // attributes...........................................................................................
     public final static String DISABLED_ATTRIBUTE = "disabled";

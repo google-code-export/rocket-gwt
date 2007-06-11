@@ -25,6 +25,7 @@ import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -35,6 +36,19 @@ import com.google.gwt.user.client.Element;
  * 
  * The {@link #getComputedStyleProperty(Element, String) and {@link #getInlineStyleProperty(Element, String)} methods return null rather
  * than none when the value indicates a particular property is missing.
+ * 
+ * In order to enable correct simulation of fixed positioning the coordinates must be set prior to setting the position.
+ * 
+ * <h3>Gotchas</h3>
+ * <ul>
+ * <li>Fixed positioning under Internet Explorer is only supported for inline css properties set via {@link StyleHelper} and not
+ * {@link DOM#setStyleAttribute(Element, String, String)}.</li>
+ * <li>It is not possible to disable text selection via css, it may only be achieved by setting a inlineStyle belonging to an element.</li>
+ * <li>A stylesheet rules list is normalized that is rules with multiple selectors are normalized when the each selector given its own rule
+ * with the same style properties. This is done to present a common view as Internet Explorer does not allow rules to have more than one
+ * selector</li>
+ * <li>
+ * </ul>
  * 
  * @author Miroslav Pokorny (mP)
  * 
@@ -124,37 +138,44 @@ public class StyleHelper {
     public static String getComputedStyleProperty(final Element element, final String propertyName) {
         return StyleHelper.getSupport().getComputedStyleProperty(element, propertyName);
     }
-    public static Colour getComputedColourStyleProperty( final Element element, final String propertyName ){
+
+    public static Colour getComputedColourStyleProperty(final Element element, final String propertyName) {
         Colour value = null;
-        final String string = StyleHelper.getComputedStyleProperty( element, propertyName );
-        if( false == StringHelper.isNullOrEmpty(string)){
-            value = Colour.parse( string );
+        final String string = StyleHelper.getComputedStyleProperty(element, propertyName);
+        if (false == StringHelper.isNullOrEmpty(string)) {
+            value = Colour.parse(string);
         }
         return value;
     }
-    public static double getComputedDoubleStyleProperty( final Element element, final String propertyName, final CssUnit unit, final double defaultValue ){
+
+    public static double getComputedDoubleStyleProperty(final Element element, final String propertyName,
+            final CssUnit unit, final double defaultValue) {
         double value = defaultValue;
-        final String string = StyleHelper.getComputedStyleProperty( element, propertyName );
-        if( false == StringHelper.isNullOrEmpty(string)){
-            value = StyleHelper.convertValue( string , unit);
+        final String string = StyleHelper.getComputedStyleProperty(element, propertyName);
+        if (false == StringHelper.isNullOrEmpty(string)) {
+            value = StyleHelper.convertValue(string, unit);
         }
         return value;
     }
-    public static int getComputedIntegerStyleProperty( final Element element, final String propertyName, final CssUnit unit, final int defaultValue ){
+
+    public static int getComputedIntegerStyleProperty(final Element element, final String propertyName,
+            final CssUnit unit, final int defaultValue) {
         int value = defaultValue;
-        final String string = StyleHelper.getComputedStyleProperty( element, propertyName );
-        if( false == StringHelper.isNullOrEmpty(string)){
-            value = (int)StyleHelper.convertValue( string , unit);
+        final String string = StyleHelper.getComputedStyleProperty(element, propertyName);
+        if (false == StringHelper.isNullOrEmpty(string)) {
+            value = (int) StyleHelper.convertValue(string, unit);
         }
         return value;
     }
-    public static String getComputedUrlStyleProperty( final Element element, final String propertyName ){
-        String string = StyleHelper.getComputedStyleProperty( element, propertyName );
-        if( false == StringHelper.isNullOrEmpty(string)){
-            string = StyleHelper.getUrl( string );
+
+    public static String getComputedUrlStyleProperty(final Element element, final String propertyName) {
+        String string = StyleHelper.getComputedStyleProperty(element, propertyName);
+        if (false == StringHelper.isNullOrEmpty(string)) {
+            string = StyleHelper.getUrl(string);
         }
         return string;
     }
+
     /**
      * Factory method which returns a view of all current Styles for the given element. The Style object returned must be destroyed when no
      * longer needed.
@@ -191,34 +212,40 @@ public class StyleHelper {
     static public String getInlineStyleProperty(final Element element, final String name) {
         return StyleHelper.getSupport().getInlineStyleProperty(element, name);
     }
-    public static Colour getInlineColourStyleProperty( final Element element, final String propertyName ){
+
+    public static Colour getInlineColourStyleProperty(final Element element, final String propertyName) {
         Colour value = null;
-        final String string = StyleHelper.getInlineStyleProperty( element, propertyName );
-        if( false == StringHelper.isNullOrEmpty(string)){
-            value = Colour.parse( string );
+        final String string = StyleHelper.getInlineStyleProperty(element, propertyName);
+        if (false == StringHelper.isNullOrEmpty(string)) {
+            value = Colour.parse(string);
         }
         return value;
     }
-    public static double getInlineDoubleStyleProperty( final Element element, final String propertyName, final CssUnit unit, final double defaultValue ){
+
+    public static double getInlineDoubleStyleProperty(final Element element, final String propertyName,
+            final CssUnit unit, final double defaultValue) {
         double value = defaultValue;
-        final String string = StyleHelper.getInlineStyleProperty( element, propertyName );
-        if( false == StringHelper.isNullOrEmpty(string)){
-            value = StyleHelper.convertValue( string , unit);
+        final String string = StyleHelper.getInlineStyleProperty(element, propertyName);
+        if (false == StringHelper.isNullOrEmpty(string)) {
+            value = StyleHelper.convertValue(string, unit);
         }
         return value;
     }
-    public static int getInlineIntegerStyleProperty( final Element element, final String propertyName, final CssUnit unit, final int defaultValue ){
+
+    public static int getInlineIntegerStyleProperty(final Element element, final String propertyName,
+            final CssUnit unit, final int defaultValue) {
         int value = defaultValue;
-        final String string = StyleHelper.getInlineStyleProperty( element, propertyName );
-        if( false == StringHelper.isNullOrEmpty(string)){
-            value = (int)StyleHelper.convertValue( string , unit);
+        final String string = StyleHelper.getInlineStyleProperty(element, propertyName);
+        if (false == StringHelper.isNullOrEmpty(string)) {
+            value = (int) StyleHelper.convertValue(string, unit);
         }
         return value;
     }
-    public static String getInlineUrlStyleProperty( final Element element, final String propertyName ){
-        String string = StyleHelper.getInlineStyleProperty( element, propertyName );
-        if( false == StringHelper.isNullOrEmpty(string)){
-            string = StyleHelper.getUrl( string );
+
+    public static String getInlineUrlStyleProperty(final Element element, final String propertyName) {
+        String string = StyleHelper.getInlineStyleProperty(element, propertyName);
+        if (false == StringHelper.isNullOrEmpty(string)) {
+            string = StyleHelper.getUrl(string);
         }
         return string;
     }
@@ -234,23 +261,29 @@ public class StyleHelper {
             final String propertyValue) {
         StyleHelper.getSupport().setInlineStyleProperty(element, propertyName, propertyValue);
     }
-    static public void setInlineColourStyleProperty( final Element element, final String propertyName, final Colour colour ){
-        StyleHelper.setInlineStyleProperty( element, propertyName, colour.toCssColour() );
+
+    static public void setInlineColourStyleProperty(final Element element, final String propertyName,
+            final Colour colour) {
+        StyleHelper.setInlineStyleProperty(element, propertyName, colour.toCssColour());
     }
-    static public void setInlineDoubleStyleProperty(final Element element, final String propertyName, final double value, final CssUnit unit ){
+
+    static public void setInlineDoubleStyleProperty(final Element element, final String propertyName,
+            final double value, final CssUnit unit) {
         // drop any trailing decimal 0's.
-        final String valueAsAString = Math.round(value) == value ? 
-                String.valueOf((int) value) : 
-                String.valueOf(value);
-        
+        final String valueAsAString = Math.round(value) == value ? String.valueOf((int) value) : String.valueOf(value);
+
         StyleHelper.setInlineStyleProperty(element, propertyName, valueAsAString);
     }
-    static public void setInlineIntegerStyleProperty(final Element element, final String propertyName, final int value, final CssUnit unit ){
+
+    static public void setInlineIntegerStyleProperty(final Element element, final String propertyName, final int value,
+            final CssUnit unit) {
         StyleHelper.setInlineStyleProperty(element, propertyName, "" + value + unit.getValue());
     }
-    static public void setInlineUrlStyleProperty( final Element element, final String propertyName, final String url ){
-        StyleHelper.setInlineStyleProperty( element, propertyName, "url('" + url + "')" );
+
+    static public void setInlineUrlStyleProperty(final Element element, final String propertyName, final String url) {
+        StyleHelper.setInlineStyleProperty(element, propertyName, "url('" + url + "')");
     }
+
     /**
      * This helper may be used to remove an existing Style's property. If the property does not exist nothing happens.
      * 
@@ -279,8 +312,7 @@ public class StyleHelper {
      * @param propertyName
      * @param propertyValue
      */
-    static void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName,
-            final String propertyValue) {
+    static void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName, final String propertyValue) {
         StyleHelper.getSupport().setRuleStyleProperty(rule, propertyName, propertyValue);
     }
 
@@ -357,7 +389,7 @@ public class StyleHelper {
 
         float length = 0;
         while (true) {
-            if (value.equals("0")) {
+            if (value.equals("0" ) || value.equals( "auto")) {
                 break;
             }
 
