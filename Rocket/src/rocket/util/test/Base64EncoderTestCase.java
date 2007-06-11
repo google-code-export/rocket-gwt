@@ -19,8 +19,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import junit.framework.TestCase;
 import rocket.util.server.Base64Encoder;
+
+import junit.framework.TestCase;
 
 /**
  * A series of unit tests for the base64 encoder class
@@ -50,7 +51,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "A";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "QQ==";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -60,7 +61,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "AZ";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "QVo=";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -70,7 +71,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "AZM";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "QVpN";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -80,7 +81,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "AZMQ";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "QVpNUQ==";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -90,7 +91,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "The quick brown fox jumped over the lazy dog.";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -100,7 +101,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "The quick brown fox jumped over the lazy dog.1";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cuMQ==";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -110,7 +111,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "The quick brown fox jumped over the lazy dog.12";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cuMTI=";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -120,7 +121,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "The quick brown fox jumped over the lazy dog.123";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cuMTIz";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -130,7 +131,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "The quick brown fox jumped over the lazy dog.1234";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cuMTIzNA==";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -140,7 +141,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "Sydney Brisbane Melbourne Canberra";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "U3lkbmV5IEJyaXNiYW5lIE1lbGJvdXJuZSBDYW5iZXJyYQ==";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -150,7 +151,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "Australia Sydney Brisbane Melbourne Canberra Perth1234567890 Adelaide";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRl";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -160,7 +161,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "Australia Sydney Brisbane Melbourne Canberra Perth1234567890 Adelaide1";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRlMQ==";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -170,7 +171,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "Australia Sydney Brisbane Melbourne Canberra Perth1234567890 Adelaide12";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRlMTI=";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -180,7 +181,7 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "Australia Sydney Brisbane Melbourne Canberra Perth1234567890 Adelaide123";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRlMTIz";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
@@ -190,20 +191,9 @@ public class Base64EncoderTestCase extends TestCase {
         final String in = "Australia Sydney Brisbane Melbourne Canberra Perth1234567890 Adelaide1234";
         final byte[] inBytes = in.getBytes();
 
-        final String expected = encode(inBytes);
+        final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRlMTIzNA==";
         final String actual = Base64Encoder.encode(inBytes);
 
         assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
-    }
-
-    private String encode(final byte[] bytes) throws IOException {
-        final ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final org.w3c.tools.codec.Base64Encoder encoder = new org.w3c.tools.codec.Base64Encoder(bais, baos);
-        encoder.process();
-        baos.flush();
-        baos.close();
-
-        return new String(baos.toByteArray());
     }
 }

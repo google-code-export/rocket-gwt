@@ -13,26 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.util.server;
+package rocket.util.test.stacktracehelper.client;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.google.gwt.user.client.rpc.SerializableException;
 
-/**
- * This helper contains a variety of useful stuff related to person photos.
- * 
- * @author Miroslav Pokorny (mP)
- */
-public class DateHelper {
-
-    /**
-     * This formatter is used to output dates in an consistant manner.
-     */
-    private final static SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-
-    public static String formatDate(final Date date) {
-        ObjectHelper.checkNotNull("parameter:date", date);
-
-        return DateHelper.dateFormatter.format(date);
+public class ServerServiceException extends SerializableException {
+    
+    public ServerServiceException(){
+        super();
+    }
+    
+    public ServerServiceException( final String message ){
+        super( message );
     }
 }

@@ -236,6 +236,13 @@ public class ColourTestCase extends TestCase {
         TestCase.assertEquals(input, actual, expected);
     }
 
+    public void testParseRgbTripletWithSpacesSeparatingComponents() {
+        final String input = "rgb(0, 1, 234)";
+        final Colour actual = Colour.parse(input);
+        final Colour expected = new Colour(1 * 0x100 + 234);
+        TestCase.assertEquals(input, actual, expected);
+    }
+
     public void testParseRgbTriplet0() {
         final String input = "rgb(12,34,56)";
         final Colour actual = Colour.parse(input);

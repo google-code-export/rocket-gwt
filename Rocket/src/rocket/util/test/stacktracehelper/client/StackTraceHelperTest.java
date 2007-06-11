@@ -15,7 +15,9 @@
  */
 package rocket.util.test.stacktracehelper.client;
 
+import rocket.browser.client.BrowserHelper;
 import rocket.util.client.StackTraceHelper;
+import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -31,7 +33,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class StackTraceHelperTest implements EntryPoint {
 
-    final static String SERVICE_WHICH_THROWS_EXCEPTION_URL = "http://localhost:8888/rocket.util.test.stacktracehelper.StackTraceHelper/serviceWhichThrowsAnException";
+    final static String SERVICE_WHICH_THROWS_EXCEPTION_URL = BrowserHelper.getContextPath() + "/serviceWhichThrowsAnException";
 
     public void onModuleLoad() {
         GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
@@ -90,19 +92,26 @@ public class StackTraceHelperTest implements EntryPoint {
     }
 
     protected void handleExpectedException(final Throwable throwable) {
-        this.log("Service returned " + GWT.getTypeName(throwable));
-
-        this.log("<b>StackTraceHelper.getStackTraceAsString()</b>");
-        final String className = "rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet";
-
-        final String expectedStackTrace = "java.lang.Exception:\n" + "\tat " + className + ".throwException()\n"
-                + "\tat " + className + ".twoFramesAwayFromMethodWhichThrowsException()\n" + "\tat " + className
-                + ".oneFrameAwayFromMethodWhichThrowsException()\n" + "\tmore...";
-        this.log(expectedStackTrace);
-
+        this.log("<b>Service threw </b>");
+        
         final String stackTrace = StackTraceHelper.getStackTraceAsString(throwable);
-        this.log(stackTrace);
-        this.log("---END OF STACKTRACE---");
+        
+        final String[] frames = StringHelper.split( stackTrace, "\n", true );
+        final StringBuffer buf = new StringBuffer();
+        for( int i = 0; i < frames.length; i++ ){
+            String frame = frames[ i ];
+            
+            final int classNameStart = frame.indexOf( "rocket.util.test.stacktracehelper.server"); 
+            if( classNameStart != -1 ){
+                frame = "<i>" + frame + "</i>";
+            }
+            buf.append( frame );
+            buf.append( "\n");
+        }
+        
+        
+        this.log(buf.toString());
+        this.log("<b>---END OF STACKTRACE---</b>");
     }
 
     protected void throwCatchAndPrintStackTrace() {
@@ -129,7 +138,7 @@ public class StackTraceHelperTest implements EntryPoint {
         final String stackTrace = StackTraceHelper.getStackTraceAsString(caught);
         this.log("<b>StackTraceHelper.getStackTraceAsString()</b>");
         this.log(stackTrace);
-        this.log("---END OF STACKTRACE---");
+        this.log("<b>---END OF STACKTRACE---</b>");
     }
 
     protected void twoFramesAwayFromMethodWhichThrowsException() {

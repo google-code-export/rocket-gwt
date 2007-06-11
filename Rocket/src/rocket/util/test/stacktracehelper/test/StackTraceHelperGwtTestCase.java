@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StackTraceHelper;
 import rocket.util.client.StringHelper;
+import rocket.util.client.ThrowableHelper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -56,7 +57,7 @@ public class StackTraceHelperGwtTestCase extends GWTTestCase {
     }
 
     public void testGetCallStackFunctions0() {
-        final JavaScriptObject stackTrace = StackTraceHelper.getCallStackFunctions();
+        final JavaScriptObject stackTrace = ThrowableHelper.getCallStackFunctions();
         assertNotNull("stackTrace", stackTrace);
 
         final int actual = ObjectHelper.getPropertyCount(stackTrace);
@@ -87,14 +88,14 @@ public class StackTraceHelperGwtTestCase extends GWTTestCase {
      }-*/;
 
     protected JavaScriptObject javaMethod() {
-        return StackTraceHelper.getCallStackFunctions();
+        return ThrowableHelper.getCallStackFunctions();
     }
 
     public void testGetCallStackFunctionNames0() {
-        final JavaScriptObject callStackFunctions = StackTraceHelper.getCallStackFunctions();
+        final JavaScriptObject callStackFunctions = ThrowableHelper.getCallStackFunctions();
         assertNotNull("callStackFunctions", callStackFunctions);
 
-        final String[] functionNames = StackTraceHelper.getCallStackFunctionNames(callStackFunctions);
+        final String[] functionNames = ThrowableHelper.getCallStackFunctionNames(callStackFunctions);
         assertNotNull("functionNames", functionNames);
 
         assertTrue("functioNames.length: " + functionNames.length, functionNames.length > 3);
@@ -126,10 +127,10 @@ public class StackTraceHelperGwtTestCase extends GWTTestCase {
     }
 
     protected String[] javaFunctionNames() {
-        final JavaScriptObject callStackFunctions = StackTraceHelper.getCallStackFunctions();
+        final JavaScriptObject callStackFunctions = ThrowableHelper.getCallStackFunctions();
         assertNotNull("callStackFunctions", callStackFunctions);
 
-        final String[] functionNames = StackTraceHelper.getCallStackFunctionNames(callStackFunctions);
+        final String[] functionNames = ThrowableHelper.getCallStackFunctionNames(callStackFunctions);
         assertNotNull("functionNames", functionNames);
         return functionNames;
     }

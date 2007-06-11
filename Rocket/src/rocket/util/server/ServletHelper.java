@@ -28,20 +28,20 @@ import rocket.util.client.StringHelper;
  * @author Miroslav Pokorny (mP)
  */
 public class ServletHelper {
-    public static void writeBytes(final String mimeType, final byte[] image, final HttpServletResponse response)
+    public static void writeBytes(final String mimeType, final byte[] bytes, final HttpServletResponse response)
             throws IOException {
         StringHelper.checkNotEmpty("parameter:mimeType", mimeType);
-        ObjectHelper.checkNotNull("parameter:image", image);
+        ObjectHelper.checkNotNull("parameter:bytes", bytes);
         ObjectHelper.checkNotNull("parameter:response", response);
 
         OutputStream out = null;
 
         try {
             response.setContentType(mimeType);
-            response.setContentLength(image.length);
+            response.setContentLength(bytes.length);
 
             out = response.getOutputStream();
-            out.write(image);
+            out.write(bytes);
             out.flush();
         } finally {
             IoHelper.closeIfNecessary(out);

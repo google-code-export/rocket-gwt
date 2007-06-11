@@ -548,7 +548,6 @@ public class ObjectHelper extends SystemHelper {
      return value ? value : null;
      }-*/;
 
-    
     /**
      * Removes or deletes a property from the given object.
      * 

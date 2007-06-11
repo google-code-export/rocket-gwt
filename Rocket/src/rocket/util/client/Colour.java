@@ -85,7 +85,7 @@ public class Colour {
      * @return
      */
     static Colour parseRgbTriplet(final String value) {
-        final String[] triplets = StringHelper.split(value.substring(4, value.length() - 1), ",", true);
+        final String[] triplets = StringHelper.split(value.substring(4, value.length() - 1), ", ", true);
         final int red = Integer.parseInt(triplets[0]);
         final int green = Integer.parseInt(triplets[1]);
         final int blue = Integer.parseInt(triplets[2]);
