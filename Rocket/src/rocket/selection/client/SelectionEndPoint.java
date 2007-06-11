@@ -18,8 +18,10 @@ package rocket.selection.client;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
+
 /**
- * An end point uses a combination of a textNode and offset to mark the start/end of a selection 
+ * An end point uses a combination of a textNode and offset to mark the start/end of a selection
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class SelectionEndPoint {
@@ -27,28 +29,31 @@ public class SelectionEndPoint {
      * The textNode containing the start/end of the selection.
      */
     private JavaScriptObject textNode;
-       
-    public JavaScriptObject getTextNode(){
-        ObjectHelper.checkNotNull("field:textNode", textNode );
+
+    public JavaScriptObject getTextNode() {
+        ObjectHelper.checkNotNull("field:textNode", textNode);
         return textNode;
     }
-    public void setTextNode( final JavaScriptObject textNode ){
-        ObjectHelper.checkNotNull("parameter:textNode", textNode );
+
+    public void setTextNode(final JavaScriptObject textNode) {
+        ObjectHelper.checkNotNull("parameter:textNode", textNode);
         this.textNode = textNode;
     }
+
     /**
-     * The number of characters starting from the beginning of the textNode where the selection begins/ends. 
+     * The number of characters starting from the beginning of the textNode where the selection begins/ends.
      */
     public int offset;
-    
-    public int getOffset(){
+
+    public int getOffset() {
         return offset;
     }
-    public void setOffset( final int offset ){
+
+    public void setOffset(final int offset) {
         this.offset = offset;
     }
-    
-    public String toString(){
+
+    public String toString() {
         return super.toString() + ", textNode[" + this.textNode + "], offset: " + offset;
     }
 }
