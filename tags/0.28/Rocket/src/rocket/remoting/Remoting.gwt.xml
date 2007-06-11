@@ -1,0 +1,10 @@
+<module>
+	<replace-with class="rocket.remoting.client.support.InternetExplorer6CometSupport">
+		<when-type-is class="rocket.remoting.client.support.CometSupport"/>
+		<when-property-is name="user.agent" value="ie6"/>
+	</replace-with>
+  	<replace-with class="rocket.remoting.client.support.SafariCometSuport">
+		<when-type-is class="rocket.remoting.client.support.CometSupport"/>
+		<when-property-is name="user.agent" value="webkit"/>
+	</replace-with>	
+</module>

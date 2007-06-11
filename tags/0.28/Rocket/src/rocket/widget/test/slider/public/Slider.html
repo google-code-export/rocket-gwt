@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Slider</title>
+<meta name='gwt:module' content='rocket.widget.test.slider.Slider'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+BODY{
+	margin-left: 20px;	
+	width: 90%;
+}
+
+BODY, TABLE, DIV{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	width: 100%;
+}
+
+.rocket-horizontalSlider{
+	background-color: #cccccc;
+	border-top-color: #888888;
+	border-bottom-color: #444444;
+	border-left-color: #888888;
+	border-right-color: #444444;
+	border-width: 1px;
+	border-style: solid;
+	
+	cursor: pointer;
+}
+
+.rocket-horizontalSlider-dragging{
+	background-color: #eeeeee;
+}
+
+.rocket-verticalSlider{
+	background-color: #cccccc;
+	border-top-color: #888888;
+	border-bottom-color: #444444;
+	border-left-color: #888888;
+	border-right-color: #444444;
+	border-width: 1px;
+	border-style: solid;
+	
+	cursor: pointer;
+}
+
+.rocket-verticalSlider-dragging{
+	background-color: #eeeeee;
+}
+
+.handle{
+	background-color: #888888;
+	border-top-color: #555555;
+	border-bottom-color: #333333;
+	border-left-color: #555555;
+	border-right-color: #333333;
+	border-width: 1px;
+	border-style: solid;
+}
+
+</style>
+</head>
+
+<body>
+A Slider is a widget which uses a sliding handle to set a value. 
+It comes in two forms a HorizontalSlider and a VerticalSlider.
+<h6>Things to test</h6>
+<ul>
+<li>Entering number values in any of the TextBoxes present will update the so named property of both Sliders.</li>
+<li>Dragging the handle will update the appropriate value label(This is accomplished by a attaching a listener to each Slider).</li>
+<li>After letting go of the handle it should still be possible to drag/select text through out the page - When dragging begins the selection behaviour of the browser is disabled. It should be reenabled when the drag cancelled is let go.</li>
+<li>Click on the background area of either slider and verify that the handle moves towards jumping by the bigDelta amount.</li>
+<li>It is not necessary to drag the handle along the slider. It is possible to drag outside this area and the handle will continue to move accordingly along the slider's axis.</li>
+<li>Dont forget to resize the window so that scrollbars appear and scroll the viewport and run tests again.</li>
+</ul>
+<br/>
+</body>
+</html>
