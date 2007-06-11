@@ -15,6 +15,7 @@
  */
 package java.lang;
 
+import rocket.util.client.ThrowableHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StackTraceHelper;
 
@@ -22,7 +23,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * This class has been modified as part of the Rocket-gwt framework to support querying of associated StackTraceElements.
+ * This class has been modified as part of the Rocket-gwt framework to capturing stacktraces from JavaScript
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -92,8 +93,8 @@ public class Throwable {
      */
     public StackTraceElement[] getStackTrace() {
         if (this.stackTrace == null) {
-            final String[] functionNames = StackTraceHelper.getCallStackFunctionNames(this.getCallStack());
-            this.stackTrace = StackTraceHelper.buildStackTraceElements(functionNames);
+            final String[] functionNames = ThrowableHelper.getCallStackFunctionNames(this.getCallStack());
+            this.stackTrace = ThrowableHelper.buildStackTraceElements(functionNames);
         }
 
         return this.stackTrace;
@@ -113,10 +114,10 @@ public class Throwable {
         Throwable currentCause = this;
         while (currentCause != null) {
             String causeMessage = currentCause.getMessage();
-            if (currentCause != this){
+            if (currentCause != this) {
                 msg.append("Caused by: ");
             }
-            msg.append( GWT.getTypeName(currentCause));
+            msg.append(GWT.getTypeName(currentCause));
             msg.append(": ");
             msg.append(causeMessage == null ? "(No exception detail)" : causeMessage);
             msg.append("\n");
@@ -156,7 +157,7 @@ public class Throwable {
      * Saves the callStack at the time that this Exception was created.
      */
     private void saveCallStack() {
-        this.setCallStack(this.setCallStack0(StackTraceHelper.getCallStackFunctions()));
+        this.setCallStack(this.setCallStack0(ThrowableHelper.getCallStackFunctions()));
     }
 
     /**
