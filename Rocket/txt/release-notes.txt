@@ -410,3 +410,13 @@ This release requires JDK 1.4 and any GWT 1.4 RC.
 * Added getters to retrieve Element's from a JavaScriptObject using an index or propertyname (String).
 * Added ability to query for user selected and programmatically create or change selection end points.
 * Added ability to test if browser is in quirks mode BrowserHelper.isQuirksMode()
+
+0.28 11 June 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.28.zip
+
+* Added OutstandingRpcTracker which provides an easy mechanism to add spinners(like firefox) and loading messages(like gmail) whenever one or
+  more rpcs are underway and automatically hidden when all outstanding rpcs finish.
+* Added seemless support for fixed positioning via StyleHelper - this achieved by using dynamic expressions. Refer to javadocs for more details.
+* Fixed a bug within StringHelper.split() which was not ignoring sequences of more one delimiters.
+* Separated jar files that support web mode stack traces into a separate package. To use stacktraces simply include rocket-stacktrace.jar.
