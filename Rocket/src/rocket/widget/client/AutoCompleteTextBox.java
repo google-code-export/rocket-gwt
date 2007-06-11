@@ -17,10 +17,8 @@ package rocket.widget.client;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
-import rocket.browser.client.BrowserHelper;
 import rocket.collection.client.CollectionHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -33,7 +31,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**

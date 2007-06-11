@@ -16,7 +16,6 @@
 package rocket.widget.client.slider;
 
 import rocket.dom.client.DomHelper;
-import rocket.dragndrop.client.DragNDropHelper;
 import rocket.selection.client.SelectionHelper;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;

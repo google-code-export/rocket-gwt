@@ -20,7 +20,6 @@ import java.util.Map;
 
 import rocket.browser.client.BrowserHelper;
 import rocket.dom.client.DomHelper;
-import rocket.dragndrop.client.DragNDropHelper;
 import rocket.selection.client.SelectionHelper;
 import rocket.style.client.CssUnit;
 import rocket.style.client.StyleConstants;
@@ -29,10 +28,7 @@ import rocket.style.client.StylePropertyValue;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
