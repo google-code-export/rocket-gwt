@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.style.client.StyleConstants;
-import rocket.style.client.StyleHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -70,8 +69,10 @@ abstract public class StyleSupport {
      * @return
      */
     public String getRuleStyleProperty(final JavaScriptObject rule, final String propertyName) {
-        ObjectHelper.checkNotNull("parameter:rule", rule);
+        return this.getRuleStyleProperty0(rule, propertyName);
+    }
 
+    protected String getRuleStyleProperty0(final JavaScriptObject rule, final String propertyName) {
         final String value = ObjectHelper.getString(this.getStyle(rule), this.toCssPropertyName(propertyName));
         return this.translateNoneValuesToNull(propertyName, value);
     }
@@ -84,6 +85,11 @@ abstract public class StyleSupport {
      * @param propertyValue
      */
     public void setRuleStyleProperty(final JavaScriptObject rule, final String propertyName, final String propertyValue) {
+        this.setRuleStyleProperty0(rule, propertyName, propertyValue);
+    }
+
+    protected void setRuleStyleProperty0(final JavaScriptObject rule, final String propertyName,
+            final String propertyValue) {
         this.checkPropertyName("parameter:propertyName", propertyName);
 
         ObjectHelper.setString(this.getStyle(rule), this.toCssPropertyName(propertyName), propertyValue);
@@ -96,10 +102,14 @@ abstract public class StyleSupport {
      * @param propertyName
      */
     public void removeRuleStyleProperty(final JavaScriptObject rule, final String propertyName) {
-        this.removeRuleStyleProperty0(rule, this.toCssPropertyName(propertyName));
+        this.removeRuleStyleProperty0(rule, propertyName);
     }
 
-    native private void removeRuleStyleProperty0(final JavaScriptObject rule, final String propertyName)/*-{
+    protected void removeRuleStyleProperty0(final JavaScriptObject rule, final String propertyName) {
+        this.removeRuleStyleProperty1(rule, this.toCssPropertyName(propertyName));
+    }
+
+    native private void removeRuleStyleProperty1(final JavaScriptObject rule, final String propertyName)/*-{
      rule.style.removeProperty( propertyName );
      }-*/;
 
@@ -117,11 +127,11 @@ abstract public class StyleSupport {
         String propertyValue = null;
         while (true) {
             if (propertyName.startsWith("border") && propertyName.endsWith("Width")) {
-                propertyValue = this.getInlineBorderWidth(element, propertyName);
+                propertyValue = this.getInlineStyleBorderWidth(element, propertyName);
                 break;
             }
             if (StyleConstants.USER_SELECT.equals(propertyName)) {
-                propertyValue = this.getInlineUserSelect(element);
+                propertyValue = this.getInlineStyleUserSelect(element);
                 break;
             }
             propertyValue = this.getInlineStyleProperty0(element, propertyName);
@@ -137,12 +147,12 @@ abstract public class StyleSupport {
         return ObjectHelper.getString(style, propertyName);
     }
 
-    protected String getInlineBorderWidth(final Element element, final String propertyName) {
+    protected String getInlineStyleBorderWidth(final Element element, final String propertyName) {
         final String propertyValue = this.getInlineStyleProperty0(element, propertyName);
         return propertyValue == null ? null : this.translateBorderWidthValue(propertyValue) + "px";
     }
 
-    protected String getInlineUserSelect(final Element element) {
+    protected String getInlineStyleUserSelect(final Element element) {
         final String propertyName = this.getUserSelectPropertyName();
         final String propertyValue = this.getInlineStyleProperty0(element, propertyName);
         return "auto".equals(propertyValue) ? null : propertyValue;
@@ -178,21 +188,25 @@ abstract public class StyleSupport {
     }
 
     public void removeInlineStyleProperty(final Element element, final String propertyName) {
-        while( true ){
-            if( StyleConstants.USER_SELECT.equals(propertyName)){
-                this.removeInlineUserSelect( element );
+        while (true) {
+            if (StyleConstants.USER_SELECT.equals(propertyName)) {
+                this.removeInlineUserSelect(element);
                 break;
             }
             this.removeInlineStyleProperty0(element, this.toCssPropertyName(propertyName));
             break;
-        }        
+        }
     }
 
-    private native void removeInlineStyleProperty0(final Element element, final String propertyName)/*-{
+    protected void removeInlineStyleProperty0(final Element element, final String propertyName) {
+        this.removeInlineStyleProperty1(element, propertyName);
+    }
+
+    private native void removeInlineStyleProperty1(final Element element, final String propertyName)/*-{
      element.style.removeProperty( propertyName );
      }-*/;
-    
-    protected void removeInlineUserSelect( final Element element ){
+
+    protected void removeInlineUserSelect(final Element element) {
         final String propertyName = this.toCssPropertyName(this.getUserSelectPropertyName());
         this.removeInlineStyleProperty0(element, propertyName);
     }
@@ -549,7 +563,7 @@ abstract public class StyleSupport {
      } // for j
      } // while
      }-*/;
-    
+
     /**
      * Checks and that the given style property name is valid, throwing an exception if it is not
      * 
@@ -569,5 +583,4 @@ abstract public class StyleSupport {
     protected void checkPropertyValue(final String name, final String propertyValue) {
         StringHelper.checkNotNull(name, propertyValue);
     }
-
 }
