@@ -27,7 +27,6 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -89,7 +88,6 @@ public abstract class TabPanel extends Composite {
         this.increaseModificationCount();
     }
 
-
     /**
      * Factory method which creates the widget that will appear within the tabbar
      * 
@@ -102,24 +100,23 @@ public abstract class TabPanel extends Composite {
     protected Widget getTabBarItemWidget(final TabItem item, final boolean closable) {
         ObjectHelper.checkNotNull("parameter:item", item);
 
-        final HorizontalPanel panel = item.getTabWidgetPanel();        
+        final HorizontalPanel panel = item.getTabWidgetPanel();
         panel.addStyleName(this.getTabBarItemStyleName());
 
         if (closable) {
-            panel.add( new HTML("&nbsp;") );            
-            
+            panel.add(new HTML("&nbsp;"));
+
             final Image closeButton = this.createCloseButton();
             closeButton.addClickListener(new ClickListener() {
                 public void onClick(final Widget sender) {
                     TabPanel.this.remove(item);
                 }
             });
-            panel.add( closeButton );
+            panel.add(closeButton);
         }
         return panel;
     }
 
-    
     public void remove(final int index) {
         final TabListenerCollection listeners = this.getTabListeners();
         final TabItem item = this.get(index);

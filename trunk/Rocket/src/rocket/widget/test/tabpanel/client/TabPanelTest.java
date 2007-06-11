@@ -86,11 +86,11 @@ public class TabPanelTest implements EntryPoint {
         final TabItem item = new TabItem();
         item.setCaption("Unremovable TabItem");
         item.setContent(new HTML(TabPanelTest.createContent()));
-        item.addTabWidget( new HTML( "1A"), false);
-        item.addTabWidget( new HTML( "2A"), false);
-        item.addTabWidget( new HTML( "1B"), true);
-        item.addTabWidget( new HTML( "2B"), true);
-        
+        item.addTabWidget(new HTML("1A"), false);
+        item.addTabWidget(new HTML("2A"), false);
+        item.addTabWidget(new HTML("1B"), true);
+        item.addTabWidget(new HTML("2B"), true);
+
         tabPanel.add(item, false);
         tabPanel.select(0);
 
@@ -234,10 +234,10 @@ public class TabPanelTest implements EntryPoint {
             item.setCaption("" + System.currentTimeMillis());
             item.setContent(new HTML(TabPanelTest.createContent()));
 
-            item.addTabWidget( new HTML( "A1"),false);
-            item.addTabWidget( new HTML( "A2"), false );
-            item.addTabWidget( new HTML( "B1"), true);
-            item.addTabWidget( new HTML( "B2"), true);
+            item.addTabWidget(new HTML("A1"), false);
+            item.addTabWidget(new HTML("A2"), false);
+            item.addTabWidget(new HTML("B1"), true);
+            item.addTabWidget(new HTML("B2"), true);
 
             return item;
         }
