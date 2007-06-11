@@ -15,10 +15,6 @@
  */
 package rocket.browser.client.support;
 
-import rocket.browser.client.BrowserConstants;
-
-import com.google.gwt.core.client.GWT;
-
 /**
  * Provides an InternetExplorer 6.x specific BrowserHelperSupport.
  * 

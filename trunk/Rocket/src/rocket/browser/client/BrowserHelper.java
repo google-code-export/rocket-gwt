@@ -16,7 +16,6 @@
 package rocket.browser.client;
 
 import rocket.browser.client.support.BrowserSupport;
-import rocket.browser.client.support.InternetExplorer6BrowserSupport;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -130,11 +129,11 @@ public class BrowserHelper {
             final int webContextEnd = location.indexOf('/', webContextStart + 1);
 
             url = location.substring(webContextStart, webContextEnd);
-        } 
-        
+        }
+
         // drop trailing slash if one is present.
-        if( url.endsWith( "/")){
-            url = url.substring( 0, url.length() -1 );
+        if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
         }
         return url;
     }
@@ -298,23 +297,17 @@ public class BrowserHelper {
      * Only warn the user if in hosted mode and the browser host page causes the document to be rendered in quirks mode.
      */
     static {
-        if (false == GWT.isScript()) {
-            warnIfInternetExplorerQuirksMode();
-        }
-    }
-
-    static void warnIfInternetExplorerQuirksMode() {
-        if (BrowserHelper.isQuirksMode()) {
+        if (false == GWT.isScript() && BrowserHelper.isQuirksMode()) {
             GWT.log(BrowserConstants.QUIRKS_MODE_WARNING, null);
         }
     }
 
     /**
-     * This method tests if the browser is InternetExplorer in quirks mode.
+     * This method tests if the browser is in quirks mode.
      * 
      * @return
      */
-    native static boolean isQuirksMode()/*-{        
+    native static public boolean isQuirksMode()/*-{        
      return "BackCompat" == $doc.compatMode;
      }-*/;
 
