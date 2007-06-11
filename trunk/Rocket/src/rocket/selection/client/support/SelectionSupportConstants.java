@@ -17,12 +17,14 @@ package rocket.selection.client.support;
 
 public class SelectionSupportConstants {
     final static String ANCHOR_NODE = "anchorNode";
+
     final static String ANCHOR_OFFSET = "anchorOffset";
 
     final static String FOCUS_NODE = "focusNode";
+
     final static String FOCUS_OFFSET = "focusOffset";
-    
+
     final static String IS_COLLAPSED = "isCollapsed";
-    
+
     final static String IE_SELECTION = "selection";
 }

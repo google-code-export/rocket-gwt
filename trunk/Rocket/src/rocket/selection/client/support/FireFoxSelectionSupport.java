@@ -18,12 +18,13 @@ package rocket.selection.client.support;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * A specialised SelectionSupport class that is adapted to handle FireFox differences from the standard implementation. 
+ * A specialised SelectionSupport class that is adapted to handle FireFox differences from the standard implementation.
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class FireFoxSelectionSupport extends SelectionSupport {
-    
+
     native protected JavaScriptObject getNativeSelection()/*-{
-        return $wnd.getSelection();
-    }-*/;
+     return $wnd.getSelection();
+     }-*/;
 }
