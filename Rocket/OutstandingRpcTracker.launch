@@ -12,7 +12,7 @@
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry containerPath=&quot;GWT_HOME/gwt-user.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;&#13;&#10;"/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry containerPath=&quot;GWT_HOME/gwt-dev-windows.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;&#13;&#10;"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-out www rocket.widget.test.tabpanel.TabPanel/TabPanel.html&#13;&#10;-style DETAILED"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-out www rocket.remoting.test.outstandingrpctracker.OutstandingRpcTracker/OutstandingRpcTracker.html&#13;&#10;-style DETAILED"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Rocket"/>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
