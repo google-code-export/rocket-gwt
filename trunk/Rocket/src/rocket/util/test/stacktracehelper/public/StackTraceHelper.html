@@ -17,15 +17,24 @@ BUTTON{
 </head>
 
 <body>
-	<div>
-	In order for this demo to include meaningful stacktraces the generated javascript must be compiled in pretty or detailed modes.
-	<br>
-	Click on the button to simulate throwing and catching and display of the StackTrace of the Exception.
-	</div>
+	<P>
+	In order for this demo to include meaningful stacktraces the generated javascript must be compiled in pretty or detailed modes
+	otherwise the class and method names will be jibberish.
+	</p>
+	
+	<h3>Things to test</h3>
+	<ul>
+	<li>Click on the <b>Throw catch and printStackTrace</b> button to simulate throwing an exception and printing its captured stacktrace.</b>
+	<li>Click on the <b>Invoke server service which throws Exception</b> button which invokes a service which throws an exception. 
+	  Only the client side portion of the stacktrace will be present in the dumped stacktrace.</li>
+	<li>Test in both hosted and web modes. The results should be fairly similar the only thing being loss are line numbers in the stacktrace</b>
+	<li>The server side portion of any stacktrace will be highlighted in italics - even though none will be present</li>
+	</ul>
+
 	<div><b>Log</b></div>
 	<div
 		id="log"
-		style="border-color: black; border-style: solid; border-width: 1px; padding: 4px; background-color: #eeeeee; width: 95%; height: 500px; overflow: scroll">
+		style="border-color: black; border-style: solid; border-width: 1px; padding: 4px; background-color: #eeeeee; width: 95%; height: 500px; overflow: scroll; font-size: 9px;">
 	</div>
 </body>
 </html>

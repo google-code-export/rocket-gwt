@@ -18,5 +18,5 @@ package rocket.util.test.stacktracehelper.client;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 public interface StackTraceHelperTestService extends RemoteService {
-    void invoke(Exception exception) throws Exception;
+    void invoke(Exception exception) throws ServerServiceException;
 }

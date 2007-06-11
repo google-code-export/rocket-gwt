@@ -247,7 +247,10 @@ public class StringHelper extends ObjectHelper {
 
                 /* token found! */
                 if (isTokenTest != -1) {
-                    tokens.add(input.substring(firstChar, i));
+                    // dont add empty tokens...
+                    if (firstChar != i) {
+                        tokens.add(input.substring(firstChar, i));
+                    }
 
                     /* include delimiter in the output ??? */
                     if (false == ignoreDelimiters) {

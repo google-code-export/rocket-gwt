@@ -16,7 +16,7 @@
 package rocket.util.server;
 
 /**
- * This class may be used to encode a byte array into a String.
+ * This class may be used to base 64 encode a byte array into a String.
  * 
  * @author Miroslav Pokorny (mP)
  */
