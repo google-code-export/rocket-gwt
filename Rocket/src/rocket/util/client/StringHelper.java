@@ -346,6 +346,26 @@ public class StringHelper extends ObjectHelper {
         int i = 0;
         final int messageLength = message.length();
         while (i < messageLength) {
+            // find escape character...
+            final int escapeIndex = message.indexOf( '\\', i );
+            if( -1 != escapeIndex ){
+                final int characterAfterIndex = escapeIndex + 1;
+                if( escapeIndex == messageLength ){
+                    StringHelper.fail( "Broken message, trailing escape character found.");
+                }
+                
+                buf.append(message.substring(i, escapeIndex ));
+                
+                final char characterAfter = message.charAt( characterAfterIndex );
+                if( '{' == characterAfter || '\\' == characterAfter ){
+                    buf.append( characterAfter );
+                    
+                    i = characterAfterIndex + 1;
+                    continue;
+                }
+                StringHelper.fail( "Invalid escape character found in format string \"" + message + "\" at " + characterAfterIndex );
+            }
+            
             // find the start placeholder
             final int placeHolderStartIndex = message.indexOf('{', i);
             if (-1 == placeHolderStartIndex) {

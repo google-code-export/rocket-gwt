@@ -447,6 +447,43 @@ public class StringHelperTestCase extends TestCase {
         }
     }
 
+    public void testFormatWithEscapedLeftParenthesis(){
+        final String message = "before \\{ {0} after";
+        final Object[] values = new Object[]{ "VALUE" };
+        final String actual = StringHelper.format(message, values);
+
+        assertEquals( "before { VALUE after", actual );
+    }
+
+    public void testFormatWithEscapedBackslash(){
+        final String message = "before \\\\ {0} after";
+        final Object[] values = new Object[]{ "VALUE" };
+        final String actual = StringHelper.format(message, values);
+
+        assertEquals( "before \\ VALUE after", actual );
+    }
+
+    public void testFormatMessageHasTrailingBackslash(){
+        final String message = "before {0} after \\";
+        final Object[] values = new Object[]{ "VALUE" };
+        try{
+            final String actual = StringHelper.format(message, values);
+            fail( "An exception and not [" + actual + "] should have failed.");
+        } catch ( final Exception expected ){            
+        }
+    }
+
+    public void testFormatMessageHasInvalidEscapedCharacter(){
+        final String message = "before \\X after";
+        final Object[] values = new Object[]{ "VALUE" };
+        try{
+            final String actual = StringHelper.format(message, values);
+            fail( "An exception and not [" + actual + "] should have failed.");
+        } catch ( final AssertionError expected ){            
+        }
+    }
+
+
     public void testHtmlEncode0() {
         final String plainText = "abc";
         final String actual = StringHelper.htmlEncode(plainText);
