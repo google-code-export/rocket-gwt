@@ -97,9 +97,6 @@ public class WidgetConstants {
      */
     public final static String COLLAPSABLE_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "collapsablePanel");
 
-    public final static String COLLAPSABLE_PANEL_FLEXTABLE_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE,
-            "flexTable");
-
     public final static String COLLAPSABLE_PANEL_TITLE_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE,
             "title");
 
@@ -151,8 +148,6 @@ public class WidgetConstants {
      * This style is applied to the container element of a Grid {@see Grid}
      */
     public final static String GRID_STYLE = StyleHelper.buildCompound(ROCKET, "grid");
-
-    public final static String GRID_FLEXTABLE_STYLE = StyleHelper.buildCompound(GRID_STYLE, "flexTable");
 
     public final static String GRID_CELL_STYLE = StyleHelper.buildCompound(GRID_STYLE, "cell");
 

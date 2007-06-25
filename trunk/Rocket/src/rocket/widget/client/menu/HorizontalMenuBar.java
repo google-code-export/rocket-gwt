@@ -38,7 +38,7 @@ public class HorizontalMenuBar extends Menu {
 
     protected Widget createMenuList() {
         final HorizontalMenuList list = new HorizontalMenuList();
-        list.addStyleName(MenuConstants.HORIZONTAL_MENU_BAR_STYLE);
+        list.setStyleName(MenuConstants.HORIZONTAL_MENU_BAR_STYLE);
         list.setHideable(false);
         list.setMenu(this);
 

@@ -221,7 +221,7 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
         final SimplePanel simplePanel = new SimplePanel();
         simplePanel.setWidth("100%");
         DOM.appendChild(simplePanel.getElement(), this.createHtml().getElement());
-        simplePanel.addStyleName(MenuConstants.SUB_MENU_ITEM_STYLE);
+        simplePanel.setStyleName(MenuConstants.SUB_MENU_ITEM_STYLE);
         this.setSimplePanel(simplePanel);
         return simplePanel;
     }

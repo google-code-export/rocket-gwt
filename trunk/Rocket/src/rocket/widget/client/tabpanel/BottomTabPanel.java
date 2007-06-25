@@ -33,7 +33,7 @@ public class BottomTabPanel extends HorizonalTabPanel {
         final VerticalPanelImpl panel = new VerticalPanelImpl();
         this.setPanel(panel);
 
-        panel.addStyleName(this.getPanelStyleName());
+        panel.setStyleName(this.getPanelStyleName());
 
         final Widget contentPanel = this.createContentPanel();
         panel.add(contentPanel);

@@ -31,7 +31,7 @@ public abstract class VerticalTabPanel extends TabPanel {
 
     protected Widget createTabBarBeforeSpacer() {
         final HTML widget = new HTML("&nbsp;");
-        widget.addStyleName(this.getTabBarBeforeSpacerStyleName());
+        widget.setStyleName(this.getTabBarBeforeSpacerStyleName());
         widget.setHeight("100%");
         return widget;
     }
@@ -40,7 +40,7 @@ public abstract class VerticalTabPanel extends TabPanel {
 
     protected Widget createTabBarAfterSpacer() {
         final HTML widget = new HTML("&nbsp;");
-        widget.addStyleName(getTabBarAfterSpacerStyleName());
+        widget.setStyleName(getTabBarAfterSpacerStyleName());
         widget.setHeight("100%");
         return widget;
     }

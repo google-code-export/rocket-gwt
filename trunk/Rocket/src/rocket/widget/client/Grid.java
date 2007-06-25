@@ -115,8 +115,7 @@ public class Grid extends Composite {
 
     protected FlexTable createFlexTable() {
         final FlexTable table = new FlexTable();
-        table.addStyleName(WidgetConstants.GRID_STYLE);
-        table.addStyleName(WidgetConstants.GRID_FLEXTABLE_STYLE);
+        table.setStyleName(WidgetConstants.GRID_STYLE);
         this.setFlexTable(table);
         return table;
     }

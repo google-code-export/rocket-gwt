@@ -30,7 +30,7 @@ public class RightSideAccordionPanel extends TwoColumnAccordionPanel {
 
     protected HorizontalPanel createPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
-        panel.addStyleName(AccordionConstants.RIGHT_SIDE_ACCORDION_PANEL_STYLE);
+        panel.setStyleName(AccordionConstants.RIGHT_SIDE_ACCORDION_PANEL_STYLE);
         this.setPanel(panel);
         panel.add(this.createContentsPanel());
         panel.add(this.createCaptionsPanel());

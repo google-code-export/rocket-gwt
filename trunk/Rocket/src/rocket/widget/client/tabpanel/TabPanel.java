@@ -101,7 +101,7 @@ public abstract class TabPanel extends Composite {
         ObjectHelper.checkNotNull("parameter:item", item);
 
         final HorizontalPanel panel = item.getTabWidgetPanel();
-        panel.addStyleName(this.getTabBarItemStyleName());
+        panel.setStyleName(this.getTabBarItemStyleName());
 
         if (closable) {
             panel.add(new HTML("&nbsp;"));
@@ -256,7 +256,7 @@ public abstract class TabPanel extends Composite {
 
     protected Image createCloseButton() {
         final Image image = new Image();
-        image.addStyleName(this.getTabBarItemWidgetStyleName());
+        image.setStyleName(this.getTabBarItemWidgetStyleName());
 
         image.setUrl(this.getCloseButtonImageUrl());
         return image;
@@ -377,7 +377,7 @@ public abstract class TabPanel extends Composite {
         final DeckPanel panel = new DeckPanel();
         this.setContentPanel(panel);
 
-        panel.addStyleName(getContentPanelStyleName());
+        panel.setStyleName(getContentPanelStyleName());
         return panel;
     }
 

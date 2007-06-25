@@ -37,7 +37,7 @@ public class CollapsablePanel extends Composite implements HasWidgets {
 
     public CollapsablePanel() {
         this.initWidget(this.createFlexTable());
-        this.addStyleName(WidgetConstants.COLLAPSABLE_PANEL_STYLE);
+        this.setStyleName(WidgetConstants.COLLAPSABLE_PANEL_STYLE);
     }
 
     public void add(final Widget widget) {
@@ -134,8 +134,6 @@ public class CollapsablePanel extends Composite implements HasWidgets {
      */
     protected FlexTable createFlexTable() {
         final FlexTable table = new FlexTable();
-        table.addStyleName(WidgetConstants.COLLAPSABLE_PANEL_FLEXTABLE_STYLE);
-
         this.setFlexTable(table);
 
         table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN,
@@ -147,7 +145,7 @@ public class CollapsablePanel extends Composite implements HasWidgets {
 
     protected FlexTable createTitleFlexTable() {
         final FlexTable table = new FlexTable();
-        table.addStyleName(WidgetConstants.COLLAPSABLE_PANEL_TITLE_FLEXTABLE_STYLE);
+        table.setStyleName(WidgetConstants.COLLAPSABLE_PANEL_TITLE_FLEXTABLE_STYLE);
 
         table.setText(0, 0, "");
         table.getFlexCellFormatter().setWidth(0, 0, "100%");

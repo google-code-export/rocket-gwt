@@ -79,7 +79,7 @@ public class VerticalMenuList extends MenuList {
 
     protected VerticalPanel createVerticalPanel() {
         final VerticalPanel panel = new VerticalPanel();
-        panel.addStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
+        panel.setStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
 
         this.setVerticalPanel(panel);
         return panel;

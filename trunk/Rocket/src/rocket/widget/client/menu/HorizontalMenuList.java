@@ -87,7 +87,7 @@ public class HorizontalMenuList extends MenuList {
     protected HorizontalPanel createHorizontalPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
         panel.setWidth("100%");
-        panel.addStyleName(MenuConstants.HORIZONTAL_MENU_LIST_STYLE);
+        panel.setStyleName(MenuConstants.HORIZONTAL_MENU_LIST_STYLE);
 
         final Widget padder = this.createPadder();
         panel.add(padder);

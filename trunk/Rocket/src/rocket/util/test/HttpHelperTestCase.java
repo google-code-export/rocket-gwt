@@ -24,29 +24,6 @@ import rocket.util.client.HttpHelper;
  * @author Miroslav Pokorny (mP)
  */
 public class HttpHelperTestCase extends TestCase {
-    public void testUrlEncode0() {
-        final String unencoded = "abcdef";
-        final String encoded = HttpHelper.urlEncode(unencoded);
-        final String expected = unencoded;
-
-        assertEquals(expected, encoded);
-    }
-
-    public void testUrlEncode1() {
-        final String unencoded = "1234567890";
-        final String encoded = HttpHelper.urlEncode(unencoded);
-        final String expected = unencoded;
-
-        assertEquals(expected, encoded);
-    }
-
-    public void testUrlEncode2() {
-        final String unencoded = " +!";
-        final String encoded = HttpHelper.urlEncode(unencoded);
-        final String expected = "+%" + Integer.toHexString('+') + "!";
-
-        assertEquals(expected, encoded);
-    }
 
     public void testUrlDecode0() {
         final String encoded = "abcdef";

@@ -66,7 +66,7 @@ public class TreeItem extends Composite {
         table.setWidget(0, 0, this.createCollapserExpanderImage());
         table.setWidget(1, 1, this.createChildren());
         this.setFlexTable(table);
-        table.addStyleName(TreeConstants.TREE_ITEM_STYLE);
+        table.setStyleName(TreeConstants.TREE_ITEM_STYLE);
         return table;
     }
 
@@ -138,7 +138,7 @@ public class TreeItem extends Composite {
      */
     protected Image createCollapserExpanderImage() {
         final Image image = new Image();
-        image.addStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);
+        image.setStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);
         this.setCollapserExpanderImage(image);
         image.addClickListener(new ClickListener() {
             public void onClick(final Widget widget) {
@@ -259,7 +259,7 @@ public class TreeItem extends Composite {
 
     protected VerticalPanel createChildren() {
         final VerticalPanel panel = new VerticalPanel();
-        panel.addStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);
+        panel.setStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);
         this.setChildren(panel);
         return panel;
     }

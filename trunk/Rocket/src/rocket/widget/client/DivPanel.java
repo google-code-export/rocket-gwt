@@ -32,7 +32,7 @@ public class DivPanel extends AbstractPanel implements HasWidgets {
         super();
 
         this.setElement(this.createPanelElement());
-        this.addStyleName(WidgetConstants.DIV_PANEL_STYLE);
+        this.setStyleName(WidgetConstants.DIV_PANEL_STYLE);
     }
 
     /**

@@ -107,7 +107,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
     public Widget createUpWidget() {
         final Image image = new Image();
         image.setUrl(this.getUpImageUrl());
-        image.addStyleName(WidgetConstants.SPINNER_UP_STYLE);
+        image.setStyleName(WidgetConstants.SPINNER_UP_STYLE);
         image.addClickListener(new ClickListener() {
 
             public void onClick(final Widget widget) {
@@ -170,7 +170,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
 
     public Widget createDownWidget() {
         final Image image = new Image();
-        image.addStyleName(WidgetConstants.SPINNER_DOWN_STYLE);
+        image.setStyleName(WidgetConstants.SPINNER_DOWN_STYLE);
         image.setUrl(this.getDownImageUrl());
 
         image.addClickListener(new ClickListener() {
@@ -264,7 +264,7 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
      */
     public Panel createPanel() {
         final VerticalPanel panel = new VerticalPanel();
-        panel.addStyleName(WidgetConstants.SPINNER_STYLE);
+        panel.setStyleName(WidgetConstants.SPINNER_STYLE);
         panel.addStyleName(WidgetConstants.SPINNER_VERTICAL_PANEL_STYLE);
         this.setPanel(panel);
 

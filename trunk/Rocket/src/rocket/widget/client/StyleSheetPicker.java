@@ -81,7 +81,7 @@ public class StyleSheetPicker extends Composite {
     protected HorizontalPanel createHorizontalPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
         this.setHorizontalPanel(panel);
-        panel.addStyleName(WidgetConstants.STYLESHEET_PICKER_STYLE);
+        panel.setStyleName(WidgetConstants.STYLESHEET_PICKER_STYLE);
         panel.addStyleName(WidgetConstants.STYLESHEET_PICKER_HORIZONTAL_PANEL_STYLE);
 
         final Widget label = this.createLabel();
@@ -114,7 +114,7 @@ public class StyleSheetPicker extends Composite {
      */
     protected Widget createLabel() {
         final Label label = new Label("");
-        label.addStyleName(WidgetConstants.STYLESHEET_PICKER_LABEL_STYLE);
+        label.setStyleName(WidgetConstants.STYLESHEET_PICKER_LABEL_STYLE);
         this.setLabel(label);
         return label;
     }
@@ -191,7 +191,7 @@ public class StyleSheetPicker extends Composite {
         StringHelper.checkNotNull("parameter:title", title);
 
         final Button button = new Button(title);
-        button.addStyleName(WidgetConstants.STYLESHEET_ITEM_STYLE);
+        button.setStyleName(WidgetConstants.STYLESHEET_ITEM_STYLE);
 
         final StyleSheetPicker that = this;
 

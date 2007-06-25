@@ -60,54 +60,6 @@ public class HttpHelper {
     }
 
     /**
-     * This takes an string and encodes it so that it contains valid url characters.
-     * 
-     * @param unencoded
-     * @return
-     */
-    public static String urlEncode(final String unencoded) {
-        StringHelper.checkNotNull("parameter:unencoded", unencoded);
-
-        final StringBuffer encoded = new StringBuffer();
-        for (int i = 0; i < unencoded.length(); i++) {
-            final char c = unencoded.charAt(i);
-
-            // alphas
-            if (c >= 'A' && c <= 'Z') {
-                encoded.append(c);
-                continue;
-            }
-            if (c >= 'a' && c <= 'z') {
-                encoded.append(c);
-                continue;
-            }
-
-            // numerics
-            if (c >= '0' && c <= '9') {
-                encoded.append(c);
-                continue;
-            }
-
-            if (c == ' ') {
-                encoded.append('+');
-                continue;
-            }
-
-            if (c == '$' || c == '-' || c == '_' || c == '.' || c == '!' || c == '*' || c == '\'' || c == '('
-                    || c == ')' || c == ',' || c == '\"') {
-                encoded.append(c);
-                continue;
-            }
-
-            // remaining characters need to be encoded...
-            encoded.append('%');
-            encoded.append(Integer.toHexString((int) c));
-        }
-
-        return encoded.toString();
-    }
-
-    /**
      * Encodes all the elements belonging to form into a url encoded safe String.
      * 
      * @param form
@@ -142,7 +94,7 @@ public class HttpHelper {
      var element = elements[ i ];
      var elementName = element.name;
      var elementValue = element.value;
-     var elementValueEncoded = @rocket.util.client.HttpHelper::urlEncode(Ljava/lang/String;)( elementValue );
+     var elementValueEncoded = @com.google.gwt.http.client.URL::encodeComponent(Ljava/lang/String;)( elementValue );
 
      encoded = encoded + elementName + "=" + elementValueEncoded;
      }
@@ -177,22 +129,18 @@ public class HttpHelper {
     }
 
     public static boolean isHttp(final String protocol) {
-        ObjectHelper.checkNotNull("parameter:protocol", protocol);
         return HttpConstants.HTTP.equals(protocol);
     }
 
     public static boolean isHttps(final String protocol) {
-        ObjectHelper.checkNotNull("parameter:protocol", protocol);
         return HttpConstants.HTTPS.equals(protocol);
     }
 
     public static boolean isGet(final String method) {
-        ObjectHelper.checkNotNull("parameter:method", method);
         return HttpConstants.GET.equals(method);
     }
 
     public static boolean isPost(final String method) {
-        ObjectHelper.checkNotNull("parameter:method", method);
         return HttpConstants.POST.equals(method);
     }
 

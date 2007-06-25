@@ -65,7 +65,7 @@ public class SuperSpinner extends Spinner {
     public Widget createBigDownWidget() {
         final Image image = new Image();
         image.setUrl(this.getBigDownImageUrl());
-        image.addStyleName(WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE);
+        image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE);
 
         image.addClickListener(new ClickListener() {
 
@@ -123,7 +123,7 @@ public class SuperSpinner extends Spinner {
     public Widget createBigUpWidget() {
         final Image image = new Image();
         image.setUrl(this.getBigUpImageUrl());
-        image.addStyleName(WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE);
+        image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE);
 
         image.addClickListener(new ClickListener() {
 
@@ -178,8 +178,7 @@ public class SuperSpinner extends Spinner {
         }
 
         final HorizontalPanel panel = new HorizontalPanel();
-        panel.addStyleName(StyleHelper.buildCompound(WidgetConstants.SUPER_SPINNER_STYLE,
-                WidgetConstants.SUPER_SPINNER_HORIZONTAL_PANEL));
+        panel.setStyleName(StyleHelper.buildCompound(WidgetConstants.SUPER_SPINNER_STYLE, WidgetConstants.SUPER_SPINNER_HORIZONTAL_PANEL));
         this.setPanel(panel);
 
         panel.add(this.createDownWidget());

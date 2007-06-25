@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 public class ZebraFlexTable extends FlexTable {
 
     public ZebraFlexTable() {
-        this.addStyleName(WidgetConstants.ZEBRA_FLEX_TABLE_STYLE);
+        this.setStyleName(WidgetConstants.ZEBRA_FLEX_TABLE_STYLE);
     }
 
     public void addHeadingStyleToFirstRow() {

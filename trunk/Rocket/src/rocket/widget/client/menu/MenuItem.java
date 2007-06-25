@@ -117,7 +117,7 @@ public class MenuItem extends AbstractMenuItem {
     protected HTML createHtml() {
         final HTML html = new HTML();
         html.setWidth("100%");
-        html.addStyleName(MenuConstants.MENU_ITEM_STYLE);
+        html.setStyleName(MenuConstants.MENU_ITEM_STYLE);
         this.setHtml(html);
         return html;
     }
