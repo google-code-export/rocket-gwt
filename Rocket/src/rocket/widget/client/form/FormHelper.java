@@ -25,6 +25,7 @@ import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -82,7 +83,7 @@ public class FormHelper extends DomHelper {
 
             final Element formElement = (Element) formElements.next();
             final String name = ObjectHelper.getString(ObjectHelper.castFromElement(formElement), DomConstants.NAME);
-            final String value = HttpHelper.urlEncode(FormHelper.getFormSubmitValue(formElement));
+            final String value = URL.encodeComponent(FormHelper.getFormSubmitValue(formElement));
             urlEncoded.append(name);
             urlEncoded.append('=');
             urlEncoded.append(value);

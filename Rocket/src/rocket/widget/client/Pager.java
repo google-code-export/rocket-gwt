@@ -113,7 +113,7 @@ public class Pager extends AbstractNumberHolder implements NumberHolder {
 
     protected HorizontalPanel createHorizontalPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
-        panel.addStyleName(WidgetConstants.PAGER_STYLE);
+        panel.setStyleName(WidgetConstants.PAGER_STYLE);
         panel.addStyleName(WidgetConstants.PAGER_HORIZONTAL_PANEL_STYLE);
         this.setHorizontalPanel(panel);
         return panel;
@@ -121,7 +121,7 @@ public class Pager extends AbstractNumberHolder implements NumberHolder {
 
     protected Button createPreviousButton() {
         final Button button = new Button(WidgetConstants.PAGER_PREVIOUS_BUTTON_TEXT);
-        button.addStyleName(WidgetConstants.PAGER_PREVIOUS_BUTTON_STYLE);
+        button.setStyleName(WidgetConstants.PAGER_PREVIOUS_BUTTON_STYLE);
 
         // if already on the first page disable button
         final int currentPage = this.getCurrentPage();
@@ -136,7 +136,7 @@ public class Pager extends AbstractNumberHolder implements NumberHolder {
 
     protected Button createNextButton() {
         final Button button = new Button(WidgetConstants.PAGER_NEXT_BUTTON_TEXT);
-        button.addStyleName(WidgetConstants.PAGER_PREVIOUS_BUTTON_STYLE);
+        button.setStyleName(WidgetConstants.PAGER_PREVIOUS_BUTTON_STYLE);
 
         // if already on the last page disable button
         final int currentPage = this.getCurrentPage();
@@ -161,7 +161,7 @@ public class Pager extends AbstractNumberHolder implements NumberHolder {
         final boolean belongsToCurrentPage = this.getCurrentPage() == pageNumber;
         final String style = belongsToCurrentPage ? WidgetConstants.PAGER_CURRENT_PAGE_STYLE
                 : WidgetConstants.PAGER_GOTO_PAGE_STYLE;
-        button.addStyleName(style);
+        button.setStyleName(style);
 
         if (false == belongsToCurrentPage) {
             button.addClickListener(this.createButtonListener(pageNumber));

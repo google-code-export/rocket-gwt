@@ -18,6 +18,7 @@ package rocket.widget.client.accordion;
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.WidgetHelper;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
@@ -105,6 +106,7 @@ public class AccordionItem {
 
     protected void createCaptionWidget() {
         final HTML html = new HTML();
+        DOM.setAttribute( html.getElement(), "className", "");
         html.setWidth("100%");
         html.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {

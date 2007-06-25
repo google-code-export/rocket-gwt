@@ -33,7 +33,7 @@ public class Tree extends Composite {
     public Tree() {
         this.createTreeListenerCollection();
         this.initWidget(this.createTreeItem());
-        this.addStyleName(TreeConstants.TREE_STYLE);
+        this.setStyleName(TreeConstants.TREE_STYLE);
     }
 
     /**

@@ -23,6 +23,7 @@ import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
@@ -36,6 +37,9 @@ public class RequestParameters implements IsSerializable {
         this.setMultiValueMap(new MultiValueMap());
     }
 
+    /**
+     * A MultiValueMap is used to hold parameter names and their associated list of values.
+     */
     private MultiValueMap multiValueMap;
 
     protected MultiValueMap getMultiValueMap() {
@@ -50,6 +54,11 @@ public class RequestParameters implements IsSerializable {
         this.multiValueMap = multiValueMap;
     }
 
+    /**
+     * Tests if a particular parameter has been added.
+     * @param name
+     * @return
+     */
     public boolean contains(final String name) {
         return this.getMultiValueMap().contains(name);
     }
@@ -140,7 +149,7 @@ public class RequestParameters implements IsSerializable {
 
                 data.append(name);
                 data.append('=');
-                data.append(HttpHelper.urlEncode((String) values.next()));
+                data.append(URL.encodeComponent((String) values.next()));
             }
         }
 
@@ -148,6 +157,6 @@ public class RequestParameters implements IsSerializable {
     }
 
     public String toString() {
-        return super.toString() + ", multiValueMap:" + multiValueMap;
+        return super.toString() + ", parameters:" + multiValueMap;
     }
 }

@@ -420,3 +420,16 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.28.zip
 * Added seemless support for fixed positioning via StyleHelper - this achieved by using dynamic expressions. Refer to javadocs for more details.
 * Fixed a bug within StringHelper.split() which was not ignoring sequences of more one delimiters.
 * Separated jar files that support web mode stack traces into a separate package. To use stacktraces simply include rocket-stacktrace.jar.
+
+0.29 25 June 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.29.zip
+
+* Added ability to escape placeholders within StringHelper.format() messages.
+* Fixed HttpHelper.isXXX methods not to fail if parameter is null. When null the test simply fails.
+* Deprecated HttpHelper.urlEncode() replacing all uses with GWT's URL.encodeComponent(). Also removed tests
+* Added rocket.generator package which basically to assist with building GWT Generator code generators.
+* Added generator to generate stubs that automatically map json encoded responses to a java graph using annotations.
+* Added generator that allows java client code to invoke remote json services in a fashion that closely mimics GWT rpc's, eg
+  java type parameters, calls AsyncCallback with a deserialized result or exception.
+* Removed most gwt stylenames when using GWT widgets to assemble rocket widgets.

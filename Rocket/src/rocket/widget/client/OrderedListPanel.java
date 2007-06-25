@@ -33,7 +33,7 @@ public class OrderedListPanel extends AbstractPanel implements HasWidgets {
         super();
 
         this.setElement(this.createPanelElement());
-        this.addStyleName(WidgetConstants.ORDERED_LIST_PANEL_STYLE);
+        this.setStyleName(WidgetConstants.ORDERED_LIST_PANEL_STYLE);
     }
 
     /**

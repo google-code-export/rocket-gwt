@@ -38,7 +38,7 @@ public class VerticalMenuBar extends Menu {
 
     protected Widget createMenuList() {
         final VerticalMenuList list = new VerticalMenuList();
-        list.addStyleName(MenuConstants.VERTICAL_MENU_BAR_STYLE);
+        list.setStyleName(MenuConstants.VERTICAL_MENU_BAR_STYLE);
         list.setHideable(false);
         list.setMenu(this);
 

@@ -61,7 +61,7 @@ public class VerticalAccordionPanel extends AccordionPanel {
 
     protected DivPanel createPanel() {
         final DivPanel panel = new DivPanel();
-        panel.addStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_STYLE);
+        panel.setStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_STYLE);
         this.setPanel(panel);
         return panel;
     }
@@ -98,7 +98,7 @@ public class VerticalAccordionPanel extends AccordionPanel {
         content.addStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_ITEM_CONTENT_STYLE);
 
         final DivPanel panel = new DivPanel();
-        panel.addStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_ITEM_STYLE);
+        panel.setStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_ITEM_STYLE);
         panel.add(caption);
         panel.add(content);
         content.setVisible(false); // content is invisible when initially added.

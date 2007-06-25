@@ -63,7 +63,7 @@ public class BreadcrumbPanel extends Composite {
 
     protected HorizontalPanel createHorizontalPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
-        panel.addStyleName(WidgetConstants.BREADCRUMB_PANEL_STYLE);
+        panel.setStyleName(WidgetConstants.BREADCRUMB_PANEL_STYLE);
         this.setHorizontalPanel(panel);
         return panel;
     }
@@ -110,7 +110,7 @@ public class BreadcrumbPanel extends Composite {
 
         final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.setText(text);
-        breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_PANEL_ITEM_STYLE);
+        breadcrumb.setStyleName(WidgetConstants.BREADCRUMB_PANEL_ITEM_STYLE);
         return breadcrumb;
     }
 
@@ -155,7 +155,7 @@ public class BreadcrumbPanel extends Composite {
 
     protected Widget createSpacer() {
         final HTML spacer = new HTML(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_HTML);
-        spacer.addStyleName(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_STYLE);
+        spacer.setStyleName(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_STYLE);
         spacer.setVisible(false);
         return spacer;
     }

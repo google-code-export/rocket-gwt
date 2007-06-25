@@ -8,7 +8,7 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.28"/>
+	<property name="version" value="0.29"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
@@ -26,6 +26,7 @@
 		<pathelement path="${lib-dir}/gwt-windows-1.4.3/gwt-user.jar"/>
 		<pathelement path="${lib-dir}/gwt-windows-1.4.3/gwt-dev-windows.jar"/>
 		<pathelement path="${lib-dir}/junit/3.8/junit.jar"/>
+		<pathelement path="${lib-dir}/flexjson/1.2/flexjson.jar"/>		
 	</path>
 
 	<!--
@@ -143,25 +144,28 @@
   	         sourcepath="${src-dir}"
   	         splitindex="no"
   			packagenames="rocket.browser.client,
-              rocket.collection.client,
-              rocket.cookie.client,
-              rocket.dom.client,
-              rocket.dragndrop.client,
-              rocket.messaging.client,
-              rocket.remoting.client, 
-			  rocket.remoting.server,
-			  rocket.selection.client, 
-              rocket.style.client, 
-              rocket.util.client, 
-              rocket.widget.client, 
-				rocket.widget.client.accordion,
-				rocket.widget.client.form,  		
-				rocket.widget.client.menu,  		
-				rocket.widget.client.slider,
-       			rocket.widget.client.splitter,
- 				rocket.widget.client.tab,
-				rocket.widget.client.testing,
-				rocket.widget.client.tree"
+							rocket.collection.client,
+							rocket.cookie.client,
+							rocket.dom.client,
+							rocket.dragndrop.client,
+							rocket.json.client,
+							rocket.generator.client,
+							rocket.messaging.client,
+							rocket.remoting.client, 
+							rocket.remoting.client.json, 
+							rocket.remoting.server,
+							rocket.selection.client, 
+							rocket.style.client, 
+							rocket.util.client, 
+							rocket.widget.client, 
+							rocket.widget.client.accordion,
+							rocket.widget.client.form,  		
+							rocket.widget.client.menu,  		
+							rocket.widget.client.slider,
+							rocket.widget.client.splitter,
+							rocket.widget.client.tab,
+							rocket.widget.client.testing,
+							rocket.widget.client.tree"
   	         verbose="no">
 		</javadoc>
 	</target>
@@ -325,7 +329,7 @@
 	-->
 	<target 	
 			name="packageRelease"
-			depends="test,translateAllModules,packageArchive,javadoc,packageArchive"     			
+			depends="translateAllModules,packageArchive,javadoc,packageArchive"     			
     		description="Package a release including compiled classes, source files, javadoc and generated html.">
 
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>

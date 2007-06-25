@@ -33,7 +33,7 @@ public class UnorderedListPanel extends AbstractPanel implements HasWidgets {
         super();
 
         this.setElement(this.createPanelElement());
-        this.addStyleName(WidgetConstants.UNORDERED_LIST_PANEL_STYLE);
+        this.setStyleName(WidgetConstants.UNORDERED_LIST_PANEL_STYLE);
     }
 
     /**

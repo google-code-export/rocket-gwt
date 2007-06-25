@@ -41,7 +41,7 @@ public class ContextMenu extends Menu {
         super();
 
         this.initWidget(this.createWidget());
-        this.addStyleName(MenuConstants.CONTEXT_MENU_STYLE);
+        this.setStyleName(MenuConstants.CONTEXT_MENU_STYLE);
     }
 
     // COMPOSITE :::::::::::::::::::::::::::::::::::::::::
@@ -77,7 +77,7 @@ public class ContextMenu extends Menu {
 
     protected Widget createMenuList() {
         final VerticalMenuList list = new VerticalMenuList();
-        list.addStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
+        list.setStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
         list.setHideable(true);
         list.setMenu(this);
         list.setOpenDirection(MenuListOpenDirection.DOWN);

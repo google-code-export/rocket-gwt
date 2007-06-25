@@ -39,7 +39,7 @@ public abstract class HorizonalTabPanel extends TabPanel {
         final HorizontalPanelImpl panel = new HorizontalPanelImpl();
         this.setTabBarPanel(panel);
 
-        panel.addStyleName(this.getTabBarStyleName());
+        panel.setStyleName(this.getTabBarStyleName());
         panel.setVerticalAlignment(alignment);
 
         final Widget first = this.createTabBarBeforeSpacer();
@@ -56,7 +56,7 @@ public abstract class HorizonalTabPanel extends TabPanel {
 
     protected Widget createTabBarBeforeSpacer() {
         final HTML widget = new HTML("&nbsp;");
-        widget.addStyleName(this.getTabBarBeforeSpacerStyleName());
+        widget.setStyleName(this.getTabBarBeforeSpacerStyleName());
         widget.setHeight("100%");
         return widget;
     }
@@ -65,7 +65,7 @@ public abstract class HorizonalTabPanel extends TabPanel {
 
     protected Widget createTabBarAfterSpacer() {
         final HTML widget = new HTML("&nbsp;");
-        widget.addStyleName(getTabBarAfterSpacerStyleName());
+        widget.setStyleName(getTabBarAfterSpacerStyleName());
         widget.setHeight("100%");
         return widget;
     }

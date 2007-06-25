@@ -33,7 +33,7 @@ public class LeftTabPanel extends VerticalTabPanel {
         final HorizontalPanelImpl panel = new HorizontalPanelImpl();
         this.setPanel(panel);
 
-        panel.addStyleName(this.getPanelStyleName());
+        panel.setStyleName(this.getPanelStyleName());
         panel.add((Widget) this.createTabBarPanel());
 
         final Widget contentPanel = this.createContentPanel();
@@ -50,7 +50,7 @@ public class LeftTabPanel extends VerticalTabPanel {
         final VerticalPanelImpl panel = new VerticalPanelImpl();
         this.setTabBarPanel(panel);
 
-        panel.addStyleName(this.getTabBarStyleName());
+        panel.setStyleName(this.getTabBarStyleName());
         panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 
         final Widget first = this.createTabBarBeforeSpacer();

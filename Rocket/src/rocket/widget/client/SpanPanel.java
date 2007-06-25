@@ -31,7 +31,7 @@ public class SpanPanel extends AbstractPanel {
         super();
 
         this.setElement(this.createPanelElement());
-        this.addStyleName(WidgetConstants.SPAN_PANEL_STYLE);
+        this.setStyleName(WidgetConstants.SPAN_PANEL_STYLE);
     }
 
     /**

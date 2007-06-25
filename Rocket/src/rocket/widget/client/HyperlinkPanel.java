@@ -23,7 +23,7 @@ public class HyperlinkPanel extends AbstractPanel {
         super();
 
         this.setElement(this.createPanelElement());
-        this.addStyleName(WidgetConstants.HYPERLINK_PANEL_STYLE);
+        this.setStyleName(WidgetConstants.HYPERLINK_PANEL_STYLE);
         this.createClickListeners();
     }
 
