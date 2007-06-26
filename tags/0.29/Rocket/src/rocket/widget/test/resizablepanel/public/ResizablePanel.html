@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>ResizablePanel</title>
+<meta name='gwt:module' content='rocket.widget.test.resizablepanel.ResizablePanel'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+BODY, TABLE{
+	font-family: Verdana, Arial, Helvetica, Sans-serif;
+	font-size: 11px;
+}
+
+TEXTAREA, IMG, SPAN {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+gwt-FlexTable{
+	background-color: #eeeeee;
+}
+
+.rocket-resizablePanel {
+	background-color: #888;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+
+	padding-right: 10px;
+	padding-top: 20px;
+	padding-left: 30px;
+	padding-bottom: 40px;
+	margin: 10px;
+}
+
+.rocket-resizablePanel-eastHandle {
+	margin: 0px;
+	border-color: #000000;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	background-color: #88ff88;
+	width: 10px;
+	height: 10px;
+	
+	cursor: e-resize;
+}
+.rocket-resizablePanel-northEastHandle {	
+	margin: 0px;
+	border-color: #000000;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	background-color: #88cccc;
+	width: 10px;
+	height: 10px;
+	
+	cursor: ne-resize;
+}
+.rocket-resizablePanel-northHandle {
+	margin: 0px;
+	border-color: #000000;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	background-color: #8888ff;
+	width: 10px;
+	height: 10px;
+	
+	cursor: n-resize;
+}
+.rocket-resizablePanel-northWestHandle {
+	margin: 0px;
+	border-color: #000000;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	background-color: #cc88cc;
+	width: 10px;
+	height: 10px;
+	
+	cursor: nw-resize;
+}
+.rocket-resizablePanel-leftHandle {
+	margin: 0px;
+	border-color: #000000;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	background-color: #ff8888;
+	width: 10px;
+	height: 10px;
+	
+	cursor: w-resize;
+}
+.rocket-resizablePanel-southWestHandle {
+	margin: 0px;
+	border-color: #000000;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	background-color: #ffcc88;
+	width: 10px;
+	height: 10px;
+	
+	cursor: sw-resize;
+}
+.rocket-resizablePanel-southHandle {
+	margin: 0px;
+	border-color: #000000;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	background-color: #ffff88;
+	width: 10px;
+	height: 10px;
+	
+	cursor: s-resize;
+}
+.rocket-resizablePanel-southEastHandle {
+	margin: 0px;
+	border-color: #000000;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	background-color: #ccff88;
+	width: 10px;
+	height: 10px;
+	
+	cursor: se-resize;
+}
+
+.rocket-resizablePanel-selected{
+	background-color: #445566;
+}
+</style>
+
+<script>
+</script>
+</head>
+
+<body>
+This test demonstrates several ResizablePanels. 
+Two types of ResizablePanels are created three times to hold a TEXTAREA, IMAGE and SPAN.
+ResizablePanels with handles always visible appear in the left column whilst those with invisible handles
+appear in the right column of the grid.
+
+<h6>Things to test</h6>
+<ul>
+<li>Text selection is turned off whenever a handle drag starts, letting go of the handle should reenable 
+text selection via dragging of the cursor</li>
+<li>A handle when being dragged should have an almost black (darkgray) background. The handle colour should return to its
+original colour when it is let go.</li>
+<li>Dragging a handle away from the center of the ResizablePanel should increase the width/height of the 
+panel and child widget with dragging inwards decreasing.</li>
+<li>ResizablePanel's with invisible handles (those in the right column of the grid) only have visible
+handles when the mouse enters the panel and are hidden once more when the mouse leaves.</li>
+<li>The handles should appear in the relevant spot half inside or overlapping the child widget and half over the edge.</li>
+</ul>
+
+</body>
+</html>
