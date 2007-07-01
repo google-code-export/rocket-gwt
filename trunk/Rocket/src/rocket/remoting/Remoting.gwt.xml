@@ -7,4 +7,8 @@
 		<when-type-is class="rocket.remoting.client.support.CometSupport"/>
 		<when-property-is name="user.agent" value="webkit"/>
 	</replace-with>	
+
+	<generate-with class="rocket.remoting.rebind.json.RemoteJsonServiceGenerator">
+		<when-type-assignable class="rocket.remoting.client.json.RemoteJsonService" />
+	</generate-with>
 </module>
