@@ -23,7 +23,7 @@ import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
- * A specialised GeneratorContext that helps TypeSerializerGenerator to generate
+ * A specialised GeneratorContext that helps SerializableType to generate
  * Serializer types as required.
  * 
  * @author Miroslav Pokorny
@@ -37,49 +37,52 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 	 * @param field
 	 * @return
 	 */
-	public String getQualifiedTransformerMethodName(final JField field) {
+	public String getQualifiedDeserializeMethodName(final JField field) {
 		String method = null;
 
 		while (true) {
 			final JType type = field.getType();
 
+			final String thisReference = "this";
+			final String singleton = "singleton";
+			
 			if (type == this.getJavaUtilList()) {
 				final JClassType elementListType = this.getListElementType(field);
 
 				if (elementListType == this.getJavaLangBoolean()) {
-					method = "this.asBooleanList";
+					method = thisReference + ".asBooleanList";
 					break;
 				}
 				if (elementListType == this.getJavaLangByte()) {
-					method = "this.asByteList";
+					method = thisReference + ".asByteList";
 					break;
 				}
 				if (elementListType == this.getJavaLangShort()) {
-					method = "this.asShortList";
+					method = thisReference + ".asShortList";
 					break;
 				}
 				if (elementListType == this.getJavaLangInteger()) {
-					method = "this.asIntegerList";
+					method = thisReference + ".asIntegerList";
 					break;
 				}
 				if (elementListType == this.getJavaLangLong()) {
-					method = "this.asLongList";
+					method = thisReference + ".asLongList";
 					break;
 				}
 				if (elementListType == this.getJavaLangFloat()) {
-					method = "this.asFloatList";
+					method = thisReference + ".asFloatList";
 					break;
 				}
 				if (elementListType == this.getJavaLangDouble()) {
-					method = "this.asDoubleList";
+					method = thisReference + ".asDoubleList";
 					break;
 				}
 				if (elementListType == this.getJavaLangCharacter()) {
-					method = "this.asCharacterList";
+					method = thisReference + ".asCharacterList";
 					break;
 				}
 				if (elementListType == this.getJavaLangString()) {
-					method = "this.asStringList";
+					method = thisReference + ".asStringList";
 					break;
 				}
 
@@ -89,14 +92,16 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 				// generate a serializer for $classType
 				this.generateReferencedTypeSerializer(classType);
 
-				final String transformerClassName = this.getSerializerClassnameForType(classType);
+				final String serializerClassName = this.getSerializerClassnameForType(classType);
 
 				final StringBuffer asList = new StringBuffer();
 				asList.append('(');
 				asList.append(type.getQualifiedSourceName());
 				asList.append(')');
-				asList.append(transformerClassName);
-				asList.append(".singleton.asList");
+				asList.append(serializerClassName);
+				asList.append("." );
+				asList.append( singleton );
+				asList.append(".asList");
 
 				method = asList.toString();
 				break;
@@ -106,56 +111,57 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 				final JClassType elementSetType = this.getSetElementType(field);
 
 				if (elementSetType == this.getJavaLangBoolean()) {
-					method = "this.asBooleanSet";
+					method = thisReference + ".asBooleanSet";
 					break;
 				}
 				if (elementSetType == this.getJavaLangByte()) {
-					method = "this.asByteSet";
+					method = thisReference + ".asByteSet";
 					break;
 				}
 				if (elementSetType == this.getJavaLangShort()) {
-					method = "this.asShortSet";
+					method = thisReference + ".asShortSet";
 					break;
 				}
 				if (elementSetType == this.getJavaLangInteger()) {
-					method = "this.asIntegerSet";
+					method = thisReference + ".asIntegerSet";
 					break;
 				}
 				if (elementSetType == this.getJavaLangLong()) {
-					method = "this.asLongSet";
+					method = thisReference + ".asLongSet";
 					break;
 				}
 				if (elementSetType == this.getJavaLangFloat()) {
-					method = "this.asFloatSet";
+					method = thisReference + ".asFloatSet";
 					break;
 				}
 				if (elementSetType == this.getJavaLangDouble()) {
-					method = "this.asDoubleSet";
+					method = thisReference + ".asDoubleSet";
 					break;
 				}
 				if (elementSetType == this.getJavaLangCharacter()) {
-					method = "this.asCharacterSet";
+					method = thisReference + ".asCharacterSet";
 					break;
 				}
 				if (elementSetType == this.getJavaLangString()) {
-					method = "this.asStringSet";
+					method = thisReference + ".asStringSet";
 					break;
 				}
 
-				// calculate the transformer for type.
 				final JClassType classType = (JClassType) elementSetType;
 
 				// generate a serializer for $classType
 				this.generateReferencedTypeSerializer(classType);
 
-				final String transformerClassName = this.getSerializerClassnameForType(classType);
+				final String serializerClassName = this.getSerializerClassnameForType(classType);
 
 				final StringBuffer asSet = new StringBuffer();
 				asSet.append('(');
 				asSet.append(type.getQualifiedSourceName());
 				asSet.append(')');
-				asSet.append(transformerClassName);
-				asSet.append(".singleton.asSet");
+				asSet.append(serializerClassName);				
+				asSet.append("." );
+				asSet.append( singleton );
+				asSet.append(".asSet");				
 
 				method = asSet.toString();
 				break;
@@ -165,39 +171,39 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 				final JClassType elementMapType = this.getMapValueType(field);
 
 				if (elementMapType == this.getJavaLangBoolean()) {
-					method = "this.asBooleanMap";
+					method = thisReference + ".asBooleanMap";
 					break;
 				}
 				if (elementMapType == this.getJavaLangByte()) {
-					method = "this.asByteMap";
+					method = thisReference + ".asByteMap";
 					break;
 				}
 				if (elementMapType == this.getJavaLangShort()) {
-					method = "this.asShortMap";
+					method = thisReference + ".asShortMap";
 					break;
 				}
 				if (elementMapType == this.getJavaLangInteger()) {
-					method = "this.asIntegerMap";
+					method = thisReference + ".asIntegerMap";
 					break;
 				}
 				if (elementMapType == this.getJavaLangLong()) {
-					method = "this.asLongMap";
+					method = thisReference + ".asLongMap";
 					break;
 				}
 				if (elementMapType == this.getJavaLangFloat()) {
-					method = "this.asFloatMap";
+					method = thisReference + ".asFloatMap";
 					break;
 				}
 				if (elementMapType == this.getJavaLangDouble()) {
-					method = "this.asDoubleMap";
+					method = thisReference + ".asDoubleMap";
 					break;
 				}
 				if (elementMapType == this.getJavaLangCharacter()) {
-					method = "this.asCharacterMap";
+					method = thisReference + ".asCharacterMap";
 					break;
 				}
 				if (elementMapType == this.getJavaLangString()) {
-					method = "this.asStringMap";
+					method = thisReference + ".asStringMap";
 					break;
 				}
 
@@ -207,70 +213,73 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 				// generate a serializer for $classType
 				this.generateReferencedTypeSerializer(classType);
 
-				final String transformerClassName = this.getSerializerClassnameForType(classType);
+				final String serializerClassName = this.getSerializerClassnameForType(classType);
 
 				final StringBuffer asMap = new StringBuffer();
 				asMap.append('(');
 				asMap.append(type.getQualifiedSourceName());
 				asMap.append(')');
-				asMap.append(transformerClassName);
-				asMap.append(".singleton.asMap");
+				asMap.append(serializerClassName);
+				asMap.append("." );
+				asMap.append( singleton );
+				asMap.append(".asMap");			
 
 				method = asMap.toString();
 				break;
 			}
 
 			if (type == JPrimitiveType.BOOLEAN) {
-				method = "this.asBoolean";
+				method = thisReference + ".asBoolean";
 				break;
 			}
 			if (type == JPrimitiveType.BYTE) {
-				method = "this.asByte";
+				method = thisReference + ".asByte";
 				break;
 			}
 			if (type == JPrimitiveType.SHORT) {
-				method = "this.asShort";
+				method = thisReference + ".asShort";
 				break;
 			}
 			if (type == JPrimitiveType.INT) {
-				method = "this.asInt";
+				method = thisReference + ".asInt";
 				break;
 			}
 			if (type == JPrimitiveType.LONG) {
-				method = "this.asLong";
+				method = thisReference + ".asLong";
 				break;
 			}
 			if (type == JPrimitiveType.FLOAT) {
-				method = "this.asFloat";
+				method = thisReference + ".asFloat";
 				break;
 			}
 			if (type == JPrimitiveType.DOUBLE) {
-				method = "this.asDouble";
+				method = thisReference + ".asDouble";
 				break;
 			}
 			if (type == JPrimitiveType.CHAR) {
-				method = "this.asChar";
+				method = thisReference + ".asChar";
 				break;
 			}
 			if (type == this.getJavaLangString()) {
-				method = "this.asString";
+				method = thisReference + ".asString";
 				break;
 			}
 
-			// calculate the transformer for type.
 			final JClassType classType = (JClassType) type;
 
 			// generate a serializer for $classType
 			this.generateReferencedTypeSerializer(classType);
 
-			final String transformerClassName = this.getSerializerClassnameForType(classType);
+			final String serializerClassName = this.getSerializerClassnameForType(classType);
 
 			final StringBuffer asObject = new StringBuffer();
 			asObject.append('(');
 			asObject.append(type.getQualifiedSourceName());
 			asObject.append(')');
-			asObject.append(transformerClassName);
-			asObject.append(".singleton.asObject");
+			asObject.append(serializerClassName);			
+			asObject.append("." );
+			asObject.append( singleton );
+			asObject.append(".asObject");						
 
 			method = asObject.toString();
 			break;
@@ -280,7 +289,7 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 	}
 
 	protected void generateReferencedTypeSerializer(final JClassType type) {
-		final TypeSerializerGenerator generator = new TypeSerializerGenerator();
+		final SerializableType generator = new SerializableType();
 		generator.setJsonSerializerGeneratorContext(this);
 		generator.setType(type);
 		generator.generate();
