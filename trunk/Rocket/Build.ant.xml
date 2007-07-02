@@ -8,25 +8,29 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.29"/>
+	<property name="version" value="0.30"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
 	<property name="bin-dir" location="${basedir}/bin"/>
 	<property name="lib-dir" location="c:/java-libraries/"/>
+	<property name="gwt-home-dir" location="${lib-dir}/gwt-windows-1.4.3"/>
+	<property name="junit-dir" location="${lib-dir}/junit/3.8"/>
+	<property name="flexjson-dir" location="${lib-dir}/flexjson/1.2"/>
 	<property name="release-dir" location="${basedir}/release"/>
 	<property name="txt-dir" location="${basedir}/txt"/>
 	<property name="www-dir" location="${basedir}/www"/>
+	<property name="ant-dir" location="${lib-dir}/apache-ant/1.7.0/lib/"/>
 
 	<path id="project.class.path">
 		<pathelement path="${src-dir}"/>
 		<pathelement path="${bin-dir}"/>
 		<pathelement path="${java.class.path}/"/>
-		<pathelement location="${lib-dir}/gwt-windows-1.4.3"/>
-		<pathelement path="${lib-dir}/gwt-windows-1.4.3/gwt-user.jar"/>
-		<pathelement path="${lib-dir}/gwt-windows-1.4.3/gwt-dev-windows.jar"/>
-		<pathelement path="${lib-dir}/junit/3.8/junit.jar"/>
-		<pathelement path="${lib-dir}/flexjson/1.2/flexjson.jar"/>		
+		<pathelement path="${gwt-home-dir}/gwt-user.jar"/>
+		<pathelement path="${gwt-home-dir}/gwt-dev-windows.jar"/>
+		<pathelement path="${junit-dir}/junit.jar"/>
+		<pathelement path="${flexjson-dir}/flexjson.jar"/>		
+		<pathelement location="${ant-dir}"/>		
 	</path>
 
 	<!--
@@ -45,13 +49,6 @@
 				debug="on" debuglevel="lines,vars,source" source="1.4" target="1.4">
 			<classpath refid="project.class.path"/>
 		</javac>
-<!--
-		<javac srcdir="${src-dir}" destdir="${bin-dir}" 
-			includes="com.google.gwt.emul.java.lang.StackTraceElement,com.google.gwt.emul.java.lang.Throwable,rocket.util.client.StackHelper" 
-			debug="on" debuglevel="lines,vars,source" source="1.4" target="1.4">
-			<classpath refid="project.class.path"/>
-		</javac>
--->		
 	</target>
 
 	<!--
@@ -136,14 +133,15 @@
 	-->
 	<target name="javadoc" depends="compile" description="Create javadoc">
 		<javadoc access="private"
-  	         author="yes"
-  	         destdir="${doc-dir}"
-	  		 doctitle="Rocket GWT ${version} Javadoc"
-		     noindex="yes"
-		     serialwarn="no"  	
-  	         sourcepath="${src-dir}"
-  	         splitindex="no"
-  			packagenames="rocket.browser.client,
+  	        author="yes"
+  	        destdir="${doc-dir}"
+	  		doctitle="Rocket GWT ${version} Javadoc"
+		    noindex="yes"
+		    serialwarn="no"  	
+  	        sourcepath="${src-dir}"
+  	        splitindex="no"
+			packagenames="	rocket.beans.client,
+							rocket.browser.client,
 							rocket.collection.client,
 							rocket.cookie.client,
 							rocket.dom.client,
@@ -382,6 +380,14 @@
 	<target name="test" depends="compile" description="Runs all Unit test cases">
 		<echo>About to run all test cases</echo>
 
+		   <taskdef name="junit"
+		            classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+		      <classpath>
+		        <pathelement path="${junit-dir}/junit.jar"/>
+		        <pathelement location="${ant.dir}"/>
+		      </classpath>
+		    </taskdef>
+		
 		<junit	fork="yes"		
 			haltonerror="no" 
 			haltonfailure="no" 
@@ -395,16 +401,7 @@
 				<pathelement location="${basedir}/bin/" />
 			</classpath>
 
-			<test name="rocket.collection.test.IteratorViewTestCase" todir="${test-dir}" />
-			<test name="rocket.collection.test.SkippingIteratorTestCase" todir="${test-dir}" />
-			<test name="rocket.collection.test.VisitRememberingIteratorTestCase" todir="${test-dir}" />
-			
-			<test name="rocket.style.test.dynamicexpression.DynamicExpressionTestCase" todir="${test-dir}" />			
-			
-			<test name="rocket.util.test.Base64EncoderTestCase" todir="${test-dir}" />
-			<test name="rocket.util.test.ColourTestCase" todir="${test-dir}" />
-			<test name="rocket.util.test.HttpHelperTestCase" todir="${test-dir}" />
-			<test name="rocket.util.test.ThrowableHelperTestCase" todir="${test-dir}" />						
+			<test name="rocket.test.RocketTestSuite"></test>
 		</junit>
 	</target>
 
