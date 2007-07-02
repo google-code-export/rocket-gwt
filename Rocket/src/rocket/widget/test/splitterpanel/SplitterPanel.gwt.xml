@@ -4,5 +4,5 @@
 	<inherits name="rocket.User" />	
 
 	<!-- Specify the app entry point class.                   -->
-	<entry-point class='rocket.widget.test.splitterpanel.client.SplitterPanelTest' />
+	<entry-point class="rocket.widget.test.splitterpanel.client.SplitterPanelTest" />
 </module>

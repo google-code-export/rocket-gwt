@@ -1,4 +1,4 @@
 <module>
-	<inherits name='rocket.User'/>
-	<entry-point class='rocket.testing.test.webpagetestrunner.client.WebPageTestRunnerTest'/>  
+	<inherits name="rocket.User"/>
+	<entry-point class="rocket.testing.test.webpagetestrunner.client.WebPageTestRunnerTest"/>  
 </module>

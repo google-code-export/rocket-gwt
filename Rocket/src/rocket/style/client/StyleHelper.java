@@ -339,8 +339,7 @@ public class StyleHelper {
     /**
      * Extracts the unit portion as a CssUnit instance given a length.
      * 
-     * @param If
-     *            value is empty or null null will be returned.
+     * @param value If value is empty or null null will be returned.
      * @return
      */
     static public CssUnit getUnit(final String value) {
@@ -377,7 +376,7 @@ public class StyleHelper {
     /**
      * Attempts to translate a length with units into another unit.
      * 
-     * Relative units such as em/ex and percentage will fail and result in a {@link java.lang.UnsupportedOperationExceptions} being thrown.
+     * Relative units such as em/ex and percentage will fail and result in a {@link java.lang.UnsupportedOperationException} being thrown.
      * 
      * @param value
      * @param targetUnit

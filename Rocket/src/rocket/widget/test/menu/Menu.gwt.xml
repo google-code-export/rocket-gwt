@@ -1,4 +1,4 @@
 <module>
 	<inherits name="rocket.User" />	
-	<entry-point class='rocket.widget.test.menu.client.MenuTest' />
+	<entry-point class="rocket.widget.test.menu.client.MenuTest" />
 </module>

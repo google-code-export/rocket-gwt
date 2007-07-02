@@ -1,14 +1,10 @@
 <module>
-	<inherits name='com.google.gwt.junit.JUnit'/>
-	<inherits name='rocket.json.Json'/>
-	<inherits name='rocket.remoting.Remoting'/>	
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.json.Json"/>
+	<inherits name="rocket.remoting.Remoting"/>	
 	
 	<source path="client" />	
-	
-	<generate-with class="rocket.remoting.rebind.json.RemoteJsonServiceGenerator">
-		<when-type-assignable class="rocket.remoting.client.json.RemoteJsonService" />
-	</generate-with>
-	
+		
 	<generate-with class="rocket.remoting.rebind.json.RemoteJsonServiceGenerator">
 		<when-type-assignable class="rocket.remoting.test.remotejsonservice.client.IsNotAnInterface" />
 	</generate-with>

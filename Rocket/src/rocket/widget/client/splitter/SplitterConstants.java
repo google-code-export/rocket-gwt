@@ -30,7 +30,7 @@ public class SplitterConstants extends WidgetConstants {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
      * This style is applied to the container element of the HorizontalSplitterPanel
-     * {@see rocket.widget.client.splitter.HorizontalSplitterPanel}
+     * {@link rocket.widget.client.splitter.HorizontalSplitterPanel}
      */
     public final static String HORIZONTAL_SPLITTER_PANEL_STYLE = StyleHelper.buildCompound(ROCKET,
             "horizontalSplitterPanel");
@@ -57,7 +57,7 @@ public class SplitterConstants extends WidgetConstants {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
      * This style is applied to the container element of the VerticalSplitterPanel
-     * {@see rocket.widget.client.splitter.VerticalSplitterPanel}
+     * {@link rocket.widget.client.splitter.VerticalSplitterPanel}
      */
     public final static String VERTICAL_SPLITTER_PANEL_STYLE = StyleHelper.buildCompound(ROCKET,
             "verticalSplitterPanel");

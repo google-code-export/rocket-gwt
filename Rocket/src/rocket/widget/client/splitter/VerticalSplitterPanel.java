@@ -58,7 +58,7 @@ public class VerticalSplitterPanel extends SplitterPanel {
     /**
      * This factory method creates a new splitter on demand.
      * 
-     * @return
+     * @return A new Vertical Splitter
      */
     protected Widget createSplitter() {
         return new VerticalSplitter();
@@ -83,7 +83,7 @@ public class VerticalSplitterPanel extends SplitterPanel {
      * This is the most important event handler that takes care of adjusting the widths of the widgets before and after the splitter being
      * moved.
      * 
-     * @param widget
+     * @param splitter
      * @param event
      */
     protected void handleMouseMove(final Splitter splitter, final Event event) {

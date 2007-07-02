@@ -83,7 +83,7 @@ public class HorizontalSplitterPanel extends SplitterPanel {
      * This is the most important event handler that takes care of adjusting the widths of the widgets before and after the splitter being
      * moved.
      * 
-     * @param widget
+     * @param splitter
      * @param event
      */
     protected void handleMouseMove(final Splitter splitter, final Event event) {

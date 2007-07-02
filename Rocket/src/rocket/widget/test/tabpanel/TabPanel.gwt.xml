@@ -1,4 +1,4 @@
 <module>
 	<inherits name="rocket.User" />	
-	<entry-point class='rocket.widget.test.tabpanel.client.TabPanelTest' />
+	<entry-point class="rocket.widget.test.tabpanel.client.TabPanelTest" />
 </module>
