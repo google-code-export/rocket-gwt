@@ -30,7 +30,7 @@ public class JsonSerializerGenerator extends Generator {
 
 	/**
 	 * Begins the code generation process that will eventually guarantee that a
-	 * Transformer exists for the given typeName.
+	 * JsonSerializer exists for the given typeName.
 	 * 
 	 * @see com.google.gwt.core.ext.Generator#generate(com.google.gwt.core.ext.TreeLogger,
 	 *      com.google.gwt.core.ext.GeneratorContext, java.lang.String)
@@ -48,9 +48,9 @@ public class JsonSerializerGenerator extends Generator {
 			generator.setJsonSerializerGeneratorContext(context);
 			generator.setType((JClassType) context.getType(typeName));
 			generator.generate();
-			final String transformerClassName = generator.getGeneratedTransformerClassname();
-			logger.log(TreeLogger.INFO, "returning JsonSerializer [" + transformerClassName + "] for type " + typeName + "...", null);
-			return transformerClassName;
+			final String generatedClassName = generator.getGeneratedSerializerClassname();
+			logger.log(TreeLogger.INFO, "returning JsonSerializer [" + generatedClassName + "] for type " + typeName + "...", null);
+			return generatedClassName;
 
 		} catch (final JsonSerializerGeneratorException rethrow) {
 			logger.log(TreeLogger.ERROR, rethrow.getMessage(), rethrow);

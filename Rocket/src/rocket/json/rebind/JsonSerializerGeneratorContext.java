@@ -89,7 +89,7 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 				// generate a serializer for $classType
 				this.generateReferencedTypeSerializer(classType);
 
-				final String transformerClassName = this.getTransformerClassnameForType(classType);
+				final String transformerClassName = this.getSerializerClassnameForType(classType);
 
 				final StringBuffer asList = new StringBuffer();
 				asList.append('(');
@@ -148,7 +148,7 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 				// generate a serializer for $classType
 				this.generateReferencedTypeSerializer(classType);
 
-				final String transformerClassName = this.getTransformerClassnameForType(classType);
+				final String transformerClassName = this.getSerializerClassnameForType(classType);
 
 				final StringBuffer asSet = new StringBuffer();
 				asSet.append('(');
@@ -207,7 +207,7 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 				// generate a serializer for $classType
 				this.generateReferencedTypeSerializer(classType);
 
-				final String transformerClassName = this.getTransformerClassnameForType(classType);
+				final String transformerClassName = this.getSerializerClassnameForType(classType);
 
 				final StringBuffer asMap = new StringBuffer();
 				asMap.append('(');
@@ -263,7 +263,7 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 			// generate a serializer for $classType
 			this.generateReferencedTypeSerializer(classType);
 
-			final String transformerClassName = this.getTransformerClassnameForType(classType);
+			final String transformerClassName = this.getSerializerClassnameForType(classType);
 
 			final StringBuffer asObject = new StringBuffer();
 			asObject.append('(');
@@ -319,7 +319,7 @@ public class JsonSerializerGeneratorContext extends rocket.generator.rebind.Gene
 		return Constants.SERIALIZER_SUFFIX;
 	}
 
-	public String getTransformerClassnameForType(final JClassType type) {
+	public String getSerializerClassnameForType(final JClassType type) {
 		return makeIntoAPublicClass(type) + this.getGeneratedClassNameSuffix();
 	}
 }
