@@ -1,5 +1,5 @@
 <module>
-	<inherits name='com.google.gwt.user.User' />
+	<inherits name="com.google.gwt.user.User" />
 	<inherits name="rocket.User" />	
-	<entry-point class='rocket.widget.test.pager.client.PagerTest' />
+	<entry-point class="rocket.widget.test.pager.client.PagerTest" />
 </module>

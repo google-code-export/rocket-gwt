@@ -1,12 +1,12 @@
 <module>
-	<inherits name='com.google.gwt.junit.JUnit'/>
-	<inherits name='rocket.generator.Generator'/>
-	<inherits name='rocket.User'/>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.generator.Generator"/>
+	<inherits name="rocket.User"/>
 
-	<inherits name='com.google.gwt.user.User' />
-	<inherits name='com.google.gwt.http.HTTP' />
-	<inherits name='com.google.gwt.user.HTTPRequest' />
-	<inherits name='com.google.gwt.json.JSON' />
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.http.HTTP" />
+	<inherits name="com.google.gwt.user.HTTPRequest" />
+	<inherits name="com.google.gwt.json.JSON" />
 
 	<source path="client" />	
 

@@ -52,7 +52,7 @@ public abstract class SplitterPanel extends Composite {
     /**
      * Returns the number of widgets belonging to this splitter
      * 
-     * @return
+     * @return The count
      */
     public int getCount() {
         return this.getItems().size();
@@ -62,7 +62,7 @@ public abstract class SplitterPanel extends Composite {
      * Returns the SplitterItem at the given index.
      * 
      * @param index
-     * @return
+     * @return The splitter Item
      */
     public SplitterItem get(final int index) {
         return (SplitterItem) this.getItems().get(index);
@@ -72,7 +72,7 @@ public abstract class SplitterPanel extends Composite {
      * Returns the index of the given item if it has been added to this HorizontalSplitterPanel
      * 
      * @param item
-     * @return
+     * @return The index of item
      */
     public int getIndex(final SplitterItem item) {
         ObjectHelper.checkNotNull("parameter:item", item);
@@ -138,7 +138,7 @@ public abstract class SplitterPanel extends Composite {
     /**
      * Factory method which creates the splitter widget that is used to divide widgets appearing within this panel.
      * 
-     * @return
+     * @return A new Splitter
      */
     protected abstract Widget createSplitter();
 

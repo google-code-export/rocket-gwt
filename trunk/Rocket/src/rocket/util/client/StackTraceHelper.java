@@ -20,7 +20,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * This class helps with converting stack traces - regardless of source into a string that is similar to the familiar
- * java stacktrace string produced by {@Link java.lang.Throwable#printStackTrace() }.
+ * java stacktrace string produced by {@link java.lang.Throwable#printStackTrace() }.
  * 
  * @author Miroslav Pokorny (mP)
  */

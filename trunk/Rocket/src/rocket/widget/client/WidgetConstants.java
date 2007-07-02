@@ -36,7 +36,7 @@ public class WidgetConstants {
     // AUTO COMPLETE TEXT BOX
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
-     * This style is applied to the container element of a AutoCompleteTextBox {@see AutoCompleteTextBox}
+     * This style is applied to the container element of a AutoCompleteTextBox {@link AutoCompleteTextBox}
      */
     public final static String AUTO_COMPLETE_TEXT_BOX_STYLE = StyleHelper.buildCompound(ROCKET, "autoCompleteTextBox");
 
@@ -93,7 +93,7 @@ public class WidgetConstants {
     // CARD
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
-     * This style is applied to the container element of a CollapsablePanel {@see CollapsablePanel}
+     * This style is applied to the container element of a CollapsablePanel {@link CollapsablePanel}
      */
     public final static String COLLAPSABLE_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "collapsablePanel");
 
@@ -128,7 +128,7 @@ public class WidgetConstants {
     // BREADCRUMB
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
-     * This style is applied to the container element of a BreadcrumbPanel {@see BreadcrumbPanel}
+     * This style is applied to the container element of a BreadcrumbPanel {@link BreadcrumbPanel}
      */
     public final static String BREADCRUMB_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "breadcrumbPanel");
 
@@ -145,7 +145,7 @@ public class WidgetConstants {
     // GRID
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
-     * This style is applied to the container element of a Grid {@see Grid}
+     * This style is applied to the container element of a Grid {@link Grid}
      */
     public final static String GRID_STYLE = StyleHelper.buildCompound(ROCKET, "grid");
 
@@ -156,7 +156,7 @@ public class WidgetConstants {
     // SORTABLD TABLE
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
-     * This style is applied to the container element of a SortableTable {@see SortableTable}
+     * This style is applied to the container element of a SortableTable {@link SortableTable}
      */
     public final static String SORTABLE_TABLE_STYLE = StyleHelper.buildCompound(ROCKET, "sortableTable");
 
@@ -247,7 +247,7 @@ public class WidgetConstants {
     // PAGER
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
-     * This style is applied to the container element of a Pager widget {@see rocket.widget.client.Pager}
+     * This style is applied to the container element of a Pager widget {@link rocket.widget.client.Pager}
      */
     public final static String PAGER_STYLE = StyleHelper.buildCompound(ROCKET, "pager");
 
@@ -287,7 +287,7 @@ public class WidgetConstants {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
-     * This style is applied to the container SPAN element of a SpanPanel {@see rocket.widget.client.SpanPanel}
+     * This style is applied to the container SPAN element of a SpanPanel {@link rocket.widget.client.SpanPanel}
      */
     public final static String SPAN_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "spanPanel");
 
@@ -295,7 +295,7 @@ public class WidgetConstants {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
-     * This style is applied to the container DIV element of a DivPanel {@see rocket.widget.client.DivPanel}
+     * This style is applied to the container DIV element of a DivPanel {@link rocket.widget.client.DivPanel}
      */
     public final static String DIV_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "divPanel");
 
@@ -303,7 +303,7 @@ public class WidgetConstants {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
-     * This style is applied to the container OL element of a OrderedListPanel {@see rocket.widget.client.OrderedListPanel}
+     * This style is applied to the container OL element of a OrderedListPanel {@link rocket.widget.client.OrderedListPanel}
      */
     public final static String ORDERED_LIST_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "orderedListPanel");
 
@@ -315,7 +315,7 @@ public class WidgetConstants {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     /**
-     * This style is applied to the container UL element of a UnOrderedListPanel {@see rocket.widget.client.UnorderedListPanel}
+     * This style is applied to the container UL element of a UnOrderedListPanel {@link rocket.widget.client.UnorderedListPanel}
      */
     public final static String UNORDERED_LIST_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "unorderedListPanel");
 
@@ -326,12 +326,12 @@ public class WidgetConstants {
     // HYPERLINK PANEL
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
-     * This style is applied to the container element of a HyperlinkPanel widget {@see rocket.widget.client.HyperlinkPanel}
+     * This style is applied to the container element of a HyperlinkPanel widget {@link rocket.widget.client.HyperlinkPanel}
      */
     public final static String HYPERLINK_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "hyperlinkPanel");
 
     /**
-     * This style is applied to the container element of a ResizablePanel widget {@see rocket.widget.client.ResizablePanel}
+     * This style is applied to the container element of a ResizablePanel widget {@link rocket.widget.client.ResizablePanel}
      */
     public final static String RESIZABLE_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "resizablePanel");
 
