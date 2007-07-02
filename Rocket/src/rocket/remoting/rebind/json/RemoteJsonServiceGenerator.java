@@ -126,7 +126,7 @@ public class RemoteJsonServiceGenerator extends Generator {
 		final RemoteJsonServiceGeneratorContext context = this.getRemoteJsonServiceGeneratorContext();
 
 		for (int i = 0; i < methods.length; i++) {
-			final MethodGenerator serviceMethod = new MethodGenerator();
+			final Method serviceMethod = new Method();
 			serviceMethod.setMethod(methods[i]);
 			serviceMethod.setRemoteJsonServiceGeneratorContext(context);
 			serviceMethod.write(writer);
