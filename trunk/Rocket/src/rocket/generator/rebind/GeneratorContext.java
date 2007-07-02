@@ -99,18 +99,23 @@ abstract public class GeneratorContext {
 	public String getPackageName(final String fullyQualifiedClassName) {
 		StringHelper.checkNotEmpty("parameter:fullyQualifiedClassName", fullyQualifiedClassName);
 
-		String packageName = fullyQualifiedClassName;
+		String packageName = null;
 		final TypeOracle typeOracle = this.getTypeOracle();
+		String name = fullyQualifiedClassName;
 
 		while (true) {
-			final int simpleNameStartIndex = packageName.lastIndexOf('.');
-			if (-1 != simpleNameStartIndex) {
-				packageName = packageName.substring(0, simpleNameStartIndex);
+			// appear to be a class in the unnamed package...
+			final int simpleNameStartIndex = name.lastIndexOf('.' );
+			if (-1 == simpleNameStartIndex) {
+				break;
 			}
+
+			packageName = name.substring(0, simpleNameStartIndex);
 			final JPackage jPackage = typeOracle.findPackage(packageName);
 			if (null != jPackage) {
 				break;
 			}
+			name = packageName;
 		}
 
 		return packageName;

@@ -1,4 +1,4 @@
 <module>
-	<inherits name='rocket.User'/>
+	<inherits name="rocket.User"/>
 	<source path="client" />	
 </module>
