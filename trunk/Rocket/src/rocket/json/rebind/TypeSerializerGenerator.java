@@ -46,7 +46,7 @@ public class TypeSerializerGenerator {
 	 * 
 	 * @return
 	 */
-	public String getGeneratedTransformerClassname() {
+	public String getGeneratedSerializerClassname() {
 		final String className = this.getType().getQualifiedSourceName();
 		return this.getJsonSerializerGeneratorContext().getGeneratedClassname(className);
 	}
@@ -67,15 +67,15 @@ public class TypeSerializerGenerator {
 		final JClassType type = this.getType();
 		final JsonSerializerGeneratorContext context = this.getJsonSerializerGeneratorContext();
 
-		final String transformerClassName = context.getTransformerClassnameForType(type);
-		final String packageName = context.getPackageName(transformerClassName);
-		final String simpleClassName = context.getSimpleClassName(transformerClassName);
+		final String serializerClassName = context.getSerializerClassnameForType(type);
+		final String packageName = context.getPackageName(serializerClassName);
+		final String simpleClassName = context.getSimpleClassName(serializerClassName);
 		final PrintWriter printWriter = context.tryCreateTypePrintWriter(packageName, simpleClassName);
 		if (printWriter != null) {
 			this.write(this.createSourceWriter(type, printWriter));
 		}
 
-		this.generateSuperTypeTransformerIfNecessary();
+		this.generateSuperTypeDeserializerIfNecessary();
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class TypeSerializerGenerator {
 	protected SourceWriter createSourceWriter(final JClassType type, final PrintWriter printWriter) {
 		final JsonSerializerGeneratorContext context = this.getJsonSerializerGeneratorContext();
 
-		final String classname = context.getTransformerClassnameForType(type);
+		final String classname = context.getSerializerClassnameForType(type);
 		final String packageName = context.getPackageName(classname);
 		final String simpleClassName = context.getSimpleClassName(classname);
 
@@ -99,7 +99,7 @@ public class TypeSerializerGenerator {
 		String superTypeName = JsonSerializer.class.getName();
 		final JClassType superType = type.getSuperclass();
 		if (superType != context.getJavaLangObject()) {
-			superTypeName = context.getTransformerClassnameForType(superType);
+			superTypeName = context.getSerializerClassnameForType(superType);
 		}
 
 		composerFactory.setSuperclass(superTypeName);
@@ -173,13 +173,13 @@ public class TypeSerializerGenerator {
 	 * @param writer
 	 */
 	protected void writeSingletonField(final SourceWriter writer) {
-		final String transformerClassName = this.getGeneratedTransformerClassname();
+		final String generatedClassName = this.getGeneratedSerializerClassname();
 
 		final StringBuffer singleton = new StringBuffer();
 		singleton.append("final public static ");
-		singleton.append(transformerClassName);
+		singleton.append(generatedClassName);
 		singleton.append(" singleton = new ");
-		singleton.append(transformerClassName);
+		singleton.append(generatedClassName);
 		singleton.append("();");
 
 		writer.println(singleton.toString());
@@ -439,7 +439,7 @@ public class TypeSerializerGenerator {
 	 * being generated.
 	 * 
 	 */
-	protected void generateSuperTypeTransformerIfNecessary() {
+	protected void generateSuperTypeDeserializerIfNecessary() {
 		final JClassType superType = this.getType().getSuperclass();
 		final JsonSerializerGeneratorContext context = this.getJsonSerializerGeneratorContext();
 
