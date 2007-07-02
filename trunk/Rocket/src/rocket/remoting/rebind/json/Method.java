@@ -41,7 +41,7 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-public class MethodGenerator {
+public class Method {
 
 	/**
 	 * Requests that this method writes its implementation.
