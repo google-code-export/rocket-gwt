@@ -1,0 +1,114 @@
+/*
+ * Copyright Miroslav Pokorny
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package rocket.beans.client;
+
+import rocket.util.client.ObjectHelper;
+
+/**
+ * Convenient base class for both Singleton and prototype bean factories. A few
+ * template methods remain outstanding and will be implemented by the code
+ * generator
+ * 
+ * @author Miroslav Pokorny
+ */
+abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAware {
+
+	/**
+	 * Creates a new bean satisfying properties etc along the way.
+	 * 
+	 * @return
+	 */
+	protected Object createObject() {
+		return this.createInstance();
+	}
+
+	protected void postCreate(final Object instance) throws Exception {
+		this.satisfyProperties(instance);
+		this.satisfyBeanFactoryAwareIfNecessary(instance);
+		this.satisfyInit(instance);
+	}
+
+	protected void throwBeanException(final String message, final Throwable cause) {
+		throw new BeanException(message, cause);
+	}
+
+	/**
+	 * Factory method that creates a new bean instance.
+	 * 
+	 * @return
+	 */
+	abstract protected Object createInstance();
+
+	/**
+	 * This method must be implemented by sub-classes. Typically the code
+	 * generator will sub-classes this method to invoke the appropriate setters
+	 * on the given instance. Properties that are primitive values and Strings
+	 * will be set using literals whilst other values will be set via either a
+	 * bean factory or another factory method ( for sets, lists and maps ).
+	 * 
+	 * @param instance
+	 *            The object or bean being created.
+	 */
+	abstract protected void satisfyProperties(Object instance);
+
+	/**
+	 * If the new instance is a BeanFactoryAware call its
+	 * {@link BeanFactoryAware#setBeanFactory(BeanFactory)}.
+	 * 
+	 * @param instance
+	 */
+	protected void satisfyBeanFactoryAwareIfNecessary(Object instance) {
+		ObjectHelper.checkNotNull("parameter:instance", instance);
+
+		if (instance instanceof BeanFactoryAware) {
+			final BeanFactoryAware aware = (BeanFactoryAware) instance;
+			aware.setBeanFactory(this.getBeanFactory());
+		}
+	}
+
+	/**
+	 * If the given instance implements InitializingBean then a cast is
+	 * performed followed by a call to
+	 * {@link InitializingBean#afterPropertiesSet()} If a custom init method has
+	 * been specified this method must be overridden.
+	 * 
+	 * @param instance
+	 * @throws Exception
+	 *             the exception thrown by the bean if it failed during
+	 *             initialization.
+	 */
+	protected void satisfyInit(final Object instance) throws Exception {
+		if (instance instanceof InitializingBean) {
+			final InitializingBean initializingBean = (InitializingBean) instance;
+			initializingBean.afterPropertiesSet();
+		}
+	}
+
+	/**
+	 * A back reference to the parent bean factory
+	 */
+	private BeanFactory beanFactory;
+
+	public void setBeanFactory(BeanFactory beanFactory) {
+		ObjectHelper.checkNotNull("parameter:beanFactory", beanFactory);
+		this.beanFactory = beanFactory;
+	}
+
+	protected BeanFactory getBeanFactory() {
+		ObjectHelper.checkNotNull("field:beanFactory", beanFactory);
+		return this.beanFactory;
+	}
+}

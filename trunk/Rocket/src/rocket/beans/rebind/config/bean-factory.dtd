@@ -1,0 +1,51 @@
+<!ELEMENT bean-factory 							(bean*, remote-json-service*, remote-rpc-service*)>
+
+<!ELEMENT bean 									(property*)>
+<!ATTLIST bean
+	class 			CDATA 						#REQUIRED
+	id 				ID	 						#REQUIRED
+	scope			(singleton|prototype) 		#REQUIRED
+	factoryMethod 	CDATA 						#IMPLIED
+	initMethod 		CDATA 						#IMPLIED
+>
+
+<!ELEMENT property 								(value|bean-reference|list|set|map) >
+<!ATTLIST property
+	name 			CDATA 						#REQUIRED
+>
+
+<!ELEMENT value									(#PCDATA) >
+<!ATTLIST value >
+
+<!ELEMENT bean-reference						EMPTY>
+<!ATTLIST bean-reference
+	reference-id	IDREF 						#REQUIRED
+>
+
+<!ELEMENT list 									(value+|bean-reference+)>
+<!ATTLIST list >
+
+<!ELEMENT set 									(value+|bean-reference+)>
+<!ATTLIST set >
+
+<!ELEMENT map 									(map-entry+)>
+<!ATTLIST map >
+
+<!ELEMENT map-entry 							(value|bean-reference)>
+<!ATTLIST map-entry
+	key				CDATA						#REQUIRED
+>
+
+<!ELEMENT remote-json-service					EMPTY >
+<!ATTLIST remote-json-service
+	id 				CDATA 						#REQUIRED
+	interface		CDATA 						#REQUIRED	
+	address			CDATA 						#REQUIRED	
+>	
+
+<!ELEMENT remote-rpc-service					EMPTY >
+<!ATTLIST remote-rpc-service
+	id 				CDATA 						#REQUIRED
+	interface		CDATA 						#REQUIRED	
+	address			CDATA 						#REQUIRED	
+>
