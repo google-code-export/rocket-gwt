@@ -39,7 +39,7 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-public class TypeSerializerGenerator {
+public class SerializableType {
 
 	/**
 	 * Returns the name of the generated type.
@@ -75,7 +75,7 @@ public class TypeSerializerGenerator {
 			this.write(this.createSourceWriter(type, printWriter));
 		}
 
-		this.generateSuperTypeDeserializerIfNecessary();
+		this.generateSuperTypeSerializerIfNecessary();
 	}
 
 	/**
@@ -90,9 +90,9 @@ public class TypeSerializerGenerator {
 	protected SourceWriter createSourceWriter(final JClassType type, final PrintWriter printWriter) {
 		final JsonSerializerGeneratorContext context = this.getJsonSerializerGeneratorContext();
 
-		final String classname = context.getSerializerClassnameForType(type);
-		final String packageName = context.getPackageName(classname);
-		final String simpleClassName = context.getSimpleClassName(classname);
+		final String className = context.getSerializerClassnameForType(type);
+		final String packageName = context.getPackageName(className);
+		final String simpleClassName = context.getSimpleClassName(className);
 
 		final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, simpleClassName);
 
@@ -125,8 +125,7 @@ public class TypeSerializerGenerator {
 	protected void verifyTypeIsSerializable() {
 		final JClassType type = this.getType();
 		if (null == type.isClass()) {
-			this
-					.throwIsNotSerializableException("Serializable classes must be concrete classes and not interfaces or abstract classes like ["
+			this.throwIsNotSerializableException("Serializable classes must be concrete classes and not interfaces or abstract classes like ["
 							+ type.getQualifiedSourceName() + "].");
 		}
 
@@ -323,7 +322,7 @@ public class TypeSerializerGenerator {
 			invokeFieldSetterAfterReadingValue.append("( instance, ");
 
 			// insert method call to deserializer / value extractor...
-			final String deserializeMethod = context.getQualifiedTransformerMethodName(field);
+			final String deserializeMethod = context.getQualifiedDeserializeMethodName(field);
 			invokeFieldSetterAfterReadingValue.append(deserializeMethod);
 			invokeFieldSetterAfterReadingValue.append("(");
 
@@ -439,12 +438,12 @@ public class TypeSerializerGenerator {
 	 * being generated.
 	 * 
 	 */
-	protected void generateSuperTypeDeserializerIfNecessary() {
+	protected void generateSuperTypeSerializerIfNecessary() {
 		final JClassType superType = this.getType().getSuperclass();
 		final JsonSerializerGeneratorContext context = this.getJsonSerializerGeneratorContext();
 
 		if (superType != context.getJavaLangObject()) {
-			final TypeSerializerGenerator generator = new TypeSerializerGenerator();
+			final SerializableType generator = new SerializableType();
 			generator.setJsonSerializerGeneratorContext(this.getJsonSerializerGeneratorContext());
 			generator.setType(superType);
 			generator.generateWithoutSerializableCheck();

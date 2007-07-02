@@ -44,7 +44,7 @@ public class JsonSerializerGenerator extends Generator {
 		context.setLogger(logger);
 
 		try {
-			final TypeSerializerGenerator generator = new TypeSerializerGenerator();
+			final SerializableType generator = new SerializableType();
 			generator.setJsonSerializerGeneratorContext(context);
 			generator.setType((JClassType) context.getType(typeName));
 			generator.generate();
