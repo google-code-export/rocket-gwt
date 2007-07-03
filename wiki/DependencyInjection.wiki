@@ -1,0 +1,221 @@
+#labels Featured,DependencyInjection,Spring,GWT
+=Purpose=
+
+The purpose of the rocket.beans package is to offer the ability to DI beans on within a GWT clientside application.
+Many but not all of the DI concepts made popular by Spring and other DI packages are supported.
+
+
+=Differences with Spring DI=
+
+The current beans package is just the start. More features (maybe including interceptors) that exist in Spring will eventually be copied.
+
+
+==Supported constructs==
+
+Not all spring concepts are supported. Many of the copied ideas use the same interfaces/names when possible.
+
+
+  * Singleton / prototype scopes
+  * FactoryBeans beans which create beans on demand
+  * A custom (static) factory method
+  * InitializingBean interface or a custom init method
+
+
+==Unsupported constructs==
+
+  * Intercepts are not supported - i am not sure how sensible it would be to support this.
+  * Specifying a destroy method is not supported. Currently this lifecycle method is not supported.
+
+
+_
+It wouldnt be to hard to decorate pointcuts for a bean, but a performance hit could result. This will have to be investigated.
+_
+
+_
+The possibility exists to call the custom destroy method for requested beans using `com.google.gwt.user.client.WindowCloseListener.onWindowClosing`
+_
+
+=Getting started=
+
+The following steps below list what and why is needed to use this facility in your own development efforts.
+
+
+==Importing the rocket module==
+
+Add the rocket module to your own module.
+
+{{{
+<module name="Rocket.User" />
+}}}
+
+==Defining a custom bean factory==
+
+Create a new interface that extends `rocket.beans.client.BeanFactory`. It must not contain any methods.
+
+
+{{{
+package example;
+
+rocket.beans.client.BeanFactory
+
+public ExampleBeanFactory extends BeanFactory{
+	*// with no methods!*
+}
+}}}
+
+==Creating the xml config file which defines all beans==
+
+Create a new xml file in the same directory (package) as the ExampleBeanFactory class. The name of the file should be `ExampleBeanFactory.xml`.
+}}}
+
+==Defining a Bean==
+
+The first bean below is for a class that contains only primitive properties.
+All properties must have a public setter.
+
+
+===Declaring a bean with primitive properties===
+{{{
+package example;
+
+public ClassWithOnlyPrimitiveProperties{
+	private boolean foo;
+	public void setFoo( boolean foo ){
+		this.foo = foo;
+	}
+
+	private int bar;
+
+	public void setBar( int bar ){
+		this.bar = bar;
+	}
+
+	private String baz;
+
+	public void setBaz( String baz ){
+		this.baz = baz;
+	}
+}
+}}}
+
+
+The beans xml block that creates and populates a singleton `example.ClassWithOnlyPrimitiveProperties`.
+
+
+{{{
+	<bean
+		id="bean1"
+		class="example.ClassWithOnlyPrimitiveProperties"
+		scope="singleton">
+
+		<property name="foo">
+			<value>true</value>
+		</property>
+
+		<property name="bar">
+			<value>123</value>
+		</property>
+
+		<property name="baz">
+			<value>"BazValue"</value>
+		</property>
+	</bean>
+}}}
+
+
+Any instances of `bean1` fetched from the bean factory or injected will have the three properties
+populated.
+
+
+	  * foo=true
+	  * bar=123
+	  * baz=BazValue
+
+
+
+
+===Declaring A bean with a reference to another bean===
+
+The example below creates a bean of type `example.ClassWhichReferencesAnotherBean` which also includes a reference
+to the `example.ClassWithOnlyPrimitiveProperties` from above.
+
+{{{
+package example;
+
+public ClassWhichReferencesAnotherBean{
+	private ClassWithOnlyPrimitiveProperties anotherBean;
+	public void setFoo( ClassWithOnlyPrimitiveProperties anotherBean ){
+		this.anotherBean = anotherBean;
+	}
+}
+}}}
+
+
+The beans xml block that creates and populates a prototype `example.ClassWhichReferencesAnotherBean`..
+Any instances of `bean2` will now also have a reference to bean1.
+
+
+{{{
+	<bean
+		id="bean2"
+		class="example.ClassWhichReferencesAnotherBean"
+		scope="prototype">
+
+		<property name="anotherBean">
+			<bean-reference reference-id="bean1"/>
+		</property>
+
+	</bean>
+}}}
+
+
+=Declaring Custom factory method===
+
+Rather than have the factory create new instances of a by simply invoking the no arguments constructor it is possible to specify a custom
+method.
+
+
+{{{
+	<bean
+		id="beanWithACustomFactoryMethod"
+		class="example.BeanWithCustomFactoryMethod"
+		scope="prototype"
+		factoryMethod="create">
+	</bean>
+}}}
+
+
+It is assumed that `example.BeanWithCustomFactoryMethod` includes a static method called create which returns new
+`example.BeanWithCustomFactoryMethod` when asked.
+
+
+=Receiving initialized lifecycle events=
+
+Two options are available if a bean wishes to receive notification when it is ready after all its properties have been set.
+Beans can implement the `rocket.beans.client.InitializingBean` or can specify a custom init method.
+
+
+
+==Custom init method==
+
+Rather than have the init create new instances of a by simply invoking the no arguments constructor it is possible to specify a custom
+method.
+
+
+{{{
+	<bean
+		id="beanWithACustomInitMethod"
+		class="example.BeanWithCustomInitMethod"
+		scope="prototype"
+		initMethod="init">
+	</bean>
+}}}
+
+
+It is assumed that `example.BeanWithCustomInitMethod` includes a public init method.
+
+
+
+=Further samples=
+
+For further examples refer to the unit tests `rocket.beans.test.client.BeansGwtTestCase (the main one)`.
