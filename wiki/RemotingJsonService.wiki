@@ -17,18 +17,6 @@ The programming interface is almost identical to that required to use GWT's RPC 
   * Input parameters for each service method is restricted to primitive type (`boolean, byte, short, int, long, float, double, and char` or `java.lang.String`.
   * Service interface methods cannot return void.
 
-
-=Requirements=
-
-Many of the requirements to use the Remote Json Service facility are similar to GWT's RPC.
-
-
-
-  * A service interface which extends `rocket.remoting.client.json.RemoteJsonService` rather than `com.google.gwt.user.client.rpc.RemoteService`
-  * A sync interface that matches the service interface. The same rules that apply to GWT RPC service interfaces apply to the async interface.
-  * The return type of each service interface must already be json binded using the rocket json serialization mechanism.
-
-
 =Getting started=
 
 The following steps below list what and why is needed to use this facility in your own development efforts.
