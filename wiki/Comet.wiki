@@ -4,12 +4,8 @@
 The purpose of the `rocket.remoting.client.comet` package is to allow the server to push java objects data to a browser. The java object would receive objects as they are pushed
 and take the appropriate action.
 
-
-=Requirements=
-
 This solution requires a client and J2EE server with servlets to work in tandem.
 Any J2EE server including tomcat may be used.
-
 
 =Getting started=
 
