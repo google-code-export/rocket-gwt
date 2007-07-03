@@ -66,7 +66,6 @@ public ExampleBeanFactory extends BeanFactory{
 ==Creating the xml config file which defines all beans==
 
 Create a new xml file in the same directory (package) as the ExampleBeanFactory class. The name of the file should be `ExampleBeanFactory.xml`.
-}}}
 
 ==Defining a Bean==
 
@@ -169,7 +168,7 @@ Any instances of `bean2` will now also have a reference to bean1.
 }}}
 
 
-=Declaring Custom factory method===
+===Declaring Custom factory method===
 
 Rather than have the factory create new instances of a by simply invoking the no arguments constructor it is possible to specify a custom
 method.
@@ -219,3 +218,4 @@ It is assumed that `example.BeanWithCustomInitMethod` includes a public init met
 =Further samples=
 
 For further examples refer to the unit tests `rocket.beans.test.client.BeansGwtTestCase (the main one)`.
+
