@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Comet streaming of java objects</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+
+<body>
+<h1>Purpose</h1>
+<p>
+The purpose of the <code>rocket.remoting.client.comet</code> package is to allow the server to push java objects data to a browser. The java object would receive objects as they are pushed
+and take the appropriate action.
+This solution requires a client and J2EE server with servlets to work in tandem.
+Any J2EE server including tomcat may be used.
+</p>
+
+<h1>Getting started</h1>
+<p>
+The following steps below list what and why is needed to use this facility in your own development efforts.
+</p>
+
+<h2>Importing the rocket module</h2>
+<p>
+Add the rocket module to your own module.
+</p>
+<pre>
+&lt;module name="Rocket.User" /&gt;
+</pre>
+
+
+<h2>Server side</h2>
+<p>
+A servlet must be created which extends <code>rocket.remoting.server.CometServerServlet</code> which implements the <code>queryObjectSource()</code>.
+This method returns null if theres nothing to push to the client. Any instances will be pushed to the client using the open comet session.
+
+The sample shows a typical CometServerServlet implementation with the only thing being required is a poll upon some source.
+</p>
+
+<pre>
+package example;
+
+import rocket.remoting.server.CometServerServlet;
+
+public SampleCometServletServlet extends CometServerServlet{
+	protected Object queryObjectSource(){
+		return poll something builidng any new CometPayloads.
+	}
+}
+</pre>
+
+<h2>Client side</h2>
+<p>
+The client side component must sub-class <code>rocket.remoting.client.CometClient</code> providing a <code>com.google.gwt.user.client.rpc.AsyncCallback</code> which receive any incoming objects.
+Methods are provided for start, stop, restart a comet session.
+</p>
+
+<h3>Creating a service interface</h3>
+<p>
+A service interface should be created with a single method that returns the type of object that will be sent by the server.
+This step is important purely so that GWT creates a deserializer which will later be used to deserialize incoming encoded java objects.
+<p>
+
+<pre>
+package example;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+
+public InterfaceWithSingleMethodThatReturnsCometPayloadType extends RemoteService{
+	CometPayload dummyMethod();
+}
+</pre>
+
+<h3>Creating the corresponding async interface</h3>
+<p>
+To satisfy the serializer/deserializer code generator the service interface must also have its async interface companion.
+</p>
+
+<pre>
+package example;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+public InterfaceWithSingleMethodThatReturnsCometPayloadTypeAsync{
+	void dummyMethod( AsyncCallback callback );
+}
+</pre>
+
+<h3>Create a comet client</h3>
+<p>
+The <code>createProxy</code> method must be overridden to include a GWT.create( InterfaceWhichReturnsCometPayloadType.class).
+This is necessary because it forces GWT to create a deserializer for the requested class which will be used at a later stage to deserialize the incoming objects.
+</p>
+
+<pre>
+package example;
+
+import rocket.remoting.client.CometClient;
+import rocket.remoting.client.CometServerConnectionFailureException;
+
+public ExampleCometClient extends CometClient{
+    protected Object createProxy() {
+        return GWT.create( InterfaceWhichReturnsCometPayload.class);
+    }
+};
+</pre>
+
+<h3>Starting a comet session</h3>
+<p>
+The code sample below shows how to create and start a comet session with the server
+The comet client must also know the url of the server side servlet.
+</p>
+
+<pre>
+	ExampleCometClient cometClient = new ExampleCometClient();
+	client.setUrl("...CometServerServlet url...");
+	cometClient.setCallback( new AsyncCallback(){
+		public void onSuccess( final Object incoming ){
+			<b>// cast to return type of method within InterfaceWhichReturnsCometPayload...</b>
+			CometPayload payload = (CometPayload) incoming;
+
+			<b>// do something with payload...</b>
+			...
+		}
+
+		public void onThrowable( final Throwable cause ){
+			<b>// handle problem</b>
+		}
+	});
+	cometClient.start();
+</pre>
+
+<h1>Further samples</h1>
+<p>
+For further examples refer to the unit test. The <code>rocket.remoting.test.comet.client.CometTest</code> class is a working comet client, with
+<code>rocket.remoting.test.comet.server.TestCometObjectStreamingServlet</code> representing the server portion.
+</p>
+
+</body>
