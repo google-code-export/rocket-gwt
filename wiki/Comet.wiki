@@ -1,0 +1,131 @@
+#labels Featured,Comet
+=Purpose=
+
+The purpose of the `rocket.remoting.client.comet` package is to allow the server to push java objects data to a browser. The java object would receive objects as they are pushed
+and take the appropriate action.
+
+
+=Requirements=
+
+This solution requires a client and J2EE server with servlets to work in tandem.
+Any J2EE server including tomcat may be used.
+
+
+=Getting started=
+
+The following steps below list what and why is needed to use this facility in your own development efforts.
+
+
+==Importing the rocket module==
+
+Add the rocket module to your own module.
+
+{{{
+<module name="Rocket.User" />
+}}}
+
+
+==Server side==
+
+A servlet must be created which extends `rocket.remoting.server.CometServerServlet` which implements the `queryObjectSource()`.
+This method returns null if theres nothing to push to the client. Any instances will be pushed to the client using the open comet session.
+
+The sample shows a typical CometServerServlet implementation with the only thing being required is a poll upon some source.
+
+
+{{{
+package example;
+
+import rocket.remoting.server.CometServerServlet;
+
+public SampleCometServletServlet extends CometServerServlet{
+	protected Object queryObjectSource(){
+		return poll something builidng any new CometPayloads.
+	}
+}
+}}}
+
+==Client side==
+
+The client side component must sub-class `rocket.remoting.client.CometClient` providing a `com.google.gwt.user.client.rpc.AsyncCallback` which receive any incoming objects.
+Methods are provided for start, stop, restart a comet session.
+
+
+===Creating a service interface===
+
+A service interface should be created with a single method that returns the type of object that will be sent by the server.
+This step is important purely so that GWT creates a deserializer which will later be used to deserialize incoming encoded java objects.
+
+
+{{{
+package example;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+
+public InterfaceWithSingleMethodThatReturnsCometPayloadType extends RemoteService{
+	CometPayload dummyMethod();
+}
+}}}
+
+===Creating the corresponding async interface===
+
+To satisfy the serializer/deserializer code generator the service interface must also have its async interface companion.
+
+
+{{{
+package example;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+public InterfaceWithSingleMethodThatReturnsCometPayloadTypeAsync{
+	void dummyMethod( AsyncCallback callback );
+}
+}}}
+
+===Create a comet client===
+
+The `createProxy` method must be overridden to include a GWT.create( InterfaceWhichReturnsCometPayloadType.class).
+This is necessary because it forces GWT to create a deserializer for the requested class which will be used at a later stage to deserialize the incoming objects.
+
+
+{{{
+package example;
+
+import rocket.remoting.client.CometClient;
+import rocket.remoting.client.CometServerConnectionFailureException;
+
+public ExampleCometClient extends CometClient{
+    protected Object createProxy() {
+        return GWT.create( InterfaceWhichReturnsCometPayload.class);
+    }
+};
+}}}
+
+===Starting a comet session===
+
+The code sample below shows how to create and start a comet session with the server
+The comet client must also know the url of the server side servlet.
+
+
+{{{
+	ExampleCometClient cometClient = new ExampleCometClient();
+	client.setUrl("...CometServerServlet url...");
+	cometClient.setCallback( new AsyncCallback(){
+		public void onSuccess( final Object incoming ){
+			*// cast to return type of method within InterfaceWhichReturnsCometPayload...*
+			CometPayload payload = (CometPayload) incoming;
+
+			*// do something with payload...*
+			...
+		}
+
+		public void onThrowable( final Throwable cause ){
+			*// handle problem*
+		}
+	});
+	cometClient.start();
+}}}
+
+=Further samples=
+
+For further examples refer to the unit test. The `rocket.remoting.test.comet.client.CometTest` class is a working comet client, with
+`rocket.remoting.test.comet.server.TestCometObjectStreamingServlet` representing the server portion.
