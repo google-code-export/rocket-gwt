@@ -11,11 +11,11 @@ from json without any manual binding.
 The library supports the following mappings from json to java.
 
 
-  *Json objects become java objects or `java.util.Map`
-  *Json arrays become `java.util.List` or `java.util.Set`
-  *Json numbers become any of the numeric primitives `byte, short, int, long, float, or double`.
-  *Json Strings become `java.lang.String` or chars(which are actually useless but included for completeness)
-  *Json booleans become `booleans`
+  * Json objects become java objects or `java.util.Map`
+  * Json arrays become `java.util.List` or `java.util.Set`
+  * Json numbers become any of the numeric primitives `byte, short, int, long, float, or double`.
+  * Json Strings become `java.lang.String` or chars(which are actually useless but included for completeness)
+  * Json booleans become `booleans`
 
 
 =Requirements=
@@ -104,10 +104,10 @@ Java classes created below.
 Two separate classes are required, one for each json object present in the convulted example given above.
 The outter object includes 4 properties.
 
-  *foo
-  *bar
-  *array
-  *object
+  * foo
+  * bar
+  * array
+  * object
 
 
 
