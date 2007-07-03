@@ -1,0 +1,229 @@
+#labels Featured,Styleproperties,GWT
+=Purpose=
+
+The purpose of the rocket.style package is to expose a standards based view of style properties regardless of the source.
+A number of other features are provided to make authoring and working with styles more intuitive, easier with less boiler code. It is advised that the javadoc for the
+class be read to learn about more of the features.
+
+
+=Features=
+
+==Standards based view of style properties==
+
+Currently styles may be written to and read using `com.google.gwt.user.client.DOM` but it does know or handle browser differences.
+The list of style properties and values between browsers is quite different and varied as demonstrated by the two contrived examples below.
+It is not possible to work with rules, stylesheets without significant effort as abstractions are not currently available in GWT.
+
+
+===Opacity example===
+
+The example below shows how setting opacity might be done using `com.google.gwt.user.client.DOM`.
+When not using Rocket's abstraction notice the special case testing to handle Internet Explorer.
+
+
+{{{
+Element element = *// get from somewhere...*
+
+String value = "opacity=0.5";
+*// special test for ie*
+if( browser is ie ){
+	value = "alpha(opacity=50)";
+}
+DOM.setStyleAttribute( element, value );
+
+*// skip attempt to include special case to read opacity value for Internet Explorer...This would be quite messy as one would have to extract the number within "alpha(opacity=50)"...*
+}}}
+
+
+Using Rocket's abstractions `rocket.style.client.StyleHelper` it is much easier to set the opacity upon an element, and equally easy to read an opacity value.
+
+
+{{{
+Element element *//get from somewhere...*
+
+*// Set an opacity value upon element...*
+StyleHelper.setInlineDoubleStyle( element, "opacity", 0.5 );
+
+*// Get the opacity value from element...*
+double opacity = StyleSheet.getInlineDoubleStyle( element, "opacity", CssUnit.NONE, 1.0 );
+}}}
+
+===Fixed positioning example===
+
+Unfortunately Internet Explorer does not under position="fixed". The style package emulates it using dynamic expressions.
+The sample below shows how it easy it is to give an element a fixed position. It is also equally easy to determine the position value for an element.
+
+
+{{{
+Element element *//get from somewhere...*
+StyleHelper.setInlineStyleProperty( element, "position", "fixed" );
+StyleHelper.setInlineIntegerStyleProperty( element, "left", 10, CssUnit.PX );
+StyleHelper.setInlineIntegerStyleProperty( element, "top", 20, CssUnit.PX  );
+}}}
+
+===Other style properties===
+
+Internet explorer is not the only culprit, there are a number of other special cases for style properties. Refer to the code to find other special cases.
+
+
+==StyleSheets==
+
+A number of methods are available to help with visiting all the StyleSheets belonging to the current page.
+
+
+==Rules==
+
+Rules may be added, inserted, removed and edited from within a stylesheet. The selector text for a rule may also be dynamically updated.
+It is also possible to work with a List view of all the Rules belonging to a single stylesheet.
+
+
+==Rule Style Properties==
+
+Style properties may be added, changed or removed from a rule. It is also possible to work with a Map view of all the Style properties belonging to a Rule.
+
+
+==Inline Style Properties==
+
+It is possible to add, change, remove or read inline style properties belonging to an element. A Map view of all styles is also available.
+
+
+
+==Computed Style Properties==
+
+It is possible to read the computed style properties belonging to an element. A read only Map view of all styles is also available.
+
+
+=Richer style property value types=
+The package also supports a richer set of value types on top of boolean, int and String.
+
+==Integer and double values==
+
+The package includes support for extracting a value seemlessly, converting between unit types. Refer to javadoc for more details.
+
+
+{{{
+	StyleHelper.getComputedIntegerProperty(Element element, String propertyName, CssUnit unit, int defaultValue );
+	StyleHelper.getComputedDoubleProperty(Element element, String propertyName, CssUnit unit, double defaultValue );
+
+	StyleHelper.getInlineIntegerProperty(Element element, String propertyName, CssUnit unit, int defaultValue );
+	StyleHelper.getInlineDoubleProperty(Element element, String propertyName, CssUnit unit, double defaultValue );
+
+	StyleHelper.setInlineIntegerProperty(Element element, String propertyName, int propertyValue, CssUnit unit);
+	StyleHelper.setInlineDoubleProperty(Element element, String propertyName, double propertyValue, CssUnit unit );
+}}}
+
+_
+Some browsers always append a unit when a property was read as a String or require a unit to be specified. The package takes care of all
+these sorts of quirks and irritating differences between browsers.
+_
+
+===Colour values===
+
+A property such as `color` or `background-color` can be written to or read from as a `rocket.util.client.Colour`.
+This class includes many useful features for manipulating colour values.
+Refer to javadoc for more details.
+
+_
+All browsers represent colours in a different way. Internet Explorer exposes the value (eg a named colour) used to set the property.
+Together with `rocket.util.client.Colour` regardless of the internal format used application code can work in a consist format.
+_
+
+{{{
+	StyleHelper.getComputedColourProperty(Element element, String propertyName);
+	StyleHelper.getInlineDoubleProperty(Element element, String propertyName);
+	StyleHelper.setInlineDoubleProperty(Element element, String propertyName);
+}}}
+
+=Getting started=
+
+The following steps below list what and why is needed to use this facility in your own development efforts.
+
+
+==Importing the rocket module==
+
+Add the rocket module to your own module.
+
+{{{
+<module name="Rocket.User" />
+}}}
+
+==Examples==
+
+===Invert colour property values within a StyleSheet===
+
+This example shows how easy it is to visit and find all the colour style properties within a stylesheet.
+After the method runs all properties with the word colour will have their values inverted. This should find and change values for properties such as
+
+  * color
+  * background-color
+  * border-XXX-color where XXX is "top", "right", "bottom" and "left"
+
+
+
+{{{
+package example;
+
+import java.util.Iterator;
+import java.util.Map.Entry;
+import rocket.style.client.StyleHelper;
+import rocket.style.client.StyleSheet;
+import rocket.style.client.Rule;
+import rocket.style.client.StylePropertyValue;
+import rocket.util.client.Colour;
+
+public StyleSheetChanger{
+
+	public void invertFirstStyleSheetColoursPropertyValues(){
+		final StyleSheet styleSheet = StyleHelper.getStyleSheets().get( 0 );
+		final Iterator rules = styleSheet.getRules().iterator();
+
+		*// visit all the rules for the first stylesheet*
+		while( rules.hasNext() ){
+			final Rule rule = (Rule) rules.next();
+
+			*// visit all the style properties finding those with color in their name...*
+			final Iterator properties = rules.getStyle().entrySet().iterator();
+			while( properties.hasNext() ){
+				final Map.Entry property = (Map.Entry) properties.next();
+				final String propertyName = (String) property.getKey();
+
+				*// if not a color property skip it...*
+				if( propertyName.toLowerCase().indexOf( "color" ) == -1 ){
+					continue;
+				}
+
+				*// if value isnt present skip...*
+				final StylePropertyValue propertyValue = (StylePropertyValue) property.getValue();
+				if( null == propertyValue ){
+					continue;
+				}
+				final Colour colour = propertyValue.getColour();
+				if( null == colour ){
+					continue;
+				}
+
+				*//invert the red, green and blue component...*
+				colour.setRed( 0xff ^ colour.getRed() );
+				colour.setGreen( 0xff ^ colour.getGreen() );
+				colour.setBlue( 0xff ^ colour.getBlue() );
+
+				*// update the colour...*
+				propertyValue.setColour( colour );
+				properties.setValue( propertyValue );
+			}
+		}
+	}
+}
+
+}}}
+
+===Unit tests===
+
+For further examples refer to the unit tests that accompany this package.
+
+
+  * rocket.style.test.computedstyle.ComputedStyleGwtTestCase
+  * rocket.style.test.inlinestyle.InlineStyleGwtTestCase
+  * rocket.style.test.stylehelper.client.StyleHelperTest
+  * rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase
+  * rocket.style.test.stylesheet.client.StyleSheetTest
