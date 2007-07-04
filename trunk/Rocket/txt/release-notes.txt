@@ -433,3 +433,14 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.29.zip
 * Added generator that allows java client code to invoke remote json services in a fashion that closely mimics GWT rpc's, eg
   java type parameters, calls AsyncCallback with a deserialized result or exception.
 * Removed most gwt stylenames when using GWT widgets to assemble rocket widgets.
+
+
+0.30 3 July 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.30.zip
+
+* Fixed GeneratorContext.getPackageName() to not get stuck in an endless loop for classes in unnamed package.
+* Added facility to test generators by using TestGenerator and accompanying support classes. 
+* Fixed Remote.gwt.xml module by adding generator mapping for RemoteJsonService
+* Added dependency injection support via the rocket.beans package. Most of the spring concepts except for interceptors and destroy method are supported.
+* Added a number of wikis for various modules within the library.
