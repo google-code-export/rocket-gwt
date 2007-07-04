@@ -13,6 +13,7 @@
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
 	<property name="bin-dir" location="${basedir}/bin"/>
+	<property name="wiki-dir" location="${basedir}/wiki"/>
 	<property name="lib-dir" location="c:/java-libraries/"/>
 	<property name="gwt-home-dir" location="${lib-dir}/gwt-windows-1.4.3"/>
 	<property name="junit-dir" location="${lib-dir}/junit/3.8"/>
@@ -344,6 +345,7 @@
 				<include name="Rocket/src/**/*.*"/>
 				<include name="Rocket/doc/**/*.*"/>
 				<include name="Rocket/release/*.jar"/>
+				<include name="Rocket/wiki/*.*"/>				
 				<include name="Rocket/www/**/*.*"/>
 				<include name="Rocket/*.*"/>
 				<exclude name="${release}/${release-archive-name}"/>
