@@ -1,0 +1,27 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.json.Json"/>
+	<inherits name="rocket.remoting.Remoting"/>	
+	
+	<source path="client" />	
+		
+	<generate-with class="rocket.remoting.rebind.json.RemoteJsonServiceGenerator">
+		<when-type-assignable class="rocket.remoting.test.remotejsonservice.client.IsNotAnInterface" />
+	</generate-with>
+
+	<generate-with class="rocket.remoting.rebind.json.RemoteJsonServiceGenerator">
+		<when-type-assignable class="rocket.remoting.test.remotejsonservice.client.InterfaceThatDoesntImplementRemoteJsonService" />
+	</generate-with>		
+
+	<servlet
+		path="/ClassWithStringJsonEncodedBuilderServlet"
+		class="rocket.remoting.test.remotejsonservice.server.ClassWithStringJsonEncodedBuilderServlet" />
+
+	<servlet
+		path="/BrokenJsonResponse"
+		class="rocket.remoting.test.remotejsonservice.server.BrokenJsonServlet" />
+
+	<servlet
+		path="/InternalServerError"
+		class="rocket.remoting.test.remotejsonservice.server.InternalServerErrorServlet" />
+</module>

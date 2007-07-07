@@ -1,0 +1,19 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.User"/>
+	<source path="client" />
+
+	<generate-with class="rocket.beans.test.rebind.TestBeanFactoryGenerator">
+		<when-type-assignable class="rocket.beans.test.client.classisnotabeanfactory.ClassIsNotABeanFactory" />
+	</generate-with>	
+
+	<generate-with class="rocket.beans.test.rebind.TestBeanFactoryGenerator">
+		<when-type-assignable class="rocket.beans.test.client.interfacedoesntimplementbeanfactory.InterfaceDoesntImplementBeanFactory" />
+	</generate-with>	
+	
+	
+	<generate-with class="rocket.beans.test.rebind.TestBeanFactoryGenerator">
+		<when-type-assignable class="rocket.beans.client.BeanFactory" />
+	</generate-with>	
+</module>
+

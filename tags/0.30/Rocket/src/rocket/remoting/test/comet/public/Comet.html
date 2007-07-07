@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Comet</title>
+<meta name='gwt:module' content='rocket.remoting.test.comet.Comet'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+BODY, TABLE{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+BUTTON{
+	margin: 4px;
+	width: 250px;
+}
+</style>
+</head>
+
+<body>
+	<p>
+	This test involves creating a CometClient which queries a mock CometServer servlet. 
+	The <b>START</b> and <b>STOP</b> buttons may be used to start or stop a comet session.
+	</p>
+	
+	<h6>Things being tested</h6>
+	<ul>
+	<li>Starting a comet session (by clicking on the <b>START</b> button)</li>
+	<li>Starting a comet session with an invalid url (by clicking on the <b>START USING BAD URL</b> button)which should result in a CometServerConnectionFailureExcecption
+	(This is caught by the test)</li>
+	<li>Stopping a current comet session - by clicking on the <b>STOP</b> button. It should be possible to restart a session at any time</li>
+	<li>Each object streamed from the server is successfully deserialized</li>
+	<li>That there is no buffering between the server and client - uses a Date object with the server timestamp which is verified on the client.</li>
+	</ul>
+	<div><b>Log</b></div>
+	<div
+		id="log"
+		style="border-color: black; border-style: solid; border-width: 1px; padding: 4px; background-color: #eeeeee; width: 95%; height: 500px; overflow: scroll">
+	</div>
+</body>
+</html>
