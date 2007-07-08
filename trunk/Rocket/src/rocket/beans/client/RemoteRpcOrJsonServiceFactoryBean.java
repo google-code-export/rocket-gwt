@@ -26,7 +26,8 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class RemoteRpcOrJsonServiceFactoryBean extends SingletonFactoryBean {
+abstract public class RemoteRpcOrJsonServiceFactoryBean extends
+		SingletonFactoryBean {
 
 	/**
 	 * Sub-classes will include a call to {@link GWT#create} with the interface
@@ -36,7 +37,8 @@ abstract public class RemoteRpcOrJsonServiceFactoryBean extends SingletonFactory
 
 	protected void satisfyProperties(Object instance) {
 		final ServiceDefTarget service = (ServiceDefTarget) instance;
-		service.setServiceEntryPoint(this.addBrowserContextIfNotAbsolute(this.getAddress()));
+		service.setServiceEntryPoint(this.addBrowserContextIfNotAbsolute(this
+				.getAddress()));
 	}
 
 	protected String addBrowserContextIfNotAbsolute(final String address) {

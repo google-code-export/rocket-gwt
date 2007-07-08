@@ -22,14 +22,14 @@ import com.google.gwt.user.rebind.SourceWriter;
  * This new instance creates a new instance using deferred binding {@link GWT.create}
  * @author Miroslav Pokorny
  */
-public class DeferredBindingNewInstance extends NewInstance {
+public class DeferredBindingNewInstance extends NewInstanceProvider {
 	
 	protected void write0(final SourceWriter writer) {
 		final StringBuilder statement = new StringBuilder();
 		statement.append("return ");
 		statement.append(GWT.class.getName());
 		statement.append(".create(");
-		statement.append(this.getBeanType().getQualifiedSourceName());
+		statement.append(this.getBean().getTypeName() );
 		statement.append(".class );");
 		writer.println(statement.toString());
 	}

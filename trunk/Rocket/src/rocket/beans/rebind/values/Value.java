@@ -16,6 +16,7 @@
 package rocket.beans.rebind.values;
 
 import rocket.beans.rebind.BeanFactoryGeneratorContext;
+import rocket.beans.rebind.HasBeanFactoryGeneratorContext;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -25,22 +26,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class PropertyValueDefinition {
-
-	/**
-	 * The property type
-	 */
-	private JType type;
-
-	protected JType getType() {
-		ObjectHelper.checkNotNull("field:type", type);
-		return type;
-	}
-
-	public void setType(final JType type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-		this.type = type;
-	}
+abstract public class Value extends HasBeanFactoryGeneratorContext{
 
 	/**
 	 * Tests if this property value entry is compatible with its field type.
@@ -50,25 +36,22 @@ abstract public class PropertyValueDefinition {
 	abstract public boolean isCompatibleWith();
 
 	/**
-	 * Asks the PropertyValueDefinition to generate peice of code that can be
+	 * Asks the Value to generate peice of code that can be
 	 * used to set a property on a bean.
 	 * 
 	 * @return
 	 */
-	abstract public String generatePropertyValueCodeBlock();
+	abstract public String generateValue();
 
-	/**
-	 * A reference to the context for this code generation session.
-	 */
-	private BeanFactoryGeneratorContext beanFactoryGeneratorContext;
-
-	protected BeanFactoryGeneratorContext getBeanFactoryGeneratorContext() {
-		ObjectHelper.checkNotNull("field:beanFactoryGeneratorContext", beanFactoryGeneratorContext);
-		return this.beanFactoryGeneratorContext;
+	private JType type;
+	
+	protected JType getType(){
+		ObjectHelper.checkNotNull("field:type", type );
+		return this.type;
 	}
-
-	public void setBeanFactoryGeneratorContext(final BeanFactoryGeneratorContext beanFactoryGeneratorContext) {
-		ObjectHelper.checkNotNull("parameter:beanFactoryGeneratorContext", beanFactoryGeneratorContext);
-		this.beanFactoryGeneratorContext = beanFactoryGeneratorContext;
+	
+	public void setType( final JType type ){
+		ObjectHelper.checkNotNull("parameter:type", type );
+		this.type = type;
 	}
 }

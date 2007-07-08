@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import rocket.beans.client.BeanFactory;
-import rocket.beans.rebind.bean.BeanDefinition;
+import rocket.beans.rebind.bean.Bean;
 import rocket.beans.rebind.bean.BeanIdAlreadyUsedException;
 import rocket.beans.rebind.bean.BeanIdNotFoundException;
 import rocket.generator.rebind.GeneratorContext;
@@ -38,12 +38,12 @@ import com.google.gwt.core.ext.typeinfo.JPackage;
  */
 public class BeanFactoryGeneratorContext extends GeneratorContext {
 
-	public BeanFactoryGeneratorContext(){
+	public BeanFactoryGeneratorContext() {
 		super();
-		
-		this.setBeanDefinitions( new HashMap() );
+
+		this.setBeans(new HashMap());
 	}
-	
+
 	protected String getGeneratedClassNameSuffix() {
 		return Constants.BEAN_FACTORY_IMPL;
 	}
@@ -56,73 +56,85 @@ public class BeanFactoryGeneratorContext extends GeneratorContext {
 		final JClassType type = (JClassType) this.getType(typeName);
 		final JPackage jPackage = type.getPackage();
 
-		final String resourceName = '/' + jPackage.getName().replace('.', '/') + '/' + type.getSimpleSourceName() + Constants.SUFFIX;
+		final String resourceName = '/' + jPackage.getName().replace('.', '/')
+				+ '/' + type.getSimpleSourceName() + Constants.SUFFIX;
 		try {
-			final InputStream inputStream = Object.class.getResourceAsStream(resourceName);
+			final InputStream inputStream = Object.class
+					.getResourceAsStream(resourceName);
 			if (null == inputStream) {
-				throw new BeanFactoryGeneratorException("Unable to load resource with a filename [" + resourceName + "] for the class ["
-						+ typeName + "]");
+				throw new BeanFactoryGeneratorException(
+						"Unable to load resource with a filename ["
+								+ resourceName + "] for the class [" + typeName
+								+ "]");
 			}
 			return inputStream;
 		} catch (final BeanFactoryGeneratorException rethrow) {
 			throw rethrow;
 		} catch (final Exception caught) {
-			throw new BeanFactoryGeneratorException("Unable to load resource [" + resourceName + "]");
+			throw new BeanFactoryGeneratorException("Unable to load resource ["
+					+ resourceName + "]");
 		}
 	}
 
 	/**
-	 * Adds a new bean definition to the map of already encountered BeanDefinitions.
-	 * If the id is already used a 
-	 * @param beanDefinition
+	 * Adds a new bean definition to the map of already encountered Beans. If
+	 * the id is already used a
+	 * 
+	 * @param bean
 	 * @throws BeanIdAlreadyUsedException
 	 */
-	public void addBeanDefinition(final BeanDefinition beanDefinition) throws BeanIdAlreadyUsedException{
-		final String id = beanDefinition.getId();
-		final Map beanDefinitions = this.getBeanDefinitions();
-		if ( beanDefinitions.containsKey(id)) {
+	public void addBean(final Bean bean) throws BeanIdAlreadyUsedException {
+		final String id = bean.getId();
+		final Map beans = this.getBeans();
+		if (beans.containsKey(id)) {
 			this.throwBeanIdAlreadyUsedException(id);
 		}
-		
-		beanDefinitions.put(id, beanDefinition);
+
+		beans.put(id, bean);
 	}
-	
-	protected void throwBeanIdAlreadyUsedException(final String id) throws BeanIdAlreadyUsedException{
-		throw new BeanIdAlreadyUsedException("The id[" + id + "] has already been used " );
+
+	protected void throwBeanIdAlreadyUsedException(final String id)
+			throws BeanIdAlreadyUsedException {
+		throw new BeanIdAlreadyUsedException("The id[" + id
+				+ "] has already been used ");
 	}
 
 	/**
-	 * Fetches a bean definition by its id. If the id is not found a BeanIdNotFoundException is thrown.
+	 * Fetches a bean definition by its id. If the id is not found a
+	 * BeanIdNotFoundException is thrown.
+	 * 
 	 * @param id
 	 * @return
 	 * @throws BeanIdNotFoundException
 	 */
-	public BeanDefinition getBeanDefinition( final String id ) throws BeanIdNotFoundException{
-		final Map beanDefinitions = this.getBeanDefinitions();
-		final BeanDefinition beanDefinition = (BeanDefinition) beanDefinitions.get( id );
-		if( null == beanDefinition ){
-			throwBeanIdNotFoundException( id );
+	public Bean getBean(final String id) throws BeanIdNotFoundException {
+		final Map beans = this.getBeans();
+		final Bean bean = (Bean) beans.get(id);
+		if (null == bean) {
+			throwBeanIdNotFoundException(id);
 		}
-		return beanDefinition;
-	}	
-
-	protected void throwBeanIdNotFoundException(final String id) throws BeanIdNotFoundException {
-		throw new BeanIdNotFoundException("Unable to find a bean with the id[" + id + "]." );
+		return bean;
 	}
-	
+
+	protected void throwBeanIdNotFoundException(final String id)
+			throws BeanIdNotFoundException {
+		throw new BeanIdNotFoundException("Unable to find a bean with the id["
+				+ id + "].");
+	}
+
 	/**
 	 * This map contains all known bean definitions encountered during parsing
 	 * of the given xml file.
 	 */
-	private Map beanDefinitions;
+	private Map beans;
 
-	public Map getBeanDefinitions() {
-		ObjectHelper.checkNotNull("field:beanDefinitions", beanDefinitions);
-		return this.beanDefinitions;
+	public Map getBeans() {
+		ObjectHelper.checkNotNull("field:beans", beans);
+		return this.beans;
 	}
 
-	public void setBeanDefinitions(final Map beanDefinitions) {
-		ObjectHelper.checkNotNull("parameter:beanDefinitions", beanDefinitions);
-		this.beanDefinitions = beanDefinitions;
+	public void setBeans(final Map beans) {
+		ObjectHelper.checkNotNull("parameter:beans", beans);
+		this.beans = beans;
 	}
 }

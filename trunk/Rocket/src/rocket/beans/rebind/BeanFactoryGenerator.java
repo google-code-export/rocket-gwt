@@ -49,8 +49,9 @@ public class BeanFactoryGenerator extends Generator {
 	 * @see com.google.gwt.core.ext.Generator#generate(com.google.gwt.core.ext.TreeLogger,
 	 *      com.google.gwt.core.ext.GeneratorContext, java.lang.String)
 	 */
-	public String generate(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext, final String typeName)
-			throws UnableToCompleteException {
+	public String generate(final TreeLogger logger,
+			final com.google.gwt.core.ext.GeneratorContext generatorContext,
+			final String typeName) throws UnableToCompleteException {
 		logger.log(TreeLogger.INFO, "generating stub for " + typeName, null);
 
 		final BeanFactoryGeneratorContext context = new BeanFactoryGeneratorContext();
@@ -61,10 +62,12 @@ public class BeanFactoryGenerator extends Generator {
 			// make sure is an interface
 			final JClassType type = context.findType(typeName);
 			if (null == type.isInterface()) {
-				throwNotABeanFactoryException("The type passed is not an interface " + type.getQualifiedSourceName());
+				throwNotABeanFactoryException("The type passed is not an interface "
+						+ type.getQualifiedSourceName());
 			}
 			if (false == type.isAssignableTo(context.getBeanFactoryType())) {
-				throwNotABeanFactoryException("The interface type [" + typeName + "] doesnt implement BeanFactory "
+				throwNotABeanFactoryException("The interface type [" + typeName
+						+ "] doesnt implement BeanFactory "
 						+ BeanFactory.class.getName());
 			}
 
@@ -74,7 +77,8 @@ public class BeanFactoryGenerator extends Generator {
 			final InputStream xmlFile = context.getResource(typeName);
 			this.readXml(saxHandler, xmlFile);
 
-			final BeanFactoryImplGenerator writer = this.createBeanFactoryWriter();
+			final BeanFactoryImplGenerator writer = this
+					.createBeanFactoryWriter();
 			writer.setBeanFactoryGeneratorContext(context);
 			writer.setType(type);
 			return writer.generate();
@@ -104,7 +108,8 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param xmlFile
 	 * @throws BeanFactoryGeneratorException
 	 */
-	public void readXml(final SaxHandler saxHandler, final InputStream xmlFile) throws BeanFactoryGeneratorException {
+	public void readXml(final SaxHandler saxHandler, final InputStream xmlFile)
+			throws BeanFactoryGeneratorException {
 		try {
 			final SAXParserFactory factory = SAXParserFactory.newInstance();
 			factory.setValidating(true);
@@ -116,27 +121,28 @@ public class BeanFactoryGenerator extends Generator {
 			parser.setEntityResolver(saxHandler);
 
 			parser.parse(new InputSource(xmlFile));
-		} catch ( final BeanFactoryGeneratorException caught ){
+		} catch (final BeanFactoryGeneratorException caught) {
 			throw caught;
 		} catch (final IOException caught) {
 			throw new BeanFactoryGeneratorException(caught.getMessage(), caught);
 		} catch (final ParserConfigurationException caught) {
 			throw new BeanFactoryGeneratorException(caught.getMessage(), caught);
 		} catch (final SAXException caught) {
-			
+
 			Throwable cause = caught;
-			while( true ){
+			while (true) {
 				final Throwable cause0 = cause.getCause();
-				if( null == cause0 ){
+				if (null == cause0) {
 					break;
 				}
 				cause = cause0;
 			}
-			
+
 			if (cause instanceof BeanFactoryGeneratorException) {
 				throw (BeanFactoryGeneratorException) cause;
 			}
-			throw new BeanFactoryGeneratorException( cause.getClass().getName() + " message[" + cause.getMessage()+ "]", cause);
+			throw new BeanFactoryGeneratorException(cause.getClass().getName()
+					+ " message[" + cause.getMessage() + "]", cause);
 		}
 	}
 

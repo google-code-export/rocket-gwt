@@ -3,9 +3,7 @@
 <bean-factory>
 	<bean 
 		id="bean" 
-		class="rocket.beans.test.client.factorymethod.BeanWithFactoryMethod" 
-		scope="singleton"
-		factoryMethod="create"
-		>
+		class="rocket.beans.test.client.noargumentsconstructor.ClassWithNoArgumentsConstructor" 
+		scope="singleton">
 	</bean>
 </bean-factory>

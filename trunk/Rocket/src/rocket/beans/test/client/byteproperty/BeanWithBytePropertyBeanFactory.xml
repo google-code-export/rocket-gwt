@@ -5,8 +5,10 @@
 		id="bean" 
 		class="rocket.beans.test.client.byteproperty.ClassWithByteProperty" 
 		scope="singleton">
-		<property name="byteProperty">
-			<value>123</value>
-		</property>
+		<properties>
+			<property name="byteProperty">
+				<value>123</value>
+			</property>
+		</properties>
 	</bean>
 </bean-factory>

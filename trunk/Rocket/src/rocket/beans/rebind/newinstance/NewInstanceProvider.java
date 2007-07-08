@@ -16,7 +16,8 @@
 package rocket.beans.rebind.newinstance;
 
 import rocket.beans.rebind.HasBeanFactoryGeneratorContext;
-import rocket.beans.rebind.bean.BeanDefinition;
+import rocket.beans.rebind.bean.Bean;
+import rocket.generator.rebind.CodeGenerator;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -25,9 +26,9 @@ import com.google.gwt.user.rebind.SourceWriter;
 /**
  * A new instance provider is responsible for generating code that will create a new bean instance.
  * @author Miroslav Pokorny
- *
  */
-public class NewInstance extends HasBeanFactoryGeneratorContext{
+abstract public class NewInstanceProvider extends HasBeanFactoryGeneratorContext implements CodeGenerator{
+	
 	public void write( final SourceWriter writer ){
 		writer.println("protected Object createInstance(){");
 		writer.indent();
@@ -38,23 +39,20 @@ public class NewInstance extends HasBeanFactoryGeneratorContext{
 		writer.println("}");		
 	}
 	
-	protected void write0(final SourceWriter writer) {
-		writer.println( "return new " + this.getBeanType().getQualifiedSourceName() + "();");
-	}
+	abstract void write0( SourceWriter writer );
 	
-	protected JClassType getBeanType(){
-		return this.getBeanDefinition().getType();
-	}
+	/**
+	 * The bean which the new instance provider will create a new instance of via generated code.
+	 */
+	private Bean bean;
 	
-	private BeanDefinition beanDefinition;
-	
-	protected BeanDefinition getBeanDefinition(){
-		ObjectHelper.checkNotNull("field:beanDefinition", beanDefinition );
-		return this.beanDefinition;
+	protected Bean getBean(){
+		ObjectHelper.checkNotNull("field:bean", bean );
+		return this.bean;
 	}
 
-	public void setBeanDefinition(final BeanDefinition beanDefinition){
-		ObjectHelper.checkNotNull("parameter:beanDefinition", beanDefinition );
-		this.beanDefinition = beanDefinition;
+	public void setBean(final Bean bean){
+		ObjectHelper.checkNotNull("parameter:bean", bean );
+		this.bean = bean;
 	}
 }

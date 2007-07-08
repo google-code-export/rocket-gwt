@@ -13,26 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.client;
+package rocket.beans.test.client.noargumentsconstructor;
 
-/**
- * A FactoryMethodBean is a class that can on demand return a bean
- * 
- * @author Miroslav Pokorny
- */
-public interface FactoryBean {
-	/**
-	 * Returns either the singleton instance of create a new instance if the
-	 * bean is a prototype.
-	 * 
-	 * @return
-	 */
-	Object getObject();
+public class ClassWithNoArgumentsConstructor {
 
-	/**
-	 * Tests if the contained bean is a singleton.
-	 * 
-	 * @return
-	 */
-	boolean isSingleton();
+	private boolean booleanProperty;
+
+	public boolean getBooleanProperty() {
+		return this.booleanProperty;
+	}
+
+	public void setBooleanProperty(final boolean booleanProperty) {
+		this.booleanProperty = booleanProperty;
+	}
 }

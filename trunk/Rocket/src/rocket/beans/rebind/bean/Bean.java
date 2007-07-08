@@ -27,17 +27,19 @@ import rocket.beans.rebind.BeansHelper;
 import rocket.beans.rebind.Constants;
 import rocket.beans.rebind.HasBeanFactoryGeneratorContext;
 import rocket.beans.rebind.init.InitMethod;
-import rocket.beans.rebind.newinstance.NewInstance;
-import rocket.beans.rebind.property.PropertyDefinition;
+import rocket.beans.rebind.newinstance.NewInstanceProvider;
+import rocket.beans.rebind.property.Property;
 import rocket.beans.rebind.property.PropertyNameAlreadyUsedException;
 import rocket.beans.rebind.property.PropertyNotFoundException;
-import rocket.beans.rebind.values.PropertyValueDefinition;
+import rocket.beans.rebind.values.Value;
+import rocket.generator.rebind.CodeGenerator;
 import rocket.generator.rebind.RebindHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.user.rebind.SourceWriter;
 
 /**
@@ -47,9 +49,10 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-public class BeanDefinition extends HasBeanFactoryGeneratorContext{
+public class Bean extends HasBeanFactoryGeneratorContext implements
+		CodeGenerator {
 
-	public BeanDefinition() {
+	public Bean() {
 		super();
 		this.setProperties(this.createPropertiesMap());
 	}
@@ -61,7 +64,8 @@ public class BeanDefinition extends HasBeanFactoryGeneratorContext{
 	 * @return
 	 */
 	public String getBeanFactoryMethodName() {
-		return Constants.FACTORY_METHOD_PREFIX + this.getId() + Constants.FACTORY_METHOD_SUFFIX;
+		return Constants.FACTORY_METHOD_PREFIX + this.getId()
+				+ Constants.FACTORY_METHOD_SUFFIX;
 	}
 
 	/**
@@ -71,7 +75,12 @@ public class BeanDefinition extends HasBeanFactoryGeneratorContext{
 	 * @param writer
 	 */
 	public void write(final SourceWriter writer) {
-		writer.println("protected " + FactoryBean.class.getName() + " " + this.getBeanFactoryMethodName() + "(){");
+		this.checkType();
+
+		final String factoryBean = "factoryBean";
+		
+		writer.println("protected " + FactoryBean.class.getName() + " "
+				+ this.getBeanFactoryMethodName() + "(){");
 		writer.indent();
 		writer.indent();
 
@@ -80,57 +89,86 @@ public class BeanDefinition extends HasBeanFactoryGeneratorContext{
 		final StringBuilder beanFactoryDeclaration = new StringBuilder();
 		beanFactoryDeclaration.append("final ");
 		beanFactoryDeclaration.append(factoryBeanType);
-		beanFactoryDeclaration.append(" factoryBean = new ");
+		beanFactoryDeclaration.append(" " );
+		beanFactoryDeclaration.append( factoryBean );
+		beanFactoryDeclaration.append("= new ");
 		beanFactoryDeclaration.append(factoryBeanType);
 		beanFactoryDeclaration.append("(){");
 		writer.println(beanFactoryDeclaration.toString());
 
 		writer.indent();
-		this.getNewInstance().write(writer );
+		this.getNewInstanceProvider().write(writer);
 		this.writeBeanFactorySatisfyProperties(writer);
 		this.getInitMethod().write(writer);
 		writer.outdent();
 
 		writer.println("};"); // close inner class
-		
-		writer.println("factoryBean.setBeanFactory( this );");
-		writer.println("return factoryBean;");
+
+		writer.println( factoryBean + ".setBeanFactory( this );");
+		writer.println("return " + factoryBean + ";");
 		writer.outdent();
 		writer.outdent();
 		writer.println("}");
 	}
 
+	protected void checkType() {
+		final String className = this.getTypeName();
+		final JClassType type = (JClassType) this.getBeanFactoryGeneratorContext().findType(className);
+		this.checkType0( type );
+	}
+	
+	protected void checkType0( final JClassType type ){
+		if (null == type) {
+			this.throwBeanTypeNotFoundException();
+		}
+
+		if (type.isAbstract() || type.isInterface() != null) {
+			throwBeanTypeMustBeConcrete();
+		}
+	}
+
+	protected void throwBeanTypeNotFoundException() {
+		throw new BeanTypeNotFoundException("Bean type [" + this.getTypeName() + "] not found.");
+	}
+
+	protected void throwBeanTypeMustBeConcrete() {
+		throw new BeanTypeNotConcreteException("The bean with an id of [" + this.getId() 
+				+ "] and scope[" + this.getScope() + "] type [" + this.getTypeName()
+				+ "] is not a concrete class ");
+	}
+
 	protected String getFactoryBeanSuperClass() {
-		return this.isSingleton() ? SingletonFactoryBean.class.getName() : PrototypeFactoryBean.class.getName();
+		return this.isSingleton() ? SingletonFactoryBean.class.getName()
+				: PrototypeFactoryBean.class.getName();
 	}
 
 	/**
 	 * This generator will generate code that creates a new bean instance.
 	 */
-	private NewInstance newInstance;
+	private NewInstanceProvider newInstanceProvider;
 
-	protected NewInstance getNewInstance(){
-		ObjectHelper.checkNotNull("field:newInstance", newInstance );
-		return this.newInstance;
+	public NewInstanceProvider getNewInstanceProvider() {
+		ObjectHelper.checkNotNull("field:newInstanceProvider", newInstanceProvider);
+		return this.newInstanceProvider;
 	}
-	
-	public void setNewInstance( final NewInstance newInstance ){
-		ObjectHelper.checkNotNull("parameter:newInstance", newInstance );
-		this.newInstance = newInstance;
+
+	public void setNewInstanceProvider(final NewInstanceProvider newInstanceProvider) {
+		ObjectHelper.checkNotNull("parameter:newInstanceProvider", newInstanceProvider);
+		this.newInstanceProvider = newInstanceProvider;
 	}
-	
+
 	private InitMethod initMethod;
-	
-	public InitMethod getInitMethod(){
+
+	public InitMethod getInitMethod() {
 		ObjectHelper.checkNotNull("field:initMethod", initMethod);
 		return initMethod;
 	}
-	
-	public void setInitMethod(final InitMethod initMethod ){
+
+	public void setInitMethod(final InitMethod initMethod) {
 		ObjectHelper.checkNotNull("parameter:initMethod", initMethod);
 		this.initMethod = initMethod;
-	}	
-	
+	}
+
 	/**
 	 * This method writes out property setters for each of the properties found
 	 * in this bean definition.
@@ -159,77 +197,81 @@ public class BeanDefinition extends HasBeanFactoryGeneratorContext{
 		final String instance = "instance";
 		final String instance0 = instance + '0';
 
-		// cast instance to its type.
-		final String type = this.getType().getQualifiedSourceName();
-		writer.println("final " + type + " " + instance0 + " = (" + type + ") " + instance + ";");
+		// cast instance to its typeName.
+		final String typeName = this.getTypeName();
+		writer.println("final " + typeName + " " + instance0 + " = (" + typeName + ") " + instance + ";");
 
+		final JClassType type = (JClassType) this.getBeanFactoryGeneratorContext().getType(this.getTypeName());
+		
 		final Iterator properties = this.getProperties().values().iterator();
 		while (properties.hasNext()) {
-			final PropertyDefinition property = (PropertyDefinition) properties.next();
-			final String setterName = RebindHelper.getSetterName((String) property.getName());
-			final PropertyValueDefinition propertyValue = (PropertyValueDefinition) property.getPropertyValueDefinition();
+			final Property property = (Property) properties.next();
+			final String setterMethodName = RebindHelper.getSetterName((String) property.getName());
+			final Value propertyValue = (Value) property.getValue();
+
+			final String propertyName = property.getName();
+
+			JMethod setterMethod = null;
+			final JMethod[] methods = type.getMethods();
+			for (int i = 0; i < methods.length; i++) {
+				final JMethod method = methods[i];
+				if (method.getName().equals(setterMethodName)) {
+					setterMethod = method;
+					break;
+				}
+			}
+			// if a setter is not found...
+			if (null == setterMethod || setterMethod.getParameters().length != 1) {
+				throwPropertySetterNotFoundException("Setter for [" + propertyName + "] not found");
+			}
+
+			// update the value type...
+			final Value value = property.getValue();
+			final JType valueType = setterMethod.getParameters()[0].getType();
+			value.setType( valueType );
+			if (false == value.isCompatibleWith()) {
+				throwPropertySetterNotFoundException(propertyName);
+			}
 
 			final StringBuilder statement = new StringBuilder();
 			statement.append(instance0);
 			statement.append(".");
-			statement.append(setterName);
+			statement.append(setterMethodName);
 			statement.append("(");
 
-			statement.append(propertyValue.generatePropertyValueCodeBlock());
+			statement.append(propertyValue.generateValue());
 
 			statement.append(");");
 			writer.println(statement.toString());
 		}
 	}
-	
+
 	/**
 	 * Adds a new property definition for this bean. Typically this is done
 	 * whilst parsing the xml file.
 	 * 
 	 * @param property
 	 */
-	public void addProperty(final PropertyDefinition property) {
-		final String propertyName = property.getName();
-		final JClassType type = this.getType();
-		final String setterMethodName = BeansHelper.createSetterName(propertyName);
+	public void addProperty(final Property property) {
+		final String name = property.getName();
 
-		JMethod setterMethod = null;
-
-		final JMethod[] methods = type.getMethods();
-		for (int i = 0; i < methods.length; i++) {
-			final JMethod method = methods[i];
-			if (method.getName().equals(setterMethodName)) {
-				setterMethod = method;
-				break;
-			}
-		}
-		// if a setter is not found...
-		if (null == setterMethod || setterMethod.getParameters().length != 1) {
-			throwPropertySetterNotFoundException("Setter for [" + propertyName + "] not found");
-		}
-		// if possible make sure the setterMethod parameter is compatible with
-		// the property
-		final PropertyValueDefinition valueDefinition = property.getPropertyValueDefinition();
-		valueDefinition.setType(setterMethod.getParameters()[0].getType());
-		if (false == valueDefinition.isCompatibleWith()) {
-			throwPropertySetterNotFoundException(propertyName);
-		}
-
-		// setter found...make sure property not already set.
 		final Map properties = this.getProperties();
-		if (properties.containsKey(propertyName)) {
-			this.throwPropertyAlreadyUsedException(propertyName);
+		if (properties.containsKey(name)) {
+			this.throwPropertyAlreadyUsedException(name);
 		}
 		// everythings ok save the property.
-		properties.put(propertyName, property);
+		properties.put(name, property);
 	}
 
-	protected void throwPropertySetterNotFoundException(final String propertyName) {
+	protected void throwPropertySetterNotFoundException(
+			final String propertyName) {
 		throw new PropertyNotFoundException(propertyName);
 	}
 
 	protected void throwPropertyAlreadyUsedException(final String propertyName) {
-		throw new PropertyNameAlreadyUsedException("An attempt is being made to add a second value for the property [" + propertyName + "]");
+		throw new PropertyNameAlreadyUsedException(
+				"An attempt is being made to add a second value for the property ["
+						+ propertyName + "]");
 	}
 
 	/**
@@ -277,7 +319,7 @@ public class BeanDefinition extends HasBeanFactoryGeneratorContext{
 	}
 
 	protected boolean isSingleton() {
-		return BeansHelper.isSingleton( this.getScope() );
+		return BeansHelper.isSingleton(this.getScope());
 	}
 
 	public void setScope(final String scope) {
@@ -286,17 +328,17 @@ public class BeanDefinition extends HasBeanFactoryGeneratorContext{
 	}
 
 	/**
-	 * The JClassType that corresponds to the BeanFactory being generated.
+	 * The typeName name of the bean.
 	 */
-	private JClassType type;
+	private String typeName;
 
-	public JClassType getType() {
-		ObjectHelper.checkNotNull("field:type", type);
-		return type;
+	public String getTypeName() {
+		ObjectHelper.checkNotNull("field:typeName", typeName);
+		return typeName;
 	}
 
-	public void setType(final JClassType type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-		this.type = type;
+	public void setTypeName(final String typeName) {
+		ObjectHelper.checkNotNull("parameter:typeName", typeName);
+		this.typeName = typeName;
 	}
 }

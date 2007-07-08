@@ -5,8 +5,10 @@
 		id="bean" 
 		class="rocket.beans.test.client.stringproperty.ClassWithStringProperty" 
 		scope="singleton">
-		<property name="stringProperty">
-			<value>apple</value>
-		</property>
+		<properties>
+			<property name="stringProperty">
+				<value>apple</value>
+			</property>
+		</properties>
 	</bean>
 </bean-factory>

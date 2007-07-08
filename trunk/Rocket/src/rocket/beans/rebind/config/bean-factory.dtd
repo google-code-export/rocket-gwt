@@ -1,6 +1,6 @@
 <!ELEMENT bean-factory 							(bean*, remote-json-service*, remote-rpc-service*)>
 
-<!ELEMENT bean 									(property*)>
+<!ELEMENT bean 									((constructor|factory)?, properties*)>
 <!ATTLIST bean
 	class 			CDATA 						#REQUIRED
 	id 				ID	 						#REQUIRED
@@ -9,7 +9,21 @@
 	initMethod 		CDATA 						#IMPLIED
 >
 
-<!ELEMENT property 								(value|bean-reference|list|set|map) >
+<!ELEMENT constructor 							(value+|bean-reference+|list+|set+|map+)>
+<!ATTLIST constructor
+>
+
+<!ELEMENT factory 								EMPTY>
+<!ATTLIST factory
+	reference-id	IDREF 						#REQUIRED
+	method			CDATA 						#REQUIRED
+>
+
+<!ELEMENT properties 							(property+)>
+<!ATTLIST properties
+>
+
+<!ELEMENT property 								(value+|bean-reference+|list+|set+|map+) >
 <!ATTLIST property
 	name 			CDATA 						#REQUIRED
 >

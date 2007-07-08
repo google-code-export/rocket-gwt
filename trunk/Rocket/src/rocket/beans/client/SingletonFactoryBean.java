@@ -16,13 +16,14 @@
 package rocket.beans.client;
 
 /**
- * Template FactoryBean that creates singletons and caches them. All generated
+ * Template FactoryMethodBean that creates singletons and caches them. All generated
  * BeanFactories use anonymous SingletonFactoryBean classes within factory
  * methods to create singleton beans
  * 
  * @author Miroslav Pokorny
  */
-abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBean implements FactoryBean {
+abstract public class SingletonFactoryBean extends
+		SingletonOrPrototypeFactoryBean implements FactoryBean {
 
 	public SingletonFactoryBean() {
 		super();

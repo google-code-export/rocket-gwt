@@ -23,7 +23,7 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class MapEntryDefinition {
+public class MapEntry {
 	/**
 	 * The key
 	 */
@@ -42,15 +42,19 @@ public class MapEntryDefinition {
 	/**
 	 * The value
 	 */
-	private PropertyValueDefinition value;
+	private Value value;
 
-	public PropertyValueDefinition getValue() {
+	public Value getValue() {
 		ObjectHelper.checkNotNull("field:value", value);
 		return value;
 	}
 
-	public void setValue(final PropertyValueDefinition value) {
+	public void setValue(final Value value) {
 		ObjectHelper.checkNotNull("parameter:value", value);
 		this.value = value;
+	}
+	
+	public String toString(){
+		return super.toString() + ", key[" + key + "] value: " + value;
 	}
 }

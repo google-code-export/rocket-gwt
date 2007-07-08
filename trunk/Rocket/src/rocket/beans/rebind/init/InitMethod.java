@@ -16,13 +16,19 @@
 package rocket.beans.rebind.init;
 
 import rocket.beans.client.BeanFactoryImpl;
-import rocket.beans.rebind.bean.BeanDefinition;
+import rocket.beans.rebind.HasBeanFactoryGeneratorContext;
+import rocket.beans.rebind.bean.Bean;
+import rocket.generator.rebind.CodeGenerator;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
 
-public class InitMethod {
+/**
+ * A place holder for an init method for a bean
+ * @author Miroslav Pokorny
+ */
+public class InitMethod extends HasBeanFactoryGeneratorContext  implements CodeGenerator{
 
 	/**
 	 * Does nothing leaving the default {@link BeanFactoryImpl#satisfyProperties} which tests if the new instance implements
@@ -32,19 +38,15 @@ public class InitMethod {
 	public void write( final SourceWriter writer ){		
 	}
 	
-	protected JClassType getBeanType(){
-		return this.getBeanDefinition().getType();
-	}
+	private Bean bean;
 	
-	private BeanDefinition beanDefinition;
-	
-	protected BeanDefinition getBeanDefinition(){
-		ObjectHelper.checkNotNull("field:beanDefinition", beanDefinition );
-		return this.beanDefinition;
+	protected Bean getBean(){
+		ObjectHelper.checkNotNull("field:bean", bean );
+		return this.bean;
 	}
 
-	public void setBeanDefinition(final BeanDefinition beanDefinition){
-		ObjectHelper.checkNotNull("parameter:beanDefinition", beanDefinition );
-		this.beanDefinition = beanDefinition;
+	public void setBean(final Bean bean){
+		ObjectHelper.checkNotNull("parameter:bean", bean );
+		this.bean = bean;
 	}
 }

@@ -13,9 +13,33 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.test.client.factorymethod;
+package rocket.beans.test.client.multipleargumentsconstructor;
 
-import rocket.beans.client.BeanFactory;
+public class ClassWithMultipleArgumentsConstructor {
 
-public interface BeanWithFactoryMethodBeanFactory extends BeanFactory {
+	public ClassWithMultipleArgumentsConstructor( final String first, final String second ){
+		this.setFirst(first);
+		this.setSecond(second);
+	}	
+	
+	private String first;
+
+	public String getFirst() {
+		return this.first;
+	}
+
+	public void setFirst(final String first) {
+		this.first = first;
+	}
+	
+	private String second;
+
+	public String getSecond() {
+		return this.second;
+	}
+
+	public void setSecond(final String second) {
+		this.second = second;
+	}
+
 }
