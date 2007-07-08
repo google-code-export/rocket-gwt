@@ -17,6 +17,7 @@ package rocket.util.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A variety of useful String manipulating methods including assertion checks and general utility methods.
@@ -332,68 +333,126 @@ public class StringHelper extends ObjectHelper {
     }
 
     /**
-     * Builds a new string substituting the placeholders within messages with values from values.
+     * Builds a new string substituting the placeholders within text with values from values.
+     * The placeholders found in the text are used as indexes to the given array of values which will supply the replacements.
      * 
-     * @param message
-     * @param values
-     * @return
+     * <pre>
+     * String input = "Apple's are ${0} and banana are ${1}.";
+     * String[] values = new String[]{ "green", "yellow" };
+     * String output = StringHelper.format( input, values ); // = "Apple's are green and bananas are yellow.";     
+     * </pre>
+     * 
+     * @param text Some text that includes placeholders
+     * @param values An array of values which will be used to replace placeholders
+     * @return The string after replacements.
      */
-    public static String format(final String message, final Object[] values) {
-        StringHelper.checkNotNull("parameter:message", message);
+    public static String format(final String text, final Object[] values) {
         ObjectHelper.checkNotNull("parameter:values", values);
 
-        final StringBuffer buf = new StringBuffer();
-        int i = 0;
-        final int messageLength = message.length();
-        while (i < messageLength) {
-            // find escape character...
-            final int escapeIndex = message.indexOf( '\\', i );
-            if( -1 != escapeIndex ){
-                final int characterAfterIndex = escapeIndex + 1;
-                if( escapeIndex == messageLength ){
-                    StringHelper.fail( "Broken message, trailing escape character found.");
-                }
-                
-                buf.append(message.substring(i, escapeIndex ));
-                
-                final char characterAfter = message.charAt( characterAfterIndex );
-                if( '{' == characterAfter || '\\' == characterAfter ){
-                    buf.append( characterAfter );
+        return new PlaceHolderReplacer(){
+        	protected String getValue( final String placeHolder ){
+        		try {
+        			final int index = Integer.parseInt(placeHolder);
+        			return String.valueOf(values[index]);
+
+        		} catch (final NumberFormatException badIndex) {
+        			StringHelper.fail("Placeholder index does not contain a number [" + placeHolder + "]");
+        			return null;// unreachable
+        		}
+        	}
+        }.execute( text );
+    }
+    
+    /**
+     * Builds a new string substituting the placeholders within text with values from values.
+     * The placeholders found in the text are used as keys to the given map of values which will supply the replacements. 
+     * 
+     * @param text Some text that includes placeholders
+     * @param values An map of values which will be used to replace placeholders
+     * @return The string after replacements.
+     */
+    public static String format(final String text, final Map values) {
+        ObjectHelper.checkNotNull("parameter:values", values);
+
+        return new PlaceHolderReplacer(){
+        	protected String getValue( final String placeHolder ){
+    			final String value = (String) values.get( placeHolder );
+    			if( null == value ){
+    				StringHelper.fail("Unable to find placeholder [" + placeHolder + "]");
+    			}
+    			return value;
+        	}
+        }.execute( text );
+    }
+    
+    /**
+     * Template used by place holder methods to locate placeholders and replace them with actual values.
+     */
+    static abstract class PlaceHolderReplacer {
+    	
+    	/**
+    	 * Travels over the input string replacing placeholders with values returning the built result.
+    	 * @param text
+    	 * @return
+    	 */
+    	protected String execute( final String text ){
+            StringHelper.checkNotNull("parameter:text", text);
+
+    		final StringBuffer buf = new StringBuffer();
+            int i = 0;
+            final int messageLength = text.length();
+            while (i < messageLength) {
+                // find escape character...
+                final int escapeIndex = text.indexOf( '\\', i );
+                if( -1 != escapeIndex ){
+                    final int characterAfterIndex = escapeIndex + 1;
+                    if( escapeIndex == messageLength ){
+                        StringHelper.fail( "Broken message, trailing escape character found.");
+                    }
                     
-                    i = characterAfterIndex + 1;
-                    continue;
+                    buf.append(text.substring(i, escapeIndex ));
+                    
+                    final char characterAfter = text.charAt( characterAfterIndex );
+                    if( '$' == characterAfter || '\\' == characterAfter ){
+                        buf.append( characterAfter );
+                        
+                        i = characterAfterIndex + 1;
+                        continue;
+                    }
+                    StringHelper.fail( "Invalid escape character found in format string \"" + text + "\" at " + characterAfterIndex );
                 }
-                StringHelper.fail( "Invalid escape character found in format string \"" + message + "\" at " + characterAfterIndex );
-            }
-            
-            // find the start placeholder
-            final int placeHolderStartIndex = message.indexOf('{', i);
-            if (-1 == placeHolderStartIndex) {
-                buf.append(message.substring(i, messageLength));
-                break;
-            }
-            buf.append(message.substring(i, placeHolderStartIndex));
+                
+                // find the start placeholder
+                final int placeHolderStartIndex = text.indexOf("${", i);
+                if (-1 == placeHolderStartIndex) {
+                    buf.append(text.substring(i, messageLength));
+                    break;
+                }
+                buf.append(text.substring(i, placeHolderStartIndex));
 
-            // find the end placeholder
-            final int placeHolderEndIndex = message.indexOf('}', placeHolderStartIndex + 1);
-            if (-1 == placeHolderEndIndex) {
-                StringHelper.fail("Unable to find placeholder end after finding start, ["
-                        + message.substring(i, messageLength - i) + "]");
-            }
+                // find the end placeholder
+                final int placeHolderEndIndex = text.indexOf('}', placeHolderStartIndex + 2 );
+                if (-1 == placeHolderEndIndex) {
+                    StringHelper.fail("Unable to find placeholder end after finding start, ["
+                            + text.substring(i, messageLength - i) + "]");
+                }
 
-            // extract the index in between...
-            String placeHolderIndex = message.substring(1 + placeHolderStartIndex, placeHolderEndIndex);
-            try {
-                final int index = Integer.parseInt(placeHolderIndex);
-                final String value = String.valueOf(values[index]);
-                buf.append(value);
+                // extract the index in between...
+                final String placeHolder = text.substring( 2 + placeHolderStartIndex, placeHolderEndIndex);
+                buf.append( this.getValue( placeHolder ));
+                
+                // advance past placeholder
                 i = placeHolderEndIndex + 1;
-
-            } catch (final NumberFormatException badIndex) {
-                StringHelper.fail("Placeholder index does not contain a number [" + placeHolderIndex + "]");
             }
-        }
-        return buf.toString();
+            return buf.toString();    		
+    	}
+    	
+    	/**
+    	 * Sub-classes must resolve the placeholder to a value.
+    	 * @param placeholder
+    	 * @return
+    	 */
+    	abstract protected String getValue( String placeholder );
     }
 
     /**

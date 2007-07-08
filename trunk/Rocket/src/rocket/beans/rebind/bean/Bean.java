@@ -128,7 +128,7 @@ public class Bean extends HasBeanFactoryGeneratorContext implements
 	}
 
 	protected void throwBeanTypeNotFoundException() {
-		throw new BeanTypeNotFoundException("Bean type [" + this.getTypeName() + "] not found.");
+		throw new BeanTypeNotFoundException("PlaceHolderBean type [" + this.getTypeName() + "] not found.");
 	}
 
 	protected void throwBeanTypeMustBeConcrete() {

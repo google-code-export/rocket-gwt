@@ -22,7 +22,7 @@ import rocket.beans.rebind.values.StringValue;
 import rocket.browser.client.BrowserHelper;
 
 /**
- * A special type of Bean that defines a {@link RemoteJsonService}
+ * A special type of PlaceHolderBean that defines a {@link RemoteJsonService}
  * 
  * @author Miroslav Pokorny
  */

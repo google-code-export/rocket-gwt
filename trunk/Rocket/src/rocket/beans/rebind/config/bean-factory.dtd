@@ -1,4 +1,9 @@
-<!ELEMENT bean-factory 							(bean*, remote-json-service*, remote-rpc-service*)>
+<!ELEMENT bean-factory 							(place-holders*, bean*, remote-json-service*, remote-rpc-service*)>
+
+<!ELEMENT place-holders							EMPTY>
+<!ATTLIST place-holders
+	file			CDATA 						#REQUIRED
+>
 
 <!ELEMENT bean 									((constructor|factory)?, properties*)>
 <!ATTLIST bean

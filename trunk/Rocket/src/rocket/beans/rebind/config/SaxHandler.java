@@ -30,32 +30,28 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import rocket.beans.rebind.BeanFactoryGeneratorContext;
 import rocket.beans.rebind.BeansHelper;
-import rocket.beans.rebind.bean.BeanClassNameMissingException;
 import rocket.beans.rebind.bean.Bean;
+import rocket.beans.rebind.bean.BeanClassNameMissingException;
 import rocket.beans.rebind.bean.BeanIdMissingException;
-import rocket.beans.rebind.bean.BeanTypeNotConcreteException;
-import rocket.beans.rebind.bean.BeanTypeNotFoundException;
 import rocket.beans.rebind.bean.InvalidBeanScopeException;
 import rocket.beans.rebind.init.CustomInitMethod;
 import rocket.beans.rebind.init.InitMethod;
 import rocket.beans.rebind.jsonandrpc.PropertyMissingException;
 import rocket.beans.rebind.jsonandrpc.RemoteJsonServiceBean;
 import rocket.beans.rebind.jsonandrpc.RemoteRpcServiceBean;
+import rocket.beans.rebind.newinstance.Constructor;
 import rocket.beans.rebind.newinstance.DeferredBindingNewInstance;
 import rocket.beans.rebind.newinstance.FactoryMethod;
-import rocket.beans.rebind.newinstance.Constructor;
-import rocket.beans.rebind.newinstance.NewInstanceProvider;
+import rocket.beans.rebind.placeholder.PlaceHolderResolver;
 import rocket.beans.rebind.property.Property;
 import rocket.beans.rebind.values.BeanReference;
 import rocket.beans.rebind.values.ListValue;
 import rocket.beans.rebind.values.MapValue;
-import rocket.beans.rebind.values.Value;
 import rocket.beans.rebind.values.SetValue;
 import rocket.beans.rebind.values.StringValue;
+import rocket.beans.rebind.values.Value;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-
-import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
  * This sax handler takes a xml file and builds a number of bean definitions.
@@ -66,6 +62,8 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 
 	public SaxHandler() {
 		super();
+		
+		this.setPlaceHolderValues( this.createPlaceHolderValues() );
 	}
 
 	/**
@@ -94,11 +92,18 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 				this.handleBeanFactoryOpen();
 				break;
 			}
+			
+			if (qName.equals(Constants.PLACE_HOLDERS )) {
+				final String file = this.getAttributeValue( attributes, Constants.PLACE_HOLDERS_FILE );
+				this.handlePlaceHoldersOpen( file );
+				break;
+			}
+			
 			if (qName.equals(Constants.BEAN)) {
-				final String className = attributes.getValue(Constants.BEAN_CLASSNAME);
-				final String id = attributes.getValue(Constants.BEAN_ID);
-				final String scope = attributes.getValue(Constants.BEAN_SCOPE);
-				final String initMethodName = attributes.getValue(Constants.BEAN_INIT_METHOD_NAME);
+				final String className = this.getAttributeValue( attributes, Constants.BEAN_CLASSNAME);
+				final String id = this.getAttributeValue( attributes, Constants.BEAN_ID);
+				final String scope = this.getAttributeValue( attributes, Constants.BEAN_SCOPE);
+				final String initMethodName = this.getAttributeValue( attributes, Constants.BEAN_INIT_METHOD_NAME);
 				this.handleBeanOpen(className, id, scope, initMethodName);
 				break;
 			}
@@ -107,8 +112,8 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 				break;
 			}
 			if (qName.equals(Constants.FACTORY )) {
-				final String factoryBeanId = attributes.getValue(Constants.FACTORY_BEAN_ID );
-				final String factoryMethodName = attributes.getValue(Constants.FACTORY_METHOD_NAME);
+				final String factoryBeanId = this.getAttributeValue( attributes, Constants.FACTORY_BEAN_ID );
+				final String factoryMethodName = this.getAttributeValue( attributes, Constants.FACTORY_METHOD_NAME);
 				this.handleFactoryOpen( factoryBeanId, factoryMethodName );
 				break;
 			}			
@@ -119,7 +124,7 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 			}
 			
 			if (qName.equals(Constants.PROPERTY)) {
-				final String propertyName = attributes.getValue(Constants.PROPERTY_NAME);
+				final String propertyName = this.getAttributeValue( attributes, Constants.PROPERTY_NAME);
 				this.handlePropertyOpen(propertyName);
 				break;
 			}
@@ -128,7 +133,7 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 				break;
 			}
 			if (qName.equals(Constants.BEAN_REFERENCE)) {
-				final String id = attributes.getValue(Constants.BEAN_REFERENCE_ID);
+				final String id = this.getAttributeValue( attributes, Constants.BEAN_REFERENCE_ID);
 				this.handleBeanReferenceOpen(id);
 				break;
 			}
@@ -145,22 +150,22 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 				break;
 			}
 			if (qName.equals(Constants.MAP_ENTRY)) {
-				final String key = attributes.getValue(Constants.MAP_ENTRY_KEY);
+				final String key = this.getAttributeValue( attributes, Constants.MAP_ENTRY_KEY);
 				this.handleMapEntryOpen(key);
 				break;
 			}
 			if (qName.equals(Constants.REMOTE_RPC_SERVICE)) {
-				final String id = attributes.getValue(Constants.REMOTE_RPC_SERVICE_ID);
-				final String interfaceType = attributes.getValue(Constants.REMOTE_RPC_SERVICE_INTERFACE);
-				final String address = attributes.getValue(Constants.REMOTE_RPC_SERVICE_ADDRESS);
+				final String id = this.getAttributeValue( attributes, Constants.REMOTE_RPC_SERVICE_ID);
+				final String interfaceType = this.getAttributeValue( attributes, Constants.REMOTE_RPC_SERVICE_INTERFACE);
+				final String address = this.getAttributeValue( attributes, Constants.REMOTE_RPC_SERVICE_ADDRESS);
 
 				this.handleRemoteRpcServiceOpen(id, interfaceType, address);
 				break;
 			}
 			if (qName.equals(Constants.REMOTE_JSON_SERVICE)) {
-				final String id = attributes.getValue(Constants.REMOTE_JSON_SERVICE_ID);
-				final String interfaceType = attributes.getValue(Constants.REMOTE_JSON_SERVICE_INTERFACE);
-				final String address = attributes.getValue(Constants.REMOTE_JSON_SERVICE_ADDRESS);
+				final String id = this.getAttributeValue( attributes, Constants.REMOTE_JSON_SERVICE_ID);
+				final String interfaceType = this.getAttributeValue( attributes, Constants.REMOTE_JSON_SERVICE_INTERFACE);
+				final String address = this.getAttributeValue( attributes, Constants.REMOTE_JSON_SERVICE_ADDRESS);
 
 				this.handleRemoteJsonServiceOpen(id, interfaceType, address);
 				break;
@@ -180,6 +185,12 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 				this.handleBeanFactoryClose();
 				break;
 			}
+			
+			if (qName.equals(Constants.PLACE_HOLDERS )) {			
+				this.handlePlaceHoldersClose();
+				break;
+			}
+			
 			if (qName.equals(Constants.BEAN)) {
 				this.handleBeanClose();
 				break;
@@ -239,6 +250,45 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 	protected void handleBeanFactoryClose() {
 	}
 
+	protected void handlePlaceHoldersOpen(final String fileName) {
+		this.getPlaceHolderValues().load(fileName);
+	}
+
+	protected void handlePlaceHoldersClose() {
+	}
+
+	/**
+	 * Each and every string be it sourced from a tag body or attribute funnels thru this method.
+	 * @param string
+	 * @return
+	 */
+	protected String replacePlaceHoldersWithValues( final String string ){
+		String value = string;
+		if( false == StringHelper.isNullOrEmpty( string )){
+			value = this.getPlaceHolderValues().resolve(string);
+		}
+		return value;
+	}
+	
+	/**
+	 * A properites object that holds the values for placeholders found in the xml file.
+	 */
+	private PlaceHolderResolver placeHolderValues;
+	
+	protected PlaceHolderResolver getPlaceHolderValues(){
+		ObjectHelper.checkNotNull("field:placeHolderValues", placeHolderValues );
+		return this.placeHolderValues;
+	}
+
+	protected void setPlaceHolderValues(final PlaceHolderResolver placeHolderValues ){
+		ObjectHelper.checkNotNull("parameter:placeHolderValues", placeHolderValues );
+		this.placeHolderValues = placeHolderValues;
+	}
+	
+	protected PlaceHolderResolver createPlaceHolderValues(){
+		return new PlaceHolderResolver();
+	}
+	
 	/**
 	 * Adds a new bean definition after checking that the type className is
 	 * concrete and the scope is valid. Adding the bean definition throws an
@@ -296,7 +346,7 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 	}
 
 	protected void throwBeanIdMissingException() {
-		throw new BeanIdMissingException("Bean id missing," + this.buildLineAndColumnFromLocator());
+		throw new BeanIdMissingException("PlaceHolderBean id missing," + this.buildLineAndColumnFromLocator());
 	}
 
 	protected void throwInvalidBeanScopeException(final String id, final String scope) {
@@ -305,7 +355,7 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 	}
 
 	protected void throwBeanClassNameMissingException() {
-		throw new BeanClassNameMissingException("Bean type missing," + this.buildLineAndColumnFromLocator());
+		throw new BeanClassNameMissingException("PlaceHolderBean type missing," + this.buildLineAndColumnFromLocator());
 	}
 
 	protected void handleBeanClose() {
@@ -551,7 +601,17 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 	protected void handleRemoteJsonServiceClose() {
 
 	}
-
+	
+	/**
+	 * Retrieves the attribute value.
+	 * @param attributes
+	 * @param name
+	 * @return
+	 */
+	protected String getAttributeValue( final Attributes attributes, final String name ){
+		return this.replacePlaceHoldersWithValues( attributes.getValue( name ));
+	}
+	
 	/**
 	 * Merely accumulates any text found between elements.
 	 */
@@ -572,7 +632,7 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 	 */
 	protected String getBuffer() {
 		final StringBuilder builder = (StringBuilder) this.getStack().pop();
-		return builder.toString().trim();
+		return this.replacePlaceHoldersWithValues( builder.toString().trim() );
 	}
 
 	protected void startBuffer() {

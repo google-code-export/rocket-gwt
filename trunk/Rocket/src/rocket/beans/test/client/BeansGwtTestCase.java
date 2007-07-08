@@ -59,6 +59,8 @@ import rocket.beans.test.client.multipleargumentsconstructor.BeanWithMultipleArg
 import rocket.beans.test.client.multipleargumentsconstructor.ClassWithMultipleArgumentsConstructor;
 import rocket.beans.test.client.noargumentsconstructor.BeanWithNoArgumentsConstructorBeanFactory;
 import rocket.beans.test.client.noargumentsconstructor.ClassWithNoArgumentsConstructor;
+import rocket.beans.test.client.placeholders.PlaceHolderBean;
+import rocket.beans.test.client.placeholders.PlaceHolderBeanFactory;
 import rocket.beans.test.client.referencesanotherbean.BeanWithAnotherBeanReferenceBeanFactory;
 import rocket.beans.test.client.referencesanotherbean.ClassWithBeanReference;
 import rocket.beans.test.client.rpc.RemoteRpcServiceAsync;
@@ -369,5 +371,11 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) bean;
 		assertTrue("/remoteJsonService", serviceDefTarget
 				.getServiceEntryPoint().endsWith("/remoteJsonService"));
+	}
+	
+	public void testPlaceHolders() {
+		final BeanFactory factory = (BeanFactory) GWT.create(PlaceHolderBeanFactory.class);
+		final PlaceHolderBean bean = (PlaceHolderBean) factory.getBean("bean");
+		assertEquals("orange yellow green green", bean.getStringProperty());
 	}
 }
