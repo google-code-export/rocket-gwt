@@ -13,24 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.util.server;
+package rocket.beans.test.client.placeholders;
 
-/**
- * This IoException may be used to represent an unchecked io exception.
- * 
- * @author Miroslav Pokorny
- */
-public class UncheckedIOException extends RuntimeException {
-    
-	public UncheckedIOException(final String message) {
-        super(message);
-    }
-	
-	public UncheckedIOException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
+public class PlaceHolderBean {
 
-    public UncheckedIOException(final Throwable cause) {
-        super(cause);
-    }
+	private String stringProperty;
+
+	public String getStringProperty() {
+		return this.stringProperty;
+	}
+
+	public void setStringProperty(final String stringProperty) {
+		this.stringProperty = stringProperty;
+	}
 }

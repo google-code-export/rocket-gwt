@@ -16,6 +16,7 @@
 package rocket.test;
 
 import rocket.beans.test.BeanFactoryTestCase;
+import rocket.beans.test.PlaceHolderResolverTestCase;
 import rocket.beans.test.PrototypeFactoryBeanTestCase;
 import rocket.beans.test.SingletonFactoryBeanTestCase;
 import rocket.collection.test.IteratorViewTestCase;
@@ -41,6 +42,7 @@ public class RocketTestSuite {
 		suite.addTestSuite(SingletonFactoryBeanTestCase.class);
 		suite.addTestSuite(BeanFactoryTestCase.class);
 		suite.addTestSuite(PrototypeFactoryBeanTestCase.class);
+		suite.addTestSuite(PlaceHolderResolverTestCase.class );
 		
 		suite.addTestSuite(SkippingIteratorTestCase.class);
 		suite.addTestSuite(VisitRememberingIteratorTestCase.class);

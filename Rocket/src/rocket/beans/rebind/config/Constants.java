@@ -28,9 +28,13 @@ public class Constants {
 
 	static final String DTD_FILE_NAME = "bean-factory.dtd";
 
-	public static final String BEAN_FACTORY_IMPL = "__Impl";
-
+	public static final String BEAN_FACTORY_IMPL = "__BeanFactoryImpl";
+	
 	public static final String BEAN_FACTORY = "bean-factory";
+	
+	public static final String PLACE_HOLDERS = "place-holders";
+	
+	public static final String PLACE_HOLDERS_FILE = "file";
 
 	public static final String BEAN = "bean";
 
