@@ -19,6 +19,7 @@ import rocket.util.client.ObjectHelper;
 
 /**
  * A base class for anything that generates a part of the BeanFactoryImpl
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class HasBeanFactoryGeneratorContext {
@@ -29,12 +30,15 @@ abstract public class HasBeanFactoryGeneratorContext {
 	private BeanFactoryGeneratorContext beanFactoryGeneratorContext;
 
 	protected BeanFactoryGeneratorContext getBeanFactoryGeneratorContext() {
-		ObjectHelper.checkNotNull("field:beanFactoryGeneratorContext", beanFactoryGeneratorContext);
+		ObjectHelper.checkNotNull("field:beanFactoryGeneratorContext",
+				beanFactoryGeneratorContext);
 		return this.beanFactoryGeneratorContext;
 	}
 
-	public void setBeanFactoryGeneratorContext(final BeanFactoryGeneratorContext beanFactoryGeneratorContext) {
-		ObjectHelper.checkNotNull("parameter:beanFactoryGeneratorContext", beanFactoryGeneratorContext);
+	public void setBeanFactoryGeneratorContext(
+			final BeanFactoryGeneratorContext beanFactoryGeneratorContext) {
+		ObjectHelper.checkNotNull("parameter:beanFactoryGeneratorContext",
+				beanFactoryGeneratorContext);
 		this.beanFactoryGeneratorContext = beanFactoryGeneratorContext;
 	}
 }

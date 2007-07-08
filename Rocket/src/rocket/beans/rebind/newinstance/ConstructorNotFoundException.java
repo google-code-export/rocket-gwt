@@ -13,43 +13,29 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind;
+package rocket.beans.rebind.newinstance;
+
+import rocket.beans.rebind.BeanFactoryGeneratorException;
 
 /**
- * This exception is thrown whenever the generator is asked to create a
- * BeanFactory implementation for a class or an interface that is not a
- * BeanFactory.
- * 
+ * This exception is thrown whenever the bean type does not have a constructor with types that match the values taken
+ * found in the xml file. 
  * @author Miroslav Pokorny
- * 
  */
-public class NotABeanFactoryException extends BeanFactoryGeneratorException {
+public class ConstructorNotFoundException extends BeanFactoryGeneratorException {
 
-	/**
-	 * 
-	 */
-	public NotABeanFactoryException() {
+	public ConstructorNotFoundException() {
 	}
 
-	/**
-	 * @param message
-	 */
-	public NotABeanFactoryException(String message) {
+	public ConstructorNotFoundException(String message) {
 		super(message);
 	}
 
-	/**
-	 * @param cause
-	 */
-	public NotABeanFactoryException(Throwable cause) {
+	public ConstructorNotFoundException(Throwable cause) {
 		super(cause);
 	}
 
-	/**
-	 * @param message
-	 * @param cause
-	 */
-	public NotABeanFactoryException(String message, Throwable cause) {
+	public ConstructorNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

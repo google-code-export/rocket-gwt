@@ -25,9 +25,9 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokory
  */
-abstract public class CollectionPropertyValueDefinition extends PropertyValueDefinition {
+abstract public class CollectionValue extends Value {
 
-	protected CollectionPropertyValueDefinition() {
+	protected CollectionValue() {
 		super();
 
 		this.setValues(this.createCollection());
@@ -50,11 +50,11 @@ abstract public class CollectionPropertyValueDefinition extends PropertyValueDef
 
 	abstract protected Collection createCollection();
 
-	public void add(final PropertyValueDefinition value) {
+	public void add(final Value value) {
 		this.getValues().add(value);
 	}
 
-	public String generatePropertyValueCodeBlock() {
+	public String generateValue() {
 		final StringBuilder buffer = new StringBuilder();
 		buffer.append("new ");
 		buffer.append(this.getBuilderTypeName());
@@ -64,8 +64,8 @@ abstract public class CollectionPropertyValueDefinition extends PropertyValueDef
 		while (values.hasNext()) {
 			buffer.append(".add(");
 
-			final PropertyValueDefinition value = (PropertyValueDefinition) values.next();
-			buffer.append(value.generatePropertyValueCodeBlock());
+			final Value value = (Value) values.next();
+			buffer.append(value.generateValue());
 
 			buffer.append(")");
 		}
@@ -80,4 +80,8 @@ abstract public class CollectionPropertyValueDefinition extends PropertyValueDef
 	abstract protected String getBuilderTypeName();
 
 	abstract protected String getCollectionGetterName();
+	
+	public String toString(){
+		return super.toString() + ", values: " + values;
+	}
 }

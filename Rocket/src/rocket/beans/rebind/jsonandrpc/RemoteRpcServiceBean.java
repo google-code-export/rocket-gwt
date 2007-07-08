@@ -17,15 +17,15 @@ package rocket.beans.rebind.jsonandrpc;
 
 import rocket.beans.client.RemoteRpcOrJsonServiceFactoryBean;
 import rocket.beans.rebind.config.Constants;
-import rocket.beans.rebind.property.PropertyDefinition;
-import rocket.beans.rebind.values.StringValueDefinition;
+import rocket.beans.rebind.property.Property;
+import rocket.beans.rebind.values.StringValue;
 
 /**
  * This bean definition represents a rpc service.
  * 
  * @author Miroslav Pokorny
  */
-public class RemoteRpcServiceBeanDefinition extends RemoteRpcOrJsonServiceBeanDefinition {
+public class RemoteRpcServiceBean extends RemoteRpcOrJsonServiceBean {
 	protected String getAddressPropertyName() {
 		return Constants.REMOTE_RPC_SERVICE_ADDRESS;
 	}
@@ -35,8 +35,8 @@ public class RemoteRpcServiceBeanDefinition extends RemoteRpcOrJsonServiceBeanDe
 	}
 
 	protected String getAddress() {
-		final PropertyDefinition property = (PropertyDefinition) this.getProperties().get(this.getAddressPropertyName());
-		final StringValueDefinition address = (StringValueDefinition) property.getPropertyValueDefinition();
-		return address.generatePropertyValueCodeBlock();
+		final Property property = (Property) this.getProperties().get(this.getAddressPropertyName());
+		final StringValue address = (StringValue) property.getValue();
+		return address.generateValue();
 	}
 }

@@ -13,26 +13,39 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.client;
+package rocket.beans.test.client.manyvalues;
 
-/**
- * A FactoryMethodBean is a class that can on demand return a bean
- * 
- * @author Miroslav Pokorny
- */
-public interface FactoryBean {
-	/**
-	 * Returns either the singleton instance of create a new instance if the
-	 * bean is a prototype.
-	 * 
-	 * @return
-	 */
-	Object getObject();
+import java.util.Set;
 
-	/**
-	 * Tests if the contained bean is a singleton.
-	 * 
-	 * @return
-	 */
-	boolean isSingleton();
+public class ClassWithManyValues {
+
+	private String apple;
+
+	public String getApple() {
+		return this.apple;
+	}
+
+	public void setApple(final String apple) {
+		this.apple = apple;
+	}
+
+	private String banana;
+
+	public String getBanana() {
+		return this.banana;
+	}
+
+	public void setBanana(final String banana) {
+		this.banana = banana;
+	}
+	
+	private String carrot;
+
+	public String getCarrot() {
+		return this.carrot;
+	}
+
+	public void setCarrot(final String carrot) {
+		this.carrot = carrot;
+	}
 }

@@ -5,8 +5,10 @@
 		id="bean" 
 		class="rocket.beans.test.client.intproperty.ClassWithIntProperty" 
 		scope="singleton">
-		<property name="intProperty">
-			<value>123</value>
-		</property>
+		<properties>
+			<property name="intProperty">
+				<value>123</value>
+			</property>
+		</properties>
 	</bean>
 </bean-factory>

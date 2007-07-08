@@ -15,6 +15,7 @@
  */
 package rocket.beans.rebind.values;
 
+import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.ext.Generator;
@@ -27,12 +28,12 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @author Miroslav Pokorny
  * 
  */
-public class StringValueDefinition extends PropertyValueDefinition {
+public class StringValue extends Value {
 
 	/**
 	 * Generates the literal that contains the value of this property.
 	 */
-	public String generatePropertyValueCodeBlock() {
+	public String generateValue() {
 		String statement = null;
 
 		while (true) {
@@ -79,45 +80,45 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		return statement;
 	}
 
-	private String generateBooleanPropertyValueLiteral() {
+	protected String generateBooleanPropertyValueLiteral() {
 		return "(boolean)" + this.getValue();
 	}
 
-	private String generateBytePropertyValueLiteral() {
+	protected String generateBytePropertyValueLiteral() {
 		return "(byte)" + this.getValue();
 	}
 
-	private String generateShortPropertyValueLiteral() {
+	protected String generateShortPropertyValueLiteral() {
 		return "(short)" + this.getValue();
 	}
 
-	private String generateIntPropertyValueLiteral() {
+	protected String generateIntPropertyValueLiteral() {
 		return this.getValue();
 	}
 
-	private String generateLongPropertyValueLiteral() {
+	protected String generateLongPropertyValueLiteral() {
 		return this.getValue() + "L";
 	}
 
-	private String generateFloatPropertyValueLiteral() {
+	protected String generateFloatPropertyValueLiteral() {
 		String statement;
 		statement = "(float)" + this.getValue() + "f";
 		return statement;
 	}
 
-	private String generateDoublePropertyValueLiteral() {
+	protected String generateDoublePropertyValueLiteral() {
 		String statement;
 		statement = this.getValue();
 		return statement;
 	}
 
-	private String generateCharPropertyValueLiteral() {
+	protected String generateCharPropertyValueLiteral() {
 		String statement;
 		statement = "'" + Generator.escape(this.getValue()) + "'";
 		return statement;
 	}
 
-	private String generateStringPropertyValueLiteral() {
+	protected String generateStringPropertyValueLiteral() {
 		return "\"" + Generator.escape(this.getValue()) + "\"";
 	}
 
@@ -130,41 +131,41 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		boolean compatible = false;
 
 		while (true) {
-			final JType propertyType = this.getType();
-			if (propertyType.getQualifiedSourceName().equals(String.class.getName())) {
+			final JType type = this.getType();
+			if (type.getQualifiedSourceName().equals(String.class.getName())) {
 				compatible = true;
 				break;
 			}
 			final String value = this.getValue();
-			if (propertyType == JPrimitiveType.BOOLEAN) {
+			if (type == JPrimitiveType.BOOLEAN) {
 				compatible = isCompatibleWithBoolean(value);
 				break;
 			}
-			if (propertyType == JPrimitiveType.BYTE) {
+			if (type == JPrimitiveType.BYTE) {
 				compatible = isCompatibleWithByte(compatible, value);
 				break;
 			}
-			if (propertyType == JPrimitiveType.SHORT) {
+			if (type == JPrimitiveType.SHORT) {
 				compatible = isCompatibleWithShort(compatible, value);
 				break;
 			}
-			if (propertyType == JPrimitiveType.INT) {
+			if (type == JPrimitiveType.INT) {
 				compatible = isCompatibleWithInt(compatible, value);
 				break;
 			}
-			if (propertyType == JPrimitiveType.LONG) {
+			if (type == JPrimitiveType.LONG) {
 				compatible = isCompatibleWithLong(compatible, value);
 				break;
 			}
-			if (propertyType == JPrimitiveType.FLOAT) {
+			if (type == JPrimitiveType.FLOAT) {
 				compatible = isCompatibleWithFloat(compatible, value);
 				break;
 			}
-			if (propertyType == JPrimitiveType.DOUBLE) {
+			if (type == JPrimitiveType.DOUBLE) {
 				compatible = isCompatibleWithDouble(compatible, value);
 				break;
 			}
-			if (propertyType == JPrimitiveType.CHAR) {
+			if (type == JPrimitiveType.CHAR) {
 				compatible = isCompatibleWithChar(value);
 				break;
 			}
@@ -174,11 +175,11 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		return compatible;
 	}
 
-	private boolean isCompatibleWithBoolean(final String value) {
+	protected boolean isCompatibleWithBoolean(final String value) {
 		return "true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value);
 	}
 
-	private boolean isCompatibleWithByte(boolean compatible, final String value) {
+	protected boolean isCompatibleWithByte(boolean compatible, final String value) {
 		try {
 			Byte.parseByte(value);
 			compatible = true;
@@ -187,7 +188,7 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		return compatible;
 	}
 
-	private boolean isCompatibleWithShort(boolean compatible, final String value) {
+	protected boolean isCompatibleWithShort(boolean compatible, final String value) {
 		try {
 			Short.parseShort(value);
 			compatible = true;
@@ -196,7 +197,7 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		return compatible;
 	}
 
-	private boolean isCompatibleWithInt(boolean compatible, final String value) {
+	protected boolean isCompatibleWithInt(boolean compatible, final String value) {
 		try {
 			Integer.parseInt(value);
 			compatible = true;
@@ -205,7 +206,7 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		return compatible;
 	}
 
-	private boolean isCompatibleWithLong(boolean compatible, final String value) {
+	protected boolean isCompatibleWithLong(boolean compatible, final String value) {
 		try {
 			Long.parseLong(value);
 			compatible = true;
@@ -214,7 +215,7 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		return compatible;
 	}
 
-	private boolean isCompatibleWithFloat(boolean compatible, final String value) {
+	protected boolean isCompatibleWithFloat(boolean compatible, final String value) {
 		try {
 			Float.parseFloat(value);
 			compatible = true;
@@ -223,7 +224,7 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		return compatible;
 	}
 
-	private boolean isCompatibleWithDouble(boolean compatible, final String value) {
+	protected boolean isCompatibleWithDouble(boolean compatible, final String value) {
 		try {
 			Double.parseDouble(value);
 			compatible = true;
@@ -232,7 +233,7 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		return compatible;
 	}
 
-	private boolean isCompatibleWithChar(final String value) {
+	protected boolean isCompatibleWithChar(final String value) {
 		boolean compatible;
 		compatible = value.length() == 1;
 		return compatible;
@@ -252,5 +253,8 @@ public class StringValueDefinition extends PropertyValueDefinition {
 		StringHelper.checkNotEmpty("parameter:value", value);
 		this.value = value;
 	}
-
+	
+	public String toString(){
+		return super.toString() + ", value[" + value + "]";
+	}
 }

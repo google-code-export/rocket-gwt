@@ -26,26 +26,12 @@ import rocket.beans.rebind.config.Constants;
  */
 public class BeansHelper {
 
-	/**
-	 * Creates the setter name for the given property
-	 * 
-	 * @param propertyName
-	 * @return
-	 */
-	static public String createSetterName(final String propertyName) {
-		String setter = "set" + Character.toUpperCase(propertyName.charAt(0));
-
-		if (propertyName.length() > 1) {
-			setter = setter + propertyName.substring(1);
-		}
-
-		return setter;
-	}
-
 	static public void checkScope(final String name, final String scope) {
 		if (false == isScope(scope)) {
-			throw new InvalidBeanScopeException("The " + name + " contains an unknown bean scope [" + scope + "] Supported types are: "
-					+ Constants.SINGLETON + " and " + Constants.PROTOTYPE);
+			throw new InvalidBeanScopeException("The " + name
+					+ " contains an unknown bean scope [" + scope
+					+ "] Supported types are: " + Constants.SINGLETON + " and "
+					+ Constants.PROTOTYPE);
 		}
 	}
 

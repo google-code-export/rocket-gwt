@@ -3,19 +3,19 @@
 <bean-factory>
 	<bean 
 		id="factory" 
-		class="rocket.beans.test.client.factorymethodnotfound.FactoryBean" 
+		class="rocket.beans.test.client.factorymethod.FactoryMethodBean" 
 		scope="singleton"
 		>
 	</bean>
 
 	<bean 
 		id="bean" 
-		class="rocket.beans.test.client.factorymethodnotfound.Bean" 
+		class="rocket.beans.test.client.factorymethod.Bean" 
 		scope="singleton"
 		>
 		<factory
 			reference-id="factory"
-			method="notFound"
+			method="create"
 			/>		
 	</bean>
 </bean-factory>

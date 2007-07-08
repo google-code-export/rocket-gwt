@@ -15,13 +15,8 @@
  */
 package rocket.beans.test.client.factorymethod;
 
-public class BeanWithFactoryMethod {
-	
-	public static BeanWithFactoryMethod create(){
-		return new BeanWithFactoryMethod( null );
-	}
-	
-	protected BeanWithFactoryMethod( final Object ignored ){
-		super();
+public class FactoryMethodBean {
+	public Bean create(){
+		return new Bean( null );
 	}
 }

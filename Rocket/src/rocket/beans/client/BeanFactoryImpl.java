@@ -74,7 +74,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	}
 
 	/**
-	 * Attempts to get the FactoryBean given a name. If the factory is not found
+	 * Attempts to get the FactoryMethodBean given a name. If the factory is not found
 	 * an exception is thrown.
 	 * 
 	 * @param name
@@ -82,15 +82,18 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * @throws UnableToFindBeanException
 	 *             if the bean doesnt exist.
 	 */
-	protected FactoryBean getFactoryBean(final String name) throws UnableToFindBeanException {
-		final FactoryBean factory = (FactoryBean) this.getFactoryBeans().get(name);
+	protected FactoryBean getFactoryBean(final String name)
+			throws UnableToFindBeanException {
+		final FactoryBean factory = (FactoryBean) this.getFactoryBeans().get(
+				name);
 		if (null == factory) {
 			throwUnableToFindBeanException("Unable to find bean [" + name + "]");
 		}
 		return factory;
 	}
 
-	protected void throwUnableToFindBeanException(final String message) throws UnableToFindBeanException {
+	protected void throwUnableToFindBeanException(final String message)
+			throws UnableToFindBeanException {
 		throw new UnableToFindBeanException(message);
 	}
 }

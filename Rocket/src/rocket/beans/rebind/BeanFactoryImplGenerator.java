@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import rocket.beans.client.BeanFactoryImpl;
-import rocket.beans.rebind.bean.BeanDefinition;
+import rocket.beans.rebind.bean.Bean;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -34,7 +34,7 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-public class BeanFactoryImplGenerator extends HasBeanFactoryGeneratorContext{
+public class BeanFactoryImplGenerator extends HasBeanFactoryGeneratorContext {
 
 	/**
 	 * Invoking this method generates the BeanFactory implementation.
@@ -42,18 +42,24 @@ public class BeanFactoryImplGenerator extends HasBeanFactoryGeneratorContext{
 	 * @return the name of the generated class.
 	 */
 	public String generate() {
-		final BeanFactoryGeneratorContext context = this.getBeanFactoryGeneratorContext();
+		final BeanFactoryGeneratorContext context = this
+				.getBeanFactoryGeneratorContext();
 
-		final String generatedClassName = context.getGeneratedClassname(this.getType().getQualifiedSourceName());
+		final String generatedClassName = context.getGeneratedClassname(this
+				.getType().getQualifiedSourceName());
 		final String packageName = context.getPackageName(generatedClassName);
-		final String simpleClassName = context.getSimpleClassName(generatedClassName);
-		final PrintWriter printWriter = context.tryCreateTypePrintWriter(packageName, simpleClassName);
+		final String simpleClassName = context
+				.getSimpleClassName(generatedClassName);
+		final PrintWriter printWriter = context.tryCreateTypePrintWriter(
+				packageName, simpleClassName);
 		if (printWriter != null) {
 
-			final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, simpleClassName);
+			final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(
+					packageName, simpleClassName);
 			composerFactory.setSuperclass(BeanFactoryImpl.class.getName());
 
-			final SourceWriter sourceWriter = context.createSourceWriter(composerFactory, printWriter);
+			final SourceWriter sourceWriter = context.createSourceWriter(
+					composerFactory, printWriter);
 			this.writeBuildBeanFactoriesMethod(sourceWriter);
 			this.writeCreateBeanFactoryMethods(sourceWriter);
 
@@ -70,10 +76,11 @@ public class BeanFactoryImplGenerator extends HasBeanFactoryGeneratorContext{
 	 * @param writer
 	 */
 	protected void writeCreateBeanFactoryMethods(final SourceWriter writer) {
-		final Iterator beanDefinitions = this.getBeanFactoryGeneratorContext().getBeanDefinitions().values().iterator();
-		while (beanDefinitions.hasNext()) {
-			final BeanDefinition beanDefinition = (BeanDefinition) beanDefinitions.next();
-			beanDefinition.write(writer);
+		final Iterator beans = this.getBeanFactoryGeneratorContext().getBeans()
+				.values().iterator();
+		while (beans.hasNext()) {
+			final Bean bean = (Bean) beans.next();
+			bean.write(writer);
 		}
 	}
 
@@ -91,27 +98,29 @@ public class BeanFactoryImplGenerator extends HasBeanFactoryGeneratorContext{
 		writer.indent();
 
 		// declare beans map instance...
-		final String beans = "beans";
-		writer.println("final " + mapTypeName + " " + beans + " = new " + HashMap.class.getName() + "();");
+		final String beansVariable = "beans";
+		writer.println("final " + mapTypeName + " " + beansVariable + " = new "
+				+ HashMap.class.getName() + "();");
 
-		final Iterator beanDefinitions = this.getBeanFactoryGeneratorContext().getBeanDefinitions().values().iterator();
-		while (beanDefinitions.hasNext()) {
-			final BeanDefinition beanDefinition = (BeanDefinition) beanDefinitions.next();
+		final Iterator beans = this.getBeanFactoryGeneratorContext().getBeans()
+				.values().iterator();
+		while (beans.hasNext()) {
+			final Bean bean = (Bean) beans.next();
 
-			final String id = beanDefinition.getId();
-			final String factoryMethodName = beanDefinition.getBeanFactoryMethodName();
+			final String id = bean.getId();
+			final String factoryMethodName = bean.getBeanFactoryMethodName();
 
-			writer.println(beans + ".put( \"" + id + "\", " + factoryMethodName + "() );");
+			writer.println(beansVariable + ".put( \"" + id + "\", "
+					+ factoryMethodName + "() );");
 		}
 
 		// return beans
-		writer.println("return " + beans + ";");
+		writer.println("return " + beansVariable + ";");
 
 		// close method declaration.
 		writer.outdent();
 		writer.println("}");
 	}
-	
 
 	/**
 	 * The JClassType that corresponds to the BeanFactory being generated.

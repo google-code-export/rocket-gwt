@@ -40,14 +40,22 @@ public class Constants {
 
 	public static final String BEAN_SCOPE = "scope";
 
-	public static final String BEAN_FACTORY_METHOD_NAME = "factoryMethod";
-
 	public static final String BEAN_INIT_METHOD_NAME = "initMethod";
 
 	public static final String SINGLETON = "singleton";
 
 	public static final String PROTOTYPE = "prototype";
 
+	public static final String CONSTRUCTOR = "constructor";
+
+	public static final String FACTORY ="factory";
+	
+	public static final String FACTORY_BEAN_ID ="reference-id";
+	
+	public static final String FACTORY_METHOD_NAME ="method";
+	
+	public static final String PROPERTIES = "properties";
+	
 	public static final String PROPERTY = "property";
 
 	public static final String PROPERTY_NAME = "name";
@@ -67,10 +75,6 @@ public class Constants {
 	public static final String MAP_ENTRY = "map-entry";
 
 	public static final String MAP_ENTRY_KEY = "key";
-
-//FIXME	public final static String FACTORY_METHOD_PREFIX = "createFactoryBeanForId_";
-//
-//	public final static String FACTORY_METHOD_SUFFIX = "_";
 
 	public final static String REMOTE_RPC_SERVICE = "remote-rpc-service";
 

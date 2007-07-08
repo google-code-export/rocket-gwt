@@ -16,7 +16,7 @@
 
 package rocket.beans.rebind.property;
 
-import rocket.beans.rebind.values.PropertyValueDefinition;
+import rocket.beans.rebind.values.Value;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -25,7 +25,7 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class PropertyDefinition {
+public class Property {
 	/**
 	 * The property name
 	 */
@@ -41,15 +41,19 @@ public class PropertyDefinition {
 		this.name = name;
 	}
 
-	private PropertyValueDefinition propertyValueDefinition;
+	private Value value;
 
-	public PropertyValueDefinition getPropertyValueDefinition() {
-		ObjectHelper.checkNotNull("field:propertyValueDefinition", propertyValueDefinition);
-		return this.propertyValueDefinition;
+	public Value getValue() {
+		ObjectHelper.checkNotNull("field:value", value);
+		return this.value;
 	}
 
-	public void setPropertyValueDefinition(final PropertyValueDefinition propertyValueDefinition) {
-		ObjectHelper.checkNotNull("parameter:propertyValueDefinition", propertyValueDefinition);
-		this.propertyValueDefinition = propertyValueDefinition;
+	public void setValue(final Value value) {
+		ObjectHelper.checkNotNull("parameter:value", value);
+		this.value = value;
+	}
+	
+	public String toString(){
+		return super.toString() + ", name[" + name + "], value: " + value;
 	}
 }

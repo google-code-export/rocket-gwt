@@ -17,7 +17,10 @@ package rocket.beans.rebind.values;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import com.google.gwt.core.ext.typeinfo.JType;
 
 import rocket.beans.client.SetBuilder;
 
@@ -26,14 +29,15 @@ import rocket.beans.client.SetBuilder;
  * 
  * @author Miroslav Pokorny
  */
-public class SetPropertyValueDefinition extends CollectionPropertyValueDefinition {
+public class SetValue extends CollectionValue {
 
 	protected Collection createCollection() {
 		return new HashSet();
 	}
 
+
 	/**
-	 * If the property is a Set report false
+	 * If the property is a not Set report false
 	 * 
 	 * @return
 	 */

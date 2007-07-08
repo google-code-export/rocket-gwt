@@ -5,9 +5,11 @@
 		id="bean" 
 		class="rocket.beans.test.client.referencesanotherbean.ClassWithBeanReference" 
 		scope="singleton">
-		<property name="anotherBean">
-			<bean-reference reference-id="anotherBean" />
-		</property>
+		<properties>
+			<property name="anotherBean">
+				<bean-reference reference-id="anotherBean" />
+			</property>
+		</properties>
 	</bean>
 
 	<bean 

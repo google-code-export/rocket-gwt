@@ -3,12 +3,11 @@
 <bean-factory>
 	<bean 
 		id="bean" 
-		class="rocket.beans.test.client.floatproperty.ClassWithFloatProperty" 
+		class="rocket.beans.test.client.multipleargumentsconstructor.ClassWithMultipleArgumentsConstructor" 
 		scope="singleton">
-		<properties>
-			<property name="floatProperty">
-				<value>123.45</value>
-			</property>
-		</properties>
+		<constructor>
+			<value>foo</value>
+			<value>bar</value>			
+		</constructor>
 	</bean>
 </bean-factory>

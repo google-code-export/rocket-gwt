@@ -3,11 +3,17 @@
 <bean-factory>
 	<bean 
 		id="bean" 
-		class="rocket.beans.test.client.floatproperty.ClassWithFloatProperty" 
+		class="rocket.beans.test.client.manyvalues.ClassWithManyValues" 
 		scope="singleton">
 		<properties>
-			<property name="floatProperty">
-				<value>123.45</value>
+			<property name="apple">
+				<value>green</value>
+			</property>
+			<property name="banana">
+				<value>yellow</value>
+			</property>
+			<property name="carrot">
+				<value>orange</value>
 			</property>
 		</properties>
 	</bean>

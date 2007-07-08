@@ -31,7 +31,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import rocket.beans.rebind.BeanFactoryGeneratorContext;
 import rocket.beans.rebind.BeansHelper;
 import rocket.beans.rebind.bean.BeanClassNameMissingException;
-import rocket.beans.rebind.bean.BeanDefinition;
+import rocket.beans.rebind.bean.Bean;
 import rocket.beans.rebind.bean.BeanIdMissingException;
 import rocket.beans.rebind.bean.BeanTypeNotConcreteException;
 import rocket.beans.rebind.bean.BeanTypeNotFoundException;
@@ -39,18 +39,19 @@ import rocket.beans.rebind.bean.InvalidBeanScopeException;
 import rocket.beans.rebind.init.CustomInitMethod;
 import rocket.beans.rebind.init.InitMethod;
 import rocket.beans.rebind.jsonandrpc.PropertyMissingException;
-import rocket.beans.rebind.jsonandrpc.RemoteJsonServiceBeanDefinition;
-import rocket.beans.rebind.jsonandrpc.RemoteRpcServiceBeanDefinition;
+import rocket.beans.rebind.jsonandrpc.RemoteJsonServiceBean;
+import rocket.beans.rebind.jsonandrpc.RemoteRpcServiceBean;
 import rocket.beans.rebind.newinstance.DeferredBindingNewInstance;
 import rocket.beans.rebind.newinstance.FactoryMethod;
-import rocket.beans.rebind.newinstance.NewInstance;
-import rocket.beans.rebind.property.PropertyDefinition;
+import rocket.beans.rebind.newinstance.Constructor;
+import rocket.beans.rebind.newinstance.NewInstanceProvider;
+import rocket.beans.rebind.property.Property;
 import rocket.beans.rebind.values.BeanReference;
-import rocket.beans.rebind.values.ListPropertyValueDefinition;
-import rocket.beans.rebind.values.MapPropertyValueDefinition;
-import rocket.beans.rebind.values.PropertyValueDefinition;
-import rocket.beans.rebind.values.SetPropertyValueDefinition;
-import rocket.beans.rebind.values.StringValueDefinition;
+import rocket.beans.rebind.values.ListValue;
+import rocket.beans.rebind.values.MapValue;
+import rocket.beans.rebind.values.Value;
+import rocket.beans.rebind.values.SetValue;
+import rocket.beans.rebind.values.StringValue;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -97,11 +98,26 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 				final String className = attributes.getValue(Constants.BEAN_CLASSNAME);
 				final String id = attributes.getValue(Constants.BEAN_ID);
 				final String scope = attributes.getValue(Constants.BEAN_SCOPE);
-				final String factoryMethodName = attributes.getValue(Constants.BEAN_FACTORY_METHOD_NAME);
 				final String initMethodName = attributes.getValue(Constants.BEAN_INIT_METHOD_NAME);
-				this.handleBeanOpen(className, id, scope, factoryMethodName, initMethodName);
+				this.handleBeanOpen(className, id, scope, initMethodName);
 				break;
 			}
+			if (qName.equals(Constants.CONSTRUCTOR )) {
+				this.handleConstructorOpen();
+				break;
+			}
+			if (qName.equals(Constants.FACTORY )) {
+				final String factoryBeanId = attributes.getValue(Constants.FACTORY_BEAN_ID );
+				final String factoryMethodName = attributes.getValue(Constants.FACTORY_METHOD_NAME);
+				this.handleFactoryOpen( factoryBeanId, factoryMethodName );
+				break;
+			}			
+			
+			if (qName.equals(Constants.PROPERTIES)) {
+				this.handlePropertiesOpen();
+				break;
+			}
+			
 			if (qName.equals(Constants.PROPERTY)) {
 				final String propertyName = attributes.getValue(Constants.PROPERTY_NAME);
 				this.handlePropertyOpen(propertyName);
@@ -135,18 +151,18 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 			}
 			if (qName.equals(Constants.REMOTE_RPC_SERVICE)) {
 				final String id = attributes.getValue(Constants.REMOTE_RPC_SERVICE_ID);
-				final String interfaceTypeName = attributes.getValue(Constants.REMOTE_RPC_SERVICE_INTERFACE);
+				final String interfaceType = attributes.getValue(Constants.REMOTE_RPC_SERVICE_INTERFACE);
 				final String address = attributes.getValue(Constants.REMOTE_RPC_SERVICE_ADDRESS);
 
-				this.handleRemoteRpcServiceOpen(id, interfaceTypeName, address);
+				this.handleRemoteRpcServiceOpen(id, interfaceType, address);
 				break;
 			}
 			if (qName.equals(Constants.REMOTE_JSON_SERVICE)) {
 				final String id = attributes.getValue(Constants.REMOTE_JSON_SERVICE_ID);
-				final String interfaceTypeName = attributes.getValue(Constants.REMOTE_JSON_SERVICE_INTERFACE);
+				final String interfaceType = attributes.getValue(Constants.REMOTE_JSON_SERVICE_INTERFACE);
 				final String address = attributes.getValue(Constants.REMOTE_JSON_SERVICE_ADDRESS);
 
-				this.handleRemoteJsonServiceOpen(id, interfaceTypeName, address);
+				this.handleRemoteJsonServiceOpen(id, interfaceType, address);
 				break;
 			}
 			break;
@@ -166,6 +182,14 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 			}
 			if (qName.equals(Constants.BEAN)) {
 				this.handleBeanClose();
+				break;
+			}
+			if (qName.equals(Constants.CONSTRUCTOR )) {
+				this.handleConstructorClose();
+				break;
+			}
+			if (qName.equals(Constants.PROPERTIES)) {
+				this.handlePropertiesClose();
 				break;
 			}
 			if (qName.equals(Constants.PROPERTY)) {
@@ -223,11 +247,9 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 	 * @param className
 	 * @param id
 	 * @param scope
-	 * @param factoryMethodName
 	 * @param initFactoryMethodName
 	 */
-	protected void handleBeanOpen(final String className, final String id, final String scope, final String factoryMethodName,
-			final String initMethodName) {
+	protected void handleBeanOpen(final String className, final String id, final String scope, final String initMethodName) {
 		if (StringHelper.isNullOrEmpty(className)) {
 			throwBeanClassNameMissingException();
 		}
@@ -239,39 +261,24 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 		}
 
 		final BeanFactoryGeneratorContext context = this.getBeanFactoryGeneratorContext();
-		final BeanDefinition bean = new BeanDefinition();
+		final Bean bean = new Bean();
 		bean.setBeanFactoryGeneratorContext(context);
 		bean.setId(id);
 		bean.setScope(scope);
-
-		final JClassType type = (JClassType) context.findType(className);
-		if (null == type) {
-			this.throwBeanTypeNotFoundException(className);
-		}
-
-		if (type.isAbstract() || type.isInterface() != null) {
-			throwBeanTypeMustBeConcrete(className, id, scope);
-		}
-		bean.setType(type);
+		bean.setTypeName( className );	
+		bean.setInitMethod( this.createInitMethod(bean, initMethodName));
 		
-		// handle factoryMethod
-		NewInstance newInstance = null;
-		while( true ){
-			if (StringHelper.isNullOrEmpty(factoryMethodName)) {
-				newInstance = new NewInstance();				
-				newInstance.setBeanDefinition(bean );
-				break;
-			}
-			final FactoryMethod factoryMethod = new FactoryMethod();
-			factoryMethod.setBeanDefinition( bean );
-			factoryMethod.setMethodName(factoryMethodName);
-			newInstance = factoryMethod;
-			break;
-		}
-		newInstance.setBeanFactoryGeneratorContext( this.getBeanFactoryGeneratorContext() );			
-		bean.setNewInstance( newInstance );
+		final Constructor constructor = new Constructor();		
+		constructor.setBeanFactoryGeneratorContext( context );
+		constructor.setBean(bean);
+		bean.setNewInstanceProvider( constructor );		
 		
-		// handle initMethod
+		context.addBean(bean);
+
+		this.push(bean);
+	}
+	
+	protected InitMethod createInitMethod( final Bean bean, final String initMethodName ){
 		InitMethod initMethod = null;
 		while( true ){
 			if (StringHelper.isNullOrEmpty(initMethodName)) {
@@ -279,16 +286,13 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 				break;
 			}
 			final CustomInitMethod customInitMethod = new CustomInitMethod();
-			customInitMethod.setBeanDefinition( bean );
+			customInitMethod.setBean( bean );
 			customInitMethod.setMethodName(initMethodName);
 			initMethod = customInitMethod;
 			break;
 		}
-		bean.setInitMethod( initMethod );
-		
-		context.addBeanDefinition(bean);
-
-		this.push(bean);
+		initMethod.setBeanFactoryGeneratorContext( this.getBeanFactoryGeneratorContext() );
+		return initMethod;
 	}
 
 	protected void throwBeanIdMissingException() {
@@ -304,32 +308,65 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 		throw new BeanClassNameMissingException("Bean type missing," + this.buildLineAndColumnFromLocator());
 	}
 
-	protected void throwBeanTypeNotFoundException(final String className) {
-		throw new BeanTypeNotFoundException("Bean type [" + className + "] not found, " + this.buildLineAndColumnFromLocator());
-	}
-
-	protected void throwBeanTypeMustBeConcrete(final String className, final String id, final String scope) {
-		throw new BeanTypeNotConcreteException("The bean with an id of [" + id + "] and scope[" + scope + "] type [" + className
-				+ "] is not a concrete class ");
-	}
-
 	protected void handleBeanClose() {
 		this.pop();
 	}
 
+	protected void handleConstructorOpen(){		
+	}
+	protected void handleConstructorClose(){
+		Bean bean = null;
+		
+		final Stack constructorParameters = new Stack();
+		while( true ){
+			final Object value = this.pop();
+			if( false == value instanceof Value ){
+				bean = (Bean) value;
+				this.push( value );
+				break;
+			}
+			constructorParameters.add( value );
+		}
+						
+		final Constructor constructor = (Constructor) bean.getNewInstanceProvider();		
+		while( false == constructorParameters.isEmpty() ){
+			constructor.addParameter( (Value) constructorParameters.pop() );
+		}
+	}
+	
+	protected void handleFactoryOpen( final String beanId, final String methodName ){
+		final Bean bean = (Bean) this.peek();
+		
+		final FactoryMethod factoryMethod = new FactoryMethod();
+		factoryMethod.setMethodName(methodName);
+		factoryMethod.setBean(bean);
+		factoryMethod.setBeanFactoryGeneratorContext( this.getBeanFactoryGeneratorContext() );
+		factoryMethod.setId(beanId);
+		
+		bean.setNewInstanceProvider( factoryMethod );
+	}
+	
+	protected void handleFactoryClose(){		
+	}
+	
+	protected void handlePropertiesOpen(){		
+	}
+	protected void handlePropertiesClose(){		
+	}
+	
 	protected void handlePropertyOpen(final String propertyName) {
-		final PropertyDefinition property = new PropertyDefinition();
+		final Property property = new Property();
 		property.setName(propertyName);
 
 		this.push(property);
 	}
 
 	protected void handlePropertyClose() {
-		final PropertyValueDefinition value = (PropertyValueDefinition) this.pop();
-		final PropertyDefinition property = (PropertyDefinition) this.pop();
-		property.setPropertyValueDefinition(value);
+		final Value value = (Value) this.pop();
+		final Property property = (Property) this.pop();
+		property.setValue(value);
 
-		final BeanDefinition bean = (BeanDefinition) this.peek();
+		final Bean bean = (Bean) this.peek();
 
 		bean.addProperty(property);
 	}
@@ -339,7 +376,7 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 	}
 
 	protected void handleValueClose(final String value) {
-		final StringValueDefinition string = new StringValueDefinition();
+		final StringValue string = new StringValue();
 
 		final BeanFactoryGeneratorContext context = this.getBeanFactoryGeneratorContext();
 		string.setBeanFactoryGeneratorContext(context);
@@ -360,7 +397,7 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 	}
 
 	protected void handleListOpen() {
-		final ListPropertyValueDefinition list = new ListPropertyValueDefinition();
+		final ListValue list = new ListValue();
 		list.setBeanFactoryGeneratorContext(this.getBeanFactoryGeneratorContext());
 		this.push(list);// this is popped by
 		// property
@@ -370,21 +407,21 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 		final Stack listElements = new Stack();
 		while (true) {
 			final Object top = this.peek();
-			if (top instanceof ListPropertyValueDefinition) {
+			if (top instanceof ListValue) {
 				break;
 			}
 			listElements.push(this.pop());
 		}
 
-		final ListPropertyValueDefinition list = (ListPropertyValueDefinition) this.peek();
+		final ListValue list = (ListValue) this.peek();
 		while (false == listElements.isEmpty()) {
-			final PropertyValueDefinition property = (PropertyValueDefinition) listElements.pop();
+			final Value property = (Value) listElements.pop();
 			list.add(property);
 		}
 	}
 
 	protected void handleSetOpen() {
-		final SetPropertyValueDefinition set = new SetPropertyValueDefinition();
+		final SetValue set = new SetValue();
 		set.setBeanFactoryGeneratorContext(this.getBeanFactoryGeneratorContext());
 		this.push(set);// this is popped by
 		// property
@@ -394,20 +431,20 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 		final Stack setElements = new Stack();
 		while (true) {
 			final Object top = this.peek();
-			if (top instanceof SetPropertyValueDefinition) {
+			if (top instanceof SetValue) {
 				break;
 			}
 			setElements.push(this.pop());
 		}
 
-		final SetPropertyValueDefinition list = (SetPropertyValueDefinition) this.peek();
+		final SetValue list = (SetValue) this.peek();
 		while (false == setElements.isEmpty()) {
-			list.add((PropertyValueDefinition) setElements.pop());
+			list.add((Value) setElements.pop());
 		}
 	}
 
 	protected void handleMapOpen() {
-		final MapPropertyValueDefinition map = new MapPropertyValueDefinition();
+		final MapValue map = new MapValue();
 		map.setBeanFactoryGeneratorContext(this.getBeanFactoryGeneratorContext());
 		this.push(map);// this is popped by
 	}
@@ -420,14 +457,14 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 	}
 
 	protected void handleMapEntryClose() {
-		final PropertyValueDefinition value = (PropertyValueDefinition) this.pop();
+		final Value value = (Value) this.pop();
 		final String key = (String) this.pop();
 
-		final MapPropertyValueDefinition map = (MapPropertyValueDefinition) this.peek();
+		final MapValue map = (MapValue) this.peek();
 		map.addMapEntry(key, value);
 	}
 
-	protected void handleRemoteRpcServiceOpen(final String id, final String interfaceTypeName, final String address) {
+	protected void handleRemoteRpcServiceOpen(final String id, final String interfaceType, final String address) {
 		if (StringHelper.isNullOrEmpty(id)) {
 			throwBeanIdMissingException();
 		}
@@ -436,30 +473,30 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 		}
 
 		final BeanFactoryGeneratorContext context = this.getBeanFactoryGeneratorContext();
-
-		final JClassType interfaceType = (JClassType) context.getType(interfaceTypeName);
-
-		final StringValueDefinition value = new StringValueDefinition();
-		value.setType(context.getJavaLangString());
-		value.setValue(address);
-
-		final PropertyDefinition property = new PropertyDefinition();
+		
+		final RemoteRpcServiceBean bean = new RemoteRpcServiceBean();
+		bean.setId(id);
+		bean.setTypeName(interfaceType);
+		bean.setBeanFactoryGeneratorContext(context);
+		
+		final Property property = new Property();
 		property.setName("address");
-		property.setPropertyValueDefinition(value);
-
-		final RemoteRpcServiceBeanDefinition beanDefinition = new RemoteRpcServiceBeanDefinition();
-		beanDefinition.setId(id);
-		beanDefinition.setType(interfaceType);
-		beanDefinition.addProperty(property);
+		
+		final StringValue value = new StringValue();
+		value.setType(context.getJavaLangString());
+		value.setValue(address);		
+		property.setValue(value);
+		
+		bean.addProperty(property);
 		
 		final DeferredBindingNewInstance newInstance = new DeferredBindingNewInstance();
-		newInstance.setBeanDefinition(beanDefinition);
+		newInstance.setBean(bean);
 		newInstance.setBeanFactoryGeneratorContext( context );		
-		beanDefinition.setNewInstance(newInstance);
+		bean.setNewInstanceProvider(newInstance);
 		
-		beanDefinition.setInitMethod( new InitMethod() );
+		bean.setInitMethod( new InitMethod() );
 
-		context.addBeanDefinition(beanDefinition);
+		context.addBean(bean);
 	}
 
 	protected void throwRemoteRpcServiceAddressMissingException() {
@@ -471,7 +508,7 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 
 	}
 
-	protected void handleRemoteJsonServiceOpen(final String id, final String interfaceTypeName, final String address) {
+	protected void handleRemoteJsonServiceOpen(final String id, final String interfaceType, final String address) {
 		if (StringHelper.isNullOrEmpty(id)) {
 			throwBeanIdMissingException();
 		}
@@ -481,30 +518,29 @@ public class SaxHandler extends DefaultHandler implements ContentHandler, ErrorH
 
 		final BeanFactoryGeneratorContext context = this.getBeanFactoryGeneratorContext();
 
-		final JClassType interfaceType = (JClassType) context.getType(interfaceTypeName);
+		final RemoteJsonServiceBean bean = new RemoteJsonServiceBean();
+		bean.setId(id);
+		bean.setTypeName(interfaceType);
+		bean.setBeanFactoryGeneratorContext(context);
 
-		final StringValueDefinition value = new StringValueDefinition();
+		final Property property = new Property();
+		property.setName("address");
+
+		final StringValue value = new StringValue();
 		value.setType(context.getJavaLangString());
 		value.setValue(address);
-
-		final PropertyDefinition property = new PropertyDefinition();
-		property.setName("address");
-		property.setPropertyValueDefinition(value);
-
-		final RemoteJsonServiceBeanDefinition beanDefinition = new RemoteJsonServiceBeanDefinition();
-		beanDefinition.setId(id);
-		beanDefinition.setType(interfaceType);
+		property.setValue(value);
+		
+		bean.addProperty(property);
 		
 		final DeferredBindingNewInstance newInstance = new DeferredBindingNewInstance();
-		newInstance.setBeanDefinition(beanDefinition);
+		newInstance.setBean(bean);
 		newInstance.setBeanFactoryGeneratorContext( context );
-		beanDefinition.setNewInstance(newInstance);
+		bean.setNewInstanceProvider(newInstance);
 		
-		beanDefinition.setInitMethod( new InitMethod() );
-		
-		beanDefinition.addProperty(property);
+		bean.setInitMethod( new InitMethod() );
 
-		context.addBeanDefinition( beanDefinition );
+		context.addBean( bean );
 	}
 
 	protected void throwRemoteJsonServiceAddressMissingException() {

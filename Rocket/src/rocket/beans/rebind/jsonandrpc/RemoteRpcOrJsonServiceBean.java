@@ -15,22 +15,23 @@
  */
 package rocket.beans.rebind.jsonandrpc;
 
-import rocket.beans.rebind.bean.BeanDefinition;
-import rocket.beans.rebind.property.PropertyDefinition;
+import rocket.beans.rebind.bean.Bean;
+import rocket.beans.rebind.property.Property;
 import rocket.beans.rebind.property.PropertyNotFoundException;
 
+import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.rebind.SourceWriter;
 
 /**
- * Common base class for both {@link RemoteJsonServiceBeanDefinition } and
- * {@link RemoteRpcServiceBeanDefinition}
+ * Common base class for both {@link RemoteJsonServiceBean } and
+ * {@link RemoteRpcServiceBean}
  * 
  * @author Miroslav Pokorny
  */
-abstract public class RemoteRpcOrJsonServiceBeanDefinition extends BeanDefinition {
+abstract public class RemoteRpcOrJsonServiceBean extends Bean {
 
-	public void addProperty(final PropertyDefinition property) {
+	public void addProperty(final Property property) {
 		final String name = property.getName();
 		if (false == name.equals(this.getAddressPropertyName())) {
 			this.throwUnknownProperty(name);
@@ -46,6 +47,13 @@ abstract public class RemoteRpcOrJsonServiceBeanDefinition extends BeanDefinitio
 
 	abstract protected String getFactoryBeanSuperClass();
 
+
+	protected void checkType0( final JClassType type ){
+		if (null == type) {
+			this.throwBeanTypeNotFoundException();
+		}
+	}
+	
 	protected void writeBeanFactorySatisfyProperty0(final SourceWriter writer) {
 		final String instance = "instance";
 		final String instance0 = instance + '0';

@@ -17,25 +17,27 @@ package rocket.beans.rebind.values;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import rocket.beans.client.MapBuilder;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.ext.Generator;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Contains a Map property value for a bean.
  * 
  * @author Miroslav Pokorny
  */
-public class MapPropertyValueDefinition extends PropertyValueDefinition {
+public class MapValue extends Value {
 
-	public MapPropertyValueDefinition() {
+	public MapValue() {
 		this.setMap(new HashMap());
 	}
 
-	public void addMapEntry(final String key, final PropertyValueDefinition value) {
+	public void addMapEntry(final String key, final Value value) {
 		final Map entries = this.getMap();
 		if (entries.containsKey(key)) {
 			this.throwMapEntryAlreadyUsedException(key);
@@ -64,7 +66,7 @@ public class MapPropertyValueDefinition extends PropertyValueDefinition {
 	}
 
 	/**
-	 * If the property is not a Map report false
+	 * If the property is a not Map report false
 	 * 
 	 * @return
 	 */
@@ -72,7 +74,7 @@ public class MapPropertyValueDefinition extends PropertyValueDefinition {
 		return this.getType().getQualifiedSourceName().equals(Map.class.getName());
 	}
 
-	public String generatePropertyValueCodeBlock() {
+	public String generateValue() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("new ");
 		builder.append(MapBuilder.class.getName());
@@ -82,17 +84,21 @@ public class MapPropertyValueDefinition extends PropertyValueDefinition {
 		while (entries.hasNext()) {
 			final Map.Entry entry = (Map.Entry) entries.next();
 			final String key = (String) entry.getKey();
-			final PropertyValueDefinition value = (PropertyValueDefinition) entry.getValue();
+			final Value value = (Value) entry.getValue();
 
 			builder.append(".add( \"");
 			builder.append(Generator.escape(key));
 			builder.append("\", ");
-			builder.append(value.generatePropertyValueCodeBlock());
+			builder.append(value.generateValue());
 			builder.append(")");
 		}
 
 		builder.append(".getMap()");
 
 		return builder.toString();
+	}
+	
+	public String toString(){
+		return super.toString() + ", map: " + map;
 	}
 }

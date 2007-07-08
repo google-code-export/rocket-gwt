@@ -5,8 +5,10 @@
 		id="bean" 
 		class="rocket.beans.test.client.booleanproperty.ClassWithBooleanProperty" 
 		scope="singleton">
-		<property name="booleanProperty">
-			<value>true</value>
-		</property>
+		<properties>
+			<property name="booleanProperty">
+				<value>true</value>
+			</property>
+		</properties>
 	</bean>
 </bean-factory>

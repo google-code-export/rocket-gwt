@@ -13,26 +13,18 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.client;
+package rocket.generator.rebind;
+
+import com.google.gwt.user.rebind.SourceWriter;
 
 /**
- * A FactoryMethodBean is a class that can on demand return a bean
- * 
+ * This interface notes that a class can write java code typically a method
  * @author Miroslav Pokorny
  */
-public interface FactoryBean {
+public interface CodeGenerator {
 	/**
-	 * Returns either the singleton instance of create a new instance if the
-	 * bean is a prototype.
-	 * 
-	 * @return
+	 * Requests for this instance to write some code to represent the artefact that it is modelling.
+	 * @param writer
 	 */
-	Object getObject();
-
-	/**
-	 * Tests if the contained bean is a singleton.
-	 * 
-	 * @return
-	 */
-	boolean isSingleton();
+	void write( SourceWriter writer ); 
 }

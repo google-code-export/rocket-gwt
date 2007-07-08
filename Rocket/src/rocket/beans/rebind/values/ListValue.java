@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.core.ext.typeinfo.JType;
+
 import rocket.beans.client.ListBuilder;
 
 /**
@@ -26,7 +28,7 @@ import rocket.beans.client.ListBuilder;
  * 
  * @author Miroslav Pokorny
  */
-public class ListPropertyValueDefinition extends CollectionPropertyValueDefinition {
+public class ListValue extends CollectionValue {
 
 	protected Collection createCollection() {
 		return new ArrayList();

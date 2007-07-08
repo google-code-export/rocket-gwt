@@ -15,17 +15,18 @@
  */
 package rocket.beans.rebind.values;
 
-import rocket.beans.rebind.bean.BeanDefinition;
+import rocket.beans.rebind.bean.Bean;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Holder for any bean-reference tag encountered during parsing.
  * 
  * @author Miroslav Pokorny
  */
-public class BeanReference extends PropertyValueDefinition {
+public class BeanReference extends Value {
 
 	/**
 	 * If the property is a primitive report false
@@ -36,10 +37,10 @@ public class BeanReference extends PropertyValueDefinition {
 		return false == this.getType() instanceof JPrimitiveType;
 	}
 
-	public String generatePropertyValueCodeBlock() {
+	public String generateValue() {
 		final String id = this.getId();
-		final BeanDefinition beanDefinition = (BeanDefinition) this.getBeanFactoryGeneratorContext().getBeanDefinitions().get(id);
-		final String beanType = beanDefinition.getType().getQualifiedSourceName();
+		final Bean bean = (Bean) this.getBeanFactoryGeneratorContext().getBeans().get(id);
+		final String beanType = bean.getTypeName();
 
 		return "(" + beanType + ") getBeanFactory().getBean( \"" + id + "\")";
 	}
@@ -57,5 +58,9 @@ public class BeanReference extends PropertyValueDefinition {
 	public void setId(final String id) {
 		StringHelper.checkNotEmpty("parameter:id", id);
 		this.id = id;
+	}
+	
+	public String toString(){
+		return super.toString() + ", id[" + id + "]";
 	}
 }
