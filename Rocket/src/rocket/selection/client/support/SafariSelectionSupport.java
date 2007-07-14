@@ -24,7 +24,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class SafariSelectionSupport extends SelectionSupport {
     native protected JavaScriptObject getNativeSelection()/*-{
-     return $wnd.selection;
+     return $wnd.getSelection();
      }-*/;
 
     public void clear() {
