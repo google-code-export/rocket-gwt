@@ -43,7 +43,7 @@ public class DraggablePanel extends SimplePanel {
     public DraggablePanel() {
         super();
 
-        this.createDragNDropListeners();
+        this.setDragNDropListeners(createDragNDropListeners() );
         this.setStyleName(DragNDropConstants.DRAG_N_DROP_DRAGGABLE_WIDGET_STYLE);
     }
 
@@ -73,8 +73,8 @@ public class DraggablePanel extends SimplePanel {
         this.dragNDropListeners = dragNDropListeners;
     }
 
-    protected void createDragNDropListeners() {
-        this.setDragNDropListeners(new DragNDropListenerCollection());
+    protected DragNDropListenerCollection createDragNDropListeners() {
+        return new DragNDropListenerCollection();
     }
 
     public void addDragNDropListener(final DragNDropListener listener) {
@@ -124,6 +124,7 @@ public class DraggablePanel extends SimplePanel {
 
                 // register an EventPreview listener to follow the mouse...
                 final EventPreview preview = this.createDraggingEventPreview();
+                this.setDraggingEventPreview(preview);
                 DOM.addEventPreview(preview);
 
                 cancelled = false;
@@ -163,7 +164,7 @@ public class DraggablePanel extends SimplePanel {
 
         final Widget widget = this.getWidget();
         final Element element = widget.getElement();
-        final Element draggedElement = DragNDropHelper.createClone(widget);
+        final Element draggedElement = this.createDragHandle0( widget );
 
         final DragHandle handle = new DragHandle(draggedElement);
         RootPanel.get().add(handle, 0, 0);
@@ -183,6 +184,15 @@ public class DraggablePanel extends SimplePanel {
         handle.followMouse(event);
 
         this.setDragHandle(handle);
+    }
+    
+    /**
+     * Factory method that clones the element belonging to the given widget.
+     * @param widget
+     * @return
+     */
+    protected Element createDragHandle0( final Widget widget ){
+    	return DragNDropHelper.createClone(widget);
     }
 
     /**
@@ -219,7 +229,6 @@ public class DraggablePanel extends SimplePanel {
                 return handleDraggingEventPreview(event);
             }
         };
-        this.setDraggingEventPreview(draggingEventPreview);
         return draggingEventPreview;
     }
 

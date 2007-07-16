@@ -32,8 +32,8 @@ public class DropTargetPanel extends SimplePanel {
     }
 
     /**
-     * This method is invoked whenever a Draggable widget is dropped over this target. The default behaviour is to simply overwrite the
-     * current widget.
+     * This method is invoked whenever a Draggable widget is dropped over this target. The default behaviour is to simply accept the widget
+     * overwriting the previous widget
      * 
      * @param widget
      */
