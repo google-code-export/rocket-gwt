@@ -28,7 +28,6 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
@@ -208,13 +207,11 @@ public class SerializableType {
 		final JClassType type = this.getType();
 		final String typeName = type.getQualifiedSourceName();
 
-		final String jsonValueTypeName = JSONValue.class.getName();
-
 		final StringBuffer asObjectMethodDeclaration = new StringBuffer();
 		asObjectMethodDeclaration.append("public ");
-		asObjectMethodDeclaration.append(Object.class.getName());
+		asObjectMethodDeclaration.append( Constants.OBJECT_TYPE);
 		asObjectMethodDeclaration.append(" asObject( final ");
-		asObjectMethodDeclaration.append(jsonValueTypeName);
+		asObjectMethodDeclaration.append( Constants.JSON_VALUE_TYPE );
 		asObjectMethodDeclaration.append(" jsonValue ){");
 		writer.println(asObjectMethodDeclaration.toString());
 
@@ -248,14 +245,14 @@ public class SerializableType {
 		writer.println("this.setFields( instance, jsonObject );");
 
 		// end if
-		writer.println("}");
 		writer.outdent();
+		writer.println("} // if");
 
 		// return instance...
 		writer.println("return instance;");
 
 		writer.outdent();
-		writer.println("}");// end of method
+		writer.println("} // asObject");// end of method
 	}
 
 	/**
@@ -286,7 +283,7 @@ public class SerializableType {
 		methodDeclaration.append("protected void setFields( final ");
 		methodDeclaration.append(type.getQualifiedSourceName());
 		methodDeclaration.append(" instance, final ");
-		methodDeclaration.append(JSONObject.class.getName());
+		methodDeclaration.append( Constants.JSON_OBJECT_TYPE );
 		methodDeclaration.append(" jsonObject ){");
 		writer.println(methodDeclaration.toString());
 		writer.indent();
@@ -349,7 +346,7 @@ public class SerializableType {
 
 		// close the method
 		writer.outdent();
-		writer.println("}");
+		writer.println("} // setFields ");
 		writer.println();
 
 		// write the field setters...
@@ -409,7 +406,7 @@ public class SerializableType {
 		writer.outdent();
 
 		// write the end of the method
-		writer.println("}-*/;");
+		writer.println("}-*/;" ); // couldnt add a comment with method name because this caused compilation errors.
 		writer.println();
 	}
 
