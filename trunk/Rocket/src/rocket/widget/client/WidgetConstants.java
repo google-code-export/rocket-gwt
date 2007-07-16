@@ -77,9 +77,6 @@ public class WidgetConstants {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public final static String STYLESHEET_PICKER_STYLE = StyleHelper.buildCompound(ROCKET, "styleSheetPicker");
 
-    public final static String STYLESHEET_PICKER_HORIZONTAL_PANEL_STYLE = StyleHelper.buildCompound(
-            STYLESHEET_PICKER_STYLE, "horizontalPanel");
-
     public final static String STYLESHEET_PICKER_LABEL_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE,
             "label");
 
@@ -191,12 +188,6 @@ public class WidgetConstants {
     public final static String ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE = StyleHelper.buildCompound(ZEBRA_FLEX_TABLE_STYLE,
             "evenRow");
 
-    // NUMBER BOX
-    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public final static String NUMBER_TEXTBOX_STYLE = StyleHelper.buildCompound(ROCKET, "numberTextBox");
-
-    public final static String TEXTBOX_STYLE = StyleHelper.buildCompound(ROCKET, "textBox");
-
     // SPINNER
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
@@ -204,17 +195,9 @@ public class WidgetConstants {
      */
     public final static String SPINNER_STYLE = StyleHelper.buildCompound(ROCKET, "spinner");
 
-    public final static String SPINNER_VERTICAL_PANEL_STYLE = StyleHelper.buildCompound(SPINNER_STYLE, "verticalPanel");
-
     public final static String SPINNER_UP_STYLE = StyleHelper.buildCompound(SPINNER_STYLE, "up");
 
     public final static String SPINNER_DOWN_STYLE = StyleHelper.buildCompound(SPINNER_STYLE, "down");
-
-    public final static String SPINNER_BASE_URL = BrowserHelper.buildImageUrl("/spinner");
-
-    public final static String SPINNER_UP_IMAGE_URL = SPINNER_BASE_URL + "/up.gif";
-
-    public final static String SPINNER_DOWN_IMAGE_URL = SPINNER_BASE_URL + "/down.gif";
 
     // SUPER SPINNER
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -222,9 +205,6 @@ public class WidgetConstants {
      * This style is applied to the container element of a SuperSpinnerWidget
      */
     public final static String SUPER_SPINNER_STYLE = StyleHelper.buildCompound(ROCKET, "superSpinner");
-
-    public final static String SUPER_SPINNER_HORIZONTAL_PANEL = StyleHelper.buildCompound(SUPER_SPINNER_STYLE,
-            "horizontalPanel");
 
     public final static String SUPER_SPINNER_UP_STYLE = StyleHelper.buildCompound(SUPER_SPINNER_STYLE, "up");
 
@@ -234,24 +214,12 @@ public class WidgetConstants {
 
     public final static String SUPER_SPINNER_BIG_DOWN_STYLE = StyleHelper.buildCompound(SUPER_SPINNER_STYLE, "bigDown");
 
-    public final static String SUPER_SPINNER_BASE_URL = BrowserHelper.buildImageUrl("/superSpinner");
-
-    public final static String SUPER_SPINNER_UP_IMAGE_URL = SUPER_SPINNER_BASE_URL + "/up.gif";
-
-    public final static String SUPER_SPINNER_DOWN_IMAGE_URL = SUPER_SPINNER_BASE_URL + "/down.gif";
-
-    public final static String SUPER_SPINNER_BIG_UP_IMAGE_URL = SUPER_SPINNER_BASE_URL + "/bigUp.gif";
-
-    public final static String SUPER_SPINNER_BIG_DOWN_IMAGE_URL = SUPER_SPINNER_BASE_URL + "/bigDown.gif";
-
     // PAGER
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**
      * This style is applied to the container element of a Pager widget {@link rocket.widget.client.Pager}
      */
     public final static String PAGER_STYLE = StyleHelper.buildCompound(ROCKET, "pager");
-
-    public final static String PAGER_HORIZONTAL_PANEL_STYLE = PAGER_STYLE;
 
     /**
      * The default text that appears on the previous button

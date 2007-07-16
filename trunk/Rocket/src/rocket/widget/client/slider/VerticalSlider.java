@@ -15,12 +15,14 @@
  */
 package rocket.widget.client.slider;
 
+import rocket.browser.client.BrowserHelper;
 import rocket.dom.client.DomHelper;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -33,7 +35,10 @@ public class VerticalSlider extends Slider {
     public VerticalSlider() {
         super();
 
-        this.initWidget(this.createPanel());
+        final SimplePanel panel = this.createPanel();
+        this.setPanel(panel);
+        this.initWidget(panel);
+        
         this.setStyleName(SliderConstants.VERTICAL_SLIDER_STYLE);
     }
 
@@ -66,7 +71,7 @@ public class VerticalSlider extends Slider {
     protected void handleBackgroundMouseDown(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
-        final int mouseY = DOM.eventGetClientY(event);
+        final int mouseY = BrowserHelper.getScrollY() + DOM.eventGetClientY(event);
         final int widgetY = DomHelper.getAbsoluteTop(this.getHandle().getElement());
         this.handleBackgroundClick(mouseY, widgetY);
     }
@@ -80,7 +85,7 @@ public class VerticalSlider extends Slider {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         final int widgetY = DomHelper.getAbsoluteTop(this.getElement());
-        final int mouseY = DOM.eventGetClientY(event);
+        final int mouseY = BrowserHelper.getScrollY() + DOM.eventGetClientY(event);
 
         final int sliderHeight = this.getOffsetHeight();
         final int handleHeight = this.getHandle().getOffsetHeight();

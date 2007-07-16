@@ -46,9 +46,12 @@ public abstract class TabPanel extends Composite {
     protected TabPanel() {
         super();
 
-        this.createItems();
-        this.createTabListeners();
-        this.initWidget((Widget) this.createPanel());
+        this.setItems( createItems() );
+        this.setTabListeners( createTabListeners() );
+        
+        final HorizontalOrVerticalPanel panel = this.createPanel();
+        this.setPanel(panel);
+        this.initWidget((Widget) panel );
     }
 
     public int getCount() {
@@ -245,9 +248,8 @@ public abstract class TabPanel extends Composite {
         this.items = items;
     }
 
-    protected void createItems() {
-        final List list = new ArrayList();
-        this.setItems(list);
+    protected List createItems() {
+        return new ArrayList();
     }
 
     protected abstract String getTabBarItemStyleName();
@@ -375,8 +377,6 @@ public abstract class TabPanel extends Composite {
 
     protected DeckPanel createContentPanel() {
         final DeckPanel panel = new DeckPanel();
-        this.setContentPanel(panel);
-
         panel.setStyleName(getContentPanelStyleName());
         return panel;
     }
@@ -401,8 +401,8 @@ public abstract class TabPanel extends Composite {
         this.tabListeners = tabListeners;
     }
 
-    protected void createTabListeners() {
-        this.setTabListeners(new TabListenerCollection());
+    protected TabListenerCollection createTabListeners() {
+        return new TabListenerCollection();
     }
 
     public void addTabListener(final TabListener listener) {

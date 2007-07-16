@@ -65,8 +65,10 @@ public class ResizablePanel extends Composite {
     public ResizablePanel() {
         super();
 
-        this.createChangeListeners();
-        this.initWidget(createAbsolutePanel());
+        this.setChangeListeners( createChangeListeners() );
+        final AbsolutePanel absolutePanel = this.createAbsolutePanel();
+        this.setAbsolutePanel(absolutePanel);
+        this.initWidget( absolutePanel );
         this.setStyleName(WidgetConstants.RESIZABLE_PANEL_STYLE);
     }
 
@@ -957,8 +959,8 @@ public class ResizablePanel extends Composite {
         this.changeListeners = changeListeners;
     }
 
-    protected void createChangeListeners() {
-        this.setChangeListeners(new ChangeListenerCollection());
+    protected ChangeListenerCollection createChangeListeners() {
+        return new ChangeListenerCollection();
     }
 
     protected void fireChange() {

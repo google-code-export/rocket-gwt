@@ -42,7 +42,11 @@ public class TreeItem extends Composite {
     public TreeItem() {
         super();
 
-        this.initWidget(this.createFlexTable());
+        final FlexTable flexTable = this.createFlexTable();
+        this.setFlexTable(flexTable );
+        this.initWidget( flexTable );
+        
+        this.setStyleName(TreeConstants.TREE_ITEM_STYLE);
         this.setExpanded(false);
     }
 
@@ -63,10 +67,15 @@ public class TreeItem extends Composite {
 
     protected FlexTable createFlexTable() {
         final FlexTable table = new FlexTable();
-        table.setWidget(0, 0, this.createCollapserExpanderImage());
-        table.setWidget(1, 1, this.createChildren());
-        this.setFlexTable(table);
-        table.setStyleName(TreeConstants.TREE_ITEM_STYLE);
+        
+        final Image collapserExpanderImage = this.createCollapserExpanderImage();
+        this.setCollapserExpanderImage(collapserExpanderImage);        
+        table.setWidget(0, 0, collapserExpanderImage );
+        
+        final VerticalPanel children = this.createChildren(); 
+        this.setChildren(children);        
+        table.setWidget(1, 1, children );
+        
         return table;
     }
 
@@ -139,7 +148,6 @@ public class TreeItem extends Composite {
     protected Image createCollapserExpanderImage() {
         final Image image = new Image();
         image.setStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);
-        this.setCollapserExpanderImage(image);
         image.addClickListener(new ClickListener() {
             public void onClick(final Widget widget) {
                 handleCollapserExpanderClick();
@@ -260,7 +268,6 @@ public class TreeItem extends Composite {
     protected VerticalPanel createChildren() {
         final VerticalPanel panel = new VerticalPanel();
         panel.setStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);
-        this.setChildren(panel);
         return panel;
     }
 

@@ -37,7 +37,6 @@ public abstract class HorizonalTabPanel extends TabPanel {
         ObjectHelper.checkNotNull("parameter:alignment", alignment);
 
         final HorizontalPanelImpl panel = new HorizontalPanelImpl();
-        this.setTabBarPanel(panel);
 
         panel.setStyleName(this.getTabBarStyleName());
         panel.setVerticalAlignment(alignment);

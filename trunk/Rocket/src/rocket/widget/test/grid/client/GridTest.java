@@ -69,7 +69,7 @@ public class GridTest implements EntryPoint {
                 PrimitiveHelper.checkBetween("parameter:index", index, this.getFirst(), this.getLast());
 
                 final Image image = new Image();
-                image.setUrl("image-" + index + ".JPG");
+                image.setUrl("image-" + index + ".jpg");
                 return image;
             }
         });

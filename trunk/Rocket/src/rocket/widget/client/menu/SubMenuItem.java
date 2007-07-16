@@ -42,7 +42,9 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
     public SubMenuItem() {
         super();
 
-        this.initWidget(this.createSimplePanel());
+        final SimplePanel panel = this.createSimplePanel();
+        this.setSimplePanel(panel);
+        this.initWidget( panel );
     }
 
     // PANEL
@@ -222,7 +224,6 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
         simplePanel.setWidth("100%");
         DOM.appendChild(simplePanel.getElement(), this.createHtml().getElement());
         simplePanel.setStyleName(MenuConstants.SUB_MENU_ITEM_STYLE);
-        this.setSimplePanel(simplePanel);
         return simplePanel;
     }
 

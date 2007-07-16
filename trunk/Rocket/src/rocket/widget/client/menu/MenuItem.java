@@ -31,7 +31,9 @@ public class MenuItem extends AbstractMenuItem {
     public MenuItem() {
         super();
 
-        this.initWidget(this.createHtml());
+        final HTML html = this.createHtml();         
+        this.setHtml(html);
+        this.initWidget( html );
     }
 
     // ACTIONS :::::::::::::::::::::::::::::::::::::::::::::::
@@ -118,7 +120,6 @@ public class MenuItem extends AbstractMenuItem {
         final HTML html = new HTML();
         html.setWidth("100%");
         html.setStyleName(MenuConstants.MENU_ITEM_STYLE);
-        this.setHtml(html);
         return html;
     }
 

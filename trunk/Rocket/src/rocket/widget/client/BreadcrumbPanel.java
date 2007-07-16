@@ -39,7 +39,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class BreadcrumbPanel extends Composite {
 
     public BreadcrumbPanel() {
-        this.initWidget(this.createHorizontalPanel());
+    	final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
+    	this.setHorizontalPanel(horizontalPanel);
+        this.initWidget( horizontalPanel );
     }
 
     /**
@@ -64,7 +66,6 @@ public class BreadcrumbPanel extends Composite {
     protected HorizontalPanel createHorizontalPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
         panel.setStyleName(WidgetConstants.BREADCRUMB_PANEL_STYLE);
-        this.setHorizontalPanel(panel);
         return panel;
     }
 

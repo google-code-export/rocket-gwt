@@ -127,7 +127,11 @@ public abstract class Slider extends AbstractNumberHolder {
         if (false == this.hasDraggingEventPreview()) {
             SelectionHelper.clearAnySelectedText();
             SelectionHelper.disableTextSelection(DomHelper.getBody());
-            DOM.addEventPreview(this.createDraggingEventPreview());
+            
+            final EventPreview eventPreview = this.createDraggingEventPreview();
+            this.setDraggingEventPreview( eventPreview );            
+            DOM.addEventPreview( eventPreview );
+            
             this.getHandle().addStyleName(this.getSliderDraggingStyleName());
         }
     }
@@ -166,7 +170,6 @@ public abstract class Slider extends AbstractNumberHolder {
                 return handleDraggingEventPreview(event);
             }
         };
-        this.setDraggingEventPreview(draggingEventPreview);
         return draggingEventPreview;
     }
 
@@ -364,7 +367,6 @@ public abstract class Slider extends AbstractNumberHolder {
         DOM.setStyleAttribute(element, StyleConstants.POSITION, "relative");
         DOM.setStyleAttribute(element, StyleConstants.LEFT, "0px");
         DOM.setStyleAttribute(element, StyleConstants.TOP, "0px");
-        this.setPanel(panel);
         return panel;
     }
 

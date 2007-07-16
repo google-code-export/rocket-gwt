@@ -33,7 +33,9 @@ public class VerticalMenuList extends MenuList {
     public VerticalMenuList() {
         super();
 
-        this.initWidget(this.createVerticalPanel());
+        final VerticalPanel verticalPanel = this.createVerticalPanel();
+        this.setVerticalPanel(verticalPanel);
+        this.initWidget( verticalPanel );
     }
 
     // PANEL
@@ -80,8 +82,6 @@ public class VerticalMenuList extends MenuList {
     protected VerticalPanel createVerticalPanel() {
         final VerticalPanel panel = new VerticalPanel();
         panel.setStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
-
-        this.setVerticalPanel(panel);
         return panel;
     }
 }

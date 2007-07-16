@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.WidgetCollection;
 public abstract class AbstractPanel extends Panel implements HasWidgets {
 
     protected AbstractPanel() {
-        this.createWidgetCollection();
+        this.setWidgetCollection( createWidgetCollection() );
     }
 
     /**
@@ -139,15 +139,14 @@ public abstract class AbstractPanel extends Panel implements HasWidgets {
      * Returns an iterator that may be used to visit and possibly remove widgets belonging to this iterator.
      */
     public Iterator iterator() {
-        final AbstractPanel that = this;
         final IteratorView iterator = new IteratorView() {
 
             protected boolean hasNext0() {
-                return this.getCursor() < that.getWidgetCount();
+                return this.getCursor() < AbstractPanel.this.getWidgetCount();
             }
 
             protected Object next0() {
-                return that.get(this.getCursor());
+                return AbstractPanel.this.get(this.getCursor());
             }
 
             protected void afterNext() {
@@ -156,12 +155,12 @@ public abstract class AbstractPanel extends Panel implements HasWidgets {
 
             protected void remove0() {
                 final int index = this.getCursor() - 1;
-                that.remove(index);
+                AbstractPanel.this.remove(index);
                 this.setCursor(index);
             }
 
             protected int getModificationCounter() {
-                return that.getModificationCounter();
+                return AbstractPanel.this.getModificationCounter();
             }
 
             int cursor;
@@ -194,8 +193,8 @@ public abstract class AbstractPanel extends Panel implements HasWidgets {
         this.widgetCollection = widgetCollection;
     }
 
-    protected void createWidgetCollection() {
-        this.setWidgetCollection(new WidgetCollection(this));
+    protected WidgetCollection createWidgetCollection() {
+        return new WidgetCollection(this);
     }
 
     /**

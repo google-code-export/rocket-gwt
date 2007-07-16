@@ -15,10 +15,8 @@
  */
 package rocket.widget.client;
 
-import rocket.style.client.StyleHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -36,11 +34,8 @@ public class SuperSpinner extends Spinner {
 
     public SuperSpinner() {
         super();
-
-        this.setDownImageUrl(WidgetConstants.SUPER_SPINNER_DOWN_IMAGE_URL);
-        this.setUpImageUrl(WidgetConstants.SUPER_SPINNER_UP_IMAGE_URL);
-        this.setBigDownImageUrl(WidgetConstants.SUPER_SPINNER_BIG_DOWN_IMAGE_URL);
-        this.setBigUpImageUrl(WidgetConstants.SUPER_SPINNER_BIG_UP_IMAGE_URL);
+        
+        this.setStyleName(WidgetConstants.SUPER_SPINNER_STYLE );
     }
 
     /**
@@ -48,23 +43,18 @@ public class SuperSpinner extends Spinner {
      */
     private Image bigDownWidget;
 
-    public Image getBigDownWidget() {
+    protected Image getBigDownWidget() {
         ObjectHelper.checkNotNull("field:bigDownWidget", bigDownWidget);
         return this.bigDownWidget;
     }
 
-    public boolean hasBigDownWidget() {
-        return this.bigDownWidget != null;
-    }
-
-    public void setBigDownWidget(final Image bigDownWidget) {
+    protected void setBigDownWidget(final Image bigDownWidget) {
         ObjectHelper.checkNotNull("parameter:bigDown", bigDownWidget);
         this.bigDownWidget = bigDownWidget;
     }
 
-    public Widget createBigDownWidget() {
+    protected Image createBigDownWidget() {
         final Image image = new Image();
-        image.setUrl(this.getBigDownImageUrl());
         image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE);
 
         image.addClickListener(new ClickListener() {
@@ -73,7 +63,6 @@ public class SuperSpinner extends Spinner {
                 SuperSpinner.this.onBigDownClick();
             }
         });
-        this.setBigDownWidget(image);
         return image;
     }
 
@@ -81,24 +70,14 @@ public class SuperSpinner extends Spinner {
         this.updateValue(this.getValue() - this.getDelta());
     }
 
-    /**
-     * . The url of the bigDown icon
-     */
-    private String bigDownImageUrl;
-
     public String getBigDownImageUrl() {
-        StringHelper.checkNotEmpty("field:bigDownImageUrl", bigDownImageUrl);
-        return bigDownImageUrl;
+        return this.getBigDownWidget().getUrl();
     }
 
     public void setBigDownImageUrl(final String bigDownImageUrl) {
         StringHelper.checkNotEmpty("parameter:bigDownImageUrl", bigDownImageUrl);
-        this.bigDownImageUrl = bigDownImageUrl;
 
-        if (this.hasBigDownWidget()) {
-            final Image image = this.getBigDownWidget();
-            image.setUrl(bigDownImageUrl);
-        }
+        this.getBigDownWidget().setUrl( bigDownImageUrl );
     }
 
     /**
@@ -106,23 +85,18 @@ public class SuperSpinner extends Spinner {
      */
     private Image bigUpWidget;
 
-    public Image getBigUpWidget() {
+    protected Image getBigUpWidget() {
         ObjectHelper.checkNotNull("field:bigUpWidget", bigUpWidget);
         return this.bigUpWidget;
     }
 
-    public boolean hasBigUpWidget() {
-        return this.bigUpWidget != null;
-    }
-
-    public void setBigUpWidget(final Image bigUpWidget) {
+    protected void setBigUpWidget(final Image bigUpWidget) {
         ObjectHelper.checkNotNull("parameter:bigUpWidget", bigUpWidget);
         this.bigUpWidget = bigUpWidget;
     }
 
-    public Widget createBigUpWidget() {
+    protected Image createBigUpWidget() {
         final Image image = new Image();
-        image.setUrl(this.getBigUpImageUrl());
         image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE);
 
         image.addClickListener(new ClickListener() {
@@ -131,7 +105,6 @@ public class SuperSpinner extends Spinner {
                 SuperSpinner.this.onBigUpClick();
             }
         });
-        this.setBigUpWidget(image);
         return image;
     }
 
@@ -139,32 +112,22 @@ public class SuperSpinner extends Spinner {
         this.updateValue(this.getValue() + this.getDelta());
     }
 
-    public void onBigUpClick() {
+    protected void onBigUpClick() {
         this.updateValue(this.getValue() + this.getBigDelta());
     }
 
-    public void onBigDownClick() {
+    protected void onBigDownClick() {
         this.updateValue(this.getValue() - this.getBigDelta());
     }
 
-    /**
-     * . The url of the bigUp icon
-     */
-    private String bigUpImageUrl;
-
     public String getBigUpImageUrl() {
-        StringHelper.checkNotEmpty("field:bigUpImageUrl", bigUpImageUrl);
-        return bigUpImageUrl;
+        return this.getBigUpWidget().getUrl();
     }
 
     public void setBigUpImageUrl(final String bigUpImageUrl) {
         StringHelper.checkNotEmpty("parameter:bigUpImageUrl", bigUpImageUrl);
-        this.bigUpImageUrl = bigUpImageUrl;
 
-        if (this.hasBigUpWidget()) {
-            final Image image = this.getBigUpWidget();
-            image.setUrl(bigUpImageUrl);
-        }
+        this.getBigUpWidget().setUrl( bigUpImageUrl );
     }
 
     /**
@@ -172,21 +135,25 @@ public class SuperSpinner extends Spinner {
      * 
      * @return
      */
-    public Panel createPanel() {
-        if (this.hasPanel()) {
-            SystemHelper.fail("An flexTable has already been created, this: " + this);
-        }
-
+    protected Panel createPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
-        panel.setStyleName(StyleHelper.buildCompound(WidgetConstants.SUPER_SPINNER_STYLE, WidgetConstants.SUPER_SPINNER_HORIZONTAL_PANEL));
-        this.setPanel(panel);
+        
+        final Image upWidget = this.createUpWidget();
+        this.setUpWidget(upWidget);
+        panel.add( upWidget );
+        
+        final Image downWidget = this.createBigDownWidget();
+        this.setDownWidget(downWidget);
+        panel.add( downWidget );
 
-        panel.add(this.createDownWidget());
-        panel.add(this.createUpWidget());
-
-        panel.add(this.createBigUpWidget());
-        panel.add(this.createBigDownWidget());
-
+        final Image bigUpWidget = this.createBigUpWidget();
+        this.setBigUpWidget(bigUpWidget);
+        panel.add( bigUpWidget );
+        
+        final Image bigDownWidget = this.createBigDownWidget();
+        this.setBigDownWidget(bigDownWidget);
+        panel.add( bigDownWidget );
+        
         this.updateValue(this.getValue());
 
         return panel;
@@ -197,24 +164,17 @@ public class SuperSpinner extends Spinner {
      */
     private int bigDelta;
 
-    private boolean bigDeltaSet;
-
     public int getBigDelta() {
-        if (false == bigDeltaSet) {
-            SystemHelper.fail("field:bigDelta", "The field:bigDelta has not been set, this: " + this);
-        }
         return this.bigDelta;
     }
 
     public void setBigDelta(final int bigDelta) {
         this.bigDelta = bigDelta;
-        this.bigDeltaSet = true;
     }
 
     public String toString() {
         return super.toString() + ", bigUpWidget: " + bigUpWidget + ", bigDownWidget: " + bigDownWidget
-                + ", bigDelta: " + bigDelta + ", bigDeltaSet: " + bigDeltaSet + ", bigUpImageUrl[" + bigUpImageUrl
-                + "], bigDownImageUrl[" + bigDownImageUrl + "]";
+                + ", bigDelta: " + bigDelta;
     }
 
 }

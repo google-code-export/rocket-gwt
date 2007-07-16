@@ -15,6 +15,9 @@
  */
 package rocket.widget.client.accordion;
 
+import rocket.widget.client.DivPanel;
+
+import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
 /**
@@ -25,15 +28,23 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 public class LeftSideAccordionPanel extends TwoColumnAccordionPanel {
 
     public LeftSideAccordionPanel() {
-        this.initWidget(this.createPanel());
+    	final HorizontalPanel panel = this.createPanel();
+    	this.setPanel(panel);
+        this.initWidget( panel);
     }
 
     protected HorizontalPanel createPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
         panel.setStyleName(AccordionConstants.LEFT_SIDE_ACCORDION_PANEL_STYLE);
-        this.setPanel(panel);
-        panel.add(this.createCaptionsPanel());
-        panel.add(this.createContentsPanel());
+        
+        final DivPanel captionsPanel = this.createCaptionsPanel();
+        this.setCaptionsPanel(captionsPanel);
+        panel.add(captionsPanel);
+        
+        final DeckPanel contentsPanel = this.createContentsPanel();
+        this.setContentsPanel(contentsPanel);
+        panel.add(contentsPanel);
+        
         return panel;
     }
 

@@ -35,7 +35,9 @@ public class HorizontalMenuList extends MenuList {
     public HorizontalMenuList() {
         super();
 
-        this.initWidget(this.createHorizontalPanel());
+        final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
+        this.setHorizontalPanel(horizontalPanel);
+        this.initWidget( horizontalPanel );
     }
 
     // PANEL
@@ -90,10 +92,10 @@ public class HorizontalMenuList extends MenuList {
         panel.setStyleName(MenuConstants.HORIZONTAL_MENU_LIST_STYLE);
 
         final Widget padder = this.createPadder();
+        this.setPadder(padder);        
         panel.add(padder);
         panel.setCellWidth(padder, "100%");
 
-        this.setHorizontalPanel(panel);
         return panel;
     }
 
@@ -113,8 +115,6 @@ public class HorizontalMenuList extends MenuList {
     }
 
     protected Widget createPadder() {
-        final Widget padder = new HTML("&nbsp;");
-        this.setPadder(padder);
-        return padder;
+        return new HTML("&nbsp;");
     }
 }

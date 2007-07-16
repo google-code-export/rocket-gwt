@@ -71,7 +71,9 @@ public abstract class SortableTable extends Composite {
     public SortableTable() {
         super();
 
-        this.initWidget(this.createFlexTable());
+        final FlexTable flexTable = this.createFlexTable();
+        this.setFlexTable(flexTable);
+        this.initWidget( flexTable );
 
         this.addStyleName(WidgetConstants.SORTABLE_TABLE_STYLE);
         this.setColumnComparators(new ArrayList());
@@ -95,9 +97,7 @@ public abstract class SortableTable extends Composite {
     }
 
     protected FlexTable createFlexTable() {
-        final FlexTable table = new ZebraFlexTable();
-        this.setFlexTable(table);
-        return table;
+        return new ZebraFlexTable();
     }
 
     protected void setWidget(final int row, final int column, final Widget widget) {

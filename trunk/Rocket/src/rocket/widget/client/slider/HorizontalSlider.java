@@ -22,6 +22,7 @@ import rocket.util.client.ObjectHelper;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -34,7 +35,9 @@ public class HorizontalSlider extends Slider {
     public HorizontalSlider() {
         super();
 
-        this.initWidget(this.createPanel());
+        final SimplePanel panel = this.createPanel();
+        this.setPanel(panel);
+        this.initWidget(panel);
         this.setStyleName(SliderConstants.HORIZONTAL_SLIDER_STYLE);
     }
 
@@ -67,7 +70,7 @@ public class HorizontalSlider extends Slider {
     protected void handleBackgroundMouseDown(final Event event) {
         ObjectHelper.checkNotNull("parameter:event", event);
 
-        final int mouseX = DOM.eventGetClientX(event);
+        final int mouseX = BrowserHelper.getScrollX() + DOM.eventGetClientX(event);
         final int widgetX = DomHelper.getAbsoluteLeft(this.getHandle().getElement());
         this.handleBackgroundClick(mouseX, widgetX);
     }
@@ -81,7 +84,7 @@ public class HorizontalSlider extends Slider {
         ObjectHelper.checkNotNull("parameter:event", event);
 
         final int widgetX = DomHelper.getAbsoluteLeft(this.getElement());
-        final int mouseX = DOM.eventGetClientX(event);
+        final int mouseX = BrowserHelper.getScrollX() + DOM.eventGetClientX(event);
         final int sliderWidth = this.getOffsetWidth();
         final int handleWidth = this.getHandle().getOffsetWidth();
 

@@ -35,8 +35,8 @@ public abstract class AccordionPanel extends Composite {
     protected AccordionPanel() {
         super();
 
-        this.createItems();
-        this.createAccordionListeners();
+        this.setItems( createItems() );
+        this.setAccordionListeners( createAccordionListeners() );
     }
 
     /**
@@ -251,9 +251,8 @@ public abstract class AccordionPanel extends Composite {
         this.items = items;
     }
 
-    protected void createItems() {
-        final List list = new ArrayList();
-        this.setItems(list);
+    protected List createItems() {
+        return new ArrayList();
     }
 
     // LISTENERS
@@ -274,8 +273,8 @@ public abstract class AccordionPanel extends Composite {
         this.accordionListeners = accordionListeners;
     }
 
-    protected void createAccordionListeners() {
-        this.setAccordionListeners(new AccordionListenerCollection());
+    protected AccordionListenerCollection createAccordionListeners() {
+        return new AccordionListenerCollection();
     }
 
     public void addAccordionListener(final AccordionListener listener) {
