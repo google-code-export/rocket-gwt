@@ -17,6 +17,7 @@ package rocket.remoting.rebind.json;
 
 import java.io.PrintWriter;
 
+import rocket.generator.rebind.JClassTypeMethodVisitor;
 import rocket.remoting.client.json.RemoteJsonService;
 import rocket.remoting.client.json.RemoteJsonServiceClient;
 import rocket.util.client.ObjectHelper;
@@ -122,15 +123,38 @@ public class RemoteJsonServiceGenerator extends Generator {
 
 		final JClassType generated = this.getServiceInterfaceType();
 
-		final JMethod[] methods = generated.getMethods();
 		final RemoteJsonServiceGeneratorContext context = this.getRemoteJsonServiceGeneratorContext();
-
-		for (int i = 0; i < methods.length; i++) {
-			final Method serviceMethod = new Method();
-			serviceMethod.setMethod(methods[i]);
-			serviceMethod.setRemoteJsonServiceGeneratorContext(context);
-			serviceMethod.write(writer);
-		}
+		
+		final JClassTypeMethodVisitor publicMethodWalker = new JClassTypeMethodVisitor(){
+			public boolean skipMethod( final JMethod method ){
+				boolean skip = false;
+				
+				while( true ){
+					if( method.isStatic() ){
+						skip = true;
+						break;
+					}					
+					final JClassType type = method.getEnclosingType();
+					if( type == type.getOracle().getJavaLangObject() ){
+						skip = true;
+						break;
+					}
+					
+					skip = false;
+					break;
+				}
+				
+				return skip;
+			}
+			public void visitMethod( final JMethod method ){
+				final Method serviceMethod = new Method();
+				serviceMethod.setMethod(method);
+				serviceMethod.setRemoteJsonServiceGeneratorContext(context);
+				serviceMethod.write(writer);				
+			}
+		};
+		publicMethodWalker.setType( generated );
+		publicMethodWalker.startVisit();
 		context.commitWriter(writer);
 	}
 

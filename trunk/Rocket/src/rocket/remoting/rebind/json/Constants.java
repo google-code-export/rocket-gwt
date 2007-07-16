@@ -15,6 +15,12 @@
  */
 package rocket.remoting.rebind.json;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.json.client.JSONValue;
+
+import rocket.json.client.JsonSerializer;
+import rocket.remoting.client.json.RemoteJsonServiceInvoker;
+
 /**
  * A collection of constants for this package.
  * 
@@ -28,4 +34,16 @@ public class Constants {
 	static final String HTTP_REQUEST_METHOD = "httpRequestMethod";
 
 	static final String HTTP_REQUEST_PARAMETER_NAME = "httpRequestParameterName";
+	
+	static final String REMOTE_JSON_SERVICE_INVOKER_TYPE = RemoteJsonServiceInvoker.class.getName();
+	
+	static final String OBJECT_TYPE = Object.class.getName();
+	
+	static final String JSON_VALUE_TYPE = JSONValue.class.getName();
+	
+	static final String JSON_SERIALIZER_TYPE = JsonSerializer.class.getName();
+	
+	static final String GWT_TYPE = GWT.class.getName();
+	
+	static final String INVOKER_VARIABLE = "invoker";
 }
