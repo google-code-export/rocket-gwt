@@ -15,6 +15,9 @@
  */
 package rocket.json.rebind;
 
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
+
 /**
  * A collection of constants used during the code generation process.
  * 
@@ -31,4 +34,10 @@ public class Constants {
 	static final String JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
 
 	static final String SERIALIZER_SUFFIX = "__JsonSerializer";
+	
+	static final String OBJECT_TYPE = Object.class.getName();
+	
+	static final String JSON_VALUE_TYPE = JSONValue.class.getName();
+	
+	static final String JSON_OBJECT_TYPE = JSONObject.class.getName();
 }
