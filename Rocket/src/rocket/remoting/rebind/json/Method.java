@@ -16,19 +16,15 @@
 package rocket.remoting.rebind.json;
 
 import rocket.generator.rebind.RebindHelper;
-import rocket.json.client.JsonSerializer;
 import rocket.remoting.client.json.RemoteGetJsonServiceInvoker;
-import rocket.remoting.client.json.RemoteJsonServiceInvoker;
 import rocket.remoting.client.json.RemotePostJsonServiceInvoker;
 import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.rebind.SourceWriter;
 
@@ -75,7 +71,7 @@ public class Method {
 	 * @param writer
 	 */
 	protected void writeSetUrlStatement(final SourceWriter writer) {
-		writer.println("invoker.setUrl( this.getServiceEntryPoint());");
+		writer.println(Constants.INVOKER_VARIABLE + ".setUrl( this.getServiceEntryPoint());");
 	}
 
 	/**
@@ -89,7 +85,7 @@ public class Method {
 	 * @param writer
 	 */
 	protected void writeSetCallbackStatement(final SourceWriter writer) {
-		writer.println("invoker.setCallback( callback );");
+		writer.println(Constants.INVOKER_VARIABLE + ".setCallback( callback );");
 	}
 
 	/**
@@ -103,7 +99,7 @@ public class Method {
 	 * @param writer
 	 */
 	protected void writeMakeRequestStatement(final SourceWriter writer) {
-		writer.println("invoker.makeRequest( this );");
+		writer.println(Constants.INVOKER_VARIABLE + ".makeRequest( this );");
 	}
 
 	/**
@@ -122,16 +118,18 @@ public class Method {
 	protected void writeNewRemoteJsonServiceMethodInvokerStatement(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
-		final StringBuffer newInvokerInstance = new StringBuffer();
+		final StringBuilder newInvokerInstance = new StringBuilder();
 		newInvokerInstance.append("final ");
-		newInvokerInstance.append(RemoteJsonServiceInvoker.class.getName());
-		newInvokerInstance.append(" invoker = new ");
+		newInvokerInstance.append( Constants.REMOTE_JSON_SERVICE_INVOKER_TYPE);
+		newInvokerInstance.append(" ");
+		newInvokerInstance.append( Constants.INVOKER_VARIABLE );
+		newInvokerInstance.append(" = new ");
 
 		final String httpMethod = this.getHttpRequestMethod();
 		final Class getOrPostInvoker = HttpHelper.isGet(httpMethod) ? RemoteGetJsonServiceInvoker.class
 				: RemotePostJsonServiceInvoker.class;
 		newInvokerInstance.append(getOrPostInvoker.getName());
-		newInvokerInstance.append("(){");
+		newInvokerInstance.append("(){");		
 		writer.println(newInvokerInstance.toString());
 		writer.println();
 		writer.indent();
@@ -140,7 +138,7 @@ public class Method {
 
 		// end of anonymous inner class.
 		writer.outdent();
-		writer.println("};");
+		writer.println("}; // " + Constants.REMOTE_JSON_SERVICE_INVOKER_TYPE );
 	}
 
 	/**
@@ -181,24 +179,23 @@ public class Method {
 					+ " returns void. Service methods must return " + Object.class.getName());
 		}
 
-		final StringBuffer declaration = new StringBuffer();
-		declaration.append("protected Object asObject( final ");
-		declaration.append(JSONValue.class.getName());
+		final StringBuilder declaration = new StringBuilder();
+		declaration.append("protected " + Constants.OBJECT_TYPE + " asObject( final ");
+		declaration.append( Constants.JSON_VALUE_TYPE );
 		declaration.append(" jsonValue ){");
 		writer.println(declaration.toString());
 		writer.indent();
 
 		// final JsonSerializer deserializer = (JsonSerializer) GWT.create(
 		// ${returnType}.class );
-		final String jsonSerializerTypeName = JsonSerializer.class.getName();
 
-		final StringBuffer invokeDeserializer = new StringBuffer();
+		final StringBuilder invokeDeserializer = new StringBuilder();
 		invokeDeserializer.append("final ");
-		invokeDeserializer.append(jsonSerializerTypeName);
+		invokeDeserializer.append(Constants.JSON_SERIALIZER_TYPE);
 		invokeDeserializer.append(" deserializer =(");
-		invokeDeserializer.append(jsonSerializerTypeName);
+		invokeDeserializer.append(Constants.JSON_SERIALIZER_TYPE);
 		invokeDeserializer.append(") ");
-		invokeDeserializer.append(GWT.class.getName());
+		invokeDeserializer.append(Constants.GWT_TYPE);
 		invokeDeserializer.append(".create( ");
 		invokeDeserializer.append(returnType.getQualifiedSourceName());
 		invokeDeserializer.append(".class );");
@@ -208,7 +205,7 @@ public class Method {
 		writer.println("return deserializer.asObject( jsonValue );");
 
 		writer.outdent();
-		writer.println("}");
+		writer.println("} // " + Constants.OBJECT_TYPE);
 	}
 
 	/**
@@ -239,8 +236,6 @@ public class Method {
 
 		final JMethod method = this.getMethod();
 
-		// TODO not sure if annotations should be fetched from JParameter or
-		// JMethod
 		final JParameter[] parameters = method.getParameters();
 		for (int i = 0; i < parameters.length; i++) {
 			final JParameter parameter = parameters[i];
@@ -248,8 +243,9 @@ public class Method {
 
 			final String httpRequestParameterName = this.getHttpRequestParameterName(i);
 
-			final StringBuffer buf = new StringBuffer();
-			buf.append("invoker.addParameter( \"");
+			final StringBuilder buf = new StringBuilder();
+			buf.append( Constants.INVOKER_VARIABLE );
+			buf.append(".addParameter( \"");
 			buf.append(httpRequestParameterName);
 			buf.append("\", ");
 			buf.append(parameterName);
@@ -307,7 +303,7 @@ public class Method {
 
 		final JMethod method = this.getMethod();
 
-		final StringBuffer buf = new StringBuffer();
+		final StringBuilder buf = new StringBuilder();
 		buf.append("public void ");
 		buf.append(method.getName());
 		buf.append("( ");
