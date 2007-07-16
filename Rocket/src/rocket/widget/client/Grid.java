@@ -36,7 +36,10 @@ public class Grid extends Composite {
 
     public Grid() {
         this.setAutoRedraw(false);
-        this.initWidget(this.createFlexTable());
+        
+        final FlexTable flexTable = this.createFlexTable();
+        this.setFlexTable(flexTable);
+        this.initWidget(flexTable);
     }
 
     // GRID :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -116,7 +119,6 @@ public class Grid extends Composite {
     protected FlexTable createFlexTable() {
         final FlexTable table = new FlexTable();
         table.setStyleName(WidgetConstants.GRID_STYLE);
-        this.setFlexTable(table);
         return table;
     }
 

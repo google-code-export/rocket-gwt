@@ -41,8 +41,12 @@ public class HorizontalSplitterPanel extends SplitterPanel {
     public HorizontalSplitterPanel() {
         super();
 
-        this.createItems();
-        this.initWidget((Widget) this.createPanel());
+        this.setItems( createItems() );
+        
+        final Panel panel = createPanel();
+        this.setPanel(panel);
+        this.initWidget(panel);
+        
         this.setStyleName(SplitterConstants.HORIZONTAL_SPLITTER_PANEL_STYLE);
 
         // this fix is necessary to make the widget appear correct in IE6x

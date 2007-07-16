@@ -22,6 +22,7 @@ import rocket.browser.client.BrowserHelper;
 import rocket.dom.client.DomHelper;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
+import rocket.widget.client.splitter.SplitterPanel.Panel;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
@@ -41,8 +42,12 @@ public class VerticalSplitterPanel extends SplitterPanel {
     public VerticalSplitterPanel() {
         super();
 
-        this.createItems();
-        this.initWidget((Widget) this.createPanel());
+this.setItems( createItems() );
+        
+        final Panel panel = createPanel();
+        this.setPanel(panel);
+        this.initWidget(panel);
+        
         this.setStyleName(SplitterConstants.VERTICAL_SPLITTER_PANEL_STYLE);
 
         // this fix is necessary to make the widget appear correct in IE6x

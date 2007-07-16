@@ -21,7 +21,6 @@ import java.util.Map;
 import rocket.dom.client.DomConstants;
 import rocket.dom.client.DomHelper;
 import rocket.util.client.Destroyable;
-import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 

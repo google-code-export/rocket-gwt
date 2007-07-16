@@ -15,6 +15,7 @@
  */
 package rocket.widget.client.tabpanel;
 
+import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -31,12 +32,15 @@ public class LeftTabPanel extends VerticalTabPanel {
 
     protected HorizontalOrVerticalPanel createPanel() {
         final HorizontalPanelImpl panel = new HorizontalPanelImpl();
-        this.setPanel(panel);
-
         panel.setStyleName(this.getPanelStyleName());
-        panel.add((Widget) this.createTabBarPanel());
+        
+        final HorizontalOrVerticalPanel tabBarPanel =  this.createTabBarPanel();
+        this.setTabBarPanel(tabBarPanel);
+        panel.add( (Widget) tabBarPanel );
 
-        final Widget contentPanel = this.createContentPanel();
+        final DeckPanel contentPanel = this.createContentPanel();
+        this.setContentPanel(contentPanel);
+        
         panel.add(contentPanel);
         panel.setCellHeight(contentPanel, "100%");
         return panel;
@@ -48,7 +52,6 @@ public class LeftTabPanel extends VerticalTabPanel {
 
     protected HorizontalOrVerticalPanel createTabBarPanel() {
         final VerticalPanelImpl panel = new VerticalPanelImpl();
-        this.setTabBarPanel(panel);
 
         panel.setStyleName(this.getTabBarStyleName());
         panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);

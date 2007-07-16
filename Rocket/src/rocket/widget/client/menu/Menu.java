@@ -34,7 +34,7 @@ public abstract class Menu extends MenuWidget implements HasWidgets {
 
     public Menu() {
         super();
-        this.createMenuListenerCollection();
+        this.setMenuListeners( createMenuListenerCollection() );
     }
 
     protected void handleMouseClick(final Event event) {
@@ -132,8 +132,8 @@ public abstract class Menu extends MenuWidget implements HasWidgets {
         this.menuListeners = menuListeners;
     }
 
-    protected void createMenuListenerCollection() {
-        this.setMenuListeners(new MenuListenerCollection());
+    protected MenuListenerCollection createMenuListenerCollection() {
+        return new MenuListenerCollection();
     }
 
     public void addMenuListener(final MenuListener listener) {

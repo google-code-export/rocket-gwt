@@ -15,7 +15,6 @@
  */
 package rocket.widget.client.menu;
 
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -31,18 +30,16 @@ public class VerticalMenuBar extends Menu {
     }
 
     protected Widget createWidget() {
-        final SimplePanel panel = new SimplePanel();
-        panel.setWidget(this.createMenuList());
-        return panel;
+        final MenuList menuList = this.createMenuList();
+        this.setMenuList(menuList);
+        return menuList;
     }
 
-    protected Widget createMenuList() {
+    protected MenuList createMenuList() {
         final VerticalMenuList list = new VerticalMenuList();
         list.setStyleName(MenuConstants.VERTICAL_MENU_BAR_STYLE);
         list.setHideable(false);
         list.setMenu(this);
-
-        this.setMenuList(list);
         return list;
     }
 }

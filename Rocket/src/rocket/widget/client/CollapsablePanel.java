@@ -36,7 +36,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class CollapsablePanel extends Composite implements HasWidgets {
 
     public CollapsablePanel() {
-        this.initWidget(this.createFlexTable());
+    	final FlexTable flexTable = this.createFlexTable();
+    	this.setFlexTable(flexTable);
+        this.initWidget( flexTable );
         this.setStyleName(WidgetConstants.COLLAPSABLE_PANEL_STYLE);
     }
 
@@ -134,8 +136,6 @@ public class CollapsablePanel extends Composite implements HasWidgets {
      */
     protected FlexTable createFlexTable() {
         final FlexTable table = new FlexTable();
-        this.setFlexTable(table);
-
         table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN,
                 this.createTitleFlexTable());
         table.getFlexCellFormatter().setWidth(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW,

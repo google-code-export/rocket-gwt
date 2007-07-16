@@ -40,7 +40,9 @@ public class ContextMenu extends Menu {
     public ContextMenu() {
         super();
 
-        this.initWidget(this.createWidget());
+        final Widget widget = this.createWidget();
+        this.initWidget( widget );
+        
         this.setStyleName(MenuConstants.CONTEXT_MENU_STYLE);
     }
 
@@ -54,7 +56,11 @@ public class ContextMenu extends Menu {
     protected Widget createWidget() {
         final SpanPanel panel = new SpanPanel();
         panel.add(new HTML(""));
-        panel.add(this.createMenuList());
+        
+        final MenuList menuList = this.createMenuList();
+        this.setMenuList(menuList);
+        panel.add( menuList );
+        
         this.setPanel(panel);
         return panel;
     }
@@ -75,7 +81,7 @@ public class ContextMenu extends Menu {
         this.panel = panel;
     }
 
-    protected Widget createMenuList() {
+    protected MenuList createMenuList() {
         final VerticalMenuList list = new VerticalMenuList();
         list.setStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
         list.setHideable(true);
@@ -83,7 +89,6 @@ public class ContextMenu extends Menu {
         list.setOpenDirection(MenuListOpenDirection.DOWN);
         list.hide();
 
-        this.setMenuList(list);
         return list;
     }
 
@@ -117,7 +122,7 @@ public class ContextMenu extends Menu {
 
     protected void registerEvents() {
         this.unsinkEvents(-1);
-        this.sinkEvents(Event.ONMOUSEDOWN);
+        this.sinkEvents(Event.ONMOUSEDOWN | Event.ONMOUSEOUT );
         DOM.setEventListener(this.getElement(), this);
     }
 
@@ -164,7 +169,7 @@ public class ContextMenu extends Menu {
         while (true) {
             final Element targetElement = DOM.eventGetToElement(event);
             if (DOM.isOrHasChild(this.getElement(), targetElement)) {
-                DOM.eventCancelBubble(event, true);
+            	DOM.eventCancelBubble(event, true);
                 break;
             }
             this.hide();

@@ -76,7 +76,6 @@ public abstract class TwoColumnAccordionPanel extends AccordionPanel {
     protected DivPanel createCaptionsPanel() {
         final DivPanel captionsPanel = new DivPanel();
         captionsPanel.setStyleName(getCaptionsPanelStyle());
-        this.setCaptionsPanel(captionsPanel);
         return captionsPanel;
     }
 
@@ -100,7 +99,6 @@ public abstract class TwoColumnAccordionPanel extends AccordionPanel {
     protected DeckPanel createContentsPanel() {
         final DeckPanel contentsPanel = new DeckPanel();
         contentsPanel.setStyleName(this.getContentsPanelStyle());
-        this.setContentsPanel(contentsPanel);
         return contentsPanel;
     }
 

@@ -38,11 +38,13 @@ import com.google.gwt.user.client.ui.Widget;
 public class Spinner extends AbstractNumberHolder implements NumberHolder {
 
     public Spinner() {
-        this.initWidget(this.createPanel());
-
-        this.setDownImageUrl(WidgetConstants.SPINNER_DOWN_IMAGE_URL);
-        this.setUpImageUrl(WidgetConstants.SPINNER_UP_IMAGE_URL);
         this.setDelta(1);
+    	
+    	final Panel panel = this.createPanel();
+    	this.setPanel(panel);
+        this.initWidget( panel );
+        
+        this.setStyleName(WidgetConstants.SPINNER_STYLE);
     }
 
     /**
@@ -90,23 +92,18 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
      */
     private Image upWidget;
 
-    public Image getUpWidget() {
+    protected Image getUpWidget() {
         ObjectHelper.checkNotNull("field:upWidget", upWidget);
         return this.upWidget;
     }
 
-    public boolean hasUpWidget() {
-        return this.upWidget != null;
-    }
-
-    public void setUpWidget(final Image upWidget) {
+    protected void setUpWidget(final Image upWidget) {
         ObjectHelper.checkNotNull("parameter:upWidget", upWidget);
         this.upWidget = upWidget;
     }
 
-    public Widget createUpWidget() {
+    protected Image createUpWidget() {
         final Image image = new Image();
-        image.setUrl(this.getUpImageUrl());
         image.setStyleName(WidgetConstants.SPINNER_UP_STYLE);
         image.addClickListener(new ClickListener() {
 
@@ -114,7 +111,6 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
                 Spinner.this.onUpClick();
             }
         });
-        this.setUpWidget(image);
         return image;
     }
 
@@ -129,24 +125,13 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
     protected void onUpperBoundsReached() {
     }
 
-    /**
-     * . The url of the up icon
-     */
-    private String upImageUrl;
-
     public String getUpImageUrl() {
-        StringHelper.checkNotEmpty("field:upImageUrl", upImageUrl);
-        return upImageUrl;
+        return this.getUpWidget().getUrl();
     }
 
     public void setUpImageUrl(final String upImageUrl) {
         StringHelper.checkNotEmpty("parameter:upImageUrl", upImageUrl);
-        this.upImageUrl = upImageUrl;
-
-        if (this.hasUpWidget()) {
-            final Image image = this.getUpWidget();
-            image.setUrl(upImageUrl);
-        }
+        this.getUpWidget().setUrl( upImageUrl );
     }
 
     /**
@@ -154,24 +139,19 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
      */
     private Image downWidget;
 
-    public Image getDownWidget() {
+    protected Image getDownWidget() {
         ObjectHelper.checkNotNull("field:downWidget", downWidget);
         return this.downWidget;
     }
 
-    public boolean hasDownWidget() {
-        return this.downWidget != null;
-    }
-
-    public void setDownWidget(final Image downWidget) {
+    protected void setDownWidget(final Image downWidget) {
         ObjectHelper.checkNotNull("parameter:downWidget", downWidget);
         this.downWidget = downWidget;
     }
 
-    public Widget createDownWidget() {
+    protected Image createDownWidget() {
         final Image image = new Image();
         image.setStyleName(WidgetConstants.SPINNER_DOWN_STYLE);
-        image.setUrl(this.getDownImageUrl());
 
         image.addClickListener(new ClickListener() {
 
@@ -179,28 +159,16 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
                 Spinner.this.onDownClick();
             }
         });
-        this.setDownWidget(image);
         return image;
     }
 
-    /**
-     * . The url of the down icon
-     */
-    private String downImageUrl;
-
     public String getDownImageUrl() {
-        StringHelper.checkNotEmpty("field:downImageUrl", downImageUrl);
-        return downImageUrl;
+    	return this.getDownWidget().getUrl();
     }
 
     public void setDownImageUrl(final String downImageUrl) {
         StringHelper.checkNotEmpty("parameter:downImageUrl", downImageUrl);
-        this.downImageUrl = downImageUrl;
-
-        if (this.hasDownWidget()) {
-            final Image image = this.getDownWidget();
-            image.setUrl(downImageUrl);
-        }
+        this.getDownWidget().setUrl(downImageUrl);
     }
 
     /**
@@ -243,59 +211,53 @@ public class Spinner extends AbstractNumberHolder implements NumberHolder {
      */
     private Panel panel;
 
-    public Panel getPanel() {
+    protected Panel getPanel() {
         ObjectHelper.checkNotNull("field:panel", panel);
         return this.panel;
     }
 
-    public boolean hasPanel() {
-        return this.panel != null;
-    }
-
-    public void setPanel(final Panel panel) {
+    protected void setPanel(final Panel panel) {
         ObjectHelper.checkNotNull("parameter:panel", panel);
         this.panel = panel;
     }
 
     /**
-     * Creates a new panel and positions the valueLabel, and the two htmls.
+     * Creates a new panel which will enclose the up and down images which when clicked increase/decrease the value
      * 
      * @return
      */
-    public Panel createPanel() {
+    protected Panel createPanel() {
         final VerticalPanel panel = new VerticalPanel();
-        panel.setStyleName(WidgetConstants.SPINNER_STYLE);
-        panel.addStyleName(WidgetConstants.SPINNER_VERTICAL_PANEL_STYLE);
-        this.setPanel(panel);
-
-        panel.add(this.createUpWidget());
-        panel.add(this.createDownWidget());
+        
+        final Image upWidget = this.createUpWidget();
+        this.setUpWidget(upWidget);
+        panel.add( upWidget );
+        
+        final Image downWidget = this.createDownWidget();
+        this.setDownWidget(downWidget);
+        panel.add( downWidget );
+        
         this.updateValue(this.getValue());
 
         return panel;
     }
 
     /**
-     * The amount the value is increased/decreased each time an up or down html is clicked.
+     * The amount the value is increased/decreased each time an up or down widget is clicked.
      */
     private int delta;
 
-    private boolean deltaSet;
-
     public int getDelta() {
-        PrimitiveHelper.checkTrue("field:delta not set", this.deltaSet);
         return this.delta;
     }
 
     public void setDelta(final int delta) {
         this.delta = delta;
-        this.deltaSet = true;
     }
 
     public String toString() {
         return super.toString() + ", value: " + value + ", lowerBounds: " + lowerBounds + ", upperBounds: "
                 + upperBounds + ", upDown: " + upWidget + ", downWidget:" + downWidget + ", panel: " + this.panel
-                + ", delta: " + delta + ", deltaSet: " + deltaSet + ", upImageUrl[" + upImageUrl + "], downImageUrl["
-                + downImageUrl + "]";
+                + ", delta: " + delta;
     }
 }

@@ -226,9 +226,8 @@ public abstract class SplitterPanel extends Composite {
         this.items = items;
     }
 
-    protected void createItems() {
-        final List list = new ArrayList();
-        this.setItems(list);
+    protected List createItems() {
+        return new ArrayList();
     }
 
     /**
@@ -247,9 +246,7 @@ public abstract class SplitterPanel extends Composite {
     }
 
     protected Panel createPanel() {
-        final Panel panel = new Panel();
-        this.setPanel(panel);
-        return panel;
+        return new Panel();
     }
 
     class Panel extends AbstractPanel {
@@ -414,7 +411,10 @@ public abstract class SplitterPanel extends Composite {
         protected void handleMouseDown(final Event event) {
             ObjectHelper.checkNotNull("parameter:event", event);
 
-            DOM.addEventPreview(this.createEventPreview());
+            final EventPreview preview = this.createEventPreview();
+             this.setEventPreview(preview);            
+            DOM.addEventPreview(preview);
+            
             this.addStyleName(this.getDraggingStyleName());
         }
 
@@ -463,7 +463,6 @@ public abstract class SplitterPanel extends Composite {
                 }
             };
 
-            this.setEventPreview(preview);
             return preview;
         }
 

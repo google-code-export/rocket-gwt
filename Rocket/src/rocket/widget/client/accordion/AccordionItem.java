@@ -33,7 +33,7 @@ public class AccordionItem {
     public AccordionItem() {
         super();
 
-        this.createCaptionWidget();
+        this.setCaptionWidget(this.createCaptionWidget());
     }
 
     /**
@@ -104,7 +104,7 @@ public class AccordionItem {
         this.captionWidget = captionWidget;
     }
 
-    protected void createCaptionWidget() {
+    protected HTML createCaptionWidget() {
         final HTML html = new HTML();
         DOM.setAttribute( html.getElement(), "className", "");
         html.setWidth("100%");
@@ -113,7 +113,7 @@ public class AccordionItem {
                 AccordionItem.this.select();
             }
         });
-        this.setCaptionWidget(html);
+        return html;
     }
 
     public String getCaption() {

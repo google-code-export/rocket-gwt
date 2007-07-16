@@ -31,8 +31,12 @@ import com.google.gwt.user.client.ui.Composite;
 public class Tree extends Composite {
 
     public Tree() {
-        this.createTreeListenerCollection();
-        this.initWidget(this.createTreeItem());
+        this.setTreeListenerCollection( createTreeListenerCollection() );
+        
+        final TreeItem treeItem = this.createTreeItem();
+        this.setTreeItem(treeItem);
+        this.initWidget(treeItem);
+        
         this.setStyleName(TreeConstants.TREE_STYLE);
     }
 
@@ -57,7 +61,6 @@ public class Tree extends Composite {
 
     protected TreeItem createTreeItem() {
         final TreeItem treeItem = new TreeItem();
-        this.setTreeItem(treeItem);
         treeItem.setTree(this);
         return treeItem;
     }
@@ -112,8 +115,8 @@ public class Tree extends Composite {
         this.treeListenerCollection = treeListenerCollection;
     }
 
-    protected void createTreeListenerCollection() {
-        this.setTreeListenerCollection(new TreeListenerCollection());
+    protected TreeListenerCollection createTreeListenerCollection() {
+        return new TreeListenerCollection();
     }
 
     public String toString() {

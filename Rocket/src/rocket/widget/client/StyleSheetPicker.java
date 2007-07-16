@@ -46,7 +46,11 @@ public class StyleSheetPicker extends Composite {
         super();
 
         this.setMappings(new HashMap());
-        this.initWidget(this.createHorizontalPanel());
+        
+        final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
+        this.setHorizontalPanel(horizontalPanel);
+        this.initWidget( horizontalPanel );
+        
         this.setText(WidgetConstants.STYLESHEET_PICKER_LABEL_TEXT);
     }
 
@@ -80,15 +84,14 @@ public class StyleSheetPicker extends Composite {
 
     protected HorizontalPanel createHorizontalPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
-        this.setHorizontalPanel(panel);
         panel.setStyleName(WidgetConstants.STYLESHEET_PICKER_STYLE);
-        panel.addStyleName(WidgetConstants.STYLESHEET_PICKER_HORIZONTAL_PANEL_STYLE);
-
+        
         final Widget label = this.createLabel();
         panel.add(label);
 
         this.createButtons(panel);
-        this.selectStyleSheet(this.getButton(0));
+        this.selectStyleSheet( (Button) panel.getWidget( 0 + 1 ));
+        
         return panel;
     }
 
@@ -193,11 +196,9 @@ public class StyleSheetPicker extends Composite {
         final Button button = new Button(title);
         button.setStyleName(WidgetConstants.STYLESHEET_ITEM_STYLE);
 
-        final StyleSheetPicker that = this;
-
         button.addClickListener(new ClickListener() {
             public void onClick(final Widget ignored) {
-                that.selectStyleSheet(button);
+                StyleSheetPicker.this.selectStyleSheet(button);
             }
         });
 

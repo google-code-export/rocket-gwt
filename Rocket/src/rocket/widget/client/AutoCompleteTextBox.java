@@ -20,6 +20,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import rocket.collection.client.CollectionHelper;
+import rocket.style.client.CssUnit;
+import rocket.style.client.StyleConstants;
+import rocket.style.client.StyleHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -43,7 +46,7 @@ public class AutoCompleteTextBox extends TextBox {
 
     public AutoCompleteTextBox() {
         super();
-        this.createDropDownList();
+        this.setDropDownList( createDropDownList() );
         this.sinkEvents(Event.ONKEYDOWN | Event.ONKEYUP);
     }
 
@@ -195,15 +198,15 @@ public class AutoCompleteTextBox extends TextBox {
     /**
      * Shows the dropDownList. This is accomplished by absolutely positioning the dropDownList( a VerticalPanel)below this very textbox.
      */
-    public void showDropDownList() {
-        final int left = this.getAbsoluteLeft();
+    public void showDropDownList() {    	
+    	final int left = this.getAbsoluteLeft();
         final int top = this.getAbsoluteTop() + this.getOffsetHeight();
-
+        
         final Widget dropDownList = this.getDropDownList();
         final Element element = dropDownList.getElement();
-        DOM.setStyleAttribute(element, "left", left + "px");
-        DOM.setStyleAttribute(element, "top", top + "px");
-
+        StyleHelper.setInlineIntegerStyleProperty(element, StyleConstants.LEFT, left, CssUnit.PX );
+        StyleHelper.setInlineIntegerStyleProperty(element, StyleConstants.TOP, top, CssUnit.PX );       
+        
         dropDownList.setWidth(this.getOffsetWidth() + "px");
         dropDownList.setVisible(true);
 
@@ -244,8 +247,7 @@ public class AutoCompleteTextBox extends TextBox {
         final DropDownList list = new DropDownList();
         list.setVisible(false);
         list.setStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE);
-        this.setDropDownList(list);
-        this.createEventPreviewer();
+        this.setEventPreviewer( this.createEventPreviewer() );
         return list;
     }
 
@@ -327,7 +329,6 @@ public class AutoCompleteTextBox extends TextBox {
                 return AutoCompleteTextBox.this.onEventPreview(event);
             }
         };
-        this.setEventPreviewer(watcher);
         return watcher;
     }
 

@@ -33,7 +33,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class Pager extends AbstractNumberHolder implements NumberHolder {
 
     public Pager() {
-        this.initWidget(this.createHorizontalPanel());
+    	final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
+    	this.setHorizontalPanel(horizontalPanel);
+        this.initWidget( horizontalPanel );
     }
 
     // NUMBER HOLDER
@@ -114,8 +116,6 @@ public class Pager extends AbstractNumberHolder implements NumberHolder {
     protected HorizontalPanel createHorizontalPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
         panel.setStyleName(WidgetConstants.PAGER_STYLE);
-        panel.addStyleName(WidgetConstants.PAGER_HORIZONTAL_PANEL_STYLE);
-        this.setHorizontalPanel(panel);
         return panel;
     }
 

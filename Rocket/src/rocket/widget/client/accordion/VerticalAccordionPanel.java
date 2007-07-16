@@ -30,7 +30,9 @@ public class VerticalAccordionPanel extends AccordionPanel {
     public VerticalAccordionPanel() {
         super();
 
-        this.initWidget(this.createPanel());
+        final DivPanel panel = this.createPanel();
+        this.setPanel(panel);
+        this.initWidget(panel);
     }
 
     protected void replaceContentWidget(final AccordionItem item) {
@@ -62,7 +64,6 @@ public class VerticalAccordionPanel extends AccordionPanel {
     protected DivPanel createPanel() {
         final DivPanel panel = new DivPanel();
         panel.setStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_STYLE);
-        this.setPanel(panel);
         return panel;
     }
 

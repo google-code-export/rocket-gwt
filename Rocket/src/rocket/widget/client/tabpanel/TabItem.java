@@ -25,7 +25,8 @@ public class TabItem {
     public TabItem() {
         super();
 
-        this.createTabWidgetPanel();
+        final HorizontalPanel panel = this.createTabWidgetPanel();
+        this.setTabWidgetPanel(panel);        
     }
 
     /**
@@ -69,7 +70,7 @@ public class TabItem {
     protected void setTabPanel(final TabPanel tabPanel) {
         ObjectHelper.checkNotNull("parameter:tabPanel", tabPanel);
 
-        // if it was already attached remove it first...
+        // if it was already attached fail!
         if (this.hasTabPanel()) {
             WidgetHelper.fail("This TabItem already belongs to a TabPanel, tabPanel: " + tabPanel);
         }
@@ -96,14 +97,13 @@ public class TabItem {
         this.captionWidget = captionWidget;
     }
 
-    protected Widget createCaptionWidget() {
+    protected HTML createCaptionWidget() {
         final HTML html = new HTML();
         html.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
                 TabItem.this.select();
             }
         });
-        this.setCaptionWidget(html);
         return html;
     }
 
@@ -161,9 +161,10 @@ public class TabItem {
     protected HorizontalPanel createTabWidgetPanel() {
         final HorizontalPanel panel = new HorizontalPanel();
         panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
-        this.setTabWidgetPanel(panel);
-
-        panel.add(this.createCaptionWidget());
+        
+        final HTML captionWidget = this.createCaptionWidget(); 
+        this.setCaptionWidget(captionWidget);        
+        panel.add( captionWidget );
 
         return panel;
     }
