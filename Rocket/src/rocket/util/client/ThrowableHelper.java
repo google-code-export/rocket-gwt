@@ -15,10 +15,6 @@
  */
 package rocket.util.client;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
