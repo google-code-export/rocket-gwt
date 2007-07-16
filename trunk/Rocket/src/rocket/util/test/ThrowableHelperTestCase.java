@@ -17,7 +17,6 @@ package rocket.util.test;
 
 import junit.framework.TestCase;
 import rocket.util.client.ThrowableHelper;
-import rocket.util.client.StackTraceHelper;
 
 /**
  * This testcase is designed to only test portions of StackTraceHelper that do not have any dependencies on JSNI.

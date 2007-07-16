@@ -15,13 +15,8 @@
  */
 package rocket.util.test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import rocket.util.server.Base64Encoder;
-
 import junit.framework.TestCase;
+import rocket.util.server.Base64Encoder;
 
 /**
  * A series of unit tests for the base64 encoder class

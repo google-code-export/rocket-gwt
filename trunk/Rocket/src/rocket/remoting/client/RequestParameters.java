@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.collection.client.MultiValueMap;
-import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 

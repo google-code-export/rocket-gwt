@@ -34,7 +34,7 @@ import com.google.gwt.user.client.rpc.impl.Serializer;
  * 
  * <h6>Gotchas</h6>
  * <ul>
- * <li> The only requirement is that the {@link #createProxy() } method is implemented to request for the runtime to create a Proxy for a
+ * <li> The only requirement is that the {@link #createProxy() } method is implemented to request for the runtime to create a XXXProxy for a
  * service that declares a return type that covers objects returned by the server side component. </li>
  * <li> When compiling/translated to javascript the Rocket.jar must be included in the classpath before any google classes so that the
  * custom ProxyGenerator is used instead of the regular class. </li>

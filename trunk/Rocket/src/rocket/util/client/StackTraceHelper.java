@@ -16,7 +16,6 @@
 package rocket.util.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * This class helps with converting stack traces - regardless of source into a string that is similar to the familiar
