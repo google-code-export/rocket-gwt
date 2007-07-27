@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import rocket.text.client.IndexedPlaceHolderReplacer;
+import rocket.text.client.NamedPlaceHolderReplacer;
+
 /**
  * A variety of useful String manipulating methods including assertion checks and general utility methods.
  * 
@@ -310,7 +313,7 @@ public class StringHelper extends ObjectHelper {
     }
 
     /**
-     * Helper which may be used to assert that a string is not or empty.
+     * GeneratorHelper which may be used to assert that a string is not or empty.
      * 
      * @param message
      * @param string
@@ -322,7 +325,7 @@ public class StringHelper extends ObjectHelper {
     }
 
     /**
-     * Helper that tests whether the given string is null or empty.
+     * GeneratorHelper that tests whether the given string is null or empty.
      * 
      * @param string
      *            String
@@ -347,21 +350,9 @@ public class StringHelper extends ObjectHelper {
      * @return The string after replacements.
      */
     public static String format(final String text, final Object[] values) {
-        ObjectHelper.checkNotNull("parameter:values", values);
-
-        return new PlaceHolderReplacer(){
-        	protected String getValue( final String placeHolder ){
-        		try {
-        			final int index = Integer.parseInt(placeHolder);
-        			return String.valueOf(values[index]);
-
-        		} catch (final NumberFormatException badIndex) {
-        			StringHelper.fail("Placeholder index does not contain a number [" + placeHolder + "]");
-        			return null;// unreachable
-        		}
-        	}
-        }.execute( text );
-    }
+        final IndexedPlaceHolderReplacer replacer = new IndexedPlaceHolderReplacer();
+        replacer.setValues( values );
+        return replacer.execute( text );    }
     
     /**
      * Builds a new string substituting the placeholders within text with values from values.
@@ -372,87 +363,9 @@ public class StringHelper extends ObjectHelper {
      * @return The string after replacements.
      */
     public static String format(final String text, final Map values) {
-        ObjectHelper.checkNotNull("parameter:values", values);
-
-        return new PlaceHolderReplacer(){
-        	protected String getValue( final String placeHolder ){
-    			final String value = (String) values.get( placeHolder );
-    			if( null == value ){
-    				StringHelper.fail("Unable to find placeholder [" + placeHolder + "]");
-    			}
-    			return value;
-        	}
-        }.execute( text );
-    }
-    
-    /**
-     * Template used by place holder methods to locate placeholders and replace them with actual values.
-     */
-    static abstract class PlaceHolderReplacer {
-    	
-    	/**
-    	 * Travels over the input string replacing placeholders with values returning the built result.
-    	 * @param text
-    	 * @return
-    	 */
-    	protected String execute( final String text ){
-            StringHelper.checkNotNull("parameter:text", text);
-
-    		final StringBuffer buf = new StringBuffer();
-            int i = 0;
-            final int messageLength = text.length();
-            while (i < messageLength) {
-                // find escape character...
-                final int escapeIndex = text.indexOf( '\\', i );
-                if( -1 != escapeIndex ){
-                    final int characterAfterIndex = escapeIndex + 1;
-                    if( escapeIndex == messageLength ){
-                        StringHelper.fail( "Broken message, trailing escape character found.");
-                    }
-                    
-                    buf.append(text.substring(i, escapeIndex ));
-                    
-                    final char characterAfter = text.charAt( characterAfterIndex );
-                    if( '$' == characterAfter || '\\' == characterAfter ){
-                        buf.append( characterAfter );
-                        
-                        i = characterAfterIndex + 1;
-                        continue;
-                    }
-                    StringHelper.fail( "Invalid escape character found in format string \"" + text + "\" at " + characterAfterIndex );
-                }
-                
-                // find the start placeholder
-                final int placeHolderStartIndex = text.indexOf("${", i);
-                if (-1 == placeHolderStartIndex) {
-                    buf.append(text.substring(i, messageLength));
-                    break;
-                }
-                buf.append(text.substring(i, placeHolderStartIndex));
-
-                // find the end placeholder
-                final int placeHolderEndIndex = text.indexOf('}', placeHolderStartIndex + 2 );
-                if (-1 == placeHolderEndIndex) {
-                    StringHelper.fail("Unable to find placeholder end after finding start, ["
-                            + text.substring(i, messageLength - i) + "]");
-                }
-
-                // extract the index in between...
-                final String placeHolder = text.substring( 2 + placeHolderStartIndex, placeHolderEndIndex);
-                buf.append( this.getValue( placeHolder ));
-                
-                // advance past placeholder
-                i = placeHolderEndIndex + 1;
-            }
-            return buf.toString();    		
-    	}
-    	
-    	/**
-    	 * Sub-classes must resolve the placeholder to a value.
-    	 * @param placeholder
-    	 * @return
-    	 */
-    	abstract protected String getValue( String placeholder );
+        final NamedPlaceHolderReplacer replacer = new NamedPlaceHolderReplacer();
+        replacer.setValues( values );
+        return replacer.execute( text );
     }
 
     /**
