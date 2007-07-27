@@ -14,8 +14,12 @@
 	</generate-with>		
 
 	<servlet
-		path="/ClassWithStringJsonEncodedBuilderServlet"
-		class="rocket.remoting.test.remotejsonservice.server.ClassWithStringJsonEncodedBuilderServlet" />
+		path="/ClassWithStringFieldJsonResponse"
+		class="rocket.remoting.test.remotejsonservice.server.ClassWithStringFieldJsonResponseServlet" />
+
+	<servlet
+		path="/ClassWith3StringFieldsJsonResponse"
+		class="rocket.remoting.test.remotejsonservice.server.ClassWith3StringFieldsJsonResponseServlet" />
 
 	<servlet
 		path="/BrokenJsonResponse"
