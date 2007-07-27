@@ -5,7 +5,7 @@
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http:www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -36,33 +36,33 @@ import com.google.gwt.junit.client.GWTTestCase;
  * 
  * @author Miroslav Pokorny
  */
-public class JsonGwtTestCase extends GWTTestCase {
+public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	public String getModuleName() {
-		return "rocket.json.test.JsonGwtTestCase";
+		return "rocket.json.test.JsonSerializerGwtTestCase";
 	}
 
 	public void testNotSerializable() {
 		try {
 			final Object proxy = GWT.create(NotSerializable.class);
-			fail("An exception should have been thrown TypeIsNotSerializableException because NotSerializable does not implement serializable.");
+			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the NotSerializable class does not implement serializable.");
 		} catch (final AssertionFailedError error) {
 			throw error;
 		} catch (final Throwable caught) {
 			final String causeType = GWT.getTypeName(caught.getCause());
-			assertTrue(causeType, causeType.endsWith("TypeIsNotSerializableException"));
+			assertTrue(causeType, causeType.equals("rocket.json.rebind.JsonSerializerGeneratorException"));
 		}
 	}
 
 	public void testClassMissingNoArgumentsConstructor() {
 		try {
 			final Object proxy = GWT.create(MissingNoArgumentsConstructor.class);
-			fail("An exception should have been thrown MissingNoArgumentsConstructorException because MissingNoArgumentsConstructor does not implement serializable.");
+			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because MissingNoArgumentsConstructor does not implement serializable.");
 		} catch (final AssertionFailedError error) {
 			throw error;
 		} catch (final Throwable caught) {
 			final String causeType = GWT.getTypeName(caught.getCause());
-			assertTrue(causeType, causeType.endsWith("MissingNoArgumentsConstructorException"));
+			assertTrue(causeType, causeType.equals("rocket.json.rebind.JsonSerializerGeneratorException"));
 		}
 	}
 
@@ -286,7 +286,7 @@ public class JsonGwtTestCase extends GWTTestCase {
 		ClassWithStringField field;
 	}
 
-	public void testDeserializeClassWithHeirarchy() {
+	public void testDeserializeClassWithFieldWithHeirarchy() {
 		final String superValue = "superValue1";
 		final String subValue = "subValue2";
 
@@ -576,7 +576,7 @@ public class JsonGwtTestCase extends GWTTestCase {
 	static class ClassWithObjectList implements JsonSerializable {
 		/**
 		 * @javascriptPropertyName listField
-		 * @listElementType rocket.json.test.client.JsonGwtTestCase.ClassWithObjectListElement
+		 * @listElementType rocket.json.test.client.JsonSerializerGwtTestCase.ClassWithObjectListElement
 		 */
 		List listField;
 	}
@@ -849,7 +849,7 @@ public class JsonGwtTestCase extends GWTTestCase {
 	static class ClassWithObjectSetField implements JsonSerializable {
 		/**
 		 * @javascriptPropertyName setField
-		 * @setElementType rocket.json.test.client.JsonGwtTestCase.ClassWithObjectSetFieldElement
+		 * @setElementType rocket.json.test.client.JsonSerializerGwtTestCase.ClassWithObjectSetFieldElement
 		 */
 		Set setField;
 	}
@@ -1119,7 +1119,7 @@ public class JsonGwtTestCase extends GWTTestCase {
 	static class ClassWithObjectMapField implements JsonSerializable {
 		/**
 		 * @javascriptPropertyName field
-		 * @mapValueType rocket.json.test.client.JsonGwtTestCase.ClassWithStringField5
+		 * @mapValueType rocket.json.test.client.JsonSerializerGwtTestCase.ClassWithStringField5
 		 */
 		Map field;
 	}

@@ -1,0 +1,11 @@
+// invoke-primitive-or-string-field-setter.txt
+//
+// \${fieldSetter}			   	The name of the field's setter method	
+// \${instance}                	The name of the variable containing the instance being reconstructed
+// \${asMethod}                	The name of a method which will convert a jsonObject into a java object
+// \${jsonObject}	   			A JSONObject which contains the values of each of the fields for this instance
+// \${javascriptPropertyName}  	The name of a javascript property which contains the source value for the field being set
+//
+// this.\${fieldSetter}( \${instance}, this.\${asMethod}( \${jsonObject}.get( \${javascriptPropertyName} )));
+
+this.${fieldSetter}( ${instance}, this.${asMethod}( ${jsonObject}.get( ${javascriptPropertyName} )));
