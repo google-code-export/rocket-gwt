@@ -25,7 +25,7 @@ import com.google.gwt.core.client.GWT;
  */
 public class StackTraceHelper {
     /**
-     * Helper converts the stackTrace of the given Throwable into a String that looks similar to a printed stackTrace.
+     * GeneratorHelper converts the stackTrace of the given Throwable into a String that looks similar to a printed stackTrace.
      * 
      * ThrowableClassName at className.methodName.level0 at className.methodName.level1
      * 
