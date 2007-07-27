@@ -19,12 +19,15 @@ import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * This interface notes that a class can write java code typically a method
+ * 
  * @author Miroslav Pokorny
  */
 public interface CodeGenerator {
 	/**
-	 * Requests for this instance to write some code to represent the artefact that it is modelling.
+	 * Requests for this instance to write some code to represent the artefact
+	 * that it is modelling.
+	 * 
 	 * @param writer
 	 */
-	void write( SourceWriter writer ); 
+	void write(SourceWriter writer);
 }
