@@ -6,9 +6,11 @@ package rocket.json.rebind;
 import rocket.generator.rebind.GeneratorException;
 
 /**
- * Common base class for all exceptions that occur whilst generating a Serializer.
+ * Common base class for all exceptions that occur whilst generating a
+ * Serializer.
+ * 
  * @author Miroslav Pokorny
- *
+ * 
  */
 public class JsonSerializerGeneratorException extends GeneratorException {
 
