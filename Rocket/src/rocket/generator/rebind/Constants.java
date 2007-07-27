@@ -20,7 +20,38 @@ package rocket.generator.rebind;
  * 
  * @author Miroslav Pokorny
  * 
+ * TODO Delete will be replaced when v2.* is moved up.
  */
 public class Constants {
+	/**
+	 * A comma separated list of all reserved javascript keywords.
+	 */
 	final static String JAVASCRIPT_RESERVED_KEYWORDS = "abstract,boolean,break,byte,case,catch,char,class,const,continue,debugger,default,delete,do,double,else,enum,export,extends,false,final,finally,float,for,function,goto,if,implements,import,in,instanceof,int,interface,long,native,new,null,package,private,protected,public,return,short,static,super,switch,synchronized,this,throw,throws,transient,true,try,typeof,var,void,volatile,while,with";
+
+	/**
+	 * A comma separated literal name black list of java keywords
+	 */
+	final static String JAVA_RESERVED_KEYWORDS = "abstract,continue,for,new,switch,assert,default,goto,package,synchronized,boolean,do,if,private,this,break,double,implements,protected,throw,byte,else,import,public,throws,case,enum,instanceof,return,transient,catch,extends,int,short,try,char,final,interface,static,void,class,finally,long,strictfp,volatile,const,float,native,super,while";
+
+	public final static String BOOLEAN = Boolean.TYPE.getName();
+
+	public final static String BYTE = Byte.TYPE.getName();
+
+	public final static String SHORT = Short.TYPE.getName();
+
+	public final static String INT = Integer.TYPE.getName();
+
+	public final static String LONG = Long.TYPE.getName();
+
+	public final static String FLOAT = Float.TYPE.getName();
+
+	public final static String DOUBLE = Double.TYPE.getName();
+
+	public final static String CHAR = Character.TYPE.getName();
+
+	public final static String VOID = Void.TYPE.getName();
+
+	public final static String OBJECT = Object.class.getName();
+
+	public final static String STRING = String.class.getName();
 }

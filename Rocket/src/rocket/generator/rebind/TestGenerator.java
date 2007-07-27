@@ -15,7 +15,6 @@
  */
 package rocket.generator.rebind;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -78,33 +77,33 @@ abstract public class TestGenerator extends Generator {
 			final String typeName, final Throwable cause) {
 
 		final GeneratorContext context = new GeneratorContext() {
-			protected String getGeneratedClassNameSuffix() {
+			protected String getGeneratedTypeNameSuffix() {
 				return "__" + FailedGenerateAttemptException.class.getName().replace('.', '_');
 			}
 		};
 		context.setGeneratorContext(generatorContext);
 		context.setLogger(logger);
 
-		final String generatedClassName = context.getGeneratedClassname(typeName);
-		final String packageName = context.getPackageName(generatedClassName);
-		final String simpleClassName = context.getSimpleClassName(generatedClassName);
-		final PrintWriter printWriter = context.tryCreateTypePrintWriter(packageName, simpleClassName);
+		final String generatedClassName = context.getGeneratedTypeName(typeName);
+		final PrintWriter printWriter = context.tryCreateTypePrintWriter(generatedClassName);
 		if (printWriter != null) {
 
+			final String packageName = context.getPackageName(generatedClassName);
+			final String simpleClassName = context.getSimpleClassName(generatedClassName);
 			final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, simpleClassName);
 			composerFactory.setSuperclass(FailedGenerateAttemptException.class.getName());
 
 			final SourceWriter sourceWriter = context.createSourceWriter(composerFactory, printWriter);
-			
+
 			Throwable cause0 = cause;
-			while( true ){
+			while (true) {
 				final Throwable cause1 = cause0.getCause();
-				if( null == cause1 ){
+				if (null == cause1) {
 					break;
 				}
 				cause0 = cause1;
 			}
-			
+
 			this.writeGetMessage(sourceWriter, typeName, cause0);
 			this.writeGetCauseType(sourceWriter, cause0);
 			this.writeGetCauseStackTrace(sourceWriter, cause0);
@@ -118,7 +117,9 @@ abstract public class TestGenerator extends Generator {
 	protected void writeGetMessage(final SourceWriter writer, final String typeName, final Throwable cause) {
 		writer.println("public String getMessage(){");
 		writer.indent();
-		writer.println("return \"Attempt to generate for [" + typeName + "] failed because " + Generator.escape( cause.getMessage() ) + "\";");
+		writer
+				.println("return \"Attempt to generate for [" + typeName + "] failed because " + Generator.escape(cause.getMessage())
+						+ "\";");
 		writer.outdent();
 		writer.println("}");
 	}
@@ -141,7 +142,7 @@ abstract public class TestGenerator extends Generator {
 	}
 
 	/**
-	 * Helper which captures the stacktrace of a throwable as a String.
+	 * GeneratorHelper which captures the stacktrace of a throwable as a String.
 	 * 
 	 * @param throwable
 	 * @return
@@ -150,12 +151,12 @@ abstract public class TestGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:throwable ", throwable);
 
 		final StringWriter stringWriter = new StringWriter();
-		//final PrintWriter printWriter = new PrintWriter(stringWriter);
-		//final PrintStream printWriter = new PrintStream(stringWriter);
-		//throwable.printStackTrace(printWriter);
-		//printWriter.flush();
-		//printWriter.close();
-//FIXME
+		// final PrintWriter printWriter = new PrintWriter(stringWriter);
+		// final PrintStream printWriter = new PrintStream(stringWriter);
+		// throwable.printStackTrace(printWriter);
+		// printWriter.flush();
+		// printWriter.close();
+		// FIXME
 		return stringWriter.toString();
 	}
 
