@@ -15,9 +15,8 @@
  */
 package java.lang;
 
-import rocket.util.client.ThrowableHelper;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.StackTraceHelper;
+import rocket.util.client.ThrowableHelper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
