@@ -21,18 +21,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import rocket.remoting.test.remotejsonservice.client.ClassWithString;
+import rocket.remoting.test.remotejsonservice.client.ClassWith3StringFields;
+import rocket.remoting.test.remotejsonservice.client.ClassWithStringField;
 import flexjson.JSONSerializer;
 
 /**
  * This servlet reads a single parameter and uses it to set the field on a
- * ClassWithString instance. This same instance is serialized back to json using
+ * ClassWithStringField instance. This same instance is serialized back to json using
  * the FLEXJson library with the encoded string then written to the response.
  * 
  * @author Miroslav Pokorny
  * 
  */
-public class ClassWithStringJsonEncodedBuilderServlet extends HttpServlet {
+public class ClassWith3StringFieldsJsonResponseServlet extends HttpServlet {
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
 		this.handleRequest(request, response);
 	}
@@ -44,13 +45,16 @@ public class ClassWithStringJsonEncodedBuilderServlet extends HttpServlet {
 	protected void handleRequest(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
 		System.out.println("SERVER - entering: " + request.getQueryString());
 
-		final ClassWithString instance = new ClassWithString();
-		instance.field = request.getParameter("stringField");
+		final ClassWith3StringFields instance = new ClassWith3StringFields();
+		instance.field1 = request.getParameter("string1");
+		instance.field2 = request.getParameter("string2");
+		instance.field3 = request.getParameter("string3");
 
 		final JSONSerializer serializer = new JSONSerializer();
 		final String json = serializer.deepSerialize(instance);
 
-		response.getWriter().print(json);
+		response.getWriter().println(json);
+		response.flushBuffer();
 
 		System.out.println("SERVER - returning json[" + json + "]");
 	}

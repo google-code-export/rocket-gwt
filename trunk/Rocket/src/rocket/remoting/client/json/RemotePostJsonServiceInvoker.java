@@ -36,4 +36,9 @@ abstract public class RemotePostJsonServiceInvoker extends RemoteJsonServiceInvo
 	final protected RequestBuilder.Method getRequestMethod() {
 		return RequestBuilder.POST;
 	}
+	
+	protected void setHeaders( final RequestBuilder request ){
+		request.setHeader( Constants.CONTENT_TYPE_HEADER, Constants.POST_CONTENT_TYPE );
+		request.setHeader( Constants.CONTENT_LENGTH_HEADER, "" + this.getRequestData().length() );
+	}
 }

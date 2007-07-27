@@ -15,294 +15,312 @@
  */
 package rocket.remoting.rebind.json;
 
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
-import rocket.generator.rebind.JClassTypeMethodVisitor;
-import rocket.remoting.client.json.RemoteJsonService;
-import rocket.remoting.client.json.RemoteJsonServiceClient;
+import rocket.generator.rebind.Generator;
+import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorHelper;
+import rocket.generator.rebind.method.Method;
+import rocket.generator.rebind.method.NewMethod;
+import rocket.generator.rebind.methodparameter.MethodParameter;
+import rocket.generator.rebind.methodparameter.NewMethodParameter;
+import rocket.generator.rebind.type.NewConcreteType;
+import rocket.generator.rebind.type.Type;
+import rocket.generator.rebind.visitor.AllMethodsVisitor;
+import rocket.generator.rebind.visitor.MethodParameterVisitor;
+import rocket.remoting.client.json.RemoteJsonServiceInvoker;
+import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-
-import com.google.gwt.core.ext.Generator;
-import com.google.gwt.core.ext.GeneratorContext;
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JParameter;
-import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
-import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
-import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
-import com.google.gwt.user.rebind.SourceWriter;
 
 /**
- * This generator may be used to generate a proxy or client for a server based
- * resource that returns its result in the json format. The interface presented
- * to the user is the same as that found in regular rpcs. The only difference
- * being some annotations must be specificed to assist in the json to java
- * mapping process.
+ * This Generator generates RemoteJsonService clients for any given
+ * RemoteService interface
  * 
  * @author Miroslav Pokorny
  */
 public class RemoteJsonServiceGenerator extends Generator {
 
-	/**
-	 * Begins the code generation process.
-	 * 
-	 * @param logger
-	 * @param remoteJsonServiceGeneratorContext
-	 * @param typeName
-	 */
-	public String generate(final TreeLogger logger, final GeneratorContext generatorContext, final String typeName)
-			throws UnableToCompleteException {
+	protected NewConcreteType assembleNewType(final Type serviceInterface, final String newTypeName) {
+		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
+		GeneratorHelper.checkJavaTypeName("parameter:TypeName", newTypeName);
 
-		final RemoteJsonServiceGeneratorContext context = new RemoteJsonServiceGeneratorContext();
-		context.setGeneratorContext(generatorContext);
-		context.setLogger(logger);
-		this.setRemoteJsonServiceGeneratorContext(context);
+		this.setServiceInterface(serviceInterface);
+		this.verifyServiceInterface();
+		this.verifyAsyncServiceInterface();
 
-		this.setServiceInterfaceClassname(typeName);
+		final NewConcreteType client = this.createJsonServiceClientType(newTypeName);
+		this.setJsonServiceClient(client);
+		this.implementPublicMethods();
 
-		// will be null if generater has already been run.
-		final String generatedClientClassname = this.getGeneratedProxyClassname();
-		final String packageName = context.getPackageName(generatedClientClassname);
-		final String simpleClassName = context.getSimpleClassName(generatedClientClassname);
-		final PrintWriter printWriter = context.tryCreateTypePrintWriter(packageName, simpleClassName);
-		final boolean alreadyExists = (null == printWriter);
-
-		if (false == alreadyExists) {
-			try {
-				this.verifyInterfaceCompatibility();
-				final SourceWriter writer = this.createSourceWriter(generatedClientClassname, printWriter);
-				this.write(writer);
-
-			} catch (final RemoteJsonServiceGeneratorException dontCatchRethrow) {
-				dontCatchRethrow.printStackTrace();
-				throw dontCatchRethrow;
-			} catch (final Throwable caught) {
-				caught.printStackTrace();
-				throw new UnableToCompleteException();
-			}
-		}
-
-		// return the name of the generated class
-		return generatedClientClassname;
+		return client;
 	}
 
 	/**
-	 * Factory field which creates a SourceWriter which will be used to write
-	 * the generate code for the json client.
-	 * 
-	 * @param packageName
-	 * @param simpleClassname
-	 * @param printWriter
-	 * @return
+	 * Visits all the public methods on the service interface creating json
+	 * client methods.
 	 */
-	protected SourceWriter createSourceWriter(final String classname, final PrintWriter printWriter) {
-		final RemoteJsonServiceGeneratorContext context = this.getRemoteJsonServiceGeneratorContext();
+	protected void implementPublicMethods() {
+		this.getGeneratorContext().info("Implementing async service interface methods");
 
-		final String packageName = context.getPackageName(classname);
-		final String simpleClassName = context.getSimpleClassName(classname);
-
-		final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, simpleClassName);
-		composerFactory.addImplementedInterface(RemoteJsonService.class.getName());
-		composerFactory.addImplementedInterface(ServiceDefTarget.class.getName());
-		composerFactory.addImplementedInterface(this.getAsyncInterfaceClassname());
-		composerFactory.setSuperclass(RemoteJsonServiceClient.class.getName());
-		return context.createSourceWriter(composerFactory, printWriter);
-	}
-
-	/**
-	 * Generates the methods that belong to the class being generated.
-	 * 
-	 * @param writer
-	 */
-	protected void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
-
-		final JClassType generated = this.getServiceInterfaceType();
-
-		final RemoteJsonServiceGeneratorContext context = this.getRemoteJsonServiceGeneratorContext();
-		
-		final JClassTypeMethodVisitor publicMethodWalker = new JClassTypeMethodVisitor(){
-			public boolean skipMethod( final JMethod method ){
-				boolean skip = false;
-				
-				while( true ){
-					if( method.isStatic() ){
-						skip = true;
-						break;
-					}					
-					final JClassType type = method.getEnclosingType();
-					if( type == type.getOracle().getJavaLangObject() ){
-						skip = true;
-						break;
-					}
-					
-					skip = false;
-					break;
-				}
-				
-				return skip;
+		final AllMethodsVisitor publicMethodFinder = new AllMethodsVisitor() {
+			protected boolean visit(final Method method) {
+				RemoteJsonServiceGenerator.this.implementPublicMethod(method);
+				return false;
 			}
-			public void visitMethod( final JMethod method ){
-				final Method serviceMethod = new Method();
-				serviceMethod.setMethod(method);
-				serviceMethod.setRemoteJsonServiceGeneratorContext(context);
-				serviceMethod.write(writer);				
+
+			protected boolean skipJavaLangObjectMethods() {
+				return true;
 			}
 		};
-		publicMethodWalker.setType( generated );
-		publicMethodWalker.startVisit();
-		context.commitWriter(writer);
+		publicMethodFinder.start(this.getServiceInterface());
 	}
 
 	/**
-	 * A refernce to the context for this code generation context.
+	 * Adds a method to the jsonServiceClient that prepares an invoker etc.
+	 * 
+	 * @param method
+	 *            A serviceInterface method.
 	 */
-	private RemoteJsonServiceGeneratorContext remoteJsonServiceGeneratorContext;
+	protected void implementPublicMethod(final Method method) {
+		ObjectHelper.checkNotNull("parameter:method", method);
 
-	protected RemoteJsonServiceGeneratorContext getRemoteJsonServiceGeneratorContext() {
-		ObjectHelper.checkNotNull("field:remoteJsonServiceGeneratorContext", remoteJsonServiceGeneratorContext);
-		return this.remoteJsonServiceGeneratorContext;
-	}
+		this.getGeneratorContext().debug("Implementing method " + method);
 
-	protected void setRemoteJsonServiceGeneratorContext(final RemoteJsonServiceGeneratorContext generateSession) {
-		ObjectHelper.checkNotNull("parameter:remoteJsonServiceGeneratorContext", generateSession);
-		this.remoteJsonServiceGeneratorContext = generateSession;
-	}
+		final NewMethod asyncMethod = this.createCorrespondingAsyncServiceInterfaceMethod(method);
 
-	/**
-	 * The name of the service interface for which the proxy is being generated.
-	 */
-	private String serviceInterfaceClassname;
+		final InvokerTemplatedFile body = new InvokerTemplatedFile();
+		body.setInvokerType(this.getInvokerTypeFromMethodAnnotation(method));
+		body.setMethodReturnType(method.getReturnType());
 
-	protected String getServiceInterfaceClassname() {
-		StringHelper.checkNotEmpty("field:serviceInterfaceClassname", serviceInterfaceClassname);
-		return this.serviceInterfaceClassname;
-	}
+		final List parameters = asyncMethod.getParameters();
+		final List httpRequestParameterNames = this.getHttpRequestParameterNamesFromMethodAnnotation(method);
 
-	public JClassType getServiceInterfaceType() {
-		return (JClassType) this.getRemoteJsonServiceGeneratorContext().getType(this.getServiceInterfaceClassname());
-	}
+		MethodParameter callbackParameter = null;
+		final Iterator parameterIterator = parameters.iterator();
+		final Iterator httpRequestParameterNameIterator = httpRequestParameterNames.iterator();
+		while (parameterIterator.hasNext()) {
+			final MethodParameter parameter = (MethodParameter) parameterIterator.next();
 
-	protected void setServiceInterfaceClassname(final String serviceInterfaceClassname) {
-		StringHelper.checkNotEmpty("parameter:serviceInterfaceClassname", serviceInterfaceClassname);
-		this.serviceInterfaceClassname = serviceInterfaceClassname;
-	}
+			if (false == parameterIterator.hasNext()) {
+				callbackParameter = parameter;
+				break;
+			}
 
-	protected String getAsyncInterfaceClassname() {
-		return this.getServiceInterfaceClassname() + Constants.ASYNC_INTERFACE_SUFFIX;
-	}
+			final InvokerAddParameterTemplatedFile addParameterStatement = new InvokerAddParameterTemplatedFile();
+			addParameterStatement.setParameter(parameter);
 
-	protected JClassType getAsyncInterfaceType() {
-		final String name = getAsyncInterfaceClassname();
-		final JClassType type = (JClassType) this.getRemoteJsonServiceGeneratorContext().findType(name);
-		if (null == type) {
-			this.throwAsyncInterfaceNotFoundException(name);
+			if (false == httpRequestParameterNameIterator.hasNext()) {
+				this.throwHttpRequestParameterNameMissing(parameter);
+			}
+			addParameterStatement.setHttpRequestParameterName((String) httpRequestParameterNameIterator.next());
+
+			body.addParameter(addParameterStatement);
 		}
+		body.setCallback(callbackParameter);
+
+		asyncMethod.setBody(body);
+	}
+
+	protected List getHttpRequestParameterNamesFromMethodAnnotation(final Method method) {
+		ObjectHelper.checkNotNull("parameter:method", method);
+
+		return method.getMetadataValues(Constants.HTTP_REQUEST_PARAMETER_NAME);
+	}
+
+	protected void throwHttpRequestParameterNameMissing(final MethodParameter parameter) {
+		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.HTTP_REQUEST_PARAMETER_NAME + "] annotation for the parameter "
+				+ parameter);
+	}
+
+	/**
+	 * Retrieves the appropriate invoker type based on the http request method
+	 * annotation on the given method
+	 * 
+	 * @param method
+	 *            A service method
+	 * @return A sub class of {@link RemoteJsonServiceInvoker}
+	 */
+	protected Type getInvokerTypeFromMethodAnnotation(final Method method) {
+		ObjectHelper.checkNotNull("parameter:method", method);
+
+		final List values = method.getMetadataValues(Constants.HTTP_REQUEST_METHOD);
+		if ( values.size() == 0 ) {
+			throwHttpRequestMethodAnnotationException( method );
+		}
+		final String httpRequestMethod = (String) values.get(0);
+		if (null == httpRequestMethod) {
+			throwHttpRequestMethodAnnotationException( method );
+		}
+
+		Type type = null;
+		while (true) {
+			if (HttpHelper.isGet(httpRequestMethod)) {
+				type = this.getRemoteGetJsonServiceInvoker();
+				break;
+			}
+			if (HttpHelper.isPost(httpRequestMethod)) {
+				type = this.getRemotePostJsonServiceInvoker();
+				break;
+			}
+
+			this.throwHttpRequestMethodAnnotationException(method);
+		}
+
+		this.getGeneratorContext().debug("After reading annotation will be using invoker [" + type.getName() + "].");
 		return type;
 	}
 
-	protected void throwAsyncInterfaceNotFoundException(final String typeName) {
-		throw new AsyncInterfaceNotFoundException("Unable to find [" + typeName + "].");
+	protected void throwHttpRequestMethodAnnotationException(final Method method) {
+		throw new RemoteJsonServiceGeneratorException("The method " + method + " is missing the " + Constants.HTTP_REQUEST_METHOD
+				+ " or contains an invalid value. GET or POST");
 	}
 
 	/**
-	 * Returns the generated client name for
+	 * Attempts to find the corresponding method on the async interface.
 	 * 
+	 * @param method
+	 *            A service interface method
+	 * @return The matching async service interface method.
+	 */
+	protected NewMethod createCorrespondingAsyncServiceInterfaceMethod(final Method method) {
+		ObjectHelper.checkNotNull("parameter:method", method);
+
+		final String methodName = method.getName();
+		final List parameterTypes = this.buildASyncServiceInterfaceMethodParameters(method);
+		final Method asyncMethod = this.getAsyncServiceInterface().findMostDerivedMethod(methodName, parameterTypes);
+		if (null == asyncMethod) {
+			this.throwMatchingAsyncInterfaceMethodNotFoundException(method);
+		}
+		if (false == asyncMethod.getReturnType().equals(this.getGeneratorContext().getVoid())) {
+			this.throwIncompatibleMethodFound(asyncMethod);
+		}
+
+		final NewMethod newMethod = asyncMethod.copy(this.getJsonServiceClient());
+
+		final MethodParameterVisitor parameters = new MethodParameterVisitor() {
+			protected boolean visit(final MethodParameter parameter) {
+				final boolean skipRemaining = RemoteJsonServiceGenerator.this.visitMethodParameter((NewMethodParameter) parameter,
+						this.counter);
+				this.counter++;
+				return skipRemaining;
+			}
+
+			int counter = 0;
+		};
+		parameters.start(newMethod);
+
+		return newMethod;
+	}
+
+	protected boolean visitMethodParameter(final NewMethodParameter parameter, final int index) {
+		parameter.setName("parameter" + index);
+		parameter.setFinal(true);
+		return false;
+	}
+
+	protected void throwMatchingAsyncInterfaceMethodNotFoundException(final Method method) {
+		throw new RemoteJsonServiceGeneratorException("Unable to find corresponding async service interface method " + method.getName()
+				+ " with parameters " + method.getParameters());
+	}
+
+	protected void throwIncompatibleMethodFound(final Method method) {
+		throw new RemoteJsonServiceGeneratorException("The async service method " + method + " should return void and not "
+				+ method.getReturnType().getName());
+	}
+
+	/**
+	 * Builds a list that holds the parameter types for the async method given
+	 * its service interface counterpart.
+	 * 
+	 * @param method
 	 * @return
 	 */
-	protected String getGeneratedProxyClassname() {
-		final String serviceInterfaceClassname = this.getServiceInterfaceClassname();
+	protected List buildASyncServiceInterfaceMethodParameters(final Method method) {
+		ObjectHelper.checkNotNull("parameter:method", method);
 
-		final RemoteJsonServiceGeneratorContext context = this.getRemoteJsonServiceGeneratorContext();
-		final String packageName = context.getPackageName(serviceInterfaceClassname);
-		final String simpleClassName = context.getSimpleClassName(serviceInterfaceClassname);
-		return packageName + '.' + simpleClassName + Constants.CLIENT_SUFFIX;
+		final List parameterTypes = new ArrayList();
+
+		final MethodParameterVisitor parameterVisitor = new MethodParameterVisitor() {
+			protected boolean visit(final MethodParameter parameter) {
+				RemoteJsonServiceGenerator.this.verifyParameterType(parameter);
+				parameterTypes.add(parameter.getType());
+				return false;
+			}
+		};
+		parameterVisitor.start(method);
+		parameterTypes.add(this.getAsyncCallbackType());
+
+		return parameterTypes;
 	}
 
 	/**
-	 * Performs rundamentary checking that the service interface and async
-	 * interface are rpc compatible.
+	 * Verifies that the parameter for this service interface method is one of
+	 * the supported types. Currently these are limited to all primitive types
+	 * and String.
+	 * 
+	 * @param methodParameter
 	 */
-	protected void verifyInterfaceCompatibility() {
-		this.verifyServiceInterface();
-		this.verifyAsyncMethods();
+	protected void verifyParameterType(final MethodParameter methodParameter) {
+		ObjectHelper.checkNotNull("parameter:methodParameter", methodParameter);
+
+		final Type string = this.getGeneratorContext().getString();
+		final Type parameterType = methodParameter.getType();
+
+		final Type invoker = this.getRemoteJsonServiceInvoker();
+		if (null == invoker.findMethod("addParameter", Arrays.asList(string, parameterType))) {
+			RemoteJsonServiceGenerator.this.throwUnsupportedParameterTypeException(methodParameter);
+		}
 	}
 
+	protected void throwUnsupportedParameterTypeException(final MethodParameter parameter) {
+		throw new RemoteJsonServiceGeneratorException("The parameter " + parameter + " contains an invalid type " + parameter.getType());
+	}
+
+	/**
+	 * Verifies that a Async interface exists.
+	 * 
+	 * @param serviceInterface
+	 */
+	protected void verifyAsyncServiceInterface() {
+		final String asyncServiceInterfaceTypeName = this.getASyncServiceInterfaceTypeName();
+		this.getGeneratorContext().debug("Verifying async service interface: " + asyncServiceInterfaceTypeName);
+
+		final Type async = this.getGeneratorContext().findType(asyncServiceInterfaceTypeName);
+		if (null == async) {
+			this.throwVerifyingAsyncInterfaceException("Unable to find type [" + asyncServiceInterfaceTypeName + "]");
+		}
+
+		if (false == async.isInterface()) {
+			this.throwVerifyingAsyncInterfaceException("The type [" + asyncServiceInterfaceTypeName + "] is not an interface.");
+		}
+	}
+
+	protected void throwVerifyingAsyncInterfaceException(final String message) {
+		throw new RemoteJsonServiceGeneratorException(message);
+	}
+
+	/**
+	 * Verifies that the incoming serviceInterface is an interface and extends
+	 * RemoteJsonService
+	 */
 	protected void verifyServiceInterface() {
-		final JClassType serviceInterface = this.getServiceInterfaceType();
+		final Type serviceInterface = this.getServiceInterface();
+
+		this.getGeneratorContext().debug("Verifying service interface: " + serviceInterface.getName());
 
 		// verify serviceInterface is an interface
-		if (serviceInterface.isInterface() == null) {
-			this.throwIncompatibleInterfacesException("The type [" + serviceInterface.getQualifiedSourceName() + "] is not an interface.");
+		if (false == serviceInterface.isInterface()) {
+			this.throwIncompatibleInterfacesException("The type [" + serviceInterface.getName() + "] is not an interface.");
 		}
 
 		// verify serviceInterface implements RemoteJsonService
-		final JClassType remoteJsonServiceType = this.getRemoteJsonServiceGeneratorContext().getRemoteJsonService();
+		final Type remoteJsonServiceType = this.getRemoteJsonService();
 		if (false == serviceInterface.isAssignableTo(remoteJsonServiceType)) {
-			this.throwIncompatibleInterfacesException("The type [" + serviceInterface.getQualifiedSourceName() + "] does not implement "
-					+ RemoteJsonService.class.getName());
-		}
-	}
-
-	/**
-	 * Verifies that the methods parameters that appear on the async interface
-	 * are compatible with the service interface as per GWT RPC rules.
-	 */
-	protected void verifyAsyncMethods() {
-		final JMethod[] methods = this.getServiceInterfaceType().getMethods();
-		final JClassType asyncInterface = this.getAsyncInterfaceType();
-		final RemoteJsonServiceGeneratorContext context = this.getRemoteJsonServiceGeneratorContext();
-		final JType asyncCallback = context.getAsyncCallbackType();
-
-		for (int i = 0; i < methods.length; i++) {
-			final JMethod method = methods[i];
-
-			// verify method returns a serializable object and not void, List or
-			// String.
-			final JType methodReturnType = method.getReturnType();
-			if (methodReturnType.isArray() != null) {
-				this.throwIncompatibleInterfacesException("The service method " + method.getReadableDeclaration()
-						+ " return type must not be an array.");
-			}
-			if (methodReturnType.isPrimitive() != null) {
-				this.throwIncompatibleInterfacesException("The service method " + method.getReadableDeclaration()
-						+ " return type must not be a primitive.");
-			}
-			if (methodReturnType == context.getJavaLangString()) {
-				this.throwIncompatibleInterfacesException("The service method " + method.getReadableDeclaration()
-						+ " return type must not be a String.");
-			}
-			if (methodReturnType == context.getJavaUtilList()) {
-				this.throwIncompatibleInterfacesException("The service method " + method.getReadableDeclaration()
-						+ " return type must not be a java.util.List.");
-			}
-			// doesnt test if return type is serializable etc this is done
-			// during code generation...
-
-			final JParameter[] parameters = method.getParameters();
-			final int parameterCount = parameters.length;
-
-			final JType[] asyncMethodParameterTypes = new JType[parameterCount + 1];
-			for (int j = 0; j < parameterCount; j++) {
-				asyncMethodParameterTypes[j] = parameters[j].getType();
-			}
-			asyncMethodParameterTypes[parameterCount] = asyncCallback;
-
-			// try and find the matchinhg method..
-			final JMethod asyncMethod = asyncInterface.findMethod(method.getName(), asyncMethodParameterTypes);
-			if (null == asyncMethod) {
-				this.throwIncompatibleInterfacesException("Cannot find the corresponding method for the service method "
-						+ method.getReadableDeclaration() + " on the class " + asyncInterface.getQualifiedSourceName());
-			}
-			final JType returnType = asyncMethod.getReturnType();
-			if (returnType != JPrimitiveType.VOID) {
-				this.throwIncompatibleInterfacesException("The return type of the async method " + asyncMethod.getReadableDeclaration()
-						+ " must be void.");
-			}
+			this.throwIncompatibleInterfacesException("The type [" + serviceInterface + "] does not implement "
+					+ remoteJsonServiceType.getName());
 		}
 	}
 
@@ -313,6 +331,105 @@ public class RemoteJsonServiceGenerator extends Generator {
 	 * @param message
 	 */
 	protected void throwIncompatibleInterfacesException(final String message) {
-		throw new IncompatibleInterfacesException(message);
+		throw new RemoteJsonServiceGeneratorException(message);
+	}
+
+	protected GeneratorContext createGeneratorContext() {
+		return new GeneratorContext() {
+			protected String getGeneratedTypeNameSuffix() {
+				return Constants.CLIENT_SUFFIX;
+			}
+		};
+	}
+
+	public Type getRemoteJsonService() {
+		return this.getGeneratorContext().getType(Constants.REMOTE_JSON_SERVICE);
+	}
+
+	public Type getAsyncCallbackType() {
+		return this.getGeneratorContext().getType(Constants.ASYNC_CALLBACK);
+	}
+
+	public Type getClientSuperType() {
+		return this.getGeneratorContext().getType(Constants.CLIENT_SUPER_TYPE);
+	}
+
+	private Type serviceInterface;
+
+	protected Type getServiceInterface() {
+		ObjectHelper.checkNotNull("field:serviceInterface", serviceInterface);
+		return serviceInterface;
+	}
+
+	protected void setServiceInterface(final Type serviceInterface) {
+		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
+		this.serviceInterface = serviceInterface;
+	}
+
+	/**
+	 * Helper which returns the corresponding async service interface for the
+	 * given service interface.
+	 * 
+	 * @param serviceInterface
+	 * @return
+	 */
+	protected Type getAsyncServiceInterface() {
+		return this.getGeneratorContext().getType(this.getASyncServiceInterfaceTypeName());
+	}
+
+	protected String getASyncServiceInterfaceTypeName() {
+		return this.getServiceInterface().getName() + Constants.ASYNC_INTERFACE_SUFFIX;
+	}
+
+	/**
+	 * The NewConcreteType jsonServiceClient being generated
+	 */
+	private NewConcreteType jsonServiceClient;
+
+	protected NewConcreteType getJsonServiceClient() {
+		ObjectHelper.checkNotNull("field:jsonServiceClient", jsonServiceClient);
+		return jsonServiceClient;
+	}
+
+	protected void setJsonServiceClient(final NewConcreteType jsonServiceClient) {
+		ObjectHelper.checkNotNull("parameter:jsonServiceClient", jsonServiceClient);
+		this.jsonServiceClient = jsonServiceClient;
+	}
+
+	/**
+	 * Factory method which creates a new NewConcreteType settings it name,
+	 * super class and implemented interfaces
+	 * 
+	 * @param newTypeName
+	 * @return A new NewConcreteType
+	 */
+	protected NewConcreteType createJsonServiceClientType(final String newTypeName) {
+		final GeneratorContext context = this.getGeneratorContext();
+		final NewConcreteType type = context.newConcreteType();
+		type.setAbstract(false);
+		type.setFinal(true);
+		type.setName(newTypeName);
+		type.setSuperType(this.getClientSuperType());
+		type.addInterface(this.getAsyncServiceInterface());
+		type.addInterface(this.getRemoteJsonService());
+		type.addInterface(this.getServiceDefTarget());
+
+		return type;
+	}
+
+	protected Type getServiceDefTarget() {
+		return this.getGeneratorContext().getType(Constants.SERVICE_DEF_TARGET);
+	}
+
+	protected Type getRemoteJsonServiceInvoker() {
+		return this.getGeneratorContext().getType(Constants.REMOTE_JSON_SERVICE_INVOKER_TYPE);
+	}
+
+	protected Type getRemoteGetJsonServiceInvoker() {
+		return this.getGeneratorContext().getType(Constants.REMOTE_GET_JSON_SERVICE_INVOKER_TYPE);
+	}
+
+	protected Type getRemotePostJsonServiceInvoker() {
+		return this.getGeneratorContext().getType(Constants.REMOTE_POST_JSON_SERVICE_INVOKER_TYPE);
 	}
 }

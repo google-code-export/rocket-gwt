@@ -13,23 +13,19 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.remoting.rebind.json;
+package rocket.remoting.test.remotejsonservice.client;
+
+import rocket.json.client.JsonSerializable;
 
 /**
- * This exception is thrown whenever the code generator finds a problem between
- * the service and async interfaces. Problems include
- * <ul>
- * <li>Missing Async interface</li>
- * <li>Async method doesnt return void</li>
- * <li>Unable to find corresponding method on Async interface</li>
- * </ul>
+ * This class is used by the test case found in this package.
  * 
  * @author Miroslav Pokorny
  * 
  */
-public class IncompatibleInterfacesException extends RemoteJsonServiceGeneratorException {
-
-	public IncompatibleInterfacesException(final String message) {
-		super(message);
-	}
+public class ClassWithStringField implements JsonSerializable {
+	/**
+	 * @javascriptPropertyName field
+	 */
+	public String field;
 }

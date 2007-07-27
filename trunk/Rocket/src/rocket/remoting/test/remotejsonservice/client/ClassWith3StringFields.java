@@ -13,16 +13,29 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.remoting.rebind.json;
+package rocket.remoting.test.remotejsonservice.client;
+
+import rocket.json.client.JsonSerializable;
 
 /**
- * This exception is thrown when a required annotation is missing.
+ * This class is used by the test case found in this package.
  * 
  * @author Miroslav Pokorny
+ * 
  */
-public class MissingAnnotationException extends RemoteJsonServiceGeneratorException {
+public class ClassWith3StringFields implements JsonSerializable {
+	/**
+	 * @javascriptPropertyName field1
+	 */
+	public String field1;
 
-	public MissingAnnotationException(String message) {
-		super(message);
-	}
+	/**
+	 * @javascriptPropertyName field2
+	 */
+	public String field2;
+
+	/**
+	 * @javascriptPropertyName field3
+	 */
+	public String field3;
 }
