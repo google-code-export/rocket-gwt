@@ -1,0 +1,11 @@
+// set-properties.txt
+//
+// \${instance}
+// \${beanType}
+// \${setIndividualProperties}
+
+// cast to the bean type
+final ${beanType} instance0 = (${beanType}) ${instance};
+
+// set the individual properties
+${setIndividualProperties}

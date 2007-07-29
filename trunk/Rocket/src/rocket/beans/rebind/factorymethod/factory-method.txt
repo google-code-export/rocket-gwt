@@ -1,0 +1,9 @@
+// factory-method.txt
+// invokes a static method on a type.
+// 
+// \${factoryType}
+// \${factoryMethod}
+//
+
+return ${factoryType}.${factoryMethod}();
+

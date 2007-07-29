@@ -24,15 +24,15 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class SingletonOrPrototypeFactoryBean implements
-		BeanFactoryAware {
+abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAware {
 
 	/**
-	 * Creates a new bean satisfying properties etc along the way.
+	 * Creates a new bean instance.
 	 * 
-	 * @return
+	 * @return The new instance
+	 * @throws Exception any exception thrown whilst creating a new instance.
 	 */
-	protected Object createObject() {
+	protected Object createObject() throws Exception{
 		return this.createInstance();
 	}
 
@@ -42,33 +42,35 @@ abstract public class SingletonOrPrototypeFactoryBean implements
 		this.satisfyInit(instance);
 	}
 
-	protected void throwBeanException(final String message,
-			final Throwable cause) {
+	protected void throwBeanException(final String message, final Throwable cause) {
 		throw new BeanException(message, cause);
 	}
 
 	/**
 	 * Factory method that creates a new bean instance.
 	 * 
-	 * @return
+	 * @return The new instance
+	 * @throws Exception any exception thrown when creating a new instance.
 	 */
-	abstract protected Object createInstance();
+	abstract protected Object createInstance() throws Exception;
 
 	/**
-	 * This method must be implemented by sub-classes. Typically the code
-	 * generator will sub-classes this method to invoke the appropriate setters
-	 * on the given instance. Properties that are primitive values and Strings
-	 * will be set using literals whilst other values will be set via either a
+	 * This method must be implemented by sub-classes if the bean has properties that must be set. 
+	 * 
+	 * Typically the code generator will override this method to invoke the appropriate setters
+	 * on the given instance after casting it to its most derived type. 
+	 * Properties that are primitive values and Strings will be set using literals whilst other values will be set via either a
 	 * bean factory or another factory method ( for sets, lists and maps ).
 	 * 
-	 * @param instance
-	 *            The object or bean being created.
+	 * @param instance The object or bean being created.
+	 * @throws Exception any exception thrown by a setter.
 	 */
-	abstract protected void satisfyProperties(Object instance);
+	protected void satisfyProperties(final Object instance) throws Exception{		
+	}
 
 	/**
 	 * If the new instance is a BeanFactoryAware call its
-	 * {@link BeanFactoryAware#setBeanFactory(BeanFactory)}.
+	 * {@link BeanFactoryAware#setBeanFactory(BeanFactory)} otherwise do nothing.
 	 * 
 	 * @param instance
 	 */

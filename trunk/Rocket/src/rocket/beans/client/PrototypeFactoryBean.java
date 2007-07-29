@@ -16,14 +16,13 @@
 package rocket.beans.client;
 
 /**
- * Template FactoryMethodBean that creates prototypes on demand. All generated
+ * Template FactoryBean that creates prototypes on demand. All generated
  * BeanFactories use anonymous PrototypeFactoryBean classes within factory
  * methods to create prototype beans
  * 
  * @author Miroslav Pokorny
  */
-abstract public class PrototypeFactoryBean extends
-		SingletonOrPrototypeFactoryBean implements FactoryBean {
+abstract public class PrototypeFactoryBean extends SingletonOrPrototypeFactoryBean implements FactoryBean {
 
 	public Object getObject() {
 		try {

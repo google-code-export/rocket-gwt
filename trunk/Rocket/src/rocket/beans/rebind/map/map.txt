@@ -1,0 +1,13 @@
+// map.txt
+//
+// \${addEntries}
+//
+
+// create a new MapBuilder which will help accumulate values
+new rocket.beans.client.MapBuilder()
+
+// add entries
+${addEntries}
+
+// get the Map
+.getMap()

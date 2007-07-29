@@ -17,64 +17,64 @@ package rocket.beans.test;
 
 import java.util.Properties;
 
-import rocket.beans.rebind.placeholder.PlaceHolderResolver;
 import junit.framework.TestCase;
+import rocket.beans.rebind.placeholder.PlaceHolderResolver;
 
 public class PlaceHolderResolverTestCase extends TestCase {
-	
-	public void testResolveNoPlaceHolder(){
+
+	public void testResolveNoPlaceHolder() {
 		final PlaceHolderResolver resolver = new PlaceHolderResolver();
-		
-		final String input ="banana";
-		final String actual = resolver.resolve( input );
+
+		final String input = "banana";
+		final String actual = resolver.resolve(input);
 		final String expected = input;
-		
-		assertEquals( expected, actual );
+
+		assertEquals(expected, actual);
 	}
 
-	public void testResolveWithPlaceHolder(){
+	public void testResolveWithPlaceHolder() {
 		final String APPLE = "apple";
 		final String APPLE_VALUE = "green";
-		
-		final PlaceHolderResolver resolver = new PlaceHolderResolver(){
-			protected Properties createValues(){
+
+		final PlaceHolderResolver resolver = new PlaceHolderResolver() {
+			protected Properties createValues() {
 				final Properties properties = new Properties();
-				properties.setProperty( APPLE, APPLE_VALUE );
+				properties.setProperty(APPLE, APPLE_VALUE);
 				return properties;
 			}
 		};
-		
-		final String input ="${apple} banana";
-		final String actual = resolver.resolve( input );
+
+		final String input = "${apple} banana";
+		final String actual = resolver.resolve(input);
 		final String expected = APPLE_VALUE + " banana";
-		
-		assertEquals( expected, actual );
+
+		assertEquals(expected, actual);
 	}
 
-	public void testResolveWithPlaceHolderReferringAnotherPlaceHolder(){
+	public void testResolveWithPlaceHolderReferringAnotherPlaceHolder() {
 		final String APPLE = "apple";
 		final String APPLE_VALUE = "green";
-		
+
 		final String BANANA = "banana";
 		final String BANANA_VALUE = "yellow ${apple}";
-		
+
 		final String CARROT = "carrot";
 		final String CARROT_VALUE = "orange ${banana}";
-				
-		final PlaceHolderResolver resolver = new PlaceHolderResolver(){
-			protected Properties createValues(){
+
+		final PlaceHolderResolver resolver = new PlaceHolderResolver() {
+			protected Properties createValues() {
 				final Properties properties = new Properties();
-				properties.setProperty( APPLE, APPLE_VALUE );
-				properties.setProperty( BANANA, BANANA_VALUE );
-				properties.setProperty( CARROT, CARROT_VALUE );
+				properties.setProperty(APPLE, APPLE_VALUE);
+				properties.setProperty(BANANA, BANANA_VALUE);
+				properties.setProperty(CARROT, CARROT_VALUE);
 				return properties;
 			}
 		};
-		
-		final String input ="${carrot} 123";
-		final String actual = resolver.resolve( input );
+
+		final String input = "${carrot} 123";
+		final String actual = resolver.resolve(input);
 		final String expected = "orange yellow " + APPLE_VALUE + " 123";
-		
-		assertEquals( expected, actual );
+
+		assertEquals(expected, actual);
 	}
 }
