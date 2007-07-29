@@ -22,10 +22,10 @@ import java.util.Set;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
-	public final static String SET_TYPE = Set.class.getName();
+class Constants {
+	final static String SET_TYPE = Set.class.getName();
 
-	public final static String SET_TEMPLATE = "set.txt";
+	final static String SET_TEMPLATE = "set.txt";
 
-	public final static String SET_ADD_ELEMENTS = "addElements";
+	final static String SET_ADD_ELEMENTS = "addElements";
 }

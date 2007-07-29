@@ -20,9 +20,9 @@ package rocket.beans.rebind.deferredbinding;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
+class Constants {
 
-	public final static String TEMPLATE = "deferred-binding.txt";
+	final static String TEMPLATE = "deferred-binding.txt";
 
-	public final static String BEAN_TYPE = "beanType";
+	final static String BEAN_TYPE = "beanType";
 }

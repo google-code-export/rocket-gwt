@@ -20,18 +20,18 @@ package rocket.beans.rebind.properties;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
-	public final static String SET_PROPERTIES_TEMPLATE = "set-properties.txt";
+class Constants {
+	final static String SET_PROPERTIES_TEMPLATE = "set-properties.txt";
 
-	public final static String SET_PROPERTIES_INSTANCE_PARAMETER = "instance";
+	final static String SET_PROPERTIES_INSTANCE_PARAMETER = "instance";
 
-	public final static String SET_PROPERTIES_BEAN_TYPE = "beanType";
+	final static String SET_PROPERTIES_BEAN_TYPE = "beanType";
 
-	public final static String SET_PROPERTIES_SET_INDIVIDUAL_PROPERTIES = "setIndividualProperties";
+	final static String SET_PROPERTIES_SET_INDIVIDUAL_PROPERTIES = "setIndividualProperties";
 
-	public final static String SET_PROPERTY_TEMPLATE = "set-property.txt";
+	final static String SET_PROPERTY_TEMPLATE = "set-property.txt";
 
-	public final static String SET_PROPERTY_SETTER = "setter";
+	final static String SET_PROPERTY_SETTER = "setter";
 
-	public final static String SET_PROPERTY_VALUE = "value";
+	final static String SET_PROPERTY_VALUE = "value";
 }

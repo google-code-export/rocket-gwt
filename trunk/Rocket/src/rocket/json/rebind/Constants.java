@@ -29,7 +29,7 @@ import com.google.gwt.json.client.JSONValue;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
+class Constants {
 	static final String JAVA_UTIL_LIST = List.class.getName();
 
 	static final String LIST_ELEMENT_TYPE = "listElementType";
@@ -52,47 +52,47 @@ public class Constants {
 
 	static final String JSON_OBJECT_TYPE = JSONObject.class.getName();
 
-	public static final String JSON_SERIALIZER_TYPE = JsonSerializer.class.getName();
+	static final String JSON_SERIALIZER_TYPE = JsonSerializer.class.getName();
 
-	public static final String AS_OBJECT_TEMPLATE = "as-object.txt";
+	static final String AS_OBJECT_TEMPLATE = "as-object.txt";
 
-	public static final String AS_OBJECT_JSON_VALUE_PARAMETER = "jsonValueParameter";
+	static final String AS_OBJECT_JSON_VALUE_PARAMETER = "jsonValueParameter";
 
-	public static final String AS_OBJECT_DESERIALIZER_TYPE = "deserializerType";
+	static final String AS_OBJECT_DESERIALIZER_TYPE = "deserializerType";
 
-	public static final String FIELD_SETTER_TEMPLATE = "field-setter.txt";
+	static final String FIELD_SETTER_TEMPLATE = "field-setter.txt";
 
-	public static final String FIELD_SETTER_INSTANCE = "instance";
+	static final String FIELD_SETTER_INSTANCE = "instance";
 
-	public static final String FIELD_SETTER_FIELD = "field";
+	static final String FIELD_SETTER_FIELD = "field";
 
-	public static final String FIELD_SETTER_VALUE = "value";
+	static final String FIELD_SETTER_VALUE = "value";
 
-	public static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_TEMPLATE = "invoke-primitive-or-string-field-setter.txt";
+	static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_TEMPLATE = "invoke-primitive-or-string-field-setter.txt";
 
-	public static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_FIELD_SETTER = "fieldSetter";
+	static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_FIELD_SETTER = "fieldSetter";
 
-	public static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_INSTANCE = "instance";
+	static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_INSTANCE = "instance";
 
-	public static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_AS_METHOD = "asMethod";
+	static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_AS_METHOD = "asMethod";
 
-	public static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_JSON_OBJECT = "jsonObject";
+	static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_JSON_OBJECT = "jsonObject";
 
-	public static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
+	static final String INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
 
-	public static final String INVOKE_OBJECT_FIELD_SETTER_TEMPLATE = "invoke-object-field-setter.txt";
+	static final String INVOKE_OBJECT_FIELD_SETTER_TEMPLATE = "invoke-object-field-setter.txt";
 
-	public static final String INVOKE_OBJECT_FIELD_SETTER_FIELD_SETTER = "fieldSetter";
+	static final String INVOKE_OBJECT_FIELD_SETTER_FIELD_SETTER = "fieldSetter";
 
-	public static final String INVOKE_OBJECT_FIELD_SETTER_INSTANCE = "instance";
+	static final String INVOKE_OBJECT_FIELD_SETTER_INSTANCE = "instance";
 
-	public static final String INVOKE_OBJECT_FIELD_SETTER_FIELD_TYPE = "fieldType";
+	static final String INVOKE_OBJECT_FIELD_SETTER_FIELD_TYPE = "fieldType";
 
-	public static final String INVOKE_OBJECT_FIELD_SETTER_FIELD_TYPE_DESERIALIZER = "fieldTypeDeserializer";
+	static final String INVOKE_OBJECT_FIELD_SETTER_FIELD_TYPE_DESERIALIZER = "fieldTypeDeserializer";
 
-	public static final String INVOKE_OBJECT_FIELD_SETTER_AS_METHOD = "asMethod";
+	static final String INVOKE_OBJECT_FIELD_SETTER_AS_METHOD = "asMethod";
 
-	public static final String INVOKE_OBJECT_FIELD_SETTER_JSON_OBJECT = "jsonObject";
+	static final String INVOKE_OBJECT_FIELD_SETTER_JSON_OBJECT = "jsonObject";
 
-	public static final String INVOKE_OBJECT_FIELD_SETTER_JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
+	static final String INVOKE_OBJECT_FIELD_SETTER_JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
 }

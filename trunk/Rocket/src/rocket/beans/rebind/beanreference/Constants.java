@@ -20,11 +20,11 @@ package rocket.beans.rebind.beanreference;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
+class Constants {
 
-	public final static String TEMPLATE = "bean-reference.txt";
+	final static String TEMPLATE = "bean-reference.txt";
 
-	public final static String BEAN_ID = "beanId";
+	final static String BEAN_ID = "beanId";
 
-	public final static String BEAN_TYPE = "beanType";
+	final static String BEAN_TYPE = "beanType";
 }

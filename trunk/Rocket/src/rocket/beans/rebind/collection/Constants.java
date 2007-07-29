@@ -20,8 +20,8 @@ package rocket.beans.rebind.collection;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
-	public final static String TEMPLATE = "collection-add-element.txt";
+class Constants {
+	final static String TEMPLATE = "collection-add-element.txt";
 
-	public final static String VALUE = "value";
+	final static String VALUE = "value";
 }

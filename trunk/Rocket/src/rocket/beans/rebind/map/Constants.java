@@ -22,16 +22,16 @@ import java.util.Map;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
-	public final static String MAP_TYPE = Map.class.getName();
+class Constants {
+	final static String MAP_TYPE = Map.class.getName();
 
-	public final static String MAP_TEMPLATE = "map.txt";
+	final static String MAP_TEMPLATE = "map.txt";
 
-	public final static String MAP_ADD_ENTRIES = "addEntries";
+	final static String MAP_ADD_ENTRIES = "addEntries";
 
-	public final static String MAP_ENTRY_ADD_TEMPLATE = "map-add-entry.txt";
+	final static String MAP_ENTRY_ADD_TEMPLATE = "map-add-entry.txt";
 
-	public final static String MAP_ENTRY_ADD_KEY = "key";
+	final static String MAP_ENTRY_ADD_KEY = "key";
 
-	public final static String MAP_ENTRY_ADD_VALUE = "value";
+	final static String MAP_ENTRY_ADD_VALUE = "value";
 }

@@ -20,10 +20,10 @@ package rocket.beans.rebind.factorymethod;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
-	public final static String TEMPLATE = "factory-method.txt";
+class Constants {
+	final static String TEMPLATE = "factory-method.txt";
 
-	public final static String FACTORY_TYPE = "factoryType";
+	final static String FACTORY_TYPE = "factoryType";
 
-	public final static String FACTORY_METHOD = "factoryMethod";
+	final static String FACTORY_METHOD = "factoryMethod";
 }

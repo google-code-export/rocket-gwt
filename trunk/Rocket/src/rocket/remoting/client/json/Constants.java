@@ -20,7 +20,7 @@ package rocket.remoting.client.json;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
+class Constants {
 	final static int HTTP_RESPONSE_OK = 200;
 	
 	final static String CONTENT_TYPE_HEADER = "Content-Type";

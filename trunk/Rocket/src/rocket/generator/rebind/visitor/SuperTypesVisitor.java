@@ -15,7 +15,6 @@
  */
 package rocket.generator.rebind.visitor;
 
-import rocket.generator.rebind.Constants;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -27,6 +26,8 @@ import rocket.util.client.ObjectHelper;
  */
 abstract public class SuperTypesVisitor {
 
+	private final static String OBJECT = Object.class.getName();
+	
 	public void start(final Type type) {
 		ObjectHelper.checkNotNull("type:type", type);
 
@@ -44,7 +45,7 @@ abstract public class SuperTypesVisitor {
 				break;
 			}
 
-			if (type0.getName().equals(Constants.OBJECT)) {
+			if (type0.getName().equals(OBJECT)) {
 				break;
 			}
 

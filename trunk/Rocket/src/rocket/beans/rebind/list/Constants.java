@@ -22,10 +22,10 @@ import java.util.List;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
-	public final static String LIST_TYPE = List.class.getName();
+class Constants {
+	final static String LIST_TYPE = List.class.getName();
 
-	public final static String LIST_TEMPLATE = "list.txt";
+	final static String LIST_TEMPLATE = "list.txt";
 
-	public final static String LIST_ADD_ELEMENTS = "addElements";
+	final static String LIST_ADD_ELEMENTS = "addElements";
 }
