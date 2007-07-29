@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import rocket.remoting.test.remotejsonservice.client.ClassWith3StringFields;
-import rocket.remoting.test.remotejsonservice.client.ClassWithStringField;
 import flexjson.JSONSerializer;
 
 /**

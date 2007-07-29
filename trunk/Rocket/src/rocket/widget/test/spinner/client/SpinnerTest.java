@@ -16,7 +16,6 @@
 package rocket.widget.test.spinner.client;
 
 import rocket.widget.client.Spinner;
-import rocket.widget.client.SuperSpinner;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

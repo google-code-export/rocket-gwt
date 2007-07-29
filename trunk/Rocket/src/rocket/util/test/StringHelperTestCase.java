@@ -15,9 +15,6 @@
  */
 package rocket.util.test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import junit.framework.TestCase;
 import rocket.util.client.StringHelper;
 

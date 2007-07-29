@@ -22,7 +22,6 @@ import rocket.browser.client.BrowserHelper;
 import rocket.dom.client.DomHelper;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.splitter.SplitterPanel.Panel;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
