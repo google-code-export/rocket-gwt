@@ -13,12 +13,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.xml;
+package rocket.generator.rebind.util;
 
 /**
- * Base class for any value container
+ * A collection of constants used through out the package.
  * 
  * @author Miroslav Pokorny
  */
-public class ConstructorArgumentOrProperty extends XmlDocumentComponent {
+class Constants {
+	protected final static String EOL = System.getProperty("line.separator");
+
+	final static String INDENTATION = "  ";
+
+	final static String JAVADOC_BEGIN = "/**";
+
+	final static String JAVADOC = " * ";
+
+	final static String JAVADOC_END = " */";
 }

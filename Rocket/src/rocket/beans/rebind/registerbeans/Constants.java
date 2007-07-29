@@ -20,14 +20,14 @@ package rocket.beans.rebind.registerbeans;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
-	public final static String BUILD_FACTORY_BEANS_TEMPLATE = "build-factory-beans.txt";
+class Constants {
+	final static String BUILD_FACTORY_BEANS_TEMPLATE = "build-factory-beans.txt";
 
-	public final static String BUILD_FACTORY_BEANS_REGISTER_BEANS = "registerBeans";
+	final static String BUILD_FACTORY_BEANS_REGISTER_BEANS = "registerBeans";
 
-	public final static String REGISTER_BEAN_TEMPLATE = "register-bean.txt";
+	final static String REGISTER_BEAN_TEMPLATE = "register-bean.txt";
 
-	public final static String REGISTER_BEAN_BEAN_ID = "beanId";
+	final static String REGISTER_BEAN_BEAN_ID = "beanId";
 
-	public final static String REGISTER_BEAN_FACTORY_BEAN = "factoryBeanType";
+	final static String REGISTER_BEAN_FACTORY_BEAN = "factoryBeanType";
 }

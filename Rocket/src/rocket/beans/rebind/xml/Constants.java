@@ -20,7 +20,7 @@ package rocket.beans.rebind.xml;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
+class Constants {
 
 	static final String CONFIG_FILE_SUFFIX = ".xml";
 
@@ -30,75 +30,75 @@ public class Constants {
 
 	static final String DTD_FILE_NAME = "bean-factory.dtd";
 
-	public static final String BEAN_FACTORY_TAG = "bean-factory";
+	static final String BEAN_FACTORY_TAG = "bean-factory";
 
-	public static final String PLACE_HOLDERS_TAG = "place-holders";
+	static final String PLACE_HOLDERS_TAG = "place-holders";
 
-	public static final String PLACE_HOLDERS_FILE_ATTRIBUTE = "file";
+	static final String PLACE_HOLDERS_FILE_ATTRIBUTE = "file";
 
-	public static final String BEANS_TAG = "beans";
+	static final String BEANS_TAG = "beans";
 
-	public static final String BEAN_TAG = "bean";
+	static final String BEAN_TAG = "bean";
 
-	public static final String BEAN_CLASSNAME_ATTRIBUTE = "class";
+	static final String BEAN_CLASSNAME_ATTRIBUTE = "class";
 
-	public static final String BEAN_ID_ATTRIBUTE = "id";
+	static final String BEAN_ID_ATTRIBUTE = "id";
 
-	public static final String BEAN_SCOPE_ATTRIBUTE = "scope";
+	static final String BEAN_SCOPE_ATTRIBUTE = "scope";
 
-	public static final String BEAN_FACTORY_METHOD_NAME_ATTRIBUTE = "factoryMethod";
+	static final String BEAN_FACTORY_METHOD_NAME_ATTRIBUTE = "factoryMethod";
 
-	public static final String BEAN_INIT_METHOD_NAME_ATTRIBUTE = "initMethod";
+	static final String BEAN_INIT_METHOD_NAME_ATTRIBUTE = "initMethod";
 
-	public static final String SINGLETON = "singleton";
+	static final String SINGLETON = "singleton";
 
-	public static final String PROTOTYPE = "prototype";
+	static final String PROTOTYPE = "prototype";
 
-	public static final String CONSTRUCTOR_TAG = "constructor";
+	static final String CONSTRUCTOR_TAG = "constructor";
 
-	public static final String PROPERTIES_TAG = "properties";
+	static final String PROPERTIES_TAG = "properties";
 
-	public static final String PROPERTY_TAG = "property";
+	static final String PROPERTY_TAG = "property";
 
-	public static final String PROPERTY_NAME_ATTRIBUTE = "name";
+	static final String PROPERTY_NAME_ATTRIBUTE = "name";
 
-	public static final String VALUE_TAG = "value";
+	static final String VALUE_TAG = "value";
 
-	public static final String BEAN_REFERENCE_TAG = "bean-reference";
+	static final String BEAN_REFERENCE_TAG = "bean-reference";
 
-	public static final String BEAN_REFERENCE_ID_ATTRIBUTE = "reference-id";
+	static final String BEAN_REFERENCE_ID_ATTRIBUTE = "reference-id";
 
-	public static final String LIST_TAG = "list";
+	static final String LIST_TAG = "list";
 
-	public static final String SET_TAG = "set";
+	static final String SET_TAG = "set";
 
-	public static final String MAP_TAG = "map";
+	static final String MAP_TAG = "map";
 
-	public static final String MAP_ENTRY_TAG = "map-entry";
+	static final String MAP_ENTRY_TAG = "map-entry";
 
-	public static final String MAP_ENTRY_KEY_ATTRIBUTE = "key";
+	static final String MAP_ENTRY_KEY_ATTRIBUTE = "key";
 
-	public final static String REMOTE_RPC_SERVICE_TAG = "remote-rpc-service";
+	final static String REMOTE_RPC_SERVICE_TAG = "remote-rpc-service";
 
-	public final static String REMOTE_RPC_SERVICE_INTERFACE = "interface";
+	final static String REMOTE_RPC_SERVICE_INTERFACE = "interface";
 
-	public final static String REMOTE_RPC_SERVICE_ADDRESS = "address";
+	final static String REMOTE_RPC_SERVICE_ADDRESS = "address";
 
-	public final static String REMOTE_RPC_SERVICE_ID = "id";
+	final static String REMOTE_RPC_SERVICE_ID = "id";
 
-	public final static String REMOTE_JSON_SERVICE_TAG = "remote-json-service";
+	final static String REMOTE_JSON_SERVICE_TAG = "remote-json-service";
 
-	public final static String REMOTE_JSON_SERVICE_INTERFACE = "interface";
+	final static String REMOTE_JSON_SERVICE_INTERFACE = "interface";
 
-	public final static String REMOTE_JSON_SERVICE_ADDRESS = "address";
+	final static String REMOTE_JSON_SERVICE_ADDRESS = "address";
 
-	public final static String REMOTE_JSON_SERVICE_ID = "id";
+	final static String REMOTE_JSON_SERVICE_ID = "id";
 
-	public final static String ADVICE_TAG = "advice";
+	final static String ADVICE_TAG = "advice";
 
-	public final static String ADVICE_ADVISOR_BEAN_ID = "advisorBeanId";
+	final static String ADVICE_ADVISOR_BEAN_ID = "advisorBeanId";
 
-	public final static String ADVICE_TARGET_BEAN_ID = "targetBeanId";
+	final static String ADVICE_TARGET_BEAN_ID = "targetBeanId";
 
-	public final static String ADVICE_METHOD_EXPRESSION = "methodExpression";
+	final static String ADVICE_METHOD_EXPRESSION = "methodExpression";
 }

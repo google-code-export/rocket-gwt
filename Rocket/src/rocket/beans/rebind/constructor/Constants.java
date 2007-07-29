@@ -20,10 +20,10 @@ package rocket.beans.rebind.constructor;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
-	public final static String TEMPLATE = "constructor.txt";
+class Constants {
+	final static String TEMPLATE = "constructor.txt";
 
-	public final static String CONSTRUCTOR = "constructor";
+	final static String CONSTRUCTOR = "constructor";
 
-	public final static String ARGUMENTS = "constructorArguments";
+	final static String ARGUMENTS = "constructorArguments";
 }

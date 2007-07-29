@@ -32,7 +32,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
+class Constants {
 	static final String CLIENT_SUFFIX = "__RemoteJsonServiceClient";
 
 	static final String ASYNC_CALLBACK = AsyncCallback.class.getName();

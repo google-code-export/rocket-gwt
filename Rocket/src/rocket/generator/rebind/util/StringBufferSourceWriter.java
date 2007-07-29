@@ -61,7 +61,7 @@ public class StringBufferSourceWriter implements SourceWriter {
 		final StringBuffer buffer = this.getStringBuffer();
 
 		if (false == this.isBeginningOfLine()) {
-			buffer.append(UtilConstants.EOL);
+			buffer.append(Constants.EOL);
 			this.setBeginningOfLine(false);
 		}
 
@@ -76,10 +76,10 @@ public class StringBufferSourceWriter implements SourceWriter {
 			this.beginNewLine();
 
 			final StringBuffer buffer = this.getStringBuffer();
-			buffer.append(UtilConstants.JAVADOC_BEGIN);
-			buffer.append(UtilConstants.EOL);
+			buffer.append(Constants.JAVADOC_BEGIN);
+			buffer.append(Constants.EOL);
 
-			this.setIndentation(this.getIndentation() + UtilConstants.JAVADOC);
+			this.setIndentation(this.getIndentation() + Constants.JAVADOC);
 			this.setBeginningOfLine(true);
 		}
 		this.setJavadoc(true);
@@ -93,13 +93,13 @@ public class StringBufferSourceWriter implements SourceWriter {
 			this.setJavadoc(false);
 
 			final String indentation = this.getIndentation();
-			final int star = indentation.indexOf(UtilConstants.JAVADOC);
+			final int star = indentation.indexOf(Constants.JAVADOC);
 			this.setIndentation(indentation.substring(0, star));
 
 			this.beginNewLine();
 			final StringBuffer buffer = this.getStringBuffer();
-			buffer.append(UtilConstants.JAVADOC_END);
-			buffer.append(UtilConstants.EOL);
+			buffer.append(Constants.JAVADOC_END);
+			buffer.append(Constants.EOL);
 
 			this.setBeginningOfLine(true);
 		}
@@ -182,7 +182,7 @@ public class StringBufferSourceWriter implements SourceWriter {
 	}
 
 	public void println() {
-		this.print(UtilConstants.EOL);
+		this.print(Constants.EOL);
 	}
 
 	public void println(final String string) {

@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import rocket.generator.rebind.Constants;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -52,6 +51,7 @@ abstract public class ReverseSuperTypesVisitor {
 		}
 	}
 
+	private final static String OBJECT = Object.class.getName();
 	/**
 	 * Accumulates all the super types for type into a list.
 	 * 
@@ -73,7 +73,7 @@ abstract public class ReverseSuperTypesVisitor {
 			// insert at the front of the list this builds a reversed list.
 			types.add(0, type0);
 
-			if (type0.getName().equals(Constants.OBJECT)) {
+			if (type0.getName().equals(OBJECT)) {
 				break;
 			}
 

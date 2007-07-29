@@ -20,12 +20,12 @@ package rocket.beans.rebind.init;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
-	public final static String TEMPLATE = "custom.txt";
+class Constants {
+	final static String TEMPLATE = "custom.txt";
 
-	public final static String BEAN_TYPE = "beanType";
+	final static String BEAN_TYPE = "beanType";
 
-	public final static String METHOD = "initMethod";
+	final static String METHOD = "initMethod";
 
-	public final static String INSTANCE_PARAMETER = "instanceParameter";
+	final static String INSTANCE_PARAMETER = "instanceParameter";
 }

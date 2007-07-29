@@ -18,7 +18,6 @@ package rocket.beans.rebind;
 import rocket.beans.client.BeanFactory;
 import rocket.beans.client.BeanFactoryImpl;
 import rocket.beans.client.PrototypeFactoryBean;
-import rocket.beans.client.RemoteRpcOrJsonServiceFactoryBean;
 import rocket.beans.client.SingletonFactoryBean;
 
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -28,26 +27,25 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
+class Constants {
 
 	static final String CONFIG_FILE_SUFFIX = ".xml";
 	
-	public final static String BEAN_FACTORY = BeanFactory.class.getName();
-	public final static String BEAN_FACTORY_IMPL = BeanFactoryImpl.class.getName();
-	public final static String BEAN_FACTORY_SUFFIX = "__BeanFactory";
+	final static String BEAN_FACTORY = BeanFactory.class.getName();
+	final static String BEAN_FACTORY_IMPL = BeanFactoryImpl.class.getName();
+	final static String BEAN_FACTORY_SUFFIX = "__BeanFactory";
 	
 	static final String BEAN_FILE_SUFFIX = "xml";	
-	public final static String FACTORY_BEAN_SUFFIX = "__FactoryBean";
+	final static String FACTORY_BEAN_SUFFIX = "__FactoryBean";
 
-	public final static String SINGLETON_FACTORY_BEAN = SingletonFactoryBean.class.getName();
-	public final static String PROTOTYPE_FACTORY_BEAN = PrototypeFactoryBean.class.getName();
-	public final static String REMOTE_RPC_OR_JSON_SERVICE_FACTORY_BEAN = RemoteRpcOrJsonServiceFactoryBean.class.getName();
-	public final static String SERVICE_DEF_TARGET = ServiceDefTarget.class.getName();
+	final static String SINGLETON_FACTORY_BEAN = SingletonFactoryBean.class.getName();
+	final static String PROTOTYPE_FACTORY_BEAN = PrototypeFactoryBean.class.getName();
+	final static String SERVICE_DEF_TARGET = ServiceDefTarget.class.getName();
 	
-	public final static String CREATE_INSTANCE = "createInstance";
-	public final static String SATISFY_PROPERTIES = "satisfyProperties";
-	public final static String SATISFY_INIT = "satisfyInit";
-	public final static String BUILD_FACTORY_BEANS = "buildFactoryBeans";
-	public final static String SET_SERVICE_ENTRY_POINT = "setServiceEntryPoint";
+	final static String CREATE_INSTANCE = "createInstance";
+	final static String SATISFY_PROPERTIES = "satisfyProperties";
+	final static String SATISFY_INIT = "satisfyInit";
+	final static String BUILD_FACTORY_BEANS = "buildFactoryBeans";
+	final static String SET_SERVICE_ENTRY_POINT = "setServiceEntryPoint";
 
 }
