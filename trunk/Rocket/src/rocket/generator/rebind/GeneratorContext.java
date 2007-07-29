@@ -77,8 +77,7 @@ abstract public class GeneratorContext {
 		return this.generator;
 	}
 
-	// TODO MAKE package private when moved to rocket.generator.rebind
-	public void setGenerator(final Generator generator) {
+	protected void setGenerator(final Generator generator) {
 		ObjectHelper.checkNotNull("parameter:generator", generator);
 		this.generator = generator;
 	}

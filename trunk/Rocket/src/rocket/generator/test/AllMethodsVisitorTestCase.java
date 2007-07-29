@@ -17,6 +17,7 @@ package rocket.generator.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -47,7 +48,7 @@ public class AllMethodsVisitorTestCase extends TestCase {
 		final Type object = context.getObject();
 		visitor.start(object);
 
-		final List noArguments = Arrays.asList(new Type[0]);
+		final List noArguments = Collections.EMPTY_LIST;
 		assertTrue(methodsVisited.contains(object.getMethod("clone", noArguments)));
 
 		assertTrue(methodsVisited.contains(object.getMethod("equals", Arrays.asList(new Type[] { object }))));
@@ -126,13 +127,8 @@ public class AllMethodsVisitorTestCase extends TestCase {
 		final Type test = context.getType(Test.class.getName());
 		visitor.start(test);
 
-		System.out.println(methodsVisited);
-
-		final Type object = context.getObject();
-		final List noArguments = Arrays.asList(new Type[0]);
-
 		assertEquals(1, methodsVisited.size());
-		assertTrue(methodsVisited.contains(test.getMethod("dummy", noArguments)));
+		assertTrue(methodsVisited.contains(test.getMethod("dummy", Collections.EMPTY_LIST)));
 	}
 
 	public void testSkipRemainingMethods() {
@@ -154,13 +150,8 @@ public class AllMethodsVisitorTestCase extends TestCase {
 		final Type test = context.getType(Test.class.getName());
 		visitor.start(test);
 
-		System.out.println(methodsVisited.size() + "\n" + methodsVisited);
-
-		final Type object = context.getObject();
-		final List noArguments = Arrays.asList(new Type[0]);
-
 		assertEquals(1, methodsVisited.size());
-		assertTrue(methodsVisited.contains(test.getMethod("dummy", noArguments)));
+		assertTrue(methodsVisited.contains(test.getMethod("dummy", Collections.EMPTY_LIST)));
 	}
 
 	static class Test extends Object {

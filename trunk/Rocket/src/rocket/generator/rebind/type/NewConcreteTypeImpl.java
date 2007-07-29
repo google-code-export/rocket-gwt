@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.Visibility;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
@@ -38,6 +39,22 @@ public class NewConcreteTypeImpl extends NewConcreteOrNestedType implements NewC
 		super();
 	}
 
+	/**
+	 * Currently the visibility field is ignored as there exists no way to set the visibility of a
+	 * generated type.
+	 */
+	private Visibility visibility;
+	
+	public Visibility getVisibility(){
+		ObjectHelper.checkNotNull("field:visibility", visibility );
+		return this.visibility;
+	}
+	
+	public void setVisibility( final Visibility visibility ){
+		ObjectHelper.checkNotNull("parameter:visibility", visibility );
+		this.visibility = visibility;
+	}
+	
 	/**
 	 * Requests this generated type to write out its definition including its
 	 * constructors, methods and fields. This operation may only be attempted

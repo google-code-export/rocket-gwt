@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.method.Method;
@@ -41,6 +42,30 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class JClassTypeTypeAdapter extends AbstractType {
 
+	public Visibility getVisibility(){
+		Visibility visibility = null;
+		
+		while( true ){
+			final JClassType type = this.getJClassType();
+			if( type.isPrivate() ){
+				visibility = Visibility.PRIVATE;
+				break;
+			}
+			if( type.isProtected() ){
+				visibility = Visibility.PROTECTED;
+				break;
+			}
+			if( type.isPublic() ){
+				visibility = Visibility.PUBLIC;
+				break;
+			}
+			visibility = Visibility.PACKAGE_PRIVATE;
+			break;
+		}
+		
+		return visibility;
+	}
+	
 	public String getSimpleName() {
 		return this.getJClassType().getSimpleSourceName();
 	}

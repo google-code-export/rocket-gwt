@@ -18,6 +18,7 @@ package rocket.generator.test.generator.rebind;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
@@ -42,19 +43,22 @@ public class SubTypesGenerator extends TestGenerator {
 		subType2.setFinal(false);
 		subType2.setName("Nested1");
 		subType2.setSuperType(subType1);
+		subType2.setVisibility( Visibility.PUBLIC );
 
 		final NewNestedType subType3 = subType1.newNestedType();
 		subType3.setAbstract(false);
 		subType3.setFinal(false);
 		subType3.setName("Nested2");
 		subType3.setSuperType(subType2);
-
+		subType3.setVisibility( Visibility.PUBLIC );
+		
 		final NewNestedType subType4 = subType1.newNestedType();
 		subType4.setAbstract(false);
 		subType4.setFinal(false);
 		subType4.setName("Nested3");
 		subType4.setSuperType(subType3);
-
+		subType4.setVisibility( Visibility.PUBLIC );
+		
 		final Set subTypes4 = subType4.getSubTypes();
 		PrimitiveHelper.checkEquals("", 0, subTypes4.size());
 

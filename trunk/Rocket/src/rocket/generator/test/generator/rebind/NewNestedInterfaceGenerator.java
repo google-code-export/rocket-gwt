@@ -52,7 +52,8 @@ public class NewNestedInterfaceGenerator extends TestGenerator {
 		nested.setName(interfaceClassname);
 		nested.setStatic(true);
 		nested.addInterface(interfaceType);
-
+		nested.setVisibility( Visibility.PUBLIC );
+		
 		return newType;
 	}
 }

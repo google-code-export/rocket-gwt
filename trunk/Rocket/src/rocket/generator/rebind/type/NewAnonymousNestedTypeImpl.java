@@ -17,6 +17,7 @@ package rocket.generator.rebind.type;
 
 import java.util.Set;
 
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.util.client.ObjectHelper;
@@ -33,6 +34,10 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 
 	public NewAnonymousNestedTypeImpl() {
 		super();
+	}
+	
+	public Visibility getVisibility(){
+		return Visibility.PRIVATE;
 	}
 
 	private Type interfacee;

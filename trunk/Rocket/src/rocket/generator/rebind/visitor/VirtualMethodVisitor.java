@@ -107,6 +107,10 @@ abstract public class VirtualMethodVisitor {
 	 */
 	abstract protected boolean skipJavaLangObjectMethods();
 
+	/**
+	 * Creates a Set that indexes itself on the method signature.
+	 * @return
+	 */
 	protected Set createVisited() {
 		final Comparator comparator = new Comparator() {
 			public int compare(final Object object, final Object otherObject) {
