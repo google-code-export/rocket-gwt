@@ -1,0 +1,6 @@
+// constructor.txt
+//
+// \${constructor}          The constructor which will create a new instance
+// \${constructorArguments} A comma separated list of the parameters belonging to this constructor
+
+return new ${constructor}(${constructorArguments});

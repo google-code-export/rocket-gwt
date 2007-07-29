@@ -16,7 +16,6 @@
 package rocket.beans.client;
 
 import rocket.browser.client.BrowserHelper;
-import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -25,20 +24,21 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * The base class for RpcServiceFactoryBean and JsonServiceFactoryBean
  * 
  * @author Miroslav Pokorny
+ * 
+ * todo delete
  */
-abstract public class RemoteRpcOrJsonServiceFactoryBean extends
-		SingletonFactoryBean {
+abstract public class RemoteRpcOrJsonServiceFactoryBean extends SingletonFactoryBean {
 
 	/**
 	 * Sub-classes will include a call to {@link GWT#create} with the interface
 	 * class literal.
+	 * @throws Exception
 	 */
-	abstract protected Object createInstance();
+	abstract protected Object createInstance() throws Exception;
 
-	protected void satisfyProperties(Object instance) {
+	protected void satisfyProperties(final Object instance) throws Exception{
 		final ServiceDefTarget service = (ServiceDefTarget) instance;
-		service.setServiceEntryPoint(this.addBrowserContextIfNotAbsolute(this
-				.getAddress()));
+		//service.setServiceEntryPoint(this.addBrowserContextIfNotAbsolute(this.getAddress()));
 	}
 
 	protected String addBrowserContextIfNotAbsolute(final String address) {
@@ -53,17 +53,4 @@ abstract public class RemoteRpcOrJsonServiceFactoryBean extends
 		final String url0 = url.toLowerCase();
 		return url0.startsWith("http://") || url0.startsWith("https://");
 	}
-
-	private String address;
-
-	protected String getAddress() {
-		StringHelper.checkNotEmpty("field:address", address);
-		return address;
-	}
-
-	public void setAddress(final String address) {
-		StringHelper.checkNotEmpty("parameter:address", address);
-		this.address = address;
-	}
-
 }

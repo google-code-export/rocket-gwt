@@ -1,0 +1,7 @@
+// deferred-binding.txt
+//
+// \${beanType} The bean type 
+//
+
+// use deferred binding to create a new instance.
+return com.google.gwt.core.client.GWT.create( ${beanType}.class );

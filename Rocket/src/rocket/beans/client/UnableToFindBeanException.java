@@ -32,8 +32,7 @@ public class UnableToFindBeanException extends RuntimeException {
 		super(throwable);
 	}
 
-	public UnableToFindBeanException(final String string,
-			final Throwable throwable) {
+	public UnableToFindBeanException(final String string, final Throwable throwable) {
 		super(string, throwable);
 	}
 

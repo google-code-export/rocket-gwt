@@ -15,6 +15,7 @@
  */
 package rocket.beans.client;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import rocket.util.client.ObjectHelper;
@@ -30,7 +31,22 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	public BeanFactoryImpl() {
 		super();
 
-		this.setFactoryBeans(this.buildFactoryBeans());
+		this.setFactoryBeans( this.buildFactoryBeans() );
+		this.prepareFactoryBeans();
+	}
+	
+	/**
+	 * Visits all factory beans setting the bean factory for BeanFactoryAware objects.
+	 */
+	protected void prepareFactoryBeans(){
+		final Iterator factoryBeans = this.getFactoryBeans().values().iterator();
+		while( factoryBeans.hasNext() ){
+			final Object factoryBean = factoryBeans.next();
+			if( factoryBean instanceof BeanFactoryAware ){
+				final BeanFactoryAware beanFactoryAware = (BeanFactoryAware) factoryBean;
+				beanFactoryAware.setBeanFactory( this );
+			}
+		}
 	}
 
 	/**
@@ -74,26 +90,23 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	}
 
 	/**
-	 * Attempts to get the FactoryMethodBean given a name. If the factory is not found
-	 * an exception is thrown.
+	 * Attempts to get the FactoryMethodBean given a name. If the factory is not
+	 * found an exception is thrown.
 	 * 
 	 * @param name
 	 * @return
 	 * @throws UnableToFindBeanException
 	 *             if the bean doesnt exist.
 	 */
-	protected FactoryBean getFactoryBean(final String name)
-			throws UnableToFindBeanException {
-		final FactoryBean factory = (FactoryBean) this.getFactoryBeans().get(
-				name);
+	protected FactoryBean getFactoryBean(final String name) throws UnableToFindBeanException {
+		final FactoryBean factory = (FactoryBean) this.getFactoryBeans().get(name);
 		if (null == factory) {
 			throwUnableToFindBeanException("Unable to find bean [" + name + "]");
 		}
 		return factory;
 	}
 
-	protected void throwUnableToFindBeanException(final String message)
-			throws UnableToFindBeanException {
+	protected void throwUnableToFindBeanException(final String message) throws UnableToFindBeanException {
 		throw new UnableToFindBeanException(message);
 	}
 }
