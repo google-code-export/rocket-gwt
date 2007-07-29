@@ -177,4 +177,16 @@ public class NewFieldImpl extends AbstractField implements NewField {
 			GeneratorHelper.writeClassComponent(codeBlock, writer);
 		}
 	}
+	
+	public String toString(){
+		final StringBuilder builder = new StringBuilder();
+		builder.append( "NewFieldImpl ");
+		
+		if( null != this.type ){
+			builder.append( type.getName() );
+			builder.append( ' ');
+		}
+		builder.append( this.name );
+		return builder.toString();
+	}
 }

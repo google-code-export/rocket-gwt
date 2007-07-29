@@ -17,6 +17,7 @@ package rocket.generator.rebind.type;
 
 import java.util.Iterator;
 
+import rocket.generator.rebind.Visibility;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.SourceWriter;
@@ -30,6 +31,18 @@ public class NewNestedTypeImpl extends NewConcreteOrNestedType implements NewNes
 
 	public NewNestedTypeImpl() {
 		super();
+	}
+	
+	private Visibility visibility;
+	
+	public Visibility getVisibility(){
+		ObjectHelper.checkNotNull("field:visibility", visibility );
+		return this.visibility;
+	}
+	
+	public void setVisibility( final Visibility visibility ){
+		ObjectHelper.checkNotNull("parameter:visibility", visibility );
+		this.visibility = visibility;
 	}
 
 	private Type enclosingType;
@@ -98,7 +111,9 @@ public class NewNestedTypeImpl extends NewConcreteOrNestedType implements NewNes
 		if (this.isFinal()) {
 			writer.print("final ");
 		}
-		writer.print("class ");
+				
+		writer.print( this.getVisibility().getJavaName() );
+		writer.print(" class ");
 
 		String name = this.getName();
 		final int lastDot = name.lastIndexOf('.');

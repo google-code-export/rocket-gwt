@@ -20,6 +20,7 @@ import java.util.Set;
 
 import rocket.generator.rebind.ClassComponent;
 import rocket.generator.rebind.HasMetadata;
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.method.Method;
@@ -31,7 +32,9 @@ import rocket.generator.rebind.packagee.Package;
  * @author Miroslav Pokorny
  */
 public interface Type extends HasMetadata, ClassComponent {
-
+	
+	Visibility getVisibility();
+	
 	String getName();
 
 	String getSimpleName();

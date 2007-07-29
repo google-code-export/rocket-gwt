@@ -19,8 +19,6 @@ package rocket.generator.rebind;
  * A collection of constants used during the code generation process.
  * 
  * @author Miroslav Pokorny
- * 
- * TODO Delete will be replaced when v2.* is moved up.
  */
 public class Constants {
 	/**

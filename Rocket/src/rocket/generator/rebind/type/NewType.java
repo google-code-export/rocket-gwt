@@ -34,12 +34,6 @@ public interface NewType extends Type, CodeGenerator {
 
 	boolean hasName();
 
-	// void setName(String name);
-	//
-	// NewConstructor newConstructor();
-	//
-	// void addConstructor(NewConstructor constructor);
-
 	NewField newField();
 
 	void addField(NewField field);
@@ -49,10 +43,6 @@ public interface NewType extends Type, CodeGenerator {
 	void addMethod(NewMethod method);
 
 	void setSuperType(Type superType);
-
-	// void setAbstract(boolean abstractt);
-	//
-	// void setFinal(boolean finall);
 
 	NewNestedType newNestedType();
 

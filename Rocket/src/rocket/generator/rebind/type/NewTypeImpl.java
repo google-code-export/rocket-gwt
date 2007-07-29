@@ -41,7 +41,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	public NewTypeImpl() {
 		super();
 	}
-
+	
 	public Package getPackage() {
 		Package packagee = null;
 
@@ -178,6 +178,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		final GeneratorContext context = this.getGeneratorContext();
 		type.setGeneratorContext(context);
 		type.setSuperType(context.getObject());
+		
 		this.addNestedType(type);
 		return type;
 	}

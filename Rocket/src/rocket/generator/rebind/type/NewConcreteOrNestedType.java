@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorHelper;
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.constructor.NewConstructorImpl;
 import rocket.generator.rebind.initializer.Initializer;
@@ -39,6 +40,18 @@ abstract public class NewConcreteOrNestedType extends NewTypeImpl implements New
 		this.setInitializers(this.createInitializers());
 	}
 
+	private Visibility visibility;
+	
+	public Visibility getVisibility(){
+		ObjectHelper.checkNotNull("field:visibility", visibility );
+		return this.visibility;
+	}
+	
+	public void setVisibility( final Visibility visibility ){
+		ObjectHelper.checkNotNull("field:visibility", visibility );
+		this.visibility = visibility;
+	}	
+	
 	/**
 	 * When true indicates that this method is abstract
 	 */

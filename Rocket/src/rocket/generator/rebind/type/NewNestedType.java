@@ -15,6 +15,7 @@
  */
 package rocket.generator.rebind.type;
 
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
 
 /**
@@ -37,4 +38,8 @@ public interface NewNestedType extends NewType {
 	void setFinal(boolean finall);
 
 	void setStatic(boolean staticc);
+	
+	Visibility getVisibility();
+	
+	void setVisibility( Visibility visibility );
 }

@@ -17,7 +17,6 @@ package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import java.util.Collections;
 
-import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
@@ -47,8 +46,6 @@ public class ConstructorPlaceHolderGenerator extends AbstractTemplatedFileCodeBl
 	}
 
 	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
-		final GeneratorContext context = this.getGeneratorContext();
-
 		final Type type = this.getNewType();
 		final Constructor constructor = type.getConstructor(Collections.EMPTY_LIST);
 

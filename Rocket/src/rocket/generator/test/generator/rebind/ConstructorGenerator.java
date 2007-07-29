@@ -16,7 +16,6 @@
 package rocket.generator.test.generator.rebind;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.constructor.Constructor;
@@ -30,8 +29,6 @@ public class ConstructorGenerator extends TestGenerator {
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
 		PrimitiveHelper.checkEquals("constructor count", 3, type.getConstructors().size());
-
-		final Constructor noArguments = type.getConstructor(Collections.EMPTY_LIST);
 
 		final Type booleanType = context.findType(Boolean.TYPE.getName());
 		final Constructor booleanParameterConstructor = type.findConstructor(Arrays.asList(new Type[] { booleanType }));

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.AbstractType;
 import rocket.generator.rebind.type.Type;
@@ -34,6 +35,10 @@ import rocket.util.client.ObjectHelper;
  */
 public class JavaClassTypeAdapter extends AbstractType {
 
+	public Visibility getVisibility(){
+		return JavaAdapterHelper.getVisibility( this.getJavaClass().getModifiers() ); 
+	}
+	
 	protected Set createConstructors() {
 		final GeneratorContext context = this.getGeneratorContext();
 

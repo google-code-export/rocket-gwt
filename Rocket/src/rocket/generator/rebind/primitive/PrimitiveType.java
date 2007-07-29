@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.method.Method;
@@ -32,6 +33,11 @@ import rocket.generator.rebind.type.Type;
  * @author Miroslav Pokorny
  */
 abstract public class PrimitiveType extends AbstractType {
+	
+	public Visibility getVisibility(){
+		throw new UnsupportedOperationException();
+	}
+	
 	protected Set createInterfaces() {
 		throw new UnsupportedOperationException();
 	}
