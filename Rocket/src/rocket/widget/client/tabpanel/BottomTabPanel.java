@@ -15,9 +15,6 @@
  */
 package rocket.widget.client.tabpanel;
 
-import rocket.widget.client.tabpanel.TabPanel.HorizontalOrVerticalPanel;
-import rocket.widget.client.tabpanel.TabPanel.VerticalPanelImpl;
-
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Widget;

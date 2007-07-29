@@ -18,10 +18,8 @@ package rocket.text.test;
 import java.util.HashMap;
 import java.util.Map;
 
-import rocket.text.client.IndexedPlaceHolderReplacer;
-import rocket.text.client.NamedPlaceHolderReplacer;
-import rocket.util.client.StringHelper;
 import junit.framework.TestCase;
+import rocket.text.client.NamedPlaceHolderReplacer;
 
 
 public class NamedPlaceHolderReplacerTestCase extends TestCase {

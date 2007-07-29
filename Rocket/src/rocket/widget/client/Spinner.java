@@ -16,7 +16,6 @@
 package rocket.widget.client;
 
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.user.client.ui.ClickListener;

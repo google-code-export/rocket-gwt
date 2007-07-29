@@ -15,9 +15,8 @@
  */
 package rocket.text.test;
 
-import rocket.text.client.IndexedPlaceHolderReplacer;
-import rocket.util.client.StringHelper;
 import junit.framework.TestCase;
+import rocket.text.client.IndexedPlaceHolderReplacer;
 
 
 public class IndexedPlaceHolderReplacerTestCase extends TestCase {
