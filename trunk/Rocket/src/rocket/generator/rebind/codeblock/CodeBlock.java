@@ -23,6 +23,6 @@ import rocket.generator.rebind.CodeGenerator;
  * 
  * @author Miroslav Pokorny
  */
-public interface CodeBlock extends ClassComponent, CodeGenerator {
+public interface CodeBlock extends CodeGenerator {
 	boolean isEmpty();
 }

@@ -68,6 +68,10 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 		this.returnType = returnType;
 	}
 
+	public boolean returnsVoid(){
+		return this.getReturnType().equals( this.getGeneratorContext().getVoid() );
+	}
+	
 	/**
 	 * GeneratorHelper which checks the super type heirarchy to test if this
 	 * method actually overrides another.
@@ -175,7 +179,7 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 		method.setAbstract(this.isAbstract());
 		method.setFinal(this.isFinal());
 		method.setName(this.getName());
-		method.setNative(this.isNative());
+		method.setNative( false );
 
 		final Iterator parameters = this.getParameters().iterator();
 		while (parameters.hasNext()) {

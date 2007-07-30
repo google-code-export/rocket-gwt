@@ -37,6 +37,8 @@ public interface Method extends ClassComponent, HasMetadata {
 
 	Type getReturnType();
 
+	boolean returnsVoid();
+	
 	List getParameters();
 
 	Visibility getVisibility();

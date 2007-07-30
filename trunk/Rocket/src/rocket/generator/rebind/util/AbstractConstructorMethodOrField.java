@@ -60,7 +60,7 @@ abstract public class AbstractConstructorMethodOrField extends AbstractClassComp
 	}
 
 	public void setEnclosingType(final Type enclosingType) {
-		ObjectHelper.checkNotNull("field:enclosingType", enclosingType);
+		ObjectHelper.checkNotNull("parameter:enclosingType", enclosingType);
 		this.enclosingType = enclosingType;
 	}
 }

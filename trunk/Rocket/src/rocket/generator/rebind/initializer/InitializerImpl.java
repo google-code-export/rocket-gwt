@@ -41,7 +41,7 @@ public class InitializerImpl implements Initializer {
 		writer.println("{");
 
 		writer.indent();
-		GeneratorHelper.writeClassComponent(this.getBody(), writer);
+		this.getBody().write( writer );
 		writer.outdent();
 
 		writer.println("};");

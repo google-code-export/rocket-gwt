@@ -174,7 +174,7 @@ public class NewFieldImpl extends AbstractField implements NewField {
 		final CodeBlock codeBlock = this.getValue();
 		if (false == codeBlock.isEmpty()) {
 			writer.print("=");
-			GeneratorHelper.writeClassComponent(codeBlock, writer);
+			codeBlock.write(writer );
 		}
 	}
 	

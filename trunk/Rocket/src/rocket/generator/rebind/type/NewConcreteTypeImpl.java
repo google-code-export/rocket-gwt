@@ -16,11 +16,13 @@
 package rocket.generator.rebind.type;
 
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorException;
 import rocket.generator.rebind.Visibility;
 import rocket.util.client.ObjectHelper;
 
@@ -87,7 +89,10 @@ public class NewConcreteTypeImpl extends NewConcreteOrNestedType implements NewC
 			this.writeFields(writer);
 			this.writeMethods(writer);
 			this.writeNestedTypes(writer);
-
+		} catch ( final GeneratorException caught ){			
+			this.handleWriteFailure(writer, caught );
+			
+			throw caught;
 		} finally {
 			context.commitWriter(writer);
 		}
@@ -96,9 +101,30 @@ public class NewConcreteTypeImpl extends NewConcreteOrNestedType implements NewC
 		// generated...
 		this.updateSuperTypeSubTypes(this);
 	}
+	
+	/**
+	 * Captures the complete stacktrace of the given exception and writes it within a javadoc comment.
+	 * @param writer The source writer of the file being generated.
+	 * @param cause The cause must not be null.
+	 */
+	protected void handleWriteFailure( final SourceWriter writer, final Throwable cause ){
+		ObjectHelper.checkNotNull( "parameter:writer", writer );
+		ObjectHelper.checkNotNull( "parameter:cause", cause );
+
+		final StringWriter stringWriter = new StringWriter();
+		final PrintWriter printWriter = new PrintWriter( stringWriter );
+		cause.printStackTrace( printWriter );
+		printWriter.flush();
+		printWriter.close();
+		
+		writer.println();
+		writer.beginJavaDocComment();
+		writer.println( stringWriter.toString() );
+		writer.endJavaDocComment();		
+	}
 
 	protected void writeLogger() {
-		this.getGeneratorContext().branch("Writing class: " + this.getName());
+		this.getGeneratorContext().branch("Writing class: " + this );
 	}
 
 	protected void updateSuperTypeSubTypes(final Type type) {

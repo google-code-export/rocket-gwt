@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.generator.rebind.field.Field;
@@ -191,7 +190,7 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 		String string = "";
 		if (false == codeBlock.isEmpty()) {
 			final StringBufferSourceWriter writer = new StringBufferSourceWriter();
-			GeneratorHelper.writeClassComponent(codeBlock, writer);
+			codeBlock.write(writer);
 			string = writer.getBuffer();
 		}
 		return string;

@@ -32,4 +32,6 @@ public interface Parameter extends ClassComponent {
 	String getJsniNotation();
 
 	boolean isFinal();
+	
+	int getIndex();
 }

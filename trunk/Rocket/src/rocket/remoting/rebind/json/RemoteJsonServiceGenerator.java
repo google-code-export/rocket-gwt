@@ -194,7 +194,7 @@ public class RemoteJsonServiceGenerator extends Generator {
 		if (null == asyncMethod) {
 			this.throwMatchingAsyncInterfaceMethodNotFoundException(method);
 		}
-		if (false == asyncMethod.getReturnType().equals(this.getGeneratorContext().getVoid())) {
+		if (false == asyncMethod.returnsVoid() ) {
 			this.throwIncompatibleMethodFound(asyncMethod);
 		}
 

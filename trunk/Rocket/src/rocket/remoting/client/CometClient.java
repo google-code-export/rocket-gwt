@@ -31,14 +31,14 @@ import com.google.gwt.user.client.rpc.impl.Serializer;
 
 /**
  * There should only ever be one instance of this class which is used to receive streamed objects from a server.
- * 
+ *
  * <h6>Gotchas</h6>
  * <ul>
  * <li> The only requirement is that the {@link #createProxy() } method is implemented to request for the runtime to create a XXXProxy for a
  * service that declares a return type that covers objects returned by the server side component. </li>
  * <li> When compiling/translated to javascript the Rocket.jar must be included in the classpath before any google classes so that the
  * custom ProxyGenerator is used instead of the regular class. </li>
- * 
+ *
  * @author Miroslav Pokorny (mP)
  */
 public abstract class CometClient {
@@ -70,7 +70,7 @@ public abstract class CometClient {
 
     /**
      * Stops or closes the connection between the client and the server.
-     * 
+     *
      */
     public void stop() {
         if (this.hasFrame()) {
@@ -101,7 +101,7 @@ public abstract class CometClient {
     /**
      * This method is called by whenever a iframe finishes loading its document. This may be caused by the server dropping its connect or
      * failing the locate a CometServer.
-     * 
+     *
      * @param thisInstance
      */
     public static void onDisconnect(final CometClient thisInstance) {
@@ -126,7 +126,7 @@ public abstract class CometClient {
 
     /**
      * This function is invoked from the hidden frame and takes care of eventually dispatching the object to the registered callback.
-     * 
+     *
      * @param c
      * @param serializedForm
      * @throws SerializationException
@@ -151,7 +151,7 @@ public abstract class CometClient {
 
     /**
      * Deserializes the Object and its graph which are encoded within the given String.
-     * 
+     *
      * @param serializedForm
      * @return
      * @throws SerializationException
@@ -160,6 +160,11 @@ public abstract class CometClient {
         StringHelper.checkNotEmpty("parameter:serializedForm", serializedForm);
 
         final Object proxy = this.createProxy();
+
+        if( false == GWT.isScript() && false == ( proxy instanceof HasSerializer )){
+			GWT.log( "It appears that the Rocket modified ProxyCreator class was not used to generate the deserializer. To fix this put the rocket.jar files before gwt-user.jar in the classpath.", null );
+		}
+
         final HasSerializer serializerHost = (HasSerializer) proxy;
         final Serializer serializer = serializerHost.getSerializer();
 
@@ -170,11 +175,11 @@ public abstract class CometClient {
 
     /**
      * Sub-classes must override this method to create the ServiceProxy using defered binding.
-     * 
+     *
      * <pre>
      *    return GWT.create( INSERT SERVICE CLASS.class );
      * </pre>
-     * 
+     *
      * @return
      */
     protected abstract Object createProxy();

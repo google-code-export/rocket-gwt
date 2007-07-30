@@ -256,7 +256,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		final CodeBlock body = this.getBody();
 		if (false == body.isEmpty()) {
 			writer.indent();
-			GeneratorHelper.writeClassComponent(body, writer);
+			body.write(writer);
 			writer.outdent();
 		}
 	}

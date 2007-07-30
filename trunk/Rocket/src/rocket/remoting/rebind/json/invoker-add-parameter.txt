@@ -1,5 +1,8 @@
 // invoker-add-parameter.txt
-// \${httpRequestParameterName}
-// \${parameter}
 
-invoker.addParameter( ${httpRequestParameterName}, ${parameter} );
+invoker.addParameter( 
+	// the httpRequestParameterName
+	${httpRequestParameterName}, 
+	
+	// the parameter's value.
+	${parameter} );
