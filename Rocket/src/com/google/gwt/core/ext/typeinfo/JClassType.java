@@ -683,7 +683,7 @@ public class JClassType extends JType implements HasMetaData {
    * Added ability to test if a jclasstype is final
    * @return
    * 
-   * FIXME added by Miroslav Pokorny for the rocket-gwt project.
+   * Added by Miroslav Pokorny for the rocket-gwt project.
    */
   public boolean isFinal() {
 	    return 0 != ( this.getModifierBits() & TypeOracle.MOD_FINAL);
