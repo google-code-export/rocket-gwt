@@ -56,7 +56,7 @@ public class NewNestedTypeImpl extends NewConcreteOrNestedType implements NewNes
 		ObjectHelper.checkNotNull("parameter:enclosingType", enclosingType);
 		this.enclosingType = enclosingType;
 	}
-
+	
 	/**
 	 * When true indicates that this class is static
 	 */

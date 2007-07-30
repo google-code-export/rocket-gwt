@@ -1,13 +1,18 @@
 // invoke-field-setter-object.txt
-//
-// \${fieldSetter}			   	The name of the field's setter method	
-// \${instance}                	The name of the variable containing the instance being reconstructed
-// \${fieldType}               	The type of the field.
-// \${fieldTypeDeserializer}   	A deserializer for this field's type.		
-// \${asMethod}                	The name of a method which will convert a jsonObject into a java object
-// \${jsonObject}	   			A JSONObject which contains the values of each of the fields for this instance
-// \${javascriptPropertyName}  	The name of a javascript property which contains the source value for the field being set
-//
-// this.\${fieldSetter}( \${instance}, (\${fieldType}) \${fieldTypeDeserializer}.singleton.\${asMethod}( \${jsonObject}.get( \${javascriptPropertyName} )));
 
-this.${fieldSetter}( ${instance}, (${fieldType}) ${fieldTypeDeserializer}.singleton.${asMethod}( ${jsonObject}.get( ${javascriptPropertyName} )));
+// invoke the setter
+this.${fieldSetter}( 
+
+	${instance}, 
+
+	// cast
+	(${fieldType}) 
+
+	// invoke the field deserializer
+	${fieldTypeDeserializer}.singleton.${asMethod}( 
+
+	// get the JSONObject by javascript name.
+	${jsonObject}.get( ${javascriptPropertyName} )
+
+)
+);

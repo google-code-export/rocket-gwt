@@ -22,5 +22,5 @@ package rocket.generator.rebind;
  * @author Miroslav Pokorny
  */
 public interface ClassComponent {
-
+	GeneratorContext getGeneratorContext();
 }

@@ -83,7 +83,7 @@ public class ManyCodeBlocks implements CodeBlock, CodeGenerator {
 				continue;
 			}
 
-			GeneratorHelper.writeClassComponent(codeBlock, writer);
+			codeBlock.write(writer);
 		}
 	}
 }

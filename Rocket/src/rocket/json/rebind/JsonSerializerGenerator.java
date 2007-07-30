@@ -415,8 +415,7 @@ public class JsonSerializerGenerator extends Generator {
 	protected void verifyTypeHasNoArgumentsConstructor(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
-		final Constructor constructor = type.findConstructor(Collections.EMPTY_LIST);
-		if (null == constructor) {
+		if ( false == type.hasNoArgumentsConstructor() ) {
 			this.throwMissingNoArgumentsConstructorException(type);
 		}
 	}

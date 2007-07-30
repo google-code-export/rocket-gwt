@@ -95,7 +95,13 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 	protected Set createConstructors() {
 		throw new UnsupportedOperationException("createConstructors");
 	}
-
+	/**
+	 * Anonymous nested types are always invoked with no arguments but thats not technically
+	 * true, throw an exception for now.
+	 */
+	public boolean hasNoArgumentsConstructor(){
+		throw new UnsupportedOperationException("hasNoArgumentsConstructor");
+	}
 	public String getName() {
 		throw new UnsupportedOperationException("getName()");
 	}

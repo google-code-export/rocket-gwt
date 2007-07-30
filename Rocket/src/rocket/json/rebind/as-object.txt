@@ -1,9 +1,6 @@
 // as-object.txt
-//
-// \${jsonValueParameter} The name of the JSONObject parameter passed to this method
-// \${deserializerType}    The type being deserialized
-//
 
+// Declare the type being deserialized.
 ${deserializerType} instance = null;
 
 // cast from JSONValue to jsonObject

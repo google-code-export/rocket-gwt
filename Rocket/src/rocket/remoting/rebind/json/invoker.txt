@@ -1,14 +1,13 @@
 // invoker.txt
-//
-// \${invokerType}       Either of the two possible types RemoteGetJsonServiceInvoker or RemotePostJsonServiceInvoker
-// \${methodReturnType}  The return type of the method
-// \${callbackParameter} The callback parameter passed to the method
-// \${addParameters}     A CodeBlock containing multiple invoker.addParameters() one for each parameter.
 
+// declare the invoker variable and create a new Post or Get invoker.
 final ${invokerType} invoker = new ${invokerType}(){
     
 protected java.lang.Object asObject( final com.google.gwt.json.client.JSONValue jsonValue ){
-	final rocket.json.client.JsonSerializer deserializer =(rocket.json.client.JsonSerializer) com.google.gwt.core.client.GWT.create( ${methodReturnType}.class );
+	final rocket.json.client.JsonSerializer deserializer =
+		(rocket.json.client.JsonSerializer) 
+		com.google.gwt.core.client.GWT.create( ${methodReturnType}.class );
+    
     	return deserializer.asObject( jsonValue );
   	} // asObject
 }; // ${invokerType}
@@ -16,5 +15,8 @@ protected java.lang.Object asObject( final com.google.gwt.json.client.JSONValue 
 ${addParameters}
 
 invoker.setUrl( this.getServiceEntryPoint());
+
+// save the callback parameter
 invoker.setCallback( ${callbackParameter} );
+
 invoker.makeRequest( this );

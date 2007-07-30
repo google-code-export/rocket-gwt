@@ -141,6 +141,10 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return adapter;
 	}
 
+	public boolean hasNoArgumentsConstructor(){
+		return this.getJClassType().isDefaultInstantiable();
+	}
+	
 	/**
 	 * Factory method which creates a set of fields.
 	 */

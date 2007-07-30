@@ -15,6 +15,7 @@
  */
 package rocket.generator.rebind.type;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -146,6 +147,10 @@ abstract public class NewConcreteOrNestedType extends NewTypeImpl implements New
 		constructor.setEnclosingType(this);
 	}
 
+	public boolean hasNoArgumentsConstructor(){
+		return this.getConstructors().isEmpty() ? true : null != this.findConstructor( Collections.EMPTY_LIST );
+	}
+	
 	protected void writeInitializers(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 

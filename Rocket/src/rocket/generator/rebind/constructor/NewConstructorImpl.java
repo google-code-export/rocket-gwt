@@ -97,7 +97,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	protected void log() {
-		this.getGeneratorContext().branch("Constructor with parameters: " + this.getParameters());
+		this.getGeneratorContext().debug("Writing Constructor: " + this );
 	}
 
 	/**
@@ -111,7 +111,12 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 
 		writer.print(this.getVisibility().getJavaName());
 		writer.print(" ");
-		writer.print(this.getEnclosingType().getSimpleName());
+		
+		String name = this.getEnclosingType().getName();
+		final int lastDot = name.lastIndexOf('.');
+		name = name.substring(lastDot + 1);
+		writer.print(name);	
+		
 		writer.print("(");
 
 		this.writeParameters(writer);
@@ -147,7 +152,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 
 		final CodeBlock body = this.getBody();
 		if (false == body.isEmpty()) {
-			GeneratorHelper.writeClassComponent(body, writer);
+			body.write(writer);
 		}
 	}
 
