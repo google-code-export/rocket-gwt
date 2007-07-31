@@ -102,7 +102,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param newTypeName The name of the type being generated.
 	 */
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
-		this.verifyIsABeanFactory(type);
+		this.verifyBeanFactory(type);
 
 		final DocumentWalker document = this.getDocumentWalker(type);
 
@@ -146,19 +146,41 @@ public class BeanFactoryGenerator extends Generator {
 	 * Verifies and throws an exception if the given type is a BeanFactory
 	 * @param The bean type interface
 	 */
-	protected void verifyIsABeanFactory(final Type type) {
+	protected void verifyBeanFactory(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
-		this.getGeneratorContext().info("Verifying " + type + " is a bean factory.");
+		final GeneratorContext context = this.getGeneratorContext();
+		context.info("Verifying " + type + " is a bean factory.");
 
 		final Type beanFactory = this.getBeanFactoryType();
 		if (false == type.isAssignableTo(beanFactory)) {
 			throwNotABeanFactory("The type [" + type + "] is not a " + beanFactory);
 		}
+		
+		// verify has no public methods (ignore those belonging to java.lang.Object
+		final List publicMethods = new ArrayList();
+		final VirtualMethodVisitor methodFinder = new VirtualMethodVisitor(){
+			 protected boolean visit(final Method method){
+				 publicMethods.add( method );
+				 return false;
+			 }
+
+			 protected boolean skipJavaLangObjectMethods(){
+				 return true;
+			 }
+		};
+		methodFinder.start( type );
+		if( false == publicMethods.isEmpty() ){
+			throwBeanFactoryInterfaceHasPublicMethods( type, publicMethods.size() );
+		}
 	}
 
 	protected void throwNotABeanFactory(final String message) {
 		throw new BeanFactoryGeneratorException(message);
+	}
+	
+	protected void throwBeanFactoryInterfaceHasPublicMethods( final Type beanFactory, final int publicMethodCount ){
+		throw new BeanFactoryGeneratorException( "The bean factory interface [" + beanFactory + "] contains " + publicMethodCount + " when it should contain 0 public methods (excluding those on java.lang.Object ignored in both cases).");
 	}
 
 	/**
