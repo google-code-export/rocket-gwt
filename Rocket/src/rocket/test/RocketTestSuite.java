@@ -33,6 +33,7 @@ import rocket.collection.test.IteratorViewTestCase;
 import rocket.collection.test.SkippingIteratorTestCase;
 import rocket.collection.test.VisitRememberingIteratorTestCase;
 import rocket.cookie.test.cookies.CookiesGwtTestCase;
+import rocket.generator.test.CollectionTemplatedCodeBlockTestCase;
 import rocket.generator.test.TypeTestCase;
 import rocket.generator.test.AllMethodsVisitorTestCase;
 import rocket.generator.test.MethodTestCase;
@@ -96,6 +97,7 @@ public class RocketTestSuite {
 		suite.addTestSuite(TypeTestCase.class );
 		suite.addTestSuite(TemplatedFileCodeBlockGwtTestCase.class );
 		suite.addTestSuite(VirtualMethodTestCase.class );
+		suite.addTestSuite(CollectionTemplatedCodeBlockTestCase.class );
 		
 		// rocket.remoting
 		suite.addTestSuite(RemoteJsonServiceGwtTestCase.class );
