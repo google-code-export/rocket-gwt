@@ -22,6 +22,8 @@ Many of the copied ideas use the same interfaces/names when possible but live un
 
 =Unsupported constructs=
   * The destroy lifecycle event is not support. Work is continuing on the best strategy to implement this. The most likely mechanism to implement this portion of a beans lifecycle is via listener registered to com.google.gwt.user.client.WindowCloseListener.onWindowClosing
+  * Autowiring to satisfy all properties of a bean is not supported.
+  * The ability to load beans eagerly or lazily is not supported. All references and values are verified during the compilation, with instances created lazily.
   * Advices can only be added to methods, fields are not supported.
 
 =Getting started=
