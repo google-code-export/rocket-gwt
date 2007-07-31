@@ -30,9 +30,9 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-public class ManyCodeBlocks implements CodeBlock, CodeGenerator {
+public class CodeBlockList implements CodeBlock, CodeGenerator {
 
-	public ManyCodeBlocks() {
+	public CodeBlockList() {
 		super();
 
 		this.setCodeBlocks(this.createCodeBlocks());

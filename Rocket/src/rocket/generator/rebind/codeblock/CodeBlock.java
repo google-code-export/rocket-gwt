@@ -15,7 +15,6 @@
  */
 package rocket.generator.rebind.codeblock;
 
-import rocket.generator.rebind.ClassComponent;
 import rocket.generator.rebind.CodeGenerator;
 
 /**

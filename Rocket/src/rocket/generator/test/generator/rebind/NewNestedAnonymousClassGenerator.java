@@ -17,7 +17,7 @@ package rocket.generator.test.generator.rebind;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.Visibility;
-import rocket.generator.rebind.codeblock.ManyCodeBlocks;
+import rocket.generator.rebind.codeblock.CodeBlockList;
 import rocket.generator.rebind.codeblock.StringCodeBlock;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.type.NewAnonymousNestedType;
@@ -37,7 +37,7 @@ public class NewNestedAnonymousClassGenerator extends TestGenerator {
 		final NewMethod getNested = newType.newMethod();
 		final Type concreteClass = context.getType(ConcreteClass.class.getName());
 
-		final ManyCodeBlocks body = new ManyCodeBlocks();
+		final CodeBlockList body = new CodeBlockList();
 		body.add(new StringCodeBlock("return new "));
 
 		final NewAnonymousNestedType nested = newType.newAnonymousNestedType();
