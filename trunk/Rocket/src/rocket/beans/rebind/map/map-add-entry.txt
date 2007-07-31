@@ -1,7 +1,3 @@
 // map-add-entry.txt
-//
-// \${key}
-// \${value}
-//
 
 .add( ${key}, ${value} )

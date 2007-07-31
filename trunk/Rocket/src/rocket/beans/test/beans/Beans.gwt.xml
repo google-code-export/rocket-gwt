@@ -4,7 +4,7 @@
 	<source path="client" />
 
 	<generate-with class="rocket.beans.test.beans.rebind.TestBeanFactoryGenerator">
-		<when-type-assignable class="rocket.beans.test.beans.client.classisnotabeanfactory.ClassIsNotABeanFactory" />
+		<when-type-assignable class="rocket.beans.test.beans.client.notabeanfactory.ClassIsNotABeanFactory" />
 	</generate-with>	
 
 	<generate-with class="rocket.beans.test.beans.rebind.TestBeanFactoryGenerator">

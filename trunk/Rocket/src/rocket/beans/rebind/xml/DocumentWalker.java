@@ -148,7 +148,7 @@ public class DocumentWalker {
 	 * 
 	 * @return
 	 */
-	public List getBeanElements() {
+	public List getBeans() {
 		final NodeList nodeList = this.getDocument().getElementsByTagName(Constants.BEAN_TAG);
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
 
@@ -166,7 +166,7 @@ public class DocumentWalker {
 		});
 	}
 
-	public List getRemoteJsonElements() {
+	public List getRemoteJsonService() {
 		final NodeList nodeList = this.getDocument().getElementsByTagName(Constants.REMOTE_JSON_SERVICE_TAG);
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
 
@@ -184,7 +184,7 @@ public class DocumentWalker {
 		});
 	}
 
-	public List getRemoteRpcElements() {
+	public List getRemoteRpcService() {
 		final NodeList nodeList = this.getDocument().getElementsByTagName(Constants.REMOTE_RPC_SERVICE_TAG);
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
 
@@ -202,4 +202,21 @@ public class DocumentWalker {
 		});
 	}
 
+	public List getAdvices() {
+		final NodeList nodeList = this.getDocument().getElementsByTagName(Constants.ADVICE_TAG);
+		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
+
+		return Collections.unmodifiableList(new AbstractList() {
+			public Object get(final int index) {
+				final AdviceTag advisor = new AdviceTag();
+				advisor.setElement((Element) nodeList.item(index));
+				advisor.setPlaceHolderResolver(placeHolderResolver);
+				return advisor;
+			}
+
+			public int size() {
+				return nodeList.getLength();
+			}
+		});
+	}
 }

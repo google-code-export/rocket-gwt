@@ -38,43 +38,49 @@ public class InterceptorChain {
 	/**
 	 * Invokes all methodInterceptors and possibly the target proxy.
 	 * 
-	 * @return
-	 * @throws Throwable
+	 * @return The value returned by the chain. Should be null for void methods.
+	 * @throws Throwable Any exception that is thrown.
 	 */
 	public Object proceed() throws Throwable {
 		final MethodInvocation methodInvocation = this.createMethodInvocation();
 		return methodInvocation.proceed();
 	}
 	
-	public boolean proceedReturnsBoolean() throws Throwable{
+	/**
+	 * Invokes the chain and automatically unwraps the wrapped boolean result
+	 * Similar methods exist to handle all the other primitive types.
+	 * @return
+	 * @throws Throwable
+	 */
+	public boolean proceedReturningBoolean() throws Throwable{
 		final Boolean wrapper = (Boolean) this.proceed();
 		return wrapper.booleanValue();
 	}
-	public byte proceedReturnsByte() throws Throwable{
+	public byte proceedReturningByte() throws Throwable{
 		final Byte wrapper = (Byte) this.proceed();
 		return wrapper.byteValue();
 	}
-	public short proceedReturnsShort() throws Throwable{
+	public short proceedReturningShort() throws Throwable{
 		final Short wrapper = (Short) this.proceed();
 		return wrapper.shortValue();
 	}
-	public int proceedReturnsInt() throws Throwable{
+	public int proceedReturningInt() throws Throwable{
 		final Integer wrapper = (Integer) this.proceed();
 		return wrapper.intValue();
 	}
-	public long proceedReturnsLong() throws Throwable{
+	public long proceedReturningLong() throws Throwable{
 		final Long wrapper = (Long) this.proceed();
 		return wrapper.longValue();
 	}
-	public float proceedReturnsFloat() throws Throwable{
+	public float proceedReturningFloat() throws Throwable{
 		final Float wrapper = (Float) this.proceed();
 		return wrapper.floatValue();
 	}
-	public double proceedReturnsDouble() throws Throwable{
+	public double proceedReturningDouble() throws Throwable{
 		final Double wrapper = (Double) this.proceed();
 		return wrapper.doubleValue();
 	}
-	public char proceedReturnsChar() throws Throwable{
+	public char proceedReturningChar() throws Throwable{
 		final Character wrapper = (Character) this.proceed();
 		return wrapper.charValue();
 	}
@@ -123,6 +129,39 @@ public class InterceptorChain {
 	}
 
 	/**
+	 * Overloaded method that helps with wrapping primitives into wrappers. 
+	 * @param booleanValue
+	 * @return A Boolean wrapper
+	 */
+	public Object asObject( final boolean booleanValue ){
+		return Boolean.valueOf( booleanValue );
+	}
+	public Object asObject( final byte byteValue ){
+		return new Byte( byteValue );
+	}
+	public Object asObject( final short shortValue ){
+		return new Short( shortValue );
+	}
+	public Object asObject( final int intValue ){
+		return new Integer( intValue );
+	}
+	public Object asObject( final long longValue ){
+		return new Long( longValue );
+	}
+	public Object asObject( final float floatValue ){
+		return new Float( floatValue );
+	}
+	public Object asObject( final double doubleValue ){
+		return new Double( doubleValue );
+	}
+	public Object asObject( final char charValue ){
+		return new Character( charValue );
+	}
+	public Object asObject( final Object object ){
+		return object;
+	}
+	
+	/**
 	 * A list containing all method interceptors
 	 */
 	private List methodInterceptors;
@@ -137,17 +176,21 @@ public class InterceptorChain {
 		this.methodInterceptors = methodInterceptors;
 	}
 
-	public void add(final Object advice) {
+	/**
+	 * Adds an advice to this chain, creating an interceptor if the advice is not an interceptor.
+	 * @param advice A new advice.
+	 */
+	public void addAdvice(final Advice advice) {
 		while (true) {
-			if (advice instanceof AfterFinallyAdviceMethodInterceptor) {
+			if (advice instanceof AfterFinallyAdvice) {
 				this.addAfterFinallyAdvice((AfterFinallyAdvice) advice);
 				break;
 			}
-			if (advice instanceof AfterReturningAdviceMethodInterceptor) {
+			if (advice instanceof AfterReturningAdvice) {
 				this.addAfterReturningAdvice((AfterReturningAdvice) advice);
 				break;
 			}
-			if (advice instanceof AfterThrowingAdviceMethodInterceptor) {
+			if (advice instanceof AfterThrowingAdvice) {
 				this.addAfterThrowingAdvice((AfterThrowingAdvice) advice);
 				break;
 			}
@@ -155,11 +198,8 @@ public class InterceptorChain {
 				this.addBeforeAdvice((BeforeAdvice) advice);
 				break;
 			}
-			if (advice instanceof MethodInterceptor) {
-				this.addMethodInterceptor((MethodInterceptor) advice);
-				break;
-			}
-			SystemHelper.fail("The parameter:advice[" + advice + "] is not an advice.");
+			
+			this.addMethodInterceptor((MethodInterceptor) advice);			
 			break;
 		}
 	}
@@ -207,6 +247,13 @@ public class InterceptorChain {
 		this.target = target;
 	}
 	
+	/**
+	 * Helper method which assists with unwrapping wrapped values. This is typically used when
+	 * invoking the target method.
+	 * Similar methods exist for all the primitive types.
+	 * @param index An index within the array of parameters.
+	 * @return The boolean value taken from the wrapper.
+	 */
 	public boolean getBooleanParameter(final int index ){
 		final Boolean wrapper =(Boolean) this.getObjectParameter( index );
 		return wrapper.booleanValue();
@@ -242,30 +289,4 @@ public class InterceptorChain {
 	public Object getObjectParameter(final int index ){
 		return this.getParameters()[ index ];
 	}
-	
-	public Object asObject( final boolean booleanValue ){
-		return Boolean.valueOf( booleanValue );
-	}
-	public Object asObject( final byte byteValue ){
-		return new Byte( byteValue );
-	}
-	public Object asObject( final short shortValue ){
-		return new Short( shortValue );
-	}
-	public Object asObject( final int intValue ){
-		return new Integer( intValue );
-	}
-	public Object asObject( final long longValue ){
-		return new Long( longValue );
-	}
-	public Object asObject( final float floatValue ){
-		return new Float( floatValue );
-	}
-	public Object asObject( final double doubleValue ){
-		return new Double( doubleValue );
-	}
-	public Object asObject( final char charValue ){
-		return new Character( charValue );
-	}
-
 }

@@ -1,13 +1,10 @@
 // set.txt
-//
-// \${addElements} one or more statements that add values to the set being built
-//
 
 // create a new SetBuilder which will help accumulate values
 new rocket.beans.client.SetBuilder()
 
-// add elements to the Set
-${addElements}
+	// add elements to the Set
+	${addElements}
 
-// get the Set
-.getSet()
+		// get the Set
+		.getSet()

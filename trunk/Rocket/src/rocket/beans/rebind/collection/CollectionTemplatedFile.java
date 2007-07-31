@@ -16,13 +16,18 @@
 package rocket.beans.rebind.collection;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import rocket.beans.rebind.value.Value;
-import rocket.generator.rebind.codeblock.ManyCodeBlocks;
+import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.util.client.ObjectHelper;
 
+import com.google.gwt.user.rebind.SourceWriter;
 /**
  * An abstraction for the list and set templates
  * 
@@ -36,31 +41,55 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 		this.setElements(this.createElements());
 	}
 
-	private ManyCodeBlocks elements;
+	private List elements;
 
-	protected ManyCodeBlocks getElements() {
+	protected List getElements() {
 		ObjectHelper.checkNotNull("field:elements", elements);
 		return this.elements;
 	}
 
-	protected void setElements(final ManyCodeBlocks entries) {
+	protected void setElements(final List entries) {
 		ObjectHelper.checkNotNull("parameter:elements", entries);
 		this.elements = entries;
 	}
 
-	protected ManyCodeBlocks createElements() {
-		return new ManyCodeBlocks();
+	protected List createElements() {
+		return new ArrayList();
 	}
 
 	public void add(final Value value) {
 		ObjectHelper.checkNotNull("parameter:value", value);
 
-		final CollectionElementAddTemplatedFile template = new CollectionElementAddTemplatedFile();
-		template.setValue(value);
-
-		this.getElements().add(template);
+		this.getElements().add(value);
 	}
 
+	protected CodeBlock getElementsCodeBlock(){		
+		final CollectionElementAddTemplatedFile template = new CollectionElementAddTemplatedFile(); 
+		final List elements = this.getElements();
+		
+		return new CollectionTemplatedCodeBlock() {
+
+			public InputStream getInputStream() {
+				return template.getInputStream();
+			}
+
+			protected Object getValue0(final String name) {
+				return template.getValue0( name );
+			}
+
+			protected Collection getCollection() {
+				return elements;
+			}
+
+			protected void prepareToWrite(Object element) {
+				template.setValue( (Value) elements.get( this.getIndex() ));
+			}
+
+			protected void writeBetweenElements(SourceWriter writer) {
+			}
+		};
+	}
+	
 	protected InputStream getInputStream() {
 		final String filename = this.getTemplate();
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -76,7 +105,7 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 		Object value = null;
 		while (true) {
 			if (this.getElementsPlaceHolder().equals(name)) {
-				value = this.getElements();
+				value = this.getElementsCodeBlock();
 				break;
 			}
 			break;
@@ -87,6 +116,6 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 	abstract protected String getElementsPlaceHolder();
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in [" + this.getTemplate() + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + this.getTemplate() + "]");
 	}
 }

@@ -16,17 +16,23 @@
 package rocket.beans.rebind.constructor;
 
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.user.rebind.SourceWriter;
+
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.codeblock.CodeBlock;
-import rocket.generator.rebind.codeblock.ManyCodeBlocks;
+import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
+import rocket.generator.rebind.codeblock.CodeBlockList;
 import rocket.generator.rebind.codeblock.StringCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.constructor.Constructor;
+import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.util.client.ObjectHelper;
 
 /**
@@ -101,21 +107,31 @@ public class ConstructorTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in [" + Constants.TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + Constants.TEMPLATE + "]");
 	}
 
 	protected CodeBlock getArgumentsAsCodeBlock() {
-		final ManyCodeBlocks manyCodeBlock = new ManyCodeBlocks();
-		final Iterator arguments = this.getArguments().iterator();
-		while (arguments.hasNext()) {
-			final Value value = (Value) arguments.next();
-			manyCodeBlock.add(value);
+		final List parameters = this.getArguments();
+		return new CollectionTemplatedCodeBlock() {
 
-			if (arguments.hasNext()) {
-				manyCodeBlock.add(new StringCodeBlock(","));
+			public InputStream getInputStream() {
+				return new StringBufferInputStream("${value}");
 			}
-		}
 
-		return manyCodeBlock;
+			protected Object getValue0(final String name) {
+				return parameters.get( this.getIndex() );
+			}
+
+			protected Collection getCollection() {
+				return parameters;
+			}
+
+			protected void prepareToWrite(Object element) {
+			}
+
+			protected void writeBetweenElements(SourceWriter writer) {
+				writer.print(",");
+			}
+		};
 	}
 }

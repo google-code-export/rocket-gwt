@@ -1,0 +1,4 @@
+// invoke-interceptor-chain-proceed-double.txt
+
+// invokes the interceptor chain, unwrapping Double because the method return type is double
+return chain.proceedReturningDouble();

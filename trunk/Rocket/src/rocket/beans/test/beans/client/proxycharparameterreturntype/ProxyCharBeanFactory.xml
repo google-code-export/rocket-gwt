@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 1.0//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 
+		id="bean" 
+		class="rocket.beans.test.beans.client.proxycharparameterreturntype.ClassWithMethodWithCharParameterAndReturnType" 
+		scope="singleton">
+	</bean>
+
+	<bean 
+		id="advisorBean" 
+		class="rocket.beans.test.beans.client.proxycharparameterreturntype.ProxyCharMethodInterceptor" 
+		scope="singleton">
+	</bean>
+	
+	<advice
+		advisorBeanId="advisorBean"
+		targetBeanId="bean"
+		methodExpression="toUpperCase"
+	/>
+</bean-factory>

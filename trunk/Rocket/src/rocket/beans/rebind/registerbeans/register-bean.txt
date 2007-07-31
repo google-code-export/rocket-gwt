@@ -1,6 +1,9 @@
 // register-bean.txt
-//
-// \${beanId}      		The id of the bean.
-// \${factoryBeanType} 	The name of a nested type FactoryBean
 
-beans.put( ${beanId}, new ${factoryBeanType}() );
+beans.put( 
+
+	// the id of the bean being registered
+	${beanId}, 
+	
+		// the factory bean which will create the bean.
+		new ${factoryBeanType}() );

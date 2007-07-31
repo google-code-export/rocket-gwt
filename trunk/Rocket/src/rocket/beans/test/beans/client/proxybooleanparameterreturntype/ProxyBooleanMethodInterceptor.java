@@ -13,14 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.test.beans.client.interfacedoesntimplementbeanfactory;
+package rocket.beans.test.beans.client.proxybooleanparameterreturntype;
+
+import rocket.beans.client.aop.MethodInvocation;
 
 /**
- * This interface when passed to the generator should result in an exception
- * being thrown.
- * 
+ * This method interceptor does nothing but invoke the next interceptor in the chain.
  * @author Miroslav Pokorny
  */
-public interface InterfaceDoesntImplementBeanFactory {
+public class ProxyBooleanMethodInterceptor implements rocket.beans.client.aop.MethodInterceptor{
 
+	public ProxyBooleanMethodInterceptor() {
+		super();
+	}
+
+	public Object invoke(MethodInvocation invocation) throws Throwable {
+		executed = true;
+		return invocation.proceed();
+	}
+	
+	public boolean executed = false;
 }

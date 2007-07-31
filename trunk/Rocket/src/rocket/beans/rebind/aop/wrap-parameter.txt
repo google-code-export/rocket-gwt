@@ -1,0 +1,4 @@
+// wrap-parameter.txt
+
+// the overloaded InterceptorChain.asObject() wraps primitives in their corresponding wrapper or for Object returns the object.
+chain.asObject( ${parameter} )

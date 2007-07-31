@@ -15,6 +15,10 @@
  */
 package rocket.beans.rebind;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import rocket.beans.rebind.aop.Advice;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -25,6 +29,13 @@ import rocket.util.client.StringHelper;
  * @author Miroslav Pokorny
  */
 public class Bean {
+	
+	public Bean(){
+		super();
+		
+		this.setAdvices( this.createAdvisors() );
+	}
+	
 	private String id;
 
 	public String getId() {
@@ -66,6 +77,66 @@ public class Bean {
 		ObjectHelper.checkNotNull("type:type", type);
 		this.type = type;
 	}
+	
+	/**
+	 * A list of advices that apply to this bean.
+	 */
+	private List advices;
+	
+	public List getAdvices(){
+		ObjectHelper.checkNotNull("field:advices", advices);
+		return this.advices;
+	}
+	
+	protected void setAdvices( final List advices ){
+		ObjectHelper.checkNotNull("parameter:advices", advices);
+		this.advices = advices;
+	}
+	
+	protected List createAdvisors(){
+		return new ArrayList();
+	}
+	
+	public void addAdvice( final Advice advice ){
+		ObjectHelper.checkNotNull("parameter:advice", advice);
+		
+		this.getAdvices().add( advice );
+	}
+	
+	/**
+	 * Contains the generated proxy for this bean
+	 */
+	private NewNestedType proxy;
+
+	public NewNestedType getProxy() {
+		ObjectHelper.checkNotNull("field:proxy", proxy);
+		return this.proxy;
+	}
+
+	public boolean hasProxy(){
+		return null != proxy;
+	}
+	
+	public void setProxy(final NewNestedType proxy) {
+		ObjectHelper.checkNotNull("proxy:proxy", proxy);
+		this.proxy = proxy;
+	}
+	
+	/**
+	 * If a proxy has been generated a proxy factory bean will also exist
+	 */
+	private NewNestedType proxyFactoryBean;
+
+	public NewNestedType getProxyFactoryBean() {
+		ObjectHelper.checkNotNull("field:proxyFactoryBean", proxyFactoryBean);
+		return this.proxyFactoryBean;
+	}
+	
+	public void setProxyFactoryBean(final NewNestedType proxyFactoryBean) {
+		ObjectHelper.checkNotNull("proxyFactoryBean:proxyFactoryBean", proxyFactoryBean);
+		this.proxyFactoryBean = proxyFactoryBean;
+	}
+	
 	
 	public String toString(){
 		return "Bean id[" + this.id + "] type[" + this.type + "]";

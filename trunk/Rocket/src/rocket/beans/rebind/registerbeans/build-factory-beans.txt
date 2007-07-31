@@ -1,5 +1,4 @@
 // build-factory-beans.txt
-// \${registerBeans}
 
 // create a new map which will house the beans.
 final java.util.Map beans = new java.util.HashMap();

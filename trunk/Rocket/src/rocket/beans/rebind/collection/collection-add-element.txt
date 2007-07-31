@@ -1,6 +1,3 @@
 // collection-add-element.txt
-//
-// \${value} the value being added to the list or set.
-//
 
 .add( ${value} )
