@@ -24,6 +24,13 @@ import java.util.List;
 import java.util.Map;
 
 import rocket.beans.client.FactoryBean;
+import rocket.beans.rebind.aop.Advice;
+import rocket.beans.rebind.aop.CreateProxyTemplatedFile;
+import rocket.beans.rebind.aop.GetTargetFactoryBeanTemplatedFile;
+import rocket.beans.rebind.aop.MethodMatcher;
+import rocket.beans.rebind.aop.MethodMatcherFactory;
+import rocket.beans.rebind.aop.ProxyInterceptedMethodTemplatedFile;
+import rocket.beans.rebind.aop.ProxyMethodTemplatedFile;
 import rocket.beans.rebind.beanreference.BeanReference;
 import rocket.beans.rebind.constructor.ConstructorTemplatedFile;
 import rocket.beans.rebind.deferredbinding.DeferredBinding;
@@ -36,6 +43,7 @@ import rocket.beans.rebind.registerbeans.BuildFactoryBeansTemplatedFile;
 import rocket.beans.rebind.set.SetValue;
 import rocket.beans.rebind.stringvalue.StringValue;
 import rocket.beans.rebind.value.Value;
+import rocket.beans.rebind.xml.AdviceTag;
 import rocket.beans.rebind.xml.BeanFactoryDtdEntityResolver;
 import rocket.beans.rebind.xml.BeanReferenceTag;
 import rocket.beans.rebind.xml.BeanTag;
@@ -53,8 +61,11 @@ import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.codeblock.EmptyCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
+import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
+import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
@@ -71,6 +82,10 @@ import rocket.util.client.StringHelper;
 /**
  * This code generator generates a BeanFactory which will create or provide the
  * beans defined in an xml file.
+ * 
+ * A standalone class is created to implement the BeanFactory. Within this BeanFactory
+ * private nested inner FactoryBean classes are created for each bean and proxy required to
+ * implement configured advices.
  * 
  * @author Miroslav Pokorny
  */
@@ -94,16 +109,19 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.createBeanFactory(newTypeName);
 		this.setBeanFactory(beanFactory);
 
-		final List beanTags = document.getBeanElements();
+		final List beanTags = document.getBeans();
 		this.buildFactoryBeans(beanTags);
 
 		this.overrideAllFactoryBeanCreateInstances(beanTags);
 		this.overrideAllFactoryBeanSatisfyInits(beanTags);
 		this.overrideAllFactoryBeanSatisfyProperties(beanTags);
 
-		this.buildRemoteJsonServiceFactoryBeans(document.getRemoteJsonElements());
-		this.buildRemoteRpcServiceFactoryBeans(document.getRemoteRpcElements());
+		this.buildRemoteJsonServiceFactoryBeans(document.getRemoteJsonService());
+		this.buildRemoteRpcServiceFactoryBeans(document.getRemoteRpcService());
 
+		this.buildAdvices( document.getAdvices() );
+		this.applyAdvices();
+		
 		this.overrideBeanFactoryBuildFactoryBeans();
 
 		return beanFactory;
@@ -135,7 +153,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Type beanFactory = this.getBeanFactoryType();
 		if (false == type.isAssignableTo(beanFactory)) {
-			throwNotABeanFactory("The interface type [" + type + "] is not a " + beanFactory);
+			throwNotABeanFactory("The type [" + type + "] is not a " + beanFactory);
 		}
 	}
 
@@ -188,9 +206,10 @@ public class BeanFactoryGenerator extends Generator {
 		bean.setType(beanType);
 
 		final Type superType = beanTag.isSingleton() ? this.getSingletonFactoryBean() : this.getPrototypeFactoryBean();
-		final NewNestedType factoryBean = this.getBeanFactory().newNestedType();
+		final NewConcreteType beanFactory = this.getBeanFactory();
+		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setName(id + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setName( beanFactory.getName() + '.' + id + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setFactoryBean(factoryBean);
@@ -706,9 +725,10 @@ public class BeanFactoryGenerator extends Generator {
 		bean.setType(beanType);
 
 		final Type superType = this.getPrototypeFactoryBean();
-		final NewNestedType factoryBean = this.getBeanFactory().newNestedType();
+		final NewConcreteType beanFactory = this.getBeanFactory();
+		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setName(id + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setName( beanFactory.getName() + '.' + id + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setFactoryBean(factoryBean);
@@ -752,9 +772,10 @@ public class BeanFactoryGenerator extends Generator {
 		bean.setType(beanType);
 
 		final Type superType = this.getPrototypeFactoryBean();
-		final NewNestedType factoryBean = this.getBeanFactory().newNestedType();
+		final NewConcreteType beanFactory = this.getBeanFactory();
+		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setName(id + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setName( beanFactory.getName() + '.' + id + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setFactoryBean(factoryBean);
@@ -796,13 +817,13 @@ public class BeanFactoryGenerator extends Generator {
 		
 		final NewType factoryBean = bean.getFactoryBean();
 		
-		final Method satisfyProperties = factoryBean.getMostDerivedMethod( Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject() );
-		final NewMethod newSatisfyProperties = satisfyProperties.copy( factoryBean );
+		final Method method = factoryBean.getMostDerivedMethod( Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject() );
+		final NewMethod newMethod = method.copy( factoryBean );
 
 		final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
-		newSatisfyProperties.setBody( body );
+		newMethod.setBody( body );
 		
-		final MethodParameter instance = (MethodParameter)newSatisfyProperties.getParameters().get( 0 );
+		final MethodParameter instance = (MethodParameter)newMethod.getParameters().get( 0 );
 		body.setInstance(instance);
 		final Type serviceDefTarget = this.getServiceDefTarget();
 		body.setBean( serviceDefTarget );
@@ -819,6 +840,348 @@ public class BeanFactoryGenerator extends Generator {
 		
 		context.debug( "Inserting statement to set address property upon bean: " + bean );
 	}
+	/**
+	 * Visits all advisors, checking they really are advisors and then adding them to the respective bean.
+	 * @param advices
+	 */
+	protected void buildAdvices( final List advices ){
+		ObjectHelper.checkNotNull( "parameter:advices", advices );
+		
+		this.getGeneratorContext().info("Processing " + advices.size() + " advice(s)." );
+		final MethodMatcherFactory methodMatcherFactory = createMethodMatcherFactor();
+		
+		final Iterator iterator = advices.iterator();
+		while( iterator.hasNext() ){
+			final AdviceTag adviceTag = (AdviceTag) iterator.next();
+			
+			final Advice advice = new Advice();
+			
+			advice.setAdvisorBeanId( adviceTag.getAdvisorBeanId() );
+			advice.setMethodMatcher( methodMatcherFactory.create( adviceTag.getMethodExpression() ));
+			final String targetBeanId = adviceTag.getTargetBeanId();
+			advice.setTargetBeanId( targetBeanId );			
+
+			final Bean bean = this.getBean( targetBeanId );
+			this.verifyProxyTarget( bean );					
+			this.verifyAdvisorBean( advice );
+			this.verifyMethodExpression( advice );
+			
+			bean.addAdvice( advice );
+		}
+	}
+	
+	protected MethodMatcherFactory createMethodMatcherFactor(){
+		return new MethodMatcherFactory();
+	}
+
+	/**
+	 * Verifies that the proxy target bean is not final so that it can be subclassed.
+	 * @param bean The bean
+	 */
+	protected void verifyProxyTarget( final Bean bean ){
+		ObjectHelper.checkNotNull("parameter:bean", bean );
+		
+		this.getGeneratorContext().debug( "Verifying proxy target: " + bean );
+		
+		final Type beanType = bean.getType();
+		if( beanType.isFinal() ){
+			this.throwProxyTargetCannotBeSubclassedException( bean );
+		}		
+	}
+	
+	protected void throwProxyTargetCannotBeSubclassedException( final Bean bean ){
+		throw new BeanFactoryGeneratorException( "Unable to create proxy because target bean is final, bean: " + bean );
+	}
+	
+	/**
+	 * Checks that the advisor bean exists and is really an advice.
+	 * @param advice The advice
+	 */
+	protected void verifyAdvisorBean( final Advice advice ){
+		ObjectHelper.checkNotNull( "parameter:advice", advice );	
+		
+		final String id = advice.getAdvisorBeanId();		
+		final Bean bean = this.getBean( id );
+		final Type type = bean.getType();
+		
+		this.getGeneratorContext().debug( "Verifying advisor bean: " + this.getBean( id ));
+		
+		if( false == type.isAssignableTo( this.getAdvice() )){
+			throwNotAnAdviceException( bean );
+		}	
+	}
+	
+	protected void throwNotAnAdviceException( final Bean bean ){
+		throw new BeanFactoryGeneratorException("The bean is not an advice, bean: " + bean );
+	}
+	
+	/**
+	 * Verifies that the method expression matches at least one public method.
+	 * @param advice
+	 */
+	protected void verifyMethodExpression( final Advice advice ){
+		ObjectHelper.checkNotNull( "parameter:advice", advice );
+		
+		final String id = advice.getTargetBeanId();
+		final Bean bean = this.getBean( id );
+		final Type type = bean.getType();
+		final MethodMatcher matcher = advice.getMethodMatcher();
+		
+		final GeneratorContext context = this.getGeneratorContext();
+		context.info( "Preparing to verify method expression: " + matcher + " against " + type );
+		
+		final List matchedMethods = new ArrayList();
+		final VirtualMethodVisitor visitor = new VirtualMethodVisitor(){
+			protected boolean visit(final Method method){				
+				if( method.isFinal() ){
+					BeanFactoryGenerator.this.throwTargetMethodIsFinalException( method );
+				}
+				if( method.getVisibility() == Visibility.PUBLIC && matcher.matches(method) ){
+					matchedMethods.add( method );
+					context.debug("Adding " + method + " to list of matched methods.");
+				}
+				return false;
+			}
+
+			protected boolean skipJavaLangObjectMethods(){
+				return true;
+			}
+		};
+		visitor.start( type );
+
+		if( matchedMethods.isEmpty() ){
+			throwNoMatchedMethodsException( advice );
+		}
+		
+		context.debug("Matched " + matchedMethods.size() + " methods(s)." );
+	}
+	
+	protected void throwTargetMethodIsFinalException( final Method method ){
+		throw new BeanFactoryGeneratorException( "The method " + method + " which is final, prevents a proxy from being generated (this is achieved via subclassing)." );
+	}
+	protected void throwNoMatchedMethodsException( final Advice advice ){
+		throw new BeanFactoryGeneratorException( "The advice expression does not match any methods, advice: " + advice );
+	}
+	/**
+	 * Creates a factory bean for each bean that will be proxied. 
+	 * @param advisors
+	 */
+	protected void applyAdvices(){
+		final GeneratorContext context = this.getGeneratorContext();
+		context.info( "About to create ProxyFactoryBeans for beans that have at least one advice.");
+		
+		final Iterator beans = this.getBeans().values().iterator();
+		while( beans.hasNext() ){
+			final Bean bean = (Bean) beans.next();
+			final List advices = bean.getAdvices();
+			if( advices.isEmpty() ){
+				context.debug( "Skipping proxy generation step for bean " + bean + " because it has no advices.");
+				continue;
+			}
+			this.buildProxyFactoryBean( bean );
+		}
+	}
+	
+	/**
+	 * Creates a factory bean for the proxy for the given bean.
+	 * @param bean The bean being proxied
+	 */
+	protected void buildProxyFactoryBean( final Bean bean ){
+		ObjectHelper.checkNotNull("parameter:bean", bean );
+
+		final GeneratorContext context = this.getGeneratorContext();
+		context.info("Building proxy factory bean for bean: " + bean );
+		
+		final String id = bean.getId();
+		
+		final Type superType = this.getProxyFactoryBean();
+		
+		final NewConcreteType beanFactory = this.getBeanFactory();
+		final NewNestedType proxyFactoryBean = beanFactory.newNestedType();
+		proxyFactoryBean.setStatic(false);
+		proxyFactoryBean.setName( beanFactory.getName() + '.' + id + Constants.PROXY_FACTORY_BEAN_SUFFIX); // FIXME
+		proxyFactoryBean.setSuperType(superType);
+		proxyFactoryBean.setVisibility(Visibility.PRIVATE);
+		bean.setProxyFactoryBean(proxyFactoryBean);
+		
+		context.debug("Subclassing " + superType + " as the FactoryBean for the proxy of bean: " + bean);
+
+		this.overrideProxyFactoryBeanGetTargetFactoryBean( bean );
+		
+		final NewNestedType proxy = this.createProxy(bean);
+		bean.setProxy(proxy);
+		
+		overridingProxyFactoryBeanCreateProxy( bean );		
+	}
+	
+	/**
+	 * Overrides the getTargetFactoryBean method of the proxy factory bean
+	 * @param bean The bean being processed
+	 */
+	protected void overrideProxyFactoryBeanGetTargetFactoryBean( final Bean bean ){
+		ObjectHelper.checkNotNull("parameter:bean", bean );
+		
+		this.getGeneratorContext().debug( "Overriding proxy factory bean getTargetFactoryBean method for bean: " + bean );
+		
+		final NewNestedType proxyFactoryBean = bean.getProxyFactoryBean();
+	final Method method = proxyFactoryBean.getMostDerivedMethod( "getTargetFactoryBean", Collections.EMPTY_LIST );
+	final NewMethod newMethod = method.copy( proxyFactoryBean );
+	
+	final GetTargetFactoryBeanTemplatedFile body = new GetTargetFactoryBeanTemplatedFile();
+	body.setTargetFactoryBean( bean.getFactoryBean() );	
+	newMethod.setBody( body );	
+}
+	
+	/**
+	 * Creates a new nested type that sub classes the proxied bean. All public methods will
+	 * be proxied to the target.
+	 * @param bean The bean
+	 * @return The new proxy
+	 */
+	protected NewNestedType createProxy( final Bean bean ){
+		ObjectHelper.checkNotNull("parameter:bean", bean );
+		
+		final Type targetBeanType = bean.getType();
+		final String id = bean.getId();
+		
+		// sub class the target...
+		final NewConcreteType beanFactory = this.getBeanFactory();
+		final NewNestedType proxy = beanFactory.newNestedType();
+		proxy.setStatic(false);
+		proxy.setName( beanFactory.getName() + '.' + id + Constants.PROXY_SUFFIX);
+		proxy.setSuperType( targetBeanType );
+		proxy.setVisibility(Visibility.PRIVATE);
+		
+		// add a no arguments constructor...
+		final NewConstructor constructor = proxy.newConstructor();
+		constructor.setBody( EmptyCodeBlock.INSTANCE );
+		constructor.setVisibility( Visibility.PUBLIC);
+		
+		// add a field of type target bean this will be set by the ProxyFactoryBean.createProxy0 method.
+		final NewField field = proxy.newField();
+		field.setFinal( false );
+		field.setName( Constants.PROXY_TARGET_FIELD );
+		field.setStatic( false );
+		field.setTransient( false );
+		field.setType( targetBeanType );
+		field.setValue( EmptyCodeBlock.INSTANCE );
+		field.setVisibility( Visibility.PUBLIC );
+		
+		final List advices = bean.getAdvices();
+		
+		final VirtualMethodVisitor visitor = new VirtualMethodVisitor(){
+				protected boolean visit(final Method method){
+					if( method.getVisibility() == Visibility.PUBLIC ){
+						final List matched = BeanFactoryGenerator.this.findMatchingAdvices( method, advices );
+						if( matched.isEmpty() ){
+							BeanFactoryGenerator.this.createProxyMethod( proxy, method );
+						} else {
+							BeanFactoryGenerator.this.createProxyMethodWithInterceptors( proxy, method, matched );
+						}
+					}
+					return false;
+				}
+
+				protected boolean skipJavaLangObjectMethods(){
+					return false;
+				}
+		};
+		visitor.start( targetBeanType );
+		
+		return proxy;
+	}
+	
+	/**
+	 * Finds all the advices that match the given method.
+	 * @param method The method
+	 * @param advices A list of advices
+	 * @return A list of matched advices
+	 */
+	protected List findMatchingAdvices( final Method method, final List advices ){
+		final Iterator advicesIterator = advices.iterator();
+		final List applicableAdvices = new ArrayList();
+		
+		while( advicesIterator.hasNext() ){
+			final Advice advice = (Advice) advicesIterator.next();
+			if( advice.getMethodMatcher().matches(method)){
+				applicableAdvices.add( advice );
+			}
+		}
+		
+		return applicableAdvices;
+	}
+	
+	/**
+	 * Creates a new method and adds it to the proxy type that simply delegates to the target.
+	 * @param proxy The proxy being created
+	 * @param method The method 
+	 */
+	protected void createProxyMethod( final NewNestedType proxy, final Method method ){
+		ObjectHelper.checkNotNull("parameter:proxy", proxy );
+		ObjectHelper.checkNotNull("parameter:method", method );
+		
+		final NewMethod newMethod = method.copy(proxy);
+		GeneratorHelper.makeAllParametersFinal( newMethod );
+		
+		final ProxyMethodTemplatedFile body = new ProxyMethodTemplatedFile();
+		newMethod.setBody( body );
+		body.setMethod( newMethod );
+	}
+	
+	/**
+	 * Creates a new method upon the proxy type that invokes interceptors for the matched advices.
+	 * @param proxy The proxy being created
+	 * @param method The method 
+	 * @param advices A list of advices for this method
+	 */
+	protected void createProxyMethodWithInterceptors( final NewNestedType proxy, final Method method , final List advices ){
+		ObjectHelper.checkNotNull("parameter:proxy", proxy );
+		ObjectHelper.checkNotNull("parameter:method", method );
+		ObjectHelper.checkNotNull("parameter:advices", advices );
+		
+		final NewMethod newMethod = method.copy( proxy );
+		GeneratorHelper.renameParametersToParameterN( newMethod );
+		GeneratorHelper.makeAllParametersFinal( newMethod );
+		
+		final ProxyInterceptedMethodTemplatedFile body = new ProxyInterceptedMethodTemplatedFile();
+		body.setAdvices( advices );
+		body.setBeanFactory( this.getBeanFactory() );
+		body.setMethod( newMethod );		
+		
+		final Type methodInterceptor = this.getMethodInterceptor();
+		final List methodInvocationParameterList = Arrays.asList( new Type[]{ this.getMethodInvocation() } );
+		final Method invoke = methodInterceptor.getMethod( Constants.METHOD_INTERCEPTOR_INVOKE, methodInvocationParameterList );
+		final MethodParameter target = (MethodParameter) invoke.getParameters().get( 0 );
+		
+		body.setTarget(target);
+		newMethod.setBody( body );
+	}
+	
+	/**
+	 * Overrides the createProxy method of the subclassed ProxyFactoryBean class
+	 * @param bean The bean being proxied.
+	 */
+	protected void overridingProxyFactoryBeanCreateProxy( final Bean bean ){
+		ObjectHelper.checkNotNull("parameter:bean", bean );
+		
+		final NewNestedType proxyFactoryBean = bean.getProxyFactoryBean();
+		final List objectParameterList = this.getParameterListWithOnlyObject();
+		final Method method = proxyFactoryBean.getMostDerivedMethod( Constants.CREATE_PROXY, objectParameterList);
+		final NewMethod newMethod = method.copy( proxyFactoryBean );
+		
+		// add a new constructor...
+		final MethodParameter targetBeanParameter = (MethodParameter)newMethod.getParameters().get( 0 );
+		
+		final Type proxy = bean.getProxy();
+		final Constructor constructor = proxy.getConstructor( Collections.EMPTY_LIST);		
+		
+		final CreateProxyTemplatedFile body = new CreateProxyTemplatedFile();
+		body.setProxyConstructor( constructor );
+		body.setTargetBeanParameter(targetBeanParameter);
+		body.setTargetBeanType( bean.getType() );
+		
+		newMethod.setBody( body );
+	}
 	
 	/**
 	 * Adds a new method to the bean factory being built that populates a map with all the factory beans keyed
@@ -831,18 +1194,15 @@ public class BeanFactoryGenerator extends Generator {
 
 		final NewType beanFactory = this.getBeanFactory();
 		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod( Constants.BUILD_FACTORY_BEANS, Collections.EMPTY_LIST);
-		final NewMethod method = abstractMethod.copy(beanFactory);
-
+		final NewMethod newMethod = abstractMethod.copy(beanFactory);		
+		
 		final BuildFactoryBeansTemplatedFile body = new BuildFactoryBeansTemplatedFile();
-		method.setBody(body);
+		newMethod.setBody(body);
 
 		final Iterator beansIterator = beans.values().iterator();
 		while (beansIterator.hasNext()) {
 			final Bean bean = (Bean) beansIterator.next();
-			final String beanId = bean.getId();
-			final NewNestedType factoryBean = (NewNestedType) bean.getFactoryBean();
-
-			body.addBean(beanId, factoryBean);
+			body.addBean( bean );
 		}
 	}
 
@@ -931,6 +1291,21 @@ public class BeanFactoryGenerator extends Generator {
 		return this.getGeneratorContext().getType(Constants.SERVICE_DEF_TARGET);
 	}
 
+	protected Type getAdvice() {
+		return this.getGeneratorContext().getType(Constants.ADVICE );
+	}
+	
+	protected Type getProxyFactoryBean() {
+		return this.getGeneratorContext().getType(Constants.PROXY_FACTORY_BEAN );
+	}
+	
+
+	protected Type getMethodInterceptor() {
+		return this.getGeneratorContext().getType(Constants.METHOD_INTERCEPTOR);
+	}
+	protected Type getMethodInvocation() {
+		return this.getGeneratorContext().getType(Constants.METHOD_INVOCATION);
+	}
 	/**
 	 * Fetches the interface type throwing an excecption if the type is not found or not an interface.
 	 * @param id

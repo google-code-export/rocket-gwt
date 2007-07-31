@@ -1,9 +1,5 @@
 // factory-method.txt
-// invokes a static method on a type.
-// 
-// \${factoryType}
-// \${factoryMethod}
-//
 
+// invokes a static method on a type.
 return ${factoryType}.${factoryMethod}();
 

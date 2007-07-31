@@ -16,15 +16,21 @@
 package rocket.beans.rebind.properties;
 
 import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import rocket.beans.rebind.value.Value;
-import rocket.generator.rebind.codeblock.ManyCodeBlocks;
+import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * An abstraction for the invoker add template
@@ -66,35 +72,67 @@ public class SetPropertiesTemplatedFile extends TemplatedCodeBlock {
 		this.bean = bean;
 	}
 
-	private ManyCodeBlocks properties;
+	private Map properties;
 
-	protected ManyCodeBlocks getProperties() {
+	protected Map getProperties() {
 		ObjectHelper.checkNotNull("field:properties", properties);
 		return this.properties;
 	}
 
-	protected void setProperties(final ManyCodeBlocks properties) {
+	protected void setProperties(final Map properties) {
 		ObjectHelper.checkNotNull("parameter:properties", properties);
 		this.properties = properties;
 	}
 
-	protected ManyCodeBlocks createProperties() {
-		return new ManyCodeBlocks();
+	protected Map createProperties() {
+		return new HashMap();
 	}
 
 	public void addProperty(final Method setter, final Value value) {
-		final SetPropertyTemplatedFile template = new SetPropertyTemplatedFile();
-		template.setSetter(setter);
-		template.setValue(value);
+		ObjectHelper.checkNotNull("parameter:setter", setter);
+		ObjectHelper.checkNotNull("parameter:value", value);
 
-		this.getProperties().add(template);
+		this.getProperties().put(setter, value);
+	}
+
+	protected CodeBlock getPropertiesCodeBlock() {
+		final SetPropertyTemplatedFile template = new SetPropertyTemplatedFile();
+
+		return new CollectionTemplatedCodeBlock() {
+
+			public InputStream getInputStream() {
+				return template.getInputStream();
+			}
+
+			protected Object getValue0(final String name) {
+				return template.getValue0(name);
+			}
+
+			protected Collection getCollection() {
+				return SetPropertiesTemplatedFile.this.getProperties()
+						.entrySet();
+			}
+
+			protected void prepareToWrite(Object element) {
+				final Map.Entry entry = (Map.Entry) element;
+
+				template.setSetter((Method) entry.getKey());
+				template.setValue((Value) entry.getValue());
+			}
+
+			protected void writeBetweenElements(SourceWriter writer) {
+				writer.println("");
+			}
+		};
 	}
 
 	protected InputStream getInputStream() {
 		final String filename = Constants.SET_PROPERTIES_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
+		final InputStream inputStream = this.getClass().getResourceAsStream(
+				filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException(
+					"Unable to find template file [" + filename + "]");
 		}
 		return inputStream;
 	}
@@ -111,7 +149,7 @@ public class SetPropertiesTemplatedFile extends TemplatedCodeBlock {
 				break;
 			}
 			if (Constants.SET_PROPERTIES_SET_INDIVIDUAL_PROPERTIES.equals(name)) {
-				value = this.getProperties();
+				value = this.getPropertiesCodeBlock();
 				break;
 			}
 
@@ -121,7 +159,8 @@ public class SetPropertiesTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in [" + Constants.SET_PROPERTIES_TEMPLATE
-				+ "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name
+				+ "] not found, template file ["
+				+ Constants.SET_PROPERTIES_TEMPLATE + "]");
 	}
-}
+};

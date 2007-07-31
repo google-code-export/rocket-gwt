@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
  * 
  * @author Miroslav Pokorny
  */
-public class CollectionValueTag extends ValueTag {
+class CollectionValueTag extends ValueTag {
 
 	public List getValues() {
 		final List valueElements = this.getElements(this.getElement().getChildNodes());

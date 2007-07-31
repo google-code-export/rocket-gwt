@@ -16,13 +16,17 @@
 package rocket.beans.rebind.map;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.google.gwt.user.rebind.SourceWriter;
+
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.codeblock.CodeBlock;
-import rocket.generator.rebind.codeblock.ManyCodeBlocks;
+import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
+import rocket.generator.rebind.codeblock.CodeBlockList;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.util.client.ObjectHelper;
@@ -32,7 +36,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class MapTemplatedFile extends TemplatedCodeBlock {
+public class MapTemplatedFile extends TemplatedCodeBlock{
 
 	public MapTemplatedFile() {
 		super();
@@ -91,23 +95,35 @@ public class MapTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected CodeBlock getEntriesCodeBlock() {
-		final ManyCodeBlocks codeBlock = new ManyCodeBlocks();
+		final MapAddEntryTemplatedFile template = new MapAddEntryTemplatedFile();
+		final Map entries = this.getEntries();
+		
+		return new CollectionTemplatedCodeBlock() {
 
-		final Iterator entries = this.getEntries().entrySet().iterator();
-		while (entries.hasNext()) {
-			final Map.Entry entry = (Map.Entry) entries.next();
+			public InputStream getInputStream() {
+				return template.getInputStream();
+			}
 
-			final MapAddEntryTemplatedFile template = new MapAddEntryTemplatedFile();
-			template.setKey((String) entry.getKey());
-			template.setValue((Value) entry.getValue());
+			protected Object getValue0(final String name) {
+				return template.getValue0(name);
+			}
 
-			codeBlock.add(template);
-		}
+			protected Collection getCollection() {
+				return entries.entrySet();
+			}
 
-		return codeBlock;
+			protected void prepareToWrite(final Object element) {
+				final Map.Entry entry = (Map.Entry) element;
+				template.setKey( (String) entry.getKey() );
+				template.setValue( (Value) entry.getValue() );
+			}
+
+			protected void writeBetweenElements(SourceWriter writer) {
+			}
+		};
 	}
-
+	
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in [" + Constants.MAP_TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + Constants.MAP_TEMPLATE + "]");
 	}
 }

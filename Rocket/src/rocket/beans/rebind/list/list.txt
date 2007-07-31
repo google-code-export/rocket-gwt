@@ -1,13 +1,10 @@
 // list.txt
-//
-// \${addElements} one or more statements that add values to the list being built
-//
 
 // create a new ListBuilder which will help accumulate values
 new rocket.beans.client.ListBuilder()
 
-// add elements to the list
-${addElements}
+	// add elements to the list
+	${addElements}
 
-// get the list
-.getList()
+		// get the list
+		.getList()

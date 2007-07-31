@@ -16,12 +16,19 @@
 package rocket.beans.rebind.registerbeans;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-import rocket.generator.rebind.codeblock.ManyCodeBlocks;
+import rocket.beans.rebind.Bean;
+import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * An abstraction for the invoker add template
@@ -36,30 +43,56 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 		this.setBeans(this.createBeans());
 	}
 
-	private ManyCodeBlocks beans;
+	private List beans;
 
-	protected ManyCodeBlocks getBeans() {
+	protected List getBeans() {
 		ObjectHelper.checkNotNull("field:beans", beans);
 		return this.beans;
 	}
 
-	protected void setBeans(final ManyCodeBlocks beans) {
+	protected void setBeans(final List beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 		this.beans = beans;
 	}
 
-	protected ManyCodeBlocks createBeans() {
-		return new ManyCodeBlocks();
+	protected List createBeans() {
+		return new ArrayList();
 	}
 
-	public void addBean(final String beanId, final NewNestedType factoryBean) {
-		final RegisterBeanTemplatedFile register = new RegisterBeanTemplatedFile();
-		register.setBeanId(beanId);
-		register.setFactoryBean(factoryBean);
-
-		this.getBeans().add(register);
+	public void addBean( final Bean bean ){
+		ObjectHelper.checkNotNull( "parameter:bean", bean );
+		this.getBeans().add( bean );
 	}
+	
+	protected CodeBlock getBeansCodeBlock() {
+		final RegisterBeanTemplatedFile registerBean = new RegisterBeanTemplatedFile();
 
+		return new CollectionTemplatedCodeBlock() {
+
+			public InputStream getInputStream() {
+				return registerBean.getInputStream();
+			}
+
+			protected Object getValue0(final String name) {
+				return registerBean.getValue0(name);
+			}
+
+			protected Collection getCollection() {
+				return BuildFactoryBeansTemplatedFile.this.getBeans();
+			}
+
+			protected void prepareToWrite(Object element) {
+				final Bean bean =(Bean)element;
+				registerBean.setBeanId( bean.getId() );
+				registerBean.setFactoryBean( bean.hasProxy() ? bean.getProxyFactoryBean() : bean.getFactoryBean() );
+			}
+
+			protected void writeBetweenElements(SourceWriter writer) {
+				writer.println();
+			}
+		};
+	}
+	
 	protected InputStream getInputStream() {
 		final String filename = Constants.BUILD_FACTORY_BEANS_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -73,7 +106,7 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 		Object value = null;
 		while (true) {
 			if (Constants.BUILD_FACTORY_BEANS_REGISTER_BEANS.equals(name)) {
-				value = this.getBeans();
+				value = this.getBeansCodeBlock();
 				break;
 			}
 			break;
@@ -82,7 +115,7 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in ["
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file ["
 				+ Constants.BUILD_FACTORY_BEANS_TEMPLATE + "]");
 	}
 }

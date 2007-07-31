@@ -32,7 +32,7 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class XmlDocumentComponent {
+class XmlDocumentComponent {
 
 	protected String getAttribute(final String attributeName) {
 		return getAttribute(this.getElement(), attributeName);
