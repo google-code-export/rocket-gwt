@@ -1,0 +1,5 @@
+// invoke-target-method.txt
+//
+
+// the overloaded asObject() takes the returned value and wraps it inside an object.
+return chain.asObject( target.${method}( ${unwrapParameters} ));

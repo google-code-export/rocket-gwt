@@ -1,0 +1,4 @@
+// invoke-interceptor-chain-proceed-int.txt
+
+// invokes the interceptor chain, unwrapping Integer because the method return type is int
+return chain.proceedReturningInt();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 1.0//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 
+		id="bean" 
+		class="rocket.beans.test.beans.client.mapproperty.ClassWithMapProperty" 
+		scope="singleton">
+		<properties>
+			<property name="mapProperty">
+				<map>
+					<map-entry key="apple">
+						<value>green</value>
+					</map-entry>
+					<map-entry key="banana">
+						<value>yellow</value>
+					</map-entry>
+					<map-entry key="carrot">
+						<value>orange</value>
+					</map-entry>
+				</map>
+			</property>
+		</properties>
+	</bean>
+</bean-factory>

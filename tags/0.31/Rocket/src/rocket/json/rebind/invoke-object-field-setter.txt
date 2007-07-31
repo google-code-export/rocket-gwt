@@ -1,0 +1,18 @@
+// invoke-field-setter-object.txt
+
+// invoke the setter
+this.${fieldSetter}( 
+
+	${instance}, 
+
+	// cast
+	(${fieldType}) 
+
+	// invoke the field deserializer
+	${fieldTypeDeserializer}.singleton.${asMethod}( 
+
+	// get the JSONObject by javascript name.
+	${jsonObject}.get( ${javascriptPropertyName} )
+
+)
+);

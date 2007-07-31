@@ -1,0 +1,7 @@
+<module>
+	<inherits name="rocket.User" />	
+	<entry-point class="rocket.util.test.stacktracehelper.client.StackTraceHelperTest" />
+	<servlet 
+		path="/serviceWhichThrowsAnException" 
+		class="rocket.util.test.stacktracehelper.server.StackTraceHelperServiceImplServlet"/>	
+</module>

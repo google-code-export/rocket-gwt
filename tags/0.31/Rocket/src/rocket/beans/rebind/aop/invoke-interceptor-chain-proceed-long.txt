@@ -1,0 +1,4 @@
+// invoke-interceptor-chain-proceed-long.txt
+
+// invokes the interceptor chain, unwrapping Long because the method return type is long
+return chain.proceedReturningLong();
