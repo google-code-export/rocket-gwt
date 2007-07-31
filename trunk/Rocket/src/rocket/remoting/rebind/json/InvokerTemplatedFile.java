@@ -16,14 +16,20 @@
 package rocket.remoting.rebind.json;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import rocket.generator.rebind.codeblock.CodeBlock;
-import rocket.generator.rebind.codeblock.ManyCodeBlocks;
+import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * An abstraction for the invoker template file.
@@ -35,39 +41,6 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 	public InvokerTemplatedFile() {
 		super();
 		setNative(false);
-		this.setAddParameters(this.createAddParameters());
-	}
-
-	private ManyCodeBlocks addParameters;
-
-	protected ManyCodeBlocks getAddParameters() {
-		ObjectHelper.checkNotNull("field:addParameters", addParameters);
-		return this.addParameters;
-	}
-
-	protected void setAddParameters(final ManyCodeBlocks addParameters) {
-		ObjectHelper.checkNotNull("parameter:addParameters", addParameters);
-		this.addParameters = addParameters;
-	}
-
-	protected ManyCodeBlocks createAddParameters() {
-		return new ManyCodeBlocks();
-	}
-
-	public void addParameter(final CodeBlock parameter) {
-		this.getAddParameters().add(parameter);
-	}
-
-	private MethodParameter callback;
-
-	protected MethodParameter getCallback() {
-		ObjectHelper.checkNotNull("field:callback", callback);
-		return this.callback;
-	}
-
-	public void setCallback(final MethodParameter callback) {
-		ObjectHelper.checkNotNull("parameter:callback", callback);
-		this.callback = callback;
 	}
 
 	private Type invokerType;
@@ -82,18 +55,90 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 		this.invokerType = invokerType;
 	}
 
-	private Type methodReturnType;
+	/**
+	 * THe return type of the service.
+	 */
+	private Type returnType;
 
-	protected Type getMethodReturnType() {
-		ObjectHelper.checkNotNull("methodReturnType:methodReturnType", methodReturnType);
-		return this.methodReturnType;
+	protected Type getReturnType() {
+		ObjectHelper.checkNotNull("returnType:returnType", returnType);
+		return this.returnType;
 	}
 
-	public void setMethodReturnType(final Type methodReturnType) {
-		ObjectHelper.checkNotNull("parameter:methodReturnType", methodReturnType);
-		this.methodReturnType = methodReturnType;
+	public void setReturnType(final Type returnType) {
+		ObjectHelper.checkNotNull("parameter:returnType", returnType);
+		this.returnType = returnType;
+	}
+	
+	/**
+	 * THe async service method being implemented
+	 */
+	private NewMethod newMethod;
+
+	protected NewMethod getNewMethod() {
+		ObjectHelper.checkNotNull("newMethod:newMethod", newMethod);
+		return this.newMethod;
 	}
 
+	public void setNewMethod(final NewMethod newMethod) {
+		ObjectHelper.checkNotNull("parameter:newMethod", newMethod);
+		this.newMethod = newMethod;
+	}
+	
+	private List httpRequestParameterNames;
+	
+	protected List getHttpRequestParameterNames(){
+		ObjectHelper.checkNotNull("field:httpRequestParameterNames", httpRequestParameterNames );
+		return this.httpRequestParameterNames;
+	}
+	
+	public void setHttpRequestParameterNames( final List httpRequestParameterNames ){
+		ObjectHelper.checkNotNull("parameter:httpRequestParameterNames", httpRequestParameterNames );
+		this.httpRequestParameterNames = httpRequestParameterNames;
+	}
+	
+	protected CodeBlock getAddParameters(){
+		final List parameters = new ArrayList();
+		parameters.addAll( this.getNewMethod().getParameters() );
+		parameters.remove( parameters.size() -1 ); // remove the callback parameter
+		
+		final InvokerAddParameterTemplatedFile repeated = new InvokerAddParameterTemplatedFile();
+		final List httpRequestParameterNames = this.getHttpRequestParameterNames();
+		
+		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock(){
+			protected Collection getCollection(){
+				return parameters;
+			}
+			protected void prepareToWrite( Object element ){
+				final MethodParameter methodParameter = (MethodParameter) element;
+				
+				final String name = (String) httpRequestParameterNames.get( this.getIndex() );
+				repeated.setHttpRequestParameterName( name );
+				repeated.setParameter(methodParameter);
+			}
+			protected void write0( final SourceWriter writer ){
+				repeated.write( writer );
+			}
+			protected void writeBetweenElements( SourceWriter writer ){
+				writer.println();
+			}
+			protected InputStream getInputStream(){
+				return repeated.getInputStream();
+			}
+			protected Object getValue0( final String name ){
+				return repeated.getValue0( name );
+			}
+		};
+		
+		return template;
+	}
+
+	protected MethodParameter getCallbackParameter(){
+		final List parameters = this.getNewMethod().getParameters();
+		
+		return (MethodParameter) parameters.get( parameters.size() - 1 );
+	}
+	
 	protected InputStream getInputStream() {
 		final String filename = Constants.INVOKER_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -111,7 +156,7 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 				break;
 			}
 			if (Constants.INVOKER_CALLBACK_PARAMETER.equals(name)) {
-				value = this.getCallback();
+				value = this.getCallbackParameter();
 				break;
 			}
 			if (Constants.INVOKER_INVOKER_TYPE.equals(name)) {
@@ -119,7 +164,7 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 				break;
 			}
 			if (Constants.INVOKER_METHOD_RETURN_TYPE.equals(name)) {
-				value = this.getMethodReturnType();
+				value = this.getReturnType();
 				break;
 			}
 			break;
