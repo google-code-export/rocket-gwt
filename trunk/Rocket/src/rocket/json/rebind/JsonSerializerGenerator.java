@@ -26,7 +26,7 @@ import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
-import rocket.generator.rebind.codeblock.ManyCodeBlocks;
+import rocket.generator.rebind.codeblock.CodeBlockList;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.field.Field;
@@ -157,7 +157,7 @@ public class JsonSerializerGenerator extends Generator {
 		final Type jsonObjectType = this.getJsonObject();
 		setFieldsJsonObjectParameter.setType(jsonObjectType);
 
-		final ManyCodeBlocks setFieldsBody = new ManyCodeBlocks();
+		final CodeBlockList setFieldsBody = new CodeBlockList();
 		setFields.setBody(setFieldsBody);
 
 		final Type listType = this.getJavaUtilList();
