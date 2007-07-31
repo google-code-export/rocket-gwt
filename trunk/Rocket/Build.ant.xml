@@ -8,14 +8,14 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.30"/>
+	<property name="version" value="0.31"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
-	<property name="bin-dir" location="${basedir}/bin"/>
+	<property name="bin-dir" location="${basedir}/bin.temp"/>
 	<property name="wiki-dir" location="${basedir}/wiki"/>
 	<property name="lib-dir" location="c:/java-libraries/"/>
-	<property name="gwt-home-dir" location="${lib-dir}/gwt-windows-1.4.3"/>
+	<property name="gwt-home-dir" location="${lib-dir}/gwt-windows-1.4.10"/>
 	<property name="junit-dir" location="${lib-dir}/junit/3.8"/>
 	<property name="flexjson-dir" location="${lib-dir}/flexjson/1.2"/>
 	<property name="release-dir" location="${basedir}/release"/>
@@ -38,15 +38,31 @@
 	Compiles the source to class files.
 	-->
 	<target name="compile" description="Compile src to bin">
+		<mkdir dir="${bin-dir}"/>
+		<mkdir dir="${src-dir}.temp"/>
+		
 		<delete failonerror="yes">
 			<fileset dir="${bin-dir}">
 				<include name="**/*"/>
 			</fileset>
 		</delete>
 		
-		<javac srcdir="${src-dir}" destdir="${bin-dir}" 
-				includes="**" 
-				excludes="com.google.gwt.emul.java.lang.StackTraceElement,com.google.gwt.emul.java.lang.Throwable,rocket.util.client.StackHelper" 
+		<delete failonerror="yes">
+			<fileset dir="${src-dir}.temp">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
+		
+		<copy todir="${src-dir}.temp">
+			<fileset dir="${src-dir}">
+				<exclude name="**/java/lang/**" />
+				<exclude name="**/java/util/**" />				
+				<exclude name="/rocket/util/client/StackHelper" />
+				<include name="**" />
+			</fileset>
+		</copy>				
+		
+		<javac srcdir="${src-dir}.temp" destdir="${bin-dir}"
 				debug="on" debuglevel="lines,vars,source" source="1.4" target="1.4">
 			<classpath refid="project.class.path"/>
 		</javac>
@@ -93,6 +109,7 @@
 				<include name="release-notes.txt"/>
 				<include name="Rocket-jar-readme.txt"/>
 				<include name="license.txt"/>
+				<include name="dependencies.txt"/>				
 			</fileset>
 		</jar>
 
@@ -149,6 +166,7 @@
 							rocket.dragndrop.client,
 							rocket.json.client,
 							rocket.generator.client,
+							rocket.generator.rebind,
 							rocket.messaging.client,
 							rocket.remoting.client, 
 							rocket.remoting.client.json, 
@@ -358,24 +376,6 @@
 			</fileset>
 		</zip>
 	</target>
-<!--
-	<target name="runGwtTests" depends="compile" description="Runs all GWT Unit test cases(incomplete)">
-		<echo>About to run all GWT test cases - TODO make this TASK work</echo>
-		<junit	fork="yes"		
-				haltonerror="no" 
-				haltonfailure="no" 
-				printsummary="yes" 
-				showoutput="yes"			
-			>
-			<formatter type="plain" />
-			<classpath>
-				<path refid="project.class.path" />
-				<pathelement path="${bin-dir}/" />
-			</classpath>
-			<test name="rocket.cookie.test.cookies.CookiesGwtTestCase" todir="${test-dir}" />
-		</junit>
-	</target>
--->
 	<!--
 	Runs all the unit test cases
 	-->
