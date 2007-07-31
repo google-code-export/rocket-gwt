@@ -4,5 +4,5 @@ invoker.addParameter(
 	// the httpRequestParameterName
 	${httpRequestParameterName}, 
 	
-	// the parameter's value.
+	// the parameter itself which will become the http request parameter value.
 	${parameter} );
