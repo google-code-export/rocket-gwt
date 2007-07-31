@@ -62,9 +62,18 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 	/**
 	 * Writes the template after populating values to the given SourceWriter
 	 * 
-	 * @param writer
+	 * @param writer The writer of the source file being created
 	 */
 	public void write(final SourceWriter writer) {
+		this.write0( writer );
+	}
+
+	/**
+	 * Does the actual work of parsing the contents of the input stream replacing placeholders with
+	 * actual values which are resolved using {@link #getValue0(String)}.
+	 * @param writer The writer of the source file being created
+	 */
+	protected void write0( final SourceWriter writer ){
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
 		BufferedReader reader = null;
@@ -74,13 +83,18 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 
 			final TemplatedFileCodeBlockPlaceHolderReplacer replacer = new TemplatedFileCodeBlockPlaceHolderReplacer();
 
-			while (true) {
+			boolean addNewLine = false;
+			while (true) {				
 				final String line = reader.readLine();
 				if (null == line) {
 					break;
 				}
-
-				writer.println(replacer.execute(line));
+				if( addNewLine ){
+					writer.println();
+				}
+				
+				writer.print(replacer.execute(line));
+				addNewLine = true;
 			}
 
 		} catch (final IOException caught) {
@@ -89,7 +103,6 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 			IoHelper.closeIfNecessary(reader);
 		}
 	}
-
 	/**
 	 * Sub-classes must return an InputStream that contains the templated text
 	 * with placeholders.
@@ -235,5 +248,4 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 	protected void throwUnhandledValueType(final Object object) {
 		throw new TemplatedCodeBlockException("Unhandled value type encountered " + object);
 	}
-
 }

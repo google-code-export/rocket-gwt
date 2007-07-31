@@ -141,8 +141,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	}
 
 	protected void throwConstructorNotFoundException(final List parameterTypes) {
-		throw new ConstructorNotFoundException("Unable to find a constructor belonging to " + this.getName() + " with parameters "
-				+ Arrays.asList(parameterTypes));
+		throw new ConstructorNotFoundException("Unable to find a constructor belonging to " + this.getName() + " with parameters "+ parameterTypes);
 	}
 	
 	public boolean hasNoArgumentsConstructor(){
@@ -393,7 +392,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 
 	protected void throwMethodNotFoundException(final String methodName, final List parameterTypes) {
 		throw new MethodNotFoundException("Unable to find a method called [" + methodName + "] within " + this.getName()
-				+ " with parameters " + Arrays.asList(parameterTypes) + " upon " + this.getName());
+				+ " with parameters " + parameterTypes + " upon " + this.getName());
 	}
 
 	/**

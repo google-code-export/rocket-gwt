@@ -39,7 +39,7 @@ public class StringCodeBlock implements Literal {
 	public void write(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
-		writer.println(this.getContent());
+		writer.print(this.getContent());
 	}
 
 	/**
