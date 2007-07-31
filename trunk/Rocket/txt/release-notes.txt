@@ -444,3 +444,36 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.30.zip
 * Fixed Remote.gwt.xml module by adding generator mapping for RemoteJsonService
 * Added dependency injection support via the rocket.beans package. Most of the spring concepts except for interceptors and destroy method are supported.
 * Added a number of wikis for various modules within the library.
+
+0.31 16 July 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.31.zip
+
+* Added ability to pass arguments to a constructor when creating a bean.
+* Fixed a silly DTD cardinality bug only allowing one value for properties etc(rocket.beans)
+* Changed StringHelper.format() placeholders syntax from just "{xxx}" to "${xxx}".
+* Added a new StringHelper.format() which accepts a Map of placeholders <-> values.
+* Added new classes to help with realizing placeholders with values (rocket.text.client.*)
+* Added ability to provide a replace placeholders with values from a properties file by including a <placeholder file="..." /> tag.
+* Fixed numerous factory bean template methods to throw Exception, which should let constructors and setters which throw checked exceptions to compile.
+* Added ability to specify advices (Before, AfterReturning, AfterThrowing and MethodInterceptors) to any public bean method.
+* Fixed selection support for Safari (issue=32)
+* Added template factory method to DraggablePanel.createDragHandle0 providing the opportunity to create handles for widgets when they are dragged.
+* Fixed Horizontal/VerticalSliders which were broken when the window was scrolled.
+* Restored lost tree.launch file to project.
+* Added tests for Spinner and SuperSpinner widgets.
+* Change all protected widget factory methods (create* belonging to rocket.widget.** ) to only create and not set their own property. Subclasses 
+  that override these methods no longer need to also set the corresponding property.  
+* Abstracted class components, classes, constructors, methods and fields (rocket.generator.rebind.*) so classes may be built by assembling objects rather 
+  than SourceWriter.print'ing. The com.google.gwt.core.ext.typeinfo.J* and java runtime classes have both been abstracted to help with creating generators 
+  for the former and testing for the later.  
+* Also included ability to build code blocks (eg method body's) from text file templates (rocket.generator.rebind.codeblock.*).
+* Also added a number of template visitor classes to help with visiting various class components, finding overridden methods etc.
+  AllMethodsVisitor, ConstructorParameterVisitor, MethodParameterVisitor, ReverseSuperTypeVisitor, SubTypesVisitor,
+  SuperTypesVisitor, TypeConstructorsVisitor, VirtualMethodVisitor.(rocket.generator.rebind.util.*).
+* Fixed RemoteJsonService to set the correct content-types (GETs and POSTs), and content-length for POSTS.
+* Rewrote all code generation classes to use new generator abstraction aka beans, json, remote json service.
+* CometClient now logs a message if it detects that the serializer about to be used to deserialize the incoming payload was not generated using the modified
+  ProxyCreator.
+* The customised ProxyCreator (the generator that creates classes to handle serializing of rpc objects) now logs a message, this should help make it easier to 
+  spot classpath problems.
