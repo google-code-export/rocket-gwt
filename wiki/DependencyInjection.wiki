@@ -1,44 +1,33 @@
-#labels Featured,DependencyInjection,Spring,GWT
+#labels Featured,DependencyInjection,Spring,GWT,Advices,Aop,MethodInterceptors,CodeGeneration
 =Purpose=
 
-The purpose of the rocket.beans package is to offer the ability to DI beans on within a GWT clientside application.
-Many but not all of the DI concepts made popular by Spring and other DI packages are supported.
+The purpose of the rocket.beans package is to offer the ability to DI beans and add advices within a GWT application.
+Many but not all of the DI and aop concepts made popular by Spring and other DI packages are supported.
 
 
 =Differences with Spring DI=
 
-The current beans package is just the start. More features (maybe including interceptors) that exist in Spring will eventually be copied.
-
+All resolution occurs during the code generation step and not at runtime. Spring and other DI frameworks take advantage of java runtimes such as reflection and classloading which are not available within a GWT environment.
 
 ==Supported constructs==
 
-Not all spring concepts are supported. Many of the copied ideas use the same interfaces/names when possible.
+Many of the popular DI/AOP concepts developers are familiar present with some restrictions due to the browser environment. 
 
-
-  * Singleton / prototype scopes
-  * FactoryBeans beans which create beans on demand
-  * A custom (static) factory method
-  * InitializingBean interface or a custom init method
-
+Many of the copied ideas use the same interfaces/names when possible but live under the rocket.beans package.
+  * *Singletons* - One instance exists throughout the BeanFactory
+  * *Prototypes* - A new instance is created each time the BF is queried.
+  * *Advices* are achieved via generated proxies with advices/interceptors weaved into the proxy.
+  * *FactoryBean* - Any bean defined which implements `rocket.beans.client.FactoryBean` is not returned but rather asked to produce a bean itself.
+  * *InitializingBean* - any bean implementing `rocket.beans.client.InitializingBean` has its `afterPropertiesSet()` method invoked after all properties are set but before the bean leaves the factory.
+  * Several types of *advices* are supported, all relating to methods only. Before, after returning, after throwing, after finally and method interceptors. The method signatures and when these advices are called are very similar to those found in Spring.
 
 ==Unsupported constructs==
-
-  * Intercepts are not supported - i am not sure how sensible it would be to support this.
-  * Specifying a destroy method is not supported. Currently this lifecycle method is not supported.
-
-
-_
-It wouldnt be to hard to decorate pointcuts for a bean, but a performance hit could result. This will have to be investigated.
-_
-
-_
-The possibility exists to call the custom destroy method for requested beans using `com.google.gwt.user.client.WindowCloseListener.onWindowClosing`
-_
+  * The destroy lifecycle event is not support. Work is continuing on the best strategy to implement this. The most likely mechanism to implement this portion of a beans lifecycle is via listener registered to `com.google.gwt.user.client.WindowCloseListener.onWindowClosing`
+  * Advices can only be added to methods, fields are not supported.
 
 =Getting started=
 
-The following steps below list what and why is needed to use this facility in your own development efforts.
-
+The following steps below list what and how to use this feature in your own development efforts. The first part describes how to edit the xml file, with the second describing the  programmatic effort required to get a BeanFactory and fetch a bean.
 
 ==Importing the rocket module==
 
@@ -48,10 +37,9 @@ Add the rocket module to your own module.
 <module name="Rocket.User" />
 }}}
 
-==Defining a custom bean factory==
+==Defining a bean factory==
 
 Create a new interface that extends `rocket.beans.client.BeanFactory`. It must not contain any methods.
-
 
 {{{
 package example;
@@ -59,163 +47,208 @@ package example;
 rocket.beans.client.BeanFactory
 
 public ExampleBeanFactory extends BeanFactory{
-	*// with no methods!*
+	// with no methods!
 }
 }}}
 
 ==Creating the xml config file which defines all beans==
 
-Create a new xml file in the same directory (package) as the ExampleBeanFactory class. The name of the file should be `ExampleBeanFactory.xml`.
+The last step involves defining beans, dependencies and advices using the xml file. The xml file format is explained below. A file must appear in the same package or directory as the interface implementing `rocket.bean.client.BeanFactory`.
+
+eg: For a class called `sample.SampleBeanFactory` an xml file called SampleBeanFactory.xml  must also appear in the sample package directory.
+
+A dtd may be found in `rockket.bean.rebind.xml.Beans.dtd`. THis dtd is also used to validate the xml file. Various structural errors are caught by the parser before the beans generator can read the xml document.
 
 ==Defining a Bean==
+Any concrete class may be given an id and defined as a bean using the `<bean>` tag.
+The bean tag includes a number of attributes
+  * *id* - A unique id of the bean.
+  * *class* - The fully qualified class name of the bean type. The class must be a concrete class otherwise the code generator will complain.
+  * *scope* - This attribute may contain either *singleton* or *prototype*.
+  * *factoryMethod* - When present specifies a static method on the defined class that can be used to retrieve a new instance of the bean.
+  * *initMethod* - When present this method (which must be a public instance method) will invoked after all properties are set but before the bean leaves the factory. This may be used in preference to `rocket.beans.client.InitializingBean`.
 
-The first bean below is for a class that contains only primitive properties.
-All properties must have a public setter.
-
-
-===Declaring a bean with primitive properties===
+The sample below defines a singleton bean with an id of "rocketBean".
 {{{
-package example;
-
-public ClassWithOnlyPrimitiveProperties{
-	private boolean foo;
-	public void setFoo( boolean foo ){
-		this.foo = foo;
-	}
-
-	private int bar;
-
-	public void setBar( int bar ){
-		this.bar = bar;
-	}
-
-	private String baz;
-
-	public void setBaz( String baz ){
-		this.baz = baz;
-	}
-}
+<bean
+   id="rocketBean"
+   class="sample.RocketBean"
+   scope="singleton" >
 }}}
 
-
-The beans xml block that creates and populates a singleton `example.ClassWithOnlyPrimitiveProperties`.
-
+The above fragment would be equivalent to the following code. The RocketBean class must have a constructor that takes a String in this example.
 
 {{{
-	<bean
-		id="bean1"
-		class="example.ClassWithOnlyPrimitiveProperties"
-		scope="singleton">
-
-		<property name="foo">
-			<value>true</value>
-		</property>
-
-		<property name="bar">
-			<value>123</value>
-		</property>
-
-		<property name="baz">
-			<value>"BazValue"</value>
-		</property>
-	</bean>
+  sample.RocketBean rocketBean = new sample.RocketBean( "Go!" );
 }}}
 
-
-Any instances of `bean1` fetched from the bean factory or injected will have the three properties
-populated.
-
-
-	  * foo=true
-	  * bar=123
-	  * baz=BazValue
-
-
-
-
-===Declaring A bean with a reference to another bean===
-
-The example below creates a bean of type `example.ClassWhichReferencesAnotherBean` which also includes a reference
-to the `example.ClassWithOnlyPrimitiveProperties` from above.
+===Constructor===
+By default all beans must have a public default / no arguments constructor. If such a constructor is not present in the bean type, the bean may be created by a constructor that satisfies the child values.
 
 {{{
-package example;
+<bean
+   id="rocketBean"
+   class="sample.RocketBean"
+   scope="singleton" >
 
-public ClassWhichReferencesAnotherBean{
-	private ClassWithOnlyPrimitiveProperties anotherBean;
-	public void setFoo( ClassWithOnlyPrimitiveProperties anotherBean ){
-		this.anotherBean = anotherBean;
-	}
-}
+   <constructor>
+     <value>Go!</value>
+   </constructor>
 }}}
 
-
-The beans xml block that creates and populates a prototype `example.ClassWhichReferencesAnotherBean`..
-Any instances of `bean2` will now also have a reference to bean1.
-
+If more than one constructor can match the constructor values, the generator will report a failure. Given the `sample.AmbiguousConstructorRocketBean` contains the following constructors, one that takes a byte and another that takes a int. The value tag content of "1" can be matched to both constructors. In this case the code generation step fails. Values are described under the values heading.
 
 {{{
-	<bean
-		id="bean2"
-		class="example.ClassWhichReferencesAnotherBean"
-		scope="prototype">
+<bean
+   id="ambiguousConstructor"
+   class="sample.AmbiguousConstructorRocketBean"
+   scope="singleton" >
 
-		<property name="anotherBean">
-			<bean-reference reference-id="bean1"/>
-		</property>
+   <constructor>
+     <value>1</value>
+   </constructor>
 
-	</bean>
 }}}
 
+==Properties==
+Properties may also be set via the `<properties>` tag. Each `<properties>` tag may in turn contain one or more `<property>` tags each setting a single value upon the bean.
 
-===Declaring Custom factory method===
+Each property must have a public setter method that accepts a single value and returns void. A variety of property types may be set including all the primitive types, `java.lang.String`, `java.util.List`, `java.util.Set`, `java.util.Map` and other beans.
 
-Rather than have the factory create new instances of a by simply invoking the no arguments constructor it is possible to specify a custom
-method.
-
-
+===Property===
+The property tag below may be used to set a property called `foo` with a value of `bar`.
 {{{
-	<bean
-		id="beanWithACustomFactoryMethod"
-		class="example.BeanWithCustomFactoryMethod"
-		scope="prototype"
-		factoryMethod="create">
-	</bean>
+...
+<property name="foo">
+  <value>bar</value>
+</property>
+...
 }}}
 
-
-It is assumed that `example.BeanWithCustomFactoryMethod` includes a static method called create which returns new
-`example.BeanWithCustomFactoryMethod` when asked.
-
-
-=Receiving initialized lifecycle events=
-
-Two options are available if a bean wishes to receive notification when it is ready after all its properties have been set.
-Beans can implement the `rocket.beans.client.InitializingBean` or can specify a custom init method.
-
-
-
-==Custom init method==
-
-Rather than have the init create new instances of a by simply invoking the no arguments constructor it is possible to specify a custom
-method.
-
-
+Skipping the creation of the instance the above is equivalent to
 {{{
-	<bean
-		id="beanWithACustomInitMethod"
-		class="example.BeanWithCustomInitMethod"
-		scope="prototype"
-		initMethod="init">
-	</bean>
+  instance.setFoo( "bar" );
 }}}
 
+==Values==
+Several tags are available that allow several types of constructor arguments and properties. These include
+  * *Primitive types* Any `boolean`, `byte`, `short`, `int`, `long`, `float`, `double`, `char` value.
+  * *String* any string value
+  * *List* A list of other values.
+  * *Set* A set of other values.
+  * *Map* A map containing string keys and Value values.
+  * *Other beans* Any other bean that is defined within the xml document.
 
-It is assumed that `example.BeanWithCustomInitMethod` includes a public init method.
+===Value===
+{{{
+<value>123</value>
+}}}
+Within a `<property>` tag the above could set a value of `123` upon a byte, short, int, long, float or double property.
 
+===list===
+The above `<list>` tag creates a list with 3 String elements containing "Foo", "Bar", and "Baz". Any values type may appear within a list
+{{{
+<list>
+  <value>Foo</value>
+  <value>Bar</value>
+  <value>Baz</value>
+</list>
+}}}
 
+Within a `<property name="list">` tag this is equivalent to
+{{{
+java.util.List list = new java.util.ArrayList();
+list.add( "Foo" );
+list.add( "Bar" );
+list.add( "Baz" );
+instance.setList( list );
+}}}
 
-=Further samples=
+===set===
+The `set` tag is also identical but can be used as a constructor parameter or property with a `java.util.Set` type. Any values type may appear within a set.
 
-For further examples refer to the unit tests `rocket.beans.test.client.BeansGwtTestCase (the main one)`.
+===map===
+The `map` tag may be used to populate a constructor parameter or property with a `java.util.Map` type. The xml fragment below creates a map with 1 entry with a string value.
+{{{
+<map>
+  <map-entry key="foo">
+   <value>bar</value>
+  </map>
+</map>
+}}}
+
+The xml above is equivalent to the following code fragment assuming it appeared within a `<property name="map">` tag.
+{{{
+  java.util.Map map = new java.util.Map();
+  map.put( "foo", "bar" );
+  instance.setMap( map );
+}}}
+
+===bean reference===
+The `<bean-reference>` tag may be used to pass a bean to a constructor or set a property with a defined bean.
+{{{
+<bean-reference id="anotherBean" />
+}}}
+
+===remote rpc service===
+The `<remote-rpc-service>` may be used as a convenience to fetching a rpc service proxy.
+Remote rpc service's are just ordinary beans and may be referenced by any other bean definition via the `<bean-reference>` tag.
+{{{
+<remote-rpc-service
+  address="url"
+  id="rpc"
+  interface="sample.RemoteRpcService"
+}}}
+The above code fragment exposes a bean which may be fetched from the bean factory using the following code. It also possible to set a property or constructor with the same bean using the `<property>` or `<constructor>` tags.
+{{{
+  sample.RemoteRpcServiceAsync rpc = (sample.RemoteRpcServiceAsync) beanFactory.getBean("rpc");
+}}}
+
+The xml fragment is equivalent to the following
+{{{
+  sample.RemoteRpcServiceAsync rpc = (sample.RemoteRpcServiceAsync} GWT.create( sample.RemoteRpcService.class);   
+  ((ServiceDefTarget)sample).setServiceEntryPoint("url");
+}}}
+
+===remote json service===
+The `<remote-json-service>` tag is identical to the `<remote-rpc-service>` tag but create s a remote json service proxy instead.
+
+===advice===
+The `<advice>` tag may be used to declare an advice to one or more methods upon a target bean. Beans may have more than one advice. If a different advisor is needed a new advisor tag must be included. The advice below advices all public methods that starting with "set" calling the advisorBean before invoking the target setXXX method.
+{{{
+<advice
+  advisorBeanId="advisorBean"
+  targetBeanId="bean"
+  methodExpression="set * "
+/>
+}}}
+
+The advisor bean above must be an advice or some sort, implementing any of the following interfaces.
+  * *rocket.beans.client.aop.AfterFinallyAdvice* An after finally advice is called after a method returns.
+  * *rocket.beans.client.aop.AfterReturningAdvice* A after returning advice is called and presented with the returned value of the target method or advice.
+  * *rocket.beans.client.aop.AfterThrowingAdvice* Receives any exception that is thrown by an advice or the target.
+  * *rocket.beans.client.aop.BeforeAdvice* Is invoked before the target method.
+  * *rocket.beans.client.aop.MethodInterceptor* The most versatile form of applying an advice.
+
+=Troubleshooting=
+Messages are logged at different levels during key portions bean factory generation. In order to view these the LOGLEVEL option must be set with INFO producing medium levels of messages and DEBUG resulting in many more. All problems are caught and logged.
+
+=More Info, Tests, Examples=
+A number of tests are available that test each and every of the features described above.
+  * *rocket.beans.test.beans.client.BeansGwtTestCase* This unit test tests all of the features of BeanFactory. Each test typically includes a client and rebind side classes.
+
+The tests below are regular junit tests that test many of the templated abstract classes used during code generation or at runtime.
+  * *rocket.beans.test.AfterFinallyAdviceMethodInterceptorTestCase* Tests 
+  * *rocket.beans.test.AfterReturningAdviceMethodInterceptorTestCase*
+  * *rocket.beans.test.AfterThrowingAdviceMethodInterceptorTestCase*
+  * *rocket.beans.test.BeanFactoryTestCase*
+  * *rocket.beans.test.BeforeAdviceMethodInterceptorTestCase*
+  * *rocket.beans.test.InterceptorChainTestCase*
+  * *rocket.beans.test.MethodMatcherTestCase* Tests the `<rocket.beans.rebind.aop.MethodMatcher>` class which takes the expression from an advice tag and finds methods of the target bean that the advice will be applied too.
+  * *rocket.beans.test.PlaceHolderResolverTestCase*
+  * *rocket.beans.test.PrototypeFactoryBeanTestCase* Tests the abstract PrototypeFactoryBean class. A number of methods are implemented by the generator.
+  * *rocket.beans.test.ProxyFactoryBeanTestCase* Tests the abstract ProxyFactoryBean class A number of methods are implemented by the generator.
+  * *rocket.beans.test.SingletonFactoryBeanTestCase* Tests the abstract SingletonFactoryBean class. A number of methods are implemented by the generator.
+
+The entire beans package uses the Rocket generator package to generate the BeanFactory, FactoryBeans, and proxies.
 
