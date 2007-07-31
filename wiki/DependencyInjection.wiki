@@ -2,8 +2,7 @@
 =Purpose=
 
 The purpose of the rocket.beans package is to offer the ability to DI beans and add advices within a GWT application.
-Many but not all of the DI and aop concepts made popular by Spring and other DI packages are supported.
-
+Many but not all of the DI and aop concepts made popular by Spring and other DI packages are supported. This page does not attempt to explain all the pros and cons of using DI. It rather concentrates on using the rocket beans implementation.
 
 =Differences with Spring DI=
 
@@ -14,12 +13,12 @@ All resolution occurs during the code generation step and not at runtime. Spring
 Many of the popular DI/AOP concepts developers are familiar present with some restrictions due to the browser environment. 
 
 Many of the copied ideas use the same interfaces/names when possible but live under the rocket.beans package.
-  * *Singletons* - One instance exists throughout the BeanFactory
-  * *Prototypes* - A new instance is created each time the BF is queried.
-  * *Advices* are achieved via generated proxies with advices/interceptors weaved into the proxy.
-  * *FactoryBean* - Any bean defined which implements rocket.beans.client.FactoryBean is not returned but rather asked to produce a bean itself.
-  * *InitializingBean* - any bean implementing rocket.beans.client.InitializingBean has its afterPropertiesSet() method invoked after all properties are set but before the bean leaves the factory.
-  * Several types of *advices* are supported, all relating to methods only. Before, after returning, after throwing, after finally and method interceptors. The method signatures and when these advices are called are very similar to those found in Spring.
+  * Singletons - One instance exists throughout the BeanFactory
+  * Prototypes - A new instance is created each time the BF is queried.
+  * Advices are achieved via generated proxies with advices/interceptors weaved into the proxy.
+  * FactoryBean - Any bean defined which implements rocket.beans.client.FactoryBean is not returned but rather asked to produce a bean itself.
+  * InitializingBean - any bean implementing rocket.beans.client.InitializingBean has its afterPropertiesSet() method invoked after all properties are set but before the bean leaves the factory.
+  * Several types of advices are supported, all relating to methods only. Before, after returning, after throwing, after finally and method interceptors. The method signatures and when these advices are called are very similar to those found in Spring.
 
 ==Unsupported constructs==
   * The destroy lifecycle event is not support. Work is continuing on the best strategy to implement this. The most likely mechanism to implement this portion of a beans lifecycle is via listener registered to com.google.gwt.user.client.WindowCloseListener.onWindowClosing
@@ -62,11 +61,11 @@ A dtd may be found in rockket.bean.rebind.xml.Beans.dtd. THis dtd is also used t
 ==Defining a Bean==
 Any concrete class may be given an id and defined as a bean using the <bean> tag.
 The bean tag includes a number of attributes
-  * *id* - A unique id of the bean.
-  * *class* - The fully qualified class name of the bean type. The class must be a concrete class otherwise the code generator will complain.
-  * *scope* - This attribute may contain either *singleton* or *prototype*.
-  * *factoryMethod* - When present specifies a static method on the defined class that can be used to retrieve a new instance of the bean.
-  * *initMethod* - When present this method (which must be a public instance method) will invoked after all properties are set but before the bean leaves the factory. This may be used in preference to rocket.beans.client.InitializingBean.
+  * id - A unique id of the bean.
+  * class - The fully qualified class name of the bean type. The class must be a concrete class otherwise the code generator will complain.
+  * scope - This attribute may contain either singleton or prototype.
+  * factoryMethod - When present specifies a static method on the defined class that can be used to retrieve a new instance of the bean.
+  * initMethod - When present this method (which must be a public instance method) will invoked after all properties are set but before the bean leaves the factory. This may be used in preference to rocket.beans.client.InitializingBean.
 
 The sample below defines a singleton bean with an id of "rocketBean".
 {{{
@@ -132,12 +131,12 @@ Skipping the creation of the instance the above is equivalent to
 
 ==Values==
 Several tags are available that allow several types of constructor arguments and properties. These include
-  * *Primitive types* Any boolean, byte, short, int, long, float, double, char value.
-  * *String* any string value
-  * *List* A list of other values.
-  * *Set* A set of other values.
-  * *Map* A map containing string keys and Value values.
-  * *Other beans* Any other bean that is defined within the xml document.
+  * Primitive types Any boolean, byte, short, int, long, float, double, char value.
+  * String any string value
+  * List A list of other values.
+  * Set A set of other values.
+  * Map A map containing string keys and Value values.
+  * Beans reference - Any other bean that is defined within the xml document.
 
 ===Value===
 {{{
@@ -224,11 +223,11 @@ The <advice> tag may be used to declare an advice to one or more methods upon a 
 }}}
 
 The advisor bean above must be an advice or some sort, implementing any of the following interfaces.
-  * *rocket.beans.client.aop.AfterFinallyAdvice* An after finally advice is called after a method returns.
-  * *rocket.beans.client.aop.AfterReturningAdvice* A after returning advice is called and presented with the returned value of the target method or advice.
-  * *rocket.beans.client.aop.AfterThrowingAdvice* Receives any exception that is thrown by an advice or the target.
-  * *rocket.beans.client.aop.BeforeAdvice* Is invoked before the target method.
-  * *rocket.beans.client.aop.MethodInterceptor* The most versatile form of applying an advice.
+  * rocket.beans.client.aop.AfterFinallyAdvice - An after finally advice is called after a method returns.
+  * rocket.beans.client.aop.AfterReturningAdvice - A after returning advice is called and presented with the returned value of the target method or advice.
+  * rocket.beans.client.aop.AfterThrowingAdvice - Receives any exception that is thrown by an advice or the target.
+  * rocket.beans.client.aop.BeforeAdvice - Is invoked before the target method.
+  * rocket.beans.client.aop.MethodInterceptor - The most versatile form of applying an advice.
 
 =Troubleshooting=
 Messages are logged at different levels during key portions bean factory generation. In order to view these the LOGLEVEL option must be set with INFO producing medium levels of messages and DEBUG resulting in many more. All problems are caught and logged.
@@ -238,17 +237,16 @@ A number of tests are available that test each and every of the features describ
   * *rocket.beans.test.beans.client.BeansGwtTestCase* This unit test tests all of the features of BeanFactory. Each test typically includes a client and rebind side classes.
 
 The tests below are regular junit tests that test many of the templated abstract classes used during code generation or at runtime.
-  * *rocket.beans.test.AfterFinallyAdviceMethodInterceptorTestCase* Tests 
-  * *rocket.beans.test.AfterReturningAdviceMethodInterceptorTestCase*
-  * *rocket.beans.test.AfterThrowingAdviceMethodInterceptorTestCase*
-  * *rocket.beans.test.BeanFactoryTestCase*
-  * *rocket.beans.test.BeforeAdviceMethodInterceptorTestCase*
-  * *rocket.beans.test.InterceptorChainTestCase*
-  * *rocket.beans.test.MethodMatcherTestCase* Tests the <rocket.beans.rebind.aop.MethodMatcher> class which takes the expression from an advice tag and finds methods of the target bean that the advice will be applied too.
-  * *rocket.beans.test.PlaceHolderResolverTestCase*
-  * *rocket.beans.test.PrototypeFactoryBeanTestCase* Tests the abstract PrototypeFactoryBean class. A number of methods are implemented by the generator.
-  * *rocket.beans.test.ProxyFactoryBeanTestCase* Tests the abstract ProxyFactoryBean class A number of methods are implemented by the generator.
-  * *rocket.beans.test.SingletonFactoryBeanTestCase* Tests the abstract SingletonFactoryBean class. A number of methods are implemented by the generator.
+  * rocket.beans.test.AfterFinallyAdviceMethodInterceptorTestCase Tests 
+  * rocket.beans.test.AfterReturningAdviceMethodInterceptorTestCase
+  * rocket.beans.test.AfterThrowingAdviceMethodInterceptorTestCase
+  * rocket.beans.test.BeanFactoryTestCase
+  * rocket.beans.test.BeforeAdviceMethodInterceptorTestCase
+  * rocket.beans.test.InterceptorChainTestCase
+  * rocket.beans.test.MethodMatcherTestCase* Tests the <rocket.beans.rebind.aop.MethodMatcher> class which takes the expression from an advice tag and finds methods of the target bean that the advice will be applied too.
+  * rocket.beans.test.PlaceHolderResolverTestCase
+  * rocket.beans.test.PrototypeFactoryBeanTestCase Tests the abstract PrototypeFactoryBean class. A number of methods are implemented by the generator.
+  * rocket.beans.test.ProxyFactoryBeanTestCase Tests the abstract ProxyFactoryBean class A number of methods are implemented by the generator.
+  * rocket.beans.test.SingletonFactoryBeanTestCase Tests the abstract SingletonFactoryBean class. A number of methods are implemented by the generator.
 
 The entire beans package uses the Rocket generator package to generate the BeanFactory, FactoryBeans, and proxies.
-
