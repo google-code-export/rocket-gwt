@@ -1,0 +1,149 @@
+#labels Featured,CodeGeneration,GWT
+=PURPOSE=
+
+Before talking about the features of the generator package and how to use them, some background about GWT generators is necessary. The generator idiom is used by GWT to implement many of its sophisticated features including:
+  * The RPC proxy and accompanying (de)serializer for reachable types.
+  * The message bundle support.
+  * ImageBundles which generate a single image from a collection of many.
+For more info on these fantastic features refer to the doco, which is found on both the GWT home page and within the download.
+
+=ProxyCreator the rpc generator=
+The com.google.gwt.user.rebind.rpc.ProxyCreator class is a generator that creates both the rpc proxy client and generates the necessary serializers for all reachable types. 
+Like all generators, GWT applications do not explicitly invoke ProxyCreator. The GWT compiler uses rules defined in module xml files to decide which generator is executed for each class literal passed to GWT.create(). The XXX.gwt.xml module defines the following rule which instructs the GWT environment to run ProxyCreator for each interface implementing RemoteRPCService.
+{{{
+
+}}}
+
+A developer wishing to create a RPC Proxy using deferred binding would include something similar to the following statement.
+{{{
+	ServiceAsync proxy = (ServiceAsync) GWT.create( Service.class );
+}}}
+Once the generator has run and created the proxy it returns the name of the generated class. The javascript output is equivalent to the following:
+{{{
+	ServiceAsync proxy = (ServiceAsync) new GeneratedClass();
+}}}
+
+The over statements are a simplification but remain true to the overall process. 
+
+=Code Generation=
+This section does not concern how a genearator decides what code to generate but rather how it interacts with the GWT environment. Two major components are used throughout a code generation session, the GWT `com.google.gwt.core.ext.typeinfo.TypeOracle` and its accompanying helpers and `com.google.gwt.user.rebind.SourceWrite`. As their names imply one answers questions about available types, whilst the other is used to create the source file for new types.
+
+==GWT Type Oracle==
+The type oracle provides an interface to discover what types are available and methods to inspect various properties including types, constructors, methods and fields. The type oracle provided a purely read only view of the types available. 
+
+
+The GWT type oracle has many parallels with the reflection facilities available in a typical java environment. 
+
+The table shows a simplified mapping between reflection abstractions and their corresponding GWT equivalent.
+
+|| Reflection || GWT Type Oracle ||
+|| Class || JClassType, JType, JPrimitiveType ||
+|| java.lang.reflect.Method || JMethod ||
+|| java.lang.reflect.Constructor || JConstructor ||
+|| java.lang.reflect.Field || JField ||
+	
+The GWT Type Oracle and its accompanying classes provide many methods to retrieve the name of a type, test is visibility, iterate over a list of all fields and more. With some experience in reflection it is quite easy to find the equivalent method on the matching GWT Type oracle abstraction. They have almost the same method signatures.
+
+==SourceWriter==
+To create new types once must use 'com.google.gwt.user.rebind.ClassSourceFileComposerFactory' to create a new SourceWriter. The factory is a bean that includes methods to set the super type, which interfaces are implemented and so on. After the skeleton of the class is created the SourceWriter may be used to print java statements. Anything text can be printed and together these will be used to build the entire source file.
+
+Whilst a powerful construct code generation within GWT is quite low level with a number of issues outstanding.
+
+  * It is hard to visualise what is being created by print statements. This must be discovered by running the generator with lots of trial and error.
+  * Syntax errors and malformed code are only discovered when the compiler complains after the source file is completed and committed.
+  * Using print statements is a extremely verbose way to output emit a method especially when most of the method body and declaration is boilerplate.
+  * No facility is currently present to create templates replacing place holders with dynamic values.
+  * The current system does not provide a way to copy class components (constructors, methods, or fields) from one class to another. Often when sub-classing it would be useful to clone the overridden method and then just replace its body.
+  * It is not possible to test components which require a TypeOracle outside of a generator.
+
+==Rocket generator package==
+The rocket generator package attempts to solve some of the very problems described above. 
+
+===Creating class components factories===
+Each class component contains factories to create its enclosed components. 
+
+The Type class contains the following methods
+  * newInitializer - adds a new initializer
+  * newConstructor add a new constructor to this type
+  * newMethod adds a new method
+  * newField adds a new field.
+  * newNestedType adds a new nested or inner class
+  * newAnonymousNestedType adds a new anonymous type. This can then be included within the body of a initializer, constructor, method, or assigned to a field.
+  
+Each abstraction above contains methods such as
+  * setName - for types, methods, fields.
+  * setVisibility - for types, constructors, methods, fields.
+  * setType - for fields.
+  * setBody - set a code block which when asked outputs a block of code. A template version is available.
+  * copy - copies the method definition from one type to another. This is especially useful when overriding an abstract method.
+  * final, abstract, static etc - properties are available to get and set these properties for types, initializers, methods and fields.
+  * rename all constructor or method parameters to "parameterN" where N is the index of the parameter within the argument list.
+
+===Templates===
+One of the most useful features of the package are templates. Templates are text files containing java code with placeholders for dynamic 
+  * Makes it very easy to write jsni. Inserting types, methods, fields into templates are all written using jsni notation. To make this happen simply set the enclosing method "native" property.
+  * All type references are now automatically fully qualified.
+  * Templates are readable, after all they are text files with placeholders.
+  * Templates may contain other templates.
+  * The CollectionTemplatedTile makes it very easy to set a template multiple times each once for each parameter or a list of something else.
+  * Theres no need to print a single line of code again.
+
+The examples below are taken from the rocket.beans bean factory and advice generator.
+
+The ProxyFactoryBean is an abstract class. It resembles a template itself, with a number of methods remaining abstract, these are overridden by the BeanFactoryGenerator. The template below contains the body of the createProxy( Object targetBean ) method. To override and implement this method a number of steps are taken.
+  * In an earlier step a NewNestedType that subclasses ProxyFactoryBean was created.
+  * Ask the ProxyFactoryBean type for a method called "createProxy" which takes a parameter of type java.lang.Object. If this fails an exception is thrown. This is good because any changes to ProxyFactoryBean (like renaming createProxy() ) will break the code generation early.
+  * The returned method is then copied from the ProxyFactory type onto the NewNestedType ProxyFactoryBean subclass.
+  * A CreateProxyTemplatedFile class exists that includes three setters for each of the placeholders below. These setters are then called with the appropriate values.
+  * The CreateProxyTemplatedFile instance is then set as the body of the overridden createProxy method.
+
+{{{
+// create-proxy.txt
+
+// invokes the proxy no arguments constructor
+final ${proxyType} proxy = new ${proxyConstructor}();
+
+// hide a reference of the target bean this will be used within all proxied methods.
+proxy.target=
+
+	// cast the parameter
+	(${targetBeanType}) ${targetBeanParameter};
+
+// return the new proxy
+return proxy;
+}}}
+
+Many other steps occur overriding the other abstract methods. Once all this is done the outter class is asked to write itself. It in turn asks all its enclosed initializers, constructors, methods and fields. Eventually the above template will write itself out to the given SourceWriter. 
+
+The CodeBlock class contains many other templates and Codeblocks. This is how the the BeanFactory.satsifyProperties is satisfied. Imagine a class with 3 fields its BeanFactory.satisfyProperties( Object beanInstance ) would look something like the code sample below
+{{{
+protected void satisfyProperties( final java.lang.Object instance ){
+  // cast the Object bean instance to a local variable with the same type as the bean.
+  BeanType instance0 = (BeanType) instance;
+
+  // three statements follow that call each of the three property setters with the appropriate values...
+  instance0.setFoo( "foo" );
+  instance0.setBar( "bar" );
+  instance0.setBaz( "baz" );
+}}}
+
+The BeanFactoryGenerator uses a template which is included below.
+{{{
+// set-properties.txt
+
+// cast the instance parameter to a typed local variable called "instance0"
+final ${beanType} instance0 = (${beanType}) ${instance};
+
+// set the individual properties
+${setIndividualProperties}
+}}}
+Naturally a template class exists that includes three methods which are set the BeanFactoryGenerator
+  * void setBeanType( Type beanType ) - A setter to set the bean type. 
+  * void setInstance( MethodParameter parameter ) - A setter which accepts the parameter for this method.
+  * void addProperty( Method setterMethod, Value value ) - the add method accumulates all the setter methods and values that need to be set.
+
+When the SetPropertiesTemplatedFile is asked to write itself, it iterates over all the properties that were added inserting another templates multiple times.
+For more information refer to the rocket.generator.rebind.XXX package and the rocket.beans.rebind.XXX for an example in action.
+
+===Testing generator components outside of a generator===
+The generator package includes two GeneratorContexts (the rocket equivalent of a TypeOracle), one that interfaces to a real TypeOracle and the other which is a fascade over java and uses reflection to provide type info. This was especially useful when time came to write a visitor that visited all the public virtual methods belonging to a type, skipping methods that were not public and were overridden by in a subclass. By using the JavaGeneratorContext it was possible to create a plain vanilla Junit TestCase, with a variety of tests that verified the VirtualMethodVisitor visitor was working correctly.
