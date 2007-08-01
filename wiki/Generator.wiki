@@ -144,8 +144,91 @@ Naturally a template class exists that includes three methods which are set the 
   * void setInstance( MethodParameter parameter ) - A setter which accepts the parameter for this method.
   * void addProperty( Method setterMethod, Value value ) - the add method accumulates all the setter methods and values that need to be set.
 
-When the SetPropertiesTemplatedFile is asked to write itself, it iterates over all the properties that were added inserting another templates multiple times.
-For more information refer to the `rocket.generator.rebind.XXX` package and the `rocket.beans.rebind.XXX` classes for further examples.
+The sample below is taken directly from BeanFactoryGenerator and uses the templates and techniques discussed above.
+{{{
+protected void overrideFactoryBeanSatisfyProperties(final Bean bean, final List properties) {
+		ObjectHelper.checkNotNull("parameter:bean", bean);
+		ObjectHelper.checkNotNull("parameter:properties", properties);
+
+		final GeneratorContext context = this.getGeneratorContext();
+		context.debug("Attempting to create a method which will set " + properties.size() + " properties upon " + bean);
+
+		final Type voidType = this.getGeneratorContext().getVoid();
+		final Type beanType = bean.getType();
+
+		final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
+		body.setBean(beanType);
+
+		final NewType factoryBean = bean.getFactoryBean();
+		final Method method = factoryBean.getMostDerivedMethod( Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject() );
+		final NewMethod newMethod = method.copy(factoryBean);
+		body.setInstance((MethodParameter) newMethod.getParameters().get(0));
+		newMethod.setBody(body);
+
+		// loop thru all properties
+		final Iterator propertyIterator = properties.iterator();
+		while (propertyIterator.hasNext()) {
+			final PropertyTag propertyTag = (PropertyTag) propertyIterator.next();
+			final String propertyName = propertyTag.getPropertyName();
+			final String setterName = GeneratorHelper.buildSetterName(propertyName);
+
+			context.debug("Searching for setter method [" + setterName + "] for property upon bean " + bean);
+
+			final Value value = this.asValue(propertyTag.getValue());
+			final List matching = new ArrayList();
+
+			final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
+				protected boolean visit(final Method method) {
+
+					while (true) {
+						// names dont match
+						if (false == method.getName().equals(setterName)) {
+							break;
+						}
+						// return type must be void
+						if (false == method.getReturnType().equals(voidType)) {
+							break;
+						}
+						// parameter types must be compatible...
+						final List parameters = method.getParameters();
+						if (parameters.size() != 1) {
+							break;
+						}
+
+						final MethodParameter parameter = (MethodParameter) parameters.get(0);
+						final Type propertyType = parameter.getType();
+						if (false == value.isCompatibleWith(propertyType)) {
+							break;
+						}
+						value.setType(propertyType);
+						matching.add(method);
+						break;
+					}
+
+					return false;
+				}
+
+				protected boolean skipJavaLangObjectMethods() {
+					return true;
+				}
+			};
+
+			visitor.start(beanType);
+			if (matching.isEmpty()) {
+				this.throwUnableToFindSetter(bean, propertyName);
+			}
+			if (matching.size() != 1) {
+				this.throwTooManySettersFound(bean, propertyName);
+			}
+
+			final Method setter = (Method) matching.get(0);
+			body.addProperty(setter, value);
+			
+			context.debug("Inserted statement to set property [" + propertyName + "] upon bean " + bean);
+
+		}
+	}
+}}}
 
 ===Testing generator components outside of a generator===
 The generator package includes two GeneratorContexts (the rocket equivalent of a TypeOracle), one that interfaces to a real TypeOracle and the other which is a fascade over java and uses reflection to provide type info. This was especially useful when time came to write a visitor that visited all the public virtual methods belonging to a type, skipping methods that were not public and were overridden by in a subclass. By using the `rocket.generator.rebind.java.JavaGeneratorContext` it was possible to create a plain vanilla Junit TestCase, with a variety of tests that verified the `rocket.generator.rebind.visitor.VirtualMethodVisitor.java` visitor was working correctly.
