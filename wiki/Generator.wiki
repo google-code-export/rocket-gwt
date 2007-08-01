@@ -1,6 +1,5 @@
 #labels Featured,CodeGeneration,GWT
-=PURPOSE=
-
+=Purpose=
 Before talking about the features of the generator package and how to use them, some background about GWT generators is necessary. The generator idiom is used by GWT to implement many of its sophisticated features including:
   * The RPC proxy and accompanying (de)serializer for reachable types.
   * The message bundle support.
