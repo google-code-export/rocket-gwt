@@ -6,6 +6,8 @@ Before talking about the features of the generator package and how to use them, 
   * ImageBundles which generate a single image from a collection of many.
 For more info on these fantastic features refer to the doco, which is found on both the GWT home page and within the download.
 
+The rocket.generator package does not change how deferred binding works. It only makes it easier to author new generators. It also makes life a lot easier with regards to revisiting old work.
+
 =ProxyCreator the rpc generator=
 The `com.google.gwt.user.rebind.rpc.ProxyCreator` class is a generator that creates both the rpc proxy client and generates the necessary serializers for all reachable types. 
 Like all generators, GWT applications do not explicitly invoke ProxyCreator. The GWT compiler uses rules defined in module xml files to decide which generator is executed for each class literal passed to GWT.create(). The '/com/google/gwt/user/user/RemoteService.gwt.xml` module defines the following rule which instructs the GWT environment to run ProxyCreator for each interface implementing `com.google.gwt.user.client.rpc.RemoteRPCService`.
