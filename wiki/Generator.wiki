@@ -89,6 +89,7 @@ One of the most useful features of the package are templates. Templates are text
   * Templates may contain other templates.
   * The CollectionTemplatedTile makes it very easy to set a template multiple times each once for each parameter or a list of something else.
   * Theres no need to print a single line of code again.
+  * No more import statements are needed. Its just as easy to always specify fully qualified class names as simple names. Templates always insert fully qualified class names.
 
 The examples below are taken from the rocket.beans bean factory and advice generator.
 
@@ -146,7 +147,6 @@ Naturally a template class exists that includes three methods which are set the 
 
 The sample below is taken directly from BeanFactoryGenerator and uses the templates and techniques discussed above.
 {{{
-protected void overrideFactoryBeanSatisfyProperties(final Bean bean, final List properties) {
 protected void overrideFactoryBeanSatisfyProperties(final Bean bean, final List properties) {
     ObjectHelper.checkNotNull("parameter:bean", bean);
     ObjectHelper.checkNotNull("parameter:properties", properties);
