@@ -7,7 +7,7 @@ Before talking about the features of the generator package and how to use them, 
 For more info on these fantastic features refer to the doco, which is found on both the GWT home page and within the download.
 
 =ProxyCreator the rpc generator=
-The com.google.gwt.user.rebind.rpc.ProxyCreator class is a generator that creates both the rpc proxy client and generates the necessary serializers for all reachable types. 
+The `com.google.gwt.user.rebind.rpc.ProxyCreator` class is a generator that creates both the rpc proxy client and generates the necessary serializers for all reachable types. 
 Like all generators, GWT applications do not explicitly invoke ProxyCreator. The GWT compiler uses rules defined in module xml files to decide which generator is executed for each class literal passed to GWT.create(). The '/com/google/gwt/user/user/RemoteService.gwt.xml` module defines the following rule which instructs the GWT environment to run ProxyCreator for each interface implementing `com.google.gwt.user.client.rpc.RemoteRPCService`.
 {{{
 <generate-with class="com.google.gwt.user.rebind.rpc.ServiceInterfaceProxyGenerator">
@@ -37,10 +37,10 @@ The GWT type oracle has many parallels with the reflection facilities available 
 The table shows a simplified mapping between reflection abstractions and their corresponding GWT equivalent.
 
 || Reflection || GWT Type Oracle ||
-|| `Class` || JClassType, JType, JPrimitiveType ||
-|| `java.lang.reflect.Method` || JMethod ||
-|| `java.lang.reflect.Constructor` || JConstructor ||
-|| `java.lang.reflect.Field` || JField ||
+|| `Class` || `com.google.gwt.core.ext.typeinfo.JClassType`, `com.google.gwt.core.ext.typeinfo.JType`, `com.google.gwt.core.ext.typeinfo.JPrimitiveType` ||
+|| `java.lang.reflect.Method` || `com.google.gwt.core.ext.typeinfo.JMethod` ||
+|| `java.lang.reflect.Constructor` || `com.google.gwt.core.ext.typeinfo.JConstructor` ||
+|| `java.lang.reflect.Field` || `com.google.gwt.core.ext.typeinfo.JField` ||
 	
 The GWT Type Oracle and its accompanying classes provide many methods to retrieve the name of a type, test is visibility, iterate over a list of all fields and more. With some experience in reflection it is quite easy to find the equivalent method on the matching GWT Type oracle abstraction. They have almost the same method signatures.
 
