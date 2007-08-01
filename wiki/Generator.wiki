@@ -59,7 +59,7 @@ Whilst a powerful construct code generation within GWT is quite low level with a
 ==Rocket generator package==
 The rocket generator package attempts to solve some of the very problems described above. 
 
-===Creating class components factories===
+===Creating class components via factories===
 Each class component contains factories to create its enclosed components. 
 
 The Type class contains the following methods
