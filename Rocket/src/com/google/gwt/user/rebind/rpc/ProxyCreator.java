@@ -43,6 +43,8 @@ import com.google.gwt.user.rebind.SourceWriter;
 
 import java.io.PrintWriter;
 
+import rocket.remoting.client.HasSerializer;
+
 /**
  * Creates a client-side proxy for a
  * {@link com.google.gwt.user.client.rpc.RemoteService RemoteService} interface
@@ -514,6 +516,7 @@ class ProxyCreator {
 
     composerFactory.addImplementedInterface(ServiceDefTarget.class.getName());
     composerFactory.addImplementedInterface(getAsyncIntfQualifiedName());
+    composerFactory.addImplementedInterface( HasSerializer.class.getName() ); // ROCKET
 
     return composerFactory.createSourceWriter(ctx, printWriter);
   }

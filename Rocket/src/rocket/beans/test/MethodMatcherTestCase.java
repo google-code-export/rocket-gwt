@@ -17,13 +17,13 @@ package rocket.beans.test;
 
 import java.util.Collections;
 
+import junit.framework.TestCase;
 import rocket.beans.rebind.aop.MethodMatcher;
 import rocket.beans.rebind.aop.MethodMatcherFactory;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.java.JavaGeneratorContext;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import junit.framework.TestCase;
 
 public class MethodMatcherTestCase extends TestCase {
 

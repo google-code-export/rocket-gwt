@@ -445,7 +445,7 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.30.zip
 * Added dependency injection support via the rocket.beans package. Most of the spring concepts except for interceptors and destroy method are supported.
 * Added a number of wikis for various modules within the library.
 
-0.31 16 July 2007
+0.31 31 July 2007
 ----------------
 Download from http://rocket-gwt.googlecode.com/files/Rocket-0.31.zip
 
@@ -477,3 +477,9 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.31.zip
   ProxyCreator.
 * The customised ProxyCreator (the generator that creates classes to handle serializing of rpc objects) now logs a message, this should help make it easier to 
   spot classpath problems.
+  
+0.32 3 August 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.32.zip
+  
+* Fixed a silly bug which occured when reapplying changes to ProxyCreator (The GWT class that creates rpc clients and (de)serializers) when upgrading from 1.4.3 to 1.4.10.

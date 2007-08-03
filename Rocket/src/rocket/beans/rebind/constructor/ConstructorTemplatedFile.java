@@ -19,21 +19,17 @@ import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-
-import com.google.gwt.user.rebind.SourceWriter;
 
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.CodeBlockList;
-import rocket.generator.rebind.codeblock.StringCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.constructor.Constructor;
-import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * An abstraction for the constructor template

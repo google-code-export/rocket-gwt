@@ -20,7 +20,6 @@ import rocket.beans.client.BeanFactoryImpl;
 import rocket.beans.client.PrototypeFactoryBean;
 import rocket.beans.client.SingletonFactoryBean;
 import rocket.beans.client.aop.Advice;
-import rocket.beans.client.aop.InterceptorChain;
 import rocket.beans.client.aop.MethodInterceptor;
 import rocket.beans.client.aop.MethodInvocation;
 import rocket.beans.client.aop.ProxyFactoryBean;
