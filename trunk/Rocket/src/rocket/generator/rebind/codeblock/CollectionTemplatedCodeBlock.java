@@ -18,7 +18,6 @@ package rocket.generator.rebind.codeblock;
 import java.util.Collection;
 import java.util.Iterator;
 
-import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.SourceWriter;

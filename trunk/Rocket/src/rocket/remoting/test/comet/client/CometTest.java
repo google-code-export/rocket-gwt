@@ -48,7 +48,7 @@ public class CometTest implements EntryPoint {
         });
         this.createComet();
 
-        final Button start = new Button("Start using bad Url");
+        final Button start = new Button("Start");
         start.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
                 final CometClient client = CometTest.this.getCometClient();
@@ -58,7 +58,7 @@ public class CometTest implements EntryPoint {
         });
         RootPanel.get().add(start);
 
-        final Button startUsingInvalidUrl = new Button("Start w/ invalid Url(Log should include exceptions)");
+        final Button startUsingInvalidUrl = new Button("Start w/ bad Url(Log should include exceptions)");
         startUsingInvalidUrl.addClickListener(new ClickListener() {
             public void onClick(final Widget sender) {
                 final CometClient client = CometTest.this.getCometClient();

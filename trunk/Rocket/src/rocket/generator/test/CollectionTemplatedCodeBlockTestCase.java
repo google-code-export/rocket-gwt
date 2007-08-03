@@ -15,21 +15,18 @@
  */
 package rocket.generator.test;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.Collection;
 import java.util.Collections;
 
-import rocket.beans.rebind.stringvalue.StringValue;
+import junit.framework.TestCase;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
-import rocket.generator.rebind.codeblock.StringCodeBlock;
 import rocket.generator.rebind.util.StringBufferSourceWriter;
-import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.SourceWriter;
-
-import junit.framework.TestCase;
 
 public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	public void testEmptyCollection() {

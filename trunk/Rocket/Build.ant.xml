@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="Rocket" default="packageRelease" basedir=".">
+<project name="Rocket" default="build" basedir=".">
 	<description>
 		This build file may be used to generate all the outputs from the rocket source including
 		javadoc
@@ -8,7 +8,7 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.31"/>
+	<property name="version" value="0.32"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
@@ -345,7 +345,7 @@
 	built jar files.
 	-->
 	<target 	
-			name="packageRelease"
+			name="build"
 			depends="translateAllModules,packageArchive,javadoc,packageArchive"     			
     		description="Package a release including compiled classes, source files, javadoc and generated html.">
 

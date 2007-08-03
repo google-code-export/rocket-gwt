@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.generator.rebind.CodeGenerator;
-import rocket.generator.rebind.GeneratorHelper;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.SourceWriter;

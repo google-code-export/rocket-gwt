@@ -25,7 +25,6 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
-import rocket.generator.rebind.type.NewNestedType;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.SourceWriter;

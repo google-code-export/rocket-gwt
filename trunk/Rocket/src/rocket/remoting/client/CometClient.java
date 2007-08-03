@@ -127,12 +127,12 @@ public abstract class CometClient {
     /**
      * This function is invoked from the hidden frame and takes care of eventually dispatching the object to the registered callback.
      *
-     * @param c
+     * @param cometClient
      * @param serializedForm
      * @throws SerializationException
      */
-    public static void dispatch(final CometClient c, final String serializedForm) throws SerializationException {
-        c.dispatch(serializedForm);
+    public static void dispatch(final CometClient cometClient, final String serializedForm) throws SerializationException {
+        cometClient.dispatch(serializedForm);
     }
 
     public void dispatch(final String serializedForm) throws SerializationException {
@@ -152,9 +152,9 @@ public abstract class CometClient {
     /**
      * Deserializes the Object and its graph which are encoded within the given String.
      *
-     * @param serializedForm
-     * @return
-     * @throws SerializationException
+     * @param serializedForm A string containing the serialized object graph
+     * @return The deserialized object
+     * @throws SerializationException If something went wrong deserializing the parameter:serializedForm
      */
     protected Object deserialize(final String serializedForm) throws SerializationException {
         StringHelper.checkNotEmpty("parameter:serializedForm", serializedForm);
@@ -174,7 +174,7 @@ public abstract class CometClient {
     }
 
     /**
-     * Sub-classes must override this method to create the ServiceProxy using defered binding.
+     * Sub-classes must override this method to create the ServiceProxy interface literal using defered binding.
      *
      * <pre>
      *    return GWT.create( INSERT SERVICE CLASS.class );

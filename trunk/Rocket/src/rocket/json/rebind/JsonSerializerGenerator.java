@@ -18,7 +18,6 @@ package rocket.json.rebind;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +27,6 @@ import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlockList;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.method.Method;
