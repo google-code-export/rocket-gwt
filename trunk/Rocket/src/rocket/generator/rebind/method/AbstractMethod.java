@@ -16,6 +16,7 @@
 package rocket.generator.rebind.method;
 
 import java.util.Iterator;
+import java.util.List;
 
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.methodparameter.MethodParameter;
@@ -197,5 +198,49 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 
 		method.setVisibility(this.getVisibility());
 		return method;
+	}
+	
+	public boolean hasSameSignature( final Method otherMethod ){
+		ObjectHelper.checkNotNull( "parameter:otherMethod", otherMethod );
+		
+		boolean same = false;
+		
+		while( true ){			
+			// name must match
+			if( false == this.getName().equals( otherMethod.getName() )){
+				break;
+			}
+			// return type must match
+			if( false == this.getReturnType().equals( otherMethod.getReturnType() )){
+				break;
+			}
+			if( this.isStatic() != otherMethod.isStatic() ){
+				break;
+			}
+			
+			// parameter types must match.
+			final List parameters = this.getParameters();
+			final List otherParameters = otherMethod.getParameters();
+			if( parameters.size() != otherParameters.size() ){
+				break;
+			}
+			same = true;
+			final Iterator parametersIterator = parameters.iterator();
+			final Iterator otherParametersIterator = otherParameters.iterator();
+
+			while (parametersIterator.hasNext()) {
+				final MethodParameter parameter = (MethodParameter )parametersIterator.next();
+				final MethodParameter otherParameter = (MethodParameter )otherParametersIterator.next();
+				
+				if( parameter.getType().equals( otherParameter.getType() )){
+					same = false;
+					break;
+				}	
+			}			
+			
+			break;
+		}
+		
+		return same;
 	}
 }
