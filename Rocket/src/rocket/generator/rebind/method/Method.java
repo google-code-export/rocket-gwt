@@ -74,4 +74,11 @@ public interface Method extends ClassComponent, HasMetadata {
 	 * @return
 	 */
 	NewMethod copy(NewType enclosingType);
+	
+	/**
+	 * Tests if the given method has the same signature as this method.
+	 * @param otherMethod
+	 * @return
+	 */
+	boolean hasSameSignature( Method otherMethod );
 }
