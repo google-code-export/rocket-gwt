@@ -55,6 +55,7 @@ import rocket.util.test.HttpHelperTestCase;
 import rocket.util.test.StringHelperTestCase;
 import rocket.util.test.ThrowableHelperTestCase;
 import rocket.util.test.stacktracehelper.test.StackTraceHelperGwtTestCase;
+import rocket.widget.test.htmltemplatefactory.client.HtmlTemplateFactoryGwtTestCase;
 
 /**
  * TestSuite that executes all unit tests.
@@ -64,8 +65,8 @@ public class RocketTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket");
-		// rocket.beans
 		
+		// rocket.beans
 		suite.addTestSuite(SingletonFactoryBeanTestCase.class);
 		suite.addTestSuite(BeanFactoryTestCase.class);
 		suite.addTestSuite(PrototypeFactoryBeanTestCase.class);
@@ -118,7 +119,10 @@ public class RocketTestSuite {
 		suite.addTestSuite(ColourTestCase.class);
 		suite.addTestSuite(ThrowableHelperTestCase.class);
 		suite.addTestSuite(StringHelperTestCase.class);
-		suite.addTestSuite(StackTraceHelperGwtTestCase.class);
+		suite.addTestSuite(StackTraceHelperGwtTestCase.class);		
+				
+		// rocket.widget
+		suite.addTestSuite( HtmlTemplateFactoryGwtTestCase.class);		
 		
 		return suite;
 	}

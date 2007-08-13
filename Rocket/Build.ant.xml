@@ -8,7 +8,7 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.32"/>
+	<property name="version" value="0.33"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
@@ -72,7 +72,7 @@
 	Packages the three jar files that make up the rocket library.
 	-->
 	<target 
-  	name="packageArchive" 
+  	name="package" 
   	depends="compile" 
   	description="Create a release archive and secondary optional archives. 
   	Rocket.jar contains everything, 
@@ -190,104 +190,106 @@
 	<!--
 	Translates all modules into javascript.
 	-->
-	<target name="translateAllModules" depends="compile" description="Generates the html pages for all demos">
+	<target name="compileAllModules" depends="compile" description="Generates the html pages for all demos">
 		<echo>About to generate ALL demos!</echo>
 		
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.dragndrop.test.DragNDrop"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.remoting.test.comet.Comet"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.selection.test.selection.Selection"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.style.test.stylesheet.StyleSheet"/>
 		</antcall>
 
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.testing.test.webpagetestrunner.WebPageTestRunnerTest"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.testing.test.interactivelist.InteractiveList"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.testing.test.interactivepanel.InteractivePanel"/>
 		</antcall>
 		
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.util.test.stacktracehelper.StackTraceHelper"/>
 		</antcall>
 
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.accordionpanel.AccordionPanel"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.autocompletetextbox.AutoCompleteTextBox"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.blockypixel.BlockyPixel"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.breadcrumbpanel.BreadcrumbPanel"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.collapsablepanel.CollapsablePanel"/>
 		</antcall>
-
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.divpanel.DivPanel"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.grid.Grid"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.hyperlinkpanel.HyperLinkPanel"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.life.Life"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.menu.Menu"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.orderedlistpanel.OrderedListPanel"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.pager.Pager"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.slider.Slider"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.sortabletable.SortableTable"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.splitterpanel.SplitterPanel"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.stylesheetpicker.StyleSheetPicker"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.tabpanel.TabPanel"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.tree.Tree"/>
-			<param name="delete-gwt-tree-gifs" value="delete-gwt-tree-gifs"/>
+			<param name="delete-gifs" value="delete-gifs"/>
 		</antcall>		
-		<antcall target="translateModule">
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.unorderedlistpanel.UnorderedListPanel"/>
 		</antcall>
-		<antcall target="translateModule">
+		<antcall target="compileModule">
+			<param name="module" value="rocket.widget.test.viewport.Viewport"/>
+		</antcall>
+		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.zebraflextable.ZebraFlexTable"/>
 		</antcall>
 	</target>
 
 	<!--
-	Invokes the GWT compiler and translate a single module into javascript.
+	Invokes the GWT compiler and compile a single module into javascript.
 	-->
-	<target name="translateModule" depends="" description="Translates a module to javascript and html pages.">
+	<target name="compileModule" depends="" description="Translates a module to javascript and html pages.">
 		<echo>Compiling ${module}...</echo>
 		<delete failonerror="no">
 			<fileset dir="${www-dir}/${module}">
@@ -307,8 +309,10 @@
 			<arg value="DETAILED" />
 			<arg value="${module}" />
 		</java>
-
-		<antcall target="deleteGwtTreeGifs">
+		<antcall target="deleteUnnecessaryFiles">
+			<param name="module" value="${module}"/>
+		</antcall>
+		<antcall target="deleteGifs">
 			<param name="module" value="${module}"/>
 		</antcall>
 		<antcall target="deleteHistory">
@@ -316,13 +320,27 @@
 		</antcall>
 	</target>
 
-	<target name="deleteGwtTreeGifs" 
-		unless="delete-gwt-tree-gifs"
-		description="Deletes the three tree.gifs that are always copied over with each module is compiled by the gwt compiler">
+	<target name="deleteUnnecessaryFiles" 
+		description="Deletes all the excess files generated by the gwt compiler. 
+		These include the cache js, hosted.html (which is not required outside of hosted mode), binding decisions made (*.xml)">
+		<echo>Removing unnecessary files from ${module}...</echo>
+		<delete failonerror="no">
+			<fileset dir="${www-dir}/${module}">
+				<include name="hosted.html"/>				
+				<include name="*.cache.js"/>				
+				<include name="*.xml"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="deleteGifs" 
+		unless="delete-gifs"
+		description="Deletes the clear cache and three tree.gifs that are always copied over with each module is compiled by the gwt compiler">
 		<echo>Removing tree gifs from ${module}...</echo>
 		<delete failonerror="no">
 			<fileset dir="${www-dir}/${module}">
-				<include name="tree_open.gif"/>
+				<include name="clear.cache.gif"/>
+				<include name="tree_open.gif"/>				
 				<include name="tree_closed.gif"/>
 				<include name="tree_white.gif"/>
 			</fileset>
@@ -331,7 +349,7 @@
 
 	<target name="deleteHistory" 
 		unless="delete-history"
-		description="Deletes the three tree.gifs">
+		description="Deletes the three history file">
 		<echo>Removing history.html from ${module}...</echo>
 		<delete failonerror="no">
 			<fileset dir="${www-dir}/${module}">
@@ -341,12 +359,11 @@
 	</target>
 
 	<!--
-	Zips up the entire project skipping a number of directories but including important files such as the
-	built jar files.
+	Builds the entire release including compiling source to web demos and so on.
 	-->
 	<target 	
 			name="build"
-			depends="translateAllModules,packageArchive,javadoc,packageArchive"     			
+			depends="compileAllModules,package,javadoc,package"     			
     		description="Package a release including compiled classes, source files, javadoc and generated html.">
 
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>
@@ -359,14 +376,14 @@
 
 		<zip destfile="${basedir}/../${release-archive-name}">
 			<fileset dir="${basedir}/..">
-				<include name="Rocket/bin/**/*.class"/>
+<!--				<include name="${bin-dir}/**/*.class"/>-->
 				<include name="Rocket/src/**/*.*"/>
 				<include name="Rocket/doc/**/*.*"/>
 				<include name="Rocket/release/*.jar"/>
-				<include name="Rocket/wiki/*.*"/>				
+<!--				<include name="Rocket/wiki/*.*"/>	-->			
 				<include name="Rocket/www/**/*.*"/>
 				<include name="Rocket/*.*"/>
-				<exclude name="${release}/${release-archive-name}"/>
+				<exclude name="Rocket/release/${release-archive-name}"/>
 			</fileset>
 
 			<fileset dir="${txt-dir}">
@@ -377,7 +394,7 @@
 		</zip>
 	</target>
 	<!--
-	Runs all the unit test cases
+	Runs a TestSuite that includes all the unit test cases.
 	-->
 	<target name="test" depends="compile" description="Runs all Unit test cases">
 		<echo>About to run all test cases</echo>
@@ -414,11 +431,10 @@
 		<delete>
 			<fileset dir="." includes="Rocket*.jar"/>
 			<fileset dir="." includes="Rocket*.zip"/>
-			<fileset dir="bin" includes="**/*.class"/>
-			<fileset dir="doc" includes="**/*"/>
-			<fileset dir="test" includes="*"/>
-			<fileset dir="www" includes="**/*"/>
+			<fileset dir="${bin-dir}" includes="**/*.class"/>
+			<fileset dir="${doc-dir}" includes="**/*"/>
+			<fileset dir="${test-dir}" includes="*"/>
+			<fileset dir="${www-dir}" includes="**/*"/>
 		</delete>
 	</target>
-
 </project>
