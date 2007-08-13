@@ -330,4 +330,30 @@ public class WidgetConstants {
     public final static String RESIZABLE_PANEL_HANDLE_SELECTED_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE,
             "selected");
 
+    
+    final static String TEXTBOX_TYPE_ATTRIBUTE = "text";
+
+	final static String PASSWORD_TEXTBOX_TYPE_ATTRIBUTE = "password";
+
+	final static String TEXTAREA_TAG = "textarea";
+
+	final static String RADIO_BUTTON_TYPE_ATTRIBUTE = "radio";
+
+	final static String RADIO_BUTTON_GROUP_ATTRIBUTE = "group";
+
+	final static String CHECKBOX_TYPE_ATTRIBUTE = "checkbox";
+
+	final static String LISTBOX_TAG = "select";
+
+	final static String LABEL_TAG = "div";
+
+	final static String BUTTON_TAG = "button";
+
+	final static String IMAGE_TAG = "img";
+
+	final static String HYPERLINK_TAG = "a";
+
+	final static String HTML_TAG = "div";
+
+	final static String FORM_TAG = "form";
 }

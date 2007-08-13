@@ -1,0 +1,8 @@
+// form.txt
+
+com.google.gwt.user.client.ui.FormPanel form = (com.google.gwt.user.client.ui.FormPanel) this.getWidget( ${id} );
+if( null == form ){
+	form = bindFormPanel( ${id} );
+}
+return form;
+
