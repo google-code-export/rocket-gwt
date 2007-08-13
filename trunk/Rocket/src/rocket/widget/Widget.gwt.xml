@@ -1,2 +1,5 @@
 <module>
+	<generate-with class="rocket.widget.rebind.htmltemplatefactory.HtmlTemplateGenerator">
+		<when-type-assignable class="rocket.widget.client.HtmlTemplateFactory" />
+	</generate-with>
 </module>

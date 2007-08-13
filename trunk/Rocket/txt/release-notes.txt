@@ -483,3 +483,16 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.31.zip
 Download from http://rocket-gwt.googlecode.com/files/Rocket-0.32.zip
   
 * Fixed a silly bug which occured when reapplying changes to ProxyCreator (The GWT class that creates rpc clients and (de)serializers) when upgrading from 1.4.3 to 1.4.10.
+
+0.33 13 August 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.33.zip
+
+* Fixed Json serializer (JsonSerializerGenerator) to skip transient and final fields and report problems if a final instance field is encountered.
+* Fixed DomHelper.checkInputTag previously assertion logic failed if the element passed the test. This has been corrected.
+* Deleted DomHelper.toString( Element ). Refactored references to use GWT's DOM.toString( Element )
+* Added HtmlTemplateFactoryGenerator which takes a HtmlTemplateFactory interface and implements any defined getters, binding elements from the dom to GWT widgets using an id.
+* Fixed a few ObjectHelper.setters which all return the previous value which failed when the previous value was undefined.
+* Added a new viewport widget which may be used to create a viewport of tiles similar to that found in Google Map's. The user may drag tiles about, with tiles are only 
+  fetched for new tiles that appear due to scrolling.
+* Fixed proxying (aop) of non final public methods (eg wait() ) belonging to java.lang.Object.
