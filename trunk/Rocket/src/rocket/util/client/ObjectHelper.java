@@ -207,7 +207,7 @@ public class ObjectHelper extends SystemHelper {
 
     private static native String getString0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
-     return value ? value : null;
+     return value || null;
      }-*/;
 
     public static String getString(final JavaScriptObject object, final int index) {
@@ -218,7 +218,7 @@ public class ObjectHelper extends SystemHelper {
 
     private static native String getString0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];
-     return value ? value : null;
+     return value || null;
      }-*/;
 
     /**
@@ -238,7 +238,7 @@ public class ObjectHelper extends SystemHelper {
     private static native String setString0(final JavaScriptObject object, final String propertyName, final String value)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = value;
-     return previousValue ? previousValue : null;
+     return previousValue || null;
      }-*/;
 
     public static Object setString(final JavaScriptObject object, final int index, final String value) {
@@ -250,7 +250,7 @@ public class ObjectHelper extends SystemHelper {
     private static native String setString0(final JavaScriptObject object, final int index, final String value)/*-{
      var previousValue = object[ index ];
      object[ index ] = value;
-     return previousValue ? previousValue : null;
+     return previousValue || null;
      }-*/;
 
     /**
@@ -305,7 +305,7 @@ public class ObjectHelper extends SystemHelper {
     private static native double setDouble0(final JavaScriptObject object, final String propertyName, final double value)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = value;
-     return previousValue ? previousValue : 0.0;
+     return previousValue || 0.0;
      }-*/;
 
     public static double setDouble(final JavaScriptObject object, final int index, final double value) {
@@ -317,7 +317,7 @@ public class ObjectHelper extends SystemHelper {
     private static native double setDouble0(final JavaScriptObject object, final int index, final double value)/*-{
      var previousValue = object[ index ];
      object[ index ] = value;
-     return previousValue ? previousValue : 0.0;
+     return previousValue || 0.0;
      }-*/;
 
     /**
@@ -358,9 +358,9 @@ public class ObjectHelper extends SystemHelper {
     /**
      * Writes a boolean value to an object's property.
      * 
-     * @param object
-     * @param propertyName
-     * @param booleanValue
+     * @param object The object
+     * @param propertyName The property name
+     * @param booleanValue THe new value
      */
     public static void setBoolean(final JavaScriptObject object, final String propertyName, final boolean booleanValue) {
         ObjectHelper.checkNotNull("parameter:object", object);
@@ -372,7 +372,7 @@ public class ObjectHelper extends SystemHelper {
             final boolean booleanValue)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = booleanValue;
-     return previousValue ? true : false;
+     return previousValue || false;
      }-*/;
 
     public static void setBoolean(final JavaScriptObject object, final int index, final boolean booleanValue) {
@@ -384,15 +384,15 @@ public class ObjectHelper extends SystemHelper {
     private static native boolean setBoolean0(final JavaScriptObject object, final int index, final boolean booleanValue)/*-{
      var previousValue = object[ index ];
      object[ index ] = booleanValue;
-     return previousValue ? true : false;
+     return previousValue || false;
      }-*/;
 
     /**
      * Reads an object's property as an integer value.
      * 
-     * @param object
-     * @param propertyName
-     * @return
+     * @param object The object
+     * @param propertyName The name of the property being read
+     * @return The value
      */
     public static int getInteger(final JavaScriptObject object, final String propertyName) {
         ObjectHelper.checkNotNull("parameter:object", object);
@@ -425,10 +425,10 @@ public class ObjectHelper extends SystemHelper {
     /**
      * Writes an integer value to an object's property
      * 
-     * @param object
-     * @param propertyName
-     * @param intValue
-     * @return
+     * @param object The object
+     * @param propertyName The name of the property being set
+     * @param intValue The new value
+     * @return The previous value
      */
     public static int setInteger(final JavaScriptObject object, final String propertyName, final int intValue) {
         ObjectHelper.checkNotNull("parameter:object", object);
@@ -437,10 +437,10 @@ public class ObjectHelper extends SystemHelper {
     }
 
     private static native int setInteger0(final JavaScriptObject object, final String propertyName, final int intValue)/*-{
-     var previousValue = object[ propertyName ];
-     object[ propertyName ] = intValue;
-     return previousValue;
-     }-*/;
+     	var previousValue = object[ propertyName ];     
+     	object[ propertyName ] = intValue;
+      	return previousValue || 0;
+     }-*/; 
 
     public static int setInteger(final JavaScriptObject object, final int index, final int intValue) {
         ObjectHelper.checkNotNull("parameter:object", object);
@@ -449,9 +449,9 @@ public class ObjectHelper extends SystemHelper {
     }
 
     private static native int setInteger0(final JavaScriptObject object, final int index, final int intValue)/*-{
-     var previousValue = object[ index ];
-     object[ index ] = intValue;
-     return previousValue;
+     	var previousValue = object[ index ];
+     	object[ index ] = intValue;
+     	return previousValue || 0;
      }-*/;
 
     /**
@@ -469,7 +469,7 @@ public class ObjectHelper extends SystemHelper {
 
     native private static JavaScriptObject getObject0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
-     return value ? value : null;
+     return value || null;
      }-*/;
 
     public static JavaScriptObject getObject(final JavaScriptObject object, final int index) {
@@ -480,7 +480,7 @@ public class ObjectHelper extends SystemHelper {
 
     native private static JavaScriptObject getObject0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];
-     return value ? value : null;
+     return value || null;
      }-*/;
 
     /**
@@ -502,7 +502,7 @@ public class ObjectHelper extends SystemHelper {
             final JavaScriptObject value)/*-{
      var previousValue = object[ propertyName ];
      object[ propertyName ] = value;
-     return previousValue ? previousValue : null;
+     return previousValue || null;
      }-*/;
 
     public static JavaScriptObject setObject(final JavaScriptObject object, final int index,
@@ -516,7 +516,7 @@ public class ObjectHelper extends SystemHelper {
             final JavaScriptObject value)/*-{
      var previousValue = object[ index ];
      object[ index ] = value;
-     return previousValue ? previousValue : null;
+     return previousValue || null;
      }-*/;
 
     /**
@@ -534,7 +534,7 @@ public class ObjectHelper extends SystemHelper {
 
     native private static Element getElement0(final JavaScriptObject object, final String propertyName)/*-{
      var value = object[ propertyName ];
-     return value ? value : null;
+     return value || null;
      }-*/;
 
     public static Element getElement(final JavaScriptObject object, final int index) {
@@ -545,7 +545,7 @@ public class ObjectHelper extends SystemHelper {
 
     native private static Element getElement0(final JavaScriptObject object, final int index)/*-{
      var value = object[ index ];
-     return value ? value : null;
+     return value || null;
      }-*/;
 
     /**
@@ -564,7 +564,7 @@ public class ObjectHelper extends SystemHelper {
     native private static JavaScriptObject removeProperty0(final JavaScriptObject object, final String propertyName)/*-{
      var previousValue = object[ propertyName ];
      delete object[ propertyName ];
-     return previousValue ? previousValue : null;
+     return previousValue || null;
      }-*/;
 
     public static JavaScriptObject removeProperty(final JavaScriptObject object, final int index) {
@@ -576,7 +576,7 @@ public class ObjectHelper extends SystemHelper {
     native private static JavaScriptObject removeProperty0(final JavaScriptObject object, final int index)/*-{
      var previousValue = object[ index ];
      delete object[ index ];
-     return previousValue ? previousValue : null;
+     return previousValue || null;
      }-*/;
 
     /**
@@ -592,7 +592,7 @@ public class ObjectHelper extends SystemHelper {
         return ObjectHelper.getType0(object, propertyName);
     }
 
-    native protected static String getType0(final JavaScriptObject object, final String propertyName)/*-{
+    native private static String getType0(final JavaScriptObject object, final String propertyName)/*-{
      return typeof( object[ propertyName ] );
      }-*/;
 
@@ -609,7 +609,7 @@ public class ObjectHelper extends SystemHelper {
         return ObjectHelper.getType0(object, index);
     }
 
-    native protected static String getType0(final JavaScriptObject object, final int index)/*-{
+    native private static String getType0(final JavaScriptObject object, final int index)/*-{
      return typeof( object[ index ] );
      }-*/;
 
@@ -632,7 +632,7 @@ public class ObjectHelper extends SystemHelper {
      * @param nativeObject
      * @return
      */
-    native protected static int getPropertyCount0(final JavaScriptObject nativeObject)/*-{
+    native private static int getPropertyCount0(final JavaScriptObject nativeObject)/*-{
      var propertyCount = nativeObject.length;
      if( typeof( propertyCount ) != "number" ){
      
@@ -687,10 +687,10 @@ public class ObjectHelper extends SystemHelper {
      * @return
      */
     public static int indexOf(final JavaScriptObject array, final JavaScriptObject element) {
-        return ObjectHelper.indexOf(array, element);
+        return ObjectHelper.indexOf0(array, element);
     }
 
-    native protected static int indexOf0(final JavaScriptObject array, final JavaScriptObject element)/*-{
+    native private static int indexOf0(final JavaScriptObject array, final JavaScriptObject element)/*-{
      var index = -1;
      for( var i = 0; i < array.length; i++ ){
      if( array[ i ] == element ){
@@ -712,7 +712,7 @@ public class ObjectHelper extends SystemHelper {
         return ObjectHelper.lastIndexOf0(array, element);
     }
 
-    native protected static int lastIndexOf0(final JavaScriptObject array, final JavaScriptObject element)/*-{
+    native private static int lastIndexOf0(final JavaScriptObject array, final JavaScriptObject element)/*-{
      var index = -1;
      for( var i = array.length -1; i >= 0; i-- ){
      if( array[ i ] == element ){
