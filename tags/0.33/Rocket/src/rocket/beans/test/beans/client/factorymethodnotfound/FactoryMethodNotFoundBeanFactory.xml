@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 1.0//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 
+		id="bean" 
+		class="rocket.beans.test.beans.client.factorymethodnotfound.Bean" 
+		scope="singleton"
+		factoryMethod="notFound"
+		>
+	</bean>
+</bean-factory>

@@ -1,0 +1,26 @@
+<module>
+	<replace-with class="rocket.style.client.support.InternetExplorer6StyleSupport">
+		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+		<when-property-is name="user.agent" value="ie6"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.FireFoxStyleSupport">
+		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+		<when-property-is name="user.agent" value="gecko"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.FireFoxStyleSupport">
+		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+		<when-property-is name="user.agent" value="gecko1_8"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.OperaStyleSupport">
+		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+		<when-property-is name="user.agent" value="opera"/>
+	</replace-with>
+
+	<replace-with class="rocket.style.client.support.SafariStyleSupport">
+		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+		<when-property-is name="user.agent" value="safari"/>
+	</replace-with>
+</module>

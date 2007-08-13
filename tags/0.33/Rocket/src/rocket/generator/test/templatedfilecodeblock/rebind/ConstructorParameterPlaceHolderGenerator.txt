@@ -1,0 +1,2 @@
+final byte ${constructorParameter} = (byte) 127;
+return new ${type}(${constructorParameter});

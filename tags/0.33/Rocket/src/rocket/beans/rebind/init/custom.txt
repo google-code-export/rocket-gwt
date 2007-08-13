@@ -1,0 +1,7 @@
+// custom.txt
+
+// cast the instance parameter to ${beanType}
+final ${beanType} instance0 = (${beanType}) ${instanceParameter};
+
+// call custom init method.
+instance0.${initMethod}();

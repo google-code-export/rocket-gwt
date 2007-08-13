@@ -1,0 +1,8 @@
+// hyperlink.txt
+
+com.google.gwt.user.client.ui.Hyperlink hyperlink = (com.google.gwt.user.client.ui.Hyperlink) this.getWidget( ${id} );
+if( null == hyperlink ){
+	hyperlink = bindHyperlink( ${id} );
+}
+return hyperlink;
+
