@@ -49,8 +49,8 @@ public class JsonSerializerGenerator extends Generator {
 	 * Builds a new Deserializer type but first checks if the given type also
 	 * has a super type that needs a deserializer.
 	 * 
-	 * @param type
-	 * @param newTypeName
+	 * @param type The type passed to GWT.create()
+	 * @param newTypeName The name of the new type being generated
 	 */
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		ObjectHelper.checkNotNull("parameter:type", type);
@@ -172,10 +172,16 @@ public class JsonSerializerGenerator extends Generator {
 		final Type characterWrapperType = context.getChar().getWrapper();
 
 		final Iterator fields = type.getFields().iterator();
-		while (fields.hasNext()) {
-			final FieldSetterTemplatedFile setterMethodBody = new FieldSetterTemplatedFile();
-
+		while (fields.hasNext()) {			
 			final Field field = (Field) fields.next();
+			if( field.isStatic() || field.isTransient() ){
+				continue;
+			}
+			if( field.isFinal() ){
+				throwFinalFieldsCannotBeDeserialized( field );
+			}
+			
+			final FieldSetterTemplatedFile setterMethodBody = new FieldSetterTemplatedFile();
 			setterMethodBody.setField(field);
 
 			// create the setter method itself.
@@ -276,6 +282,10 @@ public class JsonSerializerGenerator extends Generator {
 			final Method asMethod = deserializer.getMostDerivedMethod(asMethodName, jsonValueParameterList);
 			invokeFieldSetter.setAsMethod(asMethod);
 		}
+	}
+	
+	protected void throwFinalFieldsCannotBeDeserialized( final Field field ){
+		throw new JsonSerializerGeneratorException("Final instance fields cannot be deserialized, field: " + field );
 	}
 
 	protected Type getListElementType(final Field field) {
