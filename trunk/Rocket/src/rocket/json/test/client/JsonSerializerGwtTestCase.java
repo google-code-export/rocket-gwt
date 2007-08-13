@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
 import rocket.json.client.JsonSerializable;
 import rocket.json.client.JsonSerializer;
 
@@ -72,6 +73,31 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		}
 	}
 
+	public void testDeserializeClassWithFinalField() {
+		final boolean value = true;
+
+		final JSONBoolean jsonBoolean = JSONBoolean.getInstance(value);
+		final JSONObject jsonObject = new JSONObject();
+		jsonObject.put("field", jsonBoolean);
+
+		try {
+			final Object proxy = GWT.create(ClassWithFinalField.class);
+			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the NotSerializable class does not implement serializable.");
+		} catch (final AssertionFailedError error) {
+			throw error;
+		} catch (final Throwable caught) {
+			final String causeType = GWT.getTypeName(caught.getCause());
+			assertTrue(causeType, causeType.equals("rocket.json.rebind.JsonSerializerGeneratorException"));
+		}
+	}
+
+	static class ClassWithFinalField implements JsonSerializable {
+		/**
+		 * @javascriptPropertyName field
+		 */
+		final boolean field = true;
+	}
+	
 	public void testDeserializeClassWithBooleanField() {
 		final boolean value = true;
 
@@ -91,7 +117,48 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		 */
 		boolean field;
 	}
+	
+	public void testDeserializeClassWithTransientField() {
+		final boolean value = true;
 
+		final JSONBoolean jsonBoolean = JSONBoolean.getInstance(value);
+		final JSONObject jsonObject = new JSONObject();
+		jsonObject.put("field", jsonBoolean);
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithTransientField.class);
+		final ClassWithTransientField instance = (ClassWithTransientField) serializer.asObject(jsonObject);
+
+		TestCase.assertTrue(value != instance.field);
+	}
+
+	static class ClassWithTransientField implements JsonSerializable {
+		/**
+		 * @javascriptPropertyName field
+		 */
+		transient boolean field;
+	}
+
+	public void testDeserializeClassWithStaticField() {
+		final boolean value = true;
+
+		final JSONBoolean jsonBoolean = JSONBoolean.getInstance(value);
+		final JSONObject jsonObject = new JSONObject();
+		jsonObject.put("field", jsonBoolean);
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithStaticField.class);
+		final ClassWithStaticField instance = (ClassWithStaticField) serializer.asObject(jsonObject);
+
+		TestCase.assertTrue(value != instance.field);
+	}
+
+	static class ClassWithStaticField implements JsonSerializable {
+		/**
+		 * @javascriptPropertyName field
+		 */
+		static boolean field;
+	}
+
+	
 	public void testDeserializeClassWithByteField() {
 		final byte value = 123;
 
