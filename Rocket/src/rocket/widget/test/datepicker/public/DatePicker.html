@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>DatePicker</title>
+		<style>
+			body,td,a,div,.p{font-family:arial,sans-serif}
+			div,td{color:#000000}
+			a:link,.w,.w a:link{color:#0000cc}
+			a:visited{color:#551a8b}
+			a:active{color:#ff0000}
+			
+			BUTTON {
+				margin: 4px;
+			}
+			
+			.rocket-datePicker{
+				margin: 4px;
+			
+				padding: 4px;
+			
+				border-width: 1px;
+				border-color: black;
+				border-style: solid;
+				background-color: #ddd;
+			}
+			
+			.rocket-datePicker-heading{
+				margin: 1px;
+				padding: 4px;
+				background-color: #000;
+				color: #eee;
+				
+				width: 10ex;
+				text-align: center;
+			}
+			
+			.rocket-datePicker-previousMonth{
+				background-color: #fed;
+			}			
+			.rocket-datePicker-currentMonth{
+				background-color: #eee;
+				font-weight: bold;
+			}
+			.rocket-datePicker-nextMonth{
+				background-color: #def;
+			}
+			
+			.rocket-datePicker-day{
+				margin: 1px;
+				padding: 4px;
+				
+				border-style: dotted;
+				border-width: 1px;
+				border-color: #123;
+				
+				text-align: center;				
+			}
+			
+			.today{
+				background-color: lightGreen;
+			}
+			
+			.weekend{
+				background-color: lightYellow;
+			}
+			
+		</style>
+		<script language='javascript' src='rocket.widget.test.datepicker.DatePicker.nocache.js'></script>
+	</head>
+	<body>
+		<h1>DatePicker</h1>
+		<p>
+			The DatePicker is a simple widget that shows a month worth of days in a grid with each week allocated a row. 
+			Developers may then decorate it with buttons which allow the user to navigate forward or backward one month at a time etc.
+			For more details refer to the javadoc.
+		</p>
+		
+		<h3>Things to test</h3>
+		<ul>
+			<li>Each day has a click listener which when clicked shows an alert that gives the full date of that day.</li>
+			<li>Previous month / Next month may be used to move backwards or forwards a month</li>
+			<li>DatePickerTest adds two styles that will make a weekend day yellow.</li>
+			<li>Days belonging to the previous month should have a pinkish background.</li>
+			<li>Days belonging to the current month will have their day of the month in bold</li>			
+			<li>Days belonging to the next month should have a cyan background.</li>	
+			<li>Today will have a green background</li>			
+		</ul>
+		
+		<button onclick="prompt('',document.body.innerHTML);">document.body.innerHTML</button>
+	</body>
+</html>
