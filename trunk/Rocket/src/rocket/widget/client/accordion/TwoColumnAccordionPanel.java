@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Miroslav Pokorny (mP)
  * 
  */
-public abstract class TwoColumnAccordionPanel extends AccordionPanel {
+abstract class TwoColumnAccordionPanel extends AccordionPanel {
     protected TwoColumnAccordionPanel() {
         super();
     }

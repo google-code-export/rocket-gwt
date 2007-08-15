@@ -18,7 +18,7 @@ package rocket.widget.client.accordion;
 import rocket.style.client.StyleHelper;
 import rocket.widget.client.WidgetConstants;
 
-public class AccordionConstants {
+class AccordionConstants {
     final static String SELECTED = "selected";
 
     final static String CAPTIONS = "captions";
