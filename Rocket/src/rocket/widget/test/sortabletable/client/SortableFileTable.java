@@ -35,173 +35,170 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class SortableFileTable extends SortableTable {
+class SortableFileTable extends SortableTable {
 
-    public SortableFileTable() {
-        super();
+	public SortableFileTable() {
+		super();
 
-        this.setHeadings();
-        final ZebraFlexTable table = (ZebraFlexTable) this.getFlexTable();
-        table.addHeadingStyleToFirstRow();
-    }
+		this.setHeadings();
+		final ZebraFlexTable table = (ZebraFlexTable) this.getFlexTable();
+		table.addHeadingStyleToFirstRow();
+	}
 
-    protected Object getValue(final Object row, final int column) {
-        ObjectHelper.checkNotNull("parameter:row", row);
-        this.checkColumn("parameter:column", column);
+	protected void onColumnSortingClick(final Widget widget) {
+		final long started = System.currentTimeMillis();
+		
+		super.onColumnSortingClick( widget );
+		
+		final long ended = System.currentTimeMillis();
+		
+		Window.alert( "Sorting of " + this.getRows().size() + " rows took " + ( ended - started ) + " milli(s) ");
+	}
+	
+	protected Object getValue(final Object row, final int column) {
+		ObjectHelper.checkNotNull("parameter:row", row);
+		this.checkColumn("parameter:column", column);
 
-        final File downloadFile = (File) row;
+		final File downloadFile = (File) row;
 
-        Object value = null;
-        switch (column) {
-        case 0: {
-            value = downloadFile.getFilename();
-            break;
-        }
-        case 1: {
-            value = new Integer(downloadFile.getSize());
-            break;
-        }
-        case 3: {
-            value = downloadFile.getCreateDate();
-            break;
-        }
-        case 4: {
-            value = downloadFile.hasDownloadDate() ? downloadFile.getDownloadDate() : null;
-            break;
-        }
-        default: {
-            SystemHelper.fail("parameter:column", "The parameter:column contains an invalid value. row: " + row);
-        }
-        }
-        return value;
-    }
+		Object value = null;
+		switch (column) {
+		case 0: {
+			value = downloadFile.getFilename();
+			break;
+		}
+		case 1: {
+			value = new Integer(downloadFile.getSize());
+			break;
+		}
+		case 3: {
+			value = downloadFile.getCreateDate();
+			break;
+		}
+		default: {
+			SystemHelper.fail("parameter:column", "The parameter:column contains an invalid value. row: " + row);
+		}
+		}
+		return value;
+	}
 
-    protected Widget getWidget(final Object value, final int column) {
-        ObjectHelper.checkNotNull("parameter:value", value);
-        this.checkColumn("parameter:column", column);
+	protected Widget getWidget(final Object value, final int column) {
+		ObjectHelper.checkNotNull("parameter:value", value);
+		this.checkColumn("parameter:column", column);
 
-        final File file = (File) value;
-        Widget widget = null;
-        switch (column) {
-        case 0: {
-            widget = visitFilename(file.getFilename());
-            break;
-        }
-        case 1: {
-            widget = visitSize(file.getSize());
-            break;
-        }
-        case 2: {
-            widget = visitDescription(file.getDescription());
-            break;
-        }
-        case 3: {
-            widget = visitCreateDate(file.getCreateDate());
-            break;
-        }
-        case 4: {
-            widget = file.hasDownloadDate() ? visitDownloadDate(file.getDownloadDate()) : this
-                    .visitMissingDownloadDate();
-            break;
-        }
-        case 5: {
-            widget = this.createDownloadLink(file.getServerId());
-            break;
-        }
-        case 6: {
-            widget = this.createRemoveLink(file.getServerId());
-            break;
-        }
-        default: {
-            SystemHelper.fail("parameter:column", "The parameter:column contains an invalid value. column: " + column);
-        }
-        }
-        return widget;
-    }
+		System.out.println("SortableFileTable - getting widget for column: " + column + " value: " + value);
 
-    protected void setHeadings() {
-        int row = 0;
-        int i = 0;
-        this.setWidget(row, i, this.createHeader("Filename", i));
-        i++;
-        this.setWidget(row, i, this.createHeader("size(bytes)", i));
-        i++;
-        this.setWidget(row, i, this.createHeader("Description", i));
-        i++;
-        this.setWidget(row, i, this.createHeader("Create Date/Time", i));
-        ;
-        i++;
-        this.setWidget(row, i, this.createHeader("Download Date/Time", i));
-        i++;
-        this.setWidget(row, i, this.createHeader("Download", i));
-        i++;
-        this.setWidget(row, i, this.createHeader("Remove", i));
-    }
+		final File file = (File) value;
+		Widget widget = null;
+		switch (column) {
+		case 0: {
+			widget = visitFilename(file.getFilename());
+			break;
+		}
+		case 1: {
+			widget = visitSize(file.getSize());
+			break;
+		}
+		case 2: {
+			widget = visitDescription(file.getDescription());
+			break;
+		}
+		case 3: {
+			widget = visitCreateDate(file.getCreateDate());
+			break;
+		}
+		default: {
+			SystemHelper.fail("parameter:column", "The parameter:column contains an invalid value. column: " + column);
+		}
+		}
+		return widget;
+	}
 
-    protected int getColumnCount() {
-        return 7;
-    }
+	protected void setHeadings() {
+		int row = 0;
+		int i = 0;
+		this.setWidget(row, i, this.createHeader("Filename", i));
+		i++;
+		this.setWidget(row, i, this.createHeader("size(bytes)", i));
+		i++;
+		this.setWidget(row, i, this.createHeader("Description", i));
+		i++;
+		this.setWidget(row, i, this.createHeader("Create Date/Time", i));
+	}
 
-    protected Hyperlink createDownloadLink(final String serverId) {
-        StringHelper.checkNotEmpty("parameter:serverId", serverId);
-        final Hyperlink link = new Hyperlink();
-        link.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                doDownload(serverId);
-            }
+	protected int getColumnCount() {
+		return 4;
+	}
 
-        });
-        link.setText("download");
-        return link;
-    }
+	protected Hyperlink createDownloadLink(final String serverId) {
+		StringHelper.checkNotEmpty("parameter:serverId", serverId);
+		final Hyperlink link = new Hyperlink();
+		link.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				doDownload(serverId);
+			}
 
-    protected void doDownload(final String serverId) {
-        Window.alert("downloading " + serverId);
-    }
+		});
+		link.setText("download");
+		return link;
+	}
 
-    protected Hyperlink createRemoveLink(final String serverId) {
-        StringHelper.checkNotEmpty("parameter:serverId", serverId);
-        final Hyperlink link = new Hyperlink();
-        link.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                doRemove(serverId);
-            }
+	protected void doDownload(final String serverId) {
+		Window.alert("downloading " + serverId);
+	}
 
-        });
-        link.setText("remove");
-        return link;
-    }
+	protected Hyperlink createRemoveLink(final String serverId) {
+		StringHelper.checkNotEmpty("parameter:serverId", serverId);
+		final Hyperlink link = new Hyperlink();
+		link.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				doRemove(serverId);
+			}
 
-    protected void doRemove(final String serverId) {
-        Window.alert("removing " + serverId);
-    }
+		});
+		link.setText("remove");
+		return link;
+	}
 
-    protected Widget visitFilename(final String filename) {
-        StringHelper.checkNotEmpty("parameter:filename", filename);
-        return new Label(filename);
-    }
+	protected void doRemove(final String serverId) {
+		Window.alert("removing " + serverId);
+	}
 
-    protected Widget visitSize(final int size) {
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:size", size, 0);
-        return new Label(PrimitiveHelper.formatKiloOrMegabytes(size));
-    }
+	protected Widget visitFilename(final String filename) {
+		StringHelper.checkNotEmpty("parameter:filename", filename);
+		return new Label(filename);
+	}
 
-    protected Widget visitDescription(final String description) {
-        StringHelper.checkNotEmpty("parameter:description", description);
-        return new Label(description);
-    }
+	protected Widget visitSize(final int size) {
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:size", size, 0);
+		return new Label(PrimitiveHelper.formatKiloOrMegabytes(size));
+	}
 
-    protected Widget visitCreateDate(final Date createDate) {
-        ObjectHelper.checkNotNull("parameter:createDate", createDate);
-        return new Label(createDate.toGMTString());
-    }
+	protected Widget visitDescription(final String description) {
+		StringHelper.checkNotEmpty("parameter:description", description);
+		return new Label(description);
+	}
 
-    protected Widget visitDownloadDate(final Date downloadDate) {
-        ObjectHelper.checkNotNull("parameter:downloadDate", downloadDate);
-        return new Label(downloadDate.toGMTString());
-    }
+	protected Widget visitCreateDate(final Date createDate) {
+		ObjectHelper.checkNotNull("parameter:createDate", createDate);
+		return new Label(createDate.toGMTString());
+	}
 
-    protected Widget visitMissingDownloadDate() {
-        return new Label("");
-    }
+	protected Widget visitDownloadDate(final Date downloadDate) {
+		ObjectHelper.checkNotNull("parameter:downloadDate", downloadDate);
+		return new Label(downloadDate.toGMTString());
+	}
+
+	protected Widget visitMissingDownloadDate() {
+		return new Label("");
+	}
+	
+	protected String getAscendingSortImageSource(){
+		return "up.gif";
+	}
+	
+	protected String getDescendingSortImageSource(){
+		return "down.gif";
+	}
+	
 }

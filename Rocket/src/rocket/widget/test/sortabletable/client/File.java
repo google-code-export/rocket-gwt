@@ -17,6 +17,8 @@ package rocket.widget.test.sortabletable.client;
 
 import java.util.Date;
 
+import com.google.gwt.user.client.Window;
+
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
@@ -27,7 +29,7 @@ import rocket.util.client.StringHelper;
  * @author Miroslav Pokorny (mP)
  * 
  */
-public class File {
+class File {
 
     /**
      * The name of the file
@@ -68,11 +70,7 @@ public class File {
         StringHelper.checkNotEmpty("field:description", description);
         return description;
     }
-
-    public boolean hasDescription() {
-        return null != description;
-    }
-
+    
     public void setDescription(final String description) {
         StringHelper.checkNotEmpty("parameter:description", description);
         this.description = description;
@@ -93,42 +91,8 @@ public class File {
         this.createDate = createDate;
     }
 
-    /**
-     * THe date/time the file was downloaded. Will be null if the file has not been downloaded.
-     */
-    private Date downloadDate;
-
-    public Date getDownloadDate() {
-        ObjectHelper.checkNotNull("field:downloadDate", downloadDate);
-        return downloadDate;
-    }
-
-    public boolean hasDownloadDate() {
-        return null != downloadDate;
-    }
-
-    public void setDownloadDate(final Date downloadDate) {
-        ObjectHelper.checkNotNull("parameter:downloadDate", downloadDate);
-        this.downloadDate = downloadDate;
-    }
-
-    /**
-     * A long string which identifies this file on the server.
-     */
-    private String serverId;
-
-    public String getServerId() {
-        StringHelper.checkNotEmpty("field:serverId", serverId);
-        return serverId;
-    }
-
-    public void setServerId(final String serverId) {
-        StringHelper.checkNotEmpty("parameter:serverId", serverId);
-        this.serverId = serverId;
-    }
-
     public String toString() {
         return super.toString() + ", filename[" + filename + "], size: " + size + ", description[" + description
-                + "], createDate: " + createDate + ", downloadDate: " + downloadDate + ", serverId[" + serverId + "]";
+                + "], createDate: " + createDate;
     }
 }
