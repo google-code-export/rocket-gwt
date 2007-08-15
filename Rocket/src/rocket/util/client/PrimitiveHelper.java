@@ -16,12 +16,27 @@
 package rocket.util.client;
 
 /**
- * A variety of check / assertion methods for primitive types.
+ * A variety of miscellaneous methods that deal with primitive types.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class PrimitiveHelper extends SystemHelper {
 
+	/**
+	 * Tests if two double values are close enough to each other to be considered equal
+	 * @param value The first value
+	 * @param otherValue The value being compared against
+	 * @param epsilon
+	 * @return True if equal or close enough otherwise false.
+	 */
+	static public boolean equals( final double value, final double otherValue, final double epsilon ){
+		return ( value - epsilon <= otherValue ) && ( value + epsilon >= otherValue ); 
+	}
+	
+	static public boolean equals( final long value, final long otherValue, final long epsilon ){
+		return ( value - epsilon <= otherValue ) && ( value + epsilon >= otherValue ); 
+	}	
+	
     public static void checkBoolean(final String name, final boolean value, final boolean expectedValue) {
         if (value != expectedValue) {
             SystemHelper.fail("The " + name + " value of " + value + " should be equal to " + expectedValue);
