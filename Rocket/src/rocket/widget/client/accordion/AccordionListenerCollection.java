@@ -21,7 +21,7 @@ import java.util.List;
 
 import rocket.util.client.ObjectHelper;
 
-public class AccordionListenerCollection {
+class AccordionListenerCollection {
     public AccordionListenerCollection() {
         this.setListeners(new ArrayList());
     }
