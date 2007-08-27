@@ -1,4 +1,4 @@
-#labels Featured,CodeGeneration,GWT
+#labels Featured,CodeGeneration
 =Purpose=
 Before talking about the features of the generator package and how to use them, some background about GWT generators is necessary. The generator idiom is used by GWT to implement many of its sophisticated features including:
   * The RPC proxy and accompanying (de)serializer for reachable types.
@@ -9,27 +9,6 @@ For more info on these fantastic features refer to the doco, which is found on b
 The rocket.generator package does not change how deferred binding works. It is however a richer abstraction that makes it easier to author new generators. A GWT generator which only works inside the hosted mode environment/compiler and may only be tested inside a GwtTestCase. A rocket enhanced generator may also use the jdk as the source of its types making it possible to test within a normal Junit TestCase.
 
 Template support also mean theres no need to ever print a single line of java code again.
-
-=ProxyCreator the GWT RPC generator=
-The `com.google.gwt.user.rebind.rpc.ProxyCreator` class is a generator that creates both the rpc proxy client and generates the necessary serializers for all reachable types. 
-Like all generators, GWT applications do not explicitly invoke ProxyCreator. The GWT compiler uses rules defined in module xml files to decide which generator is executed for each class literal passed to GWT.create(). The '/com/google/gwt/user/user/RemoteService.gwt.xml` module defines the following rule which instructs the GWT environment to run ProxyCreator for each interface implementing `com.google.gwt.user.client.rpc.RemoteRPCService`.
-{{{
-<generate-with class="com.google.gwt.user.rebind.rpc.ServiceInterfaceProxyGenerator">
-  <when-type-assignable class="com.google.gwt.user.client.rpc.RemoteService"/>
-</generate-with>
-}}}
-
-A developer wishing to create a RPC Proxy using deferred binding would include something similar to the following statement.
-{{{
-	ServiceAsync proxy = (ServiceAsync) GWT.create( Service.class );
-}}}
-
-Once the generator has run and created the proxy it returns the name of the generated class. The javascript output is equivalent to the following:
-{{{
-	ServiceAsync proxy = (ServiceAsync) new GeneratedClass();
-}}}
-
-The above statements are a simplification but are reasonably accurate discription of the overall process. 
 
 =Code Generation=
 This section does not concern how a genearator decides what code to generate but rather how it interacts with the GWT environment. Two major components are used throughout a code generation session, the GWT `com.google.gwt.core.ext.typeinfo.TypeOracle` and its accompanying helpers and `com.google.gwt.user.rebind.SourceWrite`. As their names imply one answers questions about available types, whilst the other is used to create the source file for new types.
@@ -240,6 +219,5 @@ Most of the above code is concerned with finding a matching setter for the given
 
 ===Testing generator components outside of a generator===
 The generator package includes two GeneratorContexts (the rocket equivalent of a TypeOracle), one that interfaces to a real TypeOracle and the other which is a fascade over java and uses reflection to provide type info. This was especially useful when time came to write a visitor that visited all the public virtual methods belonging to a type, skipping methods that were not public and were overridden by in a subclass. By using the `rocket.generator.rebind.java.JavaGeneratorContext` it was possible to create a plain vanilla Junit TestCase, with a variety of tests that verified the `rocket.generator.rebind.visitor.VirtualMethodVisitor.java` visitor was working correctly.
-
 
 
