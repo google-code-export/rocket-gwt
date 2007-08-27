@@ -22,7 +22,7 @@ Add the rocket module to your own application module.
 }}}
 
 
-==Server side==
+==Authoring the server component==
 
 A servlet must be created which extends `rocket.remoting.server.CometServerServlet` and implements the `queryObjectSource()` method. 
 
@@ -46,7 +46,7 @@ public SampleCometServletServlet extends CometServerServlet{
 }
 }}}
 
-==Client side==
+==Authoring the client==
 
 A number of types must be created as part of the process of creating a comet client.
 
@@ -98,4 +98,3 @@ The code sample below shows how to create and start a comet session with the ser
 
 For further examples refer to the unit test. The `rocket.remoting.test.comet.client.CometTest` class is a working comet client, with
 `rocket.remoting.test.comet.server.TestCometObjectStreamingServlet` representing the server portion.
-
