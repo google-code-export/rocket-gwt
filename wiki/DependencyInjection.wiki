@@ -8,8 +8,7 @@ Many but not all of the DI and aop concepts made popular by Spring and other DI 
 
 All resolution occurs during the code generation step and not at runtime. Spring and other DI frameworks take advantage of java runtimes such as reflection and classloading which are not available within a GWT environment.
 
-=Supported constructs=
-
+=Whats supported and works=
 Many of the popular DI/AOP concepts developers are familiar present with some restrictions due to the browser environment. 
 
 Many of the copied ideas use the same interfaces/names when possible but live under the rocket.beans package.
@@ -20,7 +19,7 @@ Many of the copied ideas use the same interfaces/names when possible but live un
   * InitializingBean - any bean implementing rocket.beans.client.InitializingBean has its afterPropertiesSet() method invoked after all properties are set but before the bean leaves the factory.
   * Several types of advices are supported, all relating to methods only. Before, after returning, after throwing, after finally and method interceptors. The method signatures and when these advices are called are very similar to those found in Spring.
 
-=Unsupported constructs=
+=What doesnt work=
   * The destroy lifecycle event is not support. Work is continuing on the best strategy to implement this. The most likely mechanism to implement this portion of a beans lifecycle is via listener registered to com.google.gwt.user.client.WindowCloseListener.onWindowClosing
   * Autowiring to satisfy all properties of a bean.
   * The ability to load beans eagerly or lazily is not supported. All references and values are verified during the compilation, with instances created lazily.
@@ -236,19 +235,21 @@ Messages are logged at different levels during key portions bean factory generat
 
 =More Info, Tests, Examples=
 A number of tests are available that test each and every of the features described above.
-  * *rocket.beans.test.beans.client.BeansGwtTestCase* This unit test tests all of the features of BeanFactory. Each test typically includes a client and rebind side classes.
+Typically each test method includes a sub package which contains the actual BeanFactory interface and xml file along with any supporting types.
+  * *rocket.beans.test.beans.client.BeansGwtTestCase
 
 The tests below are regular junit tests that test many of the templated abstract classes used during code generation or at runtime.
-  * rocket.beans.test.AfterFinallyAdviceMethodInterceptorTestCase Tests 
-  * rocket.beans.test.AfterReturningAdviceMethodInterceptorTestCase
-  * rocket.beans.test.AfterThrowingAdviceMethodInterceptorTestCase
-  * rocket.beans.test.BeanFactoryTestCase
-  * rocket.beans.test.BeforeAdviceMethodInterceptorTestCase
-  * rocket.beans.test.InterceptorChainTestCase
-  * rocket.beans.test.MethodMatcherTestCase* Tests the <rocket.beans.rebind.aop.MethodMatcher> class which takes the expression from an advice tag and finds methods of the target bean that the advice will be applied too.
-  * rocket.beans.test.PlaceHolderResolverTestCase
-  * rocket.beans.test.PrototypeFactoryBeanTestCase Tests the abstract PrototypeFactoryBean class. A number of methods are implemented by the generator.
-  * rocket.beans.test.ProxyFactoryBeanTestCase Tests the abstract ProxyFactoryBean class A number of methods are implemented by the generator.
-  * rocket.beans.test.SingletonFactoryBeanTestCase Tests the abstract SingletonFactoryBean class. A number of methods are implemented by the generator.
+  * `rocket.beans.test.AfterFinallyAdviceMethodInterceptorTestCase`
+  * `rocket.beans.test.AfterReturningAdviceMethodInterceptorTestCase`
+  * `rocket.beans.test.AfterThrowingAdviceMethodInterceptorTestCase`
+  * `rocket.beans.test.BeanFactoryTestCase`
+  * `rocket.beans.test.BeforeAdviceMethodInterceptorTestCase`
+  * `rocket.beans.test.InterceptorChainTestCase`
+  * `rocket.beans.test.MethodMatcherTestCase`
+  * `rocket.beans.rebind.aop.MethodMatcher`
+  * `rocket.beans.test.PlaceHolderResolverTestCase`
+  * `rocket.beans.test.PrototypeFactoryBeanTestCase`
+  * `rocket.beans.test.ProxyFactoryBeanTestCase`
+  * `rocket.beans.test.SingletonFactoryBeanTestCase`
 
 The entire beans package uses the Rocket generator package to generate the BeanFactory, FactoryBeans, and proxies.
