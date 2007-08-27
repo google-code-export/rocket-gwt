@@ -236,7 +236,7 @@ Messages are logged at different levels during key portions bean factory generat
 =More Info, Tests, Examples=
 A number of tests are available that test each and every of the features described above.
 Typically each test method includes a sub package which contains the actual BeanFactory interface and xml file along with any supporting types.
-  * *rocket.beans.test.beans.client.BeansGwtTestCase
+  * `rocket.beans.test.beans.client.BeansGwtTestCase`
 
 The tests below are regular junit tests that test many of the templated abstract classes used during code generation or at runtime.
   * `rocket.beans.test.AfterFinallyAdviceMethodInterceptorTestCase`
