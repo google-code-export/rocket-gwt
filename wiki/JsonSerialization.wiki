@@ -1,28 +1,20 @@
 #labels Featured,Json
-# Using the json serialization module.
-
 =Purpose=
 
-The rocket.json package includes a simple provision to map java objects to a json encoded stream. This makes it easy to build a java object
-from json without any manual binding.
-
-
+The rocket.json package includes a simple provision to map java objects to a json encoded stream. This makes it easy to build a java object from json without any manual binding or copying of values from a json and setting properties upon a java instance.
 
 The library supports the following mappings from json to java.
 
+|| JSON Type || Possible Java Type equivalents ||
+|| objects || java instances or a Map composed of key/value pairs ||
+|| arrays || become a List or Set of instances ||
+|| numbers || become any of the numeric primitive `byte, short, int, long, float, or double`. ||
+|| strings || `java.lang.String` or chars(which are actually useless but included for completeness) ||
+|| booleans || `booleans` ||
 
-  * Json objects become java objects or `java.util.Map`
-  * Json arrays become `java.util.List` or `java.util.Set`
-  * Json numbers become any of the numeric primitives `byte, short, int, long, float, or double`.
-  * Json Strings become `java.lang.String` or chars(which are actually useless but included for completeness)
-  * Json booleans become `booleans`
+==Marking a class as serializable==
 
-
-=Requirements=
-==Class and JsonSerializable==
-
-Following in java / gwt tradition a marker interface must be implemented by classes that wish to be serializable. In the case
-of the rocket library this is `rocket.json.client.JsonSerializable`.
+Following in java / gwt tradition a marker interface must be implemented by classes that wish to be serializable. In the case of the rocket library this is `rocket.json.client.JsonSerializable`.
 
 
 _
@@ -37,8 +29,7 @@ Only non transient, instance fields will be serializable. The visibilty of the f
 
 
 _
-The generator (`rocket.json.rebind.JsonSerializerGenerator`) uses JSNI to set each of the individual fields belonging to the instance being built. Field access visibility rules are not
-enforced within JSNI code.
+The generator (`rocket.json.rebind.JsonSerializerGenerator`) uses JSNI to set each of the individual fields belonging to the instance being built. Because JSNI code is used field visibility is not an issue, and setters are not required.
 _
 
 ===Json objects===
@@ -57,8 +48,6 @@ private String foo;
 ===Json array===
 
 An annotation must be included to tell the system the type of each element of the list or set.
-
-
 {{{
 /**
 * Something about the foo field..
@@ -70,23 +59,21 @@ An annotation must be included to tell the system the type of each element of th
 private String foo;
 }}}
 
-=Getting started with a quick simple example...=
+=Getting started=
 
 The following steps below list what and why is needed to use this facility in your own development efforts.
 
 
 ==Importing the rocket module==
 
-Add the rocket module to your own module.
+Add the rocket module to your own project module.
 
 {{{
 <module name="Rocket.User" />
 }}}
 
-==Json==
-
-The sample below includes a simple json object graph which includes all json types. It will be used as the basis for the contrived
-Java classes created below.
+==Sample Json==
+The sample below includes a simple json object graph which includes all json types. It will be used as the basis for the contrived Java classes created below.
 
 {{{
 	{
@@ -99,7 +86,7 @@ Java classes created below.
 	}
 }}}
 
-==Binding classes==
+==Annotating the bound types==
 
 Two separate classes are required, one for each json object present in the convulted example given above.
 The outter object includes 4 properties.
@@ -109,14 +96,12 @@ The outter object includes 4 properties.
   * array
   * object
 
-
-
 The code snippet below includes all the fields and required annotations that would be required to map the outter object to a class called
 OutterClass.
 
 
 {{{
-package somepackage;
+package example;
 import rocket.json.client.JsonSerializable;
 
 public class OutterClass implements JsonSerializable{
@@ -151,7 +136,7 @@ The code snippet below includes all the fields and required annotations that wou
 
 
 {{{
-package somepackage;
+package example;
 import rocket.json.client.JsonSerializable;
 
 public class InnerClass implements JsonSerializable{
@@ -162,10 +147,9 @@ public class InnerClass implements JsonSerializable{
 }
 }}}
 
-==Application code==
+==Binding json to a java object instance==
 
 Include required import statements.
-
 {{{
 import rocket.json.client.JsonSerializer;
 }}}
@@ -174,7 +158,7 @@ import rocket.json.client.JsonSerializer;
 To de serialize a json object to java a reference to a JsonSerializer must obtained using deferred binding.
 
 {{{
-JSONObject jsonObject = *// already got it from somewhere...*
+JSONObject jsonObject = // already got it from somewhere...
 JsonSerializer deserialize = (JsonSerialize) GWT.create( SomeClass.class );
 }}}
 
@@ -189,3 +173,5 @@ SomeClass instance = (SomeClass) deserialize.asObject( jsonObject );
 =Further samples=
 
 For further examples refer to the unit test `rocket.json.test.client.JsonGwtTestCase`
+
+
