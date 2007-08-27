@@ -6,6 +6,8 @@ The purpose of the `rocket.remoting.client.comet` package is to allow the server
 This solution requires a client and J2EE server with servlets to work in tandem.
 Any java servlet container including tomcat may be used.
 
+Only a single method must be implemented by any comet client and server. This is mostly simple glue consisting of a few lines of code.
+
 =Getting started=
 
 The following steps below list what and why is needed to use this facility in your own development efforts.
@@ -22,10 +24,15 @@ Add the rocket module to your own application module.
 
 ==Server side==
 
-A servlet must be created which extends `rocket.remoting.server.CometServerServlet` and implements the `queryObjectSource()` method. The servlet must block for an appropriate time and eventually return an instance which is then pushed to the client. Returning null results in the server pushing a heartbeat to keep the connection open, otherwise the object instance is pushed down the wire.
+A servlet must be created which extends `rocket.remoting.server.CometServerServlet` and implements the `queryObjectSource()` method. 
 
+===Polling object source===
+The servlet must block for an appropriate time and eventually return an instance which is then pushed to the client. Returning null results in the server pushing a heartbeat to keep the connection open, otherwise the object instance is pushed down the wire.
+
+===Web Container===
 The servlet must defined within a container's web.xml. The mapped url will be used by the client to establish a communication channel.
 
+===Sample===
 The sample shows a typical CometServerServlet implementation with the only thing being required is a poll upon some source.
 {{{
 package example;
@@ -47,6 +54,7 @@ A number of types must be created as part of the process of creating a comet cli
   * Create a GWT RemoteService and corresponding Async service interface with a method with a return type compatible with  the objects being pushed by the server.
   * Pass a `com.google.gwt.user.client.rpc.AsyncCallback` to handle any incoming objects.
 
+===Sample===
 The sample class below includes an example of the implemented abstract CometClient method.
 {{{
 package example;
@@ -90,5 +98,4 @@ The code sample below shows how to create and start a comet session with the ser
 
 For further examples refer to the unit test. The `rocket.remoting.test.comet.client.CometTest` class is a working comet client, with
 `rocket.remoting.test.comet.server.TestCometObjectStreamingServlet` representing the server portion.
-
 
