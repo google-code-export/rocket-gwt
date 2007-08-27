@@ -10,7 +10,7 @@ The rocket.generator package does not change how deferred binding works. It is h
 
 Template support also mean theres no need to ever print a single line of java code again.
 
-=Code Generation=
+=Emitting new types=
 This section does not concern how a genearator decides what code to generate but rather how it interacts with the GWT environment. Two major components are used throughout a code generation session, the GWT `com.google.gwt.core.ext.typeinfo.TypeOracle` and its accompanying helpers and `com.google.gwt.user.rebind.SourceWrite`. As their names imply one answers questions about available types, whilst the other is used to create the source file for new types.
 
 ==Comparing GWT Type Oracle with java reflection==
@@ -218,6 +218,25 @@ protected void overrideFactoryBeanSatisfyProperties(final Bean bean, final List 
 Most of the above code is concerned with finding a matching setter for the given property. Very little is concerned with emitting code.
 
 ===Testing generator components outside of a generator===
-The generator package includes two GeneratorContexts (the rocket equivalent of a TypeOracle), one that interfaces to a real TypeOracle and the other which is a fascade over java and uses reflection to provide type info. This was especially useful when time came to write a visitor that visited all the public virtual methods belonging to a type, skipping methods that were not public and were overridden by in a subclass. By using the `rocket.generator.rebind.java.JavaGeneratorContext` it was possible to create a plain vanilla Junit TestCase, with a variety of tests that verified the `rocket.generator.rebind.visitor.VirtualMethodVisitor.java` visitor was working correctly.
+
+The generator package includes two GeneratorContexts (the rocket equivalent of a TypeOracle).
+  * `rocket.generator.rebind.GeneratorContext` which uses the GWT TypeOracle.
+  * `rocket.generator.rebind.java.JavaGeneratorContext` uses the jdk as the type source
+
+=Further examples=
+For further examples refer to the unit tests.
+The tests below execute within the GWT compiler and use the GWT TypeOracle
+  * `rocket.generator.test.generator.client.GeneratorGwtTestCase`
+  * `rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockGwtTestCase`
+
+The list below includes a number of junit tests that use the generator module but use the jdk as the type source.
+  * `rocket.generator.test.AllMethodsVisitorTestCase`
+  * `rocket.generator.test.CollectionTemplateTestCase`
+  * `rocket.generator.test.GeneratorHelperTestCase`
+  * `rocket.generator.test.MethodTestCase`
+  * `rocket.generator.test.StringBufferSourceWriterTestCase`
+  * `rocket.generator.test.TypeTestCase`
+  * `rocket.generator.test.VirtualMethodTestCase`
+  * 
 
 
