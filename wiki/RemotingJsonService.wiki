@@ -6,12 +6,6 @@ The purpose of the rocket.remoting.client.json package is to expose remote serve
 use the json serialization facility to map json encoded responses to java objects without messing about with json bindings in code.
 The programming interface is almost identical to that required to use GWT's RPC mechanism.
 
-
-=Differences with GWT RPC=
-
-  * Remote json services are not restricted to only calling home. Using absolute urls they can point to anything.
-
-
 =Gotchas=
 
   * Input parameters for each service method is restricted to primitive type (`boolean, byte, short, int, long, float, double, and char` or `java.lang.String`.
