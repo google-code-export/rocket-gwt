@@ -6,9 +6,11 @@ Before talking about the features of the generator package and how to use them, 
   * ImageBundles which generate a single image from a collection of many.
 For more info on these fantastic features refer to the doco, which is found on both the GWT home page and within the download.
 
-The rocket.generator package does not change how deferred binding works. It only makes it easier to author new generators. It also makes life a lot easier with regards to revisiting old work. In the end it adds object abstractions for all parts the together compose a class. Templates support also mean theres no need to ever print a single line of java code again.
+The rocket.generator package does not change how deferred binding works. It is however a richer abstraction that makes it easier to author new generators. A GWT generator which only works inside the hosted mode environment/compiler and may only be tested inside a GwtTestCase. A rocket enhanced generator may also use the jdk as the source of its types making it possible to test within a normal Junit TestCase.
 
-=ProxyCreator the rpc generator=
+Template support also mean theres no need to ever print a single line of java code again.
+
+=ProxyCreator the GWT RPC generator=
 The `com.google.gwt.user.rebind.rpc.ProxyCreator` class is a generator that creates both the rpc proxy client and generates the necessary serializers for all reachable types. 
 Like all generators, GWT applications do not explicitly invoke ProxyCreator. The GWT compiler uses rules defined in module xml files to decide which generator is executed for each class literal passed to GWT.create(). The '/com/google/gwt/user/user/RemoteService.gwt.xml` module defines the following rule which instructs the GWT environment to run ProxyCreator for each interface implementing `com.google.gwt.user.client.rpc.RemoteRPCService`.
 {{{
@@ -21,17 +23,18 @@ A developer wishing to create a RPC Proxy using deferred binding would include s
 {{{
 	ServiceAsync proxy = (ServiceAsync) GWT.create( Service.class );
 }}}
+
 Once the generator has run and created the proxy it returns the name of the generated class. The javascript output is equivalent to the following:
 {{{
 	ServiceAsync proxy = (ServiceAsync) new GeneratedClass();
 }}}
 
-The over statements are a simplification but remain true to the overall process. 
+The above statements are a simplification but are reasonably accurate discription of the overall process. 
 
 =Code Generation=
 This section does not concern how a genearator decides what code to generate but rather how it interacts with the GWT environment. Two major components are used throughout a code generation session, the GWT `com.google.gwt.core.ext.typeinfo.TypeOracle` and its accompanying helpers and `com.google.gwt.user.rebind.SourceWrite`. As their names imply one answers questions about available types, whilst the other is used to create the source file for new types.
 
-==GWT Type Oracle==
+==Comparing GWT Type Oracle with java reflection==
 The type oracle provides an interface to discover what types are available and methods to inspect various properties including types, constructors, methods and fields. The type oracle provided a purely read only view of the types available. 
 
 The GWT type oracle has many parallels with the reflection facilities available in a typical java environment. 
@@ -46,7 +49,7 @@ The table shows a simplified mapping between reflection abstractions and their c
 	
 The GWT Type Oracle and its accompanying classes provide many methods to retrieve the name of a type, test is visibility, iterate over a list of all fields and more. With some experience in reflection it is quite easy to find the equivalent method on the matching GWT Type oracle abstraction. They have almost the same method signatures.
 
-==SourceWriter==
+==Emitting a new type with SourceWriter==
 To create new types one must use `com.google.gwt.user.rebind.ClassSourceFileComposerFactory` to eventually create a new SourceWriter. The factory is a bean that includes methods to set the super type, which interfaces are implemented and so on. After the skeleton of the class is created the SourceWriter may be used to print java statements. Anything text can be printed and together these will be used to build the entire source file.
 
 Whilst a powerful construct code generation within GWT is quite low level with a number of issues outstanding.
@@ -58,7 +61,7 @@ Whilst a powerful construct code generation within GWT is quite low level with a
   * The current system does not provide a way to copy class components (constructors, methods, or fields) from one class to another. Often when sub-classing it would be useful to clone the overridden method and then just replace its body.
   * It is not possible to test components which require a TypeOracle outside of a generator.
 
-==Rocket generator package==
+==Authoring a generator with the Rocket package==
 The rocket generator package attempts to solve some of the very problems described above. 
 
 ===Creating class components via factories===
@@ -118,10 +121,12 @@ return proxy;
 
 Many other steps occur overriding the other abstract methods. Once all this is done the outter class is asked to write itself. It in turn asks all its enclosed initializers, constructors, methods and fields. Eventually the above template will write itself out to the given SourceWriter. 
 
-The CodeBlock class contains many other templates and Codeblocks. This is how the the BeanFactory.satsifyProperties is satisfied. Imagine a class with 3 fields its BeanFactory.satisfyProperties( Object beanInstance ) would look something like the code sample below
+A number of codeblocks are provided that provide alternatives to outputting java code. One laternative is that of a template which is used to implement the BeanFactory.satsifyProperties method. 
+
+A BeanFactory attempting to set three properties within its satisfyProperties() should end up looking like the code sample below.
 {{{
 protected void satisfyProperties( final java.lang.Object instance ){
-  // cast the Object bean instance to a local variable with the same type as the bean.
+  // cast the Object bean instance to a local variable to the actual bean type.
   BeanType instance0 = (BeanType) instance;
 
   // three statements follow that call each of the three property setters with the appropriate values...
@@ -235,3 +240,6 @@ Most of the above code is concerned with finding a matching setter for the given
 
 ===Testing generator components outside of a generator===
 The generator package includes two GeneratorContexts (the rocket equivalent of a TypeOracle), one that interfaces to a real TypeOracle and the other which is a fascade over java and uses reflection to provide type info. This was especially useful when time came to write a visitor that visited all the public virtual methods belonging to a type, skipping methods that were not public and were overridden by in a subclass. By using the `rocket.generator.rebind.java.JavaGeneratorContext` it was possible to create a plain vanilla Junit TestCase, with a variety of tests that verified the `rocket.generator.rebind.visitor.VirtualMethodVisitor.java` visitor was working correctly.
+
+
+
