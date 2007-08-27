@@ -1,15 +1,19 @@
 #labels Featured,Json,Serialization
-# Working with json services using a similar interface to GWT RPC services.
 =Purpose=
+The primary purpose of the rocket.remoting.client.json package is to make the steps to work with a remote server's json services almost the same as those required by a GWT RPC.
 
-The purpose of the rocket.remoting.client.json package is to expose remote server json services as java objects. Developers can then
-use the json serialization facility to map json encoded responses to java objects without messing about with json bindings in code.
-The programming interface is almost identical to that required to use GWT's RPC mechanism.
+==Similaries between GWT and RemoteJsonService==
+Many of the steps involved in using a GWT RPC have identical equivalents. 
+  * Both require their respective value objects to be serializable. This is indicated by different marker interfaces.
+  * A service interface must be defined.
+  * A Async service interface must also be defined.
+  * A proxy is retrieved using deferred binding.
+  * The target url must then be set after casting to ServiceDefTarget.
+  * A callback is notified of the rpc response, returning a object instance upon success or a Throwable when something goes wrong.
 
-=Gotchas=
+Both systems take care of the marshalling / unmarshalling required to convert an encoded String to a JavaObject.
 
-  * Input parameters for each service method is restricted to primitive type (`boolean, byte, short, int, long, float, double, and char` or `java.lang.String`.
-  * Service interface methods cannot return void.
+The rocket module uses another related module to handle its binding requirements `rocket.json.Json`. Refer to that wiki for more info on preparing JsonSerializable types.
 
 =Getting started=
 
@@ -18,20 +22,30 @@ The following steps below list what and why is needed to use this facility in yo
 
 ==Importing the rocket module==
 
-Add the rocket module to your own module.
+Add the rocket module to your own application module.
 
 {{{
 <module name="Rocket.User" />
 }}}
 
-==Create a GWT Service interface==
+==Creating a GWT Service interface==
 
 The sample below includes a simple service interface with all required annotations.
 The `@httpRequestMethod` is used to specify if a GET or a POST will be made to the target.
-The `@httpRequestParameterName` annotations (one is required for each method parameter are used to eventually build a querystring
-or post data for the target.
-Input parameters each method can only be a primitive type (`boolean, byte, short, int, long, float, double, and char` or `java.lang.String`.
+The `@httpRequestParameterName` annotations (one is required for each method parameter are used to eventually build a querystring or post data for the target.
 
+Input parameters each method can only be a primitive type 
+  * boolean
+  * byte
+  * short
+  * int
+  * long
+  * float
+  * double
+  * char
+  * java.lang.String
+
+The interface below assumes that the JsonResponsePayload type satisfies all the requirements of a JsonSerializable.
 {{{
 package example;
 
@@ -48,12 +62,14 @@ public interface ServiceInterface extends RemoteJsonService{
 }
 }}}
 
-==Create a GWT Async interface==
+==Creating a GWT Async interface==
 
-The Async interface name must be formed by append Async to the service interface name. For our example `example.ServiceInterface`
-becomes `example.ServiceInterfaceAsync`.
+A Async interface must be created for the matching service. The rules for the creation of the async interface are identical to those of a GWT RPC Async service interface.
 
+  * Append Async to the service interface name.
+  * Copy all public service methods to the async service interface, changing the return type to void and adding a AsyncCallback argument.
 
+The sample below gives the async complement of the interface previously defined.
 {{{
 package example;
 
@@ -61,32 +77,31 @@ import rocket.remoting.client.json.RemoteJsonService;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ServiceInterfaceAsync{
-
 	void invokeServer( boolean first, int second, String third, AsyncCallback callback );
 }
 }}}
 
-==Application code==
+==Invoking the Json service==
 
-The statements required to execute the remote json service are almost a carbon copy for those required to execute a GWT rpc.
-Required import statements are skipped.
+The statements required to execute the remote json service are almost a carbon copy of those required to execute a GWT rpc.
+
+Import statements
+{{{
+   // skipped
+}}}
 
 
-
-Get a reference to the generated proxy.
-
+Get a reference to the proxy via deferred binding.
 {{{
 ServiceInterfaceAsync service = (ServiceInterfaceAsync) GWT.create( ServiceInterface.class );
 }}}
 
 
 Set the target url.
-
 {{{
 ServiceDefTarget serviceDefTarget = (ServiceDefTarget) service;
 serviceDefTarget.setServiceEntryPoint( "targetUrl" );
 }}}
-
 
 
 Invoke the service. The given callback will be notified with the response or handle any errors encountered.
@@ -95,14 +110,14 @@ Invoke the service. The given callback will be notified with the response or han
 {{{
 service.invokeServer( true, 1, "apple", new AsyncCallback(){
 	public void onSuccess( final Object result ){
-		*// cast to JsonResponsePayload*
+		// cast to JsonResponsePayload*
 		JsonResponsePayload payload = (JsonResponsePayload) result;
 
-		*// continue with appropriate logic.*
+		// continue with appropriate logic.*
 	}
 
 	public void onFailure( final Throwable throwable ){
-		*// oops handle the throwable which is actually `rocket.remoting.client.json.RemoteJsonServiceException`*
+		// oops handle the throwable which is actually a `rocket.remoting.client.json.RemoteJsonServiceException`*
 	}
 
 } );
@@ -113,3 +128,9 @@ service.invokeServer( true, 1, "apple", new AsyncCallback(){
 =Further samples=
 
 For further examples refer to the unit test `rocket.remoting.test.remotejsonservice.client.RemoteJsonServiceGwtTestCase`
+
+
+
+
+
+
