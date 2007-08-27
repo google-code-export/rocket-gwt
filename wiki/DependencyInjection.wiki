@@ -15,16 +15,16 @@ Many of the popular DI/AOP concepts developers are familiar present with some re
 Many of the copied ideas use the same interfaces/names when possible but live under the rocket.beans package.
   * Singletons - One instance exists throughout the BeanFactory
   * Prototypes - A new instance is created each time the BF is queried.
-  * Advices are achieved via generated proxies with advices/interceptors weaved into the proxy.
+  * Method advices are achieved via generated proxies with advices/interceptors weaved into the proxy.
   * FactoryBean - Any bean defined which implements rocket.beans.client.FactoryBean is not returned but rather asked to produce a bean itself.
   * InitializingBean - any bean implementing rocket.beans.client.InitializingBean has its afterPropertiesSet() method invoked after all properties are set but before the bean leaves the factory.
   * Several types of advices are supported, all relating to methods only. Before, after returning, after throwing, after finally and method interceptors. The method signatures and when these advices are called are very similar to those found in Spring.
 
 =Unsupported constructs=
   * The destroy lifecycle event is not support. Work is continuing on the best strategy to implement this. The most likely mechanism to implement this portion of a beans lifecycle is via listener registered to com.google.gwt.user.client.WindowCloseListener.onWindowClosing
-  * Autowiring to satisfy all properties of a bean is not supported.
+  * Autowiring to satisfy all properties of a bean.
   * The ability to load beans eagerly or lazily is not supported. All references and values are verified during the compilation, with instances created lazily.
-  * Advices can only be added to methods, fields are not supported.
+  * Fields advices are not supported.
 
 =Getting started=
 
