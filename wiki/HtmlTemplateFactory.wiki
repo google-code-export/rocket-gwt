@@ -1,0 +1,88 @@
+#labels Featured
+# Wiki for the HtmlTemplateFactory
+
+=Purpose=
+The HtmlTemplateFactory provides the capability to bind elements to basic GWT widgets. Each element must have a unique id, along with an interface containing getters with widget return types. This capability allows GWT developers and web designers to work in tandem. The designer creates a html page and marks widgets with ids.
+
+The table below includes a mapping between html elements to GWT widgets.
+
+|| Html element || GWT Widget ||
+|| A || Hyperlink ||
+|| BUTTON || Button ||
+|| INPUT type=checkbox || CheckBox || 
+|| INPUT type=password || PasswordTextBox ||
+|| INPUT type=radiobutton || RadioButton ||
+|| INPUT type=text || TextBox ||
+|| SELECT || ListBox ||
+|| TEXTAREA || TextArea ||
+
+
+==Gotchas==
+The HtmlTemplateFactory contains a number of limitations.
+  * All interface methods must have no paramters. The id is specified via an annotation.
+  * The return type of each method must be compatible with the actual element type.
+  * Multiple calls to the same getter will return the same widget instance.
+  * Widgets fetched from the HtmlTemplateFactory may be removed and added to other panels.
+  * It is not possible to the implied attached label embedded within the CheckBox and RadioButton widgets.
+
+=Getting started=
+
+==Importing the rocket module==
+
+Add the rocket module to your own application module.
+
+{{{
+<module name="Rocket.User" />
+}}}
+
+==Defining a HtmlTemplateFactory==
+Create an interface that sub classes `rocket.widget.client.HtmlTemplateFactory` adding getters for each indentified element that we wish to expose as one of the following basic GWT widgets.
+
+The html fragment below contains a single textbox element.
+{{{
+   <table>
+     <tr>
+        <td>Foo</td><td><input type="text" id="textbox"></td>
+     </tr>
+   </table>
+
+}}}
+
+The HtmlTemplateFactory sub class below provides a factory method which binds the text element described above to a GWT TextBox. All the methods read and write to the textBox as expected.
+
+{{{
+package example;
+
+import rocket.widget.client.HtmlTemplateFactory;
+
+public class SampleHtmlTemplateFactory extends HtmlTemplateFactory{
+   /*
+    * @id=textbox
+    */
+   TextBox getTextBox();
+}
+}}}
+
+==Using the factory==
+A single singleton method should be defined to fetch the SampleHtmlTemplateFactory from the above example.
+
+{{{
+// The singleton...
+static SampleHtmlTemplateFactory factory = (SampleHtmlTemplateFactory) 
+  GWT.create( SampleHtmlTemplateFactory.class );
+}}}
+
+{{{
+   TextBox textBox = factory.getTextBox();
+   textBox.addClickListener( new ClickListener(){
+     public void onClick( Widget sender ){
+       // handle click event.
+     }
+   });
+   textBox.setText( ... );
+}}}
+
+=Further samples=
+
+For further examples refer to the unit test.
+  * `rocket.widget.test.htmltemplatefactory.client.HtmlTemplateFactoryGwtTestCase`
