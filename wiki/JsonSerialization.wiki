@@ -172,6 +172,6 @@ SomeClass instance = (SomeClass) deserialize.asObject( jsonObject );
 
 =Further samples=
 
-For further examples refer to the unit test `rocket.json.test.client.JsonGwtTestCase`
-
+For further examples refer to the unit test 
+  * `rocket.json.test.client.JsonGwtTestCase`
 
