@@ -96,5 +96,6 @@ The code sample below shows how to create and start a comet session with the ser
 
 =Further samples=
 
-For further examples refer to the unit test. The `rocket.remoting.test.comet.client.CometTest` class is a working comet client, with
-`rocket.remoting.test.comet.server.TestCometObjectStreamingServlet` representing the server portion.
+For further examples refer to the unit test. 
+  * client - `rocket.remoting.test.comet.client.CometTest` 
+  * server - `rocket.remoting.test.comet.server.TestCometObjectStreamingServlet` 
