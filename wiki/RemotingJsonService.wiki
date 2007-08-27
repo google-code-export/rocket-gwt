@@ -1,4 +1,4 @@
-#labels Featured,Json,Serialization
+#labels Featured,Json
 =Purpose=
 The primary purpose of the rocket.remoting.client.json package is to make the steps to work with a remote server's json services almost the same as those required by a GWT RPC.
 
@@ -127,10 +127,5 @@ service.invokeServer( true, 1, "apple", new AsyncCallback(){
 
 =Further samples=
 
-For further examples refer to the unit test `rocket.remoting.test.remotejsonservice.client.RemoteJsonServiceGwtTestCase`
-
-
-
-
-
-
+For further examples refer to the unit test.
+  * `rocket.remoting.test.remotejsonservice.client.RemoteJsonServiceGwtTestCase`
