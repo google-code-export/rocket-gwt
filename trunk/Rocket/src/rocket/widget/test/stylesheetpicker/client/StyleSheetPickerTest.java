@@ -24,22 +24,23 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * This test includes three accompanying stylesheets which are in turn selectable using the StyleSheetPicker widget.
+ * This test includes three accompanying stylesheets which are in turn
+ * selectable using the StyleSheetPicker widget.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class StyleSheetPickerTest implements EntryPoint {
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
 
-        final StyleSheetPicker picker = new StyleSheetPicker();
-        picker.setText("Theme picker");
-        picker.selectStyleSheet(0);
-        RootPanel.get().add(picker, 0, 0);
-    }
+		final StyleSheetPicker picker = new StyleSheetPicker();
+		picker.setText("Theme picker");
+		picker.selectStyleSheet(0);
+		RootPanel.get().add(picker, 0, 0);
+	}
 }

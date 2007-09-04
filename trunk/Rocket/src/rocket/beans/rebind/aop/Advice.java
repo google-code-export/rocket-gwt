@@ -67,8 +67,7 @@ public class Advice {
 	}
 
 	public String toString() {
-		return super.toString() + ", methodMatcher: " + methodMatcher
-				+ ", advisorBeanId: " + advisorBeanId + ", targetBeanId["
+		return super.toString() + ", methodMatcher: " + methodMatcher + ", advisorBeanId: " + advisorBeanId + ", targetBeanId["
 				+ targetBeanId + "]";
 	}
 }

@@ -17,8 +17,6 @@ package rocket.widget.test.sortabletable.client;
 
 import java.util.Date;
 
-import com.google.gwt.user.client.Window;
-
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
@@ -31,68 +29,68 @@ import rocket.util.client.StringHelper;
  */
 class File {
 
-    /**
-     * The name of the file
-     */
-    private String filename;
+	/**
+	 * The name of the file
+	 */
+	private String filename;
 
-    public String getFilename() {
-        StringHelper.checkNotEmpty("field:filename", filename);
-        return filename;
-    }
+	public String getFilename() {
+		StringHelper.checkNotEmpty("field:filename", filename);
+		return filename;
+	}
 
-    public void setFilename(final String filename) {
-        StringHelper.checkNotEmpty("parameter:filename", filename);
-        this.filename = filename;
-    }
+	public void setFilename(final String filename) {
+		StringHelper.checkNotEmpty("parameter:filename", filename);
+		this.filename = filename;
+	}
 
-    /**
-     * The size of the file in bytes.
-     */
-    private int size;
+	/**
+	 * The size of the file in bytes.
+	 */
+	private int size;
 
-    public int getSize() {
-        PrimitiveHelper.checkGreaterThanOrEqual("field:size", size, 0);
-        return size;
-    }
+	public int getSize() {
+		PrimitiveHelper.checkGreaterThanOrEqual("field:size", size, 0);
+		return size;
+	}
 
-    public void setSize(final int size) {
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:size", size, 0);
-        this.size = size;
-    }
+	public void setSize(final int size) {
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:size", size, 0);
+		this.size = size;
+	}
 
-    /**
-     * A description accompanying the file
-     */
-    private String description;
+	/**
+	 * A description accompanying the file
+	 */
+	private String description;
 
-    public String getDescription() {
-        StringHelper.checkNotEmpty("field:description", description);
-        return description;
-    }
-    
-    public void setDescription(final String description) {
-        StringHelper.checkNotEmpty("parameter:description", description);
-        this.description = description;
-    }
+	public String getDescription() {
+		StringHelper.checkNotEmpty("field:description", description);
+		return description;
+	}
 
-    /**
-     * The date the file was created.
-     */
-    private Date createDate;
+	public void setDescription(final String description) {
+		StringHelper.checkNotEmpty("parameter:description", description);
+		this.description = description;
+	}
 
-    public Date getCreateDate() {
-        ObjectHelper.checkNotNull("field:createDate", createDate);
-        return createDate;
-    }
+	/**
+	 * The date the file was created.
+	 */
+	private Date createDate;
 
-    public void setCreateDate(final Date createDate) {
-        ObjectHelper.checkNotNull("parameter:createDate", createDate);
-        this.createDate = createDate;
-    }
+	public Date getCreateDate() {
+		ObjectHelper.checkNotNull("field:createDate", createDate);
+		return createDate;
+	}
 
-    public String toString() {
-        return super.toString() + ", filename[" + filename + "], size: " + size + ", description[" + description
-                + "], createDate: " + createDate;
-    }
+	public void setCreateDate(final Date createDate) {
+		ObjectHelper.checkNotNull("parameter:createDate", createDate);
+		this.createDate = createDate;
+	}
+
+	public String toString() {
+		return super.toString() + ", filename[" + filename + "], size: " + size + ", description[" + description + "], createDate: "
+				+ createDate;
+	}
 }

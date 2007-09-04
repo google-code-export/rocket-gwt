@@ -28,6 +28,7 @@ import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.SourceWriter;
+
 /**
  * An abstraction for the list and set templates
  * 
@@ -63,10 +64,10 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 		this.getElements().add(value);
 	}
 
-	protected CodeBlock getElementsCodeBlock(){		
-		final CollectionElementAddTemplatedFile template = new CollectionElementAddTemplatedFile(); 
+	protected CodeBlock getElementsCodeBlock() {
+		final CollectionElementAddTemplatedFile template = new CollectionElementAddTemplatedFile();
 		final List elements = this.getElements();
-		
+
 		return new CollectionTemplatedCodeBlock() {
 
 			public InputStream getInputStream() {
@@ -74,7 +75,7 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 			}
 
 			protected Object getValue0(final String name) {
-				return template.getValue0( name );
+				return template.getValue0(name);
 			}
 
 			protected Collection getCollection() {
@@ -82,14 +83,14 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 			}
 
 			protected void prepareToWrite(Object element) {
-				template.setValue( (Value) elements.get( this.getIndex() ));
+				template.setValue((Value) elements.get(this.getIndex()));
 			}
 
 			protected void writeBetweenElements(SourceWriter writer) {
 			}
 		};
 	}
-	
+
 	protected InputStream getInputStream() {
 		final String filename = this.getTemplate();
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);

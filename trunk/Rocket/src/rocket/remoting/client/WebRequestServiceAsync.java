@@ -19,5 +19,5 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface WebRequestServiceAsync {
 
-    void doRequest(WebRequest request, AsyncCallback callback) throws FailedWebRequestException;
+	void doRequest(WebRequest request, AsyncCallback callback) throws FailedWebRequestException;
 }

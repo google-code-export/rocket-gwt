@@ -21,16 +21,16 @@ package rocket.util.server;
  * @author Miroslav Pokorny
  */
 public class UncheckedIOException extends RuntimeException {
-    
-	public UncheckedIOException(final String message) {
-        super(message);
-    }
-	
-	public UncheckedIOException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
 
-    public UncheckedIOException(final Throwable cause) {
-        super(cause);
-    }
+	public UncheckedIOException(final String message) {
+		super(message);
+	}
+
+	public UncheckedIOException(final String message, final Throwable cause) {
+		super(message, cause);
+	}
+
+	public UncheckedIOException(final Throwable cause) {
+		super(cause);
+	}
 }

@@ -16,10 +16,11 @@
 package rocket.widget.client.form;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import rocket.dom.client.Dom;
 import rocket.dom.client.DomConstants;
-import rocket.dom.client.DomHelper;
 import rocket.util.client.Destroyable;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -34,7 +35,22 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class FormHelper extends DomHelper {
+public class FormHelper {
+
+	/**
+	 * Factory method which creates a list view of the elements belonging to the
+	 * given form.
+	 * 
+	 * @param form
+	 *            The form element
+	 * @return The read only list.
+	 */
+	static public List createFormElementsList(Element form) {
+		final FormElementsList list = new FormElementsList();
+		list.setForm(form);
+		return list;
+	}
+
 	/**
 	 * Populates the given map with the values of the elements belonging to the
 	 * given form. The element name becomes the key and teh value the entry
@@ -54,7 +70,7 @@ public class FormHelper extends DomHelper {
 		final Iterator formElements = FormHelper.getFormElements(form);
 		while (formElements.hasNext()) {
 			final Element formElement = (Element) formElements.next();
-			final String name = DOM.getAttribute(formElement, DomConstants.NAME);
+			final String name = DOM.getElementProperty(formElement, DomConstants.NAME);
 			if (null == name) {
 				continue;
 			}
@@ -110,17 +126,17 @@ public class FormHelper extends DomHelper {
 
 		String value = null;
 		while (true) {
-			if (isTag(element, FormConstants.LIST_TAG)) {
-				value = DOM.getAttribute(element, DomConstants.VALUE);
+			if (Dom.isTag(element, FormConstants.LIST_TAG)) {
+				value = DOM.getElementProperty(element, DomConstants.VALUE);
 				break;
 			}
-			if (isTag(element, FormConstants.TEXTAREA_TAG)) {
+			if (Dom.isTag(element, FormConstants.TEXTAREA_TAG)) {
 				value = DOM.getInnerText(element);
 				break;
 			}
 
-			if (DomHelper.isTag(element, DomConstants.INPUT_TAG)) {
-				value = DOM.getAttribute(element, DomConstants.VALUE);
+			if (Dom.isTag(element, DomConstants.INPUT_TAG)) {
+				value = DOM.getElementProperty(element, DomConstants.VALUE);
 				break;
 			}
 
@@ -140,7 +156,7 @@ public class FormHelper extends DomHelper {
 	 * @return
 	 */
 	public static Iterator getFormElements(final Element form) {
-		DomHelper.checkTagName("parameter:form", form, DomConstants.FORM_TAG);
+		Dom.checkTagName("parameter:form", form, DomConstants.FORM_TAG);
 
 		final FormElementsIterator iterator = new FormElementsIterator();
 		iterator.setForm(form);
@@ -154,7 +170,7 @@ public class FormHelper extends DomHelper {
 	static class FormElementsIterator implements Iterator, Destroyable {
 
 		public boolean hasNext() {
-			return this.getCursor() < DOM.getIntAttribute(this.getForm(), DomConstants.LENGTH_PROPERTY);
+			return this.getCursor() < DOM.getElementPropertyInt(this.getForm(), DomConstants.LENGTH_PROPERTY);
 		}
 
 		public Object next() {
@@ -170,7 +186,7 @@ public class FormHelper extends DomHelper {
 		 }-*/;
 
 		public void remove() {
-			throw new UnsupportedOperationException("Form elements may not be removed using this iterator. this: " + this);
+			throw new RuntimeException("Form elements may not be removed using this iterator. this: " + this);
 		}
 
 		public void destroy() {

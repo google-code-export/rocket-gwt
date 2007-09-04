@@ -46,7 +46,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 	public void testNotSerializable() {
 		try {
 			final Object proxy = GWT.create(NotSerializable.class);
-			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the NotSerializable class does not implement serializable.");
+			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the NotSerializable class does not implement serializable, and not: "
+					+ proxy);
 		} catch (final AssertionFailedError error) {
 			throw error;
 		} catch (final Throwable caught) {
@@ -58,7 +59,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 	public void testClassMissingNoArgumentsConstructor() {
 		try {
 			final Object proxy = GWT.create(MissingNoArgumentsConstructor.class);
-			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because MissingNoArgumentsConstructor does not implement serializable.");
+			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because MissingNoArgumentsConstructor does not implement serializable, and not: "
+					+ proxy);
 		} catch (final AssertionFailedError error) {
 			throw error;
 		} catch (final Throwable caught) {
@@ -82,7 +84,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		try {
 			final Object proxy = GWT.create(ClassWithFinalField.class);
-			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the NotSerializable class does not implement serializable.");
+			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the NotSerializable class does not implement serializable, and not: "
+					+ proxy);
 		} catch (final AssertionFailedError error) {
 			throw error;
 		} catch (final Throwable caught) {
@@ -97,7 +100,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		 */
 		final boolean field = true;
 	}
-	
+
 	public void testDeserializeClassWithBooleanField() {
 		final boolean value = true;
 
@@ -117,7 +120,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		 */
 		boolean field;
 	}
-	
+
 	public void testDeserializeClassWithTransientField() {
 		final boolean value = true;
 
@@ -158,7 +161,6 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		static boolean field;
 	}
 
-	
 	public void testDeserializeClassWithByteField() {
 		final byte value = 123;
 

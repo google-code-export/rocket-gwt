@@ -115,7 +115,7 @@ public class ConstructorTemplatedFile extends TemplatedCodeBlock {
 			}
 
 			protected Object getValue0(final String name) {
-				return parameters.get( this.getIndex() );
+				return parameters.get(this.getIndex());
 			}
 
 			protected Collection getCollection() {

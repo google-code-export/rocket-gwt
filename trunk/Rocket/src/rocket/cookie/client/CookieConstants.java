@@ -23,26 +23,23 @@ import java.util.Date;
  * @author Miroslav Pokorny (mP)
  */
 public class CookieConstants {
-    // COOKIE CONSTANTS
-    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::";
-    public final static char COOKIE_SEPARATOR = ';';
+	public final static char SEPARATOR = ';';
 
-    public final static String COOKIE_SEPARATOR_STRING = "" + COOKIE_SEPARATOR;
+	public final static String SEPARATOR_STRING = "" + SEPARATOR;
 
-    public final static char COOKIE_NAME_VALUE_SEPARATOR = '=';
+	public final static char NAME_VALUE_SEPARATOR = '=';
 
-    public final static String COOKIE_COMMENT = "; comment=";
+	public final static String COMMENT = "; comment=";
 
-    public final static String COOKIE_DOMAIN = "; domain=";
+	public final static String DOMAIN = "; domain=";
 
-    public final static String COOKIE_EXPIRES = "; expires=";
+	public final static String EXPIRES = "; expires=";
 
-    public final static String COOKIE_PATH = "; path=";
+	public final static String PATH = "; path=";
 
-    public final static String COOKIE_SECURE = "; secure";
+	public final static String SECURE = "; secure";
 
-    public final static String COOKIE_VERSION = "; version=";
+	public final static String VERSION = "; version=";
 
-    public final static String COOKIE_REMOVE_SUFFIX = "=; expires="
-            + new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000).toGMTString();
+	public final static String REMOVE_SUFFIX = "=; expires=" + new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000).toGMTString();
 }

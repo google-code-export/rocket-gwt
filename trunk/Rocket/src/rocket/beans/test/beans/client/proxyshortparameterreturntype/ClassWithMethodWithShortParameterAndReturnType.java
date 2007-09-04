@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxyshortparameterreturntype;
 
 public class ClassWithMethodWithShortParameterAndReturnType {
 
-	public short add( final short a, final short b ){
+	public short add(final short a, final short b) {
 		return (short) (a + b);
 	}
 }

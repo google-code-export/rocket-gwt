@@ -26,230 +26,257 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * This widget presents a series of buttons with the title of available LINKED stylesheets for a web application. For a LINKed stylesheet to
- * be recognized and made a candidate it must have a title, href. Only one LINKed stylesheet should be active with all others disabled.
+ * This widget presents a series of buttons with the title of available LINKED
+ * stylesheets for a web application. For a LINKed stylesheet to be recognized
+ * and made a candidate it must have a title, href. Only one LINKed stylesheet
+ * should be active with all others disabled.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class StyleSheetPicker extends Composite {
 
-    public StyleSheetPicker() {
-        super();
+	public StyleSheetPicker() {
+		super();
 
-        this.setMappings(new HashMap());
-        
-        final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
-        this.setHorizontalPanel(horizontalPanel);
-        this.initWidget( horizontalPanel );
-        
-        this.setText(WidgetConstants.STYLESHEET_PICKER_LABEL_TEXT);
-    }
+		this.setText(WidgetConstants.STYLESHEET_PICKER_LABEL_TEXT);
+	}
 
-    public String getText() {
-        return this.getLabel().getText();
-    }
+	protected void beforeCreateWidget() {
+		this.setMappings(new HashMap());
+	}
 
-    public void setText(final String text) {
-        StringHelper.checkNotEmpty("parameter:text", text);
-        this.getLabel().setText(text);
-    }
+	protected Widget createWidget() {
+		final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
+		this.setHorizontalPanel(horizontalPanel);
+		return horizontalPanel;
+	}
 
-    /**
-     * This panel contains the buttons created for each of the found external stylesheets.
-     */
-    private HorizontalPanel horizontalPanel;
+	protected void afterCreateWidget() {
+		this.setFocusListeners(this.createFocusListeners());
+	}
 
-    protected HorizontalPanel getHorizontalPanel() {
-        ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
-        return horizontalPanel;
-    }
+	protected int getSunkEventsBitMask() {
+		return Event.FOCUSEVENTS;
+	}
 
-    protected boolean hasHorizontalPanel() {
-        return null != this.horizontalPanel;
-    }
+	public String getText() {
+		return this.getLabel().getText();
+	}
 
-    protected void setHorizontalPanel(final HorizontalPanel horizontalPanel) {
-        ObjectHelper.checkNotNull("parameter:horizontalPanel", horizontalPanel);
-        this.horizontalPanel = horizontalPanel;
-    }
+	public void setText(final String text) {
+		StringHelper.checkNotEmpty("parameter:text", text);
+		this.getLabel().setText(text);
+	}
 
-    protected HorizontalPanel createHorizontalPanel() {
-        final HorizontalPanel panel = new HorizontalPanel();
-        panel.setStyleName(WidgetConstants.STYLESHEET_PICKER_STYLE);
-        
-        final Widget label = this.createLabel();
-        panel.add(label);
+	/**
+	 * This panel contains the buttons created for each of the found external
+	 * stylesheets.
+	 */
+	private HorizontalPanel horizontalPanel;
 
-        this.createButtons(panel);
-        this.selectStyleSheet( (Button) panel.getWidget( 0 + 1 ));
-        
-        return panel;
-    }
+	protected HorizontalPanel getHorizontalPanel() {
+		ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
+		return horizontalPanel;
+	}
 
-    /**
-     * The label container for the picker text.
-     */
-    private Label label;
+	protected boolean hasHorizontalPanel() {
+		return null != this.horizontalPanel;
+	}
 
-    public Label getLabel() {
-        ObjectHelper.checkNotNull("field:label", label);
-        return label;
-    }
+	protected void setHorizontalPanel(final HorizontalPanel horizontalPanel) {
+		ObjectHelper.checkNotNull("parameter:horizontalPanel", horizontalPanel);
+		this.horizontalPanel = horizontalPanel;
+	}
 
-    public void setLabel(final Label label) {
-        ObjectHelper.checkNotNull("parameter:label", label);
-        this.label = label;
-    }
+	protected HorizontalPanel createHorizontalPanel() {
+		final HorizontalPanel panel = new HorizontalPanel();
+		panel.setStyleName(WidgetConstants.STYLESHEET_PICKER_STYLE);
 
-    /**
-     * Creates the label that preceeds the available css stylesheet boxes/buttons
-     * 
-     * @return
-     */
-    protected Widget createLabel() {
-        final Label label = new Label("");
-        label.setStyleName(WidgetConstants.STYLESHEET_PICKER_LABEL_STYLE);
-        this.setLabel(label);
-        return label;
-    }
+		final Widget label = this.createLabel();
+		panel.add(label);
 
-    protected void createButtons(final HorizontalPanel panel) {
-        ObjectHelper.checkNotNull("parameter:panel", panel);
+		this.createButtons(panel);
+		this.selectStyleSheet((Button) panel.getWidget(0 + 1));
 
-        final Collection styleSheets = StyleHelper.getStyleSheets();
+		return panel;
+	}
 
-        // loop thru creating a button for each available stylesheet.
-        final Iterator iterator = styleSheets.iterator();
-        while (iterator.hasNext()) {
-            final StyleSheet styleSheet = (StyleSheet) iterator.next();
-            if (false == styleSheet.isExternalFile()) {
-                continue;
-            }
+	/**
+	 * The label container for the picker text.
+	 */
+	private Label label;
 
-            final Button button = this.createButton(styleSheet.getTitle());
-            this.setStyleSheet(button, styleSheet);
-            panel.add(button);
-            panel.setCellVerticalAlignment(button, HasVerticalAlignment.ALIGN_BOTTOM);
-        }
-    }
+	public Label getLabel() {
+		ObjectHelper.checkNotNull("field:label", label);
+		return label;
+	}
 
-    public Button getButton(final int index) {
-        PrimitiveHelper.checkIsPositive("parameter:index", index);
-        return (Button) this.getHorizontalPanel().getWidget(index + 1);// skip the first Label widget
-    }
+	public void setLabel(final Label label) {
+		ObjectHelper.checkNotNull("parameter:label", label);
+		this.label = label;
+	}
 
-    public int getButtonCount() {
-        return this.getHorizontalPanel().getWidgetCount() - 1; // less 1 because the count shouldnt include the Label widget
-    }
+	/**
+	 * Creates the label that preceeds the available css stylesheet
+	 * boxes/buttons
+	 * 
+	 * @return
+	 */
+	protected Widget createLabel() {
+		final Label label = new Label("");
+		label.setStyleName(WidgetConstants.STYLESHEET_PICKER_LABEL_STYLE);
+		this.setLabel(label);
+		return label;
+	}
 
-    /**
-     * This map contains a mapping between Buttons and their corresponding StyleSheet DOM objects.
-     */
-    private Map mappings;
+	protected void createButtons(final HorizontalPanel panel) {
+		ObjectHelper.checkNotNull("parameter:panel", panel);
 
-    protected Map getMappings() {
-        ObjectHelper.checkNotNull("field:mappings", mappings);
-        return mappings;
-    }
+		final Collection styleSheets = StyleHelper.getStyleSheets();
 
-    protected void setMappings(final Map mappings) {
-        ObjectHelper.checkNotNull("parameter:mappings", mappings);
-        this.mappings = mappings;
-    }
+		// loop thru creating a button for each available stylesheet.
+		final Iterator iterator = styleSheets.iterator();
+		while (iterator.hasNext()) {
+			final StyleSheet styleSheet = (StyleSheet) iterator.next();
+			if (false == styleSheet.isExternalFile()) {
+				continue;
+			}
 
-    public StyleSheet getStyleSheet(final int index) {
-        return this.getStyleSheet(this.getButton(index));
-    }
+			final Button button = this.createButton(styleSheet.getTitle());
+			this.setStyleSheet(button, styleSheet);
+			panel.add(button);
+			panel.setCellVerticalAlignment(button, HasVerticalAlignment.ALIGN_BOTTOM);
+		}
+	}
 
-    protected StyleSheet getStyleSheet(final Button button) {
-        ObjectHelper.checkNotNull("parameter:button", button);
-        final StyleSheet styleSheet = (StyleSheet) this.getMappings().get(button);
-        if (null == styleSheet) {
-            ObjectHelper.fail("parameter:button", "Unable find the styleSheet for the parameter:button");
-        }
-        return styleSheet;
-    }
+	public Button getButton(final int index) {
+		PrimitiveHelper.checkIsPositive("parameter:index", index);
+		return (Button) this.getHorizontalPanel().getWidget(index + 1);// skip
+		// the
+		// first
+		// Label
+		// widget
+	}
 
-    protected void setStyleSheet(final Button button, final StyleSheet styleSheet) {
-        ObjectHelper.checkNotNull("parameter:button", button);
-        ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
+	public int getButtonCount() {
+		return this.getHorizontalPanel().getWidgetCount() - 1; // less 1
+		// because the
+		// count
+		// shouldnt
+		// include the
+		// Label widget
+	}
 
-        final Map mappings = this.getMappings();
-        if (mappings.containsKey(button)) {
-            ObjectHelper.fail("parameter:button", "The parameter:button has already been mapped.");
-        }
-        mappings.put(button, styleSheet);
-    }
+	/**
+	 * This map contains a mapping between Buttons and their corresponding
+	 * StyleSheet DOM objects.
+	 */
+	private Map mappings;
 
-    protected Button createButton(final String title) {
-        StringHelper.checkNotNull("parameter:title", title);
+	protected Map getMappings() {
+		ObjectHelper.checkNotNull("field:mappings", mappings);
+		return mappings;
+	}
 
-        final Button button = new Button(title);
-        button.setStyleName(WidgetConstants.STYLESHEET_ITEM_STYLE);
+	protected void setMappings(final Map mappings) {
+		ObjectHelper.checkNotNull("parameter:mappings", mappings);
+		this.mappings = mappings;
+	}
 
-        button.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignored) {
-                StyleSheetPicker.this.selectStyleSheet(button);
-            }
-        });
+	public StyleSheet getStyleSheet(final int index) {
+		return this.getStyleSheet(this.getButton(index));
+	}
 
-        return button;
-    }
+	protected StyleSheet getStyleSheet(final Button button) {
+		ObjectHelper.checkNotNull("parameter:button", button);
+		final StyleSheet styleSheet = (StyleSheet) this.getMappings().get(button);
+		if (null == styleSheet) {
+			ObjectHelper.fail("parameter:button", "Unable find the styleSheet for the parameter:button");
+		}
+		return styleSheet;
+	}
 
-    public void selectStyleSheet(final int index) {
-        this.selectStyleSheet(this.getButton(index));
-    }
+	protected void setStyleSheet(final Button button, final StyleSheet styleSheet) {
+		ObjectHelper.checkNotNull("parameter:button", button);
+		ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
 
-    /**
-     * Makes a stylesheet active and also changes its corresponding button to show this.
-     * 
-     * @param button
-     */
-    protected void selectStyleSheet(final Button button) {
-        ObjectHelper.checkNotNull("parameter:button", button);
+		final Map mappings = this.getMappings();
+		if (mappings.containsKey(button)) {
+			ObjectHelper.fail("parameter:button", "The parameter:button has already been mapped.");
+		}
+		mappings.put(button, styleSheet);
+	}
 
-        this.unselectAllStyleSheets();
-        button.addStyleName(WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE);
+	protected Button createButton(final String title) {
+		StringHelper.checkNotNull("parameter:title", title);
 
-        final StyleSheet styleSheet = this.getStyleSheet(button);
-        styleSheet.setDisabled(false);
-    }
+		final Button button = new Button(title);
+		button.setStyleName(WidgetConstants.STYLESHEET_ITEM_STYLE);
 
-    /**
-     * Unselects all stylesheets and deselects their corresponding button
-     */
-    protected void unselectAllStyleSheets() {
-        final Iterator iterator = this.getMappings().keySet().iterator();
-        while (iterator.hasNext()) {
-            final Button button = (Button) iterator.next();
-            this.unselectStyleSheet(button);
-        }
-    }
+		button.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignored) {
+				StyleSheetPicker.this.selectStyleSheet(button);
+			}
+		});
 
-    /**
-     * Unselects the given stylesheet and its corresponding button
-     * 
-     * @param button
-     */
-    protected void unselectStyleSheet(final Button button) {
-        ObjectHelper.checkNotNull("parameter:button", button);
+		return button;
+	}
 
-        button.removeStyleName(WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE);
+	public void selectStyleSheet(final int index) {
+		this.selectStyleSheet(this.getButton(index));
+	}
 
-        final StyleSheet styleSheet = this.getStyleSheet(button);
-        styleSheet.setDisabled(true);
-    }
+	/**
+	 * Makes a stylesheet active and also changes its corresponding button to
+	 * show this.
+	 * 
+	 * @param button
+	 */
+	protected void selectStyleSheet(final Button button) {
+		ObjectHelper.checkNotNull("parameter:button", button);
 
-    public String toString() {
-        return super.toString() + ", horizontalPanel: " + horizontalPanel + ", mappings: " + mappings;
-    }
+		this.unselectAllStyleSheets();
+		button.addStyleName(WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE);
+
+		final StyleSheet styleSheet = this.getStyleSheet(button);
+		styleSheet.setDisabled(false);
+	}
+
+	/**
+	 * Unselects all stylesheets and deselects their corresponding button
+	 */
+	protected void unselectAllStyleSheets() {
+		final Iterator iterator = this.getMappings().keySet().iterator();
+		while (iterator.hasNext()) {
+			final Button button = (Button) iterator.next();
+			this.unselectStyleSheet(button);
+		}
+	}
+
+	/**
+	 * Unselects the given stylesheet and its corresponding button
+	 * 
+	 * @param button
+	 */
+	protected void unselectStyleSheet(final Button button) {
+		ObjectHelper.checkNotNull("parameter:button", button);
+
+		button.removeStyleName(WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE);
+
+		final StyleSheet styleSheet = this.getStyleSheet(button);
+		styleSheet.setDisabled(true);
+	}
+
+	public String toString() {
+		return super.toString() + ", horizontalPanel: " + horizontalPanel + ", mappings: " + mappings;
+	}
 }

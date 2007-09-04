@@ -34,77 +34,77 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ZebraFlexTableTest implements EntryPoint {
 
-    /**
-     * This is the entry point method.
-     */
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
 
-        final RootPanel rootPanel = RootPanel.get();
-        final ZebraFlexTable table = new ZebraFlexTable();
+		final RootPanel rootPanel = RootPanel.get();
+		final ZebraFlexTable table = new ZebraFlexTable();
 
-        for (int r = 0; r < 10; r++) {
-            for (int c = 0; c < 5; c++) {
-                table.setText(r, c, "" + r + "," + c);
-            }
-        }
-        table.addHeadingStyleToFirstRow();
-        rootPanel.add(table);
+		for (int r = 0; r < 10; r++) {
+			for (int c = 0; c < 5; c++) {
+				table.setText(r, c, "" + r + "," + c);
+			}
+		}
+		table.addHeadingStyleToFirstRow();
+		rootPanel.add(table);
 
-        final TextBox row = new TextBox();
-        final TextBox column = new TextBox();
-        rootPanel.add(new Label("Row"));
-        rootPanel.add(row);
-        rootPanel.add(new Label("Column"));
-        rootPanel.add(column);
+		final TextBox row = new TextBox();
+		final TextBox column = new TextBox();
+		rootPanel.add(new Label("Row"));
+		rootPanel.add(row);
+		rootPanel.add(new Label("Column"));
+		rootPanel.add(column);
 
-        rootPanel.add(new HTML("<br/>"));
+		rootPanel.add(new HTML("<br/>"));
 
-        final Button insertRow = new Button("insertRow");
-        insertRow.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                final int rowNumber = Integer.parseInt(row.getText());
-                table.insertRow(rowNumber);
+		final Button insertRow = new Button("insertRow");
+		insertRow.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				final int rowNumber = Integer.parseInt(row.getText());
+				table.insertRow(rowNumber);
 
-                for (int i = 0; i < 10; i++) {
-                    table.setText(rowNumber, i, "" + rowNumber + "," + i);
-                }
+				for (int i = 0; i < 10; i++) {
+					table.setText(rowNumber, i, "" + rowNumber + "," + i);
+				}
 
-            }
+			}
 
-        });
-        rootPanel.add(insertRow);
+		});
+		rootPanel.add(insertRow);
 
-        final Button insertCell = new Button("insertCell");
-        insertCell.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                table.insertCell(Integer.parseInt(row.getText()), Integer.parseInt(column.getText()));
-            }
+		final Button insertCell = new Button("insertCell");
+		insertCell.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				table.insertCell(Integer.parseInt(row.getText()), Integer.parseInt(column.getText()));
+			}
 
-        });
-        rootPanel.add(insertCell);
+		});
+		rootPanel.add(insertCell);
 
-        final Button removeRow = new Button("removeRow");
-        removeRow.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                table.removeRow(Integer.parseInt(row.getText()));
-            }
+		final Button removeRow = new Button("removeRow");
+		removeRow.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				table.removeRow(Integer.parseInt(row.getText()));
+			}
 
-        });
-        rootPanel.add(removeRow);
+		});
+		rootPanel.add(removeRow);
 
-        final Button removeCell = new Button("removeCell");
-        removeCell.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                table.removeCell(Integer.parseInt(row.getText()), Integer.parseInt(column.getText()));
-            }
+		final Button removeCell = new Button("removeCell");
+		removeCell.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				table.removeCell(Integer.parseInt(row.getText()), Integer.parseInt(column.getText()));
+			}
 
-        });
-        rootPanel.add(removeCell);
-    }
+		});
+		rootPanel.add(removeCell);
+	}
 }

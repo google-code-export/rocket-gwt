@@ -18,7 +18,9 @@ package rocket.beans.test.beans.client.proxyfloatparameterreturntype;
 import rocket.beans.client.aop.MethodInvocation;
 
 /**
- * This method interceptor does nothing but invoke the next interceptor in the chain.
+ * This method interceptor does nothing but invoke the next interceptor in the
+ * chain.
+ * 
  * @author Miroslav Pokorny
  */
 public class ProxyFloatMethodInterceptor implements rocket.beans.client.aop.MethodInterceptor {

@@ -25,156 +25,158 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * An extension of a regular spinner that includes two extra buttons to assist with modifying the value.
+ * An extension of a regular spinner that includes two extra buttons to assist
+ * with modifying the value.
  * 
  * @author Miroslav Pokorny (mP)
  * 
  */
 public class SuperSpinner extends Spinner {
 
-    public SuperSpinner() {
-        super();
-        
-        this.setStyleName(WidgetConstants.SUPER_SPINNER_STYLE );
-    }
+	public SuperSpinner() {
+		super();
 
-    /**
-     * The left button that when clicked decreases the spinners value.
-     */
-    private Image bigDownWidget;
+		this.setStyleName(WidgetConstants.SUPER_SPINNER_STYLE);
+	}
 
-    protected Image getBigDownWidget() {
-        ObjectHelper.checkNotNull("field:bigDownWidget", bigDownWidget);
-        return this.bigDownWidget;
-    }
+	/**
+	 * The left button that when clicked decreases the spinners value.
+	 */
+	private Image bigDownWidget;
 
-    protected void setBigDownWidget(final Image bigDownWidget) {
-        ObjectHelper.checkNotNull("parameter:bigDown", bigDownWidget);
-        this.bigDownWidget = bigDownWidget;
-    }
+	protected Image getBigDownWidget() {
+		ObjectHelper.checkNotNull("field:bigDownWidget", bigDownWidget);
+		return this.bigDownWidget;
+	}
 
-    protected Image createBigDownWidget() {
-        final Image image = new Image();
-        image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE);
+	protected void setBigDownWidget(final Image bigDownWidget) {
+		ObjectHelper.checkNotNull("parameter:bigDown", bigDownWidget);
+		this.bigDownWidget = bigDownWidget;
+	}
 
-        image.addClickListener(new ClickListener() {
+	protected Image createBigDownWidget() {
+		final Image image = new Image();
+		image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE);
 
-            public void onClick(final Widget widget) {
-                SuperSpinner.this.onBigDownClick();
-            }
-        });
-        return image;
-    }
+		image.addClickListener(new ClickListener() {
 
-    protected void onDownClick() {
-        this.updateValue(this.getValue() - this.getDelta());
-    }
+			public void onClick(final Widget widget) {
+				SuperSpinner.this.onBigDownClick();
+			}
+		});
+		return image;
+	}
 
-    public String getBigDownImageUrl() {
-        return this.getBigDownWidget().getUrl();
-    }
+	protected void onDownClick() {
+		this.updateValue(this.getValue() - this.getDelta());
+	}
 
-    public void setBigDownImageUrl(final String bigDownImageUrl) {
-        StringHelper.checkNotEmpty("parameter:bigDownImageUrl", bigDownImageUrl);
+	public String getBigDownImageUrl() {
+		return this.getBigDownWidget().getUrl();
+	}
 
-        this.getBigDownWidget().setUrl( bigDownImageUrl );
-    }
+	public void setBigDownImageUrl(final String bigDownImageUrl) {
+		StringHelper.checkNotEmpty("parameter:bigDownImageUrl", bigDownImageUrl);
 
-    /**
-     * The right button that when clicked decreases the spinners value.
-     */
-    private Image bigUpWidget;
+		this.getBigDownWidget().setUrl(bigDownImageUrl);
+	}
 
-    protected Image getBigUpWidget() {
-        ObjectHelper.checkNotNull("field:bigUpWidget", bigUpWidget);
-        return this.bigUpWidget;
-    }
+	/**
+	 * The right button that when clicked decreases the spinners value.
+	 */
+	private Image bigUpWidget;
 
-    protected void setBigUpWidget(final Image bigUpWidget) {
-        ObjectHelper.checkNotNull("parameter:bigUpWidget", bigUpWidget);
-        this.bigUpWidget = bigUpWidget;
-    }
+	protected Image getBigUpWidget() {
+		ObjectHelper.checkNotNull("field:bigUpWidget", bigUpWidget);
+		return this.bigUpWidget;
+	}
 
-    protected Image createBigUpWidget() {
-        final Image image = new Image();
-        image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE);
+	protected void setBigUpWidget(final Image bigUpWidget) {
+		ObjectHelper.checkNotNull("parameter:bigUpWidget", bigUpWidget);
+		this.bigUpWidget = bigUpWidget;
+	}
 
-        image.addClickListener(new ClickListener() {
+	protected Image createBigUpWidget() {
+		final Image image = new Image();
+		image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE);
 
-            public void onClick(final Widget widget) {
-                SuperSpinner.this.onBigUpClick();
-            }
-        });
-        return image;
-    }
+		image.addClickListener(new ClickListener() {
 
-    public void onUpClick() {
-        this.updateValue(this.getValue() + this.getDelta());
-    }
+			public void onClick(final Widget widget) {
+				SuperSpinner.this.onBigUpClick();
+			}
+		});
+		return image;
+	}
 
-    protected void onBigUpClick() {
-        this.updateValue(this.getValue() + this.getBigDelta());
-    }
+	public void onUpClick() {
+		this.updateValue(this.getValue() + this.getDelta());
+	}
 
-    protected void onBigDownClick() {
-        this.updateValue(this.getValue() - this.getBigDelta());
-    }
+	protected void onBigUpClick() {
+		this.updateValue(this.getValue() + this.getBigDelta());
+	}
 
-    public String getBigUpImageUrl() {
-        return this.getBigUpWidget().getUrl();
-    }
+	protected void onBigDownClick() {
+		this.updateValue(this.getValue() - this.getBigDelta());
+	}
 
-    public void setBigUpImageUrl(final String bigUpImageUrl) {
-        StringHelper.checkNotEmpty("parameter:bigUpImageUrl", bigUpImageUrl);
+	public String getBigUpImageUrl() {
+		return this.getBigUpWidget().getUrl();
+	}
 
-        this.getBigUpWidget().setUrl( bigUpImageUrl );
-    }
+	public void setBigUpImageUrl(final String bigUpImageUrl) {
+		StringHelper.checkNotEmpty("parameter:bigUpImageUrl", bigUpImageUrl);
 
-    /**
-     * Creates a new HorizontalPanel and fills it with various clickable widgets which may be used adjust the value.
-     * 
-     * @return
-     */
-    protected Panel createPanel() {
-        final HorizontalPanel panel = new HorizontalPanel();
-        
-        final Image upWidget = this.createUpWidget();
-        this.setUpWidget(upWidget);
-        panel.add( upWidget );
-        
-        final Image downWidget = this.createBigDownWidget();
-        this.setDownWidget(downWidget);
-        panel.add( downWidget );
+		this.getBigUpWidget().setUrl(bigUpImageUrl);
+	}
 
-        final Image bigUpWidget = this.createBigUpWidget();
-        this.setBigUpWidget(bigUpWidget);
-        panel.add( bigUpWidget );
-        
-        final Image bigDownWidget = this.createBigDownWidget();
-        this.setBigDownWidget(bigDownWidget);
-        panel.add( bigDownWidget );
-        
-        this.updateValue(this.getValue());
+	/**
+	 * Creates a new HorizontalPanel and fills it with various clickable widgets
+	 * which may be used adjust the value.
+	 * 
+	 * @return
+	 */
+	protected Panel createPanel() {
+		final HorizontalPanel panel = new HorizontalPanel();
 
-        return panel;
-    }
+		final Image upWidget = this.createUpWidget();
+		this.setUpWidget(upWidget);
+		panel.add(upWidget);
 
-    /**
-     * The amount the value is increased/decreased each time an up or down button is clicked.
-     */
-    private int bigDelta;
+		final Image downWidget = this.createDownWidget();
+		this.setDownWidget(downWidget);
+		panel.add(downWidget);
 
-    public int getBigDelta() {
-        return this.bigDelta;
-    }
+		final Image bigUpWidget = this.createBigUpWidget();
+		this.setBigUpWidget(bigUpWidget);
+		panel.add(bigUpWidget);
 
-    public void setBigDelta(final int bigDelta) {
-        this.bigDelta = bigDelta;
-    }
+		final Image bigDownWidget = this.createBigDownWidget();
+		this.setBigDownWidget(bigDownWidget);
+		panel.add(bigDownWidget);
 
-    public String toString() {
-        return super.toString() + ", bigUpWidget: " + bigUpWidget + ", bigDownWidget: " + bigDownWidget
-                + ", bigDelta: " + bigDelta;
-    }
+		this.updateValue(this.getValue());
+
+		return panel;
+	}
+
+	/**
+	 * The amount the value is increased/decreased each time an up or down
+	 * button is clicked.
+	 */
+	private int bigDelta;
+
+	public int getBigDelta() {
+		return this.bigDelta;
+	}
+
+	public void setBigDelta(final int bigDelta) {
+		this.bigDelta = bigDelta;
+	}
+
+	public String toString() {
+		return super.toString() + ", bigUpWidget: " + bigUpWidget + ", bigDownWidget: " + bigDownWidget + ", bigDelta: " + bigDelta;
+	}
 
 }

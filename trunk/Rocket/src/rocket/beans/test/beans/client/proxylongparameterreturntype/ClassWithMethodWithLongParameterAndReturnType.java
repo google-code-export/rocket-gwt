@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxylongparameterreturntype;
 
 public class ClassWithMethodWithLongParameterAndReturnType {
 
-	public long add( final long a, final long b ){
+	public long add(final long a, final long b) {
 		return (long) (a + b);
 	}
 }

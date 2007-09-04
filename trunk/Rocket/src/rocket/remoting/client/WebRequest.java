@@ -23,90 +23,92 @@ import rocket.util.client.SystemHelper;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
- * Used to package a web request for a servlet or other web resource with the same web application. This is particularly useful when
- * integrating with third party jsps/tags or servlets that produce output that cannot be gathered in another way.
+ * Used to package a web request for a servlet or other web resource with the
+ * same web application. This is particularly useful when integrating with third
+ * party jsps/tags or servlets that produce output that cannot be gathered in
+ * another way.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class WebRequest implements IsSerializable {
 
-    private String url;
+	private String url;
 
-    public String getUrl() {
-        StringHelper.checkNotNull("field:url", url);
-        return url;
-    }
+	public String getUrl() {
+		StringHelper.checkNotNull("field:url", url);
+		return url;
+	}
 
-    public void setUrl(final String url) {
-        StringHelper.checkNotNull("parameter:url", url);
-        this.url = url;
-    }
+	public void setUrl(final String url) {
+		StringHelper.checkNotNull("parameter:url", url);
+		this.url = url;
+	}
 
-    private RequestParameters parameters;
+	private RequestParameters parameters;
 
-    public RequestParameters getParameters() {
-        ObjectHelper.checkNotNull("field:parameters", this.parameters);
-        return parameters;
-    }
+	public RequestParameters getParameters() {
+		ObjectHelper.checkNotNull("field:parameters", this.parameters);
+		return parameters;
+	}
 
-    public boolean hasParameters() {
-        return null != this.parameters;
-    }
+	public boolean hasParameters() {
+		return null != this.parameters;
+	}
 
-    public void setParameters(final RequestParameters parameters) {
-        ObjectHelper.checkNotNull("parameter:parameters", parameters);
-        if (this.hasData()) {
-            SystemHelper.fail("Data has already been set, parameters cannot also be set.");
-        }
+	public void setParameters(final RequestParameters parameters) {
+		ObjectHelper.checkNotNull("parameter:parameters", parameters);
+		if (this.hasData()) {
+			SystemHelper.fail("Data has already been set, parameters cannot also be set.");
+		}
 
-        this.parameters = parameters;
-    }
+		this.parameters = parameters;
+	}
 
-    private Headers headers;
+	private Headers headers;
 
-    public Headers getHeaders() {
-        ObjectHelper.checkNotNull("field:headers", headers);
-        return this.headers;
-    }
+	public Headers getHeaders() {
+		ObjectHelper.checkNotNull("field:headers", headers);
+		return this.headers;
+	}
 
-    public void setHeaders(final Headers headers) {
-        ObjectHelper.checkNotNull("parameter:headers", headers);
-        this.headers = headers;
-    }
+	public void setHeaders(final Headers headers) {
+		ObjectHelper.checkNotNull("parameter:headers", headers);
+		this.headers = headers;
+	}
 
-    private String data;
+	private String data;
 
-    public String getData() {
-        StringHelper.checkNotNull("field:data", this.data);
-        return data;
-    }
+	public String getData() {
+		StringHelper.checkNotNull("field:data", this.data);
+		return data;
+	}
 
-    public boolean hasData() {
-        return null != data;
-    }
+	public boolean hasData() {
+		return null != data;
+	}
 
-    public void setData(final String data) {
-        StringHelper.checkNotNull("parameter:data", data);
-        if (false == HttpHelper.isPost(this.getMethod())) {
-            SystemHelper.fail("ContentType/Data may only be set on a POST WebRequest");
-        }
-        this.data = data;
-    }
+	public void setData(final String data) {
+		StringHelper.checkNotNull("parameter:data", data);
+		if (false == HttpHelper.isPost(this.getMethod())) {
+			SystemHelper.fail("ContentType/Data may only be set on a POST WebRequest");
+		}
+		this.data = data;
+	}
 
-    private String method;
+	private String method;
 
-    public String getMethod() {
-        HttpHelper.checkMethod("field:method", method);
-        return method;
-    }
+	public String getMethod() {
+		HttpHelper.checkMethod("field:method", method);
+		return method;
+	}
 
-    public void setMethod(final String method) {
-        HttpHelper.checkMethod("parameter:method", method);
-        this.method = method;
-    }
+	public void setMethod(final String method) {
+		HttpHelper.checkMethod("parameter:method", method);
+		this.method = method;
+	}
 
-    public String toString() {
-        return super.toString() + ", method[" + method + "], url[" + url + "], headers: " + headers + ", parameters:"
-                + parameters + ", data: " + data;
-    }
+	public String toString() {
+		return super.toString() + ", method[" + method + "], url[" + url + "], headers: " + headers + ", parameters:" + parameters
+				+ ", data: " + data;
+	}
 }

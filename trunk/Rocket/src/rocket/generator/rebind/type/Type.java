@@ -32,9 +32,9 @@ import rocket.generator.rebind.packagee.Package;
  * @author Miroslav Pokorny
  */
 public interface Type extends HasMetadata, ClassComponent {
-	
+
 	Visibility getVisibility();
-	
+
 	String getName();
 
 	String getSimpleName();
@@ -56,7 +56,7 @@ public interface Type extends HasMetadata, ClassComponent {
 	Constructor getConstructor(List parameterTypes);
 
 	boolean hasNoArgumentsConstructor();
-	
+
 	Set getMethods();
 
 	Method findMethod(String methodName, List parameterTypes);

@@ -21,71 +21,73 @@ import java.util.Iterator;
 import rocket.util.client.ObjectHelper;
 
 /**
- * A collection of view port listeners, includes a number of methods to fire all events.
+ * A collection of view port listeners, includes a number of methods to fire all
+ * events.
+ * 
  * @author Miroslav Pokorny
  */
 class ViewportListenerCollection extends ArrayList {
-	
-	public boolean fireBeforeDragStarted( final Viewport viewport ){
-		ObjectHelper.checkNotNull( "parameter:viewport", viewport );
-		
+
+	public boolean fireBeforeDragStarted(final Viewport viewport) {
+		ObjectHelper.checkNotNull("parameter:viewport", viewport);
+
 		boolean cancel = false;
 		final Iterator listeners = this.iterator();
-		while( listeners.hasNext() ){
+		while (listeners.hasNext()) {
 			final ViewportListener listener = (ViewportListener) listeners.next();
-			cancel = listener.onBeforeDragStarted( viewport );
-			
-			if( cancel ){
+			cancel = listener.onBeforeDragStarted(viewport);
+
+			if (cancel) {
 				break;
 			}
 		}
 		return cancel;
 	}
-	
-	public void fireDragStarted( final Viewport viewport ){
-		ObjectHelper.checkNotNull( "parameter:viewport", viewport );
-		
+
+	public void fireDragStarted(final Viewport viewport) {
+		ObjectHelper.checkNotNull("parameter:viewport", viewport);
+
 		final Iterator listeners = this.iterator();
-		while( listeners.hasNext() ){
+		while (listeners.hasNext()) {
 			final ViewportListener listener = (ViewportListener) listeners.next();
-			listener.onDragStarted( viewport );			
+			listener.onDragStarted(viewport);
 		}
 	}
 
-	public boolean fireBeforeDragMove( final Viewport viewport ){
-		ObjectHelper.checkNotNull( "parameter:viewport", viewport );
-		
+	public boolean fireBeforeDragMove(final Viewport viewport) {
+		ObjectHelper.checkNotNull("parameter:viewport", viewport);
+
 		boolean cancel = false;
 		final Iterator listeners = this.iterator();
-		while( listeners.hasNext() ){
+		while (listeners.hasNext()) {
 			final ViewportListener listener = (ViewportListener) listeners.next();
-			cancel = listener.onBeforeDragMove( viewport );
-			
-			if( cancel ){
+			cancel = listener.onBeforeDragMove(viewport);
+
+			if (cancel) {
 				break;
 			}
 		}
-		
+
 		return cancel;
 	}
-	
-	public void fireDragMoved( final Viewport viewport ){
-		ObjectHelper.checkNotNull( "parameter:viewport", viewport );
-		
+
+	public void fireDragMoved(final Viewport viewport) {
+		ObjectHelper.checkNotNull("parameter:viewport", viewport);
+
 		final Iterator listeners = this.iterator();
-		while( listeners.hasNext() ){
+		while (listeners.hasNext()) {
 			final ViewportListener listener = (ViewportListener) listeners.next();
-			listener.onDragMoved( viewport );			
+			listener.onDragMoved(viewport);
 		}
 	}
-		
-	public void fireDragStopped( final Viewport viewport ){
-		ObjectHelper.checkNotNull( "parameter:viewport", viewport );
-		
+
+	public void fireDragStopped(final Viewport viewport) {
+		ObjectHelper.checkNotNull("parameter:viewport", viewport);
+
 		final Iterator listeners = this.iterator();
-		while( listeners.hasNext() ){
+		while (listeners.hasNext()) {
 			final ViewportListener listener = (ViewportListener) listeners.next();
-			listener.onDragStopped( viewport );			
+			listener.onDragStopped(viewport);
 		}
 	}
 }

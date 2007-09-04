@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxydoubleparameterreturntype;
 
 public class ClassWithMethodWithDoubleParameterAndReturnType {
 
-	public double add( final double a, final double b ){
+	public double add(final double a, final double b) {
 		return (double) (a + b);
 	}
 }

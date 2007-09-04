@@ -32,130 +32,133 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 public class RequestParameters implements IsSerializable {
 
-    public RequestParameters() {
-        this.setMultiValueMap(new MultiValueMap());
-    }
+	public RequestParameters() {
+		this.setMultiValueMap(new MultiValueMap());
+	}
 
-    /**
-     * A MultiValueMap is used to hold parameter names and their associated list of values.
-     */
-    private MultiValueMap multiValueMap;
+	/**
+	 * A MultiValueMap is used to hold parameter names and their associated list
+	 * of values.
+	 */
+	private MultiValueMap multiValueMap;
 
-    protected MultiValueMap getMultiValueMap() {
-        ObjectHelper.checkNotNull("field:map", multiValueMap);
+	protected MultiValueMap getMultiValueMap() {
+		ObjectHelper.checkNotNull("field:map", multiValueMap);
 
-        return multiValueMap;
-    }
+		return multiValueMap;
+	}
 
-    protected void setMultiValueMap(final MultiValueMap multiValueMap) {
-        ObjectHelper.checkNotNull("parameter:multiValueMap", multiValueMap);
+	protected void setMultiValueMap(final MultiValueMap multiValueMap) {
+		ObjectHelper.checkNotNull("parameter:multiValueMap", multiValueMap);
 
-        this.multiValueMap = multiValueMap;
-    }
+		this.multiValueMap = multiValueMap;
+	}
 
-    /**
-     * Tests if a particular parameter has been added.
-     * @param name
-     * @return
-     */
-    public boolean contains(final String name) {
-        return this.getMultiValueMap().contains(name);
-    }
+	/**
+	 * Tests if a particular parameter has been added.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean contains(final String name) {
+		return this.getMultiValueMap().contains(name);
+	}
 
-    public String getValue(final String name) {
-        return (String) this.getMultiValueMap().getFirstValue(name);
-    }
+	public String getValue(final String name) {
+		return (String) this.getMultiValueMap().getFirstValue(name);
+	}
 
-    protected List getValueAsList(final String name) {
-        StringHelper.checkNotEmpty("parameter:name", name);
-        return (List) this.getMultiValueMap().getValuesList(name);
-    }
+	protected List getValueAsList(final String name) {
+		StringHelper.checkNotEmpty("parameter:name", name);
+		return (List) this.getMultiValueMap().getValuesList(name);
+	}
 
-    public String[] getValues(final String name) {
-        final Object[] values = this.getMultiValueMap().getValues(name);
-        String[] array = null;
-        if (null != values) {
-            final int size = values.length;
-            array = new String[size];
-            for (int i = 0; i < size; i++) {
-                array[i] = (String) values[i];
-            }
-        }
-        return array;
-    }
+	public String[] getValues(final String name) {
+		final Object[] values = this.getMultiValueMap().getValues(name);
+		String[] array = null;
+		if (null != values) {
+			final int size = values.length;
+			array = new String[size];
+			for (int i = 0; i < size; i++) {
+				array[i] = (String) values[i];
+			}
+		}
+		return array;
+	}
 
-    public void buildFromUrl(final String url) {
-        StringHelper.checkNotNull("parameter:url", url);
-        final int queryStringIndex = url.indexOf("?");
-        if (queryStringIndex != -1) {
-            final String queryString = url.substring(queryStringIndex);
-            this.buildFromQueryString(queryString);
-        }
-    }
+	public void buildFromUrl(final String url) {
+		StringHelper.checkNotNull("parameter:url", url);
+		final int queryStringIndex = url.indexOf("?");
+		if (queryStringIndex != -1) {
+			final String queryString = url.substring(queryStringIndex);
+			this.buildFromQueryString(queryString);
+		}
+	}
 
-    public void buildFromQueryString(final String string) {
-        StringHelper.checkNotNull("parameter:string", string);
+	public void buildFromQueryString(final String string) {
+		StringHelper.checkNotNull("parameter:string", string);
 
-        final String[] parameters = StringHelper.split(string, "&", true);
-        for (int i = 0; i < parameters.length; i++) {
-            final String parameter = parameters[i];
-            final int equals = parameter.indexOf('=');
-            final String name = equals == -1 ? parameter : parameter.substring(0, equals);
-            final String value = equals == -1 ? null : parameter.substring(equals + 1);
+		final String[] parameters = StringHelper.split(string, "&", true);
+		for (int i = 0; i < parameters.length; i++) {
+			final String parameter = parameters[i];
+			final int equals = parameter.indexOf('=');
+			final String name = equals == -1 ? parameter : parameter.substring(0, equals);
+			final String value = equals == -1 ? null : parameter.substring(equals + 1);
 
-            this.add(name, value);
-        }
-    }
+			this.add(name, value);
+		}
+	}
 
-    public void add(final String name, final String value) {
-        StringHelper.checkNotEmpty("parameter:name", name);
+	public void add(final String name, final String value) {
+		StringHelper.checkNotEmpty("parameter:name", name);
 
-        this.getMultiValueMap().add(name, value);
-    }
+		this.getMultiValueMap().add(name, value);
+	}
 
-    public Iterator names() {
-        return this.getMultiValueMap().keys();
-    }
+	public Iterator names() {
+		return this.getMultiValueMap().keys();
+	}
 
-    public void clear() {
-        this.getMultiValueMap().clear();
-    }
+	public void clear() {
+		this.getMultiValueMap().clear();
+	}
 
-    /**
-     * Converts the parameters within this object into a post data equivalent ie array of bytes.
-     * 
-     * @return
-     */
-    public String asString() {
-        final StringBuffer data = new StringBuffer();
+	/**
+	 * Converts the parameters within this object into a post data equivalent ie
+	 * array of bytes.
+	 * 
+	 * @return
+	 */
+	public String asString() {
+		final StringBuffer data = new StringBuffer();
 
-        final Iterator names = this.names();
-        boolean addSeparator = false;
+		final Iterator names = this.names();
+		boolean addSeparator = false;
 
-        while (names.hasNext()) {
-            final String name = (String) names.next();
-            final List valuesList = this.getValueAsList(name);
-            if (null == valuesList) {
-                continue;
-            }
+		while (names.hasNext()) {
+			final String name = (String) names.next();
+			final List valuesList = this.getValueAsList(name);
+			if (null == valuesList) {
+				continue;
+			}
 
-            final Iterator values = valuesList.iterator();
-            while (values.hasNext()) {
-                if (addSeparator) {
-                    data.append("&");
-                }
-                addSeparator = true;
+			final Iterator values = valuesList.iterator();
+			while (values.hasNext()) {
+				if (addSeparator) {
+					data.append("&");
+				}
+				addSeparator = true;
 
-                data.append(name);
-                data.append('=');
-                data.append(URL.encodeComponent((String) values.next()));
-            }
-        }
+				data.append(name);
+				data.append('=');
+				data.append(URL.encodeComponent((String) values.next()));
+			}
+		}
 
-        return data.toString();
-    }
+		return data.toString();
+	}
 
-    public String toString() {
-        return super.toString() + ", parameters:" + multiValueMap;
-    }
+	public String toString() {
+		return super.toString() + ", parameters:" + multiValueMap;
+	}
 }

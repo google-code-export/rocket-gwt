@@ -15,228 +15,230 @@
  */
 package rocket.dom.client;
 
+import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 /**
- * Provides a bean like view of an Object element with all standard attributes given setters/getters. Beans like this would typically be
- * used for inserting java applets, audio/video controls such as Windows Media Player.
+ * Provides a bean like view of an Object element with all standard attributes
+ * given setters/getters. Beans like this would typically be used for inserting
+ * java applets, audio/video controls such as Windows Media Player.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class EmbeddedObject extends ElementWrapperImpl implements ElementWrapper {
-    public EmbeddedObject() {
-        this.createElement();
-    }
+	public EmbeddedObject() {
+		this.createElement();
+	}
 
-    protected void createElement() {
-        this.setElement(DOM.createElement(DomConstants.OBJECT_TAG));
-    }
+	protected void createElement() {
+		this.setElement(DOM.createElement(DomConstants.OBJECT_TAG));
+	}
 
-    public String getAlign() {
-        return this.getString(DomConstants.ALIGN_ATTRIBUTE);
-    }
+	public String getAlign() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.ALIGN_ATTRIBUTE);
+	}
 
-    public boolean hasAlign() {
-        return this.hasProperty(DomConstants.ALIGN_ATTRIBUTE);
-    }
+	public boolean hasAlign() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.ALIGN_ATTRIBUTE);
+	}
 
-    public void setAlign(final String mimeType) {
-        this.setString(DomConstants.ALIGN_ATTRIBUTE, mimeType);
-    }
+	public void setAlign(final String mimeType) {
+		ObjectHelper.setString(this.getElement(), DomConstants.ALIGN_ATTRIBUTE, mimeType);
+	}
 
-    public String getArchive() {
-        return this.getString(DomConstants.ARCHIVE_ATTRIBUTE);
-    }
+	public String getArchive() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.ARCHIVE_ATTRIBUTE);
+	}
 
-    public boolean hasArchive() {
-        return this.hasProperty(DomConstants.ARCHIVE_ATTRIBUTE);
-    }
+	public boolean hasArchive() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.ARCHIVE_ATTRIBUTE);
+	}
 
-    public void setArchive(final String archive) {
-        this.setString(DomConstants.ARCHIVE_ATTRIBUTE, archive);
-    }
+	public void setArchive(final String archive) {
+		ObjectHelper.setString(this.getElement(), DomConstants.ARCHIVE_ATTRIBUTE, archive);
+	}
 
-    public int getBorder() {
-        return this.getInteger(DomConstants.BORDER_ATTRIBUTE);
-    }
+	public int getBorder() {
+		return ObjectHelper.getInteger(this.getElement(), DomConstants.BORDER_ATTRIBUTE);
+	}
 
-    public boolean hasBorder() {
-        return this.hasProperty(DomConstants.BORDER_ATTRIBUTE);
-    }
+	public boolean hasBorder() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.BORDER_ATTRIBUTE);
+	}
 
-    public void setBorder(final int border) {
-        this.setInteger(DomConstants.BORDER_ATTRIBUTE, border);
-    }
+	public void setBorder(final int border) {
+		ObjectHelper.setInteger(this.getElement(), DomConstants.BORDER_ATTRIBUTE, border);
+	}
 
-    public String getClassId() {
-        return this.getString(DomConstants.CLASS_ID_ATTRIBUTE);
-    }
+	public String getClassId() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.CLASS_ID_ATTRIBUTE);
+	}
 
-    public boolean hasClassId() {
-        return this.hasProperty(DomConstants.CLASS_ID_ATTRIBUTE);
-    }
+	public boolean hasClassId() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.CLASS_ID_ATTRIBUTE);
+	}
 
-    public void setClassId(final String classId) {
-        this.setString(DomConstants.CLASS_ID_ATTRIBUTE, classId);
-    }
+	public void setClassId(final String classId) {
+		ObjectHelper.setString(this.getElement(), DomConstants.CLASS_ID_ATTRIBUTE, classId);
+	}
 
-    public String getCodeBase() {
-        return this.getString(DomConstants.CODEBASE_ATTRIBUTE);
-    }
+	public String getCodeBase() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.CODEBASE_ATTRIBUTE);
+	}
 
-    public boolean hasCodeBase() {
-        return this.hasProperty(DomConstants.CODEBASE_ATTRIBUTE);
-    }
+	public boolean hasCodeBase() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.CODEBASE_ATTRIBUTE);
+	}
 
-    public void setCodeBase(final String codeBase) {
-        this.setString(DomConstants.CODEBASE_ATTRIBUTE, codeBase);
-    }
+	public void setCodeBase(final String codeBase) {
+		ObjectHelper.setString(this.getElement(), DomConstants.CODEBASE_ATTRIBUTE, codeBase);
+	}
 
-    public String getCodeType() {
-        return this.getString(DomConstants.CODETYPE_ATTRIBUTE);
-    }
+	public String getCodeType() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.CODETYPE_ATTRIBUTE);
+	}
 
-    public boolean hasCodeType() {
-        return this.hasProperty(DomConstants.CODETYPE_ATTRIBUTE);
-    }
+	public boolean hasCodeType() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.CODETYPE_ATTRIBUTE);
+	}
 
-    public void setCodeType(final String codeType) {
-        this.setString(DomConstants.CODETYPE_ATTRIBUTE, codeType);
-    }
+	public void setCodeType(final String codeType) {
+		ObjectHelper.setString(this.getElement(), DomConstants.CODETYPE_ATTRIBUTE, codeType);
+	}
 
-    public String getData() {
-        return this.getString(DomConstants.DATA_ATTRIBUTE);
-    }
+	public String getData() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.DATA_ATTRIBUTE);
+	}
 
-    public boolean hasData() {
-        return this.hasProperty(DomConstants.DATA_ATTRIBUTE);
-    }
+	public boolean hasData() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.DATA_ATTRIBUTE);
+	}
 
-    public void setData(final String data) {
-        this.setString(DomConstants.DATA_ATTRIBUTE, data);
-    }
+	public void setData(final String data) {
+		ObjectHelper.setString(this.getElement(), DomConstants.DATA_ATTRIBUTE, data);
+	}
 
-    public String getDeclare() {
-        return this.getString(DomConstants.DECLARE_ATTRIBUTE);
-    }
+	public String getDeclare() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.DECLARE_ATTRIBUTE);
+	}
 
-    public boolean hasDeclare() {
-        return this.hasProperty(DomConstants.DECLARE_ATTRIBUTE);
-    }
+	public boolean hasDeclare() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.DECLARE_ATTRIBUTE);
+	}
 
-    public void setDeclare(final String declare) {
-        this.setString(DomConstants.DECLARE_ATTRIBUTE, declare);
-    }
+	public void setDeclare(final String declare) {
+		ObjectHelper.setString(this.getElement(), DomConstants.DECLARE_ATTRIBUTE, declare);
+	}
 
-    public int getHeight() {
-        return this.getInteger(DomConstants.HEIGHT_ATTRIBUTE);
-    }
+	public int getHeight() {
+		return ObjectHelper.getInteger(this.getElement(), DomConstants.HEIGHT_ATTRIBUTE);
+	}
 
-    public boolean hasHeight() {
-        return this.hasProperty(DomConstants.HEIGHT_ATTRIBUTE);
-    }
+	public boolean hasHeight() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.HEIGHT_ATTRIBUTE);
+	}
 
-    public void setHeight(final int height) {
-        this.setInteger(DomConstants.HEIGHT_ATTRIBUTE, height);
-    }
+	public void setHeight(final int height) {
+		ObjectHelper.setInteger(this.getElement(), DomConstants.HEIGHT_ATTRIBUTE, height);
+	}
 
-    public int getHSpace() {
-        return this.getInteger(DomConstants.HSPACE_ATTRIBUTE);
-    }
+	public int getHSpace() {
+		return ObjectHelper.getInteger(this.getElement(), DomConstants.HSPACE_ATTRIBUTE);
+	}
 
-    public boolean hasHSpace() {
-        return this.hasProperty(DomConstants.HSPACE_ATTRIBUTE);
-    }
+	public boolean hasHSpace() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.HSPACE_ATTRIBUTE);
+	}
 
-    public void setHSpace(final int hspace) {
-        this.setInteger(DomConstants.HSPACE_ATTRIBUTE, hspace);
-    }
+	public void setHSpace(final int hspace) {
+		ObjectHelper.setInteger(this.getElement(), DomConstants.HSPACE_ATTRIBUTE, hspace);
+	}
 
-    public String getInnerHtml() {
-        return DOM.getInnerHTML(this.getElement());
-    }
+	public String getInnerHtml() {
+		return DOM.getInnerHTML(this.getElement());
+	}
 
-    public void setInnerHtml(final String innerHtml) {
-        StringHelper.checkNotNull("parameter:html", innerHtml);
-        DOM.setInnerHTML(this.getElement(), innerHtml);
-    }
+	public void setInnerHtml(final String innerHtml) {
+		StringHelper.checkNotNull("parameter:html", innerHtml);
+		DOM.setInnerHTML(this.getElement(), innerHtml);
+	}
 
-    public String getMimeType() {
-        return this.getString(DomConstants.MIME_TYPE_ATTRIBUTE);
-    }
+	public String getMimeType() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.MIME_TYPE_ATTRIBUTE);
+	}
 
-    public boolean hasMimeType() {
-        return this.hasProperty(DomConstants.MIME_TYPE_ATTRIBUTE);
-    }
+	public boolean hasMimeType() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.MIME_TYPE_ATTRIBUTE);
+	}
 
-    public void setMimeType(final String mimeType) {
-        this.setString(DomConstants.MIME_TYPE_ATTRIBUTE, mimeType);
-    }
+	public void setMimeType(final String mimeType) {
+		ObjectHelper.setString(this.getElement(), DomConstants.MIME_TYPE_ATTRIBUTE, mimeType);
+	}
 
-    public String getStandby() {
-        return this.getString(DomConstants.STANDBY_ATTRIBUTE);
-    }
+	public String getStandby() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.STANDBY_ATTRIBUTE);
+	}
 
-    public boolean hasStandby() {
-        return this.hasProperty(DomConstants.STANDBY_ATTRIBUTE);
-    }
+	public boolean hasStandby() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.STANDBY_ATTRIBUTE);
+	}
 
-    public void setStandby(final String standby) {
-        this.setString(DomConstants.STANDBY_ATTRIBUTE, standby);
-    }
+	public void setStandby(final String standby) {
+		ObjectHelper.setString(this.getElement(), DomConstants.STANDBY_ATTRIBUTE, standby);
+	}
 
-    public String getUsemap() {
-        return this.getString(DomConstants.USEMAP_ATTRIBUTE);
-    }
+	public String getUsemap() {
+		return ObjectHelper.getString(this.getElement(), DomConstants.USEMAP_ATTRIBUTE);
+	}
 
-    public boolean hasUsemap() {
-        return this.hasProperty(DomConstants.USEMAP_ATTRIBUTE);
-    }
+	public boolean hasUsemap() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.USEMAP_ATTRIBUTE);
+	}
 
-    public void setUsemap(final String useMap) {
-        this.setString(DomConstants.USEMAP_ATTRIBUTE, useMap);
-    }
+	public void setUsemap(final String useMap) {
+		ObjectHelper.setString(this.getElement(), DomConstants.USEMAP_ATTRIBUTE, useMap);
+	}
 
-    public int getVSpace() {
-        return this.getInteger(DomConstants.VSPACE_ATTRIBUTE);
-    }
+	public int getVSpace() {
+		return ObjectHelper.getInteger(this.getElement(), DomConstants.VSPACE_ATTRIBUTE);
+	}
 
-    public boolean hasVSpace() {
-        return this.hasProperty(DomConstants.VSPACE_ATTRIBUTE);
-    }
+	public boolean hasVSpace() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.VSPACE_ATTRIBUTE);
+	}
 
-    public void setVSpace(final int hspace) {
-        this.setInteger(DomConstants.VSPACE_ATTRIBUTE, hspace);
-    }
+	public void setVSpace(final int hspace) {
+		ObjectHelper.setInteger(this.getElement(), DomConstants.VSPACE_ATTRIBUTE, hspace);
+	}
 
-    public int getWidth() {
-        return this.getInteger(DomConstants.WIDTH_ATTRIBUTE);
-    }
+	public int getWidth() {
+		return ObjectHelper.getInteger(this.getElement(), DomConstants.WIDTH_ATTRIBUTE);
+	}
 
-    public boolean hasWidth() {
-        return this.hasProperty(DomConstants.WIDTH_ATTRIBUTE);
-    }
+	public boolean hasWidth() {
+		return ObjectHelper.hasProperty(this.getElement(), DomConstants.WIDTH_ATTRIBUTE);
+	}
 
-    public void setWidth(final int width) {
-        this.setInteger(DomConstants.WIDTH_ATTRIBUTE, width);
-    }
+	public void setWidth(final int width) {
+		ObjectHelper.setInteger(this.getElement(), DomConstants.WIDTH_ATTRIBUTE, width);
+	}
 
-    /**
-     * Adds a new Param to this object.
-     * 
-     * @param name
-     *            The parameter name
-     * @param value
-     *            The parameter value.
-     */
-    public void addParam(final String name, final String value) {
-        StringHelper.checkNotEmpty("parameter:name", name);
-        StringHelper.checkNotNull("parameter:value ", value);
+	/**
+	 * Adds a new Param to this object.
+	 * 
+	 * @param name
+	 *            The parameter name
+	 * @param value
+	 *            The parameter value.
+	 */
+	public void addParam(final String name, final String value) {
+		StringHelper.checkNotEmpty("parameter:name", name);
+		StringHelper.checkNotNull("parameter:value ", value);
 
-        final Element param = DOM.createElement(DomConstants.PARAM_TAG);
-        DOM.appendChild(this.getElement(), param);
-    }
+		final Element param = DOM.createElement(DomConstants.PARAM_TAG);
+		DOM.appendChild(this.getElement(), param);
+	}
 }

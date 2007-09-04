@@ -25,27 +25,27 @@ import rocket.util.client.HttpHelper;
  */
 public class HttpHelperTestCase extends TestCase {
 
-    public void testUrlDecode0() {
-        final String encoded = "abcdef";
-        final String decoded = HttpHelper.urlDecode(encoded);
-        final String expected = encoded;
+	public void testUrlDecode0() {
+		final String encoded = "abcdef";
+		final String decoded = HttpHelper.urlDecode(encoded);
+		final String expected = encoded;
 
-        assertEquals(expected, decoded);
-    }
+		assertEquals(expected, decoded);
+	}
 
-    public void testUrlDecode1() {
-        final String encoded = "1234567890";
-        final String decoded = HttpHelper.urlDecode(encoded);
-        final String expected = encoded;
+	public void testUrlDecode1() {
+		final String encoded = "1234567890";
+		final String decoded = HttpHelper.urlDecode(encoded);
+		final String expected = encoded;
 
-        assertEquals(expected, decoded);
-    }
+		assertEquals(expected, decoded);
+	}
 
-    public void testUrlDecode2() {
-        final String encoded = "+%" + Integer.toHexString((int) '+') + "!";
-        final String decoded = HttpHelper.urlDecode(encoded);
-        final String expected = " +!";
+	public void testUrlDecode2() {
+		final String encoded = "+%" + Integer.toHexString((int) '+') + "!";
+		final String decoded = HttpHelper.urlDecode(encoded);
+		final String expected = " +!";
 
-        assertEquals(expected, decoded);
-    }
+		assertEquals(expected, decoded);
+	}
 }

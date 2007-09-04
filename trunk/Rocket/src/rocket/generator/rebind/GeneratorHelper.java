@@ -348,32 +348,34 @@ public class GeneratorHelper {
 	static private boolean isJavascriptIdentifierPart(final char c) {
 		return c == '_' || c == '$' || (c >= 'A' & c <= 'Z') || (c >= 'a' & c <= 'z') || (c >= '0' & c <= '9') || c > 'z';
 	}
-	
+
 	/**
 	 * Makes all parameters that belong to the constructor final.
+	 * 
 	 * @param constructor
 	 */
-	static public void makeAllParametersFinal( final NewConstructor constructor ){
-		ObjectHelper.checkNotNull("parameter:constructor", constructor );
-		
+	static public void makeAllParametersFinal(final NewConstructor constructor) {
+		ObjectHelper.checkNotNull("parameter:constructor", constructor);
+
 		final Iterator parameters = constructor.getParameters().iterator();
-		while( parameters.hasNext() ){
-			final NewConstructorParameter parameter = (NewConstructorParameter)parameters.next();
-			parameter.setFinal( true );
+		while (parameters.hasNext()) {
+			final NewConstructorParameter parameter = (NewConstructorParameter) parameters.next();
+			parameter.setFinal(true);
 		}
 	}
-	
+
 	/**
 	 * Makes all parameters that belong to the method final.
+	 * 
 	 * @param method
 	 */
-	static public void makeAllParametersFinal( final NewMethod method ){
-		ObjectHelper.checkNotNull("parameter:method", method );
-		
+	static public void makeAllParametersFinal(final NewMethod method) {
+		ObjectHelper.checkNotNull("parameter:method", method);
+
 		final Iterator parameters = method.getParameters().iterator();
-		while( parameters.hasNext() ){
-			final NewMethodParameter parameter = (NewMethodParameter)parameters.next();
-			parameter.setFinal( true );
+		while (parameters.hasNext()) {
+			final NewMethodParameter parameter = (NewMethodParameter) parameters.next();
+			parameter.setFinal(true);
 		}
 	}
 }

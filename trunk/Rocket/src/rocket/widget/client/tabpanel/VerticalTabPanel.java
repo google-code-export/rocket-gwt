@@ -19,31 +19,32 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * The VerticalTabPanel class is the base class for both the LeftTabPanel and RightTabPanel classes.
+ * The VerticalTabPanel class is the base class for both the LeftTabPanel and
+ * RightTabPanel classes.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class VerticalTabPanel extends TabPanel {
+abstract class VerticalTabPanel extends TabPanel {
 
-    protected VerticalTabPanel() {
-        super();
-    }
+	protected VerticalTabPanel() {
+		super();
+	}
 
-    protected Widget createTabBarBeforeSpacer() {
-        final HTML widget = new HTML("&nbsp;");
-        widget.setStyleName(this.getTabBarBeforeSpacerStyleName());
-        widget.setHeight("100%");
-        return widget;
-    }
+	protected Widget createTabBarBeforeSpacer() {
+		final HTML widget = new HTML("&nbsp;");
+		widget.setStyleName(this.getTabBarBeforeSpacerStyleName());
+		widget.setHeight("100%");
+		return widget;
+	}
 
-    protected abstract String getTabBarBeforeSpacerStyleName();
+	protected abstract String getTabBarBeforeSpacerStyleName();
 
-    protected Widget createTabBarAfterSpacer() {
-        final HTML widget = new HTML("&nbsp;");
-        widget.setStyleName(getTabBarAfterSpacerStyleName());
-        widget.setHeight("100%");
-        return widget;
-    }
+	protected Widget createTabBarAfterSpacer() {
+		final HTML widget = new HTML("&nbsp;");
+		widget.setStyleName(getTabBarAfterSpacerStyleName());
+		widget.setHeight("100%");
+		return widget;
+	}
 
-    protected abstract String getTabBarAfterSpacerStyleName();
+	protected abstract String getTabBarAfterSpacerStyleName();
 }

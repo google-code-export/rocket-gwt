@@ -34,7 +34,7 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-public class MapTemplatedFile extends TemplatedCodeBlock{
+public class MapTemplatedFile extends TemplatedCodeBlock {
 
 	public MapTemplatedFile() {
 		super();
@@ -95,7 +95,7 @@ public class MapTemplatedFile extends TemplatedCodeBlock{
 	protected CodeBlock getEntriesCodeBlock() {
 		final MapAddEntryTemplatedFile template = new MapAddEntryTemplatedFile();
 		final Map entries = this.getEntries();
-		
+
 		return new CollectionTemplatedCodeBlock() {
 
 			public InputStream getInputStream() {
@@ -112,16 +112,17 @@ public class MapTemplatedFile extends TemplatedCodeBlock{
 
 			protected void prepareToWrite(final Object element) {
 				final Map.Entry entry = (Map.Entry) element;
-				template.setKey( (String) entry.getKey() );
-				template.setValue( (Value) entry.getValue() );
+				template.setKey((String) entry.getKey());
+				template.setValue((Value) entry.getValue());
 			}
 
 			protected void writeBetweenElements(SourceWriter writer) {
 			}
 		};
 	}
-	
+
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + Constants.MAP_TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + Constants.MAP_TEMPLATE
+				+ "]");
 	}
 }

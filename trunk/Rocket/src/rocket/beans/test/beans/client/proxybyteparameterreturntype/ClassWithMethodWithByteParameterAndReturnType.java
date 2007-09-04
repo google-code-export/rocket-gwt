@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxybyteparameterreturntype;
 
 public class ClassWithMethodWithByteParameterAndReturnType {
 
-	public byte add( final byte a, final byte b ){
+	public byte add(final byte a, final byte b) {
 		return (byte) (a + b);
 	}
 }

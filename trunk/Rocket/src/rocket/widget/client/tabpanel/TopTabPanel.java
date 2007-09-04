@@ -20,70 +20,71 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A TopTabPanel arranges its tab titles along the top edge with the remainder allocated to the tab contents of the active tab.
+ * A TopTabPanel arranges its tab titles along the top edge with the remainder
+ * allocated to the tab contents of the active tab.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class TopTabPanel extends HorizonalTabPanel {
 
-    public TopTabPanel() {
-        super();
-    }
+	public TopTabPanel() {
+		super();
+	}
 
-    protected HorizontalOrVerticalPanel createPanel() {
-        final VerticalPanelImpl panel = new VerticalPanelImpl();
-        panel.setStyleName(this.getPanelStyleName());
-        
-        final HorizontalOrVerticalPanel tabBarPanel = this.createTabBarPanel();
-        this.setTabBarPanel(tabBarPanel);
-        panel.add((Widget) tabBarPanel );
+	protected HorizontalOrVerticalPanel createPanel() {
+		final VerticalPanelImpl panel = new VerticalPanelImpl();
+		panel.setStyleName(this.getPanelStyleName());
 
-        final DeckPanel contentPanel = this.createContentPanel();
-        this.setContentPanel(contentPanel);
-        panel.add(contentPanel);
-        panel.setCellHeight(contentPanel, "100%");
-        
-        return panel;
-    }
+		final HorizontalOrVerticalPanel tabBarPanel = this.createTabBarPanel();
+		this.setTabBarPanel(tabBarPanel);
+		panel.add((Widget) tabBarPanel);
 
-    protected TabPanel.HorizontalOrVerticalPanel createTabBarPanel() {
-        return this.createTabBarPanel(HasVerticalAlignment.ALIGN_BOTTOM);
-    }
+		final DeckPanel contentPanel = this.createContentPanel();
+		this.setContentPanel(contentPanel);
+		panel.add(contentPanel);
+		panel.setCellHeight(contentPanel, "100%");
 
-    protected String getPanelStyleName() {
-        return TabConstants.TOP_TAB_PANEL_STYLE;
-    }
+		return panel;
+	}
 
-    protected String getTabBarStyleName() {
-        return TabConstants.TOP_TAB_BAR_STYLE;
-    }
+	protected TabPanel.HorizontalOrVerticalPanel createTabBarPanel() {
+		return this.createTabBarPanel(HasVerticalAlignment.ALIGN_BOTTOM);
+	}
 
-    protected String getTabBarBeforeSpacerStyleName() {
-        return TabConstants.TOP_TAB_BAR_BEFORE_SPACER_STYLE;
-    }
+	protected String getPanelStyleName() {
+		return TabConstants.TOP_TAB_PANEL_STYLE;
+	}
 
-    protected String getTabBarAfterSpacerStyleName() {
-        return TabConstants.TOP_TAB_BAR_AFTER_SPACER_STYLE;
-    }
+	protected String getTabBarStyleName() {
+		return TabConstants.TOP_TAB_BAR_STYLE;
+	}
 
-    protected String getTabBarItemStyleName() {
-        return TabConstants.TOP_TAB_BAR_ITEM_STYLE;
-    }
+	protected String getTabBarBeforeSpacerStyleName() {
+		return TabConstants.TOP_TAB_BAR_BEFORE_SPACER_STYLE;
+	}
 
-    protected String getTabBarItemLabelStyleName() {
-        return TabConstants.TOP_TAB_BAR_ITEM_LABEL_STYLE;
-    }
+	protected String getTabBarAfterSpacerStyleName() {
+		return TabConstants.TOP_TAB_BAR_AFTER_SPACER_STYLE;
+	}
 
-    protected String getTabBarItemWidgetStyleName() {
-        return TabConstants.TOP_TAB_BAR_ITEM_WIDGET_STYLE;
-    }
+	protected String getTabBarItemStyleName() {
+		return TabConstants.TOP_TAB_BAR_ITEM_STYLE;
+	}
 
-    protected String getTabBarItemSelectedStyleName() {
-        return TabConstants.TOP_TAB_BAR_ITEM_SELECTED_STYLE;
-    }
+	protected String getTabBarItemLabelStyleName() {
+		return TabConstants.TOP_TAB_BAR_ITEM_LABEL_STYLE;
+	}
 
-    protected String getContentPanelStyleName() {
-        return TabConstants.TOP_TAB_CONTENT_STYLE;
-    }
+	protected String getTabBarItemWidgetStyleName() {
+		return TabConstants.TOP_TAB_BAR_ITEM_WIDGET_STYLE;
+	}
+
+	protected String getTabBarItemSelectedStyleName() {
+		return TabConstants.TOP_TAB_BAR_ITEM_SELECTED_STYLE;
+	}
+
+	protected String getContentPanelStyleName() {
+		return TabConstants.TOP_TAB_CONTENT_STYLE;
+	}
 
 }

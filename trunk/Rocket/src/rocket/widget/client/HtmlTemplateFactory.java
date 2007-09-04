@@ -1,5 +1,7 @@
 package rocket.widget.client;
 
+import com.google.gwt.user.client.ui.CheckBox;
+
 /**
  * Base interface for all generated HtmlTemplates. Sub interfaces must define
  * one or more methods. Each method must satisfy the following rules.
@@ -11,7 +13,8 @@ package rocket.widget.client;
  * The parent panel of all widgets retrieved from this factory is the RootPanel
  * singleton.
  * 
- * The label portion of the CheckBox, RadioButton widget is not accessible thus attempts to invoke any related method will fail.
+ * The label portion of the CheckBox, RadioButton widget is not accessible thus
+ * attempts to invoke any related method will fail.
  * <ul>
  * <li>{@link CheckBox#getText }</li>
  * <li>{@link CheckBox#setText }</li>

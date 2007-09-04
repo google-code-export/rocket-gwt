@@ -91,6 +91,7 @@ class SetPropertyTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + Constants.SET_PROPERTY_TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file ["
+				+ Constants.SET_PROPERTY_TEMPLATE + "]");
 	}
 }

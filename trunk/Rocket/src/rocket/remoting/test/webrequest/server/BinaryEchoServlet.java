@@ -31,31 +31,31 @@ import rocket.util.server.IoHelper;
  * @author Miroslav Pokorny (mP)
  */
 public class BinaryEchoServlet extends HttpServlet {
-    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-    }
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+	}
 
-    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        final String contentType = request.getContentType();
-        response.setContentType(contentType);
+	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		final String contentType = request.getContentType();
+		response.setContentType(contentType);
 
-        InputStream inputStream = null;
-        final byte[] buffer = new byte[4 * 1024];
-        final OutputStream outputStream = response.getOutputStream();
-        try {
-            inputStream = request.getInputStream();
+		InputStream inputStream = null;
+		final byte[] buffer = new byte[4 * 1024];
+		final OutputStream outputStream = response.getOutputStream();
+		try {
+			inputStream = request.getInputStream();
 
-            while (true) {
-                final int readByteCount = inputStream.read(buffer);
-                if (-1 == readByteCount) {
-                    break;
-                }
-                outputStream.write(buffer, 0, readByteCount);
-            }
-            outputStream.flush();
-        } finally {
-            IoHelper.closeIfNecessary(inputStream);
-            IoHelper.closeIfNecessary(outputStream);
-        }
-    }
+			while (true) {
+				final int readByteCount = inputStream.read(buffer);
+				if (-1 == readByteCount) {
+					break;
+				}
+				outputStream.write(buffer, 0, readByteCount);
+			}
+			outputStream.flush();
+		} finally {
+			IoHelper.closeIfNecessary(inputStream);
+			IoHelper.closeIfNecessary(outputStream);
+		}
+	}
 }

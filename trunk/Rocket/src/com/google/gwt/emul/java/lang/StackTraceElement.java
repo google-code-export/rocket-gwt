@@ -22,63 +22,62 @@ package java.lang;
  */
 public class StackTraceElement {
 
-    public StackTraceElement(final String declaringClass, final String methodName, final String fileName,
-            final int lineNumber) {
-        super();
+	public StackTraceElement(final String declaringClass, final String methodName, final String fileName, final int lineNumber) {
+		super();
 
-        this.setClassName(declaringClass);
-        this.setMethodName(methodName);
-        this.setFileName(fileName);
-        this.setLineNumber(lineNumber);
-    }
+		this.setClassName(declaringClass);
+		this.setMethodName(methodName);
+		this.setFileName(fileName);
+		this.setLineNumber(lineNumber);
+	}
 
-    public String getClassName() {
-        return className;
-    }
+	public String getClassName() {
+		return className;
+	}
 
-    public String getFileName() {
-        return fileName;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
-    public int getLineNumber() {
-        return lineNumber;
-    }
+	public int getLineNumber() {
+		return lineNumber;
+	}
 
-    public String getMethodName() {
-        return methodName;
-    }
+	public String getMethodName() {
+		return methodName;
+	}
 
-    /**
-     * The className will be empty when the function was anonymous.
-     */
-    private String className;
+	/**
+	 * The className will be empty when the function was anonymous.
+	 */
+	private String className;
 
-    /**
-     * This will contain the module name.
-     */
-    private String fileName;
+	/**
+	 * This will contain the module name.
+	 */
+	private String fileName;
 
-    /**
-     * This cannot be determined and should contain -1
-     */
-    private int lineNumber;
+	/**
+	 * This cannot be determined and should contain -1
+	 */
+	private int lineNumber;
 
-    private String methodName;
+	private String methodName;
 
-    // ROCKET The setters below were added to support hosted mode stacktraces
-    void setClassName(final String className) {
-        this.className = className;
-    }
+	// ROCKET The setters below were added to support hosted mode stacktraces
+	void setClassName(final String className) {
+		this.className = className;
+	}
 
-    void setFileName(final String fileName) {
-        this.fileName = fileName;
-    }
+	void setFileName(final String fileName) {
+		this.fileName = fileName;
+	}
 
-    void setLineNumber(final int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
+	void setLineNumber(final int lineNumber) {
+		this.lineNumber = lineNumber;
+	}
 
-    void setMethodName(final String methodName) {
-        this.methodName = methodName;
-    }
+	void setMethodName(final String methodName) {
+		this.methodName = methodName;
+	}
 }

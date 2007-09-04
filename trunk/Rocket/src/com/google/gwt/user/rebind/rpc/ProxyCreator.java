@@ -15,6 +15,10 @@
  */
 package com.google.gwt.user.rebind.rpc;
 
+import java.io.PrintWriter;
+
+import rocket.remoting.client.HasSerializer;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.core.ext.GeneratorContext;
@@ -41,487 +45,460 @@ import com.google.gwt.user.client.rpc.impl.Serializer;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
-import java.io.PrintWriter;
-
-import rocket.remoting.client.HasSerializer;
-
 /**
  * Creates a client-side proxy for a
  * {@link com.google.gwt.user.client.rpc.RemoteService RemoteService} interface
  * as well as the necessary type and field serializers.
  */
 class ProxyCreator {
-	
-	// print something to the log to make it easy to spot that the correct ProxyCreator is being used with the rocket library.
-	static{
-		GWT.log( "Rocket: Using customized ProxyCreator to generated (de)serializers.", null );
+
+	// print something to the log to make it easy to spot that the correct
+	// ProxyCreator is being used with the rocket library.
+	static {
+		GWT.log("Rocket: Using customized ProxyCreator to generated (de)serializers.", null);
 	}
-	
-  private static final String ENTRY_POINT_TAG = "gwt.defaultEntryPoint";
-  private static final String PROXY_SUFFIX = "_Proxy";
 
-  private static final String SERIALIZATION_STREAM_READER_INSTANTIATION = ClientSerializationStreamReader.class.getName()
-      + " streamReader = new "
-      + ClientSerializationStreamReader.class.getName() + "(SERIALIZER);";
+	private static final String ENTRY_POINT_TAG = "gwt.defaultEntryPoint";
 
-  private static final String SERIALIZATION_STREAM_WRITER_INSTANTIATION = ClientSerializationStreamWriter.class.getName()
-      + " streamWriter = new "
-      + ClientSerializationStreamWriter.class.getName() + "(SERIALIZER);";
+	private static final String PROXY_SUFFIX = "_Proxy";
 
-  /*
-   * This method returns the real type name. Currently, it only affects
-   * JParameterizedType since their names are not legal Java names.
-   */
-  private static String getJavaTypeName(JType type) {
-    JParameterizedType parameterizedType = type.isParameterized();
-    if (parameterizedType != null) {
-      return parameterizedType.getRawType().getQualifiedSourceName();
-    }
+	private static final String SERIALIZATION_STREAM_READER_INSTANTIATION = ClientSerializationStreamReader.class.getName()
+			+ " streamReader = new " + ClientSerializationStreamReader.class.getName() + "(SERIALIZER);";
 
-    return type.getQualifiedSourceName();
-  }
+	private static final String SERIALIZATION_STREAM_WRITER_INSTANTIATION = ClientSerializationStreamWriter.class.getName()
+			+ " streamWriter = new " + ClientSerializationStreamWriter.class.getName() + "(SERIALIZER);";
 
-  private boolean enforceTypeVersioning;
+	/*
+	 * This method returns the real type name. Currently, it only affects
+	 * JParameterizedType since their names are not legal Java names.
+	 */
+	private static String getJavaTypeName(JType type) {
+		JParameterizedType parameterizedType = type.isParameterized();
+		if (parameterizedType != null) {
+			return parameterizedType.getRawType().getQualifiedSourceName();
+		}
 
-  private JClassType serviceIntf;
+		return type.getQualifiedSourceName();
+	}
 
-  public ProxyCreator(JClassType serviceIntf) {
-    assert (serviceIntf.isInterface() != null);
+	private boolean enforceTypeVersioning;
 
-    this.serviceIntf = serviceIntf;
-  }
+	private JClassType serviceIntf;
 
-  /**
-   * Creates the client-side proxy class.
-   * 
-   * @throws UnableToCompleteException
-   */
-  public String create(TreeLogger logger, GeneratorContext context)
-      throws UnableToCompleteException {
-    SourceWriter srcWriter = getSourceWriter(logger, context);
-    if (srcWriter == null) {
-      return getProxyQualifiedName();
-    }
+	public ProxyCreator(JClassType serviceIntf) {
+		assert (serviceIntf.isInterface() != null);
 
-    SerializableTypeOracleBuilder stob = new SerializableTypeOracleBuilder(
-        logger, context.getTypeOracle());
-    SerializableTypeOracle sto = stob.build(context.getPropertyOracle(),
-        serviceIntf);
+		this.serviceIntf = serviceIntf;
+	}
 
-    TypeSerializerCreator tsc = new TypeSerializerCreator(logger, sto, context,
-        serviceIntf);
-    tsc.realize(logger);
+	/**
+	 * Creates the client-side proxy class.
+	 * 
+	 * @throws UnableToCompleteException
+	 */
+	public String create(TreeLogger logger, GeneratorContext context) throws UnableToCompleteException {
+		SourceWriter srcWriter = getSourceWriter(logger, context);
+		if (srcWriter == null) {
+			return getProxyQualifiedName();
+		}
 
-    enforceTypeVersioning = Shared.shouldEnforceTypeVersioning(logger,
-        context.getPropertyOracle());
+		SerializableTypeOracleBuilder stob = new SerializableTypeOracleBuilder(logger, context.getTypeOracle());
+		SerializableTypeOracle sto = stob.build(context.getPropertyOracle(), serviceIntf);
 
-    generateProxyFields(srcWriter, sto);
+		TypeSerializerCreator tsc = new TypeSerializerCreator(logger, sto, context, serviceIntf);
+		tsc.realize(logger);
 
-    generateServiceDefTargetImpl(srcWriter);
+		enforceTypeVersioning = Shared.shouldEnforceTypeVersioning(logger, context.getPropertyOracle());
 
-    generateProxyMethods(srcWriter, sto);
+		generateProxyFields(srcWriter, sto);
 
-    this.generateHasSerializerMethod(srcWriter); // ROCKET
-    
-    srcWriter.commit(logger);
+		generateServiceDefTargetImpl(srcWriter);
 
-    return getProxyQualifiedName();
-  }
-  
-  /**
-   * THis method inserts the getter which exposes the serializer accompanying the generated proxy. This getter is required by the comet
-   * module to help it to deserialize incoming objects.
-   * 
-   * @param writer
-   * 
-   * ROCKET
-   */
-  protected void generateHasSerializerMethod(SourceWriter writer) {
-      writer.println("/**");
-      writer.println("* This method is added by the rocket framework providing a mechanism to get the internal serializer.");
-      writer.println("**/");
-      writer.println();
-      writer.println("public " + Serializer.class.getName() + " getSerializer(){");
-      writer.println("  return SERIALIZER;");
-      writer.println("}");
-      writer.println();
-  }
+		generateProxyMethods(srcWriter, sto);
 
-  /*
-   * Given a type emit an expression for calling the correct
-   * SerializationStreamReader method which reads the corresponding 
-   * instance out of the stream.
-   */
-  protected final void generateDecodeCall(SourceWriter w, JType type) {
-    w.print("streamReader.");
-    w.print("read" + Shared.getCallSuffix(type) + "()");
-  }
+		this.generateHasSerializerMethod(srcWriter); // ROCKET
 
-  /*
-   * Given a type emit an expression for calling the correct
-   * SerializationStreamWriter method which writes that type into the stream.
-   */
-  protected void generateEncodeCall(SourceWriter w, JParameter parameter) {
-    JType paramType = parameter.getType();
-    w.print("streamWriter.");
-    w.print("write" + Shared.getCallSuffix(paramType));
-    w.println("(" + parameter.getName() + ");");
-  }
+		srcWriter.commit(logger);
 
-  /*
-   * Calls the __ version to encode.
-   */
-  private void generateAsynchronousProxyMethod(SourceWriter w, JMethod method) {
+		return getProxyQualifiedName();
+	}
 
-    JType returnType = method.getReturnType();
-    JParameter[] params = method.getParameters();
+	/**
+	 * THis method inserts the getter which exposes the serializer accompanying
+	 * the generated proxy. This getter is required by the comet module to help
+	 * it to deserialize incoming objects.
+	 * 
+	 * @param writer
+	 * 
+	 * ROCKET
+	 */
+	protected void generateHasSerializerMethod(SourceWriter writer) {
+		writer.println("/**");
+		writer.println("* This method is added by the rocket framework providing a mechanism to get the internal serializer.");
+		writer.println("**/");
+		writer.println();
+		writer.println("public " + Serializer.class.getName() + " getSerializer(){");
+		writer.println("  return SERIALIZER;");
+		writer.println("}");
+		writer.println();
+	}
 
-    NameFactory nameFactory = new NameFactory();
+	/*
+	 * Given a type emit an expression for calling the correct
+	 * SerializationStreamReader method which reads the corresponding instance
+	 * out of the stream.
+	 */
+	protected final void generateDecodeCall(SourceWriter w, JType type) {
+		w.print("streamReader.");
+		w.print("read" + Shared.getCallSuffix(type) + "()");
+	}
 
-    for (int i = 0; i < params.length; ++i) {
-      nameFactory.addName(params[i].getName());
-    }
+	/*
+	 * Given a type emit an expression for calling the correct
+	 * SerializationStreamWriter method which writes that type into the stream.
+	 */
+	protected void generateEncodeCall(SourceWriter w, JParameter parameter) {
+		JType paramType = parameter.getType();
+		w.print("streamWriter.");
+		w.print("write" + Shared.getCallSuffix(paramType));
+		w.println("(" + parameter.getName() + ");");
+	}
 
-    w.println();
-    w.print("public void " + method.getName() + "(");
-    int i;
-    for (i = 0; i < params.length; i++) {
-      JParameter param = params[i];
-      w.print((i > 0 ? ", " : "") + getJavaTypeName(param.getType()) + " "
-          + param.getName());
-    }
+	/*
+	 * Calls the __ version to encode.
+	 */
+	private void generateAsynchronousProxyMethod(SourceWriter w, JMethod method) {
 
-    w.println((i > 0 ? ", final " : "final ") + AsyncCallback.class.getName()
-        + " callback) {");
-    w.indent();
-    w.println("final " + SERIALIZATION_STREAM_READER_INSTANTIATION);
-    w.println("final " + SERIALIZATION_STREAM_WRITER_INSTANTIATION);
-    w.println("try {");
-    w.indent();
-    {
-      w.print("__" + method.getName() + "(streamWriter");
-      for (i = 0; i < params.length; i++) {
-        w.print(", " + params[i].getName());
-      }
-      w.println(");");
-    }
-    w.outdent();
+		JType returnType = method.getReturnType();
+		JParameter[] params = method.getParameters();
 
-    String exceptionName = nameFactory.createName("e");
-    w.println("} catch (" + SerializationException.class.getName() + " "
-        + exceptionName + ") {");
-    w.indentln("callback.onFailure(" + exceptionName + ");");
-    w.indentln("return;");
-    w.println("}");
+		NameFactory nameFactory = new NameFactory();
 
-    // Generate the async response handler.
-    //
-    w.println(ResponseTextHandler.class.getName() + " handler = new "
-        + ResponseTextHandler.class.getName() + "() {");
-    w.indent();
-    {
-      w.println("public final void onCompletion(String encodedResponse) {");
-      w.indent();
-      {
-        w.println("UncaughtExceptionHandler handler = GWT.getUncaughtExceptionHandler();");
-        w.println("if (handler != null)");
-        w.indent();
-        {
-          w.println("onCompletionAndCatch(encodedResponse, handler);");
-        }
-        w.outdent();
-        w.println("else");
-        w.indent();
-        {
-          w.println("onCompletionImpl(encodedResponse);");
-        }
-        w.outdent();
-      }
-      w.outdent();
-      w.println("}");
+		for (int i = 0; i < params.length; ++i) {
+			nameFactory.addName(params[i].getName());
+		}
 
-      w.println("private void onCompletionAndCatch(String encodedResponse, UncaughtExceptionHandler handler) {");
-      w.indent();
-      {
-        w.println("try {");
-        w.indent();
-        {
-          w.println("onCompletionImpl(encodedResponse);");
-        }
-        w.outdent();
-        w.println("} catch (Throwable e) {");
-        w.indent();
-        {
-          w.println("handler.onUncaughtException(e);");
-        }
-        w.outdent();
-        w.println("}");
-      }
-      w.outdent();
-      w.println("}");
+		w.println();
+		w.print("public void " + method.getName() + "(");
+		int i;
+		for (i = 0; i < params.length; i++) {
+			JParameter param = params[i];
+			w.print((i > 0 ? ", " : "") + getJavaTypeName(param.getType()) + " " + param.getName());
+		}
 
-      w.println("private void onCompletionImpl(String encodedResponse) {");
-      w.indent();
-      {
-        w.println("Object result = null;");
-        w.println("Throwable caught = null;");
-        w.println("try {");
-        w.indent();
-        {
-          w.println("if (encodedResponse.startsWith(\"//OK\")) {");
-          w.indent();
-          {
-            w.println("streamReader.prepareToRead(encodedResponse.substring(4));");
-            w.print("result = ");
+		w.println((i > 0 ? ", final " : "final ") + AsyncCallback.class.getName() + " callback) {");
+		w.indent();
+		w.println("final " + SERIALIZATION_STREAM_READER_INSTANTIATION);
+		w.println("final " + SERIALIZATION_STREAM_WRITER_INSTANTIATION);
+		w.println("try {");
+		w.indent();
+		{
+			w.print("__" + method.getName() + "(streamWriter");
+			for (i = 0; i < params.length; i++) {
+				w.print(", " + params[i].getName());
+			}
+			w.println(");");
+		}
+		w.outdent();
 
-            JPrimitiveType primitive = returnType.isPrimitive();
-            if (primitive == JPrimitiveType.VOID) {
-              w.print("null");
-            } else {
-              if (primitive != null) {
-                w.print("new ");
-                w.print(getObjectWrapperName(primitive));
-                w.print("(");
-                generateDecodeCall(w, returnType);
-                w.print(")");
-              } else {
-                generateDecodeCall(w, returnType);
-              }
-            }
-            w.println(";");
-          }
-          w.outdent();
-          w.println("} else if (encodedResponse.startsWith(\"//EX\")) {");
-          w.indent();
-          {
-            w.println("streamReader.prepareToRead(encodedResponse.substring(4));");
-            w.println("caught = (Throwable) streamReader.readObject();");
-          }
-          w.outdent();
-          w.println("} else {");
-          w.indent();
-          {
-            w.println("caught = new " + InvocationException.class.getName()
-                + "(encodedResponse);");
-          }
-          w.outdent();
-          w.println("}");
-        }
-        w.outdent();
-        w.println("} catch (" + SerializationException.class.getName() + " e) {");
-        w.indent();
-        {
-          w.println("caught = new " + IncompatibleRemoteServiceException.class.getName() + "();");
-        }
-        w.outdent();
-        w.println("} catch (Throwable e) {");
-        w.indent();
-        {
-          w.println("caught = e;");
-        }
-        w.outdent();
-        w.println("}");
+		String exceptionName = nameFactory.createName("e");
+		w.println("} catch (" + SerializationException.class.getName() + " " + exceptionName + ") {");
+		w.indentln("callback.onFailure(" + exceptionName + ");");
+		w.indentln("return;");
+		w.println("}");
 
-        w.println("if (caught == null)");
-        w.indent();
-        {
-          w.println("callback.onSuccess(result);");
-        }
-        w.outdent();
-        w.println("else");
-        w.indent();
-        {
-          w.println("callback.onFailure(caught);");
-        }
-        w.outdent();
-      }
-      w.outdent();
-      w.println("}");
-    }
-    w.outdent();
-    w.println("};");
+		// Generate the async response handler.
+		//
+		w.println(ResponseTextHandler.class.getName() + " handler = new " + ResponseTextHandler.class.getName() + "() {");
+		w.indent();
+		{
+			w.println("public final void onCompletion(String encodedResponse) {");
+			w.indent();
+			{
+				w.println("UncaughtExceptionHandler handler = GWT.getUncaughtExceptionHandler();");
+				w.println("if (handler != null)");
+				w.indent();
+				{
+					w.println("onCompletionAndCatch(encodedResponse, handler);");
+				}
+				w.outdent();
+				w.println("else");
+				w.indent();
+				{
+					w.println("onCompletionImpl(encodedResponse);");
+				}
+				w.outdent();
+			}
+			w.outdent();
+			w.println("}");
 
-    // Make the asynchronous invocation.
-    //
-    w.println("if (!com.google.gwt.user.client.HTTPRequest.asyncPost(getServiceEntryPoint(), streamWriter.toString(), handler))");
-    w.indentln("callback.onFailure(new "
-        + InvocationException.class.getName()
-        + "(\"Unable to initiate the asynchronous service invocation -- check the network connection\"));");
-    w.outdent();
+			w.println("private void onCompletionAndCatch(String encodedResponse, UncaughtExceptionHandler handler) {");
+			w.indent();
+			{
+				w.println("try {");
+				w.indent();
+				{
+					w.println("onCompletionImpl(encodedResponse);");
+				}
+				w.outdent();
+				w.println("} catch (Throwable e) {");
+				w.indent();
+				{
+					w.println("handler.onUncaughtException(e);");
+				}
+				w.outdent();
+				w.println("}");
+			}
+			w.outdent();
+			w.println("}");
 
-    w.println("}");
-  }
+			w.println("private void onCompletionImpl(String encodedResponse) {");
+			w.indent();
+			{
+				w.println("Object result = null;");
+				w.println("Throwable caught = null;");
+				w.println("try {");
+				w.indent();
+				{
+					w.println("if (encodedResponse.startsWith(\"//OK\")) {");
+					w.indent();
+					{
+						w.println("streamReader.prepareToRead(encodedResponse.substring(4));");
+						w.print("result = ");
 
-  /**
-   * Generate the code that addresses the service.
-   */
-  private void generateProxyEncode(SourceWriter w,
-      SerializableTypeOracle serializableTypeOracle, JMethod method) {
-    String methodName = method.getName();
-    JParameter[] params = method.getParameters();
-    w.println();
-    w.print("private void __" + methodName + "("
-        + ClientSerializationStreamWriter.class.getName() + " streamWriter");
-    for (int i = 0; i < params.length; i++) {
-      JParameter param = params[i];
-      w.print(", " + getJavaTypeName(param.getType()) + " " + param.getName());
-    }
+						JPrimitiveType primitive = returnType.isPrimitive();
+						if (primitive == JPrimitiveType.VOID) {
+							w.print("null");
+						} else {
+							if (primitive != null) {
+								w.print("new ");
+								w.print(getObjectWrapperName(primitive));
+								w.print("(");
+								generateDecodeCall(w, returnType);
+								w.print(")");
+							} else {
+								generateDecodeCall(w, returnType);
+							}
+						}
+						w.println(";");
+					}
+					w.outdent();
+					w.println("} else if (encodedResponse.startsWith(\"//EX\")) {");
+					w.indent();
+					{
+						w.println("streamReader.prepareToRead(encodedResponse.substring(4));");
+						w.println("caught = (Throwable) streamReader.readObject();");
+					}
+					w.outdent();
+					w.println("} else {");
+					w.indent();
+					{
+						w.println("caught = new " + InvocationException.class.getName() + "(encodedResponse);");
+					}
+					w.outdent();
+					w.println("}");
+				}
+				w.outdent();
+				w.println("} catch (" + SerializationException.class.getName() + " e) {");
+				w.indent();
+				{
+					w.println("caught = new " + IncompatibleRemoteServiceException.class.getName() + "();");
+				}
+				w.outdent();
+				w.println("} catch (Throwable e) {");
+				w.indent();
+				{
+					w.println("caught = e;");
+				}
+				w.outdent();
+				w.println("}");
 
-    w.println(") throws " + SerializationException.class.getName() + " {");
-    w.indent();
+				w.println("if (caught == null)");
+				w.indent();
+				{
+					w.println("callback.onSuccess(result);");
+				}
+				w.outdent();
+				w.println("else");
+				w.indent();
+				{
+					w.println("callback.onFailure(caught);");
+				}
+				w.outdent();
+			}
+			w.outdent();
+			w.println("}");
+		}
+		w.outdent();
+		w.println("};");
 
-    // Make sure that we have a service def class name specified.
-    //
-    w.println("if (getServiceEntryPoint() == null)");
-    String className = NoServiceEntryPointSpecifiedException.class.getName();
-    className = className.replace('$', '.');
-    w.indentln("throw new " + className + "();");
+		// Make the asynchronous invocation.
+		//
+		w.println("if (!com.google.gwt.user.client.HTTPRequest.asyncPost(getServiceEntryPoint(), streamWriter.toString(), handler))");
+		w.indentln("callback.onFailure(new " + InvocationException.class.getName()
+				+ "(\"Unable to initiate the asynchronous service invocation -- check the network connection\"));");
+		w.outdent();
 
-    // Generate code to describe just enough meta data for the server to locate
-    // the service definition class and resolve the method overload.
-    //
-    w.println("streamWriter.prepareToWrite();");
+		w.println("}");
+	}
 
-    if (!shouldEnforceTypeVersioning()) {
-      w.println("streamWriter.addFlags("
-          + ClientSerializationStreamReader.class.getName()
-          + ".SERIALIZATION_STREAM_FLAGS_NO_TYPE_VERSIONING);");
-    }
-    w.println("streamWriter.writeString(\""
-        + serializableTypeOracle.getSerializedTypeName(method.getEnclosingType())
-        + "\");");
-    w.println("streamWriter.writeString(\"" + methodName + "\");");
-    w.println("streamWriter.writeInt(" + params.length + ");");
-    for (int i = 0; i < params.length; ++i) {
-      JParameter param = params[i];
-      w.println("streamWriter.writeString(\""
-          + serializableTypeOracle.getSerializedTypeName(param.getType())
-          + "\");");
-    }
+	/**
+	 * Generate the code that addresses the service.
+	 */
+	private void generateProxyEncode(SourceWriter w, SerializableTypeOracle serializableTypeOracle, JMethod method) {
+		String methodName = method.getName();
+		JParameter[] params = method.getParameters();
+		w.println();
+		w.print("private void __" + methodName + "(" + ClientSerializationStreamWriter.class.getName() + " streamWriter");
+		for (int i = 0; i < params.length; i++) {
+			JParameter param = params[i];
+			w.print(", " + getJavaTypeName(param.getType()) + " " + param.getName());
+		}
 
-    // Encode the arguments.
-    //
-    for (int i = 0; i < params.length; i++) {
-      JParameter param = params[i];
-      generateEncodeCall(w, param);
-    }
+		w.println(") throws " + SerializationException.class.getName() + " {");
+		w.indent();
 
-    w.outdent();
-    w.println("}");
-  }
+		// Make sure that we have a service def class name specified.
+		//
+		w.println("if (getServiceEntryPoint() == null)");
+		String className = NoServiceEntryPointSpecifiedException.class.getName();
+		className = className.replace('$', '.');
+		w.indentln("throw new " + className + "();");
 
-  /**
-   * Generate any fields required by the proxy.
-   */
-  private void generateProxyFields(SourceWriter srcWriter,
-      SerializableTypeOracle serializableTypeOracle) {
-    String typeSerializerName = serializableTypeOracle.getTypeSerializerQualifiedName(serviceIntf);
-    srcWriter.println("private static final " + typeSerializerName
-        + " SERIALIZER = new " + typeSerializerName + "();");
-  }
+		// Generate code to describe just enough meta data for the server to
+		// locate
+		// the service definition class and resolve the method overload.
+		//
+		w.println("streamWriter.prepareToWrite();");
 
-  private void generateProxyMethods(SourceWriter w,
-      SerializableTypeOracle serializableTypeOracle) {
+		if (!shouldEnforceTypeVersioning()) {
+			w.println("streamWriter.addFlags(" + ClientSerializationStreamReader.class.getName()
+					+ ".SERIALIZATION_STREAM_FLAGS_NO_TYPE_VERSIONING);");
+		}
+		w.println("streamWriter.writeString(\"" + serializableTypeOracle.getSerializedTypeName(method.getEnclosingType()) + "\");");
+		w.println("streamWriter.writeString(\"" + methodName + "\");");
+		w.println("streamWriter.writeInt(" + params.length + ");");
+		for (int i = 0; i < params.length; ++i) {
+			JParameter param = params[i];
+			w.println("streamWriter.writeString(\"" + serializableTypeOracle.getSerializedTypeName(param.getType()) + "\");");
+		}
 
-    JMethod[] methods = serviceIntf.getOverridableMethods();
-    for (int i = 0; i < methods.length; ++i) {
-      JMethod method = methods[i];
-      generateProxyEncode(w, serializableTypeOracle, method);
-      generateAsynchronousProxyMethod(w, method);
-    }
-  }
+		// Encode the arguments.
+		//
+		for (int i = 0; i < params.length; i++) {
+			JParameter param = params[i];
+			generateEncodeCall(w, param);
+		}
 
-  /**
-   * Implements the ServiceDefTarget interface to allow clients to switch which
-   * back-end service definition we send calls to.
-   */
-  private void generateServiceDefTargetImpl(SourceWriter w) {
-    String serverDefName = getDefaultServiceDefName();
-    if (serverDefName != null) {
-      serverDefName = "\"" + serverDefName + "\"";
-    } else {
-      serverDefName = "null";
-    }
+		w.outdent();
+		w.println("}");
+	}
 
-    w.println();
-    w.println("String fServiceEntryPoint = " + serverDefName + ";");
-    w.println();
-    w.println("public String getServiceEntryPoint() { return fServiceEntryPoint; }");
-    w.println();
-    w.println("public void setServiceEntryPoint(String s) { fServiceEntryPoint = s; }");
-  }
+	/**
+	 * Generate any fields required by the proxy.
+	 */
+	private void generateProxyFields(SourceWriter srcWriter, SerializableTypeOracle serializableTypeOracle) {
+		String typeSerializerName = serializableTypeOracle.getTypeSerializerQualifiedName(serviceIntf);
+		srcWriter.println("private static final " + typeSerializerName + " SERIALIZER = new " + typeSerializerName + "();");
+	}
 
-  private String getAsyncIntfQualifiedName() {
-    String asyncIntf = serviceIntf.getQualifiedSourceName() + "Async";
-    return asyncIntf;
-  }
+	private void generateProxyMethods(SourceWriter w, SerializableTypeOracle serializableTypeOracle) {
 
-  private String getDefaultServiceDefName() {
-    String[][] metaData = serviceIntf.getMetaData(ENTRY_POINT_TAG);
-    if (metaData.length == 0) {
-      return null;
-    }
-    return serviceIntf.getMetaData(ENTRY_POINT_TAG)[0][0];
-  }
+		JMethod[] methods = serviceIntf.getOverridableMethods();
+		for (int i = 0; i < methods.length; ++i) {
+			JMethod method = methods[i];
+			generateProxyEncode(w, serializableTypeOracle, method);
+			generateAsynchronousProxyMethod(w, method);
+		}
+	}
 
-  /*
-   * Determine the name of the object wrapper class to instantiate based on the
-   * the type of the primitive.
-   */
-  private String getObjectWrapperName(JPrimitiveType primitive) {
-    if (primitive == JPrimitiveType.INT) {
-      return "Integer";
-    } else if (primitive == JPrimitiveType.CHAR) {
-      return "Character";
-    }
+	/**
+	 * Implements the ServiceDefTarget interface to allow clients to switch
+	 * which back-end service definition we send calls to.
+	 */
+	private void generateServiceDefTargetImpl(SourceWriter w) {
+		String serverDefName = getDefaultServiceDefName();
+		if (serverDefName != null) {
+			serverDefName = "\"" + serverDefName + "\"";
+		} else {
+			serverDefName = "null";
+		}
 
-    return Shared.capitalize(primitive.getSimpleSourceName());
-  }
+		w.println();
+		w.println("String fServiceEntryPoint = " + serverDefName + ";");
+		w.println();
+		w.println("public String getServiceEntryPoint() { return fServiceEntryPoint; }");
+		w.println();
+		w.println("public void setServiceEntryPoint(String s) { fServiceEntryPoint = s; }");
+	}
 
-  private String getPackageName() {
-    JPackage pkg = serviceIntf.getPackage();
-    if (pkg != null) {
-      return pkg.getName();
-    }
+	private String getAsyncIntfQualifiedName() {
+		String asyncIntf = serviceIntf.getQualifiedSourceName() + "Async";
+		return asyncIntf;
+	}
 
-    return "";
-  }
+	private String getDefaultServiceDefName() {
+		String[][] metaData = serviceIntf.getMetaData(ENTRY_POINT_TAG);
+		if (metaData.length == 0) {
+			return null;
+		}
+		return serviceIntf.getMetaData(ENTRY_POINT_TAG)[0][0];
+	}
 
-  private String getProxyQualifiedName() {
-    String[] name = Shared.synthesizeTopLevelClassName(serviceIntf,
-        PROXY_SUFFIX);
-    return name[0].length() == 0 ? name[1] : name[0] + "." + name[1];
-  }
+	/*
+	 * Determine the name of the object wrapper class to instantiate based on
+	 * the the type of the primitive.
+	 */
+	private String getObjectWrapperName(JPrimitiveType primitive) {
+		if (primitive == JPrimitiveType.INT) {
+			return "Integer";
+		} else if (primitive == JPrimitiveType.CHAR) {
+			return "Character";
+		}
 
-  private String getProxySimpleName() {
-    String[] name = Shared.synthesizeTopLevelClassName(serviceIntf,
-        PROXY_SUFFIX);
-    return name[1];
-  }
+		return Shared.capitalize(primitive.getSimpleSourceName());
+	}
 
-  private SourceWriter getSourceWriter(TreeLogger logger, GeneratorContext ctx) {
-    PrintWriter printWriter = ctx.tryCreate(logger, getPackageName(),
-        getProxySimpleName());
-    if (printWriter == null) {
-      return null;
-    }
+	private String getPackageName() {
+		JPackage pkg = serviceIntf.getPackage();
+		if (pkg != null) {
+			return pkg.getName();
+		}
 
-    ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(
-        getPackageName(), getProxySimpleName());
+		return "";
+	}
 
-    composerFactory.addImport(GWT.class.getName());
-    String className = UncaughtExceptionHandler.class.getName();
-    className = className.replace('$', '.');
-    composerFactory.addImport(className);
+	private String getProxyQualifiedName() {
+		String[] name = Shared.synthesizeTopLevelClassName(serviceIntf, PROXY_SUFFIX);
+		return name[0].length() == 0 ? name[1] : name[0] + "." + name[1];
+	}
 
-    composerFactory.addImplementedInterface(ServiceDefTarget.class.getName());
-    composerFactory.addImplementedInterface(getAsyncIntfQualifiedName());
-    composerFactory.addImplementedInterface( HasSerializer.class.getName() ); // ROCKET
+	private String getProxySimpleName() {
+		String[] name = Shared.synthesizeTopLevelClassName(serviceIntf, PROXY_SUFFIX);
+		return name[1];
+	}
 
-    return composerFactory.createSourceWriter(ctx, printWriter);
-  }
+	private SourceWriter getSourceWriter(TreeLogger logger, GeneratorContext ctx) {
+		PrintWriter printWriter = ctx.tryCreate(logger, getPackageName(), getProxySimpleName());
+		if (printWriter == null) {
+			return null;
+		}
 
-  private boolean shouldEnforceTypeVersioning() {
-    return enforceTypeVersioning;
-  }
+		ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(getPackageName(), getProxySimpleName());
+
+		composerFactory.addImport(GWT.class.getName());
+		String className = UncaughtExceptionHandler.class.getName();
+		className = className.replace('$', '.');
+		composerFactory.addImport(className);
+
+		composerFactory.addImplementedInterface(ServiceDefTarget.class.getName());
+		composerFactory.addImplementedInterface(getAsyncIntfQualifiedName());
+		composerFactory.addImplementedInterface(HasSerializer.class.getName()); // ROCKET
+
+		return composerFactory.createSourceWriter(ctx, printWriter);
+	}
+
+	private boolean shouldEnforceTypeVersioning() {
+		return enforceTypeVersioning;
+	}
 }

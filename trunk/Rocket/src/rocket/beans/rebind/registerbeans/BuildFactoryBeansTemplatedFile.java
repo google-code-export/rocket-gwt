@@ -58,11 +58,11 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 		return new ArrayList();
 	}
 
-	public void addBean( final Bean bean ){
-		ObjectHelper.checkNotNull( "parameter:bean", bean );
-		this.getBeans().add( bean );
+	public void addBean(final Bean bean) {
+		ObjectHelper.checkNotNull("parameter:bean", bean);
+		this.getBeans().add(bean);
 	}
-	
+
 	protected CodeBlock getBeansCodeBlock() {
 		final RegisterBeanTemplatedFile registerBean = new RegisterBeanTemplatedFile();
 
@@ -81,9 +81,9 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 			}
 
 			protected void prepareToWrite(Object element) {
-				final Bean bean =(Bean)element;
-				registerBean.setBeanId( bean.getId() );
-				registerBean.setFactoryBean( bean.hasProxy() ? bean.getProxyFactoryBean() : bean.getFactoryBean() );
+				final Bean bean = (Bean) element;
+				registerBean.setBeanId(bean.getId());
+				registerBean.setFactoryBean(bean.hasProxy() ? bean.getProxyFactoryBean() : bean.getFactoryBean());
 			}
 
 			protected void writeBetweenElements(SourceWriter writer) {
@@ -91,7 +91,7 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 			}
 		};
 	}
-	
+
 	protected InputStream getInputStream() {
 		final String filename = Constants.BUILD_FACTORY_BEANS_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);

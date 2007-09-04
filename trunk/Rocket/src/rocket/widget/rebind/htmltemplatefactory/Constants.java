@@ -15,22 +15,6 @@
  */
 package rocket.widget.rebind.htmltemplatefactory;
 
-import rocket.widget.client.HtmlTemplateFactory;
-import rocket.widget.client.HtmlTemplateFactoryImpl;
-
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
-
 class Constants {
 	final static String SUFFIX = "__HtmlTemplateFactory";
 

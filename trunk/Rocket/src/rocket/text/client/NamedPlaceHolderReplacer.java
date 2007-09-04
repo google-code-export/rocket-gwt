@@ -22,30 +22,32 @@ import rocket.util.client.StringHelper;
 
 /**
  * This placeholder uses the placeholder as a key into a map to fetch the value.
+ * 
  * @author Miroslav Pokorny
  */
 public class NamedPlaceHolderReplacer extends PlaceHolderReplacer {
 
-	public String execute( final String text ){
+	public String execute(final String text) {
 		return super.execute(text);
 	}
-	
-	protected String getValue( final String placeHolder ){
-		final String value = (String) this.getValues().get( placeHolder );
-		if( null == value ){
+
+	protected String getValue(final String placeHolder) {
+		final String value = (String) this.getValues().get(placeHolder);
+		if (null == value) {
 			StringHelper.fail("Unable to find placeholder [" + placeHolder + "]");
 		}
 		return value;
 	}
-	
+
 	private Map values;
-	
-	protected Map getValues(){
-		ObjectHelper.checkNotNull("field:values", values );
+
+	protected Map getValues() {
+		ObjectHelper.checkNotNull("field:values", values);
 		return this.values;
 	}
-	public void setValues( final Map values ){
-		ObjectHelper.checkNotNull("parameter:values", values );
+
+	public void setValues(final Map values) {
+		ObjectHelper.checkNotNull("parameter:values", values);
 		this.values = values;
 	}
 }

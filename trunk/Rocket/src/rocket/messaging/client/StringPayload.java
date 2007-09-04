@@ -22,25 +22,25 @@ package rocket.messaging.client;
  */
 public class StringPayload implements Payload {
 
-    public StringPayload() {
+	public StringPayload() {
 
-    }
+	}
 
-    public StringPayload(final String string) {
-        this.setString(string);
-    }
+	public StringPayload(final String string) {
+		this.setString(string);
+	}
 
-    private String string;
+	private String string;
 
-    public String getString() {
-        return string;
-    }
+	public String getString() {
+		return string;
+	}
 
-    public void setString(final String string) {
-        this.string = string;
-    }
+	public void setString(final String string) {
+		this.string = string;
+	}
 
-    public String toString() {
-        return super.toString();
-    }
+	public String toString() {
+		return super.toString();
+	}
 }

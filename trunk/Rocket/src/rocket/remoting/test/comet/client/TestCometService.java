@@ -18,5 +18,5 @@ package rocket.remoting.test.comet.client;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 public interface TestCometService extends RemoteService {
-    TestCometPayload invoke();
+	TestCometPayload invoke();
 }

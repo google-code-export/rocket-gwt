@@ -22,70 +22,70 @@ import rocket.util.client.StringHelper;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
- * A value object that contains the result of a request for a web resource done via rpc. In keeping with limitations and uselessness of
- * having a byte array in javascript only text response bodies are supported.
+ * A value object that contains the result of a request for a web resource done
+ * via rpc. In keeping with limitations and uselessness of having a byte array
+ * in javascript only text response bodies are supported.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class WebResponse implements IsSerializable {
 
-    private int code = -1;
+	private int code = -1;
 
-    public int getCode() {
-        PrimitiveHelper.checkGreaterThan("field:code", code, 0);
-        return this.code;
-    }
+	public int getCode() {
+		PrimitiveHelper.checkGreaterThan("field:code", code, 0);
+		return this.code;
+	}
 
-    public void setCode(final int code) {
-        PrimitiveHelper.checkGreaterThan("parameter:code", code, 0);
-        this.code = code;
-    }
+	public void setCode(final int code) {
+		PrimitiveHelper.checkGreaterThan("parameter:code", code, 0);
+		this.code = code;
+	}
 
-    private String message;
+	private String message;
 
-    public String getMessage() {
-        StringHelper.checkNotEmpty("field:message", message);
-        return this.message;
-    }
+	public String getMessage() {
+		StringHelper.checkNotEmpty("field:message", message);
+		return this.message;
+	}
 
-    public void setMessage(final String message) {
-        StringHelper.checkNotEmpty("parameter:message", message);
-        this.message = message;
-    }
+	public void setMessage(final String message) {
+		StringHelper.checkNotEmpty("parameter:message", message);
+		this.message = message;
+	}
 
-    private Headers headers;
+	private Headers headers;
 
-    public Headers getHeaders() {
-        ObjectHelper.checkNotNull("field:headers", headers);
-        return this.headers;
-    }
+	public Headers getHeaders() {
+		ObjectHelper.checkNotNull("field:headers", headers);
+		return this.headers;
+	}
 
-    public void setHeaders(final Headers headers) {
-        ObjectHelper.checkNotNull("parameter:headers", headers);
-        this.headers = headers;
-    }
+	public void setHeaders(final Headers headers) {
+		ObjectHelper.checkNotNull("parameter:headers", headers);
+		this.headers = headers;
+	}
 
-    public String getContentType() {
-        return this.getHeaders().getValue("Content-type");
-    }
+	public String getContentType() {
+		return this.getHeaders().getValue("Content-type");
+	}
 
-    /**
-     * THe output of the web request.
-     */
-    private String body;
+	/**
+	 * THe output of the web request.
+	 */
+	private String body;
 
-    public String getBody() {
-        ObjectHelper.checkNotNull("field:body", body);
-        return body;
-    }
+	public String getBody() {
+		ObjectHelper.checkNotNull("field:body", body);
+		return body;
+	}
 
-    public void setBody(final String body) {
-        ObjectHelper.checkNotNull("parameter:body", body);
-        this.body = body;
-    }
+	public void setBody(final String body) {
+		ObjectHelper.checkNotNull("parameter:body", body);
+		this.body = body;
+	}
 
-    public String toString() {
-        return super.toString() + ", code: " + code + ", message[" + message + "], headers: " + headers + ", body["
-                + body + "]";
-    }
+	public String toString() {
+		return super.toString() + ", code: " + code + ", message[" + message + "], headers: " + headers + ", body[" + body + "]";
+	}
 }

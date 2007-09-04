@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxybooleanparameterreturntype;
 
 public class ClassWithMethodWithBooleanParameterAndReturnType {
 
-	public boolean xor( final boolean a, final boolean b ){
+	public boolean xor(final boolean a, final boolean b) {
 		return a ^ b;
 	}
 }

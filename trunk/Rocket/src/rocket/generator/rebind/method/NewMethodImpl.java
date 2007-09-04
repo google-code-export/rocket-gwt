@@ -189,7 +189,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	}
 
 	protected void writeLogger() {
-		this.getGeneratorContext().debug("Writing " + this );
+		this.getGeneratorContext().debug("Writing " + this);
 	}
 
 	/**
@@ -278,12 +278,12 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("NewMethod ");
-		
-		if( this.hasReturnType() ){
-			builder.append( this.getReturnType() );
-			builder.append( ' ');
+
+		if (this.hasReturnType()) {
+			builder.append(this.getReturnType());
+			builder.append(' ');
 		}
-		
+
 		if (this.hasEnclosingType()) {
 			builder.append(this.getEnclosingType());
 			builder.append(' ');
@@ -293,7 +293,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 			builder.append(this.getName());
 		}
 
-		builder.append('(');		
+		builder.append('(');
 		if (this.hasParameters()) {
 			final Iterator parameters = this.getParameters().iterator();
 			while (parameters.hasNext()) {
@@ -305,8 +305,8 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 				}
 			}
 		}
-		builder.append( ')');
-		
+		builder.append(')');
+
 		return builder.toString();
 	}
 }

@@ -29,47 +29,48 @@ import javax.servlet.http.HttpServletResponse;
 import rocket.util.server.ObjectHelper;
 
 /**
- * This servlet simply echos all request parameters in alphabetical order using a line for each parameter. The first line however contains
- * the method type. GET and POST requests are processed in the same manner.
+ * This servlet simply echos all request parameters in alphabetical order using
+ * a line for each parameter. The first line however contains the method type.
+ * GET and POST requests are processed in the same manner.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class RequestParametersEchoServlet extends HttpServlet {
-    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        this.processRequest(request, response);
-    }
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		this.processRequest(request, response);
+	}
 
-    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        this.processRequest(request, response);
-    }
+	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		this.processRequest(request, response);
+	}
 
-    public void processRequest(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        ObjectHelper.checkNotNull("parameter:request", request);
-        ObjectHelper.checkNotNull("parameter:response", response);
+	public void processRequest(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		ObjectHelper.checkNotNull("parameter:request", request);
+		ObjectHelper.checkNotNull("parameter:response", response);
 
-        final Map sorted = new TreeMap();
-        final Enumeration names = request.getParameterNames();
-        while (names.hasMoreElements()) {
-            final String name = (String) names.nextElement();
-            final String[] values = request.getParameterValues(name);
-            sorted.put(name, values);
-        }
+		final Map sorted = new TreeMap();
+		final Enumeration names = request.getParameterNames();
+		while (names.hasMoreElements()) {
+			final String name = (String) names.nextElement();
+			final String[] values = request.getParameterValues(name);
+			sorted.put(name, values);
+		}
 
-        final PrintWriter writer = response.getWriter();
-        writer.println(request.getMethod());
+		final PrintWriter writer = response.getWriter();
+		writer.println(request.getMethod());
 
-        final Iterator entries = sorted.entrySet().iterator();
-        while (entries.hasNext()) {
-            final Map.Entry entry = (Map.Entry) entries.next();
-            final String name = (String) entry.getKey();
-            final String[] values = (String[]) entry.getValue();
+		final Iterator entries = sorted.entrySet().iterator();
+		while (entries.hasNext()) {
+			final Map.Entry entry = (Map.Entry) entries.next();
+			final String name = (String) entry.getKey();
+			final String[] values = (String[]) entry.getValue();
 
-            for (int i = 0; i < values.length; i++) {
-                writer.print(name);
-                writer.print('=');
-                writer.println(values[i]);
-            }
-        }
+			for (int i = 0; i < values.length; i++) {
+				writer.print(name);
+				writer.print('=');
+				writer.println(values[i]);
+			}
+		}
 
-    }
+	}
 }

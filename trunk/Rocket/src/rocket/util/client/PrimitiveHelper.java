@@ -23,203 +23,199 @@ package rocket.util.client;
 public class PrimitiveHelper extends SystemHelper {
 
 	/**
-	 * Tests if two double values are close enough to each other to be considered equal
-	 * @param value The first value
-	 * @param otherValue The value being compared against
+	 * Tests if two double values are close enough to each other to be
+	 * considered equal
+	 * 
+	 * @param value
+	 *            The first value
+	 * @param otherValue
+	 *            The value being compared against
 	 * @param epsilon
 	 * @return True if equal or close enough otherwise false.
 	 */
-	static public boolean equals( final double value, final double otherValue, final double epsilon ){
-		return ( value - epsilon <= otherValue ) && ( value + epsilon >= otherValue ); 
+	static public boolean equals(final double value, final double otherValue, final double epsilon) {
+		return (value - epsilon <= otherValue) && (value + epsilon >= otherValue);
 	}
-	
-	static public boolean equals( final long value, final long otherValue, final long epsilon ){
-		return ( value - epsilon <= otherValue ) && ( value + epsilon >= otherValue ); 
-	}	
-	
-    public static void checkBoolean(final String name, final boolean value, final boolean expectedValue) {
-        if (value != expectedValue) {
-            SystemHelper.fail("The " + name + " value of " + value + " should be equal to " + expectedValue);
-        }
-    }
 
-    /**
-     * Checks that the test boolean value is true otherwise an assertion failure is reported.
-     * 
-     * @param message
-     * @param booleanValue
-     */
-    public static void checkTrue(final String message, final boolean booleanValue) {
-        if (!booleanValue) {
-            fail(message);
-        }
-    }
+	static public boolean equals(final long value, final long otherValue, final long epsilon) {
+		return (value - epsilon <= otherValue) && (value + epsilon >= otherValue);
+	}
 
-    /**
-     * Checks that the test boolean value is false otherwise an assertion failure is reported.
-     * 
-     * @param message
-     * @param booleanValue
-     */
-    public static void checkFalse(final String message, final boolean booleanValue) {
-        if (booleanValue) {
-            fail(message);
-        }
-    }
+	public static void checkBoolean(final String name, final boolean value, final boolean expectedValue) {
+		if (value != expectedValue) {
+			SystemHelper.fail("The " + name + " value of " + value + " should be equal to " + expectedValue);
+		}
+	}
 
-    public static void checkEquals(final String name, final long value, final long expectedValue) {
-        if (value != expectedValue) {
-            SystemHelper.fail("The " + name + " value of " + value + " should be equal to " + expectedValue);
-        }
-    }
+	/**
+	 * Checks that the test boolean value is true otherwise an assertion failure
+	 * is reported.
+	 * 
+	 * @param message
+	 * @param booleanValue
+	 */
+	public static void checkTrue(final String message, final boolean booleanValue) {
+		if (!booleanValue) {
+			fail(message);
+		}
+	}
 
-    public static void checkNotEquals(final String name, final long value, final long expectedValue) {
-        if (value == expectedValue) {
-            SystemHelper.fail("The " + name + " value of " + value + " should not be equal to " + expectedValue);
-        }
-    }
+	/**
+	 * Checks that the test boolean value is false otherwise an assertion
+	 * failure is reported.
+	 * 
+	 * @param message
+	 * @param booleanValue
+	 */
+	public static void checkFalse(final String message, final boolean booleanValue) {
+		if (booleanValue) {
+			fail(message);
+		}
+	}
 
-    public static void checkBetween(final String name, final long longValue, final long lowerBounds,
-            final long upperBounds) {
-        if (longValue < lowerBounds || longValue >= upperBounds) {
-            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be between " + lowerBounds
-                    + " and " + upperBounds);
-        }
-    }
+	public static void checkEquals(final String name, final long value, final long expectedValue) {
+		if (value != expectedValue) {
+			SystemHelper.fail("The " + name + " value of " + value + " should be equal to " + expectedValue);
+		}
+	}
 
-    public static void checkGreaterThan(final String name, final long longValue, final long greaterThan) {
-        if (false == (longValue > greaterThan)) {
-            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be greater than " + greaterThan);
-        }
-    }
+	public static void checkNotEquals(final String name, final long value, final long expectedValue) {
+		if (value == expectedValue) {
+			SystemHelper.fail("The " + name + " value of " + value + " should not be equal to " + expectedValue);
+		}
+	}
 
-    public static void checkGreaterThanOrEqual(final String name, final long longValue, final long greaterThanOrEqual) {
-        if (false == (longValue >= greaterThanOrEqual)) {
-            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be greater than or equal to "
-                    + greaterThanOrEqual);
-        }
-    }
+	public static void checkBetween(final String name, final long longValue, final long lowerBounds, final long upperBounds) {
+		if (longValue < lowerBounds || longValue >= upperBounds) {
+			SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be between " + lowerBounds + " and " + upperBounds);
+		}
+	}
 
-    public static void checkLessThan(final String name, final long longValue, final long lessThan) {
-        if (false == (longValue < lessThan)) {
-            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be less than " + lessThan);
-        }
-    }
+	public static void checkGreaterThan(final String name, final long longValue, final long greaterThan) {
+		if (false == (longValue > greaterThan)) {
+			SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be greater than " + greaterThan);
+		}
+	}
 
-    public static void checkLessThanOrEqual(final String name, final long longValue, final long lessThanOrEqual) {
-        if (false == (longValue <= lessThanOrEqual)) {
-            SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be less than or equal to "
-                    + lessThanOrEqual);
-        }
-    }
+	public static void checkGreaterThanOrEqual(final String name, final long longValue, final long greaterThanOrEqual) {
+		if (false == (longValue >= greaterThanOrEqual)) {
+			SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be greater than or equal to " + greaterThanOrEqual);
+		}
+	}
 
-    public static void checkNotZero(final String name, final long longValue) {
-        if (longValue == 0) {
-            SystemHelper.fail(name, "The " + name + " must not be zero");
-        }
-    }
+	public static void checkLessThan(final String name, final long longValue, final long lessThan) {
+		if (false == (longValue < lessThan)) {
+			SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be less than " + lessThan);
+		}
+	}
 
-    public static void checkIsZero(final String name, final long longValue) {
-        if (longValue != 0) {
-            SystemHelper.fail(name, "The " + name + " must not be zero");
-        }
-    }
+	public static void checkLessThanOrEqual(final String name, final long longValue, final long lessThanOrEqual) {
+		if (false == (longValue <= lessThanOrEqual)) {
+			SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be less than or equal to " + lessThanOrEqual);
+		}
+	}
 
-    public static void checkIsNegative(final String name, final long longValue) {
-        if (longValue < 0) {
-            SystemHelper.fail(name, "The " + name + " must not be zero");
-        }
-    }
+	public static void checkNotZero(final String name, final long longValue) {
+		if (longValue == 0) {
+			SystemHelper.fail(name, "The " + name + " must not be zero");
+		}
+	}
 
-    public static void checkIsPositive(final String name, final long longValue) {
-        if (longValue < 0) {
-            SystemHelper.fail(name, "The " + name + " must not be zero");
-        }
-    }
+	public static void checkIsZero(final String name, final long longValue) {
+		if (longValue != 0) {
+			SystemHelper.fail(name, "The " + name + " must not be zero");
+		}
+	}
 
-    public static void checkNotZero(final String name, final double doubleValue) {
-        if (doubleValue == 0) {
-            SystemHelper.fail(name, "The " + name + " must not be zero");
-        }
-    }
+	public static void checkIsNegative(final String name, final long longValue) {
+		if (longValue < 0) {
+			SystemHelper.fail(name, "The " + name + " must not be zero");
+		}
+	}
 
-    public static void checkIsZero(final String name, final double doubleValue) {
-        if (doubleValue != 0) {
-            SystemHelper.fail(name, "The " + name + " must not be zero");
-        }
-    }
+	public static void checkIsPositive(final String name, final long longValue) {
+		if (longValue < 0) {
+			SystemHelper.fail(name, "The " + name + " must not be zero");
+		}
+	}
 
-    public static void checkIsNegative(final String name, final double doubleValue) {
-        if (doubleValue < 0) {
-            SystemHelper.fail(name, "The " + name + " must not be zero");
-        }
-    }
+	public static void checkNotZero(final String name, final double doubleValue) {
+		if (doubleValue == 0) {
+			SystemHelper.fail(name, "The " + name + " must not be zero");
+		}
+	}
 
-    public static void checkIsPositive(final String name, final double doubleValue) {
-        if (doubleValue < 0) {
-            SystemHelper.fail(name, "The " + name + " must not be zero");
-        }
-    }
+	public static void checkIsZero(final String name, final double doubleValue) {
+		if (doubleValue != 0) {
+			SystemHelper.fail(name, "The " + name + " must not be zero");
+		}
+	}
 
-    public static void checkBetween(final String name, final double doubleValue, final double lowerBounds,
-            final double upperBounds) {
-        if (doubleValue < lowerBounds || doubleValue >= upperBounds) {
-            SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be between " + lowerBounds
-                    + " and " + upperBounds);
-        }
-    }
+	public static void checkIsNegative(final String name, final double doubleValue) {
+		if (doubleValue < 0) {
+			SystemHelper.fail(name, "The " + name + " must not be zero");
+		}
+	}
 
-    public static void checkGreaterThan(final String name, final double doubleValue, final double greaterThan) {
-        if (false == (doubleValue > greaterThan)) {
-            SystemHelper
-                    .fail(name, "The " + name + " value of " + doubleValue + " must be greater than " + greaterThan);
-        }
-    }
+	public static void checkIsPositive(final String name, final double doubleValue) {
+		if (doubleValue < 0) {
+			SystemHelper.fail(name, "The " + name + " must not be zero");
+		}
+	}
 
-    public static void checkGreaterThanOrEqual(final String name, final double doubleValue,
-            final double greaterThanOrEqual) {
-        if (false == (doubleValue >= greaterThanOrEqual)) {
-            SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be greater than or equal to "
-                    + greaterThanOrEqual);
-        }
-    }
+	public static void checkBetween(final String name, final double doubleValue, final double lowerBounds, final double upperBounds) {
+		if (doubleValue < lowerBounds || doubleValue >= upperBounds) {
+			SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be between " + lowerBounds + " and " + upperBounds);
+		}
+	}
 
-    public static void checkLessThan(final String name, final double doubleValue, final double lessThan) {
-        if (false == (doubleValue < lessThan)) {
-            SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be less than " + lessThan);
-        }
-    }
+	public static void checkGreaterThan(final String name, final double doubleValue, final double greaterThan) {
+		if (false == (doubleValue > greaterThan)) {
+			SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be greater than " + greaterThan);
+		}
+	}
 
-    public static void checkLessThanOrEqual(final String name, final double doubleValue, final double lessThanOrEqual) {
-        if (false == (doubleValue <= lessThanOrEqual)) {
-            SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be less than or equal to "
-                    + lessThanOrEqual);
-        }
-    }
+	public static void checkGreaterThanOrEqual(final String name, final double doubleValue, final double greaterThanOrEqual) {
+		if (false == (doubleValue >= greaterThanOrEqual)) {
+			SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be greater than or equal to " + greaterThanOrEqual);
+		}
+	}
 
-    final static int KILOBYTES = 1024;
+	public static void checkLessThan(final String name, final double doubleValue, final double lessThan) {
+		if (false == (doubleValue < lessThan)) {
+			SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be less than " + lessThan);
+		}
+	}
 
-    final static int MEGABYTES = 1024 * 1024;
+	public static void checkLessThanOrEqual(final String name, final double doubleValue, final double lessThanOrEqual) {
+		if (false == (doubleValue <= lessThanOrEqual)) {
+			SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be less than or equal to " + lessThanOrEqual);
+		}
+	}
 
-    public static String formatKiloOrMegabytes(final int number) {
-        String formatted = null;
-        while (true) {
-            if (number < KILOBYTES) {
-                formatted = String.valueOf(number);
-                break;
-            }
+	final static int KILOBYTES = 1024;
 
-            if (number < MEGABYTES) {
-                formatted = String.valueOf((int) (number / KILOBYTES)) + " K";
-                break;
-            }
+	final static int MEGABYTES = 1024 * 1024;
 
-            formatted = String.valueOf((int) (number / MEGABYTES)) + " M";
-            break;
-        }
-        return formatted;
-    }
+	public static String formatKiloOrMegabytes(final int number) {
+		String formatted = null;
+		while (true) {
+			if (number < KILOBYTES) {
+				formatted = String.valueOf(number);
+				break;
+			}
 
-    public PrimitiveHelper() {
-    }
+			if (number < MEGABYTES) {
+				formatted = String.valueOf((int) (number / KILOBYTES)) + " K";
+				break;
+			}
+
+			formatted = String.valueOf((int) (number / MEGABYTES)) + " M";
+			break;
+		}
+		return formatted;
+	}
+
+	public PrimitiveHelper() {
+	}
 }

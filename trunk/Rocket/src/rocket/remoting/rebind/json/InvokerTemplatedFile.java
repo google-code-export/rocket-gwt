@@ -69,7 +69,7 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:returnType", returnType);
 		this.returnType = returnType;
 	}
-	
+
 	/**
 	 * THe async service method being implemented
 	 */
@@ -84,61 +84,67 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:newMethod", newMethod);
 		this.newMethod = newMethod;
 	}
-	
+
 	private List httpRequestParameterNames;
-	
-	protected List getHttpRequestParameterNames(){
-		ObjectHelper.checkNotNull("field:httpRequestParameterNames", httpRequestParameterNames );
+
+	protected List getHttpRequestParameterNames() {
+		ObjectHelper.checkNotNull("field:httpRequestParameterNames", httpRequestParameterNames);
 		return this.httpRequestParameterNames;
 	}
-	
-	public void setHttpRequestParameterNames( final List httpRequestParameterNames ){
-		ObjectHelper.checkNotNull("parameter:httpRequestParameterNames", httpRequestParameterNames );
+
+	public void setHttpRequestParameterNames(final List httpRequestParameterNames) {
+		ObjectHelper.checkNotNull("parameter:httpRequestParameterNames", httpRequestParameterNames);
 		this.httpRequestParameterNames = httpRequestParameterNames;
 	}
-	
-	protected CodeBlock getAddParameters(){
+
+	protected CodeBlock getAddParameters() {
 		final List parameters = new ArrayList();
-		parameters.addAll( this.getNewMethod().getParameters() );
-		parameters.remove( parameters.size() -1 ); // remove the callback parameter
-		
+		parameters.addAll(this.getNewMethod().getParameters());
+		parameters.remove(parameters.size() - 1); // remove the callback
+		// parameter
+
 		final InvokerAddParameterTemplatedFile repeated = new InvokerAddParameterTemplatedFile();
 		final List httpRequestParameterNames = this.getHttpRequestParameterNames();
-		
-		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock(){
-			protected Collection getCollection(){
+
+		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock() {
+			protected Collection getCollection() {
 				return parameters;
 			}
-			protected void prepareToWrite( Object element ){
+
+			protected void prepareToWrite(Object element) {
 				final MethodParameter methodParameter = (MethodParameter) element;
-				
-				final String name = (String) httpRequestParameterNames.get( this.getIndex() );
-				repeated.setHttpRequestParameterName( name );
+
+				final String name = (String) httpRequestParameterNames.get(this.getIndex());
+				repeated.setHttpRequestParameterName(name);
 				repeated.setParameter(methodParameter);
 			}
-			protected void write0( final SourceWriter writer ){
-				repeated.write( writer );
+
+			protected void write0(final SourceWriter writer) {
+				repeated.write(writer);
 			}
-			protected void writeBetweenElements( SourceWriter writer ){
+
+			protected void writeBetweenElements(SourceWriter writer) {
 				writer.println();
 			}
-			protected InputStream getInputStream(){
+
+			protected InputStream getInputStream() {
 				return repeated.getInputStream();
 			}
-			protected Object getValue0( final String name ){
-				return repeated.getValue0( name );
+
+			protected Object getValue0(final String name) {
+				return repeated.getValue0(name);
 			}
 		};
-		
+
 		return template;
 	}
 
-	protected MethodParameter getCallbackParameter(){
+	protected MethodParameter getCallbackParameter() {
 		final List parameters = this.getNewMethod().getParameters();
-		
-		return (MethodParameter) parameters.get( parameters.size() - 1 );
+
+		return (MethodParameter) parameters.get(parameters.size() - 1);
 	}
-	
+
 	protected InputStream getInputStream() {
 		final String filename = Constants.INVOKER_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);

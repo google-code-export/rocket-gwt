@@ -20,31 +20,32 @@ import rocket.util.client.ObjectWrapper;
 import com.google.gwt.user.client.Element;
 
 /**
- * Represents a handle to a single DOM element with a number of common attributes.
+ * Represents a handle to a single DOM element with a number of common
+ * attributes.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public interface ElementWrapper extends ObjectWrapper {
 
-    String getId();
+	String getId();
 
-    boolean hasId();
+	boolean hasId();
 
-    void setId(String id);
+	void setId(String id);
 
-    String getName();
+	String getName();
 
-    boolean hasName();
+	boolean hasName();
 
-    void setName(String name);
+	void setName(String name);
 
-    String getTitle();
+	String getTitle();
 
-    boolean hasTitle();
+	boolean hasTitle();
 
-    void setTitle(String title);
+	void setTitle(String title);
 
-    Element getElement();
+	Element getElement();
 
-    void setElement(Element element);
+	void setElement(Element element);
 }

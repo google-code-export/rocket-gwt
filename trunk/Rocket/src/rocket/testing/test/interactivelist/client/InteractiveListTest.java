@@ -31,107 +31,107 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 public class InteractiveListTest implements EntryPoint {
 
-    /**
-     * This is the entry point method.
-     */
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
 
-        final RootPanel rootPanel = RootPanel.get();
-        rootPanel.add(new InteractiveList());
-    }
+		final RootPanel rootPanel = RootPanel.get();
+		rootPanel.add(new InteractiveList());
+	}
 
-    public class InteractiveList extends rocket.testing.client.InteractiveList {
+	public class InteractiveList extends rocket.testing.client.InteractiveList {
 
-        InteractiveList() {
-            this.createList();
-        }
+		InteractiveList() {
+			this.createList();
+		}
 
-        protected String getCollectionTypeName() {
-            return "java.util.ArrayList";
-        }
+		protected String getCollectionTypeName() {
+			return "java.util.ArrayList";
+		}
 
-        protected int getListSize() {
-            return this.getList().size();
-        }
+		protected int getListSize() {
+			return this.getList().size();
+		}
 
-        protected boolean getListIsEmpty() {
-            return this.getList().isEmpty();
-        }
+		protected boolean getListIsEmpty() {
+			return this.getList().isEmpty();
+		}
 
-        protected boolean listAdd(final Object element) {
-            return this.getList().add(element);
-        }
+		protected boolean listAdd(final Object element) {
+			return this.getList().add(element);
+		}
 
-        protected void listInsert(final int index, final Object element) {
-            this.getList().add(index, element);
-        }
+		protected void listInsert(final int index, final Object element) {
+			this.getList().add(index, element);
+		}
 
-        protected Object listGet(final int index) {
-            return this.getList().get(index);
-        }
+		protected Object listGet(final int index) {
+			return this.getList().get(index);
+		}
 
-        protected Object listRemove(final int index) {
-            return this.getList().remove(index);
-        }
+		protected Object listRemove(final int index) {
+			return this.getList().remove(index);
+		}
 
-        protected Object listSet(final int index, final Object element) {
-            return this.getList().set(index, element);
-        }
+		protected Object listSet(final int index, final Object element) {
+			return this.getList().set(index, element);
+		}
 
-        protected Object createElement() {
-            return new HTML("" + System.currentTimeMillis());
-        }
+		protected Object createElement() {
+			return new HTML("" + System.currentTimeMillis());
+		}
 
-        protected Iterator listIterator() {
-            return this.getList().iterator();
-        }
+		protected Iterator listIterator() {
+			return this.getList().iterator();
+		}
 
-        protected void checkType(Object element) {
-            if (false == (element instanceof HTML)) {
-                SystemHelper.fail("Unknown element type. element ");
-            }
-        }
+		protected void checkType(Object element) {
+			if (false == (element instanceof HTML)) {
+				SystemHelper.fail("Unknown element type. element ");
+			}
+		}
 
-        protected int getMessageLineCount() {
-            return 10;
-        }
+		protected int getMessageLineCount() {
+			return 10;
+		}
 
-        /**
-         * Creates a listbox friendly string form for the given element.
-         * 
-         * @param element
-         * @return
-         */
-        protected String toString(final Object element) {
-            final HTML html = (HTML) element;
-            return html.getText();
-        }
+		/**
+		 * Creates a listbox friendly string form for the given element.
+		 * 
+		 * @param element
+		 * @return
+		 */
+		protected String toString(final Object element) {
+			final HTML html = (HTML) element;
+			return html.getText();
+		}
 
-        /**
-         * Contains the list being interactively controlled.
-         */
-        private List list;
+		/**
+		 * Contains the list being interactively controlled.
+		 */
+		private List list;
 
-        protected List getList() {
-            ObjectHelper.checkNotNull("field:list", list);
-            return this.list;
-        }
+		protected List getList() {
+			ObjectHelper.checkNotNull("field:list", list);
+			return this.list;
+		}
 
-        protected void setList(final List list) {
-            ObjectHelper.checkNotNull("parameter:list", list);
-            this.list = list;
-        }
+		protected void setList(final List list) {
+			ObjectHelper.checkNotNull("parameter:list", list);
+			this.list = list;
+		}
 
-        protected List createList() {
-            final List list = new ArrayList();
-            this.setList(list);
-            return list;
-        }
-    }
+		protected List createList() {
+			final List list = new ArrayList();
+			this.setList(list);
+			return list;
+		}
+	}
 }

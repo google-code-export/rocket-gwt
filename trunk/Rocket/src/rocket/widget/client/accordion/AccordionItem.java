@@ -30,123 +30,124 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class AccordionItem {
 
-    public AccordionItem() {
-        super();
+	public AccordionItem() {
+		super();
 
-        this.setCaptionWidget(this.createCaptionWidget());
-    }
+		this.setCaptionWidget(this.createCaptionWidget());
+	}
 
-    /**
-     * Selects or makes this AccordionItem the current or active one.
-     * 
-     */
-    public void select() {
-        if (false == this.hasAccordionPanel()) {
-            throw new UnsupportedOperationException(
-                    "This accordionItem cannot be selected because it has not yet been added to a AccordionPanel");
-        }
-        this.getAccordionPanel().select(this);
-    }
+	/**
+	 * Selects or makes this AccordionItem the current or active one.
+	 * 
+	 */
+	public void select() {
+		if (false == this.hasAccordionPanel()) {
+			throw new UnsupportedOperationException(
+					"This accordionItem cannot be selected because it has not yet been added to a AccordionPanel");
+		}
+		this.getAccordionPanel().select(this);
+	}
 
-    /**
-     * Removes this accordionItem from its parent AccordionPanel provided it has already been added.
-     */
-    public void remove() {
-        if (false == this.hasAccordionPanel()) {
-            throw new UnsupportedOperationException(
-                    "This accordionItem cannot be removed because it has not yet been added to a AccordionPanel");
-        }
-        this.getAccordionPanel().remove(this);
-    }
+	/**
+	 * Removes this accordionItem from its parent AccordionPanel provided it has
+	 * already been added.
+	 */
+	public void remove() {
+		if (false == this.hasAccordionPanel()) {
+			throw new UnsupportedOperationException(
+					"This accordionItem cannot be removed because it has not yet been added to a AccordionPanel");
+		}
+		this.getAccordionPanel().remove(this);
+	}
 
-    /**
-     * The accordionPanel that this item belongs too.
-     */
-    private AccordionPanel accordionPanel;
+	/**
+	 * The accordionPanel that this item belongs too.
+	 */
+	private AccordionPanel accordionPanel;
 
-    protected AccordionPanel getAccordionPanel() {
-        ObjectHelper.checkNotNull("field:accordionPanel", accordionPanel);
-        return this.accordionPanel;
-    }
+	protected AccordionPanel getAccordionPanel() {
+		ObjectHelper.checkNotNull("field:accordionPanel", accordionPanel);
+		return this.accordionPanel;
+	}
 
-    protected boolean hasAccordionPanel() {
-        return null != this.accordionPanel;
-    }
+	protected boolean hasAccordionPanel() {
+		return null != this.accordionPanel;
+	}
 
-    protected void setAccordionPanel(final AccordionPanel accordionPanel) {
-        ObjectHelper.checkNotNull("parameter:accordionPanel", accordionPanel);
+	protected void setAccordionPanel(final AccordionPanel accordionPanel) {
+		ObjectHelper.checkNotNull("parameter:accordionPanel", accordionPanel);
 
-        // if it was already attached remove it first...
-        if (this.hasAccordionPanel()) {
-            WidgetHelper.fail("This AccordionItem already belongs to a AccordionPanel, accordionPanel: "
-                    + accordionPanel);
-        }
+		// if it was already attached remove it first...
+		if (this.hasAccordionPanel()) {
+			WidgetHelper.fail("This AccordionItem already belongs to a AccordionPanel, accordionPanel: " + accordionPanel);
+		}
 
-        this.accordionPanel = accordionPanel;
-    }
+		this.accordionPanel = accordionPanel;
+	}
 
-    protected void clearAccordionPanel() {
-        this.accordionPanel = null;
-    }
+	protected void clearAccordionPanel() {
+		this.accordionPanel = null;
+	}
 
-    /**
-     * The caption or title that appears above the content.
-     */
-    private HTML captionWidget;
+	/**
+	 * The caption or title that appears above the content.
+	 */
+	private HTML captionWidget;
 
-    protected HTML getCaptionWidget() {
-        ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
-        return this.captionWidget;
-    }
+	protected HTML getCaptionWidget() {
+		ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
+		return this.captionWidget;
+	}
 
-    protected void setCaptionWidget(final HTML captionWidget) {
-        ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
-        this.captionWidget = captionWidget;
-    }
+	protected void setCaptionWidget(final HTML captionWidget) {
+		ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
+		this.captionWidget = captionWidget;
+	}
 
-    protected HTML createCaptionWidget() {
-        final HTML html = new HTML();
-        DOM.setAttribute( html.getElement(), "className", "");
-        html.setWidth("100%");
-        html.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                AccordionItem.this.select();
-            }
-        });
-        return html;
-    }
+	protected HTML createCaptionWidget() {
+		final HTML html = new HTML();
+		DOM.setElementProperty(html.getElement(), "className", "");
+		html.setWidth("100%");
+		html.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				AccordionItem.this.select();
+			}
+		});
+		return html;
+	}
 
-    public String getCaption() {
-        return this.getCaptionWidget().getText();
-    }
+	public String getCaption() {
+		return this.getCaptionWidget().getText();
+	}
 
-    public void setCaption(final String text) {
-        this.getCaptionWidget().setText(text);
-    }
+	public void setCaption(final String text) {
+		this.getCaptionWidget().setText(text);
+	}
 
-    /**
-     * THe content portion which is only visible when this widget is the active one within the parent Accordion.
-     */
-    private Widget content;
+	/**
+	 * THe content portion which is only visible when this widget is the active
+	 * one within the parent Accordion.
+	 */
+	private Widget content;
 
-    public Widget getContent() {
-        ObjectHelper.checkNotNull("field:content", content);
-        return this.content;
-    }
+	public Widget getContent() {
+		ObjectHelper.checkNotNull("field:content", content);
+		return this.content;
+	}
 
-    public boolean hasContent() {
-        return null != content;
-    }
+	public boolean hasContent() {
+		return null != content;
+	}
 
-    public void setContent(final Widget content) {
-        ObjectHelper.checkNotNull("parameter:content", content);
+	public void setContent(final Widget content) {
+		ObjectHelper.checkNotNull("parameter:content", content);
 
-        // replace the previous content widget with the new one...
-        if (this.hasAccordionPanel()) {
-            final AccordionPanel accordion = this.getAccordionPanel();
-            accordion.replaceContentWidget(this);
-        }
+		// replace the previous content widget with the new one...
+		if (this.hasAccordionPanel()) {
+			final AccordionPanel accordion = this.getAccordionPanel();
+			accordion.replaceContentWidget(this);
+		}
 
-        this.content = content;
-    }
+		this.content = content;
+	}
 }

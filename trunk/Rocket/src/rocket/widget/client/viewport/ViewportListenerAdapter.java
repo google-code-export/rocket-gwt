@@ -16,7 +16,9 @@
 package rocket.widget.client.viewport;
 
 /**
- * Adapter that overrides all the ViewportListener methods with do nothing methods
+ * Adapter that overrides all the ViewportListener methods with do nothing
+ * methods
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class ViewportListenerAdapter implements ViewportListener {

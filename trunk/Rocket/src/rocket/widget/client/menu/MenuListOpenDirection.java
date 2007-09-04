@@ -24,44 +24,44 @@ import rocket.util.client.StringHelper;
  */
 public class MenuListOpenDirection {
 
-    /**
-     * MenuLists with an UP direction open upwards.
-     */
-    public final static MenuListOpenDirection UP = new MenuListOpenDirection("UP");
+	/**
+	 * MenuLists with an UP direction open upwards.
+	 */
+	public final static MenuListOpenDirection UP = new MenuListOpenDirection("UP");
 
-    public final static MenuListOpenDirection RIGHT = new MenuListOpenDirection("RIGHT");
+	public final static MenuListOpenDirection RIGHT = new MenuListOpenDirection("RIGHT");
 
-    public final static MenuListOpenDirection DOWN = new MenuListOpenDirection("DOWN");
+	public final static MenuListOpenDirection DOWN = new MenuListOpenDirection("DOWN");
 
-    public final static MenuListOpenDirection LEFT = new MenuListOpenDirection("MOVE_ZONE_LEFT");
+	public final static MenuListOpenDirection LEFT = new MenuListOpenDirection("MOVE_ZONE_LEFT");
 
-    /**
-     * Private constructor to control instance creation.
-     * 
-     * @param description
-     */
-    private MenuListOpenDirection(final String description) {
-        super();
+	/**
+	 * Private constructor to control instance creation.
+	 * 
+	 * @param description
+	 */
+	private MenuListOpenDirection(final String description) {
+		super();
 
-        this.setDescription(description);
-    }
+		this.setDescription(description);
+	}
 
-    /**
-     * A textual description of this enum.
-     */
-    private String description;
+	/**
+	 * A textual description of this enum.
+	 */
+	private String description;
 
-    public String getDescription() {
-        StringHelper.checkNotEmpty("field:description", description);
-        return description;
-    }
+	public String getDescription() {
+		StringHelper.checkNotEmpty("field:description", description);
+		return description;
+	}
 
-    protected void setDescription(final String description) {
-        StringHelper.checkNotEmpty("parameter:description", description);
-        this.description = description;
-    }
+	protected void setDescription(final String description) {
+		StringHelper.checkNotEmpty("parameter:description", description);
+		this.description = description;
+	}
 
-    public String toString() {
-        return this.getDescription();
-    }
+	public String toString() {
+		return this.getDescription();
+	}
 }

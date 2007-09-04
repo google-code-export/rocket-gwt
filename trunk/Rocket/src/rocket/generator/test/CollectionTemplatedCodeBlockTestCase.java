@@ -30,61 +30,60 @@ import com.google.gwt.user.rebind.SourceWriter;
 
 public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	public void testEmptyCollection() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock( Collections.EMPTY_LIST );
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.EMPTY_LIST);
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
-		
+
 		final String actual = writer.getBuffer();
 		final String expected = "";
-		TestCase.assertEquals( expected, actual );
+		TestCase.assertEquals(expected, actual);
 	}
 
 	public void testCollectionWithOneElement() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock( Collections.nCopies( 1, EmptyCodeBlock.INSTANCE ) );
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.nCopies(1, EmptyCodeBlock.INSTANCE));
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
-		
+
 		final String actual = writer.getBuffer();
 		final String expected = "value0";
-		TestCase.assertEquals( expected, actual );
+		TestCase.assertEquals(expected, actual);
 	}
-	
+
 	public void testCollectionWithTwoElements() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock( Collections.nCopies( 2, EmptyCodeBlock.INSTANCE ) );
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.nCopies(2, EmptyCodeBlock.INSTANCE));
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
-		
+
 		final String actual = writer.getBuffer();
 		final String expected = "value0,value1";
-		TestCase.assertEquals( expected, actual );
+		TestCase.assertEquals(expected, actual);
 	}
-	
+
 	public void testCollectionWithThreeElements() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock( Collections.nCopies( 3, EmptyCodeBlock.INSTANCE ) );
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.nCopies(3, EmptyCodeBlock.INSTANCE));
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
-		
+
 		final String actual = writer.getBuffer();
 		final String expected = "value0,value1,value2";
-		TestCase.assertEquals( expected, actual );
-	}	
-	
-	CollectionTemplatedCodeBlock createCollectionTemplatedCodeBlock( final Collection collection ){
+		TestCase.assertEquals(expected, actual);
+	}
+
+	CollectionTemplatedCodeBlock createCollectionTemplatedCodeBlock(final Collection collection) {
 		final TestCollectionTemplatedCodeBlock test = new TestCollectionTemplatedCodeBlock();
-		test.setCollection( collection );
+		test.setCollection(collection);
 		return test;
 	}
-	
-	public class TestCollectionTemplatedCodeBlock extends
-			CollectionTemplatedCodeBlock {
+
+	public class TestCollectionTemplatedCodeBlock extends CollectionTemplatedCodeBlock {
 
 		private Collection collection;
-		
+
 		protected Collection getCollection() {
 			return this.collection;
 		}
-		
-		public void setCollection( final Collection collection ){
+
+		public void setCollection(final Collection collection) {
 			this.collection = collection;
 		}
 
@@ -102,17 +101,17 @@ public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 
 		protected Object getValue0(final String name) {
 			final int index = this.getIndex();
-			return new CodeBlock(){
-				public boolean isEmpty(){
+			return new CodeBlock() {
+				public boolean isEmpty() {
 					return false;
 				}
+
 				public void write(final SourceWriter writer) {
-					writer.print( "value" + index );
+					writer.print("value" + index);
 				}
 			};
 		}
 
 	}
 
-	
 }

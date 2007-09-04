@@ -42,21 +42,21 @@ public class NewConcreteTypeImpl extends NewConcreteOrNestedType implements NewC
 	}
 
 	/**
-	 * Currently the visibility field is ignored as there exists no way to set the visibility of a
-	 * generated type.
+	 * Currently the visibility field is ignored as there exists no way to set
+	 * the visibility of a generated type.
 	 */
 	private Visibility visibility;
-	
-	public Visibility getVisibility(){
-		ObjectHelper.checkNotNull("field:visibility", visibility );
+
+	public Visibility getVisibility() {
+		ObjectHelper.checkNotNull("field:visibility", visibility);
 		return this.visibility;
 	}
-	
-	public void setVisibility( final Visibility visibility ){
-		ObjectHelper.checkNotNull("parameter:visibility", visibility );
+
+	public void setVisibility(final Visibility visibility) {
+		ObjectHelper.checkNotNull("parameter:visibility", visibility);
 		this.visibility = visibility;
 	}
-	
+
 	/**
 	 * Requests this generated type to write out its definition including its
 	 * constructors, methods and fields. This operation may only be attempted
@@ -89,9 +89,9 @@ public class NewConcreteTypeImpl extends NewConcreteOrNestedType implements NewC
 			this.writeFields(writer);
 			this.writeMethods(writer);
 			this.writeNestedTypes(writer);
-		} catch ( final GeneratorException caught ){			
-			this.handleWriteFailure(writer, caught );
-			
+		} catch (final GeneratorException caught) {
+			this.handleWriteFailure(writer, caught);
+
 			throw caught;
 		} finally {
 			context.commitWriter(writer);
@@ -101,30 +101,34 @@ public class NewConcreteTypeImpl extends NewConcreteOrNestedType implements NewC
 		// generated...
 		this.updateSuperTypeSubTypes(this);
 	}
-	
+
 	/**
-	 * Captures the complete stacktrace of the given exception and writes it within a javadoc comment.
-	 * @param writer The source writer of the file being generated.
-	 * @param cause The cause must not be null.
+	 * Captures the complete stacktrace of the given exception and writes it
+	 * within a javadoc comment.
+	 * 
+	 * @param writer
+	 *            The source writer of the file being generated.
+	 * @param cause
+	 *            The cause must not be null.
 	 */
-	protected void handleWriteFailure( final SourceWriter writer, final Throwable cause ){
-		ObjectHelper.checkNotNull( "parameter:writer", writer );
-		ObjectHelper.checkNotNull( "parameter:cause", cause );
+	protected void handleWriteFailure(final SourceWriter writer, final Throwable cause) {
+		ObjectHelper.checkNotNull("parameter:writer", writer);
+		ObjectHelper.checkNotNull("parameter:cause", cause);
 
 		final StringWriter stringWriter = new StringWriter();
-		final PrintWriter printWriter = new PrintWriter( stringWriter );
-		cause.printStackTrace( printWriter );
+		final PrintWriter printWriter = new PrintWriter(stringWriter);
+		cause.printStackTrace(printWriter);
 		printWriter.flush();
 		printWriter.close();
-		
+
 		writer.println();
 		writer.beginJavaDocComment();
-		writer.println( stringWriter.toString() );
-		writer.endJavaDocComment();		
+		writer.println(stringWriter.toString());
+		writer.endJavaDocComment();
 	}
 
 	protected void writeLogger() {
-		this.getGeneratorContext().branch("Writing class: " + this );
+		this.getGeneratorContext().branch("Writing class: " + this);
 	}
 
 	protected void updateSuperTypeSubTypes(final Type type) {

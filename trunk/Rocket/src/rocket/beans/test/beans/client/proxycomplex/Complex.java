@@ -52,16 +52,20 @@ public class Complex {
 	public String advisedToLowerCase(final String a) {
 		return a.toLowerCase();
 	}
-	public void advisedDummy(){		
+
+	public void advisedDummy() {
 	}
 
-	public Object advisedReturnsObject( final boolean a, final byte b, final short s, final int i, final long l, final float f, final double d, final Object o ){
+	public Object advisedReturnsObject(final boolean a, final byte b, final short s, final int i, final long l, final float f,
+			final double d, final Object o) {
 		return o;
 	}
-	public Object advisedReturnsNull( final boolean a, final byte b, final short s, final int i, final long l, final float f, final double d, final Object o ){
+
+	public Object advisedReturnsNull(final boolean a, final byte b, final short s, final int i, final long l, final float f,
+			final double d, final Object o) {
 		return null;
 	}
-	
+
 	public void advisedThrowCheckedException() throws Exception {
 		throw new Exception();
 	}
@@ -69,7 +73,7 @@ public class Complex {
 	public void advisedThrowUncheckedException() throws RuntimeException {
 		throw new RuntimeException();
 	}
-	
+
 	public boolean unadvisedXor(final boolean a, final boolean b) {
 		return a ^ b;
 	}
@@ -106,16 +110,19 @@ public class Complex {
 		return a.toLowerCase();
 	}
 
-	public void unadvisedDummy(){		
+	public void unadvisedDummy() {
 	}
 
-	public Object unadvisedReturnsObject( final boolean a, final byte b, final short s, final int i, final long l, final float f, final double d, final Object o ){
+	public Object unadvisedReturnsObject(final boolean a, final byte b, final short s, final int i, final long l, final float f,
+			final double d, final Object o) {
 		return o;
 	}
-	public Object unadvisedReturnsNull( final boolean a, final byte b, final short s, final int i, final long l, final float f, final double d, final Object o ){
+
+	public Object unadvisedReturnsNull(final boolean a, final byte b, final short s, final int i, final long l, final float f,
+			final double d, final Object o) {
 		return null;
 	}
-	
+
 	public void unadvisedThrowCheckedException() throws Exception {
 		throw new Exception();
 	}

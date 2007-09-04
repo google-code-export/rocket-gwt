@@ -45,10 +45,10 @@ abstract public class AbstractConstructorParameter extends AbstractParameter imp
 		this.enclosingConstructor = enclosingConstructor;
 	}
 
-	public int getIndex(){
-		return this.getEnclosingConstructor().getParameters().indexOf( this );
+	public int getIndex() {
+		return this.getEnclosingConstructor().getParameters().indexOf(this);
 	}
-	
+
 	public NewConstructorParameter copy() {
 		final NewConstructorParameterImpl parameter = new NewConstructorParameterImpl();
 		parameter.setGeneratorContext(this.getGeneratorContext());

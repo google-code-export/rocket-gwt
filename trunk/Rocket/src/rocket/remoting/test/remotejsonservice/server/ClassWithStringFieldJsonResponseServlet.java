@@ -26,8 +26,9 @@ import flexjson.JSONSerializer;
 
 /**
  * This servlet reads a single parameter and uses it to set the field on a
- * ClassWithStringField instance. This same instance is serialized back to json using
- * the FLEXJson library with the encoded string then written to the response.
+ * ClassWithStringField instance. This same instance is serialized back to json
+ * using the FLEXJson library with the encoded string then written to the
+ * response.
  * 
  * @author Miroslav Pokorny
  * 

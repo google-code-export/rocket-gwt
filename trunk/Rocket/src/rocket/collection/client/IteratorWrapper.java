@@ -20,27 +20,28 @@ import java.util.Iterator;
 import rocket.util.client.ObjectHelper;
 
 /**
- * Useful base class for any iterator which is actually a view around another Iterator
+ * Useful base class for any iterator which is actually a view around another
+ * Iterator
  * 
  * @author Miroslav Pokorny
  */
 public abstract class IteratorWrapper implements Iterator {
-    /**
-     * The iterator being wrapped.
-     */
-    private Iterator iterator;
+	/**
+	 * The iterator being wrapped.
+	 */
+	private Iterator iterator;
 
-    public Iterator getIterator() {
-        ObjectHelper.checkNotNull("field:iterator", iterator);
-        return iterator;
-    }
+	public Iterator getIterator() {
+		ObjectHelper.checkNotNull("field:iterator", iterator);
+		return iterator;
+	}
 
-    public void setIterator(final Iterator iterator) {
-        ObjectHelper.checkNotNull("field:iterator", iterator);
-        this.iterator = iterator;
-    }
+	public void setIterator(final Iterator iterator) {
+		ObjectHelper.checkNotNull("field:iterator", iterator);
+		this.iterator = iterator;
+	}
 
-    public String toString() {
-        return super.toString() + ", iterator: " + iterator;
-    }
+	public String toString() {
+		return super.toString() + ", iterator: " + iterator;
+	}
 }

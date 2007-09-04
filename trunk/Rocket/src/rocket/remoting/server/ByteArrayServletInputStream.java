@@ -28,27 +28,27 @@ import rocket.util.server.ObjectHelper;
  */
 public class ByteArrayServletInputStream extends ServletInputStream {
 
-    public ByteArrayServletInputStream(final byte[] bytes) {
-        this.setByteArrayInputStream(new ByteArrayInputStream(bytes));
-    }
+	public ByteArrayServletInputStream(final byte[] bytes) {
+		this.setByteArrayInputStream(new ByteArrayInputStream(bytes));
+	}
 
-    public int read() {
-        return 0;
-    }
+	public int read() {
+		return 0;
+	}
 
-    private ByteArrayInputStream byteArrayInputStream;
+	private ByteArrayInputStream byteArrayInputStream;
 
-    protected ByteArrayInputStream getByteArrayInputStream() {
-        ObjectHelper.checkNotNull("field:byteArrayInputStream", byteArrayInputStream);
-        return this.byteArrayInputStream;
-    }
+	protected ByteArrayInputStream getByteArrayInputStream() {
+		ObjectHelper.checkNotNull("field:byteArrayInputStream", byteArrayInputStream);
+		return this.byteArrayInputStream;
+	}
 
-    protected void setByteArrayInputStream(final ByteArrayInputStream byteArrayInputStream) {
-        ObjectHelper.checkNotNull("parameter:byteArrayInputStream", byteArrayInputStream);
-        this.byteArrayInputStream = byteArrayInputStream;
-    }
+	protected void setByteArrayInputStream(final ByteArrayInputStream byteArrayInputStream) {
+		ObjectHelper.checkNotNull("parameter:byteArrayInputStream", byteArrayInputStream);
+		this.byteArrayInputStream = byteArrayInputStream;
+	}
 
-    public String toString() {
-        return super.toString() + ", byteArrayInputStream: " + byteArrayInputStream;
-    }
+	public String toString() {
+		return super.toString() + ", byteArrayInputStream: " + byteArrayInputStream;
+	}
 }

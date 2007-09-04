@@ -27,7 +27,7 @@ import rocket.util.client.ObjectHelper;
 abstract public class SuperTypesVisitor {
 
 	private final static String OBJECT = Object.class.getName();
-	
+
 	public void start(final Type type) {
 		ObjectHelper.checkNotNull("type:type", type);
 

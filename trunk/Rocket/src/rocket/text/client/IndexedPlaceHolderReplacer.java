@@ -19,19 +19,21 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 /**
- * This placeholder scans for placeholders and uses the placeholder as an index into a String array.
+ * This placeholder scans for placeholders and uses the placeholder as an index
+ * into a String array.
+ * 
  * @author Miroslav Pokorny
  */
 public class IndexedPlaceHolderReplacer extends PlaceHolderReplacer {
 
-	public String execute( final String text ){
+	public String execute(final String text) {
 		return super.execute(text);
 	}
-	
-	protected String getValue( final String placeHolder ){
+
+	protected String getValue(final String placeHolder) {
 		try {
 			final int index = Integer.parseInt(placeHolder);
-			return String.valueOf( this.getValues()[index]);
+			return String.valueOf(this.getValues()[index]);
 
 		} catch (final NumberFormatException badIndex) {
 			StringHelper.fail("Placeholder index does not contain a number [" + placeHolder + "]");
@@ -43,13 +45,14 @@ public class IndexedPlaceHolderReplacer extends PlaceHolderReplacer {
 	 * A String array that contains the values for each of the placeholders
 	 */
 	private Object[] values;
-	
-	protected Object[] getValues(){
-		ObjectHelper.checkNotNull("field:values", values );
+
+	protected Object[] getValues() {
+		ObjectHelper.checkNotNull("field:values", values);
 		return this.values;
 	}
-	public void setValues( final Object[] values ){
-		ObjectHelper.checkNotNull("parameter:values", values );
+
+	public void setValues(final Object[] values) {
+		ObjectHelper.checkNotNull("parameter:values", values);
 		this.values = values;
 	}
 }

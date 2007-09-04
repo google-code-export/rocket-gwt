@@ -15,25 +15,39 @@
  */
 package rocket.browser.client.support;
 
+import rocket.browser.client.Browser;
+
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+
 /**
- * This class provides the support that a standards based browser following w3c specifications would require.
+ * This class provides the support that a standards based browser following w3c
+ * specifications would require.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class BrowserSupport {
-    native public int getScrollX()/*-{
-     return $wnd.scrollX;
-     }-*/;
+	native public int getScrollX()/*-{
+	 return $wnd.scrollX;
+	 }-*/;
 
-    native public int getScrollY()/*-{
-     return $wnd.scrollY;
-     }-*/;
+	native public int getScrollY()/*-{
+	 return $wnd.scrollY;
+	 }-*/;
 
-    native public int getClientWidth()/*-{
-     return $wnd.innerWidth;
-     }-*/;
+	native public int getClientWidth()/*-{
+	 return $wnd.innerWidth;
+	 }-*/;
 
-    native public int getClientHeight()/*-{
-     return $wnd.innerHeight;
-     }-*/;
+	native public int getClientHeight()/*-{
+	 return $wnd.innerHeight;
+	 }-*/;
+
+	public int getMousePageX(final Event event) {
+		return Browser.getScrollX() + DOM.eventGetClientX(event);
+	}
+
+	public int getMousePageY(final Event event) {
+		return Browser.getScrollY() + DOM.eventGetClientY(event);
+	}
 }

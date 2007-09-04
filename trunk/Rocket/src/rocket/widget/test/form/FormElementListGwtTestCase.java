@@ -16,14 +16,13 @@
 package rocket.widget.test.form;
 
 import java.util.Iterator;
+import java.util.List;
 
-import rocket.browser.client.BrowserHelper;
-import rocket.util.client.ObjectHelper;
+import rocket.dom.client.Dom;
 import rocket.widget.client.form.FormConstants;
-import rocket.widget.client.form.FormElementsList;
+import rocket.widget.client.form.FormHelper;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -43,174 +42,166 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 public class FormElementListGwtTestCase extends GWTTestCase {
 
-    final static String NAME = "name";
+	final static String NAME = "name";
 
-    final static String VALUE = "value";
+	final static String VALUE = "value";
 
-    public String getModuleName() {
-        return "rocket.widget.test.form.FormElementListGwtTestCase";
-    }
+	public String getModuleName() {
+		return "rocket.widget.test.form.FormElementListGwtTestCase";
+	}
 
-    public void testSize() {
-        final TestFormElementsList list = new TestFormElementsList();
-        list.setForm(getForm());
+	public void testSize() {
+		final List list = getForm();
 
-        assertEquals(10, list.size());
-    }
+		assertEquals(10, list.size());
+	}
 
-    public void testGet0OnlyTestsNotNull() {
-        final TestFormElementsList list = new TestFormElementsList();
-        list.setForm(getForm());
+	public void testGet() {
+		final List list = getForm();
 
-        for (int i = 0; i < 10; i++) {
-            this.addCheckpoint("element: " + i);
+		int i = 0;
+		final Object button = list.get(i);
+		assertTrue("List.get(" + i + ") should be a Button not a " + button, button instanceof Button);
+		i++;
 
-            final Object element = list.get(i);
-            assertNotNull("get(" + i + ")[" + element + "]", element);
-        }
-    }
+		final Object checkBox = list.get(i);
+		assertTrue("List.get(" + i + ") should be a CheckBox not a " + checkBox, checkBox instanceof CheckBox);
+		i++;
 
-    public void testGet1TestsElementType() {
-        final TestFormElementsList list = new TestFormElementsList();
-        list.setForm(getForm());
+		final Object hiddenFormField = list.get(i);
+		assertTrue("List.get(" + i + ") should be a HiddenFormField not a " + hiddenFormField, GWT.getTypeName(hiddenFormField).indexOf(
+				"HiddenFormField") != -1);
+		i++;
 
-        {
-            final Object element = list.get(0);
-            assertTrue("get(0) should be a TextBox type: " + GWT.getTypeName(element), element instanceof TextBox);
-        }
-        {
-            final Object element = list.get(1);
-            assertTrue("get(1) should be a PasswordTextBox type: " + GWT.getTypeName(element),
-                    element instanceof PasswordTextBox);
-        }
-        {
-            final Object element = list.get(2);
-            assertTrue("get(2) should be a CheckBox type: " + GWT.getTypeName(element), element instanceof CheckBox);
-        }
-        {
-            final Object element = list.get(3);
-            assertTrue("get(3) should be a RadioButton type: " + GWT.getTypeName(element),
-                    element instanceof RadioButton);
-        }
-        {
-            final Object element = list.get(4);
-            assertTrue("get(4) should be a HiddenFormField type: " + GWT.getTypeName(element), GWT.getTypeName(element)
-                    .indexOf("HiddenFormField") != -1);
-        }
-        {
-            final Object element = list.get(5);
-            assertTrue("get(5) should be a TextArea type: " + GWT.getTypeName(element), element instanceof TextArea);
-        }
-        {
-            final Object element = list.get(6);
-            assertTrue("get(6) should be a Button type: " + GWT.getTypeName(element), element instanceof Button);
-        }
-        {
-            final Object element = list.get(7);
-            assertTrue("get(7) should be a ResetButton type: " + GWT.getTypeName(element), GWT.getTypeName(element)
-                    .indexOf("ResetButton") != -1);
-        }
-        {
-            final Object element = list.get(8);
-            assertTrue("get(8) should be a SubmitButton type: " + GWT.getTypeName(element), GWT.getTypeName(element)
-                    .indexOf("SubmitButton") != -1);
-        }
-        {
-            final Object element = list.get(9);
-            assertTrue("get(9) should be a ListBox type: " + GWT.getTypeName(element), element instanceof ListBox);
-        }
-    }
+		final Object listBox = list.get(i);
+		assertTrue("List.get(" + i + ") should be a ListBox not a " + listBox, listBox instanceof ListBox);
+		i++;
 
-    public void testIterator() {
-        final TestFormElementsList list = new TestFormElementsList();
-        list.setForm(getForm());
+		final Object password = list.get(i);
+		assertTrue("List.get(" + i + ") should be a PasswordTextBox not a " + password, password instanceof PasswordTextBox);
+		i++;
 
-        final Iterator iterator = list.iterator();
-        int i = 0;
-        while (iterator.hasNext()) {
-            this.addCheckpoint("element: " + i);
+		final Object radioButton = list.get(i);
+		assertTrue("List.get(" + i + ") should be a RadioButton not a " + radioButton, radioButton instanceof RadioButton);
+		i++;
 
-            final Object element = iterator.next();
-            final Object expectedElement = list.get(i);
-            assertEquals("element:" + i, expectedElement, element);
-            i++;
-        }
+		final Object resetButton = list.get(i);
+		assertTrue("List.get(" + i + ") should be a ResetButton not a " + resetButton,
+				GWT.getTypeName(resetButton).indexOf("ResetButton") != -1);
+		i++;
 
-        assertFalse("Iterator.hasNext() should return false", iterator.hasNext());
-    }
+		final Object submitButton = list.get(i);
+		assertTrue("List.get(" + i + ") should be a SubmitButton not a " + submitButton, GWT.getTypeName(submitButton).indexOf(
+				"SubmitButton") != -1);
+		i++;
 
-    /**
-     * Factory which creates a form with three elements.
-     * 
-     * @return
-     */
-    static JavaScriptObject getFormElements() {
-        final Element form = DOM.createElement("FORM");
-        DOM.appendChild(RootPanel.getBodyElement(), form);
+		final Object textArea = list.get(i);
+		assertTrue("List.get(" + i + ") should be a TextArea not a " + textArea, textArea instanceof TextArea);
+		i++;
 
-        // 0
-        final Element text = DOM.createInputText();
-        DOM.appendChild(form, text);
+		final Object textBox = list.get(i);
+		assertTrue("List.get(" + i + ") should be a TextBox not a " + textBox, textBox instanceof TextBox);
+		i++;
+	}
 
-        // 1
-        final Element password = DOM.createInputPassword();
-        DOM.appendChild(form, password);
+	public void testSameWrapperReturned() {
+		final List list = getForm();
 
-        // 2
-        final Element checkBox = DOM.createInputCheck();
-        DOM.appendChild(form, checkBox);
+		for (int i = 0; i < list.size(); i++) {
+			this.addCheckpoint("element: " + i);
 
-        // 3
-        final Element radioButton = DOM.createInputRadio("radioGroup");
-        DOM.appendChild(form, radioButton);
+			final Object element = list.get(i);
+			final Object elementAgain = list.get(i);
+			assertSame("get(" + i + ")", element, elementAgain);
+		}
+	}
 
-        // 4
-        final Element hidden = DOM.createElement(FormConstants.INPUT_TAG);
-        DOM.setAttribute(hidden, FormConstants.INPUT_TAG_TYPE, FormConstants.HIDDEN_TYPE);
-        DOM.appendChild(form, hidden);
+	public void testIterator() {
+		final List list = getForm();
 
-        // 5
-        final Element textArea = DOM.createElement(FormConstants.TEXTAREA_TAG);
-        DOM.appendChild(form, textArea);
+		final Iterator iterator = list.iterator();
+		int i = 0;
+		while (iterator.hasNext()) {
+			this.addCheckpoint("element: " + i + " list: " + list);
 
-        // 6
-        final Element button = DOM.createButton();
-        DOM.appendChild(form, button);
+			final Object element = iterator.next();
+			final Object expectedElement = list.get(i);
+			assertEquals("element:" + i, expectedElement, element);
+			i++;
+		}
 
-        // 7
-        final Element resetButton = DOM.createElement(FormConstants.INPUT_TAG);
-        DOM.setAttribute(resetButton, FormConstants.INPUT_TAG_TYPE, FormConstants.RESET_BUTTON_TYPE);
-        DOM.appendChild(form, resetButton);
+		assertFalse("Iterator.hasNext() should return false", iterator.hasNext());
+	}
 
-        // 8
-        final Element submitButton = DOM.createElement(FormConstants.INPUT_TAG);
-        DOM.setAttribute(submitButton, FormConstants.INPUT_TAG_TYPE, FormConstants.SUBMIT_BUTTON_TYPE);
-        DOM.appendChild(form, submitButton);
+	/**
+	 * Factory which creates a form with several elements.
+	 * 
+	 * @return The created unattached form.
+	 */
+	static Element buildForm() {
+		final Element form = DOM.createElement("FORM");
+		DOM.appendChild(RootPanel.getBodyElement(), form);
 
-        // 9
-        final Element list = DOM.createSelect();
-        final Element options = DOM.createOptions();
-        DOM.appendChild(list, options);
-        DOM.appendChild(options, DOM.createElement(FormConstants.OPTION_TAG));
-        DOM.appendChild(options, DOM.createElement(FormConstants.OPTION_TAG));
-        DOM.appendChild(form, list);
+		// 0
+		final Element button = DOM.createButton();
+		DOM.appendChild(form, button);
 
-        return getForm();
-    }
+		// 1
+		final Element checkBox = DOM.createInputCheck();
+		DOM.appendChild(form, checkBox);
 
-    /**
-     * Convenient method to get
-     * 
-     * @return
-     */
-    static JavaScriptObject getForm() {
-        final JavaScriptObject forms = ObjectHelper.getObject(BrowserHelper.getDocument(), "form");
-        return ObjectHelper.getObject(forms, 0);
-    }
+		// 2
+		final Element hidden = DOM.createElement(FormConstants.INPUT_TAG);
+		DOM.setElementProperty(hidden, FormConstants.INPUT_TAG_TYPE, FormConstants.HIDDEN_TYPE);
+		DOM.appendChild(form, hidden);
 
-    class TestFormElementsList extends FormElementsList {
-        public void setForm(final JavaScriptObject form) {
-            super.setForm(form);
-        }
-    }
+		// 3
+		final Element list = DOM.createSelect();
+		final Element options = DOM.createOptions();
+		DOM.appendChild(list, options);
+		DOM.appendChild(options, DOM.createElement(FormConstants.OPTION_TAG));
+		DOM.appendChild(options, DOM.createElement(FormConstants.OPTION_TAG));
+		DOM.appendChild(form, list);
+
+		// 4
+		final Element password = DOM.createInputPassword();
+		DOM.appendChild(form, password);
+
+		// 5
+		final Element radioButton = DOM.createInputRadio("radioGroup");
+		DOM.appendChild(form, radioButton);
+
+		// 6
+		final Element resetButton = DOM.createElement(FormConstants.INPUT_TAG);
+		DOM.setElementProperty(resetButton, FormConstants.INPUT_TAG_TYPE, FormConstants.RESET_BUTTON_TYPE);
+		DOM.appendChild(form, resetButton);
+
+		// 7
+		final Element submitButton = DOM.createElement(FormConstants.INPUT_TAG);
+		DOM.setElementProperty(submitButton, FormConstants.INPUT_TAG_TYPE, FormConstants.SUBMIT_BUTTON_TYPE);
+		DOM.appendChild(form, submitButton);
+
+		// 8
+		final Element textArea = DOM.createElement(FormConstants.TEXTAREA_TAG);
+		DOM.appendChild(form, textArea);
+
+		// 9
+		final Element text = DOM.createInputText();
+		DOM.appendChild(form, text);
+
+		return form;
+	}
+
+	/**
+	 * Convenient method to retrieve a list view of a collection of form
+	 * elements.
+	 * 
+	 * @return The list
+	 */
+	static List getForm() {
+		final Element form = buildForm();
+
+		DOM.appendChild(Dom.getBody(), form);
+		return FormHelper.createFormElementsList(form);
+	}
 }

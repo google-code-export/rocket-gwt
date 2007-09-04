@@ -16,8 +16,9 @@
 package rocket.beans.client.aop;
 
 /**
- * This exception is a wrapper around any checked exception not declared by a method that may occur during
- * a interceptor chain invocation.
+ * This exception is a wrapper around any checked exception not declared by a
+ * method that may occur during a interceptor chain invocation.
+ * 
  * @author Miroslav Pokorny
  */
 public class AopInvocationException extends RuntimeException {

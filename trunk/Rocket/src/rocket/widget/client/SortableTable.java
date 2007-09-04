@@ -29,7 +29,6 @@ import rocket.util.client.StringHelper;
 import rocket.util.client.SystemHelper;
 
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -37,31 +36,38 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A powerful easy to use table that includes support for sorting individual columns using Comparators provided by the user. This class uses
- * the template approach to facilitate mapping between value objects and columns.
+ * A powerful easy to use table that includes support for sorting individual
+ * columns using Comparators provided by the user. This class uses the template
+ * approach to facilitate mapping between value objects and columns.
  * 
- * The {@link #getValue(Object, int)} method is required to return the value for a particular column for the given row. The
- * {@link #getWidget(Object, int)} method is required to return the Widget that will appear at the given column for the given row.
+ * The {@link #getValue(Object, int)} method is required to return the value for
+ * a particular column for the given row. The {@link #getWidget(Object, int)}
+ * method is required to return the Widget that will appear at the given column
+ * for the given row.
  * 
- * Two additional methods must be implemented each of which fetches the {@link #getAscendingSortImageSource() ascending }/ {@link #getDescendingSortImageSource() descending }sort images.  
+ * Two additional methods must be implemented each of which fetches the
+ * {@link #getAscendingSortImageSource() ascending }/
+ * {@link #getDescendingSortImageSource() descending }sort images.
  * 
  * <h6>Gotchas</h6>
  * <ul>
  * 
- * <li>Column comparators should be set before adding any headers. Once headers have been created it is possible to set the order
- * (ascending/descending) for any sortable column Refer to the bundle test that shows how simple it is to subclass and use this
- * implementation. </li>
+ * <li>Column comparators should be set before adding any headers. Once headers
+ * have been created it is possible to set the order (ascending/descending) for
+ * any sortable column Refer to the bundle test that shows how simple it is to
+ * subclass and use this implementation. </li>
  * 
- * <li> if autoRedraw (which may be set via {@link #setAutoRedraw(boolean)}) is true the table will be redrawn each time the rows list is
- * modified. </li>
+ * <li> if autoRedraw (which may be set via {@link #setAutoRedraw(boolean)}) is
+ * true the table will be redrawn each time the rows list is modified. </li>
  * 
- * <li> if autoRedraw (which may be set via {@link #setAutoRedraw(boolean)}) is false the user must force redraws using {@link #redraw() }
- * </li>
+ * <li> if autoRedraw (which may be set via {@link #setAutoRedraw(boolean)}) is
+ * false the user must force redraws using {@link #redraw() } </li>
  * 
  * </ul>
  * {@link #redrawIfAutoEnabled()} and {@link #redrawIfAutoEnabled()} </li>
  * 
- * <li> User code should not use the {@link #insertRow(int)} and {@link #removeRow(int)} methods as they potentially may corrupt the
+ * <li> User code should not use the {@link #insertRow(int)} and
+ * {@link #removeRow(int)} methods as they potentially may corrupt the
  * SortableTable. </li>
  * 
  * </ul>
@@ -73,18 +79,25 @@ public abstract class SortableTable extends Composite {
 	public SortableTable() {
 		super();
 
-		final FlexTable flexTable = this.createFlexTable();
-		this.setFlexTable(flexTable);
-		this.initWidget(flexTable);
-
 		this.setStyleName(WidgetConstants.SORTABLE_TABLE_STYLE);
 		this.setColumnComparators(new ArrayList());
 		this.setRows(this.createRows());
 		this.setAutoRedraw(true);
 	}
 
+	protected Widget createWidget() {
+		final FlexTable flexTable = this.createFlexTable();
+		this.setFlexTable(flexTable);
+		return flexTable;
+	}
+
+	protected int getSunkEventsBitMask() {
+		return 0;
+	}
+
 	/**
-	 * A FlexTable or sub-class is the target table that is used to house the sorted table
+	 * A FlexTable or sub-class is the target table that is used to house the
+	 * sorted table
 	 */
 	private FlexTable flexTable;
 
@@ -111,7 +124,8 @@ public abstract class SortableTable extends Composite {
 	}
 
 	/**
-	 * A list of comparators one for each column or null if a column is not sortable.
+	 * A list of comparators one for each column or null if a column is not
+	 * sortable.
 	 */
 	private List columnComparators;
 
@@ -228,8 +242,9 @@ public abstract class SortableTable extends Composite {
 	}
 
 	/**
-	 * Returns a comparator which may be used to sort a particular column. It also factors into whether the column is sorted in ascending or
-	 * descending mode.
+	 * Returns a comparator which may be used to sort a particular column. It
+	 * also factors into whether the column is sorted in ascending or descending
+	 * mode.
 	 * 
 	 * @param column
 	 * @return
@@ -334,7 +349,8 @@ public abstract class SortableTable extends Composite {
 	}
 
 	/**
-	 * This factory returns a list that automatically takes care of updating the table as rows are added, removed etc.
+	 * This factory returns a list that automatically takes care of updating the
+	 * table as rows are added, removed etc.
 	 */
 	protected RowList createRows() {
 		return new RowList();
@@ -348,43 +364,48 @@ public abstract class SortableTable extends Composite {
 	 * @return
 	 */
 	public List getTableRows() {
-		
+
 		final RowList rowList = this.getRowsList();
 		final SortedRowList sortedRowList = rowList.getSorted();
-		
-		return new AbstractList(){
-			public int size(){
+
+		return new AbstractList() {
+			public int size() {
 				return rowList.size();
 			}
-			public boolean add( final Object element ){
-				rowList.add( element );
+
+			public boolean add(final Object element) {
+				rowList.add(element);
 				return true;
 			}
-			public void add( final int index, final Object element ){
+
+			public void add(final int index, final Object element) {
 				throw new RuntimeException("Adding in a specific slot is not supported, add with add( Object )");
 			}
-			
-			public Object get( final int index ){
+
+			public Object get(final int index) {
 				return sortedRowList.get(index);
 			}
-			
-			public boolean remove( final Object row ){
+
+			public boolean remove(final Object row) {
 				return rowList.remove(row);
 			}
-			public Object remove( final int index ){
+
+			public Object remove(final int index) {
 				final Object removing = this.get(index);
-				rowList.remove( removing );
+				rowList.remove(removing);
 				return removing;
 			}
-			public Object set( final int index, final Object element ){
+
+			public Object set(final int index, final Object element) {
 				throw new RuntimeException("Replacing a specific slot is not supported.");
 			}
-		};			
+		};
 	}
 
 	/**
-	 * This method must be implemented by sub-classes. It provides a method of addressing properties for an object using an index. These
-	 * details are implemented by the sub-class.
+	 * This method must be implemented by sub-classes. It provides a method of
+	 * addressing properties for an object using an index. These details are
+	 * implemented by the sub-class.
 	 * 
 	 * @param row
 	 * @param column
@@ -393,7 +414,8 @@ public abstract class SortableTable extends Composite {
 	protected abstract Object getValue(final Object row, final int column);
 
 	/**
-	 * This method returns the appropriate widget for the given value using its column to distinguish the type of widget etc.
+	 * This method returns the appropriate widget for the given value using its
+	 * column to distinguish the type of widget etc.
 	 * 
 	 * @param row
 	 * @param column
@@ -402,14 +424,16 @@ public abstract class SortableTable extends Composite {
 	protected abstract Widget getWidget(final Object row, final int column);
 
 	/**
-	 * Sub-classes must override this method and return the number of columns the table will display.
+	 * Sub-classes must override this method and return the number of columns
+	 * the table will display.
 	 * 
 	 * @return
 	 */
 	protected abstract int getColumnCount();
 
 	/**
-	 * Simply asserts that the column value is valid. If not an exception is thrown.
+	 * Simply asserts that the column value is valid. If not an exception is
+	 * thrown.
 	 * 
 	 * @param name
 	 * @param column
@@ -419,8 +443,9 @@ public abstract class SortableTable extends Composite {
 	}
 
 	/**
-	 * This flag controls whether this table is repainted each time a new row is added or removed etc. if set to false the user must call
-	 * {@link #redraw} themselves.
+	 * This flag controls whether this table is repainted each time a new row is
+	 * added or removed etc. if set to false the user must call {@link #redraw}
+	 * themselves.
 	 */
 	private boolean autoRedraw;
 
@@ -466,7 +491,8 @@ public abstract class SortableTable extends Composite {
 	/**
 	 * This method does the actual translation or painting of the sorted rows.
 	 * 
-	 * @param rows A sorted list ready to be painted.
+	 * @param rows
+	 *            A sorted list ready to be painted.
 	 */
 	protected void repaintRows(final SortedRowList rows) {
 		ObjectHelper.checkNotNull("parameter:rows", rows);
@@ -492,8 +518,10 @@ public abstract class SortableTable extends Composite {
 	/**
 	 * Creates the widget that will house the header cell
 	 * 
-	 * @param text The header text
-	 * @param index The column
+	 * @param text
+	 *            The header text
+	 * @param index
+	 *            The column
 	 * @return The new widget
 	 */
 	protected Widget createHeader(final String text, final int index) {
@@ -517,7 +545,8 @@ public abstract class SortableTable extends Composite {
 	}
 
 	/**
-	 * Handles whenever a header is clicked (this should only be possible with sortable headers).
+	 * Handles whenever a header is clicked (this should only be possible with
+	 * sortable headers).
 	 * 
 	 * @param widget
 	 */
@@ -537,15 +566,16 @@ public abstract class SortableTable extends Composite {
 	}
 
 	abstract protected String getAscendingSortImageSource();
-	
+
 	abstract protected String getDescendingSortImageSource();
-	
+
 	public String toString() {
 		return super.toString() + ", columnComparators: " + columnComparators + ", rows: " + rows + ", sortedColumn: " + sortedColumn;
 	}
 
 	/**
-	 * This object contains both the comparator and sorting option for a particular colu@author Miroslav Pokorny (mP)
+	 * This object contains both the comparator and sorting option for a
+	 * particular colu@author Miroslav Pokorny (mP)
 	 * 
 	 * @author Miroslav Pokorny (mP)
 	 */
@@ -566,7 +596,8 @@ public abstract class SortableTable extends Composite {
 		}
 
 		/**
-		 * This flag when true indicates that this column is in ascending sort mode.
+		 * This flag when true indicates that this column is in ascending sort
+		 * mode.
 		 */
 		private boolean ascendingSort;
 
@@ -584,7 +615,8 @@ public abstract class SortableTable extends Composite {
 	}
 
 	/**
-	 * This list automatically takes care of refreshing of the parent SortableTable
+	 * This list automatically takes care of refreshing of the parent
+	 * SortableTable
 	 * 
 	 * @author Miroslav Pokorny (mP)
 	 */
@@ -698,18 +730,18 @@ public abstract class SortableTable extends Composite {
 			}
 			return removed;
 		}
-		
-		public boolean remove( final Object row ){
-			final boolean removed = super.remove( row );
-			
-			if( removed ){
+
+		public boolean remove(final Object row) {
+			final boolean removed = super.remove(row);
+
+			if (removed) {
 				final SortedRowList sorted = this.getSorted();
-				sorted.remove( row );
+				sorted.remove(row);
 
 				// redraw if necessary
-				SortableTable.this.redrawIfAutoEnabled();				
+				SortableTable.this.redrawIfAutoEnabled();
 			}
-			
+
 			return removed;
 		}
 
@@ -721,14 +753,16 @@ public abstract class SortableTable extends Composite {
 	};
 
 	/**
-	 * This list is a sorted view of the rows that belong to RowList.
-	 * Each row is actually wrapped inside a SortedRowListElement, therefore all the public methods wrap/unwrap the row, whilst a few additional
-	 * methods are available to get at the wrapper itself.
-	 * This class also includes a method to sort if necessary.
+	 * This list is a sorted view of the rows that belong to RowList. Each row
+	 * is actually wrapped inside a SortedRowListElement, therefore all the
+	 * public methods wrap/unwrap the row, whilst a few additional methods are
+	 * available to get at the wrapper itself. This class also includes a method
+	 * to sort if necessary.
 	 */
 	class SortedRowList extends ArrayList {
 		/**
-		 * This flag indicates that the sorted list is out of sync with the rows belonging to this list.
+		 * This flag indicates that the sorted list is out of sync with the rows
+		 * belonging to this list.
 		 */
 		boolean unsorted = true;
 
@@ -745,10 +779,11 @@ public abstract class SortableTable extends Composite {
 				final int sortedColumn = SortableTable.this.getSortedColumn();
 				final Comparator columnComparator = SortableTable.this.getColumnComparator(sortedColumn);
 				Collections.sort(
-						/**
-						 * THis list returns SortedRowListElement rather than the default behaviour which unwraps the row object.
-						 */						
-						new AbstractList() {
+				/**
+				 * THis list returns SortedRowListElement rather than the
+				 * default behaviour which unwraps the row object.
+				 */
+				new AbstractList() {
 					public Object get(final int index) {
 						return SortedRowList.this.getSortedRowListElement(index);
 					}
@@ -761,8 +796,9 @@ public abstract class SortableTable extends Composite {
 						return SortedRowList.this.size();
 					}
 				}, new Comparator() {
-					/** 
-					 * Retrieve the row property from each SortedRowListElement and then pass that to the comparator.
+					/**
+					 * Retrieve the row property from each SortedRowListElement
+					 * and then pass that to the comparator.
 					 */
 					public int compare(final Object first, final Object second) {
 						final SortedRowListElement firstElement = (SortedRowListElement) first;
@@ -786,13 +822,13 @@ public abstract class SortableTable extends Composite {
 		}
 
 		public void add(final int index, final Object row) {
-			throw new RuntimeException("Adding an element in a specific slot is not supported."); 
+			throw new RuntimeException("Adding an element in a specific slot is not supported.");
 		}
 
-		public void add(final int index, final Collection collection ) {
+		public void add(final int index, final Collection collection) {
 			throw new RuntimeException("Adding a collection in a specific slot is not supported.");
 		}
-		
+
 		public Object get(final int index) {
 			final SortedRowListElement sortedRowListElement = (SortedRowListElement) super.get(index);
 			return null == sortedRowListElement ? null : sortedRowListElement.getRow();
@@ -812,19 +848,19 @@ public abstract class SortableTable extends Composite {
 		}
 
 		public boolean remove(final Object row) {
-			
+
 			int index = -1;
-				final int size = this.size();
-				for (int i = 0; i < size; i++) {
-					final SortedRowListElement element = this.getSortedRowListElement(i);
-					if (row.equals(element.getRow())) {
-						index = i;
-						super.remove( index );
-						element.clear();
-						break;
-					}
+			final int size = this.size();
+			for (int i = 0; i < size; i++) {
+				final SortedRowListElement element = this.getSortedRowListElement(i);
+				if (row.equals(element.getRow())) {
+					index = i;
+					super.remove(index);
+					element.clear();
+					break;
 				}
-						
+			}
+
 			return -1 != index;
 		}
 
@@ -834,11 +870,12 @@ public abstract class SortableTable extends Composite {
 
 		public Object setSortedRowListElement(final int index, final SortedRowListElement element) {
 			return super.set(index, element);
-		}	
+		}
 	}
 
 	/**
-	 * This object maintains a cache between a row, individual values for each column, and widgets for the same column.
+	 * This object maintains a cache between a row, individual values for each
+	 * column, and widgets for the same column.
 	 */
 	class SortedRowListElement {
 
@@ -849,8 +886,11 @@ public abstract class SortableTable extends Composite {
 		}
 
 		/**
-		 * Lazily creates the widget when requested and caches for future requests.
-		 * @param column The column
+		 * Lazily creates the widget when requested and caches for future
+		 * requests.
+		 * 
+		 * @param column
+		 *            The column
 		 * @return The widget
 		 */
 		Widget getWidget(final int column) {
@@ -874,7 +914,7 @@ public abstract class SortableTable extends Composite {
 		}
 
 		/**
-		 * The source value object 
+		 * The source value object
 		 */
 		private Object row;
 
@@ -890,8 +930,9 @@ public abstract class SortableTable extends Composite {
 
 		/**
 		 * This array holds a cache of widgets previously created for this row.
-		 * The SortableTable will reuse these until the row is removed.
-		 * If the array contains null elements it means the table has not yet been redrawn.
+		 * The SortableTable will reuse these until the row is removed. If the
+		 * array contains null elements it means the table has not yet been
+		 * redrawn.
 		 */
 		private Widget[] widgets;
 

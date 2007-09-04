@@ -58,14 +58,12 @@ public class CreateProxyTemplatedFile extends TemplatedCodeBlock {
 	private MethodParameter targetBeanParameter;
 
 	protected MethodParameter getTargetBeanParameter() {
-		ObjectHelper.checkNotNull("field:targetBeanParameter",
-				targetBeanParameter);
+		ObjectHelper.checkNotNull("field:targetBeanParameter", targetBeanParameter);
 		return this.targetBeanParameter;
 	}
 
 	public void setTargetBeanParameter(final MethodParameter targetBeanParameter) {
-		ObjectHelper.checkNotNull("parameter:targetBeanParameter",
-				targetBeanParameter);
+		ObjectHelper.checkNotNull("parameter:targetBeanParameter", targetBeanParameter);
 		this.targetBeanParameter = targetBeanParameter;
 	}
 
@@ -83,11 +81,9 @@ public class CreateProxyTemplatedFile extends TemplatedCodeBlock {
 
 	protected InputStream getInputStream() {
 		final String filename = Constants.CREATE_PROXY_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(
-				filename);
+		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException(
-					"Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
 		}
 		return inputStream;
 	}
@@ -117,8 +113,7 @@ public class CreateProxyTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name
-				+ "] not found, template file ["
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file ["
 				+ Constants.CREATE_PROXY_TEMPLATE + "]");
 	}
 }

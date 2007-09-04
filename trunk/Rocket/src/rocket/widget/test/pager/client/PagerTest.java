@@ -31,42 +31,42 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class PagerTest implements EntryPoint {
 
-    /**
-     * This is the entry point method.
-     */
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
 
-        this.createPager(1, 20, 1, 7);
-        this.createPager(1, 20, 10, 7);
-        this.createPager(1, 20, 19, 7);
-    }
+		this.createPager(1, 20, 1, 7);
+		this.createPager(1, 20, 10, 7);
+		this.createPager(1, 20, 19, 7);
+	}
 
-    protected void createPager(final int first, final int last, final int currentPage, final int inBetweenCount) {
-        final RootPanel rootPanel = RootPanel.get();
+	protected void createPager(final int first, final int last, final int currentPage, final int inBetweenCount) {
+		final RootPanel rootPanel = RootPanel.get();
 
-        final Label label = new Label("" + currentPage);
+		final Label label = new Label("" + currentPage);
 
-        final Pager pager = new Pager();
-        pager.setFirstPage(first);
-        pager.setLastPage(last);
-        pager.setCurrentPage(currentPage);
-        pager.setPagesInBetweenCount(inBetweenCount);
+		final Pager pager = new Pager();
+		pager.setFirstPage(first);
+		pager.setLastPage(last);
+		pager.setCurrentPage(currentPage);
+		pager.setPagesInBetweenCount(inBetweenCount);
 
-        pager.addChangeListener(new ChangeListener() {
-            public void onChange(final Widget source) {
-                label.setText("Current Page: " + pager.getValue());
-            }
-        });
+		pager.addChangeListener(new ChangeListener() {
+			public void onChange(final Widget source) {
+				label.setText("Current Page: " + pager.getValue());
+			}
+		});
 
-        rootPanel.add(label);
-        rootPanel.add(pager);
-        pager.redraw();
-    }
+		rootPanel.add(label);
+		rootPanel.add(pager);
+		pager.redraw();
+	}
 
 }

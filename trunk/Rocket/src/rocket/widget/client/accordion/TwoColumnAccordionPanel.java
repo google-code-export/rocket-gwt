@@ -23,135 +23,140 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A common class for both the LeftSideAccordionPanel and RightSideAccordionPanel classes.
+ * A common class for both the LeftSideAccordionPanel and
+ * RightSideAccordionPanel classes.
  * 
  * @author Miroslav Pokorny (mP)
  * 
  */
 abstract class TwoColumnAccordionPanel extends AccordionPanel {
-    protected TwoColumnAccordionPanel() {
-        super();
-    }
+	protected TwoColumnAccordionPanel() {
+		super();
+	}
 
-    protected void replaceContentWidget(final AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	protected int getSunkEventsBitMask() {
+		return 0;
+	}
 
-        final DeckPanel contents = this.getContentsPanel();
-        final int index = this.getIndex(item);
-        contents.remove(index);
-        final Widget content = item.getContent();
-        contents.insert(content, index);
-    }
+	protected void replaceContentWidget(final AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-    /**
-     * A HorizontalPanel is used to house the entire Accordion.
-     */
-    private HorizontalPanel panel;
+		final DeckPanel contents = this.getContentsPanel();
+		final int index = this.getIndex(item);
+		contents.remove(index);
+		final Widget content = item.getContent();
+		contents.insert(content, index);
+	}
 
-    protected HorizontalPanel getPanel() {
-        ObjectHelper.checkNotNull("field:panel", panel);
-        return panel;
-    }
+	/**
+	 * A HorizontalPanel is used to house the entire Accordion.
+	 */
+	private HorizontalPanel panel;
 
-    protected void setPanel(final HorizontalPanel panel) {
-        ObjectHelper.checkNotNull("parameter:panel", panel);
-        this.panel = panel;
-    }
+	protected HorizontalPanel getPanel() {
+		ObjectHelper.checkNotNull("field:panel", panel);
+		return panel;
+	}
 
-    /**
-     * A DivPanel is used to house the list of all captions.
-     */
-    private DivPanel captionsPanel;
+	protected void setPanel(final HorizontalPanel panel) {
+		ObjectHelper.checkNotNull("parameter:panel", panel);
+		this.panel = panel;
+	}
 
-    protected DivPanel getCaptionsPanel() {
-        ObjectHelper.checkNotNull("field:captionsPanel", captionsPanel);
-        return captionsPanel;
-    }
+	/**
+	 * A DivPanel is used to house the list of all captions.
+	 */
+	private DivPanel captionsPanel;
 
-    protected void setCaptionsPanel(final DivPanel captionsPanel) {
-        ObjectHelper.checkNotNull("parameter:captionsPanel", captionsPanel);
-        this.captionsPanel = captionsPanel;
-    }
+	protected DivPanel getCaptionsPanel() {
+		ObjectHelper.checkNotNull("field:captionsPanel", captionsPanel);
+		return captionsPanel;
+	}
 
-    protected DivPanel createCaptionsPanel() {
-        final DivPanel captionsPanel = new DivPanel();
-        captionsPanel.setStyleName(getCaptionsPanelStyle());
-        return captionsPanel;
-    }
+	protected void setCaptionsPanel(final DivPanel captionsPanel) {
+		ObjectHelper.checkNotNull("parameter:captionsPanel", captionsPanel);
+		this.captionsPanel = captionsPanel;
+	}
 
-    protected abstract String getCaptionsPanelStyle();
+	protected DivPanel createCaptionsPanel() {
+		final DivPanel captionsPanel = new DivPanel();
+		captionsPanel.setStyleName(getCaptionsPanelStyle());
+		return captionsPanel;
+	}
 
-    /**
-     * A DeckPanel is used to house the content widgets.
-     */
-    private DeckPanel contentsPanel;
+	protected abstract String getCaptionsPanelStyle();
 
-    protected DeckPanel getContentsPanel() {
-        ObjectHelper.checkNotNull("field:contentsPanel", contentsPanel);
-        return contentsPanel;
-    }
+	/**
+	 * A DeckPanel is used to house the content widgets.
+	 */
+	private DeckPanel contentsPanel;
 
-    protected void setContentsPanel(final DeckPanel contentsPanel) {
-        ObjectHelper.checkNotNull("parameter:contentsPanel", contentsPanel);
-        this.contentsPanel = contentsPanel;
-    }
+	protected DeckPanel getContentsPanel() {
+		ObjectHelper.checkNotNull("field:contentsPanel", contentsPanel);
+		return contentsPanel;
+	}
 
-    protected DeckPanel createContentsPanel() {
-        final DeckPanel contentsPanel = new DeckPanel();
-        contentsPanel.setStyleName(this.getContentsPanelStyle());
-        return contentsPanel;
-    }
+	protected void setContentsPanel(final DeckPanel contentsPanel) {
+		ObjectHelper.checkNotNull("parameter:contentsPanel", contentsPanel);
+		this.contentsPanel = contentsPanel;
+	}
 
-    protected abstract String getContentsPanelStyle();
+	protected DeckPanel createContentsPanel() {
+		final DeckPanel contentsPanel = new DeckPanel();
+		contentsPanel.setStyleName(this.getContentsPanelStyle());
+		return contentsPanel;
+	}
 
-    protected void removeSelectedStyle(final AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	protected abstract String getContentsPanelStyle();
 
-        final Widget caption = item.getCaptionWidget();
-        caption.removeStyleName(this.getCaptionSelectedStyle());
-        final Widget content = item.getContent();
-        content.removeStyleName(this.getContentSelectedStyle());
-    }
+	protected void removeSelectedStyle(final AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-    protected abstract String getCaptionSelectedStyle();
+		final Widget caption = item.getCaptionWidget();
+		caption.removeStyleName(this.getCaptionSelectedStyle());
+		final Widget content = item.getContent();
+		content.removeStyleName(this.getContentSelectedStyle());
+	}
 
-    protected abstract String getContentSelectedStyle();
+	protected abstract String getCaptionSelectedStyle();
 
-    protected void addSelectedStyle(AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	protected abstract String getContentSelectedStyle();
 
-        final Widget caption = item.getCaptionWidget();
-        caption.addStyleName(this.getCaptionSelectedStyle());
-        final Widget content = item.getContent();
-        content.addStyleName(this.getContentSelectedStyle());
+	protected void addSelectedStyle(AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        final int index = this.getIndex(item);
-        this.getContentsPanel().showWidget(index);
+		final Widget caption = item.getCaptionWidget();
+		caption.addStyleName(this.getCaptionSelectedStyle());
+		final Widget content = item.getContent();
+		content.addStyleName(this.getContentSelectedStyle());
 
-    }
+		final int index = this.getIndex(item);
+		this.getContentsPanel().showWidget(index);
 
-    protected void insert0(int insertBefore, AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	}
 
-        final Widget caption = item.getCaptionWidget();
-        caption.addStyleName(this.getCaptionStyle());
-        this.getCaptionsPanel().insert(caption, insertBefore);
+	protected void insert0(int insertBefore, AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        final Widget content = item.getContent();
-        content.addStyleName(this.getContentStyle());
-        this.getContentsPanel().insert(content, insertBefore);
-    }
+		final Widget caption = item.getCaptionWidget();
+		caption.addStyleName(this.getCaptionStyle());
+		this.getCaptionsPanel().insert(caption, insertBefore);
 
-    protected abstract String getCaptionStyle();
+		final Widget content = item.getContent();
+		content.addStyleName(this.getContentStyle());
+		this.getContentsPanel().insert(content, insertBefore);
+	}
 
-    protected abstract String getContentStyle();
+	protected abstract String getCaptionStyle();
 
-    protected void remove0(final int index) {
-        final AccordionItem item = this.get(index);
-        item.getCaptionWidget().removeStyleName(this.getCaptionStyle());
-        this.getCaptionsPanel().remove(index);
-        item.getContent().removeStyleName(this.getContentStyle());
-        this.getContentsPanel().remove(index);
-    }
+	protected abstract String getContentStyle();
+
+	protected void remove0(final int index) {
+		final AccordionItem item = this.get(index);
+		item.getCaptionWidget().removeStyleName(this.getCaptionStyle());
+		this.getCaptionsPanel().remove(index);
+		item.getContent().removeStyleName(this.getContentStyle());
+		this.getContentsPanel().remove(index);
+	}
 
 }

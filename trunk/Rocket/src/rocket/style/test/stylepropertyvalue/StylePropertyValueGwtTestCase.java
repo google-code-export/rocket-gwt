@@ -28,57 +28,57 @@ import com.google.gwt.junit.client.GWTTestCase;
  */
 public class StylePropertyValueGwtTestCase extends GWTTestCase {
 
-    public String getModuleName() {
-        return "rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase";
-    }
+	public String getModuleName() {
+		return "rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase";
+	}
 
-    public void testGetNumber() {
-        final StylePropertyValue value = new StylePropertyValue();
-        value.setString("123px");
+	public void testGetNumber() {
+		final StylePropertyValue value = new StylePropertyValue();
+		value.setString("123px");
 
-        final double actual = value.getDouble(CssUnit.PX);
-        final double expected = 123.0;
-        TestCase.assertEquals(expected, actual, 0.1);
-    }
+		final double actual = value.getDouble(CssUnit.PX);
+		final double expected = 123.0;
+		TestCase.assertEquals(expected, actual, 0.1);
+	}
 
-    public void testSetNumber() {
-        final StylePropertyValue value = new StylePropertyValue();
-        value.setString("123px");
+	public void testSetNumber() {
+		final StylePropertyValue value = new StylePropertyValue();
+		value.setString("123px");
 
-        final double newValue = 456;
-        value.setDouble(newValue, CssUnit.PX);
+		final double newValue = 456;
+		value.setDouble(newValue, CssUnit.PX);
 
-        final String actual = value.getString();
-        final String expected = "456px";
-        TestCase.assertEquals(expected, actual);
-    }
+		final String actual = value.getString();
+		final String expected = "456px";
+		TestCase.assertEquals(expected, actual);
+	}
 
-    public void testGetInteger() {
-        final StylePropertyValue value = new StylePropertyValue();
-        value.setString("123px");
+	public void testGetInteger() {
+		final StylePropertyValue value = new StylePropertyValue();
+		value.setString("123px");
 
-        final int actual = value.getInteger(CssUnit.PX);
-        final int expected = 123;
-        TestCase.assertEquals(expected, actual);
-    }
+		final int actual = value.getInteger(CssUnit.PX);
+		final int expected = 123;
+		TestCase.assertEquals(expected, actual);
+	}
 
-    public void testSetInteger() {
-        final StylePropertyValue value = new StylePropertyValue();
-        value.setString("123px");
+	public void testSetInteger() {
+		final StylePropertyValue value = new StylePropertyValue();
+		value.setString("123px");
 
-        value.setInteger(456, CssUnit.PX);
+		value.setInteger(456, CssUnit.PX);
 
-        final String actual = value.getString();
-        final String expected = "456px";
-        TestCase.assertEquals(expected, actual);
-    }
+		final String actual = value.getString();
+		final String expected = "456px";
+		TestCase.assertEquals(expected, actual);
+	}
 
-    public void testGetUnit() {
-        final StylePropertyValue value = new StylePropertyValue();
-        value.setString("456em");
+	public void testGetUnit() {
+		final StylePropertyValue value = new StylePropertyValue();
+		value.setString("456em");
 
-        final CssUnit actualUnit = value.getUnit();
-        final CssUnit expectedUnit = CssUnit.EM;
-        TestCase.assertSame(actualUnit, expectedUnit);
-    }
+		final CssUnit actualUnit = value.getUnit();
+		final CssUnit expectedUnit = CssUnit.EM;
+		TestCase.assertSame(actualUnit, expectedUnit);
+	}
 }

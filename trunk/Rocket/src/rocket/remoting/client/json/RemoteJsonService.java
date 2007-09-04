@@ -25,14 +25,21 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * A maker interface that marks a interface as being a RemoteService that
  * returns a json encoded response.
  * 
- * Many of the steps involved in creating a RemoteJsonService are similar to those required to create a GWT RemoteService.
+ * Many of the steps involved in creating a RemoteJsonService are similar to
+ * those required to create a GWT RemoteService.
  * <ul>
- * <li>A service interface which must extends {@link RemoteJsonService} instead of {@link RemoteService}</li>
- * <li>The return type of the service interface and all types referenced must implement {@link JsonSerializable}</li>
- * <li>An async interface following similar rules to that of {@link RemoteService}</li>
+ * <li>A service interface which must extends {@link RemoteJsonService} instead
+ * of {@link RemoteService}</li>
+ * <li>The return type of the service interface and all types referenced must
+ * implement {@link JsonSerializable}</li>
+ * <li>An async interface following similar rules to that of
+ * {@link RemoteService}</li>
  * <li>All async methods must return void</li>
- * <li>All methods from the service interface must also appear in the async interface, same name, same arguments plus a trailing {@link AsyncCallback} parameter</li>
- * <li>The service address must be set after casting to {@link ServiceDefTarget} and calling {@link ServiceDefTarget#setServiceEntry}
+ * <li>All methods from the service interface must also appear in the async
+ * interface, same name, same arguments plus a trailing {@link AsyncCallback}
+ * parameter</li>
+ * <li>The service address must be set after casting to
+ * {@link ServiceDefTarget} and calling {@link ServiceDefTarget#setServiceEntry}
  * </ul>
  * 
  * @author Miroslav Pokorny

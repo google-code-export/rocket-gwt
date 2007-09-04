@@ -20,40 +20,42 @@ import rocket.util.client.ObjectHelper;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * An end point uses a combination of a textNode and offset to mark the start/end of a selection
+ * An end point uses a combination of a textNode and offset to mark the
+ * start/end of a selection
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class SelectionEndPoint {
-    /**
-     * The textNode containing the start/end of the selection.
-     */
-    private JavaScriptObject textNode;
+	/**
+	 * The textNode containing the start/end of the selection.
+	 */
+	private JavaScriptObject textNode;
 
-    public JavaScriptObject getTextNode() {
-        ObjectHelper.checkNotNull("field:textNode", textNode);
-        return textNode;
-    }
+	public JavaScriptObject getTextNode() {
+		ObjectHelper.checkNotNull("field:textNode", textNode);
+		return textNode;
+	}
 
-    public void setTextNode(final JavaScriptObject textNode) {
-        ObjectHelper.checkNotNull("parameter:textNode", textNode);
-        this.textNode = textNode;
-    }
+	public void setTextNode(final JavaScriptObject textNode) {
+		ObjectHelper.checkNotNull("parameter:textNode", textNode);
+		this.textNode = textNode;
+	}
 
-    /**
-     * The number of characters starting from the beginning of the textNode where the selection begins/ends.
-     */
-    public int offset;
+	/**
+	 * The number of characters starting from the beginning of the textNode
+	 * where the selection begins/ends.
+	 */
+	public int offset;
 
-    public int getOffset() {
-        return offset;
-    }
+	public int getOffset() {
+		return offset;
+	}
 
-    public void setOffset(final int offset) {
-        this.offset = offset;
-    }
+	public void setOffset(final int offset) {
+		this.offset = offset;
+	}
 
-    public String toString() {
-        return super.toString() + ", textNode[" + this.textNode + "], offset: " + offset;
-    }
+	public String toString() {
+		return super.toString() + ", textNode[" + this.textNode + "], offset: " + offset;
+	}
 }

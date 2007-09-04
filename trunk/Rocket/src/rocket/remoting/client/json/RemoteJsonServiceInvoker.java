@@ -61,8 +61,8 @@ abstract public class RemoteJsonServiceInvoker implements RequestCallback {
 		if (serviceImpl.hasTimeout()) {
 			request.setTimeoutMillis(serviceImpl.getTimeout());
 		}
-		
-		this.setHeaders( request );
+
+		this.setHeaders(request);
 
 		try {
 			request.sendRequest(this.getRequestData(), this);
@@ -121,13 +121,13 @@ abstract public class RemoteJsonServiceInvoker implements RequestCallback {
 	 * @return
 	 */
 	abstract RequestBuilder.Method getRequestMethod();
-	
+
 	/**
-	 * This method will be implemented by either 
+	 * This method will be implemented by either
 	 * {@link RemoteGetJsonServiceInvoker} or
 	 * {@link RemotePostJsonServiceInvoker}.
 	 */
-	abstract protected void setHeaders( final RequestBuilder request );
+	abstract protected void setHeaders(final RequestBuilder request);
 
 	public void onResponseReceived(final Request request, final Response response) {
 		final int status = response.getStatusCode();

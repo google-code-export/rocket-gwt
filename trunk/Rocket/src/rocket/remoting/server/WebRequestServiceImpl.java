@@ -26,23 +26,24 @@ import rocket.remoting.client.WebResponse;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * This server side service simply does the WebRequest and returns the WebResponse to the client.
+ * This server side service simply does the WebRequest and returns the
+ * WebResponse to the client.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class WebRequestServiceImpl extends RemoteServiceServlet implements WebRequestService {
 
-    public WebResponse doRequest(final WebRequest webRequest) throws FailedWebRequestException {
-        try {
-            final HttpServletRequest request = this.getThreadLocalRequest();
-            final HttpServletResponse response = this.getThreadLocalResponse();
+	public WebResponse doRequest(final WebRequest webRequest) throws FailedWebRequestException {
+		try {
+			final HttpServletRequest request = this.getThreadLocalRequest();
+			final HttpServletResponse response = this.getThreadLocalResponse();
 
-            final WebResponse webResponse = WebHelper.doWebRequest(request, response, webRequest);
-            return webResponse;
-        } catch (final FailedWebRequestException caught) {
-            this.log(caught.getMessage(), caught);
-            throw caught;
-        }
-    }
+			final WebResponse webResponse = WebHelper.doWebRequest(request, response, webRequest);
+			return webResponse;
+		} catch (final FailedWebRequestException caught) {
+			this.log(caught.getMessage(), caught);
+			throw caught;
+		}
+	}
 
 }

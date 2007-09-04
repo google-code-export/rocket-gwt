@@ -16,11 +16,11 @@
 package rocket.widget.client.tabpanel;
 
 public interface TabListener {
-    boolean onBeforeTabSelected(TabItem item);
+	boolean onBeforeTabSelected(TabItem item);
 
-    void onTabSelected(TabItem item);
+	void onTabSelected(TabItem item);
 
-    boolean onBeforeTabClosed(TabItem item);
+	boolean onBeforeTabClosed(TabItem item);
 
-    void onTabClosed(TabItem item);
+	void onTabClosed(TabItem item);
 }

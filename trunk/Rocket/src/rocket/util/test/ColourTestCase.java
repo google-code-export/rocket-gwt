@@ -266,20 +266,16 @@ public class ColourTestCase extends TestCase {
 			for (int green = 0; green < 255; green++) {
 				for (int blue = 0; blue < 255; blue++) {
 					final Colour colour = new Colour(red, green, blue);
-					final HueSaturationValue hueSaturationValue = colour
-							.asHueSaturationValue();
+					final HueSaturationValue hueSaturationValue = colour.asHueSaturationValue();
 
-					final float[] hsvComponents = Color.RGBtoHSB(red, green, blue, null );
+					final float[] hsvComponents = Color.RGBtoHSB(red, green, blue, null);
 					final float hue = hsvComponents[0];
 					final float saturation = hsvComponents[1];
 					final float value = hsvComponents[2];
 
-					if (false == equals(hue, saturation, value,
-							hueSaturationValue)) {
-						fail("colour: " + colour + ", hue: " + hue
-								+ ", saturation: " + saturation + ", value: "
-								+ value + ", hueSaturationValue: "
-								+ hueSaturationValue);
+					if (false == equals(hue, saturation, value, hueSaturationValue)) {
+						fail("colour: " + colour + ", hue: " + hue + ", saturation: " + saturation + ", value: " + value
+								+ ", hueSaturationValue: " + hueSaturationValue);
 					}
 				}
 			}
@@ -293,20 +289,15 @@ public class ColourTestCase extends TestCase {
 			final float hue1 = hueSaturationValue.getHue() % 0.999f;
 
 			if (false == PrimitiveHelper.equals(hue0, hue1, 0.03)) {
-				if (false == 
-					(PrimitiveHelper.equals(hue0, 0.0, 0.01) || 
-					PrimitiveHelper.equals(hue0, 1.0, 0.01)) && 
-					PrimitiveHelper.equals(hue1, 0.0, 0.01) || 
-					PrimitiveHelper.equals(hue1, 1.0, 0.01)) {
+				if (false == (PrimitiveHelper.equals(hue0, 0.0, 0.01) || PrimitiveHelper.equals(hue0, 1.0, 0.01))
+						&& PrimitiveHelper.equals(hue1, 0.0, 0.01) || PrimitiveHelper.equals(hue1, 1.0, 0.01)) {
 					break;
 				}
 			}
-			if (false == PrimitiveHelper.equals(saturation, hueSaturationValue
-					.getSaturation(), 0.03)) {
+			if (false == PrimitiveHelper.equals(saturation, hueSaturationValue.getSaturation(), 0.03)) {
 				break;
 			}
-			if (false == PrimitiveHelper.equals(value, hueSaturationValue
-					.getValue(), 0.03)) {
+			if (false == PrimitiveHelper.equals(value, hueSaturationValue.getValue(), 0.03)) {
 				break;
 			}
 			equals = true;

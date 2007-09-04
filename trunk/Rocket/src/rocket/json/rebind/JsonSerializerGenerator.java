@@ -49,8 +49,10 @@ public class JsonSerializerGenerator extends Generator {
 	 * Builds a new Deserializer type but first checks if the given type also
 	 * has a super type that needs a deserializer.
 	 * 
-	 * @param type The type passed to GWT.create()
-	 * @param newTypeName The name of the new type being generated
+	 * @param type
+	 *            The type passed to GWT.create()
+	 * @param newTypeName
+	 *            The name of the new type being generated
 	 */
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		ObjectHelper.checkNotNull("parameter:type", type);
@@ -172,15 +174,15 @@ public class JsonSerializerGenerator extends Generator {
 		final Type characterWrapperType = context.getChar().getWrapper();
 
 		final Iterator fields = type.getFields().iterator();
-		while (fields.hasNext()) {			
+		while (fields.hasNext()) {
 			final Field field = (Field) fields.next();
-			if( field.isStatic() || field.isTransient() ){
+			if (field.isStatic() || field.isTransient()) {
 				continue;
 			}
-			if( field.isFinal() ){
-				throwFinalFieldsCannotBeDeserialized( field );
+			if (field.isFinal()) {
+				throwFinalFieldsCannotBeDeserialized(field);
 			}
-			
+
 			final FieldSetterTemplatedFile setterMethodBody = new FieldSetterTemplatedFile();
 			setterMethodBody.setField(field);
 
@@ -283,9 +285,9 @@ public class JsonSerializerGenerator extends Generator {
 			invokeFieldSetter.setAsMethod(asMethod);
 		}
 	}
-	
-	protected void throwFinalFieldsCannotBeDeserialized( final Field field ){
-		throw new JsonSerializerGeneratorException("Final instance fields cannot be deserialized, field: " + field );
+
+	protected void throwFinalFieldsCannotBeDeserialized(final Field field) {
+		throw new JsonSerializerGeneratorException("Final instance fields cannot be deserialized, field: " + field);
 	}
 
 	protected Type getListElementType(final Field field) {
@@ -423,7 +425,7 @@ public class JsonSerializerGenerator extends Generator {
 	protected void verifyTypeHasNoArgumentsConstructor(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
-		if ( false == type.hasNoArgumentsConstructor() ) {
+		if (false == type.hasNoArgumentsConstructor()) {
 			this.throwMissingNoArgumentsConstructorException(type);
 		}
 	}

@@ -55,11 +55,9 @@ public class RethrowDeclaredExceptionTemplatedFile extends TemplatedCodeBlock {
 
 	protected InputStream getInputStream() {
 		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(
-				filename);
+		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException(
-					"Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
 		}
 		return inputStream;
 	}
@@ -67,8 +65,7 @@ public class RethrowDeclaredExceptionTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.RETHROW_DECLARED_EXCEPTION_EXCEPTION_TYPE
-					.equals(name)) {
+			if (Constants.RETHROW_DECLARED_EXCEPTION_EXCEPTION_TYPE.equals(name)) {
 				value = this.getException();
 				break;
 			}
@@ -78,7 +75,6 @@ public class RethrowDeclaredExceptionTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name
-				+ "] not found, template file [" + this.getFileName() + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + this.getFileName() + "]");
 	}
 }

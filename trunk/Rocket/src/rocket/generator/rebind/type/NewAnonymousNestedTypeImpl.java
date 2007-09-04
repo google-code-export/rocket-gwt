@@ -35,8 +35,8 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 	public NewAnonymousNestedTypeImpl() {
 		super();
 	}
-	
-	public Visibility getVisibility(){
+
+	public Visibility getVisibility() {
 		return Visibility.PRIVATE;
 	}
 
@@ -95,13 +95,15 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 	protected Set createConstructors() {
 		throw new UnsupportedOperationException("createConstructors");
 	}
+
 	/**
-	 * Anonymous nested types are always invoked with no arguments but thats not technically
-	 * true, throw an exception for now.
+	 * Anonymous nested types are always invoked with no arguments but thats not
+	 * technically true, throw an exception for now.
 	 */
-	public boolean hasNoArgumentsConstructor(){
+	public boolean hasNoArgumentsConstructor() {
 		throw new UnsupportedOperationException("hasNoArgumentsConstructor");
 	}
+
 	public String getName() {
 		throw new UnsupportedOperationException("getName()");
 	}

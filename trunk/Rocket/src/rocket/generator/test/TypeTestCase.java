@@ -72,7 +72,7 @@ public class TypeTestCase extends TestCase {
 		final Type type = context.getType(ClassWithNoMethods.class.getName());
 		try {
 			final Method mostDerived = type.getMostDerivedMethod("dummy", Collections.EMPTY_LIST);
-			fail("An MethodNotFoundException should have been thrown.");
+			fail("An MethodNotFoundException should have been thrown and not Method: " + mostDerived);
 		} catch (final MethodNotFoundException expected) {
 		}
 	}

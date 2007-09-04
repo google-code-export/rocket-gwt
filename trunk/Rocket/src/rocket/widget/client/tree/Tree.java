@@ -17,110 +17,122 @@ package rocket.widget.client.tree;
 
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
+import rocket.widget.client.Composite;
 
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A tree is the base container for more TreeItems which may be arranged in a hierarchical fashion. TreeItems themselves may host regular
- * widgets.
+ * A tree is the base container for more TreeItems which may be arranged in a
+ * hierarchical fashion. TreeItems themselves may host regular widgets.
  * 
- * To find out if a particular treeNode has been clicked ClickListeners must be added to the widget themselves.
+ * To find out if a particular treeNode has been clicked ClickListeners must be
+ * added to the widget themselves.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class Tree extends Composite {
 
-    public Tree() {
-        this.setTreeListenerCollection( createTreeListenerCollection() );
-        
-        final TreeItem treeItem = this.createTreeItem();
-        this.setTreeItem(treeItem);
-        this.initWidget(treeItem);
-        
-        this.setStyleName(TreeConstants.TREE_STYLE);
-    }
+	public Tree() {
+		super();
 
-    /**
-     * The root treeItem.
-     */
-    private TreeItem treeItem;
+		this.setStyleName(TreeConstants.TREE_STYLE);
+	}
 
-    public TreeItem getTreeItem() {
-        ObjectHelper.checkNotNull("field:treeItem", treeItem);
-        return treeItem;
-    }
+	protected Widget createWidget() {
+		final TreeItem root = this.createTreeItem();
+		this.setTreeItem(root);
+		return root;
+	}
 
-    public boolean hasTreeItem() {
-        return null != treeItem;
-    }
+	protected void afterCreateWidget() {
+		this.setTreeListenerCollection(createTreeListenerCollection());
+	}
 
-    public void setTreeItem(final TreeItem treeItem) {
-        ObjectHelper.checkNotNull("parameter:treeItem", treeItem);
-        this.treeItem = treeItem;
-    }
+	protected int getSunkEventsBitMask() {
+		return 0;
+	}
 
-    protected TreeItem createTreeItem() {
-        final TreeItem treeItem = new TreeItem();
-        treeItem.setTree(this);
-        return treeItem;
-    }
+	/**
+	 * The root treeItem.
+	 */
+	private TreeItem treeItem;
 
-    private String collapserImageUrl;
+	public TreeItem getTreeItem() {
+		ObjectHelper.checkNotNull("field:treeItem", treeItem);
+		return treeItem;
+	}
 
-    public String getCollapserImageUrl() {
-        StringHelper.checkNotEmpty("field:collapserImageUrl", collapserImageUrl);
-        return this.collapserImageUrl;
-    }
+	public boolean hasTreeItem() {
+		return null != treeItem;
+	}
 
-    public void setCollapserImageUrl(final String collapserImageUrl) {
-        StringHelper.checkNotEmpty("parameter:collapserImageUrl", collapserImageUrl);
-        this.collapserImageUrl = collapserImageUrl;
-    }
+	public void setTreeItem(final TreeItem treeItem) {
+		ObjectHelper.checkNotNull("parameter:treeItem", treeItem);
+		this.treeItem = treeItem;
+	}
 
-    private String expanderImageUrl;
+	protected TreeItem createTreeItem() {
+		final TreeItem treeItem = new TreeItem();
+		treeItem.setTree(this);
+		return treeItem;
+	}
 
-    public String getExpanderImageUrl() {
-        StringHelper.checkNotEmpty("field:expanderImageUrl", expanderImageUrl);
-        return this.expanderImageUrl;
-    }
+	private String collapserImageUrl;
 
-    public void setExpanderImageUrl(final String expanderImageUrl) {
-        StringHelper.checkNotEmpty("parameter:expanderImageUrl", expanderImageUrl);
-        this.expanderImageUrl = expanderImageUrl;
-    }
+	public String getCollapserImageUrl() {
+		StringHelper.checkNotEmpty("field:collapserImageUrl", collapserImageUrl);
+		return this.collapserImageUrl;
+	}
 
-    // LISTENERS
-    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	public void setCollapserImageUrl(final String collapserImageUrl) {
+		StringHelper.checkNotEmpty("parameter:collapserImageUrl", collapserImageUrl);
+		this.collapserImageUrl = collapserImageUrl;
+	}
 
-    public void addTreeListener(final TreeListener listener) {
-        this.getTreeListenerCollection().add(listener);
-    }
+	private String expanderImageUrl;
 
-    public void removeTreeListener(final TreeListener listener) {
-        this.getTreeListenerCollection().remove(listener);
-    }
+	public String getExpanderImageUrl() {
+		StringHelper.checkNotEmpty("field:expanderImageUrl", expanderImageUrl);
+		return this.expanderImageUrl;
+	}
 
-    /**
-     * A collection of TreeListeners.
-     */
-    private TreeListenerCollection treeListenerCollection;
+	public void setExpanderImageUrl(final String expanderImageUrl) {
+		StringHelper.checkNotEmpty("parameter:expanderImageUrl", expanderImageUrl);
+		this.expanderImageUrl = expanderImageUrl;
+	}
 
-    public TreeListenerCollection getTreeListenerCollection() {
-        ObjectHelper.checkNotNull("field:treeListenerCollection", treeListenerCollection);
-        return treeListenerCollection;
-    }
+	// LISTENERS
+	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    public void setTreeListenerCollection(final TreeListenerCollection treeListenerCollection) {
-        ObjectHelper.checkNotNull("parameter:treeListenerCollection", treeListenerCollection);
-        this.treeListenerCollection = treeListenerCollection;
-    }
+	public void addTreeListener(final TreeListener listener) {
+		this.getTreeListenerCollection().add(listener);
+	}
 
-    protected TreeListenerCollection createTreeListenerCollection() {
-        return new TreeListenerCollection();
-    }
+	public void removeTreeListener(final TreeListener listener) {
+		this.getTreeListenerCollection().remove(listener);
+	}
 
-    public String toString() {
-        return super.toString() + ", treeItem: " + treeItem + ", collapserImageUrl[" + collapserImageUrl
-                + "], expanderImageUrl[" + expanderImageUrl + "]";
-    }
+	/**
+	 * A collection of TreeListeners.
+	 */
+	private TreeListenerCollection treeListenerCollection;
+
+	public TreeListenerCollection getTreeListenerCollection() {
+		ObjectHelper.checkNotNull("field:treeListenerCollection", treeListenerCollection);
+		return treeListenerCollection;
+	}
+
+	public void setTreeListenerCollection(final TreeListenerCollection treeListenerCollection) {
+		ObjectHelper.checkNotNull("parameter:treeListenerCollection", treeListenerCollection);
+		this.treeListenerCollection = treeListenerCollection;
+	}
+
+	protected TreeListenerCollection createTreeListenerCollection() {
+		return new TreeListenerCollection();
+	}
+
+	public String toString() {
+		return super.toString() + ", treeItem: " + treeItem + ", collapserImageUrl[" + collapserImageUrl + "], expanderImageUrl["
+				+ expanderImageUrl + "]";
+	}
 }

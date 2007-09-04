@@ -32,103 +32,103 @@ import rocket.util.server.ObjectHelper;
 
 public class WebHelper {
 
-    public static WebResponse doWebRequest(final HttpServletRequest request, final HttpServletResponse response,
-            final WebRequest webRequest) throws FailedWebRequestException {
-        ObjectHelper.checkNotNull("parameter:request", request);
-        ObjectHelper.checkNotNull("parameter:response", response);
-        ObjectHelper.checkNotNull("parameter:webRequest", webRequest);
+	public static WebResponse doWebRequest(final HttpServletRequest request, final HttpServletResponse response, final WebRequest webRequest)
+			throws FailedWebRequestException {
+		ObjectHelper.checkNotNull("parameter:request", request);
+		ObjectHelper.checkNotNull("parameter:response", response);
+		ObjectHelper.checkNotNull("parameter:webRequest", webRequest);
 
-        try {
-            // if url includes contxt path drop it.
-            final String url = dropContextPathIfNecessary(webRequest.getUrl(), request);
+		try {
+			// if url includes contxt path drop it.
+			final String url = dropContextPathIfNecessary(webRequest.getUrl(), request);
 
-            final Headers headers = webRequest.getHeaders();
+			final Headers headers = webRequest.getHeaders();
 
-            AbstractHttpServletRequest request0 = null;
-            while (true) {
-                if (HttpHelper.isGet(webRequest.getMethod())) {
-                    request0 = new GetHttpServletRequest(request, url, headers, webRequest.getParameters());
-                    break;
-                }
+			AbstractHttpServletRequest request0 = null;
+			while (true) {
+				if (HttpHelper.isGet(webRequest.getMethod())) {
+					request0 = new GetHttpServletRequest(request, url, headers, webRequest.getParameters());
+					break;
+				}
 
-                if (webRequest.hasParameters()) {
-                    request0 = new PostHttpServletRequest(request, url, headers, webRequest.getParameters());
-                    break;
-                }
+				if (webRequest.hasParameters()) {
+					request0 = new PostHttpServletRequest(request, url, headers, webRequest.getParameters());
+					break;
+				}
 
-                request0 = new PostHttpServletRequest(request, url, headers, webRequest.getData().getBytes());
-                break;
-            }
+				request0 = new PostHttpServletRequest(request, url, headers, webRequest.getData().getBytes());
+				break;
+			}
 
-            final ContentCapturingResponse response0 = new ContentCapturingResponse(response);
-            response0.setBufferSize(response.getBufferSize());
+			final ContentCapturingResponse response0 = new ContentCapturingResponse(response);
+			response0.setBufferSize(response.getBufferSize());
 
-            final RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-            dispatcher.include(request0, response0);
-            response0.flushBuffer();
+			final RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			dispatcher.include(request0, response0);
+			response0.flushBuffer();
 
-            final WebResponse webResponse = new WebResponse();
-            webResponse.setCode(response0.getStatus());
-            webResponse.setMessage(response0.getMessage());
-            // @temp not needed for now
-            // webResponse.setHeaders(response0.getHeaders());
+			final WebResponse webResponse = new WebResponse();
+			webResponse.setCode(response0.getStatus());
+			webResponse.setMessage(response0.getMessage());
+			// @temp not needed for now
+			// webResponse.setHeaders(response0.getHeaders());
 
-            final byte[] bytes = response0.toByteArray();
-            final String characterEncoding = response0.getCharacterEncoding();
-            final String text = null == characterEncoding ? new String(bytes) : new String(bytes, characterEncoding);
-            webResponse.setBody(text);
-            return webResponse;
-        } catch (final Exception caught) {
-            caught.printStackTrace();
-            throw new FailedWebRequestException(caught.getMessage(), caught);
-        }
-    }
+			final byte[] bytes = response0.toByteArray();
+			final String characterEncoding = response0.getCharacterEncoding();
+			final String text = null == characterEncoding ? new String(bytes) : new String(bytes, characterEncoding);
+			webResponse.setBody(text);
+			return webResponse;
+		} catch (final Exception caught) {
+			caught.printStackTrace();
+			throw new FailedWebRequestException(caught.getMessage(), caught);
+		}
+	}
 
-    public void copyHeaders(final HttpServletRequest source, final Headers destination) {
-        ObjectHelper.checkNotNull("parameter:source", source);
-        ObjectHelper.checkNotNull("parameter:destination", destination);
+	public void copyHeaders(final HttpServletRequest source, final Headers destination) {
+		ObjectHelper.checkNotNull("parameter:source", source);
+		ObjectHelper.checkNotNull("parameter:destination", destination);
 
-        final Enumeration names = source.getHeaderNames();
-        while (names.hasMoreElements()) {
-            final String name = (String) names.nextElement();
-            final Enumeration values = source.getHeaders(name);
-            while (values.hasMoreElements()) {
-                String value = (String) values.nextElement();
+		final Enumeration names = source.getHeaderNames();
+		while (names.hasMoreElements()) {
+			final String name = (String) names.nextElement();
+			final Enumeration values = source.getHeaders(name);
+			while (values.hasMoreElements()) {
+				String value = (String) values.nextElement();
 
-                destination.add(name, value);
-            }
-        }
-    }
+				destination.add(name, value);
+			}
+		}
+	}
 
-    public void copyHeaders(final Headers source, final HttpServletResponse destination) {
-        ObjectHelper.checkNotNull("parameter:source", source);
-        ObjectHelper.checkNotNull("parameter:destination", destination);
+	public void copyHeaders(final Headers source, final HttpServletResponse destination) {
+		ObjectHelper.checkNotNull("parameter:source", source);
+		ObjectHelper.checkNotNull("parameter:destination", destination);
 
-        final Iterator names = source.names();
-        while (names.hasNext()) {
-            final String name = (String) names.next();
-            final String[] values = source.getValues(name);
-            for (int i = 0; i < values.length; i++) {
-                String value = (String) values[i];
+		final Iterator names = source.names();
+		while (names.hasNext()) {
+			final String name = (String) names.next();
+			final String[] values = source.getValues(name);
+			for (int i = 0; i < values.length; i++) {
+				String value = (String) values[i];
 
-                destination.addHeader(name, value);
-            }
-        }
-    }
+				destination.addHeader(name, value);
+			}
+		}
+	}
 
-    public static String dropContextPathIfNecessary(final String url, final HttpServletRequest request) {
-        StringHelper.checkNotNull("parameter:url", url);
-        ObjectHelper.checkNotNull("parameter:request", request);
+	public static String dropContextPathIfNecessary(final String url, final HttpServletRequest request) {
+		StringHelper.checkNotNull("parameter:url", url);
+		ObjectHelper.checkNotNull("parameter:request", request);
 
-        String checkedUrl = url;
-        final String contextPath = request.getContextPath();
-        if (url.startsWith(contextPath)) {
-            checkedUrl = url.substring(contextPath.length());
-        }
-        return checkedUrl;
-    }
+		String checkedUrl = url;
+		final String contextPath = request.getContextPath();
+		if (url.startsWith(contextPath)) {
+			checkedUrl = url.substring(contextPath.length());
+		}
+		return checkedUrl;
+	}
 
-    public static String toString(final long date) {
-        return String.valueOf(date);
-    }
+	public static String toString(final long date) {
+		return String.valueOf(date);
+	}
 }

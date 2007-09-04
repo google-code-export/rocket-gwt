@@ -18,29 +18,27 @@ package rocket.widget.client.menu;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A standard horizontal menu.The top level menus are layed out horizontally and are always visible.
+ * A standard horizontal menu.The top level menus are layed out horizontally and
+ * are always visible.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class HorizontalMenuBar extends Menu {
-    public HorizontalMenuBar() {
-        super();
+	public HorizontalMenuBar() {
+		super();
+	}
 
-        final Widget widget = this.createWidget();
-        this.initWidget( widget );
-    }
+	protected Widget createWidget() {
+		final MenuList menuList = this.createMenuList();
+		this.setMenuList(menuList);
+		return menuList;
+	}
 
-    protected Widget createWidget() {
-        final MenuList menuList = this.createMenuList();
-        this.setMenuList(menuList);
-        return menuList;
-    }
-    
-    protected MenuList createMenuList() {
-        final HorizontalMenuList list = new HorizontalMenuList();
-        list.setStyleName(MenuConstants.HORIZONTAL_MENU_BAR_STYLE);
-        list.setHideable(false);
-        list.setMenu(this);
-        return list;
-    }
+	protected MenuList createMenuList() {
+		final HorizontalMenuList list = new HorizontalMenuList();
+		list.setStyleName(Constants.HORIZONTAL_MENU_BAR_STYLE);
+		list.setHideable(false);
+		list.setMenu(this);
+		return list;
+	}
 }

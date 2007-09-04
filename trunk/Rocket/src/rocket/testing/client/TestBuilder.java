@@ -3,11 +3,13 @@ package rocket.testing.client;
 import java.util.List;
 
 /**
- * A TestSuiteBuilder represents a factory which may be used to build suite or collection of tests.
+ * A TestSuiteBuilder represents a factory which may be used to build suite or
+ * collection of tests.
  * 
- * Because reflection is not supported the discovery of tests must be accomplished in code and this is done via the {@link TestBuilder}
- * class. It is responsible for returning a List of Test(s) which are typically inner classes. The Test class needs to only implement a two
- * methods
+ * Because reflection is not supported the discovery of tests must be
+ * accomplished in code and this is done via the {@link TestBuilder} class. It
+ * is responsible for returning a List of Test(s) which are typically inner
+ * classes. The Test class needs to only implement a two methods
  * <ul>
  * <li>Return the name of the test</li>
  * <li>Execute the test when asked</li>
@@ -30,10 +32,11 @@ import java.util.List;
  */
 public interface TestBuilder {
 
-    /**
-     * Sub-classes must build a list containing one or more Tests. These will then be executed by the TestRunner.
-     * 
-     * @return
-     */
-    abstract List buildCandidates();
+	/**
+	 * Sub-classes must build a list containing one or more Tests. These will
+	 * then be executed by the TestRunner.
+	 * 
+	 * @return
+	 */
+	abstract List buildCandidates();
 }

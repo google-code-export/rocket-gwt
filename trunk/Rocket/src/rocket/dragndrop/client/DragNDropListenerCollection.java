@@ -24,149 +24,150 @@ import rocket.util.client.ObjectHelper;
 import com.google.gwt.user.client.Event;
 
 /**
- * A collection of listeners which are interested in subscribing to various drag events.
+ * A collection of listeners which are interested in subscribing to various drag
+ * events.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class DragNDropListenerCollection {
 
-    public DragNDropListenerCollection() {
-        this.setListeners(new ArrayList());
-    }
+	public DragNDropListenerCollection() {
+		this.setListeners(new ArrayList());
+	}
 
-    /**
-     * A list containing listeners to the various drag events.
-     */
-    private List listeners;
+	/**
+	 * A list containing listeners to the various drag events.
+	 */
+	private List listeners;
 
-    public List getListeners() {
-        ObjectHelper.checkNotNull("field:listeners", listeners);
-        return listeners;
-    }
+	public List getListeners() {
+		ObjectHelper.checkNotNull("field:listeners", listeners);
+		return listeners;
+	}
 
-    public void setListeners(final List listeners) {
-        ObjectHelper.checkNotNull("parameter:listeners", listeners);
-        this.listeners = listeners;
-    }
+	public void setListeners(final List listeners) {
+		ObjectHelper.checkNotNull("parameter:listeners", listeners);
+		this.listeners = listeners;
+	}
 
-    public void add(final DragNDropListener dragNDropListener) {
-        ObjectHelper.checkNotNull("parameter:dragNDropListener", dragNDropListener);
+	public void add(final DragNDropListener dragNDropListener) {
+		ObjectHelper.checkNotNull("parameter:dragNDropListener", dragNDropListener);
 
-        this.getListeners().add(dragNDropListener);
-    }
+		this.getListeners().add(dragNDropListener);
+	}
 
-    public void remove(final DragNDropListener dragNDropListener) {
-        ObjectHelper.checkNotNull("parameter:dragNDropListener", dragNDropListener);
+	public void remove(final DragNDropListener dragNDropListener) {
+		ObjectHelper.checkNotNull("parameter:dragNDropListener", dragNDropListener);
 
-        this.getListeners().remove(dragNDropListener);
-    }
+		this.getListeners().remove(dragNDropListener);
+	}
 
-    // FIRE EVENTS ::::::::::::::::::::::::::::::::::::::
+	// FIRE EVENTS ::::::::::::::::::::::::::::::::::::::
 
-    public boolean fireBeforeDragStarted(final DraggablePanel widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
+	public boolean fireBeforeDragStarted(final DraggablePanel widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-        boolean startDrag = true;
-        final Iterator listeners = this.getListeners().iterator();
+		boolean startDrag = true;
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final DragNDropListener listener = (DragNDropListener) listeners.next();
-            startDrag = listener.onBeforeDragStart(widget);
-            if (false == startDrag) {
-                this.fireDragCancelled(widget);
-                break;
-            }
-        }
-        return startDrag;
-    }
+		while (listeners.hasNext()) {
+			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			startDrag = listener.onBeforeDragStart(widget);
+			if (false == startDrag) {
+				this.fireDragCancelled(widget);
+				break;
+			}
+		}
+		return startDrag;
+	}
 
-    public void fireDragStarted(final DraggablePanel widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
+	public void fireDragStarted(final DraggablePanel widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-        final Iterator listeners = this.getListeners().iterator();
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final DragNDropListener listener = (DragNDropListener) listeners.next();
-            listener.onBeforeDragStart(widget);
-        }
-    }
+		while (listeners.hasNext()) {
+			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			listener.onBeforeDragStart(widget);
+		}
+	}
 
-    public boolean fireBeforeDragMoved(final Event event, final DraggablePanel widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
+	public boolean fireBeforeDragMoved(final Event event, final DraggablePanel widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-        boolean allowMove = true;
-        final Iterator listeners = this.getListeners().iterator();
+		boolean allowMove = true;
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final DragNDropListener listener = (DragNDropListener) listeners.next();
-            allowMove = listener.onBeforeDragMove(event, widget);
-            if (!allowMove) {
-                break;
-            }
-        }
-        return allowMove;
-    }
+		while (listeners.hasNext()) {
+			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			allowMove = listener.onBeforeDragMove(event, widget);
+			if (!allowMove) {
+				break;
+			}
+		}
+		return allowMove;
+	}
 
-    public void fireDragMoved(final Event event, final DraggablePanel widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
+	public void fireDragMoved(final Event event, final DraggablePanel widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-        final Iterator listeners = this.getListeners().iterator();
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final DragNDropListener listener = (DragNDropListener) listeners.next();
-            listener.onDragMove(event, widget);
-        }
-    }
+		while (listeners.hasNext()) {
+			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			listener.onDragMove(event, widget);
+		}
+	}
 
-    public boolean fireBeforeDrop(final DraggablePanel widget, final DropTargetPanel target) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-        ObjectHelper.checkNotNull("parameter:target", target);
+	public boolean fireBeforeDrop(final DraggablePanel widget, final DropTargetPanel target) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+		ObjectHelper.checkNotNull("parameter:target", target);
 
-        boolean drop = true;
-        final Iterator listeners = this.getListeners().iterator();
+		boolean drop = true;
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final DragNDropListener listener = (DragNDropListener) listeners.next();
-            drop = listener.onBeforeDrop(widget, target);
-            if (false == drop) {
-                break;
-            }
-        }
+		while (listeners.hasNext()) {
+			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			drop = listener.onBeforeDrop(widget, target);
+			if (false == drop) {
+				break;
+			}
+		}
 
-        return drop;
-    }
+		return drop;
+	}
 
-    public void fireDrop(final DraggablePanel widget, final DropTargetPanel target) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-        ObjectHelper.checkNotNull("parameter:target", target);
+	public void fireDrop(final DraggablePanel widget, final DropTargetPanel target) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+		ObjectHelper.checkNotNull("parameter:target", target);
 
-        final Iterator listeners = this.getListeners().iterator();
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final DragNDropListener listener = (DragNDropListener) listeners.next();
-            listener.onDrop(widget, target);
-        }
-    }
+		while (listeners.hasNext()) {
+			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			listener.onDrop(widget, target);
+		}
+	}
 
-    public void fireDragCancelled(final DraggablePanel widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
+	public void fireDragCancelled(final DraggablePanel widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-        final Iterator listeners = this.getListeners().iterator();
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final DragNDropListener listener = (DragNDropListener) listeners.next();
-            listener.onDragCancelled(widget);
-        }
-    }
+		while (listeners.hasNext()) {
+			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			listener.onDragCancelled(widget);
+		}
+	}
 
-    public void fireInvalidDrop(final Event event, final DraggablePanel widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
+	public void fireInvalidDrop(final Event event, final DraggablePanel widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-        final Iterator listeners = this.getListeners().iterator();
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final DragNDropListener listener = (DragNDropListener) listeners.next();
-            listener.onInvalidDrop(event, widget);
-        }
-    }
+		while (listeners.hasNext()) {
+			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			listener.onInvalidDrop(event, widget);
+		}
+	}
 }
