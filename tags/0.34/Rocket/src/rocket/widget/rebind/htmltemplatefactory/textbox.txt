@@ -1,0 +1,8 @@
+// textbox.txt
+
+com.google.gwt.user.client.ui.TextBox textBox = (com.google.gwt.user.client.ui.TextBox) this.getWidget( ${id} );
+if( null == textBox ){
+	textBox = bindTextBox( ${id} );
+}
+return textBox;
+
