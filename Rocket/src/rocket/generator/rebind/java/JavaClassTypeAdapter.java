@@ -35,10 +35,10 @@ import rocket.util.client.ObjectHelper;
  */
 public class JavaClassTypeAdapter extends AbstractType {
 
-	public Visibility getVisibility(){
-		return JavaAdapterHelper.getVisibility( this.getJavaClass().getModifiers() ); 
+	public Visibility getVisibility() {
+		return JavaAdapterHelper.getVisibility(this.getJavaClass().getModifiers());
 	}
-	
+
 	protected Set createConstructors() {
 		final GeneratorContext context = this.getGeneratorContext();
 

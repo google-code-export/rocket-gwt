@@ -25,29 +25,30 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DropTargetPanel extends SimplePanel {
 
-    public DropTargetPanel() {
-        super();
+	public DropTargetPanel() {
+		super();
 
-        this.setStyleName(DragNDropConstants.DRAG_N_DROP_DROP_TARGET_STYLE);
-    }
+		this.setStyleName(Constants.DRAG_N_DROP_DROP_TARGET_STYLE);
+	}
 
-    /**
-     * This method is invoked whenever a Draggable widget is dropped over this target. The default behaviour is to simply accept the widget
-     * overwriting the previous widget
-     * 
-     * @param widget
-     */
-    protected void accept(final Widget widget) {
-        this.setWidget(widget);
-    }
+	/**
+	 * This method is invoked whenever a Draggable widget is dropped over this
+	 * target. The default behaviour is to simply accept the widget overwriting
+	 * the previous widget
+	 * 
+	 * @param widget
+	 */
+	protected void accept(final Widget widget) {
+		this.setWidget(widget);
+	}
 
-    protected void onAttach() {
-        super.onAttach();
-        DropTargetPanelCollection.getInstance().add(this);
-    }
+	protected void onAttach() {
+		super.onAttach();
+		DropTargetPanelCollection.getInstance().add(this);
+	}
 
-    protected void onDetach() {
-        super.onDetach();
-        DropTargetPanelCollection.getInstance().remove(this);
-    }
+	protected void onDetach() {
+		super.onDetach();
+		DropTargetPanelCollection.getInstance().remove(this);
+	}
 }

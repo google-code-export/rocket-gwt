@@ -40,7 +40,7 @@ public class InitializerImpl implements Initializer {
 		writer.println("{");
 
 		writer.indent();
-		this.getBody().write( writer );
+		this.getBody().write(writer);
 		writer.outdent();
 
 		writer.println("};");

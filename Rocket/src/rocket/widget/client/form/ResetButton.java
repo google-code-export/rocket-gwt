@@ -15,7 +15,7 @@
  */
 package rocket.widget.client.form;
 
-import rocket.dom.client.DomHelper;
+import rocket.dom.client.Dom;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -23,44 +23,45 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ButtonBase;
 
 /**
- * The ResetButton widget represents a button abstraction of a Reset button that is typically part of a form.
+ * The ResetButton widget represents a button abstraction of a Reset button that
+ * is typically part of a form.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class ResetButton extends ButtonBase {
-    public ResetButton(final Element element) {
-        super(element);
-        sinkEvents(Event.ONCLICK);
-    }
+	public ResetButton(final Element element) {
+		super(element);
+		sinkEvents(Event.ONCLICK);
+	}
 
-    static Element createElement() {
-        final Element element = DOM.createElement(FormConstants.INPUT_TAG);
-        DOM.setAttribute(element, FormConstants.INPUT_TAG_TYPE, FormConstants.RESET_BUTTON_TYPE);
-        return element;
-    }
+	static Element createElement() {
+		final Element element = DOM.createElement(FormConstants.INPUT_TAG);
+		DOM.setElementProperty(element, FormConstants.INPUT_TAG_TYPE, FormConstants.RESET_BUTTON_TYPE);
+		return element;
+	}
 
-    public ResetButton() {
-        this(createElement());
-    }
+	public ResetButton() {
+		this(createElement());
+	}
 
-    protected void setElement(final Element element) {
-        DomHelper.checkInput("parameter:element", element, FormConstants.RESET_BUTTON_TYPE);
-        super.setElement(element);
-    }
+	protected void setElement(final Element element) {
+		Dom.checkInput("parameter:element", element, FormConstants.RESET_BUTTON_TYPE);
+		super.setElement(element);
+	}
 
-    public void reset() {
-        this.reset0(this.getElement());
-    }
+	public void reset() {
+		this.reset0(this.getElement());
+	}
 
-    native private void reset0(final Element element)/*-{
-     element.reset();
-     }-*/;
+	native private void reset0(final Element element)/*-{
+	 element.reset();
+	 }-*/;
 
-    public boolean equals(final Object other) {
-        return other instanceof ResetButton && DOM.compare(this.getElement(), ((ResetButton) other).getElement());
-    }
+	public boolean equals(final Object other) {
+		return other instanceof ResetButton && DOM.compare(this.getElement(), ((ResetButton) other).getElement());
+	}
 
-    public int hashCode() {
-        return this.getElement().hashCode();
-    }
+	public int hashCode() {
+		return this.getElement().hashCode();
+	}
 }

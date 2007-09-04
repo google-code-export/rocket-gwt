@@ -27,35 +27,35 @@ import com.google.gwt.junit.client.GWTTestCase;
  */
 public class StringHelperGwtTestCase extends GWTTestCase {
 
-    public String getModuleName() {
-        return "rocket.util.test.stringhelper.StringHelperGwtTestCase";
-    }
+	public String getModuleName() {
+		return "rocket.util.test.stringhelper.StringHelperGwtTestCase";
+	}
 
-    public void testToCamelCase0() {
-        final String input = "color";
-        final String actual = StringHelper.toCamelCase(input);
-        final String expected = "color";
-        TestCase.assertEquals(input, expected, actual);
-    }
+	public void testToCamelCase0() {
+		final String input = "color";
+		final String actual = StringHelper.toCamelCase(input);
+		final String expected = "color";
+		TestCase.assertEquals(input, expected, actual);
+	}
 
-    public void testToCamelCase1() {
-        final String input = "background-color";
-        final String actual = StringHelper.toCamelCase(input);
-        final String expected = "backgroundColor";
-        TestCase.assertEquals(input, expected, actual);
-    }
+	public void testToCamelCase1() {
+		final String input = "background-color";
+		final String actual = StringHelper.toCamelCase(input);
+		final String expected = "backgroundColor";
+		TestCase.assertEquals(input, expected, actual);
+	}
 
-    public void testToCssPropertyName0() {
-        final String input = "color";
-        final String actual = StringHelper.toCssPropertyName(input);
-        final String expected = "color";
-        TestCase.assertEquals(input, expected, actual);
-    }
+	public void testToCssPropertyName0() {
+		final String input = "color";
+		final String actual = StringHelper.toCssPropertyName(input);
+		final String expected = "color";
+		TestCase.assertEquals(input, expected, actual);
+	}
 
-    public void testToCssPropertyName1() {
-        final String input = "backgroundColor";
-        final String actual = StringHelper.toCssPropertyName(input);
-        final String expected = "background-color";
-        TestCase.assertEquals(input, expected, actual);
-    }
+	public void testToCssPropertyName1() {
+		final String input = "backgroundColor";
+		final String actual = StringHelper.toCssPropertyName(input);
+		final String expected = "background-color";
+		TestCase.assertEquals(input, expected, actual);
+	}
 }

@@ -1,6 +1,6 @@
 package rocket.widget.test.htmltemplatefactory.client;
 
-import rocket.dom.client.DomHelper;
+import rocket.dom.client.Dom;
 import rocket.widget.client.HtmlTemplateFactory;
 
 import com.google.gwt.core.client.GWT;
@@ -39,7 +39,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testTextBox";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final TextBoxHtmlTemplateFactory factory = (TextBoxHtmlTemplateFactory) GWT.create(TextBoxHtmlTemplateFactory.class);
 				return factory.getTextBox();
 			}
@@ -72,7 +72,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testPasswordTextBox";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final PasswordTextBoxHtmlTemplateFactory factory = (PasswordTextBoxHtmlTemplateFactory) GWT
 						.create(PasswordTextBoxHtmlTemplateFactory.class);
 				return factory.getPasswordTextBox();
@@ -106,7 +106,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testTextArea";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final TextAreaHtmlTemplateFactory factory = (TextAreaHtmlTemplateFactory) GWT.create(TextAreaHtmlTemplateFactory.class);
 				return factory.getTextArea();
 			}
@@ -139,7 +139,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testRadioButton";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final RadioButtonHtmlTemplateFactory factory = (RadioButtonHtmlTemplateFactory) GWT
 						.create(RadioButtonHtmlTemplateFactory.class);
 				return factory.getRadioButton();
@@ -147,9 +147,10 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 			void doRemainingTests(final Element element, final Widget widget) {
 				final RadioButton radioButton = (RadioButton) widget;
-				radioButton.setName("testRadioButton");
-				assertEquals("element: " + DOM.toString(element) + "\nradioButton: " + radioButton + "\n", radioButton.getName(), DOM
-						.getElementProperty(element, "name"));
+
+				final String name = "testRadioButton";
+				radioButton.setName(name);
+				assertEquals("element: " + DOM.toString(element) + "\nradioButton: " + radioButton + "\n", name, radioButton.getName());
 			}
 		};
 		test.run();
@@ -173,16 +174,16 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testCheckBox";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final CheckBoxHtmlTemplateFactory factory = (CheckBoxHtmlTemplateFactory) GWT.create(CheckBoxHtmlTemplateFactory.class);
 				return factory.getCheckBox();
 			}
 
 			void doRemainingTests(final Element element, final Widget widget) {
 				final CheckBox checkBox = (CheckBox) widget;
-				checkBox.setName("testCheckBox");
-				assertEquals("element: " + DOM.toString(element) + "\ncheckBox: " + checkBox + "\n", checkBox.getName(), DOM
-						.getElementProperty(element, "name"));
+				final String name = "testRadioButton";
+				checkBox.setName(name);
+				assertEquals("element: " + DOM.toString(element) + "\ncheckBox: " + checkBox + "\n", name, checkBox.getName());
 			}
 		};
 		test.run();
@@ -218,7 +219,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testListBox";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final ListBoxHtmlTemplateFactory factory = (ListBoxHtmlTemplateFactory) GWT.create(ListBoxHtmlTemplateFactory.class);
 				return factory.getListBox();
 			}
@@ -250,7 +251,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testLabel";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final LabelHtmlTemplateFactory factory = (LabelHtmlTemplateFactory) GWT.create(LabelHtmlTemplateFactory.class);
 				return factory.getLabel();
 			}
@@ -283,7 +284,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testButton";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final ButtonHtmlTemplateFactory factory = (ButtonHtmlTemplateFactory) GWT.create(ButtonHtmlTemplateFactory.class);
 				return factory.getButton();
 			}
@@ -316,7 +317,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testImage";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final ImageHtmlTemplateFactory factory = (ImageHtmlTemplateFactory) GWT.create(ImageHtmlTemplateFactory.class);
 				return factory.getImage();
 			}
@@ -349,7 +350,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testHyperlink";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final HyperlinkHtmlTemplateFactory factory = (HyperlinkHtmlTemplateFactory) GWT.create(HyperlinkHtmlTemplateFactory.class);
 				return factory.getHyperlink();
 			}
@@ -382,7 +383,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testHtml";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final HtmlHtmlTemplateFactory factory = (HtmlHtmlTemplateFactory) GWT.create(HtmlHtmlTemplateFactory.class);
 				return factory.getHtml();
 			}
@@ -443,7 +444,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				return "testForm";
 			}
 
-			Widget getInstanceFromHtmlTemplateFactory() {
+			Widget getInstance() {
 				final FormHtmlTemplateFactory factory = (FormHtmlTemplateFactory) GWT.create(FormHtmlTemplateFactory.class);
 				return factory.getForm();
 			}
@@ -459,20 +460,20 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				assertEquals("widgetCount", 5, panel.getWidgetCount());
 
 				final TextBox textBox = (TextBox) panel.getWidget(0);
-				assertNotNull( textBox );
-				
+				assertNotNull(textBox);
+
 				final PasswordTextBox password = (PasswordTextBox) panel.getWidget(1);
 				assertNotNull(password);
-				
+
 				final ListBox listBox = (ListBox) panel.getWidget(2);
 				assertNotNull(listBox);
-				
+
 				final CheckBox checkBox = (CheckBox) panel.getWidget(3);
 				assertNotNull(checkBox);
-				
+
 				final RadioButton radioButton = (RadioButton) panel.getWidget(4);
-				assertNotNull( radioButton );
-				
+				assertNotNull(radioButton);
+
 				panel.remove(0);
 				assertEquals("widgetCount", 4, panel.getWidgetCount());
 				assertNull(DOM.getElementById("testFormTextBox"));
@@ -514,12 +515,12 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			final Element element = this.createElement();
 			DOM.setElementProperty(element, "id", this.getId());
 
-			final Element parent = DomHelper.getBody();
+			final Element parent = Dom.getBody();
 			DOM.appendChild(parent, element);
 			final int index = DOM.getChildIndex(parent, element);
 
-			final Widget widget = this.getInstanceFromHtmlTemplateFactory();
-			
+			final Widget widget = this.getInstance();
+
 			assertTrue("isAttached", widget.isAttached());
 			assertSame("parentPanel", RootPanel.get(), widget.getParent());
 
@@ -530,9 +531,9 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			assertEquals("child index", index, DOM.getChildIndex(parent, widgetElement));
 
 			this.doRemainingTests(element, widget);
-			
+
 			this.removeFromParent(widget);
-			this.addToAnotherPanel(widget);	
+			this.addToAnotherPanel(widget);
 		}
 
 		/**
@@ -556,7 +557,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 		 * 
 		 * @return The widget instance being tested.
 		 */
-		abstract Widget getInstanceFromHtmlTemplateFactory();
+		abstract Widget getInstance();
 
 		/**
 		 * Further tests to ensure that the wrapped element is functioning
@@ -574,7 +575,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			assertNotNull("parent before removing from parent", widget.getParent());
 
 			final Element element = widget.getElement();
-			assertNotNull(DOM.getParent(element));
+			assertNotNull("" + element, DOM.getParent(element));
 
 			widget.removeFromParent();
 
@@ -598,8 +599,8 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			assertNotNull(DOM.getParent(element));
 		}
 	}
-	
-	static void log( final String message ){
-		//System.out.println( message );
+
+	static void log(final String message) {
+		// System.out.println( message );
 	}
 }

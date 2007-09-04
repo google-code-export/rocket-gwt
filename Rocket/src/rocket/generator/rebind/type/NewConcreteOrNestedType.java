@@ -42,17 +42,17 @@ abstract public class NewConcreteOrNestedType extends NewTypeImpl implements New
 	}
 
 	private Visibility visibility;
-	
-	public Visibility getVisibility(){
-		ObjectHelper.checkNotNull("field:visibility", visibility );
+
+	public Visibility getVisibility() {
+		ObjectHelper.checkNotNull("field:visibility", visibility);
 		return this.visibility;
 	}
-	
-	public void setVisibility( final Visibility visibility ){
-		ObjectHelper.checkNotNull("field:visibility", visibility );
+
+	public void setVisibility(final Visibility visibility) {
+		ObjectHelper.checkNotNull("field:visibility", visibility);
 		this.visibility = visibility;
-	}	
-	
+	}
+
 	/**
 	 * When true indicates that this method is abstract
 	 */
@@ -147,10 +147,10 @@ abstract public class NewConcreteOrNestedType extends NewTypeImpl implements New
 		constructor.setEnclosingType(this);
 	}
 
-	public boolean hasNoArgumentsConstructor(){
-		return this.getConstructors().isEmpty() ? true : null != this.findConstructor( Collections.EMPTY_LIST );
+	public boolean hasNoArgumentsConstructor() {
+		return this.getConstructors().isEmpty() ? true : null != this.findConstructor(Collections.EMPTY_LIST);
 	}
-	
+
 	protected void writeInitializers(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 

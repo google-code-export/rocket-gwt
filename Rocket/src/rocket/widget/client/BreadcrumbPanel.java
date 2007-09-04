@@ -21,208 +21,217 @@ import rocket.util.client.SystemHelper;
 
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * This particular panel allows widgets (which should be links) automatically creating a breadcrumb illusion. Whenever a new breadcrumb is
- * added it becomes the new last breadcrumb and as such is made disabled.
+ * This particular panel allows widgets (which should be links) automatically
+ * creating a breadcrumb illusion. Whenever a new breadcrumb is added it becomes
+ * the new last breadcrumb and as such is made disabled.
  * 
- * This panel functions as a stack of breadcrumbs, thus breadcrumbs must be pushed or popped and cannot be inserted in the middle of the
- * chain.
+ * This panel functions as a stack of breadcrumbs, thus breadcrumbs must be
+ * pushed or popped and cannot be inserted in the middle of the chain.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class BreadcrumbPanel extends Composite {
 
-    public BreadcrumbPanel() {
-    	final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
-    	this.setHorizontalPanel(horizontalPanel);
-        this.initWidget( horizontalPanel );
-    }
+	public BreadcrumbPanel() {
+	}
 
-    /**
-     * A horizontal panel contains all the individual breadcrumbs and their corresponding separators.
-     */
-    private HorizontalPanel horizontalPanel;
+	protected Widget createWidget() {
+		final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
+		this.setHorizontalPanel(horizontalPanel);
+		return horizontalPanel;
+	}
 
-    protected HorizontalPanel getHorizontalPanel() {
-        ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
-        return this.horizontalPanel;
-    }
+	protected int getSunkEventsBitMask() {
+		return 0;
+	}
 
-    protected boolean hasHorizontalPanel() {
-        return null != this.horizontalPanel;
-    }
+	/**
+	 * A horizontal panel contains all the individual breadcrumbs and their
+	 * corresponding separators.
+	 */
+	private HorizontalPanel horizontalPanel;
 
-    protected void setHorizontalPanel(final HorizontalPanel horizontalPanel) {
-        ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
-        this.horizontalPanel = horizontalPanel;
-    }
+	protected HorizontalPanel getHorizontalPanel() {
+		ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
+		return this.horizontalPanel;
+	}
 
-    protected HorizontalPanel createHorizontalPanel() {
-        final HorizontalPanel panel = new HorizontalPanel();
-        panel.setStyleName(WidgetConstants.BREADCRUMB_PANEL_STYLE);
-        return panel;
-    }
+	protected boolean hasHorizontalPanel() {
+		return null != this.horizontalPanel;
+	}
 
-    /**
-     * Adds a new breadcrumb to the panel. The given clickListener will be notified whenever the user selects the corresponding breadcrumb.
-     * 
-     * @param add
-     *            The text that appears within the hyper link
-     * @param clickListener
-     *            The listener that will be notified.
-     */
-    public boolean push(final String text, final ClickListener clickListener) {
-        StringHelper.checkNotEmpty("parameter:text", text);
-        ObjectHelper.checkNotNull("parameter:clickListener", clickListener);
+	protected void setHorizontalPanel(final HorizontalPanel horizontalPanel) {
+		ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
+		this.horizontalPanel = horizontalPanel;
+	}
 
-        final HorizontalPanel panel = this.getHorizontalPanel();
+	protected HorizontalPanel createHorizontalPanel() {
+		final HorizontalPanel panel = new HorizontalPanel();
+		panel.setStyleName(WidgetConstants.BREADCRUMB_PANEL_STYLE);
+		return panel;
+	}
 
-        // change the old last breadcrumb to be clickable as it is no longer the
-        // last breadcrumb.
-        final int widgetCount = panel.getWidgetCount();
-        if (widgetCount > 0) {
-            this.updateFormerLastBreadcrumb();
-        }
+	/**
+	 * Adds a new breadcrumb to the panel. The given clickListener will be
+	 * notified whenever the user selects the corresponding breadcrumb.
+	 * 
+	 * @param add
+	 *            The text that appears within the hyper link
+	 * @param clickListener
+	 *            The listener that will be notified.
+	 */
+	public boolean push(final String text, final ClickListener clickListener) {
+		StringHelper.checkNotEmpty("parameter:text", text);
+		ObjectHelper.checkNotNull("parameter:clickListener", clickListener);
 
-        // create and add the new breadcrumb.
-        final Breadcrumb breadcrumb = this.createBreadcrumb(text);
-        breadcrumb.setBreadcrumbPanel(this);
-        final boolean disabled = clickListener == null;
-        breadcrumb.setDisabled(disabled);
-        if (!disabled) {
-            breadcrumb.addClickListener(clickListener);
-        }
-        panel.add(breadcrumb);
-        panel.add(this.createSpacer());
+		final HorizontalPanel panel = this.getHorizontalPanel();
 
-        this.updateLastBreadcrumb();
+		// change the old last breadcrumb to be clickable as it is no longer the
+		// last breadcrumb.
+		final int widgetCount = panel.getWidgetCount();
+		if (widgetCount > 0) {
+			this.updateFormerLastBreadcrumb();
+		}
 
-        return true;
-    }
+		// create and add the new breadcrumb.
+		final Breadcrumb breadcrumb = this.createBreadcrumb(text);
+		breadcrumb.setBreadcrumbPanel(this);
+		final boolean disabled = clickListener == null;
+		breadcrumb.setDisabled(disabled);
+		if (!disabled) {
+			breadcrumb.addClickListener(clickListener);
+		}
+		panel.add(breadcrumb);
+		panel.add(this.createSpacer());
 
-    protected Breadcrumb createBreadcrumb(final String text) {
-        StringHelper.checkNotEmpty("parameter:text", text);
+		this.updateLastBreadcrumb();
 
-        final Breadcrumb breadcrumb = new Breadcrumb();
-        breadcrumb.setText(text);
-        breadcrumb.setStyleName(WidgetConstants.BREADCRUMB_PANEL_ITEM_STYLE);
-        return breadcrumb;
-    }
+		return true;
+	}
 
-    class Breadcrumb extends Hyperlink {
+	protected Breadcrumb createBreadcrumb(final String text) {
+		StringHelper.checkNotEmpty("parameter:text", text);
 
-        public void onBrowserEvent(final Event event) {
-            ObjectHelper.checkNotNull("parameter:event", event);
+		final Breadcrumb breadcrumb = new Breadcrumb();
+		breadcrumb.setText(text);
+		breadcrumb.setStyleName(WidgetConstants.BREADCRUMB_PANEL_ITEM_STYLE);
+		return breadcrumb;
+	}
 
-            // if this breadcrumb is the last or disabled cancel any click
-            // events.
-            if (false == this.isDisabled() && false == this.getBreadcrumbPanel().isLastBreadcrumb(this)) {
-                super.onBrowserEvent(event);
-            }
-        }
+	class Breadcrumb extends Hyperlink {
 
-        BreadcrumbPanel breadcrumbPanel;
+		public void onBrowserEvent(final Event event) {
+			ObjectHelper.checkNotNull("parameter:event", event);
 
-        BreadcrumbPanel getBreadcrumbPanel() {
-            ObjectHelper.checkNotNull("field:breadcrumbPanel", breadcrumbPanel);
-            return breadcrumbPanel;
-        }
+			// if this breadcrumb is the last or disabled cancel any click
+			// events.
+			if (false == this.isDisabled() && false == this.getBreadcrumbPanel().isLastBreadcrumb(this)) {
+				super.onBrowserEvent(event);
+			}
+		}
 
-        void setBreadcrumbPanel(final BreadcrumbPanel breadcrumbPanel) {
-            ObjectHelper.checkNotNull("parameter:breadcrumbPanel", breadcrumbPanel);
-            this.breadcrumbPanel = breadcrumbPanel;
-        }
+		BreadcrumbPanel breadcrumbPanel;
 
-        boolean disabled;
+		BreadcrumbPanel getBreadcrumbPanel() {
+			ObjectHelper.checkNotNull("field:breadcrumbPanel", breadcrumbPanel);
+			return breadcrumbPanel;
+		}
 
-        public boolean isDisabled() {
-            return disabled;
-        }
+		void setBreadcrumbPanel(final BreadcrumbPanel breadcrumbPanel) {
+			ObjectHelper.checkNotNull("parameter:breadcrumbPanel", breadcrumbPanel);
+			this.breadcrumbPanel = breadcrumbPanel;
+		}
 
-        public void setDisabled(final boolean disabled) {
-            this.disabled = disabled;
-        }
+		boolean disabled;
 
-        public String toString() {
-            return super.toString() + ", disabled: " + disabled;
-        }
-    }
+		public boolean isDisabled() {
+			return disabled;
+		}
 
-    protected Widget createSpacer() {
-        final HTML spacer = new HTML(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_HTML);
-        spacer.setStyleName(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_STYLE);
-        spacer.setVisible(false);
-        return spacer;
-    }
+		public void setDisabled(final boolean disabled) {
+			this.disabled = disabled;
+		}
 
-    /**
-     * Removes all breadcrumbs.
-     */
-    public void clear() {
-        final HorizontalPanel panel = this.getHorizontalPanel();
-        final int widgetCount = panel.getWidgetCount() / 2;
-        for (int i = 0; i < widgetCount; i++) {
-            this.pop();
-        }
-    }
+		public String toString() {
+			return super.toString() + ", disabled: " + disabled;
+		}
+	}
 
-    /**
-     * Removes the topmost or last breadcrumb.
-     */
-    public boolean pop() {
-        boolean removed = false;
+	protected Widget createSpacer() {
+		final HTML spacer = new HTML(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_HTML);
+		spacer.setStyleName(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_STYLE);
+		spacer.setVisible(false);
+		return spacer;
+	}
 
-        final HorizontalPanel panel = this.getHorizontalPanel();
-        final int widgetCount = panel.getWidgetCount();
-        if (widgetCount == 0) {
-            SystemHelper.fail("Unable to pop a breadcrumb - this breadcrumb panel is already empty");
-        }
+	/**
+	 * Removes all breadcrumbs.
+	 */
+	public void clear() {
+		final HorizontalPanel panel = this.getHorizontalPanel();
+		final int widgetCount = panel.getWidgetCount() / 2;
+		for (int i = 0; i < widgetCount; i++) {
+			this.pop();
+		}
+	}
 
-        // remove the breadcrumb and then the spacer.
-        final Widget breadcrumb = panel.getWidget(widgetCount - 1 - 1);
-        final Widget spacer = panel.getWidget(widgetCount - 1);
+	/**
+	 * Removes the topmost or last breadcrumb.
+	 */
+	public boolean pop() {
+		boolean removed = false;
 
-        panel.remove(breadcrumb);
-        panel.remove(spacer);
+		final HorizontalPanel panel = this.getHorizontalPanel();
+		final int widgetCount = panel.getWidgetCount();
+		if (widgetCount == 0) {
+			SystemHelper.fail("Unable to pop a breadcrumb - this breadcrumb panel is already empty");
+		}
 
-        this.updateLastBreadcrumb();
-        return removed;
-    }
+		// remove the breadcrumb and then the spacer.
+		final Widget breadcrumb = panel.getWidget(widgetCount - 1 - 1);
+		final Widget spacer = panel.getWidget(widgetCount - 1);
 
-    protected void updateFormerLastBreadcrumb() {
-        final HorizontalPanel panel = this.getHorizontalPanel();
-        final int index = panel.getWidgetCount() - 1 - 1;
-        if (index >= 0) {
-            final Widget breadcrumb = panel.getWidget(index);
-            breadcrumb.removeStyleName(WidgetConstants.BREADCRUMB_PANEL_LAST_ITEM_STYLE);
+		panel.remove(breadcrumb);
+		panel.remove(spacer);
 
-            final Widget spacer = panel.getWidget(index + 1);
-            spacer.setVisible(true);
-        }
-    }
+		this.updateLastBreadcrumb();
+		return removed;
+	}
 
-    protected void updateLastBreadcrumb() {
-        final HorizontalPanel panel = this.getHorizontalPanel();
-        final int index = panel.getWidgetCount() - 1 - 1;
-        if (index >= 0) {
-            final Widget breadcrumb = panel.getWidget(index);
-            breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_PANEL_LAST_ITEM_STYLE);
+	protected void updateFormerLastBreadcrumb() {
+		final HorizontalPanel panel = this.getHorizontalPanel();
+		final int index = panel.getWidgetCount() - 1 - 1;
+		if (index >= 0) {
+			final Widget breadcrumb = panel.getWidget(index);
+			breadcrumb.removeStyleName(WidgetConstants.BREADCRUMB_PANEL_LAST_ITEM_STYLE);
 
-            final Widget spacer = panel.getWidget(index + 1);
-            spacer.setVisible(false);
-        }
-    }
+			final Widget spacer = panel.getWidget(index + 1);
+			spacer.setVisible(true);
+		}
+	}
 
-    protected boolean isLastBreadcrumb(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
+	protected void updateLastBreadcrumb() {
+		final HorizontalPanel panel = this.getHorizontalPanel();
+		final int index = panel.getWidgetCount() - 1 - 1;
+		if (index >= 0) {
+			final Widget breadcrumb = panel.getWidget(index);
+			breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_PANEL_LAST_ITEM_STYLE);
 
-        final HorizontalPanel panel = this.getHorizontalPanel();
-        return widget == panel.getWidget(panel.getWidgetCount() - 2);
-    }
+			final Widget spacer = panel.getWidget(index + 1);
+			spacer.setVisible(false);
+		}
+	}
+
+	protected boolean isLastBreadcrumb(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+
+		final HorizontalPanel panel = this.getHorizontalPanel();
+		return widget == panel.getWidget(panel.getWidgetCount() - 2);
+	}
 }

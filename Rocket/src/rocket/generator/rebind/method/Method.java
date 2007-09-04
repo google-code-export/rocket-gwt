@@ -38,7 +38,7 @@ public interface Method extends ClassComponent, HasMetadata {
 	Type getReturnType();
 
 	boolean returnsVoid();
-	
+
 	List getParameters();
 
 	Visibility getVisibility();
@@ -74,11 +74,12 @@ public interface Method extends ClassComponent, HasMetadata {
 	 * @return
 	 */
 	NewMethod copy(NewType enclosingType);
-	
+
 	/**
 	 * Tests if the given method has the same signature as this method.
+	 * 
 	 * @param otherMethod
 	 * @return
 	 */
-	boolean hasSameSignature( Method otherMethod );
+	boolean hasSameSignature(Method otherMethod);
 }

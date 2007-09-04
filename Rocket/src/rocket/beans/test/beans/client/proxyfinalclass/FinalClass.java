@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxyfinalclass;
 
 final public class FinalClass {
 
-	public int add( final int a, final int b ){
+	public int add(final int a, final int b) {
 		return a + b;
 	}
 }

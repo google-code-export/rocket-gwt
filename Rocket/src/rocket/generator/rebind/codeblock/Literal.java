@@ -17,6 +17,7 @@ package rocket.generator.rebind.codeblock;
 
 /**
  * Base interface for any of the literal types.
+ * 
  * @author Miroslav Pokorny
  */
 public interface Literal extends CodeBlock {

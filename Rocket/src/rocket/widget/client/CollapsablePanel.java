@@ -20,252 +20,262 @@ import java.util.Iterator;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Provides a card container for a title bar which may have various widgets added to it and a main panel which may contain the content
- * widget.
+ * Provides a card container for a title bar which may have various widgets
+ * added to it and a main panel which may contain the content widget.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class CollapsablePanel extends Composite implements HasWidgets {
 
-    public CollapsablePanel() {
-    	final FlexTable flexTable = this.createFlexTable();
-    	this.setFlexTable(flexTable);
-        this.initWidget( flexTable );
-        this.setStyleName(WidgetConstants.COLLAPSABLE_PANEL_STYLE);
-    }
+	public CollapsablePanel() {
+		this.setStyleName(WidgetConstants.COLLAPSABLE_PANEL_STYLE);
+	}
 
-    public void add(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
+	protected Widget createWidget() {
+		final FlexTable flexTable = this.createFlexTable();
+		this.setFlexTable(flexTable);
+		return flexTable;
+	}
 
-        final FlexTable table = this.getTitleFlexTable();
-        final int column = table.getCellCount(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW);
-        table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, column, widget);
-        table.getCellFormatter().setStyleName(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, column,
-                WidgetConstants.COLLAPSABLE_PANEL_TITLE_WIDGET_STYLE);
-    }
+	protected int getSunkEventsBitMask() {
+		return Event.FOCUSEVENTS;
+	}
 
-    public boolean remove(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-        final FlexTable table = this.getTitleFlexTable();
-        final boolean success = table.remove(widget);
-        return success;
-    }
+	protected void afterCreateWidget() {
+		this.setFocusListeners(this.createFocusListeners());
+	}
 
-    public int getCount() {
-        return this.getTitleFlexTable().getCellCount(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW) - 1;
-    }
+	public void addFocusListener(final FocusListener focusListener) {
+		super.addFocusListener(focusListener);
+	}
 
-    public Widget getWidget(final int index) {
-        return this.getTitleFlexTable().getWidget(0, index + 1);
-    }
+	public void removeFocusListener(final FocusListener focusListener) {
+		super.removeFocusListener(focusListener);
+	}
 
-    public int getIndex(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-        int index = -1;
-        final Iterator iterator = this.iterator();
-        int i = 0;
-        while (iterator.hasNext()) {
-            final Widget otherWidget = (Widget) iterator.next();
-            if (widget == otherWidget) {
-                index = i;
-                break;
-            }
-            i++;
-        }
-        return index;
-    }
+	public void add(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-    public void clear() {
-        final Iterator iterator = this.iterator();
-        while (iterator.hasNext()) {
-            this.remove((Widget) iterator.next());
-        }
-    }
+		final FlexTable table = this.getTitleFlexTable();
+		final int column = table.getCellCount(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW);
+		table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, column, widget);
+		table.getCellFormatter().setStyleName(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, column,
+				WidgetConstants.COLLAPSABLE_PANEL_TITLE_WIDGET_STYLE);
+	}
 
-    public Iterator iterator() {
-        return this.getTitleFlexTable().iterator();
-    }
+	public boolean remove(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+		final FlexTable table = this.getTitleFlexTable();
+		final boolean success = table.remove(widget);
+		return success;
+	}
 
-    // IMPL
-    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	public int getCount() {
+		return this.getTitleFlexTable().getCellCount(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW) - 1;
+	}
 
-    /**
-     * This counter should be incremented each time a modification is made to this container. It exists to help any iterators fail fast.
-     */
-    private int modificationCount;
+	public Widget getWidget(final int index) {
+		return this.getTitleFlexTable().getWidget(0, index + 1);
+	}
 
-    protected int getModificationCount() {
-        return this.modificationCount;
-    }
+	public int getIndex(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+		int index = -1;
+		final Iterator iterator = this.iterator();
+		int i = 0;
+		while (iterator.hasNext()) {
+			final Widget otherWidget = (Widget) iterator.next();
+			if (widget == otherWidget) {
+				index = i;
+				break;
+			}
+			i++;
+		}
+		return index;
+	}
 
-    public void setModificationCount(final int modificationCount) {
-        this.modificationCount = modificationCount;
-    }
+	public void clear() {
+		final Iterator iterator = this.iterator();
+		while (iterator.hasNext()) {
+			this.remove((Widget) iterator.next());
+		}
+	}
 
-    /**
-     * This flexTable contains the title and the contents.
-     */
-    private FlexTable flexTable;
+	public Iterator iterator() {
+		return this.getTitleFlexTable().iterator();
+	}
 
-    protected FlexTable getFlexTable() {
-        ObjectHelper.checkNotNull("field:flexTable", flexTable);
-        return flexTable;
-    }
+	// IMPL
+	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    protected boolean hasFlexTable() {
-        return this.flexTable != null;
-    }
+	/**
+	 * This flexTable contains the title and the contents.
+	 */
+	private FlexTable flexTable;
 
-    protected void setFlexTable(final FlexTable flexTable) {
-        ObjectHelper.checkNotNull("parameter:flexTable", flexTable);
-        this.flexTable = flexTable;
-    }
+	protected FlexTable getFlexTable() {
+		ObjectHelper.checkNotNull("field:flexTable", flexTable);
+		return flexTable;
+	}
 
-    /**
-     * The principal factory method which is responsible for creating the entire widget ready for displaying purposes.
-     * 
-     * @return
-     */
-    protected FlexTable createFlexTable() {
-        final FlexTable table = new FlexTable();
-        table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN,
-                this.createTitleFlexTable());
-        table.getFlexCellFormatter().setWidth(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW,
-                WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN, "100%");
-        return table;
-    }
+	protected boolean hasFlexTable() {
+		return this.flexTable != null;
+	}
 
-    protected FlexTable createTitleFlexTable() {
-        final FlexTable table = new FlexTable();
-        table.setStyleName(WidgetConstants.COLLAPSABLE_PANEL_TITLE_FLEXTABLE_STYLE);
+	protected void setFlexTable(final FlexTable flexTable) {
+		ObjectHelper.checkNotNull("parameter:flexTable", flexTable);
+		this.flexTable = flexTable;
+	}
 
-        table.setText(0, 0, "");
-        table.getFlexCellFormatter().setWidth(0, 0, "100%");
-        return table;
-    }
+	/**
+	 * The principal factory method which is responsible for creating the entire
+	 * widget ready for displaying purposes.
+	 * 
+	 * @return
+	 */
+	protected FlexTable createFlexTable() {
+		final FlexTable table = new FlexTable();
+		table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN, this
+				.createTitleFlexTable());
+		table.getFlexCellFormatter().setWidth(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN,
+				"100%");
+		return table;
+	}
 
-    protected FlexTable getTitleFlexTable() {
-        return (FlexTable) this.getFlexTable().getWidget(0, 0);
-    }
+	protected FlexTable createTitleFlexTable() {
+		final FlexTable table = new FlexTable();
+		table.setStyleName(WidgetConstants.COLLAPSABLE_PANEL_TITLE_FLEXTABLE_STYLE);
 
-    public String getTitle() {
-        return this.getTitleFlexTable().getText(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW,
-                WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN);
-    }
+		table.setText(0, 0, "");
+		table.getFlexCellFormatter().setWidth(0, 0, "100%");
+		return table;
+	}
 
-    public void setTitle(final String title) {
-        StringHelper.checkNotEmpty("parameter:title", title);
+	protected FlexTable getTitleFlexTable() {
+		return (FlexTable) this.getFlexTable().getWidget(0, 0);
+	}
 
-        this.getTitleFlexTable().setText(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW,
-                WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN, title);
-    }
+	public String getTitle() {
+		return this.getTitleFlexTable()
+				.getText(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN);
+	}
 
-    public Widget getContent() {
-        return this.getFlexTable().getWidget(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW,
-                WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN);
-    }
+	public void setTitle(final String title) {
+		StringHelper.checkNotEmpty("parameter:title", title);
 
-    public boolean hasContent() {
-        final FlexTable table = this.getFlexTable();
-        return table.getRowCount() == (WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW + 1)
-                && table.getCellCount(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW) == (WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN + 1);
-    }
+		this.getTitleFlexTable()
+				.setText(WidgetConstants.COLLAPSABLE_PANEL_TITLE_ROW, WidgetConstants.COLLAPSABLE_PANEL_TITLE_COLUMN, title);
+	}
 
-    public void setContent(final Widget content) {
-        ObjectHelper.checkNotNull("parameter:content", content);
+	public Widget getContent() {
+		return this.getFlexTable().getWidget(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW,
+				WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN);
+	}
 
-        final FlexTable table = this.getFlexTable();
-        table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW,
-                WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN, content);
-        final FlexTable.FlexCellFormatter formatter = table.getFlexCellFormatter();
-        formatter.addStyleName(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW,
-                WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN, WidgetConstants.COLLAPSABLE_PANEL_CONTENT_STYLE);
-    }
+	public boolean hasContent() {
+		final FlexTable table = this.getFlexTable();
+		return table.getRowCount() == (WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW + 1)
+				&& table.getCellCount(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW) == (WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN + 1);
+	}
 
-    public void clearContent() {
-        this.getFlexTable().removeRow(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW);
-    }
+	public void setContent(final Widget content) {
+		ObjectHelper.checkNotNull("parameter:content", content);
 
-    public void showContent() {
-        this.getContent().setVisible(true);
-    }
+		final FlexTable table = this.getFlexTable();
+		table.setWidget(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW, WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN, content);
+		final FlexTable.FlexCellFormatter formatter = table.getFlexCellFormatter();
+		formatter.addStyleName(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW, WidgetConstants.COLLAPSABLE_PANEL_CONTENT_COLUMN,
+				WidgetConstants.COLLAPSABLE_PANEL_CONTENT_STYLE);
+	}
 
-    public void hideContent() {
-        this.getContent().setVisible(false);
-    }
+	public void clearContent() {
+		this.getFlexTable().removeRow(WidgetConstants.COLLAPSABLE_PANEL_CONTENT_ROW);
+	}
 
-    /**
-     * Creates a widget(actually an Image) so that when clicked it will close this CollapsablePanel. The widget however must be added to the
-     * card via {@link #add}
-     * 
-     * @return
-     */
-    public Widget createClose() {
-        final Image image = new Image();
-        image.setUrl(WidgetConstants.COLLAPSABLE_PANEL_CLOSE_IMAGE_URL);
+	public void showContent() {
+		this.getContent().setVisible(true);
+	}
 
-        final CollapsablePanel that = this;
+	public void hideContent() {
+		this.getContent().setVisible(false);
+	}
 
-        image.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                that.removeFromParent();
-            }
-        });
+	/**
+	 * Creates a widget(actually an Image) so that when clicked it will close
+	 * this CollapsablePanel. The widget however must be added to the card via
+	 * {@link #add}
+	 * 
+	 * @return
+	 */
+	public Widget createClose() {
+		final Image image = new Image();
+		image.setUrl(WidgetConstants.COLLAPSABLE_PANEL_CLOSE_IMAGE_URL);
 
-        return image;
-    }
+		final CollapsablePanel that = this;
 
-    /**
-     * Creates a widget(actually an Image) so that when clicked it will minimize this CollapsablePanel. The widget however must be added to
-     * the card via {@link #add}
-     * 
-     * @return
-     */
-    public Widget createMinimize() {
-        final Image image = new Image();
-        image.setUrl(WidgetConstants.COLLAPSABLE_PANEL_MINIMIZE_IMAGE_URL);
+		image.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				that.removeFromParent();
+			}
+		});
 
-        final CollapsablePanel that = this;
+		return image;
+	}
 
-        image.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                that.hideContent();
-            }
-        });
+	/**
+	 * Creates a widget(actually an Image) so that when clicked it will minimize
+	 * this CollapsablePanel. The widget however must be added to the card via
+	 * {@link #add}
+	 * 
+	 * @return
+	 */
+	public Widget createMinimize() {
+		final Image image = new Image();
+		image.setUrl(WidgetConstants.COLLAPSABLE_PANEL_MINIMIZE_IMAGE_URL);
 
-        return image;
-    }
+		final CollapsablePanel that = this;
 
-    /**
-     * Creates a widget(actually an Image) so that when clicked it will maximize this CollapsablePanel. The widget however must be added to
-     * the card via {@link #add}
-     * 
-     * @return
-     */
-    public Widget createMaximize() {
-        final Image image = new Image();
-        image.setUrl(WidgetConstants.COLLAPSABLE_PANEL_MAXIMIZE_IMAGE_URL);
+		image.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				that.hideContent();
+			}
+		});
 
-        final CollapsablePanel that = this;
+		return image;
+	}
 
-        image.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                that.showContent();
-            }
-        });
+	/**
+	 * Creates a widget(actually an Image) so that when clicked it will maximize
+	 * this CollapsablePanel. The widget however must be added to the card via
+	 * {@link #add}
+	 * 
+	 * @return
+	 */
+	public Widget createMaximize() {
+		final Image image = new Image();
+		image.setUrl(WidgetConstants.COLLAPSABLE_PANEL_MAXIMIZE_IMAGE_URL);
 
-        return image;
-    }
+		final CollapsablePanel that = this;
 
-    public String toString() {
-        return super.toString() + ", flexTable: " + flexTable;
-    }
+		image.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				that.showContent();
+			}
+		});
+
+		return image;
+	}
+
+	public String toString() {
+		return super.toString() + ", flexTable: " + flexTable;
+	}
 }

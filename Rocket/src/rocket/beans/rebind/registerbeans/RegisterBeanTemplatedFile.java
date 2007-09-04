@@ -86,7 +86,7 @@ public class RegisterBeanTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + Constants.REGISTER_BEAN_TEMPLATE
-				+ "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file ["
+				+ Constants.REGISTER_BEAN_TEMPLATE + "]");
 	}
 }

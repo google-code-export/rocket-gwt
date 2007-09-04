@@ -25,33 +25,33 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public interface WidgetProvider {
 
-    /**
-     * Returns the index of the first widget
-     * 
-     * @return
-     */
-    int getFirst();
+	/**
+	 * Returns the index of the first widget
+	 * 
+	 * @return
+	 */
+	int getFirst();
 
-    /**
-     * Returns the index of the last widget(exclusive)
-     * 
-     * @return
-     */
-    int getLast();
+	/**
+	 * Returns the index of the last widget(exclusive)
+	 * 
+	 * @return
+	 */
+	int getLast();
 
-    /**
-     * Returns the total number of widgets
-     * 
-     * @return
-     */
-    int getCount();
+	/**
+	 * Returns the total number of widgets
+	 * 
+	 * @return
+	 */
+	int getCount();
 
-    /**
-     * Retrieves the widget at the given spot.
-     * 
-     * @param index
-     * @return
-     */
-    Widget getWidget(int index);
+	/**
+	 * Retrieves the widget at the given spot.
+	 * 
+	 * @param index
+	 * @return
+	 */
+	Widget getWidget(int index);
 
 }

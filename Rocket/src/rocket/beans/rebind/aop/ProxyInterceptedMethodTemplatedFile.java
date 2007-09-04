@@ -157,8 +157,7 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 			}
 
 			protected Collection getCollection() {
-				return ProxyInterceptedMethodTemplatedFile.this.getMethod()
-						.getParameters();
+				return ProxyInterceptedMethodTemplatedFile.this.getMethod().getParameters();
 			}
 
 			protected void prepareToWrite(Object element) {
@@ -182,8 +181,7 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 		final GeneratorContext context = method.getGeneratorContext();
 		final List alreadyCaughts = new ArrayList();
 		final Type exception = context.getType(Constants.EXCEPTION);
-		final Type runtimeException = context
-				.getType(Constants.RUNTIME_EXCEPTION);
+		final Type runtimeException = context.getType(Constants.RUNTIME_EXCEPTION);
 
 		final List catchAndRethrow = new ArrayList();
 		final Iterator thrown = this.getMethod().getThrownTypes().iterator();
@@ -253,11 +251,9 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 
 	protected InputStream getInputStream() {
 		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(
-				filename);
+		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException(
-					"Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
 		}
 		return inputStream;
 	}
@@ -278,18 +274,15 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 				value = this.getWrapParameters();
 				break;
 			}
-			if (Constants.PROXY_INTERCEPTED_METHOD_INVOKE_TARGET_METHOD
-					.equals(name)) {
+			if (Constants.PROXY_INTERCEPTED_METHOD_INVOKE_TARGET_METHOD.equals(name)) {
 				value = this.getInvokeTargetMethod();
 				break;
 			}
-			if (Constants.PROXY_INTERCEPTED_METHOD_INTERCEPTOR_CHAIN_INVOKE_PROCEED
-					.equals(name)) {
+			if (Constants.PROXY_INTERCEPTED_METHOD_INTERCEPTOR_CHAIN_INVOKE_PROCEED.equals(name)) {
 				value = this.getInterceptorChainInvokeProceed();
 				break;
 			}
-			if (Constants.PROXY_INTERCEPTED_METHOD_RETHROW_EXPECTED_EXCEPTIONS
-					.equals(name)) {
+			if (Constants.PROXY_INTERCEPTED_METHOD_RETHROW_EXPECTED_EXCEPTIONS.equals(name)) {
 				value = this.getRethrowExpectedExceptions();
 				break;
 			}
@@ -299,8 +292,7 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name
-				+ "] not found, template file [" + this.getFileName() + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + this.getFileName() + "]");
 	}
 
 	protected CodeBlock getInvokeTargetMethod() {

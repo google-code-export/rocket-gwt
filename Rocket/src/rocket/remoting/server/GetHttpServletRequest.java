@@ -25,50 +25,51 @@ import rocket.remoting.client.Headers;
 import rocket.remoting.client.RequestParameters;
 
 /**
- * This Request supports simulating a GET request within the same web application
+ * This Request supports simulating a GET request within the same web
+ * application
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class GetHttpServletRequest extends AbstractHttpServletRequest implements HttpServletRequest {
 
-    public GetHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers) {
-        super(request, url, headers);
+	public GetHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers) {
+		super(request, url, headers);
 
-        final RequestParameters parameters = new RequestParameters();
-        parameters.buildFromUrl(url);
-        this.setRequestParameters(parameters);
-    }
+		final RequestParameters parameters = new RequestParameters();
+		parameters.buildFromUrl(url);
+		this.setRequestParameters(parameters);
+	}
 
-    public GetHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers,
-            final RequestParameters parameters) {
-        super(request, url, headers);
+	public GetHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers,
+			final RequestParameters parameters) {
+		super(request, url, headers);
 
-        this.setRequestParameters(parameters);
-    }
+		this.setRequestParameters(parameters);
+	}
 
-    public String getMethod() {
-        return "GET";
-    }
+	public String getMethod() {
+		return "GET";
+	}
 
-    /**
-     * Gets by definition GETS dont have any body.
-     */
-    public int getContentLength() {
-        throw new UnsupportedOperationException("getContentLength() is not supported for GET requests");
-    }
+	/**
+	 * Gets by definition GETS dont have any body.
+	 */
+	public int getContentLength() {
+		throw new UnsupportedOperationException("getContentLength() is not supported for GET requests");
+	}
 
-    /**
-     * There is no body and no content type.
-     */
-    public String getContentType() {
-        throw new UnsupportedOperationException("getContentType() is not supported for GET requests");
-    }
+	/**
+	 * There is no body and no content type.
+	 */
+	public String getContentType() {
+		throw new UnsupportedOperationException("getContentType() is not supported for GET requests");
+	}
 
-    public ServletInputStream getInputStream() throws IOException {
-        throw new UnsupportedOperationException("getInputStream() is not supported for GET requests");
-    }
+	public ServletInputStream getInputStream() throws IOException {
+		throw new UnsupportedOperationException("getInputStream() is not supported for GET requests");
+	}
 
-    public BufferedReader getReader() throws IOException {
-        throw new UnsupportedOperationException("getReader() is not supported for GET requests");
-    }
+	public BufferedReader getReader() throws IOException {
+		throw new UnsupportedOperationException("getReader() is not supported for GET requests");
+	}
 }

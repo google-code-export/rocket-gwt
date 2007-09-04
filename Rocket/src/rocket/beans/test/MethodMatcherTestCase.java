@@ -31,13 +31,13 @@ public class MethodMatcherTestCase extends TestCase {
 		final String expression = "abc";
 		final MethodMatcher matcher = this.createMethodMatcher(expression);
 
-		final Method method = this.createContext().getType( Test.class.getName() ).getMethod( "abc", Collections.EMPTY_LIST );
+		final Method method = this.createContext().getType(Test.class.getName()).getMethod("abc", Collections.EMPTY_LIST);
 		final boolean actual = matcher.matches(method);
 		assertTrue(actual);
 	}
-	
-	static class Test{
-		public void abc(){			
+
+	static class Test {
+		public void abc() {
 		}
 	}
 
@@ -45,46 +45,48 @@ public class MethodMatcherTestCase extends TestCase {
 		final String expression = "foo.*";
 		final MethodMatcher matcher = this.createMethodMatcher(expression);
 
-		final Method method = this.createContext().getType( Test2.class.getName() ).getMethod( "foo", Collections.EMPTY_LIST );
-		assertTrue(expression, matcher.matches( method ));
+		final Method method = this.createContext().getType(Test2.class.getName()).getMethod("foo", Collections.EMPTY_LIST);
+		assertTrue(expression, matcher.matches(method));
 	}
 
 	public void testWildcardDoesntMatch() {
 		final String expression = "foo.*xxx";
 		final MethodMatcher matcher = this.createMethodMatcher(expression);
 
-		final Method method = this.createContext().getType( Test2.class.getName() ).getMethod( "foo", Collections.EMPTY_LIST );
-		assertFalse(expression, matcher.matches( method ));
+		final Method method = this.createContext().getType(Test2.class.getName()).getMethod("foo", Collections.EMPTY_LIST);
+		assertFalse(expression, matcher.matches(method));
 	}
 
-	static class Test2{
-		public void foo(){			
+	static class Test2 {
+		public void foo() {
 		}
 	}
-	
+
 	public void testManyMatchersWithinExpression() {
 		final String expression = "foo.*,bar.*";
 		final MethodMatcher matcher = this.createMethodMatcher(expression);
 
 		final GeneratorContext context = this.createContext();
-		final Type type = context.getType( Test3.class.getName() );
-		
-		final Method foo = type.getMethod( "foo", Collections.EMPTY_LIST );
+		final Type type = context.getType(Test3.class.getName());
+
+		final Method foo = type.getMethod("foo", Collections.EMPTY_LIST);
 		assertTrue(expression, matcher.matches(foo));
-		
-		final Method bar = type.getMethod( "bar", Collections.EMPTY_LIST );
+
+		final Method bar = type.getMethod("bar", Collections.EMPTY_LIST);
 		assertTrue(expression, matcher.matches(bar));
-		
-		final Method baz = type.getMethod( "baz", Collections.EMPTY_LIST );
-		assertFalse(expression, matcher.matches(baz));		
+
+		final Method baz = type.getMethod("baz", Collections.EMPTY_LIST);
+		assertFalse(expression, matcher.matches(baz));
 	}
 
-	static class Test3{
-		public void foo(){			
+	static class Test3 {
+		public void foo() {
 		}
-		public void bar(){			
+
+		public void bar() {
 		}
-		public void baz(){			
+
+		public void baz() {
 		}
 	}
 
@@ -93,29 +95,32 @@ public class MethodMatcherTestCase extends TestCase {
 		final MethodMatcher matcher = this.createMethodMatcher(expression);
 
 		final GeneratorContext context = this.createContext();
-		final Type type = context.getType( Test4.class.getName() );
-		
-		final Method foo = type.getMethod( "foo", Collections.EMPTY_LIST );
+		final Type type = context.getType(Test4.class.getName());
+
+		final Method foo = type.getMethod("foo", Collections.EMPTY_LIST);
 		assertFalse(expression, matcher.matches(foo));
-		
-		final Method bar = type.getMethod( "bar", Collections.EMPTY_LIST );
+
+		final Method bar = type.getMethod("bar", Collections.EMPTY_LIST);
 		assertFalse(expression, matcher.matches(bar));
-		
-		final Method baz = type.getMethod( "baz", Collections.EMPTY_LIST );
-		assertFalse(expression, matcher.matches(baz));		
+
+		final Method baz = type.getMethod("baz", Collections.EMPTY_LIST);
+		assertFalse(expression, matcher.matches(baz));
 	}
 
-	static class Test4{
-		protected void foo(){			
+	static class Test4 {
+		protected void foo() {
 		}
-		protected void bar(){			
+
+		protected void bar() {
 		}
-		protected void baz(){			
+
+		protected void baz() {
 		}
 	}
 
 	/**
 	 * Factory method which creats a new MethodMatcher
+	 * 
 	 * @param expression
 	 * @return
 	 */
@@ -123,8 +128,7 @@ public class MethodMatcherTestCase extends TestCase {
 		return new MethodMatcherFactory().create(expression);
 	}
 
-	
-	GeneratorContext createContext(){
+	GeneratorContext createContext() {
 		return new JavaGeneratorContext();
 	}
 }

@@ -18,80 +18,83 @@ package rocket.widget.client.menu;
 import rocket.util.client.ObjectHelper;
 
 /**
- * Base class for all MenuItem type classes including MenuItem, SubMenuItem and MenuSpacer.
+ * Base class for all MenuItem type classes including MenuItem, SubMenuItem and
+ * MenuSpacer.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public abstract class AbstractMenuItem extends MenuWidget {
 
-    protected AbstractMenuItem() {
-        super();
-    }
+	protected AbstractMenuItem() {
+		super();
+	}
 
-    protected void onDetach() {
-        super.onDetach();
+	protected void onDetach() {
+		super.onDetach();
 
-        this.hide();
-    }
+		this.hide();
+	}
 
-    // EVENT HANDLING ::::::::::::::::::::::::::::::::::::
+	// EVENT HANDLING ::::::::::::::::::::::::::::::::::::
 
-    // ACTIONS
-    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    protected void addHighlight() {
-        this.addStyleName(this.getSelectedStyle());
-    }
+	// ACTIONS
+	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	protected void addHighlight() {
+		this.addStyleName(this.getSelectedStyle());
+	}
 
-    protected void removeHighlight() {
-        this.removeStyleName(this.getSelectedStyle());
-    }
+	protected void removeHighlight() {
+		this.removeStyleName(this.getSelectedStyle());
+	}
 
-    /**
-     * This style is added or removed depending on whether the widget is highlighted.
-     * 
-     * @return
-     */
-    protected abstract String getSelectedStyle();
+	/**
+	 * This style is added or removed depending on whether the widget is
+	 * highlighted.
+	 * 
+	 * @return
+	 */
+	protected abstract String getSelectedStyle();
 
-    /**
-     * WHen a widget is disabled it all events are ignored.
-     */
-    private boolean disabled;
+	/**
+	 * WHen a widget is disabled it all events are ignored.
+	 */
+	private boolean disabled;
 
-    public boolean isDisabled() {
-        return this.disabled;
-    }
+	public boolean isDisabled() {
+		return this.disabled;
+	}
 
-    public void setDisabled(final boolean disabled) {
-        final String disabledStyle = this.getDisabledStyle();
-        if (this.isDisabled()) {
-            this.removeStyleName(disabledStyle);
-        }
-        this.disabled = disabled;
-        if (disabled) {
-            this.addStyleName(disabledStyle);
-        }
-    }
+	public void setDisabled(final boolean disabled) {
+		final String disabledStyle = this.getDisabledStyle();
+		if (this.isDisabled()) {
+			this.removeStyleName(disabledStyle);
+		}
+		this.disabled = disabled;
+		if (disabled) {
+			this.addStyleName(disabledStyle);
+		}
+	}
 
-    /**
-     * Retrieves the style that is added or removed depending on whether the widget is disabled.
-     * 
-     * @return
-     */
-    protected abstract String getDisabledStyle();
+	/**
+	 * Retrieves the style that is added or removed depending on whether the
+	 * widget is disabled.
+	 * 
+	 * @return
+	 */
+	protected abstract String getDisabledStyle();
 
-    /**
-     * The parent menuList that contains this MenuItem.
-     */
-    private MenuList parentMenuList;
+	/**
+	 * The parent menuList that contains this MenuItem.
+	 */
+	private MenuList parentMenuList;
 
-    protected MenuList getParentMenuList() {
-        ObjectHelper.checkNotNull("field:parentMenuList", parentMenuList);
-        return this.parentMenuList;
-    }
+	protected MenuList getParentMenuList() {
+		ObjectHelper.checkNotNull("field:parentMenuList", parentMenuList);
+		return this.parentMenuList;
+	}
 
-    public void setParentMenuList(final MenuList parentMenuList) {
-        ObjectHelper.checkNotNull("parameter:parentMenuList", parentMenuList);
-        this.parentMenuList = parentMenuList;
-    }
+	public void setParentMenuList(final MenuList parentMenuList) {
+		ObjectHelper.checkNotNull("parameter:parentMenuList", parentMenuList);
+		this.parentMenuList = parentMenuList;
+	}
 }

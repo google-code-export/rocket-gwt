@@ -69,10 +69,10 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 		this.returnType = returnType;
 	}
 
-	public boolean returnsVoid(){
-		return this.getReturnType().equals( this.getGeneratorContext().getVoid() );
+	public boolean returnsVoid() {
+		return this.getReturnType().equals(this.getGeneratorContext().getVoid());
 	}
-	
+
 	/**
 	 * GeneratorHelper which checks the super type heirarchy to test if this
 	 * method actually overrides another.
@@ -180,7 +180,7 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 		method.setAbstract(this.isAbstract());
 		method.setFinal(this.isFinal());
 		method.setName(this.getName());
-		method.setNative( false );
+		method.setNative(false);
 
 		final Iterator parameters = this.getParameters().iterator();
 		while (parameters.hasNext()) {
@@ -199,29 +199,29 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 		method.setVisibility(this.getVisibility());
 		return method;
 	}
-	
-	public boolean hasSameSignature( final Method otherMethod ){
-		ObjectHelper.checkNotNull( "parameter:otherMethod", otherMethod );
-		
+
+	public boolean hasSameSignature(final Method otherMethod) {
+		ObjectHelper.checkNotNull("parameter:otherMethod", otherMethod);
+
 		boolean same = false;
-		
-		while( true ){			
+
+		while (true) {
 			// name must match
-			if( false == this.getName().equals( otherMethod.getName() )){
+			if (false == this.getName().equals(otherMethod.getName())) {
 				break;
 			}
 			// return type must match
-			if( false == this.getReturnType().equals( otherMethod.getReturnType() )){
+			if (false == this.getReturnType().equals(otherMethod.getReturnType())) {
 				break;
 			}
-			if( this.isStatic() != otherMethod.isStatic() ){
+			if (this.isStatic() != otherMethod.isStatic()) {
 				break;
 			}
-			
+
 			// parameter types must match.
 			final List parameters = this.getParameters();
 			final List otherParameters = otherMethod.getParameters();
-			if( parameters.size() != otherParameters.size() ){
+			if (parameters.size() != otherParameters.size()) {
 				break;
 			}
 			same = true;
@@ -229,18 +229,18 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 			final Iterator otherParametersIterator = otherParameters.iterator();
 
 			while (parametersIterator.hasNext()) {
-				final MethodParameter parameter = (MethodParameter )parametersIterator.next();
-				final MethodParameter otherParameter = (MethodParameter )otherParametersIterator.next();
-				
-				if( parameter.getType().equals( otherParameter.getType() )){
+				final MethodParameter parameter = (MethodParameter) parametersIterator.next();
+				final MethodParameter otherParameter = (MethodParameter) otherParametersIterator.next();
+
+				if (parameter.getType().equals(otherParameter.getType())) {
 					same = false;
 					break;
-				}	
-			}			
-			
+				}
+			}
+
 			break;
 		}
-		
+
 		return same;
 	}
 }

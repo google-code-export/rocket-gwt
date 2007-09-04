@@ -55,8 +55,7 @@ public class MethodMatcherFactory {
 
 				final Iterator iterator = methodMatchers.iterator();
 				while (iterator.hasNext()) {
-					final MethodMatcher matcher = (MethodMatcher) iterator
-							.next();
+					final MethodMatcher matcher = (MethodMatcher) iterator.next();
 					if (matcher.matches(method)) {
 						matched = true;
 						break;

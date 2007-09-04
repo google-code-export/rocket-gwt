@@ -22,61 +22,61 @@ import java.util.List;
 import rocket.util.client.ObjectHelper;
 
 class AccordionListenerCollection {
-    public AccordionListenerCollection() {
-        this.setListeners(new ArrayList());
-    }
+	public AccordionListenerCollection() {
+		this.setListeners(new ArrayList());
+	}
 
-    /**
-     * A list containing listeners to the various accordion events.
-     */
-    private List listeners;
+	/**
+	 * A list containing listeners to the various accordion events.
+	 */
+	private List listeners;
 
-    public List getListeners() {
-        ObjectHelper.checkNotNull("field:listeners", listeners);
-        return listeners;
-    }
+	public List getListeners() {
+		ObjectHelper.checkNotNull("field:listeners", listeners);
+		return listeners;
+	}
 
-    public void setListeners(final List listeners) {
-        ObjectHelper.checkNotNull("parameter:listeners", listeners);
-        this.listeners = listeners;
-    }
+	public void setListeners(final List listeners) {
+		ObjectHelper.checkNotNull("parameter:listeners", listeners);
+		this.listeners = listeners;
+	}
 
-    public void add(final AccordionListener listener) {
-        ObjectHelper.checkNotNull("parameter:listener", listener);
+	public void add(final AccordionListener listener) {
+		ObjectHelper.checkNotNull("parameter:listener", listener);
 
-        this.getListeners().add(listener);
-    }
+		this.getListeners().add(listener);
+	}
 
-    public void remove(final AccordionListener listener) {
-        ObjectHelper.checkNotNull("parameter:listener", listener);
+	public void remove(final AccordionListener listener) {
+		ObjectHelper.checkNotNull("parameter:listener", listener);
 
-        this.getListeners().remove(listener);
-    }
+		this.getListeners().remove(listener);
+	}
 
-    public boolean fireBeforeAccordionSelected(final AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	public boolean fireBeforeAccordionSelected(final AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        boolean doSelect = true;
-        final Iterator listeners = this.getListeners().iterator();
+		boolean doSelect = true;
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final AccordionListener listener = (AccordionListener) listeners.next();
-            if (false == listener.onBeforeItemSelected(item)) {
-                doSelect = false;
-                break;
-            }
-        }
-        return doSelect;
-    }
+		while (listeners.hasNext()) {
+			final AccordionListener listener = (AccordionListener) listeners.next();
+			if (false == listener.onBeforeItemSelected(item)) {
+				doSelect = false;
+				break;
+			}
+		}
+		return doSelect;
+	}
 
-    public void fireAccordionSelected(final AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	public void fireAccordionSelected(final AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        final Iterator listeners = this.getListeners().iterator();
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final AccordionListener listener = (AccordionListener) listeners.next();
-            listener.onItemSelected(item);
-        }
-    }
+		while (listeners.hasNext()) {
+			final AccordionListener listener = (AccordionListener) listeners.next();
+			listener.onItemSelected(item);
+		}
+	}
 }

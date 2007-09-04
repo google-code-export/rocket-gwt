@@ -18,21 +18,23 @@ package rocket.selection.client.support;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * A specialised SelectionSupport class that is adapted to handle Safari differences from the standard implementation.
+ * A specialised SelectionSupport class that is adapted to handle Safari
+ * differences from the standard implementation.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class SafariSelectionSupport extends SelectionSupport {
-    native protected JavaScriptObject getNativeSelection()/*-{
-     return $wnd.getSelection();
-     }-*/;
 
-    public void clear() {
-        final JavaScriptObject selection = this.getNativeSelection();
-        this.clear0(selection);
-    }
+	native protected JavaScriptObject getNativeSelection()/*-{
+	 return $wnd.getSelection();
+	 }-*/;
 
-    native private void clear0(final JavaScriptObject selection)/*-{
-     selection.collapse();
-     }-*/;
+	public void clear() {
+		final JavaScriptObject selection = this.getNativeSelection();
+		this.clear0(selection);
+	}
+
+	native private void clear0(final JavaScriptObject selection)/*-{
+	 selection.collapse();
+	 }-*/;
 }

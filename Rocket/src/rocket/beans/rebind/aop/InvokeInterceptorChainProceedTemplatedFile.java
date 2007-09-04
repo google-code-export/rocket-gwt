@@ -28,8 +28,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class InvokeInterceptorChainProceedTemplatedFile extends
-		TemplatedCodeBlock {
+public class InvokeInterceptorChainProceedTemplatedFile extends TemplatedCodeBlock {
 
 	public InvokeInterceptorChainProceedTemplatedFile() {
 		super();
@@ -47,8 +46,7 @@ public class InvokeInterceptorChainProceedTemplatedFile extends
 	}
 
 	public void setMethodReturnType(final Type methodReturnType) {
-		ObjectHelper.checkNotNull("parameter:methodReturnType",
-				methodReturnType);
+		ObjectHelper.checkNotNull("parameter:methodReturnType", methodReturnType);
 		this.methodReturnType = methodReturnType;
 	}
 
@@ -108,11 +106,9 @@ public class InvokeInterceptorChainProceedTemplatedFile extends
 
 	protected InputStream getInputStream() {
 		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(
-				filename);
+		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException(
-					"Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
 		}
 		return inputStream;
 	}
@@ -120,8 +116,7 @@ public class InvokeInterceptorChainProceedTemplatedFile extends
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.INVOKE_INTERCEPTOR_CHAIN_PROCEED_METHOD_RETURN_TYPE
-					.equals(name)) {
+			if (Constants.INVOKE_INTERCEPTOR_CHAIN_PROCEED_METHOD_RETURN_TYPE.equals(name)) {
 				value = this.getMethodReturnType();
 				break;
 			}

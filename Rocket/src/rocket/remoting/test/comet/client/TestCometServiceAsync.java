@@ -4,5 +4,5 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 public interface TestCometServiceAsync extends RemoteService {
-    void invoke(AsyncCallback callback);
+	void invoke(AsyncCallback callback);
 }

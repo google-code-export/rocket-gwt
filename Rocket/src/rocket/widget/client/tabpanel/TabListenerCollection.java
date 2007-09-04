@@ -21,88 +21,88 @@ import java.util.List;
 
 import rocket.util.client.ObjectHelper;
 
-public class TabListenerCollection {
-    public TabListenerCollection() {
-        this.setListeners(new ArrayList());
-    }
+class TabListenerCollection {
+	public TabListenerCollection() {
+		this.setListeners(new ArrayList());
+	}
 
-    /**
-     * A list containing listeners to the various page change events.
-     */
-    private List listeners;
+	/**
+	 * A list containing listeners to the various page change events.
+	 */
+	private List listeners;
 
-    public List getListeners() {
-        ObjectHelper.checkNotNull("field:listeners", listeners);
-        return listeners;
-    }
+	public List getListeners() {
+		ObjectHelper.checkNotNull("field:listeners", listeners);
+		return listeners;
+	}
 
-    public void setListeners(final List listeners) {
-        ObjectHelper.checkNotNull("parameter:listeners", listeners);
-        this.listeners = listeners;
-    }
+	public void setListeners(final List listeners) {
+		ObjectHelper.checkNotNull("parameter:listeners", listeners);
+		this.listeners = listeners;
+	}
 
-    public void add(final TabListener tabListener) {
-        ObjectHelper.checkNotNull("parameter:tabListener", tabListener);
+	public void add(final TabListener tabListener) {
+		ObjectHelper.checkNotNull("parameter:tabListener", tabListener);
 
-        this.getListeners().add(tabListener);
-    }
+		this.getListeners().add(tabListener);
+	}
 
-    public void remove(final TabListener tabListener) {
-        ObjectHelper.checkNotNull("parameter:tabListener", tabListener);
+	public void remove(final TabListener tabListener) {
+		ObjectHelper.checkNotNull("parameter:tabListener", tabListener);
 
-        this.getListeners().remove(tabListener);
-    }
+		this.getListeners().remove(tabListener);
+	}
 
-    public boolean fireBeforeTabSelected(final TabItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	public boolean fireBeforeTabSelected(final TabItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        boolean doSelect = true;
-        final Iterator listeners = this.getListeners().iterator();
+		boolean doSelect = true;
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final TabListener listener = (TabListener) listeners.next();
-            if (!listener.onBeforeTabSelected(item)) {
-                doSelect = false;
-                break;
-            }
-        }
-        return doSelect;
-    }
+		while (listeners.hasNext()) {
+			final TabListener listener = (TabListener) listeners.next();
+			if (!listener.onBeforeTabSelected(item)) {
+				doSelect = false;
+				break;
+			}
+		}
+		return doSelect;
+	}
 
-    public void fireTabSelected(final TabItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
-        final Iterator listeners = this.getListeners().iterator();
+	public void fireTabSelected(final TabItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final TabListener listener = (TabListener) listeners.next();
-            listener.onTabSelected(item);
-        }
-    }
+		while (listeners.hasNext()) {
+			final TabListener listener = (TabListener) listeners.next();
+			listener.onTabSelected(item);
+		}
+	}
 
-    public boolean fireBeforeTabClosed(final TabItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	public boolean fireBeforeTabClosed(final TabItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        boolean removed = true;
-        final Iterator listeners = this.getListeners().iterator();
+		boolean removed = true;
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final TabListener listener = (TabListener) listeners.next();
-            if (!listener.onBeforeTabClosed(item)) {
-                removed = false;
-                break;
-            }
-        }
-        return removed;
-    }
+		while (listeners.hasNext()) {
+			final TabListener listener = (TabListener) listeners.next();
+			if (!listener.onBeforeTabClosed(item)) {
+				removed = false;
+				break;
+			}
+		}
+		return removed;
+	}
 
-    public void fireTabClosed(final TabItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	public void fireTabClosed(final TabItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        final Iterator listeners = this.getListeners().iterator();
+		final Iterator listeners = this.getListeners().iterator();
 
-        while (listeners.hasNext()) {
-            final TabListener listener = (TabListener) listeners.next();
-            listener.onTabClosed(item);
-        }
-    }
+		while (listeners.hasNext()) {
+			final TabListener listener = (TabListener) listeners.next();
+			listener.onTabClosed(item);
+		}
+	}
 }

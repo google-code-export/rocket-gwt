@@ -21,97 +21,106 @@ import rocket.widget.client.DivPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A VerticalAccordion is a simple vertical list made up of captions and contents. Only one content is ever visible.
+ * A VerticalAccordion is a simple vertical list made up of captions and
+ * contents. Only one content is ever visible.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class VerticalAccordionPanel extends AccordionPanel {
 
-    public VerticalAccordionPanel() {
-        super();
+	public VerticalAccordionPanel() {
+		super();
+	}
 
-        final DivPanel panel = this.createPanel();
-        this.setPanel(panel);
-        this.initWidget(panel);
-    }
+	protected Widget createWidget() {
+		final DivPanel panel = this.createPanel();
+		this.setPanel(panel);
+		return panel;
+	}
 
-    protected void replaceContentWidget(final AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	protected int getSunkEventsBitMask() {
+		return 0;
+	}
 
-        final DivPanel panel = this.getPanel();
-        final int index = this.getIndex(item);
-        final DivPanel itemPanel = (DivPanel) panel.get(index);
-        itemPanel.remove(1);
-        final Widget content = item.getContent();
-        itemPanel.add(content);
-    }
+	protected void replaceContentWidget(final AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-    /**
-     * A DivPanel is used to house the entire Accordion.
-     */
-    private DivPanel panel;
+		final DivPanel panel = this.getPanel();
+		final int index = this.getIndex(item);
+		final DivPanel itemPanel = (DivPanel) panel.get(index);
+		itemPanel.remove(1);
+		final Widget content = item.getContent();
+		itemPanel.add(content);
+	}
 
-    protected DivPanel getPanel() {
-        ObjectHelper.checkNotNull("field:panel", panel);
-        return panel;
-    }
+	/**
+	 * A DivPanel is used to house the entire Accordion.
+	 */
+	private DivPanel panel;
 
-    protected void setPanel(final DivPanel panel) {
-        ObjectHelper.checkNotNull("parameter:panel", panel);
-        this.panel = panel;
-    }
+	protected DivPanel getPanel() {
+		ObjectHelper.checkNotNull("field:panel", panel);
+		return panel;
+	}
 
-    protected DivPanel createPanel() {
-        final DivPanel panel = new DivPanel();
-        panel.setStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_STYLE);
-        return panel;
-    }
+	protected void setPanel(final DivPanel panel) {
+		ObjectHelper.checkNotNull("parameter:panel", panel);
+		this.panel = panel;
+	}
 
-    // ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	protected DivPanel createPanel() {
+		final DivPanel panel = new DivPanel();
+		panel.setStyleName(Constants.VERTICAL_ACCORDION_PANEL_STYLE);
+		return panel;
+	}
 
-    protected void removeSelectedStyle(final AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+	// ACCORDION PANEL
+	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-        final int index = this.getIndex(item);
-        final Widget widget = this.getPanel().get(index);
-        widget.removeStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_ITEM_SELECTED_STYLE);
+	protected void removeSelectedStyle(final AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        item.getContent().setVisible(false);
-    }
+		final int index = this.getIndex(item);
+		final Widget widget = this.getPanel().get(index);
+		widget.removeStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_SELECTED_STYLE);
 
-    protected void addSelectedStyle(final AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+		item.getContent().setVisible(false);
+	}
 
-        final int index = this.getIndex(item);
-        final Widget widget = this.getPanel().get(index);
-        widget.addStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_ITEM_SELECTED_STYLE);
+	protected void addSelectedStyle(final AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        item.getContent().setVisible(true);
-    }
+		final int index = this.getIndex(item);
+		final Widget widget = this.getPanel().get(index);
+		widget.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_SELECTED_STYLE);
 
-    protected void insert0(final int insertBefore, final AccordionItem item) {
-        ObjectHelper.checkNotNull("parameter:item", item);
+		item.getContent().setVisible(true);
+	}
 
-        final Widget caption = item.getCaptionWidget();
-        caption.addStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_ITEM_CAPTION_STYLE);
+	protected void insert0(final int insertBefore, final AccordionItem item) {
+		ObjectHelper.checkNotNull("parameter:item", item);
 
-        final Widget content = item.getContent();
-        content.addStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_ITEM_CONTENT_STYLE);
+		final Widget caption = item.getCaptionWidget();
+		caption.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_CAPTION_STYLE);
 
-        final DivPanel panel = new DivPanel();
-        panel.setStyleName(AccordionConstants.VERTICAL_ACCORDION_PANEL_ITEM_STYLE);
-        panel.add(caption);
-        panel.add(content);
-        content.setVisible(false); // content is invisible when initially added.
+		final Widget content = item.getContent();
+		content.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_CONTENT_STYLE);
 
-        this.getPanel().insert(panel, insertBefore);
-    }
+		final DivPanel panel = new DivPanel();
+		panel.setStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_STYLE);
+		panel.add(caption);
+		panel.add(content);
+		content.setVisible(false); // content is invisible when initially
+		// added.
 
-    protected void remove0(final int index) {
-        final AccordionItem item = this.get(index);
+		this.getPanel().insert(panel, insertBefore);
+	}
 
-        this.getPanel().remove(index);
-        item.clearAccordionPanel();
-    }
+	protected void remove0(final int index) {
+		final AccordionItem item = this.get(index);
+
+		this.getPanel().remove(index);
+		item.clearAccordionPanel();
+	}
 
 }

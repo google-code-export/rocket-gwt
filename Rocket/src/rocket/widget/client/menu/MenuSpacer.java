@@ -28,57 +28,56 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Miroslav Pokorny (mP)
  */
 public class MenuSpacer extends AbstractMenuItem {
-    public MenuSpacer() {
-        this.initWidget(this.createWidget());
-    }
+	public MenuSpacer() {
+	}
 
-    // EVENT HANDLING............................
+	// EVENT HANDLING............................
 
-    protected void handleMouseClick(final Event event) {
-    }
+	protected void handleMouseClick(final Event event) {
+	}
 
-    protected void handleMouseOver(final Event event) {
-    }
+	protected void handleMouseOver(final Event event) {
+	}
 
-    protected void handleMouseOut(final Event event) {
-    }
+	protected void handleMouseOut(final Event event) {
+	}
 
-    // ACTIONS
-    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	// ACTIONS
+	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    public void open() {
-        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".open()");
-    }
+	public void open() {
+		throw new RuntimeException(GWT.getTypeName(this) + ".open()");
+	}
 
-    /**
-     * MenuSpacers do nothing when asked to hide...
-     */
-    public void hide() {
-    }
+	/**
+	 * MenuSpacers do nothing when asked to hide...
+	 */
+	public void hide() {
+	}
 
-    protected void addHighlight() {
-        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".addHighlight()");
-    }
+	protected void addHighlight() {
+		throw new UnsupportedOperationException(GWT.getTypeName(this) + ".addHighlight()");
+	}
 
-    protected void removeHighlight() {
-        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".removeHighlight()");
-    }
+	protected void removeHighlight() {
+		throw new UnsupportedOperationException(GWT.getTypeName(this) + ".removeHighlight()");
+	}
 
-    protected String getSelectedStyle() {
-        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".getSelectedStyle()");
-    }
+	protected String getSelectedStyle() {
+		throw new UnsupportedOperationException(GWT.getTypeName(this) + ".getSelectedStyle()");
+	}
 
-    protected String getDisabledStyle() {
-        throw new UnsupportedOperationException(GWT.getTypeName(this) + ".getDisabledStyle()");
-    }
+	protected String getDisabledStyle() {
+		throw new UnsupportedOperationException(GWT.getTypeName(this) + ".getDisabledStyle()");
+	}
 
-    protected Widget createWidget() {
-        final HTML html = new HTML(MenuConstants.SPACER_HTML);
-        html.addStyleName(MenuConstants.SPACER_STYLE);
-        return html;
-    }
+	protected Widget createWidget() {
+		final HTML html = new HTML(Constants.SPACER_HTML);
+		html.addStyleName(Constants.SPACER_STYLE);
+		return html;
+	}
 
-    public String toString() {
-        return ObjectHelper.defaultToString(this);
-    }
+	public String toString() {
+		return ObjectHelper.defaultToString(this);
+	}
 }

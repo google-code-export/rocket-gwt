@@ -26,7 +26,7 @@ import rocket.util.client.ObjectHelper;
  * @author Miroslav Pokorny
  */
 public class AfterReturningAdviceMethodInterceptor implements MethodInterceptor {
-	
+
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
 		final Object returned = invocation.proceed();
 		final AfterReturningAdvice advice = this.getAfterReturningAdvice();

@@ -97,7 +97,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	protected void log() {
-		this.getGeneratorContext().debug("Writing Constructor: " + this );
+		this.getGeneratorContext().debug("Writing Constructor: " + this);
 	}
 
 	/**
@@ -111,12 +111,12 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 
 		writer.print(this.getVisibility().getJavaName());
 		writer.print(" ");
-		
+
 		String name = this.getEnclosingType().getName();
 		final int lastDot = name.lastIndexOf('.');
 		name = name.substring(lastDot + 1);
-		writer.print(name);	
-		
+		writer.print(name);
+
 		writer.print("(");
 
 		this.writeParameters(writer);

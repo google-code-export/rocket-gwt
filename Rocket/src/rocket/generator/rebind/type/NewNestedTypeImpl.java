@@ -32,16 +32,16 @@ public class NewNestedTypeImpl extends NewConcreteOrNestedType implements NewNes
 	public NewNestedTypeImpl() {
 		super();
 	}
-	
+
 	private Visibility visibility;
-	
-	public Visibility getVisibility(){
-		ObjectHelper.checkNotNull("field:visibility", visibility );
+
+	public Visibility getVisibility() {
+		ObjectHelper.checkNotNull("field:visibility", visibility);
 		return this.visibility;
 	}
-	
-	public void setVisibility( final Visibility visibility ){
-		ObjectHelper.checkNotNull("parameter:visibility", visibility );
+
+	public void setVisibility(final Visibility visibility) {
+		ObjectHelper.checkNotNull("parameter:visibility", visibility);
 		this.visibility = visibility;
 	}
 
@@ -56,7 +56,7 @@ public class NewNestedTypeImpl extends NewConcreteOrNestedType implements NewNes
 		ObjectHelper.checkNotNull("parameter:enclosingType", enclosingType);
 		this.enclosingType = enclosingType;
 	}
-	
+
 	/**
 	 * When true indicates that this class is static
 	 */
@@ -85,12 +85,12 @@ public class NewNestedTypeImpl extends NewConcreteOrNestedType implements NewNes
 		this.writeNestedTypes(writer);
 		writer.outdent();
 
-		Type type = null;
-		if (this.hasSuperType()) {
-			type = this.getSuperType();
-		} else {
-			type = (Type) this.getInterfaces().iterator().next();
-		}
+		// Type type = null;
+		// if (this.hasSuperType()) {
+		// type = this.getSuperType();
+		// } else {
+		// type = (Type) this.getInterfaces().iterator().next();
+		// }
 
 		writer.println("} // " + this.getName());
 	}
@@ -111,8 +111,8 @@ public class NewNestedTypeImpl extends NewConcreteOrNestedType implements NewNes
 		if (this.isFinal()) {
 			writer.print("final ");
 		}
-				
-		writer.print( this.getVisibility().getJavaName() );
+
+		writer.print(this.getVisibility().getJavaName());
 		writer.print(" class ");
 
 		String name = this.getName();

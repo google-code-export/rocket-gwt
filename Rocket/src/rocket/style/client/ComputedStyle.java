@@ -15,13 +15,10 @@
  */
 package rocket.style.client;
 
-import java.util.AbstractMap;
-import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
+import rocket.util.client.Colour;
 import rocket.util.client.Destroyable;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -40,177 +37,131 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class ComputedStyle extends AbstractMap implements Destroyable {
+public class ComputedStyle extends Style implements Destroyable {
 
-    public int size() {
-        int counter = 0;
-        final Iterator iterator = this.entrySet().iterator();
-        while (iterator.hasNext()) {
-            iterator.next();
-            counter++;
-        }
-        return counter;
-    }
+	/**
+	 * This method retrieves a concrete value(it ignores inherited, transparent
+	 * etc) given a propertyName for any element.
+	 * 
+	 * @param element
+	 * @param propertyName
+	 *            The javascript form of the css property (ie backgroundColor
+	 *            NOT background-color).
+	 * @return The String value of the property or null if it wasnt found.
+	 *         Unless the propertyName is not a valid style some default will
+	 *         always be returned.
+	 */
+	public static String getString(final Element element, final String propertyName) {
+		return StyleHelper.getSupport().getComputedStyleProperty(element, propertyName);
+	}
 
-    public Object put(final Object key, final Object value) {
-        throw new UnsupportedOperationException("put");
-    }
+	public static Colour getColour(final Element element, final String propertyName) {
+		Colour value = null;
+		final String string = ComputedStyle.getString(element, propertyName);
+		if (false == StringHelper.isNullOrEmpty(string)) {
+			value = Colour.parse(string);
+		}
+		return value;
+	}
 
-    public Object remove(final Object key) {
-        throw new UnsupportedOperationException("remove");
-    }
+	public static double getDouble(final Element element, final String propertyName, final CssUnit unit, final double defaultValue) {
+		double value = defaultValue;
+		final String string = ComputedStyle.getString(element, propertyName);
+		if (false == StringHelper.isNullOrEmpty(string)) {
+			value = StyleHelper.convertValue(string, unit);
+		}
+		return value;
+	}
 
-    public Object get(final Object key) {
-        return this.getStylePropertyValue((String) key);
-    }
+	public static int getInteger(final Element element, final String propertyName, final CssUnit unit, final int defaultValue) {
+		int value = defaultValue;
+		final String string = ComputedStyle.getString(element, propertyName);
+		if (false == StringHelper.isNullOrEmpty(string)) {
+			value = (int) StyleHelper.convertValue(string, unit);
+		}
+		return value;
+	}
 
-    /**
-     * Factory method which creates a new StylePropertyValue and populates it with a string value if the computed style property is
-     * available.
-     * 
-     * @param propertyName
-     * @return
-     */
-    protected StylePropertyValue getStylePropertyValue(final String propertyName) {
-        StylePropertyValue value = null;
-        String stringValue = StyleHelper.getComputedStyleProperty(this.getElement(), propertyName);
-        if (false == StringHelper.isNullOrEmpty(stringValue)) {
-            value = new StylePropertyValue();
-            value.setString(stringValue);
-        }
-        return value;
-    }
+	public static String getUrl(final Element element, final String propertyName) {
+		String string = ComputedStyle.getString(element, propertyName);
+		if (false == StringHelper.isNullOrEmpty(string)) {
+			string = StyleHelper.getUrl(string);
+		}
+		return string;
+	}
 
-    public boolean containsKey(final Object key) {
-        return null != this.get(key);
-    }
+	/**
+	 * Factory method which returns a view of all current Styles for the given
+	 * element. The Style object returned must be destroyed when no longer
+	 * needed.
+	 * 
+	 * @param element
+	 * @return
+	 */
+	static public Map get(final Element element) {
+		final ComputedStyle style = new ComputedStyle();
+		style.setElement(element);
+		return style;
+	}
 
-    public Set entrySet() {
-        return new ComputedStyleEntrySet();
-    }
+	final public String getCssText() {
+		return ObjectHelper.getString(this.getElement(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
+	}
 
-    /**
-     * Implements a Set view of all the computed styles belonging to an Element.
-     */
-    class ComputedStyleEntrySet extends AbstractSet {
-        public int size() {
-            int counter = 0;
-            final Iterator iterator = this.iterator();
-            while (iterator.hasNext()) {
-                iterator.next();
-                counter++;
-            }
-            return counter;
-        }
+	final public void setCssText(final String cssText) {
+		throw new UnsupportedOperationException("setCssText");
+	}
 
-        public Iterator iterator() {
-            return new ComputedStyleEntrySetIterator();
-        }
-    }
+	public int size() {
+		int counter = 0;
+		final Iterator iterator = this.entrySet().iterator();
+		while (iterator.hasNext()) {
+			iterator.next();
+			counter++;
+		}
+		return counter;
+	}
 
-    /**
-     * This iterator may be used to visit all computed style entries.
-     */
-    class ComputedStyleEntrySetIterator implements Iterator {
+	protected void putValue(String propertyName, String propertyValue) {
+		throw new UnsupportedOperationException("putValue");
+	}
 
-        {
-            this.setCursor(0);
-        }
+	protected void removeValue(final String propertyName) {
+		throw new UnsupportedOperationException("removeValue");
+	}
 
-        public boolean hasNext() {
-            return this.getCursor() < this.getPropertyNames().length;
-        }
+	public Object get(final Object key) {
+		return this.getStylePropertyValue((String) key);
+	}
 
-        public Object next() {
-            final int cursor = this.getCursor();
-            final String[] propertyNames = this.getPropertyNames();
-            if (cursor >= propertyNames.length) {
-                throw new NoSuchElementException();
-            }
-            final String key = propertyNames[cursor];
-            final Object value = ComputedStyle.this.get(key);
-            this.setCursor(cursor + 1);
-            return new Map.Entry() {
-                public Object getKey() {
-                    return key;
-                }
+	protected String getValue(String propertyName) {
+		return ComputedStyle.getString(this.getElement(), propertyName);
+	}
 
-                public Object getValue() {
-                    return value;
-                }
+	protected String[] getPropertyNames() {
+		return StyleHelper.getComputedStylePropertyNames(this.getElement());
+	}
 
-                public Object setValue(final Object newValue) {
-                    return ComputedStyle.this.put(key, newValue);
-                }
-            };
-        }
+	public void destroy() {
+		this.clearElement();
+	}
 
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
+	/**
+	 * The native element being viewed as a Map
+	 */
+	private Element element;
 
-        /**
-         * An array containing all the property names for the native object.
-         */
-        String[] propertyNames;
+	public Element getElement() {
+		ObjectHelper.checkNotNull("field:element", element);
+		return element;
+	}
 
-        String[] getPropertyNames() {
-            if (false == this.hasPropertyNames()) {
-                this.setPropertyNames(StyleHelper.getComputedStylePropertyNames(ComputedStyle.this.getElement()));
-            }
-            return this.propertyNames;
-        }
+	public void setElement(final Element element) {
+		ObjectHelper.checkNotNull("parameter:element", element);
+		this.element = element;
+	}
 
-        boolean hasPropertyNames() {
-            return null != this.propertyNames;
-        }
-
-        void setPropertyNames(final String[] propertyNames) {
-            this.propertyNames = propertyNames;
-        }
-
-        /**
-         * This cursor points to the next visitable element.
-         */
-        int cursor = 0;
-
-        int getCursor() {
-            return this.cursor;
-        }
-
-        void setCursor(final int cursor) {
-            this.cursor = cursor;
-        }
-    }
-
-    public void destroy() {
-        this.clearElement();
-    }
-
-    /**
-     * The native element being viewed as a Map
-     */
-    private Element element;
-
-    public Element getElement() {
-        ObjectHelper.checkNotNull("field:element", element);
-        return element;
-    }
-
-    public boolean hasElement() {
-        return null != this.element;
-    }
-
-    public void setElement(final Element element) {
-        ObjectHelper.checkNotNull("parameter:element", element);
-        this.element = element;
-    }
-
-    public void clearElement() {
-        this.element = null;
-    }
-
-    public String toString() {
-        return super.toString() + ", element: " + element;
-    }
+	public void clearElement() {
+		this.element = null;
+	}
 }

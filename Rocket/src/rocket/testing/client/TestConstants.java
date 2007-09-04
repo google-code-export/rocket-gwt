@@ -18,25 +18,25 @@ import rocket.style.client.StyleHelper;
 import rocket.widget.client.WidgetConstants;
 
 public class TestConstants extends WidgetConstants {
-    /**
-     * This style is applied to the container element of the InteractiveList {@see rocket.test.client.InteractiveList}
-     */
-    public final static String INTERACTIVE_LIST_STYLE = StyleHelper.buildCompound(ROCKET, "interactiveList");
+	/**
+	 * This style is applied to the container element of the InteractiveList
+	 * {@see rocket.test.client.InteractiveList}
+	 */
+	public final static String INTERACTIVE_LIST_STYLE = StyleHelper.buildCompound(ROCKET, "interactiveList");
 
-    /**
-     * This style is applied to the accompanying log.
-     */
-    public final static String INTERACTIVE_LIST_WIDGET_LOG_STYLE = StyleHelper.buildCompound(INTERACTIVE_LIST_STYLE,
-            "log");
+	/**
+	 * This style is applied to the accompanying log.
+	 */
+	public final static String INTERACTIVE_LIST_WIDGET_LOG_STYLE = StyleHelper.buildCompound(INTERACTIVE_LIST_STYLE, "log");
 
-    /**
-     * This style is applied to the container element of the InteractivePanel {@see rocket.test.client.InteractivePanel}
-     */
-    public final static String INTERACTIVE_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "interactivePanel");
+	/**
+	 * This style is applied to the container element of the InteractivePanel
+	 * {@see rocket.test.client.InteractivePanel}
+	 */
+	public final static String INTERACTIVE_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "interactivePanel");
 
-    /**
-     * This style is applied to the accompanying log.
-     */
-    public final static String INTERACTIVE_PANEL_WIDGET_LOG_STYLE = StyleHelper.buildCompound(INTERACTIVE_PANEL_STYLE,
-            "log");
+	/**
+	 * This style is applied to the accompanying log.
+	 */
+	public final static String INTERACTIVE_PANEL_WIDGET_LOG_STYLE = StyleHelper.buildCompound(INTERACTIVE_PANEL_STYLE, "log");
 }

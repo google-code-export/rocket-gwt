@@ -65,8 +65,8 @@ abstract public class VirtualMethodVisitor {
 					if (Visibility.PRIVATE == visibility) {
 						break;
 					}
+					// different pacakge skip this method.
 					if (Visibility.PACKAGE_PRIVATE == visibility) {
-						// different method skip this method.
 						final Type enclosingType = method.getEnclosingType();
 						if (false == packagee.equals(enclosingType.getPackage())) {
 							break;
@@ -109,6 +109,7 @@ abstract public class VirtualMethodVisitor {
 
 	/**
 	 * Creates a Set that indexes itself on the method signature.
+	 * 
 	 * @return
 	 */
 	protected Set createVisited() {

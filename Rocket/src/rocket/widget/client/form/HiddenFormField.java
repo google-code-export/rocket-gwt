@@ -15,7 +15,7 @@
  */
 package rocket.widget.client.form;
 
-import rocket.dom.client.DomHelper;
+import rocket.dom.client.Dom;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -23,46 +23,46 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * This widget class represents a hidden form field to make manipulation of the value a bit easier.
+ * This widget class represents a hidden form field to make manipulation of the
+ * value a bit easier.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class HiddenFormField extends Widget {
-    public HiddenFormField(final Element element) {
-        super();
+	public HiddenFormField(final Element element) {
+		super();
 
-        this.setElement(element);
-    }
+		this.setElement(element);
+	}
 
-    protected void setElement(final Element element) {
-        DomHelper.checkInput("parameter:element", element, FormConstants.HIDDEN_TYPE);
-        super.setElement(element);
-    }
+	protected void setElement(final Element element) {
+		Dom.checkInput("parameter:element", element, FormConstants.HIDDEN_TYPE);
+		super.setElement(element);
+	}
 
-    public String getName() {
-        return DOM.getAttribute(this.getElement(), "name");
-    }
+	public String getName() {
+		return DOM.getElementProperty(this.getElement(), "name");
+	}
 
-    public void setName(final String name) {
-        StringHelper.checkNotNull("parameter:name", name);
-        DOM.setAttribute(this.getElement(), "name", name);
-    }
+	public void setName(final String name) {
+		StringHelper.checkNotNull("parameter:name", name);
+		DOM.setElementProperty(this.getElement(), "name", name);
+	}
 
-    public String getValue() {
-        return DOM.getAttribute(this.getElement(), "value");
-    }
+	public String getValue() {
+		return DOM.getElementProperty(this.getElement(), "value");
+	}
 
-    public void setValue(final String value) {
-        StringHelper.checkNotNull("parameter:value", value);
-        DOM.setAttribute(this.getElement(), "value", value);
-    }
+	public void setValue(final String value) {
+		StringHelper.checkNotNull("parameter:value", value);
+		DOM.setElementProperty(this.getElement(), "value", value);
+	}
 
-    public boolean equals(final Object other) {
-        return other instanceof HiddenFormField
-                && DOM.compare(this.getElement(), ((HiddenFormField) other).getElement());
-    }
+	public boolean equals(final Object other) {
+		return other instanceof HiddenFormField && DOM.compare(this.getElement(), ((HiddenFormField) other).getElement());
+	}
 
-    public int hashCode() {
-        return this.getElement().hashCode();
-    }
+	public int hashCode() {
+		return this.getElement().hashCode();
+	}
 }

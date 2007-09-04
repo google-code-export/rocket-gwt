@@ -17,6 +17,6 @@ package rocket.beans.test.beans.client.proxyreturnsvoid;
 
 public class ClassWithMethodThatReturnsVoid {
 
-	public void returnsVoid(){
+	public void returnsVoid() {
 	}
 }

@@ -18,10 +18,12 @@ package rocket.beans.test.beans.client.proxyintparameterreturntype;
 import rocket.beans.client.aop.MethodInvocation;
 
 /**
- * This method interceptor does nothing but invoke the next interceptor in the chain.
+ * This method interceptor does nothing but invoke the next interceptor in the
+ * chain.
+ * 
  * @author Miroslav Pokorny
  */
-public class ProxyIntMethodInterceptor implements rocket.beans.client.aop.MethodInterceptor{
+public class ProxyIntMethodInterceptor implements rocket.beans.client.aop.MethodInterceptor {
 
 	public ProxyIntMethodInterceptor() {
 		super();
@@ -31,6 +33,6 @@ public class ProxyIntMethodInterceptor implements rocket.beans.client.aop.Method
 		this.executed = true;
 		return invocation.proceed();
 	}
-	
+
 	public boolean executed = false;
 }

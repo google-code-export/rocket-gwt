@@ -33,65 +33,65 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class BreadcrumbPanelTest implements EntryPoint {
 
-    /**
-     * This is the entry point method.
-     */
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
 
-        final RootPanel rootPanel = RootPanel.get();
-        final BreadcrumbPanel breadcrumbs = new BreadcrumbPanel();
-        breadcrumbs.push("First", new ClickListener() {
-            public void onClick(final Widget sender) {
-                Window.alert("First breadcrumb clicked");
-            }
-        });
+		final RootPanel rootPanel = RootPanel.get();
+		final BreadcrumbPanel breadcrumbs = new BreadcrumbPanel();
+		breadcrumbs.push("First", new ClickListener() {
+			public void onClick(final Widget sender) {
+				Window.alert("First breadcrumb clicked");
+			}
+		});
 
-        breadcrumbs.push("Second", new ClickListener() {
-            public void onClick(final Widget sender) {
-                Window.alert("Second breadcrumb clicked");
-            }
-        });
-        breadcrumbs.push("Third", new ClickListener() {
-            public void onClick(final Widget sender) {
-                Window.alert("Third breadcrumb clicked");
-            }
-        });
-        rootPanel.add(breadcrumbs);
+		breadcrumbs.push("Second", new ClickListener() {
+			public void onClick(final Widget sender) {
+				Window.alert("Second breadcrumb clicked");
+			}
+		});
+		breadcrumbs.push("Third", new ClickListener() {
+			public void onClick(final Widget sender) {
+				Window.alert("Third breadcrumb clicked");
+			}
+		});
+		rootPanel.add(breadcrumbs);
 
-        final Button push = new Button("Push another breadcrumb onto the panel.");
-        push.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                final String text = "breadcrumb-" + new Date();
+		final Button push = new Button("Push another breadcrumb onto the panel.");
+		push.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				final String text = "breadcrumb-" + new Date();
 
-                breadcrumbs.push(text, new ClickListener() {
-                    public void onClick(final Widget sender) {
-                        Window.alert("breadcrumb [" + text + "]clicked");
-                    }
-                });
-            }
-        });
-        rootPanel.add(push);
+				breadcrumbs.push(text, new ClickListener() {
+					public void onClick(final Widget sender) {
+						Window.alert("breadcrumb [" + text + "]clicked");
+					}
+				});
+			}
+		});
+		rootPanel.add(push);
 
-        final Button pop = new Button("Pop last breadcrumb");
-        pop.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                breadcrumbs.pop();
-            }
-        });
-        rootPanel.add(pop);
+		final Button pop = new Button("Pop last breadcrumb");
+		pop.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				breadcrumbs.pop();
+			}
+		});
+		rootPanel.add(pop);
 
-        final Button clear = new Button("Clear all breadcrumbs");
-        clear.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                breadcrumbs.clear();
-            }
-        });
-        rootPanel.add(clear);
-    }
+		final Button clear = new Button("Clear all breadcrumbs");
+		clear.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				breadcrumbs.clear();
+			}
+		});
+		rootPanel.add(clear);
+	}
 }

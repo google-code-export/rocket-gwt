@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxyclasswithfinalpublicmethod;
 
 public class ClassWithFinalPublicMethod {
 
-	final public int add( final int a, final int b ){
+	final public int add(final int a, final int b) {
 		return a + b;
 	}
 }

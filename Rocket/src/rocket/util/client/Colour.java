@@ -26,7 +26,8 @@ import java.util.Map;
 public class Colour {
 
 	/**
-	 * Accepts a colour value as a string and attempts to convert it into an integer value. Currently supported formats include
+	 * Accepts a colour value as a string and attempts to convert it into an
+	 * integer value. Currently supported formats include
 	 * <ul>
 	 * <li>#rgb</li>
 	 * <li>#rrggbb</li>
@@ -72,23 +73,21 @@ public class Colour {
 			}
 
 			// unknown colour value/ format etc.
-			throw new IllegalArgumentException(
-					"Unable to read rgb value from property value[" + value
-							+ "]");
+			throw new IllegalArgumentException("Unable to read rgb value from property value[" + value + "]");
 		}
 
 		return colourValue;
 	}
 
 	/**
-	 * Handles the parsing and conversion of rgb(rr,gg,bbb) triplets into a single integer value.
+	 * Handles the parsing and conversion of rgb(rr,gg,bbb) triplets into a
+	 * single integer value.
 	 * 
 	 * @param value
 	 * @return
 	 */
 	static Colour parseRgbTriplet(final String value) {
-		final String[] triplets = StringHelper.split(value.substring(4, value
-				.length() - 1), ", ", true);
+		final String[] triplets = StringHelper.split(value.substring(4, value.length() - 1), ", ", true);
 		final int red = Integer.parseInt(triplets[0]);
 		final int green = Integer.parseInt(triplets[1]);
 		final int blue = Integer.parseInt(triplets[2]);
@@ -97,7 +96,8 @@ public class Colour {
 	}
 
 	/**
-	 * Handles the parsing and conversion of #rrggbb formatted colour values into an integer
+	 * Handles the parsing and conversion of #rrggbb formatted colour values
+	 * into an integer
 	 * 
 	 * @param value
 	 * @return
@@ -105,13 +105,13 @@ public class Colour {
 	static Colour parseHashRrggbb(final String value) {
 		StringHelper.checkNotEmpty("parameter:value", value);
 
-		final int redGreenBlue = Integer
-				.parseInt(value.substring(1, 1 + 6), 16);
+		final int redGreenBlue = Integer.parseInt(value.substring(1, 1 + 6), 16);
 		return new Colour(redGreenBlue);
 	}
 
 	/**
-	 * Handles the parsing and conversion of #rgb formatted colour values into an integer
+	 * Handles the parsing and conversion of #rgb formatted colour values into
+	 * an integer
 	 * 
 	 * @param value
 	 * @return
@@ -132,7 +132,8 @@ public class Colour {
 	}
 
 	/**
-	 * THis map is used to lookup rgb values for a colour using its name. THe key is the lowercased form of the colour name.
+	 * THis map is used to lookup rgb values for a colour using its name. THe
+	 * key is the lowercased form of the colour name.
 	 */
 	private static Map namedColours;
 
@@ -321,8 +322,7 @@ public class Colour {
 	}
 
 	public String toCssColour() {
-		final int rgb = this.getRed() * 0x10000 + this.getGreen() * 0x100
-				+ this.getBlue();
+		final int rgb = this.getRed() * 0x10000 + this.getGreen() * 0x100 + this.getBlue();
 
 		final String rgbHexString = Integer.toHexString(rgb);
 		final String string = '#' + StringHelper.padLeft(rgbHexString, 6, '0');
@@ -375,8 +375,7 @@ public class Colour {
 		final float otherRatio = 1.0f - mixRatio;
 
 		final int mixedRed = (int) (red * mixRatio + otherRed * otherRatio);
-		final int mixedGreen = (int) (green * mixRatio + otherGreen
-				* otherRatio);
+		final int mixedGreen = (int) (green * mixRatio + otherGreen * otherRatio);
 		final int mixedBlue = (int) (blue * mixRatio + otherBlue * otherRatio);
 
 		return new Colour(mixedRed, mixedGreen, mixedBlue);
@@ -389,8 +388,7 @@ public class Colour {
 	}
 
 	void setRed(final int red) {
-		PrimitiveHelper.checkBetween("parameter:red", red, 0,
-				Constants.COLOUR_COMPONENT_VALUE + 1);
+		PrimitiveHelper.checkBetween("parameter:red", red, 0, Constants.COLOUR_COMPONENT_VALUE + 1);
 		this.red = red;
 	}
 
@@ -401,8 +399,7 @@ public class Colour {
 	}
 
 	void setGreen(final int green) {
-		PrimitiveHelper.checkBetween("parameter:green", green, 0,
-				Constants.COLOUR_COMPONENT_VALUE + 1);
+		PrimitiveHelper.checkBetween("parameter:green", green, 0, Constants.COLOUR_COMPONENT_VALUE + 1);
 		this.green = green;
 	}
 
@@ -413,17 +410,17 @@ public class Colour {
 	}
 
 	void setBlue(final int blue) {
-		PrimitiveHelper.checkBetween("parameter:blue", blue, 0,
-				Constants.COLOUR_COMPONENT_VALUE + 1);
+		PrimitiveHelper.checkBetween("parameter:blue", blue, 0, Constants.COLOUR_COMPONENT_VALUE + 1);
 		this.blue = blue;
 	}
 
-	public int getRgb(){
+	public int getRgb() {
 		return this.getRed() << 16 | this.getGreen() << 8 | this.getBlue();
 	}
-	
+
 	/**
 	 * Converts this colour into a HueSaturationValue.
+	 * 
 	 * @return
 	 */
 	public HueSaturationValue asHueSaturationValue() {
@@ -457,36 +454,33 @@ public class Colour {
 					hue = 240 + 60 * (red - green) / delta;
 					break;
 				}
-				
+
 				break;
 			}
-			if( hue < 0 ){
+			if (hue < 0) {
 				hue = hue + 360;
 			}
 			break;
 		}
-		if( hue == 0 ){
+		if (hue == 0) {
 			hue = 360;
 		}
 
-		return new HueSaturationValue(hue / 360f, saturation, value/ 256f );
+		return new HueSaturationValue(hue / 360f, saturation, value / 256f);
 	}
 
 	public String toString() {
 		return // super.toString() + ", colour:
-		"0x" + StringHelper.padLeft(Integer.toHexString(red), 2, '0')
-				+ StringHelper.padLeft(Integer.toHexString(green), 2, '0')
+		"0x" + StringHelper.padLeft(Integer.toHexString(red), 2, '0') + StringHelper.padLeft(Integer.toHexString(green), 2, '0')
 				+ StringHelper.padLeft(Integer.toHexString(blue), 2, '0');
 	}
 
 	public boolean equals(final Object otherObject) {
-		return otherObject instanceof Colour ? this
-				.equals((Colour) otherObject) : false;
+		return otherObject instanceof Colour ? this.equals((Colour) otherObject) : false;
 	}
 
 	public boolean equals(final Colour otherColour) {
-		return this.getRed() == otherColour.getRed()
-				&& this.getGreen() == otherColour.getGreen()
+		return otherColour == null ? false : this.getRed() == otherColour.getRed() && this.getGreen() == otherColour.getGreen()
 				&& this.getBlue() == otherColour.getBlue();
 	}
 

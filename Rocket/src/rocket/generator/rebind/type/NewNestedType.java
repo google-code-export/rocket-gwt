@@ -38,8 +38,8 @@ public interface NewNestedType extends NewType {
 	void setFinal(boolean finall);
 
 	void setStatic(boolean staticc);
-	
+
 	Visibility getVisibility();
-	
-	void setVisibility( Visibility visibility );
+
+	void setVisibility(Visibility visibility);
 }

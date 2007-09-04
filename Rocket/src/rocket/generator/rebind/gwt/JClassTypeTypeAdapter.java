@@ -42,30 +42,30 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class JClassTypeTypeAdapter extends AbstractType {
 
-	public Visibility getVisibility(){
+	public Visibility getVisibility() {
 		Visibility visibility = null;
-		
-		while( true ){
+
+		while (true) {
 			final JClassType type = this.getJClassType();
-			if( type.isPrivate() ){
+			if (type.isPrivate()) {
 				visibility = Visibility.PRIVATE;
 				break;
 			}
-			if( type.isProtected() ){
+			if (type.isProtected()) {
 				visibility = Visibility.PROTECTED;
 				break;
 			}
-			if( type.isPublic() ){
+			if (type.isPublic()) {
 				visibility = Visibility.PUBLIC;
 				break;
 			}
 			visibility = Visibility.PACKAGE_PRIVATE;
 			break;
 		}
-		
+
 		return visibility;
 	}
-	
+
 	public String getSimpleName() {
 		return this.getJClassType().getSimpleSourceName();
 	}
@@ -141,10 +141,10 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return adapter;
 	}
 
-	public boolean hasNoArgumentsConstructor(){
+	public boolean hasNoArgumentsConstructor() {
 		return this.getJClassType().isDefaultInstantiable();
 	}
-	
+
 	/**
 	 * Factory method which creates a set of fields.
 	 */

@@ -19,7 +19,6 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,208 +27,217 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 /**
  * A Grid uses a Flextable to hold widgets from its enclosed WidgetProvider
  * 
- * Whenever any of the properties such as rows/columns/cursor are updated the widget redraws itself,
+ * Whenever any of the properties such as rows/columns/cursor are updated the
+ * widget redraws itself,
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class Grid extends Composite {
 
-    public Grid() {
-        this.setAutoRedraw(false);
-        
-        final FlexTable flexTable = this.createFlexTable();
-        this.setFlexTable(flexTable);
-        this.initWidget(flexTable);
-    }
+	public Grid() {
+		this.setAutoRedraw(false);
+	}
 
-    // GRID :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    private boolean autoRedraw;
+	protected Widget createWidget() {
+		final FlexTable flexTable = this.createFlexTable();
+		this.setFlexTable(flexTable);
+		return flexTable;
+	}
 
-    public boolean isAutoRedraw() {
-        return this.autoRedraw;
-    }
+	public int getSunkEventsBitMask() {
+		return 0;
+	}
 
-    public void setAutoRedraw(final boolean autoRedraw) {
-        this.autoRedraw = autoRedraw;
-    }
+	// GRID :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	private boolean autoRedraw;
 
-    protected void redrawIfAutoEnabled() {
-        if (this.isAutoRedraw()) {
-            this.redraw();
-        }
-    }
+	public boolean isAutoRedraw() {
+		return this.autoRedraw;
+	}
 
-    /**
-     * Refreshes the grid using the WidgetProvider to fill in each cell.
-     */
-    public void redraw() {
-        final FlexTable table = this.getFlexTable();
-        table.clear();
+	public void setAutoRedraw(final boolean autoRedraw) {
+		this.autoRedraw = autoRedraw;
+	}
 
-        final WidgetProvider provider = this.getWidgetProvider();
+	protected void redrawIfAutoEnabled() {
+		if (this.isAutoRedraw()) {
+			this.redraw();
+		}
+	}
 
-        final int rows = this.getRows();
-        final int columns = this.getColumns();
+	/**
+	 * Refreshes the grid using the WidgetProvider to fill in each cell.
+	 */
+	public void redraw() {
+		final FlexTable table = this.getFlexTable();
+		table.clear();
 
-        final int first = provider.getFirst();
-        final int last = provider.getLast();
-        final int cursor = this.getCursor();
+		final WidgetProvider provider = this.getWidgetProvider();
 
-        final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
+		final int rows = this.getRows();
+		final int columns = this.getColumns();
 
-        int lastValidIndex = Integer.MIN_VALUE;
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                Widget cellWidget = null;
-                final int cellIndex = r * columns + c + cursor;
+		final int first = provider.getFirst();
+		final int last = provider.getLast();
+		final int cursor = this.getCursor();
 
-                if (cellIndex < first || cellIndex >= last) {
-                    cellWidget = this.createFiller();
-                } else {
-                    cellWidget = provider.getWidget(cellIndex);
-                    lastValidIndex = cellIndex;
-                }
-                cellFormatter.addStyleName(r, c, WidgetConstants.GRID_CELL_STYLE);
-                table.setWidget(r, c, cellWidget);
-            }
-        }
+		final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 
-        this.setLastValidIndex(lastValidIndex);
-    }
+		int lastValidIndex = Integer.MIN_VALUE;
+		for (int r = 0; r < rows; r++) {
+			for (int c = 0; c < columns; c++) {
+				Widget cellWidget = null;
+				final int cellIndex = r * columns + c + cursor;
 
-    /**
-     * This flexTable is the table that will display the grid of widgets
-     */
-    private FlexTable flexTable;
+				if (cellIndex < first || cellIndex >= last) {
+					cellWidget = this.createFiller();
+				} else {
+					cellWidget = provider.getWidget(cellIndex);
+					lastValidIndex = cellIndex;
+				}
+				cellFormatter.addStyleName(r, c, WidgetConstants.GRID_CELL_STYLE);
+				table.setWidget(r, c, cellWidget);
+			}
+		}
 
-    protected FlexTable getFlexTable() {
-        ObjectHelper.checkNotNull("field:flexTable", flexTable);
-        return flexTable;
-    }
+		this.setLastValidIndex(lastValidIndex);
+	}
 
-    protected boolean hasFlexTable() {
-        return null != this.flexTable;
-    }
+	/**
+	 * This flexTable is the table that will display the grid of widgets
+	 */
+	private FlexTable flexTable;
 
-    protected void setFlexTable(final FlexTable flexTable) {
-        ObjectHelper.checkNotNull("parameter:flexTable", flexTable);
-        this.flexTable = flexTable;
-    }
+	protected FlexTable getFlexTable() {
+		ObjectHelper.checkNotNull("field:flexTable", flexTable);
+		return flexTable;
+	}
 
-    protected FlexTable createFlexTable() {
-        final FlexTable table = new FlexTable();
-        table.setStyleName(WidgetConstants.GRID_STYLE);
-        return table;
-    }
+	protected boolean hasFlexTable() {
+		return null != this.flexTable;
+	}
 
-    // GRID ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	protected void setFlexTable(final FlexTable flexTable) {
+		ObjectHelper.checkNotNull("parameter:flexTable", flexTable);
+		this.flexTable = flexTable;
+	}
 
-    /**
-     * The pointer which indexes the first visible item from the widgetprovider
-     */
-    private int cursor;
+	protected FlexTable createFlexTable() {
+		final FlexTable table = new FlexTable();
+		table.setStyleName(WidgetConstants.GRID_STYLE);
+		return table;
+	}
 
-    public int getCursor() {
-        return this.cursor;
-    }
+	// GRID ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    public void setCursor(final int cursor) {
-        this.cursor = cursor;
+	/**
+	 * The pointer which indexes the first visible item from the widgetprovider
+	 */
+	private int cursor;
 
-        this.redrawIfAutoEnabled();
-    }
+	public int getCursor() {
+		return this.cursor;
+	}
 
-    /**
-     * The number of visible rows
-     */
-    private int rows;
+	public void setCursor(final int cursor) {
+		this.cursor = cursor;
 
-    public int getRows() {
-        PrimitiveHelper.checkGreaterThanOrEqual("field:rows", rows, 0);
-        return this.rows;
-    }
+		this.redrawIfAutoEnabled();
+	}
 
-    public void setRows(final int rows) {
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:rows", rows, 0);
-        this.rows = rows;
-        this.redrawIfAutoEnabled();
-    }
+	/**
+	 * The number of visible rows
+	 */
+	private int rows;
 
-    /**
-     * The number of visible columns
-     */
-    private int columns;
+	public int getRows() {
+		PrimitiveHelper.checkGreaterThanOrEqual("field:rows", rows, 0);
+		return this.rows;
+	}
 
-    public int getColumns() {
-        PrimitiveHelper.checkGreaterThanOrEqual("field:columns", columns, 0);
-        return this.columns;
-    }
+	public void setRows(final int rows) {
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:rows", rows, 0);
+		this.rows = rows;
+		this.redrawIfAutoEnabled();
+	}
 
-    public void setColumns(final int columns) {
-        PrimitiveHelper.checkGreaterThanOrEqual("parameter:columns", columns, 0);
-        this.columns = columns;
-        this.redrawIfAutoEnabled();
-    }
+	/**
+	 * The number of visible columns
+	 */
+	private int columns;
 
-    /**
-     * This html is used to fill in missing grid cells. A missing cell is where a particular widget is not available for a cell because
-     * there are more grid cells than the WidgetProvider can give.
-     */
-    private String filler;
+	public int getColumns() {
+		PrimitiveHelper.checkGreaterThanOrEqual("field:columns", columns, 0);
+		return this.columns;
+	}
 
-    public String getFiller() {
-        StringHelper.checkNotNull("field:filler", filler);
-        return this.filler;
-    }
+	public void setColumns(final int columns) {
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:columns", columns, 0);
+		this.columns = columns;
+		this.redrawIfAutoEnabled();
+	}
 
-    public void setFiller(final String filler) {
-        StringHelper.checkNotNull("parameter:filler", filler);
-        this.filler = filler;
-        this.redrawIfAutoEnabled();
-    }
+	/**
+	 * This html is used to fill in missing grid cells. A missing cell is where
+	 * a particular widget is not available for a cell because there are more
+	 * grid cells than the WidgetProvider can give.
+	 */
+	private String filler;
 
-    protected Widget createFiller() {
-        final HTML html = new HTML(this.getFiller());
-        html.addStyleName(WidgetConstants.GRID_FILLER_STYLE);
-        return html;
-    }
+	public String getFiller() {
+		StringHelper.checkNotNull("field:filler", filler);
+		return this.filler;
+	}
 
-    /**
-     * The widgetProvider being wrapped.
-     */
-    private WidgetProvider widgetProvider;
+	public void setFiller(final String filler) {
+		StringHelper.checkNotNull("parameter:filler", filler);
+		this.filler = filler;
+		this.redrawIfAutoEnabled();
+	}
 
-    public WidgetProvider getWidgetProvider() {
-        ObjectHelper.checkNotNull("field:widgetProvider", widgetProvider);
-        return widgetProvider;
-    }
+	protected Widget createFiller() {
+		final HTML html = new HTML(this.getFiller());
+		html.addStyleName(WidgetConstants.GRID_FILLER_STYLE);
+		return html;
+	}
 
-    public void setWidgetProvider(final WidgetProvider widgetProvider) {
-        ObjectHelper.checkNotNull("parameter:widgetProvider", widgetProvider);
-        this.widgetProvider = widgetProvider;
-        redrawIfAutoEnabled();
-    }
+	/**
+	 * The widgetProvider being wrapped.
+	 */
+	private WidgetProvider widgetProvider;
 
-    /**
-     * Because a grid may be larger than the number of widgets that may be supplied by a WIdgetProvider this method provides a means of
-     * knowing the true actual last valid index.
-     */
-    private int lastValidIndex;
+	public WidgetProvider getWidgetProvider() {
+		ObjectHelper.checkNotNull("field:widgetProvider", widgetProvider);
+		return widgetProvider;
+	}
 
-    public int getLastValidIndex() {
-        return this.lastValidIndex;
-    }
+	public void setWidgetProvider(final WidgetProvider widgetProvider) {
+		ObjectHelper.checkNotNull("parameter:widgetProvider", widgetProvider);
+		this.widgetProvider = widgetProvider;
+		redrawIfAutoEnabled();
+	}
 
-    protected void setLastValidIndex(final int lastValidIndex) {
-        this.lastValidIndex = lastValidIndex;
-    }
+	/**
+	 * Because a grid may be larger than the number of widgets that may be
+	 * supplied by a WIdgetProvider this method provides a means of knowing the
+	 * true actual last valid index.
+	 */
+	private int lastValidIndex;
 
-    protected void clearLastValidIndex() {
-        this.lastValidIndex = Integer.MIN_VALUE;
-    }
+	public int getLastValidIndex() {
+		return this.lastValidIndex;
+	}
 
-    public String toString() {
-        return super.toString() + ", cursor: " + cursor + ", rows: " + rows + ", columns: " + columns + ", filler["
-                + filler + "], widgetProvider: " + widgetProvider;
-    }
+	protected void setLastValidIndex(final int lastValidIndex) {
+		this.lastValidIndex = lastValidIndex;
+	}
+
+	protected void clearLastValidIndex() {
+		this.lastValidIndex = Integer.MIN_VALUE;
+	}
+
+	public String toString() {
+		return super.toString() + ", cursor: " + cursor + ", rows: " + rows + ", columns: " + columns + ", filler[" + filler
+				+ "], widgetProvider: " + widgetProvider;
+	}
 }

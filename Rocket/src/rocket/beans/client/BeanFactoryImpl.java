@@ -31,20 +31,21 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	public BeanFactoryImpl() {
 		super();
 
-		this.setFactoryBeans( this.buildFactoryBeans() );
+		this.setFactoryBeans(this.buildFactoryBeans());
 		this.prepareFactoryBeans();
 	}
-	
+
 	/**
-	 * Visits all factory beans setting the bean factory for BeanFactoryAware objects.
+	 * Visits all factory beans setting the bean factory for BeanFactoryAware
+	 * objects.
 	 */
-	protected void prepareFactoryBeans(){
+	protected void prepareFactoryBeans() {
 		final Iterator factoryBeans = this.getFactoryBeans().values().iterator();
-		while( factoryBeans.hasNext() ){
+		while (factoryBeans.hasNext()) {
 			final Object factoryBean = factoryBeans.next();
-			if( factoryBean instanceof BeanFactoryAware ){
+			if (factoryBean instanceof BeanFactoryAware) {
 				final BeanFactoryAware beanFactoryAware = (BeanFactoryAware) factoryBean;
-				beanFactoryAware.setBeanFactory( this );
+				beanFactoryAware.setBeanFactory(this);
 			}
 		}
 	}

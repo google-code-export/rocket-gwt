@@ -496,3 +496,35 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.33.zip
 * Added a new viewport widget which may be used to create a viewport of tiles similar to that found in Google Map's. The user may drag tiles about, with tiles are only 
   fetched for new tiles that appear due to scrolling.
 * Fixed proxying (aop) of non final public methods (eg wait() ) belonging to java.lang.Object.
+
+0.34 4 September 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.34.zip
+
+* Added a new DatePicker widget.
+* Added new method to test float/doubles for equality including a epsilon value.
+* Added range checking to Colour red, green and blue setters.
+* Added new HueSaturationValue class which can be used to manipulate a colour expressed as hue/saturation/value. 
+  Methods are available that allow conversion to and from Colour.
+* Improved SortableTable performance so that it doesnt request widgets for each cell each time it redraws itself. Widgets are still detached and 
+  reattached during a redraw. The sorted list of rows is now read/writable.
+* The ascending / descending url which is added to sortable columns is now an abstract method rather than two properties.
+* Introduced a new Composite which adds many new features to make it easier to start authoring a new composite widget. All the basic event Listeners 
+  collections are already included. The new composite widget provides some template methods.
+* Refactored existing widgets to use new Composite/Panel classes. Most widgets now receive all/most of the basic events.
+* Fixed bug with SuperSpinner where the wrong factory was being called and presented as the down value widget.
+* Fixed a few broken demos.
+* Made a few public widget helper classes package private.
+* Dropped Helper from a helper class names, BrowserHelper > Browser, DomHelper > Dom, DragNDropHelper > DragNDrop, StackTraceHelper > StackTrace
+* Also several methods to Browser isSafari, isOpera and getMousePageX/Y within an event.
+* Deleted CookieHelper and moved static methods to Cookies.
+* Renamed DragNDropListenerImpl to DragNDropListenerAdapter
+* Big reorganisation of methods belonging to StyleHelper. xxxComputedXXX methods have been moved to ComputedStyle, xxxInlineXXX methods have been moved to 
+  InlineStyle.
+* Deleted SelectionHelper and moved static methods to Selection (singleton getter etc).
+* Fixed Selection.delete() for Safari.
+* Fixed Slider widgets background click behaviour so the handle smoothly glides towards the mouse cursor.
+* Renamed StackTrace.getStackTraceAsString to asString
+* Added new HorizontalVerticalSlider.
+* Deprecated Life widget which was more of a demo rather than a reusable Widget
+* Verified to work with GWT 1.4.60 release.

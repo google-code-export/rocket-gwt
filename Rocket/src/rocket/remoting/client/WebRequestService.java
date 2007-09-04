@@ -19,5 +19,5 @@ import com.google.gwt.user.client.rpc.RemoteService;
 
 public interface WebRequestService extends RemoteService {
 
-    WebResponse doRequest(WebRequest request) throws FailedWebRequestException;
+	WebResponse doRequest(WebRequest request) throws FailedWebRequestException;
 }

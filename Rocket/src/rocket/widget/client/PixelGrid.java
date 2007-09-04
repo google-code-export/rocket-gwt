@@ -18,15 +18,15 @@ package rocket.widget.client;
 import rocket.util.client.Colour;
 
 public interface PixelGrid {
-    Colour getColour(int x, int y);
+	Colour getColour(int x, int y);
 
-    void setColour(int x, int y, Colour colour);
+	void setColour(int x, int y, Colour colour);
 
-    int getColumns();
+	int getColumns();
 
-    void setColumns(int columns);
+	void setColumns(int columns);
 
-    int getRows();
+	int getRows();
 
-    void setRows(int rows);
+	void setRows(int rows);
 }

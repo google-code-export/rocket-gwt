@@ -20,110 +20,114 @@ import rocket.util.client.StringHelper;
 
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A menu item is an item that may appear in a list which may be clicked if its not disabled. When
+ * A menu item is an item that may appear in a list which may be clicked if its
+ * not disabled. When
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class MenuItem extends AbstractMenuItem {
 
-    public MenuItem() {
-        super();
+	public MenuItem() {
+		super();
+	}
 
-        final HTML html = this.createHtml();         
-        this.setHtml(html);
-        this.initWidget( html );
-    }
+	protected Widget createWidget() {
+		final HTML html = this.createHtml();
+		this.setHtml(html);
+		return html;
+	}
 
-    // ACTIONS :::::::::::::::::::::::::::::::::::::::::::::::
+	// ACTIONS :::::::::::::::::::::::::::::::::::::::::::::::
 
-    public void open() {
-        final MenuList menuList = this.getParentMenuList();
+	public void open() {
+		final MenuList menuList = this.getParentMenuList();
 
-        final Menu menu = menuList.getMenu();
-        final MenuListenerCollection listeners = menu.getMenuListeners();
-        if (listeners.fireBeforeMenuOpened(this)) {
-            listeners.fireMenuOpened(this);
-        }
-        menu.hide();
-    }
+		final Menu menu = menuList.getMenu();
+		final MenuListenerCollection listeners = menu.getMenuListeners();
+		if (listeners.fireBeforeMenuOpened(this)) {
+			listeners.fireMenuOpened(this);
+		}
+		menu.hide();
+	}
 
-    public void hide() {
-        this.removeHighlight();
-    }
+	public void hide() {
+		this.removeHighlight();
+	}
 
-    protected String getSelectedStyle() {
-        return MenuConstants.MENU_ITEM_SELECTED_STYLE;
-    }
+	protected String getSelectedStyle() {
+		return Constants.MENU_ITEM_SELECTED_STYLE;
+	}
 
-    protected String getDisabledStyle() {
-        return MenuConstants.MENU_ITEM_DISABLED_STYLE;
-    }
+	protected String getDisabledStyle() {
+		return Constants.MENU_ITEM_DISABLED_STYLE;
+	}
 
-    // EVENT HANDLING ::::::::::::::::::::::::::::::::::::
+	// EVENT HANDLING ::::::::::::::::::::::::::::::::::::
 
-    /**
-     * This event is only fired if the MenuItem is not disabled.
-     */
-    protected void handleMouseClick(final Event event) {
-        if (false == this.isDisabled()) {
-            this.open();
-        }
-    }
+	/**
+	 * This event is only fired if the MenuItem is not disabled.
+	 */
+	protected void handleMouseClick(final Event event) {
+		if (false == this.isDisabled()) {
+			this.open();
+		}
+	}
 
-    /**
-     * Highlights this widget
-     */
-    protected void handleMouseOver(final Event event) {
-        if (false == this.isDisabled()) {
-            this.addHighlight();
-        }
-    }
+	/**
+	 * Highlights this widget
+	 */
+	protected void handleMouseOver(final Event event) {
+		if (false == this.isDisabled()) {
+			this.addHighlight();
+		}
+	}
 
-    /**
-     * Unhighlights this widget.
-     */
-    protected void handleMouseOut(final Event event) {
-        if (false == this.isDisabled()) {
-            this.removeHighlight();
-        }
-    }
+	/**
+	 * Unhighlights this widget.
+	 */
+	protected void handleMouseOut(final Event event) {
+		if (false == this.isDisabled()) {
+			this.removeHighlight();
+		}
+	}
 
-    // COMPOSITE
-    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public String getText() {
-        return this.getHtml().getText();
-    }
+	// COMPOSITE
+	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	public String getText() {
+		return this.getHtml().getText();
+	}
 
-    public void setText(final String text) {
-        StringHelper.checkNotEmpty("parameter:text", text);
-        this.getHtml().setText(text);
-    }
+	public void setText(final String text) {
+		StringHelper.checkNotEmpty("parameter:text", text);
+		this.getHtml().setText(text);
+	}
 
-    /**
-     * A TEXT widget contains the text or label for this item.
-     */
-    private HTML html;
+	/**
+	 * A TEXT widget contains the text or label for this item.
+	 */
+	private HTML html;
 
-    protected HTML getHtml() {
-        ObjectHelper.checkNotNull("field:html", html);
-        return html;
-    }
+	protected HTML getHtml() {
+		ObjectHelper.checkNotNull("field:html", html);
+		return html;
+	}
 
-    protected void setHtml(final HTML html) {
-        ObjectHelper.checkNotNull("parameter:html", html);
-        this.html = html;
-    }
+	protected void setHtml(final HTML html) {
+		ObjectHelper.checkNotNull("parameter:html", html);
+		this.html = html;
+	}
 
-    protected HTML createHtml() {
-        final HTML html = new HTML();
-        html.setWidth("100%");
-        html.setStyleName(MenuConstants.MENU_ITEM_STYLE);
-        return html;
-    }
+	protected HTML createHtml() {
+		final HTML html = new HTML();
+		html.setWidth("100%");
+		html.setStyleName(Constants.MENU_ITEM_STYLE);
+		return html;
+	}
 
-    public String toString() {
-        return ObjectHelper.defaultToString(this) + ", text[" + this.getText() + "]";
-    }
+	public String toString() {
+		return ObjectHelper.defaultToString(this) + ", text[" + this.getText() + "]";
+	}
 }

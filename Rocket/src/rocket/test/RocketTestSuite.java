@@ -32,13 +32,12 @@ import rocket.beans.test.beans.client.BeansGwtTestCase;
 import rocket.collection.test.IteratorViewTestCase;
 import rocket.collection.test.SkippingIteratorTestCase;
 import rocket.collection.test.VisitRememberingIteratorTestCase;
-import rocket.cookie.test.cookies.CookiesGwtTestCase;
-import rocket.generator.test.CollectionTemplatedCodeBlockTestCase;
-import rocket.generator.test.TypeTestCase;
 import rocket.generator.test.AllMethodsVisitorTestCase;
-import rocket.generator.test.MethodTestCase;
+import rocket.generator.test.CollectionTemplatedCodeBlockTestCase;
 import rocket.generator.test.GeneratorHelperTestCase;
+import rocket.generator.test.MethodTestCase;
 import rocket.generator.test.StringBufferSourceWriterTestCase;
+import rocket.generator.test.TypeTestCase;
 import rocket.generator.test.VirtualMethodTestCase;
 import rocket.generator.test.generator.client.GeneratorGwtTestCase;
 import rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockGwtTestCase;
@@ -52,79 +51,83 @@ import rocket.text.test.NamedPlaceHolderReplacerTestCase;
 import rocket.util.test.Base64EncoderTestCase;
 import rocket.util.test.ColourTestCase;
 import rocket.util.test.HttpHelperTestCase;
+import rocket.util.test.HueSaturationValueTestCase;
 import rocket.util.test.StringHelperTestCase;
 import rocket.util.test.ThrowableHelperTestCase;
-import rocket.util.test.stacktracehelper.test.StackTraceHelperGwtTestCase;
+import rocket.util.test.stacktrace.test.StackTraceGwtTestCase;
+import rocket.widget.test.form.FormElementListGwtTestCase;
 import rocket.widget.test.htmltemplatefactory.client.HtmlTemplateFactoryGwtTestCase;
 
 /**
  * TestSuite that executes all unit tests.
+ * 
  * @author Miroslav Pokorny
  */
 public class RocketTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket");
-		
+
 		// rocket.beans
 		suite.addTestSuite(SingletonFactoryBeanTestCase.class);
 		suite.addTestSuite(BeanFactoryTestCase.class);
 		suite.addTestSuite(PrototypeFactoryBeanTestCase.class);
-		suite.addTestSuite(PlaceHolderResolverTestCase.class );
-		suite.addTestSuite(InterceptorChainTestCase.class );
-		suite.addTestSuite(AfterReturningAdviceMethodInterceptorTestCase.class );
-		suite.addTestSuite(BeforeAdviceMethodInterceptorTestCase.class );
-		suite.addTestSuite(AfterThrowingAdviceMethodInterceptorTestCase.class );
-		suite.addTestSuite(AfterFinallyAdviceMethodInterceptorTestCase.class );
-		suite.addTestSuite(MethodMatcherTestCase.class );
-		suite.addTestSuite(ProxyFactoryBeanTestCase.class );
-		
-		suite.addTestSuite(BeansGwtTestCase.class );
-		
+		suite.addTestSuite(PlaceHolderResolverTestCase.class);
+		suite.addTestSuite(InterceptorChainTestCase.class);
+		suite.addTestSuite(AfterReturningAdviceMethodInterceptorTestCase.class);
+		suite.addTestSuite(BeforeAdviceMethodInterceptorTestCase.class);
+		suite.addTestSuite(AfterThrowingAdviceMethodInterceptorTestCase.class);
+		suite.addTestSuite(AfterFinallyAdviceMethodInterceptorTestCase.class);
+		suite.addTestSuite(MethodMatcherTestCase.class);
+		suite.addTestSuite(ProxyFactoryBeanTestCase.class);
+
+		suite.addTestSuite(BeansGwtTestCase.class);
+
 		// rocket.collection
 		suite.addTestSuite(SkippingIteratorTestCase.class);
 		suite.addTestSuite(VisitRememberingIteratorTestCase.class);
 		suite.addTestSuite(IteratorViewTestCase.class);
-		
+
 		// rocket.cookie.*
-		//suite.addTestSuite(CookiesGwtTestCase.class );
-		
+		// suite.addTestSuite(CookiesGwtTestCase.class );
+
 		// rocket.generator
-		suite.addTestSuite(AllMethodsVisitorTestCase.class );
-		suite.addTestSuite(MethodTestCase.class );
-		suite.addTestSuite(GeneratorHelperTestCase.class );
-		suite.addTestSuite(StringBufferSourceWriterTestCase.class );
-		suite.addTestSuite(GeneratorGwtTestCase.class );
-		suite.addTestSuite(TypeTestCase.class );
-		suite.addTestSuite(TemplatedFileCodeBlockGwtTestCase.class );
-		suite.addTestSuite(VirtualMethodTestCase.class );
-		suite.addTestSuite(CollectionTemplatedCodeBlockTestCase.class );
-		
+		suite.addTestSuite(AllMethodsVisitorTestCase.class);
+		suite.addTestSuite(MethodTestCase.class);
+		suite.addTestSuite(GeneratorHelperTestCase.class);
+		suite.addTestSuite(StringBufferSourceWriterTestCase.class);
+		suite.addTestSuite(GeneratorGwtTestCase.class);
+		suite.addTestSuite(TypeTestCase.class);
+		suite.addTestSuite(TemplatedFileCodeBlockGwtTestCase.class);
+		suite.addTestSuite(VirtualMethodTestCase.class);
+		suite.addTestSuite(CollectionTemplatedCodeBlockTestCase.class);
+
 		// rocket.remoting
-		suite.addTestSuite(RemoteJsonServiceGwtTestCase.class );
-		
+		suite.addTestSuite(RemoteJsonServiceGwtTestCase.class);
+
 		// rocket.style
-		suite.addTestSuite(ComputedStyleGwtTestCase.class );
-		suite.addTestSuite(DynamicExpressionTestCase.class );
-		suite.addTestSuite(InlineStyleGwtTestCase.class );
-		suite.addTestSuite(StylePropertyValueGwtTestCase.class );
-		
+		suite.addTestSuite(ComputedStyleGwtTestCase.class);
+		suite.addTestSuite(DynamicExpressionTestCase.class);
+		suite.addTestSuite(InlineStyleGwtTestCase.class);
+		suite.addTestSuite(StylePropertyValueGwtTestCase.class);
+
 		// rocket.text
-		suite.addTestSuite(IndexedPlaceHolderReplacerTestCase.class );
-		suite.addTestSuite(NamedPlaceHolderReplacerTestCase.class );
-		
+		suite.addTestSuite(IndexedPlaceHolderReplacerTestCase.class);
+		suite.addTestSuite(NamedPlaceHolderReplacerTestCase.class);
+
 		// rocket.util
 		suite.addTestSuite(HttpHelperTestCase.class);
 		suite.addTestSuite(Base64EncoderTestCase.class);
 		suite.addTestSuite(ColourTestCase.class);
+		suite.addTestSuite(HueSaturationValueTestCase.class);
 		suite.addTestSuite(ThrowableHelperTestCase.class);
 		suite.addTestSuite(StringHelperTestCase.class);
-		suite.addTestSuite(StackTraceHelperGwtTestCase.class);		
-				
+		suite.addTestSuite(StackTraceGwtTestCase.class);
+
 		// rocket.widget
-		suite.addTestSuite( HtmlTemplateFactoryGwtTestCase.class);		
-		
+		suite.addTestSuite(FormElementListGwtTestCase.class);
+		suite.addTestSuite(HtmlTemplateFactoryGwtTestCase.class);
+
 		return suite;
 	}
 }
-

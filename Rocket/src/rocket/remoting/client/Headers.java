@@ -31,68 +31,68 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 public class Headers implements IsSerializable {
 
-    public Headers() {
-        this.setMultiValueMap(new MultiValueMap());
-    }
+	public Headers() {
+		this.setMultiValueMap(new MultiValueMap());
+	}
 
-    /**
-     * A special map that stores one or more values for a key.
-     */
-    private MultiValueMap multiValueMap;
+	/**
+	 * A special map that stores one or more values for a key.
+	 */
+	private MultiValueMap multiValueMap;
 
-    protected MultiValueMap getMultiValueMap() {
-        ObjectHelper.checkNotNull("field:map", multiValueMap);
+	protected MultiValueMap getMultiValueMap() {
+		ObjectHelper.checkNotNull("field:map", multiValueMap);
 
-        return multiValueMap;
-    }
+		return multiValueMap;
+	}
 
-    protected void setMultiValueMap(final MultiValueMap multiValueMap) {
-        ObjectHelper.checkNotNull("parameter:multiValueMap", multiValueMap);
+	protected void setMultiValueMap(final MultiValueMap multiValueMap) {
+		ObjectHelper.checkNotNull("parameter:multiValueMap", multiValueMap);
 
-        this.multiValueMap = multiValueMap;
-    }
+		this.multiValueMap = multiValueMap;
+	}
 
-    public boolean contains(final String name) {
-        return this.getMultiValueMap().contains(name.toLowerCase());
-    }
+	public boolean contains(final String name) {
+		return this.getMultiValueMap().contains(name.toLowerCase());
+	}
 
-    public String getValue(final String name) {
-        return (String) this.getMultiValueMap().getFirstValue(name.toLowerCase());
-    }
+	public String getValue(final String name) {
+		return (String) this.getMultiValueMap().getFirstValue(name.toLowerCase());
+	}
 
-    protected List getValueAsList(final String name) {
-        StringHelper.checkNotEmpty("parameter:name", name);
-        return (List) this.getMultiValueMap().getValuesList(name.toLowerCase());
-    }
+	protected List getValueAsList(final String name) {
+		StringHelper.checkNotEmpty("parameter:name", name);
+		return (List) this.getMultiValueMap().getValuesList(name.toLowerCase());
+	}
 
-    public String[] getValues(final String name) {
-        final Object[] values = this.getMultiValueMap().getValues(name.toLowerCase());
-        String[] array = null;
-        if (null != values) {
-            final int size = values.length;
-            array = new String[size];
-            for (int i = 0; i < size; i++) {
-                array[i] = (String) values[i];
-            }
-        }
-        return array;
-    }
+	public String[] getValues(final String name) {
+		final Object[] values = this.getMultiValueMap().getValues(name.toLowerCase());
+		String[] array = null;
+		if (null != values) {
+			final int size = values.length;
+			array = new String[size];
+			for (int i = 0; i < size; i++) {
+				array[i] = (String) values[i];
+			}
+		}
+		return array;
+	}
 
-    public void add(final String name, final String value) {
-        StringHelper.checkNotEmpty("parameter:name", name);
+	public void add(final String name, final String value) {
+		StringHelper.checkNotEmpty("parameter:name", name);
 
-        this.getMultiValueMap().add(name.toLowerCase(), value);
-    }
+		this.getMultiValueMap().add(name.toLowerCase(), value);
+	}
 
-    public Iterator names() {
-        return this.getMultiValueMap().keys();
-    }
+	public Iterator names() {
+		return this.getMultiValueMap().keys();
+	}
 
-    public void clear() {
-        this.getMultiValueMap().clear();
-    }
+	public void clear() {
+		this.getMultiValueMap().clear();
+	}
 
-    public String toString() {
-        return super.toString() + ", multiValueMap:" + multiValueMap;
-    }
+	public String toString() {
+		return super.toString() + ", multiValueMap:" + multiValueMap;
+	}
 }

@@ -17,11 +17,11 @@ package rocket.beans.test.beans.client.proxytargetthrowsuncheckedexception;
 
 public class ClassWithMethodThatThrowsUncheckedException {
 
-	public void throwUncheckedException() throws UncheckedException{
+	public void throwUncheckedException() throws UncheckedException {
 		throw new UncheckedException();
 	}
 
-	public void unadvicedThrowUncheckedException() throws UncheckedException{
+	public void unadvicedThrowUncheckedException() throws UncheckedException {
 		throw new UncheckedException();
 	}
 }

@@ -19,56 +19,61 @@ import rocket.widget.client.DivPanel;
 
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A RightSideAccordion compromises a menu on the right with the visible content on the right.
+ * A RightSideAccordion compromises a menu on the right with the visible content
+ * on the right.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class RightSideAccordionPanel extends TwoColumnAccordionPanel {
 
-    public RightSideAccordionPanel() {
-    	final HorizontalPanel panel = this.createPanel();
-    	this.setPanel(panel);
-        this.initWidget( panel);
-    }
+	public RightSideAccordionPanel() {
+	}
 
-    protected HorizontalPanel createPanel() {
-        final HorizontalPanel panel = new HorizontalPanel();
-        panel.setStyleName(AccordionConstants.RIGHT_SIDE_ACCORDION_PANEL_STYLE);
-        
-        final DivPanel captionsPanel = this.createCaptionsPanel();
-        this.setCaptionsPanel(captionsPanel);
-        panel.add(captionsPanel);
-        
-        final DeckPanel contentsPanel = this.createContentsPanel();
-        this.setContentsPanel(contentsPanel);
-        panel.add(contentsPanel);
-        
-        return panel;
-    }
+	protected Widget createWidget() {
+		final HorizontalPanel panel = this.createPanel();
+		this.setPanel(panel);
+		return panel;
+	}
 
-    protected String getCaptionsPanelStyle() {
-        return AccordionConstants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
-    }
+	protected HorizontalPanel createPanel() {
+		final HorizontalPanel panel = new HorizontalPanel();
+		panel.setStyleName(Constants.RIGHT_SIDE_ACCORDION_PANEL_STYLE);
 
-    protected String getContentsPanelStyle() {
-        return AccordionConstants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
-    }
+		final DeckPanel contentsPanel = this.createContentsPanel();
+		this.setContentsPanel(contentsPanel);
+		panel.add(contentsPanel);
 
-    protected String getCaptionSelectedStyle() {
-        return AccordionConstants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_SELECTED_STYLE;
-    }
+		final DivPanel captionsPanel = this.createCaptionsPanel();
+		this.setCaptionsPanel(captionsPanel);
+		panel.add(captionsPanel);
 
-    protected String getContentSelectedStyle() {
-        return AccordionConstants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_SELECTED_STYLE;
-    }
+		return panel;
+	}
 
-    protected String getCaptionStyle() {
-        return AccordionConstants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE;
-    }
+	protected String getCaptionsPanelStyle() {
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
+	}
 
-    protected String getContentStyle() {
-        return AccordionConstants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE;
-    }
+	protected String getContentsPanelStyle() {
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
+	}
+
+	protected String getCaptionSelectedStyle() {
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_SELECTED_STYLE;
+	}
+
+	protected String getContentSelectedStyle() {
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_SELECTED_STYLE;
+	}
+
+	protected String getCaptionStyle() {
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE;
+	}
+
+	protected String getContentStyle() {
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE;
+	}
 }

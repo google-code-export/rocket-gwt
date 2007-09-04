@@ -21,7 +21,7 @@ package rocket.beans.client.aop;
  * 
  * @author Miroslav Pokorny
  */
-public interface MethodInterceptor extends Advice{
+public interface MethodInterceptor extends Advice {
 	/**
 	 * This method is invoked each time a proxy is invoked. The proxy is free to
 	 * perform whatever advise it wants.

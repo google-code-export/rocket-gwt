@@ -27,53 +27,56 @@ import com.google.gwt.user.client.Element;
  * 
  */
 public class CometSupport {
-    /**
-     * Standards complient browsers register a onload event which is then delegated to the CometClient instance which handles
-     * deserialization and calls registered callbacks.
-     * 
-     * @param cometClient
-     * @param frame
-     */
-    public void start(CometClient cometClient, Element frame) {
-        ObjectHelper.checkNotNull("parameter:cometClient", cometClient);
-        this.registerConnectHandler(cometClient, frame);
-        this.registerDisconnectHandler(cometClient, frame);
-        this.registerObjectRecievedDispatcher(cometClient, frame);
-    }
+	/**
+	 * Standards complient browsers register a onload event which is then
+	 * delegated to the CometClient instance which handles deserialization and
+	 * calls registered callbacks.
+	 * 
+	 * @param cometClient
+	 * @param frame
+	 */
+	public void start(CometClient cometClient, Element frame) {
+		ObjectHelper.checkNotNull("parameter:cometClient", cometClient);
+		this.registerConnectHandler(cometClient, frame);
+		this.registerDisconnectHandler(cometClient, frame);
+		this.registerObjectRecievedDispatcher(cometClient, frame);
+	}
 
-    /**
-     * Registers a function on the main window which will set the __connected flag on the given iframe to true when executed.
-     * 
-     * @param cometClient
-     * @param frame
-     */
-    native protected void registerConnectHandler(final CometClient cometClient, final Element frame)/*-{
-     $wnd.__cometOnConnect = function(){
-     frame.__connected=true;
-     };
-     }-*/;
+	/**
+	 * Registers a function on the main window which will set the __connected
+	 * flag on the given iframe to true when executed.
+	 * 
+	 * @param cometClient
+	 * @param frame
+	 */
+	native protected void registerConnectHandler(final CometClient cometClient, final Element frame)/*-{
+	 $wnd.__cometOnConnect = function(){
+	 frame.__connected=true;
+	 };
+	 }-*/;
 
-    native protected void registerDisconnectHandler(final CometClient cometClient, final Element iframe)/*-{
-     var callback = @rocket.remoting.client.CometClient::onDisconnect(Lrocket/remoting/client/CometClient;);
-     iframe.onload=function(){
-     callback( cometClient );
-     }
-     }-*/;
+	native protected void registerDisconnectHandler(final CometClient cometClient, final Element iframe)/*-{
+	 var callback = @rocket.remoting.client.CometClient::onDisconnect(Lrocket/remoting/client/CometClient;);
+	 iframe.onload=function(){
+	 callback( cometClient );
+	 }
+	 }-*/;
 
-    native protected void registerObjectRecievedDispatcher(final CometClient cometClient, final Element frame)/*-{
-     var callback = @rocket.remoting.client.CometClient::dispatch(Lrocket/remoting/client/CometClient;Ljava/lang/String;)
-     var dispatch = function( serializedForm ){
-     callback( cometClient, serializedForm );
-     }
-     $wnd.__cometDispatch = dispatch;
-     }-*/;
+	native protected void registerObjectRecievedDispatcher(final CometClient cometClient, final Element frame)/*-{
+	 var callback = @rocket.remoting.client.CometClient::dispatch(Lrocket/remoting/client/CometClient;Ljava/lang/String;)
+	 var dispatch = function( serializedForm ){
+	 callback( cometClient, serializedForm );     	
+	 }
+	 $wnd.__cometDispatch = dispatch;
+	 }-*/;
 
-    /**
-     * Standards compliant browsers dont need to anything extra to stop a comet session other than to destroy and deattach the hidden frame.
-     * 
-     * @param cometClient
-     * @param frame
-     */
-    public void stop(CometClient cometClient, Element frame) {
-    }
+	/**
+	 * Standards compliant browsers dont need to anything extra to stop a comet
+	 * session other than to destroy and deattach the hidden frame.
+	 * 
+	 * @param cometClient
+	 * @param frame
+	 */
+	public void stop(CometClient cometClient, Element frame) {
+	}
 }

@@ -21,5 +21,5 @@ package rocket.messaging.client;
  * @author Miroslav Pokorny (mP)
  */
 public interface TopicSubscriber {
-    void onMessage(Object payload);
+	void onMessage(Object payload);
 }

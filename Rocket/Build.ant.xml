@@ -8,14 +8,14 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.33"/>
+	<property name="version" value="0.34"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
 	<property name="bin-dir" location="${basedir}/bin.temp"/>
 	<property name="wiki-dir" location="${basedir}/wiki"/>
 	<property name="lib-dir" location="c:/java-libraries/"/>
-	<property name="gwt-home-dir" location="${lib-dir}/gwt-windows-1.4.10"/>
+	<property name="gwt-home-dir" location="${lib-dir}/gwt-windows-1.4.60"/>
 	<property name="junit-dir" location="${lib-dir}/junit/3.8"/>
 	<property name="flexjson-dir" location="${lib-dir}/flexjson/1.2"/>
 	<property name="release-dir" location="${basedir}/release"/>
@@ -217,7 +217,7 @@
 		</antcall>
 		
 		<antcall target="compileModule">
-			<param name="module" value="rocket.util.test.stacktracehelper.StackTraceHelper"/>
+			<param name="module" value="rocket.util.test.stacktrace.StackTrace"/>
 		</antcall>
 
 		<antcall target="compileModule">
@@ -245,9 +245,6 @@
 			<param name="module" value="rocket.widget.test.hyperlinkpanel.HyperLinkPanel"/>
 		</antcall>
 		<antcall target="compileModule">
-			<param name="module" value="rocket.widget.test.life.Life"/>
-		</antcall>
-		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.menu.Menu"/>
 		</antcall>
 		<antcall target="compileModule">
@@ -261,6 +258,9 @@
 		</antcall>
 		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.sortabletable.SortableTable"/>
+		</antcall>
+		<antcall target="compileModule">
+			<param name="module" value="rocket.widget.test.spanpanel.SpanPanel"/>
 		</antcall>
 		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.splitterpanel.SplitterPanel"/>
@@ -359,7 +359,7 @@
 	</target>
 
 	<!--
-	Builds the entire release including compiling source to web demos and so on.
+	Builds the entire release including compiling source to web demos and so on, and then packaging everything up.
 	-->
 	<target 	
 			name="build"
@@ -374,7 +374,7 @@
 			</fileset>
 		</delete>
 
-		<zip destfile="${basedir}/../${release-archive-name}">
+		<zip destfile="${basedir}/../${release-archive-name}" >
 			<fileset dir="${basedir}/..">
 <!--				<include name="${bin-dir}/**/*.class"/>-->
 				<include name="Rocket/src/**/*.*"/>

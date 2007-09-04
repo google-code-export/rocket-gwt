@@ -20,61 +20,63 @@ import java.util.Iterator;
 import rocket.util.client.PrimitiveHelper;
 
 /**
- * This iterator provides automatic support that may be queried for the last element to visited via {@link #next}. This is particularly
- * useful within the a subclass implementation of {@link #remove}.
+ * This iterator provides automatic support that may be queried for the last
+ * element to visited via {@link #next}. This is particularly useful within the
+ * a subclass implementation of {@link #remove}.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class VisitedRememberingIterator extends IteratorWrapper implements Iterator {
 
-    // ITERATOR
-    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    public boolean hasNext() {
-        return this.getIterator().hasNext();
-    }
+	// ITERATOR
+	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	public boolean hasNext() {
+		return this.getIterator().hasNext();
+	}
 
-    public Object next() {
-        final Object lastVisited = this.getIterator().next();
-        this.setLastVisited(lastVisited);
-        return lastVisited;
-    }
+	public Object next() {
+		final Object lastVisited = this.getIterator().next();
+		this.setLastVisited(lastVisited);
+		return lastVisited;
+	}
 
-    public void remove() {
-        this.getIterator().remove();
-        this.clearLastVisited();
-    }
+	public void remove() {
+		this.getIterator().remove();
+		this.clearLastVisited();
+	}
 
-    // IMPL
-    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	// IMPL
+	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    /**
-     * This senitel value is used to detect if the lastVisited field is unset.
-     */
-    final Object LAST_VISITED_SET = "{lastVisitedNotSet}";
+	/**
+	 * This senitel value is used to detect if the lastVisited field is unset.
+	 */
+	final Object LAST_VISITED_SET = "{lastVisitedNotSet}";
 
-    /**
-     * The object that was last visited ie the object returned by the last call to {@link #next}
-     */
-    private Object lastVisited = LAST_VISITED_SET;
+	/**
+	 * The object that was last visited ie the object returned by the last call
+	 * to {@link #next}
+	 */
+	private Object lastVisited = LAST_VISITED_SET;
 
-    public Object getLastVisited() {
-        PrimitiveHelper.checkTrue("lastVisited", LAST_VISITED_SET != this.lastVisited);
-        return lastVisited;
-    }
+	public Object getLastVisited() {
+		PrimitiveHelper.checkTrue("lastVisited", LAST_VISITED_SET != this.lastVisited);
+		return lastVisited;
+	}
 
-    public boolean hasLastVisited() {
-        return this.lastVisited == LAST_VISITED_SET;
-    }
+	public boolean hasLastVisited() {
+		return this.lastVisited == LAST_VISITED_SET;
+	}
 
-    public void setLastVisited(final Object lastVisited) {
-        this.lastVisited = lastVisited;
-    }
+	public void setLastVisited(final Object lastVisited) {
+		this.lastVisited = lastVisited;
+	}
 
-    public void clearLastVisited() {
-        this.lastVisited = LAST_VISITED_SET;
-    }
+	public void clearLastVisited() {
+		this.lastVisited = LAST_VISITED_SET;
+	}
 
-    public String toString() {
-        return super.toString() + ", lastVisited: " + lastVisited;
-    }
+	public String toString() {
+		return super.toString() + ", lastVisited: " + lastVisited;
+	}
 }

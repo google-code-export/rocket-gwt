@@ -18,9 +18,10 @@ package rocket.widget.test.splitterpanel.client;
 import java.util.Date;
 import java.util.Iterator;
 
-import rocket.browser.client.BrowserHelper;
+import rocket.browser.client.Browser;
 import rocket.testing.client.InteractiveList;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StackTrace;
 import rocket.util.client.SystemHelper;
 import rocket.widget.client.splitter.HorizontalSplitterPanel;
 import rocket.widget.client.splitter.SplitterItem;
@@ -43,247 +44,247 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class SplitterPanelTest implements EntryPoint {
 
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
 
-        final RootPanel root = RootPanel.get();
-        root.add(this.createHorizontalSplitterPanelListView());
-        root.add(this.createHorizontalSplitterPanel());
+				Window.alert("Caught:" + caught + "\n" + StackTrace.asString(caught));
+			}
+		});
 
-        root.add(this.createVerticalSplitterPanelListView());
-        root.add(this.createVerticalSplitterPanel());
-    }
+		final RootPanel root = RootPanel.get();
+		root.add(this.createHorizontalSplitterPanelListView());
+		root.add(this.createHorizontalSplitterPanel());
 
-    HorizontalSplitterPanel horizontalSplitterPanel;
+		root.add(this.createVerticalSplitterPanelListView());
+		root.add(this.createVerticalSplitterPanel());
+	}
 
-    HorizontalSplitterPanel getHorizontalSplitterPanel() {
-        ObjectHelper.checkNotNull("field:horizontalSplitterPanel", horizontalSplitterPanel);
-        return this.horizontalSplitterPanel;
-    }
+	HorizontalSplitterPanel horizontalSplitterPanel;
 
-    void setHorizontalSplitterPanel(final HorizontalSplitterPanel horizontalSplitterPanel) {
-        ObjectHelper.checkNotNull("parameter:horizontalSplitterPanel", horizontalSplitterPanel);
-        this.horizontalSplitterPanel = horizontalSplitterPanel;
-    }
+	HorizontalSplitterPanel getHorizontalSplitterPanel() {
+		ObjectHelper.checkNotNull("field:horizontalSplitterPanel", horizontalSplitterPanel);
+		return this.horizontalSplitterPanel;
+	}
 
-    HorizontalSplitterPanel createHorizontalSplitterPanel() {
-        final HorizontalSplitterPanel panel = new HorizontalSplitterPanel();
-        panel.setWidth("95%");
-        panel.setHeight("300px");
-        panel.setSplitterSize(6);
-        this.setHorizontalSplitterPanel(panel);
-        return panel;
-    }
+	void setHorizontalSplitterPanel(final HorizontalSplitterPanel horizontalSplitterPanel) {
+		ObjectHelper.checkNotNull("parameter:horizontalSplitterPanel", horizontalSplitterPanel);
+		this.horizontalSplitterPanel = horizontalSplitterPanel;
+	}
 
-    /**
-     * This method creates a widget which allows interactive manipulation of a new HorizontalSplitterPanel as if it were a list.
-     * 
-     * @return
-     */
-    protected Widget createHorizontalSplitterPanelListView() {
+	HorizontalSplitterPanel createHorizontalSplitterPanel() {
+		final HorizontalSplitterPanel panel = new HorizontalSplitterPanel();
+		panel.setWidth("95%");
+		panel.setHeight("300px");
+		panel.setSplitterSize(6);
+		this.setHorizontalSplitterPanel(panel);
+		return panel;
+	}
 
-        final InteractiveList list = new InteractiveList() {
+	/**
+	 * This method creates a widget which allows interactive manipulation of a
+	 * new HorizontalSplitterPanel as if it were a list.
+	 * 
+	 * @return
+	 */
+	protected Widget createHorizontalSplitterPanelListView() {
 
-            protected String getCollectionTypeName() {
-                return "HorizontalSplitterPanel";
-            }
+		final InteractiveList list = new InteractiveList() {
 
-            protected int getListSize() {
-                return SplitterPanelTest.this.getHorizontalSplitterPanel().getCount();
-            }
+			protected String getCollectionTypeName() {
+				return "HorizontalSplitterPanel";
+			}
 
-            protected boolean getListIsEmpty() {
-                throw new UnsupportedOperationException();
-            }
+			protected int getListSize() {
+				return SplitterPanelTest.this.getHorizontalSplitterPanel().getCount();
+			}
 
-            protected boolean listAdd(Object element) {
-                SplitterPanelTest.this.getHorizontalSplitterPanel().add((SplitterItem) element);
-                return true;
-            }
+			protected boolean getListIsEmpty() {
+				throw new UnsupportedOperationException();
+			}
 
-            protected void listInsert(final int index, final Object element) {
-                SplitterPanelTest.this.getHorizontalSplitterPanel().insert(index, (SplitterItem) element);
-            }
+			protected boolean listAdd(Object element) {
+				SplitterPanelTest.this.getHorizontalSplitterPanel().add((SplitterItem) element);
+				return true;
+			}
 
-            protected Object listGet(final int index) {
-                return SplitterPanelTest.this.getHorizontalSplitterPanel().get(index);
-            }
+			protected void listInsert(final int index, final Object element) {
+				SplitterPanelTest.this.getHorizontalSplitterPanel().insert(index, (SplitterItem) element);
+			}
 
-            protected Object listRemove(final int index) {
-                final SplitterItem item = SplitterPanelTest.this.getHorizontalSplitterPanel().get(index);
-                SplitterPanelTest.this.getHorizontalSplitterPanel().remove(index);
-                return item;
-            }
+			protected Object listGet(final int index) {
+				return SplitterPanelTest.this.getHorizontalSplitterPanel().get(index);
+			}
 
-            protected Object listSet(int index, Object element) {
-                throw new UnsupportedOperationException();
-            }
+			protected Object listRemove(final int index) {
+				final SplitterItem item = SplitterPanelTest.this.getHorizontalSplitterPanel().get(index);
+				SplitterPanelTest.this.getHorizontalSplitterPanel().remove(index);
+				return item;
+			}
 
-            protected Object createElement() {
-                final SplitterItem item = new SplitterItem();
+			protected Object listSet(int index, Object element) {
+				throw new UnsupportedOperationException();
+			}
 
-                item.setMinimumSize(Integer.parseInt(BrowserHelper.prompt("MinimumSize in pixels", "100")));
-                item.setSizeShare(Integer.parseInt(BrowserHelper.prompt("ShareSize", "100")));
-                item.setWidget(SplitterPanelTest.createWidget());
+			protected Object createElement() {
+				final SplitterItem item = new SplitterItem();
+				item.setMinimumSize(Integer.parseInt(Browser.prompt("MinimumSize in pixels", "100")));
+				item.setSizeShare(Integer.parseInt(Browser.prompt("ShareSize", "100")));
+				item.setWidget(SplitterPanelTest.createWidget());
+				return item;
+			}
 
-                return item;
-            }
+			protected Iterator listIterator() {
+				return SplitterPanelTest.this.getHorizontalSplitterPanel().iterator();
+			}
 
-            protected Iterator listIterator() {
-                return SplitterPanelTest.this.getHorizontalSplitterPanel().iterator();
-            }
+			protected void checkType(Object element) {
+				if (false == (element instanceof SplitterItem)) {
+					SystemHelper.fail("");
+				}
+			}
 
-            protected void checkType(Object element) {
-                if (false == (element instanceof SplitterItem)) {
-                    SystemHelper.fail("");
-                }
-            }
+			protected int getMessageLineCount() {
+				return 10;
+			}
 
-            protected int getMessageLineCount() {
-                return 10;
-            }
+			protected String toString(final Object element) {
+				final SplitterItem item = (SplitterItem) element;
+				final Widget widget = item.getWidget();
+				return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText["
+						+ DOM.getInnerText(widget.getElement()).substring(0, 100) + "...]";
+			}
+		};
 
-            protected String toString(final Object element) {
-                final SplitterItem item = (SplitterItem) element;
-                final Widget widget = item.getWidget();
-                return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText["
-                        + DOM.getInnerText(widget.getElement()).substring(0, 100) + "...]";
-            }
-        };
+		return list;
+	}
 
-        return list;
-    }
+	VerticalSplitterPanel verticalSplitterPanel;
 
-    VerticalSplitterPanel verticalSplitterPanel;
+	VerticalSplitterPanel getVerticalSplitterPanel() {
+		ObjectHelper.checkNotNull("field:verticalSplitterPanel", verticalSplitterPanel);
+		return this.verticalSplitterPanel;
+	}
 
-    VerticalSplitterPanel getVerticalSplitterPanel() {
-        ObjectHelper.checkNotNull("field:verticalSplitterPanel", verticalSplitterPanel);
-        return this.verticalSplitterPanel;
-    }
+	void setVerticalSplitterPanel(final VerticalSplitterPanel verticalSplitterPanel) {
+		ObjectHelper.checkNotNull("parameter:verticalSplitterPanel", verticalSplitterPanel);
+		this.verticalSplitterPanel = verticalSplitterPanel;
+	}
 
-    void setVerticalSplitterPanel(final VerticalSplitterPanel verticalSplitterPanel) {
-        ObjectHelper.checkNotNull("parameter:verticalSplitterPanel", verticalSplitterPanel);
-        this.verticalSplitterPanel = verticalSplitterPanel;
-    }
+	VerticalSplitterPanel createVerticalSplitterPanel() {
+		final VerticalSplitterPanel panel = new VerticalSplitterPanel();
+		panel.setWidth("95%");
+		panel.setHeight("600px");
+		panel.setSplitterSize(6);
+		this.setVerticalSplitterPanel(panel);
+		return panel;
+	}
 
-    VerticalSplitterPanel createVerticalSplitterPanel() {
-        final VerticalSplitterPanel panel = new VerticalSplitterPanel();
-        panel.setWidth("95%");
-        panel.setHeight("600px");
-        panel.setSplitterSize(6);
-        this.setVerticalSplitterPanel(panel);
-        return panel;
-    }
+	/**
+	 * This method creates a widget which allows interactive manipulation of a
+	 * new VerticalSplitterPanel as if it were a list.
+	 * 
+	 * @return
+	 */
+	protected Widget createVerticalSplitterPanelListView() {
 
-    /**
-     * This method creates a widget which allows interactive manipulation of a new VerticalSplitterPanel as if it were a list.
-     * 
-     * @return
-     */
-    protected Widget createVerticalSplitterPanelListView() {
+		final InteractiveList list = new InteractiveList() {
 
-        final InteractiveList list = new InteractiveList() {
+			protected String getCollectionTypeName() {
+				return "VerticalSplitterPanel";
+			}
 
-            protected String getCollectionTypeName() {
-                return "VerticalSplitterPanel";
-            }
+			protected int getListSize() {
+				return SplitterPanelTest.this.getVerticalSplitterPanel().getCount();
+			}
 
-            protected int getListSize() {
-                return SplitterPanelTest.this.getVerticalSplitterPanel().getCount();
-            }
+			protected boolean getListIsEmpty() {
+				throw new UnsupportedOperationException();
+			}
 
-            protected boolean getListIsEmpty() {
-                throw new UnsupportedOperationException();
-            }
+			protected boolean listAdd(Object element) {
+				SplitterPanelTest.this.getVerticalSplitterPanel().add((SplitterItem) element);
+				return true;
+			}
 
-            protected boolean listAdd(Object element) {
-                SplitterPanelTest.this.getVerticalSplitterPanel().add((SplitterItem) element);
-                return true;
-            }
+			protected void listInsert(final int index, final Object element) {
+				SplitterPanelTest.this.getVerticalSplitterPanel().insert(index, (SplitterItem) element);
+			}
 
-            protected void listInsert(final int index, final Object element) {
-                SplitterPanelTest.this.getVerticalSplitterPanel().insert(index, (SplitterItem) element);
-            }
+			protected Object listGet(final int index) {
+				return SplitterPanelTest.this.getVerticalSplitterPanel().get(index);
+			}
 
-            protected Object listGet(final int index) {
-                return SplitterPanelTest.this.getVerticalSplitterPanel().get(index);
-            }
+			protected Object listRemove(final int index) {
+				final SplitterItem item = SplitterPanelTest.this.getVerticalSplitterPanel().get(index);
+				SplitterPanelTest.this.getVerticalSplitterPanel().remove(index);
+				return item;
+			}
 
-            protected Object listRemove(final int index) {
-                final SplitterItem item = SplitterPanelTest.this.getVerticalSplitterPanel().get(index);
-                SplitterPanelTest.this.getVerticalSplitterPanel().remove(index);
-                return item;
-            }
+			protected Object listSet(int index, Object element) {
+				throw new UnsupportedOperationException();
+			}
 
-            protected Object listSet(int index, Object element) {
-                throw new UnsupportedOperationException();
-            }
+			protected Object createElement() {
+				final SplitterItem item = new SplitterItem();
 
-            protected Object createElement() {
-                final SplitterItem item = new SplitterItem();
+				item.setMinimumSize(Integer.parseInt(Browser.prompt("MinimumSize in pixels", "100")));
+				item.setSizeShare(Integer.parseInt(Browser.prompt("SizeShare", "100")));
+				item.setWidget(SplitterPanelTest.createWidget());
+				return item;
+			}
 
-                item.setMinimumSize(Integer.parseInt(BrowserHelper.prompt("MinimumSize in pixels", "100")));
-                item.setSizeShare(Integer.parseInt(BrowserHelper.prompt("SizeShare", "100")));
-                item.setWidget(SplitterPanelTest.createWidget());
+			protected Iterator listIterator() {
+				return SplitterPanelTest.this.getVerticalSplitterPanel().iterator();
+			}
 
-                return item;
-            }
+			protected void checkType(Object element) {
+				if (false == (element instanceof SplitterItem)) {
+					SystemHelper.fail("");
+				}
+			}
 
-            protected Iterator listIterator() {
-                return SplitterPanelTest.this.getVerticalSplitterPanel().iterator();
-            }
+			protected int getMessageLineCount() {
+				return 10;
+			}
 
-            protected void checkType(Object element) {
-                if (false == (element instanceof SplitterItem)) {
-                    SystemHelper.fail("");
-                }
-            }
+			protected String toString(final Object element) {
+				final SplitterItem item = (SplitterItem) element;
+				final Widget widget = item.getWidget();
+				return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText["
+						+ DOM.getInnerText(widget.getElement()).substring(0, 100) + "...]";
+			}
+		};
 
-            protected int getMessageLineCount() {
-                return 10;
-            }
+		return list;
+	}
 
-            protected String toString(final Object element) {
-                final SplitterItem item = (SplitterItem) element;
-                final Widget widget = item.getWidget();
-                return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText["
-                        + DOM.getInnerText(widget.getElement()).substring(0, 100) + "...]";
-            }
-        };
+	/**
+	 * Factory method which creates a TEXT widget full of 200 jibberish words
+	 * 
+	 * @return
+	 */
+	static Widget createWidget() {
+		final StringBuffer buf = new StringBuffer();
 
-        return list;
-    }
+		buf.append("<b>");
+		buf.append(new Date());
+		buf.append("</b> ");
 
-    /**
-     * Factory method which creates a TEXT widget full of 200 jibberish words
-     * 
-     * @return
-     */
-    static Widget createWidget() {
-        final StringBuffer buf = new StringBuffer();
+		for (int i = 0; i < 200; i++) {
+			buf.append(i);
+			buf.append(' ');
 
-        buf.append("<b>");
-        buf.append(new Date());
-        buf.append("</b> ");
+			final int wordLength = 2 + Random.nextInt(10);
+			for (int j = 0; j < wordLength; j++) {
+				final char c = (char) ('a' + Random.nextInt('z' - 'a'));
+				buf.append(c);
+			}
 
-        for (int i = 0; i < 200; i++) {
-            buf.append(i);
-            buf.append(' ');
+			buf.append(' ');
+		}
 
-            int wordLength = 2 + Random.nextInt(10);
-            for (int j = 0; j < wordLength; j++) {
-                final char c = (char) ('a' + Random.nextInt('z' - 'a'));
-                buf.append(c);
-            }
-
-            buf.append(' ');
-        }
-
-        return new HTML(buf.toString());
-    }
+		return new HTML(buf.toString());
+	}
 }

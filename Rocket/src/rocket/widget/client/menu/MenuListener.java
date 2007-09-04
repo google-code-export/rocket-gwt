@@ -20,32 +20,36 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * This listener allows observers to receive a variety of menu events.
  * 
- * Once strategy of using the {@link #onBeforeMenuOpened(Widget)} event a listener may wish to rebuild/update child menuItems.
+ * Once strategy of using the {@link #onBeforeMenuOpened(Widget)} event a
+ * listener may wish to rebuild/update child menuItems.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public interface MenuListener {
 
-    /**
-     * This method is called when a menu is cancelled. Cancelling a menu involves a user navigating over menus submenus and so on and then
-     * clicking outside the menu area.
-     * 
-     * @param widget
-     */
-    void onMenuCancelled(Widget widget);
+	/**
+	 * This method is called when a menu is cancelled. Cancelling a menu
+	 * involves a user navigating over menus submenus and so on and then
+	 * clicking outside the menu area.
+	 * 
+	 * @param widget
+	 */
+	void onMenuCancelled(Widget widget);
 
-    /**
-     * This event is fired before a subMenu/ menuItem is opened. This allows a listener to cancel or veto an open event.
-     * 
-     * @param widget
-     * @return Return false to cancel the open( works for both subMenus / menuItems) action or true to let it go.
-     */
-    boolean onBeforeMenuOpened(Widget widget);
+	/**
+	 * This event is fired before a subMenu/ menuItem is opened. This allows a
+	 * listener to cancel or veto an open event.
+	 * 
+	 * @param widget
+	 * @return Return false to cancel the open( works for both subMenus /
+	 *         menuItems) action or true to let it go.
+	 */
+	boolean onBeforeMenuOpened(Widget widget);
 
-    /**
-     * This event is fired after a subMenu or menuItem is opened.
-     * 
-     * @param widget
-     */
-    void onMenuOpened(Widget widget);
+	/**
+	 * This event is fired after a subMenu or menuItem is opened.
+	 * 
+	 * @param widget
+	 */
+	void onMenuOpened(Widget widget);
 }

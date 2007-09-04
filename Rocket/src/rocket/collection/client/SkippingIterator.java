@@ -23,99 +23,104 @@ import rocket.util.client.PrimitiveHelper;
 import com.google.gwt.core.client.GWT;
 
 /**
- * This iterator may be used to skip elements from an underlying iterator via the {@link #skip} method.
+ * This iterator may be used to skip elements from an underlying iterator via
+ * the {@link #skip} method.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public abstract class SkippingIterator extends IteratorWrapper implements Iterator {
-    public boolean hasNext() {
-        return this.findNext();
-    }
+	public boolean hasNext() {
+		return this.findNext();
+	}
 
-    /**
-     * This is the principal method that controls the read ahead / skipping process.
-     * 
-     * First it checks if a cached object has been already found and exits if one has been. Otherwise it reads from the wrapped iterator one
-     * at a time asking skip if the object should be skipped. This continues until the iterator is exhausted or a non skipped element is
-     * found.
-     * 
-     * A flag is returned indicating whether or not an element was found.
-     * 
-     * @return
-     */
-    protected boolean findNext() {
-        boolean hasMore = this.hasCache();
+	/**
+	 * This is the principal method that controls the read ahead / skipping
+	 * process.
+	 * 
+	 * First it checks if a cached object has been already found and exits if
+	 * one has been. Otherwise it reads from the wrapped iterator one at a time
+	 * asking skip if the object should be skipped. This continues until the
+	 * iterator is exhausted or a non skipped element is found.
+	 * 
+	 * A flag is returned indicating whether or not an element was found.
+	 * 
+	 * @return
+	 */
+	protected boolean findNext() {
+		boolean hasMore = this.hasCache();
 
-        if (false == hasMore) {
+		if (false == hasMore) {
 
-            // keep looping until the iterator is exhaused or an element that
-            // should not be skipped is found.
-            final Iterator iterator = this.getIterator();
-            while (true) {
-                if (false == iterator.hasNext()) {
-                    break;
-                }
+			// keep looping until the iterator is exhaused or an element that
+			// should not be skipped is found.
+			final Iterator iterator = this.getIterator();
+			while (true) {
+				if (false == iterator.hasNext()) {
+					break;
+				}
 
-                final Object next = this.getIterator().next();
+				final Object next = this.getIterator().next();
 
-                // try next...
-                if (this.skip(next)) {
-                    continue;
-                }
+				// try next...
+				if (this.skip(next)) {
+					continue;
+				}
 
-                // found exit!
-                this.setCache(next);
-                hasMore = true;
-                break;
-            }
-        }
-        return hasMore;
-    }
+				// found exit!
+				this.setCache(next);
+				hasMore = true;
+				break;
+			}
+		}
+		return hasMore;
+	}
 
-    protected abstract boolean skip(Object object);
+	protected abstract boolean skip(Object object);
 
-    public Object next() {
-        if (false == findNext()) {
-            throw new NoSuchElementException(GWT.getTypeName(this) + " is empty.");
-        }
-        final Object next = this.getCache();
-        this.clearCache();
-        return next;
-    }
+	public Object next() {
+		if (false == findNext()) {
+			throw new NoSuchElementException(GWT.getTypeName(this) + " is empty.");
+		}
+		final Object next = this.getCache();
+		this.clearCache();
+		return next;
+	}
 
-    public void remove() {
-        this.getIterator().remove();
-    }
+	public void remove() {
+		this.getIterator().remove();
+	}
 
-    /**
-     * This senitel is placed in the cache field to mark that is not set.
-     */
-    final static Object CACHE_NOT_SET = new Object();
+	/**
+	 * This senitel is placed in the cache field to mark that is not set.
+	 */
+	final static Object CACHE_NOT_SET = new Object();
 
-    /**
-     * This property keeps a cached copy of the element that will be returned by {@link #next()}. This is necessary as {@link #hasNext()}
-     * reads ahead finding an element that should not be skipped and stores its value here ready for {@link #next()}.
-     */
-    private Object cache = CACHE_NOT_SET;
+	/**
+	 * This property keeps a cached copy of the element that will be returned by
+	 * {@link #next()}. This is necessary as {@link #hasNext()} reads ahead
+	 * finding an element that should not be skipped and stores its value here
+	 * ready for {@link #next()}.
+	 */
+	private Object cache = CACHE_NOT_SET;
 
-    protected Object getCache() {
-        PrimitiveHelper.checkTrue("cache", cache != CACHE_NOT_SET);
-        return cache;
-    }
+	protected Object getCache() {
+		PrimitiveHelper.checkTrue("cache", cache != CACHE_NOT_SET);
+		return cache;
+	}
 
-    protected boolean hasCache() {
-        return cache != CACHE_NOT_SET;
-    }
+	protected boolean hasCache() {
+		return cache != CACHE_NOT_SET;
+	}
 
-    protected void setCache(Object cache) {
-        this.cache = cache;
-    }
+	protected void setCache(Object cache) {
+		this.cache = cache;
+	}
 
-    protected void clearCache() {
-        this.cache = CACHE_NOT_SET;
-    }
+	protected void clearCache() {
+		this.cache = CACHE_NOT_SET;
+	}
 
-    public String toString() {
-        return super.toString() + ", cache: " + cache;
-    }
+	public String toString() {
+		return super.toString() + ", cache: " + cache;
+	}
 }

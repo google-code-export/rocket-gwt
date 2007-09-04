@@ -52,6 +52,7 @@ abstract public class ReverseSuperTypesVisitor {
 	}
 
 	private final static String OBJECT = Object.class.getName();
+
 	/**
 	 * Accumulates all the super types for type into a list.
 	 * 

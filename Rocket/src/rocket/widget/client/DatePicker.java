@@ -22,7 +22,6 @@ import java.util.Map;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -65,12 +64,21 @@ import com.google.gwt.user.client.ui.Widget;
 abstract public class DatePicker extends Composite {
 
 	public DatePicker() {
+		super();
+
+		this.setStyleName(Constants.DATE_PICKER_STYLE);
+	}
+
+	protected Widget createWidget() {
 		this.setDate(this.createDate());
 		final CalendarGrid grid = this.createGrid();
 		this.setCalendarGrid(grid);
-		this.initWidget(grid);
 
-		this.setStyleName(Constants.DATE_PICKER_STYLE);
+		return grid;
+	}
+
+	protected int getSunkEventsBitMask() {
+		return 0;
 	}
 
 	public void onAttach() {
@@ -88,12 +96,10 @@ abstract public class DatePicker extends Composite {
 
 		final Date date = this.getDate();
 		long ticks = this.getDate().getTime();
-		ticks = ticks - date.getDay()
-				* Constants.DATEPICKER_MILLISECONDS_IN_A_DAY;
+		ticks = ticks - date.getDay() * Constants.DATEPICKER_MILLISECONDS_IN_A_DAY;
 		date.setTime(ticks);
 
-		String monthStyle = date.getDate() != 1 ? Constants.DATEPICKER_PREVIOUS_MONTH_STYLE
-				: Constants.DATEPICKER_CURRENT_MONTH_STYLE;
+		String monthStyle = date.getDate() != 1 ? Constants.DATEPICKER_PREVIOUS_MONTH_STYLE : Constants.DATEPICKER_CURRENT_MONTH_STYLE;
 
 		final int rowOffset = this.hasHeadings() ? 1 : 0;
 		final int lastRow = grid.getRowCount();
@@ -104,8 +110,7 @@ abstract public class DatePicker extends Composite {
 				final int month = date.getMonth();
 				final int dayOfMonth = date.getDate();
 
-				final Widget widget = this.createDateTile(year, month,
-						dayOfMonth);
+				final Widget widget = this.createDateTile(year, month, dayOfMonth);
 				widget.addStyleName(monthStyle);
 				widget.addStyleName(Constants.DATEPICKER_DAY_STYLE);
 
@@ -114,8 +119,7 @@ abstract public class DatePicker extends Composite {
 				date.setDate(dayOfMonth + 1);
 
 				if (date.getDate() < dayOfMonth) {
-					monthStyle = monthStyle
-							.equals(Constants.DATEPICKER_CURRENT_MONTH_STYLE) ? Constants.DATEPICKER_NEXT_MONTH_STYLE
+					monthStyle = monthStyle.equals(Constants.DATEPICKER_CURRENT_MONTH_STYLE) ? Constants.DATEPICKER_NEXT_MONTH_STYLE
 							: Constants.DATEPICKER_CURRENT_MONTH_STYLE;
 				}
 			}
@@ -145,10 +149,8 @@ abstract public class DatePicker extends Composite {
 	 */
 	protected CalendarGrid createGrid() {
 		final boolean hasHeadings = this.hasHeadings();
-		final int rows = hasHeadings ? Constants.DATEPICKER_ROW + 1
-				: Constants.DATEPICKER_ROW;
-		final CalendarGrid grid = new CalendarGrid(rows,
-				Constants.DATEPICKER_COLUMNS);
+		final int rows = hasHeadings ? Constants.DATEPICKER_ROW + 1 : Constants.DATEPICKER_ROW;
+		final CalendarGrid grid = new CalendarGrid(rows, Constants.DATEPICKER_COLUMNS);
 		if (hasHeadings) {
 			this.addHeadings(grid);
 		}
@@ -210,8 +212,7 @@ abstract public class DatePicker extends Composite {
 			return (Widget) this.getDatesToWidgets().get(key);
 		}
 
-		void setWidget(final int row, final int column, final Widget widget,
-				final int year, final int month, final int dayOfMonth) {
+		void setWidget(final int row, final int column, final Widget widget, final int year, final int month, final int dayOfMonth) {
 			final Map widgetsToDates = this.getWidgetsToDates();
 			final Map datesToWidgets = this.getDatesToWidgets();
 
@@ -231,8 +232,7 @@ abstract public class DatePicker extends Composite {
 			datesToWidgets.put(widget, key);
 		}
 
-		protected Object buildKey(final int year, final int month,
-				final int dayOfMonth) {
+		protected Object buildKey(final int year, final int month, final int dayOfMonth) {
 			return year + "/" + month + "/" + dayOfMonth;
 		}
 	}
@@ -286,8 +286,7 @@ abstract public class DatePicker extends Composite {
 	 *            The day of the month starting at 1
 	 * @return
 	 */
-	abstract protected Widget createDateTile(final int year, final int month,
-			final int day);
+	abstract protected Widget createDateTile(final int year, final int month, final int day);
 
 	/**
 	 * Retrieves the widget at the given coordinates.
@@ -315,10 +314,8 @@ abstract public class DatePicker extends Composite {
 		return this.getCalendarGrid().getWidget(year, month, dayOfMonth);
 	}
 
-	public void setDay(final int column, final int row, final int year,
-			final int month, final int dayOfMonth, final Widget widget) {
-		this.getCalendarGrid().setWidget(row, column, widget, year, month,
-				dayOfMonth);
+	public void setDay(final int column, final int row, final int year, final int month, final int dayOfMonth, final Widget widget) {
+		this.getCalendarGrid().setWidget(row, column, widget, year, month, dayOfMonth);
 	}
 
 	/**

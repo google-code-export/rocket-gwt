@@ -22,36 +22,38 @@ package rocket.util.client;
  */
 public class SystemHelper {
 
-    final static String PARAMETER = "parameter:";
+	final static String PARAMETER = "parameter:";
 
-    final static String FIELD = "field:";
+	final static String FIELD = "field:";
 
-    final static String ASSERT = "assert:";
+	final static String ASSERT = "assert:";
 
-    /**
-     * Convenience method which builds the appropriate exception includes the message and throws the excection
-     * 
-     * @param name
-     *            The name of the variable. This is used to construct the error message of the built exception
-     * @param message
-     *            The message
-     */
-    public static void fail(final String name, final String message) {
-        if (name != null) {
-            if (name.startsWith(PARAMETER)) {
-                throw new IllegalArgumentException(message);
-            }
-            if (name.startsWith(FIELD)) {
-                throw new IllegalStateException(message);
-            }
-        }
-        throw new AssertionError(message);
-    }
+	/**
+	 * Convenience method which builds the appropriate exception includes the
+	 * message and throws the excection
+	 * 
+	 * @param name
+	 *            The name of the variable. This is used to construct the error
+	 *            message of the built exception
+	 * @param message
+	 *            The message
+	 */
+	public static void fail(final String name, final String message) {
+		if (name != null) {
+			if (name.startsWith(PARAMETER)) {
+				throw new IllegalArgumentException(message);
+			}
+			if (name.startsWith(FIELD)) {
+				throw new IllegalStateException(message);
+			}
+		}
+		throw new AssertionError(message);
+	}
 
-    public static void fail(final String message) {
-        throw new AssertionError(message);
-    }
+	public static void fail(final String message) {
+		throw new AssertionError(message);
+	}
 
-    protected SystemHelper() {
-    }
+	protected SystemHelper() {
+	}
 }

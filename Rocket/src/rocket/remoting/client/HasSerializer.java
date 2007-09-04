@@ -18,11 +18,12 @@ package rocket.remoting.client;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 
 /**
- * THis interface is implemented by the customized ProxyCreator and is added to all generated proxy classes. This provides a mechanism to
- * access the Serializer for a given Service.
+ * THis interface is implemented by the customized ProxyCreator and is added to
+ * all generated proxy classes. This provides a mechanism to access the
+ * Serializer for a given Service.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public interface HasSerializer {
-    Serializer getSerializer();
+	Serializer getSerializer();
 }

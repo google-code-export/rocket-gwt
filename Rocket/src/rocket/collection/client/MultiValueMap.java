@@ -26,87 +26,88 @@ import rocket.util.client.ObjectHelper;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
- * A Map like class that records multiple values for a key. Duplicate values are accepted.
+ * A Map like class that records multiple values for a key. Duplicate values are
+ * accepted.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class MultiValueMap implements IsSerializable {
 
-    public MultiValueMap() {
-        this.setMap(new HashMap());
-    }
+	public MultiValueMap() {
+		this.setMap(new HashMap());
+	}
 
-    private Map map;
+	private Map map;
 
-    protected Map getMap() {
-        ObjectHelper.checkNotNull("field:map", map);
+	protected Map getMap() {
+		ObjectHelper.checkNotNull("field:map", map);
 
-        return map;
-    }
+		return map;
+	}
 
-    protected void setMap(final Map map) {
-        ObjectHelper.checkNotNull("parameter:map", map);
+	protected void setMap(final Map map) {
+		ObjectHelper.checkNotNull("parameter:map", map);
 
-        this.map = map;
-    }
+		this.map = map;
+	}
 
-    public Iterator keys() {
-        return this.getMap().keySet().iterator();
-    }
+	public Iterator keys() {
+		return this.getMap().keySet().iterator();
+	}
 
-    public boolean contains(final Object key) {
-        return this.getMap().containsKey(key);
-    }
+	public boolean contains(final Object key) {
+		return this.getMap().containsKey(key);
+	}
 
-    public Object getFirstValue(final Object key) {
-        final Object[] values = this.getValues(key);
-        return values != null && values.length > 0 ? values[0] : null;
-    }
+	public Object getFirstValue(final Object key) {
+		final Object[] values = this.getValues(key);
+		return values != null && values.length > 0 ? values[0] : null;
+	}
 
-    public Object[] getValues(final Object key) {
-        ObjectHelper.checkNotNull("parameter:key", key);
+	public Object[] getValues(final Object key) {
+		ObjectHelper.checkNotNull("parameter:key", key);
 
-        Object[] values = null;
-        List list = (List) this.getMap().get(key);
-        if (null != list && false == list.isEmpty()) {
-            final int size = list.size();
-            values = new Object[size];
+		Object[] values = null;
+		List list = (List) this.getMap().get(key);
+		if (null != list && false == list.isEmpty()) {
+			final int size = list.size();
+			values = new Object[size];
 
-            final Iterator iterator = list.iterator();
-            int i = 0;
-            while (iterator.hasNext()) {
-                values[i++] = iterator.next();
-            }
-        }
+			final Iterator iterator = list.iterator();
+			int i = 0;
+			while (iterator.hasNext()) {
+				values[i++] = iterator.next();
+			}
+		}
 
-        return values;
-    }
+		return values;
+	}
 
-    public List getValuesList(final Object key) {
-        ObjectHelper.checkNotNull("parameter:key", key);
+	public List getValuesList(final Object key) {
+		ObjectHelper.checkNotNull("parameter:key", key);
 
-        return (List) this.getMap().get(key);
-    }
+		return (List) this.getMap().get(key);
+	}
 
-    public void add(final Object key, final Object value) {
-        final Map map = this.getMap();
-        List values = (List) this.getValuesList(key);
-        if (values == null) {
-            values = new ArrayList();
-            map.put(key, values);
-        }
-        values.add(value);
-    }
+	public void add(final Object key, final Object value) {
+		final Map map = this.getMap();
+		List values = (List) this.getValuesList(key);
+		if (values == null) {
+			values = new ArrayList();
+			map.put(key, values);
+		}
+		values.add(value);
+	}
 
-    public void clear() {
-        this.getMap().clear();
-    }
+	public void clear() {
+		this.getMap().clear();
+	}
 
-    public List remove(final Object key) {
-        return (List) this.getMap().remove(key);
-    }
+	public List remove(final Object key) {
+		return (List) this.getMap().remove(key);
+	}
 
-    public String toString() {
-        return super.toString() + ", map: " + map;
-    }
+	public String toString() {
+		return super.toString() + ", map: " + map;
+	}
 }

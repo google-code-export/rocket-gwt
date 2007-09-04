@@ -17,15 +17,15 @@ package rocket.beans.test.beans.client.proxytargetthrowscheckedexception;
 
 public class ClassWithMethodThatThrowsCheckedException {
 
-	public void throwCheckedException() throws CheckedException{
+	public void throwCheckedException() throws CheckedException {
 		throw new CheckedException();
 	}
 
-	public void unadvicedThrowCheckedException() throws CheckedException{
+	public void unadvicedThrowCheckedException() throws CheckedException {
 		throw new CheckedException();
 	}
-	
-	public void throwRuntimeException(){
+
+	public void throwRuntimeException() {
 		throw new RuntimeException();
 	}
 }

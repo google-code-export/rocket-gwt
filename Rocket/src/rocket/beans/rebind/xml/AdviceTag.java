@@ -15,7 +15,6 @@
  */
 package rocket.beans.rebind.xml;
 
-
 /**
  * A bean like view of an advisor tag
  * 
@@ -26,7 +25,7 @@ public class AdviceTag extends XmlDocumentComponent {
 	public String getAdvisorBeanId() {
 		return this.getAttribute(Constants.ADVICE_ADVISOR_BEAN_ID);
 	}
-	
+
 	public String getMethodExpression() {
 		return this.getAttribute(Constants.ADVICE_METHOD_EXPRESSION);
 	}

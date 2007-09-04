@@ -338,7 +338,8 @@ public class MenuTest implements EntryPoint {
 	}
 
 	/**
-	 * VerticalMenuLists hanging off HorizontalMenuLists open downwards when this is true...
+	 * VerticalMenuLists hanging off HorizontalMenuLists open downwards when
+	 * this is true...
 	 */
 	private CheckBox openDownwards;
 
@@ -353,7 +354,8 @@ public class MenuTest implements EntryPoint {
 	}
 
 	/**
-	 * VerticalMenuLists hanging off other VerticalMenuLists open to the right when this is true...
+	 * VerticalMenuLists hanging off other VerticalMenuLists open to the right
+	 * when this is true...
 	 */
 	private CheckBox openRightwards;
 

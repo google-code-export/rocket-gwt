@@ -16,25 +16,25 @@
 package rocket.browser.client.support;
 
 /**
- * Provides an InternetExplorer 6.x specific BrowserHelperSupport.
+ * Provides an InternetExplorer 6.x specific BrowserSupport.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class InternetExplorer6BrowserSupport extends BrowserSupport {
 
-    native public int getScrollX()/*-{
-     return $doc.documentElement ? $doc.documentElement.scrollLeft: $doc.body.scrollLeft;
-     }-*/;
+	native public int getScrollX()/*-{
+	 return $doc.documentElement ? $doc.documentElement.scrollLeft: $doc.body.scrollLeft;
+	 }-*/;
 
-    native public int getScrollY()/*-{
-     return $doc.documentElement ? $doc.documentElement.scrollTop: $doc.body.scrollTop;
-     }-*/;
+	native public int getScrollY()/*-{
+	 return $doc.documentElement ? $doc.documentElement.scrollTop: $doc.body.scrollTop;
+	 }-*/;
 
-    native public int getClientWidth()/*-{
-     return $doc.documentElement ? $doc.documentElement.clientWidth: $doc.body.clientWidth;     
-     }-*/;
+	native public int getClientWidth()/*-{
+	 return $doc.documentElement ? $doc.documentElement.clientWidth: $doc.body.clientWidth;     
+	 }-*/;
 
-    native public int getClientHeight()/*-{
-     return $doc.documentElement ? $doc.documentElement.clientHeight: $doc.body.clientHeight;     
-     }-*/;
+	native public int getClientHeight()/*-{
+	 return $doc.documentElement ? $doc.documentElement.clientHeight: $doc.body.clientHeight;     
+	 }-*/;
 }

@@ -31,7 +31,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * This table is displays all download files, it may be sorted and also includes actions such as downloading or removing a file.
+ * This table is displays all download files, it may be sorted and also includes
+ * actions such as downloading or removing a file.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -47,14 +48,14 @@ class SortableFileTable extends SortableTable {
 
 	protected void onColumnSortingClick(final Widget widget) {
 		final long started = System.currentTimeMillis();
-		
-		super.onColumnSortingClick( widget );
-		
+
+		super.onColumnSortingClick(widget);
+
 		final long ended = System.currentTimeMillis();
-		
-		Window.alert( "Sorting of " + this.getRows().size() + " rows took " + ( ended - started ) + " milli(s) ");
+
+		Window.alert("Sorting of " + this.getRows().size() + " rows took " + (ended - started) + " milli(s) ");
 	}
-	
+
 	protected Object getValue(final Object row, final int column) {
 		ObjectHelper.checkNotNull("parameter:row", row);
 		this.checkColumn("parameter:column", column);
@@ -192,13 +193,13 @@ class SortableFileTable extends SortableTable {
 	protected Widget visitMissingDownloadDate() {
 		return new Label("");
 	}
-	
-	protected String getAscendingSortImageSource(){
+
+	protected String getAscendingSortImageSource() {
 		return "up.gif";
 	}
-	
-	protected String getDescendingSortImageSource(){
+
+	protected String getDescendingSortImageSource() {
 		return "down.gif";
 	}
-	
+
 }

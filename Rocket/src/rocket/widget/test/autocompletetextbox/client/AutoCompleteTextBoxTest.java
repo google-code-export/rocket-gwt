@@ -34,52 +34,52 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class AutoCompleteTextBoxTest implements EntryPoint {
 
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
-        final RootPanel rootPanel = RootPanel.get();
-        rootPanel.add(new TextBox());
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
+		final RootPanel rootPanel = RootPanel.get();
+		rootPanel.add(new TextBox());
 
-        final List matchCandidates = Arrays.asList(new String[] { "New England", "New Jersey", "New Mexico",
-                "New South Wales", "New York", "New York state", "New Zealand", "Red", "Red apple", "Red baron",
-                "Red square", "Red star", "Zebra", "Zebra crossing", "Zebra stripe" });
+		final List matchCandidates = Arrays.asList(new String[] { "New England", "New Jersey", "New Mexico", "New South Wales", "New York",
+				"New York state", "New Zealand", "Red", "Red apple", "Red baron", "Red square", "Red star", "Zebra", "Zebra crossing",
+				"Zebra stripe" });
 
-        final StringBuffer buf = new StringBuffer();
-        buf.append("<ul>");
+		final StringBuffer buf = new StringBuffer();
+		buf.append("<ul>");
 
-        final Iterator iterator = matchCandidates.iterator();
-        while (iterator.hasNext()) {
-            buf.append("<li>");
-            buf.append(iterator.next());
-            buf.append("</li>");
-        }
-        buf.append("</ul>");
+		final Iterator iterator = matchCandidates.iterator();
+		while (iterator.hasNext()) {
+			buf.append("<li>");
+			buf.append(iterator.next());
+			buf.append("</li>");
+		}
+		buf.append("</ul>");
 
-        rootPanel.add(new HTML(buf.toString()));
+		rootPanel.add(new HTML(buf.toString()));
 
-        final AutoCompleteTextBox autoCompleteTextBox = new AutoCompleteTextBox();
-        autoCompleteTextBox.setWidth("200px");
-        rootPanel.add(autoCompleteTextBox);
-        autoCompleteTextBox.setFocus(true);
-        autoCompleteTextBox.addKeyboardListener(new KeyboardListenerAdapter() {
-            public void onKeyUp(final Widget sender, final char keyCode, final int modifiers) {
-                final String text = autoCompleteTextBox.getText();
-                autoCompleteTextBox.clear();
+		final AutoCompleteTextBox autoCompleteTextBox = new AutoCompleteTextBox();
+		autoCompleteTextBox.setWidth("200px");
+		rootPanel.add(autoCompleteTextBox);
+		autoCompleteTextBox.setFocus(true);
+		autoCompleteTextBox.addKeyboardListener(new KeyboardListenerAdapter() {
+			public void onKeyUp(final Widget sender, final char keyCode, final int modifiers) {
+				final String text = autoCompleteTextBox.getText();
+				autoCompleteTextBox.clear();
 
-                if (text.length() > 0) {
-                    final Iterator iterator = matchCandidates.iterator();
-                    while (iterator.hasNext()) {
-                        final String test = (String) iterator.next();
-                        if (StringHelper.startsWithIgnoringCase(test, text)) {
-                            autoCompleteTextBox.add(test);
-                        }
-                    }
-                }
-            }
-        });
-    }
+				if (text.length() > 0) {
+					final Iterator iterator = matchCandidates.iterator();
+					while (iterator.hasNext()) {
+						final String test = (String) iterator.next();
+						if (StringHelper.startsWithIgnoringCase(test, text)) {
+							autoCompleteTextBox.add(test);
+						}
+					}
+				}
+			}
+		});
+	}
 }

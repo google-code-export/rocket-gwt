@@ -94,8 +94,8 @@ public class RemoteJsonServiceGenerator extends Generator {
 		body.setHttpRequestParameterNames(this.getHttpRequestParameterNamesFromMethodAnnotation(method));
 		body.setInvokerType(this.getInvokerTypeFromMethodAnnotation(method));
 		body.setNewMethod(asyncMethod);
-		body.setReturnType( method.getReturnType());
-		
+		body.setReturnType(method.getReturnType());
+
 		asyncMethod.setBody(body);
 	}
 
@@ -106,8 +106,8 @@ public class RemoteJsonServiceGenerator extends Generator {
 	}
 
 	protected void throwHttpRequestParameterNameMissing(final MethodParameter parameter) {
-		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.HTTP_REQUEST_PARAMETER_NAME + "] annotation for the parameter "
-				+ parameter);
+		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.HTTP_REQUEST_PARAMETER_NAME
+				+ "] annotation for the parameter " + parameter);
 	}
 
 	/**
@@ -122,12 +122,12 @@ public class RemoteJsonServiceGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:method", method);
 
 		final List values = method.getMetadataValues(Constants.HTTP_REQUEST_METHOD);
-		if ( values.size() == 0 ) {
-			throwHttpRequestMethodAnnotationException( method );
+		if (values.size() == 0) {
+			throwHttpRequestMethodAnnotationException(method);
 		}
 		final String httpRequestMethod = (String) values.get(0);
 		if (null == httpRequestMethod) {
-			throwHttpRequestMethodAnnotationException( method );
+			throwHttpRequestMethodAnnotationException(method);
 		}
 
 		Type type = null;
@@ -169,7 +169,7 @@ public class RemoteJsonServiceGenerator extends Generator {
 		if (null == asyncMethod) {
 			this.throwMatchingAsyncInterfaceMethodNotFoundException(method);
 		}
-		if (false == asyncMethod.returnsVoid() ) {
+		if (false == asyncMethod.returnsVoid()) {
 			this.throwIncompatibleMethodFound(asyncMethod);
 		}
 
@@ -245,7 +245,7 @@ public class RemoteJsonServiceGenerator extends Generator {
 		final Type parameterType = methodParameter.getType();
 
 		final Type invoker = this.getRemoteJsonServiceInvoker();
-		if (null == invoker.findMethod("addParameter", Arrays.asList(new Type[]{string, parameterType}))) {
+		if (null == invoker.findMethod("addParameter", Arrays.asList(new Type[] { string, parameterType }))) {
 			RemoteJsonServiceGenerator.this.throwUnsupportedParameterTypeException(methodParameter);
 		}
 	}

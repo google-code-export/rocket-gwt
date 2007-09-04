@@ -21,8 +21,8 @@ import rocket.util.client.ObjectHelper;
 /**
  * A convenient base class for any FactoryBean that gives out proxies.
  * 
- * Generated classes only need to implement {@link #createProxy0()} methods to handle singleton/prototype 
- * instances are taken care of.
+ * Generated classes only need to implement {@link #createProxy0()} methods to
+ * handle singleton/prototype instances are taken care of.
  * 
  * @author Miroslav Pokorny
  */
@@ -37,75 +37,83 @@ abstract public class ProxyFactoryBean implements FactoryBean {
 
 	/**
 	 * Retrieves a proxy for the target.
+	 * 
 	 * @return A new proxy
 	 */
 	public Object getObject() {
 		return this.isSingleton() ? this.getSingleton() : this.getPrototype();
 	}
 
-	protected Object getSingleton(){
+	protected Object getSingleton() {
 		return this.getProxy();
 	}
-	
-	protected Object getPrototype(){
+
+	protected Object getPrototype() {
 		return this.createProxy();
 	}
-	
+
 	/**
-	 * Tests this factory bean is a singleton by asking the target factory bean if it is a singleton.
+	 * Tests this factory bean is a singleton by asking the target factory bean
+	 * if it is a singleton.
 	 */
 	public boolean isSingleton() {
 		return this.getTargetFactoryBean().isSingleton();
 	}
-	
+
 	/**
 	 * The factory bean that produces the bean being proxied.
 	 */
 	private FactoryBean targetFactoryBean;
-	
-	protected FactoryBean getTargetFactoryBean(){
-		ObjectHelper.checkNotNull("field:targetFactoryBean", targetFactoryBean );
+
+	protected FactoryBean getTargetFactoryBean() {
+		ObjectHelper.checkNotNull("field:targetFactoryBean", targetFactoryBean);
 		return this.targetFactoryBean;
 	}
-	
-	public void setTargetFactoryBean( final FactoryBean targetFactoryBean ){
-		ObjectHelper.checkNotNull("parameter:targetFactoryBean", targetFactoryBean );
+
+	public void setTargetFactoryBean(final FactoryBean targetFactoryBean) {
+		ObjectHelper.checkNotNull("parameter:targetFactoryBean", targetFactoryBean);
 		this.targetFactoryBean = targetFactoryBean;
 	}
-	
+
 	/**
-	 * A cache copy of the proxy. Generated proxies are stateless and may be cached.
+	 * A cache copy of the proxy. Generated proxies are stateless and may be
+	 * cached.
 	 */
 	private Object proxy;
-	
-	protected Object getProxy(){
-		if( false == this.hasProxy() ){
-			this.setProxy( this.createProxy() );
+
+	protected Object getProxy() {
+		if (false == this.hasProxy()) {
+			this.setProxy(this.createProxy());
 		}
-		ObjectHelper.checkNotNull("field:proxy", proxy );
+		ObjectHelper.checkNotNull("field:proxy", proxy);
 		return this.proxy;
 	}
-	protected boolean hasProxy(){
+
+	protected boolean hasProxy() {
 		return null != this.proxy;
 	}
-	
-	protected void setProxy( final Object proxy ){
-		ObjectHelper.checkNotNull("parameter:proxy", proxy );
+
+	protected void setProxy(final Object proxy) {
+		ObjectHelper.checkNotNull("parameter:proxy", proxy);
 		this.proxy = proxy;
 	}
-	
-	protected Object createProxy(){
-		return this.createProxy0( this.getTargetFactoryBean().getObject() );
+
+	protected Object createProxy() {
+		return this.createProxy0(this.getTargetFactoryBean().getObject());
 	}
+
 	/**
-	 * This method returns a new proxy when invoked.
-	 * Not only must a new instance of the proxy be created but its target field must also be set.
+	 * This method returns a new proxy when invoked. Not only must a new
+	 * instance of the proxy be created but its target field must also be set.
 	 * 
-	 * Generated sub-classes will override this method to create a sub-class of the target type delegating all public
-	 * methods to the target. Where appropriate some methods will be adviced whilst others will be simple forwards.
+	 * Generated sub-classes will override this method to create a sub-class of
+	 * the target type delegating all public methods to the target. Where
+	 * appropriate some methods will be adviced whilst others will be simple
+	 * forwards.
 	 * 
-	 * @param the target.
+	 * @param the
+	 *            target.
 	 * @return A new Proxy
 	 */
-	abstract protected Object createProxy0( Object target );
+	abstract protected Object createProxy0(Object target);
 }

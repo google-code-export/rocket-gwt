@@ -89,7 +89,7 @@ public class MapAddEntryTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + Constants.MAP_ENTRY_ADD_TEMPLATE
-				+ "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file ["
+				+ Constants.MAP_ENTRY_ADD_TEMPLATE + "]");
 	}
 }

@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxyintparameterreturntype;
 
 public class ClassWithMethodWithIntParameterAndReturnType {
 
-	public int add( final int a, final int b ){
+	public int add(final int a, final int b) {
 		return (int) (a + b);
 	}
 }

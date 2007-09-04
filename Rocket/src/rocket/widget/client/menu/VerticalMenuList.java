@@ -23,65 +23,67 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A VerticalMenuList contains menu items that grow down the screen. VerticalMenuLists are mostly only used as the MenuList for non Menu
- * widgets.
+ * A VerticalMenuList contains menu items that grow down the screen.
+ * VerticalMenuLists are mostly only used as the MenuList for non Menu widgets.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class VerticalMenuList extends MenuList {
 
-    public VerticalMenuList() {
-        super();
+	public VerticalMenuList() {
+		super();
+	}
 
-        final VerticalPanel verticalPanel = this.createVerticalPanel();
-        this.setVerticalPanel(verticalPanel);
-        this.initWidget( verticalPanel );
-    }
+	protected Widget createWidget() {
+		final VerticalPanel verticalPanel = this.createVerticalPanel();
+		this.setVerticalPanel(verticalPanel);
+		return verticalPanel;
+	}
 
-    // PANEL
-    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	// PANEL
+	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    public Widget get(final int index) {
-        return this.getVerticalPanel().getWidget(index);
-    }
+	public Widget get(final int index) {
+		return this.getVerticalPanel().getWidget(index);
+	}
 
-    public void insert(final Widget widget, final int beforeIndex) {
-        this.getVerticalPanel().insert(widget, beforeIndex);
-        this.afterInsert(widget);
-    }
+	public void insert(final Widget widget, final int beforeIndex) {
+		this.getVerticalPanel().insert(widget, beforeIndex);
+		this.afterInsert(widget);
+	}
 
-    protected boolean remove0(final Widget widget) {
-        return this.getVerticalPanel().remove(widget);
-    }
+	protected boolean remove0(final Widget widget) {
+		return this.getVerticalPanel().remove(widget);
+	}
 
-    public int getWidgetCount() {
-        return this.getVerticalPanel().getWidgetCount();
-    }
+	public int getWidgetCount() {
+		return this.getVerticalPanel().getWidgetCount();
+	}
 
-    public Iterator iterator() {
-        return this.getVerticalPanel().iterator();
-    }
+	public Iterator iterator() {
+		return this.getVerticalPanel().iterator();
+	}
 
-    // PROPERTIES :::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	// PROPERTIES :::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    /**
-     * A verticalPanel is used as the container for all child widgets.
-     */
-    private VerticalPanel verticalPanel;
+	/**
+	 * A verticalPanel is used as the container for all child widgets.
+	 */
+	private VerticalPanel verticalPanel;
 
-    protected VerticalPanel getVerticalPanel() {
-        ObjectHelper.checkNotNull("field:verticalPanel", verticalPanel);
-        return this.verticalPanel;
-    }
+	protected VerticalPanel getVerticalPanel() {
+		ObjectHelper.checkNotNull("field:verticalPanel", verticalPanel);
+		return this.verticalPanel;
+	}
 
-    protected void setVerticalPanel(final VerticalPanel verticalPanel) {
-        ObjectHelper.checkNotNull("parameter:verticalPanel", verticalPanel);
-        this.verticalPanel = verticalPanel;
-    }
+	protected void setVerticalPanel(final VerticalPanel verticalPanel) {
+		ObjectHelper.checkNotNull("parameter:verticalPanel", verticalPanel);
+		this.verticalPanel = verticalPanel;
+	}
 
-    protected VerticalPanel createVerticalPanel() {
-        final VerticalPanel panel = new VerticalPanel();
-        panel.setStyleName(MenuConstants.VERTICAL_MENU_LIST_STYLE);
-        return panel;
-    }
+	protected VerticalPanel createVerticalPanel() {
+		final VerticalPanel panel = new VerticalPanel();
+		panel.setStyleName(Constants.VERTICAL_MENU_LIST_STYLE);
+		return panel;
+	}
 }

@@ -26,7 +26,7 @@ import rocket.util.client.ObjectHelper;
  * @author Miroslav Pokorny
  */
 public class AfterFinallyAdviceMethodInterceptor implements MethodInterceptor {
-	
+
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
 		try {
 			return invocation.proceed();

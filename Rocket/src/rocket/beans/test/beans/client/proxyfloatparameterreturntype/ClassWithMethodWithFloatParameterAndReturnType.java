@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxyfloatparameterreturntype;
 
 public class ClassWithMethodWithFloatParameterAndReturnType {
 
-	public float add( final float a, final float b ){
+	public float add(final float a, final float b) {
 		return (float) (a + b);
 	}
 }

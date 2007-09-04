@@ -158,8 +158,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		try {
 			assertBindingFailed(GWT.create(ClassIsNotABeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
@@ -170,8 +169,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 			assertBindingFailed(GWT.create(MissingBeanIdBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
 			final String causeType = failed.getCauseType();
-			assertTrue("" + failed, causeType.equals(SAX_PARSE_EXCEPTION)
-					|| causeType.equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, causeType.equals(SAX_PARSE_EXCEPTION) || causeType.equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
@@ -180,8 +178,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 			assertBindingFailed(GWT.create(InvalidScopeBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
 			final String causeType = failed.getCauseType();
-			assertTrue("" + failed, causeType.equals(SAX_PARSE_EXCEPTION)
-					|| causeType.equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, causeType.equals(SAX_PARSE_EXCEPTION) || causeType.equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
@@ -189,34 +186,28 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		try {
 			assertBindingFailed(GWT.create(NotFoundBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	public void testBeanTypeIsNotConcrete() {
 		try {
-			assertBindingFailed(GWT
-					.create(BeanTypeThatIsNotConcreteBeanFactory.class));
+			assertBindingFailed(GWT.create(BeanTypeThatIsNotConcreteBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	public void testFactoryMethodNotFound() {
 		try {
-			assertBindingFailed(GWT
-					.create(FactoryMethodNotFoundBeanFactory.class));
+			assertBindingFailed(GWT.create(FactoryMethodNotFoundBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	public void testFactoryMethod() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(FactoryMethodBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(FactoryMethodBeanFactory.class);
 		final Bean bean = (Bean) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 	}
@@ -225,53 +216,42 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		try {
 			assertBindingFailed(GWT.create(InitMethodNotFoundBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	public void testInitMethod() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(InitMethodBeanFactory.class);
-		final BeanWithCustomInit bean = (BeanWithCustomInit) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(InitMethodBeanFactory.class);
+		final BeanWithCustomInit bean = (BeanWithCustomInit) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 		assertTrue(bean.customInitCalled);
 	}
 
 	public void testConstructorNotFound() {
 		try {
-			assertBindingFailed(GWT
-					.create(ConstructorNotFoundBeanFactory.class));
+			assertBindingFailed(GWT.create(ConstructorNotFoundBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	public void testAmbiguousConstructors() {
 		try {
-			assertBindingFailed(GWT
-					.create(AmbiguousConstructorsBeanFactory.class));
+			assertBindingFailed(GWT.create(AmbiguousConstructorsBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	public void testNoArgumentsConstructor() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(NoArgumentsConstructorBeanFactory.class);
-		final ClassWithNoArgumentsConstructor bean = (ClassWithNoArgumentsConstructor) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(NoArgumentsConstructorBeanFactory.class);
+		final ClassWithNoArgumentsConstructor bean = (ClassWithNoArgumentsConstructor) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 	}
 
 	public void testConstructorWithMultipleParameters() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(MultipleArgumentsConstructorBeanFactory.class);
-		final ClassWithMultipleArgumentsConstructor bean = (ClassWithMultipleArgumentsConstructor) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(MultipleArgumentsConstructorBeanFactory.class);
+		final ClassWithMultipleArgumentsConstructor bean = (ClassWithMultipleArgumentsConstructor) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 
 		assertEquals("foo", bean.getFirst());
@@ -282,96 +262,73 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		try {
 			assertBindingFailed(GWT.create(AmbiguousSettersBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	public void testNoProperties() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(NoPropertiesBeanFactory.class);
-		final ClassWithNoProperties bean = (ClassWithNoProperties) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(NoPropertiesBeanFactory.class);
+		final ClassWithNoProperties bean = (ClassWithNoProperties) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 	}
 
 	public void testBooleanProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(BooleanPropertyBeanFactory.class);
-		final ClassWithBooleanProperty bean = (ClassWithBooleanProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(BooleanPropertyBeanFactory.class);
+		final ClassWithBooleanProperty bean = (ClassWithBooleanProperty) factory.getBean(BEAN_ID);
 		assertTrue(bean.getBooleanProperty());
 	}
 
 	public void testByteProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(BytePropertyBeanFactory.class);
-		final ClassWithByteProperty bean = (ClassWithByteProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(BytePropertyBeanFactory.class);
+		final ClassWithByteProperty bean = (ClassWithByteProperty) factory.getBean(BEAN_ID);
 		assertEquals(123, bean.getByteProperty());
 	}
 
 	public void testShortProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ShortPropertyBeanFactory.class);
-		final ClassWithShortProperty bean = (ClassWithShortProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(ShortPropertyBeanFactory.class);
+		final ClassWithShortProperty bean = (ClassWithShortProperty) factory.getBean(BEAN_ID);
 		assertEquals(123, bean.getShortProperty());
 	}
 
 	public void testIntProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(IntPropertyBeanFactory.class);
-		final ClassWithIntProperty bean = (ClassWithIntProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(IntPropertyBeanFactory.class);
+		final ClassWithIntProperty bean = (ClassWithIntProperty) factory.getBean(BEAN_ID);
 		assertEquals(123, bean.getIntProperty());
 	}
 
 	public void testLongProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(LongPropertyBeanFactory.class);
-		final ClassWithLongProperty bean = (ClassWithLongProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(LongPropertyBeanFactory.class);
+		final ClassWithLongProperty bean = (ClassWithLongProperty) factory.getBean(BEAN_ID);
 		assertEquals(123, bean.getLongProperty());
 	}
 
 	public void testFloatProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(FloatPropertyBeanFactory.class);
-		final ClassWithFloatProperty bean = (ClassWithFloatProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(FloatPropertyBeanFactory.class);
+		final ClassWithFloatProperty bean = (ClassWithFloatProperty) factory.getBean(BEAN_ID);
 		assertEquals(123.45f, bean.getFloatProperty(), 0.01f);
 	}
 
 	public void testDoubleProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(DoublePropertyBeanFactory.class);
-		final ClassWithDoubleProperty bean = (ClassWithDoubleProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(DoublePropertyBeanFactory.class);
+		final ClassWithDoubleProperty bean = (ClassWithDoubleProperty) factory.getBean(BEAN_ID);
 		assertEquals(123.45, bean.getDoubleProperty(), 0.01);
 	}
 
 	public void testCharProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(CharPropertyBeanFactory.class);
-		final ClassWithCharProperty bean = (ClassWithCharProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(CharPropertyBeanFactory.class);
+		final ClassWithCharProperty bean = (ClassWithCharProperty) factory.getBean(BEAN_ID);
 		assertEquals('a', bean.getCharProperty());
 	}
 
 	public void testStringProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(StringPropertyBeanFactory.class);
-		final ClassWithStringProperty bean = (ClassWithStringProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(StringPropertyBeanFactory.class);
+		final ClassWithStringProperty bean = (ClassWithStringProperty) factory.getBean(BEAN_ID);
 		assertEquals("apple", bean.getStringProperty());
 	}
 
 	public void testListProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ListPropertyBeanFactory.class);
-		final ClassWithListProperty bean = (ClassWithListProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(ListPropertyBeanFactory.class);
+		final ClassWithListProperty bean = (ClassWithListProperty) factory.getBean(BEAN_ID);
 		final List list = bean.getListProperty();
 		assertNotNull(list);
 		assertEquals(3, list.size());
@@ -381,10 +338,8 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testSetProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(SetPropertyBeanFactory.class);
-		final ClassWithSetProperty bean = (ClassWithSetProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(SetPropertyBeanFactory.class);
+		final ClassWithSetProperty bean = (ClassWithSetProperty) factory.getBean(BEAN_ID);
 		final Set set = bean.getSetProperty();
 		assertNotNull(set);
 		assertEquals(3, set.size());
@@ -395,10 +350,8 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testMapProperty() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(MapPropertyBeanFactory.class);
-		final ClassWithMapProperty bean = (ClassWithMapProperty) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(MapPropertyBeanFactory.class);
+		final ClassWithMapProperty bean = (ClassWithMapProperty) factory.getBean(BEAN_ID);
 		final Map map = bean.getMapProperty();
 		assertNotNull(map);
 		assertEquals(3, map.size());
@@ -409,52 +362,41 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testManyValues() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ManyValuesBeanFactory.class);
-		final ClassWithManyValues bean = (ClassWithManyValues) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(ManyValuesBeanFactory.class);
+		final ClassWithManyValues bean = (ClassWithManyValues) factory.getBean(BEAN_ID);
 		assertEquals("green", bean.getApple());
 		assertEquals("yellow", bean.getBanana());
 		assertEquals("orange", bean.getCarrot());
 	}
 
 	public void testBeanReference() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(BeanReferenceBeanFactory.class);
-		final ClassWithBeanReference bean = (ClassWithBeanReference) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(BeanReferenceBeanFactory.class);
+		final ClassWithBeanReference bean = (ClassWithBeanReference) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 
 		assertNotNull("bean reference was not set", bean.getAnotherBean());
 	}
 
 	public void testRemoteRpcService() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(RemoteRpcServiceBeanFactory.class);
-		final RemoteRpcServiceAsync bean = (RemoteRpcServiceAsync) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(RemoteRpcServiceBeanFactory.class);
+		final RemoteRpcServiceAsync bean = (RemoteRpcServiceAsync) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 
 		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) bean;
-		assertTrue("/remoteRpcService", serviceDefTarget.getServiceEntryPoint()
-				.endsWith("/remoteRpcService"));
+		assertTrue("/remoteRpcService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteRpcService"));
 	}
 
 	public void testRemoteJsonService() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(RemoteJsonServiceBeanFactory.class);
-		final RemoteJsonServiceAsync bean = (RemoteJsonServiceAsync) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(RemoteJsonServiceBeanFactory.class);
+		final RemoteJsonServiceAsync bean = (RemoteJsonServiceAsync) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 
 		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) bean;
-		assertTrue("/remoteJsonService", serviceDefTarget
-				.getServiceEntryPoint().endsWith("/remoteJsonService"));
+		assertTrue("/remoteJsonService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteJsonService"));
 	}
 
 	public void testPlaceHolders() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(PlaceHolderBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(PlaceHolderBeanFactory.class);
 		final PlaceHolderBean bean = (PlaceHolderBean) factory.getBean(BEAN_ID);
 		assertEquals("orange yellow green green", bean.getStringProperty());
 	}
@@ -463,8 +405,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		try {
 			assertBindingFailed(GWT.create(NotAnAdviceBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
@@ -472,160 +413,124 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		try {
 			assertBindingFailed(GWT.create(ProxyFinalClassBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	public void testProxyClassWithFinalPublicMethod() throws Exception {
 		try {
-			assertBindingFailed(GWT
-					.create(ProxyFinalPublicMethodBeanFactory.class));
+			assertBindingFailed(GWT.create(ProxyFinalPublicMethodBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(
-					BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	public void testProxyBeanWithMethodWithBooleanParameterAndReturnType() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyBooleanBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyBooleanBeanFactory.class);
 		final ClassWithMethodWithBooleanParameterAndReturnType proxy = (ClassWithMethodWithBooleanParameterAndReturnType) factory
 				.getBean(BEAN_ID);
 		assertEquals("proxy true ^ false", true ^ false, proxy.xor(true, false));
 		assertEquals("proxy true ^ true", true ^ true, proxy.xor(true, true));
-		assertEquals("proxy false ^ false", false ^ false, proxy.xor(false,
-				false));
+		assertEquals("proxy false ^ false", false ^ false, proxy.xor(false, false));
 
-		final ProxyBooleanMethodInterceptor advisor = (ProxyBooleanMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyBooleanMethodInterceptor advisor = (ProxyBooleanMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyBeanWithMethodWithByteParameterAndReturnType() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyByteBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyByteBeanFactory.class);
 		final ClassWithMethodWithByteParameterAndReturnType proxy = (ClassWithMethodWithByteParameterAndReturnType) factory
 				.getBean(BEAN_ID);
-		assertEquals("proxy sum of " + BYTE + "+" + BYTE, BYTE + BYTE, proxy
-				.add(BYTE, BYTE));
+		assertEquals("proxy sum of " + BYTE + "+" + BYTE, BYTE + BYTE, proxy.add(BYTE, BYTE));
 
-		final ProxyByteMethodInterceptor advisor = (ProxyByteMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyByteMethodInterceptor advisor = (ProxyByteMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyBeanWithMethodWithShortParameterAndReturnType() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyShortBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyShortBeanFactory.class);
 		final ClassWithMethodWithShortParameterAndReturnType proxy = (ClassWithMethodWithShortParameterAndReturnType) factory
 				.getBean(BEAN_ID);
-		assertEquals("proxy sum of " + SHORT + "+" + SHORT, SHORT + SHORT,
-				proxy.add(SHORT, SHORT));
+		assertEquals("proxy sum of " + SHORT + "+" + SHORT, SHORT + SHORT, proxy.add(SHORT, SHORT));
 
-		final ProxyShortMethodInterceptor advisor = (ProxyShortMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyShortMethodInterceptor advisor = (ProxyShortMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyBeanWithMethodWithIntParameterAndReturnType() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyIntBeanFactory.class);
-		final ClassWithMethodWithIntParameterAndReturnType proxy = (ClassWithMethodWithIntParameterAndReturnType) factory
-				.getBean(BEAN_ID);
-		assertEquals("proxy sum of " + INT + "+" + INT, INT + INT, proxy.add(
-				INT, INT));
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyIntBeanFactory.class);
+		final ClassWithMethodWithIntParameterAndReturnType proxy = (ClassWithMethodWithIntParameterAndReturnType) factory.getBean(BEAN_ID);
+		assertEquals("proxy sum of " + INT + "+" + INT, INT + INT, proxy.add(INT, INT));
 
-		final ProxyIntMethodInterceptor advisor = (ProxyIntMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyIntMethodInterceptor advisor = (ProxyIntMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyBeanWithMethodWithLongParameterAndReturnType() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyLongBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyLongBeanFactory.class);
 		final ClassWithMethodWithLongParameterAndReturnType proxy = (ClassWithMethodWithLongParameterAndReturnType) factory
 				.getBean(BEAN_ID);
-		assertEquals("proxy sum of " + LONG + "+" + LONG, LONG + LONG, proxy
-				.add(LONG, LONG));
+		assertEquals("proxy sum of " + LONG + "+" + LONG, LONG + LONG, proxy.add(LONG, LONG));
 
-		final ProxyLongMethodInterceptor advisor = (ProxyLongMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyLongMethodInterceptor advisor = (ProxyLongMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyBeanWithMethodWithFloatParameterAndReturnType() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyFloatBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyFloatBeanFactory.class);
 		final ClassWithMethodWithFloatParameterAndReturnType proxy = (ClassWithMethodWithFloatParameterAndReturnType) factory
 				.getBean(BEAN_ID);
-		assertEquals("proxy sum of " + FLOAT + "+" + FLOAT, FLOAT + FLOAT,
-				proxy.add(FLOAT, FLOAT), 0.1f);
+		assertEquals("proxy sum of " + FLOAT + "+" + FLOAT, FLOAT + FLOAT, proxy.add(FLOAT, FLOAT), 0.1f);
 
-		final ProxyFloatMethodInterceptor advisor = (ProxyFloatMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyFloatMethodInterceptor advisor = (ProxyFloatMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyBeanWithMethodWithDoubleParameterAndReturnType() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyDoubleBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyDoubleBeanFactory.class);
 		final ClassWithMethodWithDoubleParameterAndReturnType proxy = (ClassWithMethodWithDoubleParameterAndReturnType) factory
 				.getBean(BEAN_ID);
-		assertEquals("proxy sum of " + DOUBLE + "+" + DOUBLE, DOUBLE + DOUBLE,
-				proxy.add(DOUBLE, DOUBLE), 0.1f);
+		assertEquals("proxy sum of " + DOUBLE + "+" + DOUBLE, DOUBLE + DOUBLE, proxy.add(DOUBLE, DOUBLE), 0.1f);
 
-		final ProxyDoubleMethodInterceptor advisor = (ProxyDoubleMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyDoubleMethodInterceptor advisor = (ProxyDoubleMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyBeanWithMethodWithCharParameterAndReturnType() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyCharBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyCharBeanFactory.class);
 		final ClassWithMethodWithCharParameterAndReturnType proxy = (ClassWithMethodWithCharParameterAndReturnType) factory
 				.getBean(BEAN_ID);
-		assertEquals("proxy.toUpperCase()", Character.toUpperCase('a'), proxy
-				.toUpperCase('a'));
+		assertEquals("proxy.toUpperCase()", Character.toUpperCase('a'), proxy.toUpperCase('a'));
 
-		final ProxyCharMethodInterceptor advisor = (ProxyCharMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyCharMethodInterceptor advisor = (ProxyCharMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyBeanWithMethodWithObjectParameterAndReturnType() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyObjectBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyObjectBeanFactory.class);
 		final ClassWithMethodWithObjectParameterAndReturnType proxy = (ClassWithMethodWithObjectParameterAndReturnType) factory
 				.getBean(BEAN_ID);
 
 		final String object = "apple";
-		assertSame("proxy passes object to target and back...", object, proxy
-				.returnParameter(object));
+		assertSame("proxy passes object to target and back...", object, proxy.returnParameter(object));
 
-		final ProxyObjectMethodInterceptor advisor = (ProxyObjectMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyObjectMethodInterceptor advisor = (ProxyObjectMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyBeanWithMethodThatReturnsVoid() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyVoidBeanFactory.class);
-		final ClassWithMethodThatReturnsVoid proxy = (ClassWithMethodThatReturnsVoid) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyVoidBeanFactory.class);
+		final ClassWithMethodThatReturnsVoid proxy = (ClassWithMethodThatReturnsVoid) factory.getBean(BEAN_ID);
 
 		proxy.returnsVoid();
 
-		final ProxyVoidMethodInterceptor advisor = (ProxyVoidMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ProxyVoidMethodInterceptor advisor = (ProxyVoidMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 		assertTrue(advisor.executed);
 	}
 
 	public void testProxyTargetThrowsCheckedException() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyTargetThrowsCheckedExceptionBeanFactory.class);
-		final ClassWithMethodThatThrowsCheckedException proxy = (ClassWithMethodThatThrowsCheckedException) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyTargetThrowsCheckedExceptionBeanFactory.class);
+		final ClassWithMethodThatThrowsCheckedException proxy = (ClassWithMethodThatThrowsCheckedException) factory.getBean(BEAN_ID);
 
 		try {
 			proxy.throwCheckedException();
@@ -639,10 +544,8 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testProxyTargetThrowsCheckedExceptionOnUnadvicedMethod() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyTargetThrowsCheckedExceptionBeanFactory.class);
-		final ClassWithMethodThatThrowsCheckedException proxy = (ClassWithMethodThatThrowsCheckedException) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyTargetThrowsCheckedExceptionBeanFactory.class);
+		final ClassWithMethodThatThrowsCheckedException proxy = (ClassWithMethodThatThrowsCheckedException) factory.getBean(BEAN_ID);
 
 		try {
 			proxy.unadvicedThrowCheckedException();
@@ -656,10 +559,8 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testProxyTargetThrowsCheckedExceptionLetsRuntimeExceptionsThrough() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyTargetThrowsCheckedExceptionBeanFactory.class);
-		final ClassWithMethodThatThrowsCheckedException proxy = (ClassWithMethodThatThrowsCheckedException) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyTargetThrowsCheckedExceptionBeanFactory.class);
+		final ClassWithMethodThatThrowsCheckedException proxy = (ClassWithMethodThatThrowsCheckedException) factory.getBean(BEAN_ID);
 
 		try {
 			proxy.throwRuntimeException();
@@ -669,10 +570,8 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testProxyTargetThrowsUncheckedException() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyTargetThrowsUncheckedExceptionBeanFactory.class);
-		final ClassWithMethodThatThrowsUncheckedException proxy = (ClassWithMethodThatThrowsUncheckedException) factory
-				.getBean(BEAN_ID);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyTargetThrowsUncheckedExceptionBeanFactory.class);
+		final ClassWithMethodThatThrowsUncheckedException proxy = (ClassWithMethodThatThrowsUncheckedException) factory.getBean(BEAN_ID);
 
 		try {
 			proxy.throwUncheckedException();
@@ -682,11 +581,9 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testProxyAdvisedAndUnadvised() {
-		final BeanFactory factory = (BeanFactory) GWT
-				.create(ProxyComplexBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(ProxyComplexBeanFactory.class);
 		final Complex proxy = (Complex) factory.getBean(BEAN_ID);
-		final ComplexMethodInterceptor interceptor = (ComplexMethodInterceptor) factory
-				.getBean(ADVISOR_BEAN_ID);
+		final ComplexMethodInterceptor interceptor = (ComplexMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);
 
 		interceptor.executed = false;
 		assertEquals("advised", true ^ false, proxy.advisedXor(true, false));
@@ -709,34 +606,28 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		assertTrue(interceptor.executed);
 
 		interceptor.executed = false;
-		assertEquals("advised", FLOAT + FLOAT, proxy.advisedAdd(FLOAT, FLOAT),
-				0.1f);
+		assertEquals("advised", FLOAT + FLOAT, proxy.advisedAdd(FLOAT, FLOAT), 0.1f);
 		assertTrue(interceptor.executed);
 
 		interceptor.executed = false;
-		assertEquals("advised", DOUBLE + DOUBLE, proxy.advisedAdd(DOUBLE,
-				DOUBLE), 0.1f);
+		assertEquals("advised", DOUBLE + DOUBLE, proxy.advisedAdd(DOUBLE, DOUBLE), 0.1f);
 		assertTrue(interceptor.executed);
 
 		interceptor.executed = false;
-		assertEquals("advised", Character.toUpperCase('a'), proxy
-				.advisedToUpperCase('a'));
+		assertEquals("advised", Character.toUpperCase('a'), proxy.advisedToUpperCase('a'));
 		assertTrue(interceptor.executed);
 
 		interceptor.executed = false;
-		assertEquals("advised", "APPLE".toLowerCase(), proxy
-				.advisedToLowerCase("APPLE"));
+		assertEquals("advised", "APPLE".toLowerCase(), proxy.advisedToLowerCase("APPLE"));
 		assertTrue(interceptor.executed);
 
 		interceptor.executed = false;
-		assertEquals("advised", null, proxy.advisedReturnsNull(true, BYTE,
-				SHORT, INT, LONG, FLOAT, DOUBLE, new Object()));
+		assertEquals("advised", null, proxy.advisedReturnsNull(true, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, new Object()));
 		assertTrue(interceptor.executed);
 
 		interceptor.executed = false;
 		final Object object = new Object();
-		assertSame("advised", object, proxy.advisedReturnsObject(true, BYTE,
-				SHORT, INT, LONG, FLOAT, DOUBLE, object));
+		assertSame("advised", object, proxy.advisedReturnsObject(true, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, object));
 		assertTrue(interceptor.executed);
 
 		interceptor.executed = false;
@@ -762,8 +653,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		assertEquals("unadvised", BYTE + BYTE, proxy.unadvisedAdd(BYTE, BYTE));
 		assertFalse(interceptor.executed);
 
-		assertEquals("unadvised", SHORT + SHORT, proxy.unadvisedAdd(SHORT,
-				SHORT));
+		assertEquals("unadvised", SHORT + SHORT, proxy.unadvisedAdd(SHORT, SHORT));
 		assertFalse(interceptor.executed);
 
 		assertEquals("unadvised", INT + INT, proxy.unadvisedAdd(INT, INT));
@@ -772,28 +662,22 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		assertEquals("unadvised", LONG + LONG, proxy.unadvisedAdd(LONG, LONG));
 		assertFalse(interceptor.executed);
 
-		assertEquals("unadvised", FLOAT + FLOAT, proxy.unadvisedAdd(FLOAT,
-				FLOAT), 0.1f);
+		assertEquals("unadvised", FLOAT + FLOAT, proxy.unadvisedAdd(FLOAT, FLOAT), 0.1f);
 		assertFalse(interceptor.executed);
 
-		assertEquals("unadvised", DOUBLE + DOUBLE, proxy.unadvisedAdd(DOUBLE,
-				DOUBLE), 0.1f);
+		assertEquals("unadvised", DOUBLE + DOUBLE, proxy.unadvisedAdd(DOUBLE, DOUBLE), 0.1f);
 		assertFalse(interceptor.executed);
 
-		assertEquals("unadvised", Character.toUpperCase('a'), proxy
-				.unadvisedToUpperCase('a'));
+		assertEquals("unadvised", Character.toUpperCase('a'), proxy.unadvisedToUpperCase('a'));
 		assertFalse(interceptor.executed);
 
-		assertEquals("unadvised", "APPLE".toLowerCase(), proxy
-				.unadvisedToLowerCase("APPLE"));
+		assertEquals("unadvised", "APPLE".toLowerCase(), proxy.unadvisedToLowerCase("APPLE"));
 		assertFalse(interceptor.executed);
 
-		assertEquals("unadvised", null, proxy.unadvisedReturnsNull(true, BYTE,
-				SHORT, INT, LONG, FLOAT, DOUBLE, new Object()));
+		assertEquals("unadvised", null, proxy.unadvisedReturnsNull(true, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, new Object()));
 		assertFalse(interceptor.executed);
 
-		assertSame("unadvised", object, proxy.unadvisedReturnsObject(true,
-				BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, object));
+		assertSame("unadvised", object, proxy.unadvisedReturnsObject(true, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, object));
 		assertFalse(interceptor.executed);
 
 		try {
@@ -809,7 +693,5 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		} catch (final RuntimeException expected) {
 		}
 		assertFalse(interceptor.executed);
-
 	}
-
 }

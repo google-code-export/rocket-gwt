@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxycharparameterreturntype;
 
 public class ClassWithMethodWithCharParameterAndReturnType {
 
-	public char toUpperCase( final char a ){
-		return Character.toUpperCase( a );
+	public char toUpperCase(final char a) {
+		return Character.toUpperCase(a);
 	}
 }

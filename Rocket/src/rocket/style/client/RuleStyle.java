@@ -26,64 +26,63 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 class RuleStyle extends Style {
 
-    public int size() {
-        return ObjectHelper.getPropertyCount(this.getStyle());
-    }
+	final public String getCssText() {
+		return ObjectHelper.getString(this.getStyle(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
+	}
 
-    /**
-     * Helper which retrieves the native style object
-     * 
-     * @return
-     */
-    protected JavaScriptObject getStyle() {
-        return ObjectHelper.getObject(this.getRule().getRule(), "style");
-    }
+	final public void setCssText(final String cssText) {
+		ObjectHelper.setString(this.getStyle(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME, cssText);
+	}
 
-    public String getValue(final String propertyName) {
-        return StyleHelper.getRuleStyleProperty(this.getRule().getRule(), propertyName);
-    }
+	public int size() {
+		return ObjectHelper.getPropertyCount(this.getStyle());
+	}
 
-    protected void putValue(final String propertyName, final String propertyValue) {
-        StyleHelper.setRuleStyleProperty(this.getRule().getRule(), propertyName, propertyValue);
-    }
+	/**
+	 * Helper which retrieves the native style object
+	 * 
+	 * @return
+	 */
+	protected JavaScriptObject getStyle() {
+		return ObjectHelper.getObject(this.getRule().getRule(), "style");
+	}
 
-    protected void removeValue(final String propertyName) {
-        StyleHelper.removeRuleStyleProperty(this.getRule().getRule(), propertyName);
-    }
+	public String getValue(final String propertyName) {
+		return StyleHelper.getRuleStyleProperty(this.getRule().getRule(), propertyName);
+	}
 
-    protected String getPropertyNames() {
-        return this.getPropertyNames(this.getRule().getRule());
-    }
+	protected void putValue(final String propertyName, final String propertyValue) {
+		StyleHelper.setRuleStyleProperty(this.getRule().getRule(), propertyName, propertyValue);
+	}
 
-    native private String getPropertyNames(final JavaScriptObject rule)/*-{
-     var style = rule.style;
-     var names = "";
-     for( n in style ){
-     names = names + n + ",";
-     }
-     return names;
-     }-*/;
+	protected void removeValue(final String propertyName) {
+		StyleHelper.removeRuleStyleProperty(this.getRule().getRule(), propertyName);
+	}
 
-    /**
-     * A copy of the parent rule that this RuleStyle belongs too.
-     */
-    private Rule rule;
+	protected String[] getPropertyNames() {
+		return StyleHelper.getRuleStylePropertyNames(this.getRule().getRule());
+	}
 
-    protected Rule getRule() {
-        ObjectHelper.checkNotNull("field:rule", rule);
-        return this.rule;
-    }
+	/**
+	 * A copy of the parent rule that this RuleStyle belongs too.
+	 */
+	private Rule rule;
 
-    protected boolean hasRule() {
-        return null != rule;
-    }
+	protected Rule getRule() {
+		ObjectHelper.checkNotNull("field:rule", rule);
+		return this.rule;
+	}
 
-    protected void setRule(final Rule rule) {
-        ObjectHelper.checkNotNull("parameter:rule", rule);
-        this.rule = rule;
-    }
+	protected boolean hasRule() {
+		return null != rule;
+	}
 
-    protected void clearRule() {
-        this.rule = null;
-    }
+	protected void setRule(final Rule rule) {
+		ObjectHelper.checkNotNull("parameter:rule", rule);
+		this.rule = rule;
+	}
+
+	protected void clearRule() {
+		this.rule = null;
+	}
 }

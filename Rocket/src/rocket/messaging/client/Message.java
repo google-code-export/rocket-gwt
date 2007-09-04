@@ -26,44 +26,44 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author Miroslav Pokorny (mP)
  */
 public class Message implements IsSerializable {
-    /**
-     * The name of the destination topic/queue
-     */
-    public String destination;
+	/**
+	 * The name of the destination topic/queue
+	 */
+	public String destination;
 
-    public String getDestination() {
-        StringHelper.checkNotEmpty("field:destination", destination);
-        return destination;
-    }
+	public String getDestination() {
+		StringHelper.checkNotEmpty("field:destination", destination);
+		return destination;
+	}
 
-    public void setDestination(final String destination) {
-        StringHelper.checkNotEmpty("parameter:destination", destination);
-        this.destination = destination;
-    }
+	public void setDestination(final String destination) {
+		StringHelper.checkNotEmpty("parameter:destination", destination);
+		this.destination = destination;
+	}
 
-    /**
-     * The payload or data for the message
-     */
-    public Payload payload;
+	/**
+	 * The payload or data for the message
+	 */
+	public Payload payload;
 
-    public Payload getPayload() {
-        ObjectHelper.checkNotNull("field:payload", payload);
-        return payload;
-    }
+	public Payload getPayload() {
+		ObjectHelper.checkNotNull("field:payload", payload);
+		return payload;
+	}
 
-    public boolean hasPayload() {
-        return this.payload != null;
-    }
+	public boolean hasPayload() {
+		return this.payload != null;
+	}
 
-    public void setPayload(final Payload payload) {
-        ObjectHelper.checkNotNull("parameter:payload", payload);
-        this.payload = payload;
-    }
+	public void setPayload(final Payload payload) {
+		ObjectHelper.checkNotNull("parameter:payload", payload);
+		this.payload = payload;
+	}
 
-    public void setNullPayload() {
-    }
+	public void setNullPayload() {
+	}
 
-    public String toString() {
-        return super.toString() + ", destination[" + destination + "], payload: " + payload;
-    }
+	public String toString() {
+		return super.toString() + ", destination[" + destination + "], payload: " + payload;
+	}
 }

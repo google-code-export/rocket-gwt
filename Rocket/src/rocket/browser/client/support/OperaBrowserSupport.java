@@ -16,17 +16,18 @@
 package rocket.browser.client.support;
 
 /**
- * Provides support for the Opera browser where it defers from the standard support.
+ * Provides support for the Opera browser where it defers from the standard
+ * support.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class OperaBrowserSupport extends BrowserSupport {
 
-    native public int getScrollX()/*-{
-     return $doc.body.scrollLeft;
-     }-*/;
+	native public int getScrollX()/*-{
+	 return $doc.body.scrollLeft;
+	 }-*/;
 
-    native public int getScrollY()/*-{
-     return $doc.body.scrollTop;
-     }-*/;
+	native public int getScrollY()/*-{
+	 return $doc.body.scrollTop;
+	 }-*/;
 }

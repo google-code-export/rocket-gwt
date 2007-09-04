@@ -45,8 +45,7 @@ public class GetTargetFactoryBeanTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	public void setTargetFactoryBean(final NewNestedType targetFactoryBean) {
-		ObjectHelper.checkNotNull("parameter:targetFactoryBean",
-				targetFactoryBean);
+		ObjectHelper.checkNotNull("parameter:targetFactoryBean", targetFactoryBean);
 		this.targetFactoryBean = targetFactoryBean;
 	}
 
@@ -56,11 +55,9 @@ public class GetTargetFactoryBeanTemplatedFile extends TemplatedCodeBlock {
 
 	protected InputStream getInputStream() {
 		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(
-				filename);
+		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException(
-					"Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
 		}
 		return inputStream;
 	}
@@ -68,8 +65,7 @@ public class GetTargetFactoryBeanTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.GET_TARGET_FACTORY_BEAN_TARGET_FACTORY_BEAN
-					.equals(name)) {
+			if (Constants.GET_TARGET_FACTORY_BEAN_TARGET_FACTORY_BEAN.equals(name)) {
 				value = this.getTargetFactoryBean();
 				break;
 			}
@@ -79,7 +75,6 @@ public class GetTargetFactoryBeanTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name
-				+ "] not found, template file [" + this.getFileName() + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + this.getFileName() + "]");
 	}
 }

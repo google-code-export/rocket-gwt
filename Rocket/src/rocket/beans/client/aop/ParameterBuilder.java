@@ -19,75 +19,78 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This builder takes care of assembling an array of Objects automatically wrapping primitive values in wrappers as necessary.
+ * This builder takes care of assembling an array of Objects automatically
+ * wrapping primitive values in wrappers as necessary.
+ * 
  * @author Miroslav Pokorny
  */
 public class ParameterBuilder {
 
-	public ParameterBuilder(){
+	public ParameterBuilder() {
 		super();
-		
-		this.setParameters( new ArrayList() );
+
+		this.setParameters(new ArrayList());
 	}
-	
-	public ParameterBuilder add( final boolean booleanValue ){
-		this.add( Boolean.valueOf( booleanValue ));
+
+	public ParameterBuilder add(final boolean booleanValue) {
+		this.add(Boolean.valueOf(booleanValue));
 		return this;
 	}
-	
-	public ParameterBuilder add( final byte byteValue ){
-		this.add( new Byte( byteValue ));
+
+	public ParameterBuilder add(final byte byteValue) {
+		this.add(new Byte(byteValue));
 		return this;
 	}
-	
-	public ParameterBuilder add( final short shortValue ){
-		this.add( new Short( shortValue ));
+
+	public ParameterBuilder add(final short shortValue) {
+		this.add(new Short(shortValue));
 		return this;
 	}
-	
-	public ParameterBuilder add( final int intValue ){
-		this.add( new Integer( intValue ));
+
+	public ParameterBuilder add(final int intValue) {
+		this.add(new Integer(intValue));
 		return this;
 	}
-	
-	public ParameterBuilder add( final long longValue ){
-		this.add( new Long( longValue ));
+
+	public ParameterBuilder add(final long longValue) {
+		this.add(new Long(longValue));
 		return this;
 	}
-	
-	public ParameterBuilder add( final float floatValue ){
-		this.add( new Float( floatValue ));
+
+	public ParameterBuilder add(final float floatValue) {
+		this.add(new Float(floatValue));
 		return this;
 	}
-	
-	public ParameterBuilder add( final double doubleValue ){
-		this.add( new Double( doubleValue ));
+
+	public ParameterBuilder add(final double doubleValue) {
+		this.add(new Double(doubleValue));
 		return this;
 	}
-	
-	public ParameterBuilder add( final char characterValue ){
-		this.add( new Character( characterValue ));
+
+	public ParameterBuilder add(final char characterValue) {
+		this.add(new Character(characterValue));
 		return this;
 	}
-	
-	public ParameterBuilder add( final Object object ){
-		this.getParameters().add( object );
+
+	public ParameterBuilder add(final Object object) {
+		this.getParameters().add(object);
 		return this;
 	}
-	
+
 	/**
 	 * This list accumulates all the parameters that are added to this builder.
 	 */
 	private List parameters;
-	
-	protected List getParameters(){
+
+	protected List getParameters() {
 		return this.parameters;
 	}
-	protected void setParameters( final List parameters ){
+
+	protected void setParameters(final List parameters) {
 		this.parameters = parameters;
 	}
-	
-	public Object[] toParameters(){
+
+	public Object[] toParameters() {
 		return this.getParameters().toArray();
 	}
 }

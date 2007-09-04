@@ -60,8 +60,9 @@ abstract public class JsonSerializer {
 	 */
 	abstract public Object asObject(JSONValue jsonValue);
 
-	protected void setFields( final Object instance, final JSONValue jsonValue ){		
+	protected void setFields(final Object instance, final JSONValue jsonValue) {
 	}
+
 	/**
 	 * Deserializes a jsonValue into a list of java objects.
 	 * 
@@ -71,8 +72,8 @@ abstract public class JsonSerializer {
 	public List asList(final JSONValue jsonValue) {
 		return JsonSerializer.listBuilder.buildList(this, jsonValue);
 	}
-	
-	static private ListBuilder listBuilder = new ListBuilder(){
+
+	static private ListBuilder listBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
 			return serializer.asObject(jsonValue);
 		}
@@ -85,7 +86,7 @@ abstract public class JsonSerializer {
 	 * @return
 	 */
 	public Set asSet(final JSONValue jsonValue) {
-		return JsonSerializer.setBuilder.buildSet( this, jsonValue);
+		return JsonSerializer.setBuilder.buildSet(this, jsonValue);
 	}
 
 	static private final SetBuilder setBuilder = new SetBuilder() {
@@ -93,7 +94,7 @@ abstract public class JsonSerializer {
 			return serializer.asObject(jsonValue);
 		}
 	};
-	
+
 	/**
 	 * Deserializes a jsonValue into a map containing java objects with String
 	 * keys
@@ -110,7 +111,7 @@ abstract public class JsonSerializer {
 			return serializer.asObject(jsonValue);
 		}
 	};
-	
+
 	/**
 	 * Copies all the boolean values from the given json array into a new list
 	 * after wrapping them in a Boolean
@@ -121,14 +122,13 @@ abstract public class JsonSerializer {
 	protected List asBooleanList(final JSONValue jsonValue) {
 		return JsonSerializer.booleanListBuilder.buildList(this, jsonValue);
 	}
-	
 
 	static final private ListBuilder booleanListBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return Boolean.valueOf( serializer.asBoolean(jsonValue));
+			return Boolean.valueOf(serializer.asBoolean(jsonValue));
 		}
 	};
-	
+
 	/**
 	 * Copies all the boolean values from the given json array into a new set
 	 * after wrapping them in a Boolean
@@ -142,7 +142,7 @@ abstract public class JsonSerializer {
 
 	static final private SetBuilder booleanSetBuilder = new SetBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return Boolean.valueOf( serializer.asBoolean(jsonValue));
+			return Boolean.valueOf(serializer.asBoolean(jsonValue));
 		}
 	};
 
@@ -159,12 +159,13 @@ abstract public class JsonSerializer {
 
 	static final private MapBuilder booleanMapBuilder = new MapBuilder() {
 		protected Object visitValue(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return Boolean.valueOf( serializer.asBoolean(jsonValue));
+			return Boolean.valueOf(serializer.asBoolean(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Extracts a double from the given JSONValue which is assumed to be a JSONBoolean
+	 * Extracts a double from the given JSONValue which is assumed to be a
+	 * JSONBoolean
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -188,17 +189,16 @@ abstract public class JsonSerializer {
 	protected List asByteList(final JSONValue jsonValue) {
 		return JsonSerializer.byteListBuilder.buildList(this, jsonValue);
 	}
-	
 
 	static final private ListBuilder byteListBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Byte( serializer.asByte(jsonValue));
+			return new Byte(serializer.asByte(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Copies all the byte values from the given json array into a new set
-	 * after wrapping them in a Byte
+	 * Copies all the byte values from the given json array into a new set after
+	 * wrapping them in a Byte
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -209,7 +209,7 @@ abstract public class JsonSerializer {
 
 	static final private SetBuilder byteSetBuilder = new SetBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Byte( serializer.asByte(jsonValue));
+			return new Byte(serializer.asByte(jsonValue));
 		}
 	};
 
@@ -226,12 +226,13 @@ abstract public class JsonSerializer {
 
 	static final private MapBuilder byteMapBuilder = new MapBuilder() {
 		protected Object visitValue(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Byte( serializer.asByte(jsonValue));
+			return new Byte(serializer.asByte(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Extracts a byte from the given JSONValue which is assumed to be a JSONNumber
+	 * Extracts a byte from the given JSONValue which is assumed to be a
+	 * JSONNumber
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -242,7 +243,7 @@ abstract public class JsonSerializer {
 			throwIncompatibleJsonValue(jsonValue, "JSONNumber");
 		}
 
-		return (byte)jsonByte.getValue();
+		return (byte) jsonByte.getValue();
 	}
 
 	/**
@@ -255,14 +256,13 @@ abstract public class JsonSerializer {
 	protected List asShortList(final JSONValue jsonValue) {
 		return JsonSerializer.shortListBuilder.buildList(this, jsonValue);
 	}
-	
 
 	static final private ListBuilder shortListBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Short( serializer.asShort(jsonValue));
+			return new Short(serializer.asShort(jsonValue));
 		}
 	};
-	
+
 	/**
 	 * Copies all the short values from the given json array into a new set
 	 * after wrapping them in a Short
@@ -276,7 +276,7 @@ abstract public class JsonSerializer {
 
 	static final private SetBuilder shortSetBuilder = new SetBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Short( serializer.asShort(jsonValue));
+			return new Short(serializer.asShort(jsonValue));
 		}
 	};
 
@@ -293,12 +293,13 @@ abstract public class JsonSerializer {
 
 	static final private MapBuilder shortMapBuilder = new MapBuilder() {
 		protected Object visitValue(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Short( serializer.asShort(jsonValue));
+			return new Short(serializer.asShort(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Extracts a short from the given JSONValue which is assumed to be a JSONNumber
+	 * Extracts a short from the given JSONValue which is assumed to be a
+	 * JSONNumber
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -309,12 +310,12 @@ abstract public class JsonSerializer {
 			throwIncompatibleJsonValue(jsonValue, "JSONNumber");
 		}
 
-		return (short)jsonShort.getValue();
+		return (short) jsonShort.getValue();
 	}
 
 	/**
-	 * Copies all the int values from the given json array into a new list
-	 * after wrapping them in a Int
+	 * Copies all the int values from the given json array into a new list after
+	 * wrapping them in a Int
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -322,17 +323,16 @@ abstract public class JsonSerializer {
 	protected List asIntegerList(final JSONValue jsonValue) {
 		return JsonSerializer.intListBuilder.buildList(this, jsonValue);
 	}
-	
 
 	static final private ListBuilder intListBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Integer( serializer.asInt(jsonValue));
+			return new Integer(serializer.asInt(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Copies all the int values from the given json array into a new set
-	 * after wrapping them in a Int
+	 * Copies all the int values from the given json array into a new set after
+	 * wrapping them in a Int
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -343,13 +343,13 @@ abstract public class JsonSerializer {
 
 	static final private SetBuilder intSetBuilder = new SetBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Integer( serializer.asInt(jsonValue));
+			return new Integer(serializer.asInt(jsonValue));
 		}
 	};
 
 	/**
-	 * Copies all the int values from the given json object into a new Map
-	 * after wrapping all values in a Int
+	 * Copies all the int values from the given json object into a new Map after
+	 * wrapping all values in a Int
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -360,12 +360,13 @@ abstract public class JsonSerializer {
 
 	static final private MapBuilder intMapBuilder = new MapBuilder() {
 		protected Object visitValue(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Integer( serializer.asInt(jsonValue));
+			return new Integer(serializer.asInt(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Extracts a int from the given JSONValue which is assumed to be a JSONNumber
+	 * Extracts a int from the given JSONValue which is assumed to be a
+	 * JSONNumber
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -376,7 +377,7 @@ abstract public class JsonSerializer {
 			throwIncompatibleJsonValue(jsonValue, "JSONNumber");
 		}
 
-		return (int)jsonInt.getValue();
+		return (int) jsonInt.getValue();
 	}
 
 	/**
@@ -389,14 +390,13 @@ abstract public class JsonSerializer {
 	protected List asLongList(final JSONValue jsonValue) {
 		return JsonSerializer.longListBuilder.buildList(this, jsonValue);
 	}
-	
 
 	static final private ListBuilder longListBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Long( serializer.asLong(jsonValue));
+			return new Long(serializer.asLong(jsonValue));
 		}
 	};
-	
+
 	/**
 	 * Copies all the long values from the given json array longo a new set
 	 * after wrapping them in a Long
@@ -410,7 +410,7 @@ abstract public class JsonSerializer {
 
 	static final private SetBuilder longSetBuilder = new SetBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Long( serializer.asLong(jsonValue));
+			return new Long(serializer.asLong(jsonValue));
 		}
 	};
 
@@ -427,12 +427,13 @@ abstract public class JsonSerializer {
 
 	static final private MapBuilder longMapBuilder = new MapBuilder() {
 		protected Object visitValue(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Long( serializer.asLong(jsonValue));
+			return new Long(serializer.asLong(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Extracts a long from the given JSONValue which is assumed to be a JSONNumber
+	 * Extracts a long from the given JSONValue which is assumed to be a
+	 * JSONNumber
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -443,7 +444,7 @@ abstract public class JsonSerializer {
 			throwIncompatibleJsonValue(jsonValue, "JSONNumber");
 		}
 
-		return (long)jsonLong.getValue();
+		return (long) jsonLong.getValue();
 	}
 
 	/**
@@ -456,14 +457,13 @@ abstract public class JsonSerializer {
 	protected List asFloatList(final JSONValue jsonValue) {
 		return JsonSerializer.floatListBuilder.buildList(this, jsonValue);
 	}
-	
 
 	static final private ListBuilder floatListBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Float( serializer.asFloat(jsonValue));
+			return new Float(serializer.asFloat(jsonValue));
 		}
 	};
-	
+
 	/**
 	 * Copies all the float values from the given json array into a new set
 	 * after wrapping them in a Float
@@ -477,7 +477,7 @@ abstract public class JsonSerializer {
 
 	static final private SetBuilder floatSetBuilder = new SetBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Float( serializer.asFloat(jsonValue));
+			return new Float(serializer.asFloat(jsonValue));
 		}
 	};
 
@@ -494,12 +494,13 @@ abstract public class JsonSerializer {
 
 	static final private MapBuilder floatMapBuilder = new MapBuilder() {
 		protected Object visitValue(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Float( serializer.asFloat(jsonValue));
+			return new Float(serializer.asFloat(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Extracts a float from the given JSONValue which is assumed to be a JSONNumber
+	 * Extracts a float from the given JSONValue which is assumed to be a
+	 * JSONNumber
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -510,7 +511,7 @@ abstract public class JsonSerializer {
 			throwIncompatibleJsonValue(jsonValue, "JSONNumber");
 		}
 
-		return (float)jsonFloat.getValue();
+		return (float) jsonFloat.getValue();
 	}
 
 	/**
@@ -523,14 +524,13 @@ abstract public class JsonSerializer {
 	protected List asDoubleList(final JSONValue jsonValue) {
 		return JsonSerializer.doubleListBuilder.buildList(this, jsonValue);
 	}
-	
 
 	static final private ListBuilder doubleListBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Double( serializer.asDouble(jsonValue));
+			return new Double(serializer.asDouble(jsonValue));
 		}
 	};
-	
+
 	/**
 	 * Copies all the double values from the given json array into a new set
 	 * after wrapping them in a Double
@@ -544,7 +544,7 @@ abstract public class JsonSerializer {
 
 	static final private SetBuilder doubleSetBuilder = new SetBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Double( serializer.asDouble(jsonValue));
+			return new Double(serializer.asDouble(jsonValue));
 		}
 	};
 
@@ -561,12 +561,13 @@ abstract public class JsonSerializer {
 
 	static final private MapBuilder doubleMapBuilder = new MapBuilder() {
 		protected Object visitValue(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Double( serializer.asDouble(jsonValue));
+			return new Double(serializer.asDouble(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Extracts a double from the given JSONValue which is assumed to be a JSONNumber
+	 * Extracts a double from the given JSONValue which is assumed to be a
+	 * JSONNumber
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -577,7 +578,7 @@ abstract public class JsonSerializer {
 			throwIncompatibleJsonValue(jsonValue, "JSONNumber");
 		}
 
-		return (double)jsonDouble.getValue();
+		return (double) jsonDouble.getValue();
 	}
 
 	/**
@@ -590,17 +591,16 @@ abstract public class JsonSerializer {
 	protected List asCharacterList(final JSONValue jsonValue) {
 		return JsonSerializer.charListBuilder.buildList(this, jsonValue);
 	}
-	
 
 	static final private ListBuilder charListBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Character( serializer.asChar(jsonValue));
+			return new Character(serializer.asChar(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Copies all the char values from the given json array into a new set
-	 * after wrapping them in a Character
+	 * Copies all the char values from the given json array into a new set after
+	 * wrapping them in a Character
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -611,7 +611,7 @@ abstract public class JsonSerializer {
 
 	static final private SetBuilder charSetBuilder = new SetBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Character( serializer.asChar(jsonValue));
+			return new Character(serializer.asChar(jsonValue));
 		}
 	};
 
@@ -628,12 +628,13 @@ abstract public class JsonSerializer {
 
 	static final private MapBuilder charMapBuilder = new MapBuilder() {
 		protected Object visitValue(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new Character( serializer.asChar(jsonValue));
+			return new Character(serializer.asChar(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Extracts a char from the given JSONValue which is assumed to be JSONString
+	 * Extracts a char from the given JSONValue which is assumed to be
+	 * JSONString
 	 * 
 	 * @param jsonValue
 	 * @return
@@ -655,7 +656,7 @@ abstract public class JsonSerializer {
 
 		return charValue;
 	}
-	
+
 	/**
 	 * Copies all the string values from the given json array into a new list
 	 * after wrapping them in a String
@@ -666,14 +667,13 @@ abstract public class JsonSerializer {
 	protected List asStringList(final JSONValue jsonValue) {
 		return JsonSerializer.stringListBuilder.buildList(this, jsonValue);
 	}
-	
 
 	static final private ListBuilder stringListBuilder = new ListBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new String( serializer.asString(jsonValue));
+			return new String(serializer.asString(jsonValue));
 		}
 	};
-	
+
 	/**
 	 * Copies all the string values from the given json array into a new set
 	 * after wrapping them in a String
@@ -687,7 +687,7 @@ abstract public class JsonSerializer {
 
 	static final private SetBuilder stringSetBuilder = new SetBuilder() {
 		protected Object visitElement(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new String( serializer.asString(jsonValue));
+			return new String(serializer.asString(jsonValue));
 		}
 	};
 
@@ -704,28 +704,29 @@ abstract public class JsonSerializer {
 
 	static final private MapBuilder stringMapBuilder = new MapBuilder() {
 		protected Object visitValue(final JsonSerializer serializer, final JSONValue jsonValue) {
-			return new String( serializer.asString(jsonValue));
+			return new String(serializer.asString(jsonValue));
 		}
 	};
-	
+
 	/**
-	 * Extracts a string from the given JSONValue which is assumed to be JSONString
+	 * Extracts a string from the given JSONValue which is assumed to be
+	 * JSONString
 	 * 
 	 * @param jsonValue
 	 * @return
 	 */
 	protected String asString(final JSONValue jsonValue) {
 		String string = null;
-		
-		if( null != jsonValue ){
+
+		if (null != jsonValue) {
 			final JSONString jsonString = jsonValue.isString();
 			if (null != jsonString) {
 				string = jsonString.stringValue();
-			}						
+			}
 		}
 		return string;
 	}
-	
+
 	/**
 	 * Convenient method that creates a JsonDeserializationException to report
 	 * any problem whilst deserializing a json encoded String into java objects.

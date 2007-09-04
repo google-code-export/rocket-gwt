@@ -20,20 +20,22 @@ import rocket.widget.client.WidgetConstants;
 
 /**
  * A collection of constants used through out this package.
+ * 
  * @author Miroslav Pokorny
  */
 class ViewportConstants {
 
-    public final static String VIEWPORT_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "viewport");
+	public final static String VIEWPORT_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "viewport");
 
-    public final static String VIEWPORT_TILE_STYLE = StyleHelper.buildCompound( VIEWPORT_STYLE, "tile");       
+	public final static String VIEWPORT_TILE_STYLE = StyleHelper.buildCompound(VIEWPORT_STYLE, "tile");
 
-    public final static String VIEWPORT_OUT_OF_BOUNDS_STYLE = StyleHelper.buildCompound( VIEWPORT_STYLE, "outOfBounds");
-    
-    final static String TILE_LEFT_ATTRIBUTE = "__tileLeft";
-    final static String TILE_TOP_ATTRIBUTE = "__tileTop";
-    
-    final static int X_OFFSET = 16384;
-    final static int Y_OFFSET = 16384;
+	public final static String VIEWPORT_OUT_OF_BOUNDS_STYLE = StyleHelper.buildCompound(VIEWPORT_STYLE, "outOfBounds");
+
+	final static String TILE_LEFT_ATTRIBUTE = "__tileLeft";
+
+	final static String TILE_TOP_ATTRIBUTE = "__tileTop";
+
+	final static int X_OFFSET = 16384;
+
+	final static int Y_OFFSET = 16384;
 }
-

@@ -174,19 +174,19 @@ public class NewFieldImpl extends AbstractField implements NewField {
 		final CodeBlock codeBlock = this.getValue();
 		if (false == codeBlock.isEmpty()) {
 			writer.print("=");
-			codeBlock.write(writer );
+			codeBlock.write(writer);
 		}
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append( "NewFieldImpl ");
-		
-		if( null != this.type ){
-			builder.append( type.getName() );
-			builder.append( ' ');
+		builder.append("NewFieldImpl ");
+
+		if (null != this.type) {
+			builder.append(type.getName());
+			builder.append(' ');
 		}
-		builder.append( this.name );
+		builder.append(this.name);
 		return builder.toString();
 	}
 }

@@ -62,17 +62,14 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedCodeBlock {
 	 * @return The file name
 	 */
 	protected String getFileName() {
-		return this.getMethod().returnsVoid() ? Constants.INVOKE_TARGET_METHOD_VOID_TEMPLATE
-				: Constants.INVOKE_TARGET_METHOD_TEMPLATE;
+		return this.getMethod().returnsVoid() ? Constants.INVOKE_TARGET_METHOD_VOID_TEMPLATE : Constants.INVOKE_TARGET_METHOD_TEMPLATE;
 	}
 
 	protected InputStream getInputStream() {
 		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(
-				filename);
+		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException(
-					"Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
 		}
 		return inputStream;
 	}
@@ -94,8 +91,7 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name
-				+ "] not found, template file [" + this.getFileName() + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + this.getFileName() + "]");
 	}
 
 	/**
@@ -118,8 +114,7 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedCodeBlock {
 			}
 
 			protected Collection getCollection() {
-				return InvokeTargetMethodTemplatedFile.this.getMethod()
-						.getParameters();
+				return InvokeTargetMethodTemplatedFile.this.getMethod().getParameters();
 			}
 
 			protected void prepareToWrite(Object element) {

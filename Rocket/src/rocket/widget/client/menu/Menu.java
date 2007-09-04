@@ -26,126 +26,127 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Base class containing common properties and behaviour for all menu types, ContextMenu and Horizontal/VerticalMenuBar
+ * Base class containing common properties and behaviour for all menu types,
+ * ContextMenu and Horizontal/VerticalMenuBar
  * 
  * @author Miroslav Pokorny (mP)
  */
 public abstract class Menu extends MenuWidget implements HasWidgets {
 
-    public Menu() {
-        super();
-        this.setMenuListeners( createMenuListenerCollection() );
-    }
+	public Menu() {
+		super();
+		this.setMenuListeners(createMenuListenerCollection());
+	}
 
-    protected void handleMouseClick(final Event event) {
-        DOM.eventCancelBubble(event, true);
-    }
+	protected void handleMouseClick(final Event event) {
+		DOM.eventCancelBubble(event, true);
+	}
 
-    protected void handleMouseOver(final Event event) {
-        DOM.eventCancelBubble(event, true);
-    }
+	protected void handleMouseOver(final Event event) {
+		DOM.eventCancelBubble(event, true);
+	}
 
-    /**
-     * If the mouse moves outside the menu hide the event.
-     */
-    protected void handleMouseOut(final Event event) {
-        final Element target = DOM.eventGetToElement(event);
-        if (target == null || DOM.isOrHasChild(this.getElement(), target)) {
-            this.hide();
-            DOM.eventCancelBubble(event, true);
-        }
-    }
+	/**
+	 * If the mouse moves outside the menu hide the event.
+	 */
+	protected void handleMouseOut(final Event event) {
+		final Element target = DOM.eventGetToElement(event);
+		if (target == null || DOM.isOrHasChild(this.getElement(), target)) {
+			this.hide();
+			DOM.eventCancelBubble(event, true);
+		}
+	}
 
-    // ACTIONS
-    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	// ACTIONS
+	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    /**
-     * This hides or closes all menu lists except for the top most one.
-     */
-    public void hide() {
-        this.getMenuList().hide();
-    }
+	/**
+	 * This hides or closes all menu lists except for the top most one.
+	 */
+	public void hide() {
+		this.getMenuList().hide();
+	}
 
-    // PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	// PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    public void add(final Widget widget) {
-        this.insert(widget, this.getCount());
-    }
+	public void add(final Widget widget) {
+		this.insert(widget, this.getCount());
+	}
 
-    public void insert(final Widget widget, final int beforeIndex) {
-        this.getMenuList().insert(widget, beforeIndex);
-    }
+	public void insert(final Widget widget, final int beforeIndex) {
+		this.getMenuList().insert(widget, beforeIndex);
+	}
 
-    public boolean remove(final Widget widget) {
-        return this.getMenuList().remove(widget);
-    }
+	public boolean remove(final Widget widget) {
+		return this.getMenuList().remove(widget);
+	}
 
-    public int getCount() {
-        return this.getMenuList().getWidgetCount();
-    }
+	public int getCount() {
+		return this.getMenuList().getWidgetCount();
+	}
 
-    public Iterator iterator() {
-        return this.getMenuList().iterator();
-    }
+	public Iterator iterator() {
+		return this.getMenuList().iterator();
+	}
 
-    public void clear() {
-        this.getMenuList().clear();
-    }
+	public void clear() {
+		this.getMenuList().clear();
+	}
 
-    // PROPERTIES :::::::::::::::::::::::::::::::::::::::::::::::::::::
+	// PROPERTIES :::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    /**
-     * A menuList is used as the container for all child menu widgets.
-     */
-    private MenuList menuList;
+	/**
+	 * A menuList is used as the container for all child menu widgets.
+	 */
+	private MenuList menuList;
 
-    protected MenuList getMenuList() {
-        ObjectHelper.checkNotNull("field:menuList", menuList);
-        return this.menuList;
-    }
+	protected MenuList getMenuList() {
+		ObjectHelper.checkNotNull("field:menuList", menuList);
+		return this.menuList;
+	}
 
-    protected boolean hasMenuList() {
-        return null != this.menuList;
-    }
+	protected boolean hasMenuList() {
+		return null != this.menuList;
+	}
 
-    protected void setMenuList(final MenuList menuList) {
-        ObjectHelper.checkNotNull("parameter:menuList", menuList);
-        this.menuList = menuList;
-        menuList.setMenu(this);
-    }
+	protected void setMenuList(final MenuList menuList) {
+		ObjectHelper.checkNotNull("parameter:menuList", menuList);
+		this.menuList = menuList;
+		menuList.setMenu(this);
+	}
 
-    // MENU LISTENER HANDLING
-    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	// MENU LISTENER HANDLING
+	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    /**
-     * A list of objects interested in menu events.
-     */
-    private MenuListenerCollection menuListeners;
+	/**
+	 * A list of objects interested in menu events.
+	 */
+	private MenuListenerCollection menuListeners;
 
-    protected MenuListenerCollection getMenuListeners() {
-        ObjectHelper.checkNotNull("field:menuListeners", this.menuListeners);
-        return this.menuListeners;
-    }
+	protected MenuListenerCollection getMenuListeners() {
+		ObjectHelper.checkNotNull("field:menuListeners", this.menuListeners);
+		return this.menuListeners;
+	}
 
-    protected void setMenuListeners(final MenuListenerCollection menuListeners) {
-        ObjectHelper.checkNotNull("parameter:menuListeners", menuListeners);
-        this.menuListeners = menuListeners;
-    }
+	protected void setMenuListeners(final MenuListenerCollection menuListeners) {
+		ObjectHelper.checkNotNull("parameter:menuListeners", menuListeners);
+		this.menuListeners = menuListeners;
+	}
 
-    protected MenuListenerCollection createMenuListenerCollection() {
-        return new MenuListenerCollection();
-    }
+	protected MenuListenerCollection createMenuListenerCollection() {
+		return new MenuListenerCollection();
+	}
 
-    public void addMenuListener(final MenuListener listener) {
-        ObjectHelper.checkNotNull("parameter:listener", listener);
-        this.getMenuListeners().add(listener);
-    }
+	public void addMenuListener(final MenuListener listener) {
+		ObjectHelper.checkNotNull("parameter:listener", listener);
+		this.getMenuListeners().add(listener);
+	}
 
-    public void removeMenuListener(final MenuListener listener) {
-        this.getMenuListeners().remove(listener);
-    }
+	public void removeMenuListener(final MenuListener listener) {
+		this.getMenuListeners().remove(listener);
+	}
 
-    public String toString() {
-        return super.toString() + ", menuListeners: " + menuListeners;
-    }
+	public String toString() {
+		return super.toString() + ", menuListeners: " + menuListeners;
+	}
 }

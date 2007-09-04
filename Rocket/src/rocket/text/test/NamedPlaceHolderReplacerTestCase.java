@@ -21,45 +21,44 @@ import java.util.Map;
 import junit.framework.TestCase;
 import rocket.text.client.NamedPlaceHolderReplacer;
 
-
 public class NamedPlaceHolderReplacerTestCase extends TestCase {
-	
-	public void testNoPlaceholders() {
-        final String text = "The quick brown fox jumped over the lazy dog";        
-        
-    	final NamedPlaceHolderReplacer replacer = new NamedPlaceHolderReplacer();
-    	final Map values = new HashMap();
-        replacer.setValues( values );  
-        
-        final String expected = text;
-        final String actual = replacer.execute( text );
-        assertEquals(expected, actual);
-    }
 
-    public void testWithSinglePlaceHolders() {
-        final String text = "The quick ${colour} fox jumped over the lazy dog.";
-        
-        final NamedPlaceHolderReplacer replacer = new NamedPlaceHolderReplacer();
-        final Map values = new HashMap();
-        values.put( "colour", "BROWN" );        
-        replacer.setValues( values );  
-        
-        final String expected = "The quick BROWN fox jumped over the lazy dog.";
-        final String actual = replacer.execute( text );
-        assertEquals(expected, actual);
-    }
-    
-    public void testWithManyValues() {
-        final String text = "The quick ${colour} fox ${action} over the lazy dog.";
-        
-        final NamedPlaceHolderReplacer replacer = new NamedPlaceHolderReplacer();
-        final Map values = new HashMap();
-        values.put( "colour", "BROWN" );
-        values.put( "action", "JUMPED" );       
-        replacer.setValues( values );          
-        
-        final String expected = "The quick BROWN fox JUMPED over the lazy dog.";
-        final String actual = replacer.execute( text );
-        assertEquals(expected, actual);
-    }
-   }
+	public void testNoPlaceholders() {
+		final String text = "The quick brown fox jumped over the lazy dog";
+
+		final NamedPlaceHolderReplacer replacer = new NamedPlaceHolderReplacer();
+		final Map values = new HashMap();
+		replacer.setValues(values);
+
+		final String expected = text;
+		final String actual = replacer.execute(text);
+		assertEquals(expected, actual);
+	}
+
+	public void testWithSinglePlaceHolders() {
+		final String text = "The quick ${colour} fox jumped over the lazy dog.";
+
+		final NamedPlaceHolderReplacer replacer = new NamedPlaceHolderReplacer();
+		final Map values = new HashMap();
+		values.put("colour", "BROWN");
+		replacer.setValues(values);
+
+		final String expected = "The quick BROWN fox jumped over the lazy dog.";
+		final String actual = replacer.execute(text);
+		assertEquals(expected, actual);
+	}
+
+	public void testWithManyValues() {
+		final String text = "The quick ${colour} fox ${action} over the lazy dog.";
+
+		final NamedPlaceHolderReplacer replacer = new NamedPlaceHolderReplacer();
+		final Map values = new HashMap();
+		values.put("colour", "BROWN");
+		values.put("action", "JUMPED");
+		replacer.setValues(values);
+
+		final String expected = "The quick BROWN fox JUMPED over the lazy dog.";
+		final String actual = replacer.execute(text);
+		assertEquals(expected, actual);
+	}
+}

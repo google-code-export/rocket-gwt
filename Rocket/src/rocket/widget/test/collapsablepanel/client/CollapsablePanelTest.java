@@ -33,86 +33,84 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class CollapsablePanelTest implements EntryPoint {
 
-    /**
-     * This is the entry point method.
-     */
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
 
-        final RootPanel rootPanel = RootPanel.get();
+		final RootPanel rootPanel = RootPanel.get();
 
-        final Button addRedTextStyle = new Button("add redText style");
-        rootPanel.add(addRedTextStyle);
-        final Button setRedTextStyle = new Button("set redText style");
-        rootPanel.add(setRedTextStyle);
-        final Button removeRedTextStyle = new Button("remove redText style");
-        rootPanel.add(removeRedTextStyle);
-        final Button removeCardStyle = new Button("remove card style");
-        rootPanel.add(removeCardStyle);
-        rootPanel.add(new HTML("<br/>"));
+		final Button addRedTextStyle = new Button("add redText style");
+		rootPanel.add(addRedTextStyle);
+		final Button setRedTextStyle = new Button("set redText style");
+		rootPanel.add(setRedTextStyle);
+		final Button removeRedTextStyle = new Button("remove redText style");
+		rootPanel.add(removeRedTextStyle);
+		final Button removeCardStyle = new Button("remove card style");
+		rootPanel.add(removeCardStyle);
+		rootPanel.add(new HTML("<br/>"));
 
-        final CollapsablePanel card = new CollapsablePanel();
-        card.setTitle("***Title***");
+		final CollapsablePanel card = new CollapsablePanel();
+		card.setTitle("***Title***");
 
-        card.add(card.createMinimize());
-        card.add(card.createMaximize());
-        card.add(card.createClose());
+		card.add(card.createMinimize());
+		card.add(card.createMaximize());
+		card.add(card.createClose());
 
-        final FlowPanel content = new FlowPanel();
-        content.add(new HTML(
-                "<span style='background-color: #ffeedd'> The quick\nbrown fox jumped over\nthe lazy dog!</span>"));
+		final FlowPanel content = new FlowPanel();
+		content.add(new HTML("<span style='background-color: #ffeedd'> The quick\nbrown fox jumped over\nthe lazy dog!</span>"));
 
-        final Button button = new Button("click me!");
-        button.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                Window.alert("clicked!");
-            }
-        });
-        content.add(button);
-        content.add(new HTML(
-                "<span style='background-color: #ddeeff'> The quick\nbrown fox jumped over\nthe lazy dog!</span>"));
+		final Button button = new Button("click me!");
+		button.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				Window.alert("clicked!");
+			}
+		});
+		content.add(button);
+		content.add(new HTML("<span style='background-color: #ddeeff'> The quick\nbrown fox jumped over\nthe lazy dog!</span>"));
 
-        card.setContent(content);
-        rootPanel.add(card);
+		card.setContent(content);
+		rootPanel.add(card);
 
-        final Button showContent = new Button("ShowContent");
-        showContent.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                card.showContent();
-            };
-        });
+		final Button showContent = new Button("ShowContent");
+		showContent.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				card.showContent();
+			};
+		});
 
-        final Button hideContent = new Button("HideContent");
-        hideContent.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                card.hideContent();
-            };
-        });
+		final Button hideContent = new Button("HideContent");
+		hideContent.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				card.hideContent();
+			};
+		});
 
-        addRedTextStyle.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                card.addStyleName("redText");
-            }
-        });
-        setRedTextStyle.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                card.setStyleName("redText");
-            }
-        });
-        removeRedTextStyle.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                card.removeStyleName("redText");
-            }
-        });
-        removeCardStyle.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                card.removeStyleName("card");
-            }
-        });
-    }
+		addRedTextStyle.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				card.addStyleName("redText");
+			}
+		});
+		setRedTextStyle.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				card.setStyleName("redText");
+			}
+		});
+		removeRedTextStyle.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				card.removeStyleName("redText");
+			}
+		});
+		removeCardStyle.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				card.removeStyleName("card");
+			}
+		});
+	}
 }

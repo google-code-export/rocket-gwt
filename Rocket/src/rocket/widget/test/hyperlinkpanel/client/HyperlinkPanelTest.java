@@ -32,74 +32,74 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class HyperlinkPanelTest implements EntryPoint {
 
-    /**
-     * This is the entry point method.
-     */
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
 
-        final RootPanel rootPanel = RootPanel.get();
-        final HyperlinkPanel panel = new HyperlinkPanel();
-        panel.addClickListener(new ClickListener() {
-            public void onClick(final Widget sender) {
-                Window.alert("HyperlinkPanel clicked");
-            }
-        });
-        rootPanel.add(panel);
+		final RootPanel rootPanel = RootPanel.get();
+		final HyperlinkPanel panel = new HyperlinkPanel();
+		panel.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				Window.alert("HyperlinkPanel clicked");
+			}
+		});
+		rootPanel.add(panel);
 
-        final InteractivePanel interactivePanel = new InteractivePanel() {
-            protected String getCollectionTypeName() {
-                return GWT.getTypeName(panel);
-            }
+		final InteractivePanel interactivePanel = new InteractivePanel() {
+			protected String getCollectionTypeName() {
+				return GWT.getTypeName(panel);
+			}
 
-            protected int getPanelWidgetCount() {
-                return panel.getWidgetCount();
-            }
+			protected int getPanelWidgetCount() {
+				return panel.getWidgetCount();
+			}
 
-            protected void panelAdd(final Widget widget) {
-                panel.add(widget);
-            }
+			protected void panelAdd(final Widget widget) {
+				panel.add(widget);
+			}
 
-            protected void panelInsert(final Widget widget, final int index) {
-                panel.insert(widget, index);
-            }
+			protected void panelInsert(final Widget widget, final int index) {
+				panel.insert(widget, index);
+			}
 
-            protected Widget panelGet(final int index) {
-                return panel.get(index);
-            }
+			protected Widget panelGet(final int index) {
+				return panel.get(index);
+			}
 
-            protected void panelRemove(final Widget widget) {
-                panel.remove(widget);
-            }
+			protected void panelRemove(final Widget widget) {
+				panel.remove(widget);
+			}
 
-            protected Widget createElement() {
-                return new HTML("" + System.currentTimeMillis());
-            }
+			protected Widget createElement() {
+				return new HTML("" + System.currentTimeMillis());
+			}
 
-            protected Iterator panelIterator() {
-                return panel.iterator();
-            }
+			protected Iterator panelIterator() {
+				return panel.iterator();
+			}
 
-            protected void checkType(Object element) {
-                if (false == (element instanceof HTML)) {
-                    SystemHelper.fail("Unknown element type type:" + GWT.getTypeName(element));
-                }
-            }
+			protected void checkType(Object element) {
+				if (false == (element instanceof HTML)) {
+					SystemHelper.fail("Unknown element type type:" + GWT.getTypeName(element));
+				}
+			}
 
-            protected int getMessageLineCount() {
-                return 10;
-            }
+			protected int getMessageLineCount() {
+				return 10;
+			}
 
-            protected String toString(final Object element) {
-                final HTML html = (HTML) element;
-                return html.getText();
-            }
-        };
-        rootPanel.add(interactivePanel);
-    }
+			protected String toString(final Object element) {
+				final HTML html = (HTML) element;
+				return html.getText();
+			}
+		};
+		rootPanel.add(interactivePanel);
+	}
 }

@@ -26,46 +26,47 @@ import rocket.util.client.ObjectHelper;
  * @author Miroslav Pokorny (mP)
  */
 class DropTargetPanelCollection {
-    /**
-     * The DropTargetPanel collection singleton.
-     * 
-     * As new DropTargetPanels are added to the dom they are also added to this collection. They are in turn removed from this list when
-     * they are removed from the dom.
-     */
-    static DropTargetPanelCollection instance = new DropTargetPanelCollection();
+	/**
+	 * The DropTargetPanel collection singleton.
+	 * 
+	 * As new DropTargetPanels are added to the dom they are also added to this
+	 * collection. They are in turn removed from this list when they are removed
+	 * from the dom.
+	 */
+	static DropTargetPanelCollection instance = new DropTargetPanelCollection();
 
-    static DropTargetPanelCollection getInstance() {
-        return instance;
-    }
+	static DropTargetPanelCollection getInstance() {
+		return instance;
+	}
 
-    public DropTargetPanelCollection() {
-        this.setDropTargetPanels(new ArrayList());
-    }
+	public DropTargetPanelCollection() {
+		this.setDropTargetPanels(new ArrayList());
+	}
 
-    /**
-     * A list which contains all available drop target panels
-     */
-    private List dropTargetPanels;
+	/**
+	 * A list which contains all available drop target panels
+	 */
+	private List dropTargetPanels;
 
-    public List getDropTargetPanels() {
-        ObjectHelper.checkNotNull("field:dropTargetPanels", dropTargetPanels);
-        return dropTargetPanels;
-    }
+	public List getDropTargetPanels() {
+		ObjectHelper.checkNotNull("field:dropTargetPanels", dropTargetPanels);
+		return dropTargetPanels;
+	}
 
-    public void setDropTargetPanels(final List dropTargetPanels) {
-        ObjectHelper.checkNotNull("parameter:dropTargetPanels", dropTargetPanels);
-        this.dropTargetPanels = dropTargetPanels;
-    }
+	public void setDropTargetPanels(final List dropTargetPanels) {
+		ObjectHelper.checkNotNull("parameter:dropTargetPanels", dropTargetPanels);
+		this.dropTargetPanels = dropTargetPanels;
+	}
 
-    public void add(final DropTargetPanel dropTargetPanel) {
-        ObjectHelper.checkNotNull("parameter:dropTargetPanel", dropTargetPanel);
+	public void add(final DropTargetPanel dropTargetPanel) {
+		ObjectHelper.checkNotNull("parameter:dropTargetPanel", dropTargetPanel);
 
-        this.getDropTargetPanels().add(dropTargetPanel);
-    }
+		this.getDropTargetPanels().add(dropTargetPanel);
+	}
 
-    public void remove(final DropTargetPanel dropTargetPanel) {
-        ObjectHelper.checkNotNull("parameter:dropTargetPanel", dropTargetPanel);
+	public void remove(final DropTargetPanel dropTargetPanel) {
+		ObjectHelper.checkNotNull("parameter:dropTargetPanel", dropTargetPanel);
 
-        this.getDropTargetPanels().remove(dropTargetPanel);
-    }
+		this.getDropTargetPanels().remove(dropTargetPanel);
+	}
 }

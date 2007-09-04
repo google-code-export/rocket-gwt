@@ -30,9 +30,10 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	 * Creates a new bean instance.
 	 * 
 	 * @return The new instance
-	 * @throws Exception any exception thrown whilst creating a new instance.
+	 * @throws Exception
+	 *             any exception thrown whilst creating a new instance.
 	 */
-	protected Object createObject() throws Exception{
+	protected Object createObject() throws Exception {
 		return this.createInstance();
 	}
 
@@ -50,27 +51,33 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	 * Factory method that creates a new bean instance.
 	 * 
 	 * @return The new instance
-	 * @throws Exception any exception thrown when creating a new instance.
+	 * @throws Exception
+	 *             any exception thrown when creating a new instance.
 	 */
 	abstract protected Object createInstance() throws Exception;
 
 	/**
-	 * This method must be implemented by sub-classes if the bean has properties that must be set. 
+	 * This method must be implemented by sub-classes if the bean has properties
+	 * that must be set.
 	 * 
-	 * Typically the code generator will override this method to invoke the appropriate setters
-	 * on the given instance after casting it to its most derived type. 
-	 * Properties that are primitive values and Strings will be set using literals whilst other values will be set via either a
-	 * bean factory or another factory method ( for sets, lists and maps ).
+	 * Typically the code generator will override this method to invoke the
+	 * appropriate setters on the given instance after casting it to its most
+	 * derived type. Properties that are primitive values and Strings will be
+	 * set using literals whilst other values will be set via either a bean
+	 * factory or another factory method ( for sets, lists and maps ).
 	 * 
-	 * @param instance The object or bean being created.
-	 * @throws Exception any exception thrown by a setter.
+	 * @param instance
+	 *            The object or bean being created.
+	 * @throws Exception
+	 *             any exception thrown by a setter.
 	 */
-	protected void satisfyProperties(final Object instance) throws Exception{		
+	protected void satisfyProperties(final Object instance) throws Exception {
 	}
 
 	/**
 	 * If the new instance is a BeanFactoryAware call its
-	 * {@link BeanFactoryAware#setBeanFactory(BeanFactory)} otherwise do nothing.
+	 * {@link BeanFactoryAware#setBeanFactory(BeanFactory)} otherwise do
+	 * nothing.
 	 * 
 	 * @param instance
 	 */

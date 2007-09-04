@@ -17,83 +17,54 @@ package rocket.widget.client.menu;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.ui.Widget;
 
-public class MenuListenerCollection {
+class MenuListenerCollection extends ArrayList {
 
-    public MenuListenerCollection() {
-        this.setListeners(new ArrayList());
-    }
+	public MenuListenerCollection() {
+	}
 
-    /**
-     * A list containing listeners to the various menu change events.
-     */
-    private List listeners;
+	// FIRE EVENTS ::::::::::::::::::::::::::::::::::::::
 
-    public List getListeners() {
-        ObjectHelper.checkNotNull("field:listeners", listeners);
-        return listeners;
-    }
+	public void fireMenuCancelled(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-    public void setListeners(final List listeners) {
-        ObjectHelper.checkNotNull("parameter:listeners", listeners);
-        this.listeners = listeners;
-    }
+		final Iterator listeners = this.iterator();
 
-    public void add(final MenuListener menuListener) {
-        ObjectHelper.checkNotNull("parameter:menuListener", menuListener);
+		while (listeners.hasNext()) {
+			final MenuListener listener = (MenuListener) listeners.next();
+			listener.onMenuCancelled(widget);
+		}
+	}
 
-        this.getListeners().add(menuListener);
-    }
+	public boolean fireBeforeMenuOpened(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-    public void remove(final MenuListener menuListener) {
-        ObjectHelper.checkNotNull("parameter:menuListener", menuListener);
+		final Iterator listeners = this.iterator();
+		boolean open = true;
 
-        this.getListeners().remove(menuListener);
-    }
+		while (listeners.hasNext()) {
+			final MenuListener listener = (MenuListener) listeners.next();
+			if (!listener.onBeforeMenuOpened(widget)) {
+				open = false;
+				break;
+			}
+		}
+		return open;
+	}
 
-    // FIRE EVENTS ::::::::::::::::::::::::::::::::::::::
+	public void fireMenuOpened(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-    public void fireMenuCancelled(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
+		final Iterator listeners = this.iterator();
 
-        final Iterator listeners = this.getListeners().iterator();
-
-        while (listeners.hasNext()) {
-            final MenuListener listener = (MenuListener) listeners.next();
-            listener.onMenuCancelled(widget);
-        }
-    }
-
-    public boolean fireBeforeMenuOpened(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-
-        final Iterator listeners = this.getListeners().iterator();
-        boolean open = true;
-
-        while (listeners.hasNext()) {
-            final MenuListener listener = (MenuListener) listeners.next();
-            if (!listener.onBeforeMenuOpened(widget)) {
-                open = false;
-                break;
-            }
-        }
-        return open;
-    }
-
-    public void fireMenuOpened(final Widget widget) {
-        ObjectHelper.checkNotNull("parameter:widget", widget);
-
-        final Iterator listeners = this.getListeners().iterator();
-
-        while (listeners.hasNext()) {
-            final MenuListener listener = (MenuListener) listeners.next();
-            listener.onMenuOpened(widget);
-        }
-    }
+		while (listeners.hasNext()) {
+			final MenuListener listener = (MenuListener) listeners.next();
+			listener.onMenuOpened(widget);
+		}
+	}
 
 }

@@ -17,6 +17,8 @@ package rocket.widget.test.blockypixel.client;
 
 import java.util.Date;
 
+import rocket.style.client.CssUnit;
+import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.Colour;
 import rocket.widget.client.BlockyPixel;
@@ -39,162 +41,163 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class BlockyPixelTest implements EntryPoint {
 
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
-        final RootPanel panel = RootPanel.get();
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
+		final RootPanel panel = RootPanel.get();
 
-        panel.add(new HTML("Interval between repaints(ms)"));
-        final TextBox interval = new TextBox();
-        interval.setText("100");
-        panel.add(interval);
-        panel.add(new HTML("<br/>"));
+		panel.add(new HTML("Interval between repaints(ms)"));
+		final TextBox interval = new TextBox();
+		interval.setText("100");
+		panel.add(interval);
+		panel.add(new HTML("<br/>"));
 
-        panel.add(new HTML("Rows"));
-        final TextBox rows = new TextBox();
-        rows.setText("10");
-        panel.add(rows);
-        panel.add(new HTML("<br/>"));
+		panel.add(new HTML("Rows"));
+		final TextBox rows = new TextBox();
+		rows.setText("10");
+		panel.add(rows);
+		panel.add(new HTML("<br/>"));
 
-        panel.add(new HTML("Columns"));
-        final TextBox columns = new TextBox();
-        columns.setText("10");
-        panel.add(columns);
-        panel.add(new HTML("<br/>"));
+		panel.add(new HTML("Columns"));
+		final TextBox columns = new TextBox();
+		columns.setText("10");
+		panel.add(columns);
+		panel.add(new HTML("<br/>"));
 
-        final Button button = new Button("Start");
-        panel.add(button);
+		final Button button = new Button("Start");
+		panel.add(button);
 
-        button.addClickListener(new ClickListener() {
-            public void onClick(final Widget ignore) {
-                final BlockyPixel grid = new BlockyPixel();
-                grid.setRows(Integer.parseInt(rows.getText()));
-                grid.setColumns(Integer.parseInt(columns.getText()));
-                grid.setSize("90%", "75%");
+		button.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignore) {
+				final BlockyPixel grid = new BlockyPixel();
+				grid.setRows(Integer.parseInt(rows.getText()));
+				grid.setColumns(Integer.parseInt(columns.getText()));
+				grid.setSize("90%", "75%");
 
-                DOM.setIntStyleAttribute(grid.getElement(), StyleConstants.Z_INDEX, 100);
-                panel.add(grid, 0, 0);
+				InlineStyle.setInteger(grid.getElement(), StyleConstants.Z_INDEX, 100, CssUnit.NONE);
+				panel.add(grid, 0, 0);
 
-                // DOM.scrollIntoView(grid.getElement());
+				// DOM.scrollIntoView(grid.getElement());
 
-                final TestTimer timer = new TestTimer();
-                timer.setCounter(0);
-                timer.setGrid(grid);
-                timer.scheduleRepeating(Integer.parseInt(interval.getText()));
+				final TestTimer timer = new TestTimer();
+				timer.setCounter(0);
+				timer.setGrid(grid);
+				timer.scheduleRepeating(Integer.parseInt(interval.getText()));
 
-                log("<b>Test started</b>");
+				log("<b>Test started</b>");
 
-                final int columns = grid.getColumns();
-                final int rows = grid.getRows();
-                log("columns: " + columns + ", rows: " + rows);
-                log("time: " + new Date() + "</b>");
+				final int columns = grid.getColumns();
+				final int rows = grid.getRows();
+				log("columns: " + columns + ", rows: " + rows);
+				log("time: " + new Date() + "</b>");
 
-                DOM.addEventPreview(new EventPreview() {
-                    public boolean onEventPreview(final Event event) {
-                        if (DOM.eventGetType(event) == Event.ONCLICK) {
-                            timer.cancel();
+				DOM.addEventPreview(new EventPreview() {
+					public boolean onEventPreview(final Event event) {
+						if (DOM.eventGetType(event) == Event.ONCLICK) {
+							timer.cancel();
 
-                            DOM.removeEventPreview(this);
-                        }
-                        return true;
-                    }
-                });
-            }
-        });
-    }
+							DOM.removeEventPreview(this);
+						}
+						return true;
+					}
+				});
+			}
+		});
+	}
 
-    void log(final String message) {
-        Element log = DOM.getElementById("log");
-        DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
-    }
+	void log(final String message) {
+		Element log = DOM.getElementById("log");
+		DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
+	}
 
-    /**
-     * This timer is in charge of periodically updating the colours appearing in the grid as well as updating counters.
-     * 
-     * @author mP
-     */
-    class TestTimer extends Timer {
-        public void run() {
-            final int counter = this.getCounter();
-            final float mix = (counter % 10) / (float) 10;
-            this.update(mix);
-            this.setCounter(counter + 1);
-        }
+	/**
+	 * This timer is in charge of periodically updating the colours appearing in
+	 * the grid as well as updating counters.
+	 * 
+	 * @author mP
+	 */
+	class TestTimer extends Timer {
+		public void run() {
+			final int counter = this.getCounter();
+			final float mix = (counter % 10) / (float) 10;
+			this.update(mix);
+			this.setCounter(counter + 1);
+		}
 
-        public void scheduleRepeating(int interval) {
-            setStartTime(System.currentTimeMillis());
-            super.scheduleRepeating(interval);
-        }
+		public void scheduleRepeating(int interval) {
+			setStartTime(System.currentTimeMillis());
+			super.scheduleRepeating(interval);
+		}
 
-        public void cancel() {
-            super.cancel();
+		public void cancel() {
+			super.cancel();
 
-            final int counter = this.getCounter();
-            if (counter > 0) {
-                final long timeTaken = System.currentTimeMillis() - this.getStartTime();
+			final int counter = this.getCounter();
+			if (counter > 0) {
+				final long timeTaken = System.currentTimeMillis() - this.getStartTime();
 
-                final float fps = counter * 1000 / (float) timeTaken;
-                log("<b>Test stopped</b>");
-                log("time: " + new Date());
-                log("timeTaken: " + timeTaken + "millis, redraws: " + counter + ", frames per second: " + fps);
+				final float fps = counter * 1000 / (float) timeTaken;
+				log("<b>Test stopped</b>");
+				log("time: " + new Date());
+				log("timeTaken: " + timeTaken + "millis, redraws: " + counter + ", frames per second: " + fps);
 
-                RootPanel.get().remove(this.getGrid());
-            }
-        }
+				RootPanel.get().remove(this.getGrid());
+			}
+		}
 
-        public void update(final float whiteMix) {
-            final BlockyPixel grid = this.getGrid();
+		public void update(final float whiteMix) {
+			final BlockyPixel grid = this.getGrid();
 
-            final int rows = grid.getRows();
-            final int columns = grid.getColumns();
+			final int rows = grid.getRows();
+			final int columns = grid.getColumns();
 
-            for (int x = 0; x < columns; x++) {
-                final int red = (int) ((float) x * 255 / columns);
+			for (int x = 0; x < columns; x++) {
+				final int red = (int) ((float) x * 255 / columns);
 
-                for (int y = 0; y < rows; y++) {
-                    final int green = (int) ((float) y * 255 / rows);
-                    final int blue = (red ^ green);
-                    final Colour colour = new Colour(red, green, blue).makeLighter(whiteMix);
-                    grid.setColour(x, y, colour);
-                }
-            }
-        }
+				for (int y = 0; y < rows; y++) {
+					final int green = (int) ((float) y * 255 / rows);
+					final int blue = (red ^ green);
+					final Colour colour = new Colour(red, green, blue).makeLighter(whiteMix);
+					grid.setColour(x, y, colour);
+				}
+			}
+		}
 
-        private BlockyPixel grid;
+		private BlockyPixel grid;
 
-        public BlockyPixel getGrid() {
-            return grid;
-        }
+		public BlockyPixel getGrid() {
+			return grid;
+		}
 
-        public void setGrid(final BlockyPixel grid) {
-            this.grid = grid;
-        }
+		public void setGrid(final BlockyPixel grid) {
+			this.grid = grid;
+		}
 
-        private long startTime;
+		private long startTime;
 
-        public void setStartTime(final long startTime) {
-            this.startTime = startTime;
-        }
+		public void setStartTime(final long startTime) {
+			this.startTime = startTime;
+		}
 
-        public long getStartTime() {
-            return this.startTime;
-        }
+		public long getStartTime() {
+			return this.startTime;
+		}
 
-        /**
-         * The number of redraws
-         */
-        private int counter;
+		/**
+		 * The number of redraws
+		 */
+		private int counter;
 
-        public void setCounter(final int counter) {
-            this.counter = counter;
-        }
+		public void setCounter(final int counter) {
+			this.counter = counter;
+		}
 
-        public int getCounter() {
-            return this.counter;
-        }
-    }
+		public int getCounter() {
+			return this.counter;
+		}
+	}
 }

@@ -18,10 +18,12 @@ package rocket.beans.test.beans.client.proxytargetthrowscheckedexception;
 import rocket.beans.client.aop.MethodInvocation;
 
 /**
- * This method interceptor does nothing but invoke the next interceptor in the chain.
+ * This method interceptor does nothing but invoke the next interceptor in the
+ * chain.
+ * 
  * @author Miroslav Pokorny
  */
-public class ProxyTargetThrowsCheckedExceptionMethodInterceptor implements rocket.beans.client.aop.MethodInterceptor{
+public class ProxyTargetThrowsCheckedExceptionMethodInterceptor implements rocket.beans.client.aop.MethodInterceptor {
 
 	public ProxyTargetThrowsCheckedExceptionMethodInterceptor() {
 		super();
@@ -31,6 +33,6 @@ public class ProxyTargetThrowsCheckedExceptionMethodInterceptor implements rocke
 		this.executed = true;
 		return invocation.proceed();
 	}
-	
+
 	public boolean executed = false;
 }

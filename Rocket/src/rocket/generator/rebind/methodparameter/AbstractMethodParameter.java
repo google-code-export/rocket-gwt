@@ -45,10 +45,10 @@ abstract public class AbstractMethodParameter extends AbstractParameter implemen
 		this.enclosingMethod = enclosingMethod;
 	}
 
-	public int getIndex(){
-		return this.getEnclosingMethod().getParameters().indexOf( this );
+	public int getIndex() {
+		return this.getEnclosingMethod().getParameters().indexOf(this);
 	}
-	
+
 	public NewMethodParameter copy() {
 		final NewMethodParameterImpl parameter = new NewMethodParameterImpl();
 		parameter.setGeneratorContext(this.getGeneratorContext());

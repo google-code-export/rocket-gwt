@@ -28,32 +28,31 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class SuperSpinnerTest implements EntryPoint {
 
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
-                Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
-            }
-        });
-        final RootPanel rootPanel = RootPanel.get();
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
+				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+			}
+		});
+		final RootPanel rootPanel = RootPanel.get();
 
-        final Label spinnerValue = new Label( "0");
-        rootPanel.add( spinnerValue );
-        
-        final SuperSpinner spinner = new SuperSpinner();
-        spinner.setDelta( 1 );
-        spinner.setBigDelta( 10 );
-        spinner.setLowerBounds( 0 );
-        spinner.setUpperBounds( 100 );
-        spinner.setDownImageUrl( "down.gif");
-        spinner.setUpImageUrl( "up.gif");
-        spinner.addChangeListener( new ChangeListener(){
-        	public void onChange( final Widget sender ){
-        		spinnerValue.setText( "" + spinner.getValue() );
-        	}
-        });
+		final Label spinnerValue = new Label("0");
+		rootPanel.add(spinnerValue);
 
-        rootPanel.add( spinner );
-    }
+		final SuperSpinner spinner = new SuperSpinner();
+		spinner.setDelta(1);
+		spinner.setBigDelta(10);
+		spinner.setLowerBounds(0);
+		spinner.setUpperBounds(100);
+		spinner.setDownImageUrl("down.gif");
+		spinner.setUpImageUrl("up.gif");
+		spinner.addChangeListener(new ChangeListener() {
+			public void onChange(final Widget sender) {
+				spinnerValue.setText("" + spinner.getValue());
+			}
+		});
+
+		rootPanel.add(spinner);
+	}
 }
-

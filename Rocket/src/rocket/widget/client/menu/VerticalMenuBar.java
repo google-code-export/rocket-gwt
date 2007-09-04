@@ -18,28 +18,27 @@ package rocket.widget.client.menu;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A vertical menu bar starts of with a vertical list of menu items. These may be opened and automatically close etc.
+ * A vertical menu bar starts of with a vertical list of menu items. These may
+ * be opened and automatically close etc.
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class VerticalMenuBar extends Menu {
-    public VerticalMenuBar() {
-        super();
+	public VerticalMenuBar() {
+		super();
+	}
 
-        this.initWidget(this.createWidget());
-    }
+	protected Widget createWidget() {
+		final MenuList menuList = this.createMenuList();
+		this.setMenuList(menuList);
+		return menuList;
+	}
 
-    protected Widget createWidget() {
-        final MenuList menuList = this.createMenuList();
-        this.setMenuList(menuList);
-        return menuList;
-    }
-
-    protected MenuList createMenuList() {
-        final VerticalMenuList list = new VerticalMenuList();
-        list.setStyleName(MenuConstants.VERTICAL_MENU_BAR_STYLE);
-        list.setHideable(false);
-        list.setMenu(this);
-        return list;
-    }
+	protected MenuList createMenuList() {
+		final VerticalMenuList list = new VerticalMenuList();
+		list.setStyleName(Constants.VERTICAL_MENU_BAR_STYLE);
+		list.setHideable(false);
+		list.setMenu(this);
+		return list;
+	}
 }

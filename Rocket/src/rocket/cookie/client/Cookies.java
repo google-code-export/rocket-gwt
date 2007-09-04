@@ -15,302 +15,342 @@ import rocket.util.client.StringHelper;
 import rocket.util.client.SystemHelper;
 
 /**
- * Represents a Map view of the cookies belonging to this browser. All map keys are of type String and the values are Cookie
+ * Represents a Map view of the cookies belonging to this browser. All map keys
+ * are of type String and the values are Cookie
  * 
  * @author Miroslav Pokorny (mP)
  */
 public class Cookies extends AbstractMap {
 
-    /**
-     * Helper which creates a Cookie object to represent a cookie with the given name if one is found.
-     * 
-     * @param cookieName
-     * @return The corresponding cookie object or null if one was not found.
-     */
-    protected Cookie getCookie(final String cookieName) {
-        Cookie cookie = null;
-        final Cookie[] cookies = this.createCookies();
-        for (int i = 0; i < cookies.length; i++) {
-            final Cookie otherCookie = (Cookie) cookies[i];
-            if (cookieName.equals(otherCookie.getName())) {
-                cookie = otherCookie;
-                break;
-            }
-        }
-        return cookie;
-    }
+	/**
+	 * This method may be invoked to query whether the browser has cookies
+	 * enabled.
+	 * 
+	 * @return
+	 */
+	native public static boolean areEnabled()/*-{
+	 return $wnd.navigator.cookieEnabled;
+	 }-*/;
 
-    /**
-     * Creates an array of Strings with each String representing a single cookie.
-     * 
-     * @return
-     */
-    protected String[] createTokens() {
-        final String cookies = CookieHelper.getCookies();
-        return StringHelper.split(cookies, CookieConstants.COOKIE_SEPARATOR_STRING, true);
-    }
+	/**
+	 * JSNI method which returns all cookies for this browser as a single
+	 * String.
+	 */
+	native static String getCookiesAsString()/*-{
+	 var cookies = $doc.cookie;
+	 return cookies ? cookies : "";
+	 }-*/;
 
-    /**
-     * Creates cookies Objects for each of the cookie tokens.
-     * 
-     * @return
-     */
-    protected Cookie[] createCookies() {
-        final String[] tokens = this.createTokens();
+	/**
+	 * Escapes to javascript to set a cookie value.
+	 * 
+	 * @param cookie
+	 */
+	static native void setCookie(final String cookie)/*-{
+	 $doc.cookie = cookie;
+	 }-*/;
 
-        final int cookieCount = tokens.length;
-        final Cookie[] cookies = new Cookie[cookieCount];
+	/**
+	 * JSNI method which removes a cookie from the browser's cookie collection.
+	 * This achieved by setting a cookie with an expires Date attribute set to
+	 * yeseterday's timestamp.
+	 * 
+	 * @param name
+	 */
+	static void removeCookie(final String name) {
+		setCookie(name + CookieConstants.REMOVE_SUFFIX);
+	}
 
-        for (int i = 0; i < cookieCount; i++) {
-            final String cookieString = tokens[i];
-            final Cookie cookie = this.createCookie(cookieString);
-            cookies[i] = cookie;
-        }
-        return cookies;
-    }
+	static Cookies cookies = new Cookies();
 
-    /**
-     * Factory method which creates a CookieObject given its string form.
-     * 
-     * @param cookieString
-     * @return The cookie object.
-     */
-    protected Cookie createCookie(final String cookieString) {
-        StringHelper.checkNotNull("parameter:cookieString", cookieString);
+	/**
+	 * Retrieves the Cookies singleton
+	 * 
+	 * @return
+	 */
+	public Cookies getCookies() {
+		return Cookies.cookies;
+	}
 
-        final String[] attributes = StringHelper.split(cookieString, CookieConstants.COOKIE_SEPARATOR_STRING, true);
+	/**
+	 * Helper which creates a Cookie object to represent a cookie with the given
+	 * name if one is found.
+	 * 
+	 * @param cookieName
+	 * @return The corresponding cookie object or null if one was not found.
+	 */
+	protected Cookie getCookie(final String cookieName) {
+		Cookie cookie = null;
+		final Cookie[] cookies = this.createCookies();
+		for (int i = 0; i < cookies.length; i++) {
+			final Cookie otherCookie = (Cookie) cookies[i];
+			if (cookieName.equals(otherCookie.getName())) {
+				cookie = otherCookie;
+				break;
+			}
+		}
+		return cookie;
+	}
 
-        final String nameValue = attributes[0];
-        final int nameValueSeparator = nameValue.indexOf(CookieConstants.COOKIE_NAME_VALUE_SEPARATOR);
-        if (nameValueSeparator == -1) {
-            SystemHelper.fail("cookieString",
-                    "The parameter:cookieString does not contain a valid cookie (name/value not found), cookieString["
-                            + cookieString + "]");
-        }
-        final String name = nameValue.substring(0, nameValueSeparator).trim();
-        final String value = nameValue.substring(nameValueSeparator + 1).trim();
+	/**
+	 * Creates an array of Strings with each String representing a single
+	 * cookie.
+	 * 
+	 * @return
+	 */
+	protected String[] createTokens() {
+		final String cookies = Cookies.getCookiesAsString();
+		return StringHelper.split(cookies, CookieConstants.SEPARATOR_STRING, true);
+	}
 
-        final Cookie cookie = new Cookie();
-        cookie.setName(name);
-        cookie.setValue(value);
-        return cookie;
-    }
+	/**
+	 * Creates Cookies objects for each of the cookie tokens.
+	 * 
+	 * @return An array of Cookie objects
+	 */
+	protected Cookie[] createCookies() {
+		final String[] tokens = this.createTokens();
 
-    public int size() {
-        return this.createTokens().length;
-    }
+		final int cookieCount = tokens.length;
+		final Cookie[] cookies = new Cookie[cookieCount];
 
-    public Object get(final Object key) {
-        return this.getCookie((String) key);
-    }
+		for (int i = 0; i < cookieCount; i++) {
+			final String cookieString = tokens[i];
+			final Cookie cookie = this.createCookie(cookieString);
+			cookies[i] = cookie;
+		}
+		return cookies;
+	}
 
-    public Object put(final Object key, final Object value) {
-        return this.putCookie((String) key, (Cookie) value);
-    }
+	/**
+	 * Factory method which creates a CookieObject given its string form.
+	 * 
+	 * @param cookieString
+	 * @return The cookie object.
+	 */
+	protected Cookie createCookie(final String cookieString) {
+		StringHelper.checkNotNull("parameter:cookieString", cookieString);
 
-    protected Cookie putCookie(final String cookieName, final Cookie cookie) {
-        final Cookie replaced = this.getCookie(cookieName);
-        CookieHelper.setCookie(cookie.toCookieString());
-        return replaced;
-    }
+		final String[] attributes = StringHelper.split(cookieString, CookieConstants.SEPARATOR_STRING, true);
 
-    public Object remove(final Object key) {
-        return this.removeCookie((String) key);
-    }
+		final String nameValue = attributes[0];
+		final int nameValueSeparator = nameValue.indexOf(CookieConstants.NAME_VALUE_SEPARATOR);
+		if (nameValueSeparator == -1) {
+			SystemHelper
+					.fail("cookieString",
+							"The parameter:cookieString does not contain a valid cookie (name/value not found), cookieString["
+									+ cookieString + "]");
+		}
+		final String name = nameValue.substring(0, nameValueSeparator).trim();
+		final String value = nameValue.substring(nameValueSeparator + 1).trim();
 
-    protected Cookie removeCookie(final String cookieName) {
-        final Cookie removed = this.getCookie(cookieName);
-        CookieHelper.removeCookie(cookieName);
-        return removed;
-    }
+		final Cookie cookie = new Cookie();
+		cookie.setName(name);
+		cookie.setValue(value);
+		return cookie;
+	}
 
-    public Set entrySet() {
-        final CookieEntrySet set = new CookieEntrySet();
-        set.setCookies(this);
-        return set;
-    }
+	public int size() {
+		return this.createTokens().length;
+	}
 
-    /**
-     * Represents an entryset view of this Cookies Map
-     */
-    class CookieEntrySet extends AbstractSet {
-        public Iterator iterator() {
-            final CookiesIterator iterator = new CookiesIterator() {
-                /**
-                 * Wraps the element (A cookie) from CookiesIterator inside a Map.Entry.
-                 */
-                public Object next() {
-                    final Cookie cookie = (Cookie) super.next();
+	public Object get(final Object key) {
+		return this.getCookie((String) key);
+	}
 
-                    final CookiesIterator that = this;
+	public Object put(final Object key, final Object value) {
+		return this.putCookie((String) key, (Cookie) value);
+	}
 
-                    return new Map.Entry() {
-                        public Object getKey() {
-                            return cookie.getName();
-                        }
+	protected Cookie putCookie(final String cookieName, final Cookie cookie) {
+		final Cookie replaced = this.getCookie(cookieName);
+		Cookies.setCookie(cookie.toCookieString());
+		return replaced;
+	}
 
-                        public Object getValue() {
-                            return cookie;
-                        }
+	public Object remove(final Object key) {
+		final String cookieName = (String) key;
+		final Cookie removed = this.getCookie(cookieName);
+		Cookies.removeCookie(cookieName);
+		return removed;
+	}
 
-                        public Object setValue(final Object value) {
-                            final Cookie cookie = (Cookie) value;
-                            final String name = cookie.getName();
-                            final Object previous = Cookies.this.put(name, cookie);
-                            that.syncSnapShot();
-                            return previous;
-                        }
-                    };
-                }
-            };
+	public Set entrySet() {
+		return new CookieEntrySet();
+	}
 
-            iterator.setCookies(this.getCookies().createCookies());
-            iterator.setCursor(0);
-            iterator.syncSnapShot();
+	/**
+	 * Represents an entryset view of this Cookies Map
+	 */
+	class CookieEntrySet extends AbstractSet {
+		public Iterator iterator() {
+			final CookiesIterator iterator = new CookiesIterator() {
+				/**
+				 * Wraps the element (A cookie) from CookiesIterator inside a
+				 * Map.Entry.
+				 */
+				public Object next() {
+					final Cookie cookie = (Cookie) super.next();
 
-            return iterator;
-        }
+					final CookiesIterator that = this;
 
-        public int size() {
-            return this.getCookies().size();
-        }
+					return new Map.Entry() {
+						public Object getKey() {
+							return cookie.getName();
+						}
 
-        Cookies cookies;
+						public Object getValue() {
+							return cookie;
+						}
 
-        Cookies getCookies() {
-            ObjectHelper.checkNotNull("field:cookies", cookies);
-            return this.cookies;
-        }
+						public Object setValue(final Object value) {
+							final Cookie cookie = (Cookie) value;
+							final String name = cookie.getName();
+							final Object previous = Cookies.this.put(name, cookie);
+							that.syncSnapShot();
+							return previous;
+						}
+					};
+				}
+			};
 
-        void setCookies(final Cookies cookies) {
-            ObjectHelper.checkNotNull("parameter:cookies", cookies);
-            this.cookies = cookies;
-        }
-    }
+			iterator.setCookies(Cookies.this.createCookies());
+			iterator.setCursor(0);
+			iterator.syncSnapShot();
 
-    public Collection values() {
-        return new AbstractCollection() {
+			return iterator;
+		}
 
-            public boolean add(final Object newElement) {
-                throw new UnsupportedOperationException();
-            }
+		public int size() {
+			return Cookies.this.size();
+		}
+	}
 
-            public Iterator iterator() {
-                final CookiesIterator iterator = new CookiesIterator();
-                iterator.setCookies(Cookies.this.createCookies());
-                iterator.setCursor(0);
-                iterator.syncSnapShot();
-                return iterator;
-            }
+	public Collection values() {
+		return new AbstractCollection() {
 
-            public int size() {
-                return Cookies.this.size();
-            }
-        };
-    }
+			public boolean add(final Object newElement) {
+				throw new UnsupportedOperationException();
+			}
 
-    /**
-     * This iterator loops over all the cookies belonging to the browser.
-     */
-    static class CookiesIterator implements Iterator {
-        public boolean hasNext() {
-            this.changeGuard();
+			public Iterator iterator() {
+				final CookiesIterator iterator = new CookiesIterator();
+				iterator.setCookies(Cookies.this.createCookies());
+				iterator.setCursor(0);
+				iterator.syncSnapShot();
+				return iterator;
+			}
 
-            return this.getCursor() < this.getCookies().length;
-        }
+			public int size() {
+				return Cookies.this.size();
+			}
+		};
+	}
 
-        public Object next() {
-            this.changeGuard();
+	/**
+	 * This iterator loops over all the cookies belonging to the browser.
+	 */
+	static class CookiesIterator implements Iterator {
+		public boolean hasNext() {
+			this.changeGuard();
 
-            final Cookie[] cookies = this.getCookies();
-            final int cursor = this.getCursor();
-            if (cursor >= cookies.length) {
-                throw new NoSuchElementException();
-            }
-            final Cookie cookie = cookies[cursor];
-            this.setCursor(cursor + 1);
-            return cookie;
-        }
+			return this.getCursor() < this.getCookies().length;
+		}
 
-        public void remove() {
-            this.changeGuard();
+		public Object next() {
+			this.changeGuard();
 
-            final int cursor = this.getCursor() - 1;
-            if (cursor < 0) {
-                throw new IllegalStateException();
-            }
+			final Cookie[] cookies = this.getCookies();
+			final int cursor = this.getCursor();
+			if (cursor >= cookies.length) {
+				throw new NoSuchElementException();
+			}
+			final Cookie cookie = cookies[cursor];
+			this.setCursor(cursor + 1);
+			return cookie;
+		}
 
-            final Cookie[] cookies = this.getCookies();
-            final Cookie remove = cookies[cursor];
+		public void remove() {
+			this.changeGuard();
 
-            // will be null if the element has already been removed...
-            if (null == remove) {
-                throw new IllegalStateException();
-            }
-            cookies[cursor] = null;
+			final int cursor = this.getCursor() - 1;
+			if (cursor < 0) {
+				throw new IllegalStateException();
+			}
 
-            CookieHelper.removeCookie(remove.getName());
-            // this.setCursor( cursor );
+			final Cookie[] cookies = this.getCookies();
+			final Cookie remove = cookies[cursor];
 
-            this.syncSnapShot();
-        }
+			// will be null if the element has already been removed...
+			if (null == remove) {
+				throw new IllegalStateException();
+			}
+			cookies[cursor] = null;
 
-        void syncSnapShot() {
-            this.setSnapShot(CookieHelper.getCookies());
-        }
+			Cookies.removeCookie(remove.getName());
+			// this.setCursor( cursor );
 
-        /**
-         * A cached copy of Cookie objects belonging to this map view
-         */
-        Cookie[] cookies;
+			this.syncSnapShot();
+		}
 
-        Cookie[] getCookies() {
-            ObjectHelper.checkNotNull("field:cookies", cookies);
-            return this.cookies;
-        }
+		void syncSnapShot() {
+			this.setSnapShot(Cookies.getCookiesAsString());
+		}
 
-        void setCookies(final Cookie[] cookies) {
-            ObjectHelper.checkNotNull("parameter:cookies", cookies);
-            this.cookies = cookies;
-        }
+		/**
+		 * A cached copy of Cookie objects belonging to this view
+		 */
+		Cookie[] cookies;
 
-        /**
-         * Points to the next cursor in the Cookies array.
-         */
-        int cursor;
+		Cookie[] getCookies() {
+			ObjectHelper.checkNotNull("field:cookies", cookies);
+			return this.cookies;
+		}
 
-        int getCursor() {
-            return cursor;
-        }
+		void setCookies(final Cookie[] cookies) {
+			ObjectHelper.checkNotNull("parameter:cookies", cookies);
+			this.cookies = cookies;
+		}
 
-        void setCursor(final int cursor) {
-            this.cursor = cursor;
-        }
+		/**
+		 * Points to the next cursor in the Cookies array.
+		 */
+		int cursor;
 
-        /**
-         * A snapshot of the cookies document property used to detect concurrent modifications.
-         */
-        String snapShot;
+		int getCursor() {
+			return cursor;
+		}
 
-        String getSnapShot() {
-            StringHelper.checkNotNull("field:snapShot", snapShot);
-            return snapShot;
-        }
+		void setCursor(final int cursor) {
+			this.cursor = cursor;
+		}
 
-        void setSnapShot(final String snapShot) {
-            StringHelper.checkNotNull("parameter:snapShot", snapShot);
-            this.snapShot = snapShot;
-        }
+		/**
+		 * A snapshot of the cookies document property used to detect concurrent
+		 * modifications.
+		 */
+		String snapShot;
 
-        /**
-         * Throws an exception if the snapshot doesnt match the current document cookies property
-         */
-        void changeGuard() {
-            final String snapShot = this.getSnapShot();
-            final String cookiesNow = CookieHelper.getCookies();
-            if (false == snapShot.equals(cookiesNow)) {
-                throw new ConcurrentModificationException(snapShot + "/" + cookiesNow);
-            }
-        }
-    }
+		String getSnapShot() {
+			StringHelper.checkNotNull("field:snapShot", snapShot);
+			return snapShot;
+		}
+
+		void setSnapShot(final String snapShot) {
+			StringHelper.checkNotNull("parameter:snapShot", snapShot);
+			this.snapShot = snapShot;
+		}
+
+		/**
+		 * Throws an exception if the snapshot doesnt match the current document
+		 * cookies property
+		 */
+		void changeGuard() {
+			final String snapShot = this.getSnapShot();
+			final String cookiesNow = Cookies.getCookiesAsString();
+			if (false == snapShot.equals(cookiesNow)) {
+				throw new ConcurrentModificationException(snapShot + "/" + cookiesNow);
+			}
+		}
+	}
 }

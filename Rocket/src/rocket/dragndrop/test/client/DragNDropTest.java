@@ -15,7 +15,7 @@
  */
 package rocket.dragndrop.test.client;
 
-import rocket.browser.client.BrowserHelper;
+import rocket.browser.client.Browser;
 import rocket.dragndrop.client.DragNDropListener;
 import rocket.dragndrop.client.DraggablePanel;
 import rocket.dragndrop.client.DropTargetPanel;
@@ -41,140 +41,136 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DragNDropTest implements EntryPoint {
 
-    public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void onUncaughtException(final Throwable caught) {
-                caught.printStackTrace();
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void onUncaughtException(final Throwable caught) {
+				caught.printStackTrace();
 
-                final String text = "FAIL Caught:" + caught + "\nmessage[" + caught.getMessage() + "]";
-                DragNDropTest.this.log(text);
-            }
-        });
+				final String text = "FAIL Caught:" + caught + "\nmessage[" + caught.getMessage() + "]";
+				DragNDropTest.this.log(text);
+			}
+		});
 
-        final RootPanel rootPanel = RootPanel.get();
+		final RootPanel rootPanel = RootPanel.get();
 
-        final CheckBox stopWidgetDrag = new CheckBox("Cancel any drag starts");
-        rootPanel.add(stopWidgetDrag);
+		final CheckBox stopWidgetDrag = new CheckBox("Cancel any drag starts");
+		rootPanel.add(stopWidgetDrag);
 
-        final CheckBox stopWidgetDrops = new CheckBox("Cancel any drops");
-        rootPanel.add(stopWidgetDrops);
+		final CheckBox stopWidgetDrops = new CheckBox("Cancel any drops");
+		rootPanel.add(stopWidgetDrops);
 
-        final CheckBox limitDragToMoveZone = new CheckBox(
-                "Limit drag movements within move zone(box with yellow background)");
-        rootPanel.add(limitDragToMoveZone);
+		final CheckBox limitDragToMoveZone = new CheckBox("Limit drag movements within move zone(box with yellow background)");
+		rootPanel.add(limitDragToMoveZone);
 
-        final HorizontalPanel panel = new HorizontalPanel();
-        panel.setStyleName("moveZone");
-        rootPanel.add(panel);
+		final HorizontalPanel panel = new HorizontalPanel();
+		panel.setStyleName("moveZone");
+		rootPanel.add(panel);
 
-        final DraggablePanel source = new DraggablePanel();
-        source.setWidget(this.createWidget());
-        panel.add(source);
+		final DraggablePanel source = new DraggablePanel();
+		source.setWidget(this.createWidget());
+		panel.add(source);
 
-        final DropTargetPanel acceptingTarget = new DropTargetPanel();
-        acceptingTarget.setWidget(new HTML("<span>Target which </span><span>accepts drops.</span>"));
-        acceptingTarget.addStyleName("accepting");
-        panel.add(acceptingTarget);
+		final DropTargetPanel acceptingTarget = new DropTargetPanel();
+		acceptingTarget.setWidget(new HTML("<span>Target which </span><span>accepts drops.</span>"));
+		acceptingTarget.addStyleName("accepting");
+		panel.add(acceptingTarget);
 
-        final DropTargetPanel rejectingTarget = new DropTargetPanel();
-        rejectingTarget.setWidget(new HTML("<span>Target</span><span>which</span><span>rejects drops.</span>"));
-        rejectingTarget.addStyleName("rejecting");
-        panel.add(rejectingTarget);
+		final DropTargetPanel rejectingTarget = new DropTargetPanel();
+		rejectingTarget.setWidget(new HTML("<span>Target</span><span>which</span><span>rejects drops.</span>"));
+		rejectingTarget.addStyleName("rejecting");
+		panel.add(rejectingTarget);
 
-        source.addDragNDropListener(new DragNDropListener() {
-            public boolean onBeforeDragStart(final DraggablePanel widget) {
-                ObjectHelper.checkNotNull("parameter:widget", widget);
+		source.addDragNDropListener(new DragNDropListener() {
+			public boolean onBeforeDragStart(final DraggablePanel widget) {
+				ObjectHelper.checkNotNull("parameter:widget", widget);
 
-                final boolean allowDrag = !stopWidgetDrag.isChecked();
-                DragNDropTest.this.log("<b>onBeforeDragStart</b> allowDrag: " + allowDrag + ", widget: "
-                        + StringHelper.htmlEncode(widget.toString()));
-                return allowDrag;
-            }
+				final boolean allowDrag = !stopWidgetDrag.isChecked();
+				DragNDropTest.this.log("<b>onBeforeDragStart</b> allowDrag: " + allowDrag + ", widget: "
+						+ StringHelper.htmlEncode(widget.toString()));
+				return allowDrag;
+			}
 
-            public void onDragStart(final DraggablePanel widget) {
-                ObjectHelper.checkNotNull("parameter:widget", widget);
+			public void onDragStart(final DraggablePanel widget) {
+				ObjectHelper.checkNotNull("parameter:widget", widget);
 
-                DragNDropTest.this.log("<b>onDragStart</b>...widget: " + StringHelper.htmlEncode(widget.toString()));
-            }
+				DragNDropTest.this.log("<b>onDragStart</b>...widget: " + StringHelper.htmlEncode(widget.toString()));
+			}
 
-            public boolean onBeforeDragMove(Event event, DraggablePanel widget) {
-                ObjectHelper.checkNotNull("parameter:event", event);
-                ObjectHelper.checkNotNull("parameter:widget", widget);
+			public boolean onBeforeDragMove(Event event, DraggablePanel widget) {
+				ObjectHelper.checkNotNull("parameter:event", event);
+				ObjectHelper.checkNotNull("parameter:widget", widget);
 
-                boolean allowMove = true;
-                if (limitDragToMoveZone.isChecked()) {
-                    final int x = DOM.eventGetClientX(event) + BrowserHelper.getScrollX();
-                    final int y = DOM.eventGetClientY(event) + BrowserHelper.getScrollY();
+				boolean allowMove = true;
+				if (limitDragToMoveZone.isChecked()) {
+					final int x = DOM.eventGetClientX(event) + Browser.getScrollX();
+					final int y = DOM.eventGetClientY(event) + Browser.getScrollY();
 
-                    final int left = panel.getAbsoluteLeft();
-                    final int top = panel.getAbsoluteTop();
-                    final int width = panel.getOffsetWidth();
-                    final int height = panel.getOffsetHeight();
+					final int left = panel.getAbsoluteLeft();
+					final int top = panel.getAbsoluteTop();
+					final int width = panel.getOffsetWidth();
+					final int height = panel.getOffsetHeight();
 
-                    allowMove = x > left && x < (left + width) && y > top && y < top + height;
-                }
+					allowMove = x > left && x < (left + width) && y > top && y < top + height;
+				}
 
-                return allowMove;
-            }
+				return allowMove;
+			}
 
-            public void onDragMove(final Event event, final DraggablePanel widget) {
-                ObjectHelper.checkNotNull("parameter:event", event);
-                ObjectHelper.checkNotNull("parameter:widget", widget);
+			public void onDragMove(final Event event, final DraggablePanel widget) {
+				ObjectHelper.checkNotNull("parameter:event", event);
+				ObjectHelper.checkNotNull("parameter:widget", widget);
 
-                DragNDropTest.this.log("<b>onDragMove</b>...event: " + event + ", widget: "
-                        + StringHelper.htmlEncode(widget.toString()));
-            }
+				DragNDropTest.this.log("<b>onDragMove</b>...event: " + event + ", widget: " + StringHelper.htmlEncode(widget.toString()));
+			}
 
-            public boolean onBeforeDrop(final DraggablePanel widget, final DropTargetPanel target) {
-                ObjectHelper.checkNotNull("parameter:widget", widget);
-                ObjectHelper.checkNotNull("parameter:target", target);
+			public boolean onBeforeDrop(final DraggablePanel widget, final DropTargetPanel target) {
+				ObjectHelper.checkNotNull("parameter:widget", widget);
+				ObjectHelper.checkNotNull("parameter:target", target);
 
-                final boolean accept = target == acceptingTarget;
+				final boolean accept = target == acceptingTarget;
 
-                DragNDropTest.this.log("<b>onBeforeDrop</b>...accept: " + accept + ", widget: "
-                        + StringHelper.htmlEncode(widget.toString()) + ", target: "
-                        + StringHelper.htmlEncode(target.toString()));
-                return accept;
-            }
+				DragNDropTest.this.log("<b>onBeforeDrop</b>...accept: " + accept + ", widget: "
+						+ StringHelper.htmlEncode(widget.toString()) + ", target: " + StringHelper.htmlEncode(target.toString()));
+				return accept;
+			}
 
-            public void onDrop(final DraggablePanel widget, final DropTargetPanel target) {
-                ObjectHelper.checkNotNull("parameter:widget", widget);
-                ObjectHelper.checkNotNull("parameter:target", target);
+			public void onDrop(final DraggablePanel widget, final DropTargetPanel target) {
+				ObjectHelper.checkNotNull("parameter:widget", widget);
+				ObjectHelper.checkNotNull("parameter:target", target);
 
-                DragNDropTest.this.log("<b>onDrop</b>...widget: " + StringHelper.htmlEncode(widget.toString())
-                        + ", target: " + StringHelper.htmlEncode(target.toString()));
-            }
+				DragNDropTest.this.log("<b>onDrop</b>...widget: " + StringHelper.htmlEncode(widget.toString()) + ", target: "
+						+ StringHelper.htmlEncode(target.toString()));
+			}
 
-            public void onDragCancelled(final DraggablePanel widget) {
-                ObjectHelper.checkNotNull("parameter:widget", widget);
+			public void onDragCancelled(final DraggablePanel widget) {
+				ObjectHelper.checkNotNull("parameter:widget", widget);
 
-                DragNDropTest.this
-                        .log("<b>onDragCancelled</b>...widget: " + StringHelper.htmlEncode(widget.toString()));
-            }
+				DragNDropTest.this.log("<b>onDragCancelled</b>...widget: " + StringHelper.htmlEncode(widget.toString()));
+			}
 
-            public void onInvalidDrop(final Event event, final DraggablePanel widget) {
-                ObjectHelper.checkNotNull("parameter:event", event);
-                ObjectHelper.checkNotNull("parameter:widget", widget);
+			public void onInvalidDrop(final Event event, final DraggablePanel widget) {
+				ObjectHelper.checkNotNull("parameter:event", event);
+				ObjectHelper.checkNotNull("parameter:widget", widget);
 
-                DragNDropTest.this.log("<b>onInvalidDrop</b>...event: " + event + ", widget: "
-                        + StringHelper.htmlEncode(widget.toString()));
-            }
-        });
-    }
+				DragNDropTest.this
+						.log("<b>onInvalidDrop</b>...event: " + event + ", widget: " + StringHelper.htmlEncode(widget.toString()));
+			}
+		});
+	}
 
-    Widget createWidget() {
-        final HTML html = new HTML("Drag Me!");
-        html.setStyleName("draggable");
-        return html;
-    }
+	Widget createWidget() {
+		final HTML html = new HTML("Drag Me!");
+		html.setStyleName("draggable");
+		return html;
+	}
 
-    /**
-     * Adds a new log message to the log div's contents...
-     * 
-     * @param message
-     */
-    protected void log(final String message) {
-        final Element log = DOM.getElementById("log");
-        DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
-    }
+	/**
+	 * Adds a new log message to the log div's contents...
+	 * 
+	 * @param message
+	 */
+	protected void log(final String message) {
+		final Element log = DOM.getElementById("log");
+		DOM.setInnerHTML(log, DOM.getInnerHTML(log) + message + "<br>");
+	}
 }

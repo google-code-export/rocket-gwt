@@ -16,25 +16,26 @@
 package rocket.remoting.client;
 
 /**
- * This exception is thrown when the hidden iframe used by the CometClient fails to connect to the server component.
+ * This exception is thrown when the hidden iframe used by the CometClient fails
+ * to connect to the server component.
  * 
  * @author Miroslav Pokorny (mP)
  * 
  */
 public class CometServerConnectionFailureException extends RuntimeException {
-    public CometServerConnectionFailureException() {
-        super();
-    }
+	public CometServerConnectionFailureException() {
+		super();
+	}
 
-    public CometServerConnectionFailureException(final String message) {
-        super(message);
-    }
+	public CometServerConnectionFailureException(final String message) {
+		super(message);
+	}
 
-    public CometServerConnectionFailureException(final String message, final Throwable caught) {
-        super(message, caught);
-    }
+	public CometServerConnectionFailureException(final String message, final Throwable caught) {
+		super(message, caught);
+	}
 
-    public CometServerConnectionFailureException(final Throwable caught) {
-        super(caught);
-    }
+	public CometServerConnectionFailureException(final Throwable caught) {
+		super(caught);
+	}
 }

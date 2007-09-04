@@ -19,19 +19,19 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class FailedWebRequestException extends RuntimeException implements IsSerializable {
 
-    public FailedWebRequestException() {
-        super();
-    }
+	public FailedWebRequestException() {
+		super();
+	}
 
-    public FailedWebRequestException(final String message) {
-        super(message);
-    }
+	public FailedWebRequestException(final String message) {
+		super(message);
+	}
 
-    public FailedWebRequestException(final String message, final Throwable caught) {
-        super(message, caught);
-    }
+	public FailedWebRequestException(final String message, final Throwable caught) {
+		super(message, caught);
+	}
 
-    public FailedWebRequestException(final Throwable caught) {
-        super(caught);
-    }
+	public FailedWebRequestException(final Throwable caught) {
+		super(caught);
+	}
 }

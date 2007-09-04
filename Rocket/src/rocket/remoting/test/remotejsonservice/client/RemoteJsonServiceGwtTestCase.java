@@ -17,7 +17,7 @@ package rocket.remoting.test.remotejsonservice.client;
 
 import java.io.Serializable;
 
-import rocket.browser.client.BrowserHelper;
+import rocket.browser.client.Browser;
 import rocket.remoting.client.json.RemoteJsonService;
 
 import com.google.gwt.core.client.GWT;
@@ -188,7 +188,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testMakeGetRequestWithSuccessfulServerResponse() {
 		final GetJsonServiceAsync service = (GetJsonServiceAsync) GWT.create(GetJsonService.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
-		target.setServiceEntryPoint(BrowserHelper.getContextPath() + CLASS_WITH_STRING_FIELD_JSON_SERVICE_URL);
+		target.setServiceEntryPoint(Browser.getContextPath() + CLASS_WITH_STRING_FIELD_JSON_SERVICE_URL);
 
 		final String value = "apple";
 
@@ -215,7 +215,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testMakePostRequestWithSuccessfulServerResponse() {
 		final PostJsonServiceAsync service = (PostJsonServiceAsync) GWT.create(PostJsonService.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
-		target.setServiceEntryPoint(BrowserHelper.getContextPath() + CLASS_WITH_STRING_FIELD_JSON_SERVICE_URL);
+		target.setServiceEntryPoint(Browser.getContextPath() + CLASS_WITH_STRING_FIELD_JSON_SERVICE_URL);
 
 		final String value = "apple";
 
@@ -242,7 +242,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testMakeGetRequestWith3ParametersAndSuccessfulServerResponse() {
 		final GetJsonService3ParametersAsync service = (GetJsonService3ParametersAsync) GWT.create(GetJsonService3Parameters.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
-		target.setServiceEntryPoint(BrowserHelper.getContextPath() + CLASS_WITH_3_STRINGS_FIELD_JSON_SERVICE_URL);
+		target.setServiceEntryPoint(Browser.getContextPath() + CLASS_WITH_3_STRINGS_FIELD_JSON_SERVICE_URL);
 
 		final String value1 = "apple";
 		final String value2 = "banana";
@@ -273,7 +273,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testDeserializingServerJsonEncodedResponseFails() {
 		final GetJsonServiceAsync service = (GetJsonServiceAsync) GWT.create(GetJsonService.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
-		target.setServiceEntryPoint(BrowserHelper.getContextPath() + BROKEN_JSON_RESPONSE_URL);
+		target.setServiceEntryPoint(Browser.getContextPath() + BROKEN_JSON_RESPONSE_URL);
 
 		final String value = "apple";
 
@@ -294,7 +294,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testServerRespondsWithInternalServerError() {
 		final GetJsonServiceAsync service = (GetJsonServiceAsync) GWT.create(GetJsonService.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
-		target.setServiceEntryPoint(BrowserHelper.getContextPath() + INTERNAL_SERVER_ERROR_URL);
+		target.setServiceEntryPoint(Browser.getContextPath() + INTERNAL_SERVER_ERROR_URL);
 
 		final String value = "apple";
 

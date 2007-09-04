@@ -17,7 +17,7 @@ package rocket.beans.test.beans.client.proxyobjectparameterreturntype;
 
 public class ClassWithMethodWithObjectParameterAndReturnType {
 
-	public String returnParameter( final String object ){
+	public String returnParameter(final String object) {
 		return object;
 	}
 }
