@@ -7,7 +7,7 @@ The DOM class current provides setters and getters to handle string and number v
   * DOM.xxxStyleAttribute for text
   * DOM.xxxIntStyleAttribute for number values.
 
-==GWT DOM Weaknesses==
+==GWT DOM class Weaknesses==
   * No attempt is made to handle special cases where browsers handle style properties in different ways. Sometimes different browsers use a different name and value format for a css style.
   * Units are ignored. This is especially important with Internet Explorer as the number value is expressed in the original unit rather than pixels.
   * No provision exists to retrieve the current value for a particular css style.
@@ -181,5 +181,4 @@ For further examples refer to the unit and functional tests that accompany the d
   * rocket.style.test.stylehelper.client.StyleHelperTest
   * rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase
   * rocket.style.test.stylesheet.client.StyleSheetTest
-
 
