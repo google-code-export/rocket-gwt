@@ -15,7 +15,6 @@
  */
 package rocket.remoting.test.webrequest.client;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rocket.dom.client.Dom;
@@ -63,11 +62,13 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 
 	static final String WEB_REQUEST_SERVICE_ENTRY_POINT_URL = "webRequestRpc";
 
+	static final int POSTPONE_TEST = 5000; 
+	
 	public void onModuleLoad() {
 		final Button button = new Button("Run Tests");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				WebRequestTest.this.executeTests(new WebRequestTestBuilder());
+				WebRequestTest.this.executeTests( (TestBuilder) GWT.create( TestFinder.class ));
 			}
 		});
 		RootPanel.get().add(button);
@@ -75,58 +76,16 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		Dom.setFocus(button.getElement());
 	}
 
-	class WebRequestTestBuilder implements TestBuilder {
-		public List buildCandidates() {
-			final List tests = new ArrayList();
-			tests.add(new Test() {
-				public String getName() {
-					return "testGetWithNoRequestParameters";
-				}
-
-				public void execute() {
-					WebRequestTest.this.testGetWithNoRequestParameters();
-				}
-			});
-			tests.add(new Test() {
-				public String getName() {
-					return "testGetWithRequestParameters";
-				}
-
-				public void execute() {
-					WebRequestTest.this.testGetWithRequestParameters();
-				}
-			});
-			tests.add(new Test() {
-				public String getName() {
-					return "testGetANonExistingUrlWhichShouldReturnA404";
-				}
-
-				public void execute() {
-					WebRequestTest.this.testGetANonExistingUrlWhichShouldReturnA404();
-				}
-			});
-			tests.add(new Test() {
-				public String getName() {
-					return "testPostWithNoRequestParameters";
-				}
-
-				public void execute() {
-					WebRequestTest.this.testPostWithNoRequestParameters();
-				}
-			});
-			tests.add(new Test() {
-				public String getName() {
-					return "testPostWithRequestParameters";
-				}
-
-				public void execute() {
-					WebRequestTest.this.testPostWithRequestParameters();
-				}
-			});
-			return tests;
-		}
+	static interface TestFinder extends TestBuilder{
+		/**
+		 * @testing-testRunner rocket.remoting.test.webrequest.client.WebRequestTest
+		 */
+		abstract public List buildCandidates();
 	}
 
+	/**
+	 * @testing-testMethodOrder 0
+	 */
 	public void testGetWithNoRequestParameters() {
 		final WebRequest request = new WebRequest();
 		request.setHeaders(new Headers());
@@ -134,7 +93,7 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		request.setUrl(REQUEST_PARAMETER_ECHO_SERVLET_URL);
 		request.setParameters(new RequestParameters());
 
-		TestRunner.postponeCurrentTest(5 * 1000);
+		TestRunner.postponeCurrentTest(POSTPONE_TEST);
 
 		final WebRequestServiceAsync service = this.createService();
 		service.doRequest(request, new AsyncCallback() {
@@ -160,6 +119,10 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		});
 	}
 
+
+	/**
+	 * @testing-testMethodOrder 1
+	 */
 	public void testGetWithRequestParameters() {
 		final WebRequest request = new WebRequest();
 		request.setHeaders(new Headers());
@@ -177,7 +140,7 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 
 		request.setParameters(parameters);
 
-		TestRunner.postponeCurrentTest(5 * 1000);
+		TestRunner.postponeCurrentTest(POSTPONE_TEST);
 
 		final WebRequestServiceAsync service = this.createService();
 		service.doRequest(request, new AsyncCallback() {
@@ -205,6 +168,9 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		});
 	}
 
+	/**
+	 * @testing-testMethodOrder 2
+	 */
 	public void testGetANonExistingUrlWhichShouldReturnA404() {
 		final WebRequest request = new WebRequest();
 		request.setHeaders(new Headers());
@@ -212,7 +178,7 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		request.setUrl("/InvokingThisUrlShouldResultInA404");
 		request.setParameters(new RequestParameters());
 
-		TestRunner.postponeCurrentTest(5 * 1000);
+		TestRunner.postponeCurrentTest(POSTPONE_TEST);
 
 		final WebRequestServiceAsync service = this.createService();
 		service.doRequest(request, new AsyncCallback() {
@@ -230,6 +196,10 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		});
 	}
 
+
+	/**
+	 * @testing-testMethodOrder 3
+	 */
 	public void testPostWithNoRequestParameters() {
 		final WebRequest request = new WebRequest();
 		request.setHeaders(new Headers());
@@ -263,6 +233,10 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		});
 	}
 
+
+	/**
+	 * @testing-testMethodOrder 4
+	 */
 	public void testPostWithRequestParameters() {
 		final WebRequest request = new WebRequest();
 		request.setHeaders(new Headers());
@@ -278,7 +252,7 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 
 		final WebRequestServiceAsync service = this.createService();
 
-		TestRunner.postponeCurrentTest(5 * 1000);
+		TestRunner.postponeCurrentTest(POSTPONE_TEST);
 
 		service.doRequest(request, new AsyncCallback() {
 			public void onFailure(final Throwable caught) {

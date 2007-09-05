@@ -646,6 +646,7 @@ public class JClassType extends JType implements HasMetaData {
 	 * @return
 	 * 
 	 * Added by Miroslav Pokorny for the rocket-gwt project.
+	 * FIXME Dont forget to reapply changes when updating GWT version
 	 */
 	public boolean isFinal() {
 		return 0 != (this.getModifierBits() & TypeOracle.MOD_FINAL);

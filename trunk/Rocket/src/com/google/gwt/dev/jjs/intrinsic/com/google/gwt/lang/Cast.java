@@ -139,6 +139,12 @@ final class Cast {
 		return o;
 	}
 
+	/**
+	 * FIXME Dont forget to reapply changes when updating GWT version
+	 * @param jso
+	 * @param seed
+	 * @return
+	 */
 	static native JavaScriptObject wrapJSO(JavaScriptObject jso, Object seed) /*-{
 	 _ = seed.prototype;
 

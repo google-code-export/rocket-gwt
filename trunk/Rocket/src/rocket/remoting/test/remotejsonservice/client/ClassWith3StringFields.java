@@ -25,17 +25,17 @@ import rocket.json.client.JsonSerializable;
  */
 public class ClassWith3StringFields implements JsonSerializable {
 	/**
-	 * @javascriptPropertyName field1
+	 * @jsonSerialization-javascriptPropertyName field1
 	 */
 	public String field1;
 
 	/**
-	 * @javascriptPropertyName field2
+	 * @jsonSerialization-javascriptPropertyName field2
 	 */
 	public String field2;
 
 	/**
-	 * @javascriptPropertyName field3
+	 * @jsonSerialization-javascriptPropertyName field3
 	 */
 	public String field3;
 }

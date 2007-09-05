@@ -360,7 +360,7 @@ public class JsonSerializerGenerator extends Generator {
 	protected String getJavascriptPropertyName(final Field field) {
 		ObjectHelper.checkNotNull("parameter:field", field);
 
-		final List values = field.getMetadataValues(Constants.JAVASCRIPT_PROPERTY_NAME);
+		final List values = field.getMetadataValues(Constants.JAVASCRIPT_PROPERTY_NAME_ANNOTATION);
 		if (null == values || values.size() != 1) {
 			throw new JsonSerializerGeneratorException("Unable to find javascript property name for " + field);
 		}

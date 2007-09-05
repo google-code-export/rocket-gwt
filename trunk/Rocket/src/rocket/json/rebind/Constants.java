@@ -32,17 +32,17 @@ import com.google.gwt.json.client.JSONValue;
 class Constants {
 	static final String JAVA_UTIL_LIST = List.class.getName();
 
-	static final String LIST_ELEMENT_TYPE = "listElementType";
+	static final String LIST_ELEMENT_TYPE = "jsonSerialization-listElementType";
 
 	static final String JAVA_UTIL_SET = Set.class.getName();
 
-	static final String SET_ELEMENT_TYPE = "setElementType";
+	static final String SET_ELEMENT_TYPE = "jsonSerialization-setElementType";
 
 	static final String JAVA_UTIL_MAP = Map.class.getName();
 
-	static final String MAP_VALUE_TYPE = "mapValueType";
+	static final String MAP_VALUE_TYPE = "jsonSerialization-mapValueType";
 
-	static final String JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
+	static final String JAVASCRIPT_PROPERTY_NAME_ANNOTATION = "jsonSerialization-javascriptPropertyName";
 
 	static final String SERIALIZER_SUFFIX = "__JsonSerializer";
 

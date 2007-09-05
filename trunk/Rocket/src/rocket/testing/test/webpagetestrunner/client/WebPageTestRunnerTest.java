@@ -1,6 +1,5 @@
 package rocket.testing.test.webpagetestrunner.client;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rocket.testing.client.Test;
@@ -9,6 +8,7 @@ import rocket.testing.client.TestRunner;
 import rocket.testing.client.WebPageTestRunner;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -39,138 +39,107 @@ public class WebPageTestRunnerTest extends WebPageTestRunner implements EntryPoi
 	}
 
 	protected TestBuilder getTestBuilder() {
-		final TestBuilder builder = new TestBuilder() {
-			public List buildCandidates() {
-				return WebPageTestRunnerTest.this.buildCandidates();
-			}
-		};
-		return builder;
+		return (TestBuilder) GWT.create(TestMethodFinder.class);
 	}
 
-	protected List buildCandidates() {
-		final List tests = new ArrayList();
+	static interface TestMethodFinder extends TestBuilder {
+		/**
+		 * @testing-testRunner rocket.testing.test.webpagetestrunner.client.WebPageTestRunnerTest
+		 */
+		abstract public List buildCandidates();
+	}
 
-		tests.add(new Test() {
-			public String getName() {
-				return "testWhichPasses";
+	/**
+	 * @testing-testMethodOrder 0
+	 */
+	public void testWhichPasses() {
+		for (int i = 0; i < 10000; i++) {
+			Math.cos(1.23f);
+		}
+	}
+
+	/**
+	 * @testing-testMethodOrder 1
+	 */
+	public void testWhichPassesAfterBeingBusyFor100ms() {
+		final long started = System.currentTimeMillis();
+		while (true) {
+			if (System.currentTimeMillis() - started >= 100) {
+				break;
 			}
+		}
+	}
 
-			public void execute() {
-				for (int i = 0; i < 10000; i++) {
-					Math.cos(1.23f);
-				}
+	/**
+	 * @testing-testMethodOrder 2
+	 */
+	public void testWhichFailsAnAssertEquals() {
+		Test.assertEquals(1, 2);
+	}
+
+	/**
+	 * @testing-testMethodOrder 3
+	 */
+	public void testWhichFailsBecauseItThrowsARuntimeExceptionAfterLoggingAMessage() {
+		log("About to throw a RuntimeException...");
+		throw new RuntimeException("RuntimeException thrown.");
+	}
+
+	/**
+	 * @testing-testMethodOrder 4
+	 */
+	public void testWhichFailsBecauseItThrowsAnException() throws Exception {
+		throw new Exception("Exception thrown.");
+	}
+
+	/**
+	 * @testing-testMethodOrder 5
+	 */
+	public void testWhichPostponesItsFinishAndThenPasses() {
+		log("about to postpone finish for 1000ms");
+		postponeCurrentTest(10000);
+
+		final Timer timer = new Timer() {
+			public void run() {
+				log("continuing...");
+				Window.alert("an alert within the postponed code!");
+				finishTest();
 			}
-		});
+		};
+		timer.schedule(500);
+		log("timer scheduled to run in 500ms.");
+	}
 
-		tests.add(new Test() {
-			public String getName() {
-				return "testWhichPassesAfterBeingBusyFor100ms";
+	/**
+	 * @testing-testMethodOrder 6
+	 */
+	public void testWhichPostponesItsFinishAndThenFails() {
+		log("about to postpone finish for 1000ms");
+		postponeCurrentTest(10000000);
+
+		final Timer timer = new Timer() {
+			public void run() {
+				Test.fail("Failure within postponed code");
 			}
+		};
+		timer.schedule(500);
+		log("timer scheduled to run in 500ms.");
+	}
 
-			public void execute() {
-				final long started = System.currentTimeMillis();
-				while (true) {
-					if (System.currentTimeMillis() - started >= 100) {
-						break;
-					}
-				}
-			}
-		});
+	/**
+	 * @testing-testMethodOrder 7
+	 */
+	public void testWhichSetsSkipRemainingTests() {
+		log("about to skip remaining");
+		skipRemainingTests();
+	}
 
-		tests.add(new Test() {
-			public String getName() {
-				return "testWhichFailsAnAssertEquals";
-			}
-
-			public void execute() {
-				Test.assertEquals(1, 2);
-			}
-		});
-
-		tests.add(new Test() {
-			public String getName() {
-				return "testWhichFailsBecauseItThrowsARuntimeExceptionAfterLoggingAMessage";
-			}
-
-			public void execute() {
-				this.log("About to throw a RuntimeException...");
-				throw new RuntimeException("RuntimeException thrown.");
-			}
-		});
-
-		tests.add(new Test() {
-			public String getName() {
-				return "testWhichFailsBecauseItThrowsAnException";
-			}
-
-			public void execute() throws Exception {
-				throw new Exception("Exception thrown.");
-			}
-		});
-
-		tests.add(new Test() {
-			public String getName() {
-				return "testWhichPostponesItsFinishAndThenPasses";
-			}
-
-			public void execute() throws Exception {
-				this.log("about to postpone finish for 1000ms");
-				this.postponeFinish(10000);
-
-				final Test thisTest = this;
-
-				final Timer timer = new Timer() {
-					public void run() {
-						log("continuing...");
-						Window.alert("an alert within the postponed code!");
-						thisTest.finish();
-					}
-				};
-				timer.schedule(500);
-				this.log("timer scheduled to run in 500ms.");
-			}
-		});
-
-		tests.add(new Test() {
-			public String getName() {
-				return "testWhichPostponesItsFinishAndThenFails";
-			}
-
-			public void execute() throws Exception {
-				this.log("about to postpone finish for 1000ms");
-				this.postponeFinish(10000000);
-				final Timer timer = new Timer() {
-					public void run() {
-						fail("Failure within postponed code");
-					}
-				};
-				timer.schedule(500);
-				this.log("timer scheduled to run in 500ms.");
-			}
-		});
-
-		tests.add(new Test() {
-			public String getName() {
-				return "testWhichSetsSkipRemainingTests";
-			}
-
-			public void execute() throws Exception {
-				this.log("about to skip remaining");
-				TestRunner.skipRemainingTests();
-			}
-		});
-
-		tests.add(new Test() {
-			public String getName() {
-				return "testWhichShouldHaveBeenSkipped";
-			}
-
-			public void execute() throws Exception {
-				fail("This test should *NOT* have been executed it should have been skipped");
-			}
-		});
-
-		return tests;
+	/**
+	 * @testing-testMethodOrder 8
+	 */
+	public void testWhichShouldHaveBeenSkipped() {
+		log("about to skip remaining");
+		Test.fail("This test should *NOT* have been executed it should have been skipped");
 	}
 
 	/**

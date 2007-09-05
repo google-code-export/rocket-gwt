@@ -15,7 +15,12 @@
  */
 package com.google.gwt.user.rebind.rpc;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import rocket.remoting.client.HasSerializer;
 
@@ -31,7 +36,9 @@ import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.dev.generator.NameFactory;
+import com.google.gwt.dev.util.Util;
 import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
@@ -44,11 +51,14 @@ import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamWriter;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.google.gwt.user.server.rpc.SerializationPolicyLoader;
 
 /**
  * Creates a client-side proxy for a
  * {@link com.google.gwt.user.client.rpc.RemoteService RemoteService} interface
  * as well as the necessary type and field serializers.
+ * 
+ * FIXME Dont forget to reapply changes when updating GWT version, scan for ROCKET
  */
 class ProxyCreator {
 
@@ -61,12 +71,6 @@ class ProxyCreator {
 	private static final String ENTRY_POINT_TAG = "gwt.defaultEntryPoint";
 
 	private static final String PROXY_SUFFIX = "_Proxy";
-
-	private static final String SERIALIZATION_STREAM_READER_INSTANTIATION = ClientSerializationStreamReader.class.getName()
-			+ " streamReader = new " + ClientSerializationStreamReader.class.getName() + "(SERIALIZER);";
-
-	private static final String SERIALIZATION_STREAM_WRITER_INSTANTIATION = ClientSerializationStreamWriter.class.getName()
-			+ " streamWriter = new " + ClientSerializationStreamWriter.class.getName() + "(SERIALIZER);";
 
 	/*
 	 * This method returns the real type name. Currently, it only affects
@@ -87,7 +91,6 @@ class ProxyCreator {
 
 	public ProxyCreator(JClassType serviceIntf) {
 		assert (serviceIntf.isInterface() != null);
-
 		this.serviceIntf = serviceIntf;
 	}
 
@@ -102,7 +105,16 @@ class ProxyCreator {
 			return getProxyQualifiedName();
 		}
 
-		SerializableTypeOracleBuilder stob = new SerializableTypeOracleBuilder(logger, context.getTypeOracle());
+		TypeOracle typeOracle = context.getTypeOracle();
+
+		// Make sure that the async and synchronous versions of the RemoteService
+		// agree with one another
+		//
+		RemoteServiceAsyncValidator rsav = new RemoteServiceAsyncValidator(logger, typeOracle);
+		rsav.validateRemoteServiceAsync(logger, serviceIntf);
+
+		// Determine the set of serializable types
+		SerializableTypeOracleBuilder stob = new SerializableTypeOracleBuilder(logger, typeOracle);
 		SerializableTypeOracle sto = stob.build(context.getPropertyOracle(), serviceIntf);
 
 		TypeSerializerCreator tsc = new TypeSerializerCreator(logger, sto, context, serviceIntf);
@@ -110,19 +122,21 @@ class ProxyCreator {
 
 		enforceTypeVersioning = Shared.shouldEnforceTypeVersioning(logger, context.getPropertyOracle());
 
-		generateProxyFields(srcWriter, sto);
+		String serializationPolicyStrongName = writeSerializationPolicyFile(logger, context, sto);
+
+		generateProxyFields(srcWriter, sto, serializationPolicyStrongName);
 
 		generateServiceDefTargetImpl(srcWriter);
 
 		generateProxyMethods(srcWriter, sto);
-
+		
 		this.generateHasSerializerMethod(srcWriter); // ROCKET
 
 		srcWriter.commit(logger);
 
 		return getProxyQualifiedName();
 	}
-
+	
 	/**
 	 * THis method inserts the getter which exposes the serializer accompanying
 	 * the generated proxy. This getter is required by the comet module to help
@@ -145,8 +159,8 @@ class ProxyCreator {
 
 	/*
 	 * Given a type emit an expression for calling the correct
-	 * SerializationStreamReader method which reads the corresponding instance
-	 * out of the stream.
+	 * SerializationStreamReader method which reads the corresponding instance out
+	 * of the stream.
 	 */
 	protected final void generateDecodeCall(SourceWriter w, JType type) {
 		w.print("streamReader.");
@@ -188,8 +202,12 @@ class ProxyCreator {
 
 		w.println((i > 0 ? ", final " : "final ") + AsyncCallback.class.getName() + " callback) {");
 		w.indent();
-		w.println("final " + SERIALIZATION_STREAM_READER_INSTANTIATION);
-		w.println("final " + SERIALIZATION_STREAM_WRITER_INSTANTIATION);
+		w.println("final "
+				+ (ClientSerializationStreamReader.class.getName() + " streamReader = new "
+						+ ClientSerializationStreamReader.class.getName() + "(SERIALIZER);"));
+		w.println("final "
+				+ (ClientSerializationStreamWriter.class.getName() + " streamWriter = new "
+						+ ClientSerializationStreamWriter.class.getName() + "(SERIALIZER, GWT.getModuleBaseURL(), SERIALIZATION_POLICY);"));
 		w.println("try {");
 		w.indent();
 		{
@@ -365,8 +383,7 @@ class ProxyCreator {
 		className = className.replace('$', '.');
 		w.indentln("throw new " + className + "();");
 
-		// Generate code to describe just enough meta data for the server to
-		// locate
+		// Generate code to describe just enough meta data for the server to locate
 		// the service definition class and resolve the method overload.
 		//
 		w.println("streamWriter.prepareToWrite();");
@@ -375,8 +392,16 @@ class ProxyCreator {
 			w.println("streamWriter.addFlags(" + ClientSerializationStreamReader.class.getName()
 					+ ".SERIALIZATION_STREAM_FLAGS_NO_TYPE_VERSIONING);");
 		}
-		w.println("streamWriter.writeString(\"" + serializableTypeOracle.getSerializedTypeName(method.getEnclosingType()) + "\");");
+
+		// Write the remote service interface's binary name
+		JClassType remoteService = method.getEnclosingType();
+		String remoteServiceBinaryName = serializableTypeOracle.getSerializedTypeName(remoteService);
+		w.println("streamWriter.writeString(\"" + remoteServiceBinaryName + "\");");
+
+		// Write the method name
 		w.println("streamWriter.writeString(\"" + methodName + "\");");
+
+		// Write the parameter count followed by the parameter values
 		w.println("streamWriter.writeInt(" + params.length + ");");
 		for (int i = 0; i < params.length; ++i) {
 			JParameter param = params[i];
@@ -397,9 +422,11 @@ class ProxyCreator {
 	/**
 	 * Generate any fields required by the proxy.
 	 */
-	private void generateProxyFields(SourceWriter srcWriter, SerializableTypeOracle serializableTypeOracle) {
+	private void generateProxyFields(SourceWriter srcWriter, SerializableTypeOracle serializableTypeOracle,
+			String serializationPolicyStrongName) {
 		String typeSerializerName = serializableTypeOracle.getTypeSerializerQualifiedName(serviceIntf);
 		srcWriter.println("private static final " + typeSerializerName + " SERIALIZER = new " + typeSerializerName + "();");
+		srcWriter.println("private static final String SERIALIZATION_POLICY =\"" + serializationPolicyStrongName + "\";");
 	}
 
 	private void generateProxyMethods(SourceWriter w, SerializableTypeOracle serializableTypeOracle) {
@@ -413,8 +440,8 @@ class ProxyCreator {
 	}
 
 	/**
-	 * Implements the ServiceDefTarget interface to allow clients to switch
-	 * which back-end service definition we send calls to.
+	 * Implements the ServiceDefTarget interface to allow clients to switch which
+	 * back-end service definition we send calls to.
 	 */
 	private void generateServiceDefTargetImpl(SourceWriter w) {
 		String serverDefName = getDefaultServiceDefName();
@@ -446,8 +473,8 @@ class ProxyCreator {
 	}
 
 	/*
-	 * Determine the name of the object wrapper class to instantiate based on
-	 * the the type of the primitive.
+	 * Determine the name of the object wrapper class to instantiate based on the
+	 * the type of the primitive.
 	 */
 	private String getObjectWrapperName(JPrimitiveType primitive) {
 		if (primitive == JPrimitiveType.INT) {
@@ -493,12 +520,54 @@ class ProxyCreator {
 
 		composerFactory.addImplementedInterface(ServiceDefTarget.class.getName());
 		composerFactory.addImplementedInterface(getAsyncIntfQualifiedName());
-		composerFactory.addImplementedInterface(HasSerializer.class.getName()); // ROCKET
 
+		composerFactory.addImplementedInterface(HasSerializer.class.getName()); // ROCKET
+		
 		return composerFactory.createSourceWriter(ctx, printWriter);
 	}
 
 	private boolean shouldEnforceTypeVersioning() {
 		return enforceTypeVersioning;
+	}
+
+	private String writeSerializationPolicyFile(TreeLogger logger, GeneratorContext ctx, SerializableTypeOracle sto)
+			throws UnableToCompleteException {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			OutputStreamWriter osw = new OutputStreamWriter(baos, SerializationPolicyLoader.SERIALIZATION_POLICY_FILE_ENCODING);
+			PrintWriter pw = new PrintWriter(osw);
+
+			JType[] serializableTypes = sto.getSerializableTypes();
+			for (int i = 0; i < serializableTypes.length; ++i) {
+				JType serializableType = serializableTypes[i];
+				String binaryTypeName = sto.getSerializedTypeName(serializableType);
+				boolean maybeInstantiated = sto.maybeInstantiated(serializableType);
+				pw.println(binaryTypeName + ", " + Boolean.toString(maybeInstantiated));
+			}
+
+			// Closes the wrapped streams.
+			pw.close();
+
+			byte[] serializationPolicyFileContents = baos.toByteArray();
+			String serializationPolicyName = Util.computeStrongName(serializationPolicyFileContents);
+
+			String serializationPolicyFileName = SerializationPolicyLoader.getSerializationPolicyFileName(serializationPolicyName);
+			OutputStream os = ctx.tryCreateResource(logger, serializationPolicyFileName);
+			if (os != null) {
+				os.write(serializationPolicyFileContents);
+				ctx.commitResource(logger, os);
+			} else {
+				logger.log(TreeLogger.TRACE, "SerializationPolicy file for RemoteService '" + serviceIntf.getQualifiedSourceName()
+						+ "' already exists; no need to rewrite it.", null);
+			}
+
+			return serializationPolicyName;
+		} catch (UnsupportedEncodingException e) {
+			logger.log(TreeLogger.ERROR, SerializationPolicyLoader.SERIALIZATION_POLICY_FILE_ENCODING + " is not supported", e);
+			throw new UnableToCompleteException();
+		} catch (IOException e) {
+			logger.log(TreeLogger.ERROR, null, e);
+			throw new UnableToCompleteException();
+		}
 	}
 }

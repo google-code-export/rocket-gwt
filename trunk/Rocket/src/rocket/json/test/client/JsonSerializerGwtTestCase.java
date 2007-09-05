@@ -96,7 +96,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithFinalField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		final boolean field = true;
 	}
@@ -116,7 +116,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithBooleanField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		boolean field;
 	}
@@ -136,7 +136,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithTransientField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		transient boolean field;
 	}
@@ -156,7 +156,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithStaticField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		static boolean field;
 	}
@@ -176,7 +176,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithByteField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		byte field;
 	}
@@ -196,7 +196,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithShortField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		short field;
 	}
@@ -216,7 +216,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithIntField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		int field;
 	}
@@ -236,7 +236,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithLongField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		long field;
 	}
@@ -256,7 +256,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithFloatField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		float field;
 	}
@@ -276,7 +276,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithDoubleField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		double field;
 	}
@@ -296,7 +296,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithCharField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		char field;
 	}
@@ -325,7 +325,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithStringField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		String field;
 	}
@@ -350,7 +350,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithAnotherClassField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		ClassWithStringField field;
 	}
@@ -372,14 +372,14 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class SuperClass {
 		/**
-		 * @javascriptPropertyName superField
+		 * @jsonSerialization-javascriptPropertyName superField
 		 */
 		String superField;
 	}
 
 	static class SubClass extends SuperClass implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName subField
+		 * @jsonSerialization-javascriptPropertyName subField
 		 */
 		String subField;
 	}
@@ -404,8 +404,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithBooleanListField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @listElementType java.lang.Boolean
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-listElementType java.lang.Boolean
 		 */
 		List field;
 	}
@@ -430,8 +430,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithByteListField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @listElementType java.lang.Byte
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-listElementType java.lang.Byte
 		 */
 		List field;
 	}
@@ -456,8 +456,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithShortListField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @listElementType java.lang.Short
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-listElementType java.lang.Short
 		 */
 		List field;
 	}
@@ -482,8 +482,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithIntegerListField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @listElementType java.lang.Integer
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-listElementType java.lang.Integer
 		 */
 		List field;
 	}
@@ -508,8 +508,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithLongListField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @listElementType java.lang.Long
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-listElementType java.lang.Long
 		 */
 		List field;
 	}
@@ -534,8 +534,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithFloatListField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @listElementType java.lang.Float
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-listElementType java.lang.Float
 		 */
 		List field;
 	}
@@ -560,8 +560,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithDoubleListField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @listElementType java.lang.Double
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-listElementType java.lang.Double
 		 */
 		List field;
 	}
@@ -586,8 +586,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithCharacterListField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @listElementType java.lang.Character
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-listElementType java.lang.Character
 		 */
 		List field;
 	}
@@ -612,8 +612,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithStringListField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @listElementType java.lang.String
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-listElementType java.lang.String
 		 */
 		List field;
 	}
@@ -644,15 +644,15 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithObjectList implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName listField
-		 * @listElementType rocket.json.test.client.JsonSerializerGwtTestCase.ClassWithObjectListElement
+		 * @jsonSerialization-javascriptPropertyName listField
+		 * @jsonSerialization-listElementType rocket.json.test.client.JsonSerializerGwtTestCase.ClassWithObjectListElement
 		 */
 		List listField;
 	}
 
 	static class ClassWithObjectListElement implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		String field;
 	}
@@ -677,8 +677,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithBooleanSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @setElementType java.lang.Boolean
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-setElementType java.lang.Boolean
 		 */
 		Set field;
 	}
@@ -703,8 +703,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithByteSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @setElementType java.lang.Byte
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-setElementType java.lang.Byte
 		 */
 		Set field;
 	}
@@ -729,8 +729,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithShortSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @setElementType java.lang.Short
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-setElementType java.lang.Short
 		 */
 		Set field;
 	}
@@ -755,8 +755,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithIntegerSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @setElementType java.lang.Integer
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-setElementType java.lang.Integer
 		 */
 		Set field;
 	}
@@ -781,8 +781,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithLongSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @setElementType java.lang.Long
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-setElementType java.lang.Long
 		 */
 		Set field;
 	}
@@ -807,8 +807,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithFloatSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @setElementType java.lang.Float
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-setElementType java.lang.Float
 		 */
 		Set field;
 	}
@@ -833,8 +833,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithDoubleSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @setElementType java.lang.Double
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-setElementType java.lang.Double
 		 */
 		Set field;
 	}
@@ -859,8 +859,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithCharacterSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @setElementType java.lang.Character
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-setElementType java.lang.Character
 		 */
 		Set field;
 	}
@@ -885,8 +885,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithStringSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @setElementType java.lang.String
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-setElementType java.lang.String
 		 */
 		Set field;
 	}
@@ -917,15 +917,15 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithObjectSetField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName setField
-		 * @setElementType rocket.json.test.client.JsonSerializerGwtTestCase.ClassWithObjectSetFieldElement
+		 * @jsonSerialization-javascriptPropertyName setField
+		 * @jsonSerialization-setElementType rocket.json.test.client.JsonSerializerGwtTestCase.ClassWithObjectSetFieldElement
 		 */
 		Set setField;
 	}
 
 	static class ClassWithObjectSetFieldElement implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		String field;
 	}
@@ -950,8 +950,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithBooleanMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType java.lang.Boolean
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType java.lang.Boolean
 		 */
 		Map field;
 	}
@@ -976,8 +976,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithByteMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType java.lang.Byte
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType java.lang.Byte
 		 */
 		Map field;
 	}
@@ -1002,8 +1002,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithShortMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType java.lang.Short
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType java.lang.Short
 		 */
 		Map field;
 	}
@@ -1028,8 +1028,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithIntegerMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType java.lang.Integer
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType java.lang.Integer
 		 */
 		Map field;
 	}
@@ -1054,8 +1054,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithLongMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType java.lang.Long
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType java.lang.Long
 		 */
 		Map field;
 	}
@@ -1080,8 +1080,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithFloatMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType java.lang.Float
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType java.lang.Float
 		 */
 		Map field;
 	}
@@ -1106,8 +1106,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithDoubleMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType java.lang.Double
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType java.lang.Double
 		 */
 		Map field;
 	}
@@ -1132,8 +1132,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithCharacterMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType java.lang.Character
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType java.lang.Character
 		 */
 		Map field;
 	}
@@ -1158,8 +1158,8 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithStringMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType java.lang.String
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType java.lang.String
 		 */
 		Map field;
 	}
@@ -1187,15 +1187,15 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithObjectMapField implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName field
-		 * @mapValueType rocket.json.test.client.JsonSerializerGwtTestCase.ClassWithStringField5
+		 * @jsonSerialization-javascriptPropertyName field
+		 * @jsonSerialization-mapElementType rocket.json.test.client.JsonSerializerGwtTestCase.ClassWithStringField5
 		 */
 		Map field;
 	}
 
 	static class ClassWithStringField5 implements JsonSerializable {
 		/**
-		 * @javascriptPropertyName string
+		 * @jsonSerialization-javascriptPropertyName string
 		 */
 		String field;
 	}

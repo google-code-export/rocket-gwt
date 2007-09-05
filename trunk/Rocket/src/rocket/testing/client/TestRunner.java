@@ -1,3 +1,18 @@
+/*
+ * Copyright Miroslav Pokorny
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package rocket.testing.client;
 
 import java.util.Iterator;
@@ -39,7 +54,7 @@ abstract public class TestRunner {
 	 */
 	private static TestRunner testRunner;
 
-	static TestRunner getInstance() {
+	static TestRunner getTestRunner() {
 		return testRunner;
 	}
 
@@ -48,22 +63,22 @@ abstract public class TestRunner {
 	}
 
 	public static void skipRemainingTests() {
-		TestRunner.getInstance().setSkipRemaining(true);
+		TestRunner.getTestRunner().setSkipRemaining(true);
 	}
 
 	public static void postponeCurrentTest(final int delay) {
-		TestRunner.getInstance().getCurrentTest().postponeFinish(delay);
+		TestRunner.getTestRunner().getCurrentTest().postponeFinish(delay);
 	}
 
 	public static void finishTest() {
-		final Test test = TestRunner.getInstance().getCurrentTest();
+		final Test test = TestRunner.getTestRunner().getCurrentTest();
 		if (null != test) {
 			test.finish();
 		}
 	}
 
 	public static void log(final String message) {
-		final Test test = TestRunner.getInstance().getCurrentTest();
+		final Test test = TestRunner.getTestRunner().getCurrentTest();
 		if (null != test) {
 			test.log(message);
 		}
@@ -77,7 +92,23 @@ abstract public class TestRunner {
 	}
 
 	/**
-	 * Executes all the tests returned by the given TestBuilder
+	 * Executes all the tests returned by the given TestBuilder.
+	 * 
+	 * It is possible to automatically execute all public methods whose name starts with test,
+	 * manually or via deferred binding.
+	 * <pre>
+	 * TestBuilder tests = (TestBuilder) GWT.create( TestFinder.class );
+	 * ...
+	 * static interface TestFinder extends TestBuilder{
+	 *      /**
+	 *       * @test test class name.
+	 *       * /
+	 * 		abstract public List buildCandidates();
+	 * }
+	 * </pre>
+	 * 
+	 * Each test method must also include an order annotation with a number value.
+	 * Methods with are sorted small to large numbers.
 	 * 
 	 * @param testBuilder
 	 */
@@ -107,29 +138,29 @@ abstract public class TestRunner {
 
 	private void setTests(final List tests) {
 		this.tests = tests;
-		this.setTestCursor(0);
+		this.setTestIndex(0);
 	}
 
-	private int testCursor;
+	private int testIndex;
 
-	private int getTestCursor() {
-		return this.testCursor;
+	private int getTestIndex() {
+		return this.testIndex;
 	}
 
-	private void setTestCursor(final int testCursor) {
-		this.testCursor = testCursor;
+	private void setTestIndex(final int testCursor) {
+		this.testIndex = testCursor;
 	}
 
 	protected void executeNextTest() {
 		boolean completed = true;
 
 		if (false == this.isSkipRemaining()) {
-			final int testCursor = this.getTestCursor();
+			final int testIndex = this.getTestIndex();
 			final List tests = this.getTests();
 
-			completed = testCursor == tests.size();
+			completed = testIndex == tests.size();
 			if (false == completed) {
-				this.execute((Test) tests.get(testCursor));
+				this.execute((Test) tests.get(testIndex));
 			}
 		}
 
@@ -181,7 +212,7 @@ abstract public class TestRunner {
 	abstract protected void onTestStarted(final Test test);
 
 	protected void fireTestPassed(final Test test) {
-		this.setTestCursor(this.getTestCursor() + 1);
+		this.setTestIndex(this.getTestIndex() + 1);
 		this.onTestPassed(test);
 		this.executeNextTest();
 	}
@@ -195,7 +226,7 @@ abstract public class TestRunner {
 	abstract protected void onTestPassed(final Test test);
 
 	protected void fireTestFailed(final Test test) {
-		this.setTestCursor(this.getTestCursor() + 1);
+		this.setTestIndex(this.getTestIndex() + 1);
 		this.onTestFailed(test);
 		this.executeNextTest();
 	}
@@ -208,7 +239,7 @@ abstract public class TestRunner {
 	abstract protected void onTestFailed(final Test test);
 
 	protected void fireTestAborted(final Test test) {
-		this.setTestCursor(this.getTestCursor() + 1);
+		this.setTestIndex(this.getTestIndex() + 1);
 		this.onTestAborted(test);
 		this.executeNextTest();
 	}
@@ -287,7 +318,7 @@ abstract public class TestRunner {
 		Test test = null;
 		while (true) {
 			final List tests = this.getTests();
-			final int cursor = this.getTestCursor();
+			final int cursor = this.getTestIndex();
 			if (cursor >= tests.size()) {
 				break;
 			}
