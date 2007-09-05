@@ -44,7 +44,7 @@ public abstract class InteractivePanel extends Composite {
 
 	public InteractivePanel() {
 		this.initWidget(this.createWidget());
-		this.setStyleName(TestConstants.INTERACTIVE_PANEL_STYLE);
+		this.setStyleName(Constants.INTERACTIVE_PANEL_STYLE);
 	}
 
 	protected Widget createWidget() {
@@ -382,7 +382,7 @@ public abstract class InteractivePanel extends Composite {
 		final VerticalPanel panel = new VerticalPanel();
 		panel.setWidth("100%");
 		InlineStyle.setString(panel.getElement(), StyleConstants.WHITE_SPACE, "nowrap");
-		panel.setStyleName(TestConstants.INTERACTIVE_PANEL_WIDGET_LOG_STYLE);
+		panel.setStyleName(Constants.INTERACTIVE_PANEL_WIDGET_LOG_STYLE);
 		this.setMessages(panel);
 		return panel;
 	}

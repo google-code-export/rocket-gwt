@@ -239,7 +239,7 @@ public class ObjectHelper extends SystemHelper {
 	}
 
 	private static native String setString0(final JavaScriptObject object, final String propertyName, final String value)/*-{
-	 var previousValue = object[ propertyName ];
+	 var previousValue = "" + object[ propertyName ];
 	 object[ propertyName ] = value;
 	 return previousValue || null;
 	 }-*/;
@@ -251,7 +251,7 @@ public class ObjectHelper extends SystemHelper {
 	}
 
 	private static native String setString0(final JavaScriptObject object, final int index, final String value)/*-{
-	 var previousValue = object[ index ];
+	 var previousValue = "" + object[ index ];
 	 object[ index ] = value;
 	 return previousValue || null;
 	 }-*/;

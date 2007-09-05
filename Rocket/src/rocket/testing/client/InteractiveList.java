@@ -44,7 +44,7 @@ public abstract class InteractiveList extends Composite {
 
 	public InteractiveList() {
 		this.initWidget(this.createWidget());
-		this.setStyleName(TestConstants.INTERACTIVE_LIST_STYLE);
+		this.setStyleName(Constants.INTERACTIVE_LIST_STYLE);
 	}
 
 	protected Widget createWidget() {
@@ -453,7 +453,7 @@ public abstract class InteractiveList extends Composite {
 		panel.setWidth("100%");
 		InlineStyle.setString(panel.getElement(), StyleConstants.WHITE_SPACE, "nowrap");
 		this.setMessages(panel);
-		panel.setStyleName(TestConstants.INTERACTIVE_LIST_WIDGET_LOG_STYLE);
+		panel.setStyleName(Constants.INTERACTIVE_LIST_WIDGET_LOG_STYLE);
 		return panel;
 	}
 

@@ -30,6 +30,7 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -63,7 +64,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		final Button button = new Button("RunTests");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				SelectionTest.this.executeTests(new SelectionTestBuilder());
+				SelectionTest.this.executeTests( (TestBuilder) GWT.create( TestMethodFinder.class ));
 			}
 		});
 		rootPanel.add(button);
@@ -71,152 +72,17 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		Dom.setFocus(button.getElement());
 	}
 
-	class SelectionTestBuilder implements TestBuilder {
-		public List buildCandidates() {
-			final List tests = new ArrayList();
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testClearTextSelection";
-				}
-
-				public void execute() {
-					SelectionTest.this.testClearTextSelection();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testTextSelectionDisabled";
-				}
-
-				public void execute() {
-					SelectionTest.this.testTextSelectionDisabled();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testTextSelectionEnabled";
-				}
-
-				public void execute() {
-					SelectionTest.this.testTextSelectionEnabled();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testIsTextSelectionEnabledWithinDisabledParent";
-				}
-
-				public void execute() {
-					SelectionTest.this.testIsTextSelectionEnabledWithinDisabledParent();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testIsSelectionEmpty";
-				}
-
-				public void execute() {
-					SelectionTest.this.testIsSelectionEmpty();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testSetSelection0";
-				}
-
-				public void execute() {
-					SelectionTest.this.testSetSelection0();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testSetSelection1";
-				}
-
-				public void execute() {
-					SelectionTest.this.testSetSelection1();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testSetSelection2";
-				}
-
-				public void execute() {
-					SelectionTest.this.testSetSelection2();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testGetSelection0";
-				}
-
-				public void execute() {
-					SelectionTest.this.testGetSelection0();
-				}
-			});
-			tests.add(new Test() {
-				public String getName() {
-					return "testGetSelection1";
-				}
-
-				public void execute() {
-					SelectionTest.this.testGetSelection1();
-				}
-			});
-			tests.add(new Test() {
-				public String getName() {
-					return "testGetSelection2";
-				}
-
-				public void execute() {
-					SelectionTest.this.testGetSelection2();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testExtractSelection";
-				}
-
-				public void execute() {
-					SelectionTest.this.testExtractSelection();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testSurroundSelection";
-				}
-
-				public void execute() {
-					SelectionTest.this.testSurroundSelection();
-				}
-			});
-
-			tests.add(new Test() {
-				public String getName() {
-					return "testDeleteSelection";
-				}
-
-				public void execute() {
-					SelectionTest.this.testDeleteSelection();
-				}
-			});
-			return tests;
-		}
+	static interface TestMethodFinder extends TestBuilder{
+		/**
+		 * @testing-testRunner rocket.selection.test.selection.client.SelectionTest
+		 */
+		abstract public List buildCandidates();
 	}
-
-	protected void testClearTextSelection() {
+	
+	/**
+	 * @testing-testMethodOrder 0
+	 */
+	public void testClearTextSelection() {
 		// ask the user to attempt to select some text ?
 		final Button clearTextSelection = new Button("Clear Text Selection");
 		clearTextSelection.addClickListener(new ClickListener() {
@@ -250,7 +116,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
 
-	protected void testTextSelectionDisabled() {
+	/**
+	 * @testing-testMethodOrder 1
+	 */
+	public void testTextSelectionDisabled() {
 		Selection.disableTextSelection();
 
 		// ask the user to attempt to select some text ?
@@ -274,7 +143,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
 
-	protected void testTextSelectionEnabled() {
+	/**
+	 * @testing-testMethodOrder 2
+	 */
+	public void testTextSelectionEnabled() {
 		Selection.enableTextSelection();
 
 		// ask the user to attempt to select some text ?
@@ -297,7 +169,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
 
-	protected void testIsTextSelectionEnabledWithinDisabledParent() {
+	/**
+	 * @testing-testMethodOrder 3
+	 */
+	public void testIsTextSelectionEnabledWithinDisabledParent() {
 		final Selection selection = Selection.getSelection();
 		selection.clear();
 
@@ -336,13 +211,15 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		});
 		RootPanel.get().add(button);
 
-		Window
-				.alert("Text selection has been selectively enabled and disabled, enabled text has a gray background whilst disabled text has a white background."
+		Window.alert("Text selection has been selectively enabled and disabled, enabled text has a gray background whilst disabled text has a white background."
 						+ "Try selecting in both areas and then click on CONTINUE...");
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
 
-	protected void testIsTextSelectionEnabled() {
+	/**
+	 * @testing-testMethodOrder 4
+	 */
+	public void testIsTextSelectionEnabled() {
 		final Element body = Dom.getBody();
 
 		Selection.enableTextSelection();
@@ -360,7 +237,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		Selection.enableTextSelection();
 	}
 
-	protected void testIsSelectionEmpty() {
+	/**
+	 * @testing-testMethodOrder 5
+	 */
+	public void testIsSelectionEmpty() {
 		final Button isTextSelectionEmpty = new Button("Is Text Selection Empty");
 		isTextSelectionEmpty.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignored) {
@@ -394,7 +274,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
 
-	protected void testSetSelection0() {
+	/**
+	 * @testing-testMethodOrder 6
+	 */
+	public void testSetSelection0() {
 		final Selection selection = Selection.getSelection();
 		selection.clear();
 
@@ -422,7 +305,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		}
 	}
 
-	protected void testSetSelection1() {
+	/**
+	 * @testing-testMethodOrder 7
+	 */
+	public void testSetSelection1() {
 		final Selection selection = Selection.getSelection();
 		selection.clear();
 
@@ -459,7 +345,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		}
 	}
 
-	protected void testSetSelection2() {
+	/**
+	 * @testing-testMethodOrder 8
+	 */
+	public void testSetSelection2() {
 		final Selection selection = Selection.getSelection();
 		selection.clear();
 
@@ -500,7 +389,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		return ObjectHelper.getString(textNode, "data");
 	}
 
-	protected void testGetSelection0() {
+	/**
+	 * @testing-testMethodOrder 9
+	 */
+	public void testGetSelection0() {
 		final Selection selection = Selection.getSelection();
 		selection.clear();
 
@@ -532,7 +424,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		Test.assertEquals(5, actualEnd.getOffset());
 	}
 
-	protected void testGetSelection1() {
+	/**
+	 * @testing-testMethodOrder 10
+	 */
+	public void testGetSelection1() {
 		final Selection selection = Selection.getSelection();
 		selection.clear();
 
@@ -569,7 +464,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		Test.assertEquals(2, actualEnd.getOffset());
 	}
 
-	protected void testGetSelection2() {
+	/**
+	 * @testing-testMethodOrder 11
+	 */
+	public void testGetSelection2() {
 		final Selection selection = Selection.getSelection();
 		selection.clear();
 
@@ -605,7 +503,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		Test.assertEquals(1, actualEnd.getOffset());
 	}
 
-	protected void testExtractSelection() {
+	/**
+	 * @testing-testMethodOrder 12
+	 */
+	public void testExtractSelection() {
 		final Button extractSelection = new Button("Extract Selection");
 		extractSelection.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignored) {
@@ -645,45 +546,14 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		});
 		rootPanel.add(continueButton);
 
-		Window
-				.alert("Try selecting text and then clicking on the EXTRACT button to extract the selection and append it to the bottom of the document...");
+		Window.alert("Try selecting text and then clicking on the EXTRACT button to extract the selection and append it to the bottom of the document...");
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
 
-	protected void testDeleteSelection() {
-		final Button deleteSelection = new Button("Delete Selection");
-		deleteSelection.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				final Selection selection = Selection.getSelection();
-				selection.delete();
-			}
-		});
-
-		final RootPanel rootPanel = RootPanel.get();
-		rootPanel.add(deleteSelection);
-
-		// ask the user to attempt to select some text ?
-		final Button continueButton = new Button("Continue");
-		continueButton.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				continueButton.removeFromParent();
-				deleteSelection.removeFromParent();
-
-				final boolean passed = Window.confirm("Did the DELETE SELECTION button work correctly ?");
-				if (false == passed) {
-					Test.fail("User confirmed that Selection.delete() did not work correctly.");
-				}
-
-				SelectionTest.finishTest();
-			}
-		});
-		rootPanel.add(continueButton);
-
-		Window.alert("Try selecting text and then clicking on the DELETE SELECTION button which should delete the selection...");
-		SelectionTest.postponeCurrentTest(60 * 1000);
-	}
-
-	protected void testSurroundSelection() {
+	/**
+	 * @testing-testMethodOrder 13
+	 */
+	public void testSurroundSelection() {
 		final Button surroundSelection = new Button("Surround Selection");
 		surroundSelection.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignored) {
@@ -717,8 +587,44 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		});
 		rootPanel.add(continueButton);
 
-		Window
-				.alert("Try selecting text and then clicking on the SURROUND button to surround the selection inside a span which makes the text larger and gives it a light gray background...");
+		Window.alert("Try selecting text and then clicking on the SURROUND button to surround the selection inside a span which makes the text larger and gives it a light gray background...");
+		SelectionTest.postponeCurrentTest(60 * 1000);
+	}
+	
+
+	/**
+	 * @testing-testMethodOrder 14
+	 */
+	public void testDeleteSelection() {
+		final Button deleteSelection = new Button("Delete Selection");
+		deleteSelection.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignored) {
+				final Selection selection = Selection.getSelection();
+				selection.delete();
+			}
+		});
+
+		final RootPanel rootPanel = RootPanel.get();
+		rootPanel.add(deleteSelection);
+
+		// ask the user to attempt to select some text ?
+		final Button continueButton = new Button("Continue");
+		continueButton.addClickListener(new ClickListener() {
+			public void onClick(final Widget ignored) {
+				continueButton.removeFromParent();
+				deleteSelection.removeFromParent();
+
+				final boolean passed = Window.confirm("Did the DELETE SELECTION button work correctly ?");
+				if (false == passed) {
+					Test.fail("User confirmed that Selection.delete() did not work correctly.");
+				}
+
+				SelectionTest.finishTest();
+			}
+		});
+		rootPanel.add(continueButton);
+
+		Window.alert("Try selecting text and then clicking on the DELETE SELECTION button which should delete the selection...");
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
 

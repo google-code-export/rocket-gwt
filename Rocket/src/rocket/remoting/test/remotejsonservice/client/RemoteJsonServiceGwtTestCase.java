@@ -318,8 +318,8 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param string
 		 * @return
 		 * 
-		 * @httpRequestMethod GET
-		 * @httpRequestParameterName string
+		 * @jsonRpc-httpMethod GET
+		 * @jsonRpc-parameterName string
 		 */
 		ClassWithStringField makeGetRequest(String string);
 	}
@@ -334,8 +334,8 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param string
 		 * @return
 		 * 
-		 * @httpRequestMethod POST
-		 * @httpRequestParameterName string
+		 * @jsonRpc-httpMethod POST
+		 * @jsonRpc-parameterName string
 		 */
 		ClassWithStringField makePostRequest(String string);
 	}
@@ -352,10 +352,10 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param string3
 		 * @return
 		 * 
-		 * @httpRequestMethod GET
-		 * @httpRequestParameterName string1
-		 * @httpRequestParameterName string2
-		 * @httpRequestParameterName string3
+		 * @jsonRpc-httpMethod GET
+		 * @jsonRpc-parameterName string1
+		 * @jsonRpc-parameterName string2
+		 * @jsonRpc-parameterName string3
 		 */
 		ClassWith3StringFields makeGetRequest(String string1, String string2, String string3);
 	}

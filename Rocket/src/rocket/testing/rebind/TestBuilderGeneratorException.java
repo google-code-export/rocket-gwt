@@ -12,20 +12,25 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- */
-package rocket.remoting.test.remotejsonservice.client;
+ */package rocket.testing.rebind;
 
-import rocket.json.client.JsonSerializable;
+import rocket.generator.rebind.GeneratorException;
 
-/**
- * This class is used by the test case found in this package.
- * 
- * @author Miroslav Pokorny
- * 
- */
-public class ClassWithStringField implements JsonSerializable {
-	/**
-	 * @jsonSerialization-javascriptPropertyName field
-	 */
-	public String field;
+public class TestBuilderGeneratorException extends GeneratorException {
+
+	public TestBuilderGeneratorException() {
+	}
+
+	public TestBuilderGeneratorException(String message) {
+		super(message);
+	}
+
+	public TestBuilderGeneratorException(Throwable cause) {
+		super(cause);
+	}
+
+	public TestBuilderGeneratorException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 }

@@ -43,9 +43,9 @@ class Constants {
 
 	static final String ASYNC_INTERFACE_SUFFIX = "Async";
 
-	static final String HTTP_REQUEST_METHOD = "httpRequestMethod";
+	static final String HTTP_REQUEST_METHOD = "jsonRpc-httpMethod";
 
-	static final String HTTP_REQUEST_PARAMETER_NAME = "httpRequestParameterName";
+	static final String HTTP_REQUEST_PARAMETER_NAME = "jsonRpc-parameterName";
 
 	static final String JSON_VALUE_TYPE = JSONValue.class.getName();
 

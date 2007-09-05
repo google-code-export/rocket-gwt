@@ -528,3 +528,18 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.34.zip
 * Added new HorizontalVerticalSlider.
 * Deprecated Life widget which was more of a demo rather than a reusable Widget
 * Verified to work with GWT 1.4.60 release.
+
+0.35 5 September 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.35.zip
+
+* Fixed and reapplied customisations to ProxyCreator which was updated again in GWT 1.4.60.
+* Added a new Generator which builds a TestBuilder from a TestBuilder.class literal. WebPageTestRunners.getTestBuilder() can have its test methods automatically
+  discovered via deferred binding of a TestBuilder subclass. The buildCandidates method must include a @testing-testRunner which points to the test class being run.
+  Each test method must have an additional annotation @testing-testMethodOrder XXX where XXX is a number. This value is used to order the execution of each test method.
+* Changed json serialization annotations, added @jsonSerialization to existing annotations @javascriptPropertyName becomes @jsonSerialization-javascriptPropertyName, 
+  @listElementType becomes @jsonSerialization-listElementType, @setElementType becomes @jsonSerialization-setElementType, @mapElementType becomes @jsonSerialization-mapElementType, 
+* Changed json rpc annotations, @httpRequestMethod becomes @jsonRpc-httpMethod, @httpRequestParameterName becomes @jsonRpc-parameterName
+* Fixed a bug relating to testing if user mouse selection is enabled for an element.
+* Fixed a bug relating to attempts to set css properties (zIndex) which actually returned integer values rather than String values. ObjectHelper.setString() returns the previous 
+  value as a String.

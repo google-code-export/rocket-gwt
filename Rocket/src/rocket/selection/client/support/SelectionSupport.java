@@ -52,7 +52,7 @@ abstract public class SelectionSupport {
 	 * @return
 	 */
 	public boolean isEnabled(final Element element) {
-		return StyleConstants.USER_SELECT_ENABLED.equals(ComputedStyle.getString(element, StyleConstants.USER_SELECT));
+		return false == StyleConstants.USER_SELECT_DISABLED.equals(ComputedStyle.getString(element, StyleConstants.USER_SELECT));
 	}
 
 	public SelectionEndPoint getStart() {

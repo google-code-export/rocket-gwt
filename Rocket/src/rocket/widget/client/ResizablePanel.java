@@ -697,7 +697,8 @@ public class ResizablePanel extends Composite {
 		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
 
 		final int zIndex = ComputedStyle.getInteger(this.getElement(), StyleConstants.Z_INDEX, CssUnit.NONE, 0);
-		InlineStyle.setInteger(element, StyleConstants.Z_INDEX, zIndex + 1, CssUnit.NONE);
+		InlineStyle.setString(element, StyleConstants.Z_INDEX, "" + zIndex + 1 );
+		//DOM.setIntStyleAttribute(element, StyleConstants.Z_INDEX, zIndex + 1);
 
 		InlineStyle.setString(element, StyleConstants.OVERFLOW, "visible");
 	}
