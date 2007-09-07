@@ -96,7 +96,7 @@ The following steps below list what and why is needed to use this facility in yo
 Add the rocket module to your own module.
 
 {{{
-<module name="Rocket.User" />
+<inherits name="rocket.User" />
 }}}
 
 ==Examples==
@@ -181,4 +181,3 @@ For further examples refer to the unit and functional tests that accompany the d
   * rocket.style.test.stylehelper.client.StyleHelperTest
   * rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase
   * rocket.style.test.stylesheet.client.StyleSheetTest
-
