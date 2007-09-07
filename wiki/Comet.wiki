@@ -1,97 +1,180 @@
 #labels Featured,Comet
-=Purpose=
+=Motivation=
 
-The purpose of the `rocket.remoting.client.comet` package is to allow the server to push java objects data to a browser. The client application must initiate the initial connection to the server. After that the channel remains open and the server can push objects to the client as required. The client cannot reply or push objects back to the server. This must be done using another mechanism.
+Currently GWT contains the very useful RPC mechanism, as a means to communicate with services hosted on a J2EE server. For circumstances where it is more desirable to wait for the server to push rather than poll the comet technique is surprisingly useful. Because of the way comet is typically implemented as a long lived HTTP connection, an application server with a lot of comet clients will quickly have its thread pool exhausted.
 
-This solution requires a client and J2EE server with servlets to work in tandem.
-Any java servlet container including tomcat may be used.
+=Solution=
+The rocket framework combines the object serialization support provided by GWT and its own client and server glue to provide a comet solution. A number of customisations were required to make all the browsers work and this is taken care of. Each time a new object is pushed down the callback registered on the client is provided with the deserialized incoming object. Behind the scenes the client takes care of other issues such as reestablishing broken connections and so on.
 
-Only a single method must be implemented by any comet client and server. This is mostly simple glue consisting of a few lines of code.
+==Technical notes==
+  * A comet session is started with the creation of a hidden iframe which connects to the comet server servlet.
+  * The servlet periodically pushes either serialized objects or heartbeats. The iframe page gradually continues to grow due to the incoming data.
+  * Every so often the server disconnects, so the client can close the iframe in order to reclaim memory. 
+  * The client will attempt to reconnect automatically when a disconnect occurs.
+  * Any java servlet container including tomcat may be used.
+  
+==Getting started==
 
-=Getting started=
+The following steps below list what and why is needed to use this facility in your own development efforts. 
 
-The following steps below list what and why is needed to use this facility in your own development efforts.
-
-
-==Importing the rocket module==
-
+===Importing the rocket module===
 Add the rocket module to your own application module.
 
 {{{
-<module name="Rocket.User" />
+<inherits name="rocket.User" />
 }}}
-
 
 ==Authoring the server component==
 
-A servlet must be created which extends `rocket.remoting.server.CometServerServlet` and implements the `queryObjectSource()` method. 
+A servlet must be created which extends `rocket.remoting.server.CometServerServlet` and also implements the `queryObjectSource()` method. 
 
 ===Polling object source===
-The servlet must block for an appropriate time and eventually return an instance which is then pushed to the client. Returning null results in the server pushing a heartbeat to keep the connection open, otherwise the object instance is pushed down the wire.
+The `queryObjectSource()` method is responsible for two tasks.
+  * It must return null if no new object is available to push to the client.
+  * The method may block for a short period of time.
+  * Any non null instance is serialized and pushed to the client. The registered client callback will receive the object inside its `onSuccess()` method.
 
-===Web Container===
-The servlet must defined within a container's web.xml. The mapped url will be used by the client to establish a communication channel.
+===Web Container Configuration===
+The web.xml fragment below gives an example of how to configure a Comet servlet.
 
-===Sample===
-The sample shows a typical CometServerServlet implementation with the only thing being required is a poll upon some source.
 {{{
-package example;
+<servlet>
+	<servlet-class>rocket.remoting.test.comet.server.TestCometObjectStreamingServlet</servlet-class>
+	<servlet-name>TestCometServlet</servlet-name>
+	
+	<init-param>
+		<param-name>maximum-bytes-written</param-name>
+		<param-value>65536</param-value>
+	</init-param>
+  
+	<init-param>
+		<param-name>connection-timeout</param-name>
+		<param-value>60000</param-value>
+	</init-param>
+  
+</servlet>
 
-import rocket.remoting.server.CometServerServlet;
+<servlet-mapping>
+	<servlet-name>TestCometServlet</servlet-name>
+	<url-pattern>/comet</url-pattern>
+</servlet-mapping>
+}}}
 
-public SampleCometServletServlet extends CometServerServlet{
-	protected Object queryObjectSource(){
-		// return poll something builidng any new CometPayloads.
+The above xml demonstrates several important aspects being confugured.
+  * Associate the comet servlet with a logical name.
+  * The maximum-bytes-written parameter controls the number of bytes that are written before a comet http connection is recycled (closed and reopened).
+  * The connection-timeout parameter controls how long a http connection is kept open before it is recycled (closed and reopened).
+  * The comet servlet must be mapped to a known url. This url will be used by the client.
+  
+Because a hidden iframe is used to the time and amount of data accumulated by the hidden iframe page must be managed and reclaimed. In the case of the above example any http connection is closed after 60 seconds or 65536 bytes are written, which ever comes first.
+
+==Authoring the client component==
+
+A number of steps must be performed to complete 
+  * Create a class that extends `rocket.remoting.client.CometClient`.
+  * Create a GWT RemoteService and corresponding Async service interface with a method with a return type compatible with the objects being pushed by the server.
+  * Register a `com.google.gwt.user.client.rpc.AsyncCallback` with the client to handle any incoming objects or exceptions.
+
+=Sample=
+
+The sample below shows a comet client and server.
+
+==The model==
+
+{{{
+package example.client;
+
+public CometPayload{
+	CometPayload( int counter ){
+		this.counter = counter;
+	}
+	
+	public int getCounter(){
+		return counter;
 	}
 }
 }}}
 
-==Authoring the client==
+==The Server==
+The sample shows a server class that continually increments a counter pausing for a second between each query.
+{{{
+package example.server;
+
+import rocket.remoting.server.CometServerServlet;
+
+public SampleCometServletServlet extends CometServerServlet{
+
+        int counter; 
+
+	protected Object queryObjectSource(){		
+		try{
+			Thread.sleep( 1000 );
+		} catch ( InterruptedException ignore ){
+		}
+		return new Payload( this.counter++ );
+	}
+}
+}}}
+
+==The client==
 
 A number of types must be created as part of the process of creating a comet client.
-
-  * Create a sub-class `rocket.remoting.client.CometClient`.
-  * Create a GWT RemoteService and corresponding Async service interface with a method with a return type compatible with  the objects being pushed by the server.
-  * Pass a `com.google.gwt.user.client.rpc.AsyncCallback` to handle any incoming objects.
-
 ===Sample===
+
 The sample class below includes an example of the implemented abstract CometClient method.
+The client may be used to control a single comet session via the `start()` and `stop()` methods.
 {{{
-package example;
+package example.client;
 
 import rocket.remoting.client.CometClient;
 import rocket.remoting.client.CometServerConnectionFailureException;
 
 public ExampleCometClient extends CometClient{
     protected Object createProxy() {
-        return GWT.create( InterfaceWhichReturnsCometPayload.class);
+        return GWT.create( Payload.class);
     }
 };
 }}}
 
-Refer to GWT documentation for further info about creating a GWT RemoteService and Async interface.
+In order to activate the object serializer generator two rpc interfaces must be created. For more info about the requirements of a GWT service interface refer to GWT documentation.
+{{{
+package example;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+
+public interface CometService extends RemoteService {
+	CometPayload ignored();
+}
+
+package example;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.RemoteService;
+
+public interface CometServiceAsync extends RemoteService {
+	CometPayload ignored(AsyncCallback callback);
+}
+}}}
 
 ===Starting a comet session===
 
 The code sample below shows how to create and start a comet session with the server.
 
 {{{
-	ExampleCometClient cometClient = new ExampleCometClient();
+	ExampleCometClient client = new ExampleCometClient();
 	client.setUrl("...CometServerServlet url...");
-	cometClient.setCallback( new AsyncCallback(){
+	client.setCallback( new AsyncCallback(){
 		public void onSuccess( final Object incoming ){
-			// cast to return type of method within InterfaceWhichReturnsCometPayload...*
 			CometPayload payload = (CometPayload) incoming;
 
 			// do something with payload...
-			...
 		}
 
 		public void onThrowable( final Throwable cause ){
 			// handle problem
 		}
 	});
-	cometClient.start();
+	client.start();
 }}}
 
 =Further samples=
