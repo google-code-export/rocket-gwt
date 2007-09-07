@@ -111,7 +111,7 @@ public SampleCometServletServlet extends CometServerServlet{
 			Thread.sleep( 1000 );
 		} catch ( InterruptedException ignore ){
 		}
-		return new Payload( this.counter++ );
+		return new CometPayload( this.counter++ );
 	}
 }
 }}}
