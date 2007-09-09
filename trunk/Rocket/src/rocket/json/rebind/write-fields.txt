@@ -1,7 +1,5 @@
 // write-fields.txt
 
-System.out.println( "write-fields\\t" + com.google.gwt.core.client.GWT.getTypeName( ${instance} ));
-
 final ${instanceType} instance0 = ( ${instanceType} ) ${instance};
 
 // read each field from instance0 and put its value onto the jsonObject being assembled.
