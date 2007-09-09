@@ -135,8 +135,6 @@ public class CometTest implements EntryPoint {
 	 * contents are visible. All other behaviour remains unchanged.
 	 * 
 	 * @author Miroslav Pokorny (mP)
-	 * 
-	 * @comet-payloadType rocket.remoting.test.comet.client.TestCometPayload
 	 */
 	abstract static public class TestCometClient extends CometClient {
 		
