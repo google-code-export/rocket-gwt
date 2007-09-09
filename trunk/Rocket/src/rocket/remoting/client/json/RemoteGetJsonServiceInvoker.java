@@ -23,7 +23,7 @@ import com.google.gwt.http.client.RequestBuilder;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class RemoteGetJsonServiceInvoker extends RemoteJsonServiceInvoker {
+abstract public class RemoteGetJsonServiceInvoker extends RemoteGetOrPostJsonServiceInvoker {
 
 	final protected String buildUrl() {
 		return this.getUrl() + '?' + this.getParameters().toString();

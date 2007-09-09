@@ -119,7 +119,10 @@ public class HtmlTemplateGenerator extends Generator {
 		}
 
 		final NewMethod newMethod = method.copy(newType);
-
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		CodeBlock body = null;
 		while (true) {
 			final Type widgetType = method.getReturnType();

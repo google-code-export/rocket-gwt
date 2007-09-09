@@ -32,13 +32,13 @@ import rocket.util.client.ObjectHelper;
 import com.google.gwt.user.rebind.SourceWriter;
 
 /**
- * An abstraction for the invoker template file.
+ * An abstraction for the request-parameters-transport-invoker template file.
  * 
  * @author Miroslav Pokorny
  */
-public class InvokerTemplatedFile extends TemplatedCodeBlock {
+class RequestParametersTransportInvokerTemplatedFile extends TemplatedCodeBlock {
 
-	public InvokerTemplatedFile() {
+	public RequestParametersTransportInvokerTemplatedFile() {
 		super();
 		setNative(false);
 	}
@@ -58,16 +58,16 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 	/**
 	 * THe return type of the service.
 	 */
-	private Type returnType;
+	private Type payloadType;
 
-	protected Type getReturnType() {
-		ObjectHelper.checkNotNull("returnType:returnType", returnType);
-		return this.returnType;
+	protected Type getPayloadType() {
+		ObjectHelper.checkNotNull("returnType:payloadType", payloadType);
+		return this.payloadType;
 	}
 
-	public void setReturnType(final Type returnType) {
-		ObjectHelper.checkNotNull("parameter:returnType", returnType);
-		this.returnType = returnType;
+	public void setPayloadType(final Type payloadType) {
+		ObjectHelper.checkNotNull("parameter:payloadType", payloadType);
+		this.payloadType = payloadType;
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 		parameters.remove(parameters.size() - 1); // remove the callback
 		// parameter
 
-		final InvokerAddParameterTemplatedFile repeated = new InvokerAddParameterTemplatedFile();
+		final RequestParametersTransportInvokerAddParameterTemplatedFile repeated = new RequestParametersTransportInvokerAddParameterTemplatedFile();
 		final List httpRequestParameterNames = this.getHttpRequestParameterNames();
 
 		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock() {
@@ -146,7 +146,7 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected InputStream getInputStream() {
-		final String filename = Constants.INVOKER_TEMPLATE;
+		final String filename = Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
@@ -157,20 +157,20 @@ public class InvokerTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.INVOKER_ADD_PARAMETERS.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETERS.equals(name)) {
 				value = this.getAddParameters();
 				break;
 			}
-			if (Constants.INVOKER_CALLBACK_PARAMETER.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_CALLBACK_PARAMETER.equals(name)) {
 				value = this.getCallbackParameter();
 				break;
 			}
-			if (Constants.INVOKER_INVOKER_TYPE.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_INVOKER_TYPE.equals(name)) {
 				value = this.getInvokerType();
 				break;
 			}
-			if (Constants.INVOKER_METHOD_RETURN_TYPE.equals(name)) {
-				value = this.getReturnType();
+			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_PAYLOAD_TYPE.equals(name)) {
+				value = this.getPayloadType();
 				break;
 			}
 			break;

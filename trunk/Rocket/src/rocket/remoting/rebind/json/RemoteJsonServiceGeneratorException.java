@@ -25,20 +25,19 @@ import rocket.generator.rebind.GeneratorException;
  */
 public class RemoteJsonServiceGeneratorException extends GeneratorException {
 
-	public RemoteJsonServiceGeneratorException() {
+	RemoteJsonServiceGeneratorException() {
 		super();
 	}
 
-	public RemoteJsonServiceGeneratorException(String message) {
+	RemoteJsonServiceGeneratorException(String message) {
 		super(message);
 	}
 
-	public RemoteJsonServiceGeneratorException(Throwable cause) {
+	RemoteJsonServiceGeneratorException(Throwable cause) {
 		super(cause);
 	}
 
-	public RemoteJsonServiceGeneratorException(String message, Throwable cause) {
+	RemoteJsonServiceGeneratorException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
 }

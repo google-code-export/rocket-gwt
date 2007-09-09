@@ -25,13 +25,13 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 /**
- * An abstraction for the invoker add template
+ * An abstraction for the request-parameters-transport-invoker-add-parameter template
  * 
  * @author Miroslav Pokorny
  */
-public class InvokerAddParameterTemplatedFile extends TemplatedCodeBlock {
+class RequestParametersTransportInvokerAddParameterTemplatedFile extends TemplatedCodeBlock {
 
-	public InvokerAddParameterTemplatedFile() {
+	public RequestParametersTransportInvokerAddParameterTemplatedFile() {
 		super();
 		setNative(false);
 	}
@@ -61,7 +61,7 @@ public class InvokerAddParameterTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected InputStream getInputStream() {
-		final String filename = Constants.INVOKER_ADD_PARAMETER_TEMPLATE;
+		final String filename = Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETER_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
@@ -72,11 +72,11 @@ public class InvokerAddParameterTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.INVOKER_ADD_PARAMETER_HTTP_REQUEST_PARAMETER_NAME.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETER_HTTP_REQUEST_PARAMETER_NAME.equals(name)) {
 				value = new StringLiteral(this.getHttpRequestParameterName());
 				break;
 			}
-			if (Constants.INVOKER_ADD_PARAMETER_PARAMETER.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETER_PARAMETER.equals(name)) {
 				value = this.getParameter();
 				break;
 			}
