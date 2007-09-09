@@ -1,8 +1,4 @@
 // write-json.txt
-
-java.lang.System.out.println( "writeJson(Object) instane::" + com.google.gwt.core.client.GWT.getTypeName( instance )); // FIXME DELTE ME
-new java.lang.Throwable().printStackTrace();
-
 com.google.gwt.json.client.JSONValue jsonValue = null;
 
 if( null != instance ){

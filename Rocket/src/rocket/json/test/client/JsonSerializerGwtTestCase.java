@@ -47,19 +47,6 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		return "rocket.json.test.JsonSerializerGwtTestCase";
 	}
 
-	public void testNotSerializable() {
-		try {
-			final Object proxy = GWT.create(NotSerializable.class);
-			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the NotSerializable class does not implement serializable, and not: "
-					+ proxy);
-		} catch (final AssertionFailedError error) {
-			throw error;
-		} catch (final Throwable caught) {
-			final String causeType = GWT.getTypeName(caught.getCause());
-			assertTrue(causeType, causeType.equals("rocket.json.rebind.JsonSerializerGeneratorException"));
-		}
-	}
-
 	public void testClassMissingNoArgumentsConstructor() {
 		try {
 			final Object proxy = GWT.create(MissingNoArgumentsConstructor.class);

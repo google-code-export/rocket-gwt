@@ -239,9 +239,12 @@ public class JsonSerializerGenerator extends Generator {
 
 		final Type jsonSerializer = this.getJsonSerializer();
 
-		final Method readObject = jsonSerializer.getMethod(Constants.READ_COMPLEX_METHOD_NAME, Arrays.asList(new Type[] { this
-				.getJsonValue() }));
+		final Method readObject = jsonSerializer.getMethod(Constants.READ_COMPLEX_METHOD_NAME, Arrays.asList(new Type[] { this.getJsonValue() }));
 		final NewMethod newReadObject = readObject.copy(deserializer);
+		newReadObject.setAbstract( false );
+		newReadObject.setFinal( false );
+		newReadObject.setNative( false );
+		
 		final MethodParameter jsonValue = (MethodParameter) newReadObject.getParameters().get(0);
 
 		final ReadComplexTemplatedFile body = new ReadComplexTemplatedFile();
@@ -417,11 +420,14 @@ public class JsonSerializerGenerator extends Generator {
 
 		final Type jsonSerializer = this.getJsonSerializer();
 
-		final Method writeJson = jsonSerializer.getMethod(Constants.WRITE_JSON_METHOD_NAME, Arrays
-				.asList(new Type[] { context.getObject() }));
-		final NewMethod newAsJson = writeJson.copy(deserializer);
+		final Method writeJson = jsonSerializer.getMethod(Constants.WRITE_JSON_METHOD_NAME, Arrays.asList(new Type[] { context.getObject() }));
+		final NewMethod newWriteJson = writeJson.copy(deserializer);
+		newWriteJson.setAbstract( false );
+		newWriteJson.setFinal( false );
+		newWriteJson.setNative( false );
+		
 		final WriteJsonTemplatedFile body = new WriteJsonTemplatedFile();
-		newAsJson.setBody(body);
+		newWriteJson.setBody(body);
 	}
 
 	/**

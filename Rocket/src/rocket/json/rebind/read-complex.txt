@@ -1,4 +1,4 @@
-// read-object.txt
+// read-objcomplexect.txt
 
 // Declare a reference being deserialized.
 ${type} instance = null;
