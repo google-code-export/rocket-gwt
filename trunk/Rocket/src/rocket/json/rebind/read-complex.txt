@@ -1,7 +1,7 @@
-// as-object.txt
+// read-object.txt
 
-// Declare the type being deserialized.
-${deserializerType} instance = null;
+// Declare a reference being deserialized.
+${type} instance = null;
 
 // cast from JSONValue to jsonObject
 final com.google.gwt.json.client.JSONObject jsonObject = ${jsonValueParameter}.isObject();
@@ -9,10 +9,11 @@ final com.google.gwt.json.client.JSONObject jsonObject = ${jsonValueParameter}.i
 if ( null != jsonObject ){
 
   // create a new instance and set its fields.
-  instance = new ${deserializerType}();
+  instance = new ${type}();
   
-  this.setFields( instance, jsonObject );
-  super.setFields( instance, jsonObject );
+  this.readFields( jsonObject, instance );
+  super.readFields( jsonObject, instance );
 } // if
 
 return instance;
+

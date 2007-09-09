@@ -1,3 +1,0 @@
-// field-setter.txt
-
-${instance}.${field}=${value};

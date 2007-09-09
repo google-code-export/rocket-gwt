@@ -21,16 +21,17 @@ import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.methodparameter.MethodParameter;
+import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the fieldSetter templated file
+ * An abstraction for the set-list templated file
  * 
  * @author Miroslav Pokorny
  */
-public class FieldSetterTemplatedFile extends TemplatedCodeBlock {
+public class SetFieldTemplatedFile extends TemplatedCodeBlock {
 
-	public FieldSetterTemplatedFile() {
+	public SetFieldTemplatedFile() {
 		super();
 		setNative(true);
 	}
@@ -38,19 +39,19 @@ public class FieldSetterTemplatedFile extends TemplatedCodeBlock {
 	private Field field;
 
 	protected Field getField() {
-		ObjectHelper.checkNotNull("field:field", field);
+		ObjectHelper.checkNotNull("list:list", field);
 		return this.field;
 	}
 
 	public void setField(final Field field) {
-		ObjectHelper.checkNotNull("parameter:field", field);
+		ObjectHelper.checkNotNull("parameter:list", field);
 		this.field = field;
 	}
 
 	private MethodParameter instance;
 
 	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("field:instance", instance);
+		ObjectHelper.checkNotNull("list:instance", instance);
 		return this.instance;
 	}
 
@@ -62,7 +63,7 @@ public class FieldSetterTemplatedFile extends TemplatedCodeBlock {
 	private MethodParameter value;
 
 	protected MethodParameter getValue() {
-		ObjectHelper.checkNotNull("field:value", value);
+		ObjectHelper.checkNotNull("list:value", value);
 		return this.value;
 	}
 
@@ -72,7 +73,7 @@ public class FieldSetterTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected InputStream getInputStream() {
-		final String filename = Constants.FIELD_SETTER_TEMPLATE;
+		final String filename = Constants.SET_FIELD_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
@@ -83,15 +84,15 @@ public class FieldSetterTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.FIELD_SETTER_FIELD.equals(name)) {
+			if (Constants.SET_FIELD_FIELD.equals(name)) {
 				value = this.getField();
 				break;
 			}
-			if (Constants.FIELD_SETTER_INSTANCE.equals(name)) {
+			if (Constants.SET_FIELD_INSTANCE.equals(name)) {
 				value = this.getInstance();
 				break;
 			}
-			if (Constants.FIELD_SETTER_VALUE.equals(name)) {
+			if (Constants.SET_FIELD_VALUE.equals(name)) {
 				value = this.getValue();
 				break;
 			}
@@ -101,8 +102,7 @@ public class FieldSetterTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file [" + Constants.FIELD_SETTER_TEMPLATE
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file [" + Constants.SET_FIELD_TEMPLATE
 				+ "]");
 	}
-
 }

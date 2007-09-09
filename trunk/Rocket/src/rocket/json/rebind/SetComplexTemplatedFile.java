@@ -26,34 +26,37 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the inserting field setter statements for fields that are
+ * An abstraction for the inserting list setter statements for fields that are
  * Objects.
  * 
  * @author Miroslav Pokorny
  */
-public class InvokeObjectFieldSetterTemplatedFile extends TemplatedCodeBlock {
+public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 
-	public InvokeObjectFieldSetterTemplatedFile() {
+	public SetComplexTemplatedFile() {
 		super();
 		setNative(false);
 	}
 
-	private Method asMethod;
+	private Method readMethod;
 
-	protected Method getAsMethod() {
-		ObjectHelper.checkNotNull("field:asMethod", asMethod);
-		return this.asMethod;
+	protected Method getReadMethod() {
+		ObjectHelper.checkNotNull("list:readMethod", readMethod);
+		return this.readMethod;
 	}
 
-	public void setAsMethod(final Method asMethod) {
-		ObjectHelper.checkNotNull("parameter:asMethod", asMethod);
-		this.asMethod = asMethod;
+	public void setReadMethod(final Method readMethod) {
+		ObjectHelper.checkNotNull("parameter:readMethod", readMethod);
+		this.readMethod = readMethod;
 	}
 
+	/**
+	 * This method takes the instance being reconstructed and sets a specific list.
+	 */
 	private Method fieldSetter;
 
 	protected Method getFieldSetter() {
-		ObjectHelper.checkNotNull("field:fieldSetter", fieldSetter);
+		ObjectHelper.checkNotNull("list:fieldSetter", fieldSetter);
 		return this.fieldSetter;
 	}
 
@@ -62,6 +65,9 @@ public class InvokeObjectFieldSetterTemplatedFile extends TemplatedCodeBlock {
 		this.fieldSetter = fieldSetter;
 	}
 
+	/**
+	 * The list type.
+	 */
 	private Type fieldType;
 
 	protected Type getFieldType() {
@@ -74,22 +80,28 @@ public class InvokeObjectFieldSetterTemplatedFile extends TemplatedCodeBlock {
 		this.fieldType = fieldType;
 	}
 
-	private Type fieldTypeDeserializer;
+	/**
+	 * The matching serializer for this fields type
+	 */
+	private Type serializer;
 
-	protected Type getFieldTypeDeserializer() {
-		ObjectHelper.checkNotNull("deserializerFieldType:deserializerFieldType", fieldTypeDeserializer);
-		return this.fieldTypeDeserializer;
+	protected Type getSerializer() {
+		ObjectHelper.checkNotNull("list:serializer", serializer);
+		return this.serializer;
 	}
 
-	public void setFieldTypeDeserializer(final Type fieldTypeDeserializer) {
-		ObjectHelper.checkNotNull("parameter:fieldTypeDeserializer", fieldTypeDeserializer);
-		this.fieldTypeDeserializer = fieldTypeDeserializer;
+	public void setSerializer(final Type fieldTypeDeserializer) {
+		ObjectHelper.checkNotNull("parameter:serializer", fieldTypeDeserializer);
+		this.serializer = fieldTypeDeserializer;
 	}
-
+	
+	/**
+	 * The method parameter that holds the instance being deserialized.
+	 */
 	private MethodParameter instance;
 
 	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("field:instance", instance);
+		ObjectHelper.checkNotNull("list:instance", instance);
 		return this.instance;
 	}
 
@@ -98,22 +110,14 @@ public class InvokeObjectFieldSetterTemplatedFile extends TemplatedCodeBlock {
 		this.instance = instance;
 	}
 
-	private String javascriptPropertyName;
-
-	protected String getJavascriptPropertyName() {
-		ObjectHelper.checkNotNull("field:javascriptPropertyName", javascriptPropertyName);
-		return this.javascriptPropertyName;
-	}
-
-	public void setJavascriptPropertyName(final String javascriptPropertyName) {
-		ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
-		this.javascriptPropertyName = javascriptPropertyName;
-	}
-
+	/**
+	 * The method parameter that holds the json object containing the source values for the instance
+	 * being deserialized
+	 */
 	private MethodParameter jsonObject;
 
 	protected MethodParameter getJsonObject() {
-		ObjectHelper.checkNotNull("field:jsonObject", jsonObject);
+		ObjectHelper.checkNotNull("list:jsonObject", jsonObject);
 		return this.jsonObject;
 	}
 
@@ -122,8 +126,23 @@ public class InvokeObjectFieldSetterTemplatedFile extends TemplatedCodeBlock {
 		this.jsonObject = jsonObject;
 	}
 
+	/**
+	 * A property of json object containing the instance list being set. 
+	 */
+	private String javascriptPropertyName;
+
+	protected String getJavascriptPropertyName() {
+		ObjectHelper.checkNotNull("list:javascriptPropertyName", javascriptPropertyName);
+		return this.javascriptPropertyName;
+	}
+
+	public void setJavascriptPropertyName(final String javascriptPropertyName) {
+		ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
+		this.javascriptPropertyName = javascriptPropertyName;
+	}
+
 	protected InputStream getInputStream() {
-		final String filename = Constants.INVOKE_OBJECT_FIELD_SETTER_TEMPLATE;
+		final String filename = Constants.SET_COMPLEX_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
@@ -134,36 +153,34 @@ public class InvokeObjectFieldSetterTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.INVOKE_OBJECT_FIELD_SETTER_AS_METHOD.equals(name)) {
-				value = this.getAsMethod();
+			if (Constants.SET_COMPLEX_READ_METHOD.equals(name)) {
+				value = this.getReadMethod();
 				break;
 			}
-
-			if (Constants.INVOKE_OBJECT_FIELD_SETTER_FIELD_SETTER.equals(name)) {
+			if (Constants.SET_COMPLEX_FIELD_SETTER.equals(name)) {
 				value = this.getFieldSetter();
 				break;
 			}
-			if (Constants.INVOKE_OBJECT_FIELD_SETTER_FIELD_TYPE.equals(name)) {
+			if (Constants.SET_COMPLEX_FIELD_TYPE.equals(name)) {
 				value = this.getFieldType();
 				break;
 			}
-			if (Constants.INVOKE_OBJECT_FIELD_SETTER_FIELD_TYPE_DESERIALIZER.equals(name)) {
-				value = this.getFieldTypeDeserializer();
+			if (Constants.SET_COMPLEX_SERIALIZER.equals(name)) {
+				value = this.getSerializer();
 				break;
 			}
-			if (Constants.INVOKE_OBJECT_FIELD_SETTER_INSTANCE.equals(name)) {
+			if (Constants.SET_COMPLEX_INSTANCE.equals(name)) {
 				value = this.getInstance();
 				break;
 			}
-			if (Constants.INVOKE_OBJECT_FIELD_SETTER_JAVASCRIPT_PROPERTY_NAME.equals(name)) {
-				value = new StringLiteral(this.getJavascriptPropertyName());
-				break;
-			}
-			if (Constants.INVOKE_OBJECT_FIELD_SETTER_JSON_OBJECT.equals(name)) {
+			if (Constants.SET_COMPLEX_JSON_OBJECT.equals(name)) {
 				value = this.getJsonObject();
 				break;
 			}
-
+			if (Constants.SET_COMPLEX_JAVASCRIPT_PROPERTY_NAME.equals(name)) {
+				value = new StringLiteral(this.getJavascriptPropertyName());
+				break;
+			}
 			break;
 		}
 		return value;
@@ -171,6 +188,6 @@ public class InvokeObjectFieldSetterTemplatedFile extends TemplatedCodeBlock {
 
 	protected void throwValueNotFoundException(final String name) {
 		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file ["
-				+ Constants.INVOKE_OBJECT_FIELD_SETTER_TEMPLATE + "]");
+				+ Constants.SET_COMPLEX_TEMPLATE + "]");
 	}
 }
