@@ -72,7 +72,7 @@ Because a hidden iframe is used to the time and amount of data accumulated by th
 
 A number of steps must be performed to complete 
   * Create a class that extends `rocket.remoting.client.CometClient`.
-  * Create a GWT RemoteService and corresponding Async service interface with a method with a return type compatible with the objects being pushed by the server.
+  * Create an abstract method called createProxy with annotation that communicates the payload type.
   * Register a `com.google.gwt.user.client.rpc.AsyncCallback` with the client to handle any incoming objects or exceptions.
 
 =Sample=
@@ -130,30 +130,11 @@ import rocket.remoting.client.CometClient;
 import rocket.remoting.client.CometServerConnectionFailureException;
 
 public ExampleCometClient extends CometClient{
-    protected Object createProxy() {
-        return GWT.create( Payload.class);
-    }
+	/**
+	 * @comet-payloadType example.client.CometPayload{
+	 */
+	abstract protected Object createProxy();
 };
-}}}
-
-In order to activate the object serializer generator two rpc interfaces must be created. For more info about the requirements of a GWT service interface refer to GWT documentation.
-{{{
-package example;
-
-import com.google.gwt.user.client.rpc.RemoteService;
-
-public interface CometService extends RemoteService {
-	CometPayload ignored();
-}
-
-package example;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.RemoteService;
-
-public interface CometServiceAsync extends RemoteService {
-	CometPayload ignored(AsyncCallback callback);
-}
 }}}
 
 ===Starting a comet session===
@@ -182,3 +163,5 @@ The code sample below shows how to create and start a comet session with the ser
 For further examples refer to the unit test. 
   * client - `rocket.remoting.test.comet.client.CometTest` 
   * server - `rocket.remoting.test.comet.server.TestCometObjectStreamingServlet` 
+
+To run the comet demo the embedded tomcat must be running.
