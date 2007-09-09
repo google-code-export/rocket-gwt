@@ -22,37 +22,29 @@ import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
+import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the inserting field setter statements for fields that are
+ * An abstraction for the inserting list setter statements for fields that are
  * primitives or Strings
  * 
  * @author Miroslav Pokorny
  */
-public class InvokePrimitiveOrStringFieldSetterTemplatedFile extends TemplatedCodeBlock {
+public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
 
-	public InvokePrimitiveOrStringFieldSetterTemplatedFile() {
+	public SetSimpleTemplatedFile() {
 		super();
 		setNative(false);
 	}
 
-	private Method asMethod;
-
-	protected Method getAsMethod() {
-		ObjectHelper.checkNotNull("field:asMethod", asMethod);
-		return this.asMethod;
-	}
-
-	public void setAsMethod(final Method asMethod) {
-		ObjectHelper.checkNotNull("parameter:asMethod", asMethod);
-		this.asMethod = asMethod;
-	}
-
+	/**
+	 * A method on the serializer that is used to write to an instance list.
+	 */
 	private Method fieldSetter;
 
 	protected Method getFieldSetter() {
-		ObjectHelper.checkNotNull("field:fieldSetter", fieldSetter);
+		ObjectHelper.checkNotNull("list:fieldSetter", fieldSetter);
 		return this.fieldSetter;
 	}
 
@@ -64,7 +56,7 @@ public class InvokePrimitiveOrStringFieldSetterTemplatedFile extends TemplatedCo
 	private MethodParameter instance;
 
 	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("field:instance", instance);
+		ObjectHelper.checkNotNull("list:instance", instance);
 		return this.instance;
 	}
 
@@ -73,22 +65,13 @@ public class InvokePrimitiveOrStringFieldSetterTemplatedFile extends TemplatedCo
 		this.instance = instance;
 	}
 
-	private String javascriptPropertyName;
-
-	protected String getJavascriptPropertyName() {
-		ObjectHelper.checkNotNull("field:javascriptPropertyName", javascriptPropertyName);
-		return this.javascriptPropertyName;
-	}
-
-	public void setJavascriptPropertyName(final String javascriptPropertyName) {
-		ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
-		this.javascriptPropertyName = javascriptPropertyName;
-	}
-
+	/**
+	 * The json object parameter variable.
+	 */
 	private MethodParameter jsonObject;
 
 	protected MethodParameter getJsonObject() {
-		ObjectHelper.checkNotNull("field:jsonObject", jsonObject);
+		ObjectHelper.checkNotNull("list:jsonObject", jsonObject);
 		return this.jsonObject;
 	}
 
@@ -97,8 +80,37 @@ public class InvokePrimitiveOrStringFieldSetterTemplatedFile extends TemplatedCo
 		this.jsonObject = jsonObject;
 	}
 
+	/**
+	 * The name of the property on jsonObject that contains the new value for the list
+	 */
+	private String javascriptPropertyName;
+
+	protected String getJavascriptPropertyName() {
+		ObjectHelper.checkNotNull("list:javascriptPropertyName", javascriptPropertyName);
+		return this.javascriptPropertyName;
+	}
+
+	public void setJavascriptPropertyName(final String javascriptPropertyName) {
+		ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
+		this.javascriptPropertyName = javascriptPropertyName;
+	}
+	/**
+	 * The matching serializer for this fields type
+	 */
+	private Type serializer;
+
+	protected Type getSerializer() {
+		ObjectHelper.checkNotNull("list:serializer", serializer);
+		return this.serializer;
+	}
+
+	public void setSerializer(final Type serializer) {
+		ObjectHelper.checkNotNull("parameter:serializer", serializer);
+		this.serializer = serializer;
+	}
+	
 	protected InputStream getInputStream() {
-		final String filename = Constants.INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_TEMPLATE;
+		final String filename = Constants.SET_SIMPLE_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
@@ -109,27 +121,26 @@ public class InvokePrimitiveOrStringFieldSetterTemplatedFile extends TemplatedCo
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_AS_METHOD.equals(name)) {
-				value = this.getAsMethod();
-				break;
-			}
-			if (Constants.INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_FIELD_SETTER.equals(name)) {
+			if (Constants.SET_SIMPLE_FIELD_SETTER.equals(name)) {
 				value = this.getFieldSetter();
 				break;
 			}
-			if (Constants.INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_INSTANCE.equals(name)) {
+			if (Constants.SET_SIMPLE_INSTANCE.equals(name)) {
 				value = this.getInstance();
 				break;
 			}
-			if (Constants.INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_JAVASCRIPT_PROPERTY_NAME.equals(name)) {
+			if (Constants.SET_SIMPLE_JAVASCRIPT_PROPERTY_NAME.equals(name)) {
 				value = new StringLiteral(this.getJavascriptPropertyName());
 				break;
 			}
-			if (Constants.INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_JSON_OBJECT.equals(name)) {
+			if (Constants.SET_SIMPLE_JSON_OBJECT.equals(name)) {
 				value = this.getJsonObject();
 				break;
 			}
-
+			if (Constants.SET_SIMPLE_SERIALIZER.equals(name)) {
+				value = this.getSerializer();
+				break;
+			}
 			break;
 		}
 		return value;
@@ -137,7 +148,6 @@ public class InvokePrimitiveOrStringFieldSetterTemplatedFile extends TemplatedCo
 
 	protected void throwValueNotFoundException(final String name) {
 		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file ["
-				+ Constants.INVOKE_PRIMITIVE_OR_STRING_FIELD_SETTER_TEMPLATE + "]");
+				+ Constants.SET_SIMPLE_TEMPLATE + "]");
 	}
-
 }

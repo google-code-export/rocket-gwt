@@ -28,13 +28,16 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class AsObjectTemplatedFile extends TemplatedCodeBlock {
+public class ReadComplexTemplatedFile extends TemplatedCodeBlock {
 
-	public AsObjectTemplatedFile() {
+	public ReadComplexTemplatedFile() {
 		super();
 		setNative(false);
 	}
 
+	/**
+	 * The type being deserialized
+	 */
 	private Type deserializerType;
 
 	protected Type getDeserializerType() {
@@ -47,10 +50,13 @@ public class AsObjectTemplatedFile extends TemplatedCodeBlock {
 		this.deserializerType = deserializerType;
 	}
 
+	/**
+	 * The jsonvalue parameter
+	 */
 	private MethodParameter jsonValue;
 
 	protected MethodParameter getJsonValue() {
-		ObjectHelper.checkNotNull("field:jsonValue", jsonValue);
+		ObjectHelper.checkNotNull("list:jsonValue", jsonValue);
 		return this.jsonValue;
 	}
 
@@ -60,7 +66,7 @@ public class AsObjectTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected InputStream getInputStream() {
-		final String filename = Constants.AS_OBJECT_TEMPLATE;
+		final String filename = Constants.READ_COMPLEX_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
@@ -71,11 +77,11 @@ public class AsObjectTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.AS_OBJECT_DESERIALIZER_TYPE.equals(name)) {
+			if (Constants.READ_COMPLEX_TYPE.equals(name)) {
 				value = this.getDeserializerType();
 				break;
 			}
-			if (Constants.AS_OBJECT_JSON_VALUE_PARAMETER.equals(name)) {
+			if (Constants.READ_COMPLEX_JSON_VALUE_PARAMETER.equals(name)) {
 				value = this.getJsonValue();
 				break;
 			}
@@ -85,7 +91,7 @@ public class AsObjectTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file [" + Constants.AS_OBJECT_TEMPLATE
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file [" + Constants.READ_COMPLEX_TEMPLATE
 				+ "]");
 	}
 }
