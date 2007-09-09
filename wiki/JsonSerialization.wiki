@@ -70,7 +70,7 @@ The following steps below list what and why is needed to use this facility in yo
 Add the rocket module to your own project module.
 
 {{{
-<module name="Rocket.User" />
+<inherits name="Rocket.User" />
 }}}
 
 ==Sample Json==
@@ -78,11 +78,11 @@ The sample below includes a simple json object graph which includes all json typ
 
 {{{
 	{
-		"foo":	true;           *// json boolean.*
-		"bar":  123;  	        *// json number*
-		"array": [ 1, 2, 3 ];	*// json array *
+		"foo":	true;           // json boolean
+		"bar":  123;  	        // json number
+		"array": [ 1, 2, 3 ];	// json array
 		"object" {
-		   "baz":  "apple"; 	*// json string*
+		   "baz":  "apple"; 	// json string
 		}
 	}
 }}}
