@@ -55,8 +55,7 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param newTypeName
 	 *            The name of the new type being generated
 	 */
-	protected NewConcreteType assembleNewType(final Type type,
-			final String newTypeName) {
+	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 		GeneratorHelper.checkJavaTypeName("parameter:newTypeName", newTypeName);
 
@@ -96,15 +95,12 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param type
 	 *            The type the deserializer is being generated for
 	 */
-	protected void overrideReadFieldsMethods(
-			final NewConcreteType deserializer, final Type type) {
+	protected void overrideReadFieldsMethods(final NewConcreteType deserializer, final Type type) {
 		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("override " + Constants.READ_FIELDS_METHOD
-				+ " and creating list setters for type ["
-				+ deserializer.getName() + "]");
+		context.debug("override " + Constants.READ_FIELDS_METHOD + " and creating list setters for type [" + deserializer.getName() + "]");
 
 		final NewMethod readFields = deserializer.newMethod();
 		readFields.setAbstract(false);
@@ -115,15 +111,13 @@ public class JsonSerializerGenerator extends Generator {
 		readFields.setStatic(false);
 		readFields.setVisibility(Visibility.PROTECTED);
 
-		final NewMethodParameter readFieldsJsonObjectParameter = readFields
-				.newParameter();
+		final NewMethodParameter readFieldsJsonObjectParameter = readFields.newParameter();
 		readFieldsJsonObjectParameter.setFinal(true);
 		readFieldsJsonObjectParameter.setName("jsonObject");
 		final Type jsonObjectType = this.getJsonObject();
 		readFieldsJsonObjectParameter.setType(jsonObjectType);
 
-		final NewMethodParameter readFieldsInstanceParameter = readFields
-				.newParameter();
+		final NewMethodParameter readFieldsInstanceParameter = readFields.newParameter();
 		readFieldsInstanceParameter.setFinal(true);
 		readFieldsInstanceParameter.setName("instance");
 		readFieldsInstanceParameter.setType(type);
@@ -158,16 +152,14 @@ public class JsonSerializerGenerator extends Generator {
 			setter.setBody(writeMethodBody);
 
 			// add its instance parameter
-			final NewMethodParameter setterInstanceParameter = setter
-					.newParameter();
+			final NewMethodParameter setterInstanceParameter = setter.newParameter();
 			setterInstanceParameter.setFinal(true);
 			setterInstanceParameter.setName("instance");
 			setterInstanceParameter.setType(type);
 			writeMethodBody.setInstance(setterInstanceParameter);
 
 			// add the value parameter
-			final NewMethodParameter setterValueParameter = setter
-					.newParameter();
+			final NewMethodParameter setterValueParameter = setter.newParameter();
 			setterValueParameter.setFinal(true);
 			setterValueParameter.setName("value");
 			setterValueParameter.setType(field.getType());
@@ -195,12 +187,12 @@ public class JsonSerializerGenerator extends Generator {
 			template.setJsonObject(readFieldsJsonObjectParameter);
 			template.setJavascriptPropertyName(this.getJavascriptPropertyName(field));
 			template.setFieldType(fieldType);
-			
-			final Type serializer = this.getSerializer( field );
-			template.setSerializer( serializer );
-			
+
+			final Type serializer = this.getSerializer(field);
+			template.setSerializer(serializer);
+
 			final String readMethodName = this.selectReadMethod(fieldType);
-			final Method readMethod = serializer.getMostDerivedMethod( readMethodName , Arrays.asList( new Type[]{ this.getJsonValue() }));
+			final Method readMethod = serializer.getMostDerivedMethod(readMethodName, Arrays.asList(new Type[] { this.getJsonValue() }));
 			template.setReadMethod(readMethod);
 
 			body.add(template);
@@ -208,22 +200,21 @@ public class JsonSerializerGenerator extends Generator {
 	}
 
 	protected void throwFinalFieldsCannotBeDeserialized(final Field field) {
-		throw new JsonSerializerGeneratorException(
-				"Final instance fields cannot be deserialized, list: " + field);
+		throw new JsonSerializerGeneratorException("Final instance fields cannot be deserialized, list: " + field);
 	}
 
-	protected String selectReadMethod( final Type type ){
+	protected String selectReadMethod(final Type type) {
 		String methodName = null;
-		while( true ){
-			if( type.equals( this.getList() )){
+		while (true) {
+			if (type.equals(this.getList())) {
 				methodName = Constants.SET_COMPLEX_READ_LIST_METHOD;
 				break;
 			}
-			if( type.equals( this.getSet() )){
+			if (type.equals(this.getSet())) {
 				methodName = Constants.SET_COMPLEX_READ_SET_METHOD;
 				break;
 			}
-			if( type.equals( this.getMap() )){
+			if (type.equals(this.getMap())) {
 				methodName = Constants.SET_COMPLEX_READ_MAP_METHOD;
 				break;
 			}
@@ -232,6 +223,7 @@ public class JsonSerializerGenerator extends Generator {
 		}
 		return methodName;
 	}
+
 	/**
 	 * Creates the readObject method and adds it to the given deserializer.
 	 * 
@@ -240,23 +232,19 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param type
 	 *            The type the deserializer is being generated for
 	 */
-	protected void overrideReadObjectMethod(final NewConcreteType deserializer,
-			final Type type) {
+	protected void overrideReadObjectMethod(final NewConcreteType deserializer, final Type type) {
 		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("override " + Constants.READ_COMPLEX_METHOD_NAME
-				+ "() for type [" + type.getName() + "]");
+		context.debug("override " + Constants.READ_COMPLEX_METHOD_NAME + "() for type [" + type.getName() + "]");
 
 		final Type jsonSerializer = this.getJsonSerializer();
 
-		final Method readObject = jsonSerializer.getMethod(
-				Constants.READ_COMPLEX_METHOD_NAME, Arrays
-						.asList(new Type[] { this.getJsonValue() }));
+		final Method readObject = jsonSerializer.getMethod(Constants.READ_COMPLEX_METHOD_NAME, Arrays.asList(new Type[] { this
+				.getJsonValue() }));
 		final NewMethod newReadObject = readObject.copy(deserializer);
-		final MethodParameter jsonValue = (MethodParameter) newReadObject
-				.getParameters().get(0);
+		final MethodParameter jsonValue = (MethodParameter) newReadObject.getParameters().get(0);
 
 		final ReadComplexTemplatedFile body = new ReadComplexTemplatedFile();
 		body.setDeserializerType(type);
@@ -275,11 +263,9 @@ public class JsonSerializerGenerator extends Generator {
 	protected String getJavascriptPropertyName(final Field field) {
 		ObjectHelper.checkNotNull("parameter:list", field);
 
-		final List values = field
-				.getMetadataValues(Constants.JAVASCRIPT_PROPERTY_NAME_ANNOTATION);
+		final List values = field.getMetadataValues(Constants.JAVASCRIPT_PROPERTY_NAME_ANNOTATION);
 		if (null == values || values.size() != 1) {
-			throw new JsonSerializerGeneratorException(
-					"Unable to find javascript property name for " + field);
+			throw new JsonSerializerGeneratorException("Unable to find javascript property name for " + field);
 		}
 		return (String) values.get(0);
 	}
@@ -292,8 +278,7 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param type
 	 * @return
 	 */
-	protected NewConcreteType createConcreteType(final String newTypeName,
-			final Type type) {
+	protected NewConcreteType createConcreteType(final String newTypeName, final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
@@ -325,9 +310,7 @@ public class JsonSerializerGenerator extends Generator {
 	}
 
 	protected void throwMissingNoArgumentsConstructorException(final Type type) {
-		throw new JsonSerializerGeneratorException(
-				"Serializable classes such as [" + type
-						+ "] must have a no arguments constructor.");
+		throw new JsonSerializerGeneratorException("Serializable classes such as [" + type + "] must have a no arguments constructor.");
 	}
 
 	/**
@@ -337,8 +320,7 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param deserializer
 	 * @param type
 	 */
-	protected void overrideWriteFieldsMethods(
-			final NewConcreteType deserializer, final Type type) {
+	protected void overrideWriteFieldsMethods(final NewConcreteType deserializer, final Type type) {
 		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
 		ObjectHelper.checkNotNull("parameter:type", type);
 
@@ -346,9 +328,8 @@ public class JsonSerializerGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("override " + Constants.WRITE_FIELDS_WRITE_METHODS
-				+ " and creating list getters for type ["
-				+ deserializer.getName() + "]");
+		context.debug("override " + Constants.WRITE_FIELDS_WRITE_METHODS + " and creating list getters for type [" + deserializer.getName()
+				+ "]");
 
 		final NewMethod writeFields = deserializer.newMethod();
 		writeFields.setAbstract(false);
@@ -364,8 +345,7 @@ public class JsonSerializerGenerator extends Generator {
 		instanceParameter.setName("instance");
 		instanceParameter.setType(context.getObject());
 
-		final NewMethodParameter jsonObjectParameter = writeFields
-				.newParameter();
+		final NewMethodParameter jsonObjectParameter = writeFields.newParameter();
 		jsonObjectParameter.setFinal(true);
 		jsonObjectParameter.setName("jsonObject");
 		final Type jsonObjectType = this.getJsonObject();
@@ -387,7 +367,7 @@ public class JsonSerializerGenerator extends Generator {
 
 			final NewMethod fieldGetter = this.createFieldGetter(deserializer, field);
 			final String javascriptPropertyName = this.getJavascriptPropertyName(field);
-			final Type serializer = this.getSerializer( field );
+			final Type serializer = this.getSerializer(field);
 
 			body.addField(javascriptPropertyName, fieldGetter, serializer);
 		} // while
@@ -396,16 +376,14 @@ public class JsonSerializerGenerator extends Generator {
 	/**
 	 * Creates a method that uses jsni to retrieve a list from a given instance
 	 */
-	protected NewMethod createFieldGetter(final NewConcreteType deserializer,
-			final Field field) {
+	protected NewMethod createFieldGetter(final NewConcreteType deserializer, final Field field) {
 		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
 		ObjectHelper.checkNotNull("parameter:list", field);
 
 		final NewMethod fieldGetter = deserializer.newMethod();
 		fieldGetter.setAbstract(false);
 		fieldGetter.setFinal(false);
-		fieldGetter.setName(Constants.GET_FIELD_METHOD_PREFIX
-				+ this.capitalize(field.getName()));
+		fieldGetter.setName(Constants.GET_FIELD_METHOD_PREFIX + this.capitalize(field.getName()));
 		fieldGetter.setNative(true);
 		fieldGetter.setReturnType(field.getType());
 		fieldGetter.setStatic(false);
@@ -432,20 +410,17 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param type
 	 *            The type the deserializer is being generated for
 	 */
-	protected void overrideWriteJsonMethod(final NewConcreteType deserializer,
-			final Type type) {
+	protected void overrideWriteJsonMethod(final NewConcreteType deserializer, final Type type) {
 		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("override " + Constants.WRITE_JSON_METHOD_NAME
-				+ "() for type [" + type.getName() + "]");
+		context.debug("override " + Constants.WRITE_JSON_METHOD_NAME + "() for type [" + type.getName() + "]");
 
 		final Type jsonSerializer = this.getJsonSerializer();
 
-		final Method writeJson = jsonSerializer.getMethod(
-				Constants.WRITE_JSON_METHOD_NAME, Arrays
-						.asList(new Type[] { context.getObject() }));
+		final Method writeJson = jsonSerializer.getMethod(Constants.WRITE_JSON_METHOD_NAME, Arrays
+				.asList(new Type[] { context.getObject() }));
 		final NewMethod newAsJson = writeJson.copy(deserializer);
 		final WriteJsonTemplatedFile body = new WriteJsonTemplatedFile();
 		newAsJson.setBody(body);
@@ -462,8 +437,7 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param deserializer
 	 * @param type
 	 */
-	protected void addDeserializerSingletonField(
-			final NewConcreteType deserializer, final Type type) {
+	protected void addDeserializerSingletonField(final NewConcreteType deserializer, final Type type) {
 		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
 		ObjectHelper.checkNotNull("parameter:type", type);
 
@@ -500,8 +474,7 @@ public class JsonSerializerGenerator extends Generator {
 	}
 
 	protected Type getJsonSerializer() {
-		return this.getGeneratorContext().getType(
-				Constants.JSON_SERIALIZER_TYPE);
+		return this.getGeneratorContext().getType(Constants.JSON_SERIALIZER_TYPE);
 	}
 
 	protected Type getJsonValue() {
@@ -525,33 +498,32 @@ public class JsonSerializerGenerator extends Generator {
 	}
 
 	protected String capitalize(final String propertyName) {
-		return Character.toUpperCase(propertyName.charAt(0))
-				+ propertyName.substring(1);
+		return Character.toUpperCase(propertyName.charAt(0)) + propertyName.substring(1);
 	}
 
-	protected Type getSerializer( final Field field ){
+	protected Type getSerializer(final Field field) {
 		Type serializerType = null;
-		
-		while( true ){
+
+		while (true) {
 			final Type fieldType = field.getType();
-		if (fieldType.equals( this.getList())) {
-			serializerType = this.getListElementType(field);
+			if (fieldType.equals(this.getList())) {
+				serializerType = this.getListElementType(field);
+				break;
+			}
+			if (fieldType.equals(this.getSet())) {
+				serializerType = this.getSetElementType(field);
+				break;
+			}
+			if (fieldType.equals(this.getMap())) {
+				serializerType = this.getMapValueType(field);
+				break;
+			}
+			serializerType = fieldType;
 			break;
 		}
-		if (fieldType.equals( this.getSet() )) {
-			serializerType = this.getSetElementType(field);
-			break;
-		}
-		if (fieldType.equals( this.getMap() )) {
-			serializerType = this.getMapValueType(field);
-			break;
-		}
-		serializerType = fieldType;
-		break;
-		}
-		return this.getSerializer0( serializerType );
+		return this.getSerializer0(serializerType);
 	}
-	
+
 	protected Type getSerializer0(final Type type) {
 		Type serializer = null;
 
@@ -559,8 +531,7 @@ public class JsonSerializerGenerator extends Generator {
 			final GeneratorContext context = this.getGeneratorContext();
 			{
 				final Type booleanType = context.getBoolean();
-				if (type.equals(booleanType)
-						|| type.equals(booleanType.getWrapper())) {
+				if (type.equals(booleanType) || type.equals(booleanType.getWrapper())) {
 					serializer = context.getType(Constants.BOOLEAN_SERIALIZER);
 					break;
 				}
@@ -575,8 +546,7 @@ public class JsonSerializerGenerator extends Generator {
 
 			{
 				final Type shortType = context.getShort();
-				if (type.equals(shortType)
-						|| type.equals(shortType.getWrapper())) {
+				if (type.equals(shortType) || type.equals(shortType.getWrapper())) {
 					serializer = context.getType(Constants.SHORT_SERIALIZER);
 					break;
 				}
@@ -600,8 +570,7 @@ public class JsonSerializerGenerator extends Generator {
 
 			{
 				final Type floatType = context.getFloat();
-				if (type.equals(floatType)
-						|| type.equals(floatType.getWrapper())) {
+				if (type.equals(floatType) || type.equals(floatType.getWrapper())) {
 					serializer = context.getType(Constants.FLOAT_SERIALIZER);
 					break;
 				}
@@ -609,8 +578,7 @@ public class JsonSerializerGenerator extends Generator {
 
 			{
 				final Type doubleType = context.getDouble();
-				if (type.equals(doubleType)
-						|| type.equals(doubleType.getWrapper())) {
+				if (type.equals(doubleType) || type.equals(doubleType.getWrapper())) {
 					serializer = context.getType(Constants.DOUBLE_SERIALIZER);
 					break;
 				}
@@ -628,8 +596,7 @@ public class JsonSerializerGenerator extends Generator {
 				break;
 			}
 
-			final String serializerTypeName = this
-					.createNewTypeIfNecessary(type.getName());
+			final String serializerTypeName = this.createNewTypeIfNecessary(type.getName());
 			serializer = context.getType(serializerTypeName);
 			break;
 		}
@@ -649,30 +616,25 @@ public class JsonSerializerGenerator extends Generator {
 	}
 
 	/**
-	 * Retrieves the type after reading the type from an annotation belonging to
-	 * the given list.
+	 * Retrieves the type after reading the type from an annotation belonging to the given field.
 	 * 
-	 * @param list
+	 * @param field
 	 * @param annotation
 	 * @return
 	 */
-	protected Type getTypeFromAnnotation(final Field field,
-			final String annotation) {
-		ObjectHelper.checkNotNull("parameter:list", field);
+	protected Type getTypeFromAnnotation(final Field field, final String annotation) {
+		ObjectHelper.checkNotNull("parameter:field", field);
 
 		final List values = field.getMetadataValues(annotation);
 		if (values.size() != 1) {
-			throw new JsonSerializerGeneratorException("Unable to find the ["
-					+ annotation + "] annotation for the list " + field);
+			throw new JsonSerializerGeneratorException("Unable to find the [" + annotation + "] annotation for the field " + field);
 		}
 
 		final String typeName = (String) values.get(0);
 		if (null == typeName) {
-			throw new JsonSerializerGeneratorException("Unable to find the ["
-					+ annotation + "] annotation for the list " + field);
+			throw new JsonSerializerGeneratorException("Unable to find the [" + annotation + "] annotation for the list " + field);
 		}
 
 		return this.getGeneratorContext().getType(typeName);
 	}
-
 }

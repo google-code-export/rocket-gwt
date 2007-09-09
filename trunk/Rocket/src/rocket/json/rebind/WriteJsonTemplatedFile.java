@@ -49,6 +49,7 @@ public class WriteJsonTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file [" + Constants.WRITE_JSON_TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file [" + Constants.WRITE_JSON_TEMPLATE
+				+ "]");
 	}
 }

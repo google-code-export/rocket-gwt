@@ -81,7 +81,8 @@ public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * The name of the property on jsonObject that contains the new value for the list
+	 * The name of the property on jsonObject that contains the new value for
+	 * the list
 	 */
 	private String javascriptPropertyName;
 
@@ -94,6 +95,7 @@ public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
 		this.javascriptPropertyName = javascriptPropertyName;
 	}
+
 	/**
 	 * The matching serializer for this fields type
 	 */
@@ -108,7 +110,7 @@ public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:serializer", serializer);
 		this.serializer = serializer;
 	}
-	
+
 	protected InputStream getInputStream() {
 		final String filename = Constants.SET_SIMPLE_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -147,7 +149,7 @@ public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file ["
-				+ Constants.SET_SIMPLE_TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file [" + Constants.SET_SIMPLE_TEMPLATE
+				+ "]");
 	}
 }
