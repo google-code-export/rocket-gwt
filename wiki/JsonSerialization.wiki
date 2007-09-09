@@ -160,7 +160,7 @@ To de serialize a json object to java a reference a JsonSerializer must obtained
 
 {{{
 JSONObject jsonObject = // already got it from somewhere...
-JsonSerializer serializer = (JsonSerialize) GWT.create( SomeClass.class );
+JsonSerializer serializer = (JsonSerializer) GWT.create( SomeClass.class );
 }}}
 
 
