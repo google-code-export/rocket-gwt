@@ -543,3 +543,14 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.35.zip
 * Fixed a bug relating to testing if user mouse selection is enabled for an element.
 * Fixed a bug relating to attempts to set css properties (zIndex) which actually returned integer values rather than String values. ObjectHelper.setString() returns the previous 
   value as a String.
+  
+0.36 10 September 2007
+----------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.36.zip
+  
+* Added support to serialize from java objects to json.
+* Added ability to create interfaces (both standalone and nested) using rocket's generator and type system.
+* Streamlined development effort required to use comet client. Developers no longer need to create the two dummy GWT RPC service and async interfaces. These are automatically generated 
+  by a new comet client generator.
+* Added support for json rpc POSTS. A new annotation @jsonRpc-inputArguments selects whether input parameters are sent as request parameters or json rpc encoded.
+* Improved accuracy of NewMethodImpl which now checks its abstract flag before writing its body. If the method is abstract the body is skipped.

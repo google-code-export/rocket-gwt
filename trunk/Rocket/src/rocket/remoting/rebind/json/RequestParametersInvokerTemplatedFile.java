@@ -36,9 +36,9 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-class RequestParametersTransportInvokerTemplatedFile extends TemplatedCodeBlock {
+class RequestParametersInvokerTemplatedFile extends TemplatedCodeBlock {
 
-	public RequestParametersTransportInvokerTemplatedFile() {
+	public RequestParametersInvokerTemplatedFile() {
 		super();
 		setNative(false);
 	}
@@ -103,7 +103,7 @@ class RequestParametersTransportInvokerTemplatedFile extends TemplatedCodeBlock 
 		parameters.remove(parameters.size() - 1); // remove the callback
 		// parameter
 
-		final RequestParametersTransportInvokerAddParameterTemplatedFile repeated = new RequestParametersTransportInvokerAddParameterTemplatedFile();
+		final RequestParametersInvokerAddParameterTemplatedFile repeated = new RequestParametersInvokerAddParameterTemplatedFile();
 		final List httpRequestParameterNames = this.getHttpRequestParameterNames();
 
 		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock() {
@@ -146,7 +146,7 @@ class RequestParametersTransportInvokerTemplatedFile extends TemplatedCodeBlock 
 	}
 
 	protected InputStream getInputStream() {
-		final String filename = Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_TEMPLATE;
+		final String filename = Constants.REQUEST_PARAMETERS_INVOKER_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
@@ -157,19 +157,19 @@ class RequestParametersTransportInvokerTemplatedFile extends TemplatedCodeBlock 
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETERS.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_INVOKER_ADD_PARAMETERS.equals(name)) {
 				value = this.getAddParameters();
 				break;
 			}
-			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_CALLBACK_PARAMETER.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_INVOKER_CALLBACK_PARAMETER.equals(name)) {
 				value = this.getCallbackParameter();
 				break;
 			}
-			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_INVOKER_TYPE.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_INVOKER_INVOKER_TYPE.equals(name)) {
 				value = this.getInvokerType();
 				break;
 			}
-			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_PAYLOAD_TYPE.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_INVOKER_PAYLOAD_TYPE.equals(name)) {
 				value = this.getPayloadType();
 				break;
 			}

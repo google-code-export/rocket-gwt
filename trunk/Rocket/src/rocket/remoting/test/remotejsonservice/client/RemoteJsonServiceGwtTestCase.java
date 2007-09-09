@@ -18,7 +18,6 @@ package rocket.remoting.test.remotejsonservice.client;
 import java.io.Serializable;
 
 import rocket.browser.client.Browser;
-import rocket.json.client.JsonSerializable;
 import rocket.remoting.client.json.RemoteJsonService;
 
 import com.google.gwt.core.client.GWT;
@@ -46,9 +45,6 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	
 	final String JSON_RPC_URL = "/jsonRpc";
 
-	/**
-	 * Must refer to a valid module that sources this class.
-	 */
 	public String getModuleName() {
 		return "rocket.remoting.test.remotejsonservice.RemoteJsonServiceGwtTestCase";
 	}
@@ -58,8 +54,8 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	 */
 	public void testTypeIsNotAnInterface() {
 		try {
-			final Object service = GWT.create(NotAnInterface.class);
-			fail("An IncompatibleInterfacesException should have been thrown because IsNotAnInterface is not an interface.");
+			final Object proxy = GWT.create(NotAnInterface.class);
+			fail("An Exception should have been thrown because NotAnInterface is not an interface, proxy: " + proxy );
 		} catch (final Exception expected) {
 		}
 	}
@@ -70,8 +66,8 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	 */
 	public void testInterfaceDoesntImplementRemoteJsonService() {
 		try {
-			final Object service = GWT.create(DoesntImplementRemoteJsonService.class);
-			fail("An IncompatibleInterfacesException should have been thrown because InterfaceThatDoesntImplementRemoteJsonService doesnt implement RemoteJsonService.");
+			final Object proxy = GWT.create(DoesntImplementRemoteJsonService.class);
+			fail("An Exception should have been thrown because InterfaceThatDoesntImplementRemoteJsonService doesnt implement RemoteJsonService, and not: " + proxy );
 		} catch (final Exception expected) {
 		}
 	}
@@ -101,8 +97,8 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	 */
 	public void testUnmatchedMethodParameters() {
 		try {
-			final Object service = GWT.create(InterfaceWithMethodWhereParametersDontMatchUp.class);
-			fail("A rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the service interface.");
+			final Object proxy = GWT.create(InterfaceWithMethodWhereParametersDontMatchUp.class);
+			fail("A rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the proxy interface.");
 		} catch (final Exception expected) {
 			final String causeType = GWT.getTypeName(expected.getCause());
 			assertTrue(causeType, causeType.equals("rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException"));
@@ -145,8 +141,8 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	 */
 	public void testInterfaceMethodsDontMatchUp() {
 		try {
-			final Object service = GWT.create(InterfaceWithUnmatchedMethod.class);
-			fail("A rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the service interface.");
+			final Object proxy = GWT.create(InterfaceWithUnmatchedMethod.class);
+			fail("A rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the proxy interface.");
 		} catch (final Exception expected) {
 			final String causeType = GWT.getTypeName(expected.getCause());
 			assertTrue(causeType, causeType.equals("rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException"));
@@ -320,7 +316,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param string
 		 * @return
 		 * 
-		 * @jsonRpc-inputTransport requestParameters
+		 * @jsonRpc-inputArguments requestParameters
 		 * @jsonRpc-httpMethod GET
 		 * @jsonRpc-parameterName string
 		 */
@@ -337,7 +333,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param string
 		 * @return
 		 * 
-		 * @jsonRpc-inputTransport requestParameters
+		 * @jsonRpc-inputArguments requestParameters
 		 * @jsonRpc-httpMethod POST
 		 * @jsonRpc-parameterName string
 		 */
@@ -356,7 +352,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param string3
 		 * @return
 		 * 
-		 * @jsonRpc-inputTransport requestParameters
+		 * @jsonRpc-inputArguments requestParameters
 		 * @jsonRpc-httpMethod GET
 		 * @jsonRpc-parameterName string1
 		 * @jsonRpc-parameterName string2
@@ -399,7 +395,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param input
 		 * @return
 		 * 
-		 * @jsonRpc-inputTransport jsonRpc
+		 * @jsonRpc-inputArguments jsonRpc
 		 */
 		ClassWithStringField makeRequest( ClassWithStringField input);
 	}

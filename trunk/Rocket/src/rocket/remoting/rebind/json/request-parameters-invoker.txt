@@ -1,4 +1,4 @@
-// request-parameters-transport-invoker.txt
+// request-parameters-invoker.txt
 
 // declare the invoker variable and create a new Post or Get invoker.
 final ${invokerType} invoker = new ${invokerType}(){
@@ -11,6 +11,8 @@ final ${invokerType} invoker = new ${invokerType}(){
    		return deserializer.readObject( jsonValue );
   	} // readObject
 }; // ${invokerType}
+
+// add the input parameters one by one.
 
 ${addParameters}
 
