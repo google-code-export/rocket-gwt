@@ -29,9 +29,9 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-class RequestParametersTransportInvokerAddParameterTemplatedFile extends TemplatedCodeBlock {
+class RequestParametersInvokerAddParameterTemplatedFile extends TemplatedCodeBlock {
 
-	public RequestParametersTransportInvokerAddParameterTemplatedFile() {
+	public RequestParametersInvokerAddParameterTemplatedFile() {
 		super();
 		setNative(false);
 	}
@@ -61,7 +61,7 @@ class RequestParametersTransportInvokerAddParameterTemplatedFile extends Templat
 	}
 
 	protected InputStream getInputStream() {
-		final String filename = Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETER_TEMPLATE;
+		final String filename = Constants.REQUEST_PARAMETERS_INVOKER_ADD_PARAMETER_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
@@ -72,11 +72,11 @@ class RequestParametersTransportInvokerAddParameterTemplatedFile extends Templat
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETER_HTTP_REQUEST_PARAMETER_NAME.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_INVOKER_ADD_PARAMETER_HTTP_REQUEST_PARAMETER_NAME.equals(name)) {
 				value = new StringLiteral(this.getHttpRequestParameterName());
 				break;
 			}
-			if (Constants.REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETER_PARAMETER.equals(name)) {
+			if (Constants.REQUEST_PARAMETERS_INVOKER_ADD_PARAMETER_PARAMETER.equals(name)) {
 				value = this.getParameter();
 				break;
 			}

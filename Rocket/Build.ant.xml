@@ -8,7 +8,7 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.35"/>
+	<property name="version" value="0.36"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>

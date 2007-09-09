@@ -84,12 +84,12 @@ public class RemoteJsonServiceGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:method", method);
 
 		while( true ){
-			final String inputTransport = this.getInputTransportFromMethodAnnotation(method);
-			if( Constants.INPUT_TRANSPORT_JSON_RPC.equals( inputTransport )){
+			final String inputArguments = this.getInputArgumentEncodingFromMethodAnnotation(method);
+			if( Constants.INPUT_ARGUMENTS_JSON_RPC.equals( inputArguments )){
 				this.implementJsonRpcMethod( method );
 				break;
 			}
-			if( Constants.INPUT_TRANSPORT_REQUEST_PARAMETERS.equals( inputTransport ) ){
+			if( Constants.INPUT_ARGUMENTS_REQUEST_PARAMETERS.equals( inputArguments ) ){
 				this.implementGetOrPostRequestParameters(method);
 				break;
 			}
@@ -100,33 +100,33 @@ public class RemoteJsonServiceGenerator extends Generator {
 	}
 	
 	/**
-	 * Helper which fetches the inputTransport value from an annotation belonging to the given method.
+	 * Helper which fetches the inputArguments value from an annotation belonging to the given method.
 	 * It also validates that only valid values are accepted.
 	 * @param method
 	 * @return
 	 */
-	protected String getInputTransportFromMethodAnnotation(final Method method) {
+	protected String getInputArgumentEncodingFromMethodAnnotation(final Method method) {
 		ObjectHelper.checkNotNull("parameter:method", method);
 
-		final List values = method.getMetadataValues(Constants.INPUT_TRANSPORT_ANNOTATION );
+		final List values = method.getMetadataValues(Constants.INPUT_ARGUMENTS_ANNOTATION );
 		if( values.size() != 1 ){
-			throwInputTransportMissing(method);
+			throwInputArgumentEncodingMissing(method);
 		}
 		
-		final String inputTransport = (String) values.get( 0 );
-		if( false == Constants.INPUT_TRANSPORT_JSON_RPC.equals( inputTransport ) && false == Constants.INPUT_TRANSPORT_REQUEST_PARAMETERS.equals( inputTransport ) ){
-			this.throwInvalidInputTransport(method, inputTransport );
+		final String inputArguments = (String) values.get( 0 );
+		if( false == Constants.INPUT_ARGUMENTS_JSON_RPC.equals( inputArguments ) && false == Constants.INPUT_ARGUMENTS_REQUEST_PARAMETERS.equals( inputArguments ) ){
+			this.throwInvalidInputArgumentEncoding(method, inputArguments );
 		}
 		
-		return inputTransport;
+		return inputArguments;
 	}
 
-	protected void throwInputTransportMissing(final Method method ) {
-		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.INPUT_TRANSPORT_ANNOTATION + "] annotation for the method " + method );
+	protected void throwInputArgumentEncodingMissing(final Method method ) {
+		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.INPUT_ARGUMENTS_ANNOTATION + "] annotation for the method " + method );
 	}
 	
-	protected void throwInvalidInputTransport(final Method method, final String value ) {
-		throw new RemoteJsonServiceGeneratorException("The [" + Constants.INPUT_TRANSPORT_ANNOTATION + "] annotation for the method " + method + " contains an invalid value [" + value + "]");
+	protected void throwInvalidInputArgumentEncoding(final Method method, final String value ) {
+		throw new RemoteJsonServiceGeneratorException("The [" + Constants.INPUT_ARGUMENTS_ANNOTATION + "] annotation for the method " + method + " contains an invalid value [" + value + "]");
 	}
 	
 	/**
@@ -157,7 +157,7 @@ public class RemoteJsonServiceGenerator extends Generator {
 	}
 	
 	protected void throwInvalidJsonRpcMethod( final Method method ){
-		throw new RemoteJsonServiceGeneratorException("A method marked with " + Constants.INPUT_TRANSPORT_ANNOTATION + "=" + Constants.INPUT_TRANSPORT_JSON_RPC + " can only have a single JsonSerializable parameter, method: " + method );
+		throw new RemoteJsonServiceGeneratorException("A method marked with " + Constants.INPUT_ARGUMENTS_ANNOTATION + "=" + Constants.INPUT_ARGUMENTS_JSON_RPC + " can only have a single JsonSerializable parameter, method: " + method );
 	}
 
 	/**
@@ -181,7 +181,7 @@ public class RemoteJsonServiceGenerator extends Generator {
 		
 		final NewMethod asyncMethod = this.createCorrespondingAsyncServiceInterfaceMethod(method);
 
-		final RequestParametersTransportInvokerTemplatedFile body = new RequestParametersTransportInvokerTemplatedFile();
+		final RequestParametersInvokerTemplatedFile body = new RequestParametersInvokerTemplatedFile();
 		body.setHttpRequestParameterNames(this.getHttpRequestParameterNamesFromMethodAnnotation(method));
 		body.setInvokerType(this.getInvokerTypeFromMethodAnnotation(method));
 		body.setNewMethod(asyncMethod);
@@ -372,7 +372,7 @@ public class RemoteJsonServiceGenerator extends Generator {
 	}
 
 	public Type getRemoteJsonServiceClient() {
-		return this.getGeneratorContext().getType(Constants.REMOTE_JSON_SERVICE_CLIENT_SUPER_TYPE);
+		return this.getGeneratorContext().getType(Constants.REMOTE_JSON_SERVICE_CLIENT_SUPER);
 	}
 
 	private Type serviceInterface;
@@ -443,14 +443,14 @@ public class RemoteJsonServiceGenerator extends Generator {
 	}
 
 	protected Type getRemoteJsonServiceInvoker() {
-		return this.getGeneratorContext().getType(Constants.REMOTE_JSON_SERVICE_INVOKER_TYPE);
+		return this.getGeneratorContext().getType(Constants.REMOTE_JSON_SERVICE_INVOKER);
 	}
 
 	protected Type getRemoteGetJsonServiceInvoker() {
-		return this.getGeneratorContext().getType(Constants.REMOTE_GET_JSON_SERVICE_INVOKER_TYPE);
+		return this.getGeneratorContext().getType(Constants.REMOTE_GET_JSON_SERVICE_INVOKER);
 	}
 
 	protected Type getRemotePostJsonServiceInvoker() {
-		return this.getGeneratorContext().getType(Constants.REMOTE_POST_JSON_SERVICE_INVOKER_TYPE);
+		return this.getGeneratorContext().getType(Constants.REMOTE_POST_JSON_SERVICE_INVOKER);
 	}
 }

@@ -21,7 +21,7 @@ public interface RemoteJsonService extends rocket.remoting.client.json.RemoteJso
 	 * @param echo
 	 * @return
 	 *
-	 * @jsonRpc-inputTransport requestParameters
+	 * @jsonRpc-inputArguments requestParameters
 	 * @jsonRpc-httpMethod GET
 	 * @jsonRpc-parameterName echo
 	 */
