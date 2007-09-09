@@ -101,6 +101,10 @@ public class TestBuilderGenerator extends Generator {
 		
 		final Method method = this.getTestBuilder().findMethod( Constants.BUILD_CANDIDATES_METHOD , Collections.EMPTY_LIST );
 		final NewMethod newMethod = method.copy( testBuilder );
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		final BuildCandidatesTemplatedFile body = new BuildCandidatesTemplatedFile();
 		newMethod.setBody(body);
 		
