@@ -122,8 +122,6 @@ abstract public class JsonSerializer {
 	abstract public JSONValue writeJson(Object instance);
 
 	public JSONValue writeJson(final Collection collection) {
-		System.out.println(GWT.getTypeName(this) + " writeJson(Collection)");
-
 		JSONValue jsonValue = null;
 		if (null == collection) {
 			jsonValue = JSONNull.getInstance();
@@ -145,7 +143,6 @@ abstract public class JsonSerializer {
 	}
 
 	public JSONValue writeJson(final Map map) {
-		System.out.println(GWT.getTypeName(this) + " writeJson(Map)");
 		JSONValue jsonValue = null;
 		if (null == map) {
 			jsonValue = JSONNull.getInstance();

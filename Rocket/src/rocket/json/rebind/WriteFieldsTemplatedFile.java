@@ -124,8 +124,6 @@ public class WriteFieldsTemplatedFile extends TemplatedCodeBlock {
 		holder.setSerializer(serializer);
 
 		this.getFields().add(holder);
-
-		System.out.println("JS > " + javascriptPropertyName + " > \tserializer > " + serializer + " \tgetter > " + fieldGetter);
 	}
 
 	protected CodeBlock getFieldsCodeBlock() {

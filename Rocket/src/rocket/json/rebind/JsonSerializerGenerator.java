@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.gwt.json.client.JSONObject;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
@@ -37,7 +36,6 @@ import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
 
 /**
  * Generates a JsonSerializer for the given type if one does not already exists.
