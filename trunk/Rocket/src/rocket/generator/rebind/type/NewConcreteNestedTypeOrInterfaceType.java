@@ -34,9 +34,9 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class NewConcreteOrNestedType extends NewTypeImpl implements NewType {
+abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implements NewType {
 
-	public NewConcreteOrNestedType() {
+	public NewConcreteNestedTypeOrInterfaceType() {
 		super();
 		this.setInitializers(this.createInitializers());
 	}

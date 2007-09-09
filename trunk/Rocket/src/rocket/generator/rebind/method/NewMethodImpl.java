@@ -179,13 +179,17 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 
 		this.writeDeclaration(writer);
 
-		this.writeBodyOpen(writer);
+		if (this.isAbstract()) {
+			writer.println(";");
+		} else {
+			this.writeBodyOpen(writer);
 
-		writer.indent();
-		this.writeBody(writer);
-		writer.outdent();
+			writer.indent();
+			this.writeBody(writer);
+			writer.outdent();
 
-		this.writeBodyClose(writer);
+			this.writeBodyClose(writer);
+		}
 	}
 
 	protected void writeLogger() {

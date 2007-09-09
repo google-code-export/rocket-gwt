@@ -15,28 +15,16 @@
  */
 package rocket.generator.rebind.type;
 
-import java.util.Iterator;
-
-import rocket.generator.rebind.Visibility;
-import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.user.rebind.SourceWriter;
+import java.io.PrintWriter;
 
 /**
- * Represents a inner class being built.
+ * A NewInterfaceType represents a interface being created
  * 
  * @author Miroslav Pokorny
  */
-public class NewNestedTypeImpl extends NewNestedTypeOrInterface implements NewNestedType {
+public interface NewInterfaceType extends NewType {
 
-	public NewNestedTypeImpl() {
-		super();
-	}
+	void setName(String name);
 
-	public boolean isInterface(){
-		return false;
-	}
-	public void setInterface( final boolean interfacee ){
-		throw new UnsupportedOperationException( "setInterface");
-	}
+	void write(final PrintWriter printWriter);
 }
