@@ -20,12 +20,14 @@ import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StackTrace;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.ui.Button;
@@ -41,12 +43,14 @@ public class CometTest implements EntryPoint {
 	final String COMET_SERVER_URL = "./cometServer";
 
 	final String INVALID_COMET_SERVER_URL = "./invalid";
+	
+	final long TOO_MUCH_LAG = 1000;
 
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
-				System.err.println("caught:" + caught.getMessage());
 				caught.printStackTrace();
+				Window.alert( StackTrace.asString( caught ));
 			}
 		});
 		this.createComet();
@@ -101,21 +105,26 @@ public class CometTest implements EntryPoint {
 	}
 
 	protected void createComet() {
-		final CometClient client = new TestCometClient();
+		final CometClient client = (CometClient) GWT.create( TestCometClient.class );
+		
 		client.setCallback(new AsyncCallback() {
 			public void onSuccess(final Object result) {
-				log("Callback.onSuccess() - " + GWT.getTypeName(result) + "=[" + result + "]");
+				log("<b>CALLBACK</b> Entering onSuccess() - payload type " + GWT.getTypeName(result) + "=[" + result + "]");
 
 				final TestCometPayload payload = (TestCometPayload) result;
 				final long now = System.currentTimeMillis();
 				final long serverTime = payload.getDate().getTime();
-				final boolean deliveredImmediately = now - serverTime < 1000;
-				log("Callback.onSuccess() - now: " + now + " serverTime: " + serverTime + " now-serverTime: " + (now - serverTime)
-						+ ", deliveredImmediately: " + deliveredImmediately);
+				final long timeDifference = now - serverTime;
+				final boolean deliveredImmediately = timeDifference < TOO_MUCH_LAG;
+				log("<b>CALLBACK</b> Calculated time difference between client and server " + timeDifference + "(ms)" +						
+						", deliveredImmediately???: " + deliveredImmediately+
+						", clientTime: " + now + ", serverTime: " + serverTime);
 			}
 
 			public void onFailure(Throwable throwable) {
-				log("Callback.onFailure() - " + throwable);
+				String stackTrace = StackTrace.asString(throwable);
+				stackTrace = stackTrace.replaceAll("\n", "<br>");				
+				log("<b>CALLBACK</b> Handling exception<br>" + stackTrace );
 			}
 		});
 		this.setCometClient(client);
@@ -126,12 +135,15 @@ public class CometTest implements EntryPoint {
 	 * contents are visible. All other behaviour remains unchanged.
 	 * 
 	 * @author Miroslav Pokorny (mP)
+	 * 
+	 * @comet-payloadType rocket.remoting.test.comet.client.TestCometPayload
 	 */
-	public class TestCometClient extends CometClient {
-
-		protected Object createProxy() {
-			return GWT.create(TestCometService.class);
-		}
+	abstract static public class TestCometClient extends CometClient {
+		
+		/**
+		 * @comet-payloadType rocket.remoting.test.comet.client.TestCometPayload
+		 */
+		abstract protected Object createProxy();
 
 		protected Element createFrame() {
 			final Element frame = super.createFrame();
@@ -145,26 +157,26 @@ public class CometTest implements EntryPoint {
 
 		public void start() {
 			super.start();
-			log("CometClient.start() - Starting comet client session...");
+			log("<b>CLIENT</b> Starting new session...");
 		}
 
 		public void stop() {
 			super.stop();
-			log("CometClient.stop() - Stopping comet client session...");
+			log("<b>CLIENT</b> Stopping existing session...");
 		}
 
 		public void dispatch(final String serializedForm) throws SerializationException {
-			log("CometClient.dispatch() - serializedForm [" + serializedForm + "]");
+			log("<b>CLIENT</b> Dispatching serializedForm [" + serializedForm + "]");
 			super.dispatch(serializedForm);
 		}
 
 		public void restart() {
-			log("CometClient.restart() - restarting new connection to server...");
+			log("<b>CLIENT</b> Restarting new connection to server...");
 			super.restart();
 		}
 	}
 
-	protected void log(final Object object) {
+	static void log(final Object object) {
 		final Element element = DOM.getElementById("log");
 		DOM.setInnerHTML(element, DOM.getInnerHTML(element) + "<br>" + object);
 	}

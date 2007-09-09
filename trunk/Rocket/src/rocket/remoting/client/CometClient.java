@@ -37,10 +37,6 @@ import com.google.gwt.user.client.rpc.impl.Serializer;
  * 
  * <h6>Gotchas</h6>
  * <ul>
- * <li> The only requirement is that the {@link #createProxy() } method is
- * implemented to request for the runtime to create a XXXProxy for a service
- * that declares a return type that covers objects returned by the server side
- * component. </li>
  * <li> When compiling/translated to javascript the Rocket.jar must be included
  * in the classpath before any google classes so that the custom ProxyGenerator
  * is used instead of the regular class. </li>
@@ -176,7 +172,6 @@ public abstract class CometClient {
 		StringHelper.checkNotEmpty("parameter:serializedForm", serializedForm);
 
 		final Object proxy = this.createProxy();
-
 		if (false == GWT.isScript() && false == (proxy instanceof HasSerializer)) {
 			GWT
 					.log(
@@ -193,13 +188,12 @@ public abstract class CometClient {
 	}
 
 	/**
-	 * Sub-classes must override this method to create the ServiceProxy
-	 * interface literal using defered binding.
+	 * This method will be realised by the CometGenerator.
 	 * 
-	 * <pre>
-	 *    return GWT.create( INSERT SERVICE CLASS.class );
-	 * </pre>
+	 * Sub classes must include a
 	 * 
+	 * @comet-payloadType annotation to indicate the payload type returned by
+	 *                    the server counterpart.
 	 * @return
 	 */
 	protected abstract Object createProxy();
