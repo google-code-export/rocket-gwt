@@ -26,7 +26,8 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the inserting statements that set a json object property from a java instance list
+ * An abstraction for the inserting statements that set a json object property
+ * from a java instance list
  * 
  * @author Miroslav Pokorny
  */
@@ -96,7 +97,7 @@ public class WriteFieldTemplatedFile extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:serializer", serializer);
 		this.serializer = serializer;
 	}
-	
+
 	protected InputStream getInputStream() {
 		final String filename = Constants.WRITE_FIELD_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -132,7 +133,7 @@ public class WriteFieldTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file ["
-				+ Constants.WRITE_FIELD_TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file [" + Constants.WRITE_FIELD_TEMPLATE
+				+ "]");
 	}
 }

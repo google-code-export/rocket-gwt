@@ -40,7 +40,7 @@ import com.google.gwt.json.client.JSONValue;
  */
 class Constants {
 	static final String JSON_SERIALIZATION = "jsonSerialization";
-	
+
 	static final String JAVA_UTIL_LIST = List.class.getName();
 
 	static final String LIST_ELEMENT_TYPE = JSON_SERIALIZATION + "-listElementType";
@@ -66,71 +66,114 @@ class Constants {
 	static final String JSON_SERIALIZER_TYPE = JsonSerializer.class.getName();
 
 	static final String SERIALIZER_SINGLETON = "serializer";
-	
+
 	// read json to java
-	
+
 	static final String READ_FIELDS_METHOD = "readFields";
-	
+
 	static final String READ_COMPLEX_METHOD_NAME = "readObject";
+
 	static final String READ_COMPLEX_TEMPLATE = "read-complex.txt";
+
 	static final String READ_COMPLEX_JSON_VALUE_PARAMETER = "jsonValueParameter";
+
 	static final String READ_COMPLEX_TYPE = "type";
 
 	static final String SET_FIELD_TEMPLATE = "set-field.txt";
+
 	static final String SET_FIELD_INSTANCE = "instance";
+
 	static final String SET_FIELD_FIELD = "field";
+
 	static final String SET_FIELD_VALUE = "value";
-	static final String SET_FIELD_METHOD_PREFIX = "set";	
-	
+
+	static final String SET_FIELD_METHOD_PREFIX = "set";
+
 	static final String SET_SIMPLE_TEMPLATE = "set-simple.txt";
+
 	static final String SET_SIMPLE_FIELD_SETTER = "setter";
+
 	static final String SET_SIMPLE_INSTANCE = "instance";
+
 	static final String SET_SIMPLE_JSON_OBJECT = "jsonObject";
+
 	static final String SET_SIMPLE_JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
+
 	static final String SET_SIMPLE_SERIALIZER = "serializer";
-	
+
 	static final String SET_COMPLEX_TEMPLATE = "set-complex.txt";
+
 	static final String SET_COMPLEX_FIELD_SETTER = "setter";
+
 	static final String SET_COMPLEX_INSTANCE = "instance";
+
 	static final String SET_COMPLEX_FIELD_TYPE = "fieldType";
+
 	static final String SET_COMPLEX_SERIALIZER = "serializer";
+
 	static final String SET_COMPLEX_READ_METHOD = "readMethod";
+
 	static final String SET_COMPLEX_READ_OBJECT_METHOD = "readObject";
+
 	static final String SET_COMPLEX_READ_LIST_METHOD = "readList";
+
 	static final String SET_COMPLEX_READ_SET_METHOD = "readSet";
+
 	static final String SET_COMPLEX_READ_MAP_METHOD = "readMap";
+
 	static final String SET_COMPLEX_JSON_OBJECT = "jsonObject";
+
 	static final String SET_COMPLEX_JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
-	
+
 	// write java to json
-	
+
 	static final String WRITE_JSON_TEMPLATE = "write-json.txt";
+
 	static final String WRITE_JSON_METHOD_NAME = "writeJson";
 
-	static final String WRITE_FIELDS_WRITE_METHODS = "writeFields";	
+	static final String WRITE_FIELDS_WRITE_METHODS = "writeFields";
+
 	static final String WRITE_FIELDS_TEMPLATE = "write-fields.txt";
+
 	static final String WRITE_FIELDS_INSTANCE_PARAMETER = "instance";
-	static final String WRITE_FIELDS_INSTANCE_TYPE = "instanceType";	
-		
+
+	static final String WRITE_FIELDS_INSTANCE_TYPE = "instanceType";
+
 	static final String WRITE_FIELD_TEMPLATE = "write-field.txt";
+
 	static final String WRITE_FIELD_FIELD_GETTER = "getter";
+
 	static final String WRITE_FIELD_JSON_OBJECT = "jsonObject";
+
 	static final String WRITE_FIELD_JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
+
 	static final String WRITE_FIELD_SERIALIZER = "serializer";
 
 	static final String GET_FIELD_TEMPLATE = "get-field.txt";
+
 	static final String GET_FIELD_INSTANCE = "instance";
+
 	static final String GET_FIELD_FIELD = "field";
+
 	static final String GET_FIELD_VALUE = "value";
+
 	static final String GET_FIELD_METHOD_PREFIX = "get";
 
 	static final String BOOLEAN_SERIALIZER = BooleanJsonSerializer.class.getName();
+
 	static final String BYTE_SERIALIZER = ByteJsonSerializer.class.getName();
+
 	static final String SHORT_SERIALIZER = ShortJsonSerializer.class.getName();
+
 	static final String INT_SERIALIZER = IntJsonSerializer.class.getName();
+
 	static final String LONG_SERIALIZER = LongJsonSerializer.class.getName();
+
 	static final String FLOAT_SERIALIZER = FloatJsonSerializer.class.getName();
+
 	static final String DOUBLE_SERIALIZER = DoubleJsonSerializer.class.getName();
+
 	static final String CHAR_SERIALIZER = CharJsonSerializer.class.getName();
+
 	static final String STRING_SERIALIZER = StringJsonSerializer.class.getName();
 }

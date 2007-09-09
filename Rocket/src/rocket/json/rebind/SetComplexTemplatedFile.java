@@ -51,7 +51,8 @@ public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * This method takes the instance being reconstructed and sets a specific list.
+	 * This method takes the instance being reconstructed and sets a specific
+	 * list.
 	 */
 	private Method fieldSetter;
 
@@ -94,7 +95,7 @@ public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:serializer", fieldTypeDeserializer);
 		this.serializer = fieldTypeDeserializer;
 	}
-	
+
 	/**
 	 * The method parameter that holds the instance being deserialized.
 	 */
@@ -111,8 +112,8 @@ public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * The method parameter that holds the json object containing the source values for the instance
-	 * being deserialized
+	 * The method parameter that holds the json object containing the source
+	 * values for the instance being deserialized
 	 */
 	private MethodParameter jsonObject;
 
@@ -127,7 +128,7 @@ public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * A property of json object containing the instance list being set. 
+	 * A property of json object containing the instance list being set.
 	 */
 	private String javascriptPropertyName;
 
@@ -187,7 +188,7 @@ public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file ["
-				+ Constants.SET_COMPLEX_TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found in file [" + Constants.SET_COMPLEX_TEMPLATE
+				+ "]");
 	}
 }

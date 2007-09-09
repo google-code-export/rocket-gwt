@@ -40,12 +40,12 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-public class WriteFieldsTemplatedFile  extends TemplatedCodeBlock {
+public class WriteFieldsTemplatedFile extends TemplatedCodeBlock {
 
-	public WriteFieldsTemplatedFile () {
+	public WriteFieldsTemplatedFile() {
 		super();
 		setNative(false);
-		this.setFields( this.createFields() );
+		this.setFields(this.createFields());
 	}
 
 	/**
@@ -76,8 +76,8 @@ public class WriteFieldsTemplatedFile  extends TemplatedCodeBlock {
 	public void setInstanceType(final Type instanceType) {
 		ObjectHelper.checkNotNull("parameter:instanceType", instanceType);
 		this.instanceType = instanceType;
-	}	
-	
+	}
+
 	/**
 	 * The parameter holding the jsonObject variable being populated
 	 */
@@ -92,9 +92,10 @@ public class WriteFieldsTemplatedFile  extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:jsonObject", jsonObject);
 		this.jsonObject = jsonObject;
 	}
-	
+
 	/**
-	 * A map containing a tuple of javascriptPropertyName and instance list getter
+	 * A map containing a tuple of javascriptPropertyName and instance list
+	 * getter
 	 */
 	private List fields;
 
@@ -112,25 +113,25 @@ public class WriteFieldsTemplatedFile  extends TemplatedCodeBlock {
 		return new ArrayList();
 	}
 
-	public void addField(final String javascriptPropertyName, final Method fieldGetter, final Type serializer ) {
-		StringHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName );
+	public void addField(final String javascriptPropertyName, final Method fieldGetter, final Type serializer) {
+		StringHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
 		ObjectHelper.checkNotNull("parameter:fieldGetter", fieldGetter);
-		ObjectHelper.checkNotNull("parameter:serializer", serializer );
+		ObjectHelper.checkNotNull("parameter:serializer", serializer);
 
 		final Holder holder = new Holder();
-		holder.setJavascriptPropertyName( javascriptPropertyName );
-		holder.setFieldGetter( fieldGetter );
-		holder.setSerializer( serializer );
-		
-		this.getFields().add( holder );
-		
-		System.out.println( "JS > " + javascriptPropertyName + " > \tserializer > " + serializer + " \tgetter > " + fieldGetter );
+		holder.setJavascriptPropertyName(javascriptPropertyName);
+		holder.setFieldGetter(fieldGetter);
+		holder.setSerializer(serializer);
+
+		this.getFields().add(holder);
+
+		System.out.println("JS > " + javascriptPropertyName + " > \tserializer > " + serializer + " \tgetter > " + fieldGetter);
 	}
 
 	protected CodeBlock getFieldsCodeBlock() {
 		final WriteFieldTemplatedFile template = new WriteFieldTemplatedFile();
-		template.setJsonObject( this.getJsonObject() );
-		
+		template.setJsonObject(this.getJsonObject());
+
 		return new CollectionTemplatedCodeBlock() {
 
 			public InputStream getInputStream() {
@@ -146,10 +147,10 @@ public class WriteFieldsTemplatedFile  extends TemplatedCodeBlock {
 			}
 
 			protected void prepareToWrite(Object element) {
-				final Holder holder  = (Holder) element;				
-				template.setJavascriptPropertyName( holder.getJavascriptPropertyName() );
-				template.setFieldGetter( holder.getFieldGetter() );
-				template.setSerializer( holder.getSerializer() );
+				final Holder holder = (Holder) element;
+				template.setJavascriptPropertyName(holder.getJavascriptPropertyName());
+				template.setFieldGetter(holder.getFieldGetter());
+				template.setSerializer(holder.getSerializer());
 			}
 
 			protected void writeBetweenElements(SourceWriter writer) {
@@ -157,43 +158,45 @@ public class WriteFieldsTemplatedFile  extends TemplatedCodeBlock {
 			}
 		};
 	}
-	
+
 	static class Holder {
 		private String javascriptPropertyName;
-		
-		String getJavascriptPropertyName(){
-			ObjectHelper.checkNotNull("list:javascriptPropertyName", javascriptPropertyName );
+
+		String getJavascriptPropertyName() {
+			ObjectHelper.checkNotNull("list:javascriptPropertyName", javascriptPropertyName);
 			return this.javascriptPropertyName;
 		}
-		
-		void setJavascriptPropertyName( final String javascriptPropertyName ){
-			ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName );
+
+		void setJavascriptPropertyName(final String javascriptPropertyName) {
+			ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
 			this.javascriptPropertyName = javascriptPropertyName;
 		}
+
 		private Method fieldGetter;
-		
-		Method getFieldGetter(){
-			ObjectHelper.checkNotNull("list:fieldGetter", fieldGetter );
+
+		Method getFieldGetter() {
+			ObjectHelper.checkNotNull("list:fieldGetter", fieldGetter);
 			return this.fieldGetter;
 		}
-		
-		void setFieldGetter( final Method fieldGetter ){
-			ObjectHelper.checkNotNull("parameter:fieldGetter", fieldGetter );
+
+		void setFieldGetter(final Method fieldGetter) {
+			ObjectHelper.checkNotNull("parameter:fieldGetter", fieldGetter);
 			this.fieldGetter = fieldGetter;
 		}
+
 		private Type serializer;
-		
-		Type getSerializer(){
-			ObjectHelper.checkNotNull("list:serializer", serializer );
+
+		Type getSerializer() {
+			ObjectHelper.checkNotNull("list:serializer", serializer);
 			return this.serializer;
 		}
-		
-		void setSerializer( final Type serializer ){
-			ObjectHelper.checkNotNull("parameter:serializer", serializer );
+
+		void setSerializer(final Type serializer) {
+			ObjectHelper.checkNotNull("parameter:serializer", serializer);
 			this.serializer = serializer;
 		}
 	}
-	
+
 	protected InputStream getInputStream() {
 		final String filename = Constants.WRITE_FIELDS_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);

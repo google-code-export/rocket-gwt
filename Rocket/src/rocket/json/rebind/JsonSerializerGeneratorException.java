@@ -17,20 +17,20 @@ public class JsonSerializerGeneratorException extends GeneratorException {
 	/**
 	 * 
 	 */
-	public JsonSerializerGeneratorException() {
+	JsonSerializerGeneratorException() {
 	}
 
 	/**
 	 * @param message
 	 */
-	public JsonSerializerGeneratorException(String message) {
+	JsonSerializerGeneratorException(String message) {
 		super(message);
 	}
 
 	/**
 	 * @param cause
 	 */
-	public JsonSerializerGeneratorException(Throwable cause) {
+	JsonSerializerGeneratorException(Throwable cause) {
 		super(cause);
 	}
 
@@ -38,8 +38,7 @@ public class JsonSerializerGeneratorException extends GeneratorException {
 	 * @param message
 	 * @param cause
 	 */
-	public JsonSerializerGeneratorException(String message, Throwable cause) {
+	JsonSerializerGeneratorException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
 }
