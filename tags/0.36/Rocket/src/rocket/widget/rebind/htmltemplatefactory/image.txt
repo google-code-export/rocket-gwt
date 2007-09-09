@@ -1,0 +1,8 @@
+// image.txt
+
+com.google.gwt.user.client.ui.Image image = (com.google.gwt.user.client.ui.Image) this.getWidget( ${id} );
+if( null == image ){
+	image = bindImage( ${id} );
+}
+return image;
+

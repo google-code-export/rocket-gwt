@@ -1,0 +1,8 @@
+// button.txt
+
+com.google.gwt.user.client.ui.Button button = (com.google.gwt.user.client.ui.Button) this.getWidget( ${id} );
+if( null == button ){
+	button = bindButton( ${id} );
+}
+return button;
+

@@ -1,0 +1,8 @@
+// checkbox.txt
+
+com.google.gwt.user.client.ui.CheckBox checkBox = (com.google.gwt.user.client.ui.CheckBox) this.getWidget( ${id} );
+if( null == checkBox ){
+	checkBox = bindCheckBox( ${id} );
+}
+return checkBox;
+

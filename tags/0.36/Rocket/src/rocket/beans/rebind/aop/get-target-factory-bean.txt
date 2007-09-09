@@ -1,0 +1,3 @@
+// get-target-factory-bean.txt
+
+return new ${targetFactoryBean}();

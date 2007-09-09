@@ -1,0 +1,8 @@
+// radiobutton.txt
+
+com.google.gwt.user.client.ui.RadioButton radioButton = (com.google.gwt.user.client.ui.RadioButton) this.getWidget( ${id} );
+if( null == radioButton ){
+	radioButton = bindRadioButton( ${id} );
+}
+return radioButton;
+
