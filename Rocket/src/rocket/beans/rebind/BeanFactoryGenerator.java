@@ -314,7 +314,10 @@ public class BeanFactoryGenerator extends Generator {
 						+ " argument(s)) in FactoryBean.createInstance for bean " + bean);
 
 		final NewMethod newFactoryMethod = this.createCreateInstanceMethod(bean.getFactoryBean());
-
+		newFactoryMethod.setAbstract( false );
+		newFactoryMethod.setFinal( true );
+		newFactoryMethod.setNative( false );
+		
 		final ConstructorTemplatedFile body = new ConstructorTemplatedFile();
 		newFactoryMethod.setBody(body);
 
@@ -447,7 +450,13 @@ public class BeanFactoryGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:factoryBean", factoryBean);
 
 		final Method method = factoryBean.getMostDerivedMethod("createInstance", Collections.EMPTY_LIST);
-		return method.copy(factoryBean);
+		
+		final NewMethod newMethod = method.copy(factoryBean);
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
+		return newMethod;
 	}
 
 	/**
@@ -495,13 +504,16 @@ public class BeanFactoryGenerator extends Generator {
 		context.debug("Overriding satisfyInit to call " + initMethod + " for bean: " + bean);
 
 		final NewType beanFactory = bean.getFactoryBean();
-		final Method beanFactoryInitMethod = beanFactory
-				.getMostDerivedMethod(Constants.SATISFY_INIT, this.getParameterListWithOnlyObject());
+		final Method beanFactoryInitMethod = beanFactory.getMostDerivedMethod(Constants.SATISFY_INIT, this.getParameterListWithOnlyObject());
 		final NewMethod newMethod = beanFactoryInitMethod.copy(beanFactory);
-
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		final CustomTemplatedFile body = new CustomTemplatedFile();
 		body.setBean(beanType);
 		body.setCustomMethod(initMethod);
+		
 		final NewMethodParameter instance = (NewMethodParameter) newMethod.getParameters().get(0);
 		body.setInstance(instance);
 
@@ -565,7 +577,12 @@ public class BeanFactoryGenerator extends Generator {
 
 		final NewType factoryBean = bean.getFactoryBean();
 		final Method method = factoryBean.getMostDerivedMethod(Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject());
+		
 		final NewMethod newMethod = method.copy(factoryBean);
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		body.setInstance((MethodParameter) newMethod.getParameters().get(0));
 		newMethod.setBody(body);
 
@@ -907,24 +924,28 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Method method = factoryBean.getMostDerivedMethod(Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject());
 		final NewMethod newMethod = method.copy(factoryBean);
-
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
 		newMethod.setBody(body);
 
 		final MethodParameter instance = (MethodParameter) newMethod.getParameters().get(0);
 		body.setInstance(instance);
+		
 		final Type serviceDefTarget = this.getServiceDefTarget();
 		body.setBean(serviceDefTarget);
 
 		final GeneratorContext context = this.getGeneratorContext();
 
 		final Type string = context.getString();
-		final Method setter = serviceDefTarget
-				.getMostDerivedMethod(Constants.SET_SERVICE_ENTRY_POINT, Arrays.asList(new Type[] { string }));
+		final Method setter = serviceDefTarget.getMostDerivedMethod(Constants.SET_SERVICE_ENTRY_POINT, Arrays.asList(new Type[] { string }));
 		final StringValue addressValue = new StringValue();
 		addressValue.setGeneratorContext(context);
 		addressValue.setType(string);
 		addressValue.setValue(address);
+		
 		body.addProperty(setter, addressValue);
 
 		context.debug("Inserting statement to set address property upon bean: " + bean);
@@ -1139,8 +1160,12 @@ public class BeanFactoryGenerator extends Generator {
 
 		final NewNestedType proxyFactoryBean = bean.getProxyFactoryBean();
 		final Method method = proxyFactoryBean.getMostDerivedMethod("getTargetFactoryBean", Collections.EMPTY_LIST);
+		
 		final NewMethod newMethod = method.copy(proxyFactoryBean);
-
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		final GetTargetFactoryBeanTemplatedFile body = new GetTargetFactoryBeanTemplatedFile();
 		body.setTargetFactoryBean(bean.getFactoryBean());
 		newMethod.setBody(body);
@@ -1258,6 +1283,10 @@ public class BeanFactoryGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:method", method);
 
 		final NewMethod newMethod = method.copy(proxy);
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		GeneratorHelper.makeAllParametersFinal(newMethod);
 
 		final ProxyMethodTemplatedFile body = new ProxyMethodTemplatedFile();
@@ -1282,6 +1311,10 @@ public class BeanFactoryGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:advices", advices);
 
 		final NewMethod newMethod = method.copy(proxy);
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		GeneratorHelper.renameParametersToParameterN(newMethod);
 		GeneratorHelper.makeAllParametersFinal(newMethod);
 
@@ -1311,8 +1344,12 @@ public class BeanFactoryGenerator extends Generator {
 		final NewNestedType proxyFactoryBean = bean.getProxyFactoryBean();
 		final List objectParameterList = this.getParameterListWithOnlyObject();
 		final Method method = proxyFactoryBean.getMostDerivedMethod(Constants.CREATE_PROXY, objectParameterList);
+		
 		final NewMethod newMethod = method.copy(proxyFactoryBean);
-
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		// add a new constructor...
 		final MethodParameter targetBeanParameter = (MethodParameter) newMethod.getParameters().get(0);
 
@@ -1337,10 +1374,13 @@ public class BeanFactoryGenerator extends Generator {
 		this.getGeneratorContext().info("Overriding BeanFactory.buildFactoryBeans() to register " + beans.size() + " bean(s).");
 
 		final NewType beanFactory = this.getBeanFactory();
-		final Method abstractMethod = beanFactory.getSuperType()
-				.getMostDerivedMethod(Constants.BUILD_FACTORY_BEANS, Collections.EMPTY_LIST);
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.BUILD_FACTORY_BEANS, Collections.EMPTY_LIST);
+		
 		final NewMethod newMethod = abstractMethod.copy(beanFactory);
-
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
 		final BuildFactoryBeansTemplatedFile body = new BuildFactoryBeansTemplatedFile();
 		newMethod.setBody(body);
 

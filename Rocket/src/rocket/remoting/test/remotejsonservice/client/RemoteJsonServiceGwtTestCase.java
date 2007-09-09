@@ -18,6 +18,7 @@ package rocket.remoting.test.remotejsonservice.client;
 import java.io.Serializable;
 
 import rocket.browser.client.Browser;
+import rocket.json.client.JsonSerializable;
 import rocket.remoting.client.json.RemoteJsonService;
 
 import com.google.gwt.core.client.GWT;
@@ -39,9 +40,11 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 
 	final String CLASS_WITH_3_STRINGS_FIELD_JSON_SERVICE_URL = "/ClassWith3StringFieldsJsonResponse";
 
-	final String BROKEN_JSON_RESPONSE_URL = "/BrokenJsonResponse";
+	final String BROKEN_JSON_RESPONSE_URL = "/brokenJsonResponse";
 
-	final String INTERNAL_SERVER_ERROR_URL = "/InternalServerError";
+	final String INTERNAL_SERVER_ERROR_URL = "/internalServerError";
+	
+	final String JSON_RPC_URL = "/jsonRpc";
 
 	/**
 	 * Must refer to a valid module that sources this class.
@@ -51,12 +54,11 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	}
 
 	/**
-	 * This test should do nothing because IsClassNotInterface is not a
-	 * interface extending RemoteJsonService
+	 * This test should do nothing because NotAnInterface does not extend RemoteJsonService.
 	 */
 	public void testTypeIsNotAnInterface() {
 		try {
-			final Object service = GWT.create(IsNotAnInterface.class);
+			final Object service = GWT.create(NotAnInterface.class);
 			fail("An IncompatibleInterfacesException should have been thrown because IsNotAnInterface is not an interface.");
 		} catch (final Exception expected) {
 		}
@@ -68,7 +70,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	 */
 	public void testInterfaceDoesntImplementRemoteJsonService() {
 		try {
-			final Object service = GWT.create(InterfaceThatDoesntImplementRemoteJsonService.class);
+			final Object service = GWT.create(DoesntImplementRemoteJsonService.class);
 			fail("An IncompatibleInterfacesException should have been thrown because InterfaceThatDoesntImplementRemoteJsonService doesnt implement RemoteJsonService.");
 		} catch (final Exception expected) {
 		}
@@ -81,7 +83,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testASyncTypeCannotBeFound() {
 		try {
 			final Object service = GWT.create(InterfaceWithMissingAsync.class);
-			fail("An rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because InterfaceWithMissingAsyncAsync doesnt exist.");
+			fail("A rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because InterfaceWithMissingAsyncAsync doesnt exist.");
 		} catch (final Exception expected) {
 			final String causeType = GWT.getTypeName(expected.getCause());
 			assertTrue(causeType, causeType.equals("rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException"));
@@ -100,7 +102,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testUnmatchedMethodParameters() {
 		try {
 			final Object service = GWT.create(InterfaceWithMethodWhereParametersDontMatchUp.class);
-			fail("An rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the service interface.");
+			fail("A rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the service interface.");
 		} catch (final Exception expected) {
 			final String causeType = GWT.getTypeName(expected.getCause());
 			assertTrue(causeType, causeType.equals("rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException"));
@@ -122,7 +124,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testAsyncMethodDoesntReturnVoid() {
 		try {
 			final Object service = GWT.create(AsyncInterfaceDoesntReturnVoid.class);
-			fail("An rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the service interface.");
+			fail("A rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the service interface.");
 		} catch (final Exception expected) {
 			final String causeType = GWT.getTypeName(expected.getCause());
 			assertTrue(causeType, causeType.equals("rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException"));
@@ -144,7 +146,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testInterfaceMethodsDontMatchUp() {
 		try {
 			final Object service = GWT.create(InterfaceWithUnmatchedMethod.class);
-			fail("An rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the service interface.");
+			fail("A rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the async is not compatible with the service interface.");
 		} catch (final Exception expected) {
 			final String causeType = GWT.getTypeName(expected.getCause());
 			assertTrue(causeType, causeType.equals("rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException"));
@@ -167,7 +169,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testHttpMethodAnnotationsIsMissing() {
 		try {
 			final Object service = GWT.create(MissingHttpMethodAnnotations.class);
-			fail("An rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the httpMethod annotation is missing.");
+			fail("A rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException should have been thrown because the httpMethod annotation is missing.");
 		} catch (final Exception expected) {
 			final String causeType = GWT.getTypeName(expected.getCause());
 			assertTrue(causeType, causeType.equals("rocket.remoting.rebind.json.RemoteJsonServiceGeneratorException"));
@@ -185,7 +187,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	static class SerializableType implements Serializable {
 	}
 
-	public void testMakeGetRequestWithSuccessfulServerResponse() {
+	public void testGetRequest() {
 		final GetJsonServiceAsync service = (GetJsonServiceAsync) GWT.create(GetJsonService.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
 		target.setServiceEntryPoint(Browser.getContextPath() + CLASS_WITH_STRING_FIELD_JSON_SERVICE_URL);
@@ -212,7 +214,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		this.delayTestFinish(RPC_TIMEOUT);
 	}
 
-	public void testMakePostRequestWithSuccessfulServerResponse() {
+	public void testPostRequest() {
 		final PostJsonServiceAsync service = (PostJsonServiceAsync) GWT.create(PostJsonService.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
 		target.setServiceEntryPoint(Browser.getContextPath() + CLASS_WITH_STRING_FIELD_JSON_SERVICE_URL);
@@ -239,7 +241,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		this.delayTestFinish(RPC_TIMEOUT);
 	}
 
-	public void testMakeGetRequestWith3ParametersAndSuccessfulServerResponse() {
+	public void testGetRequestWith3Parameters() {
 		final GetJsonService3ParametersAsync service = (GetJsonService3ParametersAsync) GWT.create(GetJsonService3Parameters.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
 		target.setServiceEntryPoint(Browser.getContextPath() + CLASS_WITH_3_STRINGS_FIELD_JSON_SERVICE_URL);
@@ -270,7 +272,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		this.delayTestFinish(RPC_TIMEOUT);
 	}
 
-	public void testDeserializingServerJsonEncodedResponseFails() {
+	public void testDeserializingJsonEncodedResponseFails() {
 		final GetJsonServiceAsync service = (GetJsonServiceAsync) GWT.create(GetJsonService.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
 		target.setServiceEntryPoint(Browser.getContextPath() + BROKEN_JSON_RESPONSE_URL);
@@ -318,6 +320,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param string
 		 * @return
 		 * 
+		 * @jsonRpc-inputTransport requestParameters
 		 * @jsonRpc-httpMethod GET
 		 * @jsonRpc-parameterName string
 		 */
@@ -334,6 +337,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param string
 		 * @return
 		 * 
+		 * @jsonRpc-inputTransport requestParameters
 		 * @jsonRpc-httpMethod POST
 		 * @jsonRpc-parameterName string
 		 */
@@ -352,6 +356,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * @param string3
 		 * @return
 		 * 
+		 * @jsonRpc-inputTransport requestParameters
 		 * @jsonRpc-httpMethod GET
 		 * @jsonRpc-parameterName string1
 		 * @jsonRpc-parameterName string2
@@ -362,5 +367,43 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 
 	static public interface GetJsonService3ParametersAsync {
 		void makeGetRequest(String string1, String string2, String string3, AsyncCallback callback);
+	}
+	
+	public void testJsonRpc() {
+		final JsonRpcServiceAsync service = (JsonRpcServiceAsync) GWT.create(JsonRpcService.class);
+		final ServiceDefTarget target = (ServiceDefTarget) service;
+		target.setServiceEntryPoint(Browser.getContextPath() + JSON_RPC_URL );
+
+		final ClassWithStringField input = new ClassWithStringField(); 
+		input.field = "apple";
+
+		service.makeRequest(input, new AsyncCallback() {
+			public void onSuccess(final Object result) {
+				final ClassWithStringField output = (ClassWithStringField)result;
+				assertEquals( input.field, output.field );
+				RemoteJsonServiceGwtTestCase.this.finishTest();
+			}
+
+			public void onFailure(final Throwable cause) {
+				cause.printStackTrace();
+				RemoteJsonServiceGwtTestCase.this.fail( "JsonRpc failed, message: " + cause.getMessage() );
+			}
+		});
+
+		this.delayTestFinish(RPC_TIMEOUT);
+	}
+	
+	static interface JsonRpcService extends RemoteJsonService{
+		/**
+		 * 
+		 * @param input
+		 * @return
+		 * 
+		 * @jsonRpc-inputTransport jsonRpc
+		 */
+		ClassWithStringField makeRequest( ClassWithStringField input);
+	}
+	static interface JsonRpcServiceAsync{
+		void makeRequest( ClassWithStringField input, AsyncCallback callback );
 	}
 }

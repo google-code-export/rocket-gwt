@@ -21,6 +21,6 @@ package rocket.remoting.test.remotejsonservice.client;
  * @author Miroslav Pokorny
  * 
  */
-public class IsNotAnInterface {
+public class NotAnInterface {
 
 }

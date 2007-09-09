@@ -34,50 +34,43 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  */
 class Constants {
 	static final String CLIENT_SUFFIX = "__RemoteJsonServiceClient";
-
-	static final String ASYNC_CALLBACK = AsyncCallback.class.getName();
-
-	static final String REMOTE_JSON_SERVICE = RemoteJsonService.class.getName();
-
-	static final String SERVICE_DEF_TARGET = ServiceDefTarget.class.getName();
-
+	
 	static final String ASYNC_INTERFACE_SUFFIX = "Async";
 
-	static final String JSON_RPC = "jsonRpc";
+	static final String JSON_RPC_ANNOTATION_BASE = "jsonRpc";
 	
-	static final String HTTP_REQUEST_METHOD = JSON_RPC + "-httpMethod";
+	static final String INPUT_TRANSPORT_ANNOTATION = JSON_RPC_ANNOTATION_BASE + "-inputTransport";
+	static final String INPUT_TRANSPORT_JSON_RPC = "jsonRpc";
+	static final String INPUT_TRANSPORT_REQUEST_PARAMETERS = "requestParameters";
+	
+	static final String HTTP_REQUEST_METHOD_ANNOTATION = JSON_RPC_ANNOTATION_BASE + "-httpMethod";
+	static final String HTTP_REQUEST_PARAMETER_NAME_ANNOTATION = JSON_RPC_ANNOTATION_BASE + "-parameterName";
 
-	static final String HTTP_REQUEST_PARAMETER_NAME = JSON_RPC + "-parameterName";
+	static final String REQUEST_PARAMETERS_TRANSPORT_INVOKER_TEMPLATE = "request-parameters-transport-invoker.txt";
+	static final String REQUEST_PARAMETERS_TRANSPORT_INVOKER_VARIABLE = "invoker";
+	static final String REQUEST_PARAMETERS_TRANSPORT_INVOKER_INVOKER_TYPE = "invokerType";
+	static final String REQUEST_PARAMETERS_TRANSPORT_INVOKER_PAYLOAD_TYPE = "payloadType";
+	static final String REQUEST_PARAMETERS_TRANSPORT_INVOKER_CALLBACK_PARAMETER = "callbackParameter";
+	static final String REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETERS = "addParameters";
+	
+	static final String REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETER_TEMPLATE = "request-parameters-transport-invoker-add-parameter.txt";
+	static final String REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETER_HTTP_REQUEST_PARAMETER_NAME = "httpRequestParameterName";
+	static final String REQUEST_PARAMETERS_TRANSPORT_INVOKER_ADD_PARAMETER_PARAMETER = "parameter";
 
-	static final String JSON_VALUE_TYPE = JSONValue.class.getName();
-
-	static final String JSON_SERIALIZER_TYPE = JsonSerializer.class.getName();
-
-	static final String GWT_TYPE = GWT.class.getName();
-
-	static final String INVOKER_VARIABLE = "invoker";
-
-	static final String INVOKER_TEMPLATE = "invoker.txt";
-
-	static final String INVOKER_INVOKER_TYPE = "invokerType";
-
-	static final String INVOKER_METHOD_RETURN_TYPE = "methodReturnType";
-
-	static final String INVOKER_CALLBACK_PARAMETER = "callbackParameter";
-
-	static final String INVOKER_ADD_PARAMETERS = "addParameters";
-
-	static final String INVOKER_ADD_PARAMETER_TEMPLATE = "invoker-add-parameter.txt";
-
-	static final String INVOKER_ADD_PARAMETER_HTTP_REQUEST_PARAMETER_NAME = "httpRequestParameterName";
-
-	static final String INVOKER_ADD_PARAMETER_PARAMETER = "parameter";
-
-	static final String CLIENT_SUPER_TYPE = RemoteJsonServiceClient.class.getName();
+	static final String REMOTE_JSON_SERVICE_CLIENT_SUPER_TYPE = RemoteJsonServiceClient.class.getName();
 
 	static final String REMOTE_JSON_SERVICE_INVOKER_TYPE = RemoteJsonServiceInvoker.class.getName();
-
 	static final String REMOTE_GET_JSON_SERVICE_INVOKER_TYPE = RemoteGetJsonServiceInvoker.class.getName();
-
 	static final String REMOTE_POST_JSON_SERVICE_INVOKER_TYPE = RemotePostJsonServiceInvoker.class.getName();
+
+	static final String JSON_RPC_INVOKER_TEMPLATE = "json-rpc-invoker.txt";
+	static final String JSON_RPC_INVOKER_PARAMETER_TYPE = "parameterType";
+	static final String JSON_RPC_INVOKER_PAYLOAD_TYPE = "payloadType";
+
+	static final String ASYNC_CALLBACK = AsyncCallback.class.getName();
+	static final String REMOTE_JSON_SERVICE = RemoteJsonService.class.getName();
+	static final String SERVICE_DEF_TARGET = ServiceDefTarget.class.getName();
+	static final String JSON_VALUE_TYPE = JSONValue.class.getName();
+	static final String JSON_SERIALIZER_TYPE = JsonSerializer.class.getName();
+	static final String GWT_TYPE = GWT.class.getName();
 }

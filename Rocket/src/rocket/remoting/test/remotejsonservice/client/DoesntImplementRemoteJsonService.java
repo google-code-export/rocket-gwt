@@ -21,6 +21,6 @@ package rocket.remoting.test.remotejsonservice.client;
  * @author Miroslav Pokorny
  * 
  */
-public class InterfaceThatDoesntImplementRemoteJsonService {
+public class DoesntImplementRemoteJsonService {
 
 }

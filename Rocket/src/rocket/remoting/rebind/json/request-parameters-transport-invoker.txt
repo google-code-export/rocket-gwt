@@ -1,0 +1,22 @@
+// request-parameters-transport-invoker.txt
+
+// declare the invoker variable and create a new Post or Get invoker.
+final ${invokerType} invoker = new ${invokerType}(){
+    
+	protected java.lang.Object readObject( final com.google.gwt.json.client.JSONValue jsonValue ){
+		final rocket.json.client.JsonSerializer deserializer =
+			(rocket.json.client.JsonSerializer) 
+				com.google.gwt.core.client.GWT.create( ${payloadType}.class );
+    
+   		return deserializer.readObject( jsonValue );
+  	} // readObject
+}; // ${invokerType}
+
+${addParameters}
+
+// end of parameter adding...
+
+invoker.setUrl( this.getServiceEntryPoint());
+invoker.setCallback( ${callbackParameter} );
+invoker.makeRequest( this );
+
