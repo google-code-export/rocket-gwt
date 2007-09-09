@@ -27,6 +27,8 @@ Add the rocket module to your own project module.
 <module name="Rocket.User" />
 }}}
 
+Pasted below is the public interface of the `rocket.client.selection.Selection` class. An additional class exists to define selection end points `rocket.client.selection.SelectionEndPoint` which consists of two properties, a text node and offset properties.
+ 
 {{{
 public class Selection {
 
