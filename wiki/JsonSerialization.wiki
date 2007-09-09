@@ -1,9 +1,12 @@
 #labels Featured,Json
-=Purpose=
+=Motivation=
 
-The rocket.json package includes a simple provision to map java objects to a json encoded stream. This makes it easy to build a java object from json without any manual binding or copying of values from a json and setting properties upon a java instance.
+GWT currently provides the very powerful and yet simple RPC mechanism that seemlessly brings rpc with java object serialization to browser based fat clients. This however has a limitation in that the backend must also be a j2ee server. In order to invoke json services developers must manually marshal json values to and from java objects.
 
-The library supports the following mappings from json to java.
+=The Solution=
+The rocket.json package includes a simple automate the mapping between java objects and json. 
+
+The module supports the following mappings between json to java.
 
 || JSON Type || Possible Java Type equivalents ||
 || objects || java instances or a Map composed of key/value pairs ||
@@ -22,7 +25,7 @@ By design the `java.io.Serializable` and `com.google.gwt.user.client.rpc.IsSeria
 _
 
 
-==Fields annotations.==
+==Fields annotations==
 
 The `rocket json` package needs some help in mapping a json stream into a java object.
 Only non transient, instance fields will be serializable. The visibilty of the field does not affect its ability to be (de)serialized.
@@ -33,30 +36,28 @@ The generator (`rocket.json.rebind.JsonSerializerGenerator`) uses JSNI to set ea
 _
 
 ===Json objects===
-Each json object which is ultimately made up of key/value pairs maps to a single java type. Each field belonging to the type must use annotations to say what key will be used to populate it.
-{{{
+Each json object which is ultimately made up of key/value pairs maps to a single java type. Each field belonging to the type must use annotations to note which json object property it is mapped to.
 
-/**
-* Something about the foo field..
-* Maps a value referened by the "bar" key to the foo field for the enclosed class.
-*
-* @javascriptPropertyName bar
-*/
-private String foo;
+{{{
+	/**
+	 * Maps a value referened by the "bar" key to the foo field for the enclosed class.
+	 *
+	 * @jsonSerialization-javascriptPropertyName bar
+	 */
+	private String foo;
 }}}
 
 ===Json array===
-
 An annotation must be included to tell the system the type of each element of the list or set.
 {{{
-/**
-* Something about the foo field..
-*
-* The elements of the foo json array will be interpretted as Strings.
-*
-* @listElementType <java.lang.String>
-*/
-private String foo;
+	/**
+	 * Something about the foo field..
+ 	 *
+	 * The elements of the foo json array will be interpretted as Strings.
+	 *
+	 * @jsonSerialization-listElementType <java.lang.String>
+	 */
+	private String foo;
 }}}
 
 =Getting started=
@@ -106,21 +107,24 @@ import rocket.json.client.JsonSerializable;
 
 public class OutterClass implements JsonSerializable{
 	/**
-	* @javascriptPropertyName foo
-	*/
+	 * @jsonSerialization-javascriptPropertyName foo
+	 */
 	private boolean foo;
+
 	/**
-	* @javascriptPropertyName bar
-	*/
+	 * @jsonSerialization-javascriptPropertyName bar
+	 */
 	private int number;
+
 	/**
-	* @javascriptPropertyName array
-	* @listElementType <java.lang.Integer>
-	*/
+	 * @jsonSerialization-javascriptPropertyName array
+	 * @jsonSerialization-listElementType <java.lang.Integer>
+	 */
 	private java.util.List number;
+
 	/**
-	* @javascriptPropertyName object
-	*/
+	 * @jsonSerialization-javascriptPropertyName object
+	 */
 	private InnerClass innerClass;
 }
 }}}
@@ -131,23 +135,20 @@ The inner object includes 1 property.
   * baz
 
 
-
 The code snippet below includes all the fields and required annotations that would be required to map the inner object to a class called InnerClass.
-
-
 {{{
 package example;
 import rocket.json.client.JsonSerializable;
 
 public class InnerClass implements JsonSerializable{
 	/**
-	* @javascriptPropertyName baz
+	* @jsonSerialization-javascriptPropertyName baz
 	*/
 	private String baz;
 }
 }}}
 
-==Binding json to a java object instance==
+==Binding json to and from a java object instance==
 
 Include required import statements.
 {{{
@@ -155,23 +156,28 @@ import rocket.json.client.JsonSerializer;
 }}}
 
 
-To de serialize a json object to java a reference to a JsonSerializer must obtained using deferred binding.
+To de serialize a json object to java a reference a JsonSerializer must obtained using deferred binding.
 
 {{{
 JSONObject jsonObject = // already got it from somewhere...
-JsonSerializer deserialize = (JsonSerialize) GWT.create( SomeClass.class );
+JsonSerializer serializer = (JsonSerialize) GWT.create( SomeClass.class );
 }}}
 
 
-Then proceed to ask the deserializer to build a java object from the given json object.
-A `rocket.json.client.JsonDeserializationException` will be thrown if anything goes wrong. Its not checked which adds flexibility.
+Then proceed to ask the serializer to build a java object from the given json object.
+A `rocket.json.client.JsonDeserializationException` (its not a checked exception) will be thrown if anything goes wrong.
 
 {{{
-SomeClass instance = (SomeClass) deserialize.asObject( jsonObject );
+SomeClass instance = (SomeClass) serializer.writeObject( jsonObject );
 }}}
+
+To serialize from java back to json is quite simple as demonstrated by the example below.
+{{{
+JSONValue json = serializer.writeObject( instance );
+}}}
+
 
 =Further samples=
 
 For further examples refer to the unit test 
   * `rocket.json.test.client.JsonGwtTestCase`
-
