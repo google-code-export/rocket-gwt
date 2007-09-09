@@ -154,7 +154,7 @@ abstract public class RemoteJsonServiceInvoker implements RequestCallback {
 			final String text = response.getText();
 			final JSONValue jsonValue = JSONParser.parse(text);
 			if (false == jsonValue.isNull() instanceof JSONNull) {
-				object = this.asObject(jsonValue);
+				object = this.readObject(jsonValue);
 			}
 			// invoke success! after deserializing...
 			skipOnFailure = true;
@@ -176,7 +176,7 @@ abstract public class RemoteJsonServiceInvoker implements RequestCallback {
 	 * @param jsonValue
 	 * @return
 	 */
-	abstract protected Object asObject(final JSONValue jsonValue);
+	abstract protected Object readObject(final JSONValue jsonValue);
 
 	/**
 	 * Dispatches to one of two methods depending on the response code.
@@ -192,7 +192,7 @@ abstract public class RemoteJsonServiceInvoker implements RequestCallback {
 	 * @param throwable
 	 */
 	protected void handleFailedRequest(final Throwable throwable) {
-		final Throwable wrapper = new InvocationException("Call to server failed", throwable);
+		final Throwable wrapper = new InvocationException("Call to server failed: " + throwable.getMessage(), throwable);
 		this.getCallback().onFailure(wrapper);
 	}
 

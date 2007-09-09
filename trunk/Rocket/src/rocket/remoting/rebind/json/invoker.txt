@@ -3,13 +3,13 @@
 // declare the invoker variable and create a new Post or Get invoker.
 final ${invokerType} invoker = new ${invokerType}(){
     
-protected java.lang.Object asObject( final com.google.gwt.json.client.JSONValue jsonValue ){
+protected java.lang.Object readObject( final com.google.gwt.json.client.JSONValue jsonValue ){
 	final rocket.json.client.JsonSerializer deserializer =
 		(rocket.json.client.JsonSerializer) 
-		com.google.gwt.core.client.GWT.create( ${methodReturnType}.class );
+			com.google.gwt.core.client.GWT.create( ${methodReturnType}.class );
     
-    	return deserializer.asObject( jsonValue );
-  	} // asObject
+    	return deserializer.readObject( jsonValue );
+  	} // readObject
 }; // ${invokerType}
 
 ${addParameters}
