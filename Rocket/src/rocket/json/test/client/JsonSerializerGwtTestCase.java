@@ -75,7 +75,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		try {
 			final Object proxy = GWT.create(ClassWithFinalField.class);
-			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the NotSerializable class does not implement serializable, and not: "
+			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the ClassWithFinalField contains a final instance field, and not: "
 					+ proxy);
 		} catch (final AssertionFailedError error) {
 			throw error;
