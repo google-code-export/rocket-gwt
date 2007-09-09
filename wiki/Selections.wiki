@@ -8,25 +8,6 @@ The selection module provides a singleton which in turn may be used to manipulat
 
 ==Features==
 
-Using `rocket.selection.client.Selection` and accompanying classes it is possible to perform the following actions. Refer to the javadoc for more 
-
-  * Test if a selection exists
-  * Delete from the DOM a selection
-  * Read the start and end points of a selection.
-  * Programmatically set the start and end points of a selection
-  * Surround a selection with a new introduced element.
-  * Extract the DOM nodes within a selection and make them a child of another element.
-
-Many of these capabilities make it possible to create a simple rich text editor. A selection may be made bold by surrounding it with a span with a style="weight: bold". The Cut and copy operations may be mimiced by extracting a mouse selection and keeping it on a clipboard. This dom node may then be pasted when the user clicks on a paste button.
-
-=Getting started=
-
-Add the rocket module to your own project module.
-
-{{{
-<module name="Rocket.User" />
-}}}
-
 Pasted below is the public interface of the `rocket.client.selection.Selection` class. An additional class exists to define selection end points `rocket.client.selection.SelectionEndPoint` which consists of two properties, a text node and offset properties.
  
 {{{
@@ -126,7 +107,13 @@ public class Selection {
 
 }}}
 
+=Getting started=
 
+Add the rocket module to your own project module.
+
+{{{
+<module name="Rocket.User" />
+}}}
 
 =Further samples=
 
