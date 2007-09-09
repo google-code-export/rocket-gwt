@@ -6,8 +6,7 @@ The purpose of the rocket.selection package is to expose in a browser independen
 =The solution=
 The selection module provides a singleton which in turn may be used to manipulate or discover more about a selection that exists on the current page.
 
-==Features==
-
+==rocket.client.selection.Selection==
 Pasted below is the public interface of the `rocket.client.selection.Selection` class. An additional class exists to define selection end points `rocket.client.selection.SelectionEndPoint` which consists of two properties, a text node and offset properties.
  
 {{{
