@@ -183,6 +183,16 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		return type;
 	}
 
+	public NewNestedInterfaceType newNestedInterfaceType() {
+		final NewNestedInterfaceTypeImpl type = new NewNestedInterfaceTypeImpl();
+		final GeneratorContext context = this.getGeneratorContext();
+		type.setGeneratorContext(context);
+		type.setSuperType(context.getObject());
+
+		this.addNestedInterfaceType(type);
+		return type;
+	}
+	
 	public void addNestedType(final NewNestedType nestedType) {
 		ObjectHelper.checkNotNull("parameter:nestedType", nestedType);
 
@@ -193,6 +203,16 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		this.getGeneratorContext().addNewType(nestedType);
 	}
 
+	public void addNestedInterfaceType(final NewNestedInterfaceType nestedType) {
+		ObjectHelper.checkNotNull("parameter:nestedType", nestedType);
+
+		final NewNestedInterfaceTypeImpl newNestedTypeImpl = (NewNestedInterfaceTypeImpl) nestedType;
+		this.getNestedTypes().add(nestedType);
+		newNestedTypeImpl.setEnclosingType(this);
+
+		this.getGeneratorContext().addNewType(nestedType);
+	}
+	
 	public NewAnonymousNestedType newAnonymousNestedType() {
 		final NewAnonymousNestedTypeImpl type = new NewAnonymousNestedTypeImpl();
 		final GeneratorContext context = this.getGeneratorContext();

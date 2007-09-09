@@ -24,6 +24,8 @@ import java.util.Iterator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorException;
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.constructor.NewConstructor;
+import rocket.generator.rebind.constructor.NewConstructorImpl;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
@@ -35,12 +37,28 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-public class NewConcreteTypeImpl extends NewConcreteNestedTypeOrInterfaceType implements NewConcreteType {
+public class NewInterfaceTypeImpl extends NewConcreteNestedTypeOrInterfaceType implements NewInterfaceType {
 
-	public NewConcreteTypeImpl() {
+	public NewInterfaceTypeImpl() {
 		super();
 	}
 
+	public void addInterface(Type interfacee){
+		throw new UnsupportedOperationException( "Interfaces do not implement other interfaces, interface: " + this );
+	}
+	
+	public NewConstructor newConstructor() {
+		throw new UnsupportedOperationException( "Interfaces do not have constructors, interface: " + this );
+	}
+
+	public void addConstructor(final NewConstructor constructor) {
+		throw new UnsupportedOperationException( "Interfaces do not have constructors, interface: " + this );
+	}
+
+	public NewAnonymousNestedType newAnonymousNestedType(){
+		throw new UnsupportedOperationException( "Interfaces cannot have anonymous nested types, interface: " + this );
+	}
+	
 	/**
 	 * Requests this generated type to write out its definition including its
 	 * constructors, methods and fields. This operation may only be attempted
@@ -58,6 +76,7 @@ public class NewConcreteTypeImpl extends NewConcreteNestedTypeOrInterfaceType im
 		final String simpleClassName = this.getSimpleName();
 
 		final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, simpleClassName);
+		composerFactory.makeInterface();
 		this.setSuperClassUponClassSourceFileComposerFactory(composerFactory);
 		this.addImplementedInterfacesToClassSourceFileComposerFactory(composerFactory);
 		this.setClassJavaDoc(composerFactory);
@@ -112,7 +131,7 @@ public class NewConcreteTypeImpl extends NewConcreteNestedTypeOrInterfaceType im
 	}
 
 	protected void writeLogger() {
-		this.getGeneratorContext().branch("Writing class: " + this);
+		this.getGeneratorContext().branch("Writing interface: " + this);
 	}
 
 	protected void updateSuperTypeSubTypes(final Type type) {

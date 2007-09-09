@@ -37,6 +37,8 @@ import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.packagee.PackageNotFoundException;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewConcreteTypeImpl;
+import rocket.generator.rebind.type.NewInterfaceType;
+import rocket.generator.rebind.type.NewInterfaceTypeImpl;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
@@ -428,6 +430,10 @@ abstract public class GeneratorContext {
 		this.getNewTypes().add(type);
 	}
 
+	/**
+	 * Factory method which creates a new concrete type.
+	 * @return The new concrete type.
+	 */
 	public NewConcreteType newConcreteType() {
 		final NewConcreteTypeImpl type = new NewConcreteTypeImpl();
 		type.setGeneratorContext(this);
@@ -436,6 +442,19 @@ abstract public class GeneratorContext {
 		this.addNewType(type);
 		return type;
 	}
+	
+	/**
+	 * Factory method which creates a new interface type.
+	 * @return The new interface type.
+	 */
+	public NewInterfaceType newInterfaceType() {
+		final NewInterfaceTypeImpl type = new NewInterfaceTypeImpl();
+		type.setGeneratorContext(this);
+		type.setSuperType(this.getObject());
+
+		this.addNewType(type);
+		return type;
+	}		
 
 	/**
 	 * Tests if a class has already been generated. If the class does not exist

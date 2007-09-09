@@ -27,14 +27,14 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  * @author Miroslav Pokorny
  */
-public class NewNestedTypeImpl extends NewNestedTypeOrInterface implements NewNestedType {
+public class NewNestedInterfaceTypeImpl extends NewNestedTypeOrInterface implements NewNestedInterfaceType{
 
-	public NewNestedTypeImpl() {
+	public NewNestedInterfaceTypeImpl() {
 		super();
 	}
-
+	
 	public boolean isInterface(){
-		return false;
+		return true;
 	}
 	public void setInterface( final boolean interfacee ){
 		throw new UnsupportedOperationException( "setInterface");
