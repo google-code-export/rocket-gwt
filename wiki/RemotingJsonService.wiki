@@ -43,7 +43,7 @@ This simple method simply builds a query string that contains each of the method
   * @jsonRpc-parameterName The name of the parameter name. This value is used as the key and the corresponding method argument becomes the value when building the query string.
   * The method return type must be a JsonSerializable type.
 
-Input parameters each method can only be a primitive type 
+Input parameters can only be one of the following simple types
   * boolean
   * byte
   * short
