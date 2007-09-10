@@ -1,16 +1,12 @@
 #labels Featured,CodeGeneration
-=Purpose=
-Before talking about the features of the generator package and how to use them, some background about GWT generators is necessary. The generator idiom is used by GWT to implement many of its sophisticated features including:
+=Background=
+The generator idiom is used by GWT to implement many of its sophisticated features including:
   * The RPC proxy and accompanying (de)serializer for reachable types.
-  * The message bundle support.
+  * Message bundle support.
   * ImageBundles which generate a single image from a collection of many.
 For more info on these fantastic features refer to the doco, which is found on both the GWT home page and within the download.
 
-The rocket.generator package does not change how deferred binding works. It is however a richer abstraction that makes it easier to author new generators. A GWT generator which only works inside the hosted mode environment/compiler and may only be tested inside a GwtTestCase. A rocket enhanced generator may also use the jdk as the source of its types making it possible to test within a normal Junit TestCase.
-
-Template support also mean theres no need to ever print a single line of java code again.
-
-=Emitting new types=
+==Emitting new types==
 This section does not concern how a genearator decides what code to generate but rather how it interacts with the GWT environment. Two major components are used throughout a code generation session, the GWT `com.google.gwt.core.ext.typeinfo.TypeOracle` and its accompanying helpers and `com.google.gwt.user.rebind.SourceWrite`. As their names imply one answers questions about available types, whilst the other is used to create the source file for new types.
 
 ==Comparing GWT Type Oracle with java reflection==
@@ -28,7 +24,11 @@ The table shows a simplified mapping between reflection abstractions and their c
 	
 The GWT Type Oracle and its accompanying classes provide many methods to retrieve the name of a type, test is visibility, iterate over a list of all fields and more. With some experience in reflection it is quite easy to find the equivalent method on the matching GWT Type oracle abstraction. They have almost the same method signatures.
 
-==Emitting a new type with SourceWriter==
+
+
+=Motivation=
+Currently GWT generators use the SourceWriter class to emit new types by printing java. The sample below is taken from `ProxyCreator` the class responsible for generating GWT RPC clients.
+
 To create new types one must use `com.google.gwt.user.rebind.ClassSourceFileComposerFactory` to eventually create a new SourceWriter. The factory is a bean that includes methods to set the super type, which interfaces are implemented and so on. After the skeleton of the class is created the SourceWriter may be used to print java statements. Anything text can be printed and together these will be used to build the entire source file.
 
 Whilst a powerful construct code generation within GWT is quite low level with a number of issues outstanding.
@@ -40,184 +40,288 @@ Whilst a powerful construct code generation within GWT is quite low level with a
   * The current system does not provide a way to copy class components (constructors, methods, or fields) from one class to another. Often when sub-classing it would be useful to clone the overridden method and then just replace its body.
   * It is not possible to test components which require a TypeOracle outside of a generator.
 
-==Authoring a generator with the Rocket package==
+The sample below is taken from [ `http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/com/google/gwt/user/rebind/rpc/ProxyCreator.java` ProxyCreator] and demonstrates some of the points listed above.
+
+{{{
+w.println("final "
+				+ (ClientSerializationStreamReader.class.getName() + " streamReader = new "
+						+ ClientSerializationStreamReader.class.getName() + "(SERIALIZER);"));
+		w.println("final "
+				+ (ClientSerializationStreamWriter.class.getName() + " streamWriter = new "
+						+ ClientSerializationStreamWriter.class.getName() + "(SERIALIZER, GWT.getModuleBaseURL(), SERIALIZATION_POLICY);"));
+		w.println("try {");
+		w.indent();
+		{
+			w.print("__" + method.getName() + "(streamWriter");
+			for (i = 0; i < params.length; i++) {
+				w.print(", " + params[i].getName());
+			}
+			w.println(");");
+		}
+		w.outdent();
+}}}
+
+
+
+=The solution=
 The rocket generator package attempts to solve some of the very problems described above. 
+The rocket.generator package does not change how deferred binding works. It is however a richer abstraction that makes it easier to author new generators. A GWT generator which only works inside the hosted mode environment/compiler and may only be tested inside a GwtTestCase. A rocket enhanced generator may also use the jdk as the source of its types making it possible to test within a normal Junit TestCase.
 
-===Creating class components via factories===
-Each class component contains factories to create its enclosed components. 
+===Creating class components via factories==
+Each class component contains factories to create its enclosed components.
 
-The Type class contains the following methods
-  * newInitializer - adds a new initializer
-  * newConstructor add a new constructor to this type
-  * newMethod adds a new method
-  * newField adds a new field.
-  * newNestedType adds a new nested or inner class
-  * newAnonymousNestedType adds a new anonymous type. This can then be included within the body of a initializer, constructor, method, or assigned to a field.
-  
-Each abstraction above contains methods such as
-  * setName - for types, methods, fields.
-  * setVisibility - for types, constructors, methods, fields.
-  * setType - for fields.
-  * setBody - set a code block which when asked outputs a block of code. A template version is available.
-  * copy - copies the method definition from one type to another. This is especially useful when overriding an abstract method.
-  * final, abstract, static etc - properties are available to get and set these properties for types, initializers, methods and fields.
-  * rename all constructor or method parameters to "parameterN" where N is the index of the parameter within the argument list.
+List below are the factory methods of [ NewType http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/generator/rebind/type/NewType.java ].
+{{{
+interface NewType{
+	NewField newField();
+	NewMethod newMethod();
+	NewNestedType newNestedType();
+	NewAnonymousNestedType newAnonymousNestedType();	
+	NewNestedInterfaceType newNestedInterfaceType();
+
+	... non factory methods omitted
+}
+}}}
+
+List below are some of the interesting factory methods of [ NewMethod http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/generator/rebind/method/NewMethod.java ] that make it easy to override methods.
+I personally find it easiest to write a templated class and then override the bare minimum - the stuff that can only be satisfied by the generator.
+{{{
+interface NewMethod
+	void setEnclosingType(Type enclosingType);
+
+	void setAbstract(boolean abstractt);
+
+	void setFinal(boolean finall);
+
+	void setStatic(boolean staticc);
+
+	void setNative(boolean nativee);
+
+	void setVisibility(Visibility visibility);
+
+	void setName(String name);
+
+	NewMethodParameter newParameter();
+
+	void addParameter(NewMethodParameter parameter);
+
+	void addThrownTypes(Type thrownTypes);
+
+	void setReturnType(Type returnType);
+
+	CodeBlock getBody();
+
+	void setBody(CodeBlock body);
+}
+}}}
 
 ===Templates===
 One of the most useful features of the package are templates. Templates are text files containing java code with placeholders for dynamic 
-  * Makes it very easy to write jsni. Inserting types, methods, fields into templates are all written using jsni notation. To make this happen simply set the enclosing method "native" property.
-  * All type references are now automatically fully qualified.
   * Templates are readable, after all they are text files with placeholders.
   * Templates may contain other templates.
   * The CollectionTemplatedTile makes it very easy to set a template multiple times each once for each parameter or a list of something else.
   * Theres no need to print a single line of code again.
-  * No more import statements are needed. Its just as easy to always specify fully qualified class names as simple names. Templates always insert fully qualified class names.
+  * Makes it very easy to write jsni. Inserted types, methods, fields into templates are all written using jsni notation. To make this happen simply set the enclosing method "native" property.
+  * All type references are now automatically fully qualified. Removes the need to add import statements.
+  * Authoring jsni with references to java types, methods or fields is simple as their references are emitted using jsni notation automatically.
 
-The examples below are taken from the rocket.beans bean factory and advice generator.
 
-The ProxyFactoryBean is an abstract class. It resembles a template itself, with a number of methods remaining abstract, these are overridden by the BeanFactoryGenerator. The template below contains the body of the createProxy( Object targetBean ) method. To override and implement this method a number of steps are taken.
-  * In an earlier step a NewNestedType that subclasses ProxyFactoryBean was created.
-  * Ask the ProxyFactoryBean type for a method called "createProxy" which takes a parameter of type java.lang.Object. If this fails an exception is thrown. This is good because any changes to ProxyFactoryBean (like renaming createProxy() ) will break the code generation early.
-  * The returned method is then copied from the ProxyFactory type onto the NewNestedType ProxyFactoryBean subclass.
-  * A CreateProxyTemplatedFile class exists that includes three setters for each of the placeholders below. These setters are then called with the appropriate values.
-  * The CreateProxyTemplatedFile instance is then set as the body of the overridden createProxy method.
+=Examples - How the BeanFactoryGenerator is put together=
 
+The [ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/rebind/BeanFactoryGenerator.java BeanFactoryGenerator ] generators a [ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/client/BeanFactory.java BeanFactory ] that realises an xml file filled with beans.
+
+A different FactoryBean sub class is generated for each defined bean. Depending on its scope the appropriate FactoryBean is selected. The generator sub classes[ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/client/SingletonFactoryBean.java SingletonFactoryBean ] concentrating on filling the following three methods.
+  * Object createInstance() throws Exception;
+  * void satisfyProperties(final Object instance) throws Exception;
+  * protected void satisfyInit(final Object instance) throws Exception;
+
+==A simple template example (creating a bean instance from a factory method)=
+The `createInstance` method is implemented using either of three possible templates.
+  * deferred binding
+  * new constructor with parameters
+  * factory method
+
+The sample below concentrates on a bean that is created from a factory.
+
+The method that overrides createInstance for beans created from a static factory method.
 {{{
-// create-proxy.txt
+	protected void overrideFactoryBeanCreateInstanceFactoryMethod(final Bean bean, final String factoryMethodName) {
+		ObjectHelper.checkNotNull("parameter:bean", bean);
+		StringHelper.checkNotEmpty("parameter:factoryMethodName", factoryMethodName);
 
-// invokes the proxy no arguments constructor
-final ${proxyType} proxy = new ${proxyConstructor}();
+		final Type beanType = bean.getType();
+		final Method factoryMethod = beanType.findMethod(factoryMethodName, Collections.EMPTY_LIST);
+		if (null == factoryMethod || false == factoryMethod.isStatic() || factoryMethod.getVisibility() != Visibility.PUBLIC) {
+			this.throwFactoryMethodNotFound(bean, factoryMethodName);
+		}
 
-// hide a reference of the target bean this will be used within all proxied methods.
-proxy.target=
+		this.getGeneratorContext().debug("Inserting statement in FactoryBean.createInstance to call " + factoryMethod + " for bean " + bean);
 
-	// cast the parameter
-	(${targetBeanType}) ${targetBeanParameter};
+		final NewMethod newFactoryMethod = this.createCreateInstanceMethod(bean.getFactoryBean());
 
-// return the new proxy
-return proxy;
+		final FactoryMethodTemplatedFile body = new FactoryMethodTemplatedFile();
+		body.setFactoryType(beanType);
+		body.setFactoryMethod(factoryMethod);
+
+		newFactoryMethod.setBody(body);
+	}
+
+	protected NewMethod createCreateInstanceMethod(final NewType factoryBean) {
+		ObjectHelper.checkNotNull("parameter:factoryBean", factoryBean);
+
+		final Method method = factoryBean.getMostDerivedMethod("createInstance", Collections.EMPTY_LIST);
+
+		// finds the abstract method and clones it.		
+		final NewMethod newMethod = method.copy(factoryBean);
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
+		return newMethod;
+	}
 }}}
 
-Many other steps occur overriding the other abstract methods. Once all this is done the outter class is asked to write itself. It in turn asks all its enclosed initializers, constructors, methods and fields. Eventually the above template will write itself out to the given SourceWriter. 
-
-A number of codeblocks are provided that provide alternatives to outputting java code. One laternative is that of a template which is used to implement the BeanFactory.satsifyProperties method. 
-
-A BeanFactory attempting to set three properties within its satisfyProperties() should end up looking like the code sample below.
+The template
 {{{
-protected void satisfyProperties( final java.lang.Object instance ){
-  // cast the Object bean instance to a local variable to the actual bean type.
-  BeanType instance0 = (BeanType) instance;
+	// factory-method.txt
 
-  // three statements follow that call each of the three property setters with the appropriate values...
-  instance0.setFoo( "foo" );
-  instance0.setBar( "bar" );
-  instance0.setBaz( "baz" );
+	// invokes a static method on a type.
+	return ${factoryType}.${factoryMethod}();
 }}}
 
-The BeanFactoryGenerator uses a template which is included below.
+To override and implement the createInstance methods requires only a few steps.
+  * Locate the method to override. factoryBean.getMostDerivedMethod
+  * Copy it - method.copy
+  * Set the only dynamic part of the template the factory method - new FactoryMethodTemplatedFile().
+
+=Emebedding one template within another=
+The next example below concentrates on the ability to repeatedly insert one template within another. Two templates work in tandem one generate satisfyProperties method. 
+
+The [http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/rebind/properties/set-properties.txt set properties] which provides the body for the satisfyProperties method.
+The [http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/rebind/properties/SetPropertiesTemplatedFile.java SetPropertiesTemplatedFile] uses [http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/generator/rebind/codeblock/CollectionTemplatedCodeBlock.java CollectionTemplateCodeBlock ] to loop over a collection of bean properties.
 {{{
-// set-properties.txt
+	// set-properties.txt
+	
+	// cast the instance parameter to a typed local variable called "instance0"
+	final ${beanType} instance0 = (${beanType}) ${instance};
 
-// cast the instance parameter to a typed local variable called "instance0"
-final ${beanType} instance0 = (${beanType}) ${instance};
-
-// set the individual properties
-${setIndividualProperties}
+	// set the individual properties
+	${setIndividualProperties}
 }}}
-Naturally a template class exists that includes three methods which are set the BeanFactoryGenerator
-  * void setBeanType( Type beanType ) - A setter to set the bean type. 
-  * void setInstance( MethodParameter parameter ) - A setter which accepts the parameter for this method.
-  * void addProperty( Method setterMethod, Value value ) - the add method accumulates all the setter methods and values that need to be set.
+  * *beanType* is a placeholder for actual bean instance type.
+  * *instance* the parameter name of the bean instance parameter.
+  * *setIndividualProperties* a placeholder for where the individual set property statements will appear.
 
-The sample below is taken directly from BeanFactoryGenerator and uses the templates and techniques discussed above.
+The [http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/rebind/properties/set-property.txt set property] which is inserted for each property being set.
 {{{
-protected void overrideFactoryBeanSatisfyProperties(final Bean bean, final List properties) {
-    ObjectHelper.checkNotNull("parameter:bean", bean);
-    ObjectHelper.checkNotNull("parameter:properties", properties);
+	// set-property.txt
 
-    final GeneratorContext context = this.getGeneratorContext();
-    context.debug("Attempting to create a method which will set " + properties.size() + " properties upon " + bean);
+	// invoke the setter passing the new property value...
+	instance0.${setter}( ${value} );
+}}}
+  * *setter* The setter method for the property being set.
+  * *value* The new property value be it a literal or another bean reference. 
 
-    final Type voidType = this.getGeneratorContext().getVoid();
-    final Type beanType = bean.getType();
+The method is the actual method within the generator that finds the setters each of the properties passed. Most of the code is concerned with locating the values for each of the placeholders of the template.
+All static stuff that doesnt change is within the template with only dynamic values populated by the method below.
+{{{
+	protected void overrideFactoryBeanSatisfyProperties(final Bean bean, final List properties) {
+		ObjectHelper.checkNotNull("parameter:bean", bean);
+		ObjectHelper.checkNotNull("parameter:properties", properties);
 
-    final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
-    body.setBean(beanType);
+		final GeneratorContext context = this.getGeneratorContext();
+		context.debug("Attempting to create a method which will set " + properties.size() + " properties upon " + bean);
 
-    final NewType factoryBean = bean.getFactoryBean();
-    final Method method = factoryBean.getMostDerivedMethod( Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject() );
-    final NewMethod newMethod = method.copy(factoryBean);
-    body.setInstance((MethodParameter) newMethod.getParameters().get(0));
-    newMethod.setBody(body);
+		final Type voidType = this.getGeneratorContext().getVoid();
+		final Type beanType = bean.getType();
 
-    // loop thru all properties
-    final Iterator propertyIterator = properties.iterator();
-    while (propertyIterator.hasNext()) {
-      final PropertyTag propertyTag = (PropertyTag) propertyIterator.next();
-      final String propertyName = propertyTag.getPropertyName();
-      final String setterName = GeneratorHelper.buildSetterName(propertyName);
+		final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
+		body.setBean(beanType);
 
-      context.debug("Searching for setter method [" + setterName + "] for property upon bean " + bean);
+		final NewType factoryBean = bean.getFactoryBean();
+		final Method method = factoryBean.getMostDerivedMethod(Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject());
+		
+		final NewMethod newMethod = method.copy(factoryBean);
+		newMethod.setAbstract( false );
+		newMethod.setFinal( true );
+		newMethod.setNative( false );
+		
+		body.setInstance((MethodParameter) newMethod.getParameters().get(0));
+		newMethod.setBody(body);
 
-      final Value value = this.asValue(propertyTag.getValue());
-      final List matching = new ArrayList();
+		// loop thru all properties
+		final Iterator propertyIterator = properties.iterator();
+		while (propertyIterator.hasNext()) {
+			final PropertyTag propertyTag = (PropertyTag) propertyIterator.next();
+			final String propertyName = propertyTag.getPropertyName();
+			final String setterName = GeneratorHelper.buildSetterName(propertyName);
 
-      final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
-        protected boolean visit(final Method method) {
+			context.debug("Searching for setter method [" + setterName + "] for property upon bean " + bean);
 
-          while (true) {
-            // names dont match
-            if (false == method.getName().equals(setterName)) {
-              break;
-            }
-            // return type must be void
-            if (false == method.getReturnType().equals(voidType)) {
-              break;
-            }
-            // parameter types must be compatible...
-            final List parameters = method.getParameters();
-            if (parameters.size() != 1) {
-              break;
-            }
+			final Value value = this.asValue(propertyTag.getValue());
+			final List matching = new ArrayList();
 
-            final MethodParameter parameter = (MethodParameter) parameters.get(0);
-            final Type propertyType = parameter.getType();
-            if (false == value.isCompatibleWith(propertyType)) {
-              break;
-            }
-            value.setType(propertyType);
-            matching.add(method);
-            break;
-          }
+			final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
+				protected boolean visit(final Method method) {
 
-          return false;
-        }
+					while (true) {
+						// names dont match
+						if (false == method.getName().equals(setterName)) {
+							break;
+						}
+						// return type must be void
+						if (false == method.getReturnType().equals(voidType)) {
+							break;
+						}
+						// parameter types must be compatible...
+						final List parameters = method.getParameters();
+						if (parameters.size() != 1) {
+							break;
+						}
 
-        protected boolean skipJavaLangObjectMethods() {
-          return true;
-        }
-      };
+						final MethodParameter parameter = (MethodParameter) parameters.get(0);
+						final Type propertyType = parameter.getType();
+						if (false == value.isCompatibleWith(propertyType)) {
+							break;
+						}
+						value.setType(propertyType);
+						matching.add(method);
+						break;
+					}
 
-      visitor.start(beanType);
-      if (matching.isEmpty()) {
-        this.throwUnableToFindSetter(bean, propertyName);
-      }
-      if (matching.size() != 1) {
-        this.throwTooManySettersFound(bean, propertyName);
-      }
+					return false;
+				}
 
-      final Method setter = (Method) matching.get(0);
-      body.addProperty(setter, value);
-      
-      context.debug("Inserted statement to set property [" + propertyName + "] upon bean " + bean);
+				protected boolean skipJavaLangObjectMethods() {
+					return true;
+				}
+			};
 
-    }
-  }
+			visitor.start(beanType);
+			if (matching.isEmpty()) {
+				this.throwUnableToFindSetter(bean, propertyName);
+			}
+			if (matching.size() != 1) {
+				this.throwTooManySettersFound(bean, propertyName);
+			}
+
+			final Method setter = (Method) matching.get(0);
+			body.addProperty(setter, value);
+
+			context.debug("Inserted statement to set property [" + propertyName + "] upon bean " + bean);
+
+		}
+	}
 }}}
 
-Most of the above code is concerned with finding a matching setter for the given property. Very little is concerned with emitting code.
 
-===Testing generator components outside of a generator===
+The process required by the factory bean to set all defined properties are
+  * Cast the instance parameter from Object to the actual bean type.
+  * invoke none or more set property statements with the appropriate value or reference.
+
+
+
+=Testing generator components outside of a generator=
 
 The generator package includes two GeneratorContexts (the rocket equivalent of a TypeOracle).
   * `rocket.generator.rebind.GeneratorContext` which uses the GWT TypeOracle.
@@ -238,5 +342,4 @@ The list below includes a number of junit tests that use the generator module bu
   * `rocket.generator.test.TypeTestCase`
   * `rocket.generator.test.VirtualMethodTestCase`
   * 
-
 
