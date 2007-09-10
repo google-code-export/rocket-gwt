@@ -48,7 +48,7 @@ To use anything thats bundled with the rocket library.
   * Always try and make minimum number of methods public.
 
 ==Tests==
-  * All reusable components come with a test. Tests also come with a matching eclipse *.launch file.
+  * All reusable components come with a test. Tests also come with a matching eclipse xxx.launch file.
   * The test suite [ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/test/RocketTestSuite.java RocketTestSuite ] contains all tests.
   * To code interactive tests consider using rocket.testing.client.WebPageTestRunner
 
@@ -58,4 +58,3 @@ To use anything thats bundled with the rocket library.
 =Feedback=
   * If anything doesnt work, run the corresponding test or check it as a reference.
   * Post to the [ http://groups.google.com/group/rocket-gwt forum ] if you have any questions, comments...
-
