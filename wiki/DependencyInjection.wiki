@@ -1,4 +1,4 @@
-#labels Featured,DependencyInjection,Spring,GWT,Advices,Aop,MethodInterceptors,CodeGeneration
+#labels Featured,GWT,Phase-Design,Phase-Implementation,DependencyInjection,InversionofControl,Methodinterceptors,Codegeneration,Advices
 =Purpose=
 
 The purpose of the rocket.beans package is to offer the ability to DI beans and add advices within a GWT application.
