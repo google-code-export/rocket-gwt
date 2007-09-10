@@ -40,7 +40,7 @@ To use anything thats bundled with the rocket library.
   * Use interface references whereever possible.
 
 ==Methods==
-  * Always test incoming parameters - aka defensive programming -> rocket.client.util.*.check
+  * Always test incoming parameters - aka defensive programming -> rocket.client.util.XXX.check
   * Avoid code duplication, move reusable code into a helper or super class.
   * Methods are categorised into two parts, methods that manipulate values and objects and other methods that coordinate a process.
   * Never group unrelated manipulations in a single method. Break up them into multiple independent methods. This makes it easy to sub class to change behaviour.
