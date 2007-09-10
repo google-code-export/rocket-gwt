@@ -1,7 +1,8 @@
 #labels Featured
-# Wiki for the HtmlTemplateFactory
+=Motivation=
+Currently GWT does not provide a mechanism to easily glue pre existing elements to widget instances. 
 
-=Purpose=
+=The solution=
 The HtmlTemplateFactory provides the capability to bind elements to basic GWT widgets. Each element must have a unique id, along with an interface containing getters with widget return types. This capability allows GWT developers and web designers to work in tandem. The designer creates a html page and marks widgets with ids.
 
 The table below includes a mapping between html elements to GWT widgets.
@@ -32,7 +33,7 @@ The HtmlTemplateFactory contains a number of limitations.
 Add the rocket module to your own application module.
 
 {{{
-<module name="Rocket.User" />
+<inherits name="Rocket.User" />
 }}}
 
 ==Defining a HtmlTemplateFactory==
@@ -51,7 +52,7 @@ The html fragment below contains a single textbox element.
 The HtmlTemplateFactory sub class below provides a factory method which binds the text element described above to a GWT TextBox. All the methods read and write to the textBox as expected.
 
 {{{
-package example;
+package example.client;
 
 import rocket.widget.client.HtmlTemplateFactory;
 
