@@ -42,7 +42,7 @@ Internet explorer is not the only culprit, there are a number of other special c
 ==Transparency / Opacity example==
 || Browser || Property name || Value || example ||
 || Internet Explorer || filter || alpha=50 || DOM.setStyleAttribute( element, "filter(opacity=50)" ) ||
-|| Other browsers || opacity || 0.5 || DOM.setStyleAttribute( element, "filter(opacity=0.5)" ) ||
+|| Other browsers || opacity || 0.5 || DOM.setStyleAttribute( element, "opacity=0.5" ) ||
 
 Using DOM.setStyleAttribute it would be necessary to create an additional abstraction to handle this special case.
 
