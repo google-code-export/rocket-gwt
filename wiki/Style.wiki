@@ -65,18 +65,19 @@ DOM.setStyleAttribute( element, value );
 Using Rocket's abstractions `rocket.style.client.InlineStyle` it is much easier to set the opacity upon an element, and equally easy to read an opacity value.
 
 {{{
-Element element *//get from somewhere...
+Element element //get from somewhere...
 
-// Set an opacity value upon element...
+// Set an opacity value upon element... element, css property, value
 InlineStyle.setDouble( element, "opacity", 0.5 );
 
-// Get the opacity value from element...
+// Get the opacity value from element... element, css property, css unit, default if not found.
 double opacity = InlineStyle.getDouble( element, "opacity", CssUnit.NONE, 1.0 );
 }}}
 
 ===Fixed positioning example===
 
-Unfortunately Internet Explorer does not under position="fixed". The style package emulates it using dynamic expressions.
+Unfortunately Internet Explorer does not understand position="fixed". The style package emulates it using dynamic expressions. 
+
 The sample below shows how it easy it is to give an element a fixed position. It is also equally easy to determine the position value for an element.
 
 {{{
