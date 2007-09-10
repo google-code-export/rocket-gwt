@@ -17,12 +17,11 @@ The table below includes a mapping between html elements to GWT widgets.
 || SELECT || ListBox ||
 || TEXTAREA || TextArea ||
 
-
-==Gotchas==
-The HtmlTemplateFactory contains a number of limitations.
-  * All interface methods must have no paramters. The id is specified via an annotation.
+The HtmlTemplateFactory contains a number of limitations and features.
+  * All interface methods must have no paramters. 
+  * The id of the target element is specified via an annotation *@id*
   * The return type of each method must be compatible with the actual element type.
-  * Multiple calls to the same getter will return the same widget instance.
+  * Multiple calls to the same getter will return the same widget instance (widget instances are cached).
   * Widgets fetched from the HtmlTemplateFactory may be removed and added to other panels.
   * It is not possible to the implied attached label embedded within the CheckBox and RadioButton widgets.
 
