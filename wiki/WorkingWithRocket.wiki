@@ -1,0 +1,61 @@
+#labels Featured,Phase-Design
+#Getting started and understanding how, why and where things are like they are...
+=Motivation=
+Developers new to GWT or rocket need a better understanding of how, why and where things are in the rocket project.
+
+=Details=
+All classes follow a number of simple rules.
+
+==Using==
+To use anything thats bundled with the rocket library.
+  * Add rocket.jar to your project's classpath (before gwt-user.jar).
+  * Add rocket-stacktrace.jar (before gwt-user.jar) to include support for web mode stacktraces.
+  * Inherit Rocket.user
+{{{
+<inherits name="Rocket.User" />
+}}}
+
+==Packaging==
+  * client Contains classes that ultimately are translated to javascript.
+  * rebind Contains any generators that assist client counterparts. These are typically accessed using deferred binding with an appropriate class literal.
+  * server Contains the server side counterpart that work in tandem with a client.
+  * test contains the corresponding tests for the component. To find tests for a client class navigate to the corresponding test subpackage. Tests are named to match the client component.
+
+==Classes==
+  * Never define constants in interfaces or classse.
+  * All constants that should not be visible outside a package are placed in a class called *Constants*.
+  * If some constants should be visible outside the package name the class XXXConstants where XXX is the module name.  
+  * If a component consists of more than a single (a few) classes move them into their own sub package.
+  * Many components are templates that require the developer to override and fill in the gaps.
+  * Never try and do too much in a single class.
+  * Keep classes small with a single purpose so they can be assembled into larger artefacts.
+
+==Constructors==
+  * Classes typically have no arguments constructors.
+
+==Fields==
+  * Fields are always private.
+  * Never directly access fields, use the getter or setter.
+  * Initialize fields via a factory.
+  * Use interface references whereever possible.
+
+==Methods==
+  * Always test incoming parameters - aka defensive programming -> rocket.client.util.*.check
+  * Avoid code duplication, move reusable code into a helper or super class.
+  * Methods are categorised into two parts, methods that manipulate values and objects and other methods that coordinate a process.
+  * Never group unrelated manipulations in a single method. Break up them into multiple independent methods. This makes it easy to sub class to change behaviour.
+  * Always use factories whereever possible rather than new XXX.
+  * Always try and make minimum number of methods public.
+
+==Tests==
+  * All reusable components come with a test. Tests also come with a matching eclipse *.launch file.
+  * The test suite [ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/test/RocketTestSuite.java RocketTestSuite ] contains all tests.
+  * To code interactive tests consider using rocket.testing.client.WebPageTestRunner
+
+=Components=
+  * When starting out look at the corresponding test for the component.
+
+=Feedback=
+  * If anything doesnt work, run the corresponding test or check it as a reference.
+  * Post to the [ http://groups.google.com/group/rocket-gwt forum ] if you have any questions, comments...
+
