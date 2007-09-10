@@ -128,7 +128,7 @@ One of the most useful features of the package are templates. Templates are text
 
 =Examples - How the BeanFactoryGenerator is put together=
 
-The [ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/rebind/BeanFactoryGenerator.java BeanFactoryGenerator ] generators a [ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/client/BeanFactory.java BeanFactory ] that realises an xml file filled with beans.
+The [ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/rebind/BeanFactoryGenerator.java BeanFactoryGenerator ] generates a [ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/client/BeanFactory.java BeanFactory ] that realises an xml file filled with beans.
 
 A different FactoryBean sub class is generated for each defined bean. Depending on its scope the appropriate FactoryBean is selected. The generator sub classes[ http://rocket-gwt.googlecode.com/svn/trunk/Rocket/src/rocket/beans/client/SingletonFactoryBean.java SingletonFactoryBean ] concentrating on filling the following three methods.
   * Object createInstance() throws Exception;
@@ -342,4 +342,3 @@ The list below includes a number of junit tests that use the generator module bu
   * `rocket.generator.test.TypeTestCase`
   * `rocket.generator.test.VirtualMethodTestCase`
   * 
-
