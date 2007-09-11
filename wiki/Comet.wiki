@@ -142,7 +142,7 @@ public ExampleCometClient extends CometClient{
 The code sample below shows how to create and start a comet session with the server.
 
 {{{
-	ExampleCometClient client = (ExampleCometClient)GWT.create( ExampleCometClient() );
+	ExampleCometClient client = (ExampleCometClient)GWT.create( ExampleCometClient.class );
 	client.setUrl("...CometServerServlet url...");
 	client.setCallback( new AsyncCallback(){
 		public void onSuccess( final Object incoming ){
