@@ -15,12 +15,6 @@
  */
 package rocket.generator.rebind.type;
 
-import java.util.Iterator;
-
-import rocket.generator.rebind.Visibility;
-import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * Represents a inner class being built.

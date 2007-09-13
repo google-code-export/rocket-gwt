@@ -23,9 +23,7 @@ import java.util.Iterator;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorException;
-import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
-import rocket.generator.rebind.constructor.NewConstructorImpl;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;

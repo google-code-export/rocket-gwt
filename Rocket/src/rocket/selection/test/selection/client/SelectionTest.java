@@ -15,7 +15,6 @@
  */
 package rocket.selection.test.selection.client;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rocket.dom.client.Dom;

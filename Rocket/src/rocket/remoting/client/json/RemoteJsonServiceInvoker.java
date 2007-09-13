@@ -23,7 +23,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
