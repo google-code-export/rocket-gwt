@@ -278,7 +278,7 @@ public class Dom {
 				break;
 			}
 
-			final String actualType = DOM.getElementProperty(element, DomConstants.INPUT_TAG_TYPE);
+			final String actualType = DOM.getElementAttribute(element, DomConstants.INPUT_TAG_TYPE);
 			is = type.equalsIgnoreCase(actualType);
 			break;
 		}
@@ -465,5 +465,14 @@ public class Dom {
 	 */
 	public static int getClientHeight(final Element element) {
 		return ObjectHelper.getInteger(element, "clientHeight");
+	}
+	
+	/**
+	 * Tests if the given element is attached to the dom.
+	 * @param element
+	 * @return
+	 */
+	public static boolean isAttached( final Element element ){
+		return DOM.isOrHasChild( Dom.getBody(), element );
 	}
 }
