@@ -19,9 +19,6 @@ import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
-import rocket.generator.rebind.methodparameter.MethodParameter;
-import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
 
 /**
  * An abstraction for the as json method body templated file

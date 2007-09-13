@@ -16,7 +16,6 @@
 package rocket.generator.rebind.type;
 
 import rocket.generator.rebind.Visibility;
-import rocket.generator.rebind.constructor.NewConstructor;
 
 /**
  * Represents a inner interface class being built.

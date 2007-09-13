@@ -21,11 +21,10 @@ import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.methodparameter.MethodParameter;
-import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the set-list templated file
+ * An abstraction for the set-field templated file
  * 
  * @author Miroslav Pokorny
  */
@@ -39,19 +38,19 @@ public class SetFieldTemplatedFile extends TemplatedCodeBlock {
 	private Field field;
 
 	protected Field getField() {
-		ObjectHelper.checkNotNull("list:list", field);
+		ObjectHelper.checkNotNull("field:field", field);
 		return this.field;
 	}
 
 	public void setField(final Field field) {
-		ObjectHelper.checkNotNull("parameter:list", field);
+		ObjectHelper.checkNotNull("parameter:field", field);
 		this.field = field;
 	}
 
 	private MethodParameter instance;
 
 	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("list:instance", instance);
+		ObjectHelper.checkNotNull("field:instance", instance);
 		return this.instance;
 	}
 
@@ -63,7 +62,7 @@ public class SetFieldTemplatedFile extends TemplatedCodeBlock {
 	private MethodParameter value;
 
 	protected MethodParameter getValue() {
-		ObjectHelper.checkNotNull("list:value", value);
+		ObjectHelper.checkNotNull("field:value", value);
 		return this.value;
 	}
 

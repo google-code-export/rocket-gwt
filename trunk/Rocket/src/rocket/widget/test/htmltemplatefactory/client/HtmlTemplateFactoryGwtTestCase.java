@@ -181,7 +181,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 			void doRemainingTests(final Element element, final Widget widget) {
 				final CheckBox checkBox = (CheckBox) widget;
-				final String name = "testRadioButton";
+				final String name = "testCheckBox";
 				checkBox.setName(name);
 				assertEquals("element: " + DOM.toString(element) + "\ncheckBox: " + checkBox + "\n", name, checkBox.getName());
 			}

@@ -48,8 +48,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	abstract protected Element createPanelElement();
 
 	/**
-	 * This method provides an opportunity for sub classes to sink events,
-	 * create listener collections etc.
+	 * This method provides an opportunity for sub classes to register listener collections etctener collections etc
 	 */
 	protected void afterCreatePanelElement() {
 	}
