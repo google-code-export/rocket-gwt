@@ -168,12 +168,12 @@ Then proceed to ask the serializer to build a java object from the given json ob
 A `rocket.json.client.JsonDeserializationException` (its not a checked exception) will be thrown if anything goes wrong.
 
 {{{
-SomeClass instance = (SomeClass) serializer.writeObject( jsonObject );
+SomeClass instance = (SomeClass) serializer.writeJson( jsonObject );
 }}}
 
 To serialize from java back to json is quite simple as demonstrated by the example below.
 {{{
-JSONValue json = serializer.writeObject( instance );
+JSONValue json = serializer.writeJson( instance );
 }}}
 
 
@@ -181,3 +181,5 @@ JSONValue json = serializer.writeObject( instance );
 
 For further examples refer to the unit test 
   * `rocket.json.test.client.JsonGwtTestCase`
+ 
+ 
