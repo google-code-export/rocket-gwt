@@ -15,9 +15,8 @@
  */
 package rocket.widget.client.tabpanel;
 
-import com.google.gwt.user.client.ui.DeckPanel;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * A BottomTabPanel arranges its tab titles along the bottom edge with the
@@ -31,59 +30,47 @@ public class BottomTabPanel extends HorizonalTabPanel {
 		super();
 	}
 
-	protected HorizontalOrVerticalPanel createPanel() {
-		final VerticalPanelImpl panel = new VerticalPanelImpl();
-		panel.setStyleName(this.getPanelStyleName());
-
-		final DeckPanel contentPanel = this.createContentPanel();
-		this.setContentPanel(contentPanel);
-		panel.add(contentPanel);
-		panel.setCellHeight(contentPanel, "100%");
-
-		final HorizontalOrVerticalPanel tabBarPanel = this.createTabBarPanel();
-		this.setTabBarPanel(tabBarPanel);
-		panel.add((Widget) tabBarPanel);
-
-		return panel;
+	DockPanel.DockLayoutConstant getTabBarDockPanelConstants(){
+		return DockPanel.SOUTH;
 	}
-
-	protected TabPanel.HorizontalOrVerticalPanel createTabBarPanel() {
+	
+	protected TabPanel.TabBarPanel createTabBarPanel() {
 		return this.createTabBarPanel(HasVerticalAlignment.ALIGN_TOP);
 	}
 
-	protected String getPanelStyleName() {
-		return TabConstants.BOTTOM_TAB_PANEL_STYLE;
+	protected String getInitialStyleName() {
+		return Constants.BOTTOM_TAB_PANEL_STYLE;
 	}
 
 	protected String getTabBarStyleName() {
-		return TabConstants.BOTTOM_TAB_BAR_STYLE;
+		return Constants.BOTTOM_TAB_BAR_STYLE;
 	}
 
 	protected String getTabBarBeforeSpacerStyleName() {
-		return TabConstants.BOTTOM_TAB_BAR_BEFORE_SPACER_STYLE;
+		return Constants.BOTTOM_TAB_BAR_BEFORE_SPACER_STYLE;
 	}
 
 	protected String getTabBarAfterSpacerStyleName() {
-		return TabConstants.BOTTOM_TAB_BAR_AFTER_SPACER_STYLE;
+		return Constants.BOTTOM_TAB_BAR_AFTER_SPACER_STYLE;
 	}
 
 	protected String getTabBarItemStyleName() {
-		return TabConstants.BOTTOM_TAB_BAR_ITEM_STYLE;
+		return Constants.BOTTOM_TAB_BAR_ITEM_STYLE;
 	}
 
 	protected String getTabBarItemLabelStyleName() {
-		return TabConstants.BOTTOM_TAB_BAR_ITEM_LABEL_STYLE;
+		return Constants.BOTTOM_TAB_BAR_ITEM_LABEL_STYLE;
 	}
 
 	protected String getTabBarItemWidgetStyleName() {
-		return TabConstants.BOTTOM_TAB_BAR_ITEM_WIDGET_STYLE;
+		return Constants.BOTTOM_TAB_BAR_ITEM_WIDGET_STYLE;
 	}
 
 	protected String getTabBarItemSelectedStyleName() {
-		return TabConstants.BOTTOM_TAB_BAR_ITEM_SELECTED_STYLE;
+		return Constants.BOTTOM_TAB_BAR_ITEM_SELECTED_STYLE;
 	}
 
 	protected String getContentPanelStyleName() {
-		return TabConstants.BOTTOM_TAB_CONTENT_STYLE;
+		return Constants.BOTTOM_TAB_CONTENT_STYLE;
 	}
 }

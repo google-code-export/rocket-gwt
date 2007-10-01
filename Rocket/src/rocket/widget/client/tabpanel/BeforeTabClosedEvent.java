@@ -1,6 +1,6 @@
 /*
  * Copyright Miroslav Pokorny
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -15,12 +15,37 @@
  */
 package rocket.widget.client.tabpanel;
 
-public interface TabListener {
-	void onBeforeTabSelected( BeforeTabSelectedEvent event );
+/**
+ * This event is fired prior to a tab close happening..
+ * @author Miroslav Pokorny
+ */
+public class BeforeTabClosedEvent {
+
+	/**
+	 * The tabItem about to be closed.
+	 */
+	private TabItem closing;
 	
-	void onTabSelected( TabSelectedEvent event );
+	public TabItem getClosing(){
+		return closing;
+	}
+	void setClosing( final TabItem closing ){
+		this.closing = closing;
+	}
 	
-	void onBeforeTabClosed( BeforeTabClosedEvent event );
+	private boolean cancelled;
 	
-	void onTabClosed( TabClosedEvent event );
+	boolean isCancelled(){
+		return this.cancelled;
+	}
+	void setCancelled( final boolean cancelled ){
+		this.cancelled = cancelled;
+	}
+	
+	/**
+	 * Invoking this method cancels the tab from being closing.
+	 */
+	public void stop(){
+		this.setCancelled( true );
+	}
 }

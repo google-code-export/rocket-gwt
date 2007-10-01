@@ -1,11 +1,13 @@
 package rocket.widget.client.tabpanel;
 
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
+import rocket.widget.client.Html;
 import rocket.widget.client.WidgetHelper;
 
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DeckPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -15,11 +17,7 @@ import com.google.gwt.user.client.ui.Widget;
  * and content.
  * 
  * The content widget must be set before adding a TabItem to a TabPanel.
- * 
- * The {@link #addTabWidgetBeforeCaption(Widget)} and
- * {@link #addTabWidgetAfterCaption(Widget)} methods may be used to add
- * additional widgets such as Spinners to a tab item.
- * 
+ *  
  * @author Miroslav Pokorny (mP)
  */
 public class TabItem {
@@ -86,22 +84,22 @@ public class TabItem {
 	/**
 	 * The caption or title that appears above the content.
 	 */
-	private HTML captionWidget;
+	private Html captionWidget;
 
-	protected HTML getCaptionWidget() {
+	protected Html getCaptionWidget() {
 		ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
 		return this.captionWidget;
 	}
 
-	protected void setCaptionWidget(final HTML captionWidget) {
+	protected void setCaptionWidget(final Html captionWidget) {
 		ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
 		this.captionWidget = captionWidget;
 	}
 
-	protected HTML createCaptionWidget() {
-		final HTML html = new HTML();
-		html.addClickListener(new ClickListener() {
-			public void onClick(final Widget sender) {
+	protected Html createCaptionWidget() {
+		final Html html = new Html();
+		html.addMouseEventListener(new MouseEventAdapter() {
+			public void onClick(final MouseClickEvent event ) {
 				TabItem.this.select();
 			}
 		});
@@ -109,11 +107,11 @@ public class TabItem {
 	}
 
 	public String getCaption() {
-		return this.getCaptionWidget().getText();
+		return this.getCaptionWidget().getHtml();
 	}
 
-	public void setCaption(final String text) {
-		this.getCaptionWidget().setText(text);
+	public void setCaption(final String text) {			
+		this.getCaptionWidget().setHtml( StringHelper.changeSpacesToNonBreakingSpaces(text));
 	}
 
 	/**
@@ -165,7 +163,7 @@ public class TabItem {
 		final HorizontalPanel panel = new HorizontalPanel();
 		panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
 
-		final HTML captionWidget = this.createCaptionWidget();
+		final Html captionWidget = this.createCaptionWidget();
 		this.setCaptionWidget(captionWidget);
 		panel.add(captionWidget);
 

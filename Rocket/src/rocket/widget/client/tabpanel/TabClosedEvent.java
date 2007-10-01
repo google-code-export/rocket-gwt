@@ -1,6 +1,6 @@
 /*
  * Copyright Miroslav Pokorny
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -15,12 +15,31 @@
  */
 package rocket.widget.client.tabpanel;
 
-public interface TabListener {
-	void onBeforeTabSelected( BeforeTabSelectedEvent event );
+/**
+ * This event is fired after closing / removing a tab.
+ * @author Miroslav Pokorny
+ */
+public class TabClosedEvent {
+
+	/**
+	 * The new tabItem that was recently closed
+	 */
+	private TabItem closed;
 	
-	void onTabSelected( TabSelectedEvent event );
+	public TabItem getClosed(){
+		return closed;
+	}
+	void setClosed( final TabItem closed ){
+		this.closed = closed;
+	}
 	
-	void onBeforeTabClosed( BeforeTabClosedEvent event );
+	private TabPanel tabPanel;
 	
-	void onTabClosed( TabClosedEvent event );
+	public TabPanel getTabPanel(){
+		return tabPanel;
+	}
+	
+	void setTabPanel( final TabPanel tabPanel ){
+		this.tabPanel = tabPanel;
+	}
 }

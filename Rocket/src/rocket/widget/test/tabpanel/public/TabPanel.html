@@ -6,266 +6,204 @@
 <script language="javascript" src="gwt.js"></script>
 
 <style>
-BODY, TABLE{
+BODY, TABLE, P, BUTTON {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 10px;
 }
 
-/* TOP PANEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-.rocket-topTabPanel-verticalPanel{
-	margin: 10px;
-	border-width: 1px;
-	border-color: black;
+BUTTON, IMG, P {
+	margin: 4px;
+}
+
+/* PANEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-topTabPanel,
+.rocket-bottomTabPanel,
+.rocket-leftTabPanel,
+.rocket-rightTabPanel
+{
+	width: 99%;
+}
+
+.rocket-topTabPanel-tabBar-item,
+.rocket-bottomTabPanel-tabBar-item,
+.rocket-leftTabPanel-tabBar-item,
+.rocket-rightTabPanel-tabBar-item
+{
+	height: 1.25em;
+	margin: 2px;
 	border-style: solid;
-}
-
-TABLE.rocket-topTabPanel-verticalPanel{
-	width: 90%;
-}
-
-.rocket-topTabPanel-tabBar-first{
-	width: 10px;
-}
-.rocket-topTabPanel-tabBar-rest{
-}
-
-.rocket-topTabPanel-tabBar-item{
-	background-color: #222222;
-	color: #dddddd;
-	white-space: nowrap;
+	border-width: 2px;
+	padding: 2px;
+	font-size: 10px;
 	cursor: hand;
+	white-space: nowrap;	
+	valign: center;
 }
-.rocket-topTabPanel-tabBar-item-selected {
-	background-color: #dddddd;
-	color: #222222;
-	font-weight: bold;
-	cursor: default;
-}
-.rocket-topTabPanel-tabBar-item{
+
+DIV.rocket-topTabPanel-tabBar-item,
+DIV.rocket-bottomTabPanel-tabBar-item,
+DIV.rocket-leftTabPanel-tabBar-item,
+DIV.rocket-rightTabPanel-tabBar-item
+{
 	white-space: nowrap;
-
-	margin-top: 0px;
-	margin-left: 4px;
-	margin-right: 4px;
-	margin-bottom: 0px;
-
-	border-color: black;
-	border-top-width: 2px;
-	border-left-width: 2px;
-	border-right-width: 2px;
-	border-bottom-width: 0px;
-	border-style: solid;
-
-	padding-left: 4px;
-	padding-top: 4px;
-	padding-right: 4px;
-	padding-bottom: 1px;
 }
 
-.rocket-topTabPanel-content{
-	background-color: #aaccff;
+.rocket-topTabPanel-tabBar-item-selected,
+.rocket-bottomTabPanel-tabBar-item-selected,
+.rocket-leftTabPanel-tabBar-item-selected,
+.rocket-rightTabPanel-tabBar-item-selected
+{
+	font-size: 12px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.rocket-topTabPanel-content,
+.rocket-bottomTabPanel-content,
+.rocket-leftTabPanel-content,
+.rocket-rightTabPanel-content{
 	border-width: 4px;
 	border-style: solid;
-	border-color: #222222;
+	padding: 1em;
+	height: 300px;
 }
 
-/* BOTTOM PANEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-.rocket-bottomTabPanel-verticalPanel{
-	margin: 10px;
-	border-width: 1px;
-	border-color: black;
-	border-style: solid;
+/* TOP and BOTTOM PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+.rocket-topTabPanel TABLE TBODY TR TD,
+.rocket-bottomTabPanel TABLE TBODY TR TD {
+	height: 1em;
+}
+.rocket-topTabPanel TABLE TBODY TR TR TD,
+.rocket-bottomTabPanel TABLE TBODY TR TR TD {
+	height: auto;
 }
 
-TABLE.rocket-bottomTabPanel-verticalPanel{
-	width: 90%;
-}
-
+.rocket-topTabPanel-tabBar-first,
 .rocket-bottomTabPanel-tabBar-first{
-	width: 10px;
+	width: 1em;
 }
+.rocket-topTabPanel-tabBar-rest,
 .rocket-bottomTabPanel-tabBar-rest{
 }
 
+.rocket-topTabPanel-tabBar-item,
 .rocket-bottomTabPanel-tabBar-item{
-	background-color: #222222;
-	color: #dddddd;
-	white-space: nowrap;
-	cursor: hand;
+	width: 25em;
+	height: 1em;
+
+	padding: 4px;
+}
+
+.rocket-topTabPanel-tabBar-item{
+	margin-bottom: 0px;
+	border-color: #89f;
+	padding-bottom: 2px;	
+	background-color: #89f;	
+}
+.rocket-bottomTabPanel-tabBar-item {
+	margin-top: 0px;
+	border-color: #fe7;
+	padding-top: 2px;
+	background-color: #fe7;	
+}
+
+.rocket-topTabPanel-tabBar-item-selected,
+.rocket-bottomTabPanel-tabBar-item-selected {
+	padding: 15px;
+}
+.rocket-topTabPanel-tabBar-item-selected{
+	background-color: #45f;
+	border-color: #45f;
+	padding-bottom: 2px;	
+	color: #cdf;
 }
 .rocket-bottomTabPanel-tabBar-item-selected {
-	background-color: #dddddd;
-	color: #222222;
-	font-weight: bold;
-	cursor: default;
-}
-.rocket-bottomTabPanel-tabBar-item{
-	white-space: nowrap;
-
-	margin-bottom: 0px;
-	margin-left: 4px;
-	margin-right: 4px;
-	margin-bottom: 0px;
-
-	border-color: black;
-	border-top-width: 0px;
-	border-left-width: 2px;
-	border-right-width: 2px;
-	border-bottom-width: 2px;
-	border-style: solid;
-
-	padding-left: 4px;
-	padding-top: 1px;
-	padding-right: 4px;
-	padding-bottom: 4px;
+	background-color: #fe4;
+	border-color: #fe4;
+	padding-top: 2px;
+	color: #01a;
 }
 
+.rocket-topTabPanel-content{
+	margin-bottom: 0px;
+	border-color: #45f;
+	background-color: #bef;
+}
 .rocket-bottomTabPanel-content{
-	background-color: #aaccff;
-	border-width: 4px;
-	border-style: solid;
-	border-color: #222222;
+	margin-top: 0px;
+	border-color: #fe4;
+	background-color: #feb;
 }
 
-/* LEFT PANEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-.rocket-leftTabPanel-verticalPanel{
-	margin: 10px;
-	border-width: 1px;
-	border-color: black;
-	border-style: solid;
+/* LEFT and RIGHT TAB PANEL :::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+.rocket-leftTabPanel-tabBar-first,
+.rocket-rightTabPanel-tabBar-first {
+	height: 1em;
+}
+.rocket-leftTabPanel-tabBar-rest,
+.rocket-rightTabPanel-tabBar-rest {	
 }
 
-TABLE.rocket-leftTabPanel-verticalPanel{
-//	width: 90%;
-}
-
-.rocket-leftTabPanel-tabBar-first{
-	height: 10px;
-}
-.rocket-leftTabPanel-tabBar-rest{
-}
-
-.rocket-leftTabPanel-tabBar-item{
-	background-color: #222222;
-	color: #dddddd;
-	white-space: nowrap;
-	cursor: hand;
-}
-.rocket-leftTabPanel-tabBar-item-selected {
-	background-color: #dddddd;
-	color: #222222;
-	font-weight: bold;
-	cursor: default;
-}
-.rocket-leftTabPanel-tabBar-item{
-	white-space: nowrap;
-
+.rocket-leftTabPanel-tabBar-item,
+.rocket-rightTabPanel-tabBar-item {
+	width: 25em;
+	height: 1.25em;
 	margin-top: 2px;
-	margin-left: 4px;
+	margin-bottom: 2px;	
+	padding: 4px;
+}
+
+.rocket-leftTabPanel-tabBar-item{
 	margin-right: 0px;
-	margin-bottom: 2px;
+	border-color: #8f9;
+	padding-left: 2px;	
+	background-color: #8f9;	
+}
+.rocket-rightTabPanel-tabBar-item {
+	margin-left: 0px;
+	border-color: #fa7;
+	padding-right: 2px;
+	background-color: #fa7;	
+}
 
-	border-color: black;
-	border-top-width: 2px;
-	border-left-width: 2px;
-	border-right-width: 0px;
-	border-bottom-width: 2px;
-	border-style: solid;
-
+.rocket-leftTabPanel-tabBar-item-selected,
+.rocket-rightTabPanel-tabBar-item-selected {
+	padding: 15px;
+}
+.rocket-leftTabPanel-tabBar-item-selected{
+	background-color: #4f5;
+	border-color: #4f5;
+	padding-right: 2px;	
+	color: #cdf;
+}
+.rocket-rightTabPanel-tabBar-item-selected {
+	background-color: #f84;
+	border-color: #f84;
 	padding-left: 2px;
-	padding-top: 4px;
-	padding-right: 4px;
-	padding-bottom: 4px;
+	color: #01a;
 }
 
 .rocket-leftTabPanel-content{
-	background-color: #aaccff;
-	border-width: 4px;
-	border-style: solid;
-	border-color: #222222;
+	margin-right: 0px;
+	border-color: #4f5;
+	background-color: #bfe;
 }
-
-/* RIGHT PANEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-.rocket-rightTabPanel-verticalPanel{
-	margin: 10px;
-	border-width: 1px;
-	border-color: black;
-	border-style: solid;
-}
-
-TABLE.rocket-rightTabPanel-verticalPanel{
-//	width: 90%;
-}
-
-.rocket-rightTabPanel-tabBar-first{
-	height: 10px;
-}
-.rocket-rightTabPanel-tabBar-rest{
-}
-
-.rocket-rightTabPanel-tabBar-item{
-	background-color: #222222;
-	color: #dddddd;
-	white-space: nowrap;
-	cursor: hand;
-}
-.rocket-rightTabPanel-tabBar-item-selected {
-	background-color: #dddddd;
-	color: #222222;
-	font-weight: bold;
-	cursor: default;
-}
-.rocket-rightTabPanel-tabBar-item{
-	white-space: nowrap;
-
-	margin-top: 2px;
-	margin-left: 0px;
-	margin-right: 4px;
-	margin-bottom: 2px;
-
-	border-color: black;
-	border-top-width: 2px;
-	border-left-width: 0px;
-	border-right-width: 2px;
-	border-bottom-width: 2px;
-	border-style: solid;
-
-	padding-left: 4px;
-	padding-top: 4px;
-	padding-right: 2px;
-	padding-bottom: 4px;
-}
-
 .rocket-rightTabPanel-content{
-	background-color: #aaccff;
-	border-width: 4px;
-	border-style: solid;
-	border-color: #222222;
+	margin-left: 0px;
+	border-color: #f84;
+	background-color: #fde;
 }
 
 /* MISC ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 .rocket-interactiveList{
 	margin: 4px;
 	padding: 4px;
-	background-color: #dddddd;
+	background-color: #ddd;
 }
 
 .rocket-interactiveList BUTTON{
-	margin: 4px;
-}
-
-.rocket-interactiveList-log{
-	border-width: 1px;
-	border-color: #aaaaaa;
-	border-style: dashed;
-
-	padding: 4px;
-	
-	background-color: #eeeeee;
-	color: #222222;
-}
-
-BUTTON {
 	margin: 4px;
 }
 
@@ -273,14 +211,46 @@ BUTTON {
 </head>
 
 <body>
-This test includes 4 buttons that when clicked create a one of the four types of TabPanel. 
-<h3>Items to test.</h3>
+<h3>Things to test.</h3>
 <ul>
 <li>Only one tab may be active at any time. The active tab also shows its content</li>
 <li>Tabs may have any number of widgets both before and after the tab caption text.</li>
 <li>TabPanels include automatic support for the inclusion of a close button for tabs on a case by case basis</li>
 <li>Each tab includes a set of controls within an area with a grayish background. These may be used to add/insert/count/remove etc tabItems.</li>
+<li>The user is prompted to veto any of the possible tab events.</li>
 </ul>
 
+<div id="lorem" style="display: none;">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<img src="pine-cone.jpg" alt="pine cone">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<img src="thistle.jpg" alt="thistle">
+
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<img src="pine-cone.jpg" alt="pine cone">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<img src="thistle.jpg" alt="thistle">
+
+</div>
 </body>
 </html>
