@@ -20,6 +20,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import rocket.collection.client.CollectionHelper;
+import rocket.event.client.Event;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.KeyDownEvent;
+import rocket.event.client.KeyEventAdapter;
+import rocket.event.client.KeyUpEvent;
+import rocket.style.client.ComputedStyle;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
@@ -28,51 +34,52 @@ import rocket.util.client.StringHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * This widget combines a TextBox and VerticalList ( the drop down list portion ).
- * Clients should register a KeyboardListener and update the VerticalList with
- * auto complete match candidates. The component takes care of hiding/showing
- * the list.
+ * Each time text is typed a call to the {@link #buildDropDownList} is which
+ * should be used to add entries to the drop down list. The widget takes care of
+ * hiding and showing the list, as well as key navigation.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class AutoCompleteTextBox extends TextBox {
+abstract public class AutoCompleteTextBox extends TextBox {
 
 	public AutoCompleteTextBox() {
 		super();
-		this.setDropDownList(createDropDownList());
-		this.sinkEvents(Event.ONKEYDOWN | Event.ONKEYUP);
 	}
 
-	protected void onAttach() {
-		super.onAttach();
-
-		RootPanel.get().add(this.getDropDownList(), 0, 0);
+	public AutoCompleteTextBox(final Element element) {
+		super(element);
 	}
 
-	protected void onDetach() {
-		super.onDetach();
+	public void afterCreateElement() {
+		super.afterCreateElement();
 
-		final DropDownList dropDown = this.getDropDownList();
-		dropDown.clear();
-		dropDown.removeFromParent();
+		this.addKeyEventListener(new KeyEventAdapter() {
+			public void onKeyDown(final KeyDownEvent event) {
+				AutoCompleteTextBox.this.handleTextBoxKeyDown(event);
+			}
+
+			public void onKeyUp(final KeyUpEvent event) {
+				AutoCompleteTextBox.this.handleTextBoxKeyUp(event);
+			}
+
+		});
 	}
 
-	// PANEL
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	protected String getInitialStyleName() {
+		return WidgetConstants.AUTO_COMPLETE_TEXT_BOX_STYLE;
+	}
 
 	public boolean add(final String text) {
 		StringHelper.checkNotEmpty("parameter:text", text);
 
-		final HTML entry = createListEntry(text);
+		final Html entry = createListEntry(text);
 		int insertBefore = 0;
 
 		// create a list and add the new widget, followed by a sort which will
@@ -82,8 +89,8 @@ public class AutoCompleteTextBox extends TextBox {
 		htmlWidgets.add(entry);
 		Collections.sort(htmlWidgets, new Comparator() {
 			public int compare(final Object object, final Object otherObject) {
-				final HTML html = (HTML) object;
-				final HTML otherHtml = (HTML) otherObject;
+				final Html html = (Html) object;
+				final Html otherHtml = (Html) otherObject;
 
 				return html.getText().toLowerCase().compareTo(otherHtml.getText().toLowerCase());
 			}
@@ -95,10 +102,10 @@ public class AutoCompleteTextBox extends TextBox {
 		return true;
 	}
 
-	protected HTML createListEntry(final String text) {
+	protected Html createListEntry(final String text) {
 		StringHelper.checkNotEmpty("parameter:text", text);
 
-		return new HTML(text);
+		return new Html(text);
 	}
 
 	public void clear() {
@@ -109,92 +116,6 @@ public class AutoCompleteTextBox extends TextBox {
 		return this.getDropDownList().getWidgetCount();
 	}
 
-	// EVENT HANDLING
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-	public void onBrowserEvent(final Event event) {
-		while (true) {
-			final int eventType = DOM.eventGetType(event);
-			if (eventType == Event.ONKEYDOWN) {
-				this.handleTextBoxKeyDown(event);
-				break;
-			}
-			if (eventType == Event.ONKEYUP) {
-				this.handleTextBoxKeyUp(event);
-				break;
-			}
-			super.onBrowserEvent(event);
-			break;
-		}
-	}
-
-	protected void handleTextBoxKeyUp(final Event event) {
-		while (true) {
-			final char key = (char) DOM.eventGetKeyCode(event);
-
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_CANCEL_KEY || key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_ACCEPT_KEY
-					|| key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_UP_KEY || key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DOWN_KEY
-					|| key == KeyboardListener.KEY_LEFT || key == KeyboardListener.KEY_RIGHT) {
-				break;
-			}
-			super.onBrowserEvent(event);
-			if (key == KeyboardListener.KEY_BACKSPACE) {
-				break;
-			}
-
-			// if the list is empty hide it...
-			final DropDownList dropDownList = this.getDropDownList();
-			if (dropDownList.getWidgetCount() == 0) {
-				this.hideDropDownList();
-				break;
-			}
-
-			// show the list...
-			this.showDropDownList();
-
-			// select the difference between the textbox and the first match.
-			final Widget widget = this.getDropDownList().get(0);
-			final HTML html = (HTML) widget;
-			final String firstMatch = html.getText();
-
-			final int cursor = this.getCursorPos();
-			this.setText(firstMatch);
-			this.setSelectionRange(cursor, firstMatch.length() - cursor);
-			break;
-		}
-	}
-
-	protected void handleTextBoxKeyDown(final Event event) {
-		while (true) {
-			final char key = (char) DOM.eventGetKeyCode(event);
-
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_CANCEL_KEY) {
-				this.cancelDropDown();
-				DOM.eventPreventDefault(event);
-				break;
-			}
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_ACCEPT_KEY) {
-				if (this.hasSelected()) {
-					this.copyValue(this.getSelected());
-				}
-				this.hideDropDownList();
-				DOM.eventPreventDefault(event);
-				break;
-			}
-
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_UP_KEY) {
-				this.moveUpOneItem();
-				break;
-			}
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DOWN_KEY) {
-				this.moveDownOneItem();
-				break;
-			}
-			super.onBrowserEvent(event);
-			break;
-		}
-	}
-
 	/**
 	 * Shows the dropDownList. This is accomplished by absolutely positioning
 	 * the dropDownList( a VerticalPanel)below this very textbox.
@@ -203,12 +124,21 @@ public class AutoCompleteTextBox extends TextBox {
 		final int left = this.getAbsoluteLeft();
 		final int top = this.getAbsoluteTop() + this.getOffsetHeight();
 
-		final Widget dropDownList = this.getDropDownList();
+		final DropDownList dropDownList = this.getDropDownList();
+		this.setDropDownList(dropDownList);
+
 		final Element element = dropDownList.getElement();
 		InlineStyle.setInteger(element, StyleConstants.LEFT, left, CssUnit.PX);
 		InlineStyle.setInteger(element, StyleConstants.TOP, top, CssUnit.PX);
 
-		dropDownList.setWidth(this.getOffsetWidth() + "px");
+		final int paddingLeft = ComputedStyle.getInteger( element, StyleConstants.PADDING_LEFT, CssUnit.PX, 0 );		
+		final int paddingRight = ComputedStyle.getInteger( element, StyleConstants.PADDING_RIGHT, CssUnit.PX, 0 );
+		final int borderLeftWidth = ComputedStyle.getInteger( element, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0 );
+		final int borderRightWidth = ComputedStyle.getInteger( element, StyleConstants.BORDER_RIGHT_WIDTH, CssUnit.PX, 0 );
+		
+		final int newWidth = this.getOffsetWidth() - paddingLeft - paddingRight - borderLeftWidth - borderRightWidth;
+		
+		dropDownList.setWidth( newWidth + "px");
 		dropDownList.setVisible(true);
 
 		DOM.addEventPreview(this.getEventPreviewer());
@@ -220,7 +150,7 @@ public class AutoCompleteTextBox extends TextBox {
 	 * after the recently cancelled selection.
 	 */
 	public void hideDropDownList() {
-		this.getDropDownList().setVisible(false);
+		this.clearDropDownList();
 		this.clearSelected();
 
 		DOM.removeEventPreview(this.getEventPreviewer());
@@ -233,6 +163,10 @@ public class AutoCompleteTextBox extends TextBox {
 	private DropDownList dropDownList;
 
 	protected DropDownList getDropDownList() {
+		if (false == this.hasDropDownList()) {
+			this.setDropDownList(this.createDropDownList());
+		}
+
 		ObjectHelper.checkNotNull("field:dropDownList", dropDownList);
 		return this.dropDownList;
 	}
@@ -249,20 +183,43 @@ public class AutoCompleteTextBox extends TextBox {
 	protected DropDownList createDropDownList() {
 		final DropDownList list = new DropDownList();
 		list.setVisible(false);
-		list.setStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE);
+		list.setStyleName( this.getDropDownListStyle() );
 		this.setEventPreviewer(this.createEventPreviewer());
+
+		RootPanel.get().add(list, 0, 0);
 		return list;
+	}
+	
+	protected String getDropDownListStyle(){
+		return WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE;
+	}
+
+	protected void clearDropDownList() {
+		if (this.hasDropDownList()) {
+			this.getDropDownList().removeFromParent();
+			this.dropDownList = null;
+		}
+	}
+
+	protected String getDropDownListOddRowStyle(){
+		return WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE;
+	}
+	protected String getDropDownListEvenRowStyle(){
+		return WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE;
 	}
 
 	class DropDownList extends DivPanel {
 		public void insert(final Widget widget, final int indexBefore) {
 			super.insert(widget, indexBefore);
 
-			String add = WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE;
-			String remove = WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE;
+			final String oddRowStyle = AutoCompleteTextBox.this.getDropDownListOddRowStyle();
+			final String evenRowStyle = AutoCompleteTextBox.this.getDropDownListEvenRowStyle();
+			
+			String add = oddRowStyle;
+			String remove = evenRowStyle;
 			if ((indexBefore & 1) == 0) {
-				add = WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE;
-				remove = WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE;
+				add = evenRowStyle;
+				remove = oddRowStyle;
 			}
 			widget.addStyleName(add);
 
@@ -282,19 +239,22 @@ public class AutoCompleteTextBox extends TextBox {
 			}
 		}
 
-		public void remove(final int index) {
+		public boolean remove(final int index) {
 			super.remove(index);
 
 			// fix the classnames of all widgets after $index
 			final int widgetCount = this.getWidgetCount();
 
-			String add = WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE;
-			String remove = WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE;
-			if ((index & 1) == 0) {
-				add = WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE;
-				remove = WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE;
-			}
+			final String oddRowStyle = AutoCompleteTextBox.this.getDropDownListOddRowStyle();
+			final String evenRowStyle = AutoCompleteTextBox.this.getDropDownListEvenRowStyle();
 
+			String add = oddRowStyle;
+			String remove = evenRowStyle;
+			if ((index & 1) == 0) {
+				add = evenRowStyle;
+				remove = oddRowStyle;
+			}
+			
 			for (int i = index; i < widgetCount; i++) {
 				final Widget after = this.get(i);
 				after.removeStyleName(remove);
@@ -306,7 +266,110 @@ public class AutoCompleteTextBox extends TextBox {
 				add = remove;
 				remove = swap;
 			}
+			return true;
 		}
+	}
+
+	/**
+	 * This method is fired whenever the textbox receives a key up event.
+	 * 
+	 * @param event
+	 */
+	protected void handleTextBoxKeyUp(final KeyUpEvent event) {
+		while (true) {
+			final char key = event.getKey();
+
+			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_CANCEL_KEY || key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_ACCEPT_KEY
+					|| key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_UP_KEY || key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DOWN_KEY
+					|| key == KeyboardListener.KEY_LEFT || key == KeyboardListener.KEY_RIGHT) {
+				break;
+			}
+			event.stop();
+
+			this.buildDropDownList();
+
+			// if the list is empty hide it...
+			final DropDownList dropDownList = this.getDropDownList();
+			if (dropDownList.getWidgetCount() == 0) {
+				this.hideDropDownList();
+				break;
+			}
+
+			// show the list...
+			this.showDropDownList();
+
+			if (key == KeyboardListener.KEY_BACKSPACE) {
+				event.stop();
+				break;
+			}		
+			
+			// select the difference between the textbox and the first match.
+			final Html html = (Html) this.getDropDownList().get(0);
+			final String firstMatch = html.getText();
+
+			final int cursor = this.getCursorPos();
+			this.setText(firstMatch);
+			this.setSelectionRange(cursor, firstMatch.length() - cursor);
+			break;
+		}
+	}
+
+	/**
+	 * Sub classes must override this method to build up the appropriate drop
+	 * down list. Typically the first step involves clearing or removing
+	 * existing items and then proceeding to add.
+	 */
+	abstract protected void buildDropDownList();
+
+	/**
+	 * This method is fired each time the textbox receives a key down event.
+	 * 
+	 * @param event
+	 */
+	protected void handleTextBoxKeyDown(final KeyDownEvent event) {
+		while (true) {
+			final char key = event.getKey();
+
+			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_CANCEL_KEY) {
+				this.cancelDropDown();
+				event.stop();
+				break;
+			}
+			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_ACCEPT_KEY) {
+				if (this.hasSelected()) {
+					this.copyValue(this.getSelected());
+				}
+				this.hideDropDownList();
+				event.stop();
+				break;
+			}
+
+			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_UP_KEY) {
+				this.moveUpOneItem();
+				event.stop();
+				break;
+			}
+			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DOWN_KEY) {
+				this.moveDownOneItem();
+				event.stop();
+				break;
+			}
+			break;
+		}
+	}
+
+	/**
+	 * Closes the drop down list.
+	 */
+	protected void cancelDropDown() {
+		final int cursor = this.getCursorPos();
+		final int selectionLength = this.getSelectionLength();
+		final String text = this.getText();
+
+		this.setText(text.substring(0, cursor) + text.substring(cursor + selectionLength));
+		this.setCursorPos(cursor);
+
+		this.hideDropDownList();
 	}
 
 	/**
@@ -331,8 +394,8 @@ public class AutoCompleteTextBox extends TextBox {
 
 	protected EventPreview createEventPreviewer() {
 		final EventPreview watcher = new EventPreview() {
-			public boolean onEventPreview(final Event event) {
-				return AutoCompleteTextBox.this.onEventPreview(event);
+			public boolean onEventPreview(final com.google.gwt.user.client.Event rawEvent) {
+				return AutoCompleteTextBox.this.onDropDownListEventPreview(Event.getEvent(rawEvent));
 			}
 		};
 		return watcher;
@@ -347,31 +410,30 @@ public class AutoCompleteTextBox extends TextBox {
 	 * @param event
 	 * @return
 	 */
-	protected boolean onEventPreview(final Event event) {
+	protected boolean onDropDownListEventPreview(final Event event) {
 		boolean dontCancel = true;
 		while (true) {
 			// if the target element is not the TextBox or DropDownList and the
-			// eventType is either click/focus hideDropDown
-			final Element target = DOM.eventGetTarget(event);
-			final int eventType = DOM.eventGetType(event);
+			final Element target = event.getTarget();
+			final int eventType = event.getBitMask();
 			final DropDownList dropDownList = this.getDropDownList();
-			if ((eventType == Event.ONCLICK || eventType == Event.ONFOCUS)
+			if ((eventType == EventBitMaskConstants.MOUSE_CLICK || eventType == EventBitMaskConstants.FOCUS)
 					& false == (target == this.getElement() || DOM.isOrHasChild(dropDownList.getElement(), target))) {
 				this.hideDropDownList();
 				break;
 			}
 
 			// ignore event if is not a click/mouseOut/mouseOver.
-			final boolean click = eventType == Event.ONCLICK;
-			final boolean err = eventType == Event.ONMOUSEOUT;
-			final boolean over = eventType == Event.ONMOUSEOVER;
+			final boolean click = eventType == EventBitMaskConstants.MOUSE_CLICK;
+			final boolean err = eventType == EventBitMaskConstants.MOUSE_OUT;
+			final boolean over = eventType == EventBitMaskConstants.MOUSE_OVER;
 			if (false == (click | err | over)) {
 				break;
 			}
 
 			// if a widget wasnt found ignore the event - because cant determine
 			// which mouse event applies too.
-			final Widget widget = WidgetHelper.findWidget(DOM.eventGetTarget(event), dropDownList.iterator());
+			final Widget widget = WidgetHelper.findWidget(target, dropDownList.iterator());
 			if (null == widget) {
 				break;
 			}
@@ -397,24 +459,28 @@ public class AutoCompleteTextBox extends TextBox {
 		return dontCancel;
 	}
 
-	protected void clearEventPreviewerer() {
-		DOM.removeEventPreview(this.getEventPreviewer());
-		this.dropDownList = null;
+	/**
+	 * This method is used to select another widget and usually occurs whenever
+	 * the user moves the select cursor via the keyboard or a mouse over.
+	 * Listeners are notified prior to changing the selected item.
+	 * 
+	 * @param widget
+	 */
+	protected void select(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+
+		// unselect the previously selected widget.
+		if (this.hasSelected()) {
+			this.unselect(this.getSelected());
+		}
+
+		widget.addStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE);
+		this.setSelected(widget);
 	}
 
-	/**
-	 * Closes the drop down list.
-	 * 
-	 */
-	protected void cancelDropDown() {
-		final int cursor = this.getCursorPos();
-		final int selectionLength = this.getSelectionLength();
-		final String text = this.getText();
-
-		this.setText(text.substring(0, cursor) + text.substring(cursor + selectionLength));
-		this.setCursorPos(cursor);
-
-		this.hideDropDownList();
+	protected void unselect(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+		widget.removeStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE);
 	}
 
 	/**
@@ -426,7 +492,7 @@ public class AutoCompleteTextBox extends TextBox {
 	protected void copyValue(final Widget widget) {
 		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-		final HTML html = (HTML) widget;
+		final Html html = (Html) widget;
 		this.setText(html.getText());
 	}
 
@@ -472,30 +538,6 @@ public class AutoCompleteTextBox extends TextBox {
 	}
 
 	/**
-	 * This method is used to select another widget and usually occurs whenever
-	 * the user moves the select cursor via the keyboard or a mouse over.
-	 * Listeners are notified prior to changing the selected item.
-	 * 
-	 * @param widget
-	 */
-	protected void select(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
-
-		// unselect the previously selected widget.
-		if (this.hasSelected()) {
-			this.unselect(this.getSelected());
-		}
-
-		widget.addStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE);
-		this.setSelected(widget);
-	}
-
-	protected void unselect(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
-		widget.removeStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE);
-	}
-
-	/**
 	 * The widget that is currently being highlighted
 	 */
 	private Widget selected;
@@ -519,10 +561,5 @@ public class AutoCompleteTextBox extends TextBox {
 			selected.removeStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE);
 		}
 		this.selected = null;
-	}
-
-	public String toString() {
-		return super.toString() + ", dropDownList: " + dropDownList + ", eventPreviewer: " + this.eventPreviewer + ", selected: "
-				+ selected;
 	}
 }
