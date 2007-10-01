@@ -2,4 +2,18 @@
 	<generate-with class="rocket.widget.rebind.htmltemplatefactory.HtmlTemplateGenerator">
 		<when-type-assignable class="rocket.widget.client.HtmlTemplateFactory" />
 	</generate-with>
+
+
+	<!-- Fall through to this rule if the browser isn't Safari -->
+	<replace-with class="rocket.widget.client.support.ListBox">
+		<when-type-is class="rocket.widget.client.support.ListBox"/>
+	</replace-with>
+
+	<!-- Safari requires a different ListBox implementation -->
+	
+	<replace-with class="rocket.widget.client.support.SafariListBox">
+		<when-type-is class="rocket.widget.client.support.ListBox"/>
+		<when-property-is name="user.agent" value="safari"/>
+	</replace-with>
+
 </module>
