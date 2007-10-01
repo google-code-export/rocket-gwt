@@ -29,22 +29,6 @@ class MenuListenerCollection {
 		this.setListeners(this.createListeners());
 	}
 
-	// FIRE EVENTS ::::::::::::::::::::::::::::::::::::::
-
-	public void fireMenuCancelled(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
-
-		final MenuOpenCancelledEvent event = new MenuOpenCancelledEvent();
-		event.setWidget( widget );
-		
-		final Iterator listeners = this.iterator();
-
-		while (listeners.hasNext()) {
-			final MenuListener listener = (MenuListener) listeners.next();
-			listener.onOpenCancelled(event);
-		}
-	}
-
 	public boolean fireBeforeMenuOpened(final Widget widget) {
 		ObjectHelper.checkNotNull("parameter:widget", widget);
 
@@ -79,6 +63,20 @@ class MenuListenerCollection {
 		}
 	}
 
+	public void fireCancelledOpen(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+
+		final CancelledMenuOpenEvent event = new CancelledMenuOpenEvent();
+		event.setWidget( widget );
+		
+		final Iterator listeners = this.iterator();
+
+		while (listeners.hasNext()) {
+			final MenuListener listener = (MenuListener) listeners.next();
+			listener.onCancelledOpen(event);
+		}
+	}
+	
 	public void add(final MenuListener menuListener) {
 		this.getListeners().add(menuListener);
 	}

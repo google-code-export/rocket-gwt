@@ -28,7 +28,7 @@ import rocket.widget.client.menu.Menu;
 import rocket.widget.client.menu.MenuItem;
 import rocket.widget.client.menu.MenuListOpenDirection;
 import rocket.widget.client.menu.MenuListener;
-import rocket.widget.client.menu.MenuOpenCancelledEvent;
+import rocket.widget.client.menu.CancelledMenuOpenEvent;
 import rocket.widget.client.menu.MenuOpenEvent;
 import rocket.widget.client.menu.MenuSpacer;
 import rocket.widget.client.menu.SubMenuItem;
@@ -73,7 +73,7 @@ public class MenuTest implements EntryPoint {
 		rootPanel.add( menusOpened );
 		
 		final MenuListener listener = new MenuListener() {
-				public void onOpenCancelled(final MenuOpenCancelledEvent event ) {
+				public void onCancelledOpen(final CancelledMenuOpenEvent event ) {
 					menusCancelled.increment();
 				}
 

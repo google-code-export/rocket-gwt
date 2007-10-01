@@ -17,14 +17,5 @@ package rocket.widget.client.menu;
 
 import com.google.gwt.user.client.ui.Widget;
 
-public class MenuOpenEvent {
-	
-	private Widget widget;
-	
-	public Widget getWidget(){
-		return this.widget;
-	}
-	void setWidget( final Widget widget ){
-		this.widget = widget;
-	}
+public class MenuOpenEvent extends MenuEvent{
 }
