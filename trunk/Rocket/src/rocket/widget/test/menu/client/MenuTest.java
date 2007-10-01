@@ -21,7 +21,7 @@ import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.widget.client.Label;
-import rocket.widget.client.menu.BeforeMenuOpenedEvent;
+import rocket.widget.client.menu.BeforeMenuOpenEvent;
 import rocket.widget.client.menu.ContextMenu;
 import rocket.widget.client.menu.HorizontalMenuBar;
 import rocket.widget.client.menu.Menu;
@@ -29,7 +29,7 @@ import rocket.widget.client.menu.MenuItem;
 import rocket.widget.client.menu.MenuListOpenDirection;
 import rocket.widget.client.menu.MenuListener;
 import rocket.widget.client.menu.MenuOpenCancelledEvent;
-import rocket.widget.client.menu.MenuOpenedEvent;
+import rocket.widget.client.menu.MenuOpenEvent;
 import rocket.widget.client.menu.MenuSpacer;
 import rocket.widget.client.menu.SubMenuItem;
 import rocket.widget.client.menu.VerticalMenuBar;
@@ -73,15 +73,15 @@ public class MenuTest implements EntryPoint {
 		rootPanel.add( menusOpened );
 		
 		final MenuListener listener = new MenuListener() {
-				public void onMenuCancelled(final MenuOpenCancelledEvent event ) {
+				public void onOpenCancelled(final MenuOpenCancelledEvent event ) {
 					menusCancelled.increment();
 				}
 
-				public void onBeforeMenuOpened( final BeforeMenuOpenedEvent event ) {
+				public void onBeforeOpen( final BeforeMenuOpenEvent event ) {
 					beforeMenusOpened.increment();
 				}
 
-				public void onMenuOpened( final MenuOpenedEvent event) {
+				public void onOpen( final MenuOpenEvent event) {
 					menusOpened.increment();
 				}
 		};
