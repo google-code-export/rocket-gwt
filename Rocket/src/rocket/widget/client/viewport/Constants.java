@@ -15,7 +15,6 @@
  */
 package rocket.widget.client.viewport;
 
-import rocket.style.client.StyleHelper;
 import rocket.widget.client.WidgetConstants;
 
 /**
@@ -23,13 +22,12 @@ import rocket.widget.client.WidgetConstants;
  * 
  * @author Miroslav Pokorny
  */
-class ViewportConstants {
+class Constants {
+	public final static String VIEWPORT_STYLE = WidgetConstants.ROCKET + "-viewport";
 
-	public final static String VIEWPORT_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "viewport");
+	public final static String VIEWPORT_TILE_STYLE = VIEWPORT_STYLE + "-tile";
 
-	public final static String VIEWPORT_TILE_STYLE = StyleHelper.buildCompound(VIEWPORT_STYLE, "tile");
-
-	public final static String VIEWPORT_OUT_OF_BOUNDS_STYLE = StyleHelper.buildCompound(VIEWPORT_STYLE, "outOfBounds");
+	public final static String VIEWPORT_OUT_OF_BOUNDS_STYLE = VIEWPORT_STYLE + "-outOfBounds";
 
 	final static String TILE_LEFT_ATTRIBUTE = "__tileLeft";
 
