@@ -1,6 +1,6 @@
 // listbox.txt
 
-com.google.gwt.user.client.ui.Label label = (com.google.gwt.user.client.ui.Label) this.getWidget( ${id} );
+rocket.widget.client.Label label = (rocket.widget.client.Label) this.getWidget( ${id} );
 if( null == label ){
 	label = bindLabel( ${id} );
 }

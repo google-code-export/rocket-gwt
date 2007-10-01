@@ -1,6 +1,6 @@
 // html.txt
 
-com.google.gwt.user.client.ui.HTML html = (com.google.gwt.user.client.ui.HTML) this.getWidget( ${id} );
+rocket.widget.client.Html html = (rocket.widget.client.Html) this.getWidget( ${id} );
 if( null == html ){
 	html = bindHtml( ${id} );
 }

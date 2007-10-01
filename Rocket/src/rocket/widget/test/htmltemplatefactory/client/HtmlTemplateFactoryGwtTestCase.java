@@ -1,28 +1,25 @@
 package rocket.widget.test.htmltemplatefactory.client;
 
 import rocket.dom.client.Dom;
+import rocket.widget.client.Button;
+import rocket.widget.client.CheckBox;
+import rocket.widget.client.FormPanel;
+import rocket.widget.client.Html;
 import rocket.widget.client.HtmlTemplateFactory;
+import rocket.widget.client.Hyperlink;
+import rocket.widget.client.Image;
+import rocket.widget.client.Label;
+import rocket.widget.client.ListBox;
+import rocket.widget.client.RadioButton;
+import rocket.widget.client.TextArea;
+import rocket.widget.client.TextBox;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.IndexedPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-
 public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public String getModuleName() {
@@ -79,7 +76,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			}
 
 			void doRemainingTests(final Element element, final Widget widget) {
-				final PasswordTextBox password = (PasswordTextBox) widget;
+				final TextBox password = (TextBox) widget;
 				final String value = "apple";
 				DOM.setElementProperty(element, "value", value);
 				assertEquals("" + password, value, password.getText());
@@ -93,7 +90,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 		 * @id testPasswordTextBox
 		 * @return
 		 */
-		PasswordTextBox getPasswordTextBox();
+		TextBox getPasswordTextBox();
 	}
 
 	public void testTextArea() {
@@ -359,7 +356,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 				final Hyperlink hyperlink = (Hyperlink) widget;
 				final String value = "apple";
 				DOM.setInnerHTML(element, value);
-				assertTrue("HyperLink:" + hyperlink + "\nelement:" + element, hyperlink.getHTML().indexOf(value) != -1);
+				assertTrue("HyperLink:" + hyperlink + "\nelement:" + element, hyperlink.getHtml().indexOf(value) != -1);
 			}
 		};
 		test.run();
@@ -389,10 +386,10 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			}
 
 			void doRemainingTests(final Element element, final Widget widget) {
-				final HTML html = (HTML) widget;
+				final Html html = (Html) widget;
 				final String value = "<b>apple</b>";
 				DOM.setInnerHTML(element, value);
-				assertEquals("" + html, value.toLowerCase(), html.getHTML().toLowerCase());
+				assertEquals("" + html, value.toLowerCase(), html.getHtml().toLowerCase());
 			}
 		};
 		test.run();
@@ -404,7 +401,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 		 * @id testHtml
 		 * @return
 		 */
-		HTML getHtml();
+		Html getHtml();
 	}
 
 	public void testForm() {
@@ -450,28 +447,26 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			}
 
 			void doRemainingTests(final Element element, final Widget widget) {
-				final FormPanel formPanel = (FormPanel) widget;
+				final FormPanel panel = (FormPanel) widget;
 
-				assertTrue("method", "POST".equalsIgnoreCase(formPanel.getMethod()));
-				assertTrue("action", formPanel.getAction().indexOf("test") != -1);
-
-				final IndexedPanel panel = (IndexedPanel) formPanel.getWidget();
+				assertTrue("method", "POST".equalsIgnoreCase(panel.getMethod()));
+				assertTrue("action", panel.getAction().indexOf("test") != -1);
 
 				assertEquals("widgetCount", 5, panel.getWidgetCount());
 
-				final TextBox textBox = (TextBox) panel.getWidget(0);
+				final TextBox textBox = (TextBox) panel.get(0);
 				assertNotNull(textBox);
 
-				final PasswordTextBox password = (PasswordTextBox) panel.getWidget(1);
+				final TextBox password = (TextBox) panel.get(1);
 				assertNotNull(password);
 
-				final ListBox listBox = (ListBox) panel.getWidget(2);
+				final ListBox listBox = (ListBox) panel.get(2);
 				assertNotNull(listBox);
 
-				final CheckBox checkBox = (CheckBox) panel.getWidget(3);
+				final CheckBox checkBox = (CheckBox) panel.get(3);
 				assertNotNull(checkBox);
 
-				final RadioButton radioButton = (RadioButton) panel.getWidget(4);
+				final RadioButton radioButton = (RadioButton) panel.get(4);
 				assertNotNull(radioButton);
 
 				panel.remove(0);

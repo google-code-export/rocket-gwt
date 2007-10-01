@@ -1,6 +1,6 @@
 // textarea.txt
 
-com.google.gwt.user.client.ui.TextArea textArea = (com.google.gwt.user.client.ui.TextArea) this.getWidget( ${id} );
+rocket.widget.client.TextArea textArea = (rocket.widget.client.TextArea) this.getWidget( ${id} );
 if( null == textArea ){
 	textArea = bindTextArea( ${id} );
 }
