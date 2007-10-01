@@ -1,43 +1,130 @@
+/*
+ * Copyright Miroslav Pokorny
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package rocket.widget.client;
 
 import java.util.Iterator;
 
 import rocket.collection.client.CollectionHelper;
+import rocket.event.client.Event;
+import rocket.event.client.EventListener;
 import rocket.util.client.ObjectHelper;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.ChangeListenerCollection;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.ClickListenerCollection;
-import com.google.gwt.user.client.ui.FocusListener;
-import com.google.gwt.user.client.ui.FocusListenerCollection;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.KeyboardListener;
-import com.google.gwt.user.client.ui.KeyboardListenerCollection;
-import com.google.gwt.user.client.ui.MouseListener;
-import com.google.gwt.user.client.ui.MouseListenerCollection;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.WidgetCollection;
 
 /**
- * Convenient base class for any Panel implementation.
+ * Convenient base class for any Panel implementation. It includes support for
+ * hijacking an element sourced from the dom.
+ * 
+ * Creating a new panel including a new element.
+ * <ul>
+ * <li>{@link #beforeCreatePanelElement()}</li>
+ * <li>{@link #createPanelElement()}</li>
+ * <li>{@link #afterCreatePanelElement()}</li>
+ * <li>{@link #applyStyleName()} Override this to do nothing if this panel has no initial style.</li>
+ * </li>
+ * 
+ * Create a new panel with an element hijacked from the dom.
+ * <ul>
+ * <li>{@link #checkElement(Element)} Check that the element is of the correct type</li>
+ * <li>{@link #beforeCreatePanelElement()}</li>
+ * <li>{@link #setElement( Element from constructor )}</li>
+ * <li>{@link #afterCreatePanelElement()}</li>
+ * <li>{@link #applyStyleName()} Override this to do nothing if this panel has no initial style.</li>
+ * </li>
+ * 
+ * The initial style of the root element from this panel is taken from {@link #getInitialStyleName()}
  * 
  * @author Miroslav Pokorny (mP)
  */
-abstract public class Panel extends com.google.gwt.user.client.ui.Panel implements HasWidgets {
+abstract public class Panel extends com.google.gwt.user.client.ui.Panel implements HasWidgets, EventListener {
 
+	/**
+	 * This constructor should be used when creating a new panel from scratch
+	 */
 	protected Panel() {
-		this.setWidgetCollection(createWidgetCollection());
+		prepare();
+	}
+
+	protected void prepare() {
+		this.setWidgetCollection(this.createWidgetCollection());
 
 		this.beforeCreatePanelElement();
 		this.setElement(this.createPanelElement());
 		this.afterCreatePanelElement();
+		this.applyStyleName();
 	}
 
+	/**
+	 * This constructor should be used when creating a new widget but using an
+	 * element taken from the dom.
+	 * 
+	 * @param element
+	 */
+	protected Panel(final Element element) {
+		prepare(element);
+	}
+
+	protected void prepare(final Element element) {
+		this.checkElement(element);
+		
+		this.setWidgetCollection(this.createWidgetCollection());
+
+		final Hijacker hijacker = new Hijacker(element);
+		hijacker.save();
+
+		this.beforeCreatePanelElement();
+		this.setElement(element);
+		this.afterCreatePanelElement();
+
+		RootPanel.get().add(this);
+		hijacker.restore();
+
+		this.applyStyleName();
+	}
+
+	/**
+	 * This special constructor should only be used by {@link CompositePanel}.
+	 * 
+	 * @param panel
+	 */
+	Panel(final boolean ignored ) {
+		super();
+	}
+
+	/**
+	 * This method is called when the lets wrap an existing DOM element
+	 * constructor is used. Sub classes should check that the element is the
+	 * appropriate type.
+	 * 
+	 * @param element
+	 */
+	abstract protected void checkElement(Element element);
+
 	protected void beforeCreatePanelElement() {
+		final int eventBitsSunk = this.getSunkEventsBitMask();
+
+		final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
+		this.setEventListenerDispatcher(dispatcher);
+		dispatcher.prepareListenerCollections(eventBitsSunk);
 	}
 
 	/**
@@ -48,21 +135,34 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	abstract protected Element createPanelElement();
 
 	/**
-	 * This method provides an opportunity for sub classes to register listener collections etctener collections etc
+	 * This method provides an opportunity for sub classes to do stuff after the
+	 * element has been created.
 	 */
 	protected void afterCreatePanelElement() {
 	}
 
+	protected void applyStyleName() {
+		this.setStyleName(this.getInitialStyleName());
+	}
+
+	/**
+	 * Sub classes must override this method to return the stylename applied to
+	 * the primary element.
+	 * 
+	 * @return
+	 */
+	abstract protected String getInitialStyleName();
+
 	protected void onAttach() {
 		super.onAttach();
 
-		this.setSinkEvents();
+		this.doSinkEvents();
 	}
 
 	/**
 	 * Sets event sinking and listener.
 	 */
-	protected void setSinkEvents() {
+	protected void doSinkEvents() {
 		final Element original = this.getElement();
 		final Element target = this.getSunkEventsTarget();
 
@@ -96,6 +196,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 		if (0 != this.getSunkEventsBitMask()) {
 			DOM.setEventListener(this.getSunkEventsTarget(), this);
 		}
+		super.onDetach();
 	}
 
 	/**
@@ -129,12 +230,18 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	}
 
 	/**
-	 * Sub-classes need to insert the given widget into the
+	 * Sub-classes need to insert the given widget into the DOM
 	 * 
 	 * @param widget
 	 * @param indexBefore
 	 */
 	public void insert(final Widget widget, int indexBefore) {
+		if (widget.getParent() != null) {
+			throw new IllegalArgumentException(
+					"The parameter:widget already has a parent, remove from that first and then add/insert again to this "
+							+ GWT.getTypeName(this));
+		}
+
 		this.insert0(widget, indexBefore);
 		this.adopt(widget);
 		this.getWidgetCollection().insert(widget, indexBefore);
@@ -180,13 +287,15 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	 * 
 	 * @param index
 	 */
-	public void remove(final int index) {
+	public boolean remove(final int index) {
 		final WidgetCollection widgets = this.getWidgetCollection();
 
 		final Widget widget = widgets.get(index);
 		this.remove0(widget.getElement(), index);// cleanup opportunity
 		this.orphan(widget);
 		widgets.remove(index);
+		
+		return true;
 	}
 
 	protected void remove0(final Widget widget, final int index) {
@@ -210,6 +319,10 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 		CollectionHelper.removeAll(this.iterator());
 	}
 
+	/**
+	 * Returns an iterator which may be used to visit all the widgets belonging
+	 * to this panel.
+	 */
 	public Iterator iterator() {
 		return this.getWidgetCollection().iterator();
 	}
@@ -238,198 +351,38 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	 * Dispatches the and fires the appropriate listeners based on the event
 	 * type
 	 */
-	public void onBrowserEvent(final Event event) {
-		while (true) {
-			final int eventType = DOM.eventGetType(event);
-			if (eventType == Event.ONCHANGE) {
-				if (this.hasChangeListeners()) {
-					this.getChangeListeners().fireChange(this);
-				}
-				break;
-			}
-			if (eventType == Event.ONCLICK) {
-				if (this.hasClickListeners()) {
-					this.getClickListeners().fireClick(this);
-				}
-				break;
-			}
-			if ((eventType & Event.FOCUSEVENTS) != 0) {
-				if (this.hasFocusListeners()) {
-					this.getFocusListeners().fireFocusEvent(this, event);
-				}
-				break;
-			}
-			if ((eventType & Event.KEYEVENTS) != 0) {
-				if (this.hasKeyboardListeners()) {
-					this.getKeyboardListeners().fireKeyboardEvent(this, event);
-				}
-				break;
-			}
-			if ((eventType & Event.MOUSEEVENTS) != 0) {
-				if (this.hasMouseListeners()) {
-					this.getMouseListeners().fireMouseEvent(this, event);
-				}
-			}
-			break;
+	public void onBrowserEvent(final com.google.gwt.user.client.Event rawEvent) {
+		Event event = null;
+		try {
+			event = Event.getEvent(rawEvent);
+			event.setWidget(this);
+			this.onBrowserEvent(event);
+		} finally {
+			ObjectHelper.destroyIfNecessary(event);
 		}
 	}
 
-	/**
-	 * A collection of change listeners interested in change events for this
-	 * widget.
-	 */
-	private ChangeListenerCollection changeListeners;
-
-	protected ChangeListenerCollection getChangeListeners() {
-		ObjectHelper.checkNotNull("field:changeListeners", changeListeners);
-		return this.changeListeners;
-	}
-
-	protected boolean hasChangeListeners() {
-		return null != this.changeListeners;
-	}
-
-	protected void setChangeListeners(final ChangeListenerCollection changeListeners) {
-		ObjectHelper.checkNotNull("parameter:changeListeners", changeListeners);
-		this.changeListeners = changeListeners;
-	}
-
-	protected ChangeListenerCollection createChangeListeners() {
-		return new ChangeListenerCollection();
-	}
-
-	protected void addChangeListener(final ChangeListener changeListener) {
-		this.getChangeListeners().add(changeListener);
-	}
-
-	protected void removeChangeListener(final ChangeListener changeListener) {
-		this.getChangeListeners().remove(changeListener);
+	public void onBrowserEvent(final Event event) {
+		this.getEventListenerDispatcher().onBrowserEvent(event);
 	}
 
 	/**
-	 * A collection of click listeners interested in click events for this
-	 * widget.
+	 * The dispatcher that fires the appropriate listener event for any
+	 * registered event listeners.
 	 */
-	private ClickListenerCollection clickListeners;
+	private EventListenerDispatcher eventListenerDispatcher;
 
-	protected ClickListenerCollection getClickListeners() {
-		ObjectHelper.checkNotNull("field:clickListeners", clickListeners);
-		return this.clickListeners;
+	protected EventListenerDispatcher getEventListenerDispatcher() {
+		ObjectHelper.checkNotNull("field:eventListenerDispatcher", this.eventListenerDispatcher);
+		return this.eventListenerDispatcher;
 	}
 
-	protected boolean hasClickListeners() {
-		return null != this.clickListeners;
+	protected void setEventListenerDispatcher(final EventListenerDispatcher eventListenerDispatcher) {
+		ObjectHelper.checkNotNull("parameter:eventListenerDispatcher", eventListenerDispatcher);
+		this.eventListenerDispatcher = eventListenerDispatcher;
 	}
 
-	protected void setClickListeners(final ClickListenerCollection clickListeners) {
-		ObjectHelper.checkNotNull("parameter:clickListeners", clickListeners);
-		this.clickListeners = clickListeners;
-	}
-
-	protected ClickListenerCollection createClickListeners() {
-		return new ClickListenerCollection();
-	}
-
-	protected void addClickListener(final ClickListener clickListener) {
-		this.getClickListeners().add(clickListener);
-	}
-
-	protected void removeClickListener(final ClickListener clickListener) {
-		this.getClickListeners().remove(clickListener);
-	}
-
-	/**
-	 * A collection of focus listeners interested in focus events for this
-	 * widget.
-	 */
-	private FocusListenerCollection focusListeners;
-
-	protected FocusListenerCollection getFocusListeners() {
-		ObjectHelper.checkNotNull("field:focusListeners", focusListeners);
-		return this.focusListeners;
-	}
-
-	protected boolean hasFocusListeners() {
-		return null != this.focusListeners;
-	}
-
-	protected void setFocusListeners(final FocusListenerCollection focusListeners) {
-		ObjectHelper.checkNotNull("parameter:focusListeners", focusListeners);
-		this.focusListeners = focusListeners;
-	}
-
-	protected FocusListenerCollection createFocusListeners() {
-		return new FocusListenerCollection();
-	}
-
-	protected void addFocusListener(final FocusListener focusListener) {
-		this.getFocusListeners().add(focusListener);
-	}
-
-	protected void removeFocusListener(final FocusListener focusListener) {
-		this.getFocusListeners().remove(focusListener);
-	}
-
-	/**
-	 * A collection of key listeners interested in key events for this widget.
-	 */
-	private KeyboardListenerCollection keyboardListeners;
-
-	protected KeyboardListenerCollection getKeyboardListeners() {
-		ObjectHelper.checkNotNull("field:keyboardListeners", keyboardListeners);
-		return this.keyboardListeners;
-	}
-
-	protected boolean hasKeyboardListeners() {
-		return null != this.keyboardListeners;
-	}
-
-	protected void setKeyboardListeners(final KeyboardListenerCollection keyboardListeners) {
-		ObjectHelper.checkNotNull("parameter:keyboardListeners", keyboardListeners);
-		this.keyboardListeners = keyboardListeners;
-	}
-
-	protected KeyboardListenerCollection createKeyboardListeners() {
-		return new KeyboardListenerCollection();
-	}
-
-	protected void addKeyboardListener(final KeyboardListener keyboardListener) {
-		this.getKeyboardListeners().add(keyboardListener);
-	}
-
-	protected void removeKeyboardListener(final KeyboardListener keyboardListener) {
-		this.getKeyboardListeners().remove(keyboardListener);
-	}
-
-	/**
-	 * A collection of mouse listeners interested in mouse events for this
-	 * widget.
-	 */
-	private MouseListenerCollection mouseListeners;
-
-	protected MouseListenerCollection getMouseListeners() {
-		ObjectHelper.checkNotNull("field:mouseListeners", mouseListeners);
-		return this.mouseListeners;
-	}
-
-	protected boolean hasMouseListeners() {
-		return null != this.mouseListeners;
-	}
-
-	protected void setMouseListeners(final MouseListenerCollection mouseListeners) {
-		ObjectHelper.checkNotNull("parameter:mouseListeners", mouseListeners);
-		this.mouseListeners = mouseListeners;
-	}
-
-	protected MouseListenerCollection createMouseListeners() {
-		return new MouseListenerCollection();
-	}
-
-	protected void addMouseListener(final MouseListener mouseListener) {
-		this.getMouseListeners().add(mouseListener);
-	}
-
-	protected void removeMouseListener(final MouseListener mouseListener) {
-		this.getMouseListeners().remove(mouseListener);
+	protected EventListenerDispatcher createEventListenerDispatcher() {
+		return new EventListenerDispatcher();
 	}
 }
