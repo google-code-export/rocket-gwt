@@ -209,7 +209,7 @@ public class ObjectHelper extends SystemHelper {
 
 	private static native String getString0(final JavaScriptObject object, final String propertyName)/*-{
 	 var value = object[ propertyName ];
-	 return value || null;
+	 return value ? "" + value : null;
 	 }-*/;
 
 	public static String getString(final JavaScriptObject object, final int index) {
@@ -220,7 +220,7 @@ public class ObjectHelper extends SystemHelper {
 
 	private static native String getString0(final JavaScriptObject object, final int index)/*-{
 	 var value = object[ index ];
-	 return value || null;
+	 return value ? "" + value : null;
 	 }-*/;
 
 	/**
