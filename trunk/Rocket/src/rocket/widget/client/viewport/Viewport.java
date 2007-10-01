@@ -19,19 +19,24 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import rocket.browser.client.Browser;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.EventPreviewAdapter;
+import rocket.event.client.MouseDownEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseMoveEvent;
+import rocket.event.client.MouseOutEvent;
+import rocket.event.client.MouseOverEvent;
+import rocket.event.client.MouseUpEvent;
 import rocket.selection.client.Selection;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.Composite;
+import rocket.widget.client.CompositeWidget;
 import rocket.widget.client.DivPanel;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -72,14 +77,24 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class Viewport extends Composite {
+abstract public class Viewport extends CompositeWidget {
 
 	public Viewport() {
 		super();
-
-		this.setStyleName(ViewportConstants.VIEWPORT_STYLE);
 	}
 
+
+	protected void beforeCreateWidget() {
+		super.beforeCreateWidget();
+		
+		this.setViewportListeners(this.createViewportListeners());
+		this.getEventListenerDispatcher().addMouseEventListener( new MouseEventAdapter(){
+			public void onMouseDown( final MouseDownEvent event ){
+				Viewport.this.handleMouseDown( event );
+			}
+		});
+	}
+	
 	protected Widget createWidget() {
 		final TileDivPanel widget = this.createInnerPanel();
 		this.setInnerPanel(widget);
@@ -100,12 +115,12 @@ abstract public class Viewport extends Composite {
 		return simplePanel;
 	}
 
-	protected void afterCreateWidget() {
-		this.setViewportListeners(this.createViewportListeners());
+	protected String getInitialStyleName(){
+	  return Constants.VIEWPORT_STYLE;
 	}
-
+	
 	protected int getSunkEventsBitMask() {
-		return Event.ONMOUSEDOWN;
+		return EventBitMaskConstants.MOUSE_DOWN;
 	}
 
 	protected Element getSunkEventsTarget() {
@@ -121,56 +136,40 @@ abstract public class Viewport extends Composite {
 	}
 
 	/**
-	 * This method watches all events over the viewport and dispatches depending
-	 * on the event type to a number of events.
-	 */
-	public void onBrowserEvent(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
-
-		while (true) {
-			final int type = DOM.eventGetType(event);
-			if (Event.ONMOUSEDOWN == type) {
-				this.handleMouseDown(event);
-				break;
-			}
-			break;
-		}
-
-		DOM.eventCancelBubble(event, true);
-		DOM.eventPreventDefault(event);
-	}
-
-	/**
 	 * This method is fired whenever a mouse down occurs.
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseDown(final Event event) {
+	protected void handleMouseDown(final MouseDownEvent event) {
 		Selection.clearAnySelectedText();
 		Selection.disableTextSelection();
 
 		final ViewportListenerCollection listeners = this.getViewportListeners();
 		if (false == listeners.fireBeforeDragStarted(this)) {
 
-			final ViewportEventPreview dragger = this.createDraggingEventPreview();
-			dragger.setMouseX(Browser.getScrollX() + DOM.eventGetClientX(event));
-			dragger.setMouseY(Browser.getScrollY() + DOM.eventGetClientY(event));
+			final ViewportEventPreviewAdapter dragger = this.createDraggingEventPreview();
+			dragger.setMouseX( event.getPageX());
+			dragger.setMouseY( event.getPageY() );
+
+			
 			dragger.setOriginX(this.getOriginX());
 			dragger.setOriginY(this.getOriginY());
 			this.setDraggingEventPreview(dragger);
 
-			DOM.addEventPreview(dragger);
+			dragger.install();
 
 			listeners.fireDragStarted(this);
 		}
+		event.cancelBubble( true );
+		event.stop();
 	}
 
 	/**
 	 * The EventPreview object that monitors dragging of a tile.
 	 */
-	private ViewportEventPreview draggingEventPreview;
+	private ViewportEventPreviewAdapter draggingEventPreview;
 
-	protected ViewportEventPreview getDraggingEventPreview() {
+	protected ViewportEventPreviewAdapter getDraggingEventPreview() {
 		ObjectHelper.checkNotNull("field:draggingEventPreview", draggingEventPreview);
 		return this.draggingEventPreview;
 	}
@@ -179,7 +178,7 @@ abstract public class Viewport extends Composite {
 		return null != this.draggingEventPreview;
 	}
 
-	protected void setDraggingEventPreview(final ViewportEventPreview draggingEventPreview) {
+	protected void setDraggingEventPreview(final ViewportEventPreviewAdapter draggingEventPreview) {
 		ObjectHelper.checkNotNull("parameter:draggingEventPreview", draggingEventPreview);
 		this.draggingEventPreview = draggingEventPreview;
 	}
@@ -188,8 +187,8 @@ abstract public class Viewport extends Composite {
 		this.draggingEventPreview = null;
 	}
 
-	protected ViewportEventPreview createDraggingEventPreview() {
-		final ViewportEventPreview draggingEventPreview = new ViewportEventPreview();
+	protected ViewportEventPreviewAdapter createDraggingEventPreview() {
+		final ViewportEventPreviewAdapter draggingEventPreview = new ViewportEventPreviewAdapter();
 		this.setDraggingEventPreview(draggingEventPreview);
 		return draggingEventPreview;
 	}
@@ -198,9 +197,19 @@ abstract public class Viewport extends Composite {
 	 * This inner class is an adapter as well as captures state about the mouse
 	 * at the start of the drag.
 	 */
-	private class ViewportEventPreview implements EventPreview {
-		public boolean onEventPreview(final Event event) {
-			return Viewport.this.handleDraggingEventPreview(event);
+	private class ViewportEventPreviewAdapter extends EventPreviewAdapter {
+		protected void handleMouseMoveEvent( final MouseMoveEvent event ){
+			Viewport.this.handleDragMouseMove( event );
+		}
+		protected void handleMouseOutEvent( final MouseOutEvent event ){
+			Viewport.this.handleDragMouseOut( event );
+		}
+		protected void handleMouseOverEvent( final MouseOverEvent event ){
+			Viewport.this.handleDragMouseOver( event );
+		}
+		
+		protected void handleMouseUpEvent( final MouseUpEvent event ){
+			Viewport.this.handleDragMouseUp( event );
 		}
 
 		/**
@@ -254,41 +263,6 @@ abstract public class Viewport extends Composite {
 		protected void setMouseY(final int mouseY) {
 			this.mouseY = mouseY;
 		}
-
-	}
-
-	/**
-	 * This method dispatches all dragging events to appropriate named methods.
-	 * 
-	 * @param event
-	 *            The event object
-	 * @return when true cancels the event.
-	 */
-	protected boolean handleDraggingEventPreview(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
-
-		boolean cancel = true;
-		while (true) {
-			final int type = DOM.eventGetType(event);
-			if (type == Event.ONMOUSEUP) {
-				cancel = this.handleDragMouseUp(event);
-				break;
-			}
-			if (type == Event.ONMOUSEOUT) {
-				cancel = this.handleDragMouseOut(event);
-				break;
-			}
-			if (type == Event.ONMOUSEOVER) {
-				cancel = this.handleDragMouseOver(event);
-				break;
-			}
-			if (type == Event.ONMOUSEMOVE) {
-				cancel = this.handleDragMouseMove(event);
-				break;
-			}
-			break;
-		}
-		return !cancel;
 	}
 
 	/**
@@ -297,16 +271,16 @@ abstract public class Viewport extends Composite {
 	 * 
 	 * @param event
 	 *            The event
-	 * @return A flag which indicates whether or not to cancel the event.
 	 */
-	protected boolean handleDragMouseUp(final Event event) {
-		DOM.removeEventPreview(this.getDraggingEventPreview());
+	protected void handleDragMouseUp(final MouseUpEvent event) {
+		this.getDraggingEventPreview().uninstall();
 		this.clearDraggingEventPreview();
 
 		Selection.enableTextSelection();
 
 		this.getViewportListeners().fireDragStopped(this);
-		return true;
+		
+		event.cancelBubble( true );
 	}
 
 	/**
@@ -318,42 +292,46 @@ abstract public class Viewport extends Composite {
 	 * 
 	 * @param event
 	 *            The event
-	 * @return A flag which indicates whether or not to cancel the event.
 	 */
-	protected boolean handleDragMouseOut(final Event event) {
+	protected void handleDragMouseOut(final MouseOutEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		final Element element = this.getElement();
-		final Element eventTarget = DOM.eventGetTarget(event);
+		final Element eventTarget = event.getTarget();
 		if (false == DOM.isOrHasChild(element, eventTarget)) {
-			this.addStyleName(ViewportConstants.VIEWPORT_OUT_OF_BOUNDS_STYLE);
+			this.addStyleName( this.getOutOfBoundsStyle() );
 		}
-		return true;
+		
+		event.cancelBubble( true );
 	}
-
+	
 	/**
 	 * This method is called when a dragging mouse moves back over the viewport
 	 * 
 	 * @param event
 	 *            The event
-	 * @return True cancels bubbling
 	 */
-	protected boolean handleDragMouseOver(final Event event) {
+	protected void handleDragMouseOver(final MouseOverEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		final Element element = this.getElement();
-		final Element eventTarget = DOM.eventGetTarget(event);
+		final Element eventTarget = event.getTarget();
 		if (DOM.isOrHasChild(element, eventTarget)) {
-			this.removeStyleName(ViewportConstants.VIEWPORT_OUT_OF_BOUNDS_STYLE);
+			this.removeStyleName(this.getOutOfBoundsStyle());
 		}
-		return true;
+		event.cancelBubble( true );
 	}
 
+	protected String getOutOfBoundsStyle(){
+		return Constants.VIEWPORT_OUT_OF_BOUNDS_STYLE;
+	}
+
+	
 	/**
 	 * This method is called each time a dragging mouse is moved within the
 	 * viewport.
 	 */
-	protected boolean handleDragMouseMove(final Event event) {
+	protected void handleDragMouseMove(final MouseMoveEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
@@ -363,13 +341,13 @@ abstract public class Viewport extends Composite {
 				break;
 			}
 
-			final ViewportEventPreview previewer = this.getDraggingEventPreview();
-			final int originalMouseX = previewer.getMouseX();
-			final int currentMouseX = Browser.getScrollX() + DOM.eventGetClientX(event);
+			final ViewportEventPreviewAdapter previewer = this.getDraggingEventPreview();
+			final int originalMouseX = previewer.getMouseX(); 
+			final int currentMouseX = event.getPageX();
 
 			final int originalMouseY = previewer.getMouseY();
-			final int currentMouseY = Browser.getScrollY() + DOM.eventGetClientY(event);
-
+			final int currentMouseY = event.getPageY();
+			
 			// mouse has not moved do nothing.
 			if (originalMouseX == currentMouseX && originalMouseY == currentMouseY) {
 				break;
@@ -385,7 +363,8 @@ abstract public class Viewport extends Composite {
 			listeners.fireDragMoved(this);
 			break;
 		}
-		return true;
+		
+		event.cancelBubble( true );
 	}
 
 	/**
@@ -541,7 +520,7 @@ abstract public class Viewport extends Composite {
 	protected Widget createTile(final int column, final int row) {
 		final Widget tile = this.createTile0(column, row);
 
-		tile.addStyleName(ViewportConstants.VIEWPORT_TILE_STYLE);
+		tile.addStyleName(this.getTileStyle());
 
 		InlineStyle.setString(tile.getElement(), StyleConstants.POSITION, "absolute");
 		this.setTileLeft(tile, column * this.getTileWidth());
@@ -550,6 +529,10 @@ abstract public class Viewport extends Composite {
 		return tile;
 	}
 
+	protected String getTileStyle(){
+		return Constants.VIEWPORT_TILE_STYLE;		
+	}
+	
 	/**
 	 * Sub classes must override this method to return the appropriate widget
 	 * for the given tile coordinates
@@ -564,28 +547,28 @@ abstract public class Viewport extends Composite {
 
 	protected void updateInnerPanelOffset() {
 		final Element element = this.getInnerPanel().getElement();
-		InlineStyle.setInteger(element, StyleConstants.LEFT, -ViewportConstants.X_OFFSET - this.getOriginX(), CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.TOP, -ViewportConstants.Y_OFFSET - this.getOriginY(), CssUnit.PX);
+		InlineStyle.setInteger(element, StyleConstants.LEFT, -Constants.X_OFFSET - this.getOriginX(), CssUnit.PX);
+		InlineStyle.setInteger(element, StyleConstants.TOP, -Constants.Y_OFFSET - this.getOriginY(), CssUnit.PX);
 	}
 
 	protected int getTileLeft(final Widget tile) {
-		return ObjectHelper.getInteger(tile.getElement(), ViewportConstants.TILE_LEFT_ATTRIBUTE);
+		return ObjectHelper.getInteger(tile.getElement(), Constants.TILE_LEFT_ATTRIBUTE);
 	}
 
 	protected int getTileTop(final Widget tile) {
-		return ObjectHelper.getInteger(tile.getElement(), ViewportConstants.TILE_TOP_ATTRIBUTE);
+		return ObjectHelper.getInteger(tile.getElement(), Constants.TILE_TOP_ATTRIBUTE);
 	}
 
 	protected void setTileLeft(final Widget tile, final int x) {
 		final Element element = tile.getElement();
-		InlineStyle.setInteger(element, StyleConstants.LEFT, ViewportConstants.X_OFFSET + x, CssUnit.PX);
-		ObjectHelper.setInteger(element, ViewportConstants.TILE_LEFT_ATTRIBUTE, x);
+		InlineStyle.setInteger(element, StyleConstants.LEFT, Constants.X_OFFSET + x, CssUnit.PX);
+		ObjectHelper.setInteger(element, Constants.TILE_LEFT_ATTRIBUTE, x);
 	}
 
 	protected void setTileTop(final Widget tile, final int y) {
 		final Element element = tile.getElement();
-		InlineStyle.setInteger(element, StyleConstants.TOP, ViewportConstants.Y_OFFSET + y, CssUnit.PX);
-		ObjectHelper.setInteger(element, ViewportConstants.TILE_TOP_ATTRIBUTE, y);
+		InlineStyle.setInteger(element, StyleConstants.TOP, Constants.Y_OFFSET + y, CssUnit.PX);
+		ObjectHelper.setInteger(element, Constants.TILE_TOP_ATTRIBUTE, y);
 	}
 
 	/**
@@ -606,7 +589,9 @@ abstract public class Viewport extends Composite {
 	protected TileDivPanel createInnerPanel() {
 		final TileDivPanel panel = new TileDivPanel();
 		final Element element = panel.getElement();
+		
 		InlineStyle.setString(element, StyleConstants.OVERFLOW, "hidden");
+		
 		InlineStyle.setString(element, StyleConstants.POSITION, "relative");
 		InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
 		InlineStyle.setInteger(element, StyleConstants.LEFT, 0, CssUnit.PX);
@@ -637,10 +622,10 @@ abstract public class Viewport extends Composite {
 			this.getWidgets().put(key, widget);
 		}
 
-		public void remove(final int index) {
+		public boolean remove(final int index) {
 			final Widget widget = this.get(index);
 			this.getWidgets().remove(this.buildKey(widget));
-			super.remove(index);
+			return super.remove(index);
 		}
 
 		protected String buildKey(final Widget widget) {
