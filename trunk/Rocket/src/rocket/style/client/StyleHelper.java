@@ -32,10 +32,8 @@ import com.google.gwt.user.client.Element;
  * This helper provides support for changing styles/classes for widgets that use
  * a heirarchical manner to name their composite widgets/elements.
  * 
- * The
- * {@link #getComputedStyleProperty(Element, String) and {@link #getString(Element, String)}
- * methods return null rather than none when the value indicates a particular
- * property is missing.
+ * Refer to the {@link InlineStyle} and {@link ComputedStyle} to work with inline and computed styles for
+ * a particular element.
  * 
  * In order to enable correct simulation of fixed positioning the coordinates
  * must be set prior to setting the position.
@@ -43,7 +41,7 @@ import com.google.gwt.user.client.Element;
  * <h3>Gotchas</h3>
  * <ul>
  * <li>Fixed positioning under Internet Explorer is only supported for inline
- * css properties set via {@link StyleHelper} and not
+ * css properties set via {@link InlineStyle} and not
  * {@link DOM#setStyleAttribute(Element, String, String)}.</li>
  * <li>It is not possible to disable text selection via css, it may only be
  * achieved by setting a inlineStyle belonging to an element.</li>
@@ -117,21 +115,7 @@ public class StyleHelper {
 			ObjectHelper.fail("The " + name + " contains more than one selector, selectorText[" + selectorText + "]");
 		}
 	}
-
-	/**
-	 * Concatenates or builds a complete stylename given a prefix and a suffix.
-	 * 
-	 * @param prefix
-	 * @param suffix
-	 * @return
-	 */
-	public static String buildCompound(final String prefix, final String suffix) {
-		StringHelper.checkNotEmpty("parameter:prefix", prefix);
-		StringHelper.checkNotEmpty("parameter:suffix", suffix);
-
-		return prefix + StyleConstants.COMPOUND + suffix;
-	}
-
+	
 	/**
 	 * Retrieves an inline style property by name.
 	 * 
