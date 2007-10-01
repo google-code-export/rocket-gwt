@@ -3,43 +3,42 @@
 	<head>
 		<title>DatePicker</title>
 		<style>
-			body,td,a,div,.p{font-family:arial,sans-serif}
-			div,td{color:#000000}
-			a:link,.w,.w a:link{color:#0000cc}
-			a:visited{color:#551a8b}
-			a:active{color:#ff0000}
-			
-			BUTTON {
+			BODY,TD,A,DIV,.P, BUTTON {
+				font-family:Verdana; 
+				font-size: 9px;
+				
 				margin: 4px;
 			}
-			
+			/* DATE PICKER :::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/			
 			.rocket-datePicker{
 				margin: 4px;
 			
 				padding: 4px;
 			
 				border-width: 1px;
-				border-color: black;
+				border-color: #fff;
 				border-style: solid;
-				background-color: #ddd;
+				background-color: #fdc;
 			}
 			
 			.rocket-datePicker-heading{
 				margin: 1px;
 				padding: 4px;
-				background-color: #000;
-				color: #eee;
+				background-color: #cba;
+				color: #210;
 				
-				width: 10ex;
+				width: 70px;
+				height: 5em;
 				text-align: center;
+				font-weight: bold;
 			}
 			
 			.rocket-datePicker-previousMonth{
 				background-color: #fed;
 			}			
 			.rocket-datePicker-currentMonth{
-				background-color: #eee;
-				font-weight: bold;
+				background-color: #ffe;
+				font-weight: normal;
 			}
 			.rocket-datePicker-nextMonth{
 				background-color: #def;
@@ -48,6 +47,9 @@
 			.rocket-datePicker-day{
 				margin: 1px;
 				padding: 4px;
+				
+				width: 70px;
+				height: 5em;
 				
 				border-style: dotted;
 				border-width: 1px;
@@ -60,8 +62,60 @@
 				background-color: lightGreen;
 			}
 			
-			.weekend{
-				background-color: lightYellow;
+			.weekend .rocket-datePicker-previousMonth{
+				background-color: #dcb;
+			}	
+			.weekend .rocket-datePicker-currentMonth{
+				background-color: #dde;
+			}	
+			.weekend .rocket-datePicker-nextMonth{
+				background-color: #bcd;
+			}	
+			
+			.gwt-DialogBox {
+			  	border: 2px outset;
+			  	background-color: #516488;
+			}
+			
+			.gwt-DialogBox .Caption {
+			  	background-color: #C3D9FF;
+			  	padding: 3px;
+			  	margin: 2px;
+			  	font-weight: bold;
+			 	cursor: default;
+			}
+
+			.gwt-DialogBox .rocket-label{
+				width: 12em;
+			}						
+			
+			.gwt-DialogBox .rocket-datePicker{
+				margin: 4px;
+			
+				padding: 4px;
+			
+				border-width: 1px;
+				border-color: #fff;
+				border-style: solid;
+				background-color: #fdc;
+			}			
+			
+			.gwt-DialogBox .rocket-datePicker-heading{
+				width: 3em;
+				height: 1em;				
+			}
+			
+			.gwt-DialogBox .rocket-datePicker-day{
+				width: 3em;
+				height: 1em;
+				
+				border-style: solid;
+				border-width: 1px;
+				border-color: #ddd;
+			}
+			
+			.gwt-DialogBox .rocket-datePicker .rocket-label{
+				width: 3em;
 			}
 			
 		</style>
@@ -84,6 +138,7 @@
 			<li>Days belonging to the current month will have their day of the month in bold</li>			
 			<li>Days belonging to the next month should have a cyan background.</li>	
 			<li>Today will have a green background</li>			
+			<li>Click on the calendar icon to pop up a mini calendar. Click on any day to close it.</li>
 		</ul>
 		
 		<button onclick="prompt('',document.body.innerHTML);">document.body.innerHTML</button>

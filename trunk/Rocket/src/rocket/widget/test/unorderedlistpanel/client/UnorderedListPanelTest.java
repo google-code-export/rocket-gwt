@@ -85,10 +85,6 @@ public class UnorderedListPanelTest implements EntryPoint {
 				}
 			}
 
-			protected int getMessageLineCount() {
-				return 10;
-			}
-
 			protected String toString(final Object element) {
 				final HTML html = (HTML) element;
 				return html.getText();

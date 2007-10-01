@@ -17,6 +17,8 @@ package rocket.widget.test.hyperlinkpanel.client;
 
 import java.util.Iterator;
 
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
 import rocket.testing.client.InteractivePanel;
 import rocket.util.client.SystemHelper;
 import rocket.widget.client.HyperlinkPanel;
@@ -25,7 +27,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -45,9 +46,9 @@ public class HyperlinkPanelTest implements EntryPoint {
 
 		final RootPanel rootPanel = RootPanel.get();
 		final HyperlinkPanel panel = new HyperlinkPanel();
-		panel.addClickListener(new ClickListener() {
-			public void onClick(final Widget sender) {
-				Window.alert("HyperlinkPanel clicked");
+		panel.addMouseEventListener(new MouseEventAdapter() {
+			public void onClick(final MouseClickEvent event ) {
+				Window.alert("HyperlinkPanel clicked !");
 			}
 		});
 		rootPanel.add(panel);
@@ -89,10 +90,6 @@ public class HyperlinkPanelTest implements EntryPoint {
 				if (false == (element instanceof HTML)) {
 					SystemHelper.fail("Unknown element type type:" + GWT.getTypeName(element));
 				}
-			}
-
-			protected int getMessageLineCount() {
-				return 10;
 			}
 
 			protected String toString(final Object element) {
