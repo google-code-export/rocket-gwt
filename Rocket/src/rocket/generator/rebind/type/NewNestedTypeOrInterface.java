@@ -17,9 +17,9 @@ package rocket.generator.rebind.type;
 
 import java.util.Iterator;
 
-import com.google.gwt.user.rebind.SourceWriter;
-
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * Convenient base class for the nested type and nested interface classes.
