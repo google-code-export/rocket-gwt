@@ -17,6 +17,7 @@ package rocket.style.client.support;
 
 import rocket.browser.client.Browser;
 import rocket.style.client.CssUnit;
+import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.style.client.StyleHelper;
 import rocket.util.client.ObjectHelper;
@@ -41,7 +42,7 @@ import com.google.gwt.user.client.Element;
  * <li>It is not possible to disable text selection via css, it may only be
  * achieved by setting a inlineStyle belonging to an element.</li>
  * <li>Fixed positioning is only supported for inline css properties set via
- * {@link StyleHelper} and not
+ * {@link InlineStyle} and not
  * {@link DOM#setStyleAttribute(Element, String, String)}.
  * </ul>
  * 
@@ -250,6 +251,14 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 			}
 			if (StyleConstants.BOTTOM.equals(propertyName)) {
 				propertyValue = this.getInlineStyleBottom(style);
+				break;
+			}
+			if (StyleConstants.WIDTH.equals(propertyName)) {
+				propertyValue = this.getInlineStyleWidth(element);
+				break;
+			}
+			if (StyleConstants.HEIGHT.equals(propertyName)) {
+				propertyValue = this.getInlineStyleHeight(element);
 				break;
 			}
 			if (StyleConstants.OPACITY.equals(propertyName)) {
@@ -531,6 +540,14 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 		this.setInlineStylePropertyValueOrDynamicExpression(style, StyleConstants.BOTTOM, value, this.getFixedPositionBottom());
 	}
 
+	protected String getInlineStyleWidth(final Element element) {
+		return this.getInlineStyleProperty0(element, "pixelWidth");
+	}
+
+	protected String getInlineStyleHeight(final Element element) {
+		return this.getInlineStyleProperty0(element, "pixelHeight");
+	}
+
 	/**
 	 * This method is potentially invoked by
 	 * {@link StyleSupport#getInlineStyleProperty(Element, String)} if the
@@ -719,10 +736,6 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 	 * <ul>
 	 * <li>Attempts to retrieve the css opacity property is converted into
 	 * filter, the value is converted back into a decimal value. </li>
-	 * <li>If requests for width or height are made and auto returned calculate
-	 * the actual width/height in pixels using
-	 * {@link #getComputedWidth(Element)} and
-	 * {@link #getComputedHeight(Element)}</li>
 	 * </ul>
 	 */
 	public String getComputedStyleProperty(final Element element, final String propertyName) {
@@ -739,17 +752,16 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 				}
 				break;
 			}
-			if (StyleConstants.HEIGHT.equals(propertyName)) {
-				propertyValue = this.getComputedHeight(element);
+			if( StyleConstants.HEIGHT.equals( propertyName )){
+				propertyValue = this.getComputedHeight( element );
 				break;
 			}
-			// opacity is a special case...
 			if (StyleConstants.OPACITY.equals(propertyName)) {
 				propertyValue = this.getComputedOpacity(element);
 				break;
 			}
-			if (StyleConstants.WIDTH.equals(propertyName)) {
-				propertyValue = this.getComputedWidth(element);
+			if( StyleConstants.WIDTH.equals( propertyName )){
+				propertyValue = this.getComputedWidth( element );
 				break;
 			}
 			propertyValue = super.getComputedStyleProperty(element, propertyName);
@@ -796,20 +808,22 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 	 return value ? "" + value : null;
 	 }-*/;
 
-	protected String getComputedWidth(final Element element) {
-		return ObjectHelper.getInteger(element, StyleSupportConstants.OFFSET_WIDTH) + "px";
+	protected String getComputedHeight( final Element element) {
+		final int offsetHeight = ObjectHelper.getInteger( element, "offsetHeight" );
+		final int borderTopHeight = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_TOP_WIDTH );
+		final int paddingTop = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_TOP );
+		final int paddingBottom = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_BOTTOM );
+		final int borderBottomHeight = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_BOTTOM_WIDTH );
+		
+		return ( offsetHeight - borderTopHeight - paddingTop - paddingBottom - borderBottomHeight ) + "px";
 	}
-
+	
 	protected String getComputedOpacity(final Element element) {
 		String value = this.getComputedStyleProperty0(element, StyleSupportConstants.FILTER);
 		if (null != value) {
 			value = this.translateFromOpacity(value);
 		}
 		return value;
-	}
-
-	protected String getComputedHeight(final Element element) {
-		return ObjectHelper.getInteger(element, StyleSupportConstants.OFFSET_HEIGHT) + "px";
 	}
 
 	/**
@@ -837,6 +851,16 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 	 return result ? null : "none";
 	 }-*/;
 
+	protected String getComputedWidth( final Element element) {
+		final int offsetWidth = ObjectHelper.getInteger( element, "offsetWidth" );
+		final int borderTopWidth = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_TOP_WIDTH );
+		final int paddingTop = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_TOP );
+		final int paddingBottom = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_BOTTOM );
+		final int borderBottomWidth = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_BOTTOM_WIDTH );
+		
+		return ( offsetWidth - borderTopWidth - paddingTop - paddingBottom - borderBottomWidth ) + "px";
+	}
+	
 	/**
 	 * This method covers a special case only returning non zero values if a
 	 * border style is also applicable.
