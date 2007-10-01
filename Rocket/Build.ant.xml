@@ -8,7 +8,7 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.36"/>
+	<property name="version" value="0.37"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
@@ -144,6 +144,11 @@
 				<include name="license.txt"/>
 			</fileset>
 		</jar>
+				
+		<delete>
+			<fileset dir="${src-dir}.temp" includes="**/*"/>
+			<fileset dir="${bin-dir}" includes="**/*"/>
+		</delete>
 	</target>
 
 	<!--
@@ -180,7 +185,7 @@
 							rocket.widget.client.menu,  		
 							rocket.widget.client.slider,
 							rocket.widget.client.splitter,
-							rocket.widget.client.tab,
+							rocket.widget.client.tabpanel,
 							rocket.widget.client.testing,
 							rocket.widget.client.tree"
   	         verbose="no">
@@ -227,19 +232,16 @@
 			<param name="module" value="rocket.widget.test.autocompletetextbox.AutoCompleteTextBox"/>
 		</antcall>
 		<antcall target="compileModule">
-			<param name="module" value="rocket.widget.test.blockypixel.BlockyPixel"/>
+			<param name="module" value="rocket.widget.test.basicwidgets.BasicWidgets"/>
 		</antcall>
 		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.breadcrumbpanel.BreadcrumbPanel"/>
 		</antcall>
 		<antcall target="compileModule">
-			<param name="module" value="rocket.widget.test.collapsablepanel.CollapsablePanel"/>
-		</antcall>
-		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.divpanel.DivPanel"/>
 		</antcall>
 		<antcall target="compileModule">
-			<param name="module" value="rocket.widget.test.grid.Grid"/>
+			<param name="module" value="rocket.widget.test.gridview.GridView"/>
 		</antcall>
 		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.hyperlinkpanel.HyperLinkPanel"/>
@@ -252,6 +254,9 @@
 		</antcall>
 		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.pager.Pager"/>
+		</antcall>
+		<antcall target="compileModule">
+			<param name="module" value="rocket.widget.test.resizablepanel.ResizablePanel"/>
 		</antcall>
 		<antcall target="compileModule">
 			<param name="module" value="rocket.widget.test.slider.Slider"/>
@@ -363,7 +368,7 @@
 	-->
 	<target 	
 			name="build"
-			depends="compileAllModules,package,javadoc,package"     			
+			depends="compileAllModules,javadoc,package"     			
     		description="Package a release including compiled classes, source files, javadoc and generated html.">
 
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>
@@ -382,6 +387,9 @@
 				<include name="Rocket/release/*.jar"/>
 <!--				<include name="Rocket/wiki/*.*"/>	-->			
 				<include name="Rocket/www/**/*.*"/>
+				<exclude name="Rocket/.gwt-cache"/>				
+				<exclude name="Rocket/src.temp"/>
+				<exclude name="Rocket/bin.temp"/>				
 				<include name="Rocket/*.*"/>
 				<exclude name="Rocket/release/${release-archive-name}"/>
 			</fileset>
@@ -435,6 +443,8 @@
 			<fileset dir="${doc-dir}" includes="**/*"/>
 			<fileset dir="${test-dir}" includes="*"/>
 			<fileset dir="${www-dir}" includes="**/*"/>
+			<fileset dir="${src-dir}.temp" includes="**/*"/>
+			<fileset dir="${bin-dir}" includes="**/*"/>
 		</delete>
 	</target>
 </project>
