@@ -14,29 +14,28 @@
  * the License.
  */package rocket.testing.client;
 
-import rocket.style.client.StyleHelper;
 import rocket.widget.client.WidgetConstants;
 
 class Constants{
 	/**
 	 * This style is applied to the container element of the InteractiveList
-	 * {@see rocket.test.client.InteractiveList}
+	 * {@see rocket.testing.client.InteractiveList}
 	 */
-	final static String INTERACTIVE_LIST_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "interactiveList");
+	final static String INTERACTIVE_LIST_STYLE = WidgetConstants.ROCKET + "-interactiveList";
 
 	/**
 	 * This style is applied to the accompanying log.
 	 */
-	final static String INTERACTIVE_LIST_WIDGET_LOG_STYLE = StyleHelper.buildCompound(INTERACTIVE_LIST_STYLE, "log");
+	final static String INTERACTIVE_LIST_WIDGET_LOG_STYLE = INTERACTIVE_LIST_STYLE + "-log";
 
 	/**
 	 * This style is applied to the container element of the InteractivePanel
-	 * {@see rocket.test.client.InteractivePanel}
+	 * {@see rocket.testing.client.InteractivePanel}
 	 */
-	final static String INTERACTIVE_PANEL_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "interactivePanel");
+	final static String INTERACTIVE_PANEL_STYLE = WidgetConstants.ROCKET + "-interactivePanel";
 
 	/**
 	 * This style is applied to the accompanying log.
 	 */
-	final static String INTERACTIVE_PANEL_WIDGET_LOG_STYLE = StyleHelper.buildCompound(INTERACTIVE_PANEL_STYLE, "log");
+	final static String INTERACTIVE_PANEL_WIDGET_LOG_STYLE = INTERACTIVE_PANEL_STYLE + "-log";
 }

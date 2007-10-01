@@ -98,10 +98,6 @@ public class InteractiveListTest implements EntryPoint {
 			}
 		}
 
-		protected int getMessageLineCount() {
-			return 10;
-		}
-
 		/**
 		 * Creates a listbox friendly string form for the given element.
 		 * 
