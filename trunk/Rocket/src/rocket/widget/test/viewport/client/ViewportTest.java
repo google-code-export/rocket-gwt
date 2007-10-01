@@ -22,8 +22,15 @@ import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.Colour;
+import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
+import rocket.widget.client.viewport.BeforeViewportMoveEvent;
+import rocket.widget.client.viewport.BeforeViewportDragStartEvent;
 import rocket.widget.client.viewport.Viewport;
+import rocket.widget.client.viewport.ViewportMoveEvent;
+import rocket.widget.client.viewport.ViewportDragStartEvent;
+import rocket.widget.client.viewport.ViewportDragStopEvent;
+import rocket.widget.client.viewport.ViewportListener;
 import rocket.widget.client.viewport.ViewportListenerAdapter;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -63,6 +70,21 @@ public class ViewportTest implements EntryPoint {
 	public void onModuleLoad() {
 		final RootPanel rootPanel = RootPanel.get();
 
+		final Counter beforeDragStarted = new Counter( "Before Drag start: ");
+		rootPanel.add( beforeDragStarted );
+
+		final Counter dragStarted = new Counter( "Drag started: ");
+		rootPanel.add( dragStarted );
+		
+		final Counter beforeMoveStarted = new Counter( "Before move start: ");
+		rootPanel.add( beforeMoveStarted );
+
+		final Counter moved = new Counter( "Move started: ");
+		rootPanel.add( moved );
+		
+		final Counter dragStopped = new Counter( "Move stopped: ");
+		rootPanel.add( dragStopped );
+				
 		final Label coordinates = new Label();
 		rootPanel.add(coordinates);
 
@@ -88,12 +110,50 @@ public class ViewportTest implements EntryPoint {
 
 		rootPanel.add(viewport);
 
-		viewport.addViewportListener(new ViewportListenerAdapter() {
+		viewport.addViewportListener(new ViewportListener() {
 
-			public void onDragMoved(Viewport viewport) {
+			public void onBeforeDragStart( final BeforeViewportDragStartEvent event){
+				ObjectHelper.checkNotNull( "parameter:event", event );
+				ObjectHelper.checkNotNull( "BeforeViewportDragStartEvent.tile", event.getTile() );
+				ObjectHelper.checkNotNull( "BeforeViewportDragStartEvent.viewport", event.getViewport() );
+				
+				beforeDragStarted.increment();
+			}
+
+			public void onDragStart(final ViewportDragStartEvent event){
+				ObjectHelper.checkNotNull( "parameter:event", event );
+				ObjectHelper.checkNotNull( "ViewportDragStartEvent.tile", event.getTile() );
+				ObjectHelper.checkNotNull( "ViewportDragStartEvent.viewport", event.getViewport() );
+				
+				dragStarted.increment();
+			}
+			
+			public void onBeforeMove(final BeforeViewportMoveEvent event){
+				ObjectHelper.checkNotNull( "parameter:event", event );
+				ObjectHelper.checkNotNull( "BeforeViewportMoveEvent.tile", event.getTile() );
+				ObjectHelper.checkNotNull( "BeforeViewportMoveEvent.viewport", event.getViewport() );
+				
+				beforeMoveStarted.increment();
+			}
+			
+			public void onMoved(final ViewportMoveEvent event){
+				ObjectHelper.checkNotNull( "parameter:event", event );
+				ObjectHelper.checkNotNull( "ViewportMoveEvent.tile", event.getTile() );
+				ObjectHelper.checkNotNull( "ViewportMoveEvent.viewport", event.getViewport() );
+				
 				System.out.println("CLIENT drag moving, timestamp: " + new Date());
 				ViewportTest.this.updateCoordinatesLabel(coordinates, viewport);
+				
+				moved.increment();
 			}
+
+			public void onDragStop(final ViewportDragStopEvent event){
+				ObjectHelper.checkNotNull( "parameter:event", event );
+				ObjectHelper.checkNotNull( "ViewportDragStopEvent.tile", event.getTile() );
+				ObjectHelper.checkNotNull( "ViewportDragStopEvent.viewport", event.getViewport() );
+				
+				dragStopped.increment();
+			}			
 		});
 
 		this.updateCoordinatesLabel(coordinates, viewport);
@@ -107,6 +167,22 @@ public class ViewportTest implements EntryPoint {
 				}
 			}
 		});
+	}
+		
+	class Counter extends Label{
+		Counter( String prefix ){
+			this.prefix = prefix;
+			this.setText( prefix + "?");
+		}
+		
+		String prefix;
+		void increment(){
+			counter++;
+			
+			this.setText( this.prefix + counter );
+		}
+		
+		int counter;
 	}
 
 	class ZoomingViewport extends Viewport {

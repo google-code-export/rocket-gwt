@@ -27,42 +27,36 @@ public interface ViewportListener {
 	 * This method is invoked before dragging starts. It gives an opportunity
 	 * for listeners to potentially cancel any drag.
 	 * 
-	 * @param viewport
-	 *            The viewport
-	 * @return Returning true cancels the attempt to drag.
+	 * @param event
 	 */
-	boolean onBeforeDragStarted(Viewport viewport);
+	void onBeforeDragStart( BeforeViewportDragStartEvent event);
 
 	/**
 	 * This method is invoked whenever the user starts a drag.
 	 * 
-	 * @param viewport
-	 *            The viewport
+	 * @param event
 	 */
-	void onDragStarted(Viewport viewport);
+	void onDragStart(ViewportDragStartEvent event);
 
 	/**
 	 * This method is invoked each time the user moves or drags a tile.
 	 * 
-	 * @param viewport
-	 *            The viewport
-	 * @return Returning true cancels or ignores the pending scrolling update.
+	 * @param event
 	 */
-	boolean onBeforeDragMove(Viewport viewport);
+	void onBeforeMove(BeforeViewportMoveEvent event);
 
 	/**
 	 * Each time the viewport moves this method is called.
 	 * 
-	 * @param viewport
+	 * @param event
 	 */
-	void onDragMoved(Viewport viewport);
+	void onMoved(ViewportMoveEvent event);
 
 	/**
 	 * This method is invoked whenever the user stops a drag.
 	 * 
-	 * @param viewport
-	 *            The viewport
+	 * @param event
 	 */
-	void onDragStopped(Viewport viewport);
+	void onDragStop(ViewportDragStopEvent event);
 
 }

@@ -22,22 +22,15 @@ package rocket.widget.client.viewport;
  * @author Miroslav Pokorny
  */
 abstract public class ViewportListenerAdapter implements ViewportListener {
-
-	public boolean onBeforeDragMove(Viewport viewport) {
-		return false;
+	
+	public void onBeforeDragStart( BeforeViewportDragStartEvent event){		
 	}
-
-	public boolean onBeforeDragStarted(Viewport viewport) {
-		return false;
+	public void onDragStart(ViewportDragStartEvent event){	
 	}
-
-	public void onDragMoved(Viewport viewport) {
+	public void onBeforeMove(BeforeViewportMoveEvent event){
 	}
-
-	public void onDragStarted(Viewport viewport) {
+	public void onMoved(ViewportMoveEvent event){		
 	}
-
-	public void onDragStopped(Viewport viewport) {
+	public void onDragStop(ViewportDragStopEvent event){	
 	}
-
 }
