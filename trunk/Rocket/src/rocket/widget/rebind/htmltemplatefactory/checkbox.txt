@@ -1,6 +1,6 @@
 // checkbox.txt
 
-com.google.gwt.user.client.ui.CheckBox checkBox = (com.google.gwt.user.client.ui.CheckBox) this.getWidget( ${id} );
+rocket.widget.client.CheckBox checkBox = (rocket.widget.client.CheckBox) this.getWidget( ${id} );
 if( null == checkBox ){
 	checkBox = bindCheckBox( ${id} );
 }

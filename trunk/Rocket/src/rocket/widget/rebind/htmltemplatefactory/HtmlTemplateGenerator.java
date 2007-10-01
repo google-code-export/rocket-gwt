@@ -131,10 +131,6 @@ public class HtmlTemplateGenerator extends Generator {
 				body = buildTextBoxGetterMethodBody(method);
 				break;
 			}
-			if (widgetType.equals(this.getPasswordTextBox())) {
-				body = buildPasswordTextBoxGetterMethodBody(method);
-				break;
-			}
 			if (widgetType.equals(this.getTextArea())) {
 				body = buildTextAreaGetterMethodBody(method);
 				break;
@@ -557,10 +553,6 @@ public class HtmlTemplateGenerator extends Generator {
 
 	protected Type getTextBox() {
 		return this.getGeneratorContext().getType(Constants.TEXTBOX);
-	}
-
-	protected Type getPasswordTextBox() {
-		return this.getGeneratorContext().getType(Constants.PASSWORD_TEXTBOX);
 	}
 
 	protected Type getTextArea() {

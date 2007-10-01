@@ -1,6 +1,6 @@
 // form.txt
 
-com.google.gwt.user.client.ui.FormPanel form = (com.google.gwt.user.client.ui.FormPanel) this.getWidget( ${id} );
+rocket.widget.client.FormPanel form = (rocket.widget.client.FormPanel) this.getWidget( ${id} );
 if( null == form ){
 	form = bindFormPanel( ${id} );
 }
