@@ -10,62 +10,59 @@ BODY, TABLE, INPUT{
 	font-size: 11px;
 }
 
-INPUT {
-	border-width: 1px;
-	border-color: #000;
+.rocket-autoCompleteTextBox{
+	border-color: #001;
 	border-style: solid;
-	
-	background-color: #eee;
-	padding: 2px;
-}
-
-.rocket-autoCompleteTextBox-textBox{
-	background-color: #eeeeee;
 	border-width: 1px;
-	border-color: black;
-	border-style: solid;
 
 	padding: 4px;
+
+	background-color: #eef;
+	color: #000;
+	font-family: Verdana, Arial, Sans-serif; 
+	font-size: 9px;
 }
 
 .rocket-autoCompleteTextBox-dropDownList{
-	background-color: #aaf;
-	color: #000000;
-
 	border-width: 1px;
 	border-color: black;
 	border-style: solid;
 
 	padding: 2px;
 
+	background-color: #eef;
+	
+	color: #000000;
+	font-family: Verdana, Arial, Sans-serif; 
+	font-size: 9px;
 	cursor: hand;
 }
 
 .rocket-autoCompleteTextBox-dropDownList-oddRow{
 	color: #000;
-	background-color: #eef;	
+	background-color: #ddf;	
 }
 
 .rocket-autoCompleteTextBox-dropDownList-evenRow{
 	color: #000;
-	background-color: #ddf;
+	background-color: #ccf;
 }
 
 .rocket-autoCompleteTextBox-dropDownList-oddRow, .rocket-autoCompleteTextBox-dropDownList-evenRow{
-	margin-top: 4px;
-	margin-bottom: 4px;
-	margin-left: 1px;
-	margin-right: 1px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	margin-left: 2px;
+	margin-right: 2px;
 	
-	padding-top: 4px;
-	padding-bottom: 4px;
-	padding-left: 2px;
-	padding-right: 2px;	
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	padding-right: 4px;	
 }
 
 .rocket-autoCompleteTextBox-dropDownList-selected{
-	color: #ddd;
-	background-color: #000;
+	color: #ef0;
+	background-color: #321;
 }
 
 
@@ -76,9 +73,18 @@ BUTTON{
 </head>
 
 <body>
+<h3>Things to test</h3>
 The AutoCompleteTextBox below auto complete matches what is typed against the list of words below.
+<ul>
+<li>Any word typed into the auto complete text box that matches any of the words listed below will be added into a drop down list which appears below.</li>
+<li>Keys may be used to navigate the drop down list.</li>
+<li>Enter selects the current option,</li>
+<li>Escape cancels any selection.</li>
+<li>The arrow keys (up and down) move up and down the list</li>
+</ul>
 
-<button onclick="prompt( document.body.innerHTML, document.body.innerHTML );">document.body.innerHTML</button>
+<h4>Word list</h4>
+
 </body>
 
 </html>

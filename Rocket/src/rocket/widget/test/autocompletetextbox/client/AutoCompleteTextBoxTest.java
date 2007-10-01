@@ -27,13 +27,12 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 
 public class AutoCompleteTextBoxTest implements EntryPoint {
 
+	final static String WORDS = "New Caledonia, New England,New France,New Jersey,New Mexico,New Orleans,New Spain,New South Wales,New York,New York State,New Zealand";
+	
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
@@ -42,12 +41,9 @@ public class AutoCompleteTextBoxTest implements EntryPoint {
 			}
 		});
 		final RootPanel rootPanel = RootPanel.get();
-		rootPanel.add(new TextBox());
 
-		final List matchCandidates = Arrays.asList(new String[] { "New England", "New Jersey", "New Mexico", "New South Wales", "New York",
-				"New York state", "New Zealand", "Red", "Red apple", "Red baron", "Red square", "Red star", "Zebra", "Zebra crossing",
-				"Zebra stripe" });
-
+		final List matchCandidates = Arrays.asList( StringHelper.split( WORDS, ",", true ));
+		
 		final StringBuffer buf = new StringBuffer();
 		buf.append("<ul>");
 
@@ -61,25 +57,24 @@ public class AutoCompleteTextBoxTest implements EntryPoint {
 
 		rootPanel.add(new HTML(buf.toString()));
 
-		final AutoCompleteTextBox autoCompleteTextBox = new AutoCompleteTextBox();
-		autoCompleteTextBox.setWidth("200px");
-		rootPanel.add(autoCompleteTextBox);
-		autoCompleteTextBox.setFocus(true);
-		autoCompleteTextBox.addKeyboardListener(new KeyboardListenerAdapter() {
-			public void onKeyUp(final Widget sender, final char keyCode, final int modifiers) {
-				final String text = autoCompleteTextBox.getText();
-				autoCompleteTextBox.clear();
+		final AutoCompleteTextBox autoCompleteTextBox = new AutoCompleteTextBox() {
+			public void buildDropDownList() {
+				final String text = this.getText();
+				this.clear();
 
 				if (text.length() > 0) {
 					final Iterator iterator = matchCandidates.iterator();
 					while (iterator.hasNext()) {
 						final String test = (String) iterator.next();
 						if (StringHelper.startsWithIgnoringCase(test, text)) {
-							autoCompleteTextBox.add(test);
+							this.add(test);
 						}
 					}
 				}
 			}
-		});
+		};
+		autoCompleteTextBox.setWidth("200px");
+		rootPanel.add(autoCompleteTextBox);
+		autoCompleteTextBox.setFocus(true);
 	}
 }
