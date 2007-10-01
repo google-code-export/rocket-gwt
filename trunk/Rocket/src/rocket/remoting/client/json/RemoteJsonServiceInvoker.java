@@ -195,7 +195,7 @@ abstract public class RemoteJsonServiceInvoker implements RequestCallback {
 
 	/**
 	 * Creates an exception that expresses the reason why the server invocation
-	 * failed, and executes the {@link #AsyncCallback#callback}
+	 * failed, and executes the {@link AsyncCallback#onFailure(Throwable)}
 	 * 
 	 * @param request
 	 * @param response
