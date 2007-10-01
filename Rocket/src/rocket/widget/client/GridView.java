@@ -15,40 +15,48 @@
  */
 package rocket.widget.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import rocket.dom.client.Dom;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
- * A Grid uses a Flextable to hold widgets from its enclosed WidgetProvider
+ * A GridView uses a table to hold widgets which are sourced from an enclosed
+ * WidgetProvider
  * 
  * Whenever any of the properties such as rows/columns/cursor are updated the
  * widget redraws itself,
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Grid extends Composite {
+public class GridView extends CompositeWidget {
 
-	public Grid() {
+	public GridView() {
 		this.setAutoRedraw(false);
 	}
 
 	protected Widget createWidget() {
-		final FlexTable flexTable = this.createFlexTable();
-		this.setFlexTable(flexTable);
-		return flexTable;
+		final Grid grid = this.createGrid();
+		this.setGrid(grid);
+		return grid;
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.GRIDVIEW_STYLE;
 	}
 
 	public int getSunkEventsBitMask() {
 		return 0;
 	}
 
-	// GRID :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	private boolean autoRedraw;
 
 	public boolean isAutoRedraw() {
@@ -67,35 +75,69 @@ public class Grid extends Composite {
 
 	/**
 	 * Refreshes the grid using the WidgetProvider to fill in each cell.
+	 * Wherever possible cells are reused with only new widgets created for
+	 * newly introduced cells.
 	 */
 	public void redraw() {
-		final FlexTable table = this.getFlexTable();
-		table.clear();
+		final Grid table = this.getGrid();
+		final int tableRowCount = this.getRows();
+
+		// copy widgets to a map using their index as the key. this will enable
+		// widget to reuse widget rather than recreate.
+		final Map cache = new HashMap();
+
+		for (int r = 0; r < tableRowCount; r++) {
+			final int columns = table.getCellCount(r);
+
+			for (int c = 0; c < columns; c++) {
+				final Widget widget = table.getWidget(r, c);
+				if (widget instanceof GridCell) {
+					final GridCell cell = (GridCell) widget;
+					cache.put(buildKey(cell.getIndex()), widget);
+				}
+
+				if (null != widget) {
+					widget.removeFromParent();
+				}
+			}
+		}
+
+		// table.clear();
 
 		final WidgetProvider provider = this.getWidgetProvider();
-
 		final int rows = this.getRows();
 		final int columns = this.getColumns();
-
 		final int first = provider.getFirst();
 		final int last = provider.getLast();
 		final int cursor = this.getCursor();
 
-		final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
-
+		final Grid.CellFormatter cellFormatter = table.getCellFormatter();
+		final String gridViewCellStyle = this.getCellStyle();
+		
 		int lastValidIndex = Integer.MIN_VALUE;
 		for (int r = 0; r < rows; r++) {
 			for (int c = 0; c < columns; c++) {
 				Widget cellWidget = null;
 				final int cellIndex = r * columns + c + cursor;
 
-				if (cellIndex < first || cellIndex >= last) {
-					cellWidget = this.createFiller();
-				} else {
+				while (true) {
+					cellWidget = (Widget) cache.get(buildKey(cellIndex));
+					if (null != cellWidget) {
+						break;
+					}
+
+					if (cellIndex < first || cellIndex >= last) {
+						cellWidget = this.createFiller();
+						cellWidget = new GridCell(cellWidget, cellIndex);
+						break;
+					}
+
 					cellWidget = provider.getWidget(cellIndex);
+					cellWidget = new GridCell(cellWidget, cellIndex);
 					lastValidIndex = cellIndex;
+					break;
 				}
-				cellFormatter.addStyleName(r, c, WidgetConstants.GRID_CELL_STYLE);
+				cellFormatter.addStyleName(r, c, gridViewCellStyle );
 				table.setWidget(r, c, cellWidget);
 			}
 		}
@@ -103,29 +145,81 @@ public class Grid extends Composite {
 		this.setLastValidIndex(lastValidIndex);
 	}
 
+	private String buildKey(final int cellIndex) {
+		return "" + cellIndex;
+	}
+	
+	protected String getCellStyle(){
+		return WidgetConstants.GRIDVIEW_CELL_STYLE;
+	}
+
 	/**
-	 * This flexTable is the table that will display the grid of widgets
+	 * This panel encloses the widget placed in a cell. It contains an extra
+	 * property that records the index of the cell.
 	 */
-	private FlexTable flexTable;
+	static class GridCell extends SimplePanel {
+		GridCell(final Widget widget, final int index) {
+			super();
+			this.setWidget(widget);
+			this.setIndex(index);
+		}
 
-	protected FlexTable getFlexTable() {
-		ObjectHelper.checkNotNull("field:flexTable", flexTable);
-		return flexTable;
+		protected Element createPanelElement() {
+			return DOM.createSpan();
+		}
+
+		protected void checkElement(final Element element) {
+		}
+
+		protected String getInitialStyleName() {
+			return "";
+		}
+
+		protected int getSunkEventsBitMask() {
+			return 0;
+		}
+
+		protected Element insert0(final Element element, int indexBefore) {
+			DOM.insertChild(this.getElement(), element, indexBefore);
+			return element;
+		}
+
+		protected void remove0(final Element element, int index) {
+			Dom.removeFromParent(element);
+		}
+
+		/**
+		 * Records the index for the enclosed widget. This allows the redraw
+		 * method to reuse widgets where ever possible.
+		 */
+		int index;
+
+		int getIndex() {
+			return index;
+		}
+
+		void setIndex(final int index) {
+			this.index = index;
+		}
 	}
 
-	protected boolean hasFlexTable() {
-		return null != this.flexTable;
+	/**
+	 * This grid is the table that will display the grid of widgets
+	 */
+	private Grid grid;
+
+	protected Grid getGrid() {
+		ObjectHelper.checkNotNull("field:grid", grid);
+		return grid;
 	}
 
-	protected void setFlexTable(final FlexTable flexTable) {
-		ObjectHelper.checkNotNull("parameter:flexTable", flexTable);
-		this.flexTable = flexTable;
+	protected void setGrid(final Grid grid) {
+		ObjectHelper.checkNotNull("parameter:grid", grid);
+		this.grid = grid;
 	}
 
-	protected FlexTable createFlexTable() {
-		final FlexTable table = new FlexTable();
-		table.setStyleName(WidgetConstants.GRID_STYLE);
-		return table;
+	protected Grid createGrid() {
+		return new Grid();
 	}
 
 	// GRID ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -148,32 +242,21 @@ public class Grid extends Composite {
 	/**
 	 * The number of visible rows
 	 */
-	private int rows;
-
 	public int getRows() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:rows", rows, 0);
-		return this.rows;
+		return this.getGrid().getRowCount();
 	}
 
 	public void setRows(final int rows) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:rows", rows, 0);
-		this.rows = rows;
+		this.getGrid().resizeRows(rows);
 		this.redrawIfAutoEnabled();
 	}
 
-	/**
-	 * The number of visible columns
-	 */
-	private int columns;
-
 	public int getColumns() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:columns", columns, 0);
-		return this.columns;
+		return this.getGrid().getCellCount(0);
 	}
 
 	public void setColumns(final int columns) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:columns", columns, 0);
-		this.columns = columns;
+		this.getGrid().resizeColumns(columns);
 		this.redrawIfAutoEnabled();
 	}
 
@@ -197,10 +280,13 @@ public class Grid extends Composite {
 
 	protected Widget createFiller() {
 		final HTML html = new HTML(this.getFiller());
-		html.addStyleName(WidgetConstants.GRID_FILLER_STYLE);
+		html.addStyleName(this.getFillerStyle() );
 		return html;
 	}
 
+	protected String getFillerStyle(){
+		return WidgetConstants.GRIDVIEW_FILLER_STYLE;
+	}
 	/**
 	 * The widgetProvider being wrapped.
 	 */
@@ -214,12 +300,14 @@ public class Grid extends Composite {
 	public void setWidgetProvider(final WidgetProvider widgetProvider) {
 		ObjectHelper.checkNotNull("parameter:widgetProvider", widgetProvider);
 		this.widgetProvider = widgetProvider;
+
+		this.clear();
 		redrawIfAutoEnabled();
 	}
 
 	/**
 	 * Because a grid may be larger than the number of widgets that may be
-	 * supplied by a WIdgetProvider this method provides a means of knowing the
+	 * supplied by a WidgetProvider this method provides a means of knowing the
 	 * true actual last valid index.
 	 */
 	private int lastValidIndex;
@@ -236,8 +324,11 @@ public class Grid extends Composite {
 		this.lastValidIndex = Integer.MIN_VALUE;
 	}
 
+	public void clear() {
+		this.getGrid().clear();
+	}
+
 	public String toString() {
-		return super.toString() + ", cursor: " + cursor + ", rows: " + rows + ", columns: " + columns + ", filler[" + filler
-				+ "], widgetProvider: " + widgetProvider;
+		return super.toString() + ", cursor: " + cursor;
 	}
 }

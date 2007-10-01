@@ -13,10 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.widget.test.grid.client;
+package rocket.widget.test.gridview.client;
 
-import rocket.util.client.PrimitiveHelper;
-import rocket.widget.client.Grid;
+import rocket.widget.client.GridView;
 import rocket.widget.client.WidgetProvider;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -25,7 +24,7 @@ import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.Label;
@@ -33,7 +32,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class GridTest implements EntryPoint {
+public class GridViewTest implements EntryPoint {
 
 	/**
 	 * This is the entry point method.
@@ -47,12 +46,18 @@ public class GridTest implements EntryPoint {
 		});
 
 		final RootPanel rootPanel = RootPanel.get();
-		final Grid grid = new Grid();
-		grid.setColumns(1);
-		grid.setCursor(0);
-		grid.setRows(1);
-		grid.setFiller("<span style='background-color: #eeeeee'></span>");
-		grid.setWidgetProvider(new WidgetProvider() {
+		
+		final HTML h = new HTML("X");
+		rootPanel.add( h );
+		h.removeFromParent();
+		
+		
+		final GridView gridView = new GridView();
+		gridView.setColumns(1);
+		gridView.setCursor(0);
+		gridView.setRows(1);
+		gridView.setFiller("<span style='background-color: #eeeeee'></span>");
+		gridView.setWidgetProvider(new WidgetProvider() {
 			public int getFirst() {
 				return 0;
 			}
@@ -66,15 +71,11 @@ public class GridTest implements EntryPoint {
 			}
 
 			public Widget getWidget(final int index) {
-				PrimitiveHelper.checkBetween("parameter:index", index, this.getFirst(), this.getLast());
-
-				final Image image = new Image();
-				image.setUrl("image-" + index + ".jpg");
-				return image;
+				return new HTML( "" + index );				
 			}
 		});
-		grid.setAutoRedraw(true);
-		grid.redraw();
+		gridView.setAutoRedraw(true);
+		gridView.redraw();
 
 		final TextBox rows = new TextBox();
 		rootPanel.add(new Label("Rows: "));
@@ -100,21 +101,21 @@ public class GridTest implements EntryPoint {
 			public void onClick(Widget ignored) {
 				final String rowsText = rows.getText();
 				try {
-					grid.setRows(Integer.parseInt(rowsText));
+					gridView.setRows(Integer.parseInt(rowsText));
 				} catch (final NumberFormatException nfe) {
 					Window.alert("rows textBox contains an invalid number [" + rowsText + "]");
 				}
 
 				final String columnsText = columns.getText();
 				try {
-					grid.setColumns(Integer.parseInt(columnsText));
+					gridView.setColumns(Integer.parseInt(columnsText));
 				} catch (final NumberFormatException nfe) {
 					Window.alert("columns textBox contains an invalid number [" + columnsText + "]");
 				}
 
 				final String cursorText = cursor.getText();
 				try {
-					grid.setCursor(Integer.parseInt(cursorText));
+					gridView.setCursor(Integer.parseInt(cursorText));
 				} catch (final NumberFormatException nfe) {
 					Window.alert("cursor textBox contains an invalid number [" + cursorText + "]");
 				}
@@ -123,6 +124,6 @@ public class GridTest implements EntryPoint {
 		});
 		rootPanel.add(update);
 
-		rootPanel.add(grid);
+		rootPanel.add(gridView);
 	}
 }
