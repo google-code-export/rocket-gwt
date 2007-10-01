@@ -1,6 +1,6 @@
 /*
  * Copyright Miroslav Pokorny
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -15,12 +15,31 @@
  */
 package rocket.widget.client.tabpanel;
 
-public interface TabListener {
-	void onBeforeTabSelected( BeforeTabSelectedEvent event );
+/**
+ * This event is fired after completing a new tab selection
+ * @author Miroslav Pokorny
+ */
+public class TabSelectedEvent {
 	
-	void onTabSelected( TabSelectedEvent event );
+	/**
+	 * The previously selected tab
+	 */
+	private TabItem previouslySelected;
 	
-	void onBeforeTabClosed( BeforeTabClosedEvent event );
+	public TabItem getPreviouslySelected(){
+		return previouslySelected;
+	}
+	void setPreviouslySelected( final TabItem previouslySelected ){
+		this.previouslySelected = previouslySelected;
+	}
 	
-	void onTabClosed( TabClosedEvent event );
+	private TabPanel tabPanel;
+	
+	public TabPanel getTabPanel(){
+		return tabPanel;
+	}
+	
+	void setTabPanel( final TabPanel tabPanel ){
+		this.tabPanel = tabPanel;
+	}
 }

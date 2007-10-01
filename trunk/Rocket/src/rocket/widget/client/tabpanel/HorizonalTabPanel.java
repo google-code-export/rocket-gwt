@@ -16,8 +16,8 @@
 package rocket.widget.client.tabpanel;
 
 import rocket.util.client.ObjectHelper;
+import rocket.widget.client.Html;
 
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
@@ -34,10 +34,10 @@ abstract class HorizonalTabPanel extends TabPanel {
 		super();
 	}
 
-	protected HorizontalOrVerticalPanel createTabBarPanel(final VerticalAlignmentConstant alignment) {
+	protected TabBarPanel createTabBarPanel(final VerticalAlignmentConstant alignment) {
 		ObjectHelper.checkNotNull("parameter:alignment", alignment);
 
-		final HorizontalPanelImpl panel = new HorizontalPanelImpl();
+		final HorizontalTabBarPanel panel = new HorizontalTabBarPanel();
 
 		panel.setStyleName(this.getTabBarStyleName());
 		panel.setVerticalAlignment(alignment);
@@ -55,7 +55,7 @@ abstract class HorizonalTabPanel extends TabPanel {
 	protected abstract String getTabBarStyleName();
 
 	protected Widget createTabBarBeforeSpacer() {
-		final HTML widget = new HTML("&nbsp;");
+		final Html widget = new Html("&nbsp;");
 		widget.setStyleName(this.getTabBarBeforeSpacerStyleName());
 		widget.setHeight("100%");
 		return widget;
@@ -64,7 +64,7 @@ abstract class HorizonalTabPanel extends TabPanel {
 	protected abstract String getTabBarBeforeSpacerStyleName();
 
 	protected Widget createTabBarAfterSpacer() {
-		final HTML widget = new HTML("&nbsp;");
+		final Html widget = new Html("&nbsp;");
 		widget.setStyleName(getTabBarAfterSpacerStyleName());
 		widget.setHeight("100%");
 		return widget;

@@ -15,7 +15,8 @@
  */
 package rocket.widget.client.tabpanel;
 
-import com.google.gwt.user.client.ui.HTML;
+import rocket.widget.client.Html;
+
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -31,7 +32,7 @@ abstract class VerticalTabPanel extends TabPanel {
 	}
 
 	protected Widget createTabBarBeforeSpacer() {
-		final HTML widget = new HTML("&nbsp;");
+		final Html widget = new Html("&nbsp;");
 		widget.setStyleName(this.getTabBarBeforeSpacerStyleName());
 		widget.setHeight("100%");
 		return widget;
@@ -40,7 +41,7 @@ abstract class VerticalTabPanel extends TabPanel {
 	protected abstract String getTabBarBeforeSpacerStyleName();
 
 	protected Widget createTabBarAfterSpacer() {
-		final HTML widget = new HTML("&nbsp;");
+		final Html widget = new Html("&nbsp;");
 		widget.setStyleName(getTabBarAfterSpacerStyleName());
 		widget.setHeight("100%");
 		return widget;

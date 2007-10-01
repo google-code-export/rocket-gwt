@@ -15,9 +15,8 @@
  */
 package rocket.widget.client.tabpanel;
 
-import com.google.gwt.user.client.ui.DeckPanel;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * A TopTabPanel arranges its tab titles along the top edge with the remainder
@@ -31,60 +30,48 @@ public class TopTabPanel extends HorizonalTabPanel {
 		super();
 	}
 
-	protected HorizontalOrVerticalPanel createPanel() {
-		final VerticalPanelImpl panel = new VerticalPanelImpl();
-		panel.setStyleName(this.getPanelStyleName());
-
-		final HorizontalOrVerticalPanel tabBarPanel = this.createTabBarPanel();
-		this.setTabBarPanel(tabBarPanel);
-		panel.add((Widget) tabBarPanel);
-
-		final DeckPanel contentPanel = this.createContentPanel();
-		this.setContentPanel(contentPanel);
-		panel.add(contentPanel);
-		panel.setCellHeight(contentPanel, "100%");
-
-		return panel;
+	DockPanel.DockLayoutConstant getTabBarDockPanelConstants(){
+		return DockPanel.NORTH;
 	}
-
-	protected TabPanel.HorizontalOrVerticalPanel createTabBarPanel() {
+	
+	protected TabPanel.TabBarPanel createTabBarPanel() {
 		return this.createTabBarPanel(HasVerticalAlignment.ALIGN_BOTTOM);
 	}
 
-	protected String getPanelStyleName() {
-		return TabConstants.TOP_TAB_PANEL_STYLE;
+	protected String getInitialStyleName() {
+		return Constants.TOP_TAB_PANEL_STYLE;
 	}
 
 	protected String getTabBarStyleName() {
-		return TabConstants.TOP_TAB_BAR_STYLE;
+		return Constants.TOP_TAB_BAR_STYLE;
 	}
 
 	protected String getTabBarBeforeSpacerStyleName() {
-		return TabConstants.TOP_TAB_BAR_BEFORE_SPACER_STYLE;
+		return Constants.TOP_TAB_BAR_BEFORE_SPACER_STYLE;
 	}
 
 	protected String getTabBarAfterSpacerStyleName() {
-		return TabConstants.TOP_TAB_BAR_AFTER_SPACER_STYLE;
+		return Constants.TOP_TAB_BAR_AFTER_SPACER_STYLE;
 	}
 
 	protected String getTabBarItemStyleName() {
-		return TabConstants.TOP_TAB_BAR_ITEM_STYLE;
+		return Constants.TOP_TAB_BAR_ITEM_STYLE;
 	}
 
 	protected String getTabBarItemLabelStyleName() {
-		return TabConstants.TOP_TAB_BAR_ITEM_LABEL_STYLE;
+		return Constants.TOP_TAB_BAR_ITEM_LABEL_STYLE;
 	}
 
 	protected String getTabBarItemWidgetStyleName() {
-		return TabConstants.TOP_TAB_BAR_ITEM_WIDGET_STYLE;
+		return Constants.TOP_TAB_BAR_ITEM_WIDGET_STYLE;
 	}
 
 	protected String getTabBarItemSelectedStyleName() {
-		return TabConstants.TOP_TAB_BAR_ITEM_SELECTED_STYLE;
+		return Constants.TOP_TAB_BAR_ITEM_SELECTED_STYLE;
 	}
 
 	protected String getContentPanelStyleName() {
-		return TabConstants.TOP_TAB_CONTENT_STYLE;
+		return Constants.TOP_TAB_CONTENT_STYLE;
 	}
 
 }

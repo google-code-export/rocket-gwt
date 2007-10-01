@@ -18,21 +18,26 @@ package rocket.widget.test.tabpanel.client;
 import java.util.Iterator;
 
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StackTrace;
 import rocket.util.client.SystemHelper;
+import rocket.widget.client.tabpanel.BeforeTabClosedEvent;
+import rocket.widget.client.tabpanel.BeforeTabSelectedEvent;
 import rocket.widget.client.tabpanel.BottomTabPanel;
 import rocket.widget.client.tabpanel.LeftTabPanel;
 import rocket.widget.client.tabpanel.RightTabPanel;
+import rocket.widget.client.tabpanel.TabClosedEvent;
 import rocket.widget.client.tabpanel.TabItem;
 import rocket.widget.client.tabpanel.TabListener;
 import rocket.widget.client.tabpanel.TabPanel;
+import rocket.widget.client.tabpanel.TabSelectedEvent;
 import rocket.widget.client.tabpanel.TopTabPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -50,27 +55,27 @@ public class TabPanelTest implements EntryPoint {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
 				caught.printStackTrace();
-				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+				Window.alert( caught.getMessage() + "\n" + StackTrace.asString( caught ));
 			}
 		});
 
 		final RootPanel rootPanel = RootPanel.get();
-		rootPanel.add(createTopTabPanelButton());
-		rootPanel.add(createBottomTabPanelButton());
-		rootPanel.add(createLeftTabPanelButton());
-		rootPanel.add(createRightTabPanelButton());
-	}
+		
+		final TabPanel topPanel = new TopTabPanel();
+		completeTabPanel(topPanel);
+		rootPanel.add(topPanel);
 
-	protected Button createTopTabPanelButton() {
-		final Button button = new Button("Create TopTabPanel");
-		button.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				final TabPanel panel = new TopTabPanel();
-				completeTabPanel(panel);
-				RootPanel.get().add(panel);
-			}
-		});
-		return button;
+		final TabPanel bottomPanel = new BottomTabPanel();
+		completeTabPanel(bottomPanel);
+		rootPanel.add(bottomPanel);
+
+		final TabPanel leftPanel = new LeftTabPanel();
+		completeTabPanel(leftPanel);
+		rootPanel.add(leftPanel);
+
+		final TabPanel rightPanel = new RightTabPanel();
+		completeTabPanel(rightPanel);
+		rootPanel.add(rightPanel);			
 	}
 
 	/**
@@ -82,16 +87,12 @@ public class TabPanelTest implements EntryPoint {
 	protected void completeTabPanel(final TabPanel tabPanel) {
 		ObjectHelper.checkNotNull("parameter:tabPanel", tabPanel);
 
-		tabPanel.setCloseButtonImageUrl("close.gif");
+		tabPanel.setCloseButtonImageUrl("close.png");
 
 		final TabItem item = new TabItem();
 		item.setCaption("Unremovable TabItem");
 		item.setContent(new HTML(TabPanelTest.createContent()));
-		item.addTabWidget(new HTML("1A"), false);
-		item.addTabWidget(new HTML("2A"), false);
-		item.addTabWidget(new HTML("1B"), true);
-		item.addTabWidget(new HTML("2B"), true);
-
+		addTabItemWidgets( item );
 		tabPanel.add(item, false);
 		tabPanel.select(0);
 
@@ -100,87 +101,47 @@ public class TabPanelTest implements EntryPoint {
 		RootPanel.get().add(control);
 
 		tabPanel.addTabListener(new TabListener() {
-			public boolean onBeforeTabSelected(final TabItem item) {
+			public void onBeforeTabSelected(final BeforeTabSelectedEvent event ) {
+				TabItem item = event.getNewSelection();
 				final String caption = item.getCaption();
 				final Widget content = item.getContent();
-				return Window.confirm("tabSelected caption[" + caption + "]\ncontent: " + content + "\n ? Cancel=vetoes");
+				final boolean stop = ! Window.confirm("tabSelected caption[" + caption + "]\ncontent: " + content + "\n ? Cancel=vetoes");
+				if( stop ){
+					event.stop();
+				}
 			}
 
-			public void onTabSelected(final TabItem item) {
+			public void onTabSelected(final TabSelectedEvent event ) {
+				final TabPanel tabPanel = event.getTabPanel();
+				final TabItem item = tabPanel.get( tabPanel.getSelectedIndex() );
 				final String caption = item.getCaption();
 				final HTML content = (HTML) item.getContent();
-				control.addMessage("tabSelected caption[" + caption + "]" + content.getText().substring(0, 50));
+				control.log("tabSelected caption[" + caption + "]" + content.getText().substring(0, 50));
 			}
 
-			public boolean onBeforeTabClosed(final TabItem item) {
+			public void onBeforeTabClosed(final BeforeTabClosedEvent event ) {
+				final TabItem item = event.getClosing();
 				final String caption = item.getCaption();
 				final Widget content = item.getContent();
-				return Window.confirm("beforeTabClosed caption[" + caption + "]\ncontent: " + content + "\n ? Cancel=vetoes");
+				final boolean stop = ! Window.confirm("beforeTabClosed caption[" + caption + "]\ncontent: " + content + "\n ? Cancel=vetoes");
+				if( stop ){
+					event.stop();
+				}
 			}
 
-			public void onTabClosed(final TabItem item) {
+			public void onTabClosed(final TabClosedEvent event ) {
+				final TabItem item = event.getClosed();
 				final String caption = item.getCaption();
 				final HTML content = (HTML) item.getContent();
-				control.addMessage("tabClosed [" + caption + "] content: " + content.getText().substring(0, 50));
+				control.log("tabClosed [" + caption + "] content: " + content.getText().substring(0, 50));
 			}
 		});
-	}
-
-	protected Button createBottomTabPanelButton() {
-		final Button button = new Button("Create BottomTabPanel");
-		button.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				final TabPanel panel = new BottomTabPanel();
-				completeTabPanel(panel);
-				RootPanel.get().add(panel);
-			}
-		});
-		return button;
-	}
-
-	protected Button createLeftTabPanelButton() {
-		final Button button = new Button("Create LeftTabPanel");
-		button.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				final TabPanel panel = new LeftTabPanel();
-				completeTabPanel(panel);
-				RootPanel.get().add(panel);
-
-			}
-		});
-		return button;
-	}
-
-	protected Button createRightTabPanelButton() {
-		final Button button = new Button("Create RightTabPanel");
-		button.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				final TabPanel panel = new RightTabPanel();
-				completeTabPanel(panel);
-				RootPanel.get().add(panel);
-			}
-		});
-		return button;
 	}
 
 	final static String createContent() {
-		StringBuffer buf = new StringBuffer();
-		for (int i = 0; i < 1000; i++) {
-			if ((i % 32) == 0) {
-				buf.append("<br/>");
-			}
-			buf.append((char) (32 + (Random.nextInt() & 95)));
-		}
-		return buf.toString();
-	}
-
-	final static String createContent(final String text) {
-		StringBuffer buf = new StringBuffer();
-		for (int i = 0; i < 10; i++) {
-			buf.append(text);
-			buf.append("<br/>");
-		}
-		return buf.toString();
+		final Element element = DOM.getElementById( "lorem");
+		ObjectHelper.checkNotNull("hidden div with lorem text", element );
+		return DOM.getInnerHTML( element );
 	}
 
 	class InterativeList extends rocket.testing.client.InteractiveList {
@@ -233,13 +194,10 @@ public class TabPanelTest implements EntryPoint {
 			item.setCaption("" + System.currentTimeMillis());
 			item.setContent(new HTML(TabPanelTest.createContent()));
 
-			item.addTabWidget(new HTML("A1"), false);
-			item.addTabWidget(new HTML("A2"), false);
-			item.addTabWidget(new HTML("B1"), true);
-			item.addTabWidget(new HTML("B2"), true);
-
+			addTabItemWidgets( item );
 			return item;
 		}
+	
 
 		protected Iterator listIterator() {
 			return this.getTabPanel().iterator();
@@ -249,10 +207,6 @@ public class TabPanelTest implements EntryPoint {
 			if (false == (element instanceof TabItem)) {
 				SystemHelper.fail("Unknown element type. element ");
 			}
-		}
-
-		protected int getMessageLineCount() {
-			return 10;
 		}
 
 		/**
@@ -281,9 +235,26 @@ public class TabPanelTest implements EntryPoint {
 			this.tabPanel = tabPanel;
 		}
 
-		public void addMessage(final String message) {
-			super.addMessage(message);
+		public void log(final String message) {
+			super.log(message);
 		}
 	}
 
+	void addTabItemWidgets( final TabItem tabItem ){
+		tabItem.addTabWidget( createTabItemWidget( "application_form_magnify.png", "1st icon before"), false);
+		tabItem.addTabWidget( createTabItemWidget( "application_get.png", "2nd icon before"), false);
+		tabItem.addTabWidget( createTabItemWidget( "application_go.png", "1st icon after" ), true);;
+		tabItem.addTabWidget( createTabItemWidget( "application_home.png", "2nd icon after"), true);
+	}
+	
+	HTML createTabItemWidget( final String url, final String altText ){
+		final HTML html = new HTML();
+		html.addClickListener( new ClickListener(){
+			public void onClick( final Widget sender ){
+				Window.alert( "Click!");
+			}
+		});
+		html.setHTML( "<img src=\"" + url +"\" alt=\"" + altText + "\">");
+		return html;
+	}	
 }

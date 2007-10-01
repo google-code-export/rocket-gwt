@@ -15,7 +15,7 @@
  */
 package rocket.widget.client.tabpanel;
 
-import com.google.gwt.user.client.ui.DeckPanel;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -31,29 +31,16 @@ public class RightTabPanel extends VerticalTabPanel {
 		super();
 	}
 
-	protected HorizontalOrVerticalPanel createPanel() {
-		final HorizontalPanelImpl panel = new HorizontalPanelImpl();
-		panel.setStyleName(this.getPanelStyleName());
-
-		final DeckPanel contentPanel = this.createContentPanel();
-		this.setContentPanel(contentPanel);
-
-		panel.add(contentPanel);
-		panel.setCellHeight(contentPanel, "100%");
-
-		final HorizontalOrVerticalPanel tabBarPanel = this.createTabBarPanel();
-		this.setTabBarPanel(tabBarPanel);
-		panel.add((Widget) tabBarPanel);
-
-		return panel;
+	DockPanel.DockLayoutConstant getTabBarDockPanelConstants(){
+		return DockPanel.EAST;
+	}
+	
+	protected String getInitialStyleName() {
+		return Constants.RIGHT_TAB_PANEL_STYLE;
 	}
 
-	protected String getPanelStyleName() {
-		return TabConstants.RIGHT_TAB_PANEL_STYLE;
-	}
-
-	protected HorizontalOrVerticalPanel createTabBarPanel() {
-		final VerticalPanelImpl panel = new VerticalPanelImpl();
+	protected TabBarPanel createTabBarPanel() {
+		final VerticalTabBarPanel panel = new VerticalTabBarPanel();
 		this.setTabBarPanel(panel);
 
 		panel.setStyleName(this.getTabBarStyleName());
@@ -70,34 +57,34 @@ public class RightTabPanel extends VerticalTabPanel {
 	}
 
 	protected String getTabBarStyleName() {
-		return TabConstants.RIGHT_TAB_BAR_STYLE;
+		return Constants.RIGHT_TAB_BAR_STYLE;
 	}
 
 	protected String getTabBarBeforeSpacerStyleName() {
-		return TabConstants.RIGHT_TAB_BAR_BEFORE_SPACER_STYLE;
+		return Constants.RIGHT_TAB_BAR_BEFORE_SPACER_STYLE;
 	}
 
 	protected String getTabBarAfterSpacerStyleName() {
-		return TabConstants.RIGHT_TAB_BAR_AFTER_SPACER_STYLE;
+		return Constants.RIGHT_TAB_BAR_AFTER_SPACER_STYLE;
 	}
 
 	protected String getTabBarItemStyleName() {
-		return TabConstants.RIGHT_TAB_BAR_ITEM_STYLE;
+		return Constants.RIGHT_TAB_BAR_ITEM_STYLE;
 	}
 
 	protected String getTabBarItemLabelStyleName() {
-		return TabConstants.RIGHT_TAB_BAR_ITEM_LABEL_STYLE;
+		return Constants.RIGHT_TAB_BAR_ITEM_LABEL_STYLE;
 	}
 
 	protected String getTabBarItemWidgetStyleName() {
-		return TabConstants.RIGHT_TAB_BAR_ITEM_WIDGET_STYLE;
+		return Constants.RIGHT_TAB_BAR_ITEM_WIDGET_STYLE;
 	}
 
 	protected String getTabBarItemSelectedStyleName() {
-		return TabConstants.RIGHT_TAB_BAR_ITEM_SELECTED_STYLE;
+		return Constants.RIGHT_TAB_BAR_ITEM_SELECTED_STYLE;
 	}
 
 	protected String getContentPanelStyleName() {
-		return TabConstants.RIGHT_TAB_CONTENT_STYLE;
+		return Constants.RIGHT_TAB_CONTENT_STYLE;
 	}
 }
