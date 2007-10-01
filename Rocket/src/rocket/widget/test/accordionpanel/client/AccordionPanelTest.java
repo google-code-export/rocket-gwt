@@ -21,22 +21,28 @@ import java.util.Iterator;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.SystemHelper;
 import rocket.widget.client.accordion.AccordionItem;
+import rocket.widget.client.accordion.AccordionItemSelectedEvent;
 import rocket.widget.client.accordion.AccordionListener;
 import rocket.widget.client.accordion.AccordionPanel;
+import rocket.widget.client.accordion.BeforeAccordionItemSelectedEvent;
 import rocket.widget.client.accordion.LeftSideAccordionPanel;
 import rocket.widget.client.accordion.RightSideAccordionPanel;
 import rocket.widget.client.accordion.VerticalAccordionPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * FIXME Fix css to work with the hosted mode ie.
+ * @author admin
+ *
+ */
 public class AccordionPanelTest implements EntryPoint {
 
 	/**
@@ -51,45 +57,18 @@ public class AccordionPanelTest implements EntryPoint {
 		});
 
 		final RootPanel rootPanel = RootPanel.get();
-		rootPanel.add(createVerticalAccordionPanelButton());
-		rootPanel.add(createLeftSideAccordionPanelButton());
-		rootPanel.add(createRightSideAccordionPanelButton());
-	}
 
-	protected Button createRightSideAccordionPanelButton() {
-		final Button button = new Button("Create RightSideAccordionPanel");
-		button.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				final AccordionPanel panel = new RightSideAccordionPanel();
-				completeAccordionPanel(panel);
-				RootPanel.get().add(panel);
-			}
-		});
-		return button;
-	}
+		final AccordionPanel leftSidePanel = new LeftSideAccordionPanel();
+		completeAccordionPanel(leftSidePanel);
+		rootPanel.add(leftSidePanel);
+		
+		final AccordionPanel rightSidePanel = new RightSideAccordionPanel();
+		completeAccordionPanel(rightSidePanel);
+		rootPanel.add(rightSidePanel);
 
-	protected Button createLeftSideAccordionPanelButton() {
-		final Button button = new Button("Create LeftSideAccordionPanel");
-		button.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				final AccordionPanel panel = new LeftSideAccordionPanel();
-				completeAccordionPanel(panel);
-				RootPanel.get().add(panel);
-			}
-		});
-		return button;
-	}
-
-	protected Button createVerticalAccordionPanelButton() {
-		final Button button = new Button("Create VerticalAccordionPanel");
-		button.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				final AccordionPanel panel = new VerticalAccordionPanel();
-				completeAccordionPanel(panel);
-				RootPanel.get().add(panel);
-			}
-		});
-		return button;
+		final AccordionPanel topSidePanel = new VerticalAccordionPanel();
+		completeAccordionPanel(topSidePanel);
+		rootPanel.add(topSidePanel);
 	}
 
 	/**
@@ -101,67 +80,46 @@ public class AccordionPanelTest implements EntryPoint {
 	protected void completeAccordionPanel(final AccordionPanel accordionPanel) {
 		ObjectHelper.checkNotNull("parameter:accordionPanel", accordionPanel);
 
+		String text = GWT.getTypeName( accordionPanel );
+		text = text.substring( 1 + text.lastIndexOf( '.'));
+		
 		final AccordionItem item = new AccordionItem();
-		item.setCaption("AccordionItem");
-		item.setContent(new HTML(AccordionPanelTest.createContent()));
+		item.setCaption( text );
+		item.setContent(new HTML(this.getContent()));
 		accordionPanel.add(item);
 		accordionPanel.select(0);
 
-		final InterativeList control = new InterativeList();
+		final AccordionPanelTestInterativeList control = new AccordionPanelTestInterativeList();
 		control.setAccordionPanel(accordionPanel);
 		RootPanel.get().add(control);
 
 		accordionPanel.addAccordionListener(new AccordionListener() {
-			public boolean onBeforeItemSelected(final AccordionItem item) {
-				final String caption = item.getCaption();
-				final Widget content = item.getContent();
-				return Window.confirm("accordionSelected caption[" + caption + "]\ncontent: " + content + "\n ? Cancel=vetoes");
+			public void onBeforeItemSelected(final BeforeAccordionItemSelectedEvent event) {
+				final AccordionItem newSelection = event.getNewSelection();
+				final String caption = newSelection.getCaption();
+				final Widget content = newSelection.getContent();
+				final boolean cancel = ! Window.confirm("accordionSelected caption[" + caption + "]\ncontent: " + content + "\n ? Cancel=vetoes");
+				if( cancel ){
+					event.stop();
+				}
 			}
 
-			public void onItemSelected(final AccordionItem item) {
-				final String caption = item.getCaption();
-				final HTML content = (HTML) item.getContent();
-				control.addMessage("accordionSelected caption[" + caption + "]" + content.getText().substring(0, 50));
+			public void onItemSelected(final AccordionItemSelectedEvent event ) {
+				final AccordionItem selected = event.getAccordionPanel().getSelected();
+				final String caption = selected.getCaption();
+				final HTML content = (HTML) selected.getContent();
+				control.log("accordionSelected caption[" + caption + "]" + content.getText().substring(0, 50));
 			}
 		});
 	}
-
-	final static String createContent() {
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append("<b>");
-		buf.append(new Date());
-		buf.append("</b> ");
-
-		for (int i = 0; i < 1000; i++) {
-			if ((i % 128) == 0) {
-				buf.append("<br/>");
-			}
-			final char c = (char) (32 + (Random.nextInt() & 95));
-			if (c == '<' || c == '>' || c == '&') {
-				continue;
-			}
-			buf.append(c);
-		}
-		return buf.toString();
+	
+	String getContent(){
+		final Element element = DOM.getElementById( "Lorem");
+		return DOM.getInnerHTML(element);
 	}
 
-	final static String createContent(final String text) {
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append("<b>");
-		buf.append(new Date());
-		buf.append("</b> ");
-
-		for (int i = 0; i < 20; i++) {
-			buf.append(text);
-			buf.append("<br/>");
-		}
-		return buf.toString();
-	}
-
-	class InterativeList extends rocket.testing.client.InteractiveList {
-		InterativeList() {
+	class AccordionPanelTestInterativeList extends rocket.testing.client.InteractiveList {
+		AccordionPanelTestInterativeList() {
 			super();
 		}
 
@@ -204,7 +162,7 @@ public class AccordionPanelTest implements EntryPoint {
 		protected Object createElement() {
 			final AccordionItem item = new AccordionItem();
 			item.setCaption("" + new Date());
-			item.setContent(new HTML(AccordionPanelTest.createContent()));
+			item.setContent(new HTML(AccordionPanelTest.this.getContent()));
 			return item;
 		}
 
@@ -216,10 +174,6 @@ public class AccordionPanelTest implements EntryPoint {
 			if (false == (element instanceof AccordionItem)) {
 				SystemHelper.fail("Unknown element type. element ");
 			}
-		}
-
-		protected int getMessageLineCount() {
-			return 10;
 		}
 
 		/**
@@ -248,8 +202,8 @@ public class AccordionPanelTest implements EntryPoint {
 			this.accordionPanel = accordionPanel;
 		}
 
-		public void addMessage(final String message) {
-			super.addMessage(message);
+		public void log(final String message) {
+			super.log(message);
 		}
 	}
 

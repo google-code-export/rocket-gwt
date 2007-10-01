@@ -40,7 +40,6 @@ public class RightSideAccordionPanel extends TwoColumnAccordionPanel {
 
 	protected HorizontalPanel createPanel() {
 		final HorizontalPanel panel = new HorizontalPanel();
-		panel.setStyleName(Constants.RIGHT_SIDE_ACCORDION_PANEL_STYLE);
 
 		final DeckPanel contentsPanel = this.createContentsPanel();
 		this.setContentsPanel(contentsPanel);
@@ -51,6 +50,10 @@ public class RightSideAccordionPanel extends TwoColumnAccordionPanel {
 		panel.add(captionsPanel);
 
 		return panel;
+	}
+	
+	protected String getInitialStyleName(){		
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_STYLE;
 	}
 
 	protected String getCaptionsPanelStyle() {

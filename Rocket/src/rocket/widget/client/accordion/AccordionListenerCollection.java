@@ -53,15 +53,20 @@ class AccordionListenerCollection {
 		this.getListeners().remove(listener);
 	}
 
-	public boolean fireBeforeAccordionSelected(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+	public boolean fireBeforeAccordionSelected(final AccordionItem newSelection) {
+		ObjectHelper.checkNotNull("parameter:item", newSelection);
 
 		boolean doSelect = true;
+		
+		final BeforeAccordionItemSelectedEvent event = new BeforeAccordionItemSelectedEvent(); 
+		event.setNewSelection( newSelection );
+		
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final AccordionListener listener = (AccordionListener) listeners.next();
-			if (false == listener.onBeforeItemSelected(item)) {
+			listener.onBeforeItemSelected(event);
+			if (event.isCancelled() ) {
 				doSelect = false;
 				break;
 			}
@@ -69,14 +74,16 @@ class AccordionListenerCollection {
 		return doSelect;
 	}
 
-	public void fireAccordionSelected(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
-
+	public void fireAccordionSelected(final AccordionItem previouslySelected, final AccordionPanel panel ) {
+		final AccordionItemSelectedEvent event = new AccordionItemSelectedEvent();
+		event.setAccordionPanel( panel  );
+		event.setPreviouslySelected( previouslySelected );
+		
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final AccordionListener listener = (AccordionListener) listeners.next();
-			listener.onItemSelected(item);
+			listener.onItemSelected( event );
 		}
 	}
 }

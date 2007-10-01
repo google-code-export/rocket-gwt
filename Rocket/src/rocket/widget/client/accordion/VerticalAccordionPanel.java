@@ -69,9 +69,11 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	}
 
 	protected DivPanel createPanel() {
-		final DivPanel panel = new DivPanel();
-		panel.setStyleName(Constants.VERTICAL_ACCORDION_PANEL_STYLE);
-		return panel;
+		return new DivPanel();
+	}
+	
+	protected String getInitialStyleName(){		
+		return Constants.VERTICAL_ACCORDION_PANEL_STYLE;
 	}
 
 	// ACCORDION PANEL
