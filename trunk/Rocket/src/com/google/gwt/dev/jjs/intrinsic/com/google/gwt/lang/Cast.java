@@ -140,7 +140,7 @@ final class Cast {
 	}
 
 	/**
-	 * FIXME Dont forget to reapply changes when updating GWT version
+	 * TODO When upgrading GWT version reapply changes to this class.
 	 * @param jso
 	 * @param seed
 	 * @return
