@@ -15,18 +15,22 @@
  */
 package rocket.widget.client.menu;
 
-import java.util.Iterator;
+import java.util.Stack;
 
-import rocket.collection.client.CollectionHelper;
-import rocket.style.client.CssUnit;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseOutEvent;
+import rocket.event.client.MouseOverEvent;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
+import rocket.widget.client.CompositePanel;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -34,32 +38,58 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class MenuList extends MenuWidget implements HasWidgets {
+abstract class MenuList extends CompositePanel implements HasWidgets {
 
 	protected MenuList() {
 		super();
 	}
+	
+	protected void checkPanel( final Panel panel ){
+		throw new UnsupportedOperationException( "checkPanel");
+	}
+	
+	abstract protected Panel createPanel();
+	
+	protected void afterCreatePanel() {
+		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
+			public void onClick(final MouseClickEvent event) {
+				MenuList.this.handleMouseClick(event);
+			}
+
+			public void onMouseOut(final MouseOutEvent event) {
+				MenuList.this.handleMouseOut(event);
+			}
+
+			public void onMouseOver(final MouseOverEvent event) {
+				MenuList.this.handleMouseOver(event);
+			}
+		});
+	}
+
+	protected int getSunkEventsBitMask() {
+		return EventBitMaskConstants.MOUSE_CLICK | EventBitMaskConstants.MOUSE_OVER | EventBitMaskConstants.MOUSE_OUT;
+	}
 
 	// EVENTS ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	protected void handleMouseClick(final Event event) {
-		DOM.eventCancelBubble(event, true);
+	protected void handleMouseClick(final MouseClickEvent event) {
+		event.cancelBubble(true);
 	}
 
-	protected void handleMouseOver(final Event event) {
-		DOM.eventCancelBubble(event, true);
+	protected void handleMouseOver(final MouseOverEvent event) {
+		event.cancelBubble(true);
 	}
 
-	protected void handleMouseOut(final Event event) {
+	protected void handleMouseOut(final MouseOutEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
-			final Element targetElement = DOM.eventGetToElement(event);
+			final Element targetElement = event.getTo();
 			if (DOM.isOrHasChild(this.getElement(), targetElement)) {
-				DOM.eventCancelBubble(event, true);
+				event.cancelBubble(true);
 				break;
 			}
-			this.hideOpened();
+			this.hide();
 			break;
 		}
 	}
@@ -67,19 +97,19 @@ public abstract class MenuList extends MenuWidget implements HasWidgets {
 	// ACTIONS
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void open() {
+	abstract protected void open();
+	
+	protected void hide() {
 		if (this.isHideable()) {
 			final Element element = this.getElement();
-			InlineStyle.setString(element, StyleConstants.DISPLAY, "block");
-			InlineStyle.setInteger(element, StyleConstants.Z_INDEX, Constants.MENU_LIST_Z_INDEX, CssUnit.NONE);
+			InlineStyle.setString(element, StyleConstants.VISIBILITY, "hidden");
+			InlineStyle.setString(element, StyleConstants.DISPLAY, "none");
 		}
-	}
-
-	public void hide() {
-		if (this.isHideable()) {
-			InlineStyle.setString(this.getElement(), StyleConstants.DISPLAY, "none");
+			
+		if (this.hasOpened()) {
+			this.getOpened().hide();
+			this.clearOpened();
 		}
-		this.hideOpened();
 	}
 
 	/**
@@ -102,39 +132,24 @@ public abstract class MenuList extends MenuWidget implements HasWidgets {
 	// PANEL
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public abstract int getWidgetCount();
-
-	public void add(final Widget widget) {
-		this.insert(widget, this.getWidgetCount());
-	}
-
 	public abstract void insert(final Widget widget, final int beforeIndex);
-
-	protected void afterInsert(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
-
-		final AbstractMenuItem menuItem = (AbstractMenuItem) widget;
-		menuItem.setParentMenuList(this);
+	
+	public boolean remove( final int index ){
+		return this.remove( this.get( index ));
 	}
 
-	public abstract Widget get(final int index);
-
-	public void clear() {
-		CollectionHelper.removeAll(this.iterator());
-	}
-
-	public abstract Iterator iterator();
-
-	public boolean remove(Widget widget) {
+	public boolean remove(final Widget widget) {
 		final boolean removed = this.remove0(widget);
 		if (removed) {
 			if (this.hasOpened() && widget == this.getOpened()) {
 				this.clearOpened();
 			}
+			final MenuWidget menuItem = (MenuWidget) widget;
+			menuItem.clearParentMenuList();
 		}
 		return removed;
 	}
-
+	
 	/**
 	 * Sub-classes must attempt to remove the given widget
 	 * 
@@ -183,7 +198,7 @@ public abstract class MenuList extends MenuWidget implements HasWidgets {
 		return this.parentMenuList;
 	}
 
-	public boolean hasParentMenuList() {
+	protected boolean hasParentMenuList() {
 		return null != this.parentMenuList;
 	}
 
@@ -232,20 +247,32 @@ public abstract class MenuList extends MenuWidget implements HasWidgets {
 		this.opened = null;
 	}
 
-	/**
-	 * Hides any opened SubMenuItem if one is present.
-	 */
-	protected void hideOpened() {
-		if (this.hasOpened()) {
-			this.getOpened().hide();
-			this.clearOpened();
-		}
-	}
-
 	public String toString() {
-		String html = DOM.getInnerText(this.getElement());
-		html = html.replace('\n', ' ');
-		html = html.replace('\r', ' ');
-		return super.toString() + "[" + html + "]";
+		final StringBuffer buf = new StringBuffer();
+		buf.append(ObjectHelper.defaultToString(this));
+		buf.append(" [");
+
+		if (this.hasParentMenuList()) {
+			MenuList parent = this.getParentMenuList();
+
+			final Stack stack = new Stack();
+			while (true) {
+				if (parent.hasOpened()) {
+					stack.push(parent.getOpened().getText());
+				}
+				if (false == parent.hasParentMenuList()) {
+					break;
+				}
+				parent = parent.getParentMenuList();
+			}
+
+			while (false == stack.isEmpty()) {
+				buf.append(stack.pop());
+				buf.append(">");
+			}
+		}
+
+		buf.append("]");
+		return buf.toString();
 	}
 }

@@ -15,33 +15,25 @@
  */
 package rocket.widget.client.menu;
 
-import com.google.gwt.user.client.ui.Panel;
 
 /**
- * A vertical menu bar starts of with a vertical list of menu items. These may
- * be opened and automatically close etc.
+ * Convenient base class that implements all {@link MenuListener} methods with
+ * do nothing methods.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class VerticalMenuBar extends Menu {
-	public VerticalMenuBar() {
+public abstract class MenuListenerAdapter implements MenuListener {
+
+	protected MenuListenerAdapter() {
 		super();
 	}
 
-	protected Panel createPanel() {
-		final MenuList menuList = this.createMenuList();
-		this.setMenuList(menuList);
-		return menuList;
+	public void onMenuCancelled(final MenuOpenCancelledEvent event ) {
 	}
 
-	protected MenuList createMenuList() {
-		final VerticalMenuList list = new VerticalMenuList();
-		list.setHideable(false);
-		list.setMenu(this);
-		return list;
+	public void onBeforeMenuOpened(final BeforeMenuOpenedEvent event ) {
 	}
 
-	protected String getInitialStyleName() {
-		return Constants.VERTICAL_MENU_BAR_STYLE;
+	public void onMenuOpened(final MenuOpenedEvent event ) {
 	}
 }

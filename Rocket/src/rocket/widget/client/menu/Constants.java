@@ -15,58 +15,41 @@
  */
 package rocket.widget.client.menu;
 
-import rocket.style.client.StyleHelper;
 import rocket.widget.client.WidgetConstants;
 
-/**
- * @author Miroslav Pokorny (mP)
- */
 class Constants {
-	public final static String MENU_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "menu");
+	final static String MENU_STYLE = WidgetConstants.ROCKET + "-menu";
 
-	final static String SELECTED = "selected";
+	final static String SELECTED = "-selected";
 
-	final static String DISABLED = "disabled";
+	final static String DISABLED = "-disabled";
 
 	// menu bars...
-	public final static String HORIZONTAL_MENU_BAR_STYLE = StyleHelper.buildCompound(MENU_STYLE, "horizontalMenuBar");
+	final static String HORIZONTAL_MENU_BAR_STYLE = MENU_STYLE + "-horizontalMenuBar";
 
-	public final static String VERTICAL_MENU_BAR_STYLE = StyleHelper.buildCompound(MENU_STYLE, "verticalMenuBar");
+	final static String VERTICAL_MENU_BAR_STYLE = MENU_STYLE + "-verticalMenuBar";
 
-	public final static String CONTEXT_MENU_STYLE = StyleHelper.buildCompound(MENU_STYLE, "contextMenu");
+	final static String CONTEXT_MENU_STYLE = MENU_STYLE + "-contextMenu";
 
 	// menu widgets...
-	public final static String SUB_MENU_ITEM_STYLE = StyleHelper.buildCompound(MENU_STYLE, "subMenuItem");
+	final static String SUB_MENU_ITEM_STYLE = MENU_STYLE + "-subMenuItem";
 
-	public final static String SUB_MENU_ITEM_SELECTED_STYLE = StyleHelper.buildCompound(SUB_MENU_ITEM_STYLE, SELECTED);
+	final static String SUB_MENU_ITEM_SELECTED_STYLE = SUB_MENU_ITEM_STYLE + SELECTED;
 
-	public final static String SUB_MENU_ITEM_DISABLED_STYLE = StyleHelper.buildCompound(SUB_MENU_ITEM_STYLE, DISABLED);
+	final static String SUB_MENU_ITEM_DISABLED_STYLE = SUB_MENU_ITEM_STYLE + DISABLED;
 
-	public final static String MENU_ITEM_STYLE = StyleHelper.buildCompound(MENU_STYLE, "menuItem");
+	final static String MENU_ITEM_STYLE = MENU_STYLE + "-menuItem";
 
-	public final static String MENU_ITEM_SELECTED_STYLE = StyleHelper.buildCompound(MENU_ITEM_STYLE, SELECTED);
+	final static String MENU_ITEM_SELECTED_STYLE = MENU_ITEM_STYLE + SELECTED;
 
-	public final static String MENU_ITEM_DISABLED_STYLE = StyleHelper.buildCompound(MENU_ITEM_STYLE, DISABLED);
+	final static String MENU_ITEM_DISABLED_STYLE = MENU_ITEM_STYLE + DISABLED;
 
-	public final static String SPACER_STYLE = StyleHelper.buildCompound(MENU_STYLE, "menuSpacer");
+	final static String SPACER_STYLE = MENU_STYLE + "-menuSpacer";
 
-	public final static String SPACER_HTML = "<hr>";
+	final static String SPACER_HTML = "<hr>";
 
 	// menu lists....
-	public final static String HORIZONTAL_MENU_LIST_STYLE = StyleHelper.buildCompound(MENU_STYLE, "horizontalMenuList");
+	final static String HORIZONTAL_MENU_LIST_STYLE = MENU_STYLE + "-horizontalMenuList";
 
-	public final static String VERTICAL_MENU_LIST_STYLE = StyleHelper.buildCompound(MENU_STYLE, "verticalMenuList");
-
-	public final static int DOWN_OVERLAP = -1;
-
-	public final static int RIGHT_OVERLAP = -1;
-
-	public final static int MENU_LIST_Z_INDEX = 1000;
-
-	/**
-	 * This message is shown within an alert whenever the ContextMenu class is
-	 * unable to setup a function to return false to override the default
-	 * behaviour of the browser for oncontextmenu events.
-	 */
-	static final String UNABLE_INSTALL_ONCONTEXTMENU_EVENT_DIVERTER = "Unable to divert oncontextmenu event to GWT.";
+	final static String VERTICAL_MENU_LIST_STYLE = MENU_STYLE + "-verticalMenuList";
 }

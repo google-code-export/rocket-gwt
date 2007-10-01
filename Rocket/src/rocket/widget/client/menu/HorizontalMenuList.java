@@ -18,10 +18,15 @@ package rocket.widget.client.menu;
 import java.util.Iterator;
 
 import rocket.collection.client.SkippingIterator;
+import rocket.style.client.CssUnit;
+import rocket.style.client.InlineStyle;
+import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
+import rocket.widget.client.Html;
 
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -36,10 +41,21 @@ public class HorizontalMenuList extends MenuList {
 		super();
 	}
 
-	protected Widget createWidget() {
-		final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
-		this.setHorizontalPanel(horizontalPanel);
-		return horizontalPanel;
+	protected Panel createPanel() {
+		return this.createHorizontalPanel();
+	}
+
+	protected String getInitialStyleName() {
+		return Constants.HORIZONTAL_MENU_LIST_STYLE;
+	}
+	
+	protected void open() {
+		if (this.isHideable()) {
+			final Element element = this.getElement();
+			InlineStyle.setInteger(element, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
+			InlineStyle.setString(element, StyleConstants.DISPLAY, "block" );
+			InlineStyle.setString(element, StyleConstants.VISIBILITY, "visible");
+		}
 	}
 
 	// PANEL
@@ -50,7 +66,9 @@ public class HorizontalMenuList extends MenuList {
 
 	public void insert(final Widget widget, final int beforeIndex) {
 		this.getHorizontalPanel().insert(widget, beforeIndex);
-		this.afterInsert(widget);
+		
+		final MenuWidget menuItem = (MenuWidget) widget;
+		menuItem.setParentMenuList(this);
 	}
 
 	protected boolean remove0(final Widget widget) {
@@ -73,26 +91,14 @@ public class HorizontalMenuList extends MenuList {
 		return iterator;
 	}
 
-	/**
-	 * A horizontalPanel is used as the container for all child widgets.
-	 */
-	private HorizontalPanel horizontalPanel;
-
 	protected HorizontalPanel getHorizontalPanel() {
-		ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
-		return this.horizontalPanel;
-	}
-
-	protected void setHorizontalPanel(final HorizontalPanel horizontalPanel) {
-		ObjectHelper.checkNotNull("parameter:horizontalPanel", horizontalPanel);
-		this.horizontalPanel = horizontalPanel;
+		return (HorizontalPanel) this.getPanel(); 
 	}
 
 	protected HorizontalPanel createHorizontalPanel() {
 		final HorizontalPanel panel = new HorizontalPanel();
 		panel.setWidth("100%");
-		panel.setStyleName(Constants.HORIZONTAL_MENU_LIST_STYLE);
-
+	
 		final Widget padder = this.createPadder();
 		this.setPadder(padder);
 		panel.add(padder);
@@ -100,7 +106,7 @@ public class HorizontalMenuList extends MenuList {
 
 		return panel;
 	}
-
+	
 	/**
 	 * An extra padding widget is added as the last item in the HorizontalPanel.
 	 */
@@ -117,6 +123,6 @@ public class HorizontalMenuList extends MenuList {
 	}
 
 	protected Widget createPadder() {
-		return new HTML("&nbsp;");
+		return new Html("&nbsp;");
 	}
 }
