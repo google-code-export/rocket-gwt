@@ -35,4 +35,7 @@ public class Constants {
 	final static String CREATE_PROXY_BEAN_TYPE = "beanType";
 	
 	final static String PAYLOAD_DECLARATION_METHOD = "__dummy";
+	
+	final static String PROXY_CREATOR = "com.google.gwt.user.rebind.rpc.ProxyCreator";
+	final static String CUSTOMISED_PROXY_CREATOR_MARKER_FIELD = "ROCKET";
 }
