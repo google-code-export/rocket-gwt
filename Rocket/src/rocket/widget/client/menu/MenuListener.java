@@ -49,5 +49,5 @@ public interface MenuListener {
 	 * 
 	 * @param event
 	 */
-	void onOpenCancelled( MenuOpenCancelledEvent event );
+	void onCancelledOpen( CancelledMenuOpenEvent event );
 }

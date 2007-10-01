@@ -34,6 +34,6 @@ public abstract class MenuListenerAdapter implements MenuListener {
 	public void onOpen(final MenuOpenEvent event ) {
 	}
 	
-	public void onOpenCancelled(final MenuOpenCancelledEvent event ) {
+	public void onCancelledOpen(final CancelledMenuOpenEvent event ) {
 	}
 }

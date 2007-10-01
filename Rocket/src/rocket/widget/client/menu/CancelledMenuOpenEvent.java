@@ -17,24 +17,5 @@ package rocket.widget.client.menu;
 
 import com.google.gwt.user.client.ui.Widget;
 
-public class BeforeMenuOpenEvent extends MenuEvent {
-
-	/**
-	 * This flag indicates that the menu should not be opened.
-	 */
-	private boolean cancelled;
-	
-	boolean isCancelled(){
-		return this.cancelled;
-	}
-	void setCancelled( final boolean cancelled ){
-		this.cancelled = cancelled;
-	}
-	
-	/**
-	 * Invoking this method stops or ignores the menu opening from happening.
-	 */
-	public void stop(){
-		this.setCancelled( true );
-	}
+public class CancelledMenuOpenEvent extends MenuEvent {
 }

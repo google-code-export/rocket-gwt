@@ -17,7 +17,7 @@ package rocket.widget.client.menu;
 
 import com.google.gwt.user.client.ui.Widget;
 
-public class MenuOpenCancelledEvent {
+abstract class MenuEvent {
 	
 	private Widget widget;
 	
