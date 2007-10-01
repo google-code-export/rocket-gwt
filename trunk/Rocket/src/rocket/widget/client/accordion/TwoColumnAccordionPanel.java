@@ -34,10 +34,6 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 		super();
 	}
 
-	protected int getSunkEventsBitMask() {
-		return 0;
-	}
-
 	protected void replaceContentWidget(final AccordionItem item) {
 		ObjectHelper.checkNotNull("parameter:item", item);
 

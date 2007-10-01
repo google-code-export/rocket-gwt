@@ -19,8 +19,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import rocket.event.client.EventBitMaskConstants;
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.Composite;
+import rocket.widget.client.CompositeWidget;
 
 /**
  * An accordian is a stack of titles and their panels following immediately
@@ -29,15 +30,21 @@ import rocket.widget.client.Composite;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class AccordionPanel extends Composite {
+public abstract class AccordionPanel extends CompositeWidget {
 
 	protected AccordionPanel() {
 		super();
 	}
 
-	protected void afterCreateWidget() {
+	protected void beforeCreateWidget(){
+		super.beforeCreateWidget();
+		
 		this.setItems(createItems());
-		this.setAccordionListeners(createAccordionListeners());
+		this.setAccordionListeners(createAccordionListeners());	
+	}
+
+	protected int getSunkEventsBitMask() {
+		return EventBitMaskConstants.FOCUS_EVENTS;
 	}
 
 	/**

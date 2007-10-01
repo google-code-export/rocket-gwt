@@ -16,7 +16,7 @@
 package rocket.widget.client.accordion;
 
 public interface AccordionListener {
-	boolean onBeforeItemSelected(AccordionItem item);
+	void onBeforeItemSelected( BeforeAccordionItemSelectedEvent event );
 
-	void onItemSelected(AccordionItem item);
+	void onItemSelected(AccordionItemSelectedEvent event );
 }

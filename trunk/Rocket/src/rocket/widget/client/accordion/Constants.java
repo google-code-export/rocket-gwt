@@ -1,7 +1,7 @@
 /*
  * Copyright Miroslav Pokorny
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * Licensed under the Apache License, Version 2.0 (the "License"; you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  *
@@ -15,77 +15,65 @@
  */
 package rocket.widget.client.accordion;
 
-import rocket.style.client.StyleHelper;
 import rocket.widget.client.WidgetConstants;
 
 class Constants {
-	final static String SELECTED = "selected";
+	private final static String SELECTED = "-selected";
 
-	final static String CAPTIONS = "captions";
+	private final static String CAPTIONS = "-captions";
 
-	final static String CAPTION = "caption";
+	private final static String CAPTION = "-caption";
 
-	final static String CONTENT = "content";
+	private final static String CONTENT = "-content";
 
-	final static String CONTENTS = "contents";
+	private final static String CONTENTS = "-contents";
 
-	public final static String VERTICAL_ACCORDION_PANEL_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "verticalAccordionPanel");
+	private final static String ITEM = "-item";
+	
+	final static String VERTICAL_ACCORDION_PANEL_STYLE = WidgetConstants.ROCKET + "-verticalAccordionPanel";
 
-	public final static String VERTICAL_ACCORDION_PANEL_ITEM_STYLE = StyleHelper.buildCompound(VERTICAL_ACCORDION_PANEL_STYLE, "item");
+	final static String VERTICAL_ACCORDION_PANEL_ITEM_STYLE = VERTICAL_ACCORDION_PANEL_STYLE + ITEM;
 
-	public final static String VERTICAL_ACCORDION_PANEL_ITEM_SELECTED_STYLE = StyleHelper.buildCompound(
-			VERTICAL_ACCORDION_PANEL_ITEM_STYLE, SELECTED);
+	final static String VERTICAL_ACCORDION_PANEL_ITEM_SELECTED_STYLE = VERTICAL_ACCORDION_PANEL_ITEM_STYLE + SELECTED;
 
-	public final static String VERTICAL_ACCORDION_PANEL_ITEM_CAPTION_STYLE = StyleHelper.buildCompound(VERTICAL_ACCORDION_PANEL_ITEM_STYLE,
-			CAPTION);
+	final static String VERTICAL_ACCORDION_PANEL_ITEM_CAPTION_STYLE = VERTICAL_ACCORDION_PANEL_ITEM_STYLE + CAPTION;
 
-	public final static String VERTICAL_ACCORDION_PANEL_ITEM_CONTENT_STYLE = StyleHelper.buildCompound(VERTICAL_ACCORDION_PANEL_ITEM_STYLE,
-			CONTENT);
+	final static String VERTICAL_ACCORDION_PANEL_ITEM_CONTENT_STYLE = VERTICAL_ACCORDION_PANEL_ITEM_STYLE + CONTENT;
 
-	public final static String LEFT_SIDE_ACCORDION_PANEL_STYLE = StyleHelper
-			.buildCompound(WidgetConstants.ROCKET, "leftSideAccordionPanel");
+	final static String LEFT_SIDE_ACCORDION_PANEL_STYLE = WidgetConstants.ROCKET + "-leftSideAccordionPanel";
 
-	public final static String LEFT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE = StyleHelper.buildCompound(LEFT_SIDE_ACCORDION_PANEL_STYLE,
-			CAPTIONS);
+	final static String LEFT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE = LEFT_SIDE_ACCORDION_PANEL_STYLE + CAPTIONS;
 
-	public final static String LEFT_SIDE_ACCORDION_PANEL_CONTENTS_STYLE = StyleHelper.buildCompound(LEFT_SIDE_ACCORDION_PANEL_STYLE,
-			CONTENTS);
+	final static String LEFT_SIDE_ACCORDION_PANEL_CONTENTS_STYLE = LEFT_SIDE_ACCORDION_PANEL_STYLE + CONTENTS;
 
-	public final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_STYLE = StyleHelper.buildCompound(LEFT_SIDE_ACCORDION_PANEL_STYLE, "item");
+	final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_STYLE = LEFT_SIDE_ACCORDION_PANEL_STYLE + ITEM;
 
-	public final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE = StyleHelper.buildCompound(
-			LEFT_SIDE_ACCORDION_PANEL_ITEM_STYLE, CAPTION);
+	final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE = LEFT_SIDE_ACCORDION_PANEL_ITEM_STYLE + CAPTION;
 
-	public final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_SELECTED_STYLE = StyleHelper.buildCompound(
-			LEFT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE, SELECTED);
+	final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_SELECTED_STYLE = LEFT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE
+			+ SELECTED;
 
-	public final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE = StyleHelper.buildCompound(
-			LEFT_SIDE_ACCORDION_PANEL_ITEM_STYLE, CONTENT);
+	final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE = LEFT_SIDE_ACCORDION_PANEL_ITEM_STYLE + CONTENT;
 
-	public final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_SELECTED_STYLE = StyleHelper.buildCompound(
-			LEFT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE, SELECTED);
+	final static String LEFT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_SELECTED_STYLE = LEFT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE
+			+ SELECTED;
 
-	public final static String RIGHT_SIDE_ACCORDION_PANEL_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET,
-			"rightSideAccordionPanel");
+	final static String RIGHT_SIDE_ACCORDION_PANEL_STYLE = WidgetConstants.ROCKET + "-rightSideAccordionPanel";
 
-	public final static String RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE = StyleHelper.buildCompound(RIGHT_SIDE_ACCORDION_PANEL_STYLE,
-			CAPTIONS);
+	final static String RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE = RIGHT_SIDE_ACCORDION_PANEL_STYLE + CAPTIONS;
 
-	public final static String RIGHT_SIDE_ACCORDION_PANEL_CONTENTS_STYLE = StyleHelper.buildCompound(RIGHT_SIDE_ACCORDION_PANEL_STYLE,
-			CONTENTS);
+	final static String RIGHT_SIDE_ACCORDION_PANEL_CONTENTS_STYLE = RIGHT_SIDE_ACCORDION_PANEL_STYLE + CONTENTS;
 
-	public final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_STYLE = StyleHelper.buildCompound(RIGHT_SIDE_ACCORDION_PANEL_STYLE, "item");
+	final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_STYLE = RIGHT_SIDE_ACCORDION_PANEL_STYLE + ITEM;
 
-	public final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE = StyleHelper.buildCompound(
-			RIGHT_SIDE_ACCORDION_PANEL_ITEM_STYLE, CAPTION);
+	final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE = RIGHT_SIDE_ACCORDION_PANEL_ITEM_STYLE + CAPTION;
 
-	public final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_SELECTED_STYLE = StyleHelper.buildCompound(
-			RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE, SELECTED);
+	final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_SELECTED_STYLE = RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE
+			+ SELECTED;
 
-	public final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE = StyleHelper.buildCompound(
-			RIGHT_SIDE_ACCORDION_PANEL_ITEM_STYLE, CONTENT);
+	final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE = RIGHT_SIDE_ACCORDION_PANEL_ITEM_STYLE + CONTENT;
 
-	public final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_SELECTED_STYLE = StyleHelper.buildCompound(
-			RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE, SELECTED);
+	final static String RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_SELECTED_STYLE = RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE
+			+ SELECTED;
 
 }
