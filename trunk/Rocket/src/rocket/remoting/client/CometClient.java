@@ -77,7 +77,7 @@ public abstract class CometClient {
 	public void stop() {
 		if (this.hasFrame()) {
 			final Element frame = this.getFrame();
-			DOM.removeChild(DOM.getParent(frame), frame);
+			Dom.removeFromParent( frame );
 			this.clearFrame();
 			this.getSupport().stop(this, frame);
 		}
