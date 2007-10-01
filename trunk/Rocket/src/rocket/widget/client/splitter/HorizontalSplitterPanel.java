@@ -18,8 +18,8 @@ package rocket.widget.client.splitter;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.browser.client.Browser;
 import rocket.dom.client.Dom;
+import rocket.event.client.MouseMoveEvent;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
@@ -27,7 +27,6 @@ import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -41,15 +40,17 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 
 	public HorizontalSplitterPanel() {
 		super();
-
-		this.setItems(createItems());
-		this.setStyleName(Constants.HORIZONTAL_SPLITTER_PANEL_STYLE);
 	}
 
 	protected void afterCreateWidget() {
+		this.setItems(createItems());
 		InlineStyle.setString(DOM.getChild(this.getElement(), 0), StyleConstants.OVERFLOW_Y, "hidden");
 	}
 
+	protected String getInitialStyleName(){
+		return Constants.HORIZONTAL_SPLITTER_PANEL_STYLE;
+	}
+	
 	/**
 	 * This factory method creates a new splitter on demand.
 	 * 
@@ -59,35 +60,50 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 		return new HorizontalSplitter();
 	}
 
-	class HorizontalSplitter extends Splitter {
+	private class HorizontalSplitter extends Splitter {
 
 		HorizontalSplitter() {
 			super();
-
+		}
+		
+		protected void afterCreateElement(){
+			super.afterCreateElement();
+			
 			this.setWidth(HorizontalSplitterPanel.this.getSplitterSize() + "px");
 			this.setHeight("100%");
-			this.setStyleName(Constants.HORIZONTAL_SPLITTER_PANEL_SPLITTER_STYLE);
+		}
+		
+		protected String getInitialStyleName(){
+			return HorizontalSplitterPanel.this.getSplitterStyle();
 		}
 
 		protected String getDraggingStyleName() {
-			return Constants.HORIZONTAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE;
+			return HorizontalSplitterPanel.this.getDraggingStyle();
 		}
 	}
 
+	protected String getSplitterStyle(){
+		return Constants.HORIZONTAL_SPLITTER_PANEL_SPLITTER_STYLE;
+	}
+
+	protected String getDraggingStyle(){
+		return Constants.HORIZONTAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE;
+	}
+	
 	/**
 	 * This is the most important event handler that takes care of adjusting the
 	 * widths of the widgets before and after the splitter being moved.
 	 * 
-	 * @param splitter
 	 * @param event
 	 */
-	protected void handleMouseMove(final Splitter splitter, final Event event) {
-		ObjectHelper.checkNotNull("parameter:splitter", splitter);
+	protected void handleMouseMove(final MouseMoveEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
+			final Splitter splitter = (Splitter) event.getWidget();
+			
 			// need to figure out if mouse has moved to the right or left...
-			final int mouseX = DOM.eventGetClientX(event) + Browser.getScrollX();
+			final int mouseX = event.getPageX();
 			final int splitterX = Dom.getAbsoluteLeft(splitter.getElement());
 
 			// if the mouse has not moved horizontally but vertically so exit...
@@ -97,7 +113,7 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 			}
 
 			// grab the widgets before and after the splitter being dragged...
-			final Panel panel = this.getPanel();
+			final InternalPanel panel = this.getPanel();
 			final int panelIndex = panel.indexOf(splitter);
 			final Widget beforeWidget = panel.get(panelIndex - 1);
 			int beforeWidgetWidth = beforeWidget.getOffsetWidth() + delta;
@@ -152,16 +168,19 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 	protected void adjustXCoordinate(final Widget widget, final int delta) {
 		final Element element = widget.getElement();
 		final int x = InlineStyle.getInteger(element, StyleConstants.LEFT, CssUnit.PX, 0);
-		Dom.setAbsolutePosition(element, x + delta, 0);
+		
+		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
+		InlineStyle.setInteger(element, StyleConstants.LEFT, x + delta, CssUnit.PX);
+		InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
 	}
 
 	/**
 	 * Lays out all added widgets summing their individual weights and then
 	 * assigns widths to each.
 	 */
-	protected void layoutWidgets0() {
+	protected void redraw0() {
 		final int weightSum = this.sumWeights();
-		final Panel panel = this.getPanel();
+		final InternalPanel panel = this.getPanel();
 		final int availableWidth = DOM.getElementPropertyInt(panel.getParentElement(), "offsetWidth");
 
 		final int splitterCount = (panel.getWidgetCount() - 1) / 2;
@@ -181,10 +200,13 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 
 			// set the widget position...
 			final Element widgetElement = widget.getElement();
-			Dom.setAbsolutePosition(widgetElement, left, 0);
+			
+			InlineStyle.setString(widgetElement, StyleConstants.POSITION, "absolute");
+			InlineStyle.setInteger(widgetElement, StyleConstants.LEFT, left, CssUnit.PX);
+			InlineStyle.setInteger(widgetElement, StyleConstants.TOP, 0, CssUnit.PX);
 
 			// overflow...
-			DOM.setStyleAttribute(widgetElement, StyleConstants.OVERFLOW, "hidden");
+			InlineStyle.setString(widgetElement, StyleConstants.OVERFLOW, "hidden");
 
 			// set the size(width/height)...
 			widget.setHeight("100%");
@@ -205,10 +227,13 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 			final Widget splitter = (Widget) widgets.next();
 
 			// set the splitter position...
-			Dom.setAbsolutePosition(splitter.getElement(), left, 0);
+			final Element splitterElement = splitter.getElement();
+			InlineStyle.setString(splitterElement, StyleConstants.POSITION, "absolute");
+			InlineStyle.setInteger(splitterElement, StyleConstants.LEFT, left, CssUnit.PX);
+			InlineStyle.setInteger(splitterElement, StyleConstants.TOP, 0, CssUnit.PX);
 
 			// overflow...
-			DOM.setStyleAttribute(widgetElement, StyleConstants.OVERFLOW, "hidden");
+			InlineStyle.setString(widgetElement, StyleConstants.OVERFLOW, "hidden");
 
 			// set the splitters size...
 			splitter.setWidth(splitterWidth + "px");

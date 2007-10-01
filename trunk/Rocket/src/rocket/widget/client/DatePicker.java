@@ -23,7 +23,10 @@ import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 
 /**
  * A template class that provides most of the functionality to build a calendar
@@ -61,20 +64,19 @@ import com.google.gwt.user.client.ui.Widget;
  * The date picker is always positioned so that the start of the current month
  * is within the first week belonging to the calendar.
  */
-abstract public class DatePicker extends Composite {
+abstract public class DatePicker extends CompositeWidget {
 
 	public DatePicker() {
 		super();
-
-		this.setStyleName(WidgetConstants.DATEPICKER_STYLE);
 	}
 
 	protected Widget createWidget() {
 		this.setDate(this.createDate());
-		final CalendarGrid grid = this.createGrid();
-		this.setCalendarGrid(grid);
+		return this.createCalendarGrid();
+	}
 
-		return grid;
+	protected String getInitialStyleName() {
+		return WidgetConstants.DATEPICKER_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
@@ -99,10 +101,16 @@ abstract public class DatePicker extends Composite {
 		ticks = ticks - date.getDay() * WidgetConstants.DATEPICKER_MILLISECONDS_IN_A_DAY;
 		date.setTime(ticks);
 
-		String monthStyle = date.getDate() != 1 ? WidgetConstants.DATEPICKER_PREVIOUS_MONTH_STYLE : WidgetConstants.DATEPICKER_CURRENT_MONTH_STYLE;
-
+		final String dayStyle = this.getDayStyle();
+		final String currentMonthStyle = this.getCurrentMonthStyle();
+		final String nextMonthStyle = this.getNextMonthStyle();
+		String monthStyle = date.getDate() != 1 ? this.getPreviousMonthStyle() : currentMonthStyle;
+		
 		final int rowOffset = this.hasHeadings() ? 1 : 0;
 		final int lastRow = grid.getRowCount();
+		
+		final CellFormatter cellFormatter = grid.getCellFormatter();
+		
 		for (int row = rowOffset; row < lastRow; row++) {
 			for (int column = 0; column < WidgetConstants.DATEPICKER_COLUMNS; column++) {
 
@@ -110,35 +118,37 @@ abstract public class DatePicker extends Composite {
 				final int month = date.getMonth();
 				final int dayOfMonth = date.getDate();
 
+				cellFormatter.setStyleName(row, column, dayStyle );
+				cellFormatter.addStyleName(row, column, monthStyle );
+								
 				final Widget widget = this.createDateTile(year, month, dayOfMonth);
-				widget.addStyleName(monthStyle);
-				widget.addStyleName(WidgetConstants.DATEPICKER_DAY_STYLE);
-
-				grid.setWidget(row, column, widget, year, month, dayOfMonth);
+				grid.setWidget(row, column, widget, year, month, dayOfMonth);							
 
 				date.setDate(dayOfMonth + 1);
 
 				if (date.getDate() < dayOfMonth) {
-					monthStyle = monthStyle.equals(WidgetConstants.DATEPICKER_CURRENT_MONTH_STYLE) ? WidgetConstants.DATEPICKER_NEXT_MONTH_STYLE
-							: WidgetConstants.DATEPICKER_CURRENT_MONTH_STYLE;
+					monthStyle = monthStyle.equals(currentMonthStyle) ? nextMonthStyle : currentMonthStyle;
 				}
 			}
 		}
 	}
-
+	protected String getDayStyle(){
+		return WidgetConstants.DATEPICKER_DAY_STYLE;
+	}
+	protected String getPreviousMonthStyle(){
+		return WidgetConstants.DATEPICKER_PREVIOUS_MONTH_STYLE;
+	}
+	protected String getCurrentMonthStyle(){
+		return WidgetConstants.DATEPICKER_CURRENT_MONTH_STYLE;
+	}
+	protected String getNextMonthStyle(){
+		return WidgetConstants.DATEPICKER_NEXT_MONTH_STYLE;
+	}
 	/**
 	 * A calendarGrid is used to hold all the cells that make up the calendar
 	 */
-	private CalendarGrid calendarGrid;
-
-	protected CalendarGrid getCalendarGrid() {
-		ObjectHelper.checkNotNull("field:calendarGrid", calendarGrid);
-		return this.calendarGrid;
-	}
-
-	protected void setCalendarGrid(final CalendarGrid calendarGrid) {
-		ObjectHelper.checkNotNull("parameter:calendarGrid", calendarGrid);
-		this.calendarGrid = calendarGrid;
+	protected CalendarGrid getCalendarGrid() {		
+		return (CalendarGrid) this.getWidget();
 	}
 
 	/**
@@ -147,13 +157,28 @@ abstract public class DatePicker extends Composite {
 	 * 
 	 * @return The new calendarGrid.
 	 */
-	protected CalendarGrid createGrid() {
+	protected CalendarGrid createCalendarGrid() {
 		final boolean hasHeadings = this.hasHeadings();
 		final int rows = hasHeadings ? WidgetConstants.DATEPICKER_ROWS + 1 : WidgetConstants.DATEPICKER_ROWS;
 		final CalendarGrid grid = new CalendarGrid(rows, WidgetConstants.DATEPICKER_COLUMNS);
 		if (hasHeadings) {
 			this.addHeadings(grid);
 		}
+		grid.setCellPadding( 0 );
+		grid.setCellSpacing( 0 );
+		
+		final CellFormatter cellFormatter = grid.getCellFormatter();
+		final String dayStyle = this.getDayStyle();
+		
+		for( int r = 0; r < rows; r++ ){
+			for( int c = 0; c < WidgetConstants.DATEPICKER_COLUMNS; c++ ){
+				cellFormatter.setAlignment(r, c, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE );				
+				cellFormatter.setWidth( r, c, "100%");
+				cellFormatter.setHeight( r, c, "100%");
+				cellFormatter.setStyleName( r, c, dayStyle);
+			}
+		}
+
 		return grid;
 	}
 

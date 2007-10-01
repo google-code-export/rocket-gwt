@@ -15,13 +15,15 @@
  */
 package rocket.widget.client;
 
+import rocket.event.client.ChangeEventListener;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseEventListener;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -33,7 +35,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Pager extends Composite implements NumberHolder {
+public class Pager extends CompositeWidget{
 
 	public Pager() {
 		super();
@@ -46,15 +48,18 @@ public class Pager extends Composite implements NumberHolder {
 	}
 
 	protected void afterCreateWidget() {
-		this.setChangeListeners(this.createChangeListeners());
+		final EventListenerDispatcher dispatcher = new EventListenerDispatcher();
+		this.setEventListenerDispatcher(dispatcher);
+		dispatcher.prepareListenerCollections(EventBitMaskConstants.CHANGE);
 	}
 
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
 
-	// NUMBER HOLDER
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	protected String getInitialStyleName() {
+		return WidgetConstants.PAGER_STYLE;
+	}
 
 	public int getValue() {
 		return this.getCurrentPage();
@@ -103,8 +108,7 @@ public class Pager extends Composite implements NumberHolder {
 				pageNumber = lastPage - 1;
 			}
 
-			final Button button = this.createPage(pageNumber);
-			panel.add(button);
+			panel.add(this.createPage(pageNumber));
 		}
 
 		panel.add(this.createNextButton());
@@ -135,54 +139,78 @@ public class Pager extends Composite implements NumberHolder {
 		return panel;
 	}
 
-	protected Button createPreviousButton() {
-		final Button button = new Button(WidgetConstants.PAGER_PREVIOUS_BUTTON_TEXT);
-		button.setStyleName(WidgetConstants.PAGER_PREVIOUS_BUTTON_STYLE);
+	protected Widget createPreviousButton() {
+		final Button button = new Button(this.getPreviousButtonText());
+		button.setStyleName(this.getPreviousButtonStyle());
 
 		// if already on the first page disable button
 		final int currentPage = this.getCurrentPage();
 		final int firstPage = this.getFirstPage();
 		if (currentPage > firstPage) {
-			button.addClickListener(this.createButtonListener(currentPage - 1));
+			button.addMouseEventListener(this.createButtonListener(currentPage - 1));
 		} else {
 			button.setEnabled(false);
 		}
 		return button;
 	}
 
-	protected Button createNextButton() {
-		final Button button = new Button(WidgetConstants.PAGER_NEXT_BUTTON_TEXT);
-		button.setStyleName(WidgetConstants.PAGER_PREVIOUS_BUTTON_STYLE);
+	protected String getPreviousButtonText(){
+		return WidgetConstants.PAGER_PREVIOUS_BUTTON_TEXT;
+	}
+	
+	protected String getPreviousButtonStyle(){
+		return WidgetConstants.PAGER_PREVIOUS_BUTTON_STYLE;
+	}
+	
+	protected Widget createNextButton() {
+		final Button button = new Button( this.getNextButtonText());
+		button.setStyleName( this.getNextButtonStyle() );
 
 		// if already on the last page disable button
 		final int currentPage = this.getCurrentPage();
 		final int lastPage = this.getLastPage();
 		if (currentPage + 1 < lastPage) {
-			button.addClickListener(this.createButtonListener(currentPage + 1));
+			button.addMouseEventListener(this.createButtonListener(currentPage + 1));
 		} else {
 			button.setEnabled(false);
 		}
 		return button;
 	}
 
-	protected Button createPage(final int pageNumber) {
+	protected String getNextButtonText(){
+		return WidgetConstants.PAGER_NEXT_BUTTON_TEXT;
+	}
+	
+	protected String getNextButtonStyle(){
+		return WidgetConstants.PAGER_NEXT_BUTTON_STYLE;
+	}
+	
+	
+	protected Widget createPage(final int pageNumber) {
 		return this.createPage(String.valueOf(pageNumber), pageNumber);
 	}
 
-	protected Button createPage(final String label, final int pageNumber) {
+	protected Widget createPage(final String label, final int pageNumber) {
 		StringHelper.checkNotEmpty("parameter:label", label);
 		PrimitiveHelper.checkBetween("parameter:pageNumber", pageNumber, this.firstPage, this.lastPage);
 
 		final Button button = new Button(String.valueOf(pageNumber));
 		final boolean belongsToCurrentPage = this.getCurrentPage() == pageNumber;
-		final String style = belongsToCurrentPage ? WidgetConstants.PAGER_CURRENT_PAGE_STYLE : WidgetConstants.PAGER_GOTO_PAGE_STYLE;
+		final String style = belongsToCurrentPage ? this.getCurrentPageStyle() : this.getOtherPagesStyle();
 		button.setStyleName(style);
 
 		if (false == belongsToCurrentPage) {
-			button.addClickListener(this.createButtonListener(pageNumber));
+			button.addMouseEventListener(this.createButtonListener(pageNumber));
 		}
 
 		return button;
+	}
+	
+	protected String getCurrentPageStyle(){
+		return WidgetConstants.PAGER_CURRENT_PAGE_STYLE; 
+	}
+	protected String getOtherPagesStyle(){
+		return WidgetConstants.PAGER_GOTO_PAGE_STYLE;
 	}
 
 	/**
@@ -229,7 +257,7 @@ public class Pager extends Composite implements NumberHolder {
 		PrimitiveHelper.checkBetween("parameter:currentPage", currentPage, this.firstPage, this.lastPage);
 		this.currentPage = currentPage;
 
-		this.getChangeListeners().fireChange(this);
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
 
 	/**
@@ -239,13 +267,11 @@ public class Pager extends Composite implements NumberHolder {
 	 * @param pageNumber
 	 * @return
 	 */
-	protected ClickListener createButtonListener(final int pageNumber) {
-		final Pager that = this;
-
-		return new ClickListener() {
-			public void onClick(Widget ignored) {
-				that.setCurrentPage(pageNumber);
-				that.redraw();
+	protected MouseEventListener createButtonListener(final int pageNumber) {
+		return new MouseEventAdapter() {
+			public void onClick(final MouseClickEvent clickEvent) {
+				Pager.this.setCurrentPage(pageNumber);
+				Pager.this.redraw();
 			}
 		};
 	}
@@ -265,16 +291,11 @@ public class Pager extends Composite implements NumberHolder {
 		this.pagesInBetweenCount = pagesInBetweenCount;
 	}
 
-	public void addChangeListener(final ChangeListener changeListener) {
-		super.addChangeListener(changeListener);
+	public void addChangeEventListener(final ChangeEventListener changeListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(changeListener);
 	}
 
-	public void removeChangeListener(final ChangeListener changeListener) {
-		super.removeChangeListener(changeListener);
-	}
-
-	public String toString() {
-		return super.toString() + ", currentPage: " + currentPage + ", firstPage: " + firstPage + ", lastPage: " + lastPage
-				+ ", pagesInBetweenCount: " + pagesInBetweenCount;
+	public void removeChangeEventListener(final ChangeEventListener changeListener) {
+		this.getEventListenerDispatcher().removeChangeEventListener(changeListener);
 	}
 }

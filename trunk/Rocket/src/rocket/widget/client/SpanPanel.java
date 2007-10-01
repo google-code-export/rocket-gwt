@@ -15,6 +15,7 @@
  */
 package rocket.widget.client;
 
+import rocket.dom.client.Dom;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -30,8 +31,14 @@ public class SpanPanel extends Panel {
 
 	public SpanPanel() {
 		super();
+	}
 
-		this.setStyleName(WidgetConstants.SPAN_PANEL_STYLE);
+	public SpanPanel(final Element element) {
+		super(element);
+	}
+
+	protected void checkElement(final Element element) {
+		Dom.checkTagName("parameter:element", element, WidgetConstants.SPAN_TAG);
 	}
 
 	/**
@@ -42,6 +49,10 @@ public class SpanPanel extends Panel {
 	 */
 	protected Element createPanelElement() {
 		return DOM.createSpan();
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.SPAN_PANEL_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
@@ -75,6 +86,6 @@ public class SpanPanel extends Panel {
 
 		final Element parent = this.getParentElement();
 		final Element child = DOM.getChild(parent, index);
-		DOM.removeChild(parent, child);
+		Dom.removeFromParent(child);
 	}
 }

@@ -15,6 +15,7 @@
  */
 package rocket.widget.client;
 
+import rocket.dom.client.Dom;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -31,8 +32,14 @@ public class OrderedListPanel extends Panel implements HasWidgets {
 
 	public OrderedListPanel() {
 		super();
+	}
 
-		this.setStyleName(WidgetConstants.ORDERED_LIST_PANEL_STYLE);
+	public OrderedListPanel(final Element element) {
+		super(element);
+	}
+
+	protected void checkElement(final Element element) {
+		Dom.checkTagName("parameter:element", element, WidgetConstants.ORDERED_LIST_TAG);
 	}
 
 	/**
@@ -41,7 +48,11 @@ public class OrderedListPanel extends Panel implements HasWidgets {
 	 * @return
 	 */
 	protected Element createPanelElement() {
-		return DOM.createElement(WidgetConstants.ORDERED_LIST);
+		return DOM.createElement(WidgetConstants.ORDERED_LIST_TAG);
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.ORDERED_LIST_PANEL_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
@@ -67,7 +78,7 @@ public class OrderedListPanel extends Panel implements HasWidgets {
 	}
 
 	protected Element createElement() {
-		return DOM.createElement(WidgetConstants.ORDERED_LIST_ITEM);
+		return DOM.createElement(WidgetConstants.ORDERED_LIST_ITEM_TAG);
 	}
 
 	protected void remove0(final Element element, final int index) {
@@ -75,6 +86,6 @@ public class OrderedListPanel extends Panel implements HasWidgets {
 
 		final Element parent = this.getParentElement();
 		final Element child = DOM.getChild(parent, index);
-		DOM.removeChild(parent, child);
+		Dom.removeFromParent(child);
 	}
 }

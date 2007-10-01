@@ -34,7 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class BlockyPixel extends Composite implements PixelGrid {
+public class BlockyPixel extends CompositeWidget implements PixelGrid {
 
 	public BlockyPixel() {
 	}
@@ -43,6 +43,10 @@ public class BlockyPixel extends Composite implements PixelGrid {
 		final Grid grid = this.createGrid();
 		this.setGrid(grid);
 		return grid;
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.BLOCKY_PIXEL_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
@@ -138,7 +142,6 @@ public class BlockyPixel extends Composite implements PixelGrid {
 
 	protected Grid createGrid() {
 		final Grid grid = new Grid();
-		grid.setStyleName(WidgetConstants.BLOCKY_PIXEL_STYLE);
 		grid.setCellPadding(0);
 		grid.setCellSpacing(0);
 		return grid;

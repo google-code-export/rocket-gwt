@@ -16,10 +16,16 @@
 package rocket.widget.client;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-import rocket.browser.client.Browser;
 import rocket.dom.client.Dom;
-import rocket.selection.client.Selection;
+import rocket.event.client.ChangeEventListener;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.EventListenerAdapter;
+import rocket.event.client.EventPreviewAdapter;
+import rocket.event.client.MouseDownEvent;
+import rocket.event.client.MouseMoveEvent;
+import rocket.event.client.MouseUpEvent;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
@@ -27,765 +33,321 @@ import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.EventListener;
-import com.google.gwt.user.client.EventPreview;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 
 /**
  * A ResizablePanel is a special panel that contains a single child widget which
  * can be resized by the user dragging any of the handles.
- * 
+ *
  * The width/height may be constrained by the following properties
  * <ul>
  * <li>minimum width/height</li>
  * <li>maximum width/height</li>
  * </ul>
  * 
- * <h6>Gotchas</h6>
- * <ul>
- * <li>For widgets that are not floating it only makes sense to add east,
- * southEast and south handles (right& down) as it is not possible to follow the
- * mouse when stretching in the other directions (up & left) </li>
- * 
- * <li> To avoid problems with IE the child widget should have its overflow css
- * style property set to "scroll" or "invisible" ChangeListeners may be
- * registered with this panel and are fired during each resize attempt. </li>
- * </ul>
- * 
+ * When resizing elements such as images it is often useful to keep the aspect ratio when the element is
+ * resized. This may be enabled by setting the keepAspectRatio property to true via {@link #setKeepAspectRatio(boolean)}
+ *
  * @author Miroslav Pokorny (mP)
  */
-public class ResizablePanel extends Composite {
+public class ResizablePanel extends CompositePanel {
 
 	public ResizablePanel() {
 		super();
-
-		this.setStyleName(WidgetConstants.RESIZABLE_PANEL_STYLE);
 	}
 
-	protected Widget createWidget() {
-		final AbsolutePanel absolutePanel = this.createAbsolutePanel();
-		this.setAbsolutePanel(absolutePanel);
-		return absolutePanel;
+	protected void beforeCreatePanel() {
+		final EventListenerDispatcher dispatcher = this
+				.createEventListenerDispatcher();
+		dispatcher.prepareListenerCollections(EventBitMaskConstants.CHANGE
+				| EventBitMaskConstants.FOCUS | EventBitMaskConstants.MOUSE_OUT
+				| EventBitMaskConstants.MOUSE_OVER);
+		this.setEventListenerDispatcher(dispatcher);
+	}
+
+	protected void checkPanel(final Panel panel) {
+		throw new UnsupportedOperationException("checkPanel");
+	}
+
+	protected Panel createPanel() {
+		return new Grid(2, 2);
+	}
+
+	protected Grid getGrid() {
+		return (Grid) this.getPanel();
+	}
+
+	protected void afterCreatePanel() {
+		final Grid grid = this.getGrid();
+		grid.setBorderWidth(0);
+		grid.setCellPadding(0);
+		grid.setCellSpacing(0);
+		
+		final String handleWidth = "";
+		final String handleHeight = "";
+		
+		this.prepareTd( 0, 0, "center", "middle", "100%", "100%", this.getWidgetStyle() );
+		this.prepareTd( 0, 1, "right", "middle", handleWidth, "100%", this.getRightHandleStyle() );
+		this.prepareTd( 1, 0, "right", "bottom", handleWidth, handleHeight, this.getBottomHandleStyle() );
+		this.prepareTd( 1, 1, "center", "bottom", "100%", handleHeight, this.getCornerHandleStyle() );
+	}
+	
+	protected String getWidgetStyle(){
+		return WidgetConstants.RESIZABLE_PANEL_WIDGET_STYLE;
+	}
+	protected String getRightHandleStyle(){
+		return WidgetConstants.RESIZABLE_PANEL_RIGHT_HANDLE_STYLE; 
+	}
+	protected String getBottomHandleStyle(){
+		return WidgetConstants.RESIZABLE_PANEL_BOTTOM_HANDLE_STYLE;
+	}
+	protected String getCornerHandleStyle(){
+		return WidgetConstants.RESIZABLE_PANEL_CORNER_HANDLE_STYLE;	
+	}
+	
+	protected void prepareTd(final int row, final int column, 
+			final String horizontalAlign, final String verticalAlign, 
+			final String width, final String height,
+			final String styleName) {
+
+		final Element element = this.getGrid().getCellFormatter().getElement( row, column );
+
+		//DOM.setElementProperty(element, "align", horizontalAlign);
+		//DOM.setStyleAttribute(element, "verticalAlign", verticalAlign);
+		DOM.setElementProperty(element, "width", width );
+		DOM.setElementProperty(element, "height", height );
+		DOM.setElementProperty( element, "className", styleName );
+				
+		DOM.sinkEvents(element, EventBitMaskConstants.MOUSE_DOWN );
+		DOM.setEventListener(element, new EventListenerAdapter(){
+			protected void handleMouseDownEvent(final MouseDownEvent event ){
+				ResizablePanel.this.handleMouseDownEvent( event );
+			}			
+		});	
+		DOM.setInnerHTML(element, " " );
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.RESIZABLE_PANEL_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
-		return Event.ONCHANGE | Event.ONFOCUS | Event.ONMOUSEOVER | Event.ONMOUSEOUT;
+		return EventBitMaskConstants.CHANGE | EventBitMaskConstants.FOCUS
+				| EventBitMaskConstants.MOUSE_OVER
+				| EventBitMaskConstants.MOUSE_OUT;
 	}
-
-	protected void afterCreateWidget() {
-		this.setChangeListeners(createChangeListeners());
-		this.setFocusListeners(this.createFocusListeners());
-	}
-
-	/**
-	 * An absolute panel is used to hold the child widget as well as the
-	 * handles.
-	 */
-	private AbsolutePanel absolutePanel;
-
-	protected AbsolutePanel getAbsolutePanel() {
-		ObjectHelper.checkNotNull("field:absolutePanel", absolutePanel);
-		return this.absolutePanel;
-	}
-
-	protected void setAbsolutePanel(final AbsolutePanel absolutePanel) {
-		ObjectHelper.checkNotNull("panel:absolutePanel", absolutePanel);
-		this.absolutePanel = absolutePanel;
-	}
-
-	protected AbsolutePanel createAbsolutePanel() {
-		final AbsolutePanel panel = new AbsolutePanel();
-		this.setAbsolutePanel(panel);
-		return panel;
-	}
-
-	/**
-	 * The child widget which is the candidate for resizing.
-	 */
-	private Widget widget;
-
+	
 	public Widget getWidget() {
-		ObjectHelper.checkNotNull("field:widget", widget);
-		return this.widget;
-	}
-
-	public boolean hasWidget() {
-		return null != this.widget;
+		return this.getGrid().getWidget(0, 0);
 	}
 
 	public void setWidget(final Widget widget) {
-		ObjectHelper.checkNotNull("panel:widget", widget);
-
-		final AbsolutePanel panel = this.getAbsolutePanel();
-
-		// remove the previous widget
-		if (null != this.widget) {
-			panel.remove(this.widget);
-		}
-		// add the new widget.
-		panel.add(widget);
-
-		this.widget = widget;
+		this.getGrid().setWidget(0, 0, widget);
 
 		final Element element = widget.getElement();
-		InlineStyle.setInteger(element, StyleConstants.WIDTH, 100, CssUnit.PERCENTAGE);
-		InlineStyle.setInteger(element, StyleConstants.HEIGHT, 100, CssUnit.PERCENTAGE);
+		final String inlineWidth = InlineStyle.getString(element, StyleConstants.WIDTH );
+		final String inlineHeight = InlineStyle.getString(element, StyleConstants.HEIGHT );
+		ObjectHelper.setString( element, "__width", inlineWidth );
+		ObjectHelper.setString( element, "__height", inlineHeight );
+		
+		widget.setWidth( "100%");
+		widget.setHeight( "100%");
+	}
 
-		if (this.isAttached()) {
-			this.layout();
+	
+	public void insert(final Widget widget, final int indexBefore) {
+		if (this.getWidgetCount() > 0 || indexBefore > 0) {
+			throw new IllegalArgumentException(GWT.getTypeName(this)
+					+ " can only have one widget.");
 		}
+		this.setWidget(widget);
 	}
 
-	/**
-	 * When this panel is attached recalculate and layout any attached handles.
-	 */
-	public void onAttach() {
-		super.onAttach();
-
-		this.layout();
+	public boolean remove(final Widget widget) {
+		final boolean removed = this.getGrid().remove(widget);
+		
+		if( removed ){
+			final Element element = widget.getElement();
+			final String inlineWidth = ObjectHelper.getString( element, "__width" );
+			final String inlineHeight = ObjectHelper.getString( element, "__height" );
+			InlineStyle.setString( element, StyleConstants.WIDTH, inlineWidth );
+			InlineStyle.setString( element, StyleConstants.HEIGHT, inlineHeight );
+		}
+		
+		return removed;
 	}
 
-	/**
-	 * Sets the width of this panel as well as recalculating the layout of any
-	 * attached handles.
-	 */
-	public void setWidth(final String width) {
-		super.setWidth(width);
+	public Iterator iterator() {
+		return new Iterator() {
 
-		final int width0 = Dom.getClientWidth(this.getElement());
-		int width1 = width0;
-		while (true) {
-			final int minimumWidth = this.getMinimumWidth();
-			if (width0 < minimumWidth) {
-				width1 = minimumWidth;
+			int state = 0;
+
+			public boolean hasNext() {
+				return this.state == 0
+						&& ResizablePanel.this.getWidget() != null;
+			}
+
+			public Object next() {
+				if (false == this.hasNext()) {
+					throw new NoSuchElementException();
+				}
+				this.state = 1;
+				return ResizablePanel.this.getWidget();
+			}
+
+			public void remove() {
+				if (this.state != 1) {
+					throw new IllegalStateException();
+				}
+				this.state = 2;
+			}
+		};
+	}
+
+	protected void handleMouseDownEvent( final MouseDownEvent event ){
+		final Element panel = this.getElement();
+		final int panelWidth = ComputedStyle.getInteger( panel, StyleConstants.WIDTH, CssUnit.PX, 0 );
+		final int panelHeight = ComputedStyle.getInteger( panel, StyleConstants.HEIGHT, CssUnit.PX, 0 );
+		
+		final Hijacker hijacker = new Hijacker( panel );
+
+		// create the ghost...
+		final Element ghost = Dom.cloneElement(panel, true );
+		ObjectHelper.setString(ghost, "className", this.getGhostStyle() );
+		InlineStyle.setString(ghost, StyleConstants.POSITION, "absolute");
+		InlineStyle.setInteger(ghost, StyleConstants.LEFT, 0, CssUnit.PX);
+		InlineStyle.setInteger(ghost, StyleConstants.TOP, 0, CssUnit.PX);
+		InlineStyle.setInteger(ghost, StyleConstants.Z_INDEX, 10000, CssUnit.NONE);								
+		InlineStyle.setString(ghost, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED );
+		
+		final Element parent = hijacker.getParent();
+		final int childIndex = hijacker.getChildIndex();
+
+		// insert a div that will be parent of the panel and the ghost.
+		final Element container = DOM.createDiv();
+		InlineStyle.setString(container, StyleConstants.POSITION, "relative");;
+		DOM.appendChild( container, panel );
+		DOM.insertChild(parent, container, childIndex);
+		
+		DOM.appendChild( container, ghost );		
+		
+		// record the coordinates of the mouse
+		final int initialMousePageX = event.getPageX();
+		final int initialMousePageY = event.getPageY();
+		
+		//install a previewer...
+		
+		boolean updateWidth = false;
+		boolean updateHeight = false;
+		
+		while( true ){
+			final Element target = event.getTarget();
+			final CellFormatter cellFormatter = ResizablePanel.this.getGrid().getCellFormatter();
+			final Element right = cellFormatter.getElement( 0, 1 );
+			if( DOM.isOrHasChild(right, target )){
+				updateWidth = true;
 				break;
 			}
-			final int maximumWidth = this.getMaximumWidth();
-			if (width0 > maximumWidth) {
-				width1 = maximumWidth;
+
+			final Element bottom = cellFormatter.getElement( 1, 0 );
+			if( DOM.isOrHasChild(bottom, target )){
+				updateHeight = true;
 				break;
 			}
-			break;
+			final Element corner = cellFormatter.getElement( 1, 1 );
+			//ObjectHelper.checkSame( "should be corner handle", corner, target );
+			updateWidth = true;
+			updateHeight = true;
+			break;				
 		}
-		if (width0 != width1) {
-			super.setWidth(width1 + "px");
-		}
-		if (this.isAttached()) {
-			this.layout();
-		}
-	}
-
-	/**
-	 * Sets the height of this panel as well as recalculating the layout of any
-	 * attached handles.
-	 */
-	public void setHeight(final String height) {
-		super.setHeight(height);
-
-		final int height0 = Dom.getClientHeight(this.getElement());
-
-		int height1 = height0;
-		while (true) {
-			final int minimumHeight = this.getMinimumHeight();
-			if (height0 < minimumHeight) {
-				height1 = minimumHeight;
-				break;
+		
+		final boolean updateWidth0 = updateWidth;
+		final boolean updateHeight0 = updateHeight;	
+		
+		final EventPreviewAdapter previewer = new EventPreviewAdapter(){
+			protected void handleMouseMoveEvent( final MouseMoveEvent event ){
+				if( updateWidth0 ){
+					final int deltaX = event.getPageX() - initialMousePageX;	
+					int newWidth = panelWidth + deltaX;
+					
+					//System.out.println( "h mouse move " + updateWidth0 + "/" + updateHeight0 + " deltaX: " + deltaX + "/" + newWidth );
+					
+					newWidth = Math.min( Math.max( newWidth, ResizablePanel.this.getMinimumWidth() ),ResizablePanel.this.getMaximumWidth());
+					InlineStyle.setInteger(ghost, StyleConstants.WIDTH, newWidth, CssUnit.PX);
+				}
+				
+				if( updateHeight0 ){
+					final int deltaY = event.getPageY() - initialMousePageY;								
+					int newHeight = panelHeight + deltaY;										
+					newHeight = Math.min( Math.max( newHeight, ResizablePanel.this.getMinimumHeight() ),ResizablePanel.this.getMaximumHeight());
+					InlineStyle.setInteger(ghost, StyleConstants.HEIGHT, newHeight, CssUnit.PX);
+				}
+				event.cancelBubble( true );
 			}
-			final int maximumHeight = this.getMaximumHeight();
-			if (height0 > maximumHeight) {
-				height1 = maximumHeight;
-				break;
+			
+			protected void handleMouseUpEvent( final MouseUpEvent event ){
+				//System.out.println( "handleMouseUpEvent");
+				this.uninstall();
+
+				int newWidth = 0;
+				int newHeight = 0;
+				
+				while( true ){
+					if( false == ResizablePanel.this.isKeepAspectRatio() ){
+						newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0 );
+						newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0 );
+						break;
+					}
+					
+					if( updateWidth0 && false == updateHeight0 ){
+						final float ratio = panelWidth * 1.0f / panelHeight;
+						newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0 );						
+						newHeight = (int)( newWidth * ratio );
+						break;
+					}
+					if( false == updateWidth0 && updateHeight0 ){
+						final float ratio = panelHeight * 1.0f / panelWidth;
+						newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0 );				
+						newWidth = (int)( newHeight * ratio );
+						break;
+					}
+					newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0 );
+					newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0 );
+					
+					final float originalDiagonalLength = (float)Math.sqrt( panelWidth * panelWidth + panelHeight * panelHeight );
+					final float newDiagonalLength = (float)Math.sqrt( newWidth * newWidth + newHeight * newHeight );
+					final float changeRatio = newDiagonalLength / originalDiagonalLength;
+					
+					newWidth = (int)( changeRatio * panelWidth );
+					newHeight = (int) (changeRatio * panelHeight );
+					break;
+				}
+								
+				// remove the ghost from the dom.
+				Dom.removeFromParent( container );
+				hijacker.restore();
+	
+				ResizablePanel.this.setWidth( newWidth + "px");
+				ResizablePanel.this.setHeight( newHeight + "px");
+								
+				event.cancelBubble( true );
+				
+				ResizablePanel.this.getEventListenerDispatcher().getChangeEventListeners().fireChange( ResizablePanel.this );
 			}
-			break;
-		}
-		if (height0 != height1) {
-			super.setHeight(height1 + "px");
-		}
-
-		if (this.isAttached()) {
-			this.layout();
-		}
+		};
+		previewer.install();
 	}
-
-	/**
-	 * Adjusts the size of the panel using the given delta values. Positive
-	 * values make that length larger which negative values make it smaller. The
-	 * min/max constraints for both width and height are respected.
-	 * 
-	 * @param deltaX
-	 *            The amount in pixels to increase/decrease the panel's width
-	 * @param deltaY
-	 *            The amount in pixels to increase/decrease the panel's height
-	 */
-	protected void resizeBy(final int deltaX, final int deltaY) {
-		final Widget widget = this.getWidget();
-		boolean changed = false;
-		if (0 != deltaX) {
-			final int width = widget.getOffsetWidth() + deltaX;
-			this.setWidth(width + "px");
-			changed = true;
-		}
-		if (0 != deltaY) {
-			final int height = widget.getOffsetHeight() + deltaY;
-			this.setHeight(height + "px");
-			changed = true;
-		}
-		if (changed) {
-			this.getChangeListeners().fireChange(this);
-		}
+	
+	protected String getGhostStyle(){
+		return WidgetConstants.RESIZABLE_PANEL_GHOST_STYLE;
 	}
-
-	/**
-	 * Schedules a layout of the everything in the near future.
-	 */
-	protected void layout() {
-		if (this.hasWidget()) {
-			this.layoutWidget();
-
-			if (this.hasNorthEastHandle()) {
-				this.layoutNorthEastHandle();
-			}
-			if (this.hasNorthWestHandle()) {
-				this.layoutNorthWestHandle();
-			}
-			if (this.hasNorthHandle()) {
-				this.layoutNorthHandle();
-			}
-			if (this.hasSouthEastHandle()) {
-				this.layoutSouthEastHandle();
-			}
-			if (this.hasSouthWestHandle()) {
-				this.layoutSouthWestHandle();
-			}
-			if (this.hasSouthHandle()) {
-				this.layoutSouthHandle();
-			}
-			if (this.hasEastHandle()) {
-				this.layoutEastHandle();
-			}
-			if (this.hasWestHandle()) {
-				this.layoutWestHandle();
-			}
-		}
-	}
-
-	/**
-	 * Recalculates the coordinates of the enclosed widget. The margins, borders
-	 * and padding are respected.
-	 */
-	protected void layoutWidget() {
-		int left = 0;
-		int top = 0;
-		int width = this.getOffsetWidth();
-		int height = this.getOffsetHeight();
-
-		final Element panelElement = this.getElement();
-		final Widget widget = this.getWidget();
-		final Element widgetElement = widget.getElement();
-
-		final int borderLeftWidth = ComputedStyle.getInteger(panelElement, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
-		final int paddingLeft = ComputedStyle.getInteger(panelElement, StyleConstants.PADDING_LEFT, CssUnit.PX, 0);
-		final int marginLeft = ComputedStyle.getInteger(widgetElement, StyleConstants.MARGIN_LEFT, CssUnit.PX, 0);
-		left = borderLeftWidth + paddingLeft + marginLeft;
-
-		width = width - borderLeftWidth;
-		width = width - paddingLeft;
-		width = width - marginLeft;
-		width = width - ComputedStyle.getInteger(panelElement, StyleConstants.BORDER_RIGHT_WIDTH, CssUnit.PX, 0);
-		width = width - ComputedStyle.getInteger(panelElement, StyleConstants.PADDING_RIGHT, CssUnit.PX, 0);
-		width = width - ComputedStyle.getInteger(widgetElement, StyleConstants.MARGIN_RIGHT, CssUnit.PX, 0);
-
-		final int borderTopWidth = ComputedStyle.getInteger(panelElement, StyleConstants.BORDER_TOP_WIDTH, CssUnit.PX, 0);
-		final int paddingTop = ComputedStyle.getInteger(panelElement, StyleConstants.PADDING_TOP, CssUnit.PX, 0);
-		final int marginTop = ComputedStyle.getInteger(widgetElement, StyleConstants.MARGIN_TOP, CssUnit.PX, 0);
-
-		top = borderTopWidth + paddingTop + marginTop;
-
-		height = height - borderTopWidth;
-		height = height - paddingTop;
-		height = height - ComputedStyle.getInteger(panelElement, StyleConstants.BORDER_BOTTOM_WIDTH, CssUnit.PX, 0);
-		height = height - ComputedStyle.getInteger(panelElement, StyleConstants.PADDING_BOTTOM, CssUnit.PX, 0);
-		height = height - ComputedStyle.getInteger(widgetElement, StyleConstants.MARGIN_BOTTOM, CssUnit.PX, 0);
-
-		InlineStyle.setString(widgetElement, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(widgetElement, StyleConstants.LEFT, left, CssUnit.PX);
-		InlineStyle.setInteger(widgetElement, StyleConstants.TOP, top, CssUnit.PX);
-
-		widget.setWidth(width + "px");
-		widget.setHeight(height + "px");
-	}
-
-	/**
-	 * This resize handle appears along the right edge of the child widget
-	 */
-	private Widget eastHandle;
-
-	public Widget getEastHandle() {
-		ObjectHelper.checkNotNull("field:eastHandle", eastHandle);
-		return this.eastHandle;
-	}
-
-	public boolean hasEastHandle() {
-		return null != this.eastHandle;
-	}
-
-	public void setEastHandle(final Widget eastHandle) {
-		ObjectHelper.checkNotNull("parameter:eastHandle", eastHandle);
-
-		this.clearEastHandle();
-		eastHandle.setStyleName(WidgetConstants.RESIZABLE_PANEL_EAST_HANDLE_STYLE);
-		this.eastHandle = eastHandle;
-		this.getAbsolutePanel().add(new HandleWrapper(eastHandle) {
-
-			protected void handleMouseMove0(final int deltaX, final int deltaY) {
-				ResizablePanel.this.handleEastHandleMouseMove(deltaX, deltaY);
-			}
-		});
-		this.layout();
-	}
-
-	protected void handleEastHandleMouseMove(final int deltaX, final int deltaY) {
-		this.resizeBy(deltaX, 0);
-	}
-
-	public void clearEastHandle() {
-		this.removeHandleFromPanel(this.eastHandle);
-		this.eastHandle = null;
-	}
-
-	protected void layoutEastHandle() {
-		final Widget handle = this.getEastHandle();
-		this.setHandleStyle(handle);
-		this.setHandleRight(handle);
-		this.setHandleMiddle(handle);
-	}
-
-	/**
-	 * This resize handle appears along the left edge of the child widget
-	 */
-	private Widget westHandle;
-
-	public Widget getWestHandle() {
-		ObjectHelper.checkNotNull("field:westHandle", westHandle);
-		return this.westHandle;
-	}
-
-	public boolean hasWestHandle() {
-		return null != this.westHandle;
-	}
-
-	public void setWestHandle(final Widget westHandle) {
-		ObjectHelper.checkNotNull("parameter:westHandle", westHandle);
-
-		this.clearWestHandle();
-		westHandle.setStyleName(WidgetConstants.RESIZABLE_PANEL_WEST_HANDLE_STYLE);
-		this.westHandle = westHandle;
-
-		this.getAbsolutePanel().add(new HandleWrapper(westHandle) {
-			protected void handleMouseMove0(final int deltaX, final int deltaY) {
-				ResizablePanel.this.handleWestHandleMouseMove(deltaX, deltaY);
-			}
-		});
-		this.layout();
-	}
-
-	protected void handleWestHandleMouseMove(final int deltaX, final int deltaY) {
-		this.resizeBy(deltaX, 0);
-	}
-
-	public void clearWestHandle() {
-		this.removeHandleFromPanel(this.westHandle);
-		this.westHandle = null;
-	}
-
-	protected void layoutWestHandle() {
-		final Widget handle = this.getWestHandle();
-		this.setHandleStyle(handle);
-		this.setHandleLeft(handle);
-		this.setHandleMiddle(handle);
-	}
-
-	/**
-	 * This resize handle appears in the top right corner of the child widget
-	 */
-	private Widget northEastHandle;
-
-	public Widget getNorthEastHandle() {
-		ObjectHelper.checkNotNull("field:northEastHandle", northEastHandle);
-		return this.northEastHandle;
-	}
-
-	public boolean hasNorthEastHandle() {
-		return null != this.northEastHandle;
-	}
-
-	public void setNorthEastHandle(final Widget northEastHandle) {
-		ObjectHelper.checkNotNull("parameter:northEastHandle", northEastHandle);
-
-		this.clearNorthEastHandle();
-
-		this.northEastHandle = northEastHandle;
-		northEastHandle.setStyleName(WidgetConstants.RESIZABLE_PANEL_NORTHEAST_HANDLE_STYLE);
-
-		this.getAbsolutePanel().add(new HandleWrapper(northEastHandle) {
-
-			protected void handleMouseMove0(final int deltaX, final int deltaY) {
-				ResizablePanel.this.handleNorthEastHandleMouseMove(deltaX, deltaY);
-			}
-		});
-
-		this.layout();
-	}
-
-	protected void handleNorthEastHandleMouseMove(final int deltaX, final int deltaY) {
-		this.resizeBy(deltaX, -deltaY);
-	}
-
-	public void clearNorthEastHandle() {
-		this.removeHandleFromPanel(this.northEastHandle);
-		this.northEastHandle = null;
-	}
-
-	protected void layoutNorthEastHandle() {
-		final Widget handle = this.getNorthEastHandle();
-		this.setHandleStyle(handle);
-		this.setHandleRight(handle);
-		this.setHandleTop(handle);
-	}
-
-	/**
-	 * This resize handle appears in the top right corner
-	 */
-	private Widget northHandle;
-
-	public Widget getNorthHandle() {
-		ObjectHelper.checkNotNull("field:northHandle", northHandle);
-		return this.northHandle;
-	}
-
-	public boolean hasNorthHandle() {
-		return null != this.northHandle;
-	}
-
-	public void setNorthHandle(final Widget northHandle) {
-		ObjectHelper.checkNotNull("parameter:northHandle", northHandle);
-
-		this.clearNorthHandle();
-		northHandle.setStyleName(WidgetConstants.RESIZABLE_PANEL_NORTH_HANDLE_STYLE);
-		this.northHandle = northHandle;
-
-		this.getAbsolutePanel().add(new HandleWrapper(northHandle) {
-			protected void handleMouseMove0(final int deltaX, final int deltaY) {
-				ResizablePanel.this.handleNorthHandleMouseMove(deltaY, deltaY);
-			}
-		});
-		this.layout();
-	}
-
-	protected void handleNorthHandleMouseMove(final int deltaX, final int deltaY) {
-		this.resizeBy(0, -deltaY);
-	}
-
-	public void clearNorthHandle() {
-		this.removeHandleFromPanel(this.northHandle);
-		this.northHandle = null;
-	}
-
-	protected void layoutNorthHandle() {
-		final Widget handle = this.getNorthHandle();
-		this.setHandleStyle(handle);
-		this.setHandleCenter(handle);
-		this.setHandleTop(handle);
-	}
-
-	/**
-	 * This resize handle appears in the top west corner
-	 */
-	private Widget northWestHandle;
-
-	public Widget getNorthWestHandle() {
-		ObjectHelper.checkNotNull("field:northWestHandle", northWestHandle);
-		return this.northWestHandle;
-	}
-
-	public boolean hasNorthWestHandle() {
-		return null != this.northWestHandle;
-	}
-
-	public void setNorthWestHandle(final Widget northWestHandle) {
-		ObjectHelper.checkNotNull("parameter:northWestHandle", northWestHandle);
-
-		this.clearNorthWestHandle();
-
-		northWestHandle.setStyleName(WidgetConstants.RESIZABLE_PANEL_NORTHWEST_HANDLE_STYLE);
-		this.northWestHandle = northWestHandle;
-
-		this.getAbsolutePanel().add(new HandleWrapper(northWestHandle) {
-			protected void handleMouseMove0(final int deltaX, final int deltaY) {
-				ResizablePanel.this.handleNorthWestHandleMouseMove(deltaX, deltaY);
-			}
-		});
-		this.layout();
-	}
-
-	protected void handleNorthWestHandleMouseMove(final int deltaX, final int deltaY) {
-		this.resizeBy(deltaX, -deltaY);
-	}
-
-	public void clearNorthWestHandle() {
-		this.removeHandleFromPanel(this.northWestHandle);
-		this.northWestHandle = null;
-	}
-
-	protected void layoutNorthWestHandle() {
-		final Widget handle = this.getNorthWestHandle();
-		this.setHandleStyle(handle);
-		this.setHandleLeft(handle);
-		this.setHandleTop(handle);
-	}
-
-	/**
-	 * This resize handle appears in the top right corner
-	 */
-	private Widget southEastHandle;
-
-	public Widget getSouthEastHandle() {
-		ObjectHelper.checkNotNull("field:southEastHandle", southEastHandle);
-		return this.southEastHandle;
-	}
-
-	public boolean hasSouthEastHandle() {
-		return null != this.southEastHandle;
-	}
-
-	public void setSouthEastHandle(final Widget southEastHandle) {
-		ObjectHelper.checkNotNull("parameter:southEastHandle", southEastHandle);
-
-		this.clearSouthEastHandle();
-
-		this.southEastHandle = southEastHandle;
-		southEastHandle.setStyleName(WidgetConstants.RESIZABLE_PANEL_SOUTHEAST_HANDLE_STYLE);
-
-		this.getAbsolutePanel().add(new HandleWrapper(southEastHandle) {
-
-			protected void handleMouseMove0(final int deltaX, final int deltaY) {
-				ResizablePanel.this.handleSouthEastHandleMouseMove(deltaX, deltaY);
-			}
-		});
-		this.layout();
-	}
-
-	protected void handleSouthEastHandleMouseMove(final int deltaX, final int deltaY) {
-		this.resizeBy(deltaX, deltaY);
-	}
-
-	public void clearSouthEastHandle() {
-		this.removeHandleFromPanel(this.southEastHandle);
-		this.southEastHandle = null;
-	}
-
-	protected void layoutSouthEastHandle() {
-		final Widget handle = this.getSouthEastHandle();
-		this.setHandleStyle(handle);
-		this.setHandleRight(handle);
-		this.setHandleBottom(handle);
-	}
-
-	/**
-	 * This resize handle appears in the top right corner
-	 */
-	private Widget southHandle;
-
-	public Widget getSouthHandle() {
-		ObjectHelper.checkNotNull("field:southHandle", southHandle);
-		return this.southHandle;
-	}
-
-	public boolean hasSouthHandle() {
-		return null != this.southHandle;
-	}
-
-	public void setSouthHandle(final Widget southHandle) {
-		ObjectHelper.checkNotNull("parameter:southHandle", southHandle);
-
-		this.clearSouthHandle();
-		southHandle.setStyleName(WidgetConstants.RESIZABLE_PANEL_SOUTH_HANDLE_STYLE);
-		this.southHandle = southHandle;
-
-		this.getAbsolutePanel().add(new HandleWrapper(southHandle) {
-
-			protected void handleMouseMove0(final int deltaX, final int deltaY) {
-				ResizablePanel.this.handleSouthHandleMouseMove(deltaX, deltaY);
-			}
-		});
-		this.layout();
-
-	}
-
-	protected void handleSouthHandleMouseMove(final int deltaX, final int deltaY) {
-		this.resizeBy(0, deltaY);
-	}
-
-	public void clearSouthHandle() {
-		this.removeHandleFromPanel(this.southHandle);
-		this.southHandle = null;
-	}
-
-	protected void layoutSouthHandle() {
-		final Widget handle = this.getSouthHandle();
-		this.setHandleStyle(handle);
-		this.setHandleCenter(handle);
-		this.setHandleBottom(handle);
-	}
-
-	/**
-	 * This resize handle appears in the bottom left corner
-	 */
-	private Widget southWestHandle;
-
-	public Widget getSouthWestHandle() {
-		ObjectHelper.checkNotNull("field:southWestHandle", southWestHandle);
-		return this.southWestHandle.getParent();
-	}
-
-	public boolean hasSouthWestHandle() {
-		return null != this.southWestHandle;
-	}
-
-	public void setSouthWestHandle(final Widget southWestHandle) {
-		ObjectHelper.checkNotNull("parameter:southWestHandle", southWestHandle);
-
-		this.clearSouthWestHandle();
-
-		southWestHandle.setStyleName(WidgetConstants.RESIZABLE_PANEL_SOUTHWEST_HANDLE_STYLE);
-		this.southWestHandle = southWestHandle;
-
-		this.getAbsolutePanel().add(new HandleWrapper(southWestHandle) {
-
-			protected void handleMouseMove0(final int deltaX, final int deltaY) {
-				ResizablePanel.this.handleSouthWestHandleMouseMove(deltaX, deltaY);
-			}
-		});
-
-		this.layout();
-	}
-
-	protected void handleSouthWestHandleMouseMove(final int deltaX, final int deltaY) {
-		this.resizeBy(deltaX, deltaY);
-	}
-
-	public void clearSouthWestHandle() {
-		this.removeHandleFromPanel(this.southWestHandle);
-		this.southWestHandle = null;
-	}
-
-	protected void layoutSouthWestHandle() {
-		final Widget handle = this.getSouthWestHandle();
-		this.setHandleStyle(handle);
-		this.setHandleLeft(handle);
-		this.setHandleBottom(handle);
-	}
-
-	protected void setHandleStyle(final Widget handle) {
-		ObjectHelper.checkNotNull("parameter:handle", handle);
-		final Element element = handle.getElement();
-		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
-
-		final int zIndex = ComputedStyle.getInteger(this.getElement(), StyleConstants.Z_INDEX, CssUnit.NONE, 0);
-		InlineStyle.setString(element, StyleConstants.Z_INDEX, "" + zIndex + 1 );
-		//DOM.setIntStyleAttribute(element, StyleConstants.Z_INDEX, zIndex + 1);
-
-		InlineStyle.setString(element, StyleConstants.OVERFLOW, "visible");
-	}
-
-	/**
-	 * Sets the left offset in pixels of the handle so that it is hovering over
-	 * the left edge of the child widget.
-	 * 
-	 * @param handle
-	 * @return
-	 */
-	protected void setHandleLeft(final Widget handle) {
-		ObjectHelper.checkNotNull("parameter:handle", handle);
-
-		int left = Dom.getOffsetLeft(this.getWidget().getElement());
-		left = left - handle.getOffsetWidth() / 2;
-
-		InlineStyle.setInteger(handle.getElement(), StyleConstants.LEFT, left, CssUnit.PX);
-	}
-
-	protected void setHandleRight(final Widget handle) {
-		ObjectHelper.checkNotNull("parameter:handle", handle);
-
-		final Widget widget = this.getWidget();
-		int right = this.getOffsetWidth();
-		right = right - Dom.getOffsetLeft(widget.getElement());
-		right = right - widget.getOffsetWidth();
-		right = right - handle.getOffsetWidth() / 2;
-
-		InlineStyle.setInteger(handle.getElement(), StyleConstants.RIGHT, right, CssUnit.PX);
-	}
-
-	protected void setHandleCenter(final Widget handle) {
-		ObjectHelper.checkNotNull("parameter:handle", handle);
-
-		final Widget widget = this.getWidget();
-		int left = Dom.getOffsetLeft(widget.getElement());
-		left = left + widget.getOffsetWidth() / 2;
-		left = left - handle.getOffsetWidth() / 2;
-
-		InlineStyle.setInteger(handle.getElement(), StyleConstants.LEFT, left, CssUnit.PX);
-	}
-
-	protected void setHandleTop(final Widget handle) {
-		ObjectHelper.checkNotNull("parameter:handle", handle);
-
-		int top = Dom.getOffsetTop(this.getWidget().getElement());
-		top = top - handle.getOffsetHeight() / 2;
-		InlineStyle.setInteger(handle.getElement(), StyleConstants.TOP, top, CssUnit.PX);
-	}
-
-	protected void setHandleBottom(final Widget handle) {
-		ObjectHelper.checkNotNull("parameter:handle", handle);
-
-		final Widget widget = this.getWidget();
-		int top = this.getOffsetHeight();
-		top = top - Dom.getOffsetTop(widget.getElement());
-		top = top - widget.getOffsetHeight();
-		top = top - handle.getOffsetHeight() / 2;
-		InlineStyle.setInteger(handle.getElement(), StyleConstants.BOTTOM, top, CssUnit.PX);
-	}
-
-	protected void setHandleMiddle(final Widget handle) {
-		ObjectHelper.checkNotNull("parameter:handle", handle);
-
-		final Widget widget = this.getWidget();
-		int top = Dom.getOffsetTop(widget.getElement());
-		top = top + widget.getOffsetHeight() / 2;
-		top = top - handle.getOffsetHeight() / 2;
-		InlineStyle.setInteger(handle.getElement(), StyleConstants.TOP, top, CssUnit.PX);
-	}
-
-	/**
-	 * Helper which removes the parent of the handle widget when it is attached
-	 * so that both are disconnected from this panel
-	 * 
-	 * @param widget
-	 */
-	protected void removeHandleFromPanel(final Widget widget) {
-		if (null != widget) {
-			final Widget parent = widget.getParent();
-			if (null != parent) {
-				parent.removeFromParent();
-			}
-		}
-	}
-
+	
 	/**
 	 * The minimum width in pixels that the child widget may be set.
 	 */
@@ -797,7 +359,8 @@ public class ResizablePanel extends Composite {
 	}
 
 	public void setMinimumWidth(final int minimumWidth) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumWidth", minimumWidth, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:minimumWidth",
+				minimumWidth, 0);
 		this.minimumWidth = minimumWidth;
 	}
 
@@ -812,7 +375,8 @@ public class ResizablePanel extends Composite {
 	}
 
 	public void setMaximumWidth(final int maximumWidth) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumWidth", maximumWidth, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:maximumWidth",
+				maximumWidth, 0);
 		this.maximumWidth = maximumWidth;
 	}
 
@@ -822,12 +386,14 @@ public class ResizablePanel extends Composite {
 	private int minimumHeight;
 
 	public int getMinimumHeight() {
-		PrimitiveHelper.checkGreaterThan("field:minimumHeight", minimumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("field:minimumHeight", minimumHeight,
+				0);
 		return this.minimumHeight;
 	}
 
 	public void setMinimumHeight(final int minimumHeight) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumHeight", minimumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:minimumHeight",
+				minimumHeight, 0);
 		this.minimumHeight = minimumHeight;
 	}
 
@@ -837,12 +403,14 @@ public class ResizablePanel extends Composite {
 	private int maximumHeight;
 
 	public int getMaximumHeight() {
-		PrimitiveHelper.checkGreaterThan("field:maximumHeight", maximumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("field:maximumHeight", maximumHeight,
+				0);
 		return this.maximumHeight;
 	}
 
 	public void setMaximumHeight(final int maximumHeight) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumHeight", maximumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:maximumHeight",
+				maximumHeight, 0);
 		this.maximumHeight = maximumHeight;
 	}
 
@@ -862,295 +430,23 @@ public class ResizablePanel extends Composite {
 		this.keepAspectRatio = keepAspectRatio;
 	}
 
-	public void onBrowserEvent(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
-
-		while (true) {
-			final int type = DOM.eventGetType(event);
-			if (Event.ONMOUSEOVER == type) {
-				this.handleMouseOver(event);
-				break;
-			}
-			if (Event.ONMOUSEOUT == type) {
-				this.handleMouseOut(event);
-			}
-			break;
-		}
-
-		super.onBrowserEvent(event);
+	public void addChangeEventListener(
+			final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(
+				changeEventListener);
 	}
 
-	/**
-	 * When the mouse moves over this panel make sure all handles are visible.
-	 * After making handle widgets visible it is necessary to recalculate the
-	 * layout.
-	 * 
-	 * @param event
-	 */
-	protected void handleMouseOver(final Event event) {
-		if (false == this.isAlwaysShowHandles()) {
-			this.setHandleWidgetVisibility(true);
-			this.layout();
-		}
-	}
-
-	/**
-	 * When the mouse leaves the panel make sure all handles are invisible.
-	 * 
-	 * @param event
-	 */
-	protected void handleMouseOut(final Event event) {
-		if (false == this.isAlwaysShowHandles()) {
-			final Element panel = this.getElement();
-			final Element target = DOM.eventGetToElement(event);
-			if (false == DOM.isOrHasChild(panel, target)) {
-				this.setHandleWidgetVisibility(false);
-			}
-		}
-	}
-
-	/**
-	 * This helper loops thru all widgets (skipping the child widget) updating
-	 * its visibility.
-	 * 
-	 * @param newVisibleValue
-	 *            The new state of all handle visible flags.
-	 */
-	protected void setHandleWidgetVisibility(final boolean newVisibleValue) {
-		final Widget childWidget = this.hasWidget() ? this.getWidget() : null;
-		final Iterator widgets = this.getAbsolutePanel().iterator();
-		while (widgets.hasNext()) {
-			final Widget widget = (Widget) widgets.next();
-			if (widget == childWidget) {
-				continue;
-			}
-			widget.setVisible(newVisibleValue);
-		}
-	}
-
-	/**
-	 * When this flag is true handles are always visible above the child widget.
-	 * When false handles are only made visible when the mouse hovers near the
-	 * panel and child widget edge.
-	 */
-	private boolean alwaysShowHandles;
-
-	public boolean isAlwaysShowHandles() {
-		return this.alwaysShowHandles;
-	}
-
-	public void setAlwaysShowHandles(final boolean alwaysShowHandles) {
-		this.alwaysShowHandles = alwaysShowHandles;
-		this.setHandleWidgetVisibility(alwaysShowHandles);
-	}
-
-	public void addChangeListener(final ChangeListener changeListener) {
-		super.addChangeListener(changeListener);
-	}
-
-	public void removeChangeListener(final ChangeListener changeListener) {
-		super.removeChangeListener(changeListener);
+	public void removeChangeEventListener(
+			final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().removeChangeEventListener(
+				changeEventListener);
 	}
 
 	public String toString() {
-		return super.toString() + ", minimumWidth: " + this.minimumWidth + ", maximumWidth: " + maximumWidth + ", minimumHeight: "
-				+ this.minimumHeight + ", maximumHeight: " + maximumHeight + ", keepAspectRatio: " + this.keepAspectRatio
-				+ ", alwaysShowHandles: " + alwaysShowHandles + ", absolutePanel: " + this.absolutePanel;
+		return super.toString() + ", minimumWidth: " + this.minimumWidth
+				+ ", maximumWidth: " + maximumWidth + ", minimumHeight: "
+				+ this.minimumHeight + ", maximumHeight: " + maximumHeight
+				+ ", keepAspectRatio: " + this.keepAspectRatio;
 	}
 
-	/**
-	 * This class provides an easy start to handle any handle dragging event. It
-	 * takes care of all the boring repetitive bits like dispatching based on
-	 * event type, calculating the amount of pixels the mouse has moved etc.
-	 */
-	abstract private class HandleWrapper extends com.google.gwt.user.client.ui.Composite implements EventListener, EventPreview {
-
-		protected HandleWrapper(final Widget widget) {
-			super();
-
-			this.initWidget(widget);
-		}
-
-		protected void initWidget(final Widget widget) {
-			super.initWidget(widget);
-			this.setWidget(widget);
-		}
-
-		/**
-		 * A reference to the widget being wrapped.
-		 */
-		private Widget widget;
-
-		protected Widget getWidget() {
-			ObjectHelper.checkNotNull("field:widget", widget);
-			return this.widget;
-		}
-
-		protected void setWidget(final Widget widget) {
-			ObjectHelper.checkNotNull("parameter:widget", widget);
-			this.widget = widget;
-		}
-
-		/**
-		 * After calling onAttach() on the composite sink the events and
-		 * listener to this class.
-		 */
-		public void onAttach() {
-			super.onAttach();
-
-			DOM.setEventListener(this.getElement(), this);
-			this.unsinkEvents(-1);
-			this.sinkEvents(Event.ONMOUSEDOWN);
-		}
-
-		public void onBrowserEvent(final Event event) {
-			ObjectHelper.checkNotNull("parameter:event", event);
-
-			final int type = DOM.eventGetType(event);
-			if (Event.ONMOUSEDOWN == type) {
-				this.handleMouseDown(event);
-			}
-		}
-
-		/**
-		 * Initializes a handle drag when a mouse down event over one occurs.
-		 * 
-		 * @param event
-		 */
-		protected void handleMouseDown(final Event event) {
-			ObjectHelper.checkNotNull("parameter:event", event);
-
-			this.setX(Browser.getMousePageX(event));
-			this.setY(Browser.getMousePageY(event));
-
-			this.setWidth(ResizablePanel.this.getOffsetWidth());
-			this.setHeight(ResizablePanel.this.getOffsetHeight());
-
-			Selection.disableTextSelection();
-			Selection.clearAnySelectedText();
-
-			DOM.addEventPreview(this);
-			this.getWidget().addStyleName(WidgetConstants.RESIZABLE_PANEL_HANDLE_SELECTED_STYLE);
-		}
-
-		public boolean onEventPreview(final Event event) {
-			ObjectHelper.checkNotNull("parameter:event", event);
-
-			while (true) {
-				final int type = DOM.eventGetType(event);
-				if (Event.ONMOUSEMOVE == type) {
-					this.handleMouseMove(event);
-					break;
-				}
-
-				if (Event.ONMOUSEUP == type) {
-					this.handleMouseUp();
-				}
-
-				break;
-			}
-
-			return true;
-		}
-
-		/**
-		 * When the mouse button is released dragging of the handle stops.
-		 */
-		protected void handleMouseUp() {
-			DOM.removeEventPreview(this);
-			Selection.enableTextSelection();
-			Selection.clearAnySelectedText();
-			this.getWidget().removeStyleName(WidgetConstants.RESIZABLE_PANEL_HANDLE_SELECTED_STYLE);
-		}
-
-		/**
-		 * THis method calculates the deltaX/Y values to help adjust the panel
-		 * width/height so that it catches up to the moving mouse.
-		 * 
-		 * @param event
-		 */
-		protected void handleMouseMove(final Event event) {
-			ObjectHelper.checkNotNull("parameter:event", event);
-
-			int deltaX = Browser.getMousePageX(event);
-			deltaX = deltaX - this.getX();
-			deltaX = deltaX - ResizablePanel.this.getOffsetWidth();
-			deltaX = deltaX + this.getWidth();
-
-			int deltaY = Browser.getMousePageY(event);
-			deltaY = deltaY - this.getY();
-			deltaY = deltaY - ResizablePanel.this.getOffsetHeight();
-			deltaY = deltaY + this.getHeight();
-
-			this.handleMouseMove0(deltaX, deltaY);
-		}
-
-		/**
-		 * This method is fired each time the dragged handle is moved.
-		 * 
-		 * @param x
-		 * @param y
-		 */
-		abstract protected void handleMouseMove0(final int x, final int y);
-
-		/**
-		 * The y coordinate of the mouse when the handle drag started.
-		 */
-		int x;
-
-		int getX() {
-			return this.x;
-		}
-
-		void setX(final int x) {
-			this.x = x;
-		}
-
-		/**
-		 * The y coordinate of the mouse when the handle drag started.
-		 */
-		int y;
-
-		int getY() {
-			return this.y;
-		}
-
-		void setY(final int y) {
-			this.y = y;
-		}
-
-		/**
-		 * The original panel width when the resize started
-		 */
-		int width;
-
-		int getWidth() {
-			PrimitiveHelper.checkGreaterThan("parameter:width", width, 0);
-			return this.width;
-		}
-
-		void setWidth(final int width) {
-			PrimitiveHelper.checkGreaterThan("parameter:width", width, 0);
-			this.width = width;
-		}
-
-		/**
-		 * The original panel height when the drag started
-		 */
-		int height;
-
-		int getHeight() {
-			PrimitiveHelper.checkGreaterThan("field:height", height, 0);
-			return this.height;
-		}
-
-		void setHeight(final int height) {
-			PrimitiveHelper.checkGreaterThan("parameter:height", height, 0);
-			this.height = height;
-		}
-
-		public String toString() {
-			return super.toString() + ", x: " + x + ", y: " + y + ", width: " + width + ", height: " + height;
-		}
-	}
 }

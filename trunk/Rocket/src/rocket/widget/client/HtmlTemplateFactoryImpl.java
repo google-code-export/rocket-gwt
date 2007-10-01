@@ -18,30 +18,11 @@ package rocket.widget.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import rocket.dom.client.Dom;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ComplexPanel;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.IndexedPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -68,29 +49,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return The new TextBox wrapper.
 	 */
 	protected TextBox bindTextBox(final String id) {
-		return (TextBox) this.build(id, RootPanel.get(), new TextBoxWidgetBuilder());
-	}
-
-	static class TextBoxWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkInput("element", element, WidgetConstants.TEXTBOX_TYPE_ATTRIBUTE);
-		}
-
-		Widget bind0(final Element element) {
-			final BindableTextBox textBox = new BindableTextBox();
-			textBox.setElement(element);
-			return textBox;
-		}
-	}
-
-	/**
-	 * This class only exists to make the setElement method visible.
-	 */
-	static class BindableTextBox extends TextBox {
-		public void setElement(final Element element) {
-			super.setElement(element);
-		}
+		return new TextBox(this.getElementById(id));
 	}
 
 	/**
@@ -101,30 +60,8 @@ abstract public class HtmlTemplateFactoryImpl {
 	 *            The id
 	 * @return A PasswordTextBox wrapper
 	 */
-	protected PasswordTextBox bindPasswordTextBox(final String id) {
-		return (PasswordTextBox) this.build(id, RootPanel.get(), new PasswordTextBoxWidgetBuilder());
-	}
-
-	static class PasswordTextBoxWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkInput("element", element, WidgetConstants.PASSWORD_TEXTBOX_TYPE_ATTRIBUTE);
-		}
-
-		Widget bind0(final Element element) {
-			final BindablePasswordTextBox textBox = new BindablePasswordTextBox();
-			textBox.setElement(element);
-			return textBox;
-		}
-	}
-
-	/**
-	 * This class only exists to make the setElement method visible.
-	 */
-	static class BindablePasswordTextBox extends PasswordTextBox {
-		public void setElement(final Element element) {
-			super.setElement(element);
-		}
+	protected TextBox bindPasswordTextBox(final String id) {
+		return new TextBox(this.getElementById(id));
 	}
 
 	/**
@@ -136,29 +73,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return A TextArea wrapper
 	 */
 	protected TextArea bindTextArea(final String id) {
-		return (TextArea) this.build(id, RootPanel.get(), new TextAreaWidgetBuilder());
-	}
-
-	static class TextAreaWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkTagName("element", element, WidgetConstants.TEXTAREA_TAG);
-		}
-
-		Widget bind0(final Element element) {
-			final BindableTextArea textArea = new BindableTextArea();
-			textArea.setElement(element);
-			return textArea;
-		}
-	}
-
-	/**
-	 * This class only exists to make the setElement method visible.
-	 */
-	static class BindableTextArea extends TextArea {
-		public void setElement(final Element element) {
-			super.setElement(element);
-		}
+		return new TextArea(this.getElementById(id));
 	}
 
 	/**
@@ -170,99 +85,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return A RadioButton wrapper
 	 */
 	protected RadioButton bindRadioButton(final String id) {
-		return (RadioButton) this.build(id, RootPanel.get(), new RadioButtonWidgetBuilder());
-	}
-
-	static class RadioButtonWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkInput("element", element, WidgetConstants.RADIO_BUTTON_TYPE_ATTRIBUTE);
-		}
-
-		Widget bind0(final Element element) {
-			final BindableRadioButton radioButton = new BindableRadioButton();
-			radioButton.setElement(element);
-			return radioButton;
-		}
-	}
-
-	static class BindableRadioButton extends RadioButton {
-
-		BindableRadioButton() {
-			super("");
-		}
-
-		public void setName(String name) {
-			this.replaceInputElement(DOM.createInputRadio(name));
-		}
-
-		public String getHTML() {
-			throw new UnsupportedOperationException("getHTML");
-		}
-
-		public void setHTML(final String html) {
-			throw new UnsupportedOperationException("setHTML");
-		}
-
-		public String getText() {
-			throw new UnsupportedOperationException("getText");
-		}
-
-		public void setText(final String html) {
-			throw new UnsupportedOperationException("setText");
-		}
-
-		public void setElement(final Element element) {
-			super.setElement(element);
-			this.setInputElement(element);
-		}
-
-		native private Element getInputElement() /*-{
-		 return this.@com.google.gwt.user.client.ui.CheckBox::inputElem;
-		 }-*/;
-
-		native private void setInputElement(final Element element)/*-{
-		 this.@com.google.gwt.user.client.ui.CheckBox::inputElem=element;
-		 this.@com.google.gwt.user.client.ui.UIObject::element=element;		
-		 }-*/;
-
-		protected void replaceInputElement(Element element) {
-			// Collect information we need to set
-			final Element oldElement = this.getElement();
-
-			int tabIndex = getTabIndex();
-			boolean checked = isChecked();
-			boolean enabled = isEnabled();
-			String id = DOM.getElementProperty(oldElement, "id");
-			String accessKey = DOM.getElementProperty(oldElement, "accessKey");
-
-			// Clear out the old input element
-			setChecked(false);
-			DOM.setElementProperty(oldElement, "id", "");
-			DOM.setElementProperty(oldElement, "accessKey", "");
-
-			// Quickly do the actual replace
-			final Element parent = DOM.getParent(oldElement);
-			final int childIndex = DOM.getChildIndex(parent, oldElement);
-
-			// remove
-			DOM.removeChild(parent, oldElement);
-
-			this.setInputElement(element);
-
-			DOM.insertChild(parent, element, childIndex);
-
-			// Setup the new element
-			DOM.sinkEvents(element, DOM.getEventsSunk(oldElement));
-			DOM.setEventListener(element, this);
-			DOM.setElementProperty(element, "id", id);
-			if (accessKey != "") {
-				DOM.setElementProperty(element, "accessKey", accessKey);
-			}
-			setTabIndex(tabIndex);
-			setChecked(checked);
-			setEnabled(enabled);
-		}
+		return new RadioButton(this.getElementById(id));
 	}
 
 	/**
@@ -274,91 +97,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return A CheckBox wrapper
 	 */
 	protected CheckBox bindCheckBox(final String id) {
-		return (CheckBox) this.build(id, RootPanel.get(), new CheckBoxWidgetBuilder());
-	}
-
-	static class CheckBoxWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkInput("element", element, WidgetConstants.CHECKBOX_TYPE_ATTRIBUTE);
-		}
-
-		Widget bind0(final Element element) {
-			final BindableCheckBox checkBox = new BindableCheckBox();
-			checkBox.setElement(element);
-			return checkBox;
-		}
-	}
-
-	static class BindableCheckBox extends CheckBox {
-		public String getHTML() {
-			throw new UnsupportedOperationException("getHTML");
-		}
-
-		public void setHTML(final String html) {
-			throw new UnsupportedOperationException("setHTML");
-		}
-
-		public String getText() {
-			throw new UnsupportedOperationException("getText");
-		}
-
-		public void setText(final String html) {
-			throw new UnsupportedOperationException("setText");
-		}
-
-		public void setElement(final Element element) {
-			super.setElement(element);
-			this.setInputElement(element);
-		}
-
-		native private Element getInputElement() /*-{
-		 return this.@com.google.gwt.user.client.ui.CheckBox::inputElem;
-		 }-*/;
-
-		native private void setInputElement(final Element element)/*-{
-		 this.@com.google.gwt.user.client.ui.CheckBox::inputElem=element;	
-		 this.@com.google.gwt.user.client.ui.UIObject::element=element;	
-		 }-*/;
-
-		protected void replaceInputElement(Element element) {
-			// Collect information we need to set
-			final Element oldElement = this.getElement();
-
-			int tabIndex = getTabIndex();
-			boolean checked = isChecked();
-			boolean enabled = isEnabled();
-			String id = DOM.getElementProperty(oldElement, "id");
-			String accessKey = DOM.getElementProperty(oldElement, "accessKey");
-
-			// Clear out the old input element
-			setChecked(false);
-			DOM.setElementProperty(oldElement, "id", "");
-			DOM.setElementProperty(oldElement, "accessKey", "");
-
-			// Quickly do the actual replace
-			final Element parent = DOM.getParent(oldElement);
-			final int childIndex = DOM.getChildIndex(parent, oldElement);
-
-			// remove
-			DOM.removeChild(parent, oldElement);
-
-			this.setInputElement(element);
-
-			DOM.insertChild(parent, element, childIndex);
-
-			// Setup the new element
-			DOM.sinkEvents(element, DOM.getEventsSunk(oldElement));
-			DOM.setEventListener(element, this);
-			DOM.setElementProperty(element, "id", id);
-			if (accessKey != "") {
-				DOM.setElementProperty(element, "accessKey", accessKey);
-			}
-			setTabIndex(tabIndex);
-			setChecked(checked);
-			setEnabled(enabled);
-		}
-
+		return new CheckBox(this.getElementById(id));
 	}
 
 	/**
@@ -370,33 +109,8 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return A ListBox wrapper
 	 */
 	protected ListBox bindListBox(final String id) {
-		return (ListBox) this.build(id, RootPanel.get(), new ListBoxWidgetBuilder());
-	}
+		return new ListBox(this.getElementById(id));
 
-	static class ListBoxWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkTagName("element", element, WidgetConstants.LISTBOX_TAG);
-		}
-
-		Widget bind0(final Element element) {
-			final ListBox listBox = new ListBox();
-			final int eventMask = DOM.getEventsSunk(element);
-			this.replaceElement(listBox, element);
-			DOM.sinkEvents(element, eventMask);
-			return listBox;
-		}
-
-		/**
-		 * This method uses jsni to replace the original element with the
-		 * already attached dom element.
-		 * 
-		 * @param listBox
-		 * @param element
-		 */
-		native private void replaceElement(final ListBox listBox, final Element element)/*-{
-		 listBox.@com.google.gwt.user.client.ui.ListBox::setElement(Lcom/google/gwt/user/client/Element;)(element);		
-		 }-*/;
 	}
 
 	/**
@@ -408,33 +122,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return A Label wrapper
 	 */
 	protected Label bindLabel(final String id) {
-		return (Label) this.build(id, RootPanel.get(), new LabelWidgetBuilder());
-	}
-
-	static class LabelWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkTagName("element", element, WidgetConstants.LABEL_TAG);
-		}
-
-		Widget bind0(final Element element) {
-			final Label label = new Label();
-			final int eventMask = DOM.getEventsSunk(element);
-			this.replaceElement(label, element);
-			DOM.sinkEvents(element, eventMask);
-			return label;
-		}
-
-		/**
-		 * This method uses jsni to replace the original element with the
-		 * already attached dom element.
-		 * 
-		 * @param label
-		 * @param element
-		 */
-		native void replaceElement(final Label label, final Element element)/*-{
-		 label.@com.google.gwt.user.client.ui.Label::setElement(Lcom/google/gwt/user/client/Element;)(element);		
-		 }-*/;
+		return new Label(this.getElementById(id));
 	}
 
 	/**
@@ -445,34 +133,8 @@ abstract public class HtmlTemplateFactoryImpl {
 	 *            The id
 	 * @return A HTML wrapper
 	 */
-	protected HTML bindHtml(final String id) {
-		return (HTML) this.build(id, RootPanel.get(), new HTMLWidgetBuilder());
-	}
-
-	static class HTMLWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkTagName("element", element, WidgetConstants.HTML_TAG);
-		}
-
-		Widget bind0(final Element element) {
-			final HTML html = new HTML();
-			final int eventMask = DOM.getEventsSunk(element);
-			this.replaceElement(html, element);
-			DOM.sinkEvents(element, eventMask);
-			return html;
-		}
-
-		/**
-		 * This method uses jsni to replace the original element with the
-		 * already attached dom element.
-		 * 
-		 * @param html
-		 * @param element
-		 */
-		native void replaceElement(final HTML html, final Element element)/*-{
-		 html.@com.google.gwt.user.client.ui.HTML::setElement(Lcom/google/gwt/user/client/Element;)(element);		
-		 }-*/;
+	protected Html bindHtml(final String id) {
+		return new Html(this.getElementById(id));
 	}
 
 	/**
@@ -484,41 +146,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return A Button wrapper
 	 */
 	protected Button bindButton(final String id) {
-		return (Button) this.build(id, RootPanel.get(), new ButtonWidgetBuilder());
-	}
-
-	static class ButtonWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkTagName("element", element, WidgetConstants.BUTTON_TAG);
-		}
-
-		Widget bind0(final Element element) {
-			return new BindableButton(element);
-		}
-	}
-
-	/**
-	 * This class only exists to make the pass the already attached element
-	 * rather than creating a new one.
-	 */
-	static class BindableButton extends Button {
-		public BindableButton(final Element element) {
-			super();
-
-			this.setElement(element);
-			this.invokeAdjustType(element);
-		}
-
-		/**
-		 * Bridge method that gets solves the inability to invoke
-		 * Button.adjustType() due to it being packagePrivate.
-		 * 
-		 * @param element
-		 */
-		native void invokeAdjustType(final Element element)/*-{
-		 @com.google.gwt.user.client.ui.Button::adjustType(Lcom/google/gwt/user/client/Element;)(element);
-		 }-*/;
+		return new Button(this.getElementById(id));
 	}
 
 	/**
@@ -530,33 +158,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return A Image wrapper
 	 */
 	protected Image bindImage(final String id) {
-		return (Image) this.build(id, RootPanel.get(), new ImageWidgetBuilder());
-	}
-
-	static class ImageWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkTagName("element", element, WidgetConstants.IMAGE_TAG);
-		}
-
-		Widget bind0(final Element element) {
-			final Image image = new Image();
-			final int eventMask = DOM.getEventsSunk(element);
-			this.replaceElement(image, element);
-			DOM.sinkEvents(element, eventMask);
-			return image;
-		}
-
-		/**
-		 * This method uses jsni to replace the original element with the
-		 * already attached dom element.
-		 * 
-		 * @param image
-		 * @param element
-		 */
-		native void replaceElement(final Image image, final Element element)/*-{
-		 image.@com.google.gwt.user.client.ui.Image::setElement(Lcom/google/gwt/user/client/Element;)(element);		
-		 }-*/;
+		return new Image(this.getElementById(id));
 	}
 
 	/**
@@ -568,35 +170,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return A Hyperlink wrapper
 	 */
 	protected Hyperlink bindHyperlink(final String id) {
-		return (Hyperlink) this.build(id, RootPanel.get(), new HyperlinkWidgetBuilder());
-	}
-
-	static class HyperlinkWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkTagName("element", element, WidgetConstants.HYPERLINK_TAG);
-		}
-
-		Widget bind0(final Element element) {
-			final Hyperlink hyperlink = new Hyperlink();
-			this.fix(hyperlink, element);
-			return hyperlink;
-		}
-
-		/**
-		 * This method uses jsni to replace the original element with the
-		 * already attached dom element.
-		 * 
-		 * @param hyperlink
-		 * @param element
-		 * 
-		 * TODO Hack alert: If this method doesnt compile, update the jsni below
-		 * to point to the field name of the anchor element.
-		 */
-		native void fix(final Hyperlink hyperlink, final Element element)/*-{		
-		 hyperlink.@com.google.gwt.user.client.ui.Hyperlink::anchorElem=element;		
-		 hyperlink.@com.google.gwt.user.client.ui.Hyperlink::setElement(Lcom/google/gwt/user/client/Element;)( element );
-		 }-*/;
+		return new Hyperlink(this.getElementById(id));
 	}
 
 	/**
@@ -608,167 +182,19 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return The new FormPanel wrapper.
 	 */
 	protected FormPanel bindFormPanel(final String id) {
-		return (FormPanel) this.build(id, RootPanel.get(), new FormPanelWidgetBuilder());
+		return new FormPanel(this.getElementById(id), true);
 	}
 
-	static class FormPanelWidgetBuilder extends WidgetBinder {
-
-		void checkElement(final Element element) {
-			Dom.checkTagName("element", element, WidgetConstants.FORM_TAG);
-		}
-
-		Widget bind0(final Element element) {
-			final ReadOnlyFormPanel formPanel = new ReadOnlyFormPanel();
-			formPanel.setElement(element);
-			return formPanel;
-		}
-	}
-
-	static class ReadOnlyFormPanel extends FormPanel {
-
-		public void setElement(final Element element) {
-			final int eventMask = DOM.getEventsSunk(element);
-			super.setElement(element);
-			DOM.sinkEvents(element, eventMask);
-		}
-
-		public void setWidget(final Widget panel) {
-			throw new UnsupportedOperationException(
-					"FormPanels binded to a DOM Form via a HtmlTemplateFactory cannot have their widget replaced.");
-		}
-
-		public Widget getWidget() {
-			FormWidgetsPanel formPanel = new FormWidgetsPanel();
-			formPanel.setElement(this.getElement());
-			formPanel.buildChildWidgets();
-			return formPanel;
-		}
-	}
-
-	/**
-	 * This panel provides the glue between a dom's form element collection.
-	 */
-	static class FormWidgetsPanel extends ComplexPanel implements IndexedPanel {
-
-		FormWidgetsPanel() {
-			super();
-		}
-
-		protected void setElement(final Element element) {
-			super.setElement(element);
-		}
-
-		public void add(final Widget widget) {
-			this.add(widget, this.getElement());
-		}
-
-		void buildChildWidgets() {
-			final JavaScriptObject collection = this.getFormCollection();
-			final int count = ObjectHelper.getPropertyCount(collection);
-
-			for (int i = 0; i < count; i++) {
-				Widget widget = null;
-				final Element formElement = ObjectHelper.getElement(collection, i);
-
-				while (true) {
-					if (Dom.isTag(formElement, WidgetConstants.BUTTON_TAG)) {
-						widget = new ButtonWidgetBuilder().bind(formElement, this);
-						break;
-					}
-					if (Dom.isInput(formElement, WidgetConstants.CHECKBOX_TYPE_ATTRIBUTE)) {
-						widget = new CheckBoxWidgetBuilder().bind(formElement, this);
-						break;
-					}
-					if (Dom.isTag(formElement, WidgetConstants.LISTBOX_TAG)) {
-						widget = new ListBoxWidgetBuilder().bind(formElement, this);
-						break;
-					}
-					if (Dom.isInput(formElement, WidgetConstants.RADIO_BUTTON_TYPE_ATTRIBUTE)) {
-						widget = new RadioButtonWidgetBuilder().bind(formElement, this);
-						break;
-					}
-					if (Dom.isInput(formElement, WidgetConstants.PASSWORD_TEXTBOX_TYPE_ATTRIBUTE)) {
-						widget = new PasswordTextBoxWidgetBuilder().bind(formElement, this);
-						break;
-					}
-					if (Dom.isTag(formElement, WidgetConstants.TEXTAREA_TAG)) {
-						widget = new TextAreaWidgetBuilder().bind(formElement, this);
-						break;
-					}
-					if (Dom.isInput(formElement, WidgetConstants.TEXTBOX_TYPE_ATTRIBUTE)) {
-						widget = new TextBoxWidgetBuilder().bind(formElement, this);
-						break;
-					}
-
-					GWT.log("Skipping " + formElement + " because wrapping GWT widget does not exist.", null);
-					break;
-				}
-
-				if (null != widget) {
-					final Element parent = DOM.getParent(formElement);
-					final int index = DOM.getChildIndex(parent, formElement);
-
-					// put back in dom where it originally was.
-					this.add(widget);
-					DOM.insertChild(parent, widget.getElement(), index);
-				}
-			}
-		}
-
-		JavaScriptObject getFormCollection() {
-			return ObjectHelper.getObject(this.getElement(), "elements");
-		};
-	}
-
-	protected Widget build(final String id, final Panel panel, final WidgetBinder builder) {
+	protected Element getElementById(final String id) {
 		final Element element = DOM.getElementById(id);
 		if (null == element) {
 			throwUnableToGetElementById(id);
 		}
-
-		final Widget widget = builder.bind(element, panel);
-		this.getWidgets().put(id, widget);
-		DOM.setElementAttribute(element, "id", id);
-
-		return widget;
+		return element;
 	}
 
 	private void throwUnableToGetElementById(final String id) {
 		throw new RuntimeException("Unable to find an element in the DOM with the id of [" + id + "].");
-	}
-
-	/**
-	 * This template helps with building the wrapper widget, adding it to
-	 * RootPanel and cleaning up the actual location of the widget in the dom.
-	 */
-	abstract static class WidgetBinder {
-
-		public Widget bind(final Element element, final Panel panel) {
-			this.checkElement(element);
-
-			final Element parent = DOM.getParent(element);
-			final int childIndex = DOM.getChildIndex(parent, element);
-
-			final Widget widget = bind0(element);
-
-			panel.add(widget);
-
-			final Element widgetElement = widget.getElement();
-			DOM.insertChild(parent, widgetElement, childIndex);
-
-			return widget;
-		}
-
-		abstract void checkElement(Element element);
-
-		/**
-		 * Sub classes must create the wrapper widget for the given element.
-		 * 
-		 * @param element
-		 *            The element to wrap
-		 * @return The widget.
-		 */
-		abstract Widget bind0(Element element);
 	}
 
 	/**

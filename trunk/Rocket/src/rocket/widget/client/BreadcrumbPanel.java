@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class BreadcrumbPanel extends Composite {
+public class BreadcrumbPanel extends CompositeWidget {
 
 	public BreadcrumbPanel() {
 	}
@@ -45,6 +45,10 @@ public class BreadcrumbPanel extends Composite {
 		final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
 		this.setHorizontalPanel(horizontalPanel);
 		return horizontalPanel;
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.BREADCRUMB_PANEL_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
@@ -72,9 +76,7 @@ public class BreadcrumbPanel extends Composite {
 	}
 
 	protected HorizontalPanel createHorizontalPanel() {
-		final HorizontalPanel panel = new HorizontalPanel();
-		panel.setStyleName(WidgetConstants.BREADCRUMB_PANEL_STYLE);
-		return panel;
+		return new HorizontalPanel();
 	}
 
 	/**
@@ -120,8 +122,12 @@ public class BreadcrumbPanel extends Composite {
 
 		final Breadcrumb breadcrumb = new Breadcrumb();
 		breadcrumb.setText(text);
-		breadcrumb.setStyleName(WidgetConstants.BREADCRUMB_PANEL_ITEM_STYLE);
+		breadcrumb.setStyleName( this.getCrumbStyle() );
 		return breadcrumb;
+	}
+	
+	protected String getCrumbStyle(){
+		return WidgetConstants.BREADCRUMB_PANEL_CRUMB_STYLE;
 	}
 
 	class Breadcrumb extends Hyperlink {
@@ -165,9 +171,13 @@ public class BreadcrumbPanel extends Composite {
 
 	protected Widget createSpacer() {
 		final HTML spacer = new HTML(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_HTML);
-		spacer.setStyleName(WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_STYLE);
+		spacer.setStyleName( this.getCrumbSeparatorStyle() );
 		spacer.setVisible(false);
 		return spacer;
+	}
+	
+	protected String getCrumbSeparatorStyle(){
+		return WidgetConstants.BREADCRUMB_PANEL_SEPARATOR_STYLE;
 	}
 
 	/**
@@ -209,11 +219,15 @@ public class BreadcrumbPanel extends Composite {
 		final int index = panel.getWidgetCount() - 1 - 1;
 		if (index >= 0) {
 			final Widget breadcrumb = panel.getWidget(index);
-			breadcrumb.removeStyleName(WidgetConstants.BREADCRUMB_PANEL_LAST_ITEM_STYLE);
+			breadcrumb.removeStyleName( this.getLastCrumbStyle() );
 
 			final Widget spacer = panel.getWidget(index + 1);
 			spacer.setVisible(true);
 		}
+	}
+	
+	protected String getLastCrumbStyle(){
+		return WidgetConstants.BREADCRUMB_PANEL_LAST_CRUMB_STYLE;
 	}
 
 	protected void updateLastBreadcrumb() {
@@ -221,7 +235,7 @@ public class BreadcrumbPanel extends Composite {
 		final int index = panel.getWidgetCount() - 1 - 1;
 		if (index >= 0) {
 			final Widget breadcrumb = panel.getWidget(index);
-			breadcrumb.addStyleName(WidgetConstants.BREADCRUMB_PANEL_LAST_ITEM_STYLE);
+			breadcrumb.addStyleName(getLastCrumbStyle());
 
 			final Widget spacer = panel.getWidget(index + 1);
 			spacer.setVisible(false);

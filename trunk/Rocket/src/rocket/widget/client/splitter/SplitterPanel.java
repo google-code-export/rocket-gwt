@@ -19,18 +19,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import rocket.dom.client.Dom;
+import rocket.event.client.Event;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.EventPreviewAdapter;
+import rocket.event.client.MouseDownEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseMoveEvent;
+import rocket.event.client.MouseUpEvent;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
-import rocket.widget.client.Composite;
+import rocket.widget.client.CompositeWidget;
+import rocket.widget.client.EventListenerDispatcher;
+import rocket.widget.client.Panel;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -39,14 +47,14 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-abstract public class SplitterPanel extends Composite {
+abstract public class SplitterPanel extends CompositeWidget {
 
 	protected SplitterPanel() {
 		super();
 	}
 
 	protected Widget createWidget() {
-		final Panel panel = createPanel();
+		final InternalPanel panel = createPanel();
 		this.setPanel(panel);
 		return panel;
 	}
@@ -57,7 +65,7 @@ abstract public class SplitterPanel extends Composite {
 
 	public void onAttach() {
 		super.onAttach();
-		this.layoutWidgets();
+		this.redraw();
 	}
 
 	/**
@@ -144,7 +152,7 @@ abstract public class SplitterPanel extends Composite {
 			break;
 		}
 
-		this.layoutWidgets();
+		this.redraw();
 	}
 
 	/**
@@ -196,26 +204,26 @@ abstract public class SplitterPanel extends Composite {
 			panel.remove(panelIndex);
 		}
 
-		this.layoutWidgets();
+		this.redraw();
 	}
 
 	/**
 	 * Checks if this widget is attached and if it has does the actual laying
 	 * out.
 	 */
-	protected void layoutWidgets() {
+	protected void redraw() {
 		if (this.isAttached()) {
-			this.layoutWidgets0();
+			this.redraw0();
 		}
 	}
 
-	protected abstract void layoutWidgets0();
+	protected abstract void redraw0();
 
 	/**
 	 * Loops thru all added items summing their weights and returning that
 	 * value.
 	 * 
-	 * @return
+	 * @return The sum
 	 */
 	protected int sumWeights() {
 		int weightSum = 0;
@@ -249,29 +257,33 @@ abstract public class SplitterPanel extends Composite {
 	/**
 	 * This is the actual panel that contains the added widgets and splitters.
 	 */
-	private Panel panel;
+	private InternalPanel panel;
 
-	protected Panel getPanel() {
+	protected InternalPanel getPanel() {
 		ObjectHelper.checkNotNull("field:panel", panel);
 		return this.panel;
 	}
 
-	protected void setPanel(final Panel panel) {
+	protected void setPanel(final InternalPanel panel) {
 		ObjectHelper.checkNotNull("parameter:panel", panel);
 		this.panel = panel;
 	}
 
-	protected Panel createPanel() {
-		return new Panel();
+	protected InternalPanel createPanel() {
+		return new InternalPanel();
 	}
 
-	static class Panel extends rocket.widget.client.Panel {
+	static class InternalPanel extends rocket.widget.client.Panel {
 
+		
+		protected void checkElement( final Element element ){
+			throw new UnsupportedOperationException();
+		}
 		/**
 		 * Factory method which creates the parent DIV element for this entire
 		 * panel
 		 * 
-		 * @return
+		 * @return The new Panel element.
 		 */
 		protected Element createPanelElement() {
 			final Element parent = DOM.createDiv();
@@ -288,6 +300,13 @@ abstract public class SplitterPanel extends Composite {
 			DOM.appendChild(parent, child);
 
 			return parent;
+		}
+		
+		protected void applyStyleName(){			
+		}
+		
+		protected String getInitialStyleName(){
+			throw new UnsupportedOperationException( "getWidgetStyleName");
 		}
 
 		protected int getSunkEventsBitMask() {
@@ -322,6 +341,7 @@ abstract public class SplitterPanel extends Composite {
 		 * widget's element
 		 */
 		protected void remove0(final Element element, final int index) {
+			Dom.removeFromParent( element );
 		}
 	};
 
@@ -341,20 +361,33 @@ abstract public class SplitterPanel extends Composite {
 	 * 
 	 * @author mP
 	 */
-	abstract class Splitter extends HTML {
+	abstract class Splitter extends rocket.widget.client.Widget {
 		Splitter() {
-			super("&nbsp;");
-
-			this.sinkEvents(Event.ONMOUSEDOWN);
-
-			InlineStyle.setString(this.getElement(), StyleConstants.OVERFLOW, "hidden");
+			super();	
 		}
+		
+		protected Element createElement(){
+			final Element div = DOM.createDiv();
+			DOM.setInnerHTML( div, "&nbsp;");
+			InlineStyle.setString( div, StyleConstants.OVERFLOW, "hidden");
+			return div;
+		}			
 
-		public void onBrowserEvent(final Event event) {
-			ObjectHelper.checkNotNull("parameter:event", event);
-			if (DOM.eventGetType(event) == Event.ONMOUSEDOWN) {
-				Splitter.this.handleMouseDown(event);
-			}
+		protected void afterCreateElement(){
+			final EventListenerDispatcher dispatcher = this.getEventListenerDispatcher();
+			dispatcher.addMouseEventListener( new MouseEventAdapter(){
+				public void onMouseDown( final MouseDownEvent event ){
+					Splitter.this.handleMouseDown(event);
+				}
+			});
+		}
+		
+		protected void checkElement(Element element){
+			throw new UnsupportedOperationException( "checkElement");
+		}
+		
+		protected int getSunkEventsBitMask(){
+			return EventBitMaskConstants.MOUSE_DOWN;
 		}
 
 		/**
@@ -364,7 +397,7 @@ abstract public class SplitterPanel extends Composite {
 		 * 
 		 * @param event
 		 */
-		protected void handleMouseDown(final Event event) {
+		protected void handleMouseDown(final MouseDownEvent event) {
 			ObjectHelper.checkNotNull("parameter:event", event);
 
 			final EventPreview preview = this.createEventPreview();
@@ -398,33 +431,19 @@ abstract public class SplitterPanel extends Composite {
 		 * @return
 		 */
 		protected EventPreview createEventPreview() {
-			final EventPreview preview = new EventPreview() {
-				public boolean onEventPreview(final Event event) {
-					ObjectHelper.checkNotNull("parameter:event", event);
-
-					while (true) {
-						final int type = DOM.eventGetType(event);
-						if (Event.ONMOUSEMOVE == type) {
-							Splitter.this.handleMouseMove(event);
-							break;
-						}
-						if (Event.ONMOUSEUP == type) {
-							Splitter.this.handleMouseUp(event);
-							break;
-						}
-						break;
-					}
-
-					// always cancel events...
-					return false;
+			return new EventPreviewAdapter() {
+				
+				protected void beforeDispatching( final Event event ){
+					event.setWidget( Splitter.this );
 				}
+				
+				protected void handleMouseMoveEvent( final MouseMoveEvent event ){
+					SplitterPanel.this.handleMouseMove( event);
+				}
+				protected void handleMouseUpEvent( final MouseUpEvent event ){
+					Splitter.this.handleMouseUp(event);
+				}		
 			};
-
-			return preview;
-		}
-
-		protected void handleMouseMove(final Event event) {
-			SplitterPanel.this.handleMouseMove(this, event);
 		}
 
 		/**
@@ -433,7 +452,7 @@ abstract public class SplitterPanel extends Composite {
 		 * 
 		 * @param event
 		 */
-		protected void handleMouseUp(final Event event) {
+		protected void handleMouseUp(final MouseUpEvent event) {
 			this.removeStyleName(this.getDraggingStyleName());
 			DOM.removeEventPreview(this.getEventPreview());
 			this.clearEventPreview();
@@ -446,10 +465,9 @@ abstract public class SplitterPanel extends Composite {
 	 * This method is implemented by both {@link HorizontalSplitterPanel} and
 	 * {@link VerticalSplitterPanel}
 	 * 
-	 * @param splitter
 	 * @param event
 	 */
-	abstract protected void handleMouseMove(Splitter splitter, Event event);
+	abstract protected void handleMouseMove(MouseMoveEvent event);
 
 	/**
 	 * The size in pixels allocated to each splitter widget that separated two

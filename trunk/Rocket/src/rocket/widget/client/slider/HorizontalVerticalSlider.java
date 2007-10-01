@@ -15,8 +15,17 @@
  */
 package rocket.widget.client.slider;
 
-import rocket.browser.client.Browser;
 import rocket.dom.client.Dom;
+import rocket.event.client.ChangeEventListener;
+import rocket.event.client.Event;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.EventPreviewAdapter;
+import rocket.event.client.FocusEventListener;
+import rocket.event.client.MouseDownEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseMoveEvent;
+import rocket.event.client.MouseOutEvent;
+import rocket.event.client.MouseUpEvent;
 import rocket.selection.client.Selection;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.CssUnit;
@@ -24,7 +33,7 @@ import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
-import rocket.widget.client.Composite;
+import rocket.widget.client.CompositeWidget;
 import rocket.widget.client.DivPanel;
 import rocket.widget.client.Panel;
 
@@ -32,11 +41,8 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -47,10 +53,10 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class HorizontalVerticalSlider extends Composite {
+public class HorizontalVerticalSlider extends CompositeWidget {
 
 	public HorizontalVerticalSlider() {
-		this.setStyleName(Constants.HORIZONTAL_VERTICAL_SLIDER_STYLE);
+		super();
 	}
 
 	protected Widget createWidget() {
@@ -60,12 +66,21 @@ public class HorizontalVerticalSlider extends Composite {
 	}
 
 	protected void afterCreateWidget() {
-		this.setChangeListeners(this.createChangeListeners());
-		this.setFocusListeners(this.createFocusListeners());
+		super.afterCreateWidget();
+		
+		this.getEventListenerDispatcher().addMouseEventListener( new MouseEventAdapter(){
+			public void onMouseDown( final MouseDownEvent event ){
+				HorizontalVerticalSlider.this.handleMouseDown( event );
+			}
+		});
+	}
+	
+	protected String getInitialStyleName(){
+		return Constants.HORIZONTAL_VERTICAL_SLIDER_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
-		return Event.FOCUSEVENTS | Event.ONCHANGE | Event.MOUSEEVENTS;
+		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.CHANGE | EventBitMaskConstants.MOUSE_EVENTS;
 	}
 
 	/**
@@ -82,43 +97,17 @@ public class HorizontalVerticalSlider extends Composite {
 	}
 
 	/**
-	 * Dispatches to the appropriate method depending on the event type.
-	 */
-	public void onBrowserEvent(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
-
-		while (true) {
-			final int eventType = DOM.eventGetType(event);
-			if (eventType == Event.ONMOUSEDOWN) {
-				handleMouseDown(event);
-				break;
-			}
-
-			if (eventType == Event.ONMOUSEOUT) {
-				this.handleMouseOut(event);
-				break;
-			}
-			if (eventType == Event.ONMOUSEUP) {
-				this.handleMouseUp(event);
-			}
-			break;
-		}
-
-		super.onBrowserEvent(event);
-	}
-
-	/**
 	 * Dispatches the event to the respective handler depending on whether the
 	 * handle or the slider background was clicked.
 	 * 
 	 * @param event
 	 *            The cause event
 	 */
-	protected void handleMouseDown(final Event event) {
+	protected void handleMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
-			final Element target = DOM.eventGetTarget(event);
+			final Element target = event.getTarget();
 
 			// check if the handle widget has been clicked...
 			if (DOM.isOrHasChild(this.getHandle().getElement(), target)) {
@@ -137,13 +126,13 @@ public class HorizontalVerticalSlider extends Composite {
 		}
 	}
 
-	protected void handleBackgroundMouseDown(Event event) {
+	protected void handleBackgroundMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		final Widget handle = this.getHandle();
 		final Element widget = this.getElement();
-		final int mouseX = Browser.getMousePageX(event) - Dom.getAbsoluteLeft(widget) - handle.getOffsetWidth() / 2;
-		final int mouseY = Browser.getMousePageY(event) - Dom.getAbsoluteTop(widget) - handle.getOffsetHeight() / 2;
+		final int mouseX = event.getPageX() - Dom.getAbsoluteLeft(widget) - handle.getOffsetWidth() / 2;
+		final int mouseY = event.getPageY() - Dom.getAbsoluteTop(widget) - handle.getOffsetHeight() / 2;
 
 		this.handleBackgroundMouseDown(mouseX, mouseY);
 
@@ -157,7 +146,7 @@ public class HorizontalVerticalSlider extends Composite {
 	 * 
 	 * @param event
 	 */
-	protected void handleHandleMouseDown(final Event event) {
+	protected void handleHandleMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		if (false == this.hasDraggingEventPreview()) {
@@ -168,8 +157,12 @@ public class HorizontalVerticalSlider extends Composite {
 			this.setDraggingEventPreview(eventPreview);
 			DOM.addEventPreview(eventPreview);
 
-			this.getHandle().addStyleName(Constants.HORIZONTAL_VERTICAL_SLIDER_DRAGGING_STYLE);
+			this.getHandle().addStyleName(this.getDraggingStyle() );
 		}
+	}
+	
+	protected String getDraggingStyle(){
+		return Constants.HORIZONTAL_VERTICAL_SLIDER_DRAGGING_STYLE;
 	}
 
 	/**
@@ -203,42 +196,14 @@ public class HorizontalVerticalSlider extends Composite {
 	 * @return
 	 */
 	protected EventPreview createDraggingEventPreview() {
-		final EventPreview draggingEventPreview = new EventPreview() {
-			public boolean onEventPreview(final Event event) {
-				return handleDraggingEventPreview(event);
+		return new EventPreviewAdapter() {
+			protected void handleMouseMoveEvent( final MouseMoveEvent event ){
+				HorizontalVerticalSlider.this.handleHandleMouseMove( event);
+			}
+			protected void handleMouseUpEvent( final MouseUpEvent event ){
+				HorizontalVerticalSlider.this.handleHandleMouseUp( event );
 			}
 		};
-		return draggingEventPreview;
-	}
-
-	/**
-	 * Manages the event type removing the EventPreview when the mouse button is
-	 * released and updating the handle via
-	 * {@link #handleHandleMouseMove(Event)}
-	 * 
-	 * @param event
-	 * @return When true stops the event from being dispatched to the target
-	 *         element.
-	 */
-	protected boolean handleDraggingEventPreview(final Event event) {
-		boolean cancelEvent = true;
-
-		while (true) {
-			final int type = DOM.eventGetType(event);
-			if (type == Event.ONMOUSEMOVE) {
-				handleHandleMouseMove(event);
-				cancelEvent = true;
-				break;
-			}
-			if (type == Event.ONMOUSEUP) {
-				this.handleHandleMouseUp(event);
-				cancelEvent = false;
-				break;
-			}
-			cancelEvent = true;
-			break;
-		}
-		return !cancelEvent;
 	}
 
 	/**
@@ -247,36 +212,56 @@ public class HorizontalVerticalSlider extends Composite {
 	 * 
 	 * @param event
 	 */
-	protected void handleHandleMouseUp(final Event event) {
-		this.getHandle().removeStyleName(Constants.HORIZONTAL_VERTICAL_SLIDER_DRAGGING_STYLE);
+	protected void handleHandleMouseUp(final MouseUpEvent event) {
+		this.getHandle().removeStyleName( this.getDraggingStyle() );
 
 		DOM.removeEventPreview(this.getDraggingEventPreview());
 		this.clearDraggingEventPreview();
 		Selection.enableTextSelection();
 	}
-
+	
 	protected void handleBackgroundMouseDown(final int mouseX, final int mouseY) {
 		final Element handle = this.getHandle().getElement();
+		boolean killTimer = false;
+		
+		final int x = this.getXValue();
 		final int handleX = ComputedStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
-		final int deltaX = mouseX - handleX;
+		int deltaX = mouseX - handleX;
 		if (0 != deltaX) {
 			if (deltaX < 0) {
 				this.handleBeforeHandleXMouseDown();
 			} else {
 				this.handleAfterHandleXMouseDown();
 			}
+			final int handleXAfter = ComputedStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
+			final int deltaXAfter = mouseX - handleXAfter;
+			
+			if( deltaX < 0 ^ deltaXAfter < 0 ){
+				this.setXValue(x);
+				InlineStyle.setInteger( handle, StyleConstants.LEFT, mouseX, CssUnit.PX );
+				deltaX = 0;
+			}
 		}
 
+		final int y = this.getYValue();
 		final int handleY = ComputedStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
-		final int deltaY = mouseY - handleY;
+		int deltaY = mouseY - handleY;
 		if (0 != deltaY) {
 			if (deltaY < 0) {
 				this.handleBeforeHandleYMouseDown();
 			} else {
 				this.handleAfterHandleYMouseDown();
 			}
+			final int handleYAfter = ComputedStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
+			final int deltaYAfter = mouseY - handleYAfter;
+			
+			if( deltaY < 0 ^ deltaYAfter < 0 ){
+				this.setYValue( y);
+				InlineStyle.setInteger( handle, StyleConstants.TOP, mouseY, CssUnit.PX );
+				deltaY = 0;
+			}
 		}
-		if (deltaX == 0 && deltaY == 0) {
+		if (killTimer || deltaX == 0 && deltaY == 0) {
 			this.clearTimer();
 		}
 	}
@@ -343,7 +328,7 @@ public class HorizontalVerticalSlider extends Composite {
 		InlineStyle.setInteger(handle, StyleConstants.TOP, top + 1, CssUnit.PX);
 	}
 
-	protected void handleHandleMouseMove(Event event) {
+	protected void handleHandleMouseMove(final MouseMoveEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		final Element sliderElement = this.getElement();
@@ -358,7 +343,7 @@ public class HorizontalVerticalSlider extends Composite {
 		final int handleHeight = handle.getOffsetHeight();
 
 		// make mouse coordinates relative to top/left of slider.
-		int mouseX = Browser.getMousePageX(event) - widgetX;
+		int mouseX = event.getPageX() - widgetX;
 		mouseX = Math.max(0, Math.min(mouseX, sliderWidth - handleWidth / 2));
 
 		final int newX = this.updateSliderValue(mouseX, this.getMaximumXValue(), sliderWidth, handleWidth);
@@ -367,7 +352,7 @@ public class HorizontalVerticalSlider extends Composite {
 		int left = mouseX - handleWidth / 2;
 		InlineStyle.setInteger(handleElement, StyleConstants.LEFT, left, CssUnit.PX);
 
-		int mouseY = Browser.getMousePageY(event) - widgetY;
+		int mouseY = event.getPageY() - widgetY;
 		mouseY = Math.max(0, Math.min(mouseY, sliderHeight - handleHeight / 2));
 		final int newY = this.updateSliderValue(mouseY, this.getMaximumYValue(), sliderHeight, handleHeight);
 
@@ -375,6 +360,8 @@ public class HorizontalVerticalSlider extends Composite {
 
 		final int top = mouseY - handleHeight / 2;
 		InlineStyle.setInteger(handleElement, StyleConstants.TOP, top, CssUnit.PX);
+		
+		event.cancelBubble( true );
 	}
 
 	protected int updateSliderValue(final int mouseCoordinate, final int maximumValue, final int sliderLength, final int handleLength) {
@@ -431,7 +418,7 @@ public class HorizontalVerticalSlider extends Composite {
 	 * background portion of the slider. Every mouseDownRepeatRate the slider
 	 * moves towards to the target point.
 	 */
-	class HandleSlidingTimer extends Timer {
+	private class HandleSlidingTimer extends Timer {
 		public void run() {
 			HorizontalVerticalSlider.this.handleBackgroundMouseDown(this.getMouseX(), this.getMouseY());
 		}
@@ -480,7 +467,7 @@ public class HorizontalVerticalSlider extends Composite {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseOut(final Event event) {
+	protected void handleMouseOut(final MouseOutEvent event) {
 		this.clearTimer();
 	}
 
@@ -489,7 +476,7 @@ public class HorizontalVerticalSlider extends Composite {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseUp(final Event event) {
+	protected void handleMouseUp(final MouseUpEvent event) {
 		this.clearTimer();
 	}
 
@@ -535,13 +522,18 @@ public class HorizontalVerticalSlider extends Composite {
 		ObjectHelper.checkNotNull("parameter:handle", handle);
 
 		final Panel panel = this.getPanel();
-
+final String handleStyle = this.getHandleStyle();
+		
 		final Widget previous = panel.get(0);
-		previous.removeStyleName(Constants.HORIZONTAL_VERTICAL_SLIDER_HANDLE_STYLE);
+		previous.removeStyleName( handleStyle );
 		panel.remove(0);
 
 		panel.insert(handle, 0);
-		handle.addStyleName(Constants.HORIZONTAL_VERTICAL_SLIDER_HANDLE_STYLE);
+		handle.addStyleName(handleStyle);
+	}
+	
+	protected String getHandleStyle(){
+		return Constants.HORIZONTAL_VERTICAL_SLIDER_HANDLE_STYLE;	
 	}
 
 	// SLIDER ::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -566,7 +558,8 @@ public class HorizontalVerticalSlider extends Composite {
 			}
 		}
 		this.xValue = xValue;
-		this.getChangeListeners().fireChange(this);
+
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
 
 	protected void setXValue0() {
@@ -632,7 +625,7 @@ public class HorizontalVerticalSlider extends Composite {
 			});
 		}
 		this.yValue = yValue;
-		this.getChangeListeners().fireChange(this);
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
 
 	protected void setYValue0() {
@@ -677,20 +670,20 @@ public class HorizontalVerticalSlider extends Composite {
 		this.deltaY = yDelta;
 	}
 
-	public void addChangeListener(final ChangeListener changeListener) {
-		super.addChangeListener(changeListener);
+	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(changeEventListener);
 	}
 
-	public void removeChangeListener(final ChangeListener changeListener) {
-		super.removeChangeListener(changeListener);
+	public void removeChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().removeChangeEventListener(changeEventListener);
 	}
 
-	public void addFocusListener(final FocusListener focusListener) {
-		super.addFocusListener(focusListener);
+	public void addFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().addFocusEventListener(focusEventListener);
 	}
 
-	public void removeFocusListener(final FocusListener focusListener) {
-		super.removeFocusListener(focusListener);
+	public void removeFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().removeFocusEventListener(focusEventListener);
 	}
 
 	public String toString() {
