@@ -20,10 +20,10 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 
 import rocket.util.client.ObjectHelper;
+import rocket.widget.client.CompositeWidget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -38,33 +38,18 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * FIX Iterator when visiting descendants does not fail fast.
  */
-public class TreeItem extends Composite {
+public class TreeItem extends CompositeWidget {
 
 	public TreeItem() {
 		super();
-
-		final FlexTable flexTable = this.createFlexTable();
-		this.setFlexTable(flexTable);
-		this.initWidget(flexTable);
-
-		this.setStyleName(TreeConstants.TREE_ITEM_STYLE);
-		this.setExpanded(false);
 	}
-
-	/**
-	 * A flexTable is used to house the main widget and child widgets within a
-	 * 2x2 flexTable.
-	 */
-	private FlexTable flexTable;
+	
+	protected Widget createWidget(){
+		return this.createFlexTable();
+	}
 
 	protected FlexTable getFlexTable() {
-		ObjectHelper.checkNotNull("field:flexTable", flexTable);
-		return flexTable;
-	}
-
-	protected void setFlexTable(final FlexTable flexTable) {
-		ObjectHelper.checkNotNull("parameter:flexTable", flexTable);
-		this.flexTable = flexTable;
+		return (FlexTable) super.getWidget();
 	}
 
 	protected FlexTable createFlexTable() {
@@ -79,6 +64,18 @@ public class TreeItem extends Composite {
 		table.setWidget(1, 1, children);
 
 		return table;
+	}
+	
+	protected void afterCreateWidget(){
+		this.setExpanded( false );
+	}
+
+	protected int getSunkEventsBitMask(){
+		return 0;
+	}
+	
+	protected String getInitialStyleName(){
+		return Constants.TREE_ITEM_STYLE;
 	}
 
 	/**
@@ -152,13 +149,17 @@ public class TreeItem extends Composite {
 	 */
 	protected Image createCollapserExpanderImage() {
 		final Image image = new Image();
-		image.setStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);
+		image.setStyleName( this.getCollapserExpanderStyle() );
 		image.addClickListener(new ClickListener() {
 			public void onClick(final Widget widget) {
 				handleCollapserExpanderClick();
 			}
 		});
 		return image;
+	}
+	
+	protected String getCollapserExpanderStyle(){
+		return Constants.TREE_EXPANDER_COLLAPSER_STYLE;
 	}
 
 	protected void handleCollapserExpanderClick() {
@@ -198,25 +199,25 @@ public class TreeItem extends Composite {
 	/**
 	 * The main or parent widget
 	 */
-	private Widget widget;
+	private Widget mainWidget;
 
-	public Widget getWidget() {
-		ObjectHelper.checkNotNull("field:widget", widget);
-		return widget;
+	public Widget getMainWidget() {
+		ObjectHelper.checkNotNull("field:mainWidget", mainWidget);
+		return mainWidget;
 	}
 
-	public boolean hasWidget() {
-		return null != this.widget;
-	}
+	public void setMainWidget(final Widget mainWidget) {
+		ObjectHelper.checkNotNull("parameter:mainWidget", mainWidget);
 
-	public void setWidget(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
-
-		widget.addStyleName(TreeConstants.TREE_WIDGET_STYLE);
-		this.widget = widget;
+		mainWidget.addStyleName(this.getWidgetStyle());
+		this.mainWidget = mainWidget;
 
 		final FlexTable table = this.getFlexTable();
-		table.setWidget(0, table.getCellCount(0) == 0 ? 0 : 1, widget);
+		table.setWidget(0, table.getCellCount(0) == 0 ? 0 : 1, mainWidget);
+	}
+	
+	protected String getWidgetStyle(){
+		return Constants.TREE_WIDGET_STYLE;
 	}
 
 	// COLLAPSE / EXPAND
@@ -271,10 +272,9 @@ public class TreeItem extends Composite {
 	}
 
 	protected VerticalPanel createChildren() {
-		final VerticalPanel panel = new VerticalPanel();
-		panel.setStyleName(TreeConstants.TREE_EXPANDER_COLLAPSER_STYLE);
-		return panel;
+		return new VerticalPanel();
 	}
+	
 
 	// WIDGET CONTAINER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -446,7 +446,7 @@ public class TreeItem extends Composite {
 		return parentTreeItem;
 	}
 
-	public boolean hasParentTreeItem() {
+	protected boolean hasParentTreeItem() {
 		return null != this.parentTreeItem;
 	}
 
@@ -471,7 +471,7 @@ public class TreeItem extends Composite {
 		return tree;
 	}
 
-	public boolean hasTree() {
+	protected boolean hasTree() {
 		return null != this.tree;
 	}
 
@@ -481,6 +481,6 @@ public class TreeItem extends Composite {
 	}
 
 	public String toString() {
-		return super.toString() + ", widget: " + widget + ", children: " + this.children;
+		return super.toString() + ", mainWidget: " + mainWidget + ", children: " + this.children;
 	}
 }

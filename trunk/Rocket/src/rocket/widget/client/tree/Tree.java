@@ -17,7 +17,7 @@ package rocket.widget.client.tree;
 
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-import rocket.widget.client.Composite;
+import rocket.widget.client.CompositeWidget;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -30,24 +30,26 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Tree extends Composite {
+public class Tree extends CompositeWidget {
 
 	public Tree() {
 		super();
-
-		this.setStyleName(TreeConstants.TREE_STYLE);
 	}
 
+	protected void beforeCreateWidget() {
+		this.setTreeListenerCollection(createTreeListenerCollection());
+	}
+	
 	protected Widget createWidget() {
 		final TreeItem root = this.createTreeItem();
 		this.setTreeItem(root);
 		return root;
 	}
 
-	protected void afterCreateWidget() {
-		this.setTreeListenerCollection(createTreeListenerCollection());
+	protected String getInitialStyleName(){
+		return Constants.TREE_STYLE;
 	}
-
+	
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
@@ -117,12 +119,12 @@ public class Tree extends Composite {
 	 */
 	private TreeListenerCollection treeListenerCollection;
 
-	public TreeListenerCollection getTreeListenerCollection() {
+	protected TreeListenerCollection getTreeListenerCollection() {
 		ObjectHelper.checkNotNull("field:treeListenerCollection", treeListenerCollection);
 		return treeListenerCollection;
 	}
 
-	public void setTreeListenerCollection(final TreeListenerCollection treeListenerCollection) {
+	protected void setTreeListenerCollection(final TreeListenerCollection treeListenerCollection) {
 		ObjectHelper.checkNotNull("parameter:treeListenerCollection", treeListenerCollection);
 		this.treeListenerCollection = treeListenerCollection;
 	}
