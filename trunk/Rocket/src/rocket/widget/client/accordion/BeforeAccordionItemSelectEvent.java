@@ -19,8 +19,20 @@ package rocket.widget.client.accordion;
  * This event is fired prior to a new accordion item actually being selected
  * @author Miroslav Pokorny
  */
-public class BeforeAccordionItemSelectedEvent {
+public class BeforeAccordionItemSelectEvent {
 
+	/**
+	 * The current item that is selected.
+	 */
+	private AccordionItem currentSelection;
+	
+	public AccordionItem getCurrentSelection(){
+		return currentSelection;
+	}
+	void setCurrentSelection( final AccordionItem currentSelection ){
+		this.currentSelection = currentSelection;
+	}
+	
 	/**
 	 * The AccordionItem about to be newSelection.
 	 */

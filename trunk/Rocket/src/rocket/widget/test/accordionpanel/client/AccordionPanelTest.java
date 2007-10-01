@@ -21,10 +21,10 @@ import java.util.Iterator;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.SystemHelper;
 import rocket.widget.client.accordion.AccordionItem;
-import rocket.widget.client.accordion.AccordionItemSelectedEvent;
+import rocket.widget.client.accordion.AccordionItemSelectEvent;
 import rocket.widget.client.accordion.AccordionListener;
 import rocket.widget.client.accordion.AccordionPanel;
-import rocket.widget.client.accordion.BeforeAccordionItemSelectedEvent;
+import rocket.widget.client.accordion.BeforeAccordionItemSelectEvent;
 import rocket.widget.client.accordion.LeftSideAccordionPanel;
 import rocket.widget.client.accordion.RightSideAccordionPanel;
 import rocket.widget.client.accordion.VerticalAccordionPanel;
@@ -38,11 +38,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * FIXME Fix css to work with the hosted mode ie.
- * @author admin
- *
- */
 public class AccordionPanelTest implements EntryPoint {
 
 	/**
@@ -66,9 +61,9 @@ public class AccordionPanelTest implements EntryPoint {
 		completeAccordionPanel(rightSidePanel);
 		rootPanel.add(rightSidePanel);
 
-		final AccordionPanel topSidePanel = new VerticalAccordionPanel();
-		completeAccordionPanel(topSidePanel);
-		rootPanel.add(topSidePanel);
+		final AccordionPanel vertical = new VerticalAccordionPanel();
+		completeAccordionPanel(vertical);
+		rootPanel.add(vertical);
 	}
 
 	/**
@@ -94,7 +89,9 @@ public class AccordionPanelTest implements EntryPoint {
 		RootPanel.get().add(control);
 
 		accordionPanel.addAccordionListener(new AccordionListener() {
-			public void onBeforeItemSelected(final BeforeAccordionItemSelectedEvent event) {
+			public void onBeforeSelect(final BeforeAccordionItemSelectEvent event) {
+				ObjectHelper.checkNotNull( "BeforeAccordionItemSelectEvent.currentSelection", event.getCurrentSelection() );				
+				
 				final AccordionItem newSelection = event.getNewSelection();
 				final String caption = newSelection.getCaption();
 				final Widget content = newSelection.getContent();
@@ -104,8 +101,10 @@ public class AccordionPanelTest implements EntryPoint {
 				}
 			}
 
-			public void onItemSelected(final AccordionItemSelectedEvent event ) {
-				final AccordionItem selected = event.getAccordionPanel().getSelected();
+			public void onSelect(final AccordionItemSelectEvent event ) {
+				ObjectHelper.checkNotNull( "AccordionItemSelectEvent.previouslySelected", event.getPreviouslySelected() );
+				
+				final AccordionItem selected = event.getNewSelection();
 				final String caption = selected.getCaption();
 				final HTML content = (HTML) selected.getContent();
 				control.log("accordionSelected caption[" + caption + "]" + content.getText().substring(0, 50));
