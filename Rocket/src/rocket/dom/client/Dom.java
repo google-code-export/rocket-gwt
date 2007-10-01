@@ -16,14 +16,10 @@
 package rocket.dom.client;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import rocket.browser.client.Browser;
 import rocket.collection.client.CollectionHelper;
-import rocket.style.client.CssUnit;
-import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.util.client.SystemHelper;
@@ -37,50 +33,15 @@ import com.google.gwt.user.client.Element;
  * @author Miroslav Pokorny (mP)
  */
 public class Dom {
-	/**
-	 * Removes all the child Elements belonging to the given element.
-	 * 
-	 * @param parent
-	 */
-	public static void removeChildren(final Element parent) {
-		final int childCount = DOM.getChildCount(parent);
-		for (int i = 0; i < childCount; i++) {
-			DOM.removeChild(parent, DOM.getChild(parent, i));
-		}
-	}
 
 	/**
-	 * Builds a string which contains the innerText of each and every element.
-	 * 
-	 * @param elements
-	 * @return
+	 * Convenience method that removes an element from its parent.
+	 * @param element
 	 */
-	public static String innerText(final List elements) {
-		ObjectHelper.checkNotNull("parameter:elements", elements);
-
-		final StringBuffer text = new StringBuffer();
-
-		final Iterator iterator = elements.iterator();
-		while (iterator.hasNext()) {
-			final Element element = (Element) iterator.next();
-
-			text.append(DOM.getInnerText(element));
-		}
-
-		return text.toString();
+	public static void removeFromParent(final Element element ){
+		DOM.removeChild( DOM.getParent(element), element );
 	}
-
-	/**
-	 * Convenient method which replaces all nbsp with a regular space.
-	 * 
-	 * @param text
-	 * @return
-	 */
-	public static String changeNonBreakingSpaceToSpace(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
-		return text.replaceAll("&nbsp;", " ");
-	}
-
+	
 	/**
 	 * Retrieve the absolute left or x coordinates for the given element
 	 * 
@@ -92,15 +53,20 @@ public class Dom {
 		return getAbsoluteLeft0(element) + Browser.getScrollX();
 	}
 
-	private static native int getAbsoluteLeft0(final Element element) /*-{
-	 var left = 0;
-	 while (element) {
-	 left += element.offsetLeft - element.scrollLeft;
-	 element = element.offsetParent;
-	 }
-	 return left;
+	native static private int getAbsoluteLeft0(final Element element) /*-{
+	 	var left = 0;
+	 	var body = $doc.body
+	 	while (element) {
+	 		if( element == body ){
+	 			break;
+	 		}
+	 	
+	 		left = left + element.offsetLeft - element.scrollLeft;
+	 		element = element.offsetParent;
+	 	}
+	 	return left;
 	 }-*/;
-
+	
 	/**
 	 * Retrieve the absolute top or y coordinates for the given element.
 	 * 
@@ -112,15 +78,19 @@ public class Dom {
 		return getAbsoluteTop0(element) + Browser.getScrollY();
 	}
 
-	private static native int getAbsoluteTop0(final Element element) /*-{
-	 var top = 0;
-	 while (element) {
-	 top += element.offsetTop - element.scrollTop;
-	 element = element.offsetParent;
-	 }
-	 return top;
-	 }-*/;
-
+	native static private int getAbsoluteTop0( final Element element )/*-{
+		var top = 0;
+	 	var body = $doc.body
+	 	while (element) {
+	 		if( element == body ){
+	 			break;
+	 		}
+	 	
+	 		top = top + element.offsetTop - element.scrollTop;
+	 		element = element.offsetParent;
+	 	}
+	 	return top;
+	}-*/;
 	/**
 	 * Retrieves the container element which contains this child element. This
 	 * is particularly useful when calculating coordinates for positioned
@@ -134,7 +104,7 @@ public class Dom {
 		return Dom.getContainer0(element);
 	}
 
-	private static native Element getContainer0(final Element element)/*-{
+	native static private Element getContainer0(final Element element)/*-{
 	 var container = null;
 	 var element0 = element;
 	 while( element0 ){
@@ -162,20 +132,23 @@ public class Dom {
 		return getContainerLeftOffset0(element);
 	}
 
-	private static native int getContainerLeftOffset0(final Element element) /*-{
-	 var left = 0;
-	 var element0 = element;
-	 while( element0 ){
-	 // stop if this element is absolutely/relative positioned. 
-	 var position = element0.style.position.toLowerCase();
-	 if( "absolute" == position || "relative" == position ){
-	 break;
-	 }
-	 left = left + element0.offsetLeft;
-	 element0 = element0.offsetParent;
-	 }
-	 return left;
+	native static private int getContainerLeftOffset0(final Element element) /*-{
+	 	var left = 0;
+	 	var element0 = element;
+	 
+	 	while( element0 ){ 
+	 		var position = element.style.position;
+ 			if( "absolute" == position || "relative" == position ){
+ 				break;
+ 			}		
+	 
+	 		left = left + element0.offsetLeft;
+	  		element0 = element0.offsetParent;  
+	 	}
+	 
+	 	return left;	 
 	 }-*/;
+
 
 	/**
 	 * Retrieves the relative y/top coordinates of the given element relative to
@@ -190,37 +163,22 @@ public class Dom {
 		return getContainerTopOffset0(element);
 	}
 
-	private static native int getContainerTopOffset0(final Element element) /*-{
-	 var top = 0;
-	 var element0 = element;
-	 while( element0 ){
-	 // stop if this element is absolutely/relative positioned. 
-	 var position = element0.style.position.toLowerCase();
-	 if( "absolute" == position || "relative" == position ){
-	 break;
-	 }
-	 top = top + element0.offsetTop;
-	 element0 = element0.offsetParent;
-	 }
-	 return top;
-	 }-*/;
-
-	/**
-	 * Performs two tasks positioning the given element absolutely and also
-	 * setting its x/y coordinates.
-	 * 
-	 * @param element
-	 * @param x
-	 * @param y
-	 */
-	public static void setAbsolutePosition(final Element element, final int x, final int y) {
-		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(element, StyleConstants.LEFT, x, CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.TOP, y, CssUnit.PX);
-	}
-
-	// TAG NAME
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	native static private int getContainerTopOffset0(final Element element) /*-{
+ 	var top = 0;
+ 	var element0 = element;
+ 
+ 	while( element0 ){ 
+ 		var position = element.style.position;
+		if( "absolute" == position || "relative" == position ){
+			break;
+		}		
+ 
+ 		top = top + element0.offsetTop;
+  		element0 = element0.offsetParent;  
+ 	}
+ 
+ 	return top;	 
+ }-*/;
 
 	/**
 	 * Helper which tests if the given element is of the specified tag.
@@ -362,23 +320,6 @@ public class Dom {
 	 };
 	 }-*/;
 
-	// DEPRECATED
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-	/**
-	 * Tests if an element is disabled.
-	 * 
-	 * @param element
-	 * @return
-	 */
-	public static boolean isDisabled(final Element element) {
-		throw new UnsupportedOperationException("Dom.isDisabled");
-	}
-
-	public static void setDisabled(final Element element, final boolean newDisabledFlag) {
-		DOM.setElementProperty(element, "disabled", newDisabledFlag ? "true" : "false");
-	}
-
 	/**
 	 * Makes a clone of the given element.
 	 * 
@@ -423,26 +364,6 @@ public class Dom {
 	 */
 	public static int getOffsetTop(final Element element) {
 		return ObjectHelper.getInteger(element, "offsetTop");
-	}
-
-	/**
-	 * Retrieves the x offset between a child and its parent container in pixels
-	 * 
-	 * @param element
-	 * @return
-	 */
-	public static int getClientLeft(final Element element) {
-		return ObjectHelper.getInteger(element, "clientLeft");
-	}
-
-	/**
-	 * Retrieves the y offset between a child and its parent container in pixels
-	 * 
-	 * @param element
-	 * @return
-	 */
-	public static int getClientTop(final Element element) {
-		return ObjectHelper.getInteger(element, "clientTop");
 	}
 
 	/**
