@@ -302,8 +302,7 @@ public class Colour {
 	/**
 	 * Returns the Colour given a web colour name.
 	 * 
-	 * @param The
-	 *            standard colour name.
+	 * @param namedColour A standard colour name, such as red, blue etc. Case is not important.
 	 * @return null is returned when the name is unknown
 	 */
 	public static Colour getColour(final String namedColour) {
