@@ -21,7 +21,6 @@ import com.google.gwt.user.client.Element;
 
 /**
  * A collection of useful methods when working with objects in general.
- * Primarily this class includes static check(assert) methods.
  * 
  * @author Miroslav Pokorny
  * @version 1.0
@@ -112,7 +111,7 @@ public class ObjectHelper extends SystemHelper {
 	 */
 	public static void checkSame(final String message, final Object object, final Object otherObject) {
 		if (false == nullSafeIdentity(object, otherObject)) {
-			fail(message + ", object: " + object);
+			fail(message + ", object: " + object + ", otherObject: " + otherObject );
 		}
 	}
 
@@ -232,28 +231,26 @@ public class ObjectHelper extends SystemHelper {
 	 * @param value
 	 * @return
 	 */
-	public static Object setString(final JavaScriptObject object, final String propertyName, final String value) {
+	public static void setString(final JavaScriptObject object, final String propertyName, final String value) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
-		return setString0(object, propertyName, value);
+		
+		setString0(object, propertyName, value);
 	}
 
-	private static native String setString0(final JavaScriptObject object, final String propertyName, final String value)/*-{
-	 var previousValue = "" + object[ propertyName ];
+	private static native void setString0(final JavaScriptObject object, final String propertyName, final String value)/*-{
 	 object[ propertyName ] = value;
-	 return previousValue || null;
 	 }-*/;
 
-	public static Object setString(final JavaScriptObject object, final int index, final String value) {
+	public static void setString(final JavaScriptObject object, final int index, final String value) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
-		return setString0(object, index, value);
+		
+		setString0(object, index, value);
 	}
 
-	private static native String setString0(final JavaScriptObject object, final int index, final String value)/*-{
-	 var previousValue = "" + object[ index ];
+	private static native void setString0(final JavaScriptObject object, final int index, final String value)/*-{
 	 object[ index ] = value;
-	 return previousValue || null;
 	 }-*/;
 
 	/**
@@ -280,6 +277,7 @@ public class ObjectHelper extends SystemHelper {
 	public static double getDouble(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+	
 		return getDouble0(object, index);
 	}
 
@@ -297,30 +295,27 @@ public class ObjectHelper extends SystemHelper {
 	 * @param object
 	 * @param propertyName
 	 * @param value
-	 * @return
 	 */
-	public static double setDouble(final JavaScriptObject object, final String propertyName, final double value) {
+	public static void setDouble(final JavaScriptObject object, final String propertyName, final double value) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
-		return setDouble0(object, propertyName, value);
+		
+		setDouble0(object, propertyName, value);
 	}
 
-	private static native double setDouble0(final JavaScriptObject object, final String propertyName, final double value)/*-{
-	 var previousValue = object[ propertyName ];
+	private static native void setDouble0(final JavaScriptObject object, final String propertyName, final double value)/*-{
 	 object[ propertyName ] = value;
-	 return previousValue || 0.0;
 	 }-*/;
 
-	public static double setDouble(final JavaScriptObject object, final int index, final double value) {
+	public static void setDouble(final JavaScriptObject object, final int index, final double value) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
-		return setDouble0(object, index, value);
+		
+		setDouble0(object, index, value);
 	}
 
-	private static native double setDouble0(final JavaScriptObject object, final int index, final double value)/*-{
-	 var previousValue = object[ index ];
+	private static native void setDouble0(final JavaScriptObject object, final int index, final double value)/*-{
 	 object[ index ] = value;
-	 return previousValue || 0.0;
 	 }-*/;
 
 	/**
@@ -337,11 +332,7 @@ public class ObjectHelper extends SystemHelper {
 	}
 
 	private native static boolean getBoolean0(final JavaScriptObject object, final String propertyName)/*-{
-	 var value = object[ propertyName ];
-	 if( typeof( value ) == "undefined" ){
-	 throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
-	 }
-	 return value;
+	 return !! object[ propertyName ];
 	 }-*/;
 
 	public static boolean getBoolean(final JavaScriptObject object, final int index) {
@@ -351,11 +342,7 @@ public class ObjectHelper extends SystemHelper {
 	}
 
 	private native static boolean getBoolean0(final JavaScriptObject object, final int index)/*-{
-	 var value = object[ index ];
-	 if( typeof( value ) == "undefined" ){
-	 throw "The object does not contain a property called [" + index + "], object: " + object; 
-	 }
-	 return value;
+	 return !! object[ index ];
 	 }-*/;
 
 	/**
@@ -371,25 +358,23 @@ public class ObjectHelper extends SystemHelper {
 	public static void setBoolean(final JavaScriptObject object, final String propertyName, final boolean booleanValue) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		
 		setBoolean0(object, propertyName, booleanValue);
 	}
 
-	private static native boolean setBoolean0(final JavaScriptObject object, final String propertyName, final boolean booleanValue)/*-{
-	 var previousValue = object[ propertyName ];
+	private static native void setBoolean0(final JavaScriptObject object, final String propertyName, final boolean booleanValue)/*-{
 	 object[ propertyName ] = booleanValue;
-	 return previousValue || false;
 	 }-*/;
 
 	public static void setBoolean(final JavaScriptObject object, final int index, final boolean booleanValue) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+	
 		setBoolean0(object, index, booleanValue);
 	}
 
-	private static native boolean setBoolean0(final JavaScriptObject object, final int index, final boolean booleanValue)/*-{
-	 var previousValue = object[ index ];
+	private static native void setBoolean0(final JavaScriptObject object, final int index, final boolean booleanValue)/*-{
 	 object[ index ] = booleanValue;
-	 return previousValue || false;
 	 }-*/;
 
 	/**
@@ -438,30 +423,27 @@ public class ObjectHelper extends SystemHelper {
 	 *            The name of the property being set
 	 * @param intValue
 	 *            The new value
-	 * @return The previous value
 	 */
-	public static int setInteger(final JavaScriptObject object, final String propertyName, final int intValue) {
+	public static void setInteger(final JavaScriptObject object, final String propertyName, final int intValue) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
-		return setInteger0(object, propertyName, intValue);
+		
+		setInteger0(object, propertyName, intValue);
 	}
 
-	private static native int setInteger0(final JavaScriptObject object, final String propertyName, final int intValue)/*-{
-	 var previousValue = object[ propertyName ];     
+	private static native void setInteger0(final JavaScriptObject object, final String propertyName, final int intValue)/*-{     
 	 object[ propertyName ] = intValue;
-	 return previousValue || 0;
 	 }-*/;
 
-	public static int setInteger(final JavaScriptObject object, final int index, final int intValue) {
+	public static void setInteger(final JavaScriptObject object, final int index, final int intValue) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
-		return setInteger0(object, index, intValue);
+		
+		setInteger0(object, index, intValue);
 	}
 
-	private static native int setInteger0(final JavaScriptObject object, final int index, final int intValue)/*-{
-	 var previousValue = object[ index ];
+	private static native void setInteger0(final JavaScriptObject object, final int index, final int intValue)/*-{
 	 object[ index ] = intValue;
-	 return previousValue || 0;
 	 }-*/;
 
 	/**
@@ -501,28 +483,26 @@ public class ObjectHelper extends SystemHelper {
 	 * @param value
 	 * @return
 	 */
-	public static JavaScriptObject setObject(final JavaScriptObject object, final String propertyName, final JavaScriptObject value) {
+	public static void setObject(final JavaScriptObject object, final String propertyName, final JavaScriptObject value) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
-		return setObject0(object, propertyName, value);
+		
+		setObject0(object, propertyName, value);
 	}
 
-	native private static JavaScriptObject setObject0(final JavaScriptObject object, final String propertyName, final JavaScriptObject value)/*-{
-	 var previousValue = object[ propertyName ];
+	native private static void setObject0(final JavaScriptObject object, final String propertyName, final JavaScriptObject value)/*-{
 	 object[ propertyName ] = value;
-	 return previousValue || null;
 	 }-*/;
 
-	public static JavaScriptObject setObject(final JavaScriptObject object, final int index, final JavaScriptObject value) {
+	public static void setObject(final JavaScriptObject object, final int index, final JavaScriptObject value) {
 		ObjectHelper.checkNotNull("parameter:object", object);
 		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
-		return setObject0(object, index, value);
+		
+		setObject0(object, index, value);
 	}
 
-	native private static JavaScriptObject setObject0(final JavaScriptObject object, final int index, final JavaScriptObject value)/*-{
-	 var previousValue = object[ index ];
+	native private static void setObject0(final JavaScriptObject object, final int index, final JavaScriptObject value)/*-{
 	 object[ index ] = value;
-	 return previousValue || null;
 	 }-*/;
 
 	/**
@@ -670,7 +650,7 @@ public class ObjectHelper extends SystemHelper {
 	/**
 	 * Convenience method which takes a Element and returns a JavaScriptObject
 	 * 
-	 * @param object
+	 * @param element
 	 * @return
 	 */
 	public native static JavaScriptObject castFromElement(final Element element)/*-{
@@ -693,7 +673,7 @@ public class ObjectHelper extends SystemHelper {
 	 * Searches the given array for an element returning the index of the first
 	 * match
 	 * 
-	 * @param object
+	 * @param array
 	 * @param element
 	 * @return
 	 */
