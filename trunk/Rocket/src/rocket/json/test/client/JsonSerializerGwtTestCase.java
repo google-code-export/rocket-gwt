@@ -71,7 +71,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONBoolean jsonBoolean = JSONBoolean.getInstance(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonBoolean);
+		jsonObject.put("field", jsonBoolean);
 
 		try {
 			final Object proxy = GWT.create(ClassWithFinalField.class);
@@ -87,7 +87,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithFinalField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		final boolean field = true;
 	}
@@ -97,7 +97,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONBoolean jsonBoolean = JSONBoolean.getInstance(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonBoolean);
+		jsonObject.put("field", jsonBoolean);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithTransientField.class);
 		final ClassWithTransientField instance = (ClassWithTransientField) serializer.readObject(jsonObject);
@@ -107,7 +107,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithTransientField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		transient boolean field;
 	}
@@ -117,7 +117,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONBoolean jsonBoolean = JSONBoolean.getInstance(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonBoolean);
+		jsonObject.put("field", jsonBoolean);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithStaticField.class);
 		final ClassWithStaticField instance = (ClassWithStaticField) serializer.readObject(jsonObject);
@@ -127,7 +127,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	static class ClassWithStaticField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		static boolean field;
 	}
@@ -137,7 +137,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONBoolean jsonBoolean = JSONBoolean.getInstance(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonBoolean);
+		jsonObject.put("field", jsonBoolean);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithBooleanField.class);
 		final ClassWithBooleanField instance = (ClassWithBooleanField) serializer.readObject(jsonObject);
@@ -155,12 +155,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertEquals(value, jsonObject.get("list").isBoolean().booleanValue());
+		assertEquals(value, jsonObject.get("field").isBoolean().booleanValue());
 	}
 
 	static class ClassWithBooleanField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		boolean field;
 	}
@@ -170,7 +170,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONNumber jsonNumber = new JSONNumber(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonNumber);
+		jsonObject.put("field", jsonNumber);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithByteField.class);
 		final ClassWithByteField instance = (ClassWithByteField) serializer.readObject(jsonObject);
@@ -188,12 +188,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertEquals(value, (byte) jsonObject.get("list").isNumber().getValue());
+		assertEquals(value, (byte) jsonObject.get("field").isNumber().getValue());
 	}
 
 	static class ClassWithByteField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		byte field;
 	}
@@ -203,7 +203,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONNumber jsonNumber = new JSONNumber(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonNumber);
+		jsonObject.put("field", jsonNumber);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithShortField.class);
 		final ClassWithShortField instance = (ClassWithShortField) serializer.readObject(jsonObject);
@@ -221,12 +221,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertEquals(value, (short) jsonObject.get("list").isNumber().getValue());
+		assertEquals(value, (short) jsonObject.get("field").isNumber().getValue());
 	}
 
 	static class ClassWithShortField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		short field;
 	}
@@ -236,7 +236,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONNumber jsonNumber = new JSONNumber(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonNumber);
+		jsonObject.put("field", jsonNumber);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithIntField.class);
 		final ClassWithIntField instance = (ClassWithIntField) serializer.readObject(jsonObject);
@@ -254,12 +254,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertEquals(value, (int) jsonObject.get("list").isNumber().getValue());
+		assertEquals(value, (int) jsonObject.get("field").isNumber().getValue());
 	}
 
 	static class ClassWithIntField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		int field;
 	}
@@ -269,7 +269,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONNumber jsonNumber = new JSONNumber(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonNumber);
+		jsonObject.put("field", jsonNumber);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithLongField.class);
 		final ClassWithLongField instance = (ClassWithLongField) serializer.readObject(jsonObject);
@@ -287,12 +287,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertEquals(value, (long) jsonObject.get("list").isNumber().getValue());
+		assertEquals(value, (long) jsonObject.get("field").isNumber().getValue());
 	}
 
 	static class ClassWithLongField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		long field;
 	}
@@ -302,7 +302,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONNumber jsonNumber = new JSONNumber(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonNumber);
+		jsonObject.put("field", jsonNumber);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithFloatField.class);
 		final ClassWithFloatField instance = (ClassWithFloatField) serializer.readObject(jsonObject);
@@ -320,12 +320,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertEquals(value, (float) jsonObject.get("list").isNumber().getValue(), 0.1f);
+		assertEquals(value, (float) jsonObject.get("field").isNumber().getValue(), 0.1f);
 	}
 
 	static class ClassWithFloatField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		float field;
 	}
@@ -335,7 +335,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONNumber jsonNumber = new JSONNumber(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonNumber);
+		jsonObject.put("field", jsonNumber);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithDoubleField.class);
 		final ClassWithDoubleField instance = (ClassWithDoubleField) serializer.readObject(jsonObject);
@@ -353,12 +353,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertEquals(value, (double) jsonObject.get("list").isNumber().getValue(), 0.1f);
+		assertEquals(value, (double) jsonObject.get("field").isNumber().getValue(), 0.1f);
 	}
 
 	static class ClassWithDoubleField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		double field;
 	}
@@ -368,7 +368,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONString jsonString = new JSONString(Character.toString(value));
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonString);
+		jsonObject.put("field", jsonString);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithCharField.class);
 		final ClassWithCharField instance = (ClassWithCharField) serializer.readObject(jsonObject);
@@ -386,12 +386,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertEquals("" + value, jsonObject.get("list").isString().stringValue());
+		assertEquals("" + value, jsonObject.get("field").isString().stringValue());
 	}
 
 	static class ClassWithCharField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		char field;
 	}
@@ -415,7 +415,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertNull(jsonObject.get("list").isString());
+		assertNull(jsonObject.get("field").isString());
 	}
 
 	public void testReadStringField() {
@@ -423,7 +423,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONString jsonString = new JSONString(value);
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("list", jsonString);
+		jsonObject.put("field", jsonString);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithStringField.class);
 		final ClassWithStringField instance = (ClassWithStringField) serializer.readObject(jsonObject);
@@ -441,16 +441,38 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
 
 		assertEquals(1, jsonObject.size());
-		assertEquals(value, jsonObject.get("list").isString().stringValue());
+		assertEquals(value, jsonObject.get("field").isString().stringValue());
 	}
 
 	static class ClassWithStringField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		String field;
 	}
 
+	public void testReadInstanceWithNullField(){
+		final JSONObject outter = new JSONObject();
+		outter.put("inner", null );
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithAnotherClassField.class);
+		final ClassWithAnotherClassField instance = (ClassWithAnotherClassField) serializer.readObject(outter);
+
+		assertNull(instance.inner);
+	}
+	public void testWriteInstanceWithNullField(){
+		final ClassWithAnotherClassField outter = new ClassWithAnotherClassField();
+		outter.inner = null;
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithAnotherClassField.class);
+		final JSONObject jsonObjectOutter = serializer.writeJson(outter).isObject();
+
+		assertNotNull(jsonObjectOutter);
+
+		final JSONObject jsonObjectInner = jsonObjectOutter.get("inner").isObject();
+		assertNull(jsonObjectInner);
+	}
+	
 	public void testReadGraph() {
 		final String value = "apple";
 
@@ -458,41 +480,38 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		final JSONString jsonString = new JSONString(value);
 		final JSONObject inner = new JSONObject();
-		inner.put("list", jsonString);
+		inner.put("field", jsonString);
 
-		outter.put("list", inner);
+		outter.put("inner", inner);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithAnotherClassField.class);
 		final ClassWithAnotherClassField instance = (ClassWithAnotherClassField) serializer.readObject(outter);
 
-		assertNotNull(instance.field);
-		assertEquals(value, instance.field.field);
+		assertNotNull(instance.inner);
+		assertEquals(value, instance.inner.field);
 	}
-
 	public void testWriteGraph() {
 		final String value = "apple";
 
 		final ClassWithStringField inner = new ClassWithStringField();
 		inner.field = value;
 		final ClassWithAnotherClassField outter = new ClassWithAnotherClassField();
-		outter.field = inner;
+		outter.inner = inner;
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithAnotherClassField.class);
 		final JSONObject jsonObjectOutter = serializer.writeJson(outter).isObject();
 
 		assertNotNull(jsonObjectOutter);
 
-		final JSONObject jsonObjectInner = jsonObjectOutter.get("list").isObject();
+		final JSONObject jsonObjectInner = jsonObjectOutter.get("inner").isObject();
 		assertNotNull(jsonObjectInner);
-
-		assertEquals(value, jsonObjectInner.get("list").isString().stringValue());
 	}
 
 	static class ClassWithAnotherClassField implements JsonSerializable {
 		/**
-		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-javascriptPropertyName inner
 		 */
-		ClassWithStringField field;
+		ClassWithStringField inner;
 	}
 
 	public void testReadClassWithHeirarchy() {

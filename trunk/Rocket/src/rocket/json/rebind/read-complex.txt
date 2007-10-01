@@ -1,10 +1,10 @@
-// read-objcomplexect.txt
+// read-complex.txt
 
 // Declare a reference being deserialized.
 ${type} instance = null;
 
 // cast from JSONValue to jsonObject
-final com.google.gwt.json.client.JSONObject jsonObject = ${jsonValueParameter}.isObject();
+final com.google.gwt.json.client.JSONObject jsonObject = ${jsonValueParameter} == null ? null : ${jsonValueParameter}.isObject();
 
 if ( null != jsonObject ){
 
