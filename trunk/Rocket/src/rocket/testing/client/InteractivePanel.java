@@ -18,17 +18,14 @@ package rocket.testing.client;
 import java.util.Iterator;
 
 import rocket.browser.client.Browser;
-import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -50,7 +47,6 @@ public abstract class InteractivePanel extends Composite {
 	protected Widget createWidget() {
 		final VerticalPanel verticalPanel = new VerticalPanel();
 		verticalPanel.add(this.createClassNameLabel());
-		verticalPanel.add(this.createMessages());
 		verticalPanel.add(this.createButtons());
 		return verticalPanel;
 	}
@@ -95,7 +91,7 @@ public abstract class InteractivePanel extends Composite {
 			caught.printStackTrace();
 			message = message + "threw " + caught.getMessage();
 		}
-		this.addMessage(message);
+		this.log(message);
 	}
 
 	/**
@@ -128,7 +124,7 @@ public abstract class InteractivePanel extends Composite {
 			caught.printStackTrace();
 			message = message + this.toString(widget) + ") threw " + caught.getMessage();
 		}
-		this.addMessage(message);
+		this.log(message);
 	}
 
 	/**
@@ -160,7 +156,7 @@ public abstract class InteractivePanel extends Composite {
 			caught.printStackTrace();
 			message = message + index + "," + this.toString(widget) + ") threw " + caught.getMessage();
 		}
-		this.addMessage(message);
+		this.log(message);
 	}
 
 	/**
@@ -191,7 +187,7 @@ public abstract class InteractivePanel extends Composite {
 			caught.printStackTrace();
 			message = message + index + ") threw " + caught.getMessage();
 		}
-		this.addMessage(message);
+		this.log(message);
 	}
 
 	/**
@@ -221,7 +217,7 @@ public abstract class InteractivePanel extends Composite {
 			caught.printStackTrace();
 			message = message + index + ") threw " + caught.getMessage();
 		}
-		this.addMessage(message);
+		this.log(message);
 	}
 
 	/**
@@ -259,7 +255,7 @@ public abstract class InteractivePanel extends Composite {
 			caught.printStackTrace();
 			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
 		}
-		this.addMessage(message);
+		this.log(message);
 	}
 
 	/**
@@ -287,7 +283,7 @@ public abstract class InteractivePanel extends Composite {
 			caught.printStackTrace();
 			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
 		}
-		this.addMessage(message);
+		this.log(message);
 	}
 
 	protected Button createIteratorNextButton() {
@@ -310,7 +306,7 @@ public abstract class InteractivePanel extends Composite {
 			caught.printStackTrace();
 			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
 		}
-		this.addMessage(message);
+		this.log(message);
 	}
 
 	protected Button createIteratorRemoveButton() {
@@ -332,7 +328,7 @@ public abstract class InteractivePanel extends Composite {
 			caught.printStackTrace();
 			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
 		}
-		this.addMessage(message);
+		this.log(message);
 	}
 
 	/**
@@ -362,42 +358,8 @@ public abstract class InteractivePanel extends Composite {
 		this.iterator = iterator;
 	}
 
-	/**
-	 * This panel is used to display messages returned as part of the users
-	 * using the widget.
-	 */
-	private VerticalPanel messages;
-
-	public VerticalPanel getMessages() {
-		ObjectHelper.checkNotNull("field:messages", messages);
-		return this.messages;
-	}
-
-	public void setMessages(final VerticalPanel messages) {
-		ObjectHelper.checkNotNull("parameter:messages", messages);
-		this.messages = messages;
-	}
-
-	protected VerticalPanel createMessages() {
-		final VerticalPanel panel = new VerticalPanel();
-		panel.setWidth("100%");
-		InlineStyle.setString(panel.getElement(), StyleConstants.WHITE_SPACE, "nowrap");
-		panel.setStyleName(Constants.INTERACTIVE_PANEL_WIDGET_LOG_STYLE);
-		this.setMessages(panel);
-		return panel;
-	}
-
-	protected abstract int getMessageLineCount();
-
-	protected void addMessage(final String message) {
-		StringHelper.checkNotEmpty("parameter:message", message);
-		final VerticalPanel messages = this.getMessages();
-		messages.add(new HTML(message));
-
-		// if the messages list box is full remove the oldest message...
-		if (messages.getWidgetCount() >= this.getMessageLineCount()) {
-			messages.remove(0);
-		}
+	protected void log(final String message) {
+		Window.alert( message );
 	}
 
 	protected abstract String toString(Object element);

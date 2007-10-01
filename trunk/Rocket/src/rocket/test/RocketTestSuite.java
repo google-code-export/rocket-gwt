@@ -55,7 +55,6 @@ import rocket.util.test.HueSaturationValueTestCase;
 import rocket.util.test.StringHelperTestCase;
 import rocket.util.test.ThrowableHelperTestCase;
 import rocket.util.test.stacktrace.test.StackTraceGwtTestCase;
-import rocket.widget.test.form.FormElementListGwtTestCase;
 import rocket.widget.test.htmltemplatefactory.client.HtmlTemplateFactoryGwtTestCase;
 
 /**
@@ -125,7 +124,6 @@ public class RocketTestSuite {
 		suite.addTestSuite(StackTraceGwtTestCase.class);
 
 		// rocket.widget
-		suite.addTestSuite(FormElementListGwtTestCase.class);
 		suite.addTestSuite(HtmlTemplateFactoryGwtTestCase.class);
 
 		return suite;
