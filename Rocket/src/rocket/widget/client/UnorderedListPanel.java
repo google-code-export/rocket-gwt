@@ -15,6 +15,7 @@
  */
 package rocket.widget.client;
 
+import rocket.dom.client.Dom;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -31,8 +32,14 @@ public class UnorderedListPanel extends Panel implements HasWidgets {
 
 	public UnorderedListPanel() {
 		super();
+	}
 
-		this.setStyleName(WidgetConstants.UNORDERED_LIST_PANEL_STYLE);
+	public UnorderedListPanel(final Element element) {
+		super(element);
+	}
+
+	protected void checkElement(final Element element) {
+		Dom.checkTagName("parameter:element", element, WidgetConstants.UNORDERED_LIST_TAG);
 	}
 
 	/**
@@ -41,7 +48,11 @@ public class UnorderedListPanel extends Panel implements HasWidgets {
 	 * @return
 	 */
 	protected Element createPanelElement() {
-		return DOM.createElement(WidgetConstants.UNORDERED_LIST);
+		return DOM.createElement(WidgetConstants.UNORDERED_LIST_TAG);
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.UNORDERED_LIST_PANEL_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
@@ -67,13 +78,13 @@ public class UnorderedListPanel extends Panel implements HasWidgets {
 	}
 
 	protected Element createElement() {
-		return DOM.createElement(WidgetConstants.UNORDERED_LIST_ITEM);
+		return DOM.createElement(WidgetConstants.UNORDERED_LIST_ITEM_TAG);
 	}
 
 	protected void remove0(final Element element, final int index) {
 		ObjectHelper.checkNotNull("parameter:element", element);
 
 		final Element child = DOM.getChild(this.getParentElement(), index);
-		DOM.removeChild(this.getElement(), child);
+		Dom.removeFromParent(child);
 	}
 }

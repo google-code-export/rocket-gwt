@@ -20,18 +20,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
 import rocket.style.client.StyleHelper;
 import rocket.style.client.StyleSheet;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -42,15 +41,15 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class StyleSheetPicker extends Composite {
+public class StyleSheetPicker extends CompositeWidget {
 
 	public StyleSheetPicker() {
 		super();
-
-		this.setText(WidgetConstants.STYLESHEET_PICKER_LABEL_TEXT);
 	}
 
 	protected void beforeCreateWidget() {
+		super.beforeCreateWidget();
+
 		this.setMappings(new HashMap());
 	}
 
@@ -61,11 +60,17 @@ public class StyleSheetPicker extends Composite {
 	}
 
 	protected void afterCreateWidget() {
-		this.setFocusListeners(this.createFocusListeners());
+		super.afterCreateWidget();
+
+		this.setText(WidgetConstants.STYLESHEET_PICKER_LABEL_TEXT);
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.STYLESHEET_PICKER_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
-		return Event.FOCUSEVENTS;
+		return EventBitMaskConstants.FOCUS_EVENTS;
 	}
 
 	public String getText() {
@@ -99,7 +104,6 @@ public class StyleSheetPicker extends Composite {
 
 	protected HorizontalPanel createHorizontalPanel() {
 		final HorizontalPanel panel = new HorizontalPanel();
-		panel.setStyleName(WidgetConstants.STYLESHEET_PICKER_STYLE);
 
 		final Widget label = this.createLabel();
 		panel.add(label);
@@ -133,11 +137,15 @@ public class StyleSheetPicker extends Composite {
 	 */
 	protected Widget createLabel() {
 		final Label label = new Label("");
-		label.setStyleName(WidgetConstants.STYLESHEET_PICKER_LABEL_STYLE);
+		label.setStyleName(this.getPickerLabelStyle());
 		this.setLabel(label);
 		return label;
 	}
 
+	protected String getPickerLabelStyle(){
+		return WidgetConstants.STYLESHEET_PICKER_LABEL_STYLE;
+	}
+	
 	protected void createButtons(final HorizontalPanel panel) {
 		ObjectHelper.checkNotNull("parameter:panel", panel);
 
@@ -222,8 +230,8 @@ public class StyleSheetPicker extends Composite {
 		final Button button = new Button(title);
 		button.setStyleName(WidgetConstants.STYLESHEET_ITEM_STYLE);
 
-		button.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
+		button.addMouseEventListener(new MouseEventAdapter() {
+			public void onClick(final MouseClickEvent ignored) {
 				StyleSheetPicker.this.selectStyleSheet(button);
 			}
 		});
@@ -245,12 +253,12 @@ public class StyleSheetPicker extends Composite {
 		ObjectHelper.checkNotNull("parameter:button", button);
 
 		this.unselectAllStyleSheets();
-		button.addStyleName(WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE);
+		button.addStyleName( this.getSelectedStyleSheetStyle() );
 
 		final StyleSheet styleSheet = this.getStyleSheet(button);
 		styleSheet.setDisabled(false);
 	}
-
+	
 	/**
 	 * Unselects all stylesheets and deselects their corresponding button
 	 */
@@ -270,13 +278,13 @@ public class StyleSheetPicker extends Composite {
 	protected void unselectStyleSheet(final Button button) {
 		ObjectHelper.checkNotNull("parameter:button", button);
 
-		button.removeStyleName(WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE);
+		button.removeStyleName( this.getSelectedStyleSheetStyle() );
 
 		final StyleSheet styleSheet = this.getStyleSheet(button);
 		styleSheet.setDisabled(true);
 	}
-
-	public String toString() {
-		return super.toString() + ", horizontalPanel: " + horizontalPanel + ", mappings: " + mappings;
+	
+	protected String getSelectedStyleSheetStyle(){
+		return WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE;
 	}
 }

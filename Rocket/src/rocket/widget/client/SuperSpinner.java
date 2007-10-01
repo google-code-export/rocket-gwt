@@ -15,14 +15,13 @@
  */
 package rocket.widget.client;
 
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * An extension of a regular spinner that includes two extra buttons to assist
@@ -35,8 +34,10 @@ public class SuperSpinner extends Spinner {
 
 	public SuperSpinner() {
 		super();
-
-		this.setStyleName(WidgetConstants.SUPER_SPINNER_STYLE);
+	}
+	
+	protected String getInitialStyleName() {
+		return WidgetConstants.SUPER_SPINNER_STYLE;
 	}
 
 	/**
@@ -56,15 +57,19 @@ public class SuperSpinner extends Spinner {
 
 	protected Image createBigDownWidget() {
 		final Image image = new Image();
-		image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE);
+		image.setStyleName( this.getBigDownArrowStyle() );
 
-		image.addClickListener(new ClickListener() {
+		image.addMouseEventListener(new MouseEventAdapter() {
 
-			public void onClick(final Widget widget) {
+			public void onClick(final MouseClickEvent event) {
 				SuperSpinner.this.onBigDownClick();
 			}
 		});
 		return image;
+	}
+	
+	protected String getBigDownArrowStyle(){
+		return WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE;
 	}
 
 	protected void onDownClick() {
@@ -98,17 +103,21 @@ public class SuperSpinner extends Spinner {
 
 	protected Image createBigUpWidget() {
 		final Image image = new Image();
-		image.setStyleName(WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE);
+		image.setStyleName( this.getBigUpArrowStyle());
 
-		image.addClickListener(new ClickListener() {
+		image.addMouseEventListener(new MouseEventAdapter() {
 
-			public void onClick(final Widget widget) {
+			public void onClick(final MouseClickEvent event) {
 				SuperSpinner.this.onBigUpClick();
 			}
 		});
 		return image;
 	}
 
+	protected String getBigUpArrowStyle(){
+		return WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE;
+	}
+	
 	public void onUpClick() {
 		this.updateValue(this.getValue() + this.getDelta());
 	}
@@ -155,8 +164,6 @@ public class SuperSpinner extends Spinner {
 		final Image bigDownWidget = this.createBigDownWidget();
 		this.setBigDownWidget(bigDownWidget);
 		panel.add(bigDownWidget);
-
-		this.updateValue(this.getValue());
 
 		return panel;
 	}

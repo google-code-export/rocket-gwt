@@ -15,7 +15,6 @@
  */
 package rocket.widget.client.splitter;
 
-import rocket.style.client.StyleHelper;
 import rocket.widget.client.WidgetConstants;
 
 /**
@@ -24,59 +23,57 @@ import rocket.widget.client.WidgetConstants;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Constants {
+class Constants {
+	
+	final static String WIDGET_HOLDER = "-widgetHolder";
+	final static String SPLITTER = "-splitter";
+	final static String DRAGGING = "-dragging";
+	
 	/**
 	 * This style is applied to the container element of the
 	 * HorizontalSplitterPanel
 	 * {@link rocket.widget.client.splitter.HorizontalSplitterPanel}
 	 */
-	public final static String HORIZONTAL_SPLITTER_PANEL_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET,
-			"horizontalSplitterPanel");
+	final static String HORIZONTAL_SPLITTER_PANEL_STYLE = WidgetConstants.ROCKET +"-horizontalSplitterPanel";
 
 	/**
 	 * This style is applied to the element that contains any of the added
 	 * widgets within a HorizontalSlider
 	 */
-	public final static String HORIZONTAL_SPLITTER_PANEL_WIDGET_HOLDER_STYLE = StyleHelper.buildCompound(HORIZONTAL_SPLITTER_PANEL_STYLE,
-			"widgetHolder");
+	final static String HORIZONTAL_SPLITTER_PANEL_WIDGET_HOLDER_STYLE = HORIZONTAL_SPLITTER_PANEL_STYLE + WIDGET_HOLDER;
 
 	/**
 	 * This style is applied to any slider that appears between widgets
 	 * belonging to a HorizontalSlider
 	 */
-	public final static String HORIZONTAL_SPLITTER_PANEL_SPLITTER_STYLE = StyleHelper.buildCompound(HORIZONTAL_SPLITTER_PANEL_STYLE,
-			"splitter");
+	final static String HORIZONTAL_SPLITTER_PANEL_SPLITTER_STYLE = HORIZONTAL_SPLITTER_PANEL_STYLE + SPLITTER;
 
 	/**
 	 * This style is applied to a slider when it is being dragged...
 	 */
-	public final static String HORIZONTAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE = StyleHelper.buildCompound(
-			HORIZONTAL_SPLITTER_PANEL_SPLITTER_STYLE, "dragging");
+	final static String HORIZONTAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE = HORIZONTAL_SPLITTER_PANEL_SPLITTER_STYLE + DRAGGING;
 
 	/**
 	 * This style is applied to the container element of the
 	 * VerticalSplitterPanel
 	 * {@link rocket.widget.client.splitter.VerticalSplitterPanel}
 	 */
-	public final static String VERTICAL_SPLITTER_PANEL_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "verticalSplitterPanel");
+	final static String VERTICAL_SPLITTER_PANEL_STYLE = WidgetConstants.ROCKET + "-verticalSplitterPanel";
 
 	/**
 	 * This style is applied to the element that contains any of the added
 	 * widgets within a VerticalSlider
 	 */
-	public final static String VERTICAL_SPLITTER_PANEL_WIDGET_HOLDER_STYLE = StyleHelper.buildCompound(VERTICAL_SPLITTER_PANEL_STYLE,
-			"widgetHolder");
+	final static String VERTICAL_SPLITTER_PANEL_WIDGET_HOLDER_STYLE = VERTICAL_SPLITTER_PANEL_STYLE + WIDGET_HOLDER;
 
 	/**
 	 * This style is applied to any slider that appears between widgets
 	 * belonging to a VerticalSlider
 	 */
-	public final static String VERTICAL_SPLITTER_PANEL_SPLITTER_STYLE = StyleHelper
-			.buildCompound(VERTICAL_SPLITTER_PANEL_STYLE, "splitter");
+	final static String VERTICAL_SPLITTER_PANEL_SPLITTER_STYLE = VERTICAL_SPLITTER_PANEL_STYLE + SPLITTER;
 
 	/**
 	 * This style is applied to a slider when it is being dragged...
 	 */
-	public final static String VERTICAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE = StyleHelper.buildCompound(
-			VERTICAL_SPLITTER_PANEL_SPLITTER_STYLE, "dragging");
+	final static String VERTICAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE = VERTICAL_SPLITTER_PANEL_SPLITTER_STYLE + DRAGGING;
 }

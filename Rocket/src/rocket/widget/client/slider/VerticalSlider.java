@@ -15,11 +15,9 @@
  */
 package rocket.widget.client.slider;
 
-import rocket.browser.client.Browser;
 import rocket.dom.client.Dom;
+import rocket.event.client.MouseEvent;
 import rocket.style.client.StyleConstants;
-
-import com.google.gwt.user.client.Event;
 
 /**
  * A VerticalSlider is a widget which allows a user to manipulate number value
@@ -30,8 +28,10 @@ import com.google.gwt.user.client.Event;
 public class VerticalSlider extends Slider {
 	public VerticalSlider() {
 		super();
-
-		this.setStyleName(Constants.VERTICAL_SLIDER_STYLE);
+	}
+	
+	protected String getInitialStyleName(){
+		return Constants.VERTICAL_SLIDER_STYLE;
 	}
 
 	protected String getHandleStyleName() {
@@ -42,8 +42,8 @@ public class VerticalSlider extends Slider {
 		return Constants.VERTICAL_SLIDER_DRAGGING_STYLE;
 	}
 
-	protected int getMousePageCoordinate(final Event event) {
-		return Browser.getMousePageY(event);
+	protected int getMousePageCoordinate(final MouseEvent event) {
+		return event.getPageY();
 	}
 
 	protected int getAbsoluteWidgetCoordinate() {

@@ -15,13 +15,23 @@
  */
 package rocket.widget.client.slider;
 
+import rocket.event.client.ChangeEventListener;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.EventPreviewAdapter;
+import rocket.event.client.FocusEventListener;
+import rocket.event.client.MouseDownEvent;
+import rocket.event.client.MouseEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseMoveEvent;
+import rocket.event.client.MouseOutEvent;
+import rocket.event.client.MouseUpEvent;
 import rocket.selection.client.Selection;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
-import rocket.widget.client.Composite;
+import rocket.widget.client.CompositeWidget;
 import rocket.widget.client.DivPanel;
 import rocket.widget.client.Panel;
 
@@ -29,11 +39,8 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -45,7 +52,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class Slider extends Composite {
+public abstract class Slider extends CompositeWidget {
 
 	/**
 	 * Sub classes must return the significant mouse coordinate.
@@ -53,7 +60,7 @@ public abstract class Slider extends Composite {
 	 * @param event
 	 * @return
 	 */
-	abstract protected int getMousePageCoordinate(final Event event);
+	abstract protected int getMousePageCoordinate(final MouseEvent event);
 
 	/**
 	 * Sub classes must return the significant widget coordinate
@@ -90,14 +97,20 @@ public abstract class Slider extends Composite {
 		this.setPanel(panel);
 		return panel;
 	}
-
-	protected void afterCreateWidget() {
-		this.setChangeListeners(this.createChangeListeners());
-		this.setFocusListeners(this.createFocusListeners());
+	
+	protected void afterCreateWidget(){
+		super.afterCreateWidget();
+		
+		this.getEventListenerDispatcher().addMouseEventListener( new MouseEventAdapter(){
+			public void onMouseDown( final MouseDownEvent event ){
+				Slider.this.handleMouseDown( event );
+			}
+		});
 	}
 
 	protected int getSunkEventsBitMask() {
-		return Event.FOCUSEVENTS | Event.ONCHANGE | Event.ONMOUSEDOWN | Event.ONMOUSEUP | Event.ONMOUSEOUT | Event.ONMOUSEMOVE;
+		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.CHANGE | EventBitMaskConstants.MOUSE_DOWN
+				| EventBitMaskConstants.MOUSE_UP | EventBitMaskConstants.MOUSE_OUT | EventBitMaskConstants.MOUSE_MOVE;
 	}
 
 	public void onAttach() {
@@ -110,42 +123,16 @@ public abstract class Slider extends Composite {
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	/**
-	 * Dispatches to the appropriate method depending on the event type.
-	 */
-	public void onBrowserEvent(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
-
-		while (true) {
-			final int eventType = DOM.eventGetType(event);
-			if (eventType == Event.ONMOUSEDOWN) {
-				handleMouseDown(event);
-				break;
-			}
-
-			if (eventType == Event.ONMOUSEOUT) {
-				this.handleMouseOut(event);
-				break;
-			}
-			if (eventType == Event.ONMOUSEUP) {
-				this.handleMouseUp(event);
-			}
-			break;
-		}
-
-		super.onBrowserEvent(event);
-	}
-
-	/**
 	 * Dispatches the event to the respective handler depending on whether the
 	 * handle or the slider background was clicked.
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseDown(final Event event) {
+	protected void handleMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
-			final Element target = DOM.eventGetTarget(event);
+			final Element target = event.getTarget();
 
 			// check if the handle widget has been clicked...
 			if (DOM.isOrHasChild(this.getHandle().getElement(), target)) {
@@ -169,7 +156,7 @@ public abstract class Slider extends Composite {
 	 * 
 	 * @param event
 	 */
-	protected void handleHandleMouseDown(final Event event) {
+	protected void handleHandleMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		if (false == this.hasDraggingEventPreview()) {
@@ -190,7 +177,7 @@ public abstract class Slider extends Composite {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseOut(final Event event) {
+	protected void handleMouseOut(final MouseOutEvent event) {
 		this.clearTimer();
 	}
 
@@ -199,7 +186,7 @@ public abstract class Slider extends Composite {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseUp(final Event event) {
+	protected void handleMouseUp(final MouseUpEvent event) {
 		this.clearTimer();
 	}
 
@@ -228,51 +215,24 @@ public abstract class Slider extends Composite {
 	}
 
 	/**
-	 * This EventPreview anonymous class merely delegates to
-	 * {@link #handleDraggingEventPreview(Event)}
+	 * Creates an EventPreview that simple delegates to appropriately called handler event methods on
+	 * the outter class.
 	 * 
 	 * @return
 	 */
 	protected EventPreview createDraggingEventPreview() {
-		final EventPreview draggingEventPreview = new EventPreview() {
-			public boolean onEventPreview(final Event event) {
-				return handleDraggingEventPreview(event);
+		return new EventPreviewAdapter() {
+
+			public void handleMouseMoveEvent( final MouseMoveEvent event ){
+				Slider.this.handleMouseMove( event );
+			}
+			public void handleMouseUpEvent( final MouseUpEvent event ){
+				Slider.this.handleHandleMouseUp( event );
 			}
 		};
-		return draggingEventPreview;
 	}
 
-	/**
-	 * Manages the event type removing the EventPreview when the mouseTarget
-	 * button is released and updating the handle via
-	 * {@link #handleHandleMouseMove(Event)}
-	 * 
-	 * @param event
-	 * @return When true stops the event from being dispatched to the
-	 *         mouseTarget element.
-	 */
-	protected boolean handleDraggingEventPreview(final Event event) {
-		boolean cancelEvent = true;
-
-		while (true) {
-			final int type = DOM.eventGetType(event);
-			if (type == Event.ONMOUSEMOVE) {
-				this.handleMouseMove(event);
-				cancelEvent = true;
-				break;
-			}
-			if (type == Event.ONMOUSEUP) {
-				this.handleHandleMouseUp(event);
-				cancelEvent = false;
-				break;
-			}
-			cancelEvent = true;
-			break;
-		}
-		return !cancelEvent;
-	}
-
-	protected void handleMouseMove(final Event event) {
+	protected void handleMouseMove(final MouseMoveEvent event) {
 		final int range = this.getSliderLength() - this.getHandleLength();
 
 		int value = this.getMousePageCoordinate(event) - this.getAbsoluteWidgetCoordinate();
@@ -287,9 +247,11 @@ public abstract class Slider extends Composite {
 		this.setValue((int) newValue);
 
 		this.clearTimer();
+		
+		event.cancelBubble( true );
 	}
 
-	protected void handleBackgroundMouseDown(final Event event) {
+	protected void handleBackgroundMouseDown(final MouseDownEvent event) {
 		final int mouse = this.getMousePageCoordinate(event) - this.getAbsoluteWidgetCoordinate() - this.getHandleLength() / 2;
 		final HandleSlidingTimer timer = this.getTimer();
 		timer.setMouse(mouse);
@@ -299,20 +261,28 @@ public abstract class Slider extends Composite {
 
 	protected void handleBackgroundMouseDown(final int mouse) {
 		while (true) {
-			final int handle = this.getRelativeHandleCoordinate();
-			if (mouse == handle) {
+			final int handleBeforeUpdate = this.getRelativeHandleCoordinate();
+						
+			if (mouse == handleBeforeUpdate ) {
 				this.clearTimer();
 				break;
 			}
-			if (mouse < handle) {
+			final boolean lessThanBefore = handleBeforeUpdate < mouse;
+			if ( lessThanBefore ) {
+				this.handleAfterHandleMouseDown();				
+			} else{
 				this.handleBeforeHandleMouseDown();
-				break;
 			}
-			this.handleAfterHandleMouseDown();
+			final int handleAfterUpdate = this.getRelativeHandleCoordinate();
+			final boolean lessThanAfter = handleAfterUpdate < mouse;
+			if( lessThanBefore != lessThanAfter ){
+				this.setRelativeHandleCoordinate( mouse );
+				this.clearTimer();
+			}
 			break;
 		}
 	}
-
+	
 	/**
 	 * Decreases the value of this slider ensuring that it does not underflow
 	 * the minimum value of this slider.
@@ -348,12 +318,14 @@ public abstract class Slider extends Composite {
 	 * 
 	 * @param event
 	 */
-	protected void handleHandleMouseUp(final Event event) {
+	protected void handleHandleMouseUp(final MouseUpEvent event) {
 		this.getHandle().removeStyleName(this.getSliderDraggingStyleName());
 
 		DOM.removeEventPreview(this.getDraggingEventPreview());
 		this.clearDraggingEventPreview();
 		Selection.enableTextSelection();
+		
+		event.cancelBubble( true );
 	}
 
 	/**
@@ -518,7 +490,7 @@ public abstract class Slider extends Composite {
 		}
 		this.value = value;
 
-		this.getChangeListeners().fireChange(this);
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
 
 	protected void setValue0() {
@@ -559,20 +531,20 @@ public abstract class Slider extends Composite {
 		this.delta = delta;
 	}
 
-	public void addChangeListener(final ChangeListener changeListener) {
-		super.addChangeListener(changeListener);
+	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(changeEventListener);
 	}
 
-	public void removeChangeListener(final ChangeListener changeListener) {
-		super.removeChangeListener(changeListener);
+	public void removeChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().removeChangeEventListener(changeEventListener);
 	}
 
-	public void addFocusListener(final FocusListener focusListener) {
-		super.addFocusListener(focusListener);
+	public void addFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().addFocusEventListener(focusEventListener);
 	}
 
-	public void removeFocusListener(final FocusListener focusListener) {
-		super.removeFocusListener(focusListener);
+	public void removeFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().removeFocusEventListener(focusEventListener);
 	}
 
 	protected int getRelativeHandleCoordinate() {

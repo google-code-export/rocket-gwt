@@ -30,14 +30,43 @@ import com.google.gwt.user.client.ui.FlexTable;
 public class ZebraFlexTable extends FlexTable {
 
 	public ZebraFlexTable() {
-		this.setStyleName(WidgetConstants.ZEBRA_FLEX_TABLE_STYLE);
+		this.setStyleName( this.getInitialStyleName());
+	}
+	
+	protected String getInitialStyleName(){
+		return WidgetConstants.ZEBRA_FLEX_TABLE_STYLE;
 	}
 
 	public void addHeadingStyleToFirstRow() {
 		final RowFormatter formatter = this.getRowFormatter();
-		formatter.addStyleName(0, WidgetConstants.ZEBRA_FLEX_TABLE_HEADING_STYLE);
+		formatter.addStyleName(0, this.getHeadingStyle() );
 	}
-
+	
+	protected String getHeadingStyle(){
+		return WidgetConstants.ZEBRA_FLEX_TABLE_HEADING_STYLE;	
+	}
+	
+	 /**
+	   * Ensure that the cell exists.
+	   * 
+	   * @param row the row to prepare.
+	   * @param column the column to prepare.
+	   * @throws IndexOutOfBoundsException if the row is negative
+	   */
+	  protected void prepareCell(final int row, final int column) {
+	    prepareRow(row);
+	    if (column < 0) {
+	      throw new IndexOutOfBoundsException(
+	          "Cannot create a column with a negative index: " + column);
+	    }	   
+	    
+	    // Ensure that the requested column exists.
+	    final int cellCount = getCellCount(row) + 1;
+	    for( int i = column; i < cellCount; i++ ){
+	    	this.insertCell( row, i );
+	    }
+	  }
+	
 	public void insertCell(final int row, final int cell) {
 		final boolean newRow = row < this.getRowCount();
 
@@ -48,7 +77,7 @@ public class ZebraFlexTable extends FlexTable {
 		}
 	}
 
-	public int insertRow(int beforeRow) {
+	public int insertRow(final int beforeRow) {
 		final int value = super.insertRow(beforeRow);
 
 		// restyle all rows that were shifted up including the new row.
@@ -56,7 +85,7 @@ public class ZebraFlexTable extends FlexTable {
 		return value;
 	}
 
-	public void removeRow(int row) {
+	public void removeRow(final int row) {
 		super.removeRow(row);
 
 		// restyle all rows that were shifted up.
@@ -76,14 +105,23 @@ public class ZebraFlexTable extends FlexTable {
 	protected void updateRowBackgroundColour(final int row) {
 		PrimitiveHelper.checkGreaterThanOrEqual("parameter:row", row, 0);
 
+		final String oddRowStyle = this.getOddRowStyle();
+		final String evenRowStyle = this.getEvenRowStyle();
+		
 		final boolean oddRow = (row & 1) == 0;
 		final RowFormatter formatter = this.getRowFormatter();
 
-		final String addStyle = oddRow ? WidgetConstants.ZEBRA_FLEX_TABLE_ODD_ROW_STYLE : WidgetConstants.ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE;
+		final String addStyle = oddRow ? oddRowStyle : evenRowStyle;
 		formatter.addStyleName(row, addStyle);
 
-		final String removeStyle = oddRow ? WidgetConstants.ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE
-				: WidgetConstants.ZEBRA_FLEX_TABLE_ODD_ROW_STYLE;
+		final String removeStyle = oddRow ? evenRowStyle : oddRowStyle;
 		formatter.removeStyleName(row, removeStyle);
+	}
+	
+	protected String getOddRowStyle(){
+		return WidgetConstants.ZEBRA_FLEX_TABLE_ODD_ROW_STYLE;
+	}
+	protected String getEvenRowStyle(){
+		return WidgetConstants.ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE;
 	}
 }

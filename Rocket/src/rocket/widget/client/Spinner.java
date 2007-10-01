@@ -15,13 +15,14 @@
  */
 package rocket.widget.client;
 
+import rocket.event.client.ChangeEventListener;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.FocusEventListener;
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.FocusListener;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -38,17 +39,9 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Spinner extends Composite implements NumberHolder {
+public class Spinner extends CompositeWidget{
 
 	public Spinner() {
-		this.setDelta(1);
-
-		this.setStyleName(WidgetConstants.SPINNER_STYLE);
-	}
-
-	protected void beforeCreateWidget() {
-		this.setChangeListeners(this.createChangeListeners());
-		this.setFocusListeners(this.createFocusListeners());
 	}
 
 	protected Widget createWidget() {
@@ -57,8 +50,17 @@ public class Spinner extends Composite implements NumberHolder {
 		return panel;
 	}
 
+	protected void afterCreateWidget() {
+		this.setDelta(1);
+		this.updateValue(this.getValue());
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.SPINNER_STYLE;
+	}
+
 	protected int getSunkEventsBitMask() {
-		return 0;
+		return EventBitMaskConstants.CHANGE | EventBitMaskConstants.FOCUS_EVENTS;
 	}
 
 	/**
@@ -72,7 +74,8 @@ public class Spinner extends Composite implements NumberHolder {
 
 	public void setValue(final int value) {
 		this.value = value;
-		this.getChangeListeners().fireChange(this);
+
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
 
 	/**
@@ -118,14 +121,18 @@ public class Spinner extends Composite implements NumberHolder {
 
 	protected Image createUpWidget() {
 		final Image image = new Image();
-		image.setStyleName(WidgetConstants.SPINNER_UP_STYLE);
-		image.addClickListener(new ClickListener() {
+		image.setStyleName( this.getUpArrowStyle() );
+		image.addMouseEventListener(new MouseEventAdapter() {
 
-			public void onClick(final Widget widget) {
+			public void onClick(final MouseClickEvent event) {
 				Spinner.this.onUpClick();
 			}
 		});
 		return image;
+	}
+	
+	protected String getUpArrowStyle(){
+		return WidgetConstants.SPINNER_UP_STYLE;		
 	}
 
 	/**
@@ -165,15 +172,19 @@ public class Spinner extends Composite implements NumberHolder {
 
 	protected Image createDownWidget() {
 		final Image image = new Image();
-		image.setStyleName(WidgetConstants.SPINNER_DOWN_STYLE);
+		image.setStyleName( this.getDownArrowStyle() );
 
-		image.addClickListener(new ClickListener() {
+		image.addMouseEventListener(new MouseEventAdapter() {
 
-			public void onClick(final Widget widget) {
+			public void onClick(final MouseClickEvent event) {
 				Spinner.this.onDownClick();
 			}
 		});
 		return image;
+	}
+	
+	protected String getDownArrowStyle(){
+		return WidgetConstants.SPINNER_DOWN_STYLE;
 	}
 
 	public String getDownImageUrl() {
@@ -216,7 +227,7 @@ public class Spinner extends Composite implements NumberHolder {
 			break;
 		}
 
-		this.getChangeListeners().fireChange(this);
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 		this.setValue(value);
 	}
 
@@ -252,8 +263,6 @@ public class Spinner extends Composite implements NumberHolder {
 		this.setDownWidget(downWidget);
 		panel.add(downWidget);
 
-		this.updateValue(this.getValue());
-
 		return panel;
 	}
 
@@ -271,24 +280,23 @@ public class Spinner extends Composite implements NumberHolder {
 		this.delta = delta;
 	}
 
-	public void addChangeListener(final ChangeListener changeListener) {
-		super.addChangeListener(changeListener);
+	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(changeEventListener);
 	}
 
-	public void removeChangeListener(final ChangeListener changeListener) {
-		super.removeChangeListener(changeListener);
+	public void removeChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().removeChangeEventListener(changeEventListener);
 	}
 
-	public void addFocusListener(final FocusListener focusListener) {
-		super.addFocusListener(focusListener);
+	public void addFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().addFocusEventListener(focusEventListener);
 	}
 
-	public void removeFocusListener(final FocusListener focusListener) {
-		super.removeFocusListener(focusListener);
+	public void removeFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().removeFocusEventListener(focusEventListener);
 	}
 
 	public String toString() {
-		return super.toString() + ", value: " + value + ", lowerBounds: " + lowerBounds + ", upperBounds: " + upperBounds + ", upDown: "
-				+ upWidget + ", downWidget:" + downWidget + ", panel: " + this.panel + ", delta: " + delta;
+		return super.toString() + ", value: " + value;
 	}
 }

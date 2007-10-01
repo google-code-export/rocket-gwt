@@ -15,28 +15,28 @@
  */
 package rocket.widget.client.slider;
 
-import rocket.style.client.StyleHelper;
 import rocket.widget.client.WidgetConstants;
 
 class Constants {
-	public final static String HORIZONTAL_SLIDER_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "horizontalSlider");
+	
+	final static String HANDLE = "-handle";
+	final static String DRAGGING = "-dragging";
+	
+	final static String HORIZONTAL_SLIDER_STYLE = WidgetConstants.ROCKET + "-horizontalSlider";
 
-	public final static String HORIZONTAL_SLIDER_HANDLE_STYLE = StyleHelper.buildCompound(HORIZONTAL_SLIDER_STYLE, "handle");
+	final static String HORIZONTAL_SLIDER_HANDLE_STYLE = HORIZONTAL_SLIDER_STYLE + HANDLE;
 
-	public final static String HORIZONTAL_SLIDER_DRAGGING_STYLE = StyleHelper.buildCompound(HORIZONTAL_SLIDER_STYLE, "dragging");
+	final static String HORIZONTAL_SLIDER_DRAGGING_STYLE = HORIZONTAL_SLIDER_STYLE + DRAGGING;
 
-	public final static String VERTICAL_SLIDER_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "verticalSlider");
+	final static String VERTICAL_SLIDER_STYLE = WidgetConstants.ROCKET + "-verticalSlider";
 
-	public final static String VERTICAL_SLIDER_HANDLE_STYLE = StyleHelper.buildCompound(VERTICAL_SLIDER_STYLE, "handle");
+	final static String VERTICAL_SLIDER_HANDLE_STYLE = VERTICAL_SLIDER_STYLE + HANDLE;
 
-	public final static String VERTICAL_SLIDER_DRAGGING_STYLE = StyleHelper.buildCompound(VERTICAL_SLIDER_STYLE, "dragging");
+	final static String VERTICAL_SLIDER_DRAGGING_STYLE = VERTICAL_SLIDER_STYLE + DRAGGING;
 
-	public final static String HORIZONTAL_VERTICAL_SLIDER_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET,
-			"horizontalVerticalSlider");
+	final static String HORIZONTAL_VERTICAL_SLIDER_STYLE = WidgetConstants.ROCKET +"-horizontalVerticalSlider";
 
-	public final static String HORIZONTAL_VERTICAL_SLIDER_HANDLE_STYLE = StyleHelper.buildCompound(HORIZONTAL_VERTICAL_SLIDER_STYLE,
-			"handle");
+	final static String HORIZONTAL_VERTICAL_SLIDER_HANDLE_STYLE = HORIZONTAL_VERTICAL_SLIDER_STYLE + HANDLE;
 
-	public final static String HORIZONTAL_VERTICAL_SLIDER_DRAGGING_STYLE = StyleHelper.buildCompound(HORIZONTAL_VERTICAL_SLIDER_STYLE,
-			"dragging");
+	final static String HORIZONTAL_VERTICAL_SLIDER_DRAGGING_STYLE = HORIZONTAL_VERTICAL_SLIDER_STYLE + DRAGGING;
 }

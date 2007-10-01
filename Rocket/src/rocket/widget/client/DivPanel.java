@@ -15,6 +15,7 @@
  */
 package rocket.widget.client;
 
+import rocket.dom.client.Dom;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -31,8 +32,14 @@ public class DivPanel extends Panel implements HasWidgets {
 
 	public DivPanel() {
 		super();
+	}
 
-		this.setStyleName(WidgetConstants.DIV_PANEL_STYLE);
+	public DivPanel(final Element div) {
+		super(div);
+	}
+
+	protected void checkElement(final Element element) {
+		Dom.checkTagName("parameter:element", element, WidgetConstants.DIV_TAG);
 	}
 
 	/**
@@ -42,6 +49,10 @@ public class DivPanel extends Panel implements HasWidgets {
 	 */
 	protected Element createPanelElement() {
 		return DOM.createDiv();
+	}
+
+	protected String getInitialStyleName() {
+		return WidgetConstants.DIV_PANEL_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
@@ -75,6 +86,6 @@ public class DivPanel extends Panel implements HasWidgets {
 
 		final Element parent = this.getParentElement();
 		final Element child = DOM.getChild(parent, index);
-		DOM.removeChild(parent, child);
+		Dom.removeFromParent(child);
 	}
 }

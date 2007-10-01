@@ -23,17 +23,18 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 import rocket.util.client.SystemHelper;
 
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
+import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 
 /**
  * A powerful easy to use table that includes support for sorting individual
@@ -65,71 +66,68 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * </ul>
  * {@link #redrawIfAutoEnabled()} and {@link #redrawIfAutoEnabled()} </li>
- * 
- * <li> User code should not use the {@link #insertRow(int)} and
- * {@link #removeRow(int)} methods as they potentially may corrupt the
- * SortableTable. </li>
- * 
+ *  
  * </ul>
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class SortableTable extends Composite {
+public abstract class SortableTable extends CompositeWidget {
 
 	public SortableTable() {
 		super();
-
-		this.setStyleName(WidgetConstants.SORTABLE_TABLE_STYLE);
-		this.setColumnComparators(new ArrayList());
-		this.setRows(this.createRows());
-		this.setAutoRedraw(true);
 	}
 
 	protected Widget createWidget() {
-		final FlexTable flexTable = this.createFlexTable();
-		this.setFlexTable(flexTable);
-		return flexTable;
+		return this.createGrid();
+	}
+
+	protected void afterCreateWidget() {
+		this.setColumnComparators( this.createColumnComparators());
+		this.setRows(this.createRows());
+		this.setAutoRedraw(true);
+
+		final Grid grid = this.getGrid();
+	grid.getRowFormatter().addStyleName(0, this.getHeaderRowStyle());
+	}
+
+protected String getHeaderRowStyle(){
+	return WidgetConstants.SORTABLE_TABLE_HEADER_ROW_STYLE;	
+}
+	
+	protected String getInitialStyleName() {
+		return WidgetConstants.SORTABLE_TABLE_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
 
-	/**
-	 * A FlexTable or sub-class is the target table that is used to house the
-	 * sorted table
-	 */
-	private FlexTable flexTable;
-
-	public FlexTable getFlexTable() {
-		ObjectHelper.checkNotNull("field:flexTable", flexTable);
-		return flexTable;
+	protected Grid getGrid() {
+		return (Grid) this.getWidget();
 	}
 
-	public void setFlexTable(final FlexTable flexTable) {
-		ObjectHelper.checkNotNull("parameter:flexTable", flexTable);
-		this.flexTable = flexTable;
-	}
-
-	protected FlexTable createFlexTable() {
-		return new ZebraFlexTable();
+	protected Grid createGrid() {
+		final Grid grid = new Grid( 1, this.getColumnCount() );
+		grid.setCellPadding(0);
+		grid.setCellSpacing(0);
+		return grid;
 	}
 
 	protected void setWidget(final int row, final int column, final Widget widget) {
-		this.getFlexTable().setWidget(row, column, widget);
+		this.getGrid().setWidget(row, column, widget);
 	}
 
 	protected void setText(final int row, final int column, final String text) {
-		this.getFlexTable().setText(row, column, text);
+		this.getGrid().setText(row, column, text);
 	}
 
 	/**
 	 * A list of comparators one for each column or null if a column is not
 	 * sortable.
 	 */
-	private List columnComparators;
+	private ColumnSorting[] columnComparators;
 
-	protected List getColumnComparators() {
+	protected ColumnSorting[] getColumnComparators() {
 		ObjectHelper.checkNotNull("field:columnComparators", columnComparators);
 		return columnComparators;
 	}
@@ -138,14 +136,16 @@ public abstract class SortableTable extends Composite {
 		return this.columnComparators != null;
 	}
 
-	protected void setColumnComparators(final List columnComparators) {
+	protected void setColumnComparators(final ColumnSorting[] columnComparators) {
 		ObjectHelper.checkNotNull("parameter:columnComparators", columnComparators);
 		this.columnComparators = columnComparators;
 	}
+	
+	protected ColumnSorting[] createColumnComparators(){
+		return new ColumnSorting[ this.getColumnCount() ];
+	}
 
 	/**
-	 * TODO remove unsorted style / set style
-	 * 
 	 * @param columnComparator
 	 * @param column
 	 * @param ascending
@@ -158,29 +158,13 @@ public abstract class SortableTable extends Composite {
 		sorting.setAscendingSort(ascending);
 		sorting.setComparator(columnComparator);
 
-		this.getColumnComparators().add(column, sorting);
+		this.getColumnComparators()[ column ] = sorting;
 
-		final HorizontalPanel panel = (HorizontalPanel) this.getFlexTable().getWidget(0, column);
-		final Label label = (Label) panel.getWidget(0);
-		Image image = null;
-
-		if (panel.getWidgetCount() == 1) {
-			label.addStyleName(WidgetConstants.SORTABLE_TABLE_SORTABLE_COLUMN_HEADER_STYLE);
-			image = this.createSortDirectionImage();
-
-			final SortableTable that = this;
-			image.addClickListener(new ClickListener() {
-				public void onClick(final Widget sender) {
-					that.onColumnSortingClick(sender);
-				}
-			});
-			panel.add(image);
-		} else {
-			label.removeStyleName(WidgetConstants.SORTABLE_TABLE_SORTABLE_COLUMN_HEADER_STYLE);
-			image = (Image) panel.getWidget(1);
-		}
-		final String url = ascending ? this.getAscendingSortImageSource() : this.getDescendingSortImageSource();
-		image.setUrl(url);
+		this.addColumnStyle(column, this.getSortableColumnStyle() );
+	}
+	
+	protected String getSortableColumnStyle(){
+		return WidgetConstants.SORTABLE_TABLE_SORTABLE_COLUMN_STYLE;
 	}
 
 	protected int getColumnIndex(final Widget widget) {
@@ -188,10 +172,10 @@ public abstract class SortableTable extends Composite {
 
 		int columnIndex = -1;
 
-		final FlexTable table = this.getFlexTable();
+		final Grid grid = this.getGrid();
 		final int columnCount = this.getColumnCount();
 		for (int i = 0; i < columnCount; i++) {
-			final HorizontalPanel panel = (HorizontalPanel) table.getWidget(0, i);
+			final HorizontalPanel panel = (HorizontalPanel) grid.getWidget(0, i);
 			final int index = panel.getWidgetIndex(widget);
 			if (-1 != index) {
 				columnIndex = i;
@@ -208,7 +192,7 @@ public abstract class SortableTable extends Composite {
 		final Image image = (Image) widget;
 		final int column = this.getColumnIndex(image);
 
-		final ColumnSorting sorting = (ColumnSorting) this.getColumnComparators().get(column);
+		final ColumnSorting sorting = this.getColumnComparators()[column];
 		final boolean newSortingOrder = !sorting.isAscendingSort();
 		sorting.setAscendingSort(newSortingOrder);
 
@@ -227,18 +211,19 @@ public abstract class SortableTable extends Composite {
 	public void makeColumnUnsortable(final int column) {
 		this.checkColumn("parameter:column", column);
 
-		this.getColumnComparators().add(column, null);
+		this.getColumnComparators()[column ] = null;
 
-		final HorizontalPanel panel = (HorizontalPanel) this.getFlexTable().getWidget(0, column);
+		final HorizontalPanel panel = (HorizontalPanel) this.getGrid().getWidget(0, column);
 		if (panel.getWidgetCount() > 1) {
-			// the second image is the sort direction icon.
 			panel.remove(panel.getWidget(1));
 		}
+		this.removeColumnStyle(column, this.getSortableColumnStyle() );
 	}
 
 	protected boolean isColumnSortable(final int column) {
 		this.checkColumn("parameter:column", column);
-		return this.getColumnComparators().get(column) != null;
+				
+		return null != this.getColumnComparators()[ column ];
 	}
 
 	/**
@@ -250,11 +235,7 @@ public abstract class SortableTable extends Composite {
 	 * @return
 	 */
 	protected Comparator getColumnComparator(final int column) {
-		this.checkColumn("parameter:column", column);
-
-		final ColumnSorting sorting = (ColumnSorting) this.getColumnComparators().get(column);
-		ObjectHelper.checkNotNull("sorting", sorting);
-
+		final ColumnSorting sorting = this.getColumnSorting(column);
 		Comparator comparator = sorting.getComparator();
 
 		if (false == sorting.isAscendingSort()) {
@@ -270,7 +251,19 @@ public abstract class SortableTable extends Composite {
 	}
 
 	protected boolean hasColumnComparator(final int column) {
-		return null != this.getColumnComparators().get(column);
+		return null != this.getColumnComparators()[column];
+	}
+
+	protected boolean isAscending(final int column) {
+		return this.getColumnSorting(column).isAscendingSort();
+	}
+
+	protected ColumnSorting getColumnSorting(final int column) {
+		this.checkColumn("parameter:column", column);
+
+		final ColumnSorting sorting = this.getColumnComparators()[column];
+		ObjectHelper.checkNotNull("sorting", sorting);
+		return sorting;
 	}
 
 	/**
@@ -294,37 +287,65 @@ public abstract class SortableTable extends Composite {
 		}
 
 		if (this.isAutoRedraw()) {
+			// remove the sorted image from the previous column...			
 			this.getRowsList().getSorted().setUnsorted(true);
 
 			// remove style from the previous column
 			if (this.hasSortedColumn()) {
-				this.removeSortedColumnStyle(this.getSortedColumn());
+				final int previousSortedColumn = this.getSortedColumn();
+				this.removeColumnStyle(previousSortedColumn, WidgetConstants.SORTABLE_TABLE_SORTED_COLUMN_STYLE);
+				this.removeSortDirectionImage(previousSortedColumn);
 			}
 			// add style to highlight the new sorted column.
-			this.addSortedColumnStyle(sortedColumn);
+			final boolean ascending = isAscending(sortedColumn);
+			this.addSortDirectionImage(sortedColumn, ascending);
+
+			this.addColumnStyle(sortedColumn, this.getSortedColumnStyle() );
 		}
 		this.sortedColumn = sortedColumn;
 	}
+	
+	protected String getSortedColumnStyle(){
+		return WidgetConstants.SORTABLE_TABLE_SORTED_COLUMN_STYLE;	
+	}
 
-	protected void addSortedColumnStyle(final int column) {
+	protected void removeSortDirectionImage(final int column) {
+		final HorizontalPanel panel = (HorizontalPanel) this.getGrid().getWidget(0, column);
+		panel.remove(1);
+	}
+
+	protected void addSortDirectionImage(final int column, final boolean ascending) {
+		final String url = ascending ? this.getAscendingSortImageSource() : this.getDescendingSortImageSource();
+		final Image image = new Image(url);
+		image.addMouseEventListener(new MouseEventAdapter() {
+			public void onClick(final MouseClickEvent mouseEvent) {
+				SortableTable.this.onColumnSortingClick(mouseEvent.getWidget());
+			}
+		});
+
+		final HorizontalPanel panel = (HorizontalPanel) this.getGrid().getWidget(0, column);
+		panel.add(image);
+	}
+
+	protected void addColumnStyle(final int column, final String style) {
 		this.checkColumn("parameter:column", column);
 
-		final FlexTable table = this.getFlexTable();
-		final FlexTable.FlexCellFormatter formatter = table.getFlexCellFormatter();
-		final int rowCount = table.getRowCount();
-		for (int i = 0; i < rowCount; i++) {
-			formatter.addStyleName(i, column, WidgetConstants.SORTABLE_TABLE_SORTED_COLUMN_STYLE);
+		final Grid table = this.getGrid();
+		final CellFormatter cellFormatter = table.getCellFormatter();
+		final int rows = table.getRowCount();
+		for (int row = 0; row < rows; row++) {
+			cellFormatter.addStyleName(row, column, style);
 		}
 	}
 
-	protected void removeSortedColumnStyle(final int column) {
+	protected void removeColumnStyle(final int column, final String style) {
 		this.checkColumn("parameter:column", column);
 
-		final FlexTable table = this.getFlexTable();
-		final FlexTable.FlexCellFormatter formatter = table.getFlexCellFormatter();
-		final int rowCount = table.getRowCount();
-		for (int i = 0; i < rowCount; i++) {
-			formatter.removeStyleName(i, column, WidgetConstants.SORTABLE_TABLE_SORTED_COLUMN_STYLE);
+		final Grid table = this.getGrid();
+		final CellFormatter cellFormatter = table.getCellFormatter();
+		final int rows = table.getRowCount();
+		for (int row = 0; row < rows; row++) {
+			cellFormatter.removeStyleName(row, column, style);
 		}
 	}
 
@@ -464,28 +485,9 @@ public abstract class SortableTable extends Composite {
 	}
 
 	public void redraw() {
-		this.removeUnnecessaryTableRows();
-
 		final SortedRowList sorted = this.getRowsList().getSorted();
 		sorted.sort();
-		this.repaintRows(sorted);
-	}
-
-	/**
-	 * This method removes any excess rows from the table widget.
-	 */
-	protected void removeUnnecessaryTableRows() {
-		final FlexTable table = this.getFlexTable();
-		final int rowObjectCount = this.getRows().size() - 1;
-		final int tableRowCount = table.getRowCount();
-
-		int i = tableRowCount;
-		i--;
-
-		while (i > rowObjectCount && i > 0) {
-			table.removeRow(i);
-			i--;
-		}
+		this.redraw(sorted);
 	}
 
 	/**
@@ -494,27 +496,62 @@ public abstract class SortableTable extends Composite {
 	 * @param rows
 	 *            A sorted list ready to be painted.
 	 */
-	protected void repaintRows(final SortedRowList rows) {
+	protected void redraw(final SortedRowList rows) {
 		ObjectHelper.checkNotNull("parameter:rows", rows);
 
-		final FlexTable table = this.getFlexTable();
+		final Grid table = this.getGrid();
 		final int columnCount = this.getColumnCount();
-
 		int rowIndex = 1;
-		final int size = rows.size();
-		for (int i = 0; i < size; i++) {
-			final SortedRowListElement row = (SortedRowListElement) rows.getSortedRowListElement(i);
+		final int rowSize = rows.size();
+		final int gridRowCount = table.getRowCount();
+		final int requiredGridCount = rowSize + 1;
+		
+		// update grid to match number of rows...
+		table.resizeRows( requiredGridCount );
+		
+		// if grid had a few rows added add even/odd styles to them...
+		
+		final RowFormatter rowFormatter = table.getRowFormatter();
+		final String evenRowStyle = this.getEvenRowStyle();
+		final String oddRowStyle = this.getOddRowStyle();
+		final String sortableColumnStyle = this.getSortableColumnStyle();
+		final String sortedColumnStyle = this.getSortedColumnStyle();
+		
+		for( int row = gridRowCount; row < requiredGridCount; row++ ){
+			final String style = (( row & 1 ) == 1 ) ? evenRowStyle : oddRowStyle ;
+			rowFormatter.addStyleName( row, style );
+			
+			final CellFormatter cellFormatter = table.getCellFormatter();
+			final int sortedColumn = this.getSortedColumn();
+			
+			for( int column = 0; column < columnCount; column++ ){
+				if( this.isColumnSortable( column )){
+					cellFormatter.setStyleName( row, column, sortableColumnStyle );
+					
+					if( sortedColumn == column ){
+						cellFormatter.addStyleName( row, column, sortedColumnStyle);
+					}
+				}
+			}
+		}
+		
+		for (int row = 0; row < rowSize; row++) {
+			final SortedRowListElement rowObject = (SortedRowListElement) rows.getSortedRowListElement(row);
 
 			for (int column = 0; column < columnCount; column++) {
-				final Widget cell = row.getWidget(column);
+				final Widget cell = rowObject.getWidget(column);
 				table.setWidget(rowIndex, column, cell);
 			}
 			rowIndex++;
 		}
-
-		this.addSortedColumnStyle(this.getSortedColumn());
 	}
-
+	
+	protected String getEvenRowStyle(){
+		return WidgetConstants.SORTABLE_TABLE_EVEN_ROW_STYLE;
+	}
+	protected String getOddRowStyle(){
+		return WidgetConstants.SORTABLE_TABLE_ODD_ROW_STYLE;
+	}
 	/**
 	 * Creates the widget that will house the header cell
 	 * 
@@ -534,11 +571,10 @@ public abstract class SortableTable extends Composite {
 		StringHelper.checkNotEmpty("parameter:text", text);
 
 		final Label label = new Label();
-		label.addStyleName(WidgetConstants.SORTABLE_TABLE_COLUMN_HEADER_STYLE);
 		label.setText(text);
-		label.addClickListener(new ClickListener() {
-			public void onClick(final Widget sender) {
-				onHeaderClick(sender);
+		label.addMouseEventListener(new MouseEventAdapter() {
+			public void onClick(final MouseClickEvent mouseEvent) {
+				onHeaderClick(mouseEvent.getWidget());
 			}
 		});
 		return label;
@@ -560,9 +596,13 @@ public abstract class SortableTable extends Composite {
 
 	protected Image createSortDirectionImage() {
 		final Image image = new Image();
-		image.addStyleName(WidgetConstants.SORTABLE_TABLE_SORT_DIRECTIONS_ARROWS_STYLE);
+		image.addStyleName( this.getSortDirectionArrowStyle());
 		image.setUrl(this.getAscendingSortImageSource());
 		return image;
+	}
+	
+	protected String getSortDirectionArrowStyle(){
+		return WidgetConstants.SORTABLE_TABLE_SORT_DIRECTIONS_ARROWS_STYLE;
 	}
 
 	abstract protected String getAscendingSortImageSource();
@@ -575,9 +615,7 @@ public abstract class SortableTable extends Composite {
 
 	/**
 	 * This object contains both the comparator and sorting option for a
-	 * particular colu@author Miroslav Pokorny (mP)
-	 * 
-	 * @author Miroslav Pokorny (mP)
+	 * particular column
 	 */
 	static private class ColumnSorting {
 		/**
@@ -812,7 +850,7 @@ public abstract class SortableTable extends Composite {
 		}
 
 		public boolean add(final Object row) {
-			final SortedRowListElement sortedRowListElement = new SortedRowListElement();
+			final SortedRowListElement sortedRowListElement = new SortedRowListElement( SortableTable.this.getColumnCount() );
 			sortedRowListElement.setRow(row);
 
 			super.add(sortedRowListElement);
@@ -822,11 +860,11 @@ public abstract class SortableTable extends Composite {
 		}
 
 		public void add(final int index, final Object row) {
-			throw new RuntimeException("Adding an element in a specific slot is not supported.");
+			throw new UnsupportedOperationException("Adding an element in a specific slot is not supported.");
 		}
 
 		public void add(final int index, final Collection collection) {
-			throw new RuntimeException("Adding a collection in a specific slot is not supported.");
+			throw new UnsupportedOperationException("Adding a collection in a specific slot is not supported.");
 		}
 
 		public Object get(final int index) {
@@ -876,13 +914,16 @@ public abstract class SortableTable extends Composite {
 	/**
 	 * This object maintains a cache between a row, individual values for each
 	 * column, and widgets for the same column.
+	 * 
+	 * This means that the widgets for a particular row mapped for a particular value object are only ever
+	 * created once.
 	 */
 	class SortedRowListElement {
 
-		public SortedRowListElement() {
+		public SortedRowListElement( int columnCount ) {
 			super();
 
-			this.setWidgets(new Widget[SortableTable.this.getColumnCount()]);
+			this.setWidgets(new Widget[ columnCount ]);
 		}
 
 		/**
