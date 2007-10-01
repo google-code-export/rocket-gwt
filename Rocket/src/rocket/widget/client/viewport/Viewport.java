@@ -34,6 +34,7 @@ import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.CompositeWidget;
 import rocket.widget.client.DivPanel;
+import rocket.widget.client.WidgetHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -144,13 +145,19 @@ abstract public class Viewport extends CompositeWidget {
 		Selection.clearAnySelectedText();
 		Selection.disableTextSelection();
 
+		final Widget tile = this.getTileContainingElement( event.getTarget() );		
+		
+		final BeforeViewportDragStartEvent beforeMoveStartedEvent = new BeforeViewportDragStartEvent();
+		beforeMoveStartedEvent.setTile(tile);
+		beforeMoveStartedEvent.setViewport(this);
+
 		final ViewportListenerCollection listeners = this.getViewportListeners();
-		if (false == listeners.fireBeforeDragStarted(this)) {
+		listeners.fireBeforeMoveStarted(beforeMoveStartedEvent);
+		if ( false == beforeMoveStartedEvent.isCancelled() ) {
 
 			final ViewportEventPreviewAdapter dragger = this.createDraggingEventPreview();
 			dragger.setMouseX( event.getPageX());
 			dragger.setMouseY( event.getPageY() );
-
 			
 			dragger.setOriginX(this.getOriginX());
 			dragger.setOriginY(this.getOriginY());
@@ -158,7 +165,11 @@ abstract public class Viewport extends CompositeWidget {
 
 			dragger.install();
 
-			listeners.fireDragStarted(this);
+			final ViewportDragStartEvent moveStartedEvent = new ViewportDragStartEvent();
+			moveStartedEvent.setViewport(this);
+			moveStartedEvent.setTile(tile );
+			
+			listeners.fireMoveStarted(moveStartedEvent);
 		}
 		event.cancelBubble( true );
 		event.stop();
@@ -278,7 +289,13 @@ abstract public class Viewport extends CompositeWidget {
 
 		Selection.enableTextSelection();
 
-		this.getViewportListeners().fireDragStopped(this);
+		final Widget tile = this.getTileContainingElement(event.getTarget() );
+		
+		final ViewportDragStopEvent viewportDragStopEvent = new ViewportDragStopEvent();
+		viewportDragStopEvent.setTile(tile);
+		viewportDragStopEvent.setViewport( this );
+		
+		this.getViewportListeners().fireMoveStopped(viewportDragStopEvent);
 		
 		event.cancelBubble( true );
 	}
@@ -335,12 +352,6 @@ abstract public class Viewport extends CompositeWidget {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
-			// give viewportListeners a chance to veto the drag move
-			final ViewportListenerCollection listeners = this.getViewportListeners();
-			if (listeners.fireBeforeDragMove(this)) {
-				break;
-			}
-
 			final ViewportEventPreviewAdapter previewer = this.getDraggingEventPreview();
 			final int originalMouseX = previewer.getMouseX(); 
 			final int currentMouseX = event.getPageX();
@@ -349,7 +360,24 @@ abstract public class Viewport extends CompositeWidget {
 			final int currentMouseY = event.getPageY();
 			
 			// mouse has not moved do nothing.
-			if (originalMouseX == currentMouseX && originalMouseY == currentMouseY) {
+			final int deltaX = currentMouseX - originalMouseX;
+			final int deltaY = currentMouseY - originalMouseY;
+			if ( deltaX == 0 && deltaY == 0 ) {
+				break;
+			}
+			
+			final Widget tile = this.getTileContainingElement( event.getTarget() );
+			
+			// give viewportListeners a chance to veto the drag move
+			final BeforeViewportMoveEvent beforeMoveEvent = new BeforeViewportMoveEvent();
+			beforeMoveEvent.setDeltaX( deltaX );
+			beforeMoveEvent.setDeltaY( deltaY );
+			beforeMoveEvent.setTile(tile);
+			beforeMoveEvent.setViewport(this);
+			
+			final ViewportListenerCollection listeners = this.getViewportListeners();
+			listeners.fireBeforeMove( beforeMoveEvent );
+			if ( beforeMoveEvent.isCancelled() ) {
 				break;
 			}
 
@@ -360,7 +388,13 @@ abstract public class Viewport extends CompositeWidget {
 
 			this.redraw();
 
-			listeners.fireDragMoved(this);
+			final ViewportMoveEvent moveEvent = new ViewportMoveEvent();
+			moveEvent.setDeltaX( deltaX );
+			moveEvent.setDeltaY( deltaY );
+			moveEvent.setTile(tile);
+			moveEvent.setViewport(this);
+			
+			listeners.fireMoved( moveEvent );
 			break;
 		}
 		
@@ -733,5 +767,11 @@ abstract public class Viewport extends CompositeWidget {
 	public boolean removeViewportListener(final ViewportListener viewportListeners) {
 		ObjectHelper.checkNotNull("parameter:viewportListeners", viewportListeners);
 		return this.getViewportListeners().remove(viewportListeners);
+	}
+	
+	
+	private Widget getTileContainingElement( final Element element ){
+		final Iterator tiles = this.getInnerPanel().iterator();
+		return WidgetHelper.findWidget(element, tiles );
 	}
 }
