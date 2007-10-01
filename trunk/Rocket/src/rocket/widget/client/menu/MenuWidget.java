@@ -15,67 +15,65 @@
  */
 package rocket.widget.client.menu;
 
-import rocket.util.client.ObjectHelper;
-import rocket.widget.client.Composite;
+import java.util.Stack;
 
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseOutEvent;
+import rocket.event.client.MouseOverEvent;
+import rocket.util.client.ObjectHelper;
+import rocket.widget.client.CompositeWidget;
 
 /**
- * Base class for all Menu widgets including Menus(Menu,ContextMenu),
- * MenuItems(MenuItem, SubMenuItem, MenuSpacer) and
- * MenuLists(HorizontalMenuList, VerticalMenuList).
+ * Base class for all MenuItem type classes including MenuItem, SubMenuItem and
+ * MenuSpacer.
  * 
  * @author Miroslav Pokorny (mP)
  */
-abstract public class MenuWidget extends Composite {
+abstract class MenuWidget extends CompositeWidget {
 
 	protected MenuWidget() {
 		super();
 	}
+	
+	protected void afterCreateWidget() {
+		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
+			public void onClick(final MouseClickEvent event) {
+				MenuWidget.this.handleMouseClick(event);
+			}
+
+			public void onMouseOut(final MouseOutEvent event) {
+				MenuWidget.this.handleMouseOut(event);
+			}
+
+			public void onMouseOver(final MouseOverEvent event) {
+				MenuWidget.this.handleMouseOver(event);
+			}
+		});
+	}
 
 	protected int getSunkEventsBitMask() {
-		return Event.ONCLICK | Event.ONMOUSEOVER | Event.ONMOUSEOUT;
+		return EventBitMaskConstants.MOUSE_CLICK | EventBitMaskConstants.MOUSE_OVER | EventBitMaskConstants.MOUSE_OUT;
 	}
 
 	// ACTION :::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public abstract void hide();
-
-	// EVENT HANDLING ::::::::::::::::::::::::::::::::::::::::::
-
-	/**
-	 * Dispatches to the appropriate method depending on the event type.
-	 * 
-	 * @param event
-	 */
-	public void onBrowserEvent(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
-
-		while (true) {
-			final int eventType = DOM.eventGetType(event);
-			if (Event.ONCLICK == eventType) {
-				this.handleMouseClick(event);
-				break;
-			}
-			if (Event.ONMOUSEOVER == eventType) {
-				this.handleMouseOver(event);
-				break;
-			}
-			if (Event.ONMOUSEOUT == eventType) {
-				this.handleMouseOut(event);
-				break;
-			}
-			break;
-		}
-	}
+	abstract protected void hide();
 
 	/**
 	 * This method is fired whenever a menuWidget receives a mouse click
 	 * 
 	 * @param event
 	 */
-	protected abstract void handleMouseClick(final Event event);
+	abstract protected void handleMouseClick(final MouseClickEvent event);
+
+	/**
+	 * This method is fired whenever this menu widget receives a mouse out event
+	 * 
+	 * @param event
+	 */
+	abstract protected void handleMouseOut(final MouseOutEvent event);
 
 	/**
 	 * This method is fired whenever this menu widget receives a mouse over
@@ -83,12 +81,112 @@ abstract public class MenuWidget extends Composite {
 	 * 
 	 * @param event
 	 */
-	protected abstract void handleMouseOver(final Event event);
+	abstract protected void handleMouseOver(final MouseOverEvent event);
+
+
+	protected void onDetach() {
+		super.onDetach();
+
+		this.hide();
+	}
+
+	// ACTIONS
+	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	protected void addHighlight() {
+		this.addStyleName(this.getSelectedStyle());
+	}
+
+	protected void removeHighlight() {
+		this.removeStyleName(this.getSelectedStyle());
+	}
 
 	/**
-	 * This method is fired whenever this menu widget receives a mouse out event
+	 * This style is added or removed depending on whether the widget is
+	 * highlighted.
 	 * 
-	 * @param event
+	 * @return
 	 */
-	protected abstract void handleMouseOut(final Event event);
+	protected abstract String getSelectedStyle();
+
+	/**
+	 * WHen a widget is disabled all events are ignored.
+	 */
+	private boolean disabled;
+
+	public boolean isDisabled() {
+		return this.disabled;
+	}
+
+	public void setDisabled(final boolean disabled) {
+		final String disabledStyle = this.getDisabledStyle();
+		if (this.isDisabled()) {
+			this.removeStyleName(disabledStyle);
+		}
+		this.disabled = disabled;
+		if (disabled) {
+			this.addStyleName(disabledStyle);
+		}
+	}
+
+	/**
+	 * Retrieves the style that is added or removed depending on whether the
+	 * widget is disabled.
+	 * 
+	 * @return
+	 */
+	protected abstract String getDisabledStyle();
+
+	/**
+	 * The parent menuList that contains this MenuItem.
+	 */
+	private MenuList parentMenuList;
+
+	protected MenuList getParentMenuList() {
+		ObjectHelper.checkNotNull("field:parentMenuList", parentMenuList);
+		return this.parentMenuList;
+	}
+	protected boolean hasParentMenuList(){
+		return null != this.parentMenuList;
+	}
+	protected void setParentMenuList(final MenuList parentMenuList) {
+		ObjectHelper.checkNotNull("parameter:parentMenuList", parentMenuList);
+		this.parentMenuList = parentMenuList;
+	}
+	protected void clearParentMenuList(){
+		this.parentMenuList = null;
+	}
+	
+	public String toString(){
+		final StringBuffer buf = new StringBuffer();
+		buf.append( ObjectHelper.defaultToString( this ));
+		buf.append( " [");	
+		
+		if( this.hasParentMenuList() ){
+			MenuList parent = this.getParentMenuList();
+					
+			final Stack stack = new Stack();
+			while( true ){
+				if( false == parent.hasParentMenuList() ){
+					break;
+				}
+				parent = parent.getParentMenuList();
+				
+				if( false == parent.hasOpened() ){
+					break;
+				}
+				stack.push( parent.getOpened().getText() );				
+			}
+						
+			while( false == stack.isEmpty() ){
+				buf.append( stack.pop() );
+				buf.append( ">");
+			}
+		}
+		
+		buf.append( this.toString0() );
+		buf.append( "]");
+		return buf.toString();
+	}
+	
+	abstract String toString0();
 }

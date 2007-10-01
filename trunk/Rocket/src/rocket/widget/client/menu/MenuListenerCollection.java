@@ -17,14 +17,16 @@ package rocket.widget.client.menu;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.ui.Widget;
 
-class MenuListenerCollection extends ArrayList {
+class MenuListenerCollection {
 
 	public MenuListenerCollection() {
+		this.setListeners(this.createListeners());
 	}
 
 	// FIRE EVENTS ::::::::::::::::::::::::::::::::::::::
@@ -32,23 +34,30 @@ class MenuListenerCollection extends ArrayList {
 	public void fireMenuCancelled(final Widget widget) {
 		ObjectHelper.checkNotNull("parameter:widget", widget);
 
+		final MenuOpenCancelledEvent event = new MenuOpenCancelledEvent();
+		event.setWidget( widget );
+		
 		final Iterator listeners = this.iterator();
 
 		while (listeners.hasNext()) {
 			final MenuListener listener = (MenuListener) listeners.next();
-			listener.onMenuCancelled(widget);
+			listener.onMenuCancelled(event);
 		}
 	}
 
 	public boolean fireBeforeMenuOpened(final Widget widget) {
 		ObjectHelper.checkNotNull("parameter:widget", widget);
 
+		final BeforeMenuOpenedEvent event = new BeforeMenuOpenedEvent();
+		event.setWidget( widget );
+		
 		final Iterator listeners = this.iterator();
 		boolean open = true;
 
 		while (listeners.hasNext()) {
 			final MenuListener listener = (MenuListener) listeners.next();
-			if (!listener.onBeforeMenuOpened(widget)) {
+			listener.onBeforeMenuOpened(event);
+			if ( event.isCancelled() ) {
 				open = false;
 				break;
 			}
@@ -59,12 +68,40 @@ class MenuListenerCollection extends ArrayList {
 	public void fireMenuOpened(final Widget widget) {
 		ObjectHelper.checkNotNull("parameter:widget", widget);
 
+		final MenuOpenedEvent event = new MenuOpenedEvent();
+		event.setWidget(widget);
+		
 		final Iterator listeners = this.iterator();
 
 		while (listeners.hasNext()) {
 			final MenuListener listener = (MenuListener) listeners.next();
-			listener.onMenuOpened(widget);
+			listener.onMenuOpened(event);
 		}
 	}
 
+	public void add(final MenuListener menuListener) {
+		this.getListeners().add(menuListener);
+	}
+
+	public void remove(final MenuListener menuListener) {
+		this.getListeners().remove(menuListener);
+	}
+
+	protected Iterator iterator() {
+		return this.getListeners().iterator();
+	}
+
+	private List listeners;
+
+	protected List getListeners() {
+		return listeners;
+	}
+
+	protected void setListeners(final List listeners) {
+		this.listeners = listeners;
+	}
+
+	protected List createListeners() {
+		return new ArrayList();
+	}
 }

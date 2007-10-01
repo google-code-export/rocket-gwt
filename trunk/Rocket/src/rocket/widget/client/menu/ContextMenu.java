@@ -15,15 +15,24 @@
  */
 package rocket.widget.client.menu;
 
+import java.util.Iterator;
+
 import rocket.dom.client.Dom;
+import rocket.event.client.Event;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.MouseDownEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseOutEvent;
+import rocket.style.client.CssUnit;
+import rocket.style.client.InlineStyle;
+import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
+import rocket.widget.client.Html;
 import rocket.widget.client.SpanPanel;
-import rocket.widget.client.WidgetHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -40,59 +49,63 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ContextMenu extends Menu {
 
+	static{
+		Event.disableContextMenu();
+	}
+	
 	public ContextMenu() {
 		super();
-
-		this.setStyleName(Constants.CONTEXT_MENU_STYLE);
 	}
-
-	// COMPOSITE :::::::::::::::::::::::::::::::::::::::::
 
 	/**
 	 * Factory method which eventually creates the VerticalMenuList.
 	 * 
 	 * @return
 	 */
-	protected Widget createWidget() {
+	protected Panel createPanel() {
+		return createSpanPanel();
+	}
+
+	protected void afterCreatePanel() {
+		super.afterCreatePanel();
+		
+		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
+			public void onMouseDown(final MouseDownEvent event) {
+				ContextMenu.this.handleMouseDown(event);
+			}
+
+			public void onMouseOut(final MouseOutEvent event) {
+				ContextMenu.this.handleMouseOut(event);
+			}
+		});		
+	}
+
+	protected String getInitialStyleName() {
+		return Constants.CONTEXT_MENU_STYLE;
+	}
+
+	protected int getSunkEventsBitMask() {
+		return EventBitMaskConstants.MOUSE_DOWN | EventBitMaskConstants.MOUSE_OUT;
+	}
+
+	protected SpanPanel createSpanPanel(){
 		final SpanPanel panel = new SpanPanel();
-		panel.add(new HTML(""));
+		panel.add(new Html(""));
 
 		final MenuList menuList = this.createMenuList();
 		this.setMenuList(menuList);
 		panel.add(menuList);
 
-		this.setPanel(panel);
 		return panel;
 	}
-
-	protected int getSunkEventsBitMask() {
-		return Event.ONMOUSEDOWN | Event.ONMOUSEOUT;
-	}
-
-	/**
-	 * A simplepanel is used as the destination panel which wraps the given
-	 * wrapped Widget. The first slot contains the widget and the second slot is
-	 * used to house the menuList.
-	 */
-	private SpanPanel panel;
-
-	protected SpanPanel getPanel() {
-		ObjectHelper.checkNotNull("field:panel", panel);
-		return panel;
-	}
-
-	protected void setPanel(final SpanPanel panel) {
-		ObjectHelper.checkNotNull("parameter:panel", panel);
-		this.panel = panel;
-	}
-
+	
 	protected MenuList createMenuList() {
 		final VerticalMenuList list = new VerticalMenuList();
 		list.setStyleName(Constants.VERTICAL_MENU_LIST_STYLE);
 		list.setHideable(true);
 		list.setMenu(this);
 		list.setOpenDirection(MenuListOpenDirection.DOWN);
-		list.hide();
+		list.setVisible( false );
 
 		return list;
 	}
@@ -103,40 +116,27 @@ public class ContextMenu extends Menu {
 	 * @return
 	 */
 	public Widget getWidget() {
-		final SpanPanel panel = this.getPanel();
+		final SpanPanel panel = (SpanPanel)this.getPanel();
 		return panel.get(0);
 	}
 
 	public void setWidget(final Widget widget) {
 		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-		final SpanPanel panel = this.getPanel();
+		final SpanPanel panel = (SpanPanel)this.getPanel();
 		panel.remove(0);
 		panel.insert(widget, 0);
 	}
 
-	// COMPOSITE
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 	/**
-	 * Dispatches to the appropriate method depending on the event type.
+	 * This method is fired whenever this menu widget receives a mouse out event
 	 * 
 	 * @param event
 	 */
-	public void onBrowserEvent(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
-
-		while (true) {
-			final int eventType = DOM.eventGetType(event);
-			if (Event.ONMOUSEDOWN == eventType && DOM.eventGetButton(event) == Event.BUTTON_RIGHT) {
-				this.handleMouseDown(event);
-				break;
-			}
-			if (Event.ONMOUSEOUT == eventType) {
-				this.handleMouseOut(event);
-				break;
-			}
-			break;
+	protected void handleMouseDown(final MouseDownEvent event) {
+		if (event.isRightButton()) {
+			this.open();
+			event.cancelBubble(true);
 		}
 	}
 
@@ -145,23 +145,13 @@ public class ContextMenu extends Menu {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseDown(final Event event) {
-		this.open();
-		DOM.eventCancelBubble(event, true);
-	}
-
-	/**
-	 * This method is fired whenever this menu widget receives a mouse out event
-	 * 
-	 * @param event
-	 */
-	protected void handleMouseOut(final Event event) {
+	protected void handleMouseOut(final MouseOutEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
-			final Element targetElement = DOM.eventGetToElement(event);
+			final Element targetElement = event.getTo();
 			if (DOM.isOrHasChild(this.getElement(), targetElement)) {
-				DOM.eventCancelBubble(event, true);
+				event.cancelBubble(true);
 				break;
 			}
 			this.hide();
@@ -183,12 +173,15 @@ public class ContextMenu extends Menu {
 			// Must set absolute coordinates in order to read the coordinates of
 			// element accurately IE6 bug
 			final Element menuListElement = menuList.getElement();
-			Dom.setAbsolutePosition(menuListElement, 0, 0);
+
+			InlineStyle.setString(menuListElement, StyleConstants.POSITION, "absolute");
+			InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, 0, CssUnit.PX);
+			InlineStyle.setInteger(menuListElement, StyleConstants.TOP, 0, CssUnit.PX);
 
 			final Widget widget = this.getWidget();
-			final Element element = widget.getElement();
-			int x = Dom.getContainerLeftOffset(element);
-			int y = Dom.getContainerTopOffset(element);
+			final Element widgetElement = widget.getElement();
+			int x = Dom.getContainerLeftOffset(widgetElement);
+			int y = Dom.getContainerTopOffset(widgetElement);
 
 			while (true) {
 				final MenuListOpenDirection openDirection = menuList.getOpenDirection();
@@ -205,15 +198,31 @@ public class ContextMenu extends Menu {
 					x = x + widget.getOffsetWidth() - 1;
 					break;
 				}
-				if (MenuListOpenDirection.DOWN == openDirection) {
-					y = y + widget.getOffsetHeight() - 1;
-					break;
-				}
-				WidgetHelper.fail("Unknown openDirection, " + openDirection);
+				ObjectHelper.checkSame("openDirection", MenuListOpenDirection.DOWN, openDirection);
+				y = y + widget.getOffsetHeight() - 1;
+				break;
 			}
-			Dom.setAbsolutePosition(menuListElement, x, y);
+			InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, x, CssUnit.PX);
+			InlineStyle.setInteger(menuListElement, StyleConstants.TOP, y, CssUnit.PX);
+			InlineStyle.setInteger(menuListElement, StyleConstants.Z_INDEX, 1, CssUnit.NONE);			
 
 			listeners.fireMenuOpened(this);
 		}
+	}
+	
+	public Iterator iterator(){
+		return this.getMenuList().iterator();
+	}
+	
+	public void insert(final Widget widget, final int beforeIndex) {
+		this.getMenuList().insert(widget, beforeIndex);
+	}
+
+	public boolean remove(final Widget widget) {
+		return this.getMenuList().remove(widget);
+	}
+
+	public int getCount() {
+		return this.getMenuList().getWidgetCount();
 	}
 }

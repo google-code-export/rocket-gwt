@@ -15,29 +15,31 @@
  */
 package rocket.widget.client.menu;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseOutEvent;
+import rocket.event.client.MouseOverEvent;
+import rocket.widget.client.Html;
 
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * A menu item is an item that may appear in a list which may be clicked if its
- * not disabled. When
+ * not disabled.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class MenuItem extends AbstractMenuItem {
+public class MenuItem extends MenuWidget {
 
 	public MenuItem() {
 		super();
 	}
 
 	protected Widget createWidget() {
-		final HTML html = this.createHtml();
-		this.setHtml(html);
-		return html;
+		return this.createHtml();
+	}
+
+	protected String getInitialStyleName() {
+		return Constants.MENU_ITEM_STYLE;
 	}
 
 	// ACTIONS :::::::::::::::::::::::::::::::::::::::::::::::
@@ -70,7 +72,7 @@ public class MenuItem extends AbstractMenuItem {
 	/**
 	 * This event is only fired if the MenuItem is not disabled.
 	 */
-	protected void handleMouseClick(final Event event) {
+	protected void handleMouseClick(final MouseClickEvent event) {
 		if (false == this.isDisabled()) {
 			this.open();
 		}
@@ -79,7 +81,7 @@ public class MenuItem extends AbstractMenuItem {
 	/**
 	 * Highlights this widget
 	 */
-	protected void handleMouseOver(final Event event) {
+	protected void handleMouseOver(final MouseOverEvent event) {
 		if (false == this.isDisabled()) {
 			this.addHighlight();
 		}
@@ -88,7 +90,7 @@ public class MenuItem extends AbstractMenuItem {
 	/**
 	 * Unhighlights this widget.
 	 */
-	protected void handleMouseOut(final Event event) {
+	protected void handleMouseOut(final MouseOutEvent event) {
 		if (false == this.isDisabled()) {
 			this.removeHighlight();
 		}
@@ -101,33 +103,19 @@ public class MenuItem extends AbstractMenuItem {
 	}
 
 	public void setText(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
 		this.getHtml().setText(text);
 	}
 
-	/**
-	 * A TEXT widget contains the text or label for this item.
-	 */
-	private HTML html;
 
-	protected HTML getHtml() {
-		ObjectHelper.checkNotNull("field:html", html);
-		return html;
+	protected Html getHtml() {
+		return (Html)this.getWidget();
 	}
 
-	protected void setHtml(final HTML html) {
-		ObjectHelper.checkNotNull("parameter:html", html);
-		this.html = html;
+	protected Html createHtml() {
+		return new Html();
 	}
-
-	protected HTML createHtml() {
-		final HTML html = new HTML();
-		html.setWidth("100%");
-		html.setStyleName(Constants.MENU_ITEM_STYLE);
-		return html;
-	}
-
-	public String toString() {
-		return ObjectHelper.defaultToString(this) + ", text[" + this.getText() + "]";
+	
+	String toString0(){
+		return this.getText();
 	}
 }

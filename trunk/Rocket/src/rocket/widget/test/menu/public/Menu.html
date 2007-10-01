@@ -10,6 +10,9 @@
 		font-size: 11px;
 	}
 	
+	BODY {
+		margin: 0px;
+	}
 	DIV{
 		margin: 0px;
 		padding: 0px;
@@ -20,84 +23,170 @@
 	}
 
 	.rocket-menu-horizontalMenuBar, 
-	.rocket-menu-verticalMenuBar, 
-	.rocket-menu-contextMenu, 
-	.rocket-menu-horizontalMenuList,
-	.rocket-menu-verticalMenuList {
+	.rocket-menu-verticalMenuBar{
+		width: 100%;		
+		margin: 0px;		
+		background-color: #bbd;
+	}
+
+	.rocket-menu-horizontalMenuList, 
+	.rocket-menu-verticalMenuList{
 		margin: 0px;
 		padding: 0px;
-		background-color: #dddddd;
-		background-image: none;
-		color: #222222;
-		border-style: none;
-		border-width: 0px;
-		white-space: nowrap;
-		
-		cursor: pointer;
-	}
-	
-	/* the width property must be set to 100% for the widget to work correctly */
-	DIV.rocket-menu-menuItem,
-	DIV.rocket-menu-subMenuItem,
-	DIV.rocket-menu-menuSpacer {
+			
+		border-width: 1px;
+		border-style: solid;
+		border-color: #99b;
+	}	
+	/*.rocket-menu-horizontalMenuList{
+		xwidth: 30em;
+	}*/	
+	.rocket-menu-verticalMenuList{
+		width: 30em;	
+	}	
+
+	.rocket-menu-menuItem,
+	.rocket-menu-subMenuItem,
+	.rocket-menu-menuSpacer {
 		margin: 0px;
 		padding-left: 5px;
 		padding-top: 5px;
 		padding-right: 5px;
 		padding-bottom: 5px;
 		border-style: none;
+		background-color: #bbd;
+
 		white-space: nowrap;
-		xwidth: 100%;
-		background-color: #dddddd;
-	}
-	/* unfortunately IE only seems to accept positionX/Y values if the shortcut background entry is used */
-	
-	DIV.rocket-menu-subMenuItem {
-		background-color: #dddddd;
+		height: 1.5em;		
 	}
 	
-	.rocket-menu-horizontalMenuList .rocket-menu-subMenuItem {
-		background: none;	
+	.rocket-menu-subMenuItem{
+		font-weight: bold;
+		color: #000;		
 	}
 	
-	.rocket-menu-verticalMenuList .rocket-menu-subMenuItem {
-		background: url( "sub-menu-arrow.gif" ) no-repeat center right;
-	}
-	
-	DIV.rocket-menu-menuItem-selected,
-	DIV.rocket-menu-subMenuItem-selected{
-		background-color: #444444;
-		color: #bbbbbb;
+	.rocket-menu-menuItem{
+		font-weight: normal;
+		color: #000;
 	}
 
-	.rocket-menu-menuItem-disabled,
+	.rocket-menu-menuItem-selected, 
+	.rocket-menu-subMenuItem-selected{
+		color: #bbd;
+		background-color: #000;
+	}
+	
+	.rocket-menu-menuItem-disabled, 
 	.rocket-menu-subMenuItem-disabled{
-		color: #888888;
+		color: #999;
 	}
 
+	/* blue theme :::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+	.blue .rocket-menu-horizontalMenuBar, 
+	.blue .rocket-menu-verticalMenuBar{
+		background-color: #bcf;
+	}
+
+	.blue .rocket-menu-horizontalMenuList, 
+	.blue .rocket-menu-verticalMenuList{
+		border-color: #9ac;
+	}	
+	
+	.blue .rocket-menu-menuItem,
+	.blue .rocket-menu-subMenuItem,
+	.blue .rocket-menu-menuSpacer {
+		background-color: #bcf;
+	}
+	
+	.blue .rocket-menu-menuItem-selected, .blue .rocket-menu-subMenuItem-selected{
+		color: #bcf;
+		background-color: #56a;
+	}
+	
+	/* green theme :::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+	.green .rocket-menu-horizontalMenuBar, 
+	.green .rocket-menu-verticalMenuBar{
+		background-color: #bfc;
+	}
+
+	.green .rocket-menu-horizontalMenuList, 
+	.green .rocket-menu-verticalMenuList{
+		border-color: #9da;
+	}	
+	
+	.green .rocket-menu-menuItem,
+	.green .rocket-menu-subMenuItem,
+	.green .rocket-menu-menuSpacer {
+		background-color: #bfc;
+	}
+	
+	.green .rocket-menu-menuItem-selected, .green .rocket-menu-subMenuItem-selected{
+		color: #bfc;
+		background-color: #6a7;
+	}
+
+	/* red theme :::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+	.red .rocket-menu-horizontalMenuBar, 
+	.red .rocket-menu-verticalMenuBar{
+		background-color: #fbc;
+	}
+
+	.red .rocket-menu-horizontalMenuList, 
+	.red .rocket-menu-verticalMenuList{
+		border-color: #d9a;
+	}	
+	
+	.red .rocket-menu-menuItem,
+	.red .rocket-menu-subMenuItem,
+	.red .rocket-menu-menuSpacer {
+		background-color: #fbc;
+	}
+	
+	.red .rocket-menu-menuItem-selected, .red .rocket-menu-subMenuItem-selected{
+		color: #fbc;
+		background-color: #a67;
+	}
+
+
+	/* yellow theme :::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+	.yellow .rocket-menu-horizontalMenuBar, 
+	.yellow .rocket-menu-verticalMenuBar{
+		background-color: #fea;
+	}
+
+	.yellow .rocket-menu-horizontalMenuList, 
+	.yellow .rocket-menu-verticalMenuList{
+		border-color: #994;
+	}	
+	
+	.yellow .rocket-menu-menuItem,
+	.yellow .rocket-menu-subMenuItem,
+	.yellow .rocket-menu-menuSpacer {
+		background-color: #fea;
+	}
+	
+	.yellow .rocket-menu-menuItem-selected, .yellow .rocket-menu-subMenuItem-selected{
+		color: #fea;
+		background-color: #764;
+	}
 </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 <script>
-function clearLog(){
-	var log = document.getElementById("log");
-	log.innerHTML="";
-}	
-</script>
-<button onclick="clearLog();">clearLog</button><br>
+<h3>Things to test</h3>
+<ul>
+<li>Each menu contains three levels of sub menus</li>
+<li>Each sub menu contains two further sub menus and two menu items.</li>
+<li>The second sub menu and menu item for each sub menu is disabled</li>
+<li>Verify that each menu works by checking the log for event messages</li>
+<li>Each of the highlighted words (those with a yellow background) below includes an attached context menu</li>
+<li>In opera context menu is accessed via control + mouse click rather than right click.</li>
+<li>The three <b>get</b>,<b>add</b> and <b>remove</b> buttons work on the green horizontal menu bar.</li>
+</ul>
 
-<b>Log</b>
-<div id="log"
-	style="margin: 4px; 
-		width: 95%; 
-		height: 20em; 
-		overflow: scroll; 
-		border-width: 1px; 
-		border-style: dotted; 
-		border-color: #888888; 
-		padding: 4px; 
-		color: #444444; 
-		background-color: #eeeeee;">	
-</div>
 </body>
 </html>

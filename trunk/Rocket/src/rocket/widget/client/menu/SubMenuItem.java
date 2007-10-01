@@ -18,36 +18,48 @@ package rocket.widget.client.menu;
 import java.util.Iterator;
 
 import rocket.dom.client.Dom;
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseOutEvent;
+import rocket.event.client.MouseOverEvent;
+import rocket.style.client.ComputedStyle;
+import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-import rocket.widget.client.WidgetHelper;
+import rocket.widget.client.DivPanel;
+import rocket.widget.client.Html;
+import rocket.widget.client.Label;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A SubMenuItem contains a text label and a list of further items.
+ * A SubMenuItem contains a text label and a MenuList containing the sub menu items.
  * 
  * @author Miroslav Pokorny (mP)
- * 
  */
-public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
+public class SubMenuItem extends MenuWidget implements HasWidgets {
 
 	public SubMenuItem() {
 		super();
 	}
 
 	protected Widget createWidget() {
-		final SimplePanel panel = this.createSimplePanel();
-		this.setSimplePanel(panel);
+		final DivPanel panel = this.createDivPanel();
+		
+		final Element element = panel.getElement();
+		InlineStyle.setString(element, StyleConstants.POSITION, "relative");
+		InlineStyle.setInteger(element, StyleConstants.LEFT, 0, CssUnit.PX);
+		InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
+		
 		return panel;
+	}
+
+	protected String getInitialStyleName() {
+		return Constants.SUB_MENU_ITEM_STYLE;
 	}
 
 	// PANEL
@@ -65,6 +77,10 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 		return this.getMenuList().get(index);
 	}
 
+	public boolean remove( final int index ){
+		return this.getMenuList().remove(index);
+	}
+	
 	public boolean remove(final Widget widget) {
 		return this.getMenuList().remove(widget);
 	}
@@ -86,49 +102,70 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 
 	public void open() {
 		final MenuList menuList = this.getMenuList();
-
 		final Menu menu = menuList.getMenu();
 		final MenuListenerCollection listeners = menu.getMenuListeners();
 		if (listeners.fireBeforeMenuOpened(this)) {
 
+			InlineStyle.setInteger(this.getElement(), StyleConstants.Z_INDEX, 1, CssUnit.NONE );
+			
 			// open the list belonging to this item...
 			menuList.open();
 			this.getParentMenuList().setOpened(this);
 
+			final Element parentMenuList = this.getParentMenuList().getElement();
+
 			// Must set absolute coordinates in order to read the coordinates of
 			// element accurately IE6 bug
 			final Element menuListElement = menuList.getElement();
-			Dom.setAbsolutePosition(menuListElement, 0, 0);
-
-			final Element element = this.getElement();
-			int x = Dom.getContainerLeftOffset(element);
-			int y = Dom.getContainerTopOffset(element);
+			InlineStyle.setString(menuListElement, StyleConstants.POSITION, "absolute");
+			InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, 0, CssUnit.PX);
+			InlineStyle.setInteger(menuListElement, StyleConstants.TOP, 0, CssUnit.PX);			
+			
+			int x = Dom.getContainerLeftOffset(menuListElement);
+			int y = Dom.getContainerTopOffset(menuListElement);
 
 			while (true) {
 				final MenuListOpenDirection openDirection = menuList.getOpenDirection();
-				final MenuList parentMenuList = this.getParentMenuList();
 
 				if (MenuListOpenDirection.LEFT == openDirection) {
-					x = x - menuList.getOffsetWidth() + 1;
+					x = x - ComputedStyle.getInteger(menuListElement, StyleConstants.WIDTH, CssUnit.PX, 0);
+					x = x + ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_RIGHT_WIDTH, CssUnit.PX, 0);
+					x++;
+					
+					y = y - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_TOP_WIDTH, CssUnit.PX, 0);
 					break;
 				}
 				if (MenuListOpenDirection.UP == openDirection) {
-					y = y - menuList.getOffsetHeight() + 1;
+					x = x - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
+					
+					y = y - ComputedStyle.getInteger(menuListElement, StyleConstants.HEIGHT, CssUnit.PX, 0);
+					y = y + ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_BOTTOM_WIDTH, CssUnit.PX, 0);
+					y--;
 					break;
 				}
 				if (MenuListOpenDirection.RIGHT == openDirection) {
-					x = x + parentMenuList.getOffsetWidth() - 1;
+					x = x + ComputedStyle.getInteger(parentMenuList, StyleConstants.WIDTH, CssUnit.PX, 0);
+					x = x - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
+					x--;
+					
+					y = y - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_TOP_WIDTH, CssUnit.PX, 0);
 					break;
-				}
-				if (MenuListOpenDirection.DOWN == openDirection) {
-					y = y + parentMenuList.getOffsetHeight() - 1;
-					break;
-				}
-				WidgetHelper.fail("Unknown openDirection, " + openDirection);
-			}
-			Dom.setAbsolutePosition(menuListElement, x, y);
+				}				
+				ObjectHelper.checkSame("openDirection", MenuListOpenDirection.DOWN, openDirection);				
 
-			listeners.fireMenuOpened(this);
+				x = x - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
+				
+				y = y + ComputedStyle.getInteger(parentMenuList, StyleConstants.HEIGHT, CssUnit.PX, 0);
+				y = y - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_TOP_WIDTH, CssUnit.PX, 0);
+				y--;
+				break;
+			}
+			InlineStyle.setString(menuListElement, StyleConstants.POSITION, "absolute");
+			InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, x, CssUnit.PX);
+			InlineStyle.setInteger(menuListElement, StyleConstants.TOP, y, CssUnit.PX);
+			InlineStyle.setInteger(menuListElement, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
+						
+			listeners.fireMenuOpened(this);			
 		}
 	}
 
@@ -139,6 +176,8 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 	public void hide() {
 		this.getMenuList().hide();
 		this.removeHighlight();
+		
+		InlineStyle.setString(this.getElement(), StyleConstants.Z_INDEX, "" );
 	}
 
 	protected String getSelectedStyle() {
@@ -155,21 +194,21 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 	/**
 	 * This event is only fired if the SubMenuItem is not disabled.
 	 */
-	protected void handleMouseClick(final Event event) {
+	protected void handleMouseClick(final MouseClickEvent event) {
 		// ignore event if menu list is already opened...
 		if (false == this.isDisabled()) {
-			if (DOM.getStyleAttribute(this.getMenuList().getElement(), StyleConstants.DISPLAY).equalsIgnoreCase("none")) {
+			if ( "hidden".equals( ComputedStyle.getString(this.getMenuList().getElement(), StyleConstants.VISIBILITY ))) {
 				this.open();
 			}
 		}
-		DOM.eventCancelBubble(event, true);
+		event.cancelBubble(true);
 	}
 
 	/**
 	 * Highlights this widget and possibly opens the attached menuList if the
 	 * parent menu has its autoOpen property set to true.
 	 */
-	protected void handleMouseOver(final Event event) {
+	protected void handleMouseOver(final MouseOverEvent event) {
 		if (false == this.isDisabled()) {
 			this.addHighlight();
 
@@ -177,7 +216,7 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 				this.open();
 			}
 		}
-		DOM.eventCancelBubble(event, true);
+		event.cancelBubble(true);
 	}
 
 	/**
@@ -185,13 +224,14 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 	 * bubbling. Otherwise let the event bubble up and let the parnet (menuList)
 	 * handle the event.
 	 */
-	protected void handleMouseOut(final Event event) {
+	protected void handleMouseOut(final MouseOutEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
-			final Element targetElement = DOM.eventGetToElement(event);
+			final Element targetElement = event.getTo();
+
 			if (DOM.isOrHasChild(this.getElement(), targetElement)) {
-				DOM.eventCancelBubble(event, true);
+				event.cancelBubble(true);
 				break;
 			}
 			this.hide();
@@ -199,8 +239,6 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 		}
 	}
 
-	// COMPOSITE
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	public String getText() {
 		return this.getHtml().getText();
 	}
@@ -210,49 +248,40 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 		this.getHtml().setText(text);
 	}
 
-	/**
-	 * A SimplePanel widget contains the menuItem text as its primary widget and
-	 * also supports the addition of the sub menu list.
-	 */
-	private SimplePanel simplePanel;
-
-	protected SimplePanel getSimplePanel() {
-		ObjectHelper.checkNotNull("field:simplePanel", simplePanel);
-		return simplePanel;
+	protected DivPanel getDivPanel() {
+		return (DivPanel)this.getWidget();
 	}
 
-	protected void setSimplePanel(final SimplePanel simplePanel) {
-		ObjectHelper.checkNotNull("parameter:simplePanel", simplePanel);
-		this.simplePanel = simplePanel;
-	}
+	protected DivPanel createDivPanel() {
+		final DivPanel divPanel = new DivPanel();
 
-	protected SimplePanel createSimplePanel() {
-		final SimplePanel simplePanel = new SimplePanel();
-		simplePanel.setWidth("100%");
-		DOM.appendChild(simplePanel.getElement(), this.createHtml().getElement());
-		simplePanel.setStyleName(Constants.SUB_MENU_ITEM_STYLE);
-		return simplePanel;
+		divPanel.add( new Label() ); // placeholder for menu list...
+		
+		final Html html = this.createHtml();
+		divPanel.add( html );
+		this.setHtml(html);
+		
+		return divPanel;
 	}
 
 	/**
-	 * A TEXT widget contains the text or label of this item.
+	 * A Html widget contains the text or label of this item.
 	 */
-	private HTML html;
+	private Html html;
 
-	protected HTML getHtml() {
+	protected Html getHtml() {
 		ObjectHelper.checkNotNull("field:html", html);
 		return html;
 	}
 
-	protected void setHtml(final HTML html) {
+	protected void setHtml(final Html html) {
 		ObjectHelper.checkNotNull("parameter:html", html);
 		this.html = html;
 	}
 
-	protected HTML createHtml() {
-		final HTML html = new HTML();
+	protected Html createHtml() {
+		final Html html = new Html();
 		html.setWidth("100%");
-		this.setHtml(html);
 		return html;
 	}
 
@@ -281,8 +310,13 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 		ObjectHelper.checkNotNull("parameter:menuList", menuList);
 		this.menuList = menuList;
 
-		InlineStyle.setString(menuList.getElement(), StyleConstants.DISPLAY, "none");
-		this.getSimplePanel().add(menuList);
+		final Element element = menuList.getElement();
+		InlineStyle.setString( element, StyleConstants.VISIBILITY, "hidden");
+		InlineStyle.setString( element, StyleConstants.DISPLAY, "none");
+		
+		final DivPanel divPanel = this.getDivPanel();
+		divPanel.remove( 0 );
+		divPanel.add( menuList);
 	}
 
 	/**
@@ -299,8 +333,8 @@ public class SubMenuItem extends AbstractMenuItem implements HasWidgets {
 	public void setAutoOpen(final boolean autoOpen) {
 		this.autoOpen = autoOpen;
 	}
-
-	public String toString() {
-		return ObjectHelper.defaultToString(this) + ", text[" + this.getText() + "], autoOpen: " + autoOpen;
+	
+	String toString0(){
+		return this.getText();
 	}
 }

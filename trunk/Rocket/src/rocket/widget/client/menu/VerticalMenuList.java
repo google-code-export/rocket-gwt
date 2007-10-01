@@ -17,9 +17,13 @@ package rocket.widget.client.menu;
 
 import java.util.Iterator;
 
-import rocket.util.client.ObjectHelper;
+import rocket.style.client.CssUnit;
+import rocket.style.client.InlineStyle;
+import rocket.style.client.StyleConstants;
+import rocket.widget.client.DivPanel;
 
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -34,56 +38,54 @@ public class VerticalMenuList extends MenuList {
 		super();
 	}
 
-	protected Widget createWidget() {
-		final VerticalPanel verticalPanel = this.createVerticalPanel();
-		this.setVerticalPanel(verticalPanel);
-		return verticalPanel;
+	protected Panel createPanel() {
+		return this.createDivPanel();
+	}
+
+	protected String getInitialStyleName() {
+		return Constants.VERTICAL_MENU_LIST_STYLE;
+	}
+	
+	protected void open() {
+		final Element element = this.getElement();
+		if (this.isHideable()) {
+			InlineStyle.setInteger(element, StyleConstants.Z_INDEX, 1, CssUnit.NONE);			
+			InlineStyle.setString(element, StyleConstants.DISPLAY, "block" );
+			InlineStyle.setString(element, StyleConstants.VISIBILITY, "visible");
+		}
 	}
 
 	// PANEL
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	public Widget get(final int index) {
-		return this.getVerticalPanel().getWidget(index);
+		return this.getDivPanel().get(index);
 	}
 
 	public void insert(final Widget widget, final int beforeIndex) {
-		this.getVerticalPanel().insert(widget, beforeIndex);
-		this.afterInsert(widget);
+		this.getDivPanel().insert(widget, beforeIndex);
+		
+		final MenuWidget menuItem = (MenuWidget) widget;
+		menuItem.setParentMenuList(this);
 	}
 
 	protected boolean remove0(final Widget widget) {
-		return this.getVerticalPanel().remove(widget);
+		return this.getDivPanel().remove(widget);
 	}
 
 	public int getWidgetCount() {
-		return this.getVerticalPanel().getWidgetCount();
+		return this.getDivPanel().getWidgetCount();
 	}
 
 	public Iterator iterator() {
-		return this.getVerticalPanel().iterator();
+		return this.getDivPanel().iterator();
 	}
 
-	// PROPERTIES :::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-	/**
-	 * A verticalPanel is used as the container for all child widgets.
-	 */
-	private VerticalPanel verticalPanel;
-
-	protected VerticalPanel getVerticalPanel() {
-		ObjectHelper.checkNotNull("field:verticalPanel", verticalPanel);
-		return this.verticalPanel;
+	protected DivPanel getDivPanel() {
+		return (DivPanel) this.getPanel();
 	}
 
-	protected void setVerticalPanel(final VerticalPanel verticalPanel) {
-		ObjectHelper.checkNotNull("parameter:verticalPanel", verticalPanel);
-		this.verticalPanel = verticalPanel;
-	}
-
-	protected VerticalPanel createVerticalPanel() {
-		final VerticalPanel panel = new VerticalPanel();
-		panel.setStyleName(Constants.VERTICAL_MENU_LIST_STYLE);
-		return panel;
+	protected DivPanel createDivPanel() {
+		return new DivPanel();
 	}
 }

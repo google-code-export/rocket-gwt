@@ -32,24 +32,22 @@ public interface MenuListener {
 	 * involves a user navigating over menus submenus and so on and then
 	 * clicking outside the menu area.
 	 * 
-	 * @param widget
+	 * @param event
 	 */
-	void onMenuCancelled(Widget widget);
+	void onMenuCancelled( MenuOpenCancelledEvent event );
 
 	/**
 	 * This event is fired before a subMenu/ menuItem is opened. This allows a
 	 * listener to cancel or veto an open event.
 	 * 
-	 * @param widget
-	 * @return Return false to cancel the open( works for both subMenus /
-	 *         menuItems) action or true to let it go.
+	 * @param event
 	 */
-	boolean onBeforeMenuOpened(Widget widget);
+	void onBeforeMenuOpened(BeforeMenuOpenedEvent event);
 
 	/**
 	 * This event is fired after a subMenu or menuItem is opened.
 	 * 
-	 * @param widget
+	 * @param event
 	 */
-	void onMenuOpened(Widget widget);
+	void onMenuOpened(MenuOpenedEvent event);
 }

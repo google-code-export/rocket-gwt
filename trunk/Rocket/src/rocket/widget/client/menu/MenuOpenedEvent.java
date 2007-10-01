@@ -17,26 +17,14 @@ package rocket.widget.client.menu;
 
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * Convenient base class that implements all {@link MenuListener} methods with
- * do nothing methods.
- * 
- * @author Miroslav Pokorny (mP)
- */
-public abstract class MenuListenerImpl implements MenuListener {
-
-	protected MenuListenerImpl() {
-		super();
+public class MenuOpenedEvent {
+	
+	private Widget widget;
+	
+	public Widget getWidget(){
+		return this.widget;
 	}
-
-	public void onMenuCancelled(final Widget widget) {
+	void setWidget( final Widget widget ){
+		this.widget = widget;
 	}
-
-	public boolean onBeforeMenuOpened(final Widget widget) {
-		return true;
-	}
-
-	public void onMenuOpened(final Widget widget) {
-	}
-
 }

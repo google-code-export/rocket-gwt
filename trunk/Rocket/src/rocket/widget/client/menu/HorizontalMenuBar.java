@@ -15,7 +15,7 @@
  */
 package rocket.widget.client.menu;
 
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.Panel;
 
 /**
  * A standard horizontal menu.The top level menus are layed out horizontally and
@@ -28,7 +28,7 @@ public class HorizontalMenuBar extends Menu {
 		super();
 	}
 
-	protected Widget createWidget() {
+	protected Panel createPanel() {
 		final MenuList menuList = this.createMenuList();
 		this.setMenuList(menuList);
 		return menuList;
@@ -36,9 +36,12 @@ public class HorizontalMenuBar extends Menu {
 
 	protected MenuList createMenuList() {
 		final HorizontalMenuList list = new HorizontalMenuList();
-		list.setStyleName(Constants.HORIZONTAL_MENU_BAR_STYLE);
-		list.setHideable(false);
+		list.setHideable( false );
 		list.setMenu(this);
 		return list;
+	}
+
+	protected String getInitialStyleName() {
+		return Constants.HORIZONTAL_MENU_BAR_STYLE;
 	}
 }
