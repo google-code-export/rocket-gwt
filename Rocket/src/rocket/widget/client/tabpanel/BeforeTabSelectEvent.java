@@ -19,8 +19,20 @@ package rocket.widget.client.tabpanel;
  * This event is fired prior to a tab selection happening.
  * @author Miroslav Pokorny
  */
-public class BeforeTabSelectedEvent {
+public class BeforeTabSelectEvent {
 
+	/**
+	 * The current selection
+	 */
+	private TabItem currentSelection;
+	
+	public TabItem getCurrentSelection(){
+		return currentSelection;
+	}
+	void setCurrentSelection( final TabItem currentSelection ){
+		this.currentSelection = currentSelection;
+	}
+	
 	/**
 	 * The tabItem about to be newSelection.
 	 */

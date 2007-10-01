@@ -133,10 +133,18 @@ public abstract class TabPanel extends CompositeWidget {
 	
 	protected void closeTab( final TabItem tabItem ){
 		final TabListenerCollection listeners = this.getTabListeners();
-		if (listeners.fireBeforeTabClosed( tabItem)) {
-
+	
+		final BeforeTabCloseEvent beforeClose = new BeforeTabCloseEvent();
+		beforeClose.setClosing( tabItem );
+		listeners.fireBeforeTabClosed( beforeClose );
+		
+		if ( false == beforeClose.isCancelled() ) {
 			this.remove( tabItem );
-			listeners.fireTabClosed( tabItem, this );
+			
+			final TabCloseEvent closed = new TabCloseEvent();
+			closed.setClosed(tabItem );
+			
+			listeners.fireTabClosed( closed );
 		} // if
 	}
 
@@ -235,11 +243,22 @@ public abstract class TabPanel extends CompositeWidget {
 		this.select(this.indexOf(item));
 	}
 
-	public void select(final int index) {
-		final TabListenerCollection listeners = this.getTabListeners();
+	public void select(final int index) {				
 		final TabItem newlySelectedItem = this.get(index);
-
-		if (listeners.fireBeforeTabSelected(newlySelectedItem)) {
+		TabItem previousSelection = null;
+		final int previouslySelectedIndex = this.getSelectedIndex();
+		if( -1 != previouslySelectedIndex ){
+			previousSelection = this.get( previouslySelectedIndex );
+		}
+				
+		final BeforeTabSelectEvent beforeSelected = new BeforeTabSelectEvent();
+		beforeSelected.setCurrentSelection( previousSelection );
+		beforeSelected.setNewSelection( newlySelectedItem );
+		
+		final TabListenerCollection listeners = this.getTabListeners();
+		listeners.fireBeforeTabSelected( beforeSelected );
+		
+		if ( false == beforeSelected.isCancelled() ) {
 			final String selectedStyle = this.getTabBarItemSelectedStyleName();
 
 			final TabBarPanel tabBarPanel = this.getTabBarPanel();
@@ -261,7 +280,11 @@ public abstract class TabPanel extends CompositeWidget {
 			// tell the deckPanel to select a new sub-widget.
 			contentPanel.showWidget(index);
 
-			listeners.fireTabSelected(previouslySelectedTabItem, this );
+			final TabSelectEvent selectedEvent = new TabSelectEvent();
+			selectedEvent.setPreviouslySelected(previouslySelectedTabItem);
+			selectedEvent.setCurrentSelection( newlySelectedItem );
+			
+			listeners.fireTabSelected( selectedEvent );
 		}
 	}
 
