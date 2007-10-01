@@ -143,7 +143,7 @@ public class StyleSupportConstants {
 
 	final static String FIXED_POSITION_BOTTOM_QUIRKSMODE_EXPRESSION = "#-(document?document.body?document.body.scrollTop:0:0)+'px'";
 
-	final static String OFFSET_WIDTH = "offsetWidth";
+	final static String CLIENT_WIDTH = "clientWidth";
 
-	final static String OFFSET_HEIGHT = "offsetHeight";
+	final static String CLIENT_HEIGHT = "clientHeight";
 }

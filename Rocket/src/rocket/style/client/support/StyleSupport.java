@@ -26,23 +26,6 @@ import com.google.gwt.user.client.Element;
 /**
  * This and sub-classes contain the browser specific jsni stuff for StyleHelper.
  * 
- * <h6>Gotchas</h6>
- * <p>
- * The content width of a child that is wider than its parent with scrollbars
- * reports different values in FF compared to IE. The width of the child is
- * never greater than the parent whilst IE reports the actual number of pixels
- * that the child is if one peeks inside the scrollable area. The same problem
- * is manifest for content height.
- * 
- * The content width is calculate as the offsetWidth of the element less any
- * padding and borders.
- * 
- * One possible solution to this problem if one wishes to report values that
- * match FF is to check if the child width is greater than the parent. If it is
- * calculate the child's width using the coordinates of the parent. This may be
- * costly as the parent itself could be inside a scrollable area etc.
- * </p>
- * 
  * @author Miroslav Pokorny (mP)
  */
 abstract public class StyleSupport {
