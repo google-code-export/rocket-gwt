@@ -80,7 +80,6 @@ public class HttpHelper {
 	 * method currently only encodes INPUT tags by reading their VALUE
 	 * attribute.
 	 * 
-	 * @todo read and encoded selected fields etc.
 	 * @param form
 	 * @return
 	 */
