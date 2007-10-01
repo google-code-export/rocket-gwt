@@ -15,14 +15,18 @@
  */
 package rocket.widget.client.menu;
 
-import java.util.Iterator;
-
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseOutEvent;
+import rocket.event.client.MouseOverEvent;
 import rocket.util.client.ObjectHelper;
+import rocket.widget.client.CompositePanel;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -31,29 +35,60 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class Menu extends MenuWidget implements HasWidgets {
+public abstract class Menu extends CompositePanel implements HasWidgets {
 
 	public Menu() {
 		super();
+	}
+
+	protected void checkPanel( final Panel panel ){
+		throw new UnsupportedOperationException("checkPanel");
+	}
+	
+	protected void beforeCreatePanel() {
+		super.beforeCreatePanel();
+
 		this.setMenuListeners(createMenuListenerCollection());
 	}
+	
+	protected void afterCreatePanel(){
+		
+		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
+			public void onClick(final MouseClickEvent event) {
+				Menu.this.handleMouseClick(event);
+			}
 
-	protected void handleMouseClick(final Event event) {
-		DOM.eventCancelBubble(event, true);
+			public void onMouseOut(final MouseOutEvent event) {
+				Menu.this.handleMouseOut(event);
+			}
+
+			public void onMouseOver(final MouseOverEvent event) {
+				Menu.this.handleMouseOver(event);
+			}
+		});	
+	}
+	
+	protected int getSunkEventsBitMask() {
+		return EventBitMaskConstants.MOUSE_CLICK | EventBitMaskConstants.MOUSE_OVER | EventBitMaskConstants.MOUSE_OUT;
 	}
 
-	protected void handleMouseOver(final Event event) {
-		DOM.eventCancelBubble(event, true);
+	protected void handleMouseClick(final MouseClickEvent event) {
+		event.cancelBubble(true);
+	}
+
+	protected void handleMouseOver(final MouseOverEvent event) {
+		event.cancelBubble(true);
 	}
 
 	/**
 	 * If the mouse moves outside the menu hide the event.
 	 */
-	protected void handleMouseOut(final Event event) {
-		final Element target = DOM.eventGetToElement(event);
+	protected void handleMouseOut(final MouseOutEvent event) {
+		final Element target = event.getTo();
+
 		if (target == null || DOM.isOrHasChild(this.getElement(), target)) {
 			this.hide();
-			DOM.eventCancelBubble(event, true);
+			event.cancelBubble(true);
 		}
 	}
 
@@ -69,12 +104,12 @@ public abstract class Menu extends MenuWidget implements HasWidgets {
 
 	// PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void add(final Widget widget) {
-		this.insert(widget, this.getCount());
-	}
-
 	public void insert(final Widget widget, final int beforeIndex) {
 		this.getMenuList().insert(widget, beforeIndex);
+	}
+	
+	public boolean remove( final int index ){
+		return this.getMenuList().remove(index);
 	}
 
 	public boolean remove(final Widget widget) {
@@ -85,13 +120,6 @@ public abstract class Menu extends MenuWidget implements HasWidgets {
 		return this.getMenuList().getWidgetCount();
 	}
 
-	public Iterator iterator() {
-		return this.getMenuList().iterator();
-	}
-
-	public void clear() {
-		this.getMenuList().clear();
-	}
 
 	// PROPERTIES :::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -147,6 +175,6 @@ public abstract class Menu extends MenuWidget implements HasWidgets {
 	}
 
 	public String toString() {
-		return super.toString() + ", menuListeners: " + menuListeners;
+		return ObjectHelper.defaultToString( this );
 	}
 }
