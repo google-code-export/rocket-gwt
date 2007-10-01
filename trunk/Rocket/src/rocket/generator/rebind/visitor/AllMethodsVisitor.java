@@ -27,8 +27,6 @@ import rocket.util.client.ObjectHelper;
  */
 abstract public class AllMethodsVisitor {
 
-	private final static String OBJECT = Object.class.getName();
-
 	/**
 	 * Starts the visiting process starting at the most derived type towards
 	 * java.lang.Object.
@@ -51,7 +49,7 @@ abstract public class AllMethodsVisitor {
 		protected boolean visit(final Type type) {
 			ObjectHelper.checkNotNull("parameter:type", type);
 
-			if (false == (AllMethodsVisitor.this.skipJavaLangObjectMethods() && type.getName().equals(OBJECT))) {
+			if (false == (AllMethodsVisitor.this.skipJavaLangObjectMethods() && type.equals( type.getGeneratorContext().getObject()))) {
 
 				final TypeMethodsVisitor methodVisitor = new TypeMethodsVisitor() {
 					protected boolean visit(final Method method) {
