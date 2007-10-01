@@ -16,8 +16,7 @@ TEXTAREA, IMG, SPAN {
 	border: 0px;
 }
 
-gwt-FlexTable{
-	background-color: #eeeeee;
+TABLE{
 }
 
 .rocket-resizablePanel {
@@ -25,138 +24,106 @@ gwt-FlexTable{
 	border-width: 1px;
 	border-color: black;
 	border-style: solid;
-
-	padding-right: 10px;
-	padding-top: 20px;
-	padding-left: 30px;
-	padding-bottom: 40px;
-	margin: 10px;
 }
 
-.rocket-resizablePanel-eastHandle {
-	margin: 0px;
-	border-color: #000000;
-	border-style: solid;
+.rocket-resizablePanel{
+}
+
+.rocket-resizablePanel-widget{
+	background-color: #fff;
+}
+.rocket-resizablePanel-rightHandle,
+.rocket-resizablePanel-cornerHandle,
+.rocket-resizablePanel-bottomHandle{	
+	background-color: #ccc;
+}	
+
+.rocket-resizablePanel-rightHandle {
+	width: 7px;
+		
+	border-left-color: #ccc;
+	border-top-color: #ccc;
+	border-right-color: #888;
+	border-bottom-width: 0px;	
 	border-width: 1px;
-	padding: 0px;
-	background-color: #88ff88;
-	width: 10px;
-	height: 10px;
+	border-style: solid;
 	
 	cursor: e-resize;
 }
-.rocket-resizablePanel-northEastHandle {	
-	margin: 0px;
-	border-color: #000000;
+
+.rocket-resizablePanel-cornerHandle {
+	width: 7px;
+	height: 8px;
+
+	border-left-width: 0px;
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-right-color: #888;
+	border-bottom-width: 1px;
+	border-bottom-color: #888;
 	border-style: solid;
-	border-width: 1px;
-	padding: 0px;
-	background-color: #88cccc;
-	width: 10px;
-	height: 10px;
-	
-	cursor: ne-resize;
+		
+	padding-left: 7px;
+		
+	cursor: se-resize;
+	background: url(corner.gif) bottom right no-repeat;
 }
-.rocket-resizablePanel-northHandle {
-	margin: 0px;
-	border-color: #000000;
-	border-style: solid;
-	border-width: 1px;
-	padding: 0px;
-	background-color: #8888ff;
-	width: 10px;
-	height: 10px;
+
+.rocket-resizablePanel-bottomHandle{
+	height: 7px;
 	
-	cursor: n-resize;
-}
-.rocket-resizablePanel-northWestHandle {
-	margin: 0px;
-	border-color: #000000;
+	border-left-width: 1px;
+	border-left-color: #888;
+	border-top-width: 1px;
+	border-top-color: #888;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-bottom-color: #888;
 	border-style: solid;
-	border-width: 1px;
-	padding: 0px;
-	background-color: #cc88cc;
-	width: 10px;
-	height: 10px;
-	
-	cursor: nw-resize;
-}
-.rocket-resizablePanel-leftHandle {
-	margin: 0px;
-	border-color: #000000;
-	border-style: solid;
-	border-width: 1px;
-	padding: 0px;
-	background-color: #ff8888;
-	width: 10px;
-	height: 10px;
-	
-	cursor: w-resize;
-}
-.rocket-resizablePanel-southWestHandle {
-	margin: 0px;
-	border-color: #000000;
-	border-style: solid;
-	border-width: 1px;
-	padding: 0px;
-	background-color: #ffcc88;
-	width: 10px;
-	height: 10px;
-	
-	cursor: sw-resize;
-}
-.rocket-resizablePanel-southHandle {
-	margin: 0px;
-	border-color: #000000;
-	border-style: solid;
-	border-width: 1px;
-	padding: 0px;
-	background-color: #ffff88;
-	width: 10px;
-	height: 10px;
 	
 	cursor: s-resize;
 }
-.rocket-resizablePanel-southEastHandle {
-	margin: 0px;
-	border-color: #000000;
-	border-style: solid;
-	border-width: 1px;
-	padding: 0px;
-	background-color: #ccff88;
-	width: 10px;
-	height: 10px;
-	
-	cursor: se-resize;
+
+.rocket-resizablePanel-ghost {
+	cursor: pointer;
+	opacity: 0.5;
+	filter(alpha=50);
 }
 
-.rocket-resizablePanel-selected{
-	background-color: #445566;
+.gwt-grid {
+	background-color: #eef;
 }
+
 </style>
-
-<script>
-</script>
 </head>
 
 <body>
-This test demonstrates several ResizablePanels. 
+This test demonstrates several ResizablePanels each containing different content widgets.
+<ul>
+<li>TextArea</li>
+<li>Image</li>
+<li>Label (span)</li>
+<li>3x3 Grid(table)</li>
+<li>A FlowPanel with some other widgets</li>
+</ul>
 Two types of ResizablePanels are created three times to hold a TEXTAREA, IMAGE and SPAN.
 ResizablePanels with handles always visible appear in the left column whilst those with invisible handles
 appear in the right column of the grid.
 
 <h6>Things to test</h6>
 <ul>
-<li>Text selection is turned off whenever a handle drag starts, letting go of the handle should reenable 
+<li>Text selection is turned off whenever a handle drag starts, letting go of the handle should reenable
 text selection via dragging of the cursor</li>
 <li>A handle when being dragged should have an almost black (darkgray) background. The handle colour should return to its
 original colour when it is let go.</li>
-<li>Dragging a handle away from the center of the ResizablePanel should increase the width/height of the 
+<li>Dragging a handle away from the center of the ResizablePanel should increase the width/height of the
 panel and child widget with dragging inwards decreasing.</li>
 <li>ResizablePanel's with invisible handles (those in the right column of the grid) only have visible
 handles when the mouse enters the panel and are hidden once more when the mouse leaves.</li>
 <li>The handles should appear in the relevant spot half inside or overlapping the child widget and half over the edge.</li>
 </ul>
+
+<button onclick="prompt('document.body.innerHTML', document.body.innerHTML )">document.body.innerHTML</button>
 
 </body>
 </html>

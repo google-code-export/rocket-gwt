@@ -84,11 +84,6 @@ public class SpanPanelTest implements EntryPoint {
 					SystemHelper.fail("Unknown element type type:" + GWT.getTypeName(element));
 				}
 			}
-
-			protected int getMessageLineCount() {
-				return 10;
-			}
-
 			protected String toString(final Object element) {
 				final HTML html = (HTML) element;
 				return html.getText();

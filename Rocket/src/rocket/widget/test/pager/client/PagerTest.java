@@ -15,25 +15,19 @@
  */
 package rocket.widget.test.pager.client;
 
+import rocket.event.client.ChangeEvent;
+import rocket.event.client.ChangeEventListener;
 import rocket.widget.client.Pager;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 
-/**
- * Entry point classes define <code>onModuleLoad()</code>.
- */
 public class PagerTest implements EntryPoint {
 
-	/**
-	 * This is the entry point method.
-	 */
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
@@ -58,8 +52,8 @@ public class PagerTest implements EntryPoint {
 		pager.setCurrentPage(currentPage);
 		pager.setPagesInBetweenCount(inBetweenCount);
 
-		pager.addChangeListener(new ChangeListener() {
-			public void onChange(final Widget source) {
+		pager.addChangeEventListener(new ChangeEventListener() {
+			public void onChange(final ChangeEvent event ) {
 				label.setText("Current Page: " + pager.getValue());
 			}
 		});

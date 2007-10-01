@@ -15,16 +15,16 @@
  */
 package rocket.widget.test.superspinner.client;
 
+import rocket.event.client.ChangeEvent;
+import rocket.event.client.ChangeEventListener;
 import rocket.widget.client.SuperSpinner;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 public class SuperSpinnerTest implements EntryPoint {
 
@@ -37,9 +37,12 @@ public class SuperSpinnerTest implements EntryPoint {
 		});
 		final RootPanel rootPanel = RootPanel.get();
 
-		final Label spinnerValue = new Label("0");
-		rootPanel.add(spinnerValue);
+		final Label value = new Label("0");
+		rootPanel.add(value);
 
+		final Label changeEventCounter = new Label("?");
+		rootPanel.add( changeEventCounter );
+		
 		final SuperSpinner spinner = new SuperSpinner();
 		spinner.setDelta(1);
 		spinner.setBigDelta(10);
@@ -47,12 +50,19 @@ public class SuperSpinnerTest implements EntryPoint {
 		spinner.setUpperBounds(100);
 		spinner.setDownImageUrl("down.gif");
 		spinner.setUpImageUrl("up.gif");
-		spinner.addChangeListener(new ChangeListener() {
-			public void onChange(final Widget sender) {
-				spinnerValue.setText("" + spinner.getValue());
+		spinner.addChangeEventListener(new ChangeEventListener() {
+			public void onChange(final ChangeEvent event ) {
+				value.setText("" + spinner.getValue());
 			}
 		});
-
+		spinner.addChangeEventListener(new ChangeEventListener() {
+			public void onChange(final ChangeEvent event ) {
+				this.counter++;
+				changeEventCounter.setText("ChangeEvent counter: " + this.counter );
+			}
+			int counter = 0;
+		});
+		
 		rootPanel.add(spinner);
 	}
 }

@@ -145,10 +145,6 @@ public class SplitterPanelTest implements EntryPoint {
 				}
 			}
 
-			protected int getMessageLineCount() {
-				return 10;
-			}
-
 			protected String toString(final Object element) {
 				final SplitterItem item = (SplitterItem) element;
 				final Widget widget = item.getWidget();
@@ -243,10 +239,6 @@ public class SplitterPanelTest implements EntryPoint {
 				if (false == (element instanceof SplitterItem)) {
 					SystemHelper.fail("");
 				}
-			}
-
-			protected int getMessageLineCount() {
-				return 10;
 			}
 
 			protected String toString(final Object element) {
