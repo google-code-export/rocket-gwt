@@ -15,7 +15,6 @@
 package rocket.widget.client;
 
 import rocket.browser.client.Browser;
-import rocket.style.client.StyleHelper;
 
 import com.google.gwt.user.client.ui.KeyboardListener;
 
@@ -33,27 +32,23 @@ public class WidgetConstants {
 	 */
 	public final static String ROCKET = "rocket";
 
+	final static String SELECTED = "-selected";
+
 	// AUTO COMPLETE TEXT BOX
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
 	 * This style is applied to the container element of a AutoCompleteTextBox
 	 * {@link AutoCompleteTextBox}
 	 */
-	final static String AUTO_COMPLETE_TEXT_BOX_STYLE = StyleHelper.buildCompound(ROCKET, "autoCompleteTextBox");
+	final static String AUTO_COMPLETE_TEXT_BOX_STYLE = ROCKET + "-autoCompleteTextBox";
 
-	final static String AUTO_COMPLETE_TEXT_BOX_TEXT_BOX_STYLE = StyleHelper.buildCompound(AUTO_COMPLETE_TEXT_BOX_STYLE, "textBox");
+	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE = AUTO_COMPLETE_TEXT_BOX_STYLE + "-dropDownList";
 
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE = StyleHelper.buildCompound(AUTO_COMPLETE_TEXT_BOX_STYLE,
-			"dropDownList");
+	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE = AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE + "-oddRow";
 
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE = StyleHelper.buildCompound(
-			AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE, "oddRow");
+	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE = AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE + "-evenRow";
 
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE = StyleHelper.buildCompound(
-			AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE, "evenRow");
-
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = StyleHelper.buildCompound(
-			AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE, "selected");
+	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE + SELECTED;
 
 	final static char AUTO_COMPLETE_TEXT_BOX_CANCEL_KEY = KeyboardListener.KEY_ESCAPE;
 
@@ -65,25 +60,21 @@ public class WidgetConstants {
 
 	// BLOCKY PIXEL
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	final static String BLOCKY_PIXEL_STYLE = StyleHelper.buildCompound(ROCKET, "blockyPixel");
+	final static String BLOCKY_PIXEL_STYLE = ROCKET + "-blockyPixel";
 
 	final static int TRANSPARENT = -1;
 
-	// LIFE
-	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	final static String LIFE_STYLE = StyleHelper.buildCompound(ROCKET, "life");
-
 	// STYLESHEET PICKER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	final static String STYLESHEET_PICKER_STYLE = StyleHelper.buildCompound(ROCKET, "styleSheetPicker");
+	final static String STYLESHEET_PICKER_STYLE = ROCKET + "-styleSheetPicker";
 
-	final static String STYLESHEET_PICKER_LABEL_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE, "label");
+	final static String STYLESHEET_PICKER_LABEL_STYLE = STYLESHEET_PICKER_STYLE + "-label";
 
 	final static String STYLESHEET_PICKER_LABEL_TEXT = "Text Size";
 
-	final static String STYLESHEET_ITEM_STYLE = StyleHelper.buildCompound(STYLESHEET_PICKER_STYLE, "item");
+	final static String STYLESHEET_ITEM_STYLE = STYLESHEET_PICKER_STYLE + "-item";
 
-	final static String STYLESHEET_ITEM_SELECTED_STYLE = StyleHelper.buildCompound(STYLESHEET_ITEM_STYLE, "selected");
+	final static String STYLESHEET_ITEM_SELECTED_STYLE = STYLESHEET_ITEM_STYLE + SELECTED;
 
 	// CARD
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -91,9 +82,9 @@ public class WidgetConstants {
 	 * This style is applied to the container element of a CollapsablePanel
 	 * {@link CollapsablePanel}
 	 */
-	final static String COLLAPSABLE_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "collapsablePanel");
+	final static String COLLAPSABLE_PANEL_STYLE = ROCKET + "-collapsablePanel";
 
-	final static String COLLAPSABLE_PANEL_TITLE_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE, "title");
+	final static String COLLAPSABLE_PANEL_TITLE_STYLE = COLLAPSABLE_PANEL_STYLE + "-title";
 
 	final static int COLLAPSABLE_PANEL_TITLE_ROW = 0;
 
@@ -101,13 +92,13 @@ public class WidgetConstants {
 
 	final static String COLLAPSABLE_PANEL_TITLE_FLEXTABLE_STYLE = COLLAPSABLE_PANEL_TITLE_STYLE;
 
-	final static String COLLAPSABLE_PANEL_CONTENT_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE, "content");
+	final static String COLLAPSABLE_PANEL_CONTENT_STYLE = COLLAPSABLE_PANEL_STYLE + "-content";
 
 	final static int COLLAPSABLE_PANEL_CONTENT_ROW = COLLAPSABLE_PANEL_TITLE_ROW + 1;
 
 	final static int COLLAPSABLE_PANEL_CONTENT_COLUMN = 0;
 
-	final static String COLLAPSABLE_PANEL_TITLE_WIDGET_STYLE = StyleHelper.buildCompound(COLLAPSABLE_PANEL_STYLE, "titleWidget");
+	final static String COLLAPSABLE_PANEL_TITLE_WIDGET_STYLE = COLLAPSABLE_PANEL_STYLE + "-titleWidget";
 
 	final static String COLLAPSABLE_PANEL_MINIMIZE_IMAGE_URL = Browser.buildImageUrl("/collapsablePanel/minimize.gif");
 
@@ -121,26 +112,27 @@ public class WidgetConstants {
 	 * This style is applied to the container element of a BreadcrumbPanel
 	 * {@link BreadcrumbPanel}
 	 */
-	final static String BREADCRUMB_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "breadcrumbPanel");
+	final static String BREADCRUMB_PANEL_STYLE = ROCKET + "-breadcrumbPanel";
 
-	final static String BREADCRUMB_PANEL_ITEM_STYLE = StyleHelper.buildCompound(BREADCRUMB_PANEL_STYLE, "item");
+	final static String BREADCRUMB_PANEL_CRUMB_STYLE = BREADCRUMB_PANEL_STYLE + "-item";
 
-	final static String BREADCRUMB_PANEL_LAST_ITEM_STYLE = StyleHelper.buildCompound(BREADCRUMB_PANEL_ITEM_STYLE, "last");
+	final static String BREADCRUMB_PANEL_LAST_CRUMB_STYLE = BREADCRUMB_PANEL_CRUMB_STYLE + "-last";
 
 	final static String BREADCRUMB_PANEL_SEPARATOR_HTML = ">";
 
-	final static String BREADCRUMB_PANEL_SEPARATOR_STYLE = StyleHelper.buildCompound(BREADCRUMB_PANEL_STYLE, "separator");
+	final static String BREADCRUMB_PANEL_SEPARATOR_STYLE = BREADCRUMB_PANEL_STYLE + "-separator";
 
 	// GRID
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
-	 * This style is applied to the container element of a Grid {@link Grid}
+	 * This style is applied to the container element of a GridView
+	 * {@link GridView}
 	 */
-	final static String GRID_STYLE = StyleHelper.buildCompound(ROCKET, "grid");
+	final static String GRIDVIEW_STYLE = ROCKET + "-gridview";
 
-	final static String GRID_CELL_STYLE = StyleHelper.buildCompound(GRID_STYLE, "cell");
+	final static String GRIDVIEW_CELL_STYLE = GRIDVIEW_STYLE + "-cell";
 
-	final static String GRID_FILLER_STYLE = StyleHelper.buildCompound(GRID_CELL_STYLE, "filler");
+	final static String GRIDVIEW_FILLER_STYLE = GRIDVIEW_CELL_STYLE + "-filler";
 
 	// SORTABLD TABLE
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -148,59 +140,59 @@ public class WidgetConstants {
 	 * This style is applied to the container element of a SortableTable
 	 * {@link SortableTable}
 	 */
-	final static String SORTABLE_TABLE_STYLE = StyleHelper.buildCompound(ROCKET, "sortableTable");
+	final static String SORTABLE_TABLE_STYLE = ROCKET + "-sortableTable";
 
-	final static String SORTABLE_TABLE_COLUMN_HEADER_STYLE = StyleHelper.buildCompound(SORTABLE_TABLE_STYLE, "columnHeader");
+	final static String SORTABLE_TABLE_HEADER_ROW_STYLE = SORTABLE_TABLE_STYLE + "-headerRow";
 
-	final static String SORTABLE_TABLE_SORTABLE_COLUMN_HEADER_STYLE = StyleHelper.buildCompound(SORTABLE_TABLE_COLUMN_HEADER_STYLE,
-			"sortable");
+	final static String SORTABLE_TABLE_SORTABLE_COLUMN_STYLE = SORTABLE_TABLE_STYLE + "-sortableColumn";
 
-	final static String SORTABLE_TABLE_SORTED_COLUMN_HEADER_STYLE = StyleHelper.buildCompound(SORTABLE_TABLE_COLUMN_HEADER_STYLE,
-			"sorted");
+	final static String SORTABLE_TABLE_SORTED_COLUMN_STYLE = SORTABLE_TABLE_STYLE + "-sortedColumn";
 
-	final static String SORTABLE_TABLE_SORTED_COLUMN_STYLE = StyleHelper.buildCompound(SORTABLE_TABLE_STYLE, "sortedColumn");
+	final static String SORTABLE_TABLE_SORT_DIRECTIONS_ARROWS_STYLE = SORTABLE_TABLE_STYLE + "-sortDirectionArrows";
 
-	final static String SORTABLE_TABLE_SORT_DIRECTIONS_ARROWS_STYLE = StyleHelper.buildCompound(SORTABLE_TABLE_STYLE,
-			"sortDirectionArrows");
+	final static String SORTABLE_TABLE_ODD_ROW_STYLE = SORTABLE_TABLE_STYLE + "-oddRow";
 
+	final static String SORTABLE_TABLE_EVEN_ROW_STYLE = SORTABLE_TABLE_STYLE + "-evenRow";
+
+	
 	// ZEBRA
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
 	 * This style is applied to the container element of a ZebraFlexTable
 	 */
-	final static String ZEBRA_FLEX_TABLE_STYLE = StyleHelper.buildCompound(ROCKET, "zebraFlexTable");
+	final static String ZEBRA_FLEX_TABLE_STYLE = ROCKET + "-zebraFlexTable";
 
-	final static String ZEBRA_FLEX_TABLE_HEADING_STYLE = StyleHelper.buildCompound(ZEBRA_FLEX_TABLE_STYLE, "heading");
+	final static String ZEBRA_FLEX_TABLE_HEADING_STYLE = ZEBRA_FLEX_TABLE_STYLE + "-heading";
 
-	final static String ZEBRA_FLEX_TABLE_ODD_ROW_STYLE = StyleHelper.buildCompound(ZEBRA_FLEX_TABLE_STYLE, "oddRow");
+	final static String ZEBRA_FLEX_TABLE_ODD_ROW_STYLE = ZEBRA_FLEX_TABLE_STYLE + "-oddRow";
 
-	final static String ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE = StyleHelper.buildCompound(ZEBRA_FLEX_TABLE_STYLE, "evenRow");
+	final static String ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE = ZEBRA_FLEX_TABLE_STYLE + "-evenRow";
 
 	// SPINNER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
 	 * This style is applied to the container element of a SpinnerWidget
 	 */
-	final static String SPINNER_STYLE = StyleHelper.buildCompound(ROCKET, "spinner");
+	final static String SPINNER_STYLE = ROCKET + "-spinner";
 
-	final static String SPINNER_UP_STYLE = StyleHelper.buildCompound(SPINNER_STYLE, "up");
+	final static String SPINNER_UP_STYLE = SPINNER_STYLE + "-up";
 
-	final static String SPINNER_DOWN_STYLE = StyleHelper.buildCompound(SPINNER_STYLE, "down");
+	final static String SPINNER_DOWN_STYLE = SPINNER_STYLE + "-down";
 
 	// SUPER SPINNER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
 	 * This style is applied to the container element of a SuperSpinnerWidget
 	 */
-	final static String SUPER_SPINNER_STYLE = StyleHelper.buildCompound(ROCKET, "superSpinner");
+	final static String SUPER_SPINNER_STYLE = ROCKET + "-superSpinner";
 
-	final static String SUPER_SPINNER_UP_STYLE = StyleHelper.buildCompound(SUPER_SPINNER_STYLE, "up");
+	final static String SUPER_SPINNER_UP_STYLE = SUPER_SPINNER_STYLE + "-up";
 
-	final static String SUPER_SPINNER_DOWN_STYLE = StyleHelper.buildCompound(SUPER_SPINNER_STYLE, "down");
+	final static String SUPER_SPINNER_DOWN_STYLE = SUPER_SPINNER_STYLE + "-down";
 
-	final static String SUPER_SPINNER_BIG_UP_STYLE = StyleHelper.buildCompound(SUPER_SPINNER_STYLE, "bigUp");
+	final static String SUPER_SPINNER_BIG_UP_STYLE = SUPER_SPINNER_STYLE + "-bigUp";
 
-	final static String SUPER_SPINNER_BIG_DOWN_STYLE = StyleHelper.buildCompound(SUPER_SPINNER_STYLE, "bigDown");
+	final static String SUPER_SPINNER_BIG_DOWN_STYLE = SUPER_SPINNER_STYLE + "-bigDown";
 
 	// PAGER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -208,7 +200,7 @@ public class WidgetConstants {
 	 * This style is applied to the container element of a Pager widget
 	 * {@link rocket.widget.client.Pager}
 	 */
-	final static String PAGER_STYLE = StyleHelper.buildCompound(ROCKET, "pager");
+	final static String PAGER_STYLE = ROCKET + "-pager";
 
 	/**
 	 * The default text that appears on the previous button
@@ -218,7 +210,7 @@ public class WidgetConstants {
 	/**
 	 * This style is applied to the previous button
 	 */
-	final static String PAGER_PREVIOUS_BUTTON_STYLE = StyleHelper.buildCompound(PAGER_STYLE, "previous");
+	final static String PAGER_PREVIOUS_BUTTON_STYLE = PAGER_STYLE + "-previous";
 
 	/**
 	 * The default text that appears on the next button.
@@ -228,18 +220,18 @@ public class WidgetConstants {
 	/**
 	 * This style is applied to the next button
 	 */
-	final static String PAGER_NEXT_BUTTON_STYLE = StyleHelper.buildCompound(PAGER_STYLE, "next");
+	final static String PAGER_NEXT_BUTTON_STYLE = PAGER_STYLE + "-next";
 
 	/**
 	 * This style is applied to each of the page buttons that appear along the
 	 * pager widget
 	 */
-	final static String PAGER_GOTO_PAGE_STYLE = StyleHelper.buildCompound(PAGER_STYLE, "goto");
+	final static String PAGER_GOTO_PAGE_STYLE = PAGER_STYLE + "-goto";
 
 	/**
 	 * This style is applied to the current page.
 	 */
-	final static String PAGER_CURRENT_PAGE_STYLE = StyleHelper.buildCompound(PAGER_STYLE, "current");
+	final static String PAGER_CURRENT_PAGE_STYLE = PAGER_STYLE + "-current";
 
 	// SPAN PANEL
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -248,7 +240,9 @@ public class WidgetConstants {
 	 * This style is applied to the container SPAN element of a SpanPanel
 	 * {@link rocket.widget.client.SpanPanel}
 	 */
-	final static String SPAN_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "spanPanel");
+	final static String SPAN_PANEL_STYLE = ROCKET + "-spanPanel";
+
+	final static String SPAN_TAG = "span";
 
 	// DIV PANEL
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -257,7 +251,9 @@ public class WidgetConstants {
 	 * This style is applied to the container DIV element of a DivPanel
 	 * {@link rocket.widget.client.DivPanel}
 	 */
-	final static String DIV_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "divPanel");
+	final static String DIV_PANEL_STYLE = ROCKET + "-divPanel";
+
+	final static String DIV_TAG = "div";
 
 	// ORDERED LIST PANEL
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -266,11 +262,11 @@ public class WidgetConstants {
 	 * This style is applied to the container OL element of a OrderedListPanel
 	 * {@link rocket.widget.client.OrderedListPanel}
 	 */
-	final static String ORDERED_LIST_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "orderedListPanel");
+	final static String ORDERED_LIST_PANEL_STYLE = ROCKET + "-orderedListPanel";
 
-	final static String ORDERED_LIST = "ol";
+	final static String ORDERED_LIST_TAG = "ol";
 
-	final static String ORDERED_LIST_ITEM = "li";
+	final static String ORDERED_LIST_ITEM_TAG = "li";
 
 	// UNORDERED LIST PANEL
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -279,74 +275,40 @@ public class WidgetConstants {
 	 * This style is applied to the container UL element of a UnorderedListPanel
 	 * {@link rocket.widget.client.UnorderedListPanel}
 	 */
-	final static String UNORDERED_LIST_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "unorderedListPanel");
+	final static String UNORDERED_LIST_PANEL_STYLE = ROCKET + "-unorderedListPanel";
 
-	final static String UNORDERED_LIST = "ul";
+	final static String UNORDERED_LIST_TAG = "ul";
 
-	final static String UNORDERED_LIST_ITEM = "li";
+	final static String UNORDERED_LIST_ITEM_TAG = "li";
 
-	// HYPERLINK PANEL
+	// HYPERLINK_STYLE PANEL
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
 	 * This style is applied to the container element of a HyperlinkPanel widget
 	 * {@link rocket.widget.client.HyperlinkPanel}
 	 */
-	final static String HYPERLINK_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "hyperlinkPanel");
+	final static String HYPERLINK_PANEL_STYLE = ROCKET + "-hyperlinkPanel";
+
+	final static String HYPERLINK_PANEL_PREVIOUS_SUNK_EVENTS_BIT_MASK = "__previousSunkEventsBitMask";
 
 	/**
 	 * This style is applied to the container element of a ResizablePanel widget
 	 * {@link rocket.widget.client.ResizablePanel}
 	 */
-	final static String RESIZABLE_PANEL_STYLE = StyleHelper.buildCompound(ROCKET, "resizablePanel");
+	final static String RESIZABLE_PANEL_STYLE = ROCKET + "-resizablePanel";
 
-	final static String RESIZABLE_PANEL_EAST_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE, "eastHandle");
-
-	final static String RESIZABLE_PANEL_NORTHEAST_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE, "northEastHandle");
-
-	final static String RESIZABLE_PANEL_NORTH_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE, "northHandle");
-
-	final static String RESIZABLE_PANEL_NORTHWEST_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE, "northWestHandle");
-
-	final static String RESIZABLE_PANEL_WEST_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE, "leftHandle");
-
-	final static String RESIZABLE_PANEL_SOUTHEAST_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE, "southEastHandle");
-
-	final static String RESIZABLE_PANEL_SOUTH_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE, "southHandle");
-
-	final static String RESIZABLE_PANEL_SOUTHWEST_HANDLE_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE, "southWestHandle");
-
-	final static String RESIZABLE_PANEL_HANDLE_SELECTED_STYLE = StyleHelper.buildCompound(RESIZABLE_PANEL_STYLE, "selected");
-
-	// HTML TEMPLATE FACTORY
+	final static String RESIZABLE_PANEL_WIDGET_STYLE = RESIZABLE_PANEL_STYLE + "-widget";
 	
-	final static String TEXTBOX_TYPE_ATTRIBUTE = "text";
-
-	final static String PASSWORD_TEXTBOX_TYPE_ATTRIBUTE = "password";
-
-	final static String TEXTAREA_TAG = "textarea";
-
-	final static String RADIO_BUTTON_TYPE_ATTRIBUTE = "radio";
-
-	final static String RADIO_BUTTON_GROUP_ATTRIBUTE = "group";
-
-	final static String CHECKBOX_TYPE_ATTRIBUTE = "checkbox";
-
-	final static String LISTBOX_TAG = "select";
-
-	final static String LABEL_TAG = "div";
-
-	final static String BUTTON_TAG = "button";
-
-	final static String IMAGE_TAG = "img";
-
-	final static String HYPERLINK_TAG = "a";
-
-	final static String HTML_TAG = "div";
-
-	final static String FORM_TAG = "form";
+	final static String RESIZABLE_PANEL_RIGHT_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-rightHandle";
 	
+	final static String RESIZABLE_PANEL_CORNER_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-cornerHandle";
+
+	final static String RESIZABLE_PANEL_BOTTOM_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-bottomHandle";
+
+	final static String RESIZABLE_PANEL_GHOST_STYLE = RESIZABLE_PANEL_STYLE + "-ghost";
+
 	// DATEPICKER
-	
+
 	final static int DATEPICKER_ROWS = 6;
 
 	final static int DATEPICKER_COLUMNS = 7;
@@ -357,15 +319,110 @@ public class WidgetConstants {
 
 	final static int DATEPICKER_YEAR_BIAS = 1900;
 
-	final static String DATEPICKER_STYLE = StyleHelper.buildCompound(WidgetConstants.ROCKET, "datePicker");
+	final static String DATEPICKER_STYLE = ROCKET + "-datePicker";
 
-	final static String DATEPICKER_HEADING_STYLE = StyleHelper.buildCompound(DATEPICKER_STYLE, "heading");
+	final static String DATEPICKER_HEADING_STYLE = DATEPICKER_STYLE + "-heading";
 
-	final static String DATEPICKER_DAY_STYLE = StyleHelper.buildCompound(DATEPICKER_STYLE, "day");
+	final static String DATEPICKER_DAY_STYLE = DATEPICKER_STYLE + "-day";
 
-	final static String DATEPICKER_PREVIOUS_MONTH_STYLE = StyleHelper.buildCompound(DATEPICKER_STYLE, "previousMonth");
+	final static String DATEPICKER_PREVIOUS_MONTH_STYLE = DATEPICKER_STYLE + "-previousMonth";
 
-	final static String DATEPICKER_CURRENT_MONTH_STYLE = StyleHelper.buildCompound(DATEPICKER_STYLE, "currentMonth");
+	final static String DATEPICKER_CURRENT_MONTH_STYLE = DATEPICKER_STYLE + "-currentMonth";
 
-	final static String DATEPICKER_NEXT_MONTH_STYLE = StyleHelper.buildCompound(DATEPICKER_STYLE, "nextMonth");
+	final static String DATEPICKER_NEXT_MONTH_STYLE = DATEPICKER_STYLE + "-nextMonth";
+
+	final static String READONLY = "-readOnly";
+
+	// PRIMITIVE WIDGET CONSTANTS FOLLOW
+	// ::::::::::::::::::::::::::::::::::::::::::::
+
+	final static String TEXTBOX_STYLE = ROCKET + "-textBox";
+
+	final static String TEXTBOX_READONLY = TEXTBOX_STYLE + READONLY;
+
+	final static String TEXTBOX_INPUT_TYPE = "text";
+
+	final static String PASSWORD = ROCKET + "-passwordTextBox";
+
+	final static String PASSWORD_READONLY = PASSWORD + READONLY;
+
+	final static String PASSWORD_TEXTBOX_INPUT_TYPE = "password";
+
+	final static String CHECKBOX_STYLE = ROCKET + "checkBox";
+
+	final static String CHECKBOX_READONLY = CHECKBOX_STYLE + READONLY;
+
+	final static String CHECKBOX_INPUT_TYPE = "checkbox";
+
+	final static String LABEL_STYLE = ROCKET + "-label";
+
+	final static String HTML = ROCKET + "-html";
+
+	final static String TEXTAREA_STYLE = ROCKET + "-textArea";
+
+	final static String TEXTAREA_TAG = "textarea";
+
+	final static String TEXTAREA_READONLY = CHECKBOX_STYLE + READONLY;
+
+	final static String LISTBOX_STYLE = ROCKET + "-listBox";
+
+	final static String LISTBOX_TAG = "select";
+
+	final static String LISTBOX_READONLY = LISTBOX_STYLE + READONLY;
+
+	final static int LISTBOX_INSERT_AT_END = -1;
+
+	final static String BUTTON_STYLE = ROCKET + "-button";
+
+	final static String BUTTON_TAG = "button";
+
+	final static String BUTTON_READONLY = BUTTON_STYLE + READONLY;
+
+	final static String BUTTON_INPUT_RESET_TYPE = "reset";
+
+	final static String BUTTON_INPUT_SUBMIT_TYPE = "submit";
+
+	final static String RADIO_BUTTON_STYLE = ROCKET + "-radioButton";
+
+	final static String RADIO_BUTTON_READONLY = RADIO_BUTTON_STYLE + READONLY;
+
+	final static String RADIO_BUTTON_INPUT_TYPE = "radio";
+
+	final static String IMAGE_STYLE = ROCKET + "-image";
+
+	final static String IMAGE_TAG = "img";
+
+	final static String HYPERLINK_STYLE = ROCKET + "-hyperlink";
+
+	final static String HYPERLINK_TAG = "a";
+
+	final static String FILE_UPLOAD_STYLE = ROCKET + "-fileUpload";
+
+	final static String FILE_UPLOAD_READONLY = FILE_UPLOAD_STYLE + READONLY;
+
+	final static String FILE_UPLOAD_INPUT_TYPE = "file";
+
+	final static String HIDDEN_INPUT_TYPE = "hidden";
+
+	final static String IFRAME_TARGET = "iframe";
+
+	final static String FORM_TAG = "form";
+
+	final static String FORM_PANEL_TARGET_PREFIX = "__FormPanel";
+
+	final static String FORM_PANEL_STYLE = ROCKET + "-formPanel";
+
+	/**
+	 * Used with {@link #setEncoding(String)} to specify that the form will be
+	 * submitted using MIME encoding (necessary for {@link FileUpload} to work
+	 * properly).
+	 */
+	static final String ENCODING_MULTIPART = "multipart/form-data";
+
+	/**
+	 * Used with {@link #setEncoding(String)} to specify that the form will be
+	 * submitted using traditional URL encoding.
+	 */
+	static final String ENCODING_URLENCODED = "application/x-www-form-urlencoded";
+
 }
