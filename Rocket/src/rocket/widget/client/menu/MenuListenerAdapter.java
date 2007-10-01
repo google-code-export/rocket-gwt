@@ -28,12 +28,12 @@ public abstract class MenuListenerAdapter implements MenuListener {
 		super();
 	}
 
-	public void onMenuCancelled(final MenuOpenCancelledEvent event ) {
+	public void onBeforeOpen(final BeforeMenuOpenEvent event ) {
 	}
 
-	public void onBeforeMenuOpened(final BeforeMenuOpenedEvent event ) {
+	public void onOpen(final MenuOpenEvent event ) {
 	}
-
-	public void onMenuOpened(final MenuOpenedEvent event ) {
+	
+	public void onOpenCancelled(final MenuOpenCancelledEvent event ) {
 	}
 }
