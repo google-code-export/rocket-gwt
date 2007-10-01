@@ -85,12 +85,39 @@ public abstract class AccordionPanel extends CompositeWidget {
 	public void select(final int index) {
 		// remove the style & hide the content of the previously selected
 		// item...
-		if (this.hasSelected()) {
-			this.removeSelectedStyle(this.getSelected());
-		}
-		final AccordionItem newSelected = this.get(index);
-		this.addSelectedStyle(newSelected);
-		this.setSelected(newSelected);
+				
+		while( true ){
+			final AccordionListenerCollection listeners = this.getAccordionListeners();
+			AccordionItem previouslySelected = null;	
+			
+			if (this.hasSelected()) {
+				previouslySelected = this.getSelected();
+				this.removeSelectedStyle(previouslySelected );
+			}
+			
+			
+			final BeforeAccordionItemSelectEvent beforeSelectedEvent = new BeforeAccordionItemSelectEvent();
+			beforeSelectedEvent.setCurrentSelection( previouslySelected );
+			
+			final AccordionItem newSelection = this.get(index);
+			beforeSelectedEvent.setNewSelection( newSelection );			
+					
+			listeners.fireBeforeSelected(beforeSelectedEvent );
+			if( beforeSelectedEvent.isCancelled() ){
+				break;
+			}
+			
+			final AccordionItem newSelectionEvent = this.get(index);
+			this.addSelectedStyle(newSelectionEvent);					
+			this.setSelected(newSelectionEvent);
+			
+			final AccordionItemSelectEvent selectedEvent = new AccordionItemSelectEvent();
+			selectedEvent.setNewSelection(newSelection);
+			selectedEvent.setPreviouslySelected(previouslySelected);
+			
+			listeners.fireSelected(selectedEvent );		
+			break;
+		}			
 	}
 
 	protected abstract void removeSelectedStyle(final AccordionItem item);

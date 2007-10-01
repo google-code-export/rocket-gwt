@@ -53,37 +53,24 @@ class AccordionListenerCollection {
 		this.getListeners().remove(listener);
 	}
 
-	public boolean fireBeforeAccordionSelected(final AccordionItem newSelection) {
-		ObjectHelper.checkNotNull("parameter:item", newSelection);
-
-		boolean doSelect = true;
-		
-		final BeforeAccordionItemSelectedEvent event = new BeforeAccordionItemSelectedEvent(); 
-		event.setNewSelection( newSelection );
-		
+	public void fireBeforeSelected(final BeforeAccordionItemSelectEvent event) {
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final AccordionListener listener = (AccordionListener) listeners.next();
-			listener.onBeforeItemSelected(event);
+			listener.onBeforeSelect(event);
 			if (event.isCancelled() ) {
-				doSelect = false;
 				break;
 			}
 		}
-		return doSelect;
 	}
 
-	public void fireAccordionSelected(final AccordionItem previouslySelected, final AccordionPanel panel ) {
-		final AccordionItemSelectedEvent event = new AccordionItemSelectedEvent();
-		event.setAccordionPanel( panel  );
-		event.setPreviouslySelected( previouslySelected );
-		
+	public void fireSelected(final AccordionItemSelectEvent event ){		
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final AccordionListener listener = (AccordionListener) listeners.next();
-			listener.onItemSelected( event );
+			listener.onSelect( event );
 		}
 	}
 }

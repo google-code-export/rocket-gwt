@@ -19,7 +19,7 @@ package rocket.widget.client.accordion;
  * This event is fired after completing a new accordion selection
  * @author Miroslav Pokorny
  */
-public class AccordionItemSelectedEvent {
+public class AccordionItemSelectEvent {
 	
 	/**
 	 * The previously selected Accordion
@@ -33,13 +33,15 @@ public class AccordionItemSelectedEvent {
 		this.previouslySelected = previouslySelected;
 	}
 	
-	private AccordionPanel AccordionPanel;
+	/**
+	 * The new currently selected AccordionItem
+	 */
+	private AccordionItem newSelection;
 	
-	public AccordionPanel getAccordionPanel(){
-		return AccordionPanel;
+	public AccordionItem getNewSelection(){
+		return newSelection;
 	}
-	
-	void setAccordionPanel( final AccordionPanel AccordionPanel ){
-		this.AccordionPanel = AccordionPanel;
+	void setNewSelection( final AccordionItem newSelection ){
+		this.newSelection = newSelection;
 	}
 }
