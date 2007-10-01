@@ -58,15 +58,14 @@ import com.google.gwt.user.server.rpc.SerializationPolicyLoader;
  * {@link com.google.gwt.user.client.rpc.RemoteService RemoteService} interface
  * as well as the necessary type and field serializers.
  * 
- * FIXME Dont forget to reapply changes when updating GWT version, scan for ROCKET
+ * TODO When upgrading GWT version reapply changes to this class.
  */
 class ProxyCreator {
-
-	// print something to the log to make it easy to spot that the correct
-	// ProxyCreator is being used with the rocket library.
-	static {
-		GWT.log("Rocket: Using customized ProxyCreator to generated (de)serializers.", null);
-	}
+	/**
+	 * TODO This is a hack and used by the CometGenerator to verify that the customised ProxyCreator is actually being
+	 * used rather than the vanilla version.
+	 */
+	public final static boolean ROCKET = true;
 
 	private static final String ENTRY_POINT_TAG = "gwt.defaultEntryPoint";
 
