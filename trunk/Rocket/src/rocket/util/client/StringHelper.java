@@ -73,7 +73,7 @@ public class StringHelper extends ObjectHelper {
 	}
 
 	/**
-	 * Invokes {@link #padRight{ String, int, char }with a default space pad
+	 * Invokes {@link #padRight( String, int, char )}with a default space pad
 	 * character.
 	 * 
 	 * @param text
@@ -395,9 +395,9 @@ public class StringHelper extends ObjectHelper {
 	/**
 	 * Asserts that the two strings are in fact the equal or both are null.
 	 * 
-	 * @param actualStringName
+	 * @param message
 	 * @param actual
-	 * @param expectedStringName
+	 * @param expected
 	 * @param expected
 	 */
 	public static void checkEquals(final String message, final String actual, final String expected) {
@@ -545,6 +545,28 @@ public class StringHelper extends ObjectHelper {
 	 return propertyName.replace(/([A-Z])/g, "-$1" ).toLowerCase()
 	 }-*/;
 
+	/**
+	 * Convenient method which replaces all nbsp with a regular space.
+	 * 
+	 * @param text
+	 * @return
+	 */
+	public static String changeNonBreakingSpacesToSpaces(final String text) {
+		StringHelper.checkNotEmpty("parameter:text", text);
+		return text.replaceAll("&nbsp;", " ");
+	}
+	
+	/**
+	 * Convenient method which replaces all nbsp with a regular space.
+	 * 
+	 * @param text
+	 * @return
+	 */
+	public static String changeSpacesToNonBreakingSpaces(final String text) {
+		StringHelper.checkNotEmpty("parameter:text", text);
+		return text.replaceAll(" ", "&nbsp;");
+	}
+	
 	/**
 	 * Private so that creating instances are not possible
 	 */
