@@ -53,69 +53,48 @@ class TabListenerCollection {
 		this.getListeners().remove(tabListener);
 	}
 
-	public boolean fireBeforeTabSelected(final TabItem newSelection ) {
-		final BeforeTabSelectedEvent event = new BeforeTabSelectedEvent();
-		event.setNewSelection( newSelection );
-		
-		boolean doSelect = true;
+	// TODO accept event not TabItem
+	public void fireBeforeTabSelected(final BeforeTabSelectEvent event ) {	
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final TabListener listener = (TabListener) listeners.next();
-			listener.onBeforeTabSelected( event );
+			listener.onBeforeTabSelect( event );
 			
 			if ( event.isCancelled() ) {
-				doSelect = false;
 				break;
 			}
 		}
-		return doSelect;
 	}
 
-	public void fireTabSelected(final TabItem previouslySelected, final TabPanel tabPanel) {
-		final TabSelectedEvent event = new TabSelectedEvent();
-		event.setPreviouslySelected( previouslySelected );
-		event.setTabPanel( tabPanel );
-				
+	public void fireTabSelected(final TabSelectEvent event ){				
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final TabListener listener = (TabListener) listeners.next();
-			listener.onTabSelected(event);
+			listener.onTabSelect(event);
 		}
 	}
 
-	public boolean fireBeforeTabClosed(final TabItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
-
-		final BeforeTabClosedEvent event = new BeforeTabClosedEvent();
-		event.setClosing(item);		
-		
-		boolean removed = true;
+	public void fireBeforeTabClosed(final BeforeTabCloseEvent event ){		
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final TabListener listener = (TabListener) listeners.next();
-			listener.onBeforeTabClosed(event);
+			listener.onBeforeTabClose(event);
 			
 			if( event.isCancelled() ){
-				removed = false;
 				break;
 			}			
 		}
-		return removed;
 	}
 
-	public void fireTabClosed(final TabItem item, final TabPanel tabPanel ) {
-		final TabClosedEvent event = new TabClosedEvent();
-		event.setClosed(item);
-		event.setTabPanel( tabPanel );
-		
+	public void fireTabClosed(final TabCloseEvent event ){
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final TabListener listener = (TabListener) listeners.next();
-			listener.onTabClosed(event);
+			listener.onTabClose(event);
 		}
 	}
 }

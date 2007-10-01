@@ -20,16 +20,16 @@ import java.util.Iterator;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StackTrace;
 import rocket.util.client.SystemHelper;
-import rocket.widget.client.tabpanel.BeforeTabClosedEvent;
-import rocket.widget.client.tabpanel.BeforeTabSelectedEvent;
+import rocket.widget.client.tabpanel.BeforeTabCloseEvent;
+import rocket.widget.client.tabpanel.BeforeTabSelectEvent;
 import rocket.widget.client.tabpanel.BottomTabPanel;
 import rocket.widget.client.tabpanel.LeftTabPanel;
 import rocket.widget.client.tabpanel.RightTabPanel;
-import rocket.widget.client.tabpanel.TabClosedEvent;
+import rocket.widget.client.tabpanel.TabCloseEvent;
 import rocket.widget.client.tabpanel.TabItem;
 import rocket.widget.client.tabpanel.TabListener;
 import rocket.widget.client.tabpanel.TabPanel;
-import rocket.widget.client.tabpanel.TabSelectedEvent;
+import rocket.widget.client.tabpanel.TabSelectEvent;
 import rocket.widget.client.tabpanel.TopTabPanel;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -43,9 +43,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * Entry point classes define <code>onModuleLoad()</code>.
- */
 public class TabPanelTest implements EntryPoint {
 
 	/**
@@ -101,39 +98,37 @@ public class TabPanelTest implements EntryPoint {
 		RootPanel.get().add(control);
 
 		tabPanel.addTabListener(new TabListener() {
-			public void onBeforeTabSelected(final BeforeTabSelectedEvent event ) {
-				TabItem item = event.getNewSelection();
+			public void onBeforeTabSelect(final BeforeTabSelectEvent event ) {
+				ObjectHelper.checkNotNull( "TabSelectEvent.currentSelection", event.getCurrentSelection() );
+				
+				final TabItem item = event.getNewSelection();
 				final String caption = item.getCaption();
-				final Widget content = item.getContent();
-				final boolean stop = ! Window.confirm("tabSelected caption[" + caption + "]\ncontent: " + content + "\n ? Cancel=vetoes");
+				final boolean stop = ! Window.confirm("tabSelected caption[" + caption + "]\n ? Cancel=vetoes");
 				if( stop ){
 					event.stop();
 				}
 			}
 
-			public void onTabSelected(final TabSelectedEvent event ) {
-				final TabPanel tabPanel = event.getTabPanel();
-				final TabItem item = tabPanel.get( tabPanel.getSelectedIndex() );
+			public void onTabSelect(final TabSelectEvent event ) {
+				ObjectHelper.checkNotNull( "TabSelectEvent.previouslySelected", event.getPreviouslySelected() );
+				final TabItem item = event.getCurrentSelection();
 				final String caption = item.getCaption();
-				final HTML content = (HTML) item.getContent();
-				control.log("tabSelected caption[" + caption + "]" + content.getText().substring(0, 50));
+				control.log("tabSelected caption[" + caption + "]");
 			}
 
-			public void onBeforeTabClosed(final BeforeTabClosedEvent event ) {
+			public void onBeforeTabClose(final BeforeTabCloseEvent event ) {
 				final TabItem item = event.getClosing();
 				final String caption = item.getCaption();
-				final Widget content = item.getContent();
-				final boolean stop = ! Window.confirm("beforeTabClosed caption[" + caption + "]\ncontent: " + content + "\n ? Cancel=vetoes");
+				final boolean stop = ! Window.confirm("beforeTabClosed caption[" + caption + "]\n ? Cancel=vetoes");
 				if( stop ){
 					event.stop();
 				}
 			}
 
-			public void onTabClosed(final TabClosedEvent event ) {
+			public void onTabClose(final TabCloseEvent event ) {
 				final TabItem item = event.getClosed();
 				final String caption = item.getCaption();
-				final HTML content = (HTML) item.getContent();
-				control.log("tabClosed [" + caption + "] content: " + content.getText().substring(0, 50));
+				control.log("tabClosed [" + caption + "]");
 			}
 		});
 	}

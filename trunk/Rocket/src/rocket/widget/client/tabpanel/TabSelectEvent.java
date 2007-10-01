@@ -16,30 +16,32 @@
 package rocket.widget.client.tabpanel;
 
 /**
- * This event is fired after closing / removing a tab.
+ * This event is fired after completing a new tab selection
  * @author Miroslav Pokorny
  */
-public class TabClosedEvent {
-
+public class TabSelectEvent {
+	
 	/**
-	 * The new tabItem that was recently closed
+	 * The previously selected tab
 	 */
-	private TabItem closed;
+	private TabItem previouslySelected;
 	
-	public TabItem getClosed(){
-		return closed;
+	public TabItem getPreviouslySelected(){
+		return previouslySelected;
 	}
-	void setClosed( final TabItem closed ){
-		this.closed = closed;
-	}
-	
-	private TabPanel tabPanel;
-	
-	public TabPanel getTabPanel(){
-		return tabPanel;
+	void setPreviouslySelected( final TabItem previouslySelected ){
+		this.previouslySelected = previouslySelected;
 	}
 	
-	void setTabPanel( final TabPanel tabPanel ){
-		this.tabPanel = tabPanel;
+	/**
+	 * The new tab that is selected
+	 */
+	private TabItem currentSelection;
+	
+	public TabItem getCurrentSelection(){
+		return currentSelection;
+	}
+	void setCurrentSelection( final TabItem currentSelection ){
+		this.currentSelection = currentSelection;
 	}
 }

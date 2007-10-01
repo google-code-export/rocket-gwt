@@ -19,7 +19,7 @@ package rocket.widget.client.tabpanel;
  * This event is fired prior to a tab close happening..
  * @author Miroslav Pokorny
  */
-public class BeforeTabClosedEvent {
+public class BeforeTabCloseEvent {
 
 	/**
 	 * The tabItem about to be closed.
