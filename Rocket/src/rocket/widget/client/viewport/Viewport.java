@@ -147,13 +147,13 @@ abstract public class Viewport extends CompositeWidget {
 
 		final Widget tile = this.getTileContainingElement( event.getTarget() );		
 		
-		final BeforeViewportDragStartEvent beforeMoveStartedEvent = new BeforeViewportDragStartEvent();
-		beforeMoveStartedEvent.setTile(tile);
-		beforeMoveStartedEvent.setViewport(this);
+		final BeforeViewportDragStartEvent beforeDragStartedEvent = new BeforeViewportDragStartEvent();
+		beforeDragStartedEvent.setTile(tile);
+		beforeDragStartedEvent.setViewport(this);
 
 		final ViewportListenerCollection listeners = this.getViewportListeners();
-		listeners.fireBeforeMoveStarted(beforeMoveStartedEvent);
-		if ( false == beforeMoveStartedEvent.isCancelled() ) {
+		listeners.fireBeforeDragStarted(beforeDragStartedEvent);
+		if ( false == beforeDragStartedEvent.isCancelled() ) {
 
 			final ViewportEventPreviewAdapter dragger = this.createDraggingEventPreview();
 			dragger.setMouseX( event.getPageX());
@@ -165,11 +165,17 @@ abstract public class Viewport extends CompositeWidget {
 
 			dragger.install();
 
-			final ViewportDragStartEvent moveStartedEvent = new ViewportDragStartEvent();
-			moveStartedEvent.setViewport(this);
-			moveStartedEvent.setTile(tile );
+			final ViewportDragStartEvent dragStartedEvent = new ViewportDragStartEvent();
+			dragStartedEvent.setViewport(this);
+			dragStartedEvent.setTile(tile );
 			
-			listeners.fireMoveStarted(moveStartedEvent);
+			listeners.fireDragStarted(dragStartedEvent);
+		} else {
+			final CancelledViewportDragStartEvent cancelled = new CancelledViewportDragStartEvent();
+			cancelled.setTile(tile);
+			cancelled.setViewport( this );
+			
+			listeners.fireCancelledDragStart(cancelled);
 		}
 		event.cancelBubble( true );
 		event.stop();
@@ -378,6 +384,14 @@ abstract public class Viewport extends CompositeWidget {
 			final ViewportListenerCollection listeners = this.getViewportListeners();
 			listeners.fireBeforeMove( beforeMoveEvent );
 			if ( beforeMoveEvent.isCancelled() ) {
+				
+				final IgnoredViewportMoveEvent ignored = new IgnoredViewportMoveEvent();
+				ignored.setDeltaX( deltaX );
+				ignored.setDeltaY( deltaY );
+				ignored.setTile(tile);
+				ignored.setViewport(this);
+				
+				listeners.fireIgnoredMove(ignored);
 				break;
 			}
 

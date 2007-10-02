@@ -1,6 +1,6 @@
 /*
  * Copyright Miroslav Pokorny
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -15,26 +15,29 @@
  */
 package rocket.widget.client.viewport;
 
-/**
- * Adapter that overrides all the ViewportListener methods with do nothing
- * methods
- * 
- * @author Miroslav Pokorny
- */
-abstract public class ViewportListenerAdapter implements ViewportListener {
+
+public class IgnoredViewportMoveEvent extends ViewportEvent{	
 	
-	public void onBeforeDragStart( BeforeViewportDragStartEvent event){		
+	/**
+	 * The deltaX
+	 */
+	private int deltaX;
+	
+	public int getDeltaX(){
+		return this.deltaX;
 	}
-	public void onDragStart(ViewportDragStartEvent event){	
+	
+	void setDeltaX( final int deltaX ){
+		this.deltaX = deltaX;
 	}
-	public void onCancelledDragStart( CancelledViewportDragStartEvent event){		
+	
+	private int deltaY;
+	
+	public int getDeltaY(){
+		return this.deltaY;
 	}
-	public void onBeforeMove(BeforeViewportMoveEvent event){
-	}
-	public void onMoved(ViewportMoveEvent event){		
-	}
-	public void onIgnoreMove(IgnoredViewportMoveEvent event){		
-	}
-	public void onDragStop(ViewportDragStopEvent event){	
+	
+	void setDeltaY( final int beforeY ){
+		this.deltaY = beforeY;
 	}
 }
