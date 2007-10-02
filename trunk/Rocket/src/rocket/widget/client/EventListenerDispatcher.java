@@ -243,8 +243,8 @@ public class EventListenerDispatcher implements EventListener {
 		this.getChangeEventListeners().add(changeListener);
 	}
 
-	public void removeChangeEventListener(final ChangeEventListener changeListener) {
-		this.getChangeEventListeners().remove(changeListener);
+	public boolean removeChangeEventListener(final ChangeEventListener changeListener) {
+		return this.getChangeEventListeners().remove(changeListener);
 	}
 
 	/**
@@ -275,8 +275,8 @@ public class EventListenerDispatcher implements EventListener {
 		this.getFocusEventListeners().add(focusEventListener);
 	}
 
-	public void removeFocusEventListener(final FocusEventListener focusEventListener) {
-		this.getFocusEventListeners().remove(focusEventListener);
+	public boolean removeFocusEventListener(final FocusEventListener focusEventListener) {
+		return this.getFocusEventListeners().remove(focusEventListener);
 	}
 
 	/**
@@ -306,8 +306,8 @@ public class EventListenerDispatcher implements EventListener {
 		this.getKeyEventListeners().add(keyEventListener);
 	}
 
-	public void removeKeyEventListener(final KeyEventListener keyEventListener) {
-		this.getKeyEventListeners().remove(keyEventListener);
+	public boolean removeKeyEventListener(final KeyEventListener keyEventListener) {
+		return this.getKeyEventListeners().remove(keyEventListener);
 	}
 
 	/**
@@ -338,8 +338,8 @@ public class EventListenerDispatcher implements EventListener {
 		this.getMouseEventListeners().add(mouseEventListener);
 	}
 
-	public void removeMouseEventListener(final MouseEventListener mouseEventListener) {
-		this.getMouseEventListeners().remove(mouseEventListener);
+	public boolean removeMouseEventListener(final MouseEventListener mouseEventListener) {
+		return this.getMouseEventListeners().remove(mouseEventListener);
 	}
 
 	/**
@@ -402,7 +402,7 @@ public class EventListenerDispatcher implements EventListener {
 		this.getImageLoadEventListeners().add(imageLoadEventListener);
 	}
 
-	public void removeImageLoadEventListener(final ImageLoadEventListener imageLoadEventListener) {
-		this.getImageLoadEventListeners().remove(imageLoadEventListener);
+	public boolean removeImageLoadEventListener(final ImageLoadEventListener imageLoadEventListener) {
+		return this.getImageLoadEventListeners().remove(imageLoadEventListener);
 	}
 }
