@@ -104,16 +104,15 @@ public class MenuItem extends MenuWidget {
 		this.getHtml().setText(text);
 	}
 
-
 	protected Html getHtml() {
-		return (Html)this.getWidget();
+		return (Html) this.getWidget();
 	}
 
 	protected Html createHtml() {
 		return new Html();
 	}
-	
-	String toString0(){
+
+	String toString0() {
 		return this.getText();
 	}
 }

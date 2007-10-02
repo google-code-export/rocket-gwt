@@ -20,8 +20,8 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * This listener allows observers to receive a variety of menu events.
  * 
- * Once strategy of using the {@link #onBeforeOpen(Widget)} event a
- * listener may wish to rebuild/update child menuItems.
+ * Once strategy of using the {@link #onBeforeOpen(Widget)} event a listener may
+ * wish to rebuild/update child menuItems.
  * 
  * @author Miroslav Pokorny (mP)
  */
