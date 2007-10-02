@@ -31,7 +31,7 @@ public class LongJsonSerializer extends JsonSerializer {
 	}
 
 	public Object readObject(final JSONValue jsonValue) {
-		return new Long((long) jsonValue.isNumber().getValue());
+		return new Long(this.read( jsonValue ));
 	}
 
 	public JSONValue writeJson(final Object instance) {
@@ -39,8 +39,9 @@ public class LongJsonSerializer extends JsonSerializer {
 		return new JSONNumber(wrapper.longValue());
 	}
 
+
 	public long read(final JSONValue jsonValue) {
-		return (long) jsonValue.isNumber().getValue();
+		return (long)this.readDouble(jsonValue);		
 	}
 
 	public JSONValue writeJson(final long longValue) {

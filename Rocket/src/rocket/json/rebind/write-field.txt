@@ -5,7 +5,7 @@ ${jsonObject}.put(
 	// the javascript property being set
 	${javascriptPropertyName},
 	
-	// wrap the java field
+	// write the java field
 	${serializer}.serializer.writeJson(
 	
 		// fetch the field

@@ -32,7 +32,7 @@ public class ByteJsonSerializer extends JsonSerializer {
 	}
 
 	public Object readObject(final JSONValue jsonValue) {
-		return new Byte((byte) jsonValue.isNumber().getValue());
+		return new Byte( read( jsonValue ));
 	}
 
 	public JSONValue writeJson(final Object instance) {
@@ -41,7 +41,7 @@ public class ByteJsonSerializer extends JsonSerializer {
 	}
 
 	public byte read(final JSONValue jsonValue) {
-		return (byte) jsonValue.isNumber().getValue();
+		return (byte)this.readDouble(jsonValue);		
 	}
 
 	public JSONValue writeJson(final byte byteValue) {

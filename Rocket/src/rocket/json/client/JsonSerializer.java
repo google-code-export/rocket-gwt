@@ -26,6 +26,7 @@ import java.util.Set;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNull;
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 
@@ -74,8 +75,7 @@ abstract public class JsonSerializer {
 		return set;
 	}
 
-	protected void readCollection(final JSONArray jsonArray,
-			final Collection collection) {
+	protected void readCollection(final JSONArray jsonArray, final Collection collection) {
 		if (null != jsonArray) {
 			final int size = jsonArray.size();
 			for (int i = 0; i < size; i++) {
@@ -169,7 +169,31 @@ abstract public class JsonSerializer {
 	 * @param instance
 	 * @param jsonObject
 	 */
-	protected void writeFields(final Object instance,
-			final JSONObject jsonObject) {
+	protected void writeFields(final Object instance, final JSONObject jsonObject) {
+	}
+
+	/**
+	 * Null safe method to retrieve the double value from a jsonValue which may or may not be a
+	 * JSONNumber. If its null or not a JSONNumber 0 is returned.
+	 * @param jsonValue
+	 * @return
+	 */
+	double readDouble(final JSONValue jsonValue) {
+		double value = 0;
+
+		while (true) {
+			if (null == jsonValue) {
+				break;
+			}
+			final JSONNumber number = jsonValue.isNumber();
+			if (null == number) {
+				break;
+			}
+
+			value = number.getValue();
+			break;
+		}
+
+		return value;
 	}
 }

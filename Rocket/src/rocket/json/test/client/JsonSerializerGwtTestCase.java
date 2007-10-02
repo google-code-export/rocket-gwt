@@ -31,6 +31,7 @@ import rocket.json.client.JsonSerializer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -396,13 +397,23 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		char field;
 	}
 
-	public void testReadNullStringField() {
+	public void testReadMissingNullStringField() {
 		final JSONObject jsonObject = new JSONObject();
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithStringField.class);
 		final ClassWithStringField instance = (ClassWithStringField) serializer.readObject(jsonObject);
 
 		assertNull(instance.field);
+	}
+
+	public void testReadNullStringField(){
+		final JSONObject jsonObject = new JSONObject();
+		jsonObject.put("field", JSONNull.getInstance() );
+		
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithStringField.class);
+		final ClassWithStringField instance = (ClassWithStringField) serializer.readObject(jsonObject);
+
+		assertNull(instance.field);		
 	}
 
 	public void testWriteNullStringField() {
@@ -1576,8 +1587,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		assertEquals(2, jsonArray.size());
 
-		assertEquals("apple", jsonArray.get(1).isObject().get("set").isString().stringValue());
-		assertEquals("banana", jsonArray.get(0).isObject().get("set").isString().stringValue());
+		final Set actual = new HashSet();
+		actual.add( jsonArray.get(0).isObject().get("set").isString().stringValue() );
+		actual.add( jsonArray.get(1).isObject().get("set").isString().stringValue() );	
+		
+		assertTrue("apple", actual.contains( "apple"));
+		assertTrue("banana", actual.contains( "banana"));
 	}
 
 	static class ClassWithObjectSet implements JsonSerializable {

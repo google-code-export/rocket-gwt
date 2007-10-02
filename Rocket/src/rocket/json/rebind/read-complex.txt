@@ -1,6 +1,6 @@
 // read-complex.txt
 
-// Declare a reference being deserialized.
+// Declare a reference to the instance being deserialized.
 ${type} instance = null;
 
 // cast from JSONValue to jsonObject

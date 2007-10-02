@@ -16,6 +16,7 @@
 package rocket.json.client;
 
 import com.google.gwt.json.client.JSONNull;
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
@@ -36,12 +37,25 @@ public class StringJsonSerializer extends JsonSerializer {
 	}
 
 	public JSONValue writeJson(final Object instance) {
-		return instance == null ? (JSONValue) JSONNull.getInstance()
-				: (JSONValue) new JSONString((String) instance);
+		return instance == null ? (JSONValue) JSONNull.getInstance() : (JSONValue) new JSONString((String) instance);
 	}
 
 	public String read(final JSONValue jsonValue) {
-		return null == jsonValue ? null : new String(jsonValue.isString()
-				.stringValue());
+		String value = null;
+
+		while (true) {
+			if (null == jsonValue) {
+				break;
+			}
+			final JSONString jsonString = jsonValue.isString();
+			if (null == jsonString) {
+				break;
+			}
+
+			value = jsonString.stringValue();
+			break;
+		}
+
+		return value;
 	}
 }
