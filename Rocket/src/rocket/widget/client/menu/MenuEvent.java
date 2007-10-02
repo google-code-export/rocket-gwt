@@ -18,13 +18,14 @@ package rocket.widget.client.menu;
 import com.google.gwt.user.client.ui.Widget;
 
 abstract class MenuEvent {
-	
+
 	private Widget widget;
-	
-	public Widget getWidget(){
+
+	public Widget getWidget() {
 		return this.widget;
 	}
-	void setWidget( final Widget widget ){
+
+	void setWidget(final Widget widget) {
 		this.widget = widget;
 	}
 }

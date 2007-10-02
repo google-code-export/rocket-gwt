@@ -104,7 +104,6 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		final MenuList menuList = this.getMenuList();
 		final Menu menu = menuList.getMenu();
 		final MenuListenerCollection listeners = menu.getMenuListeners();
-		if (listeners.fireBeforeMenuOpened(this)) {
 
 			InlineStyle.setInteger(this.getElement(), StyleConstants.Z_INDEX, 1, CssUnit.NONE );
 			
@@ -166,7 +165,6 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 			InlineStyle.setInteger(menuListElement, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
 						
 			listeners.fireMenuOpened(this);			
-		}
 	}
 
 	/**

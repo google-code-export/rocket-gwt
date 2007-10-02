@@ -49,9 +49,7 @@ public class MenuItem extends MenuWidget {
 
 		final Menu menu = menuList.getMenu();
 		final MenuListenerCollection listeners = menu.getMenuListeners();
-		if (listeners.fireBeforeMenuOpened(this)) {
-			listeners.fireMenuOpened(this);
-		}
+		listeners.fireMenuOpened(this);
 		menu.hide();
 	}
 

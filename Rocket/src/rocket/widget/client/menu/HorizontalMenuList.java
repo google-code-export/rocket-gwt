@@ -48,12 +48,12 @@ public class HorizontalMenuList extends MenuList {
 	protected String getInitialStyleName() {
 		return Constants.HORIZONTAL_MENU_LIST_STYLE;
 	}
-	
+
 	protected void open() {
 		if (this.isHideable()) {
 			final Element element = this.getElement();
 			InlineStyle.setInteger(element, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
-			InlineStyle.setString(element, StyleConstants.DISPLAY, "block" );
+			InlineStyle.setString(element, StyleConstants.DISPLAY, "block");
 			InlineStyle.setString(element, StyleConstants.VISIBILITY, "visible");
 		}
 	}
@@ -66,7 +66,7 @@ public class HorizontalMenuList extends MenuList {
 
 	public void insert(final Widget widget, final int beforeIndex) {
 		this.getHorizontalPanel().insert(widget, beforeIndex);
-		
+
 		final MenuWidget menuItem = (MenuWidget) widget;
 		menuItem.setParentMenuList(this);
 	}
@@ -92,13 +92,13 @@ public class HorizontalMenuList extends MenuList {
 	}
 
 	protected HorizontalPanel getHorizontalPanel() {
-		return (HorizontalPanel) this.getPanel(); 
+		return (HorizontalPanel) this.getPanel();
 	}
 
 	protected HorizontalPanel createHorizontalPanel() {
 		final HorizontalPanel panel = new HorizontalPanel();
 		panel.setWidth("100%");
-	
+
 		final Widget padder = this.createPadder();
 		this.setPadder(padder);
 		panel.add(padder);
@@ -106,7 +106,7 @@ public class HorizontalMenuList extends MenuList {
 
 		return panel;
 	}
-	
+
 	/**
 	 * An extra padding widget is added as the last item in the HorizontalPanel.
 	 */

@@ -21,14 +21,12 @@ import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.widget.client.Label;
-import rocket.widget.client.menu.BeforeMenuOpenEvent;
 import rocket.widget.client.menu.ContextMenu;
 import rocket.widget.client.menu.HorizontalMenuBar;
 import rocket.widget.client.menu.Menu;
 import rocket.widget.client.menu.MenuItem;
 import rocket.widget.client.menu.MenuListOpenDirection;
 import rocket.widget.client.menu.MenuListener;
-import rocket.widget.client.menu.CancelledMenuOpenEvent;
 import rocket.widget.client.menu.MenuOpenEvent;
 import rocket.widget.client.menu.MenuSpacer;
 import rocket.widget.client.menu.SubMenuItem;
@@ -63,26 +61,18 @@ public class MenuTest implements EntryPoint {
 
 		final RootPanel rootPanel = RootPanel.get();	
 		
-		final Counter menusCancelled = new Counter( "Menus cancelled: ");
-		rootPanel.add( menusCancelled );
-		
-		final Counter beforeMenusOpened = new Counter( "Menus opened: ");
-		rootPanel.add( beforeMenusOpened );
-				
 		final Counter menusOpened = new Counter( "Menus opened: ");
 		rootPanel.add( menusOpened );
 		
 		final MenuListener listener = new MenuListener() {
-				public void onCancelledOpen(final CancelledMenuOpenEvent event ) {
-					menusCancelled.increment();
-				}
-
-				public void onBeforeOpen( final BeforeMenuOpenEvent event ) {
-					beforeMenusOpened.increment();
-				}
-
 				public void onOpen( final MenuOpenEvent event) {
 					menusOpened.increment();
+					
+					final Widget widget = event.getWidget();
+					if( widget instanceof MenuItem ){
+						final MenuItem menuItem = (MenuItem) widget;
+						Window.alert( "Selected menu item...\n" + menuItem );
+					}
 				}
 		};
 

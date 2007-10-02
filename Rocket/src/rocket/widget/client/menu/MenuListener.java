@@ -28,26 +28,9 @@ import com.google.gwt.user.client.ui.Widget;
 public interface MenuListener {
 
 	/**
-	 * This event is fired before a subMenu/ menuItem is opened. This allows a
-	 * listener to cancel or veto an open event.
-	 * 
-	 * @param event
-	 */
-	void onBeforeOpen(BeforeMenuOpenEvent event);
-
-	/**
 	 * This event is fired after a subMenu or menuItem is opened.
 	 * 
 	 * @param event
 	 */
 	void onOpen(MenuOpenEvent event);
-
-	/**
-	 * This method is called when a menu is cancelled. Cancelling a menu
-	 * involves a user navigating over menus submenus and so on and then
-	 * clicking outside the menu area.
-	 * 
-	 * @param event
-	 */
-	void onCancelledOpen( CancelledMenuOpenEvent event );
 }
