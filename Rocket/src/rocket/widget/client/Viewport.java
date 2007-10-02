@@ -13,12 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.widget.client.viewport;
+package rocket.widget.client;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import rocket.event.client.ChangeEventListener;
 import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.EventPreviewAdapter;
 import rocket.event.client.MouseDownEvent;
@@ -32,9 +33,6 @@ import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
-import rocket.widget.client.CompositeWidget;
-import rocket.widget.client.DivPanel;
-import rocket.widget.client.WidgetHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -84,18 +82,18 @@ abstract public class Viewport extends CompositeWidget {
 		super();
 	}
 
-
 	protected void beforeCreateWidget() {
 		super.beforeCreateWidget();
-		
-		this.setViewportListeners(this.createViewportListeners());
-		this.getEventListenerDispatcher().addMouseEventListener( new MouseEventAdapter(){
+
+		final EventListenerDispatcher dispatcher = this.getEventListenerDispatcher();
+		dispatcher.addMouseEventListener( new MouseEventAdapter(){
 			public void onMouseDown( final MouseDownEvent event ){
 				Viewport.this.handleMouseDown( event );
 			}
 		});
+		dispatcher.prepareListenerCollections(EventBitMaskConstants.CHANGE);
 	}
-	
+
 	protected Widget createWidget() {
 		final TileDivPanel widget = this.createInnerPanel();
 		this.setInnerPanel(widget);
@@ -116,10 +114,10 @@ abstract public class Viewport extends CompositeWidget {
 		return simplePanel;
 	}
 
-	protected String getInitialStyleName(){
-	  return Constants.VIEWPORT_STYLE;
+	protected String getInitialStyleName() {
+		return WidgetConstants.VIEWPORT_STYLE;
 	}
-	
+
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.MOUSE_DOWN;
 	}
@@ -145,39 +143,17 @@ abstract public class Viewport extends CompositeWidget {
 		Selection.clearAnySelectedText();
 		Selection.disableTextSelection();
 
-		final Widget tile = this.getTileContainingElement( event.getTarget() );		
-		
-		final BeforeViewportDragStartEvent beforeDragStartedEvent = new BeforeViewportDragStartEvent();
-		beforeDragStartedEvent.setTile(tile);
-		beforeDragStartedEvent.setViewport(this);
+		final ViewportEventPreviewAdapter dragger = this.createDraggingEventPreview();
+		dragger.setMouseX(event.getPageX());
+		dragger.setMouseY(event.getPageY());
 
-		final ViewportListenerCollection listeners = this.getViewportListeners();
-		listeners.fireBeforeDragStarted(beforeDragStartedEvent);
-		if ( false == beforeDragStartedEvent.isCancelled() ) {
+		dragger.setOriginX(this.getOriginX());
+		dragger.setOriginY(this.getOriginY());
+		this.setDraggingEventPreview(dragger);
 
-			final ViewportEventPreviewAdapter dragger = this.createDraggingEventPreview();
-			dragger.setMouseX( event.getPageX());
-			dragger.setMouseY( event.getPageY() );
-			
-			dragger.setOriginX(this.getOriginX());
-			dragger.setOriginY(this.getOriginY());
-			this.setDraggingEventPreview(dragger);
+		dragger.install();
 
-			dragger.install();
-
-			final ViewportDragStartEvent dragStartedEvent = new ViewportDragStartEvent();
-			dragStartedEvent.setViewport(this);
-			dragStartedEvent.setTile(tile );
-			
-			listeners.fireDragStarted(dragStartedEvent);
-		} else {
-			final CancelledViewportDragStartEvent cancelled = new CancelledViewportDragStartEvent();
-			cancelled.setTile(tile);
-			cancelled.setViewport( this );
-			
-			listeners.fireCancelledDragStart(cancelled);
-		}
-		event.cancelBubble( true );
+		event.cancelBubble(true);
 		event.stop();
 	}
 
@@ -215,18 +191,20 @@ abstract public class Viewport extends CompositeWidget {
 	 * at the start of the drag.
 	 */
 	private class ViewportEventPreviewAdapter extends EventPreviewAdapter {
-		protected void handleMouseMoveEvent( final MouseMoveEvent event ){
-			Viewport.this.handleDragMouseMove( event );
+		protected void handleMouseMoveEvent(final MouseMoveEvent event) {
+			Viewport.this.handleDragMouseMove(event);
 		}
-		protected void handleMouseOutEvent( final MouseOutEvent event ){
-			Viewport.this.handleDragMouseOut( event );
+
+		protected void handleMouseOutEvent(final MouseOutEvent event) {
+			Viewport.this.handleDragMouseOut(event);
 		}
-		protected void handleMouseOverEvent( final MouseOverEvent event ){
-			Viewport.this.handleDragMouseOver( event );
+
+		protected void handleMouseOverEvent(final MouseOverEvent event) {
+			Viewport.this.handleDragMouseOver(event);
 		}
-		
-		protected void handleMouseUpEvent( final MouseUpEvent event ){
-			Viewport.this.handleDragMouseUp( event );
+
+		protected void handleMouseUpEvent(final MouseUpEvent event) {
+			Viewport.this.handleDragMouseUp(event);
 		}
 
 		/**
@@ -295,15 +273,7 @@ abstract public class Viewport extends CompositeWidget {
 
 		Selection.enableTextSelection();
 
-		final Widget tile = this.getTileContainingElement(event.getTarget() );
-		
-		final ViewportDragStopEvent viewportDragStopEvent = new ViewportDragStopEvent();
-		viewportDragStopEvent.setTile(tile);
-		viewportDragStopEvent.setViewport( this );
-		
-		this.getViewportListeners().fireMoveStopped(viewportDragStopEvent);
-		
-		event.cancelBubble( true );
+		event.cancelBubble(true);
 	}
 
 	/**
@@ -322,12 +292,12 @@ abstract public class Viewport extends CompositeWidget {
 		final Element element = this.getElement();
 		final Element eventTarget = event.getTarget();
 		if (false == DOM.isOrHasChild(element, eventTarget)) {
-			this.addStyleName( this.getOutOfBoundsStyle() );
+			this.addStyleName(this.getOutOfBoundsStyle());
 		}
-		
-		event.cancelBubble( true );
+
+		event.cancelBubble(true);
 	}
-	
+
 	/**
 	 * This method is called when a dragging mouse moves back over the viewport
 	 * 
@@ -342,14 +312,13 @@ abstract public class Viewport extends CompositeWidget {
 		if (DOM.isOrHasChild(element, eventTarget)) {
 			this.removeStyleName(this.getOutOfBoundsStyle());
 		}
-		event.cancelBubble( true );
+		event.cancelBubble(true);
 	}
 
-	protected String getOutOfBoundsStyle(){
-		return Constants.VIEWPORT_OUT_OF_BOUNDS_STYLE;
+	protected String getOutOfBoundsStyle() {
+		return WidgetConstants.VIEWPORT_OUT_OF_BOUNDS_STYLE;
 	}
 
-	
 	/**
 	 * This method is called each time a dragging mouse is moved within the
 	 * viewport.
@@ -359,39 +328,16 @@ abstract public class Viewport extends CompositeWidget {
 
 		while (true) {
 			final ViewportEventPreviewAdapter previewer = this.getDraggingEventPreview();
-			final int originalMouseX = previewer.getMouseX(); 
+			final int originalMouseX = previewer.getMouseX();
 			final int currentMouseX = event.getPageX();
 
 			final int originalMouseY = previewer.getMouseY();
 			final int currentMouseY = event.getPageY();
-			
+
 			// mouse has not moved do nothing.
 			final int deltaX = currentMouseX - originalMouseX;
 			final int deltaY = currentMouseY - originalMouseY;
-			if ( deltaX == 0 && deltaY == 0 ) {
-				break;
-			}
-			
-			final Widget tile = this.getTileContainingElement( event.getTarget() );
-			
-			// give viewportListeners a chance to veto the drag move
-			final BeforeViewportMoveEvent beforeMoveEvent = new BeforeViewportMoveEvent();
-			beforeMoveEvent.setDeltaX( deltaX );
-			beforeMoveEvent.setDeltaY( deltaY );
-			beforeMoveEvent.setTile(tile);
-			beforeMoveEvent.setViewport(this);
-			
-			final ViewportListenerCollection listeners = this.getViewportListeners();
-			listeners.fireBeforeMove( beforeMoveEvent );
-			if ( beforeMoveEvent.isCancelled() ) {
-				
-				final IgnoredViewportMoveEvent ignored = new IgnoredViewportMoveEvent();
-				ignored.setDeltaX( deltaX );
-				ignored.setDeltaY( deltaY );
-				ignored.setTile(tile);
-				ignored.setViewport(this);
-				
-				listeners.fireIgnoredMove(ignored);
+			if (deltaX == 0 && deltaY == 0) {
 				break;
 			}
 
@@ -402,17 +348,10 @@ abstract public class Viewport extends CompositeWidget {
 
 			this.redraw();
 
-			final ViewportMoveEvent moveEvent = new ViewportMoveEvent();
-			moveEvent.setDeltaX( deltaX );
-			moveEvent.setDeltaY( deltaY );
-			moveEvent.setTile(tile);
-			moveEvent.setViewport(this);
-			
-			listeners.fireMoved( moveEvent );
+			this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 			break;
 		}
-		
-		event.cancelBubble( true );
+		event.cancelBubble(true);
 	}
 
 	/**
@@ -577,10 +516,10 @@ abstract public class Viewport extends CompositeWidget {
 		return tile;
 	}
 
-	protected String getTileStyle(){
-		return Constants.VIEWPORT_TILE_STYLE;		
+	protected String getTileStyle() {
+		return WidgetConstants.VIEWPORT_TILE_STYLE;
 	}
-	
+
 	/**
 	 * Sub classes must override this method to return the appropriate widget
 	 * for the given tile coordinates
@@ -595,28 +534,28 @@ abstract public class Viewport extends CompositeWidget {
 
 	protected void updateInnerPanelOffset() {
 		final Element element = this.getInnerPanel().getElement();
-		InlineStyle.setInteger(element, StyleConstants.LEFT, -Constants.X_OFFSET - this.getOriginX(), CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.TOP, -Constants.Y_OFFSET - this.getOriginY(), CssUnit.PX);
+		InlineStyle.setInteger(element, StyleConstants.LEFT, -WidgetConstants.VIEWPORT_X_OFFSET - this.getOriginX(), CssUnit.PX);
+		InlineStyle.setInteger(element, StyleConstants.TOP, -WidgetConstants.VIEWPORT_Y_OFFSET - this.getOriginY(), CssUnit.PX);
 	}
 
 	protected int getTileLeft(final Widget tile) {
-		return ObjectHelper.getInteger(tile.getElement(), Constants.TILE_LEFT_ATTRIBUTE);
+		return ObjectHelper.getInteger(tile.getElement(), WidgetConstants.VIEWPORT_TILE_LEFT_ATTRIBUTE);
 	}
 
 	protected int getTileTop(final Widget tile) {
-		return ObjectHelper.getInteger(tile.getElement(), Constants.TILE_TOP_ATTRIBUTE);
+		return ObjectHelper.getInteger(tile.getElement(), WidgetConstants.VIEWPORT_TILE_TOP_ATTRIBUTE);
 	}
 
 	protected void setTileLeft(final Widget tile, final int x) {
 		final Element element = tile.getElement();
-		InlineStyle.setInteger(element, StyleConstants.LEFT, Constants.X_OFFSET + x, CssUnit.PX);
-		ObjectHelper.setInteger(element, Constants.TILE_LEFT_ATTRIBUTE, x);
+		InlineStyle.setInteger(element, StyleConstants.LEFT, WidgetConstants.VIEWPORT_X_OFFSET + x, CssUnit.PX);
+		ObjectHelper.setInteger(element, WidgetConstants.VIEWPORT_TILE_LEFT_ATTRIBUTE, x);
 	}
 
 	protected void setTileTop(final Widget tile, final int y) {
 		final Element element = tile.getElement();
-		InlineStyle.setInteger(element, StyleConstants.TOP, Constants.Y_OFFSET + y, CssUnit.PX);
-		ObjectHelper.setInteger(element, Constants.TILE_TOP_ATTRIBUTE, y);
+		InlineStyle.setInteger(element, StyleConstants.TOP, WidgetConstants.VIEWPORT_Y_OFFSET + y, CssUnit.PX);
+		ObjectHelper.setInteger(element, WidgetConstants.VIEWPORT_TILE_TOP_ATTRIBUTE, y);
 	}
 
 	/**
@@ -637,9 +576,9 @@ abstract public class Viewport extends CompositeWidget {
 	protected TileDivPanel createInnerPanel() {
 		final TileDivPanel panel = new TileDivPanel();
 		final Element element = panel.getElement();
-		
+
 		InlineStyle.setString(element, StyleConstants.OVERFLOW, "hidden");
-		
+
 		InlineStyle.setString(element, StyleConstants.POSITION, "relative");
 		InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
 		InlineStyle.setInteger(element, StyleConstants.LEFT, 0, CssUnit.PX);
@@ -710,7 +649,7 @@ abstract public class Viewport extends CompositeWidget {
 	}
 
 	public void setOriginX(final int originX) {
-		this.originX = originX;
+		this.originX = originX;		
 	}
 
 	/**
@@ -723,7 +662,7 @@ abstract public class Viewport extends CompositeWidget {
 	}
 
 	public void setOriginY(final int originY) {
-		this.originY = originY;
+		this.originY = originY;		
 	}
 
 	/**
@@ -752,40 +691,11 @@ abstract public class Viewport extends CompositeWidget {
 		this.tileHeight = tileHeight;
 	}
 
-	/**
-	 * A collection of viewportListeners which are registered to receive
-	 * viewport events.
-	 */
-	private ViewportListenerCollection viewportListeners;
-
-	protected ViewportListenerCollection getViewportListeners() {
-		ObjectHelper.checkNotNull("field:viewportListeners", viewportListeners);
-		return this.viewportListeners;
+	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(changeEventListener);
 	}
 
-	protected void setViewportListeners(final ViewportListenerCollection viewportListeners) {
-		ObjectHelper.checkNotNull("parameter:viewportListeners", viewportListeners);
-		this.viewportListeners = viewportListeners;
-	}
-
-	protected ViewportListenerCollection createViewportListeners() {
-		return new ViewportListenerCollection();
-	}
-
-	public void addViewportListener(final ViewportListener viewportListeners) {
-		ObjectHelper.checkNotNull("parameter:viewportListeners", viewportListeners);
-
-		this.getViewportListeners().add(viewportListeners);
-	}
-
-	public boolean removeViewportListener(final ViewportListener viewportListeners) {
-		ObjectHelper.checkNotNull("parameter:viewportListeners", viewportListeners);
-		return this.getViewportListeners().remove(viewportListeners);
-	}
-	
-	
-	private Widget getTileContainingElement( final Element element ){
-		final Iterator tiles = this.getInnerPanel().iterator();
-		return WidgetHelper.findWidget(element, tiles );
+	public boolean removeChangeEventListener(final ChangeEventListener changeEventListener) {
+		return this.getEventListenerDispatcher().removeChangeEventListener(changeEventListener);
 	}
 }

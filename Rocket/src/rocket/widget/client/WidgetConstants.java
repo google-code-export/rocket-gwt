@@ -424,5 +424,21 @@ public class WidgetConstants {
 	 * submitted using traditional URL encoding.
 	 */
 	static final String ENCODING_URLENCODED = "application/x-www-form-urlencoded";
+	
+	
+	final static String VIEWPORT_STYLE = WidgetConstants.ROCKET + "-viewport";
+
+	final static String VIEWPORT_TILE_STYLE = VIEWPORT_STYLE + "-tile";
+
+	final static String VIEWPORT_OUT_OF_BOUNDS_STYLE = VIEWPORT_STYLE + "-outOfBounds";
+
+	final static String VIEWPORT_TILE_LEFT_ATTRIBUTE = "__tileLeft";
+
+	final static String VIEWPORT_TILE_TOP_ATTRIBUTE = "__tileTop";
+
+	final static int VIEWPORT_X_OFFSET = 16384;
+
+	final static int VIEWPORT_Y_OFFSET = 16384;
+
 
 }
