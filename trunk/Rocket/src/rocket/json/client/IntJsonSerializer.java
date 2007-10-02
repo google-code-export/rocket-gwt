@@ -31,7 +31,7 @@ public class IntJsonSerializer extends JsonSerializer {
 	}
 
 	public Object readObject(final JSONValue jsonValue) {
-		return new Integer((int) jsonValue.isNumber().getValue());
+		return new Integer( this.read( jsonValue ));
 	}
 
 	public JSONValue writeJson(final Object instance) {
@@ -39,8 +39,9 @@ public class IntJsonSerializer extends JsonSerializer {
 		return new JSONNumber(wrapper.intValue());
 	}
 
+
 	public int read(final JSONValue jsonValue) {
-		return (int) jsonValue.isNumber().getValue();
+		return (int)this.readDouble(jsonValue);		
 	}
 
 	public JSONValue writeJson(final int intValue) {

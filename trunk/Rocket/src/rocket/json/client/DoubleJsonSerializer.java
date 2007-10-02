@@ -31,7 +31,7 @@ public class DoubleJsonSerializer extends JsonSerializer {
 	}
 
 	public Object readObject(final JSONValue jsonValue) {
-		return new Double((double) jsonValue.isNumber().getValue());
+		return new Double( read( jsonValue ));
 	}
 
 	public JSONValue writeJson(final Object instance) {
@@ -39,8 +39,9 @@ public class DoubleJsonSerializer extends JsonSerializer {
 		return new JSONNumber(wrapper.doubleValue());
 	}
 
+
 	public double read(final JSONValue jsonValue) {
-		return (double) jsonValue.isNumber().getValue();
+		return (double)this.readDouble(jsonValue);		
 	}
 
 	public JSONValue writeJson(final double doubleValue) {
