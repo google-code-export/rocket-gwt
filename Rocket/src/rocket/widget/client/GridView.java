@@ -37,7 +37,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class GridView extends CompositeWidget {
+abstract public class GridView extends CompositeWidget {
 
 	public GridView() {
 		this.setAutoRedraw(false);
@@ -104,11 +104,10 @@ public class GridView extends CompositeWidget {
 
 		// table.clear();
 
-		final WidgetProvider provider = this.getWidgetProvider();
 		final int rows = this.getRows();
 		final int columns = this.getColumns();
-		final int first = provider.getFirst();
-		final int last = provider.getLast();
+		final int first = this.getFirst();
+		final int last = this.getLast();
 		final int cursor = this.getCursor();
 
 		final Grid.CellFormatter cellFormatter = table.getCellFormatter();
@@ -127,12 +126,13 @@ public class GridView extends CompositeWidget {
 					}
 
 					if (cellIndex < first || cellIndex >= last) {
-						cellWidget = this.createFiller();
+						cellWidget = this.createFillerWidget();
+						cellWidget.addStyleName( this.getFillerStyle() );
 						cellWidget = new GridCell(cellWidget, cellIndex);
 						break;
 					}
 
-					cellWidget = provider.getWidget(cellIndex);
+					cellWidget = this.createCellWidget(cellIndex);
 					cellWidget = new GridCell(cellWidget, cellIndex);
 					lastValidIndex = cellIndex;
 					break;
@@ -153,6 +153,10 @@ public class GridView extends CompositeWidget {
 		return WidgetConstants.GRIDVIEW_CELL_STYLE;
 	}
 
+	abstract protected int getFirst();
+	abstract protected int getLast();
+	abstract protected Widget createCellWidget( int index );
+	
 	/**
 	 * This panel encloses the widget placed in a cell. It contains an extra
 	 * property that records the index of the cell.
@@ -260,49 +264,10 @@ public class GridView extends CompositeWidget {
 		this.redrawIfAutoEnabled();
 	}
 
-	/**
-	 * This html is used to fill in missing grid cells. A missing cell is where
-	 * a particular widget is not available for a cell because there are more
-	 * grid cells than the WidgetProvider can give.
-	 */
-	private String filler;
-
-	public String getFiller() {
-		StringHelper.checkNotNull("field:filler", filler);
-		return this.filler;
-	}
-
-	public void setFiller(final String filler) {
-		StringHelper.checkNotNull("parameter:filler", filler);
-		this.filler = filler;
-		this.redrawIfAutoEnabled();
-	}
-
-	protected Widget createFiller() {
-		final HTML html = new HTML(this.getFiller());
-		html.addStyleName(this.getFillerStyle() );
-		return html;
-	}
+	abstract protected Widget createFillerWidget();
 
 	protected String getFillerStyle(){
 		return WidgetConstants.GRIDVIEW_FILLER_STYLE;
-	}
-	/**
-	 * The widgetProvider being wrapped.
-	 */
-	private WidgetProvider widgetProvider;
-
-	public WidgetProvider getWidgetProvider() {
-		ObjectHelper.checkNotNull("field:widgetProvider", widgetProvider);
-		return widgetProvider;
-	}
-
-	public void setWidgetProvider(final WidgetProvider widgetProvider) {
-		ObjectHelper.checkNotNull("parameter:widgetProvider", widgetProvider);
-		this.widgetProvider = widgetProvider;
-
-		this.clear();
-		redrawIfAutoEnabled();
 	}
 
 	/**
