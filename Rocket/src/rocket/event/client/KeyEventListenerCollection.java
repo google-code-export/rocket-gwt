@@ -19,8 +19,8 @@ public class KeyEventListenerCollection extends ListenerCollection {
 	public void add( final KeyEventListener listener ){
 		super.add( listener );
 	}
-	public void remove( final KeyEventListener listener ){
-		super.remove( listener );
+	public boolean remove( final KeyEventListener listener ){
+		return super.remove( listener );
 	}
 	
 	public void fireKeyDown( final KeyDownEvent event ){

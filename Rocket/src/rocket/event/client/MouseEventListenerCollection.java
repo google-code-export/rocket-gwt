@@ -19,8 +19,8 @@ public class MouseEventListenerCollection extends ListenerCollection {
 	public void add( final MouseEventListener listener ){
 		super.add( listener );
 	}
-	public void remove( final MouseEventListener listener ){
-		super.remove( listener );
+	public boolean remove( final MouseEventListener listener ){
+		return super.remove( listener );
 	}
 	
 	public void fireClick( final MouseClickEvent event ){

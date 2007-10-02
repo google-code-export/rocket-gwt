@@ -59,8 +59,8 @@ abstract public class ListenerCollection {
 	 * Sub classes will need to create a remove method with an appropriately typed listener parameter
 	 * @param listener
 	 */
-	protected void remove( final Object listener ){
-		this.getListeners().remove( listener );
+	protected boolean remove( final Object listener ){
+		return this.getListeners().remove( listener );
 	}
 	
 	protected void fire( final EventFiringAdapter adapter ){
