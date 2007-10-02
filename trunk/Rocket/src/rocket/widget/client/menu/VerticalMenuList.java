@@ -45,12 +45,12 @@ public class VerticalMenuList extends MenuList {
 	protected String getInitialStyleName() {
 		return Constants.VERTICAL_MENU_LIST_STYLE;
 	}
-	
+
 	protected void open() {
 		final Element element = this.getElement();
 		if (this.isHideable()) {
-			InlineStyle.setInteger(element, StyleConstants.Z_INDEX, 1, CssUnit.NONE);			
-			InlineStyle.setString(element, StyleConstants.DISPLAY, "block" );
+			InlineStyle.setInteger(element, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
+			InlineStyle.setString(element, StyleConstants.DISPLAY, "block");
 			InlineStyle.setString(element, StyleConstants.VISIBILITY, "visible");
 		}
 	}
@@ -64,7 +64,7 @@ public class VerticalMenuList extends MenuList {
 
 	public void insert(final Widget widget, final int beforeIndex) {
 		this.getDivPanel().insert(widget, beforeIndex);
-		
+
 		final MenuWidget menuItem = (MenuWidget) widget;
 		menuItem.setParentMenuList(this);
 	}

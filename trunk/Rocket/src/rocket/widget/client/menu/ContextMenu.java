@@ -49,10 +49,10 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ContextMenu extends Menu {
 
-	static{
+	static {
 		Event.disableContextMenu();
 	}
-	
+
 	public ContextMenu() {
 		super();
 	}
@@ -68,7 +68,7 @@ public class ContextMenu extends Menu {
 
 	protected void afterCreatePanel() {
 		super.afterCreatePanel();
-		
+
 		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
 			public void onMouseDown(final MouseDownEvent event) {
 				ContextMenu.this.handleMouseDown(event);
@@ -77,7 +77,7 @@ public class ContextMenu extends Menu {
 			public void onMouseOut(final MouseOutEvent event) {
 				ContextMenu.this.handleMouseOut(event);
 			}
-		});		
+		});
 	}
 
 	protected String getInitialStyleName() {
@@ -88,7 +88,7 @@ public class ContextMenu extends Menu {
 		return EventBitMaskConstants.MOUSE_DOWN | EventBitMaskConstants.MOUSE_OUT;
 	}
 
-	protected SpanPanel createSpanPanel(){
+	protected SpanPanel createSpanPanel() {
 		final SpanPanel panel = new SpanPanel();
 		panel.add(new Html(""));
 
@@ -98,14 +98,14 @@ public class ContextMenu extends Menu {
 
 		return panel;
 	}
-	
+
 	protected MenuList createMenuList() {
 		final VerticalMenuList list = new VerticalMenuList();
 		list.setStyleName(Constants.VERTICAL_MENU_LIST_STYLE);
 		list.setHideable(true);
 		list.setMenu(this);
 		list.setOpenDirection(MenuListOpenDirection.DOWN);
-		list.setVisible( false );
+		list.setVisible(false);
 
 		return list;
 	}
@@ -116,14 +116,14 @@ public class ContextMenu extends Menu {
 	 * @return
 	 */
 	public Widget getWidget() {
-		final SpanPanel panel = (SpanPanel)this.getPanel();
+		final SpanPanel panel = (SpanPanel) this.getPanel();
 		return panel.get(0);
 	}
 
 	public void setWidget(final Widget widget) {
 		ObjectHelper.checkNotNull("parameter:widget", widget);
 
-		final SpanPanel panel = (SpanPanel)this.getPanel();
+		final SpanPanel panel = (SpanPanel) this.getPanel();
 		panel.remove(0);
 		panel.insert(widget, 0);
 	}
@@ -167,53 +167,52 @@ public class ContextMenu extends Menu {
 		final MenuList menuList = this.getMenuList();
 		final Menu menu = this;
 		final MenuListenerCollection listeners = menu.getMenuListeners();
-		if (listeners.fireBeforeMenuOpened(this)) {
-			menuList.open();
 
-			// Must set absolute coordinates in order to read the coordinates of
-			// element accurately IE6 bug
-			final Element menuListElement = menuList.getElement();
+		menuList.open();
 
-			InlineStyle.setString(menuListElement, StyleConstants.POSITION, "absolute");
-			InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, 0, CssUnit.PX);
-			InlineStyle.setInteger(menuListElement, StyleConstants.TOP, 0, CssUnit.PX);
+		// Must set absolute coordinates in order to read the coordinates of
+		// element accurately IE6 bug
+		final Element menuListElement = menuList.getElement();
 
-			final Widget widget = this.getWidget();
-			final Element widgetElement = widget.getElement();
-			int x = Dom.getContainerLeftOffset(widgetElement);
-			int y = Dom.getContainerTopOffset(widgetElement);
+		InlineStyle.setString(menuListElement, StyleConstants.POSITION, "absolute");
+		InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, 0, CssUnit.PX);
+		InlineStyle.setInteger(menuListElement, StyleConstants.TOP, 0, CssUnit.PX);
 
-			while (true) {
-				final MenuListOpenDirection openDirection = menuList.getOpenDirection();
+		final Widget widget = this.getWidget();
+		final Element widgetElement = widget.getElement();
+		int x = Dom.getContainerLeftOffset(widgetElement);
+		int y = Dom.getContainerTopOffset(widgetElement);
 
-				if (MenuListOpenDirection.LEFT == openDirection) {
-					x = x - menuList.getOffsetWidth() + 1;
-					break;
-				}
-				if (MenuListOpenDirection.UP == openDirection) {
-					y = y - menuList.getOffsetHeight() + 1;
-					break;
-				}
-				if (MenuListOpenDirection.RIGHT == openDirection) {
-					x = x + widget.getOffsetWidth() - 1;
-					break;
-				}
-				ObjectHelper.checkSame("openDirection", MenuListOpenDirection.DOWN, openDirection);
-				y = y + widget.getOffsetHeight() - 1;
+		while (true) {
+			final MenuListOpenDirection openDirection = menuList.getOpenDirection();
+
+			if (MenuListOpenDirection.LEFT == openDirection) {
+				x = x - menuList.getOffsetWidth() + 1;
 				break;
 			}
-			InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, x, CssUnit.PX);
-			InlineStyle.setInteger(menuListElement, StyleConstants.TOP, y, CssUnit.PX);
-			InlineStyle.setInteger(menuListElement, StyleConstants.Z_INDEX, 1, CssUnit.NONE);			
-
-			listeners.fireMenuOpened(this);
+			if (MenuListOpenDirection.UP == openDirection) {
+				y = y - menuList.getOffsetHeight() + 1;
+				break;
+			}
+			if (MenuListOpenDirection.RIGHT == openDirection) {
+				x = x + widget.getOffsetWidth() - 1;
+				break;
+			}
+			ObjectHelper.checkSame("openDirection", MenuListOpenDirection.DOWN, openDirection);
+			y = y + widget.getOffsetHeight() - 1;
+			break;
 		}
+		InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, x, CssUnit.PX);
+		InlineStyle.setInteger(menuListElement, StyleConstants.TOP, y, CssUnit.PX);
+		InlineStyle.setInteger(menuListElement, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
+
+		listeners.fireMenuOpened(this);
 	}
-	
-	public Iterator iterator(){
+
+	public Iterator iterator() {
 		return this.getMenuList().iterator();
 	}
-	
+
 	public void insert(final Widget widget, final int beforeIndex) {
 		this.getMenuList().insert(widget, beforeIndex);
 	}

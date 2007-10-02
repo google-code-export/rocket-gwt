@@ -76,8 +76,8 @@ public class MenuSpacer extends MenuWidget {
 	protected Widget createWidget() {
 		return new Html(Constants.SPACER_HTML);
 	}
-	
-	String toString0(){
+
+	String toString0() {
 		return "<spacer>";
 	}
 }

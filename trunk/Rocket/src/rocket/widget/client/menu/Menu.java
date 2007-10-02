@@ -41,18 +41,18 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 		super();
 	}
 
-	protected void checkPanel( final Panel panel ){
+	protected void checkPanel(final Panel panel) {
 		throw new UnsupportedOperationException("checkPanel");
 	}
-	
+
 	protected void beforeCreatePanel() {
 		super.beforeCreatePanel();
 
 		this.setMenuListeners(createMenuListenerCollection());
 	}
-	
-	protected void afterCreatePanel(){
-		
+
+	protected void afterCreatePanel() {
+
 		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
 				Menu.this.handleMouseClick(event);
@@ -65,9 +65,9 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 			public void onMouseOver(final MouseOverEvent event) {
 				Menu.this.handleMouseOver(event);
 			}
-		});	
+		});
 	}
-	
+
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.MOUSE_CLICK | EventBitMaskConstants.MOUSE_OVER | EventBitMaskConstants.MOUSE_OUT;
 	}
@@ -107,8 +107,8 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 	public void insert(final Widget widget, final int beforeIndex) {
 		this.getMenuList().insert(widget, beforeIndex);
 	}
-	
-	public boolean remove( final int index ){
+
+	public boolean remove(final int index) {
 		return this.getMenuList().remove(index);
 	}
 
@@ -119,7 +119,6 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 	public int getCount() {
 		return this.getMenuList().getWidgetCount();
 	}
-
 
 	// PROPERTIES :::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -175,6 +174,6 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 	}
 
 	public String toString() {
-		return ObjectHelper.defaultToString( this );
+		return ObjectHelper.defaultToString(this);
 	}
 }

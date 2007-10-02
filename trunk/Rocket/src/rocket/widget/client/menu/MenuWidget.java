@@ -36,7 +36,7 @@ abstract class MenuWidget extends CompositeWidget {
 	protected MenuWidget() {
 		super();
 	}
-	
+
 	protected void afterCreateWidget() {
 		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
@@ -82,7 +82,6 @@ abstract class MenuWidget extends CompositeWidget {
 	 * @param event
 	 */
 	abstract protected void handleMouseOver(final MouseOverEvent event);
-
 
 	protected void onDetach() {
 		super.onDetach();
@@ -145,48 +144,51 @@ abstract class MenuWidget extends CompositeWidget {
 		ObjectHelper.checkNotNull("field:parentMenuList", parentMenuList);
 		return this.parentMenuList;
 	}
-	protected boolean hasParentMenuList(){
+
+	protected boolean hasParentMenuList() {
 		return null != this.parentMenuList;
 	}
+
 	protected void setParentMenuList(final MenuList parentMenuList) {
 		ObjectHelper.checkNotNull("parameter:parentMenuList", parentMenuList);
 		this.parentMenuList = parentMenuList;
 	}
-	protected void clearParentMenuList(){
+
+	protected void clearParentMenuList() {
 		this.parentMenuList = null;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		final StringBuffer buf = new StringBuffer();
-		buf.append( ObjectHelper.defaultToString( this ));
-		buf.append( " [");	
-		
-		if( this.hasParentMenuList() ){
+		buf.append(ObjectHelper.defaultToString(this));
+		buf.append(" [");
+
+		if (this.hasParentMenuList()) {
 			MenuList parent = this.getParentMenuList();
-					
+
 			final Stack stack = new Stack();
-			while( true ){
-				if( false == parent.hasParentMenuList() ){
+			while (true) {
+				if (false == parent.hasParentMenuList()) {
 					break;
 				}
 				parent = parent.getParentMenuList();
-				
-				if( false == parent.hasOpened() ){
+
+				if (false == parent.hasOpened()) {
 					break;
 				}
-				stack.push( parent.getOpened().getText() );				
+				stack.push(parent.getOpened().getText());
 			}
-						
-			while( false == stack.isEmpty() ){
-				buf.append( stack.pop() );
-				buf.append( ">");
+
+			while (false == stack.isEmpty()) {
+				buf.append(stack.pop());
+				buf.append(">");
 			}
 		}
-		
-		buf.append( this.toString0() );
-		buf.append( "]");
+
+		buf.append(this.toString0());
+		buf.append("]");
 		return buf.toString();
 	}
-	
+
 	abstract String toString0();
 }

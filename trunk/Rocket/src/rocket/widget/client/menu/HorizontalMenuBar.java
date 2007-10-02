@@ -36,7 +36,7 @@ public class HorizontalMenuBar extends Menu {
 
 	protected MenuList createMenuList() {
 		final HorizontalMenuList list = new HorizontalMenuList();
-		list.setHideable( false );
+		list.setHideable(false);
 		list.setMenu(this);
 		return list;
 	}

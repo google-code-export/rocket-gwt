@@ -43,13 +43,13 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	protected MenuList() {
 		super();
 	}
-	
-	protected void checkPanel( final Panel panel ){
-		throw new UnsupportedOperationException( "checkPanel");
+
+	protected void checkPanel(final Panel panel) {
+		throw new UnsupportedOperationException("checkPanel");
 	}
-	
+
 	abstract protected Panel createPanel();
-	
+
 	protected void afterCreatePanel() {
 		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
@@ -98,14 +98,14 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	abstract protected void open();
-	
+
 	protected void hide() {
 		if (this.isHideable()) {
 			final Element element = this.getElement();
 			InlineStyle.setString(element, StyleConstants.VISIBILITY, "hidden");
 			InlineStyle.setString(element, StyleConstants.DISPLAY, "none");
 		}
-			
+
 		if (this.hasOpened()) {
 			this.getOpened().hide();
 			this.clearOpened();
@@ -133,9 +133,9 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	public abstract void insert(final Widget widget, final int beforeIndex);
-	
-	public boolean remove( final int index ){
-		return this.remove( this.get( index ));
+
+	public boolean remove(final int index) {
+		return this.remove(this.get(index));
 	}
 
 	public boolean remove(final Widget widget) {
@@ -149,7 +149,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 		}
 		return removed;
 	}
-	
+
 	/**
 	 * Sub-classes must attempt to remove the given widget
 	 * 
