@@ -16,8 +16,6 @@
 package rocket.widget.test.gridview.client;
 
 import rocket.widget.client.GridView;
-import rocket.widget.client.WidgetProvider;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -34,9 +32,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class GridViewTest implements EntryPoint {
 
-	/**
-	 * This is the entry point method.
-	 */
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
@@ -52,28 +47,26 @@ public class GridViewTest implements EntryPoint {
 		h.removeFromParent();
 		
 		
-		final GridView gridView = new GridView();
+		final GridView gridView = new GridView(){
+			protected int getFirst(){
+				return 0;
+			}
+			protected int getLast(){
+				return 10;
+			}
+			protected int getCount(){
+				return this.getLast() - this.getFirst();
+			}
+			protected Widget createCellWidget(final int index) {
+				return new HTML( "" + index );				
+			}
+			protected Widget createFillerWidget(){
+				return new HTML();
+			}
+		};
 		gridView.setColumns(1);
 		gridView.setCursor(0);
 		gridView.setRows(1);
-		gridView.setFiller("<span style='background-color: #eeeeee'></span>");
-		gridView.setWidgetProvider(new WidgetProvider() {
-			public int getFirst() {
-				return 0;
-			}
-
-			public int getLast() {
-				return 10;
-			}
-
-			public int getCount() {
-				return this.getLast() - getFirst();
-			}
-
-			public Widget getWidget(final int index) {
-				return new HTML( "" + index );				
-			}
-		});
 		gridView.setAutoRedraw(true);
 		gridView.redraw();
 
