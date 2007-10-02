@@ -21,8 +21,8 @@ public class ChangeEventListenerCollection extends ListenerCollection {
 	public void add( final ChangeEventListener listener ){
 		super.add( listener );
 	}
-	public void remove( final ChangeEventListener listener ){
-		super.remove( listener );
+	public boolean remove( final ChangeEventListener listener ){
+		return super.remove( listener );
 	}
 	
 	public void fireChange( final Widget sender ){

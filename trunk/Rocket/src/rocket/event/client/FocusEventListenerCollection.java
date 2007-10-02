@@ -19,8 +19,8 @@ public class FocusEventListenerCollection extends ListenerCollection {
 	public void add( final FocusEventListener listener ){
 		super.add( listener );
 	}
-	public void remove( final FocusEventListener listener ){
-		super.remove( listener );
+	public boolean remove( final FocusEventListener listener ){
+		return super.remove( listener );
 	}
 	
 	public void fireFocus( final FocusEvent event ){
