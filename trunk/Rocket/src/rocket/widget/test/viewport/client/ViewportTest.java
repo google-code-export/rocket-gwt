@@ -24,14 +24,15 @@ import rocket.style.client.StyleConstants;
 import rocket.util.client.Colour;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-import rocket.widget.client.viewport.BeforeViewportMoveEvent;
 import rocket.widget.client.viewport.BeforeViewportDragStartEvent;
+import rocket.widget.client.viewport.BeforeViewportMoveEvent;
+import rocket.widget.client.viewport.CancelledViewportDragStartEvent;
+import rocket.widget.client.viewport.IgnoredViewportMoveEvent;
 import rocket.widget.client.viewport.Viewport;
-import rocket.widget.client.viewport.ViewportMoveEvent;
 import rocket.widget.client.viewport.ViewportDragStartEvent;
 import rocket.widget.client.viewport.ViewportDragStopEvent;
 import rocket.widget.client.viewport.ViewportListener;
-import rocket.widget.client.viewport.ViewportListenerAdapter;
+import rocket.widget.client.viewport.ViewportMoveEvent;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Element;
@@ -76,11 +77,17 @@ public class ViewportTest implements EntryPoint {
 		final Counter dragStarted = new Counter( "Drag started: ");
 		rootPanel.add( dragStarted );
 		
+		final Counter cancelledDragStart = new Counter( "Cancelled drag: ");
+		rootPanel.add( cancelledDragStart );
+		
 		final Counter beforeMoveStarted = new Counter( "Before move start: ");
 		rootPanel.add( beforeMoveStarted );
 
 		final Counter moved = new Counter( "Move started: ");
 		rootPanel.add( moved );
+		
+		final Counter ignoredMove = new Counter( "Ignored move: ");
+		rootPanel.add( ignoredMove );
 		
 		final Counter dragStopped = new Counter( "Move stopped: ");
 		rootPanel.add( dragStopped );
@@ -128,6 +135,14 @@ public class ViewportTest implements EntryPoint {
 				dragStarted.increment();
 			}
 			
+			public void onCancelledDragStart( CancelledViewportDragStartEvent event ){
+				ObjectHelper.checkNotNull( "parameter:event", event );
+				ObjectHelper.checkNotNull( "CancelledViewportDragStartEvent.tile", event.getTile() );
+				ObjectHelper.checkNotNull( "CancelledViewportDragStartEvent.viewport", event.getViewport() );
+				
+				cancelledDragStart.increment();
+			}
+			
 			public void onBeforeMove(final BeforeViewportMoveEvent event){
 				ObjectHelper.checkNotNull( "parameter:event", event );
 				ObjectHelper.checkNotNull( "BeforeViewportMoveEvent.tile", event.getTile() );
@@ -147,6 +162,17 @@ public class ViewportTest implements EntryPoint {
 				moved.increment();
 			}
 
+			public void onIgnoredMove(final IgnoredViewportMoveEvent event){
+				ObjectHelper.checkNotNull( "parameter:event", event );
+				ObjectHelper.checkNotNull( "IgnoredViewportMoveEvent.tile", event.getTile() );
+				ObjectHelper.checkNotNull( "IgnoredViewportMoveEvent.viewport", event.getViewport() );
+				
+				System.out.println("CLIENT drag moving, timestamp: " + new Date());
+				ViewportTest.this.updateCoordinatesLabel(coordinates, viewport);
+				
+				ignoredMove.increment();
+			}
+			
 			public void onDragStop(final ViewportDragStopEvent event){
 				ObjectHelper.checkNotNull( "parameter:event", event );
 				ObjectHelper.checkNotNull( "ViewportDragStopEvent.tile", event.getTile() );

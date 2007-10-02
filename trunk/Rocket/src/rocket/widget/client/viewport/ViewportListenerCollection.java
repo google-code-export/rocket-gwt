@@ -26,7 +26,7 @@ import java.util.Iterator;
  */
 class ViewportListenerCollection extends ArrayList {
 
-	public void fireBeforeMoveStarted(final BeforeViewportDragStartEvent event ) {		
+	public void fireBeforeDragStarted(final BeforeViewportDragStartEvent event ) {		
 		final Iterator listeners = this.iterator();
 		
 		while (listeners.hasNext()) {
@@ -39,7 +39,7 @@ class ViewportListenerCollection extends ArrayList {
 		}
 	}
 
-	public void fireMoveStarted(final ViewportDragStartEvent event ) {				
+	public void fireDragStarted(final ViewportDragStartEvent event ) {				
 		final Iterator listeners = this.iterator();
 		while (listeners.hasNext()) {
 			final ViewportListener listener = (ViewportListener) listeners.next();
@@ -48,6 +48,15 @@ class ViewportListenerCollection extends ArrayList {
 		}
 	}
 
+	public void fireCancelledDragStart(final CancelledViewportDragStartEvent event ) {		
+		final Iterator listeners = this.iterator();
+		
+		while (listeners.hasNext()) {
+			final ViewportListener listener = (ViewportListener) listeners.next();
+			listener.onCancelledDragStart(event);
+		}
+	}
+	
 	public void fireBeforeMove( final BeforeViewportMoveEvent event ) {		
 		final Iterator listeners = this.iterator();
 		
@@ -70,6 +79,16 @@ class ViewportListenerCollection extends ArrayList {
 		}
 	}
 
+	public void fireIgnoredMove(final IgnoredViewportMoveEvent event ) {
+		final Iterator listeners = this.iterator();
+		
+		while (listeners.hasNext()) {
+			final ViewportListener listener = (ViewportListener) listeners.next();
+			listener.onIgnoredMove(event);
+		}
+	}
+
+	
 	public void fireMoveStopped(final ViewportDragStopEvent event) {
 		final Iterator listeners = this.iterator();
 		

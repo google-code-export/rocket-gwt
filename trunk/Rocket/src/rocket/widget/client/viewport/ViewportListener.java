@@ -39,6 +39,11 @@ public interface ViewportListener {
 	void onDragStart(ViewportDragStartEvent event);
 
 	/**
+	 * This method is invoked whenever a drag event is cancelled.
+	 * @param event
+	 */
+	void onCancelledDragStart( CancelledViewportDragStartEvent event );
+	/**
 	 * This method is invoked each time the user moves or drags a tile.
 	 * 
 	 * @param event
@@ -52,6 +57,12 @@ public interface ViewportListener {
 	 */
 	void onMoved(ViewportMoveEvent event);
 
+	/**
+	 * This method is fired when a move event is cancelled.
+	 * @param event
+	 */
+	void onIgnoredMove( IgnoredViewportMoveEvent event );
+	
 	/**
 	 * This method is invoked whenever the user stops a drag.
 	 * 
