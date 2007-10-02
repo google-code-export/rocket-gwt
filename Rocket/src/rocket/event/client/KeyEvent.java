@@ -21,7 +21,7 @@ import com.google.gwt.user.client.DOM;
  * Package private class that adds the shared behaviour for all key events.
  * @author Miroslav Pokorny
  */
-abstract class KeyEvent extends Event {
+public class KeyEvent extends Event {
 	public KeyEvent(){		
 	}
 	
