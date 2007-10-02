@@ -34,7 +34,7 @@ class MenuListenerCollection {
 
 		final MenuOpenEvent event = new MenuOpenEvent();
 		event.setWidget(widget);
-		
+
 		final Iterator listeners = this.iterator();
 
 		while (listeners.hasNext()) {
@@ -42,7 +42,7 @@ class MenuListenerCollection {
 			listener.onOpen(event);
 		}
 	}
-	
+
 	public void add(final MenuListener menuListener) {
 		this.getListeners().add(menuListener);
 	}
