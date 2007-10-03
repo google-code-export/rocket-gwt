@@ -191,19 +191,19 @@ abstract public class Viewport extends CompositeWidget {
 	 * at the start of the drag.
 	 */
 	private class ViewportEventPreviewAdapter extends EventPreviewAdapter {
-		protected void handleMouseMoveEvent(final MouseMoveEvent event) {
+		protected void onMouseMove(final MouseMoveEvent event) {
 			Viewport.this.handleDragMouseMove(event);
 		}
 
-		protected void handleMouseOutEvent(final MouseOutEvent event) {
+		protected void onMouseOut(final MouseOutEvent event) {
 			Viewport.this.handleDragMouseOut(event);
 		}
 
-		protected void handleMouseOverEvent(final MouseOverEvent event) {
+		protected void onMouseOver(final MouseOverEvent event) {
 			Viewport.this.handleDragMouseOver(event);
 		}
 
-		protected void handleMouseUpEvent(final MouseUpEvent event) {
+		protected void onMouseUp(final MouseUpEvent event) {
 			Viewport.this.handleDragMouseUp(event);
 		}
 

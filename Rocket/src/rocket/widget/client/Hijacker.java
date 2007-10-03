@@ -97,7 +97,7 @@ public class Hijacker {
 		}
 	}
 
-	void restore() {
+	public void restore() {
 		final Element parent = this.getParent();
 		if( null != parent ){
 			DOM.insertChild(parent, this.getElement(), this.getChildIndex());

@@ -35,93 +35,93 @@ abstract class EventDispatcher {
 			
 			final MouseClickEvent mouseClickEvent = event.asMouseClickEvent();
 			if (mouseClickEvent != null) {
-				this.handleMouseClickEvent(mouseClickEvent);
+				this.onMouseClick(mouseClickEvent);
 				break;
 			}
 			final MouseDoubleClickEvent mouseDoubleClickEvent = event.asMouseDoubleClickEvent();
 			if (mouseDoubleClickEvent != null) {
-				this.handleMouseDoubleClickEvent(mouseDoubleClickEvent);
+				this.onMouseDoubleClick(mouseDoubleClickEvent);
 				break;
 			}
 
 			final MouseDownEvent mouseDownEvent = event.asMouseDownEvent();
 			if (mouseDownEvent != null) {
-				this.handleMouseDownEvent(mouseDownEvent);
+				this.onMouseDown(mouseDownEvent);
 				break;
 			}
 			final MouseMoveEvent mouseMoveEvent = event.asMouseMoveEvent();
 			if (mouseMoveEvent != null) {
-				this.handleMouseMoveEvent(mouseMoveEvent);
+				this.onMouseMove(mouseMoveEvent);
 				break;
 			}
 			final MouseOutEvent mouseOutEvent = event.asMouseOutEvent();
 			if (mouseOutEvent != null) {
-				this.handleMouseOutEvent(mouseOutEvent);
+				this.onMouseOut(mouseOutEvent);
 				break;
 			}
 			final MouseOverEvent mouseOverEvent = event.asMouseOverEvent();
 			if (mouseOverEvent != null) {
-				this.handleMouseOverEvent(mouseOverEvent);
+				this.onMouseOver(mouseOverEvent);
 				break;
 			}
 			final MouseUpEvent mouseUpEvent = event.asMouseUpEvent();
 			if (mouseUpEvent != null) {
-				this.handleMouseUpEvent(mouseUpEvent);
+				this.onMouseUp(mouseUpEvent);
 				break;
 			}
 			final MouseWheelEvent mouseWheelEvent = event.asMouseWheelEvent();
 			if (mouseWheelEvent != null) {
-				this.handleMouseWheelEvent(mouseWheelEvent);
+				this.onMouseWheel(mouseWheelEvent);
 				break;
 			}
 
 			final KeyDownEvent keyDownEvent = event.asKeyDownEvent();
 			if (keyDownEvent != null) {
-				this.handleKeyDownEvent(keyDownEvent);
+				this.onKeyDown(keyDownEvent);
 				break;
 			}
 			final KeyPressEvent keyPressEvent = event.asKeyPressEvent();
 			if (keyPressEvent != null) {
-				this.handleKeyPressEvent(keyPressEvent);
+				this.onKeyPress(keyPressEvent);
 				break;
 			}
 			final KeyUpEvent keyUpEvent = event.asKeyUpEvent();
 			if (keyUpEvent != null) {
-				this.handleKeyUpEvent(keyUpEvent);
+				this.onKeyUp(keyUpEvent);
 				break;
 			}
 
 			final FocusEvent focusEvent = event.asFocusEvent();
 			if (focusEvent != null) {
-				this.handleFocusEvent(focusEvent);
+				this.onFocus(focusEvent);
 				break;
 			}
 
 			final BlurEvent blurEvent = event.asBlurEvent();
 			if (blurEvent != null) {
-				this.handleBlurEvent(blurEvent);
+				this.onBlur(blurEvent);
 				break;
 			}
 
 			final ChangeEvent changeEvent = event.asChangeEvent();
 			if (changeEvent != null) {
-				this.handleChangeEvent(changeEvent);
+				this.onChange(changeEvent);
 				break;
 			}
 
 			final ScrollEvent scrollEvent = event.asScrollEvent();
 			if (scrollEvent != null) {
-				this.handleScrollEvent(scrollEvent);
+				this.onScroll(scrollEvent);
 				break;
 			}
 			final ImageLoadSuccessEvent imageLoadSuccessEvent = event.asImageLoadSuccessEvent();
 			if (imageLoadSuccessEvent != null) {
-				this.handleImageLoadSuccessEvent(imageLoadSuccessEvent);
+				this.onImageLoadSuccess(imageLoadSuccessEvent);
 				break;
 			}
 			final ImageLoadFailedEvent imageLoadFailedEvent = event.asImageLoadFailedEvent();
 			if (imageLoadFailedEvent != null) {
-				this.handleImageLoadFailedEvent(imageLoadFailedEvent);
+				this.onImageLoadFailed(imageLoadFailedEvent);
 				break;
 			}
 
@@ -130,55 +130,55 @@ abstract class EventDispatcher {
 		
 	}
 	
-	protected void handleMouseClickEvent(final MouseClickEvent event) {
+	protected void onMouseClick(final MouseClickEvent event) {
 	}
 
-	protected void handleMouseDoubleClickEvent(final MouseDoubleClickEvent event) {
+	protected void onMouseDoubleClick(final MouseDoubleClickEvent event) {
 	}
 
-	protected void handleMouseDownEvent(final MouseDownEvent event) {
+	protected void onMouseDown(final MouseDownEvent event) {
 	}
 
-	protected void handleMouseMoveEvent(final MouseMoveEvent event) {
+	protected void onMouseMove(final MouseMoveEvent event) {
 	}
 
-	protected void handleMouseOutEvent(final MouseOutEvent event) {
+	protected void onMouseOut(final MouseOutEvent event) {
 	}
 
-	protected void handleMouseOverEvent(final MouseOverEvent event) {
+	protected void onMouseOver(final MouseOverEvent event) {
 	}
 
-	protected void handleMouseUpEvent(final MouseUpEvent event) {
+	protected void onMouseUp(final MouseUpEvent event) {
 	}
 
-	protected void handleMouseWheelEvent(final MouseWheelEvent event) {
+	protected void onMouseWheel(final MouseWheelEvent event) {
 	}
 
-	protected void handleKeyDownEvent(final KeyDownEvent event) {
+	protected void onKeyDown(final KeyDownEvent event) {
 	}
 
-	protected void handleKeyPressEvent(final KeyPressEvent event) {
+	protected void onKeyPress(final KeyPressEvent event) {
 	}
 
-	protected void handleKeyUpEvent(final KeyUpEvent event) {
+	protected void onKeyUp(final KeyUpEvent event) {
 	}
 
-	protected void handleImageLoadSuccessEvent(final ImageLoadSuccessEvent event) {
+	protected void onImageLoadSuccess(final ImageLoadSuccessEvent event) {
 	}
 
-	protected void handleImageLoadFailedEvent(final ImageLoadFailedEvent event) {
+	protected void onImageLoadFailed(final ImageLoadFailedEvent event) {
 	}
 
-	protected void handleFocusEvent(final FocusEvent event) {
+	protected void onFocus(final FocusEvent event) {
 	}
 
-	protected void handleBlurEvent(final BlurEvent event) {
+	protected void onBlur(final BlurEvent event) {
 	}
 
-	protected void handleChangeEvent(final ChangeEvent event) {
+	protected void onChange(final ChangeEvent event) {
 	}
 
-	protected void handleScrollEvent(final ScrollEvent event) {
+	protected void onScroll(final ScrollEvent event) {
 	}
 	
 	/**

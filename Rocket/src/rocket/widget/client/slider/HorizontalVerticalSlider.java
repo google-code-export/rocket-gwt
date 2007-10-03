@@ -197,10 +197,10 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	 */
 	protected EventPreview createDraggingEventPreview() {
 		return new EventPreviewAdapter() {
-			protected void handleMouseMoveEvent( final MouseMoveEvent event ){
+			protected void onMouseMove( final MouseMoveEvent event ){
 				HorizontalVerticalSlider.this.handleHandleMouseMove( event);
 			}
-			protected void handleMouseUpEvent( final MouseUpEvent event ){
+			protected void onMouseUp( final MouseUpEvent event ){
 				HorizontalVerticalSlider.this.handleHandleMouseUp( event );
 			}
 		};

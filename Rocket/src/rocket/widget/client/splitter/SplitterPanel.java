@@ -437,10 +437,10 @@ abstract public class SplitterPanel extends CompositeWidget {
 					event.setWidget( Splitter.this );
 				}
 				
-				protected void handleMouseMoveEvent( final MouseMoveEvent event ){
+				protected void onMouseMove( final MouseMoveEvent event ){
 					SplitterPanel.this.handleMouseMove( event);
 				}
-				protected void handleMouseUpEvent( final MouseUpEvent event ){
+				protected void onMouseUp( final MouseUpEvent event ){
 					Splitter.this.handleMouseUp(event);
 				}		
 			};
