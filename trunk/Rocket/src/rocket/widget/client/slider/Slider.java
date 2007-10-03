@@ -223,10 +223,10 @@ public abstract class Slider extends CompositeWidget {
 	protected EventPreview createDraggingEventPreview() {
 		return new EventPreviewAdapter() {
 
-			public void handleMouseMoveEvent( final MouseMoveEvent event ){
+			public void onMouseMove( final MouseMoveEvent event ){
 				Slider.this.handleMouseMove( event );
 			}
-			public void handleMouseUpEvent( final MouseUpEvent event ){
+			public void onMouseUp( final MouseUpEvent event ){
 				Slider.this.handleHandleMouseUp( event );
 			}
 		};

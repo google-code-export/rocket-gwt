@@ -126,7 +126,7 @@ public class ResizablePanel extends CompositePanel {
 				
 		DOM.sinkEvents(element, EventBitMaskConstants.MOUSE_DOWN );
 		DOM.setEventListener(element, new EventListenerAdapter(){
-			protected void handleMouseDownEvent(final MouseDownEvent event ){
+			protected void onMouseDown(final MouseDownEvent event ){
 				ResizablePanel.this.handleMouseDownEvent( event );
 			}			
 		});	
@@ -271,7 +271,7 @@ public class ResizablePanel extends CompositePanel {
 		final boolean updateHeight0 = updateHeight;	
 		
 		final EventPreviewAdapter previewer = new EventPreviewAdapter(){
-			protected void handleMouseMoveEvent( final MouseMoveEvent event ){
+			protected void onMouseMove( final MouseMoveEvent event ){
 				if( updateWidth0 ){
 					final int deltaX = event.getPageX() - initialMousePageX;	
 					int newWidth = panelWidth + deltaX;
@@ -291,7 +291,7 @@ public class ResizablePanel extends CompositePanel {
 				event.cancelBubble( true );
 			}
 			
-			protected void handleMouseUpEvent( final MouseUpEvent event ){
+			protected void onMouseUp( final MouseUpEvent event ){
 				//System.out.println( "handleMouseUpEvent");
 				this.uninstall();
 
