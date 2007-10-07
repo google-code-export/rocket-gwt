@@ -70,7 +70,7 @@ public class WebHelper {
 			final WebResponse webResponse = new WebResponse();
 			webResponse.setCode(response0.getStatus());
 			webResponse.setMessage(response0.getMessage());
-			// @temp not needed for now
+			// @originalWidget not needed for now
 			// webResponse.setHeaders(response0.getHeaders());
 
 			final byte[] bytes = response0.toByteArray();

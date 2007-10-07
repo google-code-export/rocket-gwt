@@ -28,7 +28,7 @@ import com.google.gwt.user.client.Element;
  * elements taken from the dom via the {@link #CheckBox(Element)} constructor.
  * 
  * Most of the internals have been ripped and reworked from the original GWT
- * CheckBox widget. 
+ * CheckBox widget.
  * 
  * TODO When upgrading GWT version reapply changes to this class.
  * 

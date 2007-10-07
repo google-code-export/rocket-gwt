@@ -39,7 +39,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Spinner extends CompositeWidget{
+public class Spinner extends CompositeWidget {
 
 	public Spinner() {
 	}
@@ -121,7 +121,7 @@ public class Spinner extends CompositeWidget{
 
 	protected Image createUpWidget() {
 		final Image image = new Image();
-		image.setStyleName( this.getUpArrowStyle() );
+		image.setStyleName(this.getUpArrowStyle());
 		image.addMouseEventListener(new MouseEventAdapter() {
 
 			public void onClick(final MouseClickEvent event) {
@@ -130,9 +130,9 @@ public class Spinner extends CompositeWidget{
 		});
 		return image;
 	}
-	
-	protected String getUpArrowStyle(){
-		return WidgetConstants.SPINNER_UP_STYLE;		
+
+	protected String getUpArrowStyle() {
+		return WidgetConstants.SPINNER_UP_STYLE;
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class Spinner extends CompositeWidget{
 
 	protected Image createDownWidget() {
 		final Image image = new Image();
-		image.setStyleName( this.getDownArrowStyle() );
+		image.setStyleName(this.getDownArrowStyle());
 
 		image.addMouseEventListener(new MouseEventAdapter() {
 
@@ -182,8 +182,8 @@ public class Spinner extends CompositeWidget{
 		});
 		return image;
 	}
-	
-	protected String getDownArrowStyle(){
+
+	protected String getDownArrowStyle() {
 		return WidgetConstants.SPINNER_DOWN_STYLE;
 	}
 

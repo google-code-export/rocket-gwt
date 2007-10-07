@@ -154,7 +154,6 @@ public class WidgetConstants {
 
 	final static String SORTABLE_TABLE_EVEN_ROW_STYLE = SORTABLE_TABLE_STYLE + "-evenRow";
 
-	
 	// ZEBRA
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
@@ -298,9 +297,9 @@ public class WidgetConstants {
 	final static String RESIZABLE_PANEL_STYLE = ROCKET + "-resizablePanel";
 
 	final static String RESIZABLE_PANEL_WIDGET_STYLE = RESIZABLE_PANEL_STYLE + "-widget";
-	
+
 	final static String RESIZABLE_PANEL_RIGHT_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-rightHandle";
-	
+
 	final static String RESIZABLE_PANEL_CORNER_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-cornerHandle";
 
 	final static String RESIZABLE_PANEL_BOTTOM_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-bottomHandle";
@@ -424,8 +423,7 @@ public class WidgetConstants {
 	 * submitted using traditional URL encoding.
 	 */
 	static final String ENCODING_URLENCODED = "application/x-www-form-urlencoded";
-	
-	
+
 	final static String VIEWPORT_STYLE = WidgetConstants.ROCKET + "-viewport";
 
 	final static String VIEWPORT_TILE_STYLE = VIEWPORT_STYLE + "-tile";
@@ -439,6 +437,5 @@ public class WidgetConstants {
 	final static int VIEWPORT_X_OFFSET = 16384;
 
 	final static int VIEWPORT_Y_OFFSET = 16384;
-
 
 }

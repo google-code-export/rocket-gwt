@@ -131,14 +131,14 @@ abstract public class AutoCompleteTextBox extends TextBox {
 		InlineStyle.setInteger(element, StyleConstants.LEFT, left, CssUnit.PX);
 		InlineStyle.setInteger(element, StyleConstants.TOP, top, CssUnit.PX);
 
-		final int paddingLeft = ComputedStyle.getInteger( element, StyleConstants.PADDING_LEFT, CssUnit.PX, 0 );		
-		final int paddingRight = ComputedStyle.getInteger( element, StyleConstants.PADDING_RIGHT, CssUnit.PX, 0 );
-		final int borderLeftWidth = ComputedStyle.getInteger( element, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0 );
-		final int borderRightWidth = ComputedStyle.getInteger( element, StyleConstants.BORDER_RIGHT_WIDTH, CssUnit.PX, 0 );
-		
+		final int paddingLeft = ComputedStyle.getInteger(element, StyleConstants.PADDING_LEFT, CssUnit.PX, 0);
+		final int paddingRight = ComputedStyle.getInteger(element, StyleConstants.PADDING_RIGHT, CssUnit.PX, 0);
+		final int borderLeftWidth = ComputedStyle.getInteger(element, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
+		final int borderRightWidth = ComputedStyle.getInteger(element, StyleConstants.BORDER_RIGHT_WIDTH, CssUnit.PX, 0);
+
 		final int newWidth = this.getOffsetWidth() - paddingLeft - paddingRight - borderLeftWidth - borderRightWidth;
-		
-		dropDownList.setWidth( newWidth + "px");
+
+		dropDownList.setWidth(newWidth + "px");
 		dropDownList.setVisible(true);
 
 		DOM.addEventPreview(this.getEventPreviewer());
@@ -183,14 +183,14 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	protected DropDownList createDropDownList() {
 		final DropDownList list = new DropDownList();
 		list.setVisible(false);
-		list.setStyleName( this.getDropDownListStyle() );
+		list.setStyleName(this.getDropDownListStyle());
 		this.setEventPreviewer(this.createEventPreviewer());
 
 		RootPanel.get().add(list, 0, 0);
 		return list;
 	}
-	
-	protected String getDropDownListStyle(){
+
+	protected String getDropDownListStyle() {
 		return WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE;
 	}
 
@@ -201,10 +201,11 @@ abstract public class AutoCompleteTextBox extends TextBox {
 		}
 	}
 
-	protected String getDropDownListOddRowStyle(){
+	protected String getDropDownListOddRowStyle() {
 		return WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE;
 	}
-	protected String getDropDownListEvenRowStyle(){
+
+	protected String getDropDownListEvenRowStyle() {
 		return WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE;
 	}
 
@@ -214,7 +215,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 
 			final String oddRowStyle = AutoCompleteTextBox.this.getDropDownListOddRowStyle();
 			final String evenRowStyle = AutoCompleteTextBox.this.getDropDownListEvenRowStyle();
-			
+
 			String add = oddRowStyle;
 			String remove = evenRowStyle;
 			if ((indexBefore & 1) == 0) {
@@ -254,7 +255,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 				add = evenRowStyle;
 				remove = oddRowStyle;
 			}
-			
+
 			for (int i = index; i < widgetCount; i++) {
 				final Widget after = this.get(i);
 				after.removeStyleName(remove);
@@ -301,8 +302,8 @@ abstract public class AutoCompleteTextBox extends TextBox {
 			if (key == KeyboardListener.KEY_BACKSPACE) {
 				event.stop();
 				break;
-			}		
-			
+			}
+
 			// select the difference between the textbox and the first match.
 			final Html html = (Html) this.getDropDownList().get(0);
 			final String firstMatch = html.getText();

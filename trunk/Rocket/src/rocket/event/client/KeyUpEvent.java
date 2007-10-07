@@ -16,10 +16,10 @@
 package rocket.event.client;
 
 public class KeyUpEvent extends KeyEvent {
-	public KeyUpEvent(){		
+	public KeyUpEvent() {
 	}
-	
-	public KeyUpEvent asKeyUpEvent(){
+
+	public KeyUpEvent asKeyUpEvent() {
 		return this;
 	}
 }

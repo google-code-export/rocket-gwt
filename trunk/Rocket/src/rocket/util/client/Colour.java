@@ -23,7 +23,7 @@ import java.util.Map;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Colour implements java.io.Serializable{
+public class Colour implements java.io.Serializable {
 
 	/**
 	 * Accepts a colour value as a string and attempts to convert it into an
@@ -302,7 +302,9 @@ public class Colour implements java.io.Serializable{
 	/**
 	 * Returns the Colour given a web colour name.
 	 * 
-	 * @param namedColour A standard colour name, such as red, blue etc. Case is not important.
+	 * @param namedColour
+	 *            A standard colour name, such as red, blue etc. Case is not
+	 *            important.
 	 * @return null is returned when the name is unknown
 	 */
 	public static Colour getColour(final String namedColour) {

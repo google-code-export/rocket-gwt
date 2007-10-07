@@ -31,7 +31,7 @@ public class FloatJsonSerializer extends JsonSerializer {
 	}
 
 	public Object readObject(final JSONValue jsonValue) {
-		return new Float( this.read( jsonValue ));
+		return new Float(this.read(jsonValue));
 	}
 
 	public JSONValue writeJson(final Object instance) {
@@ -39,9 +39,8 @@ public class FloatJsonSerializer extends JsonSerializer {
 		return new JSONNumber(wrapper.floatValue());
 	}
 
-
 	public float read(final JSONValue jsonValue) {
-		return (float)this.readDouble(jsonValue);		
+		return (float) this.readDouble(jsonValue);
 	}
 
 	public JSONValue writeJson(final float floatValue) {

@@ -17,7 +17,7 @@ package rocket.widget.client.menu;
 
 import com.google.gwt.user.client.ui.Widget;
 
-public class MenuOpenEvent{
+public class MenuOpenEvent {
 
 	private Widget widget;
 
@@ -29,12 +29,13 @@ public class MenuOpenEvent{
 		this.widget = widget;
 	}
 
-	public MenuItem getMenuItem(){
+	public MenuItem getMenuItem() {
 		final Widget widget = this.getWidget();
-		return widget instanceof MenuItem ? (MenuItem)widget : null;
+		return widget instanceof MenuItem ? (MenuItem) widget : null;
 	}
-	public SubMenuItem getSubMenuItem(){
+
+	public SubMenuItem getSubMenuItem() {
 		final Widget widget = this.getWidget();
-		return widget instanceof SubMenuItem ? (SubMenuItem)widget : null;
+		return widget instanceof SubMenuItem ? (SubMenuItem) widget : null;
 	}
 }

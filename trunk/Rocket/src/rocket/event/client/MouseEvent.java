@@ -20,26 +20,30 @@ import rocket.browser.client.Browser;
 import com.google.gwt.user.client.DOM;
 
 public class MouseEvent extends Event {
-	public MouseEvent(){
+	public MouseEvent() {
 	}
-	
 
-	public int getClientX(){
-		return DOM.eventGetClientX( this.getEvent() );
+	public int getClientX() {
+		return DOM.eventGetClientX(this.getEvent());
 	}
-	public int getClientY(){
-		return DOM.eventGetClientY( this.getEvent() );
+
+	public int getClientY() {
+		return DOM.eventGetClientY(this.getEvent());
 	}
-	public int getPageX(){
-		return Browser.getMousePageX(this.getEvent() );
+
+	public int getPageX() {
+		return Browser.getMousePageX(this.getEvent());
 	}
-	public int getPageY(){
-		return Browser.getMousePageY(this.getEvent() );
+
+	public int getPageY() {
+		return Browser.getMousePageY(this.getEvent());
 	}
-	public int getScreenX(){
-		return DOM.eventGetScreenX( this.getEvent() );
+
+	public int getScreenX() {
+		return DOM.eventGetScreenX(this.getEvent());
 	}
-	public int getScreenY(){
-		return DOM.eventGetScreenY( this.getEvent() );
+
+	public int getScreenY() {
+		return DOM.eventGetScreenY(this.getEvent());
 	}
 }

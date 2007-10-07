@@ -43,14 +43,14 @@ public class VerticalSplitterPanel extends SplitterPanel {
 	}
 
 	protected void afterCreateWidget() {
-		this.setItems(createItems());		
+		this.setItems(createItems());
 		InlineStyle.setString(DOM.getChild(this.getElement(), 0), StyleConstants.OVERFLOW_X, "hidden");
 	}
 
-	protected String getInitialStyleName(){
+	protected String getInitialStyleName() {
 		return Constants.VERTICAL_SPLITTER_PANEL_STYLE;
 	}
-	
+
 	/**
 	 * This factory method creates a new splitter on demand.
 	 * 
@@ -65,15 +65,15 @@ public class VerticalSplitterPanel extends SplitterPanel {
 		VerticalSplitter() {
 			super();
 		}
-		
-		protected void afterCreateElement(){
+
+		protected void afterCreateElement() {
 			super.afterCreateElement();
-			
+
 			this.setWidth("100%");
 			this.setHeight(VerticalSplitterPanel.this.getSplitterSize() + "px");
 		}
-		
-		protected String getInitialStyleName(){
+
+		protected String getInitialStyleName() {
 			return VerticalSplitterPanel.this.getSplitterStyle();
 		}
 
@@ -81,15 +81,15 @@ public class VerticalSplitterPanel extends SplitterPanel {
 			return VerticalSplitterPanel.this.getDraggingStyle();
 		}
 	}
-	
-	protected String getSplitterStyle(){
+
+	protected String getSplitterStyle() {
 		return Constants.VERTICAL_SPLITTER_PANEL_SPLITTER_STYLE;
 	}
 
-	protected String getDraggingStyle(){
+	protected String getDraggingStyle() {
 		return Constants.VERTICAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE;
 	}
-	
+
 	/**
 	 * This is the most important event handler that takes care of adjusting the
 	 * widths of the widgets before and after the splitter being moved.
@@ -102,7 +102,7 @@ public class VerticalSplitterPanel extends SplitterPanel {
 
 		while (true) {
 			final Splitter splitter = (Splitter) event.getWidget();
-			
+
 			// need to figure out if mouse has moved to the right or left...
 			final int mouseY = event.getPageY();
 			final int splitterY = Dom.getAbsoluteTop(splitter.getElement());
@@ -169,8 +169,7 @@ public class VerticalSplitterPanel extends SplitterPanel {
 	protected void adjustYCoordinate(final Widget widget, final int delta) {
 		final Element element = widget.getElement();
 		final int y = InlineStyle.getInteger(element, StyleConstants.TOP, CssUnit.PX, 0);
-		
-		
+
 		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
 		InlineStyle.setInteger(element, StyleConstants.LEFT, 0, CssUnit.PX);
 		InlineStyle.setInteger(element, StyleConstants.TOP, y + delta, CssUnit.PX);
@@ -202,7 +201,7 @@ public class VerticalSplitterPanel extends SplitterPanel {
 
 			// set the widget position...
 			final Element widgetElement = widget.getElement();
-			
+
 			InlineStyle.setString(widgetElement, StyleConstants.POSITION, "absolute");
 			InlineStyle.setInteger(widgetElement, StyleConstants.LEFT, 0, CssUnit.PX);
 			InlineStyle.setInteger(widgetElement, StyleConstants.TOP, top, CssUnit.PX);

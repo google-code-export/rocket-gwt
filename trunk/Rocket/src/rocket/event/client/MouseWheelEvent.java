@@ -18,13 +18,14 @@ package rocket.event.client;
 import com.google.gwt.user.client.DOM;
 
 public class MouseWheelEvent extends MouseEvent {
-	public MouseWheelEvent(){}
-	
-	public MouseWheelEvent asMouseWheelEvent(){
+	public MouseWheelEvent() {
+	}
+
+	public MouseWheelEvent asMouseWheelEvent() {
 		return this;
 	}
-	
-	public int getYVelocity(){
-		return DOM.eventGetMouseWheelVelocityY( this.getEvent() );
+
+	public int getYVelocity() {
+		return DOM.eventGetMouseWheelVelocityY(this.getEvent());
 	}
 }

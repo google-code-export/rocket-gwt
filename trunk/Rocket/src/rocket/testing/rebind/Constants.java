@@ -15,22 +15,27 @@
  */
 package rocket.testing.rebind;
 
-
-class Constants{
+class Constants {
 
 	final static String TEST_BUILDER_SUFFIX = "__TestBuilder";
 
 	final static String BUILD_CANDIDATES_TEMPLATE = "build-candidates.txt";
+
 	final static String BUILD_CANDIDATES_ADD_TESTS = "addTests";
-	
+
 	final static String ADD_TEST_METHOD_TEMPLATE = "add-test-method.txt";
+
 	final static String ADD_TEST_METHOD_TEST_RUNNER = "testRunner";
+
 	final static String ADD_TEST_METHOD_METHOD = "method";
+
 	final static String ADD_TEST_METHOD_TEST_NAME = "testName";
-	
+
 	final static String TEST_METHOD_NAME_PREFIX = "test";
-	
+
 	final static String BUILD_CANDIDATES_METHOD = "buildCandidates";
+
 	final static String TEST_ANNOTATION = "testing-testRunner";
+
 	final static String ORDER_ANNOTATION = "testing-testMethodOrder";
 }

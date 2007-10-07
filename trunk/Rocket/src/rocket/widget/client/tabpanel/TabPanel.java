@@ -52,7 +52,7 @@ public abstract class TabPanel extends CompositeWidget {
 
 	protected void beforeCreateWidget() {
 		super.beforeCreateWidget();
-		
+
 		this.setItems(createItems());
 		this.setTabListeners(createTabListeners());
 	}
@@ -60,7 +60,7 @@ public abstract class TabPanel extends CompositeWidget {
 	protected Widget createWidget() {
 		return this.createDockPanel();
 	}
-	
+
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
@@ -122,7 +122,7 @@ public abstract class TabPanel extends CompositeWidget {
 
 			final Image closeButton = this.createCloseButton();
 			closeButton.addMouseEventListener(new MouseEventAdapter() {
-				public void onClick(final MouseClickEvent event ) {
+				public void onClick(final MouseClickEvent event) {
 					TabPanel.this.closeTab(item);
 				}
 			});
@@ -130,21 +130,21 @@ public abstract class TabPanel extends CompositeWidget {
 		}
 		return panel;
 	}
-	
-	protected void closeTab( final TabItem tabItem ){
+
+	protected void closeTab(final TabItem tabItem) {
 		final TabListenerCollection listeners = this.getTabListeners();
-	
+
 		final BeforeTabCloseEvent beforeClose = new BeforeTabCloseEvent();
-		beforeClose.setClosing( tabItem );
-		listeners.fireBeforeTabClosed( beforeClose );
-		
-		if ( false == beforeClose.isCancelled() ) {
-			this.remove( tabItem );
-			
+		beforeClose.setClosing(tabItem);
+		listeners.fireBeforeTabClosed(beforeClose);
+
+		if (false == beforeClose.isCancelled()) {
+			this.remove(tabItem);
+
 			final TabCloseEvent closed = new TabCloseEvent();
-			closed.setClosed(tabItem );
-			
-			listeners.fireTabClosed( closed );
+			closed.setClosed(tabItem);
+
+			listeners.fireTabClosed(closed);
 		} // if
 	}
 
@@ -166,7 +166,7 @@ public abstract class TabPanel extends CompositeWidget {
 		final DeckPanel contentPanel = this.getContentPanel();
 		contentPanel.remove(contentPanel.getWidget(index));
 
-		final TabItem item = (TabItem)this.getItems().remove(index);
+		final TabItem item = (TabItem) this.getItems().remove(index);
 		item.clearTabPanel();
 	}
 
@@ -243,22 +243,22 @@ public abstract class TabPanel extends CompositeWidget {
 		this.select(this.indexOf(item));
 	}
 
-	public void select(final int index) {				
+	public void select(final int index) {
 		final TabItem newlySelectedItem = this.get(index);
 		TabItem previousSelection = null;
 		final int previouslySelectedIndex = this.getSelectedIndex();
-		if( -1 != previouslySelectedIndex ){
-			previousSelection = this.get( previouslySelectedIndex );
+		if (-1 != previouslySelectedIndex) {
+			previousSelection = this.get(previouslySelectedIndex);
 		}
-				
+
 		final BeforeTabSelectEvent beforeSelected = new BeforeTabSelectEvent();
-		beforeSelected.setCurrentSelection( previousSelection );
-		beforeSelected.setNewSelection( newlySelectedItem );
-		
+		beforeSelected.setCurrentSelection(previousSelection);
+		beforeSelected.setNewSelection(newlySelectedItem);
+
 		final TabListenerCollection listeners = this.getTabListeners();
-		listeners.fireBeforeTabSelected( beforeSelected );
-		
-		if ( false == beforeSelected.isCancelled() ) {
+		listeners.fireBeforeTabSelected(beforeSelected);
+
+		if (false == beforeSelected.isCancelled()) {
 			final String selectedStyle = this.getTabBarItemSelectedStyleName();
 
 			final TabBarPanel tabBarPanel = this.getTabBarPanel();
@@ -270,7 +270,7 @@ public abstract class TabPanel extends CompositeWidget {
 			if (-1 != previousIndex) {
 				final Widget tab = tabBarPanel.getWidget(previousIndex + 1);
 				tab.removeStyleName(selectedStyle);
-				previouslySelectedTabItem = this.get( previousIndex );
+				previouslySelectedTabItem = this.get(previousIndex);
 			}
 
 			// apply the style to the new tab.
@@ -282,9 +282,9 @@ public abstract class TabPanel extends CompositeWidget {
 
 			final TabSelectEvent selectedEvent = new TabSelectEvent();
 			selectedEvent.setPreviouslySelected(previouslySelectedTabItem);
-			selectedEvent.setCurrentSelection( newlySelectedItem );
-			
-			listeners.fireTabSelected( selectedEvent );
+			selectedEvent.setCurrentSelection(newlySelectedItem);
+
+			listeners.fireTabSelected(selectedEvent);
 		}
 	}
 
@@ -296,26 +296,25 @@ public abstract class TabPanel extends CompositeWidget {
 	protected DockPanel getPanel() {
 		return (DockPanel) this.getWidget();
 	}
-	
-	protected DockPanel createDockPanel(){
+
+	protected DockPanel createDockPanel() {
 		final DockPanel dockPanel = new DockPanel();
 
 		final TabBarPanel tabBarPanel = this.createTabBarPanel();
 		this.setTabBarPanel(tabBarPanel);
-		dockPanel.add((Widget) tabBarPanel, getTabBarDockPanelConstants() );
-		
+		dockPanel.add((Widget) tabBarPanel, getTabBarDockPanelConstants());
+
 		final DeckPanel contentPanel = this.createContentPanel();
 		this.setContentPanel(contentPanel);
 
-		dockPanel.add(contentPanel, DockPanel.CENTER );
-		dockPanel.setCellHeight( contentPanel, "100%");
-		dockPanel.setCellWidth( contentPanel, "100%");
-		
+		dockPanel.add(contentPanel, DockPanel.CENTER);
+		dockPanel.setCellHeight(contentPanel, "100%");
+		dockPanel.setCellWidth(contentPanel, "100%");
+
 		return dockPanel;
 	}
 
-	abstract DockPanel.DockLayoutConstant getTabBarDockPanelConstants(); 
-
+	abstract DockPanel.DockLayoutConstant getTabBarDockPanelConstants();
 
 	/**
 	 * This panel is used to house tab title widgets.

@@ -69,7 +69,7 @@ public class MenuTest implements EntryPoint {
 				menusOpened.increment();
 
 				final MenuItem menuItem = event.getMenuItem();
-				if ( null != menuItem ) {
+				if (null != menuItem) {
 					Window.alert("Selected menu item...\n" + menuItem);
 				}
 			}

@@ -47,7 +47,7 @@ public class HyperlinkPanelTest implements EntryPoint {
 		final RootPanel rootPanel = RootPanel.get();
 		final HyperlinkPanel panel = new HyperlinkPanel();
 		panel.addMouseEventListener(new MouseEventAdapter() {
-			public void onClick(final MouseClickEvent event ) {
+			public void onClick(final MouseClickEvent event) {
 				Window.alert("HyperlinkPanel clicked !");
 			}
 		});

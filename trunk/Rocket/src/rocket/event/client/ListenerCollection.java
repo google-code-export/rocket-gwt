@@ -22,55 +22,59 @@ import java.util.List;
 import rocket.util.client.ObjectHelper;
 
 abstract public class ListenerCollection {
-	protected ListenerCollection(){
+	protected ListenerCollection() {
 		super();
-		
-		this.setListeners( createListeners() );
+
+		this.setListeners(createListeners());
 	}
-	
+
 	/**
 	 * A list of registered listeners.
 	 */
 	private List listeners;
-	
-	private List getListeners(){
-		ObjectHelper.checkNotNull("field:listeners", listeners );
+
+	private List getListeners() {
+		ObjectHelper.checkNotNull("field:listeners", listeners);
 		return this.listeners;
 	}
-	private void setListeners(final List listeners ){
-		ObjectHelper.checkNotNull("parameter:listeners", listeners );
+
+	private void setListeners(final List listeners) {
+		ObjectHelper.checkNotNull("parameter:listeners", listeners);
 		this.listeners = listeners;
 	}
-	
-	protected List createListeners(){
+
+	protected List createListeners() {
 		return new ArrayList();
 	}
-	
-	/**
-	 * Sub classes will need to create a add method with an appropriately typed listener parameter
-	 * @param listener
-	 */
-	protected void add( final Object listener ){
-		this.getListeners().add( listener );
-	}
-	
 
 	/**
-	 * Sub classes will need to create a remove method with an appropriately typed listener parameter
+	 * Sub classes will need to create a add method with an appropriately typed
+	 * listener parameter
+	 * 
 	 * @param listener
 	 */
-	protected boolean remove( final Object listener ){
-		return this.getListeners().remove( listener );
+	protected void add(final Object listener) {
+		this.getListeners().add(listener);
 	}
-	
-	protected void fire( final EventFiringAdapter adapter ){
+
+	/**
+	 * Sub classes will need to create a remove method with an appropriately
+	 * typed listener parameter
+	 * 
+	 * @param listener
+	 */
+	protected boolean remove(final Object listener) {
+		return this.getListeners().remove(listener);
+	}
+
+	protected void fire(final EventFiringAdapter adapter) {
 		final Iterator iterator = this.getListeners().iterator();
-		while( iterator.hasNext() ){
-			adapter.fire( iterator.next() );
+		while (iterator.hasNext()) {
+			adapter.fire(iterator.next());
 		}
 	}
-	
-	static public interface EventFiringAdapter{
-		void fire( Object listener );
+
+	static public interface EventFiringAdapter {
+		void fire(Object listener);
 	}
 }

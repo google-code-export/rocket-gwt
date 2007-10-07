@@ -39,19 +39,23 @@ import com.google.gwt.user.client.ui.WidgetCollection;
  * <li>{@link #beforeCreatePanelElement()}</li>
  * <li>{@link #createPanelElement()}</li>
  * <li>{@link #afterCreatePanelElement()}</li>
- * <li>{@link #applyStyleName()} Override this to do nothing if this panel has no initial style.</li>
+ * <li>{@link #applyStyleName()} Override this to do nothing if this panel has
+ * no initial style.</li>
  * </li>
  * 
  * Create a new panel with an element hijacked from the dom.
  * <ul>
- * <li>{@link #checkElement(Element)} Check that the element is of the correct type</li>
+ * <li>{@link #checkElement(Element)} Check that the element is of the correct
+ * type</li>
  * <li>{@link #beforeCreatePanelElement()}</li>
  * <li>{@link #setElement( Element from constructor )}</li>
  * <li>{@link #afterCreatePanelElement()}</li>
- * <li>{@link #applyStyleName()} Override this to do nothing if this panel has no initial style.</li>
+ * <li>{@link #applyStyleName()} Override this to do nothing if this panel has
+ * no initial style.</li>
  * </li>
  * 
- * The initial style of the root element from this panel is taken from {@link #getInitialStyleName()}
+ * The initial style of the root element from this panel is taken from
+ * {@link #getInitialStyleName()}
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -85,7 +89,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 
 	protected void prepare(final Element element) {
 		this.checkElement(element);
-		
+
 		this.setWidgetCollection(this.createWidgetCollection());
 
 		final Hijacker hijacker = new Hijacker(element);
@@ -106,7 +110,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	 * 
 	 * @param panel
 	 */
-	Panel(final boolean ignored ) {
+	Panel(final boolean ignored) {
 		super();
 	}
 
@@ -294,7 +298,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 		this.remove0(widget.getElement(), index);// cleanup opportunity
 		this.orphan(widget);
 		widgets.remove(index);
-		
+
 		return true;
 	}
 

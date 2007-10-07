@@ -44,7 +44,7 @@ import com.google.gwt.user.client.ui.Widget;
  * to provide feedback of not only the iterator but any of the other buttons
  * that modify the tree/treeItems.
  * 
- * @author (Miroslav Pokorny) mP 
+ * @author (Miroslav Pokorny) mP
  * 
  * TODO redo. show a tree with paths. show a branch with a checkbox + label.
  */

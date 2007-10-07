@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.Widget;
  * and content.
  * 
  * The content widget must be set before adding a TabItem to a TabPanel.
- *  
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class TabItem {
@@ -99,7 +99,7 @@ public class TabItem {
 	protected Html createCaptionWidget() {
 		final Html html = new Html();
 		html.addMouseEventListener(new MouseEventAdapter() {
-			public void onClick(final MouseClickEvent event ) {
+			public void onClick(final MouseClickEvent event) {
 				TabItem.this.select();
 			}
 		});
@@ -110,8 +110,8 @@ public class TabItem {
 		return this.getCaptionWidget().getHtml();
 	}
 
-	public void setCaption(final String text) {			
-		this.getCaptionWidget().setHtml( StringHelper.changeSpacesToNonBreakingSpaces(text));
+	public void setCaption(final String text) {
+		this.getCaptionWidget().setHtml(StringHelper.changeSpacesToNonBreakingSpaces(text));
 	}
 
 	/**

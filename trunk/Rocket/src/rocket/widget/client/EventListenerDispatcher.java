@@ -51,9 +51,10 @@ import rocket.util.client.ObjectHelper;
 
 /**
  * This class contains all listener types and collections. It also contains
- * logic to dispatch an event to the registered listeners. Widget, CompositeWidget and
- * Panel's simply need to expose the listeners they sink add/removeXXXListener
- * methods and have them to delegate to an instance of this class.
+ * logic to dispatch an event to the registered listeners. Widget,
+ * CompositeWidget and Panel's simply need to expose the listeners they sink
+ * add/removeXXXListener methods and have them to delegate to an instance of
+ * this class.
  * 
  * The enclosing widget, composite or panel will still need to create and then
  * set the listener collections via {@link #prepareListenerCollections(int)} for

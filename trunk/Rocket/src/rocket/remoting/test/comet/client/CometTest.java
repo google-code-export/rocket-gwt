@@ -43,14 +43,14 @@ public class CometTest implements EntryPoint {
 	final String COMET_SERVER_URL = "./cometServer";
 
 	final String INVALID_COMET_SERVER_URL = "./invalid";
-	
+
 	final long TOO_MUCH_LAG = 1000;
 
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
 				caught.printStackTrace();
-				Window.alert( StackTrace.asString( caught ));
+				Window.alert(StackTrace.asString(caught));
 			}
 		});
 		this.createComet();
@@ -105,8 +105,8 @@ public class CometTest implements EntryPoint {
 	}
 
 	protected void createComet() {
-		final CometClient client = (CometClient) GWT.create( TestCometClient.class );
-		
+		final CometClient client = (CometClient) GWT.create(TestCometClient.class);
+
 		client.setCallback(new AsyncCallback() {
 			public void onSuccess(final Object result) {
 				log("<b>CALLBACK</b> Entering onSuccess() - payload type " + GWT.getTypeName(result) + "=[" + result + "]");
@@ -116,15 +116,14 @@ public class CometTest implements EntryPoint {
 				final long serverTime = payload.getDate().getTime();
 				final long timeDifference = now - serverTime;
 				final boolean deliveredImmediately = timeDifference < TOO_MUCH_LAG;
-				log("<b>CALLBACK</b> Calculated time difference between client and server " + timeDifference + "(ms)" +						
-						", deliveredImmediately???: " + deliveredImmediately+
-						", clientTime: " + now + ", serverTime: " + serverTime);
+				log("<b>CALLBACK</b> Calculated time difference between client and server " + timeDifference + "(ms)"
+						+ ", deliveredImmediately???: " + deliveredImmediately + ", clientTime: " + now + ", serverTime: " + serverTime);
 			}
 
 			public void onFailure(Throwable throwable) {
 				String stackTrace = StackTrace.asString(throwable);
-				stackTrace = stackTrace.replaceAll("\n", "<br>");				
-				log("<b>CALLBACK</b> Handling exception<br>" + stackTrace );
+				stackTrace = stackTrace.replaceAll("\n", "<br>");
+				log("<b>CALLBACK</b> Handling exception<br>" + stackTrace);
 			}
 		});
 		this.setCometClient(client);
@@ -137,7 +136,7 @@ public class CometTest implements EntryPoint {
 	 * @author Miroslav Pokorny (mP)
 	 */
 	abstract static public class TestCometClient extends CometClient {
-		
+
 		/**
 		 * @comet-payloadType rocket.remoting.test.comet.client.TestCometPayload
 		 */

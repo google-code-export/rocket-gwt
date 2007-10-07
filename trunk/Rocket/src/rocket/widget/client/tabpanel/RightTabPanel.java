@@ -31,10 +31,10 @@ public class RightTabPanel extends VerticalTabPanel {
 		super();
 	}
 
-	DockPanel.DockLayoutConstant getTabBarDockPanelConstants(){
+	DockPanel.DockLayoutConstant getTabBarDockPanelConstants() {
 		return DockPanel.EAST;
 	}
-	
+
 	protected String getInitialStyleName() {
 		return Constants.RIGHT_TAB_PANEL_STYLE;
 	}

@@ -34,7 +34,7 @@ import com.google.gwt.user.client.Element;
 public class Hidden extends Widget {
 
 	public Hidden() {
-		super();		
+		super();
 	}
 
 	public Hidden(final String value) {
@@ -75,7 +75,7 @@ public class Hidden extends Widget {
 	public void setName(String name) {
 		DOM.setElementProperty(getElement(), "name", name);
 	}
-	
+
 	/**
 	 * Gets the default value of the hidden field.
 	 * 

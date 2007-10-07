@@ -43,8 +43,8 @@ public class TreeItem extends CompositeWidget {
 	public TreeItem() {
 		super();
 	}
-	
-	protected Widget createWidget(){
+
+	protected Widget createWidget() {
 		return this.createFlexTable();
 	}
 
@@ -65,16 +65,16 @@ public class TreeItem extends CompositeWidget {
 
 		return table;
 	}
-	
-	protected void afterCreateWidget(){
-		this.setExpanded( false );
+
+	protected void afterCreateWidget() {
+		this.setExpanded(false);
 	}
 
-	protected int getSunkEventsBitMask(){
+	protected int getSunkEventsBitMask() {
 		return 0;
 	}
-	
-	protected String getInitialStyleName(){
+
+	protected String getInitialStyleName() {
 		return Constants.TREE_ITEM_STYLE;
 	}
 
@@ -149,7 +149,7 @@ public class TreeItem extends CompositeWidget {
 	 */
 	protected Image createCollapserExpanderImage() {
 		final Image image = new Image();
-		image.setStyleName( this.getCollapserExpanderStyle() );
+		image.setStyleName(this.getCollapserExpanderStyle());
 		image.addClickListener(new ClickListener() {
 			public void onClick(final Widget widget) {
 				handleCollapserExpanderClick();
@@ -157,8 +157,8 @@ public class TreeItem extends CompositeWidget {
 		});
 		return image;
 	}
-	
-	protected String getCollapserExpanderStyle(){
+
+	protected String getCollapserExpanderStyle() {
 		return Constants.TREE_EXPANDER_COLLAPSER_STYLE;
 	}
 
@@ -215,8 +215,8 @@ public class TreeItem extends CompositeWidget {
 		final FlexTable table = this.getFlexTable();
 		table.setWidget(0, table.getCellCount(0) == 0 ? 0 : 1, mainWidget);
 	}
-	
-	protected String getWidgetStyle(){
+
+	protected String getWidgetStyle() {
 		return Constants.TREE_WIDGET_STYLE;
 	}
 
@@ -274,7 +274,6 @@ public class TreeItem extends CompositeWidget {
 	protected VerticalPanel createChildren() {
 		return new VerticalPanel();
 	}
-	
 
 	// WIDGET CONTAINER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

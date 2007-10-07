@@ -41,7 +41,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class SortableTableTest implements EntryPoint {
 
-	
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
@@ -52,109 +51,109 @@ public class SortableTableTest implements EntryPoint {
 
 		final RootPanel rootPanel = RootPanel.get();
 
-		final SortableTable table = new SortableTable(){
-				protected void afterCreateWidget() {
-					super.afterCreateWidget();
+		final SortableTable table = new SortableTable() {
+			protected void afterCreateWidget() {
+				super.afterCreateWidget();
 
-					this.setHeadings();
+				this.setHeadings();
+			}
+
+			protected void onColumnSortingClick(final Widget widget) {
+				final long started = System.currentTimeMillis();
+
+				super.onColumnSortingClick(widget);
+
+				final long ended = System.currentTimeMillis();
+
+				Window.alert("Sorting of " + this.getRows().size() + " rows took " + (ended - started) + " milli(s) ");
+			}
+
+			protected Object getValue(final Object row, final int column) {
+				ObjectHelper.checkNotNull("parameter:row", row);
+				this.checkColumn("parameter:column", column);
+
+				final Fruit fruit = (Fruit) row;
+
+				Object value = null;
+				switch (column) {
+				case 0: {
+					value = fruit.name;
+					break;
 				}
-
-				protected void onColumnSortingClick(final Widget widget) {
-					final long started = System.currentTimeMillis();
-
-					super.onColumnSortingClick(widget);
-
-					final long ended = System.currentTimeMillis();
-
-					Window.alert("Sorting of " + this.getRows().size() + " rows took " + (ended - started) + " milli(s) ");
+				case 1: {
+					value = fruit.colour;
+					break;
 				}
-
-				protected Object getValue(final Object row, final int column) {
-					ObjectHelper.checkNotNull("parameter:row", row);
-					this.checkColumn("parameter:column", column);
-
-					final Fruit fruit = (Fruit) row;
-
-					Object value = null;
-					switch (column) {
-					case 0: {
-						value = fruit.name;
-						break;
-					}
-					case 1: {
-						value = fruit.colour;
-						break;
-					}
-					case 2: {
-						value = new Integer( fruit.seedCount );
-						break;
-					}
-					case 4: {
-						value = new Integer( fruit.weight );
-						break;
-					}
-					}
-					return value;
+				case 2: {
+					value = new Integer(fruit.seedCount);
+					break;
 				}
-
-				protected Widget getWidget(final Object value, final int column) {
-					ObjectHelper.checkNotNull("parameter:value", value);
-					this.checkColumn("parameter:column", column);
-
-					System.out.println("SortableFruitTable - getting widget for column: " + column + " value: " + value);
-
-					final Fruit fruit = (Fruit) value;
-					Widget widget = null;
-					switch (column) {
-					case 0: {
-						widget = new Label( fruit.name );
-						break;
-					}
-					case 1: {
-						widget = new Label( fruit.colour );
-						break;
-					}
-					case 2: {
-						widget = new Label( "" + fruit.seedCount );
-						break;
-					}
-					case 3: {
-						widget = new Label( "" + fruit.shiny );
-						break;
-					}
-					case 4: {
-						widget = new Label( "" + fruit.weight + " g");
-						break;
-					}
-					}
-					return widget;
+				case 4: {
+					value = new Integer(fruit.weight);
+					break;
 				}
-
-				protected void setHeadings() {
-					int row = 0;
-					int i = 0;
-					this.setWidget(row, i, this.createHeader("Name", i));
-					i++;
-					this.setWidget(row, i, this.createHeader("Colour", i));
-					i++;
-					this.setWidget(row, i, this.createHeader("Seed count", i));
-					i++;
-					this.setWidget(row, i, this.createHeader("Shiny", i));
-					i++;
-					this.setWidget(row, i, this.createHeader("Average weight", i));
 				}
+				return value;
+			}
 
-				protected int getColumnCount() {
-					return 5;
-				}
+			protected Widget getWidget(final Object value, final int column) {
+				ObjectHelper.checkNotNull("parameter:value", value);
+				this.checkColumn("parameter:column", column);
 
-				protected String getAscendingSortImageSource() {
-					return "up-arrow.gif";
-				}
+				System.out.println("SortableFruitTable - getting widget for column: " + column + " value: " + value);
 
-				protected String getDescendingSortImageSource() {
-					return "down-arrow.gif";
+				final Fruit fruit = (Fruit) value;
+				Widget widget = null;
+				switch (column) {
+				case 0: {
+					widget = new Label(fruit.name);
+					break;
 				}
+				case 1: {
+					widget = new Label(fruit.colour);
+					break;
+				}
+				case 2: {
+					widget = new Label("" + fruit.seedCount);
+					break;
+				}
+				case 3: {
+					widget = new Label("" + fruit.shiny);
+					break;
+				}
+				case 4: {
+					widget = new Label("" + fruit.weight + " g");
+					break;
+				}
+				}
+				return widget;
+			}
+
+			protected void setHeadings() {
+				int row = 0;
+				int i = 0;
+				this.setWidget(row, i, this.createHeader("Name", i));
+				i++;
+				this.setWidget(row, i, this.createHeader("Colour", i));
+				i++;
+				this.setWidget(row, i, this.createHeader("Seed count", i));
+				i++;
+				this.setWidget(row, i, this.createHeader("Shiny", i));
+				i++;
+				this.setWidget(row, i, this.createHeader("Average weight", i));
+			}
+
+			protected int getColumnCount() {
+				return 5;
+			}
+
+			protected String getAscendingSortImageSource() {
+				return "up-arrow.gif";
+			}
+
+			protected String getDescendingSortImageSource() {
+				return "down-arrow.gif";
+			}
 		};
 		rootPanel.add(table);
 		table.setColumnComparator(StringComparator.IGNORE_CASE_COMPARATOR, 0, true);
@@ -166,50 +165,50 @@ public class SortableTableTest implements EntryPoint {
 				final int secondValue = ((Integer) second).intValue();
 				return firstValue - secondValue;
 			}
-		}; 
-		
-		table.setColumnComparator( integerComparator, 2, true);
+		};
+
+		table.setColumnComparator(integerComparator, 2, true);
 		table.makeColumnUnsortable(3);
-		table.setColumnComparator( integerComparator, 4, true);
+		table.setColumnComparator(integerComparator, 4, true);
 		table.setSortedColumn(1);
-		
+
 		final Fruit apple = new Fruit();
 		apple.name = "Apple";
 		apple.colour = "red";
 		apple.seedCount = 5;
 		apple.shiny = true;
 		apple.weight = 300;
-		table.getRows().add( apple );
-		
+		table.getRows().add(apple);
+
 		final Fruit banana = new Fruit();
 		banana.name = "Banana";
 		banana.colour = "yellow";
 		banana.seedCount = 1;
 		banana.shiny = true;
 		banana.weight = 200;
-		table.getRows().add( banana );
-		
+		table.getRows().add(banana);
+
 		final Fruit carrot = new Fruit();
 		carrot.name = "Carrot";
 		carrot.colour = "orange";
 		carrot.seedCount = 0;
 		carrot.shiny = false;
 		carrot.weight = 100;
-		table.getRows().add( carrot );			
+		table.getRows().add(carrot);
 
-		table.setAutoRedraw( true );
-		
+		table.setAutoRedraw(true);
+
 		final Button adder = new Button("Add new Fruit");
 		adder.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignore) {
 				final Fruit fruit = new Fruit();
-				fruit.name=Browser.prompt("Fruit name", "");
-				fruit.colour =Browser.prompt("Colour", "red");
-				fruit.seedCount=Integer.parseInt( Browser.prompt( "Seed count", "10"));				
-				fruit.shiny = "true".equalsIgnoreCase( Browser.prompt( "Shiny ?(true/false)", "false"));
-				fruit.weight=Integer.parseInt( Browser.prompt( "Avg weight", "10"));
-				
-				table.getRows().add( fruit );
+				fruit.name = Browser.prompt("Fruit name", "");
+				fruit.colour = Browser.prompt("Colour", "red");
+				fruit.seedCount = Integer.parseInt(Browser.prompt("Seed count", "10"));
+				fruit.shiny = "true".equalsIgnoreCase(Browser.prompt("Shiny ?(true/false)", "false"));
+				fruit.weight = Integer.parseInt(Browser.prompt("Avg weight", "10"));
+
+				table.getRows().add(fruit);
 			}
 		});
 		rootPanel.add(adder);
@@ -265,42 +264,47 @@ public class SortableTableTest implements EntryPoint {
 				table.getRows().addAll(newFruits);
 				final long end = System.currentTimeMillis();
 
-				Window.alert(count + " fruit(s) added to table in " + (end - start) + " milliseconds. Table now has " + table.getRows().size()
-						+ " rows ");
+				Window.alert(count + " fruit(s) added to table in " + (end - start) + " milliseconds. Table now has "
+						+ table.getRows().size() + " rows ");
 			}
 		});
 	}
-	
-	protected List generateFruit( final int count ){
+
+	protected List generateFruit(final int count) {
 		final List fruits = new ArrayList();
-		
-		for( int i = 0; i < count; i++ ){
+
+		for (int i = 0; i < count; i++) {
 			final Fruit fruit = new Fruit();
-			
-			final String colour = COLOURS[ i % COLOURS.length ]; 
-			
-			fruit.name =  Character.toUpperCase(colour.charAt( 0 )) + colour.substring( 1 ) + "berry";
-			fruit.colour= colour;
-			fruit.seedCount = Random.nextInt( 23 );
+
+			final String colour = COLOURS[i % COLOURS.length];
+
+			fruit.name = Character.toUpperCase(colour.charAt(0)) + colour.substring(1) + "berry";
+			fruit.colour = colour;
+			fruit.seedCount = Random.nextInt(23);
 			fruit.shiny = Random.nextBoolean();
-			fruit.weight = 12 + Random.nextInt( 345 );
-			fruits.add( fruit );
+			fruit.weight = 12 + Random.nextInt(345);
+			fruits.add(fruit);
 		}
-		
+
 		return fruits;
 	}
-	
-	static class Fruit{
+
+	static class Fruit {
 		String name;
+
 		String colour;
+
 		int seedCount;
+
 		boolean shiny;
+
 		int weight;
-		
-		public String toString(){
+
+		public String toString() {
 			return "" + name;
 		}
 	}
-	
-	static String[] COLOURS = new String[]{ "red", "orange", "yellow", "blue", "straw", "green", "pink", "purple", "goose", "rock", "grass" };
+
+	static String[] COLOURS = new String[] { "red", "orange", "yellow", "blue", "straw", "green", "pink", "purple", "goose", "rock",
+			"grass" };
 }

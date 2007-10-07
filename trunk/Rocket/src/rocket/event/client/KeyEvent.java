@@ -19,73 +19,75 @@ import com.google.gwt.user.client.DOM;
 
 /**
  * Package private class that adds the shared behaviour for all key events.
+ * 
  * @author Miroslav Pokorny
  */
 public class KeyEvent extends Event {
-	public KeyEvent(){		
+	public KeyEvent() {
 	}
-	
-	public char getKey(){
-		return (char) DOM.eventGetKeyCode( this.getEvent() );
+
+	public char getKey() {
+		return (char) DOM.eventGetKeyCode(this.getEvent());
 	}
-	
-	public void setKey( final char key ){
-		DOM.eventSetKeyCode( this.getEvent(), key);
+
+	public void setKey(final char key) {
+		DOM.eventSetKeyCode(this.getEvent(), key);
 	}
-	
-	public boolean isShift(){
-		return DOM.eventGetShiftKey( this.getEvent() );
+
+	public boolean isShift() {
+		return DOM.eventGetShiftKey(this.getEvent());
 	}
-	
-	public boolean isControl(){
-		return DOM.eventGetCtrlKey( this.getEvent() );
+
+	public boolean isControl() {
+		return DOM.eventGetCtrlKey(this.getEvent());
 	}
-	
-	public boolean isAlt(){
-		return DOM.eventGetAltKey( this.getEvent() );
+
+	public boolean isAlt() {
+		return DOM.eventGetAltKey(this.getEvent());
 	}
-	public boolean isMeta(){
-		return DOM.eventGetMetaKey( this.getEvent() );
+
+	public boolean isMeta() {
+		return DOM.eventGetMetaKey(this.getEvent());
 	}
-	
-	public boolean isRepeatedKey(){
-		return DOM.eventGetRepeat( this.getEvent() );
+
+	public boolean isRepeatedKey() {
+		return DOM.eventGetRepeat(this.getEvent());
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		final StringBuffer buf = new StringBuffer();
-		
-		buf.append( super.toString() );
-		buf.append( ", key '" );
-		buf.append( this.getKey() );
-		buf.append( "' ");
-		
+
+		buf.append(super.toString());
+		buf.append(", key '");
+		buf.append(this.getKey());
+		buf.append("' ");
+
 		boolean addSeparator = false;
-		if( this.isShift() ){
-			buf.append( "shift");
+		if (this.isShift()) {
+			buf.append("shift");
 			addSeparator = true;
 		}
-		if( this.isControl() ){
-			if( addSeparator ){
-				buf.append( '+');
+		if (this.isControl()) {
+			if (addSeparator) {
+				buf.append('+');
 			}
-			buf.append( "control");
+			buf.append("control");
 			addSeparator = true;
 		}
-		if( this.isAlt() ){
-			if( addSeparator ){
-				buf.append( '+');
+		if (this.isAlt()) {
+			if (addSeparator) {
+				buf.append('+');
 			}
-			buf.append( "alt+");
+			buf.append("alt+");
 			addSeparator = true;
 		}
-		if( this.isMeta() ){
-			if( addSeparator ){
-				buf.append( '+');
+		if (this.isMeta()) {
+			if (addSeparator) {
+				buf.append('+');
 			}
-			buf.append( "meta");
+			buf.append("meta");
 			addSeparator = true;
 		}
-		return buf.toString();			
+		return buf.toString();
 	}
 }

@@ -28,69 +28,77 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class Event implements Destroyable{
+abstract public class Event implements Destroyable {
 
 	/**
 	 * Disables the browser's built in context menu.
-	 *
+	 * 
 	 */
-	
+
 	private static boolean disabled = false;
-	
-	static public void disableContextMenu(){
-		if( false == disabled ){
+
+	static public void disableContextMenu() {
+		if (false == disabled) {
 			disableContextMenu0();
 			disabled = true;
-			
-			GWT.log( "Browser context menu's has been disabled for entire window...", null );
-		}
-	}
-	
-	native static void disableContextMenu0()/*-{
-		var block = function( event ){
-			return false;
-		};
 
-		var body = $doc.body;
-		if( body.attachEvent ){
- 			body.attachEvent( "oncontextmenu", block );
-		}else {
-			body.addEventListener( "contextmenu", block, false );
+			GWT.log("Browser context menu's has been disabled for entire window...", null);
 		}
-		body.oncontextmenu = block;
-	}-*/;
-	
-	static public Event getEvent( final Widget widget, final int bitMask ){
-		ObjectHelper.checkNotNull("parameter:widget", widget );
-		
-		final Event event = getEvent( bitMask );
-		event.setTarget( widget.getElement() );
-		event.setWidget(widget );
-		return event;		
 	}
-	
-	/**
-	 * Factory method which creates a Event object which adds behaviour to the given raw GWT event object.
-	 * Depending on the event type the appropriate Event sub type is created each exposing methods appropriate for that event.
-	 * @param rawEvent The raw GWT event object.
-	 * @return
-	 */
-	static public Event getEvent(final com.google.gwt.user.client.Event rawEvent ) {
-		ObjectHelper.checkNotNull("parameter:rawEvent", rawEvent );
-	
-		final Event event = getEvent( DOM.eventGetType( rawEvent ));
-		event.setEvent( rawEvent );		
+
+	native static void disableContextMenu0()/*-{
+	 var block = function( event ){
+	 return false;
+	 };
+
+	 var body = $doc.body;
+	 if( body.attachEvent ){
+	 body.attachEvent( "oncontextmenu", block );
+	 }else {
+	 body.addEventListener( "contextmenu", block, false );
+	 }
+	 body.oncontextmenu = block;
+	 }-*/;
+
+	static public Event getEvent(final Widget widget, final int bitMask) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+
+		final Event event = getEvent(bitMask);
+		event.setTarget(widget.getElement());
+		event.setWidget(widget);
 		return event;
 	}
-	
+
 	/**
-	 * Factory method which creates a Event object which adds behaviour to the given raw GWT event object.
-	 * Depending on the event type the appropriate Event sub type is created each exposing methods appropriate for that event.
-	 * @param rawEvent The raw GWT event object.
+	 * Factory method which creates a Event object which adds behaviour to the
+	 * given raw GWT event object. Depending on the event type the appropriate
+	 * Event sub type is created each exposing methods appropriate for that
+	 * event.
+	 * 
+	 * @param rawEvent
+	 *            The raw GWT event object.
 	 * @return
 	 */
-	static public Event getEvent(final int mask ) {
-		
+	static public Event getEvent(final com.google.gwt.user.client.Event rawEvent) {
+		ObjectHelper.checkNotNull("parameter:rawEvent", rawEvent);
+
+		final Event event = getEvent(DOM.eventGetType(rawEvent));
+		event.setEvent(rawEvent);
+		return event;
+	}
+
+	/**
+	 * Factory method which creates a Event object which adds behaviour to the
+	 * given raw GWT event object. Depending on the event type the appropriate
+	 * Event sub type is created each exposing methods appropriate for that
+	 * event.
+	 * 
+	 * @param rawEvent
+	 *            The raw GWT event object.
+	 * @return
+	 */
+	static public Event getEvent(final int mask) {
+
 		Event event = null;
 
 		while (true) {
@@ -162,7 +170,7 @@ abstract public class Event implements Destroyable{
 				event = new ChangeEvent();
 				break;
 			}
-			throw new UnsupportedOperationException("Unknown event bitMask: 0x" + Integer.toHexString( mask ));
+			throw new UnsupportedOperationException("Unknown event bitMask: 0x" + Integer.toHexString(mask));
 		}
 
 		return event;
@@ -186,8 +194,8 @@ abstract public class Event implements Destroyable{
 		ObjectHelper.checkNotNull("parameter:event", event);
 		this.event = event;
 	}
-	
-	private void clearEvent(){
+
+	private void clearEvent() {
 		this.event = null;
 	}
 
@@ -199,6 +207,7 @@ abstract public class Event implements Destroyable{
 	}
 
 	private boolean cancelled = false;
+
 	/**
 	 * Cancels event bubbling.
 	 * 
@@ -208,8 +217,8 @@ abstract public class Event implements Destroyable{
 		DOM.eventCancelBubble(this.getEvent(), cancel);
 		this.cancelled = this.cancelled | cancel;
 	}
-	
-	boolean isCancelled(){
+
+	boolean isCancelled() {
 		return this.cancelled;
 	}
 
@@ -217,6 +226,7 @@ abstract public class Event implements Destroyable{
 	 * This field will only be set when synthetizing an event.
 	 */
 	private Element target;
+
 	/**
 	 * Returns the target element of this event.
 	 * 
@@ -226,37 +236,37 @@ abstract public class Event implements Destroyable{
 		return this.hasTarget() ? this.target : DOM.eventGetTarget(this.getEvent());
 	}
 
-	protected boolean hasTarget(){
+	protected boolean hasTarget() {
 		return null != this.target;
 	}
-	
-	public void setTarget( final Element target ){
+
+	public void setTarget(final Element target) {
 		this.target = target;
 	}
-	
+
 	/**
 	 * The widget whose element was the target of this event.
 	 */
 	private Widget widget;
-	
-	public Widget getWidget(){
-		ObjectHelper.checkNotNull("field:widget", this.widget );
+
+	public Widget getWidget() {
+		ObjectHelper.checkNotNull("field:widget", this.widget);
 		return this.widget;
 	}
-	
-	public boolean hasWidget(){
+
+	public boolean hasWidget() {
 		return null != this.widget;
 	}
-	
-	public void setWidget( final Widget widget ){
-		ObjectHelper.checkNotNull("parameter:widget", widget );
+
+	public void setWidget(final Widget widget) {
+		ObjectHelper.checkNotNull("parameter:widget", widget);
 		this.widget = widget;
 	}
-	
-	void clearWidget(){
+
+	void clearWidget() {
 		this.widget = null;
 	}
-	
+
 	public BlurEvent asBlurEvent() {
 		return null;
 	}
@@ -324,17 +334,17 @@ abstract public class Event implements Destroyable{
 	public ScrollEvent asScrollEvent() {
 		return null;
 	}
-	
-	public String toString(){
-		return DOM.eventGetTypeString( this.getEvent() );
+
+	public String toString() {
+		return DOM.eventGetTypeString(this.getEvent());
 	}
-	
-	public void destroy(){
+
+	public void destroy() {
 		this.clearEvent();
 		this.clearWidget();
 	}
-	
-	public int getBitMask(){
-		return DOM.eventGetType( this.getEvent() );
+
+	public int getBitMask() {
+		return DOM.eventGetType(this.getEvent());
 	}
 }

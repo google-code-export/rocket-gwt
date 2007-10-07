@@ -62,13 +62,13 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 
 	static final String WEB_REQUEST_SERVICE_ENTRY_POINT_URL = "webRequestRpc";
 
-	static final int POSTPONE_TEST = 5000; 
-	
+	static final int POSTPONE_TEST = 5000;
+
 	public void onModuleLoad() {
 		final Button button = new Button("Run Tests");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				WebRequestTest.this.executeTests( (TestBuilder) GWT.create( TestFinder.class ));
+				WebRequestTest.this.executeTests((TestBuilder) GWT.create(TestFinder.class));
 			}
 		});
 		RootPanel.get().add(button);
@@ -76,7 +76,7 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		Dom.setFocus(button.getElement());
 	}
 
-	static interface TestFinder extends TestBuilder{
+	static interface TestFinder extends TestBuilder {
 		/**
 		 * @testing-testRunner rocket.remoting.test.webrequest.client.WebRequestTest
 		 */
@@ -118,7 +118,6 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 			}
 		});
 	}
-
 
 	/**
 	 * @testing-testMethodOrder 1
@@ -196,7 +195,6 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		});
 	}
 
-
 	/**
 	 * @testing-testMethodOrder 3
 	 */
@@ -232,7 +230,6 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 			}
 		});
 	}
-
 
 	/**
 	 * @testing-testMethodOrder 4

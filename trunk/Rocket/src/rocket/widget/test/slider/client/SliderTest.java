@@ -63,18 +63,18 @@ public class SliderTest implements EntryPoint {
 		rootPanel.add(panel);
 
 		final Label changeEventCounter = new Label("?");
-		rootPanel.add( changeEventCounter );
-		
-		final ChangeEventListener changeEventListener = new ChangeEventListener(){
-			public void onChange( final ChangeEvent event ){
+		rootPanel.add(changeEventCounter);
+
+		final ChangeEventListener changeEventListener = new ChangeEventListener() {
+			public void onChange(final ChangeEvent event) {
 				this.counter++;
-				
-				changeEventCounter.setText( "ChangeEvent counter: " + counter + ", lastWidget: " + GWT.getTypeName(event.getWidget() ) );
+
+				changeEventCounter.setText("ChangeEvent counter: " + counter + ", lastWidget: " + GWT.getTypeName(event.getWidget()));
 			}
-			
+
 			int counter;
 		};
-		
+
 		final Label horizontalSliderValue = new Label();
 		panel.add(horizontalSliderValue);
 
@@ -87,11 +87,11 @@ public class SliderTest implements EntryPoint {
 		horizontalSlider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
 
 		horizontalSlider.addChangeEventListener(new ChangeEventListener() {
-			public void onChange( final ChangeEvent event ) {
+			public void onChange(final ChangeEvent event) {
 				horizontalSliderValue.setText("" + horizontalSlider.getValue());
 			}
 		});
-		horizontalSlider.addChangeEventListener( changeEventListener );
+		horizontalSlider.addChangeEventListener(changeEventListener);
 		horizontalSlider.setValue(VALUE);
 
 		panel.add(horizontalSlider);
@@ -109,11 +109,11 @@ public class SliderTest implements EntryPoint {
 		verticalSlider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
 
 		verticalSlider.addChangeEventListener(new ChangeEventListener() {
-			public void onChange( final ChangeEvent event ) {
+			public void onChange(final ChangeEvent event) {
 				verticalSliderValue.setText("" + verticalSlider.getValue());
 			}
 		});
-		verticalSlider.addChangeEventListener( changeEventListener );
+		verticalSlider.addChangeEventListener(changeEventListener);
 
 		panel.add(verticalSlider);
 
@@ -131,12 +131,12 @@ public class SliderTest implements EntryPoint {
 		slider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
 
 		slider.addChangeEventListener(new ChangeEventListener() {
-			public void onChange(final ChangeEvent event ) {
+			public void onChange(final ChangeEvent event) {
 				hvSliderValue.setText("" + slider.getXValue() + "," + slider.getYValue());
 			}
 		});
-		slider.addChangeEventListener( changeEventListener );
-		
+		slider.addChangeEventListener(changeEventListener);
+
 		slider.setXValue(VALUE);
 		slider.setYValue(VALUE);
 

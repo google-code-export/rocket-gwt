@@ -16,10 +16,10 @@
 package rocket.event.client;
 
 public class FocusEvent extends Event {
-	public FocusEvent(){
+	public FocusEvent() {
 	}
-	
-	public FocusEvent asFocusEvent(){
+
+	public FocusEvent asFocusEvent() {
 		return this;
 	}
 }

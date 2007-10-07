@@ -15,7 +15,6 @@
  */
 package rocket.generator.rebind.type;
 
-
 /**
  * Represents a inner class being built.
  * 
@@ -27,10 +26,11 @@ public class NewNestedTypeImpl extends NewNestedTypeOrInterface implements NewNe
 		super();
 	}
 
-	public boolean isInterface(){
+	public boolean isInterface() {
 		return false;
 	}
-	public void setInterface( final boolean interfacee ){
-		throw new UnsupportedOperationException( "setInterface");
+
+	public void setInterface(final boolean interfacee) {
+		throw new UnsupportedOperationException("setInterface");
 	}
 }

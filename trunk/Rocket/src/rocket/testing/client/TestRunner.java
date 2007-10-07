@@ -94,8 +94,9 @@ abstract public class TestRunner {
 	/**
 	 * Executes all the tests returned by the given TestBuilder.
 	 * 
-	 * It is possible to automatically execute all public methods whose name starts with test,
-	 * manually or via deferred binding.
+	 * It is possible to automatically execute all public methods whose name
+	 * starts with test, manually or via deferred binding.
+	 * 
 	 * <pre>
 	 * TestBuilder tests = (TestBuilder) GWT.create( TestFinder.class );
 	 * ...
@@ -107,8 +108,8 @@ abstract public class TestRunner {
 	 * }
 	 * </pre>
 	 * 
-	 * Each test method must also include an order annotation with a number value.
-	 * Methods with are sorted small to large numbers.
+	 * Each test method must also include an order annotation with a number
+	 * value. Methods with are sorted small to large numbers.
 	 * 
 	 * @param testBuilder
 	 */

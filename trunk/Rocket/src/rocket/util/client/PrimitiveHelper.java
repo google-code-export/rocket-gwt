@@ -73,13 +73,13 @@ public class PrimitiveHelper extends SystemHelper {
 		}
 	}
 
-	public static void checkEquals(final String name, final long value, final long expectedValue) {
+	public static void checkEquals(final String name, final long expectedValue, final long value) {
 		if (value != expectedValue) {
 			SystemHelper.fail("The " + name + " value of " + value + " should be equal to " + expectedValue);
 		}
 	}
 
-	public static void checkNotEquals(final String name, final long value, final long expectedValue) {
+	public static void checkNotEquals(final String name, final long expectedValue, final long value) {
 		if (value == expectedValue) {
 			SystemHelper.fail("The " + name + " value of " + value + " should not be equal to " + expectedValue);
 		}
@@ -91,25 +91,25 @@ public class PrimitiveHelper extends SystemHelper {
 		}
 	}
 
-	public static void checkGreaterThan(final String name, final long longValue, final long greaterThan) {
+	public static void checkGreaterThan(final String name, final long greaterThan, final long longValue) {
 		if (false == (longValue > greaterThan)) {
 			SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be greater than " + greaterThan);
 		}
 	}
 
-	public static void checkGreaterThanOrEqual(final String name, final long longValue, final long greaterThanOrEqual) {
+	public static void checkGreaterThanOrEqual(final String name, final long greaterThanOrEqual, final long longValue) {
 		if (false == (longValue >= greaterThanOrEqual)) {
 			SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be greater than or equal to " + greaterThanOrEqual);
 		}
 	}
 
-	public static void checkLessThan(final String name, final long longValue, final long lessThan) {
+	public static void checkLessThan(final String name, final long lessThan, final long longValue) {
 		if (false == (longValue < lessThan)) {
 			SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be less than " + lessThan);
 		}
 	}
 
-	public static void checkLessThanOrEqual(final String name, final long longValue, final long lessThanOrEqual) {
+	public static void checkLessThanOrEqual(final String name, final long lessThanOrEqual, final long longValue) {
 		if (false == (longValue <= lessThanOrEqual)) {
 			SystemHelper.fail(name, "The " + name + " value of " + longValue + " must be less than or equal to " + lessThanOrEqual);
 		}
@@ -169,25 +169,25 @@ public class PrimitiveHelper extends SystemHelper {
 		}
 	}
 
-	public static void checkGreaterThan(final String name, final double doubleValue, final double greaterThan) {
+	public static void checkGreaterThan(final String name, final double greaterThan, final double doubleValue) {
 		if (false == (doubleValue > greaterThan)) {
 			SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be greater than " + greaterThan);
 		}
 	}
 
-	public static void checkGreaterThanOrEqual(final String name, final double doubleValue, final double greaterThanOrEqual) {
+	public static void checkGreaterThanOrEqual(final String name, final double greaterThanOrEqual, final double doubleValue) {
 		if (false == (doubleValue >= greaterThanOrEqual)) {
 			SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be greater than or equal to " + greaterThanOrEqual);
 		}
 	}
 
-	public static void checkLessThan(final String name, final double doubleValue, final double lessThan) {
+	public static void checkLessThan(final String name, final double lessThan, final double doubleValue) {
 		if (false == (doubleValue < lessThan)) {
 			SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be less than " + lessThan);
 		}
 	}
 
-	public static void checkLessThanOrEqual(final String name, final double doubleValue, final double lessThanOrEqual) {
+	public static void checkLessThanOrEqual(final String name, final double lessThanOrEqual, final double doubleValue) {
 		if (false == (doubleValue <= lessThanOrEqual)) {
 			SystemHelper.fail(name, "The " + name + " value of " + doubleValue + " must be less than or equal to " + lessThanOrEqual);
 		}

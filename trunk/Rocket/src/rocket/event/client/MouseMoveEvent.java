@@ -16,11 +16,11 @@
 package rocket.event.client;
 
 public class MouseMoveEvent extends MouseEvent {
-	public MouseMoveEvent(){
-		
+	public MouseMoveEvent() {
+
 	}
-	
-	public MouseMoveEvent asMouseMoveEvent(){
+
+	public MouseMoveEvent asMouseMoveEvent() {
 		return this;
 	}
 }

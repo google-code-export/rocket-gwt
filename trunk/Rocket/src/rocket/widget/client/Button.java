@@ -36,7 +36,7 @@ import com.google.gwt.user.client.Element;
  * </li>
  * 
  * Most of the internals have been ripped and reworked from the original GWT
- * Button widget. 
+ * Button widget.
  * 
  * TODO When upgrading GWT version reapply changes to this class.
  * 

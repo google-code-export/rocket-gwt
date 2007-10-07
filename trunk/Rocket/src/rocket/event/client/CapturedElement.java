@@ -20,28 +20,30 @@ import com.google.gwt.user.client.Element;
 
 /**
  * Represents a captured element.
+ * 
  * @author Miroslav Pokorny
  */
 public class CapturedElement {
-	
+
 	/**
-	 * Because only one element may be captured at any time the singleton pattern is used.
+	 * Because only one element may be captured at any time the singleton
+	 * pattern is used.
 	 */
 	static CapturedElement capturedElement = new CapturedElement();
-	
-	static public CapturedElement getCapturedElement(){
+
+	static public CapturedElement getCapturedElement() {
 		return capturedElement;
 	}
-	
-	public Element get(){
+
+	public Element get() {
 		return DOM.getCaptureElement();
 	}
-	
-	public void set( final Element element ){
-		DOM.setCapture(element );
+
+	public void set(final Element element) {
+		DOM.setCapture(element);
 	}
-	
-	public void clear( final Element element ){
-		DOM.releaseCapture(element );
+
+	public void clear(final Element element) {
+		DOM.releaseCapture(element);
 	}
 }

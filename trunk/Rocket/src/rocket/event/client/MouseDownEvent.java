@@ -16,11 +16,11 @@
 package rocket.event.client;
 
 public class MouseDownEvent extends MouseButtonEvent {
-	public MouseDownEvent( ){
-		
+	public MouseDownEvent() {
+
 	}
-	
-	public MouseDownEvent asMouseDownEvent(){
+
+	public MouseDownEvent asMouseDownEvent() {
 		return this;
 	}
 }

@@ -15,14 +15,19 @@
  */package rocket.event.client;
 
 public interface MouseEventListener {
-	void onClick( final MouseClickEvent event );
-	void onDoubleClick( final MouseDoubleClickEvent event );
-	
-	void onMouseDown( final MouseDownEvent event );
-	void onMouseMove( final MouseMoveEvent event );
-	void onMouseOut( final MouseOutEvent event );
-	void onMouseOver( final MouseOverEvent event );
-	void onMouseUp( final MouseUpEvent event );
-	
-	void onMouseWheel( final MouseWheelEvent event );
+	void onClick(final MouseClickEvent event);
+
+	void onDoubleClick(final MouseDoubleClickEvent event);
+
+	void onMouseDown(final MouseDownEvent event);
+
+	void onMouseMove(final MouseMoveEvent event);
+
+	void onMouseOut(final MouseOutEvent event);
+
+	void onMouseOver(final MouseOverEvent event);
+
+	void onMouseUp(final MouseUpEvent event);
+
+	void onMouseWheel(final MouseWheelEvent event);
 }

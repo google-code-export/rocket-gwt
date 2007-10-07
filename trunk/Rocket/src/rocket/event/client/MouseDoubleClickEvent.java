@@ -16,10 +16,10 @@
 package rocket.event.client;
 
 public class MouseDoubleClickEvent extends MouseButtonEvent {
-	public MouseDoubleClickEvent(){		
+	public MouseDoubleClickEvent() {
 	}
-	
-	public MouseDoubleClickEvent asMouseDoubleClickEvent(){
+
+	public MouseDoubleClickEvent asMouseDoubleClickEvent() {
 		return this;
 	}
 }

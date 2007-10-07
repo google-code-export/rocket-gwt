@@ -16,18 +16,19 @@
 package rocket.event.client;
 
 public class ScrollEventListenerCollection extends ListenerCollection {
-	public void add( final ScrollEventListener listener ){
-		super.add( listener );
+	public void add(final ScrollEventListener listener) {
+		super.add(listener);
 	}
-	public void remove( final ScrollEventListener listener ){
-		super.remove( listener );
+
+	public void remove(final ScrollEventListener listener) {
+		super.remove(listener);
 	}
-	
-	public void fireScroll( final ScrollEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final ScrollEventListener listener0 = (ScrollEventListener)listener;
-				listener0.onScroll( event );
+
+	public void fireScroll(final ScrollEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final ScrollEventListener listener0 = (ScrollEventListener) listener;
+				listener0.onScroll(event);
 			}
 		});
 	}

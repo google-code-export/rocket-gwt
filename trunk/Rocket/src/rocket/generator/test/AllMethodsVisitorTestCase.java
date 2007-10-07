@@ -85,7 +85,6 @@ public class AllMethodsVisitorTestCase extends TestCase {
 		final Type test = context.getType(Test.class.getName());
 		visitor.start(test);
 
-
 		final Type object = context.getObject();
 		final List noArguments = Arrays.asList(new Type[0]);
 

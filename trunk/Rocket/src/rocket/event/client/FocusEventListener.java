@@ -16,6 +16,7 @@
 package rocket.event.client;
 
 public interface FocusEventListener {
-	void onFocus( final FocusEvent event );
-	void onBlur( final BlurEvent event );
+	void onFocus(final FocusEvent event);
+
+	void onBlur(final BlurEvent event);
 }

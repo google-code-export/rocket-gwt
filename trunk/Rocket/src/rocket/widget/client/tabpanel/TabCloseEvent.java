@@ -17,6 +17,7 @@ package rocket.widget.client.tabpanel;
 
 /**
  * This event is fired after closing / removing a tab.
+ * 
  * @author Miroslav Pokorny
  */
 public class TabCloseEvent {
@@ -25,21 +26,22 @@ public class TabCloseEvent {
 	 * The new tabItem that was recently closed
 	 */
 	private TabItem closed;
-	
-	public TabItem getClosed(){
+
+	public TabItem getClosed() {
 		return closed;
 	}
-	void setClosed( final TabItem closed ){
+
+	void setClosed(final TabItem closed) {
 		this.closed = closed;
 	}
-	
+
 	private TabPanel tabPanel;
-	
-	public TabPanel getTabPanel(){
+
+	public TabPanel getTabPanel() {
 		return tabPanel;
 	}
-	
-	void setTabPanel( final TabPanel tabPanel ){
+
+	void setTabPanel(final TabPanel tabPanel) {
 		this.tabPanel = tabPanel;
 	}
 }

@@ -41,22 +41,22 @@ public class NewInterfaceTypeImpl extends NewConcreteNestedTypeOrInterfaceType i
 		super();
 	}
 
-	public void addInterface(Type interfacee){
-		throw new UnsupportedOperationException( "Interfaces do not implement other interfaces, interface: " + this );
+	public void addInterface(Type interfacee) {
+		throw new UnsupportedOperationException("Interfaces do not implement other interfaces, interface: " + this);
 	}
-	
+
 	public NewConstructor newConstructor() {
-		throw new UnsupportedOperationException( "Interfaces do not have constructors, interface: " + this );
+		throw new UnsupportedOperationException("Interfaces do not have constructors, interface: " + this);
 	}
 
 	public void addConstructor(final NewConstructor constructor) {
-		throw new UnsupportedOperationException( "Interfaces do not have constructors, interface: " + this );
+		throw new UnsupportedOperationException("Interfaces do not have constructors, interface: " + this);
 	}
 
-	public NewAnonymousNestedType newAnonymousNestedType(){
-		throw new UnsupportedOperationException( "Interfaces cannot have anonymous nested types, interface: " + this );
+	public NewAnonymousNestedType newAnonymousNestedType() {
+		throw new UnsupportedOperationException("Interfaces cannot have anonymous nested types, interface: " + this);
 	}
-	
+
 	/**
 	 * Requests this generated type to write out its definition including its
 	 * constructors, methods and fields. This operation may only be attempted

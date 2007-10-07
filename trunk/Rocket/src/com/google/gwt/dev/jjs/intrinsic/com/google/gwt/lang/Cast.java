@@ -141,6 +141,7 @@ final class Cast {
 
 	/**
 	 * TODO When upgrading GWT version reapply changes to this class.
+	 * 
 	 * @param jso
 	 * @param seed
 	 * @return

@@ -30,10 +30,10 @@ public class BottomTabPanel extends HorizonalTabPanel {
 		super();
 	}
 
-	DockPanel.DockLayoutConstant getTabBarDockPanelConstants(){
+	DockPanel.DockLayoutConstant getTabBarDockPanelConstants() {
 		return DockPanel.SOUTH;
 	}
-	
+
 	protected TabPanel.TabBarPanel createTabBarPanel() {
 		return this.createTabBarPanel(HasVerticalAlignment.ALIGN_TOP);
 	}

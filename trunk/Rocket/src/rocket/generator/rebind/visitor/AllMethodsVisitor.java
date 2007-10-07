@@ -49,7 +49,7 @@ abstract public class AllMethodsVisitor {
 		protected boolean visit(final Type type) {
 			ObjectHelper.checkNotNull("parameter:type", type);
 
-			if (false == (AllMethodsVisitor.this.skipJavaLangObjectMethods() && type.equals( type.getGeneratorContext().getObject()))) {
+			if (false == (AllMethodsVisitor.this.skipJavaLangObjectMethods() && type.equals(type.getGeneratorContext().getObject()))) {
 
 				final TypeMethodsVisitor methodVisitor = new TypeMethodsVisitor() {
 					protected boolean visit(final Method method) {

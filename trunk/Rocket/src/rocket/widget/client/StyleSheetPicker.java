@@ -142,10 +142,10 @@ public class StyleSheetPicker extends CompositeWidget {
 		return label;
 	}
 
-	protected String getPickerLabelStyle(){
+	protected String getPickerLabelStyle() {
 		return WidgetConstants.STYLESHEET_PICKER_LABEL_STYLE;
 	}
-	
+
 	protected void createButtons(final HorizontalPanel panel) {
 		ObjectHelper.checkNotNull("parameter:panel", panel);
 
@@ -253,12 +253,12 @@ public class StyleSheetPicker extends CompositeWidget {
 		ObjectHelper.checkNotNull("parameter:button", button);
 
 		this.unselectAllStyleSheets();
-		button.addStyleName( this.getSelectedStyleSheetStyle() );
+		button.addStyleName(this.getSelectedStyleSheetStyle());
 
 		final StyleSheet styleSheet = this.getStyleSheet(button);
 		styleSheet.setDisabled(false);
 	}
-	
+
 	/**
 	 * Unselects all stylesheets and deselects their corresponding button
 	 */
@@ -278,13 +278,13 @@ public class StyleSheetPicker extends CompositeWidget {
 	protected void unselectStyleSheet(final Button button) {
 		ObjectHelper.checkNotNull("parameter:button", button);
 
-		button.removeStyleName( this.getSelectedStyleSheetStyle() );
+		button.removeStyleName(this.getSelectedStyleSheetStyle());
 
 		final StyleSheet styleSheet = this.getStyleSheet(button);
 		styleSheet.setDisabled(true);
 	}
-	
-	protected String getSelectedStyleSheetStyle(){
+
+	protected String getSelectedStyleSheetStyle() {
 		return WidgetConstants.STYLESHEET_ITEM_SELECTED_STYLE;
 	}
 }

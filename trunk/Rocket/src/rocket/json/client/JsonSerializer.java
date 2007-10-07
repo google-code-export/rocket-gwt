@@ -173,8 +173,10 @@ abstract public class JsonSerializer {
 	}
 
 	/**
-	 * Null safe method to retrieve the double value from a jsonValue which may or may not be a
-	 * JSONNumber. If its null or not a JSONNumber 0 is returned.
+	 * Null safe method to retrieve the double value from a jsonValue which may
+	 * or may not be a JSONNumber. If its null or not a JSONNumber 0 is
+	 * returned.
+	 * 
 	 * @param jsonValue
 	 * @return
 	 */

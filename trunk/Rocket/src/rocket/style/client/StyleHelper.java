@@ -32,8 +32,8 @@ import com.google.gwt.user.client.Element;
  * This helper provides support for changing styles/classes for widgets that use
  * a heirarchical manner to name their composite widgets/elements.
  * 
- * Refer to the {@link InlineStyle} and {@link ComputedStyle} to work with inline and computed styles for
- * a particular element.
+ * Refer to the {@link InlineStyle} and {@link ComputedStyle} to work with
+ * inline and computed styles for a particular element.
  * 
  * In order to enable correct simulation of fixed positioning the coordinates
  * must be set prior to setting the position.
@@ -115,7 +115,7 @@ public class StyleHelper {
 			ObjectHelper.fail("The " + name + " contains more than one selector, selectorText[" + selectorText + "]");
 		}
 	}
-	
+
 	/**
 	 * Retrieves an inline style property by name.
 	 * 

@@ -41,8 +41,8 @@ public class SpinnerTest implements EntryPoint {
 		rootPanel.add(value);
 
 		final Label changeEventCounter = new Label("?");
-		rootPanel.add( changeEventCounter );
-		
+		rootPanel.add(changeEventCounter);
+
 		final Spinner spinner = new Spinner();
 		spinner.setDelta(1);
 		spinner.setLowerBounds(0);
@@ -50,18 +50,18 @@ public class SpinnerTest implements EntryPoint {
 		spinner.setDownImageUrl("down.gif");
 		spinner.setUpImageUrl("up.gif");
 		spinner.addChangeEventListener(new ChangeEventListener() {
-			public void onChange(final ChangeEvent event ) {
+			public void onChange(final ChangeEvent event) {
 				value.setText("" + spinner.getValue());
 			}
 		});
 		spinner.addChangeEventListener(new ChangeEventListener() {
-			public void onChange(final ChangeEvent event ) {
+			public void onChange(final ChangeEvent event) {
 				this.counter++;
-				changeEventCounter.setText("ChangeEvent counter: " + this.counter );
+				changeEventCounter.setText("ChangeEvent counter: " + this.counter);
 			}
+
 			int counter = 0;
 		});
-		
 
 		rootPanel.add(spinner);
 	}

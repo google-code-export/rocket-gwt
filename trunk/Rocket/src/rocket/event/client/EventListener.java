@@ -16,14 +16,16 @@
 package rocket.event.client;
 
 /**
- * This interfaces that wish to receive event that occur with any element. 
+ * This interfaces that wish to receive event that occur with any element.
+ * 
  * @author Miroslav Pokorny
  */
 public interface EventListener {
-	  /**
-	   * Fired whenever a browser event is received.
-	   * 
-	   * @param event the event received
-	   */
-	  void onBrowserEvent(Event event);
+	/**
+	 * Fired whenever a browser event is received.
+	 * 
+	 * @param event
+	 *            the event received
+	 */
+	void onBrowserEvent(Event event);
 }

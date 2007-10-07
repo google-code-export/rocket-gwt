@@ -144,7 +144,7 @@ public class FormPanel extends Panel {
 		for (int i = 0; i < count; i++) {
 			com.google.gwt.user.client.ui.Widget widget = null;
 			final Element formElement = ObjectHelper.getElement(collection, i);
-			
+
 			while (true) {
 				if (Dom.isTag(formElement, WidgetConstants.BUTTON_TAG) || Dom.isInput(formElement, WidgetConstants.BUTTON_INPUT_RESET_TYPE)
 						|| Dom.isInput(formElement, WidgetConstants.BUTTON_INPUT_SUBMIT_TYPE)) {
@@ -194,10 +194,11 @@ public class FormPanel extends Panel {
 				this.add(widget);
 
 				hijacker.restore();
-				
-				final String formName = DOM.getElementProperty( formElement, "name");
-				if( StringHelper.isNullOrEmpty( formName )){
-					GWT.log( "The " + i + "th form element [" + formElement + "]is missing a name attribute. This might result in it being omitted from any submitted form.", null );
+
+				final String formName = DOM.getElementProperty(formElement, "name");
+				if (StringHelper.isNullOrEmpty(formName)) {
+					GWT.log("The " + i + "th form element [" + formElement
+							+ "]is missing a name attribute. This might result in it being omitted from any submitted form.", null);
 				}
 			}
 
@@ -428,9 +429,11 @@ public class FormPanel extends Panel {
 		// most browsers.
 		final Element dummy = DOM.createDiv();
 		final String frameName = this.getTarget();
-		
-		// FIXME http://code.google.com/p/google-web-toolkit/issues/detail?id=1205
-		DOM.setInnerHTML(dummy, "<iframe src=\"javascript='<html></html>'\" name=\"" + frameName + "\" style=\"width:0;height:0;border:0\">");
+
+		// FIXME
+		// http://code.google.com/p/google-web-toolkit/issues/detail?id=1205
+		DOM.setInnerHTML(dummy, "<iframe src=\"javascript='<html></html>'\" name=\"" + frameName
+				+ "\" style=\"width:0;height:0;border:0\">");
 
 		return DOM.getFirstChild(dummy);
 	}

@@ -63,7 +63,7 @@ class JsonRpcInvokerTemplatedFile extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:parameterType", parameterType);
 		this.parameterType = parameterType;
 	}
-	
+
 	protected InputStream getInputStream() {
 		final String filename = Constants.JSON_RPC_INVOKER_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);

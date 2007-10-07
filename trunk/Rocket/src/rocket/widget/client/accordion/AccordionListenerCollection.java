@@ -59,18 +59,18 @@ class AccordionListenerCollection {
 		while (listeners.hasNext()) {
 			final AccordionListener listener = (AccordionListener) listeners.next();
 			listener.onBeforeSelect(event);
-			if (event.isCancelled() ) {
+			if (event.isCancelled()) {
 				break;
 			}
 		}
 	}
 
-	public void fireSelected(final AccordionItemSelectEvent event ){		
+	public void fireSelected(final AccordionItemSelectEvent event) {
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final AccordionListener listener = (AccordionListener) listeners.next();
-			listener.onSelect( event );
+			listener.onSelect(event);
 		}
 	}
 }

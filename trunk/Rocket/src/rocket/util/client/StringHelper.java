@@ -555,7 +555,7 @@ public class StringHelper extends ObjectHelper {
 		StringHelper.checkNotEmpty("parameter:text", text);
 		return text.replaceAll("&nbsp;", " ");
 	}
-	
+
 	/**
 	 * Convenient method which replaces all nbsp with a regular space.
 	 * 
@@ -566,7 +566,7 @@ public class StringHelper extends ObjectHelper {
 		StringHelper.checkNotEmpty("parameter:text", text);
 		return text.replaceAll(" ", "&nbsp;");
 	}
-	
+
 	/**
 	 * Private so that creating instances are not possible
 	 */

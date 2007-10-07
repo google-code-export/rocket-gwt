@@ -97,13 +97,13 @@ public abstract class Slider extends CompositeWidget {
 		this.setPanel(panel);
 		return panel;
 	}
-	
-	protected void afterCreateWidget(){
+
+	protected void afterCreateWidget() {
 		super.afterCreateWidget();
-		
-		this.getEventListenerDispatcher().addMouseEventListener( new MouseEventAdapter(){
-			public void onMouseDown( final MouseDownEvent event ){
-				Slider.this.handleMouseDown( event );
+
+		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
+			public void onMouseDown(final MouseDownEvent event) {
+				Slider.this.handleMouseDown(event);
 			}
 		});
 	}
@@ -215,19 +215,20 @@ public abstract class Slider extends CompositeWidget {
 	}
 
 	/**
-	 * Creates an EventPreview that simple delegates to appropriately called handler event methods on
-	 * the outter class.
+	 * Creates an EventPreview that simple delegates to appropriately called
+	 * handler event methods on the outter class.
 	 * 
 	 * @return
 	 */
 	protected EventPreview createDraggingEventPreview() {
 		return new EventPreviewAdapter() {
 
-			public void onMouseMove( final MouseMoveEvent event ){
-				Slider.this.handleMouseMove( event );
+			public void onMouseMove(final MouseMoveEvent event) {
+				Slider.this.handleMouseMove(event);
 			}
-			public void onMouseUp( final MouseUpEvent event ){
-				Slider.this.handleHandleMouseUp( event );
+
+			public void onMouseUp(final MouseUpEvent event) {
+				Slider.this.handleHandleMouseUp(event);
 			}
 		};
 	}
@@ -247,8 +248,8 @@ public abstract class Slider extends CompositeWidget {
 		this.setValue((int) newValue);
 
 		this.clearTimer();
-		
-		event.cancelBubble( true );
+
+		event.cancelBubble(true);
 	}
 
 	protected void handleBackgroundMouseDown(final MouseDownEvent event) {
@@ -262,27 +263,27 @@ public abstract class Slider extends CompositeWidget {
 	protected void handleBackgroundMouseDown(final int mouse) {
 		while (true) {
 			final int handleBeforeUpdate = this.getRelativeHandleCoordinate();
-						
-			if (mouse == handleBeforeUpdate ) {
+
+			if (mouse == handleBeforeUpdate) {
 				this.clearTimer();
 				break;
 			}
 			final boolean lessThanBefore = handleBeforeUpdate < mouse;
-			if ( lessThanBefore ) {
-				this.handleAfterHandleMouseDown();				
-			} else{
+			if (lessThanBefore) {
+				this.handleAfterHandleMouseDown();
+			} else {
 				this.handleBeforeHandleMouseDown();
 			}
 			final int handleAfterUpdate = this.getRelativeHandleCoordinate();
 			final boolean lessThanAfter = handleAfterUpdate < mouse;
-			if( lessThanBefore != lessThanAfter ){
-				this.setRelativeHandleCoordinate( mouse );
+			if (lessThanBefore != lessThanAfter) {
+				this.setRelativeHandleCoordinate(mouse);
 				this.clearTimer();
 			}
 			break;
 		}
 	}
-	
+
 	/**
 	 * Decreases the value of this slider ensuring that it does not underflow
 	 * the minimum value of this slider.
@@ -324,8 +325,8 @@ public abstract class Slider extends CompositeWidget {
 		DOM.removeEventPreview(this.getDraggingEventPreview());
 		this.clearDraggingEventPreview();
 		Selection.enableTextSelection();
-		
-		event.cancelBubble( true );
+
+		event.cancelBubble(true);
 	}
 
 	/**

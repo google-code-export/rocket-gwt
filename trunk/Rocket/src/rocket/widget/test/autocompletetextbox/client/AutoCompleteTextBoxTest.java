@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class AutoCompleteTextBoxTest implements EntryPoint {
 
 	final static String WORDS = "New Caledonia, New England,New France,New Jersey,New Mexico,New Orleans,New Spain,New South Wales,New York,New York State,New Zealand";
-	
+
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
@@ -42,8 +42,8 @@ public class AutoCompleteTextBoxTest implements EntryPoint {
 		});
 		final RootPanel rootPanel = RootPanel.get();
 
-		final List matchCandidates = Arrays.asList( StringHelper.split( WORDS, ",", true ));
-		
+		final List matchCandidates = Arrays.asList(StringHelper.split(WORDS, ",", true));
+
 		final StringBuffer buf = new StringBuffer();
 		buf.append("<ul>");
 

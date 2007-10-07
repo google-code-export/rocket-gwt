@@ -23,13 +23,15 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 /**
- * This class provides a simple mechanism to store the dom location of a given element, and have the same element
- * restored to recorded location.
+ * This class provides a simple mechanism to store the dom location of a given
+ * element, and have the same element restored to recorded location.
  * 
- * This class is used to implement hijacking of dom elements to a supported wrapper widget etc. passing a 
- * TEXTAREA element to a TextArea widget. The TextArea typically adds the wrapped TextArea widget to the RootPanel.
- * The RootPanel class then adds the TEXTAREA element to the document body. The hijacker then restores the TEXTAREA
- * element to its original dom location, thus making everything just right.
+ * This class is used to implement hijacking of dom elements to a supported
+ * wrapper widget etc. passing a TEXTAREA element to a TextArea widget. The
+ * TextArea typically adds the wrapped TextArea widget to the RootPanel. The
+ * RootPanel class then adds the TEXTAREA element to the document body. The
+ * hijacker then restores the TEXTAREA element to its original dom location,
+ * thus making everything just right.
  * 
  * @author Miroslav Pokorny
  */
@@ -59,7 +61,7 @@ public class Hijacker {
 
 	Element getParent() {
 		return this.parent;
-	}	
+	}
 
 	void setParent(final Element parent) {
 		ObjectHelper.checkNotNull("parameter:parent", parent);
@@ -98,9 +100,25 @@ public class Hijacker {
 	}
 
 	public void restore() {
+		final Element element = this.getElement();
 		final Element parent = this.getParent();
-		if( null != parent ){
-			DOM.insertChild(parent, this.getElement(), this.getChildIndex());
+		if (null != parent) {
+			DOM.insertChild(parent, element, this.getChildIndex());
+		} else {
+			if (DOM.getParent(element) != null) {
+				Dom.removeFromParent(element);
+			}
 		}
+	}
+
+	/**
+	 * Replaces the element contained with the given element.
+	 * 
+	 * @param element
+	 */
+	public void replace(final Element element) {
+		final Element parent = this.getParent();
+		ObjectHelper.checkNotNull("element was not attached", parent);
+		DOM.insertChild(parent, element, this.getChildIndex());
 	}
 }

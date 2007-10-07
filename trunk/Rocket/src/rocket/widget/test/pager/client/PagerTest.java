@@ -53,7 +53,7 @@ public class PagerTest implements EntryPoint {
 		pager.setPagesInBetweenCount(inBetweenCount);
 
 		pager.addChangeEventListener(new ChangeEventListener() {
-			public void onChange(final ChangeEvent event ) {
+			public void onChange(final ChangeEvent event) {
 				label.setText("Current Page: " + pager.getValue());
 			}
 		});

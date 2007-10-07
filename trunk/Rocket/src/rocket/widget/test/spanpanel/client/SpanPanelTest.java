@@ -84,6 +84,7 @@ public class SpanPanelTest implements EntryPoint {
 					SystemHelper.fail("Unknown element type type:" + GWT.getTypeName(element));
 				}
 			}
+
 			protected String toString(final Object element) {
 				final HTML html = (HTML) element;
 				return html.getText();

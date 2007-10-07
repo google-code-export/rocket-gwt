@@ -16,7 +16,9 @@
 package rocket.event.client;
 
 public interface KeyEventListener {
-	void onKeyDown( final KeyDownEvent event );
-	void onKeyPress( final KeyPressEvent event );
-	void onKeyUp( final KeyUpEvent event );
+	void onKeyDown(final KeyDownEvent event);
+
+	void onKeyPress(final KeyPressEvent event);
+
+	void onKeyUp(final KeyUpEvent event);
 }

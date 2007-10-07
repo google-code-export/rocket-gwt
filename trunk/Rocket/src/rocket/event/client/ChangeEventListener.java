@@ -16,5 +16,5 @@
 package rocket.event.client;
 
 public interface ChangeEventListener {
-	void onChange( ChangeEvent event );
+	void onChange(ChangeEvent event);
 }

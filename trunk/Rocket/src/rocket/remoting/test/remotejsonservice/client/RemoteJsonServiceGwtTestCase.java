@@ -42,7 +42,7 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	final String BROKEN_JSON_RESPONSE_URL = "/brokenJsonResponse";
 
 	final String INTERNAL_SERVER_ERROR_URL = "/internalServerError";
-	
+
 	final String JSON_RPC_URL = "/jsonRpc";
 
 	public String getModuleName() {
@@ -50,12 +50,13 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	}
 
 	/**
-	 * This test should do nothing because NotAnInterface does not extend RemoteJsonService.
+	 * This test should do nothing because NotAnInterface does not extend
+	 * RemoteJsonService.
 	 */
 	public void testTypeIsNotAnInterface() {
 		try {
 			final Object proxy = GWT.create(NotAnInterface.class);
-			fail("An Exception should have been thrown because NotAnInterface is not an interface, proxy: " + proxy );
+			fail("An Exception should have been thrown because NotAnInterface is not an interface, proxy: " + proxy);
 		} catch (final Exception expected) {
 		}
 	}
@@ -67,7 +68,8 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	public void testInterfaceDoesntImplementRemoteJsonService() {
 		try {
 			final Object proxy = GWT.create(DoesntImplementRemoteJsonService.class);
-			fail("An Exception should have been thrown because InterfaceThatDoesntImplementRemoteJsonService doesnt implement RemoteJsonService, and not: " + proxy );
+			fail("An Exception should have been thrown because InterfaceThatDoesntImplementRemoteJsonService doesnt implement RemoteJsonService, and not: "
+					+ proxy);
 		} catch (final Exception expected) {
 		}
 	}
@@ -364,32 +366,32 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 	static public interface GetJsonService3ParametersAsync {
 		void makeGetRequest(String string1, String string2, String string3, AsyncCallback callback);
 	}
-	
+
 	public void testJsonRpc() {
 		final JsonRpcServiceAsync service = (JsonRpcServiceAsync) GWT.create(JsonRpcService.class);
 		final ServiceDefTarget target = (ServiceDefTarget) service;
-		target.setServiceEntryPoint(Browser.getContextPath() + JSON_RPC_URL );
+		target.setServiceEntryPoint(Browser.getContextPath() + JSON_RPC_URL);
 
-		final ClassWithStringField input = new ClassWithStringField(); 
+		final ClassWithStringField input = new ClassWithStringField();
 		input.field = "apple";
 
 		service.makeRequest(input, new AsyncCallback() {
 			public void onSuccess(final Object result) {
-				final ClassWithStringField output = (ClassWithStringField)result;
-				assertEquals( input.field, output.field );
+				final ClassWithStringField output = (ClassWithStringField) result;
+				assertEquals(input.field, output.field);
 				RemoteJsonServiceGwtTestCase.this.finishTest();
 			}
 
 			public void onFailure(final Throwable cause) {
 				cause.printStackTrace();
-				RemoteJsonServiceGwtTestCase.this.fail( "JsonRpc failed, message: " + cause.getMessage() );
+				RemoteJsonServiceGwtTestCase.this.fail("JsonRpc failed, message: " + cause.getMessage());
 			}
 		});
 
 		this.delayTestFinish(RPC_TIMEOUT);
 	}
-	
-	static interface JsonRpcService extends RemoteJsonService{
+
+	static interface JsonRpcService extends RemoteJsonService {
 		/**
 		 * 
 		 * @param input
@@ -397,9 +399,10 @@ public class RemoteJsonServiceGwtTestCase extends GWTTestCase {
 		 * 
 		 * @jsonRpc-inputArguments jsonRpc
 		 */
-		ClassWithStringField makeRequest( ClassWithStringField input);
+		ClassWithStringField makeRequest(ClassWithStringField input);
 	}
-	static interface JsonRpcServiceAsync{
-		void makeRequest( ClassWithStringField input, AsyncCallback callback );
+
+	static interface JsonRpcServiceAsync {
+		void makeRequest(ClassWithStringField input, AsyncCallback callback);
 	}
 }

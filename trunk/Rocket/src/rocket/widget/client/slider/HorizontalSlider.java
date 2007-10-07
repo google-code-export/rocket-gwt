@@ -29,8 +29,8 @@ public class HorizontalSlider extends Slider {
 	public HorizontalSlider() {
 		super();
 	}
-	
-	protected String getInitialStyleName(){
+
+	protected String getInitialStyleName() {
 		return Constants.HORIZONTAL_SLIDER_STYLE;
 	}
 

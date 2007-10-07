@@ -66,7 +66,7 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
  * 
  * </ul>
  * {@link #redrawIfAutoEnabled()} and {@link #redrawIfAutoEnabled()} </li>
- *  
+ * 
  * </ul>
  * 
  * @author Miroslav Pokorny (mP)
@@ -82,18 +82,18 @@ public abstract class SortableTable extends CompositeWidget {
 	}
 
 	protected void afterCreateWidget() {
-		this.setColumnComparators( this.createColumnComparators());
+		this.setColumnComparators(this.createColumnComparators());
 		this.setRows(this.createRows());
 		this.setAutoRedraw(true);
 
 		final Grid grid = this.getGrid();
-	grid.getRowFormatter().addStyleName(0, this.getHeaderRowStyle());
+		grid.getRowFormatter().addStyleName(0, this.getHeaderRowStyle());
 	}
 
-protected String getHeaderRowStyle(){
-	return WidgetConstants.SORTABLE_TABLE_HEADER_ROW_STYLE;	
-}
-	
+	protected String getHeaderRowStyle() {
+		return WidgetConstants.SORTABLE_TABLE_HEADER_ROW_STYLE;
+	}
+
 	protected String getInitialStyleName() {
 		return WidgetConstants.SORTABLE_TABLE_STYLE;
 	}
@@ -107,7 +107,7 @@ protected String getHeaderRowStyle(){
 	}
 
 	protected Grid createGrid() {
-		final Grid grid = new Grid( 1, this.getColumnCount() );
+		final Grid grid = new Grid(1, this.getColumnCount());
 		grid.setCellPadding(0);
 		grid.setCellSpacing(0);
 		return grid;
@@ -140,9 +140,9 @@ protected String getHeaderRowStyle(){
 		ObjectHelper.checkNotNull("parameter:columnComparators", columnComparators);
 		this.columnComparators = columnComparators;
 	}
-	
-	protected ColumnSorting[] createColumnComparators(){
-		return new ColumnSorting[ this.getColumnCount() ];
+
+	protected ColumnSorting[] createColumnComparators() {
+		return new ColumnSorting[this.getColumnCount()];
 	}
 
 	/**
@@ -158,12 +158,12 @@ protected String getHeaderRowStyle(){
 		sorting.setAscendingSort(ascending);
 		sorting.setComparator(columnComparator);
 
-		this.getColumnComparators()[ column ] = sorting;
+		this.getColumnComparators()[column] = sorting;
 
-		this.addColumnStyle(column, this.getSortableColumnStyle() );
+		this.addColumnStyle(column, this.getSortableColumnStyle());
 	}
-	
-	protected String getSortableColumnStyle(){
+
+	protected String getSortableColumnStyle() {
 		return WidgetConstants.SORTABLE_TABLE_SORTABLE_COLUMN_STYLE;
 	}
 
@@ -211,19 +211,19 @@ protected String getHeaderRowStyle(){
 	public void makeColumnUnsortable(final int column) {
 		this.checkColumn("parameter:column", column);
 
-		this.getColumnComparators()[column ] = null;
+		this.getColumnComparators()[column] = null;
 
 		final HorizontalPanel panel = (HorizontalPanel) this.getGrid().getWidget(0, column);
 		if (panel.getWidgetCount() > 1) {
 			panel.remove(panel.getWidget(1));
 		}
-		this.removeColumnStyle(column, this.getSortableColumnStyle() );
+		this.removeColumnStyle(column, this.getSortableColumnStyle());
 	}
 
 	protected boolean isColumnSortable(final int column) {
 		this.checkColumn("parameter:column", column);
-				
-		return null != this.getColumnComparators()[ column ];
+
+		return null != this.getColumnComparators()[column];
 	}
 
 	/**
@@ -287,7 +287,7 @@ protected String getHeaderRowStyle(){
 		}
 
 		if (this.isAutoRedraw()) {
-			// remove the sorted image from the previous column...			
+			// remove the sorted image from the previous column...
 			this.getRowsList().getSorted().setUnsorted(true);
 
 			// remove style from the previous column
@@ -300,13 +300,13 @@ protected String getHeaderRowStyle(){
 			final boolean ascending = isAscending(sortedColumn);
 			this.addSortDirectionImage(sortedColumn, ascending);
 
-			this.addColumnStyle(sortedColumn, this.getSortedColumnStyle() );
+			this.addColumnStyle(sortedColumn, this.getSortedColumnStyle());
 		}
 		this.sortedColumn = sortedColumn;
 	}
-	
-	protected String getSortedColumnStyle(){
-		return WidgetConstants.SORTABLE_TABLE_SORTED_COLUMN_STYLE;	
+
+	protected String getSortedColumnStyle() {
+		return WidgetConstants.SORTABLE_TABLE_SORTED_COLUMN_STYLE;
 	}
 
 	protected void removeSortDirectionImage(final int column) {
@@ -505,36 +505,36 @@ protected String getHeaderRowStyle(){
 		final int rowSize = rows.size();
 		final int gridRowCount = table.getRowCount();
 		final int requiredGridCount = rowSize + 1;
-		
+
 		// update grid to match number of rows...
-		table.resizeRows( requiredGridCount );
-		
+		table.resizeRows(requiredGridCount);
+
 		// if grid had a few rows added add even/odd styles to them...
-		
+
 		final RowFormatter rowFormatter = table.getRowFormatter();
 		final String evenRowStyle = this.getEvenRowStyle();
 		final String oddRowStyle = this.getOddRowStyle();
 		final String sortableColumnStyle = this.getSortableColumnStyle();
 		final String sortedColumnStyle = this.getSortedColumnStyle();
-		
-		for( int row = gridRowCount; row < requiredGridCount; row++ ){
-			final String style = (( row & 1 ) == 1 ) ? evenRowStyle : oddRowStyle ;
-			rowFormatter.addStyleName( row, style );
-			
+
+		for (int row = gridRowCount; row < requiredGridCount; row++) {
+			final String style = ((row & 1) == 1) ? evenRowStyle : oddRowStyle;
+			rowFormatter.addStyleName(row, style);
+
 			final CellFormatter cellFormatter = table.getCellFormatter();
 			final int sortedColumn = this.getSortedColumn();
-			
-			for( int column = 0; column < columnCount; column++ ){
-				if( this.isColumnSortable( column )){
-					cellFormatter.setStyleName( row, column, sortableColumnStyle );
-					
-					if( sortedColumn == column ){
-						cellFormatter.addStyleName( row, column, sortedColumnStyle);
+
+			for (int column = 0; column < columnCount; column++) {
+				if (this.isColumnSortable(column)) {
+					cellFormatter.setStyleName(row, column, sortableColumnStyle);
+
+					if (sortedColumn == column) {
+						cellFormatter.addStyleName(row, column, sortedColumnStyle);
 					}
 				}
 			}
 		}
-		
+
 		for (int row = 0; row < rowSize; row++) {
 			final SortedRowListElement rowObject = (SortedRowListElement) rows.getSortedRowListElement(row);
 
@@ -545,13 +545,15 @@ protected String getHeaderRowStyle(){
 			rowIndex++;
 		}
 	}
-	
-	protected String getEvenRowStyle(){
+
+	protected String getEvenRowStyle() {
 		return WidgetConstants.SORTABLE_TABLE_EVEN_ROW_STYLE;
 	}
-	protected String getOddRowStyle(){
+
+	protected String getOddRowStyle() {
 		return WidgetConstants.SORTABLE_TABLE_ODD_ROW_STYLE;
 	}
+
 	/**
 	 * Creates the widget that will house the header cell
 	 * 
@@ -596,12 +598,12 @@ protected String getHeaderRowStyle(){
 
 	protected Image createSortDirectionImage() {
 		final Image image = new Image();
-		image.addStyleName( this.getSortDirectionArrowStyle());
+		image.addStyleName(this.getSortDirectionArrowStyle());
 		image.setUrl(this.getAscendingSortImageSource());
 		return image;
 	}
-	
-	protected String getSortDirectionArrowStyle(){
+
+	protected String getSortDirectionArrowStyle() {
 		return WidgetConstants.SORTABLE_TABLE_SORT_DIRECTIONS_ARROWS_STYLE;
 	}
 
@@ -850,7 +852,7 @@ protected String getHeaderRowStyle(){
 		}
 
 		public boolean add(final Object row) {
-			final SortedRowListElement sortedRowListElement = new SortedRowListElement( SortableTable.this.getColumnCount() );
+			final SortedRowListElement sortedRowListElement = new SortedRowListElement(SortableTable.this.getColumnCount());
 			sortedRowListElement.setRow(row);
 
 			super.add(sortedRowListElement);
@@ -915,15 +917,15 @@ protected String getHeaderRowStyle(){
 	 * This object maintains a cache between a row, individual values for each
 	 * column, and widgets for the same column.
 	 * 
-	 * This means that the widgets for a particular row mapped for a particular value object are only ever
-	 * created once.
+	 * This means that the widgets for a particular row mapped for a particular
+	 * value object are only ever created once.
 	 */
 	class SortedRowListElement {
 
-		public SortedRowListElement( int columnCount ) {
+		public SortedRowListElement(int columnCount) {
 			super();
 
-			this.setWidgets(new Widget[ columnCount ]);
+			this.setWidgets(new Widget[columnCount]);
 		}
 
 		/**

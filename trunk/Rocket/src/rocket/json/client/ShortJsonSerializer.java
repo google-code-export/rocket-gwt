@@ -31,7 +31,7 @@ public class ShortJsonSerializer extends JsonSerializer {
 	}
 
 	public Object readObject(final JSONValue jsonValue) {
-		return new Short( this.read(jsonValue));
+		return new Short(this.read(jsonValue));
 	}
 
 	public JSONValue writeJson(final Object instance) {
@@ -40,7 +40,7 @@ public class ShortJsonSerializer extends JsonSerializer {
 	}
 
 	public short read(final JSONValue jsonValue) {
-		return (short)this.readDouble(jsonValue);		
+		return (short) this.readDouble(jsonValue);
 	}
 
 	public JSONValue writeJson(final short shortValue) {

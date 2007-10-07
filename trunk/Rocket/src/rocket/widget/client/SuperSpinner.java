@@ -35,7 +35,7 @@ public class SuperSpinner extends Spinner {
 	public SuperSpinner() {
 		super();
 	}
-	
+
 	protected String getInitialStyleName() {
 		return WidgetConstants.SUPER_SPINNER_STYLE;
 	}
@@ -57,7 +57,7 @@ public class SuperSpinner extends Spinner {
 
 	protected Image createBigDownWidget() {
 		final Image image = new Image();
-		image.setStyleName( this.getBigDownArrowStyle() );
+		image.setStyleName(this.getBigDownArrowStyle());
 
 		image.addMouseEventListener(new MouseEventAdapter() {
 
@@ -67,8 +67,8 @@ public class SuperSpinner extends Spinner {
 		});
 		return image;
 	}
-	
-	protected String getBigDownArrowStyle(){
+
+	protected String getBigDownArrowStyle() {
 		return WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE;
 	}
 
@@ -103,7 +103,7 @@ public class SuperSpinner extends Spinner {
 
 	protected Image createBigUpWidget() {
 		final Image image = new Image();
-		image.setStyleName( this.getBigUpArrowStyle());
+		image.setStyleName(this.getBigUpArrowStyle());
 
 		image.addMouseEventListener(new MouseEventAdapter() {
 
@@ -114,10 +114,10 @@ public class SuperSpinner extends Spinner {
 		return image;
 	}
 
-	protected String getBigUpArrowStyle(){
+	protected String getBigUpArrowStyle() {
 		return WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE;
 	}
-	
+
 	public void onUpClick() {
 		this.updateValue(this.getValue() + this.getDelta());
 	}

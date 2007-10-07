@@ -71,8 +71,8 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	protected DivPanel createPanel() {
 		return new DivPanel();
 	}
-	
-	protected String getInitialStyleName(){		
+
+	protected String getInitialStyleName() {
 		return Constants.VERTICAL_ACCORDION_PANEL_STYLE;
 	}
 

@@ -275,10 +275,10 @@ abstract public class SplitterPanel extends CompositeWidget {
 
 	static class InternalPanel extends rocket.widget.client.Panel {
 
-		
-		protected void checkElement( final Element element ){
+		protected void checkElement(final Element element) {
 			throw new UnsupportedOperationException();
 		}
+
 		/**
 		 * Factory method which creates the parent DIV element for this entire
 		 * panel
@@ -301,12 +301,12 @@ abstract public class SplitterPanel extends CompositeWidget {
 
 			return parent;
 		}
-		
-		protected void applyStyleName(){			
+
+		protected void applyStyleName() {
 		}
-		
-		protected String getInitialStyleName(){
-			throw new UnsupportedOperationException( "getWidgetStyleName");
+
+		protected String getInitialStyleName() {
+			throw new UnsupportedOperationException("getWidgetStyleName");
 		}
 
 		protected int getSunkEventsBitMask() {
@@ -341,7 +341,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 		 * widget's element
 		 */
 		protected void remove0(final Element element, final int index) {
-			Dom.removeFromParent( element );
+			Dom.removeFromParent(element);
 		}
 	};
 
@@ -363,30 +363,30 @@ abstract public class SplitterPanel extends CompositeWidget {
 	 */
 	abstract class Splitter extends rocket.widget.client.Widget {
 		Splitter() {
-			super();	
+			super();
 		}
-		
-		protected Element createElement(){
-			final Element div = DOM.createDiv();
-			DOM.setInnerHTML( div, "&nbsp;");
-			InlineStyle.setString( div, StyleConstants.OVERFLOW, "hidden");
-			return div;
-		}			
 
-		protected void afterCreateElement(){
+		protected Element createElement() {
+			final Element div = DOM.createDiv();
+			DOM.setInnerHTML(div, "&nbsp;");
+			InlineStyle.setString(div, StyleConstants.OVERFLOW, "hidden");
+			return div;
+		}
+
+		protected void afterCreateElement() {
 			final EventListenerDispatcher dispatcher = this.getEventListenerDispatcher();
-			dispatcher.addMouseEventListener( new MouseEventAdapter(){
-				public void onMouseDown( final MouseDownEvent event ){
+			dispatcher.addMouseEventListener(new MouseEventAdapter() {
+				public void onMouseDown(final MouseDownEvent event) {
 					Splitter.this.handleMouseDown(event);
 				}
 			});
 		}
-		
-		protected void checkElement(Element element){
-			throw new UnsupportedOperationException( "checkElement");
+
+		protected void checkElement(Element element) {
+			throw new UnsupportedOperationException("checkElement");
 		}
-		
-		protected int getSunkEventsBitMask(){
+
+		protected int getSunkEventsBitMask() {
 			return EventBitMaskConstants.MOUSE_DOWN;
 		}
 
@@ -432,17 +432,18 @@ abstract public class SplitterPanel extends CompositeWidget {
 		 */
 		protected EventPreview createEventPreview() {
 			return new EventPreviewAdapter() {
-				
-				protected void beforeDispatching( final Event event ){
-					event.setWidget( Splitter.this );
+
+				protected void beforeDispatching(final Event event) {
+					event.setWidget(Splitter.this);
 				}
-				
-				protected void onMouseMove( final MouseMoveEvent event ){
-					SplitterPanel.this.handleMouseMove( event);
+
+				protected void onMouseMove(final MouseMoveEvent event) {
+					SplitterPanel.this.handleMouseMove(event);
 				}
-				protected void onMouseUp( final MouseUpEvent event ){
+
+				protected void onMouseUp(final MouseUpEvent event) {
 					Splitter.this.handleMouseUp(event);
-				}		
+				}
 			};
 		}
 

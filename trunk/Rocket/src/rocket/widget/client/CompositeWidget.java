@@ -36,10 +36,12 @@ import com.google.gwt.user.client.ui.Widget;
  * <li>{@link #beforeCreateElement()}</li>
  * <li>{@link #initWidget( createWidget() )}</li>
  * <li>{@link #afterCreateElement()}</li>
- * <li>{@link #applyStyleName()} Override this to do nothing if this widget has no initial style.</li>
+ * <li>{@link #applyStyleName()} Override this to do nothing if this widget has
+ * no initial style.</li>
  * </li>
  * 
- * The initial style of the root element from this composite widget is taken from {@link #getInitialStyleName()}
+ * The initial style of the root element from this composite widget is taken
+ * from {@link #getInitialStyleName()}
  * 
  * @author Miroslav Pokorny
  */

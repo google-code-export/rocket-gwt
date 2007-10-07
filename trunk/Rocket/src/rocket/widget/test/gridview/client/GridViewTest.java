@@ -16,6 +16,7 @@
 package rocket.widget.test.gridview.client;
 
 import rocket.widget.client.GridView;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -41,26 +42,29 @@ public class GridViewTest implements EntryPoint {
 		});
 
 		final RootPanel rootPanel = RootPanel.get();
-		
+
 		final HTML h = new HTML("X");
-		rootPanel.add( h );
+		rootPanel.add(h);
 		h.removeFromParent();
-		
-		
-		final GridView gridView = new GridView(){
-			protected int getFirst(){
+
+		final GridView gridView = new GridView() {
+			protected int getFirst() {
 				return 0;
 			}
-			protected int getLast(){
+
+			protected int getLast() {
 				return 10;
 			}
-			protected int getCount(){
+
+			protected int getCount() {
 				return this.getLast() - this.getFirst();
 			}
+
 			protected Widget createCellWidget(final int index) {
-				return new HTML( "" + index );				
+				return new HTML("" + index);
 			}
-			protected Widget createFillerWidget(){
+
+			protected Widget createFillerWidget() {
 				return new HTML();
 			}
 		};

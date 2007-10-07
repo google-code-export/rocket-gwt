@@ -16,10 +16,10 @@
 package rocket.event.client;
 
 public class KeyDownEvent extends KeyEvent {
-	public KeyDownEvent(){
+	public KeyDownEvent() {
 	}
-	
-	public KeyDownEvent asKeyDownEvent(){
+
+	public KeyDownEvent asKeyDownEvent() {
 		return this;
 	}
 }

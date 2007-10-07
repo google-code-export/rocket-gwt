@@ -16,27 +16,28 @@
 package rocket.event.client;
 
 public class ImageLoadEventListenerCollection extends ListenerCollection {
-	public void add( final ImageLoadEventListener listener ){
-		super.add( listener );
+	public void add(final ImageLoadEventListener listener) {
+		super.add(listener);
 	}
-	public boolean remove( final ImageLoadEventListener listener ){
-		return super.remove( listener );
+
+	public boolean remove(final ImageLoadEventListener listener) {
+		return super.remove(listener);
 	}
-	
-	public void fireImageLoadCompleted( final ImageLoadSuccessEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final ImageLoadEventListener listener0 = (ImageLoadEventListener)listener;
-				listener0.onSuccess( event );
+
+	public void fireImageLoadCompleted(final ImageLoadSuccessEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final ImageLoadEventListener listener0 = (ImageLoadEventListener) listener;
+				listener0.onSuccess(event);
 			}
 		});
 	}
-	
-	public void fireImageLoadFailed( final ImageLoadFailedEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final ImageLoadEventListener listener0 = (ImageLoadEventListener)listener;
-				listener0.onFailed( event );
+
+	public void fireImageLoadFailed(final ImageLoadFailedEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final ImageLoadEventListener listener0 = (ImageLoadEventListener) listener;
+				listener0.onFailed(event);
 			}
 		});
 	}

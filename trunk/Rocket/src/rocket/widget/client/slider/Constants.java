@@ -18,10 +18,11 @@ package rocket.widget.client.slider;
 import rocket.widget.client.WidgetConstants;
 
 class Constants {
-	
+
 	final static String HANDLE = "-handle";
+
 	final static String DRAGGING = "-dragging";
-	
+
 	final static String HORIZONTAL_SLIDER_STYLE = WidgetConstants.ROCKET + "-horizontalSlider";
 
 	final static String HORIZONTAL_SLIDER_HANDLE_STYLE = HORIZONTAL_SLIDER_STYLE + HANDLE;
@@ -34,7 +35,7 @@ class Constants {
 
 	final static String VERTICAL_SLIDER_DRAGGING_STYLE = VERTICAL_SLIDER_STYLE + DRAGGING;
 
-	final static String HORIZONTAL_VERTICAL_SLIDER_STYLE = WidgetConstants.ROCKET +"-horizontalVerticalSlider";
+	final static String HORIZONTAL_VERTICAL_SLIDER_STYLE = WidgetConstants.ROCKET + "-horizontalVerticalSlider";
 
 	final static String HORIZONTAL_VERTICAL_SLIDER_HANDLE_STYLE = HORIZONTAL_VERTICAL_SLIDER_STYLE + HANDLE;
 

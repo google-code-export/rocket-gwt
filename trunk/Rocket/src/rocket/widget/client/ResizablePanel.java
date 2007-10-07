@@ -44,16 +44,17 @@ import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 /**
  * A ResizablePanel is a special panel that contains a single child widget which
  * can be resized by the user dragging any of the handles.
- *
+ * 
  * The width/height may be constrained by the following properties
  * <ul>
  * <li>minimum width/height</li>
  * <li>maximum width/height</li>
  * </ul>
  * 
- * When resizing elements such as images it is often useful to keep the aspect ratio when the element is
- * resized. This may be enabled by setting the keepAspectRatio property to true via {@link #setKeepAspectRatio(boolean)}
- *
+ * When resizing elements such as images it is often useful to keep the aspect
+ * ratio when the element is resized. This may be enabled by setting the
+ * keepAspectRatio property to true via {@link #setKeepAspectRatio(boolean)}
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class ResizablePanel extends CompositePanel {
@@ -63,10 +64,8 @@ public class ResizablePanel extends CompositePanel {
 	}
 
 	protected void beforeCreatePanel() {
-		final EventListenerDispatcher dispatcher = this
-				.createEventListenerDispatcher();
-		dispatcher.prepareListenerCollections(EventBitMaskConstants.CHANGE
-				| EventBitMaskConstants.FOCUS | EventBitMaskConstants.MOUSE_OUT
+		final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
+		dispatcher.prepareListenerCollections(EventBitMaskConstants.CHANGE | EventBitMaskConstants.FOCUS | EventBitMaskConstants.MOUSE_OUT
 				| EventBitMaskConstants.MOUSE_OVER);
 		this.setEventListenerDispatcher(dispatcher);
 	}
@@ -88,49 +87,50 @@ public class ResizablePanel extends CompositePanel {
 		grid.setBorderWidth(0);
 		grid.setCellPadding(0);
 		grid.setCellSpacing(0);
-		
+
 		final String handleWidth = "";
 		final String handleHeight = "";
-		
-		this.prepareTd( 0, 0, "center", "middle", "100%", "100%", this.getWidgetStyle() );
-		this.prepareTd( 0, 1, "right", "middle", handleWidth, "100%", this.getRightHandleStyle() );
-		this.prepareTd( 1, 0, "right", "bottom", handleWidth, handleHeight, this.getBottomHandleStyle() );
-		this.prepareTd( 1, 1, "center", "bottom", "100%", handleHeight, this.getCornerHandleStyle() );
+
+		this.prepareTd(0, 0, "center", "middle", "100%", "100%", this.getWidgetStyle());
+		this.prepareTd(0, 1, "right", "middle", handleWidth, "100%", this.getRightHandleStyle());
+		this.prepareTd(1, 0, "right", "bottom", handleWidth, handleHeight, this.getBottomHandleStyle());
+		this.prepareTd(1, 1, "center", "bottom", "100%", handleHeight, this.getCornerHandleStyle());
 	}
-	
-	protected String getWidgetStyle(){
+
+	protected String getWidgetStyle() {
 		return WidgetConstants.RESIZABLE_PANEL_WIDGET_STYLE;
 	}
-	protected String getRightHandleStyle(){
-		return WidgetConstants.RESIZABLE_PANEL_RIGHT_HANDLE_STYLE; 
+
+	protected String getRightHandleStyle() {
+		return WidgetConstants.RESIZABLE_PANEL_RIGHT_HANDLE_STYLE;
 	}
-	protected String getBottomHandleStyle(){
+
+	protected String getBottomHandleStyle() {
 		return WidgetConstants.RESIZABLE_PANEL_BOTTOM_HANDLE_STYLE;
 	}
-	protected String getCornerHandleStyle(){
-		return WidgetConstants.RESIZABLE_PANEL_CORNER_HANDLE_STYLE;	
+
+	protected String getCornerHandleStyle() {
+		return WidgetConstants.RESIZABLE_PANEL_CORNER_HANDLE_STYLE;
 	}
-	
-	protected void prepareTd(final int row, final int column, 
-			final String horizontalAlign, final String verticalAlign, 
-			final String width, final String height,
-			final String styleName) {
 
-		final Element element = this.getGrid().getCellFormatter().getElement( row, column );
+	protected void prepareTd(final int row, final int column, final String horizontalAlign, final String verticalAlign, final String width,
+			final String height, final String styleName) {
 
-		//DOM.setElementProperty(element, "align", horizontalAlign);
-		//DOM.setStyleAttribute(element, "verticalAlign", verticalAlign);
-		DOM.setElementProperty(element, "width", width );
-		DOM.setElementProperty(element, "height", height );
-		DOM.setElementProperty( element, "className", styleName );
-				
-		DOM.sinkEvents(element, EventBitMaskConstants.MOUSE_DOWN );
-		DOM.setEventListener(element, new EventListenerAdapter(){
-			protected void onMouseDown(final MouseDownEvent event ){
-				ResizablePanel.this.handleMouseDownEvent( event );
-			}			
-		});	
-		DOM.setInnerHTML(element, " " );
+		final Element element = this.getGrid().getCellFormatter().getElement(row, column);
+
+		// DOM.setElementProperty(element, "align", horizontalAlign);
+		// DOM.setStyleAttribute(element, "verticalAlign", verticalAlign);
+		DOM.setElementProperty(element, "width", width);
+		DOM.setElementProperty(element, "height", height);
+		DOM.setElementProperty(element, "className", styleName);
+
+		DOM.sinkEvents(element, EventBitMaskConstants.MOUSE_DOWN);
+		DOM.setEventListener(element, new EventListenerAdapter() {
+			protected void onMouseDown(final MouseDownEvent event) {
+				ResizablePanel.this.handleMouseDownEvent(event);
+			}
+		});
+		DOM.setInnerHTML(element, " ");
 	}
 
 	protected String getInitialStyleName() {
@@ -138,11 +138,10 @@ public class ResizablePanel extends CompositePanel {
 	}
 
 	protected int getSunkEventsBitMask() {
-		return EventBitMaskConstants.CHANGE | EventBitMaskConstants.FOCUS
-				| EventBitMaskConstants.MOUSE_OVER
+		return EventBitMaskConstants.CHANGE | EventBitMaskConstants.FOCUS | EventBitMaskConstants.MOUSE_OVER
 				| EventBitMaskConstants.MOUSE_OUT;
 	}
-	
+
 	public Widget getWidget() {
 		return this.getGrid().getWidget(0, 0);
 	}
@@ -151,35 +150,33 @@ public class ResizablePanel extends CompositePanel {
 		this.getGrid().setWidget(0, 0, widget);
 
 		final Element element = widget.getElement();
-		final String inlineWidth = InlineStyle.getString(element, StyleConstants.WIDTH );
-		final String inlineHeight = InlineStyle.getString(element, StyleConstants.HEIGHT );
-		ObjectHelper.setString( element, "__width", inlineWidth );
-		ObjectHelper.setString( element, "__height", inlineHeight );
-		
-		widget.setWidth( "100%");
-		widget.setHeight( "100%");
+		final String inlineWidth = InlineStyle.getString(element, StyleConstants.WIDTH);
+		final String inlineHeight = InlineStyle.getString(element, StyleConstants.HEIGHT);
+		ObjectHelper.setString(element, "__width", inlineWidth);
+		ObjectHelper.setString(element, "__height", inlineHeight);
+
+		widget.setWidth("100%");
+		widget.setHeight("100%");
 	}
 
-	
 	public void insert(final Widget widget, final int indexBefore) {
 		if (this.getWidgetCount() > 0 || indexBefore > 0) {
-			throw new IllegalArgumentException(GWT.getTypeName(this)
-					+ " can only have one widget.");
+			throw new IllegalArgumentException(GWT.getTypeName(this) + " can only have one widget.");
 		}
 		this.setWidget(widget);
 	}
 
 	public boolean remove(final Widget widget) {
 		final boolean removed = this.getGrid().remove(widget);
-		
-		if( removed ){
+
+		if (removed) {
 			final Element element = widget.getElement();
-			final String inlineWidth = ObjectHelper.getString( element, "__width" );
-			final String inlineHeight = ObjectHelper.getString( element, "__height" );
-			InlineStyle.setString( element, StyleConstants.WIDTH, inlineWidth );
-			InlineStyle.setString( element, StyleConstants.HEIGHT, inlineHeight );
+			final String inlineWidth = ObjectHelper.getString(element, "__width");
+			final String inlineHeight = ObjectHelper.getString(element, "__height");
+			InlineStyle.setString(element, StyleConstants.WIDTH, inlineWidth);
+			InlineStyle.setString(element, StyleConstants.HEIGHT, inlineHeight);
 		}
-		
+
 		return removed;
 	}
 
@@ -189,8 +186,7 @@ public class ResizablePanel extends CompositePanel {
 			int state = 0;
 
 			public boolean hasNext() {
-				return this.state == 0
-						&& ResizablePanel.this.getWidget() != null;
+				return this.state == 0 && ResizablePanel.this.getWidget() != null;
 			}
 
 			public Object next() {
@@ -210,144 +206,149 @@ public class ResizablePanel extends CompositePanel {
 		};
 	}
 
-	protected void handleMouseDownEvent( final MouseDownEvent event ){
+	protected void handleMouseDownEvent(final MouseDownEvent event) {
 		final Element panel = this.getElement();
-		final int panelWidth = ComputedStyle.getInteger( panel, StyleConstants.WIDTH, CssUnit.PX, 0 );
-		final int panelHeight = ComputedStyle.getInteger( panel, StyleConstants.HEIGHT, CssUnit.PX, 0 );
-		
-		final Hijacker hijacker = new Hijacker( panel );
+		final int panelWidth = ComputedStyle.getInteger(panel, StyleConstants.WIDTH, CssUnit.PX, 0);
+		final int panelHeight = ComputedStyle.getInteger(panel, StyleConstants.HEIGHT, CssUnit.PX, 0);
+
+		final Hijacker hijacker = new Hijacker(panel);
 
 		// create the ghost...
-		final Element ghost = Dom.cloneElement(panel, true );
-		ObjectHelper.setString(ghost, "className", this.getGhostStyle() );
+		final Element ghost = Dom.cloneElement(panel, true);
+		ObjectHelper.setString(ghost, "className", this.getGhostStyle());
 		InlineStyle.setString(ghost, StyleConstants.POSITION, "absolute");
 		InlineStyle.setInteger(ghost, StyleConstants.LEFT, 0, CssUnit.PX);
 		InlineStyle.setInteger(ghost, StyleConstants.TOP, 0, CssUnit.PX);
-		InlineStyle.setInteger(ghost, StyleConstants.Z_INDEX, 10000, CssUnit.NONE);								
-		InlineStyle.setString(ghost, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED );
-		
+		InlineStyle.setInteger(ghost, StyleConstants.Z_INDEX, 10000, CssUnit.NONE);
+		InlineStyle.setString(ghost, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED);
+
 		final Element parent = hijacker.getParent();
 		final int childIndex = hijacker.getChildIndex();
 
 		// insert a div that will be parent of the panel and the ghost.
 		final Element container = DOM.createDiv();
-		InlineStyle.setString(container, StyleConstants.POSITION, "relative");;
-		DOM.appendChild( container, panel );
+		InlineStyle.setString(container, StyleConstants.POSITION, "relative");
+		;
+		DOM.appendChild(container, panel);
 		DOM.insertChild(parent, container, childIndex);
-		
-		DOM.appendChild( container, ghost );		
-		
+
+		DOM.appendChild(container, ghost);
+
 		// record the coordinates of the mouse
 		final int initialMousePageX = event.getPageX();
 		final int initialMousePageY = event.getPageY();
-		
-		//install a previewer...
-		
+
+		// install a previewer...
+
 		boolean updateWidth = false;
 		boolean updateHeight = false;
-		
-		while( true ){
+
+		while (true) {
 			final Element target = event.getTarget();
 			final CellFormatter cellFormatter = ResizablePanel.this.getGrid().getCellFormatter();
-			final Element right = cellFormatter.getElement( 0, 1 );
-			if( DOM.isOrHasChild(right, target )){
+			final Element right = cellFormatter.getElement(0, 1);
+			if (DOM.isOrHasChild(right, target)) {
 				updateWidth = true;
 				break;
 			}
 
-			final Element bottom = cellFormatter.getElement( 1, 0 );
-			if( DOM.isOrHasChild(bottom, target )){
+			final Element bottom = cellFormatter.getElement(1, 0);
+			if (DOM.isOrHasChild(bottom, target)) {
 				updateHeight = true;
 				break;
 			}
-			final Element corner = cellFormatter.getElement( 1, 1 );
-			//ObjectHelper.checkSame( "should be corner handle", corner, target );
+			final Element corner = cellFormatter.getElement(1, 1);
+			// ObjectHelper.checkSame( "should be corner handle", corner, target
+			// );
 			updateWidth = true;
 			updateHeight = true;
-			break;				
+			break;
 		}
-		
+
 		final boolean updateWidth0 = updateWidth;
-		final boolean updateHeight0 = updateHeight;	
-		
-		final EventPreviewAdapter previewer = new EventPreviewAdapter(){
-			protected void onMouseMove( final MouseMoveEvent event ){
-				if( updateWidth0 ){
-					final int deltaX = event.getPageX() - initialMousePageX;	
+		final boolean updateHeight0 = updateHeight;
+
+		final EventPreviewAdapter previewer = new EventPreviewAdapter() {
+			protected void onMouseMove(final MouseMoveEvent event) {
+				if (updateWidth0) {
+					final int deltaX = event.getPageX() - initialMousePageX;
 					int newWidth = panelWidth + deltaX;
-					
-					//System.out.println( "h mouse move " + updateWidth0 + "/" + updateHeight0 + " deltaX: " + deltaX + "/" + newWidth );
-					
-					newWidth = Math.min( Math.max( newWidth, ResizablePanel.this.getMinimumWidth() ),ResizablePanel.this.getMaximumWidth());
+
+					// System.out.println( "h mouse move " + updateWidth0 + "/"
+					// + updateHeight0 + " deltaX: " + deltaX + "/" + newWidth
+					// );
+
+					newWidth = Math.min(Math.max(newWidth, ResizablePanel.this.getMinimumWidth()), ResizablePanel.this.getMaximumWidth());
 					InlineStyle.setInteger(ghost, StyleConstants.WIDTH, newWidth, CssUnit.PX);
 				}
-				
-				if( updateHeight0 ){
-					final int deltaY = event.getPageY() - initialMousePageY;								
-					int newHeight = panelHeight + deltaY;										
-					newHeight = Math.min( Math.max( newHeight, ResizablePanel.this.getMinimumHeight() ),ResizablePanel.this.getMaximumHeight());
+
+				if (updateHeight0) {
+					final int deltaY = event.getPageY() - initialMousePageY;
+					int newHeight = panelHeight + deltaY;
+					newHeight = Math.min(Math.max(newHeight, ResizablePanel.this.getMinimumHeight()), ResizablePanel.this
+							.getMaximumHeight());
 					InlineStyle.setInteger(ghost, StyleConstants.HEIGHT, newHeight, CssUnit.PX);
 				}
-				event.cancelBubble( true );
+				event.cancelBubble(true);
 			}
-			
-			protected void onMouseUp( final MouseUpEvent event ){
-				//System.out.println( "handleMouseUpEvent");
+
+			protected void onMouseUp(final MouseUpEvent event) {
+				// System.out.println( "handleMouseUpEvent");
 				this.uninstall();
 
 				int newWidth = 0;
 				int newHeight = 0;
-				
-				while( true ){
-					if( false == ResizablePanel.this.isKeepAspectRatio() ){
-						newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0 );
-						newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0 );
+
+				while (true) {
+					if (false == ResizablePanel.this.isKeepAspectRatio()) {
+						newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0);
+						newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0);
 						break;
 					}
-					
-					if( updateWidth0 && false == updateHeight0 ){
+
+					if (updateWidth0 && false == updateHeight0) {
 						final float ratio = panelWidth * 1.0f / panelHeight;
-						newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0 );						
-						newHeight = (int)( newWidth * ratio );
+						newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0);
+						newHeight = (int) (newWidth * ratio);
 						break;
 					}
-					if( false == updateWidth0 && updateHeight0 ){
+					if (false == updateWidth0 && updateHeight0) {
 						final float ratio = panelHeight * 1.0f / panelWidth;
-						newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0 );				
-						newWidth = (int)( newHeight * ratio );
+						newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0);
+						newWidth = (int) (newHeight * ratio);
 						break;
 					}
-					newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0 );
-					newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0 );
-					
-					final float originalDiagonalLength = (float)Math.sqrt( panelWidth * panelWidth + panelHeight * panelHeight );
-					final float newDiagonalLength = (float)Math.sqrt( newWidth * newWidth + newHeight * newHeight );
+					newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0);
+					newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0);
+
+					final float originalDiagonalLength = (float) Math.sqrt(panelWidth * panelWidth + panelHeight * panelHeight);
+					final float newDiagonalLength = (float) Math.sqrt(newWidth * newWidth + newHeight * newHeight);
 					final float changeRatio = newDiagonalLength / originalDiagonalLength;
-					
-					newWidth = (int)( changeRatio * panelWidth );
-					newHeight = (int) (changeRatio * panelHeight );
+
+					newWidth = (int) (changeRatio * panelWidth);
+					newHeight = (int) (changeRatio * panelHeight);
 					break;
 				}
-								
+
 				// remove the ghost from the dom.
-				Dom.removeFromParent( container );
+				Dom.removeFromParent(container);
 				hijacker.restore();
-	
-				ResizablePanel.this.setWidth( newWidth + "px");
-				ResizablePanel.this.setHeight( newHeight + "px");
-								
-				event.cancelBubble( true );
-				
-				ResizablePanel.this.getEventListenerDispatcher().getChangeEventListeners().fireChange( ResizablePanel.this );
+
+				ResizablePanel.this.setWidth(newWidth + "px");
+				ResizablePanel.this.setHeight(newHeight + "px");
+
+				event.cancelBubble(true);
+
+				ResizablePanel.this.getEventListenerDispatcher().getChangeEventListeners().fireChange(ResizablePanel.this);
 			}
 		};
 		previewer.install();
 	}
-	
-	protected String getGhostStyle(){
+
+	protected String getGhostStyle() {
 		return WidgetConstants.RESIZABLE_PANEL_GHOST_STYLE;
 	}
-	
+
 	/**
 	 * The minimum width in pixels that the child widget may be set.
 	 */
@@ -359,8 +360,7 @@ public class ResizablePanel extends CompositePanel {
 	}
 
 	public void setMinimumWidth(final int minimumWidth) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumWidth",
-				minimumWidth, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:minimumWidth", minimumWidth, 0);
 		this.minimumWidth = minimumWidth;
 	}
 
@@ -375,8 +375,7 @@ public class ResizablePanel extends CompositePanel {
 	}
 
 	public void setMaximumWidth(final int maximumWidth) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumWidth",
-				maximumWidth, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:maximumWidth", maximumWidth, 0);
 		this.maximumWidth = maximumWidth;
 	}
 
@@ -386,14 +385,12 @@ public class ResizablePanel extends CompositePanel {
 	private int minimumHeight;
 
 	public int getMinimumHeight() {
-		PrimitiveHelper.checkGreaterThan("field:minimumHeight", minimumHeight,
-				0);
+		PrimitiveHelper.checkGreaterThan("field:minimumHeight", minimumHeight, 0);
 		return this.minimumHeight;
 	}
 
 	public void setMinimumHeight(final int minimumHeight) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumHeight",
-				minimumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:minimumHeight", minimumHeight, 0);
 		this.minimumHeight = minimumHeight;
 	}
 
@@ -403,14 +400,12 @@ public class ResizablePanel extends CompositePanel {
 	private int maximumHeight;
 
 	public int getMaximumHeight() {
-		PrimitiveHelper.checkGreaterThan("field:maximumHeight", maximumHeight,
-				0);
+		PrimitiveHelper.checkGreaterThan("field:maximumHeight", maximumHeight, 0);
 		return this.maximumHeight;
 	}
 
 	public void setMaximumHeight(final int maximumHeight) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumHeight",
-				maximumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:maximumHeight", maximumHeight, 0);
 		this.maximumHeight = maximumHeight;
 	}
 
@@ -430,23 +425,17 @@ public class ResizablePanel extends CompositePanel {
 		this.keepAspectRatio = keepAspectRatio;
 	}
 
-	public void addChangeEventListener(
-			final ChangeEventListener changeEventListener) {
-		this.getEventListenerDispatcher().addChangeEventListener(
-				changeEventListener);
+	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(changeEventListener);
 	}
 
-	public void removeChangeEventListener(
-			final ChangeEventListener changeEventListener) {
-		this.getEventListenerDispatcher().removeChangeEventListener(
-				changeEventListener);
+	public void removeChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().removeChangeEventListener(changeEventListener);
 	}
 
 	public String toString() {
-		return super.toString() + ", minimumWidth: " + this.minimumWidth
-				+ ", maximumWidth: " + maximumWidth + ", minimumHeight: "
-				+ this.minimumHeight + ", maximumHeight: " + maximumHeight
-				+ ", keepAspectRatio: " + this.keepAspectRatio;
+		return super.toString() + ", minimumWidth: " + this.minimumWidth + ", maximumWidth: " + maximumWidth + ", minimumHeight: "
+				+ this.minimumHeight + ", maximumHeight: " + maximumHeight + ", keepAspectRatio: " + this.keepAspectRatio;
 	}
 
 }

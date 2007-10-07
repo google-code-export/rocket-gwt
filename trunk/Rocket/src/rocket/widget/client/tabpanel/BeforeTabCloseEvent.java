@@ -17,6 +17,7 @@ package rocket.widget.client.tabpanel;
 
 /**
  * This event is fired prior to a tab close happening..
+ * 
  * @author Miroslav Pokorny
  */
 public class BeforeTabCloseEvent {
@@ -25,27 +26,29 @@ public class BeforeTabCloseEvent {
 	 * The tabItem about to be closed.
 	 */
 	private TabItem closing;
-	
-	public TabItem getClosing(){
+
+	public TabItem getClosing() {
 		return closing;
 	}
-	void setClosing( final TabItem closing ){
+
+	void setClosing(final TabItem closing) {
 		this.closing = closing;
 	}
-	
+
 	private boolean cancelled;
-	
-	boolean isCancelled(){
+
+	boolean isCancelled() {
 		return this.cancelled;
 	}
-	void setCancelled( final boolean cancelled ){
+
+	void setCancelled(final boolean cancelled) {
 		this.cancelled = cancelled;
 	}
-	
+
 	/**
 	 * Invoking this method cancels the tab from being closing.
 	 */
-	public void stop(){
-		this.setCancelled( true );
+	public void stop() {
+		this.setCancelled(true);
 	}
 }

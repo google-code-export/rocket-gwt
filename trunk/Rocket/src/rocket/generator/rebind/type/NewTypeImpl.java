@@ -192,7 +192,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		this.addNestedInterfaceType(type);
 		return type;
 	}
-	
+
 	public void addNestedType(final NewNestedType nestedType) {
 		ObjectHelper.checkNotNull("parameter:nestedType", nestedType);
 
@@ -212,7 +212,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 
 		this.getGeneratorContext().addNewType(nestedType);
 	}
-	
+
 	public NewAnonymousNestedType newAnonymousNestedType() {
 		final NewAnonymousNestedTypeImpl type = new NewAnonymousNestedTypeImpl();
 		final GeneratorContext context = this.getGeneratorContext();

@@ -86,9 +86,9 @@ abstract public class Viewport extends CompositeWidget {
 		super.beforeCreateWidget();
 
 		final EventListenerDispatcher dispatcher = this.getEventListenerDispatcher();
-		dispatcher.addMouseEventListener( new MouseEventAdapter(){
-			public void onMouseDown( final MouseDownEvent event ){
-				Viewport.this.handleMouseDown( event );
+		dispatcher.addMouseEventListener(new MouseEventAdapter() {
+			public void onMouseDown(final MouseDownEvent event) {
+				Viewport.this.handleMouseDown(event);
 			}
 		});
 		dispatcher.prepareListenerCollections(EventBitMaskConstants.CHANGE);
@@ -649,7 +649,7 @@ abstract public class Viewport extends CompositeWidget {
 	}
 
 	public void setOriginX(final int originX) {
-		this.originX = originX;		
+		this.originX = originX;
 	}
 
 	/**
@@ -662,7 +662,7 @@ abstract public class Viewport extends CompositeWidget {
 	}
 
 	public void setOriginY(final int originY) {
-		this.originY = originY;		
+		this.originY = originY;
 	}
 
 	/**

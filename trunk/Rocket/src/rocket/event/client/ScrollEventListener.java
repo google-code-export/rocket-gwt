@@ -16,5 +16,5 @@
 package rocket.event.client;
 
 public interface ScrollEventListener {
-	void onScroll( ScrollEvent event );
+	void onScroll(ScrollEvent event);
 }

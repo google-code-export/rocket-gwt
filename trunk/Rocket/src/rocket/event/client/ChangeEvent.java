@@ -16,10 +16,10 @@
 package rocket.event.client;
 
 public class ChangeEvent extends Event {
-	public ChangeEvent(){		
+	public ChangeEvent() {
 	}
-	
-	public ChangeEvent asChangeEvent(){
+
+	public ChangeEvent asChangeEvent() {
 		return this;
 	}
 }

@@ -15,6 +15,7 @@
  */
 package rocket.widget.client;
 
+import rocket.dom.client.Dom;
 import rocket.event.client.Event;
 import rocket.event.client.EventListener;
 import rocket.util.client.ObjectHelper;
@@ -34,25 +35,29 @@ import com.google.gwt.user.client.ui.RootPanel;
  * 
  * Wrapping an existing element taken from the dom is trivial and simply
  * requires the {@link #Widget(Element)} to be called.
- *
+ * 
  * Creating a new widget including a new element.
  * <ul>
  * <li>{@link #beforeCreateElement()}</li>
  * <li>{@link #createElement()}</li>
  * <li>{@link #afterCreateElement()}</li>
- * <li>{@link #applyStyleName()} Override this to do nothing if this widget has no initial style.</li>
+ * <li>{@link #applyStyleName()} Override this to do nothing if this widget has
+ * no initial style.</li>
  * </li>
  * 
  * Create a new widget with an element hijacked from the dom.
  * <ul>
- * <li>{@link #checkElement(Element)} Check that the element is of the correct type</li>
+ * <li>{@link #checkElement(Element)} Check that the element is of the correct
+ * type</li>
  * <li>{@link #beforeCreateElement()}</li>
  * <li>{@link #setElement( Element from constructor )}</li>
  * <li>{@link #afterCreateElement()}</li>
- * <li>{@link #applyStyleName()} Override this to do nothing if this widget has no initial style.</li>
+ * <li>{@link #applyStyleName()} Override this to do nothing if this widget has
+ * no initial style.</li>
  * </li>
  * 
- * The initial style of the root element from this widget is taken from {@link #getInitialStyleName()}
+ * The initial style of the root element from this widget is taken from
+ * {@link #getInitialStyleName()}
  * 
  * @author Miroslav Pokorny
  */
@@ -96,9 +101,12 @@ abstract public class Widget extends com.google.gwt.user.client.ui.Widget implem
 		this.setElement(element);
 		this.afterCreateElement();
 
-		RootPanel.get().add(this);
-		hijacker.restore();
-
+		// if element is attached to the dom, then logically attach the widget
+		// to RootPanel.
+		if (Dom.isAttached(element)) {
+			RootPanel.get().add(this);
+			hijacker.restore();
+		}
 		this.applyStyleName();
 	}
 
