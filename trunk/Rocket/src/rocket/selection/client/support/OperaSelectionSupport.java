@@ -26,6 +26,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 public class OperaSelectionSupport extends SelectionSupport {
 
 	native protected JavaScriptObject getNativeSelection()/*-{
-	 return $doc.selection;
+	 return $wnd.getSelection();
 	 }-*/;
 }
