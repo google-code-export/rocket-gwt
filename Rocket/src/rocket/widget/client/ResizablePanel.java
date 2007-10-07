@@ -150,13 +150,19 @@ public class ResizablePanel extends CompositePanel {
 		this.getGrid().setWidget(0, 0, widget);
 
 		final Element element = widget.getElement();
-		final String inlineWidth = InlineStyle.getString(element, StyleConstants.WIDTH);
+		final String inlineWidth =InlineStyle.getString(element, StyleConstants.WIDTH);
 		final String inlineHeight = InlineStyle.getString(element, StyleConstants.HEIGHT);
 		ObjectHelper.setString(element, "__width", inlineWidth);
 		ObjectHelper.setString(element, "__height", inlineHeight);
-
+		
+		final String overflowX = InlineStyle.getString(element, StyleConstants.OVERFLOW_X);
+		final String overflowY = InlineStyle.getString(element, StyleConstants.OVERFLOW_Y);
+		ObjectHelper.setString(element, "__overflowX", overflowX);
+		ObjectHelper.setString(element, "__overflowY", overflowY);
+		
 		widget.setWidth("100%");
 		widget.setHeight("100%");
+		InlineStyle.setString(element, StyleConstants.OVERFLOW, "hidden");
 	}
 
 	public void insert(final Widget widget, final int indexBefore) {
@@ -175,6 +181,11 @@ public class ResizablePanel extends CompositePanel {
 			final String inlineHeight = ObjectHelper.getString(element, "__height");
 			InlineStyle.setString(element, StyleConstants.WIDTH, inlineWidth);
 			InlineStyle.setString(element, StyleConstants.HEIGHT, inlineHeight);
+			
+			final String inlineOverflowX = ObjectHelper.getString(element, "__overflowX");
+			final String inlineOverflowY = ObjectHelper.getString(element, "__overflowY");
+			InlineStyle.setString(element, StyleConstants.OVERFLOW_X, inlineOverflowX);
+			InlineStyle.setString(element, StyleConstants.OVERFLOW_Y, inlineOverflowY);
 		}
 
 		return removed;
@@ -213,14 +224,14 @@ public class ResizablePanel extends CompositePanel {
 
 		final Hijacker hijacker = new Hijacker(panel);
 
-		// create the ghost...
-		final Element ghost = Dom.cloneElement(panel, true);
-		ObjectHelper.setString(ghost, "className", this.getGhostStyle());
-		InlineStyle.setString(ghost, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(ghost, StyleConstants.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(ghost, StyleConstants.TOP, 0, CssUnit.PX);
-		InlineStyle.setInteger(ghost, StyleConstants.Z_INDEX, 10000, CssUnit.NONE);
-		InlineStyle.setString(ghost, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED);
+		// create the dragged ghost...
+		final Element draggedWidget = Dom.cloneElement(panel, true);
+		ObjectHelper.setString(draggedWidget, "className", this.getDraggedWidgetStyle());
+		InlineStyle.setString(draggedWidget, StyleConstants.POSITION, "absolute");
+		InlineStyle.setInteger(draggedWidget, StyleConstants.LEFT, 0, CssUnit.PX);
+		InlineStyle.setInteger(draggedWidget, StyleConstants.TOP, 0, CssUnit.PX);
+		InlineStyle.setInteger(draggedWidget, StyleConstants.Z_INDEX, 10000, CssUnit.NONE);
+		InlineStyle.setString(draggedWidget, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED);
 
 		final Element parent = hijacker.getParent();
 		final int childIndex = hijacker.getChildIndex();
@@ -232,7 +243,7 @@ public class ResizablePanel extends CompositePanel {
 		DOM.appendChild(container, panel);
 		DOM.insertChild(parent, container, childIndex);
 
-		DOM.appendChild(container, ghost);
+		DOM.appendChild(container, draggedWidget);
 
 		// record the coordinates of the mouse
 		final int initialMousePageX = event.getPageX();
@@ -274,12 +285,8 @@ public class ResizablePanel extends CompositePanel {
 					final int deltaX = event.getPageX() - initialMousePageX;
 					int newWidth = panelWidth + deltaX;
 
-					// System.out.println( "h mouse move " + updateWidth0 + "/"
-					// + updateHeight0 + " deltaX: " + deltaX + "/" + newWidth
-					// );
-
 					newWidth = Math.min(Math.max(newWidth, ResizablePanel.this.getMinimumWidth()), ResizablePanel.this.getMaximumWidth());
-					InlineStyle.setInteger(ghost, StyleConstants.WIDTH, newWidth, CssUnit.PX);
+					InlineStyle.setInteger(draggedWidget, StyleConstants.WIDTH, newWidth, CssUnit.PX);
 				}
 
 				if (updateHeight0) {
@@ -287,13 +294,13 @@ public class ResizablePanel extends CompositePanel {
 					int newHeight = panelHeight + deltaY;
 					newHeight = Math.min(Math.max(newHeight, ResizablePanel.this.getMinimumHeight()), ResizablePanel.this
 							.getMaximumHeight());
-					InlineStyle.setInteger(ghost, StyleConstants.HEIGHT, newHeight, CssUnit.PX);
+					InlineStyle.setInteger(draggedWidget, StyleConstants.HEIGHT, newHeight, CssUnit.PX);
 				}
+				InlineStyle.setString(draggedWidget, StyleConstants.OVERFLOW, "hidden");
 				event.cancelBubble(true);
 			}
 
 			protected void onMouseUp(final MouseUpEvent event) {
-				// System.out.println( "handleMouseUpEvent");
 				this.uninstall();
 
 				int newWidth = 0;
@@ -301,25 +308,25 @@ public class ResizablePanel extends CompositePanel {
 
 				while (true) {
 					if (false == ResizablePanel.this.isKeepAspectRatio()) {
-						newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0);
-						newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0);
+						newWidth = ComputedStyle.getInteger(draggedWidget, StyleConstants.WIDTH, CssUnit.PX, 0);
+						newHeight = ComputedStyle.getInteger(draggedWidget, StyleConstants.HEIGHT, CssUnit.PX, 0);
 						break;
 					}
 
 					if (updateWidth0 && false == updateHeight0) {
 						final float ratio = panelWidth * 1.0f / panelHeight;
-						newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0);
+						newWidth = ComputedStyle.getInteger(draggedWidget, StyleConstants.WIDTH, CssUnit.PX, 0);
 						newHeight = (int) (newWidth * ratio);
 						break;
 					}
 					if (false == updateWidth0 && updateHeight0) {
 						final float ratio = panelHeight * 1.0f / panelWidth;
-						newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0);
+						newHeight = ComputedStyle.getInteger(draggedWidget, StyleConstants.HEIGHT, CssUnit.PX, 0);
 						newWidth = (int) (newHeight * ratio);
 						break;
 					}
-					newWidth = ComputedStyle.getInteger(ghost, StyleConstants.WIDTH, CssUnit.PX, 0);
-					newHeight = ComputedStyle.getInteger(ghost, StyleConstants.HEIGHT, CssUnit.PX, 0);
+					newWidth = ComputedStyle.getInteger(draggedWidget, StyleConstants.WIDTH, CssUnit.PX, 0);
+					newHeight = ComputedStyle.getInteger(draggedWidget, StyleConstants.HEIGHT, CssUnit.PX, 0);
 
 					final float originalDiagonalLength = (float) Math.sqrt(panelWidth * panelWidth + panelHeight * panelHeight);
 					final float newDiagonalLength = (float) Math.sqrt(newWidth * newWidth + newHeight * newHeight);
@@ -336,7 +343,6 @@ public class ResizablePanel extends CompositePanel {
 
 				ResizablePanel.this.setWidth(newWidth + "px");
 				ResizablePanel.this.setHeight(newHeight + "px");
-
 				event.cancelBubble(true);
 
 				ResizablePanel.this.getEventListenerDispatcher().getChangeEventListeners().fireChange(ResizablePanel.this);
@@ -345,8 +351,8 @@ public class ResizablePanel extends CompositePanel {
 		previewer.install();
 	}
 
-	protected String getGhostStyle() {
-		return WidgetConstants.RESIZABLE_PANEL_GHOST_STYLE;
+	protected String getDraggedWidgetStyle() {
+		return WidgetConstants.RESIZABLE_PANEL_DRAGGED_WIDGET_STYLE;
 	}
 
 	/**

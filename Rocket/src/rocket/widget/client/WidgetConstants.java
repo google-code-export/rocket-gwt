@@ -304,7 +304,7 @@ public class WidgetConstants {
 
 	final static String RESIZABLE_PANEL_BOTTOM_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-bottomHandle";
 
-	final static String RESIZABLE_PANEL_GHOST_STYLE = RESIZABLE_PANEL_STYLE + "-ghost";
+	final static String RESIZABLE_PANEL_DRAGGED_WIDGET_STYLE = RESIZABLE_PANEL_STYLE + "-draggedWidget";
 
 	// DATEPICKER
 
