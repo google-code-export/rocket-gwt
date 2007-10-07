@@ -272,7 +272,7 @@ public abstract class SortableTable extends CompositeWidget {
 	private int sortedColumn = -1;
 
 	public int getSortedColumn() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:sortedColumn", this.sortedColumn, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("field:sortedColumn", 0, this.sortedColumn );
 		return this.sortedColumn;
 	}
 

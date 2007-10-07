@@ -581,12 +581,12 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	private int maximumXValue;
 
 	public int getMaximumXValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumXValue", maximumXValue, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumXValue", 0, maximumXValue );
 		return this.maximumXValue;
 	}
 
 	public void setMaximumXValue(final int maximumXValue) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumXValue", maximumXValue, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumXValue", 0, maximumXValue );
 		this.maximumXValue = maximumXValue;
 	}
 
@@ -647,12 +647,12 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	private int maximumYValue;
 
 	public int getMaximumYValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumYValue", maximumYValue, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumYValue", 0, this.maximumYValue );
 		return this.maximumYValue;
 	}
 
 	public void setMaximumYValue(final int maximumYValue) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumYValue", maximumYValue, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumYValue", 0, maximumYValue );
 		this.maximumYValue = maximumYValue;
 	}
 

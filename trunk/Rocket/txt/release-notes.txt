@@ -607,3 +607,4 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.37.zip
 * Reworked and significantly improved Drag n drop, try demo.
 * Drag n Drop events are now fully fledged objects.
 * The dragged widget may be changed by dnd listeners by ( setDraggedWidget() ).
+* Refactored all *Helper.check* methods so the format is consistent, message, expected value and test value.
