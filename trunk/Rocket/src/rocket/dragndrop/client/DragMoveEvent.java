@@ -19,8 +19,7 @@ package rocket.dragndrop.client;
  * A DragMoveEvent is fired each time the dragged widget is moved.
  * 
  * 
- * @author admin
- * 
+ * @author Miroslav Pokorny
  */
 public class DragMoveEvent extends DragEvent {
 }
