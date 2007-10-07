@@ -15,14 +15,12 @@
  */
 package rocket.dragndrop.client;
 
-import rocket.widget.client.WidgetConstants;
-
-class Constants {
-	final static String DRAG_N_DROP_STYLE = WidgetConstants.ROCKET + "-dragNDrop";
-
-	final static String DRAG_N_DROP_DRAGGABLE_WIDGET_STYLE = DRAG_N_DROP_STYLE + "-widget";
-
-	final static String DRAG_N_DROP_DRAGGED_WIDGET_STYLE = DRAG_N_DROP_STYLE + "-draggedWidget";
-
-	final static String DRAG_N_DROP_DROP_TARGET_STYLE = DRAG_N_DROP_STYLE + "-dropTarget";
+/**
+ * A DragMoveEvent is fired each time the dragged widget is moved.
+ * 
+ * 
+ * @author admin
+ * 
+ */
+public class DragMoveEvent extends DragEvent {
 }

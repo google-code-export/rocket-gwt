@@ -12,92 +12,64 @@ BODY, TABLE, BUTTON {
 	font-size: 10px;
 }
 
-BUTTON{
-	margin: 4px;
-	width: 100px;
+IMG {
+	width: 32px;
+	height: 32px;
+	padding: 0px;
+	border-width: none;
+	margin: 0px;
 }
 
-.rocket-dragNDrop-widget {
-	padding: 10px;
+.rocket-label{
+	background-color: #eef;
+	margin: 4px;
+}
 
-	border-color: #aaaacc;
-	border-width: 1px;
-	border-style: dotted;
-
-	background-color: #ccccff;	
+.dragNDropTest-grid{
+	background-color: #fdd;
 	
+	border-width: 1px;
+	border-style: solid;
+	border-color: #edd;
+}
+
+.dragNDropTest-grid TD{
+	width: 40px;
+	height: 40px;
+	background-color: #abc;
+}
+
+.dragNDropTest-horizontalPanel {
+	width: 99%;
+	
+	border-color: #efe;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #dfd;
+}
+
+.rocket-dragNDrop-draggable{
+	background-color: #efe;
+}
+
+.rocket-dragNDrop-widget {	
 	cursor: move;
 }
 
-.rocket-dragNDrop-dragging {
-	opacity: 0.5;
-	filter: alpha(opacity=50);
+.rocket-dragNDrop-draggedWidget {
 	cursor: move;
-}
-
-.rocket-dragNDrop-dropPanel {
-	margin: 20px;
-	padding: 10px;
-	border-width: 1px;
-	border-style: solid;
-}
-
-.moveZone{
-	margin: 4px;
-	background-color: #ffffdd;
-	border-color: #ddddbb;
-	border-width: 1px;
-	border-style: solid;
-}
-
-.accepting {
-	margin: 30px;
-	border-color: #aaddaa;
-	padding: 10px;
-	background-color: #ccffcc;
-}
-
-.rejecting {
-	margin: 40px;
-	border-color: #ccaacc;
-	padding: 10px;
-	background-color: #ffcccc;
-	
-	cursor: notAllowed;
 }
 
 </style>
-<script>
-function clearLog(){
-	var log = document.getElementById("log");
-	log.innerHTML = "";
-}
-</script>
 </head>
 
 <body>
-
-<p>
-This test involves creating a single object that may be dragged and dropped upon two targets.
-</p>
+<h3>Things to test</h3>
 <ul>
-<li>Drag the blue coloured box onto the green coloured box.</li>
-<li>Drag the red coloured box onto the green coloured box which should result in a invalid drop</li>
-<li>Any attempts to start any dragging operation may be cancelled via a DND listener which watches the <b>CANCEL ANY DRAG START</b> checkbox.
-    A message </li>
-<li>Limit any dragging of the blue box within the yellow box via a DND listener which watches the <b>CANCEL ANY DRAG START</b> checkbox.</li>
-<li>Dont forget to resize the window so that scrollbars appear and scroll the viewport and run tests again.</li>
+<li>Dragging widgets to the bin deletes them when dropped.</li>
+<li>Dropping widgets onto the horizontal panel simply adds the dropped widget on the end.</li>
+<li>Any of the widgets belonging to the Grid may be dropped on other cells or on other targets</li>
 </ul>
-
-<div>
-<button id="clearLog" onclick="clearLog();" >Clear log</button>
-</div>
-
-<b>Log</b>
-<div 
-	id="log" 
-	style="height: 25em; overflow: scroll; border-width: 1px; border-style: dotted; border-color: #888888; margin: 4px; padding: 4px; background-color: #eeeeee; font-size: 10px;">
-</div>
 
 </body>
 </html>

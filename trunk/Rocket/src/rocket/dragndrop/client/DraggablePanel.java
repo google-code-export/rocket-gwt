@@ -19,15 +19,24 @@ import java.util.Iterator;
 
 import rocket.browser.client.Browser;
 import rocket.dom.client.Dom;
+import rocket.event.client.EventBitMaskConstants;
+import rocket.event.client.EventPreviewAdapter;
+import rocket.event.client.MouseDownEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.event.client.MouseMoveEvent;
+import rocket.event.client.MouseUpEvent;
 import rocket.selection.client.Selection;
+import rocket.style.client.CssUnit;
+import rocket.style.client.InlineStyle;
+import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
+import rocket.widget.client.Hijacker;
+import rocket.widget.client.Html;
+import rocket.widget.client.SimplePanel;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -44,288 +53,371 @@ public class DraggablePanel extends SimplePanel {
 
 	public DraggablePanel() {
 		super();
+	}
+
+	protected void beforeCreatePanelElement() {
+		super.beforeCreatePanelElement();
 
 		this.setDragNDropListeners(createDragNDropListeners());
-		this.setStyleName(Constants.DRAG_N_DROP_DRAGGABLE_WIDGET_STYLE);
 	}
 
-	protected void onAttach() {
-		super.onAttach();
-
-		this.unsinkEvents(Event.FOCUSEVENTS | Event.KEYEVENTS | Event.MOUSEEVENTS);
-		this.sinkEvents(Event.ONMOUSEDOWN);
-		DOM.setEventListener(this.getElement(), this);
+	protected Element createPanelElement() {
+		return DOM.createDiv();
 	}
 
-	// DND LISTENER HANDLING
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-	/**
-	 * A list of listeners interested in dragNDrop events.
-	 */
-	private DragNDropListenerCollection dragNDropListeners;
-
-	protected DragNDropListenerCollection getDragNDropListeners() {
-		ObjectHelper.checkNotNull("field:dragNDropListeners", this.dragNDropListeners);
-		return this.dragNDropListeners;
+	protected void checkElement(final Element element) {
+		throw new UnsupportedOperationException("checkElement");
 	}
 
-	protected void setDragNDropListeners(final DragNDropListenerCollection dragNDropListeners) {
-		ObjectHelper.checkNotNull("parameter:dragNDropListeners", dragNDropListeners);
-		this.dragNDropListeners = dragNDropListeners;
+	protected void afterCreatePanelElement() {
+		super.afterCreatePanelElement();
+
+		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
+			public void onMouseDown(final MouseDownEvent event) {
+				DraggablePanel.this.handleDragStart(event);
+			}
+		});
 	}
 
-	protected DragNDropListenerCollection createDragNDropListeners() {
-		return new DragNDropListenerCollection();
+	protected String getInitialStyleName() {
+		return Constants.DRAG_N_DROP_DRAGGABLE_WIDGET_STYLE;
 	}
 
-	public void addDragNDropListener(final DragNDropListener listener) {
-		ObjectHelper.checkNotNull("parameter:listener", listener);
-		this.getDragNDropListeners().add(listener);
+	protected int getSunkEventsBitMask() {
+		return EventBitMaskConstants.MOUSE_DOWN;
 	}
 
-	public void removeDragNDropListener(final DragNDropListener listener) {
-		this.getDragNDropListeners().remove(listener);
+	protected Element insert0(final Element element, final int index) {
+		DOM.appendChild(this.getElement(), element);
+		return element;
 	}
 
-	/**
-	 * This event listener watches out for mouseDown events that occur on this
-	 * widget.
-	 */
-	public void onBrowserEvent(final Event event) {
-		final int eventType = DOM.eventGetType(event);
-		if (Event.ONMOUSEDOWN == eventType) {
-			this.handleDragStart(event);
-
-			DOM.eventCancelBubble(event, true);
-		}
+	protected void remove0(final Element element, final int index) {
+		Dom.removeFromParent(element);
 	}
+
+	int q = 0;
 
 	/**
 	 * This event is fired whenever a user starts a drag of a draggable widget.
 	 * 
-	 * @param event
+	 * @param mouseDownEvent
 	 */
-	protected void handleDragStart(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+	protected void handleDragStart(final MouseDownEvent mouseDownEvent) {
+		ObjectHelper.checkNotNull("parameter:mouseDownEvent", mouseDownEvent);
 
-		boolean cancelled = true;
+		if (q == 1) {
+			int qq = 0;
+		}
+		q++;
 
-		final DragNDropListenerCollection listeners = this.getDragNDropListeners();
-		try {
-			while (true) {
-				// first verify that all listeners are ok with a drag start...
-				if (false == listeners.fireBeforeDragStarted(this)) {
-					break;
+		while (true) {
+			mouseDownEvent.stop();
+
+			Widget dragged = createDraggedWidget();
+			dragged.setStyleName(this.getGhostStyle());
+
+			final DragStartEvent dragStartEvent = new DragStartEvent();
+			dragStartEvent.setDraggablePanel(this);
+			dragStartEvent.setDragged(dragged);
+			dragStartEvent.setDraggedElement(mouseDownEvent.getTarget());
+
+			Widget widget = this.getWidget();
+			final Element widgetElement = widget.getElement();
+			final int widgetLeft = Dom.getAbsoluteLeft(widgetElement);
+			final int widgetTop = Dom.getAbsoluteTop(widgetElement);
+			dragStartEvent.setWidget(widget);
+
+			final int mouseLeft = mouseDownEvent.getPageX();
+			final int mouseTop = mouseDownEvent.getPageY();
+			dragStartEvent.setMousePageX(mouseLeft);
+			dragStartEvent.setMousePageY(mouseTop);
+
+			int xOffset = widgetLeft - mouseLeft;
+			int yOffset = widgetTop - mouseTop;
+			dragStartEvent.setXOffset(xOffset);
+			dragStartEvent.setYOffset(yOffset);
+
+			this.getDragNDropListeners().fireDragStarted(dragStartEvent);
+
+			// if cancelled good bye!
+			if (dragStartEvent.isCancelled()) {
+				break;
+			}
+
+			Selection.disableTextSelection();
+			Selection.clearAnySelectedText();
+
+			// update ui,
+			dragged = dragStartEvent.getDragged();
+			xOffset = dragStartEvent.getXOffset();
+			yOffset = dragStartEvent.getYOffset();
+			widget = dragStartEvent.getWidget();
+
+			final DraggedPanel draggedPanel = this.createDraggedPanel();
+			draggedPanel.prepare(widget);
+			draggedPanel.setWidget(dragged);
+			draggedPanel.setXOffset(xOffset);
+			draggedPanel.setYOffset(yOffset);
+			draggedPanel.setActualWidget(widget);
+
+			// register an event previewer to handle mouse events(watch for drag
+			// move, drop ).
+			final EventPreviewAdapter greedy = new EventPreviewAdapter() {
+				public void onMouseMove(final MouseMoveEvent event) {
+					DraggablePanel.this.handleDragMove(event, draggedPanel);
 				}
 
-				// create the widget that will be handle that follows the moving
-				// mouse...
-				this.createDragHandle(event);
+				public void onMouseUp(final MouseUpEvent event) {
+					DraggablePanel.this.handleDropped(event, draggedPanel, this);
+				}
+			};
+			greedy.install();
 
-				Selection.disableTextSelection();
-				Selection.clearAnySelectedText();
+			final Element dragPanelElement = draggedPanel.getElement();
+			final int elementPageX = Dom.getAbsoluteLeft(dragPanelElement);
+			final int elementPageY = Dom.getAbsoluteTop(dragPanelElement);
 
-				// register an EventPreview listener to follow the mouse...
-				final EventPreview preview = this.createDraggingEventPreview();
-				this.setDraggingEventPreview(preview);
-				DOM.addEventPreview(preview);
+			// reposition the $dragged so it follows the mouse.
+			final int mousePageX = mouseDownEvent.getPageX();
+			final int mousePageY = mouseDownEvent.getPageY();
+			dragStartEvent.setMousePageX(mousePageX);
+			dragStartEvent.setMousePageY(mousePageY);
 
-				cancelled = false;
-				break;
-			}
-		} finally {
-			if (cancelled) {
-				listeners.fireDragCancelled(this);
-			}
-		}
-	}
+			final int newX = mousePageX + xOffset - elementPageX;
+			final int newY = mousePageY + yOffset - elementPageY;
 
-	/**
-	 * The widget being dragged. It exists only whilst a drag operation is
-	 * underway and cleared when the drop finishes.
-	 */
-	private DragHandle dragHandle;
-
-	protected DragHandle getDragHandle() {
-		ObjectHelper.checkNotNull("field:dragHandle", dragHandle);
-		return this.dragHandle;
-	}
-
-	protected void setDragHandle(final DragHandle dragHandle) {
-		ObjectHelper.checkNotNull("parameter:dragHandle", dragHandle);
-		this.dragHandle = dragHandle;
-	}
-
-	protected void clearDragHandle() {
-		this.dragHandle = null;
-	}
-
-	/**
-	 * Factory method which creates the element which will be dragged along with
-	 * the moving mouse.
-	 */
-	protected void createDragHandle(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
-
-		final Widget widget = this.getWidget();
-		final Element element = widget.getElement();
-		final Element draggedElement = this.createDragHandle0(widget);
-
-		final DragHandle handle = new DragHandle(draggedElement);
-		RootPanel.get().add(handle, 0, 0);
-
-		handle.addStyleName(Constants.DRAG_N_DROP_DRAGGING_STYLE);
-
-		// calculate the offset of the mouse relative to the widget.
-		final int widgetX = Dom.getAbsoluteLeft(element);
-		final int widgetY = Dom.getAbsoluteTop(element);
-
-		final int mouseX = DOM.eventGetClientX(event) + Browser.getScrollX();
-		final int mouseY = DOM.eventGetClientY(event) + Browser.getScrollY();
-
-		handle.setXOffset(mouseX - widgetX);
-		handle.setYOffset(mouseY - widgetY);
-
-		handle.followMouse(event);
-
-		this.setDragHandle(handle);
-	}
-
-	/**
-	 * Factory method that clones the element belonging to the given widget.
-	 * 
-	 * @param widget
-	 * @return
-	 */
-	protected Element createDragHandle0(final Widget widget) {
-		return DragNDrop.createClone(widget);
-	}
-
-	/**
-	 * The EventPreview object that is following the handle whilst it is being
-	 * dragged.
-	 */
-	private EventPreview draggingEventPreview;
-
-	protected EventPreview getDraggingEventPreview() {
-		ObjectHelper.checkNotNull("field:draggingEventPreview", draggingEventPreview);
-		return this.draggingEventPreview;
-	}
-
-	protected boolean hasDraggingEventPreview() {
-		return null != this.draggingEventPreview;
-	}
-
-	protected void setDraggingEventPreview(final EventPreview draggingEventPreview) {
-		ObjectHelper.checkNotNull("parameter:draggingEventPreview", draggingEventPreview);
-		this.draggingEventPreview = draggingEventPreview;
-	}
-
-	protected void clearDraggingEventPreview() {
-		this.draggingEventPreview = null;
-	}
-
-	/**
-	 * This EventPreview anonymous class merely delegates to
-	 * {@link #handleDraggingEventPreview(Event)}
-	 * 
-	 * @return
-	 */
-	protected EventPreview createDraggingEventPreview() {
-		final EventPreview draggingEventPreview = new EventPreview() {
-			public boolean onEventPreview(final Event event) {
-				return handleDraggingEventPreview(event);
-			}
-		};
-		return draggingEventPreview;
-	}
-
-	/**
-	 * Receives any onEventPreview events.
-	 * 
-	 * @param event
-	 */
-	protected boolean handleDraggingEventPreview(final Event event) {
-		boolean cancelEvent = true;
-
-		while (true) {
-			final int eventType = DOM.eventGetType(event);
-
-			if (Event.ONMOUSEUP == eventType) {
-				this.handleMouseUp(event);
-				cancelEvent = false;
-				break;
-			}
-
-			if (Event.ONMOUSEMOVE == eventType) {
-				this.handleMouseMove(event);
-				break;
-			}
+			final Element draggedElement = dragged.getElement();
+			InlineStyle.setString(draggedElement, StyleConstants.POSITION, "absolute");
+			InlineStyle.setInteger(draggedElement, StyleConstants.LEFT, newX, CssUnit.PX);
+			InlineStyle.setInteger(draggedElement, StyleConstants.TOP, newY, CssUnit.PX);
 			break;
 		}
-		return !cancelEvent;
 	}
 
-	/**
-	 * This method is called whenever the mouse button is released.
-	 * 
-	 * @param event
-	 */
-	protected void handleMouseUp(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
-
-		final DragNDropListenerCollection listeners = this.getDragNDropListeners();
-
-		// find a target...
-		final DropTargetPanel target = this.findDropTarget(event);
+	protected void handleDragMove(final MouseMoveEvent mouseMoveEvent, final DraggedPanel draggedPanel) {
 		while (true) {
-			// if no target was found fire a invalidDropTarget event...
-			if (null == target) {
-				listeners.fireInvalidDrop(event, this);
+			mouseMoveEvent.stop();
+
+			// prepare drag move event
+			final DragMoveEvent dragMoveEvent = new DragMoveEvent();
+			dragMoveEvent.setDraggablePanel(this);
+
+			Widget draggedWidget = draggedPanel.getWidget();
+			dragMoveEvent.setDragged(draggedWidget);
+
+			final int xOffset = draggedPanel.getXOffset();
+			final int yOffset = draggedPanel.getYOffset();
+			dragMoveEvent.setXOffset(xOffset);
+			dragMoveEvent.setYOffset(yOffset);
+
+			// fire!
+			this.getDragNDropListeners().fireDragMoveStarted(dragMoveEvent);
+
+			if (dragMoveEvent.isCancelled()) {
 				break;
 			}
 
-			if (listeners.fireBeforeDrop(this, target)) {
-				listeners.fireDrop(this, target);
-				break;
-			}
-			listeners.fireDragCancelled(this);
+			draggedWidget = dragMoveEvent.getDragged();
+
+			// find the absolute position of the DraggablePanel.
+			final Element element = draggedPanel.getElement();
+			final int elementPageX = Dom.getAbsoluteLeft(element);
+			final int elementPageY = Dom.getAbsoluteTop(element);
+
+			// reposition the $dragged so it follows the mouse.
+			final int mousePageX = mouseMoveEvent.getPageX();
+			final int mousePageY = mouseMoveEvent.getPageY();
+			dragMoveEvent.setMousePageX(mousePageX);
+			dragMoveEvent.setMousePageY(mousePageY);
+
+			final int newX = mousePageX + xOffset - elementPageX;
+			final int newY = mousePageY + yOffset - elementPageY;
+
+			final Element draggedElement = draggedWidget.getElement();
+			InlineStyle.setString(draggedElement, StyleConstants.POSITION, "absolute");
+			InlineStyle.setInteger(draggedElement, StyleConstants.LEFT, newX, CssUnit.PX);
+			InlineStyle.setInteger(draggedElement, StyleConstants.TOP, newY, CssUnit.PX);
+
+			draggedPanel.setWidget(draggedWidget);
 			break;
 		}
-		this.cancelDrag();
 	}
 
-	/**
-	 * This method cancels any pending drag and also cleans up any associated
-	 * resources.
-	 * 
-	 */
-	protected void cancelDrag() {
-		final DragHandle handle = this.getDragHandle();
-		handle.removeStyleName(Constants.DRAG_N_DROP_DRAGGING_STYLE);
-		handle.removeFromParent();
+	protected void handleDropped(final MouseUpEvent mouseUpEvent, final DraggedPanel draggedPanel, EventPreviewAdapter previewer) {
+		// stop bubbling...
+		mouseUpEvent.cancelBubble(true);
 
-		DOM.removeEventPreview(this.getDraggingEventPreview());
-		this.clearDraggingEventPreview();
+		previewer.uninstall();
 
+		// restore widget to its original parent element...
+		final Hijacker hijacker = draggedPanel.getHijacker();
+		hijacker.restore();
+
+		// reenable selections
 		Selection.enableTextSelection();
 		Selection.clearAnySelectedText();
+
+		// try and find a drop target...
+		final int mouseX = mouseUpEvent.getPageX() + Browser.getScrollX();
+		final int mouseY = mouseUpEvent.getPageY() + Browser.getScrollY();
+
+		final DropTargetPanel droppedOver = this.findDropTarget(mouseX, mouseY);
+
+		// create the event...
+		final DropEvent dropEvent = new DropEvent();
+		dropEvent.setDraggablePanel(this);
+		dropEvent.setWidget(draggedPanel.getActualWidget());
+
+		final Element droppedOverElement = this.findDroppedOverElement(mouseX, mouseY, droppedOver.getElement());
+		dropEvent.setDroppedOverElement(droppedOverElement);
+		dropEvent.setDropTargetPanel(droppedOver);
+
+		this.getDragNDropListeners().fireDropped(dropEvent);
+
+		// the dragged and its panel will disappear...
+		draggedPanel.removeFromParent();
+
+		// let the drop target add the widget.
+		droppedOver.accept(dropEvent);
+	}
+
+	protected DraggedPanel createDraggedPanel() {
+		return new DraggedPanel();
 	}
 
 	/**
-	 * This method gets the current mouse coordinates and calls
-	 * {@link #findDropTarget(int, int)}
-	 * 
-	 * @param event
-	 * @return The found DropTargetPanel or nunll if none was found.
+	 * This panel houses the ghost and is moved around each time the user moves
+	 * the dragged widget
 	 */
-	protected DropTargetPanel findDropTarget(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+	class DraggedPanel extends rocket.widget.client.SimplePanel {
 
-		final int x = DOM.eventGetClientX(event) + Browser.getScrollX();
-		final int y = DOM.eventGetClientY(event) + Browser.getScrollY();
-		return this.findDropTarget(x, y);
+		protected void checkElement(Element element) {
+			throw new UnsupportedOperationException("checkElement");
+		}
+
+		protected Element createPanelElement() {
+			return DOM.createDiv();
+		}
+
+		protected String getInitialStyleName() {
+			return "";
+		}
+
+		protected int getSunkEventsBitMask() {
+			return 0; // never receives any events as these are handled by a
+						// eventpreview(er)
+		}
+
+		protected Element insert0(final Element element, final int index) {
+			DOM.insertChild(this.getElement(), element, 0);
+			return element;
+		}
+
+		protected void remove0(final Element element, final int index) {
+			Dom.removeFromParent(element);
+		}
+
+		public void setWidget(final Widget widget) {
+			super.setWidget(widget);
+			if (null != widget) {
+				widget.addStyleName(DraggablePanel.this.getGhostStyle());
+			}
+		}
+
+		public Widget getWidget() {
+			final Widget widget = super.getWidget();
+			if (null != widget) {
+				widget.removeStyleName(DraggablePanel.this.getGhostStyle());
+			}
+			return widget;
+		}
+
+		protected void prepare(final Widget widget) {
+			final Element widgetElement = widget.getElement();
+
+			final Hijacker hijacker = new Hijacker(widgetElement);
+			this.setHijacker(hijacker);
+
+			RootPanel.get().add(this);
+
+			// insert the root elementof this panel in the same spot were widget
+			// was.
+			final Element element = this.getElement();
+			InlineStyle.setString(element, StyleConstants.POSITION, "relative");
+			InlineStyle.setInteger(element, StyleConstants.LEFT, 0, CssUnit.PX);
+			InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
+
+			hijacker.replace(element);
+
+			DOM.appendChild(element, widgetElement);
+		}
+
+		/**
+		 * A hijacker is used to store and eventually restore the widget element
+		 * to its rightful spot in the dom after a drop.
+		 */
+		private Hijacker hijacker;
+
+		protected Hijacker getHijacker() {
+			ObjectHelper.checkNotNull("field:hijacker", hijacker);
+			return this.hijacker;
+		}
+
+		public void setHijacker(final Hijacker hijacker) {
+			ObjectHelper.checkNotNull("parameter:hijacker", hijacker);
+			this.hijacker = hijacker;
+		}
+
+		private int xOffset;
+
+		public int getXOffset() {
+			return this.xOffset;
+		}
+
+		public void setXOffset(final int xOffset) {
+			this.xOffset = xOffset;
+		}
+
+		private int yOffset;
+
+		public int getYOffset() {
+			return this.yOffset;
+		}
+
+		public void setYOffset(final int yOffset) {
+			this.yOffset = yOffset;
+		}
+
+		/**
+		 * The widget thats having its ghost being dragged
+		 */
+		private Widget actualWidget;
+
+		public Widget getActualWidget() {
+			ObjectHelper.checkNotNull("field:actualWidget", actualWidget);
+			return this.actualWidget;
+		}
+
+		public void setActualWidget(final Widget actualWidget) {
+			ObjectHelper.checkNotNull("parameter:actualWidget", actualWidget);
+			this.actualWidget = actualWidget;
+		}
+	}
+
+	protected String getGhostStyle() {
+		return Constants.DRAG_N_DROP_DRAGGED_WIDGET_STYLE;
+	}
+
+	/**
+	 * Factory method that creates the initial ghost, by simply cloning the
+	 * contents of the current widget.
+	 * 
+	 * @return
+	 */
+	protected Widget createDraggedWidget() {
+		final Element element = this.getWidget().getElement();
+		return new Html(Dom.cloneElement(element, true));
 	}
 
 	/**
@@ -349,6 +441,7 @@ public class DraggablePanel extends SimplePanel {
 			if (x < left || x > right) {
 				continue;
 			}
+
 			final int top = Dom.getAbsoluteTop(otherElement);
 			final int bottom = top + possibleTarget.getOffsetHeight();
 			if (y < top || y > bottom) {
@@ -363,81 +456,79 @@ public class DraggablePanel extends SimplePanel {
 	}
 
 	/**
-	 * This method is called whenever the mouse is moved whilst in drag mode.
+	 * Using the given mouse coordinates and starting at the given element(
+	 * which is the root of the dropTarget) find the element that the mouse was
+	 * over when the drop occured.
 	 * 
-	 * @param event
+	 * Unfortunately the mouseUpEvent target cannot be read as it gives the
+	 * ghost rather than the true element.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param element
+	 * @return
 	 */
-	protected void handleMouseMove(final Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+	protected Element findDroppedOverElement(final int x, final int y, final Element element) {
+		Element between = element;
 
-		// ask listeners if the drag should be ignored ?
-		final DragNDropListenerCollection listeners = this.getDragNDropListeners();
-		if (listeners.fireBeforeDragMoved(event, this)) {
+		final int childCount = DOM.getChildCount(element);
 
-			// update the coordinates of the handle...
-			this.getDragHandle().followMouse(event);
+		for (int i = 0; i < childCount; i++) {
+			final Element child = DOM.getChild(element, i);
+			if (Dom.isTag(child, "colgroup")) {
+				continue;
+			}
 
-			// fired after drag handle has been moved...
-			listeners.fireBeforeDragMoved(event, this);
+			final int childOffsetLeft = Dom.getAbsoluteLeft(child);
+			if (x < childOffsetLeft) {
+				continue;
+			}
+
+			final int childOffsetTop = Dom.getAbsoluteTop(child);
+			if (y < childOffsetTop) {
+				continue;
+			}
+
+			final int childOffsetRight = childOffsetLeft + ObjectHelper.getInteger(child, "offsetWidth");
+			if (x > childOffsetRight) {
+				continue;
+			}
+			final int childOffsetBottom = childOffsetTop + ObjectHelper.getInteger(child, "offsetHeight");
+			if (y > childOffsetBottom) {
+				continue;
+			}
+
+			between = this.findDroppedOverElement(x, y, child);
+			break;
 		}
-	}
 
-	public String toString() {
-		return super.toString() + ", dragNDropListeners: " + dragNDropListeners;
+		return between;
 	}
 
 	/**
-	 * This class exists only whilst a drag operation is underway.
+	 * A list of listeners interested in dragNDrop events.
 	 */
-	class DragHandle extends SimplePanel {
+	private DragNDropListenerCollection dragNDropListeners;
 
-		public DragHandle(final Element element) {
-			super();
+	protected DragNDropListenerCollection getDragNDropListeners() {
+		ObjectHelper.checkNotNull("field:dragNDropListeners", this.dragNDropListeners);
+		return this.dragNDropListeners;
+	}
 
-			this.setElement(element);
-		}
+	protected void setDragNDropListeners(final DragNDropListenerCollection dragNDropListeners) {
+		ObjectHelper.checkNotNull("parameter:dragNDropListeners", dragNDropListeners);
+		this.dragNDropListeners = dragNDropListeners;
+	}
 
-		/**
-		 * Updates the position of the element after reading the mouses current
-		 * position.
-		 * 
-		 * @param event
-		 */
-		void followMouse(final Event event) {
-			final int mouseX = DOM.eventGetClientX(event);
-			final int mouseY = DOM.eventGetClientY(event);
+	protected DragNDropListenerCollection createDragNDropListeners() {
+		return new DragNDropListenerCollection();
+	}
 
-			final int newX = mouseX - this.getXOffset();
-			final int newY = mouseY - this.getYOffset();
-			Dom.setAbsolutePosition(this.getElement(), newX, newY);
-		}
+	public void addDragNDropListener(final DragNDropListener listener) {
+		this.getDragNDropListeners().add(listener);
+	}
 
-		/**
-		 * THe x offset in pixels of the mouse relative to the top left corner
-		 * of the widget being dragged
-		 */
-		int xOffset;
-
-		int getXOffset() {
-			return this.xOffset;
-		}
-
-		void setXOffset(final int xOffset) {
-			this.xOffset = xOffset;
-		}
-
-		/**
-		 * The y offset in pixels of the mouse relative to the top left corner
-		 * of the widget being dragged
-		 */
-		int yOffset;
-
-		int getYOffset() {
-			return this.yOffset;
-		}
-
-		void setYOffset(final int yOffset) {
-			this.yOffset = yOffset;
-		}
+	public void removeDragNDropListener(final DragNDropListener listener) {
+		this.getDragNDropListeners().remove(listener);
 	}
 }
