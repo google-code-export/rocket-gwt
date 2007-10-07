@@ -608,3 +608,6 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.37.zip
 * Drag n Drop events are now fully fledged objects.
 * The dragged widget may be changed by dnd listeners by ( setDraggedWidget() ).
 * Refactored all *Helper.check* methods so the format is consistent, message, expected value and test value.
+* Fixed Opera selection support code which was querying the wrong method/property to get the native selection object.
+* Fixed Slider and SplitterPanels widgets so they dont select text as they are dragged in Opera.
+* Added a new page that provides links to all runnable demos.
