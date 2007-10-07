@@ -53,7 +53,6 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected void onTestFailed(final Test test) {
-		SelectionTest.skipRemainingTests();
 		super.onTestFailed(test);
 	}
 
