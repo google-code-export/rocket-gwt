@@ -405,6 +405,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 			DOM.addEventPreview(preview);
 
 			this.addStyleName(this.getDraggingStyleName());
+			event.stop(); // cancel event so text selection doesnt happen in Opera.
 		}
 
 		private EventPreview eventPreview;

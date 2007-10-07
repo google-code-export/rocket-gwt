@@ -363,6 +363,7 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 		InlineStyle.setInteger(handleElement, StyleConstants.TOP, top, CssUnit.PX);
 
 		event.cancelBubble(true);
+		event.stop();// stops text selection in Opera
 	}
 
 	protected int updateSliderValue(final int mouseCoordinate, final int maximumValue, final int sliderLength, final int handleLength) {

@@ -250,6 +250,7 @@ public abstract class Slider extends CompositeWidget {
 		this.clearTimer();
 
 		event.cancelBubble(true);
+		event.stop(); // stops text selection in Opera.
 	}
 
 	protected void handleBackgroundMouseDown(final MouseDownEvent event) {
@@ -528,7 +529,7 @@ public abstract class Slider extends CompositeWidget {
 	}
 
 	public void setDelta(final int delta) {
-		PrimitiveHelper.checkGreaterThan("parameter:delta", 0, delta );
+		PrimitiveHelper.checkGreaterThan("parameter:delta", 0, delta);
 		this.delta = delta;
 	}
 
