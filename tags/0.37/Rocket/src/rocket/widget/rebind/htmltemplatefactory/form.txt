@@ -1,0 +1,8 @@
+// form.txt
+
+rocket.widget.client.FormPanel form = (rocket.widget.client.FormPanel) this.getWidget( ${id} );
+if( null == form ){
+	form = bindFormPanel( ${id} );
+}
+return form;
+

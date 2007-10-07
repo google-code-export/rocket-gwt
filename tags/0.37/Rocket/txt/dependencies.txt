@@ -1,0 +1,10 @@
+FlexJson 1.2
+http://flexjson.sourceforge.net/
+* Only used by RemoteJsonServiceTestCase test, not required by when authoring client side components.
+
+GWT 1.4.60
+http://code.google.com/webtoolkit/
+
+JUNIT 3.8
+www.junit.org
+* Only used by all test cases, not required by when authoring client side components.

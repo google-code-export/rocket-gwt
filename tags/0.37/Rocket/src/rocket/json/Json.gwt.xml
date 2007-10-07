@@ -1,0 +1,15 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.User"/>
+
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.http.HTTP" />
+	<inherits name="com.google.gwt.user.HTTPRequest" />
+	<inherits name="com.google.gwt.json.JSON" />
+
+	<source path="client" />	
+
+	<generate-with class="rocket.json.rebind.JsonSerializerGenerator">
+		<when-type-assignable class="rocket.json.client.JsonSerializable" />
+	</generate-with>	
+</module>

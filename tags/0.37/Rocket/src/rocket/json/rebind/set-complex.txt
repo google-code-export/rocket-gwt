@@ -1,0 +1,18 @@
+// set-complex.txt
+
+// invoke the setter
+this.${setter}( 
+
+	${instance}, 
+
+	// cast
+	(${fieldType}) 
+
+		// invoke the field deserializer
+		${serializer}.serializer.${readMethod}( 
+
+			// get the JSONValue by javascript name.
+			${jsonObject}.get( ${javascriptPropertyName} )
+		)
+);
+

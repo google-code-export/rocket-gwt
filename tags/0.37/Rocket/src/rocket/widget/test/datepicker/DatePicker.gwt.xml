@@ -1,0 +1,4 @@
+<module>
+	<inherits name='rocket.User'/>
+	<entry-point class='rocket.widget.test.datepicker.client.DatePickerTest'/>
+</module>
