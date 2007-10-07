@@ -170,54 +170,6 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	/**
 	 * @testing-testMethodOrder 3
 	 */
-	public void testIsTextSelectionEnabledWithinDisabledParent() {
-		final Selection selection = Selection.getSelection();
-		selection.clear();
-
-		final Element body = DOM.getElementById("body");
-		ObjectHelper.checkNotNull("element with an id =\"body\"", body);
-		final Element child = DOM.getElementById("child");
-		ObjectHelper.checkNotNull("element with an id =\"child\"", child);
-
-		Selection.disableTextSelection(body);
-		Selection.enableTextSelection(child);
-
-		// ask the user to attempt to select some text ?
-		final Button button = new Button("Continue");
-		button.addClickListener(new ClickListener() {
-			public void onClick(final Widget ignored) {
-				button.removeFromParent();
-
-				Selection.enableTextSelection(body);
-				Selection.enableTextSelection(child);
-
-				final boolean wasDisabled = Window
-						.confirm("Was it impossible to select text the outside the enabled element (element has a white background)?");
-				if (false == wasDisabled) {
-					Test
-							.fail("User confirmed that text selection was still possible even though selection had been disabled for the document.");
-				}
-
-				final boolean wasEnabled = Window
-						.confirm("Was it possible to select text the inside the enabled element (element has a gray background)?");
-				if (false == wasEnabled) {
-					Test.fail("User confirmed that text selection is not possible even though selection had been enabled for the element.");
-				}
-
-				SelectionTest.finishTest();
-			}
-		});
-		RootPanel.get().add(button);
-
-		Window
-				.alert("Text selection has been selectively enabled and disabled, enabled text has a gray background whilst disabled text has a white background."
-						+ "Try selecting in both areas and then click on CONTINUE...");
-		SelectionTest.postponeCurrentTest(60 * 1000);
-	}
-
-	/**
-	 * @testing-testMethodOrder 4
-	 */
 	public void testIsTextSelectionEnabled() {
 		final Element body = Dom.getBody();
 
@@ -237,7 +189,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 5
+	 * @testing-testMethodOrder 4
 	 */
 	public void testIsSelectionEmpty() {
 		final Button isTextSelectionEmpty = new Button("Is Text Selection Empty");
@@ -274,7 +226,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 6
+	 * @testing-testMethodOrder 5
 	 */
 	public void testSetSelection0() {
 		final Selection selection = Selection.getSelection();
@@ -305,7 +257,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 7
+	 * @testing-testMethodOrder 6
 	 */
 	public void testSetSelection1() {
 		final Selection selection = Selection.getSelection();
@@ -345,7 +297,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 8
+	 * @testing-testMethodOrder 7
 	 */
 	public void testSetSelection2() {
 		final Selection selection = Selection.getSelection();
@@ -389,7 +341,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 9
+	 * @testing-testMethodOrder 8
 	 */
 	public void testGetSelection0() {
 		final Selection selection = Selection.getSelection();
@@ -424,7 +376,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 10
+	 * @testing-testMethodOrder 9
 	 */
 	public void testGetSelection1() {
 		final Selection selection = Selection.getSelection();
@@ -464,7 +416,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 11
+	 * @testing-testMethodOrder 10
 	 */
 	public void testGetSelection2() {
 		final Selection selection = Selection.getSelection();
@@ -503,7 +455,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 12
+	 * @testing-testMethodOrder 11
 	 */
 	public void testExtractSelection() {
 		final Button extractSelection = new Button("Extract Selection");
@@ -551,7 +503,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 13
+	 * @testing-testMethodOrder 12
 	 */
 	public void testSurroundSelection() {
 		final Button surroundSelection = new Button("Surround Selection");
@@ -593,7 +545,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 14
+	 * @testing-testMethodOrder 13
 	 */
 	public void testDeleteSelection() {
 		final Button deleteSelection = new Button("Delete Selection");
