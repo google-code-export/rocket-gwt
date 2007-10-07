@@ -20,7 +20,6 @@ import java.util.Map;
 
 import rocket.dom.client.Dom;
 import rocket.dom.client.DomConstants;
-import rocket.util.client.Colour;
 import rocket.util.client.Destroyable;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -60,7 +59,7 @@ public class WidgetHelper extends SystemHelper {
 		Widget widget = null;
 		while (widgets.hasNext()) {
 			final Widget otherWidget = (Widget) widgets.next();
-			if (DOM.isOrHasChild(otherWidget.getElement(), target)) {
+			if (DOM.isOrHasChild(target, otherWidget.getElement())) {
 				widget = otherWidget;
 				break;
 			}
@@ -255,14 +254,16 @@ public class WidgetHelper extends SystemHelper {
 
 	 element = form.elements[ elementName ];
 	 return element ? element : null;}-*/;
-	
+
 	/**
-	 * Helper used by CompositePanel to invoke the non visible Widget.setParent() method.
+	 * Helper used by CompositePanel to invoke the non visible
+	 * Widget.setParent() method.
+	 * 
 	 * @param widget
 	 * @param panel
 	 */
-	static native void widgetSetParent( final com.google.gwt.user.client.ui.Widget widget, final com.google.gwt.user.client.ui.Panel panel )/*-{
-	widget.@com.google.gwt.user.client.ui.Widget::setParent(Lcom/google/gwt/user/client/ui/Widget;)(panel);
- }-*/;
+	static native void widgetSetParent(final com.google.gwt.user.client.ui.Widget widget, final com.google.gwt.user.client.ui.Panel panel)/*-{
+	 widget.@com.google.gwt.user.client.ui.Widget::setParent(Lcom/google/gwt/user/client/ui/Widget;)(panel);
+	 }-*/;
 
 }
