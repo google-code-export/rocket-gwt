@@ -36,12 +36,13 @@ public class Dom {
 
 	/**
 	 * Convenience method that removes an element from its parent.
+	 * 
 	 * @param element
 	 */
-	public static void removeFromParent(final Element element ){
-		DOM.removeChild( DOM.getParent(element), element );
+	public static void removeFromParent(final Element element) {
+		DOM.removeChild(DOM.getParent(element), element);
 	}
-	
+
 	/**
 	 * Retrieve the absolute left or x coordinates for the given element
 	 * 
@@ -54,19 +55,19 @@ public class Dom {
 	}
 
 	native static private int getAbsoluteLeft0(final Element element) /*-{
-	 	var left = 0;
-	 	var body = $doc.body
-	 	while (element) {
-	 		if( element == body ){
-	 			break;
-	 		}
-	 	
-	 		left = left + element.offsetLeft - element.scrollLeft;
-	 		element = element.offsetParent;
-	 	}
-	 	return left;
+	 var left = 0;
+	 var body = $doc.body
+	 while (element) {
+	 if( element == body ){
+	 break;
+	 }
+	 
+	 left = left + element.offsetLeft - element.scrollLeft;
+	 element = element.offsetParent;
+	 }
+	 return left;
 	 }-*/;
-	
+
 	/**
 	 * Retrieve the absolute top or y coordinates for the given element.
 	 * 
@@ -78,19 +79,20 @@ public class Dom {
 		return getAbsoluteTop0(element) + Browser.getScrollY();
 	}
 
-	native static private int getAbsoluteTop0( final Element element )/*-{
-		var top = 0;
-	 	var body = $doc.body
-	 	while (element) {
-	 		if( element == body ){
-	 			break;
-	 		}
-	 	
-	 		top = top + element.offsetTop - element.scrollTop;
-	 		element = element.offsetParent;
-	 	}
-	 	return top;
-	}-*/;
+	native static private int getAbsoluteTop0(final Element element)/*-{
+	 var top = 0;
+	 var body = $doc.body
+	 while (element) {
+	 if( element == body ){
+	 break;
+	 }
+	 
+	 top = top + element.offsetTop - element.scrollTop;
+	 element = element.offsetParent;
+	 }
+	 return top;
+	 }-*/;
+
 	/**
 	 * Retrieves the container element which contains this child element. This
 	 * is particularly useful when calculating coordinates for positioned
@@ -133,22 +135,21 @@ public class Dom {
 	}
 
 	native static private int getContainerLeftOffset0(final Element element) /*-{
-	 	var left = 0;
-	 	var element0 = element;
+	 var left = 0;
+	 var element0 = element;
 	 
-	 	while( element0 ){ 
-	 		var position = element.style.position;
- 			if( "absolute" == position || "relative" == position ){
- 				break;
- 			}		
+	 while( element0 ){ 
+	 var position = element.style.position;
+	 if( "absolute" == position || "relative" == position ){
+	 break;
+	 }		
 	 
-	 		left = left + element0.offsetLeft;
-	  		element0 = element0.offsetParent;  
-	 	}
+	 left = left + element0.offsetLeft;
+	 element0 = element0.offsetParent;  
+	 }
 	 
-	 	return left;	 
+	 return left;	 
 	 }-*/;
-
 
 	/**
 	 * Retrieves the relative y/top coordinates of the given element relative to
@@ -164,21 +165,21 @@ public class Dom {
 	}
 
 	native static private int getContainerTopOffset0(final Element element) /*-{
- 	var top = 0;
- 	var element0 = element;
- 
- 	while( element0 ){ 
- 		var position = element.style.position;
-		if( "absolute" == position || "relative" == position ){
-			break;
-		}		
- 
- 		top = top + element0.offsetTop;
-  		element0 = element0.offsetParent;  
- 	}
- 
- 	return top;	 
- }-*/;
+	 var top = 0;
+	 var element0 = element;
+	 
+	 while( element0 ){ 
+	 var position = element.style.position;
+	 if( "absolute" == position || "relative" == position ){
+	 break;
+	 }		
+	 
+	 top = top + element0.offsetTop;
+	 element0 = element0.offsetParent;  
+	 }
+	 
+	 return top;	 
+	 }-*/;
 
 	/**
 	 * Helper which tests if the given element is of the specified tag.
@@ -387,13 +388,14 @@ public class Dom {
 	public static int getClientHeight(final Element element) {
 		return ObjectHelper.getInteger(element, "clientHeight");
 	}
-	
+
 	/**
 	 * Tests if the given element is attached to the dom.
+	 * 
 	 * @param element
 	 * @return
 	 */
-	public static boolean isAttached( final Element element ){
-		return DOM.isOrHasChild( Dom.getBody(), element );
+	public static boolean isAttached(final Element element) {
+		return DOM.isOrHasChild(Dom.getBody(), element);
 	}
 }

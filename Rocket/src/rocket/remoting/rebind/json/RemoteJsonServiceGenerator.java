@@ -78,107 +78,116 @@ public class RemoteJsonServiceGenerator extends Generator {
 	/**
 	 * Adds a method to the jsonServiceClient that prepares an invoker etc.
 	 * 
-	 * @param method A serviceInterface method.
+	 * @param method
+	 *            A serviceInterface method.
 	 */
 	protected void implementPublicMethod(final Method method) {
 		ObjectHelper.checkNotNull("parameter:method", method);
 
-		while( true ){
+		while (true) {
 			final String inputArguments = this.getInputArgumentEncodingFromMethodAnnotation(method);
-			if( Constants.INPUT_ARGUMENTS_JSON_RPC.equals( inputArguments )){
-				this.implementJsonRpcMethod( method );
+			if (Constants.INPUT_ARGUMENTS_JSON_RPC.equals(inputArguments)) {
+				this.implementJsonRpcMethod(method);
 				break;
 			}
-			if( Constants.INPUT_ARGUMENTS_REQUEST_PARAMETERS.equals( inputArguments ) ){
+			if (Constants.INPUT_ARGUMENTS_REQUEST_PARAMETERS.equals(inputArguments)) {
 				this.implementGetOrPostRequestParameters(method);
 				break;
 			}
-			
+
 			throw new RuntimeException();
 		}
-		
+
 	}
-	
+
 	/**
-	 * Helper which fetches the inputArguments value from an annotation belonging to the given method.
-	 * It also validates that only valid values are accepted.
+	 * Helper which fetches the inputArguments value from an annotation
+	 * belonging to the given method. It also validates that only valid values
+	 * are accepted.
+	 * 
 	 * @param method
 	 * @return
 	 */
 	protected String getInputArgumentEncodingFromMethodAnnotation(final Method method) {
 		ObjectHelper.checkNotNull("parameter:method", method);
 
-		final List values = method.getMetadataValues(Constants.INPUT_ARGUMENTS_ANNOTATION );
-		if( values.size() != 1 ){
+		final List values = method.getMetadataValues(Constants.INPUT_ARGUMENTS_ANNOTATION);
+		if (values.size() != 1) {
 			throwInputArgumentEncodingMissing(method);
 		}
-		
-		final String inputArguments = (String) values.get( 0 );
-		if( false == Constants.INPUT_ARGUMENTS_JSON_RPC.equals( inputArguments ) && false == Constants.INPUT_ARGUMENTS_REQUEST_PARAMETERS.equals( inputArguments ) ){
-			this.throwInvalidInputArgumentEncoding(method, inputArguments );
+
+		final String inputArguments = (String) values.get(0);
+		if (false == Constants.INPUT_ARGUMENTS_JSON_RPC.equals(inputArguments)
+				&& false == Constants.INPUT_ARGUMENTS_REQUEST_PARAMETERS.equals(inputArguments)) {
+			this.throwInvalidInputArgumentEncoding(method, inputArguments);
 		}
-		
+
 		return inputArguments;
 	}
 
-	protected void throwInputArgumentEncodingMissing(final Method method ) {
-		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.INPUT_ARGUMENTS_ANNOTATION + "] annotation for the method " + method );
+	protected void throwInputArgumentEncodingMissing(final Method method) {
+		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.INPUT_ARGUMENTS_ANNOTATION
+				+ "] annotation for the method " + method);
 	}
-	
-	protected void throwInvalidInputArgumentEncoding(final Method method, final String value ) {
-		throw new RemoteJsonServiceGeneratorException("The [" + Constants.INPUT_ARGUMENTS_ANNOTATION + "] annotation for the method " + method + " contains an invalid value [" + value + "]");
+
+	protected void throwInvalidInputArgumentEncoding(final Method method, final String value) {
+		throw new RemoteJsonServiceGeneratorException("The [" + Constants.INPUT_ARGUMENTS_ANNOTATION + "] annotation for the method "
+				+ method + " contains an invalid value [" + value + "]");
 	}
-	
+
 	/**
-	 * Implements a method that is a bridge that invokes a json rpc encoded response and deserializes responses calling
-	 * the provided callback.
+	 * Implements a method that is a bridge that invokes a json rpc encoded
+	 * response and deserializes responses calling the provided callback.
+	 * 
 	 * @param method
 	 */
-	protected void implementJsonRpcMethod( final Method method ){
-		ObjectHelper.checkNotNull("parameter:method", method );
-		
+	protected void implementJsonRpcMethod(final Method method) {
+		ObjectHelper.checkNotNull("parameter:method", method);
+
 		this.getGeneratorContext().debug("Implementing json rpc method, method: " + method);
-		
+
 		final List parameters = method.getParameters();
-		if( parameters.size() != 1 ){
-			throwInvalidJsonRpcMethod( method );
+		if (parameters.size() != 1) {
+			throwInvalidJsonRpcMethod(method);
 		}
-		
+
 		final NewMethod asyncMethod = this.createCorrespondingAsyncServiceInterfaceMethod(method);
 
 		final JsonRpcInvokerTemplatedFile body = new JsonRpcInvokerTemplatedFile();
-		
-		final MethodParameter parameter = (MethodParameter)parameters.get( 0 );
-		body.setParameterType( parameter.getType() );
-		
+
+		final MethodParameter parameter = (MethodParameter) parameters.get(0);
+		body.setParameterType(parameter.getType());
+
 		body.setPayloadType(method.getReturnType());
 
-		asyncMethod.setBody(body);			
+		asyncMethod.setBody(body);
 	}
-	
-	protected void throwInvalidJsonRpcMethod( final Method method ){
-		throw new RemoteJsonServiceGeneratorException("A method marked with " + Constants.INPUT_ARGUMENTS_ANNOTATION + "=" + Constants.INPUT_ARGUMENTS_JSON_RPC + " can only have a single JsonSerializable parameter, method: " + method );
+
+	protected void throwInvalidJsonRpcMethod(final Method method) {
+		throw new RemoteJsonServiceGeneratorException("A method marked with " + Constants.INPUT_ARGUMENTS_ANNOTATION + "="
+				+ Constants.INPUT_ARGUMENTS_JSON_RPC + " can only have a single JsonSerializable parameter, method: " + method);
 	}
 
 	/**
-	 * This method satisfy the currently being generated method passing simple parameters
-	 * via request parameters
+	 * This method satisfy the currently being generated method passing simple
+	 * parameters via request parameters
+	 * 
 	 * @param method
 	 */
-	protected void implementGetOrPostRequestParameters( final Method method ){
-		ObjectHelper.checkNotNull("parameter:method", method );
-		
+	protected void implementGetOrPostRequestParameters(final Method method) {
+		ObjectHelper.checkNotNull("parameter:method", method);
+
 		this.getGeneratorContext().debug("Implementing method that sends parameters as request parameters, method: " + method);
-		
+
 		final Iterator parameters = method.getParameters().iterator();
-		while( parameters.hasNext() ){
+		while (parameters.hasNext()) {
 			final MethodParameter methodParameter = (MethodParameter) parameters.next();
-			final Type parameterType = methodParameter.getType();		
-			if ( false == this.isSimpleType( parameterType )) {
+			final Type parameterType = methodParameter.getType();
+			if (false == this.isSimpleType(parameterType)) {
 				this.throwUnsupportedParameterTypeException(methodParameter);
 			}
 		}
-		
+
 		final NewMethod asyncMethod = this.createCorrespondingAsyncServiceInterfaceMethod(method);
 
 		final RequestParametersInvokerTemplatedFile body = new RequestParametersInvokerTemplatedFile();
@@ -187,13 +196,13 @@ public class RemoteJsonServiceGenerator extends Generator {
 		body.setNewMethod(asyncMethod);
 		body.setPayloadType(method.getReturnType());
 
-		asyncMethod.setBody(body);		
+		asyncMethod.setBody(body);
 	}
-	
+
 	protected void throwUnsupportedParameterTypeException(final MethodParameter parameter) {
 		throw new RemoteJsonServiceGeneratorException("The parameter " + parameter + " contains an invalid type " + parameter.getType());
 	}
-	
+
 	/**
 	 * Attempts to find the corresponding method on the async interface.
 	 * 
@@ -207,12 +216,12 @@ public class RemoteJsonServiceGenerator extends Generator {
 		final String methodName = method.getName();
 		final List asyncMethodParameters = new ArrayList();
 		final Iterator parameters = method.getParameters().iterator();
-		while( parameters.hasNext() ){
+		while (parameters.hasNext()) {
 			final MethodParameter methodParameter = (MethodParameter) parameters.next();
-			asyncMethodParameters.add( methodParameter.getType() );
+			asyncMethodParameters.add(methodParameter.getType());
 		}
-		asyncMethodParameters.add( this.getAsyncCallback() );
-		
+		asyncMethodParameters.add(this.getAsyncCallback());
+
 		final Method asyncMethod = this.getAsyncServiceInterface().findMostDerivedMethod(methodName, asyncMethodParameters);
 		if (null == asyncMethod) {
 			this.throwMatchingAsyncInterfaceMethodNotFoundException(method);
@@ -222,19 +231,20 @@ public class RemoteJsonServiceGenerator extends Generator {
 		}
 
 		final NewMethod newMethod = asyncMethod.copy(this.getJsonServiceClient());
-		newMethod.setAbstract( false );
-		newMethod.setFinal( true );
-		GeneratorHelper.renameParametersToParameterN( newMethod );
+		newMethod.setAbstract(false);
+		newMethod.setFinal(true);
+		GeneratorHelper.renameParametersToParameterN(newMethod);
 
 		return newMethod;
 	}
-	
+
 	protected void throwMatchingAsyncInterfaceMethodNotFoundException(final Method method) {
-		throw new RemoteJsonServiceGeneratorException("Unable to find corresponding async service interface method " + method );
+		throw new RemoteJsonServiceGeneratorException("Unable to find corresponding async service interface method " + method);
 	}
 
 	protected void throwIncompatibleMethodFound(final Method method) {
-		throw new RemoteJsonServiceGeneratorException("The async service method " + method + " should return void and not " + method.getReturnType().getName());
+		throw new RemoteJsonServiceGeneratorException("The async service method " + method + " should return void and not "
+				+ method.getReturnType().getName());
 	}
 
 	protected List getHttpRequestParameterNamesFromMethodAnnotation(final Method method) {
@@ -247,16 +257,17 @@ public class RemoteJsonServiceGenerator extends Generator {
 		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.HTTP_REQUEST_PARAMETER_NAME_ANNOTATION
 				+ "] annotation for the parameter " + parameter);
 	}
-	
+
 	/**
 	 * Tests if the given type is a simple type ie a primitive or String.
+	 * 
 	 * @param type
 	 * @return
 	 */
-	protected boolean isSimpleType( final Type type ){
-		ObjectHelper.checkNotNull( "parameter:type", type );
-		
-		return type.isPrimitive() || type.equals( type.getGeneratorContext().getString() );
+	protected boolean isSimpleType(final Type type) {
+		ObjectHelper.checkNotNull("parameter:type", type);
+
+		return type.isPrimitive() || type.equals(type.getGeneratorContext().getString());
 	}
 
 	/**
@@ -293,12 +304,14 @@ public class RemoteJsonServiceGenerator extends Generator {
 			this.throwHttpRequestMethodAnnotationException(method);
 		}
 
-		this.getGeneratorContext().debug("After reading annotation the method " + method + " will use the invoker [" + type.getName() + "].");
+		this.getGeneratorContext().debug(
+				"After reading annotation the method " + method + " will use the invoker [" + type.getName() + "].");
 		return type;
 	}
 
 	protected void throwHttpRequestMethodAnnotationException(final Method method) {
-		throw new RemoteJsonServiceGeneratorException("The method " + method + " is missing the " + Constants.HTTP_REQUEST_METHOD_ANNOTATION + " or contains an invalid value. GET or POST");
+		throw new RemoteJsonServiceGeneratorException("The method " + method + " is missing the "
+				+ Constants.HTTP_REQUEST_METHOD_ANNOTATION + " or contains an invalid value. GET or POST");
 	}
 
 	/**
@@ -318,7 +331,8 @@ public class RemoteJsonServiceGenerator extends Generator {
 		// verify serviceInterface implements RemoteJsonService
 		final Type remoteJsonServiceType = this.getRemoteJsonService();
 		if (false == serviceInterface.isAssignableTo(remoteJsonServiceType)) {
-			this.throwIncompatibleInterfacesException("The type [" + serviceInterface + "] does not implement " + remoteJsonServiceType.getName());
+			this.throwIncompatibleInterfacesException("The type [" + serviceInterface + "] does not implement "
+					+ remoteJsonServiceType.getName());
 		}
 	}
 
@@ -354,7 +368,7 @@ public class RemoteJsonServiceGenerator extends Generator {
 	protected void throwVerifyingAsyncInterfaceException(final String message) {
 		throw new RemoteJsonServiceGeneratorException(message);
 	}
-	
+
 	protected GeneratorContext createGeneratorContext() {
 		return new GeneratorContext() {
 			protected String getGeneratedTypeNameSuffix() {

@@ -17,6 +17,7 @@ package rocket.widget.client.accordion;
 
 /**
  * This event is fired prior to a new accordion item actually being selected
+ * 
  * @author Miroslav Pokorny
  */
 public class BeforeAccordionItemSelectEvent {
@@ -25,42 +26,47 @@ public class BeforeAccordionItemSelectEvent {
 	 * The current item that is selected.
 	 */
 	private AccordionItem currentSelection;
-	
-	public AccordionItem getCurrentSelection(){
+
+	public AccordionItem getCurrentSelection() {
 		return currentSelection;
 	}
-	void setCurrentSelection( final AccordionItem currentSelection ){
+
+	void setCurrentSelection(final AccordionItem currentSelection) {
 		this.currentSelection = currentSelection;
 	}
-	
+
 	/**
 	 * The AccordionItem about to be newSelection.
 	 */
 	private AccordionItem newSelection;
-	
-	public AccordionItem getNewSelection(){
+
+	public AccordionItem getNewSelection() {
 		return newSelection;
 	}
-	void setNewSelection( final AccordionItem newSelection ){
+
+	void setNewSelection(final AccordionItem newSelection) {
 		this.newSelection = newSelection;
 	}
-	
+
 	/**
-	 * This flag indicates that the Accordion select should be ignored and not happen.
+	 * This flag indicates that the Accordion select should be ignored and not
+	 * happen.
 	 */
 	private boolean cancelled;
-	
-	boolean isCancelled(){
+
+	boolean isCancelled() {
 		return this.cancelled;
 	}
-	void setCancelled( final boolean stopSelect ){
+
+	void setCancelled(final boolean stopSelect) {
 		this.cancelled = stopSelect;
 	}
-	
+
 	/**
-	 * Invoking this method stops or ignores the new Accordion selection from happening.
+	 * Invoking this method stops or ignores the new Accordion selection from
+	 * happening.
 	 */
-	public void stop(){
-		this.setCancelled( true );
+	public void stop() {
+		this.setCancelled(true);
 	}
 }

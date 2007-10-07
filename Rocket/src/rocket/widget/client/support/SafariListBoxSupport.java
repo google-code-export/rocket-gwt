@@ -18,39 +18,39 @@ package rocket.widget.client.support;
 import com.google.gwt.user.client.Element;
 
 /**
- * TODO When upgrading GWT version replace all methods below with the inner class com.google.gwt.user.client.ui.Listbox.SafariImpl
+ * TODO When upgrading GWT version replace all methods below with the inner
+ * class com.google.gwt.user.client.ui.Listbox.SafariImpl
  */
-public class SafariListBoxSupport extends ListBoxSupport{
-	 public native void clear(Element select) /*-{
-     select.innerText = '';
-   }-*/;
+public class SafariListBoxSupport extends ListBoxSupport {
+	public native void clear(Element select) /*-{
+	 select.innerText = '';
+	 }-*/;
 
-   public native int getItemCount(Element select) /*-{
-     return select.children.length;
-   }-*/;
+	public native int getItemCount(Element select) /*-{
+	 return select.children.length;
+	 }-*/;
 
-   public native String getItemText(Element select, int index) /*-{
-     return select.children[index].text;
-   }-*/;
+	public native String getItemText(Element select, int index) /*-{
+	 return select.children[index].text;
+	 }-*/;
 
-   public native String getItemValue(Element select, int index) /*-{
-     return select.children[index].value;
-   }-*/;
+	public native String getItemValue(Element select, int index) /*-{
+	 return select.children[index].value;
+	 }-*/;
 
-   public native boolean isItemSelected(Element select, int index) /*-{
-     return select.children[index].selected;
-   }-*/;
+	public native boolean isItemSelected(Element select, int index) /*-{
+	 return select.children[index].selected;
+	 }-*/;
 
-   public native void removeItem(Element select, int index) /*-{
-     select.removeChild(select.children[index]);
-   }-*/;
+	public native void removeItem(Element select, int index) /*-{
+	 select.removeChild(select.children[index]);
+	 }-*/;
 
-   public native void setItemSelected(Element select, int index,
-                                      boolean selected) /*-{
-     select.children[index].selected = selected;
-   }-*/;
+	public native void setItemSelected(Element select, int index, boolean selected) /*-{
+	 select.children[index].selected = selected;
+	 }-*/;
 
-   public native void setValue(Element select, int index, String value) /*-{
-     select.children[index].value = value;
-   }-*/;
+	public native void setValue(Element select, int index, String value) /*-{
+	 select.children[index].value = value;
+	 }-*/;
 }

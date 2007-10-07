@@ -607,7 +607,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 		// verify that it was appended by checking bananaRules index.
 		final int newRuleIndex = rules.indexOf(rule);
-		PrimitiveHelper.checkEquals("bananaRule indexOf ", newRuleIndex, INITIAL_RULE_COUNT);
+		PrimitiveHelper.checkEquals("bananaRule indexOf ", INITIAL_RULE_COUNT, newRuleIndex);
 
 		// update the style portion of the rule...
 		final Style style = (Style) rule.getStyle();

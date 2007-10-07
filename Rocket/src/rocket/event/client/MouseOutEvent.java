@@ -19,12 +19,14 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 public class MouseOutEvent extends MouseEvent {
-	public MouseOutEvent(){}
-	
-	public MouseOutEvent asMouseOutEvent(){
+	public MouseOutEvent() {
+	}
+
+	public MouseOutEvent asMouseOutEvent() {
 		return this;
 	}
-	public Element getTo(){
-		return DOM.eventGetToElement(this.getEvent() );
+
+	public Element getTo() {
+		return DOM.eventGetToElement(this.getEvent());
 	}
 }

@@ -39,17 +39,17 @@ public class Tree extends CompositeWidget {
 	protected void beforeCreateWidget() {
 		this.setTreeListenerCollection(createTreeListenerCollection());
 	}
-	
+
 	protected Widget createWidget() {
 		final TreeItem root = this.createTreeItem();
 		this.setTreeItem(root);
 		return root;
 	}
 
-	protected String getInitialStyleName(){
+	protected String getInitialStyleName() {
 		return Constants.TREE_STYLE;
 	}
-	
+
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}

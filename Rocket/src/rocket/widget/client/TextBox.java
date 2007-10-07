@@ -26,7 +26,8 @@ import com.google.gwt.user.client.Element;
 
 /**
  * A simple widget that contains the same capabilities of the GWT Label widget
- * but also adds the ability to hijack input text and password elements from the dom.
+ * but also adds the ability to hijack input text and password elements from the
+ * dom.
  * 
  * Most of the internals have been ripped and reworked from the original GWT
  * TextBox widget.
@@ -40,9 +41,9 @@ public class TextBox extends TextEntryWidget {
 	public TextBox() {
 		super();
 	}
-	
-	public TextBox( final boolean password ){
-		super( password ? DOM.createInputPassword() : DOM.createInputText() );
+
+	public TextBox(final boolean password) {
+		super(password ? DOM.createInputPassword() : DOM.createInputText());
 	}
 
 	public TextBox(final Element element) {
@@ -50,10 +51,10 @@ public class TextBox extends TextEntryWidget {
 	}
 
 	protected void checkElement(final Element element) {
-		if( false == Dom.isInput(element, WidgetConstants.TEXTBOX_INPUT_TYPE )&& 
-			false == Dom.isInput(element, WidgetConstants.PASSWORD_TEXTBOX_INPUT_TYPE )){
-			SystemHelper.fail( "Incompatible element type passed to constructor: element: " + element );
-		}		
+		if (false == Dom.isInput(element, WidgetConstants.TEXTBOX_INPUT_TYPE)
+				&& false == Dom.isInput(element, WidgetConstants.PASSWORD_TEXTBOX_INPUT_TYPE)) {
+			SystemHelper.fail("Incompatible element type passed to constructor: element: " + element);
+		}
 	}
 
 	protected Element createElement() {
@@ -142,12 +143,13 @@ public class TextBox extends TextEntryWidget {
 	public void setTextAlignment(final TextAlignment textAligment) {
 		InlineStyle.setString(getElement(), StyleConstants.TEXT_ALIGN, textAligment.getValue());
 	}
-	
+
 	/**
 	 * Tests if this element is a password text box.
+	 * 
 	 * @return
 	 */
-	public boolean isPassword(){
-		return Dom.isInput( this.getElement(), WidgetConstants.PASSWORD_TEXTBOX_INPUT_TYPE );
+	public boolean isPassword() {
+		return Dom.isInput(this.getElement(), WidgetConstants.PASSWORD_TEXTBOX_INPUT_TYPE);
 	}
 }

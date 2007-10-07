@@ -16,10 +16,10 @@
 package rocket.event.client;
 
 public class BlurEvent extends Event {
-	public BlurEvent(){
+	public BlurEvent() {
 	}
-	
-	public BlurEvent asBlurEvent(){
+
+	public BlurEvent asBlurEvent() {
 		return this;
 	}
 }

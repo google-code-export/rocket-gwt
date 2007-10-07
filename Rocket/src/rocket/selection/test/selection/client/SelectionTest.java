@@ -63,7 +63,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		final Button button = new Button("RunTests");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				SelectionTest.this.executeTests( (TestBuilder) GWT.create( TestMethodFinder.class ));
+				SelectionTest.this.executeTests((TestBuilder) GWT.create(TestMethodFinder.class));
 			}
 		});
 		rootPanel.add(button);
@@ -71,13 +71,13 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		Dom.setFocus(button.getElement());
 	}
 
-	static interface TestMethodFinder extends TestBuilder{
+	static interface TestMethodFinder extends TestBuilder {
 		/**
 		 * @testing-testRunner rocket.selection.test.selection.client.SelectionTest
 		 */
 		abstract public List buildCandidates();
 	}
-	
+
 	/**
 	 * @testing-testMethodOrder 0
 	 */
@@ -210,7 +210,8 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		});
 		RootPanel.get().add(button);
 
-		Window.alert("Text selection has been selectively enabled and disabled, enabled text has a gray background whilst disabled text has a white background."
+		Window
+				.alert("Text selection has been selectively enabled and disabled, enabled text has a gray background whilst disabled text has a white background."
 						+ "Try selecting in both areas and then click on CONTINUE...");
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
@@ -545,7 +546,8 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		});
 		rootPanel.add(continueButton);
 
-		Window.alert("Try selecting text and then clicking on the EXTRACT button to extract the selection and append it to the bottom of the document...");
+		Window
+				.alert("Try selecting text and then clicking on the EXTRACT button to extract the selection and append it to the bottom of the document...");
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
 
@@ -586,10 +588,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		});
 		rootPanel.add(continueButton);
 
-		Window.alert("Try selecting text and then clicking on the SURROUND button to surround the selection inside a span which makes the text larger and gives it a light gray background...");
+		Window
+				.alert("Try selecting text and then clicking on the SURROUND button to surround the selection inside a span which makes the text larger and gives it a light gray background...");
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
-	
 
 	/**
 	 * @testing-testMethodOrder 14

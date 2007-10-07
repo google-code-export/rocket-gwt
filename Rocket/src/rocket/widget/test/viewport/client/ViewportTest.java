@@ -24,7 +24,6 @@ import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
 import rocket.util.client.Colour;
-import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.widget.client.Viewport;
 
@@ -97,7 +96,7 @@ public class ViewportTest implements EntryPoint {
 
 			public void onChange(final ChangeEvent event) {
 				changeEvent.increment();
-				
+
 				System.out.println("CLIENT drag moving, timestamp: " + new Date());
 				ViewportTest.this.updateCoordinatesLabel(coordinates, viewport);
 			}

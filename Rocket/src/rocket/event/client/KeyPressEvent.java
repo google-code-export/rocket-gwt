@@ -16,11 +16,11 @@
 package rocket.event.client;
 
 public class KeyPressEvent extends KeyEvent {
-	public KeyPressEvent(){
-		
+	public KeyPressEvent() {
+
 	}
-	
-	public KeyPressEvent asKeyPressEvent(){
+
+	public KeyPressEvent asKeyPressEvent() {
 		return this;
 	}
 }

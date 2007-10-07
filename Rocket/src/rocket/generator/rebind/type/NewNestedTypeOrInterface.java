@@ -23,6 +23,7 @@ import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * Convenient base class for the nested type and nested interface classes.
+ * 
  * @author Miroslav Pokorny
  */
 abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterfaceType {
@@ -71,7 +72,7 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 
 		writer.println("} // " + this.getName());
 	}
-	
+
 	protected void writeDeclaration(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
@@ -86,10 +87,10 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		}
 
 		writer.print(this.getVisibility().getJavaName());
-		writer.print( " ");
-		writer.print( this.isInterface() ? "interface" : "class");
-		writer.print( " ");
-		
+		writer.print(" ");
+		writer.print(this.isInterface() ? "interface" : "class");
+		writer.print(" ");
+
 		String name = this.getName();
 		final int lastDot = name.lastIndexOf('.');
 		name = name.substring(lastDot + 1);
@@ -97,9 +98,9 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 
 		if (this.hasSuperType()) {
 			final Type superType = this.getSuperType();
-			if( false == superType.equals( superType.getGeneratorContext().getObject() )){
+			if (false == superType.equals(superType.getGeneratorContext().getObject())) {
 				writer.print(" extends ");
-				writer.print( superType.getName());				
+				writer.print(superType.getName());
 			}
 		}
 
@@ -119,8 +120,10 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		}
 		writer.println("{");
 	}
-	
+
 	protected void log() {
-		this.getGeneratorContext().branch("Writing nested " + ( this.isInterface() ? "interface" : "class" )+ this.getName() + " enclosed type " + this.getEnclosingType().getName() );
+		this.getGeneratorContext().branch(
+				"Writing nested " + (this.isInterface() ? "interface" : "class") + this.getName() + " enclosed type "
+						+ this.getEnclosingType().getName());
 	}
 }

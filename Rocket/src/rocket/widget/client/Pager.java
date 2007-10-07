@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Pager extends CompositeWidget{
+public class Pager extends CompositeWidget {
 
 	public Pager() {
 		super();
@@ -154,17 +154,17 @@ public class Pager extends CompositeWidget{
 		return button;
 	}
 
-	protected String getPreviousButtonText(){
+	protected String getPreviousButtonText() {
 		return WidgetConstants.PAGER_PREVIOUS_BUTTON_TEXT;
 	}
-	
-	protected String getPreviousButtonStyle(){
+
+	protected String getPreviousButtonStyle() {
 		return WidgetConstants.PAGER_PREVIOUS_BUTTON_STYLE;
 	}
-	
+
 	protected Widget createNextButton() {
-		final Button button = new Button( this.getNextButtonText());
-		button.setStyleName( this.getNextButtonStyle() );
+		final Button button = new Button(this.getNextButtonText());
+		button.setStyleName(this.getNextButtonStyle());
 
 		// if already on the last page disable button
 		final int currentPage = this.getCurrentPage();
@@ -177,15 +177,14 @@ public class Pager extends CompositeWidget{
 		return button;
 	}
 
-	protected String getNextButtonText(){
+	protected String getNextButtonText() {
 		return WidgetConstants.PAGER_NEXT_BUTTON_TEXT;
 	}
-	
-	protected String getNextButtonStyle(){
+
+	protected String getNextButtonStyle() {
 		return WidgetConstants.PAGER_NEXT_BUTTON_STYLE;
 	}
-	
-	
+
 	protected Widget createPage(final int pageNumber) {
 		return this.createPage(String.valueOf(pageNumber), pageNumber);
 	}
@@ -205,11 +204,12 @@ public class Pager extends CompositeWidget{
 
 		return button;
 	}
-	
-	protected String getCurrentPageStyle(){
-		return WidgetConstants.PAGER_CURRENT_PAGE_STYLE; 
+
+	protected String getCurrentPageStyle() {
+		return WidgetConstants.PAGER_CURRENT_PAGE_STYLE;
 	}
-	protected String getOtherPagesStyle(){
+
+	protected String getOtherPagesStyle() {
 		return WidgetConstants.PAGER_GOTO_PAGE_STYLE;
 	}
 

@@ -51,8 +51,8 @@ public class LeftSideAccordionPanel extends TwoColumnAccordionPanel {
 
 		return panel;
 	}
-	
-	protected String getInitialStyleName(){		
+
+	protected String getInitialStyleName() {
 		return Constants.LEFT_SIDE_ACCORDION_PANEL_STYLE;
 	}
 

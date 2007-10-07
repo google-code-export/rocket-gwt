@@ -432,6 +432,7 @@ abstract public class GeneratorContext {
 
 	/**
 	 * Factory method which creates a new concrete type.
+	 * 
 	 * @return The new concrete type.
 	 */
 	public NewConcreteType newConcreteType() {
@@ -442,9 +443,10 @@ abstract public class GeneratorContext {
 		this.addNewType(type);
 		return type;
 	}
-	
+
 	/**
 	 * Factory method which creates a new interface type.
+	 * 
 	 * @return The new interface type.
 	 */
 	public NewInterfaceType newInterfaceType() {
@@ -454,7 +456,7 @@ abstract public class GeneratorContext {
 
 		this.addNewType(type);
 		return type;
-	}		
+	}
 
 	/**
 	 * Tests if a class has already been generated. If the class does not exist

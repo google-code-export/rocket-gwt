@@ -16,7 +16,6 @@
 package rocket.json.client;
 
 import com.google.gwt.json.client.JSONBoolean;
-import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
 
 /**
@@ -33,7 +32,7 @@ public class BooleanJsonSerializer extends JsonSerializer {
 	}
 
 	public Object readObject(final JSONValue jsonValue) {
-		return read( jsonValue ) ? Boolean.TRUE : Boolean.FALSE;
+		return read(jsonValue) ? Boolean.TRUE : Boolean.FALSE;
 	}
 
 	public JSONValue writeJson(final Object instance) {
@@ -57,7 +56,7 @@ public class BooleanJsonSerializer extends JsonSerializer {
 			break;
 		}
 
-		return value;		
+		return value;
 	}
 
 	public JSONValue writeJson(final boolean booleanValue) {

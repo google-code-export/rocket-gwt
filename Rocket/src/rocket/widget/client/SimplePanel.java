@@ -36,19 +36,19 @@ abstract public class SimplePanel extends Panel {
 	}
 
 	public void add(final Widget widget) {
-		this.oneWidgetOnlyGuard( this.getWidgetCount() );
+		this.oneWidgetOnlyGuard(this.getWidgetCount());
 
 		super.add(widget);
 	}
 
 	public void insert(final Widget widget, final int indexBefore) {
-		this.oneWidgetOnlyGuard( indexBefore );
+		this.oneWidgetOnlyGuard(indexBefore);
 
 		super.insert(widget, indexBefore);
 	}
 
-	protected void oneWidgetOnlyGuard( final int index ) {
-		if (this.getWidgetCount() > 0 || index > 0 ) {
+	protected void oneWidgetOnlyGuard(final int index) {
+		if (this.getWidgetCount() > 0 || index > 0) {
 			throw new UnsupportedOperationException("Unable to add more than one widget to this " + GWT.getTypeName(this));
 		}
 	}

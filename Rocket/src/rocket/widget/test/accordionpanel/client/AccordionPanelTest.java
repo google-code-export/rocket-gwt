@@ -56,7 +56,7 @@ public class AccordionPanelTest implements EntryPoint {
 		final AccordionPanel leftSidePanel = new LeftSideAccordionPanel();
 		completeAccordionPanel(leftSidePanel);
 		rootPanel.add(leftSidePanel);
-		
+
 		final AccordionPanel rightSidePanel = new RightSideAccordionPanel();
 		completeAccordionPanel(rightSidePanel);
 		rootPanel.add(rightSidePanel);
@@ -75,11 +75,11 @@ public class AccordionPanelTest implements EntryPoint {
 	protected void completeAccordionPanel(final AccordionPanel accordionPanel) {
 		ObjectHelper.checkNotNull("parameter:accordionPanel", accordionPanel);
 
-		String text = GWT.getTypeName( accordionPanel );
-		text = text.substring( 1 + text.lastIndexOf( '.'));
-		
+		String text = GWT.getTypeName(accordionPanel);
+		text = text.substring(1 + text.lastIndexOf('.'));
+
 		final AccordionItem item = new AccordionItem();
-		item.setCaption( text );
+		item.setCaption(text);
 		item.setContent(new HTML(this.getContent()));
 		accordionPanel.add(item);
 		accordionPanel.select(0);
@@ -90,20 +90,21 @@ public class AccordionPanelTest implements EntryPoint {
 
 		accordionPanel.addAccordionListener(new AccordionListener() {
 			public void onBeforeSelect(final BeforeAccordionItemSelectEvent event) {
-				ObjectHelper.checkNotNull( "BeforeAccordionItemSelectEvent.currentSelection", event.getCurrentSelection() );				
-				
+				ObjectHelper.checkNotNull("BeforeAccordionItemSelectEvent.currentSelection", event.getCurrentSelection());
+
 				final AccordionItem newSelection = event.getNewSelection();
 				final String caption = newSelection.getCaption();
 				final Widget content = newSelection.getContent();
-				final boolean cancel = ! Window.confirm("accordionSelected caption[" + caption + "]\ncontent: " + content + "\n ? Cancel=vetoes");
-				if( cancel ){
+				final boolean cancel = !Window.confirm("accordionSelected caption[" + caption + "]\ncontent: " + content
+						+ "\n ? Cancel=vetoes");
+				if (cancel) {
 					event.stop();
 				}
 			}
 
-			public void onSelect(final AccordionItemSelectEvent event ) {
-				ObjectHelper.checkNotNull( "AccordionItemSelectEvent.previouslySelected", event.getPreviouslySelected() );
-				
+			public void onSelect(final AccordionItemSelectEvent event) {
+				ObjectHelper.checkNotNull("AccordionItemSelectEvent.previouslySelected", event.getPreviouslySelected());
+
 				final AccordionItem selected = event.getNewSelection();
 				final String caption = selected.getCaption();
 				final HTML content = (HTML) selected.getContent();
@@ -111,9 +112,9 @@ public class AccordionPanelTest implements EntryPoint {
 			}
 		});
 	}
-	
-	String getContent(){
-		final Element element = DOM.getElementById( "Lorem");
+
+	String getContent() {
+		final Element element = DOM.getElementById("Lorem");
 		return DOM.getInnerHTML(element);
 	}
 

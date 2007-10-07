@@ -359,7 +359,7 @@ public abstract class InteractivePanel extends Composite {
 	}
 
 	protected void log(final String message) {
-		Window.alert( message );
+		Window.alert(message);
 	}
 
 	protected abstract String toString(Object element);

@@ -19,23 +19,28 @@ import com.google.gwt.user.client.rpc.RemoteService;
 
 public class Constants {
 	final static String COMET_CLIENT_SUFFIX = "__CometClient";
-	
+
 	final static String COMET_PAYLOAD_TYPE_ANNOTATION = "comet-payloadType";
-	
+
 	final static String CREATE_PROXY_METHOD = "createProxy";
-	
+
 	final static String RPC_SERVICE_INTERFACE = "__ServiceInterface";
+
 	final static String REMOTE_SERVICE = RemoteService.class.getName();
-	
+
 	final static String RPC_ASYNC_SERVICE_INTERFACE = RPC_SERVICE_INTERFACE + "Async";
+
 	final static String ASYNC_CALLBACK = AsyncCallback.class.getName();
+
 	final static String ASYNC_CALLBACK_PARAMETER_NAME = "callback";
-	
+
 	final static String CREATE_PROXY_TEMPLATE = "create-proxy.txt";
+
 	final static String CREATE_PROXY_BEAN_TYPE = "beanType";
-	
+
 	final static String PAYLOAD_DECLARATION_METHOD = "__dummy";
-	
+
 	final static String PROXY_CREATOR = "com.google.gwt.user.rebind.rpc.ProxyCreator";
+
 	final static String CUSTOMISED_PROXY_CREATOR_MARKER_FIELD = "ROCKET";
 }

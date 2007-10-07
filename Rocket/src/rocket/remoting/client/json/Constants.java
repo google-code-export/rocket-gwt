@@ -30,8 +30,7 @@ class Constants {
 	final static String POST_CONTENT_TYPE = "application/x-www-form-urlencoded";
 
 	final static String CONTENT_LENGTH_HEADER = "Content-Length";
-	
+
 	final static String JSON_RPC_CONTENT_TYPE = "application/json";
-	
-	
+
 }

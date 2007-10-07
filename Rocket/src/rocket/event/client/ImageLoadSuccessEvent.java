@@ -16,12 +16,11 @@
 package rocket.event.client;
 
 public class ImageLoadSuccessEvent extends Event {
-	public ImageLoadSuccessEvent(){
-		
+	public ImageLoadSuccessEvent() {
+
 	}
-	
-	public ImageLoadSuccessEvent asImageLoadSuccessEvent(){
+
+	public ImageLoadSuccessEvent asImageLoadSuccessEvent() {
 		return this;
 	}
 }
-

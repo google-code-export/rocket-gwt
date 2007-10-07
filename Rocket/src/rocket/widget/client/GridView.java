@@ -20,12 +20,10 @@ import java.util.Map;
 
 import rocket.dom.client.Dom;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -112,7 +110,7 @@ abstract public class GridView extends CompositeWidget {
 
 		final Grid.CellFormatter cellFormatter = table.getCellFormatter();
 		final String gridViewCellStyle = this.getCellStyle();
-		
+
 		int lastValidIndex = Integer.MIN_VALUE;
 		for (int r = 0; r < rows; r++) {
 			for (int c = 0; c < columns; c++) {
@@ -127,7 +125,7 @@ abstract public class GridView extends CompositeWidget {
 
 					if (cellIndex < first || cellIndex >= last) {
 						cellWidget = this.createFillerWidget();
-						cellWidget.addStyleName( this.getFillerStyle() );
+						cellWidget.addStyleName(this.getFillerStyle());
 						cellWidget = new GridCell(cellWidget, cellIndex);
 						break;
 					}
@@ -137,7 +135,7 @@ abstract public class GridView extends CompositeWidget {
 					lastValidIndex = cellIndex;
 					break;
 				}
-				cellFormatter.addStyleName(r, c, gridViewCellStyle );
+				cellFormatter.addStyleName(r, c, gridViewCellStyle);
 				table.setWidget(r, c, cellWidget);
 			}
 		}
@@ -148,15 +146,17 @@ abstract public class GridView extends CompositeWidget {
 	private String buildKey(final int cellIndex) {
 		return "" + cellIndex;
 	}
-	
-	protected String getCellStyle(){
+
+	protected String getCellStyle() {
 		return WidgetConstants.GRIDVIEW_CELL_STYLE;
 	}
 
 	abstract protected int getFirst();
+
 	abstract protected int getLast();
-	abstract protected Widget createCellWidget( int index );
-	
+
+	abstract protected Widget createCellWidget(int index);
+
 	/**
 	 * This panel encloses the widget placed in a cell. It contains an extra
 	 * property that records the index of the cell.
@@ -266,7 +266,7 @@ abstract public class GridView extends CompositeWidget {
 
 	abstract protected Widget createFillerWidget();
 
-	protected String getFillerStyle(){
+	protected String getFillerStyle() {
 		return WidgetConstants.GRIDVIEW_FILLER_STYLE;
 	}
 

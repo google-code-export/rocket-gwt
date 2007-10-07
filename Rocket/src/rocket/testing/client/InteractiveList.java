@@ -431,8 +431,8 @@ public abstract class InteractiveList extends Composite {
 
 	protected void log(final String message) {
 		StringHelper.checkNotEmpty("parameter:message", message);
-	
-		Window.alert( message );
+
+		Window.alert(message);
 	}
 
 	protected abstract String toString(Object element);

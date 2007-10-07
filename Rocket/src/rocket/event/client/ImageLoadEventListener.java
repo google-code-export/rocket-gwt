@@ -16,6 +16,7 @@
 package rocket.event.client;
 
 public interface ImageLoadEventListener {
-	void onSuccess( ImageLoadSuccessEvent event );
-	void onFailed( ImageLoadFailedEvent event );
+	void onSuccess(ImageLoadSuccessEvent event);
+
+	void onFailed(ImageLoadFailedEvent event);
 }

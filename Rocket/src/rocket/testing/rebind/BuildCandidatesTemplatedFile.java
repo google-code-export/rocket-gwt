@@ -40,7 +40,7 @@ public class BuildCandidatesTemplatedFile extends TemplatedCodeBlock {
 	public BuildCandidatesTemplatedFile() {
 		super();
 		setNative(false);
-		this.setTestMethods( this.createTestMethods() );
+		this.setTestMethods(this.createTestMethods());
 	}
 
 	protected InputStream getInputStream() {
@@ -105,22 +105,22 @@ public class BuildCandidatesTemplatedFile extends TemplatedCodeBlock {
 			}
 		};
 	}
-	
+
 	/**
 	 * A reference to the test being run.
 	 */
 	private Type testRunner;
-	
-	protected Type getTestRunner(){
-		ObjectHelper.checkNotNull("field:testRunner", testRunner );
+
+	protected Type getTestRunner() {
+		ObjectHelper.checkNotNull("field:testRunner", testRunner);
 		return this.testRunner;
 	}
 
-	public void setTestRunner( final Type testRunner ){
-		ObjectHelper.checkNotNull("parameter:testRunner", testRunner );
+	public void setTestRunner(final Type testRunner) {
+		ObjectHelper.checkNotNull("parameter:testRunner", testRunner);
 		this.testRunner = testRunner;
 	}
-	
+
 	protected Object getValue0(final String name) {
 		Object value = null;
 		if (Constants.BUILD_CANDIDATES_ADD_TESTS.equals(name)) {

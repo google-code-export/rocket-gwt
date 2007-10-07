@@ -19,15 +19,15 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 public class MouseOverEvent extends MouseEvent {
-	public MouseOverEvent(){
-		
+	public MouseOverEvent() {
+
 	}
-	
-	public MouseOverEvent asMouseOverEvent(){
+
+	public MouseOverEvent asMouseOverEvent() {
 		return this;
 	}
-	
-	public Element getFrom(){
-		return DOM.eventGetFromElement(this.getEvent() );
+
+	public Element getFrom() {
+		return DOM.eventGetFromElement(this.getEvent());
 	}
 }

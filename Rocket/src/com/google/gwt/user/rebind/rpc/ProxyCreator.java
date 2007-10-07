@@ -62,8 +62,9 @@ import com.google.gwt.user.server.rpc.SerializationPolicyLoader;
  */
 class ProxyCreator {
 	/**
-	 * TODO This is a hack and used by the CometGenerator to verify that the customised ProxyCreator is actually being
-	 * used rather than the vanilla version.
+	 * TODO This is a hack and used by the CometGenerator to verify that the
+	 * customised ProxyCreator is actually being used rather than the vanilla
+	 * version.
 	 */
 	public final static boolean ROCKET = true;
 
@@ -106,7 +107,8 @@ class ProxyCreator {
 
 		TypeOracle typeOracle = context.getTypeOracle();
 
-		// Make sure that the async and synchronous versions of the RemoteService
+		// Make sure that the async and synchronous versions of the
+		// RemoteService
 		// agree with one another
 		//
 		RemoteServiceAsyncValidator rsav = new RemoteServiceAsyncValidator(logger, typeOracle);
@@ -128,14 +130,14 @@ class ProxyCreator {
 		generateServiceDefTargetImpl(srcWriter);
 
 		generateProxyMethods(srcWriter, sto);
-		
+
 		this.generateHasSerializerMethod(srcWriter); // ROCKET
 
 		srcWriter.commit(logger);
 
 		return getProxyQualifiedName();
 	}
-	
+
 	/**
 	 * THis method inserts the getter which exposes the serializer accompanying
 	 * the generated proxy. This getter is required by the comet module to help
@@ -158,8 +160,8 @@ class ProxyCreator {
 
 	/*
 	 * Given a type emit an expression for calling the correct
-	 * SerializationStreamReader method which reads the corresponding instance out
-	 * of the stream.
+	 * SerializationStreamReader method which reads the corresponding instance
+	 * out of the stream.
 	 */
 	protected final void generateDecodeCall(SourceWriter w, JType type) {
 		w.print("streamReader.");
@@ -382,7 +384,8 @@ class ProxyCreator {
 		className = className.replace('$', '.');
 		w.indentln("throw new " + className + "();");
 
-		// Generate code to describe just enough meta data for the server to locate
+		// Generate code to describe just enough meta data for the server to
+		// locate
 		// the service definition class and resolve the method overload.
 		//
 		w.println("streamWriter.prepareToWrite();");
@@ -439,8 +442,8 @@ class ProxyCreator {
 	}
 
 	/**
-	 * Implements the ServiceDefTarget interface to allow clients to switch which
-	 * back-end service definition we send calls to.
+	 * Implements the ServiceDefTarget interface to allow clients to switch
+	 * which back-end service definition we send calls to.
 	 */
 	private void generateServiceDefTargetImpl(SourceWriter w) {
 		String serverDefName = getDefaultServiceDefName();
@@ -472,8 +475,8 @@ class ProxyCreator {
 	}
 
 	/*
-	 * Determine the name of the object wrapper class to instantiate based on the
-	 * the type of the primitive.
+	 * Determine the name of the object wrapper class to instantiate based on
+	 * the the type of the primitive.
 	 */
 	private String getObjectWrapperName(JPrimitiveType primitive) {
 		if (primitive == JPrimitiveType.INT) {
@@ -521,7 +524,7 @@ class ProxyCreator {
 		composerFactory.addImplementedInterface(getAsyncIntfQualifiedName());
 
 		composerFactory.addImplementedInterface(HasSerializer.class.getName()); // ROCKET
-		
+
 		return composerFactory.createSourceWriter(ctx, printWriter);
 	}
 

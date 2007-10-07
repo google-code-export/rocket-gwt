@@ -15,24 +15,24 @@
  */
 package rocket.event.client;
 
-
 abstract class EventDispatcher {
 
 	/**
-	 * This method is invoked before dispatching the event to the appropriate method. 
+	 * This method is invoked before dispatching the event to the appropriate
+	 * method.
+	 * 
 	 * @param event
 	 */
-	protected void beforeDispatching( final Event event ){		
+	protected void beforeDispatching(final Event event) {
 	}
-	
-	protected void dispatch( final Event event ){
+
+	protected void dispatch(final Event event) {
 		while (true) {
 
-			
-			if( event.isCancelled() ){
+			if (event.isCancelled()) {
 				break;
 			}
-			
+
 			final MouseClickEvent mouseClickEvent = event.asMouseClickEvent();
 			if (mouseClickEvent != null) {
 				this.onMouseClick(mouseClickEvent);
@@ -127,9 +127,9 @@ abstract class EventDispatcher {
 
 			break;
 		}
-		
+
 	}
-	
+
 	protected void onMouseClick(final MouseClickEvent event) {
 	}
 
@@ -180,11 +180,13 @@ abstract class EventDispatcher {
 
 	protected void onScroll(final ScrollEvent event) {
 	}
-	
+
 	/**
-	 * This method is invoked after the event is dispatched to one of the overloaded protected methods even if the event is cancelled.
+	 * This method is invoked after the event is dispatched to one of the
+	 * overloaded protected methods even if the event is cancelled.
+	 * 
 	 * @param event
 	 */
-	protected void afterDispatching( final Event event ){		
-	}	
+	protected void afterDispatching(final Event event) {
+	}
 }

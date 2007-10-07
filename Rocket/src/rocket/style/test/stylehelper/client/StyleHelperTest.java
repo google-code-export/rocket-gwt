@@ -59,15 +59,15 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 		final Button button = new Button("Run Tests");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				StyleHelperTest.this.executeTests((TestBuilder) GWT.create( TestMethodFinder.class ));
+				StyleHelperTest.this.executeTests((TestBuilder) GWT.create(TestMethodFinder.class));
 			}
 		});
 		RootPanel.get().add(button);
 
 		button.setFocus(true);
 	}
-	
-	static interface TestMethodFinder extends TestBuilder{
+
+	static interface TestMethodFinder extends TestBuilder {
 		/**
 		 * @testing-testRunner rocket.style.test.stylehelper.client.StyleHelperTest
 		 */
@@ -119,6 +119,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 
 		Test.assertEquals("apple banana carrot dog", DOM.getElementProperty(element, StyleConstants.CLASS_NAME));
 	}
+
 	/**
 	 * @testing-testMethodOrder 4
 	 */
@@ -517,6 +518,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 		final String expectedContentHeight = height + "px";
 		Test.assertEquals(expectedContentHeight, actualContentHeight);
 	}
+
 	/**
 	 * @testing-testMethodOrder 18
 	 */
@@ -610,6 +612,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 		final float expected = Math.round(input / 96f * 25.4f);
 		Test.assertEquals(expected, actual, 0.75f);
 	}
+
 	/**
 	 * @testing-testMethodOrder 25
 	 */
@@ -1563,6 +1566,7 @@ public class StyleHelperTest extends WebPageTestRunner implements EntryPoint {
 		Window.alert("An element with a olive background has been fixed to the top/left try scrolling and then click on CONTINUE...");
 		StyleHelperTest.postponeCurrentTest(POSTPONE_DELAY);
 	}
+
 	/**
 	 * @testing-testMethodOrder 68
 	 */

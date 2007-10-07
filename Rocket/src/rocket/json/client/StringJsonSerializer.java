@@ -16,7 +16,6 @@
 package rocket.json.client;
 
 import com.google.gwt.json.client.JSONNull;
-import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 

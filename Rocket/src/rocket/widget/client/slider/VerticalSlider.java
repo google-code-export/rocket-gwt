@@ -29,8 +29,8 @@ public class VerticalSlider extends Slider {
 	public VerticalSlider() {
 		super();
 	}
-	
-	protected String getInitialStyleName(){
+
+	protected String getInitialStyleName() {
 		return Constants.VERTICAL_SLIDER_STYLE;
 	}
 

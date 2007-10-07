@@ -52,12 +52,12 @@ public class TabPanelTest implements EntryPoint {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
 				caught.printStackTrace();
-				Window.alert( caught.getMessage() + "\n" + StackTrace.asString( caught ));
+				Window.alert(caught.getMessage() + "\n" + StackTrace.asString(caught));
 			}
 		});
 
 		final RootPanel rootPanel = RootPanel.get();
-		
+
 		final TabPanel topPanel = new TopTabPanel();
 		completeTabPanel(topPanel);
 		rootPanel.add(topPanel);
@@ -72,7 +72,7 @@ public class TabPanelTest implements EntryPoint {
 
 		final TabPanel rightPanel = new RightTabPanel();
 		completeTabPanel(rightPanel);
-		rootPanel.add(rightPanel);			
+		rootPanel.add(rightPanel);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class TabPanelTest implements EntryPoint {
 		final TabItem item = new TabItem();
 		item.setCaption("Unremovable TabItem");
 		item.setContent(new HTML(TabPanelTest.createContent()));
-		addTabItemWidgets( item );
+		addTabItemWidgets(item);
 		tabPanel.add(item, false);
 		tabPanel.select(0);
 
@@ -98,34 +98,34 @@ public class TabPanelTest implements EntryPoint {
 		RootPanel.get().add(control);
 
 		tabPanel.addTabListener(new TabListener() {
-			public void onBeforeTabSelect(final BeforeTabSelectEvent event ) {
-				ObjectHelper.checkNotNull( "TabSelectEvent.currentSelection", event.getCurrentSelection() );
-				
+			public void onBeforeTabSelect(final BeforeTabSelectEvent event) {
+				ObjectHelper.checkNotNull("TabSelectEvent.currentSelection", event.getCurrentSelection());
+
 				final TabItem item = event.getNewSelection();
 				final String caption = item.getCaption();
-				final boolean stop = ! Window.confirm("tabSelected caption[" + caption + "]\n ? Cancel=vetoes");
-				if( stop ){
+				final boolean stop = !Window.confirm("tabSelected caption[" + caption + "]\n ? Cancel=vetoes");
+				if (stop) {
 					event.stop();
 				}
 			}
 
-			public void onTabSelect(final TabSelectEvent event ) {
-				ObjectHelper.checkNotNull( "TabSelectEvent.previouslySelected", event.getPreviouslySelected() );
+			public void onTabSelect(final TabSelectEvent event) {
+				ObjectHelper.checkNotNull("TabSelectEvent.previouslySelected", event.getPreviouslySelected());
 				final TabItem item = event.getCurrentSelection();
 				final String caption = item.getCaption();
 				control.log("tabSelected caption[" + caption + "]");
 			}
 
-			public void onBeforeTabClose(final BeforeTabCloseEvent event ) {
+			public void onBeforeTabClose(final BeforeTabCloseEvent event) {
 				final TabItem item = event.getClosing();
 				final String caption = item.getCaption();
-				final boolean stop = ! Window.confirm("beforeTabClosed caption[" + caption + "]\n ? Cancel=vetoes");
-				if( stop ){
+				final boolean stop = !Window.confirm("beforeTabClosed caption[" + caption + "]\n ? Cancel=vetoes");
+				if (stop) {
 					event.stop();
 				}
 			}
 
-			public void onTabClose(final TabCloseEvent event ) {
+			public void onTabClose(final TabCloseEvent event) {
 				final TabItem item = event.getClosed();
 				final String caption = item.getCaption();
 				control.log("tabClosed [" + caption + "]");
@@ -134,9 +134,9 @@ public class TabPanelTest implements EntryPoint {
 	}
 
 	final static String createContent() {
-		final Element element = DOM.getElementById( "lorem");
-		ObjectHelper.checkNotNull("hidden div with lorem text", element );
-		return DOM.getInnerHTML( element );
+		final Element element = DOM.getElementById("lorem");
+		ObjectHelper.checkNotNull("hidden div with lorem text", element);
+		return DOM.getInnerHTML(element);
 	}
 
 	class InterativeList extends rocket.testing.client.InteractiveList {
@@ -189,10 +189,9 @@ public class TabPanelTest implements EntryPoint {
 			item.setCaption("" + System.currentTimeMillis());
 			item.setContent(new HTML(TabPanelTest.createContent()));
 
-			addTabItemWidgets( item );
+			addTabItemWidgets(item);
 			return item;
 		}
-	
 
 		protected Iterator listIterator() {
 			return this.getTabPanel().iterator();
@@ -235,21 +234,22 @@ public class TabPanelTest implements EntryPoint {
 		}
 	}
 
-	void addTabItemWidgets( final TabItem tabItem ){
-		tabItem.addTabWidget( createTabItemWidget( "application_form_magnify.png", "1st icon before"), false);
-		tabItem.addTabWidget( createTabItemWidget( "application_get.png", "2nd icon before"), false);
-		tabItem.addTabWidget( createTabItemWidget( "application_go.png", "1st icon after" ), true);;
-		tabItem.addTabWidget( createTabItemWidget( "application_home.png", "2nd icon after"), true);
+	void addTabItemWidgets(final TabItem tabItem) {
+		tabItem.addTabWidget(createTabItemWidget("application_form_magnify.png", "1st icon before"), false);
+		tabItem.addTabWidget(createTabItemWidget("application_get.png", "2nd icon before"), false);
+		tabItem.addTabWidget(createTabItemWidget("application_go.png", "1st icon after"), true);
+		;
+		tabItem.addTabWidget(createTabItemWidget("application_home.png", "2nd icon after"), true);
 	}
-	
-	HTML createTabItemWidget( final String url, final String altText ){
+
+	HTML createTabItemWidget(final String url, final String altText) {
 		final HTML html = new HTML();
-		html.addClickListener( new ClickListener(){
-			public void onClick( final Widget sender ){
-				Window.alert( "Click!");
+		html.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				Window.alert("Click!");
 			}
 		});
-		html.setHTML( "<img src=\"" + url +"\" alt=\"" + altText + "\">");
+		html.setHTML("<img src=\"" + url + "\" alt=\"" + altText + "\">");
 		return html;
-	}	
+	}
 }

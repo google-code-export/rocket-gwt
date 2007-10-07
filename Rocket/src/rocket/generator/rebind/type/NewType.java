@@ -47,10 +47,10 @@ public interface NewType extends Type, CodeGenerator {
 	NewNestedType newNestedType();
 
 	void addNestedType(NewNestedType type);
-	
+
 	void addNestedInterfaceType(NewNestedInterfaceType type);
 
 	NewAnonymousNestedType newAnonymousNestedType();
-	
+
 	NewNestedInterfaceType newNestedInterfaceType();
 }

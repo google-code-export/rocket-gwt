@@ -54,20 +54,20 @@ class TabListenerCollection {
 	}
 
 	// TODO accept event not TabItem
-	public void fireBeforeTabSelected(final BeforeTabSelectEvent event ) {	
+	public void fireBeforeTabSelected(final BeforeTabSelectEvent event) {
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final TabListener listener = (TabListener) listeners.next();
-			listener.onBeforeTabSelect( event );
-			
-			if ( event.isCancelled() ) {
+			listener.onBeforeTabSelect(event);
+
+			if (event.isCancelled()) {
 				break;
 			}
 		}
 	}
 
-	public void fireTabSelected(final TabSelectEvent event ){				
+	public void fireTabSelected(final TabSelectEvent event) {
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
@@ -76,20 +76,20 @@ class TabListenerCollection {
 		}
 	}
 
-	public void fireBeforeTabClosed(final BeforeTabCloseEvent event ){		
+	public void fireBeforeTabClosed(final BeforeTabCloseEvent event) {
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
 			final TabListener listener = (TabListener) listeners.next();
 			listener.onBeforeTabClose(event);
-			
-			if( event.isCancelled() ){
+
+			if (event.isCancelled()) {
 				break;
-			}			
+			}
 		}
 	}
 
-	public void fireTabClosed(final TabCloseEvent event ){
+	public void fireTabClosed(final TabCloseEvent event) {
 		final Iterator listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {

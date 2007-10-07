@@ -406,14 +406,14 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		assertNull(instance.field);
 	}
 
-	public void testReadNullStringField(){
+	public void testReadNullStringField() {
 		final JSONObject jsonObject = new JSONObject();
-		jsonObject.put("field", JSONNull.getInstance() );
-		
+		jsonObject.put("field", JSONNull.getInstance());
+
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithStringField.class);
 		final ClassWithStringField instance = (ClassWithStringField) serializer.readObject(jsonObject);
 
-		assertNull(instance.field);		
+		assertNull(instance.field);
 	}
 
 	public void testWriteNullStringField() {
@@ -462,16 +462,17 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		String field;
 	}
 
-	public void testReadInstanceWithNullField(){
+	public void testReadInstanceWithNullField() {
 		final JSONObject outter = new JSONObject();
-		outter.put("inner", null );
+		outter.put("inner", null);
 
 		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithAnotherClassField.class);
 		final ClassWithAnotherClassField instance = (ClassWithAnotherClassField) serializer.readObject(outter);
 
 		assertNull(instance.inner);
 	}
-	public void testWriteInstanceWithNullField(){
+
+	public void testWriteInstanceWithNullField() {
 		final ClassWithAnotherClassField outter = new ClassWithAnotherClassField();
 		outter.inner = null;
 
@@ -483,7 +484,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		final JSONObject jsonObjectInner = jsonObjectOutter.get("inner").isObject();
 		assertNull(jsonObjectInner);
 	}
-	
+
 	public void testReadGraph() {
 		final String value = "apple";
 
@@ -501,6 +502,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		assertNotNull(instance.inner);
 		assertEquals(value, instance.inner.field);
 	}
+
 	public void testWriteGraph() {
 		final String value = "apple";
 
@@ -1588,11 +1590,11 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		assertEquals(2, jsonArray.size());
 
 		final Set actual = new HashSet();
-		actual.add( jsonArray.get(0).isObject().get("set").isString().stringValue() );
-		actual.add( jsonArray.get(1).isObject().get("set").isString().stringValue() );	
-		
-		assertTrue("apple", actual.contains( "apple"));
-		assertTrue("banana", actual.contains( "banana"));
+		actual.add(jsonArray.get(0).isObject().get("set").isString().stringValue());
+		actual.add(jsonArray.get(1).isObject().get("set").isString().stringValue());
+
+		assertTrue("apple", actual.contains("apple"));
+		assertTrue("banana", actual.contains("banana"));
 	}
 
 	static class ClassWithObjectSet implements JsonSerializable {

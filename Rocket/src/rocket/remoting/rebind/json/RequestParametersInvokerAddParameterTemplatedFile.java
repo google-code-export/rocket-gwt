@@ -25,7 +25,8 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 /**
- * An abstraction for the request-parameters-transport-invoker-add-parameter template
+ * An abstraction for the request-parameters-transport-invoker-add-parameter
+ * template
  * 
  * @author Miroslav Pokorny
  */

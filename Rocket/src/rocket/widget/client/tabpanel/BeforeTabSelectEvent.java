@@ -17,6 +17,7 @@ package rocket.widget.client.tabpanel;
 
 /**
  * This event is fired prior to a tab selection happening.
+ * 
  * @author Miroslav Pokorny
  */
 public class BeforeTabSelectEvent {
@@ -25,42 +26,46 @@ public class BeforeTabSelectEvent {
 	 * The current selection
 	 */
 	private TabItem currentSelection;
-	
-	public TabItem getCurrentSelection(){
+
+	public TabItem getCurrentSelection() {
 		return currentSelection;
 	}
-	void setCurrentSelection( final TabItem currentSelection ){
+
+	void setCurrentSelection(final TabItem currentSelection) {
 		this.currentSelection = currentSelection;
 	}
-	
+
 	/**
 	 * The tabItem about to be newSelection.
 	 */
 	private TabItem newSelection;
-	
-	public TabItem getNewSelection(){
+
+	public TabItem getNewSelection() {
 		return newSelection;
 	}
-	void setNewSelection( final TabItem newSelection ){
+
+	void setNewSelection(final TabItem newSelection) {
 		this.newSelection = newSelection;
 	}
-		
+
 	/**
 	 * This flag indicates that the tab select should be ignored and not happen.
 	 */
 	private boolean cancelled;
-	
-	boolean isCancelled(){
+
+	boolean isCancelled() {
 		return this.cancelled;
 	}
-	void setCancelled( final boolean cancelled ){
+
+	void setCancelled(final boolean cancelled) {
 		this.cancelled = cancelled;
 	}
-	
+
 	/**
-	 * Invoking this method stops or ignores the new tab selection from happening.
+	 * Invoking this method stops or ignores the new tab selection from
+	 * happening.
 	 */
-	public void stop(){
-		this.setCancelled( true );
+	public void stop() {
+		this.setCancelled(true);
 	}
 }

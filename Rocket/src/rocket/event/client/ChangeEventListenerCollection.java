@@ -18,23 +18,23 @@ package rocket.event.client;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ChangeEventListenerCollection extends ListenerCollection {
-	public void add( final ChangeEventListener listener ){
-		super.add( listener );
+	public void add(final ChangeEventListener listener) {
+		super.add(listener);
 	}
-	public boolean remove( final ChangeEventListener listener ){
-		return super.remove( listener );
+
+	public boolean remove(final ChangeEventListener listener) {
+		return super.remove(listener);
 	}
-	
-	public void fireChange( final Widget sender ){
-		this.fireChange( (ChangeEvent) Event.getEvent( sender , EventBitMaskConstants.CHANGE ));
+
+	public void fireChange(final Widget sender) {
+		this.fireChange((ChangeEvent) Event.getEvent(sender, EventBitMaskConstants.CHANGE));
 	}
-	
-	
-	public void fireChange( final ChangeEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final ChangeEventListener listener0 = (ChangeEventListener)listener;
-				listener0.onChange( event );
+
+	public void fireChange(final ChangeEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final ChangeEventListener listener0 = (ChangeEventListener) listener;
+				listener0.onChange(event);
 			}
 		});
 	}

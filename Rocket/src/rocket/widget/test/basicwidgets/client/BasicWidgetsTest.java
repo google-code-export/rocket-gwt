@@ -71,37 +71,32 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
+
 public class BasicWidgetsTest implements EntryPoint {
 
 	final static String TEXTBOX_ID = "textBox";
 
-	final static String TEXTBOX_HTML_FRAGMENT = "<input id=\"" + TEXTBOX_ID
-			+ "\" type=\"text\" value=\"hijacked\">";
+	final static String TEXTBOX_HTML_FRAGMENT = "<input id=\"" + TEXTBOX_ID + "\" type=\"text\" value=\"hijacked\">";
 
 	final static String PASSWORD_ID = "password";
 
-	final static String PASSWORD_HTML_FRAGMENT = "<input id=\"" + PASSWORD_ID
-			+ "\" type=\"password\" value=\"hijacked\">";
+	final static String PASSWORD_HTML_FRAGMENT = "<input id=\"" + PASSWORD_ID + "\" type=\"password\" value=\"hijacked\">";
 
 	final static String TEXTAREA_ID = "textArea";
 
-	final static String TEXTAREA_HTML_FRAGMENT = "<textarea id=\""
-			+ TEXTAREA_ID + "\" rows=\"3\" cols=\"10\">Lorem</textarea>";
+	final static String TEXTAREA_HTML_FRAGMENT = "<textarea id=\"" + TEXTAREA_ID + "\" rows=\"3\" cols=\"10\">Lorem</textarea>";
 
 	final static String RADIO_BUTTON_ID = "radioButton";
 
-	final static String RADIO_BUTTON_HTML_FRAGMENT = "<input id=\""
-			+ RADIO_BUTTON_ID + "\" type=\"radio\" value=\"hijacked\">";
+	final static String RADIO_BUTTON_HTML_FRAGMENT = "<input id=\"" + RADIO_BUTTON_ID + "\" type=\"radio\" value=\"hijacked\">";
 
 	final static String CHECKBOX_ID = "checkBox";
 
-	final static String CHECKBOX_HTML_FRAGMENT = "<input id=\"" + CHECKBOX_ID
-			+ "\" type=\"checkbox\" value=\"hijacked\">";
+	final static String CHECKBOX_HTML_FRAGMENT = "<input id=\"" + CHECKBOX_ID + "\" type=\"checkbox\" value=\"hijacked\">";
 
 	final static String LISTBOX_ID = "listBox";
 
-	final static String LISTBOX_HTML_FRAGMENT = "<select id=\""
-			+ LISTBOX_ID
+	final static String LISTBOX_HTML_FRAGMENT = "<select id=\"" + LISTBOX_ID
 			+ "\">\n<option>foo</option>\n<option>bar</option>\n<option>baz</option>\n</select>";
 
 	final static String IMAGE_ID = "image";
@@ -110,25 +105,21 @@ public class BasicWidgetsTest implements EntryPoint {
 
 	final static String IMAGE2_URL = "tomato.jpg"; // Thanx wikipedia!
 
-	final static String IMAGE_HTML_FRAGMENT = "<img id=\"" + IMAGE_ID
-			+ "\" src=\"" + IMAGE1_URL + "\">";
+	final static String IMAGE_HTML_FRAGMENT = "<img id=\"" + IMAGE_ID + "\" src=\"" + IMAGE1_URL + "\">";
 
 	final static String HTML_ID = "html";
 
-	final static String HTML_HTML_FRAGMENT = "<div id=\""
-			+ HTML_ID
+	final static String HTML_HTML_FRAGMENT = "<div id=\"" + HTML_ID
 			+ "\">\n\tLorem <b>ipsum <i>dolor</i> sit amet</b>, consectetur <u>adipisicing</u> elit\n</div>";
 
 	final static String LABEL_ID = "label";
 
-	final static String LABEL_HTML_FRAGMENT = "<span id=\""
-			+ LABEL_ID
+	final static String LABEL_HTML_FRAGMENT = "<span id=\"" + LABEL_ID
 			+ "\">\tLorem ipsum dolor sit amet, consectetur adipisicing elit</span>";
 
 	final static String HYPERLINK_ID = "hyperlink";
 
-	final static String HYPERLINK_HTML_FRAGMENT = "<a id=\"" + HYPERLINK_ID
-			+ "\">click here</a>";
+	final static String HYPERLINK_HTML_FRAGMENT = "<a id=\"" + HYPERLINK_ID + "\">click here</a>";
 
 	final static String BUTTON_ID = "button";
 
@@ -136,44 +127,37 @@ public class BasicWidgetsTest implements EntryPoint {
 
 	final static String SUBMIT_BUTTON_ID = "submit";
 
-	final static String BUTTON_HTML_FRAGMENT = "<button id=\""
-			+ BUTTON_ID
-			+ "\">click here(true button)</button>\n<input type=\"reset\" id=\""
-			+ RESET_BUTTON_ID
-			+ "\" value=\"click here(reset)\" />\n<input type=\"submit\" id=\""
-			+ SUBMIT_BUTTON_ID + "\" value=\"click here(submit)\" />";
+	final static String BUTTON_HTML_FRAGMENT = "<button id=\"" + BUTTON_ID
+			+ "\">click here(true button)</button>\n<input type=\"reset\" id=\"" + RESET_BUTTON_ID
+			+ "\" value=\"click here(reset)\" />\n<input type=\"submit\" id=\"" + SUBMIT_BUTTON_ID + "\" value=\"click here(submit)\" />";
 
 	final static String FORM_PANEL_ID = "form";
 
 	final static String HIDDEN_ID = "hidden";
 
-	final static String HIDDEN_HTML_FRAGMENT = "<input id=\"" + HIDDEN_ID
-			+ "\" name=\"" + HIDDEN_ID + "\" type=\"hidden\" value=\"hidden\">";
+	final static String HIDDEN_HTML_FRAGMENT = "<input id=\"" + HIDDEN_ID + "\" name=\"" + HIDDEN_ID
+			+ "\" type=\"hidden\" value=\"hidden\">";
 
 	final static String FILE_ID = "file";
 
-	final static String FILE_HTML_FRAGMENT = "<input id=\"" + FILE_ID
-			+ "\" name=\"" + FILE_ID + "\" type=\"file\">";
+	final static String FILE_HTML_FRAGMENT = "<input id=\"" + FILE_ID + "\" name=\"" + FILE_ID + "\" type=\"file\">";
 
-	final static String SUBMIT_URL = Browser.getContextPath()
-			+ "/echo";
+	final static String SUBMIT_URL = Browser.getContextPath() + "/echo";
 
 	final static String FP_TEXTBOX_ID = "formTextBox";
 
-	final static String FP_TEXTBOX_HTML_FRAGMENT = "<input id=\""
-			+ FP_TEXTBOX_ID + "\" name=\"" + FP_TEXTBOX_ID + "\" type=\"text\" value=\"text\">";
+	final static String FP_TEXTBOX_HTML_FRAGMENT = "<input id=\"" + FP_TEXTBOX_ID + "\" name=\"" + FP_TEXTBOX_ID
+			+ "\" type=\"text\" value=\"text\">";
 
-	final static String FP_TEXTBOX_UPLOAD_URL = Browser.getContextPath()
-			+ "/fileUpload";
+	final static String FP_TEXTBOX_UPLOAD_URL = Browser.getContextPath() + "/fileUpload";
 
-	final static String FORM_PANEL_HTML_FRAGMENT = "<form id=\""
-			+ FORM_PANEL_ID + "\">" + FILE_HTML_FRAGMENT + HIDDEN_HTML_FRAGMENT
+	final static String FORM_PANEL_HTML_FRAGMENT = "<form id=\"" + FORM_PANEL_ID + "\">" + FILE_HTML_FRAGMENT + HIDDEN_HTML_FRAGMENT
 			+ FP_TEXTBOX_HTML_FRAGMENT + "</form>";
 
 	static final String ENCODING_URLENCODED = "application/x-www-form-urlencoded";
 
 	static final String MULTIPART_FORM_DATA = "multipart/form-data";
-	
+
 	static final String FORM_ENCODING = MULTIPART_FORM_DATA;
 
 	final static String FORM_PANEL_TEXTBOX_ID = "formTextBox";
@@ -230,8 +214,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
 				caught.printStackTrace();
-				
-				Window.alert( "Caught " + StackTrace.asString( caught ));
+
+				Window.alert("Caught " + StackTrace.asString(caught));
 			}
 		});
 
@@ -254,10 +238,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("TextBox"));
 		final TextBox textBox = createTextBox(row);
 		grid.setWidget(row, WIDGET, textBox);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(TEXTBOX_HTML_FRAGMENT));
-		grid.setWidget(row, HIJACKED_WIDGET,
-				createGwtHTML(TEXTBOX_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(TEXTBOX_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(TEXTBOX_HTML_FRAGMENT));
 		final TextBox hijackedTextBox = hijackTextBox(row);
 		this.buildTextBoxActions(row, textBox, hijackedTextBox);
 
@@ -266,23 +248,18 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("PasswordTextBox"));
 		final TextBox passwordTextBox = createPasswordTextBox(row);
 		grid.setWidget(row, WIDGET, passwordTextBox);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(PASSWORD_HTML_FRAGMENT));
-		grid.setWidget(row, HIJACKED_WIDGET,
-				createGwtHTML(PASSWORD_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(PASSWORD_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(PASSWORD_HTML_FRAGMENT));
 		final TextBox hijackedPasswordTextBox = hijackPasswordTextBox(row);
-		this.buildPasswordTextBoxActions(row, passwordTextBox,
-				hijackedPasswordTextBox);
+		this.buildPasswordTextBoxActions(row, passwordTextBox, hijackedPasswordTextBox);
 
 		row++;
 
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("TextArea"));
 		final TextArea textArea = createTextArea(row);
 		grid.setWidget(row, WIDGET, textArea);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(TEXTAREA_HTML_FRAGMENT));
-		grid.setWidget(row, HIJACKED_WIDGET,
-				createGwtHTML(TEXTAREA_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(TEXTAREA_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(TEXTAREA_HTML_FRAGMENT));
 		final TextArea hijackedTextArea = hijackTextArea(row);
 		this.buildTextAreaActions(row, textArea, hijackedTextArea);
 
@@ -291,10 +268,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("RadioButton"));
 		final RadioButton radioButton = createRadioButton(row);
 		grid.setWidget(row, WIDGET, radioButton);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(RADIO_BUTTON_HTML_FRAGMENT));
-		grid.setWidget(row, HIJACKED_WIDGET,
-				createGwtHTML(RADIO_BUTTON_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(RADIO_BUTTON_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(RADIO_BUTTON_HTML_FRAGMENT));
 		final RadioButton hijackedRadioButton = hijackRadioButton(row);
 		this.buildRadioButtonActions(row, radioButton, hijackedRadioButton);
 
@@ -303,10 +278,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("CheckBox"));
 		final CheckBox checkBox = createCheckBox(row);
 		grid.setWidget(row, WIDGET, checkBox);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(CHECKBOX_HTML_FRAGMENT));
-		grid.setWidget(row, HIJACKED_WIDGET,
-				createGwtHTML(CHECKBOX_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(CHECKBOX_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(CHECKBOX_HTML_FRAGMENT));
 		final CheckBox hijackedCheckBox = hijackCheckBox(row);
 		this.buildCheckBoxActions(row, checkBox, hijackedCheckBox);
 
@@ -315,10 +288,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("listBox"));
 		final ListBox listBox = createListBox(row);
 		grid.setWidget(row, WIDGET, listBox);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(LISTBOX_HTML_FRAGMENT));
-		grid.setWidget(row, HIJACKED_WIDGET,
-				createGwtHTML(LISTBOX_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(LISTBOX_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(LISTBOX_HTML_FRAGMENT));
 		final ListBox hijackedListBox = hijackListBox(row);
 		this.buildListBoxActions(row, listBox, hijackedListBox);
 
@@ -327,11 +298,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("Image"));
 		final Image image = createImage(row);
 		grid.setWidget(row, WIDGET, image);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(IMAGE_HTML_FRAGMENT));
-		grid
-				.setWidget(row, HIJACKED_WIDGET,
-						createGwtHTML(IMAGE_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(IMAGE_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(IMAGE_HTML_FRAGMENT));
 		final Image hijackedImage = hijackImage(row);
 		this.buildImageActions(row, image, hijackedImage);
 
@@ -340,11 +308,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("Label"));
 		final Label label = createLabel(row);
 		grid.setWidget(row, WIDGET, label);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(LABEL_HTML_FRAGMENT));
-		grid
-				.setWidget(row, HIJACKED_WIDGET,
-						createGwtHTML(LABEL_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(LABEL_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(LABEL_HTML_FRAGMENT));
 		final Label hijackedLabel = hijackLabel(row);
 		this.buildLabelActions(row, label, hijackedLabel);
 
@@ -353,8 +318,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("Html"));
 		final Html html = createHtml(row);
 		grid.setWidget(row, WIDGET, html);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(HTML_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(HTML_HTML_FRAGMENT));
 		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(HTML_HTML_FRAGMENT));
 		final Html hijackedHtml = hijackHtml(row);
 		this.buildHtmlActions(row, html, hijackedHtml);
@@ -364,10 +328,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("Hyperlink"));
 		final Hyperlink hyperlink = createHyperlink(row);
 		grid.setWidget(row, WIDGET, hyperlink);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(HYPERLINK_HTML_FRAGMENT));
-		grid.setWidget(row, HIJACKED_WIDGET,
-				createGwtHTML(HYPERLINK_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(HYPERLINK_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(HYPERLINK_HTML_FRAGMENT));
 		final Hyperlink hijackedHyperlink = hijackHyperlink(row);
 		this.buildHyperlinkActions(row, hyperlink, hijackedHyperlink);
 
@@ -376,29 +338,22 @@ public class BasicWidgetsTest implements EntryPoint {
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("Button"));
 		final Button button = createButton(row);
 		grid.setWidget(row, WIDGET, button);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(BUTTON_HTML_FRAGMENT));
-		grid.setWidget(row, HIJACKED_WIDGET,
-				createGwtHTML(BUTTON_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(BUTTON_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(BUTTON_HTML_FRAGMENT));
 		final Button hijackedButton = hijackButton(row);
 		final Button hijackedResetButton = hijackResetButton(row);
 		final Button hijackedSubmitButton = hijackSubmitButton(row);
-		this.buildButtonActions(row, button, hijackedButton,
-				hijackedResetButton, hijackedSubmitButton);
+		this.buildButtonActions(row, button, hijackedButton, hijackedResetButton, hijackedSubmitButton);
 
 		row++;
 
 		grid
-				.setWidget(
-						row,
-						WIDGET_LABEL,
+				.setWidget(row, WIDGET_LABEL,
 						createGwtHTML("FormPanel with three fields<ul><li>TextBox</li><li>Hidden</li><li>File</li></ul>"));
 		final FormPanel formPanel = createFormPanel(row);
 		grid.setWidget(row, WIDGET, formPanel);
-		grid.setWidget(row, HTML_FRAGMENT,
-				createHtmlFragment(FORM_PANEL_HTML_FRAGMENT));
-		grid.setWidget(row, HIJACKED_WIDGET,
-				createGwtHTML(FORM_PANEL_HTML_FRAGMENT));
+		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(FORM_PANEL_HTML_FRAGMENT));
+		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(FORM_PANEL_HTML_FRAGMENT));
 		final FormPanel hijackedFormPanel = hijackFormPanel(row);
 		this.buildFormPanelActions(row, formPanel, hijackedFormPanel);
 
@@ -438,14 +393,12 @@ public class BasicWidgetsTest implements EntryPoint {
 		textBox.addKeyEventListener(this.createKeyEventListener(row));
 	}
 
-	void buildTextBoxActions(final int row, final TextBox textBox,
-			final TextBox hijackedTextBox) {
+	void buildTextBoxActions(final int row, final TextBox textBox, final TextBox hijackedTextBox) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button textBoxSelectAll = new com.google.gwt.user.client.ui.Button(
-				"selectAll");
+		final com.google.gwt.user.client.ui.Button textBoxSelectAll = new com.google.gwt.user.client.ui.Button("selectAll");
 		textBoxSelectAll.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				textBox.selectAll();
@@ -453,8 +406,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(textBoxSelectAll);
 
-		final com.google.gwt.user.client.ui.Button textBoxGetSelectedText = new com.google.gwt.user.client.ui.Button(
-				"getSelectedText");
+		final com.google.gwt.user.client.ui.Button textBoxGetSelectedText = new com.google.gwt.user.client.ui.Button("getSelectedText");
 		textBoxGetSelectedText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				Window.alert(textBox.getSelectedText());
@@ -462,8 +414,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(textBoxGetSelectedText);
 
-		final com.google.gwt.user.client.ui.Button hijackedTextBoxSelectAll = new com.google.gwt.user.client.ui.Button(
-				"selectAll (*)");
+		final com.google.gwt.user.client.ui.Button hijackedTextBoxSelectAll = new com.google.gwt.user.client.ui.Button("selectAll (*)");
 		hijackedTextBoxSelectAll.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				hijackedTextBox.selectAll();
@@ -489,30 +440,23 @@ public class BasicWidgetsTest implements EntryPoint {
 	}
 
 	TextBox hijackPasswordTextBox(final int row) {
-		final TextBox passwordTextBox = new TextBox(this
-				.getElementById(PASSWORD_ID));
+		final TextBox passwordTextBox = new TextBox(this.getElementById(PASSWORD_ID));
 		this.addPasswordTextBoxEventListeners(passwordTextBox, row);
 		return passwordTextBox;
 	}
 
-	void addPasswordTextBoxEventListeners(
-			final TextBox passwordTextBox, final int row) {
-		passwordTextBox.addChangeEventListener(this
-				.createChangeEventListener(row));
-		passwordTextBox.addFocusEventListener(this
-				.createFocusEventListener(row));
+	void addPasswordTextBoxEventListeners(final TextBox passwordTextBox, final int row) {
+		passwordTextBox.addChangeEventListener(this.createChangeEventListener(row));
+		passwordTextBox.addFocusEventListener(this.createFocusEventListener(row));
 		passwordTextBox.addKeyEventListener(this.createKeyEventListener(row));
 	}
 
-	void buildPasswordTextBoxActions(final int row,
-			final TextBox passwordTextBox,
-			final TextBox hijackedPasswordTextBox) {
+	void buildPasswordTextBoxActions(final int row, final TextBox passwordTextBox, final TextBox hijackedPasswordTextBox) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button passwordTextBoxSelectAll = new com.google.gwt.user.client.ui.Button(
-				"selectAll");
+		final com.google.gwt.user.client.ui.Button passwordTextBoxSelectAll = new com.google.gwt.user.client.ui.Button("selectAll");
 		passwordTextBoxSelectAll.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				passwordTextBox.selectAll();
@@ -540,12 +484,11 @@ public class BasicWidgetsTest implements EntryPoint {
 
 		final com.google.gwt.user.client.ui.Button hijackedPasswordTextBoxGetSelectedText = new com.google.gwt.user.client.ui.Button(
 				"getSelectedText (*)");
-		hijackedPasswordTextBoxGetSelectedText
-				.addClickListener(new ClickListener() {
-					public void onClick(final Widget sender) {
-						Window.alert(hijackedPasswordTextBox.getSelectedText());
-					}
-				});
+		hijackedPasswordTextBoxGetSelectedText.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				Window.alert(hijackedPasswordTextBox.getSelectedText());
+			}
+		});
 		panel.add(hijackedPasswordTextBoxGetSelectedText);
 	}
 
@@ -569,14 +512,12 @@ public class BasicWidgetsTest implements EntryPoint {
 		textArea.addKeyEventListener(this.createKeyEventListener(row));
 	}
 
-	void buildTextAreaActions(final int row, final TextArea textArea,
-			final TextArea hijackedTextArea) {
+	void buildTextAreaActions(final int row, final TextArea textArea, final TextArea hijackedTextArea) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button textAreaSelectAll = new com.google.gwt.user.client.ui.Button(
-				"selectAll");
+		final com.google.gwt.user.client.ui.Button textAreaSelectAll = new com.google.gwt.user.client.ui.Button("selectAll");
 		textAreaSelectAll.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				textArea.selectAll();
@@ -584,8 +525,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(textAreaSelectAll);
 
-		final com.google.gwt.user.client.ui.Button textAreaGetSelectedText = new com.google.gwt.user.client.ui.Button(
-				"getSelectedText");
+		final com.google.gwt.user.client.ui.Button textAreaGetSelectedText = new com.google.gwt.user.client.ui.Button("getSelectedText");
 		textAreaGetSelectedText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				Window.alert(textArea.getSelectedText());
@@ -593,8 +533,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(textAreaGetSelectedText);
 
-		final com.google.gwt.user.client.ui.Button hijackedTextAreaSelectAll = new com.google.gwt.user.client.ui.Button(
-				"selectAll (*)");
+		final com.google.gwt.user.client.ui.Button hijackedTextAreaSelectAll = new com.google.gwt.user.client.ui.Button("selectAll (*)");
 		hijackedTextAreaSelectAll.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				hijackedTextArea.selectAll();
@@ -619,26 +558,22 @@ public class BasicWidgetsTest implements EntryPoint {
 	}
 
 	RadioButton hijackRadioButton(final int row) {
-		final RadioButton radioButton = new RadioButton(this
-				.getElementById(RADIO_BUTTON_ID));
+		final RadioButton radioButton = new RadioButton(this.getElementById(RADIO_BUTTON_ID));
 		this.addRadioButtonEventListeners(radioButton, row);
 		return radioButton;
 	}
 
-	void addRadioButtonEventListeners(final RadioButton radioButton,
-			final int row) {
+	void addRadioButtonEventListeners(final RadioButton radioButton, final int row) {
 		radioButton.addChangeEventListener(this.createChangeEventListener(row));
 		radioButton.addFocusEventListener(this.createFocusEventListener(row));
 	}
 
-	void buildRadioButtonActions(final int row, final RadioButton radioButton,
-			final RadioButton hijackedRadioButton) {
+	void buildRadioButtonActions(final int row, final RadioButton radioButton, final RadioButton hijackedRadioButton) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button radioButtonChecked = new com.google.gwt.user.client.ui.Button(
-				"check");
+		final com.google.gwt.user.client.ui.Button radioButtonChecked = new com.google.gwt.user.client.ui.Button("check");
 		radioButtonChecked.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				radioButton.setChecked(true);
@@ -646,8 +581,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(radioButtonChecked);
 
-		final com.google.gwt.user.client.ui.Button radioButtonUnchecked = new com.google.gwt.user.client.ui.Button(
-				"uncheck");
+		final com.google.gwt.user.client.ui.Button radioButtonUnchecked = new com.google.gwt.user.client.ui.Button("uncheck");
 		radioButtonUnchecked.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				radioButton.setChecked(false);
@@ -655,8 +589,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(radioButtonUnchecked);
 
-		final com.google.gwt.user.client.ui.Button hijackedRadioButtonChecked = new com.google.gwt.user.client.ui.Button(
-				"check (*)");
+		final com.google.gwt.user.client.ui.Button hijackedRadioButtonChecked = new com.google.gwt.user.client.ui.Button("check (*)");
 		hijackedRadioButtonChecked.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				hijackedRadioButton.setChecked(true);
@@ -664,8 +597,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(hijackedRadioButtonChecked);
 
-		final com.google.gwt.user.client.ui.Button hijackedRadioButtonUnchecked = new com.google.gwt.user.client.ui.Button(
-				"uncheck (*)");
+		final com.google.gwt.user.client.ui.Button hijackedRadioButtonUnchecked = new com.google.gwt.user.client.ui.Button("uncheck (*)");
 		hijackedRadioButtonUnchecked.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				hijackedRadioButton.setChecked(false);
@@ -691,14 +623,12 @@ public class BasicWidgetsTest implements EntryPoint {
 		checkBox.addFocusEventListener(this.createFocusEventListener(row));
 	}
 
-	void buildCheckBoxActions(final int row, final CheckBox checkBox,
-			final CheckBox hijackedCheckBox) {
+	void buildCheckBoxActions(final int row, final CheckBox checkBox, final CheckBox hijackedCheckBox) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button checkBoxChecked = new com.google.gwt.user.client.ui.Button(
-				"check");
+		final com.google.gwt.user.client.ui.Button checkBoxChecked = new com.google.gwt.user.client.ui.Button("check");
 		checkBoxChecked.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				checkBox.setChecked(true);
@@ -706,8 +636,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(checkBoxChecked);
 
-		final com.google.gwt.user.client.ui.Button checkBoxUnchecked = new com.google.gwt.user.client.ui.Button(
-				"uncheck");
+		final com.google.gwt.user.client.ui.Button checkBoxUnchecked = new com.google.gwt.user.client.ui.Button("uncheck");
 		checkBoxUnchecked.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				checkBox.setChecked(false);
@@ -715,8 +644,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(checkBoxUnchecked);
 
-		final com.google.gwt.user.client.ui.Button hijackedCheckBoxChecked = new com.google.gwt.user.client.ui.Button(
-				"check (*)");
+		final com.google.gwt.user.client.ui.Button hijackedCheckBoxChecked = new com.google.gwt.user.client.ui.Button("check (*)");
 		hijackedCheckBoxChecked.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				hijackedCheckBox.setChecked(true);
@@ -724,8 +652,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(hijackedCheckBoxChecked);
 
-		final com.google.gwt.user.client.ui.Button hijackedCheckBoxUnchecked = new com.google.gwt.user.client.ui.Button(
-				"uncheck (*)");
+		final com.google.gwt.user.client.ui.Button hijackedCheckBoxUnchecked = new com.google.gwt.user.client.ui.Button("uncheck (*)");
 		hijackedCheckBoxUnchecked.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				hijackedCheckBox.setChecked(false);
@@ -754,106 +681,86 @@ public class BasicWidgetsTest implements EntryPoint {
 		listBox.addFocusEventListener(this.createFocusEventListener(row));
 	}
 
-	void buildListBoxActions(final int row, final ListBox listBox,
-			final ListBox hijackedListBox) {
+	void buildListBoxActions(final int row, final ListBox listBox, final ListBox hijackedListBox) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button listBoxGetItem = new com.google.gwt.user.client.ui.Button(
-				"getItem");
+		final com.google.gwt.user.client.ui.Button listBoxGetItem = new com.google.gwt.user.client.ui.Button("getItem");
 		listBoxGetItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final int index = Integer.parseInt(Browser.prompt(
-						"index ( 0..." + listBox.getItemCount() + ")", "0"));
+				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + listBox.getItemCount() + ")", "0"));
 				Window.alert("" + listBox.getValue(index));
 			}
 		});
 		panel.add(listBoxGetItem);
 
-		final com.google.gwt.user.client.ui.Button listBoxSetItem = new com.google.gwt.user.client.ui.Button(
-				"setItemText");
+		final com.google.gwt.user.client.ui.Button listBoxSetItem = new com.google.gwt.user.client.ui.Button("setItemText");
 		listBoxSetItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt(
-						"index ( 0..." + count + ")", "0"));
-				final String text = Browser
-						.prompt("item text", "item-" + count);
+				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
+				final String text = Browser.prompt("item text", "item-" + count);
 				listBox.setItemText(index, text);
 			}
 		});
 		panel.add(listBoxSetItem);
 
-		final com.google.gwt.user.client.ui.Button listBoxAddItem = new com.google.gwt.user.client.ui.Button(
-				"addItem");
+		final com.google.gwt.user.client.ui.Button listBoxAddItem = new com.google.gwt.user.client.ui.Button("addItem");
 		listBoxAddItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final String text = Browser
-						.prompt("item text", "item-" + count);
+				final String text = Browser.prompt("item text", "item-" + count);
 				listBox.addItem(text);
 			}
 		});
 		panel.add(listBoxAddItem);
 
-		final com.google.gwt.user.client.ui.Button listBoxRemoveItem = new com.google.gwt.user.client.ui.Button(
-				"removeItem");
+		final com.google.gwt.user.client.ui.Button listBoxRemoveItem = new com.google.gwt.user.client.ui.Button("removeItem");
 		listBoxRemoveItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt(
-						"index ( 0..." + count + ")", "0"));
+				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
 				listBox.removeItem(index);
 			}
 		});
 		panel.add(listBoxRemoveItem);
 
-		final com.google.gwt.user.client.ui.Button hijackedListBoxGetItem = new com.google.gwt.user.client.ui.Button(
-				"getItem (*)");
+		final com.google.gwt.user.client.ui.Button hijackedListBoxGetItem = new com.google.gwt.user.client.ui.Button("getItem (*)");
 		hijackedListBoxGetItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final int index = Integer.parseInt(Browser.prompt(
-						"index ( 0..." + hijackedListBox.getItemCount() + ")",
-						"0"));
+				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + hijackedListBox.getItemCount() + ")", "0"));
 				Window.alert("" + hijackedListBox.getValue(index));
 			}
 		});
 		panel.add(hijackedListBoxGetItem);
 
-		final com.google.gwt.user.client.ui.Button hijackedListBoxSetItem = new com.google.gwt.user.client.ui.Button(
-				"setItemText (*)");
+		final com.google.gwt.user.client.ui.Button hijackedListBoxSetItem = new com.google.gwt.user.client.ui.Button("setItemText (*)");
 		hijackedListBoxSetItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = hijackedListBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt(
-						"index ( 0..." + count + ")", "0"));
-				final String text = Browser
-						.prompt("item text", "item-" + count);
+				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
+				final String text = Browser.prompt("item text", "item-" + count);
 				hijackedListBox.setItemText(index, text);
 			}
 		});
 		panel.add(hijackedListBoxSetItem);
 
-		final com.google.gwt.user.client.ui.Button hijackedListBoxAddItem = new com.google.gwt.user.client.ui.Button(
-				"addItem (*)");
+		final com.google.gwt.user.client.ui.Button hijackedListBoxAddItem = new com.google.gwt.user.client.ui.Button("addItem (*)");
 		hijackedListBoxAddItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = hijackedListBox.getItemCount();
-				final String text = Browser
-						.prompt("item text", "item-" + count);
+				final String text = Browser.prompt("item text", "item-" + count);
 				hijackedListBox.addItem(text);
 			}
 		});
 		panel.add(hijackedListBoxAddItem);
 
-		final com.google.gwt.user.client.ui.Button hijackedListBoxRemoveItem = new com.google.gwt.user.client.ui.Button(
-				"removeItem (*)");
+		final com.google.gwt.user.client.ui.Button hijackedListBoxRemoveItem = new com.google.gwt.user.client.ui.Button("removeItem (*)");
 		hijackedListBoxRemoveItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt(
-						"index ( 0..." + count + ")", "0"));
+				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
 				hijackedListBox.removeItem(index);
 			}
 		});
@@ -879,31 +786,26 @@ public class BasicWidgetsTest implements EntryPoint {
 		image.addMouseEventListener(this.createMouseEventListener(row));
 	}
 
-	void buildImageActions(final int row, final Image image,
-			final Image hijackedImage) {
+	void buildImageActions(final int row, final Image image, final Image hijackedImage) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button imageSetUrl = new com.google.gwt.user.client.ui.Button(
-				"load other image");
+		final com.google.gwt.user.client.ui.Button imageSetUrl = new com.google.gwt.user.client.ui.Button("load other image");
 		imageSetUrl.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final String url = image.getUrl();
-				final boolean first = url.toLowerCase().endsWith(
-						IMAGE1_URL.toLowerCase());
+				final boolean first = url.toLowerCase().endsWith(IMAGE1_URL.toLowerCase());
 				image.setUrl(first ? IMAGE2_URL : IMAGE1_URL);
 			}
 		});
 		panel.add(imageSetUrl);
 
-		final com.google.gwt.user.client.ui.Button hijackedImageSetUrl = new com.google.gwt.user.client.ui.Button(
-				"load other image(*)");
+		final com.google.gwt.user.client.ui.Button hijackedImageSetUrl = new com.google.gwt.user.client.ui.Button("load other image(*)");
 		hijackedImageSetUrl.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final String url = hijackedImage.getUrl();
-				final boolean first = url.toLowerCase().endsWith(
-						IMAGE1_URL.toLowerCase());
+				final boolean first = url.toLowerCase().endsWith(IMAGE1_URL.toLowerCase());
 				hijackedImage.setUrl(first ? IMAGE2_URL : IMAGE1_URL);
 			}
 		});
@@ -928,14 +830,12 @@ public class BasicWidgetsTest implements EntryPoint {
 		label.addMouseEventListener(this.createMouseEventListener(row));
 	}
 
-	void buildLabelActions(final int row, final Label label,
-			final Label hijackedLabel) {
+	void buildLabelActions(final int row, final Label label, final Label hijackedLabel) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button labelSetText = new com.google.gwt.user.client.ui.Button(
-				"setText");
+		final com.google.gwt.user.client.ui.Button labelSetText = new com.google.gwt.user.client.ui.Button("setText");
 		labelSetText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				label.setText(Browser.prompt("Text", label.getText()));
@@ -943,12 +843,10 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(labelSetText);
 
-		final com.google.gwt.user.client.ui.Button hijackedLabelSetText = new com.google.gwt.user.client.ui.Button(
-				"setText (*)");
+		final com.google.gwt.user.client.ui.Button hijackedLabelSetText = new com.google.gwt.user.client.ui.Button("setText (*)");
 		hijackedLabelSetText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedLabel.setText(Browser.prompt("Text", hijackedLabel
-						.getText()));
+				hijackedLabel.setText(Browser.prompt("Text", hijackedLabel.getText()));
 			}
 		});
 		panel.add(hijackedLabelSetText);
@@ -972,14 +870,12 @@ public class BasicWidgetsTest implements EntryPoint {
 		html.addMouseEventListener(this.createMouseEventListener(row));
 	}
 
-	void buildHtmlActions(final int row, final Html html,
-			final Html hijackedHtml) {
+	void buildHtmlActions(final int row, final Html html, final Html hijackedHtml) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button htmlSetText = new com.google.gwt.user.client.ui.Button(
-				"setText");
+		final com.google.gwt.user.client.ui.Button htmlSetText = new com.google.gwt.user.client.ui.Button("setText");
 		htmlSetText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				html.setText(Browser.prompt("Text", html.getText()));
@@ -987,8 +883,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(htmlSetText);
 
-		final com.google.gwt.user.client.ui.Button htmlSetHtml = new com.google.gwt.user.client.ui.Button(
-				"setHtml");
+		final com.google.gwt.user.client.ui.Button htmlSetHtml = new com.google.gwt.user.client.ui.Button("setHtml");
 		htmlSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				html.setHtml(Browser.prompt("Html", html.getHtml()));
@@ -996,22 +891,18 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(htmlSetHtml);
 
-		final com.google.gwt.user.client.ui.Button hijackedHtmlSetText = new com.google.gwt.user.client.ui.Button(
-				"setText (*)");
+		final com.google.gwt.user.client.ui.Button hijackedHtmlSetText = new com.google.gwt.user.client.ui.Button("setText (*)");
 		hijackedHtmlSetText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedHtml.setText(Browser.prompt("Text", hijackedHtml
-						.getText()));
+				hijackedHtml.setText(Browser.prompt("Text", hijackedHtml.getText()));
 			}
 		});
 		panel.add(hijackedHtmlSetText);
 
-		final com.google.gwt.user.client.ui.Button hijackedHtmlSetHijackedHtml = new com.google.gwt.user.client.ui.Button(
-				"setHtml (*)");
+		final com.google.gwt.user.client.ui.Button hijackedHtmlSetHijackedHtml = new com.google.gwt.user.client.ui.Button("setHtml (*)");
 		hijackedHtmlSetHijackedHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedHtml.setHtml(Browser.prompt("Html", hijackedHtml
-						.getHtml()));
+				hijackedHtml.setHtml(Browser.prompt("Html", hijackedHtml.getHtml()));
 			}
 		});
 		panel.add(hijackedHtmlSetHijackedHtml);
@@ -1025,8 +916,7 @@ public class BasicWidgetsTest implements EntryPoint {
 	}
 
 	Hyperlink hijackHyperlink(final int row) {
-		final Hyperlink hyperlink = new Hyperlink(this
-				.getElementById(HYPERLINK_ID));
+		final Hyperlink hyperlink = new Hyperlink(this.getElementById(HYPERLINK_ID));
 		this.addHyperlinkEventListeners(hyperlink, row);
 		return hyperlink;
 	}
@@ -1036,14 +926,12 @@ public class BasicWidgetsTest implements EntryPoint {
 		hyperlink.addMouseEventListener(this.createMouseEventListener(row));
 		hyperlink.addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
-				Window.alert("clicked on Hyperlink with innerHTML of \n"
-						+ hyperlink.getHtml());
+				Window.alert("clicked on Hyperlink with innerHTML of \n" + hyperlink.getHtml());
 			}
 		});
 	}
 
-	void buildHyperlinkActions(final int row, final Hyperlink hyperlink,
-			final Hyperlink hijackedHyperlink) {
+	void buildHyperlinkActions(final int row, final Hyperlink hyperlink, final Hyperlink hijackedHyperlink) {
 	}
 
 	Button createButton(final int row) {
@@ -1077,21 +965,18 @@ public class BasicWidgetsTest implements EntryPoint {
 
 		button.addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
-				Window.alert("clicked on Button with innerHTML of \n"
-						+ button.getHtml());
+				Window.alert("clicked on Button with innerHTML of \n" + button.getHtml());
 			}
 		});
 	}
 
-	void buildButtonActions(final int row, final Button button,
-			final Button hijackedButton, final Button hijackedResetButton,
+	void buildButtonActions(final int row, final Button button, final Button hijackedButton, final Button hijackedResetButton,
 			final Button hijackedSubmitButton) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button buttonSetHtml = new com.google.gwt.user.client.ui.Button(
-				"setHtml");
+		final com.google.gwt.user.client.ui.Button buttonSetHtml = new com.google.gwt.user.client.ui.Button("setHtml");
 		buttonSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				button.setHtml(Browser.prompt("Html", button.getText()));
@@ -1099,22 +984,18 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(buttonSetHtml);
 
-		final com.google.gwt.user.client.ui.Button hijackedButtonSetHtml = new com.google.gwt.user.client.ui.Button(
-				"setHtml (button*)");
+		final com.google.gwt.user.client.ui.Button hijackedButtonSetHtml = new com.google.gwt.user.client.ui.Button("setHtml (button*)");
 		hijackedButtonSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedButton.setHtml(Browser.prompt("Html", hijackedButton
-						.getText()));
+				hijackedButton.setHtml(Browser.prompt("Html", hijackedButton.getText()));
 			}
 		});
 		panel.add(hijackedButtonSetHtml);
 
-		final com.google.gwt.user.client.ui.Button hijackedResetButtonSetHtml = new com.google.gwt.user.client.ui.Button(
-				"setHtml (reset*)");
+		final com.google.gwt.user.client.ui.Button hijackedResetButtonSetHtml = new com.google.gwt.user.client.ui.Button("setHtml (reset*)");
 		hijackedResetButtonSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedResetButton.setHtml(Browser.prompt("Html",
-						hijackedResetButton.getText()));
+				hijackedResetButton.setHtml(Browser.prompt("Html", hijackedResetButton.getText()));
 			}
 		});
 		panel.add(hijackedResetButtonSetHtml);
@@ -1123,8 +1004,7 @@ public class BasicWidgetsTest implements EntryPoint {
 				"setHtml (submit*)");
 		hijackedSubmitButtonSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedSubmitButton.setHtml(Browser.prompt("Html",
-						hijackedSubmitButton.getText()));
+				hijackedSubmitButton.setHtml(Browser.prompt("Html", hijackedSubmitButton.getText()));
 			}
 		});
 		panel.add(hijackedSubmitButtonSetHtml);
@@ -1132,7 +1012,7 @@ public class BasicWidgetsTest implements EntryPoint {
 
 	FormPanel createFormPanel(final int row) {
 		final FormPanel formPanel = new FormPanel();
-		this.setupFormPanel( formPanel );
+		this.setupFormPanel(formPanel);
 
 		// Order which widgets is important as they fetched by order in addForm*
 		final FileUpload fileUpload = new FileUpload();
@@ -1155,20 +1035,19 @@ public class BasicWidgetsTest implements EntryPoint {
 
 	FormPanel hijackFormPanel(final int row) {
 		final FormPanel formPanel = new FormPanel(this.getElementById(FORM_PANEL_ID), true);
-		this.setupFormPanel( formPanel );
+		this.setupFormPanel(formPanel);
 		this.addFormHandler(formPanel, row);
 		return formPanel;
 	}
-	
-	void setupFormPanel( final FormPanel formPanel ){
+
+	void setupFormPanel(final FormPanel formPanel) {
 		formPanel.setAction(SUBMIT_URL);
-		formPanel.setEncoding( FORM_ENCODING );
+		formPanel.setEncoding(FORM_ENCODING);
 		formPanel.setMethod("POST");
 	}
 
 	void addFormHandler(final FormPanel formPanel, final int row) {
-		PrimitiveHelper.checkEquals("formPanel.widget count", 3, formPanel
-				.getWidgetCount());
+		PrimitiveHelper.checkEquals("formPanel.widget count", 3, formPanel.getWidgetCount());
 		int i = 0;
 		final FileUpload fileUpload = (FileUpload) formPanel.get(i++);
 		final Hidden hidden = (Hidden) formPanel.get(i++);
@@ -1180,13 +1059,13 @@ public class BasicWidgetsTest implements EntryPoint {
 			}
 
 			public void onSubmitComplete(final FormSubmitCompleteEvent event) {
-				BasicWidgetsTest.this.increment(FORM_PANEL_SUBMIT_COMPLETED_LISTENER,row);
-				
-				ObjectHelper.checkSame( "formPanel", formPanel, event.getSource() );
-				
+				BasicWidgetsTest.this.increment(FORM_PANEL_SUBMIT_COMPLETED_LISTENER, row);
+
+				ObjectHelper.checkSame("formPanel", formPanel, event.getSource());
+
 				final String actual = event.getResults();
 				final String expected = "" + textBox.getText();
-				
+
 				if (-1 == actual.indexOf(expected)) {
 					Window
 							.alert("The text echod back after submitting the form(to a hidden iframe) do not contain the text within the textBox.\nexpected: ["
@@ -1197,30 +1076,27 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 	}
 
-	void buildFormPanelActions(final int row, final FormPanel formPanel,
-			final FormPanel hijackedFormPanel) {
+	void buildFormPanelActions(final int row, final FormPanel formPanel, final FormPanel hijackedFormPanel) {
 
 		final VerticalPanel panel = new VerticalPanel();
 		this.getGrid().setWidget(row, ACTION_BUTTON_COLUMN, panel);
 
-		final com.google.gwt.user.client.ui.Button submitFormPanel = new com.google.gwt.user.client.ui.Button(
-				"submit");
+		final com.google.gwt.user.client.ui.Button submitFormPanel = new com.google.gwt.user.client.ui.Button("submit");
 		submitFormPanel.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				formPanel.submit();
 			}
 		});
-		panel.add( submitFormPanel );
-		
-		final com.google.gwt.user.client.ui.Button hijackedSubmitFormPanel = new com.google.gwt.user.client.ui.Button(
-				"submit (*)");
+		panel.add(submitFormPanel);
+
+		final com.google.gwt.user.client.ui.Button hijackedSubmitFormPanel = new com.google.gwt.user.client.ui.Button("submit (*)");
 		hijackedSubmitFormPanel.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				hijackedFormPanel.submit();
 			}
 		});
-		
-		panel.add( hijackedSubmitFormPanel );
+
+		panel.add(hijackedSubmitFormPanel);
 	}
 
 	ChangeEventListener createChangeEventListener(final int row) {
@@ -1262,13 +1138,11 @@ public class BasicWidgetsTest implements EntryPoint {
 	ImageLoadEventListener createImageLoadEventListener(final int row) {
 		return new ImageLoadEventListener() {
 			public void onSuccess(final ImageLoadSuccessEvent event) {
-				BasicWidgetsTest.this.increment(IMAGE_LOAD_SUCCESS_LISTENER,
-						row);
+				BasicWidgetsTest.this.increment(IMAGE_LOAD_SUCCESS_LISTENER, row);
 			}
 
 			public void onFailed(final ImageLoadFailedEvent event) {
-				BasicWidgetsTest.this
-						.increment(IMAGE_LOAD_FAILED_LISTENER, row);
+				BasicWidgetsTest.this.increment(IMAGE_LOAD_FAILED_LISTENER, row);
 			}
 		};
 	}
@@ -1280,8 +1154,7 @@ public class BasicWidgetsTest implements EntryPoint {
 			}
 
 			public void onDoubleClick(final MouseDoubleClickEvent event) {
-				BasicWidgetsTest.this.increment(MOUSE_DOUBLE_CLICK_LISTENER,
-						row);
+				BasicWidgetsTest.this.increment(MOUSE_DOUBLE_CLICK_LISTENER, row);
 			}
 
 			public void onMouseDown(final MouseDownEvent event) {

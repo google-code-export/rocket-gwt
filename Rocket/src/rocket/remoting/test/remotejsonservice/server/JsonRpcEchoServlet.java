@@ -32,7 +32,7 @@ import rocket.util.server.IoHelper;
  */
 public class JsonRpcEchoServlet extends HttpServlet {
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-		response.sendError( HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Only posts are supported.");
+		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Only posts are supported.");
 	}
 
 	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
@@ -45,23 +45,23 @@ public class JsonRpcEchoServlet extends HttpServlet {
 		Reader reader = null;
 		Writer writer = null;
 		final StringBuffer captured = new StringBuffer();
-		
-		try{
+
+		try {
 			reader = request.getReader();
 			writer = response.getWriter();
-			
-			final char[] buffer = new char[ 4096 ]; 
-			while( true ){
-				final int readCount = reader.read( buffer );
-				if( -1 == readCount ){
+
+			final char[] buffer = new char[4096];
+			while (true) {
+				final int readCount = reader.read(buffer);
+				if (-1 == readCount) {
 					break;
 				}
-				writer.write( buffer, 0, readCount );
-				captured.append( buffer, 0, readCount );
+				writer.write(buffer, 0, readCount);
+				captured.append(buffer, 0, readCount);
 			}
 		} finally {
-			IoHelper.closeIfNecessary( reader );
-			IoHelper.closeIfNecessary( writer );
+			IoHelper.closeIfNecessary(reader);
+			IoHelper.closeIfNecessary(writer);
 		}
 		System.out.println("SERVER - echoing json[" + captured + "]");
 	}

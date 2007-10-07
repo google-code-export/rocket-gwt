@@ -48,8 +48,9 @@ public class ResizablePanelTest implements EntryPoint {
 	final int MINIMUM_HEIGHT = 150;
 
 	final int MAXIMUM_HEIGHT = 400;
-	
+
 	final int GRID_ROW_COUNT = 3;
+
 	final int GRID_COLUMN_COUNT = 3;
 
 	public void onModuleLoad() {
@@ -86,7 +87,7 @@ public class ResizablePanelTest implements EntryPoint {
 		rootPanel.add(this.createResizablePanel(textArea1, true, countUpdater));
 
 		rootPanel.add(new Label("Resizable image"));
-		
+
 		final Image image0 = new Image();
 		image0.setUrl(IMAGE_URL);
 		rootPanel.add(this.createResizablePanel(image0, false, countUpdater));
@@ -97,7 +98,7 @@ public class ResizablePanelTest implements EntryPoint {
 		rootPanel.add(this.createResizablePanel(image1, true, countUpdater));
 
 		rootPanel.add(new Label("Resizable Label"));
-		
+
 		final Label label0 = new Label();
 		label0.setText(TEXT);
 		label0.setWidth((MAXIMUM_WIDTH + MINIMUM_WIDTH) / 2 + "px");
@@ -110,24 +111,24 @@ public class ResizablePanelTest implements EntryPoint {
 		label1.setWidth((MAXIMUM_WIDTH + MINIMUM_WIDTH) / 2 + "px");
 		label1.setHeight((MAXIMUM_HEIGHT + MINIMUM_HEIGHT) / 2 + "px");
 		rootPanel.add(this.createResizablePanel(label1, true, countUpdater));
-		
+
 		rootPanel.add(new Label("Resizable Grid(html table)"));
-		final Grid grid0 = new Grid( GRID_ROW_COUNT, GRID_COLUMN_COUNT );
-		for( int r = 0; r < GRID_ROW_COUNT; r++ ){
-			for( int c = 0; c < GRID_COLUMN_COUNT; c++ ){
-				grid0.setWidget(r, c, new Label( "x"));
-			}	
+		final Grid grid0 = new Grid(GRID_ROW_COUNT, GRID_COLUMN_COUNT);
+		for (int r = 0; r < GRID_ROW_COUNT; r++) {
+			for (int c = 0; c < GRID_COLUMN_COUNT; c++) {
+				grid0.setWidget(r, c, new Label("x"));
+			}
 		}
 		grid0.setWidth((MAXIMUM_WIDTH + MINIMUM_WIDTH) / 2 + "px");
 		grid0.setHeight((MAXIMUM_HEIGHT + MINIMUM_HEIGHT) / 2 + "px");
 		rootPanel.add(this.createResizablePanel(grid0, false, countUpdater));
 
 		rootPanel.add(new Label("Resizable Grid(html table)(keeps aspect ratio)"));
-		final Grid grid1 = new Grid( GRID_ROW_COUNT, GRID_COLUMN_COUNT );
-		for( int r = 0; r < GRID_ROW_COUNT; r++ ){
-			for( int c = 0; c < GRID_COLUMN_COUNT; c++ ){
-				grid1.setWidget(r, c, new Label( "x"));
-			}	
+		final Grid grid1 = new Grid(GRID_ROW_COUNT, GRID_COLUMN_COUNT);
+		for (int r = 0; r < GRID_ROW_COUNT; r++) {
+			for (int c = 0; c < GRID_COLUMN_COUNT; c++) {
+				grid1.setWidget(r, c, new Label("x"));
+			}
 		}
 		grid1.setWidth((MAXIMUM_WIDTH + MINIMUM_WIDTH) / 2 + "px");
 		grid1.setHeight((MAXIMUM_HEIGHT + MINIMUM_HEIGHT) / 2 + "px");
@@ -136,13 +137,13 @@ public class ResizablePanelTest implements EntryPoint {
 		rootPanel.add(new Label("Resizable FlowPanel with multiple child widgets."));
 
 		final FlowPanel flowPanel = new FlowPanel();
-		flowPanel.add( new TextBox());
-		flowPanel.add( new TextBox( true ));
-		flowPanel.add( new CheckBox());
-		flowPanel.add( new RadioButton( "group"));
-		flowPanel.add( new TextBox());
-		flowPanel.add( new TextBox( true ));
-		flowPanel.add( new ListBox());		
+		flowPanel.add(new TextBox());
+		flowPanel.add(new TextBox(true));
+		flowPanel.add(new CheckBox());
+		flowPanel.add(new RadioButton("group"));
+		flowPanel.add(new TextBox());
+		flowPanel.add(new TextBox(true));
+		flowPanel.add(new ListBox());
 		flowPanel.setWidth((MAXIMUM_WIDTH + MINIMUM_WIDTH) / 2 + "px");
 		flowPanel.setHeight((MAXIMUM_HEIGHT + MINIMUM_HEIGHT) / 2 + "px");
 		rootPanel.add(this.createResizablePanel(flowPanel, true, countUpdater));

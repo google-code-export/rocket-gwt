@@ -16,9 +16,10 @@
 package rocket.event.client;
 
 public class ScrollEvent extends Event {
-	public ScrollEvent(){}
-	
-	public ScrollEvent asScrollEvent(){
+	public ScrollEvent() {
+	}
+
+	public ScrollEvent asScrollEvent() {
 		return this;
 	}
 }

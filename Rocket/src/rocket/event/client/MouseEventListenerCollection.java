@@ -16,81 +16,82 @@
 package rocket.event.client;
 
 public class MouseEventListenerCollection extends ListenerCollection {
-	public void add( final MouseEventListener listener ){
-		super.add( listener );
+	public void add(final MouseEventListener listener) {
+		super.add(listener);
 	}
-	public boolean remove( final MouseEventListener listener ){
-		return super.remove( listener );
-	}
-	
-	public void fireClick( final MouseClickEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final MouseEventListener listener0 = (MouseEventListener)listener;
-				listener0.onClick( event );
-			}
-		});
-	}
-	
 
-	public void fireDoubleClick( final MouseDoubleClickEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final MouseEventListener listener0 = (MouseEventListener)listener;
-				listener0.onDoubleClick( event );
-			}
-		});
+	public boolean remove(final MouseEventListener listener) {
+		return super.remove(listener);
 	}
-	
-	public void fireMouseDown( final MouseDownEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final MouseEventListener listener0 = (MouseEventListener)listener;
-				listener0.onMouseDown( event );
-			}
-		});
-	}
-	
 
-	public void fireMouseMove( final MouseMoveEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final MouseEventListener listener0 = (MouseEventListener)listener;
-				listener0.onMouseMove( event );
+	public void fireClick(final MouseClickEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final MouseEventListener listener0 = (MouseEventListener) listener;
+				listener0.onClick(event);
 			}
 		});
 	}
-	
-	public void fireMouseOut( final MouseOutEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final MouseEventListener listener0 = (MouseEventListener)listener;
-				listener0.onMouseOut( event );
+
+	public void fireDoubleClick(final MouseDoubleClickEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final MouseEventListener listener0 = (MouseEventListener) listener;
+				listener0.onDoubleClick(event);
 			}
 		});
 	}
-	
-	public void fireMouseOver( final MouseOverEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final MouseEventListener listener0 = (MouseEventListener)listener;
-				listener0.onMouseOver( event );
+
+	public void fireMouseDown(final MouseDownEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final MouseEventListener listener0 = (MouseEventListener) listener;
+				listener0.onMouseDown(event);
 			}
 		});
 	}
-	public void fireMouseUp( final MouseUpEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final MouseEventListener listener0 = (MouseEventListener)listener;
-				listener0.onMouseUp( event );
+
+	public void fireMouseMove(final MouseMoveEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final MouseEventListener listener0 = (MouseEventListener) listener;
+				listener0.onMouseMove(event);
 			}
 		});
 	}
-	public void fireMouseWheel( final MouseWheelEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final MouseEventListener listener0 = (MouseEventListener)listener;
-				listener0.onMouseWheel( event );
+
+	public void fireMouseOut(final MouseOutEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final MouseEventListener listener0 = (MouseEventListener) listener;
+				listener0.onMouseOut(event);
+			}
+		});
+	}
+
+	public void fireMouseOver(final MouseOverEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final MouseEventListener listener0 = (MouseEventListener) listener;
+				listener0.onMouseOver(event);
+			}
+		});
+	}
+
+	public void fireMouseUp(final MouseUpEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final MouseEventListener listener0 = (MouseEventListener) listener;
+				listener0.onMouseUp(event);
+			}
+		});
+	}
+
+	public void fireMouseWheel(final MouseWheelEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final MouseEventListener listener0 = (MouseEventListener) listener;
+				listener0.onMouseWheel(event);
 			}
 		});
 	}

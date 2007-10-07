@@ -16,7 +16,7 @@
 
 import rocket.widget.client.WidgetConstants;
 
-class Constants{
+class Constants {
 	/**
 	 * This style is applied to the container element of the InteractiveList
 	 * {@see rocket.testing.client.InteractiveList}

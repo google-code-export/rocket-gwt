@@ -31,17 +31,17 @@ public class LeftTabPanel extends VerticalTabPanel {
 		super();
 	}
 
-	DockPanel.DockLayoutConstant getTabBarDockPanelConstants(){
+	DockPanel.DockLayoutConstant getTabBarDockPanelConstants() {
 		return DockPanel.WEST;
 	}
-	
+
 	protected String getInitialStyleName() {
 		return Constants.LEFT_TAB_PANEL_STYLE;
 	}
 
 	protected TabBarPanel createTabBarPanel() {
 		final VerticalTabBarPanel panel = new VerticalTabBarPanel();
-		
+
 		panel.setStyleName(this.getTabBarStyleName());
 		panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 

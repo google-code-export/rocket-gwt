@@ -21,10 +21,12 @@ import rocket.util.client.StringHelper;
 import com.google.gwt.http.client.URL;
 
 /**
- * Adds the capability to accumulate parameters which are either added to the url or post data.
+ * Adds the capability to accumulate parameters which are either added to the
+ * url or post data.
+ * 
  * @author Miroslav Pokorny
  */
-abstract public class RemoteGetOrPostJsonServiceInvoker extends RemoteJsonServiceInvoker{
+abstract public class RemoteGetOrPostJsonServiceInvoker extends RemoteJsonServiceInvoker {
 	/**
 	 * Accumulates any parameters that accompany the request.
 	 */

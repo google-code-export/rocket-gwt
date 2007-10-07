@@ -19,40 +19,40 @@ import com.google.gwt.user.client.Element;
 
 /**
  * Pretty much a copy of the private inner type ListBox.Impl.
- *
- * TODO When upgrading GWT version replace all methods below with the inner class com.google.gwt.user.client.ui.Listbox.SafariImpl
+ * 
+ * TODO When upgrading GWT version replace all methods below with the inner
+ * class com.google.gwt.user.client.ui.Listbox.SafariImpl
  */
 public class ListBoxSupport {
-    native public void clear(Element select) /*-{
-    select.options.length = 0;
-  }-*/;
+	native public void clear(Element select) /*-{
+	 select.options.length = 0;
+	 }-*/;
 
-  native public int getItemCount(Element select) /*-{
-    return select.options.length;
-  }-*/;
+	native public int getItemCount(Element select) /*-{
+	 return select.options.length;
+	 }-*/;
 
-  native public String getItemText(Element select, int index) /*-{
-    return select.options[index].text;
-  }-*/;
+	native public String getItemText(Element select, int index) /*-{
+	 return select.options[index].text;
+	 }-*/;
 
-  native public String getItemValue(Element select, int index) /*-{
-    return select.options[index].value;
-  }-*/;
+	native public String getItemValue(Element select, int index) /*-{
+	 return select.options[index].value;
+	 }-*/;
 
-  native public boolean isItemSelected(Element select, int index) /*-{
-    return select.options[index].selected;
-  }-*/;
+	native public boolean isItemSelected(Element select, int index) /*-{
+	 return select.options[index].selected;
+	 }-*/;
 
-  native public void removeItem(Element select, int index) /*-{
-    select.options[index] = null;
-  }-*/;
+	native public void removeItem(Element select, int index) /*-{
+	 select.options[index] = null;
+	 }-*/;
 
-  native public void setItemSelected(Element select, int index,
-                                     boolean selected) /*-{
-    select.options[index].selected = selected;
-  }-*/;
+	native public void setItemSelected(Element select, int index, boolean selected) /*-{
+	 select.options[index].selected = selected;
+	 }-*/;
 
-  native public void setValue(Element select, int index, String value) /*-{
-    select.options[index].value = value;
-  }-*/;
+	native public void setValue(Element select, int index, String value) /*-{
+	 select.options[index].value = value;
+	 }-*/;
 }

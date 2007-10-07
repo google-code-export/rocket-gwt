@@ -25,7 +25,9 @@ import com.google.gwt.json.client.JSONValue;
 /**
  * Convenient base class invoker for any json rpc poster.
  * 
- * The generator will implement the {@link #readObject(JSONValue)} and {@link #createSerializer()}.
+ * The generator will implement the {@link #readObject(JSONValue)} and
+ * {@link #createSerializer()}.
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class RemoteJsonRpcServiceInvoker extends RemoteJsonServiceInvoker {
@@ -36,7 +38,7 @@ abstract public class RemoteJsonRpcServiceInvoker extends RemoteJsonServiceInvok
 
 	String getRequestData() {
 		final JsonSerializer serializer = this.createSerializer();
-		final JSONValue json = serializer.writeJson( this.getParameter() );
+		final JSONValue json = serializer.writeJson(this.getParameter());
 		return json.toString();
 	}
 
@@ -50,22 +52,25 @@ abstract public class RemoteJsonRpcServiceInvoker extends RemoteJsonServiceInvok
 	}
 
 	/**
-	 * The parameter that will be serialized and sent to the json rpc service on the server.
+	 * The parameter that will be serialized and sent to the json rpc service on
+	 * the server.
 	 */
 	private Object parameter;
-	
-	public Object getParameter(){
-		ObjectHelper.checkNotNull( "field:parameter", parameter );
+
+	public Object getParameter() {
+		ObjectHelper.checkNotNull("field:parameter", parameter);
 		return this.parameter;
 	}
-	public void setParameter( final Object parameter ){
-		ObjectHelper.checkNotNull( "parameter:parameter", parameter );
+
+	public void setParameter(final Object parameter) {
+		ObjectHelper.checkNotNull("parameter:parameter", parameter);
 		this.parameter = parameter;
 	}
-	
+
 	/**
-	 * The generator will override this method and use deferred binding to locate the appropriate json serializer for the
-	 * parameter.
+	 * The generator will override this method and use deferred binding to
+	 * locate the appropriate json serializer for the parameter.
+	 * 
 	 * @return
 	 */
 	abstract protected JsonSerializer createSerializer();

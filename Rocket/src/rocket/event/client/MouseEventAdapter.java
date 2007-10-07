@@ -16,8 +16,10 @@
 package rocket.event.client;
 
 /**
- * A convenience that implements do nothing methods of the {@link MouseEventListener}
- * interface. Sub classes can then select which method they wish to override.
+ * A convenience that implements do nothing methods of the
+ * {@link MouseEventListener} interface. Sub classes can then select which
+ * method they wish to override.
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class MouseEventAdapter implements MouseEventListener {

@@ -752,16 +752,16 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 				}
 				break;
 			}
-			if( StyleConstants.HEIGHT.equals( propertyName )){
-				propertyValue = this.getComputedHeight( element );
+			if (StyleConstants.HEIGHT.equals(propertyName)) {
+				propertyValue = this.getComputedHeight(element);
 				break;
 			}
 			if (StyleConstants.OPACITY.equals(propertyName)) {
 				propertyValue = this.getComputedOpacity(element);
 				break;
 			}
-			if( StyleConstants.WIDTH.equals( propertyName )){
-				propertyValue = this.getComputedWidth( element );
+			if (StyleConstants.WIDTH.equals(propertyName)) {
+				propertyValue = this.getComputedWidth(element);
 				break;
 			}
 			propertyValue = super.getComputedStyleProperty(element, propertyName);
@@ -808,16 +808,16 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 	 return value ? "" + value : null;
 	 }-*/;
 
-	protected String getComputedHeight( final Element element) {
-		final int offsetHeight = ObjectHelper.getInteger( element, "offsetHeight" );
-		final int borderTopHeight = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_TOP_WIDTH );
-		final int paddingTop = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_TOP );
-		final int paddingBottom = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_BOTTOM );
-		final int borderBottomHeight = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_BOTTOM_WIDTH );
-		
-		return ( offsetHeight - borderTopHeight - paddingTop - paddingBottom - borderBottomHeight ) + "px";
+	protected String getComputedHeight(final Element element) {
+		final int offsetHeight = ObjectHelper.getInteger(element, "offsetHeight");
+		final int borderTopHeight = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_TOP_WIDTH);
+		final int paddingTop = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_TOP);
+		final int paddingBottom = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_BOTTOM);
+		final int borderBottomHeight = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_BOTTOM_WIDTH);
+
+		return (offsetHeight - borderTopHeight - paddingTop - paddingBottom - borderBottomHeight) + "px";
 	}
-	
+
 	protected String getComputedOpacity(final Element element) {
 		String value = this.getComputedStyleProperty0(element, StyleSupportConstants.FILTER);
 		if (null != value) {
@@ -851,16 +851,16 @@ public class InternetExplorer6StyleSupport extends StyleSupport {
 	 return result ? null : "none";
 	 }-*/;
 
-	protected String getComputedWidth( final Element element) {
-		final int offsetWidth = ObjectHelper.getInteger( element, "offsetWidth" );
-		final int borderTopWidth = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_TOP_WIDTH );
-		final int paddingTop = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_TOP );
-		final int paddingBottom = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_BOTTOM );
-		final int borderBottomWidth = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_BOTTOM_WIDTH );
-		
-		return ( offsetWidth - borderTopWidth - paddingTop - paddingBottom - borderBottomWidth ) + "px";
+	protected String getComputedWidth(final Element element) {
+		final int offsetWidth = ObjectHelper.getInteger(element, "offsetWidth");
+		final int borderTopWidth = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_TOP_WIDTH);
+		final int paddingTop = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_TOP);
+		final int paddingBottom = this.getComputedStylePropertyInPixels(element, StyleConstants.PADDING_BOTTOM);
+		final int borderBottomWidth = this.getComputedBorderWidthInPixels(element, StyleConstants.BORDER_BOTTOM_WIDTH);
+
+		return (offsetWidth - borderTopWidth - paddingTop - paddingBottom - borderBottomWidth) + "px";
 	}
-	
+
 	/**
 	 * This method covers a special case only returning non zero values if a
 	 * border style is also applicable.

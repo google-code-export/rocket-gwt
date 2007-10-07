@@ -16,27 +16,28 @@
 package rocket.event.client;
 
 public class FocusEventListenerCollection extends ListenerCollection {
-	public void add( final FocusEventListener listener ){
-		super.add( listener );
+	public void add(final FocusEventListener listener) {
+		super.add(listener);
 	}
-	public boolean remove( final FocusEventListener listener ){
-		return super.remove( listener );
+
+	public boolean remove(final FocusEventListener listener) {
+		return super.remove(listener);
 	}
-	
-	public void fireFocus( final FocusEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final FocusEventListener listener0 = (FocusEventListener)listener;
-				listener0.onFocus( event );
+
+	public void fireFocus(final FocusEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final FocusEventListener listener0 = (FocusEventListener) listener;
+				listener0.onFocus(event);
 			}
 		});
 	}
-	
-	public void fireBlur( final BlurEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final FocusEventListener listener0 = (FocusEventListener)listener;
-				listener0.onBlur( event );
+
+	public void fireBlur(final BlurEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final FocusEventListener listener0 = (FocusEventListener) listener;
+				listener0.onBlur(event);
 			}
 		});
 	}

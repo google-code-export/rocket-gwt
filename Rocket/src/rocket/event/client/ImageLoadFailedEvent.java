@@ -16,9 +16,10 @@
 package rocket.event.client;
 
 public class ImageLoadFailedEvent extends Event {
-	public ImageLoadFailedEvent(){		
+	public ImageLoadFailedEvent() {
 	}
-	public ImageLoadFailedEvent asImageLoadFailedEvent(){
+
+	public ImageLoadFailedEvent asImageLoadFailedEvent() {
 		return this;
 	}
 }

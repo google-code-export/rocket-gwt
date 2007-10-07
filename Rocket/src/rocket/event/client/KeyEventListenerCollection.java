@@ -16,36 +16,37 @@
 package rocket.event.client;
 
 public class KeyEventListenerCollection extends ListenerCollection {
-	public void add( final KeyEventListener listener ){
-		super.add( listener );
+	public void add(final KeyEventListener listener) {
+		super.add(listener);
 	}
-	public boolean remove( final KeyEventListener listener ){
-		return super.remove( listener );
+
+	public boolean remove(final KeyEventListener listener) {
+		return super.remove(listener);
 	}
-	
-	public void fireKeyDown( final KeyDownEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final KeyEventListener listener0 = (KeyEventListener)listener;
-				listener0.onKeyDown( event );
+
+	public void fireKeyDown(final KeyDownEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final KeyEventListener listener0 = (KeyEventListener) listener;
+				listener0.onKeyDown(event);
 			}
 		});
 	}
-	
-	public void fireKeyPress( final KeyPressEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final KeyEventListener listener0 = (KeyEventListener)listener;
-				listener0.onKeyPress( event );
+
+	public void fireKeyPress(final KeyPressEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final KeyEventListener listener0 = (KeyEventListener) listener;
+				listener0.onKeyPress(event);
 			}
 		});
 	}
-	
-	public void fireKeyUp( final KeyUpEvent event ){
-		this.fire( new ListenerCollection.EventFiringAdapter(){
-			public void fire( final Object listener ){
-				final KeyEventListener listener0 = (KeyEventListener)listener;
-				listener0.onKeyUp( event );
+
+	public void fireKeyUp(final KeyUpEvent event) {
+		this.fire(new ListenerCollection.EventFiringAdapter() {
+			public void fire(final Object listener) {
+				final KeyEventListener listener0 = (KeyEventListener) listener;
+				listener0.onKeyUp(event);
 			}
 		});
 	}

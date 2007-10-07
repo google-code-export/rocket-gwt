@@ -16,9 +16,10 @@
 package rocket.event.client;
 
 public class MouseUpEvent extends MouseButtonEvent {
-	public MouseUpEvent(){}
-	
-	public MouseUpEvent asMouseUpEvent(){
+	public MouseUpEvent() {
+	}
+
+	public MouseUpEvent asMouseUpEvent() {
 		return this;
 	}
 }

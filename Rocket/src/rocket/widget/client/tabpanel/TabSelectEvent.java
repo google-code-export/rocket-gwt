@@ -17,31 +17,34 @@ package rocket.widget.client.tabpanel;
 
 /**
  * This event is fired after completing a new tab selection
+ * 
  * @author Miroslav Pokorny
  */
 public class TabSelectEvent {
-	
+
 	/**
 	 * The previously selected tab
 	 */
 	private TabItem previouslySelected;
-	
-	public TabItem getPreviouslySelected(){
+
+	public TabItem getPreviouslySelected() {
 		return previouslySelected;
 	}
-	void setPreviouslySelected( final TabItem previouslySelected ){
+
+	void setPreviouslySelected(final TabItem previouslySelected) {
 		this.previouslySelected = previouslySelected;
 	}
-	
+
 	/**
 	 * The new tab that is selected
 	 */
 	private TabItem currentSelection;
-	
-	public TabItem getCurrentSelection(){
+
+	public TabItem getCurrentSelection() {
 		return currentSelection;
 	}
-	void setCurrentSelection( final TabItem currentSelection ){
+
+	void setCurrentSelection(final TabItem currentSelection) {
 		this.currentSelection = currentSelection;
 	}
 }

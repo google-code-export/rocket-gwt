@@ -17,29 +17,28 @@ package rocket.event.client;
 
 import rocket.util.client.ObjectHelper;
 
-
 /**
- * Convenient method which takes care of adapting a GWt raw event into a rocket event and then dispatching
- * to the appropriate handleXXX method.
+ * Convenient method which takes care of adapting a GWt raw event into a rocket
+ * event and then dispatching to the appropriate handleXXX method.
  * 
  * Sub classes only need to override the appropriate handle method.
  * 
  * @author Miroslav Pokorny
  */
-public class EventListenerAdapter extends EventDispatcher implements com.google.gwt.user.client.EventListener{	
-	
-	public void onBrowserEvent( final com.google.gwt.user.client.Event rawEvent ){
-	Event event = null;	
-	
-	try {			
-		event = Event.getEvent(rawEvent);
+public class EventListenerAdapter extends EventDispatcher implements com.google.gwt.user.client.EventListener {
 
-		this.beforeDispatching( event );
-		this.dispatch(event );					
-		this.afterDispatching(event );		
-		
-	} finally {
-		ObjectHelper.destroyIfNecessary(event);
+	public void onBrowserEvent(final com.google.gwt.user.client.Event rawEvent) {
+		Event event = null;
+
+		try {
+			event = Event.getEvent(rawEvent);
+
+			this.beforeDispatching(event);
+			this.dispatch(event);
+			this.afterDispatching(event);
+
+		} finally {
+			ObjectHelper.destroyIfNecessary(event);
+		}
 	}
-}
 }

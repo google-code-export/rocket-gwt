@@ -19,25 +19,28 @@ import com.google.gwt.user.client.DOM;
 
 /**
  * A common base class for any mouse button event.
+ * 
  * @author Miroslav Pokorny
  */
 class MouseButtonEvent extends MouseEvent {
-	
-	public MouseButtonEvent(){		
+
+	public MouseButtonEvent() {
 	}
-	
-	public boolean isLeftButton(){
-		return com.google.gwt.user.client.Event.BUTTON_LEFT == DOM.eventGetButton( this.getEvent() );
+
+	public boolean isLeftButton() {
+		return com.google.gwt.user.client.Event.BUTTON_LEFT == DOM.eventGetButton(this.getEvent());
 	}
-	public boolean isMiddleButton(){
-		return com.google.gwt.user.client.Event.BUTTON_MIDDLE == DOM.eventGetButton( this.getEvent() );
+
+	public boolean isMiddleButton() {
+		return com.google.gwt.user.client.Event.BUTTON_MIDDLE == DOM.eventGetButton(this.getEvent());
 	}
-	public boolean isRightButton(){
-		return com.google.gwt.user.client.Event.BUTTON_RIGHT == DOM.eventGetButton( this.getEvent() );
+
+	public boolean isRightButton() {
+		return com.google.gwt.user.client.Event.BUTTON_RIGHT == DOM.eventGetButton(this.getEvent());
 	}
-	
-	public String toString(){
-		return super.toString() + ", button=" + 
-			(this.isLeftButton() ? " Left" : (this.isMiddleButton() ? " Middle" : (this.isRightButton() ? " Right" : "???" )));
+
+	public String toString() {
+		return super.toString() + ", button="
+				+ (this.isLeftButton() ? " Left" : (this.isMiddleButton() ? " Middle" : (this.isRightButton() ? " Right" : "???")));
 	}
 }

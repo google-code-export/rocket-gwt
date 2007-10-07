@@ -105,12 +105,12 @@ abstract public class DatePicker extends CompositeWidget {
 		final String currentMonthStyle = this.getCurrentMonthStyle();
 		final String nextMonthStyle = this.getNextMonthStyle();
 		String monthStyle = date.getDate() != 1 ? this.getPreviousMonthStyle() : currentMonthStyle;
-		
+
 		final int rowOffset = this.hasHeadings() ? 1 : 0;
 		final int lastRow = grid.getRowCount();
-		
+
 		final CellFormatter cellFormatter = grid.getCellFormatter();
-		
+
 		for (int row = rowOffset; row < lastRow; row++) {
 			for (int column = 0; column < WidgetConstants.DATEPICKER_COLUMNS; column++) {
 
@@ -118,11 +118,11 @@ abstract public class DatePicker extends CompositeWidget {
 				final int month = date.getMonth();
 				final int dayOfMonth = date.getDate();
 
-				cellFormatter.setStyleName(row, column, dayStyle );
-				cellFormatter.addStyleName(row, column, monthStyle );
-								
+				cellFormatter.setStyleName(row, column, dayStyle);
+				cellFormatter.addStyleName(row, column, monthStyle);
+
 				final Widget widget = this.createDateTile(year, month, dayOfMonth);
-				grid.setWidget(row, column, widget, year, month, dayOfMonth);							
+				grid.setWidget(row, column, widget, year, month, dayOfMonth);
 
 				date.setDate(dayOfMonth + 1);
 
@@ -132,22 +132,27 @@ abstract public class DatePicker extends CompositeWidget {
 			}
 		}
 	}
-	protected String getDayStyle(){
+
+	protected String getDayStyle() {
 		return WidgetConstants.DATEPICKER_DAY_STYLE;
 	}
-	protected String getPreviousMonthStyle(){
+
+	protected String getPreviousMonthStyle() {
 		return WidgetConstants.DATEPICKER_PREVIOUS_MONTH_STYLE;
 	}
-	protected String getCurrentMonthStyle(){
+
+	protected String getCurrentMonthStyle() {
 		return WidgetConstants.DATEPICKER_CURRENT_MONTH_STYLE;
 	}
-	protected String getNextMonthStyle(){
+
+	protected String getNextMonthStyle() {
 		return WidgetConstants.DATEPICKER_NEXT_MONTH_STYLE;
 	}
+
 	/**
 	 * A calendarGrid is used to hold all the cells that make up the calendar
 	 */
-	protected CalendarGrid getCalendarGrid() {		
+	protected CalendarGrid getCalendarGrid() {
 		return (CalendarGrid) this.getWidget();
 	}
 
@@ -164,18 +169,18 @@ abstract public class DatePicker extends CompositeWidget {
 		if (hasHeadings) {
 			this.addHeadings(grid);
 		}
-		grid.setCellPadding( 0 );
-		grid.setCellSpacing( 0 );
-		
+		grid.setCellPadding(0);
+		grid.setCellSpacing(0);
+
 		final CellFormatter cellFormatter = grid.getCellFormatter();
 		final String dayStyle = this.getDayStyle();
-		
-		for( int r = 0; r < rows; r++ ){
-			for( int c = 0; c < WidgetConstants.DATEPICKER_COLUMNS; c++ ){
-				cellFormatter.setAlignment(r, c, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE );				
-				cellFormatter.setWidth( r, c, "100%");
-				cellFormatter.setHeight( r, c, "100%");
-				cellFormatter.setStyleName( r, c, dayStyle);
+
+		for (int r = 0; r < rows; r++) {
+			for (int c = 0; c < WidgetConstants.DATEPICKER_COLUMNS; c++) {
+				cellFormatter.setAlignment(r, c, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+				cellFormatter.setWidth(r, c, "100%");
+				cellFormatter.setHeight(r, c, "100%");
+				cellFormatter.setStyleName(r, c, dayStyle);
 			}
 		}
 

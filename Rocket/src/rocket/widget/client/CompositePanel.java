@@ -122,29 +122,29 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 		if (isAttached()) {
 			throw new IllegalStateException("Should only call onAttach when the widget is detached from the browser's document");
 		}
-		this.setAttachFlag( this, true );
+		this.setAttachFlag(this, true);
 		this.invokePanelOnAttach(this.getPanel());
-		this.doSinkEvents();		
+		this.doSinkEvents();
 	}
 
-	native private void setAttachFlag( final Widget widget, final boolean attached )/*-{
-	widget.@com.google.gwt.user.client.ui.Widget::attached=attached;
-	}-*/;
-	
-	native private void invokePanelOnAttach(final Panel panel )/*-{
+	native private void setAttachFlag(final Widget widget, final boolean attached)/*-{
+	 widget.@com.google.gwt.user.client.ui.Widget::attached=attached;
+	 }-*/;
+
+	native private void invokePanelOnAttach(final Panel panel)/*-{
 	 panel.@com.google.gwt.user.client.ui.Widget::onAttach()();
 	 }-*/;
 
 	protected void onDetach() {
-		if (false ==isAttached()) {
+		if (false == isAttached()) {
 			throw new IllegalStateException("Should only call onDetach when the widget is attached to the browser's document");
 		}
 
 		try {
 			onUnload();
-			this.setAttachFlag( this, false );
+			this.setAttachFlag(this, false);
 		} finally {
-			this.invokePanelOnDetach( this.getPanel() );
+			this.invokePanelOnDetach(this.getPanel());
 
 			if (0 != this.getSunkEventsBitMask()) {
 				DOM.setEventListener(this.getSunkEventsTarget(), this);
@@ -152,10 +152,10 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 		}
 	}
 
-	native private void invokePanelOnDetach(final Panel panel )/*-{
+	native private void invokePanelOnDetach(final Panel panel)/*-{
 	 panel.@com.google.gwt.user.client.ui.Widget::onDetach()();
 	 }-*/;
-	
+
 	abstract public void insert(final Widget widget, final int indexBefore);
 
 	public Widget get(final int index) {
@@ -175,8 +175,8 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 	}
 
 	public int indexOf(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget );
-		
+		ObjectHelper.checkNotNull("parameter:widget", widget);
+
 		int index = -1;
 		final Iterator iterator = this.iterator();
 		while (iterator.hasNext()) {
@@ -198,16 +198,16 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 		return count;
 	}
 
-	public Iterator iterator(){
+	public Iterator iterator() {
 		return this.getPanel().iterator();
 	}
 
 	abstract public boolean remove(final Widget widget);
 
-	public void clear(){
-		CollectionHelper.removeAll( this.iterator() );
+	public void clear() {
+		CollectionHelper.removeAll(this.iterator());
 	}
-	
+
 	// THE METHODS BELOW SHOULD BE IGNORED
 	final protected void checkElement(final Element element) {
 		throw new UnsupportedOperationException("checkElement");

@@ -24,17 +24,19 @@ import rocket.widget.client.WidgetConstants;
  * @author Miroslav Pokorny (mP)
  */
 class Constants {
-	
+
 	final static String WIDGET_HOLDER = "-widgetHolder";
+
 	final static String SPLITTER = "-splitter";
+
 	final static String DRAGGING = "-dragging";
-	
+
 	/**
 	 * This style is applied to the container element of the
 	 * HorizontalSplitterPanel
 	 * {@link rocket.widget.client.splitter.HorizontalSplitterPanel}
 	 */
-	final static String HORIZONTAL_SPLITTER_PANEL_STYLE = WidgetConstants.ROCKET +"-horizontalSplitterPanel";
+	final static String HORIZONTAL_SPLITTER_PANEL_STYLE = WidgetConstants.ROCKET + "-horizontalSplitterPanel";
 
 	/**
 	 * This style is applied to the element that contains any of the added
