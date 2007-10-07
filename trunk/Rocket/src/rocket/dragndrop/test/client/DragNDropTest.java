@@ -110,8 +110,8 @@ public class DragNDropTest implements EntryPoint {
 		final Grid grid = new Grid(3, 3);
 		grid.setStyleName("dragNDropTest-grid");
 		grid.setBorderWidth(0);
-		grid.setCellPadding(0);
-		grid.setCellSpacing(0);
+		grid.setCellPadding( 1);
+		grid.setCellSpacing( 1 );
 		grid.setWidget(0, 0, new Image("anchor.png"));
 		grid.setWidget(1, 1, new Image("bell.png"));
 		grid.setWidget(2, 2, new Image("bomb.png"));
