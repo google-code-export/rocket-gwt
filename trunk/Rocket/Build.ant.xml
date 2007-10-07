@@ -381,23 +381,26 @@
 
 		<zip destfile="${basedir}/../${release-archive-name}" >
 			<fileset dir="${basedir}/..">
-<!--				<include name="${bin-dir}/**/*.class"/>-->
-				<include name="Rocket/src/**/*.*"/>
-				<include name="Rocket/doc/**/*.*"/>
-				<include name="Rocket/release/*.jar"/>
-<!--				<include name="Rocket/wiki/*.*"/>	-->			
-				<include name="Rocket/www/**/*.*"/>
-				<exclude name="Rocket/.gwt-cache"/>				
-				<exclude name="Rocket/src.temp"/>
 				<exclude name="Rocket/bin.temp"/>				
-				<include name="Rocket/*.*"/>
+				<include name="Rocket/doc/**/*.*"/>
 				<exclude name="Rocket/release/${release-archive-name}"/>
+				<include name="Rocket/release/*.jar"/>
+				<include name="Rocket/src/**/*.*"/>
+				<include name="Rocket/www/**/*.*"/>
+				<include name="Rocket/.classpath"/>					
+				<include name="Rocket/.project"/>	
+				<include name="Rocket/build.xml"/>				
+				<include name="Rocket/*.launch"/>								
 			</fileset>
 
 			<fileset dir="${txt-dir}">
 				<include name="*.jar"/>
 				<include name="release-notes.txt"/>
 				<include name="license.txt"/>
+			</fileset>
+
+			<fileset dir=".">
+				<include name="demos.html"/>
 			</fileset>
 		</zip>
 	</target>
