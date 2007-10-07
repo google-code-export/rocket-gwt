@@ -454,12 +454,12 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	private int mouseDownRepeatRate;
 
 	public int getMouseDownRepeatRate() {
-		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", mouseDownRepeatRate, 0);
+		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		return this.mouseDownRepeatRate;
 	}
 
 	public void setMouseDownRepeatRate(final int mouseDownRepeatRate) {
-		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", mouseDownRepeatRate, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		this.mouseDownRepeatRate = mouseDownRepeatRate;
 	}
 
@@ -596,12 +596,12 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	private int deltaX;
 
 	public int getDeltaX() {
-		PrimitiveHelper.checkGreaterThan("field:deltaX", deltaX, 0);
+		PrimitiveHelper.checkGreaterThan("field:deltaX", 0, deltaX);
 		return this.deltaX;
 	}
 
 	public void setDeltaX(final int xDelta) {
-		PrimitiveHelper.checkGreaterThan("parameter:deltaX", xDelta, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:deltaX", 0, xDelta);
 		this.deltaX = xDelta;
 	}
 
@@ -662,12 +662,12 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	private int deltaY;
 
 	public int getDeltaY() {
-		PrimitiveHelper.checkGreaterThan("field:deltaY", deltaY, 0);
+		PrimitiveHelper.checkGreaterThan("field:deltaY", 0, deltaY);
 		return this.deltaY;
 	}
 
 	public void setDeltaY(final int yDelta) {
-		PrimitiveHelper.checkGreaterThan("parameter:deltaY", yDelta, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:deltaY", 0, yDelta );
 		this.deltaY = yDelta;
 	}
 

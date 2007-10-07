@@ -39,12 +39,12 @@ public class ByteArrayServletOutputStream extends ServletOutputStream {
 	private int bufferSize;
 
 	protected int getBufferSize() {
-		PrimitiveHelper.checkGreaterThan("field:bufferSize", this.bufferSize, 0);
+		PrimitiveHelper.checkGreaterThan("field:bufferSize", 0, this.bufferSize);
 		return this.bufferSize;
 	}
 
 	protected void setBufferSize(final int bufferSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:bufferSize", bufferSize, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:bufferSize", 0, bufferSize);
 		this.bufferSize = bufferSize;
 	}
 

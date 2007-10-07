@@ -158,12 +158,12 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	private int bufferSize;
 
 	public int getBufferSize() {
-		PrimitiveHelper.checkGreaterThan("field:bufferSize", bufferSize, 0);
+		PrimitiveHelper.checkGreaterThan("field:bufferSize", 0, bufferSize);
 		return bufferSize;
 	}
 
 	public void setBufferSize(final int bufferSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:bufferSize", bufferSize, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:bufferSize", 0, bufferSize );
 		this.bufferSize = bufferSize;
 	}
 

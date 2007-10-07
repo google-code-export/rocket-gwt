@@ -33,12 +33,12 @@ public class WebResponse implements IsSerializable {
 	private int code = -1;
 
 	public int getCode() {
-		PrimitiveHelper.checkGreaterThan("field:code", code, 0);
+		PrimitiveHelper.checkGreaterThan("field:code", 0, code);
 		return this.code;
 	}
 
 	public void setCode(final int code) {
-		PrimitiveHelper.checkGreaterThan("parameter:code", code, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:code", 0, code );
 		this.code = code;
 	}
 

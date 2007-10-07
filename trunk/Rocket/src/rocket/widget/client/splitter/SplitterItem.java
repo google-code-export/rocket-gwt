@@ -78,12 +78,12 @@ public class SplitterItem {
 	private int minimumSize;
 
 	public int getMinimumSize() {
-		PrimitiveHelper.checkGreaterThan("field:minimumSize", minimumSize, 0);
+		PrimitiveHelper.checkGreaterThan("field:minimumSize", 0, minimumSize);
 		return this.minimumSize;
 	}
 
 	public void setMinimumSize(final int minimumSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumSize", minimumSize, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:minimumSize", 0, minimumSize);
 		this.minimumSize = minimumSize;
 	}
 
@@ -94,12 +94,12 @@ public class SplitterItem {
 	private int sizeShare;
 
 	public int getSizeShare() {
-		PrimitiveHelper.checkGreaterThan("field:sizeShare", sizeShare, 0);
+		PrimitiveHelper.checkGreaterThan("field:sizeShare", 0, sizeShare);
 		return this.sizeShare;
 	}
 
 	public void setSizeShare(final int sizeShare) {
-		PrimitiveHelper.checkGreaterThan("parameter:sizeShare", sizeShare, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:sizeShare", 0, sizeShare);
 		this.sizeShare = sizeShare;
 	}
 

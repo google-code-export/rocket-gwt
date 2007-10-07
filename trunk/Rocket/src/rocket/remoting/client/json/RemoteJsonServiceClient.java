@@ -100,7 +100,7 @@ abstract public class RemoteJsonServiceClient implements RemoteJsonService, Serv
 	private int timeout;
 
 	public int getTimeout() {
-		PrimitiveHelper.checkGreaterThan("field:timeout", timeout, 0);
+		PrimitiveHelper.checkGreaterThan("field:timeout", 0, timeout);
 		return timeout;
 	}
 
@@ -109,7 +109,7 @@ abstract public class RemoteJsonServiceClient implements RemoteJsonService, Serv
 	}
 
 	public void setTimeout(final int timeout) {
-		PrimitiveHelper.checkGreaterThan("parameter:timeout", timeout, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:timeout", 0, timeout );
 		this.timeout = timeout;
 	}
 
