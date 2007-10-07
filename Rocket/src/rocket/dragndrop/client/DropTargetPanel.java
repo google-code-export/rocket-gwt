@@ -15,7 +15,12 @@
  */
 package rocket.dragndrop.client;
 
-import com.google.gwt.user.client.ui.SimplePanel;
+import rocket.dom.client.Dom;
+import rocket.util.client.ObjectHelper;
+import rocket.widget.client.SimplePanel;
+
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -28,17 +33,45 @@ public class DropTargetPanel extends SimplePanel {
 	public DropTargetPanel() {
 		super();
 
-		this.setStyleName(Constants.DRAG_N_DROP_DROP_TARGET_STYLE);
+	}
+
+	protected Element createPanelElement() {
+		return DOM.createDiv();
+	}
+
+	protected void checkElement(final Element element) {
+	}
+
+	protected String getInitialStyleName() {
+		return Constants.DRAG_N_DROP_DROP_TARGET_STYLE;
+	}
+
+	protected int getSunkEventsBitMask() {
+		return 0;
+	}
+
+	protected Element insert0(final Element element, final int index) {
+		DOM.appendChild(this.getElement(), element);
+		return element;
+	}
+
+	protected void remove0(final Element element, final int index) {
+		Dom.removeFromParent(element);
 	}
 
 	/**
-	 * This method is invoked whenever a Draggable widget is dropped over this
-	 * target. The default behaviour is to simply accept the widget overwriting
-	 * the previous widget
+	 * This method simply removes the dropped widget from its parent and makes
+	 * it the widget. Sub-classes may wish to override this method when
+	 * attempting to do things like drop a widget into a cell when the housed
+	 * widget is a Grid.
 	 * 
-	 * @param widget
+	 * @param event
 	 */
-	protected void accept(final Widget widget) {
+	protected void accept(final DropEvent event) {
+		ObjectHelper.checkNotNull("parameter:event", event);
+
+		final Widget widget = event.getWidget();
+		widget.removeFromParent();
 		this.setWidget(widget);
 	}
 

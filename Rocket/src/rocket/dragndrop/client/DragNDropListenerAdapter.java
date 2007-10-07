@@ -15,8 +15,6 @@
  */
 package rocket.dragndrop.client;
 
-import com.google.gwt.user.client.Event;
-
 /**
  * Convenient start for any DragNDropListener in which all its methods do
  * nothing. This is particularly useful when only one method needs to be
@@ -24,33 +22,14 @@ import com.google.gwt.user.client.Event;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class DragNDropListenerAdapter implements DragNDropListener {
+abstract public class DragNDropListenerAdapter implements DragNDropListener {
 
-	public boolean onBeforeDragStart(final DraggablePanel widget) {
-		return true;
+	public void onDragStart(DragStartEvent event) {
 	}
 
-	public void onDragStart(final DraggablePanel widget) {
+	public void onDragMove(final DragMoveEvent event) {
 	}
 
-	public boolean onBeforeDragMove(final Event event, final DraggablePanel widget) {
-		return true;
-	}
-
-	public void onDragMove(final Event event, final DraggablePanel widget) {
-	}
-
-	public boolean onBeforeDrop(final DraggablePanel dragged, final DropTargetPanel target) {
-		return true;
-	}
-
-	public void onDrop(final DraggablePanel dragged, final DropTargetPanel target) {
-	}
-
-	public void onDragCancelled(final DraggablePanel widget) {
-
-	}
-
-	public void onInvalidDrop(final Event event, final DraggablePanel widget) {
+	public void onDrop(final DropEvent event) {
 	}
 }
