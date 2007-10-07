@@ -105,7 +105,7 @@ public class ZebraFlexTable extends FlexTable {
 	}
 
 	protected void updateRowBackgroundColour(final int row) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:row", row, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:row", 0, row );
 
 		final String oddRowStyle = this.getOddRowStyle();
 		final String evenRowStyle = this.getEvenRowStyle();

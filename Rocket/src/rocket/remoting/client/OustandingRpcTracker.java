@@ -45,12 +45,12 @@ public class OustandingRpcTracker {
 	private int oustandingCount;
 
 	protected int getOustandingCount() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:oustandingCount", oustandingCount, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("field:oustandingCount", 0, oustandingCount );
 		return this.oustandingCount;
 	}
 
 	protected void setOustandingCount(final int oustandingCount) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:oustandingCount", oustandingCount, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:oustandingCount", 0, oustandingCount );
 		this.oustandingCount = oustandingCount;
 
 		this.getWidget().setVisible(oustandingCount > 0);

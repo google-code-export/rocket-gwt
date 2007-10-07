@@ -185,7 +185,7 @@ public class ObjectHelper extends SystemHelper {
 	 */
 	public static boolean hasProperty(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 		return hasProperty0(object, index);
 	}
 
@@ -214,7 +214,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static String getString(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 		return getString0(object, index);
 	}
 
@@ -244,7 +244,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static void setString(final JavaScriptObject object, final int index, final String value) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 
 		setString0(object, index, value);
 	}
@@ -276,7 +276,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static double getDouble(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 
 		return getDouble0(object, index);
 	}
@@ -309,7 +309,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static void setDouble(final JavaScriptObject object, final int index, final double value) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 
 		setDouble0(object, index, value);
 	}
@@ -337,7 +337,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static boolean getBoolean(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 		return getBoolean0(object, index);
 	}
 
@@ -368,7 +368,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static void setBoolean(final JavaScriptObject object, final int index, final boolean booleanValue) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 
 		setBoolean0(object, index, booleanValue);
 	}
@@ -402,7 +402,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static int getInteger(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 		return getInteger0(object, index);
 	}
 
@@ -437,7 +437,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static void setInteger(final JavaScriptObject object, final int index, final int intValue) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 
 		setInteger0(object, index, intValue);
 	}
@@ -466,7 +466,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static JavaScriptObject getObject(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 		return getObject0(object, index);
 	}
 
@@ -496,7 +496,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static void setObject(final JavaScriptObject object, final int index, final JavaScriptObject value) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 
 		setObject0(object, index, value);
 	}
@@ -525,7 +525,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static Element getElement(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 		return getElement0(object, index);
 	}
 
@@ -555,7 +555,7 @@ public class ObjectHelper extends SystemHelper {
 
 	public static JavaScriptObject removeProperty(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 		return removeProperty0(object, index);
 	}
 
@@ -592,7 +592,7 @@ public class ObjectHelper extends SystemHelper {
 	 */
 	public static String getType(final JavaScriptObject object, final int index) {
 		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", index, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
 		return ObjectHelper.getType0(object, index);
 	}
 

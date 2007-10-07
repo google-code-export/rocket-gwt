@@ -78,12 +78,12 @@ public class Hijacker {
 	private int childIndex;
 
 	int getChildIndex() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:childIndex", childIndex, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("field:childIndex", 0, childIndex );
 		return this.childIndex;
 	}
 
 	void setChildIndex(final int childIndex) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:childIndex", childIndex, 0);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:childIndex", 0, childIndex );
 		this.childIndex = childIndex;
 	}
 
