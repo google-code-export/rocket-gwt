@@ -25,12 +25,20 @@ BUTTON{
 	
 	<h6>Things being tested</h6>
 	<ul>
-	<li>Starting a comet session (by clicking on the <b>START</b> button)</li>
-	<li>Starting a comet session with an invalid url (by clicking on the <b>START USING BAD URL</b> button)which should result in a CometServerConnectionFailureExcecption
+	<li>Starting a comet session (by clicking on the <b>Start</b> button)</li>
+	<li>Starting a comet session with an invalid url (by clicking on the <b>Start using bad url</b> button)which should result in a CometServerConnectionFailureExcecption
 	(This is caught by the test)</li>
-	<li>Stopping a current comet session - by clicking on the <b>STOP</b> button. It should be possible to restart a session at any time</li>
+	<li>Stopping a current comet session - by clicking on the <b>Stop</b> button. It should be possible to restart a session at any time</li>
 	<li>Each object streamed from the server is successfully deserialized</li>
 	<li>That there is no buffering between the server and client - uses a Date object with the server timestamp which is verified on the client.</li>
+	<li>Kill the tomcat server and check that an exception is reported in the log. 
+	  <ul>
+	     <li>Run this test in hosted mode.</li>
+	     <li>Click on the <b>Compile/Browse</b> button which appears in the hosted mode browser toolbar.</li>
+	     <li>From the non hosted mode browser start a new comet session.</li>
+	     <li>Let the test run for a few seconds.</li>
+	     <li>Kill the hosted mode browser.</li>
+	     <li>The log that appears in the regular browser comet test should now report an exception regarding lost connectivity.</li>
 	</ul>
 	<div><b>Log</b></div>
 	<div
