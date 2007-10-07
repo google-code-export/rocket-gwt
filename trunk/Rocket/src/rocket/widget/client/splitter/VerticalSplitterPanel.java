@@ -162,6 +162,8 @@ public class VerticalSplitterPanel extends SplitterPanel {
 			beforeWidget.setWidth("100%");
 			splitter.setWidth("100%");
 			afterWidget.setWidth("100%");
+
+			// its necessary to prevent the event to stop text selection in opera.
 			break;
 		}
 	}
