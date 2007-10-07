@@ -404,12 +404,12 @@ public abstract class Slider extends CompositeWidget {
 	private int mouseDownRepeatRate;
 
 	public int getMouseDownRepeatRate() {
-		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", mouseDownRepeatRate, 0);
+		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		return this.mouseDownRepeatRate;
 	}
 
 	public void setMouseDownRepeatRate(final int mouseDownRepeatRate) {
-		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", mouseDownRepeatRate, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		this.mouseDownRepeatRate = mouseDownRepeatRate;
 	}
 
@@ -508,12 +508,12 @@ public abstract class Slider extends CompositeWidget {
 	private int maximumValue;
 
 	public int getMaximumValue() {
-		PrimitiveHelper.checkGreaterThan("field:maximumValue", maximumValue, 0);
+		PrimitiveHelper.checkGreaterThan("field:maximumValue", 0, maximumValue);
 		return this.maximumValue;
 	}
 
 	public void setMaximumValue(final int maximumValue) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumValue", maximumValue, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:maximumValue", 0, maximumValue);
 		this.maximumValue = maximumValue;
 	}
 
@@ -523,12 +523,12 @@ public abstract class Slider extends CompositeWidget {
 	private int delta;
 
 	public int getDelta() {
-		PrimitiveHelper.checkGreaterThan("field:delta", delta, 0);
+		PrimitiveHelper.checkGreaterThan("field:delta", 0, delta);
 		return this.delta;
 	}
 
 	public void setDelta(final int delta) {
-		PrimitiveHelper.checkGreaterThan("parameter:delta", delta, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:delta", 0, delta );
 		this.delta = delta;
 	}
 

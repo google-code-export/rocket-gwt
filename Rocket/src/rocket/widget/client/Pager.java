@@ -219,12 +219,12 @@ public class Pager extends CompositeWidget {
 	private int firstPage;
 
 	public int getFirstPage() {
-		PrimitiveHelper.checkGreaterThan("field:firstPage", this.firstPage, 0);
+		PrimitiveHelper.checkGreaterThan("field:firstPage", 0, this.firstPage);
 		return this.firstPage;
 	}
 
 	public void setFirstPage(final int firstPage) {
-		PrimitiveHelper.checkGreaterThan("parameter:firstPage", firstPage, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:firstPage", 0, firstPage);
 		this.firstPage = firstPage;
 	}
 
@@ -234,12 +234,12 @@ public class Pager extends CompositeWidget {
 	private int lastPage;
 
 	public int getLastPage() {
-		PrimitiveHelper.checkGreaterThan("field:lastPage", this.lastPage, 0);
+		PrimitiveHelper.checkGreaterThan("field:lastPage", 0, this.lastPage);
 		return this.lastPage;
 	}
 
 	public void setLastPage(final int lastPage) {
-		PrimitiveHelper.checkGreaterThan("parameter:lastPage", lastPage, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:lastPage", 0, lastPage);
 		this.lastPage = lastPage;
 	}
 
@@ -282,12 +282,12 @@ public class Pager extends CompositeWidget {
 	private int pagesInBetweenCount;
 
 	public int getPagesInBetweenCount() {
-		PrimitiveHelper.checkGreaterThan("field:pagesInBetweenCount", pagesInBetweenCount, 0);
+		PrimitiveHelper.checkGreaterThan("field:pagesInBetweenCount", 0, pagesInBetweenCount);
 		return this.pagesInBetweenCount;
 	}
 
 	public void setPagesInBetweenCount(final int pagesInBetweenCount) {
-		PrimitiveHelper.checkGreaterThan("parameter:pagesInBetweenCount", pagesInBetweenCount, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:pagesInBetweenCount", 0, pagesInBetweenCount);
 		this.pagesInBetweenCount = pagesInBetweenCount;
 	}
 

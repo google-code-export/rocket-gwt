@@ -477,12 +477,12 @@ abstract public class SplitterPanel extends CompositeWidget {
 	private int splitterSize;
 
 	public int getSplitterSize() {
-		PrimitiveHelper.checkGreaterThan("field:splitterSize", splitterSize, 0);
+		PrimitiveHelper.checkGreaterThan("field:splitterSize", 0, splitterSize);
 		return this.splitterSize;
 	}
 
 	public void setSplitterSize(final int splitterSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:splitterSize", splitterSize, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:splitterSize", 0, splitterSize);
 		this.splitterSize = splitterSize;
 	}
 

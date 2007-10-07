@@ -95,12 +95,12 @@ public abstract class CometServerServlet extends HttpServlet {
 	private int maximumBytesWritten;
 
 	protected int getMaximumBytesWritten() {
-		PrimitiveHelper.checkGreaterThan("field:maximumBytesWritten", this.maximumBytesWritten, 0);
+		PrimitiveHelper.checkGreaterThan("field:maximumBytesWritten", 0, this.maximumBytesWritten);
 		return this.maximumBytesWritten;
 	}
 
 	protected void setMaximumBytesWritten(final int maximumBytesWritten) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumBytesWritten", maximumBytesWritten, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:maximumBytesWritten", 0, maximumBytesWritten);
 		this.maximumBytesWritten = maximumBytesWritten;
 	}
 
@@ -111,12 +111,12 @@ public abstract class CometServerServlet extends HttpServlet {
 	private int connectionTimeout;
 
 	protected int getConnectionTimeout() {
-		PrimitiveHelper.checkGreaterThan("field:connectionTimeout", this.connectionTimeout, 0);
+		PrimitiveHelper.checkGreaterThan("field:connectionTimeout", 0, this.connectionTimeout);
 		return this.connectionTimeout;
 	}
 
 	protected void setConnectionTimeout(final int connectionTimeout) {
-		PrimitiveHelper.checkGreaterThan("parameter:connectionTimeout", connectionTimeout, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:connectionTimeout", 0, connectionTimeout);
 		this.connectionTimeout = connectionTimeout;
 	}
 

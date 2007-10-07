@@ -726,6 +726,16 @@ public class BasicWidgetsTest implements EntryPoint {
 		});
 		panel.add(listBoxRemoveItem);
 
+		final com.google.gwt.user.client.ui.Button listBoxSelectItem = new com.google.gwt.user.client.ui.Button("setSelectItem");
+		listBoxSelectItem.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				final int count = listBox.getItemCount();
+				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
+				listBox.setItemSelected(index, true );
+			}
+		});
+		panel.add(listBoxSelectItem);
+		
 		final com.google.gwt.user.client.ui.Button hijackedListBoxGetItem = new com.google.gwt.user.client.ui.Button("getItem (*)");
 		hijackedListBoxGetItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
@@ -765,6 +775,16 @@ public class BasicWidgetsTest implements EntryPoint {
 			}
 		});
 		panel.add(hijackedListBoxRemoveItem);
+
+		final com.google.gwt.user.client.ui.Button hijackedListBoxSelectItem = new com.google.gwt.user.client.ui.Button("setSelectItem (*)");
+		hijackedListBoxSelectItem.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				final int count = listBox.getItemCount();
+				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
+				hijackedListBox.setItemSelected(index, true);
+			}
+		});
+		panel.add(hijackedListBoxSelectItem);
 	}
 
 	Image createImage(final int row) {

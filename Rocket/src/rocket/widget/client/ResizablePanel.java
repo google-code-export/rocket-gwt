@@ -355,12 +355,12 @@ public class ResizablePanel extends CompositePanel {
 	private int minimumWidth;
 
 	public int getMinimumWidth() {
-		PrimitiveHelper.checkGreaterThan("field:minimumWidth", minimumWidth, 0);
+		PrimitiveHelper.checkGreaterThan("field:minimumWidth", 0, minimumWidth);
 		return this.minimumWidth;
 	}
 
 	public void setMinimumWidth(final int minimumWidth) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumWidth", minimumWidth, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:minimumWidth", 0, minimumWidth);
 		this.minimumWidth = minimumWidth;
 	}
 
@@ -370,12 +370,12 @@ public class ResizablePanel extends CompositePanel {
 	private int maximumWidth;
 
 	public int getMaximumWidth() {
-		PrimitiveHelper.checkGreaterThan("field:maximumWidth", maximumWidth, 0);
+		PrimitiveHelper.checkGreaterThan("field:maximumWidth", 0, maximumWidth);
 		return this.maximumWidth;
 	}
 
 	public void setMaximumWidth(final int maximumWidth) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumWidth", maximumWidth, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:maximumWidth", 0, maximumWidth);
 		this.maximumWidth = maximumWidth;
 	}
 
@@ -385,12 +385,12 @@ public class ResizablePanel extends CompositePanel {
 	private int minimumHeight;
 
 	public int getMinimumHeight() {
-		PrimitiveHelper.checkGreaterThan("field:minimumHeight", minimumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("field:minimumHeight", 0, minimumHeight);
 		return this.minimumHeight;
 	}
 
 	public void setMinimumHeight(final int minimumHeight) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumHeight", minimumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:minimumHeight", 0, minimumHeight);
 		this.minimumHeight = minimumHeight;
 	}
 
@@ -400,12 +400,12 @@ public class ResizablePanel extends CompositePanel {
 	private int maximumHeight;
 
 	public int getMaximumHeight() {
-		PrimitiveHelper.checkGreaterThan("field:maximumHeight", maximumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("field:maximumHeight", 0, maximumHeight);
 		return this.maximumHeight;
 	}
 
 	public void setMaximumHeight(final int maximumHeight) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumHeight", maximumHeight, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:maximumHeight", 0, maximumHeight );
 		this.maximumHeight = maximumHeight;
 	}
 

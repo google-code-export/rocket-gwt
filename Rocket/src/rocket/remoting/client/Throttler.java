@@ -48,12 +48,12 @@ public abstract class Throttler {
 	private int period;
 
 	public int getPeriod() {
-		PrimitiveHelper.checkGreaterThan("field:period", period, 0);
+		PrimitiveHelper.checkGreaterThan("field:period", 0, period);
 		return period;
 	}
 
 	public void setPeriod(final int period) {
-		PrimitiveHelper.checkGreaterThan("parameter:period", period, 0);
+		PrimitiveHelper.checkGreaterThan("parameter:period", 0, period );
 		this.period = period;
 	}
 
