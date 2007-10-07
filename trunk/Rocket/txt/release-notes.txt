@@ -554,3 +554,56 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.36.zip
   by a new comet client generator.
 * Added support for json rpc POSTS. A new annotation @jsonRpc-inputArguments selects whether input parameters are sent as request parameters or json rpc encoded.
 * Improved accuracy of NewMethodImpl which now checks its abstract flag before writing its body. If the method is abstract the body is skipped.
+
+0.37 XXXXX 2007
+----------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.37.zip
+
+* Fixed Dom.isInput() which was using the wrong method to retrieve the given elements "type" attribute. Should be DOM.getElementAttribute() not DOM.getElementProperty()
+* Added Dom.isAttached( Element ) which tests if the given element is attached to the DOM.
+* Added Dom.removeFromParent( Element )
+* Improved the CometGenerator so that it fails if it detects that the customised ProxyCreator is not being loaded. This has been the source of most comet related problems. This 
+  activate attempt at reporting classpath issues should help everyone.
+* Added abstract void buildDropDownList method to AutoCompleteTextBox (previously drop down lists had to be built during a keyUp event).
+* Fixed AutoCompleteTextBox to rebuild drop down list when user hits backspace. Previously rebuilding the list was delayed until the user typed in another "non editing" key.
+* Added new primitive widgets which contain all the functionality of the GWT equivalent with additional constructors to accept elements from the dom.
+  Note that no separate PasswordTextBox class exists, with password input fields created via new TextBox( true ). Try BasicWidget's demo.
+* New FormPanel widget contains all the functionality of the GWT FormPanel with the additional ability to convert form elements into widgets which may be fetched via get() or iterator().
+* Removed rocket.widget.client.form.* package (functionality has been superceeded by new FormPanel widget) and moved helper methods from FormHelper to 
+  WidgetHelper less List createFormElements().
+* Renamed Grid widget to GridView. Also renamed accompanying artefacts including styles, demo etc.
+* Removed WidgetProvider class and move methods to GridView as abstract methods.
+* Updated HtmlTemplateFactory (including generator) to now use introduced primitive widgets rather than the corresponding GWT primitive widgets.
+* Fixed bug with XXXSplitterPanel.remove which was failing to delete the removed widget.
+* Removed StyleHelper.buildCompound. Widget styles must not be built using String concatentation with the minus sign between components.
+* Reworked get computed width and height for IE so the value is computed rather than trying to use currentStyle.
+* Fixed bug with drag n drop when window was scrolled.
+* Introduced new event system which includes different classes with appropriate events for each basic event type. This removes the need to use
+  the DOM.eventXXX methods.
+* Reworked all widgets to use new typed event objects.
+* Reworked and significantly improved base classes for creating widgets and panels (refer to Widget,CompositeWidget, Panel and CompositePanel). Each
+  includes support for hijacking elements from the DOM. All widgets now use the new object oriented typed event system.
+* All ObjectHelper setters now return void instead of the previous value.
+* Fixed ObjectHelper methods which return String's to coerse ints to Strings. This prevents problems in hosted mode.
+* Added new method to Event to disable browser context menus. Once disabled they may not be reenabled.
+* Moved Dom.changeNonBreakingSpaceToSpace to StringHelper. Also added StringHelper.changeSpaceToNonBreakingSpace().
+* Smartened up look, feel and features demonstrated of various demos.
+* Updated all widgets to retrieve the styles they add to individual assembled components from appropriately named getters. This allows sub classes to change styles by overriding the 
+  appropriate method.
+* Renamed TreeItem.setWidget/getWidget to setMainWidget/getMainWidget (this overcomes clash with set/getWidget from CompositeWidget)
+* Removed CollapsablePanel use GWT's DisclosurePanel.
+* Fixed a bug where json deserializing was falling over when encountering null values.
+* Reworked TabPanel events to have their own types. TabListener updated to match new event types.
+* Renamed TabPanel.getIndex() to indexOf().
+* The onTabClosingEvent is now only fired when a tab is closed by a user rather than whenever a tabItem is removed.
+* Reworked AccordionPanel events to have their own types. AccordionListener updated to match new event types.
+* Replaced InteractiveList and InteractivePanel and logging to a VerticalPanel of messages with Window.alerts
+* Deleted MenuListenerImpl (aka MenuListenerAdapter).
+* Simplified Menu events into a single event MenuOpenEvent. MenuListener is also updated to match new event types.
+* Removed PixelGrid(interface) and BlockyPixel(implementation).
+* Made Colour serializable (now implements java.io.Serializable).
+* Reworked Viewport to only fire ChangeEvents when it is scrolled or moved. Also moved Viewport class to rocket.widget.client.
+* WidgetHelper.findWidget - Swapped test of element with widget element.
+* Reworked and significantly improved Drag n drop, try demo.
+* Drag n Drop events are now fully fledged objects.
+* The dragged widget may be changed by dnd listeners by ( setDraggedWidget() ).
