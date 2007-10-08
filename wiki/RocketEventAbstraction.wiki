@@ -1,0 +1,181 @@
+#summary One-sentence summary of this page.
+#labels Featured,Phase-Design,GWT
+
+=Motivation=
+The way events are modelled in GWT could have been better.
+  * Event objects dont have any behaviour or methods
+  * The DOM class contains all event related methods (DOM.eventXXX). 
+    It is possible to call methods that are relevant for the particular event type, eg call DOM.eventGetKey() for a mouse move.
+  * Not all listener methods expose all the functionality that may be required to interact with an event.
+    Without accessing the Event singleton it is not possible to prevent the default browser action within a KeyboardListener.
+  * Because event objects are not passed to listeners it is not possible to add functionality, as their method signature is fixed.
+  * Not very object oriented dispatching on a int value ( the event type) instead of using polymorphism and types.
+
+==TextBox & KeyboardListener==
+The GWT TextBox widget is an example of many of the above listed problems.
+The TextBox class contains methods that are not related to manipulating the widget but rather are hacks to add functionality that is not possible from a KeyboardListeners.
+  * the currentEvent field.
+  * cancelKey method
+
+Until recently it was not possible to prevent the default action within a KeyboardListener. Situations like this obviously motivated the new introduction of a getter to retrieve the Event being processed.
+
+=Solution=
+The event solution found in rocket provides a number of types for each respective event type. The nested lists below show the type heirarchy. The new event system is completely compatible and uses the existing GWT event system to perform the heavy lifting. There are therefore no issues related to mixing widgets and listeners that use both event abstractions. When authoring sub classes of the Rocket Widget and Panel classes it is never necessary to reference the GWT Event type or reference any of the DOM.eventXXX methods.
+
+  * Event
+    * BlurEvent
+    * ChangeEvent
+    * FocusEvent
+    * ImageLoadFailedEvent
+    * ImageLoadSuccessEvent
+    * KeyEvent
+       * KeyDownEvent
+       * KeyPressEvent
+       * KeyUpEvent	
+    * MouseEvent
+       * MouseButtonEvent
+          * MouseClickEvent
+          * MouseDoubleClickEvent
+          * MouseDownEvent
+          * MouseUpEvent
+       * MouseMoveEvent
+       * MouseOutEvent
+       * MouseOverEvent
+       * MouseWheelEvent
+    * ScrollEvent
+
+==Meet some of the event types==
+
+===Event===
+The Event super type contains methods that enable developers to cancel bubbles as well as to prevent the default browser action from occuring.
+  * cancelBubble( boolean ) - 
+  * stop - prevents the default browser action
+  * getTarget - the element that was the target of the event.
+  * getWidget - if target element of the event belongs to a widget this will be a reference to the widget.
+
+The event object contains a number of asXXX method where XXX is the event category. Each asXXX method will return null if the cast fails or a typed instance of the method sub type.
+This is best illustrated by the sample code below. Assuming the incoming event reference really is a MouseDown the asMouseDown() method will return a non null instance.
+
+{{{
+void handleEvent( Event event ){
+	// if event is really a MouseDown asMouseDown will return non null reference
+	MouseDownEvent mouseDownEvent = event.asMouseDown();
+
+	// debug statement...
+	System.out.println( "Because event is really a mouse down event mouseDownEvent should be non null: " + mouseDownEvent );
+}
+
+}}}
+
+===KeyEvent===
+The KeyEvent contains all the common methods to all key events.
+  * getKey
+  * setKey 
+  * isAlt - Was the alt key pressed ? Notice no need to extract a bit out of bit mask.
+  * isControl
+  * isRepeatedKey
+  * isShift
+  
+===MouseEvent===
+  * getClientX - get the x coordinates within the viewable or client window.
+  * getClientY
+  * getPageX - get the absolute / document coordinates of the mouse
+  * getPageY
+  * getScreenX - get the mouses screen coordinates.
+  * getScreenY
+
+===MouseOutEvent===
+In addition to the inheriting the methods belonging to its super type (MouseEvent) one extra method exists.
+  * getTo - get the element the mouse was moved towards.
+  
+==Event Listeners==
+A number of event listeners exist for each of the different category of event. The rocket basic widget replacements all use these new listeners rather than the traditional GWT listeners.
+Event listeners that use the new event sub types exist and are used by all basic widgets.
+  * ChangeEventListener
+  * FocusEventListener
+  * ImageLoadEventListener
+  * KeyEventListener
+  * MouseEventListener
+  * ScrollListener
+Each of the listener classes above receives the appropriate Event sub type which contains all the behaviour and properties relevant for that category of event.
+
+
+==Authoring Widgets, Panels==
+Subclassing either of the rocket Widget or Panel abstract classes makes it very easy to take advantage of the new events.
+  * getSunkEventsBitMask Override this method to return a bit mask indicatig which events need to be sunk. The class does all the boring stuff like the registering the element and listener via DOM.sinkEventBits.
+  * Add addXXX and removeXXX methods that delegate to the EventListenerDispatcher instance for each widget/panel, where XXX is the event listener.
+
+Therefore creating a widget that wraps a TEXTBOX element and allows users to register Key events would like something like this.
+{{{
+	import rocket.event.client.*;
+	import rocket.widget.client.Widget;
+
+	class SimpleTextBox extends Widget{
+
+		// allow key event listeners to be registered...
+		protected void afterCreateElement() {
+			final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
+			this.setEventListenerDispatcher(dispatcher);
+			dispatcher.setKeyEventListeners(dispatcher.createKeyEventListeners());
+		}	
+
+		// EventBitMaskConstants includes constants with the same values as those found on com.google.gwt.user.client.Event. it just has a different name to avoid clashes between both Event types.
+		protected int getSunkEventsBitMask() {
+			return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.KEY_EVENTS | EventBitMaskConstants.CHANGE;
+		}
+
+		// add a public addXXX and removeXXX where XXX is KeyEventListener methods.
+		public void addKeyEventListener(final KeyEventListener keyEventListener) {
+			this.getEventListenerDispatcher().addKeyEventListener(keyEventListener);
+		}
+
+		public void removeKeyEventListener(final KeyEventListener keyEventListener) {
+			this.getEventListenerDispatcher().removeKeyEventListener(keyEventListener);
+		}
+
+		// add other getters and setters to set properties like maxLength upon the wrapped element, etc.
+	}
+}}}
+
+The original Event is still fired via the EventListener.onBrowserEvent method.
+  * Event is fired as a result of some browser event.
+  * GWT locates the appropriate EventListener and passes the native event to EventListener.onBrowser(com.google.gwt.user.client.Event );
+  * The rocket Widget or Panel builds a rocket.event.client.Event sub type and calls onBrowser( rocket.event.client.Event );
+  * Within the Rocket Widget/Panel onBrowser( rocket.event.client.Event ) all listeners are notified.
+
+==Adapters between GWT EventListener and EventPreview and the new richer Event system==
+An abstract class that satisfies the GWT EventPreview interface exists and takes care of creating the appropriate Rocket Event sub type followed by dispatchign it to the appropriate onXXX method, where XXX matches the event category.
+Eg for a MouseDownEvent the onMouseDown( MouseDownEvent ) method is called. The name of the class that contains this functionality is rocket.event.client.EventPreviewAdapter. 
+
+A similar class exists (rocket.event.client.EventListenerAdapter) that performs the same sort of functionality taking an event from a EventListener and firing one of the appropriate onXXX methods.
+
+=Registering a key event listener against a textbox widget=
+The example below compares the code required to register a keyboard listener for a GWT TextBox against that for a Rocket TextBox.
+{{{
+   com.google.gwt.user.client.ui.TextBox textBox = new com.google.gwt.user.client.ui.TextBox();
+   textBox.addKeyListener( 
+	new KeyboardListenerAdapter(){
+		public void onKeyUp( final Widget sender, final char key, final int modifier ){
+			// do something...
+		}
+	}
+
+   );
+}}}
+
+The rocket equivalent follows below.
+{{{
+   rocket.widget.client.TextBox textBox = new rocket.widget.client.TextBox ();
+   textBox.addKeyListener( 
+	new KeyEventListenerAdapter(){
+		public void onKeyUp( final KeyUpEvent event ){
+			// do something...
+		}
+	}
+
+   );
+}}}
+
+=Further examples=
+For further samples refer to any of the following demo.
+  * rocket.widget.test.basicwidgets.client.BasicWidgetsTest
