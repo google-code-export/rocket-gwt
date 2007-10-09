@@ -10,9 +10,9 @@ All classes follow a number of simple rules.
 To use anything thats bundled with the rocket library.
   * Add rocket.jar to your project's classpath (before gwt-user.jar).
   * Add rocket-stacktrace.jar (before gwt-user.jar) to include support for web mode stacktraces.
-  * Inherit Rocket.user
+  * Inherit rocket.User
 {{{
-<inherits name="Rocket.User" />
+<inherits name="rocket.User" />
 }}}
 
 ==Packaging==
