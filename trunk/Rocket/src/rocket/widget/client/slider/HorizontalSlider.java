@@ -38,6 +38,10 @@ public class HorizontalSlider extends Slider {
 		return Constants.HORIZONTAL_SLIDER_HANDLE_STYLE;
 	}
 
+	protected String getBackgroundStyleName() {
+		return Constants.HORIZONTAL_SLIDER_BACKGROUND_STYLE;
+	}
+
 	protected String getSliderDraggingStyleName() {
 		return Constants.HORIZONTAL_SLIDER_DRAGGING_STYLE;
 	}

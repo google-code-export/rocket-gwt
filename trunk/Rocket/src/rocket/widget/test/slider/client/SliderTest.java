@@ -17,22 +17,25 @@ package rocket.widget.test.slider.client;
 
 import rocket.event.client.ChangeEvent;
 import rocket.event.client.ChangeEventListener;
+import rocket.style.client.InlineStyle;
+import rocket.style.client.StyleConstants;
+import rocket.util.client.StackTrace;
+import rocket.widget.client.Image;
+import rocket.widget.client.slider.FloatingSlider;
 import rocket.widget.client.slider.HorizontalSlider;
-import rocket.widget.client.slider.HorizontalVerticalSlider;
 import rocket.widget.client.slider.VerticalSlider;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.KeyboardListener;
-import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 
 public class SliderTest implements EntryPoint {
 
@@ -54,132 +57,172 @@ public class SliderTest implements EntryPoint {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
 				caught.printStackTrace();
-				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+				Window.alert(StackTrace.asString(caught));
 			}
 		});
 
 		final RootPanel rootPanel = RootPanel.get();
-		final HorizontalPanel panel = new HorizontalPanel();
-		rootPanel.add(panel);
 
-		final Label changeEventCounter = new Label("?");
-		rootPanel.add(changeEventCounter);
+		final Grid grid = new Grid(4, 3);
+		grid.setCellPadding(0);
+		grid.setCellSpacing(0);
+		grid.setBorderWidth(0);
 
-		final ChangeEventListener changeEventListener = new ChangeEventListener() {
-			public void onChange(final ChangeEvent event) {
-				this.counter++;
+		rootPanel.add(grid);
 
-				changeEventCounter.setText("ChangeEvent counter: " + counter + ", lastWidget: " + GWT.getTypeName(event.getWidget()));
-			}
+		final CellFormatter cellFormatter = grid.getCellFormatter();
+		cellFormatter.setWidth(0, 0, "33%");
+		cellFormatter.setWidth(0, 1, "33%");
+		cellFormatter.setWidth(0, 2, "33%");
 
-			int counter;
-		};
+		this.buildHorizontalSlider(grid);
+		this.buildVerticalSlider(grid);
+		this.buildFloatingSlider(grid);
+	}
 
-		final Label horizontalSliderValue = new Label();
-		panel.add(horizontalSliderValue);
+	void buildFloatingSlider(final Grid grid) {
+		final int column = 2;
 
-		final HorizontalSlider horizontalSlider = new HorizontalSlider();
-		horizontalSlider.setWidth(LENGTH + "px");
-		horizontalSlider.setHeight(HEIGHT + "px");
-		horizontalSlider.setDelta(DELTA);
-		horizontalSlider.setMaximumValue(MAXIMUM_VALUE);
-		horizontalSlider.setHandle(createHandle());
-		horizontalSlider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
+		grid.setText(0, column, "FloatingSlider");
 
-		horizontalSlider.addChangeEventListener(new ChangeEventListener() {
-			public void onChange(final ChangeEvent event) {
-				horizontalSliderValue.setText("" + horizontalSlider.getValue());
-			}
-		});
-		horizontalSlider.addChangeEventListener(changeEventListener);
-		horizontalSlider.setValue(VALUE);
+		final Label value = new Label();
+		grid.setWidget(1, column, value);
 
-		panel.add(horizontalSlider);
+		final Label changeCounter = new Label();
+		grid.setWidget(2, column, changeCounter);
 
-		final Label verticalSliderValue = new Label();
-		panel.add(verticalSliderValue);
-
-		final VerticalSlider verticalSlider = new VerticalSlider();
-		verticalSlider.setWidth(WIDTH + "px");
-		verticalSlider.setHeight(LENGTH + "px");
-		verticalSlider.setDelta(DELTA);
-		verticalSlider.setMaximumValue(MAXIMUM_VALUE);
-		verticalSlider.setHandle(this.createHandle());
-		verticalSlider.setValue(VALUE);
-		verticalSlider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
-
-		verticalSlider.addChangeEventListener(new ChangeEventListener() {
-			public void onChange(final ChangeEvent event) {
-				verticalSliderValue.setText("" + verticalSlider.getValue());
-			}
-		});
-		verticalSlider.addChangeEventListener(changeEventListener);
-
-		panel.add(verticalSlider);
-
-		final Label hvSliderValue = new Label();
-		panel.add(hvSliderValue);
-
-		final HorizontalVerticalSlider slider = new HorizontalVerticalSlider();
+		final FloatingSlider slider = new FloatingSlider();
 		slider.setWidth(LENGTH + "px");
 		slider.setHeight(LENGTH + "px");
 		slider.setDeltaX(DELTA);
 		slider.setDeltaY(DELTA);
 		slider.setMaximumXValue(MAXIMUM_VALUE);
 		slider.setMaximumYValue(MAXIMUM_VALUE);
-		slider.setHandle(this.createHandle());
+		slider.setHandle(createHandle());
+		slider.setBackground(createBackground());
 		slider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
 
 		slider.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
-				hvSliderValue.setText("" + slider.getXValue() + "," + slider.getYValue());
+				value.setText("" + slider.getXValue() + ","
+						+ slider.getYValue());
+
+				counter++;
+				changeCounter.setText("" + counter);
 			}
+
+			int counter = 0;
 		});
-		slider.addChangeEventListener(changeEventListener);
 
 		slider.setXValue(VALUE);
 		slider.setYValue(VALUE);
 
-		panel.add(slider);
+		grid.setWidget(3, column, slider);
+	}
 
-		rootPanel.add(new HTML("Value<br>"));
+	void buildVerticalSlider(final Grid grid) {
+		final int column = 1;
 
-		final TextBox value = new TextBox();
-		value.setText(String.valueOf(VALUE));
-		value.addKeyboardListener(new KeyboardListenerAdapter() {
-			public void onKeyDown(Widget sender, char keyCode, int modifiers) {
-				if (KeyboardListener.KEY_ENTER == keyCode) {
-					final int newValue = Integer.parseInt(value.getText());
-					horizontalSlider.setValue(newValue);
-					verticalSlider.setValue(newValue);
-					slider.setXValue(newValue);
-					slider.setYValue(newValue);
-				}
+		grid.setText(0, column, "VerticalSlider");
+
+		final Label value = new Label();
+		grid.setWidget(1, column, value);
+
+		final Label changeCounter = new Label();
+		grid.setWidget(2, column, changeCounter);
+
+		final VerticalSlider slider = new VerticalSlider();
+		slider.setWidth(WIDTH + "px");
+		slider.setHeight(LENGTH + "px");
+		slider.setDelta(DELTA);
+		slider.setMaximumValue(MAXIMUM_VALUE);
+		slider.setHandle(createHandle());
+		slider.setBackground(createBackground());
+		slider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
+
+		slider.addChangeEventListener(new ChangeEventListener() {
+			public void onChange(final ChangeEvent event) {
+				value.setText("" + slider.getValue());
+
+				counter++;
+				changeCounter.setText("" + counter);
 			}
+
+			int counter = 0;
 		});
-		rootPanel.add(value);
 
-		rootPanel.add(new HTML("MouseDownRepeatRate<br>"));
+		slider.setValue(VALUE);
 
-		final TextBox mouseDownRepeatRate = new TextBox();
-		mouseDownRepeatRate.setText(String.valueOf(MOUSEDOWN_REPEAT_RATE));
-		mouseDownRepeatRate.addKeyboardListener(new KeyboardListenerAdapter() {
-			public void onKeyDown(Widget sender, char keyCode, int modifiers) {
-				if (KeyboardListener.KEY_ENTER == keyCode) {
-					final int newValue = Integer.parseInt(mouseDownRepeatRate.getText());
-					horizontalSlider.setMouseDownRepeatRate(newValue);
-					verticalSlider.setMouseDownRepeatRate(newValue);
-				}
+		grid.setWidget(3, column, slider);
+	}
+
+	void buildHorizontalSlider(final Grid grid) {
+		final int column = 0;
+
+		grid.setText(0, column, "HorizontalSlider");
+
+		final Label value = new Label();
+		grid.setWidget(1, column, value);
+
+		final Label changeCounter = new Label();
+		grid.setWidget(2, column, changeCounter);
+
+		final HorizontalSlider slider = new HorizontalSlider();
+		slider.setWidth(LENGTH + "px");
+		slider.setHeight(HEIGHT + "px");
+		slider.setDelta(DELTA);
+		slider.setMaximumValue(MAXIMUM_VALUE);
+		slider.setHandle(createHandle());
+		slider.setBackground(createBackground());
+		slider.setMouseDownRepeatRate(MOUSEDOWN_REPEAT_RATE);
+
+		slider.addChangeEventListener(new ChangeEventListener() {
+			public void onChange(final ChangeEvent event) {
+				value.setText("" + slider.getValue());
+
+				counter++;
+				changeCounter.setText("" + counter);
 			}
+
+			int counter = 0;
 		});
-		rootPanel.add(mouseDownRepeatRate);
+
+		slider.setValue(VALUE);
+
+		grid.setWidget(3, column, slider);
 	}
 
 	Widget createHandle() {
-		final HTML widget = new HTML("&nbsp;");
+		final Image widget = new Image("star.png");
 		widget.setWidth(WIDTH + "px");
 		widget.setHeight(HEIGHT + "px");
 		widget.addStyleName("handle");
 		return widget;
+	}
+
+	Widget createBackground() {
+		final int rows = 15;
+		final int columns = 15;
+
+		final Grid grid = new Grid(rows, columns);
+		grid.setBorderWidth(0);
+		grid.setCellPadding(0);
+		grid.setCellSpacing(0);
+
+		final CellFormatter cellFormatter = grid.getCellFormatter();
+
+		for (int r = 0; r < rows; r++) {
+			for (int c = 0; c < columns; c++) {
+				final Element element = cellFormatter.getElement(r, c);
+				DOM.setInnerHTML(element, "");
+				final int red = 224 - r * 4;
+				final int green = 224 - c * 4;
+				final int blue = 224 ^ r ^ c;
+				final int rgb = red * 256 * 256 + green * 256 + blue;
+				InlineStyle.setString(element, StyleConstants.BACKGROUND_COLOR,
+						"#" + Integer.toHexString(rgb));
+			}
+		}
+		return grid;
 	}
 }
