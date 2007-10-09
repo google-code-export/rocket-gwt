@@ -100,11 +100,15 @@ public class InlineStyle extends Style implements Destroyable {
 	 * @param propertyValue
 	 */
 	static public void setString(final Element element, final String propertyName, final String propertyValue) {
+		if( null != propertyValue ){
 		StyleHelper.getSupport().setInlineStyleProperty(element, propertyName, propertyValue);
+		}
 	}
 
 	static public void setColour(final Element element, final String propertyName, final Colour colour) {
+		if( null != colour ){
 		InlineStyle.setString(element, propertyName, colour.toCssColour());
+		}
 	}
 
 	static public void setDouble(final Element element, final String propertyName, final double value, final CssUnit unit) {
@@ -119,7 +123,9 @@ public class InlineStyle extends Style implements Destroyable {
 	}
 
 	static public void setUrl(final Element element, final String propertyName, final String url) {
+		if( null != url ){
 		InlineStyle.setString(element, propertyName, "url('" + url + "')");
+		}
 	}
 
 	/**
