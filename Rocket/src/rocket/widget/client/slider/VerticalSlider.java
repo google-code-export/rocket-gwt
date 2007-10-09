@@ -38,6 +38,10 @@ public class VerticalSlider extends Slider {
 		return Constants.VERTICAL_SLIDER_HANDLE_STYLE;
 	}
 
+	protected String getBackgroundStyleName() {
+		return Constants.VERTICAL_SLIDER_BACKGROUND_STYLE;
+	}
+
 	protected String getSliderDraggingStyleName() {
 		return Constants.VERTICAL_SLIDER_DRAGGING_STYLE;
 	}

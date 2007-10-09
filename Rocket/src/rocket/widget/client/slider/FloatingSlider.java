@@ -34,16 +34,13 @@ import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.widget.client.CompositeWidget;
-import rocket.widget.client.DivPanel;
+import rocket.widget.client.Html;
 import rocket.widget.client.Panel;
 
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -53,34 +50,87 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class HorizontalVerticalSlider extends CompositeWidget {
+public class FloatingSlider extends CompositeWidget {
 
-	public HorizontalVerticalSlider() {
+	public FloatingSlider() {
 		super();
 	}
 
 	protected Widget createWidget() {
-		final Panel panel = this.createPanel();
-		this.setPanel(panel);
-		return panel;
+		return this.createPanel();
+	}
+
+	protected Panel getPanel() {
+		return (Panel) this.getWidget();
+	}
+
+	protected Panel createPanel() {
+		return new InternalSliderPanel() {
+			protected String getBackgroundStyleName() {
+				return FloatingSlider.this.getBackgroundStyleName();
+			}
+
+			protected String getHandleStyleName() {
+				return FloatingSlider.this.getHandleStyleName();
+			}
+		};
+	}
+
+	public Widget getHandle() {
+		return this.getPanel().get(Constants.HANDLE_WIDGET_INDEX);
+	}
+
+	public void setHandle(final Widget handle) {
+		final Panel panel = this.getPanel();
+		panel.remove(Constants.HANDLE_WIDGET_INDEX);
+		panel.insert(handle, Constants.HANDLE_WIDGET_INDEX);
+	}
+
+	protected Widget createHandle() {
+		return new Html();
+	}
+
+	protected String getHandleStyleName() {
+		return Constants.FLOATING_SLIDER_HANDLE_STYLE;
+	}
+
+	public Widget getBackground() {
+		return this.getPanel().get(Constants.BACKGROUND_WIDGET_INDEX);
+	}
+
+	public void setBackground(final Widget background) {
+		final Panel panel = this.getPanel();
+		panel.remove(Constants.BACKGROUND_WIDGET_INDEX);
+		panel.insert(background, Constants.BACKGROUND_WIDGET_INDEX);
+	}
+
+	protected Widget createBackground() {
+		return new Html();
+	}
+
+	protected String getBackgroundStyleName() {
+		return Constants.FLOATING_SLIDER_BACKGROUND_STYLE;
 	}
 
 	protected void afterCreateWidget() {
 		super.afterCreateWidget();
 
-		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
-			public void onMouseDown(final MouseDownEvent event) {
-				HorizontalVerticalSlider.this.handleMouseDown(event);
-			}
-		});
+		this.getEventListenerDispatcher().addMouseEventListener(
+				new MouseEventAdapter() {
+					public void onMouseDown(final MouseDownEvent event) {
+						FloatingSlider.this.handleMouseDown(event);
+					}
+				});
 	}
 
 	protected String getInitialStyleName() {
-		return Constants.HORIZONTAL_VERTICAL_SLIDER_STYLE;
+		return Constants.FLOATING_SLIDER_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
-		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.CHANGE | EventBitMaskConstants.MOUSE_EVENTS;
+		return EventBitMaskConstants.FOCUS_EVENTS
+				| EventBitMaskConstants.CHANGE
+				| EventBitMaskConstants.MOUSE_EVENTS;
 	}
 
 	/**
@@ -131,8 +181,10 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 
 		final Widget handle = this.getHandle();
 		final Element widget = this.getElement();
-		final int mouseX = event.getPageX() - Dom.getAbsoluteLeft(widget) - handle.getOffsetWidth() / 2;
-		final int mouseY = event.getPageY() - Dom.getAbsoluteTop(widget) - handle.getOffsetHeight() / 2;
+		final int mouseX = event.getPageX() - Dom.getAbsoluteLeft(widget)
+				- handle.getOffsetWidth() / 2;
+		final int mouseY = event.getPageY() - Dom.getAbsoluteTop(widget)
+				- handle.getOffsetHeight() / 2;
 
 		this.handleBackgroundMouseDown(mouseX, mouseY);
 
@@ -162,7 +214,7 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	}
 
 	protected String getDraggingStyle() {
-		return Constants.HORIZONTAL_VERTICAL_SLIDER_DRAGGING_STYLE;
+		return Constants.FLOATING_SLIDER_DRAGGING_STYLE;
 	}
 
 	/**
@@ -172,7 +224,8 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	private EventPreview draggingEventPreview;
 
 	protected EventPreview getDraggingEventPreview() {
-		ObjectHelper.checkNotNull("field:draggingEventPreview", draggingEventPreview);
+		ObjectHelper.checkNotNull("field:draggingEventPreview",
+				draggingEventPreview);
 		return this.draggingEventPreview;
 	}
 
@@ -180,8 +233,10 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 		return null != this.draggingEventPreview;
 	}
 
-	protected void setDraggingEventPreview(final EventPreview draggingEventPreview) {
-		ObjectHelper.checkNotNull("parameter:draggingEventPreview", draggingEventPreview);
+	protected void setDraggingEventPreview(
+			final EventPreview draggingEventPreview) {
+		ObjectHelper.checkNotNull("parameter:draggingEventPreview",
+				draggingEventPreview);
 		this.draggingEventPreview = draggingEventPreview;
 	}
 
@@ -198,11 +253,11 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	protected EventPreview createDraggingEventPreview() {
 		return new EventPreviewAdapter() {
 			protected void onMouseMove(final MouseMoveEvent event) {
-				HorizontalVerticalSlider.this.handleHandleMouseMove(event);
+				FloatingSlider.this.handleHandleMouseMove(event);
 			}
 
 			protected void onMouseUp(final MouseUpEvent event) {
-				HorizontalVerticalSlider.this.handleHandleMouseUp(event);
+				FloatingSlider.this.handleHandleMouseUp(event);
 			}
 		};
 	}
@@ -226,7 +281,8 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 		boolean killTimer = false;
 
 		final int x = this.getXValue();
-		final int handleX = ComputedStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
+		final int handleX = ComputedStyle.getInteger(handle,
+				StyleConstants.LEFT, CssUnit.PX, 0);
 		int deltaX = mouseX - handleX;
 		if (0 != deltaX) {
 			if (deltaX < 0) {
@@ -234,18 +290,21 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 			} else {
 				this.handleAfterHandleXMouseDown();
 			}
-			final int handleXAfter = ComputedStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
+			final int handleXAfter = ComputedStyle.getInteger(handle,
+					StyleConstants.LEFT, CssUnit.PX, 0);
 			final int deltaXAfter = mouseX - handleXAfter;
 
 			if (deltaX < 0 ^ deltaXAfter < 0) {
 				this.setXValue(x);
-				InlineStyle.setInteger(handle, StyleConstants.LEFT, mouseX, CssUnit.PX);
+				InlineStyle.setInteger(handle, StyleConstants.LEFT, mouseX,
+						CssUnit.PX);
 				deltaX = 0;
 			}
 		}
 
 		final int y = this.getYValue();
-		final int handleY = ComputedStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
+		final int handleY = ComputedStyle.getInteger(handle,
+				StyleConstants.TOP, CssUnit.PX, 0);
 		int deltaY = mouseY - handleY;
 		if (0 != deltaY) {
 			if (deltaY < 0) {
@@ -253,12 +312,14 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 			} else {
 				this.handleAfterHandleYMouseDown();
 			}
-			final int handleYAfter = ComputedStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
+			final int handleYAfter = ComputedStyle.getInteger(handle,
+					StyleConstants.TOP, CssUnit.PX, 0);
 			final int deltaYAfter = mouseY - handleYAfter;
 
 			if (deltaY < 0 ^ deltaYAfter < 0) {
 				this.setYValue(y);
-				InlineStyle.setInteger(handle, StyleConstants.TOP, mouseY, CssUnit.PX);
+				InlineStyle.setInteger(handle, StyleConstants.TOP, mouseY,
+						CssUnit.PX);
 				deltaY = 0;
 			}
 		}
@@ -272,14 +333,14 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	 * the minimum xValue of this slider.
 	 */
 	protected void handleBeforeHandleXMouseDown() {
-		int newValue = this.getXValue() - this.getDeltaX();
-		if (newValue < 0) {
-			newValue = 0;
-		}
+		final int newValue = Math.max(0, this.getXValue() - this.getDeltaX());
+
 		final Element handle = this.getHandle().getElement();
-		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
+		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT,
+				CssUnit.PX, 0);
 		this.setXValue(newValue);
-		InlineStyle.setInteger(handle, StyleConstants.LEFT, left - 1, CssUnit.PX);
+		InlineStyle.setInteger(handle, StyleConstants.LEFT, left - 1,
+				CssUnit.PX);
 	}
 
 	/**
@@ -287,15 +348,14 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	 * maximum xValue of this slider.
 	 */
 	protected void handleAfterHandleXMouseDown() {
-		int newValue = this.getXValue() + this.getDeltaX();
-		final int maximumValue = this.getMaximumXValue();
-		if (newValue > maximumValue) {
-			newValue = maximumValue;
-		}
+		final int newValue = Math.min(this.getXValue() + this.getDeltaX(), this
+				.getMaximumXValue());
 		final Element handle = this.getHandle().getElement();
-		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
+		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT,
+				CssUnit.PX, 0);
 		this.setXValue(newValue);
-		InlineStyle.setInteger(handle, StyleConstants.LEFT, left + 1, CssUnit.PX);
+		InlineStyle.setInteger(handle, StyleConstants.LEFT, left + 1,
+				CssUnit.PX);
 	}
 
 	/**
@@ -303,12 +363,11 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	 * the minimum yValue of this slider.
 	 */
 	protected void handleBeforeHandleYMouseDown() {
-		int newValue = this.getYValue() - this.getDeltaY();
-		if (newValue < 0) {
-			newValue = 0;
-		}
+		final int newValue = Math.max(0, this.getYValue() - this.getDeltaY());
+
 		final Element handle = this.getHandle().getElement();
-		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
+		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP,
+				CssUnit.PX, 0);
 		this.setYValue(newValue);
 		InlineStyle.setInteger(handle, StyleConstants.TOP, top - 1, CssUnit.PX);
 	}
@@ -318,13 +377,12 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	 * maximum yValue of this slider.
 	 */
 	protected void handleAfterHandleYMouseDown() {
-		int newValue = this.getYValue() + this.getDeltaY();
-		final int maximumValue = this.getMaximumYValue();
-		if (newValue > maximumValue) {
-			newValue = maximumValue;
-		}
+		final int newValue = Math.min(this.getYValue() + this.getDeltaY(), this
+				.getMaximumYValue());
+
 		final Element handle = this.getHandle().getElement();
-		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
+		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP,
+				CssUnit.PX, 0);
 		this.setYValue(newValue);
 		InlineStyle.setInteger(handle, StyleConstants.TOP, top + 1, CssUnit.PX);
 	}
@@ -347,26 +405,32 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 		int mouseX = event.getPageX() - widgetX;
 		mouseX = Math.max(0, Math.min(mouseX, sliderWidth - handleWidth / 2));
 
-		final int newX = this.updateSliderValue(mouseX, this.getMaximumXValue(), sliderWidth, handleWidth);
+		final int newX = this.updateSliderValue(mouseX,
+				this.getMaximumXValue(), sliderWidth, handleWidth);
 		this.setXValue(newX);
 
 		int left = mouseX - handleWidth / 2;
-		InlineStyle.setInteger(handleElement, StyleConstants.LEFT, left, CssUnit.PX);
+		InlineStyle.setInteger(handleElement, StyleConstants.LEFT, left,
+				CssUnit.PX);
 
 		int mouseY = event.getPageY() - widgetY;
 		mouseY = Math.max(0, Math.min(mouseY, sliderHeight - handleHeight / 2));
-		final int newY = this.updateSliderValue(mouseY, this.getMaximumYValue(), sliderHeight, handleHeight);
+		final int newY = this.updateSliderValue(mouseY,
+				this.getMaximumYValue(), sliderHeight, handleHeight);
 
 		this.setYValue(newY);
 
 		final int top = mouseY - handleHeight / 2;
-		InlineStyle.setInteger(handleElement, StyleConstants.TOP, top, CssUnit.PX);
+		InlineStyle.setInteger(handleElement, StyleConstants.TOP, top,
+				CssUnit.PX);
 
 		event.cancelBubble(true);
 		event.stop();// stops text selection in Opera
 	}
 
-	protected int updateSliderValue(final int mouseCoordinate, final int maximumValue, final int sliderLength, final int handleLength) {
+	protected int updateSliderValue(final int mouseCoordinate,
+			final int maximumValue, final int sliderLength,
+			final int handleLength) {
 		final int range = sliderLength - handleLength;
 
 		int value = mouseCoordinate;
@@ -422,7 +486,8 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	 */
 	private class HandleSlidingTimer extends Timer {
 		public void run() {
-			HorizontalVerticalSlider.this.handleBackgroundMouseDown(this.getMouseX(), this.getMouseY());
+			FloatingSlider.this.handleBackgroundMouseDown(this.getMouseX(),
+					this.getMouseY());
 		}
 
 		private int mouseX;
@@ -455,12 +520,14 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	private int mouseDownRepeatRate;
 
 	public int getMouseDownRepeatRate() {
-		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", 0, mouseDownRepeatRate);
+		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", 0,
+				mouseDownRepeatRate);
 		return this.mouseDownRepeatRate;
 	}
 
 	public void setMouseDownRepeatRate(final int mouseDownRepeatRate) {
-		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", 0, mouseDownRepeatRate);
+		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", 0,
+				mouseDownRepeatRate);
 		this.mouseDownRepeatRate = mouseDownRepeatRate;
 	}
 
@@ -484,62 +551,6 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 
 	// WIDGET :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	/**
-	 * A panel is used to hold both the sliders element and house the handle
-	 * widget.
-	 */
-	private Panel panel;
-
-	protected Panel getPanel() {
-		ObjectHelper.checkNotNull("field:panel", panel);
-		return panel;
-	}
-
-	protected boolean hasPanel() {
-		return null != this.panel;
-	}
-
-	protected void setPanel(final Panel panel) {
-		ObjectHelper.checkNotNull("parameter:panel", panel);
-
-		this.panel = panel;
-	}
-
-	protected Panel createPanel() {
-		final Panel panel = new DivPanel();
-		final Element element = panel.getElement();
-		InlineStyle.setString(element, StyleConstants.POSITION, "relative");
-		InlineStyle.setInteger(element, StyleConstants.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
-
-		panel.add(new HTML());
-		return panel;
-	}
-
-	public Widget getHandle() {
-		return this.getPanel().get(0);
-	}
-
-	public void setHandle(final Widget handle) {
-		ObjectHelper.checkNotNull("parameter:handle", handle);
-
-		final Panel panel = this.getPanel();
-		final String handleStyle = this.getHandleStyle();
-
-		final Widget previous = panel.get(0);
-		previous.removeStyleName(handleStyle);
-		panel.remove(0);
-
-		panel.insert(handle, 0);
-		handle.addStyleName(handleStyle);
-	}
-
-	protected String getHandleStyle() {
-		return Constants.HORIZONTAL_VERTICAL_SLIDER_HANDLE_STYLE;
-	}
-
-	// SLIDER ::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 	private int xValue;
 
 	public int getXValue() {
@@ -548,30 +559,24 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 
 	public void setXValue(final int xValue) {
 		final int maximumValue = this.getMaximumXValue();
-		PrimitiveHelper.checkBetween("parameter:xValue", xValue, 0, maximumValue + 1);
+		PrimitiveHelper.checkBetween("parameter:xValue", xValue, 0,
+				maximumValue + 1);
 
-		if (this.isAttached()) {
-			if (this.isAttached()) {
-				DeferredCommand.addCommand(new Command() {
-					public void execute() {
-						HorizontalVerticalSlider.this.setXValue0();
-					}
-				});
-			}
-		}
 		this.xValue = xValue;
 
-		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
-	}
-
-	protected void setXValue0() {
 		final Widget handle = this.getHandle();
-		final int sliderLength = this.getOffsetWidth() - handle.getOffsetWidth();
-		final int newLeft = this.getXValue() * sliderLength / this.getMaximumXValue();
+		final int sliderLength = this.getOffsetWidth()
+				- handle.getOffsetWidth();
+		final int newLeft = Math.round(1.0f * this.getXValue() * sliderLength
+				/ this.getMaximumXValue());
 
 		final Element element = handle.getElement();
 		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(element, StyleConstants.LEFT, newLeft, CssUnit.PX);
+		InlineStyle.setInteger(element, StyleConstants.LEFT, newLeft,
+				CssUnit.PX);
+
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(
+				this);
 	}
 
 	/**
@@ -582,12 +587,14 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	private int maximumXValue;
 
 	public int getMaximumXValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumXValue", 0, maximumXValue );
+		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumXValue", 0,
+				maximumXValue);
 		return this.maximumXValue;
 	}
 
 	public void setMaximumXValue(final int maximumXValue) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumXValue", 0, maximumXValue );
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumXValue", 0,
+				maximumXValue);
 		this.maximumXValue = maximumXValue;
 	}
 
@@ -617,27 +624,23 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 
 	public void setYValue(final int yValue) {
 		final int maximumValue = this.getMaximumYValue();
-		PrimitiveHelper.checkBetween("parameter:yValue", yValue, 0, maximumValue + 1);
+		PrimitiveHelper.checkBetween("parameter:yValue", yValue, 0,
+				maximumValue + 1);
 
-		if (this.isAttached()) {
-			DeferredCommand.addCommand(new Command() {
-				public void execute() {
-					HorizontalVerticalSlider.this.setYValue0();
-				}
-			});
-		}
 		this.yValue = yValue;
-		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
-	}
 
-	protected void setYValue0() {
 		final Widget handle = this.getHandle();
-		final int sliderLength = this.getOffsetHeight() - handle.getOffsetHeight();
-		final int newTop = this.getYValue() * sliderLength / this.getMaximumYValue();
+		final int sliderLength = this.getOffsetHeight()
+				- handle.getOffsetHeight();
+		final int newTop = Math.round(1.0f * this.getYValue() * sliderLength
+				/ this.getMaximumYValue());
 
 		final Element element = handle.getElement();
 		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
 		InlineStyle.setInteger(element, StyleConstants.TOP, newTop, CssUnit.PX);
+
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(
+				this);
 	}
 
 	/**
@@ -648,12 +651,14 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	private int maximumYValue;
 
 	public int getMaximumYValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumYValue", 0, this.maximumYValue );
+		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumYValue", 0,
+				this.maximumYValue);
 		return this.maximumYValue;
 	}
 
 	public void setMaximumYValue(final int maximumYValue) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumYValue", 0, maximumYValue );
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumYValue", 0,
+				maximumYValue);
 		this.maximumYValue = maximumYValue;
 	}
 
@@ -668,27 +673,35 @@ public class HorizontalVerticalSlider extends CompositeWidget {
 	}
 
 	public void setDeltaY(final int yDelta) {
-		PrimitiveHelper.checkGreaterThan("parameter:deltaY", 0, yDelta );
+		PrimitiveHelper.checkGreaterThan("parameter:deltaY", 0, yDelta);
 		this.deltaY = yDelta;
 	}
 
-	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
-		this.getEventListenerDispatcher().addChangeEventListener(changeEventListener);
+	public void addChangeEventListener(
+			final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(
+				changeEventListener);
 	}
 
-	public void removeChangeEventListener(final ChangeEventListener changeEventListener) {
-		this.getEventListenerDispatcher().removeChangeEventListener(changeEventListener);
+	public void removeChangeEventListener(
+			final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().removeChangeEventListener(
+				changeEventListener);
 	}
 
-	public void addFocusEventListener(final FocusEventListener focusEventListener) {
-		this.getEventListenerDispatcher().addFocusEventListener(focusEventListener);
+	public void addFocusEventListener(
+			final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().addFocusEventListener(
+				focusEventListener);
 	}
 
-	public void removeFocusEventListener(final FocusEventListener focusEventListener) {
-		this.getEventListenerDispatcher().removeFocusEventListener(focusEventListener);
+	public void removeFocusEventListener(
+			final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().removeFocusEventListener(
+				focusEventListener);
 	}
 
 	public String toString() {
-		return super.toString() + ", xValue: " + xValue + ", yValue: " + yValue;
+		return super.toString() + ", values: " + xValue + "," + yValue;
 	}
 }

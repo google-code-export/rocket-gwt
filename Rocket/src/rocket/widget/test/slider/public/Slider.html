@@ -16,64 +16,74 @@ BODY, TABLE, DIV{
 	width: 100%;
 }
 
+/* HORIZONTAL SLIDER ::::::::::::::::::::::::::::::::::::::::*/
 .rocket-horizontalSlider{
-	background-color: #cccccc;
-	border-top-color: #888888;
-	border-bottom-color: #444444;
-	border-left-color: #888888;
-	border-right-color: #444444;
-	border-width: 1px;
+	background-color: #ccc;
+	border-top-color: #444;
+	border-bottom-color: #888;
+	border-left-color: #444;
+	border-right-color: #888;
+	border-width: 2px;
 	border-style: solid;
 	
 	cursor: pointer;
+}
+
+.rocket-horizontalSlider-handle{
+	z-index: 1;
+}
+
+.rocket-horizontalSlider-background{
 }
 
 .rocket-horizontalSlider-dragging{
-	background-color: #eeeeee;
 }
 
+/* VERTICAL SLIDER ::::::::::::::::::::::::::::::::::::::::*/
 .rocket-verticalSlider{
-	background-color: #cccccc;
-	border-top-color: #888888;
-	border-bottom-color: #444444;
-	border-left-color: #888888;
-	border-right-color: #444444;
-	border-width: 1px;
+	background-color: #ccc;
+	border-top-color: #444;
+	border-bottom-color: #888;
+	border-left-color: #444;
+	border-right-color: #888;
+	border-width: 2px;
 	border-style: solid;
 	
 	cursor: pointer;
+}
+
+.rocket-verticalSlider-handle{
+	z-index: 1;
+}
+
+.rocket-verticalSlider-background{
 }
 
 .rocket-verticalSlider-dragging{
-	background-color: #eeeeee;
 }
 
-.rocket-horizontalVerticalSlider{
-	background-color: #cccccc;
-	border-top-color: #888888;
-	border-bottom-color: #444444;
-	border-left-color: #888888;
-	border-right-color: #444444;
-	border-width: 1px;
+/* FLOATING SLIDER :::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-floatingSlider{
+	background-color: #ccc;
+	border-top-color: #444;
+	border-bottom-color: #888;
+	border-left-color: #444;
+	border-right-color: #888;
+	border-width: 2px;
 	border-style: solid;
 	
 	cursor: pointer;
 }
 
-.rocket-horizontalVerticalSlider-dragging{
-	background-color: #eeeeee;
+.rocket-floatingSlider-handle{
+	z-index: 1;
 }
 
-.handle{
-	background-color: #888888;
-	border-top-color: #555555;
-	border-bottom-color: #333333;
-	border-left-color: #555555;
-	border-right-color: #333333;
-	border-width: 1px;
-	border-style: solid;
+.rocket-floatingSlider-background{
 }
 
+.rocket-floatingSlider-dragging{
+}
 </style>
 </head>
 
@@ -88,6 +98,7 @@ Three slider flavours are available.
 <li>Each slider widget has an accompanying Label which is updated using a ChangeEventListener.</li>
 <li>Dont forget to resize the window so that scrollbars appear and scroll the viewport and run tests again.</li>
 </ul>
+<button onclick="prompt('',document.body.innerHTML);">dbi</button>
 <br/>
 </body>
 </html>
