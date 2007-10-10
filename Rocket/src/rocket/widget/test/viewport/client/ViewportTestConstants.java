@@ -15,7 +15,7 @@
  */
 package rocket.widget.test.viewport.client;
 
-public class Constants {
+public class ViewportTestConstants {
 	public final static String X = "x";
 
 	public final static String Y = "y";
