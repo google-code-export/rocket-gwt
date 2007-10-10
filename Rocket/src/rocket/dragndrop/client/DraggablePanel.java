@@ -87,9 +87,8 @@ public class DraggablePanel extends SimplePanel {
 		return EventBitMaskConstants.MOUSE_DOWN;
 	}
 
-	protected Element insert0(final Element element, final int index) {
+	protected void insert0(final Element element, final int index) {
 		DOM.appendChild(this.getElement(), element);
-		return element;
 	}
 
 	protected void remove0(final Element element, final int index) {
@@ -309,9 +308,8 @@ public class DraggablePanel extends SimplePanel {
 						// eventpreview(er)
 		}
 
-		protected Element insert0(final Element element, final int index) {
+		protected void insert0(final Element element, final int index) {
 			DOM.insertChild(this.getElement(), element, 0);
-			return element;
 		}
 
 		protected void remove0(final Element element, final int index) {

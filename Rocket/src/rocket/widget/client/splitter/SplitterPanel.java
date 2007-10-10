@@ -326,12 +326,11 @@ abstract public class SplitterPanel extends CompositeWidget {
 		/**
 		 * Add the given element to the parent DIV element
 		 */
-		protected Element insert0(final Element element, final int indexBefore) {
+		protected void insert0(final Element element, final int indexBefore) {
 			ObjectHelper.checkNotNull("parameter:element", element);
 
 			final Element parent = this.getParentElement();
 			DOM.appendChild(parent, element);
-			return parent;
 		}
 
 		/**

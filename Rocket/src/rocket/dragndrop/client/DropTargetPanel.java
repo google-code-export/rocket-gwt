@@ -50,9 +50,8 @@ public class DropTargetPanel extends SimplePanel {
 		return 0;
 	}
 
-	protected Element insert0(final Element element, final int index) {
+	protected void insert0(final Element element, final int index) {
 		DOM.appendChild(this.getElement(), element);
-		return element;
 	}
 
 	protected void remove0(final Element element, final int index) {
