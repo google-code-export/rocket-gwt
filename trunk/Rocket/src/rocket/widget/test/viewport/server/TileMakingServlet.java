@@ -32,7 +32,7 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.util.server.IoHelper;
 import rocket.util.server.UncheckedIOException;
-import rocket.widget.test.viewport.client.Constants;
+import rocket.widget.test.viewport.client.ViewportTestConstants;
 
 /**
  * A simple servlet that returns a tile or rectangular area from a larger image
@@ -51,11 +51,11 @@ public class TileMakingServlet extends HttpServlet {
 
 		OutputStream output = null;
 		try {
-			int x = this.getIntegerParameter(request, Constants.X);
-			int y = this.getIntegerParameter(request, Constants.Y);
-			final int width = this.getIntegerParameter(request, Constants.WIDTH);
-			final int height = this.getIntegerParameter(request, Constants.HEIGHT);
-			final int zoom = this.getIntegerParameter(request, Constants.ZOOM);
+			int x = this.getIntegerParameter(request, ViewportTestConstants.X);
+			int y = this.getIntegerParameter(request, ViewportTestConstants.Y);
+			final int width = this.getIntegerParameter(request, ViewportTestConstants.WIDTH);
+			final int height = this.getIntegerParameter(request, ViewportTestConstants.HEIGHT);
+			final int zoom = this.getIntegerParameter(request, ViewportTestConstants.ZOOM);
 
 			// create a new image and write a scaled sub image into it.
 			final BufferedImage tile = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
