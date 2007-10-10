@@ -183,9 +183,8 @@ abstract public class GridView extends CompositeWidget {
 			return 0;
 		}
 
-		protected Element insert0(final Element element, int indexBefore) {
+		protected void insert0(final Element element, int indexBefore) {
 			DOM.insertChild(this.getElement(), element, indexBefore);
-			return element;
 		}
 
 		protected void remove0(final Element element, int index) {

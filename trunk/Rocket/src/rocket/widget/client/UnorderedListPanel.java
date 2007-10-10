@@ -68,13 +68,12 @@ public class UnorderedListPanel extends Panel implements HasWidgets {
 		return this.getElement();
 	}
 
-	protected Element insert0(final Element element, final int indexBefore) {
+	protected void insert0(final Element element, final int indexBefore) {
 		ObjectHelper.checkNotNull("parameter:element", element);
 
 		final Element child = this.createElement();
 		DOM.insertChild(this.getParentElement(), child, indexBefore);
 		DOM.appendChild(child, element);
-		return child;
 	}
 
 	protected Element createElement() {

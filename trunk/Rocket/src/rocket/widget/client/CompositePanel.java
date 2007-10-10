@@ -217,7 +217,7 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 		throw new UnsupportedOperationException("createPanelElement");
 	}
 
-	final protected Element insert0(final Element element, final int indexBefore) {
+	final protected void insert0(final Element element, final int indexBefore) {
 		throw new UnsupportedOperationException("insert0");
 	}
 

@@ -81,7 +81,7 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		return 0;
 	}
 
-	protected Element insert0(final Element element, final int index) {
+	protected void insert0(final Element element, final int index) {
 		final Element childParent = DOM.getChild(this.getElement(), index);
 
 		if (index == Constants.BACKGROUND_WIDGET_INDEX) {
@@ -110,8 +110,6 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		}
 
 		DOM.appendChild(childParent, element);
-
-		return element;
 	}
 
 	protected void remove0(final Element element, final int index) {

@@ -65,7 +65,7 @@ public class HyperlinkPanel extends Panel {
 		return this.getElement();
 	}
 
-	protected Element insert0(final Element element, final int indexBefore) {
+	protected void insert0(final Element element, final int indexBefore) {
 		ObjectHelper.checkNotNull("parameter:element", element);
 
 		final Element child = this.createElement();
@@ -77,8 +77,6 @@ public class HyperlinkPanel extends Panel {
 		final int sunk = DOM.getEventsSunk(element);
 		ObjectHelper.setInteger(element, WidgetConstants.HYPERLINK_PANEL_PREVIOUS_SUNK_EVENTS_BIT_MASK, sunk);
 		DOM.sinkEvents(element, 0);
-
-		return child;
 	}
 
 	protected Element createElement() {

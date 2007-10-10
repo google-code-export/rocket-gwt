@@ -251,9 +251,9 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 		this.getWidgetCollection().insert(widget, indexBefore);
 	}
 
-	protected Element insert0(final Widget widget, int indexBefore) {
+	protected void insert0(final Widget widget, int indexBefore) {
 		ObjectHelper.checkNotNull("parameter:widget", widget);
-		return this.insert0(widget.getElement(), indexBefore);
+		this.insert0(widget.getElement(), indexBefore);
 	}
 
 	/**
@@ -264,7 +264,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	 * @param indexBefore
 	 * @return Element the parent element of the new widget.
 	 */
-	protected abstract Element insert0(Element element, int indexBefore);
+	protected abstract void insert0(Element element, int indexBefore);
 
 	/**
 	 * Attempts to remove an existing widget from this panel if it is a child.

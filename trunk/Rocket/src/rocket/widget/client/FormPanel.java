@@ -313,9 +313,8 @@ public class FormPanel extends Panel {
 		this.clearIFrame();
 	}
 
-	protected Element insert0(final Element element, final int indexBefore) {
+	protected void insert0(final Element element, final int indexBefore) {
 		DOM.insertChild(this.getElement(), element, indexBefore);
-		return element;
 	}
 
 	protected void remove0(final Element element, final int index) {
