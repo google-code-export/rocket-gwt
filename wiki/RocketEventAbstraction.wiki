@@ -1,5 +1,5 @@
-#summary One-sentence summary of this page.
 #labels Featured,Phase-Design,GWT
+#Summary of the design and objectives of the new Event system.
 
 =Motivation=
 The way events are modelled in GWT could have been better.
