@@ -108,18 +108,18 @@ public class BeanFactoryGenerator extends Generator {
 
 		final DocumentWalker document = this.getDocumentWalker(type);
 
-		final NewConcreteType beanFactory = this.createBeanFactory(newTypeName);
+		final NewConcreteType beanFactory = this.createBeanFactory(newTypeName, type );
 		this.setBeanFactory(beanFactory);
 
 		final List beanTags = document.getBeans();
 		this.buildFactoryBeans(beanTags);
-
+		
+		this.buildRemoteJsonServiceFactoryBeans(document.getRemoteJsonService());
+		this.buildRemoteRpcServiceFactoryBeans(document.getRemoteRpcService());		
+		
 		this.overrideAllFactoryBeanCreateInstances(beanTags);
 		this.overrideAllFactoryBeanSatisfyInits(beanTags);
 		this.overrideAllFactoryBeanSatisfyProperties(beanTags);
-
-		this.buildRemoteJsonServiceFactoryBeans(document.getRemoteJsonService());
-		this.buildRemoteRpcServiceFactoryBeans(document.getRemoteRpcService());
 
 		this.buildAdvices(document.getAdvices());
 		this.applyAdvices();
@@ -196,9 +196,10 @@ public class BeanFactoryGenerator extends Generator {
 	 * fields etc.
 	 * 
 	 * @param newTypeName
+	 * @param implementsInterface
 	 * @return
 	 */
-	protected NewConcreteType createBeanFactory(final String newTypeName) {
+	protected NewConcreteType createBeanFactory(final String newTypeName, final Type implementsInterface ) {
 		this.getGeneratorContext().info("Creating BeanFactory with a name of [" + newTypeName + "].");
 
 		final NewConcreteType beanFactory = this.getGeneratorContext().newConcreteType();
@@ -207,6 +208,7 @@ public class BeanFactoryGenerator extends Generator {
 		beanFactory.setFinal(true);
 		beanFactory.setName(newTypeName);
 		beanFactory.setSuperType(this.getBeanFactoryImpl());
+		beanFactory.addInterface( implementsInterface );
 
 		return beanFactory;
 	}
@@ -243,7 +245,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setName(beanFactory.getName() + '.' + id + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setFactoryBean(factoryBean);
@@ -664,7 +666,7 @@ public class BeanFactoryGenerator extends Generator {
 
 	protected void throwUnableToFindSetter(final Bean bean, final String propertyName) {
 		throw new BeanFactoryGeneratorException("Unable to find a setter for the property [" + propertyName
-				+ "] for the bean with an id of [" + bean.getId() + "].");
+				+ "] on the bean, bean: " + bean );
 	}
 
 	protected ListValue asListValue(final ListTag tag) {
@@ -721,6 +723,8 @@ public class BeanFactoryGenerator extends Generator {
 	 * 
 	 * @param tag
 	 * @return
+	 * 
+	 * TODO need to know if bean is a true bean or a gwt rpc...
 	 */
 	protected BeanReference asBeanReference(final BeanReferenceTag tag) {
 		ObjectHelper.checkNotNull("parameter:tag", tag);
@@ -815,14 +819,14 @@ public class BeanFactoryGenerator extends Generator {
 		bean.setId(id);
 
 		final String interfaceName = jsonTag.getInterface();
-		final Type beanType = this.getInterfaceType(id, interfaceName);
+		final Type beanType = this.getInterfaceType(id, interfaceName + Constants.ASYNC_SUFFIX );
 		bean.setType(beanType);
 
 		final Type superType = this.getPrototypeFactoryBean();
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setName(beanFactory.getName() + '.' + id + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setFactoryBean(factoryBean);
@@ -866,14 +870,14 @@ public class BeanFactoryGenerator extends Generator {
 		bean.setId(id);
 
 		final String interfaceName = rpcTag.getInterface();
-		final Type beanType = this.getInterfaceType(id, interfaceName);
+		final Type beanType = this.getInterfaceType(id, interfaceName + Constants.ASYNC_SUFFIX );
 		bean.setType(beanType);
 
 		final Type superType = this.getPrototypeFactoryBean();
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setName(beanFactory.getName() + '.' + id + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setFactoryBean(factoryBean);
@@ -897,11 +901,17 @@ public class BeanFactoryGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
 
 		final NewType factoryBean = bean.getFactoryBean();
-		final Type beanType = bean.getType();
-
+		
+		// get the actual interface type from the async interface type.
+		final Type asyncInterfaceType = bean.getType();
+		final String asyncInterfaceName = asyncInterfaceType.getName(); 
+		
+		final String interfaceTypeName = asyncInterfaceName.substring( 0, asyncInterfaceName.length() - Constants.ASYNC_SUFFIX.length() );
+		final Type interfaceType = this.getInterfaceType( bean.getId(), interfaceTypeName);
+		
 		final NewMethod createInstance = this.createCreateInstanceMethod(factoryBean);
 		final DeferredBinding body = new DeferredBinding();
-		body.setType(beanType);
+		body.setType(interfaceType);
 		createInstance.setBody(body);
 
 		this.getGeneratorContext().debug(
@@ -1134,7 +1144,8 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType proxyFactoryBean = beanFactory.newNestedType();
 		proxyFactoryBean.setStatic(false);
-		proxyFactoryBean.setName(beanFactory.getName() + '.' + id + Constants.PROXY_FACTORY_BEAN_SUFFIX);
+		proxyFactoryBean
+				.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_FACTORY_BEAN_SUFFIX);
 		proxyFactoryBean.setSuperType(superType);
 		proxyFactoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setProxyFactoryBean(proxyFactoryBean);
@@ -1191,7 +1202,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType proxy = beanFactory.newNestedType();
 		proxy.setStatic(false);
-		proxy.setName(beanFactory.getName() + '.' + id + Constants.PROXY_SUFFIX);
+		proxy.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_SUFFIX);
 		proxy.setSuperType(targetBeanType);
 		proxy.setVisibility(Visibility.PRIVATE);
 
@@ -1459,8 +1470,14 @@ public class BeanFactoryGenerator extends Generator {
 	 */
 	protected Bean getBean(final String id) {
 		final Bean bean = (Bean) this.getBeans().get(id);
-		ObjectHelper.checkNotNull("bean", bean);
+		if (null == bean) {
+			this.throwUnableToFindBean(id);
+		}
 		return bean;
+	}
+
+	protected void throwUnableToFindBean(final String id) {
+		throw new BeanFactoryGeneratorException("Unable to locate a bean with an id of [" + id + "]");
 	}
 
 	protected Type getSingletonFactoryBean() {
@@ -1551,5 +1568,36 @@ public class BeanFactoryGenerator extends Generator {
 
 	protected void throwBeanTypeIsNotConcrete(final String id, final Type type) {
 		throw new BeanFactoryGeneratorException("The type [" + type + "] is not concrete for the bean id[" + id + "]");
+	}
+
+	protected String escapeBeanIdToBeClassNameSafe(final String beanId) {
+		StringHelper.checkNotEmpty("parameter:beanId", beanId);
+
+		final StringBuffer safeName = new StringBuffer();
+
+		final char[] chars = beanId.toCharArray();
+
+		for (int j = 0; j < chars.length; j++) {
+			final char c = chars[j];
+
+			// escape underscore to double underscore...
+			if (c == '_') {
+				safeName.append("__");
+				continue;
+			}
+			// if $c a valid chacter simply add it...
+			if ((j == 0 && Character.isJavaIdentifierStart(c)) || Character.isJavaIdentifierPart(c)) {
+				safeName.append(c);
+				continue;
+			}
+
+			// not a safe character encode it as underscore + hex
+			// value of $c.
+			safeName.append('_');
+
+			final String hexEncoded = StringHelper.padLeft(Integer.toHexString(c), 4, '0');
+			safeName.append(hexEncoded);
+		} // for j
+		return safeName.toString();
 	}
 }

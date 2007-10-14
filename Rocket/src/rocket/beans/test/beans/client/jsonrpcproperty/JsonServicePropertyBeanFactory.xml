@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 1.0//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 
+		id="bean" 
+		class="rocket.beans.test.beans.client.jsonrpcproperty.BeanWithJsonService" 
+		scope="singleton">
+		<properties>
+			<property name="service">
+				<bean-reference 
+					reference-id="jsonService" />
+			</property>
+		</properties>
+	</bean>
+
+	<remote-json-service
+		id="jsonService"
+		interface="rocket.beans.test.beans.client.jsonrpcproperty.JsonService"
+		address="/remoteJsonService"	
+	/>
+</bean-factory>

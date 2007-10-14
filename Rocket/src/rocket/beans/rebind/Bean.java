@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rocket.beans.rebind.aop.Advice;
+import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -29,7 +30,7 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class Bean {
+public class Bean{
 
 	public Bean() {
 		super();
@@ -139,6 +140,6 @@ public class Bean {
 	}
 
 	public String toString() {
-		return "Bean id[" + this.id + "] type[" + this.type + "]";
+		return "bean id[" + this.id + "] type[" + this.type + "]";
 	}
 }
