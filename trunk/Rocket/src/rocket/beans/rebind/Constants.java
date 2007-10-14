@@ -23,6 +23,7 @@ import rocket.beans.client.aop.Advice;
 import rocket.beans.client.aop.MethodInterceptor;
 import rocket.beans.client.aop.MethodInvocation;
 import rocket.beans.client.aop.ProxyFactoryBean;
+import rocket.util.client.StringHelper;
 
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
@@ -78,4 +79,8 @@ class Constants {
 	final static String METHOD_INTERCEPTOR_INVOKE = "invoke";
 
 	final static String METHOD_INVOCATION = MethodInvocation.class.getName();
+	
+	final static String ENCODED_DOT_WITHIN_TYPE_NAME = "_" + StringHelper.padLeft( Integer.toHexString( '.' ), 4, '0' );
+	
+	final static String ASYNC_SUFFIX = "Async";
 }

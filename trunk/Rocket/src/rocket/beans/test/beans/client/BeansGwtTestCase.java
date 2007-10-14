@@ -35,6 +35,7 @@ import rocket.beans.test.beans.client.charproperty.ClassWithCharProperty;
 import rocket.beans.test.beans.client.constructornotfound.ConstructorNotFoundBeanFactory;
 import rocket.beans.test.beans.client.doubleproperty.ClassWithDoubleProperty;
 import rocket.beans.test.beans.client.doubleproperty.DoublePropertyBeanFactory;
+import rocket.beans.test.beans.client.escapebeanidintosafeclassnamecomponents.EscapeBeanIdsIntoSafeClassNamesBeanFactory;
 import rocket.beans.test.beans.client.factorymethod.Bean;
 import rocket.beans.test.beans.client.factorymethod.FactoryMethodBeanFactory;
 import rocket.beans.test.beans.client.factorymethodnotfound.FactoryMethodNotFoundBeanFactory;
@@ -46,6 +47,9 @@ import rocket.beans.test.beans.client.initmethodnotfound.InitMethodNotFoundBeanF
 import rocket.beans.test.beans.client.intproperty.ClassWithIntProperty;
 import rocket.beans.test.beans.client.intproperty.IntPropertyBeanFactory;
 import rocket.beans.test.beans.client.invalidbeanscope.InvalidScopeBeanFactory;
+import rocket.beans.test.beans.client.jsonrpcproperty.BeanWithJsonService;
+import rocket.beans.test.beans.client.jsonrpcproperty.JsonServiceAsync;
+import rocket.beans.test.beans.client.jsonrpcproperty.JsonServicePropertyBeanFactory;
 import rocket.beans.test.beans.client.listproperty.ClassWithListProperty;
 import rocket.beans.test.beans.client.listproperty.ListPropertyBeanFactory;
 import rocket.beans.test.beans.client.longproperty.ClassWithLongProperty;
@@ -111,6 +115,9 @@ import rocket.beans.test.beans.client.remotejsonservice.RemoteJsonServiceAsync;
 import rocket.beans.test.beans.client.remotejsonservice.RemoteJsonServiceBeanFactory;
 import rocket.beans.test.beans.client.remoterpcservice.RemoteRpcServiceAsync;
 import rocket.beans.test.beans.client.remoterpcservice.RemoteRpcServiceBeanFactory;
+import rocket.beans.test.beans.client.rpcproperty.GwtRpcServicePropertyBeanFactory;
+import rocket.beans.test.beans.client.rpcproperty.BeanWithGwtRpcService;
+import rocket.beans.test.beans.client.rpcproperty.GwtRpcServiceAsync;
 import rocket.beans.test.beans.client.setproperty.ClassWithSetProperty;
 import rocket.beans.test.beans.client.setproperty.SetPropertyBeanFactory;
 import rocket.beans.test.beans.client.shortproperty.ClassWithShortProperty;
@@ -153,7 +160,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	public String getModuleName() {
 		return "rocket.beans.test.beans.Beans";
 	}
-
+	
 	public void testNotABeanFactory() {
 		try {
 			assertBindingFailed(GWT.create(ClassIsNotABeanFactory.class));
@@ -198,6 +205,12 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		}
 	}
 
+
+	public void testEscapeBeanIdsIntoSafeClassNames(){
+		final EscapeBeanIdsIntoSafeClassNamesBeanFactory beanFactory = (EscapeBeanIdsIntoSafeClassNamesBeanFactory)GWT.create( EscapeBeanIdsIntoSafeClassNamesBeanFactory.class );
+		assertNotNull( beanFactory );
+	}
+	
 	public void testFactoryMethodNotFound() {
 		try {
 			assertBindingFailed(GWT.create(FactoryMethodNotFoundBeanFactory.class));
@@ -378,14 +391,14 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testRemoteRpcService() {
-		final BeanFactory factory = (BeanFactory) GWT.create(RemoteRpcServiceBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create( RemoteRpcServiceBeanFactory.class);
 		final RemoteRpcServiceAsync bean = (RemoteRpcServiceAsync) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 
 		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) bean;
 		assertTrue("/remoteRpcService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteRpcService"));
 	}
-
+	
 	public void testRemoteJsonService() {
 		final BeanFactory factory = (BeanFactory) GWT.create(RemoteJsonServiceBeanFactory.class);
 		final RemoteJsonServiceAsync bean = (RemoteJsonServiceAsync) factory.getBean(BEAN_ID);
@@ -394,7 +407,30 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) bean;
 		assertTrue("/remoteJsonService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteJsonService"));
 	}
+	
+	public void testBeanWithRemoteRpcServiceProperty() {
+		final BeanFactory factory = (BeanFactory) GWT.create(GwtRpcServicePropertyBeanFactory.class);
+		final BeanWithGwtRpcService bean = (BeanWithGwtRpcService) factory.getBean(BEAN_ID);
+		assertNotNull(bean);
+		
+		final GwtRpcServiceAsync service = bean.getService();
+		assertNotNull( "rpcService", service );
 
+		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) service;
+		assertTrue("/remoteRpcService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteRpcService"));
+	}
+	
+	public void testBeanWithJsonRpcServiceProperty() {
+		final BeanFactory factory = (BeanFactory) GWT.create(JsonServicePropertyBeanFactory.class);
+		final BeanWithJsonService bean = (BeanWithJsonService) factory.getBean(BEAN_ID);
+		assertNotNull(bean);
+
+		final JsonServiceAsync service = bean.getService();
+		
+		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) service;
+		assertTrue("/remoteRpcService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteJsonService"));
+	}
+	
 	public void testPlaceHolders() {
 		final BeanFactory factory = (BeanFactory) GWT.create(PlaceHolderBeanFactory.class);
 		final PlaceHolderBean bean = (PlaceHolderBean) factory.getBean(BEAN_ID);

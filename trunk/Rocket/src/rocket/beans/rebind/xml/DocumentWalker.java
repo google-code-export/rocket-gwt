@@ -31,6 +31,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import rocket.beans.rebind.BeanFactoryGeneratorException;
 import rocket.beans.rebind.placeholder.PlaceHolderResolver;
@@ -70,10 +71,14 @@ public class DocumentWalker {
 
 		} catch (final ParserConfigurationException caught) {
 			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst preparing to read the file [" + fileName + "]", caught);
-		} catch (final SAXException caught) {
+		} catch (final SAXParseException caught) {	
+			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file [" + fileName + "] at line: " + caught.getLineNumber() + ", column: " + caught.getColumnNumber(), caught);
+		} catch (final SAXException caught) {	
 			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file [" + fileName + "]", caught);
 		} catch (final IOException caught) {
 			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst reading the file [" + fileName + "]", caught);
+		} catch( final RuntimeException caught ){
+			throw caught;
 		}
 	}
 

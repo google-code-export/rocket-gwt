@@ -1,9 +1,6 @@
 <!ELEMENT bean-factory 							(
 		place-holders*, 
-		bean*, 
-		remote-json-service*, 
-		remote-rpc-service*, 
-		advice*
+			(bean|remote-json-service|remote-rpc-service|advice)*
 		)>
 
 <!ELEMENT place-holders							EMPTY>
@@ -38,7 +35,7 @@
 
 <!ELEMENT bean-reference						EMPTY>
 <!ATTLIST bean-reference
-	reference-id	IDREF 						#REQUIRED
+	reference-id	CDATA 						#REQUIRED
 >
 
 <!ELEMENT list 									(value+|bean-reference+)>
@@ -57,14 +54,14 @@
 
 <!ELEMENT remote-json-service					EMPTY >
 <!ATTLIST remote-json-service
-	id 				CDATA 						#REQUIRED
+	id 				ID	 						#REQUIRED
 	interface		CDATA 						#REQUIRED	
 	address			CDATA 						#REQUIRED	
 >	
 
 <!ELEMENT remote-rpc-service					EMPTY >
 <!ATTLIST remote-rpc-service
-	id 				CDATA 						#REQUIRED
+	id 				ID	 						#REQUIRED
 	interface		CDATA 						#REQUIRED	
 	address			CDATA 						#REQUIRED	
 >
