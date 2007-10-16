@@ -264,10 +264,7 @@ public class StringHelper extends ObjectHelper {
 
 				/* token found! */
 				if (isTokenTest != -1) {
-					// dont add empty tokens...
-					if (firstChar != i) {
-						tokens.add(input.substring(firstChar, i));
-					}
+					tokens.add(input.substring(firstChar, i));
 
 					/* include delimiter in the output ??? */
 					if (false == ignoreDelimiters) {
@@ -281,9 +278,7 @@ public class StringHelper extends ObjectHelper {
 			} // for each char
 
 			/* the last token will not be terminated.. add */
-			if (firstChar != stringLength) {
-				tokens.add(input.substring(firstChar));
-			}
+			tokens.add(input.substring(firstChar));
 		}// if
 
 		/* copy the splitted strings into a String array */

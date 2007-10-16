@@ -87,10 +87,10 @@ public class Colour implements java.io.Serializable {
 	 * @return
 	 */
 	static Colour parseRgbTriplet(final String value) {
-		final String[] triplets = StringHelper.split(value.substring(4, value.length() - 1), ", ", true);
-		final int red = Integer.parseInt(triplets[0]);
-		final int green = Integer.parseInt(triplets[1]);
-		final int blue = Integer.parseInt(triplets[2]);
+		final String[] triplets = StringHelper.split(value.substring(4, value.length() - 1), ",", true);
+		final int red = Integer.parseInt(triplets[0].trim());
+		final int green = Integer.parseInt(triplets[1].trim());
+		final int blue = Integer.parseInt(triplets[2].trim());
 
 		return new Colour(red, green, blue);
 	}
