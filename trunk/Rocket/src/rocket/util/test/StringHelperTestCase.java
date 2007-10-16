@@ -164,7 +164,7 @@ public class StringHelperTestCase extends TestCase {
 		assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}" + endsWith + "])", expected, actual);
 	}
 
-	public void testSplit0IgnoringDelimiters() {
+	public void testSplitIgnoringDelimiters0() {
 		final String first = "the";
 		final String second = "quick";
 		final String third = "brown";
@@ -182,7 +182,7 @@ public class StringHelperTestCase extends TestCase {
 		assertEquals("The third token should be", third, tokens[2]);
 	}
 
-	public void testSplit1IgnoringDelimiters() {
+	public void testSplitIgnoringDelimiters1() {
 		final String first = "a";
 		final String second = "b";
 		final String third = "c";
@@ -200,7 +200,62 @@ public class StringHelperTestCase extends TestCase {
 		assertEquals("The third token should be", third, tokens[2]);
 	}
 
-	public void testSplit2IgnoringDelimitersWithTrailingDelimiter() {
+	public void testSplitIgnoringDelimitersWithEmptyTokens() {
+		final String first = "a";
+		final String second = "";
+		final String third = "c";
+
+		final String delimiters = " ";
+		final String input = first + delimiters + second + delimiters + third;
+		boolean ignoreDelimiters = true;
+
+		final String[] tokens = StringHelper.split(input, delimiters, ignoreDelimiters);
+		assertNotNull("The returned tokens array should not be null", tokens);
+		assertEquals("There should be 3 tokens", 3, tokens.length);
+
+		assertEquals("The first token should be", first, tokens[0]);
+		assertEquals("The second token should be", second, tokens[1]);
+		assertEquals("The third token should be", third, tokens[2]);
+	}
+
+	public void testSplitIgnoringDelimitersWithEmptyFirstToken() {
+		final String first = "";
+		final String second = "b";
+		final String third = "c";
+
+		final String delimiters = " ";
+		final String input = first + delimiters + second + delimiters + third;
+		boolean ignoreDelimiters = true;
+
+		final String[] tokens = StringHelper.split(input, delimiters, ignoreDelimiters);
+		assertNotNull("The returned tokens array should not be null", tokens);
+		assertEquals("There should be 3 tokens", 3, tokens.length);
+
+		assertEquals("The first token should be", first, tokens[0]);
+		assertEquals("The second token should be", second, tokens[1]);
+		assertEquals("The third token should be", third, tokens[2]);
+	}
+	
+	public void testSplitIgnoringDelimitersWithEmptyLastToken() {
+		final String first = "a";
+		final String second = "b";
+		final String third = "";
+
+		final String delimiters = " ";
+		final String input = first + delimiters + second + delimiters + third;
+		boolean ignoreDelimiters = true;
+
+		final String[] tokens = StringHelper.split(input, delimiters, ignoreDelimiters);
+		assertNotNull("The returned tokens array should not be null", tokens);
+		assertEquals("There should be 3 tokens", 3, tokens.length);
+
+		assertEquals("The first token should be", first, tokens[0]);
+		assertEquals("The second token should be", second, tokens[1]);
+		assertEquals("The third token should be", third, tokens[2]);
+	}
+
+	
+	public void testSplitIgnoringDelimitersWithTrailingDelimiter() {
 		final String first = "the";
 		final String second = "quick";
 		final String third = "brown";
@@ -218,7 +273,7 @@ public class StringHelperTestCase extends TestCase {
 		assertEquals("The third token should be", third, tokens[2]);
 	}
 
-	public void testSplit3UsingDifferentDelimitersIgnoringDelimiters() {
+	public void testSplitUsingDifferentDelimitersIgnoringDelimiters() {
 		final String first = "the";
 		final String second = "quick";
 		final String third = "brown";
@@ -237,7 +292,7 @@ public class StringHelperTestCase extends TestCase {
 		assertEquals("The third token should be", third, tokens[2]);
 	}
 
-	public void testSplit4UsingDifferentDelimitersIgnoringDelimitersWithTrailingDelimiter() {
+	public void testSplitUsingDifferentDelimitersIgnoringDelimitersWithTrailingDelimiter() {
 		final String first = "the";
 		final String second = "quick";
 		final String third = "brown";
@@ -249,14 +304,15 @@ public class StringHelperTestCase extends TestCase {
 
 		final String[] tokens = StringHelper.split(input, delimiter0 + delimiter1, ignoreDelimiters);
 		assertNotNull("The returned tokens array should not be null", tokens);
-		assertEquals("There should be 3 tokens", 3, tokens.length);
+		assertEquals("There should be 4 tokens[" + input + "]", 4, tokens.length);
 
 		assertEquals("The first token should be", first, tokens[0]);
 		assertEquals("The second token should be", second, tokens[1]);
 		assertEquals("The third token should be", third, tokens[2]);
+		assertEquals("The fourth token should be", "", tokens[3]);
 	}
 
-	public void testSplit5KeepingDelimiters() {
+	public void testSplitKeepingDelimiters() {
 		final String first = "the";
 		final String second = "quick";
 		final String third = "brown";
@@ -276,7 +332,7 @@ public class StringHelperTestCase extends TestCase {
 		assertEquals("The fifth token should be", third, tokens[4]);
 	}
 
-	public void testSplit6WithTrailingDelimiterKeepingDelimiters() {
+	public void testSplitWithTrailingDelimiterKeepingDelimiters() {
 		final String first = "the";
 		final String second = "quick";
 		final String third = "brown";
@@ -287,7 +343,7 @@ public class StringHelperTestCase extends TestCase {
 
 		final String[] tokens = StringHelper.split(input, delimiters, ignoreDelimiters);
 		assertNotNull("The returned tokens array should not be null", tokens);
-		assertEquals("There should be 6 tokens", 6, tokens.length);
+		assertEquals("There should be 7 tokens [" + input + "]", 7, tokens.length);
 
 		assertEquals("The first token should be", first, tokens[0]);
 		assertEquals("The second token should be", delimiters, tokens[1]);
@@ -295,6 +351,7 @@ public class StringHelperTestCase extends TestCase {
 		assertEquals("The fourth token should be", delimiters, tokens[3]);
 		assertEquals("The fifth token should be", third, tokens[4]);
 		assertEquals("The sixth token should be", delimiters, tokens[5]);
+		assertEquals("The seventh token should be", "", tokens[6]);
 	}
 
 	public void testStartsWithIgnoringCaseWhichSucceeds() {
@@ -322,84 +379,84 @@ public class StringHelperTestCase extends TestCase {
 				+ "]", StringHelper.startsWithIgnoringCase(first, second));
 	}
 
-	public void testIndexOfIgnoringCase0WhichFails() {
+	public void testIndexOfIgnoringCaseWhichFails() {
 		final String string = "apple";
 		final String search = "banana";
 
 		assertEquals(-1, StringHelper.indexOfIgnoringCase(string, search));
 	}
 
-	public void testIndexOfIgnoringCase1WhichMatchesWhereCasesAreIdentical() {
+	public void testIndexOfIgnoringCaseWhichMatchesWhereCasesAreIdentical() {
 		final String string = "apple banana carrot";
 		final String search = "banana";
 
 		assertEquals(6, StringHelper.indexOfIgnoringCase(string, search));
 	}
 
-	public void testIndexOfIgnoringCase2WhichMatchesButCasesAreDifferent() {
+	public void testIndexOfIgnoringCaseWhichMatchesButCasesAreDifferent() {
 		final String string = "apple banana carrot";
 		final String search = "BANAna";
 
 		assertEquals(6, StringHelper.indexOfIgnoringCase(string, search));
 	}
 
-	public void testIndexOfIgnoringCase3WhichFailsEvenThoughPartialMatchExists() {
+	public void testIndexOfIgnoringCaseWhichFailsEvenThoughPartialMatchExists() {
 		final String string = "apple banana carrot";
 		final String search = "BANANARAMAMA";
 
 		assertEquals(-1, StringHelper.indexOfIgnoringCase(string, search));
 	}
 
-	public void testIndexOfIgnoringCase4MatchesWordAtStart() {
+	public void testIndexOfIgnoringCaseMatchesWordAtStart() {
 		final String string = "apple banana carrot";
 		final String search = "ApPlE";
 
 		assertEquals(0, StringHelper.indexOfIgnoringCase(string, search));
 	}
 
-	public void testIndexOfIgnoringCase5MatchesWordAtEnd() {
+	public void testIndexOfIgnoringCaseMatchesWordAtEnd() {
 		final String string = "apple banana carrot";
 		final String search = "CARROT";
 
 		assertEquals("apple banana ".length(), StringHelper.indexOfIgnoringCase(string, search));
 	}
 
-	public void testHtmlEncode0() {
+	public void testHtmlEncodeAlpha() {
 		final String plainText = "abc";
 		final String actual = StringHelper.htmlEncode(plainText);
 		final String expected = plainText;
 		assertEquals(expected, actual);
 	}
 
-	public void testHtmlEncode1() {
+	public void testHtmlEncodeNumber() {
 		final String plainText = "123";
 		final String actual = StringHelper.htmlEncode(plainText);
 		final String expected = plainText;
 		assertEquals(expected, actual);
 	}
 
-	public void testHtmlEncode2() {
+	public void testHtmlEncodeEntityCharsWhichShouldBeEscaped() {
 		final String plainText = "<>'\"&";
 		final String actual = StringHelper.htmlEncode(plainText);
 		final String expected = "&lt;&gt;&apos;&quot;&amp;";
 		assertEquals(expected, actual);
 	}
 
-	public void testHtmlDecode0() {
+	public void testHtmlDecodeAlpha() {
 		final String plainText = "abc";
 		final String actual = StringHelper.htmlDecode(plainText);
 		final String expected = plainText;
 		assertEquals(expected, actual);
 	}
 
-	public void testHtmlDecode1() {
+	public void testHtmlDecodeNumber() {
 		final String plainText = "123";
 		final String actual = StringHelper.htmlDecode(plainText);
 		final String expected = plainText;
 		assertEquals(expected, actual);
 	}
 
-	public void testHtmlDecode2() {
+	public void testHtmlDecodeEntities() {
 		final String plainText = "&lt;&gt;&apos;&quot;&amp;";
 		final String actual = StringHelper.htmlDecode(plainText);
 		final String expected = "<>'\"&";
