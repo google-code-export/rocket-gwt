@@ -63,8 +63,9 @@ public class ZebraFlexTable extends FlexTable {
 		}
 
 		// Ensure that the requested column exists.
-		final int cellCount = getCellCount(row) + 1;
-		for (int i = column; i < cellCount; i++) {
+		final int cellCount = getCellCount(row);
+		
+		for (int i = cellCount; i <= column; i++) {
 			this.insertCell(row, i);
 		}
 	}
