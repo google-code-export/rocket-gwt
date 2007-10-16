@@ -59,6 +59,8 @@ import rocket.beans.test.beans.client.manyvalues.ManyValuesBeanFactory;
 import rocket.beans.test.beans.client.mapproperty.ClassWithMapProperty;
 import rocket.beans.test.beans.client.mapproperty.MapPropertyBeanFactory;
 import rocket.beans.test.beans.client.missingbeanid.MissingBeanIdBeanFactory;
+import rocket.beans.test.beans.client.morethanonebeanfactory.FirstBeanFactory;
+import rocket.beans.test.beans.client.morethanonebeanfactory.SecondBeanFactory;
 import rocket.beans.test.beans.client.multipleargumentsconstructor.ClassWithMultipleArgumentsConstructor;
 import rocket.beans.test.beans.client.multipleargumentsconstructor.MultipleArgumentsConstructorBeanFactory;
 import rocket.beans.test.beans.client.noargumentsconstructor.ClassWithNoArgumentsConstructor;
@@ -160,7 +162,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	public String getModuleName() {
 		return "rocket.beans.test.beans.Beans";
 	}
-	
+
 	public void testNotABeanFactory() {
 		try {
 			assertBindingFailed(GWT.create(ClassIsNotABeanFactory.class));
@@ -205,12 +207,12 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		}
 	}
 
-
-	public void testEscapeBeanIdsIntoSafeClassNames(){
-		final EscapeBeanIdsIntoSafeClassNamesBeanFactory beanFactory = (EscapeBeanIdsIntoSafeClassNamesBeanFactory)GWT.create( EscapeBeanIdsIntoSafeClassNamesBeanFactory.class );
-		assertNotNull( beanFactory );
+	public void testEscapeBeanIdsIntoSafeClassNames() {
+		final EscapeBeanIdsIntoSafeClassNamesBeanFactory beanFactory = (EscapeBeanIdsIntoSafeClassNamesBeanFactory) GWT
+				.create(EscapeBeanIdsIntoSafeClassNamesBeanFactory.class);
+		assertNotNull(beanFactory);
 	}
-	
+
 	public void testFactoryMethodNotFound() {
 		try {
 			assertBindingFailed(GWT.create(FactoryMethodNotFoundBeanFactory.class));
@@ -391,14 +393,14 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testRemoteRpcService() {
-		final BeanFactory factory = (BeanFactory) GWT.create( RemoteRpcServiceBeanFactory.class);
+		final BeanFactory factory = (BeanFactory) GWT.create(RemoteRpcServiceBeanFactory.class);
 		final RemoteRpcServiceAsync bean = (RemoteRpcServiceAsync) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 
 		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) bean;
 		assertTrue("/remoteRpcService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteRpcService"));
 	}
-	
+
 	public void testRemoteJsonService() {
 		final BeanFactory factory = (BeanFactory) GWT.create(RemoteJsonServiceBeanFactory.class);
 		final RemoteJsonServiceAsync bean = (RemoteJsonServiceAsync) factory.getBean(BEAN_ID);
@@ -407,30 +409,40 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) bean;
 		assertTrue("/remoteJsonService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteJsonService"));
 	}
-	
+
 	public void testBeanWithRemoteRpcServiceProperty() {
 		final BeanFactory factory = (BeanFactory) GWT.create(GwtRpcServicePropertyBeanFactory.class);
 		final BeanWithGwtRpcService bean = (BeanWithGwtRpcService) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
-		
+
 		final GwtRpcServiceAsync service = bean.getService();
-		assertNotNull( "rpcService", service );
+		assertNotNull("rpcService", service);
 
 		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) service;
 		assertTrue("/remoteRpcService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteRpcService"));
 	}
-	
+
 	public void testBeanWithJsonRpcServiceProperty() {
 		final BeanFactory factory = (BeanFactory) GWT.create(JsonServicePropertyBeanFactory.class);
 		final BeanWithJsonService bean = (BeanWithJsonService) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 
 		final JsonServiceAsync service = bean.getService();
-		
+
 		final ServiceDefTarget serviceDefTarget = (ServiceDefTarget) service;
 		assertTrue("/remoteRpcService", serviceDefTarget.getServiceEntryPoint().endsWith("/remoteJsonService"));
 	}
-	
+
+	public void testMoreThanOneBeanFactory() {
+		final FirstBeanFactory firstBeanFactory = (FirstBeanFactory) GWT.create(FirstBeanFactory.class);
+		assertNotNull("firstBeanFactory", firstBeanFactory);
+		assertNotNull("firstBeanFactory", firstBeanFactory.getBean( BEAN_ID));
+
+		final SecondBeanFactory secondBeanFactory = (SecondBeanFactory) GWT.create(SecondBeanFactory.class);
+		assertNotNull("secondBeanFactory", secondBeanFactory);
+		assertNotNull("secondBeanFactory", secondBeanFactory.getBean(BEAN_ID));
+	}
+
 	public void testPlaceHolders() {
 		final BeanFactory factory = (BeanFactory) GWT.create(PlaceHolderBeanFactory.class);
 		final PlaceHolderBean bean = (PlaceHolderBean) factory.getBean(BEAN_ID);
