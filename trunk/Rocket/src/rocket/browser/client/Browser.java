@@ -266,7 +266,7 @@ public class Browser {
 	 $doc.title = title;
 	 }-*/;
 
-	public static boolean isInternetExplorer6() {
+	public static boolean isInternetExplorer() {
 		return getUserAgent().indexOf(BrowserConstants.INTERNET_EXPLORER_USER_AGENT) != -1 && false == isOpera();
 	}
 
