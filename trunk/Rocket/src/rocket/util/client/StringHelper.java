@@ -428,10 +428,10 @@ public class StringHelper extends ObjectHelper {
 				buf.append("&amp;");
 				continue;
 			}
-			if ('\'' == c) {
-				buf.append("&apos;");
-				continue;
-			}
+//			if ('\'' == c) {
+//				buf.append("&apos;");
+//				continue;
+//			}
 			if ('"' == c) {
 				buf.append("&quot;");
 				continue;
@@ -474,10 +474,6 @@ public class StringHelper extends ObjectHelper {
 
 				if (entity.equals("amp")) {
 					buf.append("&");
-					continue;
-				}
-				if (entity.equals("apos")) {
-					buf.append('\'');
 					continue;
 				}
 				if (entity.equals("quot")) {
