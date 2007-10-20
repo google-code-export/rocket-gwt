@@ -56,6 +56,7 @@ import rocket.util.test.StringHelperTestCase;
 import rocket.util.test.ThrowableHelperTestCase;
 import rocket.util.test.stacktrace.test.StackTraceGwtTestCase;
 import rocket.widget.test.htmltemplatefactory.client.HtmlTemplateFactoryGwtTestCase;
+import rocket.widget.test.pager.unit.PagerGwtTestCase;
 
 /**
  * TestSuite that executes all unit tests.
@@ -125,6 +126,7 @@ public class RocketTestSuite {
 
 		// rocket.widget
 		suite.addTestSuite(HtmlTemplateFactoryGwtTestCase.class);
+		suite.addTestSuite(PagerGwtTestCase.class);
 
 		return suite;
 	}

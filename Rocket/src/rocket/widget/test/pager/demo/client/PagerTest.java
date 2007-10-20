@@ -13,18 +13,23 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.widget.test.pager.client;
+package rocket.widget.test.pager.demo.client;
 
 import rocket.event.client.ChangeEvent;
 import rocket.event.client.ChangeEventListener;
+import rocket.util.client.StringHelper;
+import rocket.widget.client.Html;
 import rocket.widget.client.Pager;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class PagerTest implements EntryPoint {
 
@@ -35,32 +40,44 @@ public class PagerTest implements EntryPoint {
 				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
 			}
 		});
+		
+		final Label summary = new Label( "");
+		summary.addStyleName( "pagerTest-summary");
+		
+		final DockPanel dockPanel = new DockPanel();
+		dockPanel.add( summary, DockPanel.NORTH );
 
-		this.createPager(1, 20, 1, 7);
-		this.createPager(1, 20, 10, 7);
-		this.createPager(1, 20, 19, 7);
-	}
-
-	protected void createPager(final int first, final int last, final int currentPage, final int inBetweenCount) {
-		final RootPanel rootPanel = RootPanel.get();
-
-		final Label label = new Label("" + currentPage);
-
+		final String item = DOM.getInnerHTML(DOM.getElementById( "item"));
+		
+		final VerticalPanel list = new VerticalPanel();
+		
 		final Pager pager = new Pager();
-		pager.setFirstPage(first);
-		pager.setLastPage(last);
-		pager.setCurrentPage(currentPage);
-		pager.setPagesInBetweenCount(inBetweenCount);
-
+		pager.setFirstItem( 0 );
+		pager.setLastItem( 1000 );
+		pager.setPagesAcrossCount( 10 );
+		pager.setItemsPerPage( 10 );
+		
 		pager.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
-				label.setText("Current Page: " + pager.getValue());
+				final int currentPage = pager.getCurrentPage();
+				final int itemsPerPage = pager.getItemsPerPage();
+				final int lastItem = pager.getLastItem();
+				final int last = Math.min( currentPage + itemsPerPage, lastItem ) - 1;
+				
+				summary.setText("Results: " + pager.getCurrentPage() + "-" + last + " of " + lastItem );
+				
+				list.clear();
+				for( int i= currentPage; i < last; i++ ){
+					final String html = StringHelper.format( item, new Object[]{ "" + i });
+					list.add( new Html( html ));
+				}
 			}
 		});
 
-		rootPanel.add(label);
-		rootPanel.add(pager);
+		pager.setCurrentPage( 0 );
 		pager.redraw();
+		dockPanel.add( pager, DockPanel.SOUTH );
+		dockPanel.add( list, DockPanel.CENTER );
+		RootPanel.get().add( dockPanel );
 	}
-
 }
