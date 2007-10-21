@@ -16,9 +16,11 @@
 package rocket.style.client.support;
 
 /**
- * This class exists primarily to assist the InternetExplorer6StyleSupport class
- * with building and extracting expressions to simulate fixed positioning for
- * IE.
+ * This class exists primarily to assist the InternetExplorer6StyleSupport
+ * class with building and extracting expressions to simulate fixed positioning
+ * for IE.
+ * 
+ * This class is only public to enable it to be tested by {@link rocket.style.test.dynamicexpression.DynamicExpressionTestCase}
  * 
  * @author Miroslav Pokorny
  */
@@ -46,7 +48,7 @@ public class DynamicExpression {
 	 * @param value
 	 * @return
 	 */
-	public String setValue(final String value) {
+	public String buildExpression(final String value) {
 		String value0 = value;
 		if (value.endsWith("px")) {
 			value0 = value0.substring(0, value0.length() - 2);
@@ -75,36 +77,41 @@ public class DynamicExpression {
 	}
 
 	/**
-	 * Extracts the number at the position of the placeholder from a
-	 * prepopulated expression.
+	 * Extracts the numeric value assuming it is a pixel value.
 	 * 
 	 * @return
 	 */
-	public int getValue(final String expressionWithValue) {
-		int value = 0;
+	public String getValue(final String expressionWithValue) {
+//		String value = null;
+//		
+//		if( expressionWithValue.startsWith("/*") && expressionWithValue.length() > 4 ){
+//			final int starSlash = expressionWithValue.indexOf( "*/", 2 );
+//			if( -1 != starSlash ){
+//				value = expressionWithValue.substring( 2, starSlash );
+//			}			
+//		}
+//		
+//		
+//		return value;
+//		
 		final String expression = this.getExpression();
-		int numberStart = expression.indexOf(StyleSupportConstants.DYNAMIC_EXPRESSION_PLACEHOLDER);
-		if (-1 != numberStart) {
+		String value = null;
 
-			boolean negativeNumber = false;
+		final int valueStart = expression.indexOf(StyleSupportConstants.DYNAMIC_EXPRESSION_PLACEHOLDER);
+		if (-1 != valueStart) {
 
-			final int length = expressionWithValue.length();
-			final char c = expressionWithValue.charAt(numberStart);
-			if ('-' == c) {
-				negativeNumber = true;
-				numberStart++;
+			final int plus = expressionWithValue.indexOf('+', valueStart + 1);
+			final int minus = expressionWithValue.indexOf('-', valueStart + 1);
+			int endOfValue = expressionWithValue.length();
+
+			if (plus != -1) {
+				endOfValue = plus;
+			}
+			if (minus != -1 & minus < endOfValue) {
+				endOfValue = minus;
 			}
 
-			for (int i = numberStart; i < length; i++) {
-				final char d = expressionWithValue.charAt(i);
-				if (false == Character.isDigit(d)) {
-					break;
-				}
-				value = value * 10 + Character.digit(d, 10);
-			}
-			if (negativeNumber) {
-				value = -value;
-			}
+			value = expressionWithValue.substring(valueStart, endOfValue) + "px";
 		}
 		return value;
 	}
@@ -113,43 +120,64 @@ public class DynamicExpression {
 	 * Compares a text which possibly contains a dynamic expression less the
 	 * substituted values.
 	 * 
-	 * @param text
+	 * @param expressionWithValue
 	 * @return
 	 */
-	public boolean isEqual(final String text) {
-		final String expression = this.getExpression();
-		final int expressionLength = expression.length();
-		final int textLength = text.length();
-		int j = 0;
-		boolean firstChar = true;
+	public boolean isEqual(final String expressionWithValue) {
+		boolean equal = false;
 
-		int i = 0;
-		while (i < expressionLength && j < textLength) {
-			final char c = expression.charAt(i);
-			final char d = text.charAt(j);
+		if (null != expressionWithValue) {
+			equal = true;
 
-			// found a placeholder skip number chars appearing in text.
-			if (StyleSupportConstants.DYNAMIC_EXPRESSION_PLACEHOLDER == c) {
-				if (firstChar && '-' == d || Character.isDigit(d)) {
-					firstChar = false;
+			final String expression = this.getExpression();
+			final int expressionLength = expression.length();
 
-					j++;
-					if (j == textLength) {
-						i++;
-					}
-					continue;
+			final int expressionWithValueLength = expressionWithValue.length();
+			int expressionIndex = 0;
+			int expressionWithValueIndex = 0;
+
+			while ( true ) {
+				boolean endOfExpressionReached = expressionIndex == expressionLength;
+				boolean endOfExpressionWithValueReached = expressionWithValueIndex == expressionWithValueLength;
+				if( endOfExpressionReached || endOfExpressionWithValueReached ){
+					equal = endOfExpressionReached == endOfExpressionWithValueReached;
+					break;
 				}
-				// not a digit check next.
-				i++;
-				continue;
-			}
-			if (c != d) {
-				break;
-			}
-			i++;
-			j++;
+				
+				while (expressionIndex < expressionLength && expressionWithValueIndex < expressionWithValueLength) {
+					final char c = expression.charAt(expressionIndex);
+					expressionIndex++;
+					
+					if (c == StyleSupportConstants.DYNAMIC_EXPRESSION_PLACEHOLDER) {
+						break;
+					}
+
+					// chars should match...
+					final char d = expressionWithValue.charAt(expressionWithValueIndex);
+					if (c != d) {
+						equal = false;
+						break;
+					}
+					expressionWithValueIndex++;				
+				}				
+
+				boolean skipMinus = true;
+				while (expressionWithValueIndex < expressionWithValueLength) {
+					char d = expressionWithValue.charAt(expressionWithValueIndex);
+					// skip along until a + or - is hit...
+					if (d == '+'){
+						break;
+					}
+					if( skipMinus == false && d == '-'){
+						break;
+					}
+						
+					skipMinus = false;
+					expressionWithValueIndex++;
+				}
+			}			
 		}
 
-		return i == expressionLength && j == textLength;
+		return equal;
 	}
 }

@@ -18,9 +18,11 @@ package rocket.style.client;
 import java.util.List;
 
 import rocket.dom.client.DomConstants;
+import rocket.style.client.support.StyleSheetSupport;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
@@ -31,20 +33,56 @@ import com.google.gwt.core.client.JavaScriptObject;
 public class StyleSheet {
 
 	/**
-	 * Helper which retrieves the native stylesheet object
+	 * An StyleSheetSupport instance is used to provide support of Browser specific
+	 * features.
+	 */
+	private static final StyleSheetSupport support = (StyleSheetSupport) GWT.create(StyleSheetSupport.class);
+
+	protected static StyleSheetSupport getSupport() {
+		return StyleSheet.support;
+	}
+	
+	static JavaScriptObject getStyleSheetCollection() {
+		return StyleSheet.getSupport().getStyleSheetCollection();
+	}	
+	
+
+	/**
+	 * A cached copy of the StyleSheetList.
+	 */
+	private static StyleSheetList styleSheets;
+
+	/**
+	 * Factory method which creates a StyleSheetCollection.
 	 * 
 	 * @return
 	 */
-	protected JavaScriptObject getStyleSheet() {
-		return this.getStyleSheets().getStyleSheet(this.getIndex());
+	public static List getStyleSheets() {
+		StyleSheetList styleSheets = null;
+		if (StyleSheet.hasStyleSheets()) {
+			styleSheets = StyleSheet.styleSheets;
+		} else {
+			styleSheets = new StyleSheetList();
+			StyleSheet.setStyleSheets(styleSheets);
+		}
+		return styleSheets;
 	}
 
+	protected static boolean hasStyleSheets() {
+		return null != styleSheets;
+	}
+
+	protected static void setStyleSheets(final StyleSheetList styleSheets) {
+		ObjectHelper.checkNotNull("parameter:styleSheets", styleSheets);
+		StyleSheet.styleSheets = styleSheets;
+	}
+	
 	/**
 	 * A cache of the parent StyleSheetList that this list belongs too.
 	 */
 	private StyleSheetList styleSheetList;
 
-	protected StyleSheetList getStyleSheets() {
+	public StyleSheetList getStyleSheetsList() {
 		ObjectHelper.checkNotNull("field:styleSheetList", styleSheetList);
 		return this.styleSheetList;
 	}
@@ -52,8 +90,82 @@ public class StyleSheet {
 	protected void setStyleSheetList(final StyleSheetList styleSheetList) {
 		ObjectHelper.checkNotNull("parameter:styleSheetList", styleSheetList);
 		this.styleSheetList = styleSheetList;
+	}	
+	
+	/**
+	 * Adds a new rule to the given stylesheet.
+	 * 
+	 * @param styleSheet
+	 * @param selectorText
+	 * @param styleText
+	 */
+	static void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText) {
+		StyleSheet.getSupport().addRule(styleSheet, selectorText, styleText);
 	}
 
+	/**
+	 * Inserts a new rule at the given slot in the given stylesheet
+	 * 
+	 * @param styleSheet
+	 * @param index
+	 * @param selectorText
+	 * @param styleText
+	 */
+	static void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText) {
+		StyleSheet.getSupport().insertRule(styleSheet, index, selectorText, styleText);
+	}
+
+	/**
+	 * Removes an existing rule from the given stylesheet
+	 * 
+	 * @param styleSheet
+	 * @param index
+	 */
+	static void removeRule(final JavaScriptObject styleSheet, final int index) {
+		StyleSheet.getSupport().removeRule(styleSheet, index);
+	}
+
+	/**
+	 * Normalizes all the rules belonging to the given stylesheet. Normalizing
+	 * is the process whereby any rules with more than one selector are
+	 * duplicated so that each rule has only one selector.
+	 * 
+	 * @param styleSheet
+	 */
+	static void normalize(final JavaScriptObject styleSheet) {
+		StyleSheet.getSupport().normalize(styleSheet);
+	}
+
+	/**
+	 * Retrieves the collection of rules belonging to a stylesheet.
+	 * 
+	 * @param styleSheet
+	 * @return
+	 */
+	static JavaScriptObject getRules(final JavaScriptObject styleSheet) {
+		return StyleSheet.getSupport().getRulesCollection(styleSheet);
+	}
+
+	/**
+	 * Retrieves the individual names of all the css styles for the given rule.
+	 * 
+	 * @param rule
+	 * @return
+	 */
+	static String[] getRuleStylePropertyNames(final JavaScriptObject rule) {
+		return RuleStyle.getSupport().getPropertyNames(rule);
+	}
+
+
+	/**
+	 * Helper which retrieves the native stylesheet object
+	 * 
+	 * @return
+	 */
+	protected JavaScriptObject getNativeStyleSheet() {
+		return this.getStyleSheetsList().getNativeStyleSheet( this.getIndex() );
+	}
+	
 	/**
 	 * The index of the native StyleSheet within the StyleSheet collection.
 	 */
@@ -154,8 +266,6 @@ public class StyleSheet {
 		this.setBoolean(StyleConstants.DISABLED_ATTRIBUTE, disabled);
 	}
 
-	// OBJECT WRAPPER IMPL :::::::::::::::::::::
-
 	public String getId() {
 		return this.getString(DomConstants.ID_ATTRIBUTE);
 	}
@@ -195,30 +305,30 @@ public class StyleSheet {
 	// A VARIETY OF CONVENIENT TYPED PROPERTY METHODS.
 
 	protected boolean hasProperty(final String propertyName) {
-		return ObjectHelper.hasProperty(this.getStyleSheet(), propertyName);
+		return ObjectHelper.hasProperty(this.getNativeStyleSheet(), propertyName);
 	}
 
 	// BOOLEAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	protected boolean getBoolean(final String propertyName) {
-		return ObjectHelper.getBoolean(this.getStyleSheet(), propertyName);
+		return ObjectHelper.getBoolean(this.getNativeStyleSheet(), propertyName);
 	}
 
 	protected void setBoolean(final String propertyName, final boolean value) {
-		ObjectHelper.setBoolean(this.getStyleSheet(), propertyName, value);
+		ObjectHelper.setBoolean(this.getNativeStyleSheet(), propertyName, value);
 	}
 
 	// STRING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	protected String getString(final String propertyName) {
-		return ObjectHelper.getString(this.getStyleSheet(), propertyName);
+		return ObjectHelper.getString(this.getNativeStyleSheet(), propertyName);
 	}
 
 	protected void setString(final String propertyName, final String value) {
-		ObjectHelper.setString(this.getStyleSheet(), propertyName, value);
+		ObjectHelper.setString(this.getNativeStyleSheet(), propertyName, value);
 	}
 
 	protected void removeProperty(final String propertyName) {
-		ObjectHelper.removeProperty(this.getStyleSheet(), propertyName);
+		ObjectHelper.removeProperty(this.getNativeStyleSheet(), propertyName);
 	}
 }

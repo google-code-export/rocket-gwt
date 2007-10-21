@@ -131,19 +131,22 @@ public class StyleSupportConstants {
 
 	final static String FIXED_POSITION_LEFT_QUIRKSMODE_EXPRESSION = "#+(document?document.body?document.body.scrollLeft:0:0)+'px'";
 
-	final static String FIXED_POSITION_RIGHT_EXPRESSION = "#-(document?document.documentElement?document.documentElement.scrollLeft:0:0)+'px'";
+	final static String FIXED_POSITION_RIGHT_EXPRESSION = "(#-(document?document.documentElement?document.documentElement.scrollLeft:0:0))+'px'";
 
-	final static String FIXED_POSITION_RIGHT_QUIRKSMODE_EXPRESSION = "#-(document?document.body?document.body.scrollLeft:0:0)+'px'";
+	final static String FIXED_POSITION_RIGHT_QUIRKSMODE_EXPRESSION = "(#-(document?document.body?document.body.scrollLeft:0:0))+'px'";
 
 	final static String FIXED_POSITION_TOP_EXPRESSION = "#+(document?document.documentElement?document.documentElement.scrollTop:0:0)+'px'";
 
 	final static String FIXED_POSITION_TOP_QUIRKSMODE_EXPRESSION = "#+(document?document.body?document.body.scrollTop:0:0)+'px'";
 
-	final static String FIXED_POSITION_BOTTOM_EXPRESSION = "#-(document?document.documentElement?document.documentElement.scrollTop:0:0)+'px'";
+	final static String FIXED_POSITION_BOTTOM_EXPRESSION = "(#-(document?document.documentElement?document.documentElement.scrollTop:0:0))+'px'";
 
-	final static String FIXED_POSITION_BOTTOM_QUIRKSMODE_EXPRESSION = "#-(document?document.body?document.body.scrollTop:0:0)+'px'";
+	final static String FIXED_POSITION_BOTTOM_QUIRKSMODE_EXPRESSION = "(#-(document?document.body?document.body.scrollTop:0:0))+'px'";
 
 	final static String CLIENT_WIDTH = "clientWidth";
 
 	final static String CLIENT_HEIGHT = "clientHeight";
+	
+	// 0 - browser user agent.
+	final static String DYNAMIC_EXPRESSIONS_USED_TO_EMULATE_FIXED_POSITIONING = "This version of IE ${0} does not support position[fixed], therefore fixed positioning will be emulated via dynamic expressions";
 }

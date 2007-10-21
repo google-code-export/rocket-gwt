@@ -104,11 +104,11 @@ public class StyleSheetList extends AbstractList {
 	 * @param index
 	 * @return
 	 */
-	JavaScriptObject getStyleSheet(final int index) {
+	JavaScriptObject getNativeStyleSheet(final int index) {
 		return ObjectHelper.getObject(this.getStyleSheetCollection(), index);
 	}
 
 	protected JavaScriptObject getStyleSheetCollection() {
-		return StyleHelper.getStyleSheetCollection();
+		return StyleSheet.getStyleSheetCollection();
 	}
 }

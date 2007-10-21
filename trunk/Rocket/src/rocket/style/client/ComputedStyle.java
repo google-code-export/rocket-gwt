@@ -18,11 +18,14 @@ package rocket.style.client;
 import java.util.Iterator;
 import java.util.Map;
 
+import rocket.style.client.support.ComputedStyleSupport;
+import rocket.style.client.support.StyleSupport;
 import rocket.util.client.Colour;
 import rocket.util.client.Destroyable;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -39,6 +42,13 @@ import com.google.gwt.user.client.Element;
  */
 public class ComputedStyle extends Style implements Destroyable {
 
+	static private final StyleSupport support = (StyleSupport) GWT.create( ComputedStyleSupport.class);
+
+	static protected StyleSupport getSupport() {
+		return ComputedStyle.support;
+	}
+
+	
 	/**
 	 * This method retrieves a concrete value(it ignores inherited, transparent
 	 * etc) given a propertyName for any element.
@@ -52,7 +62,7 @@ public class ComputedStyle extends Style implements Destroyable {
 	 *         always be returned.
 	 */
 	public static String getString(final Element element, final String propertyName) {
-		return StyleHelper.getSupport().getComputedStyleProperty(element, propertyName);
+		return ComputedStyle.getSupport().get(element, propertyName);
 	}
 
 	public static Colour getColour(final Element element, final String propertyName) {
@@ -68,7 +78,7 @@ public class ComputedStyle extends Style implements Destroyable {
 		double value = defaultValue;
 		final String string = ComputedStyle.getString(element, propertyName);
 		if (false == StringHelper.isNullOrEmpty(string)) {
-			value = StyleHelper.convertValue(string, unit);
+			value = CssUnit.convertValue(string, unit);
 		}
 		return value;
 	}
@@ -77,7 +87,7 @@ public class ComputedStyle extends Style implements Destroyable {
 		int value = defaultValue;
 		final String string = ComputedStyle.getString(element, propertyName);
 		if (false == StringHelper.isNullOrEmpty(string)) {
-			value = (int) StyleHelper.convertValue(string, unit);
+			value = (int) CssUnit.convertValue(string, unit);
 		}
 		return value;
 	}
@@ -85,7 +95,7 @@ public class ComputedStyle extends Style implements Destroyable {
 	public static String getUrl(final Element element, final String propertyName) {
 		String string = ComputedStyle.getString(element, propertyName);
 		if (false == StringHelper.isNullOrEmpty(string)) {
-			string = StyleHelper.getUrl(string);
+			string = Style.getUrl(string);
 		}
 		return string;
 	}
@@ -104,6 +114,16 @@ public class ComputedStyle extends Style implements Destroyable {
 		return style;
 	}
 
+	protected ComputedStyle(){
+		super();
+	}
+	
+	protected ComputedStyle( final Element element ){
+		super();
+		
+		this.setElement(element );
+	}
+	
 	final public String getCssText() {
 		return ObjectHelper.getString(this.getElement(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
 	}
@@ -139,7 +159,7 @@ public class ComputedStyle extends Style implements Destroyable {
 	}
 
 	protected String[] getPropertyNames() {
-		return StyleHelper.getComputedStylePropertyNames(this.getElement());
+		return ComputedStyle.getSupport().getPropertyNames(this.getElement());
 	}
 
 	public void destroy() {

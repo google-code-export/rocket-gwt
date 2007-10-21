@@ -15,11 +15,6 @@
  */
 package rocket.style.client.support;
 
-import com.google.gwt.user.client.Window;
+public class FireFoxStyleSheetSupport extends StyleSheetSupport {
 
-abstract public class OperaStyleSupport extends StyleSupport{
-	
-	protected String getUserSelectPropertyName(){
-		throw new UnsupportedOperationException("getUserSelectPropertyName");
-	}
 }
