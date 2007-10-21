@@ -436,9 +436,9 @@ public class StringHelperTestCase extends TestCase {
 	}
 
 	public void testHtmlEncodeEntityCharsWhichShouldBeEscaped() {
-		final String plainText = "<>'\"&";
+		final String plainText = "<>\"&";
 		final String actual = StringHelper.htmlEncode(plainText);
-		final String expected = "&lt;&gt;&apos;&quot;&amp;";
+		final String expected = "&lt;&gt;&quot;&amp;";
 		assertEquals(expected, actual);
 	}
 
@@ -457,9 +457,9 @@ public class StringHelperTestCase extends TestCase {
 	}
 
 	public void testHtmlDecodeEntities() {
-		final String plainText = "&lt;&gt;&apos;&quot;&amp;";
+		final String plainText = "&lt;&gt;&quot;&amp;";
 		final String actual = StringHelper.htmlDecode(plainText);
-		final String expected = "<>'\"&";
+		final String expected = "<>\"&";
 		assertEquals(expected, actual);
 	}
 }
