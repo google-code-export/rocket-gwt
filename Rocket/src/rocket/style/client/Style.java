@@ -199,4 +199,33 @@ abstract public class Style extends AbstractMap {
 	public String toString() {
 		return this.getCssText();
 	}
+
+	/**
+	 * Helper which removes the decorating url, brackets and quotes from a
+	 * string returning just the url.
+	 * 
+	 * @param value
+	 * @return
+	 */
+	static String getUrl(final String value) {
+		String url = value;
+		if (null != url) {
+			int first = "url(".length();
+			int last = url.length() - 1 - 1;
+			if (url.charAt(first) == '\'') {
+				first++;
+			}
+			if (url.charAt(first) == '"') {
+				first++;
+			}
+			if (url.charAt(last) == '\'') {
+				last--;
+			}
+			if (url.charAt(last) == '"') {
+				last--;
+			}
+			url = url.substring(first, last + 1);
+		}
+		return url;
+	}
 }

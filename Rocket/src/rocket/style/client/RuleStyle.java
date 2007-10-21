@@ -15,8 +15,11 @@
  */
 package rocket.style.client;
 
+import rocket.style.client.support.RuleStyleSupport;
+import rocket.style.client.support.StyleSupport;
 import rocket.util.client.ObjectHelper;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
@@ -26,6 +29,12 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 class RuleStyle extends Style {
 
+	static private final StyleSupport support = (StyleSupport) GWT.create( RuleStyleSupport.class);
+
+	static protected StyleSupport getSupport() {
+		return RuleStyle.support;
+	}
+	
 	final public String getCssText() {
 		return ObjectHelper.getString(this.getStyle(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
 	}
@@ -44,23 +53,23 @@ class RuleStyle extends Style {
 	 * @return
 	 */
 	protected JavaScriptObject getStyle() {
-		return ObjectHelper.getObject(this.getRule().getRule(), "style");
+		return ObjectHelper.getObject(this.getRule().getNativeRule(), "style");
 	}
 
 	public String getValue(final String propertyName) {
-		return StyleHelper.getRuleStyleProperty(this.getRule().getRule(), propertyName);
+		return RuleStyle.getSupport().get(this.getRule().getNativeRule(), propertyName);
 	}
 
 	protected void putValue(final String propertyName, final String propertyValue) {
-		StyleHelper.setRuleStyleProperty(this.getRule().getRule(), propertyName, propertyValue);
+		RuleStyle.getSupport().set(this.getRule().getNativeRule(), propertyName, propertyValue);
 	}
 
 	protected void removeValue(final String propertyName) {
-		StyleHelper.removeRuleStyleProperty(this.getRule().getRule(), propertyName);
+		RuleStyle.getSupport().remove(this.getRule().getNativeRule(), propertyName);
 	}
 
 	protected String[] getPropertyNames() {
-		return StyleHelper.getRuleStylePropertyNames(this.getRule().getRule());
+		return StyleSheet.getRuleStylePropertyNames(this.getRule().getNativeRule());
 	}
 
 	/**

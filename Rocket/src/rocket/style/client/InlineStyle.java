@@ -17,11 +17,14 @@ package rocket.style.client;
 
 import java.util.Map;
 
+import rocket.style.client.support.InlineStyleSupport;
+import rocket.style.client.support.StyleSupport;
 import rocket.util.client.Colour;
 import rocket.util.client.Destroyable;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
 
@@ -32,6 +35,12 @@ import com.google.gwt.user.client.Element;
  */
 public class InlineStyle extends Style implements Destroyable {
 
+	static private final StyleSupport support = (StyleSupport) GWT.create( InlineStyleSupport.class);
+
+	static protected StyleSupport getSupport() {
+		return InlineStyle.support;
+	}
+	
 	/**
 	 * Factory method which returns a view of all the inline style object for
 	 * the given element. The Style object returned must be destroyed when no
@@ -54,7 +63,7 @@ public class InlineStyle extends Style implements Destroyable {
 	 * @return
 	 */
 	static public String getString(final Element element, final String name) {
-		return StyleHelper.getSupport().getInlineStyleProperty(element, name);
+		return InlineStyle.getSupport().get(element, name);
 	}
 
 	public static Colour getColour(final Element element, final String propertyName) {
@@ -70,7 +79,7 @@ public class InlineStyle extends Style implements Destroyable {
 		double value = defaultValue;
 		final String string = InlineStyle.getString(element, propertyName);
 		if (false == StringHelper.isNullOrEmpty(string)) {
-			value = StyleHelper.convertValue(string, unit);
+			value = CssUnit.convertValue(string, unit);
 		}
 		return value;
 	}
@@ -79,7 +88,7 @@ public class InlineStyle extends Style implements Destroyable {
 		int value = defaultValue;
 		final String string = InlineStyle.getString(element, propertyName);
 		if (false == StringHelper.isNullOrEmpty(string)) {
-			value = (int) StyleHelper.convertValue(string, unit);
+			value = (int) CssUnit.convertValue(string, unit);
 		}
 		return value;
 	}
@@ -87,7 +96,7 @@ public class InlineStyle extends Style implements Destroyable {
 	public static String getUrl(final Element element, final String propertyName) {
 		String string = InlineStyle.getString(element, propertyName);
 		if (false == StringHelper.isNullOrEmpty(string)) {
-			string = StyleHelper.getUrl(string);
+			string = Style.getUrl(string);
 		}
 		return string;
 	}
@@ -101,13 +110,13 @@ public class InlineStyle extends Style implements Destroyable {
 	 */
 	static public void setString(final Element element, final String propertyName, final String propertyValue) {
 		if( null != propertyValue ){
-		StyleHelper.getSupport().setInlineStyleProperty(element, propertyName, propertyValue);
+			InlineStyle.getSupport().set(element, propertyName, propertyValue);
 		}
 	}
 
 	static public void setColour(final Element element, final String propertyName, final Colour colour) {
 		if( null != colour ){
-		InlineStyle.setString(element, propertyName, colour.toCssColour());
+			InlineStyle.setString(element, propertyName, colour.toCssColour());
 		}
 	}
 
@@ -119,7 +128,7 @@ public class InlineStyle extends Style implements Destroyable {
 	}
 
 	static public void setInteger(final Element element, final String propertyName, final int value, final CssUnit unit) {
-		InlineStyle.setString(element, propertyName, "" + value + unit.getValue());
+		InlineStyle.setString(element, propertyName, "" + value + unit.getSuffix());
 	}
 
 	static public void setUrl(final Element element, final String propertyName, final String url) {
@@ -136,15 +145,15 @@ public class InlineStyle extends Style implements Destroyable {
 	 * @param propertyName
 	 */
 	static public void remove(final Element element, final String propertyName) {
-		StyleHelper.getSupport().removeInlineStyleProperty(element, propertyName);
+		InlineStyle.getSupport().remove(element, propertyName);
 	}
 
 	final public String getCssText() {
-		return ObjectHelper.getString(this.getStyle(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
+		return InlineStyle.getSupport().get( this.getElement(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME );
 	}
 
 	final public void setCssText(final String cssText) {
-		ObjectHelper.setString(this.getStyle(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME, cssText);
+		InlineStyle.getSupport().set( this.getElement(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME, cssText );
 	}
 
 	/**
@@ -157,8 +166,7 @@ public class InlineStyle extends Style implements Destroyable {
 	}
 
 	public int size() {
-		final JavaScriptObject style = ObjectHelper.getObject(this.getElement(), "style");
-		return ObjectHelper.getPropertyCount(style);
+		return ObjectHelper.getPropertyCount( this.getStyle() );
 	}
 
 	public String getValue(String propertyName) {

@@ -15,9 +15,12 @@
  */
 package rocket.style.client;
 
+import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
+
 /**
  * This enum represents each of the possible CssUnits that may be applied to any
- * style property value.
+ * style property suffix.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -99,10 +102,10 @@ public class CssUnit {
 		return unit;
 	}
 
-	protected CssUnit(final String value, final float pixels) {
+	protected CssUnit(final String suffix, final float pixels) {
 		super();
 
-		this.setValue(value);
+		this.setSuffix(suffix);
 		this.setPixels(pixels);
 	}
 
@@ -128,20 +131,20 @@ public class CssUnit {
 	}
 
 	protected boolean equals(final String string) {
-		return this.getValue().equalsIgnoreCase(string);
+		return this.getSuffix().equalsIgnoreCase(string);
 	}
 
 	/**
 	 * The string abbreviation for this unit
 	 */
-	private String value;
+	private String suffix;
 
-	public String getValue() {
-		return this.value;
+	public String getSuffix() {
+		return this.suffix;
 	}
 
-	protected void setValue(final String value) {
-		this.value = value;
+	protected void setSuffix(final String suffix) {
+		this.suffix = suffix;
 	}
 
 	/**
@@ -152,7 +155,7 @@ public class CssUnit {
 
 	float getPixels() {
 		if (Float.isNaN(this.pixels)) {
-			throw new UnsupportedOperationException("Unable to convert to/from this unit.");
+			throw new UnsupportedOperationException("Unable to convert to/from this unit suffix[" + this.suffix + "]");
 		}
 		return pixels;
 	}
@@ -162,6 +165,84 @@ public class CssUnit {
 	}
 
 	public String toString() {
-		return this.value;
+		return this.suffix;
+	}
+
+	/**
+	 * Extracts the unit portion as a CssUnit instance given a length.
+	 * 
+	 * @param value
+	 *            If value is empty or null null will be returned.
+	 * @return
+	 */
+	static public CssUnit getUnit(final String value) {
+		CssUnit unit = NONE;
+		while (true) {
+			// defensive test.
+			if (StringHelper.isNullOrEmpty(value)) {
+				break;
+			}
+	
+			if (value.endsWith("%")) {
+				unit = PERCENTAGE;
+				break;
+			}
+	
+			final int valueLength = value.length();
+			if (valueLength < 3) {
+				unit = NONE;
+				break;
+			}
+			// if the third last char is not a number then value isnt
+			// number-unit.
+			final char thirdLastChar = value.charAt(valueLength - 3);
+			if (false == Character.isDigit(thirdLastChar)) {
+				unit = NONE;
+				break;
+			}
+	
+			unit = toCssUnit(value.substring(valueLength - 2));
+			break;
+		}
+		return unit;
+	}
+
+	/**
+	 * Attempts to translate a length with units into another unit.
+	 * 
+	 * Relative units such as em/ex and percentage will fail and result in a
+	 * {@link java.lang.UnsupportedOperationException} being thrown.
+	 * 
+	 * @param value
+	 * @param targetUnit
+	 * @return
+	 */
+	static public float convertValue(final String value, final CssUnit targetUnit) {
+		StringHelper.checkNotEmpty("parameter:value", value);
+		ObjectHelper.checkNotNull("parameter:targetUnit", targetUnit);
+	
+		float length = 0;
+		while (true) {
+			if (value.equals("0") || value.equals("auto")) {
+				break;
+			}
+	
+			final CssUnit unit = CssUnit.getUnit(value);
+			final String numberString = value.substring(0, value.length() - unit.getSuffix().length());
+	
+			// convert value into a number
+			length = Float.parseFloat(numberString);
+	
+			// if the unit and target unit are the same do nothing...
+			if (unit == targetUnit) {
+				break;
+			}
+	
+			length = unit.toPixels(length);
+			length = targetUnit.fromPixels(length);
+			break;
+		}
+	
+		return length;
 	}
 }

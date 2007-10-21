@@ -38,7 +38,7 @@ public class Rule {
 	public String getSelector() {
 		String selector = this.selector;
 		if (this.hasRuleList()) {
-			final JavaScriptObject rule = this.getRule();
+			final JavaScriptObject rule = this.getNativeRule();
 			selector = ObjectHelper.getString(rule, StyleConstants.SELECTOR_TEXT_PROPERTY_NAME);
 		}
 		return selector;
@@ -51,7 +51,7 @@ public class Rule {
 			// remove this rule from its parent and reinsert it at the same
 			// spot.
 			final RuleList ruleList = this.getRuleList();
-			final JavaScriptObject styleSheet = ruleList.getStyleSheet().getStyleSheet();
+			final JavaScriptObject styleSheet = ruleList.getStyleSheet().getNativeStyleSheet();
 			final int index = this.getIndex();
 
 			final RuleStyle style = (RuleStyle) this.getStyle();
@@ -59,8 +59,8 @@ public class Rule {
 			final String styleText = ObjectHelper.getString(nativeStyle, StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
 
 			// remove and reinser the rule...
-			StyleHelper.removeRule(styleSheet, index);
-			StyleHelper.insertRule(styleSheet, index, selector, styleText);
+			StyleSheet.removeRule(styleSheet, index);
+			StyleSheet.insertRule(styleSheet, index, selector, styleText);
 		}
 		this.selector = selector;
 	}
@@ -97,7 +97,7 @@ public class Rule {
 	 * 
 	 * @return
 	 */
-	protected JavaScriptObject getRule() {
+	protected JavaScriptObject getNativeRule() {
 		return ObjectHelper.getObject(this.getRuleList().getRulesCollection(), this.getIndex());
 	}
 

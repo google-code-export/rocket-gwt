@@ -76,7 +76,7 @@ public class StylePropertyValue {
 
 	public double getDouble(final CssUnit unit) {
 		final String value = this.getString();
-		return StyleHelper.convertValue(value, unit);
+		return CssUnit.convertValue(value, unit);
 	}
 
 	public void setDouble(final double doubleValue, final CssUnit unit) {
@@ -85,18 +85,18 @@ public class StylePropertyValue {
 		// drop any trailing decimal 0's.
 		final String stringForm = Math.round(doubleValue) == doubleValue ? String.valueOf((int) doubleValue) : String.valueOf(doubleValue);
 
-		this.setString(stringForm + unit.getValue());
+		this.setString(stringForm + unit.getSuffix());
 	}
 
 	public int getInteger(final CssUnit unit) {
 		final String value = this.getString();
-		return Math.round(StyleHelper.convertValue(value, unit));
+		return Math.round(CssUnit.convertValue(value, unit));
 	}
 
 	public void setInteger(final int intValue, final CssUnit unit) {
 		ObjectHelper.checkNotNull("parameter:unit", unit);
 
-		this.setString(String.valueOf(intValue) + unit.getValue());
+		this.setString(String.valueOf(intValue) + unit.getSuffix());
 	}
 
 	/**
@@ -114,11 +114,11 @@ public class StylePropertyValue {
 	}
 
 	public CssUnit getUnit() {
-		return StyleHelper.getUnit(this.getString());
+		return CssUnit.getUnit(this.getString());
 	}
 
 	public String getUrl() {
-		return StyleHelper.getUrl(this.getString());
+		return Style.getUrl(this.getString());
 	}
 
 	public void setUrl(final String url) {

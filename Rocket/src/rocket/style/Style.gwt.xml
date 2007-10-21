@@ -1,26 +1,116 @@
 <module>
-	<replace-with class="rocket.style.client.support.InternetExplorer6StyleSupport">
-		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+	<!--
+	*** StyleSheet support classes **********************************************************************
+	-->
+	<replace-with class="rocket.style.client.support.InternetExplorerStyleSheetSupport">
+		<when-type-is class="rocket.style.client.support.StyleSheetSupport"/>
 		<when-property-is name="user.agent" value="ie6"/>
 	</replace-with>
 	
-	<replace-with class="rocket.style.client.support.FireFoxStyleSupport">
-		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+	<replace-with class="rocket.style.client.support.FireFoxStyleSheetSupport">
+		<when-type-is class="rocket.style.client.support.StyleSheetSupport"/>
 		<when-property-is name="user.agent" value="gecko"/>
 	</replace-with>
 	
-	<replace-with class="rocket.style.client.support.FireFoxStyleSupport">
-		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+	<replace-with class="rocket.style.client.support.FireFoxStyleSheetSupport">
+		<when-type-is class="rocket.style.client.support.StyleSheetSupport"/>
 		<when-property-is name="user.agent" value="gecko1_8"/>
 	</replace-with>
 	
-	<replace-with class="rocket.style.client.support.OperaStyleSupport">
-		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+	<replace-with class="rocket.style.client.support.OperaStyleSheetSupport">
+		<when-type-is class="rocket.style.client.support.StyleSheetSupport"/>
 		<when-property-is name="user.agent" value="opera"/>
 	</replace-with>
 
-	<replace-with class="rocket.style.client.support.SafariStyleSupport">
-		<when-type-is class="rocket.style.client.support.StyleSupport"/>
+	<replace-with class="rocket.style.client.support.SafariStyleSheetSupport">
+		<when-type-is class="rocket.style.client.support.StyleSheetSupport"/>
 		<when-property-is name="user.agent" value="safari"/>
 	</replace-with>
+	
+	
+	<!--
+	*** InlineStyle support classes **********************************************************************
+	-->
+	<replace-with class="rocket.style.client.support.InternetExplorerInlineStyleSupport">
+		<when-type-is class="rocket.style.client.support.InlineStyleSupport"/>
+		<when-property-is name="user.agent" value="ie6"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.FireFoxInlineStyleSupport">
+		<when-type-is class="rocket.style.client.support.InlineStyleSupport"/>
+		<when-property-is name="user.agent" value="gecko"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.FireFoxInlineStyleSupport">
+		<when-type-is class="rocket.style.client.support.InlineStyleSupport"/>
+		<when-property-is name="user.agent" value="gecko1_8"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.OperaInlineStyleSupport">
+		<when-type-is class="rocket.style.client.support.InlineStyleSupport"/>
+		<when-property-is name="user.agent" value="opera"/>
+	</replace-with>
+
+	<replace-with class="rocket.style.client.support.SafariInlineStyleSupport">
+		<when-type-is class="rocket.style.client.support.InlineStyleSupport"/>
+		<when-property-is name="user.agent" value="safari"/>
+	</replace-with>
+		
+	<!--
+	*** ComputedStyle support classes **********************************************************************
+	-->
+	<replace-with class="rocket.style.client.support.InternetExplorerComputedStyleSupport">
+		<when-type-is class="rocket.style.client.support.ComputedStyleSupport"/>
+		<when-property-is name="user.agent" value="ie6"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.FireFoxComputedStyleSupport">
+		<when-type-is class="rocket.style.client.support.ComputedStyleSupport"/>
+		<when-property-is name="user.agent" value="gecko"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.FireFoxComputedStyleSupport">
+		<when-type-is class="rocket.style.client.support.ComputedStyleSupport"/>
+		<when-property-is name="user.agent" value="gecko1_8"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.OperaComputedStyleSupport">
+		<when-type-is class="rocket.style.client.support.ComputedStyleSupport"/>
+		<when-property-is name="user.agent" value="opera"/>
+	</replace-with>
+
+	<replace-with class="rocket.style.client.support.SafariComputedStyleSupport">
+		<when-type-is class="rocket.style.client.support.ComputedStyleSupport"/>
+		<when-property-is name="user.agent" value="safari"/>
+	</replace-with>
+		
+
+	<!--
+	*** RuleStyle support classes **********************************************************************
+	-->
+	<replace-with class="rocket.style.client.support.InternetExplorerRuleStyleSupport">
+		<when-type-is class="rocket.style.client.support.RuleStyleSupport"/>
+		<when-property-is name="user.agent" value="ie6"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.FireFoxRuleStyleSupport">
+		<when-type-is class="rocket.style.client.support.RuleStyleSupport"/>
+		<when-property-is name="user.agent" value="gecko"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.FireFoxRuleStyleSupport">
+		<when-type-is class="rocket.style.client.support.RuleStyleSupport"/>
+		<when-property-is name="user.agent" value="gecko1_8"/>
+	</replace-with>
+	
+	<replace-with class="rocket.style.client.support.OperaRuleStyleSupport">
+		<when-type-is class="rocket.style.client.support.RuleStyleSupport"/>
+		<when-property-is name="user.agent" value="opera"/>
+	</replace-with>
+
+	<replace-with class="rocket.style.client.support.SafariRuleStyleSupport">
+		<when-type-is class="rocket.style.client.support.RuleStyleSupport"/>
+		<when-property-is name="user.agent" value="safari"/>
+	</replace-with>
+		
 </module>

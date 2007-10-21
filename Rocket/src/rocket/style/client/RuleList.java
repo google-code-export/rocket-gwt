@@ -58,13 +58,13 @@ class RuleList extends AbstractList {
 	 * @return
 	 */
 	protected JavaScriptObject getRulesCollection() {
-		final JavaScriptObject styleSheet = this.getStyleSheet().getStyleSheet();
+		final JavaScriptObject styleSheet = this.getStyleSheet().getNativeStyleSheet();
 		if (false == this.isAlreadyNormalized()) {
-			StyleHelper.normalize(styleSheet);
+			StyleSheet.normalize(styleSheet);
 			this.setAlreadyNormalized(true);
 		}
 
-		final JavaScriptObject rulesCollection = StyleHelper.getRules(styleSheet);
+		final JavaScriptObject rulesCollection = StyleSheet.getRules(styleSheet);
 		return rulesCollection;
 	}
 
@@ -158,11 +158,11 @@ class RuleList extends AbstractList {
 		final Rule rule = (Rule) newRule;
 		this.checkNotAlreadyAttached(rule);
 
-		final JavaScriptObject styleSheet = this.getStyleSheet().getStyleSheet();
 		final String selector = rule.getSelector();
 		final String style = "";
 
-		StyleHelper.addRule(styleSheet, selector, style);
+		final JavaScriptObject styleSheet = this.getStyleSheet().getNativeStyleSheet();
+		StyleSheet.addRule(styleSheet, selector, style);
 	}
 
 	public void add(final int index, final Object newRule) {
@@ -196,12 +196,12 @@ class RuleList extends AbstractList {
 	protected void insertRule(final int index, final Rule rule) {
 		this.checkNotAlreadyAttached(rule);
 
-		final JavaScriptObject styleSheet = this.getStyleSheet().getStyleSheet();
+		final JavaScriptObject styleSheet = this.getStyleSheet().getNativeStyleSheet();
 		final String selector = rule.getSelector();
 		final RuleStyle ruleStyle = (RuleStyle) rule.getStyle();
 		final String style = ruleStyle.getCssText();
 
-		StyleHelper.insertRule(styleSheet, index, selector, style);
+		StyleSheet.insertRule(styleSheet, index, selector, style);
 	}
 
 	public Object set(final int index, final Object object) {
@@ -236,10 +236,10 @@ class RuleList extends AbstractList {
 		ObjectHelper.checkNotNull("parameter:rule", rule);
 
 		if (rule.hasRuleList()) {
-			final JavaScriptObject styleSheet = this.getStyleSheet().getStyleSheet();
+			final JavaScriptObject styleSheet = this.getStyleSheet().getNativeStyleSheet();
 			final int index = rule.getIndex();
 
-			StyleHelper.removeRule(styleSheet, index);
+			StyleSheet.removeRule(styleSheet, index);
 			rule.clearRule();
 		}
 	}

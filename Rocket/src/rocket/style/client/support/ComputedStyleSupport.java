@@ -15,11 +15,11 @@
  */
 package rocket.style.client.support;
 
-import com.google.gwt.user.client.Window;
 
-abstract public class OperaStyleSupport extends StyleSupport{
-	
-	protected String getUserSelectPropertyName(){
-		throw new UnsupportedOperationException("getUserSelectPropertyName");
-	}
+/**
+ * Tag used by the deferred binding system and passed as a class literal to GWT.create 
+ * This type is not actually referenced in actual code.
+ * @author Miroslav Pokorny
+ */
+public class ComputedStyleSupport {
 }
