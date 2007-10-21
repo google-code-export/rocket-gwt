@@ -715,6 +715,31 @@ public class ObjectHelper extends SystemHelper {
 	 return index;    
 	 }-*/;
 
+	/**
+	 * Builds an array containing the names of all the properties from the given java script object.
+	 * @param object
+	 * @return
+	 */
+	public static String[] getPropertyNames( final JavaScriptObject object ){
+		final JavaScriptObject namesArray = getPropertyNames0( object );
+		final int count = ObjectHelper.getPropertyCount( namesArray );
+		final String[] strings = new String[ count ];
+		for( int i = 0; i < count; i++ ){
+			strings[ i ] = ObjectHelper.getString( namesArray, i );
+		}
+		return strings;
+	}
+	
+	native static private JavaScriptObject getPropertyNames0( final JavaScriptObject object )/*-{
+		var names = new Array();			
+		
+		for( name in object ){
+			names.push( name );
+		}
+		
+		return names;
+	}-*/;
+	
 	protected ObjectHelper() {
 	}
 }
