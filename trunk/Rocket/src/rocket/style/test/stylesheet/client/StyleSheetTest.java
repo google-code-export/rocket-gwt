@@ -11,7 +11,6 @@ import rocket.style.client.CssUnit;
 import rocket.style.client.Rule;
 import rocket.style.client.Style;
 import rocket.style.client.StyleConstants;
-import rocket.style.client.StyleHelper;
 import rocket.style.client.StylePropertyValue;
 import rocket.style.client.StyleSheet;
 import rocket.testing.client.Test;
@@ -35,36 +34,29 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * This test creates a number of buttons which run a set of related tests.
  * 
- * @author Miroslav Pokorny (mP)
+ * @author Miroslav Pokorny (mP) 
  */
 public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
-	public void onModuleLoad() {
-		this.createTestLabels();
-		this.addButtons();
-	}
-
 	final static int STYLE_SHEET_COUNT = 1;
 
-	final static String APPLE_TEXT = "This area is styled with the \"apple\" class...";
-
+	final static String APPLE_TEXT = "apple";
 	final static int APPLE_RULE_INDEX = 3;
-
 	final static String APPLE_CLASS_NAME = "apple";
+	final static String APPLE_IMAGE_URL = "apple.png";
 
-	final static String BANANA_TEXT = "This area is styled with the \"banana\" class...";
+	final static int LEMON_RULE_INDEX = 4;
+	final static String LEMON_TEXT = "lemon";
+	final static String LEMON_CLASS_NAME = "lemon";
+	final static String LEMON_IMAGE_URL = "lemon.png";
 
-	final static int BANANA_RULE_INDEX = 4;
-
-	final static String BANANA_CLASS_NAME = "banana";
-
-	final static String CARROT_TEXT = "This area is styled with the \"carrot\" class...";
-
-	final static String CARROT_CLASS_NAME = "carrot";
-
+	final static String CAPSICUM_TEXT = "capsicum";
+	final static String CAPSICUM_CLASS_NAME = "capsicum";
+	final static String CAPSICUM_IMAGE_URL = "capsicum.png";
+	
 	/**
 	 * The initial stylesheet contains three rules
-	 * (div/body/button/apple/reverseApple).
+	 * (div/body/button/apple/apple).
 	 */
 	final static int INITIAL_RULE_COUNT = APPLE_RULE_INDEX + 1;
 
@@ -84,12 +76,17 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 	final String FONT_SIZE_VALUE = "40px";
 
+	public void onModuleLoad() {
+		this.createTestLabels();
+		this.addButtons();
+	}
+	
 	protected void createTestLabels() {
 		final RootPanel rootPanel = RootPanel.get();
 
-		rootPanel.add(this.createLabel(APPLE_TEXT, APPLE_CLASS_NAME));
-		rootPanel.add(this.createLabel(BANANA_TEXT, BANANA_CLASS_NAME));
-		rootPanel.add(this.createLabel(CARROT_TEXT, CARROT_CLASS_NAME));
+		rootPanel.add(this.createLabel(APPLE_TEXT, APPLE_CLASS_NAME, APPLE_IMAGE_URL ));
+		rootPanel.add(this.createLabel(LEMON_TEXT, LEMON_CLASS_NAME, LEMON_IMAGE_URL ));
+		rootPanel.add(this.createLabel(CAPSICUM_TEXT, CAPSICUM_CLASS_NAME, CAPSICUM_IMAGE_URL ));
 	}
 
 	/**
@@ -100,9 +97,10 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	 * @param styleName
 	 * @return
 	 */
-	protected Widget createLabel(final String text, final String styleName) {
+	protected Widget createLabel(final String text, final String styleName, final String backgroundImage ) {
 		StringHelper.checkNotEmpty("parameter:text", text);
 		StringHelper.checkNotEmpty("parameter:styleName", styleName);
+		StringHelper.checkNotEmpty("parameter:backgroundImage", backgroundImage);
 
 		final Label label = new Label(text);
 		label.setStyleName(styleName);
@@ -110,6 +108,10 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, "borderStyle", "dotted");
 		DOM.setStyleAttribute(element, "borderWidth", "1px");
 		DOM.setStyleAttribute(element, "borderColor", "black");
+		DOM.setStyleAttribute(element, "backgroundImage", "url('" + backgroundImage + "')");
+		DOM.setStyleAttribute(element, "backgroundRepeat", "no-repeat");
+		DOM.setStyleAttribute(element, "width", "95%");
+		DOM.setStyleAttribute(element, "height", "100px");
 		return label;
 	}
 
@@ -315,32 +317,32 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected void testGetStyleSheetList() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		Test.assertEquals("StyleSheets size", 1, styleSheets.size());
 	}
 
 	protected void testStyleSheetListCached() {
-		final List first = StyleHelper.getStyleSheets();
-		final List second = StyleHelper.getStyleSheets();
+		final List first = StyleSheet.getStyleSheets();
+		final List second = StyleSheet.getStyleSheets();
 		Test.assertSame("StyleSheetsList cached", first, second);
 	}
 
 	protected void testStyleSheetListSize() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		final int expected = 1;
 		final int actual = styleSheets.size();
 		Test.assertEquals("StyleSheets List", actual, expected);
 	}
 
 	protected void testStyleSheetListIsEmpty() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		final boolean expected = false;
 		final boolean actual = styleSheets.isEmpty();
 		Test.assertEquals("empty test", actual, expected);
 	}
 
 	protected void testStyleSheetListAddObject() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		try {
 			styleSheets.add(null);
 			Test.fail("StyleSheets.add(Object) should have thrown an exception...");
@@ -349,7 +351,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected void testStyleSheetListAddIntObject() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		try {
 			styleSheets.add(0, null);
 			Test.fail("StyleSheets.add(int,Object) should have thrown an exception...");
@@ -358,20 +360,20 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected void testStyleSheetListGet() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		final Object rule = styleSheets.get(0);
 		Test.assertNotNull(rule);
 	}
 
 	protected void testStyleSheetListRepeatedGet() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		final Object firstRule = styleSheets.get(0);
 		final Object secondRule = styleSheets.get(0);
 		Test.assertSame(firstRule, secondRule);
 	}
 
 	protected void testStyleSheetListGetWithInvalidIndex() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		try {
 			styleSheets.get(100);
 			Test.fail("StyleSheets.get(invalidIndex) should have thrown an exception...");
@@ -380,7 +382,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected void testStyleSheetListSet() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		try {
 			styleSheets.set(0, null);
 			Test.fail("StyleSheets.set(int,StyleSheet) should have thrown an exception...");
@@ -389,7 +391,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected void testStyleSheetListRemoveInt() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		try {
 			styleSheets.remove(0);
 			Test.fail("StyleSheets.remove(int) should have thrown an exception...");
@@ -398,7 +400,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected void testStyleSheetListRemoveObject() {
-		final List styleSheets = StyleHelper.getStyleSheets();
+		final List styleSheets = StyleSheet.getStyleSheets();
 		try {
 			final Object styleSheet = styleSheets.get(0);
 			styleSheets.remove(styleSheet);
@@ -427,7 +429,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected void testStyleSheetGetRules() {
-		final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
+		final StyleSheet styleSheet = (StyleSheet) StyleSheet.getStyleSheets().get(0);
 		final List rules = styleSheet.getRules();
 		Test.assertNotNull(rules);
 	}
@@ -600,21 +602,21 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		final List rules = this.getRules();
 
 		final Rule rule = new Rule();
-		rule.setSelector("." + BANANA_CLASS_NAME);
+		rule.setSelector("." + LEMON_CLASS_NAME);
 		rules.add(rule);
 
 		Test.assertEquals("new rules count", rules.size(), INITIAL_RULE_COUNT + 1);
 
-		// verify that it was appended by checking bananaRules index.
+		// verify that it was appended by checking lemonRules index.
 		final int newRuleIndex = rules.indexOf(rule);
-		PrimitiveHelper.checkEquals("bananaRule indexOf ", INITIAL_RULE_COUNT, newRuleIndex);
+		PrimitiveHelper.checkEquals("lemonRule indexOf ", INITIAL_RULE_COUNT, newRuleIndex);
 
 		// update the style portion of the rule...
 		final Style style = (Style) rule.getStyle();
 		style.setCssText("color: orange; background-color: purple;");
 
-		if (false == Window.confirm("Does the banana area now have orange text on a purple background")) {
-			Test.fail("The banana area does not have orange text on a purple background.");
+		if (false == Window.confirm("Does the lemon area now have orange text on a purple background")) {
+			Test.fail("The lemon area does not have orange text on a purple background.");
 		}
 
 		final boolean removed = rules.remove(rule);
@@ -623,12 +625,12 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		// test that the rule size has returned back to normal.
 		Test.assertEquals("rules", rules.size(), INITIAL_RULE_COUNT);
 
-		// verify that it was appended by checking bananaRules index.
+		// verify that it was appended by checking lemonRules index.
 		final int indexOfRemovedRule = rules.indexOf(rule);
-		Test.assertEquals("indexOf( bananaRule ) should be -1 after removing the newRule", indexOfRemovedRule, -1);
+		Test.assertEquals("indexOf( lemonRule ) should be -1 after removing the newRule", indexOfRemovedRule, -1);
 
-		if (false == Window.confirm("Has banana area has reverted back to black text on a white background (inherited from body)?")) {
-			Test.fail("The banana area did not revert back to black text on a white background after removing the newly added rule.");
+		if (false == Window.confirm("Has lemon area has reverted back to black text on a white background (inherited from body)?")) {
+			Test.fail("The lemon area did not revert back to black text on a white background after removing the newly added rule.");
 		}
 	}
 
@@ -673,7 +675,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	protected void testSelectorSet() {
 		final List rules = this.getRules();
 		final Rule rule = (Rule) rules.get(APPLE_RULE_INDEX);
-		rule.setSelector("." + CARROT_CLASS_NAME);
+		rule.setSelector("." + CAPSICUM_CLASS_NAME);
 
 		// rule size shouldnt have changed...
 		Test.assertEquals("rules", rules.size(), INITIAL_RULE_COUNT);
@@ -685,8 +687,8 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		if (false == Window.confirm("Does the apple area have black text on a white background ?\n")) {
 			Test.fail("The apple area does not have black text on white background.");
 		}
-		if (false == Window.confirm("Does the carrot area have green text on a yellow background ?\n")) {
-			Test.fail("The carrot area does not have green text on yellow background.");
+		if (false == Window.confirm("Does the capsicum area have green text on a yellow background ?\n")) {
+			Test.fail("The capsicum area does not have green text on yellow background.");
 		}
 
 		rule.setSelector("." + APPLE_CLASS_NAME);
@@ -694,8 +696,8 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		if (false == Window.confirm("Does the apple area have green text on a yellow background ?\n")) {
 			Test.fail("The apple area does not have green text on yellow background.");
 		}
-		if (false == Window.confirm("Does the carrot area have black text on a white background ?\n")) {
-			Test.fail("The apple carrot does not have black text on white background.");
+		if (false == Window.confirm("Does the capsicum area have black text on a white background ?\n")) {
+			Test.fail("The capsicum area does not have black text on white background.");
 		}
 	}
 
@@ -1192,7 +1194,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		Test.assertNotNull(value);
 
 		final Colour colour = value.getColour();
-		final Colour expectedColour = new Colour(0xffff00);
+		final Colour expectedColour = new Colour(0xffffdd);
 		Test.assertEquals("apple rule style backgroundColour(should be yellow)", colour, expectedColour);
 	}
 
@@ -1224,7 +1226,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected List getRules() {
-		final StyleSheet styleSheet = (StyleSheet) StyleHelper.getStyleSheets().get(0);
+		final StyleSheet styleSheet = (StyleSheet) StyleSheet.getStyleSheets().get(0);
 		return styleSheet.getRules();
 	}
 
