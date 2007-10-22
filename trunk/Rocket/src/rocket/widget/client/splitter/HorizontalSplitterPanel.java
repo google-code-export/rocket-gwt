@@ -96,7 +96,7 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseMove(final MouseMoveEvent event) {
+	protected void onMouseMove(final MouseMoveEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
