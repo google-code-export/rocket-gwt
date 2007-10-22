@@ -53,7 +53,6 @@ class TabListenerCollection {
 		this.getListeners().remove(tabListener);
 	}
 
-	// TODO accept event not TabItem
 	public void fireBeforeTabSelected(final BeforeTabSelectEvent event) {
 		final Iterator listeners = this.getListeners().iterator();
 
