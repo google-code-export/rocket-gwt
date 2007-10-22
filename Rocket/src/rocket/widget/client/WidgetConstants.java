@@ -204,7 +204,7 @@ public class WidgetConstants {
 	/**
 	 * The default text that appears on the previous button
 	 */
-	final static String PAGER_PREVIOUS_BUTTON_TEXT = "Previous";
+	final static String PAGER_PREVIOUS_BUTTON_TEXT = "<< Previous";
 
 	/**
 	 * This style is applied to the previous button
@@ -214,7 +214,7 @@ public class WidgetConstants {
 	/**
 	 * The default text that appears on the next button.
 	 */
-	final static String PAGER_NEXT_BUTTON_TEXT = "Next";
+	final static String PAGER_NEXT_BUTTON_TEXT = "Next >>";
 
 	/**
 	 * This style is applied to the next button
