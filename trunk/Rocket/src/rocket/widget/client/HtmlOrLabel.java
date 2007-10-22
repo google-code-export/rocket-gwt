@@ -20,7 +20,7 @@ import rocket.event.client.FocusEventListener;
 import rocket.event.client.MouseEventListener;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -79,14 +79,14 @@ abstract class HtmlOrLabel extends FocusWidget {
 	}
 
 	public void setWordWrap(boolean wrap) {
-		InlineStyle.setString(getElement(), StyleConstants.WHITE_SPACE, wrap ? "normal" : "nowrap");
+		InlineStyle.setString(getElement(), Css.WHITE_SPACE, wrap ? "normal" : "nowrap");
 	}
 
 	public HorizontalAlignment getHorizontalAligment() {
 		HorizontalAlignment textAlignment = HorizontalAlignment.LEFT;
 
 		while (true) {
-			final String property = ComputedStyle.getString(getElement(), StyleConstants.TEXT_ALIGN);
+			final String property = ComputedStyle.getString(getElement(), Css.TEXT_ALIGN);
 			if (HorizontalAlignment.CENTER.getValue().equals(property)) {
 				textAlignment = HorizontalAlignment.CENTER;
 				break;
@@ -108,7 +108,7 @@ abstract class HtmlOrLabel extends FocusWidget {
 	}
 
 	public void setHorizontalAlignment(final HorizontalAlignment textAligment) {
-		InlineStyle.setString(getElement(), StyleConstants.TEXT_ALIGN, textAligment.getValue());
+		InlineStyle.setString(getElement(), Css.TEXT_ALIGN, textAligment.getValue());
 	}
 
 	public void addFocusEventListener(final FocusEventListener focusEventListener) {

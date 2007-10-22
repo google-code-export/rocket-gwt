@@ -149,11 +149,11 @@ public class InlineStyle extends Style implements Destroyable {
 	}
 
 	final public String getCssText() {
-		return InlineStyle.getSupport().get( this.getElement(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME );
+		return InlineStyle.getSupport().get( this.getElement(), Css.CSS_STYLE_TEXT_PROPERTY_NAME );
 	}
 
 	final public void setCssText(final String cssText) {
-		InlineStyle.getSupport().set( this.getElement(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME, cssText );
+		InlineStyle.getSupport().set( this.getElement(), Css.CSS_STYLE_TEXT_PROPERTY_NAME, cssText );
 	}
 
 	/**

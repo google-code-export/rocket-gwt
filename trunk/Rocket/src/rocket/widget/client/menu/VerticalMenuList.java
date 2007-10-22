@@ -19,7 +19,7 @@ import java.util.Iterator;
 
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.widget.client.DivPanel;
 
 import com.google.gwt.user.client.Element;
@@ -49,9 +49,9 @@ public class VerticalMenuList extends MenuList {
 	protected void open() {
 		final Element element = this.getElement();
 		if (this.isHideable()) {
-			InlineStyle.setInteger(element, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
-			InlineStyle.setString(element, StyleConstants.DISPLAY, "block");
-			InlineStyle.setString(element, StyleConstants.VISIBILITY, "visible");
+			InlineStyle.setInteger(element, Css.Z_INDEX, 1, CssUnit.NONE);
+			InlineStyle.setString(element, Css.DISPLAY, "block");
+			InlineStyle.setString(element, Css.VISIBILITY, "visible");
 		}
 	}
 

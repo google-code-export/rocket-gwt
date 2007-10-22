@@ -29,7 +29,7 @@ import rocket.event.client.MouseUpEvent;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 
@@ -150,19 +150,19 @@ public class ResizablePanel extends CompositePanel {
 		this.getGrid().setWidget(0, 0, widget);
 
 		final Element element = widget.getElement();
-		final String inlineWidth =InlineStyle.getString(element, StyleConstants.WIDTH);
-		final String inlineHeight = InlineStyle.getString(element, StyleConstants.HEIGHT);
+		final String inlineWidth =InlineStyle.getString(element, Css.WIDTH);
+		final String inlineHeight = InlineStyle.getString(element, Css.HEIGHT);
 		ObjectHelper.setString(element, "__width", inlineWidth);
 		ObjectHelper.setString(element, "__height", inlineHeight);
 		
-		final String overflowX = InlineStyle.getString(element, StyleConstants.OVERFLOW_X);
-		final String overflowY = InlineStyle.getString(element, StyleConstants.OVERFLOW_Y);
+		final String overflowX = InlineStyle.getString(element, Css.OVERFLOW_X);
+		final String overflowY = InlineStyle.getString(element, Css.OVERFLOW_Y);
 		ObjectHelper.setString(element, "__overflowX", overflowX);
 		ObjectHelper.setString(element, "__overflowY", overflowY);
 		
 		widget.setWidth("100%");
 		widget.setHeight("100%");
-		InlineStyle.setString(element, StyleConstants.OVERFLOW, "hidden");
+		InlineStyle.setString(element, Css.OVERFLOW, "hidden");
 	}
 
 	public void insert(final Widget widget, final int indexBefore) {
@@ -179,13 +179,13 @@ public class ResizablePanel extends CompositePanel {
 			final Element element = widget.getElement();
 			final String inlineWidth = ObjectHelper.getString(element, "__width");
 			final String inlineHeight = ObjectHelper.getString(element, "__height");
-			InlineStyle.setString(element, StyleConstants.WIDTH, inlineWidth);
-			InlineStyle.setString(element, StyleConstants.HEIGHT, inlineHeight);
+			InlineStyle.setString(element, Css.WIDTH, inlineWidth);
+			InlineStyle.setString(element, Css.HEIGHT, inlineHeight);
 			
 			final String inlineOverflowX = ObjectHelper.getString(element, "__overflowX");
 			final String inlineOverflowY = ObjectHelper.getString(element, "__overflowY");
-			InlineStyle.setString(element, StyleConstants.OVERFLOW_X, inlineOverflowX);
-			InlineStyle.setString(element, StyleConstants.OVERFLOW_Y, inlineOverflowY);
+			InlineStyle.setString(element, Css.OVERFLOW_X, inlineOverflowX);
+			InlineStyle.setString(element, Css.OVERFLOW_Y, inlineOverflowY);
 		}
 
 		return removed;
@@ -219,26 +219,26 @@ public class ResizablePanel extends CompositePanel {
 
 	protected void handleMouseDownEvent(final MouseDownEvent event) {
 		final Element panel = this.getElement();
-		final int panelWidth = ComputedStyle.getInteger(panel, StyleConstants.WIDTH, CssUnit.PX, 0);
-		final int panelHeight = ComputedStyle.getInteger(panel, StyleConstants.HEIGHT, CssUnit.PX, 0);
+		final int panelWidth = ComputedStyle.getInteger(panel, Css.WIDTH, CssUnit.PX, 0);
+		final int panelHeight = ComputedStyle.getInteger(panel, Css.HEIGHT, CssUnit.PX, 0);
 
 		final Hijacker hijacker = new Hijacker(panel);
 
 		// create the dragged ghost...
 		final Element draggedWidget = Dom.cloneElement(panel, true);
 		ObjectHelper.setString(draggedWidget, "className", this.getDraggedWidgetStyle());
-		InlineStyle.setString(draggedWidget, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(draggedWidget, StyleConstants.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(draggedWidget, StyleConstants.TOP, 0, CssUnit.PX);
-		InlineStyle.setInteger(draggedWidget, StyleConstants.Z_INDEX, 10000, CssUnit.NONE);
-		InlineStyle.setString(draggedWidget, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED);
+		InlineStyle.setString(draggedWidget, Css.POSITION, "absolute");
+		InlineStyle.setInteger(draggedWidget, Css.LEFT, 0, CssUnit.PX);
+		InlineStyle.setInteger(draggedWidget, Css.TOP, 0, CssUnit.PX);
+		InlineStyle.setInteger(draggedWidget, Css.Z_INDEX, 10000, CssUnit.NONE);
+		InlineStyle.setString(draggedWidget, Css.USER_SELECT, Css.USER_SELECT_DISABLED);
 
 		final Element parent = hijacker.getParent();
 		final int childIndex = hijacker.getChildIndex();
 
 		// insert a div that will be parent of the panel and the ghost.
 		final Element container = DOM.createDiv();
-		InlineStyle.setString(container, StyleConstants.POSITION, "relative");
+		InlineStyle.setString(container, Css.POSITION, "relative");
 		;
 		DOM.appendChild(container, panel);
 		DOM.insertChild(parent, container, childIndex);
@@ -286,7 +286,7 @@ public class ResizablePanel extends CompositePanel {
 					int newWidth = panelWidth + deltaX;
 
 					newWidth = Math.min(Math.max(newWidth, ResizablePanel.this.getMinimumWidth()), ResizablePanel.this.getMaximumWidth());
-					InlineStyle.setInteger(draggedWidget, StyleConstants.WIDTH, newWidth, CssUnit.PX);
+					InlineStyle.setInteger(draggedWidget, Css.WIDTH, newWidth, CssUnit.PX);
 				}
 
 				if (updateHeight0) {
@@ -294,9 +294,9 @@ public class ResizablePanel extends CompositePanel {
 					int newHeight = panelHeight + deltaY;
 					newHeight = Math.min(Math.max(newHeight, ResizablePanel.this.getMinimumHeight()), ResizablePanel.this
 							.getMaximumHeight());
-					InlineStyle.setInteger(draggedWidget, StyleConstants.HEIGHT, newHeight, CssUnit.PX);
+					InlineStyle.setInteger(draggedWidget, Css.HEIGHT, newHeight, CssUnit.PX);
 				}
-				InlineStyle.setString(draggedWidget, StyleConstants.OVERFLOW, "hidden");
+				InlineStyle.setString(draggedWidget, Css.OVERFLOW, "hidden");
 				event.cancelBubble(true);
 			}
 
@@ -308,25 +308,25 @@ public class ResizablePanel extends CompositePanel {
 
 				while (true) {
 					if (false == ResizablePanel.this.isKeepAspectRatio()) {
-						newWidth = ComputedStyle.getInteger(draggedWidget, StyleConstants.WIDTH, CssUnit.PX, 0);
-						newHeight = ComputedStyle.getInteger(draggedWidget, StyleConstants.HEIGHT, CssUnit.PX, 0);
+						newWidth = ComputedStyle.getInteger(draggedWidget, Css.WIDTH, CssUnit.PX, 0);
+						newHeight = ComputedStyle.getInteger(draggedWidget, Css.HEIGHT, CssUnit.PX, 0);
 						break;
 					}
 
 					if (updateWidth0 && false == updateHeight0) {
 						final float ratio = panelWidth * 1.0f / panelHeight;
-						newWidth = ComputedStyle.getInteger(draggedWidget, StyleConstants.WIDTH, CssUnit.PX, 0);
+						newWidth = ComputedStyle.getInteger(draggedWidget, Css.WIDTH, CssUnit.PX, 0);
 						newHeight = (int) (newWidth * ratio);
 						break;
 					}
 					if (false == updateWidth0 && updateHeight0) {
 						final float ratio = panelHeight * 1.0f / panelWidth;
-						newHeight = ComputedStyle.getInteger(draggedWidget, StyleConstants.HEIGHT, CssUnit.PX, 0);
+						newHeight = ComputedStyle.getInteger(draggedWidget, Css.HEIGHT, CssUnit.PX, 0);
 						newWidth = (int) (newHeight * ratio);
 						break;
 					}
-					newWidth = ComputedStyle.getInteger(draggedWidget, StyleConstants.WIDTH, CssUnit.PX, 0);
-					newHeight = ComputedStyle.getInteger(draggedWidget, StyleConstants.HEIGHT, CssUnit.PX, 0);
+					newWidth = ComputedStyle.getInteger(draggedWidget, Css.WIDTH, CssUnit.PX, 0);
+					newHeight = ComputedStyle.getInteger(draggedWidget, Css.HEIGHT, CssUnit.PX, 0);
 
 					final float originalDiagonalLength = (float) Math.sqrt(panelWidth * panelWidth + panelHeight * panelHeight);
 					final float newDiagonalLength = (float) Math.sqrt(newWidth * newWidth + newHeight * newHeight);

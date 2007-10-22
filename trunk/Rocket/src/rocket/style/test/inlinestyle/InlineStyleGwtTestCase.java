@@ -23,7 +23,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 import rocket.dom.client.Dom;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.style.client.StylePropertyValue;
 
 import com.google.gwt.junit.client.GWTTestCase;
@@ -45,7 +45,7 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
 	}
 
 	public void testSize() {
-		final String propertyName = StyleConstants.OVERFLOW_X;
+		final String propertyName = Css.OVERFLOW_X;
 		final String propertyValue = "scroll";
 
 		final Element element = this.createElementAndAddToDocument();
@@ -240,7 +240,7 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
 		final Map map = InlineStyle.get(element);
 		TestCase.assertNotNull(element);
 
-		final String propertyName = StyleConstants.MARGIN_LEFT;
+		final String propertyName = Css.MARGIN_LEFT;
 		final String propertyValue = "12px";
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
@@ -264,7 +264,7 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
 		final Map map = InlineStyle.get(element);
 		TestCase.assertNotNull(element);
 
-		final String propertyName = StyleConstants.MARGIN_LEFT;
+		final String propertyName = Css.MARGIN_LEFT;
 		final String propertyValue = "12px";
 
 		final StylePropertyValue value = new StylePropertyValue();
@@ -283,7 +283,7 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
 		final Map map = InlineStyle.get(element);
 		TestCase.assertNotNull(element);
 
-		final String propertyName = StyleConstants.MARGIN_LEFT;
+		final String propertyName = Css.MARGIN_LEFT;
 		final String propertyValue = "123px";
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
@@ -297,7 +297,7 @@ public class InlineStyleGwtTestCase extends GWTTestCase {
 		final Map map = InlineStyle.get(element);
 		TestCase.assertNotNull(element);
 
-		final String propertyName = StyleConstants.MARGIN_LEFT;
+		final String propertyName = Css.MARGIN_LEFT;
 		final StylePropertyValue value = (StylePropertyValue) map.remove(propertyName);
 		TestCase.assertNull(value);
 	}

@@ -18,7 +18,7 @@ package rocket.widget.test.slider.client;
 import rocket.event.client.ChangeEvent;
 import rocket.event.client.ChangeEventListener;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.StackTrace;
 import rocket.widget.client.Image;
 import rocket.widget.client.slider.FloatingSlider;
@@ -192,8 +192,8 @@ public class SliderTest implements EntryPoint {
 		final Grid grid = new Grid(rows, columns);
 		
 		final Element gridElement = grid.getElement();
-		InlineStyle.setString( gridElement, StyleConstants.BORDER_COLLAPSE, "collapse" );
-		InlineStyle.setString( gridElement, StyleConstants.BORDER_SPACING, "0" );
+		InlineStyle.setString( gridElement, Css.BORDER_COLLAPSE, "collapse" );
+		InlineStyle.setString( gridElement, Css.BORDER_SPACING, "0" );
 
 		final CellFormatter cellFormatter = grid.getCellFormatter();
 
@@ -205,7 +205,7 @@ public class SliderTest implements EntryPoint {
 				final int green = 224 - c * 4;
 				final int blue = 224 ^ r ^ c;
 				final int rgb = red * 256 * 256 + green * 256 + blue;
-				InlineStyle.setString(element, StyleConstants.BACKGROUND_COLOR,
+				InlineStyle.setString(element, Css.BACKGROUND_COLOR,
 						"#" + Integer.toHexString(rgb));
 			}
 		}

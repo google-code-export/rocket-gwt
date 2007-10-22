@@ -28,7 +28,7 @@ import rocket.event.client.KeyUpEvent;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -128,13 +128,13 @@ abstract public class AutoCompleteTextBox extends TextBox {
 		this.setDropDownList(dropDownList);
 
 		final Element element = dropDownList.getElement();
-		InlineStyle.setInteger(element, StyleConstants.LEFT, left, CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.TOP, top, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.LEFT, left, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.TOP, top, CssUnit.PX);
 
-		final int paddingLeft = ComputedStyle.getInteger(element, StyleConstants.PADDING_LEFT, CssUnit.PX, 0);
-		final int paddingRight = ComputedStyle.getInteger(element, StyleConstants.PADDING_RIGHT, CssUnit.PX, 0);
-		final int borderLeftWidth = ComputedStyle.getInteger(element, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
-		final int borderRightWidth = ComputedStyle.getInteger(element, StyleConstants.BORDER_RIGHT_WIDTH, CssUnit.PX, 0);
+		final int paddingLeft = ComputedStyle.getInteger(element, Css.PADDING_LEFT, CssUnit.PX, 0);
+		final int paddingRight = ComputedStyle.getInteger(element, Css.PADDING_RIGHT, CssUnit.PX, 0);
+		final int borderLeftWidth = ComputedStyle.getInteger(element, Css.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
+		final int borderRightWidth = ComputedStyle.getInteger(element, Css.BORDER_RIGHT_WIDTH, CssUnit.PX, 0);
 
 		final int newWidth = this.getOffsetWidth() - paddingLeft - paddingRight - borderLeftWidth - borderRightWidth;
 

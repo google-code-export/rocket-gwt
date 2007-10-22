@@ -39,7 +39,7 @@ public class Rule {
 		String selector = this.selector;
 		if (this.hasRuleList()) {
 			final JavaScriptObject rule = this.getNativeRule();
-			selector = ObjectHelper.getString(rule, StyleConstants.SELECTOR_TEXT_PROPERTY_NAME);
+			selector = ObjectHelper.getString(rule, Constants.SELECTOR_TEXT_PROPERTY_NAME);
 		}
 		return selector;
 	}
@@ -56,7 +56,7 @@ public class Rule {
 
 			final RuleStyle style = (RuleStyle) this.getStyle();
 			final JavaScriptObject nativeStyle = style.getStyle();
-			final String styleText = ObjectHelper.getString(nativeStyle, StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
+			final String styleText = ObjectHelper.getString(nativeStyle, Css.CSS_STYLE_TEXT_PROPERTY_NAME);
 
 			// remove and reinser the rule...
 			StyleSheet.removeRule(styleSheet, index);

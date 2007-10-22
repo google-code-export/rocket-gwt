@@ -10,7 +10,7 @@ import java.util.Set;
 import rocket.style.client.CssUnit;
 import rocket.style.client.Rule;
 import rocket.style.client.Style;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.style.client.StylePropertyValue;
 import rocket.style.client.StyleSheet;
 import rocket.testing.client.Test;
@@ -956,7 +956,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 		final StylePropertyValue value = new StylePropertyValue();
 		value.setString(PADDING_VALUE);
-		style.put(StyleConstants.PADDING_RIGHT, value);
+		style.put(Css.PADDING_RIGHT, value);
 
 		final boolean containsValue = style.containsValue(value);
 		Test.assertTrue("Map.containsValue(\"" + PADDING_VALUE + "\")", containsValue);
@@ -1102,7 +1102,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 		final StylePropertyValue value = new StylePropertyValue();
 		value.setString(PADDING_VALUE);
-		style.put(StyleConstants.PADDING, value);
+		style.put(Css.PADDING, value);
 
 		final boolean contains = values.contains(value);
 		Test.assertTrue("StyleValuesCollection.contains( \"" + value + "\" )", contains);

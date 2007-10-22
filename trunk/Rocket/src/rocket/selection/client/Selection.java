@@ -18,7 +18,7 @@ package rocket.selection.client;
 import rocket.dom.client.Dom;
 import rocket.selection.client.support.SelectionSupport;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
@@ -60,7 +60,7 @@ public class Selection {
 	 * @param element
 	 */
 	public static void disableTextSelection(final Element element) {
-		InlineStyle.setString(element, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_DISABLED);
+		InlineStyle.setString(element, Css.USER_SELECT, Css.USER_SELECT_DISABLED);
 	}
 
 	public static void disableTextSelection() {
@@ -77,7 +77,7 @@ public class Selection {
 	 * @param element
 	 */
 	public static void enableTextSelection(final Element element) {
-		InlineStyle.setString(element, StyleConstants.USER_SELECT, StyleConstants.USER_SELECT_ENABLED);
+		InlineStyle.setString(element, Css.USER_SELECT, Css.USER_SELECT_ENABLED);
 	}
 
 	public static void enableTextSelection() {

@@ -18,7 +18,7 @@ package rocket.browser.client;
 import rocket.browser.client.support.BrowserSupport;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -227,8 +227,8 @@ public class Browser {
 		final int top = browserHeight / 2 - height / 2;
 
 		final Element element = widget.getElement();
-		InlineStyle.setInteger(element, StyleConstants.LEFT, left, CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.TOP, top, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.LEFT, left, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.TOP, top, CssUnit.PX);
 	}
 
 	/**

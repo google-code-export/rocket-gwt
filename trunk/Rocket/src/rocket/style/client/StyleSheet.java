@@ -259,11 +259,11 @@ public class StyleSheet {
 	}
 
 	public boolean isDisabled() {
-		return this.hasProperty(StyleConstants.DISABLED_ATTRIBUTE) ? this.getBoolean(StyleConstants.DISABLED_ATTRIBUTE) : false;
+		return this.hasProperty(Constants.DISABLED_ATTRIBUTE) ? this.getBoolean(Constants.DISABLED_ATTRIBUTE) : false;
 	}
 
 	public void setDisabled(final boolean disabled) {
-		this.setBoolean(StyleConstants.DISABLED_ATTRIBUTE, disabled);
+		this.setBoolean(Constants.DISABLED_ATTRIBUTE, disabled);
 	}
 
 	public String getId() {

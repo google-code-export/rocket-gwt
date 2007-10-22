@@ -30,7 +30,7 @@ import rocket.selection.client.Selection;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.widget.client.CompositeWidget;
@@ -273,7 +273,7 @@ public class FloatingSlider extends CompositeWidget {
 		boolean killTimer = false;
 
 		final int x = this.getXValue();
-		final int handleX = ComputedStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
+		final int handleX = ComputedStyle.getInteger(handle, Css.LEFT, CssUnit.PX, 0);
 		int deltaX = mouseX - handleX;
 		if (0 != deltaX) {
 			if (deltaX < 0) {
@@ -281,18 +281,18 @@ public class FloatingSlider extends CompositeWidget {
 			} else {
 				this.onAfterHandleXMouseDown();
 			}
-			final int handleXAfter = ComputedStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
+			final int handleXAfter = ComputedStyle.getInteger(handle, Css.LEFT, CssUnit.PX, 0);
 			final int deltaXAfter = mouseX - handleXAfter;
 
 			if (deltaX < 0 ^ deltaXAfter < 0) {
 				this.setXValue(x);
-				InlineStyle.setInteger(handle, StyleConstants.LEFT, mouseX, CssUnit.PX);
+				InlineStyle.setInteger(handle, Css.LEFT, mouseX, CssUnit.PX);
 				deltaX = 0;
 			}
 		}
 
 		final int y = this.getYValue();
-		final int handleY = ComputedStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
+		final int handleY = ComputedStyle.getInteger(handle, Css.TOP, CssUnit.PX, 0);
 		int deltaY = mouseY - handleY;
 		if (0 != deltaY) {
 			if (deltaY < 0) {
@@ -300,12 +300,12 @@ public class FloatingSlider extends CompositeWidget {
 			} else {
 				this.onAfterHandleYMouseDown();
 			}
-			final int handleYAfter = ComputedStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
+			final int handleYAfter = ComputedStyle.getInteger(handle, Css.TOP, CssUnit.PX, 0);
 			final int deltaYAfter = mouseY - handleYAfter;
 
 			if (deltaY < 0 ^ deltaYAfter < 0) {
 				this.setYValue(y);
-				InlineStyle.setInteger(handle, StyleConstants.TOP, mouseY, CssUnit.PX);
+				InlineStyle.setInteger(handle, Css.TOP, mouseY, CssUnit.PX);
 				deltaY = 0;
 			}
 		}
@@ -322,9 +322,9 @@ public class FloatingSlider extends CompositeWidget {
 		final int newValue = Math.max(0, this.getXValue() - this.getDeltaX());
 
 		final Element handle = this.getHandle().getElement();
-		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
+		final int left = InlineStyle.getInteger(handle, Css.LEFT, CssUnit.PX, 0);
 		this.setXValue(newValue);
-		InlineStyle.setInteger(handle, StyleConstants.LEFT, left - 1, CssUnit.PX);
+		InlineStyle.setInteger(handle, Css.LEFT, left - 1, CssUnit.PX);
 	}
 
 	/**
@@ -334,9 +334,9 @@ public class FloatingSlider extends CompositeWidget {
 	protected void onAfterHandleXMouseDown() {
 		final int newValue = Math.min(this.getXValue() + this.getDeltaX(), this.getMaximumXValue());
 		final Element handle = this.getHandle().getElement();
-		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
+		final int left = InlineStyle.getInteger(handle, Css.LEFT, CssUnit.PX, 0);
 		this.setXValue(newValue);
-		InlineStyle.setInteger(handle, StyleConstants.LEFT, left + 1, CssUnit.PX);
+		InlineStyle.setInteger(handle, Css.LEFT, left + 1, CssUnit.PX);
 	}
 
 	/**
@@ -347,9 +347,9 @@ public class FloatingSlider extends CompositeWidget {
 		final int newValue = Math.max(0, this.getYValue() - this.getDeltaY());
 
 		final Element handle = this.getHandle().getElement();
-		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
+		final int top = InlineStyle.getInteger(handle, Css.TOP, CssUnit.PX, 0);
 		this.setYValue(newValue);
-		InlineStyle.setInteger(handle, StyleConstants.TOP, top - 1, CssUnit.PX);
+		InlineStyle.setInteger(handle, Css.TOP, top - 1, CssUnit.PX);
 	}
 
 	/**
@@ -360,9 +360,9 @@ public class FloatingSlider extends CompositeWidget {
 		final int newValue = Math.min(this.getYValue() + this.getDeltaY(), this.getMaximumYValue());
 
 		final Element handle = this.getHandle().getElement();
-		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
+		final int top = InlineStyle.getInteger(handle, Css.TOP, CssUnit.PX, 0);
 		this.setYValue(newValue);
-		InlineStyle.setInteger(handle, StyleConstants.TOP, top + 1, CssUnit.PX);
+		InlineStyle.setInteger(handle, Css.TOP, top + 1, CssUnit.PX);
 	}
 
 	protected void onHandleMouseMove(final MouseMoveEvent event) {
@@ -387,7 +387,7 @@ public class FloatingSlider extends CompositeWidget {
 		this.setXValue(newX);
 
 		int left = mouseX - handleWidth / 2;
-		InlineStyle.setInteger(handleElement, StyleConstants.LEFT, left, CssUnit.PX);
+		InlineStyle.setInteger(handleElement, Css.LEFT, left, CssUnit.PX);
 
 		int mouseY = event.getPageY() - widgetY;
 		mouseY = Math.max(0, Math.min(mouseY, sliderHeight - handleHeight / 2));
@@ -396,7 +396,7 @@ public class FloatingSlider extends CompositeWidget {
 		this.setYValue(newY);
 
 		final int top = mouseY - handleHeight / 2;
-		InlineStyle.setInteger(handleElement, StyleConstants.TOP, top, CssUnit.PX);
+		InlineStyle.setInteger(handleElement, Css.TOP, top, CssUnit.PX);
 
 		event.cancelBubble(true);
 		event.stop();// stops text selection in Opera
@@ -537,8 +537,8 @@ public class FloatingSlider extends CompositeWidget {
 		final int newLeft = Math.round(1.0f * this.getXValue() * sliderLength / this.getMaximumXValue());
 
 		final Element element = handle.getElement();
-		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(element, StyleConstants.LEFT, newLeft, CssUnit.PX);
+		InlineStyle.setString(element, Css.POSITION, "absolute");
+		InlineStyle.setInteger(element, Css.LEFT, newLeft, CssUnit.PX);
 
 		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
@@ -595,8 +595,8 @@ public class FloatingSlider extends CompositeWidget {
 		final int newTop = Math.round(1.0f * this.getYValue() * sliderLength / this.getMaximumYValue());
 
 		final Element element = handle.getElement();
-		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(element, StyleConstants.TOP, newTop, CssUnit.PX);
+		InlineStyle.setString(element, Css.POSITION, "absolute");
+		InlineStyle.setInteger(element, Css.TOP, newTop, CssUnit.PX);
 
 		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}

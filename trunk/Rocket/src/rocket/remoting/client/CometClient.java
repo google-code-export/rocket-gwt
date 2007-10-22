@@ -19,7 +19,7 @@ import rocket.dom.client.Dom;
 import rocket.remoting.client.support.CometSupport;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -225,11 +225,11 @@ public abstract class CometClient {
 
 	protected Element createFrame() {
 		final Element frame = DOM.createIFrame();
-		InlineStyle.setInteger(frame, StyleConstants.WIDTH, 0, CssUnit.PX);
-		InlineStyle.setInteger(frame, StyleConstants.HEIGHT, 0, CssUnit.PX);
-		InlineStyle.setInteger(frame, StyleConstants.BORDER, 0, CssUnit.PX);
-		InlineStyle.setInteger(frame, StyleConstants.PADDING, 0, CssUnit.PX);
-		InlineStyle.setInteger(frame, StyleConstants.MARGIN, 0, CssUnit.PX);
+		InlineStyle.setInteger(frame, Css.WIDTH, 0, CssUnit.PX);
+		InlineStyle.setInteger(frame, Css.HEIGHT, 0, CssUnit.PX);
+		InlineStyle.setInteger(frame, Css.BORDER, 0, CssUnit.PX);
+		InlineStyle.setInteger(frame, Css.PADDING, 0, CssUnit.PX);
+		InlineStyle.setInteger(frame, Css.MARGIN, 0, CssUnit.PX);
 		return frame;
 	}
 

@@ -18,7 +18,7 @@ package rocket.remoting.test.comet.client;
 import rocket.remoting.client.CometClient;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StackTrace;
 
@@ -145,9 +145,9 @@ public class CometTest implements EntryPoint {
 		protected Element createFrame() {
 			final Element frame = super.createFrame();
 
-			InlineStyle.setInteger(frame, StyleConstants.WIDTH, 100, CssUnit.PX);
-			InlineStyle.setInteger(frame, StyleConstants.HEIGHT, 100, CssUnit.PX);
-			InlineStyle.setInteger(frame, StyleConstants.BORDER, 1, CssUnit.PX);
+			InlineStyle.setInteger(frame, Css.WIDTH, 100, CssUnit.PX);
+			InlineStyle.setInteger(frame, Css.HEIGHT, 100, CssUnit.PX);
+			InlineStyle.setInteger(frame, Css.BORDER, 1, CssUnit.PX);
 
 			return frame;
 		}

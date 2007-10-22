@@ -15,7 +15,7 @@
  */
 package rocket.style.client.support;
 
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -33,11 +33,11 @@ abstract public class StyleSupport {
 				value = this.getBorderWidth(source, name);
 				break;
 			}
-			if( StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME.equals(name) ){
+			if( Css.CSS_STYLE_TEXT_PROPERTY_NAME.equals(name) ){
 				value = this.getCssText( source );
 				break;
 			}
-			if (StyleConstants.USER_SELECT.equals(name)) {
+			if (Css.USER_SELECT.equals(name)) {
 				value = this.getUserSelect( source);
 				break;
 			}
@@ -183,7 +183,7 @@ abstract public class StyleSupport {
 		int weight = -1;
 
 		while (true) {
-			final String propertyValue = getComputed(element, StyleConstants.FONT_WEIGHT);
+			final String propertyValue = getComputed(element, Css.FONT_WEIGHT);
 			if (StringHelper.isNullOrEmpty(propertyValue)) {
 				weight = StyleSupportConstants.FONT_WEIGHT_NORMAL_VALUE;
 				break;
@@ -220,7 +220,7 @@ abstract public class StyleSupport {
 	
 	public void set( final JavaScriptObject source, final String name, final String value ){
 		while( true ){
-			if( StyleConstants.USER_SELECT.equals( name ) ){
+			if( Css.USER_SELECT.equals( name ) ){
 				this.setUserSelect( source, value );
 				break;
 			}
@@ -259,7 +259,7 @@ abstract public class StyleSupport {
 	
 	public void remove( final JavaScriptObject source, final String name ){
 		while( true ){
-			if( StyleConstants.USER_SELECT.equals( name ) ){
+			if( Css.USER_SELECT.equals( name ) ){
 				this.removeUserSelect( source);
 			}
 			break;
@@ -282,7 +282,7 @@ abstract public class StyleSupport {
 	 }-*/;
 	
 	protected String[] getPropertyNamesFromCssText( final JavaScriptObject elementOrRule ){
-		final String cssText = this.get( elementOrRule, StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME );
+		final String cssText = this.get( elementOrRule, Css.CSS_STYLE_TEXT_PROPERTY_NAME );
 
 		// remove any quotes...
 		final StringBuffer names = new StringBuffer();
@@ -333,7 +333,7 @@ abstract public class StyleSupport {
 	
 	protected String translateNoneValuesToNull(final String name, final String value) {
 		// if value== none and not usertextselect return null else return value.
-		return false == StyleConstants.USER_SELECT.equals(name) && "none".equals(value) ? null : value;
+		return false == Css.USER_SELECT.equals(name) && "none".equals(value) ? null : value;
 	}
 	
 	/**

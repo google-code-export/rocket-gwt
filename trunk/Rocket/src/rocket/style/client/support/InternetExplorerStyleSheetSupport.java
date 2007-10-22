@@ -15,7 +15,7 @@
  */
 package rocket.style.client.support;
 
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -29,7 +29,7 @@ public class InternetExplorerStyleSheetSupport extends StyleSheetSupport {
 	 * @return
 	 */
 	public JavaScriptObject getRulesCollection(final JavaScriptObject styleSheet) {
-		return ObjectHelper.getObject(styleSheet, StyleConstants.RULES_LIST_PROPERTY_IE6);
+		return ObjectHelper.getObject(styleSheet, Css.RULES_LIST_PROPERTY_IE6);
 	}
 
 	public void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText) {

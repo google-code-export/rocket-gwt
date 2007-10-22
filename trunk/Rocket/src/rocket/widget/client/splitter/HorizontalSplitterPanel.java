@@ -22,7 +22,7 @@ import rocket.dom.client.Dom;
 import rocket.event.client.MouseMoveEvent;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -44,7 +44,7 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 
 	protected void afterCreateWidget() {
 		this.setItems(createItems());
-		InlineStyle.setString(DOM.getChild(this.getElement(), 0), StyleConstants.OVERFLOW_Y, "hidden");
+		InlineStyle.setString(DOM.getChild(this.getElement(), 0), Css.OVERFLOW_Y, "hidden");
 	}
 
 	protected String getInitialStyleName() {
@@ -171,11 +171,11 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 
 	protected void adjustXCoordinate(final Widget widget, final int delta) {
 		final Element element = widget.getElement();
-		final int x = InlineStyle.getInteger(element, StyleConstants.LEFT, CssUnit.PX, 0);
+		final int x = InlineStyle.getInteger(element, Css.LEFT, CssUnit.PX, 0);
 
-		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(element, StyleConstants.LEFT, x + delta, CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
+		InlineStyle.setString(element, Css.POSITION, "absolute");
+		InlineStyle.setInteger(element, Css.LEFT, x + delta, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.TOP, 0, CssUnit.PX);
 	}
 
 	/**
@@ -205,12 +205,12 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 			// set the widget position...
 			final Element widgetElement = widget.getElement();
 
-			InlineStyle.setString(widgetElement, StyleConstants.POSITION, "absolute");
-			InlineStyle.setInteger(widgetElement, StyleConstants.LEFT, left, CssUnit.PX);
-			InlineStyle.setInteger(widgetElement, StyleConstants.TOP, 0, CssUnit.PX);
+			InlineStyle.setString(widgetElement, Css.POSITION, "absolute");
+			InlineStyle.setInteger(widgetElement, Css.LEFT, left, CssUnit.PX);
+			InlineStyle.setInteger(widgetElement, Css.TOP, 0, CssUnit.PX);
 
 			// overflow...
-			InlineStyle.setString(widgetElement, StyleConstants.OVERFLOW, "hidden");
+			InlineStyle.setString(widgetElement, Css.OVERFLOW, "hidden");
 
 			// set the size(width/height)...
 			widget.setHeight("100%");
@@ -232,12 +232,12 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 
 			// set the splitter position...
 			final Element splitterElement = splitter.getElement();
-			InlineStyle.setString(splitterElement, StyleConstants.POSITION, "absolute");
-			InlineStyle.setInteger(splitterElement, StyleConstants.LEFT, left, CssUnit.PX);
-			InlineStyle.setInteger(splitterElement, StyleConstants.TOP, 0, CssUnit.PX);
+			InlineStyle.setString(splitterElement, Css.POSITION, "absolute");
+			InlineStyle.setInteger(splitterElement, Css.LEFT, left, CssUnit.PX);
+			InlineStyle.setInteger(splitterElement, Css.TOP, 0, CssUnit.PX);
 
 			// overflow...
-			InlineStyle.setString(widgetElement, StyleConstants.OVERFLOW, "hidden");
+			InlineStyle.setString(widgetElement, Css.OVERFLOW, "hidden");
 
 			// set the splitters size...
 			splitter.setWidth(splitterWidth + "px");

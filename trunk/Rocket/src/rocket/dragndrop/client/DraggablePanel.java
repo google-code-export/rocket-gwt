@@ -28,7 +28,7 @@ import rocket.event.client.MouseUpEvent;
 import rocket.selection.client.Selection;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.Hijacker;
 import rocket.widget.client.Html;
@@ -187,9 +187,9 @@ public class DraggablePanel extends SimplePanel {
 			final int newY = mousePageY + yOffset - elementPageY;
 
 			final Element draggedElement = dragged.getElement();
-			InlineStyle.setString(draggedElement, StyleConstants.POSITION, "absolute");
-			InlineStyle.setInteger(draggedElement, StyleConstants.LEFT, newX, CssUnit.PX);
-			InlineStyle.setInteger(draggedElement, StyleConstants.TOP, newY, CssUnit.PX);
+			InlineStyle.setString(draggedElement, Css.POSITION, "absolute");
+			InlineStyle.setInteger(draggedElement, Css.LEFT, newX, CssUnit.PX);
+			InlineStyle.setInteger(draggedElement, Css.TOP, newY, CssUnit.PX);
 			break;
 		}
 	}
@@ -234,9 +234,9 @@ public class DraggablePanel extends SimplePanel {
 			final int newY = mousePageY + yOffset - elementPageY;
 
 			final Element draggedElement = draggedWidget.getElement();
-			InlineStyle.setString(draggedElement, StyleConstants.POSITION, "absolute");
-			InlineStyle.setInteger(draggedElement, StyleConstants.LEFT, newX, CssUnit.PX);
-			InlineStyle.setInteger(draggedElement, StyleConstants.TOP, newY, CssUnit.PX);
+			InlineStyle.setString(draggedElement, Css.POSITION, "absolute");
+			InlineStyle.setInteger(draggedElement, Css.LEFT, newX, CssUnit.PX);
+			InlineStyle.setInteger(draggedElement, Css.TOP, newY, CssUnit.PX);
 
 			draggedPanel.setWidget(draggedWidget);
 			break;
@@ -342,9 +342,9 @@ public class DraggablePanel extends SimplePanel {
 			// insert the root elementof this panel in the same spot were widget
 			// was.
 			final Element element = this.getElement();
-			InlineStyle.setString(element, StyleConstants.POSITION, "relative");
-			InlineStyle.setInteger(element, StyleConstants.LEFT, 0, CssUnit.PX);
-			InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
+			InlineStyle.setString(element, Css.POSITION, "relative");
+			InlineStyle.setInteger(element, Css.LEFT, 0, CssUnit.PX);
+			InlineStyle.setInteger(element, Css.TOP, 0, CssUnit.PX);
 
 			hijacker.replace(element);
 

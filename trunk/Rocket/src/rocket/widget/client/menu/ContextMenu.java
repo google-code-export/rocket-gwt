@@ -25,7 +25,7 @@ import rocket.event.client.MouseEventAdapter;
 import rocket.event.client.MouseOutEvent;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.Html;
 import rocket.widget.client.SpanPanel;
@@ -174,9 +174,9 @@ public class ContextMenu extends Menu {
 		// element accurately IE6 bug
 		final Element menuListElement = menuList.getElement();
 
-		InlineStyle.setString(menuListElement, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(menuListElement, StyleConstants.TOP, 0, CssUnit.PX);
+		InlineStyle.setString(menuListElement, Css.POSITION, "absolute");
+		InlineStyle.setInteger(menuListElement, Css.LEFT, 0, CssUnit.PX);
+		InlineStyle.setInteger(menuListElement, Css.TOP, 0, CssUnit.PX);
 
 		final Widget widget = this.getWidget();
 		final Element widgetElement = widget.getElement();
@@ -202,9 +202,9 @@ public class ContextMenu extends Menu {
 			y = y + widget.getOffsetHeight() - 1;
 			break;
 		}
-		InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, x, CssUnit.PX);
-		InlineStyle.setInteger(menuListElement, StyleConstants.TOP, y, CssUnit.PX);
-		InlineStyle.setInteger(menuListElement, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
+		InlineStyle.setInteger(menuListElement, Css.LEFT, x, CssUnit.PX);
+		InlineStyle.setInteger(menuListElement, Css.TOP, y, CssUnit.PX);
+		InlineStyle.setInteger(menuListElement, Css.Z_INDEX, 1, CssUnit.NONE);
 
 		listeners.fireMenuOpened(this);
 	}

@@ -15,7 +15,7 @@
  */
 package rocket.style.client.support;
 
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -25,7 +25,7 @@ public class SafariComputedStyleSupport extends SafariStyleSupport {
 	public String get(final JavaScriptObject element, final String name) {
 		String value = null;
 		while (true) {	
-			if (StyleConstants.FONT_WEIGHT.equals( name)) {
+			if (Css.FONT_WEIGHT.equals( name)) {
 				value = "" + this.getComputedFontWeight( ObjectHelper.castToElement( element));
 				break;
 			}

@@ -20,7 +20,7 @@ import java.util.Iterator;
 import rocket.collection.client.SkippingIterator;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.Html;
 
@@ -52,9 +52,9 @@ public class HorizontalMenuList extends MenuList {
 	protected void open() {
 		if (this.isHideable()) {
 			final Element element = this.getElement();
-			InlineStyle.setInteger(element, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
-			InlineStyle.setString(element, StyleConstants.DISPLAY, "block");
-			InlineStyle.setString(element, StyleConstants.VISIBILITY, "visible");
+			InlineStyle.setInteger(element, Css.Z_INDEX, 1, CssUnit.NONE);
+			InlineStyle.setString(element, Css.DISPLAY, "block");
+			InlineStyle.setString(element, Css.VISIBILITY, "visible");
 		}
 	}
 

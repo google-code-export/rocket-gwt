@@ -18,7 +18,7 @@ package rocket.selection.client.support;
 import rocket.selection.client.SelectionEndPoint;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -39,9 +39,9 @@ abstract public class SelectionSupport {
 	 */
 	public void setEnabled(final Element element, final boolean enable) {
 		if (enable) {
-			InlineStyle.remove(element, StyleConstants.USER_SELECT);
+			InlineStyle.remove(element, Css.USER_SELECT);
 		} else {
-			InlineStyle.setString(element, StyleConstants.USER_SELECT, "none");
+			InlineStyle.setString(element, Css.USER_SELECT, "none");
 		}
 	}
 
@@ -52,7 +52,7 @@ abstract public class SelectionSupport {
 	 * @return
 	 */
 	public boolean isEnabled(final Element element) {
-		return false == StyleConstants.USER_SELECT_DISABLED.equals(ComputedStyle.getString(element, StyleConstants.USER_SELECT));
+		return false == Css.USER_SELECT_DISABLED.equals(ComputedStyle.getString(element, Css.USER_SELECT));
 	}
 
 	public SelectionEndPoint getStart() {

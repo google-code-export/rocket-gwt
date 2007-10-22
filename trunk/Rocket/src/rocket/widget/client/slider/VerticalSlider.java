@@ -17,7 +17,7 @@ package rocket.widget.client.slider;
 
 import rocket.dom.client.Dom;
 import rocket.event.client.MouseEvent;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 
 /**
  * A VerticalSlider is a widget which allows a user to manipulate number value
@@ -55,7 +55,7 @@ public class VerticalSlider extends Slider {
 	}
 
 	protected String getHandleCoordinateStylePropertyName() {
-		return StyleConstants.TOP;
+		return Css.TOP;
 	}
 
 	protected int getSliderLength() {

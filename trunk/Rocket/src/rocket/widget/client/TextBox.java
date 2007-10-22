@@ -18,7 +18,7 @@ package rocket.widget.client;
 import rocket.dom.client.Dom;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.SystemHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -119,7 +119,7 @@ public class TextBox extends TextEntryWidget {
 		TextAlignment textAlignment = TextAlignment.LEFT;
 
 		while (true) {
-			final String property = ComputedStyle.getString(getElement(), StyleConstants.TEXT_ALIGN);
+			final String property = ComputedStyle.getString(getElement(), Css.TEXT_ALIGN);
 			if (TextAlignment.CENTER.getValue().equals(property)) {
 				textAlignment = TextAlignment.CENTER;
 				break;
@@ -141,7 +141,7 @@ public class TextBox extends TextEntryWidget {
 	}
 
 	public void setTextAlignment(final TextAlignment textAligment) {
-		InlineStyle.setString(getElement(), StyleConstants.TEXT_ALIGN, textAligment.getValue());
+		InlineStyle.setString(getElement(), Css.TEXT_ALIGN, textAligment.getValue());
 	}
 
 	/**

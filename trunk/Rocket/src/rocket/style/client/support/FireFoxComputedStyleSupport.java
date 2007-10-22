@@ -15,7 +15,7 @@
  */
 package rocket.style.client.support;
 
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -25,11 +25,11 @@ public class FireFoxComputedStyleSupport extends FireFoxStyleSupport {
 	public String get(final JavaScriptObject element, final String name) {
 		String value = null;
 		while (true) {
-			if (StyleConstants.BACKGROUND_POSITION.equals(name)) {
+			if (Css.BACKGROUND_POSITION.equals(name)) {
 				value = this.getBackgroundPosition(element);
 				break;
 			}
-			if (StyleConstants.FONT_WEIGHT.equals( name)) {
+			if (Css.FONT_WEIGHT.equals( name)) {
 				value = "" + this.getComputedFontWeight( ObjectHelper.castToElement( element));
 				break;
 			}
@@ -48,7 +48,7 @@ public class FireFoxComputedStyleSupport extends FireFoxStyleSupport {
 	 * @return
 	 */
 	protected String getBackgroundPosition(final JavaScriptObject element) {
-		final String value = this.getString(element, StyleConstants.BACKGROUND_POSITION);
+		final String value = this.getString(element, Css.BACKGROUND_POSITION);
 		if (value == null) {
 			throw new UnsupportedOperationException("FireFox bug 316981 ");
 		}
