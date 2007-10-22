@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rocket.beans.rebind.aop.Advice;
-import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;

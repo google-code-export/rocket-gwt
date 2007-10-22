@@ -18,7 +18,6 @@ package rocket.style.client.support;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.Window;
 
 public class OperaInlineStyleSupport extends OperaStyleSupport {
 	

@@ -15,8 +15,6 @@
  */
 package rocket.style.client.support;
 
-import java.util.Iterator;
-
 import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -24,7 +22,6 @@ import rocket.util.client.StringHelper;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Window;
 
 abstract public class StyleSupport {
 

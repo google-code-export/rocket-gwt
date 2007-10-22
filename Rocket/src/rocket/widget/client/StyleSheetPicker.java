@@ -23,7 +23,6 @@ import java.util.Map;
 import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
-import rocket.style.client.StyleHelper;
 import rocket.style.client.StyleSheet;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
@@ -149,7 +148,7 @@ public class StyleSheetPicker extends CompositeWidget {
 	protected void createButtons(final HorizontalPanel panel) {
 		ObjectHelper.checkNotNull("parameter:panel", panel);
 
-		final Collection styleSheets = StyleHelper.getStyleSheets();
+		final Collection styleSheets = StyleSheet.getStyleSheets();
 
 		// loop thru creating a button for each available stylesheet.
 		final Iterator iterator = styleSheets.iterator();

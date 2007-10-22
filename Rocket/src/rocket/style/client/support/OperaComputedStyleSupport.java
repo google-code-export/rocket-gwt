@@ -20,7 +20,6 @@ import rocket.style.client.StyleConstants;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.Window;
 
 public class OperaComputedStyleSupport extends OperaStyleSupport {
 	
