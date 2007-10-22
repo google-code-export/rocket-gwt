@@ -15,7 +15,7 @@
  */
 package rocket.style.client.support;
 
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -27,26 +27,26 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 	public String get(final JavaScriptObject element, final String propertyName) {
 		String propertyValue = null;
 		while (true) {
-			if (StyleConstants.BACKGROUND_POSITION.equals(propertyName)) {
+			if (Css.BACKGROUND_POSITION.equals(propertyName)) {
 				propertyValue = this.getBackgroundPosition( ObjectHelper.castToElement(element));
 				break;
 			}
-			if (propertyName.equals(StyleConstants.FONT_SIZE)) {
+			if (propertyName.equals(Css.FONT_SIZE)) {
 				final int fontSize = this.getFontSize(ObjectHelper.castToElement(element));
 				if (-1 != fontSize) {
 					propertyValue = fontSize + "px";
 				}
 				break;
 			}
-			if (StyleConstants.HEIGHT.equals(propertyName)) {
+			if (Css.HEIGHT.equals(propertyName)) {
 				propertyValue = this.getHeight(ObjectHelper.castToElement(element));
 				break;
 			}
-			if (StyleConstants.OPACITY.equals(propertyName)) {
+			if (Css.OPACITY.equals(propertyName)) {
 				propertyValue = this.getOpacity( element );
 				break;
 			}
-			if (StyleConstants.WIDTH.equals(propertyName)) {
+			if (Css.WIDTH.equals(propertyName)) {
 				propertyValue = this.getWidth(ObjectHelper.castToElement(element));
 				break;
 			}
@@ -63,20 +63,20 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 	
 	protected String getHeight(final Element element) {
 		final int offsetHeight = ObjectHelper.getInteger(element, "offsetHeight");
-		final int borderTopHeight = this.getBorderWidth(element, StyleConstants.BORDER_TOP_WIDTH);
-		final int paddingTop = this.getPixelProperty(element, StyleConstants.PADDING_TOP);
-		final int paddingBottom = this.getPixelProperty(element, StyleConstants.PADDING_BOTTOM);
-		final int borderBottomHeight = this.getBorderWidth(element, StyleConstants.BORDER_BOTTOM_WIDTH);
+		final int borderTopHeight = this.getBorderWidth(element, Css.BORDER_TOP_WIDTH);
+		final int paddingTop = this.getPixelProperty(element, Css.PADDING_TOP);
+		final int paddingBottom = this.getPixelProperty(element, Css.PADDING_BOTTOM);
+		final int borderBottomHeight = this.getBorderWidth(element, Css.BORDER_BOTTOM_WIDTH);
 
 		return (offsetHeight - borderTopHeight - paddingTop - paddingBottom - borderBottomHeight) + "px";
 	}
 	
 	protected String getWidth(final Element element) {
 			final int offsetWidth = ObjectHelper.getInteger(element, "offsetWidth");
-			final int borderTopWidth = this.getBorderWidth(element, StyleConstants.BORDER_TOP_WIDTH);
-			final int paddingTop = this.getPixelProperty(element, StyleConstants.PADDING_TOP);
-			final int paddingBottom = this.getPixelProperty(element, StyleConstants.PADDING_BOTTOM);
-			final int borderBottomWidth = this.getBorderWidth(element, StyleConstants.BORDER_BOTTOM_WIDTH);
+			final int borderTopWidth = this.getBorderWidth(element, Css.BORDER_TOP_WIDTH);
+			final int paddingTop = this.getPixelProperty(element, Css.PADDING_TOP);
+			final int paddingBottom = this.getPixelProperty(element, Css.PADDING_BOTTOM);
+			final int borderBottomWidth = this.getBorderWidth(element, Css.BORDER_BOTTOM_WIDTH);
 	
 			return (offsetWidth - borderTopWidth - paddingTop - paddingBottom - borderBottomWidth) + "px";
 	}

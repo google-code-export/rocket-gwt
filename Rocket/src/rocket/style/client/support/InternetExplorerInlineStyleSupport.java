@@ -16,7 +16,7 @@
 package rocket.style.client.support;
 
 import rocket.browser.client.Browser;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -99,27 +99,27 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	 }-*/;
 
 	protected String getPosition(final JavaScriptObject element) {
-		return this.isFixedPosition(element) ? "fixed" : this.getString(element, StyleConstants.POSITION);
+		return this.isFixedPosition(element) ? "fixed" : this.getString(element, Css.POSITION);
 	}
 
 	protected boolean isFixedPosition(final JavaScriptObject element) {
-		return null != this.getDynamicExpressionValue(element, StyleConstants.POSITION);
+		return null != this.getDynamicExpressionValue(element, Css.POSITION);
 	}
 
 	protected String getLeft(final JavaScriptObject element) {
-		return this.getValueFromDynamicExpressThenStyle(element, StyleConstants.LEFT, this.getFixedPositionLeft());
+		return this.getValueFromDynamicExpressThenStyle(element, Css.LEFT, this.getFixedPositionLeft());
 	}
 
 	protected String getTop(final JavaScriptObject element) {
-		return this.getValueFromDynamicExpressThenStyle(element, StyleConstants.TOP, this.getFixedPositionTop());
+		return this.getValueFromDynamicExpressThenStyle(element, Css.TOP, this.getFixedPositionTop());
 	}
 
 	protected String getRight(final JavaScriptObject element) {
-		return this.getValueFromDynamicExpressThenStyle(element, StyleConstants.RIGHT, this.getFixedPositionRight());
+		return this.getValueFromDynamicExpressThenStyle(element, Css.RIGHT, this.getFixedPositionRight());
 	}
 
 	protected String getBottom(final JavaScriptObject element) {
-		return this.getValueFromDynamicExpressThenStyle(element, StyleConstants.BOTTOM, this.getFixedPositionBottom());
+		return this.getValueFromDynamicExpressThenStyle(element, Css.BOTTOM, this.getFixedPositionBottom());
 	}
 
 	protected String getValueFromDynamicExpressThenStyle(final JavaScriptObject element, final String name,
@@ -151,7 +151,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 			// if both are compatible - both not fixed, or both are fixed do
 			// nothing.
 			if (oldPositionFixed == newPositionFixed) {
-				this.setString(element, StyleConstants.POSITION, position);
+				this.setString(element, Css.POSITION, position);
 				break;
 			}
 
@@ -160,21 +160,21 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 			if (oldPositionFixed) {
 
 				// extract values from dynamic expressions....
-				final String left = this.getString(element, StyleConstants.LEFT);
-				final String top = this.getString(element, StyleConstants.TOP);
-				final String right = this.getString(element, StyleConstants.RIGHT);
-				final String bottom = this.getString(element, StyleConstants.BOTTOM);
+				final String left = this.getString(element, Css.LEFT);
+				final String top = this.getString(element, Css.TOP);
+				final String right = this.getString(element, Css.RIGHT);
+				final String bottom = this.getString(element, Css.BOTTOM);
 
 				this.removeDynamicExpression(element);
 
 				// set them back...this needs to be done because the dynamic
 				// expression overrides the actual css property resulting in the
 				// original value being lost.
-				this.setString(element, StyleConstants.POSITION, position);
-				this.setString(element, StyleConstants.LEFT, left);
-				this.setString(element, StyleConstants.TOP, top);
-				this.setString(element, StyleConstants.RIGHT, right);
-				this.setString(element, StyleConstants.BOTTOM, bottom);
+				this.setString(element, Css.POSITION, position);
+				this.setString(element, Css.LEFT, left);
+				this.setString(element, Css.TOP, top);
+				this.setString(element, Css.RIGHT, right);
+				this.setString(element, Css.BOTTOM, bottom);
 				break;
 			}
 
@@ -191,19 +191,19 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	 }-*/;
 
 	protected void setLeft(final JavaScriptObject element, final String value) {
-		this.setDynamicExpressionIfFixedPosition(element, StyleConstants.LEFT, value, this.getFixedPositionLeft());
+		this.setDynamicExpressionIfFixedPosition(element, Css.LEFT, value, this.getFixedPositionLeft());
 	}
 
 	protected void setRight(final JavaScriptObject element, final String value) {
-		this.setDynamicExpressionIfFixedPosition(element, StyleConstants.RIGHT, value, this.getFixedPositionRight());
+		this.setDynamicExpressionIfFixedPosition(element, Css.RIGHT, value, this.getFixedPositionRight());
 	}
 
 	protected void setTop(final JavaScriptObject element, final String value) {
-		this.setDynamicExpressionIfFixedPosition(element, StyleConstants.TOP, value, this.getFixedPositionTop());
+		this.setDynamicExpressionIfFixedPosition(element, Css.TOP, value, this.getFixedPositionTop());
 	}
 
 	protected void setBottom(final JavaScriptObject element, final String value) {
-		this.setDynamicExpressionIfFixedPosition(element, StyleConstants.BOTTOM, value, this.getFixedPositionBottom());
+		this.setDynamicExpressionIfFixedPosition(element, Css.BOTTOM, value, this.getFixedPositionBottom());
 	}
 
 	protected void setDynamicExpressionIfFixedPosition(final JavaScriptObject element, final String name, final String value,
@@ -220,26 +220,26 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 
 	protected void convertLeftTopRightBottomToDynamicExpressions(final JavaScriptObject element) {
 		final String cssText = this.getCssText(element);
-		String prefix = StyleConstants.POSITION + ": expression(" + this.getFixedPosition().buildExpression("fixed") + ");";
+		String prefix = Css.POSITION + ": expression(" + this.getFixedPosition().buildExpression("fixed") + ");";
 
 		// set dynamic expressions using the original value (if it was present).
-		final String left = this.getString(element, StyleConstants.LEFT);
+		final String left = this.getString(element, Css.LEFT);
 		if (null != left) {
-			prefix = prefix + StyleConstants.LEFT + ": expression(" + this.getFixedPositionLeft().buildExpression(left) + "); ";
+			prefix = prefix + Css.LEFT + ": expression(" + this.getFixedPositionLeft().buildExpression(left) + "); ";
 		}
-		final String top = this.getString(element, StyleConstants.TOP);
+		final String top = this.getString(element, Css.TOP);
 		if (null != top) {
-			prefix = prefix + StyleConstants.TOP + ": expression(" + this.getFixedPositionTop().buildExpression(top) + "); ";
+			prefix = prefix + Css.TOP + ": expression(" + this.getFixedPositionTop().buildExpression(top) + "); ";
 		}
-		final String right = this.getString(element, StyleConstants.RIGHT);
+		final String right = this.getString(element, Css.RIGHT);
 		if (null != right) {
-			prefix = prefix + StyleConstants.RIGHT + ": expression(" + this.getFixedPositionRight().buildExpression(right) + "); ";
+			prefix = prefix + Css.RIGHT + ": expression(" + this.getFixedPositionRight().buildExpression(right) + "); ";
 		}
-		final String bottom = this.getString(element, StyleConstants.BOTTOM);
+		final String bottom = this.getString(element, Css.BOTTOM);
 		if (null != bottom) {
-			prefix = prefix + StyleConstants.BOTTOM + ": expression(" + this.getFixedPositionBottom().buildExpression(bottom) + "); ";
+			prefix = prefix + Css.BOTTOM + ": expression(" + this.getFixedPositionBottom().buildExpression(bottom) + "); ";
 		}
-		this.setString(element, StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME, prefix + cssText);
+		this.setString(element, Css.CSS_STYLE_TEXT_PROPERTY_NAME, prefix + cssText);
 	}
 
 	/**
@@ -306,32 +306,32 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 
 		while (true) {
 			if (false == this.supportsFixedPosition()) {
-				if (StyleConstants.POSITION.equals(name)) {
+				if (Css.POSITION.equals(name)) {
 					value = this.getPosition(element);
 					break;
 				}
-				if (StyleConstants.LEFT.equals(name)) {
+				if (Css.LEFT.equals(name)) {
 					value = this.getLeft(element);
 					break;
 				}
-				if (StyleConstants.TOP.equals(name)) {
+				if (Css.TOP.equals(name)) {
 					value = this.getTop(element);
 					break;
 				}
-				if (StyleConstants.RIGHT.equals(name)) {
+				if (Css.RIGHT.equals(name)) {
 					value = this.getRight(element);
 					break;
 				}
-				if (StyleConstants.BOTTOM.equals(name)) {
+				if (Css.BOTTOM.equals(name)) {
 					value = this.getBottom(element);
 					break;
 				}
 			}
-			if (StyleConstants.WIDTH.equals(name)) {
+			if (Css.WIDTH.equals(name)) {
 				value = this.getWidth(element);
 				break;
 			}
-			if (StyleConstants.HEIGHT.equals(name)) {
+			if (Css.HEIGHT.equals(name)) {
 				value = this.getHeight(element);
 				break;
 			}
@@ -381,37 +381,37 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 
 	public void set(final JavaScriptObject element, final String name, final String value) {
 		while (true) {
-			if (StyleConstants.BACKGROUND_IMAGE.equals(name)) {
+			if (Css.BACKGROUND_IMAGE.equals(name)) {
 				this.setBackgroundImage(element, value);
 				break;
 			}
 			if (false == this.supportsFixedPosition()) {
-				if (StyleConstants.POSITION.equals(name)) {
+				if (Css.POSITION.equals(name)) {
 					this.setPosition(element, value);
 					break;
 				}
-				if (StyleConstants.LEFT.equals(name)) {
+				if (Css.LEFT.equals(name)) {
 					this.setLeft(element, value);
 					break;
 				}
-				if (StyleConstants.RIGHT.equals(name)) {
+				if (Css.RIGHT.equals(name)) {
 					this.setRight(element, value);
 					break;
 				}
-				if (StyleConstants.TOP.equals(name)) {
+				if (Css.TOP.equals(name)) {
 					this.setTop(element, value);
 					break;
 				}
-				if (StyleConstants.BOTTOM.equals(name)) {
+				if (Css.BOTTOM.equals(name)) {
 					this.setBottom(element, value);
 					break;
 				}
 			}
-			if (StyleConstants.OPACITY.equals(name)) {
+			if (Css.OPACITY.equals(name)) {
 				this.setOpacity(element, value);
 				break;
 			}
-			if (StyleConstants.HEIGHT.equals(name)) {
+			if (Css.HEIGHT.equals(name)) {
 				this.setHeight(element, value);
 				break;
 			}
@@ -425,7 +425,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 		if (value.equals("inherits")) {
 			value0 = "100%";
 		}
-		this.setString(element, StyleConstants.HEIGHT, value0);
+		this.setString(element, Css.HEIGHT, value0);
 	}
 
 	protected void setUserSelect( final JavaScriptObject element, final String value ){

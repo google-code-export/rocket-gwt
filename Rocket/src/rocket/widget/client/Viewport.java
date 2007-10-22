@@ -31,7 +31,7 @@ import rocket.event.client.MouseUpEvent;
 import rocket.selection.client.Selection;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.DOM;
@@ -102,8 +102,8 @@ abstract public class Viewport extends CompositeWidget {
 		simplePanel.setWidget(widget);
 
 		final Element element = simplePanel.getElement();
-		InlineStyle.setString(element, StyleConstants.OVERFLOW, "hidden");
-		InlineStyle.setString(element, StyleConstants.POSITION, "relative"); // required
+		InlineStyle.setString(element, Css.OVERFLOW, "hidden");
+		InlineStyle.setString(element, Css.POSITION, "relative"); // required
 		// to
 		// make
 		// the
@@ -509,7 +509,7 @@ abstract public class Viewport extends CompositeWidget {
 
 		tile.addStyleName(this.getTileStyle());
 
-		InlineStyle.setString(tile.getElement(), StyleConstants.POSITION, "absolute");
+		InlineStyle.setString(tile.getElement(), Css.POSITION, "absolute");
 		this.setTileLeft(tile, column * this.getTileWidth());
 		this.setTileTop(tile, row * this.getTileHeight());
 
@@ -534,8 +534,8 @@ abstract public class Viewport extends CompositeWidget {
 
 	protected void updateInnerPanelOffset() {
 		final Element element = this.getInnerPanel().getElement();
-		InlineStyle.setInteger(element, StyleConstants.LEFT, -WidgetConstants.VIEWPORT_X_OFFSET - this.getOriginX(), CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.TOP, -WidgetConstants.VIEWPORT_Y_OFFSET - this.getOriginY(), CssUnit.PX);
+		InlineStyle.setInteger(element, Css.LEFT, -WidgetConstants.VIEWPORT_X_OFFSET - this.getOriginX(), CssUnit.PX);
+		InlineStyle.setInteger(element, Css.TOP, -WidgetConstants.VIEWPORT_Y_OFFSET - this.getOriginY(), CssUnit.PX);
 	}
 
 	protected int getTileLeft(final Widget tile) {
@@ -548,13 +548,13 @@ abstract public class Viewport extends CompositeWidget {
 
 	protected void setTileLeft(final Widget tile, final int x) {
 		final Element element = tile.getElement();
-		InlineStyle.setInteger(element, StyleConstants.LEFT, WidgetConstants.VIEWPORT_X_OFFSET + x, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.LEFT, WidgetConstants.VIEWPORT_X_OFFSET + x, CssUnit.PX);
 		ObjectHelper.setInteger(element, WidgetConstants.VIEWPORT_TILE_LEFT_ATTRIBUTE, x);
 	}
 
 	protected void setTileTop(final Widget tile, final int y) {
 		final Element element = tile.getElement();
-		InlineStyle.setInteger(element, StyleConstants.TOP, WidgetConstants.VIEWPORT_Y_OFFSET + y, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.TOP, WidgetConstants.VIEWPORT_Y_OFFSET + y, CssUnit.PX);
 		ObjectHelper.setInteger(element, WidgetConstants.VIEWPORT_TILE_TOP_ATTRIBUTE, y);
 	}
 
@@ -577,14 +577,14 @@ abstract public class Viewport extends CompositeWidget {
 		final TileDivPanel panel = new TileDivPanel();
 		final Element element = panel.getElement();
 
-		InlineStyle.setString(element, StyleConstants.OVERFLOW, "hidden");
+		InlineStyle.setString(element, Css.OVERFLOW, "hidden");
 
-		InlineStyle.setString(element, StyleConstants.POSITION, "relative");
-		InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.LEFT, 0, CssUnit.PX);
+		InlineStyle.setString(element, Css.POSITION, "relative");
+		InlineStyle.setInteger(element, Css.TOP, 0, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.LEFT, 0, CssUnit.PX);
 
-		InlineStyle.setInteger(element, StyleConstants.WIDTH, Short.MAX_VALUE, CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.HEIGHT, Short.MAX_VALUE, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.WIDTH, Short.MAX_VALUE, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.HEIGHT, Short.MAX_VALUE, CssUnit.PX);
 		return panel;
 	}
 

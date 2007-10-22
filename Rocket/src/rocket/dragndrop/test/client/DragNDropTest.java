@@ -23,7 +23,7 @@ import rocket.dragndrop.client.DropEvent;
 import rocket.dragndrop.client.DropTargetPanel;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.StackTrace;
 import rocket.widget.client.Html;
 import rocket.widget.client.Image;
@@ -276,7 +276,7 @@ public class DragNDropTest implements EntryPoint {
 				System.out.println("Swapping: ");
 			}
 			final double opacity = 1.0f * (this.swapTimeout - now) / SWAP_TIMEOUT;
-			InlineStyle.setDouble(event.getDragged().getElement(), StyleConstants.OPACITY, opacity, CssUnit.NONE);
+			InlineStyle.setDouble(event.getDragged().getElement(), Css.OPACITY, opacity, CssUnit.NONE);
 
 			if (this.otherWidget == event.getDragged()) {
 				event.stop();

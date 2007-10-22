@@ -21,10 +21,8 @@ package rocket.style.client;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class StyleConstants {
+public class Css {
 	public final static String CLASS_NAME = "className";
-
-	public final static char COMPOUND = '-';
 
 	public final static String RULES_LIST_PROPERTY = "cssRules";
 
@@ -40,16 +38,6 @@ public class StyleConstants {
 	public final static String USER_SELECT_DISABLED = "none";
 
 	public final static String USER_SELECT_ENABLED = "";
-
-	// style
-	// attributes...........................................................................................
-	public final static String DISABLED_ATTRIBUTE = "disabled";
-
-	public final static String STYLE_SHEET = "stylesheet";
-
-	public final static String SELECTOR_TEXT_PROPERTY_NAME = "selectorText";
-
-	public final static String SELECTOR_SEPARATOR = ",";
 
 	/**
 	 * Each rule has a style object which contains a read/writable cssText

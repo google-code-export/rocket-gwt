@@ -22,7 +22,7 @@ import rocket.event.client.ChangeEvent;
 import rocket.event.client.ChangeEventListener;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.Colour;
 import rocket.util.client.StringHelper;
 import rocket.widget.client.Viewport;
@@ -86,9 +86,9 @@ public class ViewportTest implements EntryPoint {
 		viewport.setZoom(ZOOM);
 
 		final Element element = viewport.getElement();
-		InlineStyle.setInteger(element, StyleConstants.BORDER_WIDTH, 2, CssUnit.PX);
-		InlineStyle.setColour(element, StyleConstants.BORDER_COLOR, Colour.getColour("orange"));
-		InlineStyle.setString(element, StyleConstants.BORDER_STYLE, "solid");
+		InlineStyle.setInteger(element, Css.BORDER_WIDTH, 2, CssUnit.PX);
+		InlineStyle.setColour(element, Css.BORDER_COLOR, Colour.getColour("orange"));
+		InlineStyle.setString(element, Css.BORDER_STYLE, "solid");
 
 		rootPanel.add(viewport);
 

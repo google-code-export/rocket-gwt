@@ -24,7 +24,7 @@ import rocket.event.client.MouseOverEvent;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.widget.client.DivPanel;
@@ -52,9 +52,9 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		final DivPanel panel = this.createDivPanel();
 
 		final Element element = panel.getElement();
-		InlineStyle.setString(element, StyleConstants.POSITION, "relative");
-		InlineStyle.setInteger(element, StyleConstants.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(element, StyleConstants.TOP, 0, CssUnit.PX);
+		InlineStyle.setString(element, Css.POSITION, "relative");
+		InlineStyle.setInteger(element, Css.LEFT, 0, CssUnit.PX);
+		InlineStyle.setInteger(element, Css.TOP, 0, CssUnit.PX);
 
 		return panel;
 	}
@@ -106,7 +106,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		final Menu menu = menuList.getMenu();
 		final MenuListenerCollection listeners = menu.getMenuListeners();
 
-		InlineStyle.setInteger(this.getElement(), StyleConstants.Z_INDEX, 1, CssUnit.NONE);
+		InlineStyle.setInteger(this.getElement(), Css.Z_INDEX, 1, CssUnit.NONE);
 
 		// open the list belonging to this item...
 		menuList.open();
@@ -117,9 +117,9 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		// Must set absolute coordinates in order to read the coordinates of
 		// element accurately IE6 bug
 		final Element menuListElement = menuList.getElement();
-		InlineStyle.setString(menuListElement, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(menuListElement, StyleConstants.TOP, 0, CssUnit.PX);
+		InlineStyle.setString(menuListElement, Css.POSITION, "absolute");
+		InlineStyle.setInteger(menuListElement, Css.LEFT, 0, CssUnit.PX);
+		InlineStyle.setInteger(menuListElement, Css.TOP, 0, CssUnit.PX);
 
 		int x = Dom.getContainerLeftOffset(menuListElement);
 		int y = Dom.getContainerTopOffset(menuListElement);
@@ -128,42 +128,42 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 			final MenuListOpenDirection openDirection = menuList.getOpenDirection();
 
 			if (MenuListOpenDirection.LEFT == openDirection) {
-				x = x - ComputedStyle.getInteger(menuListElement, StyleConstants.WIDTH, CssUnit.PX, 0);
-				x = x + ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_RIGHT_WIDTH, CssUnit.PX, 0);
+				x = x - ComputedStyle.getInteger(menuListElement, Css.WIDTH, CssUnit.PX, 0);
+				x = x + ComputedStyle.getInteger(menuListElement, Css.BORDER_RIGHT_WIDTH, CssUnit.PX, 0);
 				x++;
 
-				y = y - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_TOP_WIDTH, CssUnit.PX, 0);
+				y = y - ComputedStyle.getInteger(menuListElement, Css.BORDER_TOP_WIDTH, CssUnit.PX, 0);
 				break;
 			}
 			if (MenuListOpenDirection.UP == openDirection) {
-				x = x - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
+				x = x - ComputedStyle.getInteger(menuListElement, Css.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
 
-				y = y - ComputedStyle.getInteger(menuListElement, StyleConstants.HEIGHT, CssUnit.PX, 0);
-				y = y + ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_BOTTOM_WIDTH, CssUnit.PX, 0);
+				y = y - ComputedStyle.getInteger(menuListElement, Css.HEIGHT, CssUnit.PX, 0);
+				y = y + ComputedStyle.getInteger(menuListElement, Css.BORDER_BOTTOM_WIDTH, CssUnit.PX, 0);
 				y--;
 				break;
 			}
 			if (MenuListOpenDirection.RIGHT == openDirection) {
-				x = x + ComputedStyle.getInteger(parentMenuList, StyleConstants.WIDTH, CssUnit.PX, 0);
-				x = x - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
+				x = x + ComputedStyle.getInteger(parentMenuList, Css.WIDTH, CssUnit.PX, 0);
+				x = x - ComputedStyle.getInteger(menuListElement, Css.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
 				x--;
 
-				y = y - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_TOP_WIDTH, CssUnit.PX, 0);
+				y = y - ComputedStyle.getInteger(menuListElement, Css.BORDER_TOP_WIDTH, CssUnit.PX, 0);
 				break;
 			}
 			ObjectHelper.checkSame("openDirection", MenuListOpenDirection.DOWN, openDirection);
 
-			x = x - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
+			x = x - ComputedStyle.getInteger(menuListElement, Css.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
 
-			y = y + ComputedStyle.getInteger(parentMenuList, StyleConstants.HEIGHT, CssUnit.PX, 0);
-			y = y - ComputedStyle.getInteger(menuListElement, StyleConstants.BORDER_TOP_WIDTH, CssUnit.PX, 0);
+			y = y + ComputedStyle.getInteger(parentMenuList, Css.HEIGHT, CssUnit.PX, 0);
+			y = y - ComputedStyle.getInteger(menuListElement, Css.BORDER_TOP_WIDTH, CssUnit.PX, 0);
 			y--;
 			break;
 		}
-		InlineStyle.setString(menuListElement, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(menuListElement, StyleConstants.LEFT, x, CssUnit.PX);
-		InlineStyle.setInteger(menuListElement, StyleConstants.TOP, y, CssUnit.PX);
-		InlineStyle.setInteger(menuListElement, StyleConstants.Z_INDEX, 1, CssUnit.NONE);
+		InlineStyle.setString(menuListElement, Css.POSITION, "absolute");
+		InlineStyle.setInteger(menuListElement, Css.LEFT, x, CssUnit.PX);
+		InlineStyle.setInteger(menuListElement, Css.TOP, y, CssUnit.PX);
+		InlineStyle.setInteger(menuListElement, Css.Z_INDEX, 1, CssUnit.NONE);
 
 		listeners.fireMenuOpened(this);
 	}
@@ -176,7 +176,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		this.getMenuList().hide();
 		this.removeHighlight();
 
-		InlineStyle.setString(this.getElement(), StyleConstants.Z_INDEX, "");
+		InlineStyle.setString(this.getElement(), Css.Z_INDEX, "");
 	}
 
 	protected String getSelectedStyle() {
@@ -196,7 +196,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	protected void handleMouseClick(final MouseClickEvent event) {
 		// ignore event if menu list is already opened...
 		if (false == this.isDisabled()) {
-			if ("hidden".equals(ComputedStyle.getString(this.getMenuList().getElement(), StyleConstants.VISIBILITY))) {
+			if ("hidden".equals(ComputedStyle.getString(this.getMenuList().getElement(), Css.VISIBILITY))) {
 				this.open();
 			}
 		}
@@ -310,8 +310,8 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		this.menuList = menuList;
 
 		final Element element = menuList.getElement();
-		InlineStyle.setString(element, StyleConstants.VISIBILITY, "hidden");
-		InlineStyle.setString(element, StyleConstants.DISPLAY, "none");
+		InlineStyle.setString(element, Css.VISIBILITY, "hidden");
+		InlineStyle.setString(element, Css.DISPLAY, "none");
 
 		final DivPanel divPanel = this.getDivPanel();
 		divPanel.remove(0);

@@ -29,7 +29,7 @@ import rocket.event.client.MouseMoveEvent;
 import rocket.event.client.MouseUpEvent;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.widget.client.CompositeWidget;
@@ -291,11 +291,11 @@ abstract public class SplitterPanel extends CompositeWidget {
 			// the enclosing div - with no border or margins...this makes it
 			// easy to calculate the available width for widgets.
 			final Element child = DOM.createDiv();
-			InlineStyle.setInteger(child, StyleConstants.MARGIN, 0, CssUnit.PX);
-			InlineStyle.setInteger(child, StyleConstants.BORDER, 0, CssUnit.PX);
-			InlineStyle.setInteger(child, StyleConstants.WIDTH, 100, CssUnit.PERCENTAGE);
-			InlineStyle.setInteger(child, StyleConstants.HEIGHT, 100, CssUnit.PERCENTAGE);
-			InlineStyle.setString(child, StyleConstants.POSITION, "relative");
+			InlineStyle.setInteger(child, Css.MARGIN, 0, CssUnit.PX);
+			InlineStyle.setInteger(child, Css.BORDER, 0, CssUnit.PX);
+			InlineStyle.setInteger(child, Css.WIDTH, 100, CssUnit.PERCENTAGE);
+			InlineStyle.setInteger(child, Css.HEIGHT, 100, CssUnit.PERCENTAGE);
+			InlineStyle.setString(child, Css.POSITION, "relative");
 
 			DOM.appendChild(parent, child);
 
@@ -368,7 +368,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 		protected Element createElement() {
 			final Element div = DOM.createDiv();
 			DOM.setInnerHTML(div, "&nbsp;");
-			InlineStyle.setString(div, StyleConstants.OVERFLOW, "hidden");
+			InlineStyle.setString(div, Css.OVERFLOW, "hidden");
 			return div;
 		}
 

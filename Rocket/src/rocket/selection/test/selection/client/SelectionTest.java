@@ -21,7 +21,7 @@ import rocket.dom.client.Dom;
 import rocket.selection.client.Selection;
 import rocket.selection.client.SelectionEndPoint;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.testing.client.Test;
 import rocket.testing.client.TestBuilder;
 import rocket.testing.client.WebPageTestRunner;
@@ -235,7 +235,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		final String TEXT = "LOREM ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.";
 
 		final Element div = DOM.createDiv();
-		InlineStyle.setString(div, StyleConstants.BACKGROUND_COLOR, "skyblue");
+		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "skyblue");
 		DOM.setInnerText(div, TEXT);
 		DOM.appendChild(Dom.getBody(), div);
 
@@ -266,7 +266,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		final String HTML = "lorem <b>iPSUM <i>DOLOR <u>SIT<u> AMET,</i> CONSECTETuer</b> adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.";
 
 		final Element div = DOM.createDiv();
-		InlineStyle.setString(div, StyleConstants.BACKGROUND_COLOR, "lightGreen");
+		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "lightGreen");
 		DOM.setInnerHTML(div, HTML);
 		DOM.appendChild(Dom.getBody(), div);
 
@@ -306,7 +306,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		final String HTML = "lorem <b>ipsum <i>doLOR <u>SIT<u> AMET,</i> CONSECTETuer</b> adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.";
 
 		final Element div = DOM.createDiv();
-		InlineStyle.setString(div, StyleConstants.BACKGROUND_COLOR, "yellow");
+		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "yellow");
 		DOM.setInnerHTML(div, HTML);
 		DOM.appendChild(Dom.getBody(), div);
 
@@ -350,7 +350,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		final String HTML = "LOREM <b>ipsum <i>dolor <u>sit<u> amet,</i> consectetuer</b> adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.";
 
 		final Element div = DOM.createDiv();
-		InlineStyle.setString(div, StyleConstants.BACKGROUND_COLOR, "lightBlue");
+		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "lightBlue");
 		DOM.setInnerHTML(div, HTML);
 		DOM.appendChild(Dom.getBody(), div);
 
@@ -385,7 +385,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		final String HTML = "lorum <b>iPSUM <i>DOlor </i>sit</b> amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.";
 
 		final Element div = DOM.createDiv();
-		InlineStyle.setString(div, StyleConstants.BACKGROUND_COLOR, "cyan");
+		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "cyan");
 		DOM.setInnerHTML(div, HTML);
 		DOM.appendChild(Dom.getBody(), div);
 
@@ -425,7 +425,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		final String HTML = "lorum <b>ipsum <i>dOLOR </i>SIT</b> AMET, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.";
 
 		final Element div = DOM.createDiv();
-		InlineStyle.setString(div, StyleConstants.BACKGROUND_COLOR, "turquoise");
+		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "turquoise");
 		DOM.setInnerHTML(div, HTML);
 		DOM.appendChild(Dom.getBody(), div);
 
@@ -512,8 +512,8 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 				final Selection selection = Selection.getSelection();
 
 				final Element element = DOM.createSpan();
-				InlineStyle.setString(element, StyleConstants.FONT_SIZE, "larger");
-				InlineStyle.setString(element, StyleConstants.BACKGROUND_COLOR, "#eee");
+				InlineStyle.setString(element, Css.FONT_SIZE, "larger");
+				InlineStyle.setString(element, Css.BACKGROUND_COLOR, "#eee");
 				selection.surround(element);
 			}
 		});

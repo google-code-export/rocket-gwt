@@ -18,7 +18,7 @@ package rocket.remoting.test.outstandingrpctracker.client;
 import rocket.remoting.client.OustandingRpcTracker;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -47,11 +47,11 @@ public class OutstandingRpcTrackerTest implements EntryPoint {
 
 		final HTML loading = new HTML("LOADING...");
 		final Element loadingElement = loading.getElement();
-		InlineStyle.setString(loadingElement, StyleConstants.BACKGROUND_COLOR, "red");
-		InlineStyle.setString(loadingElement, StyleConstants.COLOR, "white");
-		InlineStyle.setString(loadingElement, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(loadingElement, StyleConstants.RIGHT, 0, CssUnit.PX);
-		InlineStyle.setInteger(loadingElement, StyleConstants.TOP, 0, CssUnit.PX);
+		InlineStyle.setString(loadingElement, Css.BACKGROUND_COLOR, "red");
+		InlineStyle.setString(loadingElement, Css.COLOR, "white");
+		InlineStyle.setString(loadingElement, Css.POSITION, "absolute");
+		InlineStyle.setInteger(loadingElement, Css.RIGHT, 0, CssUnit.PX);
+		InlineStyle.setInteger(loadingElement, Css.TOP, 0, CssUnit.PX);
 
 		root.add(loading);
 

@@ -19,7 +19,7 @@ import rocket.dom.client.Dom;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.Html;
 
@@ -42,9 +42,9 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 	protected Element createPanelElement() {
 		final Element panel = DOM.createDiv();
 
-		InlineStyle.setString(panel, StyleConstants.POSITION, "relative");
-		InlineStyle.setInteger(panel, StyleConstants.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(panel, StyleConstants.TOP, 0, CssUnit.PX);
+		InlineStyle.setString(panel, Css.POSITION, "relative");
+		InlineStyle.setInteger(panel, Css.LEFT, 0, CssUnit.PX);
+		InlineStyle.setInteger(panel, Css.TOP, 0, CssUnit.PX);
 
 		final Element background = DOM.createSpan();
 		ObjectHelper.setString(background, "className", this.getBackgroundStyleName());
@@ -52,11 +52,11 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 
 		final Element handle = DOM.createDiv();
 		ObjectHelper.setString(handle, "className", this.getHandleStyleName());
-		InlineStyle.setString(background, StyleConstants.Z_INDEX, "1");
+		InlineStyle.setString(background, Css.Z_INDEX, "1");
 		DOM.appendChild(panel, handle);
 
-		InlineStyle.setString(panel, StyleConstants.OVERFLOW_X, "hidden");
-		InlineStyle.setString(panel, StyleConstants.OVERFLOW_Y, "hidden");
+		InlineStyle.setString(panel, Css.OVERFLOW_X, "hidden");
+		InlineStyle.setString(panel, Css.OVERFLOW_Y, "hidden");
 
 		return panel;
 	}
@@ -99,17 +99,17 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 	protected void updateBackgroundDimensions(){
 		final Element element = this.getBackgroundWidgetElement();
 		
-		final String originalWidth = InlineStyle.getString(element, StyleConstants.WIDTH);
-		final String originalHeight = InlineStyle.getString(element, StyleConstants.HEIGHT);
+		final String originalWidth = InlineStyle.getString(element, Css.WIDTH);
+		final String originalHeight = InlineStyle.getString(element, Css.HEIGHT);
 
-		ObjectHelper.setString(element, "_" + StyleConstants.WIDTH, originalWidth);
-		ObjectHelper.setString(element, "_" + StyleConstants.HEIGHT, originalHeight);
+		ObjectHelper.setString(element, "_" + Css.WIDTH, originalWidth);
+		ObjectHelper.setString(element, "_" + Css.HEIGHT, originalHeight);
 
-		final int widthInPixels = ComputedStyle.getInteger( this.getElement(), StyleConstants.WIDTH, CssUnit.PX, 0 );
-		InlineStyle.setInteger(element, StyleConstants.WIDTH, widthInPixels, CssUnit.PX );
+		final int widthInPixels = ComputedStyle.getInteger( this.getElement(), Css.WIDTH, CssUnit.PX, 0 );
+		InlineStyle.setInteger(element, Css.WIDTH, widthInPixels, CssUnit.PX );
 		
-		final int heightInPixels = ComputedStyle.getInteger( this.getElement(), StyleConstants.HEIGHT, CssUnit.PX, 0 );
-		InlineStyle.setInteger(element, StyleConstants.HEIGHT, heightInPixels, CssUnit.PX );
+		final int heightInPixels = ComputedStyle.getInteger( this.getElement(), Css.HEIGHT, CssUnit.PX, 0 );
+		InlineStyle.setInteger(element, Css.HEIGHT, heightInPixels, CssUnit.PX );
 	}
 	
 	protected void remove0(final Element element, final int index) {
@@ -121,11 +121,11 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 	
 	protected void restoreBackgroundWidgetDimensions(){
 		final Element element = this.getBackgroundWidgetElement();
-		final String width = ObjectHelper.getString(element, "_" + StyleConstants.WIDTH);
-		final String height = ObjectHelper.getString(element, "_" + StyleConstants.HEIGHT);
+		final String width = ObjectHelper.getString(element, "_" + Css.WIDTH);
+		final String height = ObjectHelper.getString(element, "_" + Css.HEIGHT);
 
-		InlineStyle.setString(element, StyleConstants.WIDTH, width);
-		InlineStyle.setString(element, StyleConstants.HEIGHT, height);
+		InlineStyle.setString(element, Css.WIDTH, width);
+		InlineStyle.setString(element, Css.HEIGHT, height);
 	}
 
 	protected Element getBackgroundWidgetElement(){

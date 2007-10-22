@@ -16,7 +16,7 @@
 package rocket.style.client.support;
 
 import rocket.style.client.CssUnit;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -30,7 +30,7 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 		String value = null;
 		
 		while( true ){
-			if( StyleConstants.OPACITY.equals( name )){
+			if( Css.OPACITY.equals( name )){
 				value = this.getOpacity(source);
 				break;
 			}			
@@ -79,7 +79,7 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 	protected int getFontSize(final Element element) {
 		int size = -1;
 		while (true) {
-			final String propertyValue = getString(element, StyleConstants.FONT_SIZE);
+			final String propertyValue = getString(element, Css.FONT_SIZE);
 			if (StringHelper.isNullOrEmpty(propertyValue)) {
 				size = -1;
 				break;
@@ -156,11 +156,11 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 	
 	public void set( final JavaScriptObject source, final String name, final String value ){
 		while( true ){
-			if( StyleConstants.OPACITY.equals( name )){
+			if( Css.OPACITY.equals( name )){
 				this.setOpacity( source, value);
 				break;
 			}
-			if( StyleConstants.BACKGROUND_IMAGE.equals( name )){
+			if( Css.BACKGROUND_IMAGE.equals( name )){
 				this.setBackgroundImage( source, value );
 			}
 			super.set(source, name, value);
@@ -174,25 +174,25 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 
 		// backup other background properties that will get lost when background
 		// shortcut with image is written.
-		final String colour = getString(ruleOrElement, StyleConstants.BACKGROUND_COLOR);
-		final String attachment = getString(ruleOrElement, StyleConstants.BACKGROUND_ATTACHMENT);
-		final String position = getString(ruleOrElement, StyleConstants.BACKGROUND_POSITION);
-		final String repeat = getString(ruleOrElement, StyleConstants.BACKGROUND_REPEAT);
+		final String colour = getString(ruleOrElement, Css.BACKGROUND_COLOR);
+		final String attachment = getString(ruleOrElement, Css.BACKGROUND_ATTACHMENT);
+		final String position = getString(ruleOrElement, Css.BACKGROUND_POSITION);
+		final String repeat = getString(ruleOrElement, Css.BACKGROUND_REPEAT);
 
-		this.setString(ruleOrElement, StyleConstants.BACKGROUND, url);
+		this.setString(ruleOrElement, Css.BACKGROUND, url);
 
 		// restore other background properties...
 		if (false == StringHelper.isNullOrEmpty(colour)) {
-			this.setString(ruleOrElement, StyleConstants.BACKGROUND_COLOR, colour);
+			this.setString(ruleOrElement, Css.BACKGROUND_COLOR, colour);
 		}
 		if (false == StringHelper.isNullOrEmpty(attachment)) {
-			this.setString(ruleOrElement, StyleConstants.BACKGROUND_ATTACHMENT, attachment);
+			this.setString(ruleOrElement, Css.BACKGROUND_ATTACHMENT, attachment);
 		}
 		if (false == StringHelper.isNullOrEmpty(position)) {
-			this.setString(ruleOrElement, StyleConstants.BACKGROUND_POSITION, position);
+			this.setString(ruleOrElement, Css.BACKGROUND_POSITION, position);
 		}
 		if (false == StringHelper.isNullOrEmpty(repeat)) {
-			this.setString(ruleOrElement, StyleConstants.BACKGROUND_REPEAT, repeat);
+			this.setString(ruleOrElement, Css.BACKGROUND_REPEAT, repeat);
 		}
 	}
 	
@@ -207,7 +207,7 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 	
 	public void remove( final JavaScriptObject source, final String name ){
 		while( true ){
-			if( StyleConstants.OPACITY.equals( name ) ){
+			if( Css.OPACITY.equals( name ) ){
 				this.removeUserSelect( source);
 			}
 			super.remove( source, name );

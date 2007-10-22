@@ -27,7 +27,7 @@ import rocket.event.client.MouseUpEvent;
 import rocket.selection.client.Selection;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
 import rocket.widget.client.CompositeWidget;
@@ -68,7 +68,7 @@ public abstract class Slider extends CompositeWidget {
 	/**
 	 * Sub classes must return the name of the style property coordinate
 	 * 
-	 * @return StyleConstants.LEFT or StyleConstants.TOP
+	 * @return Css.LEFT or Css.TOP
 	 */
 	abstract protected String getHandleCoordinateStylePropertyName();
 
@@ -547,9 +547,9 @@ public abstract class Slider extends CompositeWidget {
 
 	protected void setRelativeHandleCoordinate(final int coordinate) {
 		final Element element = this.getHandle().getElement();
-		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
-		InlineStyle.setString(element, StyleConstants.LEFT, "0px");
-		InlineStyle.setString(element, StyleConstants.TOP, "0px");
+		InlineStyle.setString(element, Css.POSITION, "absolute");
+		InlineStyle.setString(element, Css.LEFT, "0px");
+		InlineStyle.setString(element, Css.TOP, "0px");
 		InlineStyle
 				.setInteger(element, this
 						.getHandleCoordinateStylePropertyName(), coordinate,

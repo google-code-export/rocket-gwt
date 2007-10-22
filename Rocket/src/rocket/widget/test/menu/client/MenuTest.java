@@ -17,7 +17,7 @@ package rocket.widget.test.menu.client;
 
 import rocket.browser.client.Browser;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.widget.client.Label;
@@ -147,7 +147,7 @@ public class MenuTest implements EntryPoint {
 			Widget widget = label;
 			if (word.length() > 1) {
 				if (i % 9 == 0) {
-					InlineStyle.setString(label.getElement(), StyleConstants.BACKGROUND_COLOR, "yellow");
+					InlineStyle.setString(label.getElement(), Css.BACKGROUND_COLOR, "yellow");
 
 					final ContextMenu contextMenu = new ContextMenu();
 					contextMenu.addMenuListener(listener);

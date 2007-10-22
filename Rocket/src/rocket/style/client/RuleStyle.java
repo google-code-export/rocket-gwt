@@ -36,11 +36,11 @@ class RuleStyle extends Style {
 	}
 	
 	final public String getCssText() {
-		return ObjectHelper.getString(this.getStyle(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
+		return ObjectHelper.getString(this.getStyle(), Css.CSS_STYLE_TEXT_PROPERTY_NAME);
 	}
 
 	final public void setCssText(final String cssText) {
-		ObjectHelper.setString(this.getStyle(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME, cssText);
+		ObjectHelper.setString(this.getStyle(), Css.CSS_STYLE_TEXT_PROPERTY_NAME, cssText);
 	}
 
 	public int size() {

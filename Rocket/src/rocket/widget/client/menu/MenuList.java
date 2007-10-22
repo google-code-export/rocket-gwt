@@ -23,7 +23,7 @@ import rocket.event.client.MouseEventAdapter;
 import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.CompositePanel;
 
@@ -102,8 +102,8 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	protected void hide() {
 		if (this.isHideable()) {
 			final Element element = this.getElement();
-			InlineStyle.setString(element, StyleConstants.VISIBILITY, "hidden");
-			InlineStyle.setString(element, StyleConstants.DISPLAY, "none");
+			InlineStyle.setString(element, Css.VISIBILITY, "hidden");
+			InlineStyle.setString(element, Css.DISPLAY, "none");
 		}
 
 		if (this.hasOpened()) {

@@ -35,15 +35,15 @@ public class CssUnit {
 
 	public final static CssUnit EX = new CssUnit("ex", Float.NaN);
 
-	public final static CssUnit IN = new CssUnit("in", StyleConstants.IN_TO_PX);
+	public final static CssUnit IN = new CssUnit("in", Css.IN_TO_PX);
 
-	public final static CssUnit CM = new CssUnit("cm", StyleConstants.CM_TO_PX);
+	public final static CssUnit CM = new CssUnit("cm", Css.CM_TO_PX);
 
-	public final static CssUnit MM = new CssUnit("mm", StyleConstants.MM_TO_PX);
+	public final static CssUnit MM = new CssUnit("mm", Css.MM_TO_PX);
 
-	public final static CssUnit PT = new CssUnit("pt", StyleConstants.PT_TO_PX);
+	public final static CssUnit PT = new CssUnit("pt", Css.PT_TO_PX);
 
-	public final static CssUnit PC = new CssUnit("pc", StyleConstants.PC_TO_PX);
+	public final static CssUnit PC = new CssUnit("pc", Css.PC_TO_PX);
 
 	/**
 	 * Takes a css position value and returns the enum.

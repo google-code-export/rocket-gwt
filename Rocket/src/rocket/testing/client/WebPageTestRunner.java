@@ -21,7 +21,7 @@ import java.util.List;
 import rocket.dom.client.Dom;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleConstants;
+import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StackTrace;
 import rocket.widget.client.DivPanel;
@@ -92,11 +92,11 @@ public class WebPageTestRunner extends TestRunner {
 	protected void addTestNameDivider() {
 		final HTML html = new HTML();
 		final Element element = html.getElement();
-		InlineStyle.setInteger(element, StyleConstants.WIDTH, 100, CssUnit.PERCENTAGE);
-		InlineStyle.setInteger(element, StyleConstants.HEIGHT, 1, CssUnit.EM);
-		InlineStyle.setInteger(element, StyleConstants.MARGIN, 4, CssUnit.PX);
-		InlineStyle.setString(element, StyleConstants.COLOR, "black");
-		InlineStyle.setString(element, StyleConstants.BACKGROUND_COLOR, "skyBlue");
+		InlineStyle.setInteger(element, Css.WIDTH, 100, CssUnit.PERCENTAGE);
+		InlineStyle.setInteger(element, Css.HEIGHT, 1, CssUnit.EM);
+		InlineStyle.setInteger(element, Css.MARGIN, 4, CssUnit.PX);
+		InlineStyle.setString(element, Css.COLOR, "black");
+		InlineStyle.setString(element, Css.BACKGROUND_COLOR, "skyBlue");
 		html.setText(this.getCurrentTestName());
 		this.addWidget(html);
 	}

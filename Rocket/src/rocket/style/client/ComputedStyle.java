@@ -125,7 +125,7 @@ public class ComputedStyle extends Style implements Destroyable {
 	}
 	
 	final public String getCssText() {
-		return ObjectHelper.getString(this.getElement(), StyleConstants.CSS_STYLE_TEXT_PROPERTY_NAME);
+		return ObjectHelper.getString(this.getElement(), Css.CSS_STYLE_TEXT_PROPERTY_NAME);
 	}
 
 	final public void setCssText(final String cssText) {
