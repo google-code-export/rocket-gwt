@@ -425,7 +425,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 
 		/**
 		 * This EventPreview dispatches to the either
-		 * {@link #handleMouseMove(Event)} or {@link #handleMouseUp(Event)}
+		 * {@link #onMouseMove(Event)} or {@link #onMouseUp(Event)}
 		 * depending on the event type.
 		 * 
 		 * @return
@@ -438,7 +438,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 				}
 
 				protected void onMouseMove(final MouseMoveEvent event) {
-					SplitterPanel.this.handleMouseMove(event);
+					SplitterPanel.this.onMouseMove(event);
 				}
 
 				protected void onMouseUp(final MouseUpEvent event) {
@@ -468,7 +468,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	abstract protected void handleMouseMove(MouseMoveEvent event);
+	abstract protected void onMouseMove(MouseMoveEvent event);
 
 	/**
 	 * The size in pixels allocated to each splitter widget that separated two
