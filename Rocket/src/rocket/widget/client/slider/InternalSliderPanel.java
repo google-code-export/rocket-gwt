@@ -16,6 +16,7 @@
 package rocket.widget.client.slider;
 
 import rocket.dom.client.Dom;
+import rocket.style.client.ComputedStyle;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.style.client.StyleConstants;
@@ -46,14 +47,16 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		InlineStyle.setInteger(panel, StyleConstants.TOP, 0, CssUnit.PX);
 
 		final Element background = DOM.createSpan();
-		ObjectHelper.setString(background, "className", this
-				.getBackgroundStyleName());
+		ObjectHelper.setString(background, "className", this.getBackgroundStyleName());
 		DOM.appendChild(panel, background);
 
 		final Element handle = DOM.createDiv();
 		ObjectHelper.setString(handle, "className", this.getHandleStyleName());
 		InlineStyle.setString(background, StyleConstants.Z_INDEX, "1");
 		DOM.appendChild(panel, handle);
+
+		InlineStyle.setString(panel, StyleConstants.OVERFLOW_X, "hidden");
+		InlineStyle.setString(panel, StyleConstants.OVERFLOW_Y, "hidden");
 
 		return panel;
 	}
@@ -85,52 +88,56 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		final Element childParent = DOM.getChild(this.getElement(), index);
 
 		if (index == Constants.BACKGROUND_WIDGET_INDEX) {
-			// backup width, height, overflow...
-			final String width = InlineStyle.getString(element,
-					StyleConstants.WIDTH);
-			final String height = InlineStyle.getString(element,
-					StyleConstants.HEIGHT);
-			final String overflowX = InlineStyle.getString(element,
-					StyleConstants.OVERFLOW_X);
-			final String overflowY = ObjectHelper.getString(element,
-					StyleConstants.OVERFLOW_Y);
-
-			ObjectHelper.setString(element, "_" + StyleConstants.WIDTH, width);
-			ObjectHelper
-					.setString(element, "_" + StyleConstants.HEIGHT, height);
-			ObjectHelper.setString(element, "_" + StyleConstants.OVERFLOW_X,
-					overflowX);
-			ObjectHelper.setString(element, "_" + StyleConstants.OVERFLOW_Y,
-					overflowY);
-
-			InlineStyle.setString(element, StyleConstants.WIDTH, "100%");
-			InlineStyle.setString(element, StyleConstants.HEIGHT, "100%");
-			InlineStyle.setString(element, StyleConstants.OVERFLOW_X, "hidden");
-			InlineStyle.setString(element, StyleConstants.OVERFLOW_Y, "hidden");
+			if( this.isAttached() ){
+				this.updateBackgroundDimensions();
+			}
 		}
 
 		DOM.appendChild(childParent, element);
 	}
 
+	protected void updateBackgroundDimensions(){
+		final Element element = this.getBackgroundWidgetElement();
+		
+		final String originalWidth = InlineStyle.getString(element, StyleConstants.WIDTH);
+		final String originalHeight = InlineStyle.getString(element, StyleConstants.HEIGHT);
+
+		ObjectHelper.setString(element, "_" + StyleConstants.WIDTH, originalWidth);
+		ObjectHelper.setString(element, "_" + StyleConstants.HEIGHT, originalHeight);
+
+		final int widthInPixels = ComputedStyle.getInteger( this.getElement(), StyleConstants.WIDTH, CssUnit.PX, 0 );
+		InlineStyle.setInteger(element, StyleConstants.WIDTH, widthInPixels, CssUnit.PX );
+		
+		final int heightInPixels = ComputedStyle.getInteger( this.getElement(), StyleConstants.HEIGHT, CssUnit.PX, 0 );
+		InlineStyle.setInteger(element, StyleConstants.HEIGHT, heightInPixels, CssUnit.PX );
+	}
+	
 	protected void remove0(final Element element, final int index) {
-		Dom.removeFromParent(element);
-
 		if (index == Constants.BACKGROUND_WIDGET_INDEX) {
-			final String width = ObjectHelper.getString(element, "_"
-					+ StyleConstants.WIDTH);
-			final String height = ObjectHelper.getString(element, "_"
-					+ StyleConstants.HEIGHT);
-			final String overflowX = ObjectHelper.getString(element, "_"
-					+ StyleConstants.OVERFLOW_X);
-			final String overflowY = ObjectHelper.getString(element, "_"
-					+ StyleConstants.OVERFLOW_Y);
+			this.restoreBackgroundWidgetDimensions();
+		}
+		Dom.removeFromParent(element);
+	}
+	
+	protected void restoreBackgroundWidgetDimensions(){
+		final Element element = this.getBackgroundWidgetElement();
+		final String width = ObjectHelper.getString(element, "_" + StyleConstants.WIDTH);
+		final String height = ObjectHelper.getString(element, "_" + StyleConstants.HEIGHT);
 
-			InlineStyle.setString(element, StyleConstants.WIDTH, width);
-			InlineStyle.setString(element, StyleConstants.HEIGHT, height);
-			InlineStyle
-					.setString(element, StyleConstants.OVERFLOW_X, overflowX);
-			InlineStyle
-					.setString(element, StyleConstants.OVERFLOW_Y, overflowY);
+		InlineStyle.setString(element, StyleConstants.WIDTH, width);
+		InlineStyle.setString(element, StyleConstants.HEIGHT, height);
+	}
+
+	protected Element getBackgroundWidgetElement(){
+		final Element parent = DOM.getChild(this.getElement(), Constants.BACKGROUND_WIDGET_INDEX);
+		return DOM.getChild(parent, 0 );
+	}
+	
+	public void onAttach(){
+		super.onAttach();
+		
+		if( this.getWidgetCount() > Constants.BACKGROUND_WIDGET_INDEX ){
+			this.updateBackgroundDimensions();
 		}
 	}
 }

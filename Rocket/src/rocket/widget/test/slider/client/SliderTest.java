@@ -47,12 +47,6 @@ public class SliderTest implements EntryPoint {
 
 	static final int MOUSEDOWN_REPEAT_RATE = 20;
 
-	static final int WIDTH = 20;
-
-	static final int HEIGHT = 20;
-
-	static final int LENGTH = 200;
-
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
@@ -64,8 +58,8 @@ public class SliderTest implements EntryPoint {
 		final RootPanel rootPanel = RootPanel.get();
 
 		final Grid grid = new Grid(4, 3);
-		grid.setCellPadding(0);
-		grid.setCellSpacing(0);
+		grid.setCellPadding(2);
+		grid.setCellSpacing(2);
 		grid.setBorderWidth(0);
 
 		rootPanel.add(grid);
@@ -92,8 +86,6 @@ public class SliderTest implements EntryPoint {
 		grid.setWidget(2, column, changeCounter);
 
 		final FloatingSlider slider = new FloatingSlider();
-		slider.setWidth(LENGTH + "px");
-		slider.setHeight(LENGTH + "px");
 		slider.setDeltaX(DELTA);
 		slider.setDeltaY(DELTA);
 		slider.setMaximumXValue(MAXIMUM_VALUE);
@@ -104,11 +96,10 @@ public class SliderTest implements EntryPoint {
 
 		slider.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
-				value.setText("" + slider.getXValue() + ","
-						+ slider.getYValue());
+				value.setText("Values: " + slider.getXValue() + "," + slider.getYValue() + " of " + slider.getMaximumXValue() + "," + slider.getMaximumYValue() );
 
 				counter++;
-				changeCounter.setText("" + counter);
+				changeCounter.setText("ChangeEvent counter: " + counter);
 			}
 
 			int counter = 0;
@@ -132,8 +123,6 @@ public class SliderTest implements EntryPoint {
 		grid.setWidget(2, column, changeCounter);
 
 		final VerticalSlider slider = new VerticalSlider();
-		slider.setWidth(WIDTH + "px");
-		slider.setHeight(LENGTH + "px");
 		slider.setDelta(DELTA);
 		slider.setMaximumValue(MAXIMUM_VALUE);
 		slider.setHandle(createHandle());
@@ -142,10 +131,10 @@ public class SliderTest implements EntryPoint {
 
 		slider.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
-				value.setText("" + slider.getValue());
+				value.setText("Value: " + slider.getValue() + " of " + slider.getMaximumValue() );
 
 				counter++;
-				changeCounter.setText("" + counter);
+				changeCounter.setText("ChangeEvent counter: " + counter);
 			}
 
 			int counter = 0;
@@ -168,8 +157,6 @@ public class SliderTest implements EntryPoint {
 		grid.setWidget(2, column, changeCounter);
 
 		final HorizontalSlider slider = new HorizontalSlider();
-		slider.setWidth(LENGTH + "px");
-		slider.setHeight(HEIGHT + "px");
 		slider.setDelta(DELTA);
 		slider.setMaximumValue(MAXIMUM_VALUE);
 		slider.setHandle(createHandle());
@@ -178,10 +165,10 @@ public class SliderTest implements EntryPoint {
 
 		slider.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
-				value.setText("" + slider.getValue());
+				value.setText("Value: " + slider.getValue() + " of " + slider.getMaximumValue() );
 
 				counter++;
-				changeCounter.setText("" + counter);
+				changeCounter.setText("ChangeEvent counter: " + counter);
 			}
 
 			int counter = 0;
@@ -194,20 +181,19 @@ public class SliderTest implements EntryPoint {
 
 	Widget createHandle() {
 		final Image widget = new Image("star.png");
-		widget.setWidth(WIDTH + "px");
-		widget.setHeight(HEIGHT + "px");
 		widget.addStyleName("handle");
 		return widget;
 	}
 
 	Widget createBackground() {
-		final int rows = 15;
-		final int columns = 15;
+		final int rows = 10;
+		final int columns = 10;
 
 		final Grid grid = new Grid(rows, columns);
-		grid.setBorderWidth(0);
-		grid.setCellPadding(0);
-		grid.setCellSpacing(0);
+		
+		final Element gridElement = grid.getElement();
+		InlineStyle.setString( gridElement, StyleConstants.BORDER_COLLAPSE, "collapse" );
+		InlineStyle.setString( gridElement, StyleConstants.BORDER_SPACING, "0" );
 
 		final CellFormatter cellFormatter = grid.getCellFormatter();
 

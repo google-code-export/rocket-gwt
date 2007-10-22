@@ -146,7 +146,7 @@ public abstract class Slider extends CompositeWidget {
 		this.getEventListenerDispatcher().addMouseEventListener(
 				new MouseEventAdapter() {
 					public void onMouseDown(final MouseDownEvent event) {
-						Slider.this.handleMouseDown(event);
+						Slider.this.onMouseDown(event);
 					}
 				});
 
@@ -179,7 +179,7 @@ public abstract class Slider extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseDown(final MouseDownEvent event) {
+	protected void onMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
@@ -187,13 +187,13 @@ public abstract class Slider extends CompositeWidget {
 
 			// check if the handle widget has been clicked...
 			if (DOM.isOrHasChild(this.getHandle().getElement(), target)) {
-				this.handleHandleMouseDown(event);
+				this.onHandleMouseDown(event);
 				break;
 			}
 
 			// was the slider background itself clicked ?
 			if (DOM.isOrHasChild(this.getElement(), target)) {
-				this.handleBackgroundMouseDown(event);
+				this.onBackgroundMouseDown(event);
 				break;
 			}
 
@@ -207,7 +207,7 @@ public abstract class Slider extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	protected void handleHandleMouseDown(final MouseDownEvent event) {
+	protected void onHandleMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		if (false == this.hasDraggingEventPreview()) {
@@ -259,16 +259,16 @@ public abstract class Slider extends CompositeWidget {
 		return new EventPreviewAdapter() {
 
 			public void onMouseMove(final MouseMoveEvent event) {
-				Slider.this.handleMouseMove(event);
+				Slider.this.onMouseMove(event);
 			}
 
 			public void onMouseUp(final MouseUpEvent event) {
-				Slider.this.handleHandleMouseUp(event);
+				Slider.this.onHandleMouseUp(event);
 			}
 		};
 	}
 
-	protected void handleMouseMove(final MouseMoveEvent event) {
+	protected void onMouseMove(final MouseMoveEvent event) {
 		final int range = this.getSliderLength() - this.getHandleLength();
 
 		int value = this.getMousePageCoordinate(event)
@@ -290,20 +290,20 @@ public abstract class Slider extends CompositeWidget {
 		event.stop(); // stops text selection in Opera.
 	}
 
-	protected void handleBackgroundMouseDown(final MouseDownEvent event) {
+	protected void onBackgroundMouseDown(final MouseDownEvent event) {
 		final int mouse = this.getMousePageCoordinate(event)
 				- this.getAbsoluteWidgetCoordinate() - this.getHandleLength()
 				/ 2;
 		final HandleSlidingTimer timer = this.getTimer();
 		timer.setMouse(mouse);
 
-		handleBackgroundMouseDown(mouse);
+		onBackgroundMouseDown(mouse);
 	}
 
-	protected void handleBackgroundMouseDown(final int mouse) {
+	protected void onBackgroundMouseDown(final int mouse) {
 		while (true) {
 			final int handleBeforeUpdate = this.getRelativeHandleCoordinate();
-			final int valueBefore = this.getValue();
+			//final int valueBefore = this.getValue();
 
 			if (mouse == handleBeforeUpdate) {
 				this.clearTimer();
@@ -311,12 +311,12 @@ public abstract class Slider extends CompositeWidget {
 			}
 			final boolean handleBeforeMouseBefore = handleBeforeUpdate <= mouse;
 			if (handleBeforeMouseBefore) {
-				this.handleAfterHandleMouseDown();
+				this.onAfterHandleMouseDown();
 			} else {
-				this.handleBeforeHandleMouseDown();
+				this.onBeforeHandleMouseDown();
 			}
 			final int handleAfterUpdate = this.getRelativeHandleCoordinate();
-			final int valueAfter = this.getValue();
+			//final int valueAfter = this.getValue();
 
 			final boolean handleBeforeMouseAfter = handleAfterUpdate <= mouse;
 			if (handleBeforeMouseBefore != handleBeforeMouseAfter) {
@@ -331,7 +331,7 @@ public abstract class Slider extends CompositeWidget {
 	 * Decreases the value of this slider ensuring that it does not underflow
 	 * the minimum value of this slider.
 	 */
-	protected void handleBeforeHandleMouseDown() {
+	protected void onBeforeHandleMouseDown() {
 		final int newValue = Math.max(0, this.getValue() - this.getDelta());
 		final int coordinate = this.getRelativeHandleCoordinate() - 1;
 		this.setValue(newValue);
@@ -342,7 +342,7 @@ public abstract class Slider extends CompositeWidget {
 	 * Increases the value of this slider ensuring that it does not exceed the
 	 * maximum value of this slider.
 	 */
-	protected void handleAfterHandleMouseDown() {
+	protected void onAfterHandleMouseDown() {
 		final int newValue = Math.min(this.getValue() + this.getDelta(), this
 				.getMaximumValue());
 		final int coordinate = this.getRelativeHandleCoordinate() + 1;
@@ -356,7 +356,7 @@ public abstract class Slider extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	protected void handleHandleMouseUp(final MouseUpEvent event) {
+	protected void onHandleMouseUp(final MouseUpEvent event) {
 		this.getHandle().removeStyleName(this.getSliderDraggingStyleName());
 
 		DOM.removeEventPreview(this.getDraggingEventPreview());
@@ -417,7 +417,7 @@ public abstract class Slider extends CompositeWidget {
 	protected class HandleSlidingTimer extends Timer {
 
 		public void run() {
-			Slider.this.handleBackgroundMouseDown(this.getMouse());
+			Slider.this.onBackgroundMouseDown(this.getMouse());
 		}
 
 		private int mouse;
