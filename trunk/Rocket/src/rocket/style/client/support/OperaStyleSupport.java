@@ -15,7 +15,6 @@
  */
 package rocket.style.client.support;
 
-import com.google.gwt.user.client.Window;
 
 abstract public class OperaStyleSupport extends StyleSupport{
 	
