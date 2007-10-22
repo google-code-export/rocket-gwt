@@ -306,29 +306,29 @@ public class WidgetConstants {
 
 	final static String RESIZABLE_PANEL_DRAGGED_WIDGET_STYLE = RESIZABLE_PANEL_STYLE + "-draggedWidget";
 
-	// DATEPICKER
+	// CALENDAR
 
-	final static int DATEPICKER_ROWS = 6;
+	final static int CALENDAR_ROWS = 6;
 
-	final static int DATEPICKER_COLUMNS = 7;
+	final static int CALENDAR_COLUMNS = 7;
 
-	final static int DATEPICKER_MILLISECONDS_IN_A_DAY = 24 * 60 * 60 * 1000;
+	final static int CALENDAR_MILLISECONDS_IN_A_DAY = 24 * 60 * 60 * 1000;
 
-	final static int DATEPICKER_MILLISECONDS_IN_A_WEEK = DATEPICKER_MILLISECONDS_IN_A_DAY * 7;
+	final static int CALENDAR_MILLISECONDS_IN_A_WEEK = CALENDAR_MILLISECONDS_IN_A_DAY * 7;
 
-	final static int DATEPICKER_YEAR_BIAS = 1900;
+	final static int CALENDAR_YEAR_BIAS = 1900;
 
-	final static String DATEPICKER_STYLE = ROCKET + "-datePicker";
+	final static String CALENDAR_STYLE = ROCKET + "-calendar";
 
-	final static String DATEPICKER_HEADING_STYLE = DATEPICKER_STYLE + "-heading";
+	final static String CALENDAR_HEADING_STYLE = CALENDAR_STYLE + "-heading";
 
-	final static String DATEPICKER_DAY_STYLE = DATEPICKER_STYLE + "-day";
+	final static String CALENDAR_DAY_STYLE = CALENDAR_STYLE + "-day";
 
-	final static String DATEPICKER_PREVIOUS_MONTH_STYLE = DATEPICKER_STYLE + "-previousMonth";
+	final static String CALENDAR_PREVIOUS_MONTH_STYLE = CALENDAR_STYLE + "-previousMonth";
 
-	final static String DATEPICKER_CURRENT_MONTH_STYLE = DATEPICKER_STYLE + "-currentMonth";
+	final static String CALENDAR_CURRENT_MONTH_STYLE = CALENDAR_STYLE + "-currentMonth";
 
-	final static String DATEPICKER_NEXT_MONTH_STYLE = DATEPICKER_STYLE + "-nextMonth";
+	final static String CALENDAR_NEXT_MONTH_STYLE = CALENDAR_STYLE + "-nextMonth";
 
 	final static String READONLY = "-readOnly";
 
