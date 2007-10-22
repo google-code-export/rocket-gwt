@@ -27,13 +27,23 @@ BODY, TABLE, DIV{
 	border-style: solid;
 	
 	cursor: pointer;
+	
+	border-collapse: collapse; 
+	border-spacing: 0
+	
+	width: 200px;
+	height: 20px;
 }
 
 .rocket-horizontalSlider-handle{
 	z-index: 1;
+	width: 16px;
+	height: 16px;
 }
 
 .rocket-horizontalSlider-background{
+	width: 200px;
+	height: 16px;
 }
 
 .rocket-horizontalSlider-dragging{
@@ -50,13 +60,21 @@ BODY, TABLE, DIV{
 	border-style: solid;
 	
 	cursor: pointer;
+
+	width: 20px;
+	height: 200px;
 }
 
 .rocket-verticalSlider-handle{
 	z-index: 1;
+	
+	width: 16px;
+	height: 16px;
 }
 
 .rocket-verticalSlider-background{
+	width: 16px;
+	height: 200px;		
 }
 
 .rocket-verticalSlider-dragging{
@@ -72,15 +90,28 @@ BODY, TABLE, DIV{
 	border-width: 2px;
 	border-style: solid;
 	
+	width: 204px;
+	height: 204px;
+	
 	cursor: pointer;
 }
 
 .rocket-floatingSlider-handle{
 	z-index: 1;
+	width: 16px;
+	height: 16px;
 }
 
 .rocket-floatingSlider-background{
+	width: 200px;
+	height: 200px;
 }
+
+TABLE.rocket-floatingSlider-background{
+	width: 200px;
+	height: 200px;
+}
+
 
 .rocket-floatingSlider-dragging{
 }

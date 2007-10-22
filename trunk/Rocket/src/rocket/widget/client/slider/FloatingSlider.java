@@ -115,12 +115,11 @@ public class FloatingSlider extends CompositeWidget {
 	protected void afterCreateWidget() {
 		super.afterCreateWidget();
 
-		this.getEventListenerDispatcher().addMouseEventListener(
-				new MouseEventAdapter() {
-					public void onMouseDown(final MouseDownEvent event) {
-						FloatingSlider.this.handleMouseDown(event);
-					}
-				});
+		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
+			public void onMouseDown(final MouseDownEvent event) {
+				FloatingSlider.this.onMouseDown(event);
+			}
+		});
 	}
 
 	protected String getInitialStyleName() {
@@ -128,9 +127,7 @@ public class FloatingSlider extends CompositeWidget {
 	}
 
 	protected int getSunkEventsBitMask() {
-		return EventBitMaskConstants.FOCUS_EVENTS
-				| EventBitMaskConstants.CHANGE
-				| EventBitMaskConstants.MOUSE_EVENTS;
+		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.CHANGE | EventBitMaskConstants.MOUSE_EVENTS;
 	}
 
 	/**
@@ -153,7 +150,7 @@ public class FloatingSlider extends CompositeWidget {
 	 * @param event
 	 *            The cause event
 	 */
-	protected void handleMouseDown(final MouseDownEvent event) {
+	protected void onMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {
@@ -161,13 +158,13 @@ public class FloatingSlider extends CompositeWidget {
 
 			// check if the handle widget has been clicked...
 			if (DOM.isOrHasChild(this.getHandle().getElement(), target)) {
-				this.handleHandleMouseDown(event);
+				this.onHandleMouseDown(event);
 				break;
 			}
 
 			// was the slider background itself clicked ?
 			if (DOM.isOrHasChild(this.getElement(), target)) {
-				this.handleBackgroundMouseDown(event);
+				this.onBackgroundMouseDown(event);
 				break;
 			}
 
@@ -176,17 +173,15 @@ public class FloatingSlider extends CompositeWidget {
 		}
 	}
 
-	protected void handleBackgroundMouseDown(final MouseDownEvent event) {
+	protected void onBackgroundMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		final Widget handle = this.getHandle();
 		final Element widget = this.getElement();
-		final int mouseX = event.getPageX() - Dom.getAbsoluteLeft(widget)
-				- handle.getOffsetWidth() / 2;
-		final int mouseY = event.getPageY() - Dom.getAbsoluteTop(widget)
-				- handle.getOffsetHeight() / 2;
+		final int mouseX = event.getPageX() - Dom.getAbsoluteLeft(widget) - handle.getOffsetWidth() / 2;
+		final int mouseY = event.getPageY() - Dom.getAbsoluteTop(widget) - handle.getOffsetHeight() / 2;
 
-		this.handleBackgroundMouseDown(mouseX, mouseY);
+		this.onBackgroundMouseDown(mouseX, mouseY);
 
 		final HandleSlidingTimer timer = this.getTimer();
 		timer.setMouseX(mouseX);
@@ -198,7 +193,7 @@ public class FloatingSlider extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	protected void handleHandleMouseDown(final MouseDownEvent event) {
+	protected void onHandleMouseDown(final MouseDownEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		if (false == this.hasDraggingEventPreview()) {
@@ -224,8 +219,7 @@ public class FloatingSlider extends CompositeWidget {
 	private EventPreview draggingEventPreview;
 
 	protected EventPreview getDraggingEventPreview() {
-		ObjectHelper.checkNotNull("field:draggingEventPreview",
-				draggingEventPreview);
+		ObjectHelper.checkNotNull("field:draggingEventPreview", draggingEventPreview);
 		return this.draggingEventPreview;
 	}
 
@@ -233,10 +227,8 @@ public class FloatingSlider extends CompositeWidget {
 		return null != this.draggingEventPreview;
 	}
 
-	protected void setDraggingEventPreview(
-			final EventPreview draggingEventPreview) {
-		ObjectHelper.checkNotNull("parameter:draggingEventPreview",
-				draggingEventPreview);
+	protected void setDraggingEventPreview(final EventPreview draggingEventPreview) {
+		ObjectHelper.checkNotNull("parameter:draggingEventPreview", draggingEventPreview);
 		this.draggingEventPreview = draggingEventPreview;
 	}
 
@@ -253,11 +245,11 @@ public class FloatingSlider extends CompositeWidget {
 	protected EventPreview createDraggingEventPreview() {
 		return new EventPreviewAdapter() {
 			protected void onMouseMove(final MouseMoveEvent event) {
-				FloatingSlider.this.handleHandleMouseMove(event);
+				FloatingSlider.this.onHandleMouseMove(event);
 			}
 
 			protected void onMouseUp(final MouseUpEvent event) {
-				FloatingSlider.this.handleHandleMouseUp(event);
+				FloatingSlider.this.onHandleMouseUp(event);
 			}
 		};
 	}
@@ -268,7 +260,7 @@ public class FloatingSlider extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	protected void handleHandleMouseUp(final MouseUpEvent event) {
+	protected void onHandleMouseUp(final MouseUpEvent event) {
 		this.getHandle().removeStyleName(this.getDraggingStyle());
 
 		DOM.removeEventPreview(this.getDraggingEventPreview());
@@ -276,50 +268,44 @@ public class FloatingSlider extends CompositeWidget {
 		Selection.enableTextSelection();
 	}
 
-	protected void handleBackgroundMouseDown(final int mouseX, final int mouseY) {
+	protected void onBackgroundMouseDown(final int mouseX, final int mouseY) {
 		final Element handle = this.getHandle().getElement();
 		boolean killTimer = false;
 
 		final int x = this.getXValue();
-		final int handleX = ComputedStyle.getInteger(handle,
-				StyleConstants.LEFT, CssUnit.PX, 0);
+		final int handleX = ComputedStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
 		int deltaX = mouseX - handleX;
 		if (0 != deltaX) {
 			if (deltaX < 0) {
-				this.handleBeforeHandleXMouseDown();
+				this.onBeforeHandleXMouseDown();
 			} else {
-				this.handleAfterHandleXMouseDown();
+				this.onAfterHandleXMouseDown();
 			}
-			final int handleXAfter = ComputedStyle.getInteger(handle,
-					StyleConstants.LEFT, CssUnit.PX, 0);
+			final int handleXAfter = ComputedStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
 			final int deltaXAfter = mouseX - handleXAfter;
 
 			if (deltaX < 0 ^ deltaXAfter < 0) {
 				this.setXValue(x);
-				InlineStyle.setInteger(handle, StyleConstants.LEFT, mouseX,
-						CssUnit.PX);
+				InlineStyle.setInteger(handle, StyleConstants.LEFT, mouseX, CssUnit.PX);
 				deltaX = 0;
 			}
 		}
 
 		final int y = this.getYValue();
-		final int handleY = ComputedStyle.getInteger(handle,
-				StyleConstants.TOP, CssUnit.PX, 0);
+		final int handleY = ComputedStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
 		int deltaY = mouseY - handleY;
 		if (0 != deltaY) {
 			if (deltaY < 0) {
-				this.handleBeforeHandleYMouseDown();
+				this.onBeforeHandleYMouseDown();
 			} else {
-				this.handleAfterHandleYMouseDown();
+				this.onAfterHandleYMouseDown();
 			}
-			final int handleYAfter = ComputedStyle.getInteger(handle,
-					StyleConstants.TOP, CssUnit.PX, 0);
+			final int handleYAfter = ComputedStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
 			final int deltaYAfter = mouseY - handleYAfter;
 
 			if (deltaY < 0 ^ deltaYAfter < 0) {
 				this.setYValue(y);
-				InlineStyle.setInteger(handle, StyleConstants.TOP, mouseY,
-						CssUnit.PX);
+				InlineStyle.setInteger(handle, StyleConstants.TOP, mouseY, CssUnit.PX);
 				deltaY = 0;
 			}
 		}
@@ -332,42 +318,36 @@ public class FloatingSlider extends CompositeWidget {
 	 * Decreases the xValue of this slider ensuring that it does not underflow
 	 * the minimum xValue of this slider.
 	 */
-	protected void handleBeforeHandleXMouseDown() {
+	protected void onBeforeHandleXMouseDown() {
 		final int newValue = Math.max(0, this.getXValue() - this.getDeltaX());
 
 		final Element handle = this.getHandle().getElement();
-		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT,
-				CssUnit.PX, 0);
+		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
 		this.setXValue(newValue);
-		InlineStyle.setInteger(handle, StyleConstants.LEFT, left - 1,
-				CssUnit.PX);
+		InlineStyle.setInteger(handle, StyleConstants.LEFT, left - 1, CssUnit.PX);
 	}
 
 	/**
 	 * Increases the xValue of this slider ensuring that it does not exceed the
 	 * maximum xValue of this slider.
 	 */
-	protected void handleAfterHandleXMouseDown() {
-		final int newValue = Math.min(this.getXValue() + this.getDeltaX(), this
-				.getMaximumXValue());
+	protected void onAfterHandleXMouseDown() {
+		final int newValue = Math.min(this.getXValue() + this.getDeltaX(), this.getMaximumXValue());
 		final Element handle = this.getHandle().getElement();
-		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT,
-				CssUnit.PX, 0);
+		final int left = InlineStyle.getInteger(handle, StyleConstants.LEFT, CssUnit.PX, 0);
 		this.setXValue(newValue);
-		InlineStyle.setInteger(handle, StyleConstants.LEFT, left + 1,
-				CssUnit.PX);
+		InlineStyle.setInteger(handle, StyleConstants.LEFT, left + 1, CssUnit.PX);
 	}
 
 	/**
 	 * Decreases the yValue of this slider ensuring that it does not underflow
 	 * the minimum yValue of this slider.
 	 */
-	protected void handleBeforeHandleYMouseDown() {
+	protected void onBeforeHandleYMouseDown() {
 		final int newValue = Math.max(0, this.getYValue() - this.getDeltaY());
 
 		final Element handle = this.getHandle().getElement();
-		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP,
-				CssUnit.PX, 0);
+		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
 		this.setYValue(newValue);
 		InlineStyle.setInteger(handle, StyleConstants.TOP, top - 1, CssUnit.PX);
 	}
@@ -376,18 +356,16 @@ public class FloatingSlider extends CompositeWidget {
 	 * Increases the yValue of this slider ensuring that it does not exceed the
 	 * maximum yValue of this slider.
 	 */
-	protected void handleAfterHandleYMouseDown() {
-		final int newValue = Math.min(this.getYValue() + this.getDeltaY(), this
-				.getMaximumYValue());
+	protected void onAfterHandleYMouseDown() {
+		final int newValue = Math.min(this.getYValue() + this.getDeltaY(), this.getMaximumYValue());
 
 		final Element handle = this.getHandle().getElement();
-		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP,
-				CssUnit.PX, 0);
+		final int top = InlineStyle.getInteger(handle, StyleConstants.TOP, CssUnit.PX, 0);
 		this.setYValue(newValue);
 		InlineStyle.setInteger(handle, StyleConstants.TOP, top + 1, CssUnit.PX);
 	}
 
-	protected void handleHandleMouseMove(final MouseMoveEvent event) {
+	protected void onHandleMouseMove(final MouseMoveEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		final Element sliderElement = this.getElement();
@@ -405,32 +383,26 @@ public class FloatingSlider extends CompositeWidget {
 		int mouseX = event.getPageX() - widgetX;
 		mouseX = Math.max(0, Math.min(mouseX, sliderWidth - handleWidth / 2));
 
-		final int newX = this.updateSliderValue(mouseX,
-				this.getMaximumXValue(), sliderWidth, handleWidth);
+		final int newX = this.updateSliderValue(mouseX, this.getMaximumXValue(), sliderWidth, handleWidth);
 		this.setXValue(newX);
 
 		int left = mouseX - handleWidth / 2;
-		InlineStyle.setInteger(handleElement, StyleConstants.LEFT, left,
-				CssUnit.PX);
+		InlineStyle.setInteger(handleElement, StyleConstants.LEFT, left, CssUnit.PX);
 
 		int mouseY = event.getPageY() - widgetY;
 		mouseY = Math.max(0, Math.min(mouseY, sliderHeight - handleHeight / 2));
-		final int newY = this.updateSliderValue(mouseY,
-				this.getMaximumYValue(), sliderHeight, handleHeight);
+		final int newY = this.updateSliderValue(mouseY, this.getMaximumYValue(), sliderHeight, handleHeight);
 
 		this.setYValue(newY);
 
 		final int top = mouseY - handleHeight / 2;
-		InlineStyle.setInteger(handleElement, StyleConstants.TOP, top,
-				CssUnit.PX);
+		InlineStyle.setInteger(handleElement, StyleConstants.TOP, top, CssUnit.PX);
 
 		event.cancelBubble(true);
 		event.stop();// stops text selection in Opera
 	}
 
-	protected int updateSliderValue(final int mouseCoordinate,
-			final int maximumValue, final int sliderLength,
-			final int handleLength) {
+	protected int updateSliderValue(final int mouseCoordinate, final int maximumValue, final int sliderLength, final int handleLength) {
 		final int range = sliderLength - handleLength;
 
 		int value = mouseCoordinate;
@@ -486,8 +458,7 @@ public class FloatingSlider extends CompositeWidget {
 	 */
 	private class HandleSlidingTimer extends Timer {
 		public void run() {
-			FloatingSlider.this.handleBackgroundMouseDown(this.getMouseX(),
-					this.getMouseY());
+			FloatingSlider.this.onBackgroundMouseDown(this.getMouseX(), this.getMouseY());
 		}
 
 		private int mouseX;
@@ -520,14 +491,12 @@ public class FloatingSlider extends CompositeWidget {
 	private int mouseDownRepeatRate;
 
 	public int getMouseDownRepeatRate() {
-		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", 0,
-				mouseDownRepeatRate);
+		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		return this.mouseDownRepeatRate;
 	}
 
 	public void setMouseDownRepeatRate(final int mouseDownRepeatRate) {
-		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", 0,
-				mouseDownRepeatRate);
+		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		this.mouseDownRepeatRate = mouseDownRepeatRate;
 	}
 
@@ -536,7 +505,7 @@ public class FloatingSlider extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseOut(final MouseOutEvent event) {
+	protected void onMouseOut(final MouseOutEvent event) {
 		this.clearTimer();
 	}
 
@@ -545,7 +514,7 @@ public class FloatingSlider extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseUp(final MouseUpEvent event) {
+	protected void onMouseUp(final MouseUpEvent event) {
 		this.clearTimer();
 	}
 
@@ -559,24 +528,19 @@ public class FloatingSlider extends CompositeWidget {
 
 	public void setXValue(final int xValue) {
 		final int maximumValue = this.getMaximumXValue();
-		PrimitiveHelper.checkBetween("parameter:xValue", xValue, 0,
-				maximumValue + 1);
+		PrimitiveHelper.checkBetween("parameter:xValue", xValue, 0, maximumValue + 1);
 
 		this.xValue = xValue;
 
 		final Widget handle = this.getHandle();
-		final int sliderLength = this.getOffsetWidth()
-				- handle.getOffsetWidth();
-		final int newLeft = Math.round(1.0f * this.getXValue() * sliderLength
-				/ this.getMaximumXValue());
+		final int sliderLength = this.getOffsetWidth() - handle.getOffsetWidth();
+		final int newLeft = Math.round(1.0f * this.getXValue() * sliderLength / this.getMaximumXValue());
 
 		final Element element = handle.getElement();
 		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
-		InlineStyle.setInteger(element, StyleConstants.LEFT, newLeft,
-				CssUnit.PX);
+		InlineStyle.setInteger(element, StyleConstants.LEFT, newLeft, CssUnit.PX);
 
-		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(
-				this);
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
 
 	/**
@@ -587,14 +551,12 @@ public class FloatingSlider extends CompositeWidget {
 	private int maximumXValue;
 
 	public int getMaximumXValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumXValue", 0,
-				maximumXValue);
+		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumXValue", 0, maximumXValue);
 		return this.maximumXValue;
 	}
 
 	public void setMaximumXValue(final int maximumXValue) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumXValue", 0,
-				maximumXValue);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumXValue", 0, maximumXValue);
 		this.maximumXValue = maximumXValue;
 	}
 
@@ -624,23 +586,19 @@ public class FloatingSlider extends CompositeWidget {
 
 	public void setYValue(final int yValue) {
 		final int maximumValue = this.getMaximumYValue();
-		PrimitiveHelper.checkBetween("parameter:yValue", yValue, 0,
-				maximumValue + 1);
+		PrimitiveHelper.checkBetween("parameter:yValue", yValue, 0, maximumValue + 1);
 
 		this.yValue = yValue;
 
 		final Widget handle = this.getHandle();
-		final int sliderLength = this.getOffsetHeight()
-				- handle.getOffsetHeight();
-		final int newTop = Math.round(1.0f * this.getYValue() * sliderLength
-				/ this.getMaximumYValue());
+		final int sliderLength = this.getOffsetHeight() - handle.getOffsetHeight();
+		final int newTop = Math.round(1.0f * this.getYValue() * sliderLength / this.getMaximumYValue());
 
 		final Element element = handle.getElement();
 		InlineStyle.setString(element, StyleConstants.POSITION, "absolute");
 		InlineStyle.setInteger(element, StyleConstants.TOP, newTop, CssUnit.PX);
 
-		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(
-				this);
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
 
 	/**
@@ -651,14 +609,12 @@ public class FloatingSlider extends CompositeWidget {
 	private int maximumYValue;
 
 	public int getMaximumYValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumYValue", 0,
-				this.maximumYValue);
+		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumYValue", 0, this.maximumYValue);
 		return this.maximumYValue;
 	}
 
 	public void setMaximumYValue(final int maximumYValue) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumYValue", 0,
-				maximumYValue);
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumYValue", 0, maximumYValue);
 		this.maximumYValue = maximumYValue;
 	}
 
@@ -677,28 +633,20 @@ public class FloatingSlider extends CompositeWidget {
 		this.deltaY = yDelta;
 	}
 
-	public void addChangeEventListener(
-			final ChangeEventListener changeEventListener) {
-		this.getEventListenerDispatcher().addChangeEventListener(
-				changeEventListener);
+	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(changeEventListener);
 	}
 
-	public void removeChangeEventListener(
-			final ChangeEventListener changeEventListener) {
-		this.getEventListenerDispatcher().removeChangeEventListener(
-				changeEventListener);
+	public void removeChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().removeChangeEventListener(changeEventListener);
 	}
 
-	public void addFocusEventListener(
-			final FocusEventListener focusEventListener) {
-		this.getEventListenerDispatcher().addFocusEventListener(
-				focusEventListener);
+	public void addFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().addFocusEventListener(focusEventListener);
 	}
 
-	public void removeFocusEventListener(
-			final FocusEventListener focusEventListener) {
-		this.getEventListenerDispatcher().removeFocusEventListener(
-				focusEventListener);
+	public void removeFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().removeFocusEventListener(focusEventListener);
 	}
 
 	public String toString() {
