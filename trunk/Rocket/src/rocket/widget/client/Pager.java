@@ -67,31 +67,35 @@ public class Pager extends CompositeWidget {
 		return WidgetConstants.PAGER_STYLE;
 	}
 
-	public int getValue() {
-		return this.getCurrentPage();
+	protected void onAttach(){
+		super.onAttach();
+		
+		this.redraw();
 	}
-
-	public void setValue(final int value) {
-		this.setCurrentPage(value);
-	}
-
+	
 	/**
 	 * Clears the dockPanels nd repaints all the buttons.
 	 * 
 	 * The current ordering of buttons is PREVIOUS | PAGES | NEXT
 	 */
-	public void redraw() {
+	protected void redraw(){
+		if( this.isAttached() ){
+			this.redraw0();
+		}
+	}
+	
+	protected void redraw0() {
 		final HorizontalPanel panel = this.getHorizontalPanel();
 		panel.clear();
 
 		panel.add(this.createPreviousButton());
 
 		// create the in between buttons.
-		final int pagesInBetween = this.getPagesAcrossCount();
+		final int pagesInBetween = this.getPageLinksAcrossCount();
 		final int firstPage = this.getFirstItem();
 		final int lastPage = this.getLastItem();
 
-		final int currentPage = this.getCurrentPage();
+		final int currentPage = this.getCurrentItem();
 		final int itemsPerPage = this.getItemsPerPage();
 		
 		final int whole = pagesInBetween * itemsPerPage; 
@@ -125,7 +129,7 @@ public class Pager extends CompositeWidget {
 		button.setStyleName(this.getPreviousButtonStyle());
 
 		// if already on the first page disable button
-		final int previous = this.getCurrentPage() - this.getItemsPerPage();
+		final int previous = this.getCurrentItem() - this.getItemsPerPage();
 		final int firstPage = this.getFirstItem();
 		
 		if (previous >= firstPage) {
@@ -150,7 +154,7 @@ public class Pager extends CompositeWidget {
 
 		// if already on the last page disable button
 		final int lastPage = this.getLastItem();		
-		final int next = this.getCurrentPage() + this.getItemsPerPage();
+		final int next = this.getCurrentItem() + this.getItemsPerPage();
 		
 		if ( next < lastPage) {
 			button.addMouseEventListener(this.createButtonListener( next ));
@@ -179,7 +183,7 @@ public class Pager extends CompositeWidget {
 		PrimitiveHelper.checkBetween("parameter:pageNumber", itemNumber, this.firstItem, this.lastItem);
 		
 		final Button button = new Button(label);
-		final boolean onCurrentPage = this.getCurrentPage() == itemNumber;
+		final boolean onCurrentPage = this.getCurrentItem() == itemNumber;
 		if( onCurrentPage ){
 			button.setEnabled( false );
 		}
@@ -231,22 +235,28 @@ public class Pager extends CompositeWidget {
 	/**
 	 * The currently selected page.
 	 */
-	private int currentPage;
+	private int currentItem;
 
-	public int getCurrentPage() {
-		PrimitiveHelper.checkBetween("field:currentPage", this.currentPage, this.firstItem, this.lastItem );
+	public int getCurrentItem() {
+		this.checkCurrentItem( "field:currentItem", currentItem);
 		
 		final int itemsPerPage = this.getItemsPerPage();
-		return this.currentPage / itemsPerPage * itemsPerPage;
+		return this.currentItem / itemsPerPage * itemsPerPage;
 	}
 
-	public void setCurrentPage(final int currentPage) {
-		PrimitiveHelper.checkBetween("parameter:currentPage", currentPage, this.firstItem, this.lastItem );
-		this.currentPage = currentPage;
+	public void setCurrentItem(final int currentItem) {
+		this.checkCurrentItem( "parameter:currentItem", currentItem);
+		
+		this.currentItem = currentItem;
 
 		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
+		this.redraw();
 	}
 
+	protected void checkCurrentItem( final String message, final int currentPage ){
+		PrimitiveHelper.checkBetween( message, currentPage, this.firstItem, this.lastItem == 0 ? 1 : this.lastItem );		
+	}
+	
 	/**
 	 * Factory method which creates the ClickListener which fires any registered
 	 * listeners.
@@ -257,7 +267,7 @@ public class Pager extends CompositeWidget {
 	protected MouseEventListener createButtonListener(final int itemNumber) {
 		return new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent ignored) {
-				Pager.this.setCurrentPage(itemNumber );
+				Pager.this.setCurrentItem(itemNumber );
 				Pager.this.redraw();
 			}
 		};
@@ -266,16 +276,16 @@ public class Pager extends CompositeWidget {
 	/**
 	 * The number of page buttons that go between previous/first and last/next
 	 */
-	private int pagesAcrossCount;
+	private int pageLinksAcrossCount;
 
-	public int getPagesAcrossCount() {
-		PrimitiveHelper.checkGreaterThan("field:pagesAcrossCount", 0, pagesAcrossCount);
-		return this.pagesAcrossCount;
+	public int getPageLinksAcrossCount() {
+		PrimitiveHelper.checkGreaterThan("field:pageLinksAcrossCount", 0, pageLinksAcrossCount);
+		return this.pageLinksAcrossCount;
 	}
 
-	public void setPagesAcrossCount(final int pagesAcrossCount) {
-		PrimitiveHelper.checkGreaterThan("parameter:pagesAcrossCount", 0, pagesAcrossCount);
-		this.pagesAcrossCount = pagesAcrossCount;
+	public void setPageLinksAcrossCount(final int pageLinksAcrossCount) {
+		PrimitiveHelper.checkGreaterThan("parameter:pageLinksAcrossCount", 0, pageLinksAcrossCount);
+		this.pageLinksAcrossCount = pageLinksAcrossCount;
 	}
 
 	/**

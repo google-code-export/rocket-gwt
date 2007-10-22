@@ -44,12 +44,11 @@ public class PagerGwtTestCase extends GWTTestCase {
 		pager.setFirstItem(0);
 		pager.setLastItem(10);
 		pager.setItemsPerPage(10);
-		pager.setPagesAcrossCount(10);
+		pager.setPageLinksAcrossCount(10);
 
-		pager.setCurrentPage(0);
+		pager.setCurrentItem(0);
 
 		RootPanel.get().add(pager);
-		pager.redraw();
 		
 		assertEquals( "" + pages, 1, pages.size() );
 		assertTrue( "" + pages, pages.remove( new Integer( 0 )));
@@ -69,12 +68,11 @@ public class PagerGwtTestCase extends GWTTestCase {
 		pager.setFirstItem(0);
 		pager.setLastItem(1000);
 		pager.setItemsPerPage(10);
-		pager.setPagesAcrossCount(10);
+		pager.setPageLinksAcrossCount(10);
 
-		pager.setCurrentPage(0);
+		pager.setCurrentItem(0);
 
 		RootPanel.get().add(pager);
-		pager.redraw();
 		
 		assertEquals( "" + pages, 10, pages.size() );
 		assertTrue( "" + pages, pages.remove( new Integer( 0 )));
@@ -104,12 +102,11 @@ public class PagerGwtTestCase extends GWTTestCase {
 		pager.setFirstItem(0);
 		pager.setLastItem(1000);
 		pager.setItemsPerPage(10);
-		pager.setPagesAcrossCount(10);
+		pager.setPageLinksAcrossCount(10);
 
-		pager.setCurrentPage(2);
+		pager.setCurrentItem(2);
 
 		RootPanel.get().add(pager);
-		pager.redraw();
 
 		assertEquals( "" + pages, 10, pages.size() );
 		assertTrue( "" + pages, pages.remove( new Integer( 0 )));
@@ -138,12 +135,11 @@ public class PagerGwtTestCase extends GWTTestCase {
 		pager.setFirstItem(0);
 		pager.setLastItem(1000);
 		pager.setItemsPerPage(10);
-		pager.setPagesAcrossCount(10);
+		pager.setPageLinksAcrossCount(10);
 
-		pager.setCurrentPage(500);
+		pager.setCurrentItem(500);
 
 		RootPanel.get().add(pager);
-		pager.redraw();
 		
 		assertEquals( "" + pages, 10, pages.size() );
 		assertTrue( "" + pages, pages.remove( new Integer( 450 )));
@@ -172,12 +168,11 @@ public class PagerGwtTestCase extends GWTTestCase {
 		pager.setFirstItem(0);
 		pager.setLastItem(1000);
 		pager.setItemsPerPage(10);
-		pager.setPagesAcrossCount(10);
+		pager.setPageLinksAcrossCount(10);
 
-		pager.setCurrentPage(961);
+		pager.setCurrentItem(961);
 
 		RootPanel.get().add(pager);
-		pager.redraw();
 		
 		assertEquals( "" + pages, 10, pages.size() );
 		assertTrue( "" + pages, pages.remove( new Integer( 900 )));
@@ -206,12 +201,11 @@ public class PagerGwtTestCase extends GWTTestCase {
 		pager.setFirstItem(0);
 		pager.setLastItem(1000);
 		pager.setItemsPerPage(10);
-		pager.setPagesAcrossCount(10);
+		pager.setPageLinksAcrossCount(10);
 
-		pager.setCurrentPage(999);
+		pager.setCurrentItem(999);
 
 		RootPanel.get().add(pager);
-		pager.redraw();
 		
 		assertEquals( "" + pages, 10, pages.size() );
 		assertTrue( "" + pages, pages.remove( new Integer( 900 )));
@@ -226,4 +220,27 @@ public class PagerGwtTestCase extends GWTTestCase {
 		assertTrue( "" + pages, pages.remove( new Integer( 990 )));
 		assertTrue( "" + pages, pages.isEmpty() );
 	}
+	
+	public void testEmptyPager() {
+		final List pages = new ArrayList();
+		
+		final Pager pager = new Pager() {
+
+			protected Widget createPage(final String label, final int itemNumber) {
+				pages.add( new Integer( itemNumber ));
+				return super.createPage(label, itemNumber);
+			}
+		};
+		pager.setFirstItem(0);
+		pager.setLastItem( 0);
+		pager.setItemsPerPage(10);
+		pager.setPageLinksAcrossCount(10);
+
+		pager.setCurrentItem( 0 );
+
+		RootPanel.get().add(pager);
+		
+		assertTrue( "" + pages, pages.isEmpty() );
+	}
+
 }
