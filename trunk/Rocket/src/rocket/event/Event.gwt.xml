@@ -1,16 +1,4 @@
 <module>
 	<source path="client" />
-
-	<!-- Fall through to this rule if the browser isn't Safari -->
-	<replace-with class="rocket.event.client.widgets.support.ListBox">
-		<when-type-is class="rocket.event.client.widgets.support.ListBox"/>
-	</replace-with>
-
-	<!-- Safari requires a different ListBox implementation -->
-	
-	<replace-with class="rocket.event.client.widgets.support.SafariListBox">
-		<when-type-is class="rocket.event.client.widgets.support.ListBox"/>
-		<when-property-is name="user.agent" value="safari"/>
-	</replace-with>
-
+	<inherits name="com.google.gwt.user.SafariEventSupport"/>
 </module>
