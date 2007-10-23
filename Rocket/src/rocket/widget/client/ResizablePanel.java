@@ -127,7 +127,7 @@ public class ResizablePanel extends CompositePanel {
 		DOM.sinkEvents(element, EventBitMaskConstants.MOUSE_DOWN);
 		DOM.setEventListener(element, new EventListenerAdapter() {
 			protected void onMouseDown(final MouseDownEvent event) {
-				ResizablePanel.this.handleMouseDownEvent(event);
+				ResizablePanel.this.onMouseDown(event);
 			}
 		});
 		DOM.setInnerHTML(element, " ");
@@ -217,7 +217,7 @@ public class ResizablePanel extends CompositePanel {
 		};
 	}
 
-	protected void handleMouseDownEvent(final MouseDownEvent event) {
+	protected void onMouseDown(final MouseDownEvent event) {
 		final Element panel = this.getElement();
 		final int panelWidth = ComputedStyle.getInteger(panel, Css.WIDTH, CssUnit.PX, 0);
 		final int panelHeight = ComputedStyle.getInteger(panel, Css.HEIGHT, CssUnit.PX, 0);

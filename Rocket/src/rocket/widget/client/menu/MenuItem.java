@@ -70,7 +70,7 @@ public class MenuItem extends MenuWidget {
 	/**
 	 * This event is only fired if the MenuItem is not disabled.
 	 */
-	protected void handleMouseClick(final MouseClickEvent event) {
+	protected void onMouseClick(final MouseClickEvent event) {
 		if (false == this.isDisabled()) {
 			this.open();
 		}
@@ -79,7 +79,7 @@ public class MenuItem extends MenuWidget {
 	/**
 	 * Highlights this widget
 	 */
-	protected void handleMouseOver(final MouseOverEvent event) {
+	protected void onMouseOver(final MouseOverEvent event) {
 		if (false == this.isDisabled()) {
 			this.addHighlight();
 		}
@@ -88,7 +88,7 @@ public class MenuItem extends MenuWidget {
 	/**
 	 * Unhighlights this widget.
 	 */
-	protected void handleMouseOut(final MouseOutEvent event) {
+	protected void onMouseOut(final MouseOutEvent event) {
 		if (false == this.isDisabled()) {
 			this.removeHighlight();
 		}

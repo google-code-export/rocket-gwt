@@ -442,7 +442,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 				}
 
 				protected void onMouseUp(final MouseUpEvent event) {
-					Splitter.this.handleMouseUp(event);
+					Splitter.this.onMouseUp(event);
 				}
 			};
 		}
@@ -453,7 +453,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 		 * 
 		 * @param event
 		 */
-		protected void handleMouseUp(final MouseUpEvent event) {
+		protected void onMouseUp(final MouseUpEvent event) {
 			this.removeStyleName(this.getDraggingStyleName());
 			DOM.removeEventPreview(this.getEventPreview());
 			this.clearEventPreview();

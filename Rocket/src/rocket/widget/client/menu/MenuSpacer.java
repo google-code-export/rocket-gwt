@@ -35,13 +35,13 @@ public class MenuSpacer extends MenuWidget {
 		return Constants.SPACER_STYLE;
 	}
 
-	protected void handleMouseClick(final MouseClickEvent event) {
+	protected void onMouseClick(final MouseClickEvent event) {
 	}
 
-	protected void handleMouseOver(final MouseOverEvent event) {
+	protected void onMouseOver(final MouseOverEvent event) {
 	}
 
-	protected void handleMouseOut(final MouseOutEvent event) {
+	protected void onMouseOut(final MouseOutEvent event) {
 	}
 
 	// ACTIONS
