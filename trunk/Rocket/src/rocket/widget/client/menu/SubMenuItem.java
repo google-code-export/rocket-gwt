@@ -193,7 +193,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	/**
 	 * This event is only fired if the SubMenuItem is not disabled.
 	 */
-	protected void handleMouseClick(final MouseClickEvent event) {
+	protected void onMouseClick(final MouseClickEvent event) {
 		// ignore event if menu list is already opened...
 		if (false == this.isDisabled()) {
 			if ("hidden".equals(ComputedStyle.getString(this.getMenuList().getElement(), Css.VISIBILITY))) {
@@ -207,7 +207,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	 * Highlights this widget and possibly opens the attached menuList if the
 	 * parent menu has its autoOpen property set to true.
 	 */
-	protected void handleMouseOver(final MouseOverEvent event) {
+	protected void onMouseOver(final MouseOverEvent event) {
 		if (false == this.isDisabled()) {
 			this.addHighlight();
 
@@ -223,7 +223,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	 * bubbling. Otherwise let the event bubble up and let the parnet (menuList)
 	 * handle the event.
 	 */
-	protected void handleMouseOut(final MouseOutEvent event) {
+	protected void onMouseOut(final MouseOutEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {

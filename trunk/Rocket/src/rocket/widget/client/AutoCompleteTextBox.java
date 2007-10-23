@@ -62,11 +62,11 @@ abstract public class AutoCompleteTextBox extends TextBox {
 
 		this.addKeyEventListener(new KeyEventAdapter() {
 			public void onKeyDown(final KeyDownEvent event) {
-				AutoCompleteTextBox.this.handleTextBoxKeyDown(event);
+				AutoCompleteTextBox.this.onTextBoxKeyDown(event);
 			}
 
 			public void onKeyUp(final KeyUpEvent event) {
-				AutoCompleteTextBox.this.handleTextBoxKeyUp(event);
+				AutoCompleteTextBox.this.onTextBoxKeyUp(event);
 			}
 
 		});
@@ -276,15 +276,11 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	 * 
 	 * @param event
 	 */
-	protected void handleTextBoxKeyUp(final KeyUpEvent event) {
+	protected void onTextBoxKeyUp(final KeyUpEvent event) {
 		while (true) {
-			final char key = event.getKey();
-
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_CANCEL_KEY || key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_ACCEPT_KEY
-					|| key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_UP_KEY || key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DOWN_KEY
-					|| key == KeyboardListener.KEY_LEFT || key == KeyboardListener.KEY_RIGHT) {
+			if( event.isEscape() || event.isEnter() || event.isCursorUp() || event.isCursorDown() || event.isCursorLeft() || event.isCursorRight() ){
 				break;
-			}
+			}			
 			event.stop();
 
 			this.buildDropDownList();
@@ -299,7 +295,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 			// show the list...
 			this.showDropDownList();
 
-			if (key == KeyboardListener.KEY_BACKSPACE) {
+			if ( event.isBackspace()) {
 				event.stop();
 				break;
 			}
@@ -327,16 +323,14 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	 * 
 	 * @param event
 	 */
-	protected void handleTextBoxKeyDown(final KeyDownEvent event) {
+	protected void onTextBoxKeyDown(final KeyDownEvent event) {
 		while (true) {
-			final char key = event.getKey();
-
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_CANCEL_KEY) {
+			if ( event.isEscape()) {
 				this.cancelDropDown();
 				event.stop();
 				break;
 			}
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_ACCEPT_KEY) {
+			if ( event.isEnter()) {
 				if (this.hasSelected()) {
 					this.copyValue(this.getSelected());
 				}
@@ -345,12 +339,12 @@ abstract public class AutoCompleteTextBox extends TextBox {
 				break;
 			}
 
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_UP_KEY) {
+			if ( event.isCursorUp()) {
 				this.moveUpOneItem();
 				event.stop();
 				break;
 			}
-			if (key == WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DOWN_KEY) {
+			if ( event.isCursorDown() ) {
 				this.moveDownOneItem();
 				event.stop();
 				break;

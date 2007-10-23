@@ -71,11 +71,11 @@ public class ContextMenu extends Menu {
 
 		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
 			public void onMouseDown(final MouseDownEvent event) {
-				ContextMenu.this.handleMouseDown(event);
+				ContextMenu.this.onMouseDown(event);
 			}
 
 			public void onMouseOut(final MouseOutEvent event) {
-				ContextMenu.this.handleMouseOut(event);
+				ContextMenu.this.onMouseOut(event);
 			}
 		});
 	}
@@ -133,7 +133,7 @@ public class ContextMenu extends Menu {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseDown(final MouseDownEvent event) {
+	protected void onMouseDown(final MouseDownEvent event) {
 		if (event.isRightButton()) {
 			this.open();
 			event.cancelBubble(true);
@@ -145,7 +145,7 @@ public class ContextMenu extends Menu {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseOut(final MouseOutEvent event) {
+	protected void onMouseOut(final MouseOutEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {

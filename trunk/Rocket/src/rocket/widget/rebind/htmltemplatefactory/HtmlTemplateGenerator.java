@@ -115,7 +115,7 @@ public class HtmlTemplateGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:newType", newType);
 
 		if (method.getParameters().size() != 0) {
-			throwMethodHasParametersException(method);
+			throwMethodHasParameters(method);
 		}
 
 		final NewMethod newMethod = method.copy(newType);
@@ -172,7 +172,7 @@ public class HtmlTemplateGenerator extends Generator {
 				break;
 			}
 
-			throwUnsupportedWidgetTypeException(method);
+			throwUnsupportedWidgetType(method);
 			break;
 		}
 		newMethod.setBody(body);
@@ -514,11 +514,11 @@ public class HtmlTemplateGenerator extends Generator {
 		};
 	}
 
-	protected void throwMethodHasParametersException(final Method method) {
+	protected void throwMethodHasParameters(final Method method) {
 		throw new HtmlTemplateGeneratorException("HtmlTemplateFactory methods such as " + method + " must not have any parameters.");
 	}
 
-	protected void throwUnsupportedWidgetTypeException(final Method method) {
+	protected void throwUnsupportedWidgetType(final Method method) {
 		throw new HtmlTemplateGeneratorException("The return type of the method " + method + " is not of a supported widget type.");
 	}
 
@@ -534,12 +534,12 @@ public class HtmlTemplateGenerator extends Generator {
 
 		final List values = method.getMetadataValues(Constants.ID_ANNOTATION);
 		if (null == values || values.size() != 1) {
-			throwUnableToFindIdAnnotationException(method);
+			throwUnableToFindIdAnnotation(method);
 		}
 		return (String) values.get(0);
 	}
 
-	protected void throwUnableToFindIdAnnotationException(final Method method) {
+	protected void throwUnableToFindIdAnnotation(final Method method) {
 		throw new HtmlTemplateGeneratorException("Unable to find an id annotation upon the method " + method);
 	}
 

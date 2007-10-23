@@ -50,14 +50,6 @@ public class WidgetConstants {
 
 	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE + SELECTED;
 
-	final static char AUTO_COMPLETE_TEXT_BOX_CANCEL_KEY = KeyboardListener.KEY_ESCAPE;
-
-	final static char AUTO_COMPLETE_TEXT_BOX_ACCEPT_KEY = KeyboardListener.KEY_ENTER;
-
-	final static char AUTO_COMPLETE_TEXT_BOX_DOWN_KEY = KeyboardListener.KEY_DOWN;
-
-	final static char AUTO_COMPLETE_TEXT_BOX_UP_KEY = KeyboardListener.KEY_UP;
-
 	// BLOCKY PIXEL
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	final static String BLOCKY_PIXEL_STYLE = ROCKET + "-blockyPixel";

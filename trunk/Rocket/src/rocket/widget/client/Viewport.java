@@ -88,7 +88,7 @@ abstract public class Viewport extends CompositeWidget {
 		final EventListenerDispatcher dispatcher = this.getEventListenerDispatcher();
 		dispatcher.addMouseEventListener(new MouseEventAdapter() {
 			public void onMouseDown(final MouseDownEvent event) {
-				Viewport.this.handleMouseDown(event);
+				Viewport.this.onMouseDown(event);
 			}
 		});
 		dispatcher.prepareListenerCollections(EventBitMaskConstants.CHANGE);
@@ -139,7 +139,7 @@ abstract public class Viewport extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	protected void handleMouseDown(final MouseDownEvent event) {
+	protected void onMouseDown(final MouseDownEvent event) {
 		Selection.clearAnySelectedText();
 		Selection.disableTextSelection();
 
@@ -192,19 +192,19 @@ abstract public class Viewport extends CompositeWidget {
 	 */
 	private class ViewportEventPreviewAdapter extends EventPreviewAdapter {
 		protected void onMouseMove(final MouseMoveEvent event) {
-			Viewport.this.handleDragMouseMove(event);
+			Viewport.this.onDragMouseMove(event);
 		}
 
 		protected void onMouseOut(final MouseOutEvent event) {
-			Viewport.this.handleDragMouseOut(event);
+			Viewport.this.onDragMouseOut(event);
 		}
 
 		protected void onMouseOver(final MouseOverEvent event) {
-			Viewport.this.handleDragMouseOver(event);
+			Viewport.this.onDragMouseOver(event);
 		}
 
 		protected void onMouseUp(final MouseUpEvent event) {
-			Viewport.this.handleDragMouseUp(event);
+			Viewport.this.onDragMouseUp(event);
 		}
 
 		/**
@@ -267,7 +267,7 @@ abstract public class Viewport extends CompositeWidget {
 	 * @param event
 	 *            The event
 	 */
-	protected void handleDragMouseUp(final MouseUpEvent event) {
+	protected void onDragMouseUp(final MouseUpEvent event) {
 		this.getDraggingEventPreview().uninstall();
 		this.clearDraggingEventPreview();
 
@@ -286,7 +286,7 @@ abstract public class Viewport extends CompositeWidget {
 	 * @param event
 	 *            The event
 	 */
-	protected void handleDragMouseOut(final MouseOutEvent event) {
+	protected void onDragMouseOut(final MouseOutEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		final Element element = this.getElement();
@@ -304,7 +304,7 @@ abstract public class Viewport extends CompositeWidget {
 	 * @param event
 	 *            The event
 	 */
-	protected void handleDragMouseOver(final MouseOverEvent event) {
+	protected void onDragMouseOver(final MouseOverEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		final Element element = this.getElement();
@@ -323,7 +323,7 @@ abstract public class Viewport extends CompositeWidget {
 	 * This method is called each time a dragging mouse is moved within the
 	 * viewport.
 	 */
-	protected void handleDragMouseMove(final MouseMoveEvent event) {
+	protected void onDragMouseMove(final MouseMoveEvent event) {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		while (true) {

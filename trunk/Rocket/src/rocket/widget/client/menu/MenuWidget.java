@@ -40,15 +40,15 @@ abstract class MenuWidget extends CompositeWidget {
 	protected void afterCreateWidget() {
 		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
-				MenuWidget.this.handleMouseClick(event);
+				MenuWidget.this.onMouseClick(event);
 			}
 
 			public void onMouseOut(final MouseOutEvent event) {
-				MenuWidget.this.handleMouseOut(event);
+				MenuWidget.this.onMouseOut(event);
 			}
 
 			public void onMouseOver(final MouseOverEvent event) {
-				MenuWidget.this.handleMouseOver(event);
+				MenuWidget.this.onMouseOver(event);
 			}
 		});
 	}
@@ -66,14 +66,14 @@ abstract class MenuWidget extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	abstract protected void handleMouseClick(final MouseClickEvent event);
+	abstract protected void onMouseClick(final MouseClickEvent event);
 
 	/**
 	 * This method is fired whenever this menu widget receives a mouse out event
 	 * 
 	 * @param event
 	 */
-	abstract protected void handleMouseOut(final MouseOutEvent event);
+	abstract protected void onMouseOut(final MouseOutEvent event);
 
 	/**
 	 * This method is fired whenever this menu widget receives a mouse over
@@ -81,7 +81,7 @@ abstract class MenuWidget extends CompositeWidget {
 	 * 
 	 * @param event
 	 */
-	abstract protected void handleMouseOver(final MouseOverEvent event);
+	abstract protected void onMouseOver(final MouseOverEvent event);
 
 	protected void onDetach() {
 		super.onDetach();

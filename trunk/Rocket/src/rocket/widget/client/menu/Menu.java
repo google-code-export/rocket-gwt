@@ -55,15 +55,15 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 
 		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
-				Menu.this.handleMouseClick(event);
+				Menu.this.onMouseClick(event);
 			}
 
 			public void onMouseOut(final MouseOutEvent event) {
-				Menu.this.handleMouseOut(event);
+				Menu.this.onMouseOut(event);
 			}
 
 			public void onMouseOver(final MouseOverEvent event) {
-				Menu.this.handleMouseOver(event);
+				Menu.this.onMouseOver(event);
 			}
 		});
 	}
@@ -72,18 +72,18 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 		return EventBitMaskConstants.MOUSE_CLICK | EventBitMaskConstants.MOUSE_OVER | EventBitMaskConstants.MOUSE_OUT;
 	}
 
-	protected void handleMouseClick(final MouseClickEvent event) {
+	protected void onMouseClick(final MouseClickEvent event) {
 		event.cancelBubble(true);
 	}
 
-	protected void handleMouseOver(final MouseOverEvent event) {
+	protected void onMouseOver(final MouseOverEvent event) {
 		event.cancelBubble(true);
 	}
 
 	/**
 	 * If the mouse moves outside the menu hide the event.
 	 */
-	protected void handleMouseOut(final MouseOutEvent event) {
+	protected void onMouseOut(final MouseOutEvent event) {
 		final Element target = event.getTo();
 
 		if (target == null || DOM.isOrHasChild(this.getElement(), target)) {

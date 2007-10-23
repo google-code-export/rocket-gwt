@@ -45,6 +45,7 @@ public class VerticalSplitterPanel extends SplitterPanel {
 	protected void afterCreateWidget() {
 		this.setItems(createItems());
 		InlineStyle.setString(DOM.getChild(this.getElement(), 0), Css.OVERFLOW_X, "hidden");
+		InlineStyle.setString(DOM.getChild(this.getElement(), 0), Css.OVERFLOW_Y, "hidden");
 	}
 
 	protected String getInitialStyleName() {

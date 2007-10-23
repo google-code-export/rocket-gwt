@@ -74,7 +74,7 @@ public class DraggablePanel extends SimplePanel {
 
 		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
 			public void onMouseDown(final MouseDownEvent event) {
-				DraggablePanel.this.handleDragStart(event);
+				DraggablePanel.this.onDragStart(event);
 			}
 		});
 	}
@@ -102,13 +102,8 @@ public class DraggablePanel extends SimplePanel {
 	 * 
 	 * @param mouseDownEvent
 	 */
-	protected void handleDragStart(final MouseDownEvent mouseDownEvent) {
+	protected void onDragStart(final MouseDownEvent mouseDownEvent) {
 		ObjectHelper.checkNotNull("parameter:mouseDownEvent", mouseDownEvent);
-
-		if (q == 1) {
-			int qq = 0;
-		}
-		q++;
 
 		while (true) {
 			mouseDownEvent.stop();
@@ -164,11 +159,11 @@ public class DraggablePanel extends SimplePanel {
 			// move, drop ).
 			final EventPreviewAdapter greedy = new EventPreviewAdapter() {
 				public void onMouseMove(final MouseMoveEvent event) {
-					DraggablePanel.this.handleDragMove(event, draggedPanel);
+					DraggablePanel.this.onDragMove(event, draggedPanel);
 				}
 
 				public void onMouseUp(final MouseUpEvent event) {
-					DraggablePanel.this.handleDropped(event, draggedPanel, this);
+					DraggablePanel.this.onDropped(event, draggedPanel, this);
 				}
 			};
 			greedy.install();
@@ -194,7 +189,7 @@ public class DraggablePanel extends SimplePanel {
 		}
 	}
 
-	protected void handleDragMove(final MouseMoveEvent mouseMoveEvent, final DraggedPanel draggedPanel) {
+	protected void onDragMove(final MouseMoveEvent mouseMoveEvent, final DraggedPanel draggedPanel) {
 		while (true) {
 			mouseMoveEvent.stop();
 
@@ -243,7 +238,7 @@ public class DraggablePanel extends SimplePanel {
 		}
 	}
 
-	protected void handleDropped(final MouseUpEvent mouseUpEvent, final DraggedPanel draggedPanel, EventPreviewAdapter previewer) {
+	protected void onDropped(final MouseUpEvent mouseUpEvent, final DraggedPanel draggedPanel, EventPreviewAdapter previewer) {
 		// stop bubbling...
 		mouseUpEvent.cancelBubble(true);
 
