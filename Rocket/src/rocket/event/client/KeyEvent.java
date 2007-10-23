@@ -26,14 +26,74 @@ public class KeyEvent extends Event {
 	public KeyEvent() {
 	}
 
-	public char getKey() {
-		return (char) DOM.eventGetKeyCode(this.getEvent());
+	public int getKey() {
+	 return DOM.eventGetKeyCode(this.getEvent());
+	}
+	
+	public char getChar(){
+		return this.getChar0( this.getEvent() );
+	}
+	
+	native private char getChar0( final com.google.gwt.user.client.Event event )/*-{
+		return event.charCode || 0;
+	}-*/;
+
+	public void setKey(final int key) {
+		DOM.eventSetKeyCode(this.getEvent(), (char)key);
 	}
 
-	public void setKey(final char key) {
-		DOM.eventSetKeyCode(this.getEvent(), key);
+	public boolean isBackspace(){
+		return this.getKey() == EventConstants.BACKSPACE;
 	}
-
+	public boolean isCursorLeft(){
+		return this.getKey() == EventConstants.CURSOR_LEFT;
+	}
+	public boolean isCursorUp(){
+		return this.getKey() == EventConstants.CURSOR_UP;
+	}
+	public boolean isCursorRight(){
+		return this.getKey() == EventConstants.CURSOR_RIGHT;
+	}
+	public boolean isCursorDown(){
+		return this.getKey() == EventConstants.CURSOR_DOWN;
+	}
+	public boolean isDelete(){
+		return this.getKey() == EventConstants.DELETE;
+	}
+	public boolean isEnd(){
+		return this.getKey() == EventConstants.END;
+	}
+	public boolean isEnter(){
+		return this.getKey() == EventConstants.ENTER;
+	}
+	public boolean isEscape(){
+		return this.getKey() == EventConstants.ESCAPE;
+	}
+	public boolean isHome(){
+		return this.getKey() == EventConstants.HOME;
+	}
+	public boolean isInsert(){
+		return this.getKey() == EventConstants.INSERT;
+	}
+	public boolean isPageDown(){
+		return this.getKey() == EventConstants.PAGE_DOWN;
+	}
+	public boolean isPageUp(){
+		return this.getKey() == EventConstants.PAGE_UP;
+	}
+	public boolean isTab(){
+		return this.getKey() == EventConstants.TAB;
+	}
+	/**
+	 * If the key was a function key return 1 thru 12 otherwise returns -1
+	 * @return
+	 */
+	
+	public int getFunctionKey(){
+		final int key = this.getKey();
+		return key < EventConstants.FUNCTION_F1 ? -1 : key > EventConstants.FUNCTION_F12 ? -1 : key - EventConstants.FUNCTION_F1 + 1;
+	}
+	
 	public boolean isShift() {
 		return DOM.eventGetShiftKey(this.getEvent());
 	}
