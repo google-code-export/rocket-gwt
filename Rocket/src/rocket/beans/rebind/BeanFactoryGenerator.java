@@ -1013,11 +1013,11 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Type beanType = bean.getType();
 		if (beanType.isFinal()) {
-			this.throwProxyTargetCannotBeSubclassedException(bean);
+			this.throwProxyTargetCannotBeSubclassed(bean);
 		}
 	}
 
-	protected void throwProxyTargetCannotBeSubclassedException(final Bean bean) {
+	protected void throwProxyTargetCannotBeSubclassed(final Bean bean) {
 		throw new BeanFactoryGeneratorException("Unable to create proxy because target bean is final, bean: " + bean);
 	}
 
@@ -1069,7 +1069,7 @@ public class BeanFactoryGenerator extends Generator {
 				while (true) {
 					if (method.isFinal()) {
 						if (false == method.getEnclosingType().equals(object)) {
-							BeanFactoryGenerator.this.throwTargetMethodIsFinalException(method);
+							BeanFactoryGenerator.this.throwTargetMethodIsFinal(method);
 						}
 					}
 					break;
@@ -1089,18 +1089,18 @@ public class BeanFactoryGenerator extends Generator {
 		visitor.start(type);
 
 		if (matchedMethods.isEmpty()) {
-			throwNoMatchedMethodsException(advice);
+			throwNoMatchedMethods(advice);
 		}
 
 		context.debug("Matched " + matchedMethods.size() + " methods(s).");
 	}
 
-	protected void throwTargetMethodIsFinalException(final Method method) {
+	protected void throwTargetMethodIsFinal(final Method method) {
 		throw new BeanFactoryGeneratorException("The method " + method
 				+ " which is final, prevents a proxy from being generated (this is achieved via subclassing).");
 	}
 
-	protected void throwNoMatchedMethodsException(final Advice advice) {
+	protected void throwNoMatchedMethods(final Advice advice) {
 		throw new BeanFactoryGeneratorException("The advice expression does not match any methods, advice: " + advice);
 	}
 

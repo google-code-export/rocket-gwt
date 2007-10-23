@@ -102,12 +102,12 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	protected FactoryBean getFactoryBean(final String name) throws UnableToFindBeanException {
 		final FactoryBean factory = (FactoryBean) this.getFactoryBeans().get(name);
 		if (null == factory) {
-			throwUnableToFindBeanException("Unable to find bean [" + name + "]");
+			throwUnableToFindBean("Unable to find bean [" + name + "]");
 		}
 		return factory;
 	}
 
-	protected void throwUnableToFindBeanException(final String message) throws UnableToFindBeanException {
+	protected void throwUnableToFindBean(final String message) throws UnableToFindBeanException {
 		throw new UnableToFindBeanException(message);
 	}
 }
