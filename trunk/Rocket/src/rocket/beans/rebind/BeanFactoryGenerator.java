@@ -517,9 +517,10 @@ public class BeanFactoryGenerator extends Generator {
 		body.setBean(beanType);
 		body.setCustomMethod(initMethod);
 
-		final NewMethodParameter instance = (NewMethodParameter) newMethod.getParameters().get(0);
-		body.setInstance(instance);
-
+		final NewMethodParameter instanceParameter = (NewMethodParameter)newMethod.getParameters().get( 0 );
+		instanceParameter.setFinal( true );
+		instanceParameter.setName( Constants.SATISFY_INIT_INSTANCE_PARAMETER );
+		
 		newMethod.setBody(body);
 	}
 
@@ -586,7 +587,10 @@ public class BeanFactoryGenerator extends Generator {
 		newMethod.setFinal(true);
 		newMethod.setNative(false);
 
-		body.setInstance((MethodParameter) newMethod.getParameters().get(0));
+		final NewMethodParameter instanceParameter = (NewMethodParameter)newMethod.getParameters().get( 0 );
+		instanceParameter.setFinal( true );
+		instanceParameter.setName( Constants.SATISFY_PROPERTIES_INSTANCE_PARAMETER );
+		
 		newMethod.setBody(body);
 
 		// loop thru all properties
@@ -942,8 +946,9 @@ public class BeanFactoryGenerator extends Generator {
 		final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
 		newMethod.setBody(body);
 
-		final MethodParameter instance = (MethodParameter) newMethod.getParameters().get(0);
-		body.setInstance(instance);
+		final NewMethodParameter instanceParameter = (NewMethodParameter)newMethod.getParameters().get( 0 );
+		instanceParameter.setFinal( true );
+		instanceParameter.setName( Constants.SATISFY_PROPERTIES_INSTANCE_PARAMETER );
 
 		final Type serviceDefTarget = this.getServiceDefTarget();
 		body.setBean(serviceDefTarget);

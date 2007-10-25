@@ -1,7 +1,7 @@
 // write-field.txt
 
 // set the json object property.
-${jsonObject}.put( 
+jsonObject.put( 
 	// the javascript property being set
 	${javascriptPropertyName},
 	

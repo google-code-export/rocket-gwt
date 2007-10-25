@@ -19,6 +19,6 @@ ${addParameters}
 // end of parameter adding...
 
 invoker.setUrl( this.getServiceEntryPoint());
-invoker.setCallback( ${callbackParameter} );
+invoker.setCallback( callback );
 invoker.makeRequest( this );
 

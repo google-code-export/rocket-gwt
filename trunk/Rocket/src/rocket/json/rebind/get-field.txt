@@ -1,4 +1,4 @@
 // get-field.txt
 
-return ${instance}.${field};
+return instance.${field};
 

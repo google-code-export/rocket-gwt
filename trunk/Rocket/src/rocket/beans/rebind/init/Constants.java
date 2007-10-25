@@ -26,6 +26,4 @@ class Constants {
 	final static String BEAN_TYPE = "beanType";
 
 	final static String METHOD = "initMethod";
-
-	final static String INSTANCE_PARAMETER = "instanceParameter";
 }

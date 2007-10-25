@@ -97,37 +97,6 @@ public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * The method parameter that holds the instance being deserialized.
-	 */
-	private MethodParameter instance;
-
-	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("list:instance", instance);
-		return this.instance;
-	}
-
-	public void setInstance(final MethodParameter instance) {
-		ObjectHelper.checkNotNull("parameter:instance", instance);
-		this.instance = instance;
-	}
-
-	/**
-	 * The method parameter that holds the json object containing the source
-	 * values for the instance being deserialized
-	 */
-	private MethodParameter jsonObject;
-
-	protected MethodParameter getJsonObject() {
-		ObjectHelper.checkNotNull("list:jsonObject", jsonObject);
-		return this.jsonObject;
-	}
-
-	public void setJsonObject(final MethodParameter jsonObject) {
-		ObjectHelper.checkNotNull("parameter:jsonObject", jsonObject);
-		this.jsonObject = jsonObject;
-	}
-
-	/**
 	 * A property of json object containing the instance list being set.
 	 */
 	private String javascriptPropertyName;
@@ -168,14 +137,6 @@ public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 			}
 			if (Constants.SET_COMPLEX_SERIALIZER.equals(name)) {
 				value = this.getSerializer();
-				break;
-			}
-			if (Constants.SET_COMPLEX_INSTANCE.equals(name)) {
-				value = this.getInstance();
-				break;
-			}
-			if (Constants.SET_COMPLEX_JSON_OBJECT.equals(name)) {
-				value = this.getJsonObject();
 				break;
 			}
 			if (Constants.SET_COMPLEX_JAVASCRIPT_PROPERTY_NAME.equals(name)) {

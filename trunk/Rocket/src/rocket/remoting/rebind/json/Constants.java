@@ -57,7 +57,7 @@ class Constants {
 
 	static final String REQUEST_PARAMETERS_INVOKER_PAYLOAD_TYPE = "payloadType";
 
-	static final String REQUEST_PARAMETERS_INVOKER_CALLBACK_PARAMETER = "callbackParameter";
+	static final String REQUEST_PARAMETERS_INVOKER_CALLBACK_PARAMETER = "callback";
 
 	static final String REQUEST_PARAMETERS_INVOKER_ADD_PARAMETERS = "addParameters";
 

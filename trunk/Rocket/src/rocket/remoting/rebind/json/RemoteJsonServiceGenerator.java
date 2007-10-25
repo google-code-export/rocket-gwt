@@ -25,6 +25,7 @@ import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
+import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.AllMethodsVisitor;
@@ -177,14 +178,14 @@ public class RemoteJsonServiceGenerator extends Generator {
 	protected void implementGetOrPostRequestParameters(final Method method) {
 		ObjectHelper.checkNotNull("parameter:method", method);
 
-		this.getGeneratorContext().debug("Implementing method that sends parameters as request parameters, method: " + method);
+		this.getGeneratorContext().debug("Implementing method that sends method parameters as request parameters, method: " + method);
 
 		final Iterator parameters = method.getParameters().iterator();
 		while (parameters.hasNext()) {
-			final MethodParameter methodParameter = (MethodParameter) parameters.next();
-			final Type parameterType = methodParameter.getType();
+			final MethodParameter parameter = (MethodParameter) parameters.next();
+			final Type parameterType = parameter.getType();
 			if (false == this.isSimpleType(parameterType)) {
-				this.throwUnsupportedParameterTypeException(methodParameter);
+				this.throwUnsupportedParameterTypeException(parameter);
 			}
 		}
 
@@ -195,7 +196,17 @@ public class RemoteJsonServiceGenerator extends Generator {
 		body.setInvokerType(this.getInvokerTypeFromMethodAnnotation(method));
 		body.setNewMethod(asyncMethod);
 		body.setPayloadType(method.getReturnType());
-
+			
+		final Iterator newMethodParameters = asyncMethod.getParameters().iterator();
+		while( newMethodParameters.hasNext() ){
+			final NewMethodParameter parameter = (NewMethodParameter) newMethodParameters.next();
+			parameter.setFinal( true );
+			
+			if( false == newMethodParameters.hasNext() ){
+				parameter.setName( Constants.REQUEST_PARAMETERS_INVOKER_CALLBACK_PARAMETER);				
+			}
+		}
+		
 		asyncMethod.setBody(body);
 	}
 

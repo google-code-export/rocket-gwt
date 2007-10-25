@@ -75,17 +75,17 @@ class Constants {
 
 	static final String READ_COMPLEX_TEMPLATE = "read-complex.txt";
 
-	static final String READ_COMPLEX_JSON_VALUE_PARAMETER = "jsonValueParameter";
+	static final String READ_COMPLEX_JSON_VALUE_PARAMETER = "jsonValue";
 
 	static final String READ_COMPLEX_TYPE = "type";
 
 	static final String SET_FIELD_TEMPLATE = "set-field.txt";
 
-	static final String SET_FIELD_INSTANCE = "instance";
+	static final String SET_FIELD_INSTANCE_PARAMETER = "instance";
 
 	static final String SET_FIELD_FIELD = "field";
 
-	static final String SET_FIELD_VALUE = "value";
+	static final String SET_FIELD_VALUE_PARAMETER = "value";
 
 	static final String SET_FIELD_METHOD_PREFIX = "set";
 
@@ -105,7 +105,7 @@ class Constants {
 
 	static final String SET_COMPLEX_FIELD_SETTER = "setter";
 
-	static final String SET_COMPLEX_INSTANCE = "instance";
+	static final String SET_COMPLEX_INSTANCE_PARAMETER = "instance";
 
 	static final String SET_COMPLEX_FIELD_TYPE = "fieldType";
 
@@ -121,7 +121,7 @@ class Constants {
 
 	static final String SET_COMPLEX_READ_MAP_METHOD = "readMap";
 
-	static final String SET_COMPLEX_JSON_OBJECT = "jsonObject";
+	static final String SET_COMPLEX_JSON_OBJECT_PARAMETER = "jsonObject";
 
 	static final String SET_COMPLEX_JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
 
@@ -143,7 +143,7 @@ class Constants {
 
 	static final String WRITE_FIELD_FIELD_GETTER = "getter";
 
-	static final String WRITE_FIELD_JSON_OBJECT = "jsonObject";
+	static final String WRITE_FIELD_JSON_OBJECT_PARAMETER = "jsonObject";
 
 	static final String WRITE_FIELD_JAVASCRIPT_PROPERTY_NAME = "javascriptPropertyName";
 
@@ -151,7 +151,7 @@ class Constants {
 
 	static final String GET_FIELD_TEMPLATE = "get-field.txt";
 
-	static final String GET_FIELD_INSTANCE = "instance";
+	static final String GET_FIELD_INSTANCE_PARAMETER = "instance";
 
 	static final String GET_FIELD_FIELD = "field";
 

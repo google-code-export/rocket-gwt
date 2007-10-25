@@ -139,12 +139,6 @@ class RequestParametersInvokerTemplatedFile extends TemplatedCodeBlock {
 		return template;
 	}
 
-	protected MethodParameter getCallbackParameter() {
-		final List parameters = this.getNewMethod().getParameters();
-
-		return (MethodParameter) parameters.get(parameters.size() - 1);
-	}
-
 	protected InputStream getInputStream() {
 		final String filename = Constants.REQUEST_PARAMETERS_INVOKER_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -159,10 +153,6 @@ class RequestParametersInvokerTemplatedFile extends TemplatedCodeBlock {
 		while (true) {
 			if (Constants.REQUEST_PARAMETERS_INVOKER_ADD_PARAMETERS.equals(name)) {
 				value = this.getAddParameters();
-				break;
-			}
-			if (Constants.REQUEST_PARAMETERS_INVOKER_CALLBACK_PARAMETER.equals(name)) {
-				value = this.getCallbackParameter();
 				break;
 			}
 			if (Constants.REQUEST_PARAMETERS_INVOKER_INVOKER_TYPE.equals(name)) {

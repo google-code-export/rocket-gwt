@@ -3,13 +3,13 @@
 // invoke the setter
 this.${setter}(
 
- 	${instance}, 
+ 	instance, 
  
 	 	// unwrap the json value into a java primitive...
 	 	${serializer}.serializer.read( 
  
 			 // get the json object by its javascript name
-			 ${jsonObject}.get( ${javascriptPropertyName} )
+			 jsonObject.get( ${javascriptPropertyName} )
 		) 
  );
  
