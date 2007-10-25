@@ -120,6 +120,8 @@ public class FloatingSlider extends CompositeWidget {
 				FloatingSlider.this.onMouseDown(event);
 			}
 		});
+		this.setHandle(this.createHandle());
+		this.setBackground(this.createBackground());		
 	}
 
 	protected String getInitialStyleName() {
