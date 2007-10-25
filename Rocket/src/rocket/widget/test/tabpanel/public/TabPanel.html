@@ -6,22 +6,35 @@
 <script language="javascript" src="gwt.js"></script>
 
 <style>
+/* DEFAULTS ::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 BODY, TABLE, P, BUTTON {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 }
 
-BUTTON, IMG, P {
+BODY {
+   margin: 0px;
+   background-color: #abc;
+}
+
+BUTTON, P {
 	margin: 4px;
 }
 
-/* PANEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+IMG {
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+/* TAB PANEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 .rocket-topTabPanel,
 .rocket-bottomTabPanel,
 .rocket-leftTabPanel,
 .rocket-rightTabPanel
 {
-	width: 99%;
+	width: 100%;
 }
 
 .rocket-topTabPanel-tabBar-item,
@@ -30,14 +43,17 @@ BUTTON, IMG, P {
 .rocket-rightTabPanel-tabBar-item
 {
 	height: 1.25em;
-	margin: 2px;
+	margin: 0px;
 	border-style: solid;
 	border-width: 2px;
+        border-color: #789;
+        background-color: #789;
 	padding: 2px;
 	font-size: 10px;
 	cursor: hand;
 	white-space: nowrap;	
-	valign: center;
+        margin-left: 4px;
+        margin-right: 4px;
 }
 
 DIV.rocket-topTabPanel-tabBar-item,
@@ -53,7 +69,9 @@ DIV.rocket-rightTabPanel-tabBar-item
 .rocket-leftTabPanel-tabBar-item-selected,
 .rocket-rightTabPanel-tabBar-item-selected
 {
-	font-size: 12px;
+        border-color: #789;
+        background-color: #fff;
+	font-size: 10px;
 	font-weight: bold;
 	cursor: pointer;
 }
@@ -62,140 +80,80 @@ DIV.rocket-rightTabPanel-tabBar-item
 .rocket-bottomTabPanel-content,
 .rocket-leftTabPanel-content,
 .rocket-rightTabPanel-content{
-	border-width: 4px;
-	border-style: solid;
-	padding: 1em;
-	height: 300px;
+	background-color: #fff;
+	border-width: 0px;
+	padding: 4em;
 	overflow: hidden;
 }
 
-/* TOP and BOTTOM PANEL ::::::::::::::::::::::::::::::::::::::::::::::::::*/
-
-.rocket-topTabPanel TABLE TBODY TR TD,
-.rocket-bottomTabPanel TABLE TBODY TR TD {
-	height: 1em;
-}
-.rocket-topTabPanel TABLE TBODY TR TR TD,
-.rocket-bottomTabPanel TABLE TBODY TR TR TD {
-	height: auto;
-}
-
-.rocket-topTabPanel-tabBar-first,
-.rocket-bottomTabPanel-tabBar-first{
-	width: 1em;
-}
-.rocket-topTabPanel-tabBar-rest,
-.rocket-bottomTabPanel-tabBar-rest{
-}
-
+/* TOP  & BOTTOM TAB PANEL :::::::::::::::::::::::::::::::::::::*/
 .rocket-topTabPanel-tabBar-item,
-.rocket-bottomTabPanel-tabBar-item{
-	width: 25em;
-	height: 1em;
-
-	padding: 4px;
-}
-
-.rocket-topTabPanel-tabBar-item{
-	margin-bottom: 0px;
-	border-color: #89f;
-	padding-bottom: 2px;	
-	background-color: #89f;	
-}
 .rocket-bottomTabPanel-tabBar-item {
-	margin-top: 0px;
-	border-color: #fe7;
-	padding-top: 2px;
-	background-color: #fe7;	
+     width: 100px;
 }
 
-.rocket-topTabPanel-tabBar-item-selected,
-.rocket-bottomTabPanel-tabBar-item-selected {
-	padding: 15px;
-}
-.rocket-topTabPanel-tabBar-item-selected{
-	background-color: #45f;
-	border-color: #45f;
-	padding-bottom: 2px;	
-	color: #cdf;
-}
-.rocket-bottomTabPanel-tabBar-item-selected {
-	background-color: #fe4;
-	border-color: #fe4;
-	padding-top: 2px;
-	color: #01a;
-}
 
+/* TOP  TAB PANEL ::::::::::::::::::::::::::::::::::::::::::::::::*/
 .rocket-topTabPanel-content{
-	margin-bottom: 0px;
-	border-color: #45f;
-	background-color: #bef;
+      border-top-color: #789;
+      border-top-style: solid;
+      border-top-width: 3px;
 }
+
+.rocket-topTabPanel-tabBar-item-selected {
+      position: relative;
+      top: 3px;
+      border-bottom-color: #fff;
+}
+
+
+/* BOTTOM TAB PANEL ::::::::::::::::::::::::::::::::::::::::::::::::*/
 .rocket-bottomTabPanel-content{
-	margin-top: 0px;
-	border-color: #fe4;
-	background-color: #feb;
+      border-bottom-color: #789;
+      border-bottom-style: solid;
+      border-bottom-width: 3px;
 }
 
-/* LEFT and RIGHT TAB PANEL :::::::::::::::::::::::::::::::::::::::::::::::::*/
-
-.rocket-leftTabPanel-tabBar-first,
-.rocket-rightTabPanel-tabBar-first {
-	height: 1em;
-}
-.rocket-leftTabPanel-tabBar-rest,
-.rocket-rightTabPanel-tabBar-rest {	
+.rocket-bottomTabPanel-tabBar-item-selected {
+      position: relative;
+      top: -3px;
+      border-top-color: #fff;
 }
 
+/* LEFT  & RIGHT TAB PANEL :::::::::::::::::::::::::::::::::::::*/
 .rocket-leftTabPanel-tabBar-item,
 .rocket-rightTabPanel-tabBar-item {
-	width: 25em;
-	height: 1.25em;
-	margin-top: 2px;
-	margin-bottom: 2px;	
-	padding: 4px;
+     width: 100px;
 }
 
-.rocket-leftTabPanel-tabBar-item{
-	margin-right: 0px;
-	border-color: #8f9;
-	padding-left: 2px;	
-	background-color: #8f9;	
-}
-.rocket-rightTabPanel-tabBar-item {
-	margin-left: 0px;
-	border-color: #fa7;
-	padding-right: 2px;
-	background-color: #fa7;	
-}
 
-.rocket-leftTabPanel-tabBar-item-selected,
-.rocket-rightTabPanel-tabBar-item-selected {
-	padding: 15px;
-}
-.rocket-leftTabPanel-tabBar-item-selected{
-	background-color: #4f5;
-	border-color: #4f5;
-	padding-right: 2px;	
-	color: #cdf;
-}
-.rocket-rightTabPanel-tabBar-item-selected {
-	background-color: #f84;
-	border-color: #f84;
-	padding-left: 2px;
-	color: #01a;
-}
-
+/* LEFT  TAB PANEL ::::::::::::::::::::::::::::::::::::::::::::::::*/
 .rocket-leftTabPanel-content{
-	margin-right: 0px;
-	border-color: #4f5;
-	background-color: #bfe;
+      border-left-color: #789;
+      border-left-style: solid;
+      border-left-width: 3px;
 }
+
+.rocket-leftTabPanel-tabBar-item-selected {
+      position: relative;
+      left: 7px;
+      border-right-color: #fff;
+}
+
+
+/* RIGHT TAB PANEL ::::::::::::::::::::::::::::::::::::::::::::::::*/
 .rocket-rightTabPanel-content{
-	margin-left: 0px;
-	border-color: #f84;
-	background-color: #fde;
+      border-right-color: #789;
+      border-right-style: solid;
+      border-right-width: 3px;
 }
+
+.rocket-rightTabPanel-tabBar-item-selected {
+      position: relative;
+      left: -7px;
+      border-left-color: #fff;
+}
+
 
 /* MISC ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 .rocket-interactiveList{
@@ -204,14 +162,21 @@ DIV.rocket-rightTabPanel-tabBar-item
 	background-color: #ddd;
 }
 
-.rocket-interactiveList BUTTON{
-	margin: 4px;
-}
-
 </style>
 </head>
 
 <body>
+<div style="
+	position: absolute; 
+	left: 10px; 
+	top: 100px; 
+	border-width: 1px;
+	border-color: #000;
+	border-style: dotted;
+	padding: 4px; 
+	background-color: #eee; 
+	opacity: 0.5; 
+	filter(alpha=50); z-index: 20;">
 <h3>Things to test.</h3>
 <ul>
 <li>Only one tab may be active at any time. The active tab also shows its content</li>
@@ -220,6 +185,8 @@ DIV.rocket-rightTabPanel-tabBar-item
 <li>Each tab includes a set of controls within an area with a grayish background. These may be used to add/insert/count/remove etc tabItems.</li>
 <li>The user is prompted to veto any of the possible tab events.</li>
 </ul>
+<button onclick="prompt('',document.body.innerHTML);">dbi</button>
+</div>
 
 <div id="lorem" style="display: none;">
 <p>
