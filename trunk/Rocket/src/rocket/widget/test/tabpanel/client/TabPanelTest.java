@@ -17,9 +17,16 @@ package rocket.widget.test.tabpanel.client;
 
 import java.util.Iterator;
 
+import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEventAdapter;
+import rocket.style.client.Css;
+import rocket.style.client.CssUnit;
+import rocket.style.client.InlineStyle;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StackTrace;
 import rocket.util.client.SystemHelper;
+import rocket.widget.client.Button;
+import rocket.widget.client.Html;
 import rocket.widget.client.tabpanel.BeforeTabCloseEvent;
 import rocket.widget.client.tabpanel.BeforeTabSelectEvent;
 import rocket.widget.client.tabpanel.BottomTabPanel;
@@ -39,6 +46,8 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.DeckPanel;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -55,24 +64,96 @@ public class TabPanelTest implements EntryPoint {
 				Window.alert(caught.getMessage() + "\n" + StackTrace.asString(caught));
 			}
 		});
-
-		final RootPanel rootPanel = RootPanel.get();
-
-		final TabPanel topPanel = new TopTabPanel();
-		completeTabPanel(topPanel);
-		rootPanel.add(topPanel);
-
+		
+		final DockPanel topBottomDockPanel = new DockPanel();
+		
 		final TabPanel bottomPanel = new BottomTabPanel();
 		completeTabPanel(bottomPanel);
-		rootPanel.add(bottomPanel);
+		topBottomDockPanel.add( bottomPanel, DockPanel.NORTH );
+		
+		final TabPanel topPanel = new TopTabPanel();
+		completeTabPanel(topPanel);
+		topBottomDockPanel.add( topPanel, DockPanel.SOUTH );
+
+		final Html topBottomCenter = new Html();
+		topBottomCenter.setHeight( "100px");
+		topBottomDockPanel.add( topBottomCenter, DockPanel.CENTER );
+		
+		final DockPanel leftRightDockPanel = new DockPanel();
+		final TabPanel rightPanel = new RightTabPanel();
+		completeTabPanel(rightPanel);
+		leftRightDockPanel.add( rightPanel, DockPanel.WEST );
 
 		final TabPanel leftPanel = new LeftTabPanel();
 		completeTabPanel(leftPanel);
-		rootPanel.add(leftPanel);
+		leftRightDockPanel.add( leftPanel, DockPanel.EAST );
+		
+		final Html leftRightCenter = new Html();
+		leftRightCenter.setWidth( "100px");
+		leftRightDockPanel.add( leftRightCenter, DockPanel.CENTER );
+		
+		final DeckPanel deckPanel = new DeckPanel();
+		deckPanel.add( topBottomDockPanel );
+		deckPanel.add( leftRightDockPanel );
+		deckPanel.showWidget( 0 );
+		
+		final RootPanel rootPanel = RootPanel.get();
+		rootPanel.add( deckPanel );
+		
+		final TabPanelControl topPanelControl = new TabPanelControl( topPanel );
+		final Element topPanelControlElement = topPanelControl.getElement();
+		InlineStyle.setString( topPanelControlElement, Css.POSITION, "absolute" );
+		InlineStyle.setInteger( topPanelControlElement, Css.LEFT, 10, CssUnit.PX );
+		InlineStyle.setInteger( topPanelControlElement, Css.BOTTOM, 50, CssUnit.PX );
+		InlineStyle.setInteger( topPanelControlElement, Css.Z_INDEX, 10, CssUnit.NONE );
+		rootPanel.add( topPanelControl );
+		
+		final TabPanelControl bottomPanelControl = new TabPanelControl( bottomPanel );
+		final Element bottomPanelControlElement = bottomPanelControl.getElement();
+		InlineStyle.setString( bottomPanelControlElement, Css.POSITION, "absolute" );
+		InlineStyle.setInteger( bottomPanelControlElement, Css.LEFT, 10, CssUnit.PX );
+		InlineStyle.setInteger( bottomPanelControlElement, Css.TOP, 50, CssUnit.PX );
+		InlineStyle.setInteger( bottomPanelControlElement, Css.Z_INDEX, 10, CssUnit.NONE );
+		rootPanel.add( bottomPanelControl );
 
-		final TabPanel rightPanel = new RightTabPanel();
-		completeTabPanel(rightPanel);
-		rootPanel.add(rightPanel);
+		final TabPanelControl leftPanelControl = new TabPanelControl( leftPanel );
+		leftPanelControl.setVisible( false );
+		final Element leftPanelControlElement = leftPanelControl.getElement();
+		InlineStyle.setString( leftPanelControlElement, Css.POSITION, "absolute" );
+		InlineStyle.setInteger( leftPanelControlElement, Css.LEFT, 10, CssUnit.PX );
+		InlineStyle.setInteger( leftPanelControlElement, Css.BOTTOM, 50, CssUnit.PX );
+		InlineStyle.setInteger( leftPanelControlElement, Css.Z_INDEX, 10, CssUnit.NONE );
+		rootPanel.add( leftPanelControl );
+		
+		final TabPanelControl rightPanelControl = new TabPanelControl( rightPanel );
+		rightPanelControl.setVisible( false );
+		final Element rightPanelControlElement = rightPanelControl.getElement();
+		InlineStyle.setString( rightPanelControlElement, Css.POSITION, "absolute" );
+		InlineStyle.setInteger( rightPanelControlElement, Css.LEFT, 10, CssUnit.PX );
+		InlineStyle.setInteger( rightPanelControlElement, Css.TOP, 50, CssUnit.PX );
+		InlineStyle.setInteger( rightPanelControlElement, Css.Z_INDEX, 10, CssUnit.NONE );
+		rootPanel.add( rightPanelControl );
+		
+		final Button button = new Button( "Swap");
+		button.addMouseEventListener( new MouseEventAdapter(){
+			public void onClick( final MouseClickEvent event) {
+				final int index = deckPanel.getVisibleWidget();
+				final boolean wasLeftRight = index == 1;
+				
+				topPanelControl.setVisible( wasLeftRight );
+				bottomPanelControl.setVisible( wasLeftRight );
+				leftPanelControl.setVisible( ! wasLeftRight );
+				rightPanelControl.setVisible( ! wasLeftRight );
+				
+				deckPanel.showWidget( wasLeftRight ? 0 : 1 );
+			}
+		});
+		rootPanel.add( button );
+		final Element buttonElement = button.getElement();
+		InlineStyle.setString( buttonElement, Css.POSITION, "absolute" );
+		InlineStyle.setInteger( buttonElement, Css.RIGHT, 10, CssUnit.PX );
+		InlineStyle.setInteger( buttonElement, Css.TOP, 10, CssUnit.PX );
+		InlineStyle.setInteger( buttonElement, Css.Z_INDEX, 30, CssUnit.NONE );
 	}
 
 	/**
@@ -93,10 +174,6 @@ public class TabPanelTest implements EntryPoint {
 		tabPanel.add(item, false);
 		tabPanel.select(0);
 
-		final InterativeList control = new InterativeList();
-		control.setTabPanel(tabPanel);
-		RootPanel.get().add(control);
-
 		tabPanel.addTabListener(new TabListener() {
 			public void onBeforeTabSelect(final BeforeTabSelectEvent event) {
 				ObjectHelper.checkNotNull("TabSelectEvent.currentSelection", event.getCurrentSelection());
@@ -113,7 +190,7 @@ public class TabPanelTest implements EntryPoint {
 				ObjectHelper.checkNotNull("TabSelectEvent.previouslySelected", event.getPreviouslySelected());
 				final TabItem item = event.getCurrentSelection();
 				final String caption = item.getCaption();
-				control.log("tabSelected caption[" + caption + "]");
+				//control.log("tabSelected caption[" + caption + "]");
 			}
 
 			public void onBeforeTabClose(final BeforeTabCloseEvent event) {
@@ -128,7 +205,7 @@ public class TabPanelTest implements EntryPoint {
 			public void onTabClose(final TabCloseEvent event) {
 				final TabItem item = event.getClosed();
 				final String caption = item.getCaption();
-				control.log("tabClosed [" + caption + "]");
+				//control.log("tabClosed [" + caption + "]");
 			}
 		});
 	}
@@ -139,9 +216,11 @@ public class TabPanelTest implements EntryPoint {
 		return DOM.getInnerHTML(element);
 	}
 
-	class InterativeList extends rocket.testing.client.InteractiveList {
-		InterativeList() {
+	class TabPanelControl extends rocket.testing.client.InteractiveList {
+		TabPanelControl( final TabPanel tabPanel ) {
 			super();
+			
+			this.setTabPanel(tabPanel);
 		}
 
 		protected String getCollectionTypeName() {
