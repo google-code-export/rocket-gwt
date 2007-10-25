@@ -45,18 +45,6 @@ public class SetPropertiesTemplatedFile extends TemplatedCodeBlock {
 		this.setProperties(this.createProperties());
 	}
 
-	private MethodParameter instance;
-
-	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("field:instance", instance);
-		return this.instance;
-	}
-
-	public void setInstance(final MethodParameter instance) {
-		ObjectHelper.checkNotNull("parameter:instance", instance);
-		this.instance = instance;
-	}
-
 	/**
 	 * The bean having its properties set.
 	 */
@@ -139,10 +127,6 @@ public class SetPropertiesTemplatedFile extends TemplatedCodeBlock {
 		while (true) {
 			if (Constants.SET_PROPERTIES_BEAN_TYPE.equals(name)) {
 				value = this.getBean();
-				break;
-			}
-			if (Constants.SET_PROPERTIES_INSTANCE_PARAMETER.equals(name)) {
-				value = this.getInstance();
 				break;
 			}
 			if (Constants.SET_PROPERTIES_SET_INDIVIDUAL_PROPERTIES.equals(name)) {

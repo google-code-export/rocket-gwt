@@ -3,7 +3,7 @@
 // invoke the setter
 this.${setter}( 
 
-	${instance}, 
+	instance, 
 
 	// cast
 	(${fieldType}) 
@@ -12,7 +12,7 @@ this.${setter}(
 		${serializer}.serializer.${readMethod}( 
 
 			// get the JSONValue by javascript name.
-			${jsonObject}.get( ${javascriptPropertyName} )
+			jsonObject.get( ${javascriptPropertyName} )
 		)
 );
 

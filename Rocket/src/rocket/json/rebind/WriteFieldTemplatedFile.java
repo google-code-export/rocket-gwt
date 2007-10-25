@@ -69,21 +69,6 @@ public class WriteFieldTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * The json object being built up.
-	 */
-	private MethodParameter jsonObject;
-
-	protected MethodParameter getJsonObject() {
-		ObjectHelper.checkNotNull("list:jsonObject", jsonObject);
-		return this.jsonObject;
-	}
-
-	public void setJsonObject(final MethodParameter jsonObject) {
-		ObjectHelper.checkNotNull("parameter:jsonObject", jsonObject);
-		this.jsonObject = jsonObject;
-	}
-
-	/**
 	 * A serializer which can serialize the list type
 	 */
 	private Type serializer;
@@ -116,10 +101,6 @@ public class WriteFieldTemplatedFile extends TemplatedCodeBlock {
 			}
 			if (Constants.WRITE_FIELD_JAVASCRIPT_PROPERTY_NAME.equals(name)) {
 				value = new StringLiteral(this.getJavascriptPropertyName());
-				break;
-			}
-			if (Constants.WRITE_FIELD_JSON_OBJECT.equals(name)) {
-				value = this.getJsonObject();
 				break;
 			}
 			if (Constants.WRITE_FIELD_SERIALIZER.equals(name)) {

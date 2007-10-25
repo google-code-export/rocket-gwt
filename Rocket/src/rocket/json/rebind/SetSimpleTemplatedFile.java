@@ -53,33 +53,6 @@ public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
 		this.fieldSetter = fieldSetter;
 	}
 
-	private MethodParameter instance;
-
-	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("list:instance", instance);
-		return this.instance;
-	}
-
-	public void setInstance(final MethodParameter instance) {
-		ObjectHelper.checkNotNull("parameter:instance", instance);
-		this.instance = instance;
-	}
-
-	/**
-	 * The json object parameter variable.
-	 */
-	private MethodParameter jsonObject;
-
-	protected MethodParameter getJsonObject() {
-		ObjectHelper.checkNotNull("list:jsonObject", jsonObject);
-		return this.jsonObject;
-	}
-
-	public void setJsonObject(final MethodParameter jsonObject) {
-		ObjectHelper.checkNotNull("parameter:jsonObject", jsonObject);
-		this.jsonObject = jsonObject;
-	}
-
 	/**
 	 * The name of the property on jsonObject that contains the new value for
 	 * the list
@@ -127,16 +100,8 @@ public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
 				value = this.getFieldSetter();
 				break;
 			}
-			if (Constants.SET_SIMPLE_INSTANCE.equals(name)) {
-				value = this.getInstance();
-				break;
-			}
 			if (Constants.SET_SIMPLE_JAVASCRIPT_PROPERTY_NAME.equals(name)) {
 				value = new StringLiteral(this.getJavascriptPropertyName());
-				break;
-			}
-			if (Constants.SET_SIMPLE_JSON_OBJECT.equals(name)) {
-				value = this.getJsonObject();
 				break;
 			}
 			if (Constants.SET_SIMPLE_SERIALIZER.equals(name)) {

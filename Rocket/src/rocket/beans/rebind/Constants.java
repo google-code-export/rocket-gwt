@@ -55,9 +55,11 @@ class Constants {
 	final static String CREATE_INSTANCE = "createInstance";
 
 	final static String SATISFY_PROPERTIES = "satisfyProperties";
+	final static String SATISFY_PROPERTIES_INSTANCE_PARAMETER = "instance"; 
 
 	final static String SATISFY_INIT = "satisfyInit";
-
+	final static String SATISFY_INIT_INSTANCE_PARAMETER = "instance";
+	
 	final static String BUILD_FACTORY_BEANS = "buildFactoryBeans";
 
 	final static String SET_SERVICE_ENTRY_POINT = "setServiceEntryPoint";

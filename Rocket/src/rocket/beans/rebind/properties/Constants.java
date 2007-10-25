@@ -23,8 +23,6 @@ package rocket.beans.rebind.properties;
 class Constants {
 	final static String SET_PROPERTIES_TEMPLATE = "set-properties.txt";
 
-	final static String SET_PROPERTIES_INSTANCE_PARAMETER = "instance";
-
 	final static String SET_PROPERTIES_BEAN_TYPE = "beanType";
 
 	final static String SET_PROPERTIES_SET_INDIVIDUAL_PROPERTIES = "setIndividualProperties";

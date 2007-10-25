@@ -50,21 +50,6 @@ public class ReadComplexTemplatedFile extends TemplatedCodeBlock {
 		this.deserializerType = deserializerType;
 	}
 
-	/**
-	 * The jsonvalue parameter
-	 */
-	private MethodParameter jsonValue;
-
-	protected MethodParameter getJsonValue() {
-		ObjectHelper.checkNotNull("list:jsonValue", jsonValue);
-		return this.jsonValue;
-	}
-
-	public void setJsonValue(final MethodParameter jsonValue) {
-		ObjectHelper.checkNotNull("parameter:jsonValue", jsonValue);
-		this.jsonValue = jsonValue;
-	}
-
 	protected InputStream getInputStream() {
 		final String filename = Constants.READ_COMPLEX_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -79,10 +64,6 @@ public class ReadComplexTemplatedFile extends TemplatedCodeBlock {
 		while (true) {
 			if (Constants.READ_COMPLEX_TYPE.equals(name)) {
 				value = this.getDeserializerType();
-				break;
-			}
-			if (Constants.READ_COMPLEX_JSON_VALUE_PARAMETER.equals(name)) {
-				value = this.getJsonValue();
 				break;
 			}
 			break;

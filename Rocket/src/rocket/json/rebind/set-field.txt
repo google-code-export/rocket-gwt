@@ -1,4 +1,4 @@
 // set-field.txt
 
-${instance}.${field}=${value};
+instance.${field}=value;
 

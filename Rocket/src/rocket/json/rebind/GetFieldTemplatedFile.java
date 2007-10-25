@@ -50,21 +50,6 @@ public class GetFieldTemplatedFile extends TemplatedCodeBlock {
 		this.field = field;
 	}
 
-	/**
-	 * The instance parameter containing the list being read.
-	 */
-	private MethodParameter instance;
-
-	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("list:instance", instance);
-		return this.instance;
-	}
-
-	public void setInstance(final MethodParameter instance) {
-		ObjectHelper.checkNotNull("parameter:instance", instance);
-		this.instance = instance;
-	}
-
 	protected InputStream getInputStream() {
 		final String filename = Constants.GET_FIELD_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -79,11 +64,6 @@ public class GetFieldTemplatedFile extends TemplatedCodeBlock {
 		while (true) {
 			if (Constants.GET_FIELD_FIELD.equals(name)) {
 				value = this.getField();
-				break;
-			}
-			if (Constants.GET_FIELD_INSTANCE.equals(name)) {
-				value = this.getInstance();
-				break;
 			}
 			break;
 		}

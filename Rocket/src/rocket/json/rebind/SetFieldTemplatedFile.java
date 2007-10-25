@@ -47,30 +47,6 @@ public class SetFieldTemplatedFile extends TemplatedCodeBlock {
 		this.field = field;
 	}
 
-	private MethodParameter instance;
-
-	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("field:instance", instance);
-		return this.instance;
-	}
-
-	public void setInstance(final MethodParameter instance) {
-		ObjectHelper.checkNotNull("parameter:instance", instance);
-		this.instance = instance;
-	}
-
-	private MethodParameter value;
-
-	protected MethodParameter getValue() {
-		ObjectHelper.checkNotNull("field:value", value);
-		return this.value;
-	}
-
-	public void setValue(final MethodParameter value) {
-		ObjectHelper.checkNotNull("parameter:value", value);
-		this.value = value;
-	}
-
 	protected InputStream getInputStream() {
 		final String filename = Constants.SET_FIELD_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -85,14 +61,6 @@ public class SetFieldTemplatedFile extends TemplatedCodeBlock {
 		while (true) {
 			if (Constants.SET_FIELD_FIELD.equals(name)) {
 				value = this.getField();
-				break;
-			}
-			if (Constants.SET_FIELD_INSTANCE.equals(name)) {
-				value = this.getInstance();
-				break;
-			}
-			if (Constants.SET_FIELD_VALUE.equals(name)) {
-				value = this.getValue();
 				break;
 			}
 			break;

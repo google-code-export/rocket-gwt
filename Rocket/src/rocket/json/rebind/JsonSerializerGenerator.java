@@ -152,16 +152,14 @@ public class JsonSerializerGenerator extends Generator {
 			// add its instance parameter
 			final NewMethodParameter setterInstanceParameter = setter.newParameter();
 			setterInstanceParameter.setFinal(true);
-			setterInstanceParameter.setName("instance");
+			setterInstanceParameter.setName( Constants.SET_FIELD_INSTANCE_PARAMETER);
 			setterInstanceParameter.setType(type);
-			writeMethodBody.setInstance(setterInstanceParameter);
 
 			// add the value parameter
 			final NewMethodParameter setterValueParameter = setter.newParameter();
 			setterValueParameter.setFinal(true);
-			setterValueParameter.setName("value");
+			setterValueParameter.setName( Constants.SET_FIELD_VALUE_PARAMETER );
 			setterValueParameter.setType(field.getType());
-			writeMethodBody.setValue(setterValueParameter);
 
 			final Type fieldType = field.getType();
 
@@ -170,8 +168,6 @@ public class JsonSerializerGenerator extends Generator {
 				final SetSimpleTemplatedFile template = new SetSimpleTemplatedFile();
 
 				template.setFieldSetter(setter);
-				template.setInstance(readFieldsInstanceParameter);
-				template.setJsonObject(readFieldsJsonObjectParameter);
 				template.setJavascriptPropertyName(this.getJavascriptPropertyName(field));
 				template.setSerializer(this.getSerializer(field));
 
@@ -181,8 +177,6 @@ public class JsonSerializerGenerator extends Generator {
 
 			final SetComplexTemplatedFile template = new SetComplexTemplatedFile();
 			template.setFieldSetter(setter);
-			template.setInstance(readFieldsInstanceParameter);
-			template.setJsonObject(readFieldsJsonObjectParameter);
 			template.setJavascriptPropertyName(this.getJavascriptPropertyName(field));
 			template.setFieldType(fieldType);
 
@@ -246,11 +240,12 @@ public class JsonSerializerGenerator extends Generator {
 		newReadObject.setFinal(false);
 		newReadObject.setNative(false);
 
-		final MethodParameter jsonValue = (MethodParameter) newReadObject.getParameters().get(0);
-
+		final NewMethodParameter jsonValue = (NewMethodParameter) newReadObject.getParameters().get(0);
+		jsonValue.setName( Constants.READ_COMPLEX_JSON_VALUE_PARAMETER );
+		jsonValue.setFinal( true );
+		
 		final ReadComplexTemplatedFile body = new ReadComplexTemplatedFile();
 		body.setDeserializerType(type);
-		body.setJsonValue(jsonValue);
 
 		newReadObject.setBody(body);
 	}
@@ -344,19 +339,17 @@ public class JsonSerializerGenerator extends Generator {
 
 		final NewMethodParameter instanceParameter = writeFields.newParameter();
 		instanceParameter.setFinal(true);
-		instanceParameter.setName("instance");
+		instanceParameter.setName( Constants.WRITE_FIELDS_INSTANCE_PARAMETER );
 		instanceParameter.setType(context.getObject());
 
 		final NewMethodParameter jsonObjectParameter = writeFields.newParameter();
 		jsonObjectParameter.setFinal(true);
-		jsonObjectParameter.setName("jsonObject");
+		jsonObjectParameter.setName( Constants.WRITE_FIELD_JSON_OBJECT_PARAMETER );
 		final Type jsonObjectType = this.getJsonObject();
 		jsonObjectParameter.setType(jsonObjectType);
 
 		final WriteFieldsTemplatedFile body = new WriteFieldsTemplatedFile();
-		body.setInstance(instanceParameter);
 		body.setInstanceType(type);
-		body.setJsonObject(jsonObjectParameter);
 		writeFields.setBody(body);
 
 		// find all fields belonging to type
@@ -392,13 +385,12 @@ public class JsonSerializerGenerator extends Generator {
 		fieldGetter.setVisibility(Visibility.PRIVATE);
 
 		final NewMethodParameter instance = fieldGetter.newParameter();
-		instance.setName(Constants.GET_FIELD_INSTANCE);
+		instance.setName(Constants.GET_FIELD_INSTANCE_PARAMETER);
 		instance.setFinal(true);
 		instance.setType(field.getEnclosingType());
 
 		final GetFieldTemplatedFile fieldGetterBody = new GetFieldTemplatedFile();
 		fieldGetterBody.setField(field);
-		fieldGetterBody.setInstance(instance);
 		fieldGetter.setBody(fieldGetterBody);
 
 		return fieldGetter;

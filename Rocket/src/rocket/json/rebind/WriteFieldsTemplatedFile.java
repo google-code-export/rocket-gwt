@@ -46,21 +46,6 @@ public class WriteFieldsTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * The method parameter that is the source of fields to be serialized
-	 */
-	private MethodParameter instance;
-
-	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("list:instance", instance);
-		return this.instance;
-	}
-
-	public void setInstance(final MethodParameter instance) {
-		ObjectHelper.checkNotNull("parameter:instance", instance);
-		this.instance = instance;
-	}
-
-	/**
 	 * The actual type of the instance parameter
 	 */
 	private Type instanceType;
@@ -73,21 +58,6 @@ public class WriteFieldsTemplatedFile extends TemplatedCodeBlock {
 	public void setInstanceType(final Type instanceType) {
 		ObjectHelper.checkNotNull("parameter:instanceType", instanceType);
 		this.instanceType = instanceType;
-	}
-
-	/**
-	 * The parameter holding the jsonObject variable being populated
-	 */
-	private MethodParameter jsonObject;
-
-	protected MethodParameter getJsonObject() {
-		ObjectHelper.checkNotNull("list:jsonObject", jsonObject);
-		return this.jsonObject;
-	}
-
-	public void setJsonObject(final MethodParameter jsonObject) {
-		ObjectHelper.checkNotNull("parameter:jsonObject", jsonObject);
-		this.jsonObject = jsonObject;
 	}
 
 	/**
@@ -125,7 +95,6 @@ public class WriteFieldsTemplatedFile extends TemplatedCodeBlock {
 
 	protected CodeBlock getFieldsCodeBlock() {
 		final WriteFieldTemplatedFile template = new WriteFieldTemplatedFile();
-		template.setJsonObject(this.getJsonObject());
 
 		return new CollectionTemplatedCodeBlock() {
 
@@ -204,10 +173,6 @@ public class WriteFieldsTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.WRITE_FIELDS_INSTANCE_PARAMETER.equals(name)) {
-				value = this.getInstance();
-				break;
-			}
 			if (Constants.WRITE_FIELDS_INSTANCE_TYPE.equals(name)) {
 				value = this.getInstanceType();
 				break;

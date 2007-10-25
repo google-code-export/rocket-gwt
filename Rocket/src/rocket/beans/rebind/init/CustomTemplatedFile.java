@@ -66,21 +66,6 @@ public class CustomTemplatedFile extends TemplatedCodeBlock {
 		this.customMethod = customMethod;
 	}
 
-	/**
-	 * The parameter passed to the satisfyInit method
-	 */
-	private MethodParameter instance;
-
-	protected MethodParameter getInstance() {
-		ObjectHelper.checkNotNull("field:customMethodParameter", instance);
-		return this.instance;
-	}
-
-	public void setInstance(final MethodParameter instance) {
-		ObjectHelper.checkNotNull("customMethodParameter:instance", instance);
-		this.instance = instance;
-	}
-
 	protected InputStream getInputStream() {
 		final String filename = Constants.TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -95,10 +80,6 @@ public class CustomTemplatedFile extends TemplatedCodeBlock {
 		while (true) {
 			if (Constants.BEAN_TYPE.equals(name)) {
 				value = this.getBean();
-				break;
-			}
-			if (Constants.INSTANCE_PARAMETER.equals(name)) {
-				value = this.getInstance();
 				break;
 			}
 			if (Constants.METHOD.equals(name)) {
