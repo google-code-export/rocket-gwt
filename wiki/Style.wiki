@@ -173,12 +173,12 @@ public StyleSheetChanger{
 
 }}}
 
-===Unit tests===
+===Unit/Functional tests===
 
 For further examples refer to the unit and functional tests that accompany the distribution.
 
   * rocket.style.test.computedstyle.ComputedStyleGwtTestCase
   * rocket.style.test.inlinestyle.InlineStyleGwtTestCase
-  * rocket.style.test.stylehelper.client.StyleHelperTest
+  * rocket.style.test.style.client.StyleTest
   * rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase
   * rocket.style.test.stylesheet.client.StyleSheetTest
