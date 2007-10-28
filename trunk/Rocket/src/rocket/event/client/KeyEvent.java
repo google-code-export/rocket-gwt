@@ -140,7 +140,7 @@ public class KeyEvent extends Event {
 	}
 	
 	public boolean isDigit(){
-		return Character.isDigit( this.getKey() );
+		return Character.isDigit( (char)this.getKey() );
 	}
 	
 	public boolean isAlpha(){
