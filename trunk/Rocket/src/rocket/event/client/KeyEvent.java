@@ -18,7 +18,9 @@ package rocket.event.client;
 import com.google.gwt.user.client.DOM;
 
 /**
- * Package private class that adds the shared behaviour for all key events.
+ * A common base class for all key events.
+ * Many convenience methods are available for testing which key was involved in the event, removing the need
+ * to test a key code using {@link #getKey()}.
  * 
  * @author Miroslav Pokorny
  */
@@ -30,14 +32,6 @@ public class KeyEvent extends Event {
 	 return DOM.eventGetKeyCode(this.getEvent());
 	}
 	
-	public char getChar(){
-		return this.getChar0( this.getEvent() );
-	}
-	
-	native private char getChar0( final com.google.gwt.user.client.Event event )/*-{
-		return event.charCode || 0;
-	}-*/;
-
 	public void setKey(final int key) {
 		DOM.eventSetKeyCode(this.getEvent(), (char)key);
 	}
@@ -110,6 +104,50 @@ public class KeyEvent extends Event {
 		return DOM.eventGetMetaKey(this.getEvent());
 	}
 
+	/**
+	 * Tests if this key event occured due to one of the modifier keys being pressed/let go.
+	 * @return
+	 */
+	public boolean isModifier(){
+		return this.isShift() || this.isControl() || this.isAlt() || this.isMeta();
+	}
+
+	/**
+	 * Tests if the key event occured due to a navigation key being pressed/let go.
+	 * The navigation keys are
+	 * <ul>
+	 * <li>any Cursor key</li>
+	 * <li>home</li>
+	 * <li>end</li>
+	 * </ul>
+	 * @return
+	 */
+	public boolean isNavigation(){
+		return this.isCursorDown() || this.isCursorLeft() || this.isCursorRight() || this.isCursorUp() || this.isHome() || this.isEnd();
+	}
+
+	/**
+	 * Tests if this event occured due to a editing key.
+	 * The editing keys are
+	 * <ul>
+	 * <li>Backspace</li>
+	 * <li>Delete</li>
+	 * </ul>
+	 * @return
+	 */
+	public boolean isEditing(){
+		return this.isBackspace() || this.isDelete();
+	}
+	
+	public boolean isDigit(){
+		return Character.isDigit( this.getKey() );
+	}
+	
+	public boolean isAlpha(){
+		final char c = (char)this.getKey();
+		return c >= 'A' && c<= 'Z';
+	}
+	
 	public boolean isRepeatedKey() {
 		return DOM.eventGetRepeat(this.getEvent());
 	}
