@@ -34,9 +34,11 @@ import rocket.collection.test.SkippingIteratorTestCase;
 import rocket.collection.test.VisitRememberingIteratorTestCase;
 import rocket.generator.test.AllMethodsVisitorTestCase;
 import rocket.generator.test.CollectionTemplatedCodeBlockTestCase;
+import rocket.generator.test.ConcreteTypesImplementingInterfaceVisitorTestCase;
 import rocket.generator.test.GeneratorHelperTestCase;
 import rocket.generator.test.MethodTestCase;
 import rocket.generator.test.StringBufferSourceWriterTestCase;
+import rocket.generator.test.SubClassVisitorTestCase;
 import rocket.generator.test.TypeTestCase;
 import rocket.generator.test.VirtualMethodTestCase;
 import rocket.generator.test.generator.client.GeneratorGwtTestCase;
@@ -101,7 +103,9 @@ public class RocketTestSuite {
 		suite.addTestSuite(TemplatedFileCodeBlockGwtTestCase.class);
 		suite.addTestSuite(VirtualMethodTestCase.class);
 		suite.addTestSuite(CollectionTemplatedCodeBlockTestCase.class);
-
+		suite.addTestSuite(SubClassVisitorTestCase.class );
+		suite.addTestSuite(ConcreteTypesImplementingInterfaceVisitorTestCase.class );
+		
 		// rocket.remoting
 		suite.addTestSuite(RemoteJsonServiceGwtTestCase.class);
 

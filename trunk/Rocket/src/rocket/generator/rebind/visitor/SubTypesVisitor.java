@@ -37,13 +37,21 @@ abstract public class SubTypesVisitor {
 				}
 			}
 
-			final Iterator subTypes = type.getSubTypes().iterator();
-			while (subTypes.hasNext()) {
-				final Type subType = (Type) subTypes.next();
-				if (this.visit(subType)) {
-					break;
-				}
+			this.visitSubTypes(type);
+			break;
+		}
+	}
+
+	protected void visitSubTypes(final Type type) {
+		ObjectHelper.checkNotNull("type:type", type);
+
+		final Iterator subTypes = type.getSubTypes().iterator();
+		while (subTypes.hasNext()) {
+			final Type subType = (Type) subTypes.next();
+			if (this.visit(subType)) {
+				break;
 			}
+			this.visitSubTypes(subType);
 		}
 	}
 
