@@ -24,7 +24,7 @@ import rocket.beans.test.beans.client.ambiguousconstructors.AmbiguousConstructor
 import rocket.beans.test.beans.client.ambiguoussetters.AmbiguousSettersBeanFactory;
 import rocket.beans.test.beans.client.beanclassnotfound.NotFoundBeanFactory;
 import rocket.beans.test.beans.client.beanreference.BeanReferenceBeanFactory;
-import rocket.beans.test.beans.client.beanreference.ClassWithBeanReference;
+import rocket.beans.test.beans.client.beanreference.ClassWithReferences;
 import rocket.beans.test.beans.client.beantypenotconcrete.BeanTypeThatIsNotConcreteBeanFactory;
 import rocket.beans.test.beans.client.booleanproperty.BooleanPropertyBeanFactory;
 import rocket.beans.test.beans.client.booleanproperty.ClassWithBooleanProperty;
@@ -386,10 +386,11 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 
 	public void testBeanReference() {
 		final BeanFactory factory = (BeanFactory) GWT.create(BeanReferenceBeanFactory.class);
-		final ClassWithBeanReference bean = (ClassWithBeanReference) factory.getBean(BEAN_ID);
+		final ClassWithReferences bean = (ClassWithReferences) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 
-		assertNotNull("bean reference was not set", bean.getAnotherBean());
+		assertNotNull("bean reference (subclass) was not set", bean.getConcreteClass() );
+		assertNotNull("bean reference (interface) was not set", bean.getInterface() );
 	}
 
 	public void testRemoteRpcService() {

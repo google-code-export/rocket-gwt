@@ -23,7 +23,8 @@ import rocket.util.client.StringHelper;
 import com.google.gwt.user.rebind.SourceWriter;
 
 /**
- * Holds a bean reference value.
+ * Holds a bean reference value. This class also includes the logic that tests if a bean reference can be
+ * set upon to a property
  * 
  * @author Miroslav Pokorny
  */
@@ -32,7 +33,7 @@ public class BeanReference extends Value {
 	public boolean isCompatibleWith(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
-		return type.isAssignableFrom(this.getType());
+		return this.getType().isAssignableTo(type);
 	}
 
 	public boolean isEmpty() {
