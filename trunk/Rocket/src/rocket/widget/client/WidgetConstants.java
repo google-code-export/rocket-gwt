@@ -339,7 +339,7 @@ public class WidgetConstants {
 
 	final static String PASSWORD_TEXTBOX_INPUT_TYPE = "password";
 
-	final static String CHECKBOX_STYLE = ROCKET + "checkBox";
+	final static String CHECKBOX_STYLE = ROCKET + "-checkBox";
 
 	final static String CHECKBOX_READONLY = CHECKBOX_STYLE + READONLY;
 
