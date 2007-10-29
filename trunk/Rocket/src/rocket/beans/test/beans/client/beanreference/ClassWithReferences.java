@@ -13,9 +13,26 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package rocket.beans.test.beans.client.beanreference;
 
-public class AnotherBean {
+public class ClassWithReferences {
+	private ConcreteClass concreteClass;
 
+	public void setConcreteClass(final ConcreteClass concreteClass) {
+		this.concreteClass = concreteClass;
+	}
+
+	public ConcreteClass getConcreteClass() {
+		return this.concreteClass;
+	}
+	
+	private Interface interfacee;
+
+	public void setInterface(final Interface interfacee) {
+		this.interfacee = interfacee;
+	}
+
+	public Interface getInterface() {
+		return this.interfacee;
+	}
 }

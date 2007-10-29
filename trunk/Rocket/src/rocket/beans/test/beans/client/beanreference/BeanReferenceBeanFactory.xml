@@ -3,18 +3,29 @@
 <bean-factory>
 	<bean 
 		id="bean" 
-		class="rocket.beans.test.beans.client.beanreference.ClassWithBeanReference" 
+		class="rocket.beans.test.beans.client.beanreference.ClassWithReferences" 
 		scope="singleton">
 		<properties>
-			<property name="anotherBean">
-				<bean-reference reference-id="anotherBean" />
+			<property name="concreteClass">
+				<bean-reference reference-id="concreteClass" />
+			</property>
+			<property name="interface">
+				<bean-reference reference-id="interface" />
 			</property>
 		</properties>
 	</bean>
 
 	<bean 
-		id="anotherBean" 
-		class="rocket.beans.test.beans.client.beanreference.AnotherBean" 
+		id="concreteClass" 
+		class="rocket.beans.test.beans.client.beanreference.SubClassOfConcreteClass" 
 		scope="singleton">
 	</bean>
+
+
+	<bean 
+		id="interface" 
+		class="rocket.beans.test.beans.client.beanreference.ConcreteInterface" 
+		scope="singleton">
+	</bean>
+
 </bean-factory>
