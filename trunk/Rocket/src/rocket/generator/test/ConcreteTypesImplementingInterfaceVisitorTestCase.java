@@ -1,3 +1,18 @@
+/*
+ * Copyright Miroslav Pokorny
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package rocket.generator.test;
 
 import java.util.Collections;
@@ -54,13 +69,13 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 					final Class javaClass = Class.forName(name);
 					Class adapterClass = null;
 					try {
-						adapterClass = Class.forName(name
-								+ "JavaClassTypeAdapter");
-						adapter = (TestJavaClassTypeAdapter) adapterClass
-								.newInstance();
+						adapterClass = Class.forName(name+ "JavaClassTypeAdapter");
+						adapter = (TestJavaClassTypeAdapter) adapterClass.newInstance();
 					} catch (final Exception useDefault) {
-						//adapter = new TestJavaClassTypeAdapter();
-						throw new RuntimeException( name );
+						if( false == name.equals("java.lang.Object")){
+							throw new RuntimeException( name );	
+						}
+						adapter = new ObjectJavaClassTypeAdapter();						
 					}
 					adapter.setGeneratorContext(this);
 					adapter.setJavaClass(javaClass);
@@ -77,7 +92,14 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 		};
 	}
 
-	static class TestJavaClassTypeAdapter extends JavaClassTypeAdapter {
+	static final String INTERFACE = Interface.class.getName();
+	static final String SUB_INTERFACE = SubInterface.class.getName();
+	final static String SUB_CLASS_THAT_IMPLEMENTS_INTERFACE = SubClassThatImplementsInterface.class.getName();
+	final static String SUB_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE = SubSubClassThatImplementsInterface.class.getName();
+	final static String CONCRETE_CLASS = ConcreteClass.class.getName();
+	final static String ANOTHER_CONCRETE_CLASS = AnotherConcreteClass.class.getName();
+	
+	static abstract class TestJavaClassTypeAdapter extends JavaClassTypeAdapter {
 		public void setJavaClass(final Class javaClass) {
 			super.setJavaClass(javaClass);
 		}
@@ -86,17 +108,27 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 			throw new UnsupportedOperationException( this.getName() + ".createSubTypes() , adapter: " + this.getClass() ); 
 		}
 	}
+	
+	static class ObjectJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
+		public void setJavaClass(final Class javaClass) {
+			super.setJavaClass(javaClass);
+		}
 
-	static interface Interface {
+		protected Set createSubTypes(){
+			final Set subTypes = new HashSet();
+			subTypes.add( getType( INTERFACE ));
+			subTypes.add( getType( CONCRETE_CLASS ));
+			subTypes.add( getType( ANOTHER_CONCRETE_CLASS ));			
+			return subTypes; 
+		}
+	}
+
+	static interface Interface{
 	}
 
 	static class InterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set getSubTypes() {
-			final Set subTypes = new HashSet();
-			subTypes.add(this.getType(SubInterface.class.getName()));
-			subTypes.add(this.getType(ConcreteClass.class.getName()));
-			subTypes.add(this.getType(AnotherConcreteClass.class.getName()));
-			return Collections.unmodifiableSet(subTypes);
+			return new HashSet( Collections.nCopies( 1, getType( SUB_INTERFACE )));
 		}
 	}
 
@@ -109,25 +141,21 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 		}
 	}
 
-	static class ConcreteClass {
+	static class ConcreteClass{
 	}
 
 	static class ConcreteClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set getSubTypes() {
-			final Set subTypes = new HashSet();
-			subTypes.add(this.getType(SubClassThatImplementsInterface.class.getName()));
-			return Collections.unmodifiableSet(subTypes);
+			return new HashSet( Collections.nCopies( 1, getType( SUB_CLASS_THAT_IMPLEMENTS_INTERFACE )));
 		}
-	}
+	} 
 
 	static class SubClass extends ConcreteClass {
 	}
 
 	static class SubClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set getSubTypes() {
-			final Set subTypes = new HashSet();
-			subTypes.add(this.getType(SubSubClassThatImplementsInterface.class.getName()));
-			return Collections.unmodifiableSet(subTypes);
+			return Collections.EMPTY_SET;
 		}
 	}
 
@@ -137,9 +165,7 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	static class SubClassThatImplementsInterfaceJavaClassTypeAdapter extends
 			TestJavaClassTypeAdapter {
 		public Set getSubTypes() {
-			final Set subTypes = new HashSet();
-			subTypes.add(this.getGeneratorContext().getType(SubSubClassThatImplementsInterface.class.getName()));
-			return Collections.unmodifiableSet(subTypes);
+			return new HashSet( Collections.nCopies( 1, getType( SUB_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE )));			
 		}
 	}
 
