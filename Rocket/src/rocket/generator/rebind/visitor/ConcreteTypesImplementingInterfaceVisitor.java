@@ -36,7 +36,7 @@ abstract public class ConcreteTypesImplementingInterfaceVisitor {
 				return false;
 			}
 		};
-		types.start( interfacee );
+		types.start( interfacee.getGeneratorContext().getObject() );
 	}
 	
 	protected boolean shouldVisitTest( final Type interfacee, final Type type ){

@@ -32,11 +32,13 @@ import rocket.beans.test.beans.client.BeansGwtTestCase;
 import rocket.collection.test.IteratorViewTestCase;
 import rocket.collection.test.SkippingIteratorTestCase;
 import rocket.collection.test.VisitRememberingIteratorTestCase;
+import rocket.generator.rebind.visitor.ReachableTypesVisitor;
 import rocket.generator.test.AllMethodsVisitorTestCase;
 import rocket.generator.test.CollectionTemplatedCodeBlockTestCase;
 import rocket.generator.test.ConcreteTypesImplementingInterfaceVisitorTestCase;
 import rocket.generator.test.GeneratorHelperTestCase;
 import rocket.generator.test.MethodTestCase;
+import rocket.generator.test.ReachableTypesVisitorTestCase;
 import rocket.generator.test.StringBufferSourceWriterTestCase;
 import rocket.generator.test.SubClassVisitorTestCase;
 import rocket.generator.test.TypeTestCase;
@@ -105,6 +107,7 @@ public class RocketTestSuite {
 		suite.addTestSuite(CollectionTemplatedCodeBlockTestCase.class);
 		suite.addTestSuite(SubClassVisitorTestCase.class );
 		suite.addTestSuite(ConcreteTypesImplementingInterfaceVisitorTestCase.class );
+		suite.addTestSuite(ReachableTypesVisitorTestCase.class );
 		
 		// rocket.remoting
 		suite.addTestSuite(RemoteJsonServiceGwtTestCase.class);
