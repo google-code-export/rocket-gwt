@@ -56,7 +56,7 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class GeneratorContextImpl implements GeneratorContext{
+public class GeneratorContextImpl implements GeneratorContext{
 
 	public GeneratorContextImpl() {
 		super();
@@ -91,10 +91,6 @@ abstract public class GeneratorContextImpl implements GeneratorContext{
 	 * @param name
 	 * @return The name of a standalone class.
 	 */
-	public String getGeneratedTypeName(final String name) {
-		return this.getGeneratedTypeName(name, this.getGeneratedTypeNameSuffix() );
-	}
-
 	public String getGeneratedTypeName(final String name, final String suffix ) {
 		final String packageName = this.getPackageName(name);
 
@@ -104,14 +100,6 @@ abstract public class GeneratorContextImpl implements GeneratorContext{
 
 		return packageName + '.' + simpleClassName + suffix;
 	}
-
-	
-	/**
-	 * The hardcoded suffix that gets appended to each generated type
-	 * 
-	 * @return
-	 */
-	abstract protected String getGeneratedTypeNameSuffix();
 
 	/**
 	 * Fetches the package for the given name.

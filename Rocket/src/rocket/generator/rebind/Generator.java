@@ -66,7 +66,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.info( "Recieved type [" + typeName + "]");
 		
-		final String newTypeName = context.getGeneratedTypeName(typeName);
+		final String newTypeName = this.getGeneratedTypeName(typeName);
 		String bindTypeName = newTypeName;
 		final long started = System.currentTimeMillis();
 
@@ -103,6 +103,17 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 		return bindTypeName;
 	}
 
+	public String getGeneratedTypeName(final String name) {
+		return this.getGeneratorContext().getGeneratedTypeName(name, this.getGeneratedTypeNameSuffix() );
+	}
+	
+	/**
+	 * The hardcoded suffix that gets appended to each generated type
+	 * 
+	 * @return
+	 */
+	abstract protected String getGeneratedTypeNameSuffix();
+	
 	protected NewConcreteType assembleNewType(final String typeName, final String newTypeName) {
 		return this.assembleNewType(this.getGeneratorContext().getType(typeName), newTypeName);
 	}
@@ -130,12 +141,17 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	}
 
 	/**
-	 * Factory method which must be overridden by sub-classes to create an
-	 * appropriate Context.
+	 * Creates a default GeneratorContext.
 	 * 
 	 * @return
 	 */
-	abstract protected GeneratorContext createGeneratorContext( com.google.gwt.core.ext.GeneratorContext generatorContext, TreeLogger logger);
+	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+		final GeneratorContextImpl context = new GeneratorContextImpl();
+		context.setGenerator( this );
+		context.setGeneratorContext( generatorContext );
+		context.setLogger( logger );
+		return context;
+	}
 
 	/**
 	 * Helper which converts a type into a filename that may be loaded from the

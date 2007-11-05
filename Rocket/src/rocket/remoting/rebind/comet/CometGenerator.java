@@ -20,7 +20,6 @@ import java.util.List;
 
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.method.Method;
@@ -30,8 +29,6 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedInterfaceType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * This generator sub-classes the given Comet and adds a method that generates
@@ -234,19 +231,10 @@ public class CometGenerator extends Generator {
 		newCreateProxy.setBody(template);
 	}
 
-	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl() {
-			protected String getGeneratedTypeNameSuffix() {
-				return Constants.COMET_CLIENT_SUFFIX;
-			}
-		};
-		context.setGenerator( this );
-		context.setGeneratorContext( generatorContext );
-		context.setLogger( logger );
-		
-		return context;
+	protected String getGeneratedTypeNameSuffix() {
+		return Constants.COMET_CLIENT_SUFFIX;
 	}
-
+	
 	protected Type getAsyncCallback() {
 		return this.getGeneratorContext().getType(Constants.ASYNC_CALLBACK);
 	}

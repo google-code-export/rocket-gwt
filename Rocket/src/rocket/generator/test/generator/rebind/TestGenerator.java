@@ -33,13 +33,19 @@ abstract public class TestGenerator extends Generator {
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		throw new UnsupportedOperationException();
 	}
+
+	/**
+	 * The hardcoded suffix that gets appended to each generated type
+	 * 
+	 * @return
+	 */
+	protected String getGeneratedTypeNameSuffix(){
+		return "1";
+	}
+
 	
 	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl() {
-			protected String getGeneratedTypeNameSuffix() {
-				return "1";
-			}
-		};
+		final GeneratorContextImpl context = new GeneratorContextImpl();
 		context.setGenerator( this );
 		context.setGeneratorContext( generatorContext );
 		context.setLogger( logger );
