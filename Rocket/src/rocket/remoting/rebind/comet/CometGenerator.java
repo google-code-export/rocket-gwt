@@ -18,8 +18,11 @@ package rocket.remoting.rebind.comet;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.gwt.core.ext.TreeLogger;
+
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.method.Method;
@@ -231,12 +234,17 @@ public class CometGenerator extends Generator {
 		newCreateProxy.setBody(template);
 	}
 
-	protected GeneratorContext createGeneratorContext() {
-		return new GeneratorContext() {
+	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+		final GeneratorContextImpl context = new GeneratorContextImpl() {
 			protected String getGeneratedTypeNameSuffix() {
 				return Constants.COMET_CLIENT_SUFFIX;
 			}
 		};
+		context.setGenerator( this );
+		context.setGeneratorContext( generatorContext );
+		context.setLogger( logger );
+		
+		return context;
 	}
 
 	protected Type getAsyncCallback() {

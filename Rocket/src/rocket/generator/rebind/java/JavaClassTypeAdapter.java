@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.AbstractType;
@@ -125,6 +126,12 @@ public class JavaClassTypeAdapter extends AbstractType {
 
 	public Package getPackage() {
 		return this.getPackage(this.getJavaClass().getPackage().getName());
+	}
+	final protected Package getPackage(final String packageName) {
+		return this.getGeneratorContextImpl().getPackage(packageName);
+	}
+	protected GeneratorContextImpl getGeneratorContextImpl(){
+		return(GeneratorContextImpl) this.getGeneratorContext();
 	}
 
 	public String getSimpleName() {

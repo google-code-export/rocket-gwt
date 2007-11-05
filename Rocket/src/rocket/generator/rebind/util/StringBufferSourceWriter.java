@@ -19,7 +19,7 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * This SourceBuffer captures all printed text which may be retrieved later via
@@ -190,7 +190,10 @@ public class StringBufferSourceWriter implements SourceWriter {
 		this.println();
 	}
 
-	public void commit(TreeLogger logger) {
+	public void commit() {
+	}
+	public void rollback(){
+		throw new UnsupportedOperationException();
 	}
 
 	/**

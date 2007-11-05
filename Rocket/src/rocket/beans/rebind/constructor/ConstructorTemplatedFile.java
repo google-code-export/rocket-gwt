@@ -29,7 +29,7 @@ import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * An abstraction for the constructor template

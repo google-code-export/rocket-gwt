@@ -26,7 +26,7 @@ import rocket.generator.rebind.constructor.NewConstructorImpl;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * Common base class containing common functionality for the concrete and nested

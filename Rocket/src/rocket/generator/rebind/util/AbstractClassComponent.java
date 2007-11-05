@@ -42,14 +42,6 @@ public class AbstractClassComponent implements ClassComponent {
 		return this.getGeneratorContext().getType(name);
 	}
 
-	final protected Package findPackage(final String packageName) {
-		return this.getGeneratorContext().findPackage(packageName);
-	}
-
-	final protected Package getPackage(final String packageName) {
-		return this.getGeneratorContext().getPackage(packageName);
-	}
-
 	private GeneratorContext generatorContext;
 
 	public GeneratorContext getGeneratorContext() {

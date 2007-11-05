@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.core.ext.TreeLogger;
+
 import rocket.beans.client.FactoryBean;
 import rocket.beans.rebind.aop.Advice;
 import rocket.beans.rebind.aop.CreateProxyTemplatedFile;
@@ -59,6 +61,7 @@ import rocket.beans.rebind.xml.StringTag;
 import rocket.beans.rebind.xml.ValueTag;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
@@ -1410,12 +1413,15 @@ public class BeanFactoryGenerator extends Generator {
 		}
 	}
 
-	protected GeneratorContext createGeneratorContext() {
-		return new GeneratorContext() {
+	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+		final GeneratorContextImpl context = new GeneratorContextImpl() {
 			protected String getGeneratedTypeNameSuffix() {
 				return Constants.BEAN_FACTORY_SUFFIX;
 			}
 		};
+		context.setGeneratorContext(generatorContext);
+		context.setLogger(logger);
+		return context;
 	}
 
 	/**

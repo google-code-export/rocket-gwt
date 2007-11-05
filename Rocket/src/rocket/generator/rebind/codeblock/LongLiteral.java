@@ -17,8 +17,7 @@ package rocket.generator.rebind.codeblock;
 
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
-
+import rocket.generator.rebind.SourceWriter;
 /**
  * A CodeBlock that contains a long literal.
  * 

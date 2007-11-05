@@ -19,7 +19,7 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * Holds a statement that creates an instance using deferred binding.

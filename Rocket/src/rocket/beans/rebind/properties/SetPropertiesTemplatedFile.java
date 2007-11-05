@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import rocket.beans.rebind.value.Value;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
@@ -29,8 +30,6 @@ import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * An abstraction for the invoker add template
@@ -100,14 +99,14 @@ public class SetPropertiesTemplatedFile extends TemplatedCodeBlock {
 				return SetPropertiesTemplatedFile.this.getProperties().entrySet();
 			}
 
-			protected void prepareToWrite(Object element) {
+			protected void prepareToWrite(final Object element) {
 				final Map.Entry entry = (Map.Entry) element;
 
 				template.setSetter((Method) entry.getKey());
 				template.setValue((Value) entry.getValue());
 			}
 
-			protected void writeBetweenElements(SourceWriter writer) {
+			protected void writeBetweenElements(final SourceWriter writer) {
 				writer.println("");
 			}
 		};

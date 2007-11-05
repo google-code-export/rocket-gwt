@@ -13,27 +13,23 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.generator.rebind.codeblock;
+package rocket.generator.rebind;
 
-import rocket.generator.rebind.SourceWriter;
 
 /**
- * Represents an empty code block. Any attempt to write it out will result in an exception being thrown.
- * 
+ * Defines a writer which may be used to write or generate a new type
  * @author Miroslav Pokorny
  */
-public class EmptyCodeBlock implements CodeBlock {
-	public static CodeBlock INSTANCE = new EmptyCodeBlock();
+public interface SourceWriter {
+	void beginJavaDocComment();
+	void endJavaDocComment();
+	
+	void indent();
+	void outdent();
+	void print(String string);
+	void println();
+	void println(String string );
 
-	private EmptyCodeBlock() {
-		super();
-	}
-
-	public boolean isEmpty() {
-		return true;
-	}
-
-	public void write(final SourceWriter writer) {
-		throw new UnsupportedOperationException(this.getClass().getName() + ".write()");
-	}
+	void commit();
+	void rollback();
 }

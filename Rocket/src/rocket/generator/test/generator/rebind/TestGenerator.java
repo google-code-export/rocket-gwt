@@ -15,8 +15,11 @@
  */
 package rocket.generator.test.generator.rebind;
 
+import com.google.gwt.core.ext.TreeLogger;
+
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 
@@ -30,12 +33,18 @@ abstract public class TestGenerator extends Generator {
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		throw new UnsupportedOperationException();
 	}
-
-	protected GeneratorContext createGeneratorContext() {
-		return new GeneratorContext() {
+	
+	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+		final GeneratorContextImpl context = new GeneratorContextImpl() {
 			protected String getGeneratedTypeNameSuffix() {
 				return "1";
 			}
 		};
+		context.setGenerator( this );
+		context.setGeneratorContext( generatorContext );
+		context.setLogger( logger );
+		
+		return context;
 	}
+
 }

@@ -20,7 +20,7 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * Holds a bean reference value. This class also includes the logic that tests if a bean reference can be

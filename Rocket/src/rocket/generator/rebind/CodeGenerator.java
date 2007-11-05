@@ -15,7 +15,6 @@
  */
 package rocket.generator.rebind;
 
-import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * This interface notes that a class can write java code typically a method

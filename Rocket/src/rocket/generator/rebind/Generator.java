@@ -36,18 +36,24 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 
 	/**
 	 * Starts the code generation process including the construction of a new
-	 * Context.
+	 * Context. This method is called by GWT for each rebind request.
 	 */
 	public String generate(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext, final String typeName) {
-		final GeneratorContext context = this.createGeneratorContext();
-		context.setGeneratorContext(generatorContext);
-		context.setLogger(logger);
-		context.setGenerator(this);
-		this.setGeneratorContext(context);
-
-		return this.createNewTypeIfNecessary(typeName);
+		final GeneratorContext context = this.createGeneratorContext( generatorContext, logger );
+		return this.generate(context, typeName);
 	}
 
+	/**
+	 * This method is called typically from another generator reusing an existing context.
+	 * @param context An existing context
+	 * @param typeName The name of the type being rebound.
+	 * @return The name of the type just that was generated.
+	 */
+	public String generate( final GeneratorContext context, final String typeName ){
+		this.setGeneratorContext(context);
+		return this.createNewTypeIfNecessary(typeName);
+	}
+	
 	/**
 	 * Tests if a Type already exists and if it doesnt invokes
 	 * {@link #assembleNewType(Context, String, String)} which will build a
@@ -58,10 +64,10 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 */
 	public String createNewTypeIfNecessary(final String typeName) {
 		final GeneratorContext context = this.getGeneratorContext();
+		context.info( "Recieved type [" + typeName + "]");
+		
 		final String newTypeName = context.getGeneratedTypeName(typeName);
 		String bindTypeName = newTypeName;
-
-		context.info("Recieved type [" + typeName + "]");
 		final long started = System.currentTimeMillis();
 
 		final PrintWriter printWriter = context.tryCreateTypePrintWriter(newTypeName);
@@ -129,7 +135,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * 
 	 * @return
 	 */
-	abstract protected GeneratorContext createGeneratorContext();
+	abstract protected GeneratorContext createGeneratorContext( com.google.gwt.core.ext.GeneratorContext generatorContext, TreeLogger logger);
 
 	/**
 	 * Helper which converts a type into a filename that may be loaded from the

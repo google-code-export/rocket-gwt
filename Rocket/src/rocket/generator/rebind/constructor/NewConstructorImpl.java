@@ -29,8 +29,7 @@ import rocket.generator.rebind.constructorparameter.NewConstructorParameterImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
-
+import rocket.generator.rebind.SourceWriter;
 /**
  * Convenient base class for any new constructor
  * 
