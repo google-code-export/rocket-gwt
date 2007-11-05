@@ -17,11 +17,10 @@ package rocket.generator.rebind.codeblock;
 
 import java.util.Iterator;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * This CodeBlock inserts a single statement that passes all the parameters it

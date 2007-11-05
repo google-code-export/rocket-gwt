@@ -20,7 +20,6 @@ import java.util.List;
 
 import rocket.generator.rebind.ClassComponent;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 

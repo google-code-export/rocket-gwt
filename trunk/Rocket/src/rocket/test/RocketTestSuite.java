@@ -32,7 +32,6 @@ import rocket.beans.test.beans.client.BeansGwtTestCase;
 import rocket.collection.test.IteratorViewTestCase;
 import rocket.collection.test.SkippingIteratorTestCase;
 import rocket.collection.test.VisitRememberingIteratorTestCase;
-import rocket.generator.rebind.visitor.ReachableTypesVisitor;
 import rocket.generator.test.AllMethodsVisitorTestCase;
 import rocket.generator.test.CollectionTemplatedCodeBlockTestCase;
 import rocket.generator.test.ConcreteTypesImplementingInterfaceVisitorTestCase;

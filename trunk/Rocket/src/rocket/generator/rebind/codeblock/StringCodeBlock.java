@@ -15,10 +15,9 @@
  */
 package rocket.generator.rebind.codeblock;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * A code block that contains a String literal

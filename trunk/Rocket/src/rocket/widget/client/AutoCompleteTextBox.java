@@ -26,16 +26,15 @@ import rocket.event.client.KeyDownEvent;
 import rocket.event.client.KeyEventAdapter;
 import rocket.event.client.KeyUpEvent;
 import rocket.style.client.ComputedStyle;
+import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.EventPreview;
-import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 

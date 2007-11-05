@@ -17,8 +17,8 @@ package rocket.selection.client.support;
 
 import rocket.selection.client.SelectionEndPoint;
 import rocket.style.client.ComputedStyle;
-import rocket.style.client.InlineStyle;
 import rocket.style.client.Css;
+import rocket.style.client.InlineStyle;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;

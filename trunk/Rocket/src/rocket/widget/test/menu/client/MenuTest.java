@@ -16,8 +16,8 @@
 package rocket.widget.test.menu.client;
 
 import rocket.browser.client.Browser;
-import rocket.style.client.InlineStyle;
 import rocket.style.client.Css;
+import rocket.style.client.InlineStyle;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.widget.client.Label;

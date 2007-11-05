@@ -16,9 +16,9 @@
 package rocket.remoting.test.comet.client;
 
 import rocket.remoting.client.CometClient;
+import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StackTrace;
 

@@ -20,17 +20,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.method.Method;
-import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * An abstraction for the write fields template

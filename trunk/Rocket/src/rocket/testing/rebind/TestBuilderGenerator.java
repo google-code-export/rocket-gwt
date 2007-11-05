@@ -21,8 +21,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.gwt.core.ext.TreeLogger;
-
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
@@ -35,6 +33,8 @@ import rocket.generator.rebind.visitor.VirtualMethodVisitor;
 import rocket.testing.client.TestBuilder;
 import rocket.testing.client.TestMethodTestBuilder;
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * This generator may be used to create a list containing all the public methods

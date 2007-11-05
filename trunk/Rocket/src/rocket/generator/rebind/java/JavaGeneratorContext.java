@@ -15,7 +15,6 @@
  */
 package rocket.generator.rebind.java;
 
-import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.Type;

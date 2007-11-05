@@ -15,13 +15,13 @@
  */
 package rocket.generator.test.generator.rebind;
 
-import com.google.gwt.core.ext.TreeLogger;
-
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
+
+import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * Base Generator for all Generators belonging to this package

@@ -19,8 +19,8 @@ import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.FocusEventListener;
 import rocket.event.client.MouseEventListener;
 import rocket.style.client.ComputedStyle;
-import rocket.style.client.InlineStyle;
 import rocket.style.client.Css;
+import rocket.style.client.InlineStyle;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;

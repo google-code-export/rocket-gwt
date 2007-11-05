@@ -15,11 +15,10 @@
  */
 package rocket.generator.rebind.methodparameter;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * Represents a parameter that belongs to a method.

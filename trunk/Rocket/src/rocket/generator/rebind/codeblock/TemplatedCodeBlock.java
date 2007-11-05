@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.generator.rebind.field.Field;
@@ -31,8 +32,6 @@ import rocket.text.client.PlaceHolderReplacer;
 import rocket.util.client.ObjectHelper;
 import rocket.util.server.IoHelper;
 import rocket.util.server.UncheckedIOException;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * Base class that may be used to resolve placeholders with literals or class

@@ -17,8 +17,6 @@ package rocket.widget.rebind.htmltemplatefactory;
 
 import java.util.List;
 
-import com.google.gwt.core.ext.TreeLogger;
-
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
@@ -30,6 +28,8 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.VirtualMethodVisitor;
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * This generator creates a new factory that binds elements identified by id

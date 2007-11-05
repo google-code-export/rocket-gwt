@@ -15,8 +15,6 @@
  */
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
-import com.google.gwt.core.ext.TreeLogger;
-
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
@@ -27,6 +25,8 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.core.ext.TreeLogger;
 
 abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator {
 

@@ -20,9 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.generator.rebind.CodeGenerator;
-import rocket.util.client.ObjectHelper;
-
 import rocket.generator.rebind.SourceWriter;
+import rocket.util.client.ObjectHelper;
 
 /**
  * Accumulates or holds multiple code blocks.

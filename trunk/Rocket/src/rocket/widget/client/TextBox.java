@@ -17,8 +17,8 @@ package rocket.widget.client;
 
 import rocket.dom.client.Dom;
 import rocket.style.client.ComputedStyle;
-import rocket.style.client.InlineStyle;
 import rocket.style.client.Css;
+import rocket.style.client.InlineStyle;
 import rocket.util.client.SystemHelper;
 
 import com.google.gwt.user.client.DOM;

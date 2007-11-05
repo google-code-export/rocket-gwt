@@ -16,9 +16,9 @@
 package rocket.remoting.test.outstandingrpctracker.client;
 
 import rocket.remoting.client.OustandingRpcTracker;
+import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.Css;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

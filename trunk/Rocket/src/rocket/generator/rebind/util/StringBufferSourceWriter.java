@@ -15,11 +15,9 @@
  */
 package rocket.generator.rebind.util;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-
-import com.google.gwt.core.ext.TreeLogger;
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * This SourceBuffer captures all printed text which may be retrieved later via

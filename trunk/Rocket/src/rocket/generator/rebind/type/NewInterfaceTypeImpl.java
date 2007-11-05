@@ -23,11 +23,11 @@ import java.util.Iterator;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorException;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * Base class for any generated concrete type that is not an anonymous inner

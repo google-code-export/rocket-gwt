@@ -22,8 +22,8 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import rocket.dom.client.Dom;
-import rocket.style.client.InlineStyle;
 import rocket.style.client.Css;
+import rocket.style.client.InlineStyle;
 import rocket.style.client.StylePropertyValue;
 
 import com.google.gwt.junit.client.GWTTestCase;

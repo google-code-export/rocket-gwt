@@ -16,9 +16,9 @@
 package rocket.browser.client;
 
 import rocket.browser.client.support.BrowserSupport;
+import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 

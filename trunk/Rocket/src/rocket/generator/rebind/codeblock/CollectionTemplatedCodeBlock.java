@@ -18,9 +18,8 @@ package rocket.generator.rebind.codeblock;
 import java.util.Collection;
 import java.util.Iterator;
 
-import rocket.util.client.ObjectHelper;
-
 import rocket.generator.rebind.SourceWriter;
+import rocket.util.client.ObjectHelper;
 
 /**
  * Iterates over a collection building a response when requested to write

@@ -23,14 +23,13 @@ import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorHelper;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.methodparameter.NewMethodParameterImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * Represents a new method that will be added to a new class being built

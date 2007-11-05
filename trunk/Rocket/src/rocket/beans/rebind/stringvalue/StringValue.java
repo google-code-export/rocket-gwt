@@ -17,6 +17,7 @@ package rocket.beans.rebind.stringvalue;
 
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.BooleanLiteral;
 import rocket.generator.rebind.codeblock.ByteLiteral;
 import rocket.generator.rebind.codeblock.CharLiteral;
@@ -30,8 +31,6 @@ import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * A StringValue holds a string literal which may be converted to an used to set

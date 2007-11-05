@@ -17,12 +17,10 @@
 import java.io.PrintWriter;
 import java.util.Set;
 
-import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewInterfaceType;
 import rocket.generator.rebind.type.Type;
 
-import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
 /**
