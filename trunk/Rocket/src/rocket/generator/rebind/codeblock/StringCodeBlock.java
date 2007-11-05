@@ -18,7 +18,7 @@ package rocket.generator.rebind.codeblock;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * A code block that contains a String literal

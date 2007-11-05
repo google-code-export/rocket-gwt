@@ -17,8 +17,11 @@ package rocket.widget.rebind.htmltemplatefactory;
 
 import java.util.List;
 
+import com.google.gwt.core.ext.TreeLogger;
+
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.method.Method;
@@ -70,8 +73,7 @@ public class HtmlTemplateGenerator extends Generator {
 	}
 
 	protected void throwDoesntImplementHtmlTemplate(final Type interfacee) {
-		throw new HtmlTemplateGeneratorException("The type " + interfacee + " is not an interface or doesnt implement "
-				+ Constants.HTML_TEMPLATE_FACTORY);
+		throw new HtmlTemplateGeneratorException("The type " + interfacee + " is not an interface or doesnt implement " + Constants.HTML_TEMPLATE_FACTORY);
 	}
 
 	/**
@@ -594,12 +596,18 @@ public class HtmlTemplateGenerator extends Generator {
 	protected Type getFormPanel() {
 		return this.getGeneratorContext().getType(Constants.FORM_PANEL);
 	}
-
-	protected GeneratorContext createGeneratorContext() {
-		return new GeneratorContext() {
+	
+	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+		final GeneratorContextImpl context = new GeneratorContextImpl() {
 			protected String getGeneratedTypeNameSuffix() {
 				return Constants.SUFFIX;
 			}
 		};
+		context.setGenerator( this );
+		context.setGeneratorContext( generatorContext );
+		context.setLogger( logger );
+		
+		return context;
 	}
+
 }

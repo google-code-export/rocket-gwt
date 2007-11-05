@@ -27,7 +27,7 @@ import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * Base class for any generated concrete type that is not an anonymous inner
@@ -95,7 +95,7 @@ public class NewInterfaceTypeImpl extends NewConcreteNestedTypeOrInterfaceType i
 
 			throw caught;
 		} finally {
-			context.commitWriter(writer);
+			writer.commit();
 		}
 
 		// update the subTypes of all superTypes that have just been

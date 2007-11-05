@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.field.NewFieldImpl;
@@ -29,7 +30,7 @@ import rocket.generator.rebind.method.NewMethodImpl;
 import rocket.generator.rebind.packagee.Package;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * A convenient base class for any type being generated.
@@ -61,6 +62,14 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		return packagee;
 	}
 
+	final protected Package findPackage(final String packageName) {
+		return this.getGeneratorContextImpl().findPackage(packageName);
+	}
+	
+	protected GeneratorContextImpl getGeneratorContextImpl(){
+		return (GeneratorContextImpl) this.getGeneratorContext();
+	}
+	
 	public String getSimpleName() {
 		String name = this.getName();
 		final Package packagee = this.getPackage();
@@ -200,7 +209,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		this.getNestedTypes().add(nestedType);
 		newNestedTypeImpl.setEnclosingType(this);
 
-		this.getGeneratorContext().addNewType(nestedType);
+		this.getGeneratorContext().addType(nestedType);
 	}
 
 	public void addNestedInterfaceType(final NewNestedInterfaceType nestedType) {
@@ -210,7 +219,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		this.getNestedTypes().add(nestedType);
 		newNestedTypeImpl.setEnclosingType(this);
 
-		this.getGeneratorContext().addNewType(nestedType);
+		this.getGeneratorContext().addType(nestedType);
 	}
 
 	public NewAnonymousNestedType newAnonymousNestedType() {
@@ -219,7 +228,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		type.setGeneratorContext(context);
 		type.setEnclosingType(type);
 		type.setSuperType(context.getObject());
-		context.addNewType(type);
+		context.addType(type);
 		return type;
 	}
 

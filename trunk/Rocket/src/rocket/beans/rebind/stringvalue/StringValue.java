@@ -31,7 +31,7 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * A StringValue holds a string literal which may be converted to an used to set

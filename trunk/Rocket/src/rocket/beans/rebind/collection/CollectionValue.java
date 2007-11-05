@@ -22,7 +22,7 @@ import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * Contains a collection ( a list or set ) value for a bean.

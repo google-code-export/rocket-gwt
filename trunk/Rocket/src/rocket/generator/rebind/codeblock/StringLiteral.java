@@ -15,11 +15,11 @@
  */
 package rocket.generator.rebind.codeblock;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.ext.Generator;
-import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * A code block that contains a String literal

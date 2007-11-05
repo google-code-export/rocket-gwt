@@ -16,6 +16,7 @@
 package rocket.generator.rebind.java;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
@@ -28,7 +29,7 @@ import com.google.gwt.core.ext.typeinfo.JPackage;
  * 
  * @author Miroslav Pokorny
  */
-public class JavaGeneratorContext extends GeneratorContext {
+public class JavaGeneratorContext extends GeneratorContextImpl {
 
 	protected String getGeneratedTypeNameSuffix() {
 		throw new UnsupportedOperationException("getGeneratedTypeNameSuffix");

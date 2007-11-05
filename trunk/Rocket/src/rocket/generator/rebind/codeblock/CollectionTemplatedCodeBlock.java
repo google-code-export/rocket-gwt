@@ -20,7 +20,7 @@ import java.util.Iterator;
 
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * Iterates over a collection building a response when requested to write

@@ -22,7 +22,7 @@ import java.util.List;
 import rocket.generator.rebind.CodeGenerator;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * Accumulates or holds multiple code blocks.

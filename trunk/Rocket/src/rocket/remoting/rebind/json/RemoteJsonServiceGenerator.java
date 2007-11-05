@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.core.ext.TreeLogger;
+
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
@@ -380,12 +383,17 @@ public class RemoteJsonServiceGenerator extends Generator {
 		throw new RemoteJsonServiceGeneratorException(message);
 	}
 
-	protected GeneratorContext createGeneratorContext() {
-		return new GeneratorContext() {
+	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+		final GeneratorContextImpl context = new GeneratorContextImpl() {
 			protected String getGeneratedTypeNameSuffix() {
 				return Constants.CLIENT_SUFFIX;
 			}
 		};
+		context.setGenerator( this );
+		context.setGeneratorContext( generatorContext );
+		context.setLogger( logger );
+		
+		return context;
 	}
 
 	public Type getRemoteJsonService() {

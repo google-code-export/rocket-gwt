@@ -15,8 +15,11 @@
  */
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
+import com.google.gwt.core.ext.TreeLogger;
+
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.NewMethod;
@@ -87,12 +90,16 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 
 	abstract protected String getNewMethodReturnType();
 
-	protected GeneratorContext createGeneratorContext() {
-		return new GeneratorContext() {
+	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+		final GeneratorContextImpl context = new GeneratorContextImpl() {
 			protected String getGeneratedTypeNameSuffix() {
 				return "1";
 			}
 		};
+		context.setGenerator( this );
+		context.setGeneratorContext( generatorContext );
+		context.setLogger( logger );
+		return context;
 	}
 
 	/**

@@ -26,7 +26,7 @@ import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
 import rocket.generator.rebind.util.StringBufferSourceWriter;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	public void testEmptyCollection() {

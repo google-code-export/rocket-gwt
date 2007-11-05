@@ -25,7 +25,6 @@ import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
-import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * This class is part of a package of several classes that assist with
@@ -76,7 +75,7 @@ abstract public class TestGenerator extends Generator {
 	public String generateFailedGenerateAttempt(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext,
 			final String typeName, final Throwable cause) {
 
-		final GeneratorContext context = new GeneratorContext() {
+		final GeneratorContextImpl context = new GeneratorContextImpl() {
 			protected String getGeneratedTypeNameSuffix() {
 				return "__" + FailedGenerateAttemptException.class.getName().replace('.', '_');
 			}
@@ -108,7 +107,7 @@ abstract public class TestGenerator extends Generator {
 			this.writeGetCauseType(sourceWriter, cause0);
 			this.writeGetCauseStackTrace(sourceWriter, cause0);
 
-			context.commitWriter(sourceWriter);
+			sourceWriter.commit();
 		}
 
 		return generatedClassName;

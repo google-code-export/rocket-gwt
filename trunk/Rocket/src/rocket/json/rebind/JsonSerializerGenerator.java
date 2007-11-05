@@ -21,8 +21,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.core.ext.TreeLogger;
+
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlockList;
@@ -463,12 +466,16 @@ public class JsonSerializerGenerator extends Generator {
 		singleton.setVisibility(Visibility.PUBLIC);
 	}
 
-	protected GeneratorContext createGeneratorContext() {
-		return new GeneratorContext() {
+	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+		final GeneratorContextImpl context = new GeneratorContextImpl() {
 			protected String getGeneratedTypeNameSuffix() {
 				return Constants.SERIALIZER_SUFFIX;
 			}
 		};
+		context.setGenerator( this );
+		context.setGeneratorContext( generatorContext );
+		context.setLogger( logger );
+		return context;
 	}
 
 	protected Type getJsonSerializer() {

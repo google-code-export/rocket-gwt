@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.field.Field;
@@ -106,6 +107,14 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return this.findPackage(this.getJClassType().getPackage().getName());
 	}
 
+	final protected Package findPackage(final String packageName) {
+		return this.getGeneratorContextImpl().findPackage(packageName);
+	}
+
+	protected GeneratorContextImpl getGeneratorContextImpl(){
+		return (GeneratorContextImpl) this.getGeneratorContext();
+	}
+	
 	public Type getSuperType() {
 		final JType superType = this.getJClassType().getSuperclass();
 		return null == superType ? null : this.findType(superType.getQualifiedSourceName());

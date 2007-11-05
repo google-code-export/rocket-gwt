@@ -32,7 +32,7 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.server.IoHelper;
 import rocket.util.server.UncheckedIOException;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * Base class that may be used to resolve placeholders with literals or class

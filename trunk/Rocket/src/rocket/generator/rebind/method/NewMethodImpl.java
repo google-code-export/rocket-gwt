@@ -30,7 +30,7 @@ import rocket.generator.rebind.methodparameter.NewMethodParameterImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.user.rebind.SourceWriter;
+import rocket.generator.rebind.SourceWriter;
 
 /**
  * Represents a new method that will be added to a new class being built
