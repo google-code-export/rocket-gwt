@@ -22,8 +22,8 @@ import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
 import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
-import rocket.style.client.InlineStyle;
 import rocket.style.client.Css;
+import rocket.style.client.InlineStyle;
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.CompositePanel;
 

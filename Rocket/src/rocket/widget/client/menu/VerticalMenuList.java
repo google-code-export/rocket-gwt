@@ -17,9 +17,9 @@ package rocket.widget.client.menu;
 
 import java.util.Iterator;
 
+import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.Css;
 import rocket.widget.client.DivPanel;
 
 import com.google.gwt.user.client.Element;

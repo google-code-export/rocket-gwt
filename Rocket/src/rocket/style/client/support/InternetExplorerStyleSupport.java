@@ -15,8 +15,8 @@
  */
 package rocket.style.client.support;
 
-import rocket.style.client.CssUnit;
 import rocket.style.client.Css;
+import rocket.style.client.CssUnit;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 

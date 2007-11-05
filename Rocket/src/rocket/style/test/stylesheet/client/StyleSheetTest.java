@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.Rule;
 import rocket.style.client.Style;
-import rocket.style.client.Css;
 import rocket.style.client.StylePropertyValue;
 import rocket.style.client.StyleSheet;
 import rocket.testing.client.Test;

@@ -23,8 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gwt.core.ext.TreeLogger;
-
 import rocket.beans.client.FactoryBean;
 import rocket.beans.rebind.aop.Advice;
 import rocket.beans.rebind.aop.CreateProxyTemplatedFile;
@@ -81,6 +79,8 @@ import rocket.generator.rebind.visitor.TypeConstructorsVisitor;
 import rocket.generator.rebind.visitor.VirtualMethodVisitor;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
+
+import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * This code generator generates a BeanFactory which will create or provide the

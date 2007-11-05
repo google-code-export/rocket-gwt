@@ -22,14 +22,13 @@ import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorHelper;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameter;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameterImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 /**
  * Convenient base class for any new constructor
  * 

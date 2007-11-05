@@ -33,8 +33,6 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.util.client.SystemHelper;
 
-import rocket.generator.rebind.SourceWriter;
-
 /**
  * A collection of helper methods used throughout this package.
  * 

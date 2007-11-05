@@ -17,8 +17,8 @@ package rocket.widget.test.slider.client;
 
 import rocket.event.client.ChangeEvent;
 import rocket.event.client.ChangeEventListener;
-import rocket.style.client.InlineStyle;
 import rocket.style.client.Css;
+import rocket.style.client.InlineStyle;
 import rocket.util.client.StackTrace;
 import rocket.widget.client.Image;
 import rocket.widget.client.slider.FloatingSlider;

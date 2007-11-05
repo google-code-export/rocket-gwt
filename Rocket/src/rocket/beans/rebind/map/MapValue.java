@@ -20,10 +20,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import rocket.beans.rebind.value.Value;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * Contains a Map property value for a bean.

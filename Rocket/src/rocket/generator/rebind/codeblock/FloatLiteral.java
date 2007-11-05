@@ -15,9 +15,8 @@
  */
 package rocket.generator.rebind.codeblock;
 
-import rocket.util.client.ObjectHelper;
-
 import rocket.generator.rebind.SourceWriter;
+import rocket.util.client.ObjectHelper;
 
 /**
  * A CodeBlock that contains a float literal.

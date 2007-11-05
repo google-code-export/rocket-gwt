@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
@@ -31,8 +32,6 @@ import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * An abstraction for the proxy intercepted method template

@@ -16,8 +16,6 @@ package rocket.widget.client;
 
 import rocket.browser.client.Browser;
 
-import com.google.gwt.user.client.ui.KeyboardListener;
-
 /**
  * This class contains primarily constants related to Widgets. Most constants
  * here are the names of various styles for the available widgets.

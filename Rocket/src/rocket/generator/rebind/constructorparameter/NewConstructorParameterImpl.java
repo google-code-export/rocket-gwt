@@ -15,11 +15,10 @@
  */
 package rocket.generator.rebind.constructorparameter;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * Represents a parameter that belongs to a constructor.

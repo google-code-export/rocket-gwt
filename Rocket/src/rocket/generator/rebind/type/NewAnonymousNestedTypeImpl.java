@@ -17,12 +17,11 @@ package rocket.generator.rebind.type;
 
 import java.util.Set;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * Represents an anonymous inner class. Methods, Fields and more nested types

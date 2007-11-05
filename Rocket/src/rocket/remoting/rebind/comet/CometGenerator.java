@@ -18,8 +18,6 @@ package rocket.remoting.rebind.comet;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.gwt.core.ext.TreeLogger;
-
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
@@ -32,6 +30,8 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedInterfaceType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * This generator sub-classes the given Comet and adds a method that generates

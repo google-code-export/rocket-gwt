@@ -16,11 +16,10 @@
 package rocket.generator.rebind.initializer;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * Represents a concrete initializer.

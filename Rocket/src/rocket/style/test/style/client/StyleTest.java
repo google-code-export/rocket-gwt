@@ -21,9 +21,9 @@ import java.util.List;
 
 import rocket.dom.client.Dom;
 import rocket.style.client.ComputedStyle;
+import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.Css;
 import rocket.style.client.support.StyleSupportConstants;
 import rocket.testing.client.Test;
 import rocket.testing.client.TestBuilder;

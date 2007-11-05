@@ -21,12 +21,11 @@ import java.util.Collection;
 import java.util.Collections;
 
 import junit.framework.TestCase;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
 import rocket.generator.rebind.util.StringBufferSourceWriter;
-
-import rocket.generator.rebind.SourceWriter;
 
 public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	public void testEmptyCollection() {

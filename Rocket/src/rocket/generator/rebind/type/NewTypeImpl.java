@@ -23,14 +23,13 @@ import java.util.Set;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.field.NewFieldImpl;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.method.NewMethodImpl;
 import rocket.generator.rebind.packagee.Package;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * A convenient base class for any type being generated.

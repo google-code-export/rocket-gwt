@@ -18,6 +18,7 @@ package rocket.beans.rebind.aop;
 import java.io.InputStream;
 import java.util.Collection;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
@@ -25,8 +26,6 @@ import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.util.client.ObjectHelper;
-
-import rocket.generator.rebind.SourceWriter;
 
 /**
  * An abstraction for the invoke target method template

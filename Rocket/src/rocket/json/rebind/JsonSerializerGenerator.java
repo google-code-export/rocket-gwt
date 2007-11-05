@@ -21,8 +21,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.gwt.core.ext.TreeLogger;
-
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
@@ -34,11 +32,12 @@ import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
-import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+
+import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * Generates a JsonSerializer for the given type if one does not already exists.

@@ -17,9 +17,9 @@ package rocket.widget.client.slider;
 
 import rocket.dom.client.Dom;
 import rocket.style.client.ComputedStyle;
+import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.style.client.Css;
 import rocket.util.client.ObjectHelper;
 import rocket.widget.client.Html;
 
