@@ -31,7 +31,6 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
  */
 public interface GeneratorContext {
 	
-	String getGeneratedTypeName(final String name);
 	String getGeneratedTypeName(final String name, final String suffix );
 	
 	Type findType(final String name);

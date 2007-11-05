@@ -23,7 +23,6 @@ import java.util.List;
 
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
@@ -33,8 +32,6 @@ import rocket.generator.rebind.visitor.VirtualMethodVisitor;
 import rocket.testing.client.TestBuilder;
 import rocket.testing.client.TestMethodTestBuilder;
 import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * This generator may be used to create a list containing all the public methods
@@ -204,20 +201,10 @@ public class TestBuilderGenerator extends Generator {
 				+ " annotation value: " + method.getMetadataValues(Constants.ORDER_ANNOTATION));
 	}
 
-	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl() {
-			protected String getGeneratedTypeNameSuffix() {
-				return Constants.TEST_BUILDER_SUFFIX;
-			}
-		};
-		context.setGenerator( this );
-		context.setGeneratorContext( generatorContext );
-		context.setLogger( logger );
-		
-		return context;
+	protected String getGeneratedTypeNameSuffix() {
+		return Constants.TEST_BUILDER_SUFFIX;
 	}
-
-
+	
 	/**
 	 * Helper which returns the TestBuilder type
 	 * 

@@ -19,7 +19,6 @@ import java.util.List;
 
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.method.Method;
@@ -28,8 +27,6 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.VirtualMethodVisitor;
 import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * This generator creates a new factory that binds elements identified by id
@@ -545,6 +542,10 @@ public class HtmlTemplateGenerator extends Generator {
 		throw new HtmlTemplateGeneratorException("Unable to find an id annotation upon the method " + method);
 	}
 
+	protected String getGeneratedTypeNameSuffix() {
+		return Constants.SUFFIX;
+	}
+	
 	protected Type getHtmlTemplateFactory() {
 		return this.getGeneratorContext().getType(Constants.HTML_TEMPLATE_FACTORY);
 	}
@@ -596,18 +597,4 @@ public class HtmlTemplateGenerator extends Generator {
 	protected Type getFormPanel() {
 		return this.getGeneratorContext().getType(Constants.FORM_PANEL);
 	}
-	
-	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl() {
-			protected String getGeneratedTypeNameSuffix() {
-				return Constants.SUFFIX;
-			}
-		};
-		context.setGenerator( this );
-		context.setGeneratorContext( generatorContext );
-		context.setLogger( logger );
-		
-		return context;
-	}
-
 }

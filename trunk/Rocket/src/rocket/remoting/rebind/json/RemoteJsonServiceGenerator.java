@@ -21,7 +21,6 @@ import java.util.List;
 
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
@@ -33,8 +32,6 @@ import rocket.generator.rebind.visitor.AllMethodsVisitor;
 import rocket.remoting.client.json.RemoteJsonServiceInvoker;
 import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * This Generator generates RemoteJsonService clients for any given
@@ -383,17 +380,8 @@ public class RemoteJsonServiceGenerator extends Generator {
 		throw new RemoteJsonServiceGeneratorException(message);
 	}
 
-	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl() {
-			protected String getGeneratedTypeNameSuffix() {
-				return Constants.CLIENT_SUFFIX;
-			}
-		};
-		context.setGenerator( this );
-		context.setGeneratorContext( generatorContext );
-		context.setLogger( logger );
-		
-		return context;
+	protected String getGeneratedTypeNameSuffix() {
+		return Constants.CLIENT_SUFFIX;
 	}
 
 	public Type getRemoteJsonService() {

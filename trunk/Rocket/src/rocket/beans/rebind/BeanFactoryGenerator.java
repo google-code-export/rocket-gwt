@@ -59,7 +59,6 @@ import rocket.beans.rebind.xml.StringTag;
 import rocket.beans.rebind.xml.ValueTag;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
@@ -80,8 +79,6 @@ import rocket.generator.rebind.visitor.VirtualMethodVisitor;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
-import com.google.gwt.core.ext.TreeLogger;
-
 /**
  * This code generator generates a BeanFactory which will create or provide the
  * beans defined in an xml file.
@@ -98,6 +95,7 @@ public class BeanFactoryGenerator extends Generator {
 		this.setBeans(this.createBeans());
 	}
 
+	
 	/**
 	 * Prepares to transform a xml file into a BeanFactory with beans.
 	 * 
@@ -1412,16 +1410,9 @@ public class BeanFactoryGenerator extends Generator {
 			body.addBean(bean);
 		}
 	}
-
-	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl() {
-			protected String getGeneratedTypeNameSuffix() {
-				return Constants.BEAN_FACTORY_SUFFIX;
-			}
-		};
-		context.setGeneratorContext(generatorContext);
-		context.setLogger(logger);
-		return context;
+	
+	protected String getGeneratedTypeNameSuffix() {
+		return Constants.BEAN_FACTORY_SUFFIX;
 	}
 
 	/**

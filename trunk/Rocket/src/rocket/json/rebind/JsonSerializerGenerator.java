@@ -23,7 +23,6 @@ import java.util.List;
 
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlockList;
@@ -36,8 +35,6 @@ import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * Generates a JsonSerializer for the given type if one does not already exists.
@@ -292,7 +289,7 @@ public class JsonSerializerGenerator extends Generator {
 		Type superType = type.getSuperType();
 		String superTypeName = Constants.JSON_SERIALIZER_TYPE;
 		if (false == superType.equals(context.getObject())) {
-			superTypeName = context.getGeneratedTypeName(superType.getName());
+			superTypeName = this.getGeneratedTypeName(superType.getName());
 		}
 		superType = context.getType(superTypeName);
 		newType.setSuperType(superType);
@@ -465,18 +462,6 @@ public class JsonSerializerGenerator extends Generator {
 		singleton.setVisibility(Visibility.PUBLIC);
 	}
 
-	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl() {
-			protected String getGeneratedTypeNameSuffix() {
-				return Constants.SERIALIZER_SUFFIX;
-			}
-		};
-		context.setGenerator( this );
-		context.setGeneratorContext( generatorContext );
-		context.setLogger( logger );
-		return context;
-	}
-
 	protected Type getJsonSerializer() {
 		return this.getGeneratorContext().getType(Constants.JSON_SERIALIZER_TYPE);
 	}
@@ -642,4 +627,9 @@ public class JsonSerializerGenerator extends Generator {
 
 		return this.getGeneratorContext().getType(typeName);
 	}
+	
+	protected String getGeneratedTypeNameSuffix(){
+		return Constants.SERIALIZER_SUFFIX;
+	}
+	
 }

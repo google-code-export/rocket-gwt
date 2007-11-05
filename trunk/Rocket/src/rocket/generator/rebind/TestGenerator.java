@@ -75,15 +75,11 @@ abstract public class TestGenerator extends Generator {
 	public String generateFailedGenerateAttempt(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext,
 			final String typeName, final Throwable cause) {
 
-		final GeneratorContextImpl context = new GeneratorContextImpl() {
-			protected String getGeneratedTypeNameSuffix() {
-				return "__" + FailedGenerateAttemptException.class.getName().replace('.', '_');
-			}
-		};
+		final GeneratorContextImpl context = new GeneratorContextImpl();
 		context.setGeneratorContext(generatorContext);
 		context.setLogger(logger);
 
-		final String generatedClassName = context.getGeneratedTypeName(typeName);
+		final String generatedClassName = context.getGeneratedTypeName(typeName, this.getGeneratedTypeNameSuffix() );
 		final PrintWriter printWriter = context.tryCreateTypePrintWriter(generatedClassName);
 		if (printWriter != null) {
 
@@ -113,6 +109,10 @@ abstract public class TestGenerator extends Generator {
 		return generatedClassName;
 	}
 
+	protected String getGeneratedTypeNameSuffix() {
+		return "__" + FailedGenerateAttemptException.class.getName().replace('.', '_');
+	}
+	
 	protected void writeGetMessage(final SourceWriter writer, final String typeName, final Throwable cause) {
 		writer.println("public String getMessage(){");
 		writer.indent();

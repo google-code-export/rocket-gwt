@@ -17,7 +17,6 @@ package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.NewMethod;
@@ -25,8 +24,6 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.core.ext.TreeLogger;
 
 abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator {
 
@@ -90,18 +87,6 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 
 	abstract protected String getNewMethodReturnType();
 
-	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl() {
-			protected String getGeneratedTypeNameSuffix() {
-				return "1";
-			}
-		};
-		context.setGenerator( this );
-		context.setGeneratorContext( generatorContext );
-		context.setLogger( logger );
-		return context;
-	}
-
 	/**
 	 * The type passed to GWT.create()
 	 */
@@ -128,5 +113,9 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 	protected void setNewType(final NewConcreteType newType) {
 		ObjectHelper.checkNotNull("parameter:newType", newType);
 		this.newType = newType;
+	}
+	
+	protected String getGeneratedTypeNameSuffix() {
+		return "1";
 	}
 }
