@@ -1,0 +1,3 @@
+// collection-add-element.txt
+
+.add( ${value} )

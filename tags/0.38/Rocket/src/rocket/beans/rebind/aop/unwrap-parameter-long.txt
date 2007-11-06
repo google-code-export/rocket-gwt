@@ -1,0 +1,3 @@
+// unwrap-parameter-long.txt
+
+chain.getLongParameter( ${parameterIndex} )

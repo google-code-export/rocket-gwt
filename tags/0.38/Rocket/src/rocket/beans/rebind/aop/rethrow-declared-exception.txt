@@ -1,0 +1,5 @@
+// rethrow-expected-exceptions.txt
+
+// catch and rethrow the caught exception.
+} catch ( final ${exception} rethrow ){
+	throw rethrow;

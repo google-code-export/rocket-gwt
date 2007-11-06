@@ -1,0 +1,3 @@
+// unwrap-parameter-char.txt
+
+chain.getCharParameter( ${parameterIndex} )

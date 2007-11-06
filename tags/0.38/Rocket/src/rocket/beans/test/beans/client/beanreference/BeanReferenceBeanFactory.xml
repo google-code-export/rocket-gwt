@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 1.0//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 
+		id="bean" 
+		class="rocket.beans.test.beans.client.beanreference.ClassWithReferences" 
+		scope="singleton">
+		<properties>
+			<property name="concreteClass">
+				<bean-reference reference-id="concreteClass" />
+			</property>
+			<property name="interface">
+				<bean-reference reference-id="interface" />
+			</property>
+		</properties>
+	</bean>
+
+	<bean 
+		id="concreteClass" 
+		class="rocket.beans.test.beans.client.beanreference.SubClassOfConcreteClass" 
+		scope="singleton">
+	</bean>
+
+
+	<bean 
+		id="interface" 
+		class="rocket.beans.test.beans.client.beanreference.ConcreteInterface" 
+		scope="singleton">
+	</bean>
+
+</bean-factory>

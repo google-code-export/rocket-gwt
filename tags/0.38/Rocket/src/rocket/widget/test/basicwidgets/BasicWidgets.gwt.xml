@@ -1,0 +1,8 @@
+<module>
+	<inherits name='rocket.User'/>
+
+	<source path="client" />
+	<entry-point class='rocket.widget.test.basicwidgets.client.BasicWidgetsTest'/>  
+
+	<servlet path="/echo" class="rocket.widget.test.basicwidgets.server.EchoServlet"/>	
+</module>

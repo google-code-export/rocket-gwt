@@ -1,0 +1,4 @@
+<module>
+	<source path="client" />
+	<inherits name="com.google.gwt.user.SafariEventSupport"/>
+</module>
