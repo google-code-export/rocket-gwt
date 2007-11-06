@@ -8,7 +8,7 @@
 		release archives
 	</description>
 
-	<property name="version" value="0.37"/>
+	<property name="version" value="0.38"/>
 	<property name="test-dir" location="${basedir}/test"/>
 	<property name="src-dir" location="${basedir}/src"/>
 	<property name="doc-dir" location="${basedir}/doc"/>
@@ -37,15 +37,9 @@
 	<!--
 	Compiles the source to class files.
 	-->
-	<target name="compile" description="Compile src to bin">
+	<target name="compile-java" description="Compile src to bin" depends="clean">
 		<mkdir dir="${bin-dir}"/>
 		<mkdir dir="${src-dir}.temp"/>
-		
-		<delete failonerror="yes">
-			<fileset dir="${bin-dir}">
-				<include name="**/*"/>
-			</fileset>
-		</delete>
 		
 		<delete failonerror="yes">
 			<fileset dir="${src-dir}.temp">
@@ -67,26 +61,18 @@
 			<classpath refid="project.class.path"/>
 		</javac>
 	</target>
-
+	
 	<!--
 	Packages the three jar files that make up the rocket library.
 	-->
 	<target 
   	name="package" 
-  	depends="compile" 
+  	depends="compile-java" 
   	description="Create a release archive and secondary optional archives. 
   	Rocket.jar contains everything, 
   	Rocket-stacktrace.jar includes only the classes required to support javascript stacktraces(requires jdk1.5+).">
 
 		<mkdir dir="${release-dir}"/>
-
-		<delete failonerror="no">
-			<fileset dir="${release-dir}">
-				<include name="Rocket.jar"/>
-				<include name="Rocket-test.jar"/>
-				<include name="Rocket-stacktrace.jar"/>
-			</fileset>
-		</delete>
 
 		<jar destfile="${release-dir}/Rocket.jar">
 			<fileset dir="${bin-dir}">
@@ -95,6 +81,7 @@
 				<exclude name="java/**/*.*"/>
 				<exclude name="rocket/util/client/ThrowableHelper.class"/>
 				<exclude name="**/test/**/*.*"/>
+				<exclude name="**/rebind/**/*.java"/>				
 				<include name="**/*.class"/>
 			</fileset>
 			<fileset dir="${src-dir}">
@@ -103,7 +90,10 @@
 				<exclude name="java/**/*.*"/>				
 				<exclude name="rocket/util/client/ThrowableHelper.java"/>
 				<exclude name="**/test/**/*.*"/>
-				<include name="**"/>
+				<include name="**/*.dtd"/>
+				<include name="**/*.java"/>
+				<include name="**/*.txt"/>				
+				<include name="**/*.xml"/>					
 			</fileset>
 			<fileset dir="${txt-dir}">
 				<include name="release-notes.txt"/>
@@ -154,7 +144,7 @@
 	<!--
 	Creates the javadoc for all classes
 	-->
-	<target name="javadoc" depends="compile" description="Create javadoc">
+	<target name="javadoc" depends="compile-java" description="Create javadoc">
 		<javadoc access="private"
   	        author="yes"
   	        destdir="${doc-dir}"
@@ -180,13 +170,11 @@
 							rocket.style.client, 
 							rocket.util.client, 
 							rocket.widget.client, 
-							rocket.widget.client.accordion,
-							rocket.widget.client.form,  		
+							rocket.widget.client.accordion, 		
 							rocket.widget.client.menu,  		
 							rocket.widget.client.slider,
 							rocket.widget.client.splitter,
 							rocket.widget.client.tabpanel,
-							rocket.widget.client.testing,
 							rocket.widget.client.tree"
   	         verbose="no">
 		</javadoc>
@@ -195,98 +183,100 @@
 	<!--
 	Translates all modules into javascript.
 	-->
-	<target name="compileAllModules" depends="compile" description="Generates the html pages for all demos">
+	<target name="compile-all-gwt" depends="compile-java" description="Generates the html pages for all demos">
 		<echo>About to generate ALL demos!</echo>
 		
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.dragndrop.test.DragNDrop"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.remoting.test.comet.Comet"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.selection.test.selection.Selection"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
+			<param name="module" value="rocket.style.test.style.Style"/>
+		</antcall>		
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.style.test.stylesheet.StyleSheet"/>
 		</antcall>
-
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.testing.test.webpagetestrunner.WebPageTestRunnerTest"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.testing.test.interactivelist.InteractiveList"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.testing.test.interactivepanel.InteractivePanel"/>
 		</antcall>
 		
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.util.test.stacktrace.StackTrace"/>
 		</antcall>
 
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.accordionpanel.AccordionPanel"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.autocompletetextbox.AutoCompleteTextBox"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.basicwidgets.BasicWidgets"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.breadcrumbpanel.BreadcrumbPanel"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.divpanel.DivPanel"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.gridview.GridView"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.hyperlinkpanel.HyperLinkPanel"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.menu.Menu"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.orderedlistpanel.OrderedListPanel"/>
 		</antcall>
-		<antcall target="compileModule">
-			<param name="module" value="rocket.widget.test.pager.Pager"/>
+		<antcall target="compile-gwt">
+			<param name="module" value="rocket.widget.test.pager.demo.Pager"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.resizablepanel.ResizablePanel"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.slider.Slider"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.sortabletable.SortableTable"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.spanpanel.SpanPanel"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.splitterpanel.SplitterPanel"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.stylesheetpicker.StyleSheetPicker"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.tabpanel.TabPanel"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.tree.Tree"/>
 			<param name="delete-gifs" value="delete-gifs"/>
 		</antcall>		
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.unorderedlistpanel.UnorderedListPanel"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.viewport.Viewport"/>
 		</antcall>
-		<antcall target="compileModule">
+		<antcall target="compile-gwt">
 			<param name="module" value="rocket.widget.test.zebraflextable.ZebraFlexTable"/>
 		</antcall>
 	</target>
@@ -294,7 +284,7 @@
 	<!--
 	Invokes the GWT compiler and compile a single module into javascript.
 	-->
-	<target name="compileModule" depends="" description="Translates a module to javascript and html pages.">
+	<target name="compile-gwt" depends="" description="Translates a module to javascript and html pages.">
 		<echo>Compiling ${module}...</echo>
 		<delete failonerror="no">
 			<fileset dir="${www-dir}/${module}">
@@ -368,7 +358,7 @@
 	-->
 	<target 	
 			name="build"
-			depends="compileAllModules,javadoc,package"     			
+			depends="compile-all-gwt,javadoc,package"     			
     		description="Package a release including compiled classes, source files, javadoc and generated html.">
 
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>
@@ -407,7 +397,7 @@
 	<!--
 	Runs a TestSuite that includes all the unit test cases.
 	-->
-	<target name="test" depends="compile" description="Runs all Unit test cases">
+	<target name="test" depends="compile-java" description="Runs all Unit test cases">
 		<echo>About to run all test cases</echo>
 
 		   <taskdef name="junit"
@@ -448,6 +438,7 @@
 			<fileset dir="${www-dir}" includes="**/*"/>
 			<fileset dir="${src-dir}.temp" includes="**/*"/>
 			<fileset dir="${bin-dir}" includes="**/*"/>
+			<fileset dir="${release-dir}" includes="**/*"/>			
 		</delete>
 	</target>
 </project>
