@@ -611,3 +611,46 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.37.zip
 * Fixed Opera selection support code which was querying the wrong method/property to get the native selection object.
 * Fixed Slider and SplitterPanels widgets so they dont select text as they are dragged in Opera.
 * Added a new page that provides links to all runnable demos.
+
+0.38 6 November 2007
+--------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.38.zip
+* Changed InlineStyle.setString/setColour/setUrl to do nothing if the property value is null.
+* Renamed HorizontalVerticalSlider to FloatingSlider.
+* Added ability to set a background widget to all Slider widgets.
+* Fixed issue common to all Slider widgets where clicking on the slider background didnt stop the handle once it had reached the clicked spot.
+* Sliders also now also update the width and height of any given background widget so that its dimensions match the content of the slider.
+* Changed the method signatures for both Panel.insert0(Widget,int) and Panel.insert0(Element,int) to void as the Panel.insert ignored the Element returned by Panel.insert0(Widget,int).
+* Modified bean-factory.dtd to allow mixing of bean, remote-json-service, remote-rpc-service, advice elements in order.
+* Corrected a number of element types, made all id attributes a "ID" and bean-reference a CDATA rather than IDREF.
+* Improved error messages within BeanFactoryGenerator to also include whereever possible line/column number of xml parsing problem.
+* Improved BeanFactoryGenerator to escape unsafe characters for generated types (bean id's are used to name generated factory beans type namesetc).
+* Minor fix, generated BeanFactory's actually implement the passed in interface, previously one could only cast to BeanFactory and not the class literal passed to GWT.create().
+* Fixed bean references bug where bean references failed if bean type was a subclass or implementing interface of property type.
+* Fixed bug where beans couldnt include a reference (using bean-reference) to a remote-rpc-service or json-rpc-service tag declared bean.
+* Fixed StringHelper.split behaviour which was not returning empty tokens.
+* Renamed getter to fetch the suffix of a CssUnit from getValue() to getSuffix().
+* Fixed ZebraFlexTable which was inserting cells via prepareCell when it shouldnt have.
+* Dropped "6" from Browser.isInternetExplorer6 method.
+* Fixed StringHelper.htmlEncode/Decode to not handle apostrophes and apostrophe entities.
+* Fixed Pager widget to show pages along in between next/previous button rather than links to items.
+* Renamed the Pager currentPage property to currentItem
+* Changed Pager to automatically redraw when currentItem is updated.
+* Modified default values for Pager previous and next link/buttons.
+* Added method to fetch the names of all properties from a JavaScriptObject - ObjectHelper.getPropertyNames()
+* Reworked style support classes from 4 monolithic classes into separate classes for type of style(Inline,Computed,Rule) and browser (InternetExplorer,FireFox,Opera,Safari). 
+  Public interface of InlineStyle, ComputedStyle, RuleStyle, StyleSheet remain constant, only implementation has changed.
+* Renamed StyleConstants to Css.
+* Renamed DatePicker to Calendar (includes styles).
+* Changed the return type of KeyEvent.getKey() from char to int.
+* Added a number of methods to KeyEvent to help test the key code or type of key for the event, eg getFunctionKey(), isBackspace(), isCursorXXX, isEditing, isNavigation etc, 
+* Updated Safari DOM support class to translate key codes for special keys like BACKSPACE to standard values.
+* Added method to retrieve char from KeyEvent
+* Standardized protected event handling method names, renaming any handleXXX to onXXX for all Widgets (includes DnD).
+* Fixed SubClassVisitor which was getting stuck in an endless loop (useful when writing generators).
+* Added a new ConcreteTypesImplementingInterfaceVisitor which may be used to visit all concrete types for a given interface.
+* Added a new ReachableTypesVisitor which provides all concrete types that are reachable from a given concrete type.
+* Fixed CheckBox style name (was missing "-" due to a typo in WidgetConstants).
+* Reworked GeneratorContext from being an abstract class into an interface.
+* Introduced a new SourceWriter which contains identical methods as those found in com.google.gwt.user.rebind.SourceWriter with new commit() 
+  and rollback() methods. The rollback method is currently unsupported until the GWT adds the ability to cancel or rollback a newly generated type.
