@@ -21,6 +21,7 @@ import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.codeblock.Literal;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -141,7 +142,6 @@ public class NewFieldImpl extends AbstractField implements NewField {
 
 		this.writeDeclaration(writer);
 		this.writeValue(writer);
-		writer.println(";");
 	}
 
 	protected void writeLogger() {
@@ -171,9 +171,16 @@ public class NewFieldImpl extends AbstractField implements NewField {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
 		final CodeBlock codeBlock = this.getValue();
-		if (false == codeBlock.isEmpty()) {
+		if (codeBlock.isEmpty()) {
+			writer.println(";");
+		} else {
 			writer.print("=");
 			codeBlock.write(writer);
+			
+			// terminate any literal with a semi colon.
+			if( codeBlock instanceof Literal ){
+				writer.println( ";");
+			}
 		}
 	}
 
