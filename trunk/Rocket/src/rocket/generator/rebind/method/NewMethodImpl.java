@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import rocket.generator.rebind.GeneratorException;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
@@ -160,6 +161,10 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		ObjectHelper.checkNotNull("field:body", body);
 		return this.body;
 	}
+	
+	public boolean hasBody(){
+		return null != this.body;
+	}
 
 	public void setBody(final CodeBlock body) {
 		ObjectHelper.checkNotNull("parameter:body", body);
@@ -179,7 +184,8 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		this.writeDeclaration(writer);
 
 		if (this.isAbstract()) {
-			writer.println(";");
+			this.writeAbstractMethod( writer );
+			
 		} else {
 			this.writeBodyOpen(writer);
 
@@ -274,6 +280,17 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		}
 	}
 
+	protected void writeAbstractMethod( final SourceWriter writer ){
+		ObjectHelper.checkNotNull("parameter:writer", writer);
+		
+		if( this.hasBody() ){
+			throw new GeneratorException("Inconsistent state abstract method contains a body " + this ); 
+		}
+		
+		writer.println(";");	
+	}
+	
+	
 	public List getMetadataValues(final String name) {
 		return Collections.EMPTY_LIST;
 	}
