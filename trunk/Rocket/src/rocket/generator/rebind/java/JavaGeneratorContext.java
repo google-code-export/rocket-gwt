@@ -20,8 +20,6 @@ import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
 
-import com.google.gwt.core.ext.typeinfo.JPackage;
-
 /**
  * A context that should be used when using the jdk/jre as the source of all
  * type info.
@@ -29,14 +27,6 @@ import com.google.gwt.core.ext.typeinfo.JPackage;
  * @author Miroslav Pokorny
  */
 public class JavaGeneratorContext extends GeneratorContextImpl {
-
-	protected String getGeneratedTypeNameSuffix() {
-		throw new UnsupportedOperationException("getGeneratedTypeNameSuffix");
-	}
-
-	protected JPackage findJPackage(final String name) {
-		throw new UnsupportedOperationException();
-	}
 
 	protected Type createBooleanType() {
 		final JavaBooleanClassTypeAdapter type = new JavaBooleanClassTypeAdapter();

@@ -29,7 +29,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class JavaAdapterHelper {
+class JavaAdapterHelper {
 	/**
 	 * GeneratorHelper which creates a set of Types from the given Class
 	 * 
@@ -71,5 +71,4 @@ public class JavaAdapterHelper {
 
 		return visibility;
 	}
-
 }
