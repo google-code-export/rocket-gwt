@@ -65,7 +65,7 @@ public class GeneratorHelper {
 	 * @param propertyName
 	 * @return
 	 */
-	static public String getSetterName(final String propertyName) {
+	static public String buildGetterName(final String propertyName) {
 		StringBuilder builder = new StringBuilder();
 
 		builder.append("get");
