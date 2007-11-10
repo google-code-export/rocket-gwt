@@ -1242,16 +1242,15 @@ public class BeanFactoryGenerator extends Generator {
 						break;
 					}
 
-					if (method.getVisibility() == Visibility.PUBLIC) {
-						final List matched = BeanFactoryGenerator.this.findMatchingAdvices(method, advices);
-						if (matched.isEmpty()) {
-							BeanFactoryGenerator.this.createProxyMethod(proxy, method);
-							break;
-						}
-
-						BeanFactoryGenerator.this.createProxyMethodWithInterceptors(proxy, method, matched);
+					// the public methods remain...
+					final List matched = BeanFactoryGenerator.this.findMatchingAdvices(method, advices);
+					if (matched.isEmpty()) {
+						BeanFactoryGenerator.this.createProxyMethod(proxy, method);
 						break;
 					}
+
+					BeanFactoryGenerator.this.createProxyMethodWithInterceptors(proxy, method, matched);
+					break;
 				}
 				return false;
 			}
