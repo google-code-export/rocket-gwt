@@ -172,8 +172,8 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return this.getJavaClass().isPrimitive();
 	}
 
-	final public List getMetadataValues(String name) {
-		return null;
+	public List getMetadataValues(String name) {
+		throw new UnsupportedOperationException();
 	}
 
 	public Type getWrapper() {
@@ -190,7 +190,7 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return this.javaClass;
 	}
 
-	protected void setJavaClass(final Class javaClass) {
+	public void setJavaClass(final Class javaClass) {
 		ObjectHelper.checkNotNull("parameter:type", javaClass);
 		this.javaClass = javaClass;
 	}
