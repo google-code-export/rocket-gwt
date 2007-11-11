@@ -48,15 +48,22 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 * within inner classes rather than dot ".".
 	 */
 	public String getRuntimeName(){
-		final String simpleName = this.getSimpleName();
+		final StringBuffer runtimeName = new StringBuffer();
+		final String name = this.getName();
 		final String packageName = this.getPackage().getName();
+		String nameLessPackageName = name;
 		
-		String runtimeName = simpleName;		
-		if( false == StringHelper.isNullOrEmpty( packageName )){
-			runtimeName = runtimeName + '.' + simpleName.replace( '.', '$');
+		if( false == StringHelper.isNullOrEmpty( packageName ) ){
+			runtimeName.append( packageName );
+			runtimeName.append( '.');
+			
+			nameLessPackageName = name.substring( packageName.length() + 1 );
 		}
 		
-		return runtimeName;
+		nameLessPackageName = nameLessPackageName.replace( '.', '$');
+		runtimeName.append( nameLessPackageName );
+		
+		return runtimeName.toString();
 	}
 	
 	/**
