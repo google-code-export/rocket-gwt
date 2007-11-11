@@ -34,6 +34,7 @@ import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.util.AbstractClassComponent;
 import rocket.generator.rebind.visitor.SuperTypesVisitor;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * Abstract class that includes facilities for implementing a type.
@@ -42,6 +43,22 @@ import rocket.util.client.ObjectHelper;
  */
 abstract public class AbstractType extends AbstractClassComponent implements Type {
 
+	/**
+	 * Returns the runtime name of the class. This method is only necessary due to the use of dollar signs "$"
+	 * within inner classes rather than dot ".".
+	 */
+	public String getRuntimeName(){
+		final String simpleName = this.getSimpleName();
+		final String packageName = this.getPackage().getName();
+		
+		String runtimeName = simpleName;		
+		if( false == StringHelper.isNullOrEmpty( packageName )){
+			runtimeName = runtimeName + '.' + simpleName.replace( '.', '$');
+		}
+		
+		return runtimeName;
+	}
+	
 	/**
 	 * A lazy loaded set containing all the interfaces implemented by this type
 	 */

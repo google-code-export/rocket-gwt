@@ -15,33 +15,25 @@
  */
 package rocket.generator.rebind.type;
 
-import rocket.generator.rebind.Visibility;
-import rocket.generator.rebind.constructor.NewConstructor;
+import rocket.generator.rebind.GeneratorHelper;
 
-/**
- * Represents a inner class being built.
- * 
- * @author Miroslav Pokorny
- */
-public interface NewNestedType extends NewType {
+abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfaceType{
+	/**
+	 * The name of the type being generated.
+	 */
+	private String name;
 
-	NewConstructor newConstructor();
+	public String getName() {
+		GeneratorHelper.checkJavaTypeName("field:name", name);
+		return name;
+	}
 
-	void addConstructor(NewConstructor constructor);
+	public boolean hasName() {
+		return this.name != null;
+	}
 
-	Type getEnclosingType();
-
-	String getNestedName();
-	
-	void setNestedName(String name);
-
-	void setAbstract(boolean abstractt);
-
-	void setFinal(boolean finall);
-
-	void setStatic(boolean staticc);
-
-	Visibility getVisibility();
-
-	void setVisibility(Visibility visibility);
+	public void setName(final String name) {		
+		GeneratorHelper.checkJavaTypeName("parameter:name", name);
+		this.name = name;
+	}
 }

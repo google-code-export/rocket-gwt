@@ -49,7 +49,7 @@ public class NewNestedInterfaceGenerator extends TestGenerator {
 		final NewNestedType nested = newType.newNestedType();
 		nested.setAbstract(false);
 		nested.setFinal(false);
-		nested.setName(interfaceClassname);
+		nested.setNestedName(interfaceClassname);
 		nested.setStatic(true);
 		nested.addInterface(interfaceType);
 		nested.setVisibility(Visibility.PUBLIC);

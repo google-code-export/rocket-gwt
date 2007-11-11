@@ -35,7 +35,7 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
  * 
  * @author Miroslav Pokorny
  */
-public class NewInterfaceTypeImpl extends NewConcreteNestedTypeOrInterfaceType implements NewInterfaceType {
+public class NewInterfaceTypeImpl extends NewConcreteOrInterfaceType implements NewInterfaceType {
 
 	public NewInterfaceTypeImpl() {
 		super();

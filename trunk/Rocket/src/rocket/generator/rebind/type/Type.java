@@ -41,6 +41,8 @@ public interface Type extends HasMetadata, ClassComponent {
 
 	String getJsniNotation();
 
+	String getRuntimeName();
+	
 	Package getPackage();
 
 	Set getInterfaces();

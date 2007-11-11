@@ -17,6 +17,7 @@ package rocket.generator.rebind.type;
 
 import java.util.Iterator;
 
+import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.util.client.ObjectHelper;
 
@@ -26,6 +27,43 @@ import rocket.util.client.ObjectHelper;
  * @author Miroslav Pokorny
  */
 abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterfaceType {
+	
+	public String getName(){
+		return this.getEnclosingType().getName() + '.' + this.getNestedName();
+	}
+	
+	public boolean hasName(){
+		boolean hasName = false;
+		try{
+			this.getName();
+			hasName = true;
+		} catch ( final Exception ignored ){
+			// ignore
+		}
+		return hasName;
+	}
+	
+	public void setName( final String name ){
+		throw new UnsupportedOperationException( "Set name using setNestedName()...");
+	}
+	
+	/**
+	 * The nested name of this type. 
+	 * 
+	 * The fully qualified class name is never recorded and must be fetched using {@link #getName()}
+	 */
+	private String nestedName;
+
+	public String getNestedName(){
+		GeneratorHelper.checkNestedJavaTypeName("field:nestedName", nestedName);
+		return nestedName;		
+	}
+
+	public void setNestedName( final String nestedName ){
+		GeneratorHelper.checkNestedJavaTypeName("parameter:nestedName", nestedName);
+		this.nestedName = nestedName;
+	}
+	
 	/**
 	 * The outter class containing this nested class.
 	 */
@@ -34,6 +72,10 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	public Type getEnclosingType() {
 		ObjectHelper.checkNotNull("field:enclosingType", enclosingType);
 		return this.enclosingType;
+	}
+	
+	protected boolean hasEnclosingType(){
+		return null != this.enclosingType;
 	}
 
 	public void setEnclosingType(Type enclosingType) {
@@ -53,12 +95,11 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	public void setStatic(final boolean staticc) {
 		this.staticc = staticc;
 	}
-
+	
 	public void write(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
 		this.log();
-
 		this.writeDeclaration(writer);
 
 		writer.indent();
@@ -89,11 +130,7 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		writer.print(" ");
 		writer.print(this.isInterface() ? "interface" : "class");
 		writer.print(" ");
-
-		String name = this.getName();
-		final int lastDot = name.lastIndexOf('.');
-		name = name.substring(lastDot + 1);
-		writer.print(name);
+		writer.print(this.getNestedName());
 
 		if (this.hasSuperType()) {
 			final Type superType = this.getSuperType();

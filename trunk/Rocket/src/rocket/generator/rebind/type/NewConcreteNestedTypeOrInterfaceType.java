@@ -78,25 +78,6 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 		this.finall = finall;
 	}
 
-	/**
-	 * The name of the type being generated.
-	 */
-	private String name;
-
-	public String getName() {
-		GeneratorHelper.checkJavaTypeName("field:name", name);
-		return name;
-	}
-
-	public boolean hasName() {
-		return this.name != null;
-	}
-
-	public void setName(final String name) {
-		GeneratorHelper.checkJavaTypeName("parameter:name", name);
-		this.name = name;
-	}
-
 	public String getJsniNotation() {
 		return 'L' + this.getName().replace('.', '/') + ';';
 	}
@@ -149,7 +130,7 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	public boolean hasNoArgumentsConstructor() {
 		return this.getConstructors().isEmpty() ? true : null != this.findConstructor(Collections.EMPTY_LIST);
 	}
-
+	
 	protected void writeInitializers(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
@@ -162,9 +143,5 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 		writer.println();
 		GeneratorHelper.writeClassComponents(initializers, writer, false, true);
 		writer.println();
-	}
-
-	public String toString() {
-		return this.name == null ? super.toString() : name;
 	}
 }
