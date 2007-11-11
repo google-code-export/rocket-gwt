@@ -49,7 +49,7 @@ public class NewNestedClassGenerator extends TestGenerator {
 		final NewNestedType nested = newType.newNestedType();
 		nested.setAbstract(false);
 		nested.setFinal(false);
-		nested.setName(concreteClassClassname);
+		nested.setNestedName(concreteClassClassname);
 		nested.setStatic(true);
 		nested.setSuperType(concreteClass);
 		nested.setVisibility(Visibility.PUBLIC);

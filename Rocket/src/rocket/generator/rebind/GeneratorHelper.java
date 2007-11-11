@@ -172,6 +172,15 @@ public class GeneratorHelper {
 			SystemHelper.fail(name, "The name[" + className + "] is not a valid java class name.");
 		}
 	}
+	
+	static public void checkNestedJavaTypeName(final String name, final String className) {
+		if (false == isValidJavaTypeName(className)) {
+			SystemHelper.fail(name, "The name[" + className + "] is not a valid java class name.");
+		}
+		if( -1 != className.indexOf( '.')){
+			SystemHelper.fail(name, "When naming a nested type the name[" + className + "] must not be fully qualified (contain dots '.').");
+		}
+	}
 
 	static public void checkJavaVariableName(final String name, final String variableName) {
 		if (false == isValidJavaVariableName(variableName)) {

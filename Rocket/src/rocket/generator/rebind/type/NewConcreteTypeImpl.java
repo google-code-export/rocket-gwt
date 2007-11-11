@@ -34,7 +34,7 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
  * 
  * @author Miroslav Pokorny
  */
-public class NewConcreteTypeImpl extends NewConcreteNestedTypeOrInterfaceType implements NewConcreteType {
+public class NewConcreteTypeImpl extends NewConcreteOrInterfaceType implements NewConcreteType {
 
 	public NewConcreteTypeImpl() {
 		super();

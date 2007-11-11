@@ -246,7 +246,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setFactoryBean(factoryBean);
@@ -728,8 +728,6 @@ public class BeanFactoryGenerator extends Generator {
 	 * 
 	 * @param tag
 	 * @return
-	 * 
-	 * TODO need to know if bean is a true bean or a gwt rpc...
 	 */
 	protected BeanReference asBeanReference(final BeanReferenceTag tag) {
 		ObjectHelper.checkNotNull("parameter:tag", tag);
@@ -831,7 +829,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setFactoryBean(factoryBean);
@@ -882,7 +880,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setNestedName( this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setFactoryBean(factoryBean);
@@ -1150,8 +1148,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType proxyFactoryBean = beanFactory.newNestedType();
 		proxyFactoryBean.setStatic(false);
-		proxyFactoryBean
-				.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_FACTORY_BEAN_SUFFIX);
+		proxyFactoryBean.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_FACTORY_BEAN_SUFFIX);
 		proxyFactoryBean.setSuperType(superType);
 		proxyFactoryBean.setVisibility(Visibility.PRIVATE);
 		bean.setProxyFactoryBean(proxyFactoryBean);
@@ -1208,7 +1205,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType proxy = beanFactory.newNestedType();
 		proxy.setStatic(false);
-		proxy.setName(beanFactory.getName() + '.' + this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_SUFFIX);
+		proxy.setNestedName( this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_SUFFIX);
 		proxy.setSuperType(targetBeanType);
 		proxy.setVisibility(Visibility.PRIVATE);
 
