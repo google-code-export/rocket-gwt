@@ -115,8 +115,8 @@ public class BeanFactoryGenerator extends Generator {
 		final List beanTags = document.getBeans();
 		this.buildFactoryBeans(beanTags);
 		
-		this.buildRemoteJsonServiceFactoryBeans(document.getRemoteJsonService());
-		this.buildRemoteRpcServiceFactoryBeans(document.getRemoteRpcService());		
+		this.buildRemoteJsonServiceFactoryBeans(document.getRemoteJsonServices());
+		this.buildRemoteRpcServiceFactoryBeans(document.getRemoteRpcServices());		
 		
 		this.overrideAllFactoryBeanCreateInstances(beanTags);
 		this.overrideAllFactoryBeanSatisfyInits(beanTags);
@@ -143,7 +143,8 @@ public class BeanFactoryGenerator extends Generator {
 		final DocumentWalker document = new DocumentWalker();
 		document.setEntityResolver(new BeanFactoryDtdEntityResolver());
 		document.setErrorHandler(new RethrowSaxExceptionsErrorHandler());
-		document.prepare(this, fileName);
+		document.setGenerator(this);
+		document.process(fileName);
 		return document;
 	}
 
