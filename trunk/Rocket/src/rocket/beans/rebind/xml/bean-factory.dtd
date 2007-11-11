@@ -1,10 +1,15 @@
 <!ELEMENT bean-factory 							(
 		place-holders*, 
-			(bean|remote-json-service|remote-rpc-service|advice)*
+			(bean|remote-json-service|remote-rpc-service|advice|include)*
 		)>
 
 <!ELEMENT place-holders							EMPTY>
 <!ATTLIST place-holders
+	file			CDATA 						#REQUIRED
+>
+
+<!ELEMENT include								EMPTY>
+<!ATTLIST include
 	file			CDATA 						#REQUIRED
 >
 

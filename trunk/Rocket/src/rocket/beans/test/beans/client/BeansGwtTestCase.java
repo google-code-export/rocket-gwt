@@ -63,6 +63,8 @@ import rocket.beans.test.beans.client.morethanonebeanfactory.FirstBeanFactory;
 import rocket.beans.test.beans.client.morethanonebeanfactory.SecondBeanFactory;
 import rocket.beans.test.beans.client.multipleargumentsconstructor.ClassWithMultipleArgumentsConstructor;
 import rocket.beans.test.beans.client.multipleargumentsconstructor.MultipleArgumentsConstructorBeanFactory;
+import rocket.beans.test.beans.client.multipleincludedfiles.MultipleIncludedFilesBeanFactory;
+import rocket.beans.test.beans.client.multipleincludedfilescycle.MultipleIncludedFilesCycleBeanFactory;
 import rocket.beans.test.beans.client.noargumentsconstructor.ClassWithNoArgumentsConstructor;
 import rocket.beans.test.beans.client.noargumentsconstructor.NoArgumentsConstructorBeanFactory;
 import rocket.beans.test.beans.client.noproperties.ClassWithNoProperties;
@@ -162,7 +164,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	public String getModuleName() {
 		return "rocket.beans.test.beans.Beans";
 	}
-
+	
 	public void testNotABeanFactory() {
 		try {
 			assertBindingFailed(GWT.create(ClassIsNotABeanFactory.class));
@@ -450,6 +452,28 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		assertEquals("orange yellow green green", bean.getStringProperty());
 	}
 
+	public void testMultipleIncludedFiles() {
+		final BeanFactory factory = (BeanFactory) GWT.create(MultipleIncludedFilesBeanFactory.class);
+		final Object bean = factory.getBean(BEAN_ID);
+		assertNotNull(bean);
+
+		final Object beanFromSecondFile = factory.getBean("beanFromSecondFile");
+		assertNotNull(beanFromSecondFile);
+
+		final Object beanFromThirdFile = factory.getBean("beanFromThirdFile");
+		assertNotNull(beanFromThirdFile);
+	}
+
+	public void testMultipleIncludedFilesWithCycle() {
+		try {
+			assertBindingFailed(GWT.create(MultipleIncludedFilesCycleBeanFactory.class));
+		} catch (final FailedGenerateAttemptException failed) {
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void testAdvisorIsNotAnAdvice() {
 		try {
 			assertBindingFailed(GWT.create(NotAnAdviceBeanFactory.class));

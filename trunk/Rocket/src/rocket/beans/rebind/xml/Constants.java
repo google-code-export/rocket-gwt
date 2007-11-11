@@ -101,4 +101,7 @@ class Constants {
 	final static String ADVICE_TARGET_BEAN_ID = "targetBeanId";
 
 	final static String ADVICE_METHOD_EXPRESSION = "methodExpression";
+	
+	final static String INCLUDE_TAG = "include";
+	final static String INCLUDE_FILE_ATTRIBUTE = "file";
 }
