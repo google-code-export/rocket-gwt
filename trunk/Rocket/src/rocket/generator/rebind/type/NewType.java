@@ -30,6 +30,8 @@ public interface NewType extends Type, CodeGenerator {
 
 	void addInterface(Type interfacee);
 
+	Initializer newInitializer();
+	
 	void addInitializer(Initializer initializer);
 
 	boolean hasName();

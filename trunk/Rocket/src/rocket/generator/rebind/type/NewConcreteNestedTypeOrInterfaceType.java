@@ -25,6 +25,7 @@ import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.constructor.NewConstructorImpl;
 import rocket.generator.rebind.initializer.Initializer;
+import rocket.generator.rebind.initializer.InitializerImpl;
 import rocket.util.client.ObjectHelper;
 
 /**
@@ -38,6 +39,14 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	public NewConcreteNestedTypeOrInterfaceType() {
 		super();
 		this.setInitializers(this.createInitializers());
+	}
+	
+	public Initializer newInitializer(){
+		final InitializerImpl initializer = new InitializerImpl();
+		initializer.setEnclosingType( this );
+		initializer.setGeneratorContext( this.getGeneratorContext() );
+		this.addInitializer(initializer);
+		return initializer;
 	}
 
 	private Visibility visibility;

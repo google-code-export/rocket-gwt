@@ -26,6 +26,8 @@ import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.field.NewFieldImpl;
+import rocket.generator.rebind.initializer.Initializer;
+import rocket.generator.rebind.initializer.InitializerImpl;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.method.NewMethodImpl;
 import rocket.generator.rebind.packagee.Package;
@@ -41,7 +43,15 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	public NewTypeImpl() {
 		super();
 	}
-
+	
+	public Initializer newInitializer(){
+		final InitializerImpl initializer = new InitializerImpl();
+		initializer.setEnclosingType( this );
+		initializer.setGeneratorContext( this.getGeneratorContext() );
+		this.addInitializer(initializer);
+		return initializer;
+	}
+	
 	public Package getPackage() {
 		Package packagee = null;
 
