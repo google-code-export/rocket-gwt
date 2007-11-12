@@ -17,7 +17,7 @@ package rocket.generator.test.generator.rebind;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.codeblock.StringCodeBlock;
-import rocket.generator.rebind.initializer.InitializerImpl;
+import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 
@@ -31,17 +31,14 @@ public class NewConstructorWithInitializerGenerator extends TestGenerator {
 
 		newType.setSuperType(superType);
 
-		final InitializerImpl staticInitializer = new InitializerImpl();
+		final Initializer staticInitializer = newType.newInitializer();		
 		staticInitializer.setBody(new StringCodeBlock(superType.getName() + ".staticInitializerRun = true;"));
-		staticInitializer.setGeneratorContext(context);
-		staticInitializer.setStatic(true);
-		newType.addInitializer(staticInitializer);
-
-		final InitializerImpl instanceInitializer = new InitializerImpl();
+		staticInitializer.setStatic( true );
+		
+		final Initializer instanceInitializer = newType.newInitializer();
 		instanceInitializer.setBody(new StringCodeBlock(superType.getName() + ".instanceInitializerRun = true;"));
-		instanceInitializer.setGeneratorContext(context);
-		newType.addInitializer(instanceInitializer);
-
+		instanceInitializer.setStatic( false );
+		
 		return newType;
 	}
 }
