@@ -88,6 +88,10 @@ public class NewFieldImpl extends AbstractField implements NewField {
 		return type;
 	}
 
+	protected boolean hasType(){
+		return null != this.type;
+	}
+	
 	public void setType(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 		this.type = type;
@@ -145,7 +149,7 @@ public class NewFieldImpl extends AbstractField implements NewField {
 	}
 
 	protected void writeLogger() {
-		this.getGeneratorContext().debug("field " + this.getType().getName() + ": " + this.getName());
+		this.getGeneratorContext().debug("Writing field " + this.getType().getName() + ": " + this.getName());
 	}
 
 	protected void writeDeclaration(final SourceWriter writer) {
@@ -188,11 +192,17 @@ public class NewFieldImpl extends AbstractField implements NewField {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("NewFieldImpl ");
 
-		if (null != this.type) {
-			builder.append(type.getName());
+		if ( this.hasType() ) {
+			builder.append(this.getType().getName());
 			builder.append(' ');
 		}
-		builder.append(this.name);
+		builder.append(this.getName());
+		
+		if( this.hasEnclosingType() ){
+			builder.append( ", enclosingType: ");
+			builder.append( this.getEnclosingType() );
+		}
+		
 		return builder.toString();
 	}
 }
