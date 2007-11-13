@@ -15,24 +15,35 @@
  */
 package rocket.generator.rebind.field;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.Literal;
+import rocket.generator.rebind.comments.HasComments;
+import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * A holder for a new field.
  * 
  * @author Miroslav Pokorny
  */
-public class NewFieldImpl extends AbstractField implements NewField {
+public class NewFieldImpl extends AbstractField implements NewField, HasComments {
 
 	public NewFieldImpl() {
+		super();
+
+		this.setComments( "" );
+		this.setMetaData( this.createMetaData() );
 	}
 
 	public void setVisibility(final Visibility visibility) {
@@ -117,13 +128,6 @@ public class NewFieldImpl extends AbstractField implements NewField {
 	}
 
 	/**
-	 * Generated fields never have meta data associated with them.
-	 */
-	public List getMetadataValues(String name) {
-		return null;
-	}
-
-	/**
 	 * A code block which may or may not contain a literal, method etc that sets
 	 * a value upon this field.
 	 */
@@ -139,11 +143,55 @@ public class NewFieldImpl extends AbstractField implements NewField {
 		this.value = value;
 	}
 
+	
+	/**
+	 * Any text which will appear within javadoc comments for this field.
+	 */
+	private String comments;
+	
+	public String getComments(){
+		StringHelper.checkNotNull( "field:comments", comments );
+		return comments;
+	}
+	
+	public void setComments( final String comments ){
+		StringHelper.checkNotNull( "parameter:comments", comments );
+		this.comments = comments;
+	}
+	
+	public void addMetaData( final String name, final String value ){
+		this.getMetaData().add( name, value);
+	}
+	
+	public List getMetadataValues( final String name ){
+		return this.getMetaData().getMetadataValues(name);
+	}
+	
+	/**
+	 * A container which holds any meta data that is added to a new field instance. 
+	 */
+	private MetaData metaData;
+	
+	protected MetaData getMetaData(){
+		ObjectHelper.checkNotNull("field:metaData", metaData );
+		return this.metaData;
+	}
+	
+	protected void setMetaData( final MetaData metaData ){
+		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+		this.metaData = metaData;
+	}
+	
+	protected MetaData createMetaData(){
+		return new MetaData();
+	}
+	
 	public void write(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
 		this.writeLogger();
 
+		this.writeComments( writer );
 		this.writeDeclaration(writer);
 		this.writeValue(writer);
 	}
@@ -152,6 +200,10 @@ public class NewFieldImpl extends AbstractField implements NewField {
 		this.getGeneratorContext().debug("Writing field " + this.getType().getName() + ": " + this.getName());
 	}
 
+	protected void writeComments( final SourceWriter writer ){		
+		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+	}
+	
 	protected void writeDeclaration(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
@@ -204,5 +256,5 @@ public class NewFieldImpl extends AbstractField implements NewField {
 		}
 		
 		return builder.toString();
-	}
+	}	
 }

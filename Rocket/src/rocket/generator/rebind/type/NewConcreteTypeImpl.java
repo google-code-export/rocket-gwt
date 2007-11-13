@@ -23,7 +23,10 @@ import java.util.Iterator;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorException;
+import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
+import rocket.generator.rebind.metadata.MetaData;
+import rocket.generator.rebind.util.StringBufferSourceWriter;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
@@ -49,7 +52,7 @@ public class NewConcreteTypeImpl extends NewConcreteOrInterfaceType implements N
 	 *            The printwriter returned by
 	 *            context.tryCreateTypePrintWriter(packageName,
 	 *            simpleClassName);
-	 */
+	 */	
 	public void write(final PrintWriter printWriter) {
 		ObjectHelper.checkNotNull("parameter:printWriter", printWriter);
 
@@ -123,10 +126,6 @@ public class NewConcreteTypeImpl extends NewConcreteOrInterfaceType implements N
 		}
 	}
 
-	public void write(final SourceWriter writer) {
-		throw new UnsupportedOperationException();
-	}
-
 	/**
 	 * GeneratorHelper which sets the super type to the given
 	 * ClassSourceFileComposerFactory
@@ -153,19 +152,5 @@ public class NewConcreteTypeImpl extends NewConcreteOrInterfaceType implements N
 			final Type interfacee = (Type) interfaces.next();
 			composerFactory.addImplementedInterface(interfacee.getName());
 		}
-	}
-
-	/**
-	 * Adds a java doc comment that includes a variety of statistics about the
-	 * class thats about to be generated.
-	 * 
-	 * @param composerFactory
-	 */
-	protected void setClassJavaDoc(final ClassSourceFileComposerFactory composerFactory) {
-		ObjectHelper.checkNotNull("parameter:composerFactory", composerFactory);
-
-		final String date = DateFormat.getInstance().format(new Date());
-		final String comment = "Generated at " + date + " by " + this.getClass().getName();
-		composerFactory.setJavaDocCommentForClass(comment);
 	}
 }

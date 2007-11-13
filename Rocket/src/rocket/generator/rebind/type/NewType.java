@@ -16,8 +16,10 @@
 package rocket.generator.rebind.type;
 
 import rocket.generator.rebind.CodeGenerator;
+import rocket.generator.rebind.comments.HasComments;
 import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.initializer.Initializer;
+import rocket.generator.rebind.metadata.HasMetadata;
 import rocket.generator.rebind.method.NewMethod;
 
 /**
@@ -26,7 +28,7 @@ import rocket.generator.rebind.method.NewMethod;
  * 
  * @author Miroslav Pokorny
  */
-public interface NewType extends Type, CodeGenerator {
+public interface NewType extends Type, CodeGenerator, HasComments, HasMetadata {
 
 	void addInterface(Type interfacee);
 
@@ -55,4 +57,6 @@ public interface NewType extends Type, CodeGenerator {
 	NewAnonymousNestedType newAnonymousNestedType();
 
 	NewNestedInterfaceType newNestedInterfaceType();
+	
+	public void addMetaData( String name, String value );
 }

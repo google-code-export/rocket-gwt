@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.ClassComponent;
-import rocket.generator.rebind.HasMetadata;
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.metadata.HasMetadata;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 

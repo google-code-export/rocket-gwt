@@ -28,10 +28,12 @@ import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.field.NewFieldImpl;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.initializer.InitializerImpl;
+import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.method.NewMethodImpl;
 import rocket.generator.rebind.packagee.Package;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * A convenient base class for any type being generated.
@@ -319,13 +321,6 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		return false;
 	}
 
-	/**
-	 * Generated types by definition never have meta data values.
-	 */
-	public List getMetadataValues(String name) {
-		return null;
-	}
-
 	protected void writeConstructors(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
@@ -385,4 +380,50 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	protected void throwTypeAlreadyExistsException() {
 		throw new TypeAlreadyExistsException("A type with the name [" + this.getName() + "] already exists, code generation failed.");
 	}
+	
+	protected void writeComments( final SourceWriter writer ){		
+		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+	}
+	
+	/**
+	 * Any text which will appear within javadoc comments for this field.
+	 */
+	private String comments;
+	
+	public String getComments(){
+		StringHelper.checkNotNull( "field:comments", comments );
+		return comments;
+	}
+	
+	public void setComments( final String comments ){
+		StringHelper.checkNotNull( "parameter:comments", comments );
+		this.comments = comments;
+	}
+	
+	public void addMetaData( final String name, final String value ){
+		this.getMetaData().add( name, value);
+	}
+	
+	public List getMetadataValues( final String name ){
+		return this.getMetaData().getMetadataValues(name);
+	}
+	
+	/**
+	 * A container which holds any meta data that is added to a new field instance. 
+	 */
+	private MetaData metaData;
+	
+	protected MetaData getMetaData(){
+		ObjectHelper.checkNotNull("field:metaData", metaData );
+		return this.metaData;
+	}
+	
+	protected void setMetaData( final MetaData metaData ){
+		ObjectHelper.checkNotNull("field:metaData", metaData );
+		this.metaData = metaData;
+	}
+	
+	protected MetaData createMetaData(){
+		return new MetaData();
+	}	
 }

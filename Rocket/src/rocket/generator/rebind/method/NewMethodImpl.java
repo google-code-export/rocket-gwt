@@ -27,10 +27,12 @@ import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.methodparameter.NewMethodParameterImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * Represents a new method that will be added to a new class being built
@@ -41,6 +43,9 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 
 	public NewMethodImpl() {
 		super();
+		
+		this.setComments( "" );
+		this.setMetaData( this.createMetaData() );
 	}
 
 	/**
@@ -172,6 +177,48 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	}
 
 	/**
+	 * Any text which will appear within javadoc comments for this field.
+	 */
+	private String comments;
+	
+	public String getComments(){
+		StringHelper.checkNotNull( "field:comments", comments );
+		return comments;
+	}
+	
+	public void setComments( final String comments ){
+		StringHelper.checkNotNull( "parameter:comments", comments );
+		this.comments = comments;
+	}
+	
+	public void addMetaData( final String name, final String value ){
+		this.getMetaData().add( name, value);
+	}
+	
+	public List getMetadataValues( final String name ){
+		return this.getMetaData().getMetadataValues(name);
+	}
+	
+	/**
+	 * A container which holds any meta data that is added to a new field instance. 
+	 */
+	private MetaData metaData;
+	
+	protected MetaData getMetaData(){
+		ObjectHelper.checkNotNull("field:metaData", metaData );
+		return this.metaData;
+	}
+	
+	protected void setMetaData( final MetaData metaData ){
+		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+		this.metaData = metaData;
+	}
+	
+	protected MetaData createMetaData(){
+		return new MetaData();
+	}	
+	
+	/**
 	 * Writes the method in its entirety to the provided SourceWriter
 	 * 
 	 * @param writer
@@ -181,6 +228,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 
 		this.writeLogger();
 
+		this.writeComments(writer);
 		this.writeDeclaration(writer);
 
 		if (this.isAbstract()) {
@@ -201,6 +249,10 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		this.getGeneratorContext().debug("Writing " + this);
 	}
 
+	protected void writeComments( final SourceWriter writer ){		
+		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+	}
+	
 	/**
 	 * Writes the method declaration of this method. final static ${visibility}
 	 * ${name} ( ${parameter-type parameter-name} )
@@ -288,11 +340,6 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		}
 		
 		writer.println(";");	
-	}
-	
-	
-	public List getMetadataValues(final String name) {
-		return Collections.EMPTY_LIST;
 	}
 
 	public String toString() {

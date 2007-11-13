@@ -13,24 +13,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.generator.rebind.type;
+package rocket.generator.test.generator.client;
 
-import rocket.generator.rebind.Visibility;
+public class CommentsAndMetaData {
 
-/**
- * Represents a inner interface class being built.
- * 
- * @author Miroslav Pokorny
- */
-public interface NewNestedInterfaceType extends NewType {
-
-	Type getEnclosingType();
-
-	void setNestedName(String name);
-
-	void setStatic(boolean staticc);
-
-	Visibility getVisibility();
-
-	void setVisibility(Visibility visibility);
 }

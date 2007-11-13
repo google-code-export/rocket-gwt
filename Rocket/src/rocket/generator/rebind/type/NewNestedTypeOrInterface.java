@@ -28,6 +28,13 @@ import rocket.util.client.ObjectHelper;
  */
 abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterfaceType {
 	
+	protected NewNestedTypeOrInterface(){
+		super();
+		
+		this.setComments( "" );
+		this.setMetaData( this.createMetaData() );
+	}
+	
 	public String getName(){
 		return this.getEnclosingType().getName() + '.' + this.getNestedName();
 	}
@@ -103,6 +110,7 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		this.writeDeclaration(writer);
 
 		writer.indent();
+		this.writeComments( writer );
 		this.writeInitializers(writer);
 		this.writeConstructors(writer);
 		this.writeFields(writer);
@@ -111,6 +119,10 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		writer.outdent();
 
 		writer.println("} // " + this.getName());
+	}
+	
+	protected void writeComments( final SourceWriter writer ){		
+		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
 	}
 
 	protected void writeDeclaration(final SourceWriter writer) {
