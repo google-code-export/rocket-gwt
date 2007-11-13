@@ -15,13 +15,17 @@
  */
 package rocket.generator.rebind.type;
 
+import java.util.List;
 import java.util.Set;
 
+import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.initializer.Initializer;
+import rocket.generator.rebind.metadata.MetaData;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * Represents an anonymous inner class. Methods, Fields and more nested types
@@ -163,7 +167,7 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 
 	public void write(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
-
+		
 		final Type type = this.hasInterface() ? this.getInterface() : this.getSuperType();
 		final String name = type.getName();
 		writer.print(name);
@@ -176,5 +180,17 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 
 		writer.outdent();
 		writer.println("}// " + name);
+	}
+	
+	public void addMetaData( final String name, final String value ){
+		throw new UnsupportedOperationException();
+	}
+	
+	public String getComments(){
+		throw new UnsupportedOperationException();
+	}
+	
+	public void setComments( final String comments ){
+		throw new UnsupportedOperationException();
 	}
 }

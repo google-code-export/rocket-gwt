@@ -17,6 +17,7 @@ package rocket.generator.rebind.type;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorHelper;
@@ -26,7 +27,9 @@ import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.constructor.NewConstructorImpl;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.initializer.InitializerImpl;
+import rocket.generator.rebind.metadata.MetaData;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * Common base class containing common functionality for the concrete and nested
@@ -38,7 +41,10 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 
 	public NewConcreteNestedTypeOrInterfaceType() {
 		super();
+		
 		this.setInitializers(this.createInitializers());
+		this.setComments( "" );
+		this.setMetaData( this.createMetaData() );
 	}
 	
 	public Initializer newInitializer(){
@@ -153,4 +159,46 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 		GeneratorHelper.writeClassComponents(initializers, writer, false, true);
 		writer.println();
 	}
+	
+	/**
+	 * Any text which will appear within javadoc comments for this field.
+	 */
+	private String comments;
+	
+	public String getComments(){
+		StringHelper.checkNotNull( "field:comments", comments );
+		return comments;
+	}
+	
+	public void setComments( final String comments ){
+		StringHelper.checkNotNull( "parameter:comments", comments );
+		this.comments = comments;
+	}
+	
+	public void addMetaData( final String name, final String value ){
+		this.getMetaData().add( name, value);
+	}
+	
+	public List getMetadataValues( final String name ){
+		return this.getMetaData().getMetadataValues(name);
+	}
+	
+	/**
+	 * A container which holds any meta data that is added to a new field instance. 
+	 */
+	private MetaData metaData;
+	
+	protected MetaData getMetaData(){
+		ObjectHelper.checkNotNull("field:metaData", metaData );
+		return this.metaData;
+	}
+	
+	protected void setMetaData( final MetaData metaData ){
+		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+		this.metaData = metaData;
+	}
+	
+	protected MetaData createMetaData(){
+		return new MetaData();
+	}	
 }

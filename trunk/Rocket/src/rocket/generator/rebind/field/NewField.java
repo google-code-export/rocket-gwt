@@ -18,6 +18,8 @@ package rocket.generator.rebind.field;
 import rocket.generator.rebind.CodeGenerator;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.comments.HasComments;
+import rocket.generator.rebind.metadata.HasMetadata;
 import rocket.generator.rebind.type.Type;
 
 /**
@@ -25,7 +27,7 @@ import rocket.generator.rebind.type.Type;
  * 
  * @author Miroslav Pokorny
  */
-public interface NewField extends Field, CodeGenerator {
+public interface NewField extends Field, CodeGenerator, HasComments, HasMetadata {
 
 	void setEnclosingType(Type enclosingType);
 
@@ -44,4 +46,6 @@ public interface NewField extends Field, CodeGenerator {
 	CodeBlock getValue();
 
 	void setValue(CodeBlock value);
+
+	void addMetaData( String key, String value );
 }

@@ -13,24 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.generator.rebind.type;
+package rocket.generator.rebind.comments;
 
-import rocket.generator.rebind.Visibility;
 
 /**
- * Represents a inner interface class being built.
+ * This interface is implemented by compile time components that can potentially
+ * include comments.
  * 
  * @author Miroslav Pokorny
  */
-public interface NewNestedInterfaceType extends NewType {
-
-	Type getEnclosingType();
-
-	void setNestedName(String name);
-
-	void setStatic(boolean staticc);
-
-	Visibility getVisibility();
-
-	void setVisibility(Visibility visibility);
+public interface HasComments {
+	String getComments();
+	
+	void setComments( String comments );
 }

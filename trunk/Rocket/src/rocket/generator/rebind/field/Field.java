@@ -16,8 +16,8 @@
 package rocket.generator.rebind.field;
 
 import rocket.generator.rebind.ClassComponent;
-import rocket.generator.rebind.HasMetadata;
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.metadata.HasMetadata;
 import rocket.generator.rebind.type.Type;
 
 /**

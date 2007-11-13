@@ -179,4 +179,10 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 		assertNotNull(instance);
 		assertEquals("rocket.generator.test.generator.client.SubTypes1", GWT.getTypeName(instance));
 	}
+	
+	public void testCommentsAndMetaData(){
+		final Object instance = GWT.create( CommentsAndMetaData.class );
+		assertNotNull( instance );
+		assertEquals("rocket.generator.test.generator.client.CommentsAndMetaData1", GWT.getTypeName(instance));
+	}
 }

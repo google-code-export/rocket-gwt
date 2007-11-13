@@ -27,8 +27,10 @@ import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameter;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameterImpl;
+import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 /**
  * Convenient base class for any new constructor
  * 
@@ -38,6 +40,9 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 
 	public NewConstructorImpl() {
 		super();
+
+		this.setComments( "" );
+		this.setMetaData( this.createMetaData() );
 	}
 
 	public void setVisibility(final Visibility visibility) {
@@ -74,6 +79,49 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	/**
+	 * Any text which will appear within javadoc comments for this field.
+	 */
+	private String comments;
+	
+	public String getComments(){
+		StringHelper.checkNotNull( "field:comments", comments );
+		return comments;
+	}
+	
+	public void setComments( final String comments ){
+		StringHelper.checkNotNull( "parameter:comments", comments );
+		this.comments = comments;
+	}
+	
+	public void addMetaData( final String name, final String value ){
+		this.getMetaData().add( name, value);
+	}
+	
+	public List getMetadataValues( final String name ){
+		return this.getMetaData().getMetadataValues(name);
+	}
+	
+	/**
+	 * A container which holds any meta data that is added to a new field instance. 
+	 */
+	private MetaData metaData;
+	
+	protected MetaData getMetaData(){
+		ObjectHelper.checkNotNull("field:metaData", metaData );
+		return this.metaData;
+	}
+	
+	protected void setMetaData( final MetaData metaData ){
+		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+		this.metaData = metaData;
+	}
+	
+	protected MetaData createMetaData(){
+		return new MetaData();
+	}	
+
+	
+	/**
 	 * Generates the method
 	 * 
 	 * @param writer
@@ -83,6 +131,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 
 		this.log();
 
+		this.writeComments( writer );
 		this.writeDeclaration(writer);
 
 		this.writeBodyOpen(writer);
@@ -98,6 +147,10 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 		this.getGeneratorContext().debug("Writing Constructor: " + this);
 	}
 
+	protected void writeComments( final SourceWriter writer ){		
+		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+	}
+	
 	/**
 	 * Writes the method declaration of this constructor. ${visibility} ${name} (
 	 * ${parameter-type parameter-name} )

@@ -18,6 +18,8 @@ package rocket.generator.rebind.method;
 import rocket.generator.rebind.CodeGenerator;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.comments.HasComments;
+import rocket.generator.rebind.metadata.HasMetadata;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.Type;
 
@@ -29,7 +31,7 @@ import rocket.generator.rebind.type.Type;
  * 
  * @author Miroslav Pokorny
  */
-public interface NewMethod extends Method, CodeGenerator {
+public interface NewMethod extends Method, CodeGenerator, HasComments, HasMetadata {
 
 	void setEnclosingType(Type enclosingType);
 
@@ -56,4 +58,6 @@ public interface NewMethod extends Method, CodeGenerator {
 	CodeBlock getBody();
 
 	void setBody(CodeBlock body);
+	
+	void addMetaData( String key, String value );
 }

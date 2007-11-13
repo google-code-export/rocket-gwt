@@ -111,5 +111,9 @@
 		<when-type-assignable class="rocket.generator.test.generator.client.SubTypes" />
 	</generate-with>
 
+	<generate-with class="rocket.generator.test.generator.rebind.CommentsAndMetaDataGenerator">
+		<when-type-assignable class="rocket.generator.test.generator.client.CommentsAndMetaData" />
+	</generate-with>
+
 </module>
 

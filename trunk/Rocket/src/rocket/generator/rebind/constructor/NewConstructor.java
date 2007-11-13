@@ -18,7 +18,9 @@ package rocket.generator.rebind.constructor;
 import rocket.generator.rebind.CodeGenerator;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.comments.HasComments;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameter;
+import rocket.generator.rebind.metadata.HasMetadata;
 import rocket.generator.rebind.type.Type;
 
 /**
@@ -26,7 +28,7 @@ import rocket.generator.rebind.type.Type;
  * 
  * @author Miroslav Pokorny
  */
-public interface NewConstructor extends Constructor, CodeGenerator {
+public interface NewConstructor extends Constructor, CodeGenerator, HasMetadata, HasComments {
 
 	void setEnclosingType(Type enclosingType);
 
@@ -41,4 +43,6 @@ public interface NewConstructor extends Constructor, CodeGenerator {
 	CodeBlock getBody();
 
 	void setBody(final CodeBlock body);
+	
+	void addMetaData( String name, String value );
 }

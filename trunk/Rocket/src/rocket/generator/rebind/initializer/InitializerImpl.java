@@ -15,11 +15,16 @@
  */
 package rocket.generator.rebind.initializer;
 
+import java.util.List;
+
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * Represents a concrete initializer.
@@ -28,11 +33,61 @@ import rocket.util.client.ObjectHelper;
  */
 public class InitializerImpl implements Initializer {
 
+	public InitializerImpl(){
+		super();
+		
+		this.setComments( "" );
+		this.setMetaData( this.createMetaData() );
+	}
+	
+	/**
+	 * Any text which will appear within javadoc comments for this field.
+	 */
+	private String comments;
+	
+	public String getComments(){
+		StringHelper.checkNotNull( "field:comments", comments );
+		return comments;
+	}
+	
+	public void setComments( final String comments ){
+		StringHelper.checkNotNull( "parameter:comments", comments );
+		this.comments = comments;
+	}
+	
+	public void addMetaData( final String name, final String value ){
+		this.getMetaData().add( name, value);
+	}
+	
+	public List getMetadataValues( final String name ){
+		return this.getMetaData().getMetadataValues(name);
+	}
+	
+	/**
+	 * A container which holds any meta data that is added to a new field instance. 
+	 */
+	private MetaData metaData;
+	
+	protected MetaData getMetaData(){
+		ObjectHelper.checkNotNull("field:metaData", metaData );
+		return this.metaData;
+	}
+	
+	protected void setMetaData( final MetaData metaData ){
+		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+		this.metaData = metaData;
+	}
+	
+	protected MetaData createMetaData(){
+		return new MetaData();
+	}
+	
 	public void write(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
 		this.writeLogger();
-
+		this.writeComments( writer );
+		
 		if (this.isStatic()) {
 			writer.print("static ");
 		}
@@ -49,6 +104,10 @@ public class InitializerImpl implements Initializer {
 		this.getGeneratorContext().debug("initializer");
 	}
 
+	protected void writeComments( final SourceWriter writer ){		
+		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+	}
+	
 	/**
 	 * When true indicates that this initializer
 	 */

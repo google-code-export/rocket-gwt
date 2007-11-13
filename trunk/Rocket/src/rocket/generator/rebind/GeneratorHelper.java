@@ -23,6 +23,7 @@ import java.util.Set;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameter;
+import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
@@ -300,7 +301,6 @@ public class GeneratorHelper {
 			throwCodeCannotBeGeneratedException(component);
 		}
 		final CodeGenerator generator = (CodeGenerator) component;
-
 		generator.write(writer);
 	}
 
@@ -384,5 +384,49 @@ public class GeneratorHelper {
 			final NewMethodParameter parameter = (NewMethodParameter) parameters.next();
 			parameter.setFinal(true);
 		}
+	}
+
+	/**
+	 * Writes out the comments and annotations (metaData) within a javadoc comment.
+	 * @param comments A string which may be empty of text
+	 * @param metaData
+	 * @param writer The writer typically invoked inside a ClassComponent when its writing itself.
+	 */
+	static public void writeComments( final String comments, final MetaData metaData, final SourceWriter writer ){
+		StringHelper.checkNotNull( "parameter:comments", comments );
+		ObjectHelper.checkNotNull( "parameter:metaData", metaData );
+		ObjectHelper.checkNotNull( "parameter:sourceWriter", writer );
+	
+		while( true ){ 
+			final boolean noComments = StringHelper.isNullOrEmpty(comments);			
+			final boolean noAnnotations = metaData.isEmpty();
+			
+			if( noComments && noAnnotations ){
+				break;
+			}
+			
+			// only has annotations...
+			if( noComments && false == noAnnotations ){
+				writer.beginJavaDocComment();
+				metaData.write(writer);
+				writer.endJavaDocComment();
+				break;
+			}
+			//only has comments...
+			if( noComments && false == noAnnotations ){
+				writer.beginJavaDocComment();
+				writer.println( comments );
+				writer.endJavaDocComment();
+				break;
+			}
+			
+			// must have both annotations and comments...
+				writer.beginJavaDocComment();
+				writer.println( comments );
+				writer.println();
+				metaData.write(writer);
+				writer.endJavaDocComment();
+				break;
+		}			
 	}
 }

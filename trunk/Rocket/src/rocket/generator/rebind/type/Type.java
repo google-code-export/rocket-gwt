@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.ClassComponent;
-import rocket.generator.rebind.HasMetadata;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.field.Field;
+import rocket.generator.rebind.metadata.HasMetadata;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.packagee.Package;
 

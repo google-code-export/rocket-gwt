@@ -114,7 +114,7 @@ public class CometGenerator extends Generator {
 		this.getGeneratorContext().info("Generating Rpc service interface which will provide the payload serializer.");
 
 		final NewNestedInterfaceType serviceInterface = newType.newNestedInterfaceType();
-		serviceInterface.setName(Constants.RPC_SERVICE_INTERFACE);
+		serviceInterface.setNestedName(Constants.RPC_SERVICE_INTERFACE);
 		serviceInterface.setStatic(true);
 		serviceInterface.setSuperType(this.getRemoteService());
 		serviceInterface.setVisibility(Visibility.PUBLIC);
@@ -147,7 +147,7 @@ public class CometGenerator extends Generator {
 		this.getGeneratorContext().info("Generating Rpc async service interface counterpart for the rpc service interface.");
 
 		final NewNestedInterfaceType asyncServiceInterface = newType.newNestedInterfaceType();
-		asyncServiceInterface.setName(Constants.RPC_ASYNC_SERVICE_INTERFACE);
+		asyncServiceInterface.setNestedName(Constants.RPC_ASYNC_SERVICE_INTERFACE);
 		asyncServiceInterface.setStatic(true);
 		asyncServiceInterface.setVisibility(Visibility.PUBLIC);
 
