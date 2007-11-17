@@ -51,7 +51,8 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 
 		String comments = this.getComments();
 		final String date = DateFormat.getInstance().format(new Date());
-		comments = comments + "\n\nGenerated at " + date + " by " + this.getClass().getName();
+		final String generatorName = this.getGeneratorContext().getGenerator().getClass().getName();
+		comments = comments + "\n\nGenerated at " + date + " by " + generatorName;
 
 		final MetaData metaData = this.getMetaData();
 
