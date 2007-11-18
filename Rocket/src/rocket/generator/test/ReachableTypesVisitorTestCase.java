@@ -35,7 +35,7 @@ import rocket.util.client.PrimitiveHelper;
 public class ReachableTypesVisitorTestCase extends TestCase {
 
 	final static String OBJECT = Object.class.getName();
-// is finding all reachables not filtering
+
 	public void testAgainstTypeWithNoReachableTypesExceptSelf() {
 		final GeneratorContext context = this.createGeneratorContext();
 
@@ -71,27 +71,27 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 3, types.size());
-		assertTrue("" + types, types.contains(context.getType( SUB_CLASS_OF_CONCRETE_CLASS )));
+		assertTrue("" + types, types.contains(context.getType( CONCRETE_SUB_CLASS )));
 		assertTrue("" + types, types.contains(context.getType( CONCRETE_CLASS )));
 		assertTrue("" + types, types.contains(context.getType( OBJECT )));
 	}
 	
 	final static String CONCRETE_CLASS = ConcreteClass.class.getName();
-	final static String SUB_CLASS_OF_CONCRETE_CLASS = SubClassOfConcreteClass.class.getName();
+	final static String CONCRETE_SUB_CLASS = ConcreteClassSubClass.class.getName();
 
 	static class ConcreteClass{
 		
 	}
 	static class ConcreteClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set createSubTypes() {
-			return new HashSet( Collections.nCopies( 1,  this.getType( SUB_CLASS_OF_CONCRETE_CLASS)));
+			return new HashSet( Collections.nCopies( 1,  this.getType( CONCRETE_SUB_CLASS)));
 		}
 	}
 	
-	static class SubClassOfConcreteClass{
+	static class ConcreteClassSubClass{
 		
 	}
-	static class SubClassOfConcreteClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
+	static class ConcreteClassSubClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set createSubTypes() {
 			return Collections.EMPTY_SET;
 		}
@@ -107,7 +107,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 3, types.size());
-		assertTrue("" + types, types.contains(context.getType( SUB_CLASS_OF_CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE )));
+		assertTrue("" + types, types.contains(context.getType( CONCRETE_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE )));
 		assertTrue("" + types, types.contains(context.getType( CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE )));
 		assertTrue("" + types, types.contains(context.getType( OBJECT )));
 	}
@@ -122,7 +122,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 3, types.size());
-		assertTrue("" + types, types.contains(context.getType( SUB_CLASS_OF_CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE )));
+		assertTrue("" + types, types.contains(context.getType( CONCRETE_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE )));
 		assertTrue("" + types, types.contains(context.getType( CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE )));
 		assertTrue("" + types, types.contains(context.getType( OBJECT )));
 	}
@@ -150,7 +150,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		assertEquals("" + types, 5, types.size());
 		assertTrue("" + types, types.contains(context.getType( CLASS_WITH_SUB_CLASS_WITH_INTERFACE_FIELD )));
 		assertTrue("" + types, types.contains(context.getType( SUB_CLASS_WITH_INTERFACE_FIELD )));
-		assertTrue("" + types, types.contains(context.getType( SUB_CLASS_OF_CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE )));
+		assertTrue("" + types, types.contains(context.getType( CONCRETE_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE )));
 		assertTrue("" + types, types.contains(context.getType( CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE )));
 		assertTrue("" + types, types.contains(context.getType( OBJECT )));
 	}
@@ -176,7 +176,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	
 	final static String INTERFACE = Interface.class.getName();
 	final static String CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE = ConcreteClassThatImplementsInterface.class.getName();
-	final static String SUB_CLASS_OF_CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE = SubClassOfConcreteClassThatImplementsInterface.class.getName();
+	final static String CONCRETE_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE = ConcreteClassSubClassThatImplementsInterface.class.getName();
 	
 
 	static class ObjectJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
@@ -205,14 +205,14 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 	static class ConcreteClassThatImplementsInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set createSubTypes() {
-			return new HashSet( Collections.nCopies( 1,  this.getType( SUB_CLASS_OF_CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE)));
+			return new HashSet( Collections.nCopies( 1,  this.getType( CONCRETE_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE)));
 		}
 	}
 	
-	static class SubClassOfConcreteClassThatImplementsInterface extends ConcreteClassThatImplementsInterface{
+	static class ConcreteClassSubClassThatImplementsInterface extends ConcreteClassThatImplementsInterface{
 		
 	}
-	static class SubClassOfConcreteClassThatImplementsInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
+	static class ConcreteClassSubClassThatImplementsInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set createSubTypes() {
 			return Collections.EMPTY_SET;
 		}

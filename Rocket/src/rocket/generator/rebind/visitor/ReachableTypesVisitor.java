@@ -76,7 +76,7 @@ abstract public class ReachableTypesVisitor {
 		PrimitiveHelper.checkTrue("The parameter:interface is not a type, type: " + type, false == type.isInterface());
 
 		this.visitSuperTypes(type);
-		this.visitFields0(type); // rename visitFields0 - visitFields() - tests if type has been visited. visitFieldIfTypeHasNotBeenVisited
+		this.visitFields0(type);
 		this.visitSubTypes(type);
 	}
 
@@ -89,17 +89,25 @@ abstract public class ReachableTypesVisitor {
 
 		final ConcreteTypesImplementingInterfaceVisitor implementedVisitor = new ConcreteTypesImplementingInterfaceVisitor() {
 			protected boolean visit(final Type type) {
-				ReachableTypesVisitor.this.visitType(type);
+				ReachableTypesVisitor.this.visitTypeThatImplementsInterface(type, interfacee);
 				return false;
 			}
 
 			protected boolean skipAbstractTypes() {
-				return false;
+				return ReachableTypesVisitor.this.skipAbstractTypesImplementingInterface();
 			}
 		};
 		implementedVisitor.start(interfacee);
 	}
 
+	protected void visitTypeThatImplementsInterface( final Type type, final Type interfacee ){
+		this.visitType(type);
+	}
+	
+	protected boolean skipAbstractTypesImplementingInterface(){
+		return false;
+	}
+	
 	protected void visitSuperTypes(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
@@ -112,8 +120,8 @@ abstract public class ReachableTypesVisitor {
 
 	protected void visitSuperTypes0(final Type type) {
 		final SuperTypesVisitor superTypes = new SuperTypesVisitor() {
-			protected boolean visit(final Type type) {
-				ReachableTypesVisitor.this.visitFields(type);
+			protected boolean visit(final Type superType) {
+				ReachableTypesVisitor.this.visitSuperType( superType );
 				return false;
 			}
 
@@ -122,6 +130,10 @@ abstract public class ReachableTypesVisitor {
 			}
 		};
 		superTypes.start(type);
+	}
+	
+	protected void visitSuperType( final Type superType ){
+		this.visitFields(superType);
 	}
 
 	/**
@@ -172,18 +184,26 @@ abstract public class ReachableTypesVisitor {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final SubTypesVisitor subTypes = new SubTypesVisitor() {
-			protected boolean visit(final Type type) {
-				ReachableTypesVisitor.this.visitType(type);
+			protected boolean visit(final Type subType) {
+				ReachableTypesVisitor.this.visitSubType( subType );
 				return false;
 			}
 
 			protected boolean skipInitialType() {
-				return true;
+				return ReachableTypesVisitor.this.skipInitialSubType();
 			}
 		};
 		subTypes.start(type);
 	}
 
+	protected void visitSubType( final Type type ){
+		visitType(type);
+	}
+	
+	protected boolean skipInitialSubType(){
+		return true;
+	}
+	
 	/**
 	 * Provides an opportunity to skip processing of a particular type.
 	 * @param type
