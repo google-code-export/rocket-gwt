@@ -530,7 +530,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return this.getGeneratorContext().getVoid();
 	}
 
-	protected Object getObject() {
+	protected Type getObject() {
 		return this.getGeneratorContext().getObject();
 	}
 }
