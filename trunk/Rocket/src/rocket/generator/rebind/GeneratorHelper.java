@@ -84,7 +84,7 @@ public class GeneratorHelper {
 	 * A set that contains all java keywords and is used as a black list of
 	 * acceptable java identifiers.
 	 */
-	private static Set javaIdentifiersBlacklist = createSetFromCommaDelimiteredString(Constants.JAVA_RESERVED_KEYWORDS);
+	private static Set javaIdentifiersBlacklist = createSetFromCommaDelimiteredString(GeneratorConstants.JAVA_RESERVED_KEYWORDS);
 
 	/**
 	 * This method exists purely as a way to easily load a set with String
@@ -311,7 +311,7 @@ public class GeneratorHelper {
 	/**
 	 * This set contains all reserved javascript keywords.
 	 */
-	static Set javascriptIdentifierBlacklist = createSetFromCommaDelimiteredString(Constants.JAVASCRIPT_RESERVED_KEYWORDS);
+	static Set javascriptIdentifierBlacklist = createSetFromCommaDelimiteredString(GeneratorConstants.JAVASCRIPT_RESERVED_KEYWORDS);
 
 	/**
 	 * Tests if a given literal is a valid javascript literal.

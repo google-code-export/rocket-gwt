@@ -19,6 +19,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import rocket.generator.client.FailedGenerateAttemptException;
+import rocket.generator.rebind.packagee.Package;
+import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.ext.Generator;
@@ -75,7 +77,22 @@ abstract public class TestGenerator extends Generator {
 	public String generateFailedGenerateAttempt(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext,
 			final String typeName, final Throwable cause) {
 
-		final GeneratorContextImpl context = new GeneratorContextImpl();
+		final GeneratorContextImpl context = new GeneratorContextImpl(){
+			protected Type createArrayType(String name) {
+				throw new UnsupportedOperationException();
+			}
+
+			protected Type createClassType(String name) {
+				throw new UnsupportedOperationException();
+			}
+
+			protected Package createPackage(String name) {
+				throw new UnsupportedOperationException();
+			}
+
+			protected void preloadTypes() {
+			}
+		};
 		context.setGeneratorContext(generatorContext);
 		context.setLogger(logger);
 

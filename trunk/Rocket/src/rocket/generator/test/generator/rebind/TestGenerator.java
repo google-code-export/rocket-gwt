@@ -17,7 +17,7 @@ package rocket.generator.test.generator.rebind;
 
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.GeneratorContextImpl;
+import rocket.generator.rebind.gwt.TypeOracleGeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 
@@ -45,7 +45,7 @@ abstract public class TestGenerator extends Generator {
 
 	
 	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl();
+		final TypeOracleGeneratorContext context = new TypeOracleGeneratorContext();
 		context.setGenerator( this );
 		context.setGeneratorContext( generatorContext );
 		context.setLogger( logger );
