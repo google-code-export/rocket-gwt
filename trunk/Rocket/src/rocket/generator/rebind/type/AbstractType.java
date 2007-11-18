@@ -35,6 +35,7 @@ import rocket.generator.rebind.util.AbstractClassComponent;
 import rocket.generator.rebind.visitor.SuperTypesVisitor;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
+import rocket.generator.rebind.packagee.Package;
 
 /**
  * Abstract class that includes facilities for implementing a type.
@@ -50,7 +51,8 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	public String getRuntimeName(){
 		final StringBuffer runtimeName = new StringBuffer();
 		final String name = this.getName();
-		final String packageName = this.getPackage().getName();
+		final Package packagee = this.getPackage();
+		final String packageName = null == packagee ? null : packagee.getName();
 		String nameLessPackageName = name;
 		
 		if( false == StringHelper.isNullOrEmpty( packageName ) ){
