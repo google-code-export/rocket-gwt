@@ -20,7 +20,7 @@ package rocket.generator.rebind;
  * 
  * @author Miroslav Pokorny
  */
-class Constants {
+public class GeneratorConstants {
 	/**
 	 * A comma separated list of all reserved javascript keywords.
 	 */
@@ -31,25 +31,25 @@ class Constants {
 	 */
 	final static String JAVA_RESERVED_KEYWORDS = "abstract,continue,for,new,switch,assert,default,goto,package,synchronized,boolean,do,if,private,this,break,double,implements,protected,throw,byte,else,import,public,throws,case,enum,instanceof,return,transient,catch,extends,int,short,try,char,final,interface,static,void,class,finally,long,strictfp,volatile,const,float,native,super,while";
 
-	final static String BOOLEAN = Boolean.TYPE.getName();
+	public final static String BOOLEAN = Boolean.TYPE.getName();
 
-	final static String BYTE = Byte.TYPE.getName();
+	public final static String BYTE = Byte.TYPE.getName();
 
-	final static String SHORT = Short.TYPE.getName();
+	public final static String SHORT = Short.TYPE.getName();
 
-	final static String INT = Integer.TYPE.getName();
+	public final static String INT = Integer.TYPE.getName();
 
-	final static String LONG = Long.TYPE.getName();
+	public final static String LONG = Long.TYPE.getName();
 
-	final static String FLOAT = Float.TYPE.getName();
+	public final static String FLOAT = Float.TYPE.getName();
 
-	final static String DOUBLE = Double.TYPE.getName();
+	public final static String DOUBLE = Double.TYPE.getName();
 
-	final static String CHAR = Character.TYPE.getName();
+	public final static String CHAR = Character.TYPE.getName();
 
-	final static String VOID = Void.TYPE.getName();
+	public final static String VOID = Void.TYPE.getName();
 
-	final static String OBJECT = Object.class.getName();
+	public final static String OBJECT = Object.class.getName();
 
-	final static String STRING = String.class.getName();
+	public final static String STRING = String.class.getName();
 }

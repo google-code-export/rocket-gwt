@@ -29,9 +29,9 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * 
  * @author Miroslav Pokorny
  */
-public class TypeOracleAdaptersHelper {
+class TypeOracleAdaptersHelper {
 	/**
-	 * GeneratorHelper which creates a list of Types from the given types
+	 * helper which creates a set of Types from the given JTypes
 	 * 
 	 * @param generatorContext
 	 * @param types

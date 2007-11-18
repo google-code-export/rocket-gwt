@@ -22,17 +22,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import rocket.generator.rebind.gwt.BooleanJPrimitiveTypeTypeAdapter;
-import rocket.generator.rebind.gwt.ByteJPrimitiveTypeTypeAdapter;
-import rocket.generator.rebind.gwt.CharJPrimitiveTypeTypeAdapter;
-import rocket.generator.rebind.gwt.DoubleJPrimitiveTypeTypeAdapter;
-import rocket.generator.rebind.gwt.FloatJPrimitiveTypeTypeAdapter;
-import rocket.generator.rebind.gwt.IntJPrimitiveTypeTypeAdapter;
-import rocket.generator.rebind.gwt.JClassTypeTypeAdapter;
-import rocket.generator.rebind.gwt.JPackagePackageAdapter;
-import rocket.generator.rebind.gwt.LongJPrimitiveTypeTypeAdapter;
-import rocket.generator.rebind.gwt.ShortJPrimitiveTypeTypeAdapter;
-import rocket.generator.rebind.gwt.VoidJPrimitiveTypeTypeAdapter;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.packagee.PackageNotFoundException;
 import rocket.generator.rebind.type.NewConcreteType;
@@ -56,7 +45,7 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
  * 
  * @author Miroslav Pokorny
  */
-public class GeneratorContextImpl implements GeneratorContext{
+abstract public class GeneratorContextImpl implements GeneratorContext {
 
 	public GeneratorContextImpl() {
 		super();
@@ -64,7 +53,6 @@ public class GeneratorContextImpl implements GeneratorContext{
 		this.setPackages(this.createPackages());
 		this.setTypes(this.createTypes());
 		this.setNewTypes(this.createNewTypes());
-		this.preloadTypes();
 	}
 
 	/**
@@ -91,7 +79,7 @@ public class GeneratorContextImpl implements GeneratorContext{
 	 * @param name
 	 * @return The name of a standalone class.
 	 */
-	public String getGeneratedTypeName(final String name, final String suffix ) {
+	public String getGeneratedTypeName(final String name, final String suffix) {
 		final String packageName = this.getPackageName(name);
 
 		String simpleClassName = this.getSimpleClassName(name);
@@ -139,18 +127,8 @@ public class GeneratorContextImpl implements GeneratorContext{
 	 * @param name
 	 * @return
 	 */
-	protected Package createPackage(final String name) {
-		JPackagePackageAdapter packagee = null;
-		final JPackage jPackage = this.findJPackage(name);
-		if (null != jPackage) {
-			packagee = new JPackagePackageAdapter();
-			packagee.setJPackage(jPackage);
-			packagee.setGeneratorContext(this);
-
-		}
-		return packagee;
-	}
-
+	abstract protected Package createPackage(final String name);
+	
 	protected JPackage findJPackage(final String name) {
 		return this.getTypeOracle().findPackage(name);
 	}
@@ -194,26 +172,18 @@ public class GeneratorContextImpl implements GeneratorContext{
 
 		Type type = null;
 		while (true) {
+			// check cache first...
 			type = (Type) this.getTypes().get(name);
 			if (null != type) {
 				break;
 			}
-			final Iterator newTypes = this.getNewTypes().iterator();
-			while (newTypes.hasNext()) {
-				final NewType newType = (NewType) newTypes.next();
-				if (false == newType.hasName()) {
-					continue;
-				}
-				if (newType.getName().equals(name)) {
-					type = newType;
-					break;
-				}
-			}
-
+			// iterate thru all types recently created...
+			type = this.getNewType(name);
 			if (null != type) {
 				break;
 			}
 
+			// create time...
 			type = this.createType(name);
 			if (null == type) {
 				break;
@@ -221,6 +191,24 @@ public class GeneratorContextImpl implements GeneratorContext{
 
 			this.addType(type);
 			break;
+		}
+
+		return type;
+	}
+
+	protected Type getNewType(final String name) {
+		Type type = null;
+
+		final Iterator newTypes = this.getNewTypes().iterator();
+		while (newTypes.hasNext()) {
+			final NewType newType = (NewType) newTypes.next();
+			if (false == newType.hasName()) {
+				continue;
+			}
+			if (newType.getName().equals(name)) {
+				type = newType;
+				break;
+			}
 		}
 
 		return type;
@@ -242,132 +230,71 @@ public class GeneratorContextImpl implements GeneratorContext{
 	 * @return
 	 */
 	protected Type createType(final String name) {
-		return this.createClassType(name);
+		return name.endsWith("[]") ? this.createArrayType(name) : this.createClassType(name);
 	}
 
 	/**
 	 * Registers each of the primitive types
 	 */
-	protected void preloadTypes() {
-		this.addType(this.createBooleanType());
-		this.addType(this.createByteType());
-		this.addType(this.createShortType());
-		this.addType(this.createIntType());
-		this.addType(this.createLongType());
-		this.addType(this.createFloatType());
-		this.addType(this.createDoubleType());
-		this.addType(this.createCharType());
-		this.addType(this.createVoidType());
-	}
-
-	protected Type createBooleanType() {
-		final BooleanJPrimitiveTypeTypeAdapter type = new BooleanJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
+	abstract protected void preloadTypes();
+	
 	public Type getBoolean() {
-		return this.getType(Constants.BOOLEAN);
-	}
-
-	protected Type createByteType() {
-		final ByteJPrimitiveTypeTypeAdapter type = new ByteJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
+		return this.getType(GeneratorConstants.BOOLEAN);
 	}
 
 	public Type getByte() {
-		return this.getType(Constants.BYTE);
-	}
-
-	protected Type createShortType() {
-		final ShortJPrimitiveTypeTypeAdapter type = new ShortJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
+		return this.getType(GeneratorConstants.BYTE);
 	}
 
 	public Type getShort() {
-		return this.getType(Constants.SHORT);
-	}
-
-	protected Type createIntType() {
-		final IntJPrimitiveTypeTypeAdapter type = new IntJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
+		return this.getType(GeneratorConstants.SHORT);
 	}
 
 	public Type getInt() {
-		return this.getType(Constants.INT);
-	}
-
-	protected Type createLongType() {
-		final LongJPrimitiveTypeTypeAdapter type = new LongJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
+		return this.getType(GeneratorConstants.INT);
 	}
 
 	public Type getLong() {
-		return this.getType(Constants.LONG);
-	}
-
-	protected Type createFloatType() {
-		final FloatJPrimitiveTypeTypeAdapter type = new FloatJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
+		return this.getType(GeneratorConstants.LONG);
 	}
 
 	public Type getFloat() {
-		return this.getType(Constants.FLOAT);
-	}
-
-	protected Type createDoubleType() {
-		final DoubleJPrimitiveTypeTypeAdapter type = new DoubleJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
+		return this.getType(GeneratorConstants.FLOAT);
 	}
 
 	public Type getDouble() {
-		return this.getType(Constants.DOUBLE);
-	}
-
-	protected Type createCharType() {
-		final CharJPrimitiveTypeTypeAdapter type = new CharJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
+		return this.getType(GeneratorConstants.DOUBLE);
 	}
 
 	public Type getChar() {
-		return this.getType(Constants.CHAR);
-	}
-
-	protected Type createVoidType() {
-		final VoidJPrimitiveTypeTypeAdapter type = new VoidJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
+		return this.getType(GeneratorConstants.CHAR);
 	}
 
 	public Type getVoid() {
-		return this.getType(Constants.VOID);
+		return this.getType(GeneratorConstants.VOID);
 	}
 
 	public Type getObject() {
-		return this.getType(Constants.OBJECT);
+		return this.getType(GeneratorConstants.OBJECT);
 	}
 
 	public Type getString() {
-		return this.getType(Constants.STRING);
+		return this.getType(GeneratorConstants.STRING);
 	}
 
-	protected Type createClassType(final String name) {
-		final JClassType jClassType = (JClassType) this.getTypeOracle().findType(name);
-		JClassTypeTypeAdapter adapter = null;
-		if (null != jClassType) {
-			adapter = new JClassTypeTypeAdapter();
-			adapter.setGeneratorContext(this);
-			adapter.setJClassType(jClassType);
-		}
-		return adapter;
-	}
+	/**
+	 * Factory method which creates an adapter for any array type. This method should only ever be called once for each array type after which all references are cached.
+	 * @param name
+	 * @return A Type
+	 */
+	abstract protected Type createArrayType(final String name);
+
+	/**
+	 * Factory method which creates an adapter for any type. This method should only ever be called once for each array type after which all references are cached.
+	 * @param name
+	 * @return a new JClassTypeTypeAdapter
+	 */
+	abstract protected Type createClassType(final String name);
 
 	/**
 	 * Adds a new type to the cache of known types.
@@ -375,8 +302,8 @@ public class GeneratorContextImpl implements GeneratorContext{
 	 * @param type
 	 */
 	public void addType(final Type type) {
-		if( type instanceof NewType ){
-			this.addNewType( (NewType) type );
+		if (type instanceof NewType) {
+			this.addNewType((NewType) type);
 		} else {
 			this.getTypes().put(type.getName(), type);
 		}
@@ -435,6 +362,7 @@ public class GeneratorContextImpl implements GeneratorContext{
 		final NewConcreteTypeImpl type = new NewConcreteTypeImpl();
 		type.setGeneratorContext(this);
 		type.setSuperType(this.getObject());
+		type.setVisibility( Visibility.PUBLIC );
 
 		this.addNewType(type);
 		return type;
@@ -449,7 +377,8 @@ public class GeneratorContextImpl implements GeneratorContext{
 		final NewInterfaceTypeImpl type = new NewInterfaceTypeImpl();
 		type.setGeneratorContext(this);
 		type.setSuperType(this.getObject());
-
+		type.setVisibility( Visibility.PUBLIC );
+		
 		this.addNewType(type);
 		return type;
 	}
@@ -480,40 +409,45 @@ public class GeneratorContextImpl implements GeneratorContext{
 	 * @return
 	 */
 	public SourceWriter createSourceWriter(final ClassSourceFileComposerFactory composerFactory, final PrintWriter printWriter) {
-		final com.google.gwt.user.rebind.SourceWriter sourceWriter = composerFactory.createSourceWriter(this.getGeneratorContext(), printWriter);
-		
-		return new SourceWriter(){
-			public void beginJavaDocComment(){
+		final com.google.gwt.user.rebind.SourceWriter sourceWriter = composerFactory.createSourceWriter(this.getGeneratorContext(),
+				printWriter);
+
+		return new SourceWriter() {
+			public void beginJavaDocComment() {
 				sourceWriter.beginJavaDocComment();
 			}
-			  public void endJavaDocComment(){
-				  sourceWriter.endJavaDocComment();
-			  }
 
-			  public void indent(){
-				  sourceWriter.indent();
-			  }
-			  public void outdent(){
-				  sourceWriter.outdent();
-			  }
-
-			  public void print(final String string){
-				  sourceWriter.print(string);
-			  }
-			  public void println(){
-				  sourceWriter.println();
-			  }
-
-			  public void println(final String string){
-				 sourceWriter.println( string); 
-			  }
-
-			  public void commit(){
-					sourceWriter.commit( GeneratorContextImpl.this.getLogger() );
+			public void endJavaDocComment() {
+				sourceWriter.endJavaDocComment();
 			}
-			  public void rollback(){
-				  throw new UnsupportedOperationException();
-			  }
+
+			public void indent() {
+				sourceWriter.indent();
+			}
+
+			public void outdent() {
+				sourceWriter.outdent();
+			}
+
+			public void print(final String string) {
+				sourceWriter.print(string);
+			}
+
+			public void println() {
+				sourceWriter.println();
+			}
+
+			public void println(final String string) {
+				sourceWriter.println(string);
+			}
+
+			public void commit() {
+				sourceWriter.commit(GeneratorContextImpl.this.getLogger());
+			}
+
+			public void rollback() {
+				throw new UnsupportedOperationException();
+			}
 		};
 	}
 

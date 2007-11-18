@@ -37,7 +37,7 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
- * Provides a type view of the given JClassType
+ * Provides a Type view of the given JClassType
  * 
  * @author Miroslav Pokorny
  */
@@ -97,10 +97,6 @@ public class JClassTypeTypeAdapter extends AbstractType {
 
 	protected Set createSubTypes() {
 		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJClassType().getSubtypes());
-	}
-
-	public Type getComponentType() {
-		return null;
 	}
 
 	public Package getPackage() {
@@ -213,22 +209,39 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return adapter;
 	}
 
-	public Type getWrapper() {
-		return null;
-	}
-
 	protected Set createNestedTypes() {
 		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJClassType().getNestedTypes());
-	}
-
-	public boolean isAbstract() {
-		return this.getJClassType().isAbstract();
 	}
 
 	public boolean isArray() {
 		return false;
 	}
+	
+	/**
+	 * This method complains if this adapter is not referring to an actual array type. 
+	 * 
+	 * This must be tested via {@link #sisArray }
+	 */
+	public Type getComponentType() {
+		throw new UnsupportedOperationException( "Only array types can have a component type" );
+	}
+	
+	public boolean isAbstract() {
+		return this.getJClassType().isAbstract();
+	}
 
+	public boolean isFinal() {
+		return this.getJClassType().isFinal();
+	}
+
+	public boolean isInterface() {
+		return null != this.getJClassType().isInterface();
+	}
+
+	public boolean isPrimitive() {
+		return false;
+	}
+	
 	public boolean isAssignableFrom(final Type otherType) {
 		boolean assignable = false;
 
@@ -253,22 +266,14 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return assignable;
 	}
 
-	public boolean isFinal() {
-		return this.getJClassType().isFinal();
-	}
-
-	public boolean isInterface() {
-		return null != this.getJClassType().isInterface();
-	}
-
-	public boolean isPrimitive() {
-		return false;
-	}
-
 	public List getMetadataValues(final String name) {
 		return this.getAnnotationValues(this.getJClassType(), name);
 	}
 
+	public Type getWrapper() {
+		return null;
+	}
+	
 	/**
 	 * The JClassType providing the source for type and related data.
 	 */

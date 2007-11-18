@@ -18,6 +18,7 @@ package rocket.generator.rebind;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
+import rocket.generator.rebind.gwt.TypeOracleGeneratorContext;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
@@ -146,7 +147,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * @return
 	 */
 	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
-		final GeneratorContextImpl context = new GeneratorContextImpl();
+		final TypeOracleGeneratorContext context = new TypeOracleGeneratorContext();
 		context.setGenerator( this );
 		context.setGeneratorContext( generatorContext );
 		context.setLogger( logger );

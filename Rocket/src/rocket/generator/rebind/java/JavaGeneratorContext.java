@@ -28,10 +28,48 @@ import rocket.generator.rebind.type.TypeNotFoundException;
  */
 public class JavaGeneratorContext extends GeneratorContextImpl {
 
+	public JavaGeneratorContext(){
+		super();		
+		
+		this.preloadTypes();
+	}
+	
+	protected void preloadTypes(){
+		this.addType(this.createBooleanType());
+		this.addType(this.createBooleanArrayType());
+
+		this.addType(this.createByteType());
+		this.addType(this.createByteArrayType());
+
+		this.addType(this.createShortType());
+		this.addType(this.createShortArrayType());
+
+		this.addType(this.createIntType());
+		this.addType(this.createIntArrayType());
+
+		this.addType(this.createLongType());
+		this.addType(this.createLongArrayType());
+
+		this.addType(this.createFloatType());
+		this.addType(this.createFloatArrayType());
+
+		this.addType(this.createDoubleType());
+		this.addType(this.createDoubleArrayType());
+
+		this.addType(this.createCharType());
+		this.addType(this.createCharArrayType());
+
+		this.addType(this.createVoidType());
+	}
+	
 	protected Type createBooleanType() {
 		final JavaBooleanClassTypeAdapter type = new JavaBooleanClassTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
+	}
+	
+	protected Type createBooleanArrayType(){
+		return this.createArrayType( new boolean[ 0 ].getClass().getName() ); 
 	}
 
 	protected Type createByteType() {
@@ -40,16 +78,25 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		return type;
 	}
 
+	protected Type createByteArrayType(){
+		return this.createArrayType( new byte[ 0 ].getClass().getName() ); 
+	}
+	
 	protected Type createShortType() {
 		final JavaShortClassTypeAdapter type = new JavaShortClassTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
 	}
-
+	protected Type createShortArrayType(){
+		return this.createArrayType( new short[ 0 ].getClass().getName() ); 
+	}
 	protected Type createIntType() {
 		final JavaIntClassTypeAdapter type = new JavaIntClassTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
+	}
+	protected Type createIntArrayType(){
+		return this.createArrayType( new int[ 0 ].getClass().getName() ); 
 	}
 
 	protected Type createLongType() {
@@ -57,11 +104,17 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		type.setGeneratorContext(this);
 		return type;
 	}
+	protected Type createLongArrayType(){
+		return this.createArrayType( new long[ 0 ].getClass().getName() ); 
+	}
 
 	protected Type createFloatType() {
 		final JavaFloatClassTypeAdapter type = new JavaFloatClassTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
+	}
+	protected Type createFloatArrayType(){
+		return this.createArrayType( new float[ 0 ].getClass().getName() ); 
 	}
 
 	protected Type createDoubleType() {
@@ -69,13 +122,18 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		type.setGeneratorContext(this);
 		return type;
 	}
+	protected Type createDoubleArrayType(){
+		return this.createArrayType( new double[ 0 ].getClass().getName() ); 
+	}
 
 	protected Type createCharType() {
 		final JavaCharClassTypeAdapter type = new JavaCharClassTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
 	}
-
+	protected Type createCharArrayType(){
+		return this.createArrayType( new char[ 0 ].getClass().getName() ); 
+	}
 	protected Type createVoidType() {
 		final JavaVoidClassTypeAdapter type = new JavaVoidClassTypeAdapter();
 		type.setGeneratorContext(this);
@@ -83,6 +141,18 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 	}
 
 	protected Type createClassType(final String name) {
+		return this.createJavaClassTypeAdapter(name);
+	}
+
+	protected void throwTypeNotFoundException(final String name, final Throwable cause) {
+		throw new TypeNotFoundException("Unable to find the type [" + name + "]", cause);
+	}
+
+	protected Type createArrayType(final String name){
+		return this.createJavaClassTypeAdapter(name);
+	}
+	
+	protected Type createJavaClassTypeAdapter( final String name ){
 		JavaClassTypeAdapter adapter = null;
 
 		try {
@@ -99,13 +169,9 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 			throwTypeNotFoundException(name, caught);
 		}
 
-		return adapter;
+		return adapter;		
 	}
-
-	protected void throwTypeNotFoundException(final String name, final Throwable cause) {
-		throw new TypeNotFoundException("Unable to find the type [" + name + "]", cause);
-	}
-
+	
 	/**
 	 * Factory method which creates a package instance the first time a request
 	 * is made.
