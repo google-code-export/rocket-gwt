@@ -133,8 +133,8 @@ public class NewInterfaceTypeImpl extends NewConcreteOrInterfaceType implements 
 		writer.endJavaDocComment();
 	}
 
-	protected void writeLogger() {
-		this.getGeneratorContext().branch("Writing interface: " + this);
+	protected void writeLogger() {				
+		this.getGeneratorContext().branch("Writing " + this.getVisibility().getName() + " interface: " + this.getName() );
 	}
 
 	protected void updateSuperTypeSubTypes(final Type type) {

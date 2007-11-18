@@ -68,7 +68,7 @@ public class NewConcreteTypeImpl extends NewConcreteOrInterfaceType implements N
 		final SourceWriter writer = context.createSourceWriter(composerFactory, printWriter);
 
 		try {
-			this.writeLogger();
+			this.log();
 
 			this.writeInitializers(writer);
 			this.writeConstructors(writer);
@@ -113,8 +113,8 @@ public class NewConcreteTypeImpl extends NewConcreteOrInterfaceType implements N
 		writer.endJavaDocComment();
 	}
 
-	protected void writeLogger() {
-		this.getGeneratorContext().branch("Writing class: " + this);
+	protected void log() {
+		this.getGeneratorContext().branch("Writing " + this.getVisibility().getName() + " class: " + this.getName() );
 	}
 
 	protected void updateSuperTypeSubTypes(final Type type) {
