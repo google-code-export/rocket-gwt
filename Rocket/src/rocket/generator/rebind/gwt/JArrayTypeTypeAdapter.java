@@ -131,7 +131,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	}
 
 	public Package getPackage() {
-		return this.findPackage(this.getComponentType().getPackage().getName());
+		return this.getComponentType().getPackage();
 	}
 	
 	final protected Package findPackage(final String packageName) {
