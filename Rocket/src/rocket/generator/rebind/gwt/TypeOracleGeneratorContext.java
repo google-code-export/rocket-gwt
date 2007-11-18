@@ -70,11 +70,32 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		final JClassType jClassType = (JClassType) this.getTypeOracle().findType(name);
 		JClassTypeTypeAdapter adapter = null;
 		if (null != jClassType) {
-			adapter = new JClassTypeTypeAdapter();
+			adapter = this.shouldBeSerializable(name) ? new ShouldBeSerializableJClassTypeAdapter() : new JClassTypeTypeAdapter();
 			adapter.setGeneratorContext(this);
 			adapter.setJClassType(jClassType);
 		}
 		return adapter;
+	}
+	
+	/**
+	 * This method only exists because the concrete collection types are not marked as serializable but really are.
+	 * @param name
+	 * @return
+	 * 
+	 * TODO GWT When all jdk concrete collection types are really serializable this hack will no longer be needed.
+	 */
+	protected boolean shouldBeSerializable( final String name ){
+		boolean shouldBeSerializable = false;
+		
+		final String[] shouldBeSerializableTypeNames = Constants.SHOULD_BE_SERIALIZABLE_TYPENAMES;
+		for( int i = 0; i < shouldBeSerializableTypeNames.length; i++ ){
+			if( shouldBeSerializableTypeNames[ i ].equals( name )){
+				shouldBeSerializable = true;
+				break;
+			}
+		}
+		
+		return shouldBeSerializable;
 	}
 
 	/**
