@@ -104,4 +104,8 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 		GeneratorHelper.checkJavaTypeName("parameter:name", name);
 		this.name = name;
 	}
+	
+	public String toString(){
+		return super.toString() + ' ' + this.getName();
+	}
 }
