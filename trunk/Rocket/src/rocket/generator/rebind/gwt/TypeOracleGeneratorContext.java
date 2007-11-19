@@ -15,6 +15,8 @@
  */
 package rocket.generator.rebind.gwt;
 
+import java.io.Serializable;
+
 import rocket.generator.rebind.GeneratorConstants;
 import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.packagee.Package;
@@ -79,19 +81,22 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	
 	/**
 	 * This method only exists because the concrete collection types are not marked as serializable but really are.
+	 * This is confirmed by querying the corresponding JDK class and checking if it can be assigned to java.io.Serializable
 	 * @param name
 	 * @return
 	 * 
-	 * TODO GWT When all jdk concrete collection types are really serializable this hack will no longer be needed.
+	 * TODO GWT When all emulated java.lang and java.util classes actually implement {@link java.io.Serializable}
+	 * this method will no longer be necessary.
 	 */
 	protected boolean shouldBeSerializable( final String name ){
 		boolean shouldBeSerializable = false;
 		
-		final String[] shouldBeSerializableTypeNames = Constants.SHOULD_BE_SERIALIZABLE_TYPENAMES;
-		for( int i = 0; i < shouldBeSerializableTypeNames.length; i++ ){
-			if( shouldBeSerializableTypeNames[ i ].equals( name )){
-				shouldBeSerializable = true;
-				break;
+		if( name.startsWith( "java.lang") || name.startsWith( "java.util")){
+			try{
+				final Class classs = Class.forName( name );
+				shouldBeSerializable = Serializable.class.isAssignableFrom( classs );
+			} catch ( final Exception ignore ){
+				shouldBeSerializable = false;
 			}
 		}
 		
