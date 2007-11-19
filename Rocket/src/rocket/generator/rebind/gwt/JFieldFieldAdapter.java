@@ -114,6 +114,6 @@ public class JFieldFieldAdapter extends AbstractField {
 	}
 
 	public String toString() {
-		return "Field: " + this.jField;
+		return "Field: " + this.jField + ", enclosingType: " + this.jField.getEnclosingType();
 	}
 }
