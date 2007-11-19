@@ -19,14 +19,4 @@ import java.io.Serializable;
 import java.util.*;
 class Constants {
 	final static String SERIALIZABLE = Serializable.class.getName();
-	
-	private final static String ARRAYLIST = ArrayList.class.getName();
-	private final static String VECTOR = Vector.class.getName();
-	private final static String STACK = Stack.class.getName();
-	
-	private final static String HASHSET = HashSet.class.getName();
-	
-	private final static String HASHMAP = HashMap.class.getName();
-	
-	final static String[] SHOULD_BE_SERIALIZABLE_TYPENAMES = new String[]{ ARRAYLIST, VECTOR, STACK, HASHSET, HASHMAP };
 }
