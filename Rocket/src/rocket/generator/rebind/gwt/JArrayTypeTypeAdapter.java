@@ -42,7 +42,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays dont have constructors.
 	 */
 	public Set getConstructors(){
-		return Collections.EMPTY_SET;//TODO FIX throw new UnsupportedOperationException();
+		return Collections.EMPTY_SET;
 	}
 
 	protected Set createConstructors() {
@@ -54,7 +54,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 */
 	
 	public Set getFields(){
-		return Collections.EMPTY_SET;//TODO FIX throw new UnsupportedOperationException();
+		return Collections.EMPTY_SET;
 	}
 	protected Set createFields() {
 		throw new UnsupportedOperationException();
@@ -65,7 +65,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays dont implement interfaces
 	 */
 	public Set getInterfaces(){
-		return Collections.EMPTY_SET;//TODO FIX throw new UnsupportedOperationException();
+		return Collections.EMPTY_SET;
 	}
 	
 	protected Set createInterfaces() {
@@ -77,7 +77,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays dont have methods
 	 */
 	public Set getMethods() {
-		return Collections.EMPTY_SET;//TODO FIX throw new UnsupportedOperationException();
+		return Collections.EMPTY_SET;
 	}
 	protected Set createMethods() {
 		throw new UnsupportedOperationException();
@@ -88,7 +88,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays cant have nested types.
 	 */
 	public Set getNestedTypes() {
-		return Collections.EMPTY_SET;//TODO FIX throw new UnsupportedOperationException();
+		return Collections.EMPTY_SET;
 	}
 
 	protected Set createNestedTypes() {
@@ -100,7 +100,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays cant be sub classed
 	 */
 	public Set getSubTypes() {
-		return Collections.EMPTY_SET;//TODO FIX throw new UnsupportedOperationException();
+		return Collections.EMPTY_SET;
 	}
 	protected Set createSubTypes() {
 		throw new UnsupportedOperationException();
