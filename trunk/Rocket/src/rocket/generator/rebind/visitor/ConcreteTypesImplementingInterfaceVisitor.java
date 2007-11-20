@@ -30,7 +30,11 @@ abstract public class ConcreteTypesImplementingInterfaceVisitor {
 		
 		final SubTypesVisitor types = new SubTypesVisitor(){
 			protected boolean visit(final Type type){
-				return shouldVisitTest( interfacee, type );
+				boolean skipRemaining = false;
+				if( false == ConcreteTypesImplementingInterfaceVisitor.this.skip( interfacee, type )){
+					skipRemaining = ConcreteTypesImplementingInterfaceVisitor.this.visit(type);
+				}
+				return skipRemaining;
 			}
 			protected boolean skipInitialType(){
 				return false;
@@ -39,28 +43,30 @@ abstract public class ConcreteTypesImplementingInterfaceVisitor {
 		types.start( interfacee.getGeneratorContext().getObject() );
 	}
 	
-	protected boolean shouldVisitTest( final Type interfacee, final Type type ){
-		boolean skipRemaining = false;
+	protected boolean skip( final Type interfacee, final Type type ){
+		boolean skip = false;
 		
 		while( true ){
 			// skip interfaces...
 			if( type.isInterface() ){
+				skip = true;
 				break;
 			}
 			
 			// skip abstract classes...
 			if( type.isAbstract() && this.skipAbstractTypes() ){
+				skip = true;
 				break;
 			}
 			
 			//does type implement interfacee ?
-			if( type.isAssignableTo( interfacee )){
-				skipRemaining = this.visit(type);
+			if( false == type.isAssignableTo( interfacee )){
+				skip = true;
 			}
 			break;
 		}
 		
-		return skipRemaining;
+		return skip;
 	}
 	
 	/**
