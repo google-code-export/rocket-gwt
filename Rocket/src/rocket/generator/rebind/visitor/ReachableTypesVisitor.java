@@ -51,18 +51,25 @@ abstract public class ReachableTypesVisitor {
 	protected void visitType(final Type type) {
 		PrimitiveHelper.checkFalse("The parameter:type must be an object not a primitive type, type: " + type, type.isPrimitive());
 
-		// if type has already been visited skip it...
-		if (false == this.hasAlreadyBeenVisited(type)) {
-
-			// if the user wishes to skip this type skip it...
-			if (false == this.skipType(type)) {
-
-				if (type.isInterface()) {
-					this.processInterface(type);
-				} else {
-					this.processType(type);
-				}
+		while( true ){
+			if (this.hasAlreadyBeenVisited(type)) {
+				break;
 			}
+			
+			this.addType(type);
+			
+			if (this.skipType(type)) {
+				break;
+			}
+			
+			if (type.isInterface()) {
+				this.processInterface(type);
+				break;
+			}
+			
+			this.addConcreteType(type);
+			this.processType(type);
+			break;
 		}
 	}
 
@@ -71,11 +78,10 @@ abstract public class ReachableTypesVisitor {
 	 * @param type
 	 */
 	protected void processType(final Type type) {
-		PrimitiveHelper.checkTrue("The parameter:interface is not a type, type: " + type, false == type.isInterface());
+		PrimitiveHelper.checkTrue("The parameter:interface is not a type, type: " + type, false == type.isInterface());		
 		
-		this.addType(type);
 		this.visitSuperTypes(type);
-		this.visitFields0(type);
+		this.visitFields(type);
 		this.visitSubTypes(type);
 	}
 
@@ -85,8 +91,6 @@ abstract public class ReachableTypesVisitor {
 	 */
 	protected void processInterface(final Type interfacee) {
 		PrimitiveHelper.checkTrue("The parameter:interface is not an interface, interface: " + interfacee, interfacee.isInterface());
-		
-		this.addType(interfacee);
 		
 		final ConcreteTypesImplementingInterfaceVisitor implementedVisitor = new ConcreteTypesImplementingInterfaceVisitor() {
 			protected boolean visit(final Type type) {
@@ -124,7 +128,7 @@ abstract public class ReachableTypesVisitor {
 	protected void visitSuperTypes0(final Type type) {
 		final SuperTypesVisitor superTypes = new SuperTypesVisitor() {
 			protected boolean visit(final Type superType) {
-				ReachableTypesVisitor.this.visitSuperType(superType);
+				ReachableTypesVisitor.this.processSuperType(superType);
 				return false;
 			}
 
@@ -135,7 +139,19 @@ abstract public class ReachableTypesVisitor {
 		superTypes.start(type);
 	}
 
-	protected void visitSuperType(final Type superType) {
+	protected void processSuperType( final Type superType ){
+		if( false == ReachableTypesVisitor.this.hasAlreadyBeenVisited(superType)){
+			if( false == ReachableTypesVisitor.this.skipSuperType( superType )){					
+				this.addConcreteType(superType);
+				this.addType(superType);
+				this.visitSuperType(superType);
+			}
+		}
+	}
+	
+	abstract protected boolean skipSuperType( Type type );
+	
+	protected void visitSuperType(final Type superType) {		
 		this.visitFields(superType);
 	}
 
@@ -146,9 +162,10 @@ abstract public class ReachableTypesVisitor {
 	protected void visitSubTypes(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
-		final SubTypesVisitor subTypes = new SubTypesVisitor() {
+		final SubTypesVisitor subTypes = new SubTypesVisitor() {			
+			
 			protected boolean visit(final Type subType) {
-				ReachableTypesVisitor.this.visitSubType(subType);
+				ReachableTypesVisitor.this.processSubType(subType);
 				return false;
 			}
 
@@ -158,34 +175,28 @@ abstract public class ReachableTypesVisitor {
 		};
 		subTypes.start(type);
 	}
+	
+	protected void processSubType( final Type subType ){
+		if( false == ReachableTypesVisitor.this.hasAlreadyBeenVisited(subType)){
+			if( false == ReachableTypesVisitor.this.skipSubType(subType)){
+				this.addConcreteType(subType);
+				this.addType(subType);		
+				this.visitSubType(subType);
+			}
+		}
+	}
 
-	protected void visitSubType(final Type type) {
-		visitFields(type);
+	abstract protected boolean skipSubType( Type subType );
+	
+	protected void visitSubType(final Type subType) {		
+		this.visitFields(subType);
 	}
 
 	protected boolean skipInitialSubType() {
 		return true;
 	}
 
-	/**
-	 * Tests if the given type should be skipped via {@link #skipType(Type)} and it shouldnt invokes {@link #visitFields0(Type)}
-	 * @param type
-	 */
 	protected void visitFields(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-
-		// if type has already been visited skip it...
-		if (false == this.hasAlreadyBeenVisited(type)) {
-			this.addType(type);
-
-			// if the user wishes to skip this type skip it...
-			if (false == this.skipType(type)) {
-				this.visitFields0(type);
-			}
-		}
-	}
-
-	protected void visitFields0(final Type type) {
 		final Iterator fields = type.getFields().iterator();
 		while (fields.hasNext()) {
 			final Field field = (Field) fields.next();
@@ -242,9 +253,19 @@ abstract public class ReachableTypesVisitor {
 		return new HashSet();
 	}
 
+	protected void addConcreteType( final Type type ){
+		ObjectHelper.checkNotNull("parameter:type", type );
+		PrimitiveHelper.checkFalse( "The type " + type + " has is an interface", type.isInterface());
+		
+		this.getConcreteTypes().add(type);
+	}
+	
+	/**
+	 * This set records types that have already been visited, avoiding the need to repeatedly revisit the same type
+	 */
 	private Set types;
 
-	public Set getTypes() {
+	protected Set getTypes() {
 		ObjectHelper.checkNotNull("field:types", types);
 		return this.types;
 	}
@@ -261,12 +282,9 @@ abstract public class ReachableTypesVisitor {
 	protected void addType(final Type type) {
 		PrimitiveHelper.checkFalse( "The type " + type + " has already been visited", this.hasAlreadyBeenVisited(type));
 		
-		if (false == type.isInterface()) {
-			this.getConcreteTypes().add(type);
-		}
 		this.getTypes().add(type);
 	}
-
+	
 	protected boolean hasAlreadyBeenVisited(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
 		return this.getTypes().contains(type);

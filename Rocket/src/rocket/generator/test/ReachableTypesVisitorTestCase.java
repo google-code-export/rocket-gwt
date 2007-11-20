@@ -228,6 +228,13 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 			}
 			final Set alreadyVisitedTypes = new HashSet();
 			
+			protected boolean skipSuperType( final Type superType ){
+				return false;
+			}
+			
+			protected boolean skipSubType( final Type subType ){
+				return false;
+			}
 			protected boolean skipField( final Field field ){			
 				PrimitiveHelper.checkFalse( "The field: " + field + " has already been visited...", this.alreadyVisitedFields.contains( field ));
 				this.alreadyVisitedFields.add( field );
