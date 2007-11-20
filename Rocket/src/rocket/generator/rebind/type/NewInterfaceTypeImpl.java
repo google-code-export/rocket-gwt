@@ -70,8 +70,6 @@ public class NewInterfaceTypeImpl extends NewConcreteOrInterfaceType implements 
 	 *            context.tryCreateTypePrintWriter(packageName,
 	 *            simpleClassName);
 	 */
-	
-	// TODO set javadoc.
 	public void write(final PrintWriter printWriter) {
 		ObjectHelper.checkNotNull("parameter:printWriter", printWriter);
 
