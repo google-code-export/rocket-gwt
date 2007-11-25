@@ -18,12 +18,14 @@ package rocket.generator.rebind.primitive;
 import rocket.generator.rebind.type.Type;
 
 /**
- * A common base class to represent the float primitive
+ * A common base class to represent the float primitive type
  * 
  * @author Miroslav Pokorny
  */
 abstract public class FloatPrimitiveType extends PrimitiveType {
-
+	public String getRuntimeName(){
+		return Constants.FLOAT_RUNTIME_NAME;
+	}
 	public boolean isAssignableFrom(final Type type) {
 		return this.equals(type) || this.getByte().equals(type) || this.getShort().equals(type) || this.getInt().equals(type)
 				|| this.getLong().equals(type);

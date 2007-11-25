@@ -24,6 +24,10 @@ import rocket.generator.rebind.type.Type;
  */
 abstract public class BooleanPrimitiveType extends PrimitiveType {
 
+	public String getRuntimeName(){
+		return Constants.BOOLEAN_RUNTIME_NAME;
+	}
+	
 	public Type getWrapper() {
 		return this.getType(Constants.BOOLEAN_WRAPPER);
 	}
