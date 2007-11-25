@@ -31,10 +31,10 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 		final GeneratorContext context = this.getGeneratorContext();
 		this.setType(superType);
 
-		final NewConcreteType newType = context.newConcreteType();
-		newType.setName(newTypeName);
+		final NewConcreteType newType = context.newConcreteType( newTypeName );
 		newType.setSuperType(superType);
-		this.setNewType(newType);
+		newType.setVisibility( Visibility.PUBLIC );
+		this.setNewType(newType);		
 
 		this.addNewConstructor();
 		this.addNewField();

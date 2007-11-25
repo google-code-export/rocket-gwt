@@ -16,6 +16,7 @@
 package rocket.generator.test.generator.rebind;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.StringCodeBlock;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.type.NewConcreteType;
@@ -26,10 +27,9 @@ public class NewConstructorWithInitializerGenerator extends TestGenerator {
 	protected NewConcreteType assembleNewType(final Type superType, final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final NewConcreteType newType = context.newConcreteType();
-		newType.setName(newTypeName);
-
+		final NewConcreteType newType = context.newConcreteType( newTypeName );
 		newType.setSuperType(superType);
+		newType.setVisibility( Visibility.PUBLIC );
 
 		final Initializer staticInitializer = newType.newInitializer();		
 		staticInitializer.setBody(new StringCodeBlock(superType.getName() + ".staticInitializerRun = true;"));

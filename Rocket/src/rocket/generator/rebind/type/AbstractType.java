@@ -31,11 +31,11 @@ import rocket.generator.rebind.field.FieldNotFoundException;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.MethodNotFoundException;
 import rocket.generator.rebind.methodparameter.MethodParameter;
+import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.util.AbstractClassComponent;
 import rocket.generator.rebind.visitor.SuperTypesVisitor;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
-import rocket.generator.rebind.packagee.Package;
 
 /**
  * Abstract class that includes facilities for implementing a type.

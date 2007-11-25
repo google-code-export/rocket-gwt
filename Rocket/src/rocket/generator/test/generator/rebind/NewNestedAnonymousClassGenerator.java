@@ -30,9 +30,9 @@ public class NewNestedAnonymousClassGenerator extends TestGenerator {
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final NewConcreteType newType = context.newConcreteType();
-		newType.setName(newTypeName);
+		final NewConcreteType newType = context.newConcreteType( newTypeName);
 		newType.setSuperType(type);
+		newType.setVisibility( Visibility.PUBLIC );
 
 		final NewMethod getNested = newType.newMethod();
 		final Type concreteClass = context.getType(ConcreteClass.class.getName());

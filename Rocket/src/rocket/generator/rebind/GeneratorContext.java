@@ -15,14 +15,11 @@
  */
 package rocket.generator.rebind;
 
-import java.io.PrintWriter;
 import java.util.Set;
 
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewInterfaceType;
 import rocket.generator.rebind.type.Type;
-
-import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
 /**
  * Defines a generator context.
@@ -49,10 +46,8 @@ public interface GeneratorContext {
 	
 	void addType(final Type type);
 	Set getNewTypes();
-	NewConcreteType newConcreteType();
-	NewInterfaceType newInterfaceType();
-	PrintWriter tryCreateTypePrintWriter(final String typeName);
-	SourceWriter createSourceWriter(final ClassSourceFileComposerFactory composerFactory, final PrintWriter printWriter);
+	NewConcreteType newConcreteType( String name );
+	NewInterfaceType newInterfaceType( String name );
 	
 	String getPackageName(final String fullyQualifiedClassName);
 	String getSimpleClassName(final String fullyQualifiedClassName);

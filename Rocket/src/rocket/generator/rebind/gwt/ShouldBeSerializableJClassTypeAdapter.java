@@ -15,13 +15,13 @@
  */
 package rocket.generator.rebind.gwt;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import rocket.generator.rebind.type.Type;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
-
-import rocket.generator.rebind.java.JavaClassTypeAdapter;
-import rocket.generator.rebind.type.Type;
 
 /**
  * This Adapter includes a special test for any of the jdk container types which are all serializable.

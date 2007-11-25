@@ -28,7 +28,6 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedInterfaceType;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
-import rocket.generator.test.generator.client.NewNestedInterface;
 
 public class CommentsAndMetaDataGenerator extends TestGenerator {
 
@@ -43,9 +42,10 @@ public class CommentsAndMetaDataGenerator extends TestGenerator {
 			}
 		};
 		
-		final NewConcreteType newType = context.newConcreteType();
+		final NewConcreteType newType = context.newConcreteType( newTypeName );
 		newType.setName(newTypeName);
 		newType.setSuperType(type);
+		newType.setVisibility( Visibility.PUBLIC );
 
 		newType.setComments( "Class comments");
 		newType.addMetaData( "classKey", "classValue" );

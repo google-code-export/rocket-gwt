@@ -204,12 +204,12 @@ public class BeanFactoryGenerator extends Generator {
 	protected NewConcreteType createBeanFactory(final String newTypeName, final Type implementsInterface ) {
 		this.getGeneratorContext().info("Creating BeanFactory with a name of [" + newTypeName + "].");
 
-		final NewConcreteType beanFactory = this.getGeneratorContext().newConcreteType();
+		final NewConcreteType beanFactory = this.getGeneratorContext().newConcreteType( newTypeName );
 
 		beanFactory.setAbstract(false);
 		beanFactory.setFinal(true);
-		beanFactory.setName(newTypeName);
 		beanFactory.setSuperType(this.getBeanFactoryImpl());
+		beanFactory.setVisibility( Visibility.PUBLIC );
 		beanFactory.addInterface( implementsInterface );
 
 		return beanFactory;

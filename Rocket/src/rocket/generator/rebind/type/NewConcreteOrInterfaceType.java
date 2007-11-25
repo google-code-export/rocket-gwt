@@ -15,14 +15,16 @@
  */
 package rocket.generator.rebind.type;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Set;
 
+import rocket.generator.rebind.GeneratorException;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
-import rocket.generator.rebind.gwt.JClassTypeTypeAdapter;
+import rocket.generator.rebind.gwt.TypeOracleGeneratorContext;
 import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.util.StringBufferSourceWriter;
 import rocket.util.client.ObjectHelper;
@@ -42,6 +44,108 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	public void write(final SourceWriter writer) {
 		throw new UnsupportedOperationException();
 	}
+	
+	/**
+	 * Requests this generated type to write out its definition including its
+	 * constructors, methods and fields. This operation may only be attempted
+	 * once.
+	 * 
+	 * @param printWriter
+	 *            The printwriter returned by
+	 *            context.tryCreateTypePrintWriter(packageName,
+	 *            simpleClassName);
+	 */	
+	public void write() {
+		final String packageName = this.getPackage().getName();
+		final String simpleClassName = this.getSimpleName();
+
+		final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, simpleClassName);
+		if( this.isInterface() ){
+			composerFactory.makeInterface();
+		}
+		
+		this.setSuperClassUponClassSourceFileComposerFactory(composerFactory);
+		this.addImplementedInterfacesToClassSourceFileComposerFactory(composerFactory);
+		this.setClassJavaDoc(composerFactory);
+
+		final TypeOracleGeneratorContext context = (TypeOracleGeneratorContext)this.getGeneratorContext();
+		final PrintWriter printWriter = this.getPrintWriter();
+		final SourceWriter writer = context.createSourceWriter(composerFactory, printWriter);
+
+		try {
+			this.log();
+
+			this.writeInitializers(writer);
+			this.writeConstructors(writer);
+			this.writeFields(writer);
+			this.writeMethods(writer);
+			this.writeNestedTypes(writer);
+		} catch (final GeneratorException caught) {
+			this.handleWriteFailure(writer, caught);
+
+			throw caught;
+		} finally {
+			writer.commit();
+		}
+	}
+
+	/**
+	 * Captures the complete stacktrace of the given exception and writes it
+	 * within a javadoc comment.
+	 * 
+	 * @param writer
+	 *            The source writer of the file being generated.
+	 * @param cause
+	 *            The cause must not be null.
+	 */
+	protected void handleWriteFailure(final SourceWriter writer, final Throwable cause) {
+		ObjectHelper.checkNotNull("parameter:writer", writer);
+		ObjectHelper.checkNotNull("parameter:cause", cause);
+
+		final StringWriter stringWriter = new StringWriter();
+		final PrintWriter printWriter = new PrintWriter(stringWriter);
+		cause.printStackTrace(printWriter);
+		printWriter.flush();
+		printWriter.close();
+
+		writer.println();
+		writer.beginJavaDocComment();
+		writer.println(stringWriter.toString());
+		writer.endJavaDocComment();
+	}
+
+	protected void log() {
+		this.getGeneratorContext().branch("Writing " + this.getVisibility().getName() + ( this.isInterface() ? " class: " : " interface: " ) + this.getName() );
+	}
+
+	/**
+	 * GeneratorHelper which sets the super type to the given
+	 * ClassSourceFileComposerFactory
+	 * 
+	 * @param composerFactory
+	 */
+	protected void setSuperClassUponClassSourceFileComposerFactory(final ClassSourceFileComposerFactory composerFactory) {
+		ObjectHelper.checkNotNull("parameter:composerFactory", composerFactory);
+
+		composerFactory.setSuperclass(this.getSuperType().getName());
+	}
+
+	/**
+	 * GeneratorHelper which adds all implemented interfaces to the given
+	 * ClassSourceFileComposerFactory
+	 * 
+	 * @param composerFactory
+	 */
+	protected void addImplementedInterfacesToClassSourceFileComposerFactory(final ClassSourceFileComposerFactory composerFactory) {
+		ObjectHelper.checkNotNull("parameter:composerFactory", composerFactory);
+
+		final Iterator interfaces = this.getInterfaces().iterator();
+		while (interfaces.hasNext()) {
+			final Type interfacee = (Type) interfaces.next();
+			composerFactory.addImplementedInterface(interfacee.getName());
+		}
+	}
+
 	
 	/**
 	 * Adds a java doc comment that includes a variety of statistics about the
@@ -106,6 +210,18 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	public void setName(final String name) {		
 		GeneratorHelper.checkJavaTypeName("parameter:name", name);
 		this.name = name;
+	}
+	
+	private PrintWriter printWriter;
+	
+	protected PrintWriter getPrintWriter(){
+		ObjectHelper.checkNotNull("field:printWriter", printWriter );
+		return this.printWriter;
+	}
+	
+	public void setPrintWriter( final PrintWriter printWriter ){
+		ObjectHelper.checkNotNull("parameter:printWriter", printWriter );
+		this.printWriter = printWriter;
 	}
 	
 	public String toString(){

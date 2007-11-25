@@ -29,9 +29,10 @@ public class NewConcreteClassWithConstructorGenerator extends TestGenerator {
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final NewConcreteType newType = context.newConcreteType();
+		final NewConcreteType newType = context.newConcreteType( newTypeName );
 		newType.setName(newTypeName);
 		newType.setSuperType(type);
+		newType.setVisibility( Visibility.PUBLIC );
 
 		final Type exception = context.getType(Exception.class.getName());
 

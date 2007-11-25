@@ -17,6 +17,8 @@ package rocket.generator.rebind.java;
 
 import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.packagee.Package;
+import rocket.generator.rebind.type.NewConcreteType;
+import rocket.generator.rebind.type.NewInterfaceType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
 
@@ -189,5 +191,13 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		packagee.setGeneratorContext(this);
 		packagee.setJavaPackage(javaPackage);
 		return packagee;
+	}
+	
+	public NewConcreteType newConcreteType(final String name) {
+		throw new UnsupportedOperationException();
+	}
+
+	public NewInterfaceType newInterfaceType(final String name) {
+		throw new UnsupportedOperationException();
 	}
 }

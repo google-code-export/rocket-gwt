@@ -19,7 +19,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import rocket.generator.client.FailedGenerateAttemptException;
+import rocket.generator.rebind.gwt.TypeOracleGeneratorContext;
 import rocket.generator.rebind.packagee.Package;
+import rocket.generator.rebind.type.NewConcreteType;
+import rocket.generator.rebind.type.NewInterfaceType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -77,7 +80,16 @@ abstract public class TestGenerator extends Generator {
 	public String generateFailedGenerateAttempt(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext,
 			final String typeName, final Throwable cause) {
 
-		final GeneratorContextImpl context = new GeneratorContextImpl(){
+		final TypeOracleGeneratorContext context = new TypeOracleGeneratorContext() {
+
+			public NewConcreteType newConcreteType(final String name) {
+				throw new UnsupportedOperationException();
+			}
+
+			public NewInterfaceType newInterfaceType(final String name) {
+				throw new UnsupportedOperationException();
+			}
+
 			protected Type createArrayType(String name) {
 				throw new UnsupportedOperationException();
 			}
@@ -96,7 +108,7 @@ abstract public class TestGenerator extends Generator {
 		context.setGeneratorContext(generatorContext);
 		context.setLogger(logger);
 
-		final String generatedClassName = context.getGeneratedTypeName(typeName, this.getGeneratedTypeNameSuffix() );
+		final String generatedClassName = context.getGeneratedTypeName(typeName, this.getGeneratedTypeNameSuffix());
 		final PrintWriter printWriter = context.tryCreateTypePrintWriter(generatedClassName);
 		if (printWriter != null) {
 
@@ -129,7 +141,7 @@ abstract public class TestGenerator extends Generator {
 	protected String getGeneratedTypeNameSuffix() {
 		return "__" + FailedGenerateAttemptException.class.getName().replace('.', '_');
 	}
-	
+
 	protected void writeGetMessage(final SourceWriter writer, final String typeName, final Throwable cause) {
 		writer.println("public String getMessage(){");
 		writer.indent();
