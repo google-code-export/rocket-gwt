@@ -40,22 +40,22 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		final GeneratorContext context = this.createGeneratorContext();
 
 		final ReachableTypesVisitor visitor = createReachableTypesVisitor(); 		
-		visitor.start(context.getType( SIMPLE_CLASS ));
+		visitor.start(context.getType( FINAL_CLASS ));
 
 		final Set types = visitor.getConcreteTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 2, types.size());
-		assertTrue("" + types, types.contains(context.getType( SIMPLE_CLASS )));
+		assertTrue("" + types, types.contains(context.getType( FINAL_CLASS )));
 		assertTrue("" + types, types.contains(context.getType( OBJECT )));
 	}
 
-	static final String SIMPLE_CLASS = SimpleClass.class.getName();
+	static final String FINAL_CLASS = FinalClass.class.getName();
 
-	static class SimpleClass{
+	static class FinalClass{
 		
 	}
-	static class SimpleClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
+	static class FinalClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set createSubTypes() {
 			return Collections.EMPTY_SET;
 		}
@@ -154,6 +154,23 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		assertTrue("" + types, types.contains(context.getType( CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE )));
 		assertTrue("" + types, types.contains(context.getType( OBJECT )));
 	}
+
+	public void testClassWithFinalClassArray(){
+		final GeneratorContext context = this.createGeneratorContext();
+
+		final ReachableTypesVisitor visitor = createReachableTypesVisitor(); 		
+		visitor.start(context.getType( CLASS_WITH_FINAL_CLASS_ARRAY ));
+
+		final Set types = visitor.getConcreteTypes();
+		assertNotNull("types", types);
+
+		assertEquals("" + types, 4, types.size());
+		assertTrue("" + types, types.contains(context.getType( CLASS_WITH_FINAL_CLASS_ARRAY )));
+		assertTrue("" + types, types.contains(context.getType( FINAL_CLASS_ARRAY  )));
+		assertTrue("" + types, types.contains(context.getType( FINAL_CLASS )));
+		assertTrue("" + types, types.contains(context.getType( OBJECT )));
+		
+	}
 	
 	final static String CLASS_WITH_SUB_CLASS_WITH_INTERFACE_FIELD = ClassThatHasSubClassWithInterfaceField.class.getName();
 	final static String SUB_CLASS_WITH_INTERFACE_FIELD = SubClassWithInterfaceField.class.getName();
@@ -177,7 +194,6 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	final static String INTERFACE = Interface.class.getName();
 	final static String CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE = ConcreteClassThatImplementsInterface.class.getName();
 	final static String CONCRETE_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE = ConcreteClassSubClassThatImplementsInterface.class.getName();
-	
 
 	static class ObjectJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set createSubTypes() {
@@ -186,7 +202,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 			subTypes.add( getType( CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE ));
 			subTypes.add( getType( CLASS_WITH_SUB_CLASS_WITH_INTERFACE_FIELD ));
 			subTypes.add( getType( CONCRETE_CLASS ));
-			subTypes.add( getType( SIMPLE_CLASS ));
+			subTypes.add( getType( FINAL_CLASS ));
 			return subTypes;
 		}
 	}
@@ -218,9 +234,39 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		}
 	}
 
+	
+	
+	final static String CLASS_WITH_FINAL_CLASS_ARRAY = ClassWithFinalClassArray.class.getName();
+	
+	static class ClassWithFinalClassArray{
+		FinalClass[] simpleClassArray;
+	}
+	static class ClassWithFinalClassArrayJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
+		public Set createSubTypes() {
+			return Collections.EMPTY_SET;
+		}
+	}	
 
+	final static String FINAL_CLASS_ARRAY = "[L" + FinalClass.class.getName() + ";";  
+	
+	static class FinalClassArrayJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
+		public Set createSubTypes() {
+			return Collections.EMPTY_SET;
+		}
+	}		
+	
+	/**
+	 * Factory method that creates a ReachableTypesVisitor visitor with some additional checks.
+	 * @return
+	 */
 	ReachableTypesVisitor createReachableTypesVisitor(){
 		return new ReachableTypesVisitor() {		
+			
+			
+			protected boolean skipArray( final Type array ){
+				return false;
+			}
+			
 			protected boolean skipType( final Type type ){
 				PrimitiveHelper.checkFalse( "The type: " + type + " has already been visited...", this.alreadyVisitedTypes.contains( type ));
 				this.alreadyVisitedTypes.add( type );
@@ -240,44 +286,56 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 				this.alreadyVisitedFields.add( field );
 				return false;
 			}
-			final Set alreadyVisitedFields = new HashSet();
-			
+			final Set alreadyVisitedFields = new HashSet();			
 		};
 	}
 	
+	/**
+	 * Creates a GeneratorContext that uses a combination of the jre and various classes and some adapters that fill in ability to get any
+	 * sub types for a given type.
+	 * @return
+	 */
 	GeneratorContext createGeneratorContext() {
 		return new JavaGeneratorContext() {
 
 			protected Type createClassType(final String name) {
 				TestJavaClassTypeAdapter adapter = null;
 								
-				try {
-					final Class javaClass = Class.forName(name);
-					Class adapterClass = null;
+				Class javaClass = null; 
+				while( true ){
+					try{
+						javaClass = Class.forName(name);
+					} catch ( Exception classNotFound ){
+						throw new RuntimeException("Unable to find type [" + name + "]");
+					}
+					if( OBJECT.equals( name )){
+						adapter = new ObjectJavaClassTypeAdapter();
+						break;
+					}
+					if( FINAL_CLASS_ARRAY.equals( name )){
+						adapter = new FinalClassArrayJavaClassTypeAdapter();
+						break;
+					}
+
+					final String adapterName = name + "JavaClassTypeAdapter";
 					try {
-						adapterClass = Class.forName(name + "JavaClassTypeAdapter");
+						final Class adapterClass = Class.forName( adapterName );
 						adapter = (TestJavaClassTypeAdapter) adapterClass.newInstance();
-					} catch (final Exception useDefault) {
+					} catch (final Exception complainIfNotObject ) {
 						if( false == OBJECT.equals( name )){
-							throw new RuntimeException(name);							
+							throw new RuntimeException( "Unable to find [" + adapterName + "] for the type [" + name + "]", complainIfNotObject );							
 						}
 						adapter = new ObjectJavaClassTypeAdapter();
 					}
-					adapter.setGeneratorContext(this);
-					adapter.setJavaClass(javaClass);
-				} catch (final ExceptionInInitializerError caught) {
-					throwTypeNotFoundException(name, caught);
-				} catch (final ClassNotFoundException caught) {
-					throwTypeNotFoundException(name, caught);
-				} catch (final LinkageError caught) {
-					throwTypeNotFoundException(name, caught);
+					break;
 				}
-
+				adapter.setGeneratorContext(this);
+				adapter.setJavaClass(javaClass);
 				return adapter;
 			}
 		};
 	}
-
+	
 	static abstract class TestJavaClassTypeAdapter extends JavaClassTypeAdapter {	
 		
 		public void setJavaClass(final Class javaClass) {
