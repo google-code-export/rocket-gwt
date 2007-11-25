@@ -17,7 +17,7 @@ package rocket.widget.client;
 
 import java.util.Iterator;
 
-import rocket.collection.client.CollectionHelper;
+import rocket.collection.client.CollectionsHelper;
 import rocket.event.client.EventListener;
 import rocket.util.client.ObjectHelper;
 
@@ -205,7 +205,7 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 	abstract public boolean remove(final Widget widget);
 
 	public void clear() {
-		CollectionHelper.removeAll(this.iterator());
+		CollectionsHelper.removeAll(this.iterator());
 	}
 
 	// THE METHODS BELOW SHOULD BE IGNORED

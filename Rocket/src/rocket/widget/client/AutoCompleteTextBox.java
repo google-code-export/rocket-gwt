@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import rocket.collection.client.CollectionHelper;
+import rocket.collection.client.CollectionsHelper;
 import rocket.event.client.Event;
 import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.KeyDownEvent;
@@ -84,8 +84,9 @@ abstract public class AutoCompleteTextBox extends TextBox {
 		// create a list and add the new widget, followed by a sort which will
 		// give its ultimate insertion point.
 		final DropDownList dropDownList = this.getDropDownList();
-		final List htmlWidgets = CollectionHelper.toList(dropDownList.iterator());
+		final List htmlWidgets = CollectionsHelper.copyIntoList(dropDownList.iterator());
 		htmlWidgets.add(entry);
+		
 		Collections.sort(htmlWidgets, new Comparator() {
 			public int compare(final Object object, final Object otherObject) {
 				final Html html = (Html) object;

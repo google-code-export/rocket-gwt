@@ -42,9 +42,7 @@ public abstract class SkippingIterator extends IteratorWrapper implements Iterat
 	 * asking skip if the object should be skipped. This continues until the
 	 * iterator is exhausted or a non skipped element is found.
 	 * 
-	 * A flag is returned indicating whether or not an element was found.
-	 * 
-	 * @return
+	 * @return A flag is returned indicating whether or not an element was found.
 	 */
 	protected boolean findNext() {
 		boolean hasMore = this.hasCache();

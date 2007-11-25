@@ -26,7 +26,7 @@ public class Cookies extends AbstractMap {
 	 * This method may be invoked to query whether the browser has cookies
 	 * enabled.
 	 * 
-	 * @return
+	 * @return True if cookies are enabled otherwise false.
 	 */
 	native public static boolean areEnabled()/*-{
 	 return $wnd.navigator.cookieEnabled;
@@ -66,7 +66,7 @@ public class Cookies extends AbstractMap {
 	/**
 	 * Retrieves the Cookies singleton
 	 * 
-	 * @return
+	 * @return The cookies singleton
 	 */
 	public Cookies getCookies() {
 		return Cookies.cookies;
@@ -96,7 +96,7 @@ public class Cookies extends AbstractMap {
 	 * Creates an array of Strings with each String representing a single
 	 * cookie.
 	 * 
-	 * @return
+	 * @return A String array of cookies.
 	 */
 	protected String[] createTokens() {
 		final String cookies = Cookies.getCookiesAsString();

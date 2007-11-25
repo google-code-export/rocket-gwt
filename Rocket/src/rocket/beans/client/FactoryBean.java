@@ -24,15 +24,11 @@ public interface FactoryBean {
 	/**
 	 * Returns either the singleton instance of create a new instance if the
 	 * bean is a prototype.
-	 * 
-	 * @return
 	 */
 	Object getObject();
 
 	/**
 	 * Tests if the contained bean is a singleton.
-	 * 
-	 * @return
 	 */
 	boolean isSingleton();
 }
