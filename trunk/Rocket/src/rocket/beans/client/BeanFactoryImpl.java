@@ -54,7 +54,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * This method is implemented by the code generator to create BeanFactory
 	 * instances for each bean defined.
 	 * 
-	 * @return
+	 * @return A map binding bean names to {@link FactoryBeans}
 	 */
 	abstract protected Map buildFactoryBeans();
 
@@ -95,9 +95,8 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * found an exception is thrown.
 	 * 
 	 * @param name
-	 * @return
-	 * @throws UnableToFindBeanException
-	 *             if the bean doesnt exist.
+	 * @return The FactoryBean identified by the given bean name.
+	 * @throws UnableToFindBeanException if the bean doesnt exist.
 	 */
 	protected FactoryBean getFactoryBean(final String name) throws UnableToFindBeanException {
 		final FactoryBean factory = (FactoryBean) this.getFactoryBeans().get(name);

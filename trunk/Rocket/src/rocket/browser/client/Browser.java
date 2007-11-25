@@ -16,22 +16,15 @@
 package rocket.browser.client;
 
 import rocket.browser.client.support.BrowserSupport;
-import rocket.style.client.Css;
-import rocket.style.client.CssUnit;
-import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A collection of useful browser application related methods. JSNI is heavily
- * used to query or modify values somewhere in the DOM.
+ * A collection of helper methods related to the browser, often reporting values retrieved from
+ * the known browser properties.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -50,7 +43,7 @@ public class Browser {
 	/**
 	 * Retrieves the document object for the current page
 	 * 
-	 * @return
+	 * @return The document
 	 */
 	public static native JavaScriptObject getDocument() /*-{
 	 return $doc;
@@ -59,7 +52,7 @@ public class Browser {
 	/**
 	 * Retrieves the window object for the current page.
 	 * 
-	 * @return
+	 * @return The window
 	 */
 	public static native JavaScriptObject getWindow() /*-{
 	 return $wnd;
@@ -68,7 +61,7 @@ public class Browser {
 	/**
 	 * Retrieves the current window status.
 	 * 
-	 * @return
+	 * @return The status text
 	 */
 	public static native String getStatus()/*-{
 	 return $wnd.status;
@@ -77,7 +70,7 @@ public class Browser {
 	/**
 	 * Sets or replaces the browser status.
 	 * 
-	 * @param status
+	 * @param status The new text
 	 */
 	public static native void setStatus(final String status)/*-{
 	 $wnd.status = status;
@@ -87,9 +80,9 @@ public class Browser {
 	 * Prompts the user for a string allowing an initial value which may in turn
 	 * be modified by the user.
 	 * 
-	 * @param message
-	 * @param initialValue
-	 * @return
+	 * @param message The message that will be displayed
+	 * @param initialValue The initial value which may be overridden by the user
+	 * @return The actual entered text.
 	 */
 	public static String prompt(final String message, final String initialValue) {
 		StringHelper.checkNotEmpty("parameter:message", message);
@@ -102,10 +95,18 @@ public class Browser {
 	 return "" + $wnd.prompt( message, initialValue );
 	 }-*/;
 
+	/**
+	 * The horizontal scroll offset of the client window relative to the actual document
+	 * @return The value in pixels.
+	 */
 	public static int getScrollX() {
 		return Browser.getSupport().getScrollX();
 	}
 
+	/**
+	 * The vertical scroll offset of the client window relative to the actual document
+	 * @return The value in pixels.
+	 */
 	public static int getScrollY() {
 		return Browser.getSupport().getScrollY();
 	}
@@ -114,8 +115,8 @@ public class Browser {
 	 * Scrolls the top left of the window to the position denoted by the given
 	 * x/y coordinates
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x The horizontal offset in pixels
+	 * @param y The vertical offset in pixels
 	 */
 	public static native void scrollTo(final int x, final int y)/*-{
 	 $wnd.scroll( x, y );
@@ -125,7 +126,7 @@ public class Browser {
 	 * Returns the contextPath of this web application, this concept is
 	 * particularly useful for working with J2EE web applications.
 	 * 
-	 * @return
+	 * @return The context path for this application.
 	 */
 	public static String getContextPath() {
 		String url = GWT.getModuleBaseURL();
@@ -147,26 +148,26 @@ public class Browser {
 
 	/**
 	 * Adds the base url of the standard images directory on the server.
-	 * 
-	 * @param url
-	 * @return
 	 */
 	public static String buildImageUrl(final String url) {
 		StringHelper.checkNotEmpty("parameter:url", url);
 
-		return Browser.getContextPath() + BrowserConstants.IMAGES + url;
+		return Browser.getContextPath() + Constants.IMAGES + url;
 	}
 
 	/**
-	 * Helper which returns the current location. This is particularly useful
-	 * when one wishes to build other urls to the same server.
+	 * Retrieves the current location.
 	 * 
-	 * @return
+	 * @return The location
 	 */
 	public static native String getLocation()/*-{
 	 return $wnd.location.href;
 	 }-*/;
 
+	/**
+	 * Sets the location of the browser, which will trigger a new page load.
+	 * @param location
+	 */
 	public static void setLocation(final String location) {
 		StringHelper.checkNotEmpty("parameter:location", location);
 
@@ -178,122 +179,77 @@ public class Browser {
 	 }-*/;
 
 	/**
-	 * because of a bug in some browsers the reported width and height of the
-	 * popup panel is incorrect before the initial setPopupPosition. THe initial
-	 * width actually matches the window width.
+	 * Returns the available screen area within the browser
 	 * 
-	 * To avoid this it is necessary to calculate the width/height and set the
-	 * position twice, as after the first set the width will be correct.
-	 * 
-	 * @param popupPanel
-	 */
-	public static void screenCenterPopupPanel(final PopupPanel popupPanel) {
-		screenCenterPopupPanel0(popupPanel);
-		screenCenterPopupPanel0(popupPanel);
-	}
-
-	protected static void screenCenterPopupPanel0(final PopupPanel popupPanel) {
-		ObjectHelper.checkNotNull("parameter:dialogBox", popupPanel);
-
-		final int width = popupPanel.getOffsetWidth();
-		final int height = popupPanel.getOffsetHeight();
-
-		final int browserWidth = getClientWidth();
-		final int browserHeight = getClientHeight();
-
-		final int left = browserWidth / 2 - width / 2;
-		final int top = browserHeight / 2 - height / 2;
-
-		popupPanel.setPopupPosition(left, top);
-		popupPanel.setPopupPosition(left, top);
-	}
-
-	/**
-	 * This method may be used to center any widget in the middle of the screen.
-	 * It is especially useful for dialog boxes.
-	 * 
-	 * @param widget
-	 */
-	public static void screenCenter(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
-
-		final int width = widget.getOffsetWidth();
-		final int height = widget.getOffsetHeight();
-
-		final int browserWidth = getClientWidth();
-		final int browserHeight = getClientHeight();
-
-		final int left = browserWidth / 2 - width / 2;
-		final int top = browserHeight / 2 - height / 2;
-
-		final Element element = widget.getElement();
-		InlineStyle.setInteger(element, Css.LEFT, left, CssUnit.PX);
-		InlineStyle.setInteger(element, Css.TOP, top, CssUnit.PX);
-	}
-
-	/**
-	 * Returns the available screen area within the browser, width in pixels
-	 * 
-	 * @return
+	 * @return The width in pixels
 	 */
 	public native static int getAvailableScreenWidth()/*-{
 	 return $wnd.screen.availWidth;
 	 }-*/;
 
 	/**
-	 * Returns the available screen area within the browser, height in pixels
+	 * Returns the available screen area within the browser
 	 * 
-	 * @return
+	 * @return The height in pixels.
 	 */
 	public native static int getAvailableScreenHeight()/*-{
 	 return $wnd.screen.availHeight;
 	 }-*/;
 
-	protected static int getClientWidth() {
+	/**
+	 * Retrieves the client area width
+	 * @return The width in pixels
+	 */
+	public static int getClientWidth() {
 		return Browser.getSupport().getClientWidth();
 	}
 
-	protected static int getClientHeight() {
+
+	/**
+	 * Retrieves the client area height
+	 * @return The height in pixels
+	 */
+	public static int getClientHeight() {
 		return Browser.getSupport().getClientHeight();
 	}
 
 	/**
-	 * THis method uses embedded javascript to update the title of the browser.
+	 * Sets the title of the window.
 	 * 
-	 * @param title
+	 * @param title The new title text
 	 */
 	public static native void setTitle(final String title) /*-{
 	 $doc.title = title;
 	 }-*/;
 
 	public static boolean isInternetExplorer() {
-		return getUserAgent().indexOf(BrowserConstants.INTERNET_EXPLORER_USER_AGENT) != -1 && false == isOpera();
+		return getUserAgent().indexOf(Constants.INTERNET_EXPLORER_USER_AGENT) != -1 && false == isOpera();
 	}
 
 	public static boolean isFireFox() {
-		return getUserAgent().indexOf(BrowserConstants.FIREFOX_USER_AGENT) != -1 && false == isOpera();
+		return getUserAgent().indexOf(Constants.FIREFOX_USER_AGENT) != -1 && false == isOpera();
 	}
 
 	public static boolean isOpera8() {
-		return getUserAgent().indexOf(BrowserConstants.OPERA8_USER_AGENT) != -1;
+		return getUserAgent().indexOf(Constants.OPERA8_USER_AGENT) != -1;
 	}
 
 	public static boolean isOpera9() {
-		return getUserAgent().indexOf(BrowserConstants.OPERA9_USER_AGENT) != -1;
+		return getUserAgent().indexOf(Constants.OPERA9_USER_AGENT) != -1;
 	}
 
 	public static boolean isOpera() {
-		return getUserAgent().indexOf(BrowserConstants.OPERA_USER_AGENT) == -1;
+		return getUserAgent().indexOf(Constants.OPERA_USER_AGENT) == -1;
 	}
 
 	public static boolean isSafari() {
-		return getUserAgent().indexOf(BrowserConstants.SAFARI_USER_AGENT) != -1 && false == isOpera();
+		return getUserAgent().indexOf(Constants.SAFARI_USER_AGENT) != -1 && false == isOpera();
 	}
 
 	/**
-	 * Retrieves the userAgent or browser identifying string using JSNI.
+	 * Retrieves the userAgent of the browser
 	 * 
-	 * @return
+	 * @return the reported user agent
 	 */
 	public static native String getUserAgent()/*-{
 	 return $wnd.navigator.userAgent;
@@ -302,7 +258,7 @@ public class Browser {
 	/**
 	 * Returns the host operating system that the browser is running under.
 	 * 
-	 * @return
+	 * @return The host operating system.
 	 */
 	public static String getOperatingSystem() {
 		final String userAgent = Browser.getUserAgent();
@@ -317,23 +273,33 @@ public class Browser {
 	 */
 	static {
 		if (false == GWT.isScript() && Browser.isQuirksMode()) {
-			GWT.log(BrowserConstants.QUIRKS_MODE_WARNING, null);
+			GWT.log(Constants.QUIRKS_MODE_WARNING, null);
 		}
 	}
 
 	/**
 	 * This method tests if the browser is in quirks mode.
 	 * 
-	 * @return
+	 * @return true if the browser is operating in quirks mode otherwise returns false
 	 */
 	native static public boolean isQuirksMode()/*-{        
 	 return "BackCompat" == $doc.compatMode;
 	 }-*/;
 
+	/**
+	 * Retrieves the mouse x position
+	 * @param event The source event
+	 * @return The x coordinate in pixels.
+	 */
 	static public int getMousePageX(final Event event) {
 		return Browser.getSupport().getMousePageX(event);
 	}
 
+	/**
+	 * Retrieves the mouse y position
+	 * @param event The source event
+	 * @return The y coordinate in pixels.
+	 */
 	static public int getMousePageY(final Event event) {
 		return Browser.getSupport().getMousePageY(event);
 	}

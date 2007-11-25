@@ -25,15 +25,17 @@ import java.util.Map;
 import rocket.util.client.ObjectHelper;
 
 /**
- * A collection of methods that are often used when working with Collections.
+ * A collection of missing methods that have not yet been implemented in the emulated Collections
+ * as well as other useful collection related methods.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class CollectionHelper {
+public class CollectionsHelper{
+		
 	/**
-	 * Visits all elements returns by the given iterator removing each one.
+	 * Removes all the remaining elements of the given iterator by visiting and removing each and every element.
 	 * 
-	 * @param iterator
+	 * @param iterator The iterator being cleared
 	 */
 	public static void removeAll(final Iterator iterator) {
 		ObjectHelper.checkNotNull("parameter:iterator", iterator);
@@ -47,26 +49,20 @@ public class CollectionHelper {
 	/**
 	 * Copies all the elements from the iterator into an array.
 	 * 
-	 * @param iterator
-	 * @return
+	 * @param iterator The source
+	 * @return The new array containing the values
 	 */
-	public static Object[] toArray(final Iterator iterator) {
-		ObjectHelper.checkNotNull("parameter:iterator", iterator);
-
-		final List list = new ArrayList();
-		while (iterator.hasNext()) {
-			list.add(iterator.next());
-		}
-		return list.toArray();
+	public static Object[] copyIntoArray(final Iterator iterator) {
+		return CollectionsHelper.copyIntoList(iterator).toArray();
 	}
 
 	/**
 	 * Copies all the elements from the iterator into a List
 	 * 
-	 * @param iterator
-	 * @return
+	 * @param iterator The source
+	 * @return The filled List
 	 */
-	public static List toList(final Iterator iterator) {
+	public static List copyIntoList(final Iterator iterator) {
 		ObjectHelper.checkNotNull("parameter:iterator", iterator);
 
 		final List list = new ArrayList();
@@ -77,14 +73,37 @@ public class CollectionHelper {
 	}
 
 	/**
-	 * Returns an unmodifiable view of a List. Using this reference the given
-	 * list may not be modified in any manner, with its references remaining
+	 * Searches the given map for the key that contains the parameter value
+	 * 
+	 * @param map The map
+	 * @param value The value being searched for
+	 * @return The key or null if value is not present in the parameter:map
+	 */
+	public static Object getKey(final Map map, final Object value) {
+		ObjectHelper.checkNotNull("parameter:map", map);
+		ObjectHelper.checkNotNull("parameter:value", value);
+
+		Object key = null;
+		final Iterator entries = map.entrySet().iterator();
+		while (entries.hasNext()) {
+			final Map.Entry entry = (Map.Entry) entries.next();
+			if (value == entry.getValue()) {
+				key = entry.getKey();
+				break;
+			}
+		}
+		return key;
+	}
+	
+	/**
+	 * Returns an unmodifiable view of a List. 
+	 * 
+	 * Using this reference the given list may not be modified in any manner, with its references remaining
 	 * constant and with the list only being modifiable using the original list
 	 * reference.
 	 * 
-	 * @param list
-	 * @return The read only list. Attempts to modify will throw
-	 *         UnsupportedOperationException...
+	 * @param list The source list.
+	 * @return The read only list. Mutator methods throw UnsupportedOperationException...
 	 */
 	public static List unmodifiableList(final List list) {
 		return new AbstractList() {
@@ -93,23 +112,27 @@ public class CollectionHelper {
 			// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 			public boolean add(Object element) {
-				throw new UnsupportedOperationException("An unmodifable List may not have an element add(Object)");
+				throwUnsupportedOperationException("add(Object)");
+				return false;
 			}
 
-			public void add(int arg0, Object element) {
-				throw new UnsupportedOperationException("An unmodifable List may not have an element add(int,Object)");
+			public void add(int index, Object element) {
+				throwUnsupportedOperationException("add(int,Object)");
 			}
 
 			public Object set(final int index, final Object element) {
-				throw new UnsupportedOperationException("An unmodifable List may not have an element set()");
+				throwUnsupportedOperationException("set(int,Object)");
+				return null;
 			}
 
 			public Object remove(final int index) {
-				throw new UnsupportedOperationException("An unmodifable List may not have an element removed(index)");
+				throwUnsupportedOperationException("remove(int)");
+				return null;
 			}
 
 			public boolean remove(final Object element) {
-				throw new UnsupportedOperationException("An unmodifable List may not have an element removed(Object)");
+				throwUnsupportedOperationException("remove(Object)");
+				return false;
 			}
 
 			public Iterator iterator() {
@@ -124,11 +147,15 @@ public class CollectionHelper {
 					}
 
 					public void remove() {
-						throw new UnsupportedOperationException("An unmodifable List's iterator may not have an element removed()");
+						throwUnsupportedOperationException( "iterator.remove()");
 					}
 				};
 			}
-
+			
+			void throwUnsupportedOperationException( final String methodName ){
+				throw new UnsupportedOperationException( "Unmodifiable Lists's do not support the " + methodName + ".");
+			}
+			
 			// DELEGATE TO ENCAPSULATED LIST::::::::::::::::::
 
 			public int size() {
@@ -163,29 +190,5 @@ public class CollectionHelper {
 				return list.lastIndexOf(object);
 			}
 		};
-	}
-
-	/**
-	 * Searches the given map for the key that contains the value
-	 * parameter:value.
-	 * 
-	 * @param map
-	 * @param value
-	 * @return The key or null if value is not present in the parameter:map
-	 */
-	public static Object getKey(final Map map, final Object value) {
-		ObjectHelper.checkNotNull("parameter:map", map);
-		ObjectHelper.checkNotNull("parameter:value", value);
-
-		Object key = null;
-		final Iterator entries = map.entrySet().iterator();
-		while (entries.hasNext()) {
-			final Map.Entry entry = (Map.Entry) entries.next();
-			if (value == entry.getValue()) {
-				key = entry.getKey();
-				break;
-			}
-		}
-		return key;
 	}
 }

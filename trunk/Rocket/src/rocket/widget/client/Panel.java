@@ -17,7 +17,7 @@ package rocket.widget.client;
 
 import java.util.Iterator;
 
-import rocket.collection.client.CollectionHelper;
+import rocket.collection.client.CollectionsHelper;
 import rocket.event.client.Event;
 import rocket.event.client.EventListener;
 import rocket.util.client.ObjectHelper;
@@ -320,7 +320,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	 * Clears or removes all widgets from this panel.
 	 */
 	public void clear() {
-		CollectionHelper.removeAll(this.iterator());
+		CollectionsHelper.removeAll(this.iterator());
 	}
 
 	/**

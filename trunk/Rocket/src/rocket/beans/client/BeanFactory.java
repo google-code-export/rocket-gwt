@@ -26,7 +26,7 @@ public interface BeanFactory {
 	 * Retrieves a bean given its name.
 	 * 
 	 * @param name
-	 * @return
+	 * @return The bean
 	 */
 	Object getBean(String name);
 
@@ -34,7 +34,7 @@ public interface BeanFactory {
 	 * Tests if the bean with the given name is a singleton.
 	 * 
 	 * @param name
-	 * @return
+	 * @return A flag indicating whether or not this BeanFactory holds a singleton.
 	 */
 	boolean isSingleton(String name);
 }

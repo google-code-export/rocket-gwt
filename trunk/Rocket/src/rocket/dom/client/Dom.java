@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rocket.browser.client.Browser;
-import rocket.collection.client.CollectionHelper;
+import rocket.collection.client.CollectionsHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 import rocket.util.client.SystemHelper;
@@ -47,7 +47,7 @@ public class Dom {
 	 * Retrieve the absolute left or x coordinates for the given element
 	 * 
 	 * @param element
-	 * @return
+	 * @return The absolute left position in pixels
 	 */
 	public static int getAbsoluteLeft(final Element element) {
 		ObjectHelper.checkNotNull("parameter:element", element);
@@ -72,7 +72,7 @@ public class Dom {
 	 * Retrieve the absolute top or y coordinates for the given element.
 	 * 
 	 * @param element
-	 * @return
+	 * @return The absolute top position in pixels
 	 */
 	public static int getAbsoluteTop(final Element element) {
 		ObjectHelper.checkNotNull("parameter:element", element);
@@ -222,9 +222,9 @@ public class Dom {
 	/**
 	 * Tests if the given element is an INPUT tag of the requested type.
 	 * 
-	 * @param element
-	 * @param type
-	 * @return
+	 * @param element The element being tested.
+	 * @param type The type attribute
+	 * @return True if the element is the specified INPUT tag.
 	 */
 	public static boolean isInput(final Element element, final String type) {
 		ObjectHelper.checkNotNull("parameter:element", element);
@@ -286,7 +286,7 @@ public class Dom {
 	 * 
 	 * @param parent
 	 * @param childTagNameToFind
-	 * @return
+	 * @return A read only list of Elements.
 	 */
 	public static List findAllChildrenOfType(final Element parent, final String childTagNameToFind) {
 		ObjectHelper.checkNotNull("parameter:parent", parent);
@@ -300,7 +300,7 @@ public class Dom {
 				found.add(child);
 			}
 		}
-		return CollectionHelper.unmodifiableList(found);
+		return CollectionsHelper.unmodifiableList(found);
 	}
 
 	/**
@@ -327,7 +327,7 @@ public class Dom {
 	 * @param element
 	 * @param deepCopy
 	 *            When true performs a deep copy (ie children are also cloned).
-	 * @return
+	 * @return The cloned element
 	 */
 	public static Element cloneElement(final Element element, final boolean deepCopy) {
 		ObjectHelper.checkNotNull("parameter:element", element);
@@ -341,7 +341,7 @@ public class Dom {
 	/**
 	 * Retrieves the body of the current document.
 	 * 
-	 * @return
+	 * @return The body element
 	 */
 	native public static Element getBody()/*-{
 	 return $doc.body;
@@ -351,7 +351,7 @@ public class Dom {
 	 * Retrieves the x offset between a child and its parent container in pixels
 	 * 
 	 * @param element
-	 * @return
+	 * @return The value in pixels
 	 */
 	public static int getOffsetLeft(final Element element) {
 		return ObjectHelper.getInteger(element, "offsetLeft");
@@ -361,7 +361,7 @@ public class Dom {
 	 * Retrieves the y offset between a child and its parent container in pixels
 	 * 
 	 * @param element
-	 * @return
+	 * @return The value in pixels
 	 */
 	public static int getOffsetTop(final Element element) {
 		return ObjectHelper.getInteger(element, "offsetTop");
@@ -372,7 +372,7 @@ public class Dom {
 	 * less any decorations such as border or margins.
 	 * 
 	 * @param element
-	 * @return
+	 * @return The value in pixels
 	 */
 	public static int getClientWidth(final Element element) {
 		return ObjectHelper.getInteger(element, "clientWidth");
@@ -383,7 +383,7 @@ public class Dom {
 	 * pixels less any decorations such as border or margins.
 	 * 
 	 * @param element
-	 * @return
+	 * @return The value in pixels
 	 */
 	public static int getClientHeight(final Element element) {
 		return ObjectHelper.getInteger(element, "clientHeight");
@@ -393,7 +393,7 @@ public class Dom {
 	 * Tests if the given element is attached to the dom.
 	 * 
 	 * @param element
-	 * @return
+	 * @return A flag indicating whether or not the element is in fact attached to the document.
 	 */
 	public static boolean isAttached(final Element element) {
 		return DOM.isOrHasChild(Dom.getBody(), element);

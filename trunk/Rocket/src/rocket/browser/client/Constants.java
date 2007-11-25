@@ -15,24 +15,24 @@
  */
 package rocket.browser.client;
 
-public class BrowserConstants {
-	public final static String IMAGES = "/images";
+public class Constants {
+	final static String IMAGES = "/images";
 
-	public final static String INTERNET_EXPLORER_USER_AGENT = "MSIE";
+	final static String INTERNET_EXPLORER_USER_AGENT = "MSIE";
 
-	public final static String FIREFOX_USER_AGENT = "Firefox";
+	final static String FIREFOX_USER_AGENT = "Firefox";
 
-	public final static String OPERA8_USER_AGENT = "Opera/8";
+	final static String OPERA8_USER_AGENT = "Opera/8";
 
-	public final static String OPERA9_USER_AGENT = "Opera/9";
+	final static String OPERA9_USER_AGENT = "Opera/9";
 
-	public final static String OPERA_USER_AGENT = "Opera";
+	final static String OPERA_USER_AGENT = "Opera";
 
-	public final static String SAFARI_USER_AGENT = "WebKit";
+	final static String SAFARI_USER_AGENT = "WebKit";
 
-	public final static String STRICT_DOCTYPE = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">";
+	final static String STRICT_DOCTYPE = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">";
 
-	public final static String QUIRKS_MODE_WARNING = "This page does not have a strict doctype such as \""
+	final static String QUIRKS_MODE_WARNING = "This page does not have a strict doctype such as \""
 			+ STRICT_DOCTYPE
 			+ "\". "
 			+ "This is especially important as InternetExplorer in quirks mode has a broken box model (http://css.maxdesign.com.au/listamatic/about-boxmodel.htm).";
