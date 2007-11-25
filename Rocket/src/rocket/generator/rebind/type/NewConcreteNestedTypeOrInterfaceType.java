@@ -158,47 +158,5 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 		writer.println();
 		GeneratorHelper.writeClassComponents(initializers, writer, false, true);
 		writer.println();
-	}
-	
-	/**
-	 * Any text which will appear within javadoc comments for this field.
-	 */
-	private String comments;
-	
-	public String getComments(){
-		StringHelper.checkNotNull( "field:comments", comments );
-		return comments;
-	}
-	
-	public void setComments( final String comments ){
-		StringHelper.checkNotNull( "parameter:comments", comments );
-		this.comments = comments;
-	}
-	
-	public void addMetaData( final String name, final String value ){
-		this.getMetaData().add( name, value);
-	}
-	
-	public List getMetadataValues( final String name ){
-		return this.getMetaData().getMetadataValues(name);
-	}
-	
-	/**
-	 * A container which holds any meta data that is added to a new field instance. 
-	 */
-	private MetaData metaData;
-	
-	protected MetaData getMetaData(){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
-		return this.metaData;
-	}
-	
-	protected void setMetaData( final MetaData metaData ){
-		ObjectHelper.checkNotNull("parameter:metaData", metaData );
-		this.metaData = metaData;
-	}
-	
-	protected MetaData createMetaData(){
-		return new MetaData();
 	}	
 }
