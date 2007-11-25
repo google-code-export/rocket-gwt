@@ -19,23 +19,39 @@
  * 
  * @author Miroslav Pokorny
  */
-public class Constants {
+class Constants {
 
-	public final static String BOOLEAN_WRAPPER = Boolean.class.getName();
+	final static String BOOLEAN_RUNTIME_NAME = "Z";
 
-	public final static String BYTE_WRAPPER = Byte.class.getName();
+	final static String BYTE_RUNTIME_NAME = "B";
 
-	public final static String SHORT_WRAPPER = Short.class.getName();
+	final static String SHORT_RUNTIME_NAME = "S";
 
-	public final static String INTEGER_WRAPPER = Integer.class.getName();
+	final static String INT_RUNTIME_NAME = "I";
 
-	public final static String LONG_WRAPPER = Long.class.getName();
+	final static String LONG_RUNTIME_NAME = "J";
 
-	public final static String FLOAT_WRAPPER = Float.class.getName();
+	final static String FLOAT_RUNTIME_NAME = "F";
 
-	public final static String DOUBLE_WRAPPER = Double.class.getName();
+	final static String DOUBLE_RUNTIME_NAME = "D";
 
-	public final static String CHARACTER_WRAPPER = Character.class.getName();
+	final static String CHAR_RUNTIME_NAME = "C";	
+	
+	final static String BOOLEAN_WRAPPER = Boolean.class.getName();
 
-	public final static String VOID_WRAPPER = Void.class.getName();
+	final static String BYTE_WRAPPER = Byte.class.getName();
+
+	final static String SHORT_WRAPPER = Short.class.getName();
+
+	final static String INTEGER_WRAPPER = Integer.class.getName();
+
+	final static String LONG_WRAPPER = Long.class.getName();
+
+	final static String FLOAT_WRAPPER = Float.class.getName();
+
+	final static String DOUBLE_WRAPPER = Double.class.getName();
+
+	final static String CHARACTER_WRAPPER = Character.class.getName();
+
+	final static String VOID_WRAPPER = Void.class.getName();
 }

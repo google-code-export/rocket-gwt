@@ -18,12 +18,14 @@ package rocket.generator.rebind.primitive;
 import rocket.generator.rebind.type.Type;
 
 /**
- * A common base class to represent the double primitive
+ * A common base class to represent the double primitive type
  * 
  * @author Miroslav Pokorny
  */
 abstract public class DoublePrimitiveType extends PrimitiveType {
-
+	public String getRuntimeName(){
+		return Constants.DOUBLE_RUNTIME_NAME;
+	}
 	public boolean isAssignableFrom(final Type type) {
 		return this.equals(type);
 	}

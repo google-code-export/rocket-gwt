@@ -24,6 +24,10 @@ import rocket.generator.rebind.type.Type;
  */
 abstract public class BytePrimitiveType extends PrimitiveType {
 
+	public String getRuntimeName(){
+		return Constants.BYTE_RUNTIME_NAME;
+	}
+	
 	public boolean isAssignableFrom(final Type type) {
 		return this.equals(type);
 	}

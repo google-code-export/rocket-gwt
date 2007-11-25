@@ -18,12 +18,16 @@ package rocket.generator.rebind.primitive;
 import rocket.generator.rebind.type.Type;
 
 /**
- * A common base class to represent the boolean primitive
+ * A common base class to represent the int primitive type
  * 
  * @author Miroslav Pokorny
  */
 abstract public class IntPrimitiveType extends PrimitiveType {
 
+	public String getRuntimeName(){
+		return Constants.INT_RUNTIME_NAME;
+	}
+	
 	public boolean isAssignableFrom(final Type type) {
 		return this.equals(type) || this.getByte().equals(type) || this.getShort().equals(type);
 	}
