@@ -17,9 +17,12 @@ package rocket.generator.rebind.type;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
+import rocket.generator.rebind.gwt.JClassTypeTypeAdapter;
 import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.util.StringBufferSourceWriter;
 import rocket.util.client.ObjectHelper;
