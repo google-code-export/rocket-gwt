@@ -17,16 +17,11 @@ package rocket.generator.rebind.type;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Iterator;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorException;
-import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
-import rocket.generator.rebind.metadata.MetaData;
-import rocket.generator.rebind.util.StringBufferSourceWriter;
 import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
@@ -82,10 +77,6 @@ public class NewConcreteTypeImpl extends NewConcreteOrInterfaceType implements N
 		} finally {
 			writer.commit();
 		}
-
-		// update the subTypes of all superTypes that have just been
-		// generated...
-		this.updateSuperTypeSubTypes(this);
 	}
 
 	/**
@@ -115,15 +106,6 @@ public class NewConcreteTypeImpl extends NewConcreteOrInterfaceType implements N
 
 	protected void log() {
 		this.getGeneratorContext().branch("Writing " + this.getVisibility().getName() + " class: " + this.getName() );
-	}
-
-	protected void updateSuperTypeSubTypes(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-
-		final Iterator nestedTypes = type.getNestedTypes().iterator();
-		while (nestedTypes.hasNext()) {
-			this.updateSuperTypeSubTypes((Type) nestedTypes.next());
-		}
 	}
 
 	/**
