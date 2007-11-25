@@ -46,10 +46,10 @@ public class CometGenerator extends Generator {
 
 		final NewConcreteType generated = this.subClassCometClient(newTypeName, cometClient);
 
-		this.createRpcServiceInterface(generated);
+		final Type serviceInterface = this.createRpcServiceInterface(generated);
 		this.createRpcAsyncServiceInterface(generated);
 
-		this.implementCreateProxy(generated);
+		this.implementCreateProxy(generated, serviceInterface );
 		return generated;
 	}
 
@@ -106,8 +106,9 @@ public class CometGenerator extends Generator {
 	 * 
 	 * @param newType
 	 *            The enclosing type that will contain the service interface
+	 * @return The service interface
 	 */
-	protected void createRpcServiceInterface(final NewConcreteType newType) {
+	protected Type createRpcServiceInterface(final NewConcreteType newType) {
 		ObjectHelper.checkNotNull("parameter:newType", newType);
 
 		this.getGeneratorContext().info("Generating Rpc service interface which will provide the payload serializer.");
@@ -129,6 +130,8 @@ public class CometGenerator extends Generator {
 
 		newMethod.setStatic(false);
 		newMethod.setVisibility(Visibility.PUBLIC);
+		
+		return serviceInterface;
 	}
 
 	/**
@@ -217,15 +220,15 @@ public class CometGenerator extends Generator {
 	 * @param newType
 	 *            The type that will contain the new realised createDeserializer
 	 *            method.
+	 *  @param serviceInterface The service interface recently created to trigger GWT to create a deserializer.
 	 */
-	protected void implementCreateProxy(final NewConcreteType newType) {
+	protected void implementCreateProxy(final NewConcreteType newType, final Type serviceInterface ) {
 		final Method createDeserializer = newType.getMostDerivedMethod(Constants.CREATE_PROXY_METHOD, Collections.EMPTY_LIST);
 		final NewMethod newCreateProxy = createDeserializer.copy(newType);
 		newCreateProxy.setAbstract(false);
 		newCreateProxy.setFinal(true);
 
 		final CreateProxyTemplatedFile template = new CreateProxyTemplatedFile();
-		final Type serviceInterface = this.getGeneratorContext().getType(Constants.RPC_SERVICE_INTERFACE);
 		template.setType(serviceInterface);
 		newCreateProxy.setBody(template);
 	}
