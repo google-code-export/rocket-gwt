@@ -175,7 +175,7 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 	}
 
 	public void testSubTypes() {
-		final SubTypes instance = (SubTypes) GWT.create(SubTypes.class);
+		final Object instance = GWT.create(SubTypes.class); // generated class is not a sub class of SubTypes
 		assertNotNull(instance);
 		assertEquals("rocket.generator.test.generator.client.SubTypes1", GWT.getTypeName(instance));
 	}

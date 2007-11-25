@@ -429,7 +429,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 
 		final Set merged = new HashSet();
 		merged.addAll(subTypes);
-		merged.addAll(this.getNewTypeSubTypes());
+		merged.addAll(this.getNewSubTypes());
 
 		return Collections.unmodifiableSet(merged);
 	}
@@ -442,31 +442,18 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 * 
 	 * @return a Set of NewType sub types
 	 */
-	protected Set getNewTypeSubTypes() {
+	protected Set getNewSubTypes() {
 		final Set subTypes = new HashSet();
 
 		final GeneratorContext context = this.getGeneratorContext();
 		final Set newTypes = context.getNewTypes();
 		final Iterator newTypesIterator = newTypes.iterator();
+		
 		while (newTypesIterator.hasNext()) {
 			final Type newType = (Type) newTypesIterator.next();
-
-			final SuperTypesVisitor superTypes = new SuperTypesVisitor() {
-				protected boolean visit(final Type type) {
-					boolean found = false;
-
-					if (AbstractType.this.equals(type.getSuperType())) {
-						subTypes.add(newType);
-						found = true;
-					}
-					return found;
-				}
-
-				protected boolean skipInitialType() {
-					return false;
-				}
-			};
-			superTypes.start(newType);
+			if( newType.getSuperType() == this ){
+				subTypes.add( newType );
+			}			
 		}
 
 		return subTypes;

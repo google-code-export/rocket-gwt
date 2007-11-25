@@ -91,7 +91,7 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return Collections.unmodifiableSet(super.getSubTypes());
 	}
 
-	protected Set getModifiableSubTypesList() {
+	public Set getModifiableSubTypesList() {
 		return super.getSubTypes();
 	}
 
