@@ -15,11 +15,19 @@
  */
 package rocket.generator.rebind.gwt;
 
+import java.io.PrintWriter;
 import java.io.Serializable;
 
 import rocket.generator.rebind.GeneratorConstants;
 import rocket.generator.rebind.GeneratorContextImpl;
+import rocket.generator.rebind.GeneratorHelper;
+import rocket.generator.rebind.SourceWriter;
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.packagee.Package;
+import rocket.generator.rebind.type.NewConcreteType;
+import rocket.generator.rebind.type.NewConcreteTypeImpl;
+import rocket.generator.rebind.type.NewInterfaceType;
+import rocket.generator.rebind.type.NewInterfaceTypeImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -28,6 +36,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
 /**
  * This GeneratorContext sources all its type info from the GWT TypeOracle.
@@ -35,6 +44,122 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 
+	/**
+	 * Factory method which creates a new concrete type.
+	 * 
+	 * @param name The name of the new concrete type
+	 * @return The new concrete type.
+	 */
+	public NewConcreteType newConcreteType( final String name ) {
+		NewConcreteTypeImpl type = null; 
+			
+		final PrintWriter printWriter = this.tryCreateTypePrintWriter( name );
+		if( null != printWriter ){
+		type = new NewConcreteTypeImpl();
+		type.setGeneratorContext(this);
+		type.setName(name);
+		type.setPrintWriter(printWriter);
+		type.setSuperType(this.getObject());
+		type.setVisibility(Visibility.PUBLIC);
+
+		this.addNewType(type);
+		}
+		
+		return type;
+	}
+
+	/**
+	 * Factory method which creates a new interface type.
+	 * 
+	 * @param name The name of the new interface
+	 * @return The new interface type.
+	 */
+	public NewInterfaceType newInterfaceType( final String name ) {
+		NewInterfaceTypeImpl type = null;
+		
+		final PrintWriter printWriter = this.tryCreateTypePrintWriter( name );
+		if( null != printWriter ){
+		type = new NewInterfaceTypeImpl();
+		type.setGeneratorContext(this);
+		type.setName(name);
+		type.setPrintWriter(printWriter);
+		type.setSuperType(this.getObject());
+		type.setVisibility(Visibility.PUBLIC);
+
+		this.addNewType(type);
+		}		
+		
+		return type;
+	}
+
+	/**
+	 * Tests if a class has already been generated. If the class does not exist
+	 * a PrintWriter is returned which may eventually be used to create the new
+	 * class.
+	 * 
+	 * @param typeName
+	 * @return Null if the class does not exist otherwise returns a PrintWriter
+	 */
+	public PrintWriter tryCreateTypePrintWriter(final String typeName) {
+		GeneratorHelper.checkJavaTypeName("parameter:typeName", typeName);
+
+		final String packageName = this.getPackageName(typeName);
+		final String simpleClassName = this.getSimpleClassName(typeName);
+		return this.getGeneratorContext().tryCreate(this.getLogger(), packageName, simpleClassName);
+	}
+
+	/**
+	 * Creates a sourceWriter. All attempts to create a SourceWriter eventually
+	 * call this method once they have setup the ClassSourceFileComposerFactory
+	 * and gotten a PrintWriter
+	 * 
+	 * @param composerFactory
+	 * @param printWriter
+	 * @return
+	 */
+	public SourceWriter createSourceWriter(final ClassSourceFileComposerFactory composerFactory, final PrintWriter printWriter) {
+		final com.google.gwt.user.rebind.SourceWriter sourceWriter = composerFactory.createSourceWriter(this.getGeneratorContext(),
+				printWriter);
+
+		return new SourceWriter() {
+			public void beginJavaDocComment() {
+				sourceWriter.beginJavaDocComment();
+			}
+
+			public void endJavaDocComment() {
+				sourceWriter.endJavaDocComment();
+			}
+
+			public void indent() {
+				sourceWriter.indent();
+			}
+
+			public void outdent() {
+				sourceWriter.outdent();
+			}
+
+			public void print(final String string) {
+				sourceWriter.print(string);
+			}
+
+			public void println() {
+				sourceWriter.println();
+			}
+
+			public void println(final String string) {
+				sourceWriter.println(string);
+			}
+
+			public void commit() {
+				sourceWriter.commit(TypeOracleGeneratorContext.this.getLogger());
+			}
+
+			public void rollback() {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
+	
 	public void setGeneratorContext(final com.google.gwt.core.ext.GeneratorContext generatorContext) {
 		super.setGeneratorContext(generatorContext);
 		this.preloadTypes();

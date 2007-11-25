@@ -56,10 +56,9 @@ public class TestBuilderGenerator extends Generator {
 	 * @return
 	 */
 	protected NewConcreteType createTestBuilder(final String newTypeName) {
-		final NewConcreteType testBuilder = this.getGeneratorContext().newConcreteType();
+		final NewConcreteType testBuilder = this.getGeneratorContext().newConcreteType( newTypeName );
 		testBuilder.setAbstract(false);
 		testBuilder.setFinal(true);
-		testBuilder.setName(newTypeName);
 		testBuilder.setSuperType(this.getTestMethodTestBuilder());
 		testBuilder.addInterface(this.getTestBuilder());
 

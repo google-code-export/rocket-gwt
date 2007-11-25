@@ -92,10 +92,9 @@ public class CometGenerator extends Generator {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.info("Creating new sub class of " + cometClient.getName() + " called " + newTypeName);
 
-		final NewConcreteType subClass = context.newConcreteType();
+		final NewConcreteType subClass = context.newConcreteType( newTypeName );
 		subClass.setAbstract(false);
 		subClass.setFinal(true);
-		subClass.setName(newTypeName);
 		subClass.setSuperType(cometClient);
 
 		return subClass;

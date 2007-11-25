@@ -280,10 +280,9 @@ public class JsonSerializerGenerator extends Generator {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.debug("creating new type [" + type.getName() + "]");
 
-		final NewConcreteType newType = context.newConcreteType();
+		final NewConcreteType newType = context.newConcreteType( newTypeName );
 		newType.setAbstract(false);
 		newType.setFinal(false);
-		newType.setName(newTypeName);
 
 		// extend either JsonSerializerType or the generated type of type...
 		Type superType = type.getSuperType();
@@ -293,7 +292,8 @@ public class JsonSerializerGenerator extends Generator {
 		}
 		superType = context.getType(superTypeName);
 		newType.setSuperType(superType);
-
+		newType.setVisibility( Visibility.PUBLIC );
+		
 		return newType;
 	}
 

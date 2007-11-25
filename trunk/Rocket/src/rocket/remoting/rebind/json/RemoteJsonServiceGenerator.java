@@ -22,6 +22,7 @@ import java.util.List;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
@@ -447,14 +448,15 @@ public class RemoteJsonServiceGenerator extends Generator {
 	 */
 	protected NewConcreteType createJsonServiceClient(final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
-		final NewConcreteType type = context.newConcreteType();
+		final NewConcreteType type = context.newConcreteType( newTypeName);
 		type.setAbstract(false);
 		type.setFinal(true);
-		type.setName(newTypeName);
 		type.setSuperType(this.getRemoteJsonServiceClient());
+		type.setVisibility( Visibility.PUBLIC );
+		
 		type.addInterface(this.getAsyncServiceInterface());
 		type.addInterface(this.getRemoteJsonService());
-		type.addInterface(this.getServiceDefTarget());
+		type.addInterface(this.getServiceDefTarget());		
 
 		return type;
 	}

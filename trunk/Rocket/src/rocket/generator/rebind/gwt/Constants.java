@@ -16,7 +16,6 @@
 package rocket.generator.rebind.gwt;
 
 import java.io.Serializable;
-import java.util.*;
 class Constants {
 	final static String SERIALIZABLE = Serializable.class.getName();
 }

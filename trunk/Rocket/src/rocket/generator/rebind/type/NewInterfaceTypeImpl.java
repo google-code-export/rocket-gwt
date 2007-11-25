@@ -15,17 +15,7 @@
  */
 package rocket.generator.rebind.type;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Iterator;
-
-import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.GeneratorException;
-import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.constructor.NewConstructor;
-import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
 /**
  * Base class for any generated concrete type that is not an anonymous inner
@@ -53,104 +43,5 @@ public class NewInterfaceTypeImpl extends NewConcreteOrInterfaceType implements 
 
 	public NewAnonymousNestedType newAnonymousNestedType() {
 		throw new UnsupportedOperationException("Interfaces cannot have anonymous nested types, interface: " + this);
-	}
-
-	/**
-	 * Requests this generated type to write out its definition including its
-	 * constructors, methods and fields. This operation may only be attempted
-	 * once.
-	 * 
-	 * @param printWriter
-	 *            The printwriter returned by
-	 *            context.tryCreateTypePrintWriter(packageName,
-	 *            simpleClassName);
-	 */
-	public void write(final PrintWriter printWriter) {
-		ObjectHelper.checkNotNull("parameter:printWriter", printWriter);
-
-		final String packageName = this.getPackage().getName();
-		final String simpleClassName = this.getSimpleName();
-
-		final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, simpleClassName);
-		composerFactory.makeInterface();
-		this.setSuperClassUponClassSourceFileComposerFactory(composerFactory);
-		this.addImplementedInterfacesToClassSourceFileComposerFactory(composerFactory);
-		this.setClassJavaDoc(composerFactory);
-
-		final GeneratorContext context = this.getGeneratorContext();
-		final SourceWriter writer = context.createSourceWriter(composerFactory, printWriter);
-
-		try {
-			this.writeLogger();
-
-			this.writeInitializers(writer);
-			this.writeConstructors(writer);
-			this.writeFields(writer);
-			this.writeMethods(writer);
-			this.writeNestedTypes(writer);
-		} catch (final GeneratorException caught) {
-			this.handleWriteFailure(writer, caught);
-
-			throw caught;
-		} finally {
-			writer.commit();
-		}
-	}
-
-	/**
-	 * Captures the complete stacktrace of the given exception and writes it
-	 * within a javadoc comment.
-	 * 
-	 * @param writer
-	 *            The source writer of the file being generated.
-	 * @param cause
-	 *            The cause must not be null.
-	 */
-	protected void handleWriteFailure(final SourceWriter writer, final Throwable cause) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
-		ObjectHelper.checkNotNull("parameter:cause", cause);
-
-		final StringWriter stringWriter = new StringWriter();
-		final PrintWriter printWriter = new PrintWriter(stringWriter);
-		cause.printStackTrace(printWriter);
-		printWriter.flush();
-		printWriter.close();
-
-		writer.println();
-		writer.beginJavaDocComment();
-		writer.println(stringWriter.toString());
-		writer.endJavaDocComment();
-	}
-
-	protected void writeLogger() {				
-		this.getGeneratorContext().branch("Writing " + this.getVisibility().getName() + " interface: " + this.getName() );
-	}
-
-	/**
-	 * GeneratorHelper which sets the super type to the given
-	 * ClassSourceFileComposerFactory
-	 * 
-	 * @param composerFactory
-	 */
-	protected void setSuperClassUponClassSourceFileComposerFactory(final ClassSourceFileComposerFactory composerFactory) {
-		ObjectHelper.checkNotNull("parameter:composerFactory", composerFactory);
-
-		composerFactory.setSuperclass(this.getSuperType().getName());
-	}
-
-	/**
-	 * GeneratorHelper which adds all implemented interfaces to the given
-	 * ClassSourceFileComposerFactory
-	 * 
-	 * @param composerFactory
-	 */
-	protected void addImplementedInterfacesToClassSourceFileComposerFactory(final ClassSourceFileComposerFactory composerFactory) {
-		ObjectHelper.checkNotNull("parameter:composerFactory", composerFactory);
-
-		final Iterator interfaces = this.getInterfaces().iterator();
-		while (interfaces.hasNext()) {
-			final Type interfacee = (Type) interfaces.next();
-			composerFactory.addImplementedInterface(interfacee.getName());
-		}
 	}
 }

@@ -19,7 +19,6 @@ import rocket.generator.rebind.ClassComponent;
 import rocket.generator.rebind.CodeGenerator;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.comments.HasComments;
-import rocket.generator.rebind.metadata.HasMetadata;
 import rocket.generator.rebind.type.Type;
 
 /**

@@ -17,7 +17,6 @@ package rocket.generator.rebind.type;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorHelper;
@@ -27,9 +26,7 @@ import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.constructor.NewConstructorImpl;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.initializer.InitializerImpl;
-import rocket.generator.rebind.metadata.MetaData;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
 
 /**
  * Common base class containing common functionality for the concrete and nested

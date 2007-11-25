@@ -16,6 +16,7 @@
 package rocket.generator.test.generator.rebind;
 
 import rocket.generator.rebind.GeneratorContext;
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 
@@ -24,9 +25,10 @@ public class NewConcreteClassGenerator extends TestGenerator {
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final NewConcreteType newType = context.newConcreteType();
+		final NewConcreteType newType = context.newConcreteType( newTypeName );
 		newType.setName(newTypeName);
 		newType.setSuperType(type);
+		newType.setVisibility( Visibility.PUBLIC );
 
 		return newType;
 	}

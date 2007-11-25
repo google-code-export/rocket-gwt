@@ -44,10 +44,9 @@ public class HtmlTemplateGenerator extends Generator {
 	protected NewConcreteType assembleNewType(final Type interfacee, final String newTypeName) {
 		this.verifyImplementsHtmlTemplate(interfacee);
 
-		final NewConcreteType newType = this.getGeneratorContext().newConcreteType();
+		final NewConcreteType newType = this.getGeneratorContext().newConcreteType( newTypeName );		
 		newType.setAbstract(false);
 		newType.setFinal(true);
-		newType.setName(newTypeName);
 		newType.setSuperType(this.getHtmlTemplateFactoryImpl());
 		newType.addInterface(interfacee);
 

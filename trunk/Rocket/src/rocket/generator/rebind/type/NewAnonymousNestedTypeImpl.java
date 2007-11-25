@@ -15,17 +15,13 @@
  */
 package rocket.generator.rebind.type;
 
-import java.util.List;
 import java.util.Set;
 
-import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.initializer.Initializer;
-import rocket.generator.rebind.metadata.MetaData;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
 
 /**
  * Represents an anonymous inner class. Methods, Fields and more nested types

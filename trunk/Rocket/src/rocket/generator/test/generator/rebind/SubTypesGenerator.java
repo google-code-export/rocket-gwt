@@ -32,12 +32,12 @@ public class SubTypesGenerator extends TestGenerator {
 		final Set subTypesSubTypes = subType.getSubTypes();
 		PrimitiveHelper.checkEquals("" + subTypesSubTypes, 0, subTypesSubTypes.size());
 
-		final NewConcreteType newConcreteType = context.newConcreteType();
+		final NewConcreteType newConcreteType = context.newConcreteType( newTypeName );
 		newConcreteType.setAbstract(false);
 		newConcreteType.setFinal(false);
-		newConcreteType.setName( newTypeName );
 		newConcreteType.setSuperType( context.getObject() );
-
+		newConcreteType.setVisibility( Visibility.PUBLIC );
+		
 		final NewNestedType newSubType = newConcreteType.newNestedType();
 		newSubType.setAbstract(false);
 		newSubType.setFinal(false);

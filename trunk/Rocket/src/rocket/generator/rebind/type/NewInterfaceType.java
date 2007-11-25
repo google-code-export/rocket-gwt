@@ -15,7 +15,7 @@
  */
 package rocket.generator.rebind.type;
 
-import java.io.PrintWriter;
+import rocket.generator.rebind.Visibility;
 
 /**
  * A NewInterfaceType represents a interface being created
@@ -26,5 +26,7 @@ public interface NewInterfaceType extends NewType {
 
 	void setName(String name);
 
-	void write(final PrintWriter printWriter);
+	void setVisibility( Visibility visibility );
+	
+	void write();
 }

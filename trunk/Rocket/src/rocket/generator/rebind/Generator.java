@@ -16,7 +16,6 @@
 package rocket.generator.rebind;
 
 import java.io.InputStream;
-import java.io.PrintWriter;
 
 import rocket.generator.rebind.gwt.TypeOracleGeneratorContext;
 import rocket.generator.rebind.packagee.Package;
@@ -26,6 +25,7 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.dev.jjs.ast.Context;
 
 /**
  * Convenient base class for any generator. It includes code to setup a context,
@@ -71,13 +71,13 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 		String bindTypeName = newTypeName;
 		final long started = System.currentTimeMillis();
 
-		final PrintWriter printWriter = context.tryCreateTypePrintWriter(newTypeName);
-		if (null != printWriter) {
+		if( null == context.findType( newTypeName )){
+		
 			try {
 				final NewConcreteType newType = this.assembleNewType(typeName, newTypeName);
 				if (null != newType) {
 					context.info("Completed assembling new type [" + newTypeName + "]");
-					newType.write(printWriter);
+					newType.write();
 
 					final long now = System.currentTimeMillis();
 
@@ -100,7 +100,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 			context.info("Skipping generation step, will use existing type instead.");
 		}
 
-		context.info("Will bind [" + typeName + "] to [" + (bindTypeName == null ? typeName : bindTypeName) + "]");
+		context.info("Will bind [" + typeName + "] to [" + bindTypeName + "]");
 		return bindTypeName;
 	}
 

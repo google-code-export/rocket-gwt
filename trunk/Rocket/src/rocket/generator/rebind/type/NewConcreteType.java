@@ -15,8 +15,7 @@
  */
 package rocket.generator.rebind.type;
 
-import java.io.PrintWriter;
-
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
 
 /**
@@ -36,5 +35,7 @@ public interface NewConcreteType extends NewType {
 
 	void setFinal(boolean finall);
 
-	void write(final PrintWriter printWriter);
+	void setVisibility( Visibility visibility );
+	
+	void write();
 }
