@@ -25,6 +25,7 @@ import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.AbstractType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -140,6 +141,53 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 
 	public String getSimpleName() {
 		return this.getJArrayType().getSimpleSourceName();
+	}
+	
+	/**
+	 * Returns the runtime name of the class. This method is only necessary due to the use of dollar signs "$"
+	 * within inner classes rather than dot ".".
+	 */
+	public String getRuntimeName(){
+		// for java.lang.String array the runtime name or signature is [Ljava.lang.String;
+		// for a two dimensioned String array the runtime name is [[Ljava.lang.String;
+		final Type componentType = this.getComponentType();
+		final boolean primitiveComponentType = componentType.isPrimitive();
+		
+		final StringBuffer runtimeName = new StringBuffer();		
+		final JArrayType jArrayType = this.getJArrayType();
+		
+		// prefix a [ for each rank.
+		final int rank = jArrayType.getRank();
+		for( int i = 0; i < rank; i++ ){
+			runtimeName.append('[');
+		}		
+		
+		if( false == primitiveComponentType ){
+			runtimeName.append( "L");
+		}
+		
+		// insert the name.
+		final String name = componentType.getRuntimeName();
+		final Package packagee = componentType.getPackage();
+		final String packageName = null == packagee ? null : packagee.getName();
+		String nameLessPackageName = name;
+		
+		if( false == StringHelper.isNullOrEmpty( packageName ) ){
+			runtimeName.append( packageName );
+			runtimeName.append( '.');
+			
+			nameLessPackageName = name.substring( packageName.length() + 1 );
+		}
+		
+		nameLessPackageName = nameLessPackageName.replace( '.', '$');
+		runtimeName.append( nameLessPackageName );
+		
+		// append a semi-colon
+		if( false == primitiveComponentType ){
+			runtimeName.append( ';' );
+		}
+		
+		return runtimeName.toString();
 	}
 	
 	/**
