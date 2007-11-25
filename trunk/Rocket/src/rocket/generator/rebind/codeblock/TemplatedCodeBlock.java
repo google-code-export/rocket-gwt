@@ -181,7 +181,7 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found.");
+		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found.");
 	}
 
 	/**

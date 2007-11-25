@@ -63,7 +63,7 @@ public class JsonRpcEchoServlet extends HttpServlet {
 			IoHelper.closeIfNecessary(reader);
 			IoHelper.closeIfNecessary(writer);
 		}
-		System.out.println("SERVER - echoing json[" + captured + "]");
+		System.out.println("SERVER - echoing json\"" + captured + "\".");
 	}
 
 }

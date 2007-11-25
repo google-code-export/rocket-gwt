@@ -67,14 +67,14 @@ public class MapTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwMapEntryAlreadyUsedException(final String key) {
-		throw new MapEntryAlreadyUsedException("A map entry with a key of [" + key + "] has already been defined");
+		throw new MapEntryAlreadyUsedException("A map entry with a key of \"" + key + "\" has already been defined");
 	}
 
 	protected InputStream getInputStream() {
 		final String filename = Constants.MAP_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
 		}
 		return inputStream;
 	}
@@ -121,7 +121,7 @@ public class MapTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + Constants.MAP_TEMPLATE
-				+ "]");
+		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.MAP_TEMPLATE
+				+ "\".");
 	}
 }

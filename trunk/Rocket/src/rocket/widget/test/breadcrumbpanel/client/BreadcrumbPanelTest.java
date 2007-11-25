@@ -40,7 +40,7 @@ public class BreadcrumbPanelTest implements EntryPoint {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
 				caught.printStackTrace();
-				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+				Window.alert("Caught:" + caught + "\nmessage\"" + caught.getMessage() + "\".");
 			}
 		});
 
@@ -71,7 +71,7 @@ public class BreadcrumbPanelTest implements EntryPoint {
 
 				breadcrumbs.push(text, new ClickListener() {
 					public void onClick(final Widget sender) {
-						Window.alert("breadcrumb [" + text + "]clicked");
+						Window.alert("breadcrumb \"" + text + "\"clicked");
 					}
 				});
 			}

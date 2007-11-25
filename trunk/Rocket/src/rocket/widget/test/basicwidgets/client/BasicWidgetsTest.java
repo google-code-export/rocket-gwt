@@ -1088,8 +1088,8 @@ public class BasicWidgetsTest implements EntryPoint {
 
 				if (-1 == actual.indexOf(expected)) {
 					Window
-							.alert("The text echod back after submitting the form(to a hidden iframe) do not contain the text within the textBox.\nexpected: ["
-									+ expected + "]\nactual[" + actual + "]");
+							.alert("The text echod back after submitting the form(to a hidden iframe) do not contain the text within the textBox.\nexpected: \""
+									+ expected + "\"\nactual\"" + actual + "\".");
 
 				}
 			}
@@ -1248,7 +1248,7 @@ public class BasicWidgetsTest implements EntryPoint {
 
 	Element getElementById(final String id) {
 		final Element element = DOM.getElementById(id);
-		ObjectHelper.checkNotNull("element with id of [" + id + "]", element);
+		ObjectHelper.checkNotNull("element with id of \"" + id + "\".", element);
 		return element;
 	}
 

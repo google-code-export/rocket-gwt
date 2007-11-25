@@ -37,7 +37,7 @@ public class GridViewTest implements EntryPoint {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
 				caught.printStackTrace();
-				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+				Window.alert("Caught:" + caught + "\nmessage\"" + caught.getMessage() + "\".");
 			}
 		});
 
@@ -100,21 +100,21 @@ public class GridViewTest implements EntryPoint {
 				try {
 					gridView.setRows(Integer.parseInt(rowsText));
 				} catch (final NumberFormatException nfe) {
-					Window.alert("rows textBox contains an invalid number [" + rowsText + "]");
+					Window.alert("rows textBox contains an invalid number \"" + rowsText + "\".");
 				}
 
 				final String columnsText = columns.getText();
 				try {
 					gridView.setColumns(Integer.parseInt(columnsText));
 				} catch (final NumberFormatException nfe) {
-					Window.alert("columns textBox contains an invalid number [" + columnsText + "]");
+					Window.alert("columns textBox contains an invalid number \"" + columnsText + "\".");
 				}
 
 				final String cursorText = cursor.getText();
 				try {
 					gridView.setCursor(Integer.parseInt(cursorText));
 				} catch (final NumberFormatException nfe) {
-					Window.alert("cursor textBox contains an invalid number [" + cursorText + "]");
+					Window.alert("cursor textBox contains an invalid number \"" + cursorText + "\".");
 				}
 
 			}

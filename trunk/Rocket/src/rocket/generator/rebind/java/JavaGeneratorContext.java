@@ -147,7 +147,7 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 	}
 
 	protected void throwTypeNotFoundException(final String name, final Throwable cause) {
-		throw new TypeNotFoundException("Unable to find the type [" + name + "]", cause);
+		throw new TypeNotFoundException("Unable to find the type \"" + name + "\".", cause);
 	}
 
 	protected Type createArrayType(final String name){

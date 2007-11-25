@@ -97,7 +97,7 @@ public class JsonSerializerGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("override " + Constants.READ_FIELDS_METHOD + " and creating list setters for type [" + deserializer.getName() + "]");
+		context.debug("override " + Constants.READ_FIELDS_METHOD + " and creating list setters for type \"" + deserializer.getName() + "\".");
 
 		final NewMethod readFields = deserializer.newMethod();
 		readFields.setAbstract(false);
@@ -228,7 +228,7 @@ public class JsonSerializerGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("override " + Constants.READ_COMPLEX_METHOD_NAME + "() for type [" + type.getName() + "]");
+		context.debug("override " + Constants.READ_COMPLEX_METHOD_NAME + "() for type \"" + type.getName() + "\".");
 
 		final Type jsonSerializer = this.getJsonSerializer();
 
@@ -278,7 +278,7 @@ public class JsonSerializerGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("creating new type [" + type.getName() + "]");
+		context.debug("creating new type \"" + type.getName() + "\".");
 
 		final NewConcreteType newType = context.newConcreteType( newTypeName );
 		newType.setAbstract(false);
@@ -306,7 +306,7 @@ public class JsonSerializerGenerator extends Generator {
 	}
 
 	protected void throwMissingNoArgumentsConstructorException(final Type type) {
-		throw new JsonSerializerGeneratorException("Serializable classes such as [" + type + "] must have a no arguments constructor.");
+		throw new JsonSerializerGeneratorException("Serializable classes such as \"" + type + "\" must have a no arguments constructor.");
 	}
 
 	/**
@@ -324,8 +324,8 @@ public class JsonSerializerGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("override " + Constants.WRITE_FIELDS_WRITE_METHODS + " and creating list getters for type [" + deserializer.getName()
-				+ "]");
+		context.debug("override " + Constants.WRITE_FIELDS_WRITE_METHODS + " and creating list getters for type \"" + deserializer.getName()
+				+ "\".");
 
 		final NewMethod writeFields = deserializer.newMethod();
 		writeFields.setAbstract(false);
@@ -408,7 +408,7 @@ public class JsonSerializerGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("override " + Constants.WRITE_JSON_METHOD_NAME + "() for type [" + type.getName() + "]");
+		context.debug("override " + Constants.WRITE_JSON_METHOD_NAME + "() for type \"" + type.getName() + "\".");
 
 		final Type jsonSerializer = this.getJsonSerializer();
 
@@ -617,12 +617,12 @@ public class JsonSerializerGenerator extends Generator {
 
 		final List values = field.getMetadataValues(annotation);
 		if (values.size() != 1) {
-			throw new JsonSerializerGeneratorException("Unable to find the [" + annotation + "] annotation for the field " + field);
+			throw new JsonSerializerGeneratorException("Unable to find the \"" + annotation + "\" annotation for the field " + field);
 		}
 
 		final String typeName = (String) values.get(0);
 		if (null == typeName) {
-			throw new JsonSerializerGeneratorException("Unable to find the [" + annotation + "] annotation for the list " + field);
+			throw new JsonSerializerGeneratorException("Unable to find the \"" + annotation + "\" annotation for the list " + field);
 		}
 
 		return this.getGeneratorContext().getType(typeName);

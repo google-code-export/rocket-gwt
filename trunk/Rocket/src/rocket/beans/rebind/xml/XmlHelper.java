@@ -26,7 +26,7 @@ public class XmlHelper {
 
 	static void checkScope(final String name, final String scope) {
 		if (false == isScope(scope)) {
-			throw new BeanFactoryGeneratorException("The " + name + " contains an unknown bean scope [" + scope + "] Supported types are: "
+			throw new BeanFactoryGeneratorException("The " + name + " contains an unknown bean scope \"" + scope + "\" Supported types are: "
 					+ Constants.SINGLETON + " and " + Constants.PROTOTYPE);
 		}
 	}

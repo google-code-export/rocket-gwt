@@ -64,6 +64,6 @@ public class Message implements IsSerializable {
 	}
 
 	public String toString() {
-		return super.toString() + ", destination[" + destination + "], payload: " + payload;
+		return super.toString() + ", destination\"" + destination + "\", payload: " + payload;
 	}
 }

@@ -55,6 +55,6 @@ abstract public class FailedGenerateAttemptException extends RuntimeException {
 	}
 
 	public String toString() {
-		return super.toString() + ", message[" + this.getMessage() + "] causeType[" + this.getCauseType() + "]";
+		return super.toString() + ", message\"" + this.getMessage() + "\" causeType\"" + this.getCauseType() + "\".";
 	}
 }

@@ -92,7 +92,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + "returned " + size;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + "threw " + GWT.getTypeName(caught) + ", message[" + caught.getMessage() + "]";
+			message = message + "threw " + GWT.getTypeName(caught) + ", message\"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -123,7 +123,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + "returned " + empty;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
+			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -157,7 +157,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + this.toString(element) + ") returned " + added;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + this.toString(element) + ") threw " + GWT.getTypeName(caught) + ", message[" + caught.getMessage() + "]";
+			message = message + this.toString(element) + ") threw " + GWT.getTypeName(caught) + ", message\"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -189,8 +189,8 @@ public abstract class InteractiveList extends Composite {
 			message = message + index + ", " + this.toString(element) + ") returned";
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + index + "," + this.toString(element) + ") threw " + GWT.getTypeName(caught) + ", message["
-					+ caught.getMessage() + "]";
+			message = message + index + "," + this.toString(element) + ") threw " + GWT.getTypeName(caught) + ", message\""
+					+ caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -221,7 +221,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + index + ") returned " + this.toString(element);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + index + ") threw " + GWT.getTypeName(caught) + ", message[" + caught.getMessage() + "]";
+			message = message + index + ") threw " + GWT.getTypeName(caught) + ", message\"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -252,7 +252,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + index + ") returned " + this.toString(element);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + index + ") threw " + GWT.getTypeName(caught) + ", message[" + caught.getMessage() + "]";
+			message = message + index + ") threw " + GWT.getTypeName(caught) + ", message\"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -285,8 +285,8 @@ public abstract class InteractiveList extends Composite {
 			message = message + index + ", " + this.toString(element) + ") returned " + this.toString(previous);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + index + "," + this.toString(element) + ") threw " + GWT.getTypeName(caught) + ", message["
-					+ caught.getMessage() + "]";
+			message = message + index + "," + this.toString(element) + ") threw " + GWT.getTypeName(caught) + ", message\""
+					+ caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -324,7 +324,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + " returned " + iterator;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
+			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -352,7 +352,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + " returned " + hasNext;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
+			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -375,7 +375,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + " returned " + this.toString(element);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
+			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -397,7 +397,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + " returned";
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
+			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}

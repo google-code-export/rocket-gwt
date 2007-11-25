@@ -109,7 +109,7 @@ public class CometTest implements EntryPoint {
 
 		client.setCallback(new AsyncCallback() {
 			public void onSuccess(final Object result) {
-				log("<b>CALLBACK</b> Entering onSuccess() - payload type " + GWT.getTypeName(result) + "=[" + result + "]");
+				log("<b>CALLBACK</b> Entering onSuccess() - payload type " + GWT.getTypeName(result) + "=\"" + result + "\".");
 
 				final TestCometPayload payload = (TestCometPayload) result;
 				final long now = System.currentTimeMillis();
@@ -163,7 +163,7 @@ public class CometTest implements EntryPoint {
 		}
 
 		public void dispatch(final String serializedForm) throws SerializationException {
-			log("<b>CLIENT</b> Dispatching serializedForm [" + serializedForm + "]");
+			log("<b>CLIENT</b> Dispatching serializedForm \"" + serializedForm + "\".");
 			super.dispatch(serializedForm);
 		}
 

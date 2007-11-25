@@ -108,7 +108,7 @@ public class WebRequest implements IsSerializable {
 	}
 
 	public String toString() {
-		return super.toString() + ", method[" + method + "], url[" + url + "], headers: " + headers + ", parameters:" + parameters
+		return super.toString() + ", method\"" + method + "\", url\"" + url + "\", headers: " + headers + ", parameters:" + parameters
 				+ ", data: " + data;
 	}
 }

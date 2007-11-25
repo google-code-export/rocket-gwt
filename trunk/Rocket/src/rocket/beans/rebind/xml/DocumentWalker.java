@@ -78,13 +78,13 @@ public class DocumentWalker {
 			this.processDocument( builder, fileName );
 			
 		} catch (final ParserConfigurationException caught) {
-			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst preparing to read the file [" + fileName + "]", caught);
+			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst preparing to read the file \"" + fileName + "\".", caught);
 		} catch (final SAXParseException caught) {	
-			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file [" + fileName + "] at line: " + caught.getLineNumber() + ", column: " + caught.getColumnNumber(), caught);
+			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + fileName + "\" at line: " + caught.getLineNumber() + ", column: " + caught.getColumnNumber(), caught);
 		} catch (final SAXException caught) {	
-			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file [" + fileName + "]", caught);
+			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + fileName + "\".", caught);
 		} catch (final IOException caught) {
-			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst reading the file [" + fileName + "]", caught);
+			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst reading the file \"" + fileName + "\".", caught);
 		} catch( final RuntimeException caught ){
 			throw caught;
 		}
@@ -94,7 +94,7 @@ public class DocumentWalker {
 		ObjectHelper.checkNotNull( "parameter:builder", builder );
 		StringHelper.checkNotEmpty( "parameter:fileName", fileName );
 		if( fileName.charAt( 0) != '/'){
-			SystemHelper.fail( "parameter:file", "Only absolute and not relative fileName's may be passed, fileName[" + fileName + "]");
+			SystemHelper.fail( "parameter:file", "Only absolute and not relative fileName's may be passed, fileName\"" + fileName + "\".");
 		}
 		
 		final Set includedFiles = this.getIncludedFiles();
@@ -105,7 +105,7 @@ public class DocumentWalker {
 		
 		final Generator generator = this.getGenerator();
 		final GeneratorContext context = generator.getGeneratorContext();
-		context.info( "Processing document fileName[" + fileName + "]");
+		context.info( "Processing document fileName\"" + fileName + "\".");
 				
 		final InputStream inputStream = generator.getResource(fileName);
 		final Document document = builder.parse(inputStream);
@@ -130,7 +130,7 @@ public class DocumentWalker {
 	}
 	
 	protected void throwIncludedFileCycle( final String fileName ){
-		throw new BeanFactoryGeneratorException("The file [" + fileName + "] has previously been included causing a cycle.");
+		throw new BeanFactoryGeneratorException("The file \"" + fileName + "\" has previously been included causing a cycle.");
 	}
 	
 	protected PlaceHolderResolver loadPlaceholderFiles( final Document document ) {

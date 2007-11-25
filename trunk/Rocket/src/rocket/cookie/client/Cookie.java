@@ -265,8 +265,8 @@ public class Cookie {
 	 * :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	 */
 	public String toString() {
-		return super.toString() + ", name[" + name + "], value[" + value + "], comment[" + comment + "], domain[" + domain + "], expires: "
-				+ expires + ", path: [" + path + "], secure: " + secure + ", secureSet: " + secureSet + ", version: " + version;
+		return super.toString() + ", name\"" + name + "\", value\"" + value + "\", comment\"" + comment + "\", domain\"" + domain + "\", expires: "
+				+ expires + ", path: \"" + path + "\", secure: " + secure + ", secureSet: " + secureSet + ", version: " + version;
 	}
 
 	/**
@@ -283,10 +283,10 @@ public class Cookie {
 			final char c = cookieName.charAt(i);
 
 			if (i == 0 && c == '$') {
-				SystemHelper.fail(name, "The " + name + " cannot begin with a $, " + name + "[" + cookieName + "]");
+				SystemHelper.fail(name, "The " + name + " cannot begin with a $, " + name + "\"." + cookieName + "\".");
 			}
 			if (c == ' ' || c == ';') {
-				SystemHelper.fail(name, "The " + name + " cannot include a space or semicolon, " + name + "[" + cookieName + "]");
+				SystemHelper.fail(name, "The " + name + " cannot include a space or semicolon, " + name + "\"." + cookieName + "\".");
 			}
 		}
 	}

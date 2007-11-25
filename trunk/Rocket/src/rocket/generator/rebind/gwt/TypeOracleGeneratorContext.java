@@ -173,7 +173,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	protected Type createArrayType(final String name) {
 		final String componentTypeName = name.substring( 0, name.length() - 2 );
 		final JClassType componentType = this.getTypeOracle().findType(componentTypeName);
-		ObjectHelper.checkNotNull("Unable to find component type [" + componentTypeName + "]", componentType);
+		ObjectHelper.checkNotNull("Unable to find component type \"" + componentTypeName + "\".", componentType);
 
 		return this.createArrayType(componentType);
 	}

@@ -34,7 +34,7 @@ public class BeanFactoryDtdEntityResolver implements EntityResolver {
 		if (Constants.PUBLIC_ID.equals(publicId)) {
 			final InputStream inputStream = this.getClass().getResourceAsStream(Constants.DTD_FILE_NAME);
 			if (null == inputStream) {
-				throw new IOException("Unable to locate DTD file [" + Constants.DTD_FILE_NAME + "]");
+				throw new IOException("Unable to locate DTD file \"" + Constants.DTD_FILE_NAME + "\".");
 			}
 			inputSource = new InputSource(inputStream);
 		}

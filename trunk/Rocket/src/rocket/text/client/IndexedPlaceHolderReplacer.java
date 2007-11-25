@@ -36,7 +36,7 @@ public class IndexedPlaceHolderReplacer extends PlaceHolderReplacer {
 			return String.valueOf(this.getValues()[index]);
 
 		} catch (final NumberFormatException badIndex) {
-			StringHelper.fail("Placeholder index does not contain a number [" + placeHolder + "]");
+			StringHelper.fail("Placeholder index does not contain a number \"" + placeHolder + "\".");
 			return null;// unreachable
 		}
 	}

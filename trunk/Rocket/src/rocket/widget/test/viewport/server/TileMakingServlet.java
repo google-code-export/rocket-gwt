@@ -109,12 +109,12 @@ public class TileMakingServlet extends HttpServlet {
 	protected int getIntegerParameter(final HttpServletRequest request, final String name) throws ServletException {
 		final String string = request.getParameter(name);
 		if (StringHelper.isNullOrEmpty(string)) {
-			throw new ServletException("Unable to find parameter [" + name + "].");
+			throw new ServletException("Unable to find parameter \"" + name + "\".");
 		}
 		try {
 			return Integer.parseInt(string);
 		} catch (final NumberFormatException number) {
-			throw new ServletException("The parameter [" + name + "] does not contain a number.");
+			throw new ServletException("The parameter \"" + name + "\" does not contain a number.");
 		}
 	}
 
@@ -144,7 +144,7 @@ public class TileMakingServlet extends HttpServlet {
 		final String filename = this.getFilename();
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new RuntimeException("Unable to locate [" + filename + "].");
+			throw new RuntimeException("Unable to locate \"" + filename + "\".");
 		}
 		BufferedImage image = null;
 		try {

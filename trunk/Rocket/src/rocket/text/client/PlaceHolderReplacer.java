@@ -69,7 +69,7 @@ abstract public class PlaceHolderReplacer {
 			// find the end placeholder
 			final int placeHolderEndIndex = text.indexOf('}', placeHolderStartIndex + 2);
 			if (-1 == placeHolderEndIndex) {
-				StringHelper.fail("Unable to find placeholder end after finding start, [" + text.substring(i, messageLength - i) + "]");
+				StringHelper.fail("Unable to find placeholder end after finding start, \"" + text.substring(i, messageLength - i) + "\".");
 			}
 
 			// extract the index in between...

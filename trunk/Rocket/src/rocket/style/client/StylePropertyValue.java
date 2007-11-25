@@ -139,6 +139,6 @@ public class StylePropertyValue {
 	}
 
 	public String toString() {
-		return super.toString() + ", string[" + string + "]";
+		return super.toString() + ", string\"" + string + "\".";
 	}
 }

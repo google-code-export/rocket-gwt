@@ -78,7 +78,7 @@ public class SafariEventSupport extends DOMImplSafari {
 				  break;
 			  }
 			  
-			  GWT.log( "Unknown safari code [" + code + "]", null );
+			  GWT.log( "Unknown safari code \"" + code + "\".", null );
 			  break;
 		  }
 		  return code;

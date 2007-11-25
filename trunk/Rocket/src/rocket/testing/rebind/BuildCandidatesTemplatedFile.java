@@ -46,7 +46,7 @@ public class BuildCandidatesTemplatedFile extends TemplatedCodeBlock {
 		final String filename = Constants.BUILD_CANDIDATES_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
 		}
 		return inputStream;
 	}
@@ -129,7 +129,7 @@ public class BuildCandidatesTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file ["
-				+ Constants.BUILD_CANDIDATES_TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
+				+ Constants.BUILD_CANDIDATES_TEMPLATE + "\".");
 	}
 }

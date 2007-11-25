@@ -614,7 +614,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		StringHelper.checkNotEmpty("parameter:searchText", searchText);
 		final JavaScriptObject textNode = this.findTextNode0(element, searchText);
 		if (textNode == null) {
-			throw new RuntimeException("Unable to find a textNode that is a child of element with the text [" + searchText + "], element: "
+			throw new RuntimeException("Unable to find a textNode that is a child of element with the text \"" + searchText + "\", element: "
 					+ DOM.getInnerText(element));
 		}
 		return textNode;

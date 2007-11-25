@@ -34,7 +34,7 @@ public class NamedPlaceHolderReplacer extends PlaceHolderReplacer {
 	protected String getValue(final String placeHolder) {
 		final String value = (String) this.getValues().get(placeHolder);
 		if (null == value) {
-			StringHelper.fail("Unable to find placeholder [" + placeHolder + "]");
+			StringHelper.fail("Unable to find placeholder \"" + placeHolder + "\".");
 		}
 		return value;
 	}

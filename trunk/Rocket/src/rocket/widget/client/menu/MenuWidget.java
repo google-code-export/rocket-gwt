@@ -161,7 +161,7 @@ abstract class MenuWidget extends CompositeWidget {
 	public String toString() {
 		final StringBuffer buf = new StringBuffer();
 		buf.append(ObjectHelper.defaultToString(this));
-		buf.append(" [");
+		buf.append(" \"");
 
 		if (this.hasParentMenuList()) {
 			MenuList parent = this.getParentMenuList();
@@ -186,7 +186,7 @@ abstract class MenuWidget extends CompositeWidget {
 		}
 
 		buf.append(this.toString0());
-		buf.append("]");
+		buf.append("\".");
 		return buf.toString();
 	}
 

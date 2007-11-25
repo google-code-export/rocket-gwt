@@ -155,7 +155,7 @@ public class CssUnit {
 
 	float getPixels() {
 		if (Float.isNaN(this.pixels)) {
-			throw new UnsupportedOperationException("Unable to convert to/from this unit suffix[" + this.suffix + "]");
+			throw new UnsupportedOperationException("Unable to convert to/from this unit suffix\"" + this.suffix + "\".");
 		}
 		return pixels;
 	}

@@ -148,7 +148,7 @@ public class SplitterPanelTest implements EntryPoint {
 			protected String toString(final Object element) {
 				final SplitterItem item = (SplitterItem) element;
 				final Widget widget = item.getWidget();
-				return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText["
+				return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText\""
 						+ DOM.getInnerText(widget.getElement()).substring(0, 100) + "...]";
 			}
 		};
@@ -244,7 +244,7 @@ public class SplitterPanelTest implements EntryPoint {
 			protected String toString(final Object element) {
 				final SplitterItem item = (SplitterItem) element;
 				final Widget widget = item.getWidget();
-				return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText["
+				return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText\""
 						+ DOM.getInnerText(widget.getElement()).substring(0, 100) + "...]";
 			}
 		};

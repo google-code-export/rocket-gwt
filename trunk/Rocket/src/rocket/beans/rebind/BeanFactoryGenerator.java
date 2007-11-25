@@ -162,7 +162,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Type beanFactory = this.getBeanFactoryType();
 		if (false == type.isAssignableTo(beanFactory)) {
-			throwNotABeanFactory("The type [" + type + "] is not a " + beanFactory);
+			throwNotABeanFactory("The type \"" + type + "\" is not a " + beanFactory);
 		}
 
 		// verify has no public methods (ignore those belonging to
@@ -189,7 +189,7 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwBeanFactoryInterfaceHasPublicMethods(final Type beanFactory, final int publicMethodCount) {
-		throw new BeanFactoryGeneratorException("The bean factory interface [" + beanFactory + "] contains " + publicMethodCount
+		throw new BeanFactoryGeneratorException("The bean factory interface \"" + beanFactory + "\" contains " + publicMethodCount
 				+ " when it should contain 0 public methods (excluding those on java.lang.Object ignored in both cases).");
 	}
 
@@ -202,7 +202,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected NewConcreteType createBeanFactory(final String newTypeName, final Type implementsInterface ) {
-		this.getGeneratorContext().info("Creating BeanFactory with a name of [" + newTypeName + "].");
+		this.getGeneratorContext().info("Creating BeanFactory with a name of \"" + newTypeName + "\".");
 
 		final NewConcreteType beanFactory = this.getGeneratorContext().newConcreteType( newTypeName );
 
@@ -447,7 +447,7 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwFactoryMethodNotFound(final Bean bean, final String method) {
-		throw new BeanFactoryGeneratorException("Unable to find a public static method factory method [" + method + "] on " + bean);
+		throw new BeanFactoryGeneratorException("Unable to find a public static method factory method \"" + method + "\" on " + bean);
 	}
 
 	protected NewMethod createCreateInstanceMethod(final NewType factoryBean) {
@@ -534,7 +534,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param initMethodName
 	 */
 	protected void throwInitMethodNotFound(final Bean bean, final String initMethodName) {
-		throw new BeanFactoryGeneratorException("Unable to find a public method called [" + initMethodName + "] on the bean " + bean);
+		throw new BeanFactoryGeneratorException("Unable to find a public method called \"" + initMethodName + "\" on the bean " + bean);
 	}
 
 	/**
@@ -602,7 +602,7 @@ public class BeanFactoryGenerator extends Generator {
 			final String propertyName = propertyTag.getPropertyName();
 			final String setterName = GeneratorHelper.buildSetterName(propertyName);
 
-			context.debug("Searching for setter method [" + setterName + "] for property upon bean " + bean);
+			context.debug("Searching for setter method \"" + setterName + "\" for property upon bean " + bean);
 
 			final Value value = this.asValue(propertyTag.getValue());
 			final List matching = new ArrayList();
@@ -654,7 +654,7 @@ public class BeanFactoryGenerator extends Generator {
 			final Method setter = (Method) matching.get(0);
 			body.addProperty(setter, value);
 
-			context.debug("Inserted statement to set property [" + propertyName + "] upon bean " + bean);
+			context.debug("Inserted statement to set property \"" + propertyName + "\" upon bean " + bean);
 
 		}
 	}
@@ -666,13 +666,13 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param bean
 	 */
 	protected void throwTooManySettersFound(final Bean bean, final String propertyName) {
-		throw new BeanFactoryGeneratorException("The bean with an id of [" + bean.getId()
-				+ "] contains more than one setter for the property [" + propertyName + "]");
+		throw new BeanFactoryGeneratorException("The bean with an id of \"" + bean.getId()
+				+ "\" contains more than one setter for the property \"" + propertyName + "\".");
 	}
 
 	protected void throwUnableToFindSetter(final Bean bean, final String propertyName) {
-		throw new BeanFactoryGeneratorException("Unable to find a setter for the property [" + propertyName
-				+ "] on the bean, bean: " + bean );
+		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + propertyName
+				+ "\" on the bean, bean: " + bean );
 	}
 
 	protected ListValue asListValue(final ListTag tag) {
@@ -1476,7 +1476,7 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwUnableToFindBean(final String id) {
-		throw new BeanFactoryGeneratorException("Unable to locate a bean with an id of [" + id + "]");
+		throw new BeanFactoryGeneratorException("Unable to locate a bean with an id of \"" + id + "\".");
 	}
 
 	protected Type getSingletonFactoryBean() {
@@ -1535,7 +1535,7 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwBeanTypeIsNotAnInterface(final String id, final Type type) {
-		throw new BeanFactoryGeneratorException("The type [" + type + "] is not an interface for the bean id[" + id + "]");
+		throw new BeanFactoryGeneratorException("The type \"" + type + "\" is not an interface for the bean id\"" + id + "\".");
 	}
 
 	/**
@@ -1562,11 +1562,11 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwBeanTypeNotFound(final String id, final String className) {
-		throw new BeanFactoryGeneratorException("Unable to find the type [" + className + "] for the bean with an id of [" + id + "]");
+		throw new BeanFactoryGeneratorException("Unable to find the type \"" + className + "\" for the bean with an id of \"" + id + "\".");
 	}
 
 	protected void throwBeanTypeIsNotConcrete(final String id, final Type type) {
-		throw new BeanFactoryGeneratorException("The type [" + type + "] is not concrete for the bean id[" + id + "]");
+		throw new BeanFactoryGeneratorException("The type \"" + type + "\" is not concrete for the bean id\"" + id + "\".");
 	}
 
 	protected String escapeBeanIdToBeClassNameSafe(final String beanId) {

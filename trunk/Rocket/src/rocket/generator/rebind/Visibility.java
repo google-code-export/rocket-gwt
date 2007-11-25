@@ -54,7 +54,7 @@ public class Visibility {
 				break;
 			}
 
-			throw new RuntimeException("Invalid visibility [" + visibilityName + "]");
+			throw new RuntimeException("Invalid visibility \"" + visibilityName + "\".");
 		}
 
 		return visibility;

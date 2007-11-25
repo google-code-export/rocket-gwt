@@ -128,13 +128,13 @@ public class RemoteJsonServiceGenerator extends Generator {
 	}
 
 	protected void throwInputArgumentEncodingMissing(final Method method) {
-		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.INPUT_ARGUMENTS_ANNOTATION
-				+ "] annotation for the method " + method);
+		throw new RemoteJsonServiceGeneratorException("Unable to find the \"" + Constants.INPUT_ARGUMENTS_ANNOTATION
+				+ "\" annotation for the method " + method);
 	}
 
 	protected void throwInvalidInputArgumentEncoding(final Method method, final String value) {
-		throw new RemoteJsonServiceGeneratorException("The [" + Constants.INPUT_ARGUMENTS_ANNOTATION + "] annotation for the method "
-				+ method + " contains an invalid value [" + value + "]");
+		throw new RemoteJsonServiceGeneratorException("The \"" + Constants.INPUT_ARGUMENTS_ANNOTATION + "\" annotation for the method "
+				+ method + " contains an invalid value \"" + value + "\".");
 	}
 
 	/**
@@ -266,8 +266,8 @@ public class RemoteJsonServiceGenerator extends Generator {
 	}
 
 	protected void throwHttpRequestParameterNameMissing(final MethodParameter parameter) {
-		throw new RemoteJsonServiceGeneratorException("Unable to find the [" + Constants.HTTP_REQUEST_PARAMETER_NAME_ANNOTATION
-				+ "] annotation for the parameter " + parameter);
+		throw new RemoteJsonServiceGeneratorException("Unable to find the \"" + Constants.HTTP_REQUEST_PARAMETER_NAME_ANNOTATION
+				+ "\" annotation for the parameter " + parameter);
 	}
 
 	/**
@@ -317,7 +317,7 @@ public class RemoteJsonServiceGenerator extends Generator {
 		}
 
 		this.getGeneratorContext().debug(
-				"After reading annotation the method " + method + " will use the invoker [" + type.getName() + "].");
+				"After reading annotation the method " + method + " will use the invoker \"" + type.getName() + "\".");
 		return type;
 	}
 
@@ -337,13 +337,13 @@ public class RemoteJsonServiceGenerator extends Generator {
 
 		// verify serviceInterface is an interface
 		if (false == serviceInterface.isInterface()) {
-			this.throwIncompatibleInterfacesException("The type [" + serviceInterface.getName() + "] is not an interface.");
+			this.throwIncompatibleInterfacesException("The type \"" + serviceInterface.getName() + "\" is not an interface.");
 		}
 
 		// verify serviceInterface implements RemoteJsonService
 		final Type remoteJsonServiceType = this.getRemoteJsonService();
 		if (false == serviceInterface.isAssignableTo(remoteJsonServiceType)) {
-			this.throwIncompatibleInterfacesException("The type [" + serviceInterface + "] does not implement "
+			this.throwIncompatibleInterfacesException("The type \"" + serviceInterface + "\" does not implement "
 					+ remoteJsonServiceType.getName());
 		}
 	}
@@ -369,11 +369,11 @@ public class RemoteJsonServiceGenerator extends Generator {
 
 		final Type async = this.getGeneratorContext().findType(asyncServiceInterfaceTypeName);
 		if (null == async) {
-			this.throwVerifyingAsyncInterfaceException("Unable to find type [" + asyncServiceInterfaceTypeName + "]");
+			this.throwVerifyingAsyncInterfaceException("Unable to find type \"" + asyncServiceInterfaceTypeName + "\".");
 		}
 
 		if (false == async.isInterface()) {
-			this.throwVerifyingAsyncInterfaceException("The type [" + asyncServiceInterfaceTypeName + "] is not an interface.");
+			this.throwVerifyingAsyncInterfaceException("The type \"" + asyncServiceInterfaceTypeName + "\" is not an interface.");
 		}
 	}
 

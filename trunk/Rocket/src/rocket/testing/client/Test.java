@@ -65,7 +65,7 @@ abstract public class Test {
 
 	public static void assertTrue(final String message, final boolean actual) {
 		if (false == actual) {
-			Test.fail("assertTrue()\nmessage[" + message + "]\nexpected: " + true + "\n" + "actual: " + actual);
+			Test.fail("assertTrue()\nmessage\"" + message + "\"\nexpected: " + true + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -77,7 +77,7 @@ abstract public class Test {
 
 	public static void assertFalse(final String message, final boolean actual) {
 		if (true == actual) {
-			Test.fail("assertFalse()\nmessage[" + message + "]\nexpected: " + false + "\n" + "actual: " + actual);
+			Test.fail("assertFalse()\nmessage\"" + message + "\"\nexpected: " + false + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -89,7 +89,7 @@ abstract public class Test {
 
 	public static void assertEquals(final String message, final boolean expected, final boolean actual) {
 		if (expected != actual) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -101,7 +101,7 @@ abstract public class Test {
 
 	public static void assertEquals(final String message, final byte expected, final byte actual) {
 		if (expected != actual) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -113,7 +113,7 @@ abstract public class Test {
 
 	public static void assertEquals(final String message, final char expected, final char actual) {
 		if (expected != actual) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -125,7 +125,7 @@ abstract public class Test {
 
 	public static void assertEquals(final String message, final double expected, final double actual, final double delta) {
 		if (actual > (expected + delta) || actual < (expected - delta)) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
 		}
 	}
 
@@ -137,7 +137,7 @@ abstract public class Test {
 
 	public static void assertEquals(final String message, final float expected, final float actual, final float delta) {
 		if (actual > (expected + delta) || actual < (expected - delta)) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
 		}
 	}
 
@@ -149,7 +149,7 @@ abstract public class Test {
 
 	public static void assertEquals(final String message, final int expected, final int actual) {
 		if (expected != actual) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -161,7 +161,7 @@ abstract public class Test {
 
 	public static void assertEquals(final String message, final long expected, final long actual) {
 		if (expected != actual) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -173,7 +173,7 @@ abstract public class Test {
 
 	public static void assertEquals(final String message, final Object expected, final Object actual) {
 		if (false == expected.equals(actual)) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -185,19 +185,19 @@ abstract public class Test {
 
 	public static void assertEquals(final String message, final short expected, final short actual) {
 		if (expected != actual) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
 	public static void assertEquals(final String expected, final String actual) {
 		if (false == expected.equals(actual)) {
-			Test.fail("assertEquals()\nexpected[" + expected + "]\nactual: " + actual);
+			Test.fail("assertEquals()\nexpected\"" + expected + "\"\nactual: " + actual);
 		}
 	}
 
 	public static void assertEquals(final String message, final String expected, final String actual) {
 		if (false == expected.equals(actual)) {
-			Test.fail("assertEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -209,7 +209,7 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final boolean expected, final boolean actual) {
 		if (expected == actual) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -221,7 +221,7 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final byte expected, final byte actual) {
 		if (expected == actual) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -233,7 +233,7 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final char expected, final char actual) {
 		if (expected == actual) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -245,7 +245,7 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final double expected, final double actual, final double delta) {
 		if (actual > (expected + delta) || actual < (expected - delta)) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
 		}
 	}
 
@@ -257,7 +257,7 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final float expected, final float actual, final float delta) {
 		if (actual > (expected + delta) || actual < (expected - delta)) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
 		}
 	}
 
@@ -269,7 +269,7 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final int expected, final int actual) {
 		if (expected == actual) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -281,7 +281,7 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final long expected, final long actual) {
 		if (expected == actual) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -293,7 +293,7 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final Object expected, final Object actual) {
 		if (false == expected.equals(actual)) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -305,19 +305,19 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final short expected, final short actual) {
 		if (expected == actual) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
 	public static void assertNotEquals(final String expected, final String actual) {
 		if (false == expected.equals(actual)) {
-			Test.fail("assertNotEquals()\nexpected[" + expected + "]\nactual: " + actual);
+			Test.fail("assertNotEquals()\nexpected\"" + expected + "\"\nactual: " + actual);
 		}
 	}
 
 	public static void assertNotEquals(final String message, final String expected, final String actual) {
 		if (false == expected.equals(actual)) {
-			Test.fail("assertNotEquals()\nmessage[" + message + "]\nexpected: " + expected + "\n" + "actual: " + actual);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\n" + "actual: " + actual);
 		}
 	}
 
@@ -329,7 +329,7 @@ abstract public class Test {
 
 	public static void assertNull(final String message, Object object) {
 		if (null != object) {
-			Test.fail("assertNull\nmessage[" + message + "]\nobject: " + object + "\n");
+			Test.fail("assertNull\nmessage\"" + message + "\"\nobject: " + object + "\n");
 		}
 	}
 
@@ -341,7 +341,7 @@ abstract public class Test {
 
 	public static void assertNotNull(final String message, Object object) {
 		if (null == object) {
-			Test.fail("assertNotNull\nmessage[" + message + "]\nobject: " + object);
+			Test.fail("assertNotNull\nmessage\"" + message + "\"\nobject: " + object);
 		}
 	}
 
@@ -353,7 +353,7 @@ abstract public class Test {
 
 	public static void assertSame(final String message, final Object object, final Object otherObject) {
 		if (object != otherObject) {
-			Test.fail("assertSame\nmessage[" + message + "]\nexpected: " + object + "\n" + "actual: " + otherObject);
+			Test.fail("assertSame\nmessage\"" + message + "\"\nexpected: " + object + "\n" + "actual: " + otherObject);
 		}
 	}
 
@@ -365,7 +365,7 @@ abstract public class Test {
 
 	public static void assertNotSame(final String message, final Object object, final Object otherObject) {
 		if (object == otherObject) {
-			Test.fail("assertNotSame\nmessage[" + message + "]\nexpected: " + object + "\n" + "actual: " + otherObject);
+			Test.fail("assertNotSame\nmessage\"" + message + "\"\nexpected: " + object + "\n" + "actual: " + otherObject);
 		}
 	}
 

@@ -89,7 +89,7 @@ public class IndexedPlaceHolderReplacerTestCase extends TestCase {
 
 			final String text = "The ${1} quick ${0}${";
 			final String returned = replacer.execute(text);
-			fail("An exception should have been thrown when formatting text[" + text + "] but returned [" + returned + "]");
+			fail("An exception should have been thrown when formatting text\"" + text + "\" but returned \"" + returned + "\".");
 		} catch (final Throwable expected) {
 
 		}
@@ -102,7 +102,7 @@ public class IndexedPlaceHolderReplacerTestCase extends TestCase {
 		replacer.setValues(new Object[] { "BROWN", "GREEN" });
 		try {
 			final String returned = replacer.execute(text);
-			fail("An exception should have been thrown when formatting text[" + text + "] but returned [" + returned + "]");
+			fail("An exception should have been thrown when formatting text\"" + text + "\" but returned \"" + returned + "\".");
 		} catch (final Throwable expected) {
 
 		}
@@ -115,7 +115,7 @@ public class IndexedPlaceHolderReplacerTestCase extends TestCase {
 		replacer.setValues(new Object[] { "BROWN", "GREEN" });
 		try {
 			final String returned = replacer.execute(text);
-			fail("An exception should have been thrown when formatting text[" + text + "] but returned [" + returned + "]");
+			fail("An exception should have been thrown when formatting text\"" + text + "\" but returned \"" + returned + "\".");
 		} catch (final Throwable expected) {
 
 		}
@@ -148,7 +148,7 @@ public class IndexedPlaceHolderReplacerTestCase extends TestCase {
 		replacer.setValues(new Object[] { "VALUE" });
 		try {
 			final String actual = replacer.execute(text);
-			fail("An exception and not [" + actual + "] should have failed.");
+			fail("An exception and not \"" + actual + "\" should have failed.");
 		} catch (final Exception expected) {
 		}
 	}
@@ -161,7 +161,7 @@ public class IndexedPlaceHolderReplacerTestCase extends TestCase {
 		replacer.setValues(values);
 		try {
 			final String actual = replacer.execute(text);
-			fail("An exception and not [" + actual + "] should have failed.");
+			fail("An exception and not \"" + actual + "\" should have failed.");
 		} catch (final AssertionError expected) {
 		}
 	}

@@ -46,7 +46,7 @@ public class EchoServlet extends HttpServlet {
 
 		response.getWriter().write(string);
 		response.flushBuffer();
-		log("echoing back [" + string + "]");
+		log("echoing back \"" + string + "\".");
 		log("leaving doPost");
 	}
 }

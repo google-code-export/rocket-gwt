@@ -168,6 +168,6 @@ abstract class TextEntryWidget extends FocusWidget {
 	}
 
 	public String toString() {
-		return super.toString() + ", text[" + this.getText() + "]";
+		return super.toString() + ", text\"" + this.getText() + "\".";
 	}
 }

@@ -41,6 +41,6 @@ public class BrokenJsonServlet extends HttpServlet {
 		final String json = "JUNK";
 		response.getWriter().print(json);
 
-		System.out.println("SERVER - returning json[" + json + "]");
+		System.out.println("SERVER - returning json\"" + json + "\".");
 	}
 }

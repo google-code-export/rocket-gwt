@@ -68,6 +68,6 @@ public class StringLiteral implements Literal {
 	}
 
 	public String toString() {
-		return "String [" + this.value + "]";
+		return "String \"" + this.value + "\".";
 	}
 }

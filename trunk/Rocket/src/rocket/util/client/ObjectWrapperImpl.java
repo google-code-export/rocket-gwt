@@ -95,6 +95,6 @@ public abstract class ObjectWrapperImpl implements ObjectWrapper, Destroyable {
 	 }-*/;
 
 	public String toString() {
-		return super.toString() + ", object[" + this.toStringObject() + "]";
+		return super.toString() + ", object\"" + this.toStringObject() + "\".";
 	}
 }

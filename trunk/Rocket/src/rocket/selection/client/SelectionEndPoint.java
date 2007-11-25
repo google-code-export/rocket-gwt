@@ -56,6 +56,6 @@ public class SelectionEndPoint {
 	}
 
 	public String toString() {
-		return super.toString() + ", textNode[" + this.textNode + "], offset: " + offset;
+		return super.toString() + ", textNode\"" + this.textNode + "\", offset: " + offset;
 	}
 }

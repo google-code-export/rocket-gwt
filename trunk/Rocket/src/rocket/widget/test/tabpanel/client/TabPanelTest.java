@@ -180,7 +180,7 @@ public class TabPanelTest implements EntryPoint {
 
 				final TabItem item = event.getNewSelection();
 				final String caption = item.getCaption();
-				final boolean stop = !Window.confirm("tabSelected caption[" + caption + "]\n ? Cancel=vetoes");
+				final boolean stop = !Window.confirm("tabSelected caption\"" + caption + "\"\n ? Cancel=vetoes");
 				if (stop) {
 					event.stop();
 				}
@@ -190,13 +190,13 @@ public class TabPanelTest implements EntryPoint {
 				ObjectHelper.checkNotNull("TabSelectEvent.previouslySelected", event.getPreviouslySelected());
 				final TabItem item = event.getCurrentSelection();
 				final String caption = item.getCaption();
-				//control.log("tabSelected caption[" + caption + "]");
+				//control.log("tabSelected caption\"" + caption + "\".");
 			}
 
 			public void onBeforeTabClose(final BeforeTabCloseEvent event) {
 				final TabItem item = event.getClosing();
 				final String caption = item.getCaption();
-				final boolean stop = !Window.confirm("beforeTabClosed caption[" + caption + "]\n ? Cancel=vetoes");
+				final boolean stop = !Window.confirm("beforeTabClosed caption\"" + caption + "\"\n ? Cancel=vetoes");
 				if (stop) {
 					event.stop();
 				}
@@ -205,7 +205,7 @@ public class TabPanelTest implements EntryPoint {
 			public void onTabClose(final TabCloseEvent event) {
 				final TabItem item = event.getClosed();
 				final String caption = item.getCaption();
-				//control.log("tabClosed [" + caption + "]");
+				//control.log("tabClosed \"" + caption + "\".");
 			}
 		});
 	}

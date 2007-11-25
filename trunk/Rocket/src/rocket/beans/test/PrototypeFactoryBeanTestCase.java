@@ -91,7 +91,7 @@ public class PrototypeFactoryBeanTestCase extends TestCase {
 			return new BeanFactory() {
 				public Object getBean(String name) {
 					if (false == name.equals("classWithStringProperty")) {
-						throw new UnsupportedOperationException("Unknown bean [" + name + "]");
+						throw new UnsupportedOperationException("Unknown bean \"" + name + "\".");
 					}
 					return new ClassWithStringPropertyPrototypeFactoryBean().getObject();
 				}

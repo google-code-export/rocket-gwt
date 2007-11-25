@@ -65,7 +65,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 */
 	public String createNewTypeIfNecessary(final String typeName) {
 		final GeneratorContext context = this.getGeneratorContext();
-		context.info( "Recieved type [" + typeName + "]");
+		context.info( "Recieved type \"" + typeName + "\".");
 		
 		final String newTypeName = this.getGeneratedTypeName(typeName);
 		String bindTypeName = newTypeName;
@@ -76,31 +76,31 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 			try {
 				final NewConcreteType newType = this.assembleNewType(typeName, newTypeName);
 				if (null != newType) {
-					context.info("Completed assembling new type [" + newTypeName + "]");
+					context.info("Completed assembling new type \"" + newTypeName + "\".");
 					newType.write();
 
 					final long now = System.currentTimeMillis();
 
-					context.info("Finished writing new type [" + newTypeName + "], " + (now - started) + " millis taken.");
+					context.info("Finished writing new type \"" + newTypeName + "\", " + (now - started) + " millis taken.");
 					bindTypeName = newTypeName;
 				} else {
-					context.info("No type was assembled for [" + newTypeName + "]");
+					context.info("No type was assembled for \"" + newTypeName + "\".");
 					bindTypeName = null;
 				}
 
 			} catch (final GeneratorException rethrow) {
-				context.error("Problem whilst running generator for type [" + typeName + "]", rethrow);
+				context.error("Problem whilst running generator for type \"" + typeName + "\".", rethrow);
 				throw rethrow;
 
 			} catch (final Throwable caught) {
-				context.error("Unexpected problem whilst running generator for type [" + typeName + "]", caught);
+				context.error("Unexpected problem whilst running generator for type \"" + typeName + "\".", caught);
 				throw new GeneratorException(caught);
 			}
 		} else {
 			context.info("Skipping generation step, will use existing type instead.");
 		}
 
-		context.info("Will bind [" + typeName + "] to [" + bindTypeName + "]");
+		context.info("Will bind \"" + typeName + "\" to \"" + bindTypeName + "\".");
 		return bindTypeName;
 	}
 
@@ -237,6 +237,6 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	}
 
 	protected void throwUnableToLoadResource(final String resourceName) {
-		throw new GeneratorException("Unable to load resource with a filename [" + resourceName + "]");
+		throw new GeneratorException("Unable to load resource with a filename \"" + resourceName + "\".");
 	}
 }

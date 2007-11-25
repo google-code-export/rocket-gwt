@@ -67,7 +67,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
 
 		removeCookie(name);
 		final String cookiesAfterRemove = getCookies();
-		assertEquals("Cookies string should be empty after removing [" + cookiesAfterRemove + "]", "", cookiesAfterRemove);
+		assertEquals("Cookies string should be empty after removing \"" + cookiesAfterRemove + "\".", "", cookiesAfterRemove);
 	}
 
 	public void testGetNonExistingCookie0() {
@@ -1272,7 +1272,7 @@ public class CookiesGwtTestCase extends GWTTestCase {
 		try {
 			iterator.next();
 			fail("The Cookies.entrySet().iterator() should have failed fast (throwing an exception) because the backing Cookies was modified, iterator: "
-					+ iterator + ", cookies[" + getCookies() + "]");
+					+ iterator + ", cookies\"" + getCookies() + "\".");
 		} catch (final Exception expected) {
 		}
 

@@ -134,7 +134,7 @@ public class Tree extends CompositeWidget {
 	}
 
 	public String toString() {
-		return super.toString() + ", treeItem: " + treeItem + ", collapserImageUrl[" + collapserImageUrl + "], expanderImageUrl["
-				+ expanderImageUrl + "]";
+		return super.toString() + ", treeItem: " + treeItem + ", collapserImageUrl\"" + collapserImageUrl + "\", expanderImageUrl\""
+				+ expanderImageUrl + "\".";
 	}
 }

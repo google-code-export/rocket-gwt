@@ -109,10 +109,10 @@ public class HttpHelper {
 		ObjectHelper.checkNotNull("parameter:path", path);
 
 		if (path.length() > 0 && path.charAt(0) != HttpConstants.PATH_SEPARATOR) {
-			SystemHelper.fail(name, "The " + name + " if not empty must start with a '/', path: [" + path + "]");
+			SystemHelper.fail(name, "The " + name + " if not empty must start with a '/', path: \"" + path + "\".");
 		}
 		if (path.indexOf(HttpConstants.QUERY_STRING) != -1 || path.indexOf(HttpConstants.ANCHOR) != -1) {
-			SystemHelper.fail(name, "The " + name + " if not empty must not include a '?' or '#', path: [" + path + "]");
+			SystemHelper.fail(name, "The " + name + " if not empty must not include a '?' or '#', path: \"" + path + "\".");
 		}
 	}
 
@@ -126,7 +126,7 @@ public class HttpHelper {
 		ObjectHelper.checkNotNull(name, protocol);
 		if (false == isHttp(protocol) && false == isHttps(protocol)) {
 			SystemHelper.fail(name, "The " + name + " is not a protocol (" + HttpConstants.HTTP + ',' + HttpConstants.HTTPS
-					+ "), protocol[" + protocol + "]");
+					+ "), protocol\"" + protocol + "\".");
 		}
 	}
 
@@ -148,8 +148,8 @@ public class HttpHelper {
 
 	public static void checkMethod(final String name, final String method) {
 		if (false == isGet(method) && false == isPost(method)) {
-			SystemHelper.fail(name, "The " + name + " is not a method (" + HttpConstants.GET + ',' + HttpConstants.POST + "), method["
-					+ method + "]");
+			SystemHelper.fail(name, "The " + name + " is not a method (" + HttpConstants.GET + ',' + HttpConstants.POST + "), method\""
+					+ method + "\".");
 		}
 	}
 

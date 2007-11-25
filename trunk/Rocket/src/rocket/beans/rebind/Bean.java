@@ -139,6 +139,6 @@ public class Bean{
 	}
 
 	public String toString() {
-		return "bean id[" + this.id + "] type[" + this.type + "]";
+		return "bean id\"" + this.id + "\" type\"" + this.type + "\".";
 	}
 }
