@@ -137,7 +137,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 
 	protected void throwPackageNotFoundException(final String name) {
-		throw new PackageNotFoundException("Unable to find a package with the name [" + name + "]");
+		throw new PackageNotFoundException("Unable to find a package with the name \"" + name + "\".");
 	}
 
 	/**
@@ -237,7 +237,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	public Type getType(final String name) {
 		final Type type = this.findType(name);
 		if (null == type) {
-			throw new TypeNotFoundException("Unable to find type [" + name + "]");
+			throw new TypeNotFoundException("Unable to find type \"" + name + "\".");
 		}
 		return type;
 	}

@@ -448,7 +448,7 @@ class ProxyCreator {
 	private void generateServiceDefTargetImpl(SourceWriter w) {
 		String serverDefName = getDefaultServiceDefName();
 		if (serverDefName != null) {
-			serverDefName = "\"" + serverDefName + "\"";
+			serverDefName = "\"." + serverDefName + "\".";
 		} else {
 			serverDefName = "null";
 		}

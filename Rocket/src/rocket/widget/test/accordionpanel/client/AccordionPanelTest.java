@@ -47,7 +47,7 @@ public class AccordionPanelTest implements EntryPoint {
 		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
 				caught.printStackTrace();
-				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+				Window.alert("Caught:" + caught + "\nmessage\"" + caught.getMessage() + "\".");
 			}
 		});
 
@@ -95,7 +95,7 @@ public class AccordionPanelTest implements EntryPoint {
 				final AccordionItem newSelection = event.getNewSelection();
 				final String caption = newSelection.getCaption();
 				final Widget content = newSelection.getContent();
-				final boolean cancel = !Window.confirm("accordionSelected caption[" + caption + "]\ncontent: " + content
+				final boolean cancel = !Window.confirm("accordionSelected caption\"" + caption + "\"\ncontent: " + content
 						+ "\n ? Cancel=vetoes");
 				if (cancel) {
 					event.stop();
@@ -108,7 +108,7 @@ public class AccordionPanelTest implements EntryPoint {
 				final AccordionItem selected = event.getNewSelection();
 				final String caption = selected.getCaption();
 				final HTML content = (HTML) selected.getContent();
-				control.log("accordionSelected caption[" + caption + "]" + content.getText().substring(0, 50));
+				control.log("accordionSelected caption\"" + caption + "\"." + content.getText().substring(0, 50));
 			}
 		});
 	}

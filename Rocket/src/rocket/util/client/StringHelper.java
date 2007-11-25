@@ -58,8 +58,8 @@ public class StringHelper extends ObjectHelper {
 		final int requiredPadding = length - textLength;
 		if (requiredPadding < 0) {
 			fail("parameter:text",
-					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text[" + text
-							+ "], text.length: " + textLength + ", length: " + length);
+					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text\"" + text
+							+ "\", text.length: " + textLength + ", length: " + length);
 		}
 
 		final StringBuffer buf = new StringBuffer(textLength + requiredPadding);
@@ -100,8 +100,8 @@ public class StringHelper extends ObjectHelper {
 		final int requiredPadding = length - textLength;
 		if (requiredPadding < 0) {
 			StringHelper.fail("parameter:text",
-					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text[" + text
-							+ "], text.length: " + textLength + ", length: " + length);
+					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text\"" + text
+							+ "\", text.length: " + textLength + ", length: " + length);
 		}
 
 		final StringBuffer buf = new StringBuffer(textLength + requiredPadding);
@@ -397,7 +397,7 @@ public class StringHelper extends ObjectHelper {
 	 */
 	public static void checkEquals(final String message, final String actual, final String expected) {
 		if (false == nullSafeEquals(actual, expected)) {
-			fail(message + ", got[" + actual + "], expected[" + expected + "]");
+			fail(message + ", got\"" + actual + "\", expected\"" + expected + "\".");
 		}
 	}
 

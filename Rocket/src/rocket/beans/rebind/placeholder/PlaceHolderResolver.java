@@ -45,7 +45,7 @@ public class PlaceHolderResolver {
 
 		final InputStream file = this.getClass().getResourceAsStream(fileName);
 		if (null == file) {
-			throw new UncheckedIOException("Unable to find properties file [" + fileName + "]");
+			throw new UncheckedIOException("Unable to find properties file \"" + fileName + "\".");
 		}
 		this.merge(file);
 	}

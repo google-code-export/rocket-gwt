@@ -117,7 +117,7 @@ public abstract class CometClient {
 		// connection failure...
 		if (false == DOM.getElementPropertyBoolean(thisInstance.getFrame(), "__connected")) {
 			thisInstance.getCallback().onFailure(
-					new CometServerConnectionFailureException("Unable to connect to [" + thisInstance.getUrl() + "]"));
+					new CometServerConnectionFailureException("Unable to connect to \"" + thisInstance.getUrl() + "\"."));
 		} else {
 			thisInstance.restart();
 		}

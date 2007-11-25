@@ -124,7 +124,7 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 		assertTrue("topMostFunctionName", foundIndex != -1);
 
 		final String secondTopMostFunctionName = functionNames[foundIndex + 1];
-		assertTrue("secondTopMostFunctionName[" + secondTopMostFunctionName + "]", -1 != secondTopMostFunctionName
+		assertTrue("secondTopMostFunctionName\"" + secondTopMostFunctionName + "\".", -1 != secondTopMostFunctionName
 				.indexOf("nativeFunctionNames"));
 	}
 

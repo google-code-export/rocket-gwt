@@ -145,9 +145,7 @@ abstract public class TestGenerator extends Generator {
 	protected void writeGetMessage(final SourceWriter writer, final String typeName, final Throwable cause) {
 		writer.println("public String getMessage(){");
 		writer.indent();
-		writer
-				.println("return \"Attempt to generate for [" + typeName + "] failed because " + Generator.escape(cause.getMessage())
-						+ "\";");
+		writer.println("return \"Attempt to generate for \\\"" + typeName + "\\\" failed because " + Generator.escape(cause.getMessage())+ "\" ;");
 		writer.outdent();
 		writer.println("}");
 	}

@@ -138,8 +138,8 @@ public class Cookies extends AbstractMap {
 		if (nameValueSeparator == -1) {
 			SystemHelper
 					.fail("cookieString",
-							"The parameter:cookieString does not contain a valid cookie (name/value not found), cookieString["
-									+ cookieString + "]");
+							"The parameter:cookieString does not contain a valid cookie (name/value not found), cookieString\""
+									+ cookieString + "\".");
 		}
 		final String name = nameValue.substring(0, nameValueSeparator).trim();
 		final String value = nameValue.substring(nameValueSeparator + 1).trim();

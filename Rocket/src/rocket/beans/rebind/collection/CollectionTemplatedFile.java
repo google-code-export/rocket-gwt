@@ -94,7 +94,7 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 		final String filename = this.getTemplate();
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
 		}
 		return inputStream;
 	}
@@ -116,6 +116,6 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 	abstract protected String getElementsPlaceHolder();
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file [" + this.getTemplate() + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + this.getTemplate() + "\".");
 	}
 }

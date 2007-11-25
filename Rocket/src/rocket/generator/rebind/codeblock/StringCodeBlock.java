@@ -66,6 +66,6 @@ public class StringCodeBlock implements Literal {
 	}
 
 	public String toString() {
-		return "StringLiteral [" + this.content + "]";
+		return "StringLiteral \"" + this.content + "\".";
 	}
 }

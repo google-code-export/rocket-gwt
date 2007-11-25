@@ -269,7 +269,7 @@ public class ObjectHelper extends SystemHelper {
 	private native static double getDouble0(final JavaScriptObject object, final String propertyName)/*-{
 	 var value = object[ propertyName ];
 	 if( typeof( value ) == "undefined" ){
-	 throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
+	 throw "The object does not contain a property called \"" + propertyName + "\", object: " + object; 
 	 }
 	 return value;
 	 }-*/;
@@ -284,7 +284,7 @@ public class ObjectHelper extends SystemHelper {
 	private native static double getDouble0(final JavaScriptObject object, final int index)/*-{
 	 var value = object[ index ];
 	 if( typeof( value ) == "undefined" ){
-	 throw "The object does not contain a property called [" + index + "], object: " + object; 
+	 throw "The object does not contain a property called \"" + index + "\", object: " + object; 
 	 }
 	 return value;
 	 }-*/;
@@ -395,7 +395,7 @@ public class ObjectHelper extends SystemHelper {
 	private native static int getInteger0(final JavaScriptObject object, final String propertyName)/*-{
 	 var value = object[ propertyName ];
 	 if( typeof( value ) == "undefined" ){
-	 throw "The object does not contain a property called [" + propertyName + "], object: " + object; 
+	 throw "The object does not contain a property called \"" + propertyName + "\", object: " + object; 
 	 }
 	 return value;
 	 }-*/;
@@ -409,7 +409,7 @@ public class ObjectHelper extends SystemHelper {
 	private native static int getInteger0(final JavaScriptObject object, final int index)/*-{
 	 var value = object[ index ];
 	 if( typeof( value ) == "undefined" ){
-	 throw "The object does not contain a property called [" + index + "], object: " + object; 
+	 throw "The object does not contain a property called \"" + index + "\", object: " + object; 
 	 }
 	 return value;
 	 }-*/;

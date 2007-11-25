@@ -56,6 +56,6 @@ public class MapEntry {
 	}
 
 	public String toString() {
-		return super.toString() + ", key[" + key + "] value: " + value;
+		return super.toString() + ", key\"" + key + "\" value: " + value;
 	}
 }

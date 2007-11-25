@@ -250,7 +250,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	public String toString() {
 		final StringBuffer buf = new StringBuffer();
 		buf.append(ObjectHelper.defaultToString(this));
-		buf.append(" [");
+		buf.append(" \"");
 
 		if (this.hasParentMenuList()) {
 			MenuList parent = this.getParentMenuList();
@@ -272,7 +272,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 			}
 		}
 
-		buf.append("]");
+		buf.append("\".");
 		return buf.toString();
 	}
 }

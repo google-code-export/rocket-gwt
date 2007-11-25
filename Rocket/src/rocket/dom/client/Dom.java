@@ -207,15 +207,15 @@ public class Dom {
 		StringHelper.checkNotEmpty(name, expectedTagName);
 
 		if (false == isTag(element, expectedTagName)) {
-			SystemHelper.fail(name, "The " + name + " is not of the expected tag type, expected [" + expectedTagName + "], but got ["
-					+ getTagName(element) + "].");
+			SystemHelper.fail(name, "The " + name + " is not of the expected tag type, expected \"" + expectedTagName + "\", but got \""
+					+ getTagName(element) + "\".");
 		}
 	}
 
 	public static void checkInput(final String name, final Element element, final String type) {
 		if (false == isInput(element, type)) {
-			SystemHelper.fail("parameter:element", "The input field " + name + " is not of the expected type, type[" + type
-					+ "], element: " + DOM.toString(element));
+			SystemHelper.fail("parameter:element", "The input field " + name + " is not of the expected type, type\"" + type
+					+ "\", element: " + DOM.toString(element));
 		}
 	}
 

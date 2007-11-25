@@ -620,7 +620,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 
 		final String expected = propertyValue;
 		final String actual = DOM.getStyleAttribute(element, propertyName);
-		Test.assertTrue("actual[" + actual + "], expected[" + expected + "]", actual.indexOf(expected) != -1);
+		Test.assertTrue("actual\"" + actual + "\", expected\"" + expected + "\".", actual.indexOf(expected) != -1);
 	}
 
 	/**
@@ -638,7 +638,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 
 		final String expected = propertyValue;
 		final String actual = DOM.getStyleAttribute(element, propertyName);
-		Test.assertTrue("actual [" + actual + "] expected[" + expected + "]", actual.indexOf(expected) != -1);
+		Test.assertTrue("actual \"" + actual + "\" expected\"" + expected + "\".", actual.indexOf(expected) != -1);
 
 		final String backgroundColour = InlineStyle.getString(element, Css.BACKGROUND_COLOR);
 		final String expectedBackgroundColour = colour.toCssColour();
@@ -658,7 +658,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		final Element element = this.createDivAndAddToDocument();
 
 		final String actual = ComputedStyle.getString(element, propertyName);
-		Test.assertTrue("" + element + ", actual[" + actual + "]", actual == null || actual.equals("0% 0%") || actual.equals("left left")
+		Test.assertTrue("" + element + ", actual\"" + actual + "\".", actual == null || actual.equals("0% 0%") || actual.equals("left left")
 				|| actual.equals("0px 0px"));
 	}
 
@@ -812,11 +812,11 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		Test.assertNotNull(actualString);
 
 		final float expected = Math.round(parentFontSize * StyleSupportConstants.SMALLER_SCALING_FACTOR);
-		TestRunner.log("actual[" + actualString + "], expected[" + expected + "]");
+		TestRunner.log("actual\"" + actualString + "\", expected\"" + expected + "\".");
 
 		final float actual = Math.round(Double.parseDouble(actualString.substring(0, actualString.length() - 2)));
-		Test.assertTrue("actual[" + actual + "] expected[" + expected + "]", actual < parentFontSize);
-		Test.assertEquals("actual[" + actual + "] expected[" + expected + "]", expected, actual, 2.5f);
+		Test.assertTrue("actual\"" + actual + "\" expected\"" + expected + "\".", actual < parentFontSize);
+		Test.assertEquals("actual\"" + actual + "\" expected\"" + expected + "\".", expected, actual, 2.5f);
 	}
 
 	/**
@@ -840,11 +840,11 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		Test.assertNotNull(actualString);
 
 		final float expected = Math.round(parentFontSize * StyleSupportConstants.LARGER_SCALING_FACTOR);
-		TestRunner.log("actual[" + actualString + "], expected[" + expected + "]");
+		TestRunner.log("actual\"" + actualString + "\", expected\"" + expected + "\".");
 
 		final float actual = Math.round(Double.parseDouble(actualString.substring(0, actualString.length() - 2)));
-		Test.assertTrue("actual[" + actual + "] expected[" + expected + "]", actual > parentFontSize);
-		Test.assertEquals("actual[" + actual + "] expected[" + expected + "]", expected, actual, 2.5f);
+		Test.assertTrue("actual\"" + actual + "\" expected\"" + expected + "\".", actual > parentFontSize);
+		Test.assertEquals("actual\"" + actual + "\" expected\"" + expected + "\".", expected, actual, 2.5f);
 	}
 
 	/**
@@ -965,7 +965,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		Test.assertNotNull(actual);
 		TestRunner.log(actual);
 		final int number = Integer.parseInt(actual.substring(0, actual.length() - 2));
-		Test.assertTrue("actual[" + actual + "]", number == StyleSupportConstants.BORDER_WIDTH_THIN_PX
+		Test.assertTrue("actual\"" + actual + "\".", number == StyleSupportConstants.BORDER_WIDTH_THIN_PX
 				|| number == StyleSupportConstants.BORDER_WIDTH_THIN_PX_IE6);
 	}
 
@@ -984,7 +984,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		final String actual = ComputedStyle.getString(element, propertyName);
 		Test.assertNotNull(actual);
 		final int number = Integer.parseInt(actual.substring(0, actual.length() - 2));
-		Test.assertTrue("actual[" + actual + "]", number == StyleSupportConstants.BORDER_WIDTH_MEDIUM_PX
+		Test.assertTrue("actual\"" + actual + "\".", number == StyleSupportConstants.BORDER_WIDTH_MEDIUM_PX
 				|| number == StyleSupportConstants.BORDER_WIDTH_MEDIUM_PX_IE6);
 	}
 
@@ -1003,7 +1003,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		final String actual = ComputedStyle.getString(element, propertyName);
 		Test.assertNotNull(actual);
 		final int number = Integer.parseInt(actual.substring(0, actual.length() - 2));
-		Test.assertTrue("actual[" + actual + "]", number == StyleSupportConstants.BORDER_WIDTH_THICK_PX
+		Test.assertTrue("actual\"" + actual + "\".", number == StyleSupportConstants.BORDER_WIDTH_THICK_PX
 				|| number == StyleSupportConstants.BORDER_WIDTH_THICK_PX_IE6);
 	}
 
@@ -1093,19 +1093,19 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 
 		InlineStyle.setString(element, propertyName, ""); // enable
 		final String value0 = InlineStyle.getString(element, propertyName);
-		Test.assertFalse("selection should be enabled. [" + value0 + "]", "none".equals(value0));
+		Test.assertFalse("selection should be enabled. \"" + value0 + "\".", "none".equals(value0));
 
 		InlineStyle.setString(element, propertyName, "none");  // disable
 		final String value1 = InlineStyle.getString(element, propertyName);
-		Test.assertEquals("selection should be disabled. [" + value1 + "]", "none", value1);
+		Test.assertEquals("selection should be disabled. \"" + value1 + "\".", "none", value1);
 
 		InlineStyle.setString(element, propertyName, "");  // enable
 		final String value2 = InlineStyle.getString(element, propertyName);
-		Test.assertFalse("selection should be enabled. [" + value2 + "]", "none".equals(value2));
+		Test.assertFalse("selection should be enabled. \"" + value2 + "\".", "none".equals(value2));
 
 		InlineStyle.setString(element, propertyName, "none");  // disable
 		final String value3 = InlineStyle.getString(element, propertyName);
-		Test.assertEquals("selection should be disabled. [" + value3 + "]", "none", value3);
+		Test.assertEquals("selection should be disabled. \"" + value3 + "\".", "none", value3);
 	}
 
 	/**
@@ -1118,19 +1118,19 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 
 		InlineStyle.setString(parent, propertyName, "");  //enable
 		final String value0 = ComputedStyle.getString(child, propertyName);
-		Test.assertNull("selection should be enabled. [" + value0 + "]", value0);
+		Test.assertNull("selection should be enabled. \"" + value0 + "\".", value0);
 
 		InlineStyle.setString(parent, propertyName, "none");  //disable
 		final String value1 = ComputedStyle.getString(child, propertyName);
-		Test.assertNotNull("selection should be disabled. [" + value1 + "]", value1);
+		Test.assertNotNull("selection should be disabled. \"" + value1 + "\".", value1);
 
 		InlineStyle.setString(parent, propertyName, "");  //enable
 		final String value2 = ComputedStyle.getString(child, propertyName);
-		Test.assertNull("selection should be enabled. [" + value2 + "]", value2);
+		Test.assertNull("selection should be enabled. \"" + value2 + "\".", value2);
 
 		InlineStyle.setString(parent, propertyName, "none");  //disable
 		final String value3 = ComputedStyle.getString(child, propertyName);
-		Test.assertNotNull("selection should be disabled. [" + value3 + "]", value3);
+		Test.assertNotNull("selection should be disabled. \"" + value3 + "\".", value3);
 	}
 
 	/**

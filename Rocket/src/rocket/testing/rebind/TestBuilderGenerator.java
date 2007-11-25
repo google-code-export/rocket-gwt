@@ -85,7 +85,7 @@ public class TestBuilderGenerator extends Generator {
 	}
 
 	protected void throwUnableToFindTest(final String test) {
-		throw new TestBuilderGeneratorException("Unable to find test [" + test + "].");
+		throw new TestBuilderGeneratorException("Unable to find test \"" + test + "\".");
 	}
 
 	/**

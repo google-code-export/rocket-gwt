@@ -194,7 +194,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	}
 
 	private void throwUnableToGetElementById(final String id) {
-		throw new RuntimeException("Unable to find an element in the DOM with an id of [" + id + "].");
+		throw new RuntimeException("Unable to find an element in the DOM with an id of \"" + id + "\".");
 	}
 
 	/**

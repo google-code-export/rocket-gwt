@@ -378,7 +378,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	protected void throwTypeAlreadyExistsException() {
-		throw new TypeAlreadyExistsException("A type with the name [" + this.getName() + "] already exists, code generation failed.");
+		throw new TypeAlreadyExistsException("A type with the name \"" + this.getName() + "\" already exists, code generation failed.");
 	}
 	
 	protected void writeComments( final SourceWriter writer ){		

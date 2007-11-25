@@ -306,7 +306,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 					try{
 						javaClass = Class.forName(name);
 					} catch ( Exception classNotFound ){
-						throw new RuntimeException("Unable to find type [" + name + "]");
+						throw new RuntimeException("Unable to find type \"" + name + "\".");
 					}
 					if( OBJECT.equals( name )){
 						adapter = new ObjectJavaClassTypeAdapter();
@@ -323,7 +323,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 						adapter = (TestJavaClassTypeAdapter) adapterClass.newInstance();
 					} catch (final Exception complainIfNotObject ) {
 						if( false == OBJECT.equals( name )){
-							throw new RuntimeException( "Unable to find [" + adapterName + "] for the type [" + name + "]", complainIfNotObject );							
+							throw new RuntimeException( "Unable to find \"" + adapterName + "\" for the type \"" + name + "\".", complainIfNotObject );							
 						}
 						adapter = new ObjectJavaClassTypeAdapter();
 					}

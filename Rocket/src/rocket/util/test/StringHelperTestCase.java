@@ -29,21 +29,21 @@ public class StringHelperTestCase extends TestCase {
 		final String in = "a";
 		final boolean expected = false;
 		final boolean actual = StringHelper.isNullOrEmpty(in);
-		assertEquals("StringHelper.isNullOrEmpty( [" + in + "] )", expected, actual);
+		assertEquals("StringHelper.isNullOrEmpty( \"" + in + "\" )", expected, actual);
 	}
 
 	public void testIsNullOrEmpty1() {
 		final String in = "";
 		final boolean expected = true;
 		final boolean actual = StringHelper.isNullOrEmpty(in);
-		assertEquals("StringHelper.isNullOrEmpty( [" + in + "] )", expected, actual);
+		assertEquals("StringHelper.isNullOrEmpty( \"" + in + "\" )", expected, actual);
 	}
 
 	public void testIsNullOrEmpty2() {
 		final String in = null;
 		final boolean expected = true;
 		final boolean actual = StringHelper.isNullOrEmpty(in);
-		assertEquals("StringHelper.isNullOrEmpty( [" + in + "] )", expected, actual);
+		assertEquals("StringHelper.isNullOrEmpty( \"" + in + "\" )", expected, actual);
 	}
 
 	public void testPadLeft0() {
@@ -52,7 +52,7 @@ public class StringHelperTestCase extends TestCase {
 		final char c = '.';
 		final String actual = StringHelper.padLeft(in, paddedLength, c);
 		final String expected = "..." + in;
-		assertEquals("StringHelper.padLeft( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+		assertEquals("StringHelper.padLeft( \"" + in + "\"." + paddedLength + ", \"" + c + "\" )", expected, actual);
 	}
 
 	public void testPadLeft1() {
@@ -61,7 +61,7 @@ public class StringHelperTestCase extends TestCase {
 		final char c = '.';
 		final String actual = StringHelper.padLeft(in, paddedLength, c);
 		final String expected = in;
-		assertEquals("StringHelper.padLeft( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+		assertEquals("StringHelper.padLeft( \"" + in + "\"." + paddedLength + ", \"" + c + "\" )", expected, actual);
 	}
 
 	public void testPadLeft2() {
@@ -70,7 +70,7 @@ public class StringHelperTestCase extends TestCase {
 		final char c = '.';
 		final String actual = StringHelper.padLeft(in, paddedLength, c);
 		final String expected = "....." + in;
-		assertEquals("StringHelper.padLeft( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+		assertEquals("StringHelper.padLeft( \"" + in + "\"." + paddedLength + ", \"" + c + "\" )", expected, actual);
 	}
 
 	public void testPadRight0() {
@@ -79,7 +79,7 @@ public class StringHelperTestCase extends TestCase {
 		final char c = '.';
 		final String actual = StringHelper.padRight(in, paddedLength, c);
 		final String expected = in + "...";
-		assertEquals("StringHelper.padRight( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+		assertEquals("StringHelper.padRight( \"" + in + "\"." + paddedLength + ", \"" + c + "\" )", expected, actual);
 	}
 
 	public void testPadRight1() {
@@ -88,7 +88,7 @@ public class StringHelperTestCase extends TestCase {
 		final char c = '.';
 		final String actual = StringHelper.padRight(in, paddedLength, c);
 		final String expected = in;
-		assertEquals("StringHelper.padRight( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+		assertEquals("StringHelper.padRight( \"" + in + "\"." + paddedLength + ", \"" + c + "\" )", expected, actual);
 	}
 
 	public void testPadRight2() {
@@ -97,7 +97,7 @@ public class StringHelperTestCase extends TestCase {
 		final char c = '.';
 		final String actual = StringHelper.padRight(in, paddedLength, c);
 		final String expected = in + ".....";
-		assertEquals("StringHelper.padRight( [" + in + "]" + paddedLength + ", [" + c + "] )", expected, actual);
+		assertEquals("StringHelper.padRight( \"" + in + "\"." + paddedLength + ", \"" + c + "\" )", expected, actual);
 	}
 
 	public void testStartsWithIgnoreCase0() {
@@ -105,7 +105,7 @@ public class StringHelperTestCase extends TestCase {
 		final String startsWith = "ap";
 		final boolean actual = StringHelper.startsWithIgnoringCase(test, startsWith);
 		final boolean expected = true;
-		assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}" + startsWith + "])", expected, actual);
+		assertEquals("StringHelper.startsWithIgnoringCase( \"" + test + "\",[}" + startsWith + "\")", expected, actual);
 	}
 
 	public void testStartsWithIgnoreCase1() {
@@ -113,7 +113,7 @@ public class StringHelperTestCase extends TestCase {
 		final String startsWith = "AP";
 		final boolean actual = StringHelper.startsWithIgnoringCase(test, startsWith);
 		final boolean expected = true;
-		assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}" + startsWith + "])", expected, actual);
+		assertEquals("StringHelper.startsWithIgnoringCase( \"" + test + "\",[}" + startsWith + "\")", expected, actual);
 	}
 
 	public void testStartsWithIgnoreCase2() {
@@ -121,7 +121,7 @@ public class StringHelperTestCase extends TestCase {
 		final String startsWith = "aP";
 		final boolean actual = StringHelper.startsWithIgnoringCase(test, startsWith);
 		final boolean expected = true;
-		assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}" + startsWith + "])", expected, actual);
+		assertEquals("StringHelper.startsWithIgnoringCase( \"" + test + "\",[}" + startsWith + "\")", expected, actual);
 	}
 
 	public void testStartsWithIgnoreCase3() {
@@ -129,7 +129,7 @@ public class StringHelperTestCase extends TestCase {
 		final String startsWith = test + "Banana";
 		final boolean actual = StringHelper.startsWithIgnoringCase(test, startsWith);
 		final boolean expected = false;
-		assertEquals("StringHelper.startsWithIgnoringCase( [" + test + "],[}" + startsWith + "])", expected, actual);
+		assertEquals("StringHelper.startsWithIgnoringCase( \"" + test + "\",[}" + startsWith + "\")", expected, actual);
 	}
 
 	public void testEndsWithIgnoreCase0() {
@@ -137,7 +137,7 @@ public class StringHelperTestCase extends TestCase {
 		final String endsWith = "le";
 		final boolean actual = StringHelper.endsWithIgnoringCase(test, endsWith);
 		final boolean expected = true;
-		assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}" + endsWith + "])", expected, actual);
+		assertEquals("StringHelper.endsWithIgnoringCase( \"" + test + "\",[}" + endsWith + "\")", expected, actual);
 	}
 
 	public void testEndsWithIgnoreCase1() {
@@ -145,7 +145,7 @@ public class StringHelperTestCase extends TestCase {
 		final String endsWith = "LE";
 		final boolean actual = StringHelper.endsWithIgnoringCase(test, endsWith);
 		final boolean expected = true;
-		assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}" + endsWith + "])", expected, actual);
+		assertEquals("StringHelper.endsWithIgnoringCase( \"" + test + "\",[}" + endsWith + "\")", expected, actual);
 	}
 
 	public void testEndsWithIgnoreCase2() {
@@ -153,7 +153,7 @@ public class StringHelperTestCase extends TestCase {
 		final String endsWith = "LE";
 		final boolean actual = StringHelper.endsWithIgnoringCase(test, endsWith);
 		final boolean expected = true;
-		assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}" + endsWith + "])", expected, actual);
+		assertEquals("StringHelper.endsWithIgnoringCase( \"" + test + "\",[}" + endsWith + "\")", expected, actual);
 	}
 
 	public void testEndsWithIgnoreCase3() {
@@ -161,7 +161,7 @@ public class StringHelperTestCase extends TestCase {
 		final String endsWith = "Banana" + test;
 		final boolean actual = StringHelper.endsWithIgnoringCase(test, endsWith);
 		final boolean expected = false;
-		assertEquals("StringHelper.endsWithIgnoringCase( [" + test + "],[}" + endsWith + "])", expected, actual);
+		assertEquals("StringHelper.endsWithIgnoringCase( \"" + test + "\",[}" + endsWith + "\")", expected, actual);
 	}
 
 	public void testSplitIgnoringDelimiters0() {
@@ -304,7 +304,7 @@ public class StringHelperTestCase extends TestCase {
 
 		final String[] tokens = StringHelper.split(input, delimiter0 + delimiter1, ignoreDelimiters);
 		assertNotNull("The returned tokens array should not be null", tokens);
-		assertEquals("There should be 4 tokens[" + input + "]", 4, tokens.length);
+		assertEquals("There should be 4 tokens\"" + input + "\".", 4, tokens.length);
 
 		assertEquals("The first token should be", first, tokens[0]);
 		assertEquals("The second token should be", second, tokens[1]);
@@ -343,7 +343,7 @@ public class StringHelperTestCase extends TestCase {
 
 		final String[] tokens = StringHelper.split(input, delimiters, ignoreDelimiters);
 		assertNotNull("The returned tokens array should not be null", tokens);
-		assertEquals("There should be 7 tokens [" + input + "]", 7, tokens.length);
+		assertEquals("There should be 7 tokens \"" + input + "\".", 7, tokens.length);
 
 		assertEquals("The first token should be", first, tokens[0]);
 		assertEquals("The second token should be", delimiters, tokens[1]);
@@ -359,7 +359,7 @@ public class StringHelperTestCase extends TestCase {
 		final String second = "green";
 
 		assertTrue(
-				"StringHelper.startsWithIgnoringCase() should return true when querying if [" + first + "] starts with [" + second + "]",
+				"StringHelper.startsWithIgnoringCase() should return true when querying if \"" + first + "\" starts with \"" + second + "\".",
 				StringHelper.startsWithIgnoringCase(first, second));
 	}
 
@@ -367,16 +367,16 @@ public class StringHelperTestCase extends TestCase {
 		final String first = "green.apple";
 		final String second = "zebra";
 
-		assertFalse("StringHelper.startsWithIgnoringCase() should return true when querying if [" + first + "] starts with [" + second
-				+ "]", StringHelper.startsWithIgnoringCase(first, second));
+		assertFalse("StringHelper.startsWithIgnoringCase() should return true when querying if \"" + first + "\" starts with \"" + second
+				+ "\".", StringHelper.startsWithIgnoringCase(first, second));
 	}
 
 	public void testStartsWithIgnoringCaseWhichFailsBecauseSecondIsLongerThanFirst() {
 		final String first = "green.apple";
 		final String second = "green.apple.big";
 
-		assertFalse("StringHelper.startsWithIgnoringCase() should return true when querying if [" + first + "] starts with [" + second
-				+ "]", StringHelper.startsWithIgnoringCase(first, second));
+		assertFalse("StringHelper.startsWithIgnoringCase() should return true when querying if \"" + first + "\" starts with \"" + second
+				+ "\".", StringHelper.startsWithIgnoringCase(first, second));
 	}
 
 	public void testIndexOfIgnoringCaseWhichFails() {

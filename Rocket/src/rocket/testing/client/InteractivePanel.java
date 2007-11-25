@@ -253,7 +253,7 @@ public abstract class InteractivePanel extends Composite {
 			message = message + " returned " + iterator;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
+			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -281,7 +281,7 @@ public abstract class InteractivePanel extends Composite {
 			message = message + " returned " + hasNext;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
+			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -304,7 +304,7 @@ public abstract class InteractivePanel extends Composite {
 			message = message + " returned " + this.toString(element);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
+			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -326,7 +326,7 @@ public abstract class InteractivePanel extends Composite {
 			message = message + " returned";
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of [" + caught.getMessage() + "]";
+			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}

@@ -45,7 +45,7 @@ public class SortableTableTest implements EntryPoint {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
 				caught.printStackTrace();
-				Window.alert("Caught:" + caught + "\nmessage[" + caught.getMessage() + "]");
+				Window.alert("Caught:" + caught + "\nmessage\"" + caught.getMessage() + "\".");
 			}
 		});
 

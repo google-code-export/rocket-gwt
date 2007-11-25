@@ -48,7 +48,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "QQ==";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test2() throws Exception {
@@ -58,7 +58,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "QVo=";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test3() throws Exception {
@@ -68,7 +68,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "QVpN";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test4() throws Exception {
@@ -78,7 +78,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "QVpNUQ==";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test5() throws Exception {
@@ -88,7 +88,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test6() throws Exception {
@@ -98,7 +98,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cuMQ==";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test7() throws Exception {
@@ -108,7 +108,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cuMTI=";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test8() throws Exception {
@@ -118,7 +118,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cuMTIz";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test9() throws Exception {
@@ -128,7 +128,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cuMTIzNA==";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test10() throws Exception {
@@ -138,7 +138,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "U3lkbmV5IEJyaXNiYW5lIE1lbGJvdXJuZSBDYW5iZXJyYQ==";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test11() throws Exception {
@@ -148,7 +148,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRl";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test12() throws Exception {
@@ -158,7 +158,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRlMQ==";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test13() throws Exception {
@@ -168,7 +168,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRlMTI=";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test14() throws Exception {
@@ -178,7 +178,7 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRlMTIz";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 
 	public void test15() throws Exception {
@@ -188,6 +188,6 @@ public class Base64EncoderTestCase extends TestCase {
 		final String expected = "QXVzdHJhbGlhIFN5ZG5leSBCcmlzYmFuZSBNZWxib3VybmUgQ2FuYmVycmEgUGVydGgxMjM0NTY3ODkwIEFkZWxhaWRlMTIzNA==";
 		final String actual = Base64Encoder.encode(inBytes);
 
-		assertEquals("in\t[" + in + "]\nexpect\t[" + expected + "]\nactual\t[" + actual + "]", expected, actual);
+		assertEquals("in\t\"" + in + "\"\nexpect\t\"" + expected + "\"\nactual\t\"" + actual + "\".", expected, actual);
 	}
 }

@@ -45,7 +45,7 @@ public class MapValue extends Value {
 	}
 
 	protected void throwMapEntryAlreadyUsedException(final String key) {
-		throw new MapEntryAlreadyUsedException("A entries entry with a key of [" + key + "] has already been defined");
+		throw new MapEntryAlreadyUsedException("A entries entry with a key of \"" + key + "\" has already been defined");
 	}
 
 	/**

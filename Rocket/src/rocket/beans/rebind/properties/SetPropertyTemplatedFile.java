@@ -69,7 +69,7 @@ class SetPropertyTemplatedFile extends TemplatedCodeBlock {
 		final String filename = Constants.SET_PROPERTY_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
 		}
 		return inputStream;
 	}
@@ -91,7 +91,7 @@ class SetPropertyTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder [" + name + "] not found, template file ["
-				+ Constants.SET_PROPERTY_TEMPLATE + "]");
+		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
+				+ Constants.SET_PROPERTY_TEMPLATE + "\".");
 	}
 }

@@ -258,6 +258,6 @@ public class StringValue extends Value {
 	}
 
 	public String toString() {
-		return super.toString() + ", value[" + value + "]";
+		return super.toString() + ", value\"" + value + "\".";
 	}
 }

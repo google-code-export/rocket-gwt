@@ -106,7 +106,7 @@ public class IteratorViewTestCase extends TestCase {
 
 		try {
 			final Object visited = iterator.next();
-			fail("Iterator.next should have thrown an Exception and not returned [" + visited + "]");
+			fail("Iterator.next should have thrown an Exception and not returned \"" + visited + "\".");
 		} catch (ConcurrentModificationException expected) {
 		}
 	}

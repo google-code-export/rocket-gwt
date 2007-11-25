@@ -64,27 +64,27 @@ public abstract class CometServerServlet extends HttpServlet {
 		// read and save the maximumBytesWritten init parameter...
 		final String maximumBytesWritten = this.getInitParameter(Constants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER);
 		if (StringHelper.isNullOrEmpty(maximumBytesWritten)) {
-			throw new ServletException("The servlet [" + this.getServletName() + "] init parameter ["
-					+ Constants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER + "] is required and missing.");
+			throw new ServletException("The servlet \"" + this.getServletName() + "\" init parameter \""
+					+ Constants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER + "\" is required and missing.");
 		}
 		try {
 			this.setMaximumBytesWritten(Integer.parseInt(maximumBytesWritten));
 		} catch (final Exception caught) {
-			throw new ServletException("The servlet [" + this.getServletName() + "] init parameter ["
-					+ Constants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER + "] contains an invalid value [" + maximumBytesWritten + "]");
+			throw new ServletException("The servlet \"" + this.getServletName() + "\" init parameter \""
+					+ Constants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER + "\" contains an invalid value \"" + maximumBytesWritten + "\".");
 		}
 
 		// read and save the connectionTimeout init parameter...
 		final String connectionTimeout = this.getInitParameter(Constants.CONNECTION_TIME_OUT_INIT_PARAMETER);
 		if (StringHelper.isNullOrEmpty(connectionTimeout)) {
-			throw new ServletException("The servlet [" + this.getServletName() + "] init parameter ["
-					+ Constants.CONNECTION_TIME_OUT_INIT_PARAMETER + "] is required and missing.");
+			throw new ServletException("The servlet \"" + this.getServletName() + "\" init parameter \""
+					+ Constants.CONNECTION_TIME_OUT_INIT_PARAMETER + "\" is required and missing.");
 		}
 		try {
 			this.setConnectionTimeout(Integer.parseInt(connectionTimeout));
 		} catch (final Exception caught) {
-			throw new ServletException("The servlet [" + this.getServletName() + "] init parameter ["
-					+ Constants.CONNECTION_TIME_OUT_INIT_PARAMETER + "] contains an invalid value [" + connectionTimeout + "]");
+			throw new ServletException("The servlet \"" + this.getServletName() + "\" init parameter \""
+					+ Constants.CONNECTION_TIME_OUT_INIT_PARAMETER + "\" contains an invalid value \"" + connectionTimeout + "\".");
 		}
 	}
 

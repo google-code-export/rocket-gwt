@@ -199,6 +199,6 @@ public abstract class AbstractHttpServletRequest extends HttpServletRequestWrapp
 	}
 
 	public String toString() {
-		return super.toString() + ", url[" + url + "], headers: " + headers + ", requestParameters:" + requestParameters;
+		return super.toString() + ", url\"" + url + "\", headers: " + headers + ", requestParameters:" + requestParameters;
 	}
 }

@@ -86,6 +86,6 @@ public class WebResponse implements IsSerializable {
 	}
 
 	public String toString() {
-		return super.toString() + ", code: " + code + ", message[" + message + "], headers: " + headers + ", body[" + body + "]";
+		return super.toString() + ", code: " + code + ", message\"" + message + "\", headers: " + headers + ", body\"" + body + "\".";
 	}
 }

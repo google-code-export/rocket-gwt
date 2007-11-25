@@ -56,7 +56,7 @@ public class ClassWith3StringFieldsJsonResponseServlet extends HttpServlet {
 		response.getWriter().println(json);
 		response.flushBuffer();
 
-		System.out.println("SERVER - returning json[" + json + "]");
+		System.out.println("SERVER - returning json\"" + json + "\".");
 	}
 
 }

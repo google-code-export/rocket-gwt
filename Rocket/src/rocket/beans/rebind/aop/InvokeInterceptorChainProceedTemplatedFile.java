@@ -108,7 +108,7 @@ public class InvokeInterceptorChainProceedTemplatedFile extends TemplatedCodeBlo
 		final String filename = this.getFileName();
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
 		}
 		return inputStream;
 	}

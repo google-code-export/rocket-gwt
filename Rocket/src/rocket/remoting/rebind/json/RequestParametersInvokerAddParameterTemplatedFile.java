@@ -65,7 +65,7 @@ class RequestParametersInvokerAddParameterTemplatedFile extends TemplatedCodeBlo
 		final String filename = Constants.REQUEST_PARAMETERS_INVOKER_ADD_PARAMETER_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file [" + filename + "]");
+			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
 		}
 		return inputStream;
 	}

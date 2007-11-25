@@ -73,7 +73,7 @@ public class Colour implements java.io.Serializable {
 			}
 
 			// unknown colour value/ format etc.
-			throw new IllegalArgumentException("Unable to read rgb value from property value[" + value + "]");
+			throw new IllegalArgumentException("Unable to read rgb value from property value\"" + value + "\".");
 		}
 
 		return colourValue;

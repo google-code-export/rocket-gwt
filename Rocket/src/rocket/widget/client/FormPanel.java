@@ -197,8 +197,8 @@ public class FormPanel extends Panel {
 
 				final String formName = DOM.getElementProperty(formElement, "name");
 				if (StringHelper.isNullOrEmpty(formName)) {
-					GWT.log("The " + i + "th form element [" + formElement
-							+ "]is missing a name attribute. This might result in it being omitted from any submitted form.", null);
+					GWT.log("The " + i + "th form element \"" + formElement
+							+ "\"is missing a name attribute. This might result in it being omitted from any submitted form.", null);
 				}
 			}
 

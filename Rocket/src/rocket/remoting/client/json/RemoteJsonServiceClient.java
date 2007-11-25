@@ -127,7 +127,7 @@ abstract public class RemoteJsonServiceClient implements RemoteJsonService, Serv
 	}
 
 	public String toString() {
-		return super.toString() + ", username[" + username + "], password[" + password + "], timeout: " + timeout + ", serviceEntryPoint["
-				+ serviceEntryPoint + "]";
+		return super.toString() + ", username\"" + username + "\", password\"" + password + "\", timeout: " + timeout + ", serviceEntryPoint\""
+				+ serviceEntryPoint + "\".";
 	}
 }

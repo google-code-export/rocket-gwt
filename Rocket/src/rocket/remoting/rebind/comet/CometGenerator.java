@@ -201,12 +201,12 @@ public class CometGenerator extends Generator {
 	}
 
 	protected void throwUnableToFindAnnotation(final Type type) {
-		throw new CometClientGeneratorException("Unable to find the annotation [" + Constants.COMET_PAYLOAD_TYPE_ANNOTATION + "] on the "
+		throw new CometClientGeneratorException("Unable to find the annotation \"" + Constants.COMET_PAYLOAD_TYPE_ANNOTATION + "\" on the "
 				+ type + "." + Constants.CREATE_PROXY_METHOD);
 	}
 
 	protected void throwUnableToFindPayloadType(final String type) {
-		throw new CometClientGeneratorException("Unable to find the type [" + type + "] which was specified by the "
+		throw new CometClientGeneratorException("Unable to find the type \"" + type + "\" which was specified by the "
 				+ Constants.CREATE_PROXY_METHOD + " annotation.");
 	}
 

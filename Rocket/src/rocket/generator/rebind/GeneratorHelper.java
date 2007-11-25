@@ -158,34 +158,34 @@ public class GeneratorHelper {
 
 	static public void checkJavaFieldName(final String name, final String fieldName) {
 		if (false == isValidJavaFieldName(fieldName)) {
-			SystemHelper.fail(name, "The name[" + fieldName + "] is not a valid java field name.");
+			SystemHelper.fail(name, "The name \"" + fieldName + "\" is not a valid java field name.");
 		}
 	}
 
 	static public void checkJavaMethodName(final String name, final String methodName) {
 		if (false == isValidJavaTypeName(methodName)) {
-			SystemHelper.fail(name, "The name[" + methodName + "] is not a valid java method name.");
+			SystemHelper.fail(name, "The name \"" + methodName + "\" is not a valid java method name.");
 		}
 	}
 
 	static public void checkJavaTypeName(final String name, final String className) {
 		if (false == isValidJavaTypeName(className)) {
-			SystemHelper.fail(name, "The name[" + className + "] is not a valid java class name.");
+			SystemHelper.fail(name, "The name \"" + className + "\" is not a valid java class name.");
 		}
 	}
 	
 	static public void checkNestedJavaTypeName(final String name, final String className) {
 		if (false == isValidJavaTypeName(className)) {
-			SystemHelper.fail(name, "The name[" + className + "] is not a valid java class name.");
+			SystemHelper.fail(name, "The name \"" + className + "\" is not a valid java class name.");
 		}
 		if( -1 != className.indexOf( '.')){
-			SystemHelper.fail(name, "When naming a nested type the name[" + className + "] must not be fully qualified (contain dots '.').");
+			SystemHelper.fail(name, "When naming a nested type the name\"" + className + "\" must not be fully qualified (contain dots '.').");
 		}
 	}
 
 	static public void checkJavaVariableName(final String name, final String variableName) {
 		if (false == isValidJavaVariableName(variableName)) {
-			SystemHelper.fail(name, "The name[" + variableName + "] is not a valid variable name.");
+			SystemHelper.fail(name, "The name \"" + variableName + "\" is not a valid variable name.");
 		}
 	}
 

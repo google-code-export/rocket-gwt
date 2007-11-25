@@ -224,7 +224,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	public Field getField(final String name) {
 		final Field method = this.findField(name);
 		if (null == method) {
-			throw new FieldNotFoundException("Unable to find a field called [" + name + "] within " + this.getName());
+			throw new FieldNotFoundException("Unable to find a field called \"" + name + "\" within " + this.getName());
 		}
 		return method;
 	}
@@ -417,7 +417,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	}
 
 	protected void throwMethodNotFoundException(final String methodName, final List parameterTypes) {
-		throw new MethodNotFoundException("Unable to find a method called [" + methodName + "] within " + this.getName()
+		throw new MethodNotFoundException("Unable to find a method called \"" + methodName + "\" within " + this.getName()
 				+ " with parameters " + parameterTypes + " upon " + this.getName());
 	}
 
