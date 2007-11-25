@@ -53,6 +53,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		this.setPackages(this.createPackages());
 		this.setTypes(this.createTypes());
 		this.setNewTypes(this.createNewTypes());
+		this.initLogLevel();
 	}
 
 	/**
@@ -80,13 +81,38 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * @return The name of a standalone class.
 	 */
 	public String getGeneratedTypeName(final String name, final String suffix) {
+		final StringBuffer buf = new StringBuffer();
+
 		final String packageName = this.getPackageName(name);
+		buf.append(packageName);
+		buf.append('.');
 
-		String simpleClassName = this.getSimpleClassName(name);
-		simpleClassName.replace("_", "__");
-		simpleClassName.replace('.', '_');
+		final char[] chars = this.getSimpleClassName(name).toCharArray();
+		for (int i = 0; i < chars.length; i++) {
+			final char c = chars[i];
 
-		return packageName + '.' + simpleClassName + suffix;
+			if ('_' == c) {
+				buf.append("__");
+				continue;
+			}
+			if ('.' == c) {
+				buf.append("_0");
+				continue;
+			}
+			if ('[' == c) {
+				buf.append("_1");
+				continue;
+			}
+			if (']' == c) {
+				buf.append("_2");
+				continue;
+			}
+			buf.append(c);
+		}
+
+		buf.append(suffix);
+
+		return buf.toString();
 	}
 
 	/**
@@ -128,7 +154,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * @return
 	 */
 	abstract protected Package createPackage(final String name);
-	
+
 	protected JPackage findJPackage(final String name) {
 		return this.getTypeOracle().findPackage(name);
 	}
@@ -237,7 +263,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * Registers each of the primitive types
 	 */
 	abstract protected void preloadTypes();
-	
+
 	public Type getBoolean() {
 		return this.getType(GeneratorConstants.BOOLEAN);
 	}
@@ -362,7 +388,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		final NewConcreteTypeImpl type = new NewConcreteTypeImpl();
 		type.setGeneratorContext(this);
 		type.setSuperType(this.getObject());
-		type.setVisibility( Visibility.PUBLIC );
+		type.setVisibility(Visibility.PUBLIC);
 
 		this.addNewType(type);
 		return type;
@@ -377,8 +403,8 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		final NewInterfaceTypeImpl type = new NewInterfaceTypeImpl();
 		type.setGeneratorContext(this);
 		type.setSuperType(this.getObject());
-		type.setVisibility( Visibility.PUBLIC );
-		
+		type.setVisibility(Visibility.PUBLIC);
+
 		this.addNewType(type);
 		return type;
 	}
@@ -602,6 +628,92 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 
 	protected void log(final TreeLogger.Type treeLoggerLevel, final String message, final Throwable throwable) {
 		this.getLogger().log(treeLoggerLevel, message, throwable);
+	}
+
+	public boolean isTraceEnabled() {
+		return this.getLogLevel() <= GeneratorConstants.TRACE_VALUE;
+	}
+
+	public boolean isDebugEnabled() {
+		return this.getLogLevel() <= GeneratorConstants.DEBUG_VALUE;
+	}
+
+	public boolean isInfoEnabled() {
+		return this.getLogLevel() <= GeneratorConstants.INFO_VALUE;
+	}
+
+	/**
+	 * Reads a system property to determine the configured logging level
+	 */
+	protected void initLogLevel() {
+		String logLevel = null;
+		final String gwtArgs = System.getProperty("gwt.args");
+		if (null != gwtArgs) {
+
+			// try and find logLevel 
+			final String[] tokens = StringHelper.split(gwtArgs, " ", true);
+			for (int i = 0; i < tokens.length; i++) {
+				final String token = tokens[i];
+				if ("-logLevel".equals(token)) {
+					logLevel = tokens[i + 1];
+					break;
+				}
+			}
+		}
+
+		if (null == logLevel) {
+			this.setLogLevel(GeneratorConstants.DISABLED_LOGGING);
+		} else {
+			this.setLogLevel(logLevel);
+		}
+	}
+
+	/**
+	 * The current logging level expressed as an integer value.
+	 */
+	private int logLevel;
+
+	protected int getLogLevel() {
+		return this.logLevel;
+	}
+
+	protected void setLogLevel(final String logLevel) {
+		StringHelper.checkNotEmpty("parameter:logLevel", logLevel);
+
+		int value = GeneratorConstants.DISABLED_LOGGING;
+
+		while (true) {
+			if (GeneratorConstants.SPAM.equals(logLevel)) {
+				value = GeneratorConstants.SPAM_VALUE;
+				break;
+			}
+			if (GeneratorConstants.TRACE.equals(logLevel)) {
+				value = GeneratorConstants.TRACE_VALUE;
+				break;
+			}
+			if (GeneratorConstants.DEBUG.equals(logLevel)) {
+				value = GeneratorConstants.DEBUG_VALUE;
+				break;
+			}
+			if (GeneratorConstants.INFO.equals(logLevel)) {
+				value = GeneratorConstants.INFO_VALUE;
+				break;
+			}
+			if (GeneratorConstants.WARN.equals(logLevel)) {
+				value = GeneratorConstants.WARN_VALUE;
+				break;
+			}
+			if (GeneratorConstants.ERROR.equals(logLevel)) {
+				value = GeneratorConstants.ERROR_VALUE;
+			}
+			break;
+		}
+
+		this.setLogLevel(value);
+	}
+
+	protected void setLogLevel(final int logLevel) {
+		this.logLevel = logLevel;
 	}
 
 	public void branch(final String message) {

@@ -69,5 +69,9 @@ public interface GeneratorContext {
 	void error(final String message, final Throwable throwable);
 	void branch(final String message);
 	
+	boolean isDebugEnabled();
+	boolean isInfoEnabled();
+	boolean isTraceEnabled();
+	
 	Generator getGenerator();
 }
