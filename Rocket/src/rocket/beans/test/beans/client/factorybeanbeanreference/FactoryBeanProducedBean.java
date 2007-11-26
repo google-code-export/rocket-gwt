@@ -13,24 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.client;
 
-/**
- * A FactoryBean is a class that can on demand return a bean.
- * 
- * An additional annotation (factoryBean-objectType)must be specified at the class level to declare the type of bean produced by this factory.
- * 
- * @author Miroslav Pokorny
- */
-public interface FactoryBean {
-	/**
-	 * Returns either the singleton instance of create a new instance if the
-	 * bean is a prototype.
-	 */
-	Object getObject();
+package rocket.beans.test.beans.client.factorybeanbeanreference;
 
-	/**
-	 * Tests if the contained bean is a singleton.
-	 */
-	boolean isSingleton();
+public class FactoryBeanProducedBean {
+
 }

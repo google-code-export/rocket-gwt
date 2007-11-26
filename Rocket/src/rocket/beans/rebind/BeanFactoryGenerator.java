@@ -250,6 +250,10 @@ public class BeanFactoryGenerator extends Generator {
 		factoryBean.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
+		
+		// add an annotation that declares the actual bean type.
+		factoryBean.addMetaData( Constants.FACTORY_BEAN_OBJECT_TYPE, bean.getType().getName() );
+		
 		bean.setFactoryBean(factoryBean);
 
 		this.getGeneratorContext().debug("Subclassing " + superType + " as the FactoryBean for bean: " + bean);
@@ -734,13 +738,32 @@ public class BeanFactoryGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:tag", tag);
 
 		final String id = tag.getId();
-		final Type type = this.getBean(id).getType();
-
+		
+		// if the bean type is a factoryBean read get the bean's actual type from the annotation.
+		final GeneratorContext context = this.getGeneratorContext();
+		final Type factoryBean = this.getFactoryBean();
+		final Bean bean = this.getBean( id );
+		
+		Type type = bean.getType();			
+		if( type.isAssignableTo( factoryBean )){
+			// locate the annotation and get the type from there...
+			final List factoryBeanObjectTypes = type.getMetadataValues( Constants.FACTORY_BEAN_OBJECT_TYPE );
+			if( null == factoryBeanObjectTypes || factoryBeanObjectTypes.size() != 1 ){
+				throwFactoryBeanObjectTypeAnnotationMissing(bean);
+			}
+			final String factoryBeanObjectTypeName = (String) factoryBeanObjectTypes.get( 0 ); 
+			type = context.getType( factoryBeanObjectTypeName );
+		}
+		
 		final BeanReference beanReference = new BeanReference();
 		beanReference.setId(id);
 		beanReference.setType(type);
-		beanReference.setGeneratorContext(this.getGeneratorContext());
+		beanReference.setGeneratorContext( context );
 		return beanReference;
+	}
+	
+	protected void throwFactoryBeanObjectTypeAnnotationMissing( final Bean bean ){
+		throw new BeanFactoryGeneratorException( "Unable to find \"" + Constants.FACTORY_BEAN_OBJECT_TYPE + "\" annotation on the factoryBean declared for bean: " + bean );
 	}
 
 	protected StringValue asStringValue(final StringTag tag) {
@@ -1152,6 +1175,7 @@ public class BeanFactoryGenerator extends Generator {
 		proxyFactoryBean.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_FACTORY_BEAN_SUFFIX);
 		proxyFactoryBean.setSuperType(superType);
 		proxyFactoryBean.setVisibility(Visibility.PRIVATE);
+		
 		bean.setProxyFactoryBean(proxyFactoryBean);
 
 		context.debug("Subclassing " + superType + " as the FactoryBean for the proxy of bean: " + bean);
@@ -1515,6 +1539,10 @@ public class BeanFactoryGenerator extends Generator {
 		return this.getGeneratorContext().getType(Constants.METHOD_INVOCATION);
 	}
 
+	protected Type getFactoryBean() {
+		return this.getGeneratorContext().getType(Constants.FACTORY_BEAN );
+	}
+	
 	/**
 	 * Fetches the interface type throwing an excecption if the type is not
 	 * found or not an interface.
@@ -1558,7 +1586,7 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected List getParameterListWithOnlyObject() {
-		return Arrays.asList(new Type[] { this.getGeneratorContext().getObject() });
+		return Collections.nCopies( 1, this.getGeneratorContext().getObject() );
 	}
 
 	protected void throwBeanTypeNotFound(final String id, final String className) {

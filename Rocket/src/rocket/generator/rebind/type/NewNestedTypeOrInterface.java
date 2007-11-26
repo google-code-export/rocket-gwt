@@ -107,10 +107,11 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
 		this.log();
-		this.writeDeclaration(writer);
-
-		writer.indent();
+		
 		this.writeComments( writer );
+		
+		this.writeDeclaration(writer);
+		writer.indent();
 		this.writeInitializers(writer);
 		this.writeConstructors(writer);
 		this.writeFields(writer);
