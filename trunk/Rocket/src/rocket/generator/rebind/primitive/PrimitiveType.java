@@ -38,8 +38,16 @@ abstract public class PrimitiveType extends AbstractType {
 		throw new UnsupportedOperationException();
 	}
 
+	public Set getInterfaces(){
+		return Collections.EMPTY_SET;
+	}
+	
 	protected Set createInterfaces() {
 		throw new UnsupportedOperationException();
+	}
+	
+	public Set getSubTypes(){
+		return Collections.EMPTY_SET;
 	}
 
 	protected Set createSubTypes() {
@@ -122,7 +130,11 @@ abstract public class PrimitiveType extends AbstractType {
 		return Collections.EMPTY_LIST;
 	}
 
-	protected Set createNestedTypes() {
+	public Set getNestedTypes(){
 		return Collections.EMPTY_SET;
+	}
+	
+	protected Set createNestedTypes() {
+		throw new UnsupportedOperationException();
 	}
 }
