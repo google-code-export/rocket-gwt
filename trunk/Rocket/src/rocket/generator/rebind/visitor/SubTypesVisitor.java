@@ -15,7 +15,9 @@
  */
 package rocket.generator.rebind.visitor;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -27,6 +29,12 @@ import rocket.util.client.ObjectHelper;
  */
 abstract public class SubTypesVisitor {
 
+	protected SubTypesVisitor(){
+		super();
+		
+		this.setVisited( this.createVisited() );
+	}
+	
 	public void start(final Type type) {
 		ObjectHelper.checkNotNull("type:type", type);
 
@@ -42,12 +50,22 @@ abstract public class SubTypesVisitor {
 		}
 	}
 
+	/**
+	 * Handles the logic involved in visiting all the sub types for a given type without ever visiting the same type more than once.
+	 * @param type A type 
+	 */
 	protected void visitSubTypes(final Type type) {
-		ObjectHelper.checkNotNull("type:type", type);
+		ObjectHelper.checkNotNull("parameter:type", type);
 
+		final Set visited = this.getVisited();
+		
 		final Iterator subTypes = type.getSubTypes().iterator();
 		while (subTypes.hasNext()) {
 			final Type subType = (Type) subTypes.next();
+			if( visited.contains( subType )){
+				continue;
+			}			
+			
 			if (this.visit(subType)) {
 				break;
 			}
@@ -70,4 +88,24 @@ abstract public class SubTypesVisitor {
 	 * @return
 	 */
 	abstract protected boolean skipInitialType();
+	
+	/**
+	 * A set which keeps track of types that have already been visited. 
+	 * This guarantees that types are only ever seen once by the {@link #visit(Type)} method.
+	 */
+	private Set visited;
+	
+	protected Set getVisited(){
+		ObjectHelper.checkNotNull("field:visited", visited );
+		return this.visited;
+	}
+	
+	protected void setVisited( final Set visited ){
+		ObjectHelper.checkNotNull("parameter:visited", visited );
+		this.visited = visited;
+	}
+	
+	protected Set createVisited(){
+		return new HashSet();
+	}
 }
