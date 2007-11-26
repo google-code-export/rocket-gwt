@@ -17,6 +17,7 @@ package rocket.beans.rebind;
 
 import rocket.beans.client.BeanFactory;
 import rocket.beans.client.BeanFactoryImpl;
+import rocket.beans.client.FactoryBean;
 import rocket.beans.client.PrototypeFactoryBean;
 import rocket.beans.client.SingletonFactoryBean;
 import rocket.beans.client.aop.Advice;
@@ -44,12 +45,16 @@ class Constants {
 
 	static final String BEAN_FILE_SUFFIX = "xml";
 
+	final static String FACTORY_BEAN = FactoryBean.class.getName();;
+	
 	final static String FACTORY_BEAN_SUFFIX = "__FactoryBean";
 
 	final static String SINGLETON_FACTORY_BEAN = SingletonFactoryBean.class.getName();
 
 	final static String PROTOTYPE_FACTORY_BEAN = PrototypeFactoryBean.class.getName();
 
+	final static String FACTORY_BEAN_OBJECT_TYPE = "factoryBean-objectType";
+	
 	final static String SERVICE_DEF_TARGET = ServiceDefTarget.class.getName();
 
 	final static String CREATE_INSTANCE = "createInstance";

@@ -36,6 +36,8 @@ import rocket.beans.test.beans.client.constructornotfound.ConstructorNotFoundBea
 import rocket.beans.test.beans.client.doubleproperty.ClassWithDoubleProperty;
 import rocket.beans.test.beans.client.doubleproperty.DoublePropertyBeanFactory;
 import rocket.beans.test.beans.client.escapebeanidintosafeclassnamecomponents.EscapeBeanIdsIntoSafeClassNamesBeanFactory;
+import rocket.beans.test.beans.client.factorybeanbeanreference.FactoryBeanBeanReferenceBeanFactory;
+import rocket.beans.test.beans.client.factorybeanbeanreference.FactoryBeanProducedBean;
 import rocket.beans.test.beans.client.factorymethod.Bean;
 import rocket.beans.test.beans.client.factorymethod.FactoryMethodBeanFactory;
 import rocket.beans.test.beans.client.factorymethodnotfound.FactoryMethodNotFoundBeanFactory;
@@ -395,6 +397,12 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		assertNotNull("bean reference (interface) was not set", bean.getInterface() );
 	}
 
+	public void testBeanReferenceWithFactoryBean() {
+		final BeanFactory factory = (BeanFactory) GWT.create(FactoryBeanBeanReferenceBeanFactory.class);
+		final FactoryBeanProducedBean bean = (FactoryBeanProducedBean) factory.getBean(BEAN_ID);
+		assertNotNull(bean);
+	}
+	
 	public void testRemoteRpcService() {
 		final BeanFactory factory = (BeanFactory) GWT.create(RemoteRpcServiceBeanFactory.class);
 		final RemoteRpcServiceAsync bean = (RemoteRpcServiceAsync) factory.getBean(BEAN_ID);
