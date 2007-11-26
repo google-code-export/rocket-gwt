@@ -239,9 +239,7 @@ abstract public class ReachableTypesVisitor {
 
 		final ConcreteTypesImplementingInterfaceVisitor implementedVisitor = new ConcreteTypesImplementingInterfaceVisitor() {
 			protected boolean visit(final Type type) {
-				if (false == ReachableTypesVisitor.this.hasAlreadyBeenVisited(type)) {
-					ReachableTypesVisitor.this.visitTypeThatImplementsInterface(type, interfacee);
-				}
+				ReachableTypesVisitor.this.processTypeThatImplementsInterface(type, interfacee);
 				return false;
 			}
 
@@ -252,6 +250,17 @@ abstract public class ReachableTypesVisitor {
 		implementedVisitor.start(interfacee);
 	}
 
+	protected boolean processTypeThatImplementsInterface(final Type type, final Type interfacee){
+		if (false == ReachableTypesVisitor.this.hasAlreadyBeenVisited(type)) {
+			if( false == this.skipTypeThatImplementsInterface( type, interfacee )){
+				this.visitTypeThatImplementsInterface(type, interfacee);	
+			}										
+		}
+		return false;
+	}
+	
+	abstract protected boolean skipTypeThatImplementsInterface(final Type type, final Type interfacee);
+	
 	protected void visitTypeThatImplementsInterface(final Type type, final Type interfacee) {
 		this.visitType(type);
 	}
