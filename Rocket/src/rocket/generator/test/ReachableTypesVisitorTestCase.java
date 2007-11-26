@@ -286,7 +286,11 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 				this.alreadyVisitedFields.add( field );
 				return false;
 			}
-			final Set alreadyVisitedFields = new HashSet();			
+			final Set alreadyVisitedFields = new HashSet();
+			
+			protected boolean skipTypeThatImplementsInterface(final Type type, final Type interfacee){
+				return false;
+			}
 		};
 	}
 	
