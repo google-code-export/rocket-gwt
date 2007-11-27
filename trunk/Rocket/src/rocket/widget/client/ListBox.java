@@ -41,33 +41,25 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ListBox extends FocusWidget {
 
+	/**
+	 * Reuse the GWT TextBox support.
+	 */
+	static private ListBoxSupport support = createSupport();
+
+	static ListBoxSupport getSupport() {
+		return support;
+	}
+
+	static ListBoxSupport createSupport() {
+		return (ListBoxSupport) GWT.create(ListBoxSupport.class);
+	}
+	
 	public ListBox() {
 		super();
-
-		this.setSupport(this.createSupport());
 	}
 
 	public ListBox(Element element) {
 		super(element);
-
-		this.setSupport(this.createSupport());
-	}
-
-	/**
-	 * Reuse the GWT TextBox support.
-	 */
-	private ListBoxSupport support;
-
-	ListBoxSupport getSupport() {
-		return support;
-	}
-
-	void setSupport(final ListBoxSupport support) {
-		this.support = support;
-	}
-
-	ListBoxSupport createSupport() {
-		return (ListBoxSupport) GWT.create(ListBoxSupport.class);
 	}
 
 	protected void checkElement(Element element) {
@@ -127,7 +119,7 @@ public class ListBox extends FocusWidget {
 	 * @return the number of items
 	 */
 	public int getItemCount() {
-		return this.getSupport().getItemCount(getElement());
+		return ListBox.getSupport().getItemCount(getElement());
 	}
 
 	/**
@@ -141,7 +133,7 @@ public class ListBox extends FocusWidget {
 	 */
 	public String getItemText(final int index) {
 		checkIndex(index);
-		return this.getSupport().getItemText(getElement(), index);
+		return ListBox.getSupport().getItemText(getElement(), index);
 	}
 
 	/**
@@ -190,7 +182,7 @@ public class ListBox extends FocusWidget {
 	 */
 	public void setItemSelected(final int index, final boolean selected) {
 		checkIndex(index);
-		this.getSupport().setItemSelected(getElement(), index, selected);
+		ListBox.getSupport().setItemSelected(getElement(), index, selected);
 	}
 
 	/**
@@ -204,7 +196,7 @@ public class ListBox extends FocusWidget {
 	 */
 	public String getValue(final int index) {
 		checkIndex(index);
-		return this.getSupport().getItemValue(getElement(), index);
+		return ListBox.getSupport().getItemValue(getElement(), index);
 	}
 
 	/**
@@ -221,7 +213,7 @@ public class ListBox extends FocusWidget {
 	 */
 	public void setValue(final int index, final String value) {
 		checkIndex(index);
-		this.getSupport().setValue(getElement(), index, value);
+		ListBox.getSupport().setValue(getElement(), index, value);
 	}
 
 	/**
@@ -262,7 +254,7 @@ public class ListBox extends FocusWidget {
 	 * Removes all items from the list box.
 	 */
 	public void clear() {
-		this.getSupport().clear(getElement());
+		ListBox.getSupport().clear(getElement());
 	}
 
 	/**
@@ -275,7 +267,7 @@ public class ListBox extends FocusWidget {
 	 */
 	public void removeItem(int index) {
 		checkIndex(index);
-		this.getSupport().removeItem(getElement(), index);
+		ListBox.getSupport().removeItem(getElement(), index);
 	}
 
 	/**
@@ -335,7 +327,7 @@ public class ListBox extends FocusWidget {
 	 */
 	public boolean isItemSelected(int index) {
 		checkIndex(index);
-		return this.getSupport().isItemSelected(getElement(), index);
+		return ListBox.getSupport().isItemSelected(getElement(), index);
 	}
 
 	/**

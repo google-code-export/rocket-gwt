@@ -49,6 +49,20 @@ import com.google.gwt.user.client.ui.impl.FormPanelImplHost;
  */
 public class FormPanel extends Panel {
 
+
+	/**
+	 * Reuse the GWT FormPanel support.
+	 */
+	static private FormPanelImpl support = createSupport();
+
+	static FormPanelImpl getSupport() {
+		return support;
+	}
+	
+	static FormPanelImpl createSupport() {
+		return (FormPanelImpl) GWT.create(FormPanelImpl.class);
+	}
+	
 	/**
 	 * A generator that is continually incremented to guaranteed that unique
 	 * target values are used when invoking {@link #FormPanel()}
@@ -94,25 +108,7 @@ public class FormPanel extends Panel {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.FORM_TAG);
 	}
 
-	/**
-	 * Reuse the GWT FormPanel support.
-	 */
-	private FormPanelImpl support;
-
-	FormPanelImpl getSupport() {
-		return support;
-	}
-
-	void setSupport(final FormPanelImpl support) {
-		this.support = support;
-	}
-
-	FormPanelImpl createSupport() {
-		return (FormPanelImpl) GWT.create(FormPanelImpl.class);
-	}
-
 	protected void beforeCreatePanelElement() {
-		this.setSupport(this.createSupport());
 	}
 
 	protected Element createPanelElement() {
@@ -218,7 +214,7 @@ public class FormPanel extends Panel {
 		// Fire the onSubmit event, because javascript's form.submit() does not
 		// fire the built-in onsubmit event.
 		if (false == this.getFormHandlers().fireOnSubmit(this)) {
-			this.getSupport().submit(getElement(), this.getIFrame());
+			FormPanel.getSupport().submit(getElement(), this.getIFrame());
 		}
 	}
 
@@ -237,7 +233,7 @@ public class FormPanel extends Panel {
 		// because there is no standard onLoad event on iframes that works
 		// across
 		// browsers.
-		this.getSupport().hookEvents(iframe, getElement(), new FormPanelImplHost() {
+		FormPanel.getSupport().hookEvents(iframe, getElement(), new FormPanelImplHost() {
 
 			public boolean onFormSubmit() {
 				return FormPanel.this.onFormSubmit();
@@ -288,7 +284,7 @@ public class FormPanel extends Panel {
 		DeferredCommand.addCommand(new Command() {
 			public void execute() {
 				final Element iframe = FormPanel.this.getIFrame();
-				FormPanel.this.getFormHandlers().fireOnComplete(FormPanel.this, FormPanel.this.getSupport().getContents(iframe));
+				FormPanel.this.getFormHandlers().fireOnComplete(FormPanel.this, FormPanel.getSupport().getContents(iframe));
 			}
 		});
 	}
@@ -307,7 +303,7 @@ public class FormPanel extends Panel {
 
 		final Element iframe = this.getIFrame();
 		// Unhook the iframe's onLoad when detached.
-		this.getSupport().unhookEvents(iframe, getElement());
+		FormPanel.getSupport().unhookEvents(iframe, getElement());
 
 		Dom.removeFromParent(iframe);
 		this.clearIFrame();
@@ -349,7 +345,7 @@ public class FormPanel extends Panel {
 	 * @return the form's encoding
 	 */
 	public String getEncoding() {
-		return this.getSupport().getEncoding(getElement());
+		return FormPanel.getSupport().getEncoding(getElement());
 	}
 
 	/**
@@ -360,7 +356,7 @@ public class FormPanel extends Panel {
 	 *            the form's encoding
 	 */
 	public void setEncoding(String encodingType) {
-		this.getSupport().setEncoding(getElement(), encodingType);
+		FormPanel.getSupport().setEncoding(getElement(), encodingType);
 	}
 
 	/**
