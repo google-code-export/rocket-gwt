@@ -33,16 +33,26 @@ import com.google.gwt.user.client.ui.impl.TextBoxImpl;
  */
 abstract class TextEntryWidget extends FocusWidget {
 
+	/**
+	 * Reuse the GWT TextBox support.
+	 */
+	static private TextBoxImpl textBoxSupport = createTextBoxSupport();
+
+	static TextBoxImpl getTextBoxSupport() {
+		return textBoxSupport;
+	}
+
+	static TextBoxImpl createTextBoxSupport() {
+		return (TextBoxImpl) GWT.create(TextBoxImpl.class);
+	}
+
+	
 	public TextEntryWidget() {
 		super();
-
-		this.setTextBoxSupport(this.createTextBoxSupport());
 	}
 
 	public TextEntryWidget(Element element) {
 		super(element);
-
-		this.setTextBoxSupport(this.createTextBoxSupport());
 	}
 
 	protected void afterCreateElement() {
@@ -86,23 +96,6 @@ abstract class TextEntryWidget extends FocusWidget {
 
 	abstract protected String getReadOnlyStyleName();
 
-	/**
-	 * Reuse the GWT TextBox support.
-	 */
-	private TextBoxImpl textBoxSupport;
-
-	TextBoxImpl getTextBoxSupport() {
-		return textBoxSupport;
-	}
-
-	void setTextBoxSupport(final TextBoxImpl support) {
-		this.textBoxSupport = support;
-	}
-
-	TextBoxImpl createTextBoxSupport() {
-		return (TextBoxImpl) GWT.create(TextBoxImpl.class);
-	}
-
 	abstract public int getCursorPos();
 
 	public void setCursorPos(final int pos) {
@@ -140,7 +133,7 @@ abstract class TextEntryWidget extends FocusWidget {
 			throw new IndexOutOfBoundsException("From Index: " + pos + "  To Index: " + (pos + length) + "  Text Length: "
 					+ getText().length());
 		}
-		this.getTextBoxSupport().setSelectionRange(getElement(), pos, length);
+		TextEntryWidget.getTextBoxSupport().setSelectionRange(getElement(), pos, length);
 	}
 
 	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
