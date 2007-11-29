@@ -37,6 +37,9 @@ public class Bean{
 		this.setAdvices(this.createAdvisors());
 	}
 
+	/**
+	 * The id of the bean
+	 */
 	private String id;
 
 	public String getId() {
@@ -138,6 +141,30 @@ public class Bean{
 		this.proxyFactoryBean = proxyFactoryBean;
 	}
 
+
+	/**
+	 * A flag which when true indicates that this singleton( its got to be a singleton ) is eagerly / non lazily loaded.
+	 */
+	private boolean eagerLoad;
+
+	public boolean isEagerLoad() {
+		return this.eagerLoad;
+	}
+
+	public void setEagerLoad(final boolean eagerLoad) {
+		this.eagerLoad = eagerLoad;
+	}
+	
+	private boolean singleton;
+	
+	public boolean isSingleton(){
+		return this.singleton;
+	}
+	
+	public void setSingleton( final boolean singleton ){
+		this.singleton = singleton;
+	}
+	
 	public String toString() {
 		return "bean id\"" + this.id + "\" type\"" + this.type + "\".";
 	}

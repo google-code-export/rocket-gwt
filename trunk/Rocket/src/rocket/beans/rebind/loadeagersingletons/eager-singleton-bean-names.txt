@@ -1,0 +1,5 @@
+// eager-singleton-bean-names.txt
+
+// return a string array of bean names...
+return new String[]{ ${beanNames} };
+

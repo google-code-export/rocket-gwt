@@ -104,4 +104,8 @@ class Constants {
 	
 	final static String INCLUDE_TAG = "include";
 	final static String INCLUDE_FILE_ATTRIBUTE = "file";
+	
+	final static String LAZYLOADED = "true";
+	final static String EAGERLY_LOADED = "false";
+	final static String LAZY_LOADED_ATTRIBUTE = "lazyLoaded";	
 }

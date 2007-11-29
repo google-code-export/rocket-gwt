@@ -35,7 +35,9 @@ import rocket.beans.test.beans.client.charproperty.ClassWithCharProperty;
 import rocket.beans.test.beans.client.constructornotfound.ConstructorNotFoundBeanFactory;
 import rocket.beans.test.beans.client.doubleproperty.ClassWithDoubleProperty;
 import rocket.beans.test.beans.client.doubleproperty.DoublePropertyBeanFactory;
-import rocket.beans.test.beans.client.escapebeanidintosafeclassnamecomponents.EscapeBeanIdsIntoSafeClassNamesBeanFactory;
+import rocket.beans.test.beans.client.eagerlyloadedsingleton.EagerlyLoadedSingletonBean;
+import rocket.beans.test.beans.client.eagerlyloadedsingleton.EagerlyLoadedSingletonBeanFactory;
+import rocket.beans.test.beans.client.escapebeanidintosafeclassnamecomponents.EscapeBeanIdIntoSafeClassNamesBeanFactory;
 import rocket.beans.test.beans.client.factorybeanbeanreference.FactoryBeanBeanReferenceBeanFactory;
 import rocket.beans.test.beans.client.factorybeanbeanreference.FactoryBeanProducedBean;
 import rocket.beans.test.beans.client.factorymethod.Bean;
@@ -52,6 +54,8 @@ import rocket.beans.test.beans.client.invalidbeanscope.InvalidScopeBeanFactory;
 import rocket.beans.test.beans.client.jsonrpcproperty.BeanWithJsonService;
 import rocket.beans.test.beans.client.jsonrpcproperty.JsonServiceAsync;
 import rocket.beans.test.beans.client.jsonrpcproperty.JsonServicePropertyBeanFactory;
+import rocket.beans.test.beans.client.lazyloadedsingleton.LazySingletonBean;
+import rocket.beans.test.beans.client.lazyloadedsingleton.LazyLoadedBeanFactory;
 import rocket.beans.test.beans.client.listproperty.ClassWithListProperty;
 import rocket.beans.test.beans.client.listproperty.ListPropertyBeanFactory;
 import rocket.beans.test.beans.client.longproperty.ClassWithLongProperty;
@@ -211,10 +215,23 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		}
 	}
 
-	public void testEscapeBeanIdsIntoSafeClassNames() {
-		final EscapeBeanIdsIntoSafeClassNamesBeanFactory beanFactory = (EscapeBeanIdsIntoSafeClassNamesBeanFactory) GWT
-				.create(EscapeBeanIdsIntoSafeClassNamesBeanFactory.class);
+	public void testEscapeBeanIdIntoSafeClassNames() {
+		final EscapeBeanIdIntoSafeClassNamesBeanFactory beanFactory = (EscapeBeanIdIntoSafeClassNamesBeanFactory) GWT
+				.create(EscapeBeanIdIntoSafeClassNamesBeanFactory.class);
 		assertNotNull(beanFactory);
+	}
+
+	public void testLazyLoadedSingletonBean() {
+		final LazyLoadedBeanFactory beanFactory = (LazyLoadedBeanFactory)GWT.create(LazyLoadedBeanFactory.class);
+		assertFalse("singleton is not yet loaded", LazySingletonBean.loaded );
+		beanFactory.getBean( BEAN_ID );
+		assertTrue("singleton is now loaded", LazySingletonBean.loaded );		
+	}
+
+	public void testEagerLoadedSingletonBean() {
+		assertFalse("singleton should have not been have been loaded until factory is created.", EagerlyLoadedSingletonBean.loaded );
+		final EagerlyLoadedSingletonBeanFactory beanFactory = (EagerlyLoadedSingletonBeanFactory)GWT.create(EagerlyLoadedSingletonBeanFactory.class);
+		assertTrue("singleton should have been loaded", EagerlyLoadedSingletonBean.loaded );
 	}
 
 	public void testFactoryMethodNotFound() {
