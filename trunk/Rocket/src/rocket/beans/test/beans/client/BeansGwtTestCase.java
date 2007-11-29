@@ -494,9 +494,10 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 			assertBindingFailed(GWT.create(MultipleIncludedFilesCycleBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
 			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
+			
+			final String message = failed.getMessage();
+			assertTrue( "" + message, message.indexOf("ActualBeanFactoryWithCycle.xml") != -1 );
+		} 
 	}
 	
 	public void testAdvisorIsNotAnAdvice() {

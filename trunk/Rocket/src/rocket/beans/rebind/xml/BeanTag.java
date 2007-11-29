@@ -23,6 +23,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import rocket.beans.rebind.placeholder.PlaceHolderResolver;
+import rocket.util.client.StringHelper;
 
 /**
  * A bean like view of a bean tag
@@ -121,5 +122,20 @@ public class BeanTag extends XmlDocumentComponent {
 		}
 
 		return properties;
+	}
+	
+	/**
+	 * The original file that contained this very tag.
+	 */
+	private String filename;
+	
+	public String getFilename(){
+		StringHelper.checkNotEmpty( "field:filename", filename );
+		return this.filename;
+	}
+	
+	public void setFilename( final String filename ){
+		StringHelper.checkNotEmpty( "parameter:filename", filename );
+		this.filename = filename;
 	}
 }

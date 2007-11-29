@@ -53,88 +53,94 @@ import rocket.util.client.SystemHelper;
 public class DocumentWalker {
 
 	/**
-	 * Initializes this document walker so that it may be used to travel about
-	 * the dom.
+	 * Initializes this document walker so that it may be used to travel about the dom.
 	 * 
-	 * @param generator
-	 * @param fileName
+	 * @param fileName The name of the first xml document to be processed.
 	 */
-	public void process(final String fileName) {		
+	public void process(final String fileName) {
 		try {
 			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setValidating(true);
 
 			final DocumentBuilder builder = factory.newDocumentBuilder();
 			builder.setErrorHandler(this.getErrorHandler());
-			builder.setEntityResolver(this.getEntityResolver());		
+			builder.setEntityResolver(this.getEntityResolver());
 
 			this.setAdvices(new ArrayList());
 			this.setBeans(new ArrayList());
 			this.setRemoteJsonServices(new ArrayList());
 			this.setRemoteRpcServices(new ArrayList());
 
-			this.setIncludedFiles( new HashSet() );
-			
-			this.processDocument( builder, fileName );
-			
+			this.setIncludedFiles(new HashSet());
+
+			this.processDocument(builder, fileName);
+
 		} catch (final ParserConfigurationException caught) {
-			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst preparing to read the file \"" + fileName + "\".", caught);
-		} catch (final SAXParseException caught) {	
-			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + fileName + "\" at line: " + caught.getLineNumber() + ", column: " + caught.getColumnNumber(), caught);
-		} catch (final SAXException caught) {	
+			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst preparing to read the file \"" + fileName + "\".",
+					caught);
+		}
+	}
+
+	protected void processDocument(final DocumentBuilder builder, final String fileName) {
+		try {
+			this.processDocument0(builder, fileName);
+		} catch (final SAXParseException caught) {
+			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + fileName + "\" at line: "
+					+ caught.getLineNumber() + ", column: " + caught.getColumnNumber(), caught);
+		} catch (final SAXException caught) {
 			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + fileName + "\".", caught);
 		} catch (final IOException caught) {
-			// FIXME returns wrong file name. 
 			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst reading the file \"" + fileName + "\".", caught);
-		} catch( final RuntimeException caught ){
+		} catch (final RuntimeException caught) {
 			throw caught;
 		}
 	}
-	
-	protected void processDocument( final DocumentBuilder builder, final String fileName ) throws SAXException, IOException{
-		ObjectHelper.checkNotNull( "parameter:builder", builder );
-		StringHelper.checkNotEmpty( "parameter:fileName", fileName );
-		if( fileName.charAt( 0) != '/'){
-			SystemHelper.fail( "parameter:file", "Only absolute and not relative fileName's may be passed, fileName\"" + fileName + "\".");
+
+	protected void processDocument0(final DocumentBuilder builder, final String fileName) throws SAXException, IOException {
+		ObjectHelper.checkNotNull("parameter:builder", builder);
+		StringHelper.checkNotEmpty("parameter:fileName", fileName);
+		if (fileName.charAt(0) != '/') {
+			SystemHelper.fail("parameter:file", "Only classpath absolute and not relative fileName paths may be passed, fileName \""
+					+ fileName + "\".");
 		}
-		
+
 		final Set includedFiles = this.getIncludedFiles();
-		if( includedFiles.contains( fileName )){
-			throwIncludedFileCycle( fileName );
+		if (includedFiles.contains(fileName)) {
+			throwIncludedFileCycle(fileName);
 		}
-		includedFiles.add( fileName );
-		
+		includedFiles.add(fileName);
+
 		final Generator generator = this.getGenerator();
 		final GeneratorContext context = generator.getGeneratorContext();
-		context.info( "Processing document fileName\"" + fileName + "\".");
-				
+		context.info("Processing document fileName\"" + fileName + "\".");
+
 		final InputStream inputStream = generator.getResource(fileName);
 		final Document document = builder.parse(inputStream);
 
 		// process the local tags
 		final PlaceHolderResolver placeHolderResolver = this.loadPlaceholderFiles(document);
-		final List included = this.findIncludedFiles(document, placeHolderResolver); 
+		final List included = this.findIncludedFiles(document, placeHolderResolver);
 
-		this.getBeans().addAll( this.findBeans(document, placeHolderResolver));
-		this.getRemoteJsonServices().addAll( this.findRemoteJsonServices(document, placeHolderResolver));
-		this.getRemoteRpcServices().addAll( this.findRemoteRpcServices(document, placeHolderResolver));
-		this.getAdvices().addAll( this.findAdvices(document, placeHolderResolver));
-		
+		this.getBeans().addAll(this.findBeans(document, fileName, placeHolderResolver));
+		this.getRemoteJsonServices().addAll(this.findRemoteJsonServices(document, placeHolderResolver));
+		this.getRemoteRpcServices().addAll(this.findRemoteRpcServices(document, placeHolderResolver));
+		this.getAdvices().addAll(this.findAdvices(document, placeHolderResolver));
+
 		// now include the included files...
 		final Iterator includedFilesIterator = included.iterator();
-		while( includedFilesIterator.hasNext() ){
+		while (includedFilesIterator.hasNext()) {
 			final IncludeTag includeFile = (IncludeTag) includedFilesIterator.next();
 			final String includedFileFileName = includeFile.getFile();
-			
-			this.processDocument(builder, includedFileFileName);			
+
+			this.processDocument(builder, includedFileFileName);
 		}
 	}
-	
-	protected void throwIncludedFileCycle( final String fileName ){
+
+	protected void throwIncludedFileCycle(final String fileName) {
 		throw new BeanFactoryGeneratorException("The file \"" + fileName + "\" has previously been included causing a cycle.");
 	}
-	
-	protected PlaceHolderResolver loadPlaceholderFiles( final Document document ) {
+
+	protected PlaceHolderResolver loadPlaceholderFiles(final Document document) {
 		final PlaceHolderResolver placeHolderResolver = new PlaceHolderResolver();
 
 		final NodeList tags = document.getElementsByTagName(Constants.PLACE_HOLDERS_TAG);
@@ -151,17 +157,26 @@ public class DocumentWalker {
 
 		return placeHolderResolver;
 	}
-	
-	protected List findBeans( final Document document, final PlaceHolderResolver placeHolderResolver ){
-		ObjectHelper.checkNotNull( "parameter:document", document );
-		ObjectHelper.checkNotNull( "parameter:placeHolderResolver", placeHolderResolver );
-		
-		final NodeList nodeList = document.getElementsByTagName(Constants.BEAN_TAG);		
+
+	/**
+	 * Builds a list containing BeanTags for each and every BEAN element within the given document.
+	 * @param document The source document.
+	 * @param filename The filename is used to construct any exception messages
+	 * @param placeHolderResolver 
+	 * @return
+	 */
+	protected List findBeans(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
+		ObjectHelper.checkNotNull("parameter:document", document);
+		StringHelper.checkNotEmpty("parameter:filename", filename);
+		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
+
+		final NodeList nodeList = document.getElementsByTagName(Constants.BEAN_TAG);
 
 		return new AbstractList() {
 			public Object get(final int index) {
 				final BeanTag bean = new BeanTag();
 				bean.setElement((Element) nodeList.item(index));
+				bean.setFilename(filename);
 				bean.setPlaceHolderResolver(placeHolderResolver);
 				return bean;
 			}
@@ -169,13 +184,13 @@ public class DocumentWalker {
 			public int size() {
 				return nodeList.getLength();
 			}
-		};		
+		};
 	}
 
-	protected List findRemoteJsonServices( final Document document, final PlaceHolderResolver placeHolderResolver ){
-		ObjectHelper.checkNotNull( "parameter:document", document );
-		ObjectHelper.checkNotNull( "parameter:placeHolderResolver", placeHolderResolver );
-		
+	protected List findRemoteJsonServices(final Document document, final PlaceHolderResolver placeHolderResolver) {
+		ObjectHelper.checkNotNull("parameter:document", document);
+		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
+
 		final NodeList nodeList = document.getElementsByTagName(Constants.REMOTE_JSON_SERVICE_TAG);
 
 		return new AbstractList() {
@@ -191,10 +206,11 @@ public class DocumentWalker {
 			}
 		};
 	}
-	protected List findRemoteRpcServices( final Document document, final PlaceHolderResolver placeHolderResolver ){
-		ObjectHelper.checkNotNull( "parameter:document", document );
-		ObjectHelper.checkNotNull( "parameter:placeHolderResolver", placeHolderResolver );
-		
+
+	protected List findRemoteRpcServices(final Document document, final PlaceHolderResolver placeHolderResolver) {
+		ObjectHelper.checkNotNull("parameter:document", document);
+		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
+
 		final NodeList nodeList = document.getElementsByTagName(Constants.REMOTE_RPC_SERVICE_TAG);
 
 		return new AbstractList() {
@@ -210,11 +226,11 @@ public class DocumentWalker {
 			}
 		};
 	}
-	
-	protected List findAdvices( final Document document, final PlaceHolderResolver placeHolderResolver ){
-		ObjectHelper.checkNotNull( "parameter:document", document );
-		ObjectHelper.checkNotNull( "parameter:placeHolderResolver", placeHolderResolver );
-		
+
+	protected List findAdvices(final Document document, final PlaceHolderResolver placeHolderResolver) {
+		ObjectHelper.checkNotNull("parameter:document", document);
+		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
+
 		final NodeList nodeList = document.getElementsByTagName(Constants.ADVICE_TAG);
 
 		return new AbstractList() {
@@ -230,12 +246,12 @@ public class DocumentWalker {
 			}
 		};
 	}
-	
-	protected List findIncludedFiles( final Document document, final PlaceHolderResolver placeHolderResolver ){
-		ObjectHelper.checkNotNull( "parameter:document", document );
-		ObjectHelper.checkNotNull( "parameter:placeHolderResolver", placeHolderResolver );
-		
-		final NodeList nodeList = document.getElementsByTagName(Constants.INCLUDE_TAG);		
+
+	protected List findIncludedFiles(final Document document, final PlaceHolderResolver placeHolderResolver) {
+		ObjectHelper.checkNotNull("parameter:document", document);
+		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
+
+		final NodeList nodeList = document.getElementsByTagName(Constants.INCLUDE_TAG);
 
 		return new AbstractList() {
 			public Object get(final int index) {
@@ -248,10 +264,9 @@ public class DocumentWalker {
 			public int size() {
 				return nodeList.getLength();
 			}
-		};		
+		};
 	}
 
-	
 	private EntityResolver entityResolver;
 
 	protected EntityResolver getEntityResolver() {
@@ -276,75 +291,75 @@ public class DocumentWalker {
 		this.errorHandler = errorHandler;
 	}
 
-private Generator generator;
-	
+	private Generator generator;
+
 	protected Generator getGenerator() {
-		ObjectHelper.checkNotNull("field:generator", generator );
+		ObjectHelper.checkNotNull("field:generator", generator);
 		return this.generator;
 	}
-	
-	public void setGenerator( final Generator generator ){
-		ObjectHelper.checkNotNull("parameter:generator", generator );
+
+	public void setGenerator(final Generator generator) {
+		ObjectHelper.checkNotNull("parameter:generator", generator);
 		this.generator = generator;
 	}
-	
+
 	private List beans;
-	
+
 	public List getBeans() {
-		ObjectHelper.checkNotNull("field:beans", beans );
+		ObjectHelper.checkNotNull("field:beans", beans);
 		return this.beans;
 	}
-	
-	protected void setBeans( final List beans ){
-		ObjectHelper.checkNotNull("parameter:beans", beans );
+
+	protected void setBeans(final List beans) {
+		ObjectHelper.checkNotNull("parameter:beans", beans);
 		this.beans = beans;
 	}
 
 	private List remoteJsonServices;
-	
+
 	public List getRemoteJsonServices() {
-		ObjectHelper.checkNotNull("field:remoteJsonServices", remoteJsonServices );
+		ObjectHelper.checkNotNull("field:remoteJsonServices", remoteJsonServices);
 		return this.remoteJsonServices;
 	}
-	
-	protected void setRemoteJsonServices( final List remoteJsonServices ){
-		ObjectHelper.checkNotNull("parameter:remoteJsonServices", remoteJsonServices );
+
+	protected void setRemoteJsonServices(final List remoteJsonServices) {
+		ObjectHelper.checkNotNull("parameter:remoteJsonServices", remoteJsonServices);
 		this.remoteJsonServices = remoteJsonServices;
 	}
-	
+
 	private List remoteRpcServices;
-	
+
 	public List getRemoteRpcServices() {
-		ObjectHelper.checkNotNull("field:remoteRpcServices", remoteRpcServices );
+		ObjectHelper.checkNotNull("field:remoteRpcServices", remoteRpcServices);
 		return this.remoteRpcServices;
 	}
-	
-	protected void setRemoteRpcServices( final List remoteRpcServices ){
-		ObjectHelper.checkNotNull("parameter:remoteRpcServices", remoteRpcServices );
+
+	protected void setRemoteRpcServices(final List remoteRpcServices) {
+		ObjectHelper.checkNotNull("parameter:remoteRpcServices", remoteRpcServices);
 		this.remoteRpcServices = remoteRpcServices;
 	}
-	
+
 	private List advices;
-	
+
 	public List getAdvices() {
-		ObjectHelper.checkNotNull("field:advices", advices );
+		ObjectHelper.checkNotNull("field:advices", advices);
 		return this.advices;
 	}
-	
-	protected void setAdvices( final List advices ){
-		ObjectHelper.checkNotNull("parameter:advices", advices );
+
+	protected void setAdvices(final List advices) {
+		ObjectHelper.checkNotNull("parameter:advices", advices);
 		this.advices = advices;
 	}
 
 	private Set includedFiles;
-	
+
 	protected Set getIncludedFiles() {
-		ObjectHelper.checkNotNull("field:includedFiles", includedFiles );
+		ObjectHelper.checkNotNull("field:includedFiles", includedFiles);
 		return this.includedFiles;
 	}
-	
-	protected void setIncludedFiles( final Set includedFiles ){
-		ObjectHelper.checkNotNull("parameter:includedFiles", includedFiles );
+
+	protected void setIncludedFiles(final Set includedFiles) {
+		ObjectHelper.checkNotNull("parameter:includedFiles", includedFiles);
 		this.includedFiles = includedFiles;
 	}
 }
