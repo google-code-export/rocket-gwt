@@ -37,6 +37,7 @@ import rocket.beans.rebind.deferredbinding.DeferredBinding;
 import rocket.beans.rebind.factorymethod.FactoryMethodTemplatedFile;
 import rocket.beans.rebind.init.CustomTemplatedFile;
 import rocket.beans.rebind.list.ListValue;
+import rocket.beans.rebind.loadeagersingletons.EagerSingletonBeanNamesTemplatedFile;
 import rocket.beans.rebind.map.MapValue;
 import rocket.beans.rebind.properties.SetPropertiesTemplatedFile;
 import rocket.beans.rebind.registerbeans.BuildFactoryBeansTemplatedFile;
@@ -77,6 +78,7 @@ import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.TypeConstructorsVisitor;
 import rocket.generator.rebind.visitor.VirtualMethodVisitor;
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
 /**
@@ -126,7 +128,8 @@ public class BeanFactoryGenerator extends Generator {
 		this.applyAdvices();
 
 		this.overrideBeanFactoryBuildFactoryBeans();
-
+		this.overrideLoadEagerBeans();
+		
 		return beanFactory;
 	}
 
@@ -237,13 +240,27 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Bean bean = new Bean();
 		final String id = beanTag.getId();
+		
+		if( this.getBeans().containsKey( id )){
+			throwBeanIdAlreadyUsed( bean );
+		}
+		
 		bean.setId(id);
 
 		final String className = beanTag.getClassName();
 		final Type beanType = this.getConcreteType(id, className);
 		bean.setType(beanType);
 
-		final Type superType = beanTag.isSingleton() ? this.getSingletonFactoryBean() : this.getPrototypeFactoryBean();
+		final boolean singleton = beanTag.isSingleton();
+		bean.setSingleton(singleton);
+		
+		final boolean eager = beanTag.isEagerLoaded();
+		if( false == singleton ){
+			throwPrototypesCantBeEagerlyLoaded( bean );
+		}
+		bean.setEagerLoad( eager );
+		
+		final Type superType = singleton ? this.getSingletonFactoryBean() : this.getPrototypeFactoryBean();
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
@@ -261,6 +278,15 @@ public class BeanFactoryGenerator extends Generator {
 		this.addBean(id, bean);
 	}
 
+	protected void throwBeanIdAlreadyUsed( final Bean bean ){
+		final String id = bean.getId();
+		throw new BeanFactoryGeneratorException( "The bean id \"" + id + "\" is used more than once, bean with duplicate id: " + bean + ", original bean: " + this.getBean( id ));
+	}
+	
+	protected void throwPrototypesCantBeEagerlyLoaded( final Bean bean ){
+		throw new BeanFactoryGeneratorException("Prototype beans cannot be eagerly loaded (only singleton's can be) bean: " + bean );
+	}
+	
 	/**
 	 * Visit all defined beans and overrides the createInstance of the factory
 	 * bean.
@@ -841,9 +867,12 @@ public class BeanFactoryGenerator extends Generator {
 	protected void createRemoteJsonServiceFactoryBean(final RemoteJsonServiceTag jsonTag) {
 		ObjectHelper.checkNotNull("parameter:jsonTag", jsonTag);
 
-		final Bean bean = new Bean();
+		final Bean bean = new Bean();		
 		final String id = jsonTag.getId();
 		bean.setId(id);
+		
+		bean.setSingleton( true );
+		bean.setEagerLoad( false );
 
 		final String interfaceName = jsonTag.getInterface();
 		final Type beanType = this.getInterfaceType(id, interfaceName + Constants.ASYNC_SUFFIX );
@@ -895,6 +924,9 @@ public class BeanFactoryGenerator extends Generator {
 		final Bean bean = new Bean();
 		final String id = rpcTag.getId();
 		bean.setId(id);
+		
+		bean.setSingleton( true );
+		bean.setEagerLoad( false );
 
 		final String interfaceName = rpcTag.getInterface();
 		final Type beanType = this.getInterfaceType(id, interfaceName + Constants.ASYNC_SUFFIX );
@@ -1411,7 +1443,7 @@ public class BeanFactoryGenerator extends Generator {
 	protected void overrideBeanFactoryBuildFactoryBeans() {
 		final Map beans = this.getBeans();
 
-		this.getGeneratorContext().info("Overriding BeanFactory.buildFactoryBeans() to register " + beans.size() + " bean(s).");
+		this.getGeneratorContext().info("Overriding BeanFactory." + Constants.BUILD_FACTORY_BEANS + "() to register " + beans.size() + " bean(s).");
 
 		final NewType beanFactory = this.getBeanFactory();
 		final Method abstractMethod = beanFactory.getSuperType()
@@ -1430,6 +1462,50 @@ public class BeanFactoryGenerator extends Generator {
 			final Bean bean = (Bean) beansIterator.next();
 			body.addBean(bean);
 		}
+	}
+	
+	/**
+	 * Overrides the {@link rocket.beans.client.BeanFactoryImpl#getEagerSingletonBeanNames()
+	 * which contains a comma separated list of singletons that need to initialized on factory startup.
+	 */
+	protected void overrideLoadEagerBeans(){		
+		final Map beans = this.getBeans();
+
+		final GeneratorContext context = this.getGeneratorContext();
+		context.info("Overriding BeanFactory." + Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD + "() to initialize eager singleton beans on factory startup.");
+
+		final NewType beanFactory = this.getBeanFactory();
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD, Collections.EMPTY_LIST);
+
+		final NewMethod newMethod = abstractMethod.copy(beanFactory);
+		newMethod.setAbstract(false);
+		newMethod.setFinal(true);
+		newMethod.setNative(false);
+
+		final EagerSingletonBeanNamesTemplatedFile body = new EagerSingletonBeanNamesTemplatedFile();
+		newMethod.setBody(body);
+		
+		int eagerSingletonBeanCount = 0;
+		int lazySingletonBeanCount = 0;
+		
+		final Iterator beansIterator = beans.values().iterator();
+		while (beansIterator.hasNext()) {
+			final Bean bean = (Bean) beansIterator.next();
+			
+			if( false == bean.isSingleton() ){
+				continue;
+			}
+			
+			// only singletons can be singletons.
+			final boolean eager = bean.isEagerLoad();
+			if( eager ){
+				body.addBean(bean.getId());	
+				eagerSingletonBeanCount++;
+			} else {
+				lazySingletonBeanCount++;
+			}
+		}
+		context.debug( "When instantiated " + eagerSingletonBeanCount + " singletons will be eaglerly loaded, the other " + lazySingletonBeanCount + " will be lazily loaded on request.");
 	}
 	
 	protected String getGeneratedTypeNameSuffix() {

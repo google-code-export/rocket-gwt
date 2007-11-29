@@ -13,10 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.test.beans.client.escapebeanidintosafeclassnamecomponents;
+package rocket.beans.test.beans.client.eagerlyloadedsingleton;
 
 import rocket.beans.client.BeanFactory;
 
-public interface EscapeBeanIdsIntoSafeClassNamesBeanFactory extends BeanFactory {
-
+/**
+ * The xml file accompanying this bean factory contains a bean with a type that
+ * is not present.
+ * 
+ * @author Miroslav Pokorny
+ * 
+ */
+public interface EagerlyLoadedSingletonBeanFactory extends BeanFactory {
 }

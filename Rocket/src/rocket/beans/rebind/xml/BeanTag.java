@@ -44,13 +44,22 @@ public class BeanTag extends XmlDocumentComponent {
 	}
 
 	public boolean isSingleton() {
-		return XmlHelper.isSingleton(this.getScope());
+		return Constants.SINGLETON.equals(this.getScope());
 	}
 
 	public boolean isPrototype() {
-		return XmlHelper.isPrototype(this.getScope());
+		return Constants.PROTOTYPE.equals(this.getScope());
 	}
 
+	public boolean isLazyLoaded(){
+		return false == this.isEagerLoaded();
+	}
+	
+	public boolean isEagerLoaded(){
+		// if the attribute is missing this will return false.
+		return Constants.EAGERLY_LOADED.equals(this.getLazyLoaded());
+	}
+	
 	public String getFactoryMethod() {
 		return this.getAttribute(Constants.BEAN_FACTORY_METHOD_NAME_ATTRIBUTE);
 	}
@@ -59,6 +68,10 @@ public class BeanTag extends XmlDocumentComponent {
 		return this.getAttribute(Constants.BEAN_INIT_METHOD_NAME_ATTRIBUTE);
 	}
 
+	public String getLazyLoaded() {
+		return this.getAttribute(Constants.LAZY_LOADED_ATTRIBUTE);
+	}
+	
 	public List getConstructorArguments() {
 		List arguments = Collections.EMPTY_LIST;
 

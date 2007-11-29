@@ -84,6 +84,7 @@ public class DocumentWalker {
 		} catch (final SAXException caught) {	
 			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + fileName + "\".", caught);
 		} catch (final IOException caught) {
+			// FIXME returns wrong file name. 
 			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst reading the file \"" + fileName + "\".", caught);
 		} catch( final RuntimeException caught ){
 			throw caught;

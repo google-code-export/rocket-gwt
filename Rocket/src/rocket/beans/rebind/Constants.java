@@ -90,4 +90,6 @@ class Constants {
 	final static String ENCODED_DOT_WITHIN_TYPE_NAME = "_" + StringHelper.padLeft( Integer.toHexString( '.' ), 4, '0' );
 	
 	final static String ASYNC_SUFFIX = "Async";
+	
+	final static String GET_EAGER_SINGELTON_BEAN_NAMES_METHOD = "getEagerSingletonBeanNames";
 }

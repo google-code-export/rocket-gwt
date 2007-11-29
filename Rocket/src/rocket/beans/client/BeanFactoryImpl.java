@@ -18,7 +18,11 @@ package rocket.beans.client;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
+
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * This class contains a number of common properties and methods that will be
@@ -33,6 +37,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 
 		this.setFactoryBeans(this.buildFactoryBeans());
 		this.prepareFactoryBeans();
+		this.loadEagerBeans();
 	}
 
 	/**
@@ -49,6 +54,21 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 			}
 		}
 	}
+	
+	/**
+	 * Retrieves and throws away all non lazy (eager) singleton beans.
+	 */
+	protected void loadEagerBeans(){
+		final String[] beanNames = this.getEagerSingletonBeanNames();
+		for( int i = 0; i < beanNames.length; i++ ){
+			final String beanName = beanNames[ i ];
+			Object ignored = this.getBean( beanName );	
+			
+			if( false == GWT.isScript() ){
+				PrimitiveHelper.checkTrue( "The bean \"" + beanName + "\" must be a singleton.", this.isSingleton( beanName ));
+			}
+		}
+	}
 
 	/**
 	 * This method is implemented by the code generator to create BeanFactory
@@ -58,6 +78,15 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 */
 	abstract protected Map buildFactoryBeans();
 
+
+	/**
+	 * A comma separated list of beans that wish to be eagerly and not lazy loaded.
+	 * 
+	 * Eager beans will be loaded when the factory starts up.
+	 * @return An array of beans which may be empty
+	 */
+	abstract protected String[] getEagerSingletonBeanNames();
+	
 	/**
 	 * This map consists of all the bean factories that will return bean
 	 * instances.

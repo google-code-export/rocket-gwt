@@ -26,6 +26,7 @@ import rocket.beans.client.FactoryBean;
 import rocket.beans.client.InitializingBean;
 import rocket.beans.client.PrototypeFactoryBean;
 import rocket.beans.client.SingletonFactoryBean;
+import rocket.util.client.StringHelper;
 
 /**
  * A collection of tests for a BeanFactory
@@ -37,112 +38,126 @@ public class BeanFactoryTestCase extends TestCase {
 	static final String SINGLETON = "singleton";
 
 	static final String PROTOTYPE = "prototype";
-
+		
 	public void testGetSingletonBean() {
-		final TestBeanFactoryImpl beanFactory = new TestBeanFactoryImpl();
-		beanFactory.addBean(SINGLETON, createSingletonFactoryBean());
-
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final Map map = new HashMap();
+				map.put(SINGLETON, createSingletonFactoryBean());
+				return map;
+			}
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[0];
+			}
+		};
+		
 		final Object bean = beanFactory.getBean(SINGLETON);
 		assertTrue("" + bean, bean instanceof Singleton);
 	}
 
-	public void testIsSingletonForSingleton() {
-		final TestBeanFactoryImpl beanFactory = new TestBeanFactoryImpl();
-		beanFactory.addBean(SINGLETON, createSingletonFactoryBean());
+	public void testLazyLoadedSingletonBean() {
+		Singleton.loaded = false;
+		
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final Map map = new HashMap();
+				map.put(SINGLETON, createSingletonFactoryBean());
+				return map;
+			}
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[0];
+			}
+		};
+		assertFalse( "The lazy singleton bean should NOT have been loaded", Singleton.loaded );
+		
+		final Object bean = beanFactory.getBean(SINGLETON);
+		assertTrue("" + bean, bean instanceof Singleton);
+	}
+	
+	public void testEagerlyLoadedSingletonBean() {
+		Singleton.loaded = false;
+		
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final Map map = new HashMap();
+				map.put(SINGLETON, createSingletonFactoryBean());
+				return map;
+			}
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[] { SINGLETON };
+			}
+		};		
+		assertTrue( "An eaglerly loaded singleton bean should have been loaded", Singleton.loaded );
+		
+		final Object bean = beanFactory.getBean(SINGLETON);
+		assertTrue("" + bean, bean instanceof Singleton);
+	}
+
+	public void testIfASingletonIsSingleton() {
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final Map map = new HashMap();
+				map.put(SINGLETON, createSingletonFactoryBean());
+				return map;
+			}
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[ 0 ];
+			}
+		};			
 		assertTrue(beanFactory.isSingleton(SINGLETON));
 	}
 
-	public void testIsSingletonForPrototype() {
-		final TestBeanFactoryImpl beanFactory = new TestBeanFactoryImpl();
-		beanFactory.addBean(PROTOTYPE, createPrototypeFactoryBean());
+	public void testIfAPrototypeIsSingleton() {
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final Map map = new HashMap();
+				map.put(PROTOTYPE, createPrototypeFactoryBean());
+				return map;
+			}
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[ 0 ];
+			}
+		};			
 		assertFalse(beanFactory.isSingleton(PROTOTYPE));
 	}
 
 	public void testRatherThanReturningAFactoryBeanCallItsGetObject() {
-		final TestBeanFactoryImpl beanFactory = new TestBeanFactoryImpl();
-		beanFactory.addBean(PROTOTYPE, new SingletonFactoryBean() {
-			public Object createInstance() {
-				return createPrototypeFactoryBean();
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final Map map = new HashMap();
+				map.put(PROTOTYPE, createPrototypeFactoryBean());
+				return map;
 			}
-
-			protected void satisfyProperties(Object instance) {
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[ 0 ];
 			}
-		});
-
+		};			
+		
 		final Object bean = beanFactory.getBean(PROTOTYPE);
 		assertTrue("" + bean, bean instanceof Prototype);
 	}
 
-	public void testBeanWithReferenceToAnotherBean() {
-		final String INCLUDES_ANOTHER_BEAN = "IncludesAnotherBean";
-
-		final TestBeanFactoryImpl beanFactory = new TestBeanFactoryImpl();
-
-		beanFactory.addBean(INCLUDES_ANOTHER_BEAN, new SingletonFactoryBean() {
-			public Object createInstance() {
-				return new SingletonFactoryBean() {
-					protected Object createInstance() {
-						return new IncludesAnotherBean();
+	public void testBeanFactoryAware() {
+		final String BEAN_FACTORY_AWARE = "bean";
+		
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final Map map = new HashMap();
+				map.put(BEAN_FACTORY_AWARE, new SingletonFactoryBean() {
+					public Object createInstance() {
+						return new ImplementsBeanFactoryAware();
 					}
 
 					protected void satisfyProperties(Object instance) {
-						final IncludesAnotherBean instance0 = (IncludesAnotherBean) instance;
-						instance0.anotherBean = (Singleton) beanFactory.getBean(SINGLETON);
 					}
-				};
+				});
+				return map;
 			}
-
-			protected void satisfyProperties(Object instance) {
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[ 0 ];
 			}
-		});
-		beanFactory.addBean(SINGLETON, createSingletonFactoryBean());
-
-		final Object bean = beanFactory.getBean(INCLUDES_ANOTHER_BEAN);
-		assertTrue("" + bean, bean instanceof IncludesAnotherBean);
-	}
-
-	static class IncludesAnotherBean {
-		Singleton anotherBean;
-	}
-
-	public void testInitializingBean() {
-		final String INITIALIZING_BEAN = "bean";
-		final TestBeanFactoryImpl beanFactory = new TestBeanFactoryImpl();
-
-		beanFactory.addBean(INITIALIZING_BEAN, new SingletonFactoryBean() {
-			public Object createInstance() {
-				return new ImplementsInitializingBean();
-			}
-
-			protected void satisfyProperties(Object instance) {
-			}
-		});
-
-		final ImplementsInitializingBean bean = (ImplementsInitializingBean) beanFactory.getBean(INITIALIZING_BEAN);
-		assertTrue("" + bean, bean.initialized);
-	}
-
-	static class ImplementsInitializingBean implements InitializingBean {
-		public void afterPropertiesSet() {
-			this.initialized = true;
-		}
-
-		boolean initialized = false;
-	}
-
-	public void testBeanFactoryAware() {
-		final String BEAN_FACTORY_AWARE = "bean";
-		final TestBeanFactoryImpl beanFactory = new TestBeanFactoryImpl();
-
-		beanFactory.addBean(BEAN_FACTORY_AWARE, new SingletonFactoryBean() {
-			public Object createInstance() {
-				return new ImplementsBeanFactoryAware();
-			}
-
-			protected void satisfyProperties(Object instance) {
-			}
-		});
-
+		};						
+		
 		final ImplementsBeanFactoryAware bean = (ImplementsBeanFactoryAware) beanFactory.getBean(BEAN_FACTORY_AWARE);
 		assertNotNull("" + bean, bean.beanFactory);
 	}
@@ -158,33 +173,115 @@ public class BeanFactoryTestCase extends TestCase {
 			assertNotNull("beanFactory properties", beanFactory);
 		}
 	}
+	
+	public void testBeanWithReferenceToAnotherBean() {
+		final String INCLUDES_ANOTHER_BEAN = "IncludesAnotherBean";
+		
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final BeanFactory that = this;
+				
+				final Map map = new HashMap();
+				map.put(INCLUDES_ANOTHER_BEAN, new SingletonFactoryBean() {
+					public Object createInstance() {
+						return new SingletonFactoryBean() {
+							protected Object createInstance() {
+								return new IncludesAnotherBean();
+							}
+
+							protected void satisfyProperties(final Object instance) {
+								final IncludesAnotherBean instance0 = (IncludesAnotherBean) instance;
+								instance0.anotherBean = (Singleton) that.getBean(SINGLETON);
+							}
+						};
+					}
+
+					protected void satisfyProperties(Object instance) {
+					}
+				});
+				map.put(SINGLETON, createSingletonFactoryBean());
+				return map;
+			}
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[ 0 ];
+			}
+		};						
+		
+		final Object bean = beanFactory.getBean(INCLUDES_ANOTHER_BEAN);
+		assertTrue("" + bean, bean instanceof IncludesAnotherBean);
+	}
+
+	static class IncludesAnotherBean{
+		Singleton anotherBean;
+	}
+
+	public void testInitializingBean() {
+		final String INITIALIZING_BEAN = "bean";
+		
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final Map map = new HashMap();
+				map.put(INITIALIZING_BEAN, new SingletonFactoryBean() {
+					public Object createInstance() {
+						return new ImplementsInitializingBean();
+					}
+
+					protected void satisfyProperties(Object instance) {
+					}
+				});
+				return map;
+			}
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[ 0 ];
+			}
+		};			
+		
+		final ImplementsInitializingBean bean = (ImplementsInitializingBean) beanFactory.getBean(INITIALIZING_BEAN);
+		assertTrue("" + bean, bean.initialized);
+	}
+
+	static class ImplementsInitializingBean implements InitializingBean {
+		public void afterPropertiesSet() {
+			this.initialized = true;
+		}
+
+		boolean initialized = false;
+	}
 
 	public void testCycle() {
-		final TestBeanFactoryImpl beanFactory = new TestBeanFactoryImpl();
 		final String CYCLE1 = "cycle1";
 		final String CYCLE2 = "cycle2";
 
-		beanFactory.addBean(CYCLE1, new SingletonFactoryBean() {
-			public Object createInstance() {
-				return new CycleSingleton1();
-			}
+		final BeanFactory beanFactory = new BeanFactoryImpl(){
+			protected Map buildFactoryBeans(){
+				final Map map = new HashMap();
+				map.put(CYCLE1, new SingletonFactoryBean() {
+					public Object createInstance() {
+						return new CycleSingleton1();
+					}
 
-			protected void satisfyProperties(Object instance) {
-				final CycleSingleton1 instance0 = (CycleSingleton1) instance;
-				instance0.otherCycleSingleton2 = (CycleSingleton2) this.getBeanFactory().getBean(CYCLE2);
-			}
-		});
-		beanFactory.addBean(CYCLE2, new SingletonFactoryBean() {
-			public Object createInstance() {
-				return new CycleSingleton2();
-			}
+					protected void satisfyProperties(Object instance) {
+						final CycleSingleton1 instance0 = (CycleSingleton1) instance;
+						instance0.otherCycleSingleton2 = (CycleSingleton2) this.getBeanFactory().getBean(CYCLE2);						
+					}
+				});
+				map.put(CYCLE2, new SingletonFactoryBean() {
+					public Object createInstance() {
+						return new CycleSingleton2();
+					}
 
-			protected void satisfyProperties(Object instance) {
-				final CycleSingleton2 instance0 = (CycleSingleton2) instance;
-				instance0.otherCycleSingleton1 = (CycleSingleton1) this.getBeanFactory().getBean(CYCLE1);
+					protected void satisfyProperties(Object instance) {
+						final CycleSingleton2 instance0 = (CycleSingleton2) instance;
+						instance0.otherCycleSingleton1 = (CycleSingleton1) this.getBeanFactory().getBean(CYCLE1);						
+					}
+				});
+				return map;
 			}
-		});
-
+			protected String[] getEagerSingletonBeanNames(){
+				return new String[ 0 ];
+			}
+		};		
+		
 		final CycleSingleton1 cycle1 = (CycleSingleton1) beanFactory.getBean(CYCLE1);
 		assertNotNull(cycle1.otherCycleSingleton2);
 
@@ -200,19 +297,6 @@ public class BeanFactoryTestCase extends TestCase {
 		public CycleSingleton1 otherCycleSingleton1;
 	}
 
-	static class TestBeanFactoryImpl extends BeanFactoryImpl {
-		protected Map buildFactoryBeans() {
-			return new HashMap();
-		}
-
-		public void addBean(final String id, final FactoryBean factoryBean) {
-			this.getFactoryBeans().put(id, factoryBean);
-
-			final BeanFactoryAware beanFactoryAware = (BeanFactoryAware) factoryBean;
-			beanFactoryAware.setBeanFactory(this);
-		}
-	}
-
 	static FactoryBean createSingletonFactoryBean() {
 		return new SingletonFactoryBean() {
 			protected Object createInstance() {
@@ -225,6 +309,13 @@ public class BeanFactoryTestCase extends TestCase {
 	}
 
 	static class Singleton {
+		
+		static public boolean loaded = false;
+		
+		Singleton(){
+			super();
+			loaded = true;
+		}
 	}
 
 	static FactoryBean createPrototypeFactoryBean() {
