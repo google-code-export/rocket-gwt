@@ -78,7 +78,6 @@ import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.TypeConstructorsVisitor;
 import rocket.generator.rebind.visitor.VirtualMethodVisitor;
 import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
 import rocket.util.client.StringHelper;
 
 /**
