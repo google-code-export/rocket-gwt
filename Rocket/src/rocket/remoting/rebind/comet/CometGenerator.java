@@ -62,10 +62,8 @@ public class CometGenerator extends Generator {
 		try {
 			final Class proxyCreator = Class.forName(Constants.PROXY_CREATOR);
 			proxyCreator.getField(Constants.CUSTOMISED_PROXY_CREATOR_MARKER_FIELD);
-			this
-					.getGeneratorContext()
-					.info(
-							"Rocket.jar appears in front of gwt*.jar files! Problems relating to the classpath should not be happen (Comet deserialization of incoming payload should work).");
+			this.getGeneratorContext().warn(
+							"Rocket.jar appears in front of gwt*.jar files! Classpath related problems should not happen (Comet deserialization of incoming payload should work).");
 
 		} catch (final NoSuchFieldException fieldMissing) {
 			fieldMissing.printStackTrace();
@@ -111,7 +109,7 @@ public class CometGenerator extends Generator {
 	protected Type createRpcServiceInterface(final NewConcreteType newType) {
 		ObjectHelper.checkNotNull("parameter:newType", newType);
 
-		this.getGeneratorContext().info("Generating Rpc service interface which will provide the payload serializer.");
+		this.getGeneratorContext().debug("Generating Rpc service interface which will provide the payload serializer.");
 
 		final NewNestedInterfaceType serviceInterface = newType.newNestedInterfaceType();
 		serviceInterface.setNestedName(Constants.RPC_SERVICE_INTERFACE);
@@ -146,7 +144,7 @@ public class CometGenerator extends Generator {
 	protected void createRpcAsyncServiceInterface(final NewConcreteType newType) {
 		ObjectHelper.checkNotNull("parameter:newType", newType);
 
-		this.getGeneratorContext().info("Generating Rpc async service interface counterpart for the rpc service interface.");
+		this.getGeneratorContext().debug("Generating Rpc async service interface counterpart for the rpc service interface.");
 
 		final NewNestedInterfaceType asyncServiceInterface = newType.newNestedInterfaceType();
 		asyncServiceInterface.setNestedName(Constants.RPC_ASYNC_SERVICE_INTERFACE);

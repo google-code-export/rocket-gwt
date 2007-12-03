@@ -52,24 +52,4 @@ public class GeneratorConstants {
 	public final static String OBJECT = Object.class.getName();
 
 	public final static String STRING = String.class.getName();
-	
-	final static String SPAM = "SPAM";
-	final static int SPAM_VALUE = 0;
-	
-	final static String TRACE = "TRACE";
-	final static int TRACE_VALUE = SPAM_VALUE + 1;
-	
-	final static String DEBUG = "DEBUG";
-	final static int DEBUG_VALUE = TRACE_VALUE + 1;
-	
-	final static String INFO = "INFO";
-	final static int INFO_VALUE = DEBUG_VALUE + 1;
-	
-	final static String WARN = "WARN";
-	final static int WARN_VALUE = INFO_VALUE + 1;
-	
-	final static String ERROR = "ERROR";
-	final static int ERROR_VALUE = WARN_VALUE + 1;
-
-	final static int DISABLED_LOGGING = ERROR_VALUE + 1;
 }

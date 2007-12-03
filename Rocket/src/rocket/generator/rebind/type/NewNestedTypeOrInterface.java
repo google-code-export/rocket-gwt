@@ -171,7 +171,7 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	}
 
 	protected void log() {
-		this.getGeneratorContext().branch(
+		this.getGeneratorContext().info(
 				"Writing nested " + (this.isInterface() ? "interface" : "class") + this.getName() + " enclosed type "
 						+ this.getEnclosingType().getName());
 	}

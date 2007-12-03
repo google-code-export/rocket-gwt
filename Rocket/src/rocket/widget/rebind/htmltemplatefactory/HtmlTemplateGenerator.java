@@ -116,6 +116,9 @@ public class HtmlTemplateGenerator extends Generator {
 			throwMethodHasParameters(method);
 		}
 
+		final GeneratorContext context = this.getGeneratorContext();
+		context.info( "Implementing " + method );
+		
 		final NewMethod newMethod = method.copy(newType);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);

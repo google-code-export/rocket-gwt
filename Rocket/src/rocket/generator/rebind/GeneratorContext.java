@@ -62,7 +62,8 @@ public interface GeneratorContext {
 	void warn(final String message, final Throwable throwable);
 	void error(final String message);
 	void error(final String message, final Throwable throwable);
-	void branch(final String message);
+	void branch();
+	void unbranch();
 	
 	boolean isDebugEnabled();
 	boolean isInfoEnabled();

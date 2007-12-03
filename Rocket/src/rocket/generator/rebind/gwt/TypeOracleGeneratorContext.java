@@ -31,6 +31,7 @@ import rocket.generator.rebind.type.NewInterfaceTypeImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
