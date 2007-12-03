@@ -107,5 +107,5 @@ class Constants {
 	
 	final static String LAZYLOADED = "true";
 	final static String EAGERLY_LOADED = "false";
-	final static String LAZY_LOADED_ATTRIBUTE = "lazyLoaded";	
+	final static String LAZY_LOADED_ATTRIBUTE = "lazyInit";	
 }
