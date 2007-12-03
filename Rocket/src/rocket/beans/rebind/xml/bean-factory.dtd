@@ -20,7 +20,7 @@
 	scope			(singleton|prototype) 		#REQUIRED
 	factoryMethod 	CDATA 						#IMPLIED
 	initMethod 		CDATA 						#IMPLIED
-	lazyLoaded		(true|false)				#IMPLIED
+	lazyInit		(true|false)				#IMPLIED
 >
 
 <!ELEMENT constructor 							(value+|bean-reference+|list+|set+|map+)>
