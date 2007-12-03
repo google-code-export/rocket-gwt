@@ -115,7 +115,7 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	}
 
 	protected void log() {
-		this.getGeneratorContext().branch("Writing " + this.getVisibility().getName() + ( this.isInterface() ? " class: " : " interface: " ) + this.getName() );
+		this.getGeneratorContext().info("Writing " + this.getVisibility().getName() + ( this.isInterface() ? " class: " : " interface: " ) + this.getName() );
 	}
 
 	/**

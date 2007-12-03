@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.packagee.PackageNotFoundException;
@@ -47,7 +48,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		this.setPackages(this.createPackages());
 		this.setTypes(this.createTypes());
 		this.setNewTypes(this.createNewTypes());
-		this.initLogLevel();
+		this.setLoggers( this.createLoggers() );
 	}
 
 	/**
@@ -463,21 +464,31 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		return this.getGeneratorContext().getTypeOracle();
 	}
 
-	/**
-	 * This treelogger may be used to log messages
-	 */
-	private TreeLogger logger;
-
-	protected TreeLogger getLogger() {
-		ObjectHelper.checkNotNull("field:logger", logger);
-		return this.logger;
+	private Stack loggers;
+	
+	protected Stack getLoggers(){
+		ObjectHelper.checkNotNull( "field:loggers", loggers);
+		return this.loggers;
 	}
-
-	public void setLogger(final TreeLogger logger) {
-		ObjectHelper.checkNotNull("parameter:logger", logger);
-		this.logger = logger;
+	
+	protected void setLoggers( final Stack loggers ){
+		ObjectHelper.checkNotNull( "parameter:loggers", loggers);
+		this.loggers = loggers;
 	}
-
+	
+	protected Stack createLoggers(){
+		return new Stack();
+	}
+	
+	protected TreeLogger getLogger(){
+		return (TreeLogger) this.getLoggers().peek();
+	}
+	
+	public void setLogger( final TreeLogger logger ){
+		ObjectHelper.checkNotNull("parameter:logger", logger );
+		this.getLoggers().push( logger );
+	}
+	
 	public void trace(final String message) {
 		this.log(TreeLogger.TRACE, message);
 	}
@@ -523,96 +534,44 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 
 	protected void log(final TreeLogger.Type treeLoggerLevel, final String message, final Throwable throwable) {
-		this.getLogger().log(treeLoggerLevel, message, throwable);
+		final TreeLogger logger = this.getLogger();
+		if( this.isBranch() ){
+			final TreeLogger newTreeLogger = logger.branch( treeLoggerLevel, message, throwable );
+			this.getLoggers().push( newTreeLogger );
+			this.setBranch( false );
+			
+		} else {
+			logger.log(treeLoggerLevel, message, throwable);	
+		}
 	}
 
 	public boolean isTraceEnabled() {
-		return this.getLogLevel() <= GeneratorConstants.TRACE_VALUE;
+		return this.getLogger().isLoggable( TreeLogger.TRACE );
 	}
 
 	public boolean isDebugEnabled() {
-		return this.getLogLevel() <= GeneratorConstants.DEBUG_VALUE;
+		return this.getLogger().isLoggable( TreeLogger.DEBUG );
 	}
 
 	public boolean isInfoEnabled() {
-		return this.getLogLevel() <= GeneratorConstants.INFO_VALUE;
+		return this.getLogger().isLoggable( TreeLogger.INFO );
+	}
+
+	public void branch() {
+		this.setBranch( true );
 	}
 
 	/**
-	 * Reads a system property to determine the configured logging level
+	 * This flag will become true indicating the next message should start a new branch.
 	 */
-	protected void initLogLevel() {
-		String logLevel = null;
-		final String gwtArgs = System.getProperty("gwt.args");
-		if (null != gwtArgs) {
-
-			// try and find logLevel 
-			final String[] tokens = StringHelper.split(gwtArgs, " ", true);
-			for (int i = 0; i < tokens.length; i++) {
-				final String token = tokens[i];
-				if ("-logLevel".equals(token)) {
-					logLevel = tokens[i + 1];
-					break;
-				}
-			}
-		}
-
-		if (null == logLevel) {
-			this.setLogLevel(GeneratorConstants.DISABLED_LOGGING);
-		} else {
-			this.setLogLevel(logLevel);
-		}
+	private boolean branch;
+	private boolean isBranch(){
+		return this.branch;
 	}
-
-	/**
-	 * The current logging level expressed as an integer value.
-	 */
-	private int logLevel;
-
-	protected int getLogLevel() {
-		return this.logLevel;
+	private void setBranch( final boolean branch ){
+		this.branch = branch;
 	}
-
-	protected void setLogLevel(final String logLevel) {
-		StringHelper.checkNotEmpty("parameter:logLevel", logLevel);
-
-		int value = GeneratorConstants.DISABLED_LOGGING;
-
-		while (true) {
-			if (GeneratorConstants.SPAM.equals(logLevel)) {
-				value = GeneratorConstants.SPAM_VALUE;
-				break;
-			}
-			if (GeneratorConstants.TRACE.equals(logLevel)) {
-				value = GeneratorConstants.TRACE_VALUE;
-				break;
-			}
-			if (GeneratorConstants.DEBUG.equals(logLevel)) {
-				value = GeneratorConstants.DEBUG_VALUE;
-				break;
-			}
-			if (GeneratorConstants.INFO.equals(logLevel)) {
-				value = GeneratorConstants.INFO_VALUE;
-				break;
-			}
-			if (GeneratorConstants.WARN.equals(logLevel)) {
-				value = GeneratorConstants.WARN_VALUE;
-				break;
-			}
-			if (GeneratorConstants.ERROR.equals(logLevel)) {
-				value = GeneratorConstants.ERROR_VALUE;
-			}
-			break;
-		}
-
-		this.setLogLevel(value);
-	}
-
-	protected void setLogLevel(final int logLevel) {
-		this.logLevel = logLevel;
-	}
-
-	public void branch(final String message) {
-		this.getLogger().branch(TreeLogger.INFO, message, null);
+	public void unbranch(){
+		this.getLoggers().pop();
 	}
 }

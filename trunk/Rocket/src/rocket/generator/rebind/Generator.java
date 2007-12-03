@@ -76,8 +76,10 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 			try {
 				final NewConcreteType newType = this.assembleNewType(typeName, newTypeName);
 				if (null != newType) {
+					context.branch();
 					context.info("Completed assembling new type \"" + newTypeName + "\".");
 					newType.write();
+					context.unbranch();
 
 					final long now = System.currentTimeMillis();
 

@@ -226,12 +226,16 @@ public class BeanFactoryGenerator extends Generator {
 	protected void buildFactoryBeans(final List beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 
-		this.getGeneratorContext().info("Creating FactoryBean's for each of the bean (" + beans.size() + ") tags.");
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info("Creating FactoryBean's for each of the bean (" + beans.size() + ") tags.");
 
 		final Iterator iterator = beans.iterator();
 		while (iterator.hasNext()) {
 			this.createBeanFactoryBean((BeanTag) iterator.next());
 		}
+		
+		context.unbranch();
 	}
 
 	protected void createBeanFactoryBean(final BeanTag beanTag) {
@@ -239,12 +243,11 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Bean bean = new Bean();
 		final String id = beanTag.getId();
+		bean.setId(id);
 		
 		if( this.getBeans().containsKey( id )){
 			throwBeanIdAlreadyUsed( bean );
-		}
-		
-		bean.setId(id);
+		}			
 
 		final String className = beanTag.getClassName();
 		final Type beanType = this.getConcreteType(id, className);
@@ -849,13 +852,17 @@ public class BeanFactoryGenerator extends Generator {
 	protected void buildRemoteJsonServiceFactoryBeans(final List jsonTags) {
 		ObjectHelper.checkNotNull("parameter:jsonTags", jsonTags);
 
-		this.getGeneratorContext().info("Creating FactoryBean's for each of the remote json service (" + jsonTags.size() + ") tags.");
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info("Creating FactoryBean's for each of the remote json service (" + jsonTags.size() + ") tags.");
 
 		final Iterator iterator = jsonTags.iterator();
 		while (iterator.hasNext()) {
 			final RemoteJsonServiceTag json = (RemoteJsonServiceTag) iterator.next();
 			this.createRemoteJsonServiceFactoryBean(json);
 		}
+		
+		context.unbranch();
 	}
 
 	/**
@@ -903,13 +910,17 @@ public class BeanFactoryGenerator extends Generator {
 	protected void buildRemoteRpcServiceFactoryBeans(final List rpcTags) {
 		ObjectHelper.checkNotNull("parameter:rpcTags", rpcTags);
 
-		this.getGeneratorContext().info("Creating FactoryBean's for each of the remote rpc service (" + rpcTags.size() + ") tags.");
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info("Creating FactoryBean's for each of the remote rpc service (" + rpcTags.size() + ") tags.");
 
 		final Iterator iterator = rpcTags.iterator();
 		while (iterator.hasNext()) {
 			final RemoteRpcServiceTag rpc = (RemoteRpcServiceTag) iterator.next();
 			this.createRemoteRpcServiceFactoryBean(rpc);
 		}
+		
+		context.unbranch();
 	}
 
 	/**
@@ -1031,7 +1042,10 @@ public class BeanFactoryGenerator extends Generator {
 	protected void buildAdvices(final List advices) {
 		ObjectHelper.checkNotNull("parameter:advices", advices);
 
-		this.getGeneratorContext().info("Processing " + advices.size() + " advice(s).");
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info("Processing " + advices.size() + " advice(s).");
+		
 		final MethodMatcherFactory methodMatcherFactory = createMethodMatcherFactor();
 
 		final Iterator iterator = advices.iterator();
@@ -1052,6 +1066,8 @@ public class BeanFactoryGenerator extends Generator {
 
 			bean.addAdvice(advice);
 		}
+		
+		context.unbranch();
 	}
 
 	protected MethodMatcherFactory createMethodMatcherFactor() {
@@ -1118,8 +1134,10 @@ public class BeanFactoryGenerator extends Generator {
 		final MethodMatcher matcher = advice.getMethodMatcher();
 
 		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
 		context.info("Preparing to verify method expression: " + matcher + " against " + type);
-
+		context.branch();
+		
 		final List matchedMethods = new ArrayList();
 		final Type object = context.getObject();
 
@@ -1136,7 +1154,7 @@ public class BeanFactoryGenerator extends Generator {
 
 				if (method.getVisibility() == Visibility.PUBLIC && matcher.matches(method)) {
 					matchedMethods.add(method);
-					context.debug("Adding " + method + " to list of matched methods.");
+					context.debug("Method " + method );
 				}
 				return false;
 			}
@@ -1151,7 +1169,9 @@ public class BeanFactoryGenerator extends Generator {
 			throwNoMatchedMethods(advice);
 		}
 
+		context.unbranch();
 		context.debug("Matched " + matchedMethods.size() + " methods(s).");
+		context.unbranch();
 	}
 
 	protected void throwTargetMethodIsFinal(final Method method) {
@@ -1170,6 +1190,7 @@ public class BeanFactoryGenerator extends Generator {
 	 */
 	protected void applyAdvices() {
 		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
 		context.info("About to create ProxyFactoryBeans for beans that have at least one advice.");
 
 		final Iterator beans = this.getBeans().values().iterator();
@@ -1182,6 +1203,8 @@ public class BeanFactoryGenerator extends Generator {
 			}
 			this.buildProxyFactoryBean(bean);
 		}
+		
+		context.unbranch();
 	}
 
 	/**
@@ -1194,8 +1217,10 @@ public class BeanFactoryGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
 
 		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
 		context.info("Building proxy factory bean for bean: " + bean);
-
+		context.branch();
+		
 		final String id = bean.getId();
 
 		final Type superType = this.getProxyFactoryBean();
@@ -1217,6 +1242,9 @@ public class BeanFactoryGenerator extends Generator {
 		bean.setProxy(proxy);
 
 		overrideProxyFactoryBeanCreateProxy(bean);
+		
+		context.unbranch();
+		context.unbranch();
 	}
 
 	/**
@@ -1471,8 +1499,10 @@ public class BeanFactoryGenerator extends Generator {
 		final Map beans = this.getBeans();
 
 		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
 		context.info("Overriding BeanFactory." + Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD + "() to initialize eager singleton beans on factory startup.");
-
+		context.branch();
+		
 		final NewType beanFactory = this.getBeanFactory();
 		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD, Collections.EMPTY_LIST);
 
@@ -1500,11 +1530,15 @@ public class BeanFactoryGenerator extends Generator {
 			if( eager ){
 				body.addBean(bean.getId());	
 				eagerSingletonBeanCount++;
+				
+				context.debug( bean.toString() );
 			} else {
 				lazySingletonBeanCount++;
 			}
 		}
+		context.unbranch();
 		context.debug( "When instantiated " + eagerSingletonBeanCount + " singletons will be eaglerly loaded, the other " + lazySingletonBeanCount + " will be lazily loaded on request.");
+		context.unbranch();
 	}
 	
 	protected String getGeneratedTypeNameSuffix() {
