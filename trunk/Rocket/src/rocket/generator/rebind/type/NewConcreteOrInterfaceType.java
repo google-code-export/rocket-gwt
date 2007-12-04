@@ -73,6 +73,7 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 		final SourceWriter writer = context.createSourceWriter(composerFactory, printWriter);
 
 		try {
+			context.branch();
 			this.log();
 
 			this.writeInitializers(writer);
@@ -80,6 +81,8 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 			this.writeFields(writer);
 			this.writeMethods(writer);
 			this.writeNestedTypes(writer);
+			context.unbranch();
+			
 		} catch (final GeneratorException caught) {
 			this.handleWriteFailure(writer, caught);
 

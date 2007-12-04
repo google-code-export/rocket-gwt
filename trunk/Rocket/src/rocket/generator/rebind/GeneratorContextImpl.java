@@ -561,17 +561,29 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		this.setBranch( true );
 	}
 
+	public void unbranch(){
+		// if branch is set to true then no real branch has occured so theres no need to do anything (aka pop)
+		if( false == this.isBranch() ){
+			final Stack loggers = this.getLoggers();
+			
+			// cant pop the last logger...
+			if( loggers.size() == 1 ){
+				throw new RuntimeException( "An attempt has been made to unbranch further back up the tree than previous branches...");
+			}
+			loggers.pop();
+		}
+		this.setBranch( false );
+	}
+	
 	/**
 	 * This flag will become true indicating the next message should start a new branch.
 	 */
 	private boolean branch;
+	
 	private boolean isBranch(){
 		return this.branch;
 	}
 	private void setBranch( final boolean branch ){
 		this.branch = branch;
-	}
-	public void unbranch(){
-		this.getLoggers().pop();
 	}
 }
