@@ -36,24 +36,24 @@ public class OustandingRpcTracker {
 		ObjectHelper.checkNotNull("parameter:widget", widget);
 		this.widget = widget;
 
-		this.setOustandingCount(this.getOustandingCount());
+		this.setOutstandingCount(this.getOutstandingCount());
 	}
 
 	/**
 	 * This counter keeps track of the number of outstanding rpc requests.
 	 */
-	private int oustandingCount;
+	private int outstandingCount;
 
-	protected int getOustandingCount() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:oustandingCount", 0, oustandingCount );
-		return this.oustandingCount;
+	protected int getOutstandingCount() {
+		PrimitiveHelper.checkGreaterThanOrEqual("field:outstandingCount", 0, outstandingCount );
+		return this.outstandingCount;
 	}
 
-	protected void setOustandingCount(final int oustandingCount) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:oustandingCount", 0, oustandingCount );
-		this.oustandingCount = oustandingCount;
+	protected void setOutstandingCount(final int outstandingCount) {
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:outstandingCount", 0, outstandingCount );
+		this.outstandingCount = outstandingCount;
 
-		this.getWidget().setVisible(oustandingCount > 0);
+		this.getWidget().setVisible(outstandingCount > 0);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class OustandingRpcTracker {
 	 * @return
 	 */
 	public AsyncCallback prepare(final AsyncCallback callback) {
-		this.setOustandingCount(this.getOustandingCount() + 1);
+		this.setOutstandingCount(this.getOutstandingCount() + 1);
 
 		return new AsyncCallback() {
 			public void onSuccess(final Object result) {
@@ -80,10 +80,10 @@ public class OustandingRpcTracker {
 	}
 
 	protected void handleOnSuccess(final Object result) {
-		this.setOustandingCount(this.getOustandingCount() - 1);
+		this.setOutstandingCount(this.getOutstandingCount() - 1);
 	}
 
 	protected void handleOnFailure(final Throwable cause) {
-		this.setOustandingCount(this.getOustandingCount() - 1);
+		this.setOutstandingCount(this.getOutstandingCount() - 1);
 	}
 }

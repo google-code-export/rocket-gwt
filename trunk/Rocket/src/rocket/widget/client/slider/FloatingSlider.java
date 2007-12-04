@@ -240,7 +240,7 @@ public class FloatingSlider extends CompositeWidget {
 
 	/**
 	 * This EventPreview anonymous class merely delegates to
-	 * {@link #handleDraggingEventPreview(Event)}
+	 * {@link #onDraggingEventPreview(Event)}
 	 * 
 	 * @return
 	 */

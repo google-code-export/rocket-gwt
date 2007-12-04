@@ -42,7 +42,7 @@ public class HyperlinkPanel extends Panel {
 	 * Factory method which creates the parent Anchor element for this entire
 	 * panel
 	 * 
-	 * @return
+	 * @return The new anchor
 	 */
 	protected Element createPanelElement() {
 		return DOM.createAnchor();
@@ -59,7 +59,7 @@ public class HyperlinkPanel extends Panel {
 	/**
 	 * Returns the element which will house each of the new widget's elements.
 	 * 
-	 * @return
+	 * @return The parent
 	 */
 	public Element getParentElement() {
 		return this.getElement();

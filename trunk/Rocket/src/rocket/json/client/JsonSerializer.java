@@ -58,8 +58,8 @@ abstract public class JsonSerializer {
 	/**
 	 * Deserializes the given jsonValue into a java object
 	 * 
-	 * @p aram jsonValue
-	 * @return
+	 * @param jsonValue
+	 * @return The deserialized read object.
 	 */
 	abstract public Object readObject(JSONValue jsonValue);
 
@@ -116,7 +116,7 @@ abstract public class JsonSerializer {
 	 * Serializes a java object into a jsonObject
 	 * 
 	 * @param instance
-	 * @return
+	 * @return A JSONValue holding the json form.
 	 */
 	abstract public JSONValue writeJson(Object instance);
 

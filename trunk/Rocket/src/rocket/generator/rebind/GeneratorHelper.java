@@ -44,7 +44,7 @@ public class GeneratorHelper {
 	 * Helper which returns the setter name for the given property.
 	 * 
 	 * @param propertyName
-	 * @return
+	 * @return The setter name.
 	 */
 	static public String buildSetterName(final String propertyName) {
 		StringBuilder builder = new StringBuilder();
@@ -62,9 +62,10 @@ public class GeneratorHelper {
 
 	/**
 	 * Convenience method which calculates the setter name for a given field.
+	 * Because no property type is passed all names will start with get and not is for boolean properties.
 	 * 
 	 * @param propertyName
-	 * @return
+	 * @return The getter name.
 	 */
 	static public String buildGetterName(final String propertyName) {
 		StringBuilder builder = new StringBuilder();
@@ -268,10 +269,8 @@ public class GeneratorHelper {
 	 * 
 	 * @param components
 	 * @param writer
-	 * @param comma
-	 *            When true a comma is printed between each written component.
-	 * @param eol
-	 *            Print a new line after each component.
+	 * @param comma When true a comma is printed between each written component.
+	 * @param eol Print a new line after each component.
 	 */
 	static public void writeClassComponents(final Collection components, final SourceWriter writer, final boolean comma, final boolean eol) {
 		ObjectHelper.checkNotNull("parameter:components", components);
@@ -317,7 +316,7 @@ public class GeneratorHelper {
 	 * Tests if a given literal is a valid javascript literal.
 	 * 
 	 * @param name
-	 * @return
+	 * @return A flag indicating whether the name is valid
 	 */
 	static public boolean isValidJavascriptIdentifier(final String name) {
 		boolean valid = false;

@@ -272,8 +272,7 @@ abstract public class Calendar extends CompositeWidget {
 	 * This method should only be invoked once usually as part of the
 	 * {@link #createWidget()} method.
 	 * 
-	 * @param calendarGrid
-	 *            the calendarGrid being constructed.
+	 * @param grid The new grid
 	 */
 	protected void addHeadings(final Grid grid) {
 		for (int dayOfWeek = 0; dayOfWeek < WidgetConstants.CALENDAR_COLUMNS; dayOfWeek++) {
@@ -288,7 +287,7 @@ abstract public class Calendar extends CompositeWidget {
 	 * on whether a heading row should be included when the calendarGrid is
 	 * built.
 	 * 
-	 * @return
+	 * @return A flag
 	 */
 	abstract protected boolean hasHeadings();
 
@@ -299,7 +298,7 @@ abstract public class Calendar extends CompositeWidget {
 	 * 
 	 * @param dayOfWeek
 	 *            0 = Sunday, 1 = Monday etc.
-	 * @return
+	 * @return The widget for the given heading
 	 */
 	abstract protected Widget createHeading(final int dayOfWeek);
 
@@ -314,7 +313,7 @@ abstract public class Calendar extends CompositeWidget {
 	 *            The month starting at 0 = January.
 	 * @param day
 	 *            The day of the month starting at 1
-	 * @return
+	 * @return The widget for the given date.
 	 */
 	abstract protected Widget createDayTile(final int year, final int month, final int day);
 
@@ -323,7 +322,7 @@ abstract public class Calendar extends CompositeWidget {
 	 * 
 	 * @param column
 	 * @param row
-	 * @return
+	 * @return The widget for the day.
 	 */
 	public Widget getDay(final int column, final int row) {
 		final int row0 = this.hasHeadings() ? row + 1 : row;
@@ -368,7 +367,7 @@ abstract public class Calendar extends CompositeWidget {
 	 * Factory which creates the date that will become the starting point for
 	 * this calendar.
 	 * 
-	 * @return
+	 * @return A new Date
 	 */
 	protected Date createDate() {
 		final Date date = new Date();

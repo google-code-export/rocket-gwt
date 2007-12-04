@@ -262,7 +262,7 @@ public class Pager extends CompositeWidget {
 	 * listeners.
 	 * 
 	 * @param itemNumber The spot that the pager will jump to when this button is clicked on.
-	 * @return
+	 * @return The new MouseEventListener
 	 */
 	protected MouseEventListener createButtonListener(final int itemNumber) {
 		return new MouseEventAdapter() {

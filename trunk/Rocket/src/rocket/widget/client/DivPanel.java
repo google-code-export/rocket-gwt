@@ -45,7 +45,7 @@ public class DivPanel extends Panel implements HasWidgets {
 	/**
 	 * Factory method which creates the parent DIV element for this entire panel
 	 * 
-	 * @return
+	 * @return A new DIV element
 	 */
 	protected Element createPanelElement() {
 		return DOM.createDiv();
@@ -62,7 +62,7 @@ public class DivPanel extends Panel implements HasWidgets {
 	/**
 	 * Returns the element which will house each of the new widget's elements.
 	 * 
-	 * @return
+	 * @return The parent element
 	 */
 	public Element getParentElement() {
 		return this.getElement();

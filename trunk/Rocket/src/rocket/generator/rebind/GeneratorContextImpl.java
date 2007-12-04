@@ -114,7 +114,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * Fetches the package for the given name.
 	 * 
 	 * @param name
-	 * @return
+	 * @return The located package or null if it wasnt found
 	 */
 	public Package findPackage(final String name) {
 		StringHelper.checkNotEmpty("parameter:name", name);
@@ -146,7 +146,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * is made.
 	 * 
 	 * @param name
-	 * @return
+	 * @return The new Package object
 	 */
 	abstract protected Package createPackage(final String name);
 
@@ -248,7 +248,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * made.
 	 * 
 	 * @param name
-	 * @return
+	 * @return The new type.
 	 */
 	protected Type createType(final String name) {
 		return name.endsWith("[]") ? this.createArrayType(name) : this.createClassType(name);
@@ -425,7 +425,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * type is an inner class.
 	 * 
 	 * @param type
-	 * @return
+	 * @return A fully qualified name of the given type.
 	 */
 	public String getStandaloneTypeName(final JClassType type) {
 		ObjectHelper.checkNotNull("parameter:type", type);

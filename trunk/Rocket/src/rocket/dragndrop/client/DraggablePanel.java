@@ -406,7 +406,7 @@ public class DraggablePanel extends SimplePanel {
 	 * Factory method that creates the initial ghost, by simply cloning the
 	 * contents of the current widget.
 	 * 
-	 * @return
+	 * @return The new dragged widget.
 	 */
 	protected Widget createDraggedWidget() {
 		final Element element = this.getWidget().getElement();
@@ -419,7 +419,7 @@ public class DraggablePanel extends SimplePanel {
 	 * 
 	 * @param x
 	 * @param y
-	 * @return
+	 * @return The matched DropTargetPanel for the given screen coordinates.
 	 */
 	protected DropTargetPanel findDropTarget(final int x, final int y) {
 		DropTargetPanel found = null;
@@ -459,7 +459,7 @@ public class DraggablePanel extends SimplePanel {
 	 * @param x
 	 * @param y
 	 * @param element
-	 * @return
+	 * @return The found element that the drop occured over.
 	 */
 	protected Element findDroppedOverElement(final int x, final int y, final Element element) {
 		Element between = element;

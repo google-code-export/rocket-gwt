@@ -49,7 +49,7 @@ public class CssUnit {
 	 * Takes a css position value and returns the enum.
 	 * 
 	 * @param propertyValue
-	 * @return
+	 * @return The CssUnit within the propertyValue
 	 */
 	static public CssUnit toCssUnit(final String propertyValue) {
 		CssUnit unit = null;
@@ -114,7 +114,7 @@ public class CssUnit {
 	 * into pixels.
 	 * 
 	 * @param length
-	 * @return
+	 * @return The pixel value
 	 */
 	public float toPixels(final float length) {
 		return length * this.getPixels();
@@ -124,7 +124,7 @@ public class CssUnit {
 	 * Takes a pixel length value and converts it into a value of this unit.
 	 * 
 	 * @param pixelLength
-	 * @return
+	 * @return The pixel value
 	 */
 	public float fromPixels(final float pixelLength) {
 		return pixelLength / this.getPixels();
@@ -173,7 +173,7 @@ public class CssUnit {
 	 * 
 	 * @param value
 	 *            If value is empty or null null will be returned.
-	 * @return
+	 * @return The CssUnit within the string value
 	 */
 	static public CssUnit getUnit(final String value) {
 		CssUnit unit = NONE;
@@ -215,7 +215,7 @@ public class CssUnit {
 	 * 
 	 * @param value
 	 * @param targetUnit
-	 * @return
+	 * @return The converted value.
 	 */
 	static public float convertValue(final String value, final CssUnit targetUnit) {
 		StringHelper.checkNotEmpty("parameter:value", value);
