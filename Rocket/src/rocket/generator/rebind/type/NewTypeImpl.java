@@ -16,9 +16,11 @@
 package rocket.generator.rebind.type;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
@@ -32,6 +34,10 @@ import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.method.NewMethodImpl;
 import rocket.generator.rebind.packagee.Package;
+import rocket.generator.rebind.util.ConstructorComparator;
+import rocket.generator.rebind.util.FieldComparator;
+import rocket.generator.rebind.util.MethodComparator;
+import rocket.generator.rebind.util.TypeComparator;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -325,13 +331,15 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
 		final Set constructors = this.getConstructors();
-
+		final Set sorted = new TreeSet( ConstructorComparator.INSTANCE );
+		sorted.addAll( constructors );
+		
 		writer.beginJavaDocComment();
 		writer.print("Constructors (" + constructors.size() + ")");
 		writer.endJavaDocComment();
 
 		writer.println();
-		GeneratorHelper.writeClassComponents(constructors, writer, false, true);
+		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
 		writer.println();
 	}
 
@@ -339,13 +347,15 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
 		final Set fields = this.getFields();
-
+		final Set sorted = new TreeSet( FieldComparator.INSTANCE );
+		sorted.addAll( fields );
+		
 		writer.beginJavaDocComment();
-		writer.print("Fields (" + fields.size() + ")");
+		writer.print("Fields (" + sorted.size() + ")");
 		writer.endJavaDocComment();
 
 		writer.println();
-		GeneratorHelper.writeClassComponents(fields, writer, false, true);
+		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
 		writer.println();
 	}
 
@@ -353,27 +363,31 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
 		final Set methods = this.getMethods();
-
+		final Set sorted = new TreeSet( MethodComparator.INSTANCE );
+		sorted.addAll( methods );		
+		
 		writer.beginJavaDocComment();
 		writer.print("Methods (" + methods.size() + ")");
 		writer.endJavaDocComment();
 
 		writer.println();
-		GeneratorHelper.writeClassComponents(methods, writer, false, true);
+		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
 		writer.println();
 	}
 
 	protected void writeNestedTypes(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
-		final Set nestedTypes = this.getNestedTypes();
-
+		final Set types = this.getNestedTypes();
+		final Set sorted = new TreeSet( TypeComparator.INSTANCE );
+		sorted.addAll( types );
+		
 		writer.beginJavaDocComment();
-		writer.print("Nested Types (" + nestedTypes.size() + ")");
+		writer.print("Nested Types (" + types.size() + ")");
 		writer.endJavaDocComment();
 
 		writer.println();
-		GeneratorHelper.writeClassComponents(nestedTypes, writer, false, true);
+		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
 		writer.println();
 	}
 
