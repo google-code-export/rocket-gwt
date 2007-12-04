@@ -231,8 +231,8 @@ public abstract class SortableTable extends CompositeWidget {
 	 * also factors into whether the column is sorted in ascending or descending
 	 * mode.
 	 * 
-	 * @param column
-	 * @return
+	 * @param column The column
+	 * @return The matching Comparator for the given column
 	 */
 	protected Comparator getColumnComparator(final int column) {
 		final ColumnSorting sorting = this.getColumnSorting(column);
@@ -430,7 +430,7 @@ public abstract class SortableTable extends CompositeWidget {
 	 * 
 	 * @param row
 	 * @param column
-	 * @return
+	 * @return The value
 	 */
 	protected abstract Object getValue(final Object row, final int column);
 
@@ -440,7 +440,7 @@ public abstract class SortableTable extends CompositeWidget {
 	 * 
 	 * @param row
 	 * @param column
-	 * @return
+	 * @return The widget at the given row/column
 	 */
 	protected abstract Widget getWidget(final Object row, final int column);
 
@@ -448,7 +448,7 @@ public abstract class SortableTable extends CompositeWidget {
 	 * Sub-classes must override this method and return the number of columns
 	 * the table will display.
 	 * 
-	 * @return
+	 * @return The number of columns.
 	 */
 	protected abstract int getColumnCount();
 

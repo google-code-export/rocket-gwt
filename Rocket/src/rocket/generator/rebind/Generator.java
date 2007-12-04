@@ -61,7 +61,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * {@link NewConcreteType}
 	 * 
 	 * @param typeName
-	 * @return
+	 * @return The name of the new type
 	 */
 	public String createNewTypeIfNecessary(final String typeName) {
 		final GeneratorContext context = this.getGeneratorContext();
@@ -113,7 +113,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	/**
 	 * The hardcoded suffix that gets appended to each generated type
 	 * 
-	 * @return
+	 * @return The suffix to appended. This typically starts with an underscore or two ...
 	 */
 	abstract protected String getGeneratedTypeNameSuffix();
 	
@@ -127,7 +127,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * 
 	 * @param type
 	 * @param newTypeName
-	 * @return
+	 * @return The new type
 	 */
 	abstract protected NewConcreteType assembleNewType(final Type type, final String newTypeName);
 
@@ -193,7 +193,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * 
 	 * @param type
 	 * @param fileExtension
-	 * @return
+	 * @return The resource name as a fully qualified class name (with dots replaced by slashes).
 	 */
 	public String getResourceName(final Type type, final String fileExtension) {
 		ObjectHelper.checkNotNull("parameter:type", type);
@@ -208,7 +208,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * 
 	 * @param packagee
 	 * @param fileName
-	 * @return
+	 * @return The resource name as a fully qualified class name (with dots replaced by slashes).
 	 */
 	public String getResourceName(final Package packagee, final String fileName) {
 		ObjectHelper.checkNotNull("parameter:package", packagee);
@@ -223,10 +223,10 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	}
 
 	/**
-	 * Retrieves a resource by name
+	 * Retrieves a resource by name. If the resource is not located on as a classpath resource an exception will be thrown.
 	 * 
 	 * @param resourceName
-	 * @return
+	 * @return The InputStream for the given resourceName.
 	 */
 	public InputStream getResource(final String resourceName) {
 		StringHelper.checkNotNull("parameter:resourceName", resourceName);

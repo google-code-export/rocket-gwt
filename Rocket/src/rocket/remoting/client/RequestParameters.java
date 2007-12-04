@@ -15,6 +15,7 @@
  */
 package rocket.remoting.client;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,7 +31,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class RequestParameters implements IsSerializable {
+public class RequestParameters implements IsSerializable, Serializable {
 
 	public RequestParameters() {
 		this.setMultiValueMap(new MultiValueMap());
@@ -58,7 +59,7 @@ public class RequestParameters implements IsSerializable {
 	 * Tests if a particular parameter has been added.
 	 * 
 	 * @param name
-	 * @return
+	 * @return True if the parameter exists false otherwise
 	 */
 	public boolean contains(final String name) {
 		return this.getMultiValueMap().contains(name);
@@ -127,7 +128,7 @@ public class RequestParameters implements IsSerializable {
 	 * Converts the parameters within this object into a post data equivalent ie
 	 * array of bytes.
 	 * 
-	 * @return
+	 * @return The built string.
 	 */
 	public String asString() {
 		final StringBuffer data = new StringBuffer();

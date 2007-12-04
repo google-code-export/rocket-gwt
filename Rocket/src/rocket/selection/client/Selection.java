@@ -36,7 +36,7 @@ public class Selection {
 	/**
 	 * Returns the document Selection singleton
 	 * 
-	 * @return
+	 * @return The singleton instance
 	 */
 	static public Selection getSelection() {
 		return selection;
@@ -128,7 +128,7 @@ public class Selection {
 	/**
 	 * Tests if anything is currently being selected
 	 * 
-	 * @return
+	 * @return True if empty false otherwise
 	 */
 	public boolean isEmpty() {
 		return Selection.getSupport().isEmpty();

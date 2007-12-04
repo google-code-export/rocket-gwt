@@ -66,36 +66,6 @@ public class WidgetConstants {
 
 	final static String STYLESHEET_ITEM_SELECTED_STYLE = STYLESHEET_ITEM_STYLE + SELECTED;
 
-	// CARD
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	/**
-	 * This style is applied to the container element of a CollapsablePanel
-	 * {@link CollapsablePanel}
-	 */
-	final static String COLLAPSABLE_PANEL_STYLE = ROCKET + "-collapsablePanel";
-
-	final static String COLLAPSABLE_PANEL_TITLE_STYLE = COLLAPSABLE_PANEL_STYLE + "-title";
-
-	final static int COLLAPSABLE_PANEL_TITLE_ROW = 0;
-
-	final static int COLLAPSABLE_PANEL_TITLE_COLUMN = 0;
-
-	final static String COLLAPSABLE_PANEL_TITLE_FLEXTABLE_STYLE = COLLAPSABLE_PANEL_TITLE_STYLE;
-
-	final static String COLLAPSABLE_PANEL_CONTENT_STYLE = COLLAPSABLE_PANEL_STYLE + "-content";
-
-	final static int COLLAPSABLE_PANEL_CONTENT_ROW = COLLAPSABLE_PANEL_TITLE_ROW + 1;
-
-	final static int COLLAPSABLE_PANEL_CONTENT_COLUMN = 0;
-
-	final static String COLLAPSABLE_PANEL_TITLE_WIDGET_STYLE = COLLAPSABLE_PANEL_STYLE + "-titleWidget";
-
-	final static String COLLAPSABLE_PANEL_MINIMIZE_IMAGE_URL = Browser.buildImageUrl("/collapsablePanel/minimize.gif");
-
-	final static String COLLAPSABLE_PANEL_MAXIMIZE_IMAGE_URL = Browser.buildImageUrl("/collapsablePanel/maximize.gif");
-
-	final static String COLLAPSABLE_PANEL_CLOSE_IMAGE_URL = Browser.buildImageUrl("/collapsablePanel/close.gif");
-
 	// BREADCRUMB
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**

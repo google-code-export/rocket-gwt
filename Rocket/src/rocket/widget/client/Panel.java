@@ -108,7 +108,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	/**
 	 * This special constructor should only be used by {@link CompositePanel}.
 	 * 
-	 * @param panel
+	 * @param ignored
 	 */
 	Panel(final boolean ignored) {
 		super();
@@ -262,7 +262,6 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	 * 
 	 * @param element
 	 * @param indexBefore
-	 * @return Element the parent element of the new widget.
 	 */
 	protected abstract void insert0(Element element, int indexBefore);
 

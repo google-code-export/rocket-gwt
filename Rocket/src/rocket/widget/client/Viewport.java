@@ -67,10 +67,10 @@ import com.google.gwt.user.client.ui.Widget;
  * new tile is created. The actual size of the gutter (in pixels) may be
  * controlled by overriding the following methods
  * <ul>
- * <li>{@link getLeftGutter()}</li>
- * <li>{@link getRightGutter()}</li>
- * <li>{@link getTopGutter()}</li>
- * <li>{@link getBottomGutter()}</li>
+ * <li>{@link #getLeftGutter()}</li>
+ * <li>{@link #getRightGutter()}</li>
+ * <li>{@link #getTopGutter()}</li>
+ * <li>{@link #getBottomGutter()}</li>
  * </li>
  * </p>
  * 

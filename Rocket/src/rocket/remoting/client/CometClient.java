@@ -188,13 +188,14 @@ public abstract class CometClient {
 	}
 
 	/**
-	 * This method will be realised by the CometGenerator.
+	 * This method will be realised by the CometGenerator. It will return a rpc proxy that will become a
+	 * factory that eventually returns a type deserializer.
 	 * 
 	 * Sub classes must include a
 	 * 
 	 * @comet-payloadType annotation to indicate the payload type returned by
 	 *                    the server counterpart.
-	 * @return
+	 * @return The rpc proxy
 	 */
 	protected abstract Object createProxy();
 

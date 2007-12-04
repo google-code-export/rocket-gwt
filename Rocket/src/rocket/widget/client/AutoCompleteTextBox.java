@@ -403,7 +403,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	 * the user clicks on something else.
 	 * 
 	 * @param event
-	 * @return
+	 * @return A flag indicating whether or not to cancel the event. 
 	 */
 	protected boolean onDropDownListEventPreview(final Event event) {
 		boolean dontCancel = true;

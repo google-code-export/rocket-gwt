@@ -83,7 +83,7 @@ public class BreadcrumbPanel extends CompositeWidget {
 	 * Adds a new breadcrumb to the panel. The given clickListener will be
 	 * notified whenever the user selects the corresponding breadcrumb.
 	 * 
-	 * @param add
+	 * @param text
 	 *            The text that appears within the hyper link
 	 * @param clickListener
 	 *            The listener that will be notified.
