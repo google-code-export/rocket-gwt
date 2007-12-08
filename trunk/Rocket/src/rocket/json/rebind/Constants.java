@@ -15,6 +15,7 @@
  */
 package rocket.json.rebind;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +23,7 @@ import java.util.Set;
 import rocket.json.client.BooleanJsonSerializer;
 import rocket.json.client.ByteJsonSerializer;
 import rocket.json.client.CharJsonSerializer;
+import rocket.json.client.DateJsonSerializer;
 import rocket.json.client.DoubleJsonSerializer;
 import rocket.json.client.FloatJsonSerializer;
 import rocket.json.client.IntJsonSerializer;
@@ -176,4 +178,8 @@ class Constants {
 	static final String CHAR_SERIALIZER = CharJsonSerializer.class.getName();
 
 	static final String STRING_SERIALIZER = StringJsonSerializer.class.getName();
+	
+	static final String DATE = Date.class.getName();
+	
+	static final String DATE_SERIALIZER = DateJsonSerializer.class.getName();
 }

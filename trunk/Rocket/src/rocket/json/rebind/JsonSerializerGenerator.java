@@ -637,6 +637,13 @@ public class JsonSerializerGenerator extends Generator {
 
 		return this.getGeneratorContext().getType(typeName);
 	}
+
+	/**
+	 * Special test to check if type is a date, if it is return the {@link rocket.json.client.DateJsonSerializer} class.
+	 */
+    public String getGeneratedTypeName(final String name) {
+    	return Constants.DATE.equals( name ) ? Constants.DATE_SERIALIZER : super.getGeneratedTypeName( name );
+    }
 	
 	protected String getGeneratedTypeNameSuffix(){
 		return Constants.SERIALIZER_SUFFIX;

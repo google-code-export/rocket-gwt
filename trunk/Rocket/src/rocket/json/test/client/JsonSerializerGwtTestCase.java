@@ -16,6 +16,7 @@
 package rocket.json.test.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -2129,5 +2130,184 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		 * @jsonSerialization-javascriptPropertyName field
 		 */
 		String field;
+	}
+	
+	public void testReadDateField() {
+		final Date value = new Date( 12345678 );
+
+		final JSONNumber jsonNumber = new JSONNumber(value.getTime());
+		final JSONObject jsonObject = new JSONObject();
+		jsonObject.put("field", jsonNumber);
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithDateField.class);
+		final ClassWithDateField instance = (ClassWithDateField) serializer.readObject(jsonObject);
+
+		assertEquals(value, instance.field);
+	}
+
+	public void testWriteDateField() {
+		final Date value = new Date( 12345678 );
+
+		final ClassWithDateField instance = new ClassWithDateField();
+		instance.field = value;
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithDateField.class);
+		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
+
+		assertEquals(1, jsonObject.size());
+		assertEquals(value.getTime(), (long) jsonObject.get("field").isNumber().getValue());
+	}
+
+	static class ClassWithDateField implements JsonSerializable {
+		/**
+		 * @jsonSerialization-javascriptPropertyName field
+		 */
+		Date field;
+	}
+
+	public void testReadDateList() {
+		final Date date = new Date( 1234567 );
+
+		final JSONArray jsonArray = new JSONArray();
+		jsonArray.set(0, new JSONNumber( date.getTime() ));
+
+		final JSONObject jsonObject = new JSONObject();
+		jsonObject.put("list", jsonArray);
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithDateListField.class);
+		final ClassWithDateListField instance = (ClassWithDateListField) serializer.readObject(jsonObject);
+
+		assertNotNull(instance.field);
+
+		final Date readDate = (Date) instance.field.get(0);
+		assertEquals(date, readDate );
+	}
+
+	public void testWriteDateList() {
+		final List list = new ArrayList();
+		final Date date = new Date( 1234567 );
+		list.add( date );
+
+		final ClassWithDateListField instance = new ClassWithDateListField();
+		instance.field = list;
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithDateListField.class);
+		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
+
+		assertNotNull(jsonObject);
+
+		assertEquals(1, jsonObject.size());
+
+		final JSONArray jsonArray = jsonObject.get("list").isArray();
+		assertNotNull(jsonArray);
+
+		assertEquals(1, jsonArray.size());
+		assertEquals(date.getTime(), (long) jsonArray.get(0).isNumber().getValue());
+	}
+
+	static class ClassWithDateListField implements JsonSerializable {
+		/**
+		 * @jsonSerialization-javascriptPropertyName list
+		 * @jsonSerialization-listElementType java.util.Date
+		 */
+		List field;
+	}
+
+	public void testReadDateSet() {
+		final Date date = new Date( 1234567 );
+
+		final JSONArray jsonArray = new JSONArray();
+		jsonArray.set(0, new JSONNumber(date.getTime()));
+
+		final JSONObject jsonObject = new JSONObject();
+		jsonObject.put("set", jsonArray);
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithDateSetField.class);
+		final ClassWithDateSetField instance = (ClassWithDateSetField) serializer.readObject(jsonObject);
+
+		assertNotNull(instance.field);
+
+		final Date readDate = (Date) instance.field.iterator().next();
+		assertEquals(date, readDate);
+	}
+
+	public void testWriteDateSet() {
+		final Set set = new HashSet();
+		final Date date = new Date( 1234567 );
+		set.add(date);
+
+		final ClassWithDateSetField instance = new ClassWithDateSetField();
+		instance.field = set;
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithDateSetField.class);
+		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
+
+		assertNotNull(jsonObject);
+
+		assertEquals(1, jsonObject.size());
+
+		final JSONArray jsonArray = jsonObject.get("set").isArray();
+		assertNotNull(jsonArray);
+
+		assertEquals(1, jsonArray.size());
+
+		assertEquals(1, jsonArray.size());
+		assertEquals(date.getTime(), (long)jsonArray.get(0).isNumber().getValue());
+	}
+
+	static class ClassWithDateSetField implements JsonSerializable {
+		/**
+		 * @jsonSerialization-javascriptPropertyName set
+		 * @jsonSerialization-setElementType java.util.Date
+		 */
+		Set field;
+	}
+	
+	public void testReadDateMap() {
+		final Date date = new Date( 1234567 );
+
+		final JSONObject map = new JSONObject();
+		map.put("0", new JSONNumber( date.getTime() ));
+
+		final JSONObject jsonObject = new JSONObject();
+		jsonObject.put("map", map);
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithDateMapField.class);
+		final ClassWithDateMapField instance = (ClassWithDateMapField) serializer.readObject(jsonObject);
+
+		assertNotNull(instance.field);
+
+		assertEquals( date, instance.field.get("0"));
+	}
+
+	public void testWriteDateMap() {
+		final Map map = new HashMap();
+		final Date date = new Date( 1234567);
+		map.put("0", date );
+
+		final ClassWithDateMapField instance = new ClassWithDateMapField();
+		instance.field = map;
+
+		final JsonSerializer serializer = (JsonSerializer) GWT.create(ClassWithDateMapField.class);
+		final JSONObject jsonObject = (JSONObject) serializer.writeJson(instance);
+
+		assertNotNull(jsonObject);
+
+		assertEquals(1, jsonObject.size());
+
+		final JSONObject actualMap = jsonObject.get("map").isObject();
+		assertNotNull(actualMap);
+
+		assertEquals(1, actualMap.size());
+
+		assertEquals( date, actualMap.get( "0"));				
+	}
+
+	static class ClassWithDateMapField implements JsonSerializable {
+		/**
+		 * @jsonSerialization-javascriptPropertyName map
+		 * @jsonSerialization-mapValueType java.util.Date
+		 */
+		Map field;
 	}
 }
