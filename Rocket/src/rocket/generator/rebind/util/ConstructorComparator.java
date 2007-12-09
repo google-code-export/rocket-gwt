@@ -35,30 +35,30 @@ public class ConstructorComparator implements Comparator {
 	}
 
 	public int compare(final Object object, final Object otherObject) {
-		return this.compare((Comparator) object, (Comparator) otherObject);
+		return this.compareConstructors((Constructor) object, (Constructor) otherObject);
 	}
 
-	int compareConstructor(final Constructor constructor, final Constructor otherConstructor) {
-		return this.compare( constructor.getParameters(), otherConstructor.getParameters());
+	int compareConstructors(final Constructor constructor, final Constructor otherConstructor) {
+		return this.compareConstructorArguments( constructor.getParameters(), otherConstructor.getParameters());
 	}
 	
-	public int compareConstructorArguments( final List arguments, final List otherArguments ) {
+	public int compareConstructorArguments( final List parameters, final List otherParameters ) {
 		int value = 0;
 		
 		while( true ){
 			// short argument list comes first...
-			value = arguments.size() - otherArguments.size();
+			value = parameters.size() - otherParameters.size();
 			if( value != 0 ){
 				break;
 			}
 			// compare argument types one by one...
-			final Iterator parameters = arguments.iterator();
-			final Iterator otherParameters = otherArguments.iterator();
+			final Iterator parametersIterator = parameters.iterator();
+			final Iterator otherParametersIterator = otherParameters.iterator();
 			final Comparator typeComparator = TypeComparator.INSTANCE;
 			
-			while( parameters.hasNext() ){
-				final ConstructorParameter parameter = (ConstructorParameter)parameters.next(); 
-				final ConstructorParameter otherParameter = (ConstructorParameter)otherParameters.next(); 
+			while( parametersIterator.hasNext() ){
+				final ConstructorParameter parameter = (ConstructorParameter)parametersIterator.next(); 
+				final ConstructorParameter otherParameter = (ConstructorParameter)otherParametersIterator.next(); 
 				
 				value = typeComparator.compare( parameter.getType(), otherParameter.getType() );
 				
