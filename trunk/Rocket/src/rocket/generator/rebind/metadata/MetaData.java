@@ -31,92 +31,84 @@ import rocket.util.client.ObjectHelper;
  * @author Miroslav Pokorny
  */
 public class MetaData implements CodeBlock, HasMetadata {
-	
-	public MetaData(){
+
+	public MetaData() {
 		super();
-		
-		this.setMetaData( this.createMetaData() );
+
+		this.setMetaData(this.createMetaData());
 	}
-	
+
 	/**
 	 * This map holds an arrangment of keys to values in add order. 
 	 */
 	private Map metaData;
-	
-	protected Map getMetaData(){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
+
+	protected Map getMetaData() {
+		ObjectHelper.checkNotNull("field:metaData", metaData);
 		return this.metaData;
 	}
-	
-	protected void setMetaData( final Map metaData ){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
+
+	protected void setMetaData(final Map metaData) {
+		ObjectHelper.checkNotNull("parameter:metaData", metaData);
 		this.metaData = metaData;
 	}
-	
-	protected Map createMetaData(){
+
+	protected Map createMetaData() {
 		return new LinkedHashMap();
 	}
-	
-	public void add( final String key, final String value ){
+
+	public void add(final String key, final String value) {
 		List list = this.get(key);
-		if( null == list ){
+		if (null == list) {
 			list = new ArrayList();
 			this.getMetaData().put(key, list);
 		}
-		
-		list.add( value );
+
+		list.add(value);
 	}
-	
-	protected List get( final String key ){
-		return (List) this.getMetaData().get( key );
+
+	protected List get(final String key) {
+		return (List) this.getMetaData().get(key);
 	}
-	
+
 	/**
 	 * Returns a read only value of all current meta data values for the given name.
 	 */
 	public List getMetadataValues(final String name) {
-		final List values = this.get( name );
-		return values == null ? null : Collections.unmodifiableList( values );
+		final List values = this.get(name);
+		return values == null ? null : Collections.unmodifiableList(values);
 	}
-	
-	public boolean isEmpty(){
+
+	public boolean isEmpty() {
 		return this.getMetaData().isEmpty();
 	}
-	
-	public void write( final SourceWriter writer ){
+
+	public void write(final SourceWriter writer) {
 		final Iterator entries = this.getMetaData().entrySet().iterator();
-		while( entries.hasNext() ){
+		while (entries.hasNext()) {
 			final Map.Entry entry = (Map.Entry) entries.next();
-			final String name = (String)entry.getKey();
+			final String name = (String) entry.getKey();
 			final List values = (List) entry.getValue();
-			
-			this.writeMetaDataEntry(name, values, writer);
+
+			this.writeMetaDataEntries(name, values, writer);
 		}
 	}
-	
-	protected void writeMetaDataEntry( final String name, final List values, final SourceWriter writer ){
-		final StringBuilder builder = new StringBuilder();
-		
-		//@name <space> value1 <comma> value2
-		builder.append( '@');
-		builder.append( name );
-		builder.append( ' ');
-		
+
+	protected void writeMetaDataEntries(final String name, final List values, final SourceWriter writer) {
+
 		final Iterator valuesIterator = values.iterator();
-		while( valuesIterator.hasNext() ){
+		while (valuesIterator.hasNext()) {
 			final String value = (String) valuesIterator.next();
-						
-			builder.append( value );
-			
-			if( valuesIterator.hasNext() ){
-				builder.append( ',');
-			}
-		}		
-		
-		writer.println( builder.toString() );
+			this.writeMetaDataEntry(name, value, writer);
+		}
 	}
-	
-	public String toString(){
+
+	protected void writeMetaDataEntry(final String name, final String value, final SourceWriter writer) {
+		final String line = '@' + name + ' ' + value;
+		writer.println(line);
+	}
+
+	public String toString() {
 		return super.toString() + this.metaData;
 	}
 }
