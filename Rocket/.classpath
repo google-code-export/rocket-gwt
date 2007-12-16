@@ -6,5 +6,6 @@
 	<classpathentry kind="var" path="GWT_HOME/gwt-user.jar"/>
 	<classpathentry kind="var" path="GWT_HOME/gwt-dev-windows.jar"/>
 	<classpathentry kind="var" path="FLEXJSON/flexjson.jar"/>
+	<classpathentry kind="var" path="CGLIB/cglib-full.jar"/>	
 	<classpathentry kind="output" path="bin"/>
 </classpath>
