@@ -229,17 +229,31 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 		this.body = body;
 	}
 
+
+	/**
+	 * Builds a string representation of this method in the following form
+	 * 
+	 * <ul>
+	 * <li>Visibility</li>
+	 * <li>Enclosing type</li>
+	 * <li>Left parenthesis</li>
+	 * <li>comma separated parameter type list</li>
+	 * <li>Right parenthesis</li>
+	 * </ul>
+	 */
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("NewConstructor ");
 
+		builder.append( this.getVisibility() );
+		
 		if (this.hasEnclosingType()) {
 			builder.append(this.getEnclosingType());
 			builder.append(' ');
 		}
 
-		if (this.hasParameters()) {
-			final Iterator parameters = this.getParameters().iterator();
+		builder.append('(');
+
+		final Iterator parameters = this.getParameters().iterator();
 			while (parameters.hasNext()) {
 				final NewConstructorParameter parameter = (NewConstructorParameter) parameters.next();
 				builder.append(parameter.getType());
@@ -250,7 +264,8 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 			}
 
 			builder.append(this.getParameters());
-		}
+
+		builder.append( ')');
 
 		return builder.toString();
 	}

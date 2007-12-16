@@ -341,18 +341,50 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		writer.println(";");	
 	}
 
+	/**
+	 * Builds a string representation of this method in the following form
+	 * 
+	 * <ul>
+	 * <li>Native</li>
+	 * <li>final</li>
+	 * <li>Static</li>
+	 * <li>Abstract</li> 
+	 * <li>Visibility</li>
+	 * <li>Return type</li>
+	 * <li>Enclosing type</li>
+	 * <li>Name</li>
+	 * <li>Left parenthesis</li>
+	 * <li>comma separated parameter types</li>
+	 * <li>Right parenethesis</li>
+	 * </ul>
+	 */
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("NewMethod ");
 
+		if( this.isNative() ){
+			builder.append( "native ");
+		}
+		if( this.isFinal() ){
+			builder.append( "final ");
+		}
+		if( this.isStatic() ){
+			builder.append( "static ");
+		}
+		if( this.isAbstract() ){
+			builder.append( "abstract ");
+		}
+
+		builder.append( this.getVisibility() );
+		builder.append( ' ');
+		
 		if (this.hasReturnType()) {
-			builder.append(this.getReturnType());
+			builder.append(this.getReturnType().getName());
 			builder.append(' ');
 		}
 
 		if (this.hasEnclosingType()) {
-			builder.append(this.getEnclosingType());
-			builder.append(' ');
+			builder.append(this.getEnclosingType().getName());
+			builder.append('.');
 		}
 
 		if (this.hasName()) {
