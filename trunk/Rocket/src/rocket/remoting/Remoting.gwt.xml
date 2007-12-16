@@ -8,9 +8,13 @@
 		<when-type-is class="rocket.remoting.client.support.CometSupport"/>
 		<when-property-is name="user.agent" value="webkit"/>
 	</replace-with>	
+	
+	<generate-with class="rocket.remoting.rebind.rpc.java.JavaRpcClientGenerator">
+		<when-type-assignable class="rocket.remoting.client.JavaRpcService" />
+	</generate-with>
 
-	<generate-with class="rocket.remoting.rebind.json.RemoteJsonServiceGenerator">
-		<when-type-assignable class="rocket.remoting.client.json.RemoteJsonService" />
+	<generate-with class="rocket.remoting.rebind.rpc.json.JsonRpcClientGenerator">
+		<when-type-assignable class="rocket.remoting.client.JsonRpcService" />
 	</generate-with>
 	
 	<generate-with class="rocket.remoting.rebind.comet.CometGenerator">

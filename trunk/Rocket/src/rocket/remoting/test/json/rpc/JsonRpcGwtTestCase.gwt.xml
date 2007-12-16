@@ -1,0 +1,37 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.json.Json"/>
+	<inherits name="rocket.remoting.Remoting"/>	
+	
+	<source path="client" />	
+		
+	<generate-with class="rocket.remoting.rebind.rpc.json.JsonRpcClientGenerator">
+		<when-type-assignable class="rocket.remoting.test.json.rpc.client.NotAnInterface" />
+	</generate-with>
+
+	<generate-with class="rocket.remoting.rebind.rpc.json.JsonRpcClientGenerator">
+		<when-type-assignable class="rocket.remoting.test.json.rpc.client.DoesntImplementRemoteJsonService" />
+	</generate-with>		
+
+	<servlet
+		path="/ClassWithStringFieldJsonResponse"
+		class="rocket.remoting.test.json.rpc.server.ClassWithStringFieldJsonResponseServlet" />
+
+	<servlet
+		path="/ClassWith3StringFieldsJsonResponse"
+		class="rocket.remoting.test.json.rpc.server.ClassWith3StringFieldsJsonResponseServlet" />
+
+	<servlet
+		path="/brokenJsonResponse"
+		class="rocket.remoting.test.json.rpc.server.BrokenJsonServlet" />
+
+	<servlet
+		path="/internalServerError"
+		class="rocket.remoting.test.json.rpc.server.InternalServerErrorServlet" />
+
+	<servlet
+		path="/jsonRpc"
+		class="rocket.remoting.test.json.rpc.server.JsonRpcEchoServlet" />
+				
+
+</module>

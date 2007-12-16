@@ -44,7 +44,7 @@ public class WebHelper {
 
 			final Headers headers = webRequest.getHeaders();
 
-			AbstractHttpServletRequest request0 = null;
+			GetOrPostHttpServletRequest request0 = null;
 			while (true) {
 				if (HttpHelper.isGet(webRequest.getMethod())) {
 					request0 = new GetHttpServletRequest(request, url, headers, webRequest.getParameters());
