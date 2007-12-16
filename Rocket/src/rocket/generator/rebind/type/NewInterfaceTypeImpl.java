@@ -15,6 +15,7 @@
  */
 package rocket.generator.rebind.type;
 
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.constructor.NewConstructor;
 
 /**
@@ -43,5 +44,11 @@ public class NewInterfaceTypeImpl extends NewConcreteOrInterfaceType implements 
 
 	public NewAnonymousNestedType newAnonymousNestedType() {
 		throw new UnsupportedOperationException("Interfaces cannot have anonymous nested types, interface: " + this);
+	}
+	
+	/**
+	 * Interfaces cant have constructors so theres nothing to write skip the constructor header etc...
+	 */
+	protected void writeConstructors(final SourceWriter writer) {		
 	}
 }
