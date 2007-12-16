@@ -29,10 +29,7 @@ import rocket.util.client.ObjectHelper;
 abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterfaceType {
 	
 	protected NewNestedTypeOrInterface(){
-		super();
-		
-		this.setComments( "" );
-		this.setMetaData( this.createMetaData() );
+		super();		
 	}
 	
 	public String getName(){
