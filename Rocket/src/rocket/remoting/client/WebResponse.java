@@ -30,6 +30,9 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 public class WebResponse implements IsSerializable {
 
+	/**
+	 * The status code returned by the server with the response
+	 */
 	private int code = -1;
 
 	public int getCode() {
@@ -42,6 +45,9 @@ public class WebResponse implements IsSerializable {
 		this.code = code;
 	}
 
+	/**
+	 * The stauts message sent by the server
+	 */
 	private String message;
 
 	public String getMessage() {
@@ -54,6 +60,9 @@ public class WebResponse implements IsSerializable {
 		this.message = message;
 	}
 
+	/**
+	 * Any headers that the server replied with.
+	 */
 	private Headers headers;
 
 	public Headers getHeaders() {

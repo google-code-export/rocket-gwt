@@ -15,6 +15,8 @@
  */
 package rocket.remoting.client;
 
+import java.io.Serializable;
+
 import rocket.util.client.HttpHelper;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -30,8 +32,11 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class WebRequest implements IsSerializable {
+public class WebRequest implements IsSerializable, Serializable {
 
+	/**
+	 * The url of the server resource being requested
+	 */
 	private String url;
 
 	public String getUrl() {
@@ -44,6 +49,9 @@ public class WebRequest implements IsSerializable {
 		this.url = url;
 	}
 
+	/**
+	 * A collection of requesta parameter name/value pairs.
+	 */
 	private RequestParameters parameters;
 
 	public RequestParameters getParameters() {
@@ -64,6 +72,9 @@ public class WebRequest implements IsSerializable {
 		this.parameters = parameters;
 	}
 
+	/**
+	 * None or more headers that should be sent when requesting the server resource
+	 */
 	private Headers headers;
 
 	public Headers getHeaders() {
@@ -76,6 +87,9 @@ public class WebRequest implements IsSerializable {
 		this.headers = headers;
 	}
 
+	/**
+	 * Any post data
+	 */
 	private String data;
 
 	public String getData() {
@@ -95,6 +109,9 @@ public class WebRequest implements IsSerializable {
 		this.data = data;
 	}
 
+	/**
+	 * The request method be it GET or POST.
+	 */
 	private String method;
 
 	public String getMethod() {

@@ -30,7 +30,7 @@ import rocket.remoting.client.RequestParameters;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class GetHttpServletRequest extends AbstractHttpServletRequest implements HttpServletRequest {
+public class GetHttpServletRequest extends GetOrPostHttpServletRequest implements HttpServletRequest {
 
 	public GetHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers) {
 		super(request, url, headers);

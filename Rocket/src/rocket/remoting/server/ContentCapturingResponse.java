@@ -116,7 +116,7 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	}
 
 	public void setStatus(final int status) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:status", 0, status );
+		PrimitiveHelper.checkGreaterThanOrEqual("parameter:status", 0, status);
 		this.status = status;
 	}
 
@@ -163,7 +163,7 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	}
 
 	public void setBufferSize(final int bufferSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:bufferSize", 0, bufferSize );
+		PrimitiveHelper.checkGreaterThan("parameter:bufferSize", 0, bufferSize);
 		this.bufferSize = bufferSize;
 	}
 
