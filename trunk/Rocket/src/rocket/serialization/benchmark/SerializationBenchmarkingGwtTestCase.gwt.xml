@@ -1,0 +1,7 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.User"/>
+	<inherits name="rocket.serialization.Serialization"/>	
+	<source path="client" />
+	<servlet path="/service" class="rocket.serialization.benchmark.server.EchoRemoteServiceServlet"/>	
+</module>

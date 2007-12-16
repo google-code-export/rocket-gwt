@@ -31,7 +31,6 @@ import rocket.generator.rebind.type.NewInterfaceTypeImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
-import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
@@ -44,28 +43,28 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
  * @author Miroslav Pokorny
  */
 public class TypeOracleGeneratorContext extends GeneratorContextImpl {
-
+	
 	/**
 	 * Factory method which creates a new concrete type.
 	 * 
 	 * @param name The name of the new concrete type
 	 * @return The new concrete type.
 	 */
-	public NewConcreteType newConcreteType( final String name ) {
-		NewConcreteTypeImpl type = null; 
-			
-		final PrintWriter printWriter = this.tryCreateTypePrintWriter( name );
-		if( null != printWriter ){
-		type = new NewConcreteTypeImpl();
-		type.setGeneratorContext(this);
-		type.setName(name);
-		type.setPrintWriter(printWriter);
-		type.setSuperType(this.getObject());
-		type.setVisibility(Visibility.PUBLIC);
+	public NewConcreteType newConcreteType(final String name) {
+		NewConcreteTypeImpl type = null;
 
-		this.addNewType(type);
+		final PrintWriter printWriter = this.tryCreateTypePrintWriter(name);
+		if (null != printWriter) {
+			type = new NewConcreteTypeImpl();
+			type.setGeneratorContext(this);
+			type.setName(name);
+			type.setPrintWriter(printWriter);
+			type.setSuperType(this.getObject());
+			type.setVisibility(Visibility.PUBLIC);
+
+			this.addNewType(type);
 		}
-		
+
 		return type;
 	}
 
@@ -75,21 +74,21 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	 * @param name The name of the new interface
 	 * @return The new interface type.
 	 */
-	public NewInterfaceType newInterfaceType( final String name ) {
+	public NewInterfaceType newInterfaceType(final String name) {
 		NewInterfaceTypeImpl type = null;
-		
-		final PrintWriter printWriter = this.tryCreateTypePrintWriter( name );
-		if( null != printWriter ){
-		type = new NewInterfaceTypeImpl();
-		type.setGeneratorContext(this);
-		type.setName(name);
-		type.setPrintWriter(printWriter);
-		type.setSuperType(this.getObject());
-		type.setVisibility(Visibility.PUBLIC);
 
-		this.addNewType(type);
-		}		
-		
+		final PrintWriter printWriter = this.tryCreateTypePrintWriter(name);
+		if (null != printWriter) {
+			type = new NewInterfaceTypeImpl();
+			type.setGeneratorContext(this);
+			type.setName(name);
+			type.setPrintWriter(printWriter);
+			type.setSuperType(this.getObject());
+			type.setVisibility(Visibility.PUBLIC);
+
+			this.addNewType(type);
+		}
+
 		return type;
 	}
 
@@ -112,11 +111,11 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	/**
 	 * Creates a sourceWriter. All attempts to create a SourceWriter eventually
 	 * call this method once they have setup the ClassSourceFileComposerFactory
-	 * and gotten a PrintWriter
+	 * and have gotten a PrintWriter
 	 * 
 	 * @param composerFactory
 	 * @param printWriter
-	 * @return
+	 * @return A SourceWriter instance which may be used to emit a new standalone type.
 	 */
 	public SourceWriter createSourceWriter(final ClassSourceFileComposerFactory composerFactory, final PrintWriter printWriter) {
 		final com.google.gwt.user.rebind.SourceWriter sourceWriter = composerFactory.createSourceWriter(this.getGeneratorContext(),
@@ -160,19 +159,19 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 			}
 		};
 	}
-	
+
 	public void setGeneratorContext(final com.google.gwt.core.ext.GeneratorContext generatorContext) {
 		super.setGeneratorContext(generatorContext);
 		this.preloadTypes();
 	}
-	
+
 	/**
 	 * Factory method which creates an adapter for any array type. This method should only ever be called once for each array type after which all references are cached.
-	 * @param name
+	 * @param name The array type name
 	 * @return A new JArrayTypeTypeAdapter
 	 */
 	protected Type createArrayType(final String name) {
-		final String componentTypeName = name.substring( 0, name.length() - 2 );
+		final String componentTypeName = name.substring(0, name.length() - 2);
 		final JClassType componentType = this.getTypeOracle().findType(componentTypeName);
 		ObjectHelper.checkNotNull("Unable to find component type \"" + componentTypeName + "\".", componentType);
 
@@ -198,34 +197,46 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		final JClassType jClassType = (JClassType) this.getTypeOracle().findType(name);
 		JClassTypeTypeAdapter adapter = null;
 		if (null != jClassType) {
-			adapter = this.shouldBeSerializable(name) ? new ShouldBeSerializableJClassTypeAdapter() : new JClassTypeTypeAdapter();
+			adapter = this.shouldBeSerializable( jClassType ) ? new ShouldBeSerializableJClassTypeAdapter() : new JClassTypeTypeAdapter();
 			adapter.setGeneratorContext(this);
 			adapter.setJClassType(jClassType);
 		}
 		return adapter;
 	}
 	
+	protected boolean shouldBeSerializable( final JClassType jClassType ){
+		boolean serializable = false;
+		
+		while( true ){
+			if( this.isJdkCounterpartSerializable(jClassType)){
+				serializable = true;
+			}
+			break;			
+		}
+		
+		return serializable;
+	}
+	
 	/**
-	 * This method only exists because the concrete collection types are not marked as serializable but really are.
-	 * This is confirmed by querying the corresponding JDK class and checking if it can be assigned to java.io.Serializable
-	 * @param name
+	 * Reports if a jdk class with the same is serializable.
+	 * @param jClassType
 	 * @return
-	 * 
-	 * TODO GWT When all emulated java.lang and java.util classes actually implement {@link java.io.Serializable}
-	 * this method will no longer be necessary.
 	 */
-	protected boolean shouldBeSerializable( final String name ){
+	protected boolean isJdkCounterpartSerializable( final JClassType jClassType ){
 		boolean shouldBeSerializable = false;
 		
-		if( name.startsWith( "java.lang") || name.startsWith( "java.util")){
+		final String name = jClassType.getQualifiedSourceName();
+		//if( name.startsWith( "java.lang") || name.startsWith( "java.util")){
 			try{
 				final Class classs = Class.forName( name );
 				shouldBeSerializable = Serializable.class.isAssignableFrom( classs );
 			} catch ( final Exception ignore ){
 				shouldBeSerializable = false;
+			} catch ( final Error ignore ){
+				shouldBeSerializable = false;
 			}
-		}
-		
+		//}
+	
 		return shouldBeSerializable;
 	}
 
@@ -233,8 +244,8 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	 * Factory method which creates a package instance the first time a request
 	 * is made.
 	 * 
-	 * @param name
-	 * @return
+	 * @param name The name of the package
+	 * @return The package
 	 */
 	protected Package createPackage(final String name) {
 		JPackagePackageAdapter packagee = null;
@@ -387,7 +398,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	protected Type createCharArrayType() {
 		return this.createArrayType(JPrimitiveType.CHAR);
 	}
-	
+
 	protected Type createVoidType() {
 		final VoidJPrimitiveTypeTypeAdapter type = new VoidJPrimitiveTypeTypeAdapter();
 		type.setGeneratorContext(this);

@@ -15,7 +15,7 @@
  */
 package rocket.beans.test.beans.client.remotejsonservice;
 
-public interface RemoteJsonService extends rocket.remoting.client.json.RemoteJsonService {
+public interface RemoteJsonService extends rocket.remoting.client.JsonRpcService {
 	/**
 	 * 
 	 * @param echo

@@ -1,0 +1,6 @@
+
+			// case-statement.txt
+			case ${serializedTypeRuntimeName}: 
+				object = ${singleton};
+				break;
+
