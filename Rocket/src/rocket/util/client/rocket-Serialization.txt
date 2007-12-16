@@ -1,0 +1,14 @@
+# rocket.util
+# blacklist everything except for Colour and HueSaturationValue
+rocket.util.client.Destroyable
+rocket.util.client.HttpConstants
+rocket.util.client.HttpHelper
+rocket.util.client.ObjectHelper
+rocket.util.client.ObjectWrapper
+rocket.util.client.ObjectWrapperImpl
+rocket.util.client.PrimitiveHelper
+rocket.util.client.StackTrace
+rocket.util.client.StringComparator
+rocket.util.client.StringHelper
+rocket.util.client.SystemHelper
+rocket.util.client.ThrowableHelper
