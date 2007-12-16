@@ -236,21 +236,42 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 		}
 	}
 
+
+	/**
+	 * Builds a string representation of this method in the following form
+	 * 
+	 * <ul>
+	 * <li>final</li>
+	 * <li>Static</li> 
+	 * <li>Visibility</li>
+	 * <li>Type</li>
+	 * <li>Enclosing type\</li>
+	 * <li>name</li>
+	 * </ul>
+	 */
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("NewFieldImpl ");
 
-		if ( this.hasType() ) {
-			builder.append(this.getType().getName());
-			builder.append(' ');
+		if( this.isFinal() ){
+			builder.append( "final ");
 		}
+		if( this.isStatic() ){
+			builder.append( "static ");
+		}
+
+		builder.append( this.getVisibility() );
+		builder.append( ' ');
+		
+		builder.append(this.getType().getName());
+		builder.append(' ');
+
+		if (this.hasEnclosingType()) {
+			builder.append(this.getEnclosingType().getName());
+			builder.append('.');
+		}
+
 		builder.append(this.getName());
-		
-		if( this.hasEnclosingType() ){
-			builder.append( ", enclosingType: ");
-			builder.append( this.getEnclosingType() );
-		}
-		
+
 		return builder.toString();
 	}	
 }
