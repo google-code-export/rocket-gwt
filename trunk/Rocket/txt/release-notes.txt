@@ -654,3 +654,40 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.38.zip
 * Reworked GeneratorContext from being an abstract class into an interface.
 * Introduced a new SourceWriter which contains identical methods as those found in com.google.gwt.user.rebind.SourceWriter with new commit() 
   and rollback() methods. The rollback method is currently unsupported until the GWT adds the ability to cancel or rollback a newly generated type.
+
+0.39 16 December 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.39.zip
+* Updated NewFieldImpl to not automatically add a semi colon ";" to all field values. Semi colons are now only added to literals.
+* Added guard to NewMethodImpl so when writing it complains if an attempt is made to write an abstract method that contains a body.  
+* Added method to Type to retrieve the runtime name of a type. This is mostly due to inner classes using a dollar sign '$' as a separator rather than dot '.'.
+* Reworked the setting of nested type names, using setNestedName() rather than setName() which now results in an UnsupportedOperationException being thrown.
+* Added ability for one BeanFactory xml file to include other files via the new include tag. Cycles are detected with an exception being thrown in such cases.
+* Added factory method to NewType to create new initializers.
+* Added support to add comments and metaData to all new class component types. These are automatically written to the generated class source.
+* Minor fix, corrected "generated at" message included in javadoc to include the generator name.
+* Added several skipXXX and visitXXX methods to ReachableTypesVisitor that are called for each type that implements an interface, is a super type or sub type of another type.
+* Added extra visit methods to ReachableTypesVisitor to differentiate between a super, type, and sub type being visited.
+* Added support to generator package for array types represented by the GWT TypeOracle.
+* Refactored GeneratorContextImpl into a true abstract class without any reference to any GWT TypeOracle class, these have been moved to the newly introduced TypeOracleGeneratorContext.
+* Hacked TypeOracleGeneratorContext to mark all jdk concrete collection types (ArrayList,Vector,HashSet,HashMap,Stack) to be serializable.
+* Added ability to test logging level via GeneratorContext, isTraceEnabled(), isDebugEnabled(), isInfoEnabled()
+* Fixed Type.getSubTypes() to only return immediate sub types and not all sub types.
+* Reworked NewType and related sub interfaces removing all mention of GWT GeneratorContext.tryCreate() and then holding onto the PrintWriter to emit source.
+* Changed strings which were previously surrounded by brackets to double quotes.
+* Improved javadoc and reworked implementation of one or two methods. 
+* Renamed methods which take an iterator and return either a Object[] or List.
+* Improved SubClassVisitor so that it doesnt visit any sub type more than once.
+* Fixed a bug with BeanFactoryGenerator where it was previously failing to find a setter for a referenced bean was actually a FactoryBean. An annotation must now exist on the 
+  FactoryBean to declare the type of beans it produces (analogous to Springs's Class FactoryBean.getType().  
+* PrimitiveTypes now return an EmptySet for getSubTypes(), getInterfaces(), getMethods(), getFields(), getConstructors(), getNestedTypes() rather than throwing UnsupportedOperationExceptions.
+* Added support for specifying if singleton beans are lazy loaded or eager via a new attribute "lazyInit" added to the bean tag (initialized on bean factory startup).
+* Improved generators so that new fields, methods and nested types are sorted before writing. Sorting is typically by staticness and name.
+* Added support to bind Json number values to and from java.util.Date instances.
+* Fixed writing of javadoc annotations by any class component (previously all values were comma separated when they should have been separate entries with the same name).
+* Fixed TypeOracleGeneratorContext to make all types serializable if their jdk counterpart is also serializable, aka java.lang.String now implements Serializable.
+  This change only exists within a rocket GeneratorContext, nb that the original JClassType's are not modified in anyway.
+* Created TestSuites for each and every module, placing them in rocket.<moduleName>.test package
+* Improved toString of various rocket generation classes.
+* Introduced SerializationFactory which accepts annotations of readable/writable types which mark which types and their reachable types will be supported by the provided factory
+* Introduced a new java rpc module which provides much of the facilities provided by the Gwt RPC system but uses the new serialization module.
