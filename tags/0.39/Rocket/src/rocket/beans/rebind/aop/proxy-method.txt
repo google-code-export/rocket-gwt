@@ -1,0 +1,3 @@
+// proxy-method.txt
+
+return this.target.${method}( ${parameters} );

@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Drag n Drop</title>
+<meta name='gwt:module' content='rocket.dragndrop.test.DragNDrop'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+
+BODY, TABLE, BUTTON {
+	margin: 4px;
+	font-family: verdana;
+	font-size: 10px;
+}
+
+IMG {
+	width: 32px;
+	height: 32px;
+	padding: 0px;
+	border-width: 0px;
+	margin: 0px;
+}
+
+.rocket-label{
+	background-color: #eef;
+	margin: 4px;
+}
+
+.dragNDropTest-grid{
+	background-color: #fdd;
+	
+	border-width: 1px;
+	border-style: solid;
+	border-color: #edd;
+}
+
+.dragNDropTest-grid TD{
+	width: 40px;
+	height: 40px;
+	background-color: #abc;
+}
+
+.dragNDropTest-horizontalPanel {
+	width: 99%;
+	
+	border-color: #efe;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #dfd;
+}
+
+.rocket-dragNDrop-draggable{
+	background-color: #efe;
+}
+
+.rocket-dragNDrop-widget {	
+	cursor: move;
+}
+
+.rocket-dragNDrop-draggedWidget {
+	cursor: move;
+}
+
+</style>
+</head>
+
+<body>
+<h3>Things to test</h3>
+<ul>
+<li>Dragging widgets to the bin deletes them when dropped.</li>
+<li>Dropping widgets onto the horizontal panel simply adds the dropped widget on the end.</li>
+<li>Any of the widgets belonging to the Grid may be dropped on other cells or on other targets</li>
+</ul>
+
+</body>
+</html>
+

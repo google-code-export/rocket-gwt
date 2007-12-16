@@ -1,0 +1,3 @@
+// constructor.txt
+
+return new ${constructor}(${constructorArguments});

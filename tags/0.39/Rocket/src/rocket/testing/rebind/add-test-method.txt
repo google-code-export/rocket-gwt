@@ -1,0 +1,17 @@
+// add-test.txt
+
+tests.add(
+	new rocket.testing.client.Test(){
+			public String getName() {
+				return ${testName};
+			}
+
+			public void execute() throws java.lang.Exception {
+				// fetch the test runner instance and cast
+				final ${testRunner} testRunner = (${testRunner}) getTestRunner();
+				
+				// execute the actual test
+				testRunner.${method}();
+			}
+	}
+);

@@ -1,0 +1,5 @@
+<module>
+	<generate-with class="rocket.testing.rebind.TestBuilderGenerator">
+		<when-type-assignable class="rocket.testing.client.TestBuilder" />
+	</generate-with>
+</module>
