@@ -568,7 +568,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 			
 			// cant pop the last logger...
 			if( loggers.size() == 1 ){
-				throw new RuntimeException( "An attempt has been made to unbranch further back up the tree than previous branches...");
+				throw new GeneratorException( "An attempt has been made to unbranch further back up the tree than previous branches...");
 			}
 			loggers.pop();
 		}
