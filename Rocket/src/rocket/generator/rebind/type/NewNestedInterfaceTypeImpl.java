@@ -15,6 +15,8 @@
  */
 package rocket.generator.rebind.type;
 
+import rocket.generator.rebind.SourceWriter;
+
 /**
  * Represents a inner class being built.
  * 
@@ -32,5 +34,11 @@ public class NewNestedInterfaceTypeImpl extends NewNestedTypeOrInterface impleme
 
 	public void setInterface(final boolean interfacee) {
 		throw new UnsupportedOperationException("setInterface");
+	}
+	
+	/**
+	 * Interfaces cant have constructors so theres nothing to write skip the constructor header etc...
+	 */
+	protected void writeConstructors(final SourceWriter writer) {		
 	}
 }
