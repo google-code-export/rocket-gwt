@@ -1,3 +1,0 @@
-// unwrap-parameter-int.txt
-
-chain.getIntParameter( ${parameterIndex} )

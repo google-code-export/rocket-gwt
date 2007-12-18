@@ -1,3 +1,0 @@
-// unwrap-parameter-short.txt
-
-chain.getShortParameter( ${parameterIndex} )

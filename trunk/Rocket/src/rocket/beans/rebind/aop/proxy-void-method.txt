@@ -1,3 +1,0 @@
-// proxy-void-method.txt
-
-this.target.${method}( ${parameters} );

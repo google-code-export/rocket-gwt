@@ -1,4 +1,0 @@
-// invoke-interceptor-chain-proceed-char.txt
-
-// invokes the interceptor chain, unwrapping Character because the method return type is char
-return chain.proceedReturningChar();
