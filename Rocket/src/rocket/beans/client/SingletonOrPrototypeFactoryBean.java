@@ -25,7 +25,7 @@ import rocket.util.client.ObjectHelper;
  * @author Miroslav Pokorny
  */
 abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAware {
-
+	
 	/**
 	 * Creates a new bean instance.
 	 * 
@@ -38,8 +38,8 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	}
 
 	protected void postCreate(final Object instance) throws Exception {
+		this.satisfyBeanFactoryAwareIfNecessary(instance);		
 		this.satisfyProperties(instance);
-		this.satisfyBeanFactoryAwareIfNecessary(instance);
 		this.satisfyInit(instance);
 	}
 

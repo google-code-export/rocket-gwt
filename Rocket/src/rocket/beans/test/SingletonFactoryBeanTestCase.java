@@ -17,6 +17,7 @@ package rocket.beans.test;
 
 import junit.framework.TestCase;
 import rocket.beans.client.BeanFactory;
+import rocket.beans.client.PrototypeFactoryBean;
 import rocket.beans.client.SingletonFactoryBean;
 
 /**
@@ -29,7 +30,7 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 
 	final static String STRING_VALUE = "apple";
 
-	public void testGetBeanWithNoBeanReferences() {
+	public void testGetBeanWhichHasNoOtherBeanReferences() {
 		final ClassWithStringPropertySingletonFactoryBean factoryBean = new ClassWithStringPropertySingletonFactoryBean();
 		final Object bean = factoryBean.getObject();
 		assertTrue("" + bean, bean instanceof ClassWithStringProperty);
@@ -38,7 +39,7 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		assertEquals("stringProperty", STRING_VALUE, bean0.getStringProperty());
 	}
 
-	public void testGetBeanReturnsSameInstance() {
+	public void testGetBeanAlwaysReturnsSameInstance() {
 		final ClassWithStringPropertySingletonFactoryBean factoryBean = new ClassWithStringPropertySingletonFactoryBean();
 		final Object first = factoryBean.getObject();
 		final Object second = factoryBean.getObject();
@@ -116,4 +117,57 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		}
 	}
 
+	public void testSingletonFactoryBeanHoldingAnotherSingletonFactoryBean() {
+		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
+			protected Object createInstance() {
+				return new SingletonFactoryBean() {
+					protected Object createInstance() {
+						return new Bean();
+					}
+				};
+			}
+		};
+		factoryBean.setBeanFactory(this.createBeanFactory());
+
+		final Object bean = factoryBean.getObject();
+		assertNotNull(bean);
+		assertTrue("" + bean, bean instanceof Bean);
+
+		final Object secondBean = factoryBean.getObject();
+		assertSame(bean, secondBean);
+	}
+
+	public void testSingletonFactoryBeanHoldingAnotherPrototypeFactoryBean() {
+		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
+			protected Object createInstance() {
+				return new PrototypeFactoryBean() {
+					protected Object createInstance() {
+						return new Bean();
+					}
+				};
+			}
+		};
+		factoryBean.setBeanFactory(this.createBeanFactory());
+		final Object bean = factoryBean.getObject();
+		assertNotNull(bean);
+		assertTrue("" + bean, bean instanceof Bean);
+
+		final Object secondBean = factoryBean.getObject();
+		assertSame(bean, secondBean);
+	}
+
+	BeanFactory createBeanFactory() {
+		return new BeanFactory() {
+			public Object getBean(final String name) {
+				throw new UnsupportedOperationException();
+			}
+
+			public boolean isSingleton(final String name) {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
+
+	static class Bean {
+	}
 }

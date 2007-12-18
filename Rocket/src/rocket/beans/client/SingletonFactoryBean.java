@@ -32,18 +32,45 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 	 * The singleton instance.
 	 */
 	private Object object;
-
+	
 	public Object getObject() {
-		if (false == this.hasObject()) {
-			try {
-				final Object object = this.createObject();
-				this.setObject(object);
-				this.postCreate(object);
-			} catch (final Throwable caught) {
-				throwBeanException("Unable to create bean", caught);
+		if( false == this.hasObject() ){
+		
+		try {
+			final Object object = this.createObject();
+			this.setObject( object );
+			this.postCreate(object);
+			final Object returned = this.getObject(object);
+			
+			if( returned != object ){
+				this.setObject( returned );
 			}
+			
+		} catch (final Throwable caught) {
+			throwBeanException("Unable to create bean, because " + caught.getMessage(), caught);
+			return null;
 		}
-		return object;
+		}
+		return this.object;
+	}
+
+	/**
+	 * Handles the final step involved in initializing a bean. If the bean is actually a FactoryBean ask it for its actual Object, this will continue
+	 * until no more FactoryBeans are present in the chain and a true bean is located.
+	 * @param object
+	 * @return The final bean
+	 * @throws Exception
+	 */
+	protected Object getObject(final Object object) throws Exception {
+		Object returned = object;		
+		
+		if (returned instanceof FactoryBean) {
+			// temp will be overridden when the true bean comes back.
+			final FactoryBean factoryBean = (FactoryBean) object;
+			returned = factoryBean.getObject();
+		}
+		
+		return returned;
 	}
 
 	protected boolean hasObject() {
