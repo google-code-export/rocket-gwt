@@ -103,18 +103,18 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 		this.factoryBeans = factoryBeans;
 	}
 
-	public Object getBean(String name) {
-		Object bean = this.getFactoryBean(name).getObject();
-		while (true) {
-			if (false == bean instanceof FactoryBean) {
-				break;
+	public Object getBean(final String name) {
+		FactoryBean factoryBean = this.getFactoryBean(name);
+		Object bean = null;
+			try{
+				bean = factoryBean.getObject();
+			} catch ( final RuntimeException runtimeException ){
+				throw new BeanException( "Unable to get bean \"" + name + "\" because " + runtimeException.getMessage(), runtimeException );
 			}
-			final FactoryBean factoryBean = (FactoryBean) bean;
-			bean = factoryBean.getObject();
-		}
+		
 		return bean;
 	}
-
+	
 	public boolean isSingleton(String name) {
 		return this.getFactoryBean(name).isSingleton();
 	}
