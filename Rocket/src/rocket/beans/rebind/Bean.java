@@ -18,7 +18,7 @@ package rocket.beans.rebind;
 import java.util.ArrayList;
 import java.util.List;
 
-import rocket.beans.rebind.aop.Advice;
+import rocket.beans.rebind.aop.addadvice.Advice;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -166,6 +166,6 @@ public class Bean{
 	}
 	
 	public String toString() {
-		return "bean id\"" + this.id + "\" type\"" + this.type + "\".";
+		return "bean id: \"" + this.id + "\", type: " + this.type + ".";
 	}
 }

@@ -1,3 +1,0 @@
-// unwrap-parameter-byte.txt
-
-chain.getByteParameter( ${parameterIndex} )

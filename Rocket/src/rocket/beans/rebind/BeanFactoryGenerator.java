@@ -19,18 +19,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import rocket.beans.client.FactoryBean;
-import rocket.beans.rebind.aop.Advice;
-import rocket.beans.rebind.aop.CreateProxyTemplatedFile;
-import rocket.beans.rebind.aop.GetTargetFactoryBeanTemplatedFile;
 import rocket.beans.rebind.aop.MethodMatcher;
 import rocket.beans.rebind.aop.MethodMatcherFactory;
-import rocket.beans.rebind.aop.ProxyInterceptedMethodTemplatedFile;
-import rocket.beans.rebind.aop.ProxyMethodTemplatedFile;
+import rocket.beans.rebind.aop.addadvice.Advice;
+import rocket.beans.rebind.aop.createproxy.CreateProxyTemplatedFile;
+import rocket.beans.rebind.aop.gettargetfactorybean.GetTargetFactoryBeanTemplatedFile;
+import rocket.beans.rebind.aop.proxyinterceptedmethod.ProxyInterceptedMethodTemplatedFile;
+import rocket.beans.rebind.aop.proxymethod.ProxyMethodTemplatedFile;
 import rocket.beans.rebind.beanreference.BeanReference;
 import rocket.beans.rebind.constructor.ConstructorTemplatedFile;
 import rocket.beans.rebind.deferredbinding.DeferredBinding;
@@ -93,7 +95,6 @@ import rocket.util.client.StringHelper;
 public class BeanFactoryGenerator extends Generator {
 
 	public BeanFactoryGenerator() {
-		this.setBeans(this.createBeans());
 	}
 
 	
@@ -106,6 +107,8 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The name of the type being generated.
 	 */
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
+		this.setBeans(this.createBeans());
+		
 		this.verifyBeanFactory(type);
 
 		final DocumentWalker document = this.getDocumentWalker(type);
@@ -228,11 +231,18 @@ public class BeanFactoryGenerator extends Generator {
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Creating FactoryBean's for each of the bean (" + beans.size() + ") tags.");
+		context.info("Creating FactoryBean's for all beans.");
 
 		final Iterator iterator = beans.iterator();
 		while (iterator.hasNext()) {
-			this.createBeanFactoryBean((BeanTag) iterator.next());
+			final BeanTag bean = (BeanTag)iterator.next();
+			
+			context.branch();
+			context.debug( bean.getId() );
+			
+			this.createBeanFactoryBean( bean);
+			
+			context.unbranch();
 		}
 		
 		context.unbranch();
@@ -241,6 +251,8 @@ public class BeanFactoryGenerator extends Generator {
 	protected void createBeanFactoryBean(final BeanTag beanTag) {
 		ObjectHelper.checkNotNull("parameter:bean", beanTag);
 
+		final GeneratorContext context = this.getGeneratorContext();
+		
 		final Bean bean = new Bean();
 		final String id = beanTag.getId();
 		bean.setId(id);
@@ -252,15 +264,22 @@ public class BeanFactoryGenerator extends Generator {
 		final String className = beanTag.getClassName();
 		final Type beanType = this.getConcreteType(id, className);
 		bean.setType(beanType);
+		
+		context.debug( "beanType: " + beanType );
 
 		final boolean singleton = beanTag.isSingleton();
 		bean.setSingleton(singleton);
+		context.debug( singleton ? "singleton" : "prototype");
 		
 		final boolean eager = beanTag.isEagerLoaded();
 		if( false == singleton ){
 			throwPrototypesCantBeEagerlyLoaded( bean );
 		}
 		bean.setEagerLoad( eager );
+		
+		if( singleton ){
+			context.debug( eager ? "eager" : "lazyloaded");
+		}
 		
 		final Type superType = singleton ? this.getSingletonFactoryBean() : this.getPrototypeFactoryBean();
 		final NewConcreteType beanFactory = this.getBeanFactory();
@@ -275,7 +294,7 @@ public class BeanFactoryGenerator extends Generator {
 		
 		bean.setFactoryBean(factoryBean);
 
-		this.getGeneratorContext().debug("Subclassing " + superType + " as the FactoryBean for bean: " + bean);
+		context.debug("FactoryBean superType: " + superType );
 
 		this.addBean(id, bean);
 	}
@@ -296,18 +315,27 @@ public class BeanFactoryGenerator extends Generator {
 	 * A constructor with parameters or factory bean may be the source of the
 	 * new bean instance.
 	 * 
-	 * @param bean
-	 *            the beans element
+	 * @param bean A list of bean tag elements straight from any included xml documents.
 	 */
 	protected void overrideAllFactoryBeanCreateInstances(final List beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 
-		this.getGeneratorContext().info("Overriding createInstance method for " + beans.size() + " bean(s).");
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info("Overriding createInstance methods for all bean(s).");
 
 		final Iterator iterator = beans.iterator();
 		while (iterator.hasNext()) {
-			this.overrideFactoryBeanCreateInstance((BeanTag) iterator.next());
+			final BeanTag bean = (BeanTag) iterator.next();
+			context.branch();
+			context.debug( bean.getId() );
+			
+			this.overrideFactoryBeanCreateInstance( bean );
+			
+			context.unbranch();
 		}
+		
+		context.unbranch();
 	}
 
 	/**
@@ -344,11 +372,7 @@ public class BeanFactoryGenerator extends Generator {
 	protected void overrideFactoryBeanCreateInstanceNewConstructor(final Bean bean, final List constructorArguments) {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
 		ObjectHelper.checkNotNull("parameter:constructorArguments", constructorArguments);
-
-		this.getGeneratorContext().debug(
-				"Inserting statement to call constructor (with " + constructorArguments.size()
-						+ " argument(s)) in FactoryBean.createInstance for bean " + bean);
-
+		
 		final NewMethod newFactoryMethod = this.createCreateInstanceMethod(bean.getFactoryBean());
 		newFactoryMethod.setAbstract(false);
 		newFactoryMethod.setFinal(true);
@@ -360,12 +384,24 @@ public class BeanFactoryGenerator extends Generator {
 		// make a list of values from constructorArguments.
 		final List constructorValues = new ArrayList();
 		final Iterator argumentIterator = constructorArguments.iterator();
+		
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();		
+		context.debug( "Constructor arguments.");
+		
 		while (argumentIterator.hasNext()) {
 			final Value value = this.asValue((ValueTag) argumentIterator.next());
 			constructorValues.add(value);
 			body.addArgument(value);
+			
+			context.debug( "" + value );
 		}
 
+		context.unbranch();
+		
+		context.branch();
+		context.debug("Matching constructors.");
+		
 		final List matchingConstructors = new ArrayList();
 		final TypeConstructorsVisitor visitor = new TypeConstructorsVisitor() {
 
@@ -396,6 +432,7 @@ public class BeanFactoryGenerator extends Generator {
 
 				if (match) {
 					matchingConstructors.add(constructor);
+					context.debug( "" + constructor );
 				}
 				return false;
 			}
@@ -410,7 +447,8 @@ public class BeanFactoryGenerator extends Generator {
 		if (matchingConstructors.size() > 1) {
 			this.throwTooManyConstructors(bean, matchingConstructors);
 		}
-
+		context.unbranch();
+		
 		final Constructor constructor = (Constructor) matchingConstructors.get(0);
 		body.setBean(constructor);
 
@@ -421,18 +459,19 @@ public class BeanFactoryGenerator extends Generator {
 			final Value value = (Value) valuesIterator.next();
 			value.setType(constructorParameter.getType());
 		}
+		
+		context.debug( "Inserting statement to call constructor " + constructor+ " for bean " + bean);
 	}
 
 	/**
 	 * This method throws an exception when more than one constructor satisfies
 	 * the specified values for a bean type
 	 * 
-	 * @param bean
-	 * @param matchingConstructors
-	 *            A list containing the matching constructors.
+	 * @param bean The bean
+	 * @param constructors A list containing the matching constructors.
 	 */
-	protected void throwTooManyConstructors(final Bean bean, final List matchingConstructors) {
-		throw new BeanFactoryGeneratorException("Found more than one constructor that matches the specified constructor arguments, bean: "
+	protected void throwTooManyConstructors(final Bean bean, final List constructors) {
+		throw new BeanFactoryGeneratorException("Found more than one constructor that matches the specified constructor arguments: " + constructors + ", bean: "
 				+ bean);
 	}
 
@@ -443,8 +482,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param bean
 	 */
 	protected void throwUnableToFindConstructor(final Bean bean) {
-		throw new BeanFactoryGeneratorException(
-				"Unable to find a constructor that is suitable for the specified constructor arguments for bean: " + bean);
+		throw new BeanFactoryGeneratorException( "Unable to find a constructor that is suitable for the specified constructor arguments for bean: " + bean);
 	}
 
 	/**
@@ -466,8 +504,7 @@ public class BeanFactoryGenerator extends Generator {
 			this.throwFactoryMethodNotFound(bean, factoryMethodName);
 		}
 
-		this.getGeneratorContext()
-				.debug("Inserting statement in FactoryBean.createInstance to call " + factoryMethod + " for bean " + bean);
+		this.getGeneratorContext().debug("FactoryBean will create new instance by calling " + factoryMethod );
 
 		final NewMethod newFactoryMethod = this.createCreateInstanceMethod(bean.getFactoryBean());
 
@@ -505,7 +542,9 @@ public class BeanFactoryGenerator extends Generator {
 	protected void overrideAllFactoryBeanSatisfyInits(final List beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 
-		this.getGeneratorContext().info("Overriding satisfyInit method for " + beans.size() + " bean(s).");
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info("Overriding satisfyInit methods.");
 
 		final Iterator iterator = beans.iterator();
 		while (iterator.hasNext()) {
@@ -514,9 +553,16 @@ public class BeanFactoryGenerator extends Generator {
 
 			if (false == StringHelper.isNullOrEmpty(initMethodName)) {
 				final Bean bean = this.getBean(beanTag.getId());
+				context.branch();
+				context.debug( bean.getId() );
+								
 				this.overrideFactoryBeanSatisfyInit(bean, initMethodName);
+				
+				context.unbranch();
 			}
 		}
+		
+		context.unbranch();
 	}
 
 	/**
@@ -540,8 +586,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.debug("Overriding satisfyInit to call " + initMethod + " for bean: " + bean);
 
 		final NewType beanFactory = bean.getFactoryBean();
-		final Method beanFactoryInitMethod = beanFactory
-				.getMostDerivedMethod(Constants.SATISFY_INIT, this.getParameterListWithOnlyObject());
+		final Method beanFactoryInitMethod = beanFactory.getMostDerivedMethod(Constants.SATISFY_INIT, this.getParameterListWithOnlyObject());
 		final NewMethod newMethod = beanFactoryInitMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
@@ -579,7 +624,8 @@ public class BeanFactoryGenerator extends Generator {
 	protected void overrideAllFactoryBeanSatisfyProperties(final List beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 
-		this.getGeneratorContext().info("Overriding satisfyProperties method for " + beans.size() + " bean(s).");
+		final GeneratorContext context = this.getGeneratorContext();
+		context.info("Overriding satisfyProperties method for all bean(s).");
 
 		final Iterator iterator = beans.iterator();
 		while (iterator.hasNext()) {
@@ -589,7 +635,12 @@ public class BeanFactoryGenerator extends Generator {
 			final Bean bean = BeanFactoryGenerator.this.getBean(id);
 			final List properties = beanTag.getProperties();
 
+			context.branch();
+			context.debug( id );
+			
 			this.overrideFactoryBeanSatisfyProperties(bean, properties);
+			
+			context.unbranch();
 		}
 	}
 
@@ -605,7 +656,8 @@ public class BeanFactoryGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:properties", properties);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("Attempting to create a method which will set " + properties.size() + " properties upon " + bean);
+		context.branch();
+		context.debug("Properties that will be set");
 
 		final Type voidType = this.getGeneratorContext().getVoid();
 		final Type beanType = bean.getType();
@@ -633,8 +685,6 @@ public class BeanFactoryGenerator extends Generator {
 			final PropertyTag propertyTag = (PropertyTag) propertyIterator.next();
 			final String propertyName = propertyTag.getPropertyName();
 			final String setterName = GeneratorHelper.buildSetterName(propertyName);
-
-			context.debug("Searching for setter method \"" + setterName + "\" for property upon bean " + bean);
 
 			final Value value = this.asValue(propertyTag.getValue());
 			final List matching = new ArrayList();
@@ -686,9 +736,10 @@ public class BeanFactoryGenerator extends Generator {
 			final Method setter = (Method) matching.get(0);
 			body.addProperty(setter, value);
 
-			context.debug("Inserted statement to set property \"" + propertyName + "\" upon bean " + bean);
-
+			context.debug("Setting \"" + propertyName + "\" with " + value );
 		}
+		
+		context.unbranch();
 	}
 
 	/**
@@ -698,13 +749,11 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param bean
 	 */
 	protected void throwTooManySettersFound(final Bean bean, final String propertyName) {
-		throw new BeanFactoryGeneratorException("The bean with an id of \"" + bean.getId()
-				+ "\" contains more than one setter for the property \"" + propertyName + "\".");
+		throw new BeanFactoryGeneratorException("The bean " + bean + " contains more than one setter for the property \"" + propertyName + "\".");
 	}
 
 	protected void throwUnableToFindSetter(final Bean bean, final String propertyName) {
-		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + propertyName
-				+ "\" on the bean, bean: " + bean );
+		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + propertyName + "\" on the bean, bean: " + bean );
 	}
 
 	protected ListValue asListValue(final ListTag tag) {
@@ -1188,21 +1237,41 @@ public class BeanFactoryGenerator extends Generator {
 	 * 
 	 * @param advisors
 	 */
-	protected void applyAdvices() {
+	protected void applyAdvices() {		
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("About to create ProxyFactoryBeans for beans that have at least one advice.");
+		context.info("Checking for beans with one or more advices." );
 
+		final Set advised = new HashSet();
 		final Iterator beans = this.getBeans().values().iterator();
+		
+		context.branch();
+		context.debug( "Beans that dont have any advices.");
+		
 		while (beans.hasNext()) {
 			final Bean bean = (Bean) beans.next();
 			final List advices = bean.getAdvices();
 			if (advices.isEmpty()) {
-				context.debug("Skipping proxy generation step for bean " + bean + " because it has no advices.");
+				context.debug( bean.getId() );
 				continue;
-			}
-			this.buildProxyFactoryBean(bean);
+			}			
+			advised.add(bean);
 		}
+		context.unbranch();
+		
+		context.branch();
+		context.info("Processing beans that are advised." );
+		final Iterator advisedIterator = advised.iterator();
+		while( advisedIterator.hasNext()){
+			final Bean bean = (Bean) advisedIterator.next();
+			
+			context.branch();
+			context.debug( bean.getId() );
+		
+			this.buildProxyFactoryBean(bean);
+			
+			context.unbranch();
+		}		
 		
 		context.unbranch();
 	}
@@ -1216,13 +1285,7 @@ public class BeanFactoryGenerator extends Generator {
 	protected void buildProxyFactoryBean(final Bean bean) {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
 
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info("Building proxy factory bean for bean: " + bean);
-		context.branch();
-		
 		final String id = bean.getId();
-
 		final Type superType = this.getProxyFactoryBean();
 
 		final NewConcreteType beanFactory = this.getBeanFactory();
@@ -1234,7 +1297,7 @@ public class BeanFactoryGenerator extends Generator {
 		
 		bean.setProxyFactoryBean(proxyFactoryBean);
 
-		context.debug("Subclassing " + superType + " as the FactoryBean for the proxy of bean: " + bean);
+		this.getGeneratorContext().debug("Subclassing " + superType + " as the FactoryBean for the proxy of bean: " + bean);
 
 		this.overrideProxyFactoryBeanGetTargetFactoryBean(bean);
 
@@ -1242,9 +1305,6 @@ public class BeanFactoryGenerator extends Generator {
 		bean.setProxy(proxy);
 
 		overrideProxyFactoryBeanCreateProxy(bean);
-		
-		context.unbranch();
-		context.unbranch();
 	}
 
 	/**

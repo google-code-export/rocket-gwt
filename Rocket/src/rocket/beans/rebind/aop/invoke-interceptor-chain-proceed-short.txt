@@ -1,4 +1,0 @@
-// invoke-interceptor-chain-proceed-short.txt
-
-// invokes the interceptor chain, unwrapping Short because the method return type is short
-return chain.proceedReturningShort();

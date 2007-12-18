@@ -1,3 +1,0 @@
-// unwrap-parameter-boolean.txt
-
-chain.getBooleanParameter( ${parameterIndex} )

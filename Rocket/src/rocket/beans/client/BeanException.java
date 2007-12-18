@@ -25,15 +25,15 @@ public class BeanException extends RuntimeException {
 	public BeanException() {
 	}
 
-	public BeanException(String string) {
+	public BeanException(final String string) {
 		super(string);
 	}
 
-	public BeanException(Throwable cause) {
+	public BeanException(final Throwable cause) {
 		super(cause);
 	}
 
-	public BeanException(String string, Throwable cause) {
+	public BeanException(final String string, final Throwable cause) {
 		super(string, cause);
 	}
 
