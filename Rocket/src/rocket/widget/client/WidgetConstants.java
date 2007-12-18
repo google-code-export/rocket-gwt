@@ -48,12 +48,6 @@ public class WidgetConstants {
 
 	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE + SELECTED;
 
-	// BLOCKY PIXEL
-	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	final static String BLOCKY_PIXEL_STYLE = ROCKET + "-blockyPixel";
-
-	final static int TRANSPARENT = -1;
-
 	// STYLESHEET PICKER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	final static String STYLESHEET_PICKER_STYLE = ROCKET + "-styleSheetPicker";
