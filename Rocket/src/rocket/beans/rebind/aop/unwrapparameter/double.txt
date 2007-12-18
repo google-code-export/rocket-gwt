@@ -1,0 +1,4 @@
+// rocket/beans/rebind/aop/unwrap/double.txt
+
+chain.getDoubleParameter( ${parameterIndex} )
+

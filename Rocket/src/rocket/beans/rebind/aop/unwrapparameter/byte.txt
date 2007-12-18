@@ -1,0 +1,4 @@
+// rocket/beans/rebind/aop/unwrap/byte.txt
+
+chain.getByteParameter( ${parameterIndex} )
+
