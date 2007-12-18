@@ -1,4 +1,4 @@
-#labels Featured,Phase-Design,Phase-Implementation,GWT,DependencyInjection,InversionofControl,Methodinterceptors,Codegeneration,Advices
+#labels Featured,Phase-Design,GWT
 =Purpose=
 
 The purpose of the rocket.beans package is to offer the ability to DI beans and add advices within a GWT application.
@@ -22,7 +22,6 @@ Many of the copied ideas use the same interfaces/names when possible but live un
 =What doesnt work=
   * The destroy lifecycle event is not support. Work is continuing on the best strategy to implement this. The most likely mechanism to implement this portion of a beans lifecycle is via listener registered to com.google.gwt.user.client.WindowCloseListener.onWindowClosing
   * Autowiring to satisfy all properties of a bean.
-  * The ability to load beans eagerly or lazily is not supported. All references and values are verified during the compilation, with instances created lazily.
   * Fields advices are not supported.
 
 =Getting started=
@@ -67,6 +66,7 @@ The bean tag includes a number of attributes
   * scope - This attribute may contain either singleton or prototype.
   * factoryMethod - When present specifies a static method on the defined class that can be used to retrieve a new instance of the bean.
   * initMethod - When present this method (which must be a public instance method) will invoked after all properties are set but before the bean leaves the factory. This may be used in preference to rocket.beans.client.InitializingBean.
+  * lazyInit - If the bean is a singleton this attribute may be used to control whether the singleton is lazy or eagerly initialized.
 
 The sample below defines a singleton bean with an id of "rocketBean".
 {{{
