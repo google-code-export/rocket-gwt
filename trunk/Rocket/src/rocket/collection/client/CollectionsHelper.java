@@ -16,11 +16,14 @@
 package rocket.collection.client;
 
 import java.util.AbstractList;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import rocket.util.client.ObjectHelper;
 
@@ -106,89 +109,66 @@ public class CollectionsHelper{
 	 * @return The read only list. Mutator methods throw UnsupportedOperationException...
 	 */
 	public static List unmodifiableList(final List list) {
-		return new AbstractList() {
-
-			// LIST MODIFIERS
-			// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-			public boolean add(Object element) {
-				throwUnsupportedOperationException("add(Object)");
-				return false;
-			}
-
-			public void add(int index, Object element) {
-				throwUnsupportedOperationException("add(int,Object)");
-			}
-
-			public Object set(final int index, final Object element) {
-				throwUnsupportedOperationException("set(int,Object)");
-				return null;
-			}
-
-			public Object remove(final int index) {
-				throwUnsupportedOperationException("remove(int)");
-				return null;
-			}
-
-			public boolean remove(final Object element) {
-				throwUnsupportedOperationException("remove(Object)");
-				return false;
-			}
-
-			public Iterator iterator() {
-				final Iterator iterator = list.iterator();
-				return new Iterator() {
-					public boolean hasNext() {
-						return iterator.hasNext();
-					}
-
-					public Object next() {
-						return iterator.next();
-					}
-
-					public void remove() {
-						throwUnsupportedOperationException( "iterator.remove()");
-					}
-				};
-			}
-			
-			void throwUnsupportedOperationException( final String methodName ){
-				throw new UnsupportedOperationException( "Unmodifiable Lists's do not support the " + methodName + ".");
-			}
-			
-			// DELEGATE TO ENCAPSULATED LIST::::::::::::::::::
-
-			public int size() {
-				return list.size();
-			}
-
-			public boolean contains(final Object object) {
-				return list.contains(object);
-			}
-
-			public Object[] toArray() {
-				return list.toArray();
-			}
-
-			public boolean containsAll(final Collection collection) {
-				return list.containsAll(collection);
-			}
-
-			public boolean retainAll(Collection collection) {
-				return list.containsAll(collection);
-			}
+		return new AbstractList(){
 
 			public Object get(final int index) {
 				return list.get(index);
 			}
 
-			public int indexOf(final Object object) {
-				return list.indexOf(object);
+			public int size() {
+				return list.size();
+			}
+		};
+	}
+	/**
+	 * Returns a readonly view of the given set.
+	 * @param set The set
+	 * @return The readonly view
+	 */
+	static public Set unmodifiableSet( final Set set ){
+		return new AbstractSet(){
+			public Iterator iterator() {				
+				final Iterator iterator = set.iterator();
+				return new Iterator(){
+					public boolean hasNext(){
+						return iterator.hasNext();
+					}
+					public Object next(){
+						return iterator.next();
+					}
+					public void remove(){
+						throw new UnsupportedOperationException();
+					}
+				};
 			}
 
-			public int lastIndexOf(Object object) {
-				return list.lastIndexOf(object);
+			public int size() {
+				return set.size();
 			}
+
+		};
+	}
+	
+	/**
+	 * Returns a unmodifiable view of the given map.
+	 * @param map The map
+	 * @return The readonly view
+	 */
+	static public Map unmodifiableMap( final Map map ){
+	
+		return new AbstractMap(){
+			
+			public boolean containsKey( final Object key ){
+				return map.containsKey(key);
+			}
+			
+			public Object get( final Object key ){
+				return map.get( key );
+			}
+			
+			public Set entrySet() {
+				return CollectionsHelper.unmodifiableSet(map.entrySet());
+			}		
 		};
 	}
 }
