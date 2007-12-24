@@ -1,4 +1,4 @@
-// list.txt
+// /rocket/beans/rebind/list/list.txt
 
 // create a new ListBuilder which will help accumulate values
 new rocket.beans.client.ListBuilder()
@@ -8,3 +8,5 @@ new rocket.beans.client.ListBuilder()
 
 		// get the list
 		.getList()
+
+		

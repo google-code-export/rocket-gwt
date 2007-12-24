@@ -65,7 +65,7 @@ class Constants {
 	final static String SATISFY_INIT = "satisfyInit";
 	final static String SATISFY_INIT_INSTANCE_PARAMETER = "instance";
 	
-	final static String BUILD_FACTORY_BEANS = "buildFactoryBeans";
+	final static String REGISTER_FACTORY_BEANS = "registerFactoryBeans";
 
 	final static String SET_SERVICE_ENTRY_POINT = "setServiceEntryPoint";
 
@@ -92,4 +92,6 @@ class Constants {
 	final static String ASYNC_SUFFIX = "Async";
 	
 	final static String GET_EAGER_SINGELTON_BEAN_NAMES_METHOD = "getEagerSingletonBeanNames";
+	
+	final static String GET_ALIASES_TO_BEANS_METHOD = "getAliasesToBeans";
 }

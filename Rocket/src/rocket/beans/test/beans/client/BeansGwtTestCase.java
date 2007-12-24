@@ -20,11 +20,17 @@ import java.util.Map;
 import java.util.Set;
 
 import rocket.beans.client.BeanFactory;
+import rocket.beans.test.beans.client.alias.AliasBeanFactory;
+import rocket.beans.test.beans.client.aliasedbeandoesntexist.AliasBeanDoesntExistBeanFactory;
+import rocket.beans.test.beans.client.aliasnamealreadyexists.AliasFromBeanIdIsNotUniqueBeanFactory;
 import rocket.beans.test.beans.client.ambiguousconstructors.AmbiguousConstructorsBeanFactory;
 import rocket.beans.test.beans.client.ambiguoussetters.AmbiguousSettersBeanFactory;
 import rocket.beans.test.beans.client.beanclassnotfound.NotFoundBeanFactory;
 import rocket.beans.test.beans.client.beanreference.BeanReferenceBeanFactory;
 import rocket.beans.test.beans.client.beanreference.ClassWithReferences;
+import rocket.beans.test.beans.client.beanreferencetoalias.AliasedBean;
+import rocket.beans.test.beans.client.beanreferencetoalias.AliasedBeanReferenceBeanFactory;
+import rocket.beans.test.beans.client.beanreferencetoalias.ClassWithAliasedBeanReference;
 import rocket.beans.test.beans.client.beantypenotconcrete.BeanTypeThatIsNotConcreteBeanFactory;
 import rocket.beans.test.beans.client.booleanproperty.BooleanPropertyBeanFactory;
 import rocket.beans.test.beans.client.booleanproperty.ClassWithBooleanProperty;
@@ -54,8 +60,8 @@ import rocket.beans.test.beans.client.invalidbeanscope.InvalidScopeBeanFactory;
 import rocket.beans.test.beans.client.jsonrpcproperty.BeanWithJsonService;
 import rocket.beans.test.beans.client.jsonrpcproperty.JsonServiceAsync;
 import rocket.beans.test.beans.client.jsonrpcproperty.JsonServicePropertyBeanFactory;
-import rocket.beans.test.beans.client.lazyloadedsingleton.LazySingletonBean;
 import rocket.beans.test.beans.client.lazyloadedsingleton.LazyLoadedBeanFactory;
+import rocket.beans.test.beans.client.lazyloadedsingleton.LazySingletonBean;
 import rocket.beans.test.beans.client.listproperty.ClassWithListProperty;
 import rocket.beans.test.beans.client.listproperty.ListPropertyBeanFactory;
 import rocket.beans.test.beans.client.longproperty.ClassWithLongProperty;
@@ -141,7 +147,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
- * A series of tests for the BeanFactoryGenerator type.
+ * A series of tests for the BeanFactoryGenerator.
  * 
  * @author Miroslav Pokorny
  */
@@ -419,6 +425,40 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		final FactoryBeanProducedBean bean = (FactoryBeanProducedBean) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
 	}
+
+	public void testAliasFromBeanIdIsNotUnique(){
+		try {
+			assertBindingFailed(GWT.create(AliasFromBeanIdIsNotUniqueBeanFactory.class));
+		} catch (final FailedGenerateAttemptException failed) {
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+		}		
+	}
+	public void testAliasToBeanIdDoesntExist(){
+		try {
+			assertBindingFailed(GWT.create(AliasBeanDoesntExistBeanFactory.class));
+		} catch (final FailedGenerateAttemptException failed) {
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+		}		
+	}
+
+	public void testAlias(){
+		final BeanFactory factory = (BeanFactory) GWT.create(AliasBeanFactory.class);
+		final Object aliased = factory.getBean( "alias");
+		assertNotNull(aliased);
+		
+		final Object bean = factory.getBean( BEAN_ID );
+		assertNotNull(bean);
+		assertSame( bean, aliased );
+	}
+	
+	public void testBeanWithAliasReference(){
+		final BeanFactory factory = (BeanFactory) GWT.create(AliasedBeanReferenceBeanFactory.class);
+		final ClassWithAliasedBeanReference bean = (ClassWithAliasedBeanReference)factory.getBean( BEAN_ID );
+		assertNotNull(bean);
+		
+		final AliasedBean aliasedBean = bean.getAliasedBean();
+		assertNotNull(aliasedBean);
+	}
 	
 	public void testRemoteRpcService() {
 		final BeanFactory factory = (BeanFactory) GWT.create(RemoteRpcServiceBeanFactory.class);
@@ -526,8 +566,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 
 	public void testProxyBeanWithMethodWithBooleanParameterAndReturnType() {
 		final BeanFactory factory = (BeanFactory) GWT.create(ProxyBooleanBeanFactory.class);
-		final ClassWithMethodWithBooleanParameterAndReturnType proxy = (ClassWithMethodWithBooleanParameterAndReturnType) factory
-				.getBean(BEAN_ID);
+		final ClassWithMethodWithBooleanParameterAndReturnType proxy = (ClassWithMethodWithBooleanParameterAndReturnType) factory.getBean(BEAN_ID);
 		assertEquals("proxy true ^ false", true ^ false, proxy.xor(true, false));
 		assertEquals("proxy true ^ true", true ^ true, proxy.xor(true, true));
 		assertEquals("proxy false ^ false", false ^ false, proxy.xor(false, false));
@@ -679,7 +718,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		}
 	}
 
-	public void testProxyAdvisedAndUnadvised() {
+	public void testProxyWithAdvisedAndUnadvisedMethods() {
 		final BeanFactory factory = (BeanFactory) GWT.create(ProxyComplexBeanFactory.class);
 		final Complex proxy = (Complex) factory.getBean(BEAN_ID);
 		final ComplexMethodInterceptor interceptor = (ComplexMethodInterceptor) factory.getBean(ADVISOR_BEAN_ID);

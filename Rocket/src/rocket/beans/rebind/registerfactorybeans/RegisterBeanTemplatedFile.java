@@ -13,37 +13,32 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.loadeagersingletons;
+package rocket.beans.rebind.registerfactorybeans;
 
 import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.type.NewNestedType;
+import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 /**
- * An abstraction for the eager-singleton-bean-name.txt template
+ * An abstraction for the invoker add template
  * 
  * @author Miroslav Pokorny
  */
-class EagerSingletonBeanNameTemplatedFile extends TemplatedCodeBlock {
+public class RegisterBeanTemplatedFile extends TemplatedCodeBlock {
 
-	public EagerSingletonBeanNameTemplatedFile() {
+	public RegisterBeanTemplatedFile() {
 		super();
 	}
 
-	public boolean isNative(){
-		return false;
-	}
-	
-	public void setNative( final boolean ignored ){
+	public void setNative( final boolean ignore ){
 		throw new UnsupportedOperationException();
 	}
 	
-	/**
-	 * The name of a singleton bean.
-	 */
 	private String beanId;
 
 	protected String getBeanId() {
@@ -56,8 +51,20 @@ class EagerSingletonBeanNameTemplatedFile extends TemplatedCodeBlock {
 		this.beanId = beanId;
 	}
 
+	private NewNestedType factoryBean;
+
+	protected NewNestedType getFactoryBean() {
+		ObjectHelper.checkNotNull("field:factoryBean", factoryBean);
+		return this.factoryBean;
+	}
+
+	public void setFactoryBean(final NewNestedType factoryBean) {
+		ObjectHelper.checkNotNull("factoryBean:factoryBean", factoryBean);
+		this.factoryBean = factoryBean;
+	}
+
 	protected InputStream getInputStream() {
-		final String filename = Constants.EAGER_SINGELTON_BEAN_NAME_TEMPLATE;
+		final String filename = Constants.REGISTER_FACTORY_BEAN_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
@@ -68,8 +75,12 @@ class EagerSingletonBeanNameTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.EAGER_SINGELTON_BEAN_NAME_BEAN_ID.equals(name)) {
+			if (Constants.REGISTER_FACTORY_BEAN_BEAN_ID.equals(name)) {
 				value = new StringLiteral(this.getBeanId());
+				break;
+			}
+			if (Constants.REGISTER_FACTORY_BEAN_FACTORY_BEAN.equals(name)) {
+				value = this.getFactoryBean();
 				break;
 			}
 			break;
@@ -79,6 +90,6 @@ class EagerSingletonBeanNameTemplatedFile extends TemplatedCodeBlock {
 
 	protected void throwValueNotFoundException(final String name) {
 		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.EAGER_SINGELTON_BEAN_NAME_TEMPLATE + "\".");
+				+ Constants.REGISTER_FACTORY_BEAN_TEMPLATE + "\".");
 	}
 }

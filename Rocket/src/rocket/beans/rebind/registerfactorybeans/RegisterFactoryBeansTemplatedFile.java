@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.registerbeans;
+package rocket.beans.rebind.registerfactorybeans;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -29,16 +29,19 @@ import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the invoker add template
+ * An abstraction for the register-factory-beans template
  * 
  * @author Miroslav Pokorny
  */
-public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
+public class RegisterFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 
-	public BuildFactoryBeansTemplatedFile() {
+	public RegisterFactoryBeansTemplatedFile() {
 		super();
-		setNative(false);
 		this.setBeans(this.createBeans());
+	}
+	
+	public void setNative( final boolean ignore ){
+		throw new UnsupportedOperationException();
 	}
 
 	private List beans;
@@ -76,7 +79,7 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 			}
 
 			protected Collection getCollection() {
-				return BuildFactoryBeansTemplatedFile.this.getBeans();
+				return RegisterFactoryBeansTemplatedFile.this.getBeans();
 			}
 
 			protected void prepareToWrite(Object element) {
@@ -92,7 +95,7 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected InputStream getInputStream() {
-		final String filename = Constants.BUILD_FACTORY_BEANS_TEMPLATE;
+		final String filename = Constants.REGISTER_FACTORY_BEANS_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
@@ -103,7 +106,7 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.BUILD_FACTORY_BEANS_REGISTER_BEANS.equals(name)) {
+			if (Constants.REGISTER_FACTORY_BEANS_REGISTER_BEANS.equals(name)) {
 				value = this.getBeansCodeBlock();
 				break;
 			}
@@ -114,6 +117,6 @@ public class BuildFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 
 	protected void throwValueNotFoundException(final String name) {
 		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.BUILD_FACTORY_BEANS_TEMPLATE + "\".");
+				+ Constants.REGISTER_FACTORY_BEANS_TEMPLATE + "\".");
 	}
 }

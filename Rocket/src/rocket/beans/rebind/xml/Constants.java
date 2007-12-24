@@ -107,5 +107,9 @@ class Constants {
 	
 	final static String LAZYLOADED = "true";
 	final static String EAGERLY_LOADED = "false";
-	final static String LAZY_LOADED_ATTRIBUTE = "lazyInit";	
+	final static String LAZY_LOADED_ATTRIBUTE = "lazyInit";
+	
+	final static String ALIAS_TAG = "alias";
+	final static String ALIAS_NAME_ATTRIBUTE = "name";
+	final static String ALIAS_BEAN_ATTRIBUTE = "bean";
 }

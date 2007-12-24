@@ -15,6 +15,7 @@
  */
 package rocket.beans.client;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -35,9 +36,31 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	public BeanFactoryImpl() {
 		super();
 
-		this.setFactoryBeans(this.buildFactoryBeans());
+		this.setFactoryBeans(this.createFactoryBeans());
+		this.registerFactoryBeans();
 		this.prepareFactoryBeans();
+		this.registerAliases();
 		this.loadEagerBeans();
+	}
+
+	/**
+	 * This method is implemented by the code generator to create BeanFactory
+	 * instances for each bean defined.
+	 */
+	abstract protected void registerFactoryBeans();
+
+	/**
+	 * Performs a dual role firstly it registers a bean and also sets the bean name upon the factory bean.
+	 * @param name The bean name
+	 * @param factoryBean The matching factory bean
+	 */
+	public void registerFactoryBean(final String name, final FactoryBean factoryBean) {
+		if (factoryBean instanceof BeanNameAware) {
+			final BeanNameAware beanNameAware = (BeanNameAware) factoryBean;
+			beanNameAware.setBeanName(name);
+		}
+
+		this.getFactoryBeans().put(name, factoryBean);
 	}
 
 	/**
@@ -45,39 +68,66 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * objects.
 	 */
 	protected void prepareFactoryBeans() {
-		final Iterator factoryBeans = this.getFactoryBeans().values().iterator();
-		while (factoryBeans.hasNext()) {
-			final Object factoryBean = factoryBeans.next();
+		final Iterator iterator = this.getFactoryBeans().entrySet().iterator();
+		while (iterator.hasNext()) {
+			final Map.Entry entry = (Map.Entry) iterator.next();
+
+			final Object factoryBean = entry.getValue();
+
+			if (factoryBean instanceof BeanNameAware) {
+				final BeanNameAware beanNameAware = (BeanNameAware) factoryBean;
+				beanNameAware.setBeanName((String) entry.getKey());
+			}
+
 			if (factoryBean instanceof BeanFactoryAware) {
 				final BeanFactoryAware beanFactoryAware = (BeanFactoryAware) factoryBean;
 				beanFactoryAware.setBeanFactory(this);
 			}
+
 		}
 	}
-	
+
+	/**
+	 * Updates the {@link #factoryBeans} map with aliases taken from {@link #getAliasesToBeans()} so that
+	 * factory bean instances will exist at the original bean name and any aliases.
+	 */
+	protected void registerAliases() {
+		final String aliasesToBeans = this.getAliasesToBeans();
+		final String[] tokens = StringHelper.split(aliasesToBeans, ",", true);
+		final Map factoryBeans = this.getFactoryBeans();
+
+		for (int i = 0; i < tokens.length; i++) {
+			final String token = tokens[i];
+			final int equals = token.indexOf('=');
+			final String alias = token.substring(0, equals);
+			final String bean = token.substring(equals + 1);
+
+			final FactoryBean factoryBean = this.getFactoryBean(bean);
+			factoryBeans.put(alias, factoryBean);
+		}
+	}
+
+	/**
+	 * A list of comma separated alias to bean mappings.
+	 * @return
+	 */
+	abstract protected String getAliasesToBeans();
+
 	/**
 	 * Retrieves and throws away all non lazy (eager) singleton beans.
 	 */
-	protected void loadEagerBeans(){
-		final String[] beanNames = this.getEagerSingletonBeanNames();
-		for( int i = 0; i < beanNames.length; i++ ){
-			final String beanName = beanNames[ i ];
-			Object ignored = this.getBean( beanName );	
-			
-			if( false == GWT.isScript() ){
-				PrimitiveHelper.checkTrue( "The bean \"" + beanName + "\" must be a singleton.", this.isSingleton( beanName ));
+	protected void loadEagerBeans() {
+		final String commaSeparatedList = this.getEagerSingletonBeanNames();
+		final String[] beanNames = StringHelper.split(commaSeparatedList, ",", true);
+		for (int i = 0; i < beanNames.length; i++) {
+			final String beanName = beanNames[i];
+			Object ignored = this.getBean(beanName);
+
+			if (false == GWT.isScript()) {
+				PrimitiveHelper.checkTrue("The bean \"" + beanName + "\" must be a singleton.", this.isSingleton(beanName));
 			}
 		}
 	}
-
-	/**
-	 * This method is implemented by the code generator to create BeanFactory
-	 * instances for each bean defined.
-	 * 
-	 * @return A map binding bean names to {@link FactoryBeans}
-	 */
-	abstract protected Map buildFactoryBeans();
-
 
 	/**
 	 * A comma separated list of beans that wish to be eagerly and not lazy loaded.
@@ -85,8 +135,8 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * Eager beans will be loaded when the factory starts up.
 	 * @return An array of beans which may be empty
 	 */
-	abstract protected String[] getEagerSingletonBeanNames();
-	
+	abstract protected String getEagerSingletonBeanNames();
+
 	/**
 	 * This map consists of all the bean factories that will return bean
 	 * instances.
@@ -103,18 +153,22 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 		this.factoryBeans = factoryBeans;
 	}
 
+	protected Map createFactoryBeans() {
+		return new HashMap();
+	}
+
 	public Object getBean(final String name) {
 		FactoryBean factoryBean = this.getFactoryBean(name);
 		Object bean = null;
-			try{
-				bean = factoryBean.getObject();
-			} catch ( final RuntimeException runtimeException ){
-				throw new BeanException( "Unable to get bean \"" + name + "\" because " + runtimeException.getMessage(), runtimeException );
-			}
-		
+		try {
+			bean = factoryBean.getObject();
+		} catch (final RuntimeException runtimeException) {
+			throw new BeanException("Unable to get bean \"" + name + "\" because " + runtimeException.getMessage(), runtimeException);
+		}
+
 		return bean;
 	}
-	
+
 	public boolean isSingleton(String name) {
 		return this.getFactoryBean(name).isSingleton();
 	}
@@ -123,7 +177,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * Attempts to get the FactoryMethodBean given a name. If the factory is not
 	 * found an exception is thrown.
 	 * 
-	 * @param name
+	 * @param name The bean name
 	 * @return The FactoryBean identified by the given bean name.
 	 * @throws UnableToFindBeanException if the bean doesnt exist.
 	 */

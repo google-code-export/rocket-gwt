@@ -16,6 +16,7 @@
 package rocket.beans.client;
 
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * Convenient base class for both Singleton and prototype bean factories. A few
@@ -24,7 +25,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAware {
+abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAware, BeanNameAware {
 	
 	/**
 	 * Creates a new bean instance.
@@ -38,7 +39,8 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	}
 
 	protected void postCreate(final Object instance) throws Exception {
-		this.satisfyBeanFactoryAwareIfNecessary(instance);		
+		this.satisfyBeanFactoryAwareIfNecessary(instance);
+		this.satisfyBeanNameAwareIfNecessary(instance);
 		this.satisfyProperties(instance);
 		this.satisfyInit(instance);
 	}
@@ -90,6 +92,36 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 		}
 	}
 
+	/**
+	 * If the new instance is a BeanNameAware call its
+	 * {@link BeanNameAware#setBeanName(BeanName)} otherwise do
+	 * nothing.
+	 * 
+	 * @param instance
+	 */
+	protected void satisfyBeanNameAwareIfNecessary(Object instance) {
+		ObjectHelper.checkNotNull("parameter:instance", instance);
+
+		if (instance instanceof BeanNameAware) {
+			final BeanNameAware aware = (BeanNameAware) instance;
+			aware.setBeanName(this.getName());
+		}
+	}
+	
+	/**
+	 * The name of the bean
+	 */
+	private String name;
+	
+	protected String getName(){
+		StringHelper.checkNotEmpty( "field:name", name );
+		return this.name;
+	}
+	public void setBeanName( final String name ){
+		StringHelper.checkNotEmpty( "parameter:name", name );
+		this.name = name;
+	}
+	
 	/**
 	 * If the given instance implements InitializingBean then a cast is
 	 * performed followed by a call to

@@ -179,4 +179,23 @@ class XmlDocumentComponent {
 		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
 		return tag;
 	}
+	
+	/**
+	 * The original file that contained this very tag.
+	 */
+	private String filename;
+	
+	public String getFilename(){
+		StringHelper.checkNotEmpty( "field:filename", filename );
+		return this.filename;
+	}
+	
+	public void setFilename( final String filename ){
+		StringHelper.checkNotEmpty( "parameter:filename", filename );
+		this.filename = filename;
+	}
+	
+	public String toString(){
+		return this.getElement().toString();
+	}
 }

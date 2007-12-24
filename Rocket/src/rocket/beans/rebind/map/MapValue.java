@@ -94,4 +94,8 @@ public class MapValue extends Value {
 
 		template.write(writer);
 	}
+	
+	public String toString(){
+		return super.toString() + "entries: " + this.getEntries();
+	}
 }

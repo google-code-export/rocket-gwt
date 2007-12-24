@@ -1,6 +1,6 @@
 <!ELEMENT bean-factory 							(
 		place-holders*, 
-			(bean|remote-json-service|remote-rpc-service|advice|include)*
+			(bean|alias|remote-json-service|remote-rpc-service|advice|include)*
 		)>
 
 <!ELEMENT place-holders							EMPTY>
@@ -56,6 +56,12 @@
 <!ELEMENT map-entry 							(value|bean-reference)>
 <!ATTLIST map-entry
 	key				CDATA						#REQUIRED
+>
+
+<!ELEMENT alias	 								EMPTY>
+<!ATTLIST alias
+	name			CDATA						#REQUIRED
+	bean			CDATA						#REQUIRED	
 >
 
 <!ELEMENT remote-json-service					EMPTY >
