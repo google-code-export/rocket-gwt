@@ -1,4 +1,4 @@
-// map.txt
+// /rocket/beans/rebind/map/map.txt
 
 // create a new MapBuilder which will help accumulate values
 new rocket.beans.client.MapBuilder()
@@ -8,3 +8,4 @@ new rocket.beans.client.MapBuilder()
 
 		// get the Map
 		.getMap()
+

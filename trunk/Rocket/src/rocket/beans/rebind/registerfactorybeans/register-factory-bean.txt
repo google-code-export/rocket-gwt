@@ -1,6 +1,6 @@
 // register-bean.txt
 
-beans.put( 
+this.registerFactoryBean( 
 
 	// the id of the bean being registered
 	${beanId}, 

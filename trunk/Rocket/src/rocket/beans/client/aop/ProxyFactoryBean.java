@@ -15,6 +15,9 @@
  */
 package rocket.beans.client.aop;
 
+import rocket.beans.client.BeanFactory;
+import rocket.beans.client.BeanFactoryAware;
+import rocket.beans.client.BeanNameAware;
 import rocket.beans.client.FactoryBean;
 import rocket.util.client.ObjectHelper;
 
@@ -26,7 +29,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class ProxyFactoryBean implements FactoryBean {
+abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, BeanFactoryAware{
 
 	/**
 	 * Creates a new ProxyFactoryBean
@@ -74,7 +77,7 @@ abstract public class ProxyFactoryBean implements FactoryBean {
 		ObjectHelper.checkNotNull("parameter:targetFactoryBean", targetFactoryBean);
 		this.targetFactoryBean = targetFactoryBean;
 	}
-
+	
 	/**
 	 * A cache copy of the proxy. Generated proxies are stateless and may be
 	 * cached.
@@ -99,7 +102,16 @@ abstract public class ProxyFactoryBean implements FactoryBean {
 	}
 
 	protected Object createProxy() {
-		return this.createProxy0(this.getTargetFactoryBean().getObject());
+		final FactoryBean factoryBean = this.getTargetFactoryBean(); 
+		if( factoryBean instanceof BeanNameAware ){
+			final BeanNameAware beanNameAware =(BeanNameAware) factoryBean;
+			beanNameAware.setBeanName( this.getBeanName() );
+		}
+		if( factoryBean instanceof BeanFactoryAware ){
+			final BeanFactoryAware beanFactoryAware =(BeanFactoryAware) factoryBean;
+			beanFactoryAware.setBeanFactory( this.getBeanFactory() );
+		}		
+		return this.createProxy0( factoryBean.getObject() );
 	}
 
 	/**
@@ -116,4 +128,26 @@ abstract public class ProxyFactoryBean implements FactoryBean {
 	 * @return A new Proxy
 	 */
 	abstract protected Object createProxy0(Object target);
+	
+	private BeanFactory beanFactory;
+	
+	protected BeanFactory getBeanFactory(){
+		ObjectHelper.checkNotNull("field:beanFactory", beanFactory);
+		return this.beanFactory;
+	}
+	public void setBeanFactory( final BeanFactory beanFactory ){
+		ObjectHelper.checkNotNull("parameter:beanFactory", beanFactory);
+		this.beanFactory = beanFactory;
+	}
+	
+	
+	private String beanName;
+	
+	protected String getBeanName(){
+		return this.beanName;
+	}
+	public void setBeanName( final String beanName ){
+		this.beanName = beanName;
+	}
+	
 }

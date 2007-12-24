@@ -1,3 +1,0 @@
-// eager-singleton-bean-name.txt
-
-${beanName}

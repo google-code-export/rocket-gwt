@@ -128,7 +128,8 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 			}
 		};
 		factoryBean.setBeanFactory(this.createBeanFactory());
-
+		factoryBean.setBeanName( "bean");
+		
 		final Object bean = factoryBean.getObject();
 		assertNotNull(bean);
 		assertTrue("" + bean, bean instanceof Bean);
@@ -148,6 +149,8 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 			}
 		};
 		factoryBean.setBeanFactory(this.createBeanFactory());
+		factoryBean.setBeanName("bean");
+		
 		final Object bean = factoryBean.getObject();
 		assertNotNull(bean);
 		assertTrue("" + bean, bean instanceof Bean);

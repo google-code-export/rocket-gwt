@@ -13,21 +13,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.registerbeans;
+package rocket.beans.test.beans.client.beanreferencetoalias;
 
-/**
- * A collection constants used by various classes within this package.
- * 
- * @author Miroslav Pokorny
- */
-class Constants {
-	final static String BUILD_FACTORY_BEANS_TEMPLATE = "build-factory-beans.txt";
+public class AliasedBean {
 
-	final static String BUILD_FACTORY_BEANS_REGISTER_BEANS = "registerBeans";
-
-	final static String REGISTER_BEAN_TEMPLATE = "register-bean.txt";
-
-	final static String REGISTER_BEAN_BEAN_ID = "beanId";
-
-	final static String REGISTER_BEAN_FACTORY_BEAN = "factoryBeanType";
 }

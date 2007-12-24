@@ -13,19 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.loadeagersingletons;
+package rocket.beans.test.beans.client.aliasnamealreadyexists;
 
-/**
- * A collection constants used by various classes within this package.
- * 
- * @author Miroslav Pokorny
- */
-class Constants {
-	final static String EAGER_SINGLETON_BEAN_NAMES_TEMPLATE = "eager-singleton-bean-names.txt";
+public class Bean {
 
-	final static String EAGER_SINGLETON_BEAN_NAMES_ARRAY = "beanNames";
+	private byte byteProperty;
 
-	final static String EAGER_SINGELTON_BEAN_NAME_TEMPLATE = "eager-singleton-bean-name.txt";
+	public byte getByteProperty() {
+		return this.byteProperty;
+	}
 
-	final static String EAGER_SINGELTON_BEAN_NAME_BEAN_ID = "beanName";
+	public void setByteProperty(final byte byteProperty) {
+		this.byteProperty = byteProperty;
+	}
 }

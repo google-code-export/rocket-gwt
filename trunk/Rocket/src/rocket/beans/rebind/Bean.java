@@ -141,7 +141,6 @@ public class Bean{
 		this.proxyFactoryBean = proxyFactoryBean;
 	}
 
-
 	/**
 	 * A flag which when true indicates that this singleton( its got to be a singleton ) is eagerly / non lazily loaded.
 	 */
@@ -155,6 +154,9 @@ public class Bean{
 		this.eagerLoad = eagerLoad;
 	}
 	
+	/**
+	 * Will be true if this bean is a singleton
+	 */
 	private boolean singleton;
 	
 	public boolean isSingleton(){
@@ -166,6 +168,6 @@ public class Bean{
 	}
 	
 	public String toString() {
-		return "bean id: \"" + this.id + "\", type: " + this.type + ".";
+		return "bean id: \"" + this.id + "\", type: " + this.type;
 	}
 }

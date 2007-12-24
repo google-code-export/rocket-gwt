@@ -1,7 +1,8 @@
-// custom.txt
+// /rocket/beans/rebind/init/custom.txt
 
 // cast the instance parameter to ${beanType}
 final ${beanType} instance0 = (${beanType}) instance;
 
 // call custom init method.
 instance0.${initMethod}();
+

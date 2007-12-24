@@ -17,8 +17,8 @@ package rocket.beans.rebind.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -68,8 +68,9 @@ public class DocumentWalker {
 
 			this.setAdvices(new ArrayList());
 			this.setBeans(new ArrayList());
-			this.setRemoteJsonServices(new ArrayList());
-			this.setRemoteRpcServices(new ArrayList());
+			this.setAliases(new ArrayList());
+			this.setJsonRpcServices(new ArrayList());
+			this.setJavaRpcServices(new ArrayList());
 
 			this.setIncludedFiles(new HashSet());
 
@@ -82,7 +83,7 @@ public class DocumentWalker {
 	}
 
 	protected void processDocument(final DocumentBuilder builder, final String fileName) {
-		try {
+		try {			
 			this.processDocument0(builder, fileName);
 		} catch (final SAXParseException caught) {
 			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + fileName + "\" at line: "
@@ -112,19 +113,20 @@ public class DocumentWalker {
 
 		final Generator generator = this.getGenerator();
 		final GeneratorContext context = generator.getGeneratorContext();
-		context.info("Processing document fileName\"" + fileName + "\".");
+		context.debug( fileName );
 
 		final InputStream inputStream = generator.getResource(fileName);
 		final Document document = builder.parse(inputStream);
 
 		// process the local tags
 		final PlaceHolderResolver placeHolderResolver = this.loadPlaceholderFiles(document);
-		final List included = this.findIncludedFiles(document, placeHolderResolver);
+		final List included = this.findIncludedFiles(document, fileName, placeHolderResolver);
 
 		this.getBeans().addAll(this.findBeans(document, fileName, placeHolderResolver));
-		this.getRemoteJsonServices().addAll(this.findRemoteJsonServices(document, placeHolderResolver));
-		this.getRemoteRpcServices().addAll(this.findRemoteRpcServices(document, placeHolderResolver));
-		this.getAdvices().addAll(this.findAdvices(document, placeHolderResolver));
+		this.getAliases().addAll(this.findAliases(document, fileName, placeHolderResolver));
+		this.getJsonRpcServices().addAll(this.findJsonRpcServices(document, fileName, placeHolderResolver));
+		this.getJavaRpcServices().addAll(this.findJavaRpcServices(document, fileName, placeHolderResolver));
+		this.getAdvices().addAll(this.findAdvices(document, fileName, placeHolderResolver));
 
 		// now include the included files...
 		final Iterator includedFilesIterator = included.iterator();
@@ -163,7 +165,7 @@ public class DocumentWalker {
 	 * @param document The source document.
 	 * @param filename The filename is used to construct any exception messages
 	 * @param placeHolderResolver 
-	 * @return
+	 * @return A list of beans
 	 */
 	protected List findBeans(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
 		ObjectHelper.checkNotNull("parameter:document", document);
@@ -171,100 +173,124 @@ public class DocumentWalker {
 		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
 
 		final NodeList nodeList = document.getElementsByTagName(Constants.BEAN_TAG);
+		final int count = nodeList.getLength();
+		
+		final List beans = new ArrayList();
+		for( int i = 0; i < count; i++  ){
+			final BeanTag bean = new BeanTag();
+			bean.setElement((Element) nodeList.item(i));
+			bean.setFilename(filename);
+			bean.setPlaceHolderResolver(placeHolderResolver);
+			
+			beans.add( bean );				
+		}		
+		
+		return Collections.unmodifiableList(beans);
+	}
+	
+	protected List findAliases(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
+		ObjectHelper.checkNotNull("parameter:document", document);
+		StringHelper.checkNotEmpty("parameter:filename", filename);
+		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
 
-		return new AbstractList() {
-			public Object get(final int index) {
-				final BeanTag bean = new BeanTag();
-				bean.setElement((Element) nodeList.item(index));
-				bean.setFilename(filename);
-				bean.setPlaceHolderResolver(placeHolderResolver);
-				return bean;
-			}
-
-			public int size() {
-				return nodeList.getLength();
-			}
-		};
+		final NodeList nodeList = document.getElementsByTagName(Constants.ALIAS_TAG);
+		final int count = nodeList.getLength();
+		
+		final List aliases = new ArrayList();
+		for( int i = 0; i < count; i++  ){
+			final AliasTag alias = new AliasTag();
+			alias.setElement((Element) nodeList.item(i));
+			alias.setFilename(filename);
+			alias.setPlaceHolderResolver(placeHolderResolver);
+			
+			aliases.add( alias );				
+		}		
+		
+		return Collections.unmodifiableList(aliases);
 	}
 
-	protected List findRemoteJsonServices(final Document document, final PlaceHolderResolver placeHolderResolver) {
+	protected List findJsonRpcServices(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
 		ObjectHelper.checkNotNull("parameter:document", document);
+		StringHelper.checkNotEmpty("parameter:filename", filename);
 		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
 
 		final NodeList nodeList = document.getElementsByTagName(Constants.REMOTE_JSON_SERVICE_TAG);
-
-		return new AbstractList() {
-			public Object get(final int index) {
-				final RemoteJsonServiceTag json = new RemoteJsonServiceTag();
-				json.setElement((Element) nodeList.item(index));
-				json.setPlaceHolderResolver(placeHolderResolver);
-				return json;
-			}
-
-			public int size() {
-				return nodeList.getLength();
-			}
-		};
+		final int count = nodeList.getLength();
+		
+		final List jsonServices = new ArrayList();
+		for( int i = 0; i < count; i++  ){
+			final RemoteJsonServiceTag jsonService = new RemoteJsonServiceTag();
+			jsonService.setElement((Element) nodeList.item(i));
+			jsonService.setFilename(filename);
+			jsonService.setPlaceHolderResolver(placeHolderResolver);
+			
+			jsonServices.add( jsonService );				
+		}		
+		
+		return Collections.unmodifiableList(jsonServices);
 	}
 
-	protected List findRemoteRpcServices(final Document document, final PlaceHolderResolver placeHolderResolver) {
+	protected List findJavaRpcServices(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
 		ObjectHelper.checkNotNull("parameter:document", document);
+		StringHelper.checkNotEmpty("parameter:filename", filename);
 		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
 
 		final NodeList nodeList = document.getElementsByTagName(Constants.REMOTE_RPC_SERVICE_TAG);
-
-		return new AbstractList() {
-			public Object get(final int index) {
-				final RemoteRpcServiceTag rpc = new RemoteRpcServiceTag();
-				rpc.setElement((Element) nodeList.item(index));
-				rpc.setPlaceHolderResolver(placeHolderResolver);
-				return rpc;
-			}
-
-			public int size() {
-				return nodeList.getLength();
-			}
-		};
+		final int count = nodeList.getLength();
+		
+		final List rpcServices = new ArrayList();
+		for( int i = 0; i < count; i++  ){
+			final RemoteRpcServiceTag rpcService = new RemoteRpcServiceTag();
+			rpcService.setElement((Element) nodeList.item(i));
+			rpcService.setFilename(filename);
+			rpcService.setPlaceHolderResolver(placeHolderResolver);
+			
+			rpcServices.add( rpcService );				
+		}		
+		
+		return Collections.unmodifiableList(rpcServices);
 	}
 
-	protected List findAdvices(final Document document, final PlaceHolderResolver placeHolderResolver) {
+	protected List findAdvices(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
 		ObjectHelper.checkNotNull("parameter:document", document);
+		StringHelper.checkNotEmpty("parameter:filename", filename);
 		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
 
 		final NodeList nodeList = document.getElementsByTagName(Constants.ADVICE_TAG);
-
-		return new AbstractList() {
-			public Object get(final int index) {
-				final AdviceTag advisor = new AdviceTag();
-				advisor.setElement((Element) nodeList.item(index));
-				advisor.setPlaceHolderResolver(placeHolderResolver);
-				return advisor;
-			}
-
-			public int size() {
-				return nodeList.getLength();
-			}
-		};
+		final int count = nodeList.getLength();
+		
+		final List advices = new ArrayList();
+		for( int i = 0; i < count; i++  ){
+			final AdviceTag advice = new AdviceTag();
+			advice.setElement((Element) nodeList.item(i));
+			advice.setFilename(filename);
+			advice.setPlaceHolderResolver(placeHolderResolver);
+			
+			advices.add( advice );				
+		}		
+		
+		return Collections.unmodifiableList(advices);
 	}
 
-	protected List findIncludedFiles(final Document document, final PlaceHolderResolver placeHolderResolver) {
+	protected List findIncludedFiles(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
 		ObjectHelper.checkNotNull("parameter:document", document);
+		StringHelper.checkNotEmpty("parameter:filename", filename);
 		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
 
 		final NodeList nodeList = document.getElementsByTagName(Constants.INCLUDE_TAG);
-
-		return new AbstractList() {
-			public Object get(final int index) {
-				final IncludeTag bean = new IncludeTag();
-				bean.setElement((Element) nodeList.item(index));
-				bean.setPlaceHolderResolver(placeHolderResolver);
-				return bean;
-			}
-
-			public int size() {
-				return nodeList.getLength();
-			}
-		};
+		final int count = nodeList.getLength();
+		
+		final List includedFiles = new ArrayList();
+		for( int i = 0; i < count; i++  ){
+			final IncludeTag includedFile = new IncludeTag();
+			includedFile.setElement((Element) nodeList.item(i));
+			includedFile.setFilename(filename);
+			includedFile.setPlaceHolderResolver(placeHolderResolver);
+			
+			includedFiles.add( includedFile );				
+		}		
+		
+		return Collections.unmodifiableList( includedFiles );
 	}
 
 	private EntityResolver entityResolver;
@@ -315,28 +341,28 @@ public class DocumentWalker {
 		this.beans = beans;
 	}
 
-	private List remoteJsonServices;
+	private List jsonRpcServices;
 
-	public List getRemoteJsonServices() {
-		ObjectHelper.checkNotNull("field:remoteJsonServices", remoteJsonServices);
-		return this.remoteJsonServices;
+	public List getJsonRpcServices() {
+		ObjectHelper.checkNotNull("field:jsonRpcServices", jsonRpcServices);
+		return this.jsonRpcServices;
 	}
 
-	protected void setRemoteJsonServices(final List remoteJsonServices) {
-		ObjectHelper.checkNotNull("parameter:remoteJsonServices", remoteJsonServices);
-		this.remoteJsonServices = remoteJsonServices;
+	protected void setJsonRpcServices(final List jsonRpcServices) {
+		ObjectHelper.checkNotNull("parameter:jsonRpcServices", jsonRpcServices);
+		this.jsonRpcServices = jsonRpcServices;
 	}
 
-	private List remoteRpcServices;
+	private List javaRpcServices;
 
-	public List getRemoteRpcServices() {
-		ObjectHelper.checkNotNull("field:remoteRpcServices", remoteRpcServices);
-		return this.remoteRpcServices;
+	public List getJavaRpcServices() {
+		ObjectHelper.checkNotNull("field:javaRpcServices", javaRpcServices);
+		return this.javaRpcServices;
 	}
 
-	protected void setRemoteRpcServices(final List remoteRpcServices) {
-		ObjectHelper.checkNotNull("parameter:remoteRpcServices", remoteRpcServices);
-		this.remoteRpcServices = remoteRpcServices;
+	protected void setJavaRpcServices(final List javaRpcServices) {
+		ObjectHelper.checkNotNull("parameter:javaRpcServices", javaRpcServices);
+		this.javaRpcServices = javaRpcServices;
 	}
 
 	private List advices;
@@ -361,5 +387,17 @@ public class DocumentWalker {
 	protected void setIncludedFiles(final Set includedFiles) {
 		ObjectHelper.checkNotNull("parameter:includedFiles", includedFiles);
 		this.includedFiles = includedFiles;
+	}
+	
+	private List aliases;
+
+	public List getAliases() {
+		ObjectHelper.checkNotNull("field:aliases", aliases);
+		return this.aliases;
+	}
+
+	protected void setAliases(final List aliases) {
+		ObjectHelper.checkNotNull("parameter:aliases", aliases);
+		this.aliases = aliases;
 	}
 }
