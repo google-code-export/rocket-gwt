@@ -21,11 +21,17 @@ import java.lang.reflect.Method;
 import rocket.remoting.client.RpcException;
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectOutputStream;
-import rocket.serialization.client.SerializationFactory;
+import rocket.util.client.ObjectHelper;
 
 /**
  * This class takes a stream and attempts to invoke a service method including
  * parameters upon a service implementation. The result (either the returned value or an exception) of invoking method is then serialized.
+ * 
+ * The located method and parameters are actually executed at {@link #invoke(Object, Method, Object[])
+ * which provides an opportunity to change behaviour. The other {@link #invoke(String, Object)} method takes
+ * care of marshalling/unmarshalling.
+ *
+ * Instances of this class are threadsafe and idepotent.
  * 
  * @author Miroslav Pokorny
  */
@@ -35,9 +41,12 @@ public class JavaRpcServiceMethodInvoker {
 	 * needs to be executed.
 	 * 
 	 * @param input The serialized form of the request.
+	 * @param serviceProvider the instance that contains the service method which will be executed once parameters are unmarshalled.
 	 * @return A string containing the serialized result of invoking the given method.	
 	 */
-	public String invoke(final String input, final Object serviceProvider ) {		
+	public String invoke(final String input, final Object serviceProvider ) {
+		ObjectHelper.checkNotNull( "parameter:serviceProvider", serviceProvider);
+		
 		ServerSerializationFactory serializationFactory = createSerializationFactory();
 
 		final ObjectInputStream inputStream = serializationFactory.createObjectInputStream(input);
@@ -78,7 +87,7 @@ public class JavaRpcServiceMethodInvoker {
 		// response...
 		try {
 			// prepare to invoke method...
-			result = method.invoke(serviceProvider, parameters);
+			result = this.invoke(serviceProvider, method, parameters);
 		} catch (final InvocationTargetException invocationTargetException) {
 			final Throwable caught = invocationTargetException.getTargetException();
 
@@ -113,6 +122,18 @@ public class JavaRpcServiceMethodInvoker {
 		outputStream.writeObject(result);
 
 		return outputStream.getText();
+	}
+	
+	/**
+	 * Invokes the located method belonging to the given provider.
+	 * @param provider The service provider which contains the method about to be executed.
+	 * @param method The method to invoke
+	 * @param parameters An array holding parameters 
+	 * @return The result returned by the method
+	 * @throws Throwable The exception that was thrown.
+	 */
+	protected Object invoke( final Object serviceProvider, final Method method, final Object[] parameters ) throws Throwable{
+		return method.invoke(serviceProvider, parameters);
 	}
 
 	/**
