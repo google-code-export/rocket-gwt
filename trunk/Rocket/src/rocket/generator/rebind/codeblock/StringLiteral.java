@@ -32,9 +32,9 @@ public class StringLiteral implements Literal {
 		super();
 	}
 
-	public StringLiteral(final String content) {
+	public StringLiteral(final String value) {
 		super();
-		this.setValue(content);
+		this.setValue(value);
 	}
 
 	public void write(final SourceWriter writer) {
@@ -50,21 +50,21 @@ public class StringLiteral implements Literal {
 	private String value;
 
 	public String getValue() {
-		StringHelper.checkNotEmpty("field:value", value);
+		StringHelper.checkNotNull("field:value", value);
 		return value;
 	}
 
-	protected boolean hasContent() {
+	protected boolean hasValue() {
 		return null != value;
 	}
 
 	public void setValue(final String value) {
-		StringHelper.checkNotEmpty("parameter:value", value);
+		StringHelper.checkNotNull("parameter:value", value);
 		this.value = value;
 	}
 
 	public boolean isEmpty() {
-		return false == (this.hasContent() && false == StringHelper.isNullOrEmpty(this.getValue()));
+		return false == (this.hasValue() && false == StringHelper.isNullOrEmpty(this.getValue()));
 	}
 
 	public String toString() {
