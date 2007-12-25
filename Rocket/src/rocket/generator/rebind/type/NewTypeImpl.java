@@ -334,13 +334,21 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		final Set sorted = new TreeSet( ConstructorComparator.INSTANCE );
 		sorted.addAll( constructors );
 		
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+	
+		final String message = "Constructors: " + constructors.size();
+		context.debug(message);
+		
 		writer.beginJavaDocComment();
-		writer.print("Constructors (" + constructors.size() + ")");
+		writer.print( message );
 		writer.endJavaDocComment();
 
 		writer.println();
 		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
 		writer.println();
+		
+		context.unbranch();
 	}
 
 	protected void writeFields(final SourceWriter writer) {
@@ -350,13 +358,21 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		final Set sorted = new TreeSet( FieldComparator.INSTANCE );
 		sorted.addAll( fields );
 		
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		
+		final String message = "Fields: " + sorted.size();
+		context.debug(message);		
+		
 		writer.beginJavaDocComment();
-		writer.print("Fields (" + sorted.size() + ")");
+		writer.print( message );
 		writer.endJavaDocComment();
 
 		writer.println();
 		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
 		writer.println();
+		
+		context.unbranch();
 	}
 
 	protected void writeMethods(final SourceWriter writer) {
@@ -365,14 +381,22 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		final Set methods = this.getMethods();
 		final Set sorted = new TreeSet( MethodComparator.INSTANCE );
 		sorted.addAll( methods );		
+				
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		
+		final String message = "Methods: " + methods.size();
+		context.debug(message);
 		
 		writer.beginJavaDocComment();
-		writer.print("Methods (" + methods.size() + ")");
+		writer.print( message );
 		writer.endJavaDocComment();
 
 		writer.println();
 		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
 		writer.println();
+
+		context.unbranch();
 	}
 
 	protected void writeNestedTypes(final SourceWriter writer) {
@@ -382,13 +406,21 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		final Set sorted = new TreeSet( TypeComparator.INSTANCE );
 		sorted.addAll( types );
 		
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		
+		final String message = "Nested Types: " + types.size();
+		context.debug(message);
+		
 		writer.beginJavaDocComment();
-		writer.print("Nested Types (" + types.size() + ")");
+		writer.print( message );
 		writer.endJavaDocComment();
 
 		writer.println();
 		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
 		writer.println();
+
+		context.unbranch();
 	}
 
 	protected void throwTypeAlreadyExistsException() {

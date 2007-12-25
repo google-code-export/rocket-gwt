@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
@@ -148,12 +149,20 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 
 		final Set initializers = this.getInitializers();
 
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		
+		final String message = "Initializers: " + initializers.size();
+		context.debug( message );
+		
 		writer.beginJavaDocComment();
-		writer.print("Initializers (" + initializers.size() + ")");
+		writer.print( message );
 		writer.endJavaDocComment();
 
 		writer.println();
 		GeneratorHelper.writeClassComponents(initializers, writer, false, true);
 		writer.println();
+		
+		context.unbranch();
 	}	
 }

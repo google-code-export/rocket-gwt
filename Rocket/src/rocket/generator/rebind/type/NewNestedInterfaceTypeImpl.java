@@ -41,4 +41,29 @@ public class NewNestedInterfaceTypeImpl extends NewNestedTypeOrInterface impleme
 	 */
 	protected void writeConstructors(final SourceWriter writer) {		
 	}
+	
+	public String toString(){
+		final StringBuffer buf = new StringBuffer();
+		
+		buf.append( this.getVisibility().toString() );
+		buf.append( ' ' );
+		
+		if( this.isFinal() ){
+			buf.append( "final ");
+		}
+		
+		if( this.isStatic() ){
+			buf.append( "static ");
+		}
+		if( this.isAbstract() ){
+			buf.append( "abstract ");
+		}
+		
+		buf.append( "interface ");
+		buf.append( this.getName() );
+		buf.append( ", enclosingType: ");
+		buf.append( this.getEnclosingType().getName() );
+		
+		return buf.toString();		
+	}
 }

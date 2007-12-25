@@ -100,10 +100,8 @@ public class InitializerImpl implements Initializer {
 		writer.println("};");
 	}
 
-	protected void writeLogger() {
-		final String message = "Writing " + ( this.isStatic() ? "static " : "" ) + "initializer";
-		
-		this.getGeneratorContext().debug( message );
+	protected void writeLogger() {		
+		this.getGeneratorContext().debug( this.toString() );
 	}
 
 	protected void writeComments( final SourceWriter writer ){		

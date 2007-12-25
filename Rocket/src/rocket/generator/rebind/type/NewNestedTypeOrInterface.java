@@ -17,6 +17,7 @@ package rocket.generator.rebind.type;
 
 import java.util.Iterator;
 
+import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.util.client.ObjectHelper;
@@ -103,6 +104,8 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	public void write(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
 		this.log();
 		
 		this.writeComments( writer );
@@ -117,6 +120,8 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		writer.outdent();
 
 		writer.println("} // " + this.getName());
+		
+		context.unbranch();
 	}
 	
 	protected void writeComments( final SourceWriter writer ){		
@@ -168,8 +173,6 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	}
 
 	protected void log() {
-		this.getGeneratorContext().info(
-				"Writing nested " + (this.isInterface() ? "interface" : "class") + this.getName() + " enclosed type "
-						+ this.getEnclosingType().getName());
-	}
+		this.getGeneratorContext().debug( this.toString() );
+	}	
 }

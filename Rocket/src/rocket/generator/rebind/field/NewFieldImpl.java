@@ -185,15 +185,15 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	public void write(final SourceWriter writer) {
 		ObjectHelper.checkNotNull("parameter:writer", writer);
 
-		this.writeLogger();
+		this.log();
 
 		this.writeComments( writer );
 		this.writeDeclaration(writer);
 		this.writeValue(writer);
 	}
 
-	protected void writeLogger() {
-		this.getGeneratorContext().debug("Writing field " + this.getType().getName() + ": " + this.getName());
+	protected void log() {
+		this.getGeneratorContext().debug( this.toString() );
 	}
 
 	protected void writeComments( final SourceWriter writer ){		
