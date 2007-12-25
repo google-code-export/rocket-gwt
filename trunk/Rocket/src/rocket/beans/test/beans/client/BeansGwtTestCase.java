@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import rocket.beans.client.BeanFactory;
+import rocket.beans.client.BeanFactoryImpl;
 import rocket.beans.test.beans.client.alias.AliasBeanFactory;
 import rocket.beans.test.beans.client.aliasedbeandoesntexist.AliasBeanDoesntExistBeanFactory;
 import rocket.beans.test.beans.client.aliasnamealreadyexists.AliasFromBeanIdIsNotUniqueBeanFactory;
@@ -39,6 +40,11 @@ import rocket.beans.test.beans.client.byteproperty.ClassWithByteProperty;
 import rocket.beans.test.beans.client.charproperty.CharPropertyBeanFactory;
 import rocket.beans.test.beans.client.charproperty.ClassWithCharProperty;
 import rocket.beans.test.beans.client.constructornotfound.ConstructorNotFoundBeanFactory;
+import rocket.beans.test.beans.client.destroymethod.BeanWithCustomDestroy;
+import rocket.beans.test.beans.client.destroymethod.DestroyMethodBeanFactory;
+import rocket.beans.test.beans.client.destroymethodnotfound.DestroyMethodNotFoundBeanFactory;
+import rocket.beans.test.beans.client.disposablebean.DisposableBeanBeanFactory;
+import rocket.beans.test.beans.client.disposablebean.DisposableBeanImpl;
 import rocket.beans.test.beans.client.doubleproperty.ClassWithDoubleProperty;
 import rocket.beans.test.beans.client.doubleproperty.DoublePropertyBeanFactory;
 import rocket.beans.test.beans.client.eagerlyloadedsingleton.EagerlyLoadedSingletonBean;
@@ -85,6 +91,7 @@ import rocket.beans.test.beans.client.notabeanfactory.ClassIsNotABeanFactory;
 import rocket.beans.test.beans.client.notanadvice.NotAnAdviceBeanFactory;
 import rocket.beans.test.beans.client.placeholders.PlaceHolderBean;
 import rocket.beans.test.beans.client.placeholders.PlaceHolderBeanFactory;
+import rocket.beans.test.beans.client.prototypewithdestroymethod.PrototypeWithDestroyMethodBeanFactory;
 import rocket.beans.test.beans.client.proxybooleanparameterreturntype.ClassWithMethodWithBooleanParameterAndReturnType;
 import rocket.beans.test.beans.client.proxybooleanparameterreturntype.ProxyBooleanBeanFactory;
 import rocket.beans.test.beans.client.proxybooleanparameterreturntype.ProxyBooleanMethodInterceptor;
@@ -266,8 +273,46 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		final BeanFactory factory = (BeanFactory) GWT.create(InitMethodBeanFactory.class);
 		final BeanWithCustomInit bean = (BeanWithCustomInit) factory.getBean(BEAN_ID);
 		assertNotNull(bean);
-		assertTrue(bean.customInitCalled);
+		assertEquals(1, bean.initialized);
 	}
+
+	public void testDestroyMethodNotFound() {
+		try {
+			assertBindingFailed(GWT.create(DestroyMethodNotFoundBeanFactory.class));
+		} catch (final FailedGenerateAttemptException failed) {
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+		}
+	}
+
+	public void testPrototypeWithCustomDestroyMethod() {
+		try {
+			assertBindingFailed(GWT.create( PrototypeWithDestroyMethodBeanFactory.class));
+		} catch (final FailedGenerateAttemptException failed) {
+			assertTrue("" + failed, failed.getCauseType().equals( BEAN_FACTORY_GENERATOR_EXCEPTION));
+		}
+	}
+
+	public void testDisposableBean() {
+		final BeanFactoryImpl factory = (BeanFactoryImpl) GWT.create(DisposableBeanBeanFactory.class);
+		final DisposableBeanImpl bean = (DisposableBeanImpl) factory.getBean(BEAN_ID);
+		assertNotNull(bean);
+		
+		factory.shutdown();
+		
+		assertEquals( "bean should have been destroyed", 1, bean.destroyed );
+	}
+	
+	public void testDestroyMethod() {
+		final BeanFactoryImpl factory = (BeanFactoryImpl) GWT.create(DestroyMethodBeanFactory.class);
+		final BeanWithCustomDestroy bean = (BeanWithCustomDestroy) factory.getBean(BEAN_ID);
+		assertNotNull(bean);
+		
+		factory.shutdown();
+		
+		assertEquals( "bean should have been destroyed", 1, bean.destroyed );
+	}
+
+	
 
 	public void testConstructorNotFound() {
 		try {

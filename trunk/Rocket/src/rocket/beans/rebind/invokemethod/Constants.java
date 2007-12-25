@@ -13,13 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+package rocket.beans.rebind.invokemethod;
 
-package rocket.beans.test.beans.client.initmethod;
+/**
+ * A collection constants used by various classes within this package.
+ * 
+ * @author Miroslav Pokorny
+ */
+class Constants {
+	final static String TEMPLATE = "invoke-method.txt";
 
-public class BeanWithCustomInit {
-	public void customInit() {
-		this.initialized++;
-	}
+	final static String TYPE = "type";
 
-	public int initialized = 0;
+	final static String METHOD = "method";
 }

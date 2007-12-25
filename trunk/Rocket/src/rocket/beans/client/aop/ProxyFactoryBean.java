@@ -18,6 +18,7 @@ package rocket.beans.client.aop;
 import rocket.beans.client.BeanFactory;
 import rocket.beans.client.BeanFactoryAware;
 import rocket.beans.client.BeanNameAware;
+import rocket.beans.client.DisposableBean;
 import rocket.beans.client.FactoryBean;
 import rocket.util.client.ObjectHelper;
 
@@ -29,7 +30,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, BeanFactoryAware{
+abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, BeanFactoryAware, DisposableBean{
 
 	/**
 	 * Creates a new ProxyFactoryBean
@@ -128,6 +129,18 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	 * @return A new Proxy
 	 */
 	abstract protected Object createProxy0(Object target);
+	
+	/**
+	 * Requests the hosted factory bean to destroy itself it is a disposable bean.
+	 * 
+	 * If the factory bean throws an exception these will leak.
+	 */
+	public void destroy(){
+		final FactoryBean factoryBean = this.getTargetFactoryBean();
+		if( factoryBean instanceof DisposableBean ){
+			((DisposableBean) factoryBean).destroy();
+		}		
+	}
 	
 	private BeanFactory beanFactory;
 	

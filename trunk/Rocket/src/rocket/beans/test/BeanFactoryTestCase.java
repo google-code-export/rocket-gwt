@@ -40,7 +40,7 @@ public class BeanFactoryTestCase extends TestCase {
 	static final String PROTOTYPE_BEAN = "prototypeBean";
 		
 	public void testGetSingletonBean() {
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
@@ -60,7 +60,7 @@ public class BeanFactoryTestCase extends TestCase {
 		final String ALIAS = "alias";
 		final String ALIAS2 = "alias2";
 		
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
@@ -86,7 +86,7 @@ public class BeanFactoryTestCase extends TestCase {
 	public void testLazyLoadedSingletonBean() {
 		Singleton.loaded = false;
 		
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
@@ -107,7 +107,7 @@ public class BeanFactoryTestCase extends TestCase {
 	public void testEagerlyLoadedSingletonBean() {
 		Singleton.loaded = false;
 		
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
@@ -125,7 +125,7 @@ public class BeanFactoryTestCase extends TestCase {
 	}
 
 	public void testIfASingletonIsSingleton() {
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
@@ -140,7 +140,7 @@ public class BeanFactoryTestCase extends TestCase {
 	}
 
 	public void testIfAPrototypeIsSingleton() {
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(PROTOTYPE_BEAN, createPrototypeFactoryBean());
 			}
@@ -155,7 +155,7 @@ public class BeanFactoryTestCase extends TestCase {
 	}
 
 	public void testRatherThanReturningAFactoryBeanCallItsGetObject() {
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(PROTOTYPE_BEAN, createPrototypeFactoryBean());
 			}
@@ -174,7 +174,7 @@ public class BeanFactoryTestCase extends TestCase {
 	public void testBeanFactoryAware() {
 		final String BEAN_FACTORY_AWARE = "bean";
 		
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(BEAN_FACTORY_AWARE, new SingletonFactoryBean() {
 					public Object createInstance() {
@@ -212,7 +212,7 @@ public class BeanFactoryTestCase extends TestCase {
 	public void testBeanNameAwareBean() {
 		final String BEAN_NAME_AWARE_BEAN = "bean";
 		
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(BEAN_NAME_AWARE_BEAN, new SingletonFactoryBean() {
 					public Object createInstance() {
@@ -246,7 +246,7 @@ public class BeanFactoryTestCase extends TestCase {
 	public void testBeanWithReferenceToAnotherBean() {
 		final String INCLUDES_ANOTHER_BEAN = "IncludesAnotherBean";
 		
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				final BeanFactory that = this;
 				
@@ -288,7 +288,7 @@ public class BeanFactoryTestCase extends TestCase {
 	public void testInitializingBean() {
 		final String INITIALIZING_BEAN = "bean";
 		
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(INITIALIZING_BEAN, new SingletonFactoryBean() {
 					public Object createInstance() {
@@ -323,7 +323,7 @@ public class BeanFactoryTestCase extends TestCase {
 		final String CYCLE1 = "cycle1";
 		final String CYCLE2 = "cycle2";
 
-		final BeanFactory beanFactory = new BeanFactoryImpl(){
+		final BeanFactory beanFactory = new TestBeanFactoryImpl(){
 			protected void registerFactoryBeans(){
 				this.registerFactoryBean(CYCLE1, new SingletonFactoryBean() {
 					public Object createInstance() {
@@ -402,5 +402,13 @@ public class BeanFactoryTestCase extends TestCase {
 	}
 
 	static class Prototype {
+	}
+	
+	static abstract class TestBeanFactoryImpl extends BeanFactoryImpl{
+		/**
+		 * Overrides the real method which has dependencies on GWT.
+		 */
+		protected void registerShutdownHook(){				
+		}
 	}
 }

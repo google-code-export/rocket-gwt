@@ -13,13 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+package rocket.beans.client;
 
-package rocket.beans.test.beans.client.initmethod;
+import rocket.util.client.Destroyable;
 
-public class BeanWithCustomInit {
-	public void customInit() {
-		this.initialized++;
-	}
+/**
+ * This interface should be implemented by singletons that wish to recieve notice of
+ * BeanFactories that are being shut down.
+ * 
+ * @author Miroslav Pokorny
+ */
+public interface DisposableBean extends Destroyable{
 
-	public int initialized = 0;
 }

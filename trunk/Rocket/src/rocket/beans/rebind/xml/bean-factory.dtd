@@ -13,7 +13,7 @@
 	file			CDATA 						#REQUIRED
 >
 
-<!ELEMENT bean 									((constructor|factory)?, properties*)>
+<!ELEMENT bean 									(constructor?, properties*)>
 <!ATTLIST bean
 	class 			CDATA 						#REQUIRED
 	id 				CDATA 						#REQUIRED
@@ -21,6 +21,7 @@
 	factoryMethod 	CDATA 						#IMPLIED
 	initMethod 		CDATA 						#IMPLIED
 	lazyInit		(true|false)				#IMPLIED
+	destroyMethod 	CDATA 						#IMPLIED	
 >
 
 <!ELEMENT constructor 							(value+|bean-reference+|list+|set+|map+)>

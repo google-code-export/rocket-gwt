@@ -17,6 +17,8 @@ package rocket.beans.test;
 
 import junit.framework.TestCase;
 import rocket.beans.client.BeanFactory;
+import rocket.beans.client.DisposableBean;
+import rocket.beans.client.InitializingBean;
 import rocket.beans.client.PrototypeFactoryBean;
 import rocket.beans.client.SingletonFactoryBean;
 
@@ -30,7 +32,7 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 
 	final static String STRING_VALUE = "apple";
 
-	public void testGetBeanWhichHasNoOtherBeanReferences() {
+	public void testGetBean() {
 		final ClassWithStringPropertySingletonFactoryBean factoryBean = new ClassWithStringPropertySingletonFactoryBean();
 		final Object bean = factoryBean.getObject();
 		assertTrue("" + bean, bean instanceof ClassWithStringProperty);
@@ -159,6 +161,51 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		assertSame(bean, secondBean);
 	}
 
+	public void testInitializingBean(){
+		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
+			protected Object createInstance() {
+				return new ImplementsInitializingBean();
+			}
+		};
+		factoryBean.setBeanFactory(this.createBeanFactory());
+		factoryBean.setBeanName("bean");
+		
+		final ImplementsInitializingBean bean = (ImplementsInitializingBean)factoryBean.getObject();		
+		assertEquals( 1, bean.initialized);
+	}
+	
+	static class ImplementsInitializingBean implements InitializingBean{
+		public void afterPropertiesSet(){
+			this.initialized++;
+		}
+		
+		int initialized = 0;
+	}
+	
+	public void testDisposableBean(){
+		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
+			protected Object createInstance() {
+				return new ImplementsDisposableBean();
+			}
+		};
+		factoryBean.setBeanFactory(this.createBeanFactory());
+		factoryBean.setBeanName("bean");
+		
+		final ImplementsDisposableBean bean = (ImplementsDisposableBean)factoryBean.getObject();
+		
+		factoryBean.destroy();
+		
+		assertEquals( 1, bean.destroyed);
+	}
+	
+	static class ImplementsDisposableBean implements DisposableBean{
+		public void destroy(){
+			this.destroyed++;
+		}
+		
+		int destroyed = 0;
+	}
+	
 	BeanFactory createBeanFactory() {
 		return new BeanFactory() {
 			public Object getBean(final String name) {

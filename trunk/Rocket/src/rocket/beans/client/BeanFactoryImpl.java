@@ -20,6 +20,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.WindowCloseListener;
 
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.PrimitiveHelper;
@@ -41,6 +43,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 		this.prepareFactoryBeans();
 		this.registerAliases();
 		this.loadEagerBeans();
+		this.registerShutdownHook();
 	}
 
 	/**
@@ -191,5 +194,53 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 
 	protected void throwUnableToFindBean(final String message) throws UnableToFindBeanException {
 		throw new UnableToFindBeanException(message);
+	}
+	
+	protected void registerShutdownHook(){
+		Window.addWindowCloseListener( new WindowCloseListener(){
+			public String onWindowClosing(){
+				  return null;
+			  }
+			  public void onWindowClosed(){
+				  BeanFactoryImpl.this.shutdown();
+			  }
+		});
+	}
+	
+	/**
+	 * This method is invoked when a application is shutting down prompting all
+	 * singletons to be destroyed.
+	 * 
+	 * This method is only public for testing purposes.
+	 */
+	public void shutdown(){
+		final Iterator factoryBeans = this.getFactoryBeans().entrySet().iterator();
+		while( factoryBeans.hasNext() ){								
+			final Map.Entry entry = (Map.Entry) factoryBeans.next();
+			final String beanName = (String) entry.getKey();
+			final FactoryBean factoryBean = (FactoryBean) entry.getValue();
+			
+			if( factoryBean instanceof DisposableBean ){
+				this.shutdownSingleton( beanName, factoryBean );
+			}
+		}
+	}
+	
+	/**
+	 * Carefully destroys the given singleton via its factory bean.
+	 * 
+	 * Any exceptions thrown by the factory bean do not leak with a message logged.
+	 * @param beanName The name of the singleton
+	 * @param factoryBean The singleton's factory bean.
+	 */
+	protected void shutdownSingleton( final String beanName, final FactoryBean factoryBean ){
+		final DisposableBean disposableBean = (DisposableBean) factoryBean;
+		try{
+			disposableBean.destroy();
+		} catch ( final Throwable caught ){			
+			GWT.log("When attempting to destroy the singleton \"" + beanName + "\" an exception was thrown, message: " + caught.getMessage(), caught );
+			caught.printStackTrace();
+		}
+
 	}
 }

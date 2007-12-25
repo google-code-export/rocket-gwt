@@ -49,6 +49,8 @@ class Constants {
 	static final String BEAN_FACTORY_METHOD_NAME_ATTRIBUTE = "factoryMethod";
 
 	static final String BEAN_INIT_METHOD_NAME_ATTRIBUTE = "initMethod";
+	
+	static final String BEAN_DESTROY_METHOD_NAME_ATTRIBUTE = "destroyMethod";
 
 	static final String SINGLETON = "singleton";
 
