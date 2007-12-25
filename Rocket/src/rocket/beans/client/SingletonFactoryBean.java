@@ -15,6 +15,8 @@
  */
 package rocket.beans.client;
 
+import rocket.util.client.ObjectHelper;
+
 /**
  * Template FactoryBean that creates singletons and caches them. All generated
  * BeanFactories use anonymous SingletonFactoryBean classes within factory
@@ -22,7 +24,7 @@ package rocket.beans.client;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBean implements FactoryBean {
+abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBean implements FactoryBean, DisposableBean {
 
 	public SingletonFactoryBean() {
 		super();
@@ -78,10 +80,24 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 	}
 
 	protected void setObject(final Object object) {
+		ObjectHelper.checkNotNull("parameter:object", object );
 		this.object = object;
 	}
 
 	public boolean isSingleton() {
 		return true;
+	}
+	
+	public void destroy(){
+		if( this.hasObject() ){
+			this.destroy( this.getObject() );
+		}
+	}
+	
+	protected void destroy( final Object instance ){
+		if( instance instanceof DisposableBean ){
+			final DisposableBean disposableBean = (DisposableBean) instance;
+			disposableBean.destroy();
+		}
 	}
 }

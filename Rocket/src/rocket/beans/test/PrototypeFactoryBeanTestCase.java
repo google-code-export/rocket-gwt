@@ -17,6 +17,7 @@ package rocket.beans.test;
 
 import junit.framework.TestCase;
 import rocket.beans.client.BeanFactory;
+import rocket.beans.client.InitializingBean;
 import rocket.beans.client.PrototypeFactoryBean;
 
 /**
@@ -28,7 +29,7 @@ public class PrototypeFactoryBeanTestCase extends TestCase {
 
 	final static String STRING_VALUE = "apple";
 
-	public void testGetBeanWithNoBeanReferences() {
+	public void testGetBean() {
 		final ClassWithStringPropertyPrototypeFactoryBean factoryBean = new ClassWithStringPropertyPrototypeFactoryBean();
 		final Object bean = factoryBean.getObject();
 		assertTrue("" + bean, bean instanceof ClassWithStringProperty);
@@ -115,4 +116,21 @@ public class PrototypeFactoryBeanTestCase extends TestCase {
 		}
 	}
 
+	public void testInitializingBean(){
+		final PrototypeFactoryBean factoryBean = new PrototypeFactoryBean() {
+			protected Object createInstance() {
+				return new ImplementsInitializingBean();
+			}
+		};
+		final ImplementsInitializingBean bean = (ImplementsInitializingBean)factoryBean.getObject();		
+		assertEquals( 1, bean.initialized);
+	}
+	
+	static class ImplementsInitializingBean implements InitializingBean{
+		public void afterPropertiesSet(){
+			this.initialized++;
+		}
+		
+		int initialized = 0;
+	}
 }

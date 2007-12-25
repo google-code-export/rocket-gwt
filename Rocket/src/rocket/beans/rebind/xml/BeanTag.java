@@ -69,6 +69,10 @@ public class BeanTag extends XmlDocumentComponent {
 		return this.getAttribute(Constants.BEAN_INIT_METHOD_NAME_ATTRIBUTE);
 	}
 
+	public String getDestroyMethod() {
+		return this.getAttribute(Constants.BEAN_DESTROY_METHOD_NAME_ATTRIBUTE);
+	}
+	
 	public String getLazyLoaded() {
 		return this.getAttribute(Constants.LAZY_LOADED_ATTRIBUTE);
 	}

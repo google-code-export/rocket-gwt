@@ -17,6 +17,7 @@ package rocket.beans.rebind;
 
 import rocket.beans.client.BeanFactory;
 import rocket.beans.client.BeanFactoryImpl;
+import rocket.beans.client.DisposableBean;
 import rocket.beans.client.FactoryBean;
 import rocket.beans.client.PrototypeFactoryBean;
 import rocket.beans.client.SingletonFactoryBean;
@@ -73,6 +74,8 @@ class Constants {
 
 	final static String PROXY_FACTORY_BEAN = ProxyFactoryBean.class.getName();
 
+	final static String PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME = "getTargetFactoryBean";
+	
 	final static String PROXY_FACTORY_BEAN_SUFFIX = "__ProxyFactoryBean";
 
 	final static String CREATE_PROXY = "createProxy0";
@@ -94,4 +97,9 @@ class Constants {
 	final static String GET_EAGER_SINGELTON_BEAN_NAMES_METHOD = "getEagerSingletonBeanNames";
 	
 	final static String GET_ALIASES_TO_BEANS_METHOD = "getAliasesToBeans";
+	
+	final static String DISPOSABLE_BEAN = DisposableBean.class.getName();
+	
+	final static String DESTROY = "destroy";
+	final static String DESTROY_INSTANCE_PARAMETER = "instance";
 }

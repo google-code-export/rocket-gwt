@@ -13,17 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.init;
 
-/**
- * A collection constants used by various classes within this package.
- * 
- * @author Miroslav Pokorny
- */
-class Constants {
-	final static String TEMPLATE = "custom.txt";
+package rocket.beans.test.beans.client.destroymethod;
 
-	final static String BEAN_TYPE = "beanType";
+public class BeanWithCustomDestroy {
+	public void customDestroy() {
+		this.destroyed++;
+	}
 
-	final static String METHOD = "initMethod";
+	public int destroyed = 0;
 }

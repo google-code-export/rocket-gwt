@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.init;
+package rocket.beans.rebind.invokemethod;
 
 import java.io.InputStream;
 
@@ -24,45 +24,45 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the custom template
+ * An abstraction for the invoke-method.txt template
  * 
  * @author Miroslav Pokorny
  */
-public class CustomTemplatedFile extends TemplatedCodeBlock {
+public class InvokeMethodTemplatedFile extends TemplatedCodeBlock {
 
-	public CustomTemplatedFile() {
+	public InvokeMethodTemplatedFile() {
 		super();
 		setNative(false);
 	}
 
 	/**
-	 * The bean that should have the custom method
+	 * The type 
 	 */
-	private Type bean;
+	private Type type;
 
-	protected Type getBean() {
-		ObjectHelper.checkNotNull("field:bean", bean);
-		return this.bean;
+	protected Type getType() {
+		ObjectHelper.checkNotNull("field:type", type);
+		return this.type;
 	}
 
-	public void setBean(final Type bean) {
-		ObjectHelper.checkNotNull("bean:bean", bean);
-		this.bean = bean;
+	public void setType(final Type type) {
+		ObjectHelper.checkNotNull("type:type", type);
+		this.type = type;
 	}
 
 	/**
-	 * The method that will be invoked after all properties are set.
+	 * The method to be invoked.
 	 */
-	private Method customMethod;
+	private Method method;
 
-	protected Method getCustomMethod() {
-		ObjectHelper.checkNotNull("field:customMethod", customMethod);
-		return this.customMethod;
+	protected Method getMethod() {
+		ObjectHelper.checkNotNull("field:method", method);
+		return this.method;
 	}
 
-	public void setCustomMethod(final Method customMethod) {
-		ObjectHelper.checkNotNull("customMethod:customMethod", customMethod);
-		this.customMethod = customMethod;
+	public void setMethod(final Method method) {
+		ObjectHelper.checkNotNull("method:method", method);
+		this.method = method;
 	}
 
 	protected InputStream getInputStream() {
@@ -77,12 +77,12 @@ public class CustomTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.BEAN_TYPE.equals(name)) {
-				value = this.getBean();
+			if (Constants.TYPE.equals(name)) {
+				value = this.getType();
 				break;
 			}
 			if (Constants.METHOD.equals(name)) {
-				value = this.getCustomMethod();
+				value = this.getMethod();
 				break;
 			}
 			break;
