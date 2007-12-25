@@ -144,7 +144,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	protected void log() {
-		this.getGeneratorContext().debug("Writing Constructor: " + this);
+		this.getGeneratorContext().debug( this.toString() );
 	}
 
 	protected void writeComments( final SourceWriter writer ){		

@@ -33,4 +33,29 @@ public class NewNestedTypeImpl extends NewNestedTypeOrInterface implements NewNe
 	public void setInterface(final boolean interfacee) {
 		throw new UnsupportedOperationException("setInterface");
 	}
+	
+	public String toString(){
+		final StringBuffer buf = new StringBuffer();
+		
+		buf.append( this.getVisibility().toString() );
+		buf.append( ' ' );
+		
+		if( this.isFinal() ){
+			buf.append( "final ");
+		}
+		
+		if( this.isStatic() ){
+			buf.append( "static ");
+		}
+		if( this.isAbstract() ){
+			buf.append( "abstract ");
+		}
+		
+		buf.append( "class ");
+		buf.append( this.getName() );
+		buf.append( ", enclosingType: ");
+		buf.append( this.getEnclosingType().getName() );
+		
+		return buf.toString();		
+	}
 }

@@ -60,7 +60,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * {@link #assembleNewType(Context, String, String)} which will build a
 	 * {@link NewConcreteType}
 	 * 
-	 * @param typeName
+	 * @param typeName The name of type which will be used to generate a new type.
 	 * @return The name of the new type
 	 */
 	public String createNewTypeIfNecessary(final String typeName) {

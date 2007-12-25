@@ -245,7 +245,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	}
 
 	protected void writeLogger() {
-		this.getGeneratorContext().debug("Writing " + this);
+		this.getGeneratorContext().debug( this.toString() );
 	}
 
 	protected void writeComments( final SourceWriter writer ){		
