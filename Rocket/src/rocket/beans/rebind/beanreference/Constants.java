@@ -24,7 +24,7 @@ class Constants {
 
 	final static String TEMPLATE = "bean-reference.txt";
 
-	final static String BEAN_ID = "beanId";
+	final static String ID = "id";
 
-	final static String BEAN_TYPE = "beanType";
+	final static String TYPE = "type";
 }

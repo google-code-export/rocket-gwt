@@ -17,13 +17,14 @@
 package rocket.beans.test.beans.client.rpcproperty;
 
 public class BeanWithGwtRpcService {
-	private GwtRpcServiceAsync service;
 	
-	public GwtRpcServiceAsync getService(){
-		return service;
+	private GwtRpcAsync rpc;
+	
+	public GwtRpcAsync getRpc(){
+		return rpc;
 	}
 	
-	public void setService( final GwtRpcServiceAsync service ){
-		this.service = service;
+	public void setRpc( final GwtRpcAsync service ){
+		this.rpc = service;
 	}
 }

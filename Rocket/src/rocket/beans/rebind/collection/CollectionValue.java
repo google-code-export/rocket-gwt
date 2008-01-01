@@ -18,6 +18,7 @@ package rocket.beans.rebind.collection;
 import java.util.Collection;
 import java.util.Iterator;
 
+import rocket.beans.rebind.value.AbstractValue;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.type.Type;
@@ -28,16 +29,9 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class CollectionValue extends Value {
+abstract public class CollectionValue extends AbstractValue implements Value {
 
 	public CollectionValue() {
-		this.setElements(this.createElements());
-	}
-
-	public void addElement(final Value value) {
-		ObjectHelper.checkNotNull("parameter:value", value);
-
-		this.getElements().add(value);
 	}
 
 	/**
@@ -50,17 +44,19 @@ abstract public class CollectionValue extends Value {
 		return this.elements;
 	}
 
-	protected void setElements(final Collection elements) {
+	public void setElements(final Collection elements) {
 		ObjectHelper.checkNotNull("parameter:elements", elements);
 		this.elements = elements;
 	}
-
-	abstract protected Collection createElements();
 
 	public boolean isCompatibleWith(final Type type) {
 		return this.getGeneratorContext().getType(this.getCollectionTypeName()).equals(type);
 	}
 
+	/**
+	 * Either of the list or set sub classes implement this method to return either List or Set
+	 * @return
+	 */
 	abstract protected String getCollectionTypeName();
 
 	public void write(final SourceWriter writer) {
@@ -83,10 +79,9 @@ abstract public class CollectionValue extends Value {
 	 * adds to a Collection all the elements housed by this instance as java
 	 * objects.
 	 * 
-	 * @return
+	 * @return The templated file instance.
 	 */
 	abstract protected CollectionTemplatedFile createTemplate();
-	
 	
 	public String toString(){
 		return super.toString() + this.getElements().toString();

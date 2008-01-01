@@ -29,10 +29,10 @@ public class ProxyTargetThrowsCheckedExceptionMethodInterceptor implements rocke
 		super();
 	}
 
-	public Object invoke(MethodInvocation invocation) throws Throwable {
-		this.executed = true;
+	public Object invoke(final MethodInvocation invocation) throws Throwable {
+		this.executedCount++;
 		return invocation.proceed();
 	}
 
-	public boolean executed = false;
+	public int executedCount = 0;
 }

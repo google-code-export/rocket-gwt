@@ -15,85 +15,40 @@
  */
 package rocket.beans.rebind.xml;
 
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.TreeMap;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Provides a bean view of a map tag.
+ * Provides a bean like view of a map tag.
  * 
  * @author Miroslav Pokorny
  */
-public class MapTag extends ValueTag {
+class MapTag extends ValueTag {
 
 	public Map getValues() {
+		final Map entries = new TreeMap();
+
 		final NodeList nodeList = this.getElement().getElementsByTagName(Constants.MAP_ENTRY_TAG);
+		final int count = nodeList.getLength();
+		for (int i = 0; i < count; i++) {
+			final Node node = nodeList.item(i);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
+				continue;
+			}
 
-		return Collections.unmodifiableMap(new AbstractMap() {
+			final Element element = (Element) node;
+			final String key = this.getAttribute(element, Constants.MAP_ENTRY_KEY_ATTRIBUTE);
 
-			public Set entrySet() {
+			final NodeList valueNodeList = element.getElementsByTagName(Constants.MAP_ENTRY_KEY_ATTRIBUTE);
+			final Element value = (Element) valueNodeList.item(0);
 
-				return new AbstractSet() {
-					public Iterator iterator() {
-						return new Iterator() {
-							public Object next() {
-								if (false == this.hasNext()) {
-									throw new NoSuchElementException();
-								}
+			entries.put(key, value);
+		}
 
-								final int index = this.getIndex();
-								final Element mapEntryElement = (Element) nodeList.item(index);
-								this.setIndex(index + 1);
-
-								return new Map.Entry() {
-									public Object getKey() {
-										return MapTag.this.getAttribute(mapEntryElement, Constants.MAP_ENTRY_KEY_ATTRIBUTE);
-									}
-
-									public Object getValue() {
-										final List value = MapTag.this.getElements(mapEntryElement.getChildNodes());
-										return MapTag.this.getValue((Element) value.get(0));
-									}
-
-									public Object setValue(final Object value) {
-										throw new UnsupportedOperationException("setValue");
-									}
-								};
-							}
-
-							public boolean hasNext() {
-								return this.getIndex() < nodeList.getLength();
-							}
-
-							int index;
-
-							int getIndex() {
-								return this.index;
-							}
-
-							void setIndex(final int index) {
-								this.index = index;
-							}
-
-							public void remove() {
-								throw new UnsupportedOperationException("remove");
-							}
-						};
-					}
-
-					public int size() {
-						return nodeList.getLength();
-					};
-				};
-			};
-		});
+		return entries;
 	}
 }

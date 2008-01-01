@@ -25,7 +25,7 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 /**
- * An abstraction for the beanReference template
+ * An abstraction for the bean-reference template
  * 
  * @author Miroslav Pokorny
  */
@@ -78,11 +78,11 @@ public class BeanReferenceTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.BEAN_ID.equals(name)) {
+			if (Constants.ID.equals(name)) {
 				value = new StringLiteral(this.getId());
 				break;
 			}
-			if (Constants.BEAN_TYPE.equals(name)) {
+			if (Constants.TYPE.equals(name)) {
 				value = this.getType();
 				break;
 			}

@@ -21,8 +21,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import rocket.beans.rebind.Advice;
 import rocket.beans.rebind.aop.addadvice.AddAdviceTemplatedFile;
-import rocket.beans.rebind.aop.addadvice.Advice;
 import rocket.beans.rebind.aop.interceptorchainproceed.InvokeInterceptorChainProceedTemplatedFile;
 import rocket.beans.rebind.aop.invoketarget.InvokeTargetMethodTemplatedFile;
 import rocket.beans.rebind.aop.rethrowdeclaredexception.RethrowDeclaredExceptionTemplatedFile;
@@ -131,7 +131,7 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 
 			protected void prepareToWrite(Object element) {
 				final Advice advice = (Advice) element;
-				addAdvice.setBeanId(advice.getAdvisorBeanId());
+				addAdvice.setBeanId(advice.getAdvisor());
 				addAdvice.setBeanFactory(beanFactory);
 			}
 

@@ -15,7 +15,12 @@
  */
 package rocket.beans.rebind.xml;
 
-public class IncludeTag extends XmlDocumentComponent {
+/**
+ * A bean like view of the include element
+ * 
+ * @author Miroslav Pokorny
+ */
+class IncludeTag extends XmlDocumentComponent {
 
 	public String getFile() {
 		return this.getAttribute(Constants.INCLUDE_FILE_ATTRIBUTE);

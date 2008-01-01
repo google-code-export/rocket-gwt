@@ -16,10 +16,10 @@
 package rocket.beans.rebind.xml;
 
 /**
- * Represents a list tag which in turn can contain more value tags
+ * Represents a set tag which in turn can contain more value tags
  * 
  * @author Miroslav Pokorny
  */
-public class SetTag extends CollectionValueTag {
+class SetTag extends CollectionValueTag {
 
 }

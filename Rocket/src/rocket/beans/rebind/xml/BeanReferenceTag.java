@@ -20,7 +20,7 @@ package rocket.beans.rebind.xml;
  * 
  * @author Miroslav Pokorny
  */
-public class BeanReferenceTag extends ValueTag {
+class BeanReferenceTag extends ValueTag {
 	public String getId() {
 		return this.getAttribute(Constants.BEAN_REFERENCE_ID_ATTRIBUTE);
 	}

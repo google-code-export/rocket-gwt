@@ -35,19 +35,20 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * @author Miroslav Pokorny
  */
 class Constants {
-
-	static final String CONFIG_FILE_SUFFIX = ".xml";
-
 	final static String BEAN_FACTORY = BeanFactory.class.getName();
 
 	final static String BEAN_FACTORY_IMPL = BeanFactoryImpl.class.getName();
 
 	final static String BEAN_FACTORY_SUFFIX = "__BeanFactory";
 
+	/**
+	 * The file extension added to the interface filename passed to the deferred
+	 * binding mechanism
+	 */
 	static final String BEAN_FILE_SUFFIX = "xml";
 
 	final static String FACTORY_BEAN = FactoryBean.class.getName();;
-	
+
 	final static String FACTORY_BEAN_SUFFIX = "__FactoryBean";
 
 	final static String SINGLETON_FACTORY_BEAN = SingletonFactoryBean.class.getName();
@@ -55,17 +56,27 @@ class Constants {
 	final static String PROTOTYPE_FACTORY_BEAN = PrototypeFactoryBean.class.getName();
 
 	final static String FACTORY_BEAN_OBJECT_TYPE = "factoryBean-objectType";
-	
+
 	final static String SERVICE_DEF_TARGET = ServiceDefTarget.class.getName();
 
 	final static String CREATE_INSTANCE = "createInstance";
 
+	/**
+	 * THe name of a method overridden by the generator which will contain many
+	 * setters upon the factory bean being generated.
+	 */
 	final static String SATISFY_PROPERTIES = "satisfyProperties";
-	final static String SATISFY_PROPERTIES_INSTANCE_PARAMETER = "instance"; 
 
+	final static String SATISFY_PROPERTIES_INSTANCE_PARAMETER = "instance";
+
+	/**
+	 * The name of method overriden by the generator which will create a new
+	 * bean instance on demand.
+	 */
 	final static String SATISFY_INIT = "satisfyInit";
+
 	final static String SATISFY_INIT_INSTANCE_PARAMETER = "instance";
-	
+
 	final static String REGISTER_FACTORY_BEANS = "registerFactoryBeans";
 
 	final static String SET_SERVICE_ENTRY_POINT = "setServiceEntryPoint";
@@ -75,7 +86,7 @@ class Constants {
 	final static String PROXY_FACTORY_BEAN = ProxyFactoryBean.class.getName();
 
 	final static String PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME = "getTargetFactoryBean";
-	
+
 	final static String PROXY_FACTORY_BEAN_SUFFIX = "__ProxyFactoryBean";
 
 	final static String CREATE_PROXY = "createProxy0";
@@ -89,17 +100,36 @@ class Constants {
 	final static String METHOD_INTERCEPTOR_INVOKE = "invoke";
 
 	final static String METHOD_INVOCATION = MethodInvocation.class.getName();
-	
-	final static String ENCODED_DOT_WITHIN_TYPE_NAME = "_" + StringHelper.padLeft( Integer.toHexString( '.' ), 4, '0' );
-	
+
+	final static String ENCODED_DOT_WITHIN_TYPE_NAME = "_" + StringHelper.padLeft(Integer.toHexString('.'), 4, '0');
+
 	final static String ASYNC_SUFFIX = "Async";
-	
+
+	/**
+	 * The name of a method overriden by the generator to return a eager(not
+	 * lazy loaded) comma separated list of singleton beans.
+	 */
 	final static String GET_EAGER_SINGELTON_BEAN_NAMES_METHOD = "getEagerSingletonBeanNames";
-	
+
+	/**
+	 * The name of a method overridden by the generator to return a comma
+	 * separated list of aliases to beans.
+	 */
 	final static String GET_ALIASES_TO_BEANS_METHOD = "getAliasesToBeans";
-	
+
 	final static String DISPOSABLE_BEAN = DisposableBean.class.getName();
-	
+
+	/**
+	 * The name of the destroy method that is overridden by the generator to
+	 * destroy a singleton.
+	 */
 	final static String DESTROY = "destroy";
+
 	final static String DESTROY_INSTANCE_PARAMETER = "instance";
+
+	/**
+	 * A prefix which is used to create unique bean names for anonymous/nested
+	 * beans
+	 */
+	final static String NESTED_BEAN_NAME_PREFIX = "nestedBean";
 }
