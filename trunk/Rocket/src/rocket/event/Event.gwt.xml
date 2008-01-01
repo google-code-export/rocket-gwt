@@ -1,4 +1,7 @@
 <module>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.browser.Browser" />	
+	<inherits name="rocket.util.Util" />	
+	
 	<source path="client" />
-	<inherits name="com.google.gwt.user.SafariEventSupport"/>
 </module>

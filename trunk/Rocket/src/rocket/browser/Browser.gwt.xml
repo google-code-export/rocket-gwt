@@ -1,4 +1,7 @@
 <module>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.util.Util" />	
+	
 	<replace-with class="rocket.browser.client.support.FirefoxBrowserSupport">
 		<when-type-is class="rocket.browser.client.support.BrowserSupport"/>
 		<when-property-is name="user.agent" value="firefox"/>

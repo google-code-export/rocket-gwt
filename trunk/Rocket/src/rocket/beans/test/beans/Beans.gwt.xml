@@ -1,6 +1,9 @@
 <module>
 	<inherits name="com.google.gwt.junit.JUnit"/>
-	<inherits name="rocket.User"/>
+	<inherits name="rocket.beans.Beans"/>
+	<inherits name="rocket.generator.Generator"/>
+	<inherits name="rocket.remoting.Remoting"/>
+	
 	<source path="client" />
 
 	<generate-with class="rocket.beans.test.beans.rebind.TestBeanFactoryGenerator">

@@ -1,4 +1,11 @@
 <module>
+	<inherits name="rocket.collection.Collection" />	
+	<inherits name="rocket.dom.Dom" />	
+	<inherits name="rocket.json.Json" />	
+	<inherits name="rocket.serialization.Serialization" />	
+	<inherits name="rocket.style.Style" />	
+	<inherits name="rocket.util.Util" />	
+	
 	<replace-with class="rocket.remoting.client.support.InternetExplorer6CometSupport">
 		<when-type-is class="rocket.remoting.client.support.CometSupport"/>
 		<when-property-is name="user.agent" value="ie6"/>
