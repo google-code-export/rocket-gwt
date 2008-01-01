@@ -26,7 +26,7 @@ import java.util.Comparator;
  */
 public class StringComparator implements Comparator {
 
-	public final static StringComparator COMPARATOR = new StringComparator(true);
+	public final static StringComparator COMPARATOR = new StringComparator(false);
 
 	public final static StringComparator IGNORE_CASE_COMPARATOR = new StringComparator(true);
 
