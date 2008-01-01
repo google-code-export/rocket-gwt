@@ -15,9 +15,6 @@
  */
 package rocket.beans.rebind.set;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import rocket.beans.rebind.collection.CollectionTemplatedFile;
 import rocket.beans.rebind.collection.CollectionValue;
 
@@ -28,10 +25,6 @@ import rocket.beans.rebind.collection.CollectionValue;
  * @author Miroslav Pokorny
  */
 public class SetValue extends CollectionValue {
-
-	protected Collection createElements() {
-		return new HashSet();
-	}
 
 	protected CollectionTemplatedFile createTemplate() {
 		return new SetTemplatedFile();

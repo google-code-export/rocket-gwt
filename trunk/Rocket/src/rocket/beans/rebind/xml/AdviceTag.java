@@ -20,17 +20,17 @@ package rocket.beans.rebind.xml;
  * 
  * @author Miroslav Pokorny
  */
-public class AdviceTag extends XmlDocumentComponent {
+class AdviceTag extends XmlDocumentComponent {
 
-	public String getAdvisorBeanId() {
-		return this.getAttribute(Constants.ADVICE_ADVISOR_BEAN_ID);
+	public String getAdvisor() {
+		return this.getAttribute(Constants.ADVICE_ADVISOR_ATTRIBUTE);
 	}
 
 	public String getMethodExpression() {
 		return this.getAttribute(Constants.ADVICE_METHOD_EXPRESSION);
 	}
 
-	public String getTargetBeanId() {
-		return this.getAttribute(Constants.ADVICE_TARGET_BEAN_ID);
+	public String getTarget() {
+		return this.getAttribute(Constants.ADVICE_TARGET_ATTRIBUTE);
 	}
 }

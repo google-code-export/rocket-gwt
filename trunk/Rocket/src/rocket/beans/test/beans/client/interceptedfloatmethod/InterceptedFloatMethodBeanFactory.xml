@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 
+		id="bean" 
+		class="rocket.beans.test.beans.client.interceptedfloatmethod.ClassWithFloatMethod" 
+		scope="singleton">
+	</bean>
+
+	<bean 
+		id="advisor" 
+		class="rocket.beans.test.beans.client.interceptedfloatmethod.FloatMethodInterceptor" 
+		scope="singleton">
+	</bean>
+	
+	<advice
+		advisor="advisor"
+		target="bean"
+		methodExpression="add"
+	/>
+</bean-factory>

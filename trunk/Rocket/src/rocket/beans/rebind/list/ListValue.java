@@ -15,9 +15,6 @@
  */
 package rocket.beans.rebind.list;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import rocket.beans.rebind.collection.CollectionTemplatedFile;
 import rocket.beans.rebind.collection.CollectionValue;
 
@@ -28,10 +25,6 @@ import rocket.beans.rebind.collection.CollectionValue;
  * @author Miroslav Pokorny
  */
 public class ListValue extends CollectionValue {
-
-	protected Collection createElements() {
-		return new ArrayList();
-	}
 
 	protected CollectionTemplatedFile createTemplate() {
 		return new ListTemplatedFile();

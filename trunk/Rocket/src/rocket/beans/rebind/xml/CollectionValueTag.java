@@ -15,32 +15,16 @@
  */
 package rocket.beans.rebind.xml;
 
-import java.util.AbstractList;
-import java.util.Collections;
 import java.util.List;
 
-import org.w3c.dom.Element;
-
 /**
- * Base class for any value be it a string literal, list, set or map.
+ * Base class for list and set tags.
  * 
  * @author Miroslav Pokorny
  */
 class CollectionValueTag extends ValueTag {
 
 	public List getValues() {
-		final List valueElements = this.getElements(this.getElement().getChildNodes());
-
-		return Collections.unmodifiableList(new AbstractList() {
-
-			public Object get(final int index) {
-				final Element element = (Element) valueElements.get(index);
-				return CollectionValueTag.this.getValue(element);
-			}
-
-			public int size() {
-				return valueElements.size();
-			}
-		});
+		return this.getElements(this.getElement());
 	}
 }

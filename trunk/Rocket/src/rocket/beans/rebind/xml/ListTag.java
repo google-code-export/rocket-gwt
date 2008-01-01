@@ -20,6 +20,6 @@ package rocket.beans.rebind.xml;
  * 
  * @author Miroslav Pokorny
  */
-public class ListTag extends CollectionValueTag {
+class ListTag extends CollectionValueTag {
 
 }

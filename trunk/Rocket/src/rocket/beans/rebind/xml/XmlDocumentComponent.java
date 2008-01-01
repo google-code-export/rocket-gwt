@@ -16,6 +16,7 @@
 package rocket.beans.rebind.xml;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.w3c.dom.Element;
@@ -54,6 +55,9 @@ class XmlDocumentComponent {
 		return value;
 	}
 
+	/**
+	 * The source element from the xml document.
+	 */
 	private Element element;
 
 	protected Element getElement() {
@@ -66,6 +70,10 @@ class XmlDocumentComponent {
 		this.element = element;
 	}
 
+	/**
+	 * A placeholder which will be used when resolving text to a final form or
+	 * text value.
+	 */
 	private PlaceHolderResolver placeHolderResolver;
 
 	protected PlaceHolderResolver getPlaceHolderResolver() {
@@ -79,123 +87,89 @@ class XmlDocumentComponent {
 	}
 
 	/**
-	 * Filters out returning a list containing only elements from the given
-	 * NodeList
+	 * Helper which finds the first child (ignoring grandchildren etc) of parent
+	 * with the given tag name.
 	 * 
-	 * @param nodeList
-	 * @return A list of Elements
+	 * @param parent
+	 *            The parent element
+	 * @param tagName
+	 *            The child tag to scan for.
+	 * @return May be null if no child exists or the element.
 	 */
-	protected List getElements(final NodeList nodeList) {
-		ObjectHelper.checkNotNull("parameter:nodeList", nodeList);
+	protected Element getFirstChildByTagName(final Element parent, final String tagName) {
+		Element element = null;
 
-		final List elements = new ArrayList();
+		final NodeList nodeList = parent.getChildNodes();
 		final int nodeCount = nodeList.getLength();
-
 		for (int i = 0; i < nodeCount; i++) {
 			final Node node = nodeList.item(i);
-			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				elements.add(node);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
+				continue;
 			}
+
+			final Element child = (Element) node;
+			if (false == child.getTagName().equals(tagName)) {
+				continue;
+			}
+			element = child;
+			break;
 		}
 
-		return elements;
+		return element;
 	}
 
-	protected ValueTag getValue(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+	/**
+	 * Helper which finds child element belonging to the given parent.
+	 * 
+	 * @param parent
+	 *            The parent element
+	 * @return May be null if no child exists or the element.
+	 */
+	protected Element getFirstElement(final Element parent) {
+		return (Element) this.getElements(parent).get(0);
+	}
 
-		ValueTag value = null;
+	/**
+	 * Returns a list that contains only child elements of the given parent
+	 * element.
+	 * 
+	 * @param parent
+	 *            The parent element
+	 * @return A list which may be empty if the parent has no child elements.
+	 */
+	protected List getElements(final Element parent) {
+		final List elements = new ArrayList();
 
-		while (true) {
-			final String tagName = element.getTagName();
+		final NodeList nodeList = parent.getChildNodes();
+		final int nodeCount = nodeList.getLength();
+		for (int i = 0; i < nodeCount; i++) {
+			final Node node = nodeList.item(i);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
+				continue;
+			}
 
-			if (tagName.equals(Constants.VALUE_TAG)) {
-				value = createStringTag(element);
-				break;
-			}
-			if (tagName.equals(Constants.LIST_TAG)) {
-				value = createListTag(element);
-				break;
-			}
-			if (tagName.equals(Constants.SET_TAG)) {
-				value = createSetTag(element);
-				break;
-			}
-			if (tagName.equals(Constants.MAP_TAG)) {
-				value = createMapTag(element);
-				break;
-			}
-			if (tagName.equals(Constants.BEAN_REFERENCE_TAG)) {
-				value = createBeanReferenceTag(element);
-				break;
-			}
-			throw new UnsupportedOperationException(tagName);
+			elements.add((Element) node);
 		}
 
-		return value;
+		return Collections.unmodifiableList(elements);
 	}
 
-	protected StringTag createStringTag(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-
-		final StringTag tag = new StringTag();
-		tag.setElement(element);
-		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
-		return tag;
-	}
-
-	protected ListTag createListTag(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-
-		final ListTag tag = new ListTag();
-		tag.setElement(element);
-		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
-		return tag;
-	}
-
-	protected SetTag createSetTag(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-
-		final SetTag tag = new SetTag();
-		tag.setElement(element);
-		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
-		return tag;
-	}
-
-	protected MapTag createMapTag(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-
-		final MapTag tag = new MapTag();
-		tag.setElement(element);
-		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
-		return tag;
-	}
-
-	protected BeanReferenceTag createBeanReferenceTag(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-
-		final BeanReferenceTag tag = new BeanReferenceTag();
-		tag.setElement(element);
-		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
-		return tag;
-	}
-	
 	/**
 	 * The original file that contained this very tag.
 	 */
 	private String filename;
-	
-	public String getFilename(){
-		StringHelper.checkNotEmpty( "field:filename", filename );
+
+	public String getFilename() {
+		StringHelper.checkNotEmpty("field:filename", filename);
 		return this.filename;
 	}
-	
-	public void setFilename( final String filename ){
-		StringHelper.checkNotEmpty( "parameter:filename", filename );
+
+	public void setFilename(final String filename) {
+		StringHelper.checkNotEmpty("parameter:filename", filename);
 		this.filename = filename;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return this.getElement().toString();
 	}
 }

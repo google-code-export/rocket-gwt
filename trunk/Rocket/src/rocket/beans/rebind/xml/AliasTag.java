@@ -20,10 +20,11 @@ package rocket.beans.rebind.xml;
  * 
  * @author Miroslav Pokorny
  */
-public class AliasTag extends ValueTag {
+class AliasTag extends ValueTag {
 	public String getName() {
 		return this.getAttribute(Constants.ALIAS_NAME_ATTRIBUTE);
 	}
+
 	public String getBean() {
 		return this.getAttribute(Constants.ALIAS_BEAN_ATTRIBUTE);
 	}

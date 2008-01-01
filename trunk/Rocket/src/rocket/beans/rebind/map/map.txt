@@ -3,7 +3,7 @@
 // create a new MapBuilder which will help accumulate values
 new rocket.beans.client.MapBuilder()
 
-	// add entries
+	// add *all* entries
 	${addEntries}
 
 		// get the Map

@@ -66,10 +66,9 @@ public class AddAdviceTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * The actual template file is selected depending on whether the method
-	 * returns void or not.
+	 * Returns the resource or filename of the template.
 	 * 
-	 * @return
+	 * @return The filename
 	 */
 	protected String getFileName() {
 		return Constants.TEMPLATE;

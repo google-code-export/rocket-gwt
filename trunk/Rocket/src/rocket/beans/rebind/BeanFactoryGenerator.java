@@ -31,39 +31,23 @@ import rocket.beans.rebind.alias.Alias;
 import rocket.beans.rebind.alias.GetAliasesToBeans;
 import rocket.beans.rebind.aop.MethodMatcher;
 import rocket.beans.rebind.aop.MethodMatcherFactory;
-import rocket.beans.rebind.aop.addadvice.Advice;
 import rocket.beans.rebind.aop.createproxy.CreateProxyTemplatedFile;
 import rocket.beans.rebind.aop.gettargetfactorybean.GetTargetFactoryBeanTemplatedFile;
 import rocket.beans.rebind.aop.proxyinterceptedmethod.ProxyInterceptedMethodTemplatedFile;
 import rocket.beans.rebind.aop.proxymethod.ProxyMethodTemplatedFile;
-import rocket.beans.rebind.beanreference.BeanReference;
+import rocket.beans.rebind.beanreference.BeanReferenceImpl;
 import rocket.beans.rebind.constructor.ConstructorTemplatedFile;
 import rocket.beans.rebind.deferredbinding.DeferredBinding;
 import rocket.beans.rebind.factorymethod.FactoryMethodTemplatedFile;
 import rocket.beans.rebind.invokemethod.InvokeMethodTemplatedFile;
-import rocket.beans.rebind.list.ListValue;
 import rocket.beans.rebind.loadeagersingletons.GetEagerSingletonBeanNames;
-import rocket.beans.rebind.map.MapValue;
 import rocket.beans.rebind.properties.SetPropertiesTemplatedFile;
 import rocket.beans.rebind.registerfactorybeans.RegisterFactoryBeansTemplatedFile;
-import rocket.beans.rebind.set.SetValue;
 import rocket.beans.rebind.stringvalue.StringValue;
 import rocket.beans.rebind.value.Value;
-import rocket.beans.rebind.xml.AdviceTag;
-import rocket.beans.rebind.xml.AliasTag;
 import rocket.beans.rebind.xml.BeanFactoryDtdEntityResolver;
-import rocket.beans.rebind.xml.BeanReferenceTag;
-import rocket.beans.rebind.xml.BeanTag;
 import rocket.beans.rebind.xml.DocumentWalker;
-import rocket.beans.rebind.xml.ListTag;
-import rocket.beans.rebind.xml.MapTag;
-import rocket.beans.rebind.xml.PropertyTag;
-import rocket.beans.rebind.xml.RemoteJsonServiceTag;
-import rocket.beans.rebind.xml.RemoteRpcServiceTag;
 import rocket.beans.rebind.xml.RethrowSaxExceptionsErrorHandler;
-import rocket.beans.rebind.xml.SetTag;
-import rocket.beans.rebind.xml.StringTag;
-import rocket.beans.rebind.xml.ValueTag;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
@@ -100,7 +84,7 @@ public class BeanFactoryGenerator extends Generator {
 
 	public BeanFactoryGenerator() {
 	}
-	
+
 	/**
 	 * Prepares to transform a xml file into a BeanFactory with beans.
 	 * 
@@ -109,62 +93,65 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param newTypeName
 	 *            The name of the type being generated.
 	 */
-	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {				
+	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		this.verifyBeanFactory(type);
 
 		final DocumentWalker document = this.getDocumentWalker(type);
 
-		final NewConcreteType beanFactory = this.createBeanFactory(newTypeName, type );
+		final NewConcreteType beanFactory = this.createBeanFactory(newTypeName, type);
 		this.setBeanFactory(beanFactory);
 
-		final List beanTags = document.getBeans();
-		this.setBeans(this.createBeans());
-		this.buildFactoryBeans(beanTags);
+		final Set beans = document.getBeans();
+		this.allocateNamesToNestedBeans(beans);
 
-		final List aliases = document.getAliases();
-		this.setAliases( this.createAliases() );
-		this.recordAliases( aliases );
-		
-		this.buildJsonRpcServiceFactoryBeans(document.getJsonRpcServices());
-		this.buildJavaRpcServiceFactoryBeans(document.getJavaRpcServices());		
-		
-		this.overrideAllFactoryBeanCreateInstances(beanTags);
-		this.overrideAllFactoryBeanSatisfyInits(beanTags);
-		this.overrideAllFactoryBeanSatisfyProperties(beanTags);
-		this.overrideAllSingletonFactoryBeanToInvokeCustomDestroy(beanTags);
-		
+		this.setBeans(this.createBeans());
+		this.setAliases(this.createAliases());
+
+		this.buildFactoryBeans(beans);
+
+		final Set aliases = document.getAliases();
+		this.recordAliases(aliases);
+
+		this.overrideAllFactoryBeanCreateInstances(beans);
+		this.overrideAllFactoryBeanSatisfyInits(beans);
+		this.overrideAllFactoryBeanSatisfyProperties(beans);
+		this.overrideAllSingletonFactoryBeanToInvokeCustomDestroy(beans);
+
 		this.buildAdvices(document.getAdvices());
 		this.applyAdvices();
 
 		this.overrideBeanFactoryRegisterFactoryBeans();
 		this.registerBeanAliases();
 		this.overrideLoadEagerBeans();
-		
+
 		return beanFactory;
 	}
 
 	/**
 	 * Factory method which creates a walker that may be used to walk around the
-	 * document.
+	 * xml document.
 	 * 
 	 * @param type
-	 * @return
+	 *            The type passed to the generator via deferred binding. This is
+	 *            used to locate the xml file.
+	 * @return A document walker containing the converted contents of the xml
+	 *         document to beans.
 	 */
 	protected DocumentWalker getDocumentWalker(final Type type) {
 		final String fileName = this.getResourceName(type, Constants.BEAN_FILE_SUFFIX);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info( "Preparing to discover components within xml file(s)");
-		
+		context.info("Preparing to discover components within xml file(s)");
+
 		final DocumentWalker document = new DocumentWalker();
 		document.setEntityResolver(new BeanFactoryDtdEntityResolver());
 		document.setErrorHandler(new RethrowSaxExceptionsErrorHandler());
 		document.setGenerator(this);
 		document.process(fileName);
-		
+
 		context.unbranch();
-		
+
 		return document;
 	}
 
@@ -218,30 +205,75 @@ public class BeanFactoryGenerator extends Generator {
 	 * fields etc.
 	 * 
 	 * @param newTypeName
+	 *            The name of the new type
 	 * @param implementsInterface
-	 * @return
+	 *            The interface to implement
+	 * @return A new type.
 	 */
-	protected NewConcreteType createBeanFactory(final String newTypeName, final Type implementsInterface ) {
+	protected NewConcreteType createBeanFactory(final String newTypeName, final Type implementsInterface) {
 		this.getGeneratorContext().info("Creating BeanFactory with a name of \"" + newTypeName + "\".");
 
-		final NewConcreteType beanFactory = this.getGeneratorContext().newConcreteType( newTypeName );
+		final NewConcreteType beanFactory = this.getGeneratorContext().newConcreteType(newTypeName);
 
 		beanFactory.setAbstract(false);
 		beanFactory.setFinal(true);
 		beanFactory.setSuperType(this.getBeanFactoryImpl());
-		beanFactory.setVisibility( Visibility.PUBLIC );
-		beanFactory.addInterface( implementsInterface );
+		beanFactory.setVisibility(Visibility.PUBLIC);
+		beanFactory.addInterface(implementsInterface);
 
 		return beanFactory;
 	}
 
 	/**
-	 * Walks all the bean tags building a NewNestedType FactoryBean for each tag
-	 * encountered.
+	 * Visits all beans and allocates unique names to any located nested beans.
 	 * 
-	 * @param beans A list of bean tags
+	 * @param beans
+	 *            A set of beans that includes regular named beans and nested
+	 *            anonymous beans
 	 */
-	protected void buildFactoryBeans(final List beans) {
+	protected void allocateNamesToNestedBeans(final Set beans) {
+		ObjectHelper.checkNotNull("parameter:beans", beans);
+
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info("Allocating names to nested (anonymous) beans.");
+
+		final Iterator iterator = beans.iterator();
+		int counter = 0;
+
+		while (iterator.hasNext()) {
+			final Bean bean = (Bean) iterator.next();
+			if (false == (bean instanceof NestedBean)) {
+				continue;
+			}
+
+			if (false == StringHelper.isNullOrEmpty(bean.getId())) {
+				throwNestedBeansMustNotHaveIds(bean);
+			}
+
+			final String id = Constants.NESTED_BEAN_NAME_PREFIX + counter;
+			context.debug(id + "=" + bean.getTypeName());
+			bean.setId(id);
+
+			counter++;
+		}
+
+		context.debug("Nested beans found: " + counter);
+		context.unbranch();
+	}
+
+	protected void throwNestedBeansMustNotHaveIds(final Bean bean) {
+		throw new BeanFactoryGeneratorException("Nested beans should not have an id set, bean: " + bean);
+	}
+
+	/**
+	 * Walks all the bean tags building a NewNestedType FactoryBean for each
+	 * bean.
+	 * 
+	 * @param beans
+	 *            The beans
+	 */
+	protected void buildFactoryBeans(final Set beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
@@ -249,98 +281,133 @@ public class BeanFactoryGenerator extends Generator {
 		context.info("Creating FactoryBean's for all beans.");
 
 		final Iterator iterator = beans.iterator();
+		int nestedBeanCounter = 0;
+		int rpcCounter = 0;
+		int beansCounter = 0;
+
 		while (iterator.hasNext()) {
-			final BeanTag bean = (BeanTag)iterator.next();
-			
+			final Bean bean = (Bean) iterator.next();
 			context.branch();
-			context.debug( bean.getId() );
-			
-			this.createFactoryBean( bean);
-			
+
+			final String beanName = bean instanceof NestedBean ? "anonymous ???" : bean.getId();
+			context.debug(beanName);
+
+			while (true) {
+				if (bean instanceof Rpc) {
+					this.createRpcFactoryBean((Rpc) bean);
+					rpcCounter++;
+					break;
+				}
+				if (bean instanceof NestedBean) {
+					this.createBeanFactoryBean(bean);
+					nestedBeanCounter++;
+					break;
+				}
+				
+				this.createBeanFactoryBean(bean);
+				beansCounter++;
+				break;
+			}
+
 			context.unbranch();
 		}
-		
+
+		context.debug("Total: " + beans.size() + ", beans: " + beansCounter + ", nested(anonymous): " + nestedBeanCounter + ", rpcs: " + rpcCounter );
 		context.unbranch();
 	}
 
 	/**
-	 * Creates the factory bean that will be responsible for producing beans on demand.
-	 * @param beanTag The source bean tag.
+	 * Creates the factory bean that will be responsible for producing the bean
+	 * on demand.
+	 * 
+	 * The strategy pattern is used with separate factory beans used to
+	 * implement the singleton and prototype bean scopes.
+	 * 
+	 * @param bean The bean under construction.
 	 */
-	protected void createFactoryBean(final BeanTag beanTag) {
-		ObjectHelper.checkNotNull("parameter:bean", beanTag);
+	protected void createBeanFactoryBean(final Bean bean) {
+		ObjectHelper.checkNotNull("parameter:bean", bean);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		
-		final Bean bean = new Bean();
-		final String id = beanTag.getId();
-		bean.setId(id);
-		
-		this.checkBean( bean );					
 
-		final String className = beanTag.getClassName();
-		final Type beanType = this.getConcreteType(id, className);
+		final String beanName = bean.getId();
+		if (StringHelper.isNullOrEmpty(beanName)) {
+			throwBeanIdIsMissing(bean);
+		}
+		this.checkIdIsUnique(bean);
+
+		final String className = bean.getTypeName();
+		final Type beanType = this.getConcreteType(beanName, className);
 		bean.setType(beanType);
-		
-		context.debug( beanType.toString() );
 
-		final boolean singleton = beanTag.isSingleton();
+		context.debug(beanType.toString());
+
+		final boolean singleton = bean.isSingleton();
 		bean.setSingleton(singleton);
-		context.debug( singleton ? "singleton" : "prototype");
-		
-		final boolean eager = beanTag.isEagerLoaded();
-		if( false == singleton ){
-			throwPrototypesCantBeEagerlyLoaded( bean );
+		context.debug(singleton ? "singleton" : "prototype");
+
+		final boolean eager = bean.isEagerLoaded();
+		if (false == singleton) {
+			throwPrototypesCantBeEagerlyLoaded(bean);
 		}
-		bean.setEagerLoad( eager );
-		
-		if( singleton ){
-			context.debug( eager ? "eager" : "lazyloaded");
+		bean.setEagerLoaded(eager);
+
+		if (singleton) {
+			context.debug(eager ? "eager" : "lazyloaded");
 		}
-		
-		if( false == singleton ){
-			final String destroyMethod = beanTag.getDestroyMethod();			
-			if( false == StringHelper.isNullOrEmpty(destroyMethod )){
-				throwPrototypeCantBeContainerDestroyed( bean );
+
+		if (false == singleton) {
+			final String destroyMethod = bean.getDestroyMethod();
+			if (false == StringHelper.isNullOrEmpty(destroyMethod)) {
+				throwPrototypeCantBeContainerDestroyed(bean);
 			}
-			
+
 			final Type disposableBean = this.getDisposableBean();
-			if( beanType.isAssignableTo( disposableBean )){
-				context.warn( "Ignoring the fact the bean implements DisposableBean (because its a prototype)" + ( context.isDebugEnabled() ? "." : ", bean: " + bean ));
+			if (beanType.isAssignableTo(disposableBean)) {
+				context.warn("Ignoring the fact the bean implements DisposableBean (because its a prototype)"
+						+ (context.isDebugEnabled() ? "." : ", bean: " + bean));
 			}
 		}
-		
+
 		// start creating the factory bean...
 		final Type superType = singleton ? this.getSingletonFactoryBean() : this.getPrototypeFactoryBean();
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
-		factoryBean.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
+		factoryBean.setNestedName(this.escapeBeanIdToBeClassNameSafe(beanName) + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
-		
+
 		// add an annotation that declares the actual bean type.
-		factoryBean.addMetaData( Constants.FACTORY_BEAN_OBJECT_TYPE, bean.getType().getName() );
-		
+		factoryBean.addMetaData(Constants.FACTORY_BEAN_OBJECT_TYPE, bean.getType().getName());
+
 		bean.setFactoryBean(factoryBean);
-		context.debug("FactoryBean superType: " + superType );
+		context.debug("FactoryBean: " + factoryBean);
 
 		this.addBean(bean);
 	}
 
-	protected void throwPrototypesCantBeEagerlyLoaded( final Bean bean ){
-		throw new BeanFactoryGeneratorException("Prototype beans cannot be eagerly loaded (only singleton's can be), bean: " + bean );
+	protected void throwBeanIdIsMissing(final Bean bean) {
+		throw new BeanFactoryGeneratorException("Bean is missing id, bean: " + bean);
+	}
+
+	protected void throwPrototypesCantBeEagerlyLoaded(final Bean bean) {
+		throw new BeanFactoryGeneratorException("Prototype beans cannot be eagerly loaded (only singleton's can be), bean: " + bean);
 	}
 
 	/**
-	 * Without something in javascript equivalent to soft references supporting disposing prototypes would create a memory leak,
-	 * because the container needs a reference to the bean. 
-	 * @param bean The bean
+	 * Without something in javascript equivalent to soft references supporting
+	 * disposing prototypes would create a memory leak, because the container
+	 * needs a reference to the bean.
+	 * 
+	 * @param bean
+	 *            The prototype bean
 	 */
-	protected void throwPrototypeCantBeContainerDestroyed( final Bean bean ){
-		throw new BeanFactoryGeneratorException("The container does not support disposing prototype beans(only singleton's ), bean: " + bean );
+	protected void throwPrototypeCantBeContainerDestroyed(final Bean bean) {
+		throw new BeanFactoryGeneratorException("The container does not support disposing prototype beans(only singleton's ), bean: "
+				+ bean);
 	}
-	
+
 	/**
 	 * Visit all defined beans and overrides the createInstance of the factory
 	 * bean.
@@ -348,9 +415,11 @@ public class BeanFactoryGenerator extends Generator {
 	 * A constructor with parameters or factory bean may be the source of the
 	 * new bean instance.
 	 * 
-	 * @param bean A list of bean tag elements straight from any included xml documents.
+	 * @param bean
+	 *            A list of bean tag elements straight from any included xml
+	 *            documents.
 	 */
-	protected void overrideAllFactoryBeanCreateInstances(final List beans) {
+	protected void overrideAllFactoryBeanCreateInstances(final Set beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
@@ -359,15 +428,15 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Iterator iterator = beans.iterator();
 		while (iterator.hasNext()) {
-			final BeanTag bean = (BeanTag) iterator.next();
+			final Bean bean = (Bean) iterator.next();
 			context.branch();
-			context.debug( bean.getId() );
-			
-			this.overrideFactoryBeanCreateInstance( bean );
-			
+			context.debug(bean.getId());
+
+			this.overrideFactoryBeanCreateInstance(bean);
+
 			context.unbranch();
 		}
-		
+
 		context.unbranch();
 	}
 
@@ -376,21 +445,51 @@ public class BeanFactoryGenerator extends Generator {
 	 * {@link FactoryBean#createInstance()} with an inline constructor call or
 	 * inserts a call to a static factory method.
 	 * 
-	 * @param beanTag
+	 * @param bean
 	 *            The bean
 	 */
-	protected void overrideFactoryBeanCreateInstance(final BeanTag beanTag) {
-		ObjectHelper.checkNotNull("parameter:bean", beanTag);
+	protected void overrideFactoryBeanCreateInstance(final Bean bean) {
+		ObjectHelper.checkNotNull("parameter:bean", bean);
 
-		final String factoryMethodName = beanTag.getFactoryMethod();
-		final Bean bean = this.getBean(beanTag.getId());
+		while (true) {
+			if (bean instanceof Rpc ) {
+				this.overrideFactoryBeanCreateInstanceViaDeferredBinding( (Rpc) bean);
+				break;
+			}
 
-		if (StringHelper.isNullOrEmpty(factoryMethodName)) {
-			final List constructorArguments = beanTag.getConstructorArguments();
-			this.overrideFactoryBeanCreateInstanceNewConstructor(bean, constructorArguments);
-		} else {
-			this.overrideFactoryBeanCreateInstanceFactoryMethod(bean, factoryMethodName);
+			final String factoryMethodName = bean.getFactoryMethod();
+
+			if (StringHelper.isNullOrEmpty(factoryMethodName)) {
+				this.overrideFactoryBeanCreateInstanceNewConstructor(bean);
+				break;
+			}
+			this.overrideFactoryBeanCreateInstanceFactoryMethod(bean);
+			break;
 		}
+	}
+
+	/**
+	 * Overrides the create instance method of the factory bean to create a new
+	 * instance via deferred binding.
+	 * 
+	 * @param rpc The bean definition
+	 */
+	protected void overrideFactoryBeanCreateInstanceViaDeferredBinding(final Rpc rpc) {
+		ObjectHelper.checkNotNull("parameter:bean", rpc);
+
+		final NewType factoryBean = rpc.getFactoryBean();
+
+		// get the actual interface type from the async interface type.
+		final Type asyncInterfaceType = rpc.getType();
+		final String asyncInterfaceName = asyncInterfaceType.getName();
+
+		final String interfaceTypeName = asyncInterfaceName.substring(0, asyncInterfaceName.length() - Constants.ASYNC_SUFFIX.length());
+		final Type interfaceType = this.getInterfaceType(rpc.getId(), interfaceTypeName);
+
+		final NewMethod createInstance = this.createCreateInstanceMethod(factoryBean);
+		final DeferredBinding body = new DeferredBinding();
+		body.setType(interfaceType);
+		createInstance.setBody(body);
 	}
 
 	/**
@@ -399,13 +498,10 @@ public class BeanFactoryGenerator extends Generator {
 	 * 
 	 * @param bean
 	 *            The bean
-	 * @param constructorArguments
-	 *            a list containing the constructor arguments
 	 */
-	protected void overrideFactoryBeanCreateInstanceNewConstructor(final Bean bean, final List constructorArguments) {
+	protected void overrideFactoryBeanCreateInstanceNewConstructor(final Bean bean) {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
-		ObjectHelper.checkNotNull("parameter:constructorArguments", constructorArguments);
-		
+
 		final NewMethod newFactoryMethod = this.createCreateInstanceMethod(bean.getFactoryBean());
 		newFactoryMethod.setAbstract(false);
 		newFactoryMethod.setFinal(true);
@@ -414,27 +510,28 @@ public class BeanFactoryGenerator extends Generator {
 		final ConstructorTemplatedFile body = new ConstructorTemplatedFile();
 		newFactoryMethod.setBody(body);
 
-		// make a list of values from constructorArguments.
-		final List constructorValues = new ArrayList();
-		final Iterator argumentIterator = constructorArguments.iterator();
-		
 		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();		
-		context.debug( "Constructor arguments.");
-		
-		while (argumentIterator.hasNext()) {
-			final Value value = this.asValue((ValueTag) argumentIterator.next());
-			constructorValues.add(value);
+		context.branch();
+		context.debug("Constructor parameter values.");
+
+		final List arguments = bean.getConstructorValues();
+		final Iterator argumentsIterator = arguments.iterator();
+		while (argumentsIterator.hasNext()) {
+			final Value value = (Value) argumentsIterator.next();
 			body.addArgument(value);
-			
-			context.debug( "" + value );
+
+			context.debug("" + value);
+		}
+
+		if (arguments.isEmpty()) {
+			context.debug("none");
 		}
 
 		context.unbranch();
-		
+
 		context.branch();
 		context.debug("Matching constructors.");
-		
+
 		final List matchingConstructors = new ArrayList();
 		final TypeConstructorsVisitor visitor = new TypeConstructorsVisitor() {
 
@@ -447,10 +544,10 @@ public class BeanFactoryGenerator extends Generator {
 
 					// skip the given constructor with different numbers of
 					// parameters.
-					if (constructorParameters.size() == constructorValues.size()) {
+					if (constructorParameters.size() == arguments.size()) {
 
 						match = true;
-						final Iterator valuesIterator = constructorValues.iterator();
+						final Iterator valuesIterator = arguments.iterator();
 						final Iterator parametersIterator = constructorParameters.iterator();
 
 						while (valuesIterator.hasNext()) {
@@ -465,7 +562,7 @@ public class BeanFactoryGenerator extends Generator {
 
 				if (match) {
 					matchingConstructors.add(constructor);
-					context.debug( "" + constructor );
+					context.debug("" + constructor);
 				}
 				return false;
 			}
@@ -481,31 +578,33 @@ public class BeanFactoryGenerator extends Generator {
 			this.throwTooManyConstructors(bean, matchingConstructors);
 		}
 		context.unbranch();
-		
+
 		final Constructor constructor = (Constructor) matchingConstructors.get(0);
 		body.setBean(constructor);
 
 		final Iterator constructorParameters = constructor.getParameters().iterator();
-		final Iterator valuesIterator = constructorValues.iterator();
+		final Iterator valuesIterator = arguments.iterator();
 		while (constructorParameters.hasNext()) {
 			final ConstructorParameter constructorParameter = (ConstructorParameter) constructorParameters.next();
 			final Value value = (Value) valuesIterator.next();
 			value.setType(constructorParameter.getType());
 		}
-		
-		context.debug( "" + constructor );
+
+		context.debug("" + constructor);
 	}
 
 	/**
 	 * This method throws an exception when more than one constructor satisfies
 	 * the specified values for a bean type
 	 * 
-	 * @param bean The bean
-	 * @param constructors A list containing the matching constructors.
+	 * @param bean
+	 *            The bean in error
+	 * @param constructorValues
+	 *            A list containing the matching constructors.
 	 */
-	protected void throwTooManyConstructors(final Bean bean, final List constructors) {
-		throw new BeanFactoryGeneratorException("Found more than one constructor that matches the specified constructor arguments: " + constructors + ", bean: "
-				+ bean);
+	protected void throwTooManyConstructors(final Bean bean, final List constructorValues) {
+		throw new BeanFactoryGeneratorException("Found more than one constructor that matches the specified constructor arguments: "
+				+ constructorValues + ", bean: " + bean);
 	}
 
 	/**
@@ -513,9 +612,11 @@ public class BeanFactoryGenerator extends Generator {
 	 * found that matches the bean's constructor parameters or lack of them.
 	 * 
 	 * @param bean
+	 *            The bean in error
 	 */
 	protected void throwUnableToFindConstructor(final Bean bean) {
-		throw new BeanFactoryGeneratorException( "Unable to find a constructor that is suitable for the specified constructor arguments for bean: " + bean);
+		throw new BeanFactoryGeneratorException(
+				"Unable to find a constructor that is suitable for the specified constructor values for bean: " + bean);
 	}
 
 	/**
@@ -523,21 +624,19 @@ public class BeanFactoryGenerator extends Generator {
 	 * static factory method.
 	 * 
 	 * @param bean
-	 *            A bean definition
-	 * @param factoryMethodName
-	 *            A fully qualified class and factory method
+	 *            The bean being processed.
 	 */
-	protected void overrideFactoryBeanCreateInstanceFactoryMethod(final Bean bean, final String factoryMethodName) {
+	protected void overrideFactoryBeanCreateInstanceFactoryMethod(final Bean bean) {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
-		StringHelper.checkNotEmpty("parameter:factoryMethodName", factoryMethodName);
 
 		final Type beanType = bean.getType();
+		final String factoryMethodName = bean.getFactoryMethod();
 		final Method factoryMethod = beanType.findMethod(factoryMethodName, Collections.EMPTY_LIST);
 		if (null == factoryMethod || false == factoryMethod.isStatic() || factoryMethod.getVisibility() != Visibility.PUBLIC) {
 			this.throwFactoryMethodNotFound(bean, factoryMethodName);
 		}
 
-		this.getGeneratorContext().debug("FactoryBean will create new instance by calling " + factoryMethod );
+		this.getGeneratorContext().debug("FactoryBean will create new instance by calling " + factoryMethod);
 
 		final NewMethod newFactoryMethod = this.createCreateInstanceMethod(bean.getFactoryBean());
 
@@ -555,7 +654,7 @@ public class BeanFactoryGenerator extends Generator {
 	protected NewMethod createCreateInstanceMethod(final NewType factoryBean) {
 		ObjectHelper.checkNotNull("parameter:factoryBean", factoryBean);
 
-		final Method method = factoryBean.getMostDerivedMethod("createInstance", Collections.EMPTY_LIST);
+		final Method method = factoryBean.getMostDerivedMethod(Constants.CREATE_INSTANCE, Collections.EMPTY_LIST);
 
 		final NewMethod newMethod = method.copy(factoryBean);
 		newMethod.setAbstract(false);
@@ -569,9 +668,10 @@ public class BeanFactoryGenerator extends Generator {
 	 * Visit all defined beans and implement the satisfyInit for each factory to
 	 * set the properties.
 	 * 
-	 * @param beans A list of beans
+	 * @param beans
+	 *            The beans
 	 */
-	protected void overrideAllFactoryBeanSatisfyInits(final List beans) {
+	protected void overrideAllFactoryBeanSatisfyInits(final Set beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
@@ -580,20 +680,19 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Iterator iterator = beans.iterator();
 		while (iterator.hasNext()) {
-			final BeanTag beanTag = (BeanTag) iterator.next();
-			final String initMethodName = beanTag.getInitMethod();
+			final Bean bean = (Bean) iterator.next();
+			final String initMethodName = bean.getInitMethod();
 
 			if (false == StringHelper.isNullOrEmpty(initMethodName)) {
-				final Bean bean = this.getBean(beanTag.getId());
 				context.branch();
-				context.debug( bean.getId() );
-								
-				this.overrideFactoryBeanSatisfyInit(bean, initMethodName);
-				
+				context.debug(bean.getId());
+
+				this.overrideFactoryBeanSatisfyInit(bean);
+
 				context.unbranch();
 			}
 		}
-		
+
 		context.unbranch();
 	}
 
@@ -601,24 +700,25 @@ public class BeanFactoryGenerator extends Generator {
 	 * Overrides the satisfyInit method for the factory bean to call the init
 	 * method of the enclosed bean
 	 * 
-	 * @param bean The bean
-	 * @param initMethodName The custom init method name
+	 * @param bean
+	 *            The bean about to be processed.
 	 */
-	protected void overrideFactoryBeanSatisfyInit(final Bean bean, final String initMethodName) {
+	protected void overrideFactoryBeanSatisfyInit(final Bean bean) {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
-		GeneratorHelper.checkJavaMethodName("parameter:initMethodName", initMethodName);
 
 		final Type beanType = bean.getType();
+		final String initMethodName = bean.getInitMethod();
 		final Method initMethod = beanType.findMethod(initMethodName, Collections.EMPTY_LIST);
 		if (null == initMethod || initMethod.isStatic() || initMethod.getVisibility() != Visibility.PUBLIC) {
 			throwInitMethodNotFound(bean, initMethodName);
 		}
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug("Overriding satisfyInit to call " + initMethod + " for bean: " + bean);
+		context.debug("Overriding satisfyInit to call " + initMethod);
 
 		final NewType beanFactory = bean.getFactoryBean();
-		final Method beanFactoryInitMethod = beanFactory.getMostDerivedMethod(Constants.SATISFY_INIT, this.getParameterListWithOnlyObject());
+		final Method beanFactoryInitMethod = beanFactory
+				.getMostDerivedMethod(Constants.SATISFY_INIT, this.getParameterListWithOnlyObject());
 		final NewMethod newMethod = beanFactoryInitMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
@@ -628,10 +728,10 @@ public class BeanFactoryGenerator extends Generator {
 		body.setType(beanType);
 		body.setMethod(initMethod);
 
-		final NewMethodParameter instanceParameter = (NewMethodParameter)newMethod.getParameters().get( 0 );
-		instanceParameter.setFinal( true );
-		instanceParameter.setName( Constants.SATISFY_INIT_INSTANCE_PARAMETER );
-		
+		final NewMethodParameter instanceParameter = (NewMethodParameter) newMethod.getParameters().get(0);
+		instanceParameter.setFinal(true);
+		instanceParameter.setName(Constants.SATISFY_INIT_INSTANCE_PARAMETER);
+
 		newMethod.setBody(body);
 	}
 
@@ -651,58 +751,102 @@ public class BeanFactoryGenerator extends Generator {
 	 * factory to set the properties.
 	 * 
 	 * @param beans
-	 *            A list of beans
+	 *            The beans
 	 */
-	protected void overrideAllFactoryBeanSatisfyProperties(final List beans) {
+	protected void overrideAllFactoryBeanSatisfyProperties(final Set beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Overriding satisfyProperties method for all bean(s).");
+		context.info("Overriding satisfyProperties method for bean(s) with 1 or more properties.");
 
 		final Iterator iterator = beans.iterator();
 		while (iterator.hasNext()) {
-			final BeanTag beanTag = (BeanTag) iterator.next();
 
-			final String id = beanTag.getId();
-			final Bean bean = BeanFactoryGenerator.this.getBean(id);
-			final List properties = beanTag.getProperties();
-			
-			this.possiblyOverrideFactoryBeanSatisfyProperties(bean, properties);			
+			context.branch();
+
+			final Bean bean = (Bean) iterator.next();
+			final String id = bean.getId();
+			context.debug(id);
+
+			while (true) {
+				if (bean instanceof Rpc) {
+					this.overrideFactoryBeanSatisfyPropertiesWithSettingServiceEntryPoint((Rpc) bean);
+					break;
+				}
+				if (bean.getProperties().size() == 0) {
+					context.debug("No properties will be set.");
+					break;
+				}
+
+				this.overrideFactoryBeanSatisfyProperties(bean);
+				break;
+			}
+
+			context.unbranch();
 		}
-		
+
 		context.unbranch();
 	}
 
 	/**
-	 * Overrides the abstract satisfyProperties with statements that set each
-	 * property.
+	 * Overrides the satisfyProperties method of the factory bean to set the
+	 * address property.
 	 * 
-	 * @param bean The bean.
-	 * @param properties A list holding all properties for the bean
+	 * @param rpc
+	 *            The rpc
 	 */
-	protected void possiblyOverrideFactoryBeanSatisfyProperties(final Bean bean, final List properties) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
-		ObjectHelper.checkNotNull("parameter:properties", properties);
+	protected void overrideFactoryBeanSatisfyPropertiesWithSettingServiceEntryPoint(final Rpc rpc) {
+		ObjectHelper.checkNotNull("parameter:rpc", rpc);
+
+		final NewType factoryBean = rpc.getFactoryBean();
+
+		final Method method = factoryBean.getMostDerivedMethod(Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject());
+		final NewMethod newMethod = method.copy(factoryBean);
+		newMethod.setAbstract(false);
+		newMethod.setFinal(true);
+		newMethod.setNative(false);
+
+		final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
+		newMethod.setBody(body);
+
+		final NewMethodParameter instanceParameter = (NewMethodParameter) newMethod.getParameters().get(0);
+		instanceParameter.setFinal(true);
+		instanceParameter.setName(Constants.SATISFY_PROPERTIES_INSTANCE_PARAMETER);
+
+		final Type serviceDefTarget = this.getServiceDefTarget();
+		body.setBean(serviceDefTarget);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.debug( bean.getId() );
-		
-		if( properties.size() == 0 ){
-			context.debug( "No properties will be set.");
-		} else {
-			this.overrideFactoryBeanSatisfyProperties( bean, properties );
-		}
-		
-		context.unbranch();
+
+		final Type string = context.getString();
+		final Method setter = serviceDefTarget.getMostDerivedMethod(Constants.SET_SERVICE_ENTRY_POINT, Collections.nCopies(1, string));
+		final StringValue addressValue = new StringValue();
+		addressValue.setGeneratorContext(context);
+		addressValue.setType(string);
+
+		final String serviceEntryPoint = rpc.getServiceEntryPoint();
+		addressValue.setValue(serviceEntryPoint);
+
+		body.addProperty(setter, addressValue);
+
+		context.debug("serviceEntryPoint: \"" + serviceEntryPoint + "\"");
 	}
-	
-	protected void overrideFactoryBeanSatisfyProperties( final Bean bean, final List properties ){
+
+	/**
+	 * Override the factory bean method to set all property values after
+	 * validating a single unambiguous setter exists
+	 * 
+	 * @param bean
+	 *            The bean being processed.
+	 */
+	protected void overrideFactoryBeanSatisfyProperties(final Bean bean) {
+		ObjectHelper.checkNotNull("parameter:bean", bean);
+
 		final GeneratorContext context = this.getGeneratorContext();
 		final Type voidType = this.getGeneratorContext().getVoid();
 		final Type beanType = bean.getType();
-		context.debug( beanType.toString() );
+		context.debug(beanType.toString());
 
 		final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
 		body.setBean(beanType);
@@ -715,21 +859,27 @@ public class BeanFactoryGenerator extends Generator {
 		newMethod.setFinal(true);
 		newMethod.setNative(false);
 
-		final NewMethodParameter instanceParameter = (NewMethodParameter)newMethod.getParameters().get( 0 );
-		instanceParameter.setFinal( true );
-		instanceParameter.setName( Constants.SATISFY_PROPERTIES_INSTANCE_PARAMETER );
-		
+		final NewMethodParameter instanceParameter = (NewMethodParameter) newMethod.getParameters().get(0);
+		instanceParameter.setFinal(true);
+		instanceParameter.setName(Constants.SATISFY_PROPERTIES_INSTANCE_PARAMETER);
+
 		newMethod.setBody(body);
 
 		// loop thru all properties
+		final List properties = bean.getProperties();
 		final Iterator propertyIterator = properties.iterator();
 		while (propertyIterator.hasNext()) {
-			final PropertyTag propertyTag = (PropertyTag) propertyIterator.next();
-			final String propertyName = propertyTag.getPropertyName();
+			final Property property = (Property) propertyIterator.next();
+			final String propertyName = property.getName();
 			final String setterName = GeneratorHelper.buildSetterName(propertyName);
 
-			final Value value = this.asValue(propertyTag.getValue());
-			final List matching = new ArrayList();
+			final Value value = property.getValue();
+			System.out.println(value);
+			if (value instanceof BeanReferenceImpl) {
+				this.prepareBeanReference((BeanReferenceImpl) value);
+			}
+
+			final List matchingSetters = new ArrayList();
 
 			final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
 				protected boolean visit(final Method method) {
@@ -755,7 +905,7 @@ public class BeanFactoryGenerator extends Generator {
 							break;
 						}
 						value.setType(propertyType);
-						matching.add(method);
+						matchingSetters.add(method);
 						break;
 					}
 
@@ -768,222 +918,169 @@ public class BeanFactoryGenerator extends Generator {
 			};
 
 			visitor.start(beanType);
-			if (matching.isEmpty()) {
+			if (matchingSetters.isEmpty()) {
 				this.throwUnableToFindSetter(bean, propertyName);
 			}
-			if (matching.size() != 1) {
+			if (matchingSetters.size() != 1) {
 				this.throwTooManySettersFound(bean, propertyName);
 			}
 
-			final Method setter = (Method) matching.get(0);
+			final Method setter = (Method) matchingSetters.get(0);
 			body.addProperty(setter, value);
 
-			context.debug( propertyName + "=" + value );
+			context.debug(propertyName + "=" + value);
 		}
-		
-		context.debug( properties.size() + " properties set." );
+
+		context.debug(properties.size() + " properties set.");
 	}
 
 	/**
 	 * This method throws an exception when more than one constructor satisfies
 	 * the specified values for a bean type
 	 * 
-	 * @param bean The bean
-	 * @param propertyName The property that caused the problem.
+	 * @param bean
+	 *            The bean
+	 * @param propertyName
+	 *            The property that caused the problem.
 	 */
 	protected void throwTooManySettersFound(final Bean bean, final String propertyName) {
-		throw new BeanFactoryGeneratorException("The bean " + bean + " contains more than one setter for the property \"" + propertyName + "\".");
+		throw new BeanFactoryGeneratorException("The bean " + bean + " contains more than one setter for the property \"" + propertyName
+				+ "\".");
 	}
 
 	protected void throwUnableToFindSetter(final Bean bean, final String propertyName) {
-		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + propertyName + "\" on the bean, bean: " + bean );
-	}
-
-	protected ListValue asListValue(final ListTag tag) {
-		ObjectHelper.checkNotNull("parameter:tag", tag);
-
-		final ListValue list = new ListValue();
-		list.setGeneratorContext(this.getGeneratorContext());
-
-		final Iterator values = tag.getValues().iterator();
-		while (values.hasNext()) {
-			final ValueTag valueTag = (ValueTag) values.next();
-			final Value value = this.asValue(valueTag);
-			list.addElement(value);
-		}
-		return list;
-	}
-
-	protected SetValue asSetValue(final SetTag tag) {
-		ObjectHelper.checkNotNull("parameter:tag", tag);
-
-		final SetValue set = new SetValue();
-		set.setGeneratorContext(this.getGeneratorContext());
-
-		final Iterator values = tag.getValues().iterator();
-		while (values.hasNext()) {
-			final ValueTag valueTag = (ValueTag) values.next();
-			final Value value = this.asValue(valueTag);
-			set.addElement(value);
-		}
-		return set;
-	}
-
-	protected MapValue asMapValue(final MapTag tag) {
-		ObjectHelper.checkNotNull("parameter:tag", tag);
-
-		final MapValue map = new MapValue();
-		map.setGeneratorContext(this.getGeneratorContext());
-
-		final Iterator entries = tag.getValues().entrySet().iterator();
-		while (entries.hasNext()) {
-			final Map.Entry entry = (Map.Entry) entries.next();
-			final String key = (String) entry.getKey();
-			final ValueTag valueTag = (ValueTag) entry.getValue();
-
-			final Value value = this.asValue(valueTag);
-
-			map.addEntry(key, value);
-		}
-		return map;
+		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + propertyName + "\" on the bean, bean: "
+				+ bean);
 	}
 
 	/**
-	 * Converts a BeanReferenceTag into a BeanReferenceValue
+	 * This method updates and validates the named bean reference. This cannot
+	 * be done earlier because when creating the BeanReference the referenced
+	 * bean might not have yet been created.
 	 * 
-	 * @param tag
-	 * @return
+	 * @param beanReference
+	 *            The bean reference
 	 */
-	protected BeanReference asBeanReference(final BeanReferenceTag tag) {
-		ObjectHelper.checkNotNull("parameter:tag", tag);
+	protected void prepareBeanReference(final BeanReferenceImpl beanReference) {
+		ObjectHelper.checkNotNull("parameter:beanReference", beanReference);
 
-		final String id = tag.getId();
-		
-		// if the bean type is a factoryBean read get the bean's actual type from the annotation.
-		final GeneratorContext context = this.getGeneratorContext();
-		final Type factoryBean = this.getFactoryBean();
-		final Bean bean = this.getBean( id );
-		
-		Type type = bean.getType();			
-		if( type.isAssignableTo( factoryBean )){
-			// locate the annotation and get the type from there...
-			final List factoryBeanObjectTypes = type.getMetadataValues( Constants.FACTORY_BEAN_OBJECT_TYPE );
-			if( null == factoryBeanObjectTypes || factoryBeanObjectTypes.size() != 1 ){
-				throwFactoryBeanObjectTypeAnnotationMissing(bean);
-			}
-			final String factoryBeanObjectTypeName = (String) factoryBeanObjectTypes.get( 0 ); 
-			type = context.getType( factoryBeanObjectTypeName );
-		}
-		
-		final BeanReference beanReference = new BeanReference();
-		beanReference.setId(id);
-		beanReference.setType(type);
-		beanReference.setGeneratorContext( context );
-		return beanReference;
+		final String id = beanReference.getId();
+		final Bean bean = this.getBean(id);
+		beanReference.setType(bean.getProducedType());
+
+		// final String id = beanReference.getId();
+		//
+		// // if the bean type is a factoryBean read get the bean's actual type
+		// // from the annotation.
+		// final GeneratorContext context = this.getGeneratorContext();
+		// final Type factoryBean = this.getFactoryBean();
+		// final Bean bean = this.getBean(id);
+		//
+		// Type type = bean.getType();
+		// if (type.isAssignableTo(factoryBean)) {
+		// // locate the annotation and get the type from there...
+		// final List factoryBeanObjectTypes =
+		// type.getMetadataValues(Constants.FACTORY_BEAN_OBJECT_TYPE);
+		// if (null == factoryBeanObjectTypes || factoryBeanObjectTypes.size()
+		// != 1) {
+		// throwFactoryBeanObjectTypeAnnotationMissing(bean);
+		// }
+		// final String factoryBeanObjectTypeName = (String)
+		// factoryBeanObjectTypes.get(0);
+		// type = context.getType(factoryBeanObjectTypeName);
+		// }
+		//		
+		// beanReference.setType( type );
 	}
-	
-	protected void throwFactoryBeanObjectTypeAnnotationMissing( final Bean bean ){
-		throw new BeanFactoryGeneratorException( "Unable to find \"" + Constants.FACTORY_BEAN_OBJECT_TYPE + "\" annotation on the factoryBean declared for bean: " + bean );
-	}
 
-	protected StringValue asStringValue(final StringTag tag) {
-		ObjectHelper.checkNotNull("parameter:tag", tag);
+	// /**
+	// * Validates the given nested bean
+	// * @param bean
+	// */
+	// protected void validateNestedBean(final NestedBean bean) {
+	// ObjectHelper.checkNotNull("parameter:nestedBean", bean);
+	//
+	// // if the bean type is a factoryBean read get the bean's actual type
+	// // from the annotation.
+	// final GeneratorContext context = this.getGeneratorContext();
+	// Type type = bean.getType();
+	// final Type factoryBean = this.getFactoryBean();
+	//		
+	// if (type.isAssignableTo(factoryBean)) {
+	// // locate the annotation and get the type from there...
+	// final List factoryBeanObjectTypes =
+	// type.getMetadataValues(Constants.FACTORY_BEAN_OBJECT_TYPE);
+	// if (null == factoryBeanObjectTypes || factoryBeanObjectTypes.size() != 1)
+	// {
+	// throwFactoryBeanObjectTypeAnnotationMissing(bean);
+	// }
+	// final String factoryBeanObjectTypeName = (String)
+	// factoryBeanObjectTypes.get(0);
+	// type = context.getType(factoryBeanObjectTypeName);
+	// }
+	//		
+	// bean.setType( type );
+	// }
 
-		final GeneratorContext context = this.getGeneratorContext();
-		final StringValue string = new StringValue();
-		string.setGeneratorContext(context);
-		string.setValue(tag.getLiteral());
-		string.setType(context.getString());
-
-		return string;
-	}
+	// protected void throwFactoryBeanObjectTypeAnnotationMissing(final Bean
+	// bean) {
+	// throw new BeanFactoryGeneratorException("Unable to find \"" +
+	// Constants.FACTORY_BEAN_OBJECT_TYPE
+	// + "\" annotation on the factoryBean declared for bean: " + bean);
+	// }
 
 	/**
-	 * Converts the given tag into a Value.
+	 * Visit all defined beans singling singleton beans with custom destroy
+	 * methods.
 	 * 
-	 * @param valueTag
-	 * @return
+	 * @param beans
+	 *            The beans
 	 */
-	protected Value asValue(final ValueTag valueTag) {
-		ObjectHelper.checkNotNull("parameter:valueTag", valueTag);
-
-		Value value = null;
-
-		while (true) {
-			if (valueTag instanceof ListTag) {
-				value = this.asListValue((ListTag) valueTag);
-				break;
-			}
-			if (valueTag instanceof SetTag) {
-				value = this.asSetValue((SetTag) valueTag);
-				break;
-			}
-			if (valueTag instanceof MapTag) {
-				value = this.asMapValue((MapTag) valueTag);
-				break;
-			}
-			if (valueTag instanceof BeanReferenceTag) {
-				value = this.asBeanReference((BeanReferenceTag) valueTag);
-				break;
-			}
-
-			value = this.asStringValue((StringTag) valueTag);
-			break;
-		}
-
-		return value;
-	}
-	
-	/**
-	 * Visit all defined beans singling singleton beans with custom destroy methods.
-	 * 
-	 * @param beans A list of beans
-	 */
-	protected void overrideAllSingletonFactoryBeanToInvokeCustomDestroy(final List beans) {
+	protected void overrideAllSingletonFactoryBeanToInvokeCustomDestroy(final Set beans) {
 		ObjectHelper.checkNotNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Visiting singleton beans with custom destroyMethods.");
+		context.info("Visiting singleton beans.");
 
 		final Iterator iterator = beans.iterator();
 		int singletonCount = 0;
 		int customDestroyMethodCount = 0;
-		
+
 		while (iterator.hasNext()) {
-			final BeanTag beanTag = (BeanTag) iterator.next();
-			if( beanTag.isPrototype() ){
+			final Bean bean = (Bean) iterator.next();
+			if (false == bean.isSingleton()) {
 				continue;
 			}
-			
-			final String destroyMethodName = beanTag.getDestroyMethod();
+
+			final String destroyMethodName = bean.getDestroyMethod();
 
 			if (false == StringHelper.isNullOrEmpty(destroyMethodName)) {
-				final Bean bean = this.getBean(beanTag.getId());
 				context.branch();
-				context.debug( bean.getId() );
-								
-				this.overrideSingletonFactoryBeanDestroy(bean, destroyMethodName);
-				
+				context.debug(bean.getId());
+
+				this.overrideSingletonFactoryBeanDestroy(bean);
+
 				context.unbranch();
 			}
 		}
-		context.debug( "Singletons: " + singletonCount + ", singletons with custom destroy methods: " + customDestroyMethodCount );
-		
+		context.debug( singletonCount == 0 ? "No singletons" : customDestroyMethodCount + " singletons have custom destroy methods.");
+
 		context.unbranch();
 	}
 
 	/**
-	 * Overrides the destroy method for the given singleton factory bean to call the custom destroy method.
+	 * Overrides the destroy method for the given singleton factory bean to call
+	 * the custom destroy method.
 	 * 
-	 * @param bean The bean
-	 * @param destroyMethodName The custom destroy method name
+	 * @param bean
+	 *            The bean
 	 */
-	protected void overrideSingletonFactoryBeanDestroy(final Bean bean, final String destroyMethodName) {
+	protected void overrideSingletonFactoryBeanDestroy(final Bean bean) {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
-		GeneratorHelper.checkJavaMethodName("parameter:destroyMethodName", destroyMethodName);
 
 		final Type beanType = bean.getType();
+		final String destroyMethodName = bean.getDestroyMethod();
 		final Method destroyMethod = beanType.findMethod(destroyMethodName, Collections.EMPTY_LIST);
 		if (null == destroyMethod || destroyMethod.isStatic() || destroyMethod.getVisibility() != Visibility.PUBLIC) {
 			throwCustomMethodNotFound(bean, destroyMethodName);
@@ -1003,15 +1100,16 @@ public class BeanFactoryGenerator extends Generator {
 		body.setType(beanType);
 		body.setMethod(destroyMethod);
 
-		final NewMethodParameter instanceParameter = (NewMethodParameter)newMethod.getParameters().get( 0 );
-		instanceParameter.setFinal( true );
-		instanceParameter.setName( Constants.DESTROY_INSTANCE_PARAMETER );
-		
+		final NewMethodParameter instanceParameter = (NewMethodParameter) newMethod.getParameters().get(0);
+		instanceParameter.setFinal(true);
+		instanceParameter.setName(Constants.DESTROY_INSTANCE_PARAMETER);
+
 		newMethod.setBody(body);
 	}
 
 	/**
-	 * This method throws an exception when the specified custom method does not exist, is not public or is static.
+	 * This method throws an exception when the specified custom method does not
+	 * exist, is not public or is static.
 	 * 
 	 * @param bean
 	 * @param destroyMethodName
@@ -1020,7 +1118,14 @@ public class BeanFactoryGenerator extends Generator {
 		throw new BeanFactoryGeneratorException("Unable to find a public method called \"" + destroyMethodName + "\" on the bean " + bean);
 	}
 
-	protected void recordAliases( final List aliases ){
+	/**
+	 * Records and registers all the given aliases
+	 * 
+	 * @param aliases
+	 *            A set containing all the aliases encountered in all combined
+	 *            xml documents.
+	 */
+	protected void recordAliases(final Set aliases) {
 		ObjectHelper.checkNotNull("parameter:aliases", aliases);
 
 		final GeneratorContext context = this.getGeneratorContext();
@@ -1029,278 +1134,94 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Iterator iterator = aliases.iterator();
 		while (iterator.hasNext()) {
-			final AliasTag aliasTag = (AliasTag) iterator.next();
-			final String name = aliasTag.getName();
-			final String bean = aliasTag.getBean();
-			
-			context.debug( name + "=" + bean );
-			
-			final Alias alias = new Alias();
-			alias.setName( name );
-			alias.setBean( bean );
-			
+			final Alias alias = (Alias) iterator.next();
+			final String name = alias.getName();
+			final String bean = alias.getBean();
+
+			context.debug(name + "=" + bean);
+
 			this.checkAlias(alias);
-			
+
 			this.addAlias(alias);
 		}
-		
-		context.unbranch();		
-	}
-	
-	/**
-	 * Builds all that factory beans that will return a remote json service
-	 * client.
-	 * 
-	 * @param jsonTags
-	 *            A read only list containing all the json tags in the document
-	 */
-	protected void buildJsonRpcServiceFactoryBeans(final List jsonTags) {
-		ObjectHelper.checkNotNull("parameter:jsonTags", jsonTags);
 
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info("Creating FactoryBean's for each of the remote json service (" + jsonTags.size() + ") tags.");
-
-		final Iterator iterator = jsonTags.iterator();
-		while (iterator.hasNext()) {
-			final RemoteJsonServiceTag json = (RemoteJsonServiceTag) iterator.next();
-			this.createJsonRpcServiceFactoryBean(json);
-		}
-		
 		context.unbranch();
 	}
 
 	/**
-	 * Factory method which creates the initial json FactoryBean
+	 * Factory method which creates the rpc FactoryBean
 	 * 
-	 * @param jsonTag The json service being processed.
+	 * @param rpc The rpc bean under construction.
 	 */
-	protected void createJsonRpcServiceFactoryBean(final RemoteJsonServiceTag jsonTag) {
-		ObjectHelper.checkNotNull("parameter:jsonTag", jsonTag);
+	protected void createRpcFactoryBean(final Rpc rpc) {
+		ObjectHelper.checkNotNull("parameter:rpc", rpc);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		
-		final Bean bean = new Bean();		
-		final String id = jsonTag.getId();
-		bean.setId(id);
-		
-		context.branch();
-		context.debug( id );
-		
-		bean.setSingleton( true );
-		bean.setEagerLoad( false );
-		
-		context.debug( "singleton");
-		context.debug( "lazy load");
-		
-		final String interfaceName = jsonTag.getInterface();
-		final Type beanType = this.getInterfaceType(id, interfaceName + Constants.ASYNC_SUFFIX );
-		bean.setType(beanType);
 
-		context.debug( "service interface: " + interfaceName );
-		context.debug( "async service interface: " + beanType.getName() );
-		
-		final Type superType = this.getPrototypeFactoryBean();
+		rpc.setSingleton(true);
+		rpc.setEagerLoaded(false);
+
+		context.debug("singleton");
+		context.debug("lazy load");
+
+		final String interfaceName = rpc.getServiceInterface();
+		final String id = rpc.getId();
+		final Type beanType = this.getInterfaceType(id, interfaceName + Constants.ASYNC_SUFFIX);
+		rpc.setType(beanType);
+
+		context.debug("service interface: " + interfaceName);
+		context.debug("async service interface: " + beanType.getName());
+
+		final Type superType = this.getSingletonFactoryBean();
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType factoryBean = beanFactory.newNestedType();
 		factoryBean.setStatic(false);
 		factoryBean.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
 		factoryBean.setSuperType(superType);
 		factoryBean.setVisibility(Visibility.PRIVATE);
-		bean.setFactoryBean(factoryBean);
+		rpc.setFactoryBean(factoryBean);
 
-		context.debug( "Factory bean super type " + superType );
+		context.debug("FactoryBean: " + factoryBean);
 
-		this.overrideFactoryBeanCreateInstanceViaDeferredBinding(bean);
-		this.overrideFactoryBeanSatisfyPropertiesWithSetAddress(bean, jsonTag.getAddress());
-
-		this.addBean(bean);
-		
-		context.unbranch();
-	}
-
-	/**
-	 * Builds all the factory beans that will return remote rpc service clients.
-	 * 
-	 * @param rpcTags
-	 *            A read only list containing all the rpc tags in the document
-	 */
-	protected void buildJavaRpcServiceFactoryBeans(final List rpcTags) {
-		ObjectHelper.checkNotNull("parameter:rpcTags", rpcTags);
-
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info("Creating FactoryBean's for each of the remote rpc service (" + rpcTags.size() + ") tags.");
-
-		final Iterator iterator = rpcTags.iterator();
-		while (iterator.hasNext()) {
-			final RemoteRpcServiceTag rpc = (RemoteRpcServiceTag) iterator.next();
-		
-			this.createJavaRpcServiceFactoryBean(rpc);
-		}
-		
-		context.unbranch();
-	}
-
-	/**
-	 * Factory method which creates the initial rpc FactoryBean
-	 * 
-	 * @param rpcTag
-	 */
-	protected void createJavaRpcServiceFactoryBean(final RemoteRpcServiceTag rpcTag) {
-		ObjectHelper.checkNotNull("parameter:rpcTag", rpcTag);
-
-		final GeneratorContext context = this.getGeneratorContext();
-		
-		final Bean bean = new Bean();
-		final String id = rpcTag.getId();
-		bean.setId(id);
-		
-		context.branch();
-		context.debug( id );
-		
-		bean.setSingleton( true );
-		bean.setEagerLoad( false );
-
-		context.debug( "singleton");
-		context.debug( "lazy load");
-		
-		final String interfaceName = rpcTag.getInterface();
-		final Type beanType = this.getInterfaceType(id, interfaceName + Constants.ASYNC_SUFFIX );
-		bean.setType(beanType);
-
-		context.debug( "service interface: " + interfaceName );
-		context.debug( "async service interface: " + beanType.getName() );
-		
-		final Type superType = this.getPrototypeFactoryBean();
-		final NewConcreteType beanFactory = this.getBeanFactory();
-		final NewNestedType factoryBean = beanFactory.newNestedType();
-		factoryBean.setStatic(false);
-		factoryBean.setNestedName( this.escapeBeanIdToBeClassNameSafe(id) + Constants.FACTORY_BEAN_SUFFIX);
-		factoryBean.setSuperType(superType);
-		factoryBean.setVisibility(Visibility.PRIVATE);
-		bean.setFactoryBean(factoryBean);
-
-		context.debug( "FactoryBean super type: " + superType );
-
-		this.overrideFactoryBeanCreateInstanceViaDeferredBinding(bean);
-		this.overrideFactoryBeanSatisfyPropertiesWithSetAddress(bean, rpcTag.getAddress());
-
-		this.addBean(bean);
-		
-		context.unbranch();
-	}
-
-	/**
-	 * Overrides the create instance method of the factory bean to create a new
-	 * instance via deferred binding.
-	 * 
-	 * @param bean
-	 *            The bean definition
-	 */
-	protected void overrideFactoryBeanCreateInstanceViaDeferredBinding(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
-
-		final NewType factoryBean = bean.getFactoryBean();
-		
-		// get the actual interface type from the async interface type.
-		final Type asyncInterfaceType = bean.getType();
-		final String asyncInterfaceName = asyncInterfaceType.getName(); 
-		
-		final String interfaceTypeName = asyncInterfaceName.substring( 0, asyncInterfaceName.length() - Constants.ASYNC_SUFFIX.length() );
-		final Type interfaceType = this.getInterfaceType( bean.getId(), interfaceTypeName);
-		
-		final NewMethod createInstance = this.createCreateInstanceMethod(factoryBean);
-		final DeferredBinding body = new DeferredBinding();
-		body.setType(interfaceType);
-		createInstance.setBody(body);
-	}
-
-	/**
-	 * Overrides the satisfyProperties method of the factory bean to set the
-	 * address property.
-	 * 
-	 * @param bean
-	 *            The bean definition
-	 * @param address The service entry point of the service.
-	 */
-	protected void overrideFactoryBeanSatisfyPropertiesWithSetAddress(final Bean bean, final String address) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
-		StringHelper.checkNotEmpty("parameter:address", address);
-
-		final NewType factoryBean = bean.getFactoryBean();
-
-		final Method method = factoryBean.getMostDerivedMethod(Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject());
-		final NewMethod newMethod = method.copy(factoryBean);
-		newMethod.setAbstract(false);
-		newMethod.setFinal(true);
-		newMethod.setNative(false);
-
-		final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
-		newMethod.setBody(body);
-
-		final NewMethodParameter instanceParameter = (NewMethodParameter)newMethod.getParameters().get( 0 );
-		instanceParameter.setFinal( true );
-		instanceParameter.setName( Constants.SATISFY_PROPERTIES_INSTANCE_PARAMETER );
-
-		final Type serviceDefTarget = this.getServiceDefTarget();
-		body.setBean(serviceDefTarget);
-
-		final GeneratorContext context = this.getGeneratorContext();
-
-		final Type string = context.getString();
-		final Method setter = serviceDefTarget
-				.getMostDerivedMethod(Constants.SET_SERVICE_ENTRY_POINT, Arrays.asList(new Type[] { string }));
-		final StringValue addressValue = new StringValue();
-		addressValue.setGeneratorContext(context);
-		addressValue.setType(string);
-		addressValue.setValue(address);
-
-		body.addProperty(setter, addressValue);
-
-		context.debug("serviceEntryPoint: \"" + address + "\"");
+		this.addBean(rpc);
 	}
 
 	/**
 	 * Visits all advisors, checking they really are advisors and then adding
 	 * them to the respective bean.
 	 * 
-	 * @param advices
+	 * @param advices All the advices within all xml files.
 	 */
-	protected void buildAdvices(final List advices) {
+	protected void buildAdvices(final Set advices) {
 		ObjectHelper.checkNotNull("parameter:advices", advices);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		context.info("Processing and verifying " + advices.size() + " advice(s).");
-		
+
 		final MethodMatcherFactory methodMatcherFactory = createMethodMatcherFactor();
 
 		final Iterator iterator = advices.iterator();
 		while (iterator.hasNext()) {
-			final AdviceTag adviceTag = (AdviceTag) iterator.next();
-
-			final Advice advice = new Advice();
-
-			final String adviceId = adviceTag.getAdvisorBeanId();
-			advice.setAdvisorBeanId( adviceId );
-			
-			advice.setMethodMatcher(methodMatcherFactory.create(adviceTag.getMethodExpression()));
-			
-			final String targetBeanId = adviceTag.getTargetBeanId();
-			advice.setTargetBeanId(targetBeanId);
+			final Advice advice = (Advice) iterator.next();
 
 			context.branch();
-			context.debug( adviceId + "=" + targetBeanId );
-			
+			final String advisorId = advice.getAdvisor();
+			final String targetBeanId = advice.getTarget();
+			context.debug(advisorId + "=" + targetBeanId);
+
+			advice.setMethodMatcher(methodMatcherFactory.create(advice.getMethodExpression()));
+
 			final Bean bean = this.getBean(targetBeanId);
 			this.verifyProxyTarget(bean);
 			this.verifyAdvisorBean(advice);
 			this.verifyMethodExpression(advice);
 
 			bean.addAdvice(advice);
+			
+			context.unbranch();
 		}
-		
+
 		context.unbranch();
 	}
 
@@ -1312,7 +1233,8 @@ public class BeanFactoryGenerator extends Generator {
 	 * Verifies that the proxy target bean is not final so that it can be
 	 * subclassed.
 	 * 
-	 * @param bean The bean
+	 * @param bean
+	 *            The bean
 	 */
 	protected void verifyProxyTarget(final Bean bean) {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
@@ -1336,7 +1258,7 @@ public class BeanFactoryGenerator extends Generator {
 	protected void verifyAdvisorBean(final Advice advice) {
 		ObjectHelper.checkNotNull("parameter:advice", advice);
 
-		final String id = advice.getAdvisorBeanId();
+		final String id = advice.getAdvisor();
 		final Bean bean = this.getBean(id);
 		final Type type = bean.getType();
 
@@ -1353,11 +1275,12 @@ public class BeanFactoryGenerator extends Generator {
 	 * Verifies that the method expression matches at least one public method.
 	 * 
 	 * @param advice
+	 *            The advice being verified.
 	 */
 	protected void verifyMethodExpression(final Advice advice) {
 		ObjectHelper.checkNotNull("parameter:advice", advice);
 
-		final String id = advice.getTargetBeanId();
+		final String id = advice.getTarget();
 		final Bean bean = this.getBean(id);
 		final Type type = bean.getType();
 		final MethodMatcher matcher = advice.getMethodMatcher();
@@ -1365,7 +1288,7 @@ public class BeanFactoryGenerator extends Generator {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		context.debug("Discovering methods that match: " + matcher + " against " + type);
-		
+
 		final List matchedMethods = new ArrayList();
 		final Type object = context.getObject();
 
@@ -1382,7 +1305,7 @@ public class BeanFactoryGenerator extends Generator {
 
 				if (method.getVisibility() == Visibility.PUBLIC && matcher.matches(method)) {
 					matchedMethods.add(method);
-					context.debug( method.toString() );
+					context.debug(method.toString());
 				}
 				return false;
 			}
@@ -1396,7 +1319,7 @@ public class BeanFactoryGenerator extends Generator {
 		if (matchedMethods.isEmpty()) {
 			throwNoMatchedMethods(advice);
 		}
-		
+
 		context.debug("Matched " + matchedMethods.size() + " methods(s).");
 		context.unbranch();
 	}
@@ -1415,46 +1338,47 @@ public class BeanFactoryGenerator extends Generator {
 	 * 
 	 * @param advisors
 	 */
-	protected void applyAdvices() {		
+	protected void applyAdvices() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Checking for beans with one or more advices." );
+		context.info("Checking for beans with one or more advices.");
 
 		final Set beans = this.filterBeansRequiringInterceptors();
-		
+
 		context.branch();
-		context.info("Processing beans that are advised." );
+		context.info("Processing beans that are advised.");
 		final Iterator advisedIterator = beans.iterator();
-		while( advisedIterator.hasNext()){
+		while (advisedIterator.hasNext()) {
 			final Bean bean = (Bean) advisedIterator.next();
 			this.buildProxyFactoryBean(bean);
-		}				
+		}
 		context.unbranch();
-		
+
 		context.unbranch();
 	}
-	
-	protected Set filterBeansRequiringInterceptors(){
+
+	protected Set filterBeansRequiringInterceptors() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.debug( "Beans that dont have any advices.");
+		context.debug("Beans that dont have any advices.");
 
 		final Set advised = new HashSet();
 		final Iterator beans = this.getBeans().values().iterator();
-				
+
 		while (beans.hasNext()) {
 			final Bean bean = (Bean) beans.next();
 			final List advices = bean.getAdvices();
 			if (advices.isEmpty()) {
-				context.debug( bean.getId() );
+				context.debug(bean.getId());
 				continue;
-			}			
+			}
 			advised.add(bean);
 		}
 		context.unbranch();
-		
+
 		return advised;
 	}
+
 	/**
 	 * Creates a factory bean for the proxy for the given bean.
 	 * 
@@ -1466,10 +1390,10 @@ public class BeanFactoryGenerator extends Generator {
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		
+
 		final String id = bean.getId();
-		context.debug( id );
-		
+		context.debug(id);
+
 		final Type superType = this.getProxyFactoryBean();
 
 		final NewConcreteType beanFactory = this.getBeanFactory();
@@ -1478,10 +1402,10 @@ public class BeanFactoryGenerator extends Generator {
 		proxyFactoryBean.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_FACTORY_BEAN_SUFFIX);
 		proxyFactoryBean.setSuperType(superType);
 		proxyFactoryBean.setVisibility(Visibility.PRIVATE);
-		
+
 		bean.setProxyFactoryBean(proxyFactoryBean);
 
-		context.debug( "Proxy factory bean: " + superType );
+		context.debug("Proxy factory bean: " + superType);
 
 		this.overrideProxyFactoryBeanGetTargetFactoryBean(bean);
 
@@ -1500,10 +1424,12 @@ public class BeanFactoryGenerator extends Generator {
 	protected void overrideProxyFactoryBeanGetTargetFactoryBean(final Bean bean) {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
 
-		this.getGeneratorContext().debug("Overriding proxy factory bean " + Constants.PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME + ".");
+		this.getGeneratorContext().debug(
+				"Overriding proxy factory bean " + Constants.PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME + ".");
 
 		final NewNestedType proxyFactoryBean = bean.getProxyFactoryBean();
-		final Method method = proxyFactoryBean.getMostDerivedMethod( Constants.PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME, Collections.EMPTY_LIST);
+		final Method method = proxyFactoryBean.getMostDerivedMethod(Constants.PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME,
+				Collections.EMPTY_LIST);
 
 		final NewMethod newMethod = method.copy(proxyFactoryBean);
 		newMethod.setAbstract(false);
@@ -1533,7 +1459,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.getBeanFactory();
 		final NewNestedType proxy = beanFactory.newNestedType();
 		proxy.setStatic(false);
-		proxy.setNestedName( this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_SUFFIX);
+		proxy.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_SUFFIX);
 		proxy.setSuperType(targetBeanType);
 		proxy.setVisibility(Visibility.PRIVATE);
 
@@ -1711,12 +1637,13 @@ public class BeanFactoryGenerator extends Generator {
 	 * Adds a new method to the bean factory being built that populates a map
 	 * with all the factory beans keyed by bean id.
 	 */
-	protected void overrideBeanFactoryRegisterFactoryBeans() {		
+	protected void overrideBeanFactoryRegisterFactoryBeans() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		
+
 		final NewType beanFactory = this.getBeanFactory();
-		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.REGISTER_FACTORY_BEANS, Collections.EMPTY_LIST);
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.REGISTER_FACTORY_BEANS,
+				Collections.EMPTY_LIST);
 
 		final NewMethod newMethod = abstractMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
@@ -1725,34 +1652,38 @@ public class BeanFactoryGenerator extends Generator {
 
 		final RegisterFactoryBeansTemplatedFile body = new RegisterFactoryBeansTemplatedFile();
 		newMethod.setBody(body);
-		
+
 		context.branch();
-		context.info( "Overriding " + newMethod + " to register all beans.");
-		
+		context.info("Overriding " + newMethod + " to register all beans.");
+
 		final Iterator beansIterator = beans.values().iterator();
-		
+
 		while (beansIterator.hasNext()) {
 			final Bean bean = (Bean) beansIterator.next();
 			body.addBean(bean);
-			
-			context.debug( bean.getId() );
+
+			context.debug(bean.getId());
 		}
 		context.unbranch();
 	}
-	
+
 	/**
-	 * Overrides the {@link rocket.beans.client.BeanFactoryImpl#getAliasesToBeans} to return a list of alias to bean mappings.
-	 * This list may be empty if no aliases were present in config files.
+	 * Overrides the
+	 * {@link rocket.beans.client.BeanFactoryImpl#getAliasesToBeans} to return a
+	 * list of alias to bean mappings. This list may be empty if no aliases were
+	 * present in config files.
 	 */
-	protected void registerBeanAliases(){
+	protected void registerBeanAliases() {
 		this.overrideBeanFactoryGetAliasesToBeans();
 	}
-	protected void overrideBeanFactoryGetAliasesToBeans(){
+
+	protected void overrideBeanFactoryGetAliasesToBeans() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		
+
 		final NewType beanFactory = this.getBeanFactory();
-		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_ALIASES_TO_BEANS_METHOD, Collections.EMPTY_LIST);
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_ALIASES_TO_BEANS_METHOD,
+				Collections.EMPTY_LIST);
 
 		final NewMethod newMethod = abstractMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
@@ -1763,39 +1694,43 @@ public class BeanFactoryGenerator extends Generator {
 		newMethod.setBody(body);
 
 		context.branch();
-		context.info( "Overriding " + newMethod + " to register all aliases.");
-		
+		context.info("Overriding " + newMethod + " to register all aliases.");
+
 		final Iterator beansIterator = this.getAliases().values().iterator();
 		int aliasCount = 0;
-		
+
 		while (beansIterator.hasNext()) {
 			final Alias alias = (Alias) beansIterator.next();
 			final String from = alias.getName();
 			final String to = alias.getBean();
-			body.register(from,to);
-			
-			context.debug( from + "=" + to );
+			body.register(from, to);
+
+			context.debug(from + "=" + to);
 			aliasCount++;
 		}
-		
-		context.debug( "Registered " + aliasCount + " aliases.");
+
+		context.debug("Registered " + aliasCount + " aliases.");
 		context.unbranch();
 	}
-	
+
 	/**
-	 * Overrides the {@link rocket.beans.client.BeanFactoryImpl#getEagerSingletonBeanNames()
-	 * which contains a comma separated list of singletons that need to initialized on factory startup.
+	 * Overrides the
+	 * {@link rocket.beans.client.BeanFactoryImpl#getEagerSingletonBeanNames()
+	 * which contains a comma separated list of singletons that need to
+	 * initialized on factory startup.
 	 */
-	protected void overrideLoadEagerBeans(){		
+	protected void overrideLoadEagerBeans() {
 		final Map beans = this.getBeans();
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Overriding BeanFactory." + Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD + "() to initialize eager singleton beans on factory startup.");
+		context.info("Overriding BeanFactory." + Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD
+				+ "() to initialize eager singleton beans on factory startup.");
 		context.branch();
-		
+
 		final NewType beanFactory = this.getBeanFactory();
-		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD, Collections.EMPTY_LIST);
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD,
+				Collections.EMPTY_LIST);
 
 		final NewMethod newMethod = abstractMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
@@ -1804,34 +1739,35 @@ public class BeanFactoryGenerator extends Generator {
 
 		final GetEagerSingletonBeanNames body = new GetEagerSingletonBeanNames();
 		newMethod.setBody(body);
-		
+
 		int eagerSingletonBeanCount = 0;
 		int lazySingletonBeanCount = 0;
-		
+
 		final Iterator beansIterator = beans.values().iterator();
 		while (beansIterator.hasNext()) {
 			final Bean bean = (Bean) beansIterator.next();
-			
-			if( false == bean.isSingleton() ){
+
+			if (false == bean.isSingleton()) {
 				continue;
 			}
-			
+
 			// only singletons can be singletons.
-			final boolean eager = bean.isEagerLoad();
-			if( eager ){
-				body.addBean(bean.getId());	
+			final boolean eager = bean.isEagerLoaded();
+			if (eager) {
+				body.addBean(bean.getId());
 				eagerSingletonBeanCount++;
-				
-				context.debug( bean.toString() );
+
+				context.debug(bean.toString());
 			} else {
 				lazySingletonBeanCount++;
 			}
 		}
 		context.unbranch();
-		context.debug( "When instantiated " + eagerSingletonBeanCount + " singletons will be eaglerly loaded, the remaining " + lazySingletonBeanCount + " will be lazily loaded on first request.");
+		context.debug("When instantiated " + eagerSingletonBeanCount + " singletons will be eaglerly loaded, the remaining "
+				+ lazySingletonBeanCount + " will be lazily loaded on first request.");
 		context.unbranch();
 	}
-	
+
 	protected String getGeneratedTypeNameSuffix() {
 		return Constants.BEAN_FACTORY_SUFFIX;
 	}
@@ -1852,7 +1788,8 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	/**
-	 * A map that contains all the NewType factory beans for each defined bean keyed on the bean's id.
+	 * A map that contains all the NewType factory beans for each defined bean
+	 * keyed on the bean's id.
 	 */
 	private Map beans;
 
@@ -1867,55 +1804,60 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	/**
-	 * A sorted TreeMap is used to guarantee that beans are processed in bean id sorted order which should make
-	 * reading of logging info much easier.
+	 * A sorted TreeMap is used to guarantee that beans are processed in bean id
+	 * sorted order which should make reading of logging info much easier.
+	 * 
 	 * @return A map
 	 */
 	protected Map createBeans() {
-		return new TreeMap( String.CASE_INSENSITIVE_ORDER );
+		return new TreeMap(String.CASE_INSENSITIVE_ORDER);
 	}
 
-	protected void checkBean( final Bean bean ){
+	protected void checkIdIsUnique(final Bean bean) {
 		final String id = bean.getId();
-		if( this.getBeans().containsKey( id )){
-			throwBeanIdAlreadyUsed( bean );
-		}	
+		if (this.getBeans().containsKey(id)) {
+			throwBeanIdAlreadyUsed(bean);
+		}
 	}
-	
-	protected void throwBeanIdAlreadyUsed( final Bean bean ){
+
+	protected void throwBeanIdAlreadyUsed(final Bean bean) {
 		final String id = bean.getId();
-		throw new BeanFactoryGeneratorException( "The id \"" + id + "\" is used by more than bean: " + bean + ", other bean: " + this.getBean(id)); 
+		throw new BeanFactoryGeneratorException("The id \"" + id + "\" is used by more than bean: " + bean + ", other bean: "
+				+ this.getBean(id));
 	}
-	
+
 	/**
 	 * Adds a new bean to the beans registry
 	 * 
-	 * @param bean The new bean
+	 * @param bean
+	 *            The new bean
 	 */
 	protected void addBean(final Bean bean) {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
 
-		this.getBeans().put( bean.getId(), bean);
+		this.getBeans().put(bean.getId(), bean);
 	}
 
 	/**
-	 * Retrieves a bean given an id searching both beans and alias to beans, throwing an exception if the id is not found.
+	 * Retrieves a bean given an id searching both beans and alias to beans,
+	 * throwing an exception if the id is not found.
 	 * 
-	 * @param id The id
+	 * @param id
+	 *            The id
 	 * @return The bean
 	 */
 	protected Bean getBean(final String id) {
 		String resolvedId = id;
-		
+
 		// check if $id is actually an alias.
 		Alias alias = (Alias) this.getAliases().get(id);
-		if( null != alias ){
+		if (null != alias) {
 			resolvedId = alias.getBean();
 		}
-		
+
 		// now try and find the bean...
 		final Bean bean = (Bean) this.getBeans().get(resolvedId);
-		if( null == bean ){
+		if (null == bean) {
 			this.throwUnableToFindBean(id);
 		}
 		return bean;
@@ -1924,10 +1866,31 @@ public class BeanFactoryGenerator extends Generator {
 	protected void throwUnableToFindBean(final String id) {
 		throw new BeanFactoryGeneratorException("Unable to locate a bean with an id of \"" + id + "\".");
 	}
-	
+
+	protected String getNextNestedBeanName() {
+		final int i = this.getNestedBeanCount();
+		this.setNestedBeanCount(i + 1);
+
+		return Constants.NESTED_BEAN_NAME_PREFIX + i;
+	}
+
 	/**
-	 * A map that contains all the NewType factory aliases for each defined alias
-	 * keyed on the alias's id.
+	 * This counter is used to generate a unique bean name for each
+	 * anonymous/nested bean.
+	 */
+	private int nestedBeanCount = 0;
+
+	protected int getNestedBeanCount() {
+		return this.nestedBeanCount;
+	}
+
+	protected void setNestedBeanCount(final int nestedBeanCount) {
+		this.nestedBeanCount = nestedBeanCount;
+	}
+
+	/**
+	 * A map that contains all the NewType factory aliases for each defined
+	 * alias keyed on the alias's id.
 	 */
 	private Map aliases;
 
@@ -1945,30 +1908,32 @@ public class BeanFactoryGenerator extends Generator {
 		return new HashMap();
 	}
 
-	protected void checkAlias( final Alias alias ){
+	protected void checkAlias(final Alias alias) {
 		final String name = alias.getName();
-		if( this.getBeans().containsKey( name )){
-			throwAliasIdAlreadyUsed( alias );
-		}	
-		this.getBean( alias.getBean() );			
+		if (this.getBeans().containsKey(name)) {
+			throwAliasIdAlreadyUsed(alias);
+		}
+		this.getBean(alias.getBean());
 	}
-	
-	protected void throwAliasIdAlreadyUsed( final Alias alias ){
+
+	protected void throwAliasIdAlreadyUsed(final Alias alias) {
 		final String id = alias.getName();
-		throw new BeanFactoryGeneratorException( "The id \"" + id + "\" used by alias " + alias + " is already used by another bean: " + this.getBean( id ));
+		throw new BeanFactoryGeneratorException("The id \"" + id + "\" used by alias " + alias + " is already used by another bean: "
+				+ this.getBean(id));
 	}
-	
+
 	/**
 	 * Adds a new alias to the aliases registry
 	 * 
-	 * @param alias The new alias
+	 * @param alias
+	 *            The new alias
 	 */
 	protected void addAlias(final Alias alias) {
 		ObjectHelper.checkNotNull("parameter:alias", alias);
 
-		this.getAliases().put( alias.getName(), alias);
+		this.getAliases().put(alias.getName(), alias);
 	}
-	
+
 	protected Type getSingletonFactoryBean() {
 		return this.getGeneratorContext().getType(Constants.SINGLETON_FACTORY_BEAN);
 	}
@@ -2006,18 +1971,19 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected Type getFactoryBean() {
-		return this.getGeneratorContext().getType(Constants.FACTORY_BEAN );
+		return this.getGeneratorContext().getType(Constants.FACTORY_BEAN);
 	}
-	
+
 	protected Type getDisposableBean() {
-		return this.getGeneratorContext().getType(Constants.DISPOSABLE_BEAN );
+		return this.getGeneratorContext().getType(Constants.DISPOSABLE_BEAN);
 	}
-	
+
 	/**
-	 * Fetches the interface type for the given bean throwing an excecption if the type is not
-	 * found or not an interface.
+	 * Fetches the interface type for the given bean throwing an excecption if
+	 * the type is not found or not an interface.
 	 * 
-	 * @param id The id of a bean
+	 * @param id
+	 *            The id of a bean
 	 * @param className
 	 * @return The type
 	 */
@@ -2041,6 +2007,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * exceptions are thrown.
 	 * 
 	 * @param id
+	 *            The bean name
 	 * @param className
 	 * @return
 	 */
@@ -2056,7 +2023,7 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected List getParameterListWithOnlyObject() {
-		return Collections.nCopies( 1, this.getGeneratorContext().getObject() );
+		return Collections.nCopies(1, this.getGeneratorContext().getObject());
 	}
 
 	protected void throwBeanTypeNotFound(final String id, final String className) {
@@ -2067,6 +2034,15 @@ public class BeanFactoryGenerator extends Generator {
 		throw new BeanFactoryGeneratorException("The type \"" + type + "\" is not concrete for the bean id\"" + id + "\".");
 	}
 
+	/**
+	 * This helper accepts a bean name and outputs a name which is safe to use
+	 * as the class name of a FactoryBean. THis is achieved by escaping invalid
+	 * characters etc.
+	 * 
+	 * @param beanId
+	 *            The bean name,
+	 * @return The safe java class name.
+	 */
 	protected String escapeBeanIdToBeClassNameSafe(final String beanId) {
 		StringHelper.checkNotEmpty("parameter:beanId", beanId);
 
@@ -2074,8 +2050,8 @@ public class BeanFactoryGenerator extends Generator {
 
 		final char[] chars = beanId.toCharArray();
 
-		for (int j = 0; j < chars.length; j++) {
-			final char c = chars[j];
+		for (int i = 0; i < chars.length; i++) {
+			final char c = chars[i];
 
 			// escape underscore to double underscore...
 			if (c == '_') {
@@ -2083,7 +2059,7 @@ public class BeanFactoryGenerator extends Generator {
 				continue;
 			}
 			// if $c a valid chacter simply add it...
-			if ((j == 0 && Character.isJavaIdentifierStart(c)) || Character.isJavaIdentifierPart(c)) {
+			if ((i == 0 && Character.isJavaIdentifierStart(c)) || Character.isJavaIdentifierPart(c)) {
 				safeName.append(c);
 				continue;
 			}
@@ -2094,7 +2070,7 @@ public class BeanFactoryGenerator extends Generator {
 
 			final String hexEncoded = StringHelper.padLeft(Integer.toHexString(c), 4, '0');
 			safeName.append(hexEncoded);
-		} // for j
+		} // for i
 		return safeName.toString();
 	}
 }

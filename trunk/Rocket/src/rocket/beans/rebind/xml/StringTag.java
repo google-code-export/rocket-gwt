@@ -16,11 +16,11 @@
 package rocket.beans.rebind.xml;
 
 /**
- * Base class for any value be it a string literal
+ * Instances of this class represent a String literal encountered during parsing.
  * 
  * @author Miroslav Pokorny
  */
-public class StringTag extends ValueTag {
+class StringTag extends ValueTag {
 
 	public String getLiteral() {
 		return this.getBody();

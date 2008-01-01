@@ -1,5 +1,5 @@
-// // /rocket/beans/rebind/beanreference/bean-reference.txt
+// /rocket/beans/rebind/beanreference/bean-reference.txt
 
 // fetch the bean and cast
-(${beanType}) getBeanFactory().getBean( ${beanId} )
+(${type}) getBeanFactory().getBean( ${id} )
 

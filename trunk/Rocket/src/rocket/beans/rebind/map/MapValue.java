@@ -19,17 +19,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import rocket.beans.rebind.value.AbstractValue;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * Contains a Map property value for a bean.
+ * Contains a Map property value for a bean, including the many entries and values that may have been specified.
  * 
  * @author Miroslav Pokorny
  */
-public class MapValue extends Value {
+public class MapValue extends AbstractValue implements Value{
 
 	public MapValue() {
 		this.setEntries(createEntries());
@@ -38,13 +39,13 @@ public class MapValue extends Value {
 	public void addEntry(final String key, final Value value) {
 		final Map entries = this.getEntries();
 		if (entries.containsKey(key)) {
-			this.throwMapEntryAlreadyUsedException(key);
+			this.throwKeyAlreadyUsed(key);
 		}
 
 		entries.put(key, value);
 	}
 
-	protected void throwMapEntryAlreadyUsedException(final String key) {
+	protected void throwKeyAlreadyUsed(final String key) {
 		throw new MapEntryAlreadyUsedException("A entries entry with a key of \"" + key + "\" has already been defined");
 	}
 
@@ -68,9 +69,9 @@ public class MapValue extends Value {
 	}
 
 	/**
-	 * If the property is a not Map report false
+	 * If the property is a not a Map report false
 	 * 
-	 * @return
+	 * @return true if the type is compatible
 	 */
 	public boolean isCompatibleWith(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);

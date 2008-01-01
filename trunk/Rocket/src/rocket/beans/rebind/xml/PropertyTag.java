@@ -15,8 +15,6 @@
  */
 package rocket.beans.rebind.xml;
 
-import java.util.List;
-
 import org.w3c.dom.Element;
 
 /**
@@ -24,15 +22,13 @@ import org.w3c.dom.Element;
  * 
  * @author Miroslav Pokorny
  */
-public class PropertyTag extends XmlDocumentComponent {
+class PropertyTag extends XmlDocumentComponent {
 
-	public String getPropertyName() {
+	public String getName() {
 		return this.getAttribute(Constants.PROPERTY_NAME_ATTRIBUTE);
 	}
 
-	public ValueTag getValue() {
-		final List values = this.getElements(this.getElement().getChildNodes());
-		final Element element = (Element) values.get(0);
-		return this.getValue(element);
+	public Element getValue() {
+		return this.getFirstElement(this.getElement());
 	}
 }

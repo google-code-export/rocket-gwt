@@ -15,6 +15,7 @@
  */
 package rocket.beans.rebind.stringvalue;
 
+import rocket.beans.rebind.value.AbstractValue;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.SourceWriter;
@@ -33,12 +34,11 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 /**
- * A StringValue holds a string literal which may be converted to an used to set
- * a String or primitive property or constructor argument.
+ * A StringValue holds a string literal which may be converted to any of the primitive or String types. 
  * 
  * @author Miroslav Pokorny
  */
-public class StringValue extends Value {
+public class StringValue extends AbstractValue implements Value {
 
 	public boolean isCompatibleWith(final Type type) {
 		ObjectHelper.checkNotNull("parameter:type", type);
@@ -213,6 +213,8 @@ public class StringValue extends Value {
 	}
 
 	public void write(final SourceWriter writer) {
+		ObjectHelper.checkNotNull( "parameter:writer", writer );
+		
 		CodeBlock literal = null;
 
 		while (true) {
@@ -258,6 +260,6 @@ public class StringValue extends Value {
 	}
 
 	public String toString() {
-		return super.toString() + ", value\"" + value + "\".";
+		return super.toString() + ", value: \"" + value + "\".";
 	}
 }

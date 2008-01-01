@@ -20,6 +20,6 @@ package rocket.beans.rebind.xml;
  * 
  * @author Miroslav Pokorny
  */
-public class ValueTag extends XmlDocumentComponent {
+class ValueTag extends XmlDocumentComponent {
 
 }

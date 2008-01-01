@@ -15,53 +15,41 @@
  */
 package rocket.beans.rebind.value;
 
-import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
 
 /**
- * A holder which contains a value that may be set upon a bean via a constructor
- * or property
+ * Concrete values are values for constructor or properties these typically include.
+ * <ul>
+ * <li>String literals</li>
+ * <li>bean references</li>
+ * <li>nested beans</li>
+ * <li>lists</li>
+ * <li>sets</li>
+ * <li>maps</li>
+ * </ul>
  * 
  * @author Miroslav Pokorny
  */
-abstract public class Value implements CodeBlock {
+public interface Value extends CodeBlock {
 	/**
 	 * Tests if this property value entry is compatible with its field type.
 	 * 
-	 * @param type
-	 *            The type being tested
-	 * @return
+	 * @param type The type being tested
+	 * @return true if the type is compatible with the value.
 	 */
-	abstract public boolean isCompatibleWith(Type type);
-
-	private Type type;
-
-	protected Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
-		return this.type;
-	}
-
-	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-		this.type = type;
-	}
-
-	private GeneratorContext generatorContext;
-
-	public GeneratorContext getGeneratorContext() {
-		ObjectHelper.checkNotNull("field:generatorContext", generatorContext);
-		return this.generatorContext;
-	}
-
-	public void setGeneratorContext(final GeneratorContext generatorContext) {
-		ObjectHelper.checkNotNull("parameter:generatorContext", generatorContext);
-		this.generatorContext = generatorContext;
-	}
-
-	public boolean isEmpty() {
-		return false;
-	}
-
+	abstract boolean isCompatibleWith(Type type);
+	
+	/**
+	 * The explicit value type.
+	 * @param type The value type.
+	 */
+	void setType( Type type );
+	
+	
+	/**
+	 * The source file that contained this value.
+	 * @param filename The filename
+	 */
+	void setFilename( String filename );
 }
