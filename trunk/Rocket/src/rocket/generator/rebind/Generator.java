@@ -25,7 +25,6 @@ import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.dev.jjs.ast.Context;
 
 /**
  * Convenient base class for any generator. It includes code to setup a context,
@@ -37,7 +36,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 
 	/**
 	 * Starts the code generation process including the construction of a new
-	 * Context. This method is called by GWT for each rebind request.
+	 * Context. This method is called by GWT for each deferred binding request.
 	 */
 	public String generate(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext, final String typeName) {
 		final GeneratorContext context = this.createGeneratorContext( generatorContext, logger );
@@ -57,7 +56,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	
 	/**
 	 * Tests if a Type already exists and if it doesnt invokes
-	 * {@link #assembleNewType(Context, String, String)} which will build a
+	 * {@link #assembleNewType(String, String)} which will build a
 	 * {@link NewConcreteType}
 	 * 
 	 * @param typeName The name of type which will be used to generate a new type.
@@ -77,16 +76,17 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 				final NewConcreteType newType = this.assembleNewType(typeName, newTypeName);
 				if (null != newType) {
 					context.branch();
-					context.info("Completed assembling new type \"" + newTypeName + "\".");
+					context.info("Assembling source for new type(s)...");
 					newType.write();
+					context.info("Completed...");
 					context.unbranch();
 
 					final long now = System.currentTimeMillis();
 
-					context.info("Finished writing new type \"" + newTypeName + "\", " + (now - started) + " millis taken.");
+					context.info("Finished writing new type in " + (now - started) + " millis.");
 					bindTypeName = newTypeName;
 				} else {
-					context.info("No type was assembled for \"" + newTypeName + "\".");
+					context.info("Definition previously existed will use that instead..");
 					bindTypeName = null;
 				}
 
