@@ -37,6 +37,9 @@ package rocket.generator.client;
  * </pre>
  * 
  * @author Miroslav Pokorny
+ * 
+ * TODO This class should probably be moved to rocket.Util so that inheriting rocket.Generator is not required. 
+ * Another alternative is that the generator doesnt throw this class if its not inside a unit test...Not sure how to detect this.
  */
 abstract public class FailedGenerateAttemptException extends RuntimeException {
 

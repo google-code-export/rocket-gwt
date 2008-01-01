@@ -1,5 +1,13 @@
 <module>
+	<inherits name="rocket.browser.Browser" />
+	<inherits name="rocket.dom.Dom" />	
+	<inherits name="rocket.style.Style" />	
+	<inherits name="rocket.util.Util" />
+	<inherits name="rocket.widget.Widget" />	
+
 	<generate-with class="rocket.testing.rebind.TestBuilderGenerator">
 		<when-type-assignable class="rocket.testing.client.TestBuilder" />
 	</generate-with>
+
+	<stylesheet src="Testing.css" />
 </module>

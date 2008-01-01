@@ -51,7 +51,9 @@ public class WebPageTestRunner extends TestRunner {
 	public WebPageTestRunner() {
 		super();
 
-		RootPanel.get().add(this.createTable());
+		final FlexTable table = this.createTable();
+		this.setTable( table );
+		RootPanel.get().add( table );
 	}
 
 	/**
@@ -258,11 +260,16 @@ public class WebPageTestRunner extends TestRunner {
 	}
 
 	private FlexTable createTable() {
-		final ZebraFlexTable table = new ZebraFlexTable();
+		final ZebraFlexTable table = new ZebraFlexTable(){
+			protected String getInitialStyleName() {
+				return Constants.WEBPAGE_TESTRUNNER_TABLE;
+			}
+		};		
 		table.setText(0, 0, "Test name");
 		table.setText(0, 1, "Outcome");
 		table.setText(0, 2, "Time taken (millis)");
-		this.setTable(table);
+		table.addHeadingStyleToFirstRow();
+		
 		return table;
 	}
 }

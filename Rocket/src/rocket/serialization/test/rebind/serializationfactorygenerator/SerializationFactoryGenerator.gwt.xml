@@ -1,6 +1,6 @@
 <module>
 	<inherits name="com.google.gwt.junit.JUnit"/>
-	<inherits name="rocket.User"/>
 	<inherits name="rocket.serialization.Serialization"/>	
+	<inherits name="rocket.generator.Generator"/>		
 	<source path="client" />
 </module>

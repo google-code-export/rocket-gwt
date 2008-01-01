@@ -1,4 +1,9 @@
 <module>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.browser.Browser" />	
+	<inherits name="rocket.dom.Dom" />	
+	<inherits name="rocket.util.Util" />	
+	
 	<!--
 	*** StyleSheet support classes **********************************************************************
 	-->

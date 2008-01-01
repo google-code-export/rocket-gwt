@@ -1,4 +1,7 @@
 <module>	
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.util.Util"/>
+
 	<replace-with class="rocket.selection.client.support.FireFoxSelectionSupport">
 		<when-type-is class="rocket.selection.client.support.SelectionSupport"/>
 		<when-property-is name="user.agent" value="gecko"/>

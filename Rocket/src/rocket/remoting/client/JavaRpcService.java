@@ -15,8 +15,6 @@
  */
 package rocket.remoting.client;
 
-import rocket.json.client.JsonSerializable;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 

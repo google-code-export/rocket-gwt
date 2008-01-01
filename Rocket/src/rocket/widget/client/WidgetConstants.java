@@ -14,7 +14,6 @@
  */
 package rocket.widget.client;
 
-import rocket.browser.client.Browser;
 
 /**
  * This class contains primarily constants related to Widgets. Most constants
@@ -286,7 +285,7 @@ public class WidgetConstants {
 
 	final static String READONLY = "-readOnly";
 
-	// PRIMITIVE WIDGET CONSTANTS FOLLOW
+	// BASIC WIDGET CONSTANTS FOLLOW
 	// ::::::::::::::::::::::::::::::::::::::::::::
 
 	final static String TEXTBOX_STYLE = ROCKET + "-textBox";
@@ -378,6 +377,9 @@ public class WidgetConstants {
 	 */
 	static final String ENCODING_URLENCODED = "application/x-www-form-urlencoded";
 
+	/**
+	 * The start of a collection of viewport widget constants.
+	 */
 	final static String VIEWPORT_STYLE = WidgetConstants.ROCKET + "-viewport";
 
 	final static String VIEWPORT_TILE_STYLE = VIEWPORT_STYLE + "-tile";

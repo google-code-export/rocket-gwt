@@ -20,12 +20,16 @@ import rocket.event.client.EventConstants;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Event;
 
+/**
+ * This class adds additional key translations to the expected standard.
+ * @author Miroslav Pokorny
+ */
 public class SafariEventSupport extends DOMImplSafari {
 
 	public SafariEventSupport(){
 		super();
 		
-		GWT.log( "Using SafariEventSupport instead of DOMImplSafari with extra key translation...", null );
+		GWT.log( "Using SafariEventSupport which provides additional key translations to standard codes from safari specific ones...", null );
 	}
 	
 	  public int eventGetKeyCode(Event evt) {

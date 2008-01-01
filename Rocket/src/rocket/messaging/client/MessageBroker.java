@@ -31,21 +31,9 @@ import rocket.util.client.StringHelper;
  */
 public class MessageBroker {
 	/**
-	 * A reference to the singleton.
-	 */
-	private static MessageBroker singleton;
-
-	public static synchronized MessageBroker getSingleton() {
-		if (singleton == null) {
-			singleton = new MessageBroker();
-		}
-		return singleton;
-	}
-
-	/**
 	 * Only a single instance needs to exist as it is stateless.
 	 */
-	private MessageBroker() {
+	public MessageBroker() {
 		this.setSubscribers(new HashMap());
 	}
 

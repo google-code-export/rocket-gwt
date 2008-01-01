@@ -33,5 +33,4 @@
 		path="/jsonRpc"
 		class="rocket.remoting.test.json.rpc.server.JsonRpcEchoServlet" />
 				
-
 </module>

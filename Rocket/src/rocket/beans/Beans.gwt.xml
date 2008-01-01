@@ -1,5 +1,7 @@
 <module>
-	<inherits name="rocket.User"/>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.util.Util"/>
+	
 	<source path="client" />	
 
 	<generate-with class="rocket.beans.rebind.BeanFactoryGenerator">

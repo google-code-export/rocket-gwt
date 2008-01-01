@@ -1,8 +1,6 @@
 <module>
+	<inherits name="rocket.testing.Testing" />	
+	<inherits name="rocket.widget.Widget" />	
 
-	<!-- Inherit the core Web Toolkit stuff.                  -->
-	<inherits name="rocket.User" />	
-
-	<!-- Specify the app entry point class.                   -->
 	<entry-point class="rocket.widget.test.orderedlistpanel.client.OrderedListPanelTest" />
 </module>

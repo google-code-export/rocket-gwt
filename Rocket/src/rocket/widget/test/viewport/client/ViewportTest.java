@@ -142,7 +142,7 @@ public class ViewportTest implements EntryPoint {
 			image.setUrl(Browser.getContextPath() + "/tiles?" + ViewportTestConstants.X + '=' + x + '&' + ViewportTestConstants.Y + '=' + y + '&' + ViewportTestConstants.WIDTH
 					+ '=' + TILE_WIDTH + '&' + ViewportTestConstants.HEIGHT + '=' + TILE_HEIGHT + '&' + ViewportTestConstants.ZOOM + '=' + 100);
 
-			ViewportTest.log("retrieving new tile at " + x + ", " + y);
+			ViewportTest.log("Requesting new tile at " + x + ", " + y);
 			return image;
 		}
 

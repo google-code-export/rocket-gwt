@@ -1,6 +1,7 @@
 <module>
 	<inherits name="com.google.gwt.junit.JUnit"/>
-	<inherits name="rocket.User"/>
+	<inherits name="rocket.generator.Generator"/>
+	
 	<source path="client" />
 
 	<generate-with class="rocket.generator.test.generator.rebind.ClassTypeGenerator">

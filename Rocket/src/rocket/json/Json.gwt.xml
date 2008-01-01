@@ -1,7 +1,7 @@
 <module>
-	<inherits name="com.google.gwt.junit.JUnit"/>
-	<inherits name="rocket.User"/>
-
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.util.Util"/>
+		
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="com.google.gwt.http.HTTP" />
 	<inherits name="com.google.gwt.user.HTTPRequest" />
