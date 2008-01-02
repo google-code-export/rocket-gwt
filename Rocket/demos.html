@@ -13,16 +13,33 @@ BODY, TABLE {
 }
 
 TH {
-	background-color: #000;
+	background-color: #aaf;
 	color: #fff;
 }
 
 .odd {
-	background-color: #eef;
+	background-color: #eee;
+	color: #111;
 }
 
 .even {
-	background-color: #ddf;
+	background-color: #ddd;
+	color: #222;
+}
+
+A {
+	color: blue;
+}
+
+PRE {
+	margin: 4px;
+	font-family: Courier, New Courier, Monospaced;
+	font-size: 7px;
+	border-width: 1px;
+	border-style: dotted;
+	border-color: #ddc;
+	padding: 4px;
+	background-color: #ffd;
 }
 
 </style>
@@ -32,133 +49,276 @@ TH {
 
 <h1>Prepackaged demos</h1>
 
+
 <p>
-All demos can be found under the www directory within the rocket download. The java source for each widget exists in a parallel test package for the said component.
+All demos can be found under the www directory within the rocket download. 
+The java source for each widget exists in a parallel test package for the said component.
 </p>
 <table>
 
-<tr>
-<th>Demo</th><th>Server required</th><th>Info</th>
-</tr>
+	<tr>
+		<th>Demo</th>
+		<th>Server required</th>
+		<th>Info</th>
+		<th>Demo class</th>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.dragndrop.test.DragNDrop/DragNDrop.html">DragNDrop</a></li></td>
+		<td>No</td>
+		<td>Drag n drop in action</td>
+		<td>rocket.dragndrop.test.client.DragNDropTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.remoting.test.comet.Comet/Comet.html">Comet</a></li></td>
+		<td>Yes - run comet.launch</td>
+		<td>Cometting of java objects to the client from a server</td>
+		<td>rocket.remoting.test.comet.client.CometTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.selection.test.selection.Selection/Selection.html">Selection</a></li></td>
+		<td>No</td>
+		<td>Programmatic interaction with selections.</td>
+		<td>rocket.selection.test.selection.client.SelectionTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.style.test.stylesheet.StyleSheet/StyleSheet.html">StyleSheet</a></li></td>
+		<td>No</td>
+		<td>Interactive test that demonstrates programmatic manipulation of stylesheets, rules and css properties</td>
+		<td>rocket.style.test.stylesheet.client.StyleSheetTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.testing.test.interactivelist.InteractiveList/InteractiveList.html">InteractiveList</a></li></td>
+		<td>No</td>
+		<td>Tests a test facility for any List</td>
+		<td>rocket.testing.test.interactivelist.client.InteractiveListTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.testing.test.interactivepanel.InteractivePanel/InteractivePanel.html">InteractivePanel</a></li></td>
+		<td>No</td>
+		<td>Tests a test facility for any Panel</td>
+		<td>rocket.testing.test.interactivepanel.client.InteractivePanelTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.testing.test.webpagetestrunner.WebPageTestRunnerTest/WebPageTestRunnerTest.html">WebPageTestRunnerTest</a></li></td>
+		<td>No</td>
+		<td>Tests a facility for writing interactive functional tests of widgets and other components which require a user to confirm something worked.</td>
+		<td>rocket.testing.test.webpagetestrunner.client.WebPageTestRunnerTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.util.test.stacktrace.StackTrace/StackTrace.html">StackTrace</a></li></td>
+		<td>No</td>
+		<td>Demonstrates stacktraces in web mode (outside hosted mode).</td>
+		<td>rocket.util.test.stacktrace.client.StackTraceTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.accordionpanel.AccordionPanel/AccordionPanel.html">AccordionPanel</a></li></td>
+		<td>No</td>
+		<td>Accordion widget</td>
+		<td>rocket.widget.test.accordionpanel.client.AccordionPanelTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.autocompletetextbox.AutoCompleteTextBox/AutoCompleteTextBox.html">AutoCompleteTextBox</a></li></td>
+		<td>No</td>
+		<td>AutoCompleteTextBox widget in action, matches againsta prepared list(shown on page).</td>
+		<td>rocket.widget.test.autocompletetextbox.client.AutoCompleteTextBoxTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.basicwidgets.BasicWidgets/BasicWidgets.html">BasicWidgets</a></li></td>
+		<td>yes - run basicWidgets.launch to test FormPanel</td>
+		<td>All GWT basic widgets rewritten to be more easily subclasses, accept hijacked elements from the dom and more, whilst maintaining the original functionality.</td>
+		<td>rocket.widget.test.basicwidgets.client.BasicWidgetsTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.breadcrumbpanel.BreadcrumbPanel/BreadcrumbPanel.html">BreadcrumbPanel</a></li></td>
+		<td>No</td>
+		<td>A simple breadcrumb panel that can pop and push crumbs</td>
+		<td>rocket.widget.test.breadcrumbpanel.client.BreadcrumbPanelTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.divpanel.DivPanel/DivPanel.html">DivPanel</a></li></td>
+		<td>No</td>
+		<td>A panel that uses a DIV panel as the root, with A DIV surrounding each child widget.</td>
+		<td>rocket.widget.test.divpanel.client.DivPanelTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.gridview.GridView/GridView.html">GridView</a></li></td>
+		<td>No</td>
+		<td>A grid base panel that lazily initiates each cell as well as supporting a window of a much larger dataset.</td>
+		<td>rocket.widget.test.gridview.client.GridViewTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.hyperlinkpanel.HyperLinkPanel/HyperLinkPanel.html">HyperLinkPanel</a></li></td>
+		<td>No</td>
+		<td>A panel that uses a A panel as the root with the ability to add child widgets.</td>
+		<td>rocket.widget.test.hyperlinkpanel.client.HyperlinkPanelTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.menu.Menu/Menu.html">Menu</a></li></td>
+		<td>No</td>
+		<td>A rich the menu system that supports control over the way menu lists open and a context menu.
+			<ul>
+				<li>Down - like traditional menus.</li>
+				<li>Up - like the windows start menu</li>
+				<li>Right - most sub menus typically open to the right</li>
+				<li>Left - when most sub menus are placed on the rigth edge of the screen they open to the left.</li>
+				<li>ContextMenu - a panel that includes a ContextMenu which is triggered by right mouse clicks</li>
+			</ul>
+		</td>
+		<td>rocket.widget.test.menu.client.MenuTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.orderedlistpanel.OrderedlistPanel/OrderedListPanel.html">OrderedListPanel</a></li></td>
+		<td>No</td>
+		<td>A panel that uses a OL panel as the root with a LI surrounding each child widget.</td>
+		<td>rocket.widget.test.orderedlistpanel.client.OrderedListPanelTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.pager.demo.Pager/Pager.html">Pager</a></li></td>
+		<td>No</td>
+		<td>A widget that can be used to create a paging navigation control.</td>
+		<td>rocket.widget.test.pager.demo.client.PagerTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.resizablepanel.ResizablePanel/ResizablePanel.html">ResizablePanel</a></li></td>
+		<td>No</td>
+		<td>A panel that can be used to resize a child widget by dragging the edges.</td>
+		<td>rocket.widget.test.resizablepanel.client.ResizablePanelTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.slider.Slider/Slider.html">Slider</a></li></td>
+		<td>No</td>
+		<td>Demonstrates several slider widgets (with different orientations).</td>
+		<td>rocket.widget.test.slider.client.SliderTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.sortabletable.SortableTable/SortableTable.html">SortableTable</a></li></td>
+		<td>No</td>
+		<td>A powerful fast sort table implementation.</td>
+		<td>rocket.widget.test.sortabletable.client.SortableTableTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.spanpanel.SpanPanel/SpanPanel.html">SpanPanel</a></li></td>
+		<td>No</td>
+		<td>A panel that uses a SPAN panel as the root with SPAN surrounding each child widget.</td>
+		<td>rocket.widget.test.spanpanel.client.SpanPanelTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.splitterpanel.SplitterPanel/SplitterPanel.html">SplitterPanel</a></li></td>
+		<td>No</td>
+		<td>Demonstrates several splitter panel widgets (unlike the GWT splitter panels both panels accept more than just 2 child widgets).</td>
+		<td>rocket.widget.test.splitterpanel.client.SplitterPanelTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.stylesheetpicker.StyleSheetPicker/StyleSheetPicker.html">StyleSheetPicker</a></li></td>
+		<td>No</td>
+		<td>A simple widget that provides the capability to allow the user to select any prepared stylesheet (all are disabled accept for the current).</td>
+		<td>rocket.widget.test.stylesheetpicker.client.StyleSheetPickerTest</td>
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.tabpanel.TabPanel/TabPanel.html">TabPanel</a></li></td>
+		<td>No</td>
+		<td>A  rich tab panel implementation with different flavours that allow customisation of where the tabs appear (above, below, to the right or left) of the content.</td>
+		<td>rocket.widget.test.tabpanel.client.TabPanelTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.unorderedlistpanel.UnorderedListPanel/UnorderedListPanel.html">UnorderedListPanel</a></li></td>
+		<td>No</td>
+		<td>A panel that uses a UL panel as the root with a LI surrounding each child widget.</td>
+		<td>rocket.widget.test.unorderedlistpanel.client.UnorderedListPanelTest</td>	
+	</tr>
+	
+	<tr class="odd">
+		<td><a href="www/rocket.widget.test.viewport.Viewport/Viewport.html">Viewport</a></li></td>
+		<td>Yes (run viewport.launch)</td>
+		<td>A simple yet powerful tile based viewport widget visually and functionally similar to the Google map map widget.</td>
+		<td>rocket.widget.test.viewport.client.ViewportTest</td>
+	</tr>
+	
+	<tr class="even">
+		<td><a href="www/rocket.widget.test.zebraflextable.ZebraFlexTable/ZebraFlexTable.html">ZebraFlexTable</a></li></td>
+		<td>No</td>
+		<td>A flextable that automatically adds an odd or even style to odd or even rows.</td>
+		<td>rocket.widget.test.zebraflextable.client.ZebraFlexTableTest</td>
+	</tr>
+</table>
 
-<tr class="odd">
-<td><a href="www/rocket.dragndrop.test.DragNDrop/DragNDrop.html">DragNDrop</a></li></td><td>No</td><td>Drag n drop in action</td>
-</tr>
+<b>Example locating the Menu Widget source</b>
+<p>
+The demo
+</p>
+<pre>
+www
+	rocket.widget.test.menu.Menu
+</pre>
 
-<tr class="even">
-<td><a href="www/rocket.remoting.test.comet.Comet/Comet.html">Comet</a></li></td><td>Yes - run comet.launch</td><td>Cometting of java objects to the client from a server</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.selection.test.selection.Selection/Selection.html">Selection</a></li></td><td>No</td><td>Programmatic interaction with selections.</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.style.test.stylesheet.StyleSheet/StyleSheet.html">StyleSheet</a></li></td><td>No</td><td>Interactive test that demonstrates programmatic manipulation of stylesheets, rules and css properties</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.testing.test.interactivelist.InteractiveList/InteractiveList.html">InteractiveList</a></li></td><td>No</td><td>Tests a test facility for any List</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.testing.test.interactivepanel.InteractivePanel/InteractivePanel.html">InteractivePanel</a></li></td><td>No</td><td>Tests a test facility for any Panel</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.testing.test.webpagetestrunner.WebPageTestRunnerTest/WebPageTestRunnerTest.html">WebPageTestRunnerTest</a></li></td><td>No</td><td>Tests a facility for writing interactive functional tests of widgets and other components which require a user to confirm something worked.</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.util.test.stacktrace.StackTrace/StackTrace.html">StackTrace</a></li></td><td>No</td><td>Demonstrates stacktraces in web mode (outside hosted mode).</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.accordionpanel.AccordionPanel/AccordionPanel.html">AccordionPanel</a></li></td><td>No</td><td>Accordion widget</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.autocompletetextbox.AutoCompleteTextBox/AutoCompleteTextBox.html">AutoCompleteTextBox</a></li></td><td>No</td><td>AutoCompleteTextBox widget in action, matches againsta prepared list(shown on page).</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.basicwidgets.BasicWidgets/BasicWidgets.html">BasicWidgets</a></li></td><td>No</td>yes - run basicWidgets.launch to test FormPanel<td>All GWT basic widgets rewritten to be more easily subclasses, accept hijacked elements from the dom and more, whilst maintaining the original functionality.</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.breadcrumbpanel.BreadcrumbPanel/BreadcrumbPanel.html">BreadcrumbPanel</a></li></td><td>No</td><td>A simple breadcrumb panel that can pop and push crumbs</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.divpanel.DivPanel/DivPanel.html">DivPanel</a></li></td><td>No</td><td>A panel that uses a DIV panel as the root, with A DIV surrounding each child widget.</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.gridview.GridView/GridView.html">GridView</a></li></td><td>No</td><td>A grid base panel that lazily initiates each cell as well as supporting a window of a much larger dataset.</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.hyperlinkpanel.HyperLinkPanel/HyperLinkPanel.html">HyperLinkPanel</a></li></td><td>No</td><td>A panel that uses a A panel as the root with the ability to add child widgets.</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.menu.Menu/Menu.html">Menu</a></li></td><td>No</td><td>A rich the menu system that supports control over the way menu lists open and a context menu.
-	<ul>
-		<li>Down - like traditional menus.</li>
-		<li>Up - like the windows start menu</li>
-		<li>Right - most sub menus typically open to the right</li>
-		<li>Left - when most sub menus are placed on the rigth edge of the screen they open to the left.</li>
-	</ul>
-</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.orderedlistpanel.OrderedlistPanel/OrderedListPanel.html">OrderedListPanel</a></li></td><td>No</td><td>A panel that uses a OL panel as the root with a LI surrounding each child widget.</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.pager.demo.Pager/Pager.html">Pager</a></li></td><td>No</td><td>A widget that can be used to create a paging navigation control.</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.resizablepanel.ResizablePanel/ResizablePanel.html">ResizablePanel</a></li></td><td>No</td><td>A panel that can be used to resize a child widget by dragging the edges.</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.slider.Slider/Slider.html">Slider</a></li></td><td>No</td><td>Demonstrates several slider widgets (with different orientations).</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.sortabletable.SortableTable/SortableTable.html">SortableTable</a></li></td><td>No</td><td>A powerful fast sort table implementation.</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.spanpanel.SpanPanel/SpanPanel.html">SpanPanel</a></li></td><td>No</td><td>A panel that uses a SPAN panel as the root with SPAN surrounding each child widget.</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.splitterpanel.SplitterPanel/SplitterPanel.html">SplitterPanel</a></li></td><td>No</td><td>Demonstrates several splitter panel widgets (unlike the GWT splitter panels both panels accept more than just 2 child widgets).</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.stylesheetpicker.StyleSheetPicker/StyleSheetPicker.html">StyleSheetPicker</a></li></td><td>No</td><td>A simple widget that provides the capability to allow the user to select any prepared stylesheet (all are disabled accept for the current).</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.tabpanel.TabPanel/TabPanel.html">TabPanel</a></li></td><td>No</td><td>A  rich tab panel implementation with different flavours that allow customisation of where the tabs appear (above, below, to the right or left) of the content.</td>
-</tr>
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.unorderedlistpanel.UnorderedListPanel/UnorderedListPanel.html">UnorderedListPanel</a></li></td><td>No</td><td>A panel that uses a UL panel as the root with a LI surrounding each child widget.</td>
-</tr>
-
-<tr class="odd">
-<td><a href="www/rocket.widget.test.viewport.Viewport/Viewport.html">Viewport</a></li></td><td>Yes (run viewport.launch)</td><td>A simple yet powerful tile based viewport widget visually and functionally similar to the Google map map widget.</td>
-</tr>
-
-
-<tr class="even">
-<td><a href="www/rocket.widget.test.zebraflextable.ZebraFlexTable/ZebraFlexTable.html">ZebraFlexTable</a></li></td><td>No</td><td>A flextable that automatically adds an odd or even style to odd or even rows.</td>
-</tr>
+<p>
+The source for the widget.
+</p>
+<pre>
+src
+	rocket
+		widget
+			client
+				menu
+					Constants
+					ContextMenu
+					ContextMenuOpenEvent
+					HorizontalMenuBar
+					HorizontalMenuList
+					Menu
+					MenuItem
+					MenuList
+					MenuListener
+					MenuListenerCollection
+					MenuListOpenDirection
+					MenuOpenEvent
+					MenuSpacer
+					MenuWidget
+					SubMenuItem
+					VerticalMenuBar
+					VerticalMenuList
+</pre>
+<p>
+The source for accompanying test/demo.
+Within Eclipse the demo can be easily be found using OpenType (CTRL+SHIFT+T) and typing MenuTest.
+</p>
+<pre>
+src
+	rocket
+		widget
+			test
+				menu
+					public
+						Menu.html
+					Menu.gwt.xml
+					client
+						MenuTest.java
+</pre>
 
 </body>
