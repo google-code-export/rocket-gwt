@@ -32,11 +32,12 @@ abstract public class Event implements Destroyable {
 
 	/**
 	 * Disables the browser's built in context menu.
-	 * 
 	 */
-
 	private static boolean disabled = false;
 
+	/**
+	 * This method includes a guard that ensures the context menu disabler is only installed once.
+	 */
 	static public void disableContextMenu() {
 		if (false == disabled) {
 			disableContextMenu0();
@@ -48,14 +49,14 @@ abstract public class Event implements Destroyable {
 
 	native static void disableContextMenu0()/*-{
 	 var block = function( event ){
-	 return false;
+	 	return false;
 	 };
 
 	 var body = $doc.body;
 	 if( body.attachEvent ){
-	 body.attachEvent( "oncontextmenu", block );
+	 	body.attachEvent( "oncontextmenu", block );
 	 }else {
-	 body.addEventListener( "contextmenu", block, false );
+	 	body.addEventListener( "contextmenu", block, false );
 	 }
 	 body.oncontextmenu = block;
 	 }-*/;
