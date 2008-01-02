@@ -24,7 +24,7 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class HyperlinkPanel extends Panel {
+public class HyperlinkPanel extends SimplePanel {
 
 	public HyperlinkPanel() {
 		super();
