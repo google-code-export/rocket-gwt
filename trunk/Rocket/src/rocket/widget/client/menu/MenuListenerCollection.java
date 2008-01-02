@@ -23,31 +23,34 @@ import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * A collection of menu event listeners.
+ * @author Miroslav Pokorny
+ */
 class MenuListenerCollection {
 
 	public MenuListenerCollection() {
 		this.setListeners(this.createListeners());
 	}
 
-	public void fireMenuOpened(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
-
-		final MenuOpenEvent event = new MenuOpenEvent();
-		event.setWidget(widget);
-
+	public void fireMenuOpened( final MenuOpenEvent event ){
+		ObjectHelper.checkNotNull("parameter:event", event);
+		
 		final Iterator listeners = this.iterator();
 
 		while (listeners.hasNext()) {
 			final MenuListener listener = (MenuListener) listeners.next();
 			listener.onOpen(event);
-		}
+		}	
 	}
-
+	
 	public void add(final MenuListener menuListener) {
+		ObjectHelper.checkNotNull("parameter:menuListener", menuListener);
 		this.getListeners().add(menuListener);
 	}
 
 	public void remove(final MenuListener menuListener) {
+		ObjectHelper.checkNotNull("parameter:menuListener", menuListener);
 		this.getListeners().remove(menuListener);
 	}
 
@@ -55,6 +58,9 @@ class MenuListenerCollection {
 		return this.getListeners().iterator();
 	}
 
+	/**
+	 * A list that aggregates MenuListeners.
+	 */
 	private List listeners;
 
 	protected List getListeners() {

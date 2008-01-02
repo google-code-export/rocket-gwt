@@ -105,7 +105,7 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 
 			// need to figure out if mouse has moved to the right or left...
 			final int mouseX = event.getPageX();
-			final int splitterX = Dom.getAbsoluteLeft(splitter.getElement());
+			final int splitterX = DOM.getAbsoluteLeft(splitter.getElement());
 
 			// if the mouse has not moved horizontally but vertically so exit...
 			int delta = mouseX - splitterX;

@@ -15,7 +15,6 @@
  */
 package rocket.widget.client.slider;
 
-import rocket.dom.client.Dom;
 import rocket.event.client.ChangeEventListener;
 import rocket.event.client.Event;
 import rocket.event.client.EventBitMaskConstants;
@@ -180,8 +179,8 @@ public class FloatingSlider extends CompositeWidget {
 
 		final Widget handle = this.getHandle();
 		final Element widget = this.getElement();
-		final int mouseX = event.getPageX() - Dom.getAbsoluteLeft(widget) - handle.getOffsetWidth() / 2;
-		final int mouseY = event.getPageY() - Dom.getAbsoluteTop(widget) - handle.getOffsetHeight() / 2;
+		final int mouseX = event.getPageX() - DOM.getAbsoluteLeft(widget) - handle.getOffsetWidth() / 2;
+		final int mouseY = event.getPageY() - DOM.getAbsoluteTop(widget) - handle.getOffsetHeight() / 2;
 
 		this.onBackgroundMouseDown(mouseX, mouseY);
 
@@ -371,8 +370,8 @@ public class FloatingSlider extends CompositeWidget {
 		ObjectHelper.checkNotNull("parameter:event", event);
 
 		final Element sliderElement = this.getElement();
-		final int widgetX = Dom.getAbsoluteLeft(sliderElement);
-		final int widgetY = Dom.getAbsoluteTop(sliderElement);
+		final int widgetX = DOM.getAbsoluteLeft(sliderElement);
+		final int widgetY = DOM.getAbsoluteTop(sliderElement);
 		final int sliderWidth = this.getOffsetWidth();
 		final int sliderHeight = this.getOffsetHeight();
 

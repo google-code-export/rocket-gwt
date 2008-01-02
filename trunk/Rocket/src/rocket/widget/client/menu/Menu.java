@@ -17,6 +17,7 @@ package rocket.widget.client.menu;
 
 import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEvent;
 import rocket.event.client.MouseEventAdapter;
 import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
@@ -70,6 +71,12 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.MOUSE_CLICK | EventBitMaskConstants.MOUSE_OVER | EventBitMaskConstants.MOUSE_OUT;
+	}
+	
+	protected void onDetach(){
+		super.onDetach();
+		
+		this.hide();
 	}
 
 	protected void onMouseClick(final MouseClickEvent event) {
@@ -171,6 +178,19 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 
 	public void removeMenuListener(final MenuListener listener) {
 		this.getMenuListeners().remove(listener);
+	}
+
+	/**
+	 * This method is respsonible for notifying or firing the MenuOpenEvent
+	 * @param event The mouse event that triggered the menu event
+	 * @param source The widget that recieved
+	 */
+	protected void fireMenuOpened(final MouseEvent event, final Widget source) {
+		final MenuOpenEvent menuOpenEvent = new MenuOpenEvent();
+		menuOpenEvent.setMenu( this );
+		menuOpenEvent.setWidget(source);
+
+		this.getMenuListeners().fireMenuOpened(menuOpenEvent);
 	}
 
 	public String toString() {

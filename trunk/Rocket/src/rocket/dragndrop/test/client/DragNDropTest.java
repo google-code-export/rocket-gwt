@@ -37,8 +37,8 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
@@ -70,7 +70,7 @@ public class DragNDropTest implements EntryPoint {
 		});
 
 		final RootPanel rootPanel = RootPanel.get();
-
+		
 		this.dragStarts = new Counter("Drag starts: ");
 		rootPanel.add(dragStarts);
 
@@ -98,17 +98,19 @@ public class DragNDropTest implements EntryPoint {
 		rootPanel.add(new Label("Grid"));
 		rootPanel.add(createGrid());
 
-		rootPanel.add(new Label("HorizontalPanel"));
-		rootPanel.add(this.createHorizontalPanel());
+		rootPanel.add(new Label("FlowPanel"));
+		rootPanel.add(this.createFlowPanel());
 
 		rootPanel.add(new Label("Bin"));
 		rootPanel.add(createBin());
+		
+		WidgetHelper.forceDocumentContentsToScroll( 100 );
 	}
 
 	Widget createGrid() {
 
 		final Grid grid = new Grid(3, 3);
-		grid.setStyleName("dragNDropTest-grid");
+		grid.setStyleName("rocket-dragNDropTest-grid");
 		grid.setBorderWidth(0);
 		grid.setCellPadding( 1);
 		grid.setCellSpacing( 1 );
@@ -200,9 +202,9 @@ public class DragNDropTest implements EntryPoint {
 		return dropTarget;
 	}
 
-	Widget createHorizontalPanel() {
-		final HorizontalPanel horizontalPanel = new HorizontalPanel();
-		horizontalPanel.addStyleName("dragNDropTest-horizontalPanel");
+	Widget createFlowPanel() {
+		final FlowPanel horizontalPanel = new FlowPanel();
+		horizontalPanel.addStyleName("rocket-dragNDropTest-flowPanel");
 		horizontalPanel.add(new Image("hourglass.png"));
 		horizontalPanel.add(new Html("<div style='width: 100%'></div>"));
 

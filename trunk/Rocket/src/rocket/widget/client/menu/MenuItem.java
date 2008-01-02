@@ -16,6 +16,7 @@
 package rocket.widget.client.menu;
 
 import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEvent;
 import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
 import rocket.widget.client.Html;
@@ -44,13 +45,15 @@ public class MenuItem extends MenuWidget {
 
 	// ACTIONS :::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void open() {
+	public void open( final MouseEvent event ) {
 		final MenuList menuList = this.getParentMenuList();
-
 		final Menu menu = menuList.getMenu();
-		final MenuListenerCollection listeners = menu.getMenuListeners();
-		listeners.fireMenuOpened(this);
-		menu.hide();
+		
+		// notify listeners...
+		menu.fireMenuOpened(event, this );
+		
+		// hide...
+		menu.hide();		
 	}
 
 	public void hide() {
@@ -72,7 +75,7 @@ public class MenuItem extends MenuWidget {
 	 */
 	protected void onMouseClick(final MouseClickEvent event) {
 		if (false == this.isDisabled()) {
-			this.open();
+			this.open( event );
 		}
 	}
 

@@ -23,6 +23,7 @@ import rocket.testing.client.InteractiveList;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StackTrace;
 import rocket.util.client.SystemHelper;
+import rocket.widget.client.WidgetHelper;
 import rocket.widget.client.splitter.HorizontalSplitterPanel;
 import rocket.widget.client.splitter.SplitterItem;
 import rocket.widget.client.splitter.VerticalSplitterPanel;
@@ -59,6 +60,8 @@ public class SplitterPanelTest implements EntryPoint {
 
 		root.add(this.createVerticalSplitterPanelListView());
 		root.add(this.createVerticalSplitterPanel());
+
+		WidgetHelper.forceDocumentContentsToScroll( 100 );
 	}
 
 	HorizontalSplitterPanel horizontalSplitterPanel;
