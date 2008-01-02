@@ -103,19 +103,6 @@ public class SplitterItem {
 		this.sizeShare = sizeShare;
 	}
 
-	/**
-	 * Removes this splitterItem from its parent Splitter provided it has
-	 * already been added.
-	 */
-	public void remove() {
-		if (false == this.hasSplitterPanel()) {
-			throw new UnsupportedOperationException(
-					"This splitterItem cannot be removed because it has not yet been added to a SplitterPanel");
-		}
-		this.getSplitterPanel().remove(this);
-		this.clearSplitterPanel();
-	}
-
 	public String toString() {
 		return super.toString() + ", minimumSize: " + minimumSize + ", sizeShare: " + sizeShare + ", widget: " + widget;
 	}
