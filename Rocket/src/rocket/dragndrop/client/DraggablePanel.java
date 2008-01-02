@@ -106,8 +106,13 @@ public class DraggablePanel extends SimplePanel {
 		ObjectHelper.checkNotNull("parameter:mouseDownEvent", mouseDownEvent);
 
 		while (true) {
+			// first disable / clear any selections...
+			Selection.disableTextSelection();
+			Selection.clearAnySelectedText();
+			
 			mouseDownEvent.stop();
 
+			// fire the event...
 			Widget dragged = createDraggedWidget();
 			dragged.setStyleName(this.getGhostStyle());
 
@@ -118,8 +123,8 @@ public class DraggablePanel extends SimplePanel {
 
 			Widget widget = this.getWidget();
 			final Element widgetElement = widget.getElement();
-			final int widgetLeft = Dom.getAbsoluteLeft(widgetElement);
-			final int widgetTop = Dom.getAbsoluteTop(widgetElement);
+			final int widgetLeft = DOM.getAbsoluteLeft(widgetElement);
+			final int widgetTop = DOM.getAbsoluteTop(widgetElement);
 			dragStartEvent.setWidget(widget);
 
 			final int mouseLeft = mouseDownEvent.getPageX();
@@ -139,10 +144,7 @@ public class DraggablePanel extends SimplePanel {
 				break;
 			}
 
-			Selection.disableTextSelection();
-			Selection.clearAnySelectedText();
-
-			// update ui,
+			// update ui ( dragged widget etc )
 			dragged = dragStartEvent.getDragged();
 			xOffset = dragStartEvent.getXOffset();
 			yOffset = dragStartEvent.getYOffset();
@@ -169,15 +171,15 @@ public class DraggablePanel extends SimplePanel {
 			greedy.install();
 
 			final Element dragPanelElement = draggedPanel.getElement();
-			final int elementPageX = Dom.getAbsoluteLeft(dragPanelElement);
-			final int elementPageY = Dom.getAbsoluteTop(dragPanelElement);
-
+			final int elementPageX = DOM.getAbsoluteLeft(dragPanelElement);
+			final int elementPageY = DOM.getAbsoluteTop(dragPanelElement);
+			
 			// reposition the $dragged so it follows the mouse.
 			final int mousePageX = mouseDownEvent.getPageX();
 			final int mousePageY = mouseDownEvent.getPageY();
 			dragStartEvent.setMousePageX(mousePageX);
 			dragStartEvent.setMousePageY(mousePageY);
-
+	
 			final int newX = mousePageX + xOffset - elementPageX;
 			final int newY = mousePageY + yOffset - elementPageY;
 
@@ -216,8 +218,8 @@ public class DraggablePanel extends SimplePanel {
 
 			// find the absolute position of the DraggablePanel.
 			final Element element = draggedPanel.getElement();
-			final int elementPageX = Dom.getAbsoluteLeft(element);
-			final int elementPageY = Dom.getAbsoluteTop(element);
+			final int elementPageX = DOM.getAbsoluteLeft(element);
+			final int elementPageY = DOM.getAbsoluteTop(element);
 
 			// reposition the $dragged so it follows the mouse.
 			final int mousePageX = mouseMoveEvent.getPageX();
@@ -253,8 +255,8 @@ public class DraggablePanel extends SimplePanel {
 		Selection.clearAnySelectedText();
 
 		// try and find a drop target...
-		final int mouseX = mouseUpEvent.getPageX() + Browser.getScrollX();
-		final int mouseY = mouseUpEvent.getPageY() + Browser.getScrollY();
+		final int mouseX = mouseUpEvent.getPageX();// + Browser.getScrollX(); // FIXME hack not sure why this needs to be done as it doesnt make sense.
+		final int mouseY = mouseUpEvent.getPageY();// + Browser.getScrollY();
 
 		final DropTargetPanel droppedOver = this.findDropTarget(mouseX, mouseY);
 
@@ -428,14 +430,14 @@ public class DraggablePanel extends SimplePanel {
 			final DropTargetPanel possibleTarget = (DropTargetPanel) possibleTargets.next();
 			final Element otherElement = possibleTarget.getElement();
 
-			final int left = Dom.getAbsoluteLeft(otherElement);
+			final int left = DOM.getAbsoluteLeft(otherElement);
 			final int right = left + possibleTarget.getOffsetWidth();
 
 			if (x < left || x > right) {
 				continue;
 			}
 
-			final int top = Dom.getAbsoluteTop(otherElement);
+			final int top = DOM.getAbsoluteTop(otherElement);
 			final int bottom = top + possibleTarget.getOffsetHeight();
 			if (y < top || y > bottom) {
 				continue;
@@ -472,12 +474,12 @@ public class DraggablePanel extends SimplePanel {
 				continue;
 			}
 
-			final int childOffsetLeft = Dom.getAbsoluteLeft(child);
+			final int childOffsetLeft = DOM.getAbsoluteLeft(child);
 			if (x < childOffsetLeft) {
 				continue;
 			}
 
-			final int childOffsetTop = Dom.getAbsoluteTop(child);
+			final int childOffsetTop = DOM.getAbsoluteTop(child);
 			if (y < childOffsetTop) {
 				continue;
 			}

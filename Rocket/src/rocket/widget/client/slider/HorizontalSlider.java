@@ -15,9 +15,10 @@
  */
 package rocket.widget.client.slider;
 
-import rocket.dom.client.Dom;
 import rocket.event.client.MouseEvent;
 import rocket.style.client.Css;
+
+import com.google.gwt.user.client.DOM;
 
 /**
  * A HorizontalSlider is a widget which allows a user to manipulate number value
@@ -51,7 +52,7 @@ public class HorizontalSlider extends Slider {
 	}
 
 	protected int getAbsoluteWidgetCoordinate() {
-		return Dom.getAbsoluteLeft(this.getElement());
+		return DOM.getAbsoluteLeft(this.getElement());
 	}
 
 	protected String getHandleCoordinateStylePropertyName() {

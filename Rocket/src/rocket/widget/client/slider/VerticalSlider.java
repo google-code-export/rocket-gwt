@@ -15,6 +15,8 @@
  */
 package rocket.widget.client.slider;
 
+import com.google.gwt.user.client.DOM;
+
 import rocket.dom.client.Dom;
 import rocket.event.client.MouseEvent;
 import rocket.style.client.Css;
@@ -51,7 +53,7 @@ public class VerticalSlider extends Slider {
 	}
 
 	protected int getAbsoluteWidgetCoordinate() {
-		return Dom.getAbsoluteTop(this.getElement());
+		return DOM.getAbsoluteTop(this.getElement());
 	}
 
 	protected String getHandleCoordinateStylePropertyName() {

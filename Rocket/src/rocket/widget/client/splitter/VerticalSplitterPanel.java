@@ -18,7 +18,6 @@ package rocket.widget.client.splitter;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.dom.client.Dom;
 import rocket.event.client.MouseMoveEvent;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
@@ -106,7 +105,7 @@ public class VerticalSplitterPanel extends SplitterPanel {
 
 			// need to figure out if mouse has moved to the right or left...
 			final int mouseY = event.getPageY();
-			final int splitterY = Dom.getAbsoluteTop(splitter.getElement());
+			final int splitterY = DOM.getAbsoluteTop(splitter.getElement());
 
 			// if the mouse has not moved vertically but vertically so exit...
 			int delta = mouseY - splitterY;

@@ -42,57 +42,7 @@ public class Dom {
 	public static void removeFromParent(final Element element) {
 		DOM.removeChild(DOM.getParent(element), element);
 	}
-
-	/**
-	 * Retrieve the absolute left or x coordinates for the given element
-	 * 
-	 * @param element
-	 * @return The absolute left position in pixels
-	 */
-	public static int getAbsoluteLeft(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-		return getAbsoluteLeft0(element) + Browser.getScrollX();
-	}
-
-	native static private int getAbsoluteLeft0(final Element element) /*-{
-	 var left = 0;
-	 var body = $doc.body
-	 while (element) {
-	 if( element == body ){
-	 break;
-	 }
-	 
-	 left = left + element.offsetLeft - element.scrollLeft;
-	 element = element.offsetParent;
-	 }
-	 return left;
-	 }-*/;
-
-	/**
-	 * Retrieve the absolute top or y coordinates for the given element.
-	 * 
-	 * @param element
-	 * @return The absolute top position in pixels
-	 */
-	public static int getAbsoluteTop(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-		return getAbsoluteTop0(element) + Browser.getScrollY();
-	}
-
-	native static private int getAbsoluteTop0(final Element element)/*-{
-	 var top = 0;
-	 var body = $doc.body
-	 while (element) {
-	 if( element == body ){
-	 break;
-	 }
-	 
-	 top = top + element.offsetTop - element.scrollTop;
-	 element = element.offsetParent;
-	 }
-	 return top;
-	 }-*/;
-
+	
 	/**
 	 * Retrieves the container element which contains this child element. This
 	 * is particularly useful when calculating coordinates for positioned

@@ -26,8 +26,10 @@ import rocket.style.client.InlineStyle;
 import rocket.util.client.Colour;
 import rocket.util.client.StringHelper;
 import rocket.widget.client.Viewport;
+import rocket.widget.client.WidgetHelper;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
@@ -62,8 +64,7 @@ public class ViewportTest implements EntryPoint {
 	static final int ZOOM = 100;
 
 	public void onModuleLoad() {
-		final RootPanel rootPanel = RootPanel.get();
-
+		final RootPanel rootPanel = RootPanel.get();		
 		final Counter changeEvent = new Counter("ChangeEvent: ");
 		rootPanel.add(changeEvent);
 
@@ -113,6 +114,8 @@ public class ViewportTest implements EntryPoint {
 				}
 			}
 		});
+		
+		WidgetHelper.forceDocumentContentsToScroll( 100 );
 	}
 
 	class Counter extends Label {

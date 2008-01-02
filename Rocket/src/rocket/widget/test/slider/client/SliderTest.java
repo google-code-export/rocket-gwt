@@ -21,6 +21,7 @@ import rocket.style.client.Css;
 import rocket.style.client.InlineStyle;
 import rocket.util.client.StackTrace;
 import rocket.widget.client.Image;
+import rocket.widget.client.WidgetHelper;
 import rocket.widget.client.slider.FloatingSlider;
 import rocket.widget.client.slider.HorizontalSlider;
 import rocket.widget.client.slider.VerticalSlider;
@@ -72,6 +73,8 @@ public class SliderTest implements EntryPoint {
 		this.buildHorizontalSlider(grid);
 		this.buildVerticalSlider(grid);
 		this.buildFloatingSlider(grid);
+		
+		WidgetHelper.forceDocumentContentsToScroll( 100 );
 	}
 
 	void buildFloatingSlider(final Grid grid) {

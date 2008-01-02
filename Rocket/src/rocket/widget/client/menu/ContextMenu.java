@@ -17,10 +17,12 @@ package rocket.widget.client.menu;
 
 import java.util.Iterator;
 
+import rocket.browser.client.Browser;
 import rocket.dom.client.Dom;
 import rocket.event.client.Event;
 import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.MouseDownEvent;
+import rocket.event.client.MouseEvent;
 import rocket.event.client.MouseEventAdapter;
 import rocket.event.client.MouseOutEvent;
 import rocket.style.client.Css;
@@ -135,7 +137,7 @@ public class ContextMenu extends Menu {
 	 */
 	protected void onMouseDown(final MouseDownEvent event) {
 		if (event.isRightButton()) {
-			this.open();
+			this.open( event );
 			event.cancelBubble(true);
 		}
 	}
@@ -160,16 +162,15 @@ public class ContextMenu extends Menu {
 	}
 
 	/**
-	 * Opens and positions the context menu relative to the widget being
-	 * wrapped.
+	 * Opens and positions the context menu relative to the widget being wrapped.
+	 * @param event The source mouse event.
 	 */
-	public void open() {
+	public void open( final MouseEvent event ) {
 		final MenuList menuList = this.getMenuList();
-		final Menu menu = this;
-		final MenuListenerCollection listeners = menu.getMenuListeners();
-
 		menuList.open();
 
+		// position the menu list...
+		
 		// Must set absolute coordinates in order to read the coordinates of
 		// element accurately IE6 bug
 		final Element menuListElement = menuList.getElement();
@@ -178,37 +179,71 @@ public class ContextMenu extends Menu {
 		InlineStyle.setInteger(menuListElement, Css.LEFT, 0, CssUnit.PX);
 		InlineStyle.setInteger(menuListElement, Css.TOP, 0, CssUnit.PX);
 
-		final Widget widget = this.getWidget();
-		final Element widgetElement = widget.getElement();
+		//final Widget widget = event.getWidget();
+		final Element widgetElement = event.getTarget();
 		int x = Dom.getContainerLeftOffset(widgetElement);
 		int y = Dom.getContainerTopOffset(widgetElement);
 
-		while (true) {
-			final MenuListOpenDirection openDirection = menuList.getOpenDirection();
-
-			if (MenuListOpenDirection.LEFT == openDirection) {
-				x = x - menuList.getOffsetWidth() + 1;
-				break;
-			}
-			if (MenuListOpenDirection.UP == openDirection) {
-				y = y - menuList.getOffsetHeight() + 1;
-				break;
-			}
-			if (MenuListOpenDirection.RIGHT == openDirection) {
-				x = x + widget.getOffsetWidth() - 1;
-				break;
-			}
-			ObjectHelper.checkSame("openDirection", MenuListOpenDirection.DOWN, openDirection);
-			y = y + widget.getOffsetHeight() - 1;
-			break;
-		}
+		x = x + event.getTargetElementX();
+		y = y + event.getTargetElementY();
+		
 		InlineStyle.setInteger(menuListElement, Css.LEFT, x, CssUnit.PX);
 		InlineStyle.setInteger(menuListElement, Css.TOP, y, CssUnit.PX);
 		InlineStyle.setInteger(menuListElement, Css.Z_INDEX, 1, CssUnit.NONE);
-
-		listeners.fireMenuOpened(this);
+		
+		this.fireMenuOpened( event, this);
+	}
+	
+	/**
+	 * The element that recieved the initial right mouse click.
+	 * When the ContextMenu is hidden this field should be cleared.
+	 */
+	private Element originalTargetElement;
+	
+	Element getOriginalTargetElement(){
+		ObjectHelper.checkNotNull( "field:originalTargetElement", originalTargetElement );
+		return this.originalTargetElement;
+	}
+	
+	void setOriginalTargetElement( final Element originalTargetElement ){
+		ObjectHelper.checkNotNull( "parameter:originalTargetElement", originalTargetElement );
+		this.originalTargetElement = originalTargetElement;
+	}
+	
+	void clearOriginalTargetElement(){
+		this.originalTargetElement = null;
+	}
+	
+	/**
+	 * The widget that recieved the initial right mouse click.
+	 * When the ContextMenu is hidden this field should be cleared.
+	 */
+	private Widget originalTargetWidget;
+	
+	Widget getOriginalTargetWidget(){
+		ObjectHelper.checkNotNull( "field:originalTargetWidget", originalTargetWidget );
+		return this.originalTargetWidget;
+	}
+	
+	void setOriginalTargetWidget( final Widget originalTargetWidget ){
+		ObjectHelper.checkNotNull( "parameter:originalTargetWidget", originalTargetWidget );
+		this.originalTargetWidget = originalTargetWidget;
+	}
+	
+	void clearOriginalTargetWidget(){
+		this.originalTargetWidget = null;
 	}
 
+	/**
+	 * Hides all visible menus as well as clearing the recorded or original element that was clicked preventing a leak.
+	 */
+	public void hide() {
+		super.hide();
+		
+		this.clearOriginalTargetElement();
+		this.clearOriginalTargetWidget();
+	}
+	
 	public Iterator iterator() {
 		return this.getMenuList().iterator();
 	}
@@ -223,5 +258,30 @@ public class ContextMenu extends Menu {
 
 	public int getCount() {
 		return this.getMenuList().getWidgetCount();
+	}
+	
+	/**
+	 * A customised fireMenuOpened which creates and fires a ContextMenuOpenEvent which includes details about the mouse click.
+	 * 
+	 * THis method also contains logic so that the original element that recieved the right mouse click is sent with the event.
+	 */
+	protected void fireMenuOpened( final MouseEvent event, final Widget source ){
+
+		if( source == this ){
+			this.setOriginalTargetElement( event.getTarget() );
+			this.setOriginalTargetWidget( event.getWidget() );			
+		} 
+		final Element target = this.getOriginalTargetElement();
+		final Widget targetWidget = this.getOriginalTargetWidget();
+		
+		final ContextMenuOpenEvent contextMenuOpenEvent = new ContextMenuOpenEvent();
+		contextMenuOpenEvent.setMenu( this );
+		contextMenuOpenEvent.setMouseEvent(event);
+		contextMenuOpenEvent.setInitialTargetElement( target );
+		contextMenuOpenEvent.setInitialTargetWidget( targetWidget );
+		
+		contextMenuOpenEvent.setWidget( source );
+
+		this.getMenuListeners().fireMenuOpened( contextMenuOpenEvent );		
 	}
 }

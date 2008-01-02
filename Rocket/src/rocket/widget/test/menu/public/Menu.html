@@ -26,7 +26,7 @@
 	.rocket-menu-verticalMenuBar{
 		width: 100%;		
 		margin: 0px;		
-		background-color: #bbd;
+		background-color: #ddd;
 	}
 
 	.rocket-menu-horizontalMenuList, 
@@ -36,13 +36,14 @@
 			
 		border-width: 1px;
 		border-style: solid;
-		border-color: #99b;
+		border-color: #bbb;
 	}	
-	/*.rocket-menu-horizontalMenuList{
-		xwidth: 30em;
-	}*/	
+
 	.rocket-menu-verticalMenuList{
-		width: 30em;	
+		width: 10em;
+		
+		opacity: 0.75;
+		filter(alpha=75);	
 	}	
 
 	.rocket-menu-menuItem,
@@ -54,10 +55,10 @@
 		padding-right: 5px;
 		padding-bottom: 5px;
 		border-style: none;
-		background-color: #bbd;
+		background-color: #ddd;
 
 		white-space: nowrap;
-		height: 1.5em;		
+		height: 1.2em;		
 	}
 	
 	.rocket-menu-subMenuItem{
@@ -72,120 +73,48 @@
 
 	.rocket-menu-menuItem-selected, 
 	.rocket-menu-subMenuItem-selected{
-		color: #bbd;
-		background-color: #000;
+		color: #004;
+		background-color: #aaf;
 	}
 	
 	.rocket-menu-menuItem-disabled, 
 	.rocket-menu-subMenuItem-disabled{
-		color: #999;
-	}
-
-	/* blue theme :::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-
-	.blue .rocket-menu-horizontalMenuBar, 
-	.blue .rocket-menu-verticalMenuBar{
-		background-color: #bcf;
-	}
-
-	.blue .rocket-menu-horizontalMenuList, 
-	.blue .rocket-menu-verticalMenuList{
-		border-color: #9ac;
+		color: #88a;
+		font-style: italics;
 	}	
 	
-	.blue .rocket-menu-menuItem,
-	.blue .rocket-menu-subMenuItem,
-	.blue .rocket-menu-menuSpacer {
-		background-color: #bcf;
+	.MenuTest-grid TABLE{
+		border-collapse: collapse;
+		margin: 4px;
+		
+		background-color: #eee;
 	}
 	
-	.blue .rocket-menu-menuItem-selected, .blue .rocket-menu-subMenuItem-selected{
-		color: #bcf;
-		background-color: #56a;
-	}
-	
-	/* green theme :::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+	.MenuTest-grid TD {
+		width: 5em;
+		height: 1.5em;
+		padding: 2px;
 
-	.green .rocket-menu-horizontalMenuBar, 
-	.green .rocket-menu-verticalMenuBar{
-		background-color: #bfc;
-	}
-
-	.green .rocket-menu-horizontalMenuList, 
-	.green .rocket-menu-verticalMenuList{
-		border-color: #9da;
-	}	
-	
-	.green .rocket-menu-menuItem,
-	.green .rocket-menu-subMenuItem,
-	.green .rocket-menu-menuSpacer {
-		background-color: #bfc;
-	}
-	
-	.green .rocket-menu-menuItem-selected, .green .rocket-menu-subMenuItem-selected{
-		color: #bfc;
-		background-color: #6a7;
-	}
-
-	/* red theme :::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-
-	.red .rocket-menu-horizontalMenuBar, 
-	.red .rocket-menu-verticalMenuBar{
-		background-color: #fbc;
-	}
-
-	.red .rocket-menu-horizontalMenuList, 
-	.red .rocket-menu-verticalMenuList{
-		border-color: #d9a;
-	}	
-	
-	.red .rocket-menu-menuItem,
-	.red .rocket-menu-subMenuItem,
-	.red .rocket-menu-menuSpacer {
-		background-color: #fbc;
-	}
-	
-	.red .rocket-menu-menuItem-selected, .red .rocket-menu-subMenuItem-selected{
-		color: #fbc;
-		background-color: #a67;
-	}
-
-
-	/* yellow theme :::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-
-	.yellow .rocket-menu-horizontalMenuBar, 
-	.yellow .rocket-menu-verticalMenuBar{
-		background-color: #fea;
-	}
-
-	.yellow .rocket-menu-horizontalMenuList, 
-	.yellow .rocket-menu-verticalMenuList{
-		border-color: #994;
-	}	
-	
-	.yellow .rocket-menu-menuItem,
-	.yellow .rocket-menu-subMenuItem,
-	.yellow .rocket-menu-menuSpacer {
-		background-color: #fea;
-	}
-	
-	.yellow .rocket-menu-menuItem-selected, .yellow .rocket-menu-subMenuItem-selected{
-		color: #fea;
-		background-color: #764;
+		background-color: #def;
+		color: #abc;
 	}
 </style>
 </head>
 <body>
-<script>
 <h3>Things to test</h3>
 <ul>
 <li>Each menu contains three levels of sub menus</li>
-<li>Each sub menu contains two further sub menus and two menu items.</li>
-<li>The second sub menu and menu item for each sub menu is disabled</li>
-<li>Verify that each menu works by checking the log for event messages</li>
-<li>Each of the highlighted words (those with a yellow background) below includes an attached context menu</li>
-<li>In opera context menu is accessed via control + mouse click rather than right click.</li>
-<li>The three <b>get</b>,<b>add</b> and <b>remove</b> buttons work on the green horizontal menu bar.</li>
+<li>The text within all SubMenuItem's is <b>bolded</b></li>
+<li>The text within all MenuItem's is plain</li>
+<li>The text within all disabled items is <i>italicised</i></li>
+<li>Check that all disabled SubMenuItem and MenuItem(they have disabled in their text) are truely unselectable.</li>
+<li>The grid also contains a context menu. When any menu item is selected a popup appears that includes 
+	<ul>
+		<li>The original widget within the grid that was clicked</li>
+		<li>The element that was originally right clicked.</li>
+	</ul>
+
+<li>In opera the context menu is accessed via control + mouse click rather than right click.</li>
 </ul>
 
 </body>

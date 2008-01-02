@@ -19,6 +19,7 @@ import java.util.Iterator;
 
 import rocket.dom.client.Dom;
 import rocket.event.client.MouseClickEvent;
+import rocket.event.client.MouseEvent;
 import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
 import rocket.style.client.ComputedStyle;
@@ -101,11 +102,8 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	// ACTIONS
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void open() {
+	public void open( final MouseEvent event ) {
 		final MenuList menuList = this.getMenuList();
-		final Menu menu = menuList.getMenu();
-		final MenuListenerCollection listeners = menu.getMenuListeners();
-
 		InlineStyle.setInteger(this.getElement(), Css.Z_INDEX, 1, CssUnit.NONE);
 
 		// open the list belonging to this item...
@@ -114,6 +112,8 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 
 		final Element parentMenuList = this.getParentMenuList().getElement();
 
+		// position the opened menuList...
+		
 		// Must set absolute coordinates in order to read the coordinates of
 		// element accurately IE6 bug
 		final Element menuListElement = menuList.getElement();
@@ -165,7 +165,8 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		InlineStyle.setInteger(menuListElement, Css.TOP, y, CssUnit.PX);
 		InlineStyle.setInteger(menuListElement, Css.Z_INDEX, 1, CssUnit.NONE);
 
-		listeners.fireMenuOpened(this);
+		// notify listeners
+		menuList.getMenu().fireMenuOpened(event, this );
 	}
 
 	/**
@@ -197,7 +198,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		// ignore event if menu list is already opened...
 		if (false == this.isDisabled()) {
 			if ("hidden".equals(ComputedStyle.getString(this.getMenuList().getElement(), Css.VISIBILITY))) {
-				this.open();
+				this.open( event );
 			}
 		}
 		event.cancelBubble(true);
@@ -212,7 +213,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 			this.addHighlight();
 
 			if (this.isAutoOpen()) {
-				this.open();
+				this.open( event );
 			}
 		}
 		event.cancelBubble(true);
