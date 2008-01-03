@@ -18,12 +18,14 @@ package rocket.util.client;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * A helper which assists with the management of colours
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Colour implements java.io.Serializable {
+public class Colour implements java.io.Serializable, IsSerializable {
 
 	/**
 	 * Accepts a colour value as a string and attempts to convert it into an
