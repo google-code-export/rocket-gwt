@@ -27,9 +27,9 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-class CreateProxyTemplatedFile extends TemplatedCodeBlock {
+class CreateGwtRpcProxyTemplatedFile extends TemplatedCodeBlock {
 
-	public CreateProxyTemplatedFile() {
+	public CreateGwtRpcProxyTemplatedFile() {
 		super();
 		setNative(false);
 	}
@@ -50,7 +50,7 @@ class CreateProxyTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	protected InputStream getInputStream() {
-		final String filename = Constants.CREATE_PROXY_TEMPLATE;
+		final String filename = Constants.CREATE_GWT_RPC_PROXY_TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
 		if (null == inputStream) {
 			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
@@ -61,7 +61,7 @@ class CreateProxyTemplatedFile extends TemplatedCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.CREATE_PROXY_BEAN_TYPE.equals(name)) {
+			if (Constants.CREATE_PROXY_TYPE.equals(name)) {
 				value = this.getType();
 				break;
 			}

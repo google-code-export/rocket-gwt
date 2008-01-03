@@ -16,6 +16,7 @@
 package rocket.remoting.test.comet.client;
 
 import rocket.remoting.client.CometClient;
+import rocket.remoting.client.GwtSerializationCometClient;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
@@ -29,7 +30,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -59,7 +59,7 @@ public class CometTest implements EntryPoint {
 		start.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final CometClient client = CometTest.this.getCometClient();
-				client.setUrl(COMET_SERVER_URL);
+				client.setServiceEntryPoint(COMET_SERVER_URL);
 				client.start();
 			}
 		});
@@ -69,7 +69,7 @@ public class CometTest implements EntryPoint {
 		startUsingInvalidUrl.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final CometClient client = CometTest.this.getCometClient();
-				client.setUrl(INVALID_COMET_SERVER_URL);
+				client.setServiceEntryPoint(INVALID_COMET_SERVER_URL);
 				client.start();
 			}
 		});
@@ -105,7 +105,7 @@ public class CometTest implements EntryPoint {
 	}
 
 	protected void createComet() {
-		final CometClient client = (CometClient) GWT.create(TestCometClient.class);
+		final CometClient client = (CometClient) GWT.create(TestGwtSerializationCometClient.class);
 
 		client.setCallback(new AsyncCallback() {
 			public void onSuccess(final Object result) {
@@ -134,13 +134,10 @@ public class CometTest implements EntryPoint {
 	 * contents are visible. All other behaviour remains unchanged.
 	 * 
 	 * @author Miroslav Pokorny (mP)
+	 * 
+	 * @comet-payloadType rocket.remoting.test.comet.client.TestCometPayload
 	 */
-	abstract static public class TestCometClient extends CometClient {
-
-		/**
-		 * @comet-payloadType rocket.remoting.test.comet.client.TestCometPayload
-		 */
-		abstract protected Object createProxy();
+	abstract static public class TestGwtSerializationCometClient extends GwtSerializationCometClient {
 
 		protected Element createFrame() {
 			final Element frame = super.createFrame();
@@ -162,7 +159,7 @@ public class CometTest implements EntryPoint {
 			log("<b>CLIENT</b> Stopping existing session...");
 		}
 
-		public void dispatch(final String serializedForm) throws SerializationException {
+		public void dispatch(final String serializedForm){
 			log("<b>CLIENT</b> Dispatching serializedForm \"" + serializedForm + "\".");
 			super.dispatch(serializedForm);
 		}

@@ -33,10 +33,11 @@ public class CometSupport {
 	 * calls registered callbacks.
 	 * 
 	 * @param cometClient
-	 * @param frame
+	 * @param frame The hidden frame being feed incoming payloads.
 	 */
 	public void start(CometClient cometClient, Element frame) {
 		ObjectHelper.checkNotNull("parameter:cometClient", cometClient);
+		
 		this.registerConnectHandler(cometClient, frame);
 		this.registerDisconnectHandler(cometClient, frame);
 		this.registerObjectRecievedDispatcher(cometClient, frame);
@@ -51,21 +52,21 @@ public class CometSupport {
 	 */
 	native protected void registerConnectHandler(final CometClient cometClient, final Element frame)/*-{
 	 $wnd.__cometOnConnect = function(){
-	 frame.__connected=true;
+	 	frame.__connected=true;
 	 };
 	 }-*/;
 
 	native protected void registerDisconnectHandler(final CometClient cometClient, final Element iframe)/*-{
 	 var callback = @rocket.remoting.client.CometClient::onDisconnect(Lrocket/remoting/client/CometClient;);
 	 iframe.onload=function(){
-	 callback( cometClient );
+	 	callback( cometClient );
 	 }
 	 }-*/;
 
 	native protected void registerObjectRecievedDispatcher(final CometClient cometClient, final Element frame)/*-{
 	 var callback = @rocket.remoting.client.CometClient::dispatch(Lrocket/remoting/client/CometClient;Ljava/lang/String;)
 	 var dispatch = function( serializedForm ){
-	 callback( cometClient, serializedForm );     	
+	 	callback( cometClient, serializedForm );     	
 	 }
 	 $wnd.__cometDispatch = dispatch;
 	 }-*/;

@@ -20,11 +20,15 @@ import rocket.remoting.client.CometClient;
 import com.google.gwt.user.client.Element;
 
 /**
- * The InternetExplorer6 specific Comet support class
+ * The InternetExplorer specific Comet support class
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class InternetExplorer6CometSupport extends CometSupport {
+public class InternetExplorerCometSupport extends CometSupport {
+	
+	public InternetExplorerCometSupport(){
+	}
+	
 	/**
 	 * Internet Explorer6 doesnt support the onload event for iframes therefore
 	 * one must watch out for readystate changes.
@@ -32,10 +36,11 @@ public class InternetExplorer6CometSupport extends CometSupport {
 	native protected void registerDisconnectHandler(final CometClient cometClient, final Element iframe)/*-{
 	 var callback = @rocket.remoting.client.CometClient::onDisconnect(Lrocket/remoting/client/CometClient;);
 
-	 iframe.onreadystatechange=function(){     
-	 if( iframe.parentNode && iframe.readyState=="complete" ){
-	 callback( cometClient );
-	 }     	 
-	 }
+	 iframe.onreadystatechange=function(){	      
+	 	if( iframe.parentNode && iframe.readyState=="complete" ){
+	 		callback( cometClient );
+	 	}     	 
+	 };
+
 	 }-*/;
 }
