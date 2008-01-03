@@ -22,7 +22,7 @@ public class Constants {
 
 	final static String COMET_PAYLOAD_TYPE_ANNOTATION = "comet-payloadType";
 
-	final static String CREATE_PROXY_METHOD = "createProxy";
+	final static String CREATE_GWT_RPC_PROXY_METHOD = "createGwtRpcProxy";
 
 	final static String RPC_SERVICE_INTERFACE = "__ServiceInterface";
 
@@ -34,13 +34,13 @@ public class Constants {
 
 	final static String ASYNC_CALLBACK_PARAMETER_NAME = "callback";
 
-	final static String CREATE_PROXY_TEMPLATE = "create-proxy.txt";
-
-	final static String CREATE_PROXY_BEAN_TYPE = "beanType";
-
-	final static String PAYLOAD_DECLARATION_METHOD = "__dummy";
+	final static String PAYLOAD_DECLARATION_METHOD = "returnTypeThatIsActuallyIncomingPayloadType";
 
 	final static String PROXY_CREATOR = "com.google.gwt.user.rebind.rpc.ProxyCreator";
 
 	final static String CUSTOMISED_PROXY_CREATOR_MARKER_FIELD = "ROCKET";
+
+	final static String CREATE_GWT_RPC_PROXY_TEMPLATE = "create-gwt-rpc-proxy.txt";
+
+	final static String CREATE_PROXY_TYPE = "type";
 }

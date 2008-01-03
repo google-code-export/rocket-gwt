@@ -22,20 +22,20 @@ package rocket.remoting.client;
  * @author Miroslav Pokorny (mP)
  * 
  */
-public class CometServerConnectionFailureException extends RuntimeException {
-	public CometServerConnectionFailureException() {
+public class CometException extends RuntimeException {
+	public CometException() {
 		super();
 	}
 
-	public CometServerConnectionFailureException(final String message) {
+	public CometException(final String message) {
 		super(message);
 	}
 
-	public CometServerConnectionFailureException(final String message, final Throwable caught) {
+	public CometException(final String message, final Throwable caught) {
 		super(message, caught);
 	}
 
-	public CometServerConnectionFailureException(final Throwable caught) {
+	public CometException(final Throwable caught) {
 		super(caught);
 	}
 }

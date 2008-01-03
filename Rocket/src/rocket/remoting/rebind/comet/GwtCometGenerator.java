@@ -35,8 +35,10 @@ import rocket.util.client.ObjectHelper;
  * the necessary
  * 
  * @author Miroslav Pokorny
+ * 
+ * TODO rework.
  */
-public class CometGenerator extends Generator {
+public class GwtCometGenerator extends Generator {
 
 	protected NewConcreteType assembleNewType(final Type cometClient, final String newTypeName) {
 		this.verifyEnvironment();
@@ -169,7 +171,6 @@ public class CometGenerator extends Generator {
 		callback.setName(Constants.ASYNC_CALLBACK_PARAMETER_NAME);
 		callback.setType(this.getAsyncCallback());
 		
-		context.debug( newMethod.toString() );
 		context.unbranch();
 	}
 
@@ -183,10 +184,8 @@ public class CometGenerator extends Generator {
 		ObjectHelper.checkNotNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
 		context.info( "Retrieving incoming payload type.");
 		
-		context.debug( "Reading \"" + Constants.COMET_PAYLOAD_TYPE_ANNOTATION + "\" annotation." );
 		final List values = type.getMetadataValues(Constants.COMET_PAYLOAD_TYPE_ANNOTATION);
 		if (values.size() != 1) {
 			throwUnableToFindCometPayloadTypeAnnotation(type);
@@ -195,17 +194,12 @@ public class CometGenerator extends Generator {
 		final String typeName = (String) values.get(0);
 		if (null == typeName) {
 			this.throwUnableToFindCometPayloadTypeAnnotation(type);
-		}		
-		context.debug( typeName );
+		}
 
 		final Type payloadType = context.findType(typeName);
 		if( payloadType == null ){
 			this.throwUnableToFindPayloadType(typeName);
 		}
-		
-		context.debug( payloadType.toString() );
-		context.unbranch();
-		
 		return payloadType;
 	}
 

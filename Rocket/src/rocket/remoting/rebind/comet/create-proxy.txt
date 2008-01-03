@@ -1,5 +1,0 @@
-// create-proxy.txt
-
-// use deferred binding to create a new instance.
-return com.google.gwt.core.client.GWT.create( ${beanType}.class );
-

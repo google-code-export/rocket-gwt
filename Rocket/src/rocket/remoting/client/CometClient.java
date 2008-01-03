@@ -27,9 +27,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader;
-import com.google.gwt.user.client.rpc.impl.Serializer;
 
 /**
  * There should only ever be one instance of this class which is used to receive
@@ -45,48 +42,23 @@ import com.google.gwt.user.client.rpc.impl.Serializer;
  */
 public abstract class CometClient {
 
-	public CometClient() {
+	/**
+	 * Singleton that holds the comet support class.
+	 */
+	static CometSupport support = (CometSupport) GWT.create(CometSupport.class); 	
+	
+	protected CometClient() {
 		super();
-
-		this.setSupport(this.createSupport());
 	}
 
-	/**
-	 * The browser aware support that takes care of browser difference nasties.
-	 */
-	private CometSupport support;
-
-	protected CometSupport getSupport() {
-		ObjectHelper.checkNotNull("field:support", this.support);
+	CometSupport getSupport(){
 		return support;
 	}
-
-	protected void setSupport(final CometSupport support) {
-		ObjectHelper.checkNotNull("parameter:support", support);
-		this.support = support;
-	}
-
-	protected CometSupport createSupport() {
-		return (CometSupport) GWT.create(CometSupport.class);
-	}
-
-	/**
-	 * Stops or closes the connection between the client and the server.
-	 * 
-	 */
-	public void stop() {
-		if (this.hasFrame()) {
-			final Element frame = this.getFrame();
-			Dom.removeFromParent(frame);
-			this.clearFrame();
-			this.getSupport().stop(this, frame);
-		}
-	}
-
+	
 	/**
 	 * Invoking this method opens the channel betweeen the client and the
 	 * server. The server will periodicly continue to send objects to the
-	 * client.
+	 * client as they are streamed to the server.
 	 */
 	public void start() {
 		final Element frame = this.createFrame();
@@ -97,29 +69,44 @@ public abstract class CometClient {
 		// the reason for the query string is to avoid caching problems...the
 		// src attribute is set before the frame is attached this also
 		// avoids the nasty clicking noises in ie.
-		DOM.setElementProperty(frame, "src", this.getUrl() + '?' + System.currentTimeMillis());
+		DOM.setElementProperty(frame, "src", this.getServiceEntryPoint() + "?serializationEngine=Gwt&" + System.currentTimeMillis());
 
 		final Element body = Dom.getBody();
 		DOM.appendChild(body, frame);
 	}
 
+
+	/**
+	 * Stops an existing comet session by closing the connection between the client and the server.
+	 */
+	public void stop() {
+		if (this.hasFrame()) {
+			final Element frame = this.getFrame();
+			Dom.removeFromParent(frame);
+			this.clearFrame();
+			this.getSupport().stop(this, frame);
+		}
+	}
+	
 	/**
 	 * This method is called by whenever a iframe finishes loading its document.
-	 * This may be caused by the server dropping its connect or failing the
-	 * locate a CometServer.
+	 * This may be caused by the server dropping its connect or failing the locate a CometServer.
 	 * 
-	 * @param thisInstance
+	 * @param cometClient
 	 */
-	static void onDisconnect(final CometClient thisInstance) {
-		ObjectHelper.checkNotNull("parameter:thisInstance", thisInstance);
-
-		// checks if the iframe has its connected flag set.. if not report
+	static void onDisconnect(final CometClient cometClient) {
+		ObjectHelper.checkNotNull("parameter:cometClient", cometClient);
+		
+		cometClient.disconnect();
+	}
+	
+	protected void disconnect(){
+		//	checks if the iframe has its connected flag set.. if not report
 		// connection failure...
-		if (false == DOM.getElementPropertyBoolean(thisInstance.getFrame(), "__connected")) {
-			thisInstance.getCallback().onFailure(
-					new CometServerConnectionFailureException("Unable to connect to \"" + thisInstance.getUrl() + "\"."));
+		if (false == DOM.getElementPropertyBoolean(this.getFrame(), "__connected")) {
+			this.getCallback().onFailure( new CometException("Unable to connect to \"" + this.getServiceEntryPoint() + "\"."));
 		} else {
-			thisInstance.restart();
+			this.restart();
 		}
 	}
 
@@ -137,67 +124,16 @@ public abstract class CometClient {
 	 * 
 	 * @param cometClient
 	 * @param serializedForm
-	 * @throws SerializationException
 	 */
-	static void dispatch(final CometClient cometClient, final String serializedForm) throws SerializationException {
+	static void dispatch(final CometClient cometClient, final String serializedForm){
 		cometClient.dispatch(serializedForm);
 	}
 
-	public void dispatch(final String serializedForm) throws SerializationException {
-		final String serializedForm0 = StringHelper.htmlDecode(serializedForm);
-
-		final boolean failed = serializedForm0.startsWith("{EX}");
-		final Object object = deserialize(serializedForm0.substring(4));
-
-		final AsyncCallback callback = this.getCallback();
-		if (failed) {
-			callback.onFailure((Throwable) object);
-		} else {
-			callback.onSuccess(object);
-		}
-	}
-
 	/**
-	 * Deserializes the Object and its graph which are encoded within the given
-	 * String.
-	 * 
-	 * @param serializedForm
-	 *            A string containing the serialized object graph
-	 * @return The deserialized object
-	 * @throws SerializationException
-	 *             If something went wrong deserializing the
-	 *             parameter:serializedForm
+	 * This method is overridden to deserialize and then dispatch the object to the registered payload
+	 * @param serializedForm The serialized form of the incoming object.
 	 */
-	protected Object deserialize(final String serializedForm) throws SerializationException {
-		StringHelper.checkNotEmpty("parameter:serializedForm", serializedForm);
-
-		final Object proxy = this.createProxy();
-		if (false == GWT.isScript() && false == (proxy instanceof HasSerializer)) {
-			GWT
-					.log(
-							"It appears that the Rocket modified ProxyCreator class was not used to generate the deserializer. To fix this put the rocket.jar files before gwt-user.jar in the classpath.",
-							null);
-		}
-
-		final HasSerializer serializerHost = (HasSerializer) proxy;
-		final Serializer serializer = serializerHost.getSerializer();
-
-		final ClientSerializationStreamReader deserializer = new ClientSerializationStreamReader(serializer);
-		deserializer.prepareToRead(serializedForm);
-		return deserializer.readObject();
-	}
-
-	/**
-	 * This method will be realised by the CometGenerator. It will return a rpc proxy that will become a
-	 * factory that eventually returns a type deserializer.
-	 * 
-	 * Sub classes must include a
-	 * 
-	 * @comet-payloadType annotation to indicate the payload type returned by
-	 *                    the server counterpart.
-	 * @return The rpc proxy
-	 */
-	protected abstract Object createProxy();
+	abstract public void dispatch(final String serializedForm);
 
 	/**
 	 * A reference to the hidden iframe which is used to make a connection which
@@ -237,16 +173,16 @@ public abstract class CometClient {
 	/**
 	 * The url of the server side portion of this component.
 	 */
-	private String url;
+	private String serviceEntryPoint;
 
-	public String getUrl() {
-		StringHelper.checkNotEmpty("field:url", url);
-		return this.url;
+	public String getServiceEntryPoint() {
+		StringHelper.checkNotEmpty("field:serviceEntryPoint", serviceEntryPoint);
+		return this.serviceEntryPoint;
 	}
 
-	public void setUrl(final String url) {
-		StringHelper.checkNotEmpty("parameter:url", url);
-		this.url = url;
+	public void setServiceEntryPoint(final String serviceEntryPoint) {
+		StringHelper.checkNotEmpty("parameter:serviceEntryPoint", serviceEntryPoint);
+		this.serviceEntryPoint = serviceEntryPoint;
 	}
 
 	/**
@@ -263,5 +199,9 @@ public abstract class CometClient {
 	public void setCallback(final AsyncCallback callback) {
 		ObjectHelper.checkNotNull("parameter:callback", callback);
 		this.callback = callback;
+	}
+	
+	public String toString(){
+		return super.toString() + ", serviceEntryPoint: \"" + this.serviceEntryPoint + "\", callback: " + this.callback;
 	}
 }
