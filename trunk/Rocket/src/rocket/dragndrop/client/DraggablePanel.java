@@ -255,8 +255,8 @@ public class DraggablePanel extends SimplePanel {
 		Selection.clearAnySelectedText();
 
 		// try and find a drop target...
-		final int mouseX = mouseUpEvent.getPageX();// + Browser.getScrollX(); // FIXME hack not sure why this needs to be done as it doesnt make sense.
-		final int mouseY = mouseUpEvent.getPageY();// + Browser.getScrollY();
+		final int mouseX = mouseUpEvent.getPageX();
+		final int mouseY = mouseUpEvent.getPageY();
 
 		final DropTargetPanel droppedOver = this.findDropTarget(mouseX, mouseY);
 
