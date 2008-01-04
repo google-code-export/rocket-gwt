@@ -15,17 +15,9 @@
  */
 package rocket.remoting.client;
 
-import rocket.dom.client.Dom;
-import rocket.remoting.client.support.comet.CometSupport;
-import rocket.style.client.Css;
-import rocket.style.client.CssUnit;
-import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader;

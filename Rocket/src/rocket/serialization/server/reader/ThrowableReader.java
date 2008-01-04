@@ -17,9 +17,6 @@ package rocket.serialization.server.reader;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
 
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.SerializationException;
