@@ -38,4 +38,12 @@ class Constants {
 	final static String EXCEPTION = Exception.class.getName();
 
 	final static String RUNTIME_EXCEPTION = RuntimeException.class.getName();
+	
+	final static String METHOD_NAME = "methodName";
+	
+	final static String IS_METHOD_NATIVE = "isMethodNative";
+	
+	final static String ENCLOSING_TYPE = "enclosingType";
+	final static String METHOD_RETURN_TYPE = "methodReturnType";
+	final static String METHOD_PARAMETER_TYPENAMES = "methodParameterTypes";
 }

@@ -1,4 +1,4 @@
-// rocket/beans/rebind/aop/unwrap/float.txt
+// /rocket/beans/rebind/aop/unwrapparameter/float.txt
 
 chain.getFloatParameter( ${parameterIndex} )
 

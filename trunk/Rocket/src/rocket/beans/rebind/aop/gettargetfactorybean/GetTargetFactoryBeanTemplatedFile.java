@@ -19,6 +19,7 @@ import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.util.client.ObjectHelper;
 
@@ -27,7 +28,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class GetTargetFactoryBeanTemplatedFile extends TemplatedCodeBlock {
+public class GetTargetFactoryBeanTemplatedFile extends TemplatedFileCodeBlock {
 
 	public GetTargetFactoryBeanTemplatedFile() {
 		super();
@@ -49,17 +50,8 @@ public class GetTargetFactoryBeanTemplatedFile extends TemplatedCodeBlock {
 		this.targetFactoryBean = targetFactoryBean;
 	}
 
-	protected String getFileName() {
-		return Constants.TEMPLATE;
-	}
-
-	protected InputStream getInputStream() {
-		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.TEMPLATE;		
 	}
 
 	protected Object getValue0(final String name) {
@@ -72,9 +64,5 @@ public class GetTargetFactoryBeanTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + this.getFileName() + "\".");
 	}
 }

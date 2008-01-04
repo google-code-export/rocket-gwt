@@ -13,9 +13,9 @@
 		scope="singleton">
 	</bean>
 	
-	<advice
+	<aspect
 		advisor="advisor"
 		target="bean"
-		methodExpression="add"
+		methods="add"
 	/>
 </bean-factory>

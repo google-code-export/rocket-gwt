@@ -20,6 +20,7 @@ import java.io.InputStream;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -30,11 +31,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class SetComplexTemplatedFile extends TemplatedCodeBlock {
+public class SetComplexTemplatedFile extends TemplatedFileCodeBlock {
 
 	public SetComplexTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	private Method readMethod;
@@ -110,15 +110,10 @@ public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 		this.javascriptPropertyName = javascriptPropertyName;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.SET_COMPLEX_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return Constants.SET_COMPLEX_TEMPLATE;
 	}
-
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -145,10 +140,5 @@ public class SetComplexTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in file \"" + Constants.SET_COMPLEX_TEMPLATE
-				+ "\".");
 	}
 }

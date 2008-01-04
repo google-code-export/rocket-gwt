@@ -16,7 +16,6 @@
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.generator.rebind.method.NewMethod;
@@ -39,16 +38,16 @@ public class ConstructorParameterPlaceHolderGenerator extends AbstractTemplatedF
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
+	protected void visitTemplate(final Template template) {
 		final GeneratorContext context = this.getGeneratorContext();
 
 		final Type returnType = context.getType(NESTED_TYPE);
-		template.setType("type", returnType);
+		template.set("type", returnType);
 
 		final Constructor constructor = (Constructor) returnType.getConstructors().iterator().next();
 		final ConstructorParameter parameter = (ConstructorParameter) constructor.getParameters().get(0);
 
-		template.setConstructorParameter("constructorParameter", parameter);
+		template.set("constructorParameter", parameter);
 	}
 
 	protected String getNewMethodReturnType() {

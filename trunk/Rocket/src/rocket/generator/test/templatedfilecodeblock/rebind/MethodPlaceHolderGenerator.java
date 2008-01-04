@@ -17,7 +17,6 @@ package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import java.util.Collections;
 
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 
@@ -35,10 +34,10 @@ public class MethodPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGe
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
+	protected void visitTemplate(final Template template) {
 		final Type type = this.getType();
 		final Method method = type.getMethod("method0", Collections.EMPTY_LIST);
-		template.setMethod("method", method);
+		template.set("method", method);
 	}
 
 	protected String getNewMethodReturnType() {

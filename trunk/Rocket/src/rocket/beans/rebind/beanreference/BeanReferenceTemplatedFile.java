@@ -15,11 +15,8 @@
  */
 package rocket.beans.rebind.beanreference;
 
-import java.io.InputStream;
-
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -29,11 +26,14 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class BeanReferenceTemplatedFile extends TemplatedCodeBlock {
+public class BeanReferenceTemplatedFile extends TemplatedFileCodeBlock {
 
 	public BeanReferenceTemplatedFile() {
 		super();
-		setNative(false);
+	}
+	
+	public void setNative( final boolean ignored ){
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -65,14 +65,9 @@ public class BeanReferenceTemplatedFile extends TemplatedCodeBlock {
 		StringHelper.checkNotNull("parameter:id", id);
 		this.id = id;
 	}
-
-	protected InputStream getInputStream() {
-		final String filename = Constants.TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	
+	protected String getResourceName(){
+		return Constants.TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {

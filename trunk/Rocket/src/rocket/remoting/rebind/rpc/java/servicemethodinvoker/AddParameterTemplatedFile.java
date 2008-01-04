@@ -17,8 +17,7 @@ package rocket.remoting.rebind.rpc.java.servicemethodinvoker;
 
 import java.io.InputStream;
 
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.util.client.ObjectHelper;
 
@@ -27,7 +26,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-class AddParameterTemplatedFile extends TemplatedCodeBlock {
+class AddParameterTemplatedFile extends TemplatedFileCodeBlock {
 
 	public AddParameterTemplatedFile() {
 		super();
@@ -56,13 +55,12 @@ class AddParameterTemplatedFile extends TemplatedCodeBlock {
 		this.parameter = parameter;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = ServiceMethodInvokerConstants.ADD_PARAMETER_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return ServiceMethodInvokerConstants.ADD_PARAMETER_TEMPLATE;
+	}
+	
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO delete when moved to parent template package.
 	}
 
 	protected Object getValue0(final String name) {

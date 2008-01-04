@@ -26,6 +26,7 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.util.client.ObjectHelper;
 
 /**
@@ -33,11 +34,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class MapTemplatedFile extends TemplatedCodeBlock {
+public class MapTemplatedFile extends TemplatedFileCodeBlock {
 
 	public MapTemplatedFile() {
 		super();
-		setNative(false);
 		this.setEntries(this.createEntries());
 	}
 
@@ -60,23 +60,18 @@ public class MapTemplatedFile extends TemplatedCodeBlock {
 	public void add(final String key, final Value value) {
 		final Map entries = this.getEntries();
 		if (entries.containsKey(key)) {
-			this.throwMapEntryAlreadyUsedException(key);
+			this.throwMapEntryAlreadyUsed(key);
 		}
 
 		entries.put(key, value);
 	}
 
-	protected void throwMapEntryAlreadyUsedException(final String key) {
+	protected void throwMapEntryAlreadyUsed(final String key) {
 		throw new MapEntryAlreadyUsedException("A map entry with a key of \"" + key + "\" has already been defined");
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.MAP_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return Constants.MAP_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -118,10 +113,5 @@ public class MapTemplatedFile extends TemplatedCodeBlock {
 			protected void writeBetweenElements(SourceWriter writer) {
 			}
 		};
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.MAP_TEMPLATE
-				+ "\".");
 	}
 }

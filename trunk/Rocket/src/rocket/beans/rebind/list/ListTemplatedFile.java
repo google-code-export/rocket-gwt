@@ -28,7 +28,7 @@ public class ListTemplatedFile extends CollectionTemplatedFile {
 		return Constants.LIST_ADD_ELEMENTS;
 	}
 
-	protected String getTemplate() {
+	protected String getResourceName() {
 		return Constants.LIST_TEMPLATE;
 	}
 

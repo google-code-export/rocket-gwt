@@ -18,8 +18,7 @@ package rocket.remoting.rebind.rpc.java.servicemethodinvoker;
 import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.util.client.ObjectHelper;
 
@@ -28,7 +27,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-class AddParameterTypeNameTemplatedFile extends TemplatedCodeBlock {
+class AddParameterTypeNameTemplatedFile extends TemplatedFileCodeBlock {
 
 	public AddParameterTypeNameTemplatedFile() {
 		super();
@@ -57,13 +56,12 @@ class AddParameterTypeNameTemplatedFile extends TemplatedCodeBlock {
 		this.parameter = parameter;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = ServiceMethodInvokerConstants.ADD_PARAMETER_TYPENAME_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return ServiceMethodInvokerConstants.ADD_PARAMETER_TYPENAME_TEMPLATE;
+	}
+	
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO DELETE when merged into parent template package.
 	}
 
 	protected Object getValue0(final String name) {
@@ -76,10 +74,5 @@ class AddParameterTypeNameTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in template \""
-				+ ServiceMethodInvokerConstants.ADD_PARAMETER_TYPENAME_TEMPLATE + "\"");
 	}
 }

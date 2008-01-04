@@ -16,7 +16,6 @@
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.codeblock.ByteLiteral;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockTestConstants;
 
 public class BytePlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGenerator {
@@ -33,8 +32,8 @@ public class BytePlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGene
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
-		template.setLiteral("byteValue", new ByteLiteral(TemplatedFileCodeBlockTestConstants.BYTE));
+	protected void visitTemplate(final Template template) {
+		template.set("byteValue", new ByteLiteral(TemplatedFileCodeBlockTestConstants.BYTE));
 	}
 
 	protected String getNewMethodReturnType() {

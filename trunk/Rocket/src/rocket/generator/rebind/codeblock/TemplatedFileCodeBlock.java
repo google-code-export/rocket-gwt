@@ -16,131 +16,43 @@
 package rocket.generator.rebind.codeblock;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import rocket.generator.rebind.CodeGenerator;
-import rocket.generator.rebind.constructor.Constructor;
-import rocket.generator.rebind.constructorparameter.ConstructorParameter;
-import rocket.generator.rebind.field.Field;
-import rocket.generator.rebind.method.Method;
-import rocket.generator.rebind.methodparameter.MethodParameter;
-import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
 
 /**
- * Provides the ability to replace placeholders within a text file with values.
- * The values for the placeholders are sourced from a map of values.
+ * An abstract class that loads a template as a resource using the classloader.
  * 
  * @author Miroslav Pokorny
  */
-public class TemplatedFileCodeBlock extends TemplatedCodeBlock implements CodeBlock, CodeGenerator {
+abstract public class TemplatedFileCodeBlock extends TemplatedCodeBlock implements CodeBlock, CodeGenerator {
 
 	public TemplatedFileCodeBlock() {
 		super();
-
-		this.setValues(this.createValues());
-	}
-
-	public void setNative(final boolean nativee) {
-		super.setNative(nativee);
 	}
 
 	/**
-	 * The text file containing the template.
+	 * Sub classes must override this to return the fully qualified name of the resource
+	 * @return The name.
 	 */
-	private String filename;
-
-	protected String getFilename() {
-		StringHelper.checkNotEmpty("field:filename", filename);
-		return this.filename;
-	}
-
-	public void setFilename(final String filename) {
-		StringHelper.checkNotEmpty("parameter:filename", filename);
-		this.filename = filename;
-	}
-
+	abstract protected String getResourceName(); 
+	
 	/**
-	 * Retrieves a resource's inputstream using the filename property as a
-	 * resource name. The InputStream is loaded from the classpath.
+	 * Locates a resource taking its name from {@link #getResourceName()} throwing an exception if the InputStream
+	 * cannot be found.
 	 * 
 	 * @return The located InputStream
 	 */
 	protected InputStream getInputStream() {
-		final String filename = this.getFilename();
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
+		final String resourceName = this.getResourceName();
+		final InputStream inputStream = this.getClass().getResourceAsStream(resourceName);
 		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
+			throw new TemplatedCodeBlockException("Unable to find template file \"" + resourceName + "\".");
 		}
 		return inputStream;
 	}
-
-	/**
-	 * A map that is used to resolve placeholders to values.
-	 */
-	private Map values;
-
-	protected Map getValues() {
-		ObjectHelper.checkNotNull("field:values", values);
-		return this.values;
+	
+	protected void throwValueNotFoundException(final String name) {
+		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in template \"" + this.getResourceName() + "\".");
 	}
 
-	protected void setValues(final Map values) {
-		ObjectHelper.checkNotNull("parameter:values", values);
-		this.values = values;
-	}
-
-	protected Map createValues() {
-		return new HashMap();
-	}
-
-	public void setLiteral(final String name, final Literal literal) {
-		this.set(name, literal);
-	}
-
-	public void setType(final String name, final Type type) {
-		this.set(name, type);
-	}
-
-	public void setConstructor(final String name, final Constructor constructor) {
-		this.set(name, constructor);
-	}
-
-	public void setConstructorParameter(final String name, final ConstructorParameter parameter) {
-		this.set(name, parameter);
-	}
-
-	public void setMethod(final String name, final Method method) {
-		this.set(name, method);
-	}
-
-	public void setMethodParameter(final String name, final MethodParameter parameter) {
-		this.set(name, parameter);
-	}
-
-	public void setField(final String name, final Field field) {
-		this.set(name, field);
-	}
-
-	public void setCodeBlock(final String name, final CodeBlock codeBlock) {
-		this.set(name, codeBlock);
-	}
-
-	protected void set(final String name, final Object value) {
-		StringHelper.checkNotEmpty("parameter:name", name);
-		ObjectHelper.checkNotNull("parameter:value", value);
-		this.getValues().put(name, value);
-	}
-
-	/**
-	 * Resolves placeholders by looking up a map using the name as the key
-	 * 
-	 * @param name
-	 * @return
-	 */
-	protected Object getValue0(final String name) {
-		return this.getValues().get(name);
-	}
 }

@@ -13,23 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.set;
-
-import rocket.beans.rebind.collection.CollectionTemplatedFile;
+package rocket.beans.rebind.xml;
 
 /**
- * An abstraction for the set template
+ * A bean like view of an advisor tag
  * 
  * @author Miroslav Pokorny
  */
-public class SetTemplatedFile extends CollectionTemplatedFile {
+class AspectTag extends XmlDocumentComponent {
 
-	protected String getElementsPlaceHolder() {
-		return Constants.SET_ADD_ELEMENTS;
+	public String getAdvisor() {
+		return this.getAttribute(Constants.ASPECT_ADVISOR_ATTRIBUTE);
 	}
 
-	protected String getResourceName() {
-		return Constants.SET_TEMPLATE;
+	public String getMethods() {
+		return this.getAttribute(Constants.ASPECT_METHODS);
 	}
 
+	public String getTarget() {
+		return this.getAttribute(Constants.ASPECT_TARGET_ATTRIBUTE);
+	}
 }

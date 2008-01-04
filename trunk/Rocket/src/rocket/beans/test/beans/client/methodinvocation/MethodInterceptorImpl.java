@@ -13,24 +13,26 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.xml;
+package rocket.beans.test.beans.client.methodinvocation;
+
+import rocket.beans.client.aop.MethodInvocation;
 
 /**
- * A bean like view of an advisor tag
- * 
+ * This method interceptor does nothing but invoke the next interceptor in the
+ * chain.
+ *
  * @author Miroslav Pokorny
  */
-class AdviceTag extends XmlDocumentComponent {
+public class MethodInterceptorImpl implements rocket.beans.client.aop.MethodInterceptor {
 
-	public String getAdvisor() {
-		return this.getAttribute(Constants.ADVICE_ADVISOR_ATTRIBUTE);
+	public MethodInterceptorImpl() {
+		super();
 	}
 
-	public String getMethodExpression() {
-		return this.getAttribute(Constants.ADVICE_METHOD_EXPRESSION);
+	public Object invoke(final MethodInvocation methodInvocation) throws Throwable {
+		this.methodInvocation = methodInvocation;
+		return methodInvocation.proceed();
 	}
 
-	public String getTarget() {
-		return this.getAttribute(Constants.ADVICE_TARGET_ATTRIBUTE);
-	}
+	public MethodInvocation methodInvocation;
 }

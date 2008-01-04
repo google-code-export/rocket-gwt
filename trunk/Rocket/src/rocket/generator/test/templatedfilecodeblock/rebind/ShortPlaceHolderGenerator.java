@@ -16,7 +16,6 @@
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.codeblock.ShortLiteral;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockTestConstants;
 
 public class ShortPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGenerator {
@@ -33,8 +32,8 @@ public class ShortPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGen
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
-		template.setLiteral("shortValue", new ShortLiteral(TemplatedFileCodeBlockTestConstants.SHORT));
+	protected void visitTemplate(final Template template) {
+		template.set("shortValue", new ShortLiteral(TemplatedFileCodeBlockTestConstants.SHORT));
 	}
 
 	protected String getNewMethodReturnType() {

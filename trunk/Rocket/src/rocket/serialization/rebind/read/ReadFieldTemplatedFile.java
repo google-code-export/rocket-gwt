@@ -18,23 +18,15 @@ package rocket.serialization.rebind.read;
 import java.io.InputStream;
 
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
-class ReadFieldTemplatedFile extends TemplatedCodeBlock {
+class ReadFieldTemplatedFile extends TemplatedFileCodeBlock {
 
-	protected InputStream getInputStream() {
-		final String fileName = this.getFilename();
-
-		final InputStream inputStream = this.getClass().getResourceAsStream(fileName);
-		ObjectHelper.checkNotNull(fileName, inputStream);
-		return inputStream;
-	}
-
-	protected String getFilename() {
+	protected String getResourceName() {
 		String fileName = null;
 		while (true) {
 			// the return type of the getter is also the field type.
@@ -78,6 +70,10 @@ class ReadFieldTemplatedFile extends TemplatedCodeBlock {
 		return fileName;
 	}
 
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO Delete after moving to same package as parent etmplate.
+	}
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 

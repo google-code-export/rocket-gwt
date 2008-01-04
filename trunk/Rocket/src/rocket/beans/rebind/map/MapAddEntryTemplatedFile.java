@@ -19,8 +19,7 @@ import java.io.InputStream;
 
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
 
@@ -29,11 +28,10 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class MapAddEntryTemplatedFile extends TemplatedCodeBlock {
+public class MapAddEntryTemplatedFile extends TemplatedFileCodeBlock {
 
 	public MapAddEntryTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -63,13 +61,12 @@ public class MapAddEntryTemplatedFile extends TemplatedCodeBlock {
 		this.value = value;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.MAP_ENTRY_ADD_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.MAP_ENTRY_ADD_TEMPLATE;
+	}
+	
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO Delete after moving to parent template package.
 	}
 
 	protected Object getValue0(final String name) {
@@ -86,10 +83,5 @@ public class MapAddEntryTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.MAP_ENTRY_ADD_TEMPLATE + "\".");
 	}
 }

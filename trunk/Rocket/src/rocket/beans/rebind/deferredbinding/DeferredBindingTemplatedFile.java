@@ -15,10 +15,7 @@
  */
 package rocket.beans.rebind.deferredbinding;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -27,11 +24,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class DeferredBindingTemplatedFile extends TemplatedCodeBlock {
+public class DeferredBindingTemplatedFile extends TemplatedFileCodeBlock {
 
 	public DeferredBindingTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -49,13 +45,8 @@ public class DeferredBindingTemplatedFile extends TemplatedCodeBlock {
 		this.type = type;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {

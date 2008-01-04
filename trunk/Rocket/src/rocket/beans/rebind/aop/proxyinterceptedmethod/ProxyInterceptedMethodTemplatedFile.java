@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.beans.rebind.Advice;
+import rocket.beans.rebind.Aspect;
 import rocket.beans.rebind.aop.addadvice.AddAdviceTemplatedFile;
 import rocket.beans.rebind.aop.interceptorchainproceed.InvokeInterceptorChainProceedTemplatedFile;
 import rocket.beans.rebind.aop.invoketarget.InvokeTargetMethodTemplatedFile;
@@ -29,10 +29,13 @@ import rocket.beans.rebind.aop.rethrowdeclaredexception.RethrowDeclaredException
 import rocket.beans.rebind.aop.wrapparameter.WrapParameterTemplatedFile;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.SourceWriter;
+import rocket.generator.rebind.codeblock.BooleanLiteral;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
+import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
@@ -44,11 +47,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
+public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock {
 
 	public ProxyInterceptedMethodTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -82,6 +84,29 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
+	 * The method that is the final target of the interceptor
+	 */
+	private Method targetMethod;
+
+	protected Method getTargetMethod() {
+		ObjectHelper.checkNotNull("field:targetMethod", targetMethod);
+		return this.targetMethod;
+	}
+
+	public void setTargetMethod(final Method targetMethod) {
+		ObjectHelper.checkNotNull("parameter:targetMethod", targetMethod);
+		this.targetMethod = targetMethod;
+	}
+
+	protected BooleanLiteral isMethodNative(){
+		return new BooleanLiteral( this.getTargetMethod().isNative() );
+	}
+
+	protected StringLiteral getEnclosingType(){
+		return new StringLiteral( this.getTargetMethod().getEnclosingType().getName() );
+	}
+	
+	/**
 	 * The target method parameter
 	 */
 	private MethodParameter target;
@@ -97,18 +122,18 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * A list containing the advices that apply to this method.
+	 * A list containing the aspects that apply to this method.
 	 */
-	private List advices;
+	private List aspects;
 
-	protected List getAdvices() {
-		ObjectHelper.checkNotNull("field:advices", advices);
-		return this.advices;
+	protected List getAspects() {
+		ObjectHelper.checkNotNull("field:aspects", aspects);
+		return this.aspects;
 	}
 
-	public void setAdvices(final List advices) {
-		ObjectHelper.checkNotNull("parameter:advices", advices);
-		this.advices = advices;
+	public void setAspects(final List aspects) {
+		ObjectHelper.checkNotNull("parameter:aspects", aspects);
+		this.aspects = aspects;
 	}
 
 	protected CodeBlock getAddAdvices() {
@@ -126,11 +151,11 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 			}
 
 			protected Collection getCollection() {
-				return ProxyInterceptedMethodTemplatedFile.this.getAdvices();
+				return ProxyInterceptedMethodTemplatedFile.this.getAspects();
 			}
 
 			protected void prepareToWrite(Object element) {
-				final Advice advice = (Advice) element;
+				final Aspect advice = (Aspect) element;
 				addAdvice.setBeanId(advice.getAdvisor());
 				addAdvice.setBeanFactory(beanFactory);
 			}
@@ -244,23 +269,50 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 		};
 	}
 
+	protected StringLiteral getMethodName(){
+		return new StringLiteral( this.getMethod().getName() );
+	}
+		
+	protected StringLiteral getMethodReturnType(){
+		return new StringLiteral( this.getMethod().getReturnType().getName() );
+	}
+	
+	protected CodeBlock getMethodParameterTypes(){
+		final List parameters = this.getMethod().getParameters();
+		
+		// this code block creates a String array holding the parameter type names.
+		return new CodeBlock(){
+			public boolean isEmpty(){
+				return false;
+			}
+			public void write(final SourceWriter writer){
+				writer.print( "new String[]{");
+				
+				final Iterator iterator = parameters.iterator();
+				while( iterator.hasNext() ){
+					final MethodParameter parameter = (MethodParameter) iterator.next();
+					
+					// write a quoted string holding the parameter type
+					new StringLiteral( parameter.getType().getRuntimeName() ).write(writer);
+					
+					if( iterator.hasNext() ){
+						writer.print( ",");
+					}
+				}
+				
+				writer.print( "}");
+			}
+		};
+	}
+	
 	/**
 	 * The actual template file is selected depending on whether the method
 	 * returns void or not.
 	 * 
-	 * @return
+	 * @return The name of the template resource
 	 */
-	protected String getFileName() {
+	protected String getResourceName() {
 		return Constants.TEMPLATE;
-	}
-
-	protected InputStream getInputStream() {
-		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
 	}
 
 	protected Object getValue0(final String name) {
@@ -291,13 +343,30 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedCodeBlock {
 				value = this.getRethrowExpectedExceptions();
 				break;
 			}
+			if (Constants.METHOD_NAME.equals(name)) {
+				value = this.getMethodName();
+				break;
+			}
+			if (Constants.IS_METHOD_NATIVE.equals(name)) {
+				value = this.isMethodNative();
+				break;
+			}
+			if (Constants.ENCLOSING_TYPE.equals(name)) {
+				value = this.getEnclosingType();
+				break;
+			}
+			if (Constants.METHOD_RETURN_TYPE.equals(name)) {
+				value = this.getMethodReturnType();
+				break;
+			}
+			if (Constants.METHOD_PARAMETER_TYPENAMES.equals(name)) {
+				value = this.getMethodParameterTypes();
+				break;
+			}
+			
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + this.getFileName() + "\".");
 	}
 
 	protected CodeBlock getInvokeTargetMethod() {

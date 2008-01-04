@@ -26,6 +26,7 @@ import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
@@ -36,18 +37,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class ServiceMethodInvokerTemplatedFile extends TemplatedCodeBlock {
+public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 
 	public ServiceMethodInvokerTemplatedFile() {
 		super();
-	}
-
-	public boolean isNative() {
-		return false;
-	}
-
-	public void setNative(final boolean ignore) {
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -186,13 +179,8 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedCodeBlock {
 		return template;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = ServiceMethodInvokerConstants.SERVICE_METHOD_INVOKER_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return ServiceMethodInvokerConstants.SERVICE_METHOD_INVOKER_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -221,10 +209,5 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in template \""
-				+ ServiceMethodInvokerConstants.SERVICE_METHOD_INVOKER_TEMPLATE + "\"");
 	}
 }

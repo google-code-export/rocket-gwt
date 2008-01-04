@@ -17,7 +17,6 @@ package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.type.Type;
@@ -50,10 +49,10 @@ public class FieldPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGen
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
+	protected void visitTemplate(final Template template) {
 		final Type type = this.getNewType();
 		final Field field = type.getField(FIELD);
-		template.setField("field", field);
+		template.set("field", field);
 	}
 
 	protected String getNewMethodReturnType() {

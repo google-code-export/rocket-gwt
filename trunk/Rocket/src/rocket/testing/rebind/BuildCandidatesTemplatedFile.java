@@ -25,6 +25,7 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -34,21 +35,16 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class BuildCandidatesTemplatedFile extends TemplatedCodeBlock {
+public class BuildCandidatesTemplatedFile extends TemplatedFileCodeBlock {
 
 	public BuildCandidatesTemplatedFile() {
 		super();
-		setNative(false);
+		
 		this.setTestMethods(this.createTestMethods());
 	}
-
-	protected InputStream getInputStream() {
-		final String filename = Constants.BUILD_CANDIDATES_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	
+	public void setNative( final boolean ignored ){
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -120,16 +116,15 @@ public class BuildCandidatesTemplatedFile extends TemplatedCodeBlock {
 		this.testRunner = testRunner;
 	}
 
+	protected String getResourceName(){
+		return Constants.BUILD_CANDIDATES_TEMPLATE;
+	}
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		if (Constants.BUILD_CANDIDATES_ADD_TESTS.equals(name)) {
 			value = this.getAddTestsCodeBlock();
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.BUILD_CANDIDATES_TEMPLATE + "\".");
 	}
 }

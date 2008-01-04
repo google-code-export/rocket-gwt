@@ -15,28 +15,19 @@
  */
 package rocket.serialization.rebind.write;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
 import rocket.util.client.ObjectHelper;
 
-public class GetFieldTemplatedFile extends TemplatedCodeBlock {
+// TODO duplicate
+public class GetFieldTemplatedFile extends TemplatedFileCodeBlock {
 
 	public boolean isNative() {
 		return true;
 	}
 
-	public void setNative(final boolean nativee) {
-		throw new UnsupportedOperationException();
-	}
-
-	protected InputStream getInputStream() {
-		final String fileName = Constants.GET_FIELD_TEMPLATE;
-
-		final InputStream inputStream = this.getClass().getResourceAsStream(fileName);
-		ObjectHelper.checkNotNull(fileName, inputStream);
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.GET_FIELD_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -63,5 +54,4 @@ public class GetFieldTemplatedFile extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:field", field);
 		this.field = field;
 	}
-
 }

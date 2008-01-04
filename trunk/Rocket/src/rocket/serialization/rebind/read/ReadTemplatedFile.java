@@ -17,9 +17,7 @@ package rocket.serialization.rebind.read;
 
 import java.io.InputStream;
 
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
-import rocket.generator.rebind.method.Method;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -28,20 +26,12 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class ReadTemplatedFile extends TemplatedCodeBlock {
+public class ReadTemplatedFile extends TemplatedFileCodeBlock {
 
 	public ReadTemplatedFile() {
 		super();
 	}
 	
-	public boolean isNative(){
-		return false;
-	}
-	
-	public void setNative( final boolean ignore ){
-		throw new UnsupportedOperationException();
-	}
-
 	/**
 	 * The type having its fields read
 	 */
@@ -57,13 +47,12 @@ public class ReadTemplatedFile extends TemplatedCodeBlock {
 		this.type = type;
 	} 
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.READ_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.READ_TEMPLATE;
+	}
+	
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO Dlete when moved to same package as parent template.
 	}
 
 	protected Object getValue0(final String name) {
@@ -74,10 +63,5 @@ public class ReadTemplatedFile extends TemplatedCodeBlock {
 		}
 		
 			return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.READ_TEMPLATE
-				+ "\".");
 	}
 };

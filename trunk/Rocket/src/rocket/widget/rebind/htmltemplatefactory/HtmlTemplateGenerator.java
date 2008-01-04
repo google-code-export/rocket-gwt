@@ -193,7 +193,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.TEXTBOX_TEMPLATE;
 			}
 
@@ -221,7 +221,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.PASSWORD_TEXTBOX_TEMPLATE;
 			}
 
@@ -249,7 +249,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.TEXTAREA_TEMPLATE;
 			}
 
@@ -277,7 +277,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.LISTBOX_TEMPLATE;
 			}
 
@@ -305,7 +305,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.CHECKBOX_TEMPLATE;
 			}
 
@@ -333,7 +333,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.RADIO_BUTTON_TEMPLATE;
 			}
 
@@ -361,7 +361,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.LABEL_TEMPLATE;
 			}
 
@@ -389,7 +389,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.BUTTON_TEMPLATE;
 			}
 
@@ -417,7 +417,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.IMAGE_TEMPLATE;
 			}
 
@@ -445,7 +445,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.HYPERLINK_TEMPLATE;
 			}
 
@@ -473,7 +473,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.FORM_TEMPLATE;
 			}
 
@@ -501,7 +501,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final String id = this.getId(method);
 
 		return new GetterMethodBodyTemplatedFile() {
-			protected String getTemplateFilename() {
+			protected String getResourceName() {
 				return Constants.HTML_TEMPLATE;
 			}
 

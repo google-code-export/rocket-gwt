@@ -26,6 +26,7 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.util.client.ObjectHelper;
 
 /**
@@ -33,11 +34,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
+abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 
 	public CollectionTemplatedFile() {
 		super();
-		setNative(false);
 		this.setElements(this.createElements());
 	}
 
@@ -90,16 +90,7 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 		};
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = this.getTemplate();
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
-	}
-
-	abstract protected String getTemplate();
+	abstract protected String getResourceName();
 
 	protected Object getValue0(final String name) {
 		Object value = null;
@@ -114,8 +105,4 @@ abstract public class CollectionTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	abstract protected String getElementsPlaceHolder();
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + this.getTemplate() + "\".");
-	}
 }

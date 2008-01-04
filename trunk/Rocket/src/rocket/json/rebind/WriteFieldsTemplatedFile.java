@@ -23,8 +23,7 @@ import java.util.List;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -35,11 +34,10 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class WriteFieldsTemplatedFile extends TemplatedCodeBlock {
+public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 
 	public WriteFieldsTemplatedFile() {
 		super();
-		setNative(false);
 		this.setFields(this.createFields());
 	}
 
@@ -159,15 +157,10 @@ public class WriteFieldsTemplatedFile extends TemplatedCodeBlock {
 		}
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.WRITE_FIELDS_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return Constants.WRITE_FIELDS_TEMPLATE;
 	}
-
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -183,10 +176,5 @@ public class WriteFieldsTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.WRITE_FIELDS_TEMPLATE + "\".");
 	}
 };

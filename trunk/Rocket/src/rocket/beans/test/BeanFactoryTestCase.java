@@ -15,9 +15,6 @@
  */
 package rocket.beans.test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import junit.framework.TestCase;
 import rocket.beans.client.BeanFactory;
 import rocket.beans.client.BeanFactoryAware;

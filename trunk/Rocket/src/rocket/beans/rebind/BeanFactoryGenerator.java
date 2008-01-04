@@ -76,7 +76,7 @@ import rocket.util.client.StringHelper;
  * 
  * A standalone class is created to implement the BeanFactory. Within this
  * BeanFactory private nested inner FactoryBean classes are created for each
- * bean and proxy required to implement configured advices.
+ * bean and proxy required to implement configured aspects.
  * 
  * @author Miroslav Pokorny
  */
@@ -117,8 +117,8 @@ public class BeanFactoryGenerator extends Generator {
 		this.overrideAllFactoryBeanSatisfyProperties(beans);
 		this.overrideAllSingletonFactoryBeanToInvokeCustomDestroy(beans);
 
-		this.buildAdvices(document.getAdvices());
-		this.applyAdvices();
+		this.buildAspects(document.getAspects());
+		this.applyAspects();
 
 		this.overrideBeanFactoryRegisterFactoryBeans();
 		this.registerBeanAliases();
@@ -1190,34 +1190,34 @@ public class BeanFactoryGenerator extends Generator {
 	 * Visits all advisors, checking they really are advisors and then adding
 	 * them to the respective bean.
 	 * 
-	 * @param advices All the advices within all xml files.
+	 * @param aspects All the aspects within all xml files.
 	 */
-	protected void buildAdvices(final Set advices) {
-		ObjectHelper.checkNotNull("parameter:advices", advices);
+	protected void buildAspects(final Set aspects) {
+		ObjectHelper.checkNotNull("parameter:aspects", aspects);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Processing and verifying " + advices.size() + " advice(s).");
+		context.info("Processing and verifying " + aspects.size() + " aspect(s).");
 
 		final MethodMatcherFactory methodMatcherFactory = createMethodMatcherFactor();
 
-		final Iterator iterator = advices.iterator();
+		final Iterator iterator = aspects.iterator();
 		while (iterator.hasNext()) {
-			final Advice advice = (Advice) iterator.next();
+			final Aspect aspect = (Aspect) iterator.next();
 
 			context.branch();
-			final String advisorId = advice.getAdvisor();
-			final String targetBeanId = advice.getTarget();
+			final String advisorId = aspect.getAdvisor();
+			final String targetBeanId = aspect.getTarget();
 			context.debug(advisorId + "=" + targetBeanId);
 
-			advice.setMethodMatcher(methodMatcherFactory.create(advice.getMethodExpression()));
+			aspect.setMethodMatcher(methodMatcherFactory.create(aspect.getMethodExpression()));
 
 			final Bean bean = this.getBean(targetBeanId);
 			this.verifyProxyTarget(bean);
-			this.verifyAdvisorBean(advice);
-			this.verifyMethodExpression(advice);
+			this.verifyAdvisorBean(aspect);
+			this.verifyMethodExpression(aspect);
 
-			bean.addAdvice(advice);
+			bean.addAspect(aspect);
 			
 			context.unbranch();
 		}
@@ -1250,15 +1250,14 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	/**
-	 * Checks that the advisor bean exists and is really an advice.
+	 * Checks that the advisor bean exists and is really an aspect of some sort
 	 * 
-	 * @param advice
-	 *            The advice
+	 * @param aspect The aspect containing the advisor
 	 */
-	protected void verifyAdvisorBean(final Advice advice) {
-		ObjectHelper.checkNotNull("parameter:advice", advice);
+	protected void verifyAdvisorBean(final Aspect aspect) {
+		ObjectHelper.checkNotNull("parameter:aspect", aspect);
 
-		final String id = advice.getAdvisor();
+		final String id = aspect.getAdvisor();
 		final Bean bean = this.getBean(id);
 		final Type type = bean.getType();
 
@@ -1268,22 +1267,21 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwNotAnAdviceException(final Bean bean) {
-		throw new BeanFactoryGeneratorException("The bean is not an advice, bean: " + bean);
+		throw new BeanFactoryGeneratorException("The so called advisor bean is not actually an advice, bean: " + bean);
 	}
 
 	/**
 	 * Verifies that the method expression matches at least one public method.
 	 * 
-	 * @param advice
-	 *            The advice being verified.
+	 * @param aspect The aspect
 	 */
-	protected void verifyMethodExpression(final Advice advice) {
-		ObjectHelper.checkNotNull("parameter:advice", advice);
+	protected void verifyMethodExpression(final Aspect aspect) {
+		ObjectHelper.checkNotNull("parameter:aspect", aspect);
 
-		final String id = advice.getTarget();
+		final String id = aspect.getTarget();
 		final Bean bean = this.getBean(id);
 		final Type type = bean.getType();
-		final MethodMatcher matcher = advice.getMethodMatcher();
+		final MethodMatcher matcher = aspect.getMethodMatcher();
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1317,7 +1315,7 @@ public class BeanFactoryGenerator extends Generator {
 		visitor.start(type);
 
 		if (matchedMethods.isEmpty()) {
-			throwNoMatchedMethods(advice);
+			throwNoMatchedMethods(aspect);
 		}
 
 		context.debug("Matched " + matchedMethods.size() + " methods(s).");
@@ -1329,51 +1327,49 @@ public class BeanFactoryGenerator extends Generator {
 				+ " which is final, prevents a proxy from being generated (this is achieved via subclassing).");
 	}
 
-	protected void throwNoMatchedMethods(final Advice advice) {
-		throw new BeanFactoryGeneratorException("The advice expression does not match any methods, advice: " + advice);
+	protected void throwNoMatchedMethods(final Aspect aspect) {
+		throw new BeanFactoryGeneratorException("The aspect expression does not match any methods, aspect: " + aspect);
 	}
 
 	/**
 	 * Creates a factory bean for each bean that will be proxied.
-	 * 
-	 * @param advisors
 	 */
-	protected void applyAdvices() {
+	protected void applyAspects() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Checking for beans with one or more advices.");
+		context.info("Checking for beans with one or more aspects.");
 
 		final Set beans = this.filterBeansRequiringInterceptors();
 
-		context.branch();
-		context.info("Processing beans that are advised.");
 		final Iterator advisedIterator = beans.iterator();
 		while (advisedIterator.hasNext()) {
 			final Bean bean = (Bean) advisedIterator.next();
 			this.buildProxyFactoryBean(bean);
 		}
-		context.unbranch();
-
+		
 		context.unbranch();
 	}
 
 	protected Set filterBeansRequiringInterceptors() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.debug("Beans that dont have any advices.");
+		context.debug("Filtering out Beans that dont have any aspects.");
 
 		final Set advised = new HashSet();
-		final Iterator beans = this.getBeans().values().iterator();
+		
+		final Map beans = this.getBeans();
+		final Iterator beansIterator = beans.values().iterator();
 
-		while (beans.hasNext()) {
-			final Bean bean = (Bean) beans.next();
-			final List advices = bean.getAdvices();
-			if (advices.isEmpty()) {
+		while (beansIterator.hasNext()) {
+			final Bean bean = (Bean) beansIterator.next();
+			final List aspectss = bean.getAspects();
+			if (aspectss.isEmpty()) {
 				context.debug(bean.getId());
 				continue;
 			}
 			advised.add(bean);
 		}
+		context.debug( "Found " + advised + " of " + beans.size() + " have at least 1 aspect.");
 		context.unbranch();
 
 		return advised;
@@ -1405,7 +1401,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		bean.setProxyFactoryBean(proxyFactoryBean);
 
-		context.debug("Proxy factory bean: " + superType);
+		context.debug("ProxyFactoryBean superType: " + superType);
 
 		this.overrideProxyFactoryBeanGetTargetFactoryBean(bean);
 
@@ -1479,7 +1475,7 @@ public class BeanFactoryGenerator extends Generator {
 		field.setValue(EmptyCodeBlock.INSTANCE);
 		field.setVisibility(Visibility.PUBLIC);
 
-		final List advices = bean.getAdvices();
+		final List aspects = bean.getAspects();
 
 		final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
 			protected boolean visit(final Method method) {
@@ -1494,7 +1490,7 @@ public class BeanFactoryGenerator extends Generator {
 					}
 
 					// the public methods remain...
-					final List matched = BeanFactoryGenerator.this.findMatchingAdvices(method, advices);
+					final List matched = BeanFactoryGenerator.this.findMatchingAdvices(method, aspects);
 					if (matched.isEmpty()) {
 						BeanFactoryGenerator.this.createProxyMethod(proxy, method);
 						break;
@@ -1518,24 +1514,22 @@ public class BeanFactoryGenerator extends Generator {
 	/**
 	 * Finds all the advices that match the given method.
 	 * 
-	 * @param method
-	 *            The method
-	 * @param advices
-	 *            A list of advices
-	 * @return A list of matched advices
+	 * @param method The method being processed
+	 * @param aspects A list of all advices for the bean
+	 * @return A list of only matching advices
 	 */
-	protected List findMatchingAdvices(final Method method, final List advices) {
-		final Iterator advicesIterator = advices.iterator();
-		final List applicableAdvices = new ArrayList();
+	protected List findMatchingAdvices(final Method method, final List aspects) {
+		final Iterator advicesIterator = aspects.iterator();
+		final List applicable = new ArrayList();
 
 		while (advicesIterator.hasNext()) {
-			final Advice advice = (Advice) advicesIterator.next();
-			if (advice.getMethodMatcher().matches(method)) {
-				applicableAdvices.add(advice);
+			final Aspect aspect = (Aspect) advicesIterator.next();
+			if (aspect.getMethodMatcher().matches(method)) {
+				applicable.add(aspect);
 			}
 		}
 
-		return applicableAdvices;
+		return applicable;
 	}
 
 	/**
@@ -1571,13 +1565,13 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The proxy being created
 	 * @param method
 	 *            The method
-	 * @param advices
-	 *            A list of advices for this method
+	 * @param aspects
+	 *            A list of aspects for this method
 	 */
-	protected void createProxyMethodWithInterceptors(final NewNestedType proxy, final Method method, final List advices) {
+	protected void createProxyMethodWithInterceptors(final NewNestedType proxy, final Method method, final List aspects) {
 		ObjectHelper.checkNotNull("parameter:proxy", proxy);
 		ObjectHelper.checkNotNull("parameter:method", method);
-		ObjectHelper.checkNotNull("parameter:advices", advices);
+		ObjectHelper.checkNotNull("parameter:advices", aspects);
 
 		final NewMethod newMethod = method.copy(proxy);
 		newMethod.setAbstract(false);
@@ -1588,9 +1582,10 @@ public class BeanFactoryGenerator extends Generator {
 		GeneratorHelper.makeAllParametersFinal(newMethod);
 
 		final ProxyInterceptedMethodTemplatedFile body = new ProxyInterceptedMethodTemplatedFile();
-		body.setAdvices(advices);
+		body.setAspects(aspects);
 		body.setBeanFactory(this.getBeanFactory());
 		body.setMethod(newMethod);
+		body.setTargetMethod( method );
 
 		final Type methodInterceptor = this.getMethodInterceptor();
 		final List methodInvocationParameterList = Arrays.asList(new Type[] { this.getMethodInvocation() });

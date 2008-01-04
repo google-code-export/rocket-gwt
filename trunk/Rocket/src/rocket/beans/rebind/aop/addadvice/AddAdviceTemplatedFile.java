@@ -18,8 +18,7 @@ package rocket.beans.rebind.aop.addadvice;
 import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -28,11 +27,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class AddAdviceTemplatedFile extends TemplatedCodeBlock {
+public class AddAdviceTemplatedFile extends TemplatedFileCodeBlock {
 
 	public AddAdviceTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -66,21 +64,16 @@ public class AddAdviceTemplatedFile extends TemplatedCodeBlock {
 	}
 
 	/**
-	 * Returns the resource or filename of the template.
+	 * Returns the name of the template resource
 	 * 
 	 * @return The filename
 	 */
-	protected String getFileName() {
+	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
-
-	public InputStream getInputStream() {
-		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO delete when merged into parent template package
 	}
 
 	public Object getValue0(final String name) {
@@ -92,14 +85,9 @@ public class AddAdviceTemplatedFile extends TemplatedCodeBlock {
 			}
 			if (Constants.BEAN_FACTORY.equals(name)) {
 				value = this.getBeanFactory();
-				break;
 			}
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + this.getFileName() + "\".");
 	}
 }

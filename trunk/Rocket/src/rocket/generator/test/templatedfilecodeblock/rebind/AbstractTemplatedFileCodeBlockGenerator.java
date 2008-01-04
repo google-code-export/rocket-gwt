@@ -18,7 +18,6 @@ package rocket.generator.test.templatedfilecodeblock.rebind;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.Visibility;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewType;
@@ -56,11 +55,9 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 		final NewMethod newMethod = type.newMethod();
 		newMethod.setAbstract(false);
 
-		final TemplatedFileCodeBlock body = new TemplatedFileCodeBlock();
-		body.setNative(this.isNewMethodNative());
-
-		final String fileName = this.getResourceNameFromGeneratorPackage(this.getTemplateFilename());
-		body.setFilename(fileName);
+		final Template body = new Template();
+		body.setNative( this.isNewMethodNative() );
+		body.setResourceName( this.getResourceNameFromGeneratorPackage(this.getTemplateFilename()));
 		newMethod.setBody(body);
 
 		newMethod.setFinal(false);
@@ -71,9 +68,10 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 		newMethod.setVisibility(Visibility.PUBLIC);
 
 		this.postNewMethodCreate(newMethod);
-		this.visitTemplacedFileCodeBlock(body);
+		
+		this.visitTemplate(body);
 	}
-
+	
 	protected void postNewMethodCreate(final NewMethod method) {
 	}
 
@@ -83,7 +81,7 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 
 	abstract protected boolean isNewMethodNative();
 
-	abstract protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template);
+	abstract protected void visitTemplate(final Template template);
 
 	abstract protected String getNewMethodReturnType();
 

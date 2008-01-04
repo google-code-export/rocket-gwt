@@ -13,23 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.beans.rebind.set;
+package rocket.beans.test.beans.client.methodinvocation;
 
-import rocket.beans.rebind.collection.CollectionTemplatedFile;
+public class SuperClassOfMethodInvocationTestTarget {
 
-/**
- * An abstraction for the set template
- * 
- * @author Miroslav Pokorny
- */
-public class SetTemplatedFile extends CollectionTemplatedFile {
-
-	protected String getElementsPlaceHolder() {
-		return Constants.SET_ADD_ELEMENTS;
+	public Object method( boolean z, byte b, short s, int i, long j, float f, double d, char c, String string ){
+		return null;
 	}
-
-	protected String getResourceName() {
-		return Constants.SET_TEMPLATE;
-	}
-
 }

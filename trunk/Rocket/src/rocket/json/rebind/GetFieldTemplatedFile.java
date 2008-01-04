@@ -15,49 +15,43 @@
  */
 package rocket.json.rebind;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the get-list templated file
+ * An abstraction for the get-field templated file
  * 
  * @author Miroslav Pokorny
+ * 
+ * TODO duplicate
  */
-public class GetFieldTemplatedFile extends TemplatedCodeBlock {
+public class GetFieldTemplatedFile extends TemplatedFileCodeBlock {
 
 	public GetFieldTemplatedFile() {
 		super();
-		setNative(true);
 	}
-
+	
 	/**
-	 * The list being fetched
+	 * The field being getted.
 	 */
 	private Field field;
 
 	protected Field getField() {
-		ObjectHelper.checkNotNull("list:list", field);
+		ObjectHelper.checkNotNull("field:field", field);
 		return this.field;
 	}
 
 	public void setField(final Field field) {
-		ObjectHelper.checkNotNull("parameter:list", field);
+		ObjectHelper.checkNotNull("parameter:field", field);
 		this.field = field;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.GET_FIELD_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return Constants.GET_FIELD_TEMPLATE;
 	}
-
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -68,10 +62,4 @@ public class GetFieldTemplatedFile extends TemplatedCodeBlock {
 		}
 		return value;
 	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in file \"" + Constants.GET_FIELD_TEMPLATE
-				+ "\".");
-	}
-
 }

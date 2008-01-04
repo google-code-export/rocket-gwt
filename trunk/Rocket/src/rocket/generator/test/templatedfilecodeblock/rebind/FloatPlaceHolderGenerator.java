@@ -16,7 +16,6 @@
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.codeblock.FloatLiteral;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockTestConstants;
 
 public class FloatPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGenerator {
@@ -33,8 +32,8 @@ public class FloatPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGen
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
-		template.setLiteral("floatValue", new FloatLiteral(TemplatedFileCodeBlockTestConstants.FLOAT));
+	protected void visitTemplate(final Template template) {
+		template.set("floatValue", new FloatLiteral(TemplatedFileCodeBlockTestConstants.FLOAT));
 	}
 
 	protected String getNewMethodReturnType() {

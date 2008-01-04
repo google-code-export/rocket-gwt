@@ -20,6 +20,7 @@ import java.io.InputStream;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -28,11 +29,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class InvokeInterceptorChainProceedTemplatedFile extends TemplatedCodeBlock {
+public class InvokeInterceptorChainProceedTemplatedFile extends TemplatedFileCodeBlock {
 
 	public InvokeInterceptorChainProceedTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class InvokeInterceptorChainProceedTemplatedFile extends TemplatedCodeBlo
 	 * 
 	 * @return
 	 */
-	protected String getFileName() {
+	protected String getResourceName() {
 		String fileName = null;
 
 		while (true) {
@@ -102,15 +102,6 @@ public class InvokeInterceptorChainProceedTemplatedFile extends TemplatedCodeBlo
 			break;
 		}
 		return fileName;
-	}
-
-	protected InputStream getInputStream() {
-		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
 	}
 
 	protected Object getValue0(final String name) {

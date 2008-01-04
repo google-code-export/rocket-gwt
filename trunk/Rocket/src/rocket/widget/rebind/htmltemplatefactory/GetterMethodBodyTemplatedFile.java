@@ -21,11 +21,12 @@ import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 
-abstract public class GetterMethodBodyTemplatedFile extends TemplatedCodeBlock {
+abstract public class GetterMethodBodyTemplatedFile extends TemplatedFileCodeBlock {
 
 	protected InputStream getInputStream() {
-		final String fileName = this.getTemplateFilename();
+		final String fileName = this.getResourceName();
 		final Generator generator = this.getGeneratorContext().getGenerator();
 		return generator.getResource(generator.getResourceNameFromGeneratorPackage(fileName));
 	}
@@ -41,7 +42,7 @@ abstract public class GetterMethodBodyTemplatedFile extends TemplatedCodeBlock {
 		return value;
 	}
 
-	abstract protected String getTemplateFilename();
+	abstract protected String getResourceName();
 
 	abstract protected String getId();
 }

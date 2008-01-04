@@ -16,7 +16,6 @@
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.codeblock.IntLiteral;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockTestConstants;
 
 public class IntPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGenerator {
@@ -33,8 +32,8 @@ public class IntPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGener
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
-		template.setLiteral("intValue", new IntLiteral(TemplatedFileCodeBlockTestConstants.INT));
+	protected void visitTemplate(final Template template) {
+		template.set("intValue", new IntLiteral(TemplatedFileCodeBlockTestConstants.INT));
 	}
 
 	protected String getNewMethodReturnType() {

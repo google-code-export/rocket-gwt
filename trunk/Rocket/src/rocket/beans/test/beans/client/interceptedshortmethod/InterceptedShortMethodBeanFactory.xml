@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
 <bean-factory>
-	<bean 
-		id="bean" 
-		class="rocket.beans.test.beans.client.interceptedshortmethod.ClassWithShortMethod" 
-		scope="singleton">
-	</bean>
+	<bean	id="bean" 
+			class="rocket.beans.test.beans.client.interceptedshortmethod.ClassWithShortMethod" 
+			scope="singleton" />
 
-	<bean 
-		id="advisor" 
-		class="rocket.beans.test.beans.client.interceptedshortmethod.ShortMethodInterceptor" 
-		scope="singleton">
-	</bean>
-	
-	<advice
+	<bean	id="advisor" 
+			class="rocket.beans.test.beans.client.interceptedshortmethod.ShortMethodInterceptor" 
+			scope="singleton" />
+				
+	<aspect
 		advisor="advisor"
 		target="bean"
-		methodExpression="add"
+		methods="add"
 	/>
 </bean-factory>
