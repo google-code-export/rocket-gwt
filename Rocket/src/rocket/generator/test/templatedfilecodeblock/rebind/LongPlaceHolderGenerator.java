@@ -16,7 +16,6 @@
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.codeblock.LongLiteral;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockTestConstants;
 
 public class LongPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGenerator {
@@ -33,8 +32,8 @@ public class LongPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGene
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
-		template.setLiteral("longValue", new LongLiteral(TemplatedFileCodeBlockTestConstants.LONG));
+	protected void visitTemplate(final Template template) {
+		template.set("longValue", new LongLiteral(TemplatedFileCodeBlockTestConstants.LONG));
 	}
 
 	protected String getNewMethodReturnType() {

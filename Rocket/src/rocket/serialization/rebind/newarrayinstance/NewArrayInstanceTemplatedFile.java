@@ -19,6 +19,7 @@ import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -27,11 +28,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class NewArrayInstanceTemplatedFile extends TemplatedCodeBlock {
+public class NewArrayInstanceTemplatedFile extends TemplatedFileCodeBlock {
 
 	public NewArrayInstanceTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	private Type type;
@@ -46,13 +46,8 @@ public class NewArrayInstanceTemplatedFile extends TemplatedCodeBlock {
 		this.type = type;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -65,9 +60,5 @@ public class NewArrayInstanceTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.TEMPLATE + "\".");
 	}
 }

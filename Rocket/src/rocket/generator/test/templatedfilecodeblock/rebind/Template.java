@@ -13,30 +13,44 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.json.rebind;
+package rocket.generator.test.templatedfilecodeblock.rebind;
 
-import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 
-/**
- * An abstraction for the as json method body templated file
- * 
- * @author Miroslav Pokorny
- */
-public class WriteJsonTemplatedFile extends TemplatedFileCodeBlock {
+public class Template extends TemplatedFileCodeBlock {
 
-	public WriteJsonTemplatedFile() {
-		super();
+	public void setNative( final boolean nativee ){
+		super.setNative(nativee);
 	}
+	
+	private String resourceName;
 
 	protected String getResourceName() {
-		return Constants.WRITE_JSON_TEMPLATE;
+		return this.resourceName;
+	}
+
+	void setResourceName(final String resourceName) {
+		this.resourceName = resourceName;
 	}
 
 	protected Object getValue0(final String name) {
-		return null;
+		return this.getValues().get(name);
+	}
+
+	private Map values = new HashMap();
+
+	Map getValues() {
+		return this.values;
+	}
+
+	void setValues(final Map values) {
+		this.values = values;
+	}
+
+	void set(final String name, final Object value) {
+		this.getValues().put(name, value);
 	}
 }

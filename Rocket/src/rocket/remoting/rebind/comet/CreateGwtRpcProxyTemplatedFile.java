@@ -19,19 +19,19 @@ import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the create-deserializer template
+ * An abstraction for the create-gwt rpc proxy template
  * 
  * @author Miroslav Pokorny
  */
-class CreateGwtRpcProxyTemplatedFile extends TemplatedCodeBlock {
+class CreateGwtRpcProxyTemplatedFile extends TemplatedFileCodeBlock {
 
 	public CreateGwtRpcProxyTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -49,13 +49,8 @@ class CreateGwtRpcProxyTemplatedFile extends TemplatedCodeBlock {
 		this.type = type;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.CREATE_GWT_RPC_PROXY_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.CREATE_GWT_RPC_PROXY_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {

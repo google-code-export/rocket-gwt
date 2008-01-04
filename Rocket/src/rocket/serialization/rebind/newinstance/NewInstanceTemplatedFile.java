@@ -15,10 +15,7 @@
  */
 package rocket.serialization.rebind.newinstance;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.util.client.ObjectHelper;
 
@@ -26,12 +23,13 @@ import rocket.util.client.ObjectHelper;
  * An abstraction for the new-instance.txt template
  * 
  * @author Miroslav Pokorny
+ * 
+ * TODO reusable template
  */
-public class NewInstanceTemplatedFile extends TemplatedCodeBlock {
+public class NewInstanceTemplatedFile extends TemplatedFileCodeBlock {
 
 	public NewInstanceTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	private Constructor constructor;
@@ -46,13 +44,8 @@ public class NewInstanceTemplatedFile extends TemplatedCodeBlock {
 		this.constructor = constructor;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return Constants.TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -65,9 +58,5 @@ public class NewInstanceTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.TEMPLATE + "\".");
 	}
 }

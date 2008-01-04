@@ -20,6 +20,7 @@ import java.io.InputStream;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -30,7 +31,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
+public class SetSimpleTemplatedFile extends TemplatedFileCodeBlock {
 
 	public SetSimpleTemplatedFile() {
 		super();
@@ -83,13 +84,8 @@ public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
 		this.serializer = serializer;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.SET_SIMPLE_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.SET_SIMPLE_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -110,10 +106,5 @@ public class SetSimpleTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in file \"" + Constants.SET_SIMPLE_TEMPLATE
-				+ "\".");
 	}
 }

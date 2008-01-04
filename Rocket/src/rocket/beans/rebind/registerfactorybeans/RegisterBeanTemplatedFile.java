@@ -20,6 +20,7 @@ import java.io.InputStream;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -29,14 +30,10 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class RegisterBeanTemplatedFile extends TemplatedCodeBlock {
+public class RegisterBeanTemplatedFile extends TemplatedFileCodeBlock {
 
 	public RegisterBeanTemplatedFile() {
 		super();
-	}
-
-	public void setNative( final boolean ignore ){
-		throw new UnsupportedOperationException();
 	}
 	
 	private String beanId;
@@ -63,13 +60,12 @@ public class RegisterBeanTemplatedFile extends TemplatedCodeBlock {
 		this.factoryBean = factoryBean;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.REGISTER_FACTORY_BEAN_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.REGISTER_FACTORY_BEAN_TEMPLATE;
+	}
+	
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO Delete when merged into same package as parent template.
 	}
 
 	protected Object getValue0(final String name) {
@@ -86,10 +82,5 @@ public class RegisterBeanTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.REGISTER_FACTORY_BEAN_TEMPLATE + "\".");
 	}
 }

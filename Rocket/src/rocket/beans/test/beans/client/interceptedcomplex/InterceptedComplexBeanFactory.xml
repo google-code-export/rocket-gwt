@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
 <bean-factory>
-	<bean 
-		id="bean" 
-		class="rocket.beans.test.beans.client.interceptedcomplex.Complex" 
-		scope="singleton">
-	</bean>
+	<bean	id="bean" 
+			class="rocket.beans.test.beans.client.interceptedcomplex.Complex" 
+			scope="singleton" />
 
-	<bean 
-		id="advisor" 
-		class="rocket.beans.test.beans.client.interceptedcomplex.ComplexMethodInterceptor" 
-		scope="singleton">
-	</bean>
+	<bean	id="advisor" 
+			class="rocket.beans.test.beans.client.interceptedcomplex.ComplexMethodInterceptor" 
+			scope="singleton" />
 	
-	<advice
-		advisor="advisor"
-		target="bean"
-		methodExpression="advised.*"
-	/>
+	<aspect	advisor="advisor"
+			target="bean"
+			methods="advised.*" />
 </bean-factory>

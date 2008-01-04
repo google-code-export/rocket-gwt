@@ -20,6 +20,7 @@ import java.io.InputStream;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -30,11 +31,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class WriteFieldTemplatedFile extends TemplatedCodeBlock {
+public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 
 	public WriteFieldTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -82,15 +82,14 @@ public class WriteFieldTemplatedFile extends TemplatedCodeBlock {
 		this.serializer = serializer;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.WRITE_FIELD_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return Constants.WRITE_FIELD_TEMPLATE;
 	}
 
+	public InputStream getInputStream() {
+		return super.getInputStream(); // TODO delete when merged with parent etmplate package
+	}
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -110,10 +109,5 @@ public class WriteFieldTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in file \"" + Constants.WRITE_FIELD_TEMPLATE
-				+ "\".");
 	}
 }

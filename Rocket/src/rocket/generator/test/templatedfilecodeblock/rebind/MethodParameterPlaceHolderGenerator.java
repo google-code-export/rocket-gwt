@@ -18,7 +18,6 @@ package rocket.generator.test.templatedfilecodeblock.rebind;
 import java.util.Arrays;
 import java.util.List;
 
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
@@ -44,11 +43,11 @@ public class MethodParameterPlaceHolderGenerator extends AbstractTemplatedFileCo
 		method.addParameter(parameter.copy());
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
+	protected void visitTemplate(final Template template) {
 		final Type type = this.getType();
 		final Method method = type.getMethod(getNewMethodName(), this.getObjectType());
 		final MethodParameter parameter = (MethodParameter) method.getParameters().get(0);
-		template.setMethodParameter("parameter", parameter);
+		template.set("parameter", parameter);
 	}
 
 	protected String getNewMethodReturnType() {

@@ -38,7 +38,7 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import rocket.beans.rebind.Advice;
+import rocket.beans.rebind.Aspect;
 import rocket.beans.rebind.Bean;
 import rocket.beans.rebind.BeanFactoryGeneratorException;
 import rocket.beans.rebind.NestedBean;
@@ -90,7 +90,7 @@ public class DocumentWalker {
 			this.setIncludedFiles(createIncludedFiles());
 			this.setBeans(this.createBeans());
 			this.setAliases(this.createAliases());
-			this.setAdvices(this.createAdvices());
+			this.setAspects(this.createAspects());
 
 			this.setFilename(fileName);
 			this.processDocument();
@@ -160,7 +160,7 @@ public class DocumentWalker {
 		this.visitRpcs();
 
 		this.visitAliases();
-		this.visitAdvices();
+		this.visitAspects();
 
 		// now include the included files...
 		final Iterator includedFilesIterator = included.iterator();
@@ -644,11 +644,11 @@ public class DocumentWalker {
 		}
 	}
 
-	protected void visitAdvices() {
+	protected void visitAspects() {
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
 		final String filename = this.getFilename();
 		
-		final NodeList nodeList = this.getDocument().getElementsByTagName(Constants.ADVICE_TAG);
+		final NodeList nodeList = this.getDocument().getElementsByTagName(Constants.ASPECT_TAG);
 		final int count = nodeList.getLength();
 		for (int i = 0; i < count; i++) {
 			final Node node = nodeList.item(i);
@@ -656,40 +656,42 @@ public class DocumentWalker {
 				continue;
 			}
 
-			final AdviceTag tag = new AdviceTag();
+			final AspectTag tag = new AspectTag();
 			tag.setElement((Element) nodeList.item(i));
 			tag.setFilename(filename);
 			tag.setPlaceHolderResolver(placeHolderResolver);
 
-			final Advice advice = new Advice();
-			advice.setAdvisor(tag.getAdvisor());
-			advice.setTarget(tag.getTarget());
-			advice.setMethodExpression(tag.getMethodExpression());
-			this.addAdvice(advice);
+			final Aspect aspect = new Aspect();
+			aspect.setAdvisor(tag.getAdvisor());
+			aspect.setTarget(tag.getTarget());
+			aspect.setMethodExpression(tag.getMethods());
+			this.addAspect(aspect);
 		}
 	}
 
 	/**
-	 * A set which aggregates all advices found
+	 * A set which aggregates all aspects found
 	 */
-	private Set advices;
+	private Set aspects;
 
-	public Set getAdvices() {
-		ObjectHelper.checkNotNull("field:advices", advices);
-		return this.advices;
+	public Set getAspects() {
+		ObjectHelper.checkNotNull("field:aspects", aspects);
+		return this.aspects;
 	}
 
-	protected void setAdvices(final Set advices) {
-		ObjectHelper.checkNotNull("parameter:advices", advices);
-		this.advices = advices;
+	protected void setAspects(final Set aspects) {
+		ObjectHelper.checkNotNull("parameter:aspects", aspects);
+		this.aspects = aspects;
 	}
 
-	protected Set createAdvices() {
+	protected Set createAspects() {
 		return new HashSet();
 	}
 
-	protected void addAdvice(final Advice advice) {
-		this.getAdvices().add(advice);
+	protected void addAspect(final Aspect aspect) {
+		ObjectHelper.checkNotNull("parameter:aspect", aspect);
+		
+		this.getAspects().add(aspect);
 	}
 
 	protected List visitIncludedFiles(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {

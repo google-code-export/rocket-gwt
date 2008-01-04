@@ -24,7 +24,8 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
-import rocket.generator.rebind.method.NewMethod;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
+import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.util.client.ObjectHelper;
 
@@ -33,24 +34,31 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class InvokeTargetMethodTemplatedFile extends TemplatedCodeBlock {
+public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 
 	public InvokeTargetMethodTemplatedFile() {
 		super();
-		setNative(false);
+	}
+	
+	public boolean isNative(){
+		return false;
+	}
+	
+	public void setNative( final boolean ignored ){
+		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * The target method
 	 */
-	private NewMethod method;
+	private Method method;
 
-	protected NewMethod getMethod() {
+	protected Method getMethod() {
 		ObjectHelper.checkNotNull("field:method", method);
 		return this.method;
 	}
 
-	public void setMethod(final NewMethod proxy) {
+	public void setMethod(final Method proxy) {
 		ObjectHelper.checkNotNull("parameter:method", proxy);
 		this.method = proxy;
 	}
@@ -61,19 +69,14 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedCodeBlock {
 	 * 
 	 * @return The file name
 	 */
-	protected String getFileName() {
+	protected String getResourceName() {
 		return this.getMethod().returnsVoid() ? Constants.VOID_TEMPLATE : Constants.TEMPLATE;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO Delete when merged into same package as parent template.
 	}
-
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -88,10 +91,6 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + this.getFileName() + "\".");
 	}
 
 	/**

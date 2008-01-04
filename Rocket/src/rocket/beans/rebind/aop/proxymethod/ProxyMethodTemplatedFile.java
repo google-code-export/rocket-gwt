@@ -24,7 +24,7 @@ import java.util.Map;
 
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.util.client.ObjectHelper;
@@ -34,16 +34,12 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class ProxyMethodTemplatedFile extends TemplatedCodeBlock {
+public class ProxyMethodTemplatedFile extends TemplatedFileCodeBlock {
 
 	public ProxyMethodTemplatedFile() {
 		super();
 	}
 	
-	public void setNative( final boolean ignore ){
-		throw new UnsupportedOperationException();
-	}
-
 	/**
 	 * The method being proxied
 	 */
@@ -65,17 +61,8 @@ public class ProxyMethodTemplatedFile extends TemplatedCodeBlock {
 	 * 
 	 * @return
 	 */
-	protected String getFileName() {
+	protected String getResourceName() {
 		return this.getMethod().returnsVoid() ? Constants.VOID_TEMPLATE : Constants.TEMPLATE;
-	}
-
-	protected InputStream getInputStream() {
-		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
 	}
 
 	protected Object getValue0(final String name) {
@@ -92,10 +79,6 @@ public class ProxyMethodTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + this.getFileName() + "\".");
 	}
 
 	protected CodeBlock getParameters() {

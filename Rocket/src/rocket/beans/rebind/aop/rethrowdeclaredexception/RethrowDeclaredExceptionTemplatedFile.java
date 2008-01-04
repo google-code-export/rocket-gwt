@@ -17,8 +17,7 @@ package rocket.beans.rebind.aop.rethrowdeclaredexception;
 
 import java.io.InputStream;
 
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -27,11 +26,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class RethrowDeclaredExceptionTemplatedFile extends TemplatedCodeBlock {
+public class RethrowDeclaredExceptionTemplatedFile extends TemplatedFileCodeBlock {
 
 	public RethrowDeclaredExceptionTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -49,19 +47,14 @@ public class RethrowDeclaredExceptionTemplatedFile extends TemplatedCodeBlock {
 		this.exception = exception;
 	}
 
-	protected String getFileName() {
+	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
-
-	public InputStream getInputStream() {
-		final String filename = this.getFileName();
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO delete after moving to parent template package.
 	}
-
+	
 	public Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -72,9 +65,5 @@ public class RethrowDeclaredExceptionTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + this.getFileName() + "\".");
 	}
 }

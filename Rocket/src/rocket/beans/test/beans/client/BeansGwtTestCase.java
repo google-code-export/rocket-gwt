@@ -21,6 +21,7 @@ import java.util.Set;
 
 import rocket.beans.client.BeanFactory;
 import rocket.beans.client.BeanFactoryImpl;
+import rocket.beans.client.aop.MethodInvocation;
 import rocket.beans.test.beans.client.alias.AliasBeanFactory;
 import rocket.beans.test.beans.client.aliasedbeandoesntexist.AliasBeanDoesntExistBeanFactory;
 import rocket.beans.test.beans.client.aliasnamealreadyexists.AliasFromBeanIdIsNotUniqueBeanFactory;
@@ -116,6 +117,9 @@ import rocket.beans.test.beans.client.manyvalues.ClassWithManyValues;
 import rocket.beans.test.beans.client.manyvalues.ManyValuesBeanFactory;
 import rocket.beans.test.beans.client.mapproperty.ClassWithMapProperty;
 import rocket.beans.test.beans.client.mapproperty.MapPropertyBeanFactory;
+import rocket.beans.test.beans.client.methodinvocation.MethodInterceptorImpl;
+import rocket.beans.test.beans.client.methodinvocation.MethodInvocationBeanFactory;
+import rocket.beans.test.beans.client.methodinvocation.MethodInvocationTestTarget;
 import rocket.beans.test.beans.client.missingbeanid.MissingBeanIdBeanFactory;
 import rocket.beans.test.beans.client.morethanonebeanfactory.FirstBeanFactory;
 import rocket.beans.test.beans.client.morethanonebeanfactory.SecondBeanFactory;
@@ -252,6 +256,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 	public void testEagerlyLoadedSingletonBean() {
 		assertFalse("singleton should have not been have been loaded until factory is created.", EagerlyLoadedSingletonBean.loaded );
 		final EagerlyLoadedSingletonBeanFactory beanFactory = (EagerlyLoadedSingletonBeanFactory)GWT.create(EagerlyLoadedSingletonBeanFactory.class);
+		assertNotNull( beanFactory );
 		assertTrue("singleton should have been loaded", EagerlyLoadedSingletonBean.loaded );
 	}
 
@@ -758,6 +763,31 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 
 		final VoidMethodInterceptor advisor = (VoidMethodInterceptor) factory.getBean(ADVISOR);
 		assertEquals(1, advisor.executedCount);
+	}
+	
+	public void testMethodInvocation() {
+		final BeanFactory factory = (BeanFactory) GWT.create(MethodInvocationBeanFactory.class);
+		final MethodInvocationTestTarget proxy = (MethodInvocationTestTarget) factory.getBean(BEAN);
+		proxy.method(false, (byte)0, (short)1, (int)2, (long)3, 4f, 5.0, 'a', "string" );
+		
+		final MethodInterceptorImpl interceptor = (MethodInterceptorImpl) factory.getBean( ADVISOR );
+		final MethodInvocation methodInvocation = interceptor.methodInvocation;
+		assertEquals( "method", methodInvocation.getMethod() );
+		assertEquals( false, methodInvocation.isNative() );
+		assertEquals( "java.lang.Object", methodInvocation.getReturnType() );
+		assertEquals( "rocket.beans.test.beans.client.methodinvocation.SuperClassOfMethodInvocationTestTarget", methodInvocation.getEnclosingType() );		
+		
+		final String[] parameterTypes = methodInvocation.getParameterTypes(); 
+		assertEquals( 9, parameterTypes.length );
+		assertEquals( "Z", parameterTypes[ 0 ]);
+		assertEquals( "B", parameterTypes[ 1 ]);
+		assertEquals( "S", parameterTypes[ 2 ]);
+		assertEquals( "I", parameterTypes[ 3 ]);
+		assertEquals( "J", parameterTypes[ 4 ]);
+		assertEquals( "F", parameterTypes[ 5 ]);
+		assertEquals( "D", parameterTypes[ 6 ]);
+		assertEquals( "C", parameterTypes[ 7 ]);
+		assertEquals( "java.lang.String", parameterTypes[ 8 ]);
 	}
 
 	public void testProxyTargetThrowsCheckedException() {

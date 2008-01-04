@@ -18,10 +18,7 @@ package rocket.beans.rebind;
 import java.util.ArrayList;
 import java.util.List;
 
-import rocket.beans.rebind.beanreference.BeanReferenceTemplatedFile;
-import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -37,7 +34,7 @@ public class Bean{
 	public Bean() {
 		super();
 
-		this.setAdvices(this.createAdvices());
+		this.setAspects(this.createAspects());
 	}
 	
 	/**
@@ -226,28 +223,28 @@ public class Bean{
 	}
 
 	/**
-	 * A list of advices that apply to this bean.
+	 * A list of aspects that apply to this bean.
 	 */
-	private List advices;
+	private List aspects;
 
-	public List getAdvices() {
-		ObjectHelper.checkNotNull("field:advices", advices);
-		return this.advices;
+	public List getAspects() {
+		ObjectHelper.checkNotNull("field:aspects", aspects);
+		return this.aspects;
 	}
 
-	protected void setAdvices(final List advices) {
-		ObjectHelper.checkNotNull("parameter:advices", advices);
-		this.advices = advices;
+	protected void setAspects(final List aspects) {
+		ObjectHelper.checkNotNull("parameter:aspects", aspects);
+		this.aspects = aspects;
 	}
 
-	protected List createAdvices() {
+	protected List createAspects() {
 		return new ArrayList();
 	}
 
-	public void addAdvice(final Advice advice) {
-		ObjectHelper.checkNotNull("parameter:advice", advice);
+	public void addAspect(final Aspect aspect) {
+		ObjectHelper.checkNotNull("parameter:aspect", aspect);
 
-		this.getAdvices().add(advice);
+		this.getAspects().add(aspect);
 	}
 
 	/**

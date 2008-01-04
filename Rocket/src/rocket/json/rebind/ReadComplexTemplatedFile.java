@@ -19,19 +19,19 @@ import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the asObject method body templated file
+ * An abstraction for the read-complex template
  * 
  * @author Miroslav Pokorny
  */
-public class ReadComplexTemplatedFile extends TemplatedCodeBlock {
+public class ReadComplexTemplatedFile extends TemplatedFileCodeBlock {
 
 	public ReadComplexTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -49,13 +49,8 @@ public class ReadComplexTemplatedFile extends TemplatedCodeBlock {
 		this.deserializerType = deserializerType;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.READ_COMPLEX_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.READ_COMPLEX_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {

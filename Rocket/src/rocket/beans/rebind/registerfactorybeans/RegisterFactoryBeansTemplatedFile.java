@@ -26,6 +26,7 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.util.client.ObjectHelper;
 
 /**
@@ -33,15 +34,15 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class RegisterFactoryBeansTemplatedFile extends TemplatedCodeBlock {
+public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 
 	public RegisterFactoryBeansTemplatedFile() {
 		super();
 		this.setBeans(this.createBeans());
 	}
 	
-	public void setNative( final boolean ignore ){
-		throw new UnsupportedOperationException();
+	protected String getResourceName(){
+		return Constants.REGISTER_FACTORY_BEANS_TEMPLATE;
 	}
 
 	private List beans;
@@ -64,7 +65,7 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 		ObjectHelper.checkNotNull("parameter:bean", bean);
 		this.getBeans().add(bean);
 	}
-
+	
 	protected CodeBlock getBeansCodeBlock() {
 		final RegisterBeanTemplatedFile registerBean = new RegisterBeanTemplatedFile();
 
@@ -93,16 +94,7 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 			}
 		};
 	}
-
-	protected InputStream getInputStream() {
-		final String filename = Constants.REGISTER_FACTORY_BEANS_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
-	}
-
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -113,10 +105,5 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.REGISTER_FACTORY_BEANS_TEMPLATE + "\".");
 	}
 }

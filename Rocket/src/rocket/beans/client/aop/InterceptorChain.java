@@ -20,9 +20,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.util.client.ObjectHelper;
+import rocket.util.client.StringHelper;
 
 /**
  * Provides a chain of methodInterceptors for a aspect.
+ * This class also acts as an adapter doing boring stuff like wrapping / unwrapping between primitive values and object.
  * 
  * @author Miroslav Pokorny
  */
@@ -119,6 +121,34 @@ public class InterceptorChain {
 				final MethodInterceptor interceptor = (MethodInterceptor) interceptors.next();
 				return interceptor.invoke(this);
 			}
+			
+			public String getMethod(){
+				return InterceptorChain.this.getMethod();
+			}			
+			
+			public String[] getParameterTypes(){
+				// make a defensive copy of the array just to be sure...
+				final String[] parameterTypes = InterceptorChain.this.getParameterTypes();
+				final int count = parameterTypes.length;
+				final String[] copy = new String[ count ];
+				for( int i = 0; i < count; i++ ){
+					copy[ i ] = parameterTypes[ i ];
+				}
+				
+				return copy;
+			}
+			
+			public String getReturnType(){
+				return InterceptorChain.this.getReturnType();
+			}
+				
+			public boolean isNative(){
+				return InterceptorChain.this.isNative();
+			}
+			
+			public String getEnclosingType(){
+				return InterceptorChain.this.getEnclosingType();
+			}
 		};
 	}
 
@@ -136,7 +166,81 @@ public class InterceptorChain {
 		ObjectHelper.checkNotNull("parameter:parameters", parameters);
 		this.parameters = parameters;
 	}
+	
+	/**
+	 * The name of the method.
+	 */
+	private String method;
+	
+	protected String getMethod(){
+		StringHelper.checkNotEmpty( "field:method", method );
+		return this.method;
+	}
+	
+	public void setMethod( final String method ){
+		StringHelper.checkNotEmpty( "parameter:method", method );
+		this.method = method;
+	}
 
+	/**
+	 * The names of the parameter types taken from the method not the input parameters. 
+	 */
+	private String[] parameterTypes;
+
+	protected String[] getParameterTypes() {
+		StringHelper.checkNotNull("field:parameterTypes", parameterTypes);
+		return parameterTypes;
+	}
+
+	public void setParameterTypes(final String[] parameterTypes) {
+		StringHelper.checkNotNull("parameter:parameterTypes", parameterTypes);
+		this.parameterTypes = parameterTypes;
+	}
+	
+	/**
+	 * The name of the returnType.
+	 */
+	private String returnType;
+	
+	protected String getReturnType(){
+		StringHelper.checkNotEmpty( "field:returnType", returnType );
+		return this.returnType;
+	}
+	
+	public void setReturnType( final String returnType ){
+		StringHelper.checkNotEmpty( "parameter:returnType", returnType );
+		this.returnType = returnType;
+	}
+	
+	/**
+	 * A flag that notes if the method is native.
+	 */
+	private boolean nativee;
+	
+	protected boolean isNative(){
+		return this.nativee;
+	}
+	
+	public void setNative( final boolean nativee ){
+		this.nativee = nativee;
+	}
+	
+
+	/**
+	 * The name of the type that encloses the method.
+	 */
+	private String enclosingType;
+	
+	protected String getEnclosingType(){
+		StringHelper.checkNotEmpty( "field:enclosingType", enclosingType );
+		return this.enclosingType;
+	}
+	
+	public void setEnclosingType( final String enclosingType ){
+		StringHelper.checkNotEmpty( "parameter:enclosingType", enclosingType );
+		this.enclosingType = enclosingType;
+	}
+	
 	/**
 	 * Overloaded method that helps with wrapping primitives into wrappers.
 	 * 

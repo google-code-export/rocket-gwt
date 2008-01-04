@@ -15,10 +15,7 @@
  */
 package rocket.json.rebind;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
 import rocket.util.client.ObjectHelper;
 
@@ -27,11 +24,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class SetFieldTemplatedFile extends TemplatedCodeBlock {
+public class SetFieldTemplatedFile extends TemplatedFileCodeBlock {
 
 	public SetFieldTemplatedFile() {
 		super();
-		setNative(true);
 	}
 
 	private Field field;
@@ -46,13 +42,8 @@ public class SetFieldTemplatedFile extends TemplatedCodeBlock {
 		this.field = field;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.SET_FIELD_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return Constants.SET_FIELD_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -65,10 +56,5 @@ public class SetFieldTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in file \"" + Constants.SET_FIELD_TEMPLATE
-				+ "\".");
 	}
 }

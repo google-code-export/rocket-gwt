@@ -89,13 +89,13 @@ class Constants {
 	
 	final static String RPC_SERVICE_ENTRY_POINT_ATTRIBUTE = "service-entry-point";
 	
-	final static String ADVICE_TAG = "advice";
+	final static String ASPECT_TAG = "aspect";
 
-	final static String ADVICE_ADVISOR_ATTRIBUTE = "advisor";
+	final static String ASPECT_ADVISOR_ATTRIBUTE = "advisor";
 
-	final static String ADVICE_TARGET_ATTRIBUTE = "target";
+	final static String ASPECT_TARGET_ATTRIBUTE = "target";
 
-	final static String ADVICE_METHOD_EXPRESSION = "methodExpression";
+	final static String ASPECT_METHODS = "methods";
 
 	final static String INCLUDE_TAG = "include";
 

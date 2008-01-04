@@ -16,7 +16,6 @@
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.codeblock.DoubleLiteral;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockTestConstants;
 
 public class DoublePlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGenerator {
@@ -33,8 +32,8 @@ public class DoublePlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGe
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
-		template.setLiteral("doubleValue", new DoubleLiteral(TemplatedFileCodeBlockTestConstants.DOUBLE));
+	protected void visitTemplate(final Template template) {
+		template.set("doubleValue", new DoubleLiteral(TemplatedFileCodeBlockTestConstants.DOUBLE));
 	}
 
 	protected String getNewMethodReturnType() {

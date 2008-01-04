@@ -1,4 +1,4 @@
-// rocket/beans/rebind/aop/unwrap/int.txt
+// /rocket/beans/rebind/aop/unwrapparameter/int.txt
 
 chain.getIntParameter( ${parameterIndex} )
 

@@ -23,8 +23,7 @@ import java.util.List;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -34,19 +33,11 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class ReadFieldsTemplatedFile extends TemplatedCodeBlock {
+public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 
 	public ReadFieldsTemplatedFile() {
 		super();
 		this.setFieldSetters(this.createFieldSetters());
-	}
-
-	public boolean isNative(){
-		return false;
-	}
-	
-	public void setNative( final boolean ignore ){
-		throw new UnsupportedOperationException();
 	}
 	
 	/**
@@ -116,15 +107,10 @@ public class ReadFieldsTemplatedFile extends TemplatedCodeBlock {
 		};
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.READ_FIELDS_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.READ_FIELDS_TEMPLATE;
 	}
-
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -140,10 +126,5 @@ public class ReadFieldsTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.READ_FIELDS_TEMPLATE
-				+ "\".");
 	}
 };

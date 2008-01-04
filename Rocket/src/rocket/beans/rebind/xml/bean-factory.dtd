@@ -1,6 +1,6 @@
 <!ELEMENT bean-factory 							(
 		place-holders*, 
-			(bean|alias|rpc|advice|include)*
+			(bean|alias|rpc|aspect|include)*
 		)>
 
 <!ELEMENT place-holders							EMPTY>
@@ -74,9 +74,9 @@
 	service-entry-point	CDATA 					#REQUIRED	
 >	
 
-<!ELEMENT advice								EMPTY >
-<!ATTLIST advice
+<!ELEMENT aspect								EMPTY >
+<!ATTLIST aspect
 	advisor				CDATA 					#REQUIRED
 	target				CDATA 					#REQUIRED	
-	methodExpression	CDATA 					#REQUIRED	
+	methods				CDATA 					#REQUIRED	
 >

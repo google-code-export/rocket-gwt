@@ -18,8 +18,7 @@ package rocket.remoting.rebind.rpc.json.requestparameters;
 import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.util.client.ObjectHelper;
 import rocket.util.client.StringHelper;
@@ -29,18 +28,10 @@ import rocket.util.client.StringHelper;
  * 
  * @author Miroslav Pokorny
  */
-class AddParameterTemplatedFile extends TemplatedCodeBlock {
+class AddParameterTemplatedFile extends TemplatedFileCodeBlock {
 
 	public AddParameterTemplatedFile() {
 		super();
-	}
-
-	public boolean isNative() {
-		return false;
-	}
-
-	public void setNative(final boolean ignored) {
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -73,15 +64,14 @@ class AddParameterTemplatedFile extends TemplatedCodeBlock {
 		this.httpRequestParameterName = httpRequestParameterName;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = RequestParametersConstants.ADD_PARAMETER_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return RequestParametersConstants.ADD_PARAMETER_TEMPLATE;
 	}
-
+	
+	public InputStream getInputStream(){
+		return super.getInputStream(); // TODO DELTE when merged into parent template package.
+	}
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -96,10 +86,5 @@ class AddParameterTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in template \""
-				+ RequestParametersConstants.ADD_PARAMETER_TEMPLATE + "\"");
 	}
 }

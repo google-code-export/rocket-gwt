@@ -15,10 +15,7 @@
  */
 package rocket.remoting.rebind.rpc.json.post;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
@@ -27,11 +24,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class JsonRpcInvokerTemplatedFile extends TemplatedCodeBlock {
+public class JsonRpcInvokerTemplatedFile extends TemplatedFileCodeBlock {
 
 	public JsonRpcInvokerTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	/**
@@ -64,13 +60,8 @@ public class JsonRpcInvokerTemplatedFile extends TemplatedCodeBlock {
 		this.returnType = returnType;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = JsonConstants.INVOKER_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return JsonConstants.INVOKER_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -87,10 +78,5 @@ public class JsonRpcInvokerTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in template \""
-				+ JsonConstants.INVOKER_TEMPLATE + "\"");
 	}
 }

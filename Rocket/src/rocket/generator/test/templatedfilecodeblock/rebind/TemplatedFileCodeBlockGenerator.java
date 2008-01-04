@@ -15,7 +15,6 @@
  */
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 
 public class TemplatedFileCodeBlockGenerator extends AbstractTemplatedFileCodeBlockGenerator {
 
@@ -31,7 +30,7 @@ public class TemplatedFileCodeBlockGenerator extends AbstractTemplatedFileCodeBl
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
+	protected void visitTemplate(final Template template) {
 	}
 
 	protected String getNewMethodReturnType() {

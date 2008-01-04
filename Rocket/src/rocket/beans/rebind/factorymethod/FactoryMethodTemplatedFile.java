@@ -15,10 +15,7 @@
  */
 package rocket.beans.rebind.factorymethod;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -28,7 +25,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class FactoryMethodTemplatedFile extends TemplatedCodeBlock {
+public class FactoryMethodTemplatedFile extends TemplatedFileCodeBlock {
 
 	public FactoryMethodTemplatedFile() {
 		super();
@@ -59,13 +56,8 @@ public class FactoryMethodTemplatedFile extends TemplatedCodeBlock {
 		this.factoryMethod = factoryMethod;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -82,9 +74,5 @@ public class FactoryMethodTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.TEMPLATE + "\".");
 	}
 }

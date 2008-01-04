@@ -15,37 +15,19 @@
  */
 package rocket.serialization.rebind.write;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import rocket.generator.rebind.SourceWriter;
-import rocket.generator.rebind.codeblock.CodeBlock;
-import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
-import rocket.generator.rebind.method.Method;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the write0.txt template
+ * An abstraction for the write.txt template
  * 
  * @author Miroslav Pokorny
  */
-public class WriteTemplatedFile extends TemplatedCodeBlock {
+public class WriteTemplatedFile extends TemplatedFileCodeBlock {
 
 	public WriteTemplatedFile() {
 		super();
-	}
-
-	public boolean isNative(){
-		return false;
-	}
-	
-	public void setNative( final boolean ignored ){
-		throw new UnsupportedOperationException();
 	}
 	
 	/**
@@ -63,13 +45,8 @@ public class WriteTemplatedFile extends TemplatedCodeBlock {
 		this.type = type;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.WRITE0_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.WRITE0_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -80,10 +57,5 @@ public class WriteTemplatedFile extends TemplatedCodeBlock {
 			}
 		
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.WRITE0_TEMPLATE
-				+ "\".");
 	}
 };

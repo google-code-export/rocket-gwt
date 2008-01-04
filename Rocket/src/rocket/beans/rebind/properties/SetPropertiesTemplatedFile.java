@@ -26,20 +26,20 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
 
 /**
- * An abstraction for the invoker add template
+ * An abstraction for the set properties template
  * 
  * @author Miroslav Pokorny
  */
-public class SetPropertiesTemplatedFile extends TemplatedCodeBlock {
+public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 
 	public SetPropertiesTemplatedFile() {
 		super();
-		setNative(false);
 		this.setProperties(this.createProperties());
 	}
 
@@ -111,13 +111,8 @@ public class SetPropertiesTemplatedFile extends TemplatedCodeBlock {
 		};
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.SET_PROPERTIES_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.SET_PROPERTIES_TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -135,10 +130,5 @@ public class SetPropertiesTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.SET_PROPERTIES_TEMPLATE + "\".");
 	}
 };

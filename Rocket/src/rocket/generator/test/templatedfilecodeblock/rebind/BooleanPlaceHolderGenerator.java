@@ -16,7 +16,6 @@
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.codeblock.BooleanLiteral;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockTestConstants;
 
 public class BooleanPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGenerator {
@@ -33,8 +32,8 @@ public class BooleanPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockG
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
-		template.setLiteral("booleanValue", new BooleanLiteral(TemplatedFileCodeBlockTestConstants.BOOLEAN));
+	protected void visitTemplate(final Template template) {
+		template.set("booleanValue", new BooleanLiteral(TemplatedFileCodeBlockTestConstants.BOOLEAN));
 	}
 
 	protected String getNewMethodReturnType() {

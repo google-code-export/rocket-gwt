@@ -19,10 +19,10 @@ import rocket.beans.rebind.aop.MethodMatcher;
 import rocket.util.client.ObjectHelper;
 
 /**
- * Represents a single advice found within a bean factory xml file
+ * Represents a single aspect found within a bean factory xml file
  * @author Miroslav Pokorny
  */
-public class Advice {
+public class Aspect {
 
 	/**
 	 * The id of the advisor bean

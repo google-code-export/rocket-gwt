@@ -16,7 +16,6 @@
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.NewAnonymousNestedType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.test.templatedfilecodeblock.client.Anonymous;
@@ -35,14 +34,14 @@ public class NestedAnonymousTypePlaceHolderGenerator extends AbstractTemplatedFi
 		return false;
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
+	protected void visitTemplate(final Template template) {
 		final GeneratorContext context = this.getGeneratorContext();
 		final Type interfaceType = context.getType(Anonymous.class.getName());
 
 		final NewAnonymousNestedType nested = this.getNewType().newAnonymousNestedType();
 		nested.addInterface(interfaceType);
 
-		template.setType("nestedType", nested);
+		template.set("nestedType", nested);
 	}
 
 	protected String getNewMethodReturnType() {

@@ -25,8 +25,7 @@ import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.util.client.ObjectHelper;
 
@@ -35,11 +34,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class ConstructorTemplatedFile extends TemplatedCodeBlock {
+public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 
 	public ConstructorTemplatedFile() {
 		super();
-		setNative(false);
 		this.setArguments(this.createArguments());
 	}
 
@@ -76,13 +74,8 @@ public class ConstructorTemplatedFile extends TemplatedCodeBlock {
 		this.getArguments().add(value);
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return Constants.TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -99,10 +92,6 @@ public class ConstructorTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.TEMPLATE + "\".");
 	}
 
 	protected CodeBlock getArgumentsAsCodeBlock() {

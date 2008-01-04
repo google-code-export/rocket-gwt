@@ -19,6 +19,7 @@ import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
@@ -29,11 +30,10 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-public class CreateProxyTemplatedFile extends TemplatedCodeBlock {
+public class CreateProxyTemplatedFile extends TemplatedFileCodeBlock {
 
 	public CreateProxyTemplatedFile() {
 		super();
-		setNative(false);
 	}
 
 	protected Type getProxyType() {
@@ -79,13 +79,8 @@ public class CreateProxyTemplatedFile extends TemplatedCodeBlock {
 		this.targetBeanType = targetBeanType;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName() {
+		return Constants.TEMPLATE;
 	}
 
 	protected Object getValue0(final String name) {
@@ -110,10 +105,5 @@ public class CreateProxyTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.TEMPLATE + "\".");
 	}
 }

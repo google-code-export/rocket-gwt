@@ -18,8 +18,7 @@ package rocket.serialization.rebind.switchstatement;
 import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
+import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.ObjectHelper;
@@ -29,7 +28,7 @@ import rocket.util.client.ObjectHelper;
  * 
  * @author Miroslav Pokorny
  */
-class CaseStatementTemplatedFile extends TemplatedCodeBlock {
+class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 
 	public CaseStatementTemplatedFile() {
 		super();
@@ -73,15 +72,14 @@ class CaseStatementTemplatedFile extends TemplatedCodeBlock {
 		this.objectWriterSingleton = objectWriterSingleton;
 	}
 
-	protected InputStream getInputStream() {
-		final String filename = Constants.CASE_STATEMENT_TEMPLATE;
-		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
-		if (null == inputStream) {
-			throw new TemplatedCodeBlockException("Unable to find template file \"" + filename + "\".");
-		}
-		return inputStream;
+	protected String getResourceName(){
+		return Constants.CASE_STATEMENT_TEMPLATE;
 	}
-
+	
+	public InputStream getInputStream(){
+		return super.getInputStream();
+	}
+	
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -96,10 +94,5 @@ class CaseStatementTemplatedFile extends TemplatedCodeBlock {
 			break;
 		}
 		return value;
-	}
-
-	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \""
-				+ Constants.CASE_STATEMENT_TEMPLATE + "\".");
 	}
 }

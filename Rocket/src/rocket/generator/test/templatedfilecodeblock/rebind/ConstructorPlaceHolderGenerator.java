@@ -18,7 +18,6 @@ package rocket.generator.test.templatedfilecodeblock.rebind;
 import java.util.Collections;
 
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.type.Type;
@@ -45,11 +44,11 @@ public class ConstructorPlaceHolderGenerator extends AbstractTemplatedFileCodeBl
 		newConstructor.setBody(EmptyCodeBlock.INSTANCE);
 	}
 
-	protected void visitTemplacedFileCodeBlock(final TemplatedFileCodeBlock template) {
+	protected void visitTemplate(final Template template) {
 		final Type type = this.getNewType();
 		final Constructor constructor = type.getConstructor(Collections.EMPTY_LIST);
 
-		template.setConstructor("constructor", constructor);
+		template.set("constructor", constructor);
 	}
 
 	protected String getNewMethodReturnType() {
