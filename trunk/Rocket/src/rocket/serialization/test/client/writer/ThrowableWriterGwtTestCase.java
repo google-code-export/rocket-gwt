@@ -15,15 +15,9 @@
  */
 package rocket.serialization.test.client.writer;
 
-import java.util.Date;
-import java.util.Map;
-
-import com.google.gwt.core.client.GWT;
-
-import rocket.serialization.client.writer.DateWriter;
+import rocket.serialization.client.ClientObjectOutputStream;
 import rocket.serialization.client.writer.ThrowableWriter;
 import rocket.serialization.test.client.ClientGwtTestCase;
-import rocket.serialization.client.ClientObjectOutputStream;
 
 public class ThrowableWriterGwtTestCase extends ClientGwtTestCase {
 

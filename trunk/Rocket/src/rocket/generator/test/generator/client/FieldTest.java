@@ -22,7 +22,7 @@ public class FieldTest {
 
 	short packagePrivateShortField;
 
-	private int privateIntField;
+	private int privateIntField = 0;
 
 	public transient final static long finalStaticTransientLongField = 0;
 

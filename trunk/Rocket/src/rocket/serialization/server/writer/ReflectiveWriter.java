@@ -17,11 +17,8 @@ package rocket.serialization.server.writer;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.SerializationException;

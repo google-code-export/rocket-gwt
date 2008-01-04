@@ -15,7 +15,6 @@
  */
 package rocket.serialization.server;
 
-import java.lang.reflect.Field;
 
 /**
  * A collection constants used by various classes within this package.

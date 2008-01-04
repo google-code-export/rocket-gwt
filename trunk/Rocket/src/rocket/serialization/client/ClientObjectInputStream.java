@@ -15,11 +15,6 @@
  */
 package rocket.serialization.client;
 
-import java.util.Map;
-
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
@@ -52,12 +47,12 @@ abstract public class ClientObjectInputStream extends ObjectInputStreamImpl impl
 	/**
 	 * This JSO holds a javascript array that contains the result of evaling the given stream.
 	 */
-	private JavaScriptObject stream;
+	private JavaScriptObject stream = null;
 
 	/**
 	 * An index into the stream that is used fetch the next token to be consumed.
 	 */
-	private int valueIndex;
+	private int valueIndex = 0;
 
 	native public boolean readBoolean() /*-{
 	 return this.@rocket.serialization.client.ClientObjectInputStream::stream[ this.@rocket.serialization.client.ClientObjectInputStream::valueIndex++ ];

@@ -15,13 +15,11 @@
  */
 package rocket.serialization.server;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import rocket.serialization.client.Constants;
 import rocket.serialization.client.ObjectInputStreamImpl;
