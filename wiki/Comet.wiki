@@ -21,7 +21,7 @@ The following steps below list what and why is needed to use this facility in yo
 Add the rocket module to your own application module.
 
 {{{
-<inherits name="rocket.User" />
+<inherits name="rocket.remoting.Remoting" />
 }}}
 
 ==Authoring the server component==
@@ -129,11 +129,12 @@ package example.client;
 import rocket.remoting.client.CometClient;
 import rocket.remoting.client.CometServerConnectionFailureException;
 
+/**
+ * @comet-payloadType example.client.CometPayload
+ * This has been promoted to a class annotation.
+ */
+
 public ExampleCometClient extends CometClient{
-	/**
-	 * @comet-payloadType example.client.CometPayload{
-	 */
-	abstract protected Object createProxy();
 };
 }}}
 
