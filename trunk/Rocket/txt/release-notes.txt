@@ -691,3 +691,68 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.39.zip
 * Improved toString of various rocket generation classes.
 * Introduced SerializationFactory which accepts annotations of readable/writable types which mark which types and their reachable types will be supported by the provided factory
 * Introduced a new java rpc module which provides much of the facilities provided by the Gwt RPC system but uses the new serialization module.
+
+0.40 3 January 2008
+-------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.40.zip
+
+Browser
+* Added a Location class which returns all the portions of the window.location object as well as read only map values of query string parameters.
+
+Bean
+* If a bean implements BeanFactoryAware this is satisfied prior to invoking the setting of other properties.
+* Refactored bean factory generator support classes(mostly moved templated files into their own subpackages).
+* Significantly improved logging produced by BeanFactoryGenerator to be more readable into a formatted tree structure(was previously very flat).
+* Added ability to specify aliases for beans via the alias element which has two attributes name (the alias name) and bean(the bean that is the target of alias).
+* Added BeanNameAware interface which when implemented provides a mechanism for a bean and its factory beans to learn of their name.
+* Extracted an invoke method from JavaRpcServiceMethodInvoker which takes the service provider, method and parameters for purposes of overridding 
+  from the unmarshalled incoming request.
+* Added support for disposing singleton (prototypes are not supported, holding any prototype reference would prevent garbage collection) 
+  beans that implement DisposableBean or define a custom destroy method with their bean tag.
+* Added support for nested(anonymous) beans within constructor and properties.
+* Added support for setting null values via the null element.
+* Merged bean factory, remote-json-rpc and remote-java-rpc tags into a single rpc tag. Changed address to service-entry-point and interface to service-interface.
+* Simplified rpc element attributes from advisorBeanId to advisor, targetBeanId to target and methodExpression to methods.
+* Modified bean-factory.dtd public id to match rocket version.
+* Enhanced MethodInvocation to include new properties about the proxy target method, name, enclosing type name, parameter type names,  is it native ? and return type name.
+
+Collections
+* Added unmodifiableSet and unmodifiableMap methods in addition to unmodifiableList to CollectionHelper
+
+Dom
+* Deprecated Dom.getAbsoluteXXX where XXX is Left or Top in favour of the equivalent Gwt DOM methods.
+
+Event
+* Added to MouseEvent ( and due to inheritence and all sub classes for the click, double click, down, up, move, out, over and wheel events ) methods to retrieve the mouse coordinates relative
+  to the target element.
+
+Generator
+* Modified StringLiteral to accept empty Strings literals, previously it would throw an exception.
+* Updated new class components new Types, Initializer, Constructor, Methods and Fields to create a tree like log when emitting their source code representation.
+* Reworked TemplateCodeBlock subclasses that should really extend TemplateFileCodeBlock
+
+Project
+* Cleaned up sub modules.gwt.xml files to only include modules they actually require.
+* Deprecated ElementWrapper, ObjectWrapperImpl, ObjectWrapper, EmbeddedObject
+
+Remoting
+* Fixed deferred binding rules for Comet (Remoting.gwt.xml), previously broken rules meant that the comet client was not detecting server connection failures in IE.
+
+Util
+* Fixed StringComparator.COMPARATOR to be an exact and not case insensitive comparator.
+* Moved all ObjectHelper methods JavaScriptObject getter/setter methods to JavaScript
+* Moved ObjectHelper,StringHelper,HttpHelper check methods ( generally those that start with "check" )to Checker.
+* Moved ObjectHelper,StringHelper,HttpHelper test methods ( generally those that start with "is") to Tester.
+* Remainng ObjectHelper,StringHelper,HttpHelper methods have been moved to Utilities
+* Renamed IoHelper to InputOutput.
+* Simplied check methods (most removed common check prefix) in Checker.
+* HttpHelper.encodeForm deprecated (duplicate of Widgets.encodeForm )
+
+Widget
+* Removed tree widget as functionality has been superceeded by GWT's own Tree widget.
+* Removed SplitterItem.remove() which was just calling the parent SplitterPanel.remove( this );
+* Made HyperlinkPanel a simple panel ie it can only have one child.
+* The initial menu list that opens when clicking on a widget with a ContextMenu (actually embedded within a ContextMenu panel) now opens at the location of the click.
+* ContextMenu now fires a new MenuOpenEvent subclass called ContextMenuOpenEvent ( a sub class of MenuOpenEvent) has been created and includes getters to retrieve the initially clicked upon 
+  Element/Widget and mouse position details.
+* Renamed WidgetsHelper to Widgets, as well moving various form related helper methods to Dom.
