@@ -15,7 +15,6 @@
  */
 package rocket.json.rebind;
 
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
 import rocket.util.client.ObjectHelper;
@@ -24,13 +23,15 @@ import rocket.util.client.ObjectHelper;
  * An abstraction for the get-field templated file
  * 
  * @author Miroslav Pokorny
- * 
- * TODO duplicate
  */
 public class GetFieldTemplatedFile extends TemplatedFileCodeBlock {
 
 	public GetFieldTemplatedFile() {
 		super();
+	}
+
+	public boolean isNative(){
+		return true;
 	}
 	
 	/**

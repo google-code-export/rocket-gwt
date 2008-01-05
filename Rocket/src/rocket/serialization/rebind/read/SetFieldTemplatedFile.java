@@ -22,6 +22,10 @@ import rocket.util.client.ObjectHelper;
 
 public class SetFieldTemplatedFile extends TemplatedFileCodeBlock {
 
+	public boolean isNative(){
+		return true;
+	}
+	
 	protected String getResourceName() {
 		return Constants.SET_FIELD_TEMPLATE;
 	}
