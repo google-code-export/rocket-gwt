@@ -16,8 +16,9 @@
 package rocket.style.client.support;
 
 import rocket.style.client.Css;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -29,13 +30,13 @@ public class InternetExplorerStyleSheetSupport extends StyleSheetSupport {
 	 * @return
 	 */
 	public JavaScriptObject getRulesCollection(final JavaScriptObject styleSheet) {
-		return ObjectHelper.getObject(styleSheet, Css.RULES_LIST_PROPERTY_IE6);
+		return JavaScript.getObject(styleSheet, Css.RULES_LIST_PROPERTY_IE6);
 	}
 
 	public void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText) {
-		ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
-		StringHelper.checkNotNull("parameter:selectorText", selectorText);
-		StringHelper.checkNotNull("parameter:styleText", styleText);
+		Checker.notNull("parameter:styleSheet", styleSheet);
+		Checker.notNull("parameter:selectorText", selectorText);
+		Checker.notNull("parameter:styleText", styleText);
 
 		this.addRule0(styleSheet, selectorText, styleText);
 	}
@@ -48,9 +49,9 @@ public class InternetExplorerStyleSheetSupport extends StyleSheetSupport {
 	 }-*/;
 
 	public void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText) {
-		ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
-		StringHelper.checkNotNull("parameter:selectorText", selectorText);
-		StringHelper.checkNotNull("parameter:styleText", styleText);
+		Checker.notNull("parameter:styleSheet", styleSheet);
+		Checker.notNull("parameter:selectorText", selectorText);
+		Checker.notNull("parameter:styleText", styleText);
 
 		this.insertRule0(styleSheet, index, selectorText, styleText);
 	}
@@ -60,7 +61,7 @@ public class InternetExplorerStyleSheetSupport extends StyleSheetSupport {
 	 }-*/;
 
 	public void removeRule(final JavaScriptObject styleSheet, final int index) {
-		ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
+		Checker.notNull("parameter:styleSheet", styleSheet);
 
 		this.removeRule0(styleSheet, index);
 	}
@@ -73,10 +74,10 @@ public class InternetExplorerStyleSheetSupport extends StyleSheetSupport {
 	 }-*/;
 
 	public String[] getRuleStylePropertyNames(final JavaScriptObject rule) {
-		ObjectHelper.checkNotNull("parameter:rule", rule);
+		Checker.notNull("parameter:rule", rule);
 		
-		final JavaScriptObject style = ObjectHelper.getObject(rule, "style"); 
-		return StringHelper.split(getStylePropertyNames0(style), ",", true);
+		final JavaScriptObject style = JavaScript.getObject(rule, "style"); 
+		return Utilities.split(getStylePropertyNames0(style), ",", true);
 	}
 
 	native private String getStylePropertyNames0(final JavaScriptObject style)/*-{

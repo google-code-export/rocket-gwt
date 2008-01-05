@@ -20,8 +20,7 @@ import rocket.remoting.client.support.comet.CometSupport;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -95,7 +94,7 @@ public abstract class CometClient {
 	 * @param cometClient
 	 */
 	static void onDisconnect(final CometClient cometClient) {
-		ObjectHelper.checkNotNull("parameter:cometClient", cometClient);
+		Checker.notNull("parameter:cometClient", cometClient);
 		
 		cometClient.disconnect();
 	}
@@ -143,7 +142,7 @@ public abstract class CometClient {
 	private Element frame;
 
 	protected Element getFrame() {
-		ObjectHelper.checkNotNull("field:frame", frame);
+		Checker.notNull("field:frame", frame);
 		return this.frame;
 	}
 
@@ -152,7 +151,7 @@ public abstract class CometClient {
 	}
 
 	protected void setFrame(final Element frame) {
-		ObjectHelper.checkNotNull("parameter:frame", frame);
+		Checker.notNull("parameter:frame", frame);
 		this.frame = frame;
 	}
 
@@ -176,12 +175,12 @@ public abstract class CometClient {
 	private String serviceEntryPoint;
 
 	public String getServiceEntryPoint() {
-		StringHelper.checkNotEmpty("field:serviceEntryPoint", serviceEntryPoint);
+		Checker.notEmpty("field:serviceEntryPoint", serviceEntryPoint);
 		return this.serviceEntryPoint;
 	}
 
 	public void setServiceEntryPoint(final String serviceEntryPoint) {
-		StringHelper.checkNotEmpty("parameter:serviceEntryPoint", serviceEntryPoint);
+		Checker.notEmpty("parameter:serviceEntryPoint", serviceEntryPoint);
 		this.serviceEntryPoint = serviceEntryPoint;
 	}
 
@@ -192,12 +191,12 @@ public abstract class CometClient {
 	private AsyncCallback callback;
 
 	public AsyncCallback getCallback() {
-		ObjectHelper.checkNotNull("field:callback", callback);
+		Checker.notNull("field:callback", callback);
 		return this.callback;
 	}
 
 	public void setCallback(final AsyncCallback callback) {
-		ObjectHelper.checkNotNull("parameter:callback", callback);
+		Checker.notNull("parameter:callback", callback);
 		this.callback = callback;
 	}
 	

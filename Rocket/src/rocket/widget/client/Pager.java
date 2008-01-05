@@ -20,8 +20,7 @@ import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
 import rocket.event.client.MouseEventListener;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -179,8 +178,8 @@ public class Pager extends CompositeWidget {
 	}
 
 	protected Widget createPage(final String label, final int itemNumber) {
-		StringHelper.checkNotEmpty("parameter:label", label);
-		PrimitiveHelper.checkBetween("parameter:pageNumber", itemNumber, this.firstItem, this.lastItem);
+		Checker.notEmpty("parameter:label", label);
+		Checker.between("parameter:pageNumber", itemNumber, this.firstItem, this.lastItem);
 		
 		final Button button = new Button(label);
 		final boolean onCurrentPage = this.getCurrentItem() == itemNumber;
@@ -208,12 +207,12 @@ public class Pager extends CompositeWidget {
 	private int firstItem;
 
 	public int getFirstItem() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:firstItem", 0, this.firstItem);
+		Checker.greaterThanOrEqual("field:firstItem", 0, this.firstItem);
 		return this.firstItem;
 	}
 
 	public void setFirstItem(final int firstItem) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:firstItem", 0, firstItem);
+		Checker.greaterThanOrEqual("parameter:firstItem", 0, firstItem);
 		this.firstItem = firstItem;
 	}
 
@@ -223,12 +222,12 @@ public class Pager extends CompositeWidget {
 	private int lastItem;
 
 	public int getLastItem() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:lastItem", 0, this.lastItem);
+		Checker.greaterThanOrEqual("field:lastItem", 0, this.lastItem);
 		return this.lastItem;
 	}
 
 	public void setLastItem(final int lastItem) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:lastItem", 0, lastItem);
+		Checker.greaterThanOrEqual("parameter:lastItem", 0, lastItem);
 		this.lastItem = lastItem;
 	}
 
@@ -254,7 +253,7 @@ public class Pager extends CompositeWidget {
 	}
 
 	protected void checkCurrentItem( final String message, final int currentPage ){
-		PrimitiveHelper.checkBetween( message, currentPage, this.firstItem, this.lastItem == 0 ? 1 : this.lastItem );		
+		Checker.between( message, currentPage, this.firstItem, this.lastItem == 0 ? 1 : this.lastItem );		
 	}
 	
 	/**
@@ -279,12 +278,12 @@ public class Pager extends CompositeWidget {
 	private int pageLinksAcrossCount;
 
 	public int getPageLinksAcrossCount() {
-		PrimitiveHelper.checkGreaterThan("field:pageLinksAcrossCount", 0, pageLinksAcrossCount);
+		Checker.greaterThan("field:pageLinksAcrossCount", 0, pageLinksAcrossCount);
 		return this.pageLinksAcrossCount;
 	}
 
 	public void setPageLinksAcrossCount(final int pageLinksAcrossCount) {
-		PrimitiveHelper.checkGreaterThan("parameter:pageLinksAcrossCount", 0, pageLinksAcrossCount);
+		Checker.greaterThan("parameter:pageLinksAcrossCount", 0, pageLinksAcrossCount);
 		this.pageLinksAcrossCount = pageLinksAcrossCount;
 	}
 
@@ -294,12 +293,12 @@ public class Pager extends CompositeWidget {
 	private int itemsPerPage;
 
 	public int getItemsPerPage() {
-		PrimitiveHelper.checkGreaterThan("field:itemsPerPage", 0, itemsPerPage);
+		Checker.greaterThan("field:itemsPerPage", 0, itemsPerPage);
 		return this.itemsPerPage;
 	}
 
 	public void setItemsPerPage(final int itemsPerPage) {
-		PrimitiveHelper.checkGreaterThan("parameter:itemsPerPage", 0, itemsPerPage);
+		Checker.greaterThan("parameter:itemsPerPage", 0, itemsPerPage);
 		this.itemsPerPage = itemsPerPage;
 	}
 	

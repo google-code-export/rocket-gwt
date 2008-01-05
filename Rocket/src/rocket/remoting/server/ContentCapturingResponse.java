@@ -23,10 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 import rocket.remoting.client.Headers;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
-import rocket.util.server.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This response captures all bytes or characters written to it. This is
@@ -56,12 +53,12 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	private Headers headers;
 
 	protected Headers getHeaders() {
-		ObjectHelper.checkNotNull("field:headers", headers);
+		Checker.notNull("field:headers", headers);
 		return headers;
 	}
 
 	protected void setHeaders(final Headers headers) {
-		ObjectHelper.checkNotNull("parameters:headers", headers);
+		Checker.notNull("parameters:headers", headers);
 		this.headers = headers;
 	}
 
@@ -102,12 +99,12 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	private String message;
 
 	public String getMessage() {
-		StringHelper.checkNotEmpty("field:message", message);
+		Checker.notEmpty("field:message", message);
 		return message;
 	}
 
 	public void setMessage(final String message) {
-		StringHelper.checkNotEmpty("parameter:message", message);
+		Checker.notEmpty("parameter:message", message);
 		this.message = message;
 	}
 
@@ -116,7 +113,7 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	}
 
 	public void setStatus(final int status) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:status", 0, status);
+		Checker.greaterThanOrEqual("parameter:status", 0, status);
 		this.status = status;
 	}
 
@@ -158,12 +155,12 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	private int bufferSize;
 
 	public int getBufferSize() {
-		PrimitiveHelper.checkGreaterThan("field:bufferSize", 0, bufferSize);
+		Checker.greaterThan("field:bufferSize", 0, bufferSize);
 		return bufferSize;
 	}
 
 	public void setBufferSize(final int bufferSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:bufferSize", 0, bufferSize);
+		Checker.greaterThan("parameter:bufferSize", 0, bufferSize);
 		this.bufferSize = bufferSize;
 	}
 
@@ -206,9 +203,9 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	}
 
 	protected void setByteArrayServletOutputStream(final ByteArrayServletOutputStream byteArrayServletOutputStream) {
-		ObjectHelper.checkNotNull("parameter:byteArrayServletOutputStream", byteArrayServletOutputStream);
+		Checker.notNull("parameter:byteArrayServletOutputStream", byteArrayServletOutputStream);
 		if (this.hasByteArrayServletOutputStream()) {
-			SystemHelper.fail("parameter:byteArrayServletOutputStream", "The field:outputStream has previously been set.");
+			Checker.fail("parameter:byteArrayServletOutputStream", "The field:outputStream has previously been set.");
 		}
 		this.byteArrayServletOutputStream = byteArrayServletOutputStream;
 	}
@@ -241,9 +238,9 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	}
 
 	protected void setWriter(final PrintWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 		if (this.hasWriter()) {
-			SystemHelper.fail("parameter:writer", "The field:writer has previously been set.");
+			Checker.fail("parameter:writer", "The field:writer has previously been set.");
 		}
 		this.writer = writer;
 	}

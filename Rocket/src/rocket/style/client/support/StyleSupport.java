@@ -16,8 +16,10 @@
 package rocket.style.client.support;
 
 import rocket.style.client.Css;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
+import rocket.util.client.Tester;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
@@ -58,7 +60,7 @@ abstract public class StyleSupport {
 	}
 	
 	protected int translateBorderWidth(final String value) {
-		StringHelper.checkNotEmpty("parameter:value", value);
+		Checker.notEmpty("parameter:value", value);
 
 		int number = 0;
 		while (true) {
@@ -145,7 +147,7 @@ abstract public class StyleSupport {
 	}-*/;
 	
 	protected String getComputed( final JavaScriptObject element, final String name ){
-		return this.getComputed0(element, StringHelper.toCssPropertyName(name));
+		return this.getComputed0(element, Utilities.toCssPropertyName(name));
 	}
 	
 	native private String getComputed0(final JavaScriptObject element, final String name)/*-{
@@ -184,7 +186,7 @@ abstract public class StyleSupport {
 
 		while (true) {
 			final String propertyValue = getComputed(element, Css.FONT_WEIGHT);
-			if (StringHelper.isNullOrEmpty(propertyValue)) {
+			if (Tester.isNullOrEmpty(propertyValue)) {
 				weight = StyleSupportConstants.FONT_WEIGHT_NORMAL_VALUE;
 				break;
 			}
@@ -199,13 +201,13 @@ abstract public class StyleSupport {
 			}
 			// relative weights...
 			if (StyleSupportConstants.FONT_WEIGHT_BOLDER.equals(propertyValue)) {
-				final Element parent = DOM.getParent( ObjectHelper.castToElement(element));
+				final Element parent = DOM.getParent( JavaScript.castToElement(element));
 				final int parentWeight = this.getComputedFontWeight(parent);
 				weight = parentWeight + 300;
 				break;
 			}
 			if (StyleSupportConstants.FONT_WEIGHT_LIGHTER.equals(propertyValue)) {
-				final Element parent = DOM.getParent( ObjectHelper.castToElement(element));
+				final Element parent = DOM.getParent( JavaScript.castToElement(element));
 				if( null != parent ){
 					final int parentWeight = this.getComputedFontWeight(parent);
 					weight = parentWeight - 300;
@@ -274,7 +276,7 @@ abstract public class StyleSupport {
 	abstract protected void remove0( JavaScriptObject source, final String name );
 	
 	protected void removeProperty(final JavaScriptObject element, final String propertyName) {
-		this.removeProperty0(element, StringHelper.toCssPropertyName(propertyName));
+		this.removeProperty0(element, Utilities.toCssPropertyName(propertyName));
 	}
 
 	native private void removeProperty0(final JavaScriptObject element, final String propertyName)/*-{
@@ -286,16 +288,16 @@ abstract public class StyleSupport {
 
 		// remove any quotes...
 		final StringBuffer names = new StringBuffer();
-		final String[] tokens = StringHelper.split(cssText, " ", true);
+		final String[] tokens = Utilities.split(cssText, " ", true);
 
 		for (int i = 0; i < tokens.length; i++) {
 			final String property = tokens[i];
 			if (property.endsWith(":")) {
-				names.append(StringHelper.toCamelCase(property));
+				names.append(Utilities.toCamelCase(property));
 			}
 		}
 
-		return StringHelper.split(names.toString(), ":", true);
+		return Utilities.split(names.toString(), ":", true);
 	}
 
 	protected String buildCssText(final JavaScriptObject element ) {
@@ -353,6 +355,6 @@ abstract public class StyleSupport {
 	 * @param propertyName
 	 */
 	protected void checkPropertyName(final String name, final String propertyName) {
-		StringHelper.checkNotEmpty(name, propertyName);
+		Checker.notEmpty(name, propertyName);
 	}
 }

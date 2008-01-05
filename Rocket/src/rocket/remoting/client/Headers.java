@@ -19,8 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.collection.client.MultiValueMap;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -41,13 +40,13 @@ public class Headers implements IsSerializable {
 	private MultiValueMap multiValueMap;
 
 	protected MultiValueMap getMultiValueMap() {
-		ObjectHelper.checkNotNull("field:map", multiValueMap);
+		Checker.notNull("field:map", multiValueMap);
 
 		return multiValueMap;
 	}
 
 	protected void setMultiValueMap(final MultiValueMap multiValueMap) {
-		ObjectHelper.checkNotNull("parameter:multiValueMap", multiValueMap);
+		Checker.notNull("parameter:multiValueMap", multiValueMap);
 
 		this.multiValueMap = multiValueMap;
 	}
@@ -61,7 +60,7 @@ public class Headers implements IsSerializable {
 	}
 
 	protected List getValueAsList(final String name) {
-		StringHelper.checkNotEmpty("parameter:name", name);
+		Checker.notEmpty("parameter:name", name);
 		return (List) this.getMultiValueMap().getValuesList(name.toLowerCase());
 	}
 
@@ -79,7 +78,7 @@ public class Headers implements IsSerializable {
 	}
 
 	public void add(final String name, final String value) {
-		StringHelper.checkNotEmpty("parameter:name", name);
+		Checker.notEmpty("parameter:name", name);
 
 		this.getMultiValueMap().add(name.toLowerCase(), value);
 	}

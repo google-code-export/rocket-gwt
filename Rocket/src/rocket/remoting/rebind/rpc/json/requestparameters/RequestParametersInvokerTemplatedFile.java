@@ -23,12 +23,10 @@ import java.util.List;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the request-parameters-invoker template file.
@@ -47,12 +45,12 @@ public class RequestParametersInvokerTemplatedFile extends TemplatedFileCodeBloc
 	private Type invokerType;
 
 	protected Type getInvokerType() {
-		ObjectHelper.checkNotNull("invokerType:invokerType", invokerType);
+		Checker.notNull("invokerType:invokerType", invokerType);
 		return this.invokerType;
 	}
 
 	public void setInvokerType(final Type invokerType) {
-		ObjectHelper.checkNotNull("parameter:invokerType", invokerType);
+		Checker.notNull("parameter:invokerType", invokerType);
 		this.invokerType = invokerType;
 	}
 
@@ -62,12 +60,12 @@ public class RequestParametersInvokerTemplatedFile extends TemplatedFileCodeBloc
 	private Type returnType;
 
 	protected Type getReturnType() {
-		ObjectHelper.checkNotNull("returnType:returnType", returnType);
+		Checker.notNull("returnType:returnType", returnType);
 		return this.returnType;
 	}
 
 	public void setReturnType(final Type returnType) {
-		ObjectHelper.checkNotNull("parameter:returnType", returnType);
+		Checker.notNull("parameter:returnType", returnType);
 		this.returnType = returnType;
 	}
 
@@ -77,12 +75,12 @@ public class RequestParametersInvokerTemplatedFile extends TemplatedFileCodeBloc
 	private List parameters;
 
 	protected List getParameters() {
-		ObjectHelper.checkNotNull("parameters:parameters", parameters);
+		Checker.notNull("parameters:parameters", parameters);
 		return this.parameters;
 	}
 
 	public void setParameters(final List parameters) {
-		ObjectHelper.checkNotNull("parameter:parameters", parameters);
+		Checker.notNull("parameter:parameters", parameters);
 		this.parameters = parameters;
 	}
 
@@ -92,12 +90,12 @@ public class RequestParametersInvokerTemplatedFile extends TemplatedFileCodeBloc
 	private List httpRequestParameterNames;
 
 	protected List getHttpRequestParameterNames() {
-		ObjectHelper.checkNotNull("field:httpRequestParameterNames", httpRequestParameterNames);
+		Checker.notNull("field:httpRequestParameterNames", httpRequestParameterNames);
 		return this.httpRequestParameterNames;
 	}
 
 	public void setHttpRequestParameterNames(final List httpRequestParameterNames) {
-		ObjectHelper.checkNotNull("parameter:httpRequestParameterNames", httpRequestParameterNames);
+		Checker.notNull("parameter:httpRequestParameterNames", httpRequestParameterNames);
 		this.httpRequestParameterNames = httpRequestParameterNames;
 	}
 

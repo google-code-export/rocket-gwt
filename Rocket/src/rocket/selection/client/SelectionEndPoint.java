@@ -15,7 +15,7 @@
  */
 package rocket.selection.client;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -32,12 +32,12 @@ public class SelectionEndPoint {
 	private JavaScriptObject textNode;
 
 	public JavaScriptObject getTextNode() {
-		ObjectHelper.checkNotNull("field:textNode", textNode);
+		Checker.notNull("field:textNode", textNode);
 		return textNode;
 	}
 
 	public void setTextNode(final JavaScriptObject textNode) {
-		ObjectHelper.checkNotNull("parameter:textNode", textNode);
+		Checker.notNull("parameter:textNode", textNode);
 		this.textNode = textNode;
 	}
 

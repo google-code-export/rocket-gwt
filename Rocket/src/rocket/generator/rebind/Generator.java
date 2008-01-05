@@ -21,8 +21,7 @@ import rocket.generator.rebind.gwt.TypeOracleGeneratorContext;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.TreeLogger;
 
@@ -134,12 +133,12 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	private GeneratorContext generatorContext;
 
 	public GeneratorContext getGeneratorContext() {
-		ObjectHelper.checkNotNull("field:generatorContext", generatorContext);
+		Checker.notNull("field:generatorContext", generatorContext);
 		return this.generatorContext;
 	}
 
 	public void setGeneratorContext(final GeneratorContext generatorContext) {
-		ObjectHelper.checkNotNull("parameter:generatorContext", generatorContext);
+		Checker.notNull("parameter:generatorContext", generatorContext);
 		this.generatorContext = generatorContext;
 	}
 
@@ -165,8 +164,8 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * @return
 	 */
 	public String getResourceName(final Class type, final String fileExtension) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-		StringHelper.checkNotNull("parameter:fileExtension", fileExtension);
+		Checker.notNull("parameter:type", type);
+		Checker.notNull("parameter:fileExtension", fileExtension);
 
 		return this.getResourceName(type.getPackage(), type.getSimpleName() + '.' + fileExtension);
 	}
@@ -180,8 +179,8 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * @return
 	 */
 	public String getResourceName(final java.lang.Package javaLangPackage, final String fileName) {
-		ObjectHelper.checkNotNull("parameter:javaLangPackage", javaLangPackage);
-		StringHelper.checkNotNull("parameter:fileName", fileName);
+		Checker.notNull("parameter:javaLangPackage", javaLangPackage);
+		Checker.notNull("parameter:fileName", fileName);
 
 		final String resourceName = '/' + javaLangPackage.getName().replace('.', '/') + '/' + fileName;
 		return resourceName;
@@ -196,8 +195,8 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * @return The resource name as a fully qualified class name (with dots replaced by slashes).
 	 */
 	public String getResourceName(final Type type, final String fileExtension) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-		StringHelper.checkNotNull("parameter:fileExtension", fileExtension);
+		Checker.notNull("parameter:type", type);
+		Checker.notNull("parameter:fileExtension", fileExtension);
 
 		return this.getResourceName(type.getPackage(), type.getSimpleName() + '.' + fileExtension);
 	}
@@ -211,8 +210,8 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * @return The resource name as a fully qualified class name (with dots replaced by slashes).
 	 */
 	public String getResourceName(final Package packagee, final String fileName) {
-		ObjectHelper.checkNotNull("parameter:package", packagee);
-		StringHelper.checkNotNull("parameter:fileName", fileName);
+		Checker.notNull("parameter:package", packagee);
+		Checker.notNull("parameter:fileName", fileName);
 
 		final String resourceName = '/' + packagee.getName().replace('.', '/') + '/' + fileName;
 		return resourceName;
@@ -229,7 +228,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * @return The InputStream for the given resourceName.
 	 */
 	public InputStream getResource(final String resourceName) {
-		StringHelper.checkNotNull("parameter:resourceName", resourceName);
+		Checker.notNull("parameter:resourceName", resourceName);
 
 		final InputStream inputStream = Object.class.getResourceAsStream(resourceName);
 		if (null == inputStream) {

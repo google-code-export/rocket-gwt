@@ -17,7 +17,7 @@ package rocket.generator.rebind.util;
 
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Represents a parameter to a constructor or method.
@@ -52,7 +52,7 @@ abstract public class AbstractParameter extends AbstractClassComponent {
 	private Type type;
 
 	public Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return type;
 	}
 
@@ -61,7 +61,7 @@ abstract public class AbstractParameter extends AbstractClassComponent {
 	}
 
 	protected void setType(final Type type) {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		this.type = type;
 	}
 

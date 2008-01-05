@@ -16,7 +16,7 @@
 package rocket.beans.rebind;
 
 import rocket.beans.rebind.aop.MethodMatcher;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Represents a single aspect found within a bean factory xml file
@@ -66,12 +66,12 @@ public class Aspect {
 	private MethodMatcher methodMatcher;
 
 	public MethodMatcher getMethodMatcher() {
-		ObjectHelper.checkNotNull("field:methodMatcher", methodMatcher);
+		Checker.notNull("field:methodMatcher", methodMatcher);
 		return this.methodMatcher;
 	}
 
 	public void setMethodMatcher(final MethodMatcher methodMatcher) {
-		ObjectHelper.checkNotNull("parameter:methodMatcher", methodMatcher);
+		Checker.notNull("parameter:methodMatcher", methodMatcher);
 		this.methodMatcher = methodMatcher;
 	}
 

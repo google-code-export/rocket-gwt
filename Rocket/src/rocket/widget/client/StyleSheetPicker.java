@@ -24,9 +24,7 @@ import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
 import rocket.style.client.StyleSheet;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -77,7 +75,7 @@ public class StyleSheetPicker extends CompositeWidget {
 	}
 
 	public void setText(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
+		Checker.notEmpty("parameter:text", text);
 		this.getLabel().setText(text);
 	}
 
@@ -88,7 +86,7 @@ public class StyleSheetPicker extends CompositeWidget {
 	private HorizontalPanel horizontalPanel;
 
 	protected HorizontalPanel getHorizontalPanel() {
-		ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
+		Checker.notNull("field:horizontalPanel", horizontalPanel);
 		return horizontalPanel;
 	}
 
@@ -97,7 +95,7 @@ public class StyleSheetPicker extends CompositeWidget {
 	}
 
 	protected void setHorizontalPanel(final HorizontalPanel horizontalPanel) {
-		ObjectHelper.checkNotNull("parameter:horizontalPanel", horizontalPanel);
+		Checker.notNull("parameter:horizontalPanel", horizontalPanel);
 		this.horizontalPanel = horizontalPanel;
 	}
 
@@ -119,12 +117,12 @@ public class StyleSheetPicker extends CompositeWidget {
 	private Label label;
 
 	public Label getLabel() {
-		ObjectHelper.checkNotNull("field:label", label);
+		Checker.notNull("field:label", label);
 		return label;
 	}
 
 	public void setLabel(final Label label) {
-		ObjectHelper.checkNotNull("parameter:label", label);
+		Checker.notNull("parameter:label", label);
 		this.label = label;
 	}
 
@@ -146,7 +144,7 @@ public class StyleSheetPicker extends CompositeWidget {
 	}
 
 	protected void createButtons(final HorizontalPanel panel) {
-		ObjectHelper.checkNotNull("parameter:panel", panel);
+		Checker.notNull("parameter:panel", panel);
 
 		final Collection styleSheets = StyleSheet.getStyleSheets();
 
@@ -166,7 +164,7 @@ public class StyleSheetPicker extends CompositeWidget {
 	}
 
 	public Button getButton(final int index) {
-		PrimitiveHelper.checkIsPositive("parameter:index", index);
+		Checker.isPositive("parameter:index", index);
 		return (Button) this.getHorizontalPanel().getWidget(index + 1);// skip
 		// the
 		// first
@@ -190,12 +188,12 @@ public class StyleSheetPicker extends CompositeWidget {
 	private Map mappings;
 
 	protected Map getMappings() {
-		ObjectHelper.checkNotNull("field:mappings", mappings);
+		Checker.notNull("field:mappings", mappings);
 		return mappings;
 	}
 
 	protected void setMappings(final Map mappings) {
-		ObjectHelper.checkNotNull("parameter:mappings", mappings);
+		Checker.notNull("parameter:mappings", mappings);
 		this.mappings = mappings;
 	}
 
@@ -204,27 +202,27 @@ public class StyleSheetPicker extends CompositeWidget {
 	}
 
 	protected StyleSheet getStyleSheet(final Button button) {
-		ObjectHelper.checkNotNull("parameter:button", button);
+		Checker.notNull("parameter:button", button);
 		final StyleSheet styleSheet = (StyleSheet) this.getMappings().get(button);
 		if (null == styleSheet) {
-			ObjectHelper.fail("parameter:button", "Unable find the styleSheet for the parameter:button");
+			Checker.fail("parameter:button", "Unable find the styleSheet for the parameter:button");
 		}
 		return styleSheet;
 	}
 
 	protected void setStyleSheet(final Button button, final StyleSheet styleSheet) {
-		ObjectHelper.checkNotNull("parameter:button", button);
-		ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
+		Checker.notNull("parameter:button", button);
+		Checker.notNull("parameter:styleSheet", styleSheet);
 
 		final Map mappings = this.getMappings();
 		if (mappings.containsKey(button)) {
-			ObjectHelper.fail("parameter:button", "The parameter:button has already been mapped.");
+			Checker.fail("parameter:button", "The parameter:button has already been mapped.");
 		}
 		mappings.put(button, styleSheet);
 	}
 
 	protected Button createButton(final String title) {
-		StringHelper.checkNotNull("parameter:title", title);
+		Checker.notNull("parameter:title", title);
 
 		final Button button = new Button(title);
 		button.setStyleName(WidgetConstants.STYLESHEET_ITEM_STYLE);
@@ -249,7 +247,7 @@ public class StyleSheetPicker extends CompositeWidget {
 	 * @param button
 	 */
 	protected void selectStyleSheet(final Button button) {
-		ObjectHelper.checkNotNull("parameter:button", button);
+		Checker.notNull("parameter:button", button);
 
 		this.unselectAllStyleSheets();
 		button.addStyleName(this.getSelectedStyleSheetStyle());
@@ -275,7 +273,7 @@ public class StyleSheetPicker extends CompositeWidget {
 	 * @param button
 	 */
 	protected void unselectStyleSheet(final Button button) {
-		ObjectHelper.checkNotNull("parameter:button", button);
+		Checker.notNull("parameter:button", button);
 
 		button.removeStyleName(this.getSelectedStyleSheetStyle());
 

@@ -16,9 +16,7 @@
 package rocket.remoting.client.support.rpc;
 
 import rocket.remoting.client.RpcException;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -39,7 +37,7 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	 * @param client The source
 	 */
 	public void prepare( final RpcServiceClient client ){
-		ObjectHelper.checkNotNull("parameter:client", client );
+		Checker.notNull("parameter:client", client );
 		
 		this.setUrl( client.getServiceEntryPoint());
 
@@ -164,12 +162,12 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	private String url;
 
 	protected String getUrl() {
-		StringHelper.checkNotEmpty("field:url", url);
+		Checker.notEmpty("field:url", url);
 		return this.url;
 	}
 
 	public void setUrl(final String url) {
-		StringHelper.checkNotEmpty("parameter:url", url);
+		Checker.notEmpty("parameter:url", url);
 		this.url = url;
 	}
 	
@@ -181,7 +179,7 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	private String username;
 
 	protected String getUsername() {
-		StringHelper.checkNotEmpty("field:username", username);
+		Checker.notEmpty("field:username", username);
 		return this.username;
 	}
 
@@ -190,7 +188,7 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	}
 
 	public void setUsername(final String username) {
-		StringHelper.checkNotEmpty("parameter:username", username);
+		Checker.notEmpty("parameter:username", username);
 		this.username = username;
 	}
 
@@ -201,7 +199,7 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	private String password;
 
 	protected String getPassword() {
-		StringHelper.checkNotEmpty("field:password", password);
+		Checker.notEmpty("field:password", password);
 		return this.password;
 	}
 
@@ -210,7 +208,7 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	}
 
 	public void setPassword(final String password) {
-		StringHelper.checkNotEmpty("parameter:password", password);
+		Checker.notEmpty("parameter:password", password);
 		this.password = password;
 	}
 
@@ -220,7 +218,7 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	private int timeout;
 
 	protected int getTimeout() {
-		PrimitiveHelper.checkGreaterThan("field:timeout", 0, timeout);
+		Checker.greaterThan("field:timeout", 0, timeout);
 		return timeout;
 	}
 
@@ -229,7 +227,7 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	}
 
 	public void setTimeout(final int timeout) {
-		PrimitiveHelper.checkGreaterThan("parameter:timeout", 0, timeout );
+		Checker.greaterThan("parameter:timeout", 0, timeout );
 		this.timeout = timeout;
 	}
 	
@@ -240,12 +238,12 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	private AsyncCallback callback;
 
 	AsyncCallback getCallback() {
-		ObjectHelper.checkNotNull("field:callback", callback);
+		Checker.notNull("field:callback", callback);
 		return this.callback;
 	}
 
 	public void setCallback(final AsyncCallback callback) {
-		ObjectHelper.checkNotNull("parameter:callback", callback);
+		Checker.notNull("parameter:callback", callback);
 		this.callback = callback;
 	}
 }

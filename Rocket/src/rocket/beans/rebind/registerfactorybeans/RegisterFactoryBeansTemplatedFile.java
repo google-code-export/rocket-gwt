@@ -24,10 +24,8 @@ import rocket.beans.rebind.Bean;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the register-factory-beans template
@@ -48,12 +46,12 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 	private List beans;
 
 	protected List getBeans() {
-		ObjectHelper.checkNotNull("field:beans", beans);
+		Checker.notNull("field:beans", beans);
 		return this.beans;
 	}
 
 	protected void setBeans(final List beans) {
-		ObjectHelper.checkNotNull("parameter:beans", beans);
+		Checker.notNull("parameter:beans", beans);
 		this.beans = beans;
 	}
 
@@ -62,7 +60,7 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public void addBean(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 		this.getBeans().add(bean);
 	}
 	

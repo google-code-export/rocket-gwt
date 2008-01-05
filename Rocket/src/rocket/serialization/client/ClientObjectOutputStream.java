@@ -15,7 +15,7 @@
  */
 package rocket.serialization.client;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -136,7 +136,7 @@ abstract public class ClientObjectOutputStream extends ObjectOutputStreamImpl {
 	}-*/;
 		
 	protected void writeNewObject(final Object object) {
-		ObjectHelper.checkNotNull("parameter:object", object);
+		Checker.notNull("parameter:object", object);
 
 		final String typeName = GWT.getTypeName(object);
 		final ObjectWriter objectWriter = this.getObjectWriter(typeName);

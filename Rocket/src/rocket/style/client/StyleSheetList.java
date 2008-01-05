@@ -19,7 +19,8 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -38,7 +39,7 @@ public class StyleSheetList extends AbstractList {
 	}
 
 	public int size() {
-		return ObjectHelper.getPropertyCount(this.getStyleSheetCollection());
+		return JavaScript.getPropertyCount(this.getStyleSheetCollection());
 	}
 
 	public Object get(final int index) {
@@ -85,12 +86,12 @@ public class StyleSheetList extends AbstractList {
 	private List styleSheets;
 
 	protected List getStyleSheets() {
-		ObjectHelper.checkNotNull("field:styleSheets", styleSheets);
+		Checker.notNull("field:styleSheets", styleSheets);
 		return this.styleSheets;
 	}
 
 	protected void setStyleSheets(final List styleSheets) {
-		ObjectHelper.checkNotNull("parameter:styleSheets", styleSheets);
+		Checker.notNull("parameter:styleSheets", styleSheets);
 		this.styleSheets = styleSheets;
 	}
 
@@ -105,7 +106,7 @@ public class StyleSheetList extends AbstractList {
 	 * @return
 	 */
 	JavaScriptObject getNativeStyleSheet(final int index) {
-		return ObjectHelper.getObject(this.getStyleSheetCollection(), index);
+		return JavaScript.getObject(this.getStyleSheetCollection(), index);
 	}
 
 	protected JavaScriptObject getStyleSheetCollection() {

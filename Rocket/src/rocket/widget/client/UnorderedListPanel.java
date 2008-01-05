@@ -16,7 +16,7 @@
 package rocket.widget.client;
 
 import rocket.dom.client.Dom;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -69,7 +69,7 @@ public class UnorderedListPanel extends Panel implements HasWidgets {
 	}
 
 	protected void insert0(final Element element, final int indexBefore) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 
 		final Element child = this.createElement();
 		DOM.insertChild(this.getParentElement(), child, indexBefore);
@@ -81,7 +81,7 @@ public class UnorderedListPanel extends Panel implements HasWidgets {
 	}
 
 	protected void remove0(final Element element, final int index) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 
 		final Element child = DOM.getChild(this.getParentElement(), index);
 		Dom.removeFromParent(child);

@@ -18,7 +18,7 @@ package rocket.collection.client;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.GWT;
 
@@ -102,7 +102,7 @@ public abstract class SkippingIterator extends IteratorWrapper implements Iterat
 	private Object cache = CACHE_NOT_SET;
 
 	protected Object getCache() {
-		PrimitiveHelper.checkTrue("cache", cache != CACHE_NOT_SET);
+		Checker.trueValue("cache", cache != CACHE_NOT_SET);
 		return cache;
 	}
 

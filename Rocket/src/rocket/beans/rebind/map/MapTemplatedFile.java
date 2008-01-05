@@ -24,10 +24,8 @@ import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the map template
@@ -44,12 +42,12 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 	private Map entries;
 
 	protected Map getEntries() {
-		ObjectHelper.checkNotNull("field:entries", entries);
+		Checker.notNull("field:entries", entries);
 		return this.entries;
 	}
 
 	protected void setEntries(final Map entries) {
-		ObjectHelper.checkNotNull("parameter:entries", entries);
+		Checker.notNull("parameter:entries", entries);
 		this.entries = entries;
 	}
 

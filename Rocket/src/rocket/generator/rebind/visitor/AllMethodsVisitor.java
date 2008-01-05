@@ -17,7 +17,7 @@ package rocket.generator.rebind.visitor;
 
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This visitor visits all the methods for the entire type heirarchy of the
@@ -34,7 +34,7 @@ abstract public class AllMethodsVisitor {
 	 * @param derivedType
 	 */
 	public void start(final Type derivedType) {
-		ObjectHelper.checkNotNull("parameter:derivedType", derivedType);
+		Checker.notNull("parameter:derivedType", derivedType);
 
 		final AllMethodsVisitorSuperTypesVisitor visitor = new AllMethodsVisitorSuperTypesVisitor();
 		visitor.start(derivedType);
@@ -47,7 +47,7 @@ abstract public class AllMethodsVisitor {
 	private class AllMethodsVisitorSuperTypesVisitor extends SuperTypesVisitor {
 
 		protected boolean visit(final Type type) {
-			ObjectHelper.checkNotNull("parameter:type", type);
+			Checker.notNull("parameter:type", type);
 
 			if (false == (AllMethodsVisitor.this.skipJavaLangObjectMethods() && type.equals(type.getGeneratorContext().getObject()))) {
 

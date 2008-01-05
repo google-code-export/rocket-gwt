@@ -27,8 +27,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 import rocket.remoting.client.Headers;
 import rocket.remoting.client.RequestParameters;
-import rocket.util.client.StringHelper;
-import rocket.util.server.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This Request supports the ability to capture output from included/forwarded
@@ -51,24 +50,24 @@ abstract class GetOrPostHttpServletRequest extends HttpServletRequestWrapper imp
 	private String url;
 
 	protected String getUrl() {
-		StringHelper.checkNotEmpty("field:url", url);
+		Checker.notEmpty("field:url", url);
 		return url;
 	}
 
 	protected void setUrl(final String url) {
-		StringHelper.checkNotEmpty("parameter:url", url);
+		Checker.notEmpty("parameter:url", url);
 		this.url = url;
 	}
 
 	private Headers headers;
 
 	public Headers getHeaders() {
-		ObjectHelper.checkNotNull("field:headers", headers);
+		Checker.notNull("field:headers", headers);
 		return this.headers;
 	}
 
 	public void setHeaders(final Headers headers) {
-		ObjectHelper.checkNotNull("parameter:headers", headers);
+		Checker.notNull("parameter:headers", headers);
 		this.headers = headers;
 	}
 
@@ -121,7 +120,7 @@ abstract class GetOrPostHttpServletRequest extends HttpServletRequestWrapper imp
 	private RequestParameters requestParameters;
 
 	protected RequestParameters getRequestParameters() {
-		ObjectHelper.checkNotNull("field:requestParameters", this.requestParameters);
+		Checker.notNull("field:requestParameters", this.requestParameters);
 		return this.requestParameters;
 	}
 
@@ -130,7 +129,7 @@ abstract class GetOrPostHttpServletRequest extends HttpServletRequestWrapper imp
 	}
 
 	protected void setRequestParameters(final RequestParameters requestParameters) {
-		ObjectHelper.checkNotNull("parameter:requestParameters", requestParameters);
+		Checker.notNull("parameter:requestParameters", requestParameters);
 		this.requestParameters = requestParameters;
 	}
 
@@ -171,7 +170,7 @@ abstract class GetOrPostHttpServletRequest extends HttpServletRequestWrapper imp
 			this.createParameterMap();
 		}
 
-		ObjectHelper.checkNotNull("field:parameterMap", parameterMap);
+		Checker.notNull("field:parameterMap", parameterMap);
 		return this.parameterMap;
 	}
 
@@ -180,7 +179,7 @@ abstract class GetOrPostHttpServletRequest extends HttpServletRequestWrapper imp
 	}
 
 	protected void setParameterMap(final Map parameterMap) {
-		ObjectHelper.checkNotNull("parameter:parameterMap", parameterMap);
+		Checker.notNull("parameter:parameterMap", parameterMap);
 		this.parameterMap = parameterMap;
 	}
 

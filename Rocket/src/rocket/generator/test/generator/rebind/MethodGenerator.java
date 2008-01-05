@@ -24,8 +24,7 @@ import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.test.generator.client.MethodTest;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class MethodGenerator extends TestGenerator {
 
@@ -34,67 +33,67 @@ public class MethodGenerator extends TestGenerator {
 
 		final Type type = context.getType(MethodTest.class.getName());
 
-		PrimitiveHelper.checkEquals("method count", 5, type.getMethods().size());
+		Checker.equals("method count", 5, type.getMethods().size());
 
 		final Type booleanType = context.getBoolean();
 		final Method publicBooleanMethod = type.getMethod("publicBooleanMethod", Arrays.asList(new Type[] { booleanType }));
 
-		ObjectHelper.checkSame("publicBooleanMethod visibility", Visibility.PUBLIC, publicBooleanMethod.getVisibility());
-		ObjectHelper.checkEquals("publicBooleanMethod name", "publicBooleanMethod", publicBooleanMethod.getName());
-		ObjectHelper.checkSame("publicBooleanMethod returnType", booleanType, publicBooleanMethod.getReturnType());
-		ObjectHelper.checkSame("publicBooleanMethod enclosing type", type, publicBooleanMethod.getEnclosingType());
-		PrimitiveHelper.checkFalse("publicBooleanMethod static", publicBooleanMethod.isStatic());
-		PrimitiveHelper.checkFalse("publicBooleanMethod final", publicBooleanMethod.isFinal());
-		PrimitiveHelper.checkFalse("publicBooleanMethod native", publicBooleanMethod.isNative());
+		Checker.same("publicBooleanMethod visibility", Visibility.PUBLIC, publicBooleanMethod.getVisibility());
+		Checker.equals("publicBooleanMethod name", "publicBooleanMethod", publicBooleanMethod.getName());
+		Checker.same("publicBooleanMethod returnType", booleanType, publicBooleanMethod.getReturnType());
+		Checker.same("publicBooleanMethod enclosing type", type, publicBooleanMethod.getEnclosingType());
+		Checker.falseValue("publicBooleanMethod static", publicBooleanMethod.isStatic());
+		Checker.falseValue("publicBooleanMethod final", publicBooleanMethod.isFinal());
+		Checker.falseValue("publicBooleanMethod native", publicBooleanMethod.isNative());
 
 		final Type byteType = context.getByte();
 		final Method protectedByteMethod = type.getMethod("protectedByteMethod", Arrays.asList(new Type[] { byteType }));
 
-		ObjectHelper.checkSame("protectedByteMethod visibility", Visibility.PROTECTED, protectedByteMethod.getVisibility());
-		ObjectHelper.checkEquals("protectedByteMethod name", "protectedByteMethod", protectedByteMethod.getName());
-		ObjectHelper.checkSame("protectedByteMethod returnType", byteType, protectedByteMethod.getReturnType());
-		ObjectHelper.checkSame("protectedByteMethod enclosing type", type, protectedByteMethod.getEnclosingType());
-		PrimitiveHelper.checkFalse("protectedByteMethod static", protectedByteMethod.isStatic());
-		PrimitiveHelper.checkFalse("protectedByteMethod final", protectedByteMethod.isFinal());
-		PrimitiveHelper.checkFalse("protectedByteMethod native", protectedByteMethod.isNative());
+		Checker.same("protectedByteMethod visibility", Visibility.PROTECTED, protectedByteMethod.getVisibility());
+		Checker.equals("protectedByteMethod name", "protectedByteMethod", protectedByteMethod.getName());
+		Checker.same("protectedByteMethod returnType", byteType, protectedByteMethod.getReturnType());
+		Checker.same("protectedByteMethod enclosing type", type, protectedByteMethod.getEnclosingType());
+		Checker.falseValue("protectedByteMethod static", protectedByteMethod.isStatic());
+		Checker.falseValue("protectedByteMethod final", protectedByteMethod.isFinal());
+		Checker.falseValue("protectedByteMethod native", protectedByteMethod.isNative());
 
 		final Type shortType = context.getShort();
 		final Method packagePrivateShortMethod = type.getMethod("packagePrivateShortMethod", Arrays.asList(new Type[] { shortType }));
 
-		ObjectHelper.checkSame("packagePrivateShortMethod visibility", Visibility.PACKAGE_PRIVATE, packagePrivateShortMethod
+		Checker.same("packagePrivateShortMethod visibility", Visibility.PACKAGE_PRIVATE, packagePrivateShortMethod
 				.getVisibility());
-		ObjectHelper.checkEquals("packagePrivateShortMethod name", "packagePrivateShortMethod", packagePrivateShortMethod.getName());
-		ObjectHelper.checkSame("packagePrivateShortMethod returnType", shortType, packagePrivateShortMethod.getReturnType());
-		ObjectHelper.checkSame("packagePrivateShortMethod enclosing type", type, packagePrivateShortMethod.getEnclosingType());
-		PrimitiveHelper.checkFalse("packagePrivateShortMethod static", packagePrivateShortMethod.isStatic());
-		PrimitiveHelper.checkFalse("packagePrivateShortMethod final", packagePrivateShortMethod.isFinal());
-		PrimitiveHelper.checkFalse("protectedByteMethod native", protectedByteMethod.isNative());
+		Checker.equals("packagePrivateShortMethod name", "packagePrivateShortMethod", packagePrivateShortMethod.getName());
+		Checker.same("packagePrivateShortMethod returnType", shortType, packagePrivateShortMethod.getReturnType());
+		Checker.same("packagePrivateShortMethod enclosing type", type, packagePrivateShortMethod.getEnclosingType());
+		Checker.falseValue("packagePrivateShortMethod static", packagePrivateShortMethod.isStatic());
+		Checker.falseValue("packagePrivateShortMethod final", packagePrivateShortMethod.isFinal());
+		Checker.falseValue("protectedByteMethod native", protectedByteMethod.isNative());
 
 		final Type intType = context.getInt();
 		final Method privateIntMethod = type.getMethod("privateIntMethod", Arrays.asList(new Type[] { intType }));
 
-		ObjectHelper.checkSame("privateIntMethod visibility", Visibility.PRIVATE, privateIntMethod.getVisibility());
-		ObjectHelper.checkEquals("privateIntMethod name", "privateIntMethod", privateIntMethod.getName());
-		ObjectHelper.checkSame("privateIntMethod returnType", intType, privateIntMethod.getReturnType());
-		ObjectHelper.checkSame("privateIntMethod enclosing type", type, privateIntMethod.getEnclosingType());
-		PrimitiveHelper.checkFalse("privateIntMethod static", privateIntMethod.isStatic());
-		PrimitiveHelper.checkFalse("privateIntMethod final", privateIntMethod.isFinal());
-		PrimitiveHelper.checkFalse("privateIntMethod native", privateIntMethod.isNative());
+		Checker.same("privateIntMethod visibility", Visibility.PRIVATE, privateIntMethod.getVisibility());
+		Checker.equals("privateIntMethod name", "privateIntMethod", privateIntMethod.getName());
+		Checker.same("privateIntMethod returnType", intType, privateIntMethod.getReturnType());
+		Checker.same("privateIntMethod enclosing type", type, privateIntMethod.getEnclosingType());
+		Checker.falseValue("privateIntMethod static", privateIntMethod.isStatic());
+		Checker.falseValue("privateIntMethod final", privateIntMethod.isFinal());
+		Checker.falseValue("privateIntMethod native", privateIntMethod.isNative());
 
 		final Type voidType = context.getVoid();
 		final Method staticFinalMethod = type.getMethod("staticFinalMethod", Arrays.asList(new Type[] {}));
 
-		ObjectHelper.checkSame("staticFinalMethod visibility", Visibility.PUBLIC, staticFinalMethod.getVisibility());
-		ObjectHelper.checkEquals("staticFinalMethod name", "staticFinalMethod", staticFinalMethod.getName());
-		ObjectHelper.checkSame("staticFinalMethod returnType", voidType, staticFinalMethod.getReturnType());
-		ObjectHelper.checkSame("staticFinalMethod enclosing type", type, staticFinalMethod.getEnclosingType());
-		PrimitiveHelper.checkTrue("staticFinalMethod static", staticFinalMethod.isStatic());
-		PrimitiveHelper.checkTrue("staticFinalMethod final", staticFinalMethod.isFinal());
-		PrimitiveHelper.checkFalse("staticFinalMethod native", staticFinalMethod.isNative());
+		Checker.same("staticFinalMethod visibility", Visibility.PUBLIC, staticFinalMethod.getVisibility());
+		Checker.equals("staticFinalMethod name", "staticFinalMethod", staticFinalMethod.getName());
+		Checker.same("staticFinalMethod returnType", voidType, staticFinalMethod.getReturnType());
+		Checker.same("staticFinalMethod enclosing type", type, staticFinalMethod.getEnclosingType());
+		Checker.trueValue("staticFinalMethod static", staticFinalMethod.isStatic());
+		Checker.trueValue("staticFinalMethod final", staticFinalMethod.isFinal());
+		Checker.falseValue("staticFinalMethod native", staticFinalMethod.isNative());
 
 		final Set thrownTypes = staticFinalMethod.getThrownTypes();
-		PrimitiveHelper.checkEquals("staticFinalMethod thrownTypes", 1, thrownTypes.size());
-		ObjectHelper.checkSame("staticFinalMethod thrownType", context.getType(Exception.class.getName()), thrownTypes.iterator().next());
+		Checker.equals("staticFinalMethod thrownTypes", 1, thrownTypes.size());
+		Checker.same("staticFinalMethod thrownType", context.getType(Exception.class.getName()), thrownTypes.iterator().next());
 
 		return null;
 	}

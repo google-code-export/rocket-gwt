@@ -23,10 +23,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.server.IoHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
+import rocket.util.client.Utilities;
+import rocket.util.server.InputOutput;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
@@ -63,7 +63,7 @@ public abstract class CometServerServlet extends HttpServlet {
 	public void init() throws ServletException {
 		// read and save the maximumBytesWritten init parameter...
 		final String maximumBytesWritten = this.getInitParameter(Constants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER);
-		if (StringHelper.isNullOrEmpty(maximumBytesWritten)) {
+		if (Tester.isNullOrEmpty(maximumBytesWritten)) {
 			throw new ServletException("The servlet \"" + this.getServletName() + "\" init parameter \""
 					+ Constants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER + "\" is required and missing.");
 		}
@@ -76,7 +76,7 @@ public abstract class CometServerServlet extends HttpServlet {
 
 		// read and save the connectionTimeout init parameter...
 		final String connectionTimeout = this.getInitParameter(Constants.CONNECTION_TIME_OUT_INIT_PARAMETER);
-		if (StringHelper.isNullOrEmpty(connectionTimeout)) {
+		if (Tester.isNullOrEmpty(connectionTimeout)) {
 			throw new ServletException("The servlet \"" + this.getServletName() + "\" init parameter \""
 					+ Constants.CONNECTION_TIME_OUT_INIT_PARAMETER + "\" is required and missing.");
 		}
@@ -95,12 +95,12 @@ public abstract class CometServerServlet extends HttpServlet {
 	private int maximumBytesWritten;
 
 	protected int getMaximumBytesWritten() {
-		PrimitiveHelper.checkGreaterThan("field:maximumBytesWritten", 0, this.maximumBytesWritten);
+		Checker.greaterThan("field:maximumBytesWritten", 0, this.maximumBytesWritten);
 		return this.maximumBytesWritten;
 	}
 
 	protected void setMaximumBytesWritten(final int maximumBytesWritten) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumBytesWritten", 0, maximumBytesWritten);
+		Checker.greaterThan("parameter:maximumBytesWritten", 0, maximumBytesWritten);
 		this.maximumBytesWritten = maximumBytesWritten;
 	}
 
@@ -111,12 +111,12 @@ public abstract class CometServerServlet extends HttpServlet {
 	private int connectionTimeout;
 
 	protected int getConnectionTimeout() {
-		PrimitiveHelper.checkGreaterThan("field:connectionTimeout", 0, this.connectionTimeout);
+		Checker.greaterThan("field:connectionTimeout", 0, this.connectionTimeout);
 		return this.connectionTimeout;
 	}
 
 	protected void setConnectionTimeout(final int connectionTimeout) {
-		PrimitiveHelper.checkGreaterThan("parameter:connectionTimeout", 0, connectionTimeout);
+		Checker.greaterThan("parameter:connectionTimeout", 0, connectionTimeout);
 		this.connectionTimeout = connectionTimeout;
 	}
 
@@ -126,12 +126,12 @@ public abstract class CometServerServlet extends HttpServlet {
 	private SerializationPolicy serializationPolicy;
 
 	protected SerializationPolicy getSerializationPolicy() {
-		ObjectHelper.checkNotNull("field:serializationPolicy", serializationPolicy);
+		Checker.notNull("field:serializationPolicy", serializationPolicy);
 		return this.serializationPolicy;
 	}
 
 	protected void setSerializationPolicy(final SerializationPolicy serializationPolicy) {
-		ObjectHelper.checkNotNull("parameter:serializationPolicy", serializationPolicy);
+		Checker.notNull("parameter:serializationPolicy", serializationPolicy);
 		this.serializationPolicy = serializationPolicy;
 	}
 
@@ -259,7 +259,7 @@ public abstract class CometServerServlet extends HttpServlet {
 			} catch (final IOException ignored) {
 
 			}
-			IoHelper.closeIfNecessary(output);
+			InputOutput.closeIfNecessary(output);
 		}
 	}
 
@@ -311,7 +311,7 @@ public abstract class CometServerServlet extends HttpServlet {
 	 * @return
 	 */
 	protected String preparePayload(final boolean isException, final String serializedForm) {
-		final String serializedForm0 = StringHelper.htmlEncode(serializedForm);
+		final String serializedForm0 = Utilities.htmlEncode(serializedForm);
 
 		return "<script>try{window.parent.__cometDispatch('" + (isException ? "{EX}" : "{OK}") + serializedForm0
 				+ "');}catch(e){}</script>\n";

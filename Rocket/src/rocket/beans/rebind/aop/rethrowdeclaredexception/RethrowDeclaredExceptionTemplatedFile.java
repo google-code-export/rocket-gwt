@@ -19,7 +19,7 @@ import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the rethrow declared exception template
@@ -38,12 +38,12 @@ public class RethrowDeclaredExceptionTemplatedFile extends TemplatedFileCodeBloc
 	private Type exception;
 
 	protected Type getException() {
-		ObjectHelper.checkNotNull("field:exception", exception);
+		Checker.notNull("field:exception", exception);
 		return this.exception;
 	}
 
 	public void setException(final Type exception) {
-		ObjectHelper.checkNotNull("exception:exception", exception);
+		Checker.notNull("exception:exception", exception);
 		this.exception = exception;
 	}
 

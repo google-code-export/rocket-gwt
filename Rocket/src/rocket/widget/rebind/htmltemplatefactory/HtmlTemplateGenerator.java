@@ -26,7 +26,7 @@ import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.VirtualMethodVisitor;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This generator creates a new factory that binds elements identified by id
@@ -81,8 +81,8 @@ public class HtmlTemplateGenerator extends Generator {
 	 *            The new type being generated
 	 */
 	protected void implementInterfaceMethods(final Type interfacee, final NewConcreteType newType) {
-		ObjectHelper.checkNotNull("parameter:interface", interfacee);
-		ObjectHelper.checkNotNull("parameter:newType", newType);
+		Checker.notNull("parameter:interface", interfacee);
+		Checker.notNull("parameter:newType", newType);
 
 		final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
 			protected boolean visit(final Method method) {
@@ -109,8 +109,8 @@ public class HtmlTemplateGenerator extends Generator {
 	 *            The recipient of all new methods.
 	 */
 	protected void implementMethod(final Method method, final NewConcreteType newType) {
-		ObjectHelper.checkNotNull("parameter:method", method);
-		ObjectHelper.checkNotNull("parameter:newType", newType);
+		Checker.notNull("parameter:method", method);
+		Checker.notNull("parameter:newType", newType);
 
 		if (method.getParameters().size() != 0) {
 			throwMethodHasParameters(method);
@@ -188,7 +188,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildTextBoxGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -216,7 +216,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildPasswordTextBoxGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -244,7 +244,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildTextAreaGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -272,7 +272,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildListBoxGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -300,7 +300,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildCheckBoxGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -328,7 +328,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildRadioButtonGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -356,7 +356,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildLabelGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -384,7 +384,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildButtonGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -412,7 +412,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildImageGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -440,7 +440,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildHyperlinkGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -468,7 +468,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildFormPanelGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -496,7 +496,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The codeblock
 	 */
 	protected CodeBlock buildHtmlGetterMethodBody(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
 
@@ -531,7 +531,7 @@ public class HtmlTemplateGenerator extends Generator {
 	 * @return The id.
 	 */
 	protected String getId(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final List values = method.getMetadataValues(Constants.ID_ANNOTATION);
 		if (null == values || values.size() != 1) {

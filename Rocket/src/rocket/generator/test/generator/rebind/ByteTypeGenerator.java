@@ -18,8 +18,7 @@ package rocket.generator.test.generator.rebind;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class ByteTypeGenerator extends TestGenerator {
 
@@ -28,15 +27,15 @@ public class ByteTypeGenerator extends TestGenerator {
 
 		final Type type = context.getType(Byte.TYPE.getName());
 
-		PrimitiveHelper.checkFalse("Byte type is a not abstract", type.isAbstract());
-		PrimitiveHelper.checkFalse("Byte type is not an interface", type.isInterface());
-		PrimitiveHelper.checkTrue("Byte type is a final", type.isFinal());
-		ObjectHelper.checkEquals("Byte type name", Byte.TYPE.getName(), type.getName());
-		PrimitiveHelper.checkFalse("Byte type is not an array", type.isArray());
-		PrimitiveHelper.checkTrue("Byte type is a primitive", type.isPrimitive());
+		Checker.falseValue("Byte type is a not abstract", type.isAbstract());
+		Checker.falseValue("Byte type is not an interface", type.isInterface());
+		Checker.trueValue("Byte type is a final", type.isFinal());
+		Checker.equals("Byte type name", Byte.TYPE.getName(), type.getName());
+		Checker.falseValue("Byte type is not an array", type.isArray());
+		Checker.trueValue("Byte type is a primitive", type.isPrimitive());
 
 		final Type wrapper = type.getWrapper();
-		ObjectHelper.checkEquals("Byte wrapper type name", Byte.class.getName(), wrapper.getName());
+		Checker.equals("Byte wrapper type name", Byte.class.getName(), wrapper.getName());
 
 		return null;
 	}

@@ -19,7 +19,7 @@ import java.util.Iterator;
 
 import rocket.collection.client.CollectionsHelper;
 import rocket.event.client.EventListener;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -102,7 +102,7 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 	private Panel panel;
 
 	protected Panel getPanel() {
-		ObjectHelper.checkNotNull("field:panel", panel);
+		Checker.notNull("field:panel", panel);
 		return panel;
 	}
 
@@ -111,7 +111,7 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 	}
 
 	protected void setPanel(final Panel panel) {
-		ObjectHelper.checkNotNull("parameter:panel", panel);
+		Checker.notNull("parameter:panel", panel);
 
 		this.setElement(panel.getElement());
 
@@ -175,7 +175,7 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 	}
 
 	public int indexOf(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 
 		int index = -1;
 		final Iterator iterator = this.iterator();

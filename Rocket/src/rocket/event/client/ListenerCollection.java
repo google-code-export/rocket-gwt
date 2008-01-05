@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 abstract public class ListenerCollection {
 	protected ListenerCollection() {
@@ -34,12 +34,12 @@ abstract public class ListenerCollection {
 	private List listeners;
 
 	private List getListeners() {
-		ObjectHelper.checkNotNull("field:listeners", listeners);
+		Checker.notNull("field:listeners", listeners);
 		return this.listeners;
 	}
 
 	private void setListeners(final List listeners) {
-		ObjectHelper.checkNotNull("parameter:listeners", listeners);
+		Checker.notNull("parameter:listeners", listeners);
 		this.listeners = listeners;
 	}
 

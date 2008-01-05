@@ -15,12 +15,6 @@
  */
 package rocket.serialization.test.clientobjectinputstream.client;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import rocket.serialization.client.ClientObjectOutputStream;
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.ObjectReader;

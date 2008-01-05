@@ -30,8 +30,8 @@ import rocket.style.client.ComputedStyle;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -152,13 +152,13 @@ public class ResizablePanel extends CompositePanel {
 		final Element element = widget.getElement();
 		final String inlineWidth =InlineStyle.getString(element, Css.WIDTH);
 		final String inlineHeight = InlineStyle.getString(element, Css.HEIGHT);
-		ObjectHelper.setString(element, "__width", inlineWidth);
-		ObjectHelper.setString(element, "__height", inlineHeight);
+		JavaScript.setString(element, "__width", inlineWidth);
+		JavaScript.setString(element, "__height", inlineHeight);
 		
 		final String overflowX = InlineStyle.getString(element, Css.OVERFLOW_X);
 		final String overflowY = InlineStyle.getString(element, Css.OVERFLOW_Y);
-		ObjectHelper.setString(element, "__overflowX", overflowX);
-		ObjectHelper.setString(element, "__overflowY", overflowY);
+		JavaScript.setString(element, "__overflowX", overflowX);
+		JavaScript.setString(element, "__overflowY", overflowY);
 		
 		widget.setWidth("100%");
 		widget.setHeight("100%");
@@ -177,13 +177,13 @@ public class ResizablePanel extends CompositePanel {
 
 		if (removed) {
 			final Element element = widget.getElement();
-			final String inlineWidth = ObjectHelper.getString(element, "__width");
-			final String inlineHeight = ObjectHelper.getString(element, "__height");
+			final String inlineWidth = JavaScript.getString(element, "__width");
+			final String inlineHeight = JavaScript.getString(element, "__height");
 			InlineStyle.setString(element, Css.WIDTH, inlineWidth);
 			InlineStyle.setString(element, Css.HEIGHT, inlineHeight);
 			
-			final String inlineOverflowX = ObjectHelper.getString(element, "__overflowX");
-			final String inlineOverflowY = ObjectHelper.getString(element, "__overflowY");
+			final String inlineOverflowX = JavaScript.getString(element, "__overflowX");
+			final String inlineOverflowY = JavaScript.getString(element, "__overflowY");
 			InlineStyle.setString(element, Css.OVERFLOW_X, inlineOverflowX);
 			InlineStyle.setString(element, Css.OVERFLOW_Y, inlineOverflowY);
 		}
@@ -226,7 +226,7 @@ public class ResizablePanel extends CompositePanel {
 
 		// create the dragged ghost...
 		final Element draggedWidget = Dom.cloneElement(panel, true);
-		ObjectHelper.setString(draggedWidget, "className", this.getDraggedWidgetStyle());
+		JavaScript.setString(draggedWidget, "className", this.getDraggedWidgetStyle());
 		InlineStyle.setString(draggedWidget, Css.POSITION, "absolute");
 		InlineStyle.setInteger(draggedWidget, Css.LEFT, 0, CssUnit.PX);
 		InlineStyle.setInteger(draggedWidget, Css.TOP, 0, CssUnit.PX);
@@ -269,7 +269,7 @@ public class ResizablePanel extends CompositePanel {
 				break;
 			}
 			final Element corner = cellFormatter.getElement(1, 1);
-			// ObjectHelper.checkSame( "should be corner handle", corner, target
+			// Checker.checkSame( "should be corner handle", corner, target
 			// );
 			updateWidth = true;
 			updateHeight = true;
@@ -361,12 +361,12 @@ public class ResizablePanel extends CompositePanel {
 	private int minimumWidth;
 
 	public int getMinimumWidth() {
-		PrimitiveHelper.checkGreaterThan("field:minimumWidth", 0, minimumWidth);
+		Checker.greaterThan("field:minimumWidth", 0, minimumWidth);
 		return this.minimumWidth;
 	}
 
 	public void setMinimumWidth(final int minimumWidth) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumWidth", 0, minimumWidth);
+		Checker.greaterThan("parameter:minimumWidth", 0, minimumWidth);
 		this.minimumWidth = minimumWidth;
 	}
 
@@ -376,12 +376,12 @@ public class ResizablePanel extends CompositePanel {
 	private int maximumWidth;
 
 	public int getMaximumWidth() {
-		PrimitiveHelper.checkGreaterThan("field:maximumWidth", 0, maximumWidth);
+		Checker.greaterThan("field:maximumWidth", 0, maximumWidth);
 		return this.maximumWidth;
 	}
 
 	public void setMaximumWidth(final int maximumWidth) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumWidth", 0, maximumWidth);
+		Checker.greaterThan("parameter:maximumWidth", 0, maximumWidth);
 		this.maximumWidth = maximumWidth;
 	}
 
@@ -391,12 +391,12 @@ public class ResizablePanel extends CompositePanel {
 	private int minimumHeight;
 
 	public int getMinimumHeight() {
-		PrimitiveHelper.checkGreaterThan("field:minimumHeight", 0, minimumHeight);
+		Checker.greaterThan("field:minimumHeight", 0, minimumHeight);
 		return this.minimumHeight;
 	}
 
 	public void setMinimumHeight(final int minimumHeight) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumHeight", 0, minimumHeight);
+		Checker.greaterThan("parameter:minimumHeight", 0, minimumHeight);
 		this.minimumHeight = minimumHeight;
 	}
 
@@ -406,12 +406,12 @@ public class ResizablePanel extends CompositePanel {
 	private int maximumHeight;
 
 	public int getMaximumHeight() {
-		PrimitiveHelper.checkGreaterThan("field:maximumHeight", 0, maximumHeight);
+		Checker.greaterThan("field:maximumHeight", 0, maximumHeight);
 		return this.maximumHeight;
 	}
 
 	public void setMaximumHeight(final int maximumHeight) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumHeight", 0, maximumHeight );
+		Checker.greaterThan("parameter:maximumHeight", 0, maximumHeight );
 		this.maximumHeight = maximumHeight;
 	}
 

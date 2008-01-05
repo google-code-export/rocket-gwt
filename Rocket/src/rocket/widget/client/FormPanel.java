@@ -16,8 +16,9 @@
 package rocket.widget.client;
 
 import rocket.dom.client.Dom;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
+import rocket.util.client.Tester;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -134,12 +135,12 @@ public class FormPanel extends Panel {
 	 * element.
 	 */
 	protected void makeFormElementsIntoWidgets() {
-		final JavaScriptObject collection = ObjectHelper.getObject(this.getElement(), "elements");
-		final int count = ObjectHelper.getPropertyCount(collection);
+		final JavaScriptObject collection = JavaScript.getObject(this.getElement(), "elements");
+		final int count = JavaScript.getPropertyCount(collection);
 
 		for (int i = 0; i < count; i++) {
 			com.google.gwt.user.client.ui.Widget widget = null;
-			final Element formElement = ObjectHelper.getElement(collection, i);
+			final Element formElement = JavaScript.getElement(collection, i);
 
 			while (true) {
 				if (Dom.isTag(formElement, WidgetConstants.BUTTON_TAG) || Dom.isInput(formElement, WidgetConstants.BUTTON_INPUT_RESET_TYPE)
@@ -192,7 +193,7 @@ public class FormPanel extends Panel {
 				hijacker.restore();
 
 				final String formName = DOM.getElementProperty(formElement, "name");
-				if (StringHelper.isNullOrEmpty(formName)) {
+				if (Tester.isNullOrEmpty(formName)) {
 					GWT.log("The " + i + "th form element \"" + formElement
 							+ "\"is missing a name attribute. This might result in it being omitted from any submitted form.", null);
 				}
@@ -401,12 +402,12 @@ public class FormPanel extends Panel {
 	private Element iframe;
 
 	protected Element getIFrame() {
-		ObjectHelper.checkNotNull("field:iframe", iframe);
+		Checker.notNull("field:iframe", iframe);
 		return iframe;
 	}
 
 	protected void setIFrame(final Element iframe) {
-		ObjectHelper.checkNotNull("parameter:iframe", iframe);
+		Checker.notNull("parameter:iframe", iframe);
 		this.iframe = iframe;
 	}
 
@@ -436,12 +437,12 @@ public class FormPanel extends Panel {
 	private FormHandlerCollection formHandlers;
 
 	protected FormHandlerCollection getFormHandlers() {
-		ObjectHelper.checkNotNull("parameter:formHandlers", formHandlers);
+		Checker.notNull("parameter:formHandlers", formHandlers);
 		return this.formHandlers;
 	}
 
 	protected void setFormHandlers(final FormHandlerCollection formHandlers) {
-		ObjectHelper.checkNotNull("parameter:formHandlers", formHandlers);
+		Checker.notNull("parameter:formHandlers", formHandlers);
 		this.formHandlers = formHandlers;
 	}
 
@@ -450,12 +451,12 @@ public class FormPanel extends Panel {
 	}
 
 	public void addFormHandler(final FormHandler formHandler) {
-		ObjectHelper.checkNotNull("parameter:formHandler", formHandler);
+		Checker.notNull("parameter:formHandler", formHandler);
 		this.getFormHandlers().add(formHandler);
 	}
 
 	public void removeFormHandler(final FormHandler formHandler) {
-		ObjectHelper.checkNotNull("parameter:formHandler", formHandler);
+		Checker.notNull("parameter:formHandler", formHandler);
 		this.getFormHandlers().remove(formHandler);
 	}
 }

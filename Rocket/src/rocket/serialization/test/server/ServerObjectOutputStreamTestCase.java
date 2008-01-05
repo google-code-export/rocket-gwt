@@ -16,9 +16,7 @@
 package rocket.serialization.test.server;
 
 import java.util.Collections;
-import java.util.Map;
 
-import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.server.ServerObjectWriter;
 
 public class ServerObjectOutputStreamTestCase extends ServerTestCase {

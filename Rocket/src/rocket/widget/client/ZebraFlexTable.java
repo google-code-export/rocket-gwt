@@ -16,7 +16,7 @@
 
 package rocket.widget.client;
 
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.ui.FlexTable;
 
@@ -106,7 +106,7 @@ public class ZebraFlexTable extends FlexTable {
 	}
 
 	protected void updateRowBackgroundColour(final int row) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:row", 0, row );
+		Checker.greaterThanOrEqual("parameter:row", 0, row );
 
 		final String oddRowStyle = this.getOddRowStyle();
 		final String evenRowStyle = this.getEvenRowStyle();

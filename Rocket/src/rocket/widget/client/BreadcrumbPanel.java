@@ -15,9 +15,7 @@
  */
 package rocket.widget.client;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -62,7 +60,7 @@ public class BreadcrumbPanel extends CompositeWidget {
 	private HorizontalPanel horizontalPanel;
 
 	protected HorizontalPanel getHorizontalPanel() {
-		ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
+		Checker.notNull("field:horizontalPanel", horizontalPanel);
 		return this.horizontalPanel;
 	}
 
@@ -71,7 +69,7 @@ public class BreadcrumbPanel extends CompositeWidget {
 	}
 
 	protected void setHorizontalPanel(final HorizontalPanel horizontalPanel) {
-		ObjectHelper.checkNotNull("field:horizontalPanel", horizontalPanel);
+		Checker.notNull("field:horizontalPanel", horizontalPanel);
 		this.horizontalPanel = horizontalPanel;
 	}
 
@@ -89,8 +87,8 @@ public class BreadcrumbPanel extends CompositeWidget {
 	 *            The listener that will be notified.
 	 */
 	public boolean push(final String text, final ClickListener clickListener) {
-		StringHelper.checkNotEmpty("parameter:text", text);
-		ObjectHelper.checkNotNull("parameter:clickListener", clickListener);
+		Checker.notEmpty("parameter:text", text);
+		Checker.notNull("parameter:clickListener", clickListener);
 
 		final HorizontalPanel panel = this.getHorizontalPanel();
 
@@ -118,7 +116,7 @@ public class BreadcrumbPanel extends CompositeWidget {
 	}
 
 	protected Breadcrumb createBreadcrumb(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
+		Checker.notEmpty("parameter:text", text);
 
 		final Breadcrumb breadcrumb = new Breadcrumb();
 		breadcrumb.setText(text);
@@ -133,7 +131,7 @@ public class BreadcrumbPanel extends CompositeWidget {
 	class Breadcrumb extends Hyperlink {
 
 		public void onBrowserEvent(final Event event) {
-			ObjectHelper.checkNotNull("parameter:event", event);
+			Checker.notNull("parameter:event", event);
 
 			// if this breadcrumb is the last or disabled cancel any click
 			// events.
@@ -145,12 +143,12 @@ public class BreadcrumbPanel extends CompositeWidget {
 		BreadcrumbPanel breadcrumbPanel;
 
 		BreadcrumbPanel getBreadcrumbPanel() {
-			ObjectHelper.checkNotNull("field:breadcrumbPanel", breadcrumbPanel);
+			Checker.notNull("field:breadcrumbPanel", breadcrumbPanel);
 			return breadcrumbPanel;
 		}
 
 		void setBreadcrumbPanel(final BreadcrumbPanel breadcrumbPanel) {
-			ObjectHelper.checkNotNull("parameter:breadcrumbPanel", breadcrumbPanel);
+			Checker.notNull("parameter:breadcrumbPanel", breadcrumbPanel);
 			this.breadcrumbPanel = breadcrumbPanel;
 		}
 
@@ -200,7 +198,7 @@ public class BreadcrumbPanel extends CompositeWidget {
 		final HorizontalPanel panel = this.getHorizontalPanel();
 		final int widgetCount = panel.getWidgetCount();
 		if (widgetCount == 0) {
-			SystemHelper.fail("Unable to pop a breadcrumb - this breadcrumb panel is already empty");
+			Checker.fail("Unable to pop a breadcrumb - this breadcrumb panel is already empty");
 		}
 
 		// remove the breadcrumb and then the spacer.
@@ -243,7 +241,7 @@ public class BreadcrumbPanel extends CompositeWidget {
 	}
 
 	protected boolean isLastBreadcrumb(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 
 		final HorizontalPanel panel = this.getHorizontalPanel();
 		return widget == panel.getWidget(panel.getWidgetCount() - 2);

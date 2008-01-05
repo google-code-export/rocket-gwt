@@ -15,14 +15,10 @@
  */
 package rocket.beans.rebind.aop.interceptorchainproceed;
 
-import java.io.InputStream;
-
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the invoke interceptor chain proceed template
@@ -41,12 +37,12 @@ public class InvokeInterceptorChainProceedTemplatedFile extends TemplatedFileCod
 	private Type methodReturnType;
 
 	protected Type getMethodReturnType() {
-		ObjectHelper.checkNotNull("field:methodReturnType", methodReturnType);
+		Checker.notNull("field:methodReturnType", methodReturnType);
 		return this.methodReturnType;
 	}
 
 	public void setMethodReturnType(final Type methodReturnType) {
-		ObjectHelper.checkNotNull("parameter:methodReturnType", methodReturnType);
+		Checker.notNull("parameter:methodReturnType", methodReturnType);
 		this.methodReturnType = methodReturnType;
 	}
 

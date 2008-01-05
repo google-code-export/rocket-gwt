@@ -17,7 +17,7 @@ package rocket.collection.client;
 
 import java.util.Iterator;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Useful base class for any iterator which is actually a view around another
@@ -32,12 +32,12 @@ public abstract class IteratorWrapper implements Iterator {
 	private Iterator iterator;
 
 	public Iterator getIterator() {
-		ObjectHelper.checkNotNull("field:iterator", iterator);
+		Checker.notNull("field:iterator", iterator);
 		return iterator;
 	}
 
 	public void setIterator(final Iterator iterator) {
-		ObjectHelper.checkNotNull("field:iterator", iterator);
+		Checker.notNull("field:iterator", iterator);
 		this.iterator = iterator;
 	}
 

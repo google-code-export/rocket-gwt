@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * Provides a chain of methodInterceptors for a aspect.
@@ -158,12 +157,12 @@ public class InterceptorChain {
 	private Object[] parameters;
 
 	protected Object[] getParameters() {
-		ObjectHelper.checkNotNull("field:parameters", parameters);
+		Checker.notNull("field:parameters", parameters);
 		return parameters;
 	}
 
 	public void setParameters(final Object[] parameters) {
-		ObjectHelper.checkNotNull("parameter:parameters", parameters);
+		Checker.notNull("parameter:parameters", parameters);
 		this.parameters = parameters;
 	}
 	
@@ -173,12 +172,12 @@ public class InterceptorChain {
 	private String method;
 	
 	protected String getMethod(){
-		StringHelper.checkNotEmpty( "field:method", method );
+		Checker.notEmpty( "field:method", method );
 		return this.method;
 	}
 	
 	public void setMethod( final String method ){
-		StringHelper.checkNotEmpty( "parameter:method", method );
+		Checker.notEmpty( "parameter:method", method );
 		this.method = method;
 	}
 
@@ -188,12 +187,12 @@ public class InterceptorChain {
 	private String[] parameterTypes;
 
 	protected String[] getParameterTypes() {
-		StringHelper.checkNotNull("field:parameterTypes", parameterTypes);
+		Checker.notNull("field:parameterTypes", parameterTypes);
 		return parameterTypes;
 	}
 
 	public void setParameterTypes(final String[] parameterTypes) {
-		StringHelper.checkNotNull("parameter:parameterTypes", parameterTypes);
+		Checker.notNull("parameter:parameterTypes", parameterTypes);
 		this.parameterTypes = parameterTypes;
 	}
 	
@@ -203,12 +202,12 @@ public class InterceptorChain {
 	private String returnType;
 	
 	protected String getReturnType(){
-		StringHelper.checkNotEmpty( "field:returnType", returnType );
+		Checker.notEmpty( "field:returnType", returnType );
 		return this.returnType;
 	}
 	
 	public void setReturnType( final String returnType ){
-		StringHelper.checkNotEmpty( "parameter:returnType", returnType );
+		Checker.notEmpty( "parameter:returnType", returnType );
 		this.returnType = returnType;
 	}
 	
@@ -232,12 +231,12 @@ public class InterceptorChain {
 	private String enclosingType;
 	
 	protected String getEnclosingType(){
-		StringHelper.checkNotEmpty( "field:enclosingType", enclosingType );
+		Checker.notEmpty( "field:enclosingType", enclosingType );
 		return this.enclosingType;
 	}
 	
 	public void setEnclosingType( final String enclosingType ){
-		StringHelper.checkNotEmpty( "parameter:enclosingType", enclosingType );
+		Checker.notEmpty( "parameter:enclosingType", enclosingType );
 		this.enclosingType = enclosingType;
 	}
 	
@@ -289,12 +288,12 @@ public class InterceptorChain {
 	private List methodInterceptors;
 
 	protected List getMethodInterceptors() {
-		ObjectHelper.checkNotNull("field:methodInterceptors", methodInterceptors);
+		Checker.notNull("field:methodInterceptors", methodInterceptors);
 		return this.methodInterceptors;
 	}
 
 	protected void setMethodInterceptors(final List methodInterceptors) {
-		ObjectHelper.checkNotNull("parameter:methodInterceptors", methodInterceptors);
+		Checker.notNull("parameter:methodInterceptors", methodInterceptors);
 		this.methodInterceptors = methodInterceptors;
 	}
 
@@ -363,12 +362,12 @@ public class InterceptorChain {
 	private Object target;
 
 	protected Object getTarget() {
-		ObjectHelper.checkNotNull("field:target", target);
+		Checker.notNull("field:target", target);
 		return target;
 	}
 
 	public void setTarget(final Object target) {
-		ObjectHelper.checkNotNull("parameter:target", target);
+		Checker.notNull("parameter:target", target);
 		this.target = target;
 	}
 

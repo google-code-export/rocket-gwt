@@ -15,6 +15,8 @@
  */
 package rocket.test;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import rocket.beans.test.BeanTestSuite;
 import rocket.collection.test.CollectionTestSuite;
 import rocket.cookie.test.CookieTestSuite;
@@ -25,8 +27,6 @@ import rocket.style.test.StyleTestSuite;
 import rocket.text.test.TextTestSuite;
 import rocket.util.test.UtilTestSuite;
 import rocket.widget.test.WidgetTestSuite;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 /**
  * TestSuite that executes all unit tests within the entire rocket project.

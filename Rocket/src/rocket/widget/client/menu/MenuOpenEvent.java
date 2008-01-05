@@ -15,9 +15,9 @@
  */
 package rocket.widget.client.menu;
 
-import com.google.gwt.user.client.ui.Widget;
+import rocket.util.client.Checker;
 
-import rocket.util.client.ObjectHelper;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * This event is fired whenever a context menu, menu item or sub menu item is selected or opened.
@@ -32,12 +32,12 @@ public class MenuOpenEvent {
 	private Menu menu;
 
 	public Menu getMenu() {
-		ObjectHelper.checkNotNull( "field:menu", menu );
+		Checker.notNull( "field:menu", menu );
 		return menu;
 	}
 	
 	void setMenu( final Menu menu ){
-		ObjectHelper.checkNotNull( "parameter:menu", menu );
+		Checker.notNull( "parameter:menu", menu );
 		this.menu = menu;
 	}
 	
@@ -47,12 +47,12 @@ public class MenuOpenEvent {
 	private Widget widget;
 
 	Widget getWidget() {
-		ObjectHelper.checkNotNull("field:widget", widget );
+		Checker.notNull("field:widget", widget );
 		return this.widget;
 	}
 
 	void setWidget(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget );
+		Checker.notNull("parameter:widget", widget );
 		this.widget = widget;
 	}
 

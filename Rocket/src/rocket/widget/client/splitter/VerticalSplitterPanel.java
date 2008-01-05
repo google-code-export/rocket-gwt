@@ -22,7 +22,7 @@ import rocket.event.client.MouseMoveEvent;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -98,7 +98,7 @@ public class VerticalSplitterPanel extends SplitterPanel {
 	 * @param event
 	 */
 	protected void onMouseMove(final MouseMoveEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		while (true) {
 			final Splitter splitter = (Splitter) event.getWidget();

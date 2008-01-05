@@ -16,7 +16,8 @@
 package rocket.selection.client.support;
 
 import rocket.selection.client.SelectionEndPoint;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
@@ -137,7 +138,7 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 	}
 
 	public void setStart(final SelectionEndPoint start) {
-		ObjectHelper.checkNotNull("parameter:start", start);
+		Checker.notNull("parameter:start", start);
 
 		final JavaScriptObject textNode = start.getTextNode();
 		final int offset = start.getOffset();
@@ -182,7 +183,7 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 	 }-*/;
 
 	public void setEnd(final SelectionEndPoint end) {
-		ObjectHelper.checkNotNull("parameter:end", end);
+		Checker.notNull("parameter:end", end);
 
 		final JavaScriptObject textNode = end.getTextNode();
 		final int offset = end.getOffset();
@@ -320,7 +321,7 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 		// get child index of selection start textNode from its parent.
 		final SelectionEndPoint selectionStart = this.getStart();
 		final JavaScriptObject textNode = selectionStart.getTextNode();
-		final Element parentOfTextNode = ObjectHelper.getElement(textNode, PARENT_NODE);
+		final Element parentOfTextNode = JavaScript.getElement(textNode, PARENT_NODE);
 
 		int insertIndex = 0;
 		if (selectionStart.getOffset() > 0) {

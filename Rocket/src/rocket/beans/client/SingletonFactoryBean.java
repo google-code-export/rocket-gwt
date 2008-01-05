@@ -15,7 +15,7 @@
  */
 package rocket.beans.client;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Template FactoryBean that creates singletons and caches them. All generated
@@ -80,7 +80,7 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 	}
 
 	protected void setObject(final Object object) {
-		ObjectHelper.checkNotNull("parameter:object", object );
+		Checker.notNull("parameter:object", object );
 		this.object = object;
 	}
 

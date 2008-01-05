@@ -18,7 +18,7 @@ package rocket.generator.rebind.gwt;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructorparameter.AbstractConstructorParameter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JParameter;
 
@@ -60,12 +60,12 @@ public class JParameterConstructorParameterAdapter extends AbstractConstructorPa
 	private JParameter jParameter;
 
 	protected JParameter getJParameter() {
-		ObjectHelper.checkNotNull("field:jParameter", jParameter);
+		Checker.notNull("field:jParameter", jParameter);
 		return jParameter;
 	}
 
 	public void setJParameter(final JParameter jParameter) {
-		ObjectHelper.checkNotNull("parameter:jParameter", jParameter);
+		Checker.notNull("parameter:jParameter", jParameter);
 		this.jParameter = jParameter;
 	}
 

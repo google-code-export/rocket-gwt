@@ -21,8 +21,7 @@ import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.test.generator.client.ClassType;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class ClassTypeGenerator extends TestGenerator {
 
@@ -32,18 +31,18 @@ public class ClassTypeGenerator extends TestGenerator {
 		final GeneratorContext context = this.getGeneratorContext();
 		final Type type = context.getType(ClassType.class.getName());
 
-		PrimitiveHelper.checkFalse("TestType type is a not abstract", type.isAbstract());
-		PrimitiveHelper.checkFalse("TestType type is not an interface", type.isInterface());
-		PrimitiveHelper.checkFalse("TestType type is a final", type.isFinal());
-		ObjectHelper.checkEquals("TestType type name", ClassType.class.getName(), type.getName());
-		PrimitiveHelper.checkFalse("TestType type is not an array", type.isArray());
-		PrimitiveHelper.checkFalse("TestType type is not a primitive", type.isPrimitive());
+		Checker.falseValue("TestType type is a not abstract", type.isAbstract());
+		Checker.falseValue("TestType type is not an interface", type.isInterface());
+		Checker.falseValue("TestType type is a final", type.isFinal());
+		Checker.equals("TestType type name", ClassType.class.getName(), type.getName());
+		Checker.falseValue("TestType type is not an array", type.isArray());
+		Checker.falseValue("TestType type is not a primitive", type.isPrimitive());
 
 		final Set inner = type.getNestedTypes();
-		PrimitiveHelper.checkEquals("nested inner types", 1, inner.size());
+		Checker.equals("nested inner types", 1, inner.size());
 
 		final Type nestedType = (Type) inner.iterator().next();
-		ObjectHelper.checkNotNull("nested type", nestedType);
+		Checker.notNull("nested type", nestedType);
 
 		return null;
 	}

@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Visits all the sub types belonging to the type..
@@ -36,7 +36,7 @@ abstract public class SubTypesVisitor {
 	}
 	
 	public void start(final Type type) {
-		ObjectHelper.checkNotNull("type:type", type);
+		Checker.notNull("type:type", type);
 
 		while (true) {
 			if (false == this.skipInitialType()) {
@@ -55,7 +55,7 @@ abstract public class SubTypesVisitor {
 	 * @param type A type 
 	 */
 	protected void visitSubTypes(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final Set visited = this.getVisited();
 		
@@ -96,12 +96,12 @@ abstract public class SubTypesVisitor {
 	private Set visited;
 	
 	protected Set getVisited(){
-		ObjectHelper.checkNotNull("field:visited", visited );
+		Checker.notNull("field:visited", visited );
 		return this.visited;
 	}
 	
 	protected void setVisited( final Set visited ){
-		ObjectHelper.checkNotNull("parameter:visited", visited );
+		Checker.notNull("parameter:visited", visited );
 		this.visited = visited;
 	}
 	

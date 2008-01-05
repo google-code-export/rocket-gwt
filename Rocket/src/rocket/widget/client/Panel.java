@@ -20,7 +20,8 @@ import java.util.Iterator;
 import rocket.collection.client.CollectionsHelper;
 import rocket.event.client.Event;
 import rocket.event.client.EventListener;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -252,7 +253,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	}
 
 	protected void insert0(final Widget widget, int indexBefore) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 		this.insert0(widget.getElement(), indexBefore);
 	}
 
@@ -272,7 +273,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	 *         otehrwise returns false.
 	 */
 	public boolean remove(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 
 		boolean removed = false;
 		final WidgetCollection widgets = this.getWidgetCollection();
@@ -302,7 +303,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	}
 
 	protected void remove0(final Widget widget, final int index) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 		this.remove0(widget.getElement(), index);
 	}
 
@@ -337,12 +338,12 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	private WidgetCollection widgetCollection;
 
 	protected WidgetCollection getWidgetCollection() {
-		ObjectHelper.checkNotNull("field:widgetCollection", widgetCollection);
+		Checker.notNull("field:widgetCollection", widgetCollection);
 		return widgetCollection;
 	}
 
 	protected void setWidgetCollection(final WidgetCollection widgetCollection) {
-		ObjectHelper.checkNotNull("parameter:widgetCollection", widgetCollection);
+		Checker.notNull("parameter:widgetCollection", widgetCollection);
 		this.widgetCollection = widgetCollection;
 	}
 
@@ -361,7 +362,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 			event.setWidget(this);
 			this.onBrowserEvent(event);
 		} finally {
-			ObjectHelper.destroyIfNecessary(event);
+			Utilities.destroyIfNecessary(event);
 		}
 	}
 
@@ -376,12 +377,12 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	private EventListenerDispatcher eventListenerDispatcher;
 
 	protected EventListenerDispatcher getEventListenerDispatcher() {
-		ObjectHelper.checkNotNull("field:eventListenerDispatcher", this.eventListenerDispatcher);
+		Checker.notNull("field:eventListenerDispatcher", this.eventListenerDispatcher);
 		return this.eventListenerDispatcher;
 	}
 
 	protected void setEventListenerDispatcher(final EventListenerDispatcher eventListenerDispatcher) {
-		ObjectHelper.checkNotNull("parameter:eventListenerDispatcher", eventListenerDispatcher);
+		Checker.notNull("parameter:eventListenerDispatcher", eventListenerDispatcher);
 		this.eventListenerDispatcher = eventListenerDispatcher;
 	}
 

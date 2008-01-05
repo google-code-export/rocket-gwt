@@ -18,8 +18,7 @@ package rocket.beans.rebind.loadeagersingletons;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for providing the body of a {@link rocket.beans.client.BeanFactoryImpl#getEagerSingletonBeanNames} 
@@ -47,12 +46,12 @@ public class GetEagerSingletonBeanNames implements CodeBlock {
 	private StringBuffer buffer;
 
 	protected StringBuffer getBuffer() {
-		ObjectHelper.checkNotNull("field:buffer", buffer);
+		Checker.notNull("field:buffer", buffer);
 		return this.buffer;
 	}
 
 	protected void setBuffer(final StringBuffer buffer) {
-		ObjectHelper.checkNotNull("parameter:buffer", buffer);
+		Checker.notNull("parameter:buffer", buffer);
 		this.buffer = buffer;
 	}
 
@@ -61,7 +60,7 @@ public class GetEagerSingletonBeanNames implements CodeBlock {
 	}
 
 	public void addBean(final String beanId ) {
-		StringHelper.checkNotEmpty("parameter:beanId", beanId );
+		Checker.notEmpty("parameter:beanId", beanId );
 		
 		final StringBuffer buf = this.getBuffer();
 		if( buf.length() > 0 ){

@@ -15,8 +15,7 @@
  */
 package rocket.messaging.client;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -32,12 +31,12 @@ public class Message implements IsSerializable {
 	public String destination;
 
 	public String getDestination() {
-		StringHelper.checkNotEmpty("field:destination", destination);
+		Checker.notEmpty("field:destination", destination);
 		return destination;
 	}
 
 	public void setDestination(final String destination) {
-		StringHelper.checkNotEmpty("parameter:destination", destination);
+		Checker.notEmpty("parameter:destination", destination);
 		this.destination = destination;
 	}
 
@@ -47,7 +46,7 @@ public class Message implements IsSerializable {
 	public Payload payload;
 
 	public Payload getPayload() {
-		ObjectHelper.checkNotNull("field:payload", payload);
+		Checker.notNull("field:payload", payload);
 		return payload;
 	}
 
@@ -56,7 +55,7 @@ public class Message implements IsSerializable {
 	}
 
 	public void setPayload(final Payload payload) {
-		ObjectHelper.checkNotNull("parameter:payload", payload);
+		Checker.notNull("parameter:payload", payload);
 		this.payload = payload;
 	}
 

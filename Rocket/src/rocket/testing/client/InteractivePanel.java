@@ -18,7 +18,7 @@ package rocket.testing.client;
 import java.util.Iterator;
 
 import rocket.browser.client.Browser;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -345,7 +345,7 @@ public abstract class InteractivePanel extends Composite {
 	private Iterator iterator;
 
 	protected Iterator getIterator() {
-		ObjectHelper.checkNotNull("field:iterator", iterator);
+		Checker.notNull("field:iterator", iterator);
 		return this.iterator;
 	}
 
@@ -354,7 +354,7 @@ public abstract class InteractivePanel extends Composite {
 	}
 
 	protected void setIterator(final Iterator iterator) {
-		ObjectHelper.checkNotNull("parameter:iterator", iterator);
+		Checker.notNull("parameter:iterator", iterator);
 		this.iterator = iterator;
 	}
 

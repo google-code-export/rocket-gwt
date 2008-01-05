@@ -1,7 +1,6 @@
 package rocket.remoting.client;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.Timer;
 
@@ -48,12 +47,12 @@ public abstract class Throttler {
 	private int period;
 
 	public int getPeriod() {
-		PrimitiveHelper.checkGreaterThan("field:period", 0, period);
+		Checker.greaterThan("field:period", 0, period);
 		return period;
 	}
 
 	public void setPeriod(final int period) {
-		PrimitiveHelper.checkGreaterThan("parameter:period", 0, period );
+		Checker.greaterThan("parameter:period", 0, period );
 		this.period = period;
 	}
 
@@ -63,7 +62,7 @@ public abstract class Throttler {
 	private Timer timer;
 
 	protected Timer getTimer() {
-		ObjectHelper.checkNotNull("field:timer", timer);
+		Checker.notNull("field:timer", timer);
 		return timer;
 	}
 
@@ -72,7 +71,7 @@ public abstract class Throttler {
 	}
 
 	protected void setTimer(final Timer timer) {
-		ObjectHelper.checkNotNull("parameter:timer", timer);
+		Checker.notNull("parameter:timer", timer);
 		this.timer = timer;
 	}
 

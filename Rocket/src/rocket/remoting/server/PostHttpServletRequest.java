@@ -25,9 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import rocket.remoting.client.Headers;
 import rocket.remoting.client.RequestParameters;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * This request supports simulating posting of data from the client using rpc
@@ -71,7 +69,7 @@ public class PostHttpServletRequest extends GetOrPostHttpServletRequest implemen
 	}
 
 	protected void setData(final byte[] data) {
-		StringHelper.checkNotNull("parameter:data", data);
+		Checker.notNull("parameter:data", data);
 		this.data = data;
 	}
 
@@ -94,7 +92,7 @@ public class PostHttpServletRequest extends GetOrPostHttpServletRequest implemen
 			this.createInputStream();
 		}
 
-		ObjectHelper.checkNotNull("inputStream", this.inputStream);
+		Checker.notNull("inputStream", this.inputStream);
 		return this.inputStream;
 	}
 
@@ -103,15 +101,15 @@ public class PostHttpServletRequest extends GetOrPostHttpServletRequest implemen
 	}
 
 	protected void setInputStream(final ServletInputStream inputStream) {
-		ObjectHelper.checkNotNull("parameter:inputStream", inputStream);
-		PrimitiveHelper.checkTrue("existing inputStream", this.hasInputStream());
-		PrimitiveHelper.checkFalse("existing reader", this.hasReader());
+		Checker.notNull("parameter:inputStream", inputStream);
+		Checker.trueValue("existing inputStream", this.hasInputStream());
+		Checker.falseValue("existing reader", this.hasReader());
 
 		this.inputStream = inputStream;
 	}
 
 	protected void createInputStream() {
-		ObjectHelper.checkNotNull("parameter:inputStream", inputStream);
+		Checker.notNull("parameter:inputStream", inputStream);
 		this.setInputStream(new ByteArrayServletInputStream(this.getData()));
 	}
 
@@ -126,7 +124,7 @@ public class PostHttpServletRequest extends GetOrPostHttpServletRequest implemen
 			this.createReader();
 		}
 
-		ObjectHelper.checkNotNull("field:reader", this.reader);
+		Checker.notNull("field:reader", this.reader);
 		return this.reader;
 	}
 
@@ -135,9 +133,9 @@ public class PostHttpServletRequest extends GetOrPostHttpServletRequest implemen
 	}
 
 	protected void setReader(final BufferedReader reader) {
-		ObjectHelper.checkNotNull("parameter:reader", reader);
-		PrimitiveHelper.checkFalse("reader", this.hasReader());
-		PrimitiveHelper.checkFalse("inputStream", this.hasInputStream());
+		Checker.notNull("parameter:reader", reader);
+		Checker.falseValue("reader", this.hasReader());
+		Checker.falseValue("inputStream", this.hasInputStream());
 
 		this.reader = reader;
 	}

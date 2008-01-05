@@ -17,7 +17,6 @@ package rocket.widget.client.menu;
 
 import java.util.Iterator;
 
-import rocket.browser.client.Browser;
 import rocket.dom.client.Dom;
 import rocket.event.client.Event;
 import rocket.event.client.EventBitMaskConstants;
@@ -28,7 +27,7 @@ import rocket.event.client.MouseOutEvent;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.Html;
 import rocket.widget.client.SpanPanel;
 
@@ -123,7 +122,7 @@ public class ContextMenu extends Menu {
 	}
 
 	public void setWidget(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 
 		final SpanPanel panel = (SpanPanel) this.getPanel();
 		panel.remove(0);
@@ -148,7 +147,7 @@ public class ContextMenu extends Menu {
 	 * @param event
 	 */
 	protected void onMouseOut(final MouseOutEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		while (true) {
 			final Element targetElement = event.getTo();
@@ -201,12 +200,12 @@ public class ContextMenu extends Menu {
 	private Element originalTargetElement;
 	
 	Element getOriginalTargetElement(){
-		ObjectHelper.checkNotNull( "field:originalTargetElement", originalTargetElement );
+		Checker.notNull( "field:originalTargetElement", originalTargetElement );
 		return this.originalTargetElement;
 	}
 	
 	void setOriginalTargetElement( final Element originalTargetElement ){
-		ObjectHelper.checkNotNull( "parameter:originalTargetElement", originalTargetElement );
+		Checker.notNull( "parameter:originalTargetElement", originalTargetElement );
 		this.originalTargetElement = originalTargetElement;
 	}
 	
@@ -221,12 +220,12 @@ public class ContextMenu extends Menu {
 	private Widget originalTargetWidget;
 	
 	Widget getOriginalTargetWidget(){
-		ObjectHelper.checkNotNull( "field:originalTargetWidget", originalTargetWidget );
+		Checker.notNull( "field:originalTargetWidget", originalTargetWidget );
 		return this.originalTargetWidget;
 	}
 	
 	void setOriginalTargetWidget( final Widget originalTargetWidget ){
-		ObjectHelper.checkNotNull( "parameter:originalTargetWidget", originalTargetWidget );
+		Checker.notNull( "parameter:originalTargetWidget", originalTargetWidget );
 		this.originalTargetWidget = originalTargetWidget;
 	}
 	

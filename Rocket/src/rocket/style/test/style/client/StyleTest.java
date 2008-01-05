@@ -31,7 +31,7 @@ import rocket.testing.client.TestRunner;
 import rocket.testing.client.WebPageTestRunner;
 import rocket.util.client.Colour;
 import rocket.util.client.StackTrace;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -1013,7 +1013,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	public void testComputedGetStylePropertyNames() {
 		final Element element = this.createDivAndAddToDocument();
 		DOM.setStyleAttribute(element, Css.CURSOR, "move");
-		DOM.setStyleAttribute(element, StringHelper.toCamelCase(Css.BACKGROUND_COLOR), "aquamarine");
+		DOM.setStyleAttribute(element, Utilities.toCamelCase(Css.BACKGROUND_COLOR), "aquamarine");
 
 		final String[] propertyNames = new TestComputedStyle( element ).getPropertyNames();
 		Test.assertNotNull(propertyNames);
@@ -1025,8 +1025,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		list.addAll(Arrays.asList(propertyNames));
 
 		Test.assertTrue(Css.CURSOR + ", list: " + list, list.contains(Css.CURSOR));
-		Test.assertTrue(Css.BACKGROUND_COLOR + ", list: " + list, list.contains(StringHelper
-				.toCamelCase(Css.BACKGROUND_COLOR)));
+		Test.assertTrue(Css.BACKGROUND_COLOR + ", list: " + list, list.contains(Utilities.toCamelCase(Css.BACKGROUND_COLOR)));
 	}
 
 	/**

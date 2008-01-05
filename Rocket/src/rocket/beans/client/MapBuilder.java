@@ -18,7 +18,7 @@ package rocket.beans.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Builds a map containing values. This is typically used by bean factories to
@@ -76,12 +76,12 @@ public class MapBuilder {
 	private Map map;
 
 	public Map getMap() {
-		ObjectHelper.checkNotNull("field:map", map);
+		Checker.notNull("field:map", map);
 		return this.map;
 	}
 
 	protected void setMap(final Map map) {
-		ObjectHelper.checkNotNull("parameter:map", map);
+		Checker.notNull("parameter:map", map);
 		this.map = map;
 	}
 

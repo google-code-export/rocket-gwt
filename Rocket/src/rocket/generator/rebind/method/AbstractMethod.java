@@ -25,7 +25,7 @@ import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.util.AbstractConstructorOrMethod;
 import rocket.generator.rebind.util.Parameter;
 import rocket.generator.rebind.visitor.SuperTypesVisitor;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Convenient base class for any Method implementation.
@@ -56,7 +56,7 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 	private Type returnType;
 
 	public Type getReturnType() {
-		ObjectHelper.checkNotNull("field:returnType", returnType);
+		Checker.notNull("field:returnType", returnType);
 		return this.returnType;
 	}
 
@@ -65,7 +65,7 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 	}
 
 	protected void setReturnType(final Type returnType) {
-		ObjectHelper.checkNotNull("parameter:returnType", returnType);
+		Checker.notNull("parameter:returnType", returnType);
 		this.returnType = returnType;
 	}
 
@@ -174,7 +174,7 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 	 * @return The new method
 	 */
 	public NewMethod copy(final NewType newType) {
-		ObjectHelper.checkNotNull("parameter:newType", newType);
+		Checker.notNull("parameter:newType", newType);
 
 		final NewMethod method = newType.newMethod();
 		method.setAbstract(this.isAbstract());
@@ -201,7 +201,7 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 	}
 
 	public boolean hasSameSignature(final Method otherMethod) {
-		ObjectHelper.checkNotNull("parameter:otherMethod", otherMethod);
+		Checker.notNull("parameter:otherMethod", otherMethod);
 
 		boolean same = false;
 

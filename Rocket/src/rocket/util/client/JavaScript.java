@@ -15,148 +15,18 @@
  */
 package rocket.util.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
 
 /**
- * A collection of useful methods when working with objects in general.
+ * The JavaScript class contains a number of methods that make it easy to bridge the gap between java and javascript object properties without
+ * escaping to Jsni.
  * 
- * @author Miroslav Pokorny
- * @version 1.0
+ * @author Miroslav Pokorny (mP)
+ * 
+ * TODO remove xxx0 make all methods straight jsni moving checks to jsni.
  */
-public class ObjectHelper extends SystemHelper {
-	/**
-	 * A safe way of checking if both objects are equal or both are null.
-	 * 
-	 * @param first
-	 *            Object
-	 * @param second
-	 *            Object
-	 * @return True if they are both null or equal.
-	 */
-	public static boolean nullSafeEquals(final Object first, final Object second) {
-
-		boolean result = false;
-
-		while (true) {
-			if (null == first && null == second) {
-				result = true;
-				break;
-			}
-			if (null == first && null != second) {
-				result = false;
-				break;
-			}
-			if (null != first && null == second) {
-				result = false;
-				break;
-			}
-			result = first.equals(second);
-			break;
-		}
-		return result;
-	}
-
-	/**
-	 * A null safe identity that checks that both objects are not null and then
-	 * invokes does a first == second. If one parmeter is not null it cannot
-	 * return true if the other parameter is null.
-	 * 
-	 * @param first
-	 *            Object
-	 * @param second
-	 *            Object
-	 * @return True if both objects are the same or both are null.
-	 */
-	public static boolean nullSafeIdentity(final Object first, final Object second) {
-		return null == first && null == second ? true : first == second;
-	}
-
-	/**
-	 * Return the default java.lang.Object.toString() for the given object.
-	 * 
-	 * @param object
-	 *            The object to format
-	 * @return String the default format representation of the given object.
-	 *         className - the at sign - the Objects hashcode ( in hex form
-	 *         without the leading '0x' ) java.lang.Object@123def
-	 */
-	public static String defaultToString(final Object object) {
-		return object == null ?
-		/* handle null */
-		String.valueOf(object) :
-		/* class name including the leading package name */
-		GWT.getTypeName(object) + '@' +
-		/* hashcode */
-		Integer.toHexString(System.identityHashCode(object));
-	} // defaultToString
-
-	public static void checkNotNull(final String name, final Object object) {
-		if (object == null) {
-			handleNullEncountered(name, "The " + name + " must not be null.");
-		}
-	}
-
-	public static void handleNullEncountered(String name, String message) {
-		fail(name, message);
-	}
-
-	/**
-	 * Asserts that the two objects are in fact the same.
-	 * 
-	 * @param message
-	 * @param object
-	 * @param otherObject
-	 */
-	public static void checkSame(final String message, final Object object, final Object otherObject) {
-		if (false == nullSafeIdentity(object, otherObject)) {
-			fail(message + ", object: " + object + ", otherObject: " + otherObject);
-		}
-	}
-
-	public static void checkNotSame(final String message, final Object object, final Object otherObject) {
-		if (nullSafeIdentity(object, otherObject)) {
-			fail(message);
-		}
-	}
-
-	/**
-	 * Asserts that the two objects are in fact different objects.
-	 * 
-	 * @param message
-	 * @param object
-	 * @param otherObject
-	 */
-	public static void checkDifferent(final String message, final Object object, final Object otherObject) {
-		if (nullSafeIdentity(object, otherObject)) {
-			fail(message);
-		}
-	}
-
-	public static void checkNull(final String name, final Object object) {
-		if (object != null) {
-			handleNonNullEncountered(name, "The " + name + " must be null. name: " + object);
-		}
-	}
-
-	public static void handleNonNullEncountered(String name, String message) {
-		fail(name, message);
-	}
-
-	/**
-	 * Asserts that the two objects are in fact the equal or both are null.
-	 * 
-	 * @param message
-	 * @param object
-	 * @param otherObject
-	 */
-	public static void checkEquals(final String message, final Object object, final Object otherObject) {
-		if (false == nullSafeEquals(object, otherObject)) {
-			SystemHelper.fail(message);
-		}
-	}
-
+public class JavaScript {
 	/**
 	 * Tests if a particular property is present on the given object.
 	 * 
@@ -165,15 +35,15 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static boolean hasProperty(final JavaScriptObject object, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 		return hasProperty0(object, propertyName);
 	}
 
-	private static native boolean hasProperty0(final JavaScriptObject object, final String propertyName)/*-{
-	 var value = object[ propertyName ];
+	private static native boolean hasProperty0(final JavaScriptObject object, final String propertyName)/*-{	 	
+	 	var value = object[ propertyName ];
 	 
-	 return typeof( value ) != "undefined"; 
+	 	return typeof( value ) != "undefined"; 
 	 }-*/;
 
 	/**
@@ -184,8 +54,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static boolean hasProperty(final JavaScriptObject object, final int index) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 		return hasProperty0(object, index);
 	}
 
@@ -202,8 +72,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static String getString(final JavaScriptObject object, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 		return getString0(object, propertyName);
 	}
 
@@ -213,8 +83,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static String getString(final JavaScriptObject object, final int index) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 		return getString0(object, index);
 	}
 
@@ -232,8 +102,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static void setString(final JavaScriptObject object, final String propertyName, final String value) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 
 		setString0(object, propertyName, value);
 	}
@@ -243,8 +113,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static void setString(final JavaScriptObject object, final int index, final String value) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 
 		setString0(object, index, value);
 	}
@@ -261,8 +131,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static double getDouble(final JavaScriptObject object, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 		return getDouble0(object, propertyName);
 	}
 
@@ -275,8 +145,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static double getDouble(final JavaScriptObject object, final int index) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 
 		return getDouble0(object, index);
 	}
@@ -297,8 +167,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @param value
 	 */
 	public static void setDouble(final JavaScriptObject object, final String propertyName, final double value) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 
 		setDouble0(object, propertyName, value);
 	}
@@ -308,8 +178,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static void setDouble(final JavaScriptObject object, final int index, final double value) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 
 		setDouble0(object, index, value);
 	}
@@ -326,8 +196,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static boolean getBoolean(final JavaScriptObject object, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 		return getBoolean0(object, propertyName);
 	}
 
@@ -336,8 +206,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static boolean getBoolean(final JavaScriptObject object, final int index) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 		return getBoolean0(object, index);
 	}
 
@@ -356,8 +226,8 @@ public class ObjectHelper extends SystemHelper {
 	 *            THe new value
 	 */
 	public static void setBoolean(final JavaScriptObject object, final String propertyName, final boolean booleanValue) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 
 		setBoolean0(object, propertyName, booleanValue);
 	}
@@ -367,8 +237,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static void setBoolean(final JavaScriptObject object, final int index, final boolean booleanValue) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 
 		setBoolean0(object, index, booleanValue);
 	}
@@ -387,12 +257,15 @@ public class ObjectHelper extends SystemHelper {
 	 * @return The value
 	 */
 	public static int getInteger(final JavaScriptObject object, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 		return getInteger0(object, propertyName);
 	}
 
-	private native static int getInteger0(final JavaScriptObject object, final String propertyName)/*-{
+	private native static int getInteger0(final JavaScriptObject object, final String propertyName)/*-{		
+//		@rocket.util.client.Checker::checkNotNull(Ljava/lang/Object;Ljava/lang/String;)("parameter:object", object );
+//		@rocket.util.client.Checker::checkNotNull(Ljava/lang/Object;Ljava/lang/String;)("parameter:propertyName", object );
+		
 	 var value = object[ propertyName ];
 	 if( typeof( value ) == "undefined" ){
 	 throw "The object does not contain a property called \"" + propertyName + "\", object: " + object; 
@@ -401,8 +274,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static int getInteger(final JavaScriptObject object, final int index) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 		return getInteger0(object, index);
 	}
 
@@ -425,8 +298,8 @@ public class ObjectHelper extends SystemHelper {
 	 *            The new value
 	 */
 	public static void setInteger(final JavaScriptObject object, final String propertyName, final int intValue) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 
 		setInteger0(object, propertyName, intValue);
 	}
@@ -436,8 +309,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static void setInteger(final JavaScriptObject object, final int index, final int intValue) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 
 		setInteger0(object, index, intValue);
 	}
@@ -454,8 +327,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static JavaScriptObject getObject(final JavaScriptObject object, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 		return getObject0(object, propertyName);
 	}
 
@@ -465,8 +338,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static JavaScriptObject getObject(final JavaScriptObject object, final int index) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 		return getObject0(object, index);
 	}
 
@@ -484,8 +357,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static void setObject(final JavaScriptObject object, final String propertyName, final JavaScriptObject value) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 
 		setObject0(object, propertyName, value);
 	}
@@ -495,8 +368,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static void setObject(final JavaScriptObject object, final int index, final JavaScriptObject value) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 
 		setObject0(object, index, value);
 	}
@@ -513,8 +386,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static Element getElement(final JavaScriptObject object, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 		return getElement0(object, propertyName);
 	}
 
@@ -524,8 +397,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static Element getElement(final JavaScriptObject object, final int index) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 		return getElement0(object, index);
 	}
 
@@ -542,8 +415,8 @@ public class ObjectHelper extends SystemHelper {
 	 * @return The properties previous value.
 	 */
 	public static JavaScriptObject removeProperty(final JavaScriptObject object, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 		return removeProperty0(object, propertyName);
 	}
 
@@ -554,8 +427,8 @@ public class ObjectHelper extends SystemHelper {
 	 }-*/;
 
 	public static JavaScriptObject removeProperty(final JavaScriptObject object, final int index) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
 		return removeProperty0(object, index);
 	}
 
@@ -573,9 +446,9 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static String getType(final JavaScriptObject object, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
-		return ObjectHelper.getType0(object, propertyName);
+		Checker.notNull("parameter:object", object);
+		Checker.notEmpty("parameter:propertyName", propertyName);
+		return JavaScript.getType0(object, propertyName);
 	}
 
 	native private static String getType0(final JavaScriptObject object, final String propertyName)/*-{
@@ -591,9 +464,9 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static String getType(final JavaScriptObject object, final int index) {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:index", 0, index);
-		return ObjectHelper.getType0(object, index);
+		Checker.notNull("parameter:object", object);
+		Checker.greaterThanOrEqual("parameter:index", 0, index);
+		return JavaScript.getType0(object, index);
 	}
 
 	native private static String getType0(final JavaScriptObject object, final int index)/*-{
@@ -607,7 +480,7 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static int getPropertyCount(final JavaScriptObject object) {
-		ObjectHelper.checkNotNull("parameter:object", object);
+		Checker.notNull("parameter:object", object);
 
 		return getPropertyCount0(object);
 	}
@@ -657,17 +530,6 @@ public class ObjectHelper extends SystemHelper {
 	 return element;
 	 }-*/;
 
-	/**
-	 * Calls the destroy method on the given object if it is destroyable.
-	 * 
-	 * @param object
-	 */
-	public static void destroyIfNecessary(final Object object) {
-		if (object instanceof Destroyable) {
-			final Destroyable destroyable = (Destroyable) object;
-			destroyable.destroy();
-		}
-	}
 
 	/**
 	 * Searches the given array for an element returning the index of the first
@@ -678,7 +540,7 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static int indexOf(final JavaScriptObject array, final JavaScriptObject element) {
-		return ObjectHelper.indexOf0(array, element);
+		return JavaScript.indexOf0(array, element);
 	}
 
 	native private static int indexOf0(final JavaScriptObject array, final JavaScriptObject element)/*-{
@@ -701,7 +563,7 @@ public class ObjectHelper extends SystemHelper {
 	 * @return
 	 */
 	public static int lastIndexOf(final JavaScriptObject array, final JavaScriptObject element) {
-		return ObjectHelper.lastIndexOf0(array, element);
+		return JavaScript.lastIndexOf0(array, element);
 	}
 
 	native private static int lastIndexOf0(final JavaScriptObject array, final JavaScriptObject element)/*-{
@@ -722,10 +584,10 @@ public class ObjectHelper extends SystemHelper {
 	 */
 	public static String[] getPropertyNames( final JavaScriptObject object ){
 		final JavaScriptObject namesArray = getPropertyNames0( object );
-		final int count = ObjectHelper.getPropertyCount( namesArray );
+		final int count = JavaScript.getPropertyCount( namesArray );
 		final String[] strings = new String[ count ];
 		for( int i = 0; i < count; i++ ){
-			strings[ i ] = ObjectHelper.getString( namesArray, i );
+			strings[ i ] = JavaScript.getString( namesArray, i );
 		}
 		return strings;
 	}
@@ -739,7 +601,4 @@ public class ObjectHelper extends SystemHelper {
 		
 		return names;
 	}-*/;
-	
-	protected ObjectHelper() {
-	}
 }

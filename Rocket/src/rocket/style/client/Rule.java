@@ -17,8 +17,8 @@ package rocket.style.client;
 
 import java.util.Map;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -39,13 +39,13 @@ public class Rule {
 		String selector = this.selector;
 		if (this.hasRuleList()) {
 			final JavaScriptObject rule = this.getNativeRule();
-			selector = ObjectHelper.getString(rule, Constants.SELECTOR_TEXT_PROPERTY_NAME);
+			selector = JavaScript.getString(rule, Constants.SELECTOR_TEXT_PROPERTY_NAME);
 		}
 		return selector;
 	}
 
 	public void setSelector(final String selector) {
-		StringHelper.checkNotEmpty("parameter:selector", selector);
+		Checker.notEmpty("parameter:selector", selector);
 
 		if (this.hasRuleList()) {
 			// remove this rule from its parent and reinsert it at the same
@@ -56,7 +56,7 @@ public class Rule {
 
 			final RuleStyle style = (RuleStyle) this.getStyle();
 			final JavaScriptObject nativeStyle = style.getStyle();
-			final String styleText = ObjectHelper.getString(nativeStyle, Css.CSS_STYLE_TEXT_PROPERTY_NAME);
+			final String styleText = JavaScript.getString(nativeStyle, Css.CSS_STYLE_TEXT_PROPERTY_NAME);
 
 			// remove and reinser the rule...
 			StyleSheet.removeRule(styleSheet, index);
@@ -82,7 +82,7 @@ public class Rule {
 	}
 
 	protected void setStyle(final Map style) {
-		ObjectHelper.checkNotNull("parameter:style", style);
+		Checker.notNull("parameter:style", style);
 		this.style = style;
 	}
 
@@ -98,7 +98,7 @@ public class Rule {
 	 * @return
 	 */
 	protected JavaScriptObject getNativeRule() {
-		return ObjectHelper.getObject(this.getRuleList().getRulesCollection(), this.getIndex());
+		return JavaScript.getObject(this.getRuleList().getRulesCollection(), this.getIndex());
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class Rule {
 	private RuleList ruleList;
 
 	protected RuleList getRuleList() {
-		ObjectHelper.checkNotNull("field:ruleList", ruleList);
+		Checker.notNull("field:ruleList", ruleList);
 		return this.ruleList;
 	}
 
@@ -116,7 +116,7 @@ public class Rule {
 	}
 
 	protected void setRuleList(final RuleList ruleList) {
-		ObjectHelper.checkNotNull("parameter:ruleList", ruleList);
+		Checker.notNull("parameter:ruleList", ruleList);
 		this.ruleList = ruleList;
 	}
 

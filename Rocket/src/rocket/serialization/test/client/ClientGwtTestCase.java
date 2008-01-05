@@ -23,7 +23,7 @@ import rocket.serialization.client.ClientObjectOutputStream;
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectReader;
 import rocket.serialization.client.ObjectWriter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -79,7 +79,7 @@ abstract public class ClientGwtTestCase extends GWTTestCase {
 	}
 
 	protected void verifyFurtherReadsFail(final ObjectInputStream inputStream) {
-		ObjectHelper.checkNotNull("parameter:inputStream", inputStream );
+		Checker.notNull("parameter:inputStream", inputStream );
 		try {
 			final int got = inputStream.readInt();
 			fail("An exception should have been thrown when attempting to read a consumed reader, but \"" + got + "\" was returned...");

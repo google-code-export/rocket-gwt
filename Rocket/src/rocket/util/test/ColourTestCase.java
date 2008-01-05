@@ -20,7 +20,7 @@ import java.awt.Color;
 import junit.framework.TestCase;
 import rocket.util.client.Colour;
 import rocket.util.client.HueSaturationValue;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Tester;
 
 /**
  * @author Miroslav Pokorny (mP)
@@ -288,16 +288,16 @@ public class ColourTestCase extends TestCase {
 			final float hue0 = hue % 0.999f;
 			final float hue1 = hueSaturationValue.getHue() % 0.999f;
 
-			if (false == PrimitiveHelper.equals(hue0, hue1, 0.03)) {
-				if (false == (PrimitiveHelper.equals(hue0, 0.0, 0.01) || PrimitiveHelper.equals(hue0, 1.0, 0.01))
-						&& PrimitiveHelper.equals(hue1, 0.0, 0.01) || PrimitiveHelper.equals(hue1, 1.0, 0.01)) {
+			if (false == Tester.equals(hue0, hue1, 0.03)) {
+				if (false == (Tester.equals(hue0, 0.0, 0.01) || Tester.equals(hue0, 1.0, 0.01))
+						&& Tester.equals(hue1, 0.0, 0.01) || Tester.equals(hue1, 1.0, 0.01)) {
 					break;
 				}
 			}
-			if (false == PrimitiveHelper.equals(saturation, hueSaturationValue.getSaturation(), 0.03)) {
+			if (false == Tester.equals(saturation, hueSaturationValue.getSaturation(), 0.03)) {
 				break;
 			}
-			if (false == PrimitiveHelper.equals(value, hueSaturationValue.getValue(), 0.03)) {
+			if (false == Tester.equals(value, hueSaturationValue.getValue(), 0.03)) {
 				break;
 			}
 			equals = true;

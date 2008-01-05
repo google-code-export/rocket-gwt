@@ -17,7 +17,8 @@ package rocket.widget.client;
 
 import rocket.event.client.Event;
 import rocket.event.client.EventListener;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -155,7 +156,7 @@ abstract public class CompositeWidget extends com.google.gwt.user.client.ui.Comp
 			event.setWidget(this);
 			this.onBrowserEvent(event);
 		} finally {
-			ObjectHelper.destroyIfNecessary(event);
+			Utilities.destroyIfNecessary(event);
 		}
 	}
 
@@ -170,12 +171,12 @@ abstract public class CompositeWidget extends com.google.gwt.user.client.ui.Comp
 	private EventListenerDispatcher eventListenerDispatcher;
 
 	protected EventListenerDispatcher getEventListenerDispatcher() {
-		ObjectHelper.checkNotNull("field:eventListenerDispatcher", this.eventListenerDispatcher);
+		Checker.notNull("field:eventListenerDispatcher", this.eventListenerDispatcher);
 		return this.eventListenerDispatcher;
 	}
 
 	protected void setEventListenerDispatcher(final EventListenerDispatcher eventListenerDispatcher) {
-		ObjectHelper.checkNotNull("parameter:eventListenerDispatcher", eventListenerDispatcher);
+		Checker.notNull("parameter:eventListenerDispatcher", eventListenerDispatcher);
 		this.eventListenerDispatcher = eventListenerDispatcher;
 	}
 

@@ -25,8 +25,7 @@ import rocket.generator.rebind.method.AbstractMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.util.Parameter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
@@ -81,7 +80,7 @@ public class JMethodMethodAdapter extends AbstractMethod {
 				visibility = Visibility.PUBLIC;
 				break;
 			}
-			SystemHelper.fail("Unknown visibility for field " + method);
+			Checker.fail("Unknown visibility for field " + method);
 		}
 		return visibility;
 	}
@@ -168,12 +167,12 @@ public class JMethodMethodAdapter extends AbstractMethod {
 	private JMethod jMethod;
 
 	protected JMethod getJMethod() {
-		ObjectHelper.checkNotNull("field:jMethod", jMethod);
+		Checker.notNull("field:jMethod", jMethod);
 		return jMethod;
 	}
 
 	public void setJMethod(final JMethod jMethod) {
-		ObjectHelper.checkNotNull("parameter:jMethod", jMethod);
+		Checker.notNull("parameter:jMethod", jMethod);
 		this.jMethod = jMethod;
 	}
 

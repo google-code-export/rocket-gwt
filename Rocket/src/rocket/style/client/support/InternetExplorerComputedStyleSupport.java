@@ -16,8 +16,9 @@
 package rocket.style.client.support;
 
 import rocket.style.client.Css;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
+import rocket.util.client.Tester;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
@@ -28,18 +29,18 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 		String propertyValue = null;
 		while (true) {
 			if (Css.BACKGROUND_POSITION.equals(propertyName)) {
-				propertyValue = this.getBackgroundPosition( ObjectHelper.castToElement(element));
+				propertyValue = this.getBackgroundPosition( JavaScript.castToElement(element));
 				break;
 			}
 			if (propertyName.equals(Css.FONT_SIZE)) {
-				final int fontSize = this.getFontSize(ObjectHelper.castToElement(element));
+				final int fontSize = this.getFontSize(JavaScript.castToElement(element));
 				if (-1 != fontSize) {
 					propertyValue = fontSize + "px";
 				}
 				break;
 			}
 			if (Css.HEIGHT.equals(propertyName)) {
-				propertyValue = this.getHeight(ObjectHelper.castToElement(element));
+				propertyValue = this.getHeight(JavaScript.castToElement(element));
 				break;
 			}
 			if (Css.OPACITY.equals(propertyName)) {
@@ -47,7 +48,7 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 				break;
 			}
 			if (Css.WIDTH.equals(propertyName)) {
-				propertyValue = this.getWidth(ObjectHelper.castToElement(element));
+				propertyValue = this.getWidth(JavaScript.castToElement(element));
 				break;
 			}
 			propertyValue = super.get(element, propertyName);
@@ -62,7 +63,7 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 	}
 	
 	protected String getHeight(final Element element) {
-		final int offsetHeight = ObjectHelper.getInteger(element, "offsetHeight");
+		final int offsetHeight = JavaScript.getInteger(element, "offsetHeight");
 		final int borderTopHeight = this.getBorderWidth(element, Css.BORDER_TOP_WIDTH);
 		final int paddingTop = this.getPixelProperty(element, Css.PADDING_TOP);
 		final int paddingBottom = this.getPixelProperty(element, Css.PADDING_BOTTOM);
@@ -72,7 +73,7 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 	}
 	
 	protected String getWidth(final Element element) {
-			final int offsetWidth = ObjectHelper.getInteger(element, "offsetWidth");
+			final int offsetWidth = JavaScript.getInteger(element, "offsetWidth");
 			final int borderTopWidth = this.getBorderWidth(element, Css.BORDER_TOP_WIDTH);
 			final int paddingTop = this.getPixelProperty(element, Css.PADDING_TOP);
 			final int paddingBottom = this.getPixelProperty(element, Css.PADDING_BOTTOM);
@@ -90,7 +91,7 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 	 * @return
 	 */
 	protected int getBorderWidth(final Element element, final String borderPropertyName) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		this.checkPropertyName("parameter:propertyName", borderPropertyName);
 
 		return this.getBorderWidth0(element, borderPropertyName);
@@ -128,7 +129,7 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 	 }-*/;
 
 	protected int getPixelProperty(final Element element, final String propertyName) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		this.checkPropertyName("parameter:propertyName", propertyName);
 
 		return this.getPixelProperty0(element, propertyName);
@@ -154,8 +155,8 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 			String x = this.getString(element, StyleSupportConstants.BACKGROUND_POSITION_X_IE6);
 			String y = this.getString(element, StyleSupportConstants.BACKGROUND_POSITION_Y_IE6);
 
-			final boolean xMissing = StringHelper.isNullOrEmpty(x);
-			final boolean yMissing = StringHelper.isNullOrEmpty(y);
+			final boolean xMissing = Tester.isNullOrEmpty(x);
+			final boolean yMissing = Tester.isNullOrEmpty(y);
 			if (xMissing && yMissing) {
 				break;
 			}
@@ -226,6 +227,6 @@ public class InternetExplorerComputedStyleSupport extends InternetExplorerStyleS
 	}
 
 	public String[] getPropertyNames( final JavaScriptObject element ){
-		return ObjectHelper.getPropertyNames( ObjectHelper.getObject( element, "currentStyle" ));
+		return JavaScript.getPropertyNames( JavaScript.getObject( element, "currentStyle" ));
 	}
 }

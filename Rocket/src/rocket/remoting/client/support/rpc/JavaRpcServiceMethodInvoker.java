@@ -21,8 +21,7 @@ import java.util.List;
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.SerializationFactory;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -60,12 +59,12 @@ public class JavaRpcServiceMethodInvoker extends RpcServiceMethodInvoker impleme
 	private SerializationFactory serializationFactory;
 
 	protected SerializationFactory getSerializationFactory() {		
-		ObjectHelper.checkNotNull("field:serializationFactory", serializationFactory);
+		Checker.notNull("field:serializationFactory", serializationFactory);
 		return this.serializationFactory;
 	}
 
 	public void setSerializationFactory(final SerializationFactory serializationFactory) {
-		ObjectHelper.checkNotNull("parameter:serializationFactory", serializationFactory);
+		Checker.notNull("parameter:serializationFactory", serializationFactory);
 		this.serializationFactory = serializationFactory;
 	}
 	
@@ -88,7 +87,7 @@ public class JavaRpcServiceMethodInvoker extends RpcServiceMethodInvoker impleme
 	}
 	
 	protected void setObjectOutputStream( final ObjectOutputStream objectOutputStream ){
-		ObjectHelper.checkNotNull( "parameter:objectOutputStream", objectOutputStream);
+		Checker.notNull( "parameter:objectOutputStream", objectOutputStream);
 		this.objectOutputStream = objectOutputStream;
 	}
 	
@@ -160,7 +159,7 @@ public class JavaRpcServiceMethodInvoker extends RpcServiceMethodInvoker impleme
 	 * @param parameterType
 	 */
 	public void addParameterType( final String parameterType ){
-		PrimitiveHelper.checkFalse( "parameterTypesWritten", this.hasParameterTypesWritten() );
+		Checker.falseValue( "parameterTypesWritten", this.hasParameterTypesWritten() );
 		this.getParameterTypes().add( parameterType );
 	}
 	

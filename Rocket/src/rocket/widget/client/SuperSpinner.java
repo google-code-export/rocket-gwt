@@ -17,8 +17,7 @@ package rocket.widget.client;
 
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
@@ -46,12 +45,12 @@ public class SuperSpinner extends Spinner {
 	private Image bigDownWidget;
 
 	protected Image getBigDownWidget() {
-		ObjectHelper.checkNotNull("field:bigDownWidget", bigDownWidget);
+		Checker.notNull("field:bigDownWidget", bigDownWidget);
 		return this.bigDownWidget;
 	}
 
 	protected void setBigDownWidget(final Image bigDownWidget) {
-		ObjectHelper.checkNotNull("parameter:bigDown", bigDownWidget);
+		Checker.notNull("parameter:bigDown", bigDownWidget);
 		this.bigDownWidget = bigDownWidget;
 	}
 
@@ -81,7 +80,7 @@ public class SuperSpinner extends Spinner {
 	}
 
 	public void setBigDownImageUrl(final String bigDownImageUrl) {
-		StringHelper.checkNotEmpty("parameter:bigDownImageUrl", bigDownImageUrl);
+		Checker.notEmpty("parameter:bigDownImageUrl", bigDownImageUrl);
 
 		this.getBigDownWidget().setUrl(bigDownImageUrl);
 	}
@@ -92,12 +91,12 @@ public class SuperSpinner extends Spinner {
 	private Image bigUpWidget;
 
 	protected Image getBigUpWidget() {
-		ObjectHelper.checkNotNull("field:bigUpWidget", bigUpWidget);
+		Checker.notNull("field:bigUpWidget", bigUpWidget);
 		return this.bigUpWidget;
 	}
 
 	protected void setBigUpWidget(final Image bigUpWidget) {
-		ObjectHelper.checkNotNull("parameter:bigUpWidget", bigUpWidget);
+		Checker.notNull("parameter:bigUpWidget", bigUpWidget);
 		this.bigUpWidget = bigUpWidget;
 	}
 
@@ -135,7 +134,7 @@ public class SuperSpinner extends Spinner {
 	}
 
 	public void setBigUpImageUrl(final String bigUpImageUrl) {
-		StringHelper.checkNotEmpty("parameter:bigUpImageUrl", bigUpImageUrl);
+		Checker.notEmpty("parameter:bigUpImageUrl", bigUpImageUrl);
 
 		this.getBigUpWidget().setUrl(bigUpImageUrl);
 	}

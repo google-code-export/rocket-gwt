@@ -35,7 +35,7 @@ import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Generates a JsonSerializer for the given type if one does not already exists.
@@ -54,7 +54,7 @@ public class JsonSerializerGenerator extends Generator {
 	 *            The name of the new type being generated
 	 */
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		GeneratorHelper.checkJavaTypeName("parameter:newTypeName", newTypeName);
 
 		NewConcreteType deserializer = null;
@@ -94,8 +94,8 @@ public class JsonSerializerGenerator extends Generator {
 	 *            The type the deserializer is being generated for
 	 */
 	protected void overrideReadFieldsMethods(final NewConcreteType deserializer, final Type type) {
-		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:deserializer", deserializer);
+		Checker.notNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -230,8 +230,8 @@ public class JsonSerializerGenerator extends Generator {
 	 *            The type the deserializer is being generated for
 	 */
 	protected void overrideReadObjectMethod(final NewConcreteType deserializer, final Type type) {
-		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:deserializer", deserializer);
+		Checker.notNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.debug("override " + Constants.READ_COMPLEX_METHOD_NAME + "() for type \"" + type.getName() + "\".");
@@ -263,7 +263,7 @@ public class JsonSerializerGenerator extends Generator {
 	 * @return
 	 */
 	protected String getJavascriptPropertyName(final Field field) {
-		ObjectHelper.checkNotNull("parameter:list", field);
+		Checker.notNull("parameter:list", field);
 
 		final List values = field.getMetadataValues(Constants.JAVASCRIPT_PROPERTY_NAME_ANNOTATION);
 		if (null == values || values.size() != 1) {
@@ -281,7 +281,7 @@ public class JsonSerializerGenerator extends Generator {
 	 * @return
 	 */
 	protected NewConcreteType createConcreteType(final String newTypeName, final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.debug("Creating new type \"" + type.getName() + "\".");
@@ -304,7 +304,7 @@ public class JsonSerializerGenerator extends Generator {
 	}
 
 	protected void verifyTypeHasNoArgumentsConstructor(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		if (false == type.hasNoArgumentsConstructor()) {
 			this.throwMissingNoArgumentsConstructorException(type);
@@ -323,11 +323,11 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param type
 	 */
 	protected void overrideWriteFieldsMethods(final NewConcreteType deserializer, final Type type) {
-		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:deserializer", deserializer);
+		Checker.notNull("parameter:type", type);
 
-		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:deserializer", deserializer);
+		Checker.notNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -380,8 +380,8 @@ public class JsonSerializerGenerator extends Generator {
 	 * Creates a method that uses jsni to retrieve a list from a given instance
 	 */
 	protected NewMethod createFieldGetter(final NewConcreteType deserializer, final Field field) {
-		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
-		ObjectHelper.checkNotNull("parameter:list", field);
+		Checker.notNull("parameter:deserializer", deserializer);
+		Checker.notNull("parameter:list", field);
 
 		final NewMethod getter = deserializer.newMethod();
 		getter.setAbstract(false);
@@ -415,8 +415,8 @@ public class JsonSerializerGenerator extends Generator {
 	 *            The type the deserializer is being generated for
 	 */
 	protected void overrideWriteJsonMethod(final NewConcreteType deserializer, final Type type) {
-		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:deserializer", deserializer);
+		Checker.notNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.debug("Override " + Constants.WRITE_JSON_METHOD_NAME + "() for type \"" + type.getName() + "\".");
@@ -445,8 +445,8 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param type
 	 */
 	protected void addDeserializerSingletonField(final NewConcreteType deserializer, final Type type) {
-		ObjectHelper.checkNotNull("parameter:deserializer", deserializer);
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:deserializer", deserializer);
+		Checker.notNull("parameter:type", type);
 
 		final TemplatedCodeBlock value = new TemplatedCodeBlock() {
 			protected Object getValue0(String name) {
@@ -623,7 +623,7 @@ public class JsonSerializerGenerator extends Generator {
 	 * @return
 	 */
 	protected Type getTypeFromAnnotation(final Field field, final String annotation) {
-		ObjectHelper.checkNotNull("parameter:field", field);
+		Checker.notNull("parameter:field", field);
 
 		final List values = field.getMetadataValues(annotation);
 		if (values.size() != 1) {

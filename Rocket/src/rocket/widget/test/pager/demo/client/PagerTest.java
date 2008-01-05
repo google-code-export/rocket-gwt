@@ -17,7 +17,7 @@ package rocket.widget.test.pager.demo.client;
 
 import rocket.event.client.ChangeEvent;
 import rocket.event.client.ChangeEventListener;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Utilities;
 import rocket.widget.client.Html;
 import rocket.widget.client.Pager;
 
@@ -68,7 +68,7 @@ public class PagerTest implements EntryPoint {
 				
 				list.clear();
 				for( int i= currentPage; i < last; i++ ){
-					final String html = StringHelper.format( item, new Object[]{ "" + i });
+					final String html = Utilities.format( item, new Object[]{ "" + i });
 					list.add( new Html( html ));
 				}
 			}

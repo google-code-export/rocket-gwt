@@ -18,7 +18,7 @@ package rocket.testing.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.GWT;
 
@@ -411,7 +411,7 @@ abstract public class Test {
 	}
 
 	public void finish(final Throwable cause) {
-		ObjectHelper.checkNotNull("parameter:cause", cause);
+		Checker.notNull("parameter:cause", cause);
 		this.setThrowable(cause);
 		this.setEndTimestap(System.currentTimeMillis());
 		this.setState(FAILED);
@@ -439,12 +439,12 @@ abstract public class Test {
 	private Object state;
 
 	private Object getState() {
-		ObjectHelper.checkNotNull("field:state", state);
+		Checker.notNull("field:state", state);
 		return this.state;
 	}
 
 	private void setState(final Object state) {
-		ObjectHelper.checkNotNull("parameter:state", state);
+		Checker.notNull("parameter:state", state);
 		this.state = state;
 	}
 
@@ -552,12 +552,12 @@ abstract public class Test {
 	private List messages;
 
 	public List getMessages() {
-		ObjectHelper.checkNotNull("field:messages", messages);
+		Checker.notNull("field:messages", messages);
 		return this.messages;
 	}
 
 	private void setMessages(final List messages) {
-		ObjectHelper.checkNotNull("field:messages", messages);
+		Checker.notNull("field:messages", messages);
 		this.messages = messages;
 	}
 

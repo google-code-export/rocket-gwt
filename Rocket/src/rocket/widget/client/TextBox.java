@@ -19,7 +19,7 @@ import rocket.dom.client.Dom;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.Css;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -53,7 +53,7 @@ public class TextBox extends TextEntryWidget {
 	protected void checkElement(final Element element) {
 		if (false == Dom.isInput(element, WidgetConstants.TEXTBOX_INPUT_TYPE)
 				&& false == Dom.isInput(element, WidgetConstants.PASSWORD_TEXTBOX_INPUT_TYPE)) {
-			SystemHelper.fail("Incompatible element type passed to constructor: element: " + element);
+			Checker.fail("Incompatible element type passed to constructor: element: " + element);
 		}
 	}
 

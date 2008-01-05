@@ -32,8 +32,8 @@ import rocket.remoting.rebind.rpc.json.post.JsonConstants;
 import rocket.remoting.rebind.rpc.json.post.JsonRpcInvokerTemplatedFile;
 import rocket.remoting.rebind.rpc.json.requestparameters.RequestParametersConstants;
 import rocket.remoting.rebind.rpc.json.requestparameters.RequestParametersInvokerTemplatedFile;
-import rocket.util.client.HttpHelper;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 /**
  * This generator generates a client proxy that may be used to invoke either a
@@ -44,7 +44,7 @@ import rocket.util.client.ObjectHelper;
 public class JsonRpcClientGenerator extends RpcClientGenerator {
 
 	protected NewConcreteType assembleNewType(final Type serviceInterface, final String newTypeName) {
-		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
+		Checker.notNull("parameter:serviceInterface", serviceInterface);
 		GeneratorHelper.checkJavaTypeName("parameter:TypeName", newTypeName);
 
 		final GeneratorContext context = this.getGeneratorContext();
@@ -74,10 +74,10 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 	 */
 	protected void implementPublicMethod(final Method method, final Type serviceInterface, final Type asyncServiceInterface,
 			final NewConcreteType remoteJsonClient) {
-		ObjectHelper.checkNotNull("parameter:method", method);
-		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
-		ObjectHelper.checkNotNull("parameter:asyncServiceInterface", asyncServiceInterface);
-		ObjectHelper.checkNotNull("parameter:remoteJsonClient", remoteJsonClient);
+		Checker.notNull("parameter:method", method);
+		Checker.notNull("parameter:serviceInterface", serviceInterface);
+		Checker.notNull("parameter:asyncServiceInterface", asyncServiceInterface);
+		Checker.notNull("parameter:remoteJsonClient", remoteJsonClient);
 
 		while (true) {
 			final String inputArguments = this.getInputArgumentEncodingFromMethodAnnotation(method);
@@ -103,7 +103,7 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 	 * @return
 	 */
 	protected String getInputArgumentEncodingFromMethodAnnotation(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final List values = method.getMetadataValues(Constants.INPUT_ARGUMENTS_ANNOTATION);
 		if (values.size() != 1) {
@@ -135,9 +135,9 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 	 * @param method
 	 */
 	protected void implementJsonRpcMethod(final Method method, final Type asyncServiceInterface, final NewConcreteType remoteJsonClient) {
-		ObjectHelper.checkNotNull("parameter:method", method);
-		ObjectHelper.checkNotNull("parameter:asyncServiceInterface", asyncServiceInterface);
-		ObjectHelper.checkNotNull("parameter:remoteJsonClient", remoteJsonClient);
+		Checker.notNull("parameter:method", method);
+		Checker.notNull("parameter:asyncServiceInterface", asyncServiceInterface);
+		Checker.notNull("parameter:remoteJsonClient", remoteJsonClient);
 
 		this.getGeneratorContext().info("Implementing json rpc method, method: " + method);
 
@@ -171,9 +171,9 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 	 */
 	protected void implementGetOrPostRequestParameters(final Method method, final Type asyncServiceInterface,
 			final NewConcreteType remoteJsonClient) {
-		ObjectHelper.checkNotNull("parameter:method", method);
-		ObjectHelper.checkNotNull("parameter:asyncServiceInterface", asyncServiceInterface);
-		ObjectHelper.checkNotNull("parameter:remoteJsonClient", remoteJsonClient);
+		Checker.notNull("parameter:method", method);
+		Checker.notNull("parameter:asyncServiceInterface", asyncServiceInterface);
+		Checker.notNull("parameter:remoteJsonClient", remoteJsonClient);
 
 		this.getGeneratorContext().debug("Implementing method that sends method parameters as request parameters, method: " + method);
 
@@ -212,7 +212,7 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 	}
 
 	protected List getHttpRequestParameterNamesFromMethodAnnotation(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		return method.getMetadataValues(Constants.HTTP_REQUEST_PARAMETER_NAME_ANNOTATION);
 	}
@@ -229,7 +229,7 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 	 * @return
 	 */
 	protected boolean isSimpleType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		return type.isPrimitive() || type.equals(type.getGeneratorContext().getString());
 	}
@@ -243,7 +243,7 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 	 * @return A sub class of {@link JsonServiceMethodInvoker}
 	 */
 	protected Type getInvokerTypeFromMethodAnnotation(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final List values = method.getMetadataValues(Constants.HTTP_REQUEST_METHOD_ANNOTATION);
 		if (values.size() == 0) {
@@ -256,11 +256,11 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 
 		Type type = null;
 		while (true) {
-			if (HttpHelper.isGet(httpRequestMethod)) {
+			if (Tester.isGet(httpRequestMethod)) {
 				type = this.getGetJsonRpcServiceInvoker();
 				break;
 			}
-			if (HttpHelper.isPost(httpRequestMethod)) {
+			if (Tester.isPost(httpRequestMethod)) {
 				type = this.getPostJsonRpcServiceInvoker();
 				break;
 			}

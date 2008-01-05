@@ -15,7 +15,7 @@
  */
 package rocket.dragndrop.client;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
@@ -60,12 +60,12 @@ public class DropEvent {
 	private DraggablePanel draggablePanel;
 
 	public DraggablePanel getDraggablePanel() {
-		ObjectHelper.checkNotNull("field:draggablePanel", draggablePanel);
+		Checker.notNull("field:draggablePanel", draggablePanel);
 		return this.draggablePanel;
 	}
 
 	void setDraggablePanel(final DraggablePanel draggablePanel) {
-		ObjectHelper.checkNotNull("parameter:draggablePanel", draggablePanel);
+		Checker.notNull("parameter:draggablePanel", draggablePanel);
 		this.draggablePanel = draggablePanel;
 	}
 
@@ -75,12 +75,12 @@ public class DropEvent {
 	private Widget widget;
 
 	public Widget getWidget() {
-		ObjectHelper.checkNotNull("field:widget", widget);
+		Checker.notNull("field:widget", widget);
 		return this.widget;
 	}
 
 	public void setWidget(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 		this.widget = widget;
 	}
 

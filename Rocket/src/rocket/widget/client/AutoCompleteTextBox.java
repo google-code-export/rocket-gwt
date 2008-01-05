@@ -29,8 +29,7 @@ import rocket.style.client.ComputedStyle;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -76,7 +75,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	}
 
 	public boolean add(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
+		Checker.notEmpty("parameter:text", text);
 
 		final Html entry = createListEntry(text);
 		int insertBefore = 0;
@@ -103,7 +102,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	}
 
 	protected Html createListEntry(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
+		Checker.notEmpty("parameter:text", text);
 
 		return new Html(text);
 	}
@@ -167,7 +166,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 			this.setDropDownList(this.createDropDownList());
 		}
 
-		ObjectHelper.checkNotNull("field:dropDownList", dropDownList);
+		Checker.notNull("field:dropDownList", dropDownList);
 		return this.dropDownList;
 	}
 
@@ -176,7 +175,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	}
 
 	protected void setDropDownList(final DropDownList dropDownList) {
-		ObjectHelper.checkNotNull("field:dropDownList", dropDownList);
+		Checker.notNull("field:dropDownList", dropDownList);
 		this.dropDownList = dropDownList;
 	}
 
@@ -374,7 +373,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	private EventPreview eventPreviewer;
 
 	protected EventPreview getEventPreviewer() {
-		ObjectHelper.checkNotNull("field:eventPreviewer", eventPreviewer);
+		Checker.notNull("field:eventPreviewer", eventPreviewer);
 		return this.eventPreviewer;
 	}
 
@@ -383,7 +382,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	}
 
 	protected void setEventPreviewer(final EventPreview eventPreviewer) {
-		ObjectHelper.checkNotNull("field:eventPreviewer", eventPreviewer);
+		Checker.notNull("field:eventPreviewer", eventPreviewer);
 		this.eventPreviewer = eventPreviewer;
 	}
 
@@ -428,7 +427,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 
 			// if a widget wasnt found ignore the event - because cant determine
 			// which mouse event applies too.
-			final Widget widget = WidgetHelper.findWidget(target, dropDownList.iterator());
+			final Widget widget = Widgets.findWidget(target, dropDownList.iterator());
 			if (null == widget) {
 				break;
 			}
@@ -462,7 +461,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	 * @param widget
 	 */
 	protected void select(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 
 		// unselect the previously selected widget.
 		if (this.hasSelected()) {
@@ -474,7 +473,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	}
 
 	protected void unselect(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 		widget.removeStyleName(WidgetConstants.AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE);
 	}
 
@@ -485,7 +484,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	 * @param widget
 	 */
 	protected void copyValue(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 
 		final Html html = (Html) widget;
 		this.setText(html.getText());
@@ -538,7 +537,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	private Widget selected;
 
 	protected Widget getSelected() {
-		ObjectHelper.checkNotNull("field:selected", selected);
+		Checker.notNull("field:selected", selected);
 		return this.selected;
 	}
 
@@ -547,7 +546,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	}
 
 	protected void setSelected(final Widget selected) {
-		ObjectHelper.checkNotNull("field:selected", selected);
+		Checker.notNull("field:selected", selected);
 		this.selected = selected;
 	}
 

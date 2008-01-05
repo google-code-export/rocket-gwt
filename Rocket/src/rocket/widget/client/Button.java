@@ -20,7 +20,7 @@ import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.FocusEventListener;
 import rocket.event.client.KeyEventListener;
 import rocket.event.client.MouseEventListener;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -69,7 +69,7 @@ public class Button extends FocusWidget {
 			if (Dom.isInput(element, WidgetConstants.BUTTON_INPUT_SUBMIT_TYPE)) {
 				break;
 			}
-			SystemHelper.fail("The parameter:element is not a button or input of type=radio/submit, but rather is a " + element);
+			Checker.fail("The parameter:element is not a button or input of type=radio/submit, but rather is a " + element);
 		}
 	}
 

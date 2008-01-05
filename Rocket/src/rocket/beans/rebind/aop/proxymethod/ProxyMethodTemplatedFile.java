@@ -27,7 +27,7 @@ import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the proxy method template
@@ -46,12 +46,12 @@ public class ProxyMethodTemplatedFile extends TemplatedFileCodeBlock {
 	private NewMethod method;
 
 	protected NewMethod getMethod() {
-		ObjectHelper.checkNotNull("field:method", method);
+		Checker.notNull("field:method", method);
 		return this.method;
 	}
 
 	public void setMethod(final NewMethod method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 		this.method = method;
 	}
 

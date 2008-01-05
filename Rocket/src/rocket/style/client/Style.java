@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import rocket.util.client.StringHelper;
+import rocket.util.client.Tester;
 
 /**
  * A common base class for any map view of a set of styles.
@@ -55,7 +55,7 @@ abstract public class Style extends AbstractMap {
 	protected StylePropertyValue getStylePropertyValue(final String propertyName) {
 		StylePropertyValue value = null;
 		String stringValue = this.getValue(propertyName);
-		if (false == StringHelper.isNullOrEmpty(stringValue)) {
+		if (false == Tester.isNullOrEmpty(stringValue)) {
 			value = new StylePropertyValue();
 			value.setString(stringValue);
 		}

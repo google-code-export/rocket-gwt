@@ -21,7 +21,8 @@ import java.util.List;
 
 import rocket.beans.rebind.BeanFactoryGeneratorException;
 import rocket.generator.rebind.method.Method;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 
 /**
  * This factory takes an expression and returns a MethodMatcher
@@ -39,9 +40,9 @@ public class MethodMatcherFactory {
 	 * @return A new MethodMatcher
 	 */
 	public MethodMatcher create(final String expression) {
-		StringHelper.checkNotEmpty("parameter:expression", expression);
+		Checker.notEmpty("parameter:expression", expression);
 
-		final String[] components = StringHelper.split(expression, ",", true);
+		final String[] components = Utilities.split(expression, ",", true);
 		final int count = components.length;
 		final List methodMatchers = new ArrayList();
 

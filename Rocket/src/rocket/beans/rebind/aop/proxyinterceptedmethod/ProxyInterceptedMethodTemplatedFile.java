@@ -33,14 +33,12 @@ import rocket.generator.rebind.codeblock.BooleanLiteral;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the proxy intercepted method template
@@ -59,12 +57,12 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 	private Type beanFactory;
 
 	protected Type getBeanFactory() {
-		ObjectHelper.checkNotNull("field:beanFactory", beanFactory);
+		Checker.notNull("field:beanFactory", beanFactory);
 		return this.beanFactory;
 	}
 
 	public void setBeanFactory(final Type beanFactory) {
-		ObjectHelper.checkNotNull("parameter:beanFactory", beanFactory);
+		Checker.notNull("parameter:beanFactory", beanFactory);
 		this.beanFactory = beanFactory;
 	}
 
@@ -74,12 +72,12 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 	private NewMethod method;
 
 	protected NewMethod getMethod() {
-		ObjectHelper.checkNotNull("field:method", method);
+		Checker.notNull("field:method", method);
 		return this.method;
 	}
 
 	public void setMethod(final NewMethod method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 		this.method = method;
 	}
 
@@ -89,12 +87,12 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 	private Method targetMethod;
 
 	protected Method getTargetMethod() {
-		ObjectHelper.checkNotNull("field:targetMethod", targetMethod);
+		Checker.notNull("field:targetMethod", targetMethod);
 		return this.targetMethod;
 	}
 
 	public void setTargetMethod(final Method targetMethod) {
-		ObjectHelper.checkNotNull("parameter:targetMethod", targetMethod);
+		Checker.notNull("parameter:targetMethod", targetMethod);
 		this.targetMethod = targetMethod;
 	}
 
@@ -112,12 +110,12 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 	private MethodParameter target;
 
 	protected MethodParameter getTarget() {
-		ObjectHelper.checkNotNull("field:target", target);
+		Checker.notNull("field:target", target);
 		return this.target;
 	}
 
 	public void setTarget(final MethodParameter target) {
-		ObjectHelper.checkNotNull("parameter:target", target);
+		Checker.notNull("parameter:target", target);
 		this.target = target;
 	}
 
@@ -127,12 +125,12 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 	private List aspects;
 
 	protected List getAspects() {
-		ObjectHelper.checkNotNull("field:aspects", aspects);
+		Checker.notNull("field:aspects", aspects);
 		return this.aspects;
 	}
 
 	public void setAspects(final List aspects) {
-		ObjectHelper.checkNotNull("parameter:aspects", aspects);
+		Checker.notNull("parameter:aspects", aspects);
 		this.aspects = aspects;
 	}
 

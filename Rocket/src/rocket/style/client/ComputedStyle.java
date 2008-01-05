@@ -20,10 +20,11 @@ import java.util.Map;
 
 import rocket.style.client.support.ComputedStyleSupport;
 import rocket.style.client.support.StyleSupport;
+import rocket.util.client.Checker;
 import rocket.util.client.Colour;
 import rocket.util.client.Destroyable;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.JavaScript;
+import rocket.util.client.Tester;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
@@ -68,7 +69,7 @@ public class ComputedStyle extends Style implements Destroyable {
 	public static Colour getColour(final Element element, final String propertyName) {
 		Colour value = null;
 		final String string = ComputedStyle.getString(element, propertyName);
-		if (false == StringHelper.isNullOrEmpty(string)) {
+		if (false == Tester.isNullOrEmpty(string)) {
 			value = Colour.parse(string);
 		}
 		return value;
@@ -77,7 +78,7 @@ public class ComputedStyle extends Style implements Destroyable {
 	public static double getDouble(final Element element, final String propertyName, final CssUnit unit, final double defaultValue) {
 		double value = defaultValue;
 		final String string = ComputedStyle.getString(element, propertyName);
-		if (false == StringHelper.isNullOrEmpty(string)) {
+		if (false == Tester.isNullOrEmpty(string)) {
 			value = CssUnit.convertValue(string, unit);
 		}
 		return value;
@@ -86,7 +87,7 @@ public class ComputedStyle extends Style implements Destroyable {
 	public static int getInteger(final Element element, final String propertyName, final CssUnit unit, final int defaultValue) {
 		int value = defaultValue;
 		final String string = ComputedStyle.getString(element, propertyName);
-		if (false == StringHelper.isNullOrEmpty(string)) {
+		if (false == Tester.isNullOrEmpty(string)) {
 			value = (int) CssUnit.convertValue(string, unit);
 		}
 		return value;
@@ -94,7 +95,7 @@ public class ComputedStyle extends Style implements Destroyable {
 
 	public static String getUrl(final Element element, final String propertyName) {
 		String string = ComputedStyle.getString(element, propertyName);
-		if (false == StringHelper.isNullOrEmpty(string)) {
+		if (false == Tester.isNullOrEmpty(string)) {
 			string = Style.getUrl(string);
 		}
 		return string;
@@ -125,7 +126,7 @@ public class ComputedStyle extends Style implements Destroyable {
 	}
 	
 	final public String getCssText() {
-		return ObjectHelper.getString(this.getElement(), Css.CSS_STYLE_TEXT_PROPERTY_NAME);
+		return JavaScript.getString(this.getElement(), Css.CSS_STYLE_TEXT_PROPERTY_NAME);
 	}
 
 	final public void setCssText(final String cssText) {
@@ -172,12 +173,12 @@ public class ComputedStyle extends Style implements Destroyable {
 	private Element element;
 
 	public Element getElement() {
-		ObjectHelper.checkNotNull("field:element", element);
+		Checker.notNull("field:element", element);
 		return element;
 	}
 
 	public void setElement(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		this.element = element;
 	}
 

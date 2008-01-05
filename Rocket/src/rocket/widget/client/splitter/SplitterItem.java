@@ -15,8 +15,7 @@
  */
 package rocket.widget.client.splitter;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -39,7 +38,7 @@ public class SplitterItem {
 	private SplitterPanel splitterPanel;
 
 	protected SplitterPanel getSplitterPanel() {
-		ObjectHelper.checkNotNull("field:splitterPanel", splitterPanel);
+		Checker.notNull("field:splitterPanel", splitterPanel);
 		return this.splitterPanel;
 	}
 
@@ -48,7 +47,7 @@ public class SplitterItem {
 	}
 
 	protected void setSplitterPanel(final SplitterPanel splitterPanel) {
-		ObjectHelper.checkNotNull("parameter:splitterPanel", splitterPanel);
+		Checker.notNull("parameter:splitterPanel", splitterPanel);
 		this.splitterPanel = splitterPanel;
 	}
 
@@ -62,12 +61,12 @@ public class SplitterItem {
 	private Widget widget;
 
 	public Widget getWidget() {
-		ObjectHelper.checkNotNull("field:widget", widget);
+		Checker.notNull("field:widget", widget);
 		return this.widget;
 	}
 
 	public void setWidget(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 		this.widget = widget;
 	}
 
@@ -78,12 +77,12 @@ public class SplitterItem {
 	private int minimumSize;
 
 	public int getMinimumSize() {
-		PrimitiveHelper.checkGreaterThan("field:minimumSize", 0, minimumSize);
+		Checker.greaterThan("field:minimumSize", 0, minimumSize);
 		return this.minimumSize;
 	}
 
 	public void setMinimumSize(final int minimumSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:minimumSize", 0, minimumSize);
+		Checker.greaterThan("parameter:minimumSize", 0, minimumSize);
 		this.minimumSize = minimumSize;
 	}
 
@@ -94,12 +93,12 @@ public class SplitterItem {
 	private int sizeShare;
 
 	public int getSizeShare() {
-		PrimitiveHelper.checkGreaterThan("field:sizeShare", 0, sizeShare);
+		Checker.greaterThan("field:sizeShare", 0, sizeShare);
 		return this.sizeShare;
 	}
 
 	public void setSizeShare(final int sizeShare) {
-		PrimitiveHelper.checkGreaterThan("parameter:sizeShare", 0, sizeShare);
+		Checker.greaterThan("parameter:sizeShare", 0, sizeShare);
 		this.sizeShare = sizeShare;
 	}
 

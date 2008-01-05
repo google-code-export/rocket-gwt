@@ -4,7 +4,8 @@ import rocket.dom.client.Dom;
 import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.FocusEventListener;
 import rocket.event.client.MouseEventListener;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -66,7 +67,7 @@ public class HyperlinkPanel extends SimplePanel {
 	}
 
 	protected void insert0(final Element element, final int indexBefore) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 
 		final Element child = this.createElement();
 		DOM.insertChild(this.getParentElement(), child, indexBefore);
@@ -75,7 +76,7 @@ public class HyperlinkPanel extends SimplePanel {
 		// save the event sunk bit mask so this value can be restored during a
 		// remove
 		final int sunk = DOM.getEventsSunk(element);
-		ObjectHelper.setInteger(element, WidgetConstants.HYPERLINK_PANEL_PREVIOUS_SUNK_EVENTS_BIT_MASK, sunk);
+		JavaScript.setInteger(element, WidgetConstants.HYPERLINK_PANEL_PREVIOUS_SUNK_EVENTS_BIT_MASK, sunk);
 		DOM.sinkEvents(element, 0);
 	}
 
@@ -84,13 +85,13 @@ public class HyperlinkPanel extends SimplePanel {
 	}
 
 	protected void remove0(final Element element, final int index) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 
 		final Element child = DOM.getChild(this.getParentElement(), index);
 		Dom.removeFromParent(child);
 
 		// restore the bits that were blanked out during an insert()
-		final int sunk = ObjectHelper.getInteger(element, WidgetConstants.HYPERLINK_PANEL_PREVIOUS_SUNK_EVENTS_BIT_MASK);
+		final int sunk = JavaScript.getInteger(element, WidgetConstants.HYPERLINK_PANEL_PREVIOUS_SUNK_EVENTS_BIT_MASK);
 		DOM.sinkEvents(child, sunk);
 	}
 

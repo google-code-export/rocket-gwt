@@ -17,11 +17,10 @@ package rocket.beans.rebind;
 
 import rocket.beans.rebind.beanreference.BeanReference;
 import rocket.beans.rebind.beanreference.BeanReferenceImpl;
-import rocket.beans.rebind.beanreference.BeanReferenceTemplatedFile;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Represents a nested anonymous bean being constructed.
@@ -39,12 +38,12 @@ public class NestedBean extends Bean implements Value, BeanReference{
 	private BeanReference beanReference;
 	
 	protected BeanReference getBeanReference(){
-		ObjectHelper.checkNotNull("field:beanReference", beanReference);
+		Checker.notNull("field:beanReference", beanReference);
 		return this.beanReference;
 	}
 	
 	protected void setBeanReference( final BeanReference beanReference ){
-		ObjectHelper.checkNotNull("parameter:beanReference", beanReference);
+		Checker.notNull("parameter:beanReference", beanReference);
 		this.beanReference = beanReference;
 	}
 	

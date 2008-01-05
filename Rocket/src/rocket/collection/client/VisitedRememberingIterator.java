@@ -17,7 +17,7 @@ package rocket.collection.client;
 
 import java.util.Iterator;
 
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 /**
  * This iterator provides automatic support that may be queried for the last
@@ -60,7 +60,7 @@ public class VisitedRememberingIterator extends IteratorWrapper implements Itera
 	private Object lastVisited = LAST_VISITED_SET;
 
 	public Object getLastVisited() {
-		PrimitiveHelper.checkTrue("lastVisited", LAST_VISITED_SET != this.lastVisited);
+		Checker.trueValue("lastVisited", LAST_VISITED_SET != this.lastVisited);
 		return lastVisited;
 	}
 

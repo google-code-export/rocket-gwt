@@ -18,7 +18,7 @@ package rocket.beans.rebind.factorymethod;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the create instance factory method template
@@ -35,24 +35,24 @@ public class FactoryMethodTemplatedFile extends TemplatedFileCodeBlock {
 	private Type factoryType;
 
 	protected Type getFactoryType() {
-		ObjectHelper.checkNotNull("field:factoryType", factoryType);
+		Checker.notNull("field:factoryType", factoryType);
 		return this.factoryType;
 	}
 
 	public void setFactoryType(final Type factoryType) {
-		ObjectHelper.checkNotNull("factoryType:factoryType", factoryType);
+		Checker.notNull("factoryType:factoryType", factoryType);
 		this.factoryType = factoryType;
 	}
 
 	private Method factoryMethod;
 
 	protected Method getFactoryMethod() {
-		ObjectHelper.checkNotNull("field:factoryMethod", factoryMethod);
+		Checker.notNull("field:factoryMethod", factoryMethod);
 		return this.factoryMethod;
 	}
 
 	public void setFactoryMethod(final Method factoryMethod) {
-		ObjectHelper.checkNotNull("factoryMethod:factoryMethod", factoryMethod);
+		Checker.notNull("factoryMethod:factoryMethod", factoryMethod);
 		this.factoryMethod = factoryMethod;
 	}
 

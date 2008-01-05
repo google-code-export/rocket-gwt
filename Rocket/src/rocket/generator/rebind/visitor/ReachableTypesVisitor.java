@@ -21,8 +21,7 @@ import java.util.Set;
 
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 /**
  * This visitor may be used to visit all types that are reachable from a particular starting type.
@@ -49,7 +48,7 @@ abstract public class ReachableTypesVisitor {
 	 * @param type
 	 */
 	protected void visitType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type );
+		Checker.notNull("parameter:type", type );
 
 		while (true) {
 			if (this.hasAlreadyBeenVisited(type)) {
@@ -86,7 +85,7 @@ abstract public class ReachableTypesVisitor {
 	 * @param array
 	 */
 	protected void processArray(final Type array) {
-		PrimitiveHelper.checkTrue("The parameter:array is not an array, type: " + array, array.isArray());
+		Checker.trueValue("The parameter:array is not an array, type: " + array, array.isArray());
 
 		this.addConcreteType(array);
 
@@ -108,7 +107,7 @@ abstract public class ReachableTypesVisitor {
 	 * @param type
 	 */
 	protected void processType(final Type type) {
-		PrimitiveHelper.checkTrue("The parameter:interface is not a type, type: " + type, false == type.isInterface());
+		Checker.trueValue("The parameter:interface is not a type, type: " + type, false == type.isInterface());
 
 		this.addConcreteType(type);
 		this.visitSuperTypes(type);
@@ -117,7 +116,7 @@ abstract public class ReachableTypesVisitor {
 	}
 
 	protected void visitSuperTypes(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		if (false == type.getName().equals(OBJECT)) {
 			this.visitSuperTypes0(type);
@@ -161,7 +160,7 @@ abstract public class ReachableTypesVisitor {
 	 * @param type
 	 */
 	protected void visitSubTypes(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final SubTypesVisitor subTypes = new SubTypesVisitor() {
 
@@ -210,7 +209,7 @@ abstract public class ReachableTypesVisitor {
 	}
 
 	protected void visitField(final Field field) {
-		ObjectHelper.checkNotNull("parameter:field", field);
+		Checker.notNull("parameter:field", field);
 
 		this.visitType(field.getType());
 	}
@@ -235,7 +234,7 @@ abstract public class ReachableTypesVisitor {
 	 * @param interfacee
 	 */
 	protected void processInterface(final Type interfacee) {
-		PrimitiveHelper.checkTrue("The parameter:interface is not an interface, interface: " + interfacee, interfacee.isInterface());
+		Checker.trueValue("The parameter:interface is not an interface, interface: " + interfacee, interfacee.isInterface());
 
 		final ConcreteTypesImplementingInterfaceVisitor implementedVisitor = new ConcreteTypesImplementingInterfaceVisitor() {
 			protected boolean visit(final Type type) {
@@ -276,12 +275,12 @@ abstract public class ReachableTypesVisitor {
 	private Set concreteTypes;
 
 	public Set getConcreteTypes() {
-		ObjectHelper.checkNotNull("field:types", concreteTypes);
+		Checker.notNull("field:types", concreteTypes);
 		return this.concreteTypes;
 	}
 
 	protected void setConcreteTypes(final Set concreteTypes) {
-		ObjectHelper.checkNotNull("parameter:types", concreteTypes);
+		Checker.notNull("parameter:types", concreteTypes);
 		this.concreteTypes = concreteTypes;
 	}
 
@@ -290,8 +289,8 @@ abstract public class ReachableTypesVisitor {
 	}
 
 	protected void addConcreteType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-		PrimitiveHelper.checkFalse("The type " + type + " has is an interface", type.isInterface());
+		Checker.notNull("parameter:type", type);
+		Checker.falseValue("The type " + type + " has is an interface", type.isInterface());
 
 		this.getConcreteTypes().add(type);
 	}
@@ -302,12 +301,12 @@ abstract public class ReachableTypesVisitor {
 	private Set types;
 
 	protected Set getTypes() {
-		ObjectHelper.checkNotNull("field:types", types);
+		Checker.notNull("field:types", types);
 		return this.types;
 	}
 
 	protected void setTypes(final Set types) {
-		ObjectHelper.checkNotNull("parameter:types", types);
+		Checker.notNull("parameter:types", types);
 		this.types = types;
 	}
 
@@ -316,13 +315,13 @@ abstract public class ReachableTypesVisitor {
 	}
 
 	protected void addType(final Type type) {
-		PrimitiveHelper.checkFalse("The type " + type + " has already been visited", this.hasAlreadyBeenVisited(type));
+		Checker.falseValue("The type " + type + " has already been visited", this.hasAlreadyBeenVisited(type));
 
 		this.getTypes().add(type);
 	}
 
 	protected boolean hasAlreadyBeenVisited(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		return this.getTypes().contains(type);
 	}
 }

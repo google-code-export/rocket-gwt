@@ -19,8 +19,9 @@ import java.util.List;
 
 import rocket.dom.client.DomConstants;
 import rocket.style.client.support.StyleSheetSupport;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
+import rocket.util.client.Tester;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -73,7 +74,7 @@ public class StyleSheet {
 	}
 
 	protected static void setStyleSheets(final StyleSheetList styleSheets) {
-		ObjectHelper.checkNotNull("parameter:styleSheets", styleSheets);
+		Checker.notNull("parameter:styleSheets", styleSheets);
 		StyleSheet.styleSheets = styleSheets;
 	}
 	
@@ -83,12 +84,12 @@ public class StyleSheet {
 	private StyleSheetList styleSheetList;
 
 	public StyleSheetList getStyleSheetsList() {
-		ObjectHelper.checkNotNull("field:styleSheetList", styleSheetList);
+		Checker.notNull("field:styleSheetList", styleSheetList);
 		return this.styleSheetList;
 	}
 
 	protected void setStyleSheetList(final StyleSheetList styleSheetList) {
-		ObjectHelper.checkNotNull("parameter:styleSheetList", styleSheetList);
+		Checker.notNull("parameter:styleSheetList", styleSheetList);
 		this.styleSheetList = styleSheetList;
 	}	
 	
@@ -188,7 +189,7 @@ public class StyleSheet {
 		if (false == this.hasRuleList()) {
 			this.setRuleList(this.createRuleList());
 		}
-		ObjectHelper.checkNotNull("field:ruleList", ruleList);
+		Checker.notNull("field:ruleList", ruleList);
 		return this.ruleList;
 	}
 
@@ -197,7 +198,7 @@ public class StyleSheet {
 	}
 
 	protected void setRuleList(final RuleList ruleList) {
-		ObjectHelper.checkNotNull("parameter:ruleList", ruleList);
+		Checker.notNull("parameter:ruleList", ruleList);
 		this.ruleList = ruleList;
 	}
 
@@ -224,7 +225,7 @@ public class StyleSheet {
 				break;
 			}
 
-			if (StringHelper.isNullOrEmpty(this.getTitle())) {
+			if (Tester.isNullOrEmpty(this.getTitle())) {
 				break;
 			}
 			external = true;
@@ -305,30 +306,30 @@ public class StyleSheet {
 	// A VARIETY OF CONVENIENT TYPED PROPERTY METHODS.
 
 	protected boolean hasProperty(final String propertyName) {
-		return ObjectHelper.hasProperty(this.getNativeStyleSheet(), propertyName);
+		return JavaScript.hasProperty(this.getNativeStyleSheet(), propertyName);
 	}
 
 	// BOOLEAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	protected boolean getBoolean(final String propertyName) {
-		return ObjectHelper.getBoolean(this.getNativeStyleSheet(), propertyName);
+		return JavaScript.getBoolean(this.getNativeStyleSheet(), propertyName);
 	}
 
 	protected void setBoolean(final String propertyName, final boolean value) {
-		ObjectHelper.setBoolean(this.getNativeStyleSheet(), propertyName, value);
+		JavaScript.setBoolean(this.getNativeStyleSheet(), propertyName, value);
 	}
 
 	// STRING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	protected String getString(final String propertyName) {
-		return ObjectHelper.getString(this.getNativeStyleSheet(), propertyName);
+		return JavaScript.getString(this.getNativeStyleSheet(), propertyName);
 	}
 
 	protected void setString(final String propertyName, final String value) {
-		ObjectHelper.setString(this.getNativeStyleSheet(), propertyName, value);
+		JavaScript.setString(this.getNativeStyleSheet(), propertyName, value);
 	}
 
 	protected void removeProperty(final String propertyName) {
-		ObjectHelper.removeProperty(this.getNativeStyleSheet(), propertyName);
+		JavaScript.removeProperty(this.getNativeStyleSheet(), propertyName);
 	}
 }

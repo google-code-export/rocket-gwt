@@ -20,8 +20,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletOutputStream;
 
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.server.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This ServletOutputStream supports capturing any bytes written to it. These
@@ -39,12 +38,12 @@ public class ByteArrayServletOutputStream extends ServletOutputStream {
 	private int bufferSize;
 
 	protected int getBufferSize() {
-		PrimitiveHelper.checkGreaterThan("field:bufferSize", 0, this.bufferSize);
+		Checker.greaterThan("field:bufferSize", 0, this.bufferSize);
 		return this.bufferSize;
 	}
 
 	protected void setBufferSize(final int bufferSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:bufferSize", 0, bufferSize);
+		Checker.greaterThan("parameter:bufferSize", 0, bufferSize);
 		this.bufferSize = bufferSize;
 	}
 
@@ -119,15 +118,15 @@ public class ByteArrayServletOutputStream extends ServletOutputStream {
 	}
 
 	public void write(final byte[] bytes) throws IOException {
-		ObjectHelper.checkNotNull("parameter:bytes", bytes);
+		Checker.notNull("parameter:bytes", bytes);
 		this.write(bytes, 0, bytes.length);
 	}
 
 	public void write(final byte[] bytes, final int offset, final int length) throws IOException {
-		ObjectHelper.checkNotNull("parameter:bytes", bytes);
+		Checker.notNull("parameter:bytes", bytes);
 		final int bytesCount = bytes.length;
-		PrimitiveHelper.checkBetween("parameter:offset", offset, 0, bytesCount);
-		PrimitiveHelper.checkBetween("parameter:length", length, offset, bytesCount - offset + 1);
+		Checker.between("parameter:offset", offset, 0, bytesCount);
+		Checker.between("parameter:length", length, offset, bytesCount - offset + 1);
 
 		this.getByteArrayOutputStream().write(bytes, offset, length);
 	}
@@ -165,12 +164,12 @@ public class ByteArrayServletOutputStream extends ServletOutputStream {
 	private ByteArrayOutputStream byteArrayOutputStream;
 
 	protected ByteArrayOutputStream getByteArrayOutputStream() {
-		ObjectHelper.checkNotNull("field:byteArrayOutputStream", byteArrayOutputStream);
+		Checker.notNull("field:byteArrayOutputStream", byteArrayOutputStream);
 		return this.byteArrayOutputStream;
 	}
 
 	protected void setByteArrayOutputStream(final ByteArrayOutputStream byteArrayOutputStream) {
-		ObjectHelper.checkNotNull("parameter:byteArrayOutputStream", byteArrayOutputStream);
+		Checker.notNull("parameter:byteArrayOutputStream", byteArrayOutputStream);
 		this.byteArrayOutputStream = byteArrayOutputStream;
 	}
 

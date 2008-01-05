@@ -24,10 +24,8 @@ import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the list and set templates
@@ -44,12 +42,12 @@ abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 	private List elements;
 
 	protected List getElements() {
-		ObjectHelper.checkNotNull("field:elements", elements);
+		Checker.notNull("field:elements", elements);
 		return this.elements;
 	}
 
 	protected void setElements(final List entries) {
-		ObjectHelper.checkNotNull("parameter:elements", entries);
+		Checker.notNull("parameter:elements", entries);
 		this.elements = entries;
 	}
 
@@ -58,7 +56,7 @@ abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public void add(final Value value) {
-		ObjectHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:value", value);
 
 		this.getElements().add(value);
 	}

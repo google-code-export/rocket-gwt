@@ -16,7 +16,7 @@
 package rocket.generator.rebind.gwt;
 
 import rocket.generator.rebind.packagee.AbstractPackage;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JPackage;
 
@@ -34,12 +34,12 @@ public class JPackagePackageAdapter extends AbstractPackage {
 	private JPackage jPackage;
 
 	protected JPackage getJPackage() {
-		ObjectHelper.checkNotNull("field:jPackage", jPackage);
+		Checker.notNull("field:jPackage", jPackage);
 		return this.jPackage;
 	}
 
 	public void setJPackage(final JPackage jPackage) {
-		ObjectHelper.checkNotNull("parameter:jPackage", jPackage);
+		Checker.notNull("parameter:jPackage", jPackage);
 		this.jPackage = jPackage;
 	}
 

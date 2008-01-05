@@ -22,12 +22,10 @@ import rocket.beans.rebind.aop.unwrapparameter.UnwrapParameterTemplatedFile;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the invoke target method template
@@ -54,12 +52,12 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 	private Method method;
 
 	protected Method getMethod() {
-		ObjectHelper.checkNotNull("field:method", method);
+		Checker.notNull("field:method", method);
 		return this.method;
 	}
 
 	public void setMethod(final Method proxy) {
-		ObjectHelper.checkNotNull("parameter:method", proxy);
+		Checker.notNull("parameter:method", proxy);
 		this.method = proxy;
 	}
 

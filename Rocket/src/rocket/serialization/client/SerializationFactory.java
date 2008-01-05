@@ -15,7 +15,6 @@
  */
 package rocket.serialization.client;
 
-import java.util.Map;
 
 /**
  * Base class for any of the generated serialization factories classes.

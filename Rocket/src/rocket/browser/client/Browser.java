@@ -16,7 +16,7 @@
 package rocket.browser.client;
 
 import rocket.browser.client.support.BrowserSupport;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -85,8 +85,8 @@ public class Browser {
 	 * @return The actual entered text.
 	 */
 	public static String prompt(final String message, final String initialValue) {
-		StringHelper.checkNotEmpty("parameter:message", message);
-		StringHelper.checkNotNull("parameter:initialValue", initialValue);
+		Checker.notEmpty("parameter:message", message);
+		Checker.notNull("parameter:initialValue", initialValue);
 
 		return prompt0(message, initialValue);
 	}
@@ -150,7 +150,7 @@ public class Browser {
 	 * Adds the base url of the standard images directory on the server.
 	 */
 	public static String buildImageUrl(final String url) {
-		StringHelper.checkNotEmpty("parameter:url", url);
+		Checker.notEmpty("parameter:url", url);
 
 		return Browser.getContextPath() + Constants.IMAGES + url;
 	}
@@ -169,7 +169,7 @@ public class Browser {
 	 * @param location
 	 */
 	public static void setLocation(final String location) {
-		StringHelper.checkNotEmpty("parameter:location", location);
+		Checker.notEmpty("parameter:location", location);
 
 		setLocation0(location);
 	}

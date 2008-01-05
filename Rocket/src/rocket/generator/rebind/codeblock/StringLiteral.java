@@ -16,8 +16,8 @@
 package rocket.generator.rebind.codeblock;
 
 import rocket.generator.rebind.SourceWriter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 import com.google.gwt.core.ext.Generator;
 
@@ -38,7 +38,7 @@ public class StringLiteral implements Literal {
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		writer.print('"' + Generator.escape(this.getValue()) + '"');
 	}
@@ -50,7 +50,7 @@ public class StringLiteral implements Literal {
 	private String value;
 
 	public String getValue() {
-		StringHelper.checkNotNull("field:value", value);
+		Checker.notNull("field:value", value);
 		return value;
 	}
 
@@ -59,12 +59,12 @@ public class StringLiteral implements Literal {
 	}
 
 	public void setValue(final String value) {
-		StringHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:value", value);
 		this.value = value;
 	}
 
 	public boolean isEmpty() {
-		return false == (this.hasValue() && false == StringHelper.isNullOrEmpty(this.getValue()));
+		return false == (this.hasValue() && false == Tester.isNullOrEmpty(this.getValue()));
 	}
 
 	public String toString() {

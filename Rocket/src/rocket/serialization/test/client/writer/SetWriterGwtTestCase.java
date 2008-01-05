@@ -20,11 +20,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import rocket.serialization.client.ClientObjectOutputStream;
 import rocket.serialization.client.writer.SetWriter;
 import rocket.serialization.test.client.ClientGwtTestCase;
 import rocket.serialization.test.client.ConcreteClass;
 import rocket.serialization.test.client.ConcreteClassObjectWriter;
-import rocket.serialization.client.ClientObjectOutputStream;
 
 public class SetWriterGwtTestCase extends ClientGwtTestCase {
 

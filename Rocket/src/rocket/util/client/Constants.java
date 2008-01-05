@@ -18,4 +18,53 @@ package rocket.util.client;
 class Constants {
 	final static int COLOUR_COMPONENT_VALUE = 255;
 
+	final static String PARAMETER = "parameter:";
+
+	final static String FIELD = "field:";
+
+	final static String ASSERT = "assert:";
+
+	final static String HTTP = "http://";
+
+	final static String HTTPS = "https://";
+
+	final static String GET = "GET";
+
+	final static String POST = "POST";
+
+	final static int PORT_NOT_SET = -1;
+
+	final static int UNSECURED_PORT = 80;
+
+	final static int SSL_PORT = 443;
+
+	final static char HOST_PORT_SEPARATOR = ':';
+
+	final static char HOST_OR_PORT_PATH_SEPARATOR = '/';
+
+	final static char PATH_SEPARATOR = '/';
+
+	final static char QUERY_STRING = '?';
+
+	final static char ANCHOR = '#';
+
+	final static char QUERY_PARAMETER_SEPARATOR = '&';
+
+	final static char QUERY_PARAMETER_NAME_VALUE_SEPARATOR = '=';
+
+	final static String QUERY_PARAMETER_SEPARATOR_STRING = "" + QUERY_PARAMETER_SEPARATOR;
+
+	final static String HEADER_NAME_VALUE_SEPARATOR = ": ";
+
+	final static String CONTENT_TYPE_HEADER = "Content-type";
+
+	final static String REFERER_HEADER = "Referer";
+
+	final static String HOST_HEADER = "Host";
+
+	final static String LOCATION_HEADER = "Location";
+
+	final static String CHARACTER_ENCODING = "Character-encoding";
+
+	final static String HTML_MIME_TYPE = "text/html";
 }

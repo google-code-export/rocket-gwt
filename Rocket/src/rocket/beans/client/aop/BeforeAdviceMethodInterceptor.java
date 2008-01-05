@@ -15,7 +15,7 @@
  */
 package rocket.beans.client.aop;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A simple adapter between a {@link MethodInterceptor} and an before advice
@@ -37,12 +37,12 @@ public class BeforeAdviceMethodInterceptor implements MethodInterceptor {
 	private BeforeAdvice beforeAdvice;
 
 	protected BeforeAdvice getBeforeAdvice() {
-		ObjectHelper.checkNotNull("field:beforeAdvice", beforeAdvice);
+		Checker.notNull("field:beforeAdvice", beforeAdvice);
 		return beforeAdvice;
 	}
 
 	public void setBeforeAdvice(final BeforeAdvice beforeAdvice) {
-		ObjectHelper.checkNotNull("parameter:beforeAdvice", beforeAdvice);
+		Checker.notNull("parameter:beforeAdvice", beforeAdvice);
 		this.beforeAdvice = beforeAdvice;
 	}
 

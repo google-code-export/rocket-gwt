@@ -18,8 +18,7 @@ package rocket.generator.test.generator.rebind;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class LongTypeGenerator extends TestGenerator {
 
@@ -28,15 +27,15 @@ public class LongTypeGenerator extends TestGenerator {
 
 		final Type type = context.getType(Long.TYPE.getName());
 
-		PrimitiveHelper.checkFalse("Long type is a not abstract", type.isAbstract());
-		PrimitiveHelper.checkFalse("Long type is not an interface", type.isInterface());
-		PrimitiveHelper.checkTrue("Long type is a final", type.isFinal());
-		ObjectHelper.checkEquals("Long type name", Long.TYPE.getName(), type.getName());
-		PrimitiveHelper.checkFalse("Long type is not an array", type.isArray());
-		PrimitiveHelper.checkTrue("Long type is a primitive", type.isPrimitive());
+		Checker.falseValue("Long type is a not abstract", type.isAbstract());
+		Checker.falseValue("Long type is not an interface", type.isInterface());
+		Checker.trueValue("Long type is a final", type.isFinal());
+		Checker.equals("Long type name", Long.TYPE.getName(), type.getName());
+		Checker.falseValue("Long type is not an array", type.isArray());
+		Checker.trueValue("Long type is a primitive", type.isPrimitive());
 
 		final Type wrapper = type.getWrapper();
-		ObjectHelper.checkEquals("Long wrapper type name", Long.class.getName(), wrapper.getName());
+		Checker.equals("Long wrapper type name", Long.class.getName(), wrapper.getName());
 
 		return null;
 	}

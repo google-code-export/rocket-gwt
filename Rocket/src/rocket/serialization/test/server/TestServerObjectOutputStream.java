@@ -15,8 +15,6 @@
  */
 package rocket.serialization.test.server;
 
-import java.util.Map;
-
 import rocket.serialization.server.ServerObjectOutputStream;
 
 public class TestServerObjectOutputStream extends ServerObjectOutputStream {

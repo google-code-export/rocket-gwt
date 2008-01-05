@@ -41,7 +41,6 @@ import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.field.NewField;
-import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
@@ -65,10 +64,9 @@ import rocket.serialization.rebind.write.GetFieldTemplatedFile;
 import rocket.serialization.rebind.write.WriteFieldsTemplatedFile;
 import rocket.serialization.rebind.write.WriteTemplatedFile;
 import rocket.serialization.rebind.writearray.WriteArrayTemplatedFile;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.server.IoHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
+import rocket.util.server.InputOutput;
 
 /**
  * This generator creates not only the SerializationFactory but also creates on
@@ -122,7 +120,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected boolean isBlackListed(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		boolean blacklisted = false;
 
@@ -182,7 +180,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return A set of types or an empty set if the black list was not found.
 	 */
 	protected Set loadBlackListFromPackage(final Package packagee) {
-		ObjectHelper.checkNotNull("parameter:package", packagee);
+		Checker.notNull("parameter:package", packagee);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.debug("Package: " + packagee.getName());
@@ -211,7 +209,7 @@ public class SerializationFactoryGenerator extends Generator {
 
 					// skip empty / comment lines...
 					final String typeName = line.trim();
-					if (StringHelper.isNullOrEmpty(typeName) || typeName.startsWith("#")) {
+					if (Tester.isNullOrEmpty(typeName) || typeName.startsWith("#")) {
 						continue;
 					}
 
@@ -227,7 +225,7 @@ public class SerializationFactoryGenerator extends Generator {
 			} catch (final Exception caught) {
 				throw new SerializationFactoryGeneratorException("Failed to load black list, message: " + caught.getMessage(), caught);
 			} finally {
-				IoHelper.closeIfNecessary(inputStream);
+				InputOutput.closeIfNecessary(inputStream);
 			}
 		}
 		return expressions;
@@ -239,12 +237,12 @@ public class SerializationFactoryGenerator extends Generator {
 	private Set blackList;
 
 	protected Set getBlackList() {
-		ObjectHelper.checkNotNull("field:blackList", blackList);
+		Checker.notNull("field:blackList", blackList);
 		return this.blackList;
 	}
 
 	protected void setBlackList(final Set blackList) {
-		ObjectHelper.checkNotNull("parameter:blackList", blackList);
+		Checker.notNull("parameter:blackList", blackList);
 		this.blackList = blackList;
 	}
 
@@ -267,7 +265,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected Set getTypeNamesListFromAnnotation(final Type type, final String annotation) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final List typeNames = type.getMetadataValues(annotation);
 		return new TreeSet( typeNames );
@@ -297,7 +295,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return A set of types
 	 */
 	protected Set findSerializablesTypes(final Set typeNames) {
-		ObjectHelper.checkNotNull("parameter:typeNames", typeNames);
+		Checker.notNull("parameter:typeNames", typeNames);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		final Set serializables = new TreeSet(TypeComparator.INSTANCE);
@@ -332,7 +330,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return A set containing all reachable serializable types.
 	 */
 	protected Set findSerializableTypes(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -451,7 +449,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected boolean isOrHasSerializableSubType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		boolean serialize = false;
 
@@ -539,7 +537,7 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	protected boolean implementsSerializable(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		return type.isAssignableTo(this.getSerializable());
 	}
 
@@ -563,7 +561,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @param types
 	 */
 	protected void warnIfNativeMethodsFound(final Set types) {
-		ObjectHelper.checkNotNull("parameter:types", types);
+		Checker.notNull("parameter:types", types);
 
 		int nativeMethodTotal = 0;
 		final GeneratorContext context = this.getGeneratorContext();
@@ -591,7 +589,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return The number of native methods found on the given type.
 	 */
 	protected int warnIfNativeMethodsFound(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final Iterator methods = type.getMethods().iterator();
 
@@ -624,7 +622,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected Map findObjectReaders(final Set serializables) {
-		ObjectHelper.checkNotNull("parameter:serializables", serializables);
+		Checker.notNull("parameter:serializables", serializables);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -661,7 +659,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected Map findObjectWriters(final Set serializables) {
-		ObjectHelper.checkNotNull("parameter:serializables", serializables);
+		Checker.notNull("parameter:serializables", serializables);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.info("Finding existing ObjectWriters...");
@@ -694,7 +692,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected Map createMapFromSet(final Set set) {
-		ObjectHelper.checkNotNull("parameter:set", set);
+		Checker.notNull("parameter:set", set);
 
 		final Map map = new TreeMap( TypeComparator.INSTANCE );
 		final Iterator iterator = set.iterator();
@@ -712,7 +710,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 *            A map of types and possibly preexisting ObjectReaders
 	 */
 	protected void generateObjectReaders(final Map serializables) {
-		ObjectHelper.checkNotNull("parameter:serializables", serializables);
+		Checker.notNull("parameter:serializables", serializables);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -736,7 +734,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return An set of generated ObjectReaders
 	 */
 	protected Map createObjectReaders(final Map serializables) {
-		ObjectHelper.checkNotNull("parameter:serializables", serializables);	
+		Checker.notNull("parameter:serializables", serializables);	
 		
 		final Map orderedSerializables = this.sortSerializablesIntoHeirarchyOrder(serializables);
 		
@@ -849,8 +847,8 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	protected void overrideObjectReaderNewInstanceMethodForArrayType(final Type arrayType, final NewConcreteType reader) {
-		ObjectHelper.checkNotNull("parameter:type", arrayType);
-		ObjectHelper.checkNotNull("parameter:reader", reader);
+		Checker.notNull("parameter:type", arrayType);
+		Checker.notNull("parameter:reader", reader);
 
 		final List parameters = new ArrayList();
 		parameters.add(this.getGeneratorContext().getString());
@@ -868,8 +866,8 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	protected void overrideObjectReaderNewInstanceMethodForNonArrayType(final Type type, final NewConcreteType reader) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-		ObjectHelper.checkNotNull("parameter:reader", reader);
+		Checker.notNull("parameter:type", type);
+		Checker.notNull("parameter:reader", reader);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		final List parameters = new ArrayList();
@@ -924,8 +922,8 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	protected void overrideObjectReaderReadMethod(final NewConcreteType reader, final Type type) {
-		ObjectHelper.checkNotNull("parameter:reader", reader);
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:reader", reader);
+		Checker.notNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
 
@@ -957,8 +955,8 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 	
 	protected void overrideObjectReaderReadFieldsMethod(final NewConcreteType reader, final Type type) {
-		ObjectHelper.checkNotNull("parameter:reader", reader);
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:reader", reader);
+		Checker.notNull("parameter:type", type);
 		
 		final GeneratorContext context = this.getGeneratorContext();
 		
@@ -1009,8 +1007,8 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return The newly created setter method
 	 */
 	protected Method createFieldSetter(final NewConcreteType reader, final Field field) {
-		ObjectHelper.checkNotNull("parameter:reader", reader);
-		ObjectHelper.checkNotNull("parameter:field", field);
+		Checker.notNull("parameter:reader", reader);
+		Checker.notNull("parameter:field", field);
 
 		final GeneratorContext context = this.getGeneratorContext();
 
@@ -1050,7 +1048,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 *            A map of types and possibly preexisting ObjectWriters
 	 */
 	protected void generateObjectWriters(final Map serializables) {
-		ObjectHelper.checkNotNull("parameter:serializables", serializables);
+		Checker.notNull("parameter:serializables", serializables);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1072,7 +1070,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return A map containing any new generated ObjectWriters
 	 */
 	protected Map createObjectWriters(final Map serializables) {
-		ObjectHelper.checkNotNull("parameter:serializables", serializables);
+		Checker.notNull("parameter:serializables", serializables);
 
 		final Map orderedSerializables = this.sortSerializablesIntoHeirarchyOrder(serializables);
 		final Iterator types = orderedSerializables.entrySet().iterator();
@@ -1100,7 +1098,7 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	protected NewConcreteType createObjectWriter(final Type type, final Map serializables ) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 				
 		final GeneratorContext context = this.getGeneratorContext();
 		
@@ -1274,8 +1272,8 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected Method createFieldGetter(final NewConcreteType writer, final Field field) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
-		ObjectHelper.checkNotNull("parameter:field", field);
+		Checker.notNull("parameter:writer", writer);
+		Checker.notNull("parameter:field", field);
 
 		final GetFieldTemplatedFile body = new GetFieldTemplatedFile();
 		body.setField(field);
@@ -1306,7 +1304,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @param fieldType
 	 */
 	protected void addSingletonFields(final Collection readerOrWriters, Type fieldType) {
-		ObjectHelper.checkNotNull("parameter:readerOrWriters", readerOrWriters);
+		Checker.notNull("parameter:readerOrWriters", readerOrWriters);
 
 		final Iterator iterator = readerOrWriters.iterator();
 
@@ -1326,8 +1324,8 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @param fieldType
 	 */
 	protected void addSingletonField(final NewConcreteType readerOrWriter, final Type fieldType) {
-		ObjectHelper.checkNotNull("parameter:readerOrWriter", readerOrWriter);
-		ObjectHelper.checkNotNull("parameter:fieldType", fieldType);
+		Checker.notNull("parameter:readerOrWriter", readerOrWriter);
+		Checker.notNull("parameter:fieldType", fieldType);
 
 		final NewField singleton = readerOrWriter.newField();
 
@@ -1358,7 +1356,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected NewConcreteType createSerializableFactory(final String newTypeName) {
-		StringHelper.checkNotEmpty("parameter:newTypeName", newTypeName);
+		Checker.notEmpty("parameter:newTypeName", newTypeName);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.info("Creating serialization factory " + newTypeName);
@@ -1376,8 +1374,8 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @param objectReaders
 	 */
 	protected void overrideSerializationFactoryGetObjectReader( final NewConcreteType serializationFactory, final Map objectReaders ){
-		ObjectHelper.checkNotNull("parameter:serializationFactory", serializationFactory);
-		ObjectHelper.checkNotNull("parameter:objectReaders", objectReaders);
+		Checker.notNull("parameter:serializationFactory", serializationFactory);
+		Checker.notNull("parameter:objectReaders", objectReaders);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1424,8 +1422,8 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @param objectWriters
 	 */
 	protected void overrideSerializationFactoryGetObjectWriter( final NewConcreteType serializationFactory, final Map objectWriters ){
-		ObjectHelper.checkNotNull("parameter:serializationFactory", serializationFactory);
-		ObjectHelper.checkNotNull("parameter:objectWriters", objectWriters);
+		Checker.notNull("parameter:serializationFactory", serializationFactory);
+		Checker.notNull("parameter:objectWriters", objectWriters);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1605,7 +1603,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected Map sortSerializablesIntoHeirarchyOrder(final Map serializables) {
-		ObjectHelper.checkNotNull("parameter:serializables", serializables);
+		Checker.notNull("parameter:serializables", serializables);
 		
 		final Map sorted = new TreeMap( TYPE_HEIRARCHY_SORTER );
 		
@@ -1615,7 +1613,7 @@ public class SerializationFactoryGenerator extends Generator {
 			sorted.put( entry.getKey(), entry.getValue() );
 		}		
 				
-		PrimitiveHelper.checkEquals( "sorted", serializables.size(), sorted.size());
+		Checker.equals( "sorted", serializables.size(), sorted.size());
 		return sorted;
 	}
 
@@ -1664,7 +1662,7 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @param types A collection of NewConcreteTypes that need to be written.
 	 */
 	protected void writeTypes( final Collection types ){
-		ObjectHelper.checkNotNull("parameter:newTypes", types );
+		Checker.notNull("parameter:newTypes", types );
 		
 		final Iterator iterator = types.iterator();
 		while( iterator.hasNext() ){

@@ -67,8 +67,9 @@ import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.TypeConstructorsVisitor;
 import rocket.generator.rebind.visitor.VirtualMethodVisitor;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
+import rocket.util.client.Utilities;
 
 /**
  * This code generator generates a BeanFactory which will create or provide the
@@ -162,7 +163,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            bean type interface
 	 */
 	protected void verifyBeanFactory(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.info("Verifying " + type + " is a bean factory.");
@@ -232,7 +233,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            anonymous beans
 	 */
 	protected void allocateNamesToNestedBeans(final Set beans) {
-		ObjectHelper.checkNotNull("parameter:beans", beans);
+		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -247,7 +248,7 @@ public class BeanFactoryGenerator extends Generator {
 				continue;
 			}
 
-			if (false == StringHelper.isNullOrEmpty(bean.getId())) {
+			if (false == Tester.isNullOrEmpty(bean.getId())) {
 				throwNestedBeansMustNotHaveIds(bean);
 			}
 
@@ -274,7 +275,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The beans
 	 */
 	protected void buildFactoryBeans(final Set beans) {
-		ObjectHelper.checkNotNull("parameter:beans", beans);
+		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -326,12 +327,12 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param bean The bean under construction.
 	 */
 	protected void createBeanFactoryBean(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final GeneratorContext context = this.getGeneratorContext();
 
 		final String beanName = bean.getId();
-		if (StringHelper.isNullOrEmpty(beanName)) {
+		if (Tester.isNullOrEmpty(beanName)) {
 			throwBeanIdIsMissing(bean);
 		}
 		this.checkIdIsUnique(bean);
@@ -358,7 +359,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		if (false == singleton) {
 			final String destroyMethod = bean.getDestroyMethod();
-			if (false == StringHelper.isNullOrEmpty(destroyMethod)) {
+			if (false == Tester.isNullOrEmpty(destroyMethod)) {
 				throwPrototypeCantBeContainerDestroyed(bean);
 			}
 
@@ -420,7 +421,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            documents.
 	 */
 	protected void overrideAllFactoryBeanCreateInstances(final Set beans) {
-		ObjectHelper.checkNotNull("parameter:beans", beans);
+		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -449,7 +450,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean
 	 */
 	protected void overrideFactoryBeanCreateInstance(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		while (true) {
 			if (bean instanceof Rpc ) {
@@ -459,7 +460,7 @@ public class BeanFactoryGenerator extends Generator {
 
 			final String factoryMethodName = bean.getFactoryMethod();
 
-			if (StringHelper.isNullOrEmpty(factoryMethodName)) {
+			if (Tester.isNullOrEmpty(factoryMethodName)) {
 				this.overrideFactoryBeanCreateInstanceNewConstructor(bean);
 				break;
 			}
@@ -475,7 +476,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param rpc The bean definition
 	 */
 	protected void overrideFactoryBeanCreateInstanceViaDeferredBinding(final Rpc rpc) {
-		ObjectHelper.checkNotNull("parameter:bean", rpc);
+		Checker.notNull("parameter:bean", rpc);
 
 		final NewType factoryBean = rpc.getFactoryBean();
 
@@ -500,7 +501,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean
 	 */
 	protected void overrideFactoryBeanCreateInstanceNewConstructor(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final NewMethod newFactoryMethod = this.createCreateInstanceMethod(bean.getFactoryBean());
 		newFactoryMethod.setAbstract(false);
@@ -627,7 +628,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean being processed.
 	 */
 	protected void overrideFactoryBeanCreateInstanceFactoryMethod(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final Type beanType = bean.getType();
 		final String factoryMethodName = bean.getFactoryMethod();
@@ -652,7 +653,7 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected NewMethod createCreateInstanceMethod(final NewType factoryBean) {
-		ObjectHelper.checkNotNull("parameter:factoryBean", factoryBean);
+		Checker.notNull("parameter:factoryBean", factoryBean);
 
 		final Method method = factoryBean.getMostDerivedMethod(Constants.CREATE_INSTANCE, Collections.EMPTY_LIST);
 
@@ -672,7 +673,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The beans
 	 */
 	protected void overrideAllFactoryBeanSatisfyInits(final Set beans) {
-		ObjectHelper.checkNotNull("parameter:beans", beans);
+		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -683,7 +684,7 @@ public class BeanFactoryGenerator extends Generator {
 			final Bean bean = (Bean) iterator.next();
 			final String initMethodName = bean.getInitMethod();
 
-			if (false == StringHelper.isNullOrEmpty(initMethodName)) {
+			if (false == Tester.isNullOrEmpty(initMethodName)) {
 				context.branch();
 				context.debug(bean.getId());
 
@@ -704,7 +705,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean about to be processed.
 	 */
 	protected void overrideFactoryBeanSatisfyInit(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final Type beanType = bean.getType();
 		final String initMethodName = bean.getInitMethod();
@@ -754,7 +755,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The beans
 	 */
 	protected void overrideAllFactoryBeanSatisfyProperties(final Set beans) {
-		ObjectHelper.checkNotNull("parameter:beans", beans);
+		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -797,7 +798,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The rpc
 	 */
 	protected void overrideFactoryBeanSatisfyPropertiesWithSettingServiceEntryPoint(final Rpc rpc) {
-		ObjectHelper.checkNotNull("parameter:rpc", rpc);
+		Checker.notNull("parameter:rpc", rpc);
 
 		final NewType factoryBean = rpc.getFactoryBean();
 
@@ -841,7 +842,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean being processed.
 	 */
 	protected void overrideFactoryBeanSatisfyProperties(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		final Type voidType = this.getGeneratorContext().getVoid();
@@ -962,7 +963,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean reference
 	 */
 	protected void prepareBeanReference(final BeanReferenceImpl beanReference) {
-		ObjectHelper.checkNotNull("parameter:beanReference", beanReference);
+		Checker.notNull("parameter:beanReference", beanReference);
 
 		final String id = beanReference.getId();
 		final Bean bean = this.getBean(id);
@@ -998,7 +999,7 @@ public class BeanFactoryGenerator extends Generator {
 	// * @param bean
 	// */
 	// protected void validateNestedBean(final NestedBean bean) {
-	// ObjectHelper.checkNotNull("parameter:nestedBean", bean);
+	// Checker.checkNotNull("parameter:nestedBean", bean);
 	//
 	// // if the bean type is a factoryBean read get the bean's actual type
 	// // from the annotation.
@@ -1037,7 +1038,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The beans
 	 */
 	protected void overrideAllSingletonFactoryBeanToInvokeCustomDestroy(final Set beans) {
-		ObjectHelper.checkNotNull("parameter:beans", beans);
+		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1055,7 +1056,7 @@ public class BeanFactoryGenerator extends Generator {
 
 			final String destroyMethodName = bean.getDestroyMethod();
 
-			if (false == StringHelper.isNullOrEmpty(destroyMethodName)) {
+			if (false == Tester.isNullOrEmpty(destroyMethodName)) {
 				context.branch();
 				context.debug(bean.getId());
 
@@ -1077,7 +1078,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean
 	 */
 	protected void overrideSingletonFactoryBeanDestroy(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final Type beanType = bean.getType();
 		final String destroyMethodName = bean.getDestroyMethod();
@@ -1126,7 +1127,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            xml documents.
 	 */
 	protected void recordAliases(final Set aliases) {
-		ObjectHelper.checkNotNull("parameter:aliases", aliases);
+		Checker.notNull("parameter:aliases", aliases);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1154,7 +1155,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param rpc The rpc bean under construction.
 	 */
 	protected void createRpcFactoryBean(final Rpc rpc) {
-		ObjectHelper.checkNotNull("parameter:rpc", rpc);
+		Checker.notNull("parameter:rpc", rpc);
 
 		final GeneratorContext context = this.getGeneratorContext();
 
@@ -1193,7 +1194,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param aspects All the aspects within all xml files.
 	 */
 	protected void buildAspects(final Set aspects) {
-		ObjectHelper.checkNotNull("parameter:aspects", aspects);
+		Checker.notNull("parameter:aspects", aspects);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1237,7 +1238,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean
 	 */
 	protected void verifyProxyTarget(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final Type beanType = bean.getType();
 		if (beanType.isFinal()) {
@@ -1255,7 +1256,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param aspect The aspect containing the advisor
 	 */
 	protected void verifyAdvisorBean(final Aspect aspect) {
-		ObjectHelper.checkNotNull("parameter:aspect", aspect);
+		Checker.notNull("parameter:aspect", aspect);
 
 		final String id = aspect.getAdvisor();
 		final Bean bean = this.getBean(id);
@@ -1276,7 +1277,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param aspect The aspect
 	 */
 	protected void verifyMethodExpression(final Aspect aspect) {
-		ObjectHelper.checkNotNull("parameter:aspect", aspect);
+		Checker.notNull("parameter:aspect", aspect);
 
 		final String id = aspect.getTarget();
 		final Bean bean = this.getBean(id);
@@ -1382,7 +1383,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean being proxied
 	 */
 	protected void buildProxyFactoryBean(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1418,7 +1419,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean being processed
 	 */
 	protected void overrideProxyFactoryBeanGetTargetFactoryBean(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		this.getGeneratorContext().debug(
 				"Overriding proxy factory bean " + Constants.PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME + ".");
@@ -1446,7 +1447,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @return The new proxy
 	 */
 	protected NewNestedType createProxy(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final Type targetBeanType = bean.getType();
 		final String id = bean.getId();
@@ -1542,8 +1543,8 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The method
 	 */
 	protected void createProxyMethod(final NewNestedType proxy, final Method method) {
-		ObjectHelper.checkNotNull("parameter:proxy", proxy);
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:proxy", proxy);
+		Checker.notNull("parameter:method", method);
 
 		final NewMethod newMethod = method.copy(proxy);
 		newMethod.setAbstract(false);
@@ -1569,9 +1570,9 @@ public class BeanFactoryGenerator extends Generator {
 	 *            A list of aspects for this method
 	 */
 	protected void createProxyMethodWithInterceptors(final NewNestedType proxy, final Method method, final List aspects) {
-		ObjectHelper.checkNotNull("parameter:proxy", proxy);
-		ObjectHelper.checkNotNull("parameter:method", method);
-		ObjectHelper.checkNotNull("parameter:advices", aspects);
+		Checker.notNull("parameter:proxy", proxy);
+		Checker.notNull("parameter:method", method);
+		Checker.notNull("parameter:advices", aspects);
 
 		final NewMethod newMethod = method.copy(proxy);
 		newMethod.setAbstract(false);
@@ -1603,7 +1604,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The bean being proxied.
 	 */
 	protected void overrideProxyFactoryBeanCreateProxy(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		final NewNestedType proxyFactoryBean = bean.getProxyFactoryBean();
 		final List objectParameterList = this.getParameterListWithOnlyObject();
@@ -1773,12 +1774,12 @@ public class BeanFactoryGenerator extends Generator {
 	private NewConcreteType beanFactory;
 
 	public NewConcreteType getBeanFactory() {
-		ObjectHelper.checkNotNull("field:beanFactory", beanFactory);
+		Checker.notNull("field:beanFactory", beanFactory);
 		return this.beanFactory;
 	}
 
 	protected void setBeanFactory(final NewConcreteType beanFactory) {
-		ObjectHelper.checkNotNull("parameter:beanFactory", beanFactory);
+		Checker.notNull("parameter:beanFactory", beanFactory);
 		this.beanFactory = beanFactory;
 	}
 
@@ -1789,12 +1790,12 @@ public class BeanFactoryGenerator extends Generator {
 	private Map beans;
 
 	public Map getBeans() {
-		ObjectHelper.checkNotNull("field:beans", beans);
+		Checker.notNull("field:beans", beans);
 		return this.beans;
 	}
 
 	protected void setBeans(final Map beans) {
-		ObjectHelper.checkNotNull("parameter:beans", beans);
+		Checker.notNull("parameter:beans", beans);
 		this.beans = beans;
 	}
 
@@ -1828,7 +1829,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The new bean
 	 */
 	protected void addBean(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		this.getBeans().put(bean.getId(), bean);
 	}
@@ -1890,12 +1891,12 @@ public class BeanFactoryGenerator extends Generator {
 	private Map aliases;
 
 	public Map getAliases() {
-		ObjectHelper.checkNotNull("field:aliases", aliases);
+		Checker.notNull("field:aliases", aliases);
 		return this.aliases;
 	}
 
 	protected void setAliases(final Map aliases) {
-		ObjectHelper.checkNotNull("parameter:aliases", aliases);
+		Checker.notNull("parameter:aliases", aliases);
 		this.aliases = aliases;
 	}
 
@@ -1924,7 +1925,7 @@ public class BeanFactoryGenerator extends Generator {
 	 *            The new alias
 	 */
 	protected void addAlias(final Alias alias) {
-		ObjectHelper.checkNotNull("parameter:alias", alias);
+		Checker.notNull("parameter:alias", alias);
 
 		this.getAliases().put(alias.getName(), alias);
 	}
@@ -2039,7 +2040,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @return The safe java class name.
 	 */
 	protected String escapeBeanIdToBeClassNameSafe(final String beanId) {
-		StringHelper.checkNotEmpty("parameter:beanId", beanId);
+		Checker.notEmpty("parameter:beanId", beanId);
 
 		final StringBuffer safeName = new StringBuffer();
 
@@ -2063,7 +2064,7 @@ public class BeanFactoryGenerator extends Generator {
 			// value of $c.
 			safeName.append('_');
 
-			final String hexEncoded = StringHelper.padLeft(Integer.toHexString(c), 4, '0');
+			final String hexEncoded = Utilities.padLeft(Integer.toHexString(c), 4, '0');
 			safeName.append(hexEncoded);
 		} // for i
 		return safeName.toString();

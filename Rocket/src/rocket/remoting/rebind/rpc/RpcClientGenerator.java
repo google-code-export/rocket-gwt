@@ -31,7 +31,7 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
 import rocket.generator.rebind.visitor.AllMethodsVisitor;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This generator generates a client proxy that may be used to invoke either a
@@ -81,7 +81,7 @@ abstract public class RpcClientGenerator extends Generator {
 	 * @param serviceInterface
 	 */
 	protected void verifyAsyncServiceInterface(final Type serviceInterface) {
-		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
+		Checker.notNull("parameter:serviceInterface", serviceInterface);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -140,8 +140,8 @@ abstract public class RpcClientGenerator extends Generator {
 	 * proxy for each service method.
 	 */
 	protected void implementPublicMethods(final Type serviceInterface, final NewConcreteType client) {
-		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
-		ObjectHelper.checkNotNull("parameter:client", client);
+		Checker.notNull("parameter:serviceInterface", serviceInterface);
+		Checker.notNull("parameter:client", client);
 
 		this.getGeneratorContext().info("Implementing async service interface methods");
 
@@ -175,9 +175,9 @@ abstract public class RpcClientGenerator extends Generator {
 	 */
 	protected NewMethod createCorrespondingAsyncServiceInterfaceMethod(final Method method, final Type asyncServiceInterface,
 			final NewConcreteType client) {
-		ObjectHelper.checkNotNull("parameter:method", method);
-		ObjectHelper.checkNotNull("parameter:asyncServiceInterface", asyncServiceInterface);
-		ObjectHelper.checkNotNull("parameter:remoteJsonClient", client);
+		Checker.notNull("parameter:method", method);
+		Checker.notNull("parameter:asyncServiceInterface", asyncServiceInterface);
+		Checker.notNull("parameter:remoteJsonClient", client);
 
 		final GeneratorContext context = this.getGeneratorContext();
 

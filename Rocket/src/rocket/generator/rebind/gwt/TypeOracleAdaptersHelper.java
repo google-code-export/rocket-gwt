@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContext;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JType;
 
@@ -38,8 +38,8 @@ class TypeOracleAdaptersHelper {
 	 * @return
 	 */
 	static public Set asSetOfTypes(final GeneratorContext generatorContext, final JType[] types) {
-		ObjectHelper.checkNotNull("parameter:generatorContext", generatorContext);
-		ObjectHelper.checkNotNull("parameter:types", types);
+		Checker.notNull("parameter:generatorContext", generatorContext);
+		Checker.notNull("parameter:types", types);
 
 		final Set set = new HashSet();
 		for (int i = 0; i < types.length; i++) {

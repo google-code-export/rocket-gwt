@@ -24,7 +24,7 @@ import java.util.Map;
 
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A container that holds any meta data added to any new types being generated.
@@ -44,12 +44,12 @@ public class MetaData implements CodeBlock, HasMetadata {
 	private Map metaData;
 
 	protected Map getMetaData() {
-		ObjectHelper.checkNotNull("field:metaData", metaData);
+		Checker.notNull("field:metaData", metaData);
 		return this.metaData;
 	}
 
 	protected void setMetaData(final Map metaData) {
-		ObjectHelper.checkNotNull("parameter:metaData", metaData);
+		Checker.notNull("parameter:metaData", metaData);
 		this.metaData = metaData;
 	}
 

@@ -17,7 +17,7 @@ package rocket.util.test.stacktrace.client;
 
 import rocket.browser.client.Browser;
 import rocket.util.client.StackTrace;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -95,7 +95,7 @@ public class StackTraceTest implements EntryPoint {
 
 		final String stackTrace = StackTrace.asString(throwable);
 
-		final String[] frames = StringHelper.split(stackTrace, "\n", true);
+		final String[] frames = Utilities.split(stackTrace, "\n", true);
 		final StringBuffer buf = new StringBuffer();
 		for (int i = 0; i < frames.length; i++) {
 			String frame = frames[i];

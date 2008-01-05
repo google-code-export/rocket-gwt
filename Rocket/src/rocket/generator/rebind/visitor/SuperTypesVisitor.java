@@ -16,7 +16,7 @@
 package rocket.generator.rebind.visitor;
 
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Visits all the super types belonging to the type starting with the given type
@@ -29,7 +29,7 @@ abstract public class SuperTypesVisitor {
 	private final static String OBJECT = Object.class.getName();
 
 	public void start(final Type type) {
-		ObjectHelper.checkNotNull("type:type", type);
+		Checker.notNull("type:type", type);
 
 		Type type0 = type;
 		if (this.skipInitialType()) {

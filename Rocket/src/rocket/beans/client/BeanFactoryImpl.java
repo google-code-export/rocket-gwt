@@ -19,13 +19,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowCloseListener;
-
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
 
 /**
  * This class contains a number of common properties and methods that will be
@@ -96,7 +95,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 */
 	protected void registerAliases() {
 		final String aliasesToBeans = this.getAliasesToBeans();
-		final String[] tokens = StringHelper.split(aliasesToBeans, ",", true);
+		final String[] tokens = Utilities.split(aliasesToBeans, ",", true);
 		final Map factoryBeans = this.getFactoryBeans();
 
 		for (int i = 0; i < tokens.length; i++) {
@@ -121,13 +120,13 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 */
 	protected void loadEagerBeans() {
 		final String commaSeparatedList = this.getEagerSingletonBeanNames();
-		final String[] beanNames = StringHelper.split(commaSeparatedList, ",", true);
+		final String[] beanNames = Utilities.split(commaSeparatedList, ",", true);
 		for (int i = 0; i < beanNames.length; i++) {
 			final String beanName = beanNames[i];
 			Object ignored = this.getBean(beanName);
 
 			if (false == GWT.isScript()) {
-				PrimitiveHelper.checkTrue("The bean \"" + beanName + "\" must be a singleton.", this.isSingleton(beanName));
+				Checker.trueValue("The bean \"" + beanName + "\" must be a singleton.", this.isSingleton(beanName));
 			}
 		}
 	}
@@ -147,12 +146,12 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	private Map factoryBeans;
 
 	protected Map getFactoryBeans() {
-		ObjectHelper.checkNotNull("field:factoryBeans", factoryBeans);
+		Checker.notNull("field:factoryBeans", factoryBeans);
 		return this.factoryBeans;
 	}
 
 	protected void setFactoryBeans(final Map factoryBeans) {
-		ObjectHelper.checkNotNull("parameter:factoryBeans", factoryBeans);
+		Checker.notNull("parameter:factoryBeans", factoryBeans);
 		this.factoryBeans = factoryBeans;
 	}
 

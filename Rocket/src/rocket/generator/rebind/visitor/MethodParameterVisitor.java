@@ -19,7 +19,7 @@ import java.util.Iterator;
 
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A template that makes it easy to visit all the parameters belonging to a
@@ -30,7 +30,7 @@ import rocket.util.client.ObjectHelper;
 abstract public class MethodParameterVisitor {
 
 	public void start(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final Iterator parameters = method.getParameters().iterator();
 		while (parameters.hasNext()) {

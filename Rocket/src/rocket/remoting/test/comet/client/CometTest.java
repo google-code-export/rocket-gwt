@@ -20,7 +20,7 @@ import rocket.remoting.client.GwtSerializationCometClient;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.util.client.StackTrace;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -95,12 +95,12 @@ public class CometTest implements EntryPoint {
 	private CometClient cometClient;
 
 	CometClient getCometClient() {
-		ObjectHelper.checkNotNull("field:cometClient", cometClient);
+		Checker.notNull("field:cometClient", cometClient);
 		return this.cometClient;
 	}
 
 	void setCometClient(final CometClient cometClient) {
-		ObjectHelper.checkNotNull("parameter:cometClient", cometClient);
+		Checker.notNull("parameter:cometClient", cometClient);
 		this.cometClient = cometClient;
 	}
 

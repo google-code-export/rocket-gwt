@@ -25,10 +25,7 @@ import java.util.List;
 
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -128,7 +125,7 @@ public abstract class SortableTable extends CompositeWidget {
 	private ColumnSorting[] columnComparators;
 
 	protected ColumnSorting[] getColumnComparators() {
-		ObjectHelper.checkNotNull("field:columnComparators", columnComparators);
+		Checker.notNull("field:columnComparators", columnComparators);
 		return columnComparators;
 	}
 
@@ -137,7 +134,7 @@ public abstract class SortableTable extends CompositeWidget {
 	}
 
 	protected void setColumnComparators(final ColumnSorting[] columnComparators) {
-		ObjectHelper.checkNotNull("parameter:columnComparators", columnComparators);
+		Checker.notNull("parameter:columnComparators", columnComparators);
 		this.columnComparators = columnComparators;
 	}
 
@@ -151,7 +148,7 @@ public abstract class SortableTable extends CompositeWidget {
 	 * @param ascending
 	 */
 	public void setColumnComparator(final Comparator columnComparator, final int column, final boolean ascending) {
-		ObjectHelper.checkNotNull("parameter:columnComparator", columnComparator);
+		Checker.notNull("parameter:columnComparator", columnComparator);
 		this.checkColumn("parameter:column", column);
 
 		final ColumnSorting sorting = new ColumnSorting();
@@ -168,7 +165,7 @@ public abstract class SortableTable extends CompositeWidget {
 	}
 
 	protected int getColumnIndex(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 
 		int columnIndex = -1;
 
@@ -187,7 +184,7 @@ public abstract class SortableTable extends CompositeWidget {
 	}
 
 	protected void onColumnSortingClick(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 
 		final Image image = (Image) widget;
 		final int column = this.getColumnIndex(image);
@@ -262,7 +259,7 @@ public abstract class SortableTable extends CompositeWidget {
 		this.checkColumn("parameter:column", column);
 
 		final ColumnSorting sorting = this.getColumnComparators()[column];
-		ObjectHelper.checkNotNull("sorting", sorting);
+		Checker.notNull("sorting", sorting);
 		return sorting;
 	}
 
@@ -272,7 +269,7 @@ public abstract class SortableTable extends CompositeWidget {
 	private int sortedColumn = -1;
 
 	public int getSortedColumn() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:sortedColumn", 0, this.sortedColumn );
+		Checker.greaterThanOrEqual("field:sortedColumn", 0, this.sortedColumn );
 		return this.sortedColumn;
 	}
 
@@ -282,7 +279,7 @@ public abstract class SortableTable extends CompositeWidget {
 
 	public void setSortedColumn(final int sortedColumn) {
 		if (false == this.isColumnSortable(sortedColumn)) {
-			SystemHelper.fail("parameter:sortedColumn", "The parameter:sortedColumn is not a sortable column. sortedColumn: "
+			Checker.fail("parameter:sortedColumn", "The parameter:sortedColumn is not a sortable column. sortedColumn: "
 					+ sortedColumn);
 		}
 
@@ -355,17 +352,17 @@ public abstract class SortableTable extends CompositeWidget {
 	private RowList rows;
 
 	public List getRows() {
-		ObjectHelper.checkNotNull("field:rows", rows);
+		Checker.notNull("field:rows", rows);
 		return rows;
 	}
 
 	public void setRows(final RowList rows) {
-		ObjectHelper.checkNotNull("parameter:rows", rows);
+		Checker.notNull("parameter:rows", rows);
 		this.rows = rows;
 	}
 
 	protected RowList getRowsList() {
-		ObjectHelper.checkNotNull("field:rows", rows);
+		Checker.notNull("field:rows", rows);
 		return this.rows;
 	}
 
@@ -460,7 +457,7 @@ public abstract class SortableTable extends CompositeWidget {
 	 * @param column
 	 */
 	protected void checkColumn(final String name, final int column) {
-		PrimitiveHelper.checkBetween(name, column, 0, this.getColumnCount());
+		Checker.between(name, column, 0, this.getColumnCount());
 	}
 
 	/**
@@ -497,7 +494,7 @@ public abstract class SortableTable extends CompositeWidget {
 	 *            A sorted list ready to be painted.
 	 */
 	protected void redraw(final SortedRowList rows) {
-		ObjectHelper.checkNotNull("parameter:rows", rows);
+		Checker.notNull("parameter:rows", rows);
 
 		final Grid table = this.getGrid();
 		final int columnCount = this.getColumnCount();
@@ -570,7 +567,7 @@ public abstract class SortableTable extends CompositeWidget {
 	}
 
 	protected Label createLabel(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
+		Checker.notEmpty("parameter:text", text);
 
 		final Label label = new Label();
 		label.setText(text);
@@ -626,12 +623,12 @@ public abstract class SortableTable extends CompositeWidget {
 		private Comparator comparator;
 
 		public Comparator getComparator() {
-			ObjectHelper.checkNotNull("field:comparator", this.comparator);
+			Checker.notNull("field:comparator", this.comparator);
 			return this.comparator;
 		}
 
 		public void setComparator(final Comparator comparator) {
-			ObjectHelper.checkNotNull("parameter:comparator", comparator);
+			Checker.notNull("parameter:comparator", comparator);
 			this.comparator = comparator;
 		}
 
@@ -668,20 +665,20 @@ public abstract class SortableTable extends CompositeWidget {
 		private SortedRowList sorted = new SortedRowList();
 
 		SortedRowList getSorted() {
-			ObjectHelper.checkNotNull("field:sorted", sorted);
+			Checker.notNull("field:sorted", sorted);
 			return sorted;
 		}
 
 		void setSorted(final SortedRowList sorted) {
-			ObjectHelper.checkNotNull("parameter:sorted", sorted);
+			Checker.notNull("parameter:sorted", sorted);
 			this.sorted = sorted;
 		}
 
 		public boolean add(final Object element) {
-			ObjectHelper.checkNotNull("parameter:element", element);
+			Checker.notNull("parameter:element", element);
 
 			if (super.contains(element)) {
-				SystemHelper.fail("parameter:element", "The given element may only be added once to this list, element: " + element);
+				Checker.fail("parameter:element", "The given element may only be added once to this list, element: " + element);
 			}
 			super.add(element);
 
@@ -692,10 +689,10 @@ public abstract class SortableTable extends CompositeWidget {
 		}
 
 		public void add(final int index, final Object element) {
-			ObjectHelper.checkNotNull("parameter:element", element);
+			Checker.notNull("parameter:element", element);
 
 			if (super.contains(element)) {
-				SystemHelper.fail("parameter:element", "The given element may only be added once to this list, element: " + element);
+				Checker.fail("parameter:element", "The given element may only be added once to this list, element: " + element);
 			}
 			super.add(index, element);
 
@@ -962,12 +959,12 @@ public abstract class SortableTable extends CompositeWidget {
 		private Object row;
 
 		Object getRow() {
-			ObjectHelper.checkNotNull("field:row", row);
+			Checker.notNull("field:row", row);
 			return this.row;
 		}
 
 		void setRow(final Object row) {
-			ObjectHelper.checkNotNull("parameter:row", row);
+			Checker.notNull("parameter:row", row);
 			this.row = row;
 		}
 
@@ -980,12 +977,12 @@ public abstract class SortableTable extends CompositeWidget {
 		private Widget[] widgets;
 
 		Widget[] getWidgets() {
-			ObjectHelper.checkNotNull("field:widgets", widgets);
+			Checker.notNull("field:widgets", widgets);
 			return this.widgets;
 		}
 
 		void setWidgets(final Widget[] widgets) {
-			ObjectHelper.checkNotNull("parameter:widgets", widgets);
+			Checker.notNull("parameter:widgets", widgets);
 			this.widgets = widgets;
 		}
 	}
