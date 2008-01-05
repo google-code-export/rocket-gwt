@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="Rocket" default="dist" basedir=".">
-	<description>
-	Ant build that includes a number of targets.
-	</description>
+	<description>Ant build that includes a number of targets.</description>
 
-	<property name="version" value="0.39"/>
-	<property name="build-dir" location="${basedir}/build"/>	
-	<property name="test-dir" location="${build-dir}/test"/>	
-	<property name="src-dir" location="${build-dir}/src"/>
-	<property name="doc-dir" location="${build-dir}/doc"/>
-	<property name="bin-dir" location="${build-dir}/bin"/>
-	<property name="wiki-dir" location="${basedir}/wiki"/>
-	<property name="txt-dir" location="${basedir}/txt"/>
-	<property name="www-dir" location="${build-dir}/www"/>
-	<property name="reports-dir" location="${build-dir}/reports"/>
-	<property name="lib-dir" location="c:/java-libraries/"/>
-	<property name="gwt-home-dir" location="${lib-dir}/gwt-windows-1.4.60"/>
-	<property name="junit-dir" location="${lib-dir}/junit/3.8"/>
-	<property name="flexjson-dir" location="${lib-dir}/flexjson/1.2"/>
-	<property name="cglib-dir" location="${lib-dir}/sourceforge.net/cglib/2.0.2"/>	
-	<property name="ant-dir" location="${lib-dir}/apache-ant/1.7.0/lib/"/>
+	<property name="version" 		value="0.40"/>
+	<property name="build-dir" 		location="${basedir}/build"/>	
+	<property name="test-dir" 		location="${build-dir}/test"/>	
+	<property name="src-dir" 		location="${build-dir}/src"/>
+	<property name="gwt-src-dir" 	location="${basedir}/src"/>		
+	<property name="doc-dir" 		location="${build-dir}/doc"/>
+	<property name="bin-dir" 		location="${build-dir}/bin"/>
+	<property name="wiki-dir" 		location="${basedir}/wiki"/>
+	<property name="txt-dir" 		location="${basedir}/txt"/>
+	<property name="www-dir" 		location="${build-dir}/www"/>
+	<property name="reports-dir" 	location="${build-dir}/reports"/>
+	<property name="lib-dir" 		location="c:/java-libraries/"/>
+	<property name="gwt-home-dir" 	location="${lib-dir}/gwt-windows-1.4.60"/>
+	<property name="junit-dir" 		location="${lib-dir}/junit/3.8"/>
+	<property name="flexjson-dir" 	location="${lib-dir}/flexjson/1.2"/>
+	<property name="cglib-dir" 		location="${lib-dir}/sourceforge.net/cglib/2.0.2"/>	
+	<property name="ant-dir" 		location="${lib-dir}/apache-ant/1.7.0/lib/"/>
 
 	<path id="project.class.path">
 		<pathelement path="${src-dir}"/>
 		<pathelement path="${bin-dir}"/>
-		<pathelement path="${java.class.path}/"/>
+		<pathelement path="${java.class.path}"/>
+		<pathelement location="${gwt-home-dir}"/>				
 		<pathelement path="${gwt-home-dir}/gwt-user.jar"/>
 		<pathelement path="${gwt-home-dir}/gwt-dev-windows.jar"/>
 		<pathelement path="${junit-dir}/junit.jar"/>
 		<pathelement path="${flexjson-dir}/flexjson.jar"/>		
 		<pathelement path="${cglib-dir}/cglib-full.jar"/>				
-		<pathelement location="${ant-dir}"/>		
+	</path>
+
+	<path id="gwt-compile.class.path">
+		<pathelement path="${gwt-src-dir}"/>
+		<pathelement path="${bin-dir}"/>
+		<pathelement path="${java.class.path}"/>
+		<pathelement location="${gwt-home-dir}"/>				
+		<pathelement path="${gwt-home-dir}/gwt-user.jar"/>
+		<pathelement path="${gwt-home-dir}/gwt-dev-windows.jar"/>
+		<pathelement path="${junit-dir}/junit.jar"/>
+		<pathelement path="${flexjson-dir}/flexjson.jar"/>		
+		<pathelement path="${cglib-dir}/cglib-full.jar"/>				
 	</path>
 
 	<!--
@@ -62,10 +73,9 @@
 	<!--
 	Packages the three jar files that make up the rocket library.
 	-->
-	<target 
-	  	name="package" 
-	  	depends="compile" 
-	  	description="Create several jar files, each containing different logical units of the framework.">
+	<target	name="package" 
+	  		depends="compile" 
+	  		description="Create several jar files, each containing different logical units of the framework.">
 
 		<mkdir dir="${build-dir}"/>
 
@@ -137,119 +147,115 @@
 	<target name="javadoc" 
 			depends="compile" 
 			description="Create javadoc">
-		<javadoc access="private"
-  	        author="yes"
-			classpathref="project.class.path"			
-  	        destdir="${doc-dir}"
-	  		doctitle="Rocket GWT ${version} Javadoc"
-		    noindex="yes"
-		    serialwarn="no"  	
-  	        sourcepath="${src-dir}"
-  	        splitindex="no"
-  	        verbose="no"
-			packagenames="rocket.**">
+		<javadoc 	access="private"
+  	        		author="yes"
+					classpathref="project.class.path"			
+  	        		destdir="${doc-dir}"
+	  				doctitle="Rocket GWT ${version} Javadoc"
+		    		noindex="yes"
+		    		serialwarn="no"  	
+  	        		sourcepath="${src-dir}"
+  	        		splitindex="no"
+  	        		verbose="no"
+					packagenames="rocket.**">
 		</javadoc>
 	</target>
 
 	<!--
 	Translates all modules into javascript by calling the gwt compiler.
 	-->
-	<target name="compile-all-gwt" 
+	<target name="gwt-compile-all" 
 			depends="compile" 
 			description="Generates the html pages for all demos">
 	
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.dragndrop.test.DragNDrop"/>
 		</antcall>
 
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.remoting.test.comet.Comet"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.selection.test.selection.Selection"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.style.test.style.Style"/>
 		</antcall>		
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.style.test.stylesheet.StyleSheet"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.testing.test.webpagetestrunner.WebPageTestRunnerTest"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.testing.test.interactivelist.InteractiveList"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.testing.test.interactivepanel.InteractivePanel"/>
 		</antcall>
 		
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.util.test.stacktrace.StackTrace"/>
 		</antcall>
 
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.accordionpanel.AccordionPanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.autocompletetextbox.AutoCompleteTextBox"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.basicwidgets.BasicWidgets"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.breadcrumbpanel.BreadcrumbPanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.divpanel.DivPanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.gridview.GridView"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.hyperlinkpanel.HyperLinkPanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.menu.Menu"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.orderedlistpanel.OrderedListPanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.pager.demo.Pager"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.resizablepanel.ResizablePanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.slider.Slider"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.sortabletable.SortableTable"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.spanpanel.SpanPanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.splitterpanel.SplitterPanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.stylesheetpicker.StyleSheetPicker"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.tabpanel.TabPanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
-			<param name="module" value="rocket.widget.test.tree.Tree"/>
-			<param name="delete-gifs" value="delete-gifs"/>
-		</antcall>		
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.unorderedlistpanel.UnorderedListPanel"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.viewport.Viewport"/>
 		</antcall>
-		<antcall target="compile-gwt">
+		<antcall target="gwt-compile">
 			<param name="module" value="rocket.widget.test.zebraflextable.ZebraFlexTable"/>
 		</antcall>
 	</target>
@@ -257,7 +263,7 @@
 	<!--
 	Invokes the GWT compiler and compile a single module into javascript.
 	-->
-	<target name="compile-gwt" 
+	<target name="gwt-compile" 
 			depends="" 
 			description="Translates a module to javascript and html pages.">
 		<delete failonerror="no">
@@ -265,13 +271,12 @@
 				<include name="**/*"/>
 			</fileset>
 		</delete>
-		<java
-			maxmemory="256M"			
-			failonerror="yes"
-			classname="com.google.gwt.dev.GWTCompiler"
-			fork="yes">
-			<classpath refid="project.class.path">
-			</classpath>
+		<java	maxmemory="256M"			
+				failonerror="yes"
+				classname="com.google.gwt.dev.GWTCompiler"
+				fork="yes">
+			<classpath refid="gwt-compile.class.path" />
+			
 			<arg value="-out" />
 			<arg value="${www-dir}" />
 			<arg value="-style" />
@@ -290,8 +295,7 @@
 	</target>
 
 	<target name="deleteUnnecessaryFiles" 
-		description="Deletes all the excess files generated by the gwt compiler. 
-		These include the cache js, hosted.html (which is not required outside of hosted mode), binding decisions made (*.xml)">
+			description="Deletes all the excess files generated by the gwt compiler. These include the cache js, hosted.html (which is not required outside of hosted mode), binding decisions made (*.xml)">
 		<delete failonerror="no">
 			<fileset dir="${www-dir}/${module}">
 				<include name="hosted.html"/>				
@@ -329,14 +333,13 @@
 	Builds the entire release including compiling source to web demos and so on, and then packaging everything up.
 	-->
 	<target name="dist"
-		depends="test,compile,compile-all-gwt,javadoc,package"     			
-		description="Package a release including compiled classes, source files, javadoc and generated html.">
-
+			depends="compile,test,gwt-compile-all,javadoc,package"     			
+			description="Package a release including compiled classes, source files, javadoc and generated html.">
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>
-		<delete failonerror="no" file="${basedir}/../${release-archive-name}" />
+		<delete failonerror="no" file="${build-dir}/${release-archive-name}" />
 		<zip 
 			whenempty="create"
-			destfile="${basedir}/../${release-archive-name}" >
+			destfile="${build-dir}/${release-archive-name}" >
 			<fileset dir="${build-dir}">
 				<include name="*.jar"/>						
 			</fileset>
@@ -379,11 +382,17 @@
 	
 	<!--
 	Executes all tests suites.
+			depends="test-gwt-testcases,test-junit-testcases" 
 	-->
 	<target name="test" 
-			depends="test-gwt-testcases,test-junit-testcases" >
+			depends="test-junit-testcases" 
+			description="executes all tests (gwt and junit)">
 	</target>
-
+<!--
+FIXME Fails with 
+	no swt-win32-3236 in java.library.path
+    java.lang.UnsatisfiedLinkError: no swt-win32-3236 in java.library.path 			
+-->
 	<target name="test-gwt-testcases" 
 			depends="compile" 
 			description="Runs all GwtUnit test cases">
@@ -396,25 +405,32 @@
 		</taskdef>
 		<mkdir dir="${reports-dir}"/>
 
-		<junit printsummary="yes">
+		<junit 	includeantruntime="false"
+				printsummary="yes"
+				fork="true">
+			<jvmarg 		value="-Dgwt.args=-out ${test-dir}" />		 
+<!--			<sysproperty 	key="basedir" 
+							value="." />-->
+			<formatter 		usefile="false" 
+							type="plain" />			
 			<classpath>
 				<path refid="project.class.path" />
 				<pathelement location="${bin-dir}" />
-				<pathelement location="${src-dir}" />										
+				<pathelement location="${src-dir}" />																	
 			</classpath>
 			<formatter type="plain" />
 			<batchtest fork="yes" todir="${reports-dir}">
 				<fileset dir="${src-dir}">
 					<include name="**/*GwtTestCase.java" />					
-					<exclude name="**/*TestCase.java" />
 				</fileset>
 			</batchtest>
 		</junit>
+		
 	</target>
 
 	<target name="test-junit-testcases" 
 			depends="compile" 
-			description="Runs all Unit test cases">
+			description="Runs all JUnit test cases">
 		<taskdef 	name="junit"
 					classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
 			<classpath>
@@ -424,7 +440,7 @@
 		</taskdef>
 		<mkdir dir="${reports-dir}"/>
 
-		<junit printsummary="yes">
+		<junit printsummary="withOutAndErr" >
 			<classpath>
 				<path refid="project.class.path" />
 				<pathelement location="${bin-dir}" />
@@ -445,8 +461,6 @@
 	-->
 	<target name="clean">
 		<delete failonerror="false">
-			<fileset dir="." includes="Rocket*.jar"/>
-			<fileset dir="." includes="Rocket*.zip"/>
 			<fileset dir="${test-dir}" includes="*"/>
 			<fileset dir="${build-dir}" includes="**/*"/>			
 		</delete>
