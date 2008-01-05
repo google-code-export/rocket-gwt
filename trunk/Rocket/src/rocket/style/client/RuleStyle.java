@@ -17,7 +17,8 @@ package rocket.style.client;
 
 import rocket.style.client.support.RuleStyleSupport;
 import rocket.style.client.support.StyleSupport;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -36,15 +37,15 @@ class RuleStyle extends Style {
 	}
 	
 	final public String getCssText() {
-		return ObjectHelper.getString(this.getStyle(), Css.CSS_STYLE_TEXT_PROPERTY_NAME);
+		return JavaScript.getString(this.getStyle(), Css.CSS_STYLE_TEXT_PROPERTY_NAME);
 	}
 
 	final public void setCssText(final String cssText) {
-		ObjectHelper.setString(this.getStyle(), Css.CSS_STYLE_TEXT_PROPERTY_NAME, cssText);
+		JavaScript.setString(this.getStyle(), Css.CSS_STYLE_TEXT_PROPERTY_NAME, cssText);
 	}
 
 	public int size() {
-		return ObjectHelper.getPropertyCount(this.getStyle());
+		return JavaScript.getPropertyCount(this.getStyle());
 	}
 
 	/**
@@ -53,7 +54,7 @@ class RuleStyle extends Style {
 	 * @return
 	 */
 	protected JavaScriptObject getStyle() {
-		return ObjectHelper.getObject(this.getRule().getNativeRule(), "style");
+		return JavaScript.getObject(this.getRule().getNativeRule(), "style");
 	}
 
 	public String getValue(final String propertyName) {
@@ -78,7 +79,7 @@ class RuleStyle extends Style {
 	private Rule rule;
 
 	protected Rule getRule() {
-		ObjectHelper.checkNotNull("field:rule", rule);
+		Checker.notNull("field:rule", rule);
 		return this.rule;
 	}
 
@@ -87,7 +88,7 @@ class RuleStyle extends Style {
 	}
 
 	protected void setRule(final Rule rule) {
-		ObjectHelper.checkNotNull("parameter:rule", rule);
+		Checker.notNull("parameter:rule", rule);
 		this.rule = rule;
 	}
 

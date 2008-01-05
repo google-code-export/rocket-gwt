@@ -17,7 +17,6 @@ package rocket.dragndrop.client;
 
 import java.util.Iterator;
 
-import rocket.browser.client.Browser;
 import rocket.dom.client.Dom;
 import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.EventPreviewAdapter;
@@ -29,7 +28,8 @@ import rocket.selection.client.Selection;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 import rocket.widget.client.Hijacker;
 import rocket.widget.client.Html;
 import rocket.widget.client.SimplePanel;
@@ -103,7 +103,7 @@ public class DraggablePanel extends SimplePanel {
 	 * @param mouseDownEvent
 	 */
 	protected void onDragStart(final MouseDownEvent mouseDownEvent) {
-		ObjectHelper.checkNotNull("parameter:mouseDownEvent", mouseDownEvent);
+		Checker.notNull("parameter:mouseDownEvent", mouseDownEvent);
 
 		while (true) {
 			// first disable / clear any selections...
@@ -355,12 +355,12 @@ public class DraggablePanel extends SimplePanel {
 		private Hijacker hijacker;
 
 		protected Hijacker getHijacker() {
-			ObjectHelper.checkNotNull("field:hijacker", hijacker);
+			Checker.notNull("field:hijacker", hijacker);
 			return this.hijacker;
 		}
 
 		public void setHijacker(final Hijacker hijacker) {
-			ObjectHelper.checkNotNull("parameter:hijacker", hijacker);
+			Checker.notNull("parameter:hijacker", hijacker);
 			this.hijacker = hijacker;
 		}
 
@@ -390,12 +390,12 @@ public class DraggablePanel extends SimplePanel {
 		private Widget actualWidget;
 
 		public Widget getActualWidget() {
-			ObjectHelper.checkNotNull("field:actualWidget", actualWidget);
+			Checker.notNull("field:actualWidget", actualWidget);
 			return this.actualWidget;
 		}
 
 		public void setActualWidget(final Widget actualWidget) {
-			ObjectHelper.checkNotNull("parameter:actualWidget", actualWidget);
+			Checker.notNull("parameter:actualWidget", actualWidget);
 			this.actualWidget = actualWidget;
 		}
 	}
@@ -484,11 +484,11 @@ public class DraggablePanel extends SimplePanel {
 				continue;
 			}
 
-			final int childOffsetRight = childOffsetLeft + ObjectHelper.getInteger(child, "offsetWidth");
+			final int childOffsetRight = childOffsetLeft + JavaScript.getInteger(child, "offsetWidth");
 			if (x > childOffsetRight) {
 				continue;
 			}
-			final int childOffsetBottom = childOffsetTop + ObjectHelper.getInteger(child, "offsetHeight");
+			final int childOffsetBottom = childOffsetTop + JavaScript.getInteger(child, "offsetHeight");
 			if (y > childOffsetBottom) {
 				continue;
 			}
@@ -506,12 +506,12 @@ public class DraggablePanel extends SimplePanel {
 	private DragNDropListenerCollection dragNDropListeners;
 
 	protected DragNDropListenerCollection getDragNDropListeners() {
-		ObjectHelper.checkNotNull("field:dragNDropListeners", this.dragNDropListeners);
+		Checker.notNull("field:dragNDropListeners", this.dragNDropListeners);
 		return this.dragNDropListeners;
 	}
 
 	protected void setDragNDropListeners(final DragNDropListenerCollection dragNDropListeners) {
-		ObjectHelper.checkNotNull("parameter:dragNDropListeners", dragNDropListeners);
+		Checker.notNull("parameter:dragNDropListeners", dragNDropListeners);
 		this.dragNDropListeners = dragNDropListeners;
 	}
 

@@ -33,12 +33,13 @@ public class UtilTestSuite {
 	}
 
 	public static void addTests(TestSuite suite) {
-		suite.addTestSuite(HttpHelperTestCase.class);
+		suite.addTestSuite(TesterTestCase.class);
+		suite.addTestSuite(UtitiliesTestCase.class);
 		suite.addTestSuite(Base64EncoderTestCase.class);
 		suite.addTestSuite(ColourTestCase.class);
 		suite.addTestSuite(HueSaturationValueTestCase.class);
 		suite.addTestSuite(ThrowableHelperTestCase.class);
-		suite.addTestSuite(StringHelperTestCase.class);
+	
 		suite.addTestSuite(StackTraceGwtTestCase.class);
 	}
 }

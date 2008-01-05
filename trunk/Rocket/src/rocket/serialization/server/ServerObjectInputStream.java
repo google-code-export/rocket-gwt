@@ -24,9 +24,8 @@ import java.util.Map;
 import rocket.serialization.client.Constants;
 import rocket.serialization.client.ObjectInputStreamImpl;
 import rocket.serialization.client.SerializationException;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 
 public class ServerObjectInputStream extends ObjectInputStreamImpl {
 
@@ -141,7 +140,7 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 	// build string table...
 	// build a different array of values.
 	protected void prepare(final String stream) {
-		StringHelper.checkNotEmpty("parameter:stream", stream);
+		Checker.notEmpty("parameter:stream", stream);
 
 		if( false == stream.startsWith("[" ) && false == stream.endsWith( "]")){
 			throw new SerializationException("Stream is not valid json.");
@@ -166,7 +165,7 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 			// consume leading double quote...
 			final char first = stream.charAt(j);
 			j++;
-			PrimitiveHelper.checkEquals("must be start of quoted string", '\"', first);
+			Checker.equals("must be start of quoted string", '\"', first);
 
 			while (true) {
 				// consume a char within the quoted string...
@@ -237,25 +236,25 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 			// consume comma...
 			final char comma2 = stream.charAt(j);
 			j++;
-			PrimitiveHelper.checkEquals("Unable to find separating comma", ',', comma2);
+			Checker.equals("Unable to find separating comma", ',', comma2);
 			// }
 		}
 		this.setStrings(strings);
 
 		// j has pointer to start of values...
-		final String[] values = StringHelper.split(stream.substring(j), ",", true);
+		final String[] values = Utilities.split(stream.substring(j), ",", true);
 		this.setValues(values);
 	}
 
 	private String[] values;
 
 	protected String[] getValues() {
-		ObjectHelper.checkNotNull("field:values", values);
+		Checker.notNull("field:values", values);
 		return this.values;
 	}
 
 	protected void setValues(final String[] values) {
-		ObjectHelper.checkNotNull("parameter:values", values);
+		Checker.notNull("parameter:values", values);
 		this.values = values;
 	}
 
@@ -311,12 +310,12 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 	private List objectReaders;
 
 	protected List getObjectReaders() {
-		ObjectHelper.checkNotNull("field:objectReaders", objectReaders);
+		Checker.notNull("field:objectReaders", objectReaders);
 		return this.objectReaders;
 	}
 
 	public void setObjectReaders(final List objectReaders) {
-		ObjectHelper.checkNotNull("parameter:objectReaders", objectReaders);
+		Checker.notNull("parameter:objectReaders", objectReaders);
 		this.objectReaders = objectReaders;
 	}
 

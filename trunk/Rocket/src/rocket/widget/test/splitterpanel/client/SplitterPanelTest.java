@@ -20,10 +20,9 @@ import java.util.Iterator;
 
 import rocket.browser.client.Browser;
 import rocket.testing.client.InteractiveList;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.util.client.StackTrace;
-import rocket.util.client.SystemHelper;
-import rocket.widget.client.WidgetHelper;
+import rocket.widget.client.Widgets;
 import rocket.widget.client.splitter.HorizontalSplitterPanel;
 import rocket.widget.client.splitter.SplitterItem;
 import rocket.widget.client.splitter.VerticalSplitterPanel;
@@ -61,18 +60,18 @@ public class SplitterPanelTest implements EntryPoint {
 		root.add(this.createVerticalSplitterPanelListView());
 		root.add(this.createVerticalSplitterPanel());
 
-		WidgetHelper.forceDocumentContentsToScroll( 100 );
+		Widgets.forceDocumentContentsToScroll( 100 );
 	}
 
 	HorizontalSplitterPanel horizontalSplitterPanel;
 
 	HorizontalSplitterPanel getHorizontalSplitterPanel() {
-		ObjectHelper.checkNotNull("field:horizontalSplitterPanel", horizontalSplitterPanel);
+		Checker.notNull("field:horizontalSplitterPanel", horizontalSplitterPanel);
 		return this.horizontalSplitterPanel;
 	}
 
 	void setHorizontalSplitterPanel(final HorizontalSplitterPanel horizontalSplitterPanel) {
-		ObjectHelper.checkNotNull("parameter:horizontalSplitterPanel", horizontalSplitterPanel);
+		Checker.notNull("parameter:horizontalSplitterPanel", horizontalSplitterPanel);
 		this.horizontalSplitterPanel = horizontalSplitterPanel;
 	}
 
@@ -144,7 +143,7 @@ public class SplitterPanelTest implements EntryPoint {
 
 			protected void checkType(Object element) {
 				if (false == (element instanceof SplitterItem)) {
-					SystemHelper.fail("");
+					Checker.fail("");
 				}
 			}
 
@@ -162,12 +161,12 @@ public class SplitterPanelTest implements EntryPoint {
 	VerticalSplitterPanel verticalSplitterPanel;
 
 	VerticalSplitterPanel getVerticalSplitterPanel() {
-		ObjectHelper.checkNotNull("field:verticalSplitterPanel", verticalSplitterPanel);
+		Checker.notNull("field:verticalSplitterPanel", verticalSplitterPanel);
 		return this.verticalSplitterPanel;
 	}
 
 	void setVerticalSplitterPanel(final VerticalSplitterPanel verticalSplitterPanel) {
-		ObjectHelper.checkNotNull("parameter:verticalSplitterPanel", verticalSplitterPanel);
+		Checker.notNull("parameter:verticalSplitterPanel", verticalSplitterPanel);
 		this.verticalSplitterPanel = verticalSplitterPanel;
 	}
 
@@ -240,7 +239,7 @@ public class SplitterPanelTest implements EntryPoint {
 
 			protected void checkType(Object element) {
 				if (false == (element instanceof SplitterItem)) {
-					SystemHelper.fail("");
+					Checker.fail("");
 				}
 			}
 

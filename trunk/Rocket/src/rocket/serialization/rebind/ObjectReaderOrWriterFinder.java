@@ -26,8 +26,7 @@ import java.util.Set;
 
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.ConcreteTypesImplementingInterfaceVisitor;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 /**
  * This class is responsible for attempting to find the best ObjectReader/Writer
@@ -92,7 +91,7 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * too.
 	 */
 	protected Map findMatchingType(final Type readerOrWriter) {
-		ObjectHelper.checkNotNull("parameter:readerOrWriter", readerOrWriter);
+		Checker.notNull("parameter:readerOrWriter", readerOrWriter);
 
 		Map matches = null;
 
@@ -137,8 +136,8 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @return
 	 */
 	protected Map findTypesImplementingInterface(final Type interfacee, final Type readerOrWriter) {
-		ObjectHelper.checkNotNull("parameter:interfacee", interfacee);
-		ObjectHelper.checkNotNull("parameter:readerOrWriter", readerOrWriter);
+		Checker.notNull("parameter:interfacee", interfacee);
+		Checker.notNull("parameter:readerOrWriter", readerOrWriter);
 
 		final Map matches = new HashMap();
 
@@ -184,7 +183,7 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @return The located type if an annotation exists on the incoming type.
 	 */
 	protected Type getTypeFromAnnotation(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		Type typeFromAnnotation = null;
 		while (true) {
@@ -202,7 +201,7 @@ abstract public class ObjectReaderOrWriterFinder {
 			final String typeName = (String) values.get(0);
 			if (null != typeName) {
 				typeFromAnnotation = type.getGeneratorContext().getType(typeName);
-				ObjectHelper.checkNotNull("Unable to find annotated type" + typeName, typeFromAnnotation);
+				Checker.notNull("Unable to find annotated type" + typeName, typeFromAnnotation);
 			}
 			break;
 		}
@@ -290,24 +289,24 @@ abstract public class ObjectReaderOrWriterFinder {
 		Type readerWriter;
 
 		Type getReaderWriter() {
-			ObjectHelper.checkNotNull("field:readerWriter", readerWriter);
+			Checker.notNull("field:readerWriter", readerWriter);
 			return this.readerWriter;
 		}
 
 		void setReaderWriter(final Type readerWriter) {
-			ObjectHelper.checkNotNull("parameter:readerWriter", readerWriter);
+			Checker.notNull("parameter:readerWriter", readerWriter);
 			this.readerWriter = readerWriter;
 		}
 
 		int score;
 
 		int getScore() {
-			PrimitiveHelper.checkNotZero("field:score", score);
+			Checker.notZero("field:score", score);
 			return score;
 		}
 
 		void setScore(final int score) {
-			PrimitiveHelper.checkNotZero("parameter:score", score);
+			Checker.notZero("parameter:score", score);
 			this.score = score;
 		}
 
@@ -341,7 +340,7 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @return A map with the type as the key and reader/writer as the value. 
 	 */
 	protected Map finalizeBindings(final Map matches) {
-		ObjectHelper.checkNotNull("parameter:matches", matches);
+		Checker.notNull("parameter:matches", matches);
 
 		final Map finalized = new HashMap();
 

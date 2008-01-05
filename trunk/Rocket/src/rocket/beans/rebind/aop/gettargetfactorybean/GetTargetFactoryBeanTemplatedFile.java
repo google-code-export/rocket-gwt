@@ -15,13 +15,9 @@
  */
 package rocket.beans.rebind.aop.gettargetfactorybean;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.NewNestedType;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the get target factory bean template
@@ -41,12 +37,12 @@ public class GetTargetFactoryBeanTemplatedFile extends TemplatedFileCodeBlock {
 	private NewNestedType targetFactoryBean;
 
 	protected NewNestedType getTargetFactoryBean() {
-		ObjectHelper.checkNotNull("field:targetFactoryBean", targetFactoryBean);
+		Checker.notNull("field:targetFactoryBean", targetFactoryBean);
 		return this.targetFactoryBean;
 	}
 
 	public void setTargetFactoryBean(final NewNestedType targetFactoryBean) {
-		ObjectHelper.checkNotNull("parameter:targetFactoryBean", targetFactoryBean);
+		Checker.notNull("parameter:targetFactoryBean", targetFactoryBean);
 		this.targetFactoryBean = targetFactoryBean;
 	}
 

@@ -23,7 +23,7 @@ import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.AbstractConstructor;
 import rocket.generator.rebind.constructor.Constructor;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An adapter between a java constructor parameter and a Constructor
@@ -67,12 +67,12 @@ public class JavaConstructorConstructorAdapter extends AbstractConstructor imple
 	private java.lang.reflect.Constructor javaConstructor;
 
 	public java.lang.reflect.Constructor getJavaConstructor() {
-		ObjectHelper.checkNotNull("field:javaConstructor", javaConstructor);
+		Checker.notNull("field:javaConstructor", javaConstructor);
 		return this.javaConstructor;
 	}
 
 	public void setJavaConstructor(final java.lang.reflect.Constructor javaConstructor) {
-		ObjectHelper.checkNotNull("parameter:javaConstructor", javaConstructor);
+		Checker.notNull("parameter:javaConstructor", javaConstructor);
 		this.javaConstructor = javaConstructor;
 	}
 

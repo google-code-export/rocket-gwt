@@ -16,7 +16,7 @@
 package rocket.widget.client.menu;
 
 import rocket.event.client.MouseEvent;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
@@ -54,12 +54,12 @@ public class ContextMenuOpenEvent extends MenuOpenEvent{
 	private Element initialTargetElement;
 	
 	public Element getInitialTargetElement(){
-		ObjectHelper.checkNotNull( "field:initialTargetElement", initialTargetElement );
+		Checker.notNull( "field:initialTargetElement", initialTargetElement );
 		return this.initialTargetElement;
 	}
 	
 	void setInitialTargetElement( final Element initialTargetElement ){
-		ObjectHelper.checkNotNull( "parameter:initialTargetElement", initialTargetElement );
+		Checker.notNull( "parameter:initialTargetElement", initialTargetElement );
 		this.initialTargetElement = initialTargetElement;
 	}
 	
@@ -69,12 +69,12 @@ public class ContextMenuOpenEvent extends MenuOpenEvent{
 	private Widget initialTargetWidget;
 	
 	public Widget getInitialTargetWidget(){
-		ObjectHelper.checkNotNull( "field:initialTargetWidget", initialTargetWidget );
+		Checker.notNull( "field:initialTargetWidget", initialTargetWidget );
 		return this.initialTargetWidget;
 	}
 	
 	void setInitialTargetWidget( final Widget initialTargetWidget ){
-		ObjectHelper.checkNotNull( "parameter:initialTargetWidget", initialTargetWidget );
+		Checker.notNull( "parameter:initialTargetWidget", initialTargetWidget );
 		this.initialTargetWidget = initialTargetWidget;
 	}
 	
@@ -113,12 +113,12 @@ public class ContextMenuOpenEvent extends MenuOpenEvent{
 	protected MouseEvent mouseEvent;
 	
 	protected MouseEvent getMouseEvent(){
-		ObjectHelper.checkNotNull( "field:mouseEvent", mouseEvent );
+		Checker.notNull( "field:mouseEvent", mouseEvent );
 		return this.mouseEvent;
 	}
 	
 	void setMouseEvent( final MouseEvent mouseEvent){
-		ObjectHelper.checkNotNull( "parameter:mouseEvent", mouseEvent );
+		Checker.notNull( "parameter:mouseEvent", mouseEvent );
 		this.mouseEvent = mouseEvent;
 	}
 }

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import rocket.collection.client.CollectionsHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Utilities;
 
 /**
  * The location class is abstraction over the browser location object.
@@ -167,7 +167,7 @@ public class Location {
 	 */
 	protected String[] createParameterNameAndValues() {
 		final String queryString = this.getQueryString();
-		final String[] tokens = StringHelper.split(queryString, "&", true);
+		final String[] tokens = Utilities.split(queryString, "&", true);
 		final int tokenCount = tokens.length;
 		final String[] nameAndValues = new String[tokenCount * 2];
 		int j = 0;

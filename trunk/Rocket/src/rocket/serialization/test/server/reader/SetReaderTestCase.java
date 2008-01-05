@@ -17,12 +17,11 @@ package rocket.serialization.test.server.reader;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
+import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.server.reader.SetReader;
 import rocket.serialization.test.server.ServerTestCase;
-import rocket.serialization.client.ObjectInputStream;
 
 public class SetReaderTestCase extends ServerTestCase {
 

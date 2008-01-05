@@ -19,10 +19,12 @@ import java.util.Map;
 
 import rocket.style.client.support.InlineStyleSupport;
 import rocket.style.client.support.StyleSupport;
+import rocket.util.client.Checker;
 import rocket.util.client.Colour;
 import rocket.util.client.Destroyable;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.JavaScript;
+import rocket.util.client.Tester;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -69,7 +71,7 @@ public class InlineStyle extends Style implements Destroyable {
 	public static Colour getColour(final Element element, final String propertyName) {
 		Colour value = null;
 		final String string = InlineStyle.getString(element, propertyName);
-		if (false == StringHelper.isNullOrEmpty(string)) {
+		if (false == Tester.isNullOrEmpty(string)) {
 			value = Colour.parse(string);
 		}
 		return value;
@@ -78,7 +80,7 @@ public class InlineStyle extends Style implements Destroyable {
 	public static double getDouble(final Element element, final String propertyName, final CssUnit unit, final double defaultValue) {
 		double value = defaultValue;
 		final String string = InlineStyle.getString(element, propertyName);
-		if (false == StringHelper.isNullOrEmpty(string)) {
+		if (false == Tester.isNullOrEmpty(string)) {
 			value = CssUnit.convertValue(string, unit);
 		}
 		return value;
@@ -87,7 +89,7 @@ public class InlineStyle extends Style implements Destroyable {
 	public static int getInteger(final Element element, final String propertyName, final CssUnit unit, final int defaultValue) {
 		int value = defaultValue;
 		final String string = InlineStyle.getString(element, propertyName);
-		if (false == StringHelper.isNullOrEmpty(string)) {
+		if (false == Tester.isNullOrEmpty(string)) {
 			value = (int) CssUnit.convertValue(string, unit);
 		}
 		return value;
@@ -95,7 +97,7 @@ public class InlineStyle extends Style implements Destroyable {
 
 	public static String getUrl(final Element element, final String propertyName) {
 		String string = InlineStyle.getString(element, propertyName);
-		if (false == StringHelper.isNullOrEmpty(string)) {
+		if (false == Tester.isNullOrEmpty(string)) {
 			string = Style.getUrl(string);
 		}
 		return string;
@@ -162,11 +164,11 @@ public class InlineStyle extends Style implements Destroyable {
 	 * @return
 	 */
 	protected JavaScriptObject getStyle() {
-		return ObjectHelper.getObject(this.getElement(), "style");
+		return JavaScript.getObject(this.getElement(), "style");
 	}
 
 	public int size() {
-		return ObjectHelper.getPropertyCount( this.getStyle() );
+		return JavaScript.getPropertyCount( this.getStyle() );
 	}
 
 	public String getValue(String propertyName) {
@@ -187,7 +189,7 @@ public class InlineStyle extends Style implements Destroyable {
 
 	protected String[] getPropertyNames() {
 		final String list = this.getPropertyNames(this.getElement());
-		return StringHelper.split(list, ",", true);
+		return Utilities.split(list, ",", true);
 	}
 
 	native private String getPropertyNames(final Element element)/*-{
@@ -205,7 +207,7 @@ public class InlineStyle extends Style implements Destroyable {
 	private Element element;
 
 	public Element getElement() {
-		ObjectHelper.checkNotNull("field:element", element);
+		Checker.notNull("field:element", element);
 		return element;
 	}
 
@@ -214,7 +216,7 @@ public class InlineStyle extends Style implements Destroyable {
 	}
 
 	public void setElement(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		this.element = element;
 	}
 

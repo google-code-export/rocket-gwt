@@ -19,7 +19,7 @@ import java.util.Iterator;
 
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Template that visits all the methods belonging to a type.
@@ -29,7 +29,7 @@ import rocket.util.client.ObjectHelper;
 abstract public class TypeMethodsVisitor {
 
 	public void start(final Type type) {
-		ObjectHelper.checkNotNull("method:type", type);
+		Checker.notNull("method:type", type);
 
 		final Iterator methods = type.getMethods().iterator();
 		while (methods.hasNext()) {

@@ -16,7 +16,7 @@
 package rocket.generator.rebind.codeblock;
 
 import rocket.generator.rebind.SourceWriter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A CodeBlock that contains a boolean literal.
@@ -38,7 +38,7 @@ public class BooleanLiteral implements Literal {
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 		writer.print(String.valueOf(this.isValue()));
 	}
 

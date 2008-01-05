@@ -34,7 +34,7 @@ import rocket.generator.rebind.type.Type;
 import rocket.remoting.rebind.rpc.RpcClientGenerator;
 import rocket.remoting.rebind.rpc.java.servicemethodinvoker.ServiceMethodInvokerTemplatedFile;
 import rocket.serialization.rebind.SerializationConstants;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This generator generates a client proxy that may be used to invoke either a
@@ -45,7 +45,7 @@ import rocket.util.client.ObjectHelper;
 public class JavaRpcClientGenerator extends RpcClientGenerator {
 
 	protected NewConcreteType assembleNewType(final Type serviceInterface, final String newTypeName) {
-		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
+		Checker.notNull("parameter:serviceInterface", serviceInterface);
 		GeneratorHelper.checkJavaTypeName("parameter:TypeName", newTypeName);
 
 		final GeneratorContext context = this.getGeneratorContext();
@@ -74,10 +74,10 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 	 */
 	protected void implementPublicMethod(final Method method, final Type serviceInterface, final Type asyncServiceInterface,
 			final NewConcreteType client) {
-		ObjectHelper.checkNotNull("parameter:method", method);
-		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
-		ObjectHelper.checkNotNull("parameter:asyncServiceInterface", asyncServiceInterface);
-		ObjectHelper.checkNotNull("parameter:client", client);
+		Checker.notNull("parameter:method", method);
+		Checker.notNull("parameter:serviceInterface", serviceInterface);
+		Checker.notNull("parameter:asyncServiceInterface", asyncServiceInterface);
+		Checker.notNull("parameter:client", client);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.info("Implementing " + method);
@@ -109,9 +109,9 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 	 * @return The new SerializationFactoryComposer that will be realised.
 	 */
 	protected Type createSerializationFactoryComposer(final Method method, final NewConcreteType client, final Type serviceInterface) {
-		ObjectHelper.checkNotNull("parameter:method", method);
-		ObjectHelper.checkNotNull("parameter:client", client);
-		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
+		Checker.notNull("parameter:method", method);
+		Checker.notNull("parameter:client", client);
+		Checker.notNull("parameter:serviceInterface", serviceInterface);
 
 		final NewNestedInterfaceType serializationFactoryComposer = client.newNestedInterfaceType();
 
@@ -154,7 +154,7 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 	 * @return The set
 	 */
 	protected Set buildReadableTypes(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final Set readableTypes = new HashSet();
 
@@ -187,7 +187,7 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 	 * @return The set
 	 */
 	protected Set buildWritableTypes(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final Set writableTypes = new HashSet();
 

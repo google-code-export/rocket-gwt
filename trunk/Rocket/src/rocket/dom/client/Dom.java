@@ -18,11 +18,9 @@ package rocket.dom.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import rocket.browser.client.Browser;
 import rocket.collection.client.CollectionsHelper;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -52,7 +50,7 @@ public class Dom {
 	 * @return
 	 */
 	public static Element getContainer(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		return Dom.getContainer0(element);
 	}
 
@@ -80,7 +78,7 @@ public class Dom {
 	 * @return The pixel value
 	 */
 	public static int getContainerLeftOffset(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		return getContainerLeftOffset0(element);
 	}
 
@@ -110,7 +108,7 @@ public class Dom {
 	 * @return The pixel value
 	 */
 	public static int getContainerTopOffset(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		return getContainerTopOffset0(element);
 	}
 
@@ -139,32 +137,32 @@ public class Dom {
 	 * @return
 	 */
 	public static boolean isTag(final Element element, final String tagName) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-		StringHelper.checkNotEmpty("parameter:tagName", tagName);
+		Checker.notNull("parameter:element", element);
+		Checker.notEmpty("parameter:tagName", tagName);
 
 		final String actualTagName = getTagName(element);
 		return actualTagName == null ? false : compareTagNames(actualTagName, tagName);
 	}
 
 	public static String getTagName(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		final String tagName = DOM.getElementProperty(element, DomConstants.TAG_NAME);
 		return tagName;
 	}
 
 	public static void checkTagName(final String name, final Element element, final String expectedTagName) {
-		ObjectHelper.checkNotNull(name, element);
-		StringHelper.checkNotEmpty(name, expectedTagName);
+		Checker.notNull(name, element);
+		Checker.notEmpty(name, expectedTagName);
 
 		if (false == isTag(element, expectedTagName)) {
-			SystemHelper.fail(name, "The " + name + " is not of the expected tag type, expected \"" + expectedTagName + "\", but got \""
+			Checker.fail(name, "The " + name + " is not of the expected tag type, expected \"" + expectedTagName + "\", but got \""
 					+ getTagName(element) + "\".");
 		}
 	}
 
 	public static void checkInput(final String name, final Element element, final String type) {
 		if (false == isInput(element, type)) {
-			SystemHelper.fail("parameter:element", "The input field " + name + " is not of the expected type, type\"" + type
+			Checker.fail("parameter:element", "The input field " + name + " is not of the expected type, type\"" + type
 					+ "\", element: " + DOM.toString(element));
 		}
 	}
@@ -177,8 +175,8 @@ public class Dom {
 	 * @return True if the element is the specified INPUT tag.
 	 */
 	public static boolean isInput(final Element element, final String type) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-		StringHelper.checkNotEmpty("parameter:type", type);
+		Checker.notNull("parameter:element", element);
+		Checker.notEmpty("parameter:type", type);
 
 		boolean is = false;
 		while (true) {
@@ -195,8 +193,8 @@ public class Dom {
 	}
 
 	public static boolean compareTagNames(final String tagName, final String otherTagName) {
-		StringHelper.checkNotNull("parameter:tagName", tagName);
-		StringHelper.checkNotNull("parameter:otherTagName", otherTagName);
+		Checker.notNull("parameter:tagName", tagName);
+		Checker.notNull("parameter:otherTagName", otherTagName);
 
 		return tagName.equalsIgnoreCase(otherTagName);
 	}
@@ -214,8 +212,8 @@ public class Dom {
 	 * @return
 	 */
 	public static Element findFirstChildOfType(final Element parent, final String childTagNameToFind) {
-		ObjectHelper.checkNotNull("parameter:parent", parent);
-		StringHelper.checkNotEmpty("parameter:childTagNameToFind", childTagNameToFind);
+		Checker.notNull("parameter:parent", parent);
+		Checker.notEmpty("parameter:childTagNameToFind", childTagNameToFind);
 
 		Element found = null;
 		final int childCount = DOM.getChildCount(parent);
@@ -239,8 +237,8 @@ public class Dom {
 	 * @return A read only list of Elements.
 	 */
 	public static List findAllChildrenOfType(final Element parent, final String childTagNameToFind) {
-		ObjectHelper.checkNotNull("parameter:parent", parent);
-		StringHelper.checkNotEmpty("parameter:childTagNameToFind", childTagNameToFind);
+		Checker.notNull("parameter:parent", parent);
+		Checker.notEmpty("parameter:childTagNameToFind", childTagNameToFind);
 
 		final List found = new ArrayList();
 		final int childCount = DOM.getChildCount(parent);
@@ -260,7 +258,7 @@ public class Dom {
 	 *            the element to receive focus.
 	 */
 	public static void setFocus(final Element focusElement) {
-		ObjectHelper.checkNotNull("paraemter:focusElement", focusElement);
+		Checker.notNull("paraemter:focusElement", focusElement);
 
 		setFocus0(focusElement);
 	}
@@ -280,7 +278,7 @@ public class Dom {
 	 * @return The cloned element
 	 */
 	public static Element cloneElement(final Element element, final boolean deepCopy) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		return cloneElement0(element, deepCopy);
 	}
 
@@ -304,7 +302,7 @@ public class Dom {
 	 * @return The value in pixels
 	 */
 	public static int getOffsetLeft(final Element element) {
-		return ObjectHelper.getInteger(element, "offsetLeft");
+		return JavaScript.getInteger(element, "offsetLeft");
 	}
 
 	/**
@@ -314,7 +312,7 @@ public class Dom {
 	 * @return The value in pixels
 	 */
 	public static int getOffsetTop(final Element element) {
-		return ObjectHelper.getInteger(element, "offsetTop");
+		return JavaScript.getInteger(element, "offsetTop");
 	}
 
 	/**
@@ -325,7 +323,7 @@ public class Dom {
 	 * @return The value in pixels
 	 */
 	public static int getClientWidth(final Element element) {
-		return ObjectHelper.getInteger(element, "clientWidth");
+		return JavaScript.getInteger(element, "clientWidth");
 	}
 
 	/**
@@ -336,7 +334,7 @@ public class Dom {
 	 * @return The value in pixels
 	 */
 	public static int getClientHeight(final Element element) {
-		return ObjectHelper.getInteger(element, "clientHeight");
+		return JavaScript.getInteger(element, "clientHeight");
 	}
 
 	/**

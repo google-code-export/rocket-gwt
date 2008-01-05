@@ -18,12 +18,10 @@ package rocket.testing.rebind;
 import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the add-test.txt template
@@ -42,12 +40,12 @@ class AddTestTemplatedFile extends TemplatedFileCodeBlock {
 	private Method method;
 
 	protected Method getMethod() {
-		ObjectHelper.checkNotNull("field:method", method);
+		Checker.notNull("field:method", method);
 		return this.method;
 	}
 
 	public void setMethod(final Method setter) {
-		ObjectHelper.checkNotNull("method:method", setter);
+		Checker.notNull("method:method", setter);
 		this.method = setter;
 	}
 

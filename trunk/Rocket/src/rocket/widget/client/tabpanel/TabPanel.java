@@ -21,8 +21,7 @@ import java.util.List;
 
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.CompositeWidget;
 import rocket.widget.client.Html;
 import rocket.widget.client.Image;
@@ -74,7 +73,7 @@ public abstract class TabPanel extends CompositeWidget {
 	}
 
 	public int indexOf(final TabItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		return this.getItems().indexOf(item);
 	}
@@ -84,7 +83,7 @@ public abstract class TabPanel extends CompositeWidget {
 	}
 
 	public void insert(final int beforeIndex, final TabItem item, final boolean closable) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final Widget content = item.getContent();
 
@@ -112,7 +111,7 @@ public abstract class TabPanel extends CompositeWidget {
 	 * @return The created widget
 	 */
 	protected Widget getTabBarItemWidget(final TabItem item, final boolean closable) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final HorizontalPanel panel = item.getTabWidgetPanel();
 		panel.setStyleName(this.getTabBarItemStyleName());
@@ -171,7 +170,7 @@ public abstract class TabPanel extends CompositeWidget {
 	}
 
 	public boolean remove(final TabItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final int index = this.indexOf(item);
 		if (-1 != index) {
@@ -190,12 +189,12 @@ public abstract class TabPanel extends CompositeWidget {
 	private List items;
 
 	protected List getItems() {
-		ObjectHelper.checkNotNull("field:items", this.items);
+		Checker.notNull("field:items", this.items);
 		return this.items;
 	}
 
 	protected void setItems(final List items) {
-		ObjectHelper.checkNotNull("parameter:items", items);
+		Checker.notNull("parameter:items", items);
 		this.items = items;
 	}
 
@@ -223,12 +222,12 @@ public abstract class TabPanel extends CompositeWidget {
 	private String closeButtonImageUrl;
 
 	public String getCloseButtonImageUrl() {
-		StringHelper.checkNotEmpty("field:closeButtonImageUrl", closeButtonImageUrl);
+		Checker.notEmpty("field:closeButtonImageUrl", closeButtonImageUrl);
 		return closeButtonImageUrl;
 	}
 
 	public void setCloseButtonImageUrl(final String closeButtonImageUrl) {
-		StringHelper.checkNotEmpty("parameter:closeButtonImageUrl", closeButtonImageUrl);
+		Checker.notEmpty("parameter:closeButtonImageUrl", closeButtonImageUrl);
 		this.closeButtonImageUrl = closeButtonImageUrl;
 	}
 
@@ -322,12 +321,12 @@ public abstract class TabPanel extends CompositeWidget {
 	private TabBarPanel tabBarPanel;
 
 	protected TabBarPanel getTabBarPanel() {
-		ObjectHelper.checkNotNull("field:tabBarPanel", tabBarPanel);
+		Checker.notNull("field:tabBarPanel", tabBarPanel);
 		return tabBarPanel;
 	}
 
 	protected void setTabBarPanel(final TabBarPanel tabBarPanel) {
-		ObjectHelper.checkNotNull("parameter:tabBarPanel", tabBarPanel);
+		Checker.notNull("parameter:tabBarPanel", tabBarPanel);
 		this.tabBarPanel = tabBarPanel;
 	}
 
@@ -340,12 +339,12 @@ public abstract class TabPanel extends CompositeWidget {
 	private DeckPanel contentPanel;
 
 	public DeckPanel getContentPanel() {
-		ObjectHelper.checkNotNull("field:contentPanel", contentPanel);
+		Checker.notNull("field:contentPanel", contentPanel);
 		return contentPanel;
 	}
 
 	public void setContentPanel(final DeckPanel contentPanel) {
-		ObjectHelper.checkNotNull("parameter:contentPanel", contentPanel);
+		Checker.notNull("parameter:contentPanel", contentPanel);
 		this.contentPanel = contentPanel;
 	}
 
@@ -367,12 +366,12 @@ public abstract class TabPanel extends CompositeWidget {
 	private TabListenerCollection tabListeners;
 
 	protected TabListenerCollection getTabListeners() {
-		ObjectHelper.checkNotNull("field:tabListeners", this.tabListeners);
+		Checker.notNull("field:tabListeners", this.tabListeners);
 		return this.tabListeners;
 	}
 
 	protected void setTabListeners(final TabListenerCollection tabListeners) {
-		ObjectHelper.checkNotNull("parameter:tabListeners", tabListeners);
+		Checker.notNull("parameter:tabListeners", tabListeners);
 		this.tabListeners = tabListeners;
 	}
 
@@ -381,7 +380,7 @@ public abstract class TabPanel extends CompositeWidget {
 	}
 
 	public void addTabListener(final TabListener listener) {
-		ObjectHelper.checkNotNull("parameter:listener", listener);
+		Checker.notNull("parameter:listener", listener);
 		this.getTabListeners().add(listener);
 	}
 

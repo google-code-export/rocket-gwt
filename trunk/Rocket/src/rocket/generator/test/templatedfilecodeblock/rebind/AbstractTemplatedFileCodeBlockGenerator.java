@@ -22,7 +22,7 @@ import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator {
 
@@ -104,12 +104,12 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 	private NewConcreteType newType;
 
 	protected NewConcreteType getNewType() {
-		ObjectHelper.checkNotNull("field:newType", newType);
+		Checker.notNull("field:newType", newType);
 		return this.newType;
 	}
 
 	protected void setNewType(final NewConcreteType newType) {
-		ObjectHelper.checkNotNull("parameter:newType", newType);
+		Checker.notNull("parameter:newType", newType);
 		this.newType = newType;
 	}
 	

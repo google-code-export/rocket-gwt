@@ -19,7 +19,7 @@ import java.io.ByteArrayInputStream;
 
 import javax.servlet.ServletInputStream;
 
-import rocket.util.server.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This class provides a ServletInputStream of an array of bytes.
@@ -39,12 +39,12 @@ public class ByteArrayServletInputStream extends ServletInputStream {
 	private ByteArrayInputStream byteArrayInputStream;
 
 	protected ByteArrayInputStream getByteArrayInputStream() {
-		ObjectHelper.checkNotNull("field:byteArrayInputStream", byteArrayInputStream);
+		Checker.notNull("field:byteArrayInputStream", byteArrayInputStream);
 		return this.byteArrayInputStream;
 	}
 
 	protected void setByteArrayInputStream(final ByteArrayInputStream byteArrayInputStream) {
-		ObjectHelper.checkNotNull("parameter:byteArrayInputStream", byteArrayInputStream);
+		Checker.notNull("parameter:byteArrayInputStream", byteArrayInputStream);
 		this.byteArrayInputStream = byteArrayInputStream;
 	}
 

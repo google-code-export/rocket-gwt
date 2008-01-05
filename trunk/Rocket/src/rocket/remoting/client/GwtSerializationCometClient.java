@@ -15,7 +15,8 @@
  */
 package rocket.remoting.client;
 
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -49,7 +50,7 @@ public abstract class GwtSerializationCometClient extends CometClient{
 		
 		Throwable caught = null;
 		try{
-			final String serializedForm0 = StringHelper.htmlDecode(serializedForm);
+			final String serializedForm0 = Utilities.htmlDecode(serializedForm);
 			final boolean failed = serializedForm0.startsWith("{EX}");
 			final Object object = deserialize(serializedForm0.substring(4));
 		
@@ -77,7 +78,7 @@ public abstract class GwtSerializationCometClient extends CometClient{
 	 * @throws SerializationException This exception is thrown by the Gwt deserialization process if something goes wrong.
 	 */
 	protected Object deserialize(final String serializedForm) throws SerializationException {
-		StringHelper.checkNotEmpty("parameter:serializedForm", serializedForm);
+		Checker.notEmpty("parameter:serializedForm", serializedForm);
 
 		final Object proxy = this.createGwtRpcProxy();
 		if (false == GWT.isScript() && false == (proxy instanceof HasSerializer)) {

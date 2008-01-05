@@ -21,7 +21,7 @@ import java.util.List;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.field.AbstractField;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Provides an adapter between a java field and a Field.
@@ -72,12 +72,12 @@ public class JavaFieldFieldAdapter extends AbstractField {
 	private java.lang.reflect.Field javaField;
 
 	public java.lang.reflect.Field getJavaField() {
-		ObjectHelper.checkNotNull("field:javaField", javaField);
+		Checker.notNull("field:javaField", javaField);
 		return this.javaField;
 	}
 
 	public void setJavaField(final java.lang.reflect.Field javaField) {
-		ObjectHelper.checkNotNull("parameter:javaField", javaField);
+		Checker.notNull("parameter:javaField", javaField);
 		this.javaField = javaField;
 	}
 

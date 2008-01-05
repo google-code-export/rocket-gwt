@@ -15,10 +15,6 @@
  */
 package rocket.serialization.client;
 
-import java.util.Iterator;
-
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
 
 abstract public class ObjectOutputStreamImpl implements ObjectOutputStream {
 

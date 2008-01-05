@@ -18,8 +18,7 @@ package rocket.widget.test.accordionpanel.client;
 import java.util.Date;
 import java.util.Iterator;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.accordion.AccordionItem;
 import rocket.widget.client.accordion.AccordionItemSelectEvent;
 import rocket.widget.client.accordion.AccordionListener;
@@ -73,7 +72,7 @@ public class AccordionPanelTest implements EntryPoint {
 	 * @param accordionPanel
 	 */
 	protected void completeAccordionPanel(final AccordionPanel accordionPanel) {
-		ObjectHelper.checkNotNull("parameter:accordionPanel", accordionPanel);
+		Checker.notNull("parameter:accordionPanel", accordionPanel);
 
 		String text = GWT.getTypeName(accordionPanel);
 		text = text.substring(1 + text.lastIndexOf('.'));
@@ -90,7 +89,7 @@ public class AccordionPanelTest implements EntryPoint {
 
 		accordionPanel.addAccordionListener(new AccordionListener() {
 			public void onBeforeSelect(final BeforeAccordionItemSelectEvent event) {
-				ObjectHelper.checkNotNull("BeforeAccordionItemSelectEvent.currentSelection", event.getCurrentSelection());
+				Checker.notNull("BeforeAccordionItemSelectEvent.currentSelection", event.getCurrentSelection());
 
 				final AccordionItem newSelection = event.getNewSelection();
 				final String caption = newSelection.getCaption();
@@ -103,7 +102,7 @@ public class AccordionPanelTest implements EntryPoint {
 			}
 
 			public void onSelect(final AccordionItemSelectEvent event) {
-				ObjectHelper.checkNotNull("AccordionItemSelectEvent.previouslySelected", event.getPreviouslySelected());
+				Checker.notNull("AccordionItemSelectEvent.previouslySelected", event.getPreviouslySelected());
 
 				final AccordionItem selected = event.getNewSelection();
 				final String caption = selected.getCaption();
@@ -172,7 +171,7 @@ public class AccordionPanelTest implements EntryPoint {
 
 		protected void checkType(Object element) {
 			if (false == (element instanceof AccordionItem)) {
-				SystemHelper.fail("Unknown element type. element ");
+				Checker.fail("Unknown element type. element ");
 			}
 		}
 
@@ -193,12 +192,12 @@ public class AccordionPanelTest implements EntryPoint {
 		private AccordionPanel accordionPanel;
 
 		protected AccordionPanel getAccordionPanel() {
-			ObjectHelper.checkNotNull("field:accordionPanel", accordionPanel);
+			Checker.notNull("field:accordionPanel", accordionPanel);
 			return this.accordionPanel;
 		}
 
 		protected void setAccordionPanel(final AccordionPanel accordionPanel) {
-			ObjectHelper.checkNotNull("parameter:accordionPanel", accordionPanel);
+			Checker.notNull("parameter:accordionPanel", accordionPanel);
 			this.accordionPanel = accordionPanel;
 		}
 

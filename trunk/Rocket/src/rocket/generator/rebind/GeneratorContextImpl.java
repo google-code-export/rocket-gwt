@@ -27,8 +27,7 @@ import rocket.generator.rebind.packagee.PackageNotFoundException;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -58,12 +57,12 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	private Generator generator;
 
 	public Generator getGenerator() {
-		ObjectHelper.checkNotNull("field:generator", generator);
+		Checker.notNull("field:generator", generator);
 		return this.generator;
 	}
 
 	public void setGenerator(final Generator generator) {
-		ObjectHelper.checkNotNull("parameter:generator", generator);
+		Checker.notNull("parameter:generator", generator);
 		this.generator = generator;
 	}
 
@@ -117,7 +116,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * @return The located package or null if it wasnt found
 	 */
 	public Package findPackage(final String name) {
-		StringHelper.checkNotEmpty("parameter:name", name);
+		Checker.notEmpty("parameter:name", name);
 
 		Package packagee = (Package) this.getPackages().get(name);
 		if (null == packagee) {
@@ -169,12 +168,12 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	private Map packages;
 
 	protected Map getPackages() {
-		ObjectHelper.checkNotNull("field:packages", packages);
+		Checker.notNull("field:packages", packages);
 		return this.packages;
 	}
 
 	protected void setPackages(final Map packages) {
-		ObjectHelper.checkNotNull("parameter:packages", packages);
+		Checker.notNull("parameter:packages", packages);
 		this.packages = packages;
 	}
 
@@ -189,7 +188,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * @return
 	 */
 	public Type findType(final String name) {
-		StringHelper.checkNotEmpty("parameter:name", name);
+		Checker.notEmpty("parameter:name", name);
 
 		Type type = null;
 		while (true) {
@@ -336,12 +335,12 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	private Map types;
 
 	protected Map getTypes() {
-		ObjectHelper.checkNotNull("field:types", types);
+		Checker.notNull("field:types", types);
 		return this.types;
 	}
 
 	protected void setTypes(final Map types) {
-		ObjectHelper.checkNotNull("parameter:types", types);
+		Checker.notNull("parameter:types", types);
 		this.types = types;
 	}
 
@@ -355,12 +354,12 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	private Set newTypes;
 
 	public Set getNewTypes() {
-		ObjectHelper.checkNotNull("field:newTypes", newTypes);
+		Checker.notNull("field:newTypes", newTypes);
 		return this.newTypes;
 	}
 
 	protected void setNewTypes(final Set newTypes) {
-		ObjectHelper.checkNotNull("parameter:newTypes", newTypes);
+		Checker.notNull("parameter:newTypes", newTypes);
 		this.newTypes = newTypes;
 	}
 
@@ -369,7 +368,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 
 	protected void addNewType(final NewType type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		this.getNewTypes().add(type);
 	}
@@ -381,7 +380,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * @return
 	 */
 	public String getPackageName(final String fullyQualifiedClassName) {
-		StringHelper.checkNotEmpty("parameter:fullyQualifiedClassName", fullyQualifiedClassName);
+		Checker.notEmpty("parameter:fullyQualifiedClassName", fullyQualifiedClassName);
 
 		String packageName = null;
 		final TypeOracle typeOracle = this.getTypeOracle();
@@ -413,7 +412,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * @return the simple classname
 	 */
 	public String getSimpleClassName(final String fullyQualifiedClassName) {
-		StringHelper.checkNotEmpty("parameter:fullyQualifiedClassName", fullyQualifiedClassName);
+		Checker.notEmpty("parameter:fullyQualifiedClassName", fullyQualifiedClassName);
 
 		final String packageName = this.getPackageName(fullyQualifiedClassName);
 		final String simpleClassNameWhichIsPossiblyAInnerClass = fullyQualifiedClassName.substring(packageName.length() + 1);
@@ -428,7 +427,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * @return A fully qualified name of the given type.
 	 */
 	public String getStandaloneTypeName(final JClassType type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final String packageName = type.getPackage().getName();
 
@@ -451,12 +450,12 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	private com.google.gwt.core.ext.GeneratorContext generatorContext;
 
 	protected com.google.gwt.core.ext.GeneratorContext getGeneratorContext() {
-		ObjectHelper.checkNotNull("field:generatorContext", generatorContext);
+		Checker.notNull("field:generatorContext", generatorContext);
 		return this.generatorContext;
 	}
 
 	public void setGeneratorContext(final com.google.gwt.core.ext.GeneratorContext generatorContext) {
-		ObjectHelper.checkNotNull("parameter:generatorContext", generatorContext);
+		Checker.notNull("parameter:generatorContext", generatorContext);
 		this.generatorContext = generatorContext;
 	}
 
@@ -467,12 +466,12 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	private Stack loggers;
 	
 	protected Stack getLoggers(){
-		ObjectHelper.checkNotNull( "field:loggers", loggers);
+		Checker.notNull( "field:loggers", loggers);
 		return this.loggers;
 	}
 	
 	protected void setLoggers( final Stack loggers ){
-		ObjectHelper.checkNotNull( "parameter:loggers", loggers);
+		Checker.notNull( "parameter:loggers", loggers);
 		this.loggers = loggers;
 	}
 	
@@ -485,7 +484,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 	
 	public void setLogger( final TreeLogger logger ){
-		ObjectHelper.checkNotNull("parameter:logger", logger );
+		Checker.notNull("parameter:logger", logger );
 		this.getLoggers().push( logger );
 	}
 	

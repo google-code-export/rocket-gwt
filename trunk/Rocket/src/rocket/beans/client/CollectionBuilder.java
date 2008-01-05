@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This helper class is used to build a list containing values within generated
@@ -78,12 +78,12 @@ abstract public class CollectionBuilder {
 	private Collection collection;
 
 	protected Collection getCollection() {
-		ObjectHelper.checkNotNull("field:collection", collection);
+		Checker.notNull("field:collection", collection);
 		return this.collection;
 	}
 
 	protected void setCollection(final Collection collection) {
-		ObjectHelper.checkNotNull("parameter:collection", collection);
+		Checker.notNull("parameter:collection", collection);
 		this.collection = collection;
 	}
 

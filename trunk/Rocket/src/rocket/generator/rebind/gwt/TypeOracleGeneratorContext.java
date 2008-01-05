@@ -29,7 +29,7 @@ import rocket.generator.rebind.type.NewConcreteTypeImpl;
 import rocket.generator.rebind.type.NewInterfaceType;
 import rocket.generator.rebind.type.NewInterfaceTypeImpl;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -173,13 +173,13 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	protected Type createArrayType(final String name) {
 		final String componentTypeName = name.substring(0, name.length() - 2);
 		final JClassType componentType = this.getTypeOracle().findType(componentTypeName);
-		ObjectHelper.checkNotNull("Unable to find component type \"" + componentTypeName + "\".", componentType);
+		Checker.notNull("Unable to find component type \"" + componentTypeName + "\".", componentType);
 
 		return this.createArrayType(componentType);
 	}
 
 	protected Type createArrayType(final JType componentType) {
-		ObjectHelper.checkNotNull("parameter:componentType", componentType);
+		Checker.notNull("parameter:componentType", componentType);
 
 		final JArrayType jArrayType = (JArrayType) this.getTypeOracle().getArrayType(componentType);
 		JArrayTypeTypeAdapter adapter = new JArrayTypeTypeAdapter();

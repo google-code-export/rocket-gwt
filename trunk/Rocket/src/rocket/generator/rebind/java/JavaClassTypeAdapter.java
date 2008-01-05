@@ -27,7 +27,7 @@ import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.AbstractType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Provides an adapter between a java class and a Type
@@ -186,12 +186,12 @@ public class JavaClassTypeAdapter extends AbstractType {
 	protected Class javaClass;
 
 	protected Class getJavaClass() {
-		ObjectHelper.checkNotNull("field:type", javaClass);
+		Checker.notNull("field:type", javaClass);
 		return this.javaClass;
 	}
 
 	public void setJavaClass(final Class javaClass) {
-		ObjectHelper.checkNotNull("parameter:type", javaClass);
+		Checker.notNull("parameter:type", javaClass);
 		this.javaClass = javaClass;
 	}
 

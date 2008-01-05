@@ -21,7 +21,7 @@ import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.Visibility;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A collection of helper methods used by various classes belonging to this
@@ -38,8 +38,8 @@ class JavaAdapterHelper {
 	 * @return
 	 */
 	static public Set asSetOfTypes(final GeneratorContext generatorContext, final Class[] types) {
-		ObjectHelper.checkNotNull("parameter:generatorContext", generatorContext);
-		ObjectHelper.checkNotNull("parameter:types", types);
+		Checker.notNull("parameter:generatorContext", generatorContext);
+		Checker.notNull("parameter:types", types);
 
 		final Set set = new HashSet();
 		for (int i = 0; i < types.length; i++) {

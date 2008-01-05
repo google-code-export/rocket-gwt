@@ -15,7 +15,7 @@
  */
 package rocket.widget.client.accordion;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.DivPanel;
 
 import com.google.gwt.user.client.ui.DeckPanel;
@@ -35,7 +35,7 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 	}
 
 	protected void replaceContentWidget(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final DeckPanel contents = this.getContentsPanel();
 		final int index = this.getIndex(item);
@@ -50,12 +50,12 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 	private HorizontalPanel panel;
 
 	protected HorizontalPanel getPanel() {
-		ObjectHelper.checkNotNull("field:panel", panel);
+		Checker.notNull("field:panel", panel);
 		return panel;
 	}
 
 	protected void setPanel(final HorizontalPanel panel) {
-		ObjectHelper.checkNotNull("parameter:panel", panel);
+		Checker.notNull("parameter:panel", panel);
 		this.panel = panel;
 	}
 
@@ -65,12 +65,12 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 	private DivPanel captionsPanel;
 
 	protected DivPanel getCaptionsPanel() {
-		ObjectHelper.checkNotNull("field:captionsPanel", captionsPanel);
+		Checker.notNull("field:captionsPanel", captionsPanel);
 		return captionsPanel;
 	}
 
 	protected void setCaptionsPanel(final DivPanel captionsPanel) {
-		ObjectHelper.checkNotNull("parameter:captionsPanel", captionsPanel);
+		Checker.notNull("parameter:captionsPanel", captionsPanel);
 		this.captionsPanel = captionsPanel;
 	}
 
@@ -88,12 +88,12 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 	private DeckPanel contentsPanel;
 
 	protected DeckPanel getContentsPanel() {
-		ObjectHelper.checkNotNull("field:contentsPanel", contentsPanel);
+		Checker.notNull("field:contentsPanel", contentsPanel);
 		return contentsPanel;
 	}
 
 	protected void setContentsPanel(final DeckPanel contentsPanel) {
-		ObjectHelper.checkNotNull("parameter:contentsPanel", contentsPanel);
+		Checker.notNull("parameter:contentsPanel", contentsPanel);
 		this.contentsPanel = contentsPanel;
 	}
 
@@ -106,7 +106,7 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 	protected abstract String getContentsPanelStyle();
 
 	protected void removeSelectedStyle(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final Widget caption = item.getCaptionWidget();
 		caption.removeStyleName(this.getCaptionSelectedStyle());
@@ -119,7 +119,7 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 	protected abstract String getContentSelectedStyle();
 
 	protected void addSelectedStyle(AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final Widget caption = item.getCaptionWidget();
 		caption.addStyleName(this.getCaptionSelectedStyle());
@@ -132,7 +132,7 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 	}
 
 	protected void insert0(int insertBefore, AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final Widget caption = item.getCaptionWidget();
 		caption.addStyleName(this.getCaptionStyle());

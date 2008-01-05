@@ -21,7 +21,8 @@ import rocket.event.client.MouseEvent;
 import rocket.event.client.MouseEventAdapter;
 import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 import rocket.widget.client.CompositePanel;
 
 import com.google.gwt.user.client.DOM;
@@ -135,7 +136,7 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 	private MenuList menuList;
 
 	protected MenuList getMenuList() {
-		ObjectHelper.checkNotNull("field:menuList", menuList);
+		Checker.notNull("field:menuList", menuList);
 		return this.menuList;
 	}
 
@@ -144,7 +145,7 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 	}
 
 	protected void setMenuList(final MenuList menuList) {
-		ObjectHelper.checkNotNull("parameter:menuList", menuList);
+		Checker.notNull("parameter:menuList", menuList);
 		this.menuList = menuList;
 		menuList.setMenu(this);
 	}
@@ -158,12 +159,12 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 	private MenuListenerCollection menuListeners;
 
 	protected MenuListenerCollection getMenuListeners() {
-		ObjectHelper.checkNotNull("field:menuListeners", this.menuListeners);
+		Checker.notNull("field:menuListeners", this.menuListeners);
 		return this.menuListeners;
 	}
 
 	protected void setMenuListeners(final MenuListenerCollection menuListeners) {
-		ObjectHelper.checkNotNull("parameter:menuListeners", menuListeners);
+		Checker.notNull("parameter:menuListeners", menuListeners);
 		this.menuListeners = menuListeners;
 	}
 
@@ -172,7 +173,7 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 	}
 
 	public void addMenuListener(final MenuListener listener) {
-		ObjectHelper.checkNotNull("parameter:listener", listener);
+		Checker.notNull("parameter:listener", listener);
 		this.getMenuListeners().add(listener);
 	}
 
@@ -194,6 +195,6 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 	}
 
 	public String toString() {
-		return ObjectHelper.defaultToString(this);
+		return Utilities.defaultToString(this);
 	}
 }

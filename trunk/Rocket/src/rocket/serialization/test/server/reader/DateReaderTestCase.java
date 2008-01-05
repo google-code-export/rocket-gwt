@@ -17,9 +17,9 @@ package rocket.serialization.test.server.reader;
 
 import java.util.Date;
 
+import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.server.reader.DateReader;
 import rocket.serialization.test.server.ServerTestCase;
-import rocket.serialization.client.ObjectInputStream;
 
 public class DateReaderTestCase extends ServerTestCase {
 

@@ -18,7 +18,7 @@ package rocket.beans.rebind.invokemethod;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the invoke-method.txt template
@@ -37,12 +37,12 @@ public class InvokeMethodTemplatedFile extends TemplatedFileCodeBlock {
 	private Type type;
 
 	protected Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return this.type;
 	}
 
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("type:type", type);
+		Checker.notNull("type:type", type);
 		this.type = type;
 	}
 
@@ -52,12 +52,12 @@ public class InvokeMethodTemplatedFile extends TemplatedFileCodeBlock {
 	private Method method;
 
 	protected Method getMethod() {
-		ObjectHelper.checkNotNull("field:method", method);
+		Checker.notNull("field:method", method);
 		return this.method;
 	}
 
 	public void setMethod(final Method method) {
-		ObjectHelper.checkNotNull("method:method", method);
+		Checker.notNull("method:method", method);
 		this.method = method;
 	}
 

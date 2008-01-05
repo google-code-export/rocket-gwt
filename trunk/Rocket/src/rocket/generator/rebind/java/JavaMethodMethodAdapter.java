@@ -25,7 +25,7 @@ import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.method.AbstractMethod;
 import rocket.generator.rebind.method.Method;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An adapter between java methods and Methods
@@ -96,12 +96,12 @@ public class JavaMethodMethodAdapter extends AbstractMethod implements Method {
 	private java.lang.reflect.Method javaMethod;
 
 	public java.lang.reflect.Method getJavaMethod() {
-		ObjectHelper.checkNotNull("field:javaMethod", javaMethod);
+		Checker.notNull("field:javaMethod", javaMethod);
 		return this.javaMethod;
 	}
 
 	public void setJavaMethod(final java.lang.reflect.Method javaMethod) {
-		ObjectHelper.checkNotNull("parameter:javaMethod", javaMethod);
+		Checker.notNull("parameter:javaMethod", javaMethod);
 		this.javaMethod = javaMethod;
 	}
 

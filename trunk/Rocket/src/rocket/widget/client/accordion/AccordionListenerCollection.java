@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 class AccordionListenerCollection {
 	public AccordionListenerCollection() {
@@ -32,23 +32,23 @@ class AccordionListenerCollection {
 	private List listeners;
 
 	public List getListeners() {
-		ObjectHelper.checkNotNull("field:listeners", listeners);
+		Checker.notNull("field:listeners", listeners);
 		return listeners;
 	}
 
 	public void setListeners(final List listeners) {
-		ObjectHelper.checkNotNull("parameter:listeners", listeners);
+		Checker.notNull("parameter:listeners", listeners);
 		this.listeners = listeners;
 	}
 
 	public void add(final AccordionListener listener) {
-		ObjectHelper.checkNotNull("parameter:listener", listener);
+		Checker.notNull("parameter:listener", listener);
 
 		this.getListeners().add(listener);
 	}
 
 	public void remove(final AccordionListener listener) {
-		ObjectHelper.checkNotNull("parameter:listener", listener);
+		Checker.notNull("parameter:listener", listener);
 
 		this.getListeners().remove(listener);
 	}

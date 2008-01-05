@@ -27,8 +27,8 @@ import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.gwt.TypeOracleGeneratorContext;
 import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.util.StringBufferSourceWriter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
@@ -102,8 +102,8 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	 *            The cause must not be null.
 	 */
 	protected void handleWriteFailure(final SourceWriter writer, final Throwable cause) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
-		ObjectHelper.checkNotNull("parameter:cause", cause);
+		Checker.notNull("parameter:writer", writer);
+		Checker.notNull("parameter:cause", cause);
 
 		final StringWriter stringWriter = new StringWriter();
 		final PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -128,7 +128,7 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	 * @param composerFactory
 	 */
 	protected void setSuperClassUponClassSourceFileComposerFactory(final ClassSourceFileComposerFactory composerFactory) {
-		ObjectHelper.checkNotNull("parameter:composerFactory", composerFactory);
+		Checker.notNull("parameter:composerFactory", composerFactory);
 
 		composerFactory.setSuperclass(this.getSuperType().getName());
 	}
@@ -140,7 +140,7 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	 * @param composerFactory
 	 */
 	protected void addImplementedInterfacesToClassSourceFileComposerFactory(final ClassSourceFileComposerFactory composerFactory) {
-		ObjectHelper.checkNotNull("parameter:composerFactory", composerFactory);
+		Checker.notNull("parameter:composerFactory", composerFactory);
 
 		final Iterator interfaces = this.getInterfaces().iterator();
 		while (interfaces.hasNext()) {
@@ -157,7 +157,7 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	 * @param composerFactory
 	 */
 	protected void setClassJavaDoc(final ClassSourceFileComposerFactory composerFactory) {
-		ObjectHelper.checkNotNull("parameter:composerFactory", composerFactory);
+		Checker.notNull("parameter:composerFactory", composerFactory);
 
 		String comments = this.getComments();
 		final String date = DateFormat.getInstance().format(new Date());
@@ -168,7 +168,7 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		while( true ){
-			final boolean noComments = StringHelper.isNullOrEmpty(comments);			
+			final boolean noComments = Tester.isNullOrEmpty(comments);			
 			final boolean noAnnotations = metaData.isEmpty();
 			
 			if( noComments && noAnnotations ){
@@ -218,12 +218,12 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	private PrintWriter printWriter;
 	
 	protected PrintWriter getPrintWriter(){
-		ObjectHelper.checkNotNull("field:printWriter", printWriter );
+		Checker.notNull("field:printWriter", printWriter );
 		return this.printWriter;
 	}
 	
 	public void setPrintWriter( final PrintWriter printWriter ){
-		ObjectHelper.checkNotNull("parameter:printWriter", printWriter );
+		Checker.notNull("parameter:printWriter", printWriter );
 		this.printWriter = printWriter;
 	}
 	

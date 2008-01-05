@@ -34,7 +34,7 @@ public abstract class ObjectWrapperImpl implements ObjectWrapper, Destroyable {
 	}
 
 	public boolean equals(final ObjectWrapper otherObjectWrapper) {
-		ObjectHelper.checkNotNull("parameter:otherObjectWrapper", otherObjectWrapper);
+		Checker.notNull("parameter:otherObjectWrapper", otherObjectWrapper);
 
 		boolean same = false;
 		while (true) {
@@ -67,7 +67,7 @@ public abstract class ObjectWrapperImpl implements ObjectWrapper, Destroyable {
 	private JavaScriptObject object;
 
 	public JavaScriptObject getObject() {
-		ObjectHelper.checkNotNull("field:object", object);
+		Checker.notNull("field:object", object);
 		return object;
 	}
 
@@ -76,7 +76,7 @@ public abstract class ObjectWrapperImpl implements ObjectWrapper, Destroyable {
 	}
 
 	public void setObject(final JavaScriptObject object) {
-		ObjectHelper.checkNotNull("parameter:object", object);
+		Checker.notNull("parameter:object", object);
 		this.object = object;
 	}
 

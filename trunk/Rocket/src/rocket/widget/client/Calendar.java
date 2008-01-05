@@ -19,7 +19,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Grid;
@@ -354,12 +355,12 @@ abstract public class Calendar extends CompositeWidget {
 	private Date date;;
 
 	protected Date getDate() {
-		ObjectHelper.checkNotNull("field:date", date);
+		Checker.notNull("field:date", date);
 		return new Date(this.date.getTime());
 	}
 
 	protected void setDate(final Date date) {
-		ObjectHelper.checkNotNull("parameter:date", date);
+		Checker.notNull("parameter:date", date);
 		this.date = new Date( date.getTime() );		
 	}
 	
@@ -396,6 +397,6 @@ abstract public class Calendar extends CompositeWidget {
 	}
 	
 	public String toString(){
-		return ObjectHelper.defaultToString( this) + ", date: " + this.getDate();
+		return Utilities.defaultToString( this) + ", date: " + this.getDate();
 	}
 }

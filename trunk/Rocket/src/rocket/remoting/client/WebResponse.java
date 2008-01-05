@@ -15,9 +15,7 @@
  */
 package rocket.remoting.client;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -36,12 +34,12 @@ public class WebResponse implements IsSerializable {
 	private int code = -1;
 
 	public int getCode() {
-		PrimitiveHelper.checkGreaterThan("field:code", 0, code);
+		Checker.greaterThan("field:code", 0, code);
 		return this.code;
 	}
 
 	public void setCode(final int code) {
-		PrimitiveHelper.checkGreaterThan("parameter:code", 0, code );
+		Checker.greaterThan("parameter:code", 0, code );
 		this.code = code;
 	}
 
@@ -51,12 +49,12 @@ public class WebResponse implements IsSerializable {
 	private String message;
 
 	public String getMessage() {
-		StringHelper.checkNotEmpty("field:message", message);
+		Checker.notEmpty("field:message", message);
 		return this.message;
 	}
 
 	public void setMessage(final String message) {
-		StringHelper.checkNotEmpty("parameter:message", message);
+		Checker.notEmpty("parameter:message", message);
 		this.message = message;
 	}
 
@@ -66,12 +64,12 @@ public class WebResponse implements IsSerializable {
 	private Headers headers;
 
 	public Headers getHeaders() {
-		ObjectHelper.checkNotNull("field:headers", headers);
+		Checker.notNull("field:headers", headers);
 		return this.headers;
 	}
 
 	public void setHeaders(final Headers headers) {
-		ObjectHelper.checkNotNull("parameter:headers", headers);
+		Checker.notNull("parameter:headers", headers);
 		this.headers = headers;
 	}
 
@@ -85,12 +83,12 @@ public class WebResponse implements IsSerializable {
 	private String body;
 
 	public String getBody() {
-		ObjectHelper.checkNotNull("field:body", body);
+		Checker.notNull("field:body", body);
 		return body;
 	}
 
 	public void setBody(final String body) {
-		ObjectHelper.checkNotNull("parameter:body", body);
+		Checker.notNull("parameter:body", body);
 		this.body = body;
 	}
 

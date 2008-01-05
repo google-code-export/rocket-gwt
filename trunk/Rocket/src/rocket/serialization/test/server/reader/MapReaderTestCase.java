@@ -18,9 +18,9 @@ package rocket.serialization.test.server.reader;
 import java.util.HashMap;
 import java.util.Map;
 
+import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.server.reader.MapReader;
 import rocket.serialization.test.server.ServerTestCase;
-import rocket.serialization.client.ObjectInputStream;
 
 public class MapReaderTestCase extends ServerTestCase {
 

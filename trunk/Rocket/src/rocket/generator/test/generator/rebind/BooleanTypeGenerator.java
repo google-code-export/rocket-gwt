@@ -18,8 +18,7 @@ package rocket.generator.test.generator.rebind;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class BooleanTypeGenerator extends TestGenerator {
 
@@ -27,15 +26,15 @@ public class BooleanTypeGenerator extends TestGenerator {
 		final GeneratorContext context = this.getGeneratorContext();
 		final Type type = context.getType(Boolean.TYPE.getName());
 
-		PrimitiveHelper.checkFalse("Boolean type is a not abstract", type.isAbstract());
-		PrimitiveHelper.checkFalse("Boolean type is not an interface", type.isInterface());
-		PrimitiveHelper.checkTrue("Boolean type is a final", type.isFinal());
-		ObjectHelper.checkEquals("Boolean type name", Boolean.TYPE.getName(), type.getName());
-		PrimitiveHelper.checkFalse("Boolean type is not an array", type.isArray());
-		PrimitiveHelper.checkTrue("Boolean type is a primitive", type.isPrimitive());
+		Checker.falseValue("Boolean type is a not abstract", type.isAbstract());
+		Checker.falseValue("Boolean type is not an interface", type.isInterface());
+		Checker.trueValue("Boolean type is a final", type.isFinal());
+		Checker.equals("Boolean type name", Boolean.TYPE.getName(), type.getName());
+		Checker.falseValue("Boolean type is not an array", type.isArray());
+		Checker.trueValue("Boolean type is a primitive", type.isPrimitive());
 
 		final Type wrapper = type.getWrapper();
-		ObjectHelper.checkEquals("Boolean wrapper type name", Boolean.class.getName(), wrapper.getName());
+		Checker.equals("Boolean wrapper type name", Boolean.class.getName(), wrapper.getName());
 
 		return null;
 	}

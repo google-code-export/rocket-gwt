@@ -15,7 +15,7 @@
  */
 package rocket.widget.client.menu;
 
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * This enum represents the possible opening directions for MenuLists.
@@ -52,12 +52,12 @@ public class MenuListOpenDirection {
 	private String description;
 
 	public String getDescription() {
-		StringHelper.checkNotEmpty("field:description", description);
+		Checker.notEmpty("field:description", description);
 		return description;
 	}
 
 	protected void setDescription(final String description) {
-		StringHelper.checkNotEmpty("parameter:description", description);
+		Checker.notEmpty("parameter:description", description);
 		this.description = description;
 	}
 

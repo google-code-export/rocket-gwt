@@ -15,7 +15,7 @@
  */
 package java.lang;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.util.client.ThrowableHelper;
 
 import com.google.gwt.core.client.GWT;
@@ -181,12 +181,12 @@ public class Throwable {
 	transient private JavaScriptObject callStack;
 
 	private JavaScriptObject getCallStack() {
-		ObjectHelper.checkNotNull("field:callStack", callStack);
+		Checker.notNull("field:callStack", callStack);
 		return this.callStack;
 	}
 
 	private void setCallStack(final JavaScriptObject callStack) {
-		ObjectHelper.checkNotNull("parameter:callStack", callStack);
+		Checker.notNull("parameter:callStack", callStack);
 		this.callStack = callStack;
 	}
 }

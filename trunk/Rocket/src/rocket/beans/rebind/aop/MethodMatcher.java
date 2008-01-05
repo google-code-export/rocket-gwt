@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.method.Method;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A method matcher is used to filter methods belonging to a type against an
@@ -51,12 +51,12 @@ public class MethodMatcher {
 	private Pattern pattern;
 
 	protected Pattern getPattern() {
-		ObjectHelper.checkNotNull("field:pattern", pattern);
+		Checker.notNull("field:pattern", pattern);
 		return this.pattern;
 	}
 
 	public void setPattern(final Pattern pattern) {
-		ObjectHelper.checkNotNull("parameter:pattern", pattern);
+		Checker.notNull("parameter:pattern", pattern);
 		this.pattern = pattern;
 	}
 
@@ -66,7 +66,7 @@ public class MethodMatcher {
 	 * @param pattern
 	 */
 	public void setPattern(final String pattern) {
-		ObjectHelper.checkNotNull("parameter:pattern", pattern);
+		Checker.notNull("parameter:pattern", pattern);
 
 		this.setPattern(Pattern.compile(pattern));
 	}

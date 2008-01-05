@@ -15,7 +15,7 @@
  */
 package rocket.widget.client.accordion;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.DivPanel;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -43,7 +43,7 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	}
 
 	protected void replaceContentWidget(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final DivPanel panel = this.getPanel();
 		final int index = this.getIndex(item);
@@ -59,12 +59,12 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	private DivPanel panel;
 
 	protected DivPanel getPanel() {
-		ObjectHelper.checkNotNull("field:panel", panel);
+		Checker.notNull("field:panel", panel);
 		return panel;
 	}
 
 	protected void setPanel(final DivPanel panel) {
-		ObjectHelper.checkNotNull("parameter:panel", panel);
+		Checker.notNull("parameter:panel", panel);
 		this.panel = panel;
 	}
 
@@ -80,7 +80,7 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	protected void removeSelectedStyle(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final int index = this.getIndex(item);
 		final Widget widget = this.getPanel().get(index);
@@ -90,7 +90,7 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	}
 
 	protected void addSelectedStyle(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final int index = this.getIndex(item);
 		final Widget widget = this.getPanel().get(index);
@@ -100,7 +100,7 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	}
 
 	protected void insert0(final int insertBefore, final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final Widget caption = item.getCaptionWidget();
 		caption.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_CAPTION_STYLE);

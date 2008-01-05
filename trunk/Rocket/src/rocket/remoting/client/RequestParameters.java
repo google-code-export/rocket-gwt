@@ -20,8 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.collection.client.MultiValueMap;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -44,13 +44,13 @@ public class RequestParameters implements IsSerializable, Serializable {
 	private MultiValueMap multiValueMap;
 
 	protected MultiValueMap getMultiValueMap() {
-		ObjectHelper.checkNotNull("field:map", multiValueMap);
+		Checker.notNull("field:map", multiValueMap);
 
 		return multiValueMap;
 	}
 
 	protected void setMultiValueMap(final MultiValueMap multiValueMap) {
-		ObjectHelper.checkNotNull("parameter:multiValueMap", multiValueMap);
+		Checker.notNull("parameter:multiValueMap", multiValueMap);
 
 		this.multiValueMap = multiValueMap;
 	}
@@ -70,7 +70,7 @@ public class RequestParameters implements IsSerializable, Serializable {
 	}
 
 	protected List getValueAsList(final String name) {
-		StringHelper.checkNotEmpty("parameter:name", name);
+		Checker.notEmpty("parameter:name", name);
 		return (List) this.getMultiValueMap().getValuesList(name);
 	}
 
@@ -88,7 +88,7 @@ public class RequestParameters implements IsSerializable, Serializable {
 	}
 
 	public void buildFromUrl(final String url) {
-		StringHelper.checkNotNull("parameter:url", url);
+		Checker.notNull("parameter:url", url);
 		final int queryStringIndex = url.indexOf("?");
 		if (queryStringIndex != -1) {
 			final String queryString = url.substring(queryStringIndex);
@@ -97,9 +97,9 @@ public class RequestParameters implements IsSerializable, Serializable {
 	}
 
 	public void buildFromQueryString(final String string) {
-		StringHelper.checkNotNull("parameter:string", string);
+		Checker.notNull("parameter:string", string);
 
-		final String[] parameters = StringHelper.split(string, "&", true);
+		final String[] parameters = Utilities.split(string, "&", true);
 		for (int i = 0; i < parameters.length; i++) {
 			final String parameter = parameters[i];
 			final int equals = parameter.indexOf('=');
@@ -111,7 +111,7 @@ public class RequestParameters implements IsSerializable, Serializable {
 	}
 
 	public void add(final String name, final String value) {
-		StringHelper.checkNotEmpty("parameter:name", name);
+		Checker.notEmpty("parameter:name", name);
 
 		this.getMultiValueMap().add(name, value);
 	}

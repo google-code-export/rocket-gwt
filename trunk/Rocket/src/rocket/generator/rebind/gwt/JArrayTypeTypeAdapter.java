@@ -24,8 +24,8 @@ import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.AbstractType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -116,7 +116,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 */
 	public Type getComponentType() {
 		final JArrayType array = this.getJArrayType().isArray();
-		ObjectHelper.checkNotNull( "The " + this.getName() + " is an array.", array );
+		Checker.notNull( "The " + this.getName() + " is an array.", array );
 		
 		final JType componentType = array.getComponentType();
 		final String componentTypeName = componentType.getQualifiedSourceName();
@@ -172,7 +172,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 		final String packageName = null == packagee ? null : packagee.getName();
 		String nameLessPackageName = name;
 		
-		if( false == StringHelper.isNullOrEmpty( packageName ) ){
+		if( false == Tester.isNullOrEmpty( packageName ) ){
 			runtimeName.append( packageName );
 			runtimeName.append( '.');
 			
@@ -254,12 +254,12 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	private JArrayType jArrayType;
 
 	protected JArrayType getJArrayType() {
-		ObjectHelper.checkNotNull("field:jArrayType", jArrayType);
+		Checker.notNull("field:jArrayType", jArrayType);
 		return jArrayType;
 	}
 
 	public void setJArrayType(final JArrayType jArrayType) {
-		ObjectHelper.checkNotNull("parameter:jArrayType", jArrayType);
+		Checker.notNull("parameter:jArrayType", jArrayType);
 		this.jArrayType = jArrayType;
 	}
 

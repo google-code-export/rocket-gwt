@@ -47,7 +47,7 @@ import rocket.event.client.MouseWheelEvent;
 import rocket.event.client.ScrollEvent;
 import rocket.event.client.ScrollEventListener;
 import rocket.event.client.ScrollEventListenerCollection;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This class contains all listener types and collections. It also contains
@@ -223,7 +223,7 @@ public class EventListenerDispatcher implements EventListener {
 	private ChangeEventListenerCollection changeEventListeners;
 
 	public ChangeEventListenerCollection getChangeEventListeners() {
-		ObjectHelper.checkNotNull("field:changeEventListeners", changeEventListeners);
+		Checker.notNull("field:changeEventListeners", changeEventListeners);
 		return this.changeEventListeners;
 	}
 
@@ -232,7 +232,7 @@ public class EventListenerDispatcher implements EventListener {
 	}
 
 	protected void setChangeEventListeners(final ChangeEventListenerCollection changeEventListeners) {
-		ObjectHelper.checkNotNull("parameter:changeEventListeners", changeEventListeners);
+		Checker.notNull("parameter:changeEventListeners", changeEventListeners);
 		this.changeEventListeners = changeEventListeners;
 	}
 
@@ -255,7 +255,7 @@ public class EventListenerDispatcher implements EventListener {
 	private FocusEventListenerCollection focusEventListeners;
 
 	protected FocusEventListenerCollection getFocusEventListeners() {
-		ObjectHelper.checkNotNull("field:focusEventListeners", focusEventListeners);
+		Checker.notNull("field:focusEventListeners", focusEventListeners);
 		return this.focusEventListeners;
 	}
 
@@ -264,7 +264,7 @@ public class EventListenerDispatcher implements EventListener {
 	}
 
 	protected void setFocusEventListeners(final FocusEventListenerCollection focusEventListeners) {
-		ObjectHelper.checkNotNull("parameter:focusEventListeners", focusEventListeners);
+		Checker.notNull("parameter:focusEventListeners", focusEventListeners);
 		this.focusEventListeners = focusEventListeners;
 	}
 
@@ -286,7 +286,7 @@ public class EventListenerDispatcher implements EventListener {
 	private KeyEventListenerCollection keyEventListeners;
 
 	protected KeyEventListenerCollection getKeyEventListeners() {
-		ObjectHelper.checkNotNull("field:keyEventListeners", keyEventListeners);
+		Checker.notNull("field:keyEventListeners", keyEventListeners);
 		return this.keyEventListeners;
 	}
 
@@ -295,7 +295,7 @@ public class EventListenerDispatcher implements EventListener {
 	}
 
 	protected void setKeyEventListeners(final KeyEventListenerCollection keyEventListeners) {
-		ObjectHelper.checkNotNull("parameter:keyEventListeners", keyEventListeners);
+		Checker.notNull("parameter:keyEventListeners", keyEventListeners);
 		this.keyEventListeners = keyEventListeners;
 	}
 
@@ -318,7 +318,7 @@ public class EventListenerDispatcher implements EventListener {
 	private MouseEventListenerCollection mouseEventListeners;
 
 	protected MouseEventListenerCollection getMouseEventListeners() {
-		ObjectHelper.checkNotNull("field:mouseEventListeners", mouseEventListeners);
+		Checker.notNull("field:mouseEventListeners", mouseEventListeners);
 		return this.mouseEventListeners;
 	}
 
@@ -327,7 +327,7 @@ public class EventListenerDispatcher implements EventListener {
 	}
 
 	protected void setMouseEventListeners(final MouseEventListenerCollection mouseEventListeners) {
-		ObjectHelper.checkNotNull("parameter:mouseEventListeners", mouseEventListeners);
+		Checker.notNull("parameter:mouseEventListeners", mouseEventListeners);
 		this.mouseEventListeners = mouseEventListeners;
 	}
 
@@ -350,7 +350,7 @@ public class EventListenerDispatcher implements EventListener {
 	private ScrollEventListenerCollection scrollEventListeners;
 
 	protected ScrollEventListenerCollection getScrollEventListeners() {
-		ObjectHelper.checkNotNull("field:scrollEventListeners", scrollEventListeners);
+		Checker.notNull("field:scrollEventListeners", scrollEventListeners);
 		return this.scrollEventListeners;
 	}
 
@@ -359,7 +359,7 @@ public class EventListenerDispatcher implements EventListener {
 	}
 
 	protected void setScrollEventListeners(final ScrollEventListenerCollection scrollEventListeners) {
-		ObjectHelper.checkNotNull("parameter:scrollEventListeners", scrollEventListeners);
+		Checker.notNull("parameter:scrollEventListeners", scrollEventListeners);
 		this.scrollEventListeners = scrollEventListeners;
 	}
 
@@ -382,7 +382,7 @@ public class EventListenerDispatcher implements EventListener {
 	private ImageLoadEventListenerCollection imageLoadEventListeners;
 
 	protected ImageLoadEventListenerCollection getImageLoadEventListeners() {
-		ObjectHelper.checkNotNull("field:imageLoadEventListeners", imageLoadEventListeners);
+		Checker.notNull("field:imageLoadEventListeners", imageLoadEventListeners);
 		return this.imageLoadEventListeners;
 	}
 
@@ -391,7 +391,7 @@ public class EventListenerDispatcher implements EventListener {
 	}
 
 	protected void setImageLoadEventListeners(final ImageLoadEventListenerCollection imageLoadEventListeners) {
-		ObjectHelper.checkNotNull("parameter:imageLoadEventListeners", imageLoadEventListeners);
+		Checker.notNull("parameter:imageLoadEventListeners", imageLoadEventListeners);
 		this.imageLoadEventListeners = imageLoadEventListeners;
 	}
 

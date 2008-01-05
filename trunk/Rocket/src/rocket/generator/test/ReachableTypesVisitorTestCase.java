@@ -26,7 +26,7 @@ import rocket.generator.rebind.java.JavaClassTypeAdapter;
 import rocket.generator.rebind.java.JavaGeneratorContext;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.ReachableTypesVisitor;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 /**
  * A variety of tests that create a simple limited class heirarchy and runs a series of tests against those.
@@ -268,7 +268,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 			}
 			
 			protected boolean skipType( final Type type ){
-				PrimitiveHelper.checkFalse( "The type: " + type + " has already been visited...", this.alreadyVisitedTypes.contains( type ));
+				Checker.falseValue( "The type: " + type + " has already been visited...", this.alreadyVisitedTypes.contains( type ));
 				this.alreadyVisitedTypes.add( type );
 				return false;
 			}
@@ -282,7 +282,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 				return false;
 			}
 			protected boolean skipField( final Field field ){			
-				PrimitiveHelper.checkFalse( "The field: " + field + " has already been visited...", this.alreadyVisitedFields.contains( field ));
+				Checker.falseValue( "The field: " + field + " has already been visited...", this.alreadyVisitedFields.contains( field ));
 				this.alreadyVisitedFields.add( field );
 				return false;
 			}

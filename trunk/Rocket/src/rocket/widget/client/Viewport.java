@@ -32,7 +32,8 @@ import rocket.selection.client.Selection;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -163,7 +164,7 @@ abstract public class Viewport extends CompositeWidget {
 	private ViewportEventPreviewAdapter draggingEventPreview;
 
 	protected ViewportEventPreviewAdapter getDraggingEventPreview() {
-		ObjectHelper.checkNotNull("field:draggingEventPreview", draggingEventPreview);
+		Checker.notNull("field:draggingEventPreview", draggingEventPreview);
 		return this.draggingEventPreview;
 	}
 
@@ -172,7 +173,7 @@ abstract public class Viewport extends CompositeWidget {
 	}
 
 	protected void setDraggingEventPreview(final ViewportEventPreviewAdapter draggingEventPreview) {
-		ObjectHelper.checkNotNull("parameter:draggingEventPreview", draggingEventPreview);
+		Checker.notNull("parameter:draggingEventPreview", draggingEventPreview);
 		this.draggingEventPreview = draggingEventPreview;
 	}
 
@@ -287,7 +288,7 @@ abstract public class Viewport extends CompositeWidget {
 	 *            The event
 	 */
 	protected void onDragMouseOut(final MouseOutEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		final Element element = this.getElement();
 		final Element eventTarget = event.getTarget();
@@ -305,7 +306,7 @@ abstract public class Viewport extends CompositeWidget {
 	 *            The event
 	 */
 	protected void onDragMouseOver(final MouseOverEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		final Element element = this.getElement();
 		final Element eventTarget = event.getTarget();
@@ -324,7 +325,7 @@ abstract public class Viewport extends CompositeWidget {
 	 * viewport.
 	 */
 	protected void onDragMouseMove(final MouseMoveEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		while (true) {
 			final ViewportEventPreviewAdapter previewer = this.getDraggingEventPreview();
@@ -395,7 +396,7 @@ abstract public class Viewport extends CompositeWidget {
 	 * @return True if the tile should be removed and lost
 	 */
 	protected boolean isOutOfView(final Widget tile) {
-		ObjectHelper.checkNotNull("parameter:tile", tile);
+		Checker.notNull("parameter:tile", tile);
 
 		boolean remove = false;
 
@@ -539,23 +540,23 @@ abstract public class Viewport extends CompositeWidget {
 	}
 
 	protected int getTileLeft(final Widget tile) {
-		return ObjectHelper.getInteger(tile.getElement(), WidgetConstants.VIEWPORT_TILE_LEFT_ATTRIBUTE);
+		return JavaScript.getInteger(tile.getElement(), WidgetConstants.VIEWPORT_TILE_LEFT_ATTRIBUTE);
 	}
 
 	protected int getTileTop(final Widget tile) {
-		return ObjectHelper.getInteger(tile.getElement(), WidgetConstants.VIEWPORT_TILE_TOP_ATTRIBUTE);
+		return JavaScript.getInteger(tile.getElement(), WidgetConstants.VIEWPORT_TILE_TOP_ATTRIBUTE);
 	}
 
 	protected void setTileLeft(final Widget tile, final int x) {
 		final Element element = tile.getElement();
 		InlineStyle.setInteger(element, Css.LEFT, WidgetConstants.VIEWPORT_X_OFFSET + x, CssUnit.PX);
-		ObjectHelper.setInteger(element, WidgetConstants.VIEWPORT_TILE_LEFT_ATTRIBUTE, x);
+		JavaScript.setInteger(element, WidgetConstants.VIEWPORT_TILE_LEFT_ATTRIBUTE, x);
 	}
 
 	protected void setTileTop(final Widget tile, final int y) {
 		final Element element = tile.getElement();
 		InlineStyle.setInteger(element, Css.TOP, WidgetConstants.VIEWPORT_Y_OFFSET + y, CssUnit.PX);
-		ObjectHelper.setInteger(element, WidgetConstants.VIEWPORT_TILE_TOP_ATTRIBUTE, y);
+		JavaScript.setInteger(element, WidgetConstants.VIEWPORT_TILE_TOP_ATTRIBUTE, y);
 	}
 
 	/**
@@ -564,12 +565,12 @@ abstract public class Viewport extends CompositeWidget {
 	private TileDivPanel innerPanel;
 
 	protected TileDivPanel getInnerPanel() {
-		ObjectHelper.checkNotNull("file:innerPanel", innerPanel);
+		Checker.notNull("file:innerPanel", innerPanel);
 		return this.innerPanel;
 	}
 
 	protected void setInnerPanel(final TileDivPanel innerPanel) {
-		ObjectHelper.checkNotNull("parameter:innerPanel", innerPanel);
+		Checker.notNull("parameter:innerPanel", innerPanel);
 		this.innerPanel = innerPanel;
 	}
 

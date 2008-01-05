@@ -25,8 +25,7 @@ import rocket.serialization.client.Constants;
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.ObjectOutputStreamImpl;
 import rocket.serialization.client.SerializationException;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements ObjectOutputStream {
 
@@ -38,7 +37,7 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	}
 
 	protected void addObject( Object object ){
-		StringHelper.checkNotNull("parameter:object", object);
+		Checker.notNull("parameter:object", object);
 
 		final Map objects = this.getObjectTable();
 		final int reference = (-1 - objects.size());
@@ -58,12 +57,12 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	private Map objectTable;
 
 	protected Map getObjectTable() {
-		StringHelper.checkNotNull("field:objectTable", objectTable);
+		Checker.notNull("field:objectTable", objectTable);
 		return this.objectTable;
 	}
 
 	protected void setObjectTable(final Map objectTable) {
-		StringHelper.checkNotNull("parameter:objectTable", objectTable);
+		Checker.notNull("parameter:objectTable", objectTable);
 		this.objectTable = objectTable;
 	}
 
@@ -143,12 +142,12 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	private Map stringTable;
 
 	protected Map getStringTable() {
-		StringHelper.checkNotNull("field:stringTable", stringTable);
+		Checker.notNull("field:stringTable", stringTable);
 		return this.stringTable;
 	}
 
 	protected void setStringTable(final Map stringTable) {
-		StringHelper.checkNotNull("parameter:stringTable", stringTable);
+		Checker.notNull("parameter:stringTable", stringTable);
 		this.stringTable = stringTable;
 	}
 
@@ -203,7 +202,7 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	}
 
 //	public String getTypeName(final Object object) {
-//		ObjectHelper.checkNotNull("parameter:object", object);
+//		Checker.checkNotNull("parameter:object", object);
 //		return object.getClass().getName();
 //	}
 
@@ -239,7 +238,7 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	}
 	
 	protected String escape(final String string) {
-		StringHelper.checkNotNull("parameter:string", string);
+		Checker.notNull("parameter:string", string);
 
 		final StringBuffer buf = new StringBuffer();
 		final int length = string.length();
@@ -338,12 +337,12 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	private List objectWriters;
 
 	protected List getObjectWriters() {
-		ObjectHelper.checkNotNull("field:objectWriters", objectWriters);
+		Checker.notNull("field:objectWriters", objectWriters);
 		return this.objectWriters;
 	}
 
 	public void setObjectWriters(final List objectWriters) {
-		ObjectHelper.checkNotNull("parameter:objectWriters", objectWriters);
+		Checker.notNull("parameter:objectWriters", objectWriters);
 		this.objectWriters = objectWriters;
 	}
 

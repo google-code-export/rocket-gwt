@@ -15,8 +15,8 @@
  */
 package rocket.style.client;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 /**
  * This enum represents each of the possible CssUnits that may be applied to any
@@ -179,7 +179,7 @@ public class CssUnit {
 		CssUnit unit = NONE;
 		while (true) {
 			// defensive test.
-			if (StringHelper.isNullOrEmpty(value)) {
+			if (Tester.isNullOrEmpty(value)) {
 				break;
 			}
 	
@@ -218,8 +218,8 @@ public class CssUnit {
 	 * @return The converted value.
 	 */
 	static public float convertValue(final String value, final CssUnit targetUnit) {
-		StringHelper.checkNotEmpty("parameter:value", value);
-		ObjectHelper.checkNotNull("parameter:targetUnit", targetUnit);
+		Checker.notEmpty("parameter:value", value);
+		Checker.notNull("parameter:targetUnit", targetUnit);
 	
 		float length = 0;
 		while (true) {

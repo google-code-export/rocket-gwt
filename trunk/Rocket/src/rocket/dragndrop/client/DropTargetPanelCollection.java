@@ -18,7 +18,7 @@ package rocket.dragndrop.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A collection of all DropTargetPanels that are attached to the dom.
@@ -49,23 +49,23 @@ class DropTargetPanelCollection {
 	private List dropTargetPanels;
 
 	public List getDropTargetPanels() {
-		ObjectHelper.checkNotNull("field:dropTargetPanels", dropTargetPanels);
+		Checker.notNull("field:dropTargetPanels", dropTargetPanels);
 		return dropTargetPanels;
 	}
 
 	public void setDropTargetPanels(final List dropTargetPanels) {
-		ObjectHelper.checkNotNull("parameter:dropTargetPanels", dropTargetPanels);
+		Checker.notNull("parameter:dropTargetPanels", dropTargetPanels);
 		this.dropTargetPanels = dropTargetPanels;
 	}
 
 	public void add(final DropTargetPanel dropTargetPanel) {
-		ObjectHelper.checkNotNull("parameter:dropTargetPanel", dropTargetPanel);
+		Checker.notNull("parameter:dropTargetPanel", dropTargetPanel);
 
 		this.getDropTargetPanels().add(dropTargetPanel);
 	}
 
 	public void remove(final DropTargetPanel dropTargetPanel) {
-		ObjectHelper.checkNotNull("parameter:dropTargetPanel", dropTargetPanel);
+		Checker.notNull("parameter:dropTargetPanel", dropTargetPanel);
 
 		this.getDropTargetPanels().remove(dropTargetPanel);
 	}

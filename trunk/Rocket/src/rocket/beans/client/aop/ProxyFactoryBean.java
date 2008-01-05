@@ -20,7 +20,7 @@ import rocket.beans.client.BeanFactoryAware;
 import rocket.beans.client.BeanNameAware;
 import rocket.beans.client.DisposableBean;
 import rocket.beans.client.FactoryBean;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A convenient base class for any FactoryBean that gives out proxies.
@@ -70,12 +70,12 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	private FactoryBean targetFactoryBean;
 
 	protected FactoryBean getTargetFactoryBean() {
-		ObjectHelper.checkNotNull("field:targetFactoryBean", targetFactoryBean);
+		Checker.notNull("field:targetFactoryBean", targetFactoryBean);
 		return this.targetFactoryBean;
 	}
 
 	public void setTargetFactoryBean(final FactoryBean targetFactoryBean) {
-		ObjectHelper.checkNotNull("parameter:targetFactoryBean", targetFactoryBean);
+		Checker.notNull("parameter:targetFactoryBean", targetFactoryBean);
 		this.targetFactoryBean = targetFactoryBean;
 	}
 	
@@ -89,7 +89,7 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 		if (false == this.hasProxy()) {
 			this.setProxy(this.createProxy());
 		}
-		ObjectHelper.checkNotNull("field:proxy", proxy);
+		Checker.notNull("field:proxy", proxy);
 		return this.proxy;
 	}
 
@@ -98,7 +98,7 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	}
 
 	protected void setProxy(final Object proxy) {
-		ObjectHelper.checkNotNull("parameter:proxy", proxy);
+		Checker.notNull("parameter:proxy", proxy);
 		this.proxy = proxy;
 	}
 
@@ -145,11 +145,11 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	private BeanFactory beanFactory;
 	
 	protected BeanFactory getBeanFactory(){
-		ObjectHelper.checkNotNull("field:beanFactory", beanFactory);
+		Checker.notNull("field:beanFactory", beanFactory);
 		return this.beanFactory;
 	}
 	public void setBeanFactory( final BeanFactory beanFactory ){
-		ObjectHelper.checkNotNull("parameter:beanFactory", beanFactory);
+		Checker.notNull("parameter:beanFactory", beanFactory);
 		this.beanFactory = beanFactory;
 	}
 	

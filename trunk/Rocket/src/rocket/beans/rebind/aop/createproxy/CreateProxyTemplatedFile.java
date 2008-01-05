@@ -15,15 +15,11 @@
  */
 package rocket.beans.rebind.aop.createproxy;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the create proxyConstructor template
@@ -43,12 +39,12 @@ public class CreateProxyTemplatedFile extends TemplatedFileCodeBlock {
 	private Constructor proxyConstructor;
 
 	protected Constructor getProxyConstructor() {
-		ObjectHelper.checkNotNull("field:proxyConstructor", proxyConstructor);
+		Checker.notNull("field:proxyConstructor", proxyConstructor);
 		return this.proxyConstructor;
 	}
 
 	public void setProxyConstructor(final Constructor proxy) {
-		ObjectHelper.checkNotNull("parameter:proxyConstructor", proxy);
+		Checker.notNull("parameter:proxyConstructor", proxy);
 		this.proxyConstructor = proxy;
 	}
 
@@ -58,24 +54,24 @@ public class CreateProxyTemplatedFile extends TemplatedFileCodeBlock {
 	private MethodParameter targetBeanParameter;
 
 	protected MethodParameter getTargetBeanParameter() {
-		ObjectHelper.checkNotNull("field:targetBeanParameter", targetBeanParameter);
+		Checker.notNull("field:targetBeanParameter", targetBeanParameter);
 		return this.targetBeanParameter;
 	}
 
 	public void setTargetBeanParameter(final MethodParameter targetBeanParameter) {
-		ObjectHelper.checkNotNull("parameter:targetBeanParameter", targetBeanParameter);
+		Checker.notNull("parameter:targetBeanParameter", targetBeanParameter);
 		this.targetBeanParameter = targetBeanParameter;
 	}
 
 	private Type targetBeanType;
 
 	protected Type getTargetBeanType() {
-		ObjectHelper.checkNotNull("field:targetBeanType", targetBeanType);
+		Checker.notNull("field:targetBeanType", targetBeanType);
 		return this.targetBeanType;
 	}
 
 	public void setTargetBeanType(final Type targetBeanType) {
-		ObjectHelper.checkNotNull("parameter:targetBeanType", targetBeanType);
+		Checker.notNull("parameter:targetBeanType", targetBeanType);
 		this.targetBeanType = targetBeanType;
 	}
 

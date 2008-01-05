@@ -19,7 +19,7 @@ import rocket.beans.rebind.value.AbstractValue;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A StringValue holds a string literal which may be converted to any of the primitive or String types. 
@@ -32,14 +32,14 @@ public class NullLiteral extends AbstractValue implements Value {
 	 * Null can be set on any property type except for the primitives.
 	 */
 	public boolean isCompatibleWith(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		
 		return false == type.isPrimitive();
 	}
 
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull( "parameter:writer", writer );
+		Checker.notNull( "parameter:writer", writer );
 	
 		writer.print( "" + null );
 	}

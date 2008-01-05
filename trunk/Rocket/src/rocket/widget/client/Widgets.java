@@ -23,10 +23,9 @@ import rocket.dom.client.DomConstants;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
+import rocket.util.client.Checker;
 import rocket.util.client.Destroyable;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.DOM;
@@ -44,7 +43,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class WidgetHelper extends SystemHelper {
+public class Widgets{
 
 	/**
 	 * Given an element attempts to find which widget it is a child of. This is
@@ -57,8 +56,8 @@ public class WidgetHelper extends SystemHelper {
 	 * @return The widget or null if a match was not possible.
 	 */
 	public static Widget findWidget(final Element target, final Iterator widgets) {
-		ObjectHelper.checkNotNull("parameter:target", target);
-		ObjectHelper.checkNotNull("parameter:widgets", widgets);
+		Checker.notNull("parameter:target", target);
+		Checker.notNull("parameter:widgets", widgets);
 
 		Widget widget = null;
 		while (widgets.hasNext()) {
@@ -84,17 +83,17 @@ public class WidgetHelper extends SystemHelper {
 	 *            The form containing the elements.
 	 */
 	public static void populateMapFromForm(final Map map, final Element form) {
-		ObjectHelper.checkNotNull("parameter:map", map);
-		ObjectHelper.checkNotNull("parameter:form", form);
+		Checker.notNull("parameter:map", map);
+		Checker.notNull("parameter:form", form);
 
-		final Iterator formElements = WidgetHelper.getFormElements(form);
+		final Iterator formElements = Widgets.getFormElements(form);
 		while (formElements.hasNext()) {
 			final Element formElement = (Element) formElements.next();
 			final String name = DOM.getElementProperty(formElement, DomConstants.NAME);
 			if (null == name) {
 				continue;
 			}
-			final String value = WidgetHelper.getFormSubmitValue(formElement);
+			final String value = Widgets.getFormSubmitValue(formElement);
 
 			map.put(name, value);
 		}
@@ -108,20 +107,20 @@ public class WidgetHelper extends SystemHelper {
 	 * @return
 	 */
 	public static String urlEncodeForm(final Element form) {
-		ObjectHelper.checkNotNull("parameter:form", form);
+		Checker.notNull("parameter:form", form);
 
 		final StringBuffer urlEncoded = new StringBuffer();
 		boolean addSeparator = false;
 
-		final Iterator formElements = WidgetHelper.getFormElements(form);
+		final Iterator formElements = Widgets.getFormElements(form);
 		while (formElements.hasNext()) {
 			if (addSeparator) {
 				urlEncoded.append('&');
 			}
 
 			final Element formElement = (Element) formElements.next();
-			final String name = ObjectHelper.getString(ObjectHelper.castFromElement(formElement), DomConstants.NAME);
-			final String value = URL.encodeComponent(WidgetHelper.getFormSubmitValue(formElement));
+			final String name = JavaScript.getString(JavaScript.castFromElement(formElement), DomConstants.NAME);
+			final String value = URL.encodeComponent(Widgets.getFormSubmitValue(formElement));
 			urlEncoded.append(name);
 			urlEncoded.append('=');
 			urlEncoded.append(value);
@@ -142,7 +141,7 @@ public class WidgetHelper extends SystemHelper {
 	 * @return
 	 */
 	public static String getFormSubmitValue(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 
 		String value = null;
 		while (true) {
@@ -247,8 +246,8 @@ public class WidgetHelper extends SystemHelper {
 	 * @return
 	 */
 	public static Element findElement(final Element form, final String elementName) {
-		ObjectHelper.checkNotNull("parameter:form", form);
-		StringHelper.checkNotEmpty("parameter:elementName", elementName);
+		Checker.notNull("parameter:form", form);
+		Checker.notEmpty("parameter:elementName", elementName);
 
 		return findElement0(form, elementName);
 	}

@@ -15,9 +15,9 @@
  */
 package rocket.remoting.client;
 
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
-
 import rocket.remoting.client.support.rpc.RpcServiceClient;
+
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
  * A collection of helper methods related to rpc.

@@ -21,7 +21,7 @@ import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the case-statement.txt template
@@ -48,12 +48,12 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 	private Type serializedType;
 
 	protected Type getSerializedType() {
-		ObjectHelper.checkNotNull("field:serializedType", serializedType);
+		Checker.notNull("field:serializedType", serializedType);
 		return this.serializedType;
 	}
 
 	public void setSerializedType(final Type serializedType) {
-		ObjectHelper.checkNotNull("parameter:serializedType", serializedType);
+		Checker.notNull("parameter:serializedType", serializedType);
 		this.serializedType = serializedType;
 	}
 
@@ -63,12 +63,12 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 	private Field objectWriterSingleton;
 
 	protected Field getObjectWriterSingleton() {
-		ObjectHelper.checkNotNull("field:objectWriter", objectWriterSingleton);
+		Checker.notNull("field:objectWriter", objectWriterSingleton);
 		return this.objectWriterSingleton;
 	}
 
 	public void setObjectWriterSingleton(final Field objectWriterSingleton) {
-		ObjectHelper.checkNotNull("parameter:objectWriterSingleton", objectWriterSingleton);
+		Checker.notNull("parameter:objectWriterSingleton", objectWriterSingleton);
 		this.objectWriterSingleton = objectWriterSingleton;
 	}
 

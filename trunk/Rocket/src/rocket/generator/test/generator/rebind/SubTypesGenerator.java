@@ -22,7 +22,7 @@ import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class SubTypesGenerator extends TestGenerator {
 
@@ -30,7 +30,7 @@ public class SubTypesGenerator extends TestGenerator {
 		final GeneratorContext context = this.getGeneratorContext();
 
 		final Set subTypesSubTypes = subType.getSubTypes();
-		PrimitiveHelper.checkEquals("" + subTypesSubTypes, 0, subTypesSubTypes.size());
+		Checker.equals("" + subTypesSubTypes, 0, subTypesSubTypes.size());
 
 		final NewConcreteType newConcreteType = context.newConcreteType( newTypeName );
 		newConcreteType.setAbstract(false);
@@ -71,21 +71,21 @@ public class SubTypesGenerator extends TestGenerator {
 		newSubSubSubType.setVisibility(Visibility.PUBLIC);
 		
 		final Set objectSubTypes = context.getObject().getSubTypes();
-		PrimitiveHelper.checkTrue("newConcreteType" + objectSubTypes, objectSubTypes.contains(newConcreteType));
-		PrimitiveHelper.checkTrue("String", objectSubTypes.contains(context.getString()));
+		Checker.trueValue("newConcreteType" + objectSubTypes, objectSubTypes.contains(newConcreteType));
+		Checker.trueValue("String", objectSubTypes.contains(context.getString()));
 
 		final Set newConcreteSubTypes = newConcreteType.getSubTypes();
-		PrimitiveHelper.checkEquals("", 1, newConcreteSubTypes.size());
-		PrimitiveHelper.checkTrue("Nested1", newConcreteSubTypes.contains(newSubType));
+		Checker.equals("", 1, newConcreteSubTypes.size());
+		Checker.trueValue("Nested1", newConcreteSubTypes.contains(newSubType));
 
 		final Set newSubTypeSubTypes = newSubType.getSubTypes();
-		PrimitiveHelper.checkEquals("", 2, newSubTypeSubTypes.size());
-		PrimitiveHelper.checkTrue("Nested2", newSubTypeSubTypes.contains(newSubSubType0));
-		PrimitiveHelper.checkTrue("Nested3", newSubTypeSubTypes.contains(newSubSubType1));
+		Checker.equals("", 2, newSubTypeSubTypes.size());
+		Checker.trueValue("Nested2", newSubTypeSubTypes.contains(newSubSubType0));
+		Checker.trueValue("Nested3", newSubTypeSubTypes.contains(newSubSubType1));
 
 		final Set newSubSubSubTypeSubTypes = newSubSubType0.getSubTypes();
-		PrimitiveHelper.checkEquals("", 1, newSubSubSubTypeSubTypes.size());
-		PrimitiveHelper.checkTrue("Nested4", newSubSubSubTypeSubTypes.contains(newSubSubSubType));
+		Checker.equals("", 1, newSubSubSubTypeSubTypes.size());
+		Checker.trueValue("Nested4", newSubSubSubTypeSubTypes.contains(newSubSubSubType));
 		
 		
 		return newConcreteType;

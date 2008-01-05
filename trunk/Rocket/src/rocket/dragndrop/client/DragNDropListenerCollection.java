@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A collection of listeners which are interested in subscribing to various drag
@@ -39,23 +39,23 @@ public class DragNDropListenerCollection {
 	private List listeners;
 
 	public List getListeners() {
-		ObjectHelper.checkNotNull("field:listeners", listeners);
+		Checker.notNull("field:listeners", listeners);
 		return listeners;
 	}
 
 	public void setListeners(final List listeners) {
-		ObjectHelper.checkNotNull("parameter:listeners", listeners);
+		Checker.notNull("parameter:listeners", listeners);
 		this.listeners = listeners;
 	}
 
 	public void add(final DragNDropListener dragNDropListener) {
-		ObjectHelper.checkNotNull("parameter:dragNDropListener", dragNDropListener);
+		Checker.notNull("parameter:dragNDropListener", dragNDropListener);
 
 		this.getListeners().add(dragNDropListener);
 	}
 
 	public void remove(final DragNDropListener dragNDropListener) {
-		ObjectHelper.checkNotNull("parameter:dragNDropListener", dragNDropListener);
+		Checker.notNull("parameter:dragNDropListener", dragNDropListener);
 
 		this.getListeners().remove(dragNDropListener);
 	}
@@ -63,7 +63,7 @@ public class DragNDropListenerCollection {
 	// FIRE EVENTS ::::::::::::::::::::::::::::::::::::::
 
 	public void fireDragStarted(final DragStartEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		final Iterator listeners = this.getListeners().iterator();
 
@@ -74,7 +74,7 @@ public class DragNDropListenerCollection {
 	}
 
 	public void fireDragMoveStarted(final DragMoveEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		final Iterator listeners = this.getListeners().iterator();
 
@@ -85,7 +85,7 @@ public class DragNDropListenerCollection {
 	}
 
 	public void fireDropped(final DropEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		final Iterator listeners = this.getListeners().iterator();
 

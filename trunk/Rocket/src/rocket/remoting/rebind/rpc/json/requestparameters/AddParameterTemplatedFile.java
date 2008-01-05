@@ -20,8 +20,7 @@ import java.io.InputStream;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.methodparameter.MethodParameter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the add-parameter template
@@ -40,12 +39,12 @@ class AddParameterTemplatedFile extends TemplatedFileCodeBlock {
 	private MethodParameter parameter;
 
 	protected MethodParameter getParameter() {
-		ObjectHelper.checkNotNull("field:parameter", parameter);
+		Checker.notNull("field:parameter", parameter);
 		return this.parameter;
 	}
 
 	public void setParameter(final MethodParameter parameter) {
-		ObjectHelper.checkNotNull("parameter:parameter", parameter);
+		Checker.notNull("parameter:parameter", parameter);
 		this.parameter = parameter;
 	}
 
@@ -55,12 +54,12 @@ class AddParameterTemplatedFile extends TemplatedFileCodeBlock {
 	private String httpRequestParameterName;
 
 	protected String getHttpRequestParameterName() {
-		StringHelper.checkNotEmpty("httpRequestParameterName:httpRequestParameterName", httpRequestParameterName);
+		Checker.notEmpty("httpRequestParameterName:httpRequestParameterName", httpRequestParameterName);
 		return this.httpRequestParameterName;
 	}
 
 	public void setHttpRequestParameterName(final String httpRequestParameterName) {
-		StringHelper.checkNotEmpty("parameter:httpRequestParameterName", httpRequestParameterName);
+		Checker.notEmpty("parameter:httpRequestParameterName", httpRequestParameterName);
 		this.httpRequestParameterName = httpRequestParameterName;
 	}
 

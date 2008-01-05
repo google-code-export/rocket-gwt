@@ -16,7 +16,7 @@
 package rocket.generator.rebind.codeblock;
 
 import rocket.generator.rebind.SourceWriter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 /**
  * A CodeBlock that contains a long literal.
  * 
@@ -37,7 +37,7 @@ public class LongLiteral implements Literal {
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 		writer.print("(long)" + String.valueOf(this.getValue()) + "L");
 	}
 

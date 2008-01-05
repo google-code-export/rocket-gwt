@@ -20,7 +20,7 @@ import java.awt.Color;
 import junit.framework.TestCase;
 import rocket.util.client.Colour;
 import rocket.util.client.HueSaturationValue;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Tester;
 
 public class HueSaturationValueTestCase extends TestCase {
 
@@ -45,13 +45,13 @@ public class HueSaturationValueTestCase extends TestCase {
 	static boolean equals(final Color awtColor, final Colour colour) {
 		boolean equals = false;
 		while (true) {
-			if (false == PrimitiveHelper.equals(awtColor.getRed(), colour.getRed(), 5)) {
+			if (false == Tester.equals(awtColor.getRed(), colour.getRed(), 5)) {
 				break;
 			}
-			if (false == PrimitiveHelper.equals(awtColor.getGreen(), colour.getGreen(), 5)) {
+			if (false == Tester.equals(awtColor.getGreen(), colour.getGreen(), 5)) {
 				break;
 			}
-			if (false == PrimitiveHelper.equals(awtColor.getBlue(), colour.getBlue(), 5)) {
+			if (false == Tester.equals(awtColor.getBlue(), colour.getBlue(), 5)) {
 				break;
 			}
 			equals = true;

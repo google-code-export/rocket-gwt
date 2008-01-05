@@ -1,7 +1,6 @@
 package rocket.remoting.client;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,12 +27,12 @@ public class OustandingRpcTracker {
 	private Widget widget;
 
 	public Widget getWidget() {
-		ObjectHelper.checkNotNull("field:widget", widget);
+		Checker.notNull("field:widget", widget);
 		return this.widget;
 	}
 
 	public void setWidget(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 		this.widget = widget;
 
 		this.setOutstandingCount(this.getOutstandingCount());
@@ -45,12 +44,12 @@ public class OustandingRpcTracker {
 	private int outstandingCount;
 
 	protected int getOutstandingCount() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:outstandingCount", 0, outstandingCount );
+		Checker.greaterThanOrEqual("field:outstandingCount", 0, outstandingCount );
 		return this.outstandingCount;
 	}
 
 	protected void setOutstandingCount(final int outstandingCount) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:outstandingCount", 0, outstandingCount );
+		Checker.greaterThanOrEqual("parameter:outstandingCount", 0, outstandingCount );
 		this.outstandingCount = outstandingCount;
 
 		this.getWidget().setVisible(outstandingCount > 0);

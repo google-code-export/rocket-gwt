@@ -17,7 +17,6 @@ package rocket.serialization.test.server.writer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import rocket.serialization.server.writer.ListWriter;
 import rocket.serialization.test.server.ConcreteClass;

@@ -24,12 +24,10 @@ import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the set properties template
@@ -49,24 +47,24 @@ public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 	private Type bean;
 
 	protected Type getBean() {
-		ObjectHelper.checkNotNull("field:bean", bean);
+		Checker.notNull("field:bean", bean);
 		return this.bean;
 	}
 
 	public void setBean(final Type bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 		this.bean = bean;
 	}
 
 	private Map properties;
 
 	protected Map getProperties() {
-		ObjectHelper.checkNotNull("field:properties", properties);
+		Checker.notNull("field:properties", properties);
 		return this.properties;
 	}
 
 	protected void setProperties(final Map properties) {
-		ObjectHelper.checkNotNull("parameter:properties", properties);
+		Checker.notNull("parameter:properties", properties);
 		this.properties = properties;
 	}
 
@@ -75,8 +73,8 @@ public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public void addProperty(final Method setter, final Value value) {
-		ObjectHelper.checkNotNull("parameter:setter", setter);
-		ObjectHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:setter", setter);
+		Checker.notNull("parameter:value", value);
 
 		this.getProperties().put(setter, value);
 	}

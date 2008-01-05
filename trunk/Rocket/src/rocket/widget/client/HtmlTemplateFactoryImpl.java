@@ -18,8 +18,7 @@ package rocket.widget.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -206,7 +205,7 @@ abstract public class HtmlTemplateFactoryImpl {
 	 * @return The widget instance of null if one was not found.
 	 */
 	protected Widget getWidget(final String id) {
-		StringHelper.checkNotEmpty("parameter:id", id);
+		Checker.notEmpty("parameter:id", id);
 
 		return (Widget) this.getWidgets().get(id);
 	}
@@ -217,12 +216,12 @@ abstract public class HtmlTemplateFactoryImpl {
 	private Map widgets;
 
 	private Map getWidgets() {
-		ObjectHelper.checkNotNull("field:widgets", widgets);
+		Checker.notNull("field:widgets", widgets);
 		return this.widgets;
 	}
 
 	private void setWidgets(final Map widgets) {
-		ObjectHelper.checkNotNull("parameter:widgets", widgets);
+		Checker.notNull("parameter:widgets", widgets);
 		this.widgets = widgets;
 	}
 

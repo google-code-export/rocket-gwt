@@ -27,7 +27,7 @@ import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.constructor.NewConstructorImpl;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.initializer.InitializerImpl;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Common base class containing common functionality for the concrete and nested
@@ -56,12 +56,12 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	private Visibility visibility;
 
 	public Visibility getVisibility() {
-		ObjectHelper.checkNotNull("field:visibility", visibility);
+		Checker.notNull("field:visibility", visibility);
 		return this.visibility;
 	}
 
 	public void setVisibility(final Visibility visibility) {
-		ObjectHelper.checkNotNull("field:visibility", visibility);
+		Checker.notNull("field:visibility", visibility);
 		this.visibility = visibility;
 	}
 
@@ -106,17 +106,17 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	private Set initializers;
 
 	protected Set getInitializers() {
-		ObjectHelper.checkNotNull("field:initializers", initializers);
+		Checker.notNull("field:initializers", initializers);
 		return this.initializers;
 	}
 
 	protected void setInitializers(final Set initializers) {
-		ObjectHelper.checkNotNull("parameter:initializers", initializers);
+		Checker.notNull("parameter:initializers", initializers);
 		this.initializers = initializers;
 	}
 
 	public void addInitializer(final Initializer initializer) {
-		ObjectHelper.checkNotNull("parameter:initializer", initializer);
+		Checker.notNull("parameter:initializer", initializer);
 
 		this.getInitializers().add(initializer);
 	}
@@ -135,7 +135,7 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	}
 
 	public void addConstructor(final NewConstructor constructor) {
-		ObjectHelper.checkNotNull("parameter:constructor", constructor);
+		Checker.notNull("parameter:constructor", constructor);
 		this.getConstructors().add(constructor);
 		constructor.setEnclosingType(this);
 	}
@@ -145,7 +145,7 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	}
 	
 	protected void writeInitializers(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final Set initializers = this.getInitializers();
 

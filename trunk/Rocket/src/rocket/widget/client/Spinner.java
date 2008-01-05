@@ -20,8 +20,7 @@ import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.FocusEventListener;
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -110,12 +109,12 @@ public class Spinner extends CompositeWidget {
 	private Image upWidget;
 
 	protected Image getUpWidget() {
-		ObjectHelper.checkNotNull("field:upWidget", upWidget);
+		Checker.notNull("field:upWidget", upWidget);
 		return this.upWidget;
 	}
 
 	protected void setUpWidget(final Image upWidget) {
-		ObjectHelper.checkNotNull("parameter:upWidget", upWidget);
+		Checker.notNull("parameter:upWidget", upWidget);
 		this.upWidget = upWidget;
 	}
 
@@ -151,7 +150,7 @@ public class Spinner extends CompositeWidget {
 	}
 
 	public void setUpImageUrl(final String upImageUrl) {
-		StringHelper.checkNotEmpty("parameter:upImageUrl", upImageUrl);
+		Checker.notEmpty("parameter:upImageUrl", upImageUrl);
 		this.getUpWidget().setUrl(upImageUrl);
 	}
 
@@ -161,12 +160,12 @@ public class Spinner extends CompositeWidget {
 	private Image downWidget;
 
 	protected Image getDownWidget() {
-		ObjectHelper.checkNotNull("field:downWidget", downWidget);
+		Checker.notNull("field:downWidget", downWidget);
 		return this.downWidget;
 	}
 
 	protected void setDownWidget(final Image downWidget) {
-		ObjectHelper.checkNotNull("parameter:downWidget", downWidget);
+		Checker.notNull("parameter:downWidget", downWidget);
 		this.downWidget = downWidget;
 	}
 
@@ -192,7 +191,7 @@ public class Spinner extends CompositeWidget {
 	}
 
 	public void setDownImageUrl(final String downImageUrl) {
-		StringHelper.checkNotEmpty("parameter:downImageUrl", downImageUrl);
+		Checker.notEmpty("parameter:downImageUrl", downImageUrl);
 		this.getDownWidget().setUrl(downImageUrl);
 	}
 
@@ -237,12 +236,12 @@ public class Spinner extends CompositeWidget {
 	private Panel panel;
 
 	protected Panel getPanel() {
-		ObjectHelper.checkNotNull("field:panel", panel);
+		Checker.notNull("field:panel", panel);
 		return this.panel;
 	}
 
 	protected void setPanel(final Panel panel) {
-		ObjectHelper.checkNotNull("parameter:panel", panel);
+		Checker.notNull("parameter:panel", panel);
 		this.panel = panel;
 	}
 

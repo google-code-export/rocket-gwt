@@ -17,7 +17,7 @@ package rocket.generator.rebind.util;
 
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Adds visibility and enclosing type properties to AbstractClassComponent.
@@ -32,7 +32,7 @@ abstract public class AbstractConstructorMethodOrField extends AbstractClassComp
 	private Visibility visibility;
 
 	public Visibility getVisibility() {
-		ObjectHelper.checkNotNull("field:visibility", visibility);
+		Checker.notNull("field:visibility", visibility);
 		return this.visibility;
 	}
 
@@ -41,7 +41,7 @@ abstract public class AbstractConstructorMethodOrField extends AbstractClassComp
 	}
 
 	protected void setVisibility(final Visibility visibility) {
-		ObjectHelper.checkNotNull("parameter:visibility", visibility);
+		Checker.notNull("parameter:visibility", visibility);
 		this.visibility = visibility;
 	}
 
@@ -51,7 +51,7 @@ abstract public class AbstractConstructorMethodOrField extends AbstractClassComp
 	private Type enclosingType;
 
 	public Type getEnclosingType() {
-		ObjectHelper.checkNotNull("field:enclosingType", enclosingType);
+		Checker.notNull("field:enclosingType", enclosingType);
 		return enclosingType;
 	}
 
@@ -60,7 +60,7 @@ abstract public class AbstractConstructorMethodOrField extends AbstractClassComp
 	}
 
 	public void setEnclosingType(final Type enclosingType) {
-		ObjectHelper.checkNotNull("parameter:enclosingType", enclosingType);
+		Checker.notNull("parameter:enclosingType", enclosingType);
 		this.enclosingType = enclosingType;
 	}
 }

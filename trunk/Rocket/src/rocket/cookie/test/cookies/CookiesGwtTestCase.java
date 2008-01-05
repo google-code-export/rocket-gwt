@@ -25,7 +25,7 @@ import java.util.Set;
 import rocket.cookie.client.Cookie;
 import rocket.cookie.client.CookieConstants;
 import rocket.cookie.client.Cookies;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -1762,10 +1762,10 @@ public class CookiesGwtTestCase extends GWTTestCase {
 
 	static void removeAllCookies() {
 		final String cookiesString = getCookies();
-		final String[] cookies = StringHelper.split(cookiesString, CookieConstants.SEPARATOR_STRING, true);
+		final String[] cookies = Utilities.split(cookiesString, CookieConstants.SEPARATOR_STRING, true);
 		for (int i = 0; i < cookies.length; i++) {
 			final String cookieString = cookies[i];
-			final String[] components = StringHelper.split(cookieString, "" + CookieConstants.NAME_VALUE_SEPARATOR, true);
+			final String[] components = Utilities.split(cookieString, "" + CookieConstants.NAME_VALUE_SEPARATOR, true);
 			final String name = components[0];
 			removeCookie(name);
 		}

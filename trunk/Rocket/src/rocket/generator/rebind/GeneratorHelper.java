@@ -30,9 +30,9 @@ import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.ConstructorParameterVisitor;
 import rocket.generator.rebind.visitor.MethodParameterVisitor;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
+import rocket.util.client.Utilities;
 
 /**
  * A collection of helper methods used throughout this package.
@@ -96,7 +96,7 @@ public class GeneratorHelper {
 	 */
 	private static Set createSetFromCommaDelimiteredString(final String input) {
 		final Set set = new HashSet();
-		final String[] literals = StringHelper.split(input, ",", true);
+		final String[] literals = Utilities.split(input, ",", true);
 		for (int i = 0; i < literals.length; i++) {
 			set.add(literals[i]);
 		}
@@ -144,9 +144,9 @@ public class GeneratorHelper {
 	static public boolean isValidJavaTypeName(final String name) {
 		boolean valid = false;
 
-		if (false == StringHelper.isNullOrEmpty(name)) {
+		if (false == Tester.isNullOrEmpty(name)) {
 			valid = true;
-			final String[] components = StringHelper.split(name, ".$", true);
+			final String[] components = Utilities.split(name, ".$", true);
 			for (int i = 0; i < components.length; i++) {
 				if (false == isValidJavaIdentifier(components[i])) {
 					valid = false;
@@ -159,34 +159,34 @@ public class GeneratorHelper {
 
 	static public void checkJavaFieldName(final String name, final String fieldName) {
 		if (false == isValidJavaFieldName(fieldName)) {
-			SystemHelper.fail(name, "The name \"" + fieldName + "\" is not a valid java field name.");
+			Checker.fail(name, "The name \"" + fieldName + "\" is not a valid java field name.");
 		}
 	}
 
 	static public void checkJavaMethodName(final String name, final String methodName) {
 		if (false == isValidJavaTypeName(methodName)) {
-			SystemHelper.fail(name, "The name \"" + methodName + "\" is not a valid java method name.");
+			Checker.fail(name, "The name \"" + methodName + "\" is not a valid java method name.");
 		}
 	}
 
 	static public void checkJavaTypeName(final String name, final String className) {
 		if (false == isValidJavaTypeName(className)) {
-			SystemHelper.fail(name, "The name \"" + className + "\" is not a valid java class name.");
+			Checker.fail(name, "The name \"" + className + "\" is not a valid java class name.");
 		}
 	}
 	
 	static public void checkNestedJavaTypeName(final String name, final String className) {
 		if (false == isValidJavaTypeName(className)) {
-			SystemHelper.fail(name, "The name \"" + className + "\" is not a valid java class name.");
+			Checker.fail(name, "The name \"" + className + "\" is not a valid java class name.");
 		}
 		if( -1 != className.indexOf( '.')){
-			SystemHelper.fail(name, "When naming a nested type the name\"" + className + "\" must not be fully qualified (contain dots '.').");
+			Checker.fail(name, "When naming a nested type the name\"" + className + "\" must not be fully qualified (contain dots '.').");
 		}
 	}
 
 	static public void checkJavaVariableName(final String name, final String variableName) {
 		if (false == isValidJavaVariableName(variableName)) {
-			SystemHelper.fail(name, "The name \"" + variableName + "\" is not a valid variable name.");
+			Checker.fail(name, "The name \"" + variableName + "\" is not a valid variable name.");
 		}
 	}
 
@@ -199,7 +199,7 @@ public class GeneratorHelper {
 	 *            The constructor containing the parameters.
 	 */
 	public static void renameParametersToParameterN(final NewConstructor constructor) {
-		ObjectHelper.checkNotNull("parameter:constructor", constructor);
+		Checker.notNull("parameter:constructor", constructor);
 
 		final ConstructorParameterVisitor visitor = new ConstructorParameterVisitor() {
 			protected boolean visit(final ConstructorParameter parameter) {
@@ -223,7 +223,7 @@ public class GeneratorHelper {
 	 *            The method containing the parameters.
 	 */
 	public static void renameParametersToParameterN(final NewMethod method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final MethodParameterVisitor visitor = new MethodParameterVisitor() {
 			protected boolean visit(final MethodParameter parameter) {
@@ -245,8 +245,8 @@ public class GeneratorHelper {
 	 * @param writer
 	 */
 	static public void writeThrownTypes(final Set types, final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:types", types);
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:types", types);
+		Checker.notNull("parameter:writer", writer);
 
 		if (false == types.isEmpty()) {
 			writer.print("throws ");
@@ -273,8 +273,8 @@ public class GeneratorHelper {
 	 * @param eol Print a new line after each component.
 	 */
 	static public void writeClassComponents(final Collection components, final SourceWriter writer, final boolean comma, final boolean eol) {
-		ObjectHelper.checkNotNull("parameter:components", components);
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:components", components);
+		Checker.notNull("parameter:writer", writer);
 
 		final Iterator componentsIterator = components.iterator();
 		while (componentsIterator.hasNext()) {
@@ -293,8 +293,8 @@ public class GeneratorHelper {
 	}
 
 	static public void writeClassComponent(final ClassComponent component, final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:component", component);
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:component", component);
+		Checker.notNull("parameter:writer", writer);
 
 		if (false == component instanceof CodeGenerator) {
 			throwCodeCannotBeGeneratedException(component);
@@ -322,7 +322,7 @@ public class GeneratorHelper {
 		boolean valid = false;
 
 		while (true) {
-			if (StringHelper.isNullOrEmpty(name)) {
+			if (Tester.isNullOrEmpty(name)) {
 				break;
 			}
 			if (GeneratorHelper.javascriptIdentifierBlacklist.contains(name)) {
@@ -361,7 +361,7 @@ public class GeneratorHelper {
 	 * @param constructor
 	 */
 	static public void makeAllParametersFinal(final NewConstructor constructor) {
-		ObjectHelper.checkNotNull("parameter:constructor", constructor);
+		Checker.notNull("parameter:constructor", constructor);
 
 		final Iterator parameters = constructor.getParameters().iterator();
 		while (parameters.hasNext()) {
@@ -376,7 +376,7 @@ public class GeneratorHelper {
 	 * @param method
 	 */
 	static public void makeAllParametersFinal(final NewMethod method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		final Iterator parameters = method.getParameters().iterator();
 		while (parameters.hasNext()) {
@@ -392,12 +392,12 @@ public class GeneratorHelper {
 	 * @param writer The writer typically invoked inside a ClassComponent when its writing itself.
 	 */
 	static public void writeComments( final String comments, final MetaData metaData, final SourceWriter writer ){
-		StringHelper.checkNotNull( "parameter:comments", comments );
-		ObjectHelper.checkNotNull( "parameter:metaData", metaData );
-		ObjectHelper.checkNotNull( "parameter:sourceWriter", writer );
+		Checker.notNull( "parameter:comments", comments );
+		Checker.notNull( "parameter:metaData", metaData );
+		Checker.notNull( "parameter:sourceWriter", writer );
 	
 		while( true ){ 
-			final boolean noComments = StringHelper.isNullOrEmpty(comments);			
+			final boolean noComments = Tester.isNullOrEmpty(comments);			
 			final boolean noAnnotations = metaData.isEmpty();
 			
 			if( noComments && noAnnotations ){

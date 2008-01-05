@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import rocket.util.server.IoHelper;
+import rocket.util.server.InputOutput;
 
 /**
  * This servlet simply re-writes any post data back.
@@ -54,8 +54,8 @@ public class BinaryEchoServlet extends HttpServlet {
 			}
 			outputStream.flush();
 		} finally {
-			IoHelper.closeIfNecessary(inputStream);
-			IoHelper.closeIfNecessary(outputStream);
+			InputOutput.closeIfNecessary(inputStream);
+			InputOutput.closeIfNecessary(outputStream);
 		}
 	}
 }

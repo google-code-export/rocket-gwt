@@ -26,17 +26,16 @@ import rocket.remoting.client.FailedWebRequestException;
 import rocket.remoting.client.Headers;
 import rocket.remoting.client.WebRequest;
 import rocket.remoting.client.WebResponse;
-import rocket.util.client.HttpHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.server.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 public class WebHelper {
 
 	public static WebResponse doWebRequest(final HttpServletRequest request, final HttpServletResponse response, final WebRequest webRequest)
 			throws FailedWebRequestException {
-		ObjectHelper.checkNotNull("parameter:request", request);
-		ObjectHelper.checkNotNull("parameter:response", response);
-		ObjectHelper.checkNotNull("parameter:webRequest", webRequest);
+		Checker.notNull("parameter:request", request);
+		Checker.notNull("parameter:response", response);
+		Checker.notNull("parameter:webRequest", webRequest);
 
 		try {
 			// if url includes contxt path drop it.
@@ -46,7 +45,7 @@ public class WebHelper {
 
 			GetOrPostHttpServletRequest request0 = null;
 			while (true) {
-				if (HttpHelper.isGet(webRequest.getMethod())) {
+				if (Tester.isGet(webRequest.getMethod())) {
 					request0 = new GetHttpServletRequest(request, url, headers, webRequest.getParameters());
 					break;
 				}
@@ -85,8 +84,8 @@ public class WebHelper {
 	}
 
 	public void copyHeaders(final HttpServletRequest source, final Headers destination) {
-		ObjectHelper.checkNotNull("parameter:source", source);
-		ObjectHelper.checkNotNull("parameter:destination", destination);
+		Checker.notNull("parameter:source", source);
+		Checker.notNull("parameter:destination", destination);
 
 		final Enumeration names = source.getHeaderNames();
 		while (names.hasMoreElements()) {
@@ -101,8 +100,8 @@ public class WebHelper {
 	}
 
 	public void copyHeaders(final Headers source, final HttpServletResponse destination) {
-		ObjectHelper.checkNotNull("parameter:source", source);
-		ObjectHelper.checkNotNull("parameter:destination", destination);
+		Checker.notNull("parameter:source", source);
+		Checker.notNull("parameter:destination", destination);
 
 		final Iterator names = source.names();
 		while (names.hasNext()) {
@@ -117,8 +116,8 @@ public class WebHelper {
 	}
 
 	public static String dropContextPathIfNecessary(final String url, final HttpServletRequest request) {
-		StringHelper.checkNotNull("parameter:url", url);
-		ObjectHelper.checkNotNull("parameter:request", request);
+		Checker.notNull("parameter:url", url);
+		Checker.notNull("parameter:request", request);
 
 		String checkedUrl = url;
 		final String contextPath = request.getContextPath();

@@ -29,8 +29,8 @@ import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.util.StringBufferSourceWriter;
 import rocket.text.client.PlaceHolderReplacer;
-import rocket.util.client.ObjectHelper;
-import rocket.util.server.IoHelper;
+import rocket.util.client.Checker;
+import rocket.util.server.InputOutput;
 import rocket.util.server.UncheckedIOException;
 
 /**
@@ -77,7 +77,7 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 	 *            The writer of the source file being created
 	 */
 	protected void write0(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		BufferedReader reader = null;
 		try {
@@ -103,7 +103,7 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 		} catch (final IOException caught) {
 			throw new UncheckedIOException(caught);
 		} finally {
-			IoHelper.closeIfNecessary(reader);
+			InputOutput.closeIfNecessary(reader);
 		}
 	}
 
@@ -202,7 +202,7 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 	 * @return
 	 */
 	protected String asString(final CodeBlock codeBlock) {
-		ObjectHelper.checkNotNull("parameter:codeBlock", codeBlock);
+		Checker.notNull("parameter:codeBlock", codeBlock);
 
 		String string = "";
 		if (false == codeBlock.isEmpty()) {
@@ -214,37 +214,37 @@ abstract public class TemplatedCodeBlock implements CodeBlock {
 	}
 
 	protected String asString(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		return this.isNative() ? type.getJsniNotation() : type.getName();
 	}
 
 	protected String asString(final Constructor constructor) {
-		ObjectHelper.checkNotNull("parameter:constructor", constructor);
+		Checker.notNull("parameter:constructor", constructor);
 
 		return constructor.getEnclosingType().getName();
 	}
 
 	protected String asString(final ConstructorParameter constructorParameter) {
-		ObjectHelper.checkNotNull("parameter:constructorParameter", constructorParameter);
+		Checker.notNull("parameter:constructorParameter", constructorParameter);
 
 		return constructorParameter.getName();
 	}
 
 	protected String asString(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		return this.isNative() ? method.getJsniNotation() : method.getName();
 	}
 
 	protected String asString(final MethodParameter methodParameter) {
-		ObjectHelper.checkNotNull("parameter:methodParameter", methodParameter);
+		Checker.notNull("parameter:methodParameter", methodParameter);
 
 		return methodParameter.getName();
 	}
 
 	protected String asString(final Field field) {
-		ObjectHelper.checkNotNull("parameter:field", field);
+		Checker.notNull("parameter:field", field);
 
 		return this.isNative() ? field.getJsniNotation() : field.getName();
 	}

@@ -17,7 +17,8 @@ package rocket.style.client.support;
 
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -50,7 +51,7 @@ public class OperaComputedStyleSupport extends OperaStyleSupport {
 				break;
 			}
 			if (Css.FONT_WEIGHT.equals( name)) {
-				value = "" + this.getComputedFontWeight( ObjectHelper.castToElement( element));
+				value = "" + this.getComputedFontWeight( JavaScript.castToElement( element));
 				break;
 			}
 
@@ -76,9 +77,9 @@ public class OperaComputedStyleSupport extends OperaStyleSupport {
 	 * @return
 	 */
 	protected int getWidth(final JavaScriptObject element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 
-		final int offsetWidth = ObjectHelper.getInteger(element, "offsetWidth");
+		final int offsetWidth = JavaScript.getInteger(element, "offsetWidth");
 
 		final int borderLeft = this.getPixelProperty(element, Css.BORDER_LEFT_WIDTH);
 		final int borderRight = this.getPixelProperty(element, Css.BORDER_RIGHT_WIDTH);
@@ -96,9 +97,9 @@ public class OperaComputedStyleSupport extends OperaStyleSupport {
 	 * @return
 	 */
 	protected int getHeight(final JavaScriptObject element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 
-		final int offsetHeight = ObjectHelper.getInteger(element, "offsetHeight");
+		final int offsetHeight = JavaScript.getInteger(element, "offsetHeight");
 
 		final int borderTop = this.getPixelProperty(element, Css.BORDER_TOP_WIDTH);
 		final int borderBottom = this.getPixelProperty(element, Css.BORDER_BOTTOM_WIDTH);
@@ -110,7 +111,7 @@ public class OperaComputedStyleSupport extends OperaStyleSupport {
 	}
 
 	protected int getPixelProperty(final JavaScriptObject element, final String name) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		this.checkPropertyName("parameter:name", name);
 
 		final String value = this.get(element, name);

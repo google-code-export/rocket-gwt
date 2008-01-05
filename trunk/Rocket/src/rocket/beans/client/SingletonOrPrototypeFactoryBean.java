@@ -15,8 +15,7 @@
  */
 package rocket.beans.client;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * Convenient base class for both Singleton and prototype bean factories. A few
@@ -84,7 +83,7 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	 * @param instance
 	 */
 	protected void satisfyBeanFactoryAwareIfNecessary(Object instance) {
-		ObjectHelper.checkNotNull("parameter:instance", instance);
+		Checker.notNull("parameter:instance", instance);
 
 		if (instance instanceof BeanFactoryAware) {
 			final BeanFactoryAware aware = (BeanFactoryAware) instance;
@@ -100,7 +99,7 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	 * @param instance
 	 */
 	protected void satisfyBeanNameAwareIfNecessary(Object instance) {
-		ObjectHelper.checkNotNull("parameter:instance", instance);
+		Checker.notNull("parameter:instance", instance);
 
 		if (instance instanceof BeanNameAware) {
 			final BeanNameAware aware = (BeanNameAware) instance;
@@ -114,11 +113,11 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	private String name;
 	
 	protected String getName(){
-		StringHelper.checkNotEmpty( "field:name", name );
+		Checker.notEmpty( "field:name", name );
 		return this.name;
 	}
 	public void setBeanName( final String name ){
-		StringHelper.checkNotEmpty( "parameter:name", name );
+		Checker.notEmpty( "parameter:name", name );
 		this.name = name;
 	}
 	
@@ -146,12 +145,12 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	private BeanFactory beanFactory;
 
 	public void setBeanFactory(BeanFactory beanFactory) {
-		ObjectHelper.checkNotNull("parameter:beanFactory", beanFactory);
+		Checker.notNull("parameter:beanFactory", beanFactory);
 		this.beanFactory = beanFactory;
 	}
 
 	protected BeanFactory getBeanFactory() {
-		ObjectHelper.checkNotNull("field:beanFactory", beanFactory);
+		Checker.notNull("field:beanFactory", beanFactory);
 		return this.beanFactory;
 	}
 }

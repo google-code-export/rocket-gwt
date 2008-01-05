@@ -15,7 +15,8 @@
  */
 package rocket.dom.client;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 import rocket.util.client.ObjectWrapperImpl;
 
 import com.google.gwt.user.client.DOM;
@@ -36,48 +37,48 @@ public abstract class ElementWrapperImpl extends ObjectWrapperImpl implements El
 	}
 
 	public String getId() {
-		return ObjectHelper.getString(this.getElement(), DomConstants.ID_ATTRIBUTE);
+		return JavaScript.getString(this.getElement(), DomConstants.ID_ATTRIBUTE);
 	}
 
 	public boolean hasId() {
-		return ObjectHelper.hasProperty(this.getElement(), DomConstants.ID_ATTRIBUTE);
+		return JavaScript.hasProperty(this.getElement(), DomConstants.ID_ATTRIBUTE);
 	}
 
 	public void setId(final String id) {
-		ObjectHelper.setString(this.getElement(), DomConstants.ID_ATTRIBUTE, id);
+		JavaScript.setString(this.getElement(), DomConstants.ID_ATTRIBUTE, id);
 	}
 
 	public String getName() {
-		return ObjectHelper.getString(this.getElement(), DomConstants.NAME_ATTRIBUTE);
+		return JavaScript.getString(this.getElement(), DomConstants.NAME_ATTRIBUTE);
 	}
 
 	public boolean hasName() {
-		return ObjectHelper.hasProperty(this.getElement(), DomConstants.NAME_ATTRIBUTE);
+		return JavaScript.hasProperty(this.getElement(), DomConstants.NAME_ATTRIBUTE);
 	}
 
 	public void setName(final String name) {
-		ObjectHelper.setString(this.getElement(), DomConstants.NAME_ATTRIBUTE, name);
+		JavaScript.setString(this.getElement(), DomConstants.NAME_ATTRIBUTE, name);
 	}
 
 	public String getTitle() {
-		return ObjectHelper.getString(this.getElement(), DomConstants.TITLE_ATTRIBUTE);
+		return JavaScript.getString(this.getElement(), DomConstants.TITLE_ATTRIBUTE);
 	}
 
 	public boolean hasTitle() {
-		return ObjectHelper.hasProperty(this.getElement(), DomConstants.TITLE_ATTRIBUTE);
+		return JavaScript.hasProperty(this.getElement(), DomConstants.TITLE_ATTRIBUTE);
 	}
 
 	public void setTitle(final String title) {
-		ObjectHelper.setString(this.getElement(), DomConstants.TITLE_ATTRIBUTE, title);
+		JavaScript.setString(this.getElement(), DomConstants.TITLE_ATTRIBUTE, title);
 	}
 
 	public Element getElement() {
-		return ObjectHelper.castToElement(this.getObject());
+		return JavaScript.castToElement(this.getObject());
 	}
 
 	public void setElement(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-		this.setObject(ObjectHelper.castFromElement(element));
+		Checker.notNull("parameter:element", element);
+		this.setObject(JavaScript.castFromElement(element));
 	}
 
 	/**

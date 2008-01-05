@@ -19,7 +19,8 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -42,12 +43,12 @@ class RuleList extends AbstractList {
 	private StyleSheet styleSheet;
 
 	protected StyleSheet getStyleSheet() {
-		ObjectHelper.checkNotNull("field:styleSheet", styleSheet);
+		Checker.notNull("field:styleSheet", styleSheet);
 		return this.styleSheet;
 	}
 
 	protected void setStyleSheet(final StyleSheet styleSheet) {
-		ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
+		Checker.notNull("parameter:styleSheet", styleSheet);
 		this.styleSheet = styleSheet;
 	}
 
@@ -82,7 +83,7 @@ class RuleList extends AbstractList {
 	}
 
 	public int size() {
-		return ObjectHelper.getPropertyCount(this.getRulesCollection());
+		return JavaScript.getPropertyCount(this.getRulesCollection());
 	}
 
 	/**
@@ -91,12 +92,12 @@ class RuleList extends AbstractList {
 	private List wrappers;
 
 	protected List getWrappers() {
-		ObjectHelper.checkNotNull("field:wrappers", this.wrappers);
+		Checker.notNull("field:wrappers", this.wrappers);
 		return this.wrappers;
 	}
 
 	protected void setWrappers(final List wrappers) {
-		ObjectHelper.checkNotNull("parameter:wrappers", wrappers);
+		Checker.notNull("parameter:wrappers", wrappers);
 		this.wrappers = wrappers;
 	}
 
@@ -233,7 +234,7 @@ class RuleList extends AbstractList {
 	}
 
 	protected void removeRule(final Rule rule) {
-		ObjectHelper.checkNotNull("parameter:rule", rule);
+		Checker.notNull("parameter:rule", rule);
 
 		if (rule.hasRuleList()) {
 			final JavaScriptObject styleSheet = this.getStyleSheet().getNativeStyleSheet();
@@ -270,7 +271,7 @@ class RuleList extends AbstractList {
 	 * @param rule
 	 */
 	protected void checkNotAlreadyAttached(final Rule rule) {
-		ObjectHelper.checkNotNull("parameter:rule", rule);
+		Checker.notNull("parameter:rule", rule);
 		if (rule.hasRuleList()) {
 			throw new IllegalArgumentException("The parameter:rule has already been added to a List.");
 		}

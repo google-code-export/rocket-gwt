@@ -16,8 +16,7 @@
 package rocket.widget.client;
 
 import rocket.dom.client.Dom;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -45,12 +44,12 @@ public class Hijacker {
 	private Element element;
 
 	Element getElement() {
-		ObjectHelper.checkNotNull("field:element", element);
+		Checker.notNull("field:element", element);
 		return element;
 	}
 
 	void setElement(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		this.element = element;
 	}
 
@@ -64,7 +63,7 @@ public class Hijacker {
 	}
 
 	void setParent(final Element parent) {
-		ObjectHelper.checkNotNull("parameter:parent", parent);
+		Checker.notNull("parameter:parent", parent);
 		this.parent = parent;
 	}
 
@@ -78,12 +77,12 @@ public class Hijacker {
 	private int childIndex;
 
 	int getChildIndex() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:childIndex", 0, childIndex );
+		Checker.greaterThanOrEqual("field:childIndex", 0, childIndex );
 		return this.childIndex;
 	}
 
 	void setChildIndex(final int childIndex) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:childIndex", 0, childIndex );
+		Checker.greaterThanOrEqual("parameter:childIndex", 0, childIndex );
 		this.childIndex = childIndex;
 	}
 
@@ -118,7 +117,7 @@ public class Hijacker {
 	 */
 	public void replace(final Element element) {
 		final Element parent = this.getParent();
-		ObjectHelper.checkNotNull("element was not attached", parent);
+		Checker.notNull("element was not attached", parent);
 		DOM.insertChild(parent, element, this.getChildIndex());
 	}
 }

@@ -15,8 +15,6 @@
  */
 package rocket.serialization.client;
 
-import java.util.HashMap;
-import java.util.Map;
 
 abstract public class ObjectInputStreamImpl implements ObjectInputStream {
 

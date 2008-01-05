@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import rocket.dom.client.Dom;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -212,12 +212,12 @@ abstract public class GridView extends CompositeWidget {
 	private Grid grid;
 
 	protected Grid getGrid() {
-		ObjectHelper.checkNotNull("field:grid", grid);
+		Checker.notNull("field:grid", grid);
 		return grid;
 	}
 
 	protected void setGrid(final Grid grid) {
-		ObjectHelper.checkNotNull("parameter:grid", grid);
+		Checker.notNull("parameter:grid", grid);
 		this.grid = grid;
 	}
 

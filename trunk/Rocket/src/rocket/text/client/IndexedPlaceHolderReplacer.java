@@ -15,8 +15,7 @@
  */
 package rocket.text.client;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * This placeholder scans for placeholders and uses the placeholder as an index
@@ -36,7 +35,7 @@ public class IndexedPlaceHolderReplacer extends PlaceHolderReplacer {
 			return String.valueOf(this.getValues()[index]);
 
 		} catch (final NumberFormatException badIndex) {
-			StringHelper.fail("Placeholder index does not contain a number \"" + placeHolder + "\".");
+			Checker.fail("Placeholder index does not contain a number \"" + placeHolder + "\".");
 			return null;// unreachable
 		}
 	}
@@ -47,12 +46,12 @@ public class IndexedPlaceHolderReplacer extends PlaceHolderReplacer {
 	private Object[] values;
 
 	protected Object[] getValues() {
-		ObjectHelper.checkNotNull("field:values", values);
+		Checker.notNull("field:values", values);
 		return this.values;
 	}
 
 	public void setValues(final Object[] values) {
-		ObjectHelper.checkNotNull("parameter:values", values);
+		Checker.notNull("parameter:values", values);
 		this.values = values;
 	}
 }

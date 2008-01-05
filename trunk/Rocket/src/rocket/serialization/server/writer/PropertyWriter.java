@@ -18,14 +18,16 @@ package rocket.serialization.server.writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.SerializationException;
 import rocket.serialization.server.ServerObjectWriter;
 import rocket.serialization.server.ServerObjectWriterImpl;
-import rocket.util.client.ObjectHelper;
-
-import java.util.*;
+import rocket.util.client.Checker;
 
 /**
  * Convenient base class for any instance who which is instrumented by a library such as CGLIB.
@@ -195,12 +197,12 @@ abstract public class PropertyWriter extends ServerObjectWriterImpl implements S
 	private Map getters;
 	
 	protected Map getGetters(){
-		ObjectHelper.checkNotNull( "field:getters", getters );
+		Checker.notNull( "field:getters", getters );
 		return this.getters;
 	}
 	
 	protected void setGetters( final Map getters ){
-		ObjectHelper.checkNotNull( "parameter:getters", getters );
+		Checker.notNull( "parameter:getters", getters );
 		this.getters = getters;
 	}
 	

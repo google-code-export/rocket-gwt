@@ -15,11 +15,9 @@
  */
 package rocket.serialization.test.client.writer;
 
-import java.util.Map;
-
+import rocket.serialization.client.ClientObjectOutputStream;
 import rocket.serialization.client.writer.IntArrayWriter;
 import rocket.serialization.test.client.ClientGwtTestCase;
-import rocket.serialization.client.ClientObjectOutputStream;
 
 public class IntArrayWriterGwtTestCase extends ClientGwtTestCase {
 

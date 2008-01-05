@@ -21,7 +21,7 @@ import java.util.List;
 import rocket.generator.rebind.ClassComponent;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.HasMetaData;
 
@@ -44,12 +44,12 @@ public class AbstractClassComponent implements ClassComponent {
 	private GeneratorContext generatorContext;
 
 	public GeneratorContext getGeneratorContext() {
-		ObjectHelper.checkNotNull("field:generatorContext", generatorContext);
+		Checker.notNull("field:generatorContext", generatorContext);
 		return this.generatorContext;
 	}
 
 	public void setGeneratorContext(final GeneratorContext generatorContext) {
-		ObjectHelper.checkNotNull("parameter:generatorContext", generatorContext);
+		Checker.notNull("parameter:generatorContext", generatorContext);
 		this.generatorContext = generatorContext;
 	}
 

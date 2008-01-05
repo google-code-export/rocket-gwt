@@ -19,16 +19,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import junit.framework.TestCase;
 import rocket.serialization.client.ObjectInputStream;
-import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.server.ServerObjectInputStream;
-import rocket.serialization.server.ServerObjectOutputStream;
 import rocket.serialization.server.ServerObjectReader;
 import rocket.serialization.server.ServerObjectWriter;
 import rocket.serialization.server.reader.ReflectiveReader;

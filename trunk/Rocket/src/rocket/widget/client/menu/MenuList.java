@@ -24,7 +24,8 @@ import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
 import rocket.style.client.Css;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 import rocket.widget.client.CompositePanel;
 
 import com.google.gwt.user.client.DOM;
@@ -81,7 +82,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	}
 
 	protected void handleMouseOut(final MouseOutEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		while (true) {
 			final Element targetElement = event.getTo();
@@ -174,7 +175,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 			menu = this.getParentMenuList().getMenu();
 		}
 
-		ObjectHelper.checkNotNull("menu", menu);
+		Checker.notNull("menu", menu);
 		return menu;
 	}
 
@@ -183,7 +184,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	}
 
 	public void setMenu(final Menu menu) {
-		ObjectHelper.checkNotNull("parameter:menu", menu);
+		Checker.notNull("parameter:menu", menu);
 		this.menu = menu;
 	}
 
@@ -194,7 +195,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	private MenuList parentMenuList;
 
 	public MenuList getParentMenuList() {
-		ObjectHelper.checkNotNull("field:parentMenuList", parentMenuList);
+		Checker.notNull("field:parentMenuList", parentMenuList);
 		return this.parentMenuList;
 	}
 
@@ -203,7 +204,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	}
 
 	public void setParentMenuList(final MenuList parentMenuList) {
-		ObjectHelper.checkNotNull("parameter:parentMenuList", parentMenuList);
+		Checker.notNull("parameter:parentMenuList", parentMenuList);
 		this.parentMenuList = parentMenuList;
 	}
 
@@ -213,12 +214,12 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	private MenuListOpenDirection openDirection;
 
 	public MenuListOpenDirection getOpenDirection() {
-		ObjectHelper.checkNotNull("field:openDirection", this.openDirection);
+		Checker.notNull("field:openDirection", this.openDirection);
 		return this.openDirection;
 	}
 
 	public void setOpenDirection(final MenuListOpenDirection openDirection) {
-		ObjectHelper.checkNotNull("parameter:openDirection", openDirection);
+		Checker.notNull("parameter:openDirection", openDirection);
 		this.openDirection = openDirection;
 	}
 
@@ -230,7 +231,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	private SubMenuItem opened;
 
 	protected SubMenuItem getOpened() {
-		ObjectHelper.checkNotNull("field:opened", opened);
+		Checker.notNull("field:opened", opened);
 		return this.opened;
 	}
 
@@ -239,7 +240,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 	}
 
 	protected void setOpened(final SubMenuItem opened) {
-		ObjectHelper.checkNotNull("parameter:opened", opened);
+		Checker.notNull("parameter:opened", opened);
 		this.opened = opened;
 	}
 
@@ -249,7 +250,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 
 	public String toString() {
 		final StringBuffer buf = new StringBuffer();
-		buf.append(ObjectHelper.defaultToString(this));
+		buf.append(Utilities.defaultToString(this));
 		buf.append(" \"");
 
 		if (this.hasParentMenuList()) {

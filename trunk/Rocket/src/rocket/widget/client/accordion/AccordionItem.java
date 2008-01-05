@@ -15,8 +15,7 @@
  */
 package rocket.widget.client.accordion;
 
-import rocket.util.client.ObjectHelper;
-import rocket.widget.client.WidgetHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -66,7 +65,7 @@ public class AccordionItem {
 	private AccordionPanel accordionPanel;
 
 	protected AccordionPanel getAccordionPanel() {
-		ObjectHelper.checkNotNull("field:accordionPanel", accordionPanel);
+		Checker.notNull("field:accordionPanel", accordionPanel);
 		return this.accordionPanel;
 	}
 
@@ -75,11 +74,11 @@ public class AccordionItem {
 	}
 
 	protected void setAccordionPanel(final AccordionPanel accordionPanel) {
-		ObjectHelper.checkNotNull("parameter:accordionPanel", accordionPanel);
+		Checker.notNull("parameter:accordionPanel", accordionPanel);
 
 		// if it was already attached remove it first...
 		if (this.hasAccordionPanel()) {
-			WidgetHelper.fail("This AccordionItem already belongs to a AccordionPanel, accordionPanel: " + accordionPanel);
+			Checker.fail("This AccordionItem already belongs to a AccordionPanel, accordionPanel: " + accordionPanel);
 		}
 
 		this.accordionPanel = accordionPanel;
@@ -95,12 +94,12 @@ public class AccordionItem {
 	private HTML captionWidget;
 
 	protected HTML getCaptionWidget() {
-		ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
+		Checker.notNull("field:captionWidget", captionWidget);
 		return this.captionWidget;
 	}
 
 	protected void setCaptionWidget(final HTML captionWidget) {
-		ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
+		Checker.notNull("field:captionWidget", captionWidget);
 		this.captionWidget = captionWidget;
 	}
 
@@ -131,7 +130,7 @@ public class AccordionItem {
 	private Widget content;
 
 	public Widget getContent() {
-		ObjectHelper.checkNotNull("field:content", content);
+		Checker.notNull("field:content", content);
 		return this.content;
 	}
 
@@ -140,7 +139,7 @@ public class AccordionItem {
 	}
 
 	public void setContent(final Widget content) {
-		ObjectHelper.checkNotNull("parameter:content", content);
+		Checker.notNull("parameter:content", content);
 
 		// replace the previous content widget with the new one...
 		if (this.hasAccordionPanel()) {

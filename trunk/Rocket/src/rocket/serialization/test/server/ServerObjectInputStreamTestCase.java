@@ -15,11 +15,8 @@
  */
 package rocket.serialization.test.server;
 
-import java.util.Map;
-
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectOutputStream;
-import rocket.serialization.server.ServerObjectInputStream;
 
 public class ServerObjectInputStreamTestCase extends ServerTestCase {
 

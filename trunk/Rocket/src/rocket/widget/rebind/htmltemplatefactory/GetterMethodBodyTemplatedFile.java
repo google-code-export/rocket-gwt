@@ -20,7 +20,6 @@ import java.io.InputStream;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 
 abstract public class GetterMethodBodyTemplatedFile extends TemplatedFileCodeBlock {

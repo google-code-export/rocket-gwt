@@ -23,7 +23,7 @@ import rocket.widget.client.ListBox;
 import rocket.widget.client.RadioButton;
 import rocket.widget.client.ResizablePanel;
 import rocket.widget.client.TextBox;
-import rocket.widget.client.WidgetHelper;
+import rocket.widget.client.Widgets;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -149,7 +149,7 @@ public class ResizablePanelTest implements EntryPoint {
 		flowPanel.setHeight((MAXIMUM_HEIGHT + MINIMUM_HEIGHT) / 2 + "px");
 		rootPanel.add(this.createResizablePanel(flowPanel, true, countUpdater));
 		
-		WidgetHelper.forceDocumentContentsToScroll( 100 );
+		Widgets.forceDocumentContentsToScroll( 100 );
 	}
 
 	protected ResizablePanel createResizablePanel(final Widget widget, final boolean keepAspectRatio,

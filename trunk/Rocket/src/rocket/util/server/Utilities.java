@@ -21,7 +21,7 @@ package rocket.util.server;
  * @author Miroslav Pokorny
  * @version 1.0
  */
-public class ObjectHelper extends rocket.util.client.ObjectHelper {
+public class Utilities extends rocket.util.client.Utilities {
 
 	/**
 	 * Return the default java.lang.Object.toString() for the given object.
@@ -42,6 +42,6 @@ public class ObjectHelper extends rocket.util.client.ObjectHelper {
 		Integer.toHexString(System.identityHashCode(object));
 	} // defaultToString
 
-	protected ObjectHelper() {
+	protected Utilities() {
 	}
 }

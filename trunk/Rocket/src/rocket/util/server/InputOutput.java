@@ -29,8 +29,7 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
 
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 /**
  * A collection of useful helper methods relating to IO such as closing
@@ -39,7 +38,7 @@ import rocket.util.client.SystemHelper;
  * @author Miroslav Pokorny
  * @version 1.0
  */
-public class IoHelper {
+public class InputOutput {
 	/**
 	 * Wraps the given reader with a BufferedReader if necessary
 	 * 
@@ -48,7 +47,7 @@ public class IoHelper {
 	 * @return A guaranteed BufferedReader
 	 */
 	public static BufferedReader makeReaderBuffered(final Reader reader) {
-		ObjectHelper.checkNotNull("parameter:reader", reader);
+		Checker.notNull("parameter:reader", reader);
 
 		return reader instanceof BufferedReader ? (BufferedReader) reader : new BufferedReader(reader);
 	}
@@ -61,7 +60,7 @@ public class IoHelper {
 	 * @return A guaranteed BufferedWriter
 	 */
 	public static BufferedWriter makeWriterBuffered(final Writer writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		return writer instanceof BufferedWriter ? (BufferedWriter) writer : new BufferedWriter(writer);
 	}
@@ -151,9 +150,9 @@ public class IoHelper {
 	 *            Object
 	 */
 	public static void mustBeSerializable(final String name, final Object object) {
-		ObjectHelper.checkNotNull(name, object);
+		Checker.notNull(name, object);
 		if (false == (object instanceof java.io.Serializable)) {
-			SystemHelper.fail(name, "The " + name + " is not serializable, object: " + object);
+			Checker.fail(name, "The " + name + " is not serializable, object: " + object);
 		}
 	}
 
@@ -174,7 +173,7 @@ public class IoHelper {
 	 *             always work)
 	 */
 	public static byte[] serialize(final Serializable object) throws UncheckedIOException {
-		ObjectHelper.checkNotNull("parameter:object", object);
+		Checker.notNull("parameter:object", object);
 		return nullSafeSerialize(object);
 	}
 
@@ -200,7 +199,7 @@ public class IoHelper {
 			throwIOException("A problem occured when attempting to serialize " + object, caught);
 			return null;
 		} finally {
-			IoHelper.closeIfNecessary(bytes);
+			InputOutput.closeIfNecessary(bytes);
 		}
 	}
 
@@ -226,7 +225,7 @@ public class IoHelper {
 			throwIOException("A problem occured when attempting to deserialize " + bytes, caught);
 			return null;
 		} finally {
-			IoHelper.closeIfNecessary(bytesInputStream);
+			InputOutput.closeIfNecessary(bytesInputStream);
 		}
 
 	}
@@ -241,8 +240,8 @@ public class IoHelper {
 	 *            Throwable
 	 */
 	public static void throwIOException(final String message, final Throwable cause) {
-		StringHelper.checkNotEmpty("assert:message", message);
-		ObjectHelper.checkNotNull("assert:cause", cause);
+		Checker.notEmpty("assert:message", message);
+		Checker.notNull("assert:cause", cause);
 
 		throw new UncheckedIOException(message, cause);
 	}
@@ -255,7 +254,7 @@ public class IoHelper {
 	 *            Throwable
 	 */
 	public static void throwIOException(final Throwable cause) {
-		ObjectHelper.checkNotNull("assert:cause", cause);
+		Checker.notNull("assert:cause", cause);
 
 		throw new UncheckedIOException(cause);
 	}
@@ -285,6 +284,6 @@ public class IoHelper {
 	/**
 	 * No need to create
 	 */
-	private IoHelper() {
+	private InputOutput() {
 	}
 }

@@ -15,7 +15,7 @@
  */
 package rocket.generator.rebind;
 
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * A enum like class that represents any of the possible levels of visibility
@@ -32,7 +32,7 @@ public class Visibility {
 	 * @return A visibility instance.
 	 */
 	static public Visibility getVisibility(final String visibilityName) {
-		StringHelper.checkNotEmpty("parameter:visibilityName", visibilityName);
+		Checker.notEmpty("parameter:visibilityName", visibilityName);
 
 		Visibility visibility = null;
 

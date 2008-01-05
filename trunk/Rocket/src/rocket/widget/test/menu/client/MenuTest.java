@@ -15,10 +15,10 @@
  */
 package rocket.widget.test.menu.client;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.Html;
 import rocket.widget.client.Label;
-import rocket.widget.client.WidgetHelper;
+import rocket.widget.client.Widgets;
 import rocket.widget.client.menu.ContextMenu;
 import rocket.widget.client.menu.ContextMenuOpenEvent;
 import rocket.widget.client.menu.HorizontalMenuBar;
@@ -85,7 +85,7 @@ public class MenuTest implements EntryPoint {
 		panel.setSize( "90%", "500px" );
 		rootPanel.add( panel );
 		
-		WidgetHelper.forceDocumentContentsToScroll( 500 );
+		Widgets.forceDocumentContentsToScroll( 500 );
 	}
 	
 	protected Widget createDownOpeningMenu(){
@@ -169,8 +169,8 @@ public class MenuTest implements EntryPoint {
 		return list;
 	}
 	void buildMenu(final Menu menu, final MenuListOpenDirection openDirection) {
-		ObjectHelper.checkNotNull("parameter:menu", menu);
-		ObjectHelper.checkNotNull("parameter:openDirection", openDirection);
+		Checker.notNull("parameter:menu", menu);
+		Checker.notNull("parameter:openDirection", openDirection);
 
 		final String[] sizes = new String[]{ "Big", "Medium", "Small" };
 		
@@ -188,8 +188,8 @@ public class MenuTest implements EntryPoint {
 	}
 	
 	void buildSubMenu(final SubMenuItem subMenuItem, final MenuListOpenDirection openDirection) {
-		ObjectHelper.checkNotNull("parameter:subMenuItem", subMenuItem);
-		ObjectHelper.checkNotNull("parameter:openDirection", openDirection);
+		Checker.notNull("parameter:subMenuItem", subMenuItem);
+		Checker.notNull("parameter:openDirection", openDirection);
 
 		final String[] colours = new String[]{ "Red", "Blue", "Green", "Yellow", "Orange", "Pink", "White", "Black" };
 		
@@ -225,8 +225,8 @@ public class MenuTest implements EntryPoint {
 	}
 
 	void buildSubSubMenu(final SubMenuItem subMenuItem, final MenuListOpenDirection openDirection) {
-		ObjectHelper.checkNotNull("parameter:subMenuItem", subMenuItem);
-		ObjectHelper.checkNotNull("parameter:openDirection", openDirection);
+		Checker.notNull("parameter:subMenuItem", subMenuItem);
+		Checker.notNull("parameter:openDirection", openDirection);
 
 		for( int i = 0; i < 5; i++ ){
 			final SubMenuItem subMenu = new SubMenuItem();
@@ -251,8 +251,8 @@ public class MenuTest implements EntryPoint {
 	}
 
 	void buildSubSubSubMenu(final SubMenuItem subMenuItem, final MenuListOpenDirection openDirection) {
-		ObjectHelper.checkNotNull("parameter:subMenuItem", subMenuItem);
-		ObjectHelper.checkNotNull("parameter:openDirection", openDirection);
+		Checker.notNull("parameter:subMenuItem", subMenuItem);
+		Checker.notNull("parameter:openDirection", openDirection);
 
 		subMenuItem.add(new MenuSpacer());
 

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import rocket.util.server.IoHelper;
+import rocket.util.server.InputOutput;
 
 /**
  * This servlet simply echos the post data from the incoming request.
@@ -60,8 +60,8 @@ public class JsonRpcEchoServlet extends HttpServlet {
 				captured.append(buffer, 0, readCount);
 			}
 		} finally {
-			IoHelper.closeIfNecessary(reader);
-			IoHelper.closeIfNecessary(writer);
+			InputOutput.closeIfNecessary(reader);
+			InputOutput.closeIfNecessary(writer);
 		}
 		System.out.println("SERVER - echoing json\"" + captured + "\".");
 	}

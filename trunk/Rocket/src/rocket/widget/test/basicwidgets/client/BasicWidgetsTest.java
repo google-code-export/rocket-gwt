@@ -40,8 +40,7 @@ import rocket.event.client.MouseUpEvent;
 import rocket.event.client.MouseWheelEvent;
 import rocket.event.client.ScrollEvent;
 import rocket.event.client.ScrollEventListener;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 import rocket.util.client.StackTrace;
 import rocket.widget.client.Button;
 import rocket.widget.client.CheckBox;
@@ -1067,7 +1066,7 @@ public class BasicWidgetsTest implements EntryPoint {
 	}
 
 	void addFormHandler(final FormPanel formPanel, final int row) {
-		PrimitiveHelper.checkEquals("formPanel.widget count", 3, formPanel.getWidgetCount());
+		Checker.equals("formPanel.widget count", 3, formPanel.getWidgetCount());
 		int i = 0;
 		final FileUpload fileUpload = (FileUpload) formPanel.get(i++);
 		final Hidden hidden = (Hidden) formPanel.get(i++);
@@ -1081,7 +1080,7 @@ public class BasicWidgetsTest implements EntryPoint {
 			public void onSubmitComplete(final FormSubmitCompleteEvent event) {
 				BasicWidgetsTest.this.increment(FORM_PANEL_SUBMIT_COMPLETED_LISTENER, row);
 
-				ObjectHelper.checkSame("formPanel", formPanel, event.getSource());
+				Checker.same("formPanel", formPanel, event.getSource());
 
 				final String actual = event.getResults();
 				final String expected = "" + textBox.getText();
@@ -1248,7 +1247,7 @@ public class BasicWidgetsTest implements EntryPoint {
 
 	Element getElementById(final String id) {
 		final Element element = DOM.getElementById(id);
-		ObjectHelper.checkNotNull("element with id of \"" + id + "\".", element);
+		Checker.notNull("element with id of \"" + id + "\".", element);
 		return element;
 	}
 

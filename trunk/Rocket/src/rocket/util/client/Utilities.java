@@ -22,14 +22,17 @@ import java.util.Map;
 import rocket.text.client.IndexedPlaceHolderReplacer;
 import rocket.text.client.NamedPlaceHolderReplacer;
 
+import com.google.gwt.core.client.GWT;
+
 /**
- * A variety of useful String manipulating methods including assertion checks
- * and general utility methods.
+ * The Checker class is a compilation of methods that check or assert that a value satisfies a particular constraint.
+ * 
+ * It is useful for checking incoming parameters, verifying state etc.
  * 
  * @author Miroslav Pokorny (mP)
- * @version 1.0
  */
-public class StringHelper extends ObjectHelper {
+public class Utilities {
+
 	/**
 	 * Invokes {@link #padLeft{ String, int, char }with a default space pad
 	 * character.
@@ -52,12 +55,12 @@ public class StringHelper extends ObjectHelper {
 	 * @return
 	 */
 	public static String padLeft(final String text, final int length, final char pad) {
-		ObjectHelper.checkNotNull("parameter:text", text);
+		Checker.notNull("parameter:text", text);
 
 		final int textLength = text.length();
 		final int requiredPadding = length - textLength;
 		if (requiredPadding < 0) {
-			fail("parameter:text",
+			Checker.fail("parameter:text",
 					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text\"" + text
 							+ "\", text.length: " + textLength + ", length: " + length);
 		}
@@ -94,12 +97,12 @@ public class StringHelper extends ObjectHelper {
 	 * @return
 	 */
 	public static String padRight(final String text, final int length, final char pad) {
-		ObjectHelper.checkNotNull("parameter:text", text);
+		Checker.notNull("parameter:text", text);
 
 		final int textLength = text.length();
 		final int requiredPadding = length - textLength;
 		if (requiredPadding < 0) {
-			StringHelper.fail("parameter:text",
+			Checker.fail("parameter:text",
 					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text\"" + text
 							+ "\", text.length: " + textLength + ", length: " + length);
 		}
@@ -135,8 +138,8 @@ public class StringHelper extends ObjectHelper {
 	 * @return True if the first string starts with the second.
 	 */
 	public static boolean startsWithIgnoringCase(final String first, final String second) {
-		ObjectHelper.checkNotNull("parameter:first", first);
-		ObjectHelper.checkNotNull("parameter:second", second);
+		Checker.notNull("parameter:first", first);
+		Checker.notNull("parameter:second", second);
 
 		boolean startsWith = false;
 
@@ -168,8 +171,8 @@ public class StringHelper extends ObjectHelper {
 	 * @return True if the first string ends with the second.
 	 */
 	public static boolean endsWithIgnoringCase(final String first, final String second) {
-		ObjectHelper.checkNotNull("parameter:first", first);
-		ObjectHelper.checkNotNull("parameter:second", second);
+		Checker.notNull("parameter:first", first);
+		Checker.notNull("parameter:second", second);
 
 		boolean startsWith = false;
 
@@ -202,8 +205,8 @@ public class StringHelper extends ObjectHelper {
 	 *         character
 	 */
 	public static int indexOfIgnoringCase(final String string, final String search) {
-		ObjectHelper.checkNotNull("parameter:string", string);
-		ObjectHelper.checkNotNull("parameter:search", search);
+		Checker.notNull("parameter:string", string);
+		Checker.notNull("parameter:search", search);
 
 		int index = -1;
 		final int stringLength = string.length();
@@ -248,8 +251,8 @@ public class StringHelper extends ObjectHelper {
 	 * @return An array of the tokens found
 	 */
 	public static String[] split(final String input, final String delimiter, final boolean ignoreDelimiters) {
-		ObjectHelper.checkNotNull("parameter:input", input);
-		StringHelper.checkNotEmpty("parameter:delimiter", delimiter);
+		Checker.notNull("parameter:input", input);
+		Checker.notEmpty("parameter:delimiter", delimiter);
 
 		final List tokens = new ArrayList();
 		final int stringLength = input.length();
@@ -300,8 +303,8 @@ public class StringHelper extends ObjectHelper {
 	 * @return
 	 */
 	public static String join(final String[] array, final String separator) {
-		ObjectHelper.checkNotNull("parameter:array", array);
-		ObjectHelper.checkNotNull("parameter:separator", separator);
+		Checker.notNull("parameter:array", array);
+		Checker.notNull("parameter:separator", separator);
 
 		final StringBuffer buf = new StringBuffer();
 		boolean addSeparator = false;
@@ -322,30 +325,6 @@ public class StringHelper extends ObjectHelper {
 	}
 
 	/**
-	 * GeneratorHelper which may be used to assert that a string is not or
-	 * empty.
-	 * 
-	 * @param message
-	 * @param string
-	 */
-	public static void checkNotEmpty(final String message, final String string) {
-		if (isNullOrEmpty(string)) {
-			StringHelper.fail(message + " is null or empty.");
-		}
-	}
-
-	/**
-	 * GeneratorHelper that tests whether the given string is null or empty.
-	 * 
-	 * @param string
-	 *            String
-	 * @return true if the string is empty or null.
-	 */
-	public static boolean isNullOrEmpty(final String string) {
-		return string == null || string.length() == 0;
-	}
-
-	/**
 	 * Builds a new string substituting the placeholders within text with values
 	 * from values. The placeholders found in the text are used as indexes to
 	 * the given array of values which will supply the replacements.
@@ -355,7 +334,7 @@ public class StringHelper extends ObjectHelper {
 	 * 
 	 * String[] values = new String[] { &quot;green&quot;, &quot;yellow&quot; };
 	 * 
-	 * String output = StringHelper.format(input, values); // = &quot;Apple's are green and bananas are yellow.&quot;;     
+	 * String output = Utilities.format(input, values); // = &quot;Apple's are green and bananas are yellow.&quot;;     
 	 * </pre>
 	 * 
 	 * @param text
@@ -388,20 +367,6 @@ public class StringHelper extends ObjectHelper {
 	}
 
 	/**
-	 * Asserts that the two strings are in fact the equal or both are null.
-	 * 
-	 * @param message
-	 * @param actual
-	 * @param expected
-	 * @param expected
-	 */
-	public static void checkEquals(final String message, final String actual, final String expected) {
-		if (false == nullSafeEquals(actual, expected)) {
-			fail(message + ", got\"" + actual + "\", expected\"" + expected + "\".");
-		}
-	}
-
-	/**
 	 * Accepts a plain string escaping various characters so that the given
 	 * string is html encoded.
 	 * 
@@ -409,7 +374,7 @@ public class StringHelper extends ObjectHelper {
 	 * @return
 	 */
 	public static String htmlEncode(final String plainText) {
-		ObjectHelper.checkNotNull("parameter:plainText", plainText);
+		Checker.notNull("parameter:plainText", plainText);
 
 		final StringBuffer buf = new StringBuffer();
 		final int length = plainText.length();
@@ -449,7 +414,7 @@ public class StringHelper extends ObjectHelper {
 	 * @return
 	 */
 	public static String htmlDecode(final String htmlEncodedText) {
-		ObjectHelper.checkNotNull("parameter:htmlEncodedText", htmlEncodedText);
+		Checker.notNull("parameter:htmlEncodedText", htmlEncodedText);
 
 		final StringBuffer buf = new StringBuffer();
 		final int length = htmlEncodedText.length();
@@ -501,7 +466,7 @@ public class StringHelper extends ObjectHelper {
 	 * @return
 	 */
 	public static String toCamelCase(final String cssPropertyName) {
-		StringHelper.checkNotEmpty("parameter:cssPropertyName", cssPropertyName);
+		Checker.notEmpty("parameter:cssPropertyName", cssPropertyName);
 
 		String propertyName = cssPropertyName;
 		int i = 0;
@@ -527,7 +492,7 @@ public class StringHelper extends ObjectHelper {
 	 * @return
 	 */
 	public static String toCssPropertyName(final String propertyName) {
-		StringHelper.checkNotEmpty("parameter:propertyName", propertyName);
+		Checker.notEmpty("parameter:propertyName", propertyName);
 
 		return toCssPropertyName0(propertyName);
 	}
@@ -543,7 +508,7 @@ public class StringHelper extends ObjectHelper {
 	 * @return
 	 */
 	public static String changeNonBreakingSpacesToSpaces(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
+		Checker.notEmpty("parameter:text", text);
 		return text.replaceAll("&nbsp;", " ");
 	}
 
@@ -554,14 +519,74 @@ public class StringHelper extends ObjectHelper {
 	 * @return
 	 */
 	public static String changeSpacesToNonBreakingSpaces(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
+		Checker.notEmpty("parameter:text", text);
 		return text.replaceAll(" ", "&nbsp;");
 	}
 
 	/**
-	 * Private so that creating instances are not possible
+	 * Takes a url encoded string and returns the decoded form.
+	 * 
+	 * @param encoded
+	 * @return
 	 */
-	protected StringHelper() {
-		super();
+	public static String urlDecode(final String encoded) {
+		Checker.notNull("parameter:encoded", encoded);
+
+		final StringBuffer decoded = new StringBuffer();
+		int i = 0;
+		while (i < encoded.length()) {
+			final char c = encoded.charAt(i);
+			i++;
+
+			if ('+' == c) {
+				decoded.append(' ');
+				continue;
+			}
+
+			if ('%' != c) {
+				decoded.append(c);
+				continue;
+			}
+
+			final int hi = Character.digit(encoded.charAt(i), 16);
+			i++;
+			final int lo = Character.digit(encoded.charAt(i), 16);
+			i++;
+			decoded.append((char) (hi * 16 + lo));
+		}
+
+		return decoded.toString();
+	}
+
+	/**
+	 * Return the default java.lang.Object.toString() for the given object.
+	 * 
+	 * @param object
+	 *            The object to format
+	 * @return String the default format representation of the given object.
+	 *         className - the at sign - the Objects hashcode ( in hex form
+	 *         without the leading '0x' ) java.lang.Object@123def
+	 */
+	public static String defaultToString(final Object object) {
+		return object == null ?
+		/* handle null */
+		String.valueOf(object) :
+		/* class name including the leading package name */
+		GWT.getTypeName(object) + '@' +
+		/* hashcode */
+		Integer.toHexString(System.identityHashCode(object));
+	} // defaultToString
+	
+
+	/**
+	 * Calls the destroy method on the given object if it is destroyable.
+	 * 
+	 * @param object A potentially destroyable object.
+	 */
+	public static void destroyIfNecessary(final Object object) {
+		if (object instanceof Destroyable) {
+			final Destroyable destroyable = (Destroyable) object;
+			destroyable.destroy();
+		}
 	}
 }

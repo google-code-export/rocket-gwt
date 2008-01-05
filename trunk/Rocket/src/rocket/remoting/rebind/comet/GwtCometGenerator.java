@@ -28,7 +28,7 @@ import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedInterfaceType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This generator sub-classes the given Comet and adds a method that generates
@@ -84,7 +84,7 @@ public class GwtCometGenerator extends Generator {
 	 */
 	protected NewConcreteType subClassCometClient(final String newTypeName, final Type cometClient) {
 		GeneratorHelper.checkJavaTypeName("parameter:newTypeName", newTypeName);
-		ObjectHelper.checkNotNull("parameter:cometClient", cometClient);
+		Checker.notNull("parameter:cometClient", cometClient);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -108,7 +108,7 @@ public class GwtCometGenerator extends Generator {
 	 * @return The service interface
 	 */
 	protected Type createRpcServiceInterface(final NewConcreteType newType) {
-		ObjectHelper.checkNotNull("parameter:newType", newType);
+		Checker.notNull("parameter:newType", newType);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -146,7 +146,7 @@ public class GwtCometGenerator extends Generator {
 	 * @param newType The nested type that will contain the async service interface
 	 */
 	protected void createRpcAsyncServiceInterface(final NewConcreteType newType) {
-		ObjectHelper.checkNotNull("parameter:newType", newType);
+		Checker.notNull("parameter:newType", newType);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -181,7 +181,7 @@ public class GwtCometGenerator extends Generator {
 	 * @return The incoming payload type
 	 */
 	protected Type getPayloadType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.info( "Retrieving incoming payload type.");

@@ -29,8 +29,7 @@ import rocket.generator.rebind.constructorparameter.NewConstructorParameter;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameterImpl;
 import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 /**
  * Convenient base class for any new constructor
  * 
@@ -63,7 +62,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	public void addParameter(final NewConstructorParameter parameter) {
-		ObjectHelper.checkNotNull("parameter:parameter", parameter);
+		Checker.notNull("parameter:parameter", parameter);
 
 		this.getParameters().add(parameter);
 		parameter.setEnclosingConstructor(this);
@@ -74,7 +73,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	public void addThrownType(final Type thrownTypes) {
-		ObjectHelper.checkNotNull("thrownTypes:thrownTypes", thrownTypes);
+		Checker.notNull("thrownTypes:thrownTypes", thrownTypes);
 		this.getThrownTypes().add(thrownTypes);
 	}
 
@@ -84,12 +83,12 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	private String comments;
 	
 	public String getComments(){
-		StringHelper.checkNotNull( "field:comments", comments );
+		Checker.notNull( "field:comments", comments );
 		return comments;
 	}
 	
 	public void setComments( final String comments ){
-		StringHelper.checkNotNull( "parameter:comments", comments );
+		Checker.notNull( "parameter:comments", comments );
 		this.comments = comments;
 	}
 	
@@ -107,12 +106,12 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	private MetaData metaData;
 	
 	protected MetaData getMetaData(){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
+		Checker.notNull("field:metaData", metaData );
 		return this.metaData;
 	}
 	
 	protected void setMetaData( final MetaData metaData ){
-		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+		Checker.notNull("parameter:metaData", metaData );
 		this.metaData = metaData;
 	}
 	
@@ -127,7 +126,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	 * @param writer
 	 */
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		this.log();
 
@@ -158,7 +157,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	 * @param writer
 	 */
 	protected void writeDeclaration(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		writer.print(this.getVisibility().getJavaName());
 		writer.print(" ");
@@ -188,7 +187,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	protected void writeBodyOpen(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		writer.println("{");
 	}
@@ -199,7 +198,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	 * @param writer
 	 */
 	public void writeBody(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final CodeBlock body = this.getBody();
 		if (false == body.isEmpty()) {
@@ -208,7 +207,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	protected void writeBodyClose(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		writer.println("} // " + this.getEnclosingType().getName());
 	}
@@ -220,12 +219,12 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	private CodeBlock body;
 
 	public CodeBlock getBody() {
-		ObjectHelper.checkNotNull("field:body", body);
+		Checker.notNull("field:body", body);
 		return this.body;
 	}
 
 	public void setBody(final CodeBlock body) {
-		ObjectHelper.checkNotNull("parameter:body", body);
+		Checker.notNull("parameter:body", body);
 		this.body = body;
 	}
 

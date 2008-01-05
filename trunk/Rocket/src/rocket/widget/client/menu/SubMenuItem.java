@@ -26,8 +26,7 @@ import rocket.style.client.ComputedStyle;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.DivPanel;
 import rocket.widget.client.Html;
 import rocket.widget.client.Label;
@@ -151,7 +150,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 				y = y - ComputedStyle.getInteger(menuListElement, Css.BORDER_TOP_WIDTH, CssUnit.PX, 0);
 				break;
 			}
-			ObjectHelper.checkSame("openDirection", MenuListOpenDirection.DOWN, openDirection);
+			Checker.same("openDirection", MenuListOpenDirection.DOWN, openDirection);
 
 			x = x - ComputedStyle.getInteger(menuListElement, Css.BORDER_LEFT_WIDTH, CssUnit.PX, 0);
 
@@ -225,7 +224,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	 * handle the event.
 	 */
 	protected void onMouseOut(final MouseOutEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		while (true) {
 			final Element targetElement = event.getTo();
@@ -244,7 +243,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	}
 
 	public void setText(final String text) {
-		StringHelper.checkNotEmpty("parameter:text", text);
+		Checker.notEmpty("parameter:text", text);
 		this.getHtml().setText(text);
 	}
 
@@ -270,12 +269,12 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	private Html html;
 
 	protected Html getHtml() {
-		ObjectHelper.checkNotNull("field:html", html);
+		Checker.notNull("field:html", html);
 		return html;
 	}
 
 	protected void setHtml(final Html html) {
-		ObjectHelper.checkNotNull("parameter:html", html);
+		Checker.notNull("parameter:html", html);
 		this.html = html;
 	}
 
@@ -298,7 +297,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	private MenuList menuList;
 
 	public MenuList getMenuList() {
-		ObjectHelper.checkNotNull("field:menuList", menuList);
+		Checker.notNull("field:menuList", menuList);
 		return this.menuList;
 	}
 
@@ -307,7 +306,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	}
 
 	public void setMenuList(final MenuList menuList) {
-		ObjectHelper.checkNotNull("parameter:menuList", menuList);
+		Checker.notNull("parameter:menuList", menuList);
 		this.menuList = menuList;
 
 		final Element element = menuList.getElement();

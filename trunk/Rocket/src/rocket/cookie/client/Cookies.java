@@ -10,9 +10,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 
 /**
  * Represents a Map view of the cookies belonging to this browser. All map keys
@@ -100,7 +99,7 @@ public class Cookies extends AbstractMap {
 	 */
 	protected String[] createTokens() {
 		final String cookies = Cookies.getCookiesAsString();
-		return StringHelper.split(cookies, CookieConstants.SEPARATOR_STRING, true);
+		return Utilities.split(cookies, CookieConstants.SEPARATOR_STRING, true);
 	}
 
 	/**
@@ -129,15 +128,14 @@ public class Cookies extends AbstractMap {
 	 * @return The cookie object.
 	 */
 	protected Cookie createCookie(final String cookieString) {
-		StringHelper.checkNotNull("parameter:cookieString", cookieString);
+		Checker.notNull("parameter:cookieString", cookieString);
 
-		final String[] attributes = StringHelper.split(cookieString, CookieConstants.SEPARATOR_STRING, true);
+		final String[] attributes = Utilities.split(cookieString, CookieConstants.SEPARATOR_STRING, true);
 
 		final String nameValue = attributes[0];
 		final int nameValueSeparator = nameValue.indexOf(CookieConstants.NAME_VALUE_SEPARATOR);
 		if (nameValueSeparator == -1) {
-			SystemHelper
-					.fail("cookieString",
+			Checker.fail("cookieString",
 							"The parameter:cookieString does not contain a valid cookie (name/value not found), cookieString\""
 									+ cookieString + "\".");
 		}
@@ -303,12 +301,12 @@ public class Cookies extends AbstractMap {
 		Cookie[] cookies;
 
 		Cookie[] getCookies() {
-			ObjectHelper.checkNotNull("field:cookies", cookies);
+			Checker.notNull("field:cookies", cookies);
 			return this.cookies;
 		}
 
 		void setCookies(final Cookie[] cookies) {
-			ObjectHelper.checkNotNull("parameter:cookies", cookies);
+			Checker.notNull("parameter:cookies", cookies);
 			this.cookies = cookies;
 		}
 
@@ -332,12 +330,12 @@ public class Cookies extends AbstractMap {
 		String snapShot;
 
 		String getSnapShot() {
-			StringHelper.checkNotNull("field:snapShot", snapShot);
+			Checker.notNull("field:snapShot", snapShot);
 			return snapShot;
 		}
 
 		void setSnapShot(final String snapShot) {
-			StringHelper.checkNotNull("parameter:snapShot", snapShot);
+			Checker.notNull("parameter:snapShot", snapShot);
 			this.snapShot = snapShot;
 		}
 

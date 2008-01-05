@@ -28,7 +28,7 @@ import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.AbstractType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JConstructor;
@@ -173,7 +173,7 @@ public class JClassTypeTypeAdapter extends AbstractType {
 	 * @return
 	 */
 	protected Field createField(final JField field) {
-		ObjectHelper.checkNotNull("parameter:field", field);
+		Checker.notNull("parameter:field", field);
 
 		final JFieldFieldAdapter adapter = new JFieldFieldAdapter();
 		adapter.setGeneratorContext(this.getGeneratorContext());
@@ -280,12 +280,12 @@ public class JClassTypeTypeAdapter extends AbstractType {
 	private JClassType jClassType;
 
 	protected JClassType getJClassType() {
-		ObjectHelper.checkNotNull("field:jClassType", jClassType);
+		Checker.notNull("field:jClassType", jClassType);
 		return jClassType;
 	}
 
 	public void setJClassType(final JClassType jClassType) {
-		ObjectHelper.checkNotNull("parameter:jClassType", jClassType);
+		Checker.notNull("parameter:jClassType", jClassType);
 		this.jClassType = jClassType;
 	}
 

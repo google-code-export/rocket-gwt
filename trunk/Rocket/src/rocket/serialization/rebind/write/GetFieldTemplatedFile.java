@@ -17,7 +17,7 @@ package rocket.serialization.rebind.write;
 
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 public class GetFieldTemplatedFile extends TemplatedFileCodeBlock {
 
@@ -45,12 +45,12 @@ public class GetFieldTemplatedFile extends TemplatedFileCodeBlock {
 	private Field field;
 
 	protected Field getField() {
-		ObjectHelper.checkNotNull("field:field", field);
+		Checker.notNull("field:field", field);
 		return this.field;
 	}
 
 	public void setField(final Field field) {
-		ObjectHelper.checkNotNull("parameter:field", field);
+		Checker.notNull("parameter:field", field);
 		this.field = field;
 	}
 }

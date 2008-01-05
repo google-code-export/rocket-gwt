@@ -15,9 +15,8 @@
  */
 package rocket.style.client;
 
+import rocket.util.client.Checker;
 import rocket.util.client.Colour;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
 
 /**
  * Each instance represents the value of a Style regardless of source eg, rule,
@@ -33,12 +32,12 @@ public class StylePropertyValue {
 	private String string;
 
 	public String getString() {
-		StringHelper.checkNotEmpty("field:string", string);
+		Checker.notEmpty("field:string", string);
 		return this.string;
 	}
 
 	public void setString(final String string) {
-		StringHelper.checkNotEmpty("parameter:string", string);
+		Checker.notEmpty("parameter:string", string);
 		this.string = string;
 	}
 
@@ -48,7 +47,7 @@ public class StylePropertyValue {
 	 * @return
 	 */
 	protected String extractNumber(final String value) {
-		StringHelper.checkNotEmpty("parameter:value", value);
+		Checker.notEmpty("parameter:value", value);
 
 		final int length = value.length();
 		String number = value;
@@ -80,7 +79,7 @@ public class StylePropertyValue {
 	}
 
 	public void setDouble(final double doubleValue, final CssUnit unit) {
-		ObjectHelper.checkNotNull("parameter:unit", unit);
+		Checker.notNull("parameter:unit", unit);
 
 		// drop any trailing decimal 0's.
 		final String stringForm = Math.round(doubleValue) == doubleValue ? String.valueOf((int) doubleValue) : String.valueOf(doubleValue);
@@ -94,7 +93,7 @@ public class StylePropertyValue {
 	}
 
 	public void setInteger(final int intValue, final CssUnit unit) {
-		ObjectHelper.checkNotNull("parameter:unit", unit);
+		Checker.notNull("parameter:unit", unit);
 
 		this.setString(String.valueOf(intValue) + unit.getSuffix());
 	}
@@ -109,7 +108,7 @@ public class StylePropertyValue {
 	}
 
 	public void setColour(final Colour colour) {
-		ObjectHelper.checkNotNull("parameter:colour", colour);
+		Checker.notNull("parameter:colour", colour);
 		this.setString(colour.toCssColour());
 	}
 
@@ -122,7 +121,7 @@ public class StylePropertyValue {
 	}
 
 	public void setUrl(final String url) {
-		StringHelper.checkNotEmpty("parameter:url", url);
+		Checker.notEmpty("parameter:url", url);
 		this.setString("url('" + url + "')");
 	}
 

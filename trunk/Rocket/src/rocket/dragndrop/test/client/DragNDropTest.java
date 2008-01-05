@@ -28,7 +28,7 @@ import rocket.util.client.StackTrace;
 import rocket.widget.client.Html;
 import rocket.widget.client.Image;
 import rocket.widget.client.Label;
-import rocket.widget.client.WidgetHelper;
+import rocket.widget.client.Widgets;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -104,7 +104,7 @@ public class DragNDropTest implements EntryPoint {
 		rootPanel.add(new Label("Bin"));
 		rootPanel.add(createBin());
 		
-		WidgetHelper.forceDocumentContentsToScroll( 100 );
+		Widgets.forceDocumentContentsToScroll( 100 );
 	}
 
 	Widget createGrid() {
@@ -124,7 +124,7 @@ public class DragNDropTest implements EntryPoint {
 				final Element target = event.getDraggedElement();
 
 				// figure out which cell widget is being dragged.
-				final Widget cellWidget = WidgetHelper.findWidget(target, grid.iterator());
+				final Widget cellWidget = Widgets.findWidget(target, grid.iterator());
 				event.setWidget(cellWidget);
 
 				// find the cell and grab its innerHTML.
@@ -224,7 +224,7 @@ public class DragNDropTest implements EntryPoint {
 			void onDragStart0(final DragStartEvent event) {
 				// because a horizontal panel can have many widgets pick the
 				// widget actually being dragged
-				final Widget widget = WidgetHelper.findWidget(event.getDraggedElement(), horizontalPanel.iterator());
+				final Widget widget = Widgets.findWidget(event.getDraggedElement(), horizontalPanel.iterator());
 				event.setWidget(widget);
 				event.setDragged(new Html(DOM.getInnerHTML(widget.getElement())));
 			}

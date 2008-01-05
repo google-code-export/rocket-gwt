@@ -15,7 +15,7 @@
  */
 package rocket.widget.client.tabpanel;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.Html;
 
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -35,7 +35,7 @@ abstract class HorizonalTabPanel extends TabPanel {
 	}
 
 	protected TabBarPanel createTabBarPanel(final VerticalAlignmentConstant alignment) {
-		ObjectHelper.checkNotNull("parameter:alignment", alignment);
+		Checker.notNull("parameter:alignment", alignment);
 
 		final HorizontalTabBarPanel panel = new HorizontalTabBarPanel();
 

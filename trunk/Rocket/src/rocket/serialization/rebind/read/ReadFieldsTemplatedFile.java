@@ -26,7 +26,7 @@ import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the read-fields.txt tempalte
@@ -46,12 +46,12 @@ public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	private Type type;
 
 	protected Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return this.type;
 	}
 
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		this.type = type;
 	}
 
@@ -61,12 +61,12 @@ public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	private List fieldSetters;
 
 	protected List getFieldSetters() {
-		ObjectHelper.checkNotNull("field:setters", fieldSetters);
+		Checker.notNull("field:setters", fieldSetters);
 		return this.fieldSetters;
 	}
 
 	protected void setFieldSetters(final List fieldSetters) {
-		ObjectHelper.checkNotNull("parameter:fieldSetters", fieldSetters);
+		Checker.notNull("parameter:fieldSetters", fieldSetters);
 		this.fieldSetters = fieldSetters;
 	}
 
@@ -75,7 +75,7 @@ public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public void addFieldSetter(final Method setter) {
-		ObjectHelper.checkNotNull("parameter:setter", setter);
+		Checker.notNull("parameter:setter", setter);
 
 		this.getFieldSetters().add(setter);
 	}

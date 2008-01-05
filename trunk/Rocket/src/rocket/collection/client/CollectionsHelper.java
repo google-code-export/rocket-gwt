@@ -19,13 +19,12 @@ import java.util.AbstractList;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A collection of missing methods that have not yet been implemented in the emulated Collections
@@ -41,7 +40,7 @@ public class CollectionsHelper{
 	 * @param iterator The iterator being cleared
 	 */
 	public static void removeAll(final Iterator iterator) {
-		ObjectHelper.checkNotNull("parameter:iterator", iterator);
+		Checker.notNull("parameter:iterator", iterator);
 
 		while (iterator.hasNext()) {
 			iterator.next();
@@ -66,7 +65,7 @@ public class CollectionsHelper{
 	 * @return The filled List
 	 */
 	public static List copyIntoList(final Iterator iterator) {
-		ObjectHelper.checkNotNull("parameter:iterator", iterator);
+		Checker.notNull("parameter:iterator", iterator);
 
 		final List list = new ArrayList();
 		while (iterator.hasNext()) {
@@ -83,8 +82,8 @@ public class CollectionsHelper{
 	 * @return The key or null if value is not present in the parameter:map
 	 */
 	public static Object getKey(final Map map, final Object value) {
-		ObjectHelper.checkNotNull("parameter:map", map);
-		ObjectHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:map", map);
+		Checker.notNull("parameter:value", value);
 
 		Object key = null;
 		final Iterator entries = map.entrySet().iterator();

@@ -36,7 +36,7 @@ public class StackTrace {
 	 * @return
 	 */
 	public static String asString(final Throwable throwable) {
-		ObjectHelper.checkNotNull("parameter:throwable ", throwable);
+		Checker.notNull("parameter:throwable ", throwable);
 
 		final StringBuffer buf = new StringBuffer();
 
@@ -44,7 +44,7 @@ public class StackTrace {
 		buf.append(':');
 
 		final String message = throwable.getMessage();
-		if (!StringHelper.isNullOrEmpty(message)) {
+		if (false == Tester.isNullOrEmpty(message)) {
 			buf.append(' ');
 			buf.append(throwable.getMessage());
 		}

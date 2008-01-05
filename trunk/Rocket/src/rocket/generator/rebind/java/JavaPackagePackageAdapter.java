@@ -17,7 +17,7 @@ package rocket.generator.rebind.java;
 
 import rocket.generator.rebind.packagee.AbstractPackage;
 import rocket.generator.rebind.packagee.Package;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 public class JavaPackagePackageAdapter extends AbstractPackage implements Package {
 
@@ -28,12 +28,12 @@ public class JavaPackagePackageAdapter extends AbstractPackage implements Packag
 	private java.lang.Package javaPackage;
 
 	public java.lang.Package getJavaPackage() {
-		ObjectHelper.checkNotNull("field:javaPackage", javaPackage);
+		Checker.notNull("field:javaPackage", javaPackage);
 		return this.javaPackage;
 	}
 
 	public void setJavaPackage(final java.lang.Package javaPackage) {
-		ObjectHelper.checkNotNull("parameter:javaPackage", javaPackage);
+		Checker.notNull("parameter:javaPackage", javaPackage);
 		this.javaPackage = javaPackage;
 	}
 

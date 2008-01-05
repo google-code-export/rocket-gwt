@@ -24,7 +24,7 @@ import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewInterfaceType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.TreeLogger;
@@ -174,7 +174,7 @@ abstract public class TestGenerator extends Generator {
 	 * @return
 	 */
 	protected String getStackTraceAsString(final Throwable throwable) {
-		ObjectHelper.checkNotNull("parameter:throwable ", throwable);
+		Checker.notNull("parameter:throwable ", throwable);
 
 		final StringWriter stringWriter = new StringWriter();
 		// final PrintWriter printWriter = new PrintWriter(stringWriter);

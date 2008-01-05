@@ -21,8 +21,8 @@ import java.util.List;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 /**
  * Represents a bean being constructed.
@@ -114,12 +114,12 @@ public class Bean{
 	private String typeName;
 
 	public String getTypeName() {
-		ObjectHelper.checkNotNull("field:typeName", typeName);
+		Checker.notNull("field:typeName", typeName);
 		return this.typeName;
 	}
 
 	public void setTypeName(final String typeName) {
-		ObjectHelper.checkNotNull("typeName:typeName", typeName);
+		Checker.notNull("typeName:typeName", typeName);
 		this.typeName = typeName;
 	}
 
@@ -168,12 +168,12 @@ public class Bean{
 	private List constructorValues;
 
 	protected List getConstructorValues() {
-		ObjectHelper.checkNotNull("field:constructorValues", constructorValues);
+		Checker.notNull("field:constructorValues", constructorValues);
 		return this.constructorValues;
 	}
 
 	public void setConstructorValues(final List constructorValues) {
-		ObjectHelper.checkNotNull("parameter:constructorValues", constructorValues);
+		Checker.notNull("parameter:constructorValues", constructorValues);
 		this.constructorValues = constructorValues;
 	}
 
@@ -183,12 +183,12 @@ public class Bean{
 	private List properties;
 
 	protected List getProperties() {
-		ObjectHelper.checkNotNull("field:properties", properties);
+		Checker.notNull("field:properties", properties);
 		return this.properties;
 	}
 
 	public void setProperties(final List properties) {
-		ObjectHelper.checkNotNull("parameter:properties", properties);
+		Checker.notNull("parameter:properties", properties);
 		this.properties = properties;
 	}
 
@@ -198,12 +198,12 @@ public class Bean{
 	private Type type;
 
 	public Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return this.type;
 	}
 
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		this.type = type;
 	}
 
@@ -213,12 +213,12 @@ public class Bean{
 	private NewNestedType factoryBean;
 
 	public NewNestedType getFactoryBean() {
-		ObjectHelper.checkNotNull("field:factoryBean", factoryBean);
+		Checker.notNull("field:factoryBean", factoryBean);
 		return this.factoryBean;
 	}
 
 	public void setFactoryBean(final NewNestedType factoryBean) {
-		ObjectHelper.checkNotNull("parameter:factoryBean", factoryBean);
+		Checker.notNull("parameter:factoryBean", factoryBean);
 		this.factoryBean = factoryBean;
 	}
 
@@ -228,12 +228,12 @@ public class Bean{
 	private List aspects;
 
 	public List getAspects() {
-		ObjectHelper.checkNotNull("field:aspects", aspects);
+		Checker.notNull("field:aspects", aspects);
 		return this.aspects;
 	}
 
 	protected void setAspects(final List aspects) {
-		ObjectHelper.checkNotNull("parameter:aspects", aspects);
+		Checker.notNull("parameter:aspects", aspects);
 		this.aspects = aspects;
 	}
 
@@ -242,7 +242,7 @@ public class Bean{
 	}
 
 	public void addAspect(final Aspect aspect) {
-		ObjectHelper.checkNotNull("parameter:aspect", aspect);
+		Checker.notNull("parameter:aspect", aspect);
 
 		this.getAspects().add(aspect);
 	}
@@ -253,7 +253,7 @@ public class Bean{
 	private NewNestedType proxy;
 
 	public NewNestedType getProxy() {
-		ObjectHelper.checkNotNull("field:proxy", proxy);
+		Checker.notNull("field:proxy", proxy);
 		return this.proxy;
 	}
 
@@ -262,7 +262,7 @@ public class Bean{
 	}
 
 	public void setProxy(final NewNestedType proxy) {
-		ObjectHelper.checkNotNull("parameter:proxy", proxy);
+		Checker.notNull("parameter:proxy", proxy);
 		this.proxy = proxy;
 	}
 
@@ -272,12 +272,12 @@ public class Bean{
 	private NewNestedType proxyFactoryBean;
 
 	public NewNestedType getProxyFactoryBean() {
-		ObjectHelper.checkNotNull("field:proxyFactoryBean", proxyFactoryBean);
+		Checker.notNull("field:proxyFactoryBean", proxyFactoryBean);
 		return this.proxyFactoryBean;
 	}
 
 	public void setProxyFactoryBean(final NewNestedType proxyFactoryBean) {
-		ObjectHelper.checkNotNull("parameter:proxyFactoryBean", proxyFactoryBean);
+		Checker.notNull("parameter:proxyFactoryBean", proxyFactoryBean);
 		this.proxyFactoryBean = proxyFactoryBean;
 	}
 
@@ -287,12 +287,12 @@ public class Bean{
 	private String filename;
 	
 	protected String getFilename(){
-		StringHelper.checkNotEmpty("field:filename", filename );
+		Checker.notEmpty("field:filename", filename );
 		return this.filename;
 	}
 	
 	public void setFilename( final String filename ){
-		StringHelper.checkNotEmpty("parameter:filename", filename );
+		Checker.notEmpty("parameter:filename", filename );
 		this.filename = filename;
 	}
 	
@@ -301,13 +301,13 @@ public class Bean{
 		
 		buf.append( super.toString() );
 		
-		if( false == StringHelper.isNullOrEmpty( this.id )){
+		if( false == Tester.isNullOrEmpty( this.id )){
 			buf.append( "id: \"");
 			buf.append( this.id );
 			buf.append( "\"");
 		}
 		
-		if( false == StringHelper.isNullOrEmpty( this.typeName ) && null == this.type ){
+		if( false == Tester.isNullOrEmpty( this.typeName ) && null == this.type ){
 			buf.append( "typeName: \"");
 			buf.append( this.typeName );
 			buf.append( "\"");

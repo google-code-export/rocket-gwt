@@ -17,11 +17,7 @@ package rocket.cookie.client;
 
 import java.util.Date;
 
-import rocket.util.client.HttpHelper;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 /**
  * Represents a single browser cookie.
@@ -68,7 +64,7 @@ public class Cookie {
 	private String value;
 
 	public String getValue() {
-		StringHelper.checkNotEmpty("field:value", this.value);
+		Checker.notEmpty("field:value", this.value);
 
 		return this.value;
 	}
@@ -78,7 +74,7 @@ public class Cookie {
 	}
 
 	public void setValue(final String value) {
-		StringHelper.checkNotEmpty("parameter:value", value);
+		Checker.notEmpty("parameter:value", value);
 
 		this.value = value;
 	}
@@ -89,7 +85,7 @@ public class Cookie {
 	private String comment;
 
 	public String getComment() {
-		StringHelper.checkNotEmpty("field:comment", this.comment);
+		Checker.notEmpty("field:comment", this.comment);
 
 		return this.comment;
 	}
@@ -99,7 +95,7 @@ public class Cookie {
 	}
 
 	public void setComment(final String comment) {
-		StringHelper.checkNotEmpty("parameter:comment", comment);
+		Checker.notEmpty("parameter:comment", comment);
 
 		this.comment = comment;
 	}
@@ -111,7 +107,7 @@ public class Cookie {
 	private String domain;
 
 	public String getDomain() {
-		StringHelper.checkNotEmpty("field:domain", this.domain);
+		Checker.notEmpty("field:domain", this.domain);
 
 		return this.domain;
 	}
@@ -121,7 +117,7 @@ public class Cookie {
 	}
 
 	public void setDomain(final String domain) {
-		StringHelper.checkNotEmpty("parameter:domain", domain);
+		Checker.notEmpty("parameter:domain", domain);
 
 		this.domain = domain;
 	}
@@ -136,7 +132,7 @@ public class Cookie {
 	private Date expires;
 
 	public Date getExpires() {
-		ObjectHelper.checkNotNull("field:expires", expires);
+		Checker.notNull("field:expires", expires);
 		return this.expires;
 	}
 
@@ -145,14 +141,14 @@ public class Cookie {
 	}
 
 	public void setExpires(final Date expires) {
-		ObjectHelper.checkNotNull("parameter:expires", expires);
+		Checker.notNull("parameter:expires", expires);
 		this.expires = expires;
 	}
 
 	private String path;
 
 	public String getPath() {
-		HttpHelper.checkPath("field:path", this.path);
+		Checker.path("field:path", this.path);
 
 		return this.path;
 	}
@@ -162,7 +158,7 @@ public class Cookie {
 	}
 
 	public void setPath(final String path) {
-		HttpHelper.checkPath("parameter:path", path);
+		Checker.path("parameter:path", path);
 
 		this.path = path;
 	}
@@ -176,7 +172,7 @@ public class Cookie {
 	private boolean secureSet;
 
 	public boolean isSecure() {
-		PrimitiveHelper.checkBoolean("field:secure", this.hasSecure(), true);
+		Checker.booleanValue("field:secure", this.hasSecure(), true);
 		return this.secure;
 	}
 
@@ -194,7 +190,7 @@ public class Cookie {
 	private boolean versionSet;
 
 	public int getVersion() {
-		PrimitiveHelper.checkBoolean("field:version", this.hasVersion(), true);
+		Checker.booleanValue("field:version", this.hasVersion(), true);
 		return this.version;
 	}
 
@@ -276,17 +272,17 @@ public class Cookie {
 	 * @param cookieName
 	 */
 	public static void checkCookieName(final String name, final String cookieName) {
-		StringHelper.checkNotEmpty(name, cookieName);
+		Checker.notEmpty(name, cookieName);
 
 		final int length = cookieName.length();
 		for (int i = 0; i < length; i++) {
 			final char c = cookieName.charAt(i);
 
 			if (i == 0 && c == '$') {
-				SystemHelper.fail(name, "The " + name + " cannot begin with a $, " + name + "\"." + cookieName + "\".");
+				Checker.fail(name, "The " + name + " cannot begin with a $, " + name + "\"." + cookieName + "\".");
 			}
 			if (c == ' ' || c == ';') {
-				SystemHelper.fail(name, "The " + name + " cannot include a space or semicolon, " + name + "\"." + cookieName + "\".");
+				Checker.fail(name, "The " + name + " cannot include a space or semicolon, " + name + "\"." + cookieName + "\".");
 			}
 		}
 	}

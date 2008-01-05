@@ -17,10 +17,8 @@ package rocket.remoting.client;
 
 import java.io.Serializable;
 
-import rocket.util.client.HttpHelper;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -40,12 +38,12 @@ public class WebRequest implements IsSerializable, Serializable {
 	private String url;
 
 	public String getUrl() {
-		StringHelper.checkNotNull("field:url", url);
+		Checker.notNull("field:url", url);
 		return url;
 	}
 
 	public void setUrl(final String url) {
-		StringHelper.checkNotNull("parameter:url", url);
+		Checker.notNull("parameter:url", url);
 		this.url = url;
 	}
 
@@ -55,7 +53,7 @@ public class WebRequest implements IsSerializable, Serializable {
 	private RequestParameters parameters;
 
 	public RequestParameters getParameters() {
-		ObjectHelper.checkNotNull("field:parameters", this.parameters);
+		Checker.notNull("field:parameters", this.parameters);
 		return parameters;
 	}
 
@@ -64,9 +62,9 @@ public class WebRequest implements IsSerializable, Serializable {
 	}
 
 	public void setParameters(final RequestParameters parameters) {
-		ObjectHelper.checkNotNull("parameter:parameters", parameters);
+		Checker.notNull("parameter:parameters", parameters);
 		if (this.hasData()) {
-			SystemHelper.fail("Data has already been set, parameters cannot also be set.");
+			Checker.fail("Data has already been set, parameters cannot also be set.");
 		}
 
 		this.parameters = parameters;
@@ -78,12 +76,12 @@ public class WebRequest implements IsSerializable, Serializable {
 	private Headers headers;
 
 	public Headers getHeaders() {
-		ObjectHelper.checkNotNull("field:headers", headers);
+		Checker.notNull("field:headers", headers);
 		return this.headers;
 	}
 
 	public void setHeaders(final Headers headers) {
-		ObjectHelper.checkNotNull("parameter:headers", headers);
+		Checker.notNull("parameter:headers", headers);
 		this.headers = headers;
 	}
 
@@ -93,7 +91,7 @@ public class WebRequest implements IsSerializable, Serializable {
 	private String data;
 
 	public String getData() {
-		StringHelper.checkNotNull("field:data", this.data);
+		Checker.notNull("field:data", this.data);
 		return data;
 	}
 
@@ -102,9 +100,9 @@ public class WebRequest implements IsSerializable, Serializable {
 	}
 
 	public void setData(final String data) {
-		StringHelper.checkNotNull("parameter:data", data);
-		if (false == HttpHelper.isPost(this.getMethod())) {
-			SystemHelper.fail("ContentType/Data may only be set on a POST WebRequest");
+		Checker.notNull("parameter:data", data);
+		if (false == Tester.isPost(this.getMethod())) {
+			Checker.fail("ContentType/Data may only be set on a POST WebRequest");
 		}
 		this.data = data;
 	}
@@ -115,12 +113,12 @@ public class WebRequest implements IsSerializable, Serializable {
 	private String method;
 
 	public String getMethod() {
-		HttpHelper.checkMethod("field:method", method);
+		Checker.httpMethod("field:method", method);
 		return method;
 	}
 
 	public void setMethod(final String method) {
-		HttpHelper.checkMethod("parameter:method", method);
+		Checker.httpMethod("parameter:method", method);
 		this.method = method;
 	}
 

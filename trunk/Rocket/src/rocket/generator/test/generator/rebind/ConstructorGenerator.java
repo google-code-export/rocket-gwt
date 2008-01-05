@@ -21,23 +21,22 @@ import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class ConstructorGenerator extends TestGenerator {
 
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
-		PrimitiveHelper.checkEquals("constructor count", 3, type.getConstructors().size());
+		Checker.equals("constructor count", 3, type.getConstructors().size());
 
 		final Type booleanType = context.findType(Boolean.TYPE.getName());
 		final Constructor booleanParameterConstructor = type.findConstructor(Arrays.asList(new Type[] { booleanType }));
-		ObjectHelper.checkNotNull("booleanParameterConstructor", booleanParameterConstructor);
-		ObjectHelper.checkSame("booleanParameterConstructor enclosing type", type, booleanParameterConstructor.getEnclosingType());
+		Checker.notNull("booleanParameterConstructor", booleanParameterConstructor);
+		Checker.same("booleanParameterConstructor enclosing type", type, booleanParameterConstructor.getEnclosingType());
 
 		final Type byteType = context.getType(Byte.TYPE.getName());
 		final Constructor byteParameterConstructor = type.getConstructor(Arrays.asList(new Type[] { byteType }));
-		ObjectHelper.checkSame("byteParameterConstructor enclosing type", type, byteParameterConstructor.getEnclosingType());
+		Checker.same("byteParameterConstructor enclosing type", type, byteParameterConstructor.getEnclosingType());
 
 		return null;
 	}

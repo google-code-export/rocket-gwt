@@ -17,9 +17,9 @@ package rocket.serialization.test.client.reader;
 
 import java.util.Date;
 
+import rocket.serialization.client.ClientObjectInputStream;
 import rocket.serialization.client.reader.DateReader;
 import rocket.serialization.test.client.ClientGwtTestCase;
-import rocket.serialization.client.ClientObjectInputStream;
 
 public class DateReaderGwtTestCase extends ClientGwtTestCase {
 

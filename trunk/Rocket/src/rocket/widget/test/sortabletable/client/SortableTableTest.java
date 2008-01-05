@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import rocket.browser.client.Browser;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.util.client.StringComparator;
 import rocket.widget.client.SortableTable;
 
@@ -69,7 +69,7 @@ public class SortableTableTest implements EntryPoint {
 			}
 
 			protected Object getValue(final Object row, final int column) {
-				ObjectHelper.checkNotNull("parameter:row", row);
+				Checker.notNull("parameter:row", row);
 				this.checkColumn("parameter:column", column);
 
 				final Fruit fruit = (Fruit) row;
@@ -97,7 +97,7 @@ public class SortableTableTest implements EntryPoint {
 			}
 
 			protected Widget getWidget(final Object value, final int column) {
-				ObjectHelper.checkNotNull("parameter:value", value);
+				Checker.notNull("parameter:value", value);
 				this.checkColumn("parameter:column", column);
 
 				System.out.println("SortableFruitTable - getting widget for column: " + column + " value: " + value);

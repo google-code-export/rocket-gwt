@@ -23,8 +23,7 @@ import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * Represents a concrete initializer.
@@ -46,12 +45,12 @@ public class InitializerImpl implements Initializer {
 	private String comments;
 	
 	public String getComments(){
-		StringHelper.checkNotNull( "field:comments", comments );
+		Checker.notNull( "field:comments", comments );
 		return comments;
 	}
 	
 	public void setComments( final String comments ){
-		StringHelper.checkNotNull( "parameter:comments", comments );
+		Checker.notNull( "parameter:comments", comments );
 		this.comments = comments;
 	}
 	
@@ -69,12 +68,12 @@ public class InitializerImpl implements Initializer {
 	private MetaData metaData;
 	
 	protected MetaData getMetaData(){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
+		Checker.notNull("field:metaData", metaData );
 		return this.metaData;
 	}
 	
 	protected void setMetaData( final MetaData metaData ){
-		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+		Checker.notNull("parameter:metaData", metaData );
 		this.metaData = metaData;
 	}
 	
@@ -83,7 +82,7 @@ public class InitializerImpl implements Initializer {
 	}
 	
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		this.writeLogger();
 		this.writeComments( writer );
@@ -127,12 +126,12 @@ public class InitializerImpl implements Initializer {
 	private CodeBlock body;
 
 	public CodeBlock getBody() {
-		ObjectHelper.checkNotNull("field:body", body);
+		Checker.notNull("field:body", body);
 		return this.body;
 	}
 
 	public void setBody(final CodeBlock body) {
-		ObjectHelper.checkNotNull("parameter:body", body);
+		Checker.notNull("parameter:body", body);
 		this.body = body;
 	}
 
@@ -142,7 +141,7 @@ public class InitializerImpl implements Initializer {
 	private Type enclosingType;
 
 	public Type getEnclosingType() {
-		ObjectHelper.checkNotNull("field:enclosingType", enclosingType);
+		Checker.notNull("field:enclosingType", enclosingType);
 		return enclosingType;
 	}
 
@@ -151,19 +150,19 @@ public class InitializerImpl implements Initializer {
 	}
 
 	public void setEnclosingType(final Type enclosingType) {
-		ObjectHelper.checkNotNull("field:enclosingType", enclosingType);
+		Checker.notNull("field:enclosingType", enclosingType);
 		this.enclosingType = enclosingType;
 	}
 
 	private GeneratorContext generatorContext;
 
 	public GeneratorContext getGeneratorContext() {
-		ObjectHelper.checkNotNull("field:generatorContext", generatorContext);
+		Checker.notNull("field:generatorContext", generatorContext);
 		return this.generatorContext;
 	}
 
 	public void setGeneratorContext(final GeneratorContext generatorContext) {
-		ObjectHelper.checkNotNull("parameter:generatorContext", generatorContext);
+		Checker.notNull("parameter:generatorContext", generatorContext);
 		this.generatorContext = generatorContext;
 	}
 
