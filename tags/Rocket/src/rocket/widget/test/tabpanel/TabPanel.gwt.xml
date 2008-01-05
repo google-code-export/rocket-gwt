@@ -1,0 +1,6 @@
+<module>
+	<inherits name="rocket.testing.Testing" />	
+	<inherits name="rocket.widget.Widget" />	
+
+	<entry-point class="rocket.widget.test.tabpanel.client.TabPanelTest" />
+</module>

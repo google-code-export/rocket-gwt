@@ -1,0 +1,8 @@
+// textbox.txt
+
+rocket.widget.client.TextBox textBox = (rocket.widget.client.TextBox) this.getWidget( ${id} );
+if( null == textBox ){
+	textBox = bindTextBox( ${id} );
+}
+return textBox;
+

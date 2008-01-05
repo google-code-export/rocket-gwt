@@ -1,0 +1,228 @@
+@create new css for menu + sortable table ( grab new up/down icons).
+
+@ create new css / icons etc for
+@ sortable table
+
+@ menu
+@ sliders
+@ styleshjeet poicker
+@ grid view
+@ auto complete text box.
+
+
+
+@ remove duplicate composite widget fields.
+@ Write a tool that prepares css files for all included widgets. It could achieve this by using a generator that finds all referenced widget types, and concatenates
+  any *.css files for each widget.
+
+cmd line tool.
++ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+make events fully fledged objects.
+
+TextBox
+CheckBox
+RadioButton
+Button
+ListBox
+
+rocket.event.client
+EventDispatcher
+	in: GwtEvent out: rocketEvent 
+
+// add a nice toString for each event.
+@todo mouse move events.
+
+Event
+	void preventDefault();
+	void cancelBubble();
+	Element getTarget();
+
+
+	KeyEvent
+		KeyPressEvent
+		KeyDownEvent
+		KeyUpEvent
+
+		char getKey();
+		void setKey( char key );
+
+		boolean isShift();
+		boolean isControl();
+		boolean isAlt();
+		boolean isMeta();
+		boolean isRepeatedKey();
+
+	FocusOrBlurEvent
+		FocusEvent
+		BlurEvent
+			Widget getWidget();
+
+	LoadEvent
+		LoadCompletedEvent
+		LoadErrorEvent
+
+		Widget Widget();		
+
+	ChangeEvent
+		Widget getWidget()
+		Object getSource();			
+
+	
+	MouseEvent
+
+		MouseOverEvent
+			Element getFrom();
+			Element getTo();
+		MouseWheelEvent
+			int getXVelocity();
+			int getYVelocity();
+		MouseOutEvent
+
+
+		int getClientX();
+		int getClientY();
+		int getScreenX();
+		int getScreenY();
+		int getPageX();
+		int getPageY();
+		
+// above implemented
+		MouseDownEvent
+		MouseUpEvent
+			MouseClickEvent,MouseDoubleClickEvent
+				isLeftButton();
+				isMiddleButton();
+				isRightButton();
+		MouseClickEvent
+		MouseDoubleClickEvent
+
+does mouseup know the button that was released ?
+
+
+
+Capture
+	Element getElement();
+	void release();
+	void setCapture();
+
+// event mask...
+sinkEvents(Element, mask)
+unsinkEvents(Element, mask)
+
+EventListener ???
+
+
+ - embeds GWT Event.
+ KeyEvent asKeyEvent() returns null if not a key event.
+ MouseEvent asMouseEvent()
+	preventDefault();
+	cancelBubble();
+ 
+KeyUpEvent/KeyDownEvent/KeyPressEvent
+	char getKeyCode
+	boolean isShift
+	boolean isControl
+
+	MouseMove asMouseMove();
+	MouseOver asMouseOver();
+	MouseClick asMouseClick();
+	MouseDown asMouseDown();
+	MouseUp asMouseUp();		return null if not a mouseUp etc.  
+
+ChangeEvent
+	Widget getWidget
+
+
+
+replicate GWT widgets
+TextBox -> TextBox
+CheckBox -> CheckBox less label etc.
+
+
+////////////////////////////////////////////////////
+
+@updated
+
+@TODO needs updating...
+Style
+Comet
+Generator
+Seelctions
+RemoteJsonService
+HtmlTemplateFactory
+DependencyInjection
+Getting Started
+
+
+FloatingWindow
+	boolean modal
+	Widget widget	
+
+InlineWindow
+	
+
+DraggableWindow
+	// a panel that can be dragged.
+	Widget widget
+
+WindowTitle
+	String text
+	Widgets - right justified
+
++---------------------------+
+| FloatingWindow            
+|  +-----------------------
+|  | ResizablePanel//already exists
+|  |  +----------------------
+|  |  | DraggableWindow// when dragged it also moves the outter floating window.
+|  |  |  +---------------

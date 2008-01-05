@@ -1,0 +1,5 @@
+// /rocket/beans/rebind/aop/interceptorchainproceed/boolean.txt
+
+// invokes the interceptor chain, unwrapping Boolean because the method return type is boolean
+return chain.proceedReturningBoolean();
+

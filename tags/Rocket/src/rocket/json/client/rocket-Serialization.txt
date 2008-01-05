@@ -1,0 +1,12 @@
+# rocket.json
+rocket.json.client.BooleanJsonSerializer
+rocket.json.client.ByteJsonSerializer
+rocket.json.client.CharJsonSerializer
+rocket.json.client.DateJsonSerializer
+rocket.json.client.FloatJsonSerializer
+rocket.json.client.IntJsonSerializer
+rocket.json.client.JsonDeserializationSerializer
+rocket.json.client.JsonSerializationSerializer
+rocket.json.client.LongJsonSerializer
+rocket.json.client.ShortJsonSerializer
+rocket.json.client.StringJsonSerializer

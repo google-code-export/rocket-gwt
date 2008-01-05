@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Menu</title>
+<meta name='gwt:module' content='rocket.widget.test.menu.Menu'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+	BODY, TABLE, DIV{
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 11px;
+	}
+	
+	BODY {
+		margin: 0px;
+	}
+	DIV{
+		margin: 0px;
+		padding: 0px;
+	}
+	
+	BUTTON{
+		margin: 4px;
+	}
+
+	.rocket-menu-horizontalMenuBar, 
+	.rocket-menu-verticalMenuBar{
+		width: 100%;		
+		margin: 0px;		
+		background-color: #ddd;
+	}
+
+	.rocket-menu-horizontalMenuList, 
+	.rocket-menu-verticalMenuList{
+		margin: 0px;
+		padding: 0px;
+			
+		border-width: 1px;
+		border-style: solid;
+		border-color: #bbb;
+	}	
+
+	.rocket-menu-verticalMenuList{
+		width: 10em;
+		
+		opacity: 0.75;
+		filter(alpha=75);	
+	}	
+
+	.rocket-menu-menuItem,
+	.rocket-menu-subMenuItem,
+	.rocket-menu-menuSpacer {
+		margin: 0px;
+		padding-left: 5px;
+		padding-top: 5px;
+		padding-right: 5px;
+		padding-bottom: 5px;
+		border-style: none;
+		background-color: #ddd;
+
+		white-space: nowrap;
+		height: 1.2em;		
+	}
+	
+	.rocket-menu-subMenuItem{
+		font-weight: bold;
+		color: #000;		
+	}
+	
+	.rocket-menu-menuItem{
+		font-weight: normal;
+		color: #000;
+	}
+
+	.rocket-menu-menuItem-selected, 
+	.rocket-menu-subMenuItem-selected{
+		color: #004;
+		background-color: #aaf;
+	}
+	
+	.rocket-menu-menuItem-disabled, 
+	.rocket-menu-subMenuItem-disabled{
+		color: #88a;
+		font-style: italics;
+	}	
+	
+	.MenuTest-grid TABLE{
+		border-collapse: collapse;
+		margin: 4px;
+		
+		background-color: #eee;
+	}
+	
+	.MenuTest-grid TD {
+		width: 5em;
+		height: 1.5em;
+		padding: 2px;
+
+		background-color: #def;
+		color: #abc;
+	}
+</style>
+</head>
+<body>
+<h3>Things to test</h3>
+<ul>
+<li>Each menu contains three levels of sub menus</li>
+<li>The text within all SubMenuItem's is <b>bolded</b></li>
+<li>The text within all MenuItem's is plain</li>
+<li>The text within all disabled items is <i>italicised</i></li>
+<li>Check that all disabled SubMenuItem and MenuItem(they have disabled in their text) are truely unselectable.</li>
+<li>The grid also contains a context menu. When any menu item is selected a popup appears that includes 
+	<ul>
+		<li>The original widget within the grid that was clicked</li>
+		<li>The element that was originally right clicked.</li>
+	</ul>
+
+<li>In opera the context menu is accessed via control + mouse click rather than right click.</li>
+</ul>
+
+</body>
+</html>
