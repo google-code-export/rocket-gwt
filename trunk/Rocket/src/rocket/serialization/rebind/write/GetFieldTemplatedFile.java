@@ -19,13 +19,12 @@ import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
 import rocket.util.client.ObjectHelper;
 
-// TODO duplicate
 public class GetFieldTemplatedFile extends TemplatedFileCodeBlock {
 
-	public boolean isNative() {
+	public boolean isNative(){
 		return true;
 	}
-
+	
 	protected String getResourceName() {
 		return Constants.GET_FIELD_TEMPLATE;
 	}

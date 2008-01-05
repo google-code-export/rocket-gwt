@@ -29,6 +29,10 @@ public class SetFieldTemplatedFile extends TemplatedFileCodeBlock {
 	public SetFieldTemplatedFile() {
 		super();
 	}
+	
+	public boolean isNative(){
+		return true;
+	}
 
 	private Field field;
 
