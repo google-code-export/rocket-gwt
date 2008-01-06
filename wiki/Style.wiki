@@ -1,184 +1,72 @@
-#labels Featured,Css,GWT,Style
+#labels Featured
+# Work with computed,inline and rule styles in a cross browser manner.
 =Motivation=
 
-GWT provides a number of DOM.methods to get and set inline style attributes.
+GWT provides a number of methods within the DOM class to help with the inline style of an element.
+  * DOM.setStyleAttribute(Element element,String attribute,String value);
+  * DOM.getStyleAttribute(Element element,String attribute);
+  * DOM.setIntStyleAttribute(Element element,String attribute,int value);
+  * DOM.getIntStyleAttribute(Element element,String attribute);
 
-The DOM class current provides setters and getters to handle string and number values (the unit is ignored).
-  * DOM.xxxStyleAttribute for text
-  * DOM.xxxIntStyleAttribute for number values.
+These four methods only address some of the functionality that may be needed by a developer, and fail to address the following issues.
+  * Querying the computed style of element.
+  * Ability to get and set the style belonging to a stylesheet rule.
+  * Inability to use standard attribute name and values in a cross browser compatible way.
+  * Richer set of css units with auto conversion - get a ex value in pixels.
 
-==GWT DOM class Weaknesses==
-  * No attempt is made to handle special cases where browsers handle style properties in different ways. Sometimes different browsers use a different name and value format for a css style.
-  * Units are ignored. This is especially important with Internet Explorer as the number value is expressed in the original unit rather than pixels.
-  * No provision exists to retrieve the current value for a particular css style.
-
-==The solution==
-The rocket style module provides a number of classes to address each of the different style problems discussed above.
-
-  * InlineStyle - reads and writes styles to an element's inline style.
-  * ComputedStyle - reads computed styles for the given element.
-  * RuleStyle - it is also possible to manipulate styles belonging to a Rule which in turn belongs to a style sheet.
-
-===Types with automatic unit conversion.===
-The Style interface provides several typed methods to handle various style value types
-  * colour - seemless handles the various colour value formats, including named colours, rgb(), #rrggbb, #rgb etc.
-  * double - floating point values with unit conversion.
-  * integer - numerical values with unit conversion.
-  * String - the value in text form.
-  * url - work with urls less css decorations - useful when setting background-images.
-
-The number getters automatically convert the actual value into the target unit.
-
-It is also possible to work with the css style properties as a Map. 
-  * This makes it possible to copy css values from one element to another.
-  * It is possible to alter all colour values belonging to an element or stylesheet etc.
-
-===Other style properties===
-
-Internet explorer is not the only culprit, there are a number of other special cases for style properties. Refer to the code to find other special cases.
-
-==Solving the problem==
-
-==Transparency / Opacity example==
-|| Browser || Property name || Value || example ||
-|| Internet Explorer || filter || alpha=50 || DOM.setStyleAttribute( element, "filter(opacity=50)" ) ||
-|| Other browsers || opacity || 0.5 || DOM.setStyleAttribute( element, "opacity=0.5" ) ||
-
-Using DOM.setStyleAttribute it would be necessary to create an additional abstraction to handle this special case.
-
-The example below shows how setting opacity might be done using `com.google.gwt.user.client.DOM`.
-When not using Rocket's abstraction notice the special case testing to handle Internet Explorer.
+==Why worry about cross browser attribute name/values==
+The ability to use standard attribute names and value cannot be undestated. Of particular interest is the need for a special case for the opacity attribute. The example below only attempts to update the opacity of an element.
 
 {{{
-Element element = // get from somewhere...
-
-String value = "opacity=0.5";
-// special test for ie
-if( internet explorer ){
-	value = "alpha(opacity=50)";
-}
-DOM.setStyleAttribute( element, value );
-
-// skip attempt to include special case to read opacity value for Internet Explorer...This would be quite messy as one would have to extract the number within "alpha(opacity=50)"...*
-}}}
-
-Using Rocket's abstractions `rocket.style.client.InlineStyle` it is much easier to set the opacity upon an element, and equally easy to read an opacity value.
-
-{{{
-Element element //get from somewhere...
-
-// Set an opacity value upon element... element, css property, value
-InlineStyle.setDouble( element, "opacity", 0.5 );
-
-// Get the opacity value from element... element, css property, css unit, default if not found.
-double opacity = InlineStyle.getDouble( element, "opacity", CssUnit.NONE, 1.0 );
-}}}
-
-===Fixed positioning example===
-
-Unfortunately Internet Explorer does not understand position="fixed". The style package emulates it using dynamic expressions. 
-
-The sample below shows how it easy it is to give an element a fixed position. It is also equally easy to determine the position value for an element.
-
-{{{
-Element element //get from somewhere...
-InlineStyle.setString( element, "position", "fixed" );
-InlineStyle.setInteger( element, "left", 10, CssUnit.PX );
-InlineStyle.setInteger( element, "top", 20, CssUnit.PX  );
-}}}
-
-=Getting started=
-
-The following steps below list what and why is needed to use this facility in your own development efforts.
-
-
-==Importing the rocket module==
-
-Add the rocket module to your own module.
-
-{{{
-<inherits name="rocket.User" />
-}}}
-
-==Examples==
-
-For further examples take a look at the example below or refer to the unit or functional tests included in the download.
-
-===Invert colour property values within a StyleSheet===
-
-This example shows how easy it is to visit and find all the colour style properties within a stylesheet.
-After the method runs all properties with the word colour will have their values inverted. This should find and change values for properties such as
-
-  * color
-  * background-color
-  * border-XXX-color where XXX is "top", "right", "bottom" and "left"
-
-
-
-{{{
-package example;
-
-import java.util.Iterator;
-import java.util.Map.Entry;
-import rocket.style.client.ComputedStyle;
-import rocket.style.client.InlineStyle;
-import rocket.style.client.StyleSheet;
-import rocket.style.client.Rule;
-import rocket.style.client.StylePropertyValue;
-import rocket.util.client.Colour;
-
-public StyleSheetChanger{
-
-	public void invertFirstStyleSheetColoursPropertyValues(){
-		final StyleSheet styleSheet = StyleHelper.getStyleSheets().get( 0 );
-		final Iterator rules = styleSheet.getRules().iterator();
-
-		// visit all the rules for the first stylesheet
-		while( rules.hasNext() ){
-			final Rule rule = (Rule) rules.next();
-
-			// visit all the style properties finding those with color in their name...
-			final Iterator properties = rules.getStyle().entrySet().iterator();
-			while( properties.hasNext() ){
-				final Map.Entry property = (Map.Entry) properties.next();
-				final String propertyName = (String) property.getKey();
-
-				// if not a color property skip it...
-				if( propertyName.toLowerCase().indexOf( "color" ) == -1 ){
-					continue;
-				}
-
-				// if value isnt present skip...
-				final StylePropertyValue propertyValue = (StylePropertyValue) property.getValue();
-				if( null == propertyValue ){
-					continue;
-				}
-				final Colour colour = propertyValue.getColour();
-				if( null == colour ){
-					continue;
-				}
-
-				//invert the red, green and blue component...
-				final int red = 0xff ^ colour.getRed();
-				final int green = 0xff ^ colour.getGreen();
-				final int blue = 0xff ^ colour.getBlue();
-
-				// update the colour...
-				propertyValue.setColour( new Colour( red, green, blue ));
-				properties.setValue( propertyValue );
-			}
-		}
+	Element element = ... // get Element from somewhere
+	
+	String value = "opacity=0.5";
+	// special test for ie
+	if( internet explorer ){
+		value = "alpha(opacity=50)";
 	}
-}
-
+	DOM.setStyleAttribute( element, value );
 }}}
 
-===Unit/Functional tests===
+=The solution=
+The rocket.style.Style module attempts to address many of the points pointed out above.
+
+  * `rocket.style.client.InlineStyle` - read/write styles to an element's inline style.
+  * `rocket.style.client.ComputedStyle` - reads computed styles for the given element.
+  * `rocket.style.client.RuleStyle` - read/write styles belonging to a Rule which in turn belongs to a style sheet.
+  * `rocket.style.client.Css` - Includes constants for all styles.
+
+==Cross browser Attribute names/values==
+Two examples below are given that show something that would require quite a bit of code and jsni without the rocket.style.Style module.
+
+===Cross browser Inline Opacity===
+The motivation section discussed the need for a special case to set a new opacity upon an element. The example shows how this would be achieved using the InlineStyle.
+{{{
+	Element element = ... // get Element from somewhere
+	InlineStyle.setDouble( element, Css.OPACITY, 0.5, CssUnit.PERCENTAGE );
+}}}
+
+===Cross browser Computed Colour values==
+Working with colour values is another problematic concern for any developer. Internet Explorer again is the primary cause of headaches for developers as it choses to have different values from all the other values. Rather than converting source returning values in a standard value it returns the original value. A developer would thus have to support the following forms of a string value when reading a colour value. The list below shows 4 different values to represent the red colour.
+  * rgb( 255,0,0) - standard form *always* returned by Firefox, Opera and Safari.
+  * "red" - a named colour
+  * #ff0000 - a hex triplet
+  * #f00 - a three digit hex triplet
+
+Reading a colour value thus becomes quite troublesome, however doing so with ComputedStyle is quite simple as the example below shows.
+{{{
+	Element element = ...// get Element from somewhere
+	Colour shouldBeRed = ComputedStyle.getColour( element, Css.BACKGROUND_COLOR );
+}}}
+
+There are many other attributes that are special cases. So far quite a few are taken care of by the rocket classes, however if you find one thats handled wrong or not yet supported feel free to post a message or send an email.
+
+=Unit/Functional tests=
 
 For further examples refer to the unit and functional tests that accompany the distribution.
 
-  * rocket.style.test.computedstyle.ComputedStyleGwtTestCase
-  * rocket.style.test.inlinestyle.InlineStyleGwtTestCase
-  * rocket.style.test.style.client.StyleTest
-  * rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase
-  * rocket.style.test.stylesheet.client.StyleSheetTest
+  * `rocket.style.test.computedstyle.ComputedStyleGwtTestCase`
+  * `rocket.style.test.inlinestyle.InlineStyleGwtTestCase`
+  * `rocket.style.test.style.client.StyleTest`
+  * `rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase`
+  * `rocket.style.test.stylesheet.client.StyleSheetTest`
