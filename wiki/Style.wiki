@@ -36,17 +36,30 @@ The rocket.style.Style module attempts to address many of the points pointed out
   * `rocket.style.client.RuleStyle` - read/write styles belonging to a Rule which in turn belongs to a style sheet.
   * `rocket.style.client.Css` - Includes constants for all styles.
 
+The methods below list the common methods available in all Style classes.
+  * getDouble(Element element,String attribute, CssUnit unit, double defaultValue);
+  * setDouble(Element element,String attribute, double value, CssUnit unit);
+  * getInteger(Element element,String attribute, CssUnit unit, int defaultValue);
+  * setInteger(Element element,String attribute, int value, CssUnit unit);
+  * getString(Element element,String attribute);
+  * setString(Element element,String attribute, String value);
+  * getUrl(Element,String attribute)
+  * setUrl(Element,String attribute,String url)
+  * remove(String) - removes a style from an element.
+
+Additional methods are present that provide a Map view of all the style attributes for an element. For more details refer to the javadoc.
+
 ==Cross browser Attribute names/values==
 Two examples below are given that show something that would require quite a bit of code and jsni without the rocket.style.Style module.
 
-===Cross browser Inline Opacity===
+===Inline Opacity===
 The motivation section discussed the need for a special case to set a new opacity upon an element. The example shows how this would be achieved using the InlineStyle.
 {{{
 	Element element = ... // get Element from somewhere
 	InlineStyle.setDouble( element, Css.OPACITY, 0.5, CssUnit.PERCENTAGE );
 }}}
 
-===Cross browser Computed Colour values==
+===Computed colour values==
 Working with colour values is another problematic concern for any developer. Internet Explorer again is the primary cause of headaches for developers as it choses to have different values from all the other values. Rather than converting source returning values in a standard value it returns the original value. A developer would thus have to support the following forms of a string value when reading a colour value. The list below shows 4 different values to represent the red colour.
   * rgb( 255,0,0) - standard form *always* returned by Firefox, Opera and Safari.
   * "red" - a named colour
