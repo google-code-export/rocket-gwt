@@ -61,6 +61,25 @@ Reading a colour value thus becomes quite troublesome, however doing so with Com
 
 There are many other attributes that are special cases. So far quite a few are taken care of by the rocket classes, however if you find one thats handled wrong or not yet supported feel free to post a message or send an email.
 
+=Getting started=
+After downloading and unzipping the download archive the last step required is to inherit the `rocket.style.Style` module. This is achieved by adding an inherits element to your application module.
+
+{{{
+<module>
+ 	<!-- inherit GWT -->
+	<inherits name="com.google.gwt.user.User" />		
+
+ 	<!-- inherit the style module -->
+	<inherits name="rocket.style.Style" />		
+
+ 	<!-- inherit any other modules you might need, for more details about editing a module.gwt.xml refer to the GWT doco. -->
+
+</module>
+}}}
+
+
+
+
 =Unit/Functional tests=
 
 For further examples refer to the unit and functional tests that accompany the distribution.
