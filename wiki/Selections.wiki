@@ -1,120 +1,52 @@
-#labels Featured,Selection
+#labels Featured
 =Motivation=
 
-The purpose of the rocket.selection package is to expose in a browser independent manner the ability to work with selections. 
+The purpose of the rocket.selection package is to expose in a browser independent manner the ability to work with selections. A selection is what happens when the user of a web page drags the mouse over some text with the browser responding by showing the selection  with reversed colours.
 
 =The solution=
 The selection module provides a singleton which in turn may be used to manipulate or discover more about a selection that exists on the current page.
 
-==rocket.client.selection.Selection==
-Pasted below is the public interface of the `rocket.client.selection.Selection` class. An additional class exists to define selection end points `rocket.client.selection.SelectionEndPoint` which consists of two properties, a text node and offset properties.
- 
-{{{
-public class Selection {
+Most of the methods are self explanatory.
 
-	/**
-	 * Returns the document Selection singleton
-	 * 
-	 * @return
-	 */
-	static public Selection getSelection();
+Global selection methods (they always work).
+|| *method* || *comments* ||
+|| Selection.getSelection() || Fetches the Selection singleton. ||
+|| Selection.disableTextSelection() || Disable text selection for the entire document. ||
+|| Selection.disableTextSelection(Element) || Disable text selection for all children of the given elements. ||
+|| Selection.enableTextSelection() || Enable text selection for the entire document. ||
+|| Selection.enableTextSelection(Element) || Enable text selection for all children of the given elements. ||
+|| Selection.clearAnySelectedText() || Clears any selection ||
 
-	/**
-	 * Disables text selection for this element and all its child elements.
-	 * 
-	 * It is not possible to re enable text selection for a child using
-	 * {@link #enableTextSelection(Element)}
-	 * 
-	 * @param element
-	 */
-	public static void disableTextSelection(final Element element);
+The table below lists functionality available upon valid selection.
+|| *method* || *comments* ||
+|| isEmpty() || Will return true if no selection is present ||
+|| clear() || Clears the current selection ||
+|| extract() || Removes or *cuts* the selected content from the visible document and makes it the child of a new element. ||
+|| delete() || Cuts the selection from the document ||
+|| surround( Element element ) || Inserts the given element into the dom so that it is a child of the given element and yet contains the selected area. ||
+|| getStart() || Get the start of a selection ||
+|| setStart(SelectionEndPoint) || Positions the start of a selection ||
+|| getEnd() || Get the end of a selection ||
+|| setEnd(SelectionEndPoint) || Positions the end of a selection ||
 
-	public static void disableTextSelection();
+  * `rocket.selection.client.SelectionEndPoint` - The start and end of a selection (if one 
+is present) are defined by a text node and an character offset within that node.
 
-	/**
-	 * Enables text selection for an element that was possibly previously
-	 * disabled.
-	 * 
-	 * It is not possible to re enable text selection for a child if a ancestor
-	 * has been disabled using {@link #disableTextSelection(Element)}
-	 * 
-	 * @param element
-	 */
-	public static void enableTextSelection(final Element element) ;
-
-	public static void enableTextSelection();
-
-	/**
-	 * Clears or removes any current text selection.
-	 * 
-	 */
-	public static void clearAnySelectedText();
-
-	/**
-	 * Updates the given element so that mouse selection is re-enabled.
-	 * 
-	 * @param element
-	 */
-	static public void setEnabled(final Element element, final boolean enabled);
-
-	static public boolean isEnabled(final Element element);
-
-	public SelectionEndPoint getStart();
-
-	public void setStart(final SelectionEndPoint start);
-
-	public SelectionEndPoint getEnd();
-
-	public void setEnd(final SelectionEndPoint end);
-
-	/**
-	 * Tests if anything is currently being selected
-	 * 
-	 * @return
-	 */
-	public boolean isEmpty();
-
-	/**
-	 * Clears any current selection.
-	 */
-	public void clear();
-
-	/**
-	 * Extracts the selection and moves it to become the only child of a new
-	 * element.
-	 * 
-	 * If not selection is active the returned element will have no child / its
-	 * innerHTML property will be an empty String.
-	 */
-	public Element extract();
-
-	/**
-	 * Inserts the given element into the dom so that it is a child of the given
-	 * element and yet contains the selected area.
-	 * 
-	 * This class includes a guard to ensure that a selection exists if not an
-	 * exception is thrown.
-	 * 
-	 * @param element
-	 */
-	public void surround(final Element element);
-
-	/**
-	 * Delets the selection's content from the document.
-	 */
-	public void delete();
-
-}}}
+==Potential use cases==
+Most of the selection functionality can be used to write a simple rich text (html) editor.
+  * The Selection.delete() method may be used to delete whatever the user has selected.
+  * The Selection.surround(Element) may be used to apply a style to whatever has selected after updating the Element's inline style.
+  * The Selection.extract() may be used to cut a selection. Pasting merely involves adding the returned element to somewhere else in the dom.
 
 =Getting started=
 
-Add the rocket module to your own project module.
+After downloading and unzipping the download the last step required is to inherit the `rocket.selection.Selecton` module.
 
 {{{
-<module name="Rocket.User" />
+<inherit name="Rocket.selection.Selection" />
 }}}
 
-=Further samples=
+=Function tests=
 
 For further examples refer to the unit demo. The demo is interactive and prompts the user to perform or verify each of the capabilities.
   `rocket.selection.test.selection.client.SelectionTest`
