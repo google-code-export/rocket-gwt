@@ -1,5 +1,5 @@
 #labels Featured
-# Work with computed,inline and rule styles in a cross browser manner.
+#Work with computed,inline and rule styles in a cross browser manner.
 =Motivation=
 
 GWT provides a number of methods within the DOM class to help with the inline style of an element.
