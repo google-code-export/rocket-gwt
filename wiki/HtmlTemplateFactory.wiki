@@ -63,18 +63,18 @@ import rocket.widget.client.HtmlTemplateFactory;
 public interface ExampleHtmlTemplateFactory extends HtmlTemplateFactory {
 
 	/*
-	 * @id=textbox
+	 * @id textbox
 	 */
 	TextBox getUsername();
 
 	/*
-	 * @id=password
+	 * @id password
 	 */
 	TextBox getPassword();
 
 
 	/*
-	 * @id=submit
+	 * @id submit
 	 */
 	Button getSubmit();
 }
