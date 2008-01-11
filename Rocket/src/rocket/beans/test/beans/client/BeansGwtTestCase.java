@@ -22,6 +22,9 @@ import java.util.Set;
 import rocket.beans.client.BeanFactory;
 import rocket.beans.client.BeanFactoryImpl;
 import rocket.beans.client.aop.MethodInvocation;
+import rocket.beans.test.beans.client.advisedrpc.AdvisedGwtRpcAsync;
+import rocket.beans.test.beans.client.advisedrpc.AdvisedRpcBeanFactory;
+import rocket.beans.test.beans.client.advisedrpc.AdvisedRpcMethodInterceptor;
 import rocket.beans.test.beans.client.alias.AliasBeanFactory;
 import rocket.beans.test.beans.client.aliasedbeandoesntexist.AliasBeanDoesntExistBeanFactory;
 import rocket.beans.test.beans.client.aliasnamealreadyexists.AliasFromBeanIdIsNotUniqueBeanFactory;
@@ -163,6 +166,7 @@ import rocket.generator.client.FailedGenerateAttemptException;
 import rocket.generator.client.GeneratorGwtTestCase;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
@@ -192,6 +196,8 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 
 	final static double DOUBLE = 56.789;
 
+	final static int DELAY_TIMEOUT = 10 * 1000;
+	
 	public String getModuleName() {
 		return "rocket.beans.test.beans.Beans";
 	}
@@ -650,7 +656,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		}
 	}
 
-	public void testProxyFinalClass() throws Exception {
+	public void testAttemptToAdviseFinalClass() throws Exception {
 		try {
 			assertBindingFailed(GWT.create(ProxyFinalClassBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
@@ -658,7 +664,7 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 		}
 	}
 
-	public void testProxyClassWithFinalPublicMethod() throws Exception {
+	public void testAttemptToAdviseClassWithFinalPublicMethod() throws Exception {
 		try {
 			assertBindingFailed(GWT.create(ProxyFinalPublicMethodBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
@@ -763,6 +769,27 @@ public class BeansGwtTestCase extends GeneratorGwtTestCase {
 
 		final VoidMethodInterceptor advisor = (VoidMethodInterceptor) factory.getBean(ADVISOR);
 		assertEquals(1, advisor.executedCount);
+	}
+
+	public void testAdviseRpc() {
+		final String string = "apple";
+		
+		final BeanFactory factory = (BeanFactory) GWT.create(AdvisedRpcBeanFactory.class);
+		final AdvisedGwtRpcAsync proxy = (AdvisedGwtRpcAsync) factory.getBean(BEAN);
+		proxy.addStar(string, new AsyncCallback(){
+			public void onSuccess( final Object result ){
+				assertEquals( string + "*", result );
+				
+				final AdvisedRpcMethodInterceptor interceptor = (AdvisedRpcMethodInterceptor) factory.getBean( ADVISOR );
+				assertEquals( 1, interceptor.executedCount );
+				finishTest();
+			}
+			public void onFailure( final Throwable cause ){
+				fail( cause.getMessage() );
+			}
+		});
+		
+		this.delayTestFinish( DELAY_TIMEOUT );
 	}
 	
 	public void testMethodInvocation() {

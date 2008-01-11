@@ -1457,7 +1457,12 @@ public class BeanFactoryGenerator extends Generator {
 		final NewNestedType proxy = beanFactory.newNestedType();
 		proxy.setStatic(false);
 		proxy.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_SUFFIX);
-		proxy.setSuperType(targetBeanType);
+		
+		if( bean instanceof Rpc ){
+			proxy.addInterface( targetBeanType );
+		} else{
+			proxy.setSuperType(targetBeanType);
+		}
 		proxy.setVisibility(Visibility.PRIVATE);
 
 		// add a no arguments constructor...

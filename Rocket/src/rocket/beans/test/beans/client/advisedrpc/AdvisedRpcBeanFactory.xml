@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+
+	<rpc	id="bean"
+			service-interface="rocket.beans.test.beans.client.advisedrpc.AdvisedGwtRpc"
+			service-entry-point="/advised-rpc"	
+	/>
+	
+	<bean 	id="advisor" 
+			class="rocket.beans.test.beans.client.advisedrpc.AdvisedRpcMethodInterceptor" 
+			scope="singleton" />
+	
+	<aspect	advisor="advisor"
+			target="bean"
+			methods="addStar" />
+	
+</bean-factory>
