@@ -13,5 +13,7 @@
 	<generate-with class="rocket.beans.test.beans.rebind.TestBeanFactoryGenerator">
 		<when-type-assignable class="rocket.beans.client.BeanFactory" />
 	</generate-with>	
+
+	<servlet path="/advised-rpc" class="rocket.beans.test.beans.server.advisedrpc.AdvisedGwtRpcImpl"/>	
 </module>
 
