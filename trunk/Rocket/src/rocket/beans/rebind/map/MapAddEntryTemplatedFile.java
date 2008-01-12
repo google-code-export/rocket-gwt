@@ -65,7 +65,7 @@ public class MapAddEntryTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO Delete after moving to parent template package.
+		return super.getInputStream();
 	}
 
 	protected Object getValue0(final String name) {

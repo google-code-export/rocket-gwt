@@ -71,7 +71,7 @@ class ReadFieldTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO Delete after moving to same package as parent etmplate.
+		return super.getInputStream();
 	}
 	
 	protected Object getValue0(final String name) {

@@ -23,8 +23,6 @@ import rocket.util.client.Checker;
  * An abstraction for the new-instance.txt template
  * 
  * @author Miroslav Pokorny
- * 
- * TODO reusable template
  */
 public class NewInstanceTemplatedFile extends TemplatedFileCodeBlock {
 

@@ -70,7 +70,7 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO DLETE when merged with  parent template package.
+		return super.getInputStream();
 	}
 
 	protected Object getValue0(final String name) {
