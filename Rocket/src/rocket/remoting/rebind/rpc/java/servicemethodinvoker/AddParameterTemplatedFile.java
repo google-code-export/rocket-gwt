@@ -60,7 +60,7 @@ class AddParameterTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO delete when moved to parent template package.
+		return super.getInputStream();
 	}
 
 	protected Object getValue0(final String name) {

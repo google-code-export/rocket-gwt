@@ -68,7 +68,7 @@ class SetPropertyTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO remove when pakcage merged.
+		return super.getInputStream();
 	}
 	
 	protected Object getValue0(final String name) {

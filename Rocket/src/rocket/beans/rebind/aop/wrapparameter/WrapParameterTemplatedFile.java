@@ -52,7 +52,7 @@ public class WrapParameterTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO Delete when merged into same package as parent template.
+		return super.getInputStream();
 	}
 
 	public Object getValue0(final String name) {
