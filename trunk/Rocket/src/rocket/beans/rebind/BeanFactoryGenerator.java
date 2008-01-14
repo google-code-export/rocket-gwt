@@ -875,7 +875,7 @@ public class BeanFactoryGenerator extends Generator {
 			final String setterName = GeneratorHelper.buildSetterName(propertyName);
 
 			final Value value = property.getValue();
-			System.out.println(value);
+
 			if (value instanceof BeanReferenceImpl) {
 				this.prepareBeanReference((BeanReferenceImpl) value);
 			}
