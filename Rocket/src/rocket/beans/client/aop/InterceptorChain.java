@@ -100,9 +100,20 @@ public class InterceptorChain {
 	 * 
 	 * @return The new MethodInvocation
 	 */
+	
 	protected MethodInvocation createMethodInvocation() {
-		final Iterator interceptors = this.getMethodInterceptors().iterator();
-		return new MethodInvocation() {
+		return createMethodInvocation( 0 );
+	}
+
+	/**
+	 * Helper which creates a MethodInvocation for each interceptor. The last interceptor is actually responsible for invoking the
+	 * target.
+	 * @param interceptorIndex Must be a valid index between 0 and the number of method interceptors.
+	 * @return A new MethodInvocation
+	 */
+	protected MethodInvocation createMethodInvocation( final int interceptorIndex ) {
+		return new MethodInvocation(){
+
 			/**
 			 * Returns the this reference for the object being proxied
 			 * 
@@ -117,40 +128,41 @@ public class InterceptorChain {
 			}
 
 			public Object proceed() throws Throwable {
-				final MethodInterceptor interceptor = (MethodInterceptor) interceptors.next();
-				return interceptor.invoke(this);
+				final MethodInterceptor methodInterceptor = (MethodInterceptor) InterceptorChain.this.getMethodInterceptors().get( interceptorIndex );
+				final MethodInvocation methodInvocation = InterceptorChain.this.createMethodInvocation( interceptorIndex + 1 );
+				return methodInterceptor.invoke( methodInvocation );
 			}
-			
-			public String getMethod(){
+
+			public String getMethod() {
 				return InterceptorChain.this.getMethod();
-			}			
-			
-			public String[] getParameterTypes(){
+			}
+
+			public String[] getParameterTypes() {
 				// make a defensive copy of the array just to be sure...
 				final String[] parameterTypes = InterceptorChain.this.getParameterTypes();
 				final int count = parameterTypes.length;
-				final String[] copy = new String[ count ];
-				for( int i = 0; i < count; i++ ){
-					copy[ i ] = parameterTypes[ i ];
+				final String[] copy = new String[count];
+				for (int i = 0; i < count; i++) {
+					copy[i] = parameterTypes[i];
 				}
-				
+
 				return copy;
 			}
-			
-			public String getReturnType(){
+
+			public String getReturnType() {
 				return InterceptorChain.this.getReturnType();
 			}
-				
-			public boolean isNative(){
+
+			public boolean isNative() {
 				return InterceptorChain.this.isNative();
 			}
-			
-			public String getEnclosingType(){
+
+			public String getEnclosingType() {
 				return InterceptorChain.this.getEnclosingType();
 			}
-		};
+		};		
 	}
-
+	
 	/**
 	 * The parameters of the method being proxied.
 	 */
@@ -165,19 +177,19 @@ public class InterceptorChain {
 		Checker.notNull("parameter:parameters", parameters);
 		this.parameters = parameters;
 	}
-	
+
 	/**
 	 * The name of the method.
 	 */
 	private String method;
-	
-	protected String getMethod(){
-		Checker.notEmpty( "field:method", method );
+
+	protected String getMethod() {
+		Checker.notEmpty("field:method", method);
 		return this.method;
 	}
-	
-	public void setMethod( final String method ){
-		Checker.notEmpty( "parameter:method", method );
+
+	public void setMethod(final String method) {
+		Checker.notEmpty("parameter:method", method);
 		this.method = method;
 	}
 
@@ -195,51 +207,50 @@ public class InterceptorChain {
 		Checker.notNull("parameter:parameterTypes", parameterTypes);
 		this.parameterTypes = parameterTypes;
 	}
-	
+
 	/**
 	 * The name of the returnType.
 	 */
 	private String returnType;
-	
-	protected String getReturnType(){
-		Checker.notEmpty( "field:returnType", returnType );
+
+	protected String getReturnType() {
+		Checker.notEmpty("field:returnType", returnType);
 		return this.returnType;
 	}
-	
-	public void setReturnType( final String returnType ){
-		Checker.notEmpty( "parameter:returnType", returnType );
+
+	public void setReturnType(final String returnType) {
+		Checker.notEmpty("parameter:returnType", returnType);
 		this.returnType = returnType;
 	}
-	
+
 	/**
 	 * A flag that notes if the method is native.
 	 */
 	private boolean nativee;
-	
-	protected boolean isNative(){
+
+	protected boolean isNative() {
 		return this.nativee;
 	}
-	
-	public void setNative( final boolean nativee ){
+
+	public void setNative(final boolean nativee) {
 		this.nativee = nativee;
 	}
-	
 
 	/**
 	 * The name of the type that encloses the method.
 	 */
 	private String enclosingType;
-	
-	protected String getEnclosingType(){
-		Checker.notEmpty( "field:enclosingType", enclosingType );
+
+	protected String getEnclosingType() {
+		Checker.notEmpty("field:enclosingType", enclosingType);
 		return this.enclosingType;
 	}
-	
-	public void setEnclosingType( final String enclosingType ){
-		Checker.notEmpty( "parameter:enclosingType", enclosingType );
+
+	public void setEnclosingType(final String enclosingType) {
+		Checker.notEmpty("parameter:enclosingType", enclosingType);
 		this.enclosingType = enclosingType;
 	}
-	
+
 	/**
 	 * Overloaded method that helps with wrapping primitives into wrappers.
 	 * 
