@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import rocket.collection.client.CollectionsHelper;
+import rocket.util.client.Checker;
 import rocket.util.client.Utilities;
 
 /**
@@ -57,32 +58,46 @@ public class Location {
 	protected Location() {
 		super();
 	}
+	
+	static native public void reload( final boolean forceGet )/*-{
+		$wnd.location.reload( forceGet );
+	}-*/;
 
-	public native String getHref() /*-{
+	native public String getHref() /*-{
 	 return $wnd.location.href;
 	 }-*/;
 
-	public native String getHost() /*-{
+	public void setHref( final String href ){
+		Checker.notEmpty( "parameter:href", href );
+		
+		this.setHref0( href );
+	}
+	
+	native private void setHref0( final String href )/*-{
+		$wnd.location.replace( href );
+	}-*/;
+	
+	native public String getHost() /*-{
 	 return $wnd.location.host;
 	 }-*/;
 
-	public native String getHostName() /*-{
+	native public String getHostName() /*-{
 	 return $wnd.location.hostname;
 	 }-*/;
 
-	public native String getProtocol() /*-{
+	native public String getProtocol() /*-{
 	 return $wnd.location.protocol;
 	 }-*/;
 
-	public native String getPort() /*-{
+	native public String getPort() /*-{
 	 return $wnd.location.port;
 	 }-*/;
 
-	public native String getPath() /*-{
+	native public String getPath() /*-{
 	 return $wnd.location.pathname;
 	 }-*/;
 
-	public native String getQueryString() /*-{
+	native public String getQueryString() /*-{
 	 return $wnd.location.search;
 	 }-*/;
 
@@ -186,7 +201,7 @@ public class Location {
 		return nameAndValues;
 	}
 
-	public native String getHash() /*-{
+	native public String getHash() /*-{
 	 return $wnd.location.hash;
 	 }-*/;
 
