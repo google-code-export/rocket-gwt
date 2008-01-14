@@ -68,6 +68,8 @@ public interface GeneratorContext {
 	boolean isDebugEnabled();
 	boolean isInfoEnabled();
 	boolean isTraceEnabled();
+
+	String getProperty( String propertyName );
 	
 	Generator getGenerator();
 }
