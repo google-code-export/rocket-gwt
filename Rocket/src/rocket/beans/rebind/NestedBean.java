@@ -35,25 +35,25 @@ public class NestedBean extends Bean implements Value, BeanReference{
 		this.setBeanReference( this.createBeanReference() );
 	}
 	
-	private BeanReference beanReference;
+	private BeanReferenceImpl beanReference;
 	
-	protected BeanReference getBeanReference(){
+	protected BeanReferenceImpl getBeanReference(){
 		Checker.notNull("field:beanReference", beanReference);
 		return this.beanReference;
 	}
 	
-	protected void setBeanReference( final BeanReference beanReference ){
+	protected void setBeanReference( final BeanReferenceImpl beanReference ){
 		Checker.notNull("parameter:beanReference", beanReference);
 		this.beanReference = beanReference;
 	}
 	
-	protected BeanReference createBeanReference(){
+	protected BeanReferenceImpl createBeanReference(){
 		return new BeanReferenceImpl(){
 			public String getId(){
 				return NestedBean.this.getId();
 			}
 			public Type getType(){
-				return NestedBean.this.getProducedType();
+				return NestedBean.this.getValueType();
 			}
 		};
 	}
@@ -61,11 +61,11 @@ public class NestedBean extends Bean implements Value, BeanReference{
 	public boolean isCompatibleWith(final Type type) {
 		return this.getBeanReference().isCompatibleWith(type);
 	}
-
+	
 	public boolean isEmpty() {
 		return this.getBeanReference().isEmpty();
 	}
-
+	
 	public void write(final SourceWriter writer) {
 		this.getBeanReference().write( writer );
 	}
