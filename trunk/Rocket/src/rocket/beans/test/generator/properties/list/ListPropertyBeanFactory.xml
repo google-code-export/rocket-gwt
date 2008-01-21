@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 
+		id="bean" 
+		class="rocket.beans.test.generator.properties.list.HasListProperty" 
+		scope="singleton">
+		<properties>
+			<property name="listProperty">
+				<list>
+					<value>apple</value>
+					<value>banana</value>
+					<value>carrot</value>								
+				</list>
+			</property>
+		</properties>
+	</bean>
+</bean-factory>
