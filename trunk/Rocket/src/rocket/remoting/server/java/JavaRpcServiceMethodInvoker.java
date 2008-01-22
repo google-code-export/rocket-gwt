@@ -221,7 +221,7 @@ public class JavaRpcServiceMethodInvoker {
 	 * 
 	 * @return
 	 */
-	private ServerSerializationFactory createSerializationFactory() {
+	protected ServerSerializationFactory createSerializationFactory() {
 		return new ServerSerializationFactory();
 	}
 }
