@@ -1,4 +1,4 @@
-// read-boolean-field.txt
+// // /rocket/serialization/rebind/read/read-boolean-field.txt
 
 this.${setter}( instance, objectInputStream.readBoolean() );
 

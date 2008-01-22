@@ -1,4 +1,4 @@
-// write0.txt
+// /rocket/serialization/rebind/write/write0.txt
 
 this.writeFields( 
 	/* cast to ${type} */

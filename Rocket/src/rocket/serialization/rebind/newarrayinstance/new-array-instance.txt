@@ -1,4 +1,4 @@
-// new-array-instance.txt
+// /rocket/serialization/rebind/newarrayinstance/new-array-instance.txt
 
 // how many elements are in the array ?
 final int elementCount = objectInputStream.readInt();

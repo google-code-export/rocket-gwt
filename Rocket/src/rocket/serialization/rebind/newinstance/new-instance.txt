@@ -1,4 +1,4 @@
-// new-instance.txt
+// // /rocket/serialization/rebind/newinstance/new-instance.txt
 
 new ${constructor}();
 
