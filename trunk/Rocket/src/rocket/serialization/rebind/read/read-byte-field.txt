@@ -1,4 +1,4 @@
-// read-byte-field.txt
+// /rocket/serialization/rebind/read/read-byte-field.txt
 
 this.${setter}( instance, objectInputStream.readByte() );
 

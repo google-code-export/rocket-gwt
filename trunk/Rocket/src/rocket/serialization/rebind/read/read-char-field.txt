@@ -1,4 +1,4 @@
-// read-char-field.txt
+// /rocket/serialization/rebind/read/read-char-field.txt
 
 this.${setter}( instance, objectInputStream.readChar() );
 
