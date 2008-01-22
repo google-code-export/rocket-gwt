@@ -9,6 +9,9 @@ com.google.gwt.junit.*
 com.google.gwt.user.*
 com.google.gwt.xml.*
 
+# JUNIT
+junit.*
+
 # blacklist all classes in this package except for SerializationException
 rocket.serialization.client.ClientObjectInputStream
 rocket.serialization.client.ClientObjectOutputStream
