@@ -41,7 +41,7 @@ public class Rpc {
 	 * @return
 	 */
 	static ServiceDefTarget getServiceDefTarget( final Object client ){
-		if( client instanceof ServiceDefTarget ){
+		if( false == client instanceof ServiceDefTarget ){
 			throw new RuntimeException( "The parameter:client is not a rpc client (gwt or rocket): " + client );
 		}
 		return (ServiceDefTarget)client;
