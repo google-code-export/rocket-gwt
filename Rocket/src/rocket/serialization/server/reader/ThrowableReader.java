@@ -43,9 +43,8 @@ public class ThrowableReader extends ReflectiveReader implements ServerObjectRea
 	}
 
 	public boolean canRead(final Class classs) {
-		return Serializable.class.isAssignableFrom( classs );
+		return Throwable.class.isAssignableFrom( classs );
 	}
-
 
 	protected void readFields(final Object object, final Class classs, final ObjectInputStream objectInputStream) {
 		if( Throwable.class.equals( classs )){
