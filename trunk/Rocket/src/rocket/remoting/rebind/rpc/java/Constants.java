@@ -15,6 +15,10 @@
  */
 package rocket.remoting.rebind.rpc.java;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import rocket.remoting.client.JavaRpcService;
 import rocket.remoting.client.RpcException;
 import rocket.remoting.client.support.rpc.JavaRpcServiceClient;
@@ -42,4 +46,8 @@ class Constants {
 	static final String NESTED_SERIALIZATION_FACTORY_COMPOSER = "SerializationFactoryComposer";
 
 	static final String RPC_EXCEPTION = RpcException.class.getName();
+	
+	static final String LIST = List.class.getName();
+	static final String SET = Set.class.getName();
+	static final String MAP = Map.class.getName();
 }
