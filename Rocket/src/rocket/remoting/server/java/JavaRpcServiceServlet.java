@@ -116,7 +116,7 @@ public class JavaRpcServiceServlet extends HttpServlet {
 	 * @return
 	 */
 	protected String invoke(final String stream) {
-		final JavaRpcServiceMethodInvoker invoker = new JavaRpcServiceMethodInvoker();
+		final JavaRpcServiceMethodInvoker invoker = this.createRpcServiceMethodInvoker();
 		final String output = invoker.invoke(stream, this);
 		return output;
 	}
