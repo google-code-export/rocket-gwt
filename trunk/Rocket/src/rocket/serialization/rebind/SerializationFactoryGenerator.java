@@ -379,7 +379,7 @@ public class SerializationFactoryGenerator extends Generator {
 					if (SerializationConstants.LIST.equals(fieldTypeName)) {
 						this.processInterface(fieldType);
 
-						final Type elementType = SerializationFactoryGenerator.this.getListElementType(field);
+						final Type elementType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field);
 						context.debug(elementType + " (List)");
 						this.visitType(elementType);
 						break;
@@ -387,7 +387,7 @@ public class SerializationFactoryGenerator extends Generator {
 					if (SerializationConstants.SET.equals(fieldTypeName)) {
 						this.processInterface(fieldType);
 
-						final Type elementType = SerializationFactoryGenerator.this.getSetElementType(field);
+						final Type elementType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field);
 						context.debug(elementType + " (Set)");
 						this.visitType(elementType);
 						break;
@@ -395,8 +395,8 @@ public class SerializationFactoryGenerator extends Generator {
 					if (SerializationConstants.MAP.equals(fieldTypeName)) {
 						this.processInterface(fieldType);
 
-						final Type keyType = SerializationFactoryGenerator.this.getMapKeyType(field);
-						final Type valueType = SerializationFactoryGenerator.this.getMapValueType(field);
+						final Type keyType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field, 0 );
+						final Type valueType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field, 1 );
 						context.debug(keyType + " (Map key)");
 						context.debug(keyType + " (Map value)");
 
@@ -1504,42 +1504,30 @@ public class SerializationFactoryGenerator extends Generator {
 		return this.getGeneratorContext().getType(SerializationConstants.LIST);
 	}
 
-	protected Type getListElementType(final Field field) {
-		return this.getTypeFromAnnotation(field, SerializationConstants.LIST_ELEMENT_TYPE);
-	}
 
 	protected Type getSet() {
 		return this.getGeneratorContext().getType(SerializationConstants.SET);
-	}
-
-	protected Type getSetElementType(final Field field) {
-		return this.getTypeFromAnnotation(field, SerializationConstants.SET_ELEMENT_TYPE);
 	}
 
 	protected Type getMap() {
 		return this.getGeneratorContext().getType(SerializationConstants.MAP);
 	}
 
-	protected Type getMapKeyType(final Field field) {
-		return this.getTypeFromAnnotation(field, SerializationConstants.MAP_KEY_TYPE);
+	protected Type getTypeFromAnnotation( final Field field ){
+		return this.getTypeFromAnnotation( field, 0 );
 	}
-
-	protected Type getMapValueType(final Field field) {
-		return this.getTypeFromAnnotation(field, SerializationConstants.MAP_VALUE_TYPE);
-	}
-
-	protected Type getTypeFromAnnotation(final Field field, final String annotation) {
-		final List values = field.getMetadataValues(annotation);
-		if (values.size() == 0) {
-			throw new SerializationException("Unable to locate \"" + annotation + "\" on field " + field);
+	
+	protected Type getTypeFromAnnotation( final Field field, final int index ){
+		final List values = field.getMetadataValues( SerializationConstants.CONTAINER_TYPE );
+		if (values.size() < index ) {
+			throw new SerializationException("Unable to locate \"" + SerializationConstants.CONTAINER_TYPE + "\" on field " + field);
 		}
-		final String typeName = (String) values.get(0);
+		final String typeName = (String) values.get( index );
 		final Type type = this.getGeneratorContext().findType(typeName);
 		if (null == type) {
-			throw new SerializationException("Unable to find type \"" + typeName + "\" which was taken from the annotation \"" + annotation
-					+ "\" from field: " + field);
+			throw new SerializationException("Unable to find type \"" + typeName + "\" which was taken from the annotation \"" + SerializationConstants.CONTAINER_TYPE + "\" from field: " + field);
 		}
-		return type;
+		return type;		
 	}
 
 	protected String getGeneratedTypeNameSuffix() {

@@ -475,7 +475,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	static class ClassWithListField implements Serializable {
 		/**
-		 * @serialization-listElementType rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ListElement
+		 * @serialization-type rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ListElement
 		 */
 		List list;
 
@@ -528,7 +528,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	static class ClassWithSetField implements Serializable {
 		/**
-		 * @serialization-setElementType rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.SetElement
+		 * @serialization-type rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.SetElement
 		 */
 		Set set;
 	}
@@ -580,8 +580,8 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	static class ClassWithMapField implements Serializable {
 		/**
-		 * @serialization-mapKeyType rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.MapKey
-		 * @serialization-mapValueType rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.MapValue
+		 * @serialization-type rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.MapKey
+		 * @serialization-type rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.MapValue
 		 */
 		Map map;
 	}
