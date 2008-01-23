@@ -15,6 +15,7 @@
  */
 package rocket.json.client;
 
+import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
@@ -22,6 +23,7 @@ import com.google.gwt.json.client.JSONValue;
  * Reads and writes char values.
  * 
  * @author Miroslav Pokorny
+ * @author Vincente Ferrer
  */
 public class CharJsonSerializer extends JsonSerializer {
 
@@ -37,7 +39,7 @@ public class CharJsonSerializer extends JsonSerializer {
 
 	public JSONValue writeJson(final Object instance) {
 		final Character wrapper = (Character) instance;
-		return new JSONString(Character.toString(wrapper.charValue()));
+		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONString(Character.toString(wrapper.charValue()));
 	}
 
 	public char read(final JSONValue jsonValue) {

@@ -15,6 +15,7 @@
  */
 package rocket.json.client;
 
+import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
 
@@ -22,6 +23,7 @@ import com.google.gwt.json.client.JSONValue;
  * Reads and writes float values.
  * 
  * @author Miroslav Pokorny
+ * @author Vincente Ferrer
  */
 public class FloatJsonSerializer extends JsonSerializer {
 	public final static FloatJsonSerializer serializer = new FloatJsonSerializer();
@@ -36,7 +38,7 @@ public class FloatJsonSerializer extends JsonSerializer {
 
 	public JSONValue writeJson(final Object instance) {
 		final Float wrapper = (Float) instance;
-		return new JSONNumber(wrapper.floatValue());
+		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.floatValue());
 	}
 
 	public float read(final JSONValue jsonValue) {

@@ -15,6 +15,7 @@
  */
 package rocket.json.client;
 
+import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
 
@@ -22,6 +23,7 @@ import com.google.gwt.json.client.JSONValue;
  * Reads and writes short values.
  * 
  * @author Miroslav Pokorny
+ * @author Vincente Ferrer
  */
 public class ShortJsonSerializer extends JsonSerializer {
 	public final static ShortJsonSerializer serializer = new ShortJsonSerializer();
@@ -36,7 +38,7 @@ public class ShortJsonSerializer extends JsonSerializer {
 
 	public JSONValue writeJson(final Object instance) {
 		final Short wrapper = (Short) instance;
-		return new JSONNumber(wrapper.shortValue());
+		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.shortValue());
 	}
 
 	public short read(final JSONValue jsonValue) {
