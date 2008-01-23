@@ -15,6 +15,7 @@
  */
 package rocket.json.client;
 
+import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
 
@@ -22,6 +23,7 @@ import com.google.gwt.json.client.JSONValue;
  * Reads and writes long values.
  * 
  * @author Miroslav Pokorny
+ * @author Vincente Ferrer
  */
 public class LongJsonSerializer extends JsonSerializer {
 	public final static LongJsonSerializer serializer = new LongJsonSerializer();
@@ -36,7 +38,7 @@ public class LongJsonSerializer extends JsonSerializer {
 
 	public JSONValue writeJson(final Object instance) {
 		final Long wrapper = (Long) instance;
-		return new JSONNumber(wrapper.longValue());
+		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.longValue());
 	}
 
 	public long read(final JSONValue jsonValue) {

@@ -506,15 +506,15 @@ public class JsonSerializerGenerator extends Generator {
 		while (true) {
 			final Type fieldType = field.getType();
 			if (fieldType.equals(this.getList())) {
-				serializerType = this.getListElementType(field);
+				serializerType = this.getTypeFromAnnotation(field);
 				break;
 			}
 			if (fieldType.equals(this.getSet())) {
-				serializerType = this.getSetElementType(field);
+				serializerType = this.getTypeFromAnnotation(field);
 				break;
 			}
 			if (fieldType.equals(this.getMap())) {
-				serializerType = this.getMapValueType(field);
+				serializerType = this.getTypeFromAnnotation(field);
 				break;
 			}
 			serializerType = fieldType;
@@ -602,37 +602,27 @@ public class JsonSerializerGenerator extends Generator {
 		return serializer;
 	}
 
-	protected Type getListElementType(final Field field) {
-		return this.getTypeFromAnnotation(field, Constants.LIST_ELEMENT_TYPE);
+	protected Type getTypeFromAnnotation( final Field field ){
+		return this.getTypeFromAnnotation(field, 0 );
 	}
-
-	protected Type getSetElementType(final Field field) {
-		return this.getTypeFromAnnotation(field, Constants.SET_ELEMENT_TYPE);
-	}
-
-	protected Type getMapValueType(final Field field) {
-		return this.getTypeFromAnnotation(field, Constants.MAP_VALUE_TYPE);
-	}
-
 	/**
 	 * Retrieves the type after reading the type from an annotation belonging to
 	 * the given field.
 	 * 
 	 * @param field
-	 * @param annotation
 	 * @return
 	 */
-	protected Type getTypeFromAnnotation(final Field field, final String annotation) {
+	protected Type getTypeFromAnnotation(final Field field, final int index ) {
 		Checker.notNull("parameter:field", field);
 
-		final List values = field.getMetadataValues(annotation);
-		if (values.size() != 1) {
-			throw new JsonSerializerGeneratorException("Unable to find the \"" + annotation + "\" annotation for the field " + field);
+		final List values = field.getMetadataValues( Constants.TYPE);
+		if (values.size() <= index ) {
+			throw new JsonSerializerGeneratorException("Unable to find the \"" + Constants.TYPE + "\" annotation for the field " + field);
 		}
 
-		final String typeName = (String) values.get(0);
+		final String typeName = (String) values.get( index );
 		if (null == typeName) {
-			throw new JsonSerializerGeneratorException("Unable to find the \"" + annotation + "\" annotation for the list " + field);
+			throw new JsonSerializerGeneratorException("Unable to find the \"" + Constants.TYPE + "\" annotation for the list " + field);
 		}
 
 		return this.getGeneratorContext().getType(typeName);
