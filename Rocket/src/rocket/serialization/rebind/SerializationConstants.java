@@ -39,19 +39,11 @@ public class SerializationConstants {
 	public final static String SERIALIZABLE_WRITABLE_TYPES = ANNOTATION_PREFIX + "-writableTypes";
 	public final static String SERIALIZABLE_TYPE = ANNOTATION_PREFIX + "-type";
 
+	
+	public final static String CONTAINER_TYPE = ANNOTATION_PREFIX + "-containerType";
 	final static String LIST = List.class.getName();
-
-	final static String LIST_ELEMENT_TYPE = ANNOTATION_PREFIX + "-listElementType";
-
 	final static String SET = Set.class.getName();
-
-	final static String SET_ELEMENT_TYPE = ANNOTATION_PREFIX + "-setElementType";
-
 	final static String MAP = Map.class.getName();
-
-	final static String MAP_KEY_TYPE = ANNOTATION_PREFIX + "-mapKeyType";
-
-	final static String MAP_VALUE_TYPE = ANNOTATION_PREFIX + "-mapValueType";
 
 	final static String SERIALIZATION_FACTORY_GENERATED_TYPE_SUFFIX = "__SerializationFactory";
 
