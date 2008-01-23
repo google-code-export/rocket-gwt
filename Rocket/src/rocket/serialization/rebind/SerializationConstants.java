@@ -40,7 +40,7 @@ public class SerializationConstants {
 	public final static String SERIALIZABLE_TYPE = ANNOTATION_PREFIX + "-type";
 
 	
-	public final static String CONTAINER_TYPE = ANNOTATION_PREFIX + "-containerType";
+	public final static String CONTAINER_TYPE = ANNOTATION_PREFIX + "-type";
 	final static String LIST = List.class.getName();
 	final static String SET = Set.class.getName();
 	final static String MAP = Map.class.getName();
