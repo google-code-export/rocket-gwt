@@ -32,6 +32,7 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedInterfaceType;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
+import rocket.generator.rebind.util.TypeComparator;
 import rocket.remoting.rebind.rpc.RpcClientGenerator;
 import rocket.remoting.rebind.rpc.java.servicemethodinvoker.ServiceMethodInvokerTemplatedFile;
 import rocket.serialization.rebind.SerializationConstants;
@@ -136,8 +137,8 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 
 		// build up a set containing of readableType which will contain all
 		// throwable types and the method return type.
-		final Set readableTypes = new TreeSet();
-		final Set writableTypes = new TreeSet();
+		final Set readableTypes = new TreeSet( TypeComparator.INSTANCE );
+		final Set writableTypes = new TreeSet( TypeComparator.INSTANCE );
 		this.buildReadableAndWritableTypes(method, readableTypes, writableTypes);
 
 		this.addAnnotations(SerializationConstants.SERIALIZABLE_READABLE_TYPES, readableTypes, serializationFactoryComposer);
@@ -170,6 +171,8 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 			final MethodParameter parameter = (MethodParameter) parameters.next();
 			final Type parameterType = parameter.getType();
 
+			context.debug( parameterType.getName() );
+			
 			// skip primitive types...
 			if (parameterType.isPrimitive()) {
 				continue;
@@ -210,9 +213,11 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 		context.debug("Return type");
 
 		// process return type...
-		final Type returnType = method.getReturnType();
+		final Type returnType = method.getReturnType();		
 		final Type voidd = this.getGeneratorContext().getVoid();
 
+		context.debug( returnType.getName() );
+		
 		// dont add if its primitive or void...
 		if (false == (returnType.equals(voidd) || returnType.isPrimitive())) {
 			readableTypes.add(returnType);
@@ -223,29 +228,29 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 					break;
 				}
 
-				writableTypes.add(returnType);
+				readableTypes.add(returnType);
 				context.debug(returnType.getName());
 
 				if (returnType.equals(list)) {
 					final Type listElementType = this.getTypeFromAnnotation(containerTypes, returnType);
-					writableTypes.add(listElementType);
+					readableTypes.add(listElementType);
 
 					context.debug(listElementType + " (List)");
 					break;
 				}
 				if (returnType.equals(set)) {
 					final Type setElementType = this.getTypeFromAnnotation(containerTypes, returnType);
-					writableTypes.add(setElementType);
+					readableTypes.add(setElementType);
 
 					context.debug(setElementType + " (Set)");
 					break;
 				}
 				if (returnType.equals(map)) {
 					final Type mapKeyType = this.getTypeFromAnnotation(containerTypes, returnType);
-					writableTypes.add(mapKeyType);
+					readableTypes.add(mapKeyType);
 
 					final Type mapValueType = this.getTypeFromAnnotation(containerTypes, returnType);
-					writableTypes.add(mapValueType);
+					readableTypes.add(mapValueType);
 
 					context.debug(mapKeyType + " (Map Key)");
 					context.debug(mapValueType + " (Map Value)");
@@ -262,6 +267,9 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 		final Iterator thrownTypes = method.getThrownTypes().iterator();
 		while (thrownTypes.hasNext()) {
 			final Type type = (Type) thrownTypes.next();
+			
+			context.debug( type.getName() );
+			
 			readableTypes.add(type);
 		}
 
