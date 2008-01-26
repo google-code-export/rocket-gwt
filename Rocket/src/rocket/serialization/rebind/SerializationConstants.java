@@ -38,7 +38,6 @@ public class SerializationConstants {
 	public final static String SERIALIZABLE_READABLE_TYPES = ANNOTATION_PREFIX + "-readableTypes";
 	public final static String SERIALIZABLE_WRITABLE_TYPES = ANNOTATION_PREFIX + "-writableTypes";
 	public final static String SERIALIZABLE_TYPE = ANNOTATION_PREFIX + "-type";
-
 	
 	public final static String CONTAINER_TYPE = ANNOTATION_PREFIX + "-type";
 	final static String LIST = List.class.getName();
@@ -116,4 +115,6 @@ public class SerializationConstants {
 	public final static String BLACKLIST_FILENAME = "rocket-Serialization.txt";
 	
 	final static String ARRAY_WRITER = ArrayWriter.class.getName();
+	
+	final static String JAVA_LANG = "java.lang"; 
 }
