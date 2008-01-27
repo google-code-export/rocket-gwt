@@ -12,6 +12,7 @@
 	<inherits name="rocket.dom.Dom" />
 	<inherits name="rocket.generator.Generator" />
 	<inherits name="rocket.json.Json" />
+	<inherits name="rocket.logging.Logging" />
 	<inherits name="rocket.messaging.Messaging" />
 	<inherits name="rocket.remoting.Remoting" />
 	<inherits name="rocket.selection.Selection" />	
