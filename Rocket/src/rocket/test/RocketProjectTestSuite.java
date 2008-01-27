@@ -21,6 +21,7 @@ import rocket.beans.test.BeanTestSuite;
 import rocket.collection.test.CollectionTestSuite;
 import rocket.cookie.test.CookieTestSuite;
 import rocket.generator.test.GeneratorTestSuite;
+import rocket.logging.test.LoggingTestSuite;
 import rocket.remoting.test.RemotingTestSuite;
 import rocket.serialization.test.SerializationTestSuite;
 import rocket.style.test.StyleTestSuite;
@@ -43,6 +44,7 @@ public class RocketProjectTestSuite {
 		CollectionTestSuite.addTests(suite);
 		CookieTestSuite.addTests(suite);
 		GeneratorTestSuite.addTests(suite);
+		LoggingTestSuite.addTests(suite);
 		RemotingTestSuite.addTests(suite);
 		SerializationTestSuite.addTests(suite);
 		StyleTestSuite.addTests(suite);
