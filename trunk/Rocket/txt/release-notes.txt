@@ -756,3 +756,45 @@ Widget
 * ContextMenu now fires a new MenuOpenEvent subclass called ContextMenuOpenEvent ( a sub class of MenuOpenEvent) has been created and includes getters to retrieve the initially clicked upon 
   Element/Widget and mouse position details.
 * Renamed WidgetsHelper to Widgets, as well moving various form related helper methods to Dom.
+
+0.41 27 January 2008
+--------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.41.zip
+
+Beans
+* Fixed aspects so they can be used in conjunction with any declared rpc (via the rpc tag).
+* Fixed/enhanced InterceptorChain to support invoking MethodInvocation.proceed() more than once (Issue#41)
+* Regression that caused failures (BeanFactoryGenerator complains that it cant find a setter) when setting properties with a bean produced by a FactoryBean.
+* Referenced beans within List, Set or Map properties were broken resulting in NPE during the step where generated factory beans were emitting their source.
+* All beans are processed in alphabetical order with nested beans always appearing last after all properly named beans. Functionally this change in semantics is
+  unimportant.
+
+Browser
+* Added Location.setHref method - equvialent to location.replace(URL) and Location.reload()
+
+Generator
+* Enhanced GeneratorContext to include a method getPropertyValue() to retrieve a module property value.
+* Fixed Generator to cleanup any reference to its GeneratorContext, this helps prevent a memory leak because generator instances are cached by GWT.
+
+Json
+* Merged former @jsonSerialization-listElementType, @jsonSerialization-setElementType, @jsonSerialization-mapKeyType, @jsonSerialization-mapValueType into a single annotation @jsonSerialization-type
+* Fixed serializers which handle wrapper types to return JSONNull if the incoming instance was null, previously resulted in a NPE (Thanx Vincente Ferrer)
+
+Logging
+* Added new module which includes a LoggerFactory which accepts categories which can resolve to different loggers with individual levels. Logging statements which are
+  below their threashhold for their parent logger are optimised and removed from source. All category, level and logger class names are taken from rocket.logging.Logging.properties
+* The query string is parsed for a "logging" parameter which may be used to select one of two compilation packages, one with and the other without logging statements.
+  are optimised and removed
+* Several client side loggers are present, as well as a logger that sends all messages to the server. Server logger components are available that support commons logging, log4j or jdk logging.
+
+Remoting
+* Fixed Rpc.setServiceDefTarget(Object,String url) where ServiceDefTarget test was the wrong way around.
+* Made rocket.remoting.server.java.JavaRpcServiceMethodInvoker.createSerializationFactory protected rather than private allowing serialization factory to be customised via overriding this method.\
+* Corrected JavaRpcClientGenerator which was ignoring annotations for collection types, List, Set and Map.
+
+Serialization
+* Updated blacklist (rocket-Serialization) to include extra GWT packages that should never be serialized (http+json).
+* Updated blacklist (rocket-Serialization) to include junit framework classes.
+* Fixed a bug which was causing ThrowableReader to attempt to deserialize non sub classes of Throwable.
+* Merged former @serialization-listElementType, @serialization-setElementType, @serialization-mapKeyType, @serialization-mapValueType into a single annotation @serialization-type
+* Fixed JavaRpcServiceServlet to actually call factory method createRpcServiceMethodInvoker, previously code was erroneously doing a new RpcServiceMethodInvoker.
