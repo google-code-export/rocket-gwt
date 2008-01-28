@@ -1,0 +1,24 @@
+
+<module>
+	<inherits name="com.google.gwt.core.Core" />
+	<inherits name="com.google.gwt.user.User" />
+
+	<inherits name="rocket.beans.Beans" />		
+	<inherits name="rocket.browser.Browser" />
+	<inherits name="rocket.collection.Collection" />		
+	<inherits name="rocket.cookie.Cookie" />
+	<inherits name="rocket.dragndrop.DragNDrop" />
+	<inherits name="rocket.event.Event" />
+	<inherits name="rocket.dom.Dom" />
+	<inherits name="rocket.generator.Generator" />
+	<inherits name="rocket.json.Json" />
+	<inherits name="rocket.messaging.Messaging" />
+	<inherits name="rocket.remoting.Remoting" />
+	<inherits name="rocket.selection.Selection" />	
+	<inherits name="rocket.serialization.Serialization" />		
+	<inherits name="rocket.style.Style" />	
+	<inherits name="rocket.testing.Testing"/>		
+	<inherits name="rocket.text.Text"/>
+	<inherits name="rocket.util.Util" />
+	<inherits name="rocket.widget.Widget" />		
+</module>

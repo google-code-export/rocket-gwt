@@ -1,0 +1,4 @@
+// rocket/beans/rebind/aop/unwrap/boolean.txt
+
+chain.getBooleanParameter( ${parameterIndex} )
+

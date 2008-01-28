@@ -1,0 +1,9 @@
+// switch.txt
+var object = null;
+
+switch( typeName ){		
+	${caseStatements}
+} // switch
+
+return object;
+

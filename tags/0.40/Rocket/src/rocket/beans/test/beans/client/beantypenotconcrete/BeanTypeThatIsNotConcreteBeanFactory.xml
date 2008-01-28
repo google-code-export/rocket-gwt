@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 
+		class="rocket.beans.test.beans.client.beantypenotconcrete.NotConcrete" 
+		id="bean" 
+		scope="singleton">
+	</bean>
+</bean-factory>

@@ -1,0 +1,5 @@
+// /rocket/beans/rebind/aop/unwrapparameter/object.txt
+
+// fetch the parameter and then cast.
+(${parameterType}) chain.getObjectParameter( ${parameterIndex} )
+
