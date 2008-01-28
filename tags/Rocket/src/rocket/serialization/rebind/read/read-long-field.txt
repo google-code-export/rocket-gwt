@@ -1,4 +1,0 @@
-// read-long-field.txt
-
-this.${setter}( instance, objectInputStream.readLong() );
-

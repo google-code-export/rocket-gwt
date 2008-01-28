@@ -1,4 +1,0 @@
-// read-char-field.txt
-
-this.${setter}( instance, objectInputStream.readChar() );
-

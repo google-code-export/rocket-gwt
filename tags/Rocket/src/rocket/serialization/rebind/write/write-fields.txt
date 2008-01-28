@@ -1,8 +1,0 @@
-// write-fields.txt
-
-// write out the individual fields one by one...
-${getAndWriteIndividualFields}
-
-// write the super type fields
-super.writeFields( instance, objectOutputStream );
-

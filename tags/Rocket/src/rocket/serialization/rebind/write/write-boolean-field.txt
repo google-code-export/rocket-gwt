@@ -1,4 +1,0 @@
-// write-boolean-field.txt
-
-objectOutputStream.writeBoolean( this.${getter}( instance ) );
-

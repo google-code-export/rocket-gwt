@@ -1,8 +1,0 @@
-// listbox.txt
-
-rocket.widget.client.ListBox listBox = (rocket.widget.client.ListBox) this.getWidget( ${id} );
-if( null == listBox ){
-	listBox = bindListBox( ${id} );
-}
-return listBox;
-

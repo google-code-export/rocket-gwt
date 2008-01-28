@@ -1,4 +1,0 @@
-// read-byte-field.txt
-
-this.${setter}( instance, objectInputStream.readByte() );
-

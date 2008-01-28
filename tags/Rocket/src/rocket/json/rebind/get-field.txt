@@ -1,4 +1,0 @@
-// get-field.txt
-
-return instance.${field};
-

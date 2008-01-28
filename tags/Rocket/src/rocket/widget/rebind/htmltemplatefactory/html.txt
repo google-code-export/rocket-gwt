@@ -1,8 +1,0 @@
-// html.txt
-
-rocket.widget.client.Html html = (rocket.widget.client.Html) this.getWidget( ${id} );
-if( null == html ){
-	html = bindHtml( ${id} );
-}
-return html;
-

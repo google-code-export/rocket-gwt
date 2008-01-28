@@ -1,8 +1,0 @@
-// read.txt
-
-this.readFields( 
-	/* cast to ${type} */
-	(${type}) instance,
-	/* pass thru ois */
-	objectInputStream );
-	

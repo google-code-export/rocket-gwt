@@ -1,7 +1,0 @@
-// /rocket/beans/rebind/aop/invoketarget/invoke-target-method-void.txt
-
-target.${method}( ${unwrapParameters} );
-
-// InterceptedMethod.invoke() returns Object so return null to keep compiler happy.
-return null;
-

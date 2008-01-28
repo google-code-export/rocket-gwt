@@ -1,4 +1,0 @@
-<module>
-	<inherits name="rocket.testing.Testing" />	
-	<entry-point class="rocket.testing.test.interactivepanel.client.InteractivePanelTest" />
-</module>

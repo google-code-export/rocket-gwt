@@ -1,8 +1,0 @@
-// hyperlink.txt
-
-rocket.widget.client.Hyperlink hyperlink = (rocket.widget.client.Hyperlink) this.getWidget( ${id} );
-if( null == hyperlink ){
-	hyperlink = bindHyperlink( ${id} );
-}
-return hyperlink;
-

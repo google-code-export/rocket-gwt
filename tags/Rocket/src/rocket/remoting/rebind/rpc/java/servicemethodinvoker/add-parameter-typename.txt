@@ -1,4 +1,0 @@
-// add-parameter-typename.txt
-
-invoker.addParameterType( ${parameterTypeName} );
-	

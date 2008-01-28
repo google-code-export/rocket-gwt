@@ -1,4 +1,0 @@
-// read-short-field.txt
-
-this.${setter}( instance, objectInputStream.readShort() );
-

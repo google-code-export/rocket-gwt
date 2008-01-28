@@ -1,4 +1,0 @@
-// read-double-field.txt
-
-this.${setter}( instance, objectInputStream.readDouble() );
-

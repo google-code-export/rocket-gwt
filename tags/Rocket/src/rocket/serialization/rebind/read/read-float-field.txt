@@ -1,4 +1,0 @@
-// read-float-field.txt
-
-this.${setter}( instance, objectInputStream.readFloat() );
-

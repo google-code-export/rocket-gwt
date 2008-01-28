@@ -1,8 +1,0 @@
-// radiobutton.txt
-
-rocket.widget.client.RadioButton radioButton = (rocket.widget.client.RadioButton) this.getWidget( ${id} );
-if( null == radioButton ){
-	radioButton = bindRadioButton( ${id} );
-}
-return radioButton;
-

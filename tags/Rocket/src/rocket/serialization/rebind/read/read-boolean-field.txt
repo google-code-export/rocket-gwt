@@ -1,4 +1,0 @@
-// read-boolean-field.txt
-
-this.${setter}( instance, objectInputStream.readBoolean() );
-

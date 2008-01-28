@@ -1,7 +1,0 @@
-<module>
-	<inherits name="rocket.dom.Dom"/>	
-	<inherits name="rocket.style.Style"/>	
-	<inherits name="rocket.testing.Testing"/>	
-	
-	<entry-point class="rocket.style.test.style.client.StyleTest"/>  
-</module>

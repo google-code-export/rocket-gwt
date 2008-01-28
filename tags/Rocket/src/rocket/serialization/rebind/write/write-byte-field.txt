@@ -1,4 +1,0 @@
-// write-byte-field.txt
-
-objectOutputStream.writeByte( this.${getter}( instance ) );
-
