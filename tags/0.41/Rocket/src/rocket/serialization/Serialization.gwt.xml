@@ -1,0 +1,8 @@
+<module>
+	<inherits name="rocket.util.Util"/>
+	<source path="client" />
+
+	<generate-with class="rocket.serialization.rebind.SerializationFactoryGenerator">
+		<when-type-assignable class="rocket.serialization.client.SerializationFactoryComposer" />
+	</generate-with>	
+</module>

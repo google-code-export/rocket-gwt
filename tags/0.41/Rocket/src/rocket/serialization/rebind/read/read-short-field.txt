@@ -1,0 +1,4 @@
+// /rocket/serialization/rebind/read/read-short-field.txt
+
+this.${setter}( instance, objectInputStream.readShort() );
+

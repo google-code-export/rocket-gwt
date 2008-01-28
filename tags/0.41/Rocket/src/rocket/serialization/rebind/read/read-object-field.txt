@@ -1,0 +1,8 @@
+// /rocket/serialization/rebind/read/read-object-field.txt
+
+this.${setter}( 
+	// cast the read object to match the field type...
+	instance, 
+
+	(${type}) objectInputStream.readObject() );
+

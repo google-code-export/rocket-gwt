@@ -1,0 +1,5 @@
+// /rocket/beans/rebind/aop/interceptorchainproceed/void.txt
+
+// invokes the interceptor chain, doesnt return anything because the method return type is void.
+chain.proceed();
+

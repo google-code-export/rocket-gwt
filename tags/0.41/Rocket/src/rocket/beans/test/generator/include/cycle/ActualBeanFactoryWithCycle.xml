@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<!--
+*** This file includes a cycle to itself. BeanFactoryGenerator should throw an exception detecting the cycle.
+    The exception message should include this fileName ***
+	-->
+	<include file="/rocket/beans/test/generator/include/cycle/ActualBeanFactoryWithCycle.xml" />
+</bean-factory>
