@@ -383,7 +383,7 @@ public class SerializationBenchmarkingGwtTestCase extends GWTTestCase {
 		/**
 		 * Need to tell both generators the element type of the list.
 		 * @gwt.typeArgs <rocket.serialization.benchmark.client.SerializationBenchmarkingGwtTestCase.Pest>
-		 * @serialization-type rocket.serialization.benchmark.client.SerializationBenchmarkingGwtTestCase.Pest
+		 * @serialization-listElementType rocket.serialization.benchmark.client.SerializationBenchmarkingGwtTestCase.Pest
 		 */
 		List pests;
 		

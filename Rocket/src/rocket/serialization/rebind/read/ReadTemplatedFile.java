@@ -52,7 +52,7 @@ public class ReadTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream();
+		return super.getInputStream(); // TODO Dlete when moved to same package as parent template.
 	}
 
 	protected Object getValue0(final String name) {

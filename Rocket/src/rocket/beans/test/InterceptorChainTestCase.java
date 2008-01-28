@@ -168,65 +168,14 @@ public class InterceptorChainTestCase extends TestCase {
 		final Object returned = chain.proceed();
 		assertSame(returning, returned);
 	}
-	public void testWhichCallsProceedMoreThanOnce() throws Throwable{
-		final Object parameter = "input";
-		final Object returning = "returning";
 
-		final InterceptorChain chain = new InterceptorChain();
-
-		final Object[] parameters = new Object[1];
-		parameters[0] = parameter;
-		chain.setParameters(parameters);
-
-		final TestMethodInterceptor firstInterceptor = new TestMethodInterceptor();
-		final TestMethodInterceptor secondInterceptor = new TestMethodInterceptor();
-		final TestMethodInterceptor thirdInterceptor = new TestMethodInterceptor();
-		
-		chain.addMethodInterceptor( firstInterceptor );
-		chain.addMethodInterceptor( secondInterceptor );
-		chain.addMethodInterceptor( thirdInterceptor );
-		
-		chain.addMethodInterceptor(this.createTargetMethodInvoker());
-
-		final Target target = new Target() {
-			Object invoke(final Object input) {	
-				assertSame( parameter, input );
-				return returning;
-			}
-		};
-		chain.setTarget(target);
-
-		final Object returned = chain.proceed();
-		assertSame(returning, returned);
-		
-		assertEquals( 2, firstInterceptor.executedCount );
-		assertEquals( 4, secondInterceptor.executedCount );
-		assertEquals( 8, thirdInterceptor.executedCount );
-	}
-
-	static class TestMethodInterceptor implements MethodInterceptor{
-		public Object invoke(final MethodInvocation invocation) throws Throwable {
-			Object result = invocation.proceed();
-			this.executedCount++;
-			
-			Object secondResult = invocation.proceed();
-			this.executedCount++;
-			
-			assertSame( result, secondResult );
-			
-			return result;
-		}
-		
-		int executedCount = 0;
-	}
-	
 	/**
 	 * Instances of this class are used as pretend proxy targets.
 	 */
 	static abstract class Target {
 		abstract Object invoke(Object input);
 	}
-	
+
 	/**
 	 * Factory method that creates a {@link MethodInterceptor} that prepares and
 	 * executes the invoke method of the Target class.

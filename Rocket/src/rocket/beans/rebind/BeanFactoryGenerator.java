@@ -17,9 +17,7 @@ package rocket.beans.rebind;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import rocket.beans.client.FactoryBean;
 import rocket.beans.rebind.alias.Alias;
@@ -43,12 +40,9 @@ import rocket.beans.rebind.constructor.ConstructorTemplatedFile;
 import rocket.beans.rebind.deferredbinding.DeferredBinding;
 import rocket.beans.rebind.factorymethod.FactoryMethodTemplatedFile;
 import rocket.beans.rebind.invokemethod.InvokeMethodTemplatedFile;
-import rocket.beans.rebind.list.ListValue;
 import rocket.beans.rebind.loadeagersingletons.GetEagerSingletonBeanNames;
-import rocket.beans.rebind.map.MapValue;
 import rocket.beans.rebind.properties.SetPropertiesTemplatedFile;
 import rocket.beans.rebind.registerfactorybeans.RegisterFactoryBeansTemplatedFile;
-import rocket.beans.rebind.set.SetValue;
 import rocket.beans.rebind.stringvalue.StringValue;
 import rocket.beans.rebind.value.Value;
 import rocket.beans.rebind.xml.BeanFactoryDtdEntityResolver;
@@ -108,8 +102,8 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.createBeanFactory(newTypeName, type);
 		this.setBeanFactory(beanFactory);
 
-		final Set unsortedBeans = document.getBeans();
-		final Set beans = this.allocateNamesToNestedBeans(unsortedBeans);
+		final Set beans = document.getBeans();
+		this.allocateNamesToNestedBeans(beans);
 
 		this.setBeans(this.createBeans());
 		this.setAliases(this.createAliases());
@@ -237,9 +231,8 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param beans
 	 *            A set of beans that includes regular named beans and nested
 	 *            anonymous beans
-	 * @return Returns a set with the beans in sorted order.
 	 */
-	protected Set allocateNamesToNestedBeans(final Set beans) {
+	protected void allocateNamesToNestedBeans(final Set beans) {
 		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
@@ -249,39 +242,8 @@ public class BeanFactoryGenerator extends Generator {
 		final Iterator iterator = beans.iterator();
 		int counter = 0;
 
-		// sort beans so nested beans appear last.
-		final Set sorted = new TreeSet(new Comparator() {
-			public int compare(final Object bean, final Object otherBean) {
-				int value = 0;
-
-				while (true) {
-					final boolean nestedBean = bean instanceof NestedBean;
-					final boolean otherNestedBean = otherBean instanceof NestedBean;
-
-					// both are nested or regular beans - sort them using their
-					// id.
-					if (nestedBean == otherNestedBean) {
-						value = this.compare((Bean) bean, (Bean) otherBean);
-						break;
-					}
-
-					// make sure the non nested bean appears before the nested
-					// bean
-					value = false == nestedBean ? +1 : -1;
-					break;
-				}
-
-				return value;
-			}
-
-			int compare(final Bean bean, final Bean otherBean) {
-				return bean.getId().compareToIgnoreCase(otherBean.getId());
-			}
-		});
-
 		while (iterator.hasNext()) {
 			final Bean bean = (Bean) iterator.next();
-			sorted.add(bean);
 			if (false == (bean instanceof NestedBean)) {
 				continue;
 			}
@@ -299,8 +261,6 @@ public class BeanFactoryGenerator extends Generator {
 
 		context.debug("Nested beans found: " + counter);
 		context.unbranch();
-
-		return sorted;
 	}
 
 	protected void throwNestedBeansMustNotHaveIds(final Bean bean) {
@@ -312,7 +272,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * bean.
 	 * 
 	 * @param beans
-	 *            A set containing all beans
+	 *            The beans
 	 */
 	protected void buildFactoryBeans(final Set beans) {
 		Checker.notNull("parameter:beans", beans);
@@ -344,7 +304,7 @@ public class BeanFactoryGenerator extends Generator {
 					nestedBeanCounter++;
 					break;
 				}
-
+				
 				this.createBeanFactoryBean(bean);
 				beansCounter++;
 				break;
@@ -353,8 +313,7 @@ public class BeanFactoryGenerator extends Generator {
 			context.unbranch();
 		}
 
-		context.debug("Total: " + beans.size() + ", beans: " + beansCounter + ", nested(anonymous): " + nestedBeanCounter + ", rpcs: "
-				+ rpcCounter);
+		context.debug("Total: " + beans.size() + ", beans: " + beansCounter + ", nested(anonymous): " + nestedBeanCounter + ", rpcs: " + rpcCounter );
 		context.unbranch();
 	}
 
@@ -365,8 +324,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * The strategy pattern is used with separate factory beans used to
 	 * implement the singleton and prototype bean scopes.
 	 * 
-	 * @param bean
-	 *            The bean under construction.
+	 * @param bean The bean under construction.
 	 */
 	protected void createBeanFactoryBean(final Bean bean) {
 		Checker.notNull("parameter:bean", bean);
@@ -495,8 +453,8 @@ public class BeanFactoryGenerator extends Generator {
 		Checker.notNull("parameter:bean", bean);
 
 		while (true) {
-			if (bean instanceof Rpc) {
-				this.overrideFactoryBeanCreateInstanceViaDeferredBinding((Rpc) bean);
+			if (bean instanceof Rpc ) {
+				this.overrideFactoryBeanCreateInstanceViaDeferredBinding( (Rpc) bean);
 				break;
 			}
 
@@ -515,8 +473,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * Overrides the create instance method of the factory bean to create a new
 	 * instance via deferred binding.
 	 * 
-	 * @param rpc
-	 *            The bean definition
+	 * @param rpc The bean definition
 	 */
 	protected void overrideFactoryBeanCreateInstanceViaDeferredBinding(final Rpc rpc) {
 		Checker.notNull("parameter:bean", rpc);
@@ -918,7 +875,10 @@ public class BeanFactoryGenerator extends Generator {
 			final String setterName = GeneratorHelper.buildSetterName(propertyName);
 
 			final Value value = property.getValue();
-			this.prepareValue(value);
+			System.out.println(value);
+			if (value instanceof BeanReferenceImpl) {
+				this.prepareBeanReference((BeanReferenceImpl) value);
+			}
 
 			final List matchingSetters = new ArrayList();
 
@@ -975,52 +935,6 @@ public class BeanFactoryGenerator extends Generator {
 		context.debug(properties.size() + " properties set.");
 	}
 
-	protected void prepareValue(final Value value) {
-		while (true) {
-			if (value instanceof BeanReferenceImpl) {
-				this.prepareBeanReferenceImpl((BeanReferenceImpl) value);
-				break;
-			}
-			if (value instanceof ListValue) {
-				this.prepareListValue((ListValue) value);
-				break;
-			}
-			if (value instanceof SetValue) {
-				this.prepareSetValue((SetValue) value);
-				break;
-			}
-			if (value instanceof MapValue) {
-				this.prepareMapValue((MapValue) value);
-				break;
-			}
-			break;
-		}
-	}
-
-	protected void prepareBeanReferenceImpl(final BeanReferenceImpl beanReference) {
-		final Bean referencedBean = (Bean) this.getBean(beanReference.getId());
-		beanReference.setType(referencedBean.getValueType());
-	}
-
-	protected void prepareListValue(final ListValue list) {
-		this.prepareCollection(list.getElements());
-	}
-
-	protected void prepareSetValue(final SetValue set) {
-		this.prepareCollection(set.getElements());
-	}
-
-	protected void prepareMapValue(final MapValue map) {
-		this.prepareCollection(map.getEntries().values());
-	}
-
-	protected void prepareCollection(final Collection values) {
-		final Iterator iterator = values.iterator();
-		while (iterator.hasNext()) {
-			this.prepareValue((Value) iterator.next());
-		}
-	}
-
 	/**
 	 * This method throws an exception when more than one constructor satisfies
 	 * the specified values for a bean type
@@ -1039,6 +953,82 @@ public class BeanFactoryGenerator extends Generator {
 		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + propertyName + "\" on the bean, bean: "
 				+ bean);
 	}
+
+	/**
+	 * This method updates and validates the named bean reference. This cannot
+	 * be done earlier because when creating the BeanReference the referenced
+	 * bean might not have yet been created.
+	 * 
+	 * @param beanReference
+	 *            The bean reference
+	 */
+	protected void prepareBeanReference(final BeanReferenceImpl beanReference) {
+		Checker.notNull("parameter:beanReference", beanReference);
+
+		final String id = beanReference.getId();
+		final Bean bean = this.getBean(id);
+		beanReference.setType(bean.getProducedType());
+
+		// final String id = beanReference.getId();
+		//
+		// // if the bean type is a factoryBean read get the bean's actual type
+		// // from the annotation.
+		// final GeneratorContext context = this.getGeneratorContext();
+		// final Type factoryBean = this.getFactoryBean();
+		// final Bean bean = this.getBean(id);
+		//
+		// Type type = bean.getType();
+		// if (type.isAssignableTo(factoryBean)) {
+		// // locate the annotation and get the type from there...
+		// final List factoryBeanObjectTypes =
+		// type.getMetadataValues(Constants.FACTORY_BEAN_OBJECT_TYPE);
+		// if (null == factoryBeanObjectTypes || factoryBeanObjectTypes.size()
+		// != 1) {
+		// throwFactoryBeanObjectTypeAnnotationMissing(bean);
+		// }
+		// final String factoryBeanObjectTypeName = (String)
+		// factoryBeanObjectTypes.get(0);
+		// type = context.getType(factoryBeanObjectTypeName);
+		// }
+		//		
+		// beanReference.setType( type );
+	}
+
+	// /**
+	// * Validates the given nested bean
+	// * @param bean
+	// */
+	// protected void validateNestedBean(final NestedBean bean) {
+	// Checker.checkNotNull("parameter:nestedBean", bean);
+	//
+	// // if the bean type is a factoryBean read get the bean's actual type
+	// // from the annotation.
+	// final GeneratorContext context = this.getGeneratorContext();
+	// Type type = bean.getType();
+	// final Type factoryBean = this.getFactoryBean();
+	//		
+	// if (type.isAssignableTo(factoryBean)) {
+	// // locate the annotation and get the type from there...
+	// final List factoryBeanObjectTypes =
+	// type.getMetadataValues(Constants.FACTORY_BEAN_OBJECT_TYPE);
+	// if (null == factoryBeanObjectTypes || factoryBeanObjectTypes.size() != 1)
+	// {
+	// throwFactoryBeanObjectTypeAnnotationMissing(bean);
+	// }
+	// final String factoryBeanObjectTypeName = (String)
+	// factoryBeanObjectTypes.get(0);
+	// type = context.getType(factoryBeanObjectTypeName);
+	// }
+	//		
+	// bean.setType( type );
+	// }
+
+	// protected void throwFactoryBeanObjectTypeAnnotationMissing(final Bean
+	// bean) {
+	// throw new BeanFactoryGeneratorException("Unable to find \"" +
+	// Constants.FACTORY_BEAN_OBJECT_TYPE
+	// + "\" annotation on the factoryBean declared for bean: " + bean);
+	// }
 
 	/**
 	 * Visit all defined beans singling singleton beans with custom destroy
@@ -1075,7 +1065,7 @@ public class BeanFactoryGenerator extends Generator {
 				context.unbranch();
 			}
 		}
-		context.debug(singletonCount == 0 ? "No singletons" : customDestroyMethodCount + " singletons have custom destroy methods.");
+		context.debug( singletonCount == 0 ? "No singletons" : customDestroyMethodCount + " singletons have custom destroy methods.");
 
 		context.unbranch();
 	}
@@ -1162,8 +1152,7 @@ public class BeanFactoryGenerator extends Generator {
 	/**
 	 * Factory method which creates the rpc FactoryBean
 	 * 
-	 * @param rpc
-	 *            The rpc bean under construction.
+	 * @param rpc The rpc bean under construction.
 	 */
 	protected void createRpcFactoryBean(final Rpc rpc) {
 		Checker.notNull("parameter:rpc", rpc);
@@ -1202,8 +1191,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * Visits all advisors, checking they really are advisors and then adding
 	 * them to the respective bean.
 	 * 
-	 * @param aspects
-	 *            All the aspects within all xml files.
+	 * @param aspects All the aspects within all xml files.
 	 */
 	protected void buildAspects(final Set aspects) {
 		Checker.notNull("parameter:aspects", aspects);
@@ -1231,7 +1219,7 @@ public class BeanFactoryGenerator extends Generator {
 			this.verifyMethodExpression(aspect);
 
 			bean.addAspect(aspect);
-
+			
 			context.unbranch();
 		}
 
@@ -1265,8 +1253,7 @@ public class BeanFactoryGenerator extends Generator {
 	/**
 	 * Checks that the advisor bean exists and is really an aspect of some sort
 	 * 
-	 * @param aspect
-	 *            The aspect containing the advisor
+	 * @param aspect The aspect containing the advisor
 	 */
 	protected void verifyAdvisorBean(final Aspect aspect) {
 		Checker.notNull("parameter:aspect", aspect);
@@ -1281,14 +1268,13 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwNotAnAdviceException(final Bean bean) {
-		throw new BeanFactoryGeneratorException("The so called advisor bean is not actually an aspect, bean: " + bean);
+		throw new BeanFactoryGeneratorException("The so called advisor bean is not actually an advice, bean: " + bean);
 	}
 
 	/**
 	 * Verifies that the method expression matches at least one public method.
 	 * 
-	 * @param aspect
-	 *            The aspect
+	 * @param aspect The aspect
 	 */
 	protected void verifyMethodExpression(final Aspect aspect) {
 		Checker.notNull("parameter:aspect", aspect);
@@ -1361,7 +1347,7 @@ public class BeanFactoryGenerator extends Generator {
 			final Bean bean = (Bean) advisedIterator.next();
 			this.buildProxyFactoryBean(bean);
 		}
-
+		
 		context.unbranch();
 	}
 
@@ -1371,7 +1357,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.debug("Filtering out Beans that dont have any aspects.");
 
 		final Set advised = new HashSet();
-
+		
 		final Map beans = this.getBeans();
 		final Iterator beansIterator = beans.values().iterator();
 
@@ -1384,7 +1370,7 @@ public class BeanFactoryGenerator extends Generator {
 			}
 			advised.add(bean);
 		}
-		context.debug("Found " + advised + " of " + beans.size() + " have at least 1 aspect.");
+		context.debug( "Found " + advised + " of " + beans.size() + " have at least 1 aspect.");
 		context.unbranch();
 
 		return advised;
@@ -1471,12 +1457,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewNestedType proxy = beanFactory.newNestedType();
 		proxy.setStatic(false);
 		proxy.setNestedName(this.escapeBeanIdToBeClassNameSafe(id) + Constants.PROXY_SUFFIX);
-
-		if (bean instanceof Rpc) {
-			proxy.addInterface(targetBeanType);
-		} else {
-			proxy.setSuperType(targetBeanType);
-		}
+		proxy.setSuperType(targetBeanType);
 		proxy.setVisibility(Visibility.PRIVATE);
 
 		// add a no arguments constructor...
@@ -1534,10 +1515,8 @@ public class BeanFactoryGenerator extends Generator {
 	/**
 	 * Finds all the advices that match the given method.
 	 * 
-	 * @param method
-	 *            The method being processed
-	 * @param aspects
-	 *            A list of all advices for the bean
+	 * @param method The method being processed
+	 * @param aspects A list of all advices for the bean
 	 * @return A list of only matching advices
 	 */
 	protected List findMatchingAdvices(final Method method, final List aspects) {
@@ -1607,7 +1586,7 @@ public class BeanFactoryGenerator extends Generator {
 		body.setAspects(aspects);
 		body.setBeanFactory(this.getBeanFactory());
 		body.setMethod(newMethod);
-		body.setTargetMethod(method);
+		body.setTargetMethod( method );
 
 		final Type methodInterceptor = this.getMethodInterceptor();
 		final List methodInvocationParameterList = Arrays.asList(new Type[] { this.getMethodInvocation() });

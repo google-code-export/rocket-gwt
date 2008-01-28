@@ -43,7 +43,7 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @return
 	 */
 	public Map build(final Set types) {
-		Checker.notNull( "parameter:types", types );
+		//SerializationFactoryGenerator.log("--->finding..." + types.toString().replace(',', '\n'));
 
 		final Map accumulator = new HashMap();
 
@@ -73,6 +73,8 @@ abstract public class ObjectReaderOrWriterFinder {
 		final Type readerOrWriterInterface = this.getImplementingInterface();
 		visitor.start(readerOrWriterInterface);
 
+		//SerializationFactoryGenerator.log("AFTER REMOVING UNNNECESSARY READERS/WRITERS:::" + accumulator.toString().replace(',', '\n') + "\n===========");
+
 		return this.finalizeBindings(accumulator);
 	}
 
@@ -96,6 +98,7 @@ abstract public class ObjectReaderOrWriterFinder {
 		while (true) {
 			final Type type = this.getTypeFromAnnotation(readerOrWriter);
 			if (null == type) {
+				//SerializationFactoryGenerator.log( "getTypeFromANnotation for " + readerOrWriter + " was missing...");
 				matches = Collections.EMPTY_MAP;
 				break;
 			}
@@ -110,10 +113,12 @@ abstract public class ObjectReaderOrWriterFinder {
 				break;
 			}
 			// find all sub classes...
+			//matches = this.buildMatchingSubTypes(type, readerOrWriter);
 			final Match match = new Match();
 			match.setScore(ObjectReaderOrWriterFinder.CLASS_MATCH);
 			match.setReaderWriter(readerOrWriter);
 
+			//SerializationFactoryGenerator.log( "\texact" + readerOrWriter + "\t" + type );
 			matches = new HashMap();
 			matches.put(type, match);
 			break;

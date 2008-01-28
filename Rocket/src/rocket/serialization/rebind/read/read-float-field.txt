@@ -1,4 +1,4 @@
-// /rocket/serialization/rebind/read/read-float-field.txt
+// read-float-field.txt
 
 this.${setter}( instance, objectInputStream.readFloat() );
 

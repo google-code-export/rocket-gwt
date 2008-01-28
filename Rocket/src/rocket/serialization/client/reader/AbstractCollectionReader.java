@@ -35,7 +35,7 @@ public class AbstractCollectionReader extends ObjectReaderImpl implements Object
 	}
 	
 	protected void readCollection(final Collection collection, final ObjectInputStream objectInputStream) {
-		Checker.notNull("parameter:collection", collection);
+		Checker.notNull("parameter:set", collection);
 		Checker.notNull("parameter:objectInputStream", objectInputStream);
 
 		final int elementCount = objectInputStream.readInt();

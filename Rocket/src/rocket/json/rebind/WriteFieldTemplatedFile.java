@@ -85,7 +85,7 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public InputStream getInputStream() {
-		return super.getInputStream();
+		return super.getInputStream(); // TODO delete when merged with parent etmplate package
 	}
 	
 	protected Object getValue0(final String name) {

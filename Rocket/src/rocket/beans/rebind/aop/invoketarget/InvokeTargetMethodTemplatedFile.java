@@ -72,7 +72,7 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public InputStream getInputStream(){
-		return super.getInputStream();
+		return super.getInputStream(); // TODO Delete when merged into same package as parent template.
 	}
 	
 	protected Object getValue0(final String name) {

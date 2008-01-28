@@ -52,7 +52,7 @@ public class RethrowDeclaredExceptionTemplatedFile extends TemplatedFileCodeBloc
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream();
+		return super.getInputStream(); // TODO delete after moving to parent template package.
 	}
 	
 	public Object getValue0(final String name) {

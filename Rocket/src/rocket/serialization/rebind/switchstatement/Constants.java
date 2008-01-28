@@ -25,9 +25,9 @@ class Constants {
 	
 	final static String SWITCH_STATEMENTS = "caseStatements";
 
-	final static String CASE_TEMPLATE = "case.txt";
+	final static String CASE_STATEMENT_TEMPLATE = "case-statement.txt";
 
-	final static String CASE_SERIALIZED_TYPE = "serializedTypeRuntimeName";
+	final static String CASE_STATEMENT_SERIALIZED_TYPE = "serializedTypeRuntimeName";
 
 	final static String CASE_STATEMENT_SINGLETON = "singleton";
 }

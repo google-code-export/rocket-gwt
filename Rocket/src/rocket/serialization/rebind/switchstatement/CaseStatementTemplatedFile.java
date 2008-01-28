@@ -73,7 +73,7 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	protected String getResourceName(){
-		return Constants.CASE_TEMPLATE;
+		return Constants.CASE_STATEMENT_TEMPLATE;
 	}
 	
 	public InputStream getInputStream(){
@@ -83,7 +83,7 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.CASE_SERIALIZED_TYPE.equals(name)) {
+			if (Constants.CASE_STATEMENT_SERIALIZED_TYPE.equals(name)) {
 				value = new StringLiteral(this.getSerializedType().getRuntimeName());
 				break;
 			}

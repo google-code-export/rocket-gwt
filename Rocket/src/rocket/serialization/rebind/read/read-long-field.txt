@@ -1,4 +1,4 @@
-// /rocket/serialization/rebind/read/read-long-field.txt
+// read-long-field.txt
 
 this.${setter}( instance, objectInputStream.readLong() );
 

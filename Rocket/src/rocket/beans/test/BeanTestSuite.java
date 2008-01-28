@@ -17,15 +17,7 @@ package rocket.beans.test;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import rocket.beans.test.generator.alias.BeanFactoryGeneratorAliasGwtTestCase;
-import rocket.beans.test.generator.aspects.client.BeanFactoryGeneratorAspectsGwtTestCase;
-import rocket.beans.test.generator.bean.BeanFactoryGeneratorBeanGwtTestCase;
-import rocket.beans.test.generator.beanreference.BeanFactoryGeneratorBeanReferenceGwtTestCase;
-import rocket.beans.test.generator.constructor.BeanFactoryGeneratorConstructorGwtTestCase;
-import rocket.beans.test.generator.include.BeanFactoryGeneratorIncludeGwtTestCase;
-import rocket.beans.test.generator.placeholder.BeanFactoryGeneratorPlaceHolderGwtTestCase;
-import rocket.beans.test.generator.properties.BeanFactoryGeneratorPropertiesGwtTestCase;
-import rocket.beans.test.generator.rpc.BeanFactoryGeneratorRpcGwtTestCase;
+import rocket.beans.test.beans.client.BeansGwtTestCase;
 
 /**
  * TestSuite that executes all unit tests relating to the Beans module
@@ -53,14 +45,6 @@ public class BeanTestSuite {
 		suite.addTestSuite(MethodMatcherTestCase.class);
 		suite.addTestSuite(ProxyFactoryBeanTestCase.class);
 
-		suite.addTestSuite(BeanFactoryGeneratorBeanGwtTestCase.class);
-		suite.addTestSuite(BeanFactoryGeneratorIncludeGwtTestCase.class);
-		suite.addTestSuite(BeanFactoryGeneratorPlaceHolderGwtTestCase.class);
-		suite.addTestSuite(BeanFactoryGeneratorAliasGwtTestCase.class);
-		suite.addTestSuite(BeanFactoryGeneratorConstructorGwtTestCase.class);
-		suite.addTestSuite(BeanFactoryGeneratorPropertiesGwtTestCase.class);
-		suite.addTestSuite(BeanFactoryGeneratorRpcGwtTestCase.class);
-		suite.addTestSuite(BeanFactoryGeneratorBeanReferenceGwtTestCase.class);		
-		suite.addTestSuite(BeanFactoryGeneratorAspectsGwtTestCase.class);		
+		suite.addTestSuite(BeansGwtTestCase.class);
 	}
 }

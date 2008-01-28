@@ -83,7 +83,6 @@ import rocket.serialization.test.server.reader.ListReaderTestCase;
 import rocket.serialization.test.server.reader.LongArrayReaderTestCase;
 import rocket.serialization.test.server.reader.LongReaderTestCase;
 import rocket.serialization.test.server.reader.MapReaderTestCase;
-import rocket.serialization.test.server.reader.ReflectiveReaderTestCase;
 import rocket.serialization.test.server.reader.SetReaderTestCase;
 import rocket.serialization.test.server.reader.ShortArrayReaderTestCase;
 import rocket.serialization.test.server.reader.ShortReaderTestCase;
@@ -104,7 +103,6 @@ import rocket.serialization.test.server.writer.ListWriterTestCase;
 import rocket.serialization.test.server.writer.LongArrayWriterTestCase;
 import rocket.serialization.test.server.writer.LongWriterTestCase;
 import rocket.serialization.test.server.writer.MapWriterTestCase;
-import rocket.serialization.test.server.writer.ReflectiveWriterTestCase;
 import rocket.serialization.test.server.writer.SetWriterTestCase;
 import rocket.serialization.test.server.writer.ShortArrayWriterTestCase;
 import rocket.serialization.test.server.writer.ShortWriterTestCase;
@@ -206,8 +204,6 @@ public class SerializationTestSuite {
 		suite.addTestSuite(DoubleReaderTestCase.class);
 		suite.addTestSuite(CharacterReaderTestCase.class);
 
-		suite.addTestSuite(ReflectiveReaderTestCase.class );
-		
 		suite.addTestSuite(BooleanArrayReaderTestCase.class);
 		suite.addTestSuite(ByteArrayReaderTestCase.class);
 		suite.addTestSuite(ShortArrayReaderTestCase.class);
@@ -243,8 +239,7 @@ public class SerializationTestSuite {
 		suite.addTestSuite(FloatWriterTestCase.class);
 		suite.addTestSuite(DoubleWriterTestCase.class);
 		suite.addTestSuite(CharacterWriterTestCase.class);
-		suite.addTestSuite(ReflectiveWriterTestCase.class );
-		
+
 		suite.addTestSuite(BooleanArrayWriterTestCase.class);
 		suite.addTestSuite(ByteArrayWriterTestCase.class);
 		suite.addTestSuite(ShortArrayWriterTestCase.class);

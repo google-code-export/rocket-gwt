@@ -268,7 +268,6 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 
 		while (true) {
 			if (this.equals(type)) {
-				assignable = true;
 				break;
 			}
 

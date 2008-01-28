@@ -15,7 +15,6 @@
  */
 package rocket.json.client;
 
-import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
 
@@ -23,7 +22,6 @@ import com.google.gwt.json.client.JSONValue;
  * Reads and writes byte values.
  * 
  * @author Miroslav Pokorny
- * @author Vincente Ferrer
  */
 public class ByteJsonSerializer extends JsonSerializer {
 
@@ -39,7 +37,7 @@ public class ByteJsonSerializer extends JsonSerializer {
 
 	public JSONValue writeJson(final Object instance) {
 		final Byte wrapper = (Byte) instance;
-		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.byteValue());
+		return new JSONNumber(wrapper.byteValue());
 	}
 
 	public byte read(final JSONValue jsonValue) {

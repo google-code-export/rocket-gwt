@@ -2,15 +2,10 @@
 
 # GWT
 com.google.gwt.core.*
-com.google.gwt.http.*
-com.google.gwt.i18n.*
-com.google.gwt.json.*
+com.google.gwt.i18n.client.*
 com.google.gwt.junit.*
 com.google.gwt.user.*
 com.google.gwt.xml.*
-
-# JUNIT
-junit.*
 
 # blacklist all classes in this package except for SerializationException
 rocket.serialization.client.ClientObjectInputStream

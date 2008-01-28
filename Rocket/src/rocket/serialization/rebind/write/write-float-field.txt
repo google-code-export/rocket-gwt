@@ -1,3 +1,3 @@
-// /rocket/serialization/rebind/write/write-float-field.txt
+// write-float-field.txt
 
 objectOutputStream.writeFloat( this.${getter}( instance ) );

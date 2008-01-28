@@ -2,26 +2,23 @@
 <project name="Rocket" default="dist" basedir=".">
 	<description>Ant build that includes a number of targets.</description>
 
-	<property name="version" 				value="0.41"/>
-	<property name="build-dir" 				location="${basedir}/build"/>	
-	<property name="test-dir" 				location="${build-dir}/test"/>	
-	<property name="src-dir" 				location="${build-dir}/src"/>
-	<property name="gwt-src-dir" 			location="${basedir}/src"/>		
-	<property name="doc-dir" 				location="${build-dir}/doc"/>
-	<property name="bin-dir" 				location="${build-dir}/bin"/>
-	<property name="wiki-dir" 				location="${basedir}/wiki"/>
-	<property name="txt-dir" 				location="${basedir}/txt"/>
-	<property name="generated-dir" 			location="${basedir}/generated"/>	
-	<property name="www-dir" 				location="${build-dir}/www"/>
-	<property name="reports-dir" 			location="${build-dir}/reports"/>
-	<property name="lib-dir" 				location="c:/java-libraries/"/>
-	<property name="gwt-home-dir"		 	location="${lib-dir}/gwt-windows-1.4.60"/>
-	<property name="junit-dir" 				location="${lib-dir}/junit/3.8"/>
-	<property name="flexjson-dir" 			location="${lib-dir}/flexjson/1.2"/>
-	<property name="cglib-dir" 				location="${lib-dir}/sourceforge.net/cglib/2.0.2"/>	
-	<property name="ant-dir" 				location="${lib-dir}/apache-ant/1.7.0/lib/"/>
-	<property name="log4j-dir" 				location="${lib-dir}/apache/log4j/1.2.15/"/>	
-	<property name="commons-logging-dir"	location="${lib-dir}/apache/commons-logging/1.1.1/"/>		
+	<property name="version" 		value="0.40"/>
+	<property name="build-dir" 		location="${basedir}/build"/>	
+	<property name="test-dir" 		location="${build-dir}/test"/>	
+	<property name="src-dir" 		location="${build-dir}/src"/>
+	<property name="gwt-src-dir" 	location="${basedir}/src"/>		
+	<property name="doc-dir" 		location="${build-dir}/doc"/>
+	<property name="bin-dir" 		location="${build-dir}/bin"/>
+	<property name="wiki-dir" 		location="${basedir}/wiki"/>
+	<property name="txt-dir" 		location="${basedir}/txt"/>
+	<property name="www-dir" 		location="${build-dir}/www"/>
+	<property name="reports-dir" 	location="${build-dir}/reports"/>
+	<property name="lib-dir" 		location="c:/java-libraries/"/>
+	<property name="gwt-home-dir" 	location="${lib-dir}/gwt-windows-1.4.60"/>
+	<property name="junit-dir" 		location="${lib-dir}/junit/3.8"/>
+	<property name="flexjson-dir" 	location="${lib-dir}/flexjson/1.2"/>
+	<property name="cglib-dir" 		location="${lib-dir}/sourceforge.net/cglib/2.0.2"/>	
+	<property name="ant-dir" 		location="${lib-dir}/apache-ant/1.7.0/lib/"/>
 
 	<path id="project.class.path">
 		<pathelement path="${src-dir}"/>
@@ -33,8 +30,6 @@
 		<pathelement path="${junit-dir}/junit.jar"/>
 		<pathelement path="${flexjson-dir}/flexjson.jar"/>		
 		<pathelement path="${cglib-dir}/cglib-full.jar"/>				
-		<pathelement path="${log4j-dir}/log4j.jar"/>	
-		<pathelement path="${commons-logging-dir}/commons-logging.jar"/>
 	</path>
 
 	<path id="gwt-compile.class.path">
@@ -47,8 +42,6 @@
 		<pathelement path="${junit-dir}/junit.jar"/>
 		<pathelement path="${flexjson-dir}/flexjson.jar"/>		
 		<pathelement path="${cglib-dir}/cglib-full.jar"/>				
-		<pathelement path="${log4j-dir}/log4j.jar"/>						
-		<pathelement path="${commons-logging-dir}/commons-logging.jar"/>								
 	</path>
 
 	<!--
@@ -115,13 +108,27 @@
 			</fileset>
 		</jar>
 
+		<jar destfile="${build-dir}/Rocket-test.jar">
+			<fileset dir="${bin-dir}">
+				<include name="**/test/**/*.*"/>
+			</fileset>
+			<fileset dir="${src-dir}">
+				<include name="**/test/**/*.*"/>
+			</fileset>
+			<fileset dir="${txt-dir}">
+				<include name="release-notes.txt"/>
+				<include name="Rocket-test-jar-readme.txt"/>
+				<include name="license.txt"/>
+			</fileset>
+		</jar>
+
 		<jar destfile="${build-dir}/Rocket-stacktrace.jar">
 			<fileset dir="${bin-dir}">
 				<include name="com/google/gwt/emul/java/lang/StackTraceElement.class"/>
 				<include name="com/google/gwt/emul/java/lang/Throwable.class"/>
 				<include name="rocket/util/client/ThrowableHelper.class"/>
 			</fileset>
-			<fileset dir="${gwt-src-dir}">
+			<fileset dir="${src-dir}">
 				<include name="com/google/gwt/emul/java/lang/StackTraceElement.java"/>
 				<include name="com/google/gwt/emul/java/lang/Throwable.java"/>
 				<include name="rocket/util/client/ThrowableHelper.java"/>				
@@ -160,14 +167,13 @@
 	<target name="gwt-compile-all" 
 			depends="compile" 
 			description="Generates the html pages for all demos">
+	
 		<antcall target="gwt-compile">
 			<param name="module" value="rocket.dragndrop.test.DragNDrop"/>
 		</antcall>
+
 		<antcall target="gwt-compile">
 			<param name="module" value="rocket.remoting.test.comet.Comet"/>
-		</antcall>
-		<antcall target="gwt-compile">
-			<param name="module" value="rocket.logging.test.application.LoggingApplication"/>
 		</antcall>
 		<antcall target="gwt-compile">
 			<param name="module" value="rocket.selection.test.selection.Selection"/>
@@ -260,25 +266,22 @@
 	<target name="gwt-compile" 
 			depends="" 
 			description="Translates a module to javascript and html pages.">
+		<delete failonerror="no">
+			<fileset dir="${www-dir}/${module}">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
 		<java	maxmemory="256M"			
 				failonerror="yes"
-				classname="com.google.gwt.dev.GWTCompiler"				
+				classname="com.google.gwt.dev.GWTCompiler"
 				fork="yes">
 			<classpath refid="gwt-compile.class.path" />
-			
-			<!-- This property is ignored by all modules except for LoggingApplication -->
-			<sysproperty 	key="rocket.logging.Logging.config"
-							value="/rocket/logging/test/application/client/Config.properties" />
 			
 			<arg value="-out" />
 			<arg value="${www-dir}" />
 			<arg value="-style" />
 			<arg value="DETAILED" />
 			<arg value="${module}" />
-			<arg value="-logLevel" />
-			<arg value="DEBUG" />			
-			<arg value="-gen" />
-			<arg value="${generated-dir}" />			
 		</java>
 		<antcall target="deleteUnnecessaryFiles">
 			<param name="module" value="${module}"/>
@@ -326,8 +329,11 @@
 		</delete>
 	</target>
 
+	<!--
+	Builds the entire release including compiling source to web demos and so on, and then packaging everything up.
+	-->
 	<target name="dist"
-			depends="clean,compile,test,gwt-compile-all,javadoc,package"     			
+			depends="compile,test,gwt-compile-all,javadoc,package"     			
 			description="Package a release including compiled classes, source files, javadoc and generated html.">
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>
 		<delete failonerror="no" file="${build-dir}/${release-archive-name}" />
@@ -455,10 +461,8 @@ FIXME Fails with
 	-->
 	<target name="clean">
 		<delete failonerror="false">
-			<fileset dir="${test-dir}" 		includes="*"/>
-			<fileset dir="${build-dir}" 	includes="**/*"/>			
-			<fileset dir="${generated-dir}" includes="**/*"/>						
-			<fileset dir="${www-dir}" 		includes="**/*"/>									
+			<fileset dir="${test-dir}" includes="*"/>
+			<fileset dir="${build-dir}" includes="**/*"/>			
 		</delete>
 	</target>
 </project>

@@ -29,8 +29,6 @@ import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
 import rocket.util.client.Checker;
 
-import com.google.gwt.core.ext.BadPropertyValueException;
-import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
@@ -447,21 +445,6 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 
 	/**
-	 * Retrieves the value for a given property name.
-	 * @param name The property name
-	 * @return The value
-	 * @throws GeneratorException if the property was not found.
-	 */
-	public String getProperty( final String name ) throws GeneratorException{
-		try{
-			final TreeLogger logger = this.getLogger();
-			return this.getPropertyOracle().getPropertyValue( logger, name );
-		} catch ( final BadPropertyValueException caught ){
-			throw new GeneratorException( "Unable to get property value for \"" + name + "\", message: " + caught.getMessage(), caught );
-		}		
-	}
-	
-	/**
 	 * The GeneratorContext for this code generation session.
 	 */
 	private com.google.gwt.core.ext.GeneratorContext generatorContext;
@@ -480,12 +463,6 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		return this.getGeneratorContext().getTypeOracle();
 	}
 
-	protected PropertyOracle getPropertyOracle(){
-		return this.getGeneratorContext().getPropertyOracle();
-	}
-	/**
-	 * This stack maintains a stack reflecting the tree logger heirarchy.
-	 */
 	private Stack loggers;
 	
 	protected Stack getLoggers(){

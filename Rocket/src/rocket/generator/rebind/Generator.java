@@ -49,12 +49,8 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * @return The name of the type just that was generated.
 	 */
 	public String generate( final GeneratorContext context, final String typeName ){
-		try{
-			this.setGeneratorContext(context);
-			return this.createNewTypeIfNecessary(typeName);
-		} finally {
-			this.clearGeneratorContext();
-		}
+		this.setGeneratorContext(context);
+		return this.createNewTypeIfNecessary(typeName);
 	}
 	
 	/**
@@ -144,10 +140,6 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	public void setGeneratorContext(final GeneratorContext generatorContext) {
 		Checker.notNull("parameter:generatorContext", generatorContext);
 		this.generatorContext = generatorContext;
-	}
-	
-	protected void clearGeneratorContext(){
-		this.generatorContext = null;
 	}
 
 	/**

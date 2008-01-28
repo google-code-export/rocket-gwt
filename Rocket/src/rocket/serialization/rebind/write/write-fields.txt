@@ -1,4 +1,4 @@
-// /rocket/serialization/rebind/write/write-fields.txt
+// write-fields.txt
 
 // write out the individual fields one by one...
 ${getAndWriteIndividualFields}

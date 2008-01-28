@@ -42,13 +42,13 @@ public class Bean{
 	 * by the bean factory.
 	 * @return The type of the bean thats actually the product of this definition.
 	 */
-	public Type getValueType(){		
+	public Type getProducedType(){		
 		// if bean type is a factoryBean read get the bean's actual delivered type from the annotation.
 		final Type type = this.getType();
-		Type valueType = type;
+		Type productType = type;
 		
 		final GeneratorContext context = type.getGeneratorContext();
-		final Type factoryBean = context.getType( Constants.FACTORY_BEAN );
+		final Type factoryBean = this.getFactoryBean();
 
 		if (type.isAssignableTo(factoryBean)) {
 			// locate the annotation and get the type from there...
@@ -57,10 +57,10 @@ public class Bean{
 				throwFactoryBeanObjectTypeAnnotationMissing();
 			}
 			final String factoryBeanObjectTypeName = (String) factoryBeanObjectTypes.get(0);
-			valueType = context.getType(factoryBeanObjectTypeName);
+			productType = context.getType(factoryBeanObjectTypeName);
 		}
 		
-		return valueType;
+		return productType;
 	}
 	
 	protected void throwFactoryBeanObjectTypeAnnotationMissing() {

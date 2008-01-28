@@ -17,7 +17,6 @@ package rocket.json.client;
 
 import java.util.Date;
 
-import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
 
@@ -25,7 +24,6 @@ import com.google.gwt.json.client.JSONValue;
  * Reads and writes date values.
  * 
  * @author Miroslav Pokorny
- * @author Vincente Ferrer
  */
 public class DateJsonSerializer extends JsonSerializer {
 	public final static DateJsonSerializer serializer = new DateJsonSerializer();
@@ -41,6 +39,6 @@ public class DateJsonSerializer extends JsonSerializer {
 
 	public JSONValue writeJson(final Object instance) {
 		final Date date = (Date) instance;
-		return null == date ? (JSONValue)JSONNull.getInstance() : new JSONNumber(date.getTime());
+		return new JSONNumber(date.getTime());
 	}
 }

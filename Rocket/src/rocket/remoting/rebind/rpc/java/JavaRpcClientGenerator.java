@@ -16,12 +16,11 @@
 package rocket.remoting.rebind.rpc.java;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
-import rocket.generator.rebind.ClassComponent;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.Visibility;
@@ -32,7 +31,6 @@ import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedInterfaceType;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
-import rocket.generator.rebind.util.TypeComparator;
 import rocket.remoting.rebind.rpc.RpcClientGenerator;
 import rocket.remoting.rebind.rpc.java.servicemethodinvoker.ServiceMethodInvokerTemplatedFile;
 import rocket.serialization.rebind.SerializationConstants;
@@ -137,160 +135,76 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 
 		// build up a set containing of readableType which will contain all
 		// throwable types and the method return type.
-		final Set readableTypes = new TreeSet( TypeComparator.INSTANCE );
-		final Set writableTypes = new TreeSet( TypeComparator.INSTANCE );
-		this.buildReadableAndWritableTypes(method, readableTypes, writableTypes);
-
+		final Set readableTypes = this.buildReadableTypes(method);
+		readableTypes.add(this.getRpcException());
 		this.addAnnotations(SerializationConstants.SERIALIZABLE_READABLE_TYPES, readableTypes, serializationFactoryComposer);
+
+		final Set writableTypes = this.buildWritableTypes(method);
 		this.addAnnotations(SerializationConstants.SERIALIZABLE_WRITABLE_TYPES, writableTypes, serializationFactoryComposer);
 
 		return serializationFactoryComposer;
 	}
 
-	protected void buildReadableAndWritableTypes(final Method method, final Set readableTypes, final Set writableTypes) {
+	/**
+	 * Builds a set of types that need to be readable, these are taken by
+	 * combining the method return and thrown types.
+	 * 
+	 * @param method
+	 *            The method to be processed
+	 * @return The set
+	 */
+	protected Set buildReadableTypes(final Method method) {
 		Checker.notNull("parameter:method", method);
-		Checker.notNull("parameter:readableTypes", readableTypes);
-		Checker.notNull("parameter:writableTypes", writableTypes);
 
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info("Processing " + method);
+		final Set readableTypes = new HashSet();
 
-		final Iterator containerTypes = method.getMetadataValues(SerializationConstants.CONTAINER_TYPE).iterator();
+		// add return type
+		final Type returnType = method.getReturnType();
+		final Type voidd = this.getGeneratorContext().getVoid();
 
-		final Type list = this.getList();
-		final Type set = this.getSet();
-		final Type map = this.getMap();
+		// dont add if its primitive or void...
+		if (false == (returnType.equals(voidd) || returnType.isPrimitive())) {
+			readableTypes.add(returnType);
+		}
 
-		context.branch();
-		context.debug("Parameters");
+		// iterate over thrown types...
+		final Iterator thrownTypes = method.getThrownTypes().iterator();
+		while (thrownTypes.hasNext()) {
+			final Type type = (Type) thrownTypes.next();
+			readableTypes.add(type);
+		}
 
-		// first process parameters...
+		return readableTypes;
+	}
+
+	/**
+	 * Builds a set of types that need to be writable, these are taken from the
+	 * parameter types of this method. Primitive parameter types are not
+	 * included in the set.
+	 * 
+	 * @param method
+	 *            The method to be processed
+	 * @return The set
+	 */
+	protected Set buildWritableTypes(final Method method) {
+		Checker.notNull("parameter:method", method);
+
+		final Set writableTypes = new HashSet();
+
 		final Iterator parameters = method.getParameters().iterator();
 		while (parameters.hasNext()) {
 			final MethodParameter parameter = (MethodParameter) parameters.next();
 			final Type parameterType = parameter.getType();
 
-			context.debug( parameterType.getName() );
-			
 			// skip primitive types...
 			if (parameterType.isPrimitive()) {
 				continue;
 			}
 
 			writableTypes.add(parameterType);
-			context.debug(parameterType.getName());
-
-			if (parameterType.equals(list)) {
-				final Type listElementType = this.getTypeFromAnnotation(containerTypes, parameter);
-				writableTypes.add(listElementType);
-
-				context.debug(listElementType + " (List)");
-				continue;
-			}
-			if (parameterType.equals(set)) {
-				final Type setElementType = this.getTypeFromAnnotation(containerTypes, parameter);
-				writableTypes.add(setElementType);
-
-				context.debug(setElementType + " (Set)");
-				continue;
-			}
-			if (parameterType.equals(map)) {
-				final Type mapKeyType = this.getTypeFromAnnotation(containerTypes, parameter);
-				writableTypes.add(mapKeyType);
-
-				final Type mapValueType = this.getTypeFromAnnotation(containerTypes, parameter);
-				writableTypes.add(mapValueType);
-
-				context.debug(mapKeyType + " (Map Key)");
-				context.debug(mapValueType + " (Map Value)");
-				continue;
-			}
 		}
 
-		context.unbranch();
-		context.branch();
-		context.debug("Return type");
-
-		// process return type...
-		final Type returnType = method.getReturnType();		
-		final Type voidd = this.getGeneratorContext().getVoid();
-
-		context.debug( returnType.getName() );
-		
-		// dont add if its primitive or void...
-		if (false == (returnType.equals(voidd) || returnType.isPrimitive())) {
-			readableTypes.add(returnType);
-
-			while (true) {
-				// skip primitive types...
-				if (returnType.isPrimitive()) {
-					break;
-				}
-
-				readableTypes.add(returnType);
-				context.debug(returnType.getName());
-
-				if (returnType.equals(list)) {
-					final Type listElementType = this.getTypeFromAnnotation(containerTypes, returnType);
-					readableTypes.add(listElementType);
-
-					context.debug(listElementType + " (List)");
-					break;
-				}
-				if (returnType.equals(set)) {
-					final Type setElementType = this.getTypeFromAnnotation(containerTypes, returnType);
-					readableTypes.add(setElementType);
-
-					context.debug(setElementType + " (Set)");
-					break;
-				}
-				if (returnType.equals(map)) {
-					final Type mapKeyType = this.getTypeFromAnnotation(containerTypes, returnType);
-					readableTypes.add(mapKeyType);
-
-					final Type mapValueType = this.getTypeFromAnnotation(containerTypes, returnType);
-					readableTypes.add(mapValueType);
-
-					context.debug(mapKeyType + " (Map Key)");
-					context.debug(mapValueType + " (Map Value)");
-					break;
-				}
-			}
-		}
-
-		context.unbranch();
-		context.branch();
-		context.debug("Thrown types");
-
-		// iterate over thrown types...
-		final Iterator thrownTypes = method.getThrownTypes().iterator();
-		while (thrownTypes.hasNext()) {
-			final Type type = (Type) thrownTypes.next();
-			
-			context.debug( type.getName() );
-			
-			readableTypes.add(type);
-		}
-
-		context.unbranch();
-		context.unbranch();
-	}
-
-	protected Type getTypeFromAnnotation(final Iterator metaDataValues, final ClassComponent classComponent) {
-		Checker.notNull("parameter:metaDataValues", metaDataValues);
-		Checker.notNull("parameter:parameter", classComponent);
-
-		if (false == metaDataValues.hasNext()) {
-			this.throwAnnotationMissing(classComponent, SerializationConstants.CONTAINER_TYPE);
-		}
-
-		final String name = (String) metaDataValues.next();
-		return this.getGeneratorContext().getType(name);
-	}
-
-	protected void throwAnnotationMissing(final ClassComponent classComponent, final String annotation) {
-		throw new JavaRpcClientGeneratorException("Unable to locate annotation \"" + annotation + "\" for " + classComponent);
+		return writableTypes;
 	}
 
 	/**
@@ -337,18 +251,6 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 
 	protected Type getRpcException() {
 		return this.getGeneratorContext().getType(Constants.RPC_EXCEPTION);
-	}
-
-	protected Type getList() {
-		return this.getGeneratorContext().getType(Constants.LIST);
-	}
-
-	protected Type getSet() {
-		return this.getGeneratorContext().getType(Constants.SET);
-	}
-
-	protected Type getMap() {
-		return this.getGeneratorContext().getType(Constants.MAP);
 	}
 
 	protected void throwException(final String message) {
