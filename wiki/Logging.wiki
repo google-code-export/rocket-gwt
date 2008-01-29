@@ -27,12 +27,12 @@ First inherit `rocket.logging.Logging` module into your application's module xml
 
 =Configuring=
 
-==File Layout==
+==File Location==
 The properties file is located as a resource on the application classpath.
   * By default the name of this file is `/rocket-Logging.properties`.
   * The actual name of the file may be changed by setting the system property `rocket.logging.Logging.config` to a classpath resource.
 
-==File layout==
+==File Layout==
 The properties file contains a number of key / value pairs.
   * The key contains the name of the logger (case sensitive).
   * A hierarchical search following Log4J standards is used to resolve a logger to a particular entry.  
