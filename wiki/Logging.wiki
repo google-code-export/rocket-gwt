@@ -1,5 +1,5 @@
 #labels Featured
-# A log4j like logging framework on the client, with auto support for globally including or excluding all logging statements.
+# A log4j like logging framework on the client, supporting loggers with individual levels and implementations as well as globally including or excluding all logging statements.
 
 =Logging=
 The rocket logging module aims to brings a powerful logging facility to a GWT application, with the important distinction to offer the option to eliminate all logging statements from the generated javascript without any changes or recompilation to your application.  Before going into technical details lets examine some of what it can and cant do.
