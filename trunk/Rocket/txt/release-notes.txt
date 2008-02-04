@@ -798,3 +798,10 @@ Serialization
 * Fixed a bug which was causing ThrowableReader to attempt to deserialize non sub classes of Throwable.
 * Merged former @serialization-listElementType, @serialization-setElementType, @serialization-mapKeyType, @serialization-mapValueType into a single annotation @serialization-type
 * Fixed JavaRpcServiceServlet to actually call factory method createRpcServiceMethodInvoker, previously code was erroneously doing a new RpcServiceMethodInvoker.
+
+0.42 4 February 2008
+--------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.42.zip
+
+Beans
+* Fixed a bug relating to advised singleton beans, singletoness was not being honoured.

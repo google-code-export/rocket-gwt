@@ -2,7 +2,7 @@
 <project name="Rocket" default="dist" basedir=".">
 	<description>Ant build that includes a number of targets.</description>
 
-	<property name="version" 				value="0.41"/>
+	<property name="version" 				value="0.42"/>
 	<property name="build-dir" 				location="${basedir}/build"/>	
 	<property name="test-dir" 				location="${build-dir}/test"/>	
 	<property name="src-dir" 				location="${build-dir}/src"/>
