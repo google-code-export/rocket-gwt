@@ -23,9 +23,12 @@ import rocket.beans.client.FactoryBean;
 import rocket.beans.client.InitializingBean;
 import rocket.beans.client.PrototypeFactoryBean;
 import rocket.beans.client.SingletonFactoryBean;
+import rocket.beans.client.UnableToFindBeanException;
 import rocket.beans.client.aop.ProxyFactoryBean;
 
 public class ProxyFactoryBeanTestCase extends TestCase {
+
+	final static String BEAN = "bean";
 
 	public void testGetSingleton() {
 		final FactoryBean proxyFactoryBean = this.createSingletonProxyFactoryBean();
@@ -78,94 +81,97 @@ public class ProxyFactoryBeanTestCase extends TestCase {
 	}
 
 	public void testProxiedBeanFactoryAwareBean() {
-		final ProxyFactoryBean factoryBean = new ProxyFactoryBean(){
-			protected Object createProxy0(Object target){
-				return target;
-			}
-		};
-		factoryBean.setBeanFactory( this.createBeanFactory() );
-		factoryBean.setBeanName( "bean" );
-		factoryBean.setTargetFactoryBean( new PrototypeFactoryBean(){
-			protected Object createInstance() throws Exception{
+		final PrototypeFactoryBean prototypeFactoryBean = new PrototypeFactoryBean() {
+			protected Object createInstance() throws Exception {
 				return new ImplementsBeanFactoryAware();
 			}
-		});
+		};
+		prototypeFactoryBean.setBeanName(BEAN);
+
+		final ProxyFactoryBean proxyFactoryBean = createProxyFactoryBean();		
+		proxyFactoryBean.setBeanName(BEAN);
+
+		final BeanFactory beanFactory = this.createBeanFactory( false, proxyFactoryBean, prototypeFactoryBean );
+		proxyFactoryBean.setBeanFactory(beanFactory);
+		prototypeFactoryBean.setBeanFactory(beanFactory);
 		
-		final ImplementsBeanFactoryAware bean = (ImplementsBeanFactoryAware)factoryBean.getObject();
-		assertNotNull( bean.beanFactory );
+		final ImplementsBeanFactoryAware bean = (ImplementsBeanFactoryAware) prototypeFactoryBean.getObject();
+		assertNotNull(bean.beanFactory);
 	}
 
-	static class ImplementsBeanFactoryAware implements BeanFactoryAware, InitializingBean{
-		
-		public void afterPropertiesSet(){
-			assertNotNull( "beanFactory not set", this.beanFactory );
+	static class ImplementsBeanFactoryAware implements BeanFactoryAware, InitializingBean {
+
+		public void afterPropertiesSet() {
+			assertNotNull("beanFactory not set", this.beanFactory);
 		}
+
 		BeanFactory beanFactory;
-		
-		public void setBeanFactory( final BeanFactory beanFactory ){
+
+		public void setBeanFactory(final BeanFactory beanFactory) {
 			this.beanFactory = beanFactory;
 		}
 	}
 
 	public void testProxiedBeanNameAwareBean() {
-		final String BEAN = "bean";
-	
-		final ProxyFactoryBean factoryBean = new ProxyFactoryBean(){
-			protected Object createProxy0(Object target){
-				return target;
-			}
-		};
-		factoryBean.setBeanFactory( this.createBeanFactory() );
-		factoryBean.setBeanName( BEAN );
-		factoryBean.setTargetFactoryBean( new PrototypeFactoryBean(){
-			protected Object createInstance() throws Exception{
+		final PrototypeFactoryBean targetFactoryBean = new PrototypeFactoryBean() {
+			protected Object createInstance() throws Exception {
 				return new ImplementsBeanNameAware();
 			}
-		});
+		};		
+		targetFactoryBean.setBeanName('$' + BEAN);
+
+		final ProxyFactoryBean proxyFactoryBean = createProxyFactoryBean();
+
+		final BeanFactory beanFactory = this.createBeanFactory( false, proxyFactoryBean, targetFactoryBean );
+		targetFactoryBean.setBeanFactory(beanFactory);
+		proxyFactoryBean.setBeanFactory(beanFactory);
 		
-		final ImplementsBeanNameAware bean = (ImplementsBeanNameAware)factoryBean.getObject();
-		assertEquals( BEAN, bean.beanName );
+		final ImplementsBeanNameAware bean = (ImplementsBeanNameAware) proxyFactoryBean.getObject();
+		assertEquals('$' + BEAN, bean.beanName);
 	}
 
-	static class ImplementsBeanNameAware implements BeanNameAware, InitializingBean{
-		
-		public void afterPropertiesSet(){
-			assertNotNull( "beanName not set", this.beanName );
+	static class ImplementsBeanNameAware implements BeanNameAware, InitializingBean {
+
+		public void afterPropertiesSet() {
+			assertNotNull("beanName not set", this.beanName);
 		}
+
 		String beanName;
-		
-		public void setBeanName( final String beanName ){
+
+		public void setBeanName(final String beanName) {
 			this.beanName = beanName;
 		}
 	}
-	
+
 	ProxyFactoryBean createSingletonProxyFactoryBean() {
-		final ProxyFactoryBean factory = this.createProxyFactoryBean();		
-		factory.setTargetFactoryBean(this.createSingletonFactoryBean());
+		final SingletonFactoryBean singletonFactoryBean = this.createSingletonFactoryBean();	
 		
-		return factory;
+		final ProxyFactoryBean proxyFactoryBean = this.createProxyFactoryBean();
+		
+		final BeanFactory beanFactory = this.createBeanFactory( true, proxyFactoryBean, singletonFactoryBean);
+		
+		singletonFactoryBean.setBeanFactory(beanFactory);
+		proxyFactoryBean.setBeanFactory( beanFactory );
+		return proxyFactoryBean;
 	}
 
 	ProxyFactoryBean createPrototypeProxyFactoryBean() {
-		final ProxyFactoryBean factory = this.createProxyFactoryBean();
+		final PrototypeFactoryBean prototypeFactoryBean = this.createPrototypeFactoryBean();				
+		final ProxyFactoryBean proxyFactoryBean = this.createProxyFactoryBean();
 		
-		factory.setBeanName("bean");
-		factory.setBeanFactory( this.createBeanFactory() );
-		factory.setTargetFactoryBean(this.createPrototypeFactoryBean());
-		
-		return factory;
+		final BeanFactory beanFactory = this.createBeanFactory( false, proxyFactoryBean, prototypeFactoryBean);
+		prototypeFactoryBean.setBeanFactory(beanFactory);
+		proxyFactoryBean.setBeanFactory( beanFactory );
+		return proxyFactoryBean;
 	}
 
 	ProxyFactoryBean createProxyFactoryBean() {
-		final ProxyFactoryBean proxy = new ProxyFactoryBean() {
-			protected Object createProxy0(Object target) {
-				final TargetProxy proxy = new TargetProxy();
-				proxy.target = (Target) target;
-				return proxy;
+		final ProxyFactoryBean proxy = new ProxyFactoryBean(){
+			protected Object createProxy0(final Object target){
+				return target;
 			}
 		};
-		proxy.setBeanName("bean");
-		proxy.setBeanFactory( this.createBeanFactory() );
+		proxy.setBeanName(BEAN);
 		return proxy;
 	}
 
@@ -184,16 +190,22 @@ public class ProxyFactoryBeanTestCase extends TestCase {
 			}
 		};
 	}
-	
-	BeanFactory createBeanFactory(){
-		return new BeanFactory(){
-		public Object getBean(String name){
-			throw new UnsupportedOperationException();
-		}
 
-		public boolean isSingleton(String name){
-			throw new UnsupportedOperationException();
-		}
+	BeanFactory createBeanFactory( final boolean singleton, final FactoryBean proxyFactoryBean, final FactoryBean factoryBean  ) {
+		return new BeanFactory() {
+			public Object getBean(final String name) {
+				if( name.equals( BEAN )){
+					return proxyFactoryBean.getObject();
+				}
+				if( name.equals( '$' + BEAN )){
+					return factoryBean.getObject();
+				}
+				throw new UnableToFindBeanException( name );
+			}
+
+			public boolean isSingleton(final String name) {
+				return singleton;
+			}
 		};
 	}
 

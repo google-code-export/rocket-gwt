@@ -299,23 +299,24 @@ public class Bean{
 	public String toString() {
 		final StringBuffer buf = new StringBuffer();
 		
-		buf.append( super.toString() );
+		buf.append( "Bean " );
 		
 		if( false == Tester.isNullOrEmpty( this.id )){
 			buf.append( "id: \"");
 			buf.append( this.id );
-			buf.append( "\"");
+			buf.append( "\", ");
 		}
 		
 		if( false == Tester.isNullOrEmpty( this.typeName ) && null == this.type ){
 			buf.append( "typeName: \"");
 			buf.append( this.typeName );
-			buf.append( "\"");
+			buf.append( "\", ");
 		}
 		
 		
 		if( null != this.type ){
 			buf.append( this.type );
+			buf.append( ", ");
 		}
 		
 		if( this.isSingleton() ){
