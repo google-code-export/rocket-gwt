@@ -1,0 +1,25 @@
+<module>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.collection.Collection" />
+	<inherits name="rocket.dom.Dom" />
+	<inherits name="rocket.event.Event" />
+	<inherits name="rocket.selection.Selection" />
+	<inherits name="rocket.style.Style" />	
+	<inherits name="rocket.util.Util" />
+
+	<generate-with class="rocket.widget.rebind.htmltemplatefactory.HtmlTemplateGenerator">
+		<when-type-assignable class="rocket.widget.client.HtmlTemplateFactory" />
+	</generate-with>
+
+	<!-- Safari requires a different ListBox implementation -->	
+	<replace-with class="rocket.widget.client.support.SafariListBox">
+		<when-type-is class="rocket.widget.client.support.ListBox"/>
+		<when-property-is name="user.agent" value="safari"/>
+	</replace-with>
+
+	<!-- Fall through to this rule if the browser isn't Safari -->
+	<replace-with class="rocket.widget.client.support.ListBox">
+		<when-type-is class="rocket.widget.client.support.ListBox"/>
+	</replace-with>
+
+</module>

@@ -1,0 +1,3 @@
+<module>
+	<inherits name="rocket.util.Util" />	
+</module>
