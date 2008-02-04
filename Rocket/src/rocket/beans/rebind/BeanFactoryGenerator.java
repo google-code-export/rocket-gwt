@@ -35,7 +35,6 @@ import rocket.beans.rebind.alias.GetAliasesToBeans;
 import rocket.beans.rebind.aop.MethodMatcher;
 import rocket.beans.rebind.aop.MethodMatcherFactory;
 import rocket.beans.rebind.aop.createproxy.CreateProxyTemplatedFile;
-import rocket.beans.rebind.aop.gettargetfactorybean.GetTargetFactoryBeanTemplatedFile;
 import rocket.beans.rebind.aop.proxyinterceptedmethod.ProxyInterceptedMethodTemplatedFile;
 import rocket.beans.rebind.aop.proxymethod.ProxyMethodTemplatedFile;
 import rocket.beans.rebind.beanreference.BeanReferenceImpl;
@@ -57,7 +56,9 @@ import rocket.beans.rebind.xml.RethrowSaxExceptionsErrorHandler;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
+import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructor.NewConstructor;
@@ -1212,7 +1213,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 		context.info("Processing and verifying " + aspects.size() + " aspect(s).");
 
-		final MethodMatcherFactory methodMatcherFactory = createMethodMatcherFactor();
+		final MethodMatcherFactory methodMatcherFactory = createMethodMatcherFactory();
 
 		final Iterator iterator = aspects.iterator();
 		while (iterator.hasNext()) {
@@ -1238,7 +1239,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.unbranch();
 	}
 
-	protected MethodMatcherFactory createMethodMatcherFactor() {
+	protected MethodMatcherFactory createMethodMatcherFactory() {
 		return new MethodMatcherFactory();
 	}
 
@@ -1360,6 +1361,8 @@ public class BeanFactoryGenerator extends Generator {
 		while (advisedIterator.hasNext()) {
 			final Bean bean = (Bean) advisedIterator.next();
 			this.buildProxyFactoryBean(bean);
+			
+			this.registerProxiedBean( bean );
 		}
 
 		context.unbranch();
@@ -1396,6 +1399,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param bean
 	 *            The bean being proxied
 	 */
+	// RENAME TARGET BEAN TO $beanName.
 	protected void buildProxyFactoryBean(final Bean bean) {
 		Checker.notNull("parameter:bean", bean);
 
@@ -1418,38 +1422,12 @@ public class BeanFactoryGenerator extends Generator {
 
 		context.debug("ProxyFactoryBean superType: " + superType);
 
-		this.overrideProxyFactoryBeanGetTargetFactoryBean(bean);
+		//this.overrideProxyFactoryBeanGetTargetFactoryBean(bean);
 
 		final NewNestedType proxy = this.createProxy(bean);
 		bean.setProxy(proxy);
 
-		overrideProxyFactoryBeanCreateProxy(bean);
-	}
-
-	/**
-	 * Overrides the getTargetFactoryBean method of the proxy factory bean
-	 * 
-	 * @param bean
-	 *            The bean being processed
-	 */
-	protected void overrideProxyFactoryBeanGetTargetFactoryBean(final Bean bean) {
-		Checker.notNull("parameter:bean", bean);
-
-		this.getGeneratorContext().debug(
-				"Overriding proxy factory bean " + Constants.PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME + ".");
-
-		final NewNestedType proxyFactoryBean = bean.getProxyFactoryBean();
-		final Method method = proxyFactoryBean.getMostDerivedMethod(Constants.PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME,
-				Collections.EMPTY_LIST);
-
-		final NewMethod newMethod = method.copy(proxyFactoryBean);
-		newMethod.setAbstract(false);
-		newMethod.setFinal(true);
-		newMethod.setNative(false);
-
-		final GetTargetFactoryBeanTemplatedFile body = new GetTargetFactoryBeanTemplatedFile();
-		body.setTargetFactoryBean(bean.getFactoryBean());
-		newMethod.setBody(body);
+		this.overrideProxyFactoryBeanCreateProxy(bean);
 	}
 
 	/**
@@ -1648,6 +1626,69 @@ public class BeanFactoryGenerator extends Generator {
 		body.setTargetBeanType(bean.getType());
 
 		newMethod.setBody(body);
+	} 
+	
+	/**
+	 * Re ads the given proxy target under a new name. The proxy factory bean will retain the original name and will refer to this factory bean as the source of the bean being advised.
+	 * @param bean The proxy bean.
+	 */
+	protected void registerProxiedBean( final Bean bean ){
+		Bean copy = null;
+		while( true ){
+			if( bean instanceof NestedBean ){
+				copy = this.copyNestedBean( (NestedBean) bean );
+				break;
+			}
+			if( bean instanceof Rpc ){
+				copy = this.copyRpc( (Rpc) bean );
+				break;
+			}
+			
+			copy = this.copyBean( bean );
+			break;
+		}
+		
+		this.addBean( copy );
+	}
+	
+	protected Bean copyRpc( final Rpc rpc ){
+		Checker.notNull( "parameter:rpc", rpc );
+		
+		final Rpc copy = new Rpc();
+		copy.setEagerLoaded( rpc.isEagerLoaded() );
+		copy.setFactoryBean( rpc.getFactoryBean() );
+		copy.setFactoryMethod( rpc.getFactoryMethod() );
+		copy.setId( Constants.PROXY_TARGET_FACTORY_BEAN_PREFIX + rpc.getId() );
+		copy.setSingleton( rpc.isSingleton() );
+		copy.setServiceEntryPoint( rpc.getServiceEntryPoint() );
+		copy.setServiceInterface( rpc.getServiceInterface() );
+		return copy;
+	}
+	
+	protected NestedBean copyNestedBean( final NestedBean nestedBean ){
+		Checker.notNull( "parameter:nestedBean", nestedBean );
+		
+		final NestedBean copy = new NestedBean();
+		this.copyProxiedBeanProperties( nestedBean, copy);
+		return copy;		
+	}
+	
+	protected Bean copyBean( final Bean bean ){
+		Checker.notNull( "parameter:bean", bean );
+		
+		final Bean copy = new Bean();
+		this.copyProxiedBeanProperties( bean, copy);
+		return copy;		
+	}
+	
+	protected void copyProxiedBeanProperties( final Bean source, final Bean target ){
+		target.setEagerLoaded( target.isEagerLoaded() );
+		target.setFactoryBean( source.getFactoryBean() );
+		target.setFactoryMethod( source.getFactoryMethod() );
+		target.setId( Constants.PROXY_TARGET_FACTORY_BEAN_PREFIX + source.getId() );
+		target.setSingleton( source.isSingleton() );
+		target.setType( source.getType() );
+		target.setTypeName( source.getTypeName() );		
 	}
 
 	/**

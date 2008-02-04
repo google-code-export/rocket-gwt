@@ -18,24 +18,20 @@ package rocket.beans.client.aop;
 import rocket.beans.client.BeanFactory;
 import rocket.beans.client.BeanFactoryAware;
 import rocket.beans.client.BeanNameAware;
-import rocket.beans.client.DisposableBean;
 import rocket.beans.client.FactoryBean;
 import rocket.util.client.Checker;
 
 /**
  * A convenient base class for any FactoryBean that gives out proxies.
- * 
- * Generated classes only need to implement {@link #createProxy0()} methods to
- * handle singleton/prototype instances are taken care of.
- * 
+ *  
  * @author Miroslav Pokorny
  */
-abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, BeanFactoryAware, DisposableBean{
+abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, BeanFactoryAware{
 
 	/**
 	 * Creates a new ProxyFactoryBean
 	 */
-	public ProxyFactoryBean() {
+	public ProxyFactoryBean(){
 		super();
 	}
 
@@ -61,24 +57,10 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	 * if it is a singleton.
 	 */
 	public boolean isSingleton() {
-		return this.getTargetFactoryBean().isSingleton();
+		final String name = this.getTargetBeanName();
+		return this.getBeanFactory().isSingleton(name);
 	}
 
-	/**
-	 * The factory bean that produces the bean being proxied.
-	 */
-	private FactoryBean targetFactoryBean;
-
-	protected FactoryBean getTargetFactoryBean() {
-		Checker.notNull("field:targetFactoryBean", targetFactoryBean);
-		return this.targetFactoryBean;
-	}
-
-	public void setTargetFactoryBean(final FactoryBean targetFactoryBean) {
-		Checker.notNull("parameter:targetFactoryBean", targetFactoryBean);
-		this.targetFactoryBean = targetFactoryBean;
-	}
-	
 	/**
 	 * A cache copy of the proxy. Generated proxies are stateless and may be
 	 * cached.
@@ -102,17 +84,18 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 		this.proxy = proxy;
 	}
 
-	protected Object createProxy() {
-		final FactoryBean factoryBean = this.getTargetFactoryBean(); 
-		if( factoryBean instanceof BeanNameAware ){
-			final BeanNameAware beanNameAware =(BeanNameAware) factoryBean;
-			beanNameAware.setBeanName( this.getBeanName() );
-		}
-		if( factoryBean instanceof BeanFactoryAware ){
-			final BeanFactoryAware beanFactoryAware =(BeanFactoryAware) factoryBean;
-			beanFactoryAware.setBeanFactory( this.getBeanFactory() );
-		}		
-		return this.createProxy0( factoryBean.getObject() );
+	/**
+	 * This method will be overridden to fetch the proxy target from the bean factory.
+	 * @return
+	 */
+	protected Object createProxy(){
+		final String name = this.getTargetBeanName();
+		final Object target = this.getBeanFactory().getBean( name );
+		return this.createProxy0( target );
+	}
+	
+	protected String getTargetBeanName(){
+		return '$' + this.getBeanName();		
 	}
 
 	/**
@@ -130,18 +113,6 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	 */
 	abstract protected Object createProxy0(Object target);
 	
-	/**
-	 * Requests the hosted factory bean to destroy itself it is a disposable bean.
-	 * 
-	 * If the factory bean throws an exception these will leak.
-	 */
-	public void destroy(){
-		final FactoryBean factoryBean = this.getTargetFactoryBean();
-		if( factoryBean instanceof DisposableBean ){
-			((DisposableBean) factoryBean).destroy();
-		}		
-	}
-	
 	private BeanFactory beanFactory;
 	
 	protected BeanFactory getBeanFactory(){
@@ -152,7 +123,6 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 		Checker.notNull("parameter:beanFactory", beanFactory);
 		this.beanFactory = beanFactory;
 	}
-	
 	
 	private String beanName;
 	

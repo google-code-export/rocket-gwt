@@ -84,11 +84,13 @@ class Constants {
 	final static String ADVICE = Advice.class.getName();
 
 	final static String PROXY_FACTORY_BEAN = ProxyFactoryBean.class.getName();
-
-	final static String PROXY_FACTORY_GET_TARGET_FACTORY_BEAN_METHOD_NAME = "getTargetFactoryBean";
+ 
+	final static String PROXY_FACTORY_CREATE_PROXY_METHOD_NAME = "createProxy";
 
 	final static String PROXY_FACTORY_BEAN_SUFFIX = "__ProxyFactoryBean";
 
+	final static String PROXY_TARGET_FACTORY_BEAN_PREFIX = "$";
+	
 	final static String CREATE_PROXY = "createProxy0";
 
 	final static String PROXY_SUFFIX = "__Proxy";

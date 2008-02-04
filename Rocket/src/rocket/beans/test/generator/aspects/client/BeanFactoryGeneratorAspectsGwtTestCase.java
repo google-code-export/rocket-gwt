@@ -47,6 +47,8 @@ import rocket.beans.test.generator.aspects.client.methodinvocation.MethodInvocat
 import rocket.beans.test.generator.aspects.client.notanadvice.NotAnAdviceBeanFactory;
 import rocket.beans.test.generator.aspects.client.rpc.AdvisedGwtRpcAsync;
 import rocket.beans.test.generator.aspects.client.rpc.AdvisedRpcBeanFactory;
+import rocket.beans.test.generator.aspects.client.singleton.Singleton;
+import rocket.beans.test.generator.aspects.client.singleton.SingletonBeanFactory;
 import rocket.beans.test.generator.aspects.client.throwscheckedexception.CheckedException;
 import rocket.beans.test.generator.aspects.client.throwscheckedexception.HasMethodThatThrowsCheckedException;
 import rocket.beans.test.generator.aspects.client.throwscheckedexception.ThrowsCheckedExceptionBeanFactory;
@@ -424,4 +426,18 @@ public class BeanFactoryGeneratorAspectsGwtTestCase extends GeneratorGwtTestCase
 		assertEquals(expectedInterceptorExecutedCount, interceptor.executedCount);
 	}
 
+	public void testSingleton(){
+		final SingletonBeanFactory factory = (SingletonBeanFactory) GWT.create(SingletonBeanFactory.class);
+		final Singleton first = (Singleton) factory.getBean( BEAN );
+		final Singleton second = (Singleton) factory.getBean( BEAN );
+		assertSame( first, second ); 
+		
+		final InvokingCountingMethodInterceptor interceptor = (InvokingCountingMethodInterceptor) factory.getBean(ADVISOR);
+		final int firstNumber = first.getNumber();
+		final int secondNumber = second.getNumber();
+		assertEquals( firstNumber, secondNumber );
+		
+		assertEquals( 2, interceptor.executedCount );
+		
+	}
 }
