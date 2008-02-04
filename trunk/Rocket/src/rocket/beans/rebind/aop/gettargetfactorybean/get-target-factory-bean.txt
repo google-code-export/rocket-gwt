@@ -1,4 +1,0 @@
-// /rocket/beans/rebind/aop/gettargetfactorybean/get-target-factory-bean.txt
-
-return new ${targetFactoryBean}();
-
