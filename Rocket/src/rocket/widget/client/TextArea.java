@@ -76,7 +76,7 @@ public class TextArea extends TextEntryWidget {
 	}
 
 	public int getSelectionLength() {
-		return this.getTextBoxSupport().getSelectionLength(getElement());
+		return this.getTextBoxSupport().getTextAreaSelectionLength(getElement());
 	}
 
 	public int getColumns() {
