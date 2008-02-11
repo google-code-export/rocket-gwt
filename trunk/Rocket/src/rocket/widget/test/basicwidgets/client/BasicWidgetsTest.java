@@ -20,11 +20,13 @@ import rocket.event.client.BlurEvent;
 import rocket.event.client.ChangeEvent;
 import rocket.event.client.ChangeEventListener;
 import rocket.event.client.FocusEvent;
+import rocket.event.client.FocusEventAdapter;
 import rocket.event.client.FocusEventListener;
 import rocket.event.client.ImageLoadEventListener;
 import rocket.event.client.ImageLoadFailedEvent;
 import rocket.event.client.ImageLoadSuccessEvent;
 import rocket.event.client.KeyDownEvent;
+import rocket.event.client.KeyEventAdapter;
 import rocket.event.client.KeyEventListener;
 import rocket.event.client.KeyPressEvent;
 import rocket.event.client.KeyUpEvent;
@@ -42,6 +44,7 @@ import rocket.event.client.ScrollEvent;
 import rocket.event.client.ScrollEventListener;
 import rocket.util.client.Checker;
 import rocket.util.client.StackTrace;
+import rocket.util.client.Tester;
 import rocket.widget.client.Button;
 import rocket.widget.client.CheckBox;
 import rocket.widget.client.FileUpload;
@@ -62,6 +65,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormHandler;
 import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormSubmitEvent;
@@ -236,7 +240,7 @@ public class BasicWidgetsTest implements EntryPoint {
 
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("TextBox"));
 		final TextBox textBox = createTextBox(row);
-		grid.setWidget(row, WIDGET, textBox);
+		grid.setWidget(row, WIDGET, this.monitorCursor( textBox));
 		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(TEXTBOX_HTML_FRAGMENT));
 		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(TEXTBOX_HTML_FRAGMENT));
 		final TextBox hijackedTextBox = hijackTextBox(row);
@@ -246,7 +250,7 @@ public class BasicWidgetsTest implements EntryPoint {
 
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("PasswordTextBox"));
 		final TextBox passwordTextBox = createPasswordTextBox(row);
-		grid.setWidget(row, WIDGET, passwordTextBox);
+		grid.setWidget(row, WIDGET, this.monitorCursor(passwordTextBox));
 		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(PASSWORD_HTML_FRAGMENT));
 		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(PASSWORD_HTML_FRAGMENT));
 		final TextBox hijackedPasswordTextBox = hijackPasswordTextBox(row);
@@ -256,7 +260,7 @@ public class BasicWidgetsTest implements EntryPoint {
 
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("TextArea"));
 		final TextArea textArea = createTextArea(row);
-		grid.setWidget(row, WIDGET, textArea);
+		grid.setWidget(row, WIDGET, this.monitorCursor( textArea));
 		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(TEXTAREA_HTML_FRAGMENT));
 		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(TEXTAREA_HTML_FRAGMENT));
 		final TextArea hijackedTextArea = hijackTextArea(row);
@@ -493,8 +497,10 @@ public class BasicWidgetsTest implements EntryPoint {
 
 	TextArea createTextArea(final int row) {
 		final TextArea textArea = new TextArea();
-		textArea
-				.setText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+		textArea.setText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+		textArea.setText( "01\n45\n89");// becomes 01\n\r45\n\r89 in IE if read back.
+		textArea.setColumns( 30 );
+		textArea.setRows( 5 );
 		this.addTextAreaEventListeners(textArea, row);
 		return textArea;
 	}
@@ -1251,4 +1257,98 @@ public class BasicWidgetsTest implements EntryPoint {
 		return element;
 	}
 
+	Widget monitorCursor( final TextBox textBox ){
+		final Label label = new Label("");
+		
+		textBox.addFocusEventListener( new FocusEventAdapter(){
+			public void onFocus( final FocusEvent event ){
+				updateLabel( textBox,label);
+			}
+		});
+		
+		textBox.addChangeEventListener( new ChangeEventListener(){
+			public void onChange( final ChangeEvent event ){
+				updateLabel( textBox,label);
+			}
+		});
+				
+		textBox.addKeyEventListener( new KeyEventAdapter(){
+			public void onKeyUp(final KeyUpEvent event) {
+				updateLabel( textBox,label);
+			}
+		});
+		
+		return this.embedWithinFlowPanel(textBox, label );
+	}
+	
+	void updateLabel( final TextBox textBox, final Label label ){
+		final int cursor = textBox.getCursorPos();
+		final int selectionLength = textBox.getSelectionLength();
+		final String selectedText = textBox.getSelectedText();
+		updateLabel( label, selectionLength, cursor, selectedText );
+	}
+	
+	
+	Widget monitorCursor( final TextArea textArea ){
+		final Label label = new Label("");
+		
+		textArea.addFocusEventListener( new FocusEventAdapter(){
+			public void onFocus( final FocusEvent event ){
+				updateLabel( textArea, label );
+			}
+		});
+		
+		textArea.addChangeEventListener( new ChangeEventListener(){
+			public void onChange( final ChangeEvent event ){
+				updateLabel( textArea, label );
+			}
+		});
+		
+		textArea.addKeyEventListener( new KeyEventAdapter(){
+			public void onKeyUp(final KeyUpEvent event) {
+				updateLabel( textArea, label );
+			}
+			
+			public void onKeyDown( final KeyDownEvent event ){
+				if( event.isTab() ){
+					// stop the default action which causes the browser to tab to the next widget.
+					event.stop();
+				
+					final int cursor = textArea.getCursorPos();
+					String text = textArea.getText();					
+					textArea.setText( text.substring( 0, cursor ) + "\t" + text.substring( cursor ));
+					textArea.setCursorPos( cursor + 1);
+					
+				}
+			}
+		});
+		
+		return this.embedWithinFlowPanel(textArea, label );
+	}
+	
+	void updateLabel( final TextArea textArea, final Label label ){
+		final int cursor = textArea.getCursorPos();		
+		final int selectionLength = textArea.getSelectionLength();
+		final String selectedText = textArea.getSelectedText().replaceAll("\n", "\\\\n").replaceAll( "\r", "\\\\r" );
+		
+		updateLabel( label, cursor, selectionLength, selectedText );		
+	}
+	
+	void updateLabel( final Label label, final int cursor, final int selectionLength, String selectedText ){
+		if( Tester.isNullOrEmpty( selectedText )){
+			selectedText = "(none)";
+		} else {
+			selectedText = "\"" + selectedText + "\"";
+		}
+				
+		final String labelText = "Cursor: " + cursor + ", selectionLength: " + selectionLength + ", SelectedText " + selectedText; 
+		label.setText( labelText );
+	}
+	
+	Widget embedWithinFlowPanel( final Widget widget, final Label label ){
+		final FlowPanel flowPanel = new FlowPanel();
+		flowPanel.add( widget );
+		flowPanel.add( label );
+		return flowPanel;		
+	}
 }
