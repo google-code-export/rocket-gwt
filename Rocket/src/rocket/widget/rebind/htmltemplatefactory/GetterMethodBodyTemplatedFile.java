@@ -17,20 +17,23 @@ package rocket.widget.rebind.htmltemplatefactory;
 
 import java.io.InputStream;
 
-import rocket.generator.rebind.Generator;
-import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
+import rocket.util.client.Checker;
 
-abstract public class GetterMethodBodyTemplatedFile extends TemplatedFileCodeBlock {
+class GetterMethodBodyTemplatedFile extends TemplatedFileCodeBlock {
 
+	GetterMethodBodyTemplatedFile( final String resourceName, final String id ){
+		super();
+		
+		this.setId(id);
+		this.setResourceName(resourceName);
+	}
+	
 	protected InputStream getInputStream() {
 		final String fileName = this.getResourceName();
-		final Generator generator = this.getGeneratorContext().getGenerator();
-		return generator.getResource(generator.getResourceNameFromGeneratorPackage(fileName));
+		return this.getClass().getResourceAsStream( fileName );
 	}
-
-	abstract protected GeneratorContext getGeneratorContext();
 
 	protected Object getValue0(final String name) {
 		Object value = null;
@@ -41,7 +44,27 @@ abstract public class GetterMethodBodyTemplatedFile extends TemplatedFileCodeBlo
 		return value;
 	}
 
-	abstract protected String getResourceName();
+	private String resourceName;
+	
+	protected String getResourceName(){
+		Checker.notEmpty( "field:resourceName", resourceName);
+		return this.resourceName;
+	}
+	
+	public void setResourceName( final String resourceName ){
+		Checker.notEmpty( "parameter:resourceName", resourceName);
+		this.resourceName = resourceName;
+	}
 
-	abstract protected String getId();
+	private String id;
+	
+	protected String getId(){
+		Checker.notEmpty( "field:id", id);
+		return this.id;
+	}
+	
+	public void setId( final String id ){
+		Checker.notEmpty( "parameter:id", id);
+		this.id = id;
+	}
 }

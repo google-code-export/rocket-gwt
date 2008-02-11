@@ -69,7 +69,7 @@ public class HtmlTemplateGenerator extends Generator {
 	}
 
 	protected void throwDoesntImplementHtmlTemplate(final Type interfacee) {
-		throw new HtmlTemplateGeneratorException("The type " + interfacee + " is not an interface or doesnt implement " + Constants.HTML_TEMPLATE_FACTORY);
+		throwException( new HtmlTemplateGeneratorException("The type " + interfacee + " is not an interface or doesnt implement " + Constants.HTML_TEMPLATE_FACTORY));
 	}
 
 	/**
@@ -191,20 +191,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.TEXTBOX_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.TEXTBOX_TEMPLATE, id );
 	}
 
 	/**
@@ -219,20 +206,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.PASSWORD_TEXTBOX_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.PASSWORD_TEXTBOX_TEMPLATE, id );
 	}
 
 	/**
@@ -247,20 +221,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.TEXTAREA_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.TEXTAREA_TEMPLATE, id );
 	}
 
 	/**
@@ -275,20 +236,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.LISTBOX_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.LISTBOX_TEMPLATE, id );
 	}
 
 	/**
@@ -303,20 +251,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.CHECKBOX_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.CHECKBOX_TEMPLATE, id );
 	}
 
 	/**
@@ -331,20 +266,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.RADIO_BUTTON_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.RADIO_BUTTON_TEMPLATE, id );
 	}
 
 	/**
@@ -359,20 +281,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.LABEL_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.LABEL_TEMPLATE, id );
 	}
 
 	/**
@@ -387,20 +296,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.BUTTON_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.BUTTON_TEMPLATE, id );
 	}
 
 	/**
@@ -415,20 +311,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.IMAGE_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.IMAGE_TEMPLATE, id );
 	}
 
 	/**
@@ -443,20 +326,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.HYPERLINK_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.HYPERLINK_TEMPLATE, id );
 	}
 
 	/**
@@ -471,20 +341,7 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.FORM_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.FORM_TEMPLATE, id );
 	}
 
 	/**
@@ -499,28 +356,15 @@ public class HtmlTemplateGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final String id = this.getId(method);
-
-		return new GetterMethodBodyTemplatedFile() {
-			protected String getResourceName() {
-				return Constants.HTML_TEMPLATE;
-			}
-
-			protected GeneratorContext getGeneratorContext() {
-				return HtmlTemplateGenerator.this.getGeneratorContext();
-			}
-
-			protected String getId() {
-				return id;
-			}
-		};
+		return new GetterMethodBodyTemplatedFile( Constants.HTML_TEMPLATE, id );
 	}
 
 	protected void throwMethodHasParameters(final Method method) {
-		throw new HtmlTemplateGeneratorException("HtmlTemplateFactory methods such as " + method + " must not have any parameters.");
+		throwException( new HtmlTemplateGeneratorException("HtmlTemplateFactory methods such as " + method + " must not have any parameters."));
 	}
 
 	protected void throwUnsupportedWidgetType(final Method method) {
-		throw new HtmlTemplateGeneratorException("The return type of the method " + method + " is not of a supported widget type.");
+		throwException( new HtmlTemplateGeneratorException("The return type of the method " + method + " is not of a supported widget type."));
 	}
 
 	/**
@@ -541,7 +385,7 @@ public class HtmlTemplateGenerator extends Generator {
 	}
 
 	protected void throwUnableToFindIdAnnotation(final Method method) {
-		throw new HtmlTemplateGeneratorException("Unable to find an id annotation upon the method " + method);
+		throwException( new HtmlTemplateGeneratorException("Unable to find an id annotation upon the method " + method));
 	}
 
 	protected String getGeneratedTypeNameSuffix() {
@@ -598,5 +442,9 @@ public class HtmlTemplateGenerator extends Generator {
 
 	protected Type getFormPanel() {
 		return this.getGeneratorContext().getType(Constants.FORM_PANEL);
+	}
+	
+	protected void throwException( final HtmlTemplateGeneratorException exception ){
+		throw exception;
 	}
 }
