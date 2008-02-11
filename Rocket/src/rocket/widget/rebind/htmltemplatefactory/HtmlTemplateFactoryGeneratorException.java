@@ -22,20 +22,17 @@ import rocket.generator.rebind.GeneratorException;
  * 
  * @author Miroslav Pokorny
  */
-public class HtmlTemplateGeneratorException extends GeneratorException {
+public class HtmlTemplateFactoryGeneratorException extends GeneratorException {
 
-	public HtmlTemplateGeneratorException() {
-	}
-
-	public HtmlTemplateGeneratorException(String message) {
+	HtmlTemplateFactoryGeneratorException(final String message) {
 		super(message);
 	}
 
-	public HtmlTemplateGeneratorException(Throwable cause) {
+	HtmlTemplateFactoryGeneratorException(final Throwable cause) {
 		super(cause);
 	}
 
-	public HtmlTemplateGeneratorException(String message, Throwable cause) {
+	HtmlTemplateFactoryGeneratorException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 }

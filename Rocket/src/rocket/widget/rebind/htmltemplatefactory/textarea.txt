@@ -1,4 +1,4 @@
-// textarea.txt
+// rocket/widget/rebind/htmltemplatefactory/textarea.txt
 
 rocket.widget.client.TextArea textArea = (rocket.widget.client.TextArea) this.getWidget( ${id} );
 if( null == textArea ){

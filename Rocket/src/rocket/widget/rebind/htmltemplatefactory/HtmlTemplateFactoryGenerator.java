@@ -39,7 +39,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-public class HtmlTemplateGenerator extends Generator {
+public class HtmlTemplateFactoryGenerator extends Generator {
 
 	protected NewConcreteType assembleNewType(final Type interfacee, final String newTypeName) {
 		this.verifyImplementsHtmlTemplate(interfacee);
@@ -69,7 +69,7 @@ public class HtmlTemplateGenerator extends Generator {
 	}
 
 	protected void throwDoesntImplementHtmlTemplate(final Type interfacee) {
-		throwException( new HtmlTemplateGeneratorException("The type " + interfacee + " is not an interface or doesnt implement " + Constants.HTML_TEMPLATE_FACTORY));
+		throwException( new HtmlTemplateFactoryGeneratorException("The type " + interfacee + " is not an interface or doesnt implement " + Constants.HTML_TEMPLATE_FACTORY));
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class HtmlTemplateGenerator extends Generator {
 		final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
 			protected boolean visit(final Method method) {
 				if (method.getVisibility() == Visibility.PUBLIC) {
-					HtmlTemplateGenerator.this.implementMethod(method, newType);
+					HtmlTemplateFactoryGenerator.this.implementMethod(method, newType);
 				}
 				return false;
 			}
@@ -360,11 +360,11 @@ public class HtmlTemplateGenerator extends Generator {
 	}
 
 	protected void throwMethodHasParameters(final Method method) {
-		throwException( new HtmlTemplateGeneratorException("HtmlTemplateFactory methods such as " + method + " must not have any parameters."));
+		throwException( new HtmlTemplateFactoryGeneratorException("HtmlTemplateFactory methods such as " + method + " must not have any parameters."));
 	}
 
 	protected void throwUnsupportedWidgetType(final Method method) {
-		throwException( new HtmlTemplateGeneratorException("The return type of the method " + method + " is not of a supported widget type."));
+		throwException( new HtmlTemplateFactoryGeneratorException("The return type of the method " + method + " is not of a supported widget type."));
 	}
 
 	/**
@@ -385,7 +385,7 @@ public class HtmlTemplateGenerator extends Generator {
 	}
 
 	protected void throwUnableToFindIdAnnotation(final Method method) {
-		throwException( new HtmlTemplateGeneratorException("Unable to find an id annotation upon the method " + method));
+		throwException( new HtmlTemplateFactoryGeneratorException("Unable to find an id annotation upon the method " + method));
 	}
 
 	protected String getGeneratedTypeNameSuffix() {
@@ -444,7 +444,7 @@ public class HtmlTemplateGenerator extends Generator {
 		return this.getGeneratorContext().getType(Constants.FORM_PANEL);
 	}
 	
-	protected void throwException( final HtmlTemplateGeneratorException exception ){
+	protected void throwException( final HtmlTemplateFactoryGeneratorException exception ){
 		throw exception;
 	}
 }
