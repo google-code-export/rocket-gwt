@@ -1,4 +1,4 @@
-// rocket/widget/rebind/htmltemplatefactory/html.txt
+// /rocket/widget/rebind/htmltemplatefactory/bindwidget/html.txt
 
 rocket.widget.client.Html html = (rocket.widget.client.Html) this.getWidget( ${id} );
 if( null == html ){

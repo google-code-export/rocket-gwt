@@ -71,6 +71,14 @@ class Constants {
 	final static String FORM_TEMPLATE = "form.txt";
 
 	final static String ID_ANNOTATION = "id";
+	
+	final static String FILE_ANNOTATION = "file";
 
 	final static String ID = "id";
+
+	static final String EOL = System.getProperty( "line.separator");
+	
+	final static String CREATE_HTML_FROM_TEMPLATE_TEMPLATE = "create-html-from-template.txt";
+	final static String STATEMENTS = "statements";
+	final static String HTML_WRITER_PRINT = "writer.print";
 }

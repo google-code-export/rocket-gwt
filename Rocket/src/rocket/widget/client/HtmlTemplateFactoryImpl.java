@@ -228,4 +228,110 @@ abstract public class HtmlTemplateFactoryImpl {
 	private Map createWidgets() {
 		return new HashMap();
 	}
+	
+	/**
+	 * This inner class is used within embedded text files containing code.
+	 * Code within <% %> may print to the writer variable.
+	 */
+	static public class HtmlWriter {
+		
+		public HtmlWriter(){
+			super();
+			
+			this.setStringBuffer( new StringBuffer() );
+		}
+		
+		public void print( final boolean booleanValue ){
+			this.getStringBuffer().append( booleanValue );
+		}
+		public void print( final byte byteValue ){
+			this.getStringBuffer().append( byteValue );
+		}
+		public void print( final short shortValue ){
+			this.getStringBuffer().append( shortValue );
+		}
+		public void print( final int intValue ){
+			this.getStringBuffer().append( intValue );
+		}
+		public void print( final long longValue ){
+			this.getStringBuffer().append( longValue );
+		}
+		public void print( final float floatValue ){
+			this.getStringBuffer().append( floatValue );
+		}
+		public void print( final double doubleValue ){
+			this.getStringBuffer().append( doubleValue );
+		}
+		public void print( final char charValue ){
+			this.getStringBuffer().append( charValue );
+		}
+		public void print( final Object object ){
+			this.getStringBuffer().append( object );
+		}
+		public void print( final String string ){
+			this.getStringBuffer().append( string );
+		}
+
+		
+		public void println( final boolean booleanValue ){
+			this.print( booleanValue );
+			this.println();
+		}
+		public void println( final byte byteValue ){
+			this.print( byteValue );
+			this.println();
+		}
+		public void println( final short shortValue ){
+			this.print( shortValue );
+			this.println();
+		}
+		public void println( final int intValue ){
+			this.print( intValue );
+			this.println();
+		}
+		public void println( final long longValue ){
+			this.print( longValue );
+			this.println();
+		}
+		public void println( final float floatValue ){
+			this.print( floatValue );
+			this.println();
+		}
+		public void println( final double doubleValue ){
+			this.print( doubleValue );
+			this.println();
+		}
+		public void println( final char charValue ){
+			this.print( charValue );
+			this.println();
+		}
+		public void println( final Object object ){
+			this.print( object );
+			this.println();
+		}
+		public void println( final String string ){
+			this.print( string );
+			this.println();
+		}
+		public void println(){
+			this.print( "\n");
+		}
+		/**
+		 * This string buffer aggregates all printed text. Its contents are then used to
+		 * build a Html widget.
+		 */
+		private StringBuffer stringBuffer;
+		
+		private StringBuffer getStringBuffer(){
+			return this.stringBuffer;
+		}
+		
+		private void setStringBuffer( final StringBuffer stringBuffer ){
+			this.stringBuffer = stringBuffer;
+		}
+		
+		public String getString(){
+			return this.getStringBuffer().toString();
+		}
+	}
 }
