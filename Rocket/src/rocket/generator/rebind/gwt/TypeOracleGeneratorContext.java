@@ -15,11 +15,14 @@
  */
 package rocket.generator.rebind.gwt;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 
 import rocket.generator.rebind.GeneratorConstants;
 import rocket.generator.rebind.GeneratorContextImpl;
+import rocket.generator.rebind.GeneratorException;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
@@ -30,12 +33,16 @@ import rocket.generator.rebind.type.NewInterfaceType;
 import rocket.generator.rebind.type.NewInterfaceTypeImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
+import rocket.util.server.InputOutput;
 
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.dev.util.Util;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
 /**
@@ -403,5 +410,80 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		final VoidJPrimitiveTypeTypeAdapter type = new VoidJPrimitiveTypeTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
+	}
+	
+	/**
+	 * This method maybe used to create a resource or file that will be available to the public path of an application or compilation.
+	 * @param filename
+	 * @return Null if the resource already existed otherwise returns a stream. When closed the stream will be committed.
+	 */
+	public OutputStream createResource( final String filename ){
+		try{
+			return this.createResource0(filename);
+		} catch ( final UnableToCompleteException caught ){
+			throw new GeneratorException( "Something went wrong whilst attempting to retrieve an OutputStream for the resource \"" + filename + "\".");
+		}		
+	}
+	
+	protected OutputStream createResource0( final String filename ) throws UnableToCompleteException{
+		OutputStream outputStream = null;
+		while( true ){
+			final TreeLogger logger = this.getLogger();
+				final com.google.gwt.core.ext.GeneratorContext context = this.getGeneratorContext(); 
+				outputStream = context.tryCreateResource(logger, filename );
+				if( null == outputStream ){
+					break;
+				}
+				
+				outputStream = new ResourceOutputStream( outputStream );
+			break;
+		}
+		return outputStream;
+
+	}
+	
+	/**
+	 * Wrapper around a GWT provided OutputStream that commits a resource when this stream is closed.
+	 */
+	class ResourceOutputStream extends OutputStream{
+		ResourceOutputStream( final OutputStream outputStream  ){
+			super();
+			
+			this.setOutputStream( outputStream );
+		}
+		
+		OutputStream outputStream;
+		
+		OutputStream getOutputStream(){
+			Checker.notNull("field:outputStream", outputStream );
+			return this.outputStream;
+		}
+		void setOutputStream( final OutputStream outputStream ){
+			Checker.notNull("parameter:outputStream", outputStream );
+			this.outputStream = outputStream;
+		}
+		
+		public void write( final byte[] bytes ) throws IOException{
+			this.getOutputStream().write(bytes);
+		}
+		public void write( final byte[] bytes, final int start, final int length ) throws IOException{
+			this.getOutputStream().write(bytes, start, length );
+		}
+		public void write( final int byteValue ) throws IOException{
+			this.getOutputStream().write(byteValue);
+		}
+		
+		public void flush() throws IOException{
+			this.getOutputStream().flush();
+		}
+		public void close() throws IOException{
+			try{
+				final OutputStream outputStream = this.getOutputStream();
+				final TreeLogger logger = TypeOracleGeneratorContext.this.getLogger(); 
+				TypeOracleGeneratorContext.this.getGeneratorContext().commitResource(logger, outputStream );
+			} catch ( final UnableToCompleteException caught ){
+				throw new IOException( "Something went wrong whilst attempting to commit resource, reason: \"" + caught.getMessage() + "\"");
+			}
+		}
 	}
 }

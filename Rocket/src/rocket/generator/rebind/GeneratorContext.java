@@ -15,6 +15,7 @@
  */
 package rocket.generator.rebind;
 
+import java.io.OutputStream;
 import java.util.Set;
 
 import rocket.generator.rebind.type.NewConcreteType;
@@ -72,4 +73,20 @@ public interface GeneratorContext {
 	String getProperty( String propertyName );
 	
 	Generator getGenerator();
+	
+	/**
+	 * Factory which may be used to attempt to create a resource that will appear onthe public path of a hosted mode
+	 * session or compilation.
+	 * @param filename
+	 * @return null if the resource already existed, or stream to write the file contents.
+	 */
+	OutputStream createResource( String filename );
+	
+	/**
+	 * Helper which writes a resource if it doesnt already exist generating a strong filename to guarantee uniqueness.
+	 * @param contents
+	 * @param suffix A suffix which is appended to the hash. Typically this will include "nocache." + the file extension.
+	 * @return The partial path of the written file.
+	 */
+	String createResource( byte[] contents, String suffix );
 }

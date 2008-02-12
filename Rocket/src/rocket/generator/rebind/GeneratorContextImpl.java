@@ -15,6 +15,8 @@
  */
 package rocket.generator.rebind;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,6 +30,7 @@ import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
 import rocket.util.client.Checker;
+import rocket.util.server.InputOutput;
 
 import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.PropertyOracle;
@@ -35,6 +38,7 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.google.gwt.dev.util.Util;
 
 /**
  * Convenient base class for all generator contexts.
@@ -483,6 +487,43 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	protected PropertyOracle getPropertyOracle(){
 		return this.getGeneratorContext().getPropertyOracle();
 	}
+	
+	
+	/**
+	 * Only GWT backed TypeOracleGenerator actually support creating resources.
+	 */
+	public OutputStream createResource( final String filename ){
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * Helper which writes a resource if it doesnt already exist generating a strong filename to guarantee uniqueness.
+	 * @param contents
+	 * @param suffix A suffix which is appended to the hash. Typically this will include "nocache." + the file extension.
+	 * @return The partial path of the written file.
+	 */
+	public String createResource( final byte[] contents, final String suffix ){
+		Checker.notNull("parameter:contents", contents );
+		Checker.notEmpty( "parameter:suffix", suffix );
+		
+		final String hash = Util.computeStrongName(contents);
+		final String filename = hash + suffix;
+		
+		OutputStream outputStream = this.createResource(filename);
+		if( null != outputStream ){
+			try{
+				outputStream.write( contents );
+				outputStream.flush();
+			} catch ( final IOException io ){
+				InputOutput.throwIOException( io );
+			} finally {
+				InputOutput.closeIfNecessary(outputStream);
+			}
+		}
+		return filename;
+	}	
+	
+	
 	/**
 	 * This stack maintains a stack reflecting the tree logger heirarchy.
 	 */
