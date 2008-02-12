@@ -1,4 +1,4 @@
-// rocket/widget/rebind/htmltemplatefactory/listbox.txt
+// /rocket/widget/rebind/htmltemplatefactory/bindwidget/listbox.txt
 
 rocket.widget.client.ListBox listBox = (rocket.widget.client.ListBox) this.getWidget( ${id} );
 if( null == listBox ){

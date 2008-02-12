@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.widget.rebind.htmltemplatefactory;
+package rocket.widget.rebind.htmltemplatefactory.bindwidget;
 
 import java.io.InputStream;
 
@@ -21,9 +21,9 @@ import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.util.client.Checker;
 
-class GetterMethodBodyTemplatedFile extends TemplatedFileCodeBlock {
+public class BindWidgetTemplatedFile extends TemplatedFileCodeBlock {
 
-	GetterMethodBodyTemplatedFile( final String resourceName, final String id ){
+	public BindWidgetTemplatedFile( final String resourceName, final String id ){
 		super();
 		
 		this.setId(id);

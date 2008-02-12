@@ -1,4 +1,4 @@
-// rocket/widget/rebind/htmltemplatefactory/button.txt
+// rocket/widget/rebind/htmltemplatefactory/bindwidget/button.txt
 
 rocket.widget.client.Button button = (rocket.widget.client.Button) this.getWidget( ${id} );
 if( null == button ){

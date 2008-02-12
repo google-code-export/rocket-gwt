@@ -1,5 +1,6 @@
 <module>
 	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.user.UserAgent" />
 	<inherits name="rocket.collection.Collection" />
 	<inherits name="rocket.dom.Dom" />
 	<inherits name="rocket.event.Event" />
@@ -7,7 +8,10 @@
 	<inherits name="rocket.style.Style" />	
 	<inherits name="rocket.util.Util" />
 
-	<generate-with class="rocket.widget.rebind.htmltemplatefactory.HtmlTemplateGenerator">
+	<!--
+	Assigns the generator for HtmlTemplateFactory
+	-->
+	<generate-with class="rocket.widget.rebind.htmltemplatefactory.HtmlTemplateFactoryGenerator">
 		<when-type-assignable class="rocket.widget.client.HtmlTemplateFactory" />
 	</generate-with>
 
@@ -21,5 +25,8 @@
 	<replace-with class="rocket.widget.client.support.ListBox">
 		<when-type-is class="rocket.widget.client.support.ListBox"/>
 	</replace-with>
+	
+	<inherits name="rocket.widget.HtmlTemplateFactory" />
+	<inherits name="rocket.widget.ImageFactory" />
 
 </module>
