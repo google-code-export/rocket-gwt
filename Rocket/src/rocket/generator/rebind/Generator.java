@@ -16,6 +16,7 @@
 package rocket.generator.rebind;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import rocket.generator.rebind.gwt.TypeOracleGeneratorContext;
 import rocket.generator.rebind.packagee.Package;
