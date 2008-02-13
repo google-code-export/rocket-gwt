@@ -25,7 +25,6 @@ import java.util.List;
 
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.method.Method;
@@ -37,7 +36,6 @@ import rocket.util.client.Checker;
 import rocket.util.client.Tester;
 import rocket.widget.rebind.htmltemplatefactory.bindwidget.BindWidgetTemplatedFile;
 import rocket.widget.rebind.htmltemplatefactory.createhtmlfromtemplate.CreateHtmlFromTemplateTemplatedFile;
-import rocket.widget.rebind.imagefactory.ImageFactoryGeneratorException;
 
 /**
  * This generator creates a new factory that binds elements identified by id
