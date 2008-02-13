@@ -25,7 +25,7 @@ First inherit `rocket.logging.Logging` module into your application's module xml
 	<inherit name="rocket.logging.Logging" />
 }}}
 
-=Configuring=
+=Configuration=
 
 ==File Location==
 The properties file is located as a resource on the application classpath.
@@ -89,7 +89,7 @@ The comments below ignore all messages below the configured threshhold for the i
 || `rocket.logging.client.ServerService` || Publishes all events to a server service || No ||
 
 ===ServerService===
-Sends each and every logging event that is not below the configured threshhold to the server. Two service implementations are provided one that sends messages to Log4J, Commons Logging and JDK logging. It therefore makes sense to coordinate the logging levels between the client and server portions of the application.
+Sends each and every logging event that is not below the configured threshhold of the logger to the server. Several service implementations are provided one that sends messages to Log4J, Commons Logging and JDK logging. It therefore sensible to coordinate the logging levels between the client and server portions of the application.
 In other words, there is no value in sending debug messages for a particular named logger from the client if the log4j config has a level of info as these events would be ignored and result in unnecessary network traffic.
 
 All three service implementations extend the `rocket.logging.server.LoggingServerService` which contains most of the logging logic, with each specialization overriding a single method which creates an adapter within the logging implementation and the service.
@@ -115,3 +115,15 @@ Because the logging module is not linked together with the rocket Beans network 
  * Any configuration must be hardcoded. It is recommended that a further subclass be created and have its constructor set the relevant properties (following the ServerService class as an example).
 
 Because the url of the logging service is unknown by the rocket library, users must sub class and override the ServerLogger.getServiceEntryPoint() method to return the url. This sub class would used in the properties file.
+
+=Futher Samples=
+For further examples refer to the unit test and related demos. The LoggingApplication is an interactive demo and is available within the download.
+
+  * `rocket.logging.test.application.client.LoggingApplication`
+  * `rocket.logging.test.LoggerFactoryImplTestCase`
+  * `rocket.logging.test.LoggingLevelTestCase`
+  * `rocket.logging.test.LoggingTestSuite`
+  * `rocket.logging.test.PropertiesFileLoggingFactoryConfigTestCase`
+  * `rocket.logging.test.loggerfactorygenerator.client.LoggerFactoryGeneratorGwtTestCase`
+  * `rocket.logging.test.server.client.ServerLoggerGwtTestCase`
+ 
