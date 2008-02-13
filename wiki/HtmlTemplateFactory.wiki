@@ -1,31 +1,108 @@
 #labels Featured
 =Motivation=
-Currently GWT does not provide a mechanism to easily glue pre existing elements to widget instances.
+Currently GWT does not provide a mechanism to easily glue pre existing elements to widget instances. It also does not include functionality to embed html, text files or execute templates on the client. In order to achieve the later one can:
+  * Manually create a string containing the entire contents of the html/text file. Achieveable, but cumbersome and not very practical if the page is constantly being changed.
+  * Make a Http request to the server to fetch the required file. When the response completes the Html widget can be created and added to the dom.
+  
+Embedding Html files has several advantages for any team that is a mixture of traditional and GWT development.  
+  * Html pages can be designed separately by a web designer.
+  * Often it is useful to include some java logic within html pages, as is frequently done in jsps.
+  
+=Goals=
+  * Make it easy to embedd html or templates at compile time, using automation and code generation.
 
-Ignore the fact the result if viewed in a browser would be very simplistic and ugly.
+=Non Goals=
+  * Validation of ids is not performed at compile time. Any such errors arent discovered until the application is run.
+  
+=Features=
+The `rocket.widget.client.HtmlTemplateFactory` factory makes it easy to bind existing elements identified by an id to a widget by defining an interface with a number of getters along with annotations to
+specify the id. The templating problem discribed above is also supported via annotations.
 
-==Sample Html==
-The html file contains three elements with ids.
+=Getting Started=
+Import the `rocket.widget.Widget` module.
+
+==Binding an element with id to a widget==
+===An example===
+
+The html page below represents a simple logon page. An example below describes how to prepare a interface that will bind the three elements below to a TextBox, Password and Button widgets.
 {{{
-<html>
-	<body>
-		...
-		<form>
-			Login:    <input type="text"      id="username"/>
-			Password: <input type="password"  id="password"/>
-	        	<button id="submit">Login</button>
-		</form>
-		...
-	</body>
-</html>
+  <html>
+  	<body>
+  		...
+  		<form>
+  			Login:    <input type="text"      id="username"/>
+  			Password: <input type="password"  id="password"/>
+  	        	<button id="submit">Login</button>
+  		</form>
+  		...
+  	</body>
+  </html>
+}}}
+  
+===Defining the interface===  
+The interface below has been prepared that descibes three methods to get a widget that will be bound to each of the three elements on the page above.  
+{{{
+package ...
+
+import rocket.widget.client.TextBox;
+import rocket.widget.client.Button;
+import rocket.widget.client.HtmlTemplateFactory;
+
+public interface HijackedElementFactory extends HtmlTemplateFactory {
+
+	/*
+	 * @id username
+	 */
+	TextBox getUsername();
+
+	/*
+	 * @id password
+	 */
+	TextBox getPassword();
+
+
+	/*
+	 * @id submit
+	 */
+	Button getSubmit();
+}
 }}}
 
-Wouldnt it be nice to be able to use the username textbox as a TextBox widget, the password textbox as a Password widget and the submit button as a Button widget ?
-`rocket.widget.client.HtmlTemplateFactory` extends the advantages of the improvements introduced by rocket's basic widgets, refer to that wiki for more info.
+The actual id of the element is noted by including an @id annotation. The getUsername() method has a return type of TextBox and an id of "username". When the interface is realised any calls to it will return the same TextBox which will be bound to the username textbox. 
 
-=Doing the same using rocket's basic widgets.=
-Whilst its already possible to easily glue the elements found in the html page and widgets using code something like the below, `rocket.widget.client.HtmlTemplateFactory` goes one step further.
-Currently its quite as easy to do the same with regular GWT widgets.
+  * The return type of the method denotes the widget that will be created from the located element. It must be compatible with the actual element. Eg dont try and hook up a TextBox with a Button a runtime exception will occur.
+  * All subsequent calls to this method will return the same widget instance. The widget instance is cached (a singleton)
+  * Initially any widget is attached to the main RootPanel.
+  * Widgets may be removed from their initial parent RootPanel and added to other Panels.
+  * All methods including listeners work as expected.
+  * All methods must have no parameters.
+  * Methods cannot return void - a factory must return something.
+  
+===Using the factory===  
+The deferred binding mechanism is used to realise a class that implements the interface contract described above. The first step involves fetching an instance of the factory using deferred binding passing the class literal of the prepared HijackedElementFactory interface. The user may then call any of the getter methods to fetch the corresponding widget.
+
+{{{
+package ...
+
+import com.google.gwt.core.client.GWT;
+
+import rocket.widget.client.TextBox;
+import rocket.widget.client.Button;
+import rocket.widget.client.HtmlTemplateFactory;
+
+...
+	// inside some method...
+	HijackedElementFactory factory = (HijackedElementFactory) GWT.create( HijackedElementFactory.class );
+
+	TextBox username = factory.getUsername();
+	TextBox password = factory.getPassword();
+	TextBox submit = factory.getSubmit();
+
+}}}
+ 
+==Alternative way of binding elements without using a HtmlTemplateFactory==
+The rocket widgets provide an extra constructor that allows a user to pass in any element. The widget will then adopt that element providing its compatible (dont pass Button elements to TextBox widgets).
+The sample below shows how this can be done.
 
 {{{
 package ...
@@ -45,14 +122,38 @@ import rocket.widget.client.Button;
 	Button submit = new Button( DOM.getElementById( "submit" ));
 
 	System.out.println( submit.getParent() ); // will print RootPanel.
-}}}
+}}}  
+  
+  
+===Supported widgets===
+The table below includes a mapping between html elements to rocket widgets.
 
-The next portion of this wiki shows how to use HtmlTemplateFactory to achieve the same in even less lines of code (less clutter is better).
+|| Html element || Widget ||
+|| A || `rocket.widgets.client.Hyperlink` ||
+|| BUTTON || `rocket.widgets.client.Button` ||
+|| IMG || `rocket.widgets.client.Image` || 
+|| FORM || `rocket.widgets.client.FormPanel` ||
+|| INPUT type=checkbox || `rocket.widgets.client.CheckBox` || 
+|| INPUT type=password || `rocket.widgets.client.TextBox` ||
+|| INPUT type=radiobutton || `rocket.widgets.client.RadioButton` ||
+|| INPUT type=text || `rocket.widgets.client.TextBox` ||
+|| SELECT || `rocket.widgets.client.ListBox` ||
+|| TEXTAREA || `rocket.widgets.client.TextArea` ||
 
-=Using HtmlTemplateFactory=
-`rocket.widget.client.HtmlTemplateFactory` is an interface that lets the user define a number of getter methods, an annotation of an element for each method. The generator then creates all the glue code that realises the getters.
+Dont worry even though the password is a TextBox reference the element remains as a password element masking any entered text. From a design perspective both elements have similar methods and fire the same events so it makes sense to have a single class to represent them. The TextBox.isPassword() method may be used to determine if the element is a regular text box or a password.
 
-So a custom HtmlTemplateFactory that would return a textbox, password and button widgets from the sample html page would look something like this.
+For more info refer to the [ BasicWidgets ] 
+  
+==Embedding a Html / Template into an Application==
+
+The HtmlTemplateFactory also supports a new annotation when the return type of a defined method is Html. The @file annotation may be used to specify a file which will be included within the generated javascript. Any calls to that method will result in a new Html element containing the contents of the file without making any http requests back to the server. The file which has many similarities to a jsp may also contain blocks of java.
+
+===An example==
+
+This simple example will show how to create embedd a simple template that contains some java to create the rows of a table. It will not show the definition of the value objects, lets just assume they exist.
+
+===Defining the interface===  
+The interface below has been prepared that descibes three methods to get a widget that will be bound to each of the three elements on the page above.  
 {{{
 package ...
 
@@ -60,28 +161,44 @@ import rocket.widget.client.TextBox;
 import rocket.widget.client.Button;
 import rocket.widget.client.HtmlTemplateFactory;
 
-public interface ExampleHtmlTemplateFactory extends HtmlTemplateFactory {
+public interface SampleTemplate extends HtmlTemplateFactory {
 
 	/*
-	 * @id textbox
+	 * @file /template.txt
 	 */
-	TextBox getUsername();
-
-	/*
-	 * @id password
-	 */
-	TextBox getPassword();
-
-
-	/*
-	 * @id submit
-	 */
-	Button getSubmit();
+	Html createTableWithRows( RowData[] rows );
 }
 }}}
 
-To fetch the factory use deferred binding passing in the class literal of the customised HtmlTemplateFactory.
-The sample below shows how to get the username, password and submit widgets.
+===The template file==
+The template file is a simple text or html file with blocks of java (<% ...java... %>) or values (specified <%= value/variable %>). The syntax is very similar to that of jsps without the custom tags.
+Any parameters to the method are available within the template using the same name.
+{{{
+<table>
+	<tr>
+		<td>Column 1</td><td>Column 2</td><td>Column 3</td>
+	</tr>
+	
+<%
+	// loop over each row creating a TR for each one.
+	for( int i = 0; i < rows.length; i++ ){
+		RowData row = rows[ i ];	
+%>	
+	<tr>
+		<td><%= row.getColumn1() %></td><td><%= row.getColumn2() %></td><td><%= row.getColumn3() %></td>
+	</tr>
+<%
+	} // end of for loop.
+%>
+</table>
+}}}
+
+  * The template can be pure html if one wishes or it may contain as much or as a little java code as your heart desires.
+  * The method may have 0 or more parameters.
+
+
+===Using the factory===  
+The deferred binding mechanism is used to realise a class that implements the interface contract described above. The first step involves fetching an instance of the factory using deferred binding passing the class literal of the prepared HijackedElementFactory interface. The user may then call any of the getter methods to fetch the corresponding widget.
 
 {{{
 package ...
@@ -94,50 +211,17 @@ import rocket.widget.client.HtmlTemplateFactory;
 
 ...
 	// inside some method...
-	ExampleHtmlTemplateFactory factory = GWT.create( ExampleHtmlTemplateFactory.class );
-
-	TextBox username = factory.getUsername();
-	TextBox password = factory.getPassword();
-	TextBox submit = factory.getSubmit();
-
+	RowData[] rowData = createRowData(); // this imaginary method creates an array of RowData instances.
+	
+	// create the factory
+	SampleTemplate factory = (SampleTemplate) GWT.create( SampleTemplate.class );
+	
+	// execute the template.
+	Html tableWithRows = factory.createTableWithRows( rowData );
 }}}
-
-==Supported widgets==
-The table below includes a mapping between html elements to rocket widgets.
-
-|| Html element || Widget ||
-|| A || `rocket.widgets.client.Hyperlink` ||
-|| BUTTON || `rocket.widgets.client.Button` ||
-|| INPUT type=checkbox || `rocket.widgets.client.CheckBox` || 
-|| INPUT type=password || `rocket.widgets.client.TextBox` ||
-|| INPUT type=radiobutton || `rocket.widgets.client.RadioButton` ||
-|| INPUT type=text || `rocket.widgets.client.TextBox` ||
-|| SELECT || `rocket.widgets.client.ListBox` ||
-|| TEXTAREA || `rocket.widgets.client.TextArea` ||
-
-Dont worry even though the password is a TextBox it is actually a browser password element.
-
-==Features==
-
-The list below contains some of the features and behavours of the provided HtmlTemplateFactory instance.
-  * All interface methods must have no paramters. 
-  * The id of the target element is specified via an annotation *@id*
-  * The return type of each method must be compatible with the actual element type.
-  * Multiple calls to the same getter will return the same widget instance (widget instances are singletons/cached).
-  * Widgets fetched from a HtmlTemplateFactory are all children of the main RootPanel.
-  * Each widget may be removed from the original RootPanel and added to another panel just like regular widgets.
-
-Thats it!.
-
-=What HtmlTemplateFactory cant do=
-
-Most of the things that HtmlTemplateFactory cant do are related to the fact that it cant verify ids against the html page ( aka host page ). Developers wont get compile time exceptions but will find out until runtime when exceptions are thrown.
-
-What it cant do
-  * It cant and wont complain if an annotated id doesnt actually exist on the host page.
-  * It cant verify that the widget type is compatible with the element, ie HtmlTemplateFactory wont complain that the element is actually a listbox but your interface method return type is TextBox.
 
 =Further samples=
 
-For further examples refer to the unit test.
+For further examples refer to the unit test and related demos.
   * `rocket.widget.test.htmltemplatefactory.client.HtmlTemplateFactoryGwtTestCase`
+  * `rocket.widget.test.basicwidgets.client.BasicWidgetsTest`
