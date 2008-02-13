@@ -29,12 +29,12 @@ package rocket.widget.client;
  * 			<th>Annotation</th><th>Description</th><th>Mandatory</th>
  * 		</tr>
  * 		<tr>
- * 			<td>rocket.widget.client.ImageFactory.file</td>
+ * 			<td>file</td>
  * 			<td>A location of the image as a class path resource. Relative paths are relative to the Interface package.</td>
  * 			<td>yes</td>
  * 		<tr>
  * 		<tr>
- * 			<td>rocket.widget.client.ImageFactory.strategy<td>
+ * 			<td>location<td>
  * 			<td>
  * 				<ul>
  * 					<li>local - images use data urls wherever possible/supported.</li>
@@ -43,7 +43,7 @@ package rocket.widget.client;
  * 			</td>
  * 		<tr>
  * 		<tr>
- * 			<td>rocket.widget.client.ImageFactory.serverRequest</td>
+ * 			<td>serverRequest</td>
  * 			<td>Controls whether or not server images are loaded eagerly or lazily.
  * 				<ul>
  * 					<li>eager - server images are prefetched</li>
