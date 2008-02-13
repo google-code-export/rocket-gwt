@@ -805,3 +805,20 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.42.zip
 
 Beans
 * Fixed a bug relating to advised singleton beans, singletoness was not being honoured.
+
+0.43 13 February 2008
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.43.zip
+
+Generator
+* Added a factory method GeneratorContext.createResource( String ) which attempts to provide an OutputStream to create a resource.
+* Added a helper to GeneratorContext.createResource( byte[],String) which computes the hash of the bytes content and writes the resource if it doesnt already exist.
+
+Widget
+* Improved TextArea.getCursorPos for IE6 when the cursor was at the beginning of any line except when it at the start of a text area. Previously the value
+  for the cursor when it was positioned at the start of a line was actually that of the NL or CR from the previous line. EOL and its accompanying 
+  SOL cursor position remain equal as there is no way to determine which is which. (GWT issue #919/1800)
+* Added ImageFactory a factory which may be used to provide new Images on request. Whereever possible data urls (providing the data url is within browser limits) 
+  are used to cut down on server requests.
+* Improved HtmlTemplateFactory adding the ability to execute a template containing a mixture of html and javascript(similar to jsp) as the content of a new Html widget.
+  All parameters to the method are available and may be referrenced by their name.
