@@ -14,7 +14,7 @@ Embedding Html files has several advantages for any team that is a mixture of tr
 =Non Goals=
   * Validation of ids is not performed at compile time. Any such errors arent discovered until the application is run.
   
-=Features=
+=HtmlTemplateFactory=
 The `rocket.widget.client.HtmlTemplateFactory` factory makes it easy to bind existing elements identified by an id to a widget by defining an interface with a number of getters along with annotations to
 specify the id. The templating problem discribed above is also supported via annotations.
 
