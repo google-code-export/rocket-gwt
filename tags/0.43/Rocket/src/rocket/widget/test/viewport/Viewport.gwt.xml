@@ -1,0 +1,7 @@
+<module>
+	<inherits name="rocket.testing.Testing" />	
+	<inherits name="rocket.widget.Widget" />	
+
+	<entry-point class='rocket.widget.test.viewport.client.ViewportTest'/>
+	<servlet path="/tiles" class="rocket.widget.test.viewport.server.TileMakingServlet"/>	
+</module>

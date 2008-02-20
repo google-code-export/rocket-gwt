@@ -1,0 +1,8 @@
+/// rocket/widget/rebind/htmltemplatefactory/bindwidget/checkbox.txt
+
+rocket.widget.client.CheckBox checkBox = (rocket.widget.client.CheckBox) this.getWidget( ${id} );
+if( null == checkBox ){
+	checkBox = bindCheckBox( ${id} );
+}
+return checkBox;
+

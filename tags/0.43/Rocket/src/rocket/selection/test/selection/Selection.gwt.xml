@@ -1,0 +1,8 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+
+	<inherits name="rocket.selection.Selection" />	
+	<inherits name="rocket.testing.Testing"/>
+
+	<entry-point class="rocket.selection.test.selection.client.SelectionTest" />
+</module>

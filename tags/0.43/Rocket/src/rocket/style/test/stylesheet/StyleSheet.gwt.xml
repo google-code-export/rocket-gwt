@@ -1,0 +1,7 @@
+<module>	
+	<inherits name="rocket.style.Style" />	
+	<inherits name="rocket.testing.Testing" />	
+	<inherits name="rocket.util.Util" />		
+		
+	<entry-point class="rocket.style.test.stylesheet.client.StyleSheetTest" />
+</module>

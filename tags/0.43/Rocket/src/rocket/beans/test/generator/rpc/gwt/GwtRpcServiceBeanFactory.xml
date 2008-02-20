@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<rpc	id="bean"
+			service-interface="rocket.beans.test.generator.rpc.gwt.GwtRpcService"
+			service-entry-point="/rpc"	
+	/>
+</bean-factory>

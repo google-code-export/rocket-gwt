@@ -1,0 +1,5 @@
+// /rocket/beans/rebind/aop/interceptorchainproceed/float.txt
+
+// invokes the interceptor chain, unwrapping Float because the method return type is float
+return chain.proceedReturningFloat();
+
