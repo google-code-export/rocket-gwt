@@ -1,4 +1,4 @@
-// read-fields.txt
+// /rocket/serialization/rebind/read/read-fields.txt
 
 // read and then set all the individual fields...
 ${readAndSetIndividualFields}

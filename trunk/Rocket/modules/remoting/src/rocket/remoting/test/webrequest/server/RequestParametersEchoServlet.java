@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import rocket.util.server.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This servlet simply echos all request parameters in alphabetical order using
@@ -45,8 +45,8 @@ public class RequestParametersEchoServlet extends HttpServlet {
 	}
 
 	public void processRequest(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-		ObjectHelper.checkNotNull("parameter:request", request);
-		ObjectHelper.checkNotNull("parameter:response", response);
+		Checker.notNull("parameter:request", request);
+		Checker.notNull("parameter:response", response);
 
 		final Map sorted = new TreeMap();
 		final Enumeration names = request.getParameterNames();

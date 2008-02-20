@@ -1,4 +1,4 @@
-// new-array-instance.txt
+// /rocket/serialization/rebind/writearray/write-array.txt
 
 // cast to actual type
 final ${type} array = (${type}) instance;

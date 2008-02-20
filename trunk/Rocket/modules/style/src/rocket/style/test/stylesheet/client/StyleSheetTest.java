@@ -17,9 +17,8 @@ import rocket.testing.client.Test;
 import rocket.testing.client.TestBuilder;
 import rocket.testing.client.TestRunner;
 import rocket.testing.client.WebPageTestRunner;
+import rocket.util.client.Checker;
 import rocket.util.client.Colour;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.DOM;
@@ -98,9 +97,9 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	 * @return
 	 */
 	protected Widget createLabel(final String text, final String styleName, final String backgroundImage ) {
-		StringHelper.checkNotEmpty("parameter:text", text);
-		StringHelper.checkNotEmpty("parameter:styleName", styleName);
-		StringHelper.checkNotEmpty("parameter:backgroundImage", backgroundImage);
+		Checker.notEmpty("parameter:text", text);
+		Checker.notEmpty("parameter:styleName", styleName);
+		Checker.notEmpty("parameter:backgroundImage", backgroundImage);
 
 		final Label label = new Label(text);
 		label.setStyleName(styleName);
@@ -609,7 +608,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 		// verify that it was appended by checking lemonRules index.
 		final int newRuleIndex = rules.indexOf(rule);
-		PrimitiveHelper.checkEquals("lemonRule indexOf ", INITIAL_RULE_COUNT, newRuleIndex);
+		Checker.equals("lemonRule indexOf ", INITIAL_RULE_COUNT, newRuleIndex);
 
 		// update the style portion of the rule...
 		final Style style = (Style) rule.getStyle();

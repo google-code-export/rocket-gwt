@@ -15,16 +15,15 @@
  */
 package rocket.style.client.support;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class OperaStyleSheetSupport extends StyleSheetSupport {
 	public void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText) {
-		ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
-		StringHelper.checkNotNull("parameter:selectorText", selectorText);
-		StringHelper.checkNotNull("parameter:styleText", styleText);
+		Checker.notNull("parameter:styleSheet", styleSheet);
+		Checker.notNull("parameter:selectorText", selectorText);
+		Checker.notNull("parameter:styleText", styleText);
 
 		this.insertRule0(styleSheet, index, selectorText, styleText);
 	}
@@ -61,7 +60,7 @@ public class OperaStyleSheetSupport extends StyleSheetSupport {
 	 }-*/;
 
 	public void normalize(final JavaScriptObject styleSheet) {
-		ObjectHelper.checkNotNull("parameter:styleSheet", styleSheet);
+		Checker.notNull("parameter:styleSheet", styleSheet);
 		this.normalize0(styleSheet);
 	}
 

@@ -1,7 +1,7 @@
 package rocket.serialization.benchmark.server;
 
 
-import rocket.serialization.benchmark.client.*;
+import rocket.serialization.benchmark.client.Tree;
 import rocket.serialization.benchmark.client.SerializationBenchmarker.FieldSerializerHackRemoteService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;

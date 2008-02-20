@@ -20,7 +20,7 @@ import java.util.Iterator;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This CodeBlock inserts a single statement that passes all the parameters it
@@ -52,7 +52,7 @@ public class InvokeSuperTypeConstructorCodeBlock implements Literal {
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final StringBuilder builder = new StringBuilder();
 
@@ -77,12 +77,12 @@ public class InvokeSuperTypeConstructorCodeBlock implements Literal {
 	private Constructor constructor;
 
 	public Constructor getConstructor() {
-		ObjectHelper.checkNotNull("field:constructor", constructor);
+		Checker.notNull("field:constructor", constructor);
 		return this.constructor;
 	}
 
 	public void setConstructor(final Constructor constructor) {
-		ObjectHelper.checkNotNull("parameter:constructor", constructor);
+		Checker.notNull("parameter:constructor", constructor);
 		this.constructor = constructor;
 	}
 

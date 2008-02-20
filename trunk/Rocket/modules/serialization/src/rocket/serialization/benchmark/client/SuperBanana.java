@@ -8,7 +8,7 @@ public class SuperBanana extends Banana {
 	/**
 	 * Need to tell both generators the element type of the list.
 	 * @gwt.typeArgs <rocket.serialization.benchmark.client.Pest>
-	 * @serialization-listElementType rocket.serialization.benchmark.client.Pest
+	 * @serialization-type rocket.serialization.benchmark.client.Pest
 	 */
 	List pests;
 	

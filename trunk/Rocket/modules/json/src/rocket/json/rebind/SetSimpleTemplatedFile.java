@@ -15,15 +15,11 @@
  */
 package rocket.json.rebind;
 
-import java.io.InputStream;
-
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the inserting list setter statements for fields that are
@@ -44,12 +40,12 @@ public class SetSimpleTemplatedFile extends TemplatedFileCodeBlock {
 	private Method fieldSetter;
 
 	protected Method getFieldSetter() {
-		ObjectHelper.checkNotNull("list:fieldSetter", fieldSetter);
+		Checker.notNull("list:fieldSetter", fieldSetter);
 		return this.fieldSetter;
 	}
 
 	public void setFieldSetter(final Method fieldSetter) {
-		ObjectHelper.checkNotNull("parameter:fieldSetter", fieldSetter);
+		Checker.notNull("parameter:fieldSetter", fieldSetter);
 		this.fieldSetter = fieldSetter;
 	}
 
@@ -60,12 +56,12 @@ public class SetSimpleTemplatedFile extends TemplatedFileCodeBlock {
 	private String javascriptPropertyName;
 
 	protected String getJavascriptPropertyName() {
-		ObjectHelper.checkNotNull("list:javascriptPropertyName", javascriptPropertyName);
+		Checker.notNull("list:javascriptPropertyName", javascriptPropertyName);
 		return this.javascriptPropertyName;
 	}
 
 	public void setJavascriptPropertyName(final String javascriptPropertyName) {
-		ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
+		Checker.notNull("parameter:javascriptPropertyName", javascriptPropertyName);
 		this.javascriptPropertyName = javascriptPropertyName;
 	}
 
@@ -75,12 +71,12 @@ public class SetSimpleTemplatedFile extends TemplatedFileCodeBlock {
 	private Type serializer;
 
 	protected Type getSerializer() {
-		ObjectHelper.checkNotNull("list:serializer", serializer);
+		Checker.notNull("list:serializer", serializer);
 		return this.serializer;
 	}
 
 	public void setSerializer(final Type serializer) {
-		ObjectHelper.checkNotNull("parameter:serializer", serializer);
+		Checker.notNull("parameter:serializer", serializer);
 		this.serializer = serializer;
 	}
 

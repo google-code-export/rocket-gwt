@@ -23,7 +23,7 @@ import rocket.beans.rebind.value.AbstractValue;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Contains a Map property value for a bean, including the many entries and values that may have been specified.
@@ -55,12 +55,12 @@ public class MapValue extends AbstractValue implements Value{
 	private Map entries;
 
 	public Map getEntries() {
-		ObjectHelper.checkNotNull("field:entries", entries);
+		Checker.notNull("field:entries", entries);
 		return this.entries;
 	}
 
 	protected void setEntries(final Map entries) {
-		ObjectHelper.checkNotNull("parameter:entries", entries);
+		Checker.notNull("parameter:entries", entries);
 		this.entries = entries;
 	}
 
@@ -74,13 +74,13 @@ public class MapValue extends AbstractValue implements Value{
 	 * @return true if the type is compatible
 	 */
 	public boolean isCompatibleWith(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		return this.getGeneratorContext().getType(Constants.MAP_TYPE).equals(type);
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final MapTemplatedFile template = new MapTemplatedFile();
 		final Iterator entries = this.getEntries().entrySet().iterator();

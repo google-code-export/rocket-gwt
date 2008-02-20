@@ -15,7 +15,7 @@
  */
 package rocket.beans.client.aop;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A simple adapter between a {@link MethodInterceptor} and an finally advice
@@ -39,12 +39,12 @@ public class AfterFinallyAdviceMethodInterceptor implements MethodInterceptor {
 	private AfterFinallyAdvice afterFinallyAdvice;
 
 	protected AfterFinallyAdvice getAfterFinallyAdvice() {
-		ObjectHelper.checkNotNull("field:afterFinallyAdvice", afterFinallyAdvice);
+		Checker.notNull("field:afterFinallyAdvice", afterFinallyAdvice);
 		return afterFinallyAdvice;
 	}
 
 	public void setAfterFinallyAdvice(final AfterFinallyAdvice finallyAdvice) {
-		ObjectHelper.checkNotNull("parameter:afterFinallyAdvice", finallyAdvice);
+		Checker.notNull("parameter:afterFinallyAdvice", finallyAdvice);
 		this.afterFinallyAdvice = finallyAdvice;
 	}
 

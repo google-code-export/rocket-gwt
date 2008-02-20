@@ -2,9 +2,9 @@ package rocket.serialization.benchmark.client;
 
 import java.io.Serializable;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import rocket.util.client.Tester;
 
-import rocket.util.client.ObjectHelper;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Worm extends Pest implements Serializable, IsSerializable{
 	boolean legless;
@@ -17,7 +17,7 @@ public class Worm extends Pest implements Serializable, IsSerializable{
 		if( otherObject instanceof Worm ){
 			final Worm otherWorm = (Worm) otherObject;
 			if( this.legless == otherWorm.legless ){
-				same = ObjectHelper.nullSafeEquals( this.text, otherWorm.text );
+				same = Tester.nullSafeEquals( this.text, otherWorm.text );
 			}				
 		}
 		

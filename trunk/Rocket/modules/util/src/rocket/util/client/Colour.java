@@ -41,7 +41,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 	 * @return
 	 */
 	static public Colour parse(final String value) {
-		StringHelper.checkNotEmpty("parameter:value", value);
+		Checker.notEmpty("parameter:value", value);
 
 		Colour colourValue = null;
 
@@ -89,7 +89,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 	 * @return
 	 */
 	static Colour parseRgbTriplet(final String value) {
-		final String[] triplets = StringHelper.split(value.substring(4, value.length() - 1), ",", true);
+		final String[] triplets = Utilities.split(value.substring(4, value.length() - 1), ",", true);
 		final int red = Integer.parseInt(triplets[0].trim());
 		final int green = Integer.parseInt(triplets[1].trim());
 		final int blue = Integer.parseInt(triplets[2].trim());
@@ -105,7 +105,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 	 * @return
 	 */
 	static Colour parseHashRrggbb(final String value) {
-		StringHelper.checkNotEmpty("parameter:value", value);
+		Checker.notEmpty("parameter:value", value);
 
 		final int redGreenBlue = Integer.parseInt(value.substring(1, 1 + 6), 16);
 		return new Colour(redGreenBlue);
@@ -119,7 +119,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 	 * @return
 	 */
 	static Colour parseHashRgb(final String value) {
-		StringHelper.checkNotEmpty("parameter:value", value);
+		Checker.notEmpty("parameter:value", value);
 
 		int red = Character.digit(value.charAt(1), 16);
 		red = red * 17;
@@ -332,7 +332,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 		final int rgb = this.getRed() * 0x10000 + this.getGreen() * 0x100 + this.getBlue();
 
 		final String rgbHexString = Integer.toHexString(rgb);
-		final String string = '#' + StringHelper.padLeft(rgbHexString, 6, '0');
+		final String string = '#' + Utilities.padLeft(rgbHexString, 6, '0');
 		return string;
 	}
 
@@ -369,7 +369,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 	}
 
 	public Colour mix(final Colour otherColour, final float mixRatio) {
-		ObjectHelper.checkNotNull("parameter:otherColour", otherColour);
+		Checker.notNull("parameter:otherColour", otherColour);
 
 		final int red = getRed();
 		final int green = getGreen();
@@ -395,7 +395,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 	}
 
 	void setRed(final int red) {
-		PrimitiveHelper.checkBetween("parameter:red", red, 0, Constants.COLOUR_COMPONENT_VALUE + 1);
+		Checker.between("parameter:red", red, 0, Constants.COLOUR_COMPONENT_VALUE + 1);
 		this.red = red;
 	}
 
@@ -406,7 +406,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 	}
 
 	void setGreen(final int green) {
-		PrimitiveHelper.checkBetween("parameter:green", green, 0, Constants.COLOUR_COMPONENT_VALUE + 1);
+		Checker.between("parameter:green", green, 0, Constants.COLOUR_COMPONENT_VALUE + 1);
 		this.green = green;
 	}
 
@@ -417,7 +417,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 	}
 
 	void setBlue(final int blue) {
-		PrimitiveHelper.checkBetween("parameter:blue", blue, 0, Constants.COLOUR_COMPONENT_VALUE + 1);
+		Checker.between("parameter:blue", blue, 0, Constants.COLOUR_COMPONENT_VALUE + 1);
 		this.blue = blue;
 	}
 
@@ -443,7 +443,7 @@ public class Colour implements java.io.Serializable, IsSerializable {
 		final float saturation = (value == 0) ? 0 : (float) delta / value;
 
 		while (true) {
-			if (PrimitiveHelper.equals(saturation, 0, 0.001)) {
+			if (Tester.equals(saturation, 0, 0.001)) {
 				hue = 0;
 				break;
 			}
@@ -478,8 +478,8 @@ public class Colour implements java.io.Serializable, IsSerializable {
 
 	public String toString() {
 		return // super.toString() + ", colour:
-		"0x" + StringHelper.padLeft(Integer.toHexString(red), 2, '0') + StringHelper.padLeft(Integer.toHexString(green), 2, '0')
-				+ StringHelper.padLeft(Integer.toHexString(blue), 2, '0');
+		"0x" + Utilities.padLeft(Integer.toHexString(red), 2, '0') + Utilities.padLeft(Integer.toHexString(green), 2, '0')
+				+ Utilities.padLeft(Integer.toHexString(blue), 2, '0');
 	}
 
 	public boolean equals(final Object otherObject) {

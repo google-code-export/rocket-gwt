@@ -16,8 +16,8 @@
 package rocket.generator.rebind.codeblock;
 
 import rocket.generator.rebind.SourceWriter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 /**
  * A code block that contains a String literal
@@ -36,7 +36,7 @@ public class StringCodeBlock implements Literal {
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		writer.print(this.getContent());
 	}
@@ -48,7 +48,7 @@ public class StringCodeBlock implements Literal {
 	private String content;
 
 	public String getContent() {
-		StringHelper.checkNotEmpty("field:content", content);
+		Checker.notEmpty("field:content", content);
 		return content;
 	}
 
@@ -57,12 +57,12 @@ public class StringCodeBlock implements Literal {
 	}
 
 	public void setContent(final String content) {
-		StringHelper.checkNotEmpty("parameter:content", content);
+		Checker.notEmpty("parameter:content", content);
 		this.content = content;
 	}
 
 	public boolean isEmpty() {
-		return false == (this.hasContent() && false == StringHelper.isNullOrEmpty(this.getContent()));
+		return false == (this.hasContent() && false == Tester.isNullOrEmpty(this.getContent()));
 	}
 
 	public String toString() {

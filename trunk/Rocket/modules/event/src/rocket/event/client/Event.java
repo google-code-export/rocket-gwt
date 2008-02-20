@@ -15,8 +15,8 @@
  */
 package rocket.event.client;
 
+import rocket.util.client.Checker;
 import rocket.util.client.Destroyable;
-import rocket.util.client.ObjectHelper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -62,7 +62,7 @@ abstract public class Event implements Destroyable {
 	 }-*/;
 
 	static public Event getEvent(final Widget widget, final int bitMask) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 
 		final Event event = getEvent(bitMask);
 		event.setTarget(widget.getElement());
@@ -81,7 +81,7 @@ abstract public class Event implements Destroyable {
 	 * @return
 	 */
 	static public Event getEvent(final com.google.gwt.user.client.Event rawEvent) {
-		ObjectHelper.checkNotNull("parameter:rawEvent", rawEvent);
+		Checker.notNull("parameter:rawEvent", rawEvent);
 
 		final Event event = getEvent(DOM.eventGetType(rawEvent));
 		event.setEvent(rawEvent);
@@ -187,12 +187,12 @@ abstract public class Event implements Destroyable {
 	private com.google.gwt.user.client.Event event;
 
 	public com.google.gwt.user.client.Event getEvent() {
-		ObjectHelper.checkNotNull("field:event", event);
+		Checker.notNull("field:event", event);
 		return event;
 	}
 
 	private void setEvent(final com.google.gwt.user.client.Event event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 		this.event = event;
 	}
 
@@ -251,7 +251,7 @@ abstract public class Event implements Destroyable {
 	private Widget widget;
 
 	public Widget getWidget() {
-		ObjectHelper.checkNotNull("field:widget", this.widget);
+		Checker.notNull("field:widget", this.widget);
 		return this.widget;
 	}
 
@@ -260,7 +260,7 @@ abstract public class Event implements Destroyable {
 	}
 
 	public void setWidget(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 		this.widget = widget;
 	}
 

@@ -16,7 +16,7 @@
 package rocket.style.client.support;
 
 import rocket.style.client.Css;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -30,7 +30,7 @@ public class FireFoxComputedStyleSupport extends FireFoxStyleSupport {
 				break;
 			}
 			if (Css.FONT_WEIGHT.equals( name)) {
-				value = "" + this.getComputedFontWeight( ObjectHelper.castToElement( element));
+				value = "" + this.getComputedFontWeight( JavaScript.castToElement( element));
 				break;
 			}
 			value = super.get(element, name);

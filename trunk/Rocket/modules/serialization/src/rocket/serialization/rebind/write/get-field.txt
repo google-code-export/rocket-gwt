@@ -1,4 +1,4 @@
-// get-field.txt
+// /rocket/serialization/rebind/write/get-field.txt
 
 return instance.${field};
 

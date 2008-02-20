@@ -20,8 +20,7 @@ import java.io.InputStream;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the map-add-entry template
@@ -40,24 +39,24 @@ public class MapAddEntryTemplatedFile extends TemplatedFileCodeBlock {
 	private String key;
 
 	protected String getKey() {
-		StringHelper.checkNotNull("field:key", key);
+		Checker.notNull("field:key", key);
 		return this.key;
 	}
 
 	public void setKey(final String key) {
-		StringHelper.checkNotNull("parameter:key", key);
+		Checker.notNull("parameter:key", key);
 		this.key = key;
 	}
 
 	private Value value;
 
 	protected Value getValue() {
-		ObjectHelper.checkNotNull("field:value", value);
+		Checker.notNull("field:value", value);
 		return this.value;
 	}
 
 	public void setValue(final Value value) {
-		ObjectHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:value", value);
 		this.value = value;
 	}
 
@@ -66,7 +65,7 @@ public class MapAddEntryTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO Delete after moving to parent template package.
+		return super.getInputStream();
 	}
 
 	protected Object getValue0(final String name) {

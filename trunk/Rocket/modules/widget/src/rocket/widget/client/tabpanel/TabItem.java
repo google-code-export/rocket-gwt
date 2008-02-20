@@ -2,10 +2,9 @@ package rocket.widget.client.tabpanel;
 
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 import rocket.widget.client.Html;
-import rocket.widget.client.WidgetHelper;
 
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -58,7 +57,7 @@ public class TabItem {
 	private TabPanel tabPanel;
 
 	protected TabPanel getTabPanel() {
-		ObjectHelper.checkNotNull("field:tabPanel", tabPanel);
+		Checker.notNull("field:tabPanel", tabPanel);
 		return this.tabPanel;
 	}
 
@@ -67,11 +66,11 @@ public class TabItem {
 	}
 
 	protected void setTabPanel(final TabPanel tabPanel) {
-		ObjectHelper.checkNotNull("parameter:tabPanel", tabPanel);
+		Checker.notNull("parameter:tabPanel", tabPanel);
 
 		// if it was already attached fail!
 		if (this.hasTabPanel()) {
-			WidgetHelper.fail("This TabItem already belongs to a TabPanel, tabPanel: " + tabPanel);
+			Checker.fail("This TabItem already belongs to a TabPanel, tabPanel: " + tabPanel);
 		}
 
 		this.tabPanel = tabPanel;
@@ -87,12 +86,12 @@ public class TabItem {
 	private Html captionWidget;
 
 	protected Html getCaptionWidget() {
-		ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
+		Checker.notNull("field:captionWidget", captionWidget);
 		return this.captionWidget;
 	}
 
 	protected void setCaptionWidget(final Html captionWidget) {
-		ObjectHelper.checkNotNull("field:captionWidget", captionWidget);
+		Checker.notNull("field:captionWidget", captionWidget);
 		this.captionWidget = captionWidget;
 	}
 
@@ -111,7 +110,7 @@ public class TabItem {
 	}
 
 	public void setCaption(final String text) {
-		this.getCaptionWidget().setHtml(StringHelper.changeSpacesToNonBreakingSpaces(text));
+		this.getCaptionWidget().setHtml(Utilities.changeSpacesToNonBreakingSpaces(text));
 	}
 
 	/**
@@ -121,7 +120,7 @@ public class TabItem {
 	private Widget content;
 
 	public Widget getContent() {
-		ObjectHelper.checkNotNull("field:content", content);
+		Checker.notNull("field:content", content);
 		return this.content;
 	}
 
@@ -130,7 +129,7 @@ public class TabItem {
 	}
 
 	public void setContent(final Widget content) {
-		ObjectHelper.checkNotNull("parameter:content", content);
+		Checker.notNull("parameter:content", content);
 
 		// replace the previous content widget with the new one...
 		if (this.hasTabPanel()) {
@@ -150,12 +149,12 @@ public class TabItem {
 	private HorizontalPanel tabWidgetPanel;
 
 	protected HorizontalPanel getTabWidgetPanel() {
-		ObjectHelper.checkNotNull("field:tabWidgetPanel", tabWidgetPanel);
+		Checker.notNull("field:tabWidgetPanel", tabWidgetPanel);
 		return this.tabWidgetPanel;
 	}
 
 	protected void setTabWidgetPanel(final HorizontalPanel tabWidgetPanel) {
-		ObjectHelper.checkNotNull("parameter:tabWidgetPanel", tabWidgetPanel);
+		Checker.notNull("parameter:tabWidgetPanel", tabWidgetPanel);
 		this.tabWidgetPanel = tabWidgetPanel;
 	}
 

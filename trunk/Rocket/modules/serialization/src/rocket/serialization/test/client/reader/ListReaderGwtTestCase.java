@@ -16,11 +16,10 @@
 package rocket.serialization.test.client.reader;
 
 import java.util.List;
-import java.util.Map;
 
+import rocket.serialization.client.ClientObjectInputStream;
 import rocket.serialization.client.reader.ListReader;
 import rocket.serialization.test.client.ClientGwtTestCase;
-import rocket.serialization.client.ClientObjectInputStream;
 
 public class ListReaderGwtTestCase extends ClientGwtTestCase {
 

@@ -19,8 +19,7 @@ import rocket.beans.rebind.value.AbstractValue;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * Holds a reference to a named bean as opposed to a anonymous nested bean.
@@ -30,7 +29,7 @@ import rocket.util.client.StringHelper;
 public class BeanReferenceImpl extends AbstractValue implements BeanReference, Value {
 
 	public boolean isCompatibleWith(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		return this.getType().isAssignableTo(type);
 	}
@@ -54,15 +53,19 @@ public class BeanReferenceImpl extends AbstractValue implements BeanReference, V
 	private String id;
 
 	public String getId() {
-		StringHelper.checkNotEmpty("field:id", id);
+		Checker.notEmpty("field:id", id);
 		return this.id;
 	}
 
 	public void setId(final String id) {
-		StringHelper.checkNotEmpty("parameter:id", id);
+		Checker.notEmpty("parameter:id", id);
 		this.id = id;
 	}
 
+	public Type getType(){
+		return super.getType();
+	}
+	
 	public String toString(){
 		return super.toString() + ", id: \"" + this.id + "\".";
 	}

@@ -25,8 +25,7 @@ import rocket.generator.rebind.codeblock.Literal;
 import rocket.generator.rebind.comments.HasComments;
 import rocket.generator.rebind.metadata.MetaData;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * A holder for a new field.
@@ -91,7 +90,7 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	private Type type;
 
 	public Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return type;
 	}
 
@@ -100,7 +99,7 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	}
 	
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		this.type = type;
 	}
 
@@ -130,12 +129,12 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	private CodeBlock value;
 
 	public CodeBlock getValue() {
-		ObjectHelper.checkNotNull("field:value", value);
+		Checker.notNull("field:value", value);
 		return this.value;
 	}
 
 	public void setValue(final CodeBlock value) {
-		ObjectHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:value", value);
 		this.value = value;
 	}
 
@@ -146,12 +145,12 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	private String comments;
 	
 	public String getComments(){
-		StringHelper.checkNotNull( "field:comments", comments );
+		Checker.notNull( "field:comments", comments );
 		return comments;
 	}
 	
 	public void setComments( final String comments ){
-		StringHelper.checkNotNull( "parameter:comments", comments );
+		Checker.notNull( "parameter:comments", comments );
 		this.comments = comments;
 	}
 	
@@ -169,12 +168,12 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	private MetaData metaData;
 	
 	protected MetaData getMetaData(){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
+		Checker.notNull("field:metaData", metaData );
 		return this.metaData;
 	}
 	
 	protected void setMetaData( final MetaData metaData ){
-		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+		Checker.notNull("parameter:metaData", metaData );
 		this.metaData = metaData;
 	}
 	
@@ -183,7 +182,7 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	}
 	
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		this.log();
 
@@ -201,7 +200,7 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	}
 	
 	protected void writeDeclaration(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		if (this.isFinal()) {
 			writer.print("final ");
@@ -220,7 +219,7 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	}
 
 	protected void writeValue(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final CodeBlock codeBlock = this.getValue();
 		if (codeBlock.isEmpty()) {

@@ -15,9 +15,9 @@
  */
 package rocket.serialization.test.server.reader;
 
+import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.server.reader.ShortArrayReader;
 import rocket.serialization.test.server.ServerTestCase;
-import rocket.serialization.client.ObjectInputStream;
 
 public class ShortArrayReaderTestCase extends ServerTestCase {
 

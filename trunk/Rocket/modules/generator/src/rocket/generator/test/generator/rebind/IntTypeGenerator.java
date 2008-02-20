@@ -18,8 +18,7 @@ package rocket.generator.test.generator.rebind;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class IntTypeGenerator extends TestGenerator {
 
@@ -27,15 +26,15 @@ public class IntTypeGenerator extends TestGenerator {
 		final GeneratorContext context = this.getGeneratorContext();
 		final Type type = context.getType(Integer.TYPE.getName());
 
-		PrimitiveHelper.checkFalse("Int type is a not abstract", type.isAbstract());
-		PrimitiveHelper.checkFalse("Int type is not an interface", type.isInterface());
-		PrimitiveHelper.checkTrue("Int type is a final", type.isFinal());
-		ObjectHelper.checkEquals("Int type name", Integer.TYPE.getName(), type.getName());
-		PrimitiveHelper.checkFalse("Int type is not an array", type.isArray());
-		PrimitiveHelper.checkTrue("Int type is a primitive", type.isPrimitive());
+		Checker.falseValue("Int type is a not abstract", type.isAbstract());
+		Checker.falseValue("Int type is not an interface", type.isInterface());
+		Checker.trueValue("Int type is a final", type.isFinal());
+		Checker.equals("Int type name", Integer.TYPE.getName(), type.getName());
+		Checker.falseValue("Int type is not an array", type.isArray());
+		Checker.trueValue("Int type is a primitive", type.isPrimitive());
 
 		final Type wrapper = type.getWrapper();
-		ObjectHelper.checkEquals("Int wrapper type name", Integer.class.getName(), wrapper.getName());
+		Checker.equals("Int wrapper type name", Integer.class.getName(), wrapper.getName());
 
 		return null;
 	}

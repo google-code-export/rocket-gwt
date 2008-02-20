@@ -31,7 +31,7 @@ import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.VirtualMethodVisitor;
 import rocket.testing.client.TestBuilder;
 import rocket.testing.client.TestMethodTestBuilder;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This generator may be used to create a list containing all the public methods
@@ -97,7 +97,7 @@ public class TestBuilderGenerator extends Generator {
 	 * @param webPageTestRunner
 	 */
 	protected void addBuildCandidates(final NewConcreteType testBuilder, final Type webPageTestRunner) {
-		ObjectHelper.checkNotNull("parameter:testBuilder", testBuilder);
+		Checker.notNull("parameter:testBuilder", testBuilder);
 
 		final GeneratorContext context = this.getGeneratorContext();
 

@@ -18,8 +18,7 @@ package rocket.generator.test.generator.rebind;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class FloatTypeGenerator extends TestGenerator {
 
@@ -27,15 +26,15 @@ public class FloatTypeGenerator extends TestGenerator {
 		final GeneratorContext context = this.getGeneratorContext();
 		final Type type = context.getType(Float.TYPE.getName());
 
-		PrimitiveHelper.checkFalse("Float type is a not abstract", type.isAbstract());
-		PrimitiveHelper.checkFalse("Float type is not an interface", type.isInterface());
-		PrimitiveHelper.checkTrue("Float type is a final", type.isFinal());
-		ObjectHelper.checkEquals("Float type name", Float.TYPE.getName(), type.getName());
-		PrimitiveHelper.checkFalse("Float type is not an array", type.isArray());
-		PrimitiveHelper.checkTrue("Float type is a primitive", type.isPrimitive());
+		Checker.falseValue("Float type is a not abstract", type.isAbstract());
+		Checker.falseValue("Float type is not an interface", type.isInterface());
+		Checker.trueValue("Float type is a final", type.isFinal());
+		Checker.equals("Float type name", Float.TYPE.getName(), type.getName());
+		Checker.falseValue("Float type is not an array", type.isArray());
+		Checker.trueValue("Float type is a primitive", type.isPrimitive());
 
 		final Type wrapper = type.getWrapper();
-		ObjectHelper.checkEquals("Float wrapper type name", Float.class.getName(), wrapper.getName());
+		Checker.equals("Float wrapper type name", Float.class.getName(), wrapper.getName());
 
 		return null;
 	}

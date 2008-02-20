@@ -20,7 +20,7 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * A collection of helpful servlet methods
@@ -29,9 +29,9 @@ import rocket.util.client.StringHelper;
  */
 public class ServletHelper {
 	public static void writeBytes(final String mimeType, final byte[] bytes, final HttpServletResponse response) throws IOException {
-		StringHelper.checkNotEmpty("parameter:mimeType", mimeType);
-		ObjectHelper.checkNotNull("parameter:bytes", bytes);
-		ObjectHelper.checkNotNull("parameter:response", response);
+		Checker.notEmpty("parameter:mimeType", mimeType);
+		Checker.notNull("parameter:bytes", bytes);
+		Checker.notNull("parameter:response", response);
 
 		OutputStream out = null;
 
@@ -43,7 +43,7 @@ public class ServletHelper {
 			out.write(bytes);
 			out.flush();
 		} finally {
-			IoHelper.closeIfNecessary(out);
+			InputOutput.closeIfNecessary(out);
 		}
 	}
 }

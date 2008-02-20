@@ -16,7 +16,7 @@
 package rocket.remoting.client.support.rpc;
 
 import rocket.json.client.JsonSerializer;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestBuilder.Method;
@@ -58,12 +58,12 @@ abstract public class JsonRpcServiceInvoker extends JsonServiceMethodInvoker {
 	private Object parameter;
 
 	public Object getParameter() {
-		ObjectHelper.checkNotNull("field:parameter", parameter);
+		Checker.notNull("field:parameter", parameter);
 		return this.parameter;
 	}
 
 	public void setParameter(final Object parameter) {
-		ObjectHelper.checkNotNull("parameter:parameter", parameter);
+		Checker.notNull("parameter:parameter", parameter);
 		this.parameter = parameter;
 	}
 

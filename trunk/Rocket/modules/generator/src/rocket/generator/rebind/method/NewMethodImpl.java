@@ -27,11 +27,11 @@ import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.metadata.MetaData;
+import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.methodparameter.NewMethodParameterImpl;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * Represents a new method that will be added to a new class being built
@@ -136,7 +136,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	}
 
 	public void addParameter(final NewMethodParameter parameter) {
-		ObjectHelper.checkNotNull("parameter:parameter", parameter);
+		Checker.notNull("parameter:parameter", parameter);
 
 		this.getParameters().add(parameter);
 		parameter.setEnclosingMethod(this);
@@ -147,7 +147,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	}
 
 	public void addThrownTypes(final Type thrownTypes) {
-		ObjectHelper.checkNotNull("thrownTypes:thrownTypes", thrownTypes);
+		Checker.notNull("thrownTypes:thrownTypes", thrownTypes);
 		this.getThrownTypes().add(thrownTypes);
 	}
 
@@ -162,7 +162,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	private CodeBlock body;
 
 	public CodeBlock getBody() {
-		ObjectHelper.checkNotNull("field:body", body);
+		Checker.notNull("field:body", body);
 		return this.body;
 	}
 	
@@ -171,7 +171,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	}
 
 	public void setBody(final CodeBlock body) {
-		ObjectHelper.checkNotNull("parameter:body", body);
+		Checker.notNull("parameter:body", body);
 		this.body = body;
 	}
 
@@ -181,12 +181,12 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	private String comments;
 	
 	public String getComments(){
-		StringHelper.checkNotNull( "field:comments", comments );
+		Checker.notNull( "field:comments", comments );
 		return comments;
 	}
 	
 	public void setComments( final String comments ){
-		StringHelper.checkNotNull( "parameter:comments", comments );
+		Checker.notNull( "parameter:comments", comments );
 		this.comments = comments;
 	}
 	
@@ -204,12 +204,12 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	private MetaData metaData;
 	
 	protected MetaData getMetaData(){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
+		Checker.notNull("field:metaData", metaData );
 		return this.metaData;
 	}
 	
 	protected void setMetaData( final MetaData metaData ){
-		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+		Checker.notNull("parameter:metaData", metaData );
 		this.metaData = metaData;
 	}
 	
@@ -223,9 +223,9 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	 * @param writer
 	 */
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
-		this.writeLogger();
+		this.log();
 
 		this.writeComments(writer);
 		this.writeDeclaration(writer);
@@ -244,8 +244,45 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		}
 	}
 
-	protected void writeLogger() {
-		this.getGeneratorContext().debug( this.toString() );
+	protected void log() {
+		final StringBuffer buf = new StringBuffer();
+		
+		if( this.isFinal() ){
+			buf.append( "final ");
+		}
+		if( this.isAbstract() ){
+			buf.append( "abstract ");
+		}
+		if( this.isStatic() ){
+			buf.append( "static ");
+		}
+		if( this.isNative() ){
+			buf.append( "native ");
+		}
+		buf.append( this.getVisibility().toString() );
+		buf.append( ' ');// Yes package private methods will have two spaces here...
+		
+		final Type returnType = this.getReturnType();
+		buf.append( returnType.getName() );
+		buf.append( ' ');		
+		
+		buf.append( this.getName() );
+		buf.append( '(');
+		
+		final Iterator parameters = this.getParameters().iterator();
+		while( parameters.hasNext() ){
+			final MethodParameter parameter = (MethodParameter)parameters.next();
+			final Type parameterType = parameter.getType();
+			buf.append( parameterType.getName() );
+			
+			if( parameters.hasNext() ){
+				buf.append( ',');
+			}
+		}
+		
+		buf.append( ')');		
+		
+		this.getGeneratorContext().debug( buf.toString() );
 	}
 
 	protected void writeComments( final SourceWriter writer ){		
@@ -259,7 +296,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	 * @param writer
 	 */
 	protected void writeDeclaration(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		if (this.isFinal()) {
 			writer.print("final ");
@@ -296,7 +333,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	}
 
 	protected void writeBodyOpen(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		if (this.isNative()) {
 			writer.println("/*-{");
@@ -311,7 +348,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	 * @param writer
 	 */
 	public void writeBody(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final CodeBlock body = this.getBody();
 		if (false == body.isEmpty()) {
@@ -322,7 +359,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	}
 
 	protected void writeBodyClose(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		if (this.isNative()) {
 			writer.println("}-*/;");
@@ -332,7 +369,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	}
 
 	protected void writeAbstractMethod( final SourceWriter writer ){
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 		
 		if( this.hasBody() ){
 			throw new GeneratorException("Inconsistent state abstract method contains a body " + this ); 

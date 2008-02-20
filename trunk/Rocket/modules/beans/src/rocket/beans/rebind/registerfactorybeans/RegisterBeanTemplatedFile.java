@@ -18,12 +18,9 @@ package rocket.beans.rebind.registerfactorybeans;
 import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.NewNestedType;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the invoker add template
@@ -39,24 +36,24 @@ public class RegisterBeanTemplatedFile extends TemplatedFileCodeBlock {
 	private String beanId;
 
 	protected String getBeanId() {
-		StringHelper.checkNotEmpty("beanId:beanId", beanId);
+		Checker.notEmpty("beanId:beanId", beanId);
 		return this.beanId;
 	}
 
 	public void setBeanId(final String beanId) {
-		StringHelper.checkNotEmpty("parameter:beanId", beanId);
+		Checker.notEmpty("parameter:beanId", beanId);
 		this.beanId = beanId;
 	}
 
 	private NewNestedType factoryBean;
 
 	protected NewNestedType getFactoryBean() {
-		ObjectHelper.checkNotNull("field:factoryBean", factoryBean);
+		Checker.notNull("field:factoryBean", factoryBean);
 		return this.factoryBean;
 	}
 
 	public void setFactoryBean(final NewNestedType factoryBean) {
-		ObjectHelper.checkNotNull("factoryBean:factoryBean", factoryBean);
+		Checker.notNull("factoryBean:factoryBean", factoryBean);
 		this.factoryBean = factoryBean;
 	}
 
@@ -65,7 +62,7 @@ public class RegisterBeanTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO Delete when merged into same package as parent template.
+		return super.getInputStream();
 	}
 
 	protected Object getValue0(final String name) {

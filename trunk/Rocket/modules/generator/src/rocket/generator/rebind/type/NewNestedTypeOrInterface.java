@@ -20,7 +20,7 @@ import java.util.Iterator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Convenient base class for the nested type and nested interface classes.
@@ -75,7 +75,7 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	private Type enclosingType;
 
 	public Type getEnclosingType() {
-		ObjectHelper.checkNotNull("field:enclosingType", enclosingType);
+		Checker.notNull("field:enclosingType", enclosingType);
 		return this.enclosingType;
 	}
 	
@@ -84,7 +84,7 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	}
 
 	public void setEnclosingType(Type enclosingType) {
-		ObjectHelper.checkNotNull("parameter:enclosingType", enclosingType);
+		Checker.notNull("parameter:enclosingType", enclosingType);
 		this.enclosingType = enclosingType;
 	}
 
@@ -102,7 +102,7 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	}
 	
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -129,7 +129,7 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	}
 
 	protected void writeDeclaration(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		if (this.isStatic()) {
 			writer.print("static ");

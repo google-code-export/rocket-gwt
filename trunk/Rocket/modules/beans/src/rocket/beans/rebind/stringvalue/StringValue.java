@@ -30,8 +30,7 @@ import rocket.generator.rebind.codeblock.LongLiteral;
 import rocket.generator.rebind.codeblock.ShortLiteral;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * A StringValue holds a string literal which may be converted to any of the primitive or String types. 
@@ -41,7 +40,7 @@ import rocket.util.client.StringHelper;
 public class StringValue extends AbstractValue implements Value {
 
 	public boolean isCompatibleWith(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		boolean compatible = false;
 
@@ -170,7 +169,7 @@ public class StringValue extends AbstractValue implements Value {
 	private String value;
 
 	public String getValue() {
-		StringHelper.checkNotNull("field:value", value);
+		Checker.notNull("field:value", value);
 		return value;
 	}
 
@@ -208,12 +207,12 @@ public class StringValue extends AbstractValue implements Value {
 	}
 
 	public void setValue(final String value) {
-		StringHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:value", value);
 		this.value = value;
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull( "parameter:writer", writer );
+		Checker.notNull( "parameter:writer", writer );
 		
 		CodeBlock literal = null;
 

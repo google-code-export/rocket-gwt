@@ -18,7 +18,7 @@ package rocket.beans.rebind.deferredbinding;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Holds a statement that creates an instance using deferred binding.
@@ -44,12 +44,12 @@ public class DeferredBinding implements CodeBlock {
 	private Type type;
 
 	protected Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return this.type;
 	}
 
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("type:type", type);
+		Checker.notNull("type:type", type);
 		this.type = type;
 	}
 }

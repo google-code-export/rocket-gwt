@@ -16,7 +16,7 @@
 package rocket.dragndrop.client;
 
 import rocket.dom.client.Dom;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.SimplePanel;
 
 import com.google.gwt.user.client.DOM;
@@ -67,7 +67,7 @@ public class DropTargetPanel extends SimplePanel {
 	 * @param event
 	 */
 	protected void accept(final DropEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		final Widget widget = event.getWidget();
 		widget.removeFromParent();

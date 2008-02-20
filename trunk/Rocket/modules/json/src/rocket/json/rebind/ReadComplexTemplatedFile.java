@@ -15,13 +15,10 @@
  */
 package rocket.json.rebind;
 
-import java.io.InputStream;
-
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the read-complex template
@@ -40,12 +37,12 @@ public class ReadComplexTemplatedFile extends TemplatedFileCodeBlock {
 	private Type deserializerType;
 
 	protected Type getDeserializerType() {
-		ObjectHelper.checkNotNull("deserializerType:deserializerType", deserializerType);
+		Checker.notNull("deserializerType:deserializerType", deserializerType);
 		return this.deserializerType;
 	}
 
 	public void setDeserializerType(final Type deserializerType) {
-		ObjectHelper.checkNotNull("parameter:deserializerType", deserializerType);
+		Checker.notNull("parameter:deserializerType", deserializerType);
 		this.deserializerType = deserializerType;
 	}
 

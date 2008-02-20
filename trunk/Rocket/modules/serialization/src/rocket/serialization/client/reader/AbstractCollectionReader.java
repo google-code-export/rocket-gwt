@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectReader;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * ObjectReader that provides common serialization of collection and its sub classes.
@@ -35,8 +35,8 @@ public class AbstractCollectionReader extends ObjectReaderImpl implements Object
 	}
 	
 	protected void readCollection(final Collection collection, final ObjectInputStream objectInputStream) {
-		ObjectHelper.checkNotNull("parameter:set", collection);
-		ObjectHelper.checkNotNull("parameter:objectInputStream", objectInputStream);
+		Checker.notNull("parameter:collection", collection);
+		Checker.notNull("parameter:objectInputStream", objectInputStream);
 
 		final int elementCount = objectInputStream.readInt();
 

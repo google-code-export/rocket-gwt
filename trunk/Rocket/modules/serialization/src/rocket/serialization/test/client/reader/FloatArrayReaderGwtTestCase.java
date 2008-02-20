@@ -15,9 +15,9 @@
  */
 package rocket.serialization.test.client.reader;
 
+import rocket.serialization.client.ClientObjectInputStream;
 import rocket.serialization.client.reader.FloatArrayReader;
 import rocket.serialization.test.client.ClientGwtTestCase;
-import rocket.serialization.client.ClientObjectInputStream;
 
 public class FloatArrayReaderGwtTestCase extends ClientGwtTestCase {
 

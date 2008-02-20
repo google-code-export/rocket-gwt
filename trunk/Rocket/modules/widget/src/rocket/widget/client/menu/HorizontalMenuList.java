@@ -21,7 +21,7 @@ import rocket.collection.client.SkippingIterator;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.Html;
 
 import com.google.gwt.user.client.Element;
@@ -113,12 +113,12 @@ public class HorizontalMenuList extends MenuList {
 	private Widget padder;
 
 	protected Widget getPadder() {
-		ObjectHelper.checkNotNull("field:padder", padder);
+		Checker.notNull("field:padder", padder);
 		return padder;
 	}
 
 	protected void setPadder(final Widget padder) {
-		ObjectHelper.checkNotNull("parameter:padder", padder);
+		Checker.notNull("parameter:padder", padder);
 		this.padder = padder;
 	}
 

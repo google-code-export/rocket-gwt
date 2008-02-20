@@ -15,11 +15,9 @@
  */
 package rocket.serialization.test.client.writer;
 
-import java.util.Map;
-
+import rocket.serialization.client.ClientObjectOutputStream;
 import rocket.serialization.client.writer.LongWriter;
 import rocket.serialization.test.client.ClientGwtTestCase;
-import rocket.serialization.client.ClientObjectOutputStream;
 
 public class LongWriterGwtTestCase extends ClientGwtTestCase {
 

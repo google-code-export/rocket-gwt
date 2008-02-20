@@ -16,7 +16,6 @@
 package rocket.event.client;
 
 import rocket.browser.client.Browser;
-import rocket.dom.client.Dom;
 
 import com.google.gwt.user.client.DOM;
 

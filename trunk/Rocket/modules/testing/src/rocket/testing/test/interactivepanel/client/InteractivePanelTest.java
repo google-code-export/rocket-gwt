@@ -18,7 +18,7 @@ package rocket.testing.test.interactivepanel.client;
 import java.util.Iterator;
 
 import rocket.testing.client.InteractivePanel;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -81,7 +81,7 @@ public class InteractivePanelTest implements EntryPoint {
 
 			protected void checkType(Object element) {
 				if (false == (element instanceof HTML)) {
-					SystemHelper.fail("Unknown element type type:" + GWT.getTypeName(element));
+					Checker.fail("Unknown element type type:" + GWT.getTypeName(element));
 				}
 			}
 

@@ -16,10 +16,10 @@
 package rocket.util.test.stacktrace.test;
 
 import junit.framework.TestCase;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.JavaScript;
 import rocket.util.client.StackTrace;
-import rocket.util.client.StringHelper;
 import rocket.util.client.ThrowableHelper;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -62,7 +62,7 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 		final JavaScriptObject stackTrace = ThrowableHelper.getCallStackFunctions();
 		assertNotNull("stackTrace", stackTrace);
 
-		final int actual = ObjectHelper.getPropertyCount(stackTrace);
+		final int actual = JavaScript.getPropertyCount(stackTrace);
 		TestCase.assertTrue("stackTraceElement count: " + actual, actual > 1);
 		log("stackTraceElement count: " + actual);
 	}
@@ -71,15 +71,15 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 		final JavaScriptObject stackTrace = this.nativeMethod();
 		assertNotNull("stackTrace", stackTrace);
 
-		final int actual = ObjectHelper.getPropertyCount(stackTrace);
+		final int actual = JavaScript.getPropertyCount(stackTrace);
 		log("stackTraceElement count: " + actual);
 		TestCase.assertTrue("stackTraceElement count: " + actual, actual > 3);
 
-		final JavaScriptObject topMostStackElement = ObjectHelper.getObject(stackTrace, 0);
+		final JavaScriptObject topMostStackElement = JavaScript.getObject(stackTrace, 0);
 		log("topMostStackElement: " + topMostStackElement);
 		assertNotNull("topMostStackElement", topMostStackElement);
 
-		final JavaScriptObject secondTopStackElement = ObjectHelper.getObject(stackTrace, 1);
+		final JavaScriptObject secondTopStackElement = JavaScript.getObject(stackTrace, 1);
 		log("secondTopStackElement: " + secondTopStackElement);
 		assertNotNull("secondTopStackElement", secondTopStackElement);
 	}
@@ -150,7 +150,7 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 		System.out.println(stackTrace);
 		assertTrue(stackTrace.length() > 0);
 
-		final String[] lines = StringHelper.split(stackTrace, "\n", true);
+		final String[] lines = Utilities.split(stackTrace, "\n", true);
 		assertTrue(lines.length > 5);
 
 		final String thisClassName = GWT.getTypeName(this);

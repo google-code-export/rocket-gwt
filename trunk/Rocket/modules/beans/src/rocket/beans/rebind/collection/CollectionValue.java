@@ -22,7 +22,7 @@ import rocket.beans.rebind.value.AbstractValue;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Contains a collection ( a list or set ) value for a bean.
@@ -40,12 +40,12 @@ abstract public class CollectionValue extends AbstractValue implements Value {
 	private Collection elements;
 
 	public Collection getElements() {
-		ObjectHelper.checkNotNull("field:elements", elements);
+		Checker.notNull("field:elements", elements);
 		return this.elements;
 	}
 
 	public void setElements(final Collection elements) {
-		ObjectHelper.checkNotNull("parameter:elements", elements);
+		Checker.notNull("parameter:elements", elements);
 		this.elements = elements;
 	}
 
@@ -60,7 +60,7 @@ abstract public class CollectionValue extends AbstractValue implements Value {
 	abstract protected String getCollectionTypeName();
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final CollectionTemplatedFile template = this.createTemplate();
 		final Iterator elements = this.getElements().iterator();

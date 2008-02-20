@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import rocket.event.client.EventBitMaskConstants;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.CompositeWidget;
 
 /**
@@ -61,7 +61,7 @@ public abstract class AccordionPanel extends CompositeWidget {
 	private AccordionItem selected;
 
 	public AccordionItem getSelected() {
-		ObjectHelper.checkNotNull("field:selected", selected);
+		Checker.notNull("field:selected", selected);
 		return this.selected;
 	}
 
@@ -70,7 +70,7 @@ public abstract class AccordionPanel extends CompositeWidget {
 	}
 
 	protected void setSelected(final AccordionItem selected) {
-		ObjectHelper.checkNotNull("parameter:selected", selected);
+		Checker.notNull("parameter:selected", selected);
 		this.selected = selected;
 	}
 
@@ -124,7 +124,7 @@ public abstract class AccordionPanel extends CompositeWidget {
 	protected abstract void addSelectedStyle(final AccordionItem item);
 
 	public void select(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 		this.select(this.getIndex(item));
 	}
 
@@ -137,7 +137,7 @@ public abstract class AccordionPanel extends CompositeWidget {
 	}
 
 	public int getIndex(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		return this.getItems().indexOf(item);
 	}
@@ -147,7 +147,7 @@ public abstract class AccordionPanel extends CompositeWidget {
 	}
 
 	public void insert(final int insertBefore, final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		this.insert0(insertBefore, item);
 		item.setAccordionPanel(this);
@@ -196,7 +196,7 @@ public abstract class AccordionPanel extends CompositeWidget {
 	protected abstract void remove0(final int index);
 
 	public boolean remove(final AccordionItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final int index = this.getIndex(item);
 		if (-1 != index) {
@@ -215,12 +215,12 @@ public abstract class AccordionPanel extends CompositeWidget {
 	private List items;
 
 	protected List getItems() {
-		ObjectHelper.checkNotNull("field:items", this.items);
+		Checker.notNull("field:items", this.items);
 		return this.items;
 	}
 
 	protected void setItems(final List items) {
-		ObjectHelper.checkNotNull("parameter:items", items);
+		Checker.notNull("parameter:items", items);
 		this.items = items;
 	}
 
@@ -238,12 +238,12 @@ public abstract class AccordionPanel extends CompositeWidget {
 	private AccordionListenerCollection accordionListeners;
 
 	protected AccordionListenerCollection getAccordionListeners() {
-		ObjectHelper.checkNotNull("field:accordionListeners", this.accordionListeners);
+		Checker.notNull("field:accordionListeners", this.accordionListeners);
 		return this.accordionListeners;
 	}
 
 	protected void setAccordionListeners(final AccordionListenerCollection accordionListeners) {
-		ObjectHelper.checkNotNull("parameter:accordionListeners", accordionListeners);
+		Checker.notNull("parameter:accordionListeners", accordionListeners);
 		this.accordionListeners = accordionListeners;
 	}
 
@@ -252,7 +252,7 @@ public abstract class AccordionPanel extends CompositeWidget {
 	}
 
 	public void addAccordionListener(final AccordionListener listener) {
-		ObjectHelper.checkNotNull("parameter:listener", listener);
+		Checker.notNull("parameter:listener", listener);
 		this.getAccordionListeners().add(listener);
 	}
 

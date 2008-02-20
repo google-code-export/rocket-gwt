@@ -1,4 +1,4 @@
-// write-byte-field.txt
+// /rocket/serialization/rebind/write/write-byte-field.txt
 
 objectOutputStream.writeByte( this.${getter}( instance ) );
 

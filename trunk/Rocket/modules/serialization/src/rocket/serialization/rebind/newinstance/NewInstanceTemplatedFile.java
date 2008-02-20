@@ -17,14 +17,12 @@ package rocket.serialization.rebind.newinstance;
 
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the new-instance.txt template
  * 
  * @author Miroslav Pokorny
- * 
- * TODO reusable template
  */
 public class NewInstanceTemplatedFile extends TemplatedFileCodeBlock {
 
@@ -35,12 +33,12 @@ public class NewInstanceTemplatedFile extends TemplatedFileCodeBlock {
 	private Constructor constructor;
 
 	protected Constructor getConstructor() {
-		ObjectHelper.checkNotNull("field:type", constructor);
+		Checker.notNull("field:type", constructor);
 		return this.constructor;
 	}
 
 	public void setConstructor(final Constructor constructor) {
-		ObjectHelper.checkNotNull("parameter:constructor", constructor);
+		Checker.notNull("parameter:constructor", constructor);
 		this.constructor = constructor;
 	}
 

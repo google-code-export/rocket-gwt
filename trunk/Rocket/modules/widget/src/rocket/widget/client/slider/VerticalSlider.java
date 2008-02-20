@@ -15,11 +15,10 @@
  */
 package rocket.widget.client.slider;
 
-import com.google.gwt.user.client.DOM;
-
-import rocket.dom.client.Dom;
 import rocket.event.client.MouseEvent;
 import rocket.style.client.Css;
+
+import com.google.gwt.user.client.DOM;
 
 /**
  * A VerticalSlider is a widget which allows a user to manipulate number value

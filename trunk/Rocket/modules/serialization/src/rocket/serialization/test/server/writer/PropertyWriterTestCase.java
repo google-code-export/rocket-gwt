@@ -18,9 +18,9 @@ package rocket.serialization.test.server.writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.server.writer.PropertyWriter;
-import junit.framework.TestCase;
 
 public class PropertyWriterTestCase extends TestCase {
 

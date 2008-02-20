@@ -18,7 +18,7 @@ package rocket.beans.rebind.value;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A convenient base class for any constructor or property value.
@@ -37,24 +37,24 @@ abstract public class AbstractValue implements CodeBlock {
 	private Type type;
 
 	protected Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return this.type;
 	}
 
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		this.type = type;
 	}
 
 	private GeneratorContext generatorContext;
 
 	public GeneratorContext getGeneratorContext() {
-		ObjectHelper.checkNotNull("field:generatorContext", generatorContext);
+		Checker.notNull("field:generatorContext", generatorContext);
 		return this.generatorContext;
 	}
 
 	public void setGeneratorContext(final GeneratorContext generatorContext) {
-		ObjectHelper.checkNotNull("parameter:generatorContext", generatorContext);
+		Checker.notNull("parameter:generatorContext", generatorContext);
 		this.generatorContext = generatorContext;
 	}
 

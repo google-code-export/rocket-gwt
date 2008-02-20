@@ -18,8 +18,7 @@ package rocket.beans.rebind.beanreference;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the bean-reference template
@@ -42,12 +41,12 @@ public class BeanReferenceTemplatedFile extends TemplatedFileCodeBlock {
 	private Type type;
 
 	protected Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return this.type;
 	}
 
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("type:type", type);
+		Checker.notNull("type:type", type);
 		this.type = type;
 	}
 
@@ -57,12 +56,12 @@ public class BeanReferenceTemplatedFile extends TemplatedFileCodeBlock {
 	private String id;
 
 	protected String getId() {
-		StringHelper.checkNotNull("field:id", id);
+		Checker.notNull("field:id", id);
 		return this.id;
 	}
 
 	public void setId(final String id) {
-		StringHelper.checkNotNull("parameter:id", id);
+		Checker.notNull("parameter:id", id);
 		this.id = id;
 	}
 	

@@ -30,8 +30,7 @@ import rocket.event.client.MouseUpEvent;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.CompositeWidget;
 import rocket.widget.client.EventListenerDispatcher;
 import rocket.widget.client.Panel;
@@ -95,7 +94,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 	 * @return The index of item
 	 */
 	public int getIndex(final SplitterItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		return this.getItems().indexOf(item);
 	}
@@ -116,7 +115,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 	 * @param item
 	 */
 	public void insert(final int beforeIndex, final SplitterItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		while (true) {
 			final List items = this.getItems();
@@ -170,7 +169,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 	 * @return true if the item was removed otherwise returns false.
 	 */
 	public boolean remove(final SplitterItem item) {
-		ObjectHelper.checkNotNull("parameter:item", item);
+		Checker.notNull("parameter:item", item);
 
 		final int index = this.getIndex(item);
 		if (-1 != index) {
@@ -241,12 +240,12 @@ abstract public class SplitterPanel extends CompositeWidget {
 	private List items;
 
 	protected List getItems() {
-		ObjectHelper.checkNotNull("field:items", this.items);
+		Checker.notNull("field:items", this.items);
 		return this.items;
 	}
 
 	protected void setItems(final List items) {
-		ObjectHelper.checkNotNull("parameter:items", items);
+		Checker.notNull("parameter:items", items);
 		this.items = items;
 	}
 
@@ -260,12 +259,12 @@ abstract public class SplitterPanel extends CompositeWidget {
 	private InternalPanel panel;
 
 	protected InternalPanel getPanel() {
-		ObjectHelper.checkNotNull("field:panel", panel);
+		Checker.notNull("field:panel", panel);
 		return this.panel;
 	}
 
 	protected void setPanel(final InternalPanel panel) {
-		ObjectHelper.checkNotNull("parameter:panel", panel);
+		Checker.notNull("parameter:panel", panel);
 		this.panel = panel;
 	}
 
@@ -327,7 +326,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 		 * Add the given element to the parent DIV element
 		 */
 		protected void insert0(final Element element, final int indexBefore) {
-			ObjectHelper.checkNotNull("parameter:element", element);
+			Checker.notNull("parameter:element", element);
 
 			final Element parent = this.getParentElement();
 			DOM.appendChild(parent, element);
@@ -397,7 +396,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 		 * @param event
 		 */
 		protected void handleMouseDown(final MouseDownEvent event) {
-			ObjectHelper.checkNotNull("parameter:event", event);
+			Checker.notNull("parameter:event", event);
 
 			final EventPreview preview = this.createEventPreview();
 			this.setEventPreview(preview);
@@ -410,12 +409,12 @@ abstract public class SplitterPanel extends CompositeWidget {
 		private EventPreview eventPreview;
 
 		protected EventPreview getEventPreview() {
-			ObjectHelper.checkNotNull("field:eventPreview", eventPreview);
+			Checker.notNull("field:eventPreview", eventPreview);
 			return this.eventPreview;
 		}
 
 		protected void setEventPreview(final EventPreview eventPreview) {
-			ObjectHelper.checkNotNull("field:eventPreview", eventPreview);
+			Checker.notNull("field:eventPreview", eventPreview);
 			this.eventPreview = eventPreview;
 		}
 
@@ -477,12 +476,12 @@ abstract public class SplitterPanel extends CompositeWidget {
 	private int splitterSize;
 
 	public int getSplitterSize() {
-		PrimitiveHelper.checkGreaterThan("field:splitterSize", 0, splitterSize);
+		Checker.greaterThan("field:splitterSize", 0, splitterSize);
 		return this.splitterSize;
 	}
 
 	public void setSplitterSize(final int splitterSize) {
-		PrimitiveHelper.checkGreaterThan("parameter:splitterSize", 0, splitterSize);
+		Checker.greaterThan("parameter:splitterSize", 0, splitterSize);
 		this.splitterSize = splitterSize;
 	}
 

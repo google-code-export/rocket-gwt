@@ -17,7 +17,7 @@ package rocket.remoting.rebind.rpc.json.post;
 
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the json-rpc-invoker template file.
@@ -36,12 +36,12 @@ public class JsonRpcInvokerTemplatedFile extends TemplatedFileCodeBlock {
 	private Type parameterType;
 
 	protected Type getParameterType() {
-		ObjectHelper.checkNotNull("field:parameterType", parameterType);
+		Checker.notNull("field:parameterType", parameterType);
 		return this.parameterType;
 	}
 
 	public void setParameterType(final Type parameterType) {
-		ObjectHelper.checkNotNull("parameter:parameterType", parameterType);
+		Checker.notNull("parameter:parameterType", parameterType);
 		this.parameterType = parameterType;
 	}
 
@@ -51,12 +51,12 @@ public class JsonRpcInvokerTemplatedFile extends TemplatedFileCodeBlock {
 	private Type returnType;
 
 	protected Type getReturnType() {
-		ObjectHelper.checkNotNull("field:returnType", returnType);
+		Checker.notNull("field:returnType", returnType);
 		return this.returnType;
 	}
 
 	public void setReturnType(final Type returnType) {
-		ObjectHelper.checkNotNull("parameter:returnType", returnType);
+		Checker.notNull("parameter:returnType", returnType);
 		this.returnType = returnType;
 	}
 

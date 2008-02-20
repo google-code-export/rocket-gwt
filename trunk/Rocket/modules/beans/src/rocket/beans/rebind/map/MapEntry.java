@@ -16,8 +16,7 @@
 package rocket.beans.rebind.map;
 
 import rocket.beans.rebind.value.Value;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * A tuple that holds a map entry, including the key as a string and the value
@@ -31,12 +30,12 @@ public class MapEntry {
 	private String key;
 
 	public String getKey() {
-		StringHelper.checkNotEmpty("field:key", key);
+		Checker.notEmpty("field:key", key);
 		return key;
 	}
 
 	public void setKey(final String key) {
-		StringHelper.checkNotEmpty("parameter:key", key);
+		Checker.notEmpty("parameter:key", key);
 		this.key = key;
 	}
 
@@ -46,12 +45,12 @@ public class MapEntry {
 	private Value value;
 
 	public Value getValue() {
-		ObjectHelper.checkNotNull("field:value", value);
+		Checker.notNull("field:value", value);
 		return value;
 	}
 
 	public void setValue(final Value value) {
-		ObjectHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:value", value);
 		this.value = value;
 	}
 

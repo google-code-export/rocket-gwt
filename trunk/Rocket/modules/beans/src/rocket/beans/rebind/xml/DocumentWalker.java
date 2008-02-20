@@ -56,8 +56,8 @@ import rocket.beans.rebind.stringvalue.StringValue;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 /**
  * This factory is includes a number of methods to assist with walking through a
@@ -108,12 +108,12 @@ public class DocumentWalker {
 	private DocumentBuilder documentBuilder;
 
 	protected DocumentBuilder getDocumentBuilder() {
-		ObjectHelper.checkNotNull("field:documentBuilder", documentBuilder);
+		Checker.notNull("field:documentBuilder", documentBuilder);
 		return this.documentBuilder;
 	}
 
 	protected void setDocumentBuilder(final DocumentBuilder documentBuilder) {
-		ObjectHelper.checkNotNull("parameter:documentBuilder", documentBuilder);
+		Checker.notNull("parameter:documentBuilder", documentBuilder);
 		this.documentBuilder = documentBuilder;
 	}
 
@@ -187,12 +187,12 @@ public class DocumentWalker {
 	private Document document;
 
 	protected Document getDocument() {
-		ObjectHelper.checkNotNull("field:document", document);
+		Checker.notNull("field:document", document);
 		return this.document;
 	}
 
 	protected void setDocument(final Document document) {
-		ObjectHelper.checkNotNull("parameter:document", document);
+		Checker.notNull("parameter:document", document);
 		this.document = document;
 	}
 
@@ -202,12 +202,12 @@ public class DocumentWalker {
 	private String filename;
 
 	protected String getFilename() {
-		StringHelper.checkNotEmpty("field:filename", filename);
+		Checker.notEmpty("field:filename", filename);
 		return this.filename;
 	}
 
 	protected void setFilename(final String filename) {
-		StringHelper.checkNotEmpty("parameter:filename", filename);
+		Checker.notEmpty("parameter:filename", filename);
 		this.filename = filename;
 	}
 
@@ -224,7 +224,7 @@ public class DocumentWalker {
 		for (int i = 0; i < count; i++) {
 			final Element element = (Element) tags.item(i);
 			final String fileName = element.getAttribute(Constants.PLACE_HOLDERS_FILE_ATTRIBUTE);
-			if (StringHelper.isNullOrEmpty(fileName)) {
+			if (Tester.isNullOrEmpty(fileName)) {
 				continue;
 			}
 
@@ -237,12 +237,12 @@ public class DocumentWalker {
 	private PlaceHolderResolver placeHolderResolver;
 
 	protected PlaceHolderResolver getPlaceHolderResolver() {
-		ObjectHelper.checkNotNull("field:placeHolderResolver", placeHolderResolver);
+		Checker.notNull("field:placeHolderResolver", placeHolderResolver);
 		return this.placeHolderResolver;
 	}
 
 	protected void setPlaceHolderResolver(final PlaceHolderResolver placeHolderResolver) {
-		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
+		Checker.notNull("parameter:placeHolderResolver", placeHolderResolver);
 		this.placeHolderResolver = placeHolderResolver;
 	}
 
@@ -274,7 +274,7 @@ public class DocumentWalker {
 	 * @param element The bean element
 	 */
 	protected void visitBean(final Element element) {
-		ObjectHelper.checkNotNull( "parameter:element", element );
+		Checker.notNull( "parameter:element", element );
 		
 		final BeanTag tag = new BeanTag();
 		tag.setElement(element);
@@ -301,12 +301,12 @@ public class DocumentWalker {
 	private Set beans;
 
 	public Set getBeans() {
-		ObjectHelper.checkNotNull("field:beans", beans);
+		Checker.notNull("field:beans", beans);
 		return this.beans;
 	}
 
 	protected void setBeans(final Set beans) {
-		ObjectHelper.checkNotNull("parameter:beans", beans);
+		Checker.notNull("parameter:beans", beans);
 		this.beans = beans;
 	}
 
@@ -315,7 +315,7 @@ public class DocumentWalker {
 	}
 
 	protected void addBean(final Bean bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 
 		this.getBeans().add(bean);
 	}
@@ -588,12 +588,12 @@ public class DocumentWalker {
 	private Set aliases;
 
 	public Set getAliases() {
-		ObjectHelper.checkNotNull("field:aliases", aliases);
+		Checker.notNull("field:aliases", aliases);
 		return this.aliases;
 	}
 
 	protected void setAliases(final Set aliases) {
-		ObjectHelper.checkNotNull("parameter:aliases", aliases);
+		Checker.notNull("parameter:aliases", aliases);
 		this.aliases = aliases;
 	}
 
@@ -602,7 +602,7 @@ public class DocumentWalker {
 	}
 
 	protected void addAlias(final Alias alias) {
-		ObjectHelper.checkNotNull("parameter:alias", alias);
+		Checker.notNull("parameter:alias", alias);
 
 		this.getAliases().add(alias);
 	}
@@ -675,12 +675,12 @@ public class DocumentWalker {
 	private Set aspects;
 
 	public Set getAspects() {
-		ObjectHelper.checkNotNull("field:aspects", aspects);
+		Checker.notNull("field:aspects", aspects);
 		return this.aspects;
 	}
 
 	protected void setAspects(final Set aspects) {
-		ObjectHelper.checkNotNull("parameter:aspects", aspects);
+		Checker.notNull("parameter:aspects", aspects);
 		this.aspects = aspects;
 	}
 
@@ -689,15 +689,15 @@ public class DocumentWalker {
 	}
 
 	protected void addAspect(final Aspect aspect) {
-		ObjectHelper.checkNotNull("parameter:aspect", aspect);
+		Checker.notNull("parameter:aspect", aspect);
 		
 		this.getAspects().add(aspect);
 	}
 
 	protected List visitIncludedFiles(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
-		ObjectHelper.checkNotNull("parameter:document", document);
-		StringHelper.checkNotEmpty("parameter:filename", filename);
-		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
+		Checker.notNull("parameter:document", document);
+		Checker.notEmpty("parameter:filename", filename);
+		Checker.notNull("parameter:placeHolderResolver", placeHolderResolver);
 
 		final NodeList nodeList = document.getElementsByTagName(Constants.INCLUDE_TAG);
 		final int count = nodeList.getLength();
@@ -722,12 +722,12 @@ public class DocumentWalker {
 	private Set includedFiles;
 
 	protected Set getIncludedFiles() {
-		ObjectHelper.checkNotNull("field:includedFiles", includedFiles);
+		Checker.notNull("field:includedFiles", includedFiles);
 		return this.includedFiles;
 	}
 
 	protected void setIncludedFiles(final Set includedFiles) {
-		ObjectHelper.checkNotNull("parameter:includedFiles", includedFiles);
+		Checker.notNull("parameter:includedFiles", includedFiles);
 		this.includedFiles = includedFiles;
 	}
 
@@ -741,12 +741,12 @@ public class DocumentWalker {
 	private EntityResolver entityResolver;
 
 	protected EntityResolver getEntityResolver() {
-		ObjectHelper.checkNotNull("field:entityResolver", entityResolver);
+		Checker.notNull("field:entityResolver", entityResolver);
 		return entityResolver;
 	}
 
 	public void setEntityResolver(final EntityResolver entityResolver) {
-		ObjectHelper.checkNotNull("parameter:entityResolver", entityResolver);
+		Checker.notNull("parameter:entityResolver", entityResolver);
 		this.entityResolver = entityResolver;
 	}
 
@@ -756,12 +756,12 @@ public class DocumentWalker {
 	private ErrorHandler errorHandler;
 
 	protected ErrorHandler getErrorHandler() {
-		ObjectHelper.checkNotNull("field:errorHandler", errorHandler);
+		Checker.notNull("field:errorHandler", errorHandler);
 		return errorHandler;
 	}
 
 	public void setErrorHandler(final ErrorHandler errorHandler) {
-		ObjectHelper.checkNotNull("parameter:errorHandler", errorHandler);
+		Checker.notNull("parameter:errorHandler", errorHandler);
 		this.errorHandler = errorHandler;
 	}
 
@@ -771,12 +771,12 @@ public class DocumentWalker {
 	private Generator generator;
 
 	protected Generator getGenerator() {
-		ObjectHelper.checkNotNull("field:generator", generator);
+		Checker.notNull("field:generator", generator);
 		return this.generator;
 	}
 
 	public void setGenerator(final Generator generator) {
-		ObjectHelper.checkNotNull("parameter:generator", generator);
+		Checker.notNull("parameter:generator", generator);
 		this.generator = generator;
 	}
 }

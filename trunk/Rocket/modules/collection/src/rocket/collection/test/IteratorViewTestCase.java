@@ -22,7 +22,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import rocket.collection.client.IteratorView;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 public class IteratorViewTestCase extends TestCase {
 	public void testIterator0WithNoModifications() {
@@ -176,12 +176,12 @@ public class IteratorViewTestCase extends TestCase {
 		List list;
 
 		List getList() {
-			ObjectHelper.checkNotNull("field:list", list);
+			Checker.notNull("field:list", list);
 			return list;
 		}
 
 		void setList(final List list) {
-			ObjectHelper.checkNotNull("parameter:list", list);
+			Checker.notNull("parameter:list", list);
 			this.list = list;
 		}
 

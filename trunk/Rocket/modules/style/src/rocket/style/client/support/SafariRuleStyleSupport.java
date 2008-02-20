@@ -15,7 +15,7 @@
  */
 package rocket.style.client.support;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -43,6 +43,6 @@ public class SafariRuleStyleSupport extends SafariStyleSupport {
 	}
 	
 	public String[] getPropertyNames( final JavaScriptObject rule ){
-		return ObjectHelper.getPropertyNames( ObjectHelper.getObject( rule, "style" ));
+		return JavaScript.getPropertyNames( JavaScript.getObject( rule, "style" ));
 	}
 }

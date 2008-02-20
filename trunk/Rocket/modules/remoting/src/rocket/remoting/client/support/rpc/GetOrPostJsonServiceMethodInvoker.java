@@ -15,8 +15,7 @@
  */
 package rocket.remoting.client.support.rpc;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.http.client.URL;
 
@@ -33,12 +32,12 @@ abstract public class GetOrPostJsonServiceMethodInvoker extends JsonServiceMetho
 	private StringBuffer parameters = new StringBuffer();
 
 	protected StringBuffer getParameters() {
-		ObjectHelper.checkNotNull("field:parameters", parameters);
+		Checker.notNull("field:parameters", parameters);
 		return this.parameters;
 	}
 
 	protected void setParameters(final StringBuffer parameters) {
-		ObjectHelper.checkNotNull("parameter:parameters", parameters);
+		Checker.notNull("parameter:parameters", parameters);
 		this.parameters = parameters;
 	}
 
@@ -82,8 +81,8 @@ abstract public class GetOrPostJsonServiceMethodInvoker extends JsonServiceMetho
 	}
 
 	public void addParameter(final String name, final String value) {
-		StringHelper.checkNotEmpty("parameter:name", name);
-		StringHelper.checkNotNull("parameter:value", value);
+		Checker.notEmpty("parameter:name", name);
+		Checker.notNull("parameter:value", value);
 
 		final StringBuffer parameters = this.getParameters();
 

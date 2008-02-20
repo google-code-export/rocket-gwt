@@ -21,8 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * Takes one or more messages and publishes them to their respective consumers
@@ -38,7 +37,7 @@ public class MessageBroker {
 	}
 
 	public void publishMessages(final List messages) {
-		ObjectHelper.checkNotNull("parameter:messages", messages);
+		Checker.notNull("parameter:messages", messages);
 
 		final Iterator iterator = messages.iterator();
 		while (iterator.hasNext()) {
@@ -48,7 +47,7 @@ public class MessageBroker {
 	}
 
 	public void publish(final Message message) {
-		ObjectHelper.checkNotNull("parameter:message", message);
+		Checker.notNull("parameter:message", message);
 
 		final String destination = message.getDestination();
 		final Object payload = message.hasPayload() ? message.getPayload() : null;
@@ -69,12 +68,12 @@ public class MessageBroker {
 	private Map subscribers;
 
 	protected Map getSubscribers() {
-		ObjectHelper.checkNotNull("field:subscribers", subscribers);
+		Checker.notNull("field:subscribers", subscribers);
 		return subscribers;
 	}
 
 	protected void setSubscribers(final Map subscribers) {
-		ObjectHelper.checkNotNull("parameter:subscribers", subscribers);
+		Checker.notNull("parameter:subscribers", subscribers);
 		this.subscribers = subscribers;
 	}
 
@@ -85,8 +84,8 @@ public class MessageBroker {
 	 * @param subscriber
 	 */
 	public void subscribe(final String name, final TopicSubscriber subscriber) {
-		StringHelper.checkNotEmpty("parameter:name", name);
-		ObjectHelper.checkNotNull("parameter:subscriber", subscriber);
+		Checker.notEmpty("parameter:name", name);
+		Checker.notNull("parameter:subscriber", subscriber);
 
 		final Map subscribers = this.getSubscribers();
 		List listeners = (List) subscribers.get(name);
@@ -98,8 +97,8 @@ public class MessageBroker {
 	}
 
 	public void unsubscribe(final String name, final TopicSubscriber subscriber) {
-		StringHelper.checkNotEmpty("parameter:name", name);
-		ObjectHelper.checkNotNull("parameter:subscriber", subscriber);
+		Checker.notEmpty("parameter:name", name);
+		Checker.notNull("parameter:subscriber", subscriber);
 
 		final Map subscribers = this.getSubscribers();
 		List listeners = (List) subscribers.get(name);

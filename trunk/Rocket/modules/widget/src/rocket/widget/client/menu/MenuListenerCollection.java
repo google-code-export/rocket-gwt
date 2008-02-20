@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
-
-import com.google.gwt.user.client.ui.Widget;
+import rocket.util.client.Checker;
 
 /**
  * A collection of menu event listeners.
@@ -34,7 +32,7 @@ class MenuListenerCollection {
 	}
 
 	public void fireMenuOpened( final MenuOpenEvent event ){
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 		
 		final Iterator listeners = this.iterator();
 
@@ -45,12 +43,12 @@ class MenuListenerCollection {
 	}
 	
 	public void add(final MenuListener menuListener) {
-		ObjectHelper.checkNotNull("parameter:menuListener", menuListener);
+		Checker.notNull("parameter:menuListener", menuListener);
 		this.getListeners().add(menuListener);
 	}
 
 	public void remove(final MenuListener menuListener) {
-		ObjectHelper.checkNotNull("parameter:menuListener", menuListener);
+		Checker.notNull("parameter:menuListener", menuListener);
 		this.getListeners().remove(menuListener);
 	}
 

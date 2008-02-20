@@ -26,7 +26,7 @@ import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This visitor visits all the virtual methods for the entire type heirarchy of
@@ -49,7 +49,7 @@ abstract public class VirtualMethodVisitor {
 	 * @param derivedType
 	 */
 	public void start(final Type derivedType) {
-		ObjectHelper.checkNotNull("parameter:derivedType", derivedType);
+		Checker.notNull("parameter:derivedType", derivedType);
 
 		final Package packagee = derivedType.getPackage();
 		final Set visited = this.createVisited();

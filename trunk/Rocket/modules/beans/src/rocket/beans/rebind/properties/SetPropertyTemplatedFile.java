@@ -18,11 +18,9 @@ package rocket.beans.rebind.properties;
 import java.io.InputStream;
 
 import rocket.beans.rebind.value.Value;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the set property template
@@ -41,12 +39,12 @@ class SetPropertyTemplatedFile extends TemplatedFileCodeBlock {
 	private Method setter;
 
 	protected Method getSetter() {
-		ObjectHelper.checkNotNull("field:setter", setter);
+		Checker.notNull("field:setter", setter);
 		return this.setter;
 	}
 
 	public void setSetter(final Method setter) {
-		ObjectHelper.checkNotNull("setter:setter", setter);
+		Checker.notNull("setter:setter", setter);
 		this.setter = setter;
 	}
 
@@ -56,12 +54,12 @@ class SetPropertyTemplatedFile extends TemplatedFileCodeBlock {
 	private Value value;
 
 	protected Value getValue() {
-		ObjectHelper.checkNotNull("field:value", value);
+		Checker.notNull("field:value", value);
 		return this.value;
 	}
 
 	public void setValue(final Value bean) {
-		ObjectHelper.checkNotNull("value:value", bean);
+		Checker.notNull("value:value", bean);
 		this.value = bean;
 	}
 
@@ -70,7 +68,7 @@ class SetPropertyTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO remove when pakcage merged.
+		return super.getInputStream();
 	}
 	
 	protected Object getValue0(final String name) {

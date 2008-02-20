@@ -20,7 +20,7 @@ import java.util.Map;
 
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectReader;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A reader for Map implementations
@@ -41,8 +41,8 @@ public class MapReader extends ObjectReaderImpl implements ObjectReader {
 	}
 	
 	protected void readMap(final Map map, final ObjectInputStream objectInputStream) {
-		ObjectHelper.checkNotNull("parameter:map", map);
-		ObjectHelper.checkNotNull("parameter:objectInputStream", objectInputStream);
+		Checker.notNull("parameter:map", map);
+		Checker.notNull("parameter:objectInputStream", objectInputStream);
 
 		final int elementCount = objectInputStream.readInt();
 

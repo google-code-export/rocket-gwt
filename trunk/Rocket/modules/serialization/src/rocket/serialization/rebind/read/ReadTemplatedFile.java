@@ -19,7 +19,7 @@ import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the read.txt template
@@ -38,12 +38,12 @@ public class ReadTemplatedFile extends TemplatedFileCodeBlock {
 	private Type type;
 
 	protected Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return this.type;
 	}
 
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		this.type = type;
 	} 
 
@@ -52,7 +52,7 @@ public class ReadTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO Dlete when moved to same package as parent template.
+		return super.getInputStream();
 	}
 
 	protected Object getValue0(final String name) {

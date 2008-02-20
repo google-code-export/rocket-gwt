@@ -18,8 +18,7 @@ package rocket.generator.test.generator.rebind;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class ShortTypeGenerator extends TestGenerator {
 
@@ -27,17 +26,17 @@ public class ShortTypeGenerator extends TestGenerator {
 		final GeneratorContext context = this.getGeneratorContext();
 
 		final Type type = context.getType(Short.TYPE.getName());
-		ObjectHelper.checkNotNull("type", type);
+		Checker.notNull("type", type);
 
-		PrimitiveHelper.checkFalse("Short type is a not abstract", type.isAbstract());
-		PrimitiveHelper.checkFalse("Short type is not an interface", type.isInterface());
-		PrimitiveHelper.checkTrue("Short type is a final", type.isFinal());
-		ObjectHelper.checkEquals("Short type name", Short.TYPE.getName(), type.getName());
-		PrimitiveHelper.checkFalse("Short type is not an array", type.isArray());
-		PrimitiveHelper.checkTrue("Short type is a primitive", type.isPrimitive());
+		Checker.falseValue("Short type is a not abstract", type.isAbstract());
+		Checker.falseValue("Short type is not an interface", type.isInterface());
+		Checker.trueValue("Short type is a final", type.isFinal());
+		Checker.equals("Short type name", Short.TYPE.getName(), type.getName());
+		Checker.falseValue("Short type is not an array", type.isArray());
+		Checker.trueValue("Short type is a primitive", type.isPrimitive());
 
 		final Type wrapper = type.getWrapper();
-		ObjectHelper.checkEquals("Short wrapper type name", Short.class.getName(), wrapper.getName());
+		Checker.equals("Short wrapper type name", Short.class.getName(), wrapper.getName());
 
 		return null;
 	}

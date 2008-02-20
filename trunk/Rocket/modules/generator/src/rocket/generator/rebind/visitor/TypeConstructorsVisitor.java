@@ -19,7 +19,7 @@ import java.util.Iterator;
 
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Template that visits all the constructors belonging to a type.
@@ -29,7 +29,7 @@ import rocket.util.client.ObjectHelper;
 abstract public class TypeConstructorsVisitor {
 
 	public void start(final Type type) {
-		ObjectHelper.checkNotNull("constructor:type", type);
+		Checker.notNull("constructor:type", type);
 
 		final Iterator constructors = type.getConstructors().iterator();
 		while (constructors.hasNext()) {

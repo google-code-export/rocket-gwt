@@ -15,15 +15,11 @@
  */
 package rocket.json.rebind;
 
-import java.io.InputStream;
-
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the inserting list setter statements for fields that are
@@ -40,12 +36,12 @@ public class SetComplexTemplatedFile extends TemplatedFileCodeBlock {
 	private Method readMethod;
 
 	protected Method getReadMethod() {
-		ObjectHelper.checkNotNull("list:readMethod", readMethod);
+		Checker.notNull("list:readMethod", readMethod);
 		return this.readMethod;
 	}
 
 	public void setReadMethod(final Method readMethod) {
-		ObjectHelper.checkNotNull("parameter:readMethod", readMethod);
+		Checker.notNull("parameter:readMethod", readMethod);
 		this.readMethod = readMethod;
 	}
 
@@ -56,12 +52,12 @@ public class SetComplexTemplatedFile extends TemplatedFileCodeBlock {
 	private Method fieldSetter;
 
 	protected Method getFieldSetter() {
-		ObjectHelper.checkNotNull("list:fieldSetter", fieldSetter);
+		Checker.notNull("list:fieldSetter", fieldSetter);
 		return this.fieldSetter;
 	}
 
 	public void setFieldSetter(final Method fieldSetter) {
-		ObjectHelper.checkNotNull("parameter:fieldSetter", fieldSetter);
+		Checker.notNull("parameter:fieldSetter", fieldSetter);
 		this.fieldSetter = fieldSetter;
 	}
 
@@ -71,12 +67,12 @@ public class SetComplexTemplatedFile extends TemplatedFileCodeBlock {
 	private Type fieldType;
 
 	protected Type getFieldType() {
-		ObjectHelper.checkNotNull("fieldType:fieldType", fieldType);
+		Checker.notNull("fieldType:fieldType", fieldType);
 		return this.fieldType;
 	}
 
 	public void setFieldType(final Type fieldType) {
-		ObjectHelper.checkNotNull("parameter:fieldType", fieldType);
+		Checker.notNull("parameter:fieldType", fieldType);
 		this.fieldType = fieldType;
 	}
 
@@ -86,12 +82,12 @@ public class SetComplexTemplatedFile extends TemplatedFileCodeBlock {
 	private Type serializer;
 
 	protected Type getSerializer() {
-		ObjectHelper.checkNotNull("list:serializer", serializer);
+		Checker.notNull("list:serializer", serializer);
 		return this.serializer;
 	}
 
 	public void setSerializer(final Type fieldTypeDeserializer) {
-		ObjectHelper.checkNotNull("parameter:serializer", fieldTypeDeserializer);
+		Checker.notNull("parameter:serializer", fieldTypeDeserializer);
 		this.serializer = fieldTypeDeserializer;
 	}
 
@@ -101,12 +97,12 @@ public class SetComplexTemplatedFile extends TemplatedFileCodeBlock {
 	private String javascriptPropertyName;
 
 	protected String getJavascriptPropertyName() {
-		ObjectHelper.checkNotNull("list:javascriptPropertyName", javascriptPropertyName);
+		Checker.notNull("list:javascriptPropertyName", javascriptPropertyName);
 		return this.javascriptPropertyName;
 	}
 
 	public void setJavascriptPropertyName(final String javascriptPropertyName) {
-		ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
+		Checker.notNull("parameter:javascriptPropertyName", javascriptPropertyName);
 		this.javascriptPropertyName = javascriptPropertyName;
 	}
 

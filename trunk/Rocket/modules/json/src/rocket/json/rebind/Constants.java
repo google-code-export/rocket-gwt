@@ -44,16 +44,10 @@ class Constants {
 	static final String JSON_SERIALIZATION = "jsonSerialization";
 
 	static final String JAVA_UTIL_LIST = List.class.getName();
-
-	static final String LIST_ELEMENT_TYPE = JSON_SERIALIZATION + "-listElementType";
-
 	static final String JAVA_UTIL_SET = Set.class.getName();
-
-	static final String SET_ELEMENT_TYPE = JSON_SERIALIZATION + "-setElementType";
-
 	static final String JAVA_UTIL_MAP = Map.class.getName();
-
-	static final String MAP_VALUE_TYPE = JSON_SERIALIZATION + "-mapValueType";
+	
+	static final String TYPE = JSON_SERIALIZATION + "-type";
 
 	static final String JAVASCRIPT_PROPERTY_NAME_ANNOTATION = JSON_SERIALIZATION + "-javascriptPropertyName";
 

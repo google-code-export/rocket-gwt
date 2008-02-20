@@ -15,6 +15,8 @@
  */
 package rocket.util.server;
 
+import rocket.util.client.Checker;
+
 /**
  * This class may be used to base 64 encode a byte array into a String.
  * 
@@ -29,7 +31,7 @@ public class Base64Encoder {
 	 * @return
 	 */
 	public static String encode(final byte[] bytes) {
-		ObjectHelper.checkNotNull("parameter:bytes", bytes);
+		Checker.notNull("parameter:bytes", bytes);
 
 		final StringBuffer buf = new StringBuffer();
 

@@ -25,8 +25,8 @@ import rocket.style.client.InlineStyle;
 import rocket.testing.client.Test;
 import rocket.testing.client.TestBuilder;
 import rocket.testing.client.WebPageTestRunner;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -337,7 +337,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected String getTextNodeText(final JavaScriptObject textNode) {
-		return ObjectHelper.getString(textNode, "data");
+		return JavaScript.getString(textNode, "data");
 	}
 
 	/**
@@ -581,7 +581,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected JavaScriptObject getTextNode(final Element element, final int index) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		return this.getTextNode0(element, index);
 	}
 
@@ -590,7 +590,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	 }-*/;
 
 	protected JavaScriptObject findFirstTextNode(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		return this.findFirstTextNode0(element);
 	}
 
@@ -610,8 +610,8 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	 }-*/;
 
 	protected JavaScriptObject findTextNode(final Element element, final String searchText) {
-		ObjectHelper.checkNotNull("parameter:element", element);
-		StringHelper.checkNotEmpty("parameter:searchText", searchText);
+		Checker.notNull("parameter:element", element);
+		Checker.notEmpty("parameter:searchText", searchText);
 		final JavaScriptObject textNode = this.findTextNode0(element, searchText);
 		if (textNode == null) {
 			throw new RuntimeException("Unable to find a textNode that is a child of element with the text \"" + searchText + "\", element: "
@@ -653,12 +653,12 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 
 	static void assertSameTextNode(final JavaScriptObject object, final JavaScriptObject otherObject) {
 		while (true) {
-			final String nodeType = ObjectHelper.getString(object, "nodeName");
+			final String nodeType = JavaScript.getString(object, "nodeName");
 			if (false == nodeType.equals("#text")) {
 				Test.fail("Expected object is not a text node, but a " + nodeType);
 			}
 
-			final String otherNodeType = ObjectHelper.getString(otherObject, "nodeName");
+			final String otherNodeType = JavaScript.getString(otherObject, "nodeName");
 			if (false == otherNodeType.equals("#text")) {
 				Test.fail("Expected otherObject is not a text node, but a " + otherNodeType);
 			}

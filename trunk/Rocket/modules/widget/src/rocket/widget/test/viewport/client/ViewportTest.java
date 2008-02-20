@@ -24,12 +24,11 @@ import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.util.client.Colour;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Utilities;
 import rocket.widget.client.Viewport;
-import rocket.widget.client.WidgetHelper;
+import rocket.widget.client.Widgets;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
@@ -115,7 +114,7 @@ public class ViewportTest implements EntryPoint {
 			}
 		});
 		
-		WidgetHelper.forceDocumentContentsToScroll( 100 );
+		Widgets.forceDocumentContentsToScroll( 100 );
 	}
 
 	class Counter extends Label {
@@ -179,8 +178,8 @@ public class ViewportTest implements EntryPoint {
 	void updateCoordinatesLabel(final Label coordinates, final Viewport viewport) {
 		final int x = viewport.getOriginX();
 		final int y = viewport.getOriginY();
-		final String text = "Viewport origin: " + StringHelper.padLeft(String.valueOf(x), 5) + " "
-				+ StringHelper.padLeft(String.valueOf(y), 5);
+		final String text = "Viewport origin: " + Utilities.padLeft(String.valueOf(x), 5) + " "
+				+ Utilities.padLeft(String.valueOf(y), 5);
 		coordinates.setText(text);
 	}
 

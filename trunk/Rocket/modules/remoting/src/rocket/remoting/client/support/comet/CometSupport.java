@@ -16,7 +16,7 @@
 package rocket.remoting.client.support.comet;
 
 import rocket.remoting.client.CometClient;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.Element;
 
@@ -36,7 +36,7 @@ public class CometSupport {
 	 * @param frame The hidden frame being feed incoming payloads.
 	 */
 	public void start(CometClient cometClient, Element frame) {
-		ObjectHelper.checkNotNull("parameter:cometClient", cometClient);
+		Checker.notNull("parameter:cometClient", cometClient);
 		
 		this.registerConnectHandler(cometClient, frame);
 		this.registerDisconnectHandler(cometClient, frame);

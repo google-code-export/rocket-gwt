@@ -28,8 +28,7 @@ import rocket.selection.client.Selection;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.CompositeWidget;
 import rocket.widget.client.Html;
 import rocket.widget.client.Panel;
@@ -180,7 +179,7 @@ public abstract class Slider extends CompositeWidget {
 	 * @param event
 	 */
 	protected void onMouseDown(final MouseDownEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		while (true) {
 			final Element target = event.getTarget();
@@ -208,7 +207,7 @@ public abstract class Slider extends CompositeWidget {
 	 * @param event
 	 */
 	protected void onHandleMouseDown(final MouseDownEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		if (false == this.hasDraggingEventPreview()) {
 			Selection.clearAnySelectedText();
@@ -229,7 +228,7 @@ public abstract class Slider extends CompositeWidget {
 	private EventPreview draggingEventPreview;
 
 	protected EventPreview getDraggingEventPreview() {
-		ObjectHelper.checkNotNull("field:draggingEventPreview",
+		Checker.notNull("field:draggingEventPreview",
 				draggingEventPreview);
 		return this.draggingEventPreview;
 	}
@@ -240,7 +239,7 @@ public abstract class Slider extends CompositeWidget {
 
 	protected void setDraggingEventPreview(
 			final EventPreview draggingEventPreview) {
-		ObjectHelper.checkNotNull("parameter:draggingEventPreview",
+		Checker.notNull("parameter:draggingEventPreview",
 				draggingEventPreview);
 		this.draggingEventPreview = draggingEventPreview;
 	}
@@ -387,7 +386,7 @@ public abstract class Slider extends CompositeWidget {
 			this.setTimer(timer);
 		}
 
-		ObjectHelper.checkNotNull("field:timer", timer);
+		Checker.notNull("field:timer", timer);
 		return timer;
 	}
 
@@ -396,7 +395,7 @@ public abstract class Slider extends CompositeWidget {
 	}
 
 	protected void setTimer(final HandleSlidingTimer timer) {
-		ObjectHelper.checkNotNull("parameter:timer", timer);
+		Checker.notNull("parameter:timer", timer);
 		this.timer = timer;
 	}
 
@@ -441,13 +440,13 @@ public abstract class Slider extends CompositeWidget {
 	private int mouseDownRepeatRate;
 
 	public int getMouseDownRepeatRate() {
-		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", 0,
+		Checker.greaterThan("field:mouseDownRepeatRate", 0,
 				mouseDownRepeatRate);
 		return this.mouseDownRepeatRate;
 	}
 
 	public void setMouseDownRepeatRate(final int mouseDownRepeatRate) {
-		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", 0,
+		Checker.greaterThan("parameter:mouseDownRepeatRate", 0,
 				mouseDownRepeatRate);
 		this.mouseDownRepeatRate = mouseDownRepeatRate;
 	}
@@ -467,7 +466,7 @@ public abstract class Slider extends CompositeWidget {
 
 	public void setValue(final int value) {
 		final int maximumValue = this.getMaximumValue();
-		PrimitiveHelper.checkBetween("parameter:value", value, 0,
+		Checker.between("parameter:value", value, 0,
 				maximumValue + 1);
 
 		this.value = value;
@@ -490,12 +489,12 @@ public abstract class Slider extends CompositeWidget {
 	private int maximumValue;
 
 	public int getMaximumValue() {
-		PrimitiveHelper.checkGreaterThan("field:maximumValue", 0, maximumValue);
+		Checker.greaterThan("field:maximumValue", 0, maximumValue);
 		return this.maximumValue;
 	}
 
 	public void setMaximumValue(final int maximumValue) {
-		PrimitiveHelper.checkGreaterThan("parameter:maximumValue", 0,
+		Checker.greaterThan("parameter:maximumValue", 0,
 				maximumValue);
 		this.maximumValue = maximumValue;
 	}
@@ -506,12 +505,12 @@ public abstract class Slider extends CompositeWidget {
 	private int delta;
 
 	public int getDelta() {
-		PrimitiveHelper.checkGreaterThan("field:delta", 0, delta);
+		Checker.greaterThan("field:delta", 0, delta);
 		return this.delta;
 	}
 
 	public void setDelta(final int delta) {
-		PrimitiveHelper.checkGreaterThan("parameter:delta", 0, delta);
+		Checker.greaterThan("parameter:delta", 0, delta);
 		this.delta = delta;
 	}
 

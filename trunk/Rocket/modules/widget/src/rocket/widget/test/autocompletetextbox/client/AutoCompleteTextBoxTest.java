@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.util.client.StringHelper;
+import rocket.util.client.Utilities;
 import rocket.widget.client.AutoCompleteTextBox;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -42,7 +42,7 @@ public class AutoCompleteTextBoxTest implements EntryPoint {
 		});
 		final RootPanel rootPanel = RootPanel.get();
 
-		final List matchCandidates = Arrays.asList(StringHelper.split(WORDS, ",", true));
+		final List matchCandidates = Arrays.asList(Utilities.split(WORDS, ",", true));
 
 		final StringBuffer buf = new StringBuffer();
 		buf.append("<ul>");
@@ -66,7 +66,7 @@ public class AutoCompleteTextBoxTest implements EntryPoint {
 					final Iterator iterator = matchCandidates.iterator();
 					while (iterator.hasNext()) {
 						final String test = (String) iterator.next();
-						if (StringHelper.startsWithIgnoringCase(test, text)) {
+						if (Utilities.startsWithIgnoringCase(test, text)) {
 							this.add(test);
 						}
 					}

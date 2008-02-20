@@ -37,8 +37,7 @@ import rocket.generator.rebind.util.ConstructorComparator;
 import rocket.generator.rebind.util.FieldComparator;
 import rocket.generator.rebind.util.MethodComparator;
 import rocket.generator.rebind.util.TypeComparator;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * A convenient base class for any type being generated.
@@ -97,7 +96,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	public void addInterface(final Type interfacee) {
-		ObjectHelper.checkNotNull("parameter:interface", interfacee);
+		Checker.notNull("parameter:interface", interfacee);
 
 		if (false == interfacee.isInterface()) {
 			throwNotAnInterfaceException(interfacee);
@@ -126,7 +125,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	public void addField(final NewField field) {
-		ObjectHelper.checkNotNull("parameter:field", field);
+		Checker.notNull("parameter:field", field);
 
 		this.getFields().add(field);
 		field.setEnclosingType(this);
@@ -146,7 +145,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	public void addMethod(final NewMethod method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		this.getMethods().add(method);
 		method.setEnclosingType(this);
@@ -185,7 +184,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	private Type superType;
 
 	public Type getSuperType() {
-		ObjectHelper.checkNotNull("field:superType", superType);
+		Checker.notNull("field:superType", superType);
 		return this.superType;
 	}
 
@@ -194,7 +193,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	public void setSuperType(final Type superType) {
-		ObjectHelper.checkNotNull("parameter:superType", superType);
+		Checker.notNull("parameter:superType", superType);
 		this.superType = superType;
 	}
 
@@ -219,7 +218,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	public void addNestedType(final NewNestedType nestedType) {
-		ObjectHelper.checkNotNull("parameter:nestedType", nestedType);
+		Checker.notNull("parameter:nestedType", nestedType);
 
 		final NewNestedTypeImpl newNestedTypeImpl = (NewNestedTypeImpl) nestedType;
 		this.getNestedTypes().add(nestedType);
@@ -229,7 +228,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	public void addNestedInterfaceType(final NewNestedInterfaceType nestedType) {
-		ObjectHelper.checkNotNull("parameter:nestedType", nestedType);
+		Checker.notNull("parameter:nestedType", nestedType);
 
 		final NewNestedInterfaceTypeImpl newNestedTypeImpl = (NewNestedInterfaceTypeImpl) nestedType;
 		this.getNestedTypes().add(nestedType);
@@ -263,12 +262,13 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	public boolean isAssignableFrom(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		boolean assignable = false;
 
 		while (true) {
 			if (this.equals(type)) {
+				assignable = true;
 				break;
 			}
 
@@ -285,7 +285,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	public boolean isAssignableTo(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		boolean assignable = false;
 
@@ -327,7 +327,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	protected void writeConstructors(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final Set constructors = this.getConstructors();
 		final Set sorted = new TreeSet( ConstructorComparator.INSTANCE );
@@ -351,7 +351,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	protected void writeFields(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final Set fields = this.getFields();
 		final Set sorted = new TreeSet( FieldComparator.INSTANCE );
@@ -375,7 +375,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	protected void writeMethods(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final Set methods = this.getMethods();
 		final Set sorted = new TreeSet( MethodComparator.INSTANCE );
@@ -399,7 +399,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	}
 
 	protected void writeNestedTypes(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final Set types = this.getNestedTypes();
 		final Set sorted = new TreeSet( TypeComparator.INSTANCE );
@@ -436,12 +436,12 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	private String comments;
 	
 	public String getComments(){
-		StringHelper.checkNotNull( "field:comments", comments );
+		Checker.notNull( "field:comments", comments );
 		return comments;
 	}
 	
 	public void setComments( final String comments ){
-		StringHelper.checkNotNull( "parameter:comments", comments );
+		Checker.notNull( "parameter:comments", comments );
 		this.comments = comments;
 	}
 	
@@ -459,12 +459,12 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	private MetaData metaData;
 	
 	protected MetaData getMetaData(){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
+		Checker.notNull("field:metaData", metaData );
 		return this.metaData;
 	}
 	
 	protected void setMetaData( final MetaData metaData ){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
+		Checker.notNull("field:metaData", metaData );
 		this.metaData = metaData;
 	}
 	

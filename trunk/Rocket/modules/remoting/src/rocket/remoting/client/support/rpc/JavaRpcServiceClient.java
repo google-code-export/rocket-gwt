@@ -31,17 +31,4 @@ abstract public class JavaRpcServiceClient extends RpcServiceClient implements S
 	protected JavaRpcServiceClient(){
 		super();	
 	}
-
-	/**
-	 * The service entry point or url of the server side service implementation.
-	 */
-	private String serviceEntryPoint;
-
-	public String getServiceEntryPoint() {
-		return this.serviceEntryPoint;
-	}
-
-	public void setServiceEntryPoint(final String serviceEntryPoint) {
-		this.serviceEntryPoint = serviceEntryPoint;
-	}
 }

@@ -21,7 +21,7 @@ import java.util.List;
 
 import rocket.generator.rebind.CodeGenerator;
 import rocket.generator.rebind.SourceWriter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Accumulates or holds multiple code blocks.
@@ -37,7 +37,7 @@ public class CodeBlockList implements CodeBlock, CodeGenerator {
 	}
 
 	public void add(final CodeBlock codeBlock) {
-		ObjectHelper.checkNotNull("parameter:codeBlock", codeBlock);
+		Checker.notNull("parameter:codeBlock", codeBlock);
 
 		this.getCodeBlocks().add(codeBlock);
 	}
@@ -45,12 +45,12 @@ public class CodeBlockList implements CodeBlock, CodeGenerator {
 	private List codeBlocks;
 
 	protected List getCodeBlocks() {
-		ObjectHelper.checkNotNull("field:codeBlocks", codeBlocks);
+		Checker.notNull("field:codeBlocks", codeBlocks);
 		return this.codeBlocks;
 	}
 
 	protected void setCodeBlocks(final List codeBlocks) {
-		ObjectHelper.checkNotNull("parameter:codeBlocks", codeBlocks);
+		Checker.notNull("parameter:codeBlocks", codeBlocks);
 		this.codeBlocks = codeBlocks;
 	}
 
@@ -72,7 +72,7 @@ public class CodeBlockList implements CodeBlock, CodeGenerator {
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final Iterator iterator = this.getCodeBlocks().iterator();
 		while (iterator.hasNext()) {
