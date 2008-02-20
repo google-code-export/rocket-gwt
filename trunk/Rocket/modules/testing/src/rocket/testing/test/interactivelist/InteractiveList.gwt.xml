@@ -1,0 +1,5 @@
+<module>
+	<inherits name="rocket.testing.Testing" />	
+	<inherits name="rocket.widget.Widget" />		
+	<entry-point class="rocket.testing.test.interactivelist.client.InteractiveListTest" />
+</module>

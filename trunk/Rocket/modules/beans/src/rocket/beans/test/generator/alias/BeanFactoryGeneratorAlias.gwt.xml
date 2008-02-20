@@ -1,0 +1,13 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.beans.Beans"/>
+	<inherits name="rocket.generator.Generator"/>
+	<inherits name="rocket.remoting.Remoting"/>
+	
+	<source path="" />	
+
+	<generate-with class="rocket.beans.test.generator.test.TestBeanFactoryGenerator">
+		<when-type-assignable class="rocket.beans.client.BeanFactory" />
+	</generate-with>	
+</module>
+

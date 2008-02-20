@@ -1,0 +1,9 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.User"/>
+	<source path="client" />
+	
+	<servlet
+		path="/service"
+		class="rocket.remoting.test.java.rpcserviceclient.server.ServiceServlet" />
+</module>

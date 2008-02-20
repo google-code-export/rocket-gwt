@@ -1,0 +1,25 @@
+<module>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.util.Util" />	
+	
+	<replace-with class="rocket.browser.client.support.FirefoxBrowserSupport">
+		<when-type-is class="rocket.browser.client.support.BrowserSupport"/>
+		<when-property-is name="user.agent" value="firefox"/>
+	</replace-with>	
+
+	<replace-with class="rocket.browser.client.support.InternetExplorer6BrowserSupport">
+		<when-type-is class="rocket.browser.client.support.BrowserSupport"/>
+		<when-property-is name="user.agent" value="ie6"/>
+	</replace-with>
+	
+	<replace-with class="rocket.browser.client.support.OperaBrowserSupport">
+		<when-type-is class="rocket.browser.client.support.BrowserSupport"/>
+		<when-property-is name="user.agent" value="opera"/>
+	</replace-with>	
+
+	<replace-with class="rocket.browser.client.support.SafariBrowserSupport">
+		<when-type-is class="rocket.browser.client.support.BrowserSupport"/>
+		<when-property-is name="user.agent" value="webkit"/>
+	</replace-with>	
+
+</module>
