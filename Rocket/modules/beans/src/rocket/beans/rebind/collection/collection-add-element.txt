@@ -1,0 +1,3 @@
+// /rocket/beans/rebind/collection/collection-add-element.txt
+
+.add( ${value} )

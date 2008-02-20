@@ -1,0 +1,11 @@
+// rocket/widget/rebind/htmltemplatefactory/createhtmlfromtemplate/create-html-from-template.txt
+
+final rocket.widget.client.HtmlTemplateFactoryImpl.HtmlWriter writer = new rocket.widget.client.HtmlTemplateFactoryImpl.HtmlWriter();
+
+// insert the statements here
+${statements}
+
+// create the html widget its contents will the result of executing statements.
+return new rocket.widget.client.Html( writer.getString() );
+
+

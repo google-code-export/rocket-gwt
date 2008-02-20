@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 	id="bean"
+			class="rocket.beans.test.generator.beanreference.HasNestedBean" 
+			scope="singleton">		
+		<properties>
+			<property name="nestedBean">
+
+				<bean	id="nestedBean"
+						class="rocket.beans.test.generator.beanreference.Bean" 
+						scope="singleton"/>			
+			</property>
+		</properties>
+	</bean>
+
+</bean-factory>
