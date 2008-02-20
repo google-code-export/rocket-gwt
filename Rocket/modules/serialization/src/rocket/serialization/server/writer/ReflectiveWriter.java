@@ -24,7 +24,7 @@ import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.SerializationException;
 import rocket.serialization.server.ReflectionHelper;
 import rocket.serialization.server.ServerObjectWriter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This writer should be considered the default writer and uses reflection to write all
@@ -63,9 +63,9 @@ public class ReflectiveWriter implements ServerObjectWriter{
 	 * @throws IllegalAccessException
 	 */
 	protected void writeFields(final Object object, final Class classs, final ObjectOutputStream objectOutputStream ) throws IllegalAccessException {
-		ObjectHelper.checkNotNull("parameter:object", object);
-		ObjectHelper.checkNotNull("parameter:classs", classs);
-		ObjectHelper.checkNotNull("parameter:objectOutputStream", objectOutputStream );
+		Checker.notNull("parameter:object", object);
+		Checker.notNull("parameter:classs", classs);
+		Checker.notNull("parameter:objectOutputStream", objectOutputStream );
 
 		final Set serializableFields = ReflectionHelper.buildSerializableFields(object, classs);
 

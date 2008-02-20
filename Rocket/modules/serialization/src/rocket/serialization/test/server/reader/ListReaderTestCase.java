@@ -17,11 +17,10 @@ package rocket.serialization.test.server.reader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.server.reader.ListReader;
 import rocket.serialization.test.server.ServerTestCase;
-import rocket.serialization.client.ObjectInputStream;
 
 public class ListReaderTestCase extends ServerTestCase {
 

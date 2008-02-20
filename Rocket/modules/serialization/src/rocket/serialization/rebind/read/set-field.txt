@@ -1,4 +1,4 @@
-// set-field.txt
+// /rocket/serialization/rebind/read/set-field.txt
 
 instance.${field}=value;
 

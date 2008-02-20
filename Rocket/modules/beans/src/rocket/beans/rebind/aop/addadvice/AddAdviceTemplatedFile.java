@@ -20,7 +20,7 @@ import java.io.InputStream;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the add advice template
@@ -39,12 +39,12 @@ public class AddAdviceTemplatedFile extends TemplatedFileCodeBlock {
 	private Type beanFactory;
 
 	protected Type getBeanFactory() {
-		ObjectHelper.checkNotNull("field:beanFactory", beanFactory);
+		Checker.notNull("field:beanFactory", beanFactory);
 		return this.beanFactory;
 	}
 
 	public void setBeanFactory(final Type beanFactory) {
-		ObjectHelper.checkNotNull("parameter:beanFactory", beanFactory);
+		Checker.notNull("parameter:beanFactory", beanFactory);
 		this.beanFactory = beanFactory;
 	}
 
@@ -54,12 +54,12 @@ public class AddAdviceTemplatedFile extends TemplatedFileCodeBlock {
 	private String beanId;
 
 	protected String getBeanId() {
-		ObjectHelper.checkNotNull("field:beanId", beanId);
+		Checker.notNull("field:beanId", beanId);
 		return this.beanId;
 	}
 
 	public void setBeanId(final String beanId) {
-		ObjectHelper.checkNotNull("parameter:beanId", beanId);
+		Checker.notNull("parameter:beanId", beanId);
 		this.beanId = beanId;
 	}
 
@@ -73,7 +73,7 @@ public class AddAdviceTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO delete when merged into parent template package
+		return super.getInputStream(); 
 	}
 
 	public Object getValue0(final String name) {

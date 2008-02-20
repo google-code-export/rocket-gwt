@@ -6,7 +6,7 @@ package rocket.generator.rebind.util;
 import java.util.List;
 import java.util.Set;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Base class for both constructors and methods
@@ -31,7 +31,7 @@ abstract public class AbstractConstructorOrMethod extends AbstractConstructorMet
 	}
 
 	protected void setParameters(final List parameters) {
-		ObjectHelper.checkNotNull("parameter:parameters", parameters);
+		Checker.notNull("parameter:parameters", parameters);
 		this.parameters = parameters;
 	}
 
@@ -54,7 +54,7 @@ abstract public class AbstractConstructorOrMethod extends AbstractConstructorMet
 	}
 
 	protected void setThrownTypes(final Set thrownTypes) {
-		ObjectHelper.checkNotNull("parameter:thrownTypes", thrownTypes);
+		Checker.notNull("parameter:thrownTypes", thrownTypes);
 		this.thrownTypes = thrownTypes;
 	}
 

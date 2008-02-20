@@ -24,13 +24,10 @@ import java.util.TreeMap;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
-import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the switch template
@@ -50,12 +47,12 @@ public class SwitchTemplatedFile extends TemplatedFileCodeBlock {
 	private Map registered;
 
 	protected Map getRegistered() {
-		ObjectHelper.checkNotNull("field:registered", registered);
+		Checker.notNull("field:registered", registered);
 		return this.registered;
 	}
 
 	protected void setRegistered(final Map registered) {
-		ObjectHelper.checkNotNull("parameter:registered", registered);
+		Checker.notNull("parameter:registered", registered);
 		this.registered = registered;
 	}
 
@@ -71,8 +68,8 @@ public class SwitchTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public void register(final Type type, final Field objectWriterSingleton) {
-		ObjectHelper.checkNotNull("parameter:type", type);
-		ObjectHelper.checkNotNull("parameter:objectWriterSingleton", objectWriterSingleton);
+		Checker.notNull("parameter:type", type);
+		Checker.notNull("parameter:objectWriterSingleton", objectWriterSingleton);
 
 		this.getRegistered().put(type, objectWriterSingleton);
 	}

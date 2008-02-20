@@ -22,7 +22,8 @@ import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
 import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
 import rocket.widget.client.CompositeWidget;
 
 /**
@@ -141,7 +142,7 @@ abstract class MenuWidget extends CompositeWidget {
 	private MenuList parentMenuList;
 
 	protected MenuList getParentMenuList() {
-		ObjectHelper.checkNotNull("field:parentMenuList", parentMenuList);
+		Checker.notNull("field:parentMenuList", parentMenuList);
 		return this.parentMenuList;
 	}
 
@@ -150,7 +151,7 @@ abstract class MenuWidget extends CompositeWidget {
 	}
 
 	protected void setParentMenuList(final MenuList parentMenuList) {
-		ObjectHelper.checkNotNull("parameter:parentMenuList", parentMenuList);
+		Checker.notNull("parameter:parentMenuList", parentMenuList);
 		this.parentMenuList = parentMenuList;
 	}
 
@@ -160,7 +161,7 @@ abstract class MenuWidget extends CompositeWidget {
 
 	public String toString() {
 		final StringBuffer buf = new StringBuffer();
-		buf.append(ObjectHelper.defaultToString(this));
+		buf.append(Utilities.defaultToString(this));
 		buf.append(" \"");
 
 		if (this.hasParentMenuList()) {

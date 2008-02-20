@@ -22,8 +22,7 @@ import java.util.Set;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.AbstractConstructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JConstructor;
 import com.google.gwt.core.ext.typeinfo.JParameter;
@@ -62,7 +61,7 @@ public class JConstructorConstructorAdapter extends AbstractConstructor {
 				visibility = Visibility.PUBLIC;
 				break;
 			}
-			SystemHelper.fail("Unknown visibility for field " + method);
+			Checker.fail("Unknown visibility for field " + method);
 		}
 		return visibility;
 	}
@@ -101,12 +100,12 @@ public class JConstructorConstructorAdapter extends AbstractConstructor {
 	private JConstructor jConstructor;
 
 	protected JConstructor getJConstructor() {
-		ObjectHelper.checkNotNull("field:jConstructor", jConstructor);
+		Checker.notNull("field:jConstructor", jConstructor);
 		return jConstructor;
 	}
 
 	public void setJConstructor(final JConstructor jConstructor) {
-		ObjectHelper.checkNotNull("parameter:jConstructor", jConstructor);
+		Checker.notNull("parameter:jConstructor", jConstructor);
 		this.jConstructor = jConstructor;
 	}
 

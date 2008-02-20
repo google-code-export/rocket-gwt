@@ -17,8 +17,8 @@ package rocket.style.client.support;
 
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
@@ -45,7 +45,7 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 		final String value = this.getString( source, StyleSupportConstants.FILTER );
 		
 		String opacity = null;
-		if (false == StringHelper.isNullOrEmpty(value)) {
+		if (false == Tester.isNullOrEmpty(value)) {
 			opacity = value.substring("alpha(opacity=".length(), value.length() - 1);
 			if (opacity.length() < 3) {
 				opacity = "0." + opacity;
@@ -80,7 +80,7 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 		int size = -1;
 		while (true) {
 			final String propertyValue = getString(element, Css.FONT_SIZE);
-			if (StringHelper.isNullOrEmpty(propertyValue)) {
+			if (Tester.isNullOrEmpty(propertyValue)) {
 				size = -1;
 				break;
 			}
@@ -141,7 +141,7 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 	 * @return
 	 */
 	protected int getComputedFontSizeOfParent(final Element element, final float scalingFactor) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 
 		Element parent = DOM.getParent(element);
 
@@ -169,8 +169,8 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 	}
 	
 	protected void setBackgroundImage( final JavaScriptObject ruleOrElement, final String url ){
-		ObjectHelper.checkNotNull("parameter:ruleOrElement", ruleOrElement);
-		StringHelper.checkNotEmpty("parameter:url", url);
+		Checker.notNull("parameter:ruleOrElement", ruleOrElement);
+		Checker.notEmpty("parameter:url", url);
 
 		// backup other background properties that will get lost when background
 		// shortcut with image is written.
@@ -182,16 +182,16 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 		this.setString(ruleOrElement, Css.BACKGROUND, url);
 
 		// restore other background properties...
-		if (false == StringHelper.isNullOrEmpty(colour)) {
+		if (false == Tester.isNullOrEmpty(colour)) {
 			this.setString(ruleOrElement, Css.BACKGROUND_COLOR, colour);
 		}
-		if (false == StringHelper.isNullOrEmpty(attachment)) {
+		if (false == Tester.isNullOrEmpty(attachment)) {
 			this.setString(ruleOrElement, Css.BACKGROUND_ATTACHMENT, attachment);
 		}
-		if (false == StringHelper.isNullOrEmpty(position)) {
+		if (false == Tester.isNullOrEmpty(position)) {
 			this.setString(ruleOrElement, Css.BACKGROUND_POSITION, position);
 		}
-		if (false == StringHelper.isNullOrEmpty(repeat)) {
+		if (false == Tester.isNullOrEmpty(repeat)) {
 			this.setString(ruleOrElement, Css.BACKGROUND_REPEAT, repeat);
 		}
 	}

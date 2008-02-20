@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -40,13 +40,13 @@ public class MultiValueMap implements IsSerializable {
 	private Map map;
 
 	protected Map getMap() {
-		ObjectHelper.checkNotNull("field:map", map);
+		Checker.notNull("field:map", map);
 
 		return map;
 	}
 
 	protected void setMap(final Map map) {
-		ObjectHelper.checkNotNull("parameter:map", map);
+		Checker.notNull("parameter:map", map);
 
 		this.map = map;
 	}
@@ -65,7 +65,7 @@ public class MultiValueMap implements IsSerializable {
 	}
 
 	public Object[] getValues(final Object key) {
-		ObjectHelper.checkNotNull("parameter:key", key);
+		Checker.notNull("parameter:key", key);
 
 		Object[] values = null;
 		List list = (List) this.getMap().get(key);
@@ -84,7 +84,7 @@ public class MultiValueMap implements IsSerializable {
 	}
 
 	public List getValuesList(final Object key) {
-		ObjectHelper.checkNotNull("parameter:key", key);
+		Checker.notNull("parameter:key", key);
 
 		return (List) this.getMap().get(key);
 	}

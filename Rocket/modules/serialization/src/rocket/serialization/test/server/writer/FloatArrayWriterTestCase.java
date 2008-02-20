@@ -15,8 +15,6 @@
  */
 package rocket.serialization.test.server.writer;
 
-import java.util.Map;
-
 import rocket.serialization.server.writer.FloatArrayWriter;
 import rocket.serialization.test.server.ServerTestCase;
 import rocket.serialization.test.server.TestServerObjectOutputStream;

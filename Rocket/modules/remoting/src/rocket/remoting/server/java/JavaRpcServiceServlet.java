@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.server.IoHelper;
+import rocket.util.client.Checker;
+import rocket.util.server.InputOutput;
 
 /**
  * This servlet performs a similar task to
@@ -84,7 +84,7 @@ public class JavaRpcServiceServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	protected String consumePostData(final HttpServletRequest request) throws IOException {
-		ObjectHelper.checkNotNull("parameter:request", request );
+		Checker.notNull("parameter:request", request );
 		
 		final StringBuffer buf = new StringBuffer();
 		final char[] chars = new char[1024];
@@ -103,7 +103,7 @@ public class JavaRpcServiceServlet extends HttpServlet {
 
 			return buf.toString();
 		} finally {
-			IoHelper.closeIfNecessary(reader);
+			InputOutput.closeIfNecessary(reader);
 		}
 
 	}
@@ -116,7 +116,7 @@ public class JavaRpcServiceServlet extends HttpServlet {
 	 * @return
 	 */
 	protected String invoke(final String stream) {
-		final JavaRpcServiceMethodInvoker invoker = new JavaRpcServiceMethodInvoker();
+		final JavaRpcServiceMethodInvoker invoker = this.createRpcServiceMethodInvoker();
 		final String output = invoker.invoke(stream, this);
 		return output;
 	}

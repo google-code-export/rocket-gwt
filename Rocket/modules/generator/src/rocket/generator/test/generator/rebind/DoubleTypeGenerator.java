@@ -18,8 +18,7 @@ package rocket.generator.test.generator.rebind;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 public class DoubleTypeGenerator extends TestGenerator {
 
@@ -27,15 +26,15 @@ public class DoubleTypeGenerator extends TestGenerator {
 		final GeneratorContext context = this.getGeneratorContext();
 		final Type type = context.getType(Double.TYPE.getName());
 
-		PrimitiveHelper.checkFalse("Double type is a not abstract", type.isAbstract());
-		PrimitiveHelper.checkFalse("Double type is not an interface", type.isInterface());
-		PrimitiveHelper.checkTrue("Double type is a final", type.isFinal());
-		ObjectHelper.checkEquals("Double type name", Double.TYPE.getName(), type.getName());
-		PrimitiveHelper.checkFalse("Double type is not an array", type.isArray());
-		PrimitiveHelper.checkTrue("Double type is a primitive", type.isPrimitive());
+		Checker.falseValue("Double type is a not abstract", type.isAbstract());
+		Checker.falseValue("Double type is not an interface", type.isInterface());
+		Checker.trueValue("Double type is a final", type.isFinal());
+		Checker.equals("Double type name", Double.TYPE.getName(), type.getName());
+		Checker.falseValue("Double type is not an array", type.isArray());
+		Checker.trueValue("Double type is a primitive", type.isPrimitive());
 
 		final Type wrapper = type.getWrapper();
-		ObjectHelper.checkEquals("Double wrapper type name", Double.class.getName(), wrapper.getName());
+		Checker.equals("Double wrapper type name", Double.class.getName(), wrapper.getName());
 
 		return null;
 	}

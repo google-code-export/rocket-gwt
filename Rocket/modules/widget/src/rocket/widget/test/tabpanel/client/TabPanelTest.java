@@ -22,9 +22,8 @@ import rocket.event.client.MouseEventAdapter;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.util.client.StackTrace;
-import rocket.util.client.SystemHelper;
 import rocket.widget.client.Button;
 import rocket.widget.client.Html;
 import rocket.widget.client.tabpanel.BeforeTabCloseEvent;
@@ -163,7 +162,7 @@ public class TabPanelTest implements EntryPoint {
 	 * @param tabPanel
 	 */
 	protected void completeTabPanel(final TabPanel tabPanel) {
-		ObjectHelper.checkNotNull("parameter:tabPanel", tabPanel);
+		Checker.notNull("parameter:tabPanel", tabPanel);
 
 		tabPanel.setCloseButtonImageUrl("close.png");
 
@@ -176,7 +175,7 @@ public class TabPanelTest implements EntryPoint {
 
 		tabPanel.addTabListener(new TabListener() {
 			public void onBeforeTabSelect(final BeforeTabSelectEvent event) {
-				ObjectHelper.checkNotNull("TabSelectEvent.currentSelection", event.getCurrentSelection());
+				Checker.notNull("TabSelectEvent.currentSelection", event.getCurrentSelection());
 
 				final TabItem item = event.getNewSelection();
 				final String caption = item.getCaption();
@@ -187,7 +186,7 @@ public class TabPanelTest implements EntryPoint {
 			}
 
 			public void onTabSelect(final TabSelectEvent event) {
-				ObjectHelper.checkNotNull("TabSelectEvent.previouslySelected", event.getPreviouslySelected());
+				Checker.notNull("TabSelectEvent.previouslySelected", event.getPreviouslySelected());
 				final TabItem item = event.getCurrentSelection();
 				final String caption = item.getCaption();
 				//control.log("tabSelected caption\"" + caption + "\".");
@@ -212,7 +211,7 @@ public class TabPanelTest implements EntryPoint {
 
 	final static String createContent() {
 		final Element element = DOM.getElementById("lorem");
-		ObjectHelper.checkNotNull("hidden div with lorem text", element);
+		Checker.notNull("hidden div with lorem text", element);
 		return DOM.getInnerHTML(element);
 	}
 
@@ -278,7 +277,7 @@ public class TabPanelTest implements EntryPoint {
 
 		protected void checkType(Object element) {
 			if (false == (element instanceof TabItem)) {
-				SystemHelper.fail("Unknown element type. element ");
+				Checker.fail("Unknown element type. element ");
 			}
 		}
 
@@ -299,12 +298,12 @@ public class TabPanelTest implements EntryPoint {
 		private TabPanel tabPanel;
 
 		protected TabPanel getTabPanel() {
-			ObjectHelper.checkNotNull("field:tabPanel", tabPanel);
+			Checker.notNull("field:tabPanel", tabPanel);
 			return this.tabPanel;
 		}
 
 		protected void setTabPanel(final TabPanel tabPanel) {
-			ObjectHelper.checkNotNull("parameter:tabPanel", tabPanel);
+			Checker.notNull("parameter:tabPanel", tabPanel);
 			this.tabPanel = tabPanel;
 		}
 

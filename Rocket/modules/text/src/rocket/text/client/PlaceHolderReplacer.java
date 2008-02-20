@@ -15,7 +15,7 @@
  */
 package rocket.text.client;
 
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * Abstract class that helps with scanning and replacing placeholders with
@@ -32,7 +32,7 @@ abstract public class PlaceHolderReplacer {
 	 * @return
 	 */
 	protected String execute(final String text) {
-		StringHelper.checkNotNull("parameter:text", text);
+		Checker.notNull("parameter:text", text);
 
 		final StringBuffer buf = new StringBuffer();
 		int i = 0;
@@ -43,7 +43,7 @@ abstract public class PlaceHolderReplacer {
 			if (-1 != escapeIndex) {
 				final int characterAfterIndex = escapeIndex + 1;
 				if (escapeIndex == messageLength) {
-					StringHelper.fail("Broken message, trailing escape character found.");
+					Checker.fail("Broken message, trailing escape character found.");
 				}
 
 				buf.append(text.substring(i, escapeIndex));
@@ -55,7 +55,7 @@ abstract public class PlaceHolderReplacer {
 					i = characterAfterIndex + 1;
 					continue;
 				}
-				StringHelper.fail("Invalid escape character found in format string \"" + text + "\" at " + characterAfterIndex);
+				Checker.fail("Invalid escape character found in format string \"" + text + "\" at " + characterAfterIndex);
 			}
 
 			// find the start placeholder
@@ -69,7 +69,7 @@ abstract public class PlaceHolderReplacer {
 			// find the end placeholder
 			final int placeHolderEndIndex = text.indexOf('}', placeHolderStartIndex + 2);
 			if (-1 == placeHolderEndIndex) {
-				StringHelper.fail("Unable to find placeholder end after finding start, \"" + text.substring(i, messageLength - i) + "\".");
+				Checker.fail("Unable to find placeholder end after finding start, \"" + text.substring(i, messageLength - i) + "\".");
 			}
 
 			// extract the index in between...

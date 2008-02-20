@@ -21,6 +21,7 @@ import rocket.generator.rebind.type.Type;
 /**
  * Concrete values are values for constructor or properties these typically include.
  * <ul>
+ * <li>null references</li>
  * <li>String literals</li>
  * <li>bean references</li>
  * <li>nested beans</li>

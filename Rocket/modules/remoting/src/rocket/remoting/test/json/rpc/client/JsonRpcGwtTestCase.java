@@ -18,7 +18,6 @@ package rocket.remoting.test.json.rpc.client;
 import java.io.Serializable;
 
 import rocket.browser.client.Browser;
-import rocket.remoting.client.JsonRpcService;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;

@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import rocket.remoting.client.RpcException;
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectOutputStream;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * This class takes a stream and attempts to invoke a service method including
@@ -45,7 +45,7 @@ public class JavaRpcServiceMethodInvoker {
 	 * @return A string containing the serialized result of invoking the given method.	
 	 */
 	public String invoke(final String input, final Object serviceProvider ) {
-		ObjectHelper.checkNotNull( "parameter:serviceProvider", serviceProvider);
+		Checker.notNull( "parameter:serviceProvider", serviceProvider);
 		
 		ServerSerializationFactory serializationFactory = createSerializationFactory();
 
@@ -221,7 +221,7 @@ public class JavaRpcServiceMethodInvoker {
 	 * 
 	 * @return
 	 */
-	private ServerSerializationFactory createSerializationFactory() {
+	protected ServerSerializationFactory createSerializationFactory() {
 		return new ServerSerializationFactory();
 	}
 }

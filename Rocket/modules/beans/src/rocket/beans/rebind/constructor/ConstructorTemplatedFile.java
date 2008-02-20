@@ -27,7 +27,7 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the constructor template
@@ -44,24 +44,24 @@ public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 	private Constructor bean;
 
 	protected Constructor getBean() {
-		ObjectHelper.checkNotNull("field:bean", bean);
+		Checker.notNull("field:bean", bean);
 		return this.bean;
 	}
 
 	public void setBean(final Constructor bean) {
-		ObjectHelper.checkNotNull("parameter:bean", bean);
+		Checker.notNull("parameter:bean", bean);
 		this.bean = bean;
 	}
 
 	private List arguments;
 
 	protected List getArguments() {
-		ObjectHelper.checkNotNull("field:addParameters", arguments);
+		Checker.notNull("field:addParameters", arguments);
 		return this.arguments;
 	}
 
 	protected void setArguments(final List arguments) {
-		ObjectHelper.checkNotNull("parameter:arguments", arguments);
+		Checker.notNull("parameter:arguments", arguments);
 		this.arguments = arguments;
 	}
 
@@ -70,7 +70,7 @@ public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public void addArgument(final Value value) {
-		ObjectHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:value", value);
 		this.getArguments().add(value);
 	}
 

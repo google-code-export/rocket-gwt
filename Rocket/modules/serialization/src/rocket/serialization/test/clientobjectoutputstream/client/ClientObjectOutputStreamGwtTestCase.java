@@ -21,7 +21,7 @@ import java.util.Map;
 import rocket.serialization.client.ClientObjectOutputStream;
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectWriter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -300,12 +300,12 @@ public class ClientObjectOutputStreamGwtTestCase extends GWTTestCase {
 		private Map objectWriters;
 	
 		protected Map getObjectWriters() {
-			ObjectHelper.checkNotNull("field:objectWriters", objectWriters);
+			Checker.notNull("field:objectWriters", objectWriters);
 			return this.objectWriters;
 		}
 	
 		public void setObjectWriters(final Map objectWriters) {
-			ObjectHelper.checkNotNull("parameter:objectWriters", objectWriters);
+			Checker.notNull("parameter:objectWriters", objectWriters);
 			this.objectWriters = objectWriters;
 		}
 	}

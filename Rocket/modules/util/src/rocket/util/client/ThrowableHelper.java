@@ -32,10 +32,10 @@ public class ThrowableHelper {
 	 * @return
 	 */
 	public static String[] getCallStackFunctionNames(final JavaScriptObject callStackFunctions) {
-		ObjectHelper.checkNotNull("parameter:callStackFunctions", callStackFunctions);
+		Checker.notNull("parameter:callStackFunctions", callStackFunctions);
 
 		final String functionNames = getCallStackFunctionNames0(callStackFunctions);
-		return StringHelper.split(functionNames, ",", true);
+		return Utilities.split(functionNames, ",", true);
 	}
 
 	native private static String getCallStackFunctionNames0(final JavaScriptObject functions)/*-{
@@ -124,7 +124,7 @@ public class ThrowableHelper {
 	 * @return
 	 */
 	public static StackTraceElement[] buildStackTraceElements(final String[] functionNames) {
-		ObjectHelper.checkNotNull("parameter:functionNames", functionNames);
+		Checker.notNull("parameter:functionNames", functionNames);
 
 		final int count = functionNames.length;
 		final StackTraceElement[] elements = new StackTraceElement[count];
@@ -306,10 +306,10 @@ public class ThrowableHelper {
 	}
 
 	protected static String[] getFunctionNames(final JavaScriptObject context) {
-		ObjectHelper.checkNotNull("parameter:context", context);
+		Checker.notNull("parameter:context", context);
 
 		final String functionNames = ThrowableHelper.getFunctionNames0(context);
-		return StringHelper.split(functionNames, ",", true);
+		return Utilities.split(functionNames, ",", true);
 	}
 
 	/**

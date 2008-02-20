@@ -20,8 +20,7 @@ import java.util.List;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.field.AbstractField;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JField;
 
@@ -72,7 +71,7 @@ public class JFieldFieldAdapter extends AbstractField {
 				visibility = Visibility.PUBLIC;
 				break;
 			}
-			SystemHelper.fail("Unknown visibility for field " + field);
+			Checker.fail("Unknown visibility for field " + field);
 		}
 		return visibility;
 	}
@@ -104,12 +103,12 @@ public class JFieldFieldAdapter extends AbstractField {
 	private JField jField;
 
 	protected JField getJField() {
-		ObjectHelper.checkNotNull("field:jField", jField);
+		Checker.notNull("field:jField", jField);
 		return jField;
 	}
 
 	public void setJField(final JField jField) {
-		ObjectHelper.checkNotNull("parameter:jField", jField);
+		Checker.notNull("parameter:jField", jField);
 		this.jField = jField;
 	}
 

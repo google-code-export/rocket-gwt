@@ -21,7 +21,7 @@ import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 
@@ -70,7 +70,7 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO DLETE when merged with  parent template package.
+		return super.getInputStream();
 	}
 
 	protected Object getValue0(final String name) {
@@ -89,12 +89,12 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 	private Method getter;
 
 	protected Method getGetter() {
-		ObjectHelper.checkNotNull("field:field", getter);
+		Checker.notNull("field:field", getter);
 		return this.getter;
 	}
 
 	protected void setGetter(final Method getter) {
-		ObjectHelper.checkNotNull("parameter:getter", getter);
+		Checker.notNull("parameter:getter", getter);
 		this.getter = getter;
 	}
 }

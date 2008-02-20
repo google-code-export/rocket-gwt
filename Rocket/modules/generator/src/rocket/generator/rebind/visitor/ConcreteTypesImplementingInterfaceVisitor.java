@@ -16,7 +16,7 @@
 package rocket.generator.rebind.visitor;
 
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 
 /**
  * This visitor may be used to discover all the concrete types that implement a given interface.
@@ -26,7 +26,7 @@ abstract public class ConcreteTypesImplementingInterfaceVisitor {
 	
 	
 	public void start( final Type interfacee ){
-		PrimitiveHelper.checkTrue( "The type " + interfacee + " is not an interface.", interfacee.isInterface() );
+		Checker.trueValue( "The type " + interfacee + " is not an interface.", interfacee.isInterface() );
 		
 		final SubTypesVisitor types = new SubTypesVisitor(){
 			protected boolean visit(final Type type){

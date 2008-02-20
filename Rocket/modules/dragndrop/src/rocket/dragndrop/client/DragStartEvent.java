@@ -15,7 +15,7 @@
  */
 package rocket.dragndrop.client;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
@@ -36,12 +36,12 @@ public class DragStartEvent extends DragEvent {
 	private Widget widget;
 
 	public Widget getWidget() {
-		ObjectHelper.checkNotNull("field:widget", widget);
+		Checker.notNull("field:widget", widget);
 		return this.widget;
 	}
 
 	public void setWidget(final Widget widget) {
-		ObjectHelper.checkNotNull("parameter:widget", widget);
+		Checker.notNull("parameter:widget", widget);
 		this.widget = widget;
 	}
 

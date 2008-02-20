@@ -15,7 +15,7 @@
  */
 package rocket.beans.client.aop;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A simple adapter between a {@link MethodInterceptor} and an after advice
@@ -36,12 +36,12 @@ public class AfterReturningAdviceMethodInterceptor implements MethodInterceptor 
 	private AfterReturningAdvice afterReturningAdvice;
 
 	protected AfterReturningAdvice getAfterReturningAdvice() {
-		ObjectHelper.checkNotNull("field:afterReturningAdvice", afterReturningAdvice);
+		Checker.notNull("field:afterReturningAdvice", afterReturningAdvice);
 		return afterReturningAdvice;
 	}
 
 	public void setAfterReturningAdvice(final AfterReturningAdvice afterAdvice) {
-		ObjectHelper.checkNotNull("parameter:afterReturningAdvice", afterAdvice);
+		Checker.notNull("parameter:afterReturningAdvice", afterAdvice);
 		this.afterReturningAdvice = afterAdvice;
 	}
 

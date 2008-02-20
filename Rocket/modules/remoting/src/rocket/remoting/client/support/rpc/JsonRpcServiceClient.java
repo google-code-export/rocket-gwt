@@ -16,10 +16,6 @@
 package rocket.remoting.client.support.rpc;
 
 import rocket.remoting.client.JsonRpcService;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
-
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
  * This is the base class for all generated client proxies created by the

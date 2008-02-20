@@ -18,7 +18,7 @@ package rocket.generator.test.generator.rebind;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 public class SuperTypeGenerator extends TestGenerator {
 
@@ -26,7 +26,7 @@ public class SuperTypeGenerator extends TestGenerator {
 		final GeneratorContext context = this.getGeneratorContext();
 
 		final Type superType = type.getSuperType();
-		ObjectHelper.checkSame("superType", context.getObject(), superType);
+		Checker.same("superType", context.getObject(), superType);
 
 		return null;
 	}

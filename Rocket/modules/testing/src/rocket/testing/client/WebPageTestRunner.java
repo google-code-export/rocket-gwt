@@ -22,7 +22,7 @@ import rocket.dom.client.Dom;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 import rocket.util.client.StackTrace;
 import rocket.widget.client.DivPanel;
 import rocket.widget.client.ZebraFlexTable;
@@ -66,7 +66,7 @@ public class WebPageTestRunner extends TestRunner {
 			RootPanel.get().add(this.createDivPanel());
 		}
 
-		ObjectHelper.checkNotNull("field:divPanel", divPanel);
+		Checker.notNull("field:divPanel", divPanel);
 		return divPanel;
 	}
 
@@ -75,7 +75,7 @@ public class WebPageTestRunner extends TestRunner {
 	}
 
 	void setDivPanel(final DivPanel divPanel) {
-		ObjectHelper.checkNotNull("parameter:divPanel", divPanel);
+		Checker.notNull("parameter:divPanel", divPanel);
 		this.divPanel = divPanel;
 	}
 
@@ -126,7 +126,7 @@ public class WebPageTestRunner extends TestRunner {
 	}
 
 	protected void onTestStarted(final Test test) {
-		ObjectHelper.checkNotNull("parameter:test", test);
+		Checker.notNull("parameter:test", test);
 
 		final FlexTable table = this.getTable();
 		final String testName = test.getName();
@@ -138,7 +138,7 @@ public class WebPageTestRunner extends TestRunner {
 	}
 
 	protected void onTestPassed(final Test test) {
-		ObjectHelper.checkNotNull("parameter:test", test);
+		Checker.notNull("parameter:test", test);
 
 		final FlexTable table = this.getTable();
 		final int row = table.getRowCount() - 1;
@@ -155,7 +155,7 @@ public class WebPageTestRunner extends TestRunner {
 	}
 
 	protected void onTestFailed(final Test test) {
-		ObjectHelper.checkNotNull("parameter:test", test);
+		Checker.notNull("parameter:test", test);
 
 		final Throwable cause = test.getThrowable();
 
@@ -188,7 +188,7 @@ public class WebPageTestRunner extends TestRunner {
 	}
 
 	protected String buildFailedTestSummary(final Test test) {
-		ObjectHelper.checkNotNull("parameter:test", test);
+		Checker.notNull("parameter:test", test);
 
 		final StringBuffer buf = new StringBuffer();
 
@@ -215,7 +215,7 @@ public class WebPageTestRunner extends TestRunner {
 	}
 
 	protected void onTestAborted(final Test test) {
-		ObjectHelper.checkNotNull("parameter:test", test);
+		Checker.notNull("parameter:test", test);
 
 		final Throwable cause = test.getThrowable();
 
@@ -250,12 +250,12 @@ public class WebPageTestRunner extends TestRunner {
 	private FlexTable table;
 
 	private FlexTable getTable() {
-		ObjectHelper.checkNotNull("field:table", table);
+		Checker.notNull("field:table", table);
 		return this.table;
 	}
 
 	private void setTable(final FlexTable table) {
-		ObjectHelper.checkNotNull("field:table", table);
+		Checker.notNull("field:table", table);
 		this.table = table;
 	}
 

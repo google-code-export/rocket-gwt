@@ -18,7 +18,7 @@ package rocket.testing.client;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -114,7 +114,7 @@ abstract public class TestRunner {
 	 * @param testBuilder
 	 */
 	public void executeTests(final TestBuilder testBuilder) {
-		ObjectHelper.checkNotNull("parameter:testBuilder", testBuilder);
+		Checker.notNull("parameter:testBuilder", testBuilder);
 
 		final List tests = testBuilder.buildCandidates();
 		if (tests.size() == 0) {
@@ -176,7 +176,7 @@ abstract public class TestRunner {
 	 * @param test
 	 */
 	protected void execute(final Test test) {
-		ObjectHelper.checkNotNull("parameter:test", test);
+		Checker.notNull("parameter:test", test);
 
 		final Timer timer = new Timer() {
 			public void run() {
@@ -187,7 +187,7 @@ abstract public class TestRunner {
 	}
 
 	protected void execute0(final Test test) {
-		ObjectHelper.checkNotNull("parameter:test", test);
+		Checker.notNull("parameter:test", test);
 
 		test.prepare();
 		try {

@@ -17,8 +17,7 @@ package rocket.text.client;
 
 import java.util.Map;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * This placeholder uses the placeholder as a key into a map to fetch the value.
@@ -34,7 +33,7 @@ public class NamedPlaceHolderReplacer extends PlaceHolderReplacer {
 	protected String getValue(final String placeHolder) {
 		final String value = (String) this.getValues().get(placeHolder);
 		if (null == value) {
-			StringHelper.fail("Unable to find placeholder \"" + placeHolder + "\".");
+			Checker.fail("Unable to find placeholder \"" + placeHolder + "\".");
 		}
 		return value;
 	}
@@ -42,12 +41,12 @@ public class NamedPlaceHolderReplacer extends PlaceHolderReplacer {
 	private Map values;
 
 	protected Map getValues() {
-		ObjectHelper.checkNotNull("field:values", values);
+		Checker.notNull("field:values", values);
 		return this.values;
 	}
 
 	public void setValues(final Map values) {
-		ObjectHelper.checkNotNull("parameter:values", values);
+		Checker.notNull("parameter:values", values);
 		this.values = values;
 	}
 }

@@ -15,11 +15,7 @@
  */
 package rocket.beans.rebind.alias;
 
-import rocket.beans.rebind.value.Value;
-import rocket.generator.rebind.SourceWriter;
-import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * Holds an aliased bean reference value. 
@@ -34,12 +30,12 @@ public class Alias{
 	private String name;
 
 	public String getName() {
-		StringHelper.checkNotEmpty("field:name", name);
+		Checker.notEmpty("field:name", name);
 		return this.name;
 	}
 
 	public void setName(final String name) {
-		StringHelper.checkNotEmpty("parameter:name", name);
+		Checker.notEmpty("parameter:name", name);
 		this.name = name;
 	}
 
@@ -49,12 +45,12 @@ public class Alias{
 	private String bean;
 
 	public String getBean() {
-		StringHelper.checkNotEmpty("field:to", bean);
+		Checker.notEmpty("field:to", bean);
 		return this.bean;
 	}
 
 	public void setBean(final String to) {
-		StringHelper.checkNotEmpty("parameter:to", to);
+		Checker.notEmpty("parameter:to", to);
 		this.bean = to;
 	}
 

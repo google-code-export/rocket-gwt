@@ -16,8 +16,7 @@
 package rocket.generator.rebind.util;
 
 import rocket.generator.rebind.SourceWriter;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * This SourceBuffer captures all printed text which may be retrieved later via
@@ -139,17 +138,17 @@ public class StringBufferSourceWriter implements SourceWriter {
 	private String indentation;
 
 	protected String getIndentation() {
-		StringHelper.checkNotNull("field:indentation", indentation);
+		Checker.notNull("field:indentation", indentation);
 		return indentation;
 	}
 
 	protected void setIndentation(final String indentation) {
-		StringHelper.checkNotNull("parameter:indentation", indentation);
+		Checker.notNull("parameter:indentation", indentation);
 		this.indentation = indentation;
 	}
 
 	public void indentln(final String string) {
-		StringHelper.checkNotNull("parameter:string", string);
+		Checker.notNull("parameter:string", string);
 
 		this.indent();
 		this.println(string);
@@ -157,7 +156,7 @@ public class StringBufferSourceWriter implements SourceWriter {
 	}
 
 	public void print(final String string) {
-		StringHelper.checkNotNull("parameter:string", string);
+		Checker.notNull("parameter:string", string);
 
 		final StringBuffer buffer = this.getStringBuffer();
 		boolean beginningOfLine = this.isBeginningOfLine();
@@ -200,12 +199,12 @@ public class StringBufferSourceWriter implements SourceWriter {
 	private StringBuffer stringBuffer;
 
 	protected StringBuffer getStringBuffer() {
-		ObjectHelper.checkNotNull("field:stringBuffer", stringBuffer);
+		Checker.notNull("field:stringBuffer", stringBuffer);
 		return this.stringBuffer;
 	}
 
 	protected void setStringBuffer(final StringBuffer stringBuffer) {
-		ObjectHelper.checkNotNull("parameter:stringBuffer", stringBuffer);
+		Checker.notNull("parameter:stringBuffer", stringBuffer);
 		this.stringBuffer = stringBuffer;
 	}
 

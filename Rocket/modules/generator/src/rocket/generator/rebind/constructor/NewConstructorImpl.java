@@ -28,9 +28,10 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameter;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameterImpl;
 import rocket.generator.rebind.metadata.MetaData;
+import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+
 /**
  * Convenient base class for any new constructor
  * 
@@ -41,8 +42,8 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	public NewConstructorImpl() {
 		super();
 
-		this.setComments( "" );
-		this.setMetaData( this.createMetaData() );
+		this.setComments("");
+		this.setMetaData(this.createMetaData());
 	}
 
 	public void setVisibility(final Visibility visibility) {
@@ -63,7 +64,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	public void addParameter(final NewConstructorParameter parameter) {
-		ObjectHelper.checkNotNull("parameter:parameter", parameter);
+		Checker.notNull("parameter:parameter", parameter);
 
 		this.getParameters().add(parameter);
 		parameter.setEnclosingConstructor(this);
@@ -74,7 +75,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	public void addThrownType(final Type thrownTypes) {
-		ObjectHelper.checkNotNull("thrownTypes:thrownTypes", thrownTypes);
+		Checker.notNull("thrownTypes:thrownTypes", thrownTypes);
 		this.getThrownTypes().add(thrownTypes);
 	}
 
@@ -82,56 +83,55 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	 * Any text which will appear within javadoc comments for this field.
 	 */
 	private String comments;
-	
-	public String getComments(){
-		StringHelper.checkNotNull( "field:comments", comments );
+
+	public String getComments() {
+		Checker.notNull("field:comments", comments);
 		return comments;
 	}
-	
-	public void setComments( final String comments ){
-		StringHelper.checkNotNull( "parameter:comments", comments );
+
+	public void setComments(final String comments) {
+		Checker.notNull("parameter:comments", comments);
 		this.comments = comments;
 	}
-	
-	public void addMetaData( final String name, final String value ){
-		this.getMetaData().add( name, value);
+
+	public void addMetaData(final String name, final String value) {
+		this.getMetaData().add(name, value);
 	}
-	
-	public List getMetadataValues( final String name ){
+
+	public List getMetadataValues(final String name) {
 		return this.getMetaData().getMetadataValues(name);
 	}
-	
+
 	/**
 	 * A container which holds any meta data that is added to a new field instance. 
 	 */
 	private MetaData metaData;
-	
-	protected MetaData getMetaData(){
-		ObjectHelper.checkNotNull("field:metaData", metaData );
+
+	protected MetaData getMetaData() {
+		Checker.notNull("field:metaData", metaData);
 		return this.metaData;
 	}
-	
-	protected void setMetaData( final MetaData metaData ){
-		ObjectHelper.checkNotNull("parameter:metaData", metaData );
+
+	protected void setMetaData(final MetaData metaData) {
+		Checker.notNull("parameter:metaData", metaData);
 		this.metaData = metaData;
 	}
-	
-	protected MetaData createMetaData(){
-		return new MetaData();
-	}	
 
-	
+	protected MetaData createMetaData() {
+		return new MetaData();
+	}
+
 	/**
 	 * Generates the method
 	 * 
 	 * @param writer
 	 */
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		this.log();
 
-		this.writeComments( writer );
+		this.writeComments(writer);
 		this.writeDeclaration(writer);
 
 		this.writeBodyOpen(writer);
@@ -144,13 +144,40 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	protected void log() {
-		this.getGeneratorContext().debug( this.toString() );
+		final StringBuffer buf = new StringBuffer();
+		
+		buf.append( this.getVisibility().toString() );
+		buf.append( ' '); // yes two spaces will be emitted for package private constructors.
+		
+		String constructor = this.getEnclosingType().getName();
+		final int dot = constructor.lastIndexOf( '.');
+		if( dot != -1 ){
+			constructor = constructor.substring( dot );
+		}
+		
+		buf.append( constructor );
+		buf.append('(');
+
+		final Iterator parameters = this.getParameters().iterator();
+		while (parameters.hasNext()) {
+			final MethodParameter parameter = (MethodParameter) parameters.next();
+			final Type parameterType = parameter.getType();
+			buf.append(parameterType.getName());
+
+			if (parameters.hasNext()) {
+				buf.append(',');
+			}
+		}
+
+		buf.append(')');
+
+		this.getGeneratorContext().debug(buf.toString());
 	}
 
-	protected void writeComments( final SourceWriter writer ){		
-		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+	protected void writeComments(final SourceWriter writer) {
+		GeneratorHelper.writeComments(this.getComments(), this.getMetaData(), writer);
 	}
-	
+
 	/**
 	 * Writes the method declaration of this constructor. ${visibility} ${name} (
 	 * ${parameter-type parameter-name} )
@@ -158,7 +185,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	 * @param writer
 	 */
 	protected void writeDeclaration(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		writer.print(this.getVisibility().getJavaName());
 		writer.print(" ");
@@ -188,7 +215,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	protected void writeBodyOpen(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		writer.println("{");
 	}
@@ -199,7 +226,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	 * @param writer
 	 */
 	public void writeBody(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final CodeBlock body = this.getBody();
 		if (false == body.isEmpty()) {
@@ -208,7 +235,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	protected void writeBodyClose(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		writer.println("} // " + this.getEnclosingType().getName());
 	}
@@ -220,15 +247,14 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	private CodeBlock body;
 
 	public CodeBlock getBody() {
-		ObjectHelper.checkNotNull("field:body", body);
+		Checker.notNull("field:body", body);
 		return this.body;
 	}
 
 	public void setBody(final CodeBlock body) {
-		ObjectHelper.checkNotNull("parameter:body", body);
+		Checker.notNull("parameter:body", body);
 		this.body = body;
 	}
-
 
 	/**
 	 * Builds a string representation of this method in the following form
@@ -244,8 +270,8 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 
-		builder.append( this.getVisibility() );
-		
+		builder.append(this.getVisibility());
+
 		if (this.hasEnclosingType()) {
 			builder.append(this.getEnclosingType());
 			builder.append(' ');
@@ -254,18 +280,18 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 		builder.append('(');
 
 		final Iterator parameters = this.getParameters().iterator();
-			while (parameters.hasNext()) {
-				final NewConstructorParameter parameter = (NewConstructorParameter) parameters.next();
-				builder.append(parameter.getType());
+		while (parameters.hasNext()) {
+			final NewConstructorParameter parameter = (NewConstructorParameter) parameters.next();
+			builder.append(parameter.getType());
 
-				if (parameters.hasNext()) {
-					builder.append(", ");
-				}
+			if (parameters.hasNext()) {
+				builder.append(", ");
 			}
+		}
 
-			builder.append(this.getParameters());
+		builder.append(this.getParameters());
 
-		builder.append( ')');
+		builder.append(')');
 
 		return builder.toString();
 	}

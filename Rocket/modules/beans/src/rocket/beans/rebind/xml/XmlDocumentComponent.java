@@ -24,8 +24,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import rocket.beans.rebind.placeholder.PlaceHolderResolver;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 /**
  * Convenient base class that includes helpers to read attributes and the tag
@@ -41,7 +41,7 @@ class XmlDocumentComponent {
 
 	protected String getAttribute(final Element element, final String attributeName) {
 		String value = element.getAttribute(attributeName);
-		if (false == StringHelper.isNullOrEmpty(value)) {
+		if (false == Tester.isNullOrEmpty(value)) {
 			value = this.getPlaceHolderResolver().resolve(value);
 		}
 		return value;
@@ -49,7 +49,7 @@ class XmlDocumentComponent {
 
 	protected String getBody() {
 		String value = this.getElement().getTextContent();
-		if (false == StringHelper.isNullOrEmpty(value)) {
+		if (false == Tester.isNullOrEmpty(value)) {
 			value = this.getPlaceHolderResolver().resolve(value);
 		}
 		return value;
@@ -61,12 +61,12 @@ class XmlDocumentComponent {
 	private Element element;
 
 	protected Element getElement() {
-		ObjectHelper.checkNotNull("field:element", element);
+		Checker.notNull("field:element", element);
 		return this.element;
 	}
 
 	public void setElement(final Element element) {
-		ObjectHelper.checkNotNull("parameter:element", element);
+		Checker.notNull("parameter:element", element);
 		this.element = element;
 	}
 
@@ -77,12 +77,12 @@ class XmlDocumentComponent {
 	private PlaceHolderResolver placeHolderResolver;
 
 	protected PlaceHolderResolver getPlaceHolderResolver() {
-		ObjectHelper.checkNotNull("field:placeHolderResolver", placeHolderResolver);
+		Checker.notNull("field:placeHolderResolver", placeHolderResolver);
 		return this.placeHolderResolver;
 	}
 
 	public void setPlaceHolderResolver(final PlaceHolderResolver placeHolderResolver) {
-		ObjectHelper.checkNotNull("parameter:placeHolderResolver", placeHolderResolver);
+		Checker.notNull("parameter:placeHolderResolver", placeHolderResolver);
 		this.placeHolderResolver = placeHolderResolver;
 	}
 
@@ -160,12 +160,12 @@ class XmlDocumentComponent {
 	private String filename;
 
 	public String getFilename() {
-		StringHelper.checkNotEmpty("field:filename", filename);
+		Checker.notEmpty("field:filename", filename);
 		return this.filename;
 	}
 
 	public void setFilename(final String filename) {
-		StringHelper.checkNotEmpty("parameter:filename", filename);
+		Checker.notEmpty("parameter:filename", filename);
 		this.filename = filename;
 	}
 

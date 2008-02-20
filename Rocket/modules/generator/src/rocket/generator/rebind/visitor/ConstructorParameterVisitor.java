@@ -19,7 +19,7 @@ import java.util.Iterator;
 
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A template that makes it easy to visit all the parameters belonging to a
@@ -30,7 +30,7 @@ import rocket.util.client.ObjectHelper;
 abstract public class ConstructorParameterVisitor {
 
 	public void start(final Constructor constructor) {
-		ObjectHelper.checkNotNull("parameter:constructor", constructor);
+		Checker.notNull("parameter:constructor", constructor);
 
 		final Iterator parameters = constructor.getParameters().iterator();
 		while (parameters.hasNext()) {

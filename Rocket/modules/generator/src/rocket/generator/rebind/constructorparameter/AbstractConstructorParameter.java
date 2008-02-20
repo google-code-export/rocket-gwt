@@ -17,7 +17,7 @@ package rocket.generator.rebind.constructorparameter;
 
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.util.AbstractParameter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Convenient base for any parameter implementation.
@@ -32,7 +32,7 @@ abstract public class AbstractConstructorParameter extends AbstractParameter imp
 	private Constructor enclosingConstructor;
 
 	public Constructor getEnclosingConstructor() {
-		ObjectHelper.checkNotNull("field:enclosingConstructor", enclosingConstructor);
+		Checker.notNull("field:enclosingConstructor", enclosingConstructor);
 		return enclosingConstructor;
 	}
 
@@ -41,7 +41,7 @@ abstract public class AbstractConstructorParameter extends AbstractParameter imp
 	}
 
 	protected void setEnclosingConstructor(final Constructor enclosingConstructor) {
-		ObjectHelper.checkNotNull("field:enclosingConstructor", enclosingConstructor);
+		Checker.notNull("field:enclosingConstructor", enclosingConstructor);
 		this.enclosingConstructor = enclosingConstructor;
 	}
 

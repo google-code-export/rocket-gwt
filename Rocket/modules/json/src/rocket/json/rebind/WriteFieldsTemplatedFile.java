@@ -26,8 +26,7 @@ import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the write fields template
@@ -47,12 +46,12 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	private Type instanceType;
 
 	protected Type getInstanceType() {
-		ObjectHelper.checkNotNull("list:instanceType", instanceType);
+		Checker.notNull("list:instanceType", instanceType);
 		return this.instanceType;
 	}
 
 	public void setInstanceType(final Type instanceType) {
-		ObjectHelper.checkNotNull("parameter:instanceType", instanceType);
+		Checker.notNull("parameter:instanceType", instanceType);
 		this.instanceType = instanceType;
 	}
 
@@ -63,12 +62,12 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	private List fields;
 
 	protected List getFields() {
-		ObjectHelper.checkNotNull("list:fields", fields);
+		Checker.notNull("list:fields", fields);
 		return this.fields;
 	}
 
 	protected void setFields(final List fields) {
-		ObjectHelper.checkNotNull("parameter:fields", fields);
+		Checker.notNull("parameter:fields", fields);
 		this.fields = fields;
 	}
 
@@ -77,9 +76,9 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public void addField(final String javascriptPropertyName, final Method fieldGetter, final Type serializer) {
-		StringHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
-		ObjectHelper.checkNotNull("parameter:fieldGetter", fieldGetter);
-		ObjectHelper.checkNotNull("parameter:serializer", serializer);
+		Checker.notNull("parameter:javascriptPropertyName", javascriptPropertyName);
+		Checker.notNull("parameter:fieldGetter", fieldGetter);
+		Checker.notNull("parameter:serializer", serializer);
 
 		final Holder holder = new Holder();
 		holder.setJavascriptPropertyName(javascriptPropertyName);
@@ -123,36 +122,36 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 		private String javascriptPropertyName;
 
 		String getJavascriptPropertyName() {
-			ObjectHelper.checkNotNull("list:javascriptPropertyName", javascriptPropertyName);
+			Checker.notNull("list:javascriptPropertyName", javascriptPropertyName);
 			return this.javascriptPropertyName;
 		}
 
 		void setJavascriptPropertyName(final String javascriptPropertyName) {
-			ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
+			Checker.notNull("parameter:javascriptPropertyName", javascriptPropertyName);
 			this.javascriptPropertyName = javascriptPropertyName;
 		}
 
 		private Method fieldGetter;
 
 		Method getFieldGetter() {
-			ObjectHelper.checkNotNull("list:fieldGetter", fieldGetter);
+			Checker.notNull("list:fieldGetter", fieldGetter);
 			return this.fieldGetter;
 		}
 
 		void setFieldGetter(final Method fieldGetter) {
-			ObjectHelper.checkNotNull("parameter:fieldGetter", fieldGetter);
+			Checker.notNull("parameter:fieldGetter", fieldGetter);
 			this.fieldGetter = fieldGetter;
 		}
 
 		private Type serializer;
 
 		Type getSerializer() {
-			ObjectHelper.checkNotNull("list:serializer", serializer);
+			Checker.notNull("list:serializer", serializer);
 			return this.serializer;
 		}
 
 		void setSerializer(final Type serializer) {
-			ObjectHelper.checkNotNull("parameter:serializer", serializer);
+			Checker.notNull("parameter:serializer", serializer);
 			this.serializer = serializer;
 		}
 	}

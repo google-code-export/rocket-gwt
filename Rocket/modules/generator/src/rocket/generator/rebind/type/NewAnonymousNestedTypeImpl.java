@@ -21,7 +21,7 @@ import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.initializer.Initializer;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Represents an anonymous inner class. Methods, Fields and more nested types
@@ -42,7 +42,7 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 	private Type interfacee;
 
 	protected Type getInterface() {
-		ObjectHelper.checkNotNull("field:interface", interfacee);
+		Checker.notNull("field:interface", interfacee);
 		return this.interfacee;
 	}
 
@@ -51,7 +51,7 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 	}
 
 	protected void setInterface(final Type interfacee) {
-		ObjectHelper.checkNotNull("parameter:interface", interfacee);
+		Checker.notNull("parameter:interface", interfacee);
 		this.interfacee = interfacee;
 	}
 
@@ -148,12 +148,12 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 	private Type enclosingType;
 
 	public Type getEnclosingType() {
-		ObjectHelper.checkNotNull("field:enclosingType", enclosingType);
+		Checker.notNull("field:enclosingType", enclosingType);
 		return this.enclosingType;
 	}
 
 	public void setEnclosingType(Type enclosingType) {
-		ObjectHelper.checkNotNull("parameter:enclosingType", enclosingType);
+		Checker.notNull("parameter:enclosingType", enclosingType);
 		this.enclosingType = enclosingType;
 	}
 
@@ -162,7 +162,7 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 		
 		final Type type = this.hasInterface() ? this.getInterface() : this.getSuperType();
 		final String name = type.getName();

@@ -20,7 +20,7 @@ import java.io.InputStream;
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for adding an element to a collection
@@ -37,12 +37,12 @@ public class CollectionElementAddTemplatedFile extends TemplatedCodeBlock {
 	private Value value;
 
 	protected Value getValue() {
-		ObjectHelper.checkNotNull("field:value", value);
+		Checker.notNull("field:value", value);
 		return this.value;
 	}
 
 	protected void setValue(final Value value) {
-		ObjectHelper.checkNotNull("parameter:value", value);
+		Checker.notNull("parameter:value", value);
 		this.value = value;
 	}
 

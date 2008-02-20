@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.SystemHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -94,7 +93,7 @@ public class InteractiveListTest implements EntryPoint {
 
 		protected void checkType(Object element) {
 			if (false == (element instanceof HTML)) {
-				SystemHelper.fail("Unknown element type. element ");
+				Checker.fail("Unknown element type. element ");
 			}
 		}
 
@@ -115,12 +114,12 @@ public class InteractiveListTest implements EntryPoint {
 		private List list;
 
 		protected List getList() {
-			ObjectHelper.checkNotNull("field:list", list);
+			Checker.notNull("field:list", list);
 			return this.list;
 		}
 
 		protected void setList(final List list) {
-			ObjectHelper.checkNotNull("parameter:list", list);
+			Checker.notNull("parameter:list", list);
 			this.list = list;
 		}
 

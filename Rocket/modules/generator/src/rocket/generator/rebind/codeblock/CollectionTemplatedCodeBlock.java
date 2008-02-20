@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import rocket.generator.rebind.SourceWriter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Iterates over a collection building a response when requested to write
@@ -87,7 +87,7 @@ abstract public class CollectionTemplatedCodeBlock extends TemplatedCodeBlock {
 	}
 
 	protected void writeCollection(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		final Iterator iterator = this.getCollection().iterator();
 		while (iterator.hasNext()) {

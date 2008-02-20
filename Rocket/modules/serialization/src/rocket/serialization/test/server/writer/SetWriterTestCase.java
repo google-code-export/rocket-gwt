@@ -16,7 +16,6 @@
 package rocket.serialization.test.server.writer;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import rocket.serialization.server.writer.SetWriter;

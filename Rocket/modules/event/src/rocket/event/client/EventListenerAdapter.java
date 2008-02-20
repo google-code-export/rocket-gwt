@@ -15,7 +15,7 @@
  */
 package rocket.event.client;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Utilities;
 
 /**
  * Convenient method which takes care of adapting a GWt raw event into a rocket
@@ -38,7 +38,7 @@ public class EventListenerAdapter extends EventDispatcher implements com.google.
 			this.afterDispatching(event);
 
 		} finally {
-			ObjectHelper.destroyIfNecessary(event);
+			Utilities.destroyIfNecessary(event);
 		}
 	}
 }

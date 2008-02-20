@@ -46,7 +46,7 @@ public class HueSaturationValue {
 		while (true) {
 			final float value = this.getValue();
 
-			if (PrimitiveHelper.equals(saturation, 0.0, 0.01)) {
+			if (Tester.equals(saturation, 0.0, 0.01)) {
 				red = this.toInteger(value);
 				green = red;
 				blue = red;
@@ -119,7 +119,7 @@ public class HueSaturationValue {
 	}
 
 	void setHue(final float hue) {
-		PrimitiveHelper.checkBetween("parameter:hue", hue, 0, 1.01f);
+		Checker.between("parameter:hue", hue, 0, 1.01f);
 		this.hue = hue;
 	}
 
@@ -133,7 +133,7 @@ public class HueSaturationValue {
 	}
 
 	void setSaturation(final float saturation) {
-		PrimitiveHelper.checkBetween("parameter:saturation", saturation, 0, 1.01f);
+		Checker.between("parameter:saturation", saturation, 0, 1.01f);
 		this.saturation = saturation;
 	}
 
@@ -147,7 +147,7 @@ public class HueSaturationValue {
 	}
 
 	void setValue(final float value) {
-		PrimitiveHelper.checkBetween("parameter:value", value, 0, 1.01f);
+		Checker.between("parameter:value", value, 0, 1.01f);
 		this.value = value;
 	}
 
@@ -156,9 +156,9 @@ public class HueSaturationValue {
 	}
 
 	public boolean equals(final HueSaturationValue otherHsv) {
-		return otherHsv == null ? false : PrimitiveHelper.equals(this.getHue(), otherHsv.getHue(), 0.05f)
-				&& PrimitiveHelper.equals(this.getSaturation(), otherHsv.getSaturation(), 0.05f)
-				&& PrimitiveHelper.equals(this.getValue(), otherHsv.getValue(), 0.05f);
+		return otherHsv == null ? false : Tester.equals(this.getHue(), otherHsv.getHue(), 0.05f)
+				&& Tester.equals(this.getSaturation(), otherHsv.getSaturation(), 0.05f)
+				&& Tester.equals(this.getValue(), otherHsv.getValue(), 0.05f);
 	}
 
 	public int hashCode() {

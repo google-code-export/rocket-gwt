@@ -20,7 +20,7 @@ import rocket.style.client.ComputedStyle;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.JavaScript;
 import rocket.widget.client.Html;
 
 import com.google.gwt.user.client.DOM;
@@ -47,11 +47,11 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		InlineStyle.setInteger(panel, Css.TOP, 0, CssUnit.PX);
 
 		final Element background = DOM.createSpan();
-		ObjectHelper.setString(background, "className", this.getBackgroundStyleName());
+		JavaScript.setString(background, "className", this.getBackgroundStyleName());
 		DOM.appendChild(panel, background);
 
 		final Element handle = DOM.createDiv();
-		ObjectHelper.setString(handle, "className", this.getHandleStyleName());
+		JavaScript.setString(handle, "className", this.getHandleStyleName());
 		InlineStyle.setString(background, Css.Z_INDEX, "1");
 		DOM.appendChild(panel, handle);
 
@@ -102,8 +102,8 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		final String originalWidth = InlineStyle.getString(element, Css.WIDTH);
 		final String originalHeight = InlineStyle.getString(element, Css.HEIGHT);
 
-		ObjectHelper.setString(element, "_" + Css.WIDTH, originalWidth);
-		ObjectHelper.setString(element, "_" + Css.HEIGHT, originalHeight);
+		JavaScript.setString(element, "_" + Css.WIDTH, originalWidth);
+		JavaScript.setString(element, "_" + Css.HEIGHT, originalHeight);
 
 		final int widthInPixels = ComputedStyle.getInteger( this.getElement(), Css.WIDTH, CssUnit.PX, 0 );
 		InlineStyle.setInteger(element, Css.WIDTH, widthInPixels, CssUnit.PX );
@@ -121,8 +121,8 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 	
 	protected void restoreBackgroundWidgetDimensions(){
 		final Element element = this.getBackgroundWidgetElement();
-		final String width = ObjectHelper.getString(element, "_" + Css.WIDTH);
-		final String height = ObjectHelper.getString(element, "_" + Css.HEIGHT);
+		final String width = JavaScript.getString(element, "_" + Css.WIDTH);
+		final String height = JavaScript.getString(element, "_" + Css.HEIGHT);
 
 		InlineStyle.setString(element, Css.WIDTH, width);
 		InlineStyle.setString(element, Css.HEIGHT, height);

@@ -34,8 +34,8 @@ import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.util.AbstractClassComponent;
 import rocket.generator.rebind.visitor.SuperTypesVisitor;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
 
 /**
  * Abstract class that includes facilities for implementing a type.
@@ -55,7 +55,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		final String packageName = null == packagee ? null : packagee.getName();
 		String nameLessPackageName = name;
 		
-		if( false == StringHelper.isNullOrEmpty( packageName ) ){
+		if( false == Tester.isNullOrEmpty( packageName ) ){
 			runtimeName.append( packageName );
 			runtimeName.append( '.');
 			
@@ -85,7 +85,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	}
 
 	protected void setInterfaces(final Set interfaces) {
-		ObjectHelper.checkNotNull("parameter:interfaces", interfaces);
+		Checker.notNull("parameter:interfaces", interfaces);
 		this.interfaces = interfaces;
 	}
 
@@ -109,7 +109,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	}
 
 	protected void setConstructors(final Set constructors) {
-		ObjectHelper.checkNotNull("parameter:constructors", constructors);
+		Checker.notNull("parameter:constructors", constructors);
 		this.constructors = constructors;
 	}
 
@@ -123,7 +123,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 * @return The matching constructor or null if none was found.
 	 */
 	public Constructor findConstructor(final List parameterTypes) {
-		ObjectHelper.checkNotNull("parameter:parameterTypes", parameterTypes);
+		Checker.notNull("parameter:parameterTypes", parameterTypes);
 
 		Constructor found = null;
 
@@ -192,7 +192,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	}
 
 	protected void setFields(final Set fields) {
-		ObjectHelper.checkNotNull("parameter:fields", fields);
+		Checker.notNull("parameter:fields", fields);
 		this.fields = fields;
 	}
 
@@ -246,7 +246,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	}
 
 	protected void setMethods(final Set methods) {
-		ObjectHelper.checkNotNull("parameter:methods", methods);
+		Checker.notNull("parameter:methods", methods);
 		this.methods = methods;
 	}
 
@@ -268,7 +268,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 */
 	public Method findMethod(final String methodName, final List parameterTypes) {
 		GeneratorHelper.checkJavaMethodName("parameter:methodName", methodName);
-		ObjectHelper.checkNotNull("parameter:parameterTypes", parameterTypes);
+		Checker.notNull("parameter:parameterTypes", parameterTypes);
 
 		Method found = null;
 
@@ -324,8 +324,8 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 *            parameter types to search for
 	 */
 	public Method findMostDerivedMethod(final String methodName, final List parameterTypes) {
-		ObjectHelper.checkNotNull("parameter:methodName", methodName);
-		ObjectHelper.checkNotNull("parameter:parameterTypes", parameterTypes);
+		Checker.notNull("parameter:methodName", methodName);
+		Checker.notNull("parameter:parameterTypes", parameterTypes);
 
 		final MostDerivedMethodFinder finder = new MostDerivedMethodFinder();
 		finder.setMethodName(methodName);
@@ -343,7 +343,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		 * @return return true to skip remaining types.
 		 */
 		protected boolean visit(final Type type) {
-			ObjectHelper.checkNotNull("parameter:type", type);
+			Checker.notNull("parameter:type", type);
 
 			final Method method = type.findMethod(this.getMethodName(), this.getParameterTypes());
 			final boolean skipRemaining = method != null;
@@ -379,12 +379,12 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		private List parameterTypes;
 
 		protected List getParameterTypes() {
-			ObjectHelper.checkNotNull("field:parameterTypes", parameterTypes);
+			Checker.notNull("field:parameterTypes", parameterTypes);
 			return this.parameterTypes;
 		}
 
 		protected void setParameterTypes(final List parameterTypes) {
-			ObjectHelper.checkNotNull("parameter:parameterTypes", parameterTypes);
+			Checker.notNull("parameter:parameterTypes", parameterTypes);
 			this.parameterTypes = parameterTypes;
 		}
 
@@ -395,7 +395,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		}
 
 		protected void setFound(final Method found) {
-			ObjectHelper.checkNotNull("parameter:found", found);
+			Checker.notNull("parameter:found", found);
 			this.found = found;
 		}
 	}
@@ -477,7 +477,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	}
 
 	protected void setNestedTypes(final Set nestedTypes) {
-		ObjectHelper.checkNotNull("parameter:nestedTypes", nestedTypes);
+		Checker.notNull("parameter:nestedTypes", nestedTypes);
 		this.nestedTypes = nestedTypes;
 	}
 

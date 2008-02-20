@@ -16,11 +16,9 @@
 package rocket.beans.client.aop;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * Provides a chain of methodInterceptors for a aspect.
@@ -101,9 +99,20 @@ public class InterceptorChain {
 	 * 
 	 * @return The new MethodInvocation
 	 */
+	
 	protected MethodInvocation createMethodInvocation() {
-		final Iterator interceptors = this.getMethodInterceptors().iterator();
-		return new MethodInvocation() {
+		return createMethodInvocation( 0 );
+	}
+
+	/**
+	 * Helper which creates a MethodInvocation for each interceptor. The last interceptor is actually responsible for invoking the
+	 * target.
+	 * @param interceptorIndex Must be a valid index between 0 and the number of method interceptors.
+	 * @return A new MethodInvocation
+	 */
+	protected MethodInvocation createMethodInvocation( final int interceptorIndex ) {
+		return new MethodInvocation(){
+
 			/**
 			 * Returns the this reference for the object being proxied
 			 * 
@@ -118,67 +127,68 @@ public class InterceptorChain {
 			}
 
 			public Object proceed() throws Throwable {
-				final MethodInterceptor interceptor = (MethodInterceptor) interceptors.next();
-				return interceptor.invoke(this);
+				final MethodInterceptor methodInterceptor = (MethodInterceptor) InterceptorChain.this.getMethodInterceptors().get( interceptorIndex );
+				final MethodInvocation methodInvocation = InterceptorChain.this.createMethodInvocation( interceptorIndex + 1 );
+				return methodInterceptor.invoke( methodInvocation );
 			}
-			
-			public String getMethod(){
+
+			public String getMethod() {
 				return InterceptorChain.this.getMethod();
-			}			
-			
-			public String[] getParameterTypes(){
+			}
+
+			public String[] getParameterTypes() {
 				// make a defensive copy of the array just to be sure...
 				final String[] parameterTypes = InterceptorChain.this.getParameterTypes();
 				final int count = parameterTypes.length;
-				final String[] copy = new String[ count ];
-				for( int i = 0; i < count; i++ ){
-					copy[ i ] = parameterTypes[ i ];
+				final String[] copy = new String[count];
+				for (int i = 0; i < count; i++) {
+					copy[i] = parameterTypes[i];
 				}
-				
+
 				return copy;
 			}
-			
-			public String getReturnType(){
+
+			public String getReturnType() {
 				return InterceptorChain.this.getReturnType();
 			}
-				
-			public boolean isNative(){
+
+			public boolean isNative() {
 				return InterceptorChain.this.isNative();
 			}
-			
-			public String getEnclosingType(){
+
+			public String getEnclosingType() {
 				return InterceptorChain.this.getEnclosingType();
 			}
-		};
+		};		
 	}
-
+	
 	/**
 	 * The parameters of the method being proxied.
 	 */
 	private Object[] parameters;
 
 	protected Object[] getParameters() {
-		ObjectHelper.checkNotNull("field:parameters", parameters);
+		Checker.notNull("field:parameters", parameters);
 		return parameters;
 	}
 
 	public void setParameters(final Object[] parameters) {
-		ObjectHelper.checkNotNull("parameter:parameters", parameters);
+		Checker.notNull("parameter:parameters", parameters);
 		this.parameters = parameters;
 	}
-	
+
 	/**
 	 * The name of the method.
 	 */
 	private String method;
-	
-	protected String getMethod(){
-		StringHelper.checkNotEmpty( "field:method", method );
+
+	protected String getMethod() {
+		Checker.notEmpty("field:method", method);
 		return this.method;
 	}
-	
-	public void setMethod( final String method ){
-		StringHelper.checkNotEmpty( "parameter:method", method );
+
+	public void setMethod(final String method) {
+		Checker.notEmpty("parameter:method", method);
 		this.method = method;
 	}
 
@@ -188,59 +198,58 @@ public class InterceptorChain {
 	private String[] parameterTypes;
 
 	protected String[] getParameterTypes() {
-		StringHelper.checkNotNull("field:parameterTypes", parameterTypes);
+		Checker.notNull("field:parameterTypes", parameterTypes);
 		return parameterTypes;
 	}
 
 	public void setParameterTypes(final String[] parameterTypes) {
-		StringHelper.checkNotNull("parameter:parameterTypes", parameterTypes);
+		Checker.notNull("parameter:parameterTypes", parameterTypes);
 		this.parameterTypes = parameterTypes;
 	}
-	
+
 	/**
 	 * The name of the returnType.
 	 */
 	private String returnType;
-	
-	protected String getReturnType(){
-		StringHelper.checkNotEmpty( "field:returnType", returnType );
+
+	protected String getReturnType() {
+		Checker.notEmpty("field:returnType", returnType);
 		return this.returnType;
 	}
-	
-	public void setReturnType( final String returnType ){
-		StringHelper.checkNotEmpty( "parameter:returnType", returnType );
+
+	public void setReturnType(final String returnType) {
+		Checker.notEmpty("parameter:returnType", returnType);
 		this.returnType = returnType;
 	}
-	
+
 	/**
 	 * A flag that notes if the method is native.
 	 */
 	private boolean nativee;
-	
-	protected boolean isNative(){
+
+	protected boolean isNative() {
 		return this.nativee;
 	}
-	
-	public void setNative( final boolean nativee ){
+
+	public void setNative(final boolean nativee) {
 		this.nativee = nativee;
 	}
-	
 
 	/**
 	 * The name of the type that encloses the method.
 	 */
 	private String enclosingType;
-	
-	protected String getEnclosingType(){
-		StringHelper.checkNotEmpty( "field:enclosingType", enclosingType );
+
+	protected String getEnclosingType() {
+		Checker.notEmpty("field:enclosingType", enclosingType);
 		return this.enclosingType;
 	}
-	
-	public void setEnclosingType( final String enclosingType ){
-		StringHelper.checkNotEmpty( "parameter:enclosingType", enclosingType );
+
+	public void setEnclosingType(final String enclosingType) {
+		Checker.notEmpty("parameter:enclosingType", enclosingType);
 		this.enclosingType = enclosingType;
 	}
-	
+
 	/**
 	 * Overloaded method that helps with wrapping primitives into wrappers.
 	 * 
@@ -289,12 +298,12 @@ public class InterceptorChain {
 	private List methodInterceptors;
 
 	protected List getMethodInterceptors() {
-		ObjectHelper.checkNotNull("field:methodInterceptors", methodInterceptors);
+		Checker.notNull("field:methodInterceptors", methodInterceptors);
 		return this.methodInterceptors;
 	}
 
 	protected void setMethodInterceptors(final List methodInterceptors) {
-		ObjectHelper.checkNotNull("parameter:methodInterceptors", methodInterceptors);
+		Checker.notNull("parameter:methodInterceptors", methodInterceptors);
 		this.methodInterceptors = methodInterceptors;
 	}
 
@@ -363,12 +372,12 @@ public class InterceptorChain {
 	private Object target;
 
 	protected Object getTarget() {
-		ObjectHelper.checkNotNull("field:target", target);
+		Checker.notNull("field:target", target);
 		return target;
 	}
 
 	public void setTarget(final Object target) {
-		ObjectHelper.checkNotNull("parameter:target", target);
+		Checker.notNull("parameter:target", target);
 		this.target = target;
 	}
 

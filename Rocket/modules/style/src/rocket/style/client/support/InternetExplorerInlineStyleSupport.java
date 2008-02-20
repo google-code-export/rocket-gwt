@@ -17,8 +17,9 @@ package rocket.style.client.support;
 
 import rocket.browser.client.Browser;
 import rocket.style.client.Css;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -40,7 +41,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 
 		if (false == supportsFixedPosition) {
 			if (GWT.isScript()) {
-				final String warning = StringHelper.format(StyleSupportConstants.DYNAMIC_EXPRESSIONS_USED_TO_EMULATE_FIXED_POSITIONING,
+				final String warning = Utilities.format(StyleSupportConstants.DYNAMIC_EXPRESSIONS_USED_TO_EMULATE_FIXED_POSITIONING,
 						new Object[] { Browser.getUserAgent() });
 				GWT.log(warning, null);
 			}
@@ -253,7 +254,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	protected void setFixedPosition(final DynamicExpression fixedPosition) {
-		ObjectHelper.checkNotNull("parameter:fixedPosition", fixedPosition);
+		Checker.notNull("parameter:fixedPosition", fixedPosition);
 		this.fixedPosition = fixedPosition;
 	}
 
@@ -264,7 +265,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	protected void setFixedPositionLeft(final DynamicExpression fixedPositionLeft) {
-		ObjectHelper.checkNotNull("parameter:fixedPositionLeft", fixedPositionLeft);
+		Checker.notNull("parameter:fixedPositionLeft", fixedPositionLeft);
 		this.fixedPositionLeft = fixedPositionLeft;
 	}
 
@@ -275,7 +276,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	protected void setFixedPositionRight(final DynamicExpression fixedPositionRight) {
-		ObjectHelper.checkNotNull("parameter:fixedPositionRight", fixedPositionRight);
+		Checker.notNull("parameter:fixedPositionRight", fixedPositionRight);
 		this.fixedPositionRight = fixedPositionRight;
 	}
 
@@ -286,7 +287,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	protected void setFixedPositionTop(final DynamicExpression fixedPositionTop) {
-		ObjectHelper.checkNotNull("parameter:fixedPositionTop", fixedPositionTop);
+		Checker.notNull("parameter:fixedPositionTop", fixedPositionTop);
 		this.fixedPositionTop = fixedPositionTop;
 	}
 
@@ -297,7 +298,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	protected void setFixedPositionBottom(final DynamicExpression fixedPositionBottom) {
-		ObjectHelper.checkNotNull("parameter:fixedPositionBottom", fixedPositionBottom);
+		Checker.notNull("parameter:fixedPositionBottom", fixedPositionBottom);
 		this.fixedPositionBottom = fixedPositionBottom;
 	}
 
@@ -351,11 +352,11 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	protected String getWidth(final JavaScriptObject element) {
-		return ObjectHelper.getString(element, "pixelWidth");
+		return JavaScript.getString(element, "pixelWidth");
 	}
 
 	protected String getHeight(final JavaScriptObject element) {
-		return ObjectHelper.getString(element, "pixelHeight");
+		return JavaScript.getString(element, "pixelHeight");
 	}
 
 	protected String getString(final JavaScriptObject element, final String name) {
@@ -464,6 +465,6 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	 }-*/;
 
 	public String[] getPropertyNames(final JavaScriptObject element) {
-		return ObjectHelper.getPropertyNames(ObjectHelper.getObject(element, "style"));
+		return JavaScript.getPropertyNames(JavaScript.getObject(element, "style"));
 	}
 }

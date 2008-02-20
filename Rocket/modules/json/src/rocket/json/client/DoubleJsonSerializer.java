@@ -15,6 +15,7 @@
  */
 package rocket.json.client;
 
+import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
 
@@ -22,6 +23,7 @@ import com.google.gwt.json.client.JSONValue;
  * Reads and writes double values.
  * 
  * @author Miroslav Pokorny
+ * @author Vincente Ferrer
  */
 public class DoubleJsonSerializer extends JsonSerializer {
 	public final static DoubleJsonSerializer serializer = new DoubleJsonSerializer();
@@ -36,7 +38,7 @@ public class DoubleJsonSerializer extends JsonSerializer {
 
 	public JSONValue writeJson(final Object instance) {
 		final Double wrapper = (Double) instance;
-		return new JSONNumber(wrapper.doubleValue());
+		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.doubleValue());
 	}
 
 	public double read(final JSONValue jsonValue) {

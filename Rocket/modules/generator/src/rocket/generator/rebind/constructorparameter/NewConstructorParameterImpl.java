@@ -18,7 +18,7 @@ package rocket.generator.rebind.constructorparameter;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Represents a parameter that belongs to a constructor.
@@ -44,7 +44,7 @@ public class NewConstructorParameterImpl extends AbstractConstructorParameter im
 	}
 
 	public void write(final SourceWriter writer) {
-		ObjectHelper.checkNotNull("parameter:writer", writer);
+		Checker.notNull("parameter:writer", writer);
 
 		if (this.isFinal()) {
 			writer.print("final ");

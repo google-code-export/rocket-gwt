@@ -16,8 +16,7 @@
 package rocket.remoting.client.support.rpc;
 
 import rocket.remoting.client.JsonRpcService;
-import rocket.util.client.PrimitiveHelper;
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
@@ -39,7 +38,7 @@ abstract public class RpcServiceClient implements JsonRpcService, ServiceDefTarg
 	private String username;
 
 	public String getUsername() {
-		StringHelper.checkNotEmpty("field:username", username);
+		Checker.notEmpty("field:username", username);
 		return this.username;
 	}
 
@@ -48,7 +47,7 @@ abstract public class RpcServiceClient implements JsonRpcService, ServiceDefTarg
 	}
 
 	public void setUsername(final String username) {
-		StringHelper.checkNotEmpty("parameter:username", username);
+		Checker.notEmpty("parameter:username", username);
 		this.username = username;
 	}
 
@@ -59,7 +58,7 @@ abstract public class RpcServiceClient implements JsonRpcService, ServiceDefTarg
 	private String password;
 
 	public String getPassword() {
-		StringHelper.checkNotEmpty("field:password", password);
+		Checker.notEmpty("field:password", password);
 		return this.password;
 	}
 
@@ -68,7 +67,7 @@ abstract public class RpcServiceClient implements JsonRpcService, ServiceDefTarg
 	}
 
 	public void setPassword(final String password) {
-		StringHelper.checkNotEmpty("parameter:password", password);
+		Checker.notEmpty("parameter:password", password);
 		this.password = password;
 	}
 
@@ -78,7 +77,7 @@ abstract public class RpcServiceClient implements JsonRpcService, ServiceDefTarg
 	private int timeout;
 
 	public int getTimeout() {
-		PrimitiveHelper.checkGreaterThan("field:timeout", 0, timeout);
+		Checker.greaterThan("field:timeout", 0, timeout);
 		return timeout;
 	}
 
@@ -87,7 +86,7 @@ abstract public class RpcServiceClient implements JsonRpcService, ServiceDefTarg
 	}
 
 	public void setTimeout(final int timeout) {
-		PrimitiveHelper.checkGreaterThan("parameter:timeout", 0, timeout );
+		Checker.greaterThan("parameter:timeout", 0, timeout );
 		this.timeout = timeout;
 	}
 

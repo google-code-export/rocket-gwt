@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Visits all the super types belonging to the type starting at java.lang.Object
@@ -31,7 +31,7 @@ import rocket.util.client.ObjectHelper;
 abstract public class ReverseSuperTypesVisitor {
 
 	public void start(final Type type) {
-		ObjectHelper.checkNotNull("type:type", type);
+		Checker.notNull("type:type", type);
 
 		final List superTypes = this.accumulateSuperTypes(type);
 
@@ -60,7 +60,7 @@ abstract public class ReverseSuperTypesVisitor {
 	 * @return
 	 */
 	protected List accumulateSuperTypes(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 
 		final List types = new LinkedList();
 

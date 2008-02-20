@@ -15,6 +15,7 @@
  */
 package rocket.json.client;
 
+import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
 
@@ -22,6 +23,7 @@ import com.google.gwt.json.client.JSONValue;
  * Reads and writes int values.
  * 
  * @author Miroslav Pokorny
+ * @author Vincente Ferrer
  */
 public class IntJsonSerializer extends JsonSerializer {
 	public final static IntJsonSerializer serializer = new IntJsonSerializer();
@@ -36,7 +38,7 @@ public class IntJsonSerializer extends JsonSerializer {
 
 	public JSONValue writeJson(final Object instance) {
 		final Integer wrapper = (Integer) instance;
-		return new JSONNumber(wrapper.intValue());
+		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.intValue());
 	}
 
 	public int read(final JSONValue jsonValue) {

@@ -2,7 +2,7 @@ package rocket.serialization.benchmark.client;
 
 import java.io.Serializable;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Tester;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -27,13 +27,13 @@ public class Tree implements Serializable, IsSerializable {
 					}
 					
 					final Tree otherTree = (Tree)otherObject;
-					if( false == ObjectHelper.nullSafeEquals( this.apple, otherTree.apple )){
+					if( false == Tester.nullSafeEquals( this.apple, otherTree.apple )){
 						break;
 					}
-					if( false == ObjectHelper.nullSafeEquals( this.banana, otherTree.banana )){
+					if( false == Tester.nullSafeEquals( this.banana, otherTree.banana )){
 						break;
 					}
-					if( false == ObjectHelper.nullSafeEquals( this.superBanana, otherTree.superBanana )){
+					if( false == Tester.nullSafeEquals( this.superBanana, otherTree.superBanana )){
 						break;
 					}
 					if( this != this.tree || otherTree != otherTree.tree ){

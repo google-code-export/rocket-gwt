@@ -19,7 +19,8 @@ import rocket.selection.client.SelectionEndPoint;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.Css;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
@@ -59,13 +60,13 @@ abstract public class SelectionSupport {
 		final JavaScriptObject selection = this.getNativeSelection();
 
 		final SelectionEndPoint start = new SelectionEndPoint();
-		start.setTextNode(ObjectHelper.castToElement(ObjectHelper.getObject(selection, Constants.ANCHOR_NODE)));
-		start.setOffset(ObjectHelper.getInteger(selection, Constants.ANCHOR_OFFSET));
+		start.setTextNode(JavaScript.castToElement(JavaScript.getObject(selection, Constants.ANCHOR_NODE)));
+		start.setOffset(JavaScript.getInteger(selection, Constants.ANCHOR_OFFSET));
 		return start;
 	}
 
 	public void setStart(final SelectionEndPoint start) {
-		ObjectHelper.checkNotNull("parameter:start", start);
+		Checker.notNull("parameter:start", start);
 
 		setStart0(this.getNativeSelection(), start.getTextNode(), start.getOffset());
 	}
@@ -93,13 +94,13 @@ abstract public class SelectionSupport {
 		final JavaScriptObject selection = this.getNativeSelection();
 
 		final SelectionEndPoint end = new SelectionEndPoint();
-		end.setTextNode(ObjectHelper.castToElement(ObjectHelper.getObject(selection, Constants.FOCUS_NODE)));
-		end.setOffset(ObjectHelper.getInteger(selection, Constants.FOCUS_OFFSET));
+		end.setTextNode(JavaScript.castToElement(JavaScript.getObject(selection, Constants.FOCUS_NODE)));
+		end.setOffset(JavaScript.getInteger(selection, Constants.FOCUS_OFFSET));
 		return end;
 	}
 
 	public void setEnd(final SelectionEndPoint end) {
-		ObjectHelper.checkNotNull("parameter:end", end);
+		Checker.notNull("parameter:end", end);
 
 		setEnd0(this.getNativeSelection(), end.getTextNode(), end.getOffset());
 	}
@@ -125,7 +126,7 @@ abstract public class SelectionSupport {
 	 }-*/;
 
 	public boolean isEmpty() {
-		return ObjectHelper.getBoolean(this.getNativeSelection(), Constants.IS_COLLAPSED);
+		return JavaScript.getBoolean(this.getNativeSelection(), Constants.IS_COLLAPSED);
 	}
 
 	public void clear() {

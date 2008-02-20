@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
-import rocket.util.client.StringHelper;
+import rocket.util.client.Checker;
 
 /**
  * A bean like view of a bean tag, as well as providing a number of helper
@@ -115,12 +115,12 @@ class BeanTag extends XmlDocumentComponent {
 	private String filename;
 
 	public String getFilename() {
-		StringHelper.checkNotEmpty("field:filename", filename);
+		Checker.notEmpty("field:filename", filename);
 		return this.filename;
 	}
 
 	public void setFilename(final String filename) {
-		StringHelper.checkNotEmpty("parameter:filename", filename);
+		Checker.notEmpty("parameter:filename", filename);
 		this.filename = filename;
 	}
 }

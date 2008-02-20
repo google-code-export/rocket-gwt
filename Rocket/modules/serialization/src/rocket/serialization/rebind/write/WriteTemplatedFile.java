@@ -17,7 +17,7 @@ package rocket.serialization.rebind.write;
 
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the write.txt template
@@ -36,12 +36,12 @@ public class WriteTemplatedFile extends TemplatedFileCodeBlock {
 	private Type type;
 
 	protected Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return this.type;
 	}
 
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		this.type = type;
 	}
 

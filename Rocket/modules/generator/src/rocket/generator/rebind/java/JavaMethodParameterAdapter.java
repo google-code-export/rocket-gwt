@@ -21,7 +21,7 @@ import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.methodparameter.AbstractMethodParameter;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * A bridge between a java method and a Method.
@@ -55,12 +55,12 @@ public class JavaMethodParameterAdapter extends AbstractMethodParameter implemen
 	protected java.lang.reflect.Method javaMethod;
 
 	protected java.lang.reflect.Method getJavaMethod() {
-		ObjectHelper.checkNotNull("field:class", javaMethod);
+		Checker.notNull("field:class", javaMethod);
 		return this.javaMethod;
 	}
 
 	protected void setJavaMethod(final java.lang.reflect.Method javaMethod) {
-		ObjectHelper.checkNotNull("parameter:javaMethod", javaMethod);
+		Checker.notNull("parameter:javaMethod", javaMethod);
 		this.javaMethod = javaMethod;
 	}
 

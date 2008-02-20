@@ -18,12 +18,10 @@ package rocket.json.rebind;
 import java.io.InputStream;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the inserting statements that set a json object property
@@ -43,12 +41,12 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 	private Method fieldGetter;
 
 	protected Method getFieldGetter() {
-		ObjectHelper.checkNotNull("list:fieldGetter", fieldGetter);
+		Checker.notNull("list:fieldGetter", fieldGetter);
 		return this.fieldGetter;
 	}
 
 	public void setFieldGetter(final Method fieldSetter) {
-		ObjectHelper.checkNotNull("parameter:fieldGetter", fieldSetter);
+		Checker.notNull("parameter:fieldGetter", fieldSetter);
 		this.fieldGetter = fieldSetter;
 	}
 
@@ -58,12 +56,12 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 	private String javascriptPropertyName;
 
 	protected String getJavascriptPropertyName() {
-		ObjectHelper.checkNotNull("list:javascriptPropertyName", javascriptPropertyName);
+		Checker.notNull("list:javascriptPropertyName", javascriptPropertyName);
 		return this.javascriptPropertyName;
 	}
 
 	public void setJavascriptPropertyName(final String javascriptPropertyName) {
-		ObjectHelper.checkNotNull("parameter:javascriptPropertyName", javascriptPropertyName);
+		Checker.notNull("parameter:javascriptPropertyName", javascriptPropertyName);
 		this.javascriptPropertyName = javascriptPropertyName;
 	}
 
@@ -73,12 +71,12 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 	private Type serializer;
 
 	protected Type getSerializer() {
-		ObjectHelper.checkNotNull("list:serializer", serializer);
+		Checker.notNull("list:serializer", serializer);
 		return this.serializer;
 	}
 
 	public void setSerializer(final Type serializer) {
-		ObjectHelper.checkNotNull("parameter:serializer", serializer);
+		Checker.notNull("parameter:serializer", serializer);
 		this.serializer = serializer;
 	}
 
@@ -87,7 +85,7 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public InputStream getInputStream() {
-		return super.getInputStream(); // TODO delete when merged with parent etmplate package
+		return super.getInputStream();
 	}
 	
 	protected Object getValue0(final String name) {

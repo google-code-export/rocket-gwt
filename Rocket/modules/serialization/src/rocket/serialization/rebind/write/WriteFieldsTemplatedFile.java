@@ -23,12 +23,10 @@ import java.util.List;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the write-fields.txt tempalte
@@ -48,12 +46,12 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	private Type type;
 
 	protected Type getType() {
-		ObjectHelper.checkNotNull("field:type", type);
+		Checker.notNull("field:type", type);
 		return this.type;
 	}
 
 	public void setType(final Type type) {
-		ObjectHelper.checkNotNull("parameter:type", type);
+		Checker.notNull("parameter:type", type);
 		this.type = type;
 	}
 
@@ -63,12 +61,12 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	private List fieldGetters;
 
 	protected List getFieldGetters() {
-		ObjectHelper.checkNotNull("field:getters", fieldGetters);
+		Checker.notNull("field:getters", fieldGetters);
 		return this.fieldGetters;
 	}
 
 	protected void setFieldGetters(final List fieldGetters) {
-		ObjectHelper.checkNotNull("parameter:fieldGetters", fieldGetters);
+		Checker.notNull("parameter:fieldGetters", fieldGetters);
 		this.fieldGetters = fieldGetters;
 	}
 
@@ -77,7 +75,7 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public void addFieldGetter(final Method getter) {
-		ObjectHelper.checkNotNull("parameter:getter", getter);
+		Checker.notNull("parameter:getter", getter);
 
 		this.getFieldGetters().add(getter);
 	}

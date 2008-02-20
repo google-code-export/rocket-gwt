@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.server.IoHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Utilities;
+import rocket.util.server.InputOutput;
 import rocket.util.server.UncheckedIOException;
 
 /**
@@ -41,7 +41,7 @@ public class PlaceHolderResolver {
 	}
 
 	public void load(final String fileName) {
-		StringHelper.checkNotEmpty("parameter:fileName", fileName);
+		Checker.notEmpty("parameter:fileName", fileName);
 
 		final InputStream file = this.getClass().getResourceAsStream(fileName);
 		if (null == file) {
@@ -51,14 +51,14 @@ public class PlaceHolderResolver {
 	}
 
 	public void merge(final InputStream inputStream) {
-		ObjectHelper.checkNotNull("parameter:inputStream", inputStream);
+		Checker.notNull("parameter:inputStream", inputStream);
 
 		try {
 			this.getValues().load(inputStream);
 		} catch (final IOException io) {
 			throw new UncheckedIOException(io);
 		} finally {
-			IoHelper.closeIfNecessary(inputStream);
+			InputOutput.closeIfNecessary(inputStream);
 		}
 	}
 
@@ -68,7 +68,7 @@ public class PlaceHolderResolver {
 		final Properties values = this.getValues();
 
 		while (true) {
-			output = StringHelper.format(input, values);
+			output = Utilities.format(input, values);
 
 			if (input.equals(output)) {
 				break;
@@ -86,12 +86,12 @@ public class PlaceHolderResolver {
 	private Properties values;
 
 	protected Properties getValues() {
-		ObjectHelper.checkNotNull("field:values", values);
+		Checker.notNull("field:values", values);
 		return this.values;
 	}
 
 	protected void setValues(final Properties values) {
-		ObjectHelper.checkNotNull("parameter:values", values);
+		Checker.notNull("parameter:values", values);
 		this.values = values;
 	}
 

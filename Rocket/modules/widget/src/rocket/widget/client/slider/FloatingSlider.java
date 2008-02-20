@@ -30,8 +30,7 @@ import rocket.style.client.ComputedStyle;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.PrimitiveHelper;
+import rocket.util.client.Checker;
 import rocket.widget.client.CompositeWidget;
 import rocket.widget.client.Html;
 import rocket.widget.client.Panel;
@@ -152,7 +151,7 @@ public class FloatingSlider extends CompositeWidget {
 	 *            The cause event
 	 */
 	protected void onMouseDown(final MouseDownEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		while (true) {
 			final Element target = event.getTarget();
@@ -175,7 +174,7 @@ public class FloatingSlider extends CompositeWidget {
 	}
 
 	protected void onBackgroundMouseDown(final MouseDownEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		final Widget handle = this.getHandle();
 		final Element widget = this.getElement();
@@ -195,7 +194,7 @@ public class FloatingSlider extends CompositeWidget {
 	 * @param event
 	 */
 	protected void onHandleMouseDown(final MouseDownEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		if (false == this.hasDraggingEventPreview()) {
 			Selection.clearAnySelectedText();
@@ -220,7 +219,7 @@ public class FloatingSlider extends CompositeWidget {
 	private EventPreview draggingEventPreview;
 
 	protected EventPreview getDraggingEventPreview() {
-		ObjectHelper.checkNotNull("field:draggingEventPreview", draggingEventPreview);
+		Checker.notNull("field:draggingEventPreview", draggingEventPreview);
 		return this.draggingEventPreview;
 	}
 
@@ -229,7 +228,7 @@ public class FloatingSlider extends CompositeWidget {
 	}
 
 	protected void setDraggingEventPreview(final EventPreview draggingEventPreview) {
-		ObjectHelper.checkNotNull("parameter:draggingEventPreview", draggingEventPreview);
+		Checker.notNull("parameter:draggingEventPreview", draggingEventPreview);
 		this.draggingEventPreview = draggingEventPreview;
 	}
 
@@ -367,7 +366,7 @@ public class FloatingSlider extends CompositeWidget {
 	}
 
 	protected void onHandleMouseMove(final MouseMoveEvent event) {
-		ObjectHelper.checkNotNull("parameter:event", event);
+		Checker.notNull("parameter:event", event);
 
 		final Element sliderElement = this.getElement();
 		final int widgetX = DOM.getAbsoluteLeft(sliderElement);
@@ -429,7 +428,7 @@ public class FloatingSlider extends CompositeWidget {
 			this.setTimer(timer);
 		}
 
-		ObjectHelper.checkNotNull("field:timer", timer);
+		Checker.notNull("field:timer", timer);
 		return timer;
 	}
 
@@ -438,7 +437,7 @@ public class FloatingSlider extends CompositeWidget {
 	}
 
 	protected void setTimer(final HandleSlidingTimer timer) {
-		ObjectHelper.checkNotNull("parameter:timer", timer);
+		Checker.notNull("parameter:timer", timer);
 		this.timer = timer;
 	}
 
@@ -492,12 +491,12 @@ public class FloatingSlider extends CompositeWidget {
 	private int mouseDownRepeatRate;
 
 	public int getMouseDownRepeatRate() {
-		PrimitiveHelper.checkGreaterThan("field:mouseDownRepeatRate", 0, mouseDownRepeatRate);
+		Checker.greaterThan("field:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		return this.mouseDownRepeatRate;
 	}
 
 	public void setMouseDownRepeatRate(final int mouseDownRepeatRate) {
-		PrimitiveHelper.checkGreaterThan("parameter:mouseDownRepeatRate", 0, mouseDownRepeatRate);
+		Checker.greaterThan("parameter:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		this.mouseDownRepeatRate = mouseDownRepeatRate;
 	}
 
@@ -529,7 +528,7 @@ public class FloatingSlider extends CompositeWidget {
 
 	public void setXValue(final int xValue) {
 		final int maximumValue = this.getMaximumXValue();
-		PrimitiveHelper.checkBetween("parameter:xValue", xValue, 0, maximumValue + 1);
+		Checker.between("parameter:xValue", xValue, 0, maximumValue + 1);
 
 		this.xValue = xValue;
 
@@ -552,12 +551,12 @@ public class FloatingSlider extends CompositeWidget {
 	private int maximumXValue;
 
 	public int getMaximumXValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumXValue", 0, maximumXValue);
+		Checker.greaterThanOrEqual("field:maximumXValue", 0, maximumXValue);
 		return this.maximumXValue;
 	}
 
 	public void setMaximumXValue(final int maximumXValue) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumXValue", 0, maximumXValue);
+		Checker.greaterThanOrEqual("parameter:maximumXValue", 0, maximumXValue);
 		this.maximumXValue = maximumXValue;
 	}
 
@@ -567,12 +566,12 @@ public class FloatingSlider extends CompositeWidget {
 	private int deltaX;
 
 	public int getDeltaX() {
-		PrimitiveHelper.checkGreaterThan("field:deltaX", 0, deltaX);
+		Checker.greaterThan("field:deltaX", 0, deltaX);
 		return this.deltaX;
 	}
 
 	public void setDeltaX(final int xDelta) {
-		PrimitiveHelper.checkGreaterThan("parameter:deltaX", 0, xDelta);
+		Checker.greaterThan("parameter:deltaX", 0, xDelta);
 		this.deltaX = xDelta;
 	}
 
@@ -587,7 +586,7 @@ public class FloatingSlider extends CompositeWidget {
 
 	public void setYValue(final int yValue) {
 		final int maximumValue = this.getMaximumYValue();
-		PrimitiveHelper.checkBetween("parameter:yValue", yValue, 0, maximumValue + 1);
+		Checker.between("parameter:yValue", yValue, 0, maximumValue + 1);
 
 		this.yValue = yValue;
 
@@ -610,12 +609,12 @@ public class FloatingSlider extends CompositeWidget {
 	private int maximumYValue;
 
 	public int getMaximumYValue() {
-		PrimitiveHelper.checkGreaterThanOrEqual("field:maximumYValue", 0, this.maximumYValue);
+		Checker.greaterThanOrEqual("field:maximumYValue", 0, this.maximumYValue);
 		return this.maximumYValue;
 	}
 
 	public void setMaximumYValue(final int maximumYValue) {
-		PrimitiveHelper.checkGreaterThanOrEqual("parameter:maximumYValue", 0, maximumYValue);
+		Checker.greaterThanOrEqual("parameter:maximumYValue", 0, maximumYValue);
 		this.maximumYValue = maximumYValue;
 	}
 
@@ -625,12 +624,12 @@ public class FloatingSlider extends CompositeWidget {
 	private int deltaY;
 
 	public int getDeltaY() {
-		PrimitiveHelper.checkGreaterThan("field:deltaY", 0, deltaY);
+		Checker.greaterThan("field:deltaY", 0, deltaY);
 		return this.deltaY;
 	}
 
 	public void setDeltaY(final int yDelta) {
-		PrimitiveHelper.checkGreaterThan("parameter:deltaY", 0, yDelta);
+		Checker.greaterThan("parameter:deltaY", 0, yDelta);
 		this.deltaY = yDelta;
 	}
 

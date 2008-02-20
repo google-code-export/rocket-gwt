@@ -17,7 +17,7 @@ package rocket.generator.rebind.methodparameter;
 
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.util.AbstractParameter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * Convenient base for any parameter implementation.
@@ -32,7 +32,7 @@ abstract public class AbstractMethodParameter extends AbstractParameter implemen
 	private Method enclosingMethod;
 
 	public Method getEnclosingMethod() {
-		ObjectHelper.checkNotNull("field:enclosingMethod", enclosingMethod);
+		Checker.notNull("field:enclosingMethod", enclosingMethod);
 		return enclosingMethod;
 	}
 
@@ -41,7 +41,7 @@ abstract public class AbstractMethodParameter extends AbstractParameter implemen
 	}
 
 	protected void setEnclosingMethod(final Method enclosingMethod) {
-		ObjectHelper.checkNotNull("field:enclosingMethod", enclosingMethod);
+		Checker.notNull("field:enclosingMethod", enclosingMethod);
 		this.enclosingMethod = enclosingMethod;
 	}
 

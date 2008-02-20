@@ -28,9 +28,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import rocket.util.client.ObjectHelper;
-import rocket.util.client.StringHelper;
-import rocket.util.server.IoHelper;
+import rocket.util.client.Checker;
+import rocket.util.client.Tester;
+import rocket.util.server.InputOutput;
 import rocket.util.server.UncheckedIOException;
 import rocket.widget.test.viewport.client.ViewportTestConstants;
 
@@ -102,13 +102,13 @@ public class TileMakingServlet extends HttpServlet {
 			this.log(request, "Failed to write tile, " + caught.getMessage());
 			throw caught;
 		} finally {
-			IoHelper.closeIfNecessary(output);
+			InputOutput.closeIfNecessary(output);
 		}
 	}
 
 	protected int getIntegerParameter(final HttpServletRequest request, final String name) throws ServletException {
 		final String string = request.getParameter(name);
-		if (StringHelper.isNullOrEmpty(string)) {
+		if (Tester.isNullOrEmpty(string)) {
 			throw new ServletException("Unable to find parameter \"" + name + "\".");
 		}
 		try {
@@ -127,7 +127,7 @@ public class TileMakingServlet extends HttpServlet {
 		if (false == this.hasImage()) {
 			this.setImage(this.loadImage());
 		}
-		ObjectHelper.checkNotNull("field:image", image);
+		Checker.notNull("field:image", image);
 		return image;
 	}
 
@@ -136,7 +136,7 @@ public class TileMakingServlet extends HttpServlet {
 	}
 
 	protected void setImage(final BufferedImage image) {
-		ObjectHelper.checkNotNull("parameter:image", image);
+		Checker.notNull("parameter:image", image);
 		this.image = image;
 	}
 

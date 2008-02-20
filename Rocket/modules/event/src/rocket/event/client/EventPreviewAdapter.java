@@ -15,7 +15,7 @@
  */
 package rocket.event.client;
 
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.user.client.DOM;
 
@@ -69,7 +69,7 @@ public class EventPreviewAdapter extends EventDispatcher implements com.google.g
 												// ???
 
 		} finally {
-			ObjectHelper.destroyIfNecessary(event);
+			Utilities.destroyIfNecessary(event);
 		}
 
 		return !cancelled;

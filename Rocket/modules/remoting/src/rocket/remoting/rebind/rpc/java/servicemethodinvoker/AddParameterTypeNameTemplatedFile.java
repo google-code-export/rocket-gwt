@@ -20,7 +20,7 @@ import java.io.InputStream;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.methodparameter.MethodParameter;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the add parameter typename template
@@ -47,12 +47,12 @@ class AddParameterTypeNameTemplatedFile extends TemplatedFileCodeBlock {
 	private MethodParameter parameter;
 
 	protected MethodParameter getParameter() {
-		ObjectHelper.checkNotNull("field:parameter", parameter);
+		Checker.notNull("field:parameter", parameter);
 		return this.parameter;
 	}
 
 	public void setParameter(final MethodParameter parameter) {
-		ObjectHelper.checkNotNull("parameter:parameter", parameter);
+		Checker.notNull("parameter:parameter", parameter);
 		this.parameter = parameter;
 	}
 
@@ -61,7 +61,7 @@ class AddParameterTypeNameTemplatedFile extends TemplatedFileCodeBlock {
 	}
 	
 	public InputStream getInputStream(){
-		return super.getInputStream(); // TODO DELETE when merged into parent template package.
+		return super.getInputStream();
 	}
 
 	protected Object getValue0(final String name) {

@@ -24,13 +24,11 @@ import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.StringLiteral;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the request-parameters-transport-invoker template file.
@@ -49,12 +47,12 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 	private Type serializationFactoryComposer;
 
 	protected Type getSerializationFactoryComposer() {
-		ObjectHelper.checkNotNull("field:serializationFactoryComposer", serializationFactoryComposer);
+		Checker.notNull("field:serializationFactoryComposer", serializationFactoryComposer);
 		return this.serializationFactoryComposer;
 	}
 
 	public void setSerializationFactoryComposer(final Type serializationFactoryComposer) {
-		ObjectHelper.checkNotNull("parameter:serializationFactoryComposer", serializationFactoryComposer);
+		Checker.notNull("parameter:serializationFactoryComposer", serializationFactoryComposer);
 		this.serializationFactoryComposer = serializationFactoryComposer;
 	}
 
@@ -64,12 +62,12 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 	private Type serviceInterface;
 
 	protected Type getServiceInterface() {
-		ObjectHelper.checkNotNull("field:serviceInterface", serviceInterface);
+		Checker.notNull("field:serviceInterface", serviceInterface);
 		return this.serviceInterface;
 	}
 
 	public void setServiceInterface(final Type serviceInterface) {
-		ObjectHelper.checkNotNull("parameter:serviceInterface", serviceInterface);
+		Checker.notNull("parameter:serviceInterface", serviceInterface);
 		this.serviceInterface = serviceInterface;
 	}
 
@@ -79,12 +77,12 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 	private Method method;
 
 	protected Method getMethod() {
-		ObjectHelper.checkNotNull("field:method", method);
+		Checker.notNull("field:method", method);
 		return this.method;
 	}
 
 	public void setMethod(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 		this.method = method;
 	}
 
@@ -94,12 +92,12 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 	private List parameters;
 
 	protected List getParameters() {
-		ObjectHelper.checkNotNull("parameters:parameters", parameters);
+		Checker.notNull("parameters:parameters", parameters);
 		return this.parameters;
 	}
 
 	public void setParameters(final List parameters) {
-		ObjectHelper.checkNotNull("parameter:parameters", parameters);
+		Checker.notNull("parameter:parameters", parameters);
 		this.parameters = parameters;
 	}
 

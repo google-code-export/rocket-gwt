@@ -1,3 +1,18 @@
+/*
+ * Copyright Miroslav Pokorny
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package rocket.widget.test.htmltemplatefactory.client;
 
 import rocket.dom.client.Dom;
@@ -498,11 +513,137 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 	static interface FormHtmlTemplateFactory extends HtmlTemplateFactory {
 		/**
 		 * @id testForm
-		 * @return
+		 * @return The form bound to a FORM element within the DOM
 		 */
 		FormPanel getForm();
 	}
+	
+	public void testIncludesHtmlFile(){
+		final HasOnlyHtml template = (HasOnlyHtml )GWT.create( HasOnlyHtml.class );
+		final Html html = template.getHtml();
+		final String expected = "Lorem";
+		final String actual = html.getHtml();
+		assertEquals( expected, actual );
+	}
 
+	static interface HasOnlyHtml extends HtmlTemplateFactory{
+		/**
+		 * @file html.txt
+		 * @return A new Html file containing the entire contents of the text file.
+		 */
+		Html getHtml();
+	}
+	
+	public void testTemplateIncludesAValue(){
+		final HasHtmlAndValue template = (HasHtmlAndValue) GWT.create( HasHtmlAndValue.class );
+		final Html html = template.getHtml();
+		final String expected = "Lorem";
+		final String actual = html.getHtml();
+		assertEquals( expected, actual );
+	}
+	
+
+	static interface HasHtmlAndValue extends HtmlTemplateFactory{
+		/**
+		 * @file value.txt
+		 * @return A new Html file containing the entire contents of the text file.
+		 */
+		Html getHtml();
+	}
+
+	public void testTemplateFileIncludesJavaCode(){
+		final HasHtmlAndJava template = (HasHtmlAndJava) GWT.create( HasHtmlAndJava.class );
+		final Html html = template.getHtml();
+		final String expected = "Lorem 12345 Ipsum";
+		final String actual = html.getHtml();
+		assertEquals( expected, actual );
+	}
+	
+
+	static interface HasHtmlAndJava extends HtmlTemplateFactory{
+		/**
+		 * @file html-with-java.txt
+		 * @return A new Html file containing the entire contents of the text file.
+		 */
+		Html getHtml();
+	}
+
+	public void testTemplateReferencesASingleParameter(){
+		final HasHtmlAndReferencesParameter template = (HasHtmlAndReferencesParameter) GWT.create( HasHtmlAndReferencesParameter.class );
+		
+		for( int i = 0; i < 10; i++ ){
+			final Html html = template.getHtml( i );
+			final String expected = "" + i;
+			final String actual = html.getHtml();
+			assertEquals( expected, actual );			
+		}
+	}
+	
+
+	static interface HasHtmlAndReferencesParameter extends HtmlTemplateFactory{
+		/**
+		 * @file parameter.txt
+		 * @return A new Html file containing the entire contents of the text file.
+		 */
+		Html getHtml( int value );
+	}
+
+	public void testTemplateReferencesParameters(){
+		final HasHtmlAndReferencesParameters template = (HasHtmlAndReferencesParameters) GWT.create( HasHtmlAndReferencesParameters.class );
+		
+		final boolean booleanValue = true;
+		final byte byteValue = 1;
+		final short shortValue = 2;
+		final int intValue = 3;
+		final long longValue = 4;
+		final float floatValue = 5;
+		final double doubleValue = 6;
+		final char charValue = 7;
+		final String string = "apple";
+		final Object object = "banana";
+		
+			final Html html = template.getHtml( booleanValue, byteValue, shortValue, intValue, longValue, floatValue, doubleValue, charValue, string, object );
+			final String expected = "Lorem " + booleanValue + byteValue + shortValue + intValue + longValue + floatValue + doubleValue + charValue + string + object;
+			final String actual = html.getHtml();
+			assertEquals( expected, actual );			
+	}
+	
+
+	static interface HasHtmlAndReferencesParameters extends HtmlTemplateFactory{
+		/**
+		 * @file parameters.txt
+		 * @return A new Html file containing the entire contents of the text file.
+		 */
+		Html getHtml( boolean booleanValue, byte byteValue, short shortValue, int intValue, long longValue, float floatValue, double doubleValue, char charValue, String string, Object object );
+	}
+	
+
+	public void testComplexTemplate(){
+		final Complex template = (Complex) GWT.create( Complex.class );
+		
+		for( int i = 0; i < 10; i++ ){			
+			final Html html = template.getHtml( i );			
+			final String actual = html.getHtml().replaceAll( "\n\r", "\n" ).replace('\r', '\n');
+			
+			assertTrue( actual, actual.indexOf( "Lorem") != -1 );
+			
+			for( int j = 0; j < i; j++ ){
+				assertTrue( actual, actual.indexOf( String.valueOf( j )) != -1 );	
+			}
+			
+		}			
+	}
+	
+
+	static interface Complex extends HtmlTemplateFactory{
+		/**
+		 * @file complex.txt
+		 * @return A new Html file containing the entire contents of the text file.
+		 */
+		Html getHtml( int i );
+	}
+
+	
 	/**
 	 * A simple template that makes it easy to test wrapping of an elemetn
 	 */
@@ -595,8 +736,8 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			assertNotNull(DOM.getParent(element));
 		}
 	}
-
+	
 	static void log(final String message) {
-		// System.out.println( message );
+		 System.out.println( message );
 	}
 }

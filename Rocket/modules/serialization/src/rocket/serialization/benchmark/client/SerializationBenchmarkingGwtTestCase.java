@@ -25,9 +25,8 @@ import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.SerializationFactory;
 import rocket.serialization.client.SerializationFactoryComposer;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Tester;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -339,13 +338,13 @@ public class SerializationBenchmarkingGwtTestCase extends GWTTestCase {
 				}
 				
 				final Tree otherTree = (Tree)otherObject;
-				if( false == ObjectHelper.nullSafeEquals( this.apple, otherTree.apple )){
+				if( false == Tester.nullSafeEquals( this.apple, otherTree.apple )){
 					break;
 				}
-				if( false == ObjectHelper.nullSafeEquals( this.banana, otherTree.banana )){
+				if( false == Tester.nullSafeEquals( this.banana, otherTree.banana )){
 					break;
 				}
-				if( false == ObjectHelper.nullSafeEquals( this.superBanana, otherTree.superBanana )){
+				if( false == Tester.nullSafeEquals( this.superBanana, otherTree.superBanana )){
 					break;
 				}
 				if( this != this.tree || otherTree != otherTree.tree ){
@@ -384,7 +383,7 @@ public class SerializationBenchmarkingGwtTestCase extends GWTTestCase {
 		/**
 		 * Need to tell both generators the element type of the list.
 		 * @gwt.typeArgs <rocket.serialization.benchmark.client.SerializationBenchmarkingGwtTestCase.Pest>
-		 * @serialization-listElementType rocket.serialization.benchmark.client.SerializationBenchmarkingGwtTestCase.Pest
+		 * @serialization-type rocket.serialization.benchmark.client.SerializationBenchmarkingGwtTestCase.Pest
 		 */
 		List pests;
 		
@@ -434,7 +433,7 @@ public class SerializationBenchmarkingGwtTestCase extends GWTTestCase {
 			if( otherObject instanceof Worm ){
 				final Worm otherWorm = (Worm) otherObject;
 				if( this.legless == otherWorm.legless ){
-					same = ObjectHelper.nullSafeEquals( this.text, otherWorm.text );
+					same = Tester.nullSafeEquals( this.text, otherWorm.text );
 				}				
 			}
 			

@@ -23,12 +23,10 @@ import java.util.List;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlock;
-import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
-import rocket.util.client.ObjectHelper;
+import rocket.util.client.Checker;
 
 /**
  * An abstraction for the build-candidates.txt template
@@ -53,12 +51,12 @@ public class BuildCandidatesTemplatedFile extends TemplatedFileCodeBlock {
 	private List testMethods;
 
 	protected List getTestMethods() {
-		ObjectHelper.checkNotNull("field:testMethods", testMethods);
+		Checker.notNull("field:testMethods", testMethods);
 		return this.testMethods;
 	}
 
 	protected void setTestMethods(final List testMethods) {
-		ObjectHelper.checkNotNull("parameter:testMethods", testMethods);
+		Checker.notNull("parameter:testMethods", testMethods);
 		this.testMethods = testMethods;
 	}
 
@@ -67,7 +65,7 @@ public class BuildCandidatesTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	public void addTestMethod(final Method method) {
-		ObjectHelper.checkNotNull("parameter:method", method);
+		Checker.notNull("parameter:method", method);
 
 		this.getTestMethods().add(method);
 	}
@@ -107,12 +105,12 @@ public class BuildCandidatesTemplatedFile extends TemplatedFileCodeBlock {
 	private Type testRunner;
 
 	protected Type getTestRunner() {
-		ObjectHelper.checkNotNull("field:testRunner", testRunner);
+		Checker.notNull("field:testRunner", testRunner);
 		return this.testRunner;
 	}
 
 	public void setTestRunner(final Type testRunner) {
-		ObjectHelper.checkNotNull("parameter:testRunner", testRunner);
+		Checker.notNull("parameter:testRunner", testRunner);
 		this.testRunner = testRunner;
 	}
 
