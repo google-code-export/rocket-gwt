@@ -1,3 +1,0 @@
-// /rocket/serialization/rebind/write/write-long-field.txt
-
-objectOutputStream.writeLong( this.${getter}( instance ) );

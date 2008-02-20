@@ -1,4 +1,0 @@
-// /rocket/beans/rebind/aop/unwrapparameter/char.txt
-
-chain.getCharParameter( ${parameterIndex} )
-

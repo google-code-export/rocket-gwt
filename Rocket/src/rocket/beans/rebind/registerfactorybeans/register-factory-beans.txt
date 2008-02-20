@@ -1,4 +1,0 @@
-// /rocket/beans/rebind/registerbeans/registerFactoryBeans.txt
-
-// register each and every bean.
-${registerBeans}

@@ -1,5 +1,0 @@
-// /rocket/widget/rebind/imagefactory/create-image.txt
-
-return new rocket.widget.client.Image( ${url} );
-
-

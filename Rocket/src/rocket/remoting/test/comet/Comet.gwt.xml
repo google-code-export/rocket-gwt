@@ -1,8 +1,0 @@
-<module>
-	<inherits name="rocket.remoting.Remoting" />	
-	<inherits name="rocket.style.Style" />	
-	<inherits name="rocket.util.Util" />	
-	
-	<entry-point class="rocket.remoting.test.comet.client.CometTest" />
-	<servlet path="/cometServer" class="rocket.remoting.test.comet.server.TestCometObjectStreamingServlet"/>	
-</module>

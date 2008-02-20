@@ -1,8 +1,0 @@
-// /rocket/beans/rebind/invokemethod/invoke-method.txt
-
-// cast the instance parameter to ${type}
-final ${type} instance0 = (${type}) instance;
-
-// invoke the no arguments public method.
-instance0.${method}();
-

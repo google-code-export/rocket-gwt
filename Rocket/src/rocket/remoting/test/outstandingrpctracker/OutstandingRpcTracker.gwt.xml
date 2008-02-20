@@ -1,6 +1,0 @@
-<module>	
-	<inherits name="com.google.gwt.user.User" />
-	<inherits name="rocket.remoting.Remoting" />	
-	<inherits name="rocket.remoting.Style" />		
-	<entry-point class="rocket.remoting.test.outstandingrpctracker.client.OutstandingRpcTrackerTest" />
-</module>
