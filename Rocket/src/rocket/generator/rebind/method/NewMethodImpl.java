@@ -27,7 +27,6 @@ import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.metadata.MetaData;
-import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.methodparameter.NewMethodParameterImpl;
 import rocket.generator.rebind.type.Type;
@@ -225,7 +224,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	public void write(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
-		this.log();
+		this.writeLogger();
 
 		this.writeComments(writer);
 		this.writeDeclaration(writer);
@@ -244,45 +243,8 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		}
 	}
 
-	protected void log() {
-		final StringBuffer buf = new StringBuffer();
-		
-		if( this.isFinal() ){
-			buf.append( "final ");
-		}
-		if( this.isAbstract() ){
-			buf.append( "abstract ");
-		}
-		if( this.isStatic() ){
-			buf.append( "static ");
-		}
-		if( this.isNative() ){
-			buf.append( "native ");
-		}
-		buf.append( this.getVisibility().toString() );
-		buf.append( ' ');// Yes package private methods will have two spaces here...
-		
-		final Type returnType = this.getReturnType();
-		buf.append( returnType.getName() );
-		buf.append( ' ');		
-		
-		buf.append( this.getName() );
-		buf.append( '(');
-		
-		final Iterator parameters = this.getParameters().iterator();
-		while( parameters.hasNext() ){
-			final MethodParameter parameter = (MethodParameter)parameters.next();
-			final Type parameterType = parameter.getType();
-			buf.append( parameterType.getName() );
-			
-			if( parameters.hasNext() ){
-				buf.append( ',');
-			}
-		}
-		
-		buf.append( ')');		
-		
-		this.getGeneratorContext().debug( buf.toString() );
+	protected void writeLogger() {
+		this.getGeneratorContext().debug( this.toString() );
 	}
 
 	protected void writeComments( final SourceWriter writer ){		
