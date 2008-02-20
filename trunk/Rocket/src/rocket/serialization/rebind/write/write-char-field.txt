@@ -1,4 +1,0 @@
-// /rocket/serialization/rebind/write/write-char-field.txt
-
-objectOutputStream.writeChar( this.${getter}( instance ) );
-

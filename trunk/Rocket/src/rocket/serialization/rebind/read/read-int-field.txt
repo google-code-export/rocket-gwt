@@ -1,4 +1,0 @@
-// /rocket/serialization/rebind/read/read-int-field.txt
-
-this.${setter}( instance, objectInputStream.readInt() );
-

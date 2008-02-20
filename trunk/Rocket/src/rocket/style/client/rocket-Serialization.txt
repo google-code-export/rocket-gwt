@@ -1,3 +1,0 @@
-# rocket.style
-rocket.style.client.*
-rocket.style.client.support.*

@@ -1,8 +1,0 @@
-// /rocket/serialization/rebind/write/write0.txt
-
-this.writeFields( 
-	/* cast to ${type} */
-	(${type}) instance, 
-	/* pass thru oos */
-	objectOutputStream );
-

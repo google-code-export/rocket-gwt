@@ -1,4 +1,0 @@
-// /rocket/beans/rebind/constructor/constructor.txt
-
-return new ${constructor}(${constructorArguments});
-

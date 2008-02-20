@@ -1,2 +1,0 @@
-# rocket.messaging
-rocket.messaging.client.MessageBroker

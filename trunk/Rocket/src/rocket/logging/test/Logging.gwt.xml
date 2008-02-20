@@ -1,7 +1,0 @@
-<module>
-	<inherits name="com.google.gwt.junit.JUnit"/>
-	<inherits name="rocket.logging.Logging"/>
-	
-	<source path="client" />
-</module>
-

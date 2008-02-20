@@ -1,8 +1,0 @@
-// /rocket/serialization/rebind/read/read-fields.txt
-
-// read and then set all the individual fields...
-${readAndSetIndividualFields}
-
-// now read super types fields...
-super.readFields( instance, objectInputStream );
-

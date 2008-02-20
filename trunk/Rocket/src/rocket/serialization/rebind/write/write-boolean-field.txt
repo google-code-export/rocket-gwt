@@ -1,4 +1,0 @@
-// /rocket/serialization/rebind/write/write-boolean-field.txt
-
-objectOutputStream.writeBoolean( this.${getter}( instance ) );
-

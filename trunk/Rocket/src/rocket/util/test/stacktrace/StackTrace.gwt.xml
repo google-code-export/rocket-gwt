@@ -1,8 +1,0 @@
-<module>
-	<inherits name="rocket.util.Util" />	
-	
-	<entry-point class="rocket.util.test.stacktrace.client.StackTraceTest" />
-	<servlet 
-		path="/throwsException" 
-		class="rocket.util.test.stacktrace.server.StackTraceServiceImplServlet"/>	
-</module>

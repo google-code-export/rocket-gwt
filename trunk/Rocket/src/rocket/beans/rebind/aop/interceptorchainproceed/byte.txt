@@ -1,5 +1,0 @@
-// /rocket/beans/rebind/aop/interceptorchainproceed/byte.txt
-
-// invokes the interceptor chain, unwrapping Byte because the method return type is byte
-return chain.proceedReturningByte();
-

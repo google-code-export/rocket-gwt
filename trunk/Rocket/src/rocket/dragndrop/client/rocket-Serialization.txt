@@ -1,2 +1,0 @@
-# rocket.dragndrop
-rocket.dragndrop.client.*

@@ -1,2 +1,0 @@
-# rocket.cookie
-rocket.cookie.client.*
