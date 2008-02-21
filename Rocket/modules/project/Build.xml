@@ -103,6 +103,9 @@
 			<fileset dir="${modules-dir}/generator/src">
 				<include name="**" />
 			</fileset>
+			<fileset dir="${modules-dir}/json/src">
+				<include name="**" />
+			</fileset>
 			<fileset dir="${modules-dir}/logging/src">
 				<include name="**" />
 			</fileset>
@@ -119,6 +122,9 @@
 				<include name="**" />
 			</fileset>
 			<fileset dir="${modules-dir}/style/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/testing/src">
 				<include name="**" />
 			</fileset>
 			<fileset dir="${modules-dir}/text/src">
@@ -211,20 +217,6 @@
 			</fileset>
 		</jar>
 		
-		<!--
-		*** build a jar file that contains the compiler modifications/enhancements ***
-		-->
-		
-		<jar destfile="${build-dir}/Rocket-compiler.jar">
-			<fileset dir="${bin-dir}">
-				<include name="com/google/gwt/**"/>
-			</fileset>
-			<fileset dir="${txt-dir}">
-				<include name="release-notes.txt"/>
-				<include name="Rocket-stacktrace-jar-readme.txt"/>
-				<include name="license.txt"/>
-			</fileset>
-		</jar>		
 	</target>
 
 	<!--
@@ -420,7 +412,7 @@
 		</delete>
 	</target>
 
-	<target name="dist"	depends="clean,compile,test,gwt-compile-all,javadoc,package"  description="Package a release including compiled classes, source files, javadoc and generated html.">
+	<target name="dist"	depends="clean,compile,test,gwt-compile-all,javadoc,package" description="Package a release including compiled classes, source files, javadoc and generated html.">
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>
 		<delete failonerror="no" file="${build-dir}/${release-archive-name}" />
 		<zip 	whenempty="create"	destfile="${build-dir}/${release-archive-name}" >
@@ -431,10 +423,7 @@
 			<fileset dir="${basedir}/..">
 				<include name="Rocket/.classpath"/>					
 				<include name="Rocket/.project"/>	
-				<include name="${modules}/project/build.xml"/>								
-				<include name="${modules}/project/demos.html"/>												
-				<include name="Rocket/bin/**/*.*"/>
-				<include name="Rocket/src/**/*.*"/>					
+				<include name="Rocket/modules/**/*.*"/>					
 				<include name="Rocket/txt/**/*.*"/>								
 			</fileset>
 
@@ -503,7 +492,7 @@ FIXME Fails with
 		
 	</target>
 
-	<target name="test-junit-testcases" 	depends="compile" description="Runs all JUnit test cases">
+	<target name="test-junit-testcases" 	depends="compile" description="Runs all JUnit test cases producing reports noting results.">
 		<taskdef 	name="junit"	classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
 			<classpath>
 		    	<pathelement path="${junit-dir}/junit.jar"/>
