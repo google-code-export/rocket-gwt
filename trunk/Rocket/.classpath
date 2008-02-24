@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="src" path="modules/beans/src"/>
-	<classpathentry exported="true" kind="src" path="modules/browser/src"/>
-	<classpathentry exported="true" kind="src" path="modules/collection/src"/>
-	<classpathentry exported="true" kind="src" path="modules/cookies/src"/>
-	<classpathentry exported="true" kind="src" path="modules/dom/src"/>
-	<classpathentry exported="true" kind="src" path="modules/dragndrop/src"/>
-	<classpathentry exported="true" kind="src" path="modules/event/src"/>
-	<classpathentry exported="true" kind="src" path="modules/generator/src"/>
-	<classpathentry exported="true" kind="src" path="modules/gwt/src"/>
-	<classpathentry exported="true" kind="src" path="modules/json/src"/>
-	<classpathentry exported="true" kind="src" path="modules/logging/src"/>
-	<classpathentry exported="true" kind="src" path="modules/messaging/src"/>
-	<classpathentry exported="true" kind="src" path="modules/project/src"/>
-	<classpathentry exported="true" kind="src" path="modules/remoting/src"/>
-	<classpathentry exported="true" kind="src" path="modules/selection/src"/>
-	<classpathentry exported="true" kind="src" path="modules/serialization/src"/>
-	<classpathentry exported="true" kind="src" path="modules/style/src"/>
-	<classpathentry exported="true" kind="src" path="modules/testing/src"/>
-	<classpathentry exported="true" kind="src" path="modules/text/src"/>
-	<classpathentry exported="true" kind="src" path="modules/util/src"/>
-	<classpathentry exported="true" kind="src" path="modules/widget/src"/>
+	<classpathentry kind="src" path="modules/beans/src"/>
+	<classpathentry kind="src" path="modules/browser/src"/>
+	<classpathentry kind="src" path="modules/collection/src"/>
+	<classpathentry kind="src" path="modules/cookies/src"/>	
+	<classpathentry kind="src" path="modules/compiler/src"/>
+	<classpathentry kind="src" path="modules/dom/src"/>
+	<classpathentry kind="src" path="modules/dragndrop/src"/>
+	<classpathentry kind="src" path="modules/event/src"/>
+	<classpathentry kind="src" path="modules/generator/src"/>
+	<classpathentry kind="src" path="modules/gwt/src"/>
+	<classpathentry kind="src" path="modules/json/src"/>
+	<classpathentry kind="src" path="modules/logging/src"/>
+	<classpathentry kind="src" path="modules/messaging/src"/>
+	<classpathentry kind="src" path="modules/project/src"/>
+	<classpathentry kind="src" path="modules/remoting/src"/>
+	<classpathentry kind="src" path="modules/selection/src"/>
+	<classpathentry kind="src" path="modules/serialization/src"/>
+	<classpathentry kind="src" path="modules/style/src"/>
+	<classpathentry kind="src" path="modules/testing/src"/>
+	<classpathentry kind="src" path="modules/text/src"/>
+	<classpathentry kind="src" path="modules/util/src"/>
+	<classpathentry kind="src" path="modules/widget/src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="var" path="JUNIT_HOME/junit.jar"/>
 	<classpathentry exported="true" kind="var" path="GWT_HOME/gwt-user.jar"/>
