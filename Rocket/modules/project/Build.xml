@@ -22,6 +22,7 @@
 	<property name="log4j-dir" 				location="${lib-dir}/apache/log4j/1.2.15/"/>	
 	<property name="commons-logging-dir"	location="${lib-dir}/apache/commons-logging/1.1.1/"/>		
 	<property name="modules-dir"			location="${basedir}/modules/"/>			
+	<property name="temp-dir"				location="${build-dir}/temp/"/>			
 
 	<path id="project.class.path">
 		<pathelement path="${src-dir}"/>
@@ -167,6 +168,7 @@
 		<!--
 		*** Builds a jar that contains the core classes required to author a GWT application ***
 		-->
+		<copy file="${txt-dir}/Rocket-jar-readme.txt" tofile="${temp-dir}/README.txt" overwrite="true"/>
 		<jar destfile="${build-dir}/Rocket.jar">
 			<fileset dir="${bin-dir}">
 				<exclude name="com/google/gwt/emul/java/lang/StackTraceElement.class"/>
@@ -188,9 +190,11 @@
 				<include name="**/*.txt"/>				
 				<include name="**/*.xml"/>					
 			</fileset>
+			<fileset dir="${temp-dir}">
+				<include name="README.txt"/>
+			</fileset>	
 			<fileset dir="${txt-dir}">
 				<include name="release-notes.txt"/>
-				<include name="Rocket-jar-readme.txt"/>
 				<include name="license.txt"/>
 				<include name="dependencies.txt"/>				
 			</fileset>
@@ -199,6 +203,7 @@
 		<!--
 		*** Build a jar that contains the classes related to web mode stack traces ***
 		-->
+		<copy file="${txt-dir}/Rocket-stacktrace-jar-readme.txt" tofile="${temp-dir}/README.txt" overwrite="true"/>
 		<jar destfile="${build-dir}/Rocket-stacktrace.jar">
 			<fileset dir="${bin-dir}">
 				<include name="com/google/gwt/emul/java/lang/StackTraceElement.class"/>
@@ -210,13 +215,41 @@
 				<include name="com/google/gwt/emul/java/lang/Throwable.java"/>
 				<include name="rocket/util/client/ThrowableHelper.java"/>				
 			</fileset>
+			<fileset dir="${temp-dir}">
+				<include name="README.txt"/>
+			</fileset>	
 			<fileset dir="${txt-dir}">
 				<include name="release-notes.txt"/>
-				<include name="Rocket-stacktrace-jar-readme.txt"/>
 				<include name="license.txt"/>
+				<include name="dependencies.txt"/>				
 			</fileset>
 		</jar>
 		
+		<!--
+		*** Build a jar that contains the classes the compiler related classes ***
+		-->
+		<copy file="${txt-dir}/Rocket-compiler-jar-readme.txt" tofile="${temp-dir}/README.txt" overwrite="true"/>
+		<jar destfile="${build-dir}/Rocket-compiler.jar">
+			<fileset dir="${bin-dir}">
+				<include name="rocket/compiler/*.class"/>
+				<include name="com/google/gwt/GWTCompiler.class"/>
+				<include name="com/google/gwt/jjs/**.*"/>
+				<include name="com/google/gwt/js/**.*"/>
+			</fileset>
+			<fileset dir="${txt-dir}">
+				<include name="release-notes.txt"/>
+				<include name="Rocket-compiler-jar-readme.txt"/>
+				<include name="license.txt"/>
+			</fileset>
+			<fileset dir="${temp-dir}">
+				<include name="README.txt"/>
+			</fileset>	
+			<fileset dir="${txt-dir}">
+				<include name="release-notes.txt"/>
+				<include name="license.txt"/>
+				<include name="dependencies.txt"/>				
+			</fileset>
+		</jar>		
 	</target>
 
 	<!--
