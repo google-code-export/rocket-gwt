@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>RocketCompiler</name>
+	<comment>This project contains additional tests for the compiler modifications, primarily a hacked JavaToJavaScript</comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>com.ibm.sse.model.structuredbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>Rocket/modules/compiler/src</name>
+			<type>2</type>
+			<location>C:/workspace.rocket/Rocket/modules/compiler/src</location>
+		</link>
+	</linkedResources>
+</projectDescription>
