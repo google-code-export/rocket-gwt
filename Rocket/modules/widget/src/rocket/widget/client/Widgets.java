@@ -90,7 +90,7 @@ public class Widgets{
 		InlineStyle.setString(before, Css.BORDER_STYLE, "dotted" );
 		InlineStyle.setInteger(before, Css.PADDING, 4, CssUnit.PX );
 		InlineStyle.setString(before, Css.COLOR, "black" );
-		InlineStyle.setString(before, Css.WORD_SPACING, "nowrap" );
+		//InlineStyle.setString(before, Css.WORD_SPACING, "nowrap" );
 		
 		final Element body = RootPanel.getBodyElement();
 		DOM.insertChild( body, before, 0 );
