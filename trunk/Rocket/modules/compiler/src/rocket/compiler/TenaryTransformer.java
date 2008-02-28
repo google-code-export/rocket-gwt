@@ -144,15 +144,6 @@ abstract class TenaryTransformer {
 	abstract protected boolean isCompatibleAssignment( JBinaryOperator operator, TreeLogger logger ); 
 
 	/**
-	 * Extracts the source equivalent of the given node replacing newlines and carriage returns with their escaped slash equivalent.
-	 * @param node
-	 * @return
-	 */
-	protected String getSource(final JNode node) {
-		return node.toSource().replaceAll( "\n", "\\\\n" ).replaceAll( "\r", "\\\\r" );
-	}
-
-	/**
 	 * This method clones the given variable reference, returning a new instance of the same type.
 	 * 
 	 * @param source
