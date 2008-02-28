@@ -17,8 +17,7 @@
 	<inherits name="rocket.remoting.Remoting" />
 	<inherits name="rocket.selection.Selection" />	
 	<inherits name="rocket.serialization.Serialization" />		
-	<inherits name="rocket.style.Style" />	
-	<inherits name="rocket.testing.Testing"/>		
+	<inherits name="rocket.style.Style" />			
 	<inherits name="rocket.text.Text"/>
 	<inherits name="rocket.util.Util" />
 	<inherits name="rocket.widget.Widget" />		
