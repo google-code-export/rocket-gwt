@@ -56,9 +56,7 @@ import rocket.beans.rebind.xml.RethrowSaxExceptionsErrorHandler;
 import rocket.generator.rebind.Generator;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorHelper;
-import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
-import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructor.NewConstructor;
@@ -436,7 +434,7 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwPrototypesCantBeEagerlyLoaded(final Bean bean) {
-		throw new BeanFactoryGeneratorException("Prototype beans cannot be eagerly loaded (only singleton's can be), bean: " + bean);
+		throw new BeanFactoryGeneratorException("Prototype beans cannot be eagerly loaded (only singleton's can be - remove \"lazyInit\" attribute from its bean definition), bean: " + bean);
 	}
 
 	/**
