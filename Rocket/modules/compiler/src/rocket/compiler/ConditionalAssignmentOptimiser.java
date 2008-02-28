@@ -35,7 +35,7 @@ import com.google.gwt.dev.jjs.ast.JVariableRef;
  * 
  * @author Miroslav Pokorny
  */
-public class ConditionalAssignmentTransformer extends TenaryTransformer implements CompilationWorker {
+public class ConditionalAssignmentOptimiser extends TenaryTransformer implements CompilationWorker {
 
 	/**
 	 * Tests if the given if statement can be transformed into its tenary
@@ -123,7 +123,7 @@ public class ConditionalAssignmentTransformer extends TenaryTransformer implemen
 		context.replaceMe(newStatement);
 		
 		if( logger.isLoggable( TreeLogger.DEBUG )){
-			logger.log( TreeLogger.DEBUG, "Converted \"" + this.getSource( ifStatement ) + "\" into equivalent tenary statement \"" + this.getSource( newStatement ) + "\"...", null );
+			logger.log( TreeLogger.DEBUG, "Converted \"" + Compiler.getSource( ifStatement ) + "\" into equivalent tenary statement \"" + Compiler.getSource( newStatement ) + "\"...", null );
 		}
 	}
 
