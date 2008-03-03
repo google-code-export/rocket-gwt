@@ -66,8 +66,9 @@ import org.eclipse.jdt.internal.compiler.CompilationResult;
 import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
 
-import rocket.compiler.ConditionalAlternateValuesTransformer;
-import rocket.compiler.ConditionalAssignmentTransformer;
+import rocket.compiler.AlternateValuesAssignmentOptimiser;
+import rocket.compiler.AlternateValuesReturnedOptimiser;
+import rocket.compiler.ConditionalAssignmentOptimiser;
 import rocket.compiler.LongNotifier;
 import rocket.compiler.TrailingReturnRemover;
 import rocket.compiler.VariableAssignedToSelfRemover;
@@ -345,8 +346,9 @@ public class JavaToJavaScriptCompiler {
       boolean didChange;
       
       // ROCKET changes must be reapplied when upgrading GWT.
-      final ConditionalAlternateValuesTransformer conditionalAlternateValuesTransformer = new ConditionalAlternateValuesTransformer();
-      final ConditionalAssignmentTransformer conditionalAssignmentTransformer = new ConditionalAssignmentTransformer();
+      final AlternateValuesAssignmentOptimiser alternateValuesAssignmentOptimiser = new AlternateValuesAssignmentOptimiser();
+      final AlternateValuesReturnedOptimiser alternateValuesReturnedOptimiser = new AlternateValuesReturnedOptimiser();
+      final ConditionalAssignmentOptimiser conditionalAssignmentOptimiser = new ConditionalAssignmentOptimiser();
       final TrailingReturnRemover trailingReturnRemover = new TrailingReturnRemover();
       final VariableAssignedToSelfRemover variableAssignedToSelfRemover = new VariableAssignedToSelfRemover();
       
@@ -360,8 +362,9 @@ public class JavaToJavaScriptCompiler {
         }
     	pass++;
         
-        didChange = conditionalAlternateValuesTransformer.work(jprogram, logger) || didChange;
-        didChange = conditionalAssignmentTransformer.work(jprogram, logger) || didChange;        
+        didChange = alternateValuesAssignmentOptimiser.work(jprogram, logger) || didChange;
+        didChange = alternateValuesReturnedOptimiser.work(jprogram, logger) || didChange;
+        didChange = conditionalAssignmentOptimiser.work(jprogram, logger) || didChange;        
         didChange = trailingReturnRemover.work(jprogram, logger) || didChange;
         didChange = variableAssignedToSelfRemover.work(jprogram, logger) || didChange;        
         
