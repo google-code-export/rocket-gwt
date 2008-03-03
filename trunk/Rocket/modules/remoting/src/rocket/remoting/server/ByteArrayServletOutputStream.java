@@ -28,7 +28,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class ByteArrayServletOutputStream extends ServletOutputStream {
+class ByteArrayServletOutputStream extends ServletOutputStream {
 
 	public ByteArrayServletOutputStream(final int bufferSize) {
 		this.setBufferSize(bufferSize);

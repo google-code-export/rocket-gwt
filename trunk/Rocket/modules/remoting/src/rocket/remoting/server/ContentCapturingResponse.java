@@ -33,7 +33,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class ContentCapturingResponse extends HttpServletResponseWrapper {
+class ContentCapturingResponse extends HttpServletResponseWrapper {
 
 	public ContentCapturingResponse(final HttpServletResponse response) {
 		super(response);
@@ -75,13 +75,17 @@ public class ContentCapturingResponse extends HttpServletResponseWrapper {
 	}
 
 	public void addDateHeader(final String name, final long date) {
-		this.addHeader(name, WebHelper.toString(date));
+		this.addHeader(name, this.formatDateHeader(date));
 	}
 
 	public void setDateHeader(final String name, final long date) {
-		this.getHeaders().add(name, WebHelper.toString(date));
+		this.getHeaders().add(name, this.formatDateHeader(date));
 	}
 
+	protected String formatDateHeader(final long date) {
+		return String.valueOf(date);
+	}
+	
 	public void setHeader(final String name, final String value) {
 		this.getHeaders().add(name, value);
 	}

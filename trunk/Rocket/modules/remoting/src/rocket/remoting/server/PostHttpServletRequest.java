@@ -33,7 +33,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class PostHttpServletRequest extends GetOrPostHttpServletRequest implements HttpServletRequest {
+class PostHttpServletRequest extends GetOrPostHttpServletRequest implements HttpServletRequest {
 
 	public PostHttpServletRequest(final HttpServletRequest request, final String url, final Headers headers,
 			final RequestParameters parameters) {
