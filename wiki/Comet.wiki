@@ -13,11 +13,11 @@ The rocket framework combines the object serialization support provided by GWT a
   * The client will attempt to reconnect automatically when a disconnect occurs.
   * Any java servlet container including tomcat may be used.
   
-==Getting started==
+=Getting started=
 
 The following steps below list what and why is needed to use this facility in your own development efforts. 
 
-===Importing the rocket module===
+==Importing the rocket module==
 Add the rocket module to your own application module.
 
 {{{
