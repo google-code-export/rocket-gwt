@@ -25,10 +25,10 @@ import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.codeblock.CodeBlock;
+import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameter;
 import rocket.generator.rebind.constructorparameter.NewConstructorParameterImpl;
 import rocket.generator.rebind.metadata.MetaData;
-import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
@@ -160,7 +160,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 
 		final Iterator parameters = this.getParameters().iterator();
 		while (parameters.hasNext()) {
-			final MethodParameter parameter = (MethodParameter) parameters.next();
+			final ConstructorParameter parameter = (ConstructorParameter) parameters.next();
 			final Type parameterType = parameter.getType();
 			buf.append(parameterType.getName());
 
