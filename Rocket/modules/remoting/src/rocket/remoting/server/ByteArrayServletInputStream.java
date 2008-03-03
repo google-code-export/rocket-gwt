@@ -26,7 +26,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class ByteArrayServletInputStream extends ServletInputStream {
+class ByteArrayServletInputStream extends ServletInputStream {
 
 	public ByteArrayServletInputStream(final byte[] bytes) {
 		this.setByteArrayInputStream(new ByteArrayInputStream(bytes));
