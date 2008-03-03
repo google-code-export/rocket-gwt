@@ -16,6 +16,9 @@
 package rocket.remoting.server;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -23,6 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import rocket.remoting.client.CometConstants;
 import rocket.util.client.Checker;
 import rocket.util.client.Tester;
 import rocket.util.client.Utilities;
@@ -34,7 +38,7 @@ import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamWriter;
 
 /**
  * This servlet provides a mechanism to write objects to the client aka COMET.
- * Sub-classes need to implement {@link #queryObjectSource()} which may block
+ * Sub-classes need to implement {@link #poll()} which may and should block
  * for a short period of time to check if a new object should be streamed.
  * 
  * This servlet uses two strategies to determine when a connect should be
@@ -44,8 +48,7 @@ import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamWriter;
  * <li>too many bytes have been written (the hidden iframe becomes too long}{@link #maximumBytesWritten}</li>
  * </ul>
  * 
- * To change the serialization policy override the
- * {@link #createSerializationPolicy()} method. Refer to GWT doco to learn more
+ * To change the serialization policy override the {@link #createSerializationPolicy()} method. Refer to GWT doco to learn more
  * about serialization policies.
  * 
  * @author Miroslav Pokorny (mP)
@@ -136,40 +139,28 @@ public abstract class CometServerServlet extends HttpServlet {
 	}
 
 	/**
-	 * Creates a default SerializationPolicy that doesnt complain about
-	 * anything.
+	 * Creates a default SerializationPolicy that doesnt complain when asked to serialize objects.
 	 * 
 	 * @return
 	 */
 	protected SerializationPolicy createSerializationPolicy() {
 		return new SerializationPolicy() {
-			public boolean shouldDeserializeFields(Class clazz) {
-				throw new UnsupportedOperationException("SerializationPolicy.shouldDeserializeFields");
+			public boolean shouldDeserializeFields(final Class clazz) {
+				throw new UnsupportedOperationException("shouldDeserializeFields");
 			}
 
-			public boolean shouldSerializeFields(Class clazz) {
+			public boolean shouldSerializeFields(final Class clazz) {
 				return Object.class != clazz;
 			}
 
-			public void validateDeserialize(Class clazz) {
-				throw new UnsupportedOperationException("SerializationPolicy.validateDeserialize");
+			public void validateDeserialize(final Class clazz) {
+				throw new UnsupportedOperationException("validateDeserialize");
 			}
 
-			public void validateSerialize(Class clazz) {
+			public void validateSerialize(final Class clazz) {
 			}
 		};
 	}
-
-	/**
-	 * This abstract method must be implemented by sub-classes in which they
-	 * check and possibly return any candidate object to be streamed.
-	 * 
-	 * Sub-classes may wait/block for short periods of time before retuning a
-	 * result.
-	 * 
-	 * @return An object to be written or null if none exists.
-	 */
-	protected abstract Object queryObjectSource();
 
 	/**
 	 * Post requests are not supported by this servlet, this method responds
@@ -180,89 +171,176 @@ public abstract class CometServerServlet extends HttpServlet {
 	}
 
 	/**
-	 * Handles any get requests. This method enteres a loop which polls the
-	 * {@link #queryObjectSource()} method to determine if more objects should
-	 * be sent to the client. WHen the bytes written or connection open time
-	 * threashholds have been reached the connection is dropped.
-	 * 
-	 * @param request
+	 * The main method that
+	 */
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
+		requests.set(request);
+		responses.set(response);		
+		
+		ServletOutputStream outputStream = null;
+		try {
+			this.prepare(response);
+			outputStream = response.getOutputStream();
+			this.poller( outputStream );			
+			
+		} catch ( final IOException ioException ){
+			this.log( ioException.getMessage(), ioException );
+		} catch ( final ServletException servletException ){
+			this.log( servletException.getMessage(), servletException );
+		} 
+	}
+	
+	/**
+	 * Sets a number of headers and also sets the buffer size for this particular comet session HTTP connection.
 	 * @param response
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
-		perThreadRequest.set(request);
-		perThreadResponse.set(response);
-		ServletOutputStream output = null;
-
-		long start = System.currentTimeMillis();
+	protected void prepare( final HttpServletResponse response ) throws IOException, ServletException{
+		response.setContentType(Constants.COMET_SERVER_RESPONSE_CONTENT_TYPE);
+		response.setStatus( Constants.COMET_SERVLET_STATUS_CODE );
+		response.setBufferSize( Constants.COMET_SERVER_BUFFER_SIZE );
+	}
+	
+	/**
+	 * This method is responsible for calling the {@link #poll} method and also includes the logic to push objects and drop connections that have written too many bytes or
+	 * been open too long.
+	 * @param servletOutputStream
+	 * @throws IOException
+	 * @throws ServletException
+	 * 
+	 * FIXME seems to be buffering not sure why...
+	 */
+	protected void poller( final ServletOutputStream servletOutputStream ) throws IOException, ServletException{
+		Checker.notNull("parameter:servletOutputStream", servletOutputStream );
+		
 		int bytesWritten = 0;
-		int byteWriteLimit = this.getMaximumBytesWritten();
-		long timeOut = start + this.getConnectionTimeout();
-
+		final int byteWriteLimit = this.getMaximumBytesWritten();
+		
+		long connectedAt = System.currentTimeMillis();
+		final long connectionTimeout = this.getConnectionTimeout();
+		
 		try {
-			output = response.getOutputStream();
-			response.setContentType(Constants.COMET_SERVER_RESPONSE_CONTENT_TYPE);
-			response.setStatus(HttpServletResponse.SC_OK);
-			response.setBufferSize(512);
-
 			final String before = this.getDocumentStartHtml();
-			output.print(before);
-			bytesWritten = bytesWritten + before.length();
+			servletOutputStream.println(before);
+			bytesWritten = bytesWritten + before.length() * 2;
 
+			boolean terminated = false;
+			
 			while (true) {
-				// check if this connection should be dropped...
+				if( terminated ){
+					break;
+				}
+				
+				// have too many bytes been written ?
 				if (bytesWritten > byteWriteLimit) {
+					this.onByteWriteLimitExceeded( bytesWritten );
 					break;
 				}
-				if (System.currentTimeMillis() > timeOut) {
+				// has the connection been open too long ???
+				final long openDuration = System.currentTimeMillis() - connectedAt; 
+				if ( openDuration >= connectionTimeout) {
+					this.onConnectionOpenTooLong( openDuration );
 					break;
 				}
-
-				boolean isException = false;
-				Object object = null;
-				try {
-					// check if there are any new objects to stream down to the
-					// client...
-					object = this.queryObjectSource();
-					if (null == object) {
-						continue;
-					}
-				} catch (final Throwable caught) {
-					isException = true;
-
-					object = caught;
-					// not all exceptions are serializable...
-					if (false == caught.getClass().getName().startsWith("java.lang")) {
-						object = new RuntimeException(caught.getMessage());
+				
+				// hack use a thread local to aggregates messages.
+				final List messagesList = new ArrayList();
+				this.messages.set( messagesList );
+				try{
+					// the sub class can push as many messages aka objects and terminates as they wish.
+					this.poll();
+				} catch ( final Throwable caught ){
+					this.push(caught);
+				}								
+				
+				// write out pending writes...
+				final Iterator messagesIterator = messagesList.iterator();
+				while( messagesIterator.hasNext() ){
+					final Message payload = (Message)messagesIterator.next();
+					final int command = payload.getCommand();
+					final Object object = payload.getObject();
+					
+					final String serialized = this.serialize( command, object);
+					final String escaped = this.preparePayload(serialized);
+					servletOutputStream.print( escaped );
+					servletOutputStream.println();
+					
+					// guess that 2 bytes were written for every char...
+					bytesWritten = bytesWritten + escaped.length() * 2;
+					
+					if( payload instanceof Terminate ){
+						terminated = true;
 					}
 				}
-
-				// serialize...
-				final String serializedForm = this.serialize(object);
-
-				// prepare payload...
-				final String responsePayload = this.preparePayload(isException, serializedForm);
-
-				// write the response payload
-				output.print(responsePayload);
-
-				bytesWritten = bytesWritten + responsePayload.length();
-
-				// flush so the new objects are processed by the client...
-				output.flush();
+				
+				this.flush(servletOutputStream);				
 			}
 
 		} finally {
 			try {
-				output.print(this.getDocumentEndHtml());
+				servletOutputStream.print(this.getDocumentEndHtml());
+				this.flush(servletOutputStream);
 			} catch (final IOException ignored) {
-
-			}
-			InputOutput.closeIfNecessary(output);
+			}			
+			InputOutput.closeIfNecessary(servletOutputStream);
 		}
 	}
-
+	
+	/**
+	 * Sub classes must override this method to include any object pushing as well as a delay before returning.
+	 */
+	abstract protected void poll();
+	
+	/**
+	 * Sub classes may use this to push a single object to the client.
+	 * @param object
+	 */
+	protected void push( final Object object ){
+		this.addMessage( new ObjectPayload( object ));
+	}
+	
+	protected void push( final Throwable throwable ){		
+		this.addMessage( new ExceptionPayload( throwable ));
+	}
+	
+	/**
+	 * Sub classes may call this method to send a terminate message to the client.
+	 */
+	protected void terminate(){
+		this.addMessage( new Terminate() );
+	}
+	
+	/**
+	 * Queues a message to be sent to the client.
+	 * @param message A new message which may not be null.
+	 */
+	protected void addMessage( final Message message ){
+		Checker.notNull("parameter:message", message );
+		
+		final List messages = (List) this.messages.get();
+		if( false == messages.isEmpty() ){
+			final int lastIndex = messages.size() - 1;
+			final Object last = messages.get( lastIndex );
+			if( last instanceof Terminate ){
+				throw new IllegalStateException( "New items cannot be pushed after a session has been terminated.");
+			}
+		}	
+		
+		// save
+		messages.add( message );
+	}
+	
+	protected void flush( final ServletOutputStream servletOutputStream ) throws IOException{
+		servletOutputStream.flush();
+		this.getResponse().flushBuffer();
+	}
+	
+	/**
+	 * Aggregates all pending write operations for a given thread.
+	 */
+	private ThreadLocal messages = new ThreadLocal();
+	
 	/**
 	 * This method is called before any payloads are written.
 	 * 
@@ -286,15 +364,16 @@ public abstract class CometServerServlet extends HttpServlet {
 	 * String. This same object will be deserialized on the client using the GWT
 	 * deserialization sub-system.
 	 * 
-	 * @param object
-	 * @return
+	 * @param command The command to send.
+	 * @param object Its okay to push null objects.
+	 * @return The serialized form of both the command and object.
 	 */
-	protected String serialize(final Object object) {
-
+	protected String serialize(final int command, final Object object) {
 		try {
 			ServerSerializationStreamWriter streamWriter = new ServerSerializationStreamWriter(this.createSerializationPolicy());
 			streamWriter.prepareToWrite();
-			streamWriter.serializeValue(object, Object.class);
+			streamWriter.writeInt( command );
+			streamWriter.writeObject(object );
 			return streamWriter.toString();
 		} catch (final SerializationException serializationException) {
 			throw new RuntimeException("Unable to serialize object, message: " + serializationException.getMessage());
@@ -306,24 +385,35 @@ public abstract class CometServerServlet extends HttpServlet {
 	 * written to the client and then executed. The client will need to unescape
 	 * the encoded String prior to deserializing.
 	 * 
-	 * @param isException
 	 * @param serializedForm
 	 * @return
 	 */
-	protected String preparePayload(final boolean isException, final String serializedForm) {
-		final String serializedForm0 = Utilities.htmlEncode(serializedForm);
+	protected String preparePayload( final String serializedForm) {
+		final String escaped = Utilities.htmlEncode(serializedForm);
 
-		return "<script>try{window.parent.__cometDispatch('" + (isException ? "{EX}" : "{OK}") + serializedForm0
-				+ "');}catch(e){}</script>\n";
+		return Constants.SCRIPT_TAG_OPEN + escaped + Constants.SCRIPT_TAG_CLOSE; 
 	}
-
+	
+	/**
+	 * This method is called when the server drops the connection because too many bytes have been written
+	 * @param byteWriteCount The total number of bytes written
+	 */
+	protected void onByteWriteLimitExceeded( final int byteWriteCount ){		
+	}
+	/**
+	 * This method is invoked whenever the server drops the connection because it has been open for too long.
+	 * @param milliseconds The total time the connection was open.
+	 */
+	protected void onConnectionOpenTooLong( final long milliseconds ){		
+	}	
+	
 	/**
 	 * Gets the <code>HttpServletRequest</code> object for the current call.
 	 * It is stored thread-locally so that simultaneous invocations can have
 	 * different request objects.
 	 */
-	protected final HttpServletRequest getThreadLocalRequest() {
-		return (HttpServletRequest) perThreadRequest.get();
+	protected final HttpServletRequest getRequest() {
+		return (HttpServletRequest) requests.get();
 	}
 
 	/**
@@ -331,12 +421,78 @@ public abstract class CometServerServlet extends HttpServlet {
 	 * It is stored thread-locally so that simultaneous invocations can have
 	 * different response objects.
 	 */
-	protected final HttpServletResponse getThreadLocalResponse() {
-		return (HttpServletResponse) perThreadResponse.get();
+	protected final HttpServletResponse getResponse() {
+		return (HttpServletResponse) responses.get();
 	}
 
-	private final ThreadLocal perThreadRequest = new ThreadLocal();
+	/**
+	 * A threadlocal is used as a hack to keep track of the current request and response objects without
+	 * passing them as method parameters. 
+	 */
+	private final ThreadLocal requests = new ThreadLocal();
 
-	private final ThreadLocal perThreadResponse = new ThreadLocal();
+	private final ThreadLocal responses = new ThreadLocal();
 
+	/**
+	 * An interface that unifies all the possible server messages to be sent to the client.
+	 */
+	static interface Message{
+		int getCommand();
+		Object getObject();
+	}
+	
+	/**
+	 * Instances of this class represent a request from the server to terminates an active comet session.
+	 */
+	static private class Terminate implements Message{
+		public int getCommand(){
+			return CometConstants.TERMINATE_COMET_SESSION;
+		}
+		public Object getObject(){
+			return null;
+		}
+	}
+	/**
+	 * Instances represent a single object being pushed from the server to the client.
+	 */
+	static private class ObjectPayload implements Message{
+		
+		ObjectPayload( final Object object ){
+			this.setObject(object);
+		}
+		
+		public int getCommand(){
+			return CometConstants.OBJECT_PAYLOAD;
+		}
+		Object object;
+		public Object getObject(){
+			return object;
+		}
+		void setObject( final Object object ){
+			this.object = object;
+		}
+	}
+	/**
+	 * Instances represent a single exception being pushed from the server to the client.
+	 */
+	static private class ExceptionPayload implements Message{
+		
+		ExceptionPayload( final Throwable throwable ){
+			this.setThrowable(throwable);
+		}
+		
+		public int getCommand(){
+			return CometConstants.EXCEPTION_PAYLOAD;
+		}
+		public Object getObject(){
+			return this.getThrowable();
+		}
+		Throwable throwable;
+		Throwable getThrowable(){
+			return this.throwable;
+		}
+		void setThrowable( final Throwable throwable ){
+			this.throwable = throwable;
+		}
+	}
 }

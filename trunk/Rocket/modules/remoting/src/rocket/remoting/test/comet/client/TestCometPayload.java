@@ -1,21 +1,19 @@
 package rocket.remoting.test.comet.client;
 
-import java.util.Date;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class TestCometPayload implements IsSerializable {
-	private Date date;
+	private long timestamp;
 
-	public Date getDate() {
-		return this.date;
+	public long getTimestamp() {
+		return this.timestamp;
 	}
 
-	public void setDate(final Date date) {
-		this.date = date;
+	public void setTimestamp(final long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	public String toString() {
-		return super.toString() + ", date: " + date;
+		return super.toString() + ", timestamp: " + timestamp;
 	}
 }
