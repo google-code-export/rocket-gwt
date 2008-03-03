@@ -19,8 +19,8 @@ import rocket.util.client.Checker;
 import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.client.rpc.SerializationStreamReader;
 import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 
@@ -36,48 +36,64 @@ import com.google.gwt.user.client.rpc.impl.Serializer;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class GwtSerializationCometClient extends CometClient{
+public abstract class GwtSerializationCometClient extends CometClient {
 
 	public GwtSerializationCometClient() {
 		super();
 	}
 
 	/**
-	 * This method takes care of unmarshalling the given object and then calling the appropriate callback method.
+	 * This method takes care of unmarshalling the given object and then calling the appropriate callback methods.
 	 */
-	public void dispatch(final String serializedForm){
-		final AsyncCallback callback = this.getCallback();
-		
+	public void dispatch(final String serializedForm) {
+		final CometCallback callback = this.getCallback();
+
+		// if this caught is ever set the onFailure method of the callback is invoked.
 		Throwable caught = null;
-		try{
-			final String serializedForm0 = Utilities.htmlDecode(serializedForm);
-			final boolean failed = serializedForm0.startsWith("{EX}");
-			final Object object = deserialize(serializedForm0.substring(4));
-		
-			if (failed) {
-				caught = (Throwable) object;
-			} 
-			callback.onSuccess(object);
-		
-		} catch ( final SerializationException serializationException ){
-			caught = serializationException;
-		} catch ( final RuntimeException runtimeException ){
-			caught = runtimeException;
+		while (true) {
+			try {
+				String serializedForm0 = Utilities.htmlDecode(serializedForm);
+				final SerializationStreamReader reader = this.createSerializationStreamReader(serializedForm0);
+				final int command = reader.readInt();
+				if (command == CometConstants.TERMINATE_COMET_SESSION) {
+					this.stop();
+					callback.onTerminate();
+					break;
+				}
+
+				if (command == CometConstants.OBJECT_PAYLOAD) {
+					final Object object = reader.readObject();
+					callback.onPayload(object);
+					break;
+				}
+
+				if (command == CometConstants.EXCEPTION_PAYLOAD) {
+					caught = (Throwable) reader.readObject();
+					break;
+				}
+
+				this.onUnknownCommand( command );
+				break;
+
+			} catch (final SerializationException serializationException) {
+				caught = serializationException;
+			} catch (final RuntimeException runtimeException) {
+				caught = runtimeException;
+			}
 		}
-		
-		if( null != caught ){
-			callback.onFailure( new CometException( caught ));
+
+		if (null != caught) {
+			callback.onFailure(new CometException(caught));
 		}
 	}
 
 	/**
-	 * Uses a hacked GwtRpc Proxy to deserialize the serialized form of the comet payload.
-	 * 
-	 * @param serializedForm A string containing the serialized object graph
-	 * @return The deserialized object
-	 * @throws SerializationException This exception is thrown by the Gwt deserialization process if something goes wrong.
+	 * This factory method creates a reader which may be used to deserialize incoming payloads.
+	 * @param serializedForm
+	 * @return
+	 * @throws SerializationException
 	 */
-	protected Object deserialize(final String serializedForm) throws SerializationException {
+	protected SerializationStreamReader createSerializationStreamReader(final String serializedForm) throws SerializationException {
 		Checker.notEmpty("parameter:serializedForm", serializedForm);
 
 		final Object proxy = this.createGwtRpcProxy();
@@ -90,15 +106,16 @@ public abstract class GwtSerializationCometClient extends CometClient{
 
 		final ClientSerializationStreamReader deserializer = new ClientSerializationStreamReader(serializer);
 		deserializer.prepareToRead(serializedForm);
-		return deserializer.readObject();
-	}
-	
-	protected void throwRocketJarClasspathProblem(){
-		throw new CometException( "The rocket.jar appears not to be in front of gwt-user.jar which has resulted in the standard ProxyCreator to be used. Fix the problem by placing rocket.jar in front of gwt-user.jar and try again.");
+		return deserializer;
 	}
 
+	protected void throwRocketJarClasspathProblem() {
+		throw new CometException(
+				"The rocket.jar appears not to be in front of gwt-user.jar which has resulted in the standard ProxyCreator to be used. Fix the problem by placing rocket.jar in front of gwt-user.jar and try again.");
+	}
+	
 	/**
-	 * This method will be implemented by the generator to return a hacked RpcProxy.
+	 * This method will be implemented by the generator to return a hacked RpcProxy which has a method available to retrieve the deserializer.
 	 * @return The rpc proxy
 	 */
 	protected abstract Object createGwtRpcProxy();

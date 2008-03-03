@@ -25,7 +25,6 @@ import rocket.util.client.Checker;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * There should only ever be one instance of this class which is used to receive
@@ -35,7 +34,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * <ul>
  * <li> When compiling/translated to javascript the Rocket.jar must be included
  * in the classpath before any google classes so that the custom ProxyGenerator
- * is used instead of the regular class. </li>
+ * is used instead of the regular unmodified class. </li>
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -103,10 +102,14 @@ public abstract class CometClient {
 		//	checks if the iframe has its connected flag set.. if not report
 		// connection failure...
 		if (false == DOM.getElementPropertyBoolean(this.getFrame(), "__connected")) {
-			this.getCallback().onFailure( new CometException("Unable to connect to \"" + this.getServiceEntryPoint() + "\"."));
+			this.onUnableToConnect();
 		} else {
 			this.restart();
 		}
+	}
+	
+	protected void onUnableToConnect(){
+		this.getCallback().onFailure( new CometException("Unable to connect to \"" + this.getServiceEntryPoint() + "\"."));
 	}
 
 	/**
@@ -134,6 +137,14 @@ public abstract class CometClient {
 	 */
 	abstract public void dispatch(final String serializedForm);
 
+	/**
+	 * This method is invoked whenever a command received from the server is unknown, by default an exception is thrown.
+	 * @param command
+	 */
+	protected void onUnknownCommand( final int command ){
+		throw new CometException("Unknown command recieved from server, command: " + command);
+	}
+	
 	/**
 	 * A reference to the hidden iframe which is used to make a connection which
 	 * is kept open for a long time. The server will periodically write objects
@@ -185,17 +196,16 @@ public abstract class CometClient {
 	}
 
 	/**
-	 * This callback receives all objects and exceptions recieved from the
-	 * server.
+	 * This callback receives and handles all comet related events.
 	 */
-	private AsyncCallback callback;
+	private CometCallback callback;
 
-	public AsyncCallback getCallback() {
+	public CometCallback getCallback() {
 		Checker.notNull("field:callback", callback);
 		return this.callback;
 	}
 
-	public void setCallback(final AsyncCallback callback) {
+	public void setCallback(final CometCallback callback) {
 		Checker.notNull("parameter:callback", callback);
 		this.callback = callback;
 	}
