@@ -26,20 +26,16 @@ Add the rocket module to your own application module.
 
 ==Authoring the server component==
 
-A servlet must be created which extends `rocket.remoting.server.CometServerServlet` and also implements the `queryObjectSource()` method. 
+A servlet must be created which extends `rocket.remoting.server.CometServerServlet` and also implements the `poll()` method. The poll method is responsible for blocking and also  pushing new objects to the client via the push method. The server may also terminate a comet session by calling terminate().
 
-===Polling object source===
-The `queryObjectSource()` method is responsible for two tasks.
-  * It must return null if no new object is available to push to the client.
-  * The method may block for a short period of time.
-  * Any non null instance is serialized and pushed to the client. The registered client callback will receive the object inside its `onSuccess()` method.
+It is recommended that the poll method block for a short but not too long period time in such a manner as too avoid creating a a busy loop.
 
 ===Web Container Configuration===
 The web.xml fragment below gives an example of how to configure a Comet servlet.
 
 {{{
 <servlet>
-	<servlet-class>rocket.remoting.test.comet.server.TestCometObjectStreamingServlet</servlet-class>
+	<servlet-class>rocket.remoting.test.comet.server.TestCometServerServlet</servlet-class>
 	<servlet-name>TestCometServlet</servlet-name>
 	
 	<init-param>
@@ -73,7 +69,7 @@ Because a hidden iframe is used to the time and amount of data accumulated by th
 A number of steps must be performed to complete 
   * Create a class that extends `rocket.remoting.client.CometClient`.
   * Create an abstract method called createProxy with annotation that communicates the payload type.
-  * Register a `com.google.gwt.user.client.rpc.AsyncCallback` with the client to handle any incoming objects or exceptions.
+  * Register a `rocket.remoting.client.CometCallback` with the client to handle any incoming payload, server initiated termination or general failures (exceptions)exceptions.
 
 =Sample=
 
@@ -104,15 +100,16 @@ import rocket.remoting.server.CometServerServlet;
 
 public SampleCometServletServlet extends CometServerServlet{
 
-        int counter; 
-
-	protected Object queryObjectSource(){		
+	protected void poll(){		
 		try{
 			Thread.sleep( 1000 );
 		} catch ( InterruptedException ignore ){
 		}
 		return new CometPayload( this.counter++ );
 	}
+
+        int counter; 
+
 }
 }}}
 
@@ -144,16 +141,20 @@ The code sample below shows how to create and start a comet session with the ser
 
 {{{
 	ExampleCometClient client = (ExampleCometClient)GWT.create( ExampleCometClient.class );
-	client.setUrl("...CometServerServlet url...");
-	client.setCallback( new AsyncCallback(){
-		public void onSuccess( final Object incoming ){
+	client.setServiceEntryPoint( "servlet-url" );
+	client.setCallback( new CometCallback(){
+		public void onPayload( final Object incoming ){
 			CometPayload payload = (CometPayload) incoming;
-
 			// do something with payload...
 		}
 
-		public void onThrowable( final Throwable cause ){
+		public void onFailure( final Throwable cause ){
 			// handle problem
+		}
+
+
+		public void onTerminate(){
+			// server has terminated session...
 		}
 	});
 	client.start();
@@ -163,6 +164,6 @@ The code sample below shows how to create and start a comet session with the ser
 
 For further examples refer to the unit test. 
   * client - `rocket.remoting.test.comet.client.CometTest` 
-  * server - `rocket.remoting.test.comet.server.TestCometObjectStreamingServlet` 
+  * server - `rocket.remoting.test.comet.server.TestCometServerServlet` 
 
 To run the comet demo the embedded tomcat must be running.
