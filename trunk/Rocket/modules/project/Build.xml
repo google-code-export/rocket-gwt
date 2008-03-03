@@ -69,7 +69,8 @@
 		<pathelement path="${flexjson-dir}/flexjson.jar"/>		
 		<pathelement path="${cglib-dir}/cglib-full.jar"/>				
 		<pathelement path="${log4j-dir}/log4j.jar"/>						
-		<pathelement path="${commons-logging-dir}/commons-logging.jar"/>																
+		<pathelement path="${commons-logging-dir}/commons-logging.jar"/>
+		<pathelement path="${build-dir}/rocket-compiler.jar"/>
 	</path>
 
 	<!--
@@ -87,6 +88,9 @@
 				<include name="**" />
 			</fileset>
 			<fileset dir="${modules-dir}/collection/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/compiler/src">
 				<include name="**" />
 			</fileset>
 			<fileset dir="${modules-dir}/cookies/src">
@@ -161,13 +165,12 @@
 	<!--
 	Packages the three jar files that make up the rocket library.
 	-->
-	<target	name="package" depends="compile" description="Create several jar files, each containing different logical units of the framework.">
-
-		<mkdir dir="${build-dir}"/>
-
-		<!--
-		*** Builds a jar that contains the core classes required to author a GWT application ***
-		-->
+	<target	name="package" depends="package-rocket-jar,package-rocket-stacktrace-jar,package-rocket-compiler-jar" description="Create several jar files, each containing different logical units of the framework." />
+	
+	<!--
+	*** Builds a jar that contains the core classes required to author a GWT application ***
+	-->
+	<target name="package-rocket-jar" depends="compile">		
 		<copy file="${txt-dir}/Rocket-jar-readme.txt" tofile="${temp-dir}/README.txt" overwrite="true"/>
 		<jar destfile="${build-dir}/Rocket.jar">
 			<fileset dir="${bin-dir}">
@@ -198,11 +201,10 @@
 				<include name="license.txt"/>
 				<include name="dependencies.txt"/>				
 			</fileset>
-		</jar>
-
-		<!--
-		*** Build a jar that contains the classes related to web mode stack traces ***
-		-->
+		</jar>					
+	</target>
+	
+	<target name="package-rocket-stacktrace-jar" depends="compile">
 		<copy file="${txt-dir}/Rocket-stacktrace-jar-readme.txt" tofile="${temp-dir}/README.txt" overwrite="true"/>
 		<jar destfile="${build-dir}/Rocket-stacktrace.jar">
 			<fileset dir="${bin-dir}">
@@ -224,40 +226,31 @@
 				<include name="dependencies.txt"/>				
 			</fileset>
 		</jar>
-		
-		<!--
-		*** Build a jar that contains the classes the compiler related classes ***
-		-->
+	</target>
+	
+	<target name="package-rocket-compiler-jar" depends="compile">
 		<copy file="${txt-dir}/Rocket-compiler-jar-readme.txt" tofile="${temp-dir}/README.txt" overwrite="true"/>
 		<jar destfile="${build-dir}/Rocket-compiler.jar">
 			<fileset dir="${bin-dir}">
 				<include name="rocket/compiler/*.class"/>
-				<include name="com/google/gwt/GWTCompiler.class"/>
-				<include name="com/google/gwt/jjs/**.*"/>
-				<include name="com/google/gwt/js/**.*"/>
+				<include name="com/google/gwt/dev/GWTCompiler.class"/>
+				<include name="com/google/gwt/dev/jjs/**.*"/>
+				<include name="com/google/gwt/dev/js/**.*"/>
 			</fileset>
 			<fileset dir="${txt-dir}">
 				<include name="release-notes.txt"/>
-				<include name="Rocket-compiler-jar-readme.txt"/>
 				<include name="license.txt"/>
 			</fileset>
 			<fileset dir="${temp-dir}">
 				<include name="README.txt"/>
 			</fileset>	
-			<fileset dir="${txt-dir}">
-				<include name="release-notes.txt"/>
-				<include name="license.txt"/>
-				<include name="dependencies.txt"/>				
-			</fileset>
-		</jar>		
+		</jar>	
 	</target>
 
 	<!--
 	Creates the javadoc for all classes(down to private methods)
 	-->
-	<target name="javadoc" 
-			depends="compile" 
-			description="Create javadoc">
+	<target name="javadoc" depends="compile" description="Create javadoc">
 		<javadoc 	access="private"
   	        		author="yes"
 				classpathref="project.class.path"			
@@ -276,7 +269,6 @@
 	Translates all modules into javascript by calling the gwt compiler.
 	-->
 	<target name="gwt-compile-all"	depends="compile" description="Generates the html pages for all demos">
-
 		<!--
 		*** compiles all module demos ***
 		-->
@@ -384,23 +376,18 @@
 	Invokes the GWT compiler and compile a single module into javascript.
 	-->
 	<target name="gwt-compile"	depends="" description="Translates a module to javascript and html pages.">
-		<java	maxmemory="256M"			
-				failonerror="yes"
-				classname="com.google.gwt.dev.GWTCompiler"				
-				fork="yes">
-			<classpath refid="gwt-compile.class.path" />
-			
+		<echo>Module: ${module}</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath refid="gwt-compile.class.path" />			
 			<!-- This property is ignored by all modules except for LoggingApplication -->
-			<sysproperty 	key="rocket.logging.Logging.config"
-					value="/rocket/logging/test/application/client/Config.properties" />
-			
+			<sysproperty 	key="rocket.logging.Logging.config"	value="/rocket/logging/test/application/client/Config.properties" />			
 			<arg value="-out" />
 			<arg value="${www-dir}" />
 			<arg value="-style" />
 			<arg value="DETAILED" />
 			<arg value="${module}" />
 			<arg value="-logLevel" />
-			<arg value="DEBUG" />			
+			<arg value="ERROR" />			
 			<arg value="-gen" />
 			<arg value="${generated-dir}" />			
 		</java>
@@ -448,7 +435,7 @@
 	<target name="dist"	depends="clean,compile,test,gwt-compile-all,javadoc,package" description="Package a release including compiled classes, source files, javadoc and generated html.">
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>
 		<delete failonerror="no" file="${build-dir}/${release-archive-name}" />
-		<zip 	whenempty="create"	destfile="${build-dir}/${release-archive-name}" >
+		<zip 	whenempty="create"	destfile="${build-dir}/${release-archive-name}" duplicate="preserve">
 			<fileset dir="${build-dir}">
 				<include name="*.jar"/>						
 			</fileset>
