@@ -1,4 +1,3 @@
-
 ROCKET GWT FRAMEWORK
 --------------------
 
@@ -8,346 +7,6 @@ blog: http://rocket-gwt.blogspot.com/index.html
 forum: http://groups.google.com/group/rocket-gwt?lnk=li
 email: miroslav <dot> pokorny <at> gmail <dot> com
 
-0.1  17 August 2006
--------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.1/Rocket-0.1.zip
-Initial release.
-This release of the Rocket GWT library contains a number of widgets, GWT core library fixes as well other useful stuff extract from another project for an inhouse application at work. 
-
-Below is a brief overview and summary of some of the interesting bits and pieces within the library.
-
-ADD BrowserHelper - A variety of browser specific helpers, browser detection, working with the window's title and status.
-ADD SkippingIterator - A useful abstract iterator which makes it easy to provide an iterator view skipping items.
-ADD IteratorView - Template that provides inbuilt fail fast support and other features.
-ADD Tree & Branch - A different type of container that provides an tree / branch view of items. Deleting a parent node removes children as well and so on.
-ADD LeastRecentlyUsedMap - A map which keeps a cap and automatically deletes when its capacity is exceeded.
-ADD MultiValueMap - A map that allows multiple values for each key. 
-
-ADD ElementWrapper - Easy authoring / wrapping of a Tag / element's properties without escaping to jsni.
-ADD AbstractElementList - Easy template to provide a List view over a collection of DOM elements. This class makes it easy for client code to work with Widgets rather than Elements.
-    A factory is called when necessary to create the wrapper when an item is fetched.
-ADD DomHelper - A variety of misc helpers relating to the Dom.
-ADD Message publishing and subscribing refer to rocket.client.messaging.
-ADD RPC View of Serverside HTTP requests returns value object with status/code/captured content using both GET and POST modes. Could be used for fileuploading(havent tried).
-ADD TabPanel - A better tab panel that includes a close button and events for various states of an individual tabs lifecycle.
-ADD Menu -A better menu system including menu spacers, item disabling and compressed / expanded menus ( such as those you find in various Office / Windows products ).
-ADD ContextMenu - A context menu may be attached to a widget via a right mouse button. After that the menu appears at which time the user can select / cancel.
-ADD SortableTable - A table that contains columns which may be sorted using comparators. The relevant header also contains controls to support an ascending/descending sort.
-    The data used for the sort may be different than that which appears within each cell. This allows sensible Date / number and other types sort.
-ADD Spinner - A simple spinner, that is a control which uses increment/decrement widgets to increase/decrease a number value.
-ADD SuperSpinner - An extension of Spinner that includes two additional controls for faster incrementing/decrementing of the value.
-ADD CssPicker - A panel which includes buttons to allow selection of any of the pages stylesheets.
-ADD PixelGrid -  A grid of blocky pixels which can be plotted or read using colours.
-ADD ZebraFlexTable - Automatic handling of a table with a zebra effect for odd / even rows.
-ADD Pager - This widget provides a paging control similar to the one that appears at the bottom of Google search results. Evnts may be monitored to allow programs to react to pager value changes.
-ADD AutoCompleteTextBox - A TextBox with an automatically managed drop down list of matches.
-ADD Card - A panel that includes a title and provision for adding widgets which appear within its title bar. It also contains a main content area.
-ADD BreadcrumbPanel - A panel of breadcrumbs with typical breadcrumb behaviour managed as a stack.
-ADD Form - A list view of a Form and its element. Getting by index returns the corresponding Widget eg a TextBox if the item at the given slot is a input field of type text. 
-    Wrappers are also present for Reset/Submit/Hidden fields along with other widgets for the other already GWT types.
-ADD Grid - Provides a grid of Widgets. 
-ADD Life - Something fun which leverages PixelGrid to create a life simulation.
-ADD VerticalPanel, HorizontalPanel - Fixed the iterators so that remove actually removes the widget from the panel and not only the internal Vector. I have had a quick look at the new 1.1 classes
-                    and whilst WidgetCollection probably fixes this problem it does not appear to provide a fail fast iterator.
-NOTE All classes come with tests be they demos or UnitTestCases
-
-0.11  23 August 2006
---------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.11/Rocket-0.11.zip
-
-FIX SortableTable - Improved repaint strategy
-ADD SortableTableTest - Added controls which allow the user to add/remove rows(value objects) within SortableTable.
-DOC MenuListener - Added javadoc describing class in detail.
-ADD Cookie/CookieMap - Added new CookieMap class which provides a Map view of the browsers current cookies. Refer to accompanying TestCase for notes.
-FIX StringHelper.split - fixed handling of attempt to split empty string with delimiters.
-NOTE: Still works only with GWT 1.0.21 has not yet been upgraded to 1.1. Some minor changes will result due to changes in various GWT classes/interfaces.
-
-0.12  26 August 2006
---------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.12/Rocket-0.12.zip
-
-FIX StringHelper.indexOfIgnoreCase - wasnt finding strings at the boundaries(ones that started at the beginning / end of the string to be searched). 
-ADD Throttler - A simple class which allows throttling or funnelling of multiple requests allowing only one within a short of period of time.
-
-0.13  30 August 2006
---------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.13/Rocket-0.13.zip
-
-ADD Tree - Added a new Tree which takes any widget (eg CheckBoxes, Labels etc) as its children. TreeItems may be permanently kept expanded with the expander control hidden.
-    Listener events are fired before and after each of the tree events with the before events being vetoable. Iterators are also provided that not only visit the current nodes           children but also provides the capability to visit all descendants of the node in question. 
-ADD TreeDemo/Test included.
-
-
-0.14  3 September 2006
-----------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.14/Rocket-0.14.zip
-
-MOD Upgraded to GWT release 1.1.10, Changes listed below
-MOD return type of add( Widget) and insert( Widget) from boolean to void
-MOD argument of Timer.scheduleRepeating() from long to int
-MOD return type of DOM.eventGetCharCode() from char to int
-MOD Updated *.launch *.cmd to use new library release
-DEL Deleted DeckPanel
-MOD CssUnitScalingFileServlet query parameter names are no longer set via init-parameters but use values from **.server.BrowserConstants.
-
-0.15  27 September 2006
------------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.15/Rocket-0.15.zip
-
-FIX FormHelper. fixed non public method within getFormElements(Element) iterator to avoid ClassCastExceptions being thrown.
-ADD FormHelper.findElement( elementName )
-DEL Panel/AbstractPanel reworked Card to remove dependencies from deleted classes.
-ADD ObjectHelper - Added checkNotSame().
-FIX StringHelper.split() & changed tests
-ADD DomHelper - Added setFocus()
-ADD TabPanel - added methods to set a tab's title previously only gettin was possible was provided.
-ADD BrowserHelper - added getClientXXX where XXX = width/height which retrieves correct values for IE6 in strict mode.
-ADD BrowserHelper - added getAvailableClientXXX where XXX = width/height
-ENH SortableTable - assigned styleName(css classes) to different components within the table.
-ADD css - Added project name "rocket-" to all widget style/class names.
-
-TODO Need to fix x/y calculation of child list within SubMenuItem.open(). I think its related to broken Element.getAbsoluteXXX where XXX = X/Y.
-
-0.16  2 October 2006
------------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.16/Rocket-0.16.zip
-
-ADD FormHelper.isInputTypeElement() 
-ADD 4 new TabPanels were added namely describing the positioning of the tab titles themselves top(the original TabPanel), right, bottom and left.
-MOD Moved Tab* classes from widget to widget.tab. TabPanel is now abstract with 4 new concrete sub-classes.
-MOD Changed Tab style constants. 
-ADD HorizontalSlider & VerticalSlider widgets with tests.
-FIX BlockyPixel style was "blockyGrid" now "blockyPixel"
-ADD BrowserHelper.prompt()
-ADD DomHelper.toJavascriptPropertyName() - will move in next release to StyleHelper.
-
-
-0.17 14 October 2006
---------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.17/Rocket-0.17.zip
-
-ADD ObjectWrapper which is similar to ElementWrapper but wraps any DOM object.
-MOD ElementWrapper refactored to extend ObjectWrapper. removed duplicate methods already present in new super class.
-MOD Renamed AbstractElementList DomCollectionList. changed references from Element to JavaScriptObject, changed     visitWrappedElement() to unwrapWrapper(). Renamed test *.launch/*.cmd files, removed methods which duplicated     those already found in AbstractList which it inherits.
-MOD Moved StyleHelper,StyleSheet and style constants from rocket.client.dom to rocket.client.style.
-MOD StylesheetCollection is no longer a public class and has made into an inner class of StyleHelper.
-FIX DomHelper.castToElement() Changed argument from Object to JavaScriptObject.
-FIX DomHelper.setProperty( XXX ) removed check that validates that property was actually updated.
-FIX (Issue#6) Relating to handle dragging and slider clicking not working correctly when the browser has been scrolled.
-ADD DomHelper.getAbsoluteXXX() where XXX is Top/Left. The GWT code found in DOM is broken for strict mode IE this     is also used by Widget.getAbsoluteXXX(). Changed various references to DOM
-ADD DomHelper.setAbsolutePosition( Element, x, y );
-FIX DomHelper.hasProperty() & DomHelper.getProperty() and DomHelper.getXXXProperty() where XXX is 
-    Boolean/Int/AsJavaScriptObject which was not handling undefined and null values correctly.
-ADD WidgetHelper.getAbsoluteXXX() where XXX is Top/Left.
-ADD WidgetHelper.setAbsolutePosition( Widget, x, y );
-ADD StyleConstants added constants for all css properties.
-ADD SpanPanel a panel which uses spans(SPAN) to house individual widgets rather than a table.
-ADD DivPanel a panel that uses divs(DIV) to house widgets rather than a table.
-ADD OrderedListPanel a panel that uses an ordered list(OL) to house widgets rather than a table.
-ADD UnorderedListPanel a panel that uses an unordered list(UL) to house widgets rather than a table.
-ADD MenuLists can now be opened up/down/right/left directions relative to their parent SubMenuItem.
-DEL Removed support for expandable vertical menu lists, use VerticalMenuList instead.
-FIX (Issue#) Fixed issue where by menu lists where not being positioned correctly when the browser client area     had been scrolled.
-ENH Moved autoOpen from Menu to SubMenuItem
-FIX Life removed stray print statement.
-FIX SortableTable.removeUnnecessaryTableRows() fixed typo in method name.
-ADD SortableTable added feature to retrieve row given a table row index.
-ADD SortableTable added clear() which empties the table.
-ADD DomHelper.eventGetToElement() includes a test to read the correct property for FF as the GWT impl was reading the wrong event property.
-ADD InteractiveList
-ADD InteractivePanel and reworked previous panel tests to use the widget.
-ADD DomObjectPropertyList, DomObjectPropertyListElement list implementation which wraps and unwraps when writing/reading to a dom object's property.
-REF Renamed AbstractIteratorWrapper to IteratorWrapper
-
-0.18 15 October 2006
---------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.18/Rocket-0.18.zip
-
-FIX Added strict HTML doctype to all test html pages.
-ENH Changed cursor styles within Slider test.html 
-FIX IteratorView.next() so it now throws NoSuchElementException if the iterator has been exhausted rather than generic Exception.
-FIX InteractiveList clicking on the IteratorRemoveButton was calling iterator.next() not interator.remove()
-FIX InteractiveList fixed logging of caught exceptions during attempted list operations.
-ENH Changed public methods of TabPanel to accept TabItem which contains handles to the caption and content widgets. Also simplified/shortened public method names to longer include "Tab".
-ADD AccordionPanel widget with 3 different flavours (VerticalAccordionPanel, LeftSideAccordionPanel, RightSideAccordionPanel).
-
-0.19 7 November 2006
---------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.19/Rocket-0.19.zip
-
-rocket.client.browser.*
-ADD BrowserHelper.isOpera8(), isOpera9() and getOperatingSystem()
-
-rocket.client.dom.*
-ENH DomCollectionList added adopt()/disown() methods and calls them each time an element is added or removed.
-ENH Added delegating method between add(Object), add(int,Object), remove(int) and target method.
-ADD Added destroy() to DomCollectionList/ObjectWrapper/DomObjectPropertyList/DomObjectPropertyListElement to break cyclic references between wrappers and dom objects.
-REF DomObjectPropertyListElement refactored XXXValueQuickly to XXXCacheValue where XXX is set/get.
-ADD DomHelper.removeProperty()
-FIX DomHelper.findAllChildrenOfType() now returns an unmodifiable List.
-REF ObjectWrapper.toStringObject() -> toStringWrapped.
-REF ObjectWrapper Removed "Property" from typed convenience getters/setters
-FIX removed wrapper cache of DomCollectionList
-REF Moved DomHelper.XXXProperty setters/getters to ObjectHelper. Removed "Property" from typed convenience getters/setters
-ADD DomHelper.XXXProperty added overloaded methods to use index rather than propertyName
-ADD DomObjectMap, DomObjectMapValue
-ADD DomObjectList, DomObjectListElement
-
-rocket.client.style.*
-REF Renamed StyleHelper.getStyleSheetsCollection() to StyleHelper.getStyleSheets()
-ADD StyleSheet which provides a List like view of a native StyleSheet object.
-ADD Rule which provides an bean like view of a native Rule object
-ADD Style which provides a Map like view of a native Style object.
-ADD StylePropertyValue which provides a bean like view of a single Style object property value
-
-rocket.util.client.*
-ADD ColourHelper.getColour( name )using standard web colour names.
-ADD CollectionHelper.unmodifiableList()
-ADD PrimitiveHelper.checkEquals(), checkNotEquals(), checkBoolean()
-REF Made ObjectWrapper into an interface and moved abstract ObjectWrapper class to ObjectWrapperImpl
-ADD ObjectWrapper.removeProperty();
-MOD ObjectHelper.setXXX() where XXX is the type now returns the replaced value.
-MOD ObjectHelper.checkXXX() to only accept a message and not multiple strings naming parameters.
-ADD StringHelper.checkEquals();
-REF IteratorView, removed viewType argument from next0(), renamed getParentModificationCount() to getModificationCount, renamed modificationCounter to expectedModificationCount
-
-rocket.client.widget
-REF Renamed CssPicker to StyleSheetPicker. Also added test. also renamed setLabel()/getLabel get/setText.
-
-rocket.client.widget.form.*
-ADD Added equals() to all rocket.client.widget.form.* widgets.
-FIX ResetButton.reset() implemented.
-FIX SubmitButton.submit() implemented.
-REF Renamed FormElementsListTestCase to FormElementListTestCase
-
-rocket.client.widget.slider.*
-REF Renamed AbstractSlider to Slider
-FIX Slider.setValue accepted values greater than maximum value...
-ADD Added clickRepeatRate to slider allowing repetition of mouse down events before/after the handle.
-
-ECLIPSE project files
-ADD Added -style DETAILED argument to all *.launch / *-compile.cmd files resulting in all generated javascript containing source and not obsfucated symbols.
-
-GWT fixes
-DomHelper.eventGetToElement() replaces DOM.eventGetToElement()  http://code.google.com/p/google-web-toolkit/issues/detail?id=229
-PrimitiveHelper.characterDigit() http://code.google.com/p/google-web-toolkit/issues/detail?id=302
-
-0.20 13 November 2006
----------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.20/Rocket-0.20.zip
-
-rocket.client.browser.*
-DEL DisabledElementEventStopper, LeavingApplicationListener
-
-rocket.client.widget.*
-ADD AbstractPanel Added indexOf( Widget) method.
-ENH Added getParentElement() to DivPanel, OrderedListPanel, SpanPanel, UnorderedListPanel.
-FIX AbstractPanel.remove(int) call remove0() before disowning widget. This gives an opportunity for sub-classes to use a valid connected element.
-REF DivPanel, OrderedListPanel, SpanPanel, UnorderedListPanel, Refactored createElement() to createParentElement()
-
-rocket.client.widget.splitter.*
-ADD Splitter widget in two flavours HorizontalSplitter & VerticalSplitter.
-
-0.21 28 November 2006
----------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.21/Rocket-0.21.zip
-
-Upgraded to latest GWT release 1.2.22.
-
-Refactored different areas within rocket, this basically means that rocket.client.package becomes rocket.package.client.*
-allowing better organisation and grouping of client/server/test packages.
-
-REF rocket.(client|server|test).rpc.* becomes rocket.remoting.(client|server|test)
-REF rocket.(client|server|test).util.* becomes rocket.util.(client|server|test)
-REF rocket.client.messaging.* becomes rocket.messaging.client
-REF rocket.(client|test).collection.* becomes rocket.collection.(client|test).*
-	REF Moved MapHelper.getKey() into CollectionHelper, deleted MapHelper
-REF rocket.(client|test).widget.* becomes rocket.widget.(client|test).*
-	REF rocket.client.test becomes rocket.widget.testing.*
-REF rocket.(client|test|server).style.* becomes rocket.style.(client|server|test).*
-	REF Moved CssUnitScaling from rocket.server.browser to rocket.style.server.*
-REF rocket.(client|test|server).browser.* becomes rocket.browser.(client|server|test).*
-    REF CookiesMap becomes CookieMap
-REF rocket.(client|test).dom.* becomes rocket.dom.(client|test).*
-
-rocket.browser.client.*
-ADD BrowserHelper added getDocument() and getWindow()
-FIX CookiesMap.keySet().iterator();
-
-rocket.dom.client.*
-FIX DomHelper.getParentContainerLeft/getParentContainerTop was not stopping at an ancestor with position:relative. (http://code.google.com/p/rocket-gwt/issues/detail?id=12)
-
-rocket.remoting.*
-ADD Created new Comet infrastructure which includes client/server side components.(rocket.remoting.*)
-
-rocket.util.client.*
-ADD HttpHelper added urlDecode().
-ADD StringHelper added htmlEncode() and htmlDecode()
-
-rocket.widget.client.*
-FIX MenuList when showing a menu list a zindex (with a big)value is also set to ensure it appears in front of other widgets.
-REF Renamed Card to CollapsablePanel, changed accompanying styles and constants etc.
-
-DEPRECATED
-DEL PrimitiveHelper.characterDigit removed due to Character.digit() being fixed by GWT 1.2.22. (http://code.google.com/p/google-web-toolkit/issues/detail?id=302)
-DEL DomHelper.eventGetToElement removed due to being fixed by GWT 1.2.22 (http://code.google.com/p/google-web-toolkit/issues/detail?id=229&can=1&q=)
-
-0.22 5 December 2006
---------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.22/Rocket-0.22.zip
-
-rocket.collection.client.*
-MOD IteratorView now throws ConcurrentModificationException when structural changes to the parent collection.
-
-rocket.dom.client.*
-ADD DomHelper.getBody()
-ADD DomHelper.clone()
-
-rocket.dragndrop.*
-ADD New drag n drop functionality.
-
-rocket.util.*
-ADD StackTraceHelper - Throwable.getStackTraceElement() now returns an array of StackTraceElements that may be examined to walk the callstack in web mode.
-ADD StackTraceHelper.getStackTraceAsString() returns a String that looks like the output of regular java's Throwable.printStackTrace().
-TIP The outputted stacktrace is very similar to that of java with some minor changes.
-    StackTraces are only meaningful when the translated javascript code is not obsfucated (eg style=PRETTY/DETAILED);
-    Within a printed stacktrace package.className(filename:linenumber) the bit in between brackets is replaced with the arguments of the method if available.
-    Because the this argument is sometimes a parameter translated javascript it will also appear in the argument list.
-	The stacktrace will potentially contain extra stack frames showing the internal constructor calls within the newly created Throwable object -ignore these.    
-    
-rocket.widget.client.*
-ADD HyperlinkPanel A new panel which is functions like a hyperlink with a twist. All widgets that are added do not receive events.
-DEL HorizontalPanel - no longer required due to WidgetCollection fix
-DEL VerticalPanel - no longer required due to WidgetCollection fix
-
-DEPRECATED
-DEL ObjectHelper.checkNotNull( String JavaScriptObject ); no longer needed due to fix in emulated Cast class
-
-GWT
-ENH com.google.gwt.emul.java.lang.Throwable modified to enable capturing of the current call stack when the Throwable is created, as well as lazily creating StackTraceElements.
-ENH com.google.gwt.emul.java.lang.StackTraceElement modified to support include all internal fields are parameters to the constructor.
-FIX com.google.gwt.lang.Cast.wrapJSO() Added try/catch to avoid javascript host exceptions when attempting to copy properties to a immutable native object. (http://code.google.com/p/google-web-toolkit/issues/detail?id=304)
-    The Cast class actually lives in gwt-dev-XXX.jar (where XXX is the appropriate platform eg "windows") at /com/google/gwt/dev/jjs/intrinsic/com/google/gwt/lang/.
-FIX com.google.gwt.user.client.ui.WidgetCollection's iterator() has been modified to fail fast.
-ENH com.google.gwt.emu.java.util.ConcurrentModificationException This exception is now available to be thrown by iterators detecting concurrent modification of the parent collection
-
-TODO Need to make GWT emulated collection class iterators fail fast and throw ConcurrentModificationExceptions.
-
-0.23 6 December 2006
---------------------
-Download from http://rocket-gwt.googlecode.com/svn/tags/0.23/Rocket-0.23.zip
-
-Minor release that addresses a silly bug within IE6.X
-NB Unfortunately stacktraces are not supported by Opera,Safari,Konqueror as they do not expose the necessary javascript
-functionality to make this possible.
-
-rocket.util.StackTraceHelper
-FIX Stopped infinite loop that was occuring in Internet Explorer 6.x
-ADD Added test to show server side stacktraces are not lost and show up in client side stacktraces.
-MOD StackTraceHelper-compile.cmd to output the same translated javascript using all three styles: OBS/PRETTY/DETAILED to individual sub directories under the 
-    www/rocket.util.test.stacktracehelper.StackTraceHelper directory.(To properly test serverside stacktraces run the StackTraceHelper hosted mode followed by
-    clicking on the appropriate www/rocket.util.test.stacktracehelper.StackTraceHelper/XXX demo.
-    
 0.24 17 January 2007
 --------------------
 Download from http://rocket-gwt.googlecode.com/files/Rocket-0.24.zip
@@ -822,3 +481,39 @@ Widget
   are used to cut down on server requests.
 * Improved HtmlTemplateFactory adding the ability to execute a template containing a mixture of html and javascript(similar to jsp) as the content of a new Html widget.
   All parameters to the method are available and may be referrenced by their name.
+  
+0.44 3 March 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.44.zip
+
+GWT
+* Small fix to rectify inability to prevent the default action for function keys in IE.
+
+Compiler
+A variety of improvements that help reduce generated javascript size. To use them the rocket-compiler.jar must be placed before any gwt-*.jar files.
+* Added toString method to SourceInfo to make it easier to build messages.
+* Improved JsObfuscateNamer to generate shorter variables/function names.
+* Added JBinaryOperator.equals() to make it easier to test for equality.
+* Added JNode.getJProgram() to help make it easier to figure out which program a node belongs too.
+* Added getAllSubTypes() and getSuperType() methods to JClassType
+* Added numerous methods to JMethod to help make it easier to test if a method is a constructor, virtual, static dispatcher and more.
+* Created AlternateValuesAssignmentOptimiser which converts if/then/else to update the same variable into tenary statement equivalent.
+* Created AlternateValuesReturnOptimiser which converts if/then/else to return alternate values depending on the condition into tenary statement equivalent.
+* Created ConditionalAssignmentAssignmentOptimiser which converts if then var = xxx into tenary statement equivalent.
+* Created TrailingReturnRemover which removes unnecessary return statements from methods.
+* Created VariableAssignedToSelfRemover which removes unnecessary variables being assigned to self statements.
+* Created LongNotifier which logs each and every long reference used within a program, be it field,method,parameter, local variable or literal. To enable it set the system property
+  rocket.compiler.LongNotifier.enabled=true.
+
+Generator
+* Improved logging whilst constructors and methods are emitting source code.
+  
+Project
+* Created a modules directory and broke up src and accompanying launch files into individual module directories.
+* Refactored hacked GWTCompiler and JavaToJavaScriptCompiler from logging to project module
+
+Remoting
+* Changed comet interfaces on both the client and server to faciliate the server sending terminate session requests.
+  The client now uses CometClient which contains 3 methods onPayload(), onTerminate(), onFailure(). CometServerSerlvet has been reworked, the poll() method must be overridden - queryObjectSource
+  has been deprecated. The push() and terminate() method must be used to push objects to the client or terminate a comet session from the server.
+  
