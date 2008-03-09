@@ -35,7 +35,7 @@ import com.google.gwt.dev.jjs.ast.JVariableRef;
  * 
  * @author Miroslav Pokorny
  */
-public class ConditionalAssignmentOptimiser extends TenaryTransformer implements CompilationWorker {
+public class ConditionalAssignmentOptimiser extends TenaryTransformer implements JavaCompilationWorker {
 
 	/**
 	 * Tests if the given if statement can be transformed into its tenary
@@ -68,7 +68,9 @@ public class ConditionalAssignmentOptimiser extends TenaryTransformer implements
 	protected boolean isCompatibleAssignment( final JBinaryOperator operator, final TreeLogger logger ){	
 		final boolean compat = operator.equals( JBinaryOperator.ASG );
 		if( false == compat ){
+			if( logger.isLoggable( TreeLogger.DEBUG )){
 			logger.log( TreeLogger.DEBUG, "BinaryOperator is not an \"=\" assignment, operator is \"" + new String( operator.getSymbol() ) + "\" - not modified.", null );
+			}
 		}
 		return compat;
 	}

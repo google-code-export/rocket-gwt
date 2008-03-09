@@ -36,7 +36,7 @@ import com.google.gwt.dev.jjs.ast.JVariableRef;
  * 
  * @author Miroslav Pokorny
  */
-public class AlternateValuesAssignmentOptimiser extends TenaryTransformer implements CompilationWorker {
+public class AlternateValuesAssignmentOptimiser extends TenaryTransformer implements JavaCompilationWorker {
 	/**
 	 * Tests if the given if statement can be transformed into its tenary
 	 * equivalent.
@@ -71,7 +71,9 @@ public class AlternateValuesAssignmentOptimiser extends TenaryTransformer implem
 			final JBinaryOperator thenBinaryOperator = thenAssignment.getOp();
 			final JBinaryOperator elseBinaryOperator = elseAssignment.getOp();
 			if( false == thenBinaryOperator.equals( elseBinaryOperator )){
+				if( branch.isLoggable( TreeLogger.DEBUG )){
 				branch.log( TreeLogger.DEBUG, "Then and else assignments are not the same type of assignment \"" + new String( thenBinaryOperator.getSymbol() ) + "\" vs \"" + new String( elseBinaryOperator.getSymbol() ) +  "\" - not modified.", null );
+				}
 				break;
 			}
 			
@@ -89,7 +91,9 @@ public class AlternateValuesAssignmentOptimiser extends TenaryTransformer implem
 	protected boolean isCompatibleAssignment( final JBinaryOperator operator, final TreeLogger logger ){
 		boolean compat = operator.isAssignment();
 		if( false == compat ){
+			if( logger.isLoggable( TreeLogger.DEBUG )){
 			logger.log( TreeLogger.DEBUG, "BinaryOperator is not an assignment, operator is \"" + new String( operator.getSymbol() ) + "\" - not modified.", null );
+			}
 		}
 		return compat;
 	}

@@ -44,7 +44,7 @@ import com.google.gwt.dev.jjs.ast.JType;
  * 
  * @author Miroslav Pokorny
  */
-public class AlternateValuesReturnedOptimiser extends TenaryTransformer implements CompilationWorker {
+public class AlternateValuesReturnedOptimiser extends TenaryTransformer implements JavaCompilationWorker {
 	/**
 	 * Tests if the given if statement can be transformed into its tenary
 	 * equivalent.
@@ -55,7 +55,7 @@ public class AlternateValuesReturnedOptimiser extends TenaryTransformer implemen
 	 */
 	protected void visitIfStatement(final JIfStatement ifStatement, final Context context, final TreeLogger logger) {
 
-		final TreeLogger branch = logger.branch(TreeLogger.DEBUG, ifStatement.getSourceInfo().toString(), null);
+		final TreeLogger branch = logger.isLoggable( TreeLogger.DEBUG ) ? logger.branch(TreeLogger.DEBUG, ifStatement.getSourceInfo().toString(), null) : TreeLogger.NULL;
 
 		while (true) {
 			// must have an else
@@ -138,6 +138,8 @@ public class AlternateValuesReturnedOptimiser extends TenaryTransformer implemen
 		
 		context.replaceMe( returnTenary );
 		
-		logger.log( TreeLogger.DEBUG, "Converted from \"" + Compiler.getSource( ifExpression ) + "\" to \"" + Compiler.getSource(returnTenary ) + "\" - optimised.", null );
+		if( logger.isLoggable( TreeLogger.DEBUG )){
+			logger.log( TreeLogger.DEBUG, "Converted from \"" + Compiler.getSource( ifExpression ) + "\" to \"" + Compiler.getSource(returnTenary ) + "\" - optimised.", null );
+		}
 	}
 }

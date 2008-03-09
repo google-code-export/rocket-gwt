@@ -33,7 +33,7 @@ import com.google.gwt.dev.jjs.ast.js.JMultiExpression;
  * 
  * @author Miroslav Pokorny
  */
-public class VariableAssignedToSelfRemover implements CompilationWorker {
+public class VariableAssignedToSelfRemover implements JavaCompilationWorker {
 
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
 		final TreeLogger branchLogger = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
