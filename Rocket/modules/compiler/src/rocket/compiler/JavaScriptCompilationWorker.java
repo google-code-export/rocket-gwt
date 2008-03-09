@@ -16,13 +16,13 @@
 package rocket.compiler;
 
 import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.dev.jjs.ast.JProgram;
+import com.google.gwt.dev.js.ast.JsProgram;
 
 /**
- * This interface is implemented by all optimisers.
- * 
+ * Represents a component that visits a programs tree when it is in javascript ast form.
+ * Typically a compilation worker will then attempt to perform some optimisation.
  * @author Miroslav Pokorny
  */
-public interface CompilationWorker {
-	boolean work(JProgram jprogram, TreeLogger logger);
+public interface JavaScriptCompilationWorker {
+	boolean work(JsProgram jsprogram, TreeLogger logger);
 }

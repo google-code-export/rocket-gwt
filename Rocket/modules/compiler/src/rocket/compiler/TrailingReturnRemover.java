@@ -20,7 +20,7 @@ import com.google.gwt.dev.jjs.ast.JType;
  * 
  * @author Miroslav Pokorny
  */
-public class TrailingReturnRemover implements CompilationWorker {
+public class TrailingReturnRemover implements JavaCompilationWorker {
 
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
 		final TreeLogger branchLogger = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);

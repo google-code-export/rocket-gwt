@@ -43,7 +43,7 @@ import com.google.gwt.dev.jjs.ast.JVisitor;
  * This compilation worker is run just before the steps that transform an optimised AST into javascript.
  * @author Miroslav Pokorny
  */
-public class LongNotifier implements CompilationWorker {
+public class LongNotifier implements JavaCompilationWorker {
 
 	final static String ENABLED_SYSTEM_PROPERTY = LongNotifier.class.getName() + ".enabled";
 	final static String ENABLED = "true";
