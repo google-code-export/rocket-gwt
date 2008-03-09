@@ -93,20 +93,26 @@ public class JBinaryOperator {
   public String toString() {
     return new String(getSymbol());
   }
-
+  
   /**
    * TODO ROCKET When upgrading GWT re add equals method.
    */
-  public boolean equals(final JBinaryOperator other ){
+  public boolean equals(final Object otherObject ){
 	  boolean equals = false;
 	  
 	  while( true ){
-		  if( this == other ){
+		  if( this == otherObject ){
 			  equals = true;
 			  break;
 		  }
 		  
-		  equals = new String( this.getSymbol() ).equals( new String( other.getSymbol() ));
+		  if( false == otherObject instanceof JBinaryOperator ){
+			  equals = false;
+			  break;
+		  }
+		  
+		  final JBinaryOperator otherBinaryOperator = (JBinaryOperator) otherObject;
+		  equals = new String( this.getSymbol() ).equals( new String( otherBinaryOperator.getSymbol() ));
 		  break;
 	  }
 	  
