@@ -68,9 +68,11 @@ import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
 
 import rocket.compiler.AlternateValuesAssignmentOptimiser;
 import rocket.compiler.AlternateValuesReturnedOptimiser;
+import rocket.compiler.CompareAgainstZeroOptimiser;
 import rocket.compiler.ConditionalAssignmentOptimiser;
 import rocket.compiler.LongNotifier;
 import rocket.compiler.TrailingReturnRemover;
+import rocket.compiler.UnusedLocalVariableRemover;
 import rocket.compiler.VariableAssignedToSelfRemover;
 import rocket.logging.compiler.LoggerOptimiser;
 import rocket.logging.compiler.LoggingLevelByNameAssigner;
@@ -330,7 +332,7 @@ public class JavaToJavaScriptCompiler {
       // Compute which classes have clinits
       jprogram.typeOracle.computeAfterAST();
       
-		// TODO When upgrading GWT version reapply changes to this class. (ROCKET) 
+		// TODO ROCKET When upgrading from GWT 1.4.60 reapply changes. 
 		final LoggerOptimiser loggerOptimiser = this.getLoggerOptimiser(jprogram, propertyOracle, logger);
 
 		loggerOptimiser.execute();
@@ -345,12 +347,13 @@ public class JavaToJavaScriptCompiler {
       // (4) Optimize the normalized Java AST
       boolean didChange;
       
-      // ROCKET changes must be reapplied when upgrading GWT.
+      // TODO ROCKET When upgrading from GWT 1.4.60 reapply changes.
       final AlternateValuesAssignmentOptimiser alternateValuesAssignmentOptimiser = new AlternateValuesAssignmentOptimiser();
       final AlternateValuesReturnedOptimiser alternateValuesReturnedOptimiser = new AlternateValuesReturnedOptimiser();
       final ConditionalAssignmentOptimiser conditionalAssignmentOptimiser = new ConditionalAssignmentOptimiser();
       final TrailingReturnRemover trailingReturnRemover = new TrailingReturnRemover();
       final VariableAssignedToSelfRemover variableAssignedToSelfRemover = new VariableAssignedToSelfRemover();
+      final UnusedLocalVariableRemover unusedLocalVariableRemover = new UnusedLocalVariableRemover();
       
       int pass = 0;
       
@@ -366,7 +369,8 @@ public class JavaToJavaScriptCompiler {
         didChange = alternateValuesReturnedOptimiser.work(jprogram, logger) || didChange;
         didChange = conditionalAssignmentOptimiser.work(jprogram, logger) || didChange;        
         didChange = trailingReturnRemover.work(jprogram, logger) || didChange;
-        didChange = variableAssignedToSelfRemover.work(jprogram, logger) || didChange;        
+        didChange = variableAssignedToSelfRemover.work(jprogram, logger) || didChange;  
+        didChange = unusedLocalVariableRemover.work( jprogram, logger ) || didChange;
         
         // Remove unreferenced types, fields, methods, [params, locals]
         didChange = Pruner.exec(jprogram, true) || didChange;
@@ -434,6 +438,15 @@ public class JavaToJavaScriptCompiler {
       } else {
         JsVerboseNamer.exec(jsProgram);
       }
+      
+      // TODO ROCKET When upgrading from GWT 1.4.60 reapply changes.
+      final CompareAgainstZeroOptimiser compareAgainstZero = new CompareAgainstZeroOptimiser();
+      do {
+          didChange = false;
+          didChange = didChange || compareAgainstZero.work(jsProgram, logger);
+          
+      } while( ! didChange );
+     
 
       DefaultTextOutput out = new DefaultTextOutput(obfuscate);
       JsSourceGenerationVisitor v = new JsSourceGenerationVisitor(out);
@@ -541,7 +554,7 @@ public class JavaToJavaScriptCompiler {
 	 * @param logger A logger
 	 * @return The appropriate implementation
 	 * 
-	 * TODO When upgrading GWT version reapply changes to this class. ROCKET
+	 * TODO ROCKET When upgrading from GWT 1.4.60 reapply changes.
 	 */
 	protected LoggerOptimiser getLoggerOptimiser(final JProgram program, final PropertyOracle propertyOracle, final TreeLogger logger) {
 		final LoggingPropertyReader reader = new LoggingPropertyReader(){
