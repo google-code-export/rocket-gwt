@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
-<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/RocketCompiler/src/rocket/compiler/test/trailingreturnremover/client/TrailingReturnRemoverGwtTestCase.java"/>
-</listAttribute>
-<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="1"/>
-</listAttribute>
 <booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
@@ -19,5 +13,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rocket.compiler.test.trailingreturnremover.client.TrailingReturnRemoverGwtTestCase"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="RocketCompiler"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www-test/1/ -logLevel DEBUG -style DETAILED -gen generated/1/ &quot; -Xmx256M&#13;&#10;-Dgwt.hybrid&#13;&#10;-Drocket.compiler.test.CompilationWorker=rocket.compiler.test.trailingreturnremover.compiler.TrailingReturnRemoverTest"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www-test/1/ -logLevel DEBUG -style DETAILED -gen generated/1/ &quot; -Xmx256M&#13;&#10;-Dgwt.hybrid&#13;&#10;-Drocket.compiler.test.JavaCompilationWorker=rocket.compiler.test.trailingreturnremover.compiler.TrailingReturnRemoverTest"/>
 </launchConfiguration>

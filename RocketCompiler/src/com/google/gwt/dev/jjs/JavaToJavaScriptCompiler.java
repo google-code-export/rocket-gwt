@@ -65,7 +65,8 @@ import org.eclipse.jdt.internal.compiler.CompilationResult;
 import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
 
-import rocket.compiler.CompilationWorker;
+import rocket.compiler.JavaCompilationWorker;
+import rocket.compiler.JavaScriptCompilationWorker;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -325,16 +326,14 @@ public class JavaToJavaScriptCompiler {
 
 			// ROCKET factory method which fetches the optimiser being tested
 			// from a factory TODO Reapply changes when upgrading GWT
-			final CompilationWorker test = getCompilationWorker(logger);
+			final JavaCompilationWorker test = getJavaCompilationWorker(logger);
 
 			do {
 				didChange = false;
 
 				// ROCKET the optimiser being tested. TODO Reapply changes when
 				// upgrading GWT
-				if (null != test) {
-					didChange = test.work(jprogram, logger) || didChange;
-				}
+				didChange = test.work(jprogram, logger) || didChange;
 
 				// Remove unreferenced types, fields, methods, [params, locals]
 				didChange = Pruner.exec(jprogram, true) || didChange;
@@ -407,10 +406,15 @@ public class JavaToJavaScriptCompiler {
 			} else {
 				JsVerboseNamer.exec(jsProgram);
 			}
-
+			
+			// ROCKET Inserted to facilitate optimisation of the javascript AST.
+			final JavaScriptCompilationWorker javaScriptCompilationWorker = this.getJavaScriptCompilationWorker(logger);
+			javaScriptCompilationWorker.work(jsProgram, logger);			
+			
 			DefaultTextOutput out = new DefaultTextOutput(obfuscate);
 			JsSourceGenerationVisitor v = new JsSourceGenerationVisitor(out);
 			v.accept(jsProgram);
+						
 			return out.toString();
 		} catch (UnableToCompleteException e) {
 			// just rethrow
@@ -508,20 +512,22 @@ public class JavaToJavaScriptCompiler {
 	 * @param logger
 	 * @return
 	 * @throws UnableToCompleteException
-	 *             if something goes wrong attempting to create the test
-	 *             optimiser
+	 *             if something goes wrong attempting to create the JavaCompilationWorker
 	 * 
 	 * ROCKET
 	 */
-	CompilationWorker getCompilationWorker(final TreeLogger logger) throws UnableToCompleteException {
-		CompilationWorker worker = null;
+	JavaCompilationWorker getJavaCompilationWorker(final TreeLogger logger) throws UnableToCompleteException {
+		JavaCompilationWorker worker = new JavaCompilationWorker(){
+			public boolean work(JProgram jprogram, TreeLogger logger){
+			return false;
+		}
+		};
 
 		while (true) {
 			// fetch the fqcn of the compilation worker from a system property.
-			final String className = System.getProperty(COMPILATION_WORKER_SYSTEM_PROPERTY);
+			final String className = System.getProperty(JAVA_COMPILATION_WORKER_SYSTEM_PROPERTY);
 			if (null == className) {
-				logger.log(TreeLogger.WARN, "The system property \"" + COMPILATION_WORKER_SYSTEM_PROPERTY
-						+ "\" was not set compilation will use default config.", null);
+				logger.log(TreeLogger.WARN, "The system property \"" + JAVA_COMPILATION_WORKER_SYSTEM_PROPERTY + "\" was not set compilation will use default config.", null);
 				break;
 			}
 
@@ -529,7 +535,7 @@ public class JavaToJavaScriptCompiler {
 
 			try {
 				final Class classs = Class.forName(className);
-				worker = (CompilationWorker) classs.newInstance();
+				worker = (JavaCompilationWorker) classs.newInstance();
 			} catch (final Exception caught) {
 				logger.log(TreeLogger.ERROR, "Unable to load the class \"" + className + "\", message: " + caught.getMessage(), null);
 				throw new UnableToCompleteException();
@@ -540,6 +546,57 @@ public class JavaToJavaScriptCompiler {
 		return worker;
 	}
 
-	final static String COMPILATION_WORKER_SYSTEM_PROPERTY = "rocket.compiler.test.CompilationWorker";
+	/**
+	 * If this system property is present the value is used as the class name of a JavaCompilationWorker
+	 */
+	final static String JAVA_COMPILATION_WORKER_SYSTEM_PROPERTY = "rocket.compiler.test.JavaCompilationWorker";
 
+	/**
+	 * Factory method which attempts to create a CompilationWorker instance
+	 * after fetching the class name from a system property.
+	 * 
+	 * @param logger
+	 * @return
+	 * @throws UnableToCompleteException
+	 *             if something goes wrong attempting to create the JavaScriptCompilationWorker
+	 * 
+	 * ROCKET
+	 */
+	JavaScriptCompilationWorker getJavaScriptCompilationWorker(final TreeLogger logger) throws UnableToCompleteException {
+		JavaScriptCompilationWorker worker = new JavaScriptCompilationWorker(){
+			public boolean work(JsProgram jprogram, TreeLogger logger){
+			return false;
+		}
+		};
+
+		while (true) {
+			// fetch the fqcn of the compilation worker from a system property.
+			final String className = System.getProperty(JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY);
+			if (null == className) {
+				logger.log(TreeLogger.WARN, "The system property \"" + JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY + "\" was not set compilation will use default config.", null);
+				break;
+			}
+
+			// try and load the class
+
+			try {
+				final Class classs = Class.forName(className);
+				worker = (JavaScriptCompilationWorker) classs.newInstance();
+			} catch (final Exception caught) {
+				logger.log(TreeLogger.ERROR, "Unable to load the class \"" + className + "\", message: " + caught.getMessage(), null);
+				throw new UnableToCompleteException();
+			}
+			break;
+		}
+
+		return worker;
+	}
+
+	/**
+	 * If this system property is present the value is used as the class name of a JavaScriptCompilationWorker
+	 */
+	final static String JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY = "rocket.compiler.test.JavaScriptCompilationWorker";
+	
+	
+	
 }
