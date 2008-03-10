@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>AccordionPanel</title>
+<meta name='gwt:module' content='rocket.widget.test.accordionpanel.AccordionPanel'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+BODY, TABLE, DIV, BUTTON{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+BUTTON{
+	margin: 4px;
+	width: 200px;
+}
+
+/* VERTICAL ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::*/
+DIV.rocket-verticalAccordionPanel{
+	margin: 0px;
+
+	border-style: dashed;
+	border-color: #ffbbbb;
+	border-width: 1px;
+	background-color: #ffeeee;
+
+	padding: 4px;
+}
+
+.rocket-verticalAccordionPanel-item{
+	margin: 0px;
+
+	border-style: solid;
+	border-color: #ffffff;
+	border-width: 4px;
+
+	background-color: #ffdddd;
+
+	padding-bottom: 4px;
+	padding-top: 4px;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.rocket-verticalAccordionPanel-item-caption{
+	margin: 0px;
+	background-color: #ffdddd;
+	padding-bottom: 0px;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-left: 4px;
+	display: inline;
+	cursor: pointer;
+}
+.rocket-verticalAccordionPanel-item-content{
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+
+	border-style: solid;
+	border-color: #888888;
+	border-width: 1px;
+
+	background-color: #ffffff;
+}
+.rocket-verticalAccordionPanel-item-selected 
+.rocket-verticalAccordionPanel-item-caption,
+DIV.rocket-verticalAccordionPanel-item-selected
+{
+	background-color: #ffaaaaa;
+	color: #000000;
+	font-weight: bold;
+}
+
+.rocket-verticalAccordionPanel-item-caption{
+	cursor: default;
+}
+
+.rocket-verticalAccordionPanel-item-content{
+	background-color: #ffeeee;
+	color: #000000;
+}
+
+/* LEFT SIDE ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::*/
+TABLE.rocket-leftSideAccordionPanel{
+	margin: 0px;
+
+	border-style: dashed;
+	border-color: #ddffdd;
+	border-width: 1px;
+	background-color: #ffffff;
+
+	padding: 4px;
+}
+
+.rocket-leftSideAccordionPanel-item-caption,
+.rocket-leftSideAccordionPanel-item-content {
+	margin: 0px;
+
+	border-style: solid;
+	border-color: #ddffdd;
+	border-width: 4px;
+
+	background-color: #ddffdd;
+
+	padding-bottom: 4px;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-left: 4px;
+}
+.rocket-leftSideAccordionPanel-item-caption {
+	margin-bottom: 2px;
+
+	cursor: pointer;
+	background-color: #ddffdd;
+	border-color: #aaffaa;
+}
+
+.rocket-leftSideAccordionPanel-item-content { 
+	background-color: #eeffee;
+	border-color: #aaffaa;
+	cursor: default;
+}
+
+.rocket-leftSideAccordionPanel-item-caption-selected {
+	cursor: default;
+	background-color: #aaffaa;
+	border-color: #aaffaa;
+	font-weight: bold;
+}
+
+/* RIGHT SIDE ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::*/
+TABLE.rocket-rightSideAccordionPanel{
+	margin: 0px;
+
+	border-style: dashed;
+	border-color: #aaaaff;
+	border-width: 1px;
+	background-color: #ffffff;
+
+	padding: 4px;
+}
+
+.rocket-rightSideAccordionPanel-item-caption,
+.rocket-rightSideAccordionPanel-item-content {
+	background-color: #ffffff;
+
+	border-style: solid;
+	border-color: #aaaaff;
+	border-width: 4px;
+
+	padding-bottom: 4px;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-right: 4px;
+	margin: 0px;
+}
+.rocket-rightSideAccordionPanel-item-caption {
+	margin-bottom: 2px;
+	
+	cursor: pointer;
+	background-color: #ddddff;
+	border-color: #aaaaff;
+}
+
+.rocket-rightSideAccordionPanel-item-content { 
+	background-color: #ddddff;
+	border-color: #aaaaff;
+	cursor: default;
+}
+
+.rocket-rightSideAccordionPanel-item-caption-selected {
+	cursor: default;
+	background-color: #aaaaff;
+	border-color: #aaaaff;
+	font-weight: bold;
+}
+
+/* MISC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+.rocket-interactiveList{
+	margin: 4px;
+	padding: 4px;
+	background-color: #dddddd;
+}
+
+.rocket-interactiveList BUTTON{
+	margin: 4px;
+}
+
+</style>
+</head>
+
+<body>
+<div style="display: none" id="Lorem">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+</div>
+</body>
+
+</html>

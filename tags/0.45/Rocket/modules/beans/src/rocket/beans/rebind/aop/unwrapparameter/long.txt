@@ -1,0 +1,4 @@
+// /rocket/beans/rebind/aop/unwrapparameter/long.txt
+
+chain.getLongParameter( ${parameterIndex} )
+
