@@ -2,7 +2,7 @@
 <project name="Rocket" default="dist" basedir="c:/workspace.rocket/Rocket/">
 	<description>Ant build for the rocket framework.</description>
 
-	<property name="version" 				value="0.44"/>
+	<property name="version" 				value="0.45"/>
 	<property name="build-dir" 				location="${basedir}/build"/>	
 	<property name="test-dir" 				location="${build-dir}/test"/>	
 	<property name="src-dir" 				location="${build-dir}/src"/>	
@@ -13,8 +13,8 @@
 	<property name="generated-dir" 			location="${basedir}/generated"/>	
 	<property name="www-dir" 				location="${build-dir}/www"/>
 	<property name="reports-dir" 			location="${build-dir}/reports"/>
-	<property name="lib-dir" 				location="c:/java-libraries/"/>
-	<property name="gwt-home-dir"		 	location="${lib-dir}/gwt-windows-1.4.60"/>
+	<property name="lib-dir" 				location="c:/libraries/"/>
+	<property name="gwt-home-dir"		 	location="${lib-dir}/google/gwt/1.4.60"/>
 	<property name="junit-dir" 				location="${lib-dir}/junit/3.8"/>
 	<property name="flexjson-dir" 			location="${lib-dir}/flexjson/1.2"/>
 	<property name="cglib-dir" 				location="${lib-dir}/sourceforge.net/cglib/2.0.2"/>	
