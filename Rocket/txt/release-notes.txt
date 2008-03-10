@@ -517,3 +517,12 @@ Remoting
   The client now uses CometClient which contains 3 methods onPayload(), onTerminate(), onFailure(). CometServerSerlvet has been reworked, the poll() method must be overridden - queryObjectSource
   has been deprecated. The push() and terminate() method must be used to push objects to the client or terminate a comet session from the server.
   
+0.45 10 March 2008
+------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.45.zip
+
+Compiler
+* Added UnusedLocalVariableRemover which removes local variables that are not referenced within a method. Any assignments to the variable are only kept if they have side effects otherwise they 
+  are eliminated.
+* Added CompareAgainstZeroOptimiser which analyses the Javascript AST and optimises tests of numeric values against 0 using javascripts coercision of zero/non zero values to false/true.
+* Fixed a bug that was introduced with changes to JsObfuscateNamer. 
