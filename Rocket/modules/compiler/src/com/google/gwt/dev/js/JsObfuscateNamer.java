@@ -55,8 +55,8 @@ public class JsObfuscateNamer {
     //
     int i = 0;
     
-    // ROCKET Reapply changes when upgrading GWT
-    sIdentBuf[i++] = sBase64Chars[id / 52 ];
+    // ROCKET When upgrading from GWT 1.4.60 reapply changes.
+    sIdentBuf[i++] = sBase64Chars[id % 52 ];
     id = id / 52;
 
     // Use base-64 for the rest of the identifier.
