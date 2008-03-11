@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/RocketCompiler/src/rocket/compiler/test/alternatevaluesassignmentoptimiser/client/AlternateValuesAssignmentOptimiserGwtTestCase.java"/>
+<listEntry value="/RocketCompiler/src/rocket/compiler/test/alternatevaluesreturnedoptimiser/client/AlternateValuesReturnedOptimiserGwtTestCase.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -17,7 +17,7 @@
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.jdt.launching.JRE_CONTAINER&quot; javaProject=&quot;Rocket&quot; path=&quot;1&quot; type=&quot;4&quot;/&gt;&#13;&#10;"/>
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rocket.compiler.test.alternatevaluesassignmentoptimiser.client.AlternateValuesAssignmentOptimiserGwtTestCase"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rocket.compiler.test.alternatevaluesreturnedoptimiser.client.AlternateValuesReturnedOptimiserGwtTestCase"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="RocketCompiler"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www-test/1/ -logLevel DEBUG -style DETAILED -gen generated/1/ &quot; -Xmx256M&#13;&#10;-Dgwt.hybrid&#13;&#10;-Drocket.compiler.test.JavaCompilationWorker=rocket.compiler.test.alternatevaluesassignmentoptimiser.compiler.AlternateValuesAssignmentOptimiserTest"/>
 </launchConfiguration>
