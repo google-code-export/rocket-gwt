@@ -54,12 +54,6 @@ public class LongNotifier implements JavaCompilationWorker {
 	final static String RETURN_TYPE = "ReturnType";
 	final static String FIELDS = "Fields";
 	
-	final static String CONSTRUCTOR_SUFFIX = " (Constructor)";
-	final static String STATIC_INITIALIZER_METHOD_NAME = "$clinit";
-	final static String STATIC_INITIALIZER_SUFFIX = " (static initializer)";
-	final static String INITIALIZER_METHOD_NAME = "$init";
-	final static String INITIALIZER_SUFFIX = " (initializer)";
-	
 	/**
 	 * If warnings are enabled output all types, methods and fields with long references.
 	 */
@@ -136,19 +130,9 @@ public class LongNotifier implements JavaCompilationWorker {
 	 * @param logger
 	 */
 	protected void outputMethod(final Method method, final TreeLogger logger) {
-		String methodName = method.getName();
-		if( methodName.equals( STATIC_INITIALIZER_METHOD_NAME)){
-			methodName = methodName + STATIC_INITIALIZER_SUFFIX;
-		}
-		if( methodName.equals( INITIALIZER_METHOD_NAME)){
-			methodName = methodName + INITIALIZER_SUFFIX;
-		}
 		final JMethod jmethod = method.getJMethod();
-		if( jmethod.isConstructor() ){
-			methodName = methodName + CONSTRUCTOR_SUFFIX;
-		}
 		
-		final TreeLogger branch = logger.branch(TreeLogger.WARN, methodName, null);
+		final TreeLogger branch = logger.branch(TreeLogger.WARN, Compiler.getMethodName( jmethod ), null);
 
 		final JType longType = jmethod.getJProgram().getTypePrimitiveLong();
 

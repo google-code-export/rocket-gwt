@@ -15,10 +15,13 @@
  */
 package rocket.compiler;
 
-import com.google.gwt.dev.jjs.ast.JClassType;
+import java.util.Iterator;
+
+import rocket.util.client.Checker;
+
 import com.google.gwt.dev.jjs.ast.JMethod;
 import com.google.gwt.dev.jjs.ast.JNode;
-import com.google.gwt.dev.jjs.ast.JReferenceType;
+import com.google.gwt.dev.jjs.ast.JType;
 import com.google.gwt.dev.js.ast.JsNode;
 
 /**
@@ -32,18 +35,54 @@ public class Compiler {
 	 * @return
 	 */
 	static public String getSource(final JNode node) {
+		Checker.notNull("parameter:node", node );
+		
 		return node.toSource().replaceAll( "\n", "\\\\n" ).replaceAll( "\r", "\\\\r" );
 	}
 	
+	final static String CONSTRUCTOR_SUFFIX = " -Constructor";
+	final static String STATIC_INITIALIZER_METHOD_NAME = "$clinit";
+	final static String STATIC_INITIALIZER_SUFFIX = " -Static initializer";
+	final static String INITIALIZER_METHOD_NAME = "$init";
+	final static String INITIALIZER_SUFFIX = " -Initializer";
+	
 	/**
-	 * Builds the fully qualified name of the method including the enclosing class.
+	 * Returns a string containing the method name followed by any parameter types.
 	 * @param method
 	 * @return
 	 */
-	static public String getFullName( final JMethod method ){
-		final JReferenceType enclosingType = method.getEnclosingType();
+	static public String getMethodName( final JMethod method ){
+		Checker.notNull("parameter:method", method );
+		
 		final String methodName = method.getName();
-		return enclosingType == null ? methodName : enclosingType.getName() + '.' + methodName;
+		
+		final StringBuffer buf = new StringBuffer();
+		buf.append( methodName );
+		buf.append( '(');
+		
+		final Iterator p = method.getOriginalParamTypes().iterator();
+		while( p.hasNext() ){
+			final JType parameter = (JType)p.next();
+			buf.append( parameter.getName() );
+			
+			if( p.hasNext() ){
+				buf.append( ",");
+			}
+		}
+		
+		buf.append( ')');
+		
+		if( methodName.equals( STATIC_INITIALIZER_METHOD_NAME)){
+			buf.append( STATIC_INITIALIZER_SUFFIX );
+		}
+		if( methodName.equals( INITIALIZER_METHOD_NAME)){
+			buf.append( INITIALIZER_SUFFIX );
+		}
+		if( method.isConstructor() ){
+			buf.append( CONSTRUCTOR_SUFFIX );
+		}
+		
+		return buf.toString();
 	}
 	
 	/**
@@ -52,6 +91,8 @@ public class Compiler {
 	 * @return
 	 */
 	static public String getSource(final JsNode node) {
+		Checker.notNull("parameter:node", node );
+		
 		return node.toSource().replaceAll( "\n", "\\\\n" ).replaceAll( "\r", "\\\\r" );
 	}
 }
