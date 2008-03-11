@@ -67,6 +67,7 @@ import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
 
 import rocket.compiler.JavaCompilationWorker;
 import rocket.compiler.JavaScriptCompilationWorker;
+import rocket.compiler.test.JavaScriptSourceChecker;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -414,8 +415,12 @@ public class JavaToJavaScriptCompiler {
 			DefaultTextOutput out = new DefaultTextOutput(obfuscate);
 			JsSourceGenerationVisitor v = new JsSourceGenerationVisitor(out);
 			v.accept(jsProgram);
-						
-			return out.toString();
+					
+			final JavaScriptSourceChecker javascriptSourceChecker = this.getJavaScriptSourceChecker( logger ); 
+			final String javascript = out.toString();
+			javascriptSourceChecker.examine( javascript );
+			
+			return javascript;
 		} catch (UnableToCompleteException e) {
 			// just rethrow
 			throw e;
@@ -527,7 +532,7 @@ public class JavaToJavaScriptCompiler {
 			// fetch the fqcn of the compilation worker from a system property.
 			final String className = System.getProperty(JAVA_COMPILATION_WORKER_SYSTEM_PROPERTY);
 			if (null == className) {
-				logger.log(TreeLogger.WARN, "The system property \"" + JAVA_COMPILATION_WORKER_SYSTEM_PROPERTY + "\" was not set compilation will use default config.", null);
+				logger.log(TreeLogger.WARN, "The system property \"" + JAVA_COMPILATION_WORKER_SYSTEM_PROPERTY + "\" was not set compilation will use a dummy JavaCompilationWorker.", null);
 				break;
 			}
 
@@ -573,7 +578,7 @@ public class JavaToJavaScriptCompiler {
 			// fetch the fqcn of the compilation worker from a system property.
 			final String className = System.getProperty(JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY);
 			if (null == className) {
-				logger.log(TreeLogger.WARN, "The system property \"" + JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY + "\" was not set compilation will use default config.", null);
+				logger.log(TreeLogger.WARN, "The system property \"" + JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY + "\" was not set compilation will use a dummy JavaScriptCompilationWorker.", null);
 				break;
 			}
 
@@ -597,6 +602,49 @@ public class JavaToJavaScriptCompiler {
 	 */
 	final static String JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY = "rocket.compiler.test.JavaScriptCompilationWorker";
 	
-	
+	/**
+	 * Factory method which attempts to create a CompilationWorker instance
+	 * after fetching the class name from a system property.
+	 * 
+	 * @param logger
+	 * @return
+	 * @throws UnableToCompleteException
+	 *             if something goes wrong attempting to create the JavaScriptSourceChecker
+	 * 
+	 * ROCKET
+	 */
+	JavaScriptSourceChecker getJavaScriptSourceChecker(final TreeLogger logger) throws UnableToCompleteException {
+		JavaScriptSourceChecker worker = new JavaScriptSourceChecker(){
+			public void examine(final String string ){
+			}
+		};
+
+		while (true) {
+			// fetch the fqcn of the compilation worker from a system property.
+			final String className = System.getProperty(JAVASCRIPT_SOURCE_CHECKER_SYSTEM_PROPERTY);
+			if (null == className) {
+				logger.log(TreeLogger.WARN, "The system property \"" + JAVASCRIPT_SOURCE_CHECKER_SYSTEM_PROPERTY + "\" was not set compilation will use a dummy JavaScriptSourceChecker.", null);
+				break;
+			}
+
+			// try and load the class
+
+			try {
+				final Class classs = Class.forName(className);
+				worker = (JavaScriptSourceChecker) classs.newInstance();
+			} catch (final Exception caught) {
+				logger.log(TreeLogger.ERROR, "Unable to load the class \"" + className + "\", message: " + caught.getMessage(), null);
+				throw new UnableToCompleteException();
+			}
+			break;
+		}
+
+		return worker;
+	}
+
+	/**
+	 * If this system property is present the value is used as the class name of a JavaScriptSourceChecker
+	 */
+	final static String JAVASCRIPT_SOURCE_CHECKER_SYSTEM_PROPERTY = "rocket.compiler.test.JavaScriptSourceChecker";	
 	
 }
