@@ -75,6 +75,7 @@ import rocket.compiler.LongNotifier;
 import rocket.compiler.TrailingReturnRemover;
 import rocket.compiler.UnusedLocalVariableRemover;
 import rocket.compiler.VariableAssignedToSelfRemover;
+import rocket.compiler.VariableUpdaterOptimiser;
 import rocket.logging.compiler.LoggerOptimiser;
 import rocket.logging.compiler.LoggingLevelByNameAssigner;
 import rocket.logging.compiler.NoneLoggingFactoryGetLoggerOptimiser;
@@ -356,6 +357,7 @@ public class JavaToJavaScriptCompiler {
       final VariableAssignedToSelfRemover variableAssignedToSelfRemover = new VariableAssignedToSelfRemover();
       final UnusedLocalVariableRemover unusedLocalVariableRemover = new UnusedLocalVariableRemover();
       final LocalVariableFinalMaker localVariableFinalMaker = new LocalVariableFinalMaker();
+      final VariableUpdaterOptimiser variableUpdaterOptimiser = new VariableUpdaterOptimiser();
       
       int pass = 0;
       
@@ -374,6 +376,7 @@ public class JavaToJavaScriptCompiler {
         didChange = variableAssignedToSelfRemover.work(jprogram, logger) || didChange;  
         didChange = unusedLocalVariableRemover.work( jprogram, logger ) || didChange;
         didChange = localVariableFinalMaker.work( jprogram, logger ) || didChange;
+        didChange = variableUpdaterOptimiser.work( jprogram, logger ) || didChange;
         
         // Remove unreferenced types, fields, methods, [params, locals]
         didChange = Pruner.exec(jprogram, true) || didChange;
