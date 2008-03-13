@@ -15,7 +15,10 @@
  */
 package rocket.compiler;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import rocket.util.client.Checker;
 
@@ -23,7 +26,6 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.dev.jjs.SourceInfo;
 import com.google.gwt.dev.jjs.ast.Context;
 import com.google.gwt.dev.jjs.ast.JBinaryOperation;
-import com.google.gwt.dev.jjs.ast.JBinaryOperator;
 import com.google.gwt.dev.jjs.ast.JBlock;
 import com.google.gwt.dev.jjs.ast.JClassType;
 import com.google.gwt.dev.jjs.ast.JDoStatement;
@@ -35,18 +37,12 @@ import com.google.gwt.dev.jjs.ast.JLocal;
 import com.google.gwt.dev.jjs.ast.JLocalDeclarationStatement;
 import com.google.gwt.dev.jjs.ast.JLocalRef;
 import com.google.gwt.dev.jjs.ast.JMethod;
-import com.google.gwt.dev.jjs.ast.JMethodBody;
 import com.google.gwt.dev.jjs.ast.JModVisitor;
 import com.google.gwt.dev.jjs.ast.JProgram;
-import com.google.gwt.dev.jjs.ast.JReturnStatement;
 import com.google.gwt.dev.jjs.ast.JSwitchStatement;
-import com.google.gwt.dev.jjs.ast.JType;
 import com.google.gwt.dev.jjs.ast.JVariable;
-import com.google.gwt.dev.jjs.ast.JVariableRef;
-import com.google.gwt.dev.jjs.ast.JVisitor;
 import com.google.gwt.dev.jjs.ast.JWhileStatement;
 import com.google.gwt.dev.jjs.ast.js.JMultiExpression;
-import com.google.gwt.dev.js.ast.JsDecimalLiteral;
 
 /**
  * This optimiser attempts to locate any local variables that are only ever set once and makes them final.
