@@ -15,10 +15,15 @@
  */
 package rocket.compiler;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.dev.jjs.ast.Context;
+import com.google.gwt.dev.jjs.ast.JClassType;
 import com.google.gwt.dev.jjs.ast.JExpression;
 import com.google.gwt.dev.jjs.ast.JMethod;
 import com.google.gwt.dev.jjs.ast.JMethodBody;
@@ -37,38 +42,95 @@ import com.google.gwt.dev.jjs.ast.JType;
  */
 public class TrailingReturnRemover implements JavaCompilationWorker {
 
+	private final static boolean VISIT_CHILD_NODES = true;
+	
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
-		final TreeLogger branchLogger = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
+		final TreeLogger branch = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
 
-		final ClassMethodVisitor visitor = new ClassMethodVisitor() {
-			public boolean visitClassMethod(final JMethod method, final Context context) {
-				TreeLogger secondBranchLogger = TreeLogger.NULL;
-				if (logger.isLoggable(TreeLogger.DEBUG)) {
-					String methodName = method.getName();
-					final JType enclosingType = method.getEnclosingType();
-					if (null != enclosingType) {
-						methodName = enclosingType.getName() + "." + methodName;
-					}
-					secondBranchLogger = branchLogger.branch(TreeLogger.DEBUG, methodName, null);
-				}
-
-				if (TrailingReturnRemover.this.isConcreteMethod(method, secondBranchLogger)) {
-					if (TrailingReturnRemover.this.attemptToRemoveReturnStatements(method, context, secondBranchLogger)) {
-						this.didChange = true;
-					}
-				}
-				return false; // dont visit methodbody etc.
-			}
-
-			public void endVisitClassMethod(final JMethod method, final Context context) {
-			}
-		};
+		final TrailingReturnMethodVisitor visitor = new TrailingReturnMethodVisitor();
+		visitor.setLogger( branch );
 		visitor.accept(jprogram);
 
 		final boolean changed = visitor.didChange();
 		logger.log(TreeLogger.DEBUG, changed ? "One or more changes were made." : "No changes were committed.", null);
 		return changed;
 	}
+	
+	/**
+	 * This visitor visits all methods attempting to locate and remove those with unnecessary trailing return statements.
+	 */
+	class TrailingReturnMethodVisitor extends ClassMethodVisitor{
+		
+		public void setLogger( final TreeLogger logger ){
+			this.setClassTypeLogger( logger );
+		}
+		
+		public boolean visit( final JClassType type, final Context context ){
+			final TreeLogger logger = this.getClassTypeLogger().branch( TreeLogger.DEBUG, type.getName(), null );
+			this.setMethodLogger( logger );
+			return VISIT_CHILD_NODES;
+		}
+		
+		public void endVisit( final JClassType type, final Context context ){
+			this.clearMethodLogger();
+		}
+		
+		/**
+		 * This logger is to be used exclusively to log local variable messages.
+		 */
+		private TreeLogger classTypeLogger;
+		
+		protected TreeLogger getClassTypeLogger(){
+			Checker.notNull("field:classTypeLogger", classTypeLogger );
+			return this.classTypeLogger;
+		}
+		
+		protected void setClassTypeLogger( final TreeLogger classTypeLogger ){
+			Checker.notNull("parameter:classTypeLogger", classTypeLogger );
+			this.classTypeLogger = classTypeLogger;
+		}
+		
+		/**
+		 * A new method resets local variables.
+		 */
+		public boolean visitClassMethod( final JMethod method, final Context context ){
+			TreeLogger logger = this.getMethodLogger();
+			TreeLogger branch = TreeLogger.NULL;
+			if (logger.isLoggable(TreeLogger.DEBUG)) {
+				branch = logger.branch(TreeLogger.DEBUG, Compiler.getMethodName(method), null);
+			}
+
+			if (TrailingReturnRemover.this.isConcreteMethod(method, branch )) {
+				if (TrailingReturnRemover.this.attemptToRemoveReturnStatements(method, context, branch )) {
+					this.didChange = true;
+				}
+			}
+			return VISIT_CHILD_NODES;			
+		}		
+		
+		/**
+		 * This logger is to used to log method names as they are encountered.
+		 */
+		private TreeLogger methodLogger;
+		
+		protected TreeLogger getMethodLogger(){
+			Checker.notNull("field:methodLogger", methodLogger );
+			return this.methodLogger;
+		}
+		
+		protected void setMethodLogger( final TreeLogger methodLogger ){
+			Checker.notNull("parameter:methodLogger", methodLogger );
+			this.methodLogger = methodLogger;
+		}
+		
+		protected void clearMethodLogger(){
+			this.methodLogger = null;
+		}
+		
+		public void endVisitClassMethod( final JMethod method, final Context context ){
+		}
+	}
+		
 
 	/**
 	 * Tests if a given method potentially have a body and therefore be
