@@ -19,5 +19,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rocket.compiler.test.alternatevaluesreturnedoptimiser.client.AlternateValuesReturnedOptimiserGwtTestCase"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="RocketCompiler"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www-test/1/ -logLevel DEBUG -style DETAILED -gen generated/1/ &quot; -Xmx256M&#13;&#10;-Dgwt.hybrid&#13;&#10;-Drocket.compiler.test.JavaCompilationWorker=rocket.compiler.test.alternatevaluesreturnedoptimiser.compiler.AlternateValuesReturnedOptimiserTest"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www/1/ -logLevel DEBUG -style DETAILED -gen generated/1/ &quot; -Xmx256M&#13;&#10;-Dgwt.hybrid&#13;&#10;-Drocket.compiler.test.JavaCompilationWorker=rocket.compiler.test.alternatevaluesreturnedoptimiser.compiler.AlternateValuesReturnedOptimiserTest"/>
 </launchConfiguration>

@@ -19,5 +19,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rocket.compiler.test.compareagainstzerooptimiser.client.CompareAgainstZeroOptimiserGwtTestCase"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="RocketCompiler"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www-test/0/ -logLevel DEBUG -style DETAILED -gen generated/0/ &quot; -Xmx256M&#13;&#10;-Dgwt.hybrid"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www/0/ -logLevel DEBUG -style DETAILED -gen generated/0/ &quot; -Xmx256M&#13;&#10;-Dgwt.hybrid"/>
 </launchConfiguration>
