@@ -55,7 +55,7 @@ public class AlternateValuesReturnedOptimiser extends TenaryTransformer implemen
 	 */
 	protected void visitIfStatement(final JIfStatement ifStatement, final Context context, final TreeLogger logger) {
 
-		final TreeLogger branch = logger.isLoggable( TreeLogger.DEBUG ) ? logger.branch(TreeLogger.DEBUG, ifStatement.getSourceInfo().toString(), null) : TreeLogger.NULL;
+		final TreeLogger branch = logger.isLoggable( TreeLogger.DEBUG ) ? logger.branch(TreeLogger.DEBUG, rocket.compiler.Compiler.getSource( ifStatement ), null) : TreeLogger.NULL;
 
 		while (true) {
 			// must have an else
@@ -139,7 +139,7 @@ public class AlternateValuesReturnedOptimiser extends TenaryTransformer implemen
 		context.replaceMe( returnTenary );
 		
 		if( logger.isLoggable( TreeLogger.DEBUG )){
-			logger.log( TreeLogger.DEBUG, "Converted from \"" + Compiler.getSource( ifExpression ) + "\" to \"" + Compiler.getSource(returnTenary ) + "\" - optimised.", null );
+			logger.log( TreeLogger.DEBUG, "Converted to \"" + Compiler.getSource(returnTenary ) + "\" - optimised.", null );
 		}
 	}
 }
