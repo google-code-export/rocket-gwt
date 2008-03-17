@@ -15,6 +15,26 @@
  */
 package com.google.gwt.dev.jjs;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.eclipse.jdt.core.compiler.IProblem;
+import org.eclipse.jdt.internal.compiler.CompilationResult;
+import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
+import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
+
+import rocket.compiler.JavaCompilationWorker;
+import rocket.compiler.JavaScriptCompilationWorker;
+import rocket.compiler.NullJavaCompilationWorker;
+import rocket.compiler.NullJavaScriptCompilationWorker;
+import rocket.logging.compiler.LoggerOptimiser;
+import rocket.logging.compiler.LoggingLevelByNameAssigner;
+import rocket.logging.compiler.NoneLoggingFactoryGetLoggerOptimiser;
+import rocket.logging.util.LoggingPropertyReader;
+import rocket.util.client.Checker;
+
 import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
@@ -60,28 +80,6 @@ import com.google.gwt.dev.js.JsVerboseNamer;
 import com.google.gwt.dev.js.ast.JsProgram;
 import com.google.gwt.dev.util.DefaultTextOutput;
 import com.google.gwt.dev.util.Util;
-
-import org.eclipse.jdt.core.compiler.IProblem;
-import org.eclipse.jdt.internal.compiler.CompilationResult;
-import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
-import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
-
-import rocket.compiler.AlternateValuesAssignmentOptimiser;
-import rocket.compiler.AlternateValuesReturnedOptimiser;
-import rocket.compiler.CompareAgainstZeroOptimiser;
-import rocket.compiler.ConditionalAssignmentOptimiser;
-import rocket.compiler.LocalVariableFinalMaker;
-import rocket.compiler.LongNotifier;
-import rocket.compiler.TrailingReturnRemover;
-import rocket.compiler.UnusedLocalVariableRemover;
-import rocket.compiler.VariableAssignedToSelfRemover;
-import rocket.compiler.VariableUpdaterOptimiser;
-import rocket.logging.compiler.LoggerOptimiser;
-import rocket.logging.compiler.LoggingLevelByNameAssigner;
-import rocket.logging.compiler.NoneLoggingFactoryGetLoggerOptimiser;
-import rocket.logging.util.LoggingPropertyReader;
-
-import java.util.*;
 
 /**
  * Compiles the Java <code>JProgram</code> representation into its
@@ -350,14 +348,21 @@ public class JavaToJavaScriptCompiler {
       boolean didChange;
       
       // TODO ROCKET When upgrading from GWT 1.4.60 reapply changes.
-      final AlternateValuesAssignmentOptimiser alternateValuesAssignmentOptimiser = new AlternateValuesAssignmentOptimiser();
-      final AlternateValuesReturnedOptimiser alternateValuesReturnedOptimiser = new AlternateValuesReturnedOptimiser();
-      final ConditionalAssignmentOptimiser conditionalAssignmentOptimiser = new ConditionalAssignmentOptimiser();
-      final TrailingReturnRemover trailingReturnRemover = new TrailingReturnRemover();
-      final VariableAssignedToSelfRemover variableAssignedToSelfRemover = new VariableAssignedToSelfRemover();
-      final UnusedLocalVariableRemover unusedLocalVariableRemover = new UnusedLocalVariableRemover();
-      final LocalVariableFinalMaker localVariableFinalMaker = new LocalVariableFinalMaker();
-      final VariableUpdaterOptimiser variableUpdaterOptimiser = new VariableUpdaterOptimiser();
+
+      // warnings generator...
+      final JavaCompilationWorker longNotifier = this.createJavaCompilationWorker( rocket.compiler.LongNotifier.class );
+
+      // actual optimisers
+      final JavaCompilationWorker alternateValuesAssignmentOptimiser =  this.createJavaCompilationWorker(rocket.compiler.AlternateValuesAssignmentOptimiser.class);
+      final JavaCompilationWorker alternateValuesReturnedOptimiser = this.createJavaCompilationWorker( rocket.compiler.AlternateValuesReturnedOptimiser.class);
+      final JavaCompilationWorker conditionalAssignmentOptimiser = this.createJavaCompilationWorker( rocket.compiler.ConditionalAssignmentOptimiser.class);
+      final JavaCompilationWorker trailingReturnRemover = this.createJavaCompilationWorker( rocket.compiler.TrailingReturnRemover.class);
+      final JavaCompilationWorker variableAssignedToSelfRemover = this.createJavaCompilationWorker( rocket.compiler.VariableAssignedToSelfRemover.class);
+      final JavaCompilationWorker unusedLocalVariableRemover = this.createJavaCompilationWorker( rocket.compiler.UnusedLocalVariableRemover.class);
+      final JavaCompilationWorker localVariableFinalMaker = this.createJavaCompilationWorker( rocket.compiler.LocalVariableFinalMaker.class);
+      final JavaCompilationWorker variableUpdaterOptimiser = this.createJavaCompilationWorker( rocket.compiler.VariableUpdaterOptimiser.class);
+      final JavaCompilationWorker incrementOrDecrementByOneOptimiser = this.createJavaCompilationWorker( rocket.compiler.IncrementOrDecrementByOneOptimiser.class);
+      final JavaCompilationWorker emptyBlockRemover = this.createJavaCompilationWorker( rocket.compiler.EmptyBlockRemover.class);
       
       int pass = 0;
       
@@ -365,7 +370,7 @@ public class JavaToJavaScriptCompiler {
         didChange = false;
         
         if( pass == 0 ){
-        	new LongNotifier().work( jprogram, logger); 
+        	longNotifier.work( jprogram, logger); 
         }
     	pass++;
         
@@ -377,6 +382,8 @@ public class JavaToJavaScriptCompiler {
         didChange = unusedLocalVariableRemover.work( jprogram, logger ) || didChange;
         didChange = localVariableFinalMaker.work( jprogram, logger ) || didChange;
         didChange = variableUpdaterOptimiser.work( jprogram, logger ) || didChange;
+        didChange = incrementOrDecrementByOneOptimiser.work( jprogram, logger ) || didChange;
+        didChange = emptyBlockRemover.work( jprogram, logger ) || didChange;
         
         // Remove unreferenced types, fields, methods, [params, locals]
         didChange = Pruner.exec(jprogram, true) || didChange;
@@ -428,8 +435,12 @@ public class JavaToJavaScriptCompiler {
       Pruner.exec(jprogram, false);
 
       // (7) Generate a JavaScript code DOM from the Java type declarations
-      GenerateJavaScriptAST.exec(jprogram, jsProgram, obfuscate, prettyNames);
-
+      if( this.isEnabled( rocket.compiler.GenerateJavaScriptAST.class.getName() )){
+    	  rocket.compiler.GenerateJavaScriptAST.exec(jprogram, jsProgram, obfuscate, prettyNames);
+      } else {
+    	  GenerateJavaScriptAST.exec(jprogram, jsProgram, obfuscate, prettyNames);  
+      }
+      
       // (8) Fix invalid constructs created during JS AST gen
       JsNormalizer.exec(jsProgram);
 
@@ -438,7 +449,14 @@ public class JavaToJavaScriptCompiler {
 
       // (10) Obfuscate
       if (obfuscate) {
-        JsObfuscateNamer.exec(jsProgram);
+    	
+    	  // ROCKET When upgrading from GWT 1.4.6x reapply changes
+    	  if( this.isEnabled( rocket.compiler.JsObfuscateNamer.class.getName() )){
+    		  rocket.compiler.JsObfuscateNamer.exec(jsProgram);
+    	  } else {
+    		  JsObfuscateNamer.exec(jsProgram);
+    	  }
+        
       } else if (prettyNames) {
         JsPrettyNamer.exec(jsProgram);
       } else {
@@ -446,19 +464,31 @@ public class JavaToJavaScriptCompiler {
       }
       
       // TODO ROCKET When upgrading from GWT 1.4.60 reapply changes.
-      final CompareAgainstZeroOptimiser compareAgainstZero = new CompareAgainstZeroOptimiser();
+      final JavaScriptCompilationWorker compareAgainstZero =  this.createJavaScriptCompilationWorker(rocket.compiler.CompareAgainstZeroOptimiser.class );
       do {
           didChange = false;
           didChange = didChange || compareAgainstZero.work(jsProgram, logger);
           
-      } while( ! didChange );
+      } while( didChange );
      
 
       DefaultTextOutput out = new DefaultTextOutput(obfuscate);
-      JsSourceGenerationVisitor v = new JsSourceGenerationVisitor(out);
-      v.accept(jsProgram);
-      return out.toString();
-    } catch (UnableToCompleteException e) {
+      
+      // TODO ROCKET when upgrading from GWT 1.4.60 reapply changes.
+      String javascript = null;
+      if( this.isEnabled( rocket.compiler.JsSourceGenerationVisitor.class.getName() )){
+    	  rocket.compiler.JsSourceGenerationVisitor v = new rocket.compiler.JsSourceGenerationVisitor(out);
+          v.accept(jsProgram);
+          javascript = out.toString();  
+      } else {
+          JsSourceGenerationVisitor v = new JsSourceGenerationVisitor(out);
+          v.accept(jsProgram);
+          javascript = out.toString();    	  
+      }
+
+      return javascript;
+    	} 
+    catch (UnableToCompleteException e) {
       // just rethrow
       throw e;
     } catch (InternalCompilerException e) {
@@ -596,5 +626,89 @@ public class JavaToJavaScriptCompiler {
 		};
 		
 		return (LoggerOptimiser)reader.readProperty();
+	}
+	
+	/**
+	 * Factory method which creates a JavaCompilationWorker given its class name. If its not found a NullJavaCompilationWorker instance is
+	 * returned instead.
+	 * @param c
+	 * @return
+	 */
+	protected JavaCompilationWorker createJavaCompilationWorker(final Class c ) {
+		Checker.notNull("parameter:class", c);
+
+		JavaCompilationWorker worker = NullJavaCompilationWorker.instance;
+
+		final String name = c.getName();
+		if (this.isEnabled( name )) {
+
+			try {
+				worker = (JavaCompilationWorker) c.newInstance();
+			} catch (final Exception exception ) {
+				throw new RuntimeException( "Unable to create JavaCompilationWorker \"" + name + "\", cause: " + exception.getMessage(), exception );
+			}
+		}
+
+		return worker;
+	}
+
+	/**
+	 * Factory method which creates a JavaScriptCompilationWorker given its class name. If its not found a NullJavaScriptCompilationWorker instance is
+	 * returned instead.
+	 * @param c
+	 * @return
+	 */
+	protected JavaScriptCompilationWorker createJavaScriptCompilationWorker(final Class c ) {
+		Checker.notNull("parameter:class", c);
+		
+		JavaScriptCompilationWorker worker = NullJavaScriptCompilationWorker.instance;
+
+		final String name = c.getName();
+		if (this.isEnabled( name )) {
+
+			try {
+				worker = (JavaScriptCompilationWorker) c.newInstance();
+			} catch (final Exception exception ) {
+				throw new RuntimeException( "Unable to create JavaScriptCompilationWorker \"" + name + "\", cause: " + exception.getMessage(), exception );
+			}
+		}
+
+		return worker;
+	}
+
+	/**
+	 * Tests if a particular optimiser is enabled by checking if a system property with the same name has a value of enabled.
+	 * @param className
+	 * @return
+	 */
+	protected boolean isEnabled(final String className) {
+		boolean enabled = false;
+		
+		while( true ){
+			final String individual = System.getProperty( className );
+			if( "enabled".equals( individual )){
+				enabled = true;
+				break;
+			}
+			if( "disabled".equals( individual )){
+				enabled = false;
+				break;
+			}
+			
+			// global enable/disable...
+			final String global = System.getProperty( "rocket.compiler");
+			if( "enabled".equals( global )){
+				enabled = true;
+				break;
+			}
+			if( "disabled".equals( global )){
+				enabled = false;
+				break;
+			}
+		
+			// defaults to disabled...
+			break;
+		}
+		return enabled;
 	}
 }
