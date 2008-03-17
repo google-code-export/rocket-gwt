@@ -46,7 +46,7 @@ public class ConditionalAssignmentOptimiser extends TenaryTransformer implements
 	 * @param logger
 	 */
 	protected void visitIfStatement(final JIfStatement ifStatement, final Context context, final TreeLogger logger) {
-		final TreeLogger branch = logger.branch(TreeLogger.DEBUG, ifStatement.getSourceInfo().toString(), null);
+		final TreeLogger branch = logger.branch(TreeLogger.DEBUG, rocket.compiler.Compiler.getSource( ifStatement ), null);
 
 		while (true) {
 			// must NOT have an else
@@ -125,7 +125,7 @@ public class ConditionalAssignmentOptimiser extends TenaryTransformer implements
 		context.replaceMe(newStatement);
 		
 		if( logger.isLoggable( TreeLogger.DEBUG )){
-			logger.log( TreeLogger.DEBUG, "Converted \"" + Compiler.getSource( ifStatement ) + "\" into equivalent tenary statement \"" + Compiler.getSource( newStatement ) + "\"...", null );
+			logger.log( TreeLogger.DEBUG, "Converted into equivalent tenary statement \"" + Compiler.getSource( newStatement ) + "\"...", null );
 		}
 	}
 

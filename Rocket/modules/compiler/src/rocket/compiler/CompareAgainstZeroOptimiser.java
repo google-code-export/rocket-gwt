@@ -82,7 +82,7 @@ public class CompareAgainstZeroOptimiser implements JavaScriptCompilationWorker 
 
 			TreeLogger branch = TreeLogger.NULL;
 			if (logger.isLoggable(TreeLogger.DEBUG)) {
-				branch = logger.branch(TreeLogger.DEBUG, "Processing binary operation, source: " + Compiler.getSource(binaryOperation), null);
+				branch = logger.branch(TreeLogger.DEBUG, Compiler.getSource(binaryOperation), null);
 			}
 			
 			// equals something
