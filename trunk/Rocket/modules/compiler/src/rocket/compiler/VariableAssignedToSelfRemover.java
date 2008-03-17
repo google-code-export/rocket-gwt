@@ -61,7 +61,7 @@ public class VariableAssignedToSelfRemover implements JavaCompilationWorker {
 	 * @param logger
 	 */
 	protected void attemptToRemoveBinaryOperation(final JBinaryOperation binaryOperation, final Context context, final TreeLogger logger) {
-		final TreeLogger branch = logger.branch(TreeLogger.DEBUG, binaryOperation.getSourceInfo().toString(), null);
+		final TreeLogger branch = logger.branch(TreeLogger.DEBUG, Compiler.getSource( binaryOperation ) , null);
 
 		if (this.isVariableAssignmentToSelf(binaryOperation, context, branch)) {
 			this.removeAssignment(binaryOperation, context, branch);
