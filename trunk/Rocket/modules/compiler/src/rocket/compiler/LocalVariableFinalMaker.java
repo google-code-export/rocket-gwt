@@ -53,8 +53,6 @@ import com.google.gwt.dev.jjs.ast.js.JMultiExpression;
  * by UnusedLocalVariableRemover.
  * 
  * @author Miroslav Pokorny
- * 
- * TODO Fix up loggers.
  */
 public class LocalVariableFinalMaker implements JavaCompilationWorker {
 
