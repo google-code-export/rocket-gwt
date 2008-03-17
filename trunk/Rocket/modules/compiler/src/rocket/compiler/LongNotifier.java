@@ -45,33 +45,23 @@ import com.google.gwt.dev.jjs.ast.JVisitor;
  */
 public class LongNotifier implements JavaCompilationWorker {
 
-	final static String ENABLED_SYSTEM_PROPERTY = LongNotifier.class.getName() + ".enabled";
-	final static String ENABLED = "true";
-	
-	final static String HEADER ="Listing all long references within program.";
+	final static String HEADER = "Listing all long references within program.";
 	final static String TYPES = "Types";
 	final static String METHODS = "Methods";
 	final static String RETURN_TYPE = "ReturnType";
 	final static String FIELDS = "Fields";
-	
+
 	/**
 	 * If warnings are enabled output all types, methods and fields with long references.
 	 */
-	public boolean work(final JProgram jprogram, final TreeLogger logger) {		
-		if( this.isEnabled()){
-			if (logger.isLoggable(TreeLogger.WARN)) {
-				logger.log(TreeLogger.WARN, HEADER, null );
-				
-				final Set types = this.findTypesWithLongReferences(jprogram);
-				this.outputTypes(types, logger);
-			}	
-		}		
+	public boolean work(final JProgram jprogram, final TreeLogger logger) {
+		if (logger.isLoggable(TreeLogger.WARN)) {
+			logger.log(TreeLogger.WARN, HEADER, null);
+
+			final Set types = this.findTypesWithLongReferences(jprogram);
+			this.outputTypes(types, logger);
+		}
 		return false;
-	}
-	
-	protected boolean isEnabled(){
-		final String value = System.getProperty( ENABLED_SYSTEM_PROPERTY );
-		return ENABLED.equals( value );
 	}
 
 	/**
@@ -82,7 +72,7 @@ public class LongNotifier implements JavaCompilationWorker {
 	protected void outputTypes(final Set types, final TreeLogger logger) {
 		final int typeCount = types.size();
 		final TreeLogger methodsLogger = logger.branch(TreeLogger.WARN, TYPES + " (" + typeCount + ")", null);
-		
+
 		final Iterator i = types.iterator();
 		while (i.hasNext()) {
 			final Type type = (Type) i.next();
@@ -100,9 +90,9 @@ public class LongNotifier implements JavaCompilationWorker {
 
 		final Set methods = type.getMethods();
 		final int methodCount = methods.size();
-		if ( methodCount > 0 ) {
+		if (methodCount > 0) {
 			final Iterator methodsIterator = methods.iterator();
-			
+
 			final TreeLogger methodsLogger = branch.branch(TreeLogger.WARN, METHODS + " (" + methodCount + ")", null);
 			while (methodsIterator.hasNext()) {
 				final Method method = (Method) methodsIterator.next();
@@ -110,12 +100,11 @@ public class LongNotifier implements JavaCompilationWorker {
 			}
 		}
 
-		
 		final Set fields = type.getFields();
 		final int fieldCount = fields.size();
-		if ( fieldCount > 0 ) {
+		if (fieldCount > 0) {
 			final TreeLogger fieldsLogger = branch.branch(TreeLogger.WARN, FIELDS + " (" + fieldCount + ")", null);
-		
+
 			final Iterator fieldIterator = type.getFields().iterator();
 			while (fieldIterator.hasNext()) {
 				final Field field = (Field) fieldIterator.next();
@@ -131,8 +120,8 @@ public class LongNotifier implements JavaCompilationWorker {
 	 */
 	protected void outputMethod(final Method method, final TreeLogger logger) {
 		final JMethod jmethod = method.getJMethod();
-		
-		final TreeLogger branch = logger.branch(TreeLogger.WARN, Compiler.getMethodName( jmethod ), null);
+
+		final TreeLogger branch = logger.branch(TreeLogger.WARN, Compiler.getMethodName(jmethod), null);
 
 		final JType longType = jmethod.getJProgram().getTypePrimitiveLong();
 
@@ -150,7 +139,7 @@ public class LongNotifier implements JavaCompilationWorker {
 	 */
 	protected void outputField(final Field field, final TreeLogger logger) {
 		final TreeLogger branch = logger.branch(TreeLogger.WARN, field.getName(), null);
-		this.outputLocals( field.getLiterals(), branch );
+		this.outputLocals(field.getLiterals(), branch);
 	}
 
 	/**
@@ -161,10 +150,10 @@ public class LongNotifier implements JavaCompilationWorker {
 	protected void outputLocals(final List locals, final TreeLogger logger) {
 		final Iterator i = locals.iterator();
 
-			while (i.hasNext()) {
-				final String item = (String) i.next();
-				logger.log(TreeLogger.WARN, item, null);
-			}
+		while (i.hasNext()) {
+			final String item = (String) i.next();
+			logger.log(TreeLogger.WARN, item, null);
+		}
 	}
 
 	/**
@@ -238,17 +227,17 @@ public class LongNotifier implements JavaCompilationWorker {
 			 */
 			public boolean visit(final JMethod jmethod, final Context context) {
 				boolean visitChildNodes = false;
-				
-				if( jmethod.getName().equals("methodWithLongParameter")){
+
+				if (jmethod.getName().equals("methodWithLongParameter")) {
 					int i = 0;
 				}
-				
-				if( /*false == jmethod.isStaticDispatcher() && */ jmethod.getEnclosingType() != null ){
+
+				if ( /*false == jmethod.isStaticDispatcher() && */jmethod.getEnclosingType() != null) {
 					final Method method = new Method(jmethod);
 					this.setMethod(method);
-					
+
 					visitChildNodes = true;
-				}				
+				}
 				return visitChildNodes;// visit all child nodes.
 			}
 
@@ -256,36 +245,36 @@ public class LongNotifier implements JavaCompilationWorker {
 			 * If the Method is of type long or has any long references in its initializer keep it...
 			 */
 			public void endVisit(final JMethod jMethod, final Context context) {
-				if( jMethod.getEnclosingType() != null ){
-				
-				boolean longReferenceFound = false;
-				final Method method = this.getMethod();
+				if (jMethod.getEnclosingType() != null) {
 
-				while (true) {
-					// if the return type is long keep the method.
-					if (method.getJMethod().getType() == longType) {
-						longReferenceFound = true;
+					boolean longReferenceFound = false;
+					final Method method = this.getMethod();
+
+					while (true) {
+						// if the return type is long keep the method.
+						if (method.getJMethod().getType() == longType) {
+							longReferenceFound = true;
+							break;
+						}
+
+						if (method.getLocals().size() > 0) {
+							longReferenceFound = true;
+							break;
+						}
 						break;
 					}
-
-					if (method.getLocals().size() > 0) {
-						longReferenceFound = true;
-						break;
+					if (longReferenceFound) {
+						this.getType().getMethods().add(method);
 					}
-					break;
-				}
-				if (longReferenceFound) {
-					this.getType().getMethods().add(method);
-				}
 
-				this.clearMethod();
+					this.clearMethod();
 				}
 			}
 
 			/**
 			 * Records any parameters of type long.
 			 */
-			public boolean visit(final JParameter parameter, final Context context) {				
+			public boolean visit(final JParameter parameter, final Context context) {
 				if (parameter.getType() == longType) {
 					this.getMethod().getLocals().add(parameter.getName());
 				}
@@ -334,7 +323,7 @@ public class LongNotifier implements JavaCompilationWorker {
 				final JType localType = local.getType();
 				if (localType == longType) {
 					final String name = local.getName();
-					this.getMethod().getLocals().add(name);					
+					this.getMethod().getLocals().add(name);
 				}
 				return true;
 			}
@@ -342,7 +331,7 @@ public class LongNotifier implements JavaCompilationWorker {
 			public boolean visit(final JLongLiteral literal, final Context context) {
 				if (literal.getType() == longType) {
 
-					final String longValue = literal.toSource(); 
+					final String longValue = literal.toSource();
 					if (this.insideMethod()) {
 						this.getMethod().getLocals().add(longValue);
 					} else {
@@ -439,7 +428,7 @@ public class LongNotifier implements JavaCompilationWorker {
 		/**
 		 * Aggregates all methods that have a return type, parameter or parametersLocalsAndLiterals localVariables that are of type long.
 		 */
-		private Set methods = new TreeSet( METHOD_COMPARATOR );
+		private Set methods = new TreeSet(METHOD_COMPARATOR);
 
 		public Set getMethods() {
 			return this.methods;
@@ -509,7 +498,7 @@ public class LongNotifier implements JavaCompilationWorker {
 		protected void setJField(final JField jfield) {
 			this.jfield = jfield;
 		}
-		
+
 		/**
 		 * Aggregates long literals
 		 */
@@ -540,7 +529,6 @@ public class LongNotifier implements JavaCompilationWorker {
 		}
 	};
 
-
 	/**
 	 * This comparator may be used to sort Types, Methods or Fields
 	 */
@@ -550,37 +538,37 @@ public class LongNotifier implements JavaCompilationWorker {
 		}
 
 		int compare(final Method method, final Method otherMethod) {
-			int value = method.getName().compareTo( otherMethod.getName() );
-				
-			if( value != 0 ){
+			int value = method.getName().compareTo(otherMethod.getName());
+
+			if (value != 0) {
 				final Iterator parameters = method.getJMethod().getOriginalParamTypes().iterator();
 				final Iterator otherParameters = otherMethod.getJMethod().getOriginalParamTypes().iterator();
-				
-				while( true){			
-					if( false == parameters.hasNext() || false == otherParameters.hasNext() ){
+
+				while (true) {
+					if (false == parameters.hasNext() || false == otherParameters.hasNext()) {
 						break;
 					}
-					
+
 					String parameterTypeName = "";
-					if( parameters.hasNext() ){
+					if (parameters.hasNext()) {
 						final JType type = (JType) parameters.next();
 						parameterTypeName = type.getName();
 					}
-					
+
 					String otherParameterTypeName = "";
-					if( otherParameters.hasNext() ){
+					if (otherParameters.hasNext()) {
 						final JType type = (JType) otherParameters.next();
-						otherParameterTypeName = type.getName();					
-					}										
-					
-					value = parameterTypeName.compareTo( otherParameterTypeName );
-					if( value != 0 ){
+						otherParameterTypeName = type.getName();
+					}
+
+					value = parameterTypeName.compareTo(otherParameterTypeName);
+					if (value != 0) {
 						break;
 					}
 				} // while
 			} // if
-			
-			return value;			
+
+			return value;
 		}
 	};
 }
