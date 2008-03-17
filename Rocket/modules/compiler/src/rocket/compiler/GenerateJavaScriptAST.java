@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.gwt.dev.jjs.impl;
+package rocket.compiler;
 
 import com.google.gwt.dev.jjs.InternalCompilerException;
 import com.google.gwt.dev.jjs.ast.Context;
@@ -84,6 +84,7 @@ import com.google.gwt.dev.jjs.ast.js.JsniMethodBody;
 import com.google.gwt.dev.jjs.ast.js.JsonArray;
 import com.google.gwt.dev.jjs.ast.js.JsonObject;
 import com.google.gwt.dev.jjs.ast.js.JsonObject.JsonPropInit;
+import com.google.gwt.dev.jjs.impl.HasNameSort;
 import com.google.gwt.dev.js.ast.JsArrayAccess;
 import com.google.gwt.dev.js.ast.JsArrayLiteral;
 import com.google.gwt.dev.js.ast.JsBinaryOperation;
@@ -413,6 +414,7 @@ public class GenerateJavaScriptAST {
 
     // @Override
     public void endVisit(JBinaryOperation x, Context ctx) {
+    	// ROCKET When upgrading from GWT 1.4.6x reapply changes...
     	if( this.simplifyReferenceNullOrNotNullTests( x, ctx)){
     		return;
     	}
