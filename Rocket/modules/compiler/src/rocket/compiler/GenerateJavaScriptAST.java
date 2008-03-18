@@ -15,6 +15,21 @@
  */
 package rocket.compiler;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+import java.util.TreeMap;
+import java.util.Map.Entry;
+
 import com.google.gwt.dev.jjs.InternalCompilerException;
 import com.google.gwt.dev.jjs.ast.Context;
 import com.google.gwt.dev.jjs.ast.HasEnclosingType;
@@ -134,21 +149,6 @@ import com.google.gwt.dev.js.ast.JsUnaryOperator;
 import com.google.gwt.dev.js.ast.JsVars;
 import com.google.gwt.dev.js.ast.JsWhile;
 import com.google.gwt.dev.js.ast.JsVars.JsVar;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.TreeMap;
-import java.util.Map.Entry;
 
 /**
  * Creates a JavaScript AST from a <code>JProgram</code> node.
@@ -413,7 +413,7 @@ public class GenerateJavaScriptAST {
     }
 
     // @Override
-    public void endVisit(JBinaryOperation x, Context ctx) {
+    public void endVisit(final JBinaryOperation x, final Context ctx) {
     	// ROCKET When upgrading from GWT 1.4.6x reapply changes...
     	if( this.simplifyReferenceNullOrNotNullTests( x, ctx)){
     		return;
@@ -521,9 +521,10 @@ public class GenerateJavaScriptAST {
         	JsExpression reference = leftIsNull ? jsRight : jsLeft;
         	
         	// if its a == null test we need to insert a !reference
-        	if( equals ){
+        	reference = new JsPrefixOperation( JsUnaryOperator.NOT, reference );
+        	if( ! equals ){
         		reference = new JsPrefixOperation(  JsUnaryOperator.NOT, reference );
-        	}
+        	} 
         	
         	this.push( reference );
     
@@ -612,9 +613,10 @@ public class GenerateJavaScriptAST {
         	JsExpression reference = leftIsZero ? jsRight : jsLeft;
         	
         	// if its a == null test we need to insert a !reference
-        	if( equals ){
+        	reference = new JsPrefixOperation( JsUnaryOperator.NOT, reference );
+        	if( ! equals ){
         		reference = new JsPrefixOperation(  JsUnaryOperator.NOT, reference );
-        	}
+        	} 
         	
         	this.push( reference );
         	
@@ -779,6 +781,10 @@ public class GenerateJavaScriptAST {
       JsExpression elseExpr = (JsExpression) pop(); // elseExpr
       JsExpression thenExpr = (JsExpression) pop(); // thenExpr
       JsExpression ifTest = (JsExpression) pop(); // ifTest
+ 
+      // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes.
+      ifTest = GenerateJavaScriptAST.removeDoubleNot( ifTest );
+      
       push(new JsConditional(ifTest, thenExpr, elseExpr));
     }
 
@@ -793,14 +799,18 @@ public class GenerateJavaScriptAST {
     }
 
     // @Override
-    public void endVisit(JDoStatement x, Context ctx) {
+    public void endVisit(JDoStatement x, Context ctx) {    	
       JsDoWhile stmt = new JsDoWhile();
       if (x.getBody() != null) {
         stmt.setBody((JsStatement) pop()); // body
       } else {
         stmt.setBody(jsProgram.getEmptyStmt());
       }
-      stmt.setCondition((JsExpression) pop()); // testExpr
+      
+      // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes.
+      JsExpression condition = (JsExpression) pop();
+      condition = GenerateJavaScriptAST.removeDoubleNot( condition );
+      stmt.setCondition(condition); // testExpr
       push(stmt);
     }
 
@@ -942,7 +952,9 @@ public class GenerateJavaScriptAST {
         stmt.setThenStmt(jsProgram.getEmptyStmt());
       }
 
-      stmt.setIfExpr((JsExpression) pop()); // ifExpr
+      JsExpression condition = (JsExpression) pop();
+      condition = GenerateJavaScriptAST.removeDoubleNot( condition );
+      stmt.setIfExpr( condition ); // ifExpr
       push(stmt);
     }
 
@@ -1345,7 +1357,10 @@ public class GenerateJavaScriptAST {
       } else {
         stmt.setBody(jsProgram.getEmptyStmt());
       }
-      stmt.setCondition((JsExpression) pop()); // testExpr
+      // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes.
+      JsExpression condition = (JsExpression) pop();
+      condition = GenerateJavaScriptAST.removeDoubleNot( condition );
+      stmt.setCondition( condition ); // testExpr
       push(stmt);
     }
 
@@ -2021,4 +2036,46 @@ public class GenerateJavaScriptAST {
     return (JsName) polymorphicNames.get(x);
   }
 
+  
+  /**
+   * This method checks if the expression actually contains a double !!expression. If it does the expression is
+   * returned otherwise the original incoming expression is returned.
+   * 
+   * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes.
+   * @param expression
+   * @return
+   */
+  static JsExpression removeDoubleNot( final JsExpression expression ){
+  	JsExpression out = expression;
+  	
+  	while( true ){
+  		// not a JsUnaryOperation cant be the starting node of a !!expression
+  		if( false == expression instanceof JsUnaryOperation ){
+  			break;
+  		}
+  		// this unary must have a NOT operator.
+  		final JsUnaryOperation unaryOperation = (JsUnaryOperation) expression;
+  		if (false == unaryOperation.getOperator().equals(JsUnaryOperator.NOT)) {
+  			break;
+  		}
+
+  		// the nested expression of unary must also be a unary
+  		final JsExpression nestedExpression = unaryOperation.getArg();
+  		if (false == nestedExpression instanceof JsUnaryOperation) {
+  			break;
+  		}
+
+  		// the nested unary must have a NOT operator.
+  		final JsUnaryOperation nestedUnaryOperation = (JsUnaryOperation) nestedExpression;
+  		if (false == nestedUnaryOperation.getOperator().equals(JsUnaryOperator.NOT)) {
+  			break;
+  		}
+
+  		// leave only the expression removing the double !!
+  		out = nestedUnaryOperation.getArg();
+  		break;
+  	}
+  	
+  	return out;
+  }
 }
