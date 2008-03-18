@@ -1,6 +1,0 @@
-<module>
-	<inherits name="com.google.gwt.junit.JUnit"/>
-	<source path="client"/>
-	
-	<set-property name="user.agent" value="ie6" />
-</module>
