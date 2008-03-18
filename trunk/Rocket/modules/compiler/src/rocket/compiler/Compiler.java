@@ -95,4 +95,40 @@ public class Compiler {
 		
 		return node.toSource().replaceAll( "\n", "\\\\n" ).replaceAll( "\r", "\\\\r" );
 	}
+	
+	/**
+	 * Tests if a particular optimiser is enabled by checking if a system property with the same name has a value of enabled.
+	 * @param className
+	 * @return
+	 */
+	static public boolean isEnabled(final String className) {
+		boolean enabled = false;
+		
+		while( true ){			
+			final String individual = System.getProperty( className );
+			if( "enabled".equals( individual )){
+				enabled = true;
+				break;
+			}
+			if( "disabled".equals( individual )){
+				enabled = false;
+				break;
+			}
+			
+			// global enable/disable...
+			final String global = System.getProperty( "rocket.compiler");
+			if( "enabled".equals( global )){
+				enabled = true;
+				break;
+			}
+			if( "disabled".equals( global )){
+				enabled = false;
+				break;
+			}
+		
+			// defaults to disabled...
+			break;
+		}
+		return enabled;
+	}
 }

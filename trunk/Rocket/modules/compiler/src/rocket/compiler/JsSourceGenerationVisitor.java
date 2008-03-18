@@ -16,7 +16,12 @@
 package rocket.compiler;
 
 import com.google.gwt.dev.js.ast.JsContext;
+import com.google.gwt.dev.js.ast.JsExpression;
 import com.google.gwt.dev.js.ast.JsIntegralLiteral;
+import com.google.gwt.dev.js.ast.JsPostfixOperation;
+import com.google.gwt.dev.js.ast.JsPrefixOperation;
+import com.google.gwt.dev.js.ast.JsUnaryOperation;
+import com.google.gwt.dev.js.ast.JsUnaryOperator;
 import com.google.gwt.dev.util.TextOutput;
 
 /**
@@ -43,4 +48,98 @@ public class JsSourceGenerationVisitor extends com.google.gwt.dev.js.JsSourceGen
 		p.print(s);
 		return false;
 	}
+	 
+	  public boolean XXXvisit(final JsPostfixOperation x, final JsContext ctx) {
+		    final JsUnaryOperator op = x.getOperator();
+		    final JsExpression arg = x.getArg();
+		    
+		    boolean outputted = false;
+		    
+		    while( true ){
+		    	// not the ! operator
+		    	if( op != JsUnaryOperator.NOT ){
+		    		break;
+		    	}
+		    	// not a nested unary operation...
+		    	if( false == arg instanceof JsUnaryOperation ){
+		    		break;
+		    	}
+		    	
+		    	// check nested unary operation...
+		    	final JsUnaryOperation unaryOperation = (JsUnaryOperation)arg;		    	
+		    	final JsUnaryOperator op2 = unaryOperation.getOperator();
+			    final JsExpression arg2 = unaryOperation.getArg();
+		    	
+			    // nested unary operation is not a !
+			    if( op2 != JsUnaryOperator.NOT ){
+			    	break;
+			    }
+			    
+			    // nested is not a unary
+			    if( false == arg instanceof JsUnaryOperation ){
+		    		break;
+		    	}
+			    
+			    // appear to have found a double !!(expression) output less the parenthesis.
+			    p.print("!!");
+			    accept(arg2);
+			    
+			    outputted = true;
+			    System.out.println( "JS POSTFIX OP\t" + Compiler.getSource( x ));
+			    break;
+		    }
+		    
+		    if( ! outputted ){
+		    	super.visit(x, ctx);
+		    }
+		    return false;
+		  }
+	  
+	  public boolean XXXvisit(final JsPrefixOperation x, final JsContext ctx) {
+		    final JsUnaryOperator op = x.getOperator();
+		    final JsExpression arg = x.getArg();
+		    
+		    boolean outputted = false;
+		    
+		    while( true ){
+		    	// not the ! operator
+		    	if( op != JsUnaryOperator.NOT ){
+		    		break;
+		    	}
+		    	// not a nested unary operation...
+		    	if( false == arg instanceof JsUnaryOperation ){
+		    		break;
+		    	}
+		    	
+		    	// check nested unary operation...
+		    	final JsUnaryOperation unaryOperation = (JsUnaryOperation)arg;		    	
+		    	final JsUnaryOperator op2 = unaryOperation.getOperator();
+			    final JsExpression arg2 = unaryOperation.getArg();
+		    	
+			    // nested unary operation is not a !
+			    if( op2 != JsUnaryOperator.NOT ){
+			    	break;
+			    }
+			    
+			    // nested is not a unary
+			    if( false == arg instanceof JsUnaryOperation ){
+		    		break;
+		    	}
+			    
+			    // appear to have found a double !!(expression) output less the parenthesis.
+			    p.print("!!");
+			    accept(arg2);
+			    
+			    outputted = true;
+			    
+			    System.out.println( "JS PREFIX OP\t" + Compiler.getSource( x ));
+			    break;
+		    }
+		    
+		    if( ! outputted ){
+		    	super.visit(x, ctx);
+		    }
+		    return false;
+		  }
+
 }
