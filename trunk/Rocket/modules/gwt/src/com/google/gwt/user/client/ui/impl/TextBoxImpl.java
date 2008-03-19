@@ -48,7 +48,7 @@ public class TextBoxImpl {
    * Delegates to {@link #getSelectionLength(Element)}.
    * The TextBox widget calls this method instead allowing customisation for the IE special case.
    * 
-   * TODO When upgrading from GWT 1.4.60 reapply changes.
+   * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
    * @param element
    * @return
    */

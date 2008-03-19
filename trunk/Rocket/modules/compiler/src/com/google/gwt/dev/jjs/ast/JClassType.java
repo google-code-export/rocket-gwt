@@ -60,7 +60,7 @@ public class JClassType extends JReferenceType implements CanBeSetFinal {
 	 * 
 	 * @return
 	 * 
-	 * TODO Reapply changes when upgrading GWT
+	 * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
 	 */
 	public JClassType[] getAllSubTypes() {
 		final Set subTypes = new HashSet();

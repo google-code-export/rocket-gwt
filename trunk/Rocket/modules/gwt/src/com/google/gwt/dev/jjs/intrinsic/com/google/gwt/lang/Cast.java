@@ -140,7 +140,7 @@ final class Cast {
 	}
 
 	/**
-	 * TODO When upgrading GWT version reapply changes to this class.
+	 * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
 	 * 
 	 * @param jso
 	 * @param seed
