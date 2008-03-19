@@ -1,0 +1,90 @@
+#labels Featured
+# An introduction to the javascript compiler optimisation additions.
+
+=Motivation=
+
+The compiler extensions found within the rocket project enhance the GWT compiler whilst attempting to make the generated javascript smaller. This is especially important for large complex applications or in other environments where network bandwidth is ordinary. Whilst the GWT compiler comes packaged with many optimisations there are a few things that can be further optimised. The rocket framework modifies the orchestrating class and inserts a number of hooks which allo its own optimisations to be enabled at key points during the compilation process.
+
+Most of the optimisations that are part of the package revolve around a few basic ideas.
+  * Removing unnecessary dead code - aka unused local variables.
+  * Replacing certain constructs with functionally equivalent by terse javascript forms - i = i + 1 -> i++
+
+=How much can be saved ?=
+The table below includes a comparison of several of the packaged sample applications that accompany the GWT download. The javascript file that targets Internet Explorer 
+has been selected as the source of the file size when building the table below. The rocket download.zip includes all compiled forms under the compiler directory.
+
+The table refers to the Kitchensink application
+
+|| Rocket optimisations enabled || Style || Filename || Filesize || Difference ||
+|| no || DETAILED || CF4CC8D03049B6F9620FD1A0D5FC37A6.html || 948,491 bytes || +3K ||
+|| yes || DETAILED || F7D49229736D21E10B8EC9CD4098CFB7.html || 945,588 bytes || -3K ||
+|| no || OBF || C40A7C4062ED0AC31D65BE7BED7F96DF.html || 137,838 bytes || +2K ||
+|| yes || OBF || B2AD4D890EBCE44FC59D32F3925FEE79.html || 136,107 bytes || -2K ||
+
+The table refers to the Mail application
+
+|| Rocket optimisations enabled || Style || Filename || Filesize || Difference ||
+|| no || DETAILED || 6B26DEA7F28DC84AB69D7E0D31E95631.html || 545,889 bytes || +2K ||
+|| yes || DETAILED || A43F12140EED306EEF5780D229C3F43D.html || 544,049 bytes || -2K ||
+|| no || OBF || 24F0C22E61EE4591498B23DD2B95CB10.html || 91,073 bytes || +1K ||
+|| yes || OBF || 166217E170863169D9AAD06ED2F8ABB9.html || 90,004 bytes || -1K ||
+
+=Configuration=
+Several optimisers are part of the package and are all disabled or off by default. They can all be enabled or individually enabled. The later feature is particularly useful if one of the optimisers is causing problems and throwing exceptions and you wish to disable it whilst leaving the others enabled. 
+
+|| Optimiser || Goals ||
+|| rocket.compiler.AlternateValuesAssignmentOptimiser || Changes if statements containing a then and else that assign the same variable a new value into a tenary statement equivalent. if(condition)then i=1; else i=2; becomes i=condition ? 1:2; ||
+|| rocket.compiler.AlternateValuesReturnOptimiser || Changes if statements containing a then and else that return values into a tenary statement equivalent. if(condition)then return 1; else return 2; becomes return condition ? 1:2; ||
+|| rocket.compiler.CompareAgainstZeroOptimiser || Takes advantage of javascript's coercision of null and zero tests to boolean ie if(number != 0 becomes if(number) ||
+|| rocket.compiler.ConditionalAssignmentOptimiser || Changes if statements with only a then which updates a variable from if(condition)then i=1; into i=condition?1:i; ||
+|| rocket.compiler.EmptyBlockRemover || Removes any empty else blocks hanging of if statements. ||
+|| rocket.compiler.GenerateJavaScriptAST || Takes advantage of javascript's coercision of null and zero tests to boolean ie if(ref === null becomes if(ref)||
+|| rocket.compiler.IncrementOrDecrementByOneOptimiser || Transforms mathematical operations like i+=1 into i++.||
+|| rocket.compiler.JsObfuscateNamer || An optimised form of the default JsObfuscateNamer||
+|| rocket.compiler.JsSourceGenerationVisitor || The default behaviour is often surround negative literal numbers with parenthesis. This class never surrounds negative literals. ||
+|| rocket.compiler.LocalVariableFinalMaker || Attempts to locate any variables that are only set once and makes them final. Helps with GWT inlining optimisations which occur for final variables. ||
+|| rocket.compiler.LongNotifier	|| Produces warning level messages noting all usages of the long type within a program.||
+|| rocket.compiler.TrailingReturnRemover || Removes the return statement providing it is the last statement of a void method.||
+|| rocket.compiler.UnusedLocalVariableRemover || Removes any unused local variables.||
+|| rocket.compiler.VariableAssignedToSelfRemover || Removes any assignment of a variable to itself. i = i;||
+|| rocket.compiler.VariableUpdaterOptimiser || Transforms mathematical operations like i = i + 2 becomes i+=2.|| 
+
+=Technical notes=
+Each and every GWT application is parsed and a tree containing many nodes is built. Each individual java construct becomes a node. 
+
+The diagram below shows a very simple class and a simplified overview of what its corresponding tree of nodes might look like. 
+
+  * GWT Package `com.google.gwt.dev.jjs.ast`
+  * Read only visitor `com.google.gwt.dev.jjs.ast.JVisitor`
+  * Updatable visitor `com.google.gwt.dev.jjs.ast.JModVisitor`.
+    * Each visit method contains a context which contains methods to replace or remove the current node.
+    * It is not always possible to remove a node, a canRemove method exists. If it reports false the typical usage pattern is to replace the current node with an empty block.
+
+For more samples refer to GWT or any of the classes within the `rocket.compiler` package.
+
+{{{
+package example;
+
+class SampleClass{
+   public void foo( int bar ){
+      int baz = 1 + 2;
+   }
+}
+
+}}}
+
+{{{
+Class
+   Method -name, return type 
+      Parameters
+         Parameter - name, type
+      Method Body
+         Local variable declaration
+             Variable - name
+             Initializer expression
+                Binary Operation operator
+                   Number Literal
+                   Number Literal 
+}}}
+
+Each test case comes with two launch files, one that runs the test without any optimisers enabled and the second with a specific optimiser enabled. Each test has had a gwt property set to only output IE6 to help make it easy to spot the large javascript output (there will only be 1 instead of 5). The output can be compared using a diff tool to analyse and verify things worked out correctly.
