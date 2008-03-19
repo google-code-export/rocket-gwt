@@ -95,7 +95,7 @@ class ImageSrcIE6 {
 	/**
 	 * Sets an image as the pending parent for the specified URL. 
 	 * 
-	 * TODO When upgrading GWT version reapply changes to this class.
+	 * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
 	 */
 	private static native void addTop(JavaScriptObject srcImgMap, Element img, String src) /*-{
 	 // No outstanding requests; load the image.

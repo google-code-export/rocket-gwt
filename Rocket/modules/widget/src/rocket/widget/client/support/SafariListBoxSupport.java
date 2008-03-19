@@ -18,7 +18,7 @@ package rocket.widget.client.support;
 import com.google.gwt.user.client.Element;
 
 /**
- * TODO When upgrading GWT version replace all methods below with the inner
+ * TODO ROCKET When upgrading from GWT 1.4.6x replace all methods below with the inner
  * class com.google.gwt.user.client.ui.Listbox.SafariImpl
  */
 public class SafariListBoxSupport extends ListBoxSupport {

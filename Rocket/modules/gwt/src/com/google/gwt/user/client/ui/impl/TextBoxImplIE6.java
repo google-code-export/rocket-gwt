@@ -40,7 +40,7 @@ public class TextBoxImplIE6 extends TextBoxImpl {
   }-*/;
   
   /**
-   * TODO When upgrading from GWT 1.4.60 reapply changes.
+   * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
    * 
    * Because of the changes to getTextAreaCursor it is possible for TextArea.getSelectedText() to throw exceptions because the cursor position +
    * selection length end up being greater than the actual length of the text area text.
@@ -72,7 +72,7 @@ public class TextBoxImplIE6 extends TextBoxImpl {
   }-*/;
   
   /**
-   * TODO When upgrading from GWT 1.4.60 reapply changes.
+   * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
    * 
    * Retrieving the cursor position within a TextArea is troublesome particularly if the cursor is after one or more CR or NL. 
    * Unfortunately IE reports the position of a cursor at the end of a line and at the start of the next line as the same value, making it impossible to say advance the cursor by a position of 1.
