@@ -29,7 +29,6 @@ public class NullAndZeroTestsSimplifierChecker implements JavaScriptSourceChecke
 
 	public void examine(final String source) {
 		// remove all spaces
-		System.out.println( "@@@START@@@\n" + source + "\n@@@END@@@");
 		final String source0 = source.replaceAll( "[ \t\r\n]", "" );
 		
 		if( source0.contains( "zeroEqualsZero==0")){
