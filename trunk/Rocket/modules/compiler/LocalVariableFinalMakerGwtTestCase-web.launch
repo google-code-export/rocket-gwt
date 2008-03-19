@@ -34,5 +34,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rocket.compiler.test.localvariablefinalmaker.client.LocalVariableFinalMakerGwtTestCase"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Rocket"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out generated/compiler/test/ -logLevel DEBUG -style DETAILED -gen generated/compiler/test/ &quot; -Xmx256M&#13;&#10;-Dgwt.hybrid&#13;&#10;-Drocket.compiler.JavaCompilationWorker=rocket.compiler.test.localvariablefinalmaker.compiler.LocalVariableFinalMakerTest"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www/compiler/test/ -logLevel DEBUG -style DETAILED -gen generated/compiler/test/ &quot; -Xmx256M&#13;&#10;-Dgwt.hybrid&#13;&#10;-Drocket.compiler.JavaCompilationWorker=rocket.compiler.test.localvariablefinalmaker.compiler.LocalVariableFinalMakerTest"/>
 </launchConfiguration>
