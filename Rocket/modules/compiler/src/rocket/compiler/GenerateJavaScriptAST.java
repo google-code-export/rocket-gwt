@@ -425,7 +425,11 @@ public class GenerateJavaScriptAST {
     JsExpression rhs = (JsExpression) pop(); // rhs
       JsExpression lhs = (JsExpression) pop(); // lhs
       JsBinaryOperator myOp = JavaToJsOperatorMap.get(x.getOp());
-
+      
+      // Attempt to remove double !!...
+      rhs = GenerateJavaScriptAST.removeDoubleNot( rhs );
+      lhs = GenerateJavaScriptAST.removeDoubleNot( lhs );
+      
       /*
        * Use === and !== on reference types, or else you can get wrong answers
        * when Object.toString() == 'some string'.
