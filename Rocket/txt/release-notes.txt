@@ -493,6 +493,12 @@ Compiler
 A variety of improvements that help reduce generated javascript size. To use them the rocket-compiler.jar must be placed before any gwt-*.jar files.
 * Added toString method to SourceInfo to make it easier to build messages.
 * Improved JsObfuscateNamer to generate shorter variables/function names.
+
+0.45 10 March 2008
+------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.45.zip
+
+Compiler
 * Added JBinaryOperator.equals() to make it easier to test for equality.
 * Added JNode.getJProgram() to help make it easier to figure out which program a node belongs too.
 * Added getAllSubTypes() and getSuperType() methods to JClassType
@@ -517,12 +523,21 @@ Remoting
   The client now uses CometClient which contains 3 methods onPayload(), onTerminate(), onFailure(). CometServerSerlvet has been reworked, the poll() method must be overridden - queryObjectSource
   has been deprecated. The push() and terminate() method must be used to push objects to the client or terminate a comet session from the server.
   
-0.45 10 March 2008
+0.46 19 March 2008
 ------------------
-Download from http://rocket-gwt.googlecode.com/files/Rocket-0.45.zip
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.46.zip
 
 Compiler
-* Added UnusedLocalVariableRemover which removes local variables that are not referenced within a method. Any assignments to the variable are only kept if they have side effects otherwise they 
-  are eliminated.
-* Added CompareAgainstZeroOptimiser which analyses the Javascript AST and optimises tests of numeric values against 0 using javascripts coercision of zero/non zero values to false/true.
-* Fixed a bug that was introduced with changes to JsObfuscateNamer. 
+To enable any of the optimisers add a system property with the fully qualified name of the feature=enabled eg <rocket.compiler.JsObfuscateNamer=enabled> or rocket.compiler=enabled to enable all.
+* Added protected JVariable.setFinal() and public JLocal.setFinal().
+* Created LocalVariableFinalMaker, an optimiser that updates the AST so that all local variables that are only set once are made final. This has two advantages,
+  CompoundAssignmentNormalizer may inline any references to recently made final variables and these same variables may then be removed in a later pass by UnusedLocalVariableRemover.
+* Modified GenerateJavaScriptAST to optimise tests reference == null, reference != null, number == 0, number != 0 into simpler javascript forms. The reference / null tests are aborted if a reference
+  is an Object or String to avoid problems arising from empty string evaluating to false which is incorrect for a null test.
+* Created VariableUpdaterOptimiser which attempts to transform statements like this i=i+j to the shorter equivalent i=+j.  
+* Created IncrementOrDecrementByOneOptimiser which attempts to transform expressions like i=i+1 to i++.
+* Updated JsToStringGeneratorVisitor (the GWT class responsible for converting the JS tree to the javascript source) to not surround negative literal numbers with parenthesis.
+* Moved hacked GenerateJavaScriptAST, JsObfuscateNamer and JsSourceGenerationVisitor to package.
+* All optimisers and enhancements are disabled by default and must be enabled by setting one or more system properties, refer to README.TXT.
+* Merged RocketCompiler project into Rocket project, moving all code and other artefacts under modules/compiler.
+* Merged test version of JavaToJavaScriptCompiler (from RocketCompiler) with the Rocket project version.
