@@ -25,8 +25,10 @@ import org.eclipse.jdt.internal.compiler.CompilationResult;
 import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
 
+import rocket.compiler.Compiler;
 import rocket.compiler.JavaCompilationWorker;
 import rocket.compiler.JavaScriptCompilationWorker;
+import rocket.compiler.JavaScriptSourceChecker;
 import rocket.compiler.NullJavaCompilationWorker;
 import rocket.compiler.NullJavaScriptCompilationWorker;
 import rocket.logging.compiler.LoggerOptimiser;
@@ -350,24 +352,28 @@ public class JavaToJavaScriptCompiler {
       // TODO ROCKET When upgrading from GWT 1.4.60 reapply changes.
 
       // warnings generator...
-      final JavaCompilationWorker longNotifier = this.createJavaCompilationWorker( rocket.compiler.LongNotifier.class );
+      final JavaCompilationWorker longNotifier = this.createJavaCompilationWorker( rocket.compiler.LongNotifier.class, logger );
 
+      final JavaCompilationWorker testJavaCompilationWorker = this.createTestJavaCompilationWorker( logger );
+      
       // actual optimisers
-      final JavaCompilationWorker alternateValuesAssignmentOptimiser =  this.createJavaCompilationWorker(rocket.compiler.AlternateValuesAssignmentOptimiser.class);
-      final JavaCompilationWorker alternateValuesReturnedOptimiser = this.createJavaCompilationWorker( rocket.compiler.AlternateValuesReturnedOptimiser.class);
-      final JavaCompilationWorker conditionalAssignmentOptimiser = this.createJavaCompilationWorker( rocket.compiler.ConditionalAssignmentOptimiser.class);
-      final JavaCompilationWorker trailingReturnRemover = this.createJavaCompilationWorker( rocket.compiler.TrailingReturnRemover.class);
-      final JavaCompilationWorker variableAssignedToSelfRemover = this.createJavaCompilationWorker( rocket.compiler.VariableAssignedToSelfRemover.class);
-      final JavaCompilationWorker unusedLocalVariableRemover = this.createJavaCompilationWorker( rocket.compiler.UnusedLocalVariableRemover.class);
-      final JavaCompilationWorker localVariableFinalMaker = this.createJavaCompilationWorker( rocket.compiler.LocalVariableFinalMaker.class);
-      final JavaCompilationWorker variableUpdaterOptimiser = this.createJavaCompilationWorker( rocket.compiler.VariableUpdaterOptimiser.class);
-      final JavaCompilationWorker incrementOrDecrementByOneOptimiser = this.createJavaCompilationWorker( rocket.compiler.IncrementOrDecrementByOneOptimiser.class);
-      final JavaCompilationWorker emptyBlockRemover = this.createJavaCompilationWorker( rocket.compiler.EmptyBlockRemover.class);
+      final JavaCompilationWorker alternateValuesAssignmentOptimiser =  this.createJavaCompilationWorker(rocket.compiler.AlternateValuesAssignmentOptimiser.class,logger);
+      final JavaCompilationWorker alternateValuesReturnedOptimiser = this.createJavaCompilationWorker( rocket.compiler.AlternateValuesReturnedOptimiser.class,logger);
+      final JavaCompilationWorker conditionalAssignmentOptimiser = this.createJavaCompilationWorker( rocket.compiler.ConditionalAssignmentOptimiser.class,logger);
+      final JavaCompilationWorker trailingReturnRemover = this.createJavaCompilationWorker( rocket.compiler.TrailingReturnRemover.class,logger);
+      final JavaCompilationWorker variableAssignedToSelfRemover = this.createJavaCompilationWorker( rocket.compiler.VariableAssignedToSelfRemover.class,logger);
+      final JavaCompilationWorker unusedLocalVariableRemover = this.createJavaCompilationWorker( rocket.compiler.UnusedLocalVariableRemover.class,logger);
+      final JavaCompilationWorker localVariableFinalMaker = this.createJavaCompilationWorker( rocket.compiler.LocalVariableFinalMaker.class,logger);
+      final JavaCompilationWorker variableUpdaterOptimiser = this.createJavaCompilationWorker( rocket.compiler.VariableUpdaterOptimiser.class,logger);
+      final JavaCompilationWorker incrementOrDecrementByOneOptimiser = this.createJavaCompilationWorker( rocket.compiler.IncrementOrDecrementByOneOptimiser.class,logger);
+      final JavaCompilationWorker emptyBlockRemover = this.createJavaCompilationWorker( rocket.compiler.EmptyBlockRemover.class,logger);
       
       int pass = 0;
       
       do {
         didChange = false;
+        
+        didChange = testJavaCompilationWorker.work(jprogram, logger) || didChange;
         
         if( pass == 0 ){
         	longNotifier.work( jprogram, logger); 
@@ -435,7 +441,7 @@ public class JavaToJavaScriptCompiler {
       Pruner.exec(jprogram, false);
 
       // (7) Generate a JavaScript code DOM from the Java type declarations
-      if( this.isEnabled( rocket.compiler.GenerateJavaScriptAST.class.getName() )){
+      if( Compiler.isEnabled( rocket.compiler.GenerateJavaScriptAST.class.getName() )){
     	  rocket.compiler.GenerateJavaScriptAST.exec(jprogram, jsProgram, obfuscate, prettyNames);
       } else {
     	  GenerateJavaScriptAST.exec(jprogram, jsProgram, obfuscate, prettyNames);  
@@ -451,7 +457,7 @@ public class JavaToJavaScriptCompiler {
       if (obfuscate) {
     	
     	  // ROCKET When upgrading from GWT 1.4.6x reapply changes
-    	  if( this.isEnabled( rocket.compiler.JsObfuscateNamer.class.getName() )){
+    	  if( Compiler.isEnabled( rocket.compiler.JsObfuscateNamer.class.getName() )){
     		  rocket.compiler.JsObfuscateNamer.exec(jsProgram);
     	  } else {
     		  JsObfuscateNamer.exec(jsProgram);
@@ -464,9 +470,12 @@ public class JavaToJavaScriptCompiler {
       }
       
       // TODO ROCKET When upgrading from GWT 1.4.60 reapply changes.
-      final JavaScriptCompilationWorker compareAgainstZero =  this.createJavaScriptCompilationWorker(rocket.compiler.CompareAgainstZeroOptimiser.class );
+      final JavaScriptCompilationWorker testJavaScriptCompilationWorker =  this.createTestJavaScriptCompilationWorker( logger );
+      
+      final JavaScriptCompilationWorker compareAgainstZero =  this.createJavaScriptCompilationWorker(rocket.compiler.CompareAgainstZeroOptimiser.class, logger );
       do {
           didChange = false;
+          didChange = didChange || testJavaScriptCompilationWorker.work(jsProgram, logger);
           didChange = didChange || compareAgainstZero.work(jsProgram, logger);
           
       } while( didChange );
@@ -476,7 +485,7 @@ public class JavaToJavaScriptCompiler {
       
       // TODO ROCKET when upgrading from GWT 1.4.60 reapply changes.
       String javascript = null;
-      if( this.isEnabled( rocket.compiler.JsSourceGenerationVisitor.class.getName() )){
+      if( Compiler.isEnabled( rocket.compiler.JsSourceGenerationVisitor.class.getName() )){
     	  rocket.compiler.JsSourceGenerationVisitor v = new rocket.compiler.JsSourceGenerationVisitor(out);
           v.accept(jsProgram);
           javascript = out.toString();  
@@ -485,6 +494,10 @@ public class JavaToJavaScriptCompiler {
           v.accept(jsProgram);
           javascript = out.toString();    	  
       }
+      
+      // TODO ROCKET when upgrading from GWT 1.4.60 reapply changes.
+      final JavaScriptSourceChecker javascriptSourceChecker = this.createJavaScriptSourceChecker( logger ); 
+      javascriptSourceChecker.examine( javascript );
 
       return javascript;
     	} 
@@ -628,22 +641,50 @@ public class JavaToJavaScriptCompiler {
 		return (LoggerOptimiser)reader.readProperty();
 	}
 	
+	
+	/**
+	 * If this system property is present the value is used as the class name of a JavaCompilationWorker
+	 */
+	final static String JAVA_COMPILATION_WORKER_SYSTEM_PROPERTY = rocket.compiler.JavaCompilationWorker.class.getName();
+	
+	protected JavaCompilationWorker createTestJavaCompilationWorker(final TreeLogger logger ){
+		JavaCompilationWorker worker = NullJavaCompilationWorker.instance;
+		
+		final String className = System.getProperty(JAVA_COMPILATION_WORKER_SYSTEM_PROPERTY );
+		if( null != className ){
+			try {
+				worker = (JavaCompilationWorker) Class.forName(className).newInstance();
+				logger.log(TreeLogger.WARN, className, null );
+				
+			} catch (final Exception exception ) {
+				throw new RuntimeException( "Unable to create JavaCompilationWorker \"" + className + "\", cause: " + exception.getMessage(), exception );
+			}
+		} else {
+			logger.log(TreeLogger.WARN, "The system property \"" + JAVA_COMPILATION_WORKER_SYSTEM_PROPERTY + "\" was not set.", null);		
+		}
+		
+		return worker;
+	}
+	
 	/**
 	 * Factory method which creates a JavaCompilationWorker given its class name. If its not found a NullJavaCompilationWorker instance is
 	 * returned instead.
 	 * @param c
 	 * @return
 	 */
-	protected JavaCompilationWorker createJavaCompilationWorker(final Class c ) {
+	protected JavaCompilationWorker createJavaCompilationWorker(final Class c, final TreeLogger logger ) {
 		Checker.notNull("parameter:class", c);
-
+		Checker.notNull("parameter:logger", logger);
+		
 		JavaCompilationWorker worker = NullJavaCompilationWorker.instance;
 
 		final String name = c.getName();
-		if (this.isEnabled( name )) {
+		if (Compiler.isEnabled( name )) {
 
 			try {
 				worker = (JavaCompilationWorker) c.newInstance();
+				logger.log(TreeLogger.WARN, c.getName(), null );
+				
 			} catch (final Exception exception ) {
 				throw new RuntimeException( "Unable to create JavaCompilationWorker \"" + name + "\", cause: " + exception.getMessage(), exception );
 			}
@@ -653,21 +694,52 @@ public class JavaToJavaScriptCompiler {
 	}
 
 	/**
+	 * If this system property is present the value is used as the class name of a JavaScriptCompilationWorker
+	 */
+	final static String JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY = rocket.compiler.JavaScriptCompilationWorker.class.getName();
+	
+	/**
+	 * Factory method which loads a JavaScriptCompilationWorker after fetching its class name from a system property
+	 * @return
+	 */
+	protected JavaScriptCompilationWorker createTestJavaScriptCompilationWorker(final TreeLogger logger ){
+		JavaScriptCompilationWorker worker = NullJavaScriptCompilationWorker.instance;
+		
+		final String className = System.getProperty(JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY );
+		if( null != className ){
+			try {
+				worker = (JavaScriptCompilationWorker) Class.forName( className ).newInstance();
+				logger.log(TreeLogger.WARN, className, null );
+				
+			} catch (final Exception exception ) {
+				throw new RuntimeException( "Unable to create JavaScriptCompilationWorker \"" + className + "\", cause: " + exception.getMessage(), exception );
+			}
+		} else {
+			logger.log(TreeLogger.WARN, "The system property \"" + JAVASCRIPT_COMPILATION_WORKER_SYSTEM_PROPERTY + "\" was not set.", null);		
+		}
+		
+		return worker;
+	}
+	
+	/**
 	 * Factory method which creates a JavaScriptCompilationWorker given its class name. If its not found a NullJavaScriptCompilationWorker instance is
 	 * returned instead.
 	 * @param c
 	 * @return
 	 */
-	protected JavaScriptCompilationWorker createJavaScriptCompilationWorker(final Class c ) {
+	protected JavaScriptCompilationWorker createJavaScriptCompilationWorker(final Class c, final TreeLogger logger ) {
 		Checker.notNull("parameter:class", c);
+		Checker.notNull("parameter:logger", logger);
 		
 		JavaScriptCompilationWorker worker = NullJavaScriptCompilationWorker.instance;
 
 		final String name = c.getName();
-		if (this.isEnabled( name )) {
+		if (Compiler.isEnabled( name )) {
 
 			try {
 				worker = (JavaScriptCompilationWorker) c.newInstance();
+				logger.log(TreeLogger.WARN, c.getName(), null );
+				
 			} catch (final Exception exception ) {
 				throw new RuntimeException( "Unable to create JavaScriptCompilationWorker \"" + name + "\", cause: " + exception.getMessage(), exception );
 			}
@@ -675,40 +747,63 @@ public class JavaToJavaScriptCompiler {
 
 		return worker;
 	}
-
+	
 	/**
-	 * Tests if a particular optimiser is enabled by checking if a system property with the same name has a value of enabled.
-	 * @param className
-	 * @return
+	 * If this system property is present the value is used as the class name of a JavaScriptSourceChecker
 	 */
-	protected boolean isEnabled(final String className) {
-		boolean enabled = false;
-		
-		while( true ){
-			final String individual = System.getProperty( className );
-			if( "enabled".equals( individual )){
-				enabled = true;
+	final static String JAVASCRIPT_SOURCE_CHECKER_SYSTEM_PROPERTY = rocket.compiler.JavaScriptSourceChecker.class.getName();	
+	
+	/**
+	 * Factory method which attempts to create a CompilationWorker instance
+	 * after fetching the class name from a system property.
+	 * 
+	 * @param logger
+	 * @return
+	 * @throws UnableToCompleteException
+	 *             if something goes wrong attempting to create the JavaScriptSourceChecker
+	 */
+	JavaScriptSourceChecker createJavaScriptSourceChecker(final TreeLogger logger) throws UnableToCompleteException {
+		JavaScriptSourceChecker worker = new JavaScriptSourceChecker(){
+			public void examine(final String string ){
+			}
+		};
+
+		while (true) {
+			// fetch the fqcn of the compilation worker from a system property.
+			final String className = System.getProperty(JAVASCRIPT_SOURCE_CHECKER_SYSTEM_PROPERTY);
+			if (null == className) {
+				logger.log(TreeLogger.WARN, "The system property \"" + JAVASCRIPT_SOURCE_CHECKER_SYSTEM_PROPERTY + "\" was not set.", null);
 				break;
 			}
-			if( "disabled".equals( individual )){
-				enabled = false;
-				break;
+
+			// try and load the class
+
+			try {
+				final Class classs = Class.forName(className);
+				worker = (JavaScriptSourceChecker) classs.newInstance();
+			} catch (final Exception caught) {
+				logger.log(TreeLogger.ERROR, "Unable to load the class \"" + className + "\", message: " + caught.getMessage(), null);
+				throw new UnableToCompleteException();
 			}
-			
-			// global enable/disable...
-			final String global = System.getProperty( "rocket.compiler");
-			if( "enabled".equals( global )){
-				enabled = true;
-				break;
-			}
-			if( "disabled".equals( global )){
-				enabled = false;
-				break;
-			}
-		
-			// defaults to disabled...
 			break;
 		}
-		return enabled;
+
+		return worker;
+	}
+	
+	/**
+	 * Simple helper that fetches the class object for a particular class name wrapping any exceptions inside an
+	 * AssertionError
+	 * @param name
+	 * @return
+	 */
+	Class classForName( final String name ){
+		Checker.notEmpty("parameter:name", name );
+		
+		try{
+			return Class.forName( name );
+		} catch ( final Exception caught ){
+			throw new AssertionError( "Unable to load the class \"" + name + "\".");
+		}
 	}
 }
