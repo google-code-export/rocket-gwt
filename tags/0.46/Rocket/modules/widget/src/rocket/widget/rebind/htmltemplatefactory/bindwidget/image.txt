@@ -1,0 +1,8 @@
+// /rocket/widget/rebind/htmltemplatefactory/bindwidget/image.txt
+
+rocket.widget.client.Image image = (rocket.widget.client.Image) this.getWidget( ${id} );
+if( null == image ){
+	image = bindImage( ${id} );
+}
+return image;
+

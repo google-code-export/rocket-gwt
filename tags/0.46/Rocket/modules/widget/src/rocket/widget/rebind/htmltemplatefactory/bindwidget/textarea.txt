@@ -1,0 +1,8 @@
+// /rocket/widget/rebind/htmltemplatefactory/bindwidget/textarea.txt
+
+rocket.widget.client.TextArea textArea = (rocket.widget.client.TextArea) this.getWidget( ${id} );
+if( null == textArea ){
+	textArea = bindTextArea( ${id} );
+}
+return textArea;
+

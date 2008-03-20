@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<style>
+			body,td,a,div,.p{
+				font-family: Verdana, Arial, Sans-serif; 
+				font-size: 10px;
+				color: #223;
+			}
+			div,td{color:#000000}
+			a:link,.w,.w a:link{color:#0000cc}
+			a:visited{color:#551a8b}
+			a:active{color:#ff0000}
+			
+			.oddRow{
+				background-color: #f9fff6;
+			}
+			.evenRow{
+				background-color: #fbfff3;
+			}
+			
+			.gwt-Button{
+				margin: 4px;
+				background-color: #fec;
+				color: #6a4;
+				font-family: Verdana, Arial, Sans-serif; 
+				font-size: 10px;
+				width: 20em;
+				font-weight: bold;
+			}
+			
+			.gwt-Grid{
+				color: #000;
+				background-color: #eef;
+			}
+			
+			.rocket-textBox,
+			.rocket-passwordTextBox,
+			.rocket-textArea{
+				background-color: #eef;
+				color: #000;
+				font-family: Verdana, Arial, Sans-serif; 
+				font-size: 9px;
+			}
+			
+			.rocket-radioButton,
+			.rocket-checkBox{
+				background-color: inherit;
+			}
+			
+			.rocket-listBox{
+				width: 10em;
+			
+				border-width: 1px;
+				border-style: solid;
+				border-color: #ccd;
+				background-color: #eef;
+
+				font-family: Verdana, Arial, Sans-serif; 
+				font-size: 9px;
+				color: #002;
+			}
+			
+			.rocket-hyperlink{
+				color: #45f;
+				text-decoration: underline;
+			}
+			
+			.rocket-button{
+				margin: 4px;
+				
+				border-width: 1px;
+				border-style: solid;
+				border-color: #9a0;
+				
+				padding: 4px;
+				
+				background-color: #cb9;
+
+				font-family: Verdana, Arial, Sans-serif; 
+				font-size: 12px;
+				font-weight: bold;
+				color: #102;				
+			}
+			
+			
+		</style>
+		<script language='javascript' src='rocket.widget.test.basicwidgets.BasicWidgets.nocache.js'></script>
+	</head>
+
+	<body>
+		<h1>Basic Widgets Things to test</h1>
+		<ul>
+		<li>The hijacked instance of each widget (the 4th column) was created by the html fragment that appears in the column to the left.</li>
+		<li>Buttons with text that includes a trailing <b>(*)</b> action the hijacked widget.</li>
+		<li>Action buttons appear to the right of the page and have a skin peach background colour</li>
+		<li>The columns with numbers are the number of times a particular event has fired upon a widget.</li>
+		<li>The counter order matches the events in list order shown below
+			<ul>
+				<li>change</li>
+				<li>blur</li>
+				<li>focus</li>	
+				<li>key down</li>			
+				<li>key press</li>
+				<li>key up</li>								
+				<li>image load success</li>
+				<li>image load failed</li>				
+				<li>mouse click</li>		
+				<li>mouse double click</li>						
+				<li>mouse down</li>		
+				<li>mouse move</li>						
+				<li>mouse out</li>										
+				<li>mouse over</li>														
+				<li>mouse wheel</li>										
+				<li>scroll</li>														
+				<li>form submitted</li>
+				<li>form submit completed</li>			
+			</ul>
+		</li>
+		</ul>
+
+	<button onclick="prompt(document.body.innerHTML,document.body.innerHTML)">document.body.innerHTML</button>
+	</body>
+</html>

@@ -1,0 +1,15 @@
+// write-field.txt
+
+// set the json object property.
+jsonObject.put( 
+	// the javascript property being set
+	${javascriptPropertyName},
+	
+	// write the java field
+	${serializer}.serializer.writeJson(
+	
+		// fetch the field
+		this.${getter}( instance0 )
+	)
+); // jsonObject.put
+

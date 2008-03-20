@@ -1,0 +1,79 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.generator.Generator"/>
+	<source path="client" />
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.TemplatedFileCodeBlockGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlock" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.BooleanPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.BooleanPlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.BytePlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.BytePlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.ShortPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.ShortPlaceHolder" />
+	</generate-with>
+	
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.IntPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.IntPlaceHolder" />
+	</generate-with>
+	
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.LongPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.LongPlaceHolder" />
+	</generate-with>
+	
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.FloatPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.FloatPlaceHolder" />
+	</generate-with>
+	
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.DoublePlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.DoublePlaceHolder" />
+	</generate-with>
+	
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.CharPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.CharPlaceHolder" />
+	</generate-with>
+	
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.StringPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.StringPlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.NestedAnonymousTypePlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.NestedAnonymousTypePlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.ConstructorPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.ConstructorPlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.ConstructorParameterPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.ConstructorParameterPlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.MethodPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.MethodPlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.JsniMethodPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.JsniMethodPlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.MethodParameterPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.MethodParameterPlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.FieldPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.FieldPlaceHolder" />
+	</generate-with>
+
+	<generate-with class="rocket.generator.test.templatedfilecodeblock.rebind.JsniFieldPlaceHolderGenerator">
+		<when-type-assignable class="rocket.generator.test.templatedfilecodeblock.client.JsniFieldPlaceHolder" />
+	</generate-with>
+
+</module>
+
