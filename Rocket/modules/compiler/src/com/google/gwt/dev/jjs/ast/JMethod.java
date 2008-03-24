@@ -146,7 +146,7 @@ public final class JMethod extends JNode implements HasEnclosingType, HasName, H
 		visitor.endVisit(this, ctx);
 	}
 
-	// ROCKET: Reapply changes when upgrading GWT
+	// ROCKET: When upgrading from GWT 1.4.6 reapply changes
 	/**
 	 * This method may be used to detect all methods that make up a constructor.
 	 * TODO Is this the best way to test if a method is a constructor ???
@@ -155,8 +155,13 @@ public final class JMethod extends JNode implements HasEnclosingType, HasName, H
 		boolean constructor = false;
 
 		// if( false == this.isStatic()){
-		final String expectedConstructorName = this.getEnclosingType().getShortName();
-		constructor = this.getName().equals(expectedConstructorName);
+		final JReferenceType enclosingType = this.getEnclosingType();
+		if( null != enclosingType ){
+			final String expectedConstructorName = enclosingType.getShortName();
+			if( this.getName().equals(expectedConstructorName)){
+				constructor = true;
+			}
+		}
 		// }
 
 		return constructor;
@@ -397,5 +402,43 @@ public final class JMethod extends JNode implements HasEnclosingType, HasName, H
 	 */
 	public JMethod getStaticDispatcher() {
 		return this.program.getStaticImpl(this);
+	}
+	
+	/**
+	 * Tests if this method is a static initializer.
+	 * @return
+	 */
+	static final String STATIC_INITIALIZER_METHOD_NAME = "$clinit";
+	
+	public boolean isStaticInitializer(){
+		boolean staticInitializer = false;
+		
+		while( true ){
+			// must be static
+			if( false == this.isStatic() ){
+				break;
+			}
+			
+			// its name must be clint
+			if( false == STATIC_INITIALIZER_METHOD_NAME.equals( this.getName() )){
+				break;
+			}
+			
+			// must have no parameters...
+			if( false == this.getOriginalParamTypes().isEmpty() ){
+				break;
+			}
+			
+			// return type must be void...
+			final JType voidType = this.getJProgram().getTypeVoid();
+			if( false == this.getType().equals( voidType )){
+				break;
+			}
+			
+			staticInitializer = true;
+			break;
+		}
+		
+		return staticInitializer;
 	}
 }
