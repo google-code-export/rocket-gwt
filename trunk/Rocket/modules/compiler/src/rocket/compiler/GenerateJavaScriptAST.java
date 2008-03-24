@@ -155,6 +155,28 @@ import com.google.gwt.dev.js.ast.JsVars.JsVar;
  */
 public class GenerateJavaScriptAST {
 
+	// TODO When upgrading from GWT 1.4.6x reapply changes...
+	
+	/**
+	 * This flag will be set to true when this feature is enabled.
+	 */
+	final static String NULL_OR_NOT_NULL_TEST = "nullOrNotNullTest";
+	final static boolean nullOrNotNullTest = Compiler.isEnabled( GenerateJavaScriptAST.class.getName(), NULL_OR_NOT_NULL_TEST ); 
+
+	static boolean isNullorNullTest(){
+		return nullOrNotNullTest;
+	}
+
+	/**
+	 * This flag will be set to true when this feature is enabled causing tests between numbers and 0 and not 0 will be optimised.
+	 */
+	final static String ZERO_OR_NOT_ZERO_TEST = "zeroOrNotZeroTest";
+	final static boolean zeroOrNotZeroTest = Compiler.isEnabled( GenerateJavaScriptAST.class.getName(), ZERO_OR_NOT_ZERO_TEST );
+
+	static boolean isZeroOrNotZeroTest(){
+		return zeroOrNotZeroTest;
+	}
+	    
   private class CreateNamesAndScopesVisitor extends JVisitor {
 
     private final Stack/* <JsScope> */scopeStack = new Stack();
@@ -376,7 +398,7 @@ public class GenerateJavaScriptAST {
       scopeStack.push(scope);
     }
   }
-
+  
   private class GenerateJavaScriptVisitor extends JVisitor {
 
     private final Set/* <JClassType> */alreadyRan = new HashSet/* <JClassType> */();
@@ -411,17 +433,22 @@ public class GenerateJavaScriptAST {
     public void endVisit(JAssertStatement x, Context ctx) {
       throw new InternalCompilerException("Should not get here.");
     }
-
+    
     // @Override
     public void endVisit(final JBinaryOperation x, final Context ctx) {
     	// ROCKET When upgrading from GWT 1.4.6x reapply changes...
-    	if( this.simplifyReferenceNullOrNotNullTests( x, ctx)){
-    		return;
+    	if( GenerateJavaScriptAST.isNullorNullTest() ){
+    		if( this.simplifyReferenceNullOrNotNullTests( x, ctx)){
+    			return;
+    		}	
     	}
-    	if( this.simplifyNumberZeroOrNotZeroTests( x, ctx )){
-    		return;
+
+    	if( GenerateJavaScriptAST.isZeroOrNotZeroTest() ){
+    		if( this.simplifyNumberZeroOrNotZeroTests( x, ctx )){
+    			return;
+    		}
     	}
-    	
+
     JsExpression rhs = (JsExpression) pop(); // rhs
       JsExpression lhs = (JsExpression) pop(); // lhs
       JsBinaryOperator myOp = JavaToJsOperatorMap.get(x.getOp());
@@ -870,6 +897,9 @@ public class GenerateJavaScriptAST {
       JsNameRef nameRef = jsFieldName.makeRef();
       JsExpression curExpr = nameRef;
 
+      // TODO When upgrading from GWT 1.4.6x reapply changes.
+      if( Compiler.requiresClinit( x )){
+      
       /*
        * Note: the comma expressions here would cause an illegal tree state if
        * the result expression ended up on the lhs of an assignment. A hack in
@@ -880,6 +910,7 @@ public class GenerateJavaScriptAST {
       JsInvocation jsInvocation = maybeCreateClinitCall(field);
       if (jsInvocation != null) {
         curExpr = createCommaExpression(jsInvocation, curExpr);
+      }
       }
 
       if (x.getInstance() != null) {
@@ -1763,12 +1794,18 @@ public class GenerateJavaScriptAST {
       if (x == enclosingType.methods.get(0)) {
         return null;
       }
+      
+      // TODO When upgrading from GWT 1.4.6x reapply changes
+      if( false == Compiler.requiresClint( x )){
+    	  return null;
+      }
 
       JMethod clinitMethod = (JMethod) enclosingType.methods.get(0);
       JsInvocation jsInvocation = new JsInvocation();
       jsInvocation.setQualifier(getName(clinitMethod).makeRef());
       return jsInvocation;
     }
+
 
     private JsNode pop() {
       return (JsNode) nodeStack.pop();

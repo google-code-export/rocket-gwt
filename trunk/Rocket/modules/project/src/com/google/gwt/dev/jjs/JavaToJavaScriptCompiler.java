@@ -31,6 +31,8 @@ import rocket.compiler.JavaScriptCompilationWorker;
 import rocket.compiler.JavaScriptSourceChecker;
 import rocket.compiler.NullJavaCompilationWorker;
 import rocket.compiler.NullJavaScriptCompilationWorker;
+import rocket.compiler.StaticFieldClinitRemover;
+import rocket.compiler.StaticMethodClinitRemover;
 import rocket.logging.compiler.LoggerOptimiser;
 import rocket.logging.compiler.LoggingLevelByNameAssigner;
 import rocket.logging.compiler.NoneLoggingFactoryGetLoggerOptimiser;
@@ -424,6 +426,13 @@ public class JavaToJavaScriptCompiler {
         // unreferenced due to type tightening?
       } while (didChange);
 
+      // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes.
+      final JavaCompilationWorker staticMethodClintRemover = this.createJavaCompilationWorker( StaticMethodClinitRemover.class, logger );
+      final JavaCompilationWorker staticFieldClintRemover = this.createJavaCompilationWorker( StaticFieldClinitRemover.class, logger );
+      
+      staticMethodClintRemover.work(jprogram, logger);
+      staticFieldClintRemover.work(jprogram, logger);
+      
       // (5) "Normalize" the high-level Java tree into a lower-level tree more
       // suited for JavaScript code generation. Don't go reordering these
       // willy-nilly because there are some subtle interdependencies.
@@ -441,11 +450,8 @@ public class JavaToJavaScriptCompiler {
       Pruner.exec(jprogram, false);
 
       // (7) Generate a JavaScript code DOM from the Java type declarations
-      if( Compiler.isEnabled( rocket.compiler.GenerateJavaScriptAST.class.getName() )){
-    	  rocket.compiler.GenerateJavaScriptAST.exec(jprogram, jsProgram, obfuscate, prettyNames);
-      } else {
-    	  GenerateJavaScriptAST.exec(jprogram, jsProgram, obfuscate, prettyNames);  
-      }
+      rocket.compiler.GenerateJavaScriptAST.exec(jprogram, jsProgram, obfuscate, prettyNames);
+      
       
       // (8) Fix invalid constructs created during JS AST gen
       JsNormalizer.exec(jsProgram);
@@ -654,7 +660,7 @@ public class JavaToJavaScriptCompiler {
 		if( null != className ){
 			try {
 				worker = (JavaCompilationWorker) Class.forName(className).newInstance();
-				logger.log(TreeLogger.WARN, className, null );
+				logger.log(TreeLogger.WARN, "Using " + className, null );
 				
 			} catch (final Exception exception ) {
 				throw new RuntimeException( "Unable to create JavaCompilationWorker \"" + className + "\", cause: " + exception.getMessage(), exception );
@@ -683,7 +689,7 @@ public class JavaToJavaScriptCompiler {
 
 			try {
 				worker = (JavaCompilationWorker) c.newInstance();
-				logger.log(TreeLogger.WARN, c.getName(), null );
+				logger.log(TreeLogger.WARN, "Using " + c.getName(), null );
 				
 			} catch (final Exception exception ) {
 				throw new RuntimeException( "Unable to create JavaCompilationWorker \"" + name + "\", cause: " + exception.getMessage(), exception );
@@ -709,7 +715,7 @@ public class JavaToJavaScriptCompiler {
 		if( null != className ){
 			try {
 				worker = (JavaScriptCompilationWorker) Class.forName( className ).newInstance();
-				logger.log(TreeLogger.WARN, className, null );
+				logger.log(TreeLogger.WARN, "Using " + className, null );
 				
 			} catch (final Exception exception ) {
 				throw new RuntimeException( "Unable to create JavaScriptCompilationWorker \"" + className + "\", cause: " + exception.getMessage(), exception );
