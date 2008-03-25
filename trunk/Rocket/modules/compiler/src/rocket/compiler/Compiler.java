@@ -102,8 +102,9 @@ public class Compiler {
 		if( null != enclosingType ){
 			buf.append( enclosingType.getName() );
 			buf.append( '.');
-			buf.append( Compiler.getMethodName( method ));
 		}
+		buf.append( Compiler.getMethodName( method ));
+		
 		return buf.toString();
 	}
 	/**
