@@ -93,20 +93,24 @@ public class StaticFieldClinitRemover implements JavaCompilationWorker {
 
 		final Set types = new HashSet();
 		final JVisitor visitor = new JVisitor() {
-			public boolean visit(final JMethodBody methodBody, final Context context) {
-				final JMethod method = methodBody.getMethod();
-				if (method.isStaticInitializer()) {
-					final List statements = methodBody.getStatements();
-					if( ! statements.isEmpty() ){					
-						final JReferenceType type = method.getEnclosingType(); 
-						final boolean newAdd = types.add( type );
-						if( newAdd ){
-							branch.log( TreeLogger.DEBUG, type.getName(), null );
-						}
+			
+			public boolean visit( final JClassType type, final Context context ){
+				if( type.hasStaticInitializer() ){
+					final boolean newAdd = types.add( type );
+					if( newAdd ){
+						branch.log( TreeLogger.DEBUG, type.getName(), null );
 					}
 				}
-				return !VISIT_CHILD_NODES;
+				return ! VISIT_CHILD_NODES;
 			}
+			
+			public boolean visit( final JInterfaceType type, final Context context ){
+				return ! VISIT_CHILD_NODES;
+			}
+			
+			public boolean visit( final JArrayType type, final Context context ){
+				return ! VISIT_CHILD_NODES;
+			}			
 		};
 		visitor.accept(jprogram);
 
@@ -603,6 +607,12 @@ public class StaticFieldClinitRemover implements JavaCompilationWorker {
 		return found;
 	}
 	
+	/**
+	 * Marks a static field belonging to a class with a static initializer as not requiring clinit.
+	 * This enables GenerateJavaScriptAST to skip the insertion of a clinit guard around this particular field reference.
+	 * @param reference
+	 * @param logger
+	 */
 	protected void markFieldReferenceAsNotRequiringClinit( final JFieldRef reference, final TreeLogger logger ){
 		Checker.notNull("parameter:reference", reference );
 		Checker.notNull("parameter:logger", logger );

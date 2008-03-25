@@ -195,49 +195,14 @@ public class StaticMethodClinitRemover implements JavaCompilationWorker {
 			final TreeLogger branch = logger.branch(TreeLogger.DEBUG, type.getName(), null);
 
 			// if the given type hasnt got any static initializers skip processing this type.
-			if (false == this.hasStaticInitializer(type)) {
-				branch.log(TreeLogger.DEBUG, "Has no static initializer(s)", null);
+			if (false == type.hasStaticInitializer() ) {
+				branch.log(TreeLogger.DEBUG, "Has no static initializer.", null);
 				break;
 			}
 
 			// process static methods attempting to remove unnecessary clint calls.
 			this.processStaticMethods(type, staticMethodsWithExternalCallSites, branch);
 			break;
-		}
-	}
-
-	/**
-	 * Tests if the given type has a static initializer.
-	 * @param type
-	 */
-	protected boolean hasStaticInitializer(final JReferenceType type) {
-		Checker.notNull("parameter:type", type);
-
-		final StaticInitializerFinder finder = new StaticInitializerFinder();
-		finder.accept(type);
-		return finder.hasStaticInitializer();
-	}
-
-	/**
-	 * This visitor visits all methods belonging to a concrete type and attempts to find a static initializer method.
-	 */
-	static class StaticInitializerFinder extends JVisitor {
-
-		public boolean visit(final JMethod method, final Context context) {
-			if (method.isStaticInitializer()) {
-				this.setStaticInitializer(true);
-			}
-			return !VISIT_CHILD_NODES;
-		}
-
-		private boolean staticInitializer;
-
-		boolean hasStaticInitializer() {
-			return this.staticInitializer;
-		}
-
-		private void setStaticInitializer(final boolean staticInitializer) {
-			this.staticInitializer = staticInitializer;
 		}
 	}
 
@@ -250,6 +215,7 @@ public class StaticMethodClinitRemover implements JavaCompilationWorker {
 	 */
 	protected void processStaticMethods(final JReferenceType type, final Map staticMethodsWithExternalCallSites, final TreeLogger logger) {
 		Checker.notNull("parameter:type", type);
+		Checker.notNull("parameter:staticMethodsWithExternalCallSites", staticMethodsWithExternalCallSites);
 		Checker.notNull("parameter:logger", logger);
 
 		// print method
@@ -301,7 +267,7 @@ public class StaticMethodClinitRemover implements JavaCompilationWorker {
 
 				if (optimise) {
 					branch.log(TreeLogger.DEBUG, "Marking as not requiring clinit calls to be inserted by GenerateJavaScriptAST.", null);
-					StaticMethodClinitRemover.this.markAsNotRequiringClint(method, context, branch);
+					StaticMethodClinitRemover.this.markAsNotRequiringClinit(method, context, branch);
 				}
 
 				return !VISIT_CHILD_NODES; // dont need to visit body.
@@ -335,7 +301,7 @@ public class StaticMethodClinitRemover implements JavaCompilationWorker {
 	 * @param context
 	 * @param logger
 	 */
-	protected void markAsNotRequiringClint(final JMethod method, final Context context, final TreeLogger logger) {
+	protected void markAsNotRequiringClinit(final JMethod method, final Context context, final TreeLogger logger) {
 		Checker.notNull("parameter:method", method);
 		Checker.notNull("parameter:context", context);
 		Checker.notNull("parameter:logger", logger);
