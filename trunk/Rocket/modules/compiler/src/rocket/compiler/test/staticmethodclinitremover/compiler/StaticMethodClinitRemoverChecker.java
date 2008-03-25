@@ -15,15 +15,8 @@
  */
 package rocket.compiler.test.staticmethodclinitremover.compiler;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
-
 import rocket.compiler.Compiler;
 import rocket.compiler.JavaScriptCompilationWorker;
-import rocket.compiler.test.staticfieldclinitremover.compiler.StaticFieldClinitRemoverTest;
-import rocket.util.client.Utilities;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.dev.js.ast.JsContext;
