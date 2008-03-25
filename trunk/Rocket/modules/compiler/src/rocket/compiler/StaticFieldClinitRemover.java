@@ -67,8 +67,6 @@ public class StaticFieldClinitRemover implements JavaCompilationWorker {
 		// first we need to know which types have static initializers...
 		final Set typesWithAStaticInitializer = this.findTypesWithStaticInitializers(jprogram, logger);
 
-		Compiler.resetFieldReferencesNotRequiringClint();
-
 		// visit all methods finding any static field accesses that dont need a
 		// clint.
 		this.findStaticFieldReferencesNotRequiringClints( jprogram, typesWithAStaticInitializer, logger );

@@ -47,8 +47,6 @@ public class StaticMethodClinitRemover implements JavaCompilationWorker {
 	 * Any such methods may then have their static initializer guard removed resulting in a smaller generated javascript file.
 	 */
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
-		Compiler.resetStaticMethodsNotRequiringClint();
-		
 		final TreeLogger branch = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
 		
 		final Map staticMethodsWithExternalCallSites = this.getStaticMethodsWithExternalCallsites(jprogram);

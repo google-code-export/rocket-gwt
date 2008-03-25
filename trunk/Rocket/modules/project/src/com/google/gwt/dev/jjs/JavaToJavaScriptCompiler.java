@@ -427,6 +427,9 @@ public class JavaToJavaScriptCompiler {
       } while (didChange);
 
       // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes.
+      Compiler.resetFieldReferencesNotRequiringClint();
+      Compiler.resetStaticMethodsNotRequiringClint();
+      
       final JavaCompilationWorker staticMethodClintRemover = this.createJavaCompilationWorker( StaticMethodClinitRemover.class, logger );
       final JavaCompilationWorker staticFieldClintRemover = this.createJavaCompilationWorker( StaticFieldClinitRemover.class, logger );
       
