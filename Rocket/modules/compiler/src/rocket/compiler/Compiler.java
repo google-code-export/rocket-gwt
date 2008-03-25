@@ -269,12 +269,26 @@ public class Compiler {
 	 * @param javascript
 	 * @return
 	 */
-	final static String CLINIT = "$clinit";
 	static public int countClinitCallsites( final String javascript ){
+		return countOccurances(javascript, Constants.CLINIT );
+	}
+
+	/**
+	 * Counts the number of occurances for the static initializer for the given class.
+	 * @param typeName
+	 * @param javascript
+	 * @return
+	 */
+	static public int countClinitCallsites( final String typeName, final String javascript ){		
+		final String clinitFunctionName = typeName.replace( '.', '_') + '_' + Constants.CLINIT + "__();";
+		return countOccurances(javascript, clinitFunctionName );
+	}
+
+	static int countOccurances( final String javascript, final String text ){
 		int count = 0;
 		int i = 0;
 		while( i < javascript.length() ){
-			final int index = javascript.indexOf( CLINIT, i );
+			final int index = javascript.indexOf( text, i );
 			if( index == -1 ){
 				break;
 			}
