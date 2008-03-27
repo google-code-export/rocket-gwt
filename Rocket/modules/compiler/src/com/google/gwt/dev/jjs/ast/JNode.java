@@ -40,8 +40,8 @@ public abstract class JNode implements JVisitable, HasSourceInfo {
 	}
 
 	/**
-	 * ROCKET Add this method to this class when upgrading GWT. Method added to
-	 * provide an access to make it easier to write optimisers without passing a
+	 * TODO ROCKET When upgrading from GWT 1.4.60 re add this method
+	 * This method was added to provide an access to make it easier to write optimisers without passing a
 	 * lot of state around.
 	 * 
 	 * @return
