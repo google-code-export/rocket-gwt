@@ -45,6 +45,11 @@ import com.google.gwt.dev.jjs.ast.JType;
  * @author Miroslav Pokorny
  */
 public class AlternateValuesReturnedOptimiser extends TenaryTransformer implements JavaCompilationWorker {
+	
+	protected String getInitialMessage(){
+		return "Locating if statements that contain two possible return statements in order to replace with a briefer form.";
+	}
+	
 	/**
 	 * Tests if the given if statement can be transformed into its tenary
 	 * equivalent.

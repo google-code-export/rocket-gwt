@@ -23,16 +23,20 @@ import java.util.Map;
 import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dev.jjs.SourceInfo;
 import com.google.gwt.dev.jjs.ast.Context;
+import com.google.gwt.dev.jjs.ast.JArrayType;
 import com.google.gwt.dev.jjs.ast.JBinaryOperation;
 import com.google.gwt.dev.jjs.ast.JBinaryOperator;
-import com.google.gwt.dev.jjs.ast.JClassType;
 import com.google.gwt.dev.jjs.ast.JExpression;
+import com.google.gwt.dev.jjs.ast.JInterfaceType;
 import com.google.gwt.dev.jjs.ast.JLocalDeclarationStatement;
 import com.google.gwt.dev.jjs.ast.JLocalRef;
 import com.google.gwt.dev.jjs.ast.JMethod;
 import com.google.gwt.dev.jjs.ast.JModVisitor;
+import com.google.gwt.dev.jjs.ast.JNode;
+import com.google.gwt.dev.jjs.ast.JPrimitiveType;
 import com.google.gwt.dev.jjs.ast.JProgram;
 import com.google.gwt.dev.jjs.ast.JTryStatement;
 import com.google.gwt.dev.jjs.ast.JVariable;
@@ -55,7 +59,7 @@ import com.google.gwt.dev.jjs.ast.js.JMultiExpression;
  * 
  * @author Miroslav Pokorny
  */
-public class UnusedLocalVariableRemover implements JavaCompilationWorker{
+public class UnusedLocalVariableRemover implements JavaCompilationWorker {
 
 	final static boolean VISIT_CHILD_NODES = true;
 
@@ -76,68 +80,38 @@ public class UnusedLocalVariableRemover implements JavaCompilationWorker{
 	 */
 	protected boolean visitAllLocalVariables(final JProgram program, final TreeLogger logger) {
 
-		// this visitor is used to count the number of assignments, and
-		// references for each local variable within a particular method.
-		final LocalVariableFinder visitor = new LocalVariableFinder();
-		visitor.setLogger(logger);
-		visitor.accept(program);
+		final TreeLogger branch = logger.branch(TreeLogger.DEBUG,"Attempting to find all local variables that are unused and removing them.", null);
 
-		return visitor.didChange();
+		final UnusedLocalVariableFinder finder = new UnusedLocalVariableFinder();
+		finder.accept(program, branch);
+		return finder.didChange();
 	}
 
-	/**
-	 * This visitor may be used to find all local variables within a method.
-	 */
-	private class LocalVariableFinder extends ClassMethodVisitor {
-		
-		public void setLogger( final TreeLogger logger ){
-			this.setClassTypeLogger(logger);
-			this.setMethodLogger( logger );
+	class UnusedLocalVariableFinder extends LoggingJModVisitor {
+		protected Type getLoggingLevel(final JNode node) {
+			return TreeLogger.DEBUG;
 		}
-		
-//		public boolean visit( final JArrayType array, final Context context ){
-//			return !VISIT_CHILD_NODES;
-//		}
-//		
-//		public boolean visit( final JInterfaceType interfacee, final Context context ){
-//			return !VISIT_CHILD_NODES;
-//		}
-		
-		public boolean visit( final JClassType type, final Context context ){
-			final TreeLogger logger = this.getClassTypeLogger().branch( TreeLogger.DEBUG, type.getName(), null );
-			this.setMethodLogger( logger );
-			return VISIT_CHILD_NODES;
+
+		public boolean visit(final JArrayType type, final Context context) {
+			return !VISIT_CHILD_NODES;
 		}
-		
-		public void endVisit( final JClassType type, final Context context ){
-			this.clearMethodLogger();
+
+		public boolean visit(final JInterfaceType type, final Context context) {
+			return !VISIT_CHILD_NODES;
 		}
-		
-		/**
-		 * This logger is to be used exclusively to log local variable messages.
-		 */
-		private TreeLogger classTypeLogger;
-		
-		protected TreeLogger getClassTypeLogger(){
-			Checker.notNull("field:classTypeLogger", classTypeLogger );
-			return this.classTypeLogger;
+
+		public boolean visit(final JPrimitiveType type, final Context context) {
+			return !VISIT_CHILD_NODES;
 		}
-		
-		protected void setClassTypeLogger( final TreeLogger classTypeLogger ){
-			Checker.notNull("parameter:classTypeLogger", classTypeLogger );
-			this.classTypeLogger = classTypeLogger;
-		}
-		
+
 		/**
 		 * Resets the local variables within this method.
 		 */
-		public boolean visitClassMethod(final JMethod method, final Context context) {
+		public boolean visit(final JMethod method, final Context context) {
 			this.setMethod(method);
 			this.setLocalVariables(new HashMap());
 
-			final TreeLogger logger = this.getMethodLogger();
-			final TreeLogger branch = logger.isLoggable(TreeLogger.DEBUG) ? logger.branch(TreeLogger.DEBUG, Compiler.getMethodName(method), null) : TreeLogger.NULL;
-			this.setLocalVariableLogger(branch);
+			super.visit(method, context);
 
 			return VISIT_CHILD_NODES;
 		}
@@ -177,7 +151,7 @@ public class UnusedLocalVariableRemover implements JavaCompilationWorker{
 				final JVariable variable = reference.getTarget();
 				this.incrementAssignmentCount(variable);
 
-				final TreeLogger branch = this.getLocalVariableLogger();
+				final TreeLogger branch = this.getLogger();
 				if (branch.isLoggable(TreeLogger.DEBUG)) {
 					branch.log(TreeLogger.DEBUG, Compiler.getSource(binaryOperation), null);
 				}
@@ -196,9 +170,9 @@ public class UnusedLocalVariableRemover implements JavaCompilationWorker{
 				public boolean visit(final JLocalRef reference, final Context context) {
 					final JVariable variable = reference.getTarget();
 
-					LocalVariableFinder.this.declareLocalVariable(variable);
-					LocalVariableFinder.this.incrementAssignmentCount(variable);
-					LocalVariableFinder.this.incrementReferenceCount(variable);
+					UnusedLocalVariableFinder.this.declareLocalVariable(variable);
+					UnusedLocalVariableFinder.this.incrementAssignmentCount(variable);
+					UnusedLocalVariableFinder.this.incrementReferenceCount(variable);
 
 					return VISIT_CHILD_NODES;
 				}
@@ -227,14 +201,15 @@ public class UnusedLocalVariableRemover implements JavaCompilationWorker{
 		 * 
 		 * @param method
 		 */
-		public void endVisitClassMethod(final JMethod method, final Context context){
+		public void endVisit(final JMethod method, final Context context) {
 			final Map variables = this.getLocalVariables();
-			final TreeLogger logger = this.getLocalVariableLogger();
+			final TreeLogger logger = this.getLogger();
 			UnusedLocalVariableRemover.this.processLocalVariables(method, variables.values(), logger);
 
 			this.clearMethod();
 			this.clearLocalVariables();
-			this.clearLocalVariableLogger();
+
+			super.endVisit(method, context);
 		}
 
 		/**
@@ -254,25 +229,6 @@ public class UnusedLocalVariableRemover implements JavaCompilationWorker{
 
 		void clearMethod() {
 			this.method = null;
-		}
-		
-		/**
-		 * This logger is used exclusively to log method messages.
-		 */
-		TreeLogger methodLogger;
-
-		TreeLogger getMethodLogger() {
-			Checker.notNull("field:methodLogger", methodLogger);
-			return this.methodLogger;
-		}
-
-		void setMethodLogger(TreeLogger methodLogger) {
-			Checker.notNull("parameter:methodLogger", methodLogger);
-			this.methodLogger = methodLogger;
-		}
-		
-		void clearMethodLogger(){
-			this.methodLogger = null;
 		}
 
 		/**
@@ -300,7 +256,7 @@ public class UnusedLocalVariableRemover implements JavaCompilationWorker{
 		 * 
 		 * @param jvariable
 		 */
-		void declareLocalVariable(final JVariable jvariable) {
+		protected void declareLocalVariable(final JVariable jvariable) {
 			Checker.notNull("parameter:jvariable", jvariable);
 
 			final LocalVariable local = new LocalVariable();
@@ -309,13 +265,13 @@ public class UnusedLocalVariableRemover implements JavaCompilationWorker{
 			local.setReferenceCount(0);
 
 			final String name = jvariable.getName();
-			this.getLocalVariables().put( jvariable, local);
+			this.getLocalVariables().put(jvariable, local);
 		}
 
-		void incrementAssignmentCount(final JVariable jvariable) {
+		protected void incrementAssignmentCount(final JVariable jvariable) {
 			Checker.notNull("parameter:jvariable", jvariable);
-			
-			final LocalVariable local = (LocalVariable) this.getLocalVariables().get( jvariable );
+
+			final LocalVariable local = (LocalVariable) this.getLocalVariables().get(jvariable);
 			if (null == local) {
 				final String name = jvariable.getName();
 				throw new AssertionError("Unable to find local variable \"" + name + "\".");
@@ -323,79 +279,17 @@ public class UnusedLocalVariableRemover implements JavaCompilationWorker{
 			local.setAssignmentCount(local.getAssignmentCount() + 1);
 		}
 
-		void incrementReferenceCount(final JVariable jvariable) {
+		protected void incrementReferenceCount(final JVariable jvariable) {
 			Checker.notNull("parameter:jvariable", jvariable);
-		
-			final LocalVariable local = (LocalVariable) this.getLocalVariables().get( jvariable );
+
+			final LocalVariable local = (LocalVariable) this.getLocalVariables().get(jvariable);
 			if (null == local) {
 				final String name = jvariable.getName();
 				throw new AssertionError("Unable to find local variable \"" + name + "\".");
 			}
 			local.setReferenceCount(local.getReferenceCount() + 1);
 		}
-
-		/**
-		 * This logger is used exclusively to log local variables.
-		 */
-		TreeLogger localVariableLogger;
-
-		TreeLogger getLocalVariableLogger() {
-			Checker.notNull("field:localVariableLogger", localVariableLogger);
-			return this.localVariableLogger;
-		}
-
-		void setLocalVariableLogger(TreeLogger localVariableLogger) {
-			Checker.notNull("parameter:localVariableLogger", localVariableLogger);
-			this.localVariableLogger = localVariableLogger;
-		}
-		
-		void clearLocalVariableLogger(){
-			this.localVariableLogger = null;
-		}
-
-	}
-
-	/**
-	 * Keeps track of various stats about a particular local variable.
-	 */
-	static class LocalVariable {
-		JVariable variable;
-
-		public JVariable getVariable() {
-			Checker.notNull("field:variable", variable);
-			return this.variable;
-		}
-
-		public void setVariable(final JVariable variable) {
-			Checker.notNull("parameter:variable", variable);
-			this.variable = variable;
-		}
-
-		private int referenceCount;
-
-		public int getReferenceCount() {
-			return this.referenceCount;
-		}
-
-		public void setReferenceCount(final int referenceCount) {
-			this.referenceCount = referenceCount;
-		}
-
-		private int assignmentCount;
-
-		public int getAssignmentCount() {
-			return this.assignmentCount;
-		}
-
-		public void setAssignmentCount(final int assignmentCount) {
-			this.assignmentCount = assignmentCount;
-		}
-
-		public String toString() {
-			return super.toString() + ", variable: \"" + this.getVariable().getName() + "\", referenceCount: " + this.referenceCount
-					+ ", assignmentCount: " + this.assignmentCount;
-		}
-	}
+	};
 
 	/**
 	 * After visiting a method attempt to remove and simply expressions
@@ -713,6 +607,48 @@ public class UnusedLocalVariableRemover implements JavaCompilationWorker{
 		}
 
 		context.replaceMe(expression);
+	}
+
+	/**
+	 * Keeps track of various stats about a particular local variable.
+	 */
+	static class LocalVariable {
+		JVariable variable;
+
+		public JVariable getVariable() {
+			Checker.notNull("field:variable", variable);
+			return this.variable;
+		}
+
+		public void setVariable(final JVariable variable) {
+			Checker.notNull("parameter:variable", variable);
+			this.variable = variable;
+		}
+
+		private int referenceCount;
+
+		public int getReferenceCount() {
+			return this.referenceCount;
+		}
+
+		public void setReferenceCount(final int referenceCount) {
+			this.referenceCount = referenceCount;
+		}
+
+		private int assignmentCount;
+
+		public int getAssignmentCount() {
+			return this.assignmentCount;
+		}
+
+		public void setAssignmentCount(final int assignmentCount) {
+			this.assignmentCount = assignmentCount;
+		}
+
+		public String toString() {
+			return super.toString() + ", variable: \"" + this.getVariable().getName() + "\", referenceCount: " + this.referenceCount
+					+ ", assignmentCount: " + this.assignmentCount;
+		}
 	}
 
 }

@@ -1160,7 +1160,9 @@ public class GenerateJavaScriptAST {
         if (x.getInstance() != null) {
           unnecessaryQualifier = (JsExpression) pop(); // instance
         }
+
         qualifier = getName(method).makeRef();
+        
       } else {
         if (x.isStaticDispatchOnly()) {
           /*

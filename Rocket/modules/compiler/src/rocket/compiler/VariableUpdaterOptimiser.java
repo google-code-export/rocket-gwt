@@ -21,22 +21,24 @@ import java.util.Map;
 import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dev.jjs.SourceInfo;
 import com.google.gwt.dev.jjs.ast.Context;
+import com.google.gwt.dev.jjs.ast.JArrayType;
 import com.google.gwt.dev.jjs.ast.JBinaryOperation;
 import com.google.gwt.dev.jjs.ast.JBinaryOperator;
 import com.google.gwt.dev.jjs.ast.JExpression;
-import com.google.gwt.dev.jjs.ast.JModVisitor;
+import com.google.gwt.dev.jjs.ast.JInterfaceType;
+import com.google.gwt.dev.jjs.ast.JNode;
+import com.google.gwt.dev.jjs.ast.JPrimitiveType;
 import com.google.gwt.dev.jjs.ast.JProgram;
 import com.google.gwt.dev.jjs.ast.JType;
 import com.google.gwt.dev.jjs.ast.JVariable;
 import com.google.gwt.dev.jjs.ast.JVariableRef;
 
 /**
- * This optimiser attempts to replace any expression that matches
- * variable = variable + expression
- * into
- * variable =+ expression
+ * This optimiser attempts to replace any expression that matches variable =
+ * variable + expression into variable =+ expression
  * 
  * where the operation (in the above case +) is +-/*% etc
  * 
@@ -49,24 +51,50 @@ public class VariableUpdaterOptimiser implements JavaCompilationWorker {
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
 		Checker.notNull("parameter:jprogram", jprogram);
 		Checker.notNull("parameter:logger", logger);
-		
+
 		final TreeLogger branch = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
-
-		final JModVisitor visitor = new JModVisitor() {
-			public boolean visit(final JBinaryOperation binaryOperation, final Context context) {
-				return VariableUpdaterOptimiser.this.visitBinaryOperation(binaryOperation, context, branch);
-			}
-		};
-		visitor.accept(jprogram);
-
-		final boolean changed = visitor.didChange();
+		final boolean changed = this.visitAllAssignments(jprogram, branch);
 		branch.log(TreeLogger.DEBUG, changed ? "One or more changes were made." : "No changes were committed.", null);
 		return changed;
 	}
 
+	protected boolean visitAllAssignments(final JProgram program, final TreeLogger logger) {
+		final TreeLogger branch = logger.branch(TreeLogger.DEBUG,
+				"Attempting to locate and replace variable updates with a terser form.", null);
+
+		final LoggingJModVisitor visitor = new LoggingJModVisitor() {
+			public Type getLoggingLevel(final JNode node) {
+				return TreeLogger.DEBUG;
+			}
+
+			public boolean visit(final JArrayType type, final Context context) {
+				return !VISIT_CHILD_NODES;
+			}
+
+			public boolean visit(final JInterfaceType type, final Context context) {
+				return !VISIT_CHILD_NODES;
+			}
+
+			public boolean visit(final JPrimitiveType type, final Context context) {
+				return !VISIT_CHILD_NODES;
+			}
+
+			public boolean visit(final JBinaryOperation binaryOperation, final Context context) {
+				final TreeLogger logger = this.getLogger();
+				return VariableUpdaterOptimiser.this.visitBinaryOperation(binaryOperation, context, logger);
+			}
+		};
+
+		visitor.accept(program, branch);
+		return visitor.didChange();
+	}
+
 	/**
-	 * Processes each encountered binary operation determining if its a potential candidate, and if it is calls {@link #replaceWithAssignmentOperator(JBinaryOperation, Context, JBinaryOperator, JExpression, TreeLogger)}
+	 * Processes each encountered binary operation determining if its a
+	 * potential candidate, and if it is calls
+	 * {@link #replaceWithAssignmentOperator(JBinaryOperation, Context, JBinaryOperator, JExpression, TreeLogger)}
 	 * to replace with the shorten optimised form.
+	 * 
 	 * @param binaryOperation
 	 * @param context
 	 * @param logger
@@ -106,11 +134,13 @@ public class VariableUpdaterOptimiser implements JavaCompilationWorker {
 				break;
 			}
 
-			// the right hand side must be an expression in order to hold variable + expression.
+			// the right hand side must be an expression in order to hold
+			// variable + expression.
 			final JExpression right = binaryOperation.getRhs();
 			if (false == right instanceof JBinaryOperation) {
 				if (branch.isLoggable(TreeLogger.DEBUG)) {
-					branch.log(TreeLogger.DEBUG, "Right hand side is not a binary operation but a " + right.getClass().getSimpleName() + " - optimisation aborted", null);
+					branch.log(TreeLogger.DEBUG, "Right hand side is not a binary operation but a " + right.getClass().getSimpleName()
+							+ " - optimisation aborted", null);
 				}
 				break;
 			}
@@ -128,7 +158,8 @@ public class VariableUpdaterOptimiser implements JavaCompilationWorker {
 				}
 			}
 
-			// one of the two sides of the rbo must be the same variable as $left.
+			// one of the two sides of the rbo must be the same variable as
+			// $left.
 			final JExpression nestedLeftExpression = nestedBinaryOperation.getLhs();
 			final JExpression nestedRightExpression = nestedBinaryOperation.getRhs();
 
@@ -140,31 +171,39 @@ public class VariableUpdaterOptimiser implements JavaCompilationWorker {
 				break;
 			}
 			if (variable == rightVariable) {
-				
-				// guard for subtract/divide/modulo because they are left associative...
-				if( false == this.canVariableReferenceBeOnRightHandSide( nestedBinaryOperator )){
+
+				// guard for subtract/divide/modulo because they are left
+				// associative...
+				if (false == this.canVariableReferenceBeOnRightHandSide(nestedBinaryOperator)) {
 					if (branch.isLoggable(TreeLogger.DEBUG)) {
-						branch.log(TreeLogger.DEBUG, "Because variable appears on the right hand side and the binary operator is \""  + new String(nestedBinaryOperator.getSymbol()) + "\" - optimisation aborted", null);
+						branch.log(TreeLogger.DEBUG, "Because variable appears on the right hand side and the binary operator is \""
+								+ new String(nestedBinaryOperator.getSymbol()) + "\" - optimisation aborted", null);
 					}
 					break;
 				}
-				
-				// if the operator is subtract switch it to add because the variable is on the right.
+
+				// if the operator is subtract switch it to add because the
+				// variable is on the right.
 				JBinaryOperator actualAssignmentOperator = assignmentOperator;
-				if( nestedBinaryOperator.equals( JBinaryOperator.SUB )){
+				if (nestedBinaryOperator.equals(JBinaryOperator.SUB)) {
 					actualAssignmentOperator = JBinaryOperator.ADD;
-					
+
 					if (branch.isLoggable(TreeLogger.DEBUG)) {
-						branch.log(TreeLogger.DEBUG, "Because variable appears on the right hand side and the binary operator is a subtract changing to add.", null);
+						branch
+								.log(
+										TreeLogger.DEBUG,
+										"Because variable appears on the right hand side and the binary operator is a subtract changing to add.",
+										null);
 					}
 				}
-				
+
 				this.replaceWithAssignmentOperator(binaryOperation, context, actualAssignmentOperator, nestedLeftExpression, branch);
 				break;
 			}
 
 			if (branch.isLoggable(TreeLogger.DEBUG)) {
-				branch.log(
+				branch
+						.log(
 								TreeLogger.DEBUG,
 								"The nested binary operator references a different variable to the one that appears on the left - optimisation aborted",
 								null);
@@ -176,7 +215,10 @@ public class VariableUpdaterOptimiser implements JavaCompilationWorker {
 	}
 
 	/**
-	 * This helper attempts to extract the target variable of a potential variable reference. If the expression doesnt house a variable null is returned.
+	 * This helper attempts to extract the target variable of a potential
+	 * variable reference. If the expression doesnt house a variable null is
+	 * returned.
+	 * 
 	 * @param expression
 	 * @return
 	 */
@@ -189,11 +231,13 @@ public class VariableUpdaterOptimiser implements JavaCompilationWorker {
 
 		return variable;
 	}
-	
+
 	/**
-	 * Contains a map that serves two purposes, the keys are valid operators that may be exist in the nested binary operation and the value contains the equivalent =operator.
+	 * Contains a map that serves two purposes, the keys are valid operators
+	 * that may be exist in the nested binary operation and the value contains
+	 * the equivalent =operator.
 	 * 
-	 * Eg for the key ADD the value would be the EQUALS ADD. 
+	 * Eg for the key ADD the value would be the EQUALS ADD.
 	 */
 	final static Map assignmentOperators = getAssignmentOperators();
 
@@ -214,7 +258,9 @@ public class VariableUpdaterOptimiser implements JavaCompilationWorker {
 	}
 
 	/**
-	 * Returns the equivalent assignment operator for any given binary operator. If one doesnt not exist null is returned. 
+	 * Returns the equivalent assignment operator for any given binary operator.
+	 * If one doesnt not exist null is returned.
+	 * 
 	 * @param binaryOperator
 	 * @return
 	 */
@@ -223,18 +269,20 @@ public class VariableUpdaterOptimiser implements JavaCompilationWorker {
 	}
 
 	/**
-	 * Only i=1+i and i=1*i can be translated into the shorten form because i=i-1 is not the equivalent of i=-1+i
+	 * Only i=1+i and i=1*i can be translated into the shorten form because
+	 * i=i-1 is not the equivalent of i=-1+i
+	 * 
 	 * @param operator
 	 * @return
 	 */
-	protected boolean canVariableReferenceBeOnRightHandSide( final JBinaryOperator operator ){
-		return 
-		operator.equals( JBinaryOperator.ADD ) || 
-		operator.equals( JBinaryOperator.MUL );
+	protected boolean canVariableReferenceBeOnRightHandSide(final JBinaryOperator operator) {
+		return operator.equals(JBinaryOperator.ADD) || operator.equals(JBinaryOperator.MUL);
 	}
-	
+
 	/**
-	 * Builds and replaces the given binary operation with its equivalent shorter form.
+	 * Builds and replaces the given binary operation with its equivalent
+	 * shorter form.
+	 * 
 	 * @param binaryOperation
 	 * @param context
 	 * @param assignmentOperator
@@ -256,15 +304,15 @@ public class VariableUpdaterOptimiser implements JavaCompilationWorker {
 		Checker.notNull("parameter:logger", logger);
 
 		final JProgram program = binaryOperation.getJProgram();
-				final SourceInfo sourceInfo = binaryOperation.getSourceInfo();
+		final SourceInfo sourceInfo = binaryOperation.getSourceInfo();
 		final JType type = binaryOperation.getType();
 		final JBinaryOperator op = assignmentOperator;
 		final JExpression left = binaryOperation.getLhs();
-		//final JExpression right = right;
+		// final JExpression right = right;
 
 		final JBinaryOperation newAssignment = new JBinaryOperation(program, sourceInfo, type, op, left, right);
-		context.replaceMe( newAssignment );
-		
+		context.replaceMe(newAssignment);
+
 		if (logger.isLoggable(TreeLogger.DEBUG)) {
 			logger.log(TreeLogger.DEBUG, "Replaced with \"" + Compiler.getSource(newAssignment) + "\".", null);
 		}

@@ -65,7 +65,6 @@ import com.google.gwt.dev.jjs.impl.CatchBlockNormalizer;
 import com.google.gwt.dev.jjs.impl.CompoundAssignmentNormalizer;
 import com.google.gwt.dev.jjs.impl.DeadCodeElimination;
 import com.google.gwt.dev.jjs.impl.GenerateJavaAST;
-import com.google.gwt.dev.jjs.impl.GenerateJavaScriptAST;
 import com.google.gwt.dev.jjs.impl.JavaScriptObjectCaster;
 import com.google.gwt.dev.jjs.impl.MakeCallsStatic;
 import com.google.gwt.dev.jjs.impl.MethodAndClassFinalizer;
@@ -359,6 +358,9 @@ public class JavaToJavaScriptCompiler {
       final JavaCompilationWorker testJavaCompilationWorker = this.createTestJavaCompilationWorker( logger );
       
       // actual optimisers
+      Compiler.resetFieldReferencesNotRequiringClint();
+      Compiler.resetStaticMethodsNotRequiringClint();
+      
       final JavaCompilationWorker alternateValuesAssignmentOptimiser =  this.createJavaCompilationWorker(rocket.compiler.AlternateValuesAssignmentOptimiser.class,logger);
       final JavaCompilationWorker alternateValuesReturnedOptimiser = this.createJavaCompilationWorker( rocket.compiler.AlternateValuesReturnedOptimiser.class,logger);
       final JavaCompilationWorker conditionalAssignmentOptimiser = this.createJavaCompilationWorker( rocket.compiler.ConditionalAssignmentOptimiser.class,logger);
@@ -378,7 +380,7 @@ public class JavaToJavaScriptCompiler {
         didChange = testJavaCompilationWorker.work(jprogram, logger) || didChange;
         
         if( pass == 0 ){
-        	longNotifier.work( jprogram, logger); 
+        	didChange = longNotifier.work( jprogram, logger) || didChange; 
         }
     	pass++;
         
@@ -427,14 +429,12 @@ public class JavaToJavaScriptCompiler {
       } while (didChange);
 
       // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes.
-      Compiler.resetFieldReferencesNotRequiringClint();
-      Compiler.resetStaticMethodsNotRequiringClint();
-      
       final JavaCompilationWorker staticMethodClintRemover = this.createJavaCompilationWorker( StaticMethodClinitRemover.class, logger );
       final JavaCompilationWorker staticFieldClintRemover = this.createJavaCompilationWorker( StaticFieldClinitRemover.class, logger );
       
       staticMethodClintRemover.work(jprogram, logger);
       staticFieldClintRemover.work(jprogram, logger);
+
       
       // (5) "Normalize" the high-level Java tree into a lower-level tree more
       // suited for JavaScript code generation. Don't go reordering these
@@ -480,12 +480,10 @@ public class JavaToJavaScriptCompiler {
       
       // TODO ROCKET When upgrading from GWT 1.4.60 reapply changes.
       final JavaScriptCompilationWorker testJavaScriptCompilationWorker =  this.createTestJavaScriptCompilationWorker( logger );
-      
-      final JavaScriptCompilationWorker compareAgainstZero =  this.createJavaScriptCompilationWorker(rocket.compiler.CompareAgainstZeroOptimiser.class, logger );
+     
       do {
           didChange = false;
           didChange = didChange || testJavaScriptCompilationWorker.work(jsProgram, logger);
-          didChange = didChange || compareAgainstZero.work(jsProgram, logger);
           
       } while( didChange );
      
@@ -791,8 +789,7 @@ public class JavaToJavaScriptCompiler {
 				final Class classs = Class.forName(className);
 				worker = (JavaScriptSourceChecker) classs.newInstance();
 			} catch (final Exception caught) {
-				logger.log(TreeLogger.ERROR, "Unable to load the class \"" + className + "\", message: " + caught.getMessage(), null);
-				throw new UnableToCompleteException();
+				throw new RuntimeException( "Unable to load the class \"" + className + "\", message: " + caught.getMessage(), caught );
 			}
 			break;
 		}

@@ -16,6 +16,7 @@
 package rocket.compiler;
 
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dev.jjs.SourceInfo;
 import com.google.gwt.dev.jjs.ast.Context;
 import com.google.gwt.dev.jjs.ast.JBinaryOperation;
@@ -55,20 +56,33 @@ abstract class TenaryTransformer {
 	 */
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
 		final TreeLogger branch = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
-
-		final JModVisitor visitor = new JModVisitor() {
-			public boolean visit(final JIfStatement ifStatement, final Context context) {
-				TenaryTransformer.this.visitIfStatement(ifStatement, context, branch);
-				return false;// dont visit child nodes.
-			}
-		};
-		visitor.accept(jprogram);
-
-		final boolean changed = visitor.didChange();
+		
+		final boolean changed = this.scanProgram(jprogram, branch );
 		branch.log(TreeLogger.DEBUG, changed ? "One or more changes were made." : "No changes were committed.", null);
 		return changed;		
 	}
-
+	
+	protected boolean scanProgram( final JProgram program, final TreeLogger logger ){
+		
+		final TreeLogger branch = TreeLoggers.delayedBranch(logger, TreeLogger.DEBUG, this.getInitialMessage(), null );
+		
+		final LoggingJModVisitor visitor = new LoggingJModVisitor() {
+			
+			protected Type getLoggingLevel( final JNode node ){
+				return TreeLogger.DEBUG;
+			}
+			
+			public boolean visit(final JIfStatement ifStatement, final Context context) {
+				TenaryTransformer.this.visitIfStatement(ifStatement, context, this.getLogger() );
+				return false;// dont visit child nodes.
+			}
+		};
+		visitor.accept(program, branch );
+		return visitor.didChange();
+	}
+	
+	protected abstract String getInitialMessage();
+	
 	/**
 	 * Sub classes must override this method to do something with the given if
 	 * statement.

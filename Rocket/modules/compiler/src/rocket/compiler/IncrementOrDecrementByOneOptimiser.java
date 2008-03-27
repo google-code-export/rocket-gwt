@@ -18,15 +18,19 @@ package rocket.compiler;
 import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dev.jjs.SourceInfo;
 import com.google.gwt.dev.jjs.ast.Context;
+import com.google.gwt.dev.jjs.ast.JArrayType;
 import com.google.gwt.dev.jjs.ast.JBinaryOperation;
 import com.google.gwt.dev.jjs.ast.JBinaryOperator;
 import com.google.gwt.dev.jjs.ast.JExpression;
 import com.google.gwt.dev.jjs.ast.JIntLiteral;
+import com.google.gwt.dev.jjs.ast.JInterfaceType;
 import com.google.gwt.dev.jjs.ast.JLongLiteral;
-import com.google.gwt.dev.jjs.ast.JModVisitor;
+import com.google.gwt.dev.jjs.ast.JNode;
 import com.google.gwt.dev.jjs.ast.JPrefixOperation;
+import com.google.gwt.dev.jjs.ast.JPrimitiveType;
 import com.google.gwt.dev.jjs.ast.JProgram;
 import com.google.gwt.dev.jjs.ast.JUnaryOperator;
 import com.google.gwt.dev.jjs.ast.JVariableRef;
@@ -52,23 +56,47 @@ import com.google.gwt.dev.jjs.ast.JVariableRef;
  * 
  * @author Miroslav Pokorny
  */
-public class IncrementOrDecrementByOneOptimiser implements JavaCompilationWorker{
+public class IncrementOrDecrementByOneOptimiser implements JavaCompilationWorker {
 	private final static boolean VISIT_CHILD_NODES = true;
 
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
 		final TreeLogger branch = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
 
-		final JModVisitor visitor = new JModVisitor() {
+		final boolean changed = this.visitAllIncrementOrDecrementByOneOperations(jprogram, branch);
+		branch.log(TreeLogger.DEBUG, changed ? "One or more changes were made." : "No changes were committed.", null);
+		return changed;
+	}
+
+	protected boolean visitAllIncrementOrDecrementByOneOperations(final JProgram program, final TreeLogger logger) {
+		final TreeLogger branch = logger.branch(TreeLogger.DEBUG,
+				"Attempting to find all increment/decrement by 1 to replacing them with terser equivalents.", null);
+
+		final LoggingJModVisitor visitor = new LoggingJModVisitor() {
+			public Type getLoggingLevel(final JNode node) {
+				return TreeLogger.DEBUG;
+			}
+
+			public boolean visit(final JArrayType type, final Context context) {
+				return !VISIT_CHILD_NODES;
+			}
+
+			public boolean visit(final JInterfaceType type, final Context context) {
+				return !VISIT_CHILD_NODES;
+			}
+
+			public boolean visit(final JPrimitiveType type, final Context context) {
+				return !VISIT_CHILD_NODES;
+			}
+
 			public boolean visit(final JBinaryOperation binaryOperation, final Context context) {
-				IncrementOrDecrementByOneOptimiser.this.visitBinaryOperation(binaryOperation, context, branch );
+				final TreeLogger logger = this.getLogger();
+				IncrementOrDecrementByOneOptimiser.this.visitBinaryOperation(binaryOperation, context, logger);
 				return VISIT_CHILD_NODES;
 			}
 		};
-		visitor.accept(jprogram);
 
-		final boolean changed = visitor.didChange();
-		branch.log(TreeLogger.DEBUG, changed ? "One or more changes were made." : "No changes were committed.", null);
-		return changed;
+		visitor.accept(program, branch);
+		return visitor.didChange();
 	}
 
 	/**
@@ -97,12 +125,12 @@ public class IncrementOrDecrementByOneOptimiser implements JavaCompilationWorker
 				}
 				break;
 			}
-			final JVariableRef reference = (JVariableRef)left;
+			final JVariableRef reference = (JVariableRef) left;
 
 			// time to check the operator... must be a = or =+
 			final JBinaryOperator binaryOperator = binaryOperation.getOp();
 			final JExpression expression = binaryOperation.getRhs();
-			
+
 			// only process =+1 or =-1
 			if (binaryOperator.equals(JBinaryOperator.ASG_ADD)) {
 				this.processAdd(reference, expression, context, branch);
@@ -182,7 +210,8 @@ public class IncrementOrDecrementByOneOptimiser implements JavaCompilationWorker
 	 * @param context
 	 * @param logger
 	 */
-	protected void processSubtract(final JVariableRef reference, final JExpression expression, final Context context,final TreeLogger logger) {
+	protected void processSubtract(final JVariableRef reference, final JExpression expression, final Context context,
+			final TreeLogger logger) {
 		Checker.notNull("parameter:reference", reference);
 		Checker.notNull("parameter:expression", expression);
 		Checker.notNull("parameter:context", context);
@@ -265,7 +294,7 @@ public class IncrementOrDecrementByOneOptimiser implements JavaCompilationWorker
 		// use prefix just incase assignment is within an expression.
 		final JPrefixOperation incrementOrDecrementByOne = new JPrefixOperation(program, sourceInfo, unaryOperator, reference);
 		context.replaceMe(incrementOrDecrementByOne);
-		
+
 		if (logger.isLoggable(TreeLogger.DEBUG)) {
 			logger.log(TreeLogger.DEBUG, "Replaced with \"" + Compiler.getSource(incrementOrDecrementByOne) + "\"", null);
 		}

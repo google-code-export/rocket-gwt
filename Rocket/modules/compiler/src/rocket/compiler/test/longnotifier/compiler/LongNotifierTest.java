@@ -14,71 +14,57 @@
  * the License.
  */package rocket.compiler.test.longnotifier.compiler;
 
-import java.util.Arrays;
+ import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import rocket.compiler.LongNotifier;
-import rocket.compiler.test.longnotifier.client.LongNotifierGwtTestCase;
-import rocket.util.client.Utilities;
+import rocket.compiler.TreeLoggers;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.dev.jjs.ast.JProgram;
-public class LongNotifierTest extends LongNotifier {
+ public class LongNotifierTest extends LongNotifier {
 
-	public boolean work(final JProgram jprogram, final TreeLogger logger) {
-		final boolean returnValue = super.work(jprogram, logger);
+	 public boolean work(final JProgram jprogram, final TreeLogger logger) {		 
+		 if( 0 == pass ){
+			 this.checkAgainstExpectedLongReferences(jprogram, logger);
+		 }
+		 this.pass++;
+		 return false;
+	 }
+	 
+	 int pass = 0;
+	 
+	 void checkAgainstExpectedLongReferences( final JProgram jprogram, final TreeLogger logger ){
+		 final List messages = new ArrayList();
+		 final TreeLogger checker = TreeLoggers.pipeAndCapture(logger, messages);
+
+		 super.work(jprogram, checker);
 		
-		if( this.types.size() > 0 ){
-			throw new AssertionError("The following types should have been noted as having long references, types: " + this.types );
-		}
-		if( this.methods.size() > 0 ){
-			throw new AssertionError("The following methods should have been noted as having long references, methods: " + this.methods );
-		}
-		if( this.fields.size() > 0 ){
-			throw new AssertionError("The following fields should have been noted as having long references, fields: " + this.fields );
-		}
-		if( this.locals.size() > 0 ){
-			throw new AssertionError("The following long parameters/local/literals should have been noted, locals: " + this.locals );
-		}
-		
-		return returnValue;
-	}
-	
-	private Set types = asSet( LongNotifierGwtTestCase.class.getName() ); 
-	
-	protected void outputType(final Type type,final TreeLogger logger ){
-		super.outputType(type, logger);
-		
-		this.types.remove( type.getName() );
-	}
-	
-	private Set methods = asSet( "methodThatReturnsLong,methodWithLongParameter,testMethodWithLongLocalVariable");
-	
-	protected void outputMethod(final Method method, final TreeLogger logger ){
-		super.outputMethod(method, logger);
-		
-		this.methods.remove( method.getName() );
-	}
-	
-	private Set fields = this.asSet( "longField");
-	
-	protected void outputField(final Field field, final TreeLogger logger ){
-		super.outputField(field, logger);
-		
-		this.fields.remove( field.getName() );
-	}
-	
-	private Set locals = this.asSet("longParameter,longLocalVariable,assignedLongLiteral,12345678L");
-	
-	protected void outputLocals(final List locals, final TreeLogger logger ){
-		super.outputLocals(locals, logger);
-		
-		this.locals.removeAll( locals );
-	}
-	
-	protected Set asSet(final String commaSeparated) {
-		return new TreeSet(Arrays.asList(Utilities.split(commaSeparated, ",", true)));
-	}
-}
+		 assertContains( messages, "methodThatReturnsLong");
+		 assertContains( messages, "methodWithLongParameter");
+		 assertContains( messages, "testMethodWithLongLocalVariable");
+		 assertContains( messages, "longField");
+		 assertContains( messages, "longParameter");
+		 assertContains( messages, "longLocalVariable");
+		 assertContains( messages, "assignedLongLiteral");
+		 assertContains( messages, "12345678L");
+	 }
+	 
+	 void assertContains( final List list, final String text ){
+		 boolean found = false;
+		 final Iterator i = list.iterator();
+		 while( i.hasNext() ){
+			 final String string = (String)i.next();
+
+			 if( string.equals( text ) || string.contains( text)){
+				 found = true;
+				 break;
+			 }
+		 }
+
+		 if( ! found ){
+			 throw new AssertionError( "Unable to find \"" + text + "\" within any of the captured messages: " + list );
+		 }
+	 }
+ }
