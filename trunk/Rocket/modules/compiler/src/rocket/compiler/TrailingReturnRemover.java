@@ -15,22 +15,23 @@
  */
 package rocket.compiler;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dev.jjs.ast.Context;
-import com.google.gwt.dev.jjs.ast.JClassType;
+import com.google.gwt.dev.jjs.ast.JArrayType;
 import com.google.gwt.dev.jjs.ast.JExpression;
+import com.google.gwt.dev.jjs.ast.JInterfaceType;
 import com.google.gwt.dev.jjs.ast.JMethod;
 import com.google.gwt.dev.jjs.ast.JMethodBody;
 import com.google.gwt.dev.jjs.ast.JModVisitor;
+import com.google.gwt.dev.jjs.ast.JNode;
+import com.google.gwt.dev.jjs.ast.JPrimitiveType;
 import com.google.gwt.dev.jjs.ast.JProgram;
 import com.google.gwt.dev.jjs.ast.JReturnStatement;
-import com.google.gwt.dev.jjs.ast.JType;
 
 /**
  * This optimiser attempts to remove any return statements that appear as the
@@ -47,9 +48,10 @@ public class TrailingReturnRemover implements JavaCompilationWorker {
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
 		final TreeLogger branch = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
 
+		final TreeLogger branchBranch = TreeLoggers.delayedBranch( branch, TreeLogger.DEBUG, "Visiting all methods belonging to program", null );
+		
 		final TrailingReturnMethodVisitor visitor = new TrailingReturnMethodVisitor();
-		visitor.setLogger( branch );
-		visitor.accept(jprogram);
+		visitor.accept(jprogram, branchBranch );
 
 		final boolean changed = visitor.didChange();
 		logger.log(TreeLogger.DEBUG, changed ? "One or more changes were made." : "No changes were committed.", null);
@@ -59,51 +61,32 @@ public class TrailingReturnRemover implements JavaCompilationWorker {
 	/**
 	 * This visitor visits all methods attempting to locate and remove those with unnecessary trailing return statements.
 	 */
-	class TrailingReturnMethodVisitor extends ClassMethodVisitor{
+	class TrailingReturnMethodVisitor extends LoggingJModVisitor{
 		
-		public void setLogger( final TreeLogger logger ){
-			this.setClassTypeLogger( logger );
+		protected Type getLoggingLevel( final JNode node ){
+			return TreeLogger.DEBUG;
 		}
 		
-		public boolean visit( final JClassType type, final Context context ){
-			final TreeLogger logger = this.getClassTypeLogger().branch( TreeLogger.DEBUG, type.getName(), null );
-			this.setMethodLogger( logger );
-			return VISIT_CHILD_NODES;
+		public boolean visit( final JArrayType type, final Context context ){
+			return ! VISIT_CHILD_NODES;
+		}
+		public boolean visit( final JInterfaceType type, final Context context ){
+			return ! VISIT_CHILD_NODES;
+		}
+		public boolean visit( final JPrimitiveType type, final Context context ){
+			return ! VISIT_CHILD_NODES;
 		}
 		
-		public void endVisit( final JClassType type, final Context context ){
-			this.clearMethodLogger();
-		}
-		
-		/**
-		 * This logger is to be used exclusively to log local variable messages.
-		 */
-		private TreeLogger classTypeLogger;
-		
-		protected TreeLogger getClassTypeLogger(){
-			Checker.notNull("field:classTypeLogger", classTypeLogger );
-			return this.classTypeLogger;
-		}
-		
-		protected void setClassTypeLogger( final TreeLogger classTypeLogger ){
-			Checker.notNull("parameter:classTypeLogger", classTypeLogger );
-			this.classTypeLogger = classTypeLogger;
-		}
-		
-		/**
-		 * A new method resets local variables.
-		 */
-		public boolean visitClassMethod( final JMethod method, final Context context ){
-			TreeLogger logger = this.getMethodLogger();
-			TreeLogger branch = TreeLogger.NULL;
-			if (logger.isLoggable(TreeLogger.DEBUG)) {
-				branch = logger.branch(TreeLogger.DEBUG, Compiler.getMethodName(method), null);
-			}
-
-			if (TrailingReturnRemover.this.isConcreteMethod(method, branch )) {
-				if (TrailingReturnRemover.this.attemptToRemoveReturnStatements(method, context, branch )) {
+		public boolean visit( final JMethod method, final Context context ){
+			
+			if( method.getEnclosingType() != null ){
+			if (TrailingReturnRemover.this.isConcreteMethod(method )){
+				super.visit( method, context );
+				
+				if (TrailingReturnRemover.this.attemptToRemoveReturnStatements(method, context, this.getLogger() )) {
 					this.didChange = true;
 				}
+			}
 			}
 			return VISIT_CHILD_NODES;			
 		}		
@@ -137,23 +120,19 @@ public class TrailingReturnRemover implements JavaCompilationWorker {
 	 * optimisable.
 	 * 
 	 * @param method
-	 * @param logger
 	 * @return
 	 */
-	protected boolean isConcreteMethod(final JMethod method, final TreeLogger logger) {
+	protected boolean isConcreteMethod(final JMethod method) {
 		boolean removable = false;
 
 		while (true) {
 			if (method.isAbstract()) {
-				logger.branch(TreeLogger.DEBUG, "Abstract methods have no body", null);
 				break;
 			}
 			if (method.isNative()) {
-				logger.branch(TreeLogger.DEBUG, "Native methods are left alone.", null);
 				break;
 			}
 			if (method.isConstructor()) {
-				logger.branch(TreeLogger.DEBUG, "Constructors are left alone.", null);
 				break;
 			}
 

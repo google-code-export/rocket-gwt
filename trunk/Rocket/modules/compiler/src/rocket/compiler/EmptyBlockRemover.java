@@ -23,7 +23,7 @@ import com.google.gwt.dev.jjs.ast.Context;
 import com.google.gwt.dev.jjs.ast.JBlock;
 import com.google.gwt.dev.jjs.ast.JExpression;
 import com.google.gwt.dev.jjs.ast.JIfStatement;
-import com.google.gwt.dev.jjs.ast.JModVisitor;
+import com.google.gwt.dev.jjs.ast.JNode;
 import com.google.gwt.dev.jjs.ast.JProgram;
 import com.google.gwt.dev.jjs.ast.JStatement;
 
@@ -39,19 +39,27 @@ public class EmptyBlockRemover implements JavaCompilationWorker {
 	
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
 		final TreeLogger branch = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
-
-		final JModVisitor visitor = new JModVisitor() {
-			
-			public boolean visit(final JIfStatement ifStatement, final Context context) {
-				EmptyBlockRemover.this.visitIfStatement(ifStatement, context, branch );
-				return VISIT_CHILD_NODES;
-			}
-		};
-		visitor.accept(jprogram);
-
-		final boolean changed = visitor.didChange();
+		
+		final boolean changed = this.visitProgram(jprogram, branch );
 		branch.log(TreeLogger.DEBUG, changed ? "One or more changes were made." : "No changes were committed.", null);
 		return changed;
+	}
+	
+	protected boolean visitProgram( final JProgram program, final TreeLogger logger ){
+		TreeLogger branch = logger.branch( TreeLogger.DEBUG, "Attempting to find all if's with empty elses.", null );
+		final LoggingJModVisitor visitor = new LoggingJModVisitor() {
+			
+			public boolean visit(final JIfStatement ifStatement, final Context context) {
+				EmptyBlockRemover.this.visitIfStatement(ifStatement, context, this.getLogger() );
+				return VISIT_CHILD_NODES;
+			}
+			
+			protected TreeLogger.Type getLoggingLevel( final JNode node ){
+				return TreeLogger.DEBUG;
+			}
+		};
+		visitor.accept(program, branch );
+		return visitor.didChange();
 	}
 	
 	/**

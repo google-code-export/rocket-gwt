@@ -16,13 +16,17 @@
 package rocket.compiler;
 
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dev.jjs.SourceInfo;
 import com.google.gwt.dev.jjs.ast.Context;
+import com.google.gwt.dev.jjs.ast.JArrayType;
 import com.google.gwt.dev.jjs.ast.JBinaryOperation;
 import com.google.gwt.dev.jjs.ast.JBinaryOperator;
 import com.google.gwt.dev.jjs.ast.JExpression;
+import com.google.gwt.dev.jjs.ast.JInterfaceType;
 import com.google.gwt.dev.jjs.ast.JModVisitor;
 import com.google.gwt.dev.jjs.ast.JNode;
+import com.google.gwt.dev.jjs.ast.JPrimitiveType;
 import com.google.gwt.dev.jjs.ast.JProgram;
 import com.google.gwt.dev.jjs.ast.JVariableRef;
 import com.google.gwt.dev.jjs.ast.js.JMultiExpression;
@@ -36,20 +40,42 @@ import com.google.gwt.dev.jjs.ast.js.JMultiExpression;
 public class VariableAssignedToSelfRemover implements JavaCompilationWorker {
 
 	public boolean work(final JProgram jprogram, final TreeLogger logger) {
-		final TreeLogger branchLogger = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
+		final TreeLogger branch = logger.branch(TreeLogger.INFO, this.getClass().getName(), null);
 
-		final JModVisitor visitor = new JModVisitor() {
-
-			public boolean visit(final JBinaryOperation binaryOperation, final Context context) {
-				VariableAssignedToSelfRemover.this.attemptToRemoveBinaryOperation(binaryOperation, context, branchLogger);
-				return false; // dont visit children.
-			}
-		};
-		visitor.accept(jprogram);
-
-		final boolean changed = visitor.didChange();
+		final boolean changed = this.visitAllAssignments(jprogram, branch );
 		logger.log(TreeLogger.DEBUG, changed ? "One or more changes were made." : "No changes were committed.", null);
 		return changed;
+	}
+	
+	protected boolean visitAllAssignments( final JProgram program, final TreeLogger logger ){
+		final TreeLogger branch = logger.branch(TreeLogger.DEBUG, "Attempting to locate and remove all assignments of a variable with itself.", null);
+
+		final LoggingJModVisitor visitor = new LoggingJModVisitor() {
+			public Type getLoggingLevel(final JNode node) {
+				return TreeLogger.DEBUG;
+			}
+
+			public boolean visit(final JArrayType type, final Context context) {
+				return !VISIT_CHILD_NODES;
+			}
+
+			public boolean visit(final JInterfaceType type, final Context context) {
+				return !VISIT_CHILD_NODES;
+			}
+
+			public boolean visit(final JPrimitiveType type, final Context context) {
+				return !VISIT_CHILD_NODES;
+			}
+
+			public boolean visit(final JBinaryOperation binaryOperation, final Context context) {
+				final TreeLogger logger = this.getLogger();
+				VariableAssignedToSelfRemover.this.attemptToRemoveBinaryOperation(binaryOperation, context, logger );
+				return VISIT_CHILD_NODES;
+			}						
+		};
+
+		visitor.accept(program, branch);
+		return visitor.didChange();
 	}
 
 	/**
