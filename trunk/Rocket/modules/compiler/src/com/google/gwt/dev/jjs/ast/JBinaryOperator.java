@@ -95,7 +95,7 @@ public class JBinaryOperator {
   }
   
   /**
-   * TODO ROCKET When upgrading GWT re add equals method.
+   * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes.
    */
   public boolean equals(final Object otherObject ){
 	  boolean equals = false;

@@ -881,7 +881,6 @@ public class JProgram extends JNode {
     return count;
   }
 
-  // ROCKET: 
   // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
   private JMethod loggerFactoryGetLogger;
   
