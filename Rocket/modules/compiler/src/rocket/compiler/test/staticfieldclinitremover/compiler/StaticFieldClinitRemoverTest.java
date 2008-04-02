@@ -17,7 +17,6 @@ package rocket.compiler.test.staticfieldclinitremover.compiler;
 
 import rocket.compiler.Compiler;
 import rocket.compiler.JavaScriptCompilationWorker;
-import rocket.compiler.StaticFieldClinitRemover;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.dev.js.ast.JsContext;
