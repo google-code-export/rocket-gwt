@@ -20,8 +20,13 @@ package rocket.compiler;
  * A container for constants used through out this package.
  */
 abstract public class Constants {
-	static final String INVOKE_CLINITS_AT_STARTUP_FILENAME = InvokeClinitsAtStartupMover.class.getName() + ".txt";
-	static final String INCLUDE_SUGGESTED_TYPES = "includeSuggestedTypes";
+
+
+	final static String CONSTRUCTOR_SUFFIX = " (Constructor)";
+	final static String STATIC_INITIALIZER_METHOD_NAME = "$clinit";
+	final static String STATIC_INITIALIZER_SUFFIX = " (Static initializer)";
+	final static String INITIALIZER_METHOD_NAME = "$init";
+	final static String INITIALIZER_SUFFIX = " -Initializer";
 	
 	static final String COMMENT_LINE = "#";
 	
@@ -30,4 +35,8 @@ abstract public class Constants {
 	static final String CLINIT = "$clinit";
 	
 	static final String PACKAGE = Constants.class.getPackage().getName();
+	
+	static final String NULL_METHOD = "nullMethod";
+	static final String INIT_METHOD_NAME = "init";
+	static final String INIT_FUNCTION_NAME = "init";
 }

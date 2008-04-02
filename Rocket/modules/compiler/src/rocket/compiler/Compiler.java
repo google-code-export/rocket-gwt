@@ -15,17 +15,12 @@
  */
 package rocket.compiler;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import rocket.util.client.Checker;
 
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dev.jjs.ast.JField;
 import com.google.gwt.dev.jjs.ast.JFieldRef;
 import com.google.gwt.dev.jjs.ast.JMethod;
@@ -50,13 +45,7 @@ public class Compiler {
 
 		return Compiler.inline(node.toSource());
 	}
-
-	final static String CONSTRUCTOR_SUFFIX = " -Constructor";
-	final static String STATIC_INITIALIZER_METHOD_NAME = "$clinit";
-	final static String STATIC_INITIALIZER_SUFFIX = " -Static initializer";
-	final static String INITIALIZER_METHOD_NAME = "$init";
-	final static String INITIALIZER_SUFFIX = " -Initializer";
-
+	
 	/**
 	 * Returns a string containing the method name followed by any parameter types.
 	 * @param method
@@ -83,14 +72,14 @@ public class Compiler {
 
 		buf.append(')');
 
-		if (methodName.equals(STATIC_INITIALIZER_METHOD_NAME)) {
-			buf.append(STATIC_INITIALIZER_SUFFIX);
+		if (methodName.equals(Constants.STATIC_INITIALIZER_METHOD_NAME)) {
+			buf.append(Constants.STATIC_INITIALIZER_SUFFIX);
 		}
-		if (methodName.equals(INITIALIZER_METHOD_NAME)) {
-			buf.append(INITIALIZER_SUFFIX);
+		if (methodName.equals(Constants.INITIALIZER_METHOD_NAME)) {
+			buf.append( Constants.INITIALIZER_SUFFIX);
 		}
 		if (method.isConstructor()) {
-			buf.append(CONSTRUCTOR_SUFFIX);
+			buf.append(Constants.CONSTRUCTOR_SUFFIX);
 		}
 
 		return buf.toString();
@@ -204,7 +193,7 @@ public class Compiler {
 	 */
 	static private Set staticMethodsNotRequiringClint;
 
-	public static void resetStaticMethodsNotRequiringClint() {
+	private static void resetStaticMethodsNotRequiringClint() {
 		Compiler.staticMethodsNotRequiringClint = new HashSet();
 	}
 
@@ -222,7 +211,7 @@ public class Compiler {
 	 */
 	static private Set staticFieldReferencesNotRequiringClinits;
 
-	public static void resetFieldReferencesNotRequiringClint() {
+	private static void resetFieldReferencesNotRequiringClint() {
 		Compiler.staticFieldReferencesNotRequiringClinits = new HashSet();
 	}
 
@@ -276,6 +265,15 @@ public class Compiler {
 	}
 
 	/**
+	 * Generates the static initializer function name for the given type when the GWT compiler is in pretty mode. 
+	 * @param typeName
+	 * @return
+	 */
+	static public String getStaticInitializerNameForType( final String typeName ){
+		return typeName.replace('.', '_') + '_' + Constants.CLINIT + "__();";
+	}
+	
+	/**
 	 * Counts the number of clinit references within the given javascript function source.
 	 * @param javascript
 	 * @return
@@ -291,7 +289,7 @@ public class Compiler {
 	 * @return
 	 */
 	static public int countClinitCallsites(final String typeName, final String javascript) {
-		final String clinitFunctionName = typeName.replace('.', '_') + '_' + Constants.CLINIT + "__();";
+		final String clinitFunctionName = Compiler.getStaticInitializerNameForType(typeName);
 		return countOccurances(javascript, clinitFunctionName);
 	}
 
@@ -334,5 +332,27 @@ public class Compiler {
 		}
 
 		return enabled;
-	}	
+	}
+	
+	/**
+	 * Resets the internal state of this class.
+	 * Typically this should be called at the start of each permutation.
+	 */
+	static public void reset(){
+		Compiler.resetFieldReferencesNotRequiringClint();
+		Compiler.resetStaticMethodsNotRequiringClint();
+	}
+
+	/**
+	 * Helper which counts the number of times an assignment is made to the given types static initializer with the nullMethod reference.
+	 * This only works in pretty mode where the names of said items can be guaranteed.
+	 * @param typeName
+	 * @param javascript
+	 * @return
+	 */
+	static public int countNullMethodClinitAssignments( final String typeName, final String javascript ){
+		final String clinit = Compiler.getStaticInitializerNameForType(typeName);
+		final String assignment = clinit + " = " + Constants.NULL_METHOD + ";";
+		return Compiler.countOccurances(javascript, assignment );
+	}
 }
