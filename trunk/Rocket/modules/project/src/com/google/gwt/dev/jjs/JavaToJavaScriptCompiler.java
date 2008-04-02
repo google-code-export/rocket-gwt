@@ -357,10 +357,10 @@ public class JavaToJavaScriptCompiler {
 
       final JavaCompilationWorker testJavaCompilationWorker = this.createTestJavaCompilationWorker( logger );
       
-      // actual optimisers
-      Compiler.resetFieldReferencesNotRequiringClint();
-      Compiler.resetStaticMethodsNotRequiringClint();
+      // reset the compiler class.
+      Compiler.reset();
       
+      // create the actual visitors(aka optimisers)
       final JavaCompilationWorker alternateValuesAssignmentOptimiser =  this.createJavaCompilationWorker(rocket.compiler.AlternateValuesAssignmentOptimiser.class,logger);
       final JavaCompilationWorker alternateValuesReturnedOptimiser = this.createJavaCompilationWorker( rocket.compiler.AlternateValuesReturnedOptimiser.class,logger);
       final JavaCompilationWorker conditionalAssignmentOptimiser = this.createJavaCompilationWorker( rocket.compiler.ConditionalAssignmentOptimiser.class,logger);
@@ -380,7 +380,7 @@ public class JavaToJavaScriptCompiler {
         didChange = testJavaCompilationWorker.work(jprogram, logger) || didChange;
         
         if( pass == 0 ){
-        	didChange = longNotifier.work( jprogram, logger) || didChange; 
+        	didChange = longNotifier.work( jprogram, logger) || didChange;
         }
     	pass++;
         
@@ -427,15 +427,14 @@ public class JavaToJavaScriptCompiler {
         // prove that any types that have been culled from the main tree are
         // unreferenced due to type tightening?
       } while (didChange);
-
+      
       // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes.
       final JavaCompilationWorker staticMethodClintRemover = this.createJavaCompilationWorker( StaticMethodClinitRemover.class, logger );
       final JavaCompilationWorker staticFieldClintRemover = this.createJavaCompilationWorker( StaticFieldClinitRemover.class, logger );
-      
+            
       staticMethodClintRemover.work(jprogram, logger);
       staticFieldClintRemover.work(jprogram, logger);
 
-      
       // (5) "Normalize" the high-level Java tree into a lower-level tree more
       // suited for JavaScript code generation. Don't go reordering these
       // willy-nilly because there are some subtle interdependencies.
@@ -451,10 +450,9 @@ public class JavaToJavaScriptCompiler {
       // (6) Perform further post-normalization optimizations
       // Prune everything
       Pruner.exec(jprogram, false);
-
+      
       // (7) Generate a JavaScript code DOM from the Java type declarations
       rocket.compiler.GenerateJavaScriptAST.exec(jprogram, jsProgram, obfuscate, prettyNames);
-      
       
       // (8) Fix invalid constructs created during JS AST gen
       JsNormalizer.exec(jsProgram);
@@ -462,6 +460,11 @@ public class JavaToJavaScriptCompiler {
       // (9) Resolve all unresolved JsNameRefs
       JsSymbolResolver.exec(jsProgram);
 
+//      //if( invokeClinitsAtStartupMover instanceof InvokeClinitsAtStartupMover ){
+//    	  final JsEliminatedClinitRemover remover = new JsEliminatedClinitRemover();
+//    	  remover.work( jsProgram, logger ); // ??? DELETE
+//      //} DELETE @@@ TODO shouldnt be necessary
+      
       // (10) Obfuscate
       if (obfuscate) {
     	
@@ -483,7 +486,7 @@ public class JavaToJavaScriptCompiler {
      
       do {
           didChange = false;
-          didChange = didChange || testJavaScriptCompilationWorker.work(jsProgram, logger);
+          didChange = testJavaScriptCompilationWorker.work(jsProgram, logger) || didChange;
           
       } while( didChange );
      
@@ -506,6 +509,9 @@ public class JavaToJavaScriptCompiler {
       final JavaScriptSourceChecker javascriptSourceChecker = this.createJavaScriptSourceChecker( logger ); 
       javascriptSourceChecker.examine( javascript );
 
+      // free up any internal state prevent memory leaks.
+      Compiler.reset();
+      
       return javascript;
     	} 
     catch (UnableToCompleteException e) {
