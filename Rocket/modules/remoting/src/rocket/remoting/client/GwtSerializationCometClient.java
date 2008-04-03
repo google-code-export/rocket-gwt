@@ -77,8 +77,10 @@ public abstract class GwtSerializationCometClient extends CometClient {
 
 			} catch (final SerializationException serializationException) {
 				caught = serializationException;
+				break;
 			} catch (final RuntimeException runtimeException) {
 				caught = runtimeException;
+				break;
 			}
 		}
 
