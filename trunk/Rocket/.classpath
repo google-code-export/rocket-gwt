@@ -3,8 +3,8 @@
 	<classpathentry kind="src" path="modules/beans/src"/>
 	<classpathentry kind="src" path="modules/browser/src"/>
 	<classpathentry kind="src" path="modules/collection/src"/>
-	<classpathentry kind="src" path="modules/cookies/src"/>	
 	<classpathentry kind="src" path="modules/compiler/src"/>
+	<classpathentry kind="src" path="modules/cookies/src"/>	
 	<classpathentry kind="src" path="modules/dom/src"/>
 	<classpathentry kind="src" path="modules/dragndrop/src"/>
 	<classpathentry kind="src" path="modules/event/src"/>
