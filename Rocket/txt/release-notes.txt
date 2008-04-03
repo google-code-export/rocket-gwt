@@ -541,3 +541,25 @@ To enable any of the optimisers add a system property with the fully qualified n
 * All optimisers and enhancements are disabled by default and must be enabled by setting one or more system properties, refer to README.TXT.
 * Merged RocketCompiler project into Rocket project, moving all code and other artefacts under modules/compiler.
 * Merged test version of JavaToJavaScriptCompiler (from RocketCompiler) with the Rocket project version.
+
+0.47 3 April 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.47.zip
+
+Compiler
+* Added isStaticInitializer method to JMethod.
+* Added numerous helper methods to Compiler, including some to assist clinit removal.
+* Added StaticFieldClinitRemover which removes unnecessary clinits after statically proving the enclosing class has already had its clinit invoked.
+* Added StaticMethodClinitRemover which removes unnecessary clinits after statically proving the enclosing class has already had its clinit invoked.
+* Added getPackageName() and hasStaticInitializer() to JReferenceType.
+* Added methods to Compiler to help testing, including counting of clinit methods within a javascript function. 		
+* Added a method to Compiler.delayedBranch() to create a TreeLogger which doesnt log any branch until an actual leaf log is made, then parent branches are 
+  commited followed by the actual log message.
+* Added a factory method to TreeLogger to create a logger which pipes messages to the given logger as well as capturing and adding each loggable message into a collection    
+* Deleted ClassMethodVisitor and reworked all dependencies too use LoggingJModVisitor.
+* Updated all optimisers to use LoggingJModVisitor so that all work includes some context, primarily the lazy creation of logging statements containing the enclosing type/method/field.
+* Introduced a new LoggingJsModVisitor which lazily outputs the enclosing function etc.
+* Deleted CompareAgainstZero as its functionality has been superceeded by functionality added to GenerateJavaScriptAST.
+
+Remoting
+* Enriched Comet test allow for better simulation of various server conditions, including throwing of exceptions, failed connection attempts and more.
