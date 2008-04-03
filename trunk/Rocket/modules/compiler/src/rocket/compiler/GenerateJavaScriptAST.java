@@ -771,7 +771,7 @@ public class GenerateJavaScriptAST {
       List/* <JsStatement> */jsFields = popList(x.fields.size()); // fields
 
       // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes: Added extra test to if expression
-      if (typeOracle.hasClinit(x) && Compiler.doesTypeStaticInitializerRequireNullMethodReentryGuard(x)) {
+      if (typeOracle.hasClinit(x) ) {
         handleClinit((JsFunction) jsFuncs.get(0));
       } else {
         jsFuncs.set(0, null);
@@ -1007,7 +1007,7 @@ public class GenerateJavaScriptAST {
       JsStatements globalStmts = jsProgram.getGlobalBlock().getStatements();
 
       // TODO ROCKET When upgrading from GWT 1.4.6x reapply changes: Added extra test to if expression
-      if (typeOracle.hasClinit(x) && Compiler.doesTypeStaticInitializerRequireNullMethodReentryGuard(x)) {
+      if (typeOracle.hasClinit(x) ) {
         JsFunction clinitFunc = (JsFunction) jsFuncs.get(0);
         handleClinit(clinitFunc);
         globalStmts.add(clinitFunc.makeStmt());
