@@ -15,12 +15,16 @@
  */
 package rocket.remoting.test.comet.client;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
  * Defines a service which invokes tells the test comet service to request a terminate.
  * @author Miroslav Pokorny
  */
-public interface TerminateServerSessionService extends RemoteService {
+public interface CometServerActionService extends RemoteService {
+	void failNextConnection();
+	void failNextPoll();
 	void terminate();
+	void timeoutNextPoll();
 }

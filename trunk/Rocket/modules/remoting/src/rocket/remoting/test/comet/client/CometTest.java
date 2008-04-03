@@ -46,7 +46,7 @@ public class CometTest implements EntryPoint {
 
 	static final String INVALID_COMET_SERVER_URL = "./invalid";
 
-	static final String SERVER_TERMINATE_COMET_SESSION_URL = "./terminate";
+	static final String SERVER_ACTION_URL = "./action";
 	
 	static final long TOO_MUCH_LAG = 1000;
 
@@ -91,8 +91,8 @@ public class CometTest implements EntryPoint {
 		final Button serverStopper = new Button("Server Terminate");
 		serverStopper.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final TerminateServerSessionServiceAsync terminator = (TerminateServerSessionServiceAsync)GWT.create( TerminateServerSessionService.class );
-				((ServiceDefTarget)terminator).setServiceEntryPoint( SERVER_TERMINATE_COMET_SESSION_URL );
+				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync)GWT.create( CometServerActionService.class );
+				((ServiceDefTarget)terminator).setServiceEntryPoint( SERVER_ACTION_URL );
 				terminator.terminate( new AsyncCallback(){
 					public void onSuccess( final Object ignored ){
 						logger.log("Client has completed request to server to terminate push terminate message.");
@@ -105,11 +105,75 @@ public class CometTest implements EntryPoint {
 			}
 		});
 		
+		final Button serverPollFails = new Button("Fail next Server poll");
+		serverPollFails.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync)GWT.create( CometServerActionService.class );
+				((ServiceDefTarget)terminator).setServiceEntryPoint( SERVER_ACTION_URL );
+				terminator.failNextPoll( new AsyncCallback(){
+					public void onSuccess( final Object ignored ){
+						logger.log("Client has completed request to server to throw exception when next polled.");
+					}
+					public void onFailure( final Throwable cause ){
+						logger.log( "Client failed to send request to throw exception when next polled, message: " + cause.getMessage() );
+						cause.printStackTrace();
+					}
+				});
+			}
+		});
+		
+
+		final Button serverTimeout = new Button("Timeout next Server poll");
+		serverTimeout.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync)GWT.create( CometServerActionService.class );
+				((ServiceDefTarget)terminator).setServiceEntryPoint( SERVER_ACTION_URL );
+				terminator.timeoutNextPoll( new AsyncCallback(){
+					public void onSuccess( final Object ignored ){
+						logger.log("Client has completed request to server to sleep and timeout when next polled.");
+					}
+					public void onFailure( final Throwable cause ){
+						logger.log( "Client failed to send request to timeout when next polled, message: " + cause.getMessage() );
+						cause.printStackTrace();
+					}
+				});
+			}
+		});
+		
+		final Button failNextConnection = new Button("Fail next Server connection");
+		failNextConnection.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync)GWT.create( CometServerActionService.class );
+				((ServiceDefTarget)terminator).setServiceEntryPoint( SERVER_ACTION_URL );
+				terminator.failNextConnection( new AsyncCallback(){
+					public void onSuccess( final Object ignored ){
+						logger.log("Client has completed request to server to fail next connection attempt.");
+					}
+					public void onFailure( final Throwable cause ){
+						logger.log( "Client failed to send request to fail next connection attempt, message: " + cause.getMessage() );
+						cause.printStackTrace();
+					}
+				});
+			}
+		});
+		
+		final Button clearLogger = new Button("Clear log");
+		clearLogger.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				logger.clear();
+			}
+		});
+		
+		
 		final RootPanel rootPanel = RootPanel.get();
 		rootPanel.add( start );
 		rootPanel.add( startWithBadUrl );
 		rootPanel.add( clientStopper );
 		rootPanel.add( serverStopper );
+		rootPanel.add( serverPollFails );
+		rootPanel.add( serverTimeout );
+		rootPanel.add( failNextConnection );
+		rootPanel.add( clearLogger );
 		rootPanel.add( logger );
 	}
 
@@ -158,8 +222,8 @@ public class CometTest implements EntryPoint {
 		protected Element createFrame() {
 			final Element frame = super.createFrame();
 
-			InlineStyle.setInteger(frame, Css.WIDTH, 100, CssUnit.PX);
-			InlineStyle.setInteger(frame, Css.HEIGHT, 100, CssUnit.PX);
+			InlineStyle.setInteger(frame, Css.WIDTH, 99, CssUnit.PERCENTAGE);
+			InlineStyle.setInteger(frame, Css.HEIGHT, 200, CssUnit.PX);
 			InlineStyle.setInteger(frame, Css.BORDER, 1, CssUnit.PX);
 
 			return frame;

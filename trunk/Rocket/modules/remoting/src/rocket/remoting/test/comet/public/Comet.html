@@ -37,9 +37,11 @@ BUTTON {
 				<li>Killing the embedded tomcat and checking that the client complained</li>
 			</ul>
 		</li>
+		<li>Server Timeout - Clicking on this button causes the next poll request on the server to sleep for a long time, which should cause the connection to time out and cause the client to reconnect.</li>
+		<li>Typically the <b>Fail next Server Connection</b> buttons is clicked after a server time out request to verify that the comet client reattempts to connect after a connection failure.</li> 
 		<li>Click on <b>Compile/Browse</b> and repeat the test with other browsers</li>
 		<li>The server drops the connection forcing the client to reconnect after approximately 3 messages, scan log for "Too many bytes written to client, server will drop connection"</li>
-		<li>The server also drops the connection when the connection is open for more than 5 seconds, scan log for "Connection open too long server will drop connection".<li>
+		<li>The server also drops the connection when the connection is open for more than 5 seconds, scan log for "Connection open too long server will drop connection".</li>
 	<ul>
 </body>
 </html>
