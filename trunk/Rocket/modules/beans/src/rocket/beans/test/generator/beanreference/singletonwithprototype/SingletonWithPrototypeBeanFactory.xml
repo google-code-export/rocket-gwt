@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.40//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+
+	<bean	id="singleton" 
+			class="rocket.beans.test.generator.beanreference.singletonwithprototype.HasAnotherBean" 
+			scope="singleton">
+		<properties>
+			<property name="bean">
+				<bean-reference reference-id="prototype" />
+			</property>			
+		</properties>
+	</bean>
+
+	<bean	id="prototype" 
+			class="rocket.beans.test.generator.beanreference.Bean" 
+			scope="prototype" />	
+</bean-factory>

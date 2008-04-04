@@ -388,11 +388,10 @@ public class BeanFactoryGenerator extends Generator {
 		bean.setSingleton(singleton);
 		context.debug(singleton ? "singleton" : "prototype");
 
-		final boolean eager = bean.isEagerLoaded();
-		if (false == singleton) {
-			throwPrototypesCantBeEagerlyLoaded(bean);
-		}
+		// process the eager/lazy attribute
+		final boolean eager = bean.isEagerLoaded();		
 		bean.setEagerLoaded(eager);
+		this.checkPrototypesAreNotMarkedAsEager( bean );
 
 		if (singleton) {
 			context.debug(eager ? "eager" : "lazyloaded");
@@ -1880,6 +1879,20 @@ public class BeanFactoryGenerator extends Generator {
 		final String id = bean.getId();
 		throw new BeanFactoryGeneratorException("The id \"" + id + "\" is used by more than bean: " + bean + ", other bean: "
 				+ this.getBean(id));
+	}
+	
+	/**
+	 * Simply asserts that the given bean if it itsa prototype has not been marked as eager=true.
+	 * @param bean
+	 */
+	protected void checkPrototypesAreNotMarkedAsEager( final Bean bean ){
+		Checker.notNull( "parameter:bean", bean );
+
+		if( false == bean.isSingleton() ){
+			if( bean.isEagerLoaded() ){
+				this.throwPrototypesCantBeEagerlyLoaded(bean);	
+			}
+		}		
 	}
 
 	/**

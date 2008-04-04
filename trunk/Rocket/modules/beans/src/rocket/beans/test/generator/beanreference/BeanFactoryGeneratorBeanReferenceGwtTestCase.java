@@ -16,15 +16,6 @@
 package rocket.beans.test.generator.beanreference;
 
 import rocket.beans.client.BeanFactory;
-import rocket.beans.client.BeanFactoryImpl;
-import rocket.beans.test.generator.beanreference.nestedbean.NestedBeanBeanFactory;
-import rocket.beans.test.generator.beanreference.nestedbeanhasid.NestedBeanHasIdBeanFactory;
-import rocket.beans.test.generator.beanreference.productoffactorybean.FactoryBeanImpl;
-import rocket.beans.test.generator.beanreference.productoffactorybean.HasProductOfFactoryBean;
-import rocket.beans.test.generator.beanreference.productoffactorybean.ReferencesFactoryBeanBeanFactory;
-import rocket.beans.test.generator.beanreference.productofnestedfactorybean.NestedFactoryBeanImpl;
-import rocket.beans.test.generator.beanreference.productofnestedfactorybean.NestedFactoryBeanBeanFactory;
-import rocket.beans.test.generator.beanreference.productofnestedfactorybean.HasProductOfNestedFactoryBean;
 import rocket.beans.test.generator.beanreference.alias.ReferencesAlias;
 import rocket.beans.test.generator.beanreference.alias.ReferencesAliasBeanFactory;
 import rocket.beans.test.generator.beanreference.beanreference.BeanReferenceBeanFactory;
@@ -32,6 +23,16 @@ import rocket.beans.test.generator.beanreference.beanreference.HasNamedBeanRefer
 import rocket.beans.test.generator.beanreference.complex.ComplexBeanFactory;
 import rocket.beans.test.generator.beanreference.doublenestedbean.DoubleNestedBeanBeanFactory;
 import rocket.beans.test.generator.beanreference.doublenestedbean.HasDoubleNestedBean;
+import rocket.beans.test.generator.beanreference.nestedbean.NestedBeanBeanFactory;
+import rocket.beans.test.generator.beanreference.nestedbeanhasid.NestedBeanHasIdBeanFactory;
+import rocket.beans.test.generator.beanreference.productoffactorybean.FactoryBeanImpl;
+import rocket.beans.test.generator.beanreference.productoffactorybean.HasProductOfFactoryBean;
+import rocket.beans.test.generator.beanreference.productoffactorybean.ReferencesFactoryBeanBeanFactory;
+import rocket.beans.test.generator.beanreference.productofnestedfactorybean.HasProductOfNestedFactoryBean;
+import rocket.beans.test.generator.beanreference.productofnestedfactorybean.NestedFactoryBeanBeanFactory;
+import rocket.beans.test.generator.beanreference.productofnestedfactorybean.NestedFactoryBeanImpl;
+import rocket.beans.test.generator.beanreference.singletonwithprototype.HasAnotherBean;
+import rocket.beans.test.generator.beanreference.singletonwithprototype.SingletonWithPrototypeBeanFactory;
 import rocket.generator.client.FailedGenerateAttemptException;
 import rocket.generator.client.GeneratorGwtTestCase;
 
@@ -127,4 +128,21 @@ public class BeanFactoryGeneratorBeanReferenceGwtTestCase extends GeneratorGwtTe
 		final rocket.beans.test.generator.beanreference.complex.HasProductOfFactoryBean hasProductOfNestedFactoryBean = (rocket.beans.test.generator.beanreference.complex.HasProductOfFactoryBean)beanFactory.getBean( "hasProductOfNestedFactoryBean");
 		assertNotNull( "HasProductOfFactoryBean.bean", hasProductOfNestedFactoryBean.getBean() );
 	}
+	
+	public void testSingletonWithPrototype(){
+		final BeanFactory beanFactory = (BeanFactory) GWT.create(SingletonWithPrototypeBeanFactory.class);
+		
+		final HasAnotherBean singleton = (HasAnotherBean)beanFactory.getBean( "singleton");
+		assertNotNull( "singleton", singleton );
+		
+		final Bean prototype = singleton.getBean();
+		assertNotNull( "singleton.prototype", singleton );
+
+		final Bean prototype2 = (Bean)beanFactory.getBean( "prototype");
+		assertNotNull( "prototype2", prototype2 );
+		
+		assertNotSame( prototype, prototype2 );
+	}
+	
+	
 }
