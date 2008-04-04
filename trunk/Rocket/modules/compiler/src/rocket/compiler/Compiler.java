@@ -189,25 +189,27 @@ public class Compiler {
 	}
 
 	/**
-	 * This set aggregates all the static methods that dont require a clint to be inserted by GenerateJavaScriptAST.
+	 * This set aggregates all the static methods that dont require a clinit to be inserted by GenerateJavaScriptAST.
 	 */
 	static private Set staticMethodsNotRequiringClint;
 
-	private static void resetStaticMethodsNotRequiringClint() {
+	private static void resetStaticMethodsNotRequiringClinit() {
 		Compiler.staticMethodsNotRequiringClint = new HashSet();
 	}
 
-	public static void addStaticMethodNotRequiringClint(final JMethod method) {
+	public static void addStaticMethodNotRequiringClinit(final JMethod method) {
 		Compiler.staticMethodsNotRequiringClint.add(method);
 	}
 
-	public static boolean requiresClint(final JMethod method) {
+	public static boolean requiresClinit(final JMethod method) {
+		Checker.notNull("parameter:method", method);
+		
 		return Compiler.staticMethodsNotRequiringClint == null ? true : false == Compiler.staticMethodsNotRequiringClint
 				.contains(method);
 	}
 
 	/**
-	 * This set aggregates all static field references that require a clint to be inserted by GenerateJavaScriptAST.
+	 * This set aggregates all static field references that require a clinit to be inserted by GenerateJavaScriptAST.
 	 */
 	static private Set staticFieldReferencesNotRequiringClinits;
 
@@ -237,6 +239,33 @@ public class Compiler {
 				: false == Compiler.staticFieldReferencesNotRequiringClinits.contains(reference);
 	}
 
+	/**
+	 * Tests whether a field typically belonging to a jsni aka native method requires a clinit to be inserted in front of the reference
+	 * to ensure correct semantics guaranteeing static initializers are invoked as required.
+	 * @param field
+	 * @return
+	 */
+	public static boolean requiresClinit( final JField field ){
+		Checker.notNull("parameter:field", field);
+		
+		// all fields require a clinit if necessary unless a reference to them is included in $staticFieldReferencesNotRequiringClinits
+		boolean requires = true;
+		
+		final Set references = Compiler.staticFieldReferencesNotRequiringClinits;
+		if( null != references ){
+			final Iterator i = references.iterator();
+			while( i.hasNext() ){
+				final JFieldRef reference = (JFieldRef)i.next();
+				if( reference.getField().equals( field )){
+					requires = false;
+					break;
+				}
+			}
+		}
+		
+		return requires;		
+	}
+	
 	/**
 	 * Returns the fullyqualified name of a field which amounts to the class name dot field name.
 	 * @param field
@@ -293,6 +322,12 @@ public class Compiler {
 		return countOccurances(javascript, clinitFunctionName);
 	}
 
+	/**
+	 * Helper which counts 
+	 * @param javascript
+	 * @param text
+	 * @return
+	 */
 	static int countOccurances(final String javascript, final String text) {
 		int count = 0;
 		int i = 0;
@@ -340,7 +375,7 @@ public class Compiler {
 	 */
 	static public void reset(){
 		Compiler.resetFieldReferencesNotRequiringClint();
-		Compiler.resetStaticMethodsNotRequiringClint();
+		Compiler.resetStaticMethodsNotRequiringClinit();
 	}
 
 	/**

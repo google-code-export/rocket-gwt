@@ -1296,13 +1296,19 @@ public class GenerateJavaScriptAST {
               JsName jsName = getName(field);
               assert (jsName != null);
               x.resolve(jsName);
+              
+              
+              // TODO ROCKET When upgrading from GWT 1.4.60 reapply changes. 
+              if( Compiler.requiresClinit(field)){
 
-              // See if we need to add a clinit call to a static field ref
-              JsInvocation clinitCall = maybeCreateClinitCall(field);
-              if (clinitCall != null) {
-                JsExpression commaExpr = createCommaExpression(clinitCall, x);
-                ctx.replaceMe(commaExpr);
+                  // See if we need to add a clinit call to a static field ref
+                  JsInvocation clinitCall = maybeCreateClinitCall(field);
+                  if (clinitCall != null) {
+                    JsExpression commaExpr = createCommaExpression(clinitCall, x);
+                    ctx.replaceMe(commaExpr);
+                  }            	  
               }
+
             } else {
               JMethod method = (JMethod) node;
               if (x.getQualifier() == null) {
@@ -1800,7 +1806,7 @@ public class GenerateJavaScriptAST {
       }
       
       // TODO When upgrading from GWT 1.4.6x reapply changes
-      if( false == Compiler.requiresClint( x )){
+      if( false == Compiler.requiresClinit( x )){
     	  return null;
       }
 
