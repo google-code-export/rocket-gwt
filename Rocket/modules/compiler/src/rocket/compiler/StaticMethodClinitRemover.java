@@ -310,6 +310,6 @@ public class StaticMethodClinitRemover implements JavaCompilationWorker {
 		Checker.notNull("parameter:method", method);
 		Checker.notNull("parameter:context", context);
 
-		Compiler.addStaticMethodNotRequiringClint(method);
+		Compiler.addStaticMethodNotRequiringClinit(method);
 	}
 }
