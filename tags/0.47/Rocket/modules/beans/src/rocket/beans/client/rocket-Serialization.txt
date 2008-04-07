@@ -1,0 +1,3 @@
+# rocket.bean
+rocket.bean.client.*
+rocket.bean.client.aop.*

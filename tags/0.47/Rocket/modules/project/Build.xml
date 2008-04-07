@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="Rocket" default="dist" basedir="c:/workspace.rocket/Rocket/">
+	<description>Ant build for the rocket framework.</description>
+
+	<property name="version" 				value="0.47"/>
+	<property name="build-dir" 				location="${basedir}/build"/>	
+	<property name="test-dir" 				location="${build-dir}/test"/>	
+	<property name="src-dir" 				location="${build-dir}/src"/>	
+	<property name="doc-dir" 				location="${build-dir}/doc"/>
+	<property name="bin-dir" 				location="${build-dir}/bin"/>
+	<property name="wiki-dir" 				location="${basedir}/wiki"/>
+	<property name="txt-dir" 				location="${basedir}/txt"/>
+	<property name="generated-dir" 			location="${basedir}/generated"/>	
+	<property name="www-dir" 				location="${build-dir}/www"/>
+	<property name="reports-dir" 			location="${build-dir}/reports"/>
+	<property name="lib-dir" 				location="c:/libraries/"/>
+	<property name="gwt-dir"		 		location="${lib-dir}/google/gwt/1.4.60"/>
+	<property name="gwt-samples-dir"		location="${gwt-dir}/samples"/>		
+	<property name="junit-dir" 				location="${lib-dir}/junit/3.8"/>
+	<property name="flexjson-dir" 			location="${lib-dir}/flexjson/1.2"/>
+	<property name="cglib-dir" 				location="${lib-dir}/sourceforge.net/cglib/2.0.2"/>	
+	<property name="ant-dir" 				location="${lib-dir}/apache-ant/1.7.0/lib/"/>
+	<property name="log4j-dir" 				location="${lib-dir}/apache/log4j/1.2.15/"/>	
+	<property name="commons-logging-dir"	location="${lib-dir}/apache/commons-logging/1.1.1/"/>		
+	<property name="modules-dir"			location="${basedir}/modules/"/>			
+	<property name="temp-dir"				location="${build-dir}/temp/"/>			
+
+	<path id="project.class.path">
+		<pathelement path="${src-dir}"/>
+		<pathelement path="${bin-dir}"/>
+		<pathelement path="${java.class.path}"/>
+		<pathelement location="${gwt-dir}"/>				
+		<pathelement path="${gwt-dir}/gwt-user.jar"/>
+		<pathelement path="${gwt-dir}/gwt-dev-windows.jar"/>
+		<pathelement path="${junit-dir}/junit.jar"/>
+		<pathelement path="${flexjson-dir}/flexjson.jar"/>		
+		<pathelement path="${cglib-dir}/cglib-full.jar"/>				
+		<pathelement path="${log4j-dir}/log4j.jar"/>	
+		<pathelement path="${commons-logging-dir}/commons-logging.jar"/>
+	</path>
+
+	<path id="gwt-compile.class.path">
+		<pathelement path="${modules-dir}/beans/src"/>
+		<pathelement path="${modules-dir}/browser/src"/>		
+		<pathelement path="${modules-dir}/collection/src"/>		
+		<pathelement path="${modules-dir}/compiler/src"/>		
+		<pathelement path="${modules-dir}/cookies/src"/>		
+		<pathelement path="${modules-dir}/dom/src"/>		
+		<pathelement path="${modules-dir}/dragndrop/src"/>		
+		<pathelement path="${modules-dir}/event/src"/>		
+		<pathelement path="${modules-dir}/generator/src"/>		
+		<pathelement path="${modules-dir}/gwt/src"/>		
+		<pathelement path="${modules-dir}/json/src"/>		
+		<pathelement path="${modules-dir}/logging/src"/>		
+		<pathelement path="${modules-dir}/messaging/src"/>		
+		<pathelement path="${modules-dir}/project/src"/>		
+		<pathelement path="${modules-dir}/remoting/src"/>		
+		<pathelement path="${modules-dir}/selection/src"/>		
+		<pathelement path="${modules-dir}/serialization/src"/>		
+		<pathelement path="${modules-dir}/style/src"/>		
+		<pathelement path="${modules-dir}/testing/src"/>					
+		<pathelement path="${modules-dir}/text/src"/>					
+		<pathelement path="${modules-dir}/util/src"/>								
+		<pathelement path="${modules-dir}/widget/src"/>										
+		<pathelement path="${bin-dir}"/>
+		<pathelement path="${java.class.path}"/>
+		<pathelement location="${gwt-dir}"/>				
+		<pathelement path="${gwt-dir}/gwt-user.jar"/>
+		<pathelement path="${gwt-dir}/gwt-dev-windows.jar"/>
+		<pathelement path="${junit-dir}/junit.jar"/>
+		<pathelement path="${flexjson-dir}/flexjson.jar"/>		
+		<pathelement path="${cglib-dir}/cglib-full.jar"/>				
+		<pathelement path="${log4j-dir}/log4j.jar"/>						
+		<pathelement path="${commons-logging-dir}/commons-logging.jar"/>
+	</path>
+
+	<!--
+	Compiles the source to class files.
+	-->
+	<target name="compile" description="Compile src to bin" depends="clean">
+		<mkdir dir="${src-dir}"/>
+		<mkdir dir="${bin-dir}"/>
+		
+		<copy todir="${src-dir}">
+			<fileset dir="${modules-dir}/beans/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/browser/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/collection/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/compiler/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/cookies/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/dom/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/dragndrop/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/event/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/generator/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/json/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/logging/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/messaging/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/remoting/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/selection/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/serialization/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/style/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/testing/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/text/src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${modules-dir}/util/src">
+				<exclude name="/rocket/util/client/StackHelper.java" />
+				<exclude name="**/java/lang/**" />				
+				<include name="**" />
+			</fileset>			
+			<fileset dir="${modules-dir}/widget/src">
+				<include name="**" />
+			</fileset>						
+
+			<fileset dir="${modules-dir}/project/src">
+				<include name="**" />
+			</fileset>			
+			<fileset dir="${modules-dir}/gwt/src">
+				<exclude name="**/java/lang/**" />
+				<exclude name="**/java/util/**" />								
+				<include name="**" />
+			</fileset>						
+		</copy>				
+		
+		<javac	srcdir="${src-dir}" 
+				destdir="${bin-dir}"
+				debug="on" debuglevel="lines,vars,source" 
+				source="1.4" target="1.4">
+			<classpath refid="project.class.path"/>
+		</javac>
+	</target>
+	
+	<!--
+	Packages the three jar files that make up the rocket library.
+	-->
+	<target	name="package" depends="package-rocket-jar,package-rocket-stacktrace-jar" description="Create several jar files, each containing different logical units of the framework." />
+	
+	<!--
+	*** Builds a jar that contains the core classes required to author a GWT application ***
+	-->
+	<target name="package-rocket-jar" depends="compile">		
+		<copy file="${txt-dir}/Rocket-jar-readme.txt" tofile="${temp-dir}/README.txt" overwrite="true"/>
+		<jar destfile="${build-dir}/Rocket.jar">
+			<fileset dir="${bin-dir}">
+				<exclude name="com/google/gwt/emul/java/lang/StackTraceElement.class"/>
+				<exclude name="com/google/gwt/emul/java/lang/Throwable.class"/>
+				<exclude name="java/**/*.*"/>
+				<exclude name="rocket/util/client/ThrowableHelper.class"/>
+				<exclude name="**/test/**/*.*"/>
+				<exclude name="**/rebind/**/*.java"/>
+				<include name="**/*.class"/>
+			</fileset>
+			<fileset dir="${src-dir}">
+				<exclude name="com/google/gwt/emul/java/lang/StackTraceElement.java"/>
+				<exclude name="com/google/gwt/emul/java/lang/Throwable.java"/>
+				<exclude name="java/**/*.*"/>				
+				<exclude name="rocket/util/client/ThrowableHelper.java"/>
+				<exclude name="**/test/**/*.*"/>
+				<include name="**/*.dtd"/>
+				<include name="**/*.java"/>
+				<include name="**/*.txt"/>				
+				<include name="**/*.xml"/>					
+			</fileset>
+			<fileset dir="${temp-dir}">
+				<include name="README.txt"/>
+			</fileset>	
+			<fileset dir="${txt-dir}">
+				<include name="release-notes.txt"/>
+				<include name="license.txt"/>
+				<include name="dependencies.txt"/>				
+			</fileset>
+		</jar>					
+	</target>
+	
+	<target name="package-rocket-stacktrace-jar" depends="compile">
+		<copy file="${txt-dir}/Rocket-stacktrace-jar-readme.txt" tofile="${temp-dir}/README.txt" overwrite="true"/>
+		<jar destfile="${build-dir}/Rocket-stacktrace.jar">
+			<fileset dir="${bin-dir}">
+				<include name="com/google/gwt/emul/java/lang/StackTraceElement.class"/>
+				<include name="com/google/gwt/emul/java/lang/Throwable.class"/>
+				<include name="rocket/util/client/ThrowableHelper.class"/>
+			</fileset>
+			<fileset dir="${modules-dir}/util/src">
+				<include name="com/google/gwt/emul/java/lang/StackTraceElement.java"/>
+				<include name="com/google/gwt/emul/java/lang/Throwable.java"/>
+				<include name="rocket/util/client/ThrowableHelper.java"/>				
+			</fileset>
+			<fileset dir="${temp-dir}">
+				<include name="README.txt"/>
+			</fileset>	
+			<fileset dir="${txt-dir}">
+				<include name="release-notes.txt"/>
+				<include name="license.txt"/>
+				<include name="dependencies.txt"/>				
+			</fileset>
+		</jar>
+	</target>
+	
+	<!--
+	Creates the javadoc for all classes(down to private methods)
+	-->
+	<target name="javadoc" depends="compile" description="Create javadoc">
+		<javadoc 	access="private"
+  	        		author="yes"
+				classpathref="project.class.path"			
+  	        		destdir="${doc-dir}"
+	  			doctitle="Rocket GWT ${version} Javadoc"
+		    		noindex="yes"
+		    		serialwarn="no"  	
+  	        		sourcepath="${src-dir}"
+  	        		splitindex="no"
+  	        		verbose="no"
+				packagenames="rocket.**"
+				excludepackagenames="rocket.*.test">
+		</javadoc>
+	</target>
+
+	<!--
+	Translates all modules into javascript by calling the gwt compiler.
+	-->
+	<target name="gwt-compile-all"	depends="compile" description="Generates the html pages for all demos">
+		<!--
+		*** compiles all module demos ***
+		-->
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.dragndrop.test.DragNDrop"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.remoting.test.comet.Comet"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.logging.test.application.LoggingApplication"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.selection.test.selection.Selection"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.style.test.style.Style"/>
+		</antcall>		
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.style.test.stylesheet.StyleSheet"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.testing.test.webpagetestrunner.WebPageTestRunnerTest"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.testing.test.interactivelist.InteractiveList"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.testing.test.interactivepanel.InteractivePanel"/>
+		</antcall>
+		
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.util.test.stacktrace.StackTrace"/>
+		</antcall>
+
+		<!--
+		*** compiles widget demos ***
+		-->
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.accordionpanel.AccordionPanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.autocompletetextbox.AutoCompleteTextBox"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.basicwidgets.BasicWidgets"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.breadcrumbpanel.BreadcrumbPanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.divpanel.DivPanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.gridview.GridView"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.hyperlinkpanel.HyperLinkPanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.imagefactory.ImageFactory"/>
+		</antcall>		
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.menu.Menu"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.orderedlistpanel.OrderedListPanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.pager.demo.Pager"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.resizablepanel.ResizablePanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.slider.Slider"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.sortabletable.SortableTable"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.spanpanel.SpanPanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.splitterpanel.SplitterPanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.stylesheetpicker.StyleSheetPicker"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.tabpanel.TabPanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.unorderedlistpanel.UnorderedListPanel"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.viewport.Viewport"/>
+		</antcall>
+		<antcall target="gwt-compile">
+			<param name="module" value="rocket.widget.test.zebraflextable.ZebraFlexTable"/>
+		</antcall>
+	</target>
+
+	<!--
+	Invokes the GWT compiler and compile a single module into javascript.
+	-->
+	<target name="gwt-compile"	depends="" description="Translates a module to javascript and html pages.">
+		<echo>Module: ${module}</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<!--
+			Add the bin dir so that the compiler classes are in front of all other jar files especially rocket.jar and any gwt* jar files.
+			-->
+			<classpath path="${bin-dir}" />
+			<classpath refid="gwt-compile.class.path" />
+			
+			<!-- This property is ignored by all modules except for LoggingApplication -->
+			<sysproperty 	key="rocket.logging.Logging.config"	value="/rocket/logging/test/application/client/Config.properties" />
+			
+			<!--
+			*** enable all optimisations ***
+			-->
+			<sysproperty 	key="rocket.compiler"	value="enabled" />
+			
+			<arg value="-out" />
+			<arg value="${www-dir}" />
+			<arg value="-style" />
+			<arg value="DETAILED" />
+			<arg value="${module}" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+			<arg value="-gen" />
+			<arg value="${generated-dir}" />			
+		</java>
+		<antcall target="deleteUnnecessaryFiles">
+			<param name="module" value="${module}"/>
+		</antcall>
+		<antcall target="deleteGifs">
+			<param name="module" value="${module}"/>
+		</antcall>
+		<antcall target="deleteHistory">
+			<param name="module" value="${module}"/>
+		</antcall>
+	</target>
+
+	<target name="deleteUnnecessaryFiles" description="Deletes all the excess files generated by the gwt compiler. These include the cache js, hosted.html (which is not required outside of hosted mode), binding decisions made (*.xml)">
+		<delete failonerror="no">
+			<fileset dir="${www-dir}/${module}">
+				<include name="hosted.html"/>				
+				<include name="*.cache.js"/>				
+				<include name="*.xml"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="deleteGifs" unless="delete-gifs"	description="Deletes the clear cache and three tree.gifs that are always copied over with each module is compiled by the gwt compiler">
+		<delete failonerror="no">
+			<fileset dir="${www-dir}/${module}">
+				<include name="clear.cache.gif"/>
+				<include name="tree_open.gif"/>				
+				<include name="tree_closed.gif"/>
+				<include name="tree_white.gif"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="deleteHistory"	unless="delete-history"	description="Deletes the three history file">
+
+		<delete failonerror="no">
+			<fileset dir="${www-dir}/${module}">
+				<include name="history.html"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="dist"	depends="clean,compile,test,gwt-compile-all,gwt-samples-compile,javadoc,package" description="Package a release including compiled classes, source files, javadoc and generated html.">
+		<property name="release-archive-name" value="Rocket-${version}.zip"/>
+		<delete failonerror="no" file="${build-dir}/${release-archive-name}" />
+		<zip 	whenempty="create"	destfile="${build-dir}/${release-archive-name}" duplicate="preserve">
+			<fileset dir="${build-dir}">
+				<include name="*.jar"/>						
+			</fileset>
+
+			<fileset dir="${basedir}/..">
+				<include name="Rocket/.classpath"/>					
+				<include name="Rocket/.project"/>	
+				<include name="Rocket/modules/**/*.*"/>					
+				<include name="Rocket/txt/**/*.*"/>								
+			</fileset>
+
+			<fileset dir="${modules-dir}/project">			
+				<include name="demos.html"/>			
+			</fileset>
+
+			<fileset dir="${build-dir}">			
+				<include name="www/**/*.*"/>				
+				<include name="compiler/gwt-samples/**/*.*"/>
+			</fileset>
+
+			<fileset dir="${txt-dir}">
+				<include name="*.jar"/>
+				<include name="dependencies.txt"/>
+				<include name="release-notes.txt"/>
+				<include name="license.txt"/>
+			</fileset>
+
+			<fileset dir="${build-dir}">
+				<include name="reports/*.txt"/>
+			</fileset>		
+			
+			<fileset dir="${build-dir}">
+				<include name="doc/**/*.*"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<!--
+	Executes all tests suites.
+			depends="test-gwt-testcases,test-junit-testcases" 
+	-->
+	<target name="test" 
+			depends="test-junit-testcases" 
+			description="executes all tests (gwt and junit)">
+	</target>
+<!--
+FIXME Fails with 
+	no swt-win32-3236 in java.library.path
+    java.lang.UnsatisfiedLinkError: no swt-win32-3236 in java.library.path 			
+-->
+	<target name="test-gwt-testcases" depends="compile" description="Runs all GwtUnit test cases">
+		<taskdef name="junit"	classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+			<classpath>
+		    	<pathelement path="${junit-dir}/junit.jar"/>
+		        <pathelement location="${ant.dir}"/>
+		    </classpath>
+		</taskdef>
+		<mkdir dir="${reports-dir}"/>
+
+		<junit 	includeantruntime="false"	printsummary="yes"	fork="true">
+			<jvmarg 	value="-Dgwt.args=-out ${test-dir}" />		 
+			<formatter 	usefile="false" type="plain" />			
+			<classpath>
+				<path refid="project.class.path" />
+				<pathelement location="${bin-dir}" />
+				<pathelement location="${src-dir}" />																	
+			</classpath>
+			<formatter type="plain" />
+			<batchtest fork="yes" todir="${reports-dir}">
+				<fileset dir="${src-dir}">
+					<include name="**/*GwtTestCase.java" />					
+				</fileset>
+			</batchtest>
+		</junit>
+		
+	</target>
+
+	<target name="test-junit-testcases" 	depends="compile" description="Runs all JUnit test cases producing reports noting results.">
+		<taskdef 	name="junit"	classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+			<classpath>
+		    	<pathelement path="${junit-dir}/junit.jar"/>
+		        <pathelement location="${ant.dir}"/>
+		    </classpath>
+		</taskdef>
+		<mkdir dir="${reports-dir}"/>
+
+		<junit printsummary="withOutAndErr" >
+			<classpath>
+				<path refid="project.class.path" />
+				<pathelement location="${bin-dir}" />
+				<pathelement location="${src-dir}" />										
+			</classpath>
+			<formatter type="plain" />
+			<batchtest fork="yes" todir="${reports-dir}">
+				<fileset dir="${src-dir}">
+					<include name="**/*TestCase.java" />
+					<exclude name="**/*GwtTestCase.java" />					
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<!--
+	Cleans all the directories that hold files that are generated as part of the build process
+	-->
+	<target name="clean">
+		<delete failonerror="false">
+			<fileset dir="${test-dir}" 		includes="*"/>
+			<fileset dir="${build-dir}" 	includes="**/*" excludes="*.zip"/>			
+			<fileset dir="${generated-dir}" includes="**/*"/>						
+			<fileset dir="${www-dir}" 		includes="**/*"/>									
+		</delete>
+	</target>
+	
+	<target name="gwt-samples-compile" depends="compile">
+
+		<delete failonerror="no">
+			<fileset dir="$${build-dir}/compiler/gwt-samples/">
+				<include name="**"/>				
+			</fileset>
+		</delete>
+		
+		<echo>Compiling KitchenSink style=OBF rocket.compiler=enabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\KitchenSink\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="enabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=OBF&amp;rocket.compiler=enabled/" />
+			<arg value="-style" />
+			<arg value="OBF" />
+			<arg value="com.google.gwt.sample.kitchensink.KitchenSink" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+		
+		<echo>Compiling KitchenSink style=OBF rocket.compiler=disabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\KitchenSink\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="disabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=OBF&amp;rocket.compiler=disabled/" />
+			<arg value="-style" />
+			<arg value="OBF" />
+			<arg value="com.google.gwt.sample.kitchensink.KitchenSink" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+	
+		<echo>Compiling KitchenSink style=DETAILED rocket.compiler=enabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\KitchenSink\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="enabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=DETAILED&amp;rocket.compiler=enabled" />
+			<arg value="-style" />
+			<arg value="DETAILED" />
+			<arg value="com.google.gwt.sample.kitchensink.KitchenSink" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+		
+		<echo>Compiling KitchenSink style=DETAILED rocket.compiler=disabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\KitchenSink\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="disabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=DETAILED&amp;rocket.compiler=disabled" />
+			<arg value="-style" />
+			<arg value="DETAILED" />
+			<arg value="com.google.gwt.sample.kitchensink.KitchenSink" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+
+		<echo>Compiling Mail style=OBF rocket.compiler=enabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\Mail\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="enabled" />
+			<sysproperty 	key="rocket.compiler.InvokeClinitsAtStartupMover"	value="disabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=OBF&amp;rocket.compiler=enabled/" />
+			<arg value="-style" />
+			<arg value="OBF" />
+			<arg value="com.google.gwt.sample.mail.Mail" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+		
+		<echo>Compiling Mail style=OBF rocket.compiler=disabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\Mail\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="disabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=OBF&amp;rocket.compiler=disabled/" />
+			<arg value="-style" />
+			<arg value="OBF" />
+			<arg value="com.google.gwt.sample.mail.Mail" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+		
+
+		<echo>Compiling Mail style=DETAILED rocket.compiler=enabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\Mail\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="enabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=DETAILED&amp;rocket.compiler=enabled/" />
+			<arg value="-style" />
+			<arg value="DETAILED" />
+			<arg value="com.google.gwt.sample.mail.Mail" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+		
+		<echo>Compiling Mail style=DETAILED rocket.compiler=disabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\Mail\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="disabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=DETAILED&amp;rocket.compiler=disabled/" />
+			<arg value="-style" />
+			<arg value="DETAILED" />
+			<arg value="com.google.gwt.sample.mail.Mail" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+
+		<echo>Compiling I18n style=OBF rocket.compiler=enabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\I18n\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="enabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=OBF&amp;rocket.compiler=enabled/" />
+			<arg value="-style" />
+			<arg value="OBF" />
+			<arg value="com.google.gwt.sample.i18n.I18n" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+		
+		<echo>Compiling I18n style=OBF rocket.compiler=disabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\I18n\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="disabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=OBF&amp;rocket.compiler=disabled/" />
+			<arg value="-style" />
+			<arg value="OBF" />
+			<arg value="com.google.gwt.sample.i18n.I18n" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+
+		<echo>Compiling I18n style=DETAILED rocket.compiler=enabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\I18n\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="enabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=DETAILED&amp;rocket.compiler=enabled/" />
+			<arg value="-style" />
+			<arg value="DETAILED" />
+			<arg value="com.google.gwt.sample.i18n.I18n" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>
+		
+		<echo>Compiling I18n style=DETAILED rocket.compiler=disabled</echo>
+		<java	maxmemory="256M"	failonerror="yes"	classname="com.google.gwt.dev.GWTCompiler"	fork="yes">
+			<classpath path="${bin-dir}" />
+			<classpath path="${gwt-samples-dir}\I18n\src" />
+			<classpath refid="gwt-compile.class.path" />		
+			<sysproperty 	key="rocket.compiler"	value="disabled" />
+			
+			<arg value="-out" />
+			<arg value="${build-dir}/compiler/gwt-samples/style=DETAILED&amp;rocket.compiler=disabled/" />
+			<arg value="-style" />
+			<arg value="DETAILED" />
+			<arg value="com.google.gwt.sample.i18n.I18n" />
+			<arg value="-logLevel" />
+			<arg value="ERROR" />			
+		</java>		
+
+	</target>	
+</project>
