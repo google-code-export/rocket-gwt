@@ -5,33 +5,38 @@
 <meta name='gwt:module' content='rocket.widget.test.resizablepanel.ResizablePanel'>
 <script language="javascript" src="gwt.js"></script>
 <style>
+
+BODY {
+	margin: 10px;
+}
+
 BODY, TABLE{
-	font-family: Verdana, Arial, Helvetica, Sans-serif;
+	font-family: Verdana, Arial;
 	font-size: 11px;
+}
+
+TABLE {
+	border-collapse: collapse;
+	border-spacing: none;
 }
 
 TEXTAREA, IMG, SPAN {
 	margin: 0px;
 	padding: 0px;
-	border: 0px;
-}
-
-TABLE{
-}
-
-.rocket-resizablePanel {
-	background-color: #888;
 	border-width: 1px;
 	border-color: black;
 	border-style: solid;
 }
 
-.rocket-resizablePanel{
+.rocket-resizablePanel {
+	background-color: #888;
+	border-width: 0px;
 }
 
 .rocket-resizablePanel-widget{
-	background-color: #fff;
+	background-color: #cde; /* the red background should never been seen on textareas and images*/
 }
+
 .rocket-resizablePanel-rightHandle,
 .rocket-resizablePanel-cornerHandle,
 .rocket-resizablePanel-bottomHandle{	
@@ -39,48 +44,19 @@ TABLE{
 }	
 
 .rocket-resizablePanel-rightHandle {
-	width: 7px;
-		
-	border-left-color: #ccc;
-	border-top-color: #ccc;
-	border-right-color: #888;
-	border-bottom-width: 0px;	
-	border-width: 1px;
-	border-style: solid;
-	
+	width: 8px;
 	cursor: e-resize;
 }
 
 .rocket-resizablePanel-cornerHandle {
-	width: 7px;
+	width: 8px;
 	height: 8px;
-
-	border-left-width: 0px;
-	border-top-width: 0px;
-	border-right-width: 1px;
-	border-right-color: #888;
-	border-bottom-width: 1px;
-	border-bottom-color: #888;
-	border-style: solid;
-		
-	padding-left: 7px;
-		
 	cursor: se-resize;
 	background: url(corner.gif) bottom right no-repeat;
 }
 
 .rocket-resizablePanel-bottomHandle{
-	height: 7px;
-	
-	border-left-width: 1px;
-	border-left-color: #888;
-	border-top-width: 1px;
-	border-top-color: #888;
-	border-right-width: 1px;
-	border-bottom-width: 1px;
-	border-bottom-color: #888;
-	border-style: solid;
-	
+	height: 8px;
 	cursor: s-resize;
 }
 
@@ -88,6 +64,8 @@ TABLE{
 	cursor: pointer;
 	opacity: 0.5;
 	filter(alpha=50);
+	
+	background-color: #abc;
 }
 
 .gwt-grid {

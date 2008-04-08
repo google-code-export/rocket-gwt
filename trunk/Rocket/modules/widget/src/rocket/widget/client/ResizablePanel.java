@@ -18,24 +18,25 @@ package rocket.widget.client;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import rocket.dom.client.Dom;
 import rocket.event.client.ChangeEventListener;
+import rocket.event.client.Event;
 import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.EventListenerAdapter;
-import rocket.event.client.EventPreviewAdapter;
 import rocket.event.client.MouseDownEvent;
 import rocket.event.client.MouseMoveEvent;
 import rocket.event.client.MouseUpEvent;
+import rocket.selection.client.Selection;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.util.client.Checker;
-import rocket.util.client.JavaScript;
+import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
@@ -45,6 +46,9 @@ import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
  * A ResizablePanel is a special panel that contains a single child widget which
  * can be resized by the user dragging any of the handles.
  * 
+ * The width and height of the panel cannot be implicitly set but must be controlled by sizing the child widget which will
+ * cause the panel to surround it to expand /shrink to accomodate the new child widget's dimensions.
+ *  
  * The width/height may be constrained by the following properties
  * <ul>
  * <li>minimum width/height</li>
@@ -75,28 +79,29 @@ public class ResizablePanel extends CompositePanel {
 	}
 
 	protected Panel createPanel() {
-		return new Grid(2, 2);
+		final Grid grid = new Grid(2, 2);
+		
+		grid.setBorderWidth(0);
+		grid.setCellPadding(0);
+		grid.setCellSpacing(0);
+		
+		return grid;
 	}
 
 	protected Grid getGrid() {
 		return (Grid) this.getPanel();
 	}
 
+	/**
+	 * Prepares the 4 cells, adding the right style
+	 */
 	protected void afterCreatePanel() {
-		final Grid grid = this.getGrid();
-		grid.setBorderWidth(0);
-		grid.setCellPadding(0);
-		grid.setCellSpacing(0);
-
-		final String handleWidth = "";
-		final String handleHeight = "";
-
-		this.prepareTd(0, 0, "center", "middle", "100%", "100%", this.getWidgetStyle());
-		this.prepareTd(0, 1, "right", "middle", handleWidth, "100%", this.getRightHandleStyle());
-		this.prepareTd(1, 0, "right", "bottom", handleWidth, handleHeight, this.getBottomHandleStyle());
-		this.prepareTd(1, 1, "center", "bottom", "100%", handleHeight, this.getCornerHandleStyle());
+		this.prepareCell(0, 0, this.getWidgetStyle() );
+		this.prepareCell(0, 1, this.getRightHandleStyle());	
+		this.prepareCell(1, 0, this.getBottomHandleStyle() );
+		this.prepareCell(1, 1, this.getCornerHandleStyle());
 	}
-
+	
 	protected String getWidgetStyle() {
 		return WidgetConstants.RESIZABLE_PANEL_WIDGET_STYLE;
 	}
@@ -113,33 +118,282 @@ public class ResizablePanel extends CompositePanel {
 		return WidgetConstants.RESIZABLE_PANEL_CORNER_HANDLE_STYLE;
 	}
 
-	protected void prepareTd(final int row, final int column, final String horizontalAlign, final String verticalAlign, final String width,
-			final String height, final String styleName) {
-
+	/**
+	 * Prepares one of the cells that belong to the grid that is used to create and display the ResizablePanel.
+	 * @param row
+	 * @param column
+	 * @param styleName
+	 */
+	protected void prepareCell(final int row, final int column, final String styleName) {
+		Checker.notNull( "parameter:styleName", styleName );
+		
 		final Element element = this.getGrid().getCellFormatter().getElement(row, column);
-
-		// DOM.setElementProperty(element, "align", horizontalAlign);
-		// DOM.setStyleAttribute(element, "verticalAlign", verticalAlign);
-		DOM.setElementProperty(element, "width", width);
-		DOM.setElementProperty(element, "height", height);
 		DOM.setElementProperty(element, "className", styleName);
 
-		DOM.sinkEvents(element, EventBitMaskConstants.MOUSE_DOWN);
-		DOM.setEventListener(element, new EventListenerAdapter() {
-			protected void onMouseDown(final MouseDownEvent event) {
-				ResizablePanel.this.onMouseDown(event);
-			}
-		});
-		DOM.setInnerHTML(element, " ");
+		DOM.setInnerHTML(element, " ");	
 	}
+	
+	protected void onAttach(){
+		super.onAttach();
+		
+		// only attach listeners when widget is attached.
+		this.setHandleEventListeners( this.createMouseListener(true, false), this.createMouseListener(true, true), this.createMouseListener(false, true));
+	}
+	
+	protected void onDetach(){
+		super.onDetach();
+		
+		// remove event listeners from handles..
+		this.setHandleEventListeners(null, null, null);
+	}
+	
+	/**
+	 * Helper which sets or removes out the listeners for the right, corner and bottom resizable panel handles.
+	 * 
+	 * Null parameters actually remove the event listener for that particular element.
+	 * @param right
+	 * @param corner
+	 * @param bottom
+	 */
+	protected void setHandleEventListeners( final EventListener right, final EventListener corner, final EventListener bottom ){
+		final CellFormatter formatter = this.getGrid().getCellFormatter();
+		final Element rightElement = formatter.getElement(0, 1 );
+		DOM.setEventListener(rightElement, right );
+		DOM.sinkEvents(rightElement, EventBitMaskConstants.MOUSE_DOWN );
+		
+		final Element cornerElement = formatter.getElement(1, 1 );
+		DOM.setEventListener(cornerElement, corner );
+		DOM.sinkEvents(cornerElement, EventBitMaskConstants.MOUSE_DOWN );
+		
+		final Element bottomElement = formatter.getElement(1, 0 );
+		DOM.setEventListener(bottomElement, bottom );
+		DOM.sinkEvents(bottomElement, EventBitMaskConstants.MOUSE_DOWN );
+	}
+	
+	/**
+	 * Factory which creates the appropriate mouse listener for a particular handle.
+	 * @param canUpdateWidth
+	 * @param canUpdateHeight
+	 * @return
+	 */
+	protected HandleMouseDragger createMouseListener( final boolean canUpdateWidth, final boolean canUpdateHeight ){
+		return new HandleMouseDragger(){
+			protected boolean canUpdateWidth(){
+				return canUpdateWidth;
+			}
+			protected boolean canUpdateHeight(){
+				return canUpdateHeight;
+			}
+		};
+	}
+	/**
+	 * Abstract class with several methods that tell whether or not the panel should stretch in that particular direction.
+	 * @author n9834386
+	 */
+	abstract class HandleMouseDragger extends EventListenerAdapter implements com.google.gwt.user.client.EventPreview{	
+		
+		protected void onMouseDown(final MouseDownEvent event) {
+			Checker.notNull("parameter:event", event );
+			
+			// stop mouse selection...
+			Selection.disableTextSelection();
+			event.stop();
 
+			// save the panel's width/height for later usage, particularly when attempting to maintain the aspect ratio.
+			final Widget widget = ResizablePanel.this.getWidget();
+			widget.addStyleName( ResizablePanel.this.getDraggedWidgetStyle() );
+			
+			final Element element = widget.getElement();
+			
+			final int width = ComputedStyle.getInteger(element, Css.WIDTH, CssUnit.PX, 0);
+			this.setInitialWidgetWidth(width);
+			
+			final int height = ComputedStyle.getInteger(element, Css.HEIGHT, CssUnit.PX, 0);
+			this.setInitialWidgetHeight(height);
+			
+			// record the initial mouse position
+			this.setInitialMouseX( event.getPageX() );			
+			this.setInitialMouseY( event.getPageY() );
+			
+			// install self as a event preview
+			this.install();
+		}
+		
+		/**
+		 * Routes the event preview event.
+		 */
+		public boolean onEventPreview(final com.google.gwt.user.client.Event rawEvent) {
+			Event event = null;
+			boolean cancelled = false;
+
+			try {
+				event = Event.getEvent(rawEvent);
+
+				this.beforeDispatching(event);
+				this.dispatch(event);
+				this.afterDispatching(event);
+
+				cancelled = event.isCancelled();
+
+			} finally {
+				Utilities.destroyIfNecessary(event);
+			}
+
+			return !cancelled;
+		}
+		
+		void install() {
+			DOM.addEventPreview(this);
+		}
+
+		void uninstall() {
+			DOM.removeEventPreview(this);
+		}
+		
+		/**
+		 * The position of the mouse when the drag was initiated.
+		 */
+		int initialMouseX;
+		
+		int getInitialMouseX(){
+			return this.initialMouseX;
+		}
+		
+		void setInitialMouseX( final int initialMouseX ){
+			this.initialMouseX = initialMouseX;
+		}
+		
+		int initialMouseY;
+		
+		int getInitialMouseY(){
+			return this.initialMouseY;
+		}
+		
+		void setInitialMouseY( final int initialMouseY ){
+			this.initialMouseY = initialMouseY;
+		}
+		
+		protected void onMouseMove( final MouseMoveEvent event ){
+			if(this.canUpdateWidth()){
+				this.updateWidth(event);
+			}
+			if(this.canUpdateHeight()){
+				this.updateHeight(event);
+			}
+			
+			event.cancelBubble(true);	
+			event.stop();
+		}
+		
+		protected void updateWidth( final MouseMoveEvent event ){
+			final int initialMousePageX = this.getInitialMouseX();			
+			
+			final int deltaX = event.getPageX() - initialMousePageX;
+			
+			final int width = this.getInitialWidgetWidth();
+			int newWidth = width + deltaX;
+
+			newWidth = Math.min(Math.max(newWidth, ResizablePanel.this.getMinimumWidth()), ResizablePanel.this.getMaximumWidth());
+			
+			final Widget widget = ResizablePanel.this.getWidget();
+			widget.setWidth( newWidth + "px");
+			
+			// if aspect ratio is enabled also update the height...
+			if( ResizablePanel.this.isKeepAspectRatio() ){
+				final float ratio = this.getAspectRatio();
+				final int newHeight = (int) ( newWidth / ratio );
+				widget.setHeight( newHeight + "px");
+			}
+		}
+		
+		protected void updateHeight( final MouseMoveEvent event ){
+			final int initialMousePageY = this.getInitialMouseY();			
+			
+			final int deltaY = event.getPageY() - initialMousePageY;
+			
+			final int height = this.getInitialWidgetHeight();
+			int newHeight = height + deltaY;
+
+			newHeight = Math.min(Math.max(newHeight, ResizablePanel.this.getMinimumHeight()), ResizablePanel.this.getMaximumHeight());
+			
+			final Widget widget = ResizablePanel.this.getWidget();
+			widget.setHeight( newHeight + "px");
+			
+			// if aspect ratio is enabled also update the height...
+			if( ResizablePanel.this.isKeepAspectRatio() ){
+				final float ratio = this.getAspectRatio();
+				final int newWidth = (int) ( newHeight * ratio );
+				widget.setWidth( newWidth + "px");	
+			}
+		}
+		
+		/**
+		 * When the mouse is released fire interested event listeners, uninstall the evnet previewer and reenable text selection.
+		 */
+		protected void onMouseUp( final MouseUpEvent event ){
+			final Widget widget = ResizablePanel.this.getWidget();
+			widget.removeStyleName( ResizablePanel.this.getDraggedWidgetStyle() );
+			
+			ResizablePanel.this.getEventListenerDispatcher().getChangeEventListeners().fireChange(ResizablePanel.this);
+			
+			Selection.enableTextSelection();
+			event.cancelBubble(true);
+			event.stop();
+			
+			this.uninstall();
+		}	
+		
+		/**
+		 * The initial width of the ResizablePanel's only child widget
+		 */
+		int initialWidgetWidth;
+		
+		protected int getInitialWidgetWidth(){
+			return initialWidgetWidth;			
+		}
+		protected void setInitialWidgetWidth( final int initialWidgetWidth ){
+			this.initialWidgetWidth = initialWidgetWidth;
+		}
+		
+		/**
+		 * The initial height of the ResizablePanel's only child widget
+		 */
+		int initialWidgetHeight;
+		
+		protected int getInitialWidgetHeight(){
+			return this.initialWidgetHeight;
+		}		
+		protected void setInitialWidgetHeight( final int initialWidgetHeight ){
+			this.initialWidgetHeight = initialWidgetHeight;
+		}
+					
+		/**
+		 * Returns the aspect ratio of the resizable panel expressed as a ratio of width/height.
+		 * A value of 2.0 indicates the width is twice as wide as the height.
+		 * @return
+		 */
+		protected float getAspectRatio(){
+			return this.getInitialWidgetWidth() * 1.0f / this.getInitialWidgetHeight();
+		}
+		
+		/**
+		 * Corner and Right handle sub classes will return true otherwise returns false.
+		 * @return
+		 */
+		abstract protected boolean canUpdateWidth();
+		/**
+		 * Corner and bottom handle sub classes will return true otherwise returns false.
+		 * @return
+		 */
+		abstract protected boolean canUpdateHeight();
+	}
+	
 	protected String getInitialStyleName() {
 		return WidgetConstants.RESIZABLE_PANEL_STYLE;
 	}
 
 	protected int getSunkEventsBitMask() {
-		return EventBitMaskConstants.CHANGE | EventBitMaskConstants.FOCUS | EventBitMaskConstants.MOUSE_OVER
-				| EventBitMaskConstants.MOUSE_OUT;
+		return 0;
 	}
 
 	public Widget getWidget() {
@@ -148,21 +402,6 @@ public class ResizablePanel extends CompositePanel {
 
 	public void setWidget(final Widget widget) {
 		this.getGrid().setWidget(0, 0, widget);
-
-		final Element element = widget.getElement();
-		final String inlineWidth =InlineStyle.getString(element, Css.WIDTH);
-		final String inlineHeight = InlineStyle.getString(element, Css.HEIGHT);
-		JavaScript.setString(element, "__width", inlineWidth);
-		JavaScript.setString(element, "__height", inlineHeight);
-		
-		final String overflowX = InlineStyle.getString(element, Css.OVERFLOW_X);
-		final String overflowY = InlineStyle.getString(element, Css.OVERFLOW_Y);
-		JavaScript.setString(element, "__overflowX", overflowX);
-		JavaScript.setString(element, "__overflowY", overflowY);
-		
-		widget.setWidth("100%");
-		widget.setHeight("100%");
-		InlineStyle.setString(element, Css.OVERFLOW, "hidden");
 	}
 
 	public void insert(final Widget widget, final int indexBefore) {
@@ -173,24 +412,12 @@ public class ResizablePanel extends CompositePanel {
 	}
 
 	public boolean remove(final Widget widget) {
-		final boolean removed = this.getGrid().remove(widget);
-
-		if (removed) {
-			final Element element = widget.getElement();
-			final String inlineWidth = JavaScript.getString(element, "__width");
-			final String inlineHeight = JavaScript.getString(element, "__height");
-			InlineStyle.setString(element, Css.WIDTH, inlineWidth);
-			InlineStyle.setString(element, Css.HEIGHT, inlineHeight);
-			
-			final String inlineOverflowX = JavaScript.getString(element, "__overflowX");
-			final String inlineOverflowY = JavaScript.getString(element, "__overflowY");
-			InlineStyle.setString(element, Css.OVERFLOW_X, inlineOverflowX);
-			InlineStyle.setString(element, Css.OVERFLOW_Y, inlineOverflowY);
-		}
-
-		return removed;
+		return this.getGrid().remove(widget);
 	}
 
+	/**
+	 * This iterator may be used to iterate over the solitary widget contained by this ResizablePanel
+	 */
 	public Iterator iterator() {
 		return new Iterator() {
 
@@ -217,144 +444,18 @@ public class ResizablePanel extends CompositePanel {
 		};
 	}
 
-	protected void onMouseDown(final MouseDownEvent event) {
-		final Element panel = this.getElement();
-		final int panelWidth = ComputedStyle.getInteger(panel, Css.WIDTH, CssUnit.PX, 0);
-		final int panelHeight = ComputedStyle.getInteger(panel, Css.HEIGHT, CssUnit.PX, 0);
-
-		final Hijacker hijacker = new Hijacker(panel);
-
-		// create the dragged ghost...
-		final Element draggedWidget = Dom.cloneElement(panel, true);
-		JavaScript.setString(draggedWidget, "className", this.getDraggedWidgetStyle());
-		InlineStyle.setString(draggedWidget, Css.POSITION, "absolute");
-		InlineStyle.setInteger(draggedWidget, Css.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(draggedWidget, Css.TOP, 0, CssUnit.PX);
-		InlineStyle.setInteger(draggedWidget, Css.Z_INDEX, 10000, CssUnit.NONE);
-		InlineStyle.setString(draggedWidget, Css.USER_SELECT, Css.USER_SELECT_DISABLED);
-
-		final Element parent = hijacker.getParent();
-		final int childIndex = hijacker.getChildIndex();
-
-		// insert a div that will be parent of the panel and the ghost.
-		final Element container = DOM.createDiv();
-		InlineStyle.setString(container, Css.POSITION, "relative");
-		;
-		DOM.appendChild(container, panel);
-		DOM.insertChild(parent, container, childIndex);
-
-		DOM.appendChild(container, draggedWidget);
-
-		// record the coordinates of the mouse
-		final int initialMousePageX = event.getPageX();
-		final int initialMousePageY = event.getPageY();
-
-		// install a previewer...
-
-		boolean updateWidth = false;
-		boolean updateHeight = false;
-
-		while (true) {
-			final Element target = event.getTarget();
-			final CellFormatter cellFormatter = ResizablePanel.this.getGrid().getCellFormatter();
-			final Element right = cellFormatter.getElement(0, 1);
-			if (DOM.isOrHasChild(right, target)) {
-				updateWidth = true;
-				break;
-			}
-
-			final Element bottom = cellFormatter.getElement(1, 0);
-			if (DOM.isOrHasChild(bottom, target)) {
-				updateHeight = true;
-				break;
-			}
-			final Element corner = cellFormatter.getElement(1, 1);
-			// Checker.checkSame( "should be corner handle", corner, target
-			// );
-			updateWidth = true;
-			updateHeight = true;
-			break;
-		}
-
-		final boolean updateWidth0 = updateWidth;
-		final boolean updateHeight0 = updateHeight;
-
-		final EventPreviewAdapter previewer = new EventPreviewAdapter() {
-			protected void onMouseMove(final MouseMoveEvent event) {
-				if (updateWidth0) {
-					final int deltaX = event.getPageX() - initialMousePageX;
-					int newWidth = panelWidth + deltaX;
-
-					newWidth = Math.min(Math.max(newWidth, ResizablePanel.this.getMinimumWidth()), ResizablePanel.this.getMaximumWidth());
-					InlineStyle.setInteger(draggedWidget, Css.WIDTH, newWidth, CssUnit.PX);
-				}
-
-				if (updateHeight0) {
-					final int deltaY = event.getPageY() - initialMousePageY;
-					int newHeight = panelHeight + deltaY;
-					newHeight = Math.min(Math.max(newHeight, ResizablePanel.this.getMinimumHeight()), ResizablePanel.this
-							.getMaximumHeight());
-					InlineStyle.setInteger(draggedWidget, Css.HEIGHT, newHeight, CssUnit.PX);
-				}
-				InlineStyle.setString(draggedWidget, Css.OVERFLOW, "hidden");
-				event.cancelBubble(true);
-			}
-
-			protected void onMouseUp(final MouseUpEvent event) {
-				this.uninstall();
-
-				int newWidth = 0;
-				int newHeight = 0;
-
-				while (true) {
-					if (false == ResizablePanel.this.isKeepAspectRatio()) {
-						newWidth = ComputedStyle.getInteger(draggedWidget, Css.WIDTH, CssUnit.PX, 0);
-						newHeight = ComputedStyle.getInteger(draggedWidget, Css.HEIGHT, CssUnit.PX, 0);
-						break;
-					}
-
-					if (updateWidth0 && false == updateHeight0) {
-						final float ratio = panelWidth * 1.0f / panelHeight;
-						newWidth = ComputedStyle.getInteger(draggedWidget, Css.WIDTH, CssUnit.PX, 0);
-						newHeight = (int) (newWidth * ratio);
-						break;
-					}
-					if (false == updateWidth0 && updateHeight0) {
-						final float ratio = panelHeight * 1.0f / panelWidth;
-						newHeight = ComputedStyle.getInteger(draggedWidget, Css.HEIGHT, CssUnit.PX, 0);
-						newWidth = (int) (newHeight * ratio);
-						break;
-					}
-					newWidth = ComputedStyle.getInteger(draggedWidget, Css.WIDTH, CssUnit.PX, 0);
-					newHeight = ComputedStyle.getInteger(draggedWidget, Css.HEIGHT, CssUnit.PX, 0);
-
-					final float originalDiagonalLength = (float) Math.sqrt(panelWidth * panelWidth + panelHeight * panelHeight);
-					final float newDiagonalLength = (float) Math.sqrt(newWidth * newWidth + newHeight * newHeight);
-					final float changeRatio = newDiagonalLength / originalDiagonalLength;
-
-					newWidth = (int) (changeRatio * panelWidth);
-					newHeight = (int) (changeRatio * panelHeight);
-					break;
-				}
-
-				// remove the ghost from the dom.
-				Dom.removeFromParent(container);
-				hijacker.restore();
-
-				ResizablePanel.this.setWidth(newWidth + "px");
-				ResizablePanel.this.setHeight(newHeight + "px");
-				event.cancelBubble(true);
-
-				ResizablePanel.this.getEventListenerDispatcher().getChangeEventListeners().fireChange(ResizablePanel.this);
-			}
-		};
-		previewer.install();
-	}
-
 	protected String getDraggedWidgetStyle() {
 		return WidgetConstants.RESIZABLE_PANEL_DRAGGED_WIDGET_STYLE;
 	}
-
+	
+	public void setWidth( final String width ){
+		throw new UnsupportedOperationException("setWidth()");
+	}
+	
+	public void setHeight( final String height ){
+		throw new UnsupportedOperationException("setHeight()");
+	}
+	
 	/**
 	 * The minimum width in pixels that the child widget may be set.
 	 */
@@ -429,6 +530,16 @@ public class ResizablePanel extends CompositePanel {
 
 	public void setKeepAspectRatio(final boolean keepAspectRatio) {
 		this.keepAspectRatio = keepAspectRatio;
+		this.setCornerHandleVisibility( !keepAspectRatio );
+	}
+	
+	/**
+	 * The corner handle should not be visible when keeping the aspect ratio.
+	 * @param visible
+	 */
+	protected void setCornerHandleVisibility( final boolean visible ){
+		final Element element = this.getGrid().getCellFormatter().getElement(1, 1);
+		InlineStyle.setString(element, Css.VISIBILITY, visible ? "visible" : "hidden");
 	}
 
 	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
@@ -443,5 +554,4 @@ public class ResizablePanel extends CompositePanel {
 		return super.toString() + ", minimumWidth: " + this.minimumWidth + ", maximumWidth: " + maximumWidth + ", minimumHeight: "
 				+ this.minimumHeight + ", maximumHeight: " + maximumHeight + ", keepAspectRatio: " + this.keepAspectRatio;
 	}
-
 }
