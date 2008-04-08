@@ -49,10 +49,13 @@ public class ResizablePanelTest implements EntryPoint {
 	final int MINIMUM_HEIGHT = 150;
 
 	final int MAXIMUM_HEIGHT = 400;
-
+	
 	final int GRID_ROW_COUNT = 3;
 
 	final int GRID_COLUMN_COUNT = 3;
+	
+	final String INITIAL_WIDTH = ( MINIMUM_WIDTH + MAXIMUM_WIDTH ) / 2 + "px";
+	final String INITIAL_HEIGHT = ( MINIMUM_HEIGHT + MAXIMUM_HEIGHT ) / 2 + "px";
 
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
@@ -79,12 +82,14 @@ public class ResizablePanelTest implements EntryPoint {
 		rootPanel.add(new Label("Resizable TextArea"));
 
 		final TextArea textArea0 = new TextArea();
+		textArea0.setSize( INITIAL_WIDTH, INITIAL_HEIGHT);
 		textArea0.setText(TEXT);
 		rootPanel.add(this.createResizablePanel(textArea0, false, countUpdater));
 
 		rootPanel.add(new Label("Resizable TextArea (keeps aspect ratio)"));
 		final TextArea textArea1 = new TextArea();
 		textArea1.setText(TEXT);
+		textArea1.setSize( INITIAL_WIDTH, INITIAL_HEIGHT);
 		rootPanel.add(this.createResizablePanel(textArea1, true, countUpdater));
 
 		rootPanel.add(new Label("Resizable image"));
@@ -102,15 +107,13 @@ public class ResizablePanelTest implements EntryPoint {
 
 		final Label label0 = new Label();
 		label0.setText(TEXT);
-		label0.setWidth((MAXIMUM_WIDTH + MINIMUM_WIDTH) / 2 + "px");
-		label0.setHeight((MAXIMUM_HEIGHT + MINIMUM_HEIGHT) / 2 + "px");
+		label0.setSize( INITIAL_WIDTH, INITIAL_HEIGHT);
 		rootPanel.add(this.createResizablePanel(label0, false, countUpdater));
 
 		rootPanel.add(new Label("Resizable Label (keeps aspect ratio)"));
 		final Label label1 = new Label();
 		label1.setText(TEXT);
-		label1.setWidth((MAXIMUM_WIDTH + MINIMUM_WIDTH) / 2 + "px");
-		label1.setHeight((MAXIMUM_HEIGHT + MINIMUM_HEIGHT) / 2 + "px");
+		label1.setSize( INITIAL_WIDTH, INITIAL_HEIGHT);
 		rootPanel.add(this.createResizablePanel(label1, true, countUpdater));
 
 		rootPanel.add(new Label("Resizable Grid(html table)"));
@@ -120,8 +123,8 @@ public class ResizablePanelTest implements EntryPoint {
 				grid0.setWidget(r, c, new Label("x"));
 			}
 		}
-		grid0.setWidth((MAXIMUM_WIDTH + MINIMUM_WIDTH) / 2 + "px");
-		grid0.setHeight((MAXIMUM_HEIGHT + MINIMUM_HEIGHT) / 2 + "px");
+		grid0.setSize( INITIAL_WIDTH, INITIAL_HEIGHT);
+		
 		rootPanel.add(this.createResizablePanel(grid0, false, countUpdater));
 
 		rootPanel.add(new Label("Resizable Grid(html table)(keeps aspect ratio)"));
@@ -131,8 +134,7 @@ public class ResizablePanelTest implements EntryPoint {
 				grid1.setWidget(r, c, new Label("x"));
 			}
 		}
-		grid1.setWidth((MAXIMUM_WIDTH + MINIMUM_WIDTH) / 2 + "px");
-		grid1.setHeight((MAXIMUM_HEIGHT + MINIMUM_HEIGHT) / 2 + "px");
+		grid1.setSize( INITIAL_WIDTH, INITIAL_HEIGHT);
 		rootPanel.add(this.createResizablePanel(grid1, true, countUpdater));
 
 		rootPanel.add(new Label("Resizable FlowPanel with multiple child widgets."));
@@ -154,14 +156,14 @@ public class ResizablePanelTest implements EntryPoint {
 
 	protected ResizablePanel createResizablePanel(final Widget widget, final boolean keepAspectRatio,
 			final ChangeEventListener changeEventListener) {
+
 		final ResizablePanel panel = new ResizablePanel();
+		
 		panel.setMinimumWidth(MINIMUM_WIDTH);
 		panel.setMaximumWidth(MAXIMUM_WIDTH);
-		panel.setWidth(MINIMUM_WIDTH + "px");
 
 		panel.setMinimumHeight(MINIMUM_HEIGHT);
 		panel.setMaximumHeight(MAXIMUM_HEIGHT);
-		panel.setHeight(MINIMUM_HEIGHT + "px");
 
 		panel.setKeepAspectRatio(keepAspectRatio);
 
