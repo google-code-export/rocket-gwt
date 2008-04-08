@@ -219,7 +219,7 @@ abstract public class Event implements Destroyable {
 		this.cancelled = this.cancelled | cancel;
 	}
 
-	boolean isCancelled() {
+	public boolean isCancelled() {
 		return this.cancelled;
 	}
 
