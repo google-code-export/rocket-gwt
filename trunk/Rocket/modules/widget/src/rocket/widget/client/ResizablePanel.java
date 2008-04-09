@@ -192,6 +192,9 @@ public class ResizablePanel extends CompositePanel {
 	 */
 	abstract class HandleMouseDragger extends EventListenerAdapter implements com.google.gwt.user.client.EventPreview{	
 		
+		/**
+		 * This method is fired when the user initiates a resize by pressing the mouse button.
+		 */
 		protected void onMouseDown(final MouseDownEvent event) {
 			Checker.notNull("parameter:event", event );
 			
@@ -274,18 +277,24 @@ public class ResizablePanel extends CompositePanel {
 		}
 		
 		protected void onMouseMove( final MouseMoveEvent event ){
-			if(this.canUpdateWidth()){
-				this.updateWidth(event);
+			boolean changed = false;
+			if( this.canUpdateWidth() ){
+				changed = this.updateWidth(event);
 			}
-			if(this.canUpdateHeight()){
+			if( this.canUpdateHeight() ){
 				this.updateHeight(event);
+				changed = true;
+			}
+			
+			if( changed ){
+				ResizablePanel.this.getEventListenerDispatcher().getChangeEventListeners().fireChange(ResizablePanel.this);
 			}
 			
 			event.cancelBubble(true);	
 			event.stop();
 		}
 		
-		protected void updateWidth( final MouseMoveEvent event ){
+		protected boolean updateWidth( final MouseMoveEvent event ){			
 			final int initialMousePageX = this.getInitialMouseX();			
 			
 			final int deltaX = event.getPageX() - initialMousePageX;
@@ -304,9 +313,10 @@ public class ResizablePanel extends CompositePanel {
 				final int newHeight = (int) ( newWidth / ratio );
 				widget.setHeight( newHeight + "px");
 			}
+			return deltaX != 0;
 		}
 		
-		protected void updateHeight( final MouseMoveEvent event ){
+		protected boolean updateHeight( final MouseMoveEvent event ){
 			final int initialMousePageY = this.getInitialMouseY();			
 			
 			final int deltaY = event.getPageY() - initialMousePageY;
@@ -325,6 +335,8 @@ public class ResizablePanel extends CompositePanel {
 				final int newWidth = (int) ( newHeight * ratio );
 				widget.setWidth( newWidth + "px");	
 			}
+			
+			return deltaY != 0;
 		}
 		
 		/**
@@ -333,9 +345,7 @@ public class ResizablePanel extends CompositePanel {
 		protected void onMouseUp( final MouseUpEvent event ){
 			final Widget widget = ResizablePanel.this.getWidget();
 			widget.removeStyleName( ResizablePanel.this.getDraggedWidgetStyle() );
-			
-			ResizablePanel.this.getEventListenerDispatcher().getChangeEventListeners().fireChange(ResizablePanel.this);
-			
+						
 			Selection.enableTextSelection();
 			event.cancelBubble(true);
 			event.stop();
