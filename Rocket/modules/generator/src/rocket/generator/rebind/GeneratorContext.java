@@ -64,6 +64,10 @@ public interface GeneratorContext {
 	void error(final String message);
 	void error(final String message, final Throwable throwable);
 	void branch();
+	/**
+	 * Causes the message to create a branch. The actual message will be buffered until a leaf message appears.
+	 */
+	void delayedBranch();
 	void unbranch();
 	
 	boolean isDebugEnabled();
