@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import rocket.compiler.TreeLoggers;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.packagee.PackageNotFoundException;
 import rocket.generator.rebind.type.NewType;
@@ -599,7 +600,13 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	protected void log(final TreeLogger.Type treeLoggerLevel, final String message, final Throwable throwable) {
 		final TreeLogger logger = this.getLogger();
 		if( this.isBranch() ){
-			final TreeLogger newTreeLogger = logger.branch( treeLoggerLevel, message, throwable );
+			final boolean delayed = this.isDelayedBranch();
+			final TreeLogger newTreeLogger = 
+				delayed ?
+				/* delayed branch */
+				TreeLoggers.delayedBranch(logger, treeLoggerLevel, message, throwable ) :
+				/* not delayed - immediate */
+				logger.branch( treeLoggerLevel, message, throwable );
 			this.getLoggers().push( newTreeLogger );
 			this.setBranch( false );
 			
@@ -623,6 +630,11 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	public void branch() {
 		this.setBranch( true );
 	}
+	
+	public void delayedBranch(){
+		this.setBranch( true );
+		this.setDelayedBranch( true );
+	}
 
 	public void unbranch(){
 		// if branch is set to true then no real branch has occured so theres no need to do anything (aka pop)
@@ -636,6 +648,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 			loggers.pop();
 		}
 		this.setBranch( false );
+		this.setDelayedBranch( false );
 	}
 	
 	/**
@@ -648,5 +661,17 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 	private void setBranch( final boolean branch ){
 		this.branch = branch;
+	}
+	
+	/**
+	 * When true indicates the next branch should delay being created until an actual leaf results.
+	 */
+	private boolean delayedBranch;
+	
+	private boolean isDelayedBranch(){
+		return this.delayedBranch;
+	}
+	private void setDelayedBranch( final boolean delayedBranch ){
+		this.delayedBranch = delayedBranch;
 	}
 }
