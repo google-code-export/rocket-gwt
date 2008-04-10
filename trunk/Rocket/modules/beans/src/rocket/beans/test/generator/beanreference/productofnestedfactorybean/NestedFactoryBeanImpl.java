@@ -17,7 +17,6 @@ package rocket.beans.test.generator.beanreference.productofnestedfactorybean;
 
 import rocket.beans.client.FactoryBean;
 import rocket.beans.test.generator.beanreference.Bean;
-import rocket.util.client.Checker;
 
 /**
  * @factoryBean-objectType rocket.beans.test.generator.beanreference.Bean

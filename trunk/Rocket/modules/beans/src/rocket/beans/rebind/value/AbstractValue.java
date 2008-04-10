@@ -62,6 +62,9 @@ abstract public class AbstractValue implements CodeBlock {
 		return false;
 	}
 	
+	public void setPropertyType( final Type ignored ){		
+	}
+	
 	/**
 	 * 
 	 */

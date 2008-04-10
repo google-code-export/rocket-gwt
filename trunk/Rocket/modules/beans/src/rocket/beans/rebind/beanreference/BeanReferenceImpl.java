@@ -67,6 +67,6 @@ public class BeanReferenceImpl extends AbstractValue implements BeanReference, V
 	}
 	
 	public String toString(){
-		return super.toString() + ", id: \"" + this.id + "\".";
+		return "bean reference: \"" + this.getId() + "\".";
 	}
 }

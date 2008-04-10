@@ -16,6 +16,7 @@
 package rocket.beans.rebind;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import rocket.generator.rebind.GeneratorContext;
@@ -35,6 +36,8 @@ public class Bean{
 		super();
 
 		this.setAspects(this.createAspects());
+		this.setConstructorValues( Collections.EMPTY_LIST );
+		this.setProperties( Collections.EMPTY_LIST );
 	}
 	
 	/**
@@ -167,7 +170,7 @@ public class Bean{
 	 */
 	private List constructorValues;
 
-	protected List getConstructorValues() {
+	public List getConstructorValues() {
 		Checker.notNull("field:constructorValues", constructorValues);
 		return this.constructorValues;
 	}
@@ -182,7 +185,7 @@ public class Bean{
 	 */
 	private List properties;
 
-	protected List getProperties() {
+	public List getProperties() {
 		Checker.notNull("field:properties", properties);
 		return this.properties;
 	}

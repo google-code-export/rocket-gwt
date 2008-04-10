@@ -84,6 +84,6 @@ abstract public class CollectionValue extends AbstractValue implements Value {
 	abstract protected CollectionTemplatedFile createTemplate();
 	
 	public String toString(){
-		return super.toString() + this.getElements().toString();
+		return this.getElements().toString();
 	}
 }

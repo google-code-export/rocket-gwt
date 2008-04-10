@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import rocket.beans.client.FactoryBean;
 import rocket.beans.rebind.alias.Alias;
@@ -77,7 +75,7 @@ import rocket.util.client.Tester;
 import rocket.util.client.Utilities;
 
 /**
- * This code generator generates a BeanFactory which will create or provide the
+ * This code generator generates a BeanFactory which will create or provide theCreating FactoryBean's for all beans
  * beans defined in an xml file.
  * 
  * A standalone class is created to implement the BeanFactory. Within this
@@ -107,8 +105,7 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.createBeanFactory(newTypeName, type);
 		this.setBeanFactory(beanFactory);
 
-		final Set unsortedBeans = document.getBeans();
-		final Set beans = this.allocateNamesToNestedBeans(unsortedBeans);
+		final Set beans = document.getBeans();
 
 		this.setBeans(this.createBeans());
 		this.setAliases(this.createAliases());
@@ -148,7 +145,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Preparing to discover components within xml file(s)");
+		context.info("Preparing to discover components within \"" + fileName + "\".");
 
 		final DocumentWalker document = new DocumentWalker();
 		document.setEntityResolver(new BeanFactoryDtdEntityResolver());
@@ -231,82 +228,6 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	/**
-	 * Visits all beans and allocates unique names to any located nested beans.
-	 * 
-	 * @param beans
-	 *            A set of beans that includes regular named beans and nested
-	 *            anonymous beans
-	 * @return Returns a set with the beans in sorted order.
-	 */
-	protected Set allocateNamesToNestedBeans(final Set beans) {
-		Checker.notNull("parameter:beans", beans);
-
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info("Allocating names to nested (anonymous) beans.");
-
-		final Iterator iterator = beans.iterator();
-		int counter = 0;
-
-		// sort beans so nested beans appear last.
-		final Set sorted = new TreeSet(new Comparator() {
-			public int compare(final Object bean, final Object otherBean) {
-				int value = 0;
-
-				while (true) {
-					final boolean nestedBean = bean instanceof NestedBean;
-					final boolean otherNestedBean = otherBean instanceof NestedBean;
-
-					// both are nested or regular beans - sort them using their
-					// id.
-					if (nestedBean == otherNestedBean) {
-						value = this.compare((Bean) bean, (Bean) otherBean);
-						break;
-					}
-
-					// make sure the non nested bean appears before the nested
-					// bean
-					value = false == nestedBean ? +1 : -1;
-					break;
-				}
-
-				return value;
-			}
-
-			int compare(final Bean bean, final Bean otherBean) {
-				return bean.getId().compareToIgnoreCase(otherBean.getId());
-			}
-		});
-
-		while (iterator.hasNext()) {
-			final Bean bean = (Bean) iterator.next();
-			sorted.add(bean);
-			if (false == (bean instanceof NestedBean)) {
-				continue;
-			}
-
-			if (false == Tester.isNullOrEmpty(bean.getId())) {
-				throwNestedBeansMustNotHaveIds(bean);
-			}
-
-			final String id = Constants.NESTED_BEAN_NAME_PREFIX + counter;
-			context.debug(id + "=" + bean.getTypeName());
-			bean.setId(id);
-
-			counter++;
-		}
-
-		context.debug("Nested beans found: " + counter);
-		context.unbranch();
-
-		return sorted;
-	}
-
-	protected void throwNestedBeansMustNotHaveIds(final Bean bean) {
-		throw new BeanFactoryGeneratorException("Nested beans should not have an id set, bean: " + bean);
-	}
-
-	/**
 	 * Walks all the bean tags building a NewNestedType FactoryBean for each
 	 * bean.
 	 * 
@@ -329,8 +250,7 @@ public class BeanFactoryGenerator extends Generator {
 			final Bean bean = (Bean) iterator.next();
 			context.branch();
 
-			final String beanName = bean instanceof NestedBean ? "anonymous ???" : bean.getId();
-			context.debug(beanName);
+			context.debug( bean.getId());
 
 			while (true) {
 				if (bean instanceof Rpc) {
@@ -352,8 +272,7 @@ public class BeanFactoryGenerator extends Generator {
 			context.unbranch();
 		}
 
-		context.debug("Total: " + beans.size() + ", beans: " + beansCounter + ", nested(anonymous): " + nestedBeanCounter + ", rpcs: "
-				+ rpcCounter);
+		context.debug("Total: " + beans.size() + ", beans: " + beansCounter + ", nested(anonymous): " + nestedBeanCounter + ", rpcs: " + rpcCounter);
 		context.unbranch();
 	}
 
@@ -553,7 +472,7 @@ public class BeanFactoryGenerator extends Generator {
 		newFactoryMethod.setBody(body);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
+		context.delayedBranch();
 		context.debug("Constructor parameter values.");
 
 		final List arguments = bean.getConstructorValues();
@@ -563,10 +482,6 @@ public class BeanFactoryGenerator extends Generator {
 			body.addArgument(value);
 
 			context.debug("" + value);
-		}
-
-		if (arguments.isEmpty()) {
-			context.debug("none");
 		}
 
 		context.unbranch();
@@ -717,7 +632,7 @@ public class BeanFactoryGenerator extends Generator {
 		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
+		context.delayedBranch();
 		context.info("Overriding satisfyInit methods for beans with custom initMethods.");
 
 		final Iterator iterator = beans.iterator();
@@ -805,7 +720,7 @@ public class BeanFactoryGenerator extends Generator {
 		final Iterator iterator = beans.iterator();
 		while (iterator.hasNext()) {
 
-			context.branch();
+			context.delayedBranch();
 
 			final Bean bean = (Bean) iterator.next();
 			final String id = bean.getId();
@@ -816,11 +731,6 @@ public class BeanFactoryGenerator extends Generator {
 					this.overrideFactoryBeanSatisfyPropertiesWithSettingServiceEntryPoint((Rpc) bean);
 					break;
 				}
-				if (bean.getProperties().size() == 0) {
-					context.debug("No properties will be set.");
-					break;
-				}
-
 				this.overrideFactoryBeanSatisfyProperties(bean);
 				break;
 			}
@@ -943,7 +853,9 @@ public class BeanFactoryGenerator extends Generator {
 						if (false == value.isCompatibleWith(propertyType)) {
 							break;
 						}
-						value.setType(propertyType);
+
+						
+						value.setPropertyType(propertyType);
 						matchingSetters.add(method);
 						break;
 					}
@@ -958,10 +870,10 @@ public class BeanFactoryGenerator extends Generator {
 
 			visitor.start(beanType);
 			if (matchingSetters.isEmpty()) {
-				this.throwUnableToFindSetter(bean, propertyName);
+				this.throwUnableToFindSetter(bean, property);
 			}
 			if (matchingSetters.size() != 1) {
-				this.throwTooManySettersFound(bean, propertyName);
+				this.throwTooManySettersFound(bean, property);
 			}
 
 			final Method setter = (Method) matchingSetters.get(0);
@@ -969,8 +881,6 @@ public class BeanFactoryGenerator extends Generator {
 
 			context.debug(propertyName + "=" + value);
 		}
-
-		context.debug(properties.size() + " properties set.");
 	}
 
 	protected void prepareValue(final Value value) {
@@ -1019,23 +929,16 @@ public class BeanFactoryGenerator extends Generator {
 		}
 	}
 
-	/**
-	 * This method throws an exception when more than one constructor satisfies
-	 * the specified values for a bean type
-	 * 
-	 * @param bean
-	 *            The bean
-	 * @param propertyName
-	 *            The property that caused the problem.
-	 */
-	protected void throwTooManySettersFound(final Bean bean, final String propertyName) {
-		throw new BeanFactoryGeneratorException("The bean " + bean + " contains more than one setter for the property \"" + propertyName
-				+ "\".");
+	protected void throwTooManySettersFound(final Bean bean, final Property property ) {
+		final String name = property.getName();
+		final Value value = property.getValue();
+		throw new BeanFactoryGeneratorException("The bean \"" + bean.getId() + "\" contains more than one setter for the property " + property + " with a value of " + value + " on type \"" + bean.getTypeName() + "\".");
 	}
 
-	protected void throwUnableToFindSetter(final Bean bean, final String propertyName) {
-		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + propertyName + "\" on the bean, bean: "
-				+ bean);
+	protected void throwUnableToFindSetter(final Bean bean, final Property property ) {
+		final String name = property.getName();
+		final Value value = property.getValue();
+		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + name + "\" on the bean \"" + bean.getId() + "\" which is a \"" + bean.getTypeName() + "\"." );
 	}
 
 	/**
@@ -1383,8 +1286,9 @@ public class BeanFactoryGenerator extends Generator {
 				continue;
 			}
 			advised.add(bean);
+			
+			context.debug( bean.getId() );
 		}
-		context.debug("Found " + advised + " of " + beans.size() + " have at least 1 aspect.");
 		context.unbranch();
 
 		return advised;

@@ -19,10 +19,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -269,6 +271,27 @@ public class DocumentWalker {
 	}
 
 	/**
+	 * this stack holds a tree of nested beans.
+	 */
+	private Stack beanStack = new Stack();
+
+	protected Stack getBeanStack(){
+		return this.beanStack;
+	}
+	
+	protected void push( final Bean bean ){
+		Checker.notNull("parameter:bean", bean );
+		this.getBeanStack().push( bean );
+	}
+	
+	protected Bean pop(){
+		return (Bean)this.getBeanStack().pop();
+	}
+	
+	protected Bean peek(){
+		return (Bean)this.getBeanStack().peek();
+	}
+	/**
 	 * Visits a single bean copying values from the xml document into the given bean.
 	 * 
 	 * @param element The bean element
@@ -278,6 +301,7 @@ public class DocumentWalker {
 		
 		final BeanTag tag = new BeanTag();
 		tag.setElement(element);
+		tag.setFilename( this.getFilename() );
 		tag.setPlaceHolderResolver( this.getPlaceHolderResolver() );
 
 		final Bean bean = new Bean();
@@ -290,11 +314,15 @@ public class DocumentWalker {
 		bean.setDestroyMethod(tag.getDestroyMethod());
 
 		this.addBean(bean);
-
+		
+		this.push( bean );
 		bean.setConstructorValues(this.visitConstructorValues(tag.getConstructorValues()));
 		bean.setProperties(this.visitProperties(tag.getProperties()));
+		
+		final Bean popped = this.pop();
+		Checker.same( "Popped bean is not the same", bean, popped );
 	}
-
+	
 	/**
 	 * A set which aggregates all beans encountered within all xml documents.
 	 */
@@ -311,8 +339,21 @@ public class DocumentWalker {
 	}
 
 	protected Set createBeans() {
-		return new HashSet();
+		return new TreeSet( BEAN_ID_SORTER);
 	}
+	
+	/**
+	 * This comparator may be used to produce a TreeSet sorted by bean id.
+	 */
+	static Comparator BEAN_ID_SORTER = new Comparator(){
+		public int compare( final Object bean, final Object otherBean ){
+			return compare( (Bean) bean, (Bean) otherBean );
+		}
+		
+		int compare( final Bean bean, final Bean otherBean ){
+			return bean.getId().compareTo( otherBean.getId() );		
+		}		
+	};
 
 	protected void addBean(final Bean bean) {
 		Checker.notNull("parameter:bean", bean);
@@ -327,6 +368,8 @@ public class DocumentWalker {
 	protected List visitProperties(final List propertys) {
 		final List properties = new ArrayList();
 
+		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
+		
 		final Iterator iterator = propertys.iterator();
 		while (iterator.hasNext()) {
 			final Element element = (Element) iterator.next();
@@ -443,27 +486,75 @@ public class DocumentWalker {
 	 * @return The new nested bean
 	 */
 	protected NestedBean visitNestedBean(final Element element ) {
+		Checker.notNull( "parameter:element", element );
+		
 		final BeanTag tag = new BeanTag();
 		tag.setElement(element);
+						
 		tag.setPlaceHolderResolver( this.getPlaceHolderResolver() );
 
 		final NestedBean bean = new NestedBean();
 		bean.setFilename( this.getFilename() );
-		
 		bean.setEagerLoaded(tag.isEagerLoaded());
-		bean.setId(tag.getId());
 		bean.setSingleton(tag.isSingleton());
 		bean.setTypeName(tag.getClassName());
 		bean.setFactoryMethod(tag.getFactoryMethod());
 		bean.setInitMethod(tag.getInitMethod());
 		bean.setDestroyMethod(tag.getDestroyMethod());
-
+		
+		if( tag.getElement().hasAttribute( Constants.BEAN_ID_ATTRIBUTE )){
+			this.throwNestedBeansMustNotHaveIds(bean);
+		}
+		
+		bean.setId( this.buildNestedBeanName() );
+		
 		this.addBean(bean);
-
+		
+		this.push( bean );
+		
 		bean.setConstructorValues(this.visitConstructorValues(tag.getConstructorValues()));
 		bean.setProperties(this.visitProperties(tag.getProperties()));
 
+		final Bean popped = this.pop();
+		Checker.same( "Popped bean is not the same", bean, popped );
+		
 		return bean;
+	}
+	
+	protected void throwNestedBeansMustNotHaveIds(final Bean bean) {
+		throw new BeanFactoryGeneratorException("Nested beans should not have an id set, bean: " + bean);
+	}
+
+	
+	/**
+	 * This string holds the name of any upcoming bean
+	 */
+	private String nestedBeanName;
+	
+	protected String buildNestedBeanName(){
+		final Bean parent = this.peek();
+		
+		final int constructorNestedBeans = this.countNestedBeans( parent.getConstructorValues() );
+		final int propertiesNestedBeans = this.countNestedBeans( parent.getProperties() );
+		final int count = constructorNestedBeans + propertiesNestedBeans;
+		
+		return parent.getId() + "-nestedBean" + count;		
+	}
+	
+	protected int countNestedBeans( final List values ){
+		Checker.notNull( "parameter:values", values );
+		
+		int count = 0;
+		
+		final Iterator properties = values.iterator();
+		while( properties.hasNext() ){
+			final Object property = properties.next();
+			if( property instanceof NestedBean ){
+				count++;
+			}
+		}	
+		
+		return count;
 	}
 
 	/**

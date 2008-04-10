@@ -16,7 +16,7 @@
 package rocket.beans.test.generator.beanreference;
 
 
-public class HasNestedBean{
+public class HasNestedBean extends Bean{
 	private Bean nestedBean;
 	
 	public Bean getNestedBean(){
