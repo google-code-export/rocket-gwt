@@ -58,6 +58,9 @@ public class NestedBean extends Bean implements Value, BeanReference{
 		};
 	}
 	
+	public void setPropertyType( final Type ignored ){		
+	}
+	
 	public boolean isCompatibleWith(final Type type) {
 		return this.getBeanReference().isCompatibleWith(type);
 	}

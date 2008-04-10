@@ -39,6 +39,10 @@ import rocket.util.client.Checker;
  */
 public class StringValue extends AbstractValue implements Value {
 
+	public StringValue(){
+		super();
+	}
+	
 	public boolean isCompatibleWith(final Type type) {
 		Checker.notNull("parameter:type", type);
 
@@ -210,6 +214,18 @@ public class StringValue extends AbstractValue implements Value {
 		Checker.notNull("parameter:value", value);
 		this.value = value;
 	}
+	
+	private Type propertyType;
+	
+	protected Type getPropertyType(){
+		return this.propertyType;
+	}
+	
+	public void setPropertyType( final Type propertyType ){
+		Checker.notNull("parameter:propertyType", propertyType );
+		this.propertyType = propertyType;
+	}
+	
 
 	public void write(final SourceWriter writer) {
 		Checker.notNull( "parameter:writer", writer );
@@ -217,7 +233,7 @@ public class StringValue extends AbstractValue implements Value {
 		CodeBlock literal = null;
 
 		while (true) {
-			final Type type = this.getType();
+			final Type type = this.getPropertyType();
 			final GeneratorContext context = this.getGeneratorContext();
 			if (type == context.getBoolean()) {
 				literal = new BooleanLiteral(this.getBooleanValue());
@@ -251,6 +267,8 @@ public class StringValue extends AbstractValue implements Value {
 				literal = new CharLiteral(this.getCharValue());
 				break;
 			}
+			
+			// will default to String for List/Set/Map which wont have set the propertyType of any StringValues
 			literal = new StringLiteral(this.getValue());
 			break;
 		}
@@ -259,6 +277,6 @@ public class StringValue extends AbstractValue implements Value {
 	}
 
 	public String toString() {
-		return super.toString() + ", value: \"" + value + "\".";
+		return "\"" + this.getValue() + "\"";
 	}
 }

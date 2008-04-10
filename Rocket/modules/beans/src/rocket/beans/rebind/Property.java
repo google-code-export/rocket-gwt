@@ -49,6 +49,6 @@ public class Property {
 	}
 	
 	public String toString(){
-		return super.toString() + ", " + this.name + "=" + this.value;
+		return this.name + "=" + this.value;
 	}
 }

@@ -86,8 +86,13 @@ public class BeanFactoryGeneratorBeanReferenceGwtTestCase extends GeneratorGwtTe
 	public void testNestedBean(){
 		final BeanFactory beanFactory = (BeanFactory)GWT.create( NestedBeanBeanFactory.class );
 		final HasNestedBean bean = (HasNestedBean) beanFactory.getBean( BEAN );
-		assertNotNull( "BeanWithNestedBean", bean );	
-		assertNotNull( "BeanWithNestedBean.nestedBean", bean.getNestedBean() );
+		assertNotNull( "BeanWithNestedBean", bean );
+		
+		final Bean nestedBean = (Bean) bean.getNestedBean();
+		assertNotNull( "BeanWithNestedBean.nestedBean", nestedBean );
+		
+		final Object $nestedBean = beanFactory.getBean( BEAN + "-nestedBean0");
+		assertSame( nestedBean, $nestedBean );
 	}
 	
 
@@ -100,6 +105,12 @@ public class BeanFactoryGeneratorBeanReferenceGwtTestCase extends GeneratorGwtTe
 		assertNotNull( "HasDoubleNestedBean.hasNestedBean", hasNestedBean );
 		
 		assertNotNull( "HasDoubleNestedBean.hasNestedBean.bean", hasNestedBean.getNestedBean() );
+		
+		final Object nestedBean = beanFactory.getBean( BEAN + "-nestedBean0");
+		assertSame( bean.getNestedBean(), nestedBean );
+		
+		final Object doubleNestedBean = beanFactory.getBean( BEAN + "-nestedBean0-nestedBean0");
+		assertSame( bean.getNestedBean().getNestedBean(), doubleNestedBean );
 	}
 
 	public void testReferencesBeanWhichIsAProductOfFactoryBean(){
@@ -114,7 +125,7 @@ public class BeanFactoryGeneratorBeanReferenceGwtTestCase extends GeneratorGwtTe
 		final NestedFactoryBeanBeanFactory beanFactory = (NestedFactoryBeanBeanFactory) GWT.create( NestedFactoryBeanBeanFactory.class );
 		final HasProductOfNestedFactoryBean bean = (HasProductOfNestedFactoryBean)beanFactory.getBean( BEAN );
 		assertNotNull( bean );
-		assertEquals( "string - if this null factory bean didnt have its property set.", "string", NestedFactoryBeanImpl.string );
+		assertEquals( "string - if null factory bean didnt have its property set.", "string", NestedFactoryBeanImpl.string );
 		assertNotNull( "reference to bean produced by factory bean", bean.getBean() );
 	}
 	

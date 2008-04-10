@@ -43,4 +43,8 @@ public class NullLiteral extends AbstractValue implements Value {
 	
 		writer.print( "" + null );
 	}
+	
+	public String toString(){
+		return "null";
+	}
 }

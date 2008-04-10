@@ -97,6 +97,6 @@ public class MapValue extends AbstractValue implements Value{
 	}
 	
 	public String toString(){
-		return super.toString() + "entries: " + this.getEntries();
+		return this.getEntries().toString();
 	}
 }

@@ -47,7 +47,11 @@ public interface Value extends CodeBlock {
 	 */
 	void setType( Type type );
 	
-	
+	/**
+	 * This method should be called after the property type has been identified.
+	 * @param type
+	 */
+	void setPropertyType( Type type );
 	/**
 	 * The source file that contained this value.
 	 * @param filename The filename
