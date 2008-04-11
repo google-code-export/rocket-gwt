@@ -279,18 +279,55 @@ public class DocumentWalker {
 		return this.beanStack;
 	}
 	
-	protected void push( final Bean bean ){
+	protected void setParentBean( final Bean bean ){
 		Checker.notNull("parameter:bean", bean );
-		this.getBeanStack().push( bean );
+		
+		final EnclosingBean parent = new EnclosingBean();
+		parent.setNestedBeanCount( 0 );
+		parent.setId( bean.getId() );
+		 
+		this.getBeanStack().push( parent );
 	}
 	
-	protected Bean pop(){
-		return (Bean)this.getBeanStack().pop();
+	protected void removeParentBean(){
+		this.getBeanStack().pop();
 	}
 	
-	protected Bean peek(){
-		return (Bean)this.getBeanStack().peek();
+	protected void addNestedBean(){
+		final EnclosingBean parent = (EnclosingBean) this.getBeanStack().peek();
+		parent.setNestedBeanCount( parent.getNestedBeanCount() + 1 );
 	}
+	
+	protected String getParentBeanId(){
+		final EnclosingBean parent = (EnclosingBean) this.getBeanStack().peek();
+		return parent.getId();
+	}
+	
+	protected int getParentBeanNestedBeanCount(){
+		final EnclosingBean parent = (EnclosingBean) this.getBeanStack().peek();
+		return parent.getNestedBeanCount();
+	}
+	
+	private static class EnclosingBean {
+		
+		int nestedBeanCount = 0;
+		
+		int getNestedBeanCount(){
+			return this.nestedBeanCount;
+		}
+		void setNestedBeanCount( final int nestedBeanCount ){
+			this.nestedBeanCount = nestedBeanCount;
+		}
+		String id;
+		
+		String getId(){
+			return this.id;
+		}
+		void setId( final String id ){
+			this.id = id;
+		}
+	}
+	
 	/**
 	 * Visits a single bean copying values from the xml document into the given bean.
 	 * 
@@ -315,12 +352,11 @@ public class DocumentWalker {
 
 		this.addBean(bean);
 		
-		this.push( bean );
+		this.setParentBean( bean );
 		bean.setConstructorValues(this.visitConstructorValues(tag.getConstructorValues()));
 		bean.setProperties(this.visitProperties(tag.getProperties()));
 		
-		final Bean popped = this.pop();
-		Checker.same( "Popped bean is not the same", bean, popped );
+		this.removeParentBean();
 	}
 	
 	/**
@@ -510,13 +546,13 @@ public class DocumentWalker {
 		
 		this.addBean(bean);
 		
-		this.push( bean );
+		this.addNestedBean();
+		this.setParentBean( bean );
 		
 		bean.setConstructorValues(this.visitConstructorValues(tag.getConstructorValues()));
 		bean.setProperties(this.visitProperties(tag.getProperties()));
 
-		final Bean popped = this.pop();
-		Checker.same( "Popped bean is not the same", bean, popped );
+		this.removeParentBean();
 		
 		return bean;
 	}
@@ -525,38 +561,12 @@ public class DocumentWalker {
 		throw new BeanFactoryGeneratorException("Nested beans should not have an id set, bean: " + bean);
 	}
 
-	
-	/**
-	 * This string holds the name of any upcoming bean
-	 */
-	private String nestedBeanName;
-	
 	protected String buildNestedBeanName(){
-		final Bean parent = this.peek();
-		
-		final int constructorNestedBeans = this.countNestedBeans( parent.getConstructorValues() );
-		final int propertiesNestedBeans = this.countNestedBeans( parent.getProperties() );
-		final int count = constructorNestedBeans + propertiesNestedBeans;
-		
-		return parent.getId() + "-nestedBean" + count;		
+		final String parentId = this.getParentBeanId();
+		final int nestedBeanCount = this.getParentBeanNestedBeanCount();
+		return parentId + "-nestedBean" + nestedBeanCount;		
 	}
 	
-	protected int countNestedBeans( final List values ){
-		Checker.notNull( "parameter:values", values );
-		
-		int count = 0;
-		
-		final Iterator properties = values.iterator();
-		while( properties.hasNext() ){
-			final Object property = properties.next();
-			if( property instanceof NestedBean ){
-				count++;
-			}
-		}	
-		
-		return count;
-	}
-
 	/**
 	 * Creates a ListValue from a list value element
 	 * 
