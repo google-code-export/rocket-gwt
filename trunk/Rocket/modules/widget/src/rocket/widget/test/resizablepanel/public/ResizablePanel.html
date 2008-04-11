@@ -84,9 +84,8 @@ This test demonstrates several ResizablePanels each containing different content
 <li>3x3 Grid(table)</li>
 <li>A FlowPanel with some other widgets</li>
 </ul>
-Two types of ResizablePanels are created three times to hold a TEXTAREA, IMAGE and SPAN.
-ResizablePanels with handles always visible appear in the left column whilst those with invisible handles
-appear in the right column of the grid.
+Two types of ResizablePanels are created three times to hold a TEXTAREA, IMAGE and SPAN elements.
+The first of the two may be freely resized whilst the second attempts to maintain its original aspect ratio.
 
 <h6>Things to test</h6>
 <ul>
@@ -96,9 +95,6 @@ text selection via dragging of the cursor</li>
 original colour when it is let go.</li>
 <li>Dragging a handle away from the center of the ResizablePanel should increase the width/height of the
 panel and child widget with dragging inwards decreasing.</li>
-<li>ResizablePanel's with invisible handles (those in the right column of the grid) only have visible
-handles when the mouse enters the panel and are hidden once more when the mouse leaves.</li>
-<li>The handles should appear in the relevant spot half inside or overlapping the child widget and half over the edge.</li>
 </ul>
 
 <button onclick="prompt('document.body.innerHTML', document.body.innerHTML )">document.body.innerHTML</button>
