@@ -352,11 +352,19 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	protected String getWidth(final JavaScriptObject element) {
-		return JavaScript.getString(element, "pixelWidth");
+		String width = this.getString(element, "pixelWidth");
+		if( null != width ){
+			width = width + "px";
+		}
+		return width;
 	}
 
 	protected String getHeight(final JavaScriptObject element) {
-		return JavaScript.getString(element, "pixelHeight");
+		String height = this.getString(element, "pixelHeight");
+		if( null != height ){
+			height = height + "px";
+		}
+		return height;
 	}
 
 	protected String getString(final JavaScriptObject element, final String name) {
