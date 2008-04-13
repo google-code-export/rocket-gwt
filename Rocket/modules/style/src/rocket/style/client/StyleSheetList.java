@@ -43,6 +43,10 @@ public class StyleSheetList extends AbstractList {
 	}
 
 	public Object get(final int index) {
+		if( index < 0 || index > size() ){
+			throw new IndexOutOfBoundsException();
+		}
+		
 		final List cache = this.getStyleSheets();
 		Object styleSheet = null;
 		if (index < cache.size()) {
@@ -51,24 +55,13 @@ public class StyleSheetList extends AbstractList {
 		if (null == styleSheet) {
 			// takes a lazy approach to creating StyleSheetList instances.
 			styleSheet = this.createStyleSheet(index);
-
+	
 			// expand the cache with null elements if necessary...
-			final int counter = cache.size() - index + 1;
+			final int counter = index - cache.size() + 1;
 			for (int i = 0; i < counter; i++) {
 				cache.add(null);
 			}
 			cache.set(index, styleSheet);
-
-			// increase the index of styleSheets that were moved up one slot...
-			final int size = cache.size();
-			for (int i = index + 1; i < size; i++) {
-				final StyleSheet previousStyleSheet = (StyleSheet) cache.get(i);
-				if (null == previousStyleSheet) {
-					continue;
-				}
-				previousStyleSheet.setIndex(i);
-			}
-
 		}
 		return styleSheet;
 	}
