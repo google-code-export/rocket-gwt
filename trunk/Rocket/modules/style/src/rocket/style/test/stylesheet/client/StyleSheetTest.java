@@ -37,8 +37,9 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
-	final static int STYLE_SHEET_COUNT = 1;
-
+	final static int STYLE_SHEET_COUNT = 2;
+	final static int STYLE_SHEET_INDEX = 1;
+	
 	final static String APPLE_TEXT = "apple";
 	final static int APPLE_RULE_INDEX = 3;
 	final static String APPLE_CLASS_NAME = "apple";
@@ -317,7 +318,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 	protected void testGetStyleSheetList() {
 		final List styleSheets = StyleSheet.getStyleSheets();
-		Test.assertEquals("StyleSheets size", 1, styleSheets.size());
+		Test.assertEquals("StyleSheets size", STYLE_SHEET_COUNT, styleSheets.size());
 	}
 
 	protected void testStyleSheetListCached() {
@@ -328,7 +329,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 	protected void testStyleSheetListSize() {
 		final List styleSheets = StyleSheet.getStyleSheets();
-		final int expected = 1;
+		final int expected = STYLE_SHEET_COUNT;
 		final int actual = styleSheets.size();
 		Test.assertEquals("StyleSheets List", actual, expected);
 	}
@@ -360,15 +361,15 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 	protected void testStyleSheetListGet() {
 		final List styleSheets = StyleSheet.getStyleSheets();
-		final Object rule = styleSheets.get(0);
-		Test.assertNotNull(rule);
+		final Object styleSheet = styleSheets.get( STYLE_SHEET_INDEX);
+		Test.assertNotNull(styleSheet);
 	}
 
 	protected void testStyleSheetListRepeatedGet() {
 		final List styleSheets = StyleSheet.getStyleSheets();
-		final Object firstRule = styleSheets.get(0);
-		final Object secondRule = styleSheets.get(0);
-		Test.assertSame(firstRule, secondRule);
+		final Object firstStyleSheet = styleSheets.get( STYLE_SHEET_INDEX);
+		final Object secondStyleSheet = styleSheets.get( STYLE_SHEET_INDEX);
+		Test.assertSame(firstStyleSheet, secondStyleSheet);
 	}
 
 	protected void testStyleSheetListGetWithInvalidIndex() {
@@ -401,7 +402,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	protected void testStyleSheetListRemoveObject() {
 		final List styleSheets = StyleSheet.getStyleSheets();
 		try {
-			final Object styleSheet = styleSheets.get(0);
+			final Object styleSheet = styleSheets.get( STYLE_SHEET_INDEX);
 			styleSheets.remove(styleSheet);
 			Test.fail("StyleSheets.remove(Object) should have thrown an exception...");
 		} catch (final Exception expected) {
@@ -461,21 +462,21 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 			tests.add(new Test() {
 				public String getName() {
-					return "testRulesGet0";
+					return "testRulesGet";
 				}
 
 				public void execute() {
-					StyleSheetTest.this.testRulesGet0();
+					StyleSheetTest.this.testRulesGet();
 				}
 			});
 
 			tests.add(new Test() {
 				public String getName() {
-					return "testRulesGet1";
+					return "testRulesGetWithInvalidIndex";
 				}
 
 				public void execute() {
-					StyleSheetTest.this.testRulesGet1();
+					StyleSheetTest.this.testRulesGetWithInvalidIndex();
 				}
 			});
 
@@ -523,14 +524,14 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		Test.assertEquals("rules.isEmpty()", rules.isEmpty(), false);
 	}
 
-	protected void testRulesGet0() {
+	protected void testRulesGet() {
 		final List rules = getRules();
 		final Rule rule = (Rule) rules.get(APPLE_RULE_INDEX);
 		Test.assertNotNull("appleRule", rule);
-		Test.assertEquals("appleRuleSelector", rule.getSelector(), "." + APPLE_CLASS_NAME);
+		Test.assertEquals("appleRuleSelector", "." + APPLE_CLASS_NAME, rule.getSelector());
 	}
 
-	protected void testRulesGet1() {
+	protected void testRulesGetWithInvalidIndex() {
 		final List rules = getRules();
 
 		try {
@@ -558,7 +559,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		Test.assertNotNull("appleRule", rule);
 
 		final int index = rules.indexOf(rule);
-		Test.assertEquals("appleIndex", index, APPLE_RULE_INDEX);
+		Test.assertEquals("appleIndex", APPLE_RULE_INDEX, index);
 	}
 
 	protected void testRulesIterator() {
@@ -604,7 +605,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		rule.setSelector("." + LEMON_CLASS_NAME);
 		rules.add(rule);
 
-		Test.assertEquals("new rules count", rules.size(), INITIAL_RULE_COUNT + 1);
+		Test.assertEquals("new rules count", INITIAL_RULE_COUNT + 1, rules.size());
 
 		// verify that it was appended by checking lemonRules index.
 		final int newRuleIndex = rules.indexOf(rule);
@@ -619,14 +620,14 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		}
 
 		final boolean removed = rules.remove(rule);
-		Test.assertEquals("rule removed", removed, true);
+		Test.assertEquals("rule removed", true, removed );
 
 		// test that the rule size has returned back to normal.
-		Test.assertEquals("rules", rules.size(), INITIAL_RULE_COUNT);
+		Test.assertEquals("rules", INITIAL_RULE_COUNT, rules.size() );
 
 		// verify that it was appended by checking lemonRules index.
 		final int indexOfRemovedRule = rules.indexOf(rule);
-		Test.assertEquals("indexOf( lemonRule ) should be -1 after removing the newRule", indexOfRemovedRule, -1);
+		Test.assertEquals("indexOf( lemonRule ) should be -1 after removing the newRule", -1, indexOfRemovedRule);
 
 		if (false == Window.confirm("Has lemon area has reverted back to black text on a white background (inherited from body)?")) {
 			Test.fail("The lemon area did not revert back to black text on a white background after removing the newly added rule.");
@@ -668,7 +669,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 		final Rule rule = (Rule) rules.get(APPLE_RULE_INDEX);
 		final String selectorValue = rule.getSelector();
-		Test.assertEquals("rule.selector", selectorValue, "." + APPLE_CLASS_NAME);
+		Test.assertEquals("rule.selector", "." + APPLE_CLASS_NAME, selectorValue);
 	}
 
 	protected void testSelectorSet() {
@@ -677,11 +678,11 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		rule.setSelector("." + CAPSICUM_CLASS_NAME);
 
 		// rule size shouldnt have changed...
-		Test.assertEquals("rules", rules.size(), INITIAL_RULE_COUNT);
+		Test.assertEquals("rules", INITIAL_RULE_COUNT, rules.size());
 
 		// index should not have changed...
 		final int index = rules.indexOf(rule);
-		Test.assertEquals("The index of rule", index, APPLE_RULE_INDEX);
+		Test.assertEquals("The index of rule", APPLE_RULE_INDEX, index);
 
 		if (false == Window.confirm("Does the apple area have black text on a white background ?\n")) {
 			Test.fail("The apple area does not have black text on white background.");
@@ -1045,7 +1046,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		final Set keys = style.keySet();
 		final int size = keys.size();
 		final int expectedCount = style.size();
-		Test.assertEquals("StyleKeySet size", size, expectedCount);
+		Test.assertEquals("StyleKeySet size", expectedCount, size);
 	}
 
 	public void testStyleKeySetIsEmpty() {
@@ -1058,14 +1059,14 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		final Map style = this.getAppleRuleStyle();
 		final Set keys = style.keySet();
 		final boolean contains = keys.contains(BACKGROUND_COLOUR_PROPERTY);
-		Test.assertEquals("StyleKeySet.contains( \"" + BACKGROUND_COLOUR_PROPERTY + "\" )", contains, true);
+		Test.assertEquals("StyleKeySet.contains( \"" + BACKGROUND_COLOUR_PROPERTY + "\" )", true, contains);
 	}
 
 	public void testStyleKeySetContains1() {
 		final Map style = this.getAppleRuleStyle();
 		final Set keys = style.keySet();
 		final boolean contains = keys.contains(ZEBRA_PROPERTY);
-		Test.assertEquals("StyleKeySet.contains( \"" + ZEBRA_PROPERTY + "\" )", contains, false);
+		Test.assertEquals("StyleKeySet.contains( \"" + ZEBRA_PROPERTY + "\" )", false, contains);
 	}
 
 	public void testStyleKeySetIterator() {
@@ -1078,7 +1079,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 			countedSize++;
 		}
 		final int expectedCount = style.size();
-		Test.assertEquals("StyleKeySet iterator. ", countedSize, expectedCount);
+		Test.assertEquals("StyleKeySet iterator. ", expectedCount, countedSize);
 	}
 
 	public void testStyleValuesCollectionSize() {
@@ -1086,7 +1087,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 		final Collection values = style.values();
 		final int size = values.size();
 		final int expectedCount = style.size();
-		Test.assertEquals("StyleKeySet size", size, expectedCount);
+		Test.assertEquals("StyleKeySet size", expectedCount, size);
 	}
 
 	public void testStyleValuesCollectionIsEmpty() {
@@ -1128,7 +1129,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 			countedSize++;
 		}
 		final int expectedCount = style.size();
-		Test.assertEquals("StyleValuesCollection iterator", countedSize, expectedCount);
+		Test.assertEquals("StyleValuesCollection iterator", expectedCount, countedSize);
 	}
 
 	class StylePropertyValueTestBuilder implements TestBuilder {
@@ -1194,7 +1195,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 		final Colour colour = value.getColour();
 		final Colour expectedColour = new Colour(0xffffdd);
-		Test.assertEquals("apple rule style backgroundColour(should be yellow)", colour, expectedColour);
+		Test.assertEquals("apple rule style backgroundColour(should be yellow)", expectedColour, colour);
 	}
 
 	public void testStylePropertyValueSetValue() {
@@ -1203,7 +1204,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 
 		final int fontSize = value.getInteger(CssUnit.PX);
 		final int originalFontSize = 10;
-		Test.assertEquals("apple rule style fontSize", fontSize, originalFontSize);
+		Test.assertEquals("apple rule style fontSize", originalFontSize, fontSize);
 
 		final Map inlineStyles = this.getAppleRuleStyle();
 		final int newFontSizeValue = 40;
@@ -1225,7 +1226,7 @@ public class StyleSheetTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	protected List getRules() {
-		final StyleSheet styleSheet = (StyleSheet) StyleSheet.getStyleSheets().get(0);
+		final StyleSheet styleSheet = (StyleSheet) StyleSheet.getStyleSheets().get( STYLE_SHEET_INDEX );
 		return styleSheet.getRules();
 	}
 
