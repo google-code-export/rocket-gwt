@@ -18,6 +18,7 @@ package rocket.beans.rebind;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewNestedType;
@@ -37,7 +38,7 @@ public class Bean{
 
 		this.setAspects(this.createAspects());
 		this.setConstructorValues( Collections.EMPTY_LIST );
-		this.setProperties( Collections.EMPTY_LIST );
+		this.setProperties( Collections.EMPTY_SET );
 	}
 	
 	/**
@@ -181,16 +182,16 @@ public class Bean{
 	}
 
 	/**
-	 * A list of property for this bean.
+	 * A set of property for this bean.
 	 */
-	private List properties;
+	private Set properties;
 
-	public List getProperties() {
+	public Set getProperties() {
 		Checker.notNull("field:properties", properties);
 		return this.properties;
 	}
 
-	public void setProperties(final List properties) {
+	public void setProperties(final Set properties) {
 		Checker.notNull("parameter:properties", properties);
 		this.properties = properties;
 	}

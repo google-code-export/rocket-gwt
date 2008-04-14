@@ -401,8 +401,8 @@ public class DocumentWalker {
 		return this.visitValues(values);
 	}
 
-	protected List visitProperties(final List propertys) {
-		final List properties = new ArrayList();
+	protected Set visitProperties(final List propertys) {
+		final Set properties = new TreeSet( PROPERTY_NAME_SORTER );
 
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
 		
@@ -425,6 +425,16 @@ public class DocumentWalker {
 
 		return properties;
 	}
+	
+	static Comparator PROPERTY_NAME_SORTER = new Comparator(){
+		public int compare( final Object property, final Object otherProperty ){
+			return this.compare( (Property) property, (Property) otherProperty );
+		}
+		
+		int compare( final Property property, final Property otherProperty ){
+			return property.getName().compareTo( otherProperty.getName() );
+		}
+	};
 
 	/**
 	 * Factory method which creates a Value from the given element

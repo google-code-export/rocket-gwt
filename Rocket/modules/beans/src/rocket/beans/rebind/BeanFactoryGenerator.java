@@ -80,7 +80,7 @@ import rocket.util.client.Utilities;
  * 
  * A standalone class is created to implement the BeanFactory. Within this
  * BeanFactory private nested inner FactoryBean classes are created for each
- * bean and proxy required to implement configured aspects.
+ * bean and proxy required to implement configured aspects
  * 
  * @author Miroslav Pokorny
  */
@@ -301,7 +301,7 @@ public class BeanFactoryGenerator extends Generator {
 		final Type beanType = this.getConcreteType(beanName, className);
 		bean.setType(beanType);
 
-		context.debug(beanType.toString());
+		context.debug(beanType.getName());
 
 		final boolean singleton = bean.isSingleton();
 		bean.setSingleton(singleton);
@@ -342,7 +342,7 @@ public class BeanFactoryGenerator extends Generator {
 		factoryBean.addMetaData(Constants.FACTORY_BEAN_OBJECT_TYPE, bean.getType().getName());
 
 		bean.setFactoryBean(factoryBean);
-		context.debug("FactoryBean: " + factoryBean);
+		context.debug("FactoryBean: " + factoryBean.getName() );
 
 		this.addBean(bean);
 	}
@@ -798,7 +798,7 @@ public class BeanFactoryGenerator extends Generator {
 		final GeneratorContext context = this.getGeneratorContext();
 		final Type voidType = this.getGeneratorContext().getVoid();
 		final Type beanType = bean.getType();
-		context.debug(beanType.toString());
+		context.debug(beanType.getName());
 
 		final SetPropertiesTemplatedFile body = new SetPropertiesTemplatedFile();
 		body.setBean(beanType);
@@ -818,7 +818,7 @@ public class BeanFactoryGenerator extends Generator {
 		newMethod.setBody(body);
 
 		// loop thru all properties
-		final List properties = bean.getProperties();
+		final Set properties = bean.getProperties();
 		final Iterator propertyIterator = properties.iterator();
 		while (propertyIterator.hasNext()) {
 			final Property property = (Property) propertyIterator.next();
@@ -1094,7 +1094,7 @@ public class BeanFactoryGenerator extends Generator {
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		rpc.setFactoryBean(factoryBean);
 
-		context.debug("FactoryBean: " + factoryBean);
+		context.debug("FactoryBean: " + factoryBean.getName() );
 
 		this.addBean(rpc);
 	}
