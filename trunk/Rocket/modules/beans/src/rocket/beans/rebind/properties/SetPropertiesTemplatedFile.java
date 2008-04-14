@@ -17,8 +17,8 @@ package rocket.beans.rebind.properties;
 
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.SourceWriter;
@@ -27,6 +27,7 @@ import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.type.Type;
+import rocket.generator.rebind.util.MethodComparator;
 import rocket.util.client.Checker;
 
 /**
@@ -69,7 +70,7 @@ public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	protected Map createProperties() {
-		return new HashMap();
+		return new TreeMap( MethodComparator.INSTANCE );
 	}
 
 	public void addProperty(final Method setter, final Value value) {

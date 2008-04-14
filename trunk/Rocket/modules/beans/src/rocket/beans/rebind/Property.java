@@ -27,7 +27,7 @@ public class Property {
 	 */
 	private String name;
 
-	protected String getName() {
+	public String getName() {
 		return this.name;
 	}
 
