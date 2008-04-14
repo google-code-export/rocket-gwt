@@ -40,6 +40,7 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 		
 		try {
 			final Object object = this.createObject();
+			// Kind of a hack to make cycles between singletons work, potentially fails when one singleton is the product of a FactoryBean
 			this.setObject( object );
 			this.postCreate(object);
 			final Object returned = this.getObject(object);
@@ -53,6 +54,10 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 			return null;
 		}
 		}
+		if( this.object instanceof FactoryBean ){
+			this.throwBeanException( "The FactoryBean of \"" + this.getName() + "\" has not had all its properties set and is involved in a cycle, break cycle.", null );
+		}
+
 		return this.object;
 	}
 
