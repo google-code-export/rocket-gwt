@@ -589,4 +589,22 @@ public class Utilities {
 			destroyable.destroy();
 		}
 	}
+	
+	/**
+	 * Convenience method that escapes all newline, carriage returns and double quotes into their java string form.
+	 * @param string
+	 * @return
+	 */
+	public static String escape( final String string ){
+		return null == string ? null : string.replaceAll("\n", "\\n").replaceAll("\r", "\\\r" ).replaceAll("\"", "\\\""); 
+	}
+	
+	/**
+	 * Convenience method which quotes non null strings as well as escaping newlines, carriage returns and double quotes.
+	 * @param string
+	 * @return
+	 */
+	public static String quotedEscape( final String string ){
+		return null == string ? null : "\"" + escape( string ) + "\"";
+	}
 }
