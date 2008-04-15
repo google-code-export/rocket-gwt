@@ -80,7 +80,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Finding interface methods which will be implemented");
+		context.info("Finding abstract methods which need be implemented");
 
 		final Set methods = new TreeSet( MethodComparator.INSTANCE ); // sort methods in alphabetical order
 
@@ -99,7 +99,6 @@ abstract public class ImageFactoryGenerator extends Generator {
 		visitor.start( type );
 		
 		context.unbranch();
-		context.debug("Found " + methods.size() + " methods.");
 		return methods;
 	}
 
@@ -120,7 +119,8 @@ abstract public class ImageFactoryGenerator extends Generator {
 		// must return Image.
 		final Type type = method.getReturnType();
 		final Type image = this.getImage();
-		if (type != image) {
+		final Type gwtImage = this.getGwtImage();
+		if (false == type.equals( image ) && false == type.equals( gwtImage )){
 			this.throwWrongReturnType(method);
 		}
 	}
@@ -130,12 +130,15 @@ abstract public class ImageFactoryGenerator extends Generator {
 	}
 
 	protected void throwWrongReturnType(final Method method) {
-		this.throwException(new ImageFactoryGeneratorException("Interface methods must return " + Constants.IMAGE_TYPE + " and not "
-				+ method.getReturnType() + ", method: " + method));
+		this.throwException(new ImageFactoryGeneratorException("The method \"" + method.getName() + "\" must return a \"" + Constants.IMAGE_TYPE + "\" or \"" + Constants.GWT_IMAGE_TYPE + "\" and not \"" + method.getReturnType().getName() + "\"." ));
 	}
 
 	protected Type getImage() {
 		return this.getGeneratorContext().getType(Constants.IMAGE_TYPE);
+	}
+
+	protected Type getGwtImage() {
+		return this.getGeneratorContext().getType(Constants.GWT_IMAGE_TYPE);
 	}
 
 	/**
@@ -188,7 +191,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Implementing methods.");
+		context.info("Implementing abstract methods.");
 		
 		final Iterator iterator = methods.iterator();
 		while( iterator.hasNext() ){
@@ -224,7 +227,10 @@ abstract public class ImageFactoryGenerator extends Generator {
 		
 		// get the filename
 		final String resourceName = this.getImageName(method);
-		context.debug( "Image: " + resourceName );
+		context.debug( resourceName );
+		
+		final Type imageType = method.getReturnType();
+		context.debug( imageType.getName() );
 		
 		// get the stream.
 		final InputStream inputStream = this.getImage(newType, resourceName);
@@ -294,6 +300,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		
 		final CreateImageTemplatedFile body = new CreateImageTemplatedFile();
 		body.setUrl(url);
+		body.setType( imageType );
 		newMethod.setBody(body);
 		
 		context.unbranch();		

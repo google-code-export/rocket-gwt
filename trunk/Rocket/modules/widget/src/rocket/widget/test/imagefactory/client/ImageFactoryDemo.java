@@ -17,22 +17,18 @@ package rocket.widget.test.imagefactory.client;
 
 import rocket.util.client.StackTrace;
 import rocket.widget.client.Html;
-import rocket.widget.client.Image;
 import rocket.widget.client.ImageFactory;
 import rocket.widget.client.ZebraFlexTable;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
-import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 
 public class ImageFactoryDemo implements EntryPoint {
 
@@ -59,35 +55,35 @@ public class ImageFactoryDemo implements EntryPoint {
 		
 		table.addHeadingStyleToFirstRow();
 		
-		final Image smallLocal = factory.createLocalSmallImage();
+		final rocket.widget.client.Image smallLocal = factory.createLocalSmallImage();
 		table.setWidget(row, 0, smallLocal);
 		table.setWidget(row, 1, this.createWidget(smallLocal.getUrl()));
 		table.setText( row, 2, "local" );
 		table.setText(row, 3, "lazy");
 		row++;
 		
-		final Image smallServer = factory.createServerSmallImage();
+		final rocket.widget.client.Image smallServer = factory.createServerSmallImage();
 		table.setWidget(row, 0, smallServer);
 		table.setWidget(row, 1, this.createWidget(smallServer.getUrl()));
 		table.setText( row, 2, "server" );
 		table.setText(row, 3, "lazy");
 		row++;
 		
-		final Image medium = factory.createLocalMediumImage();
+		final com.google.gwt.user.client.ui.Image medium = factory.createLocalMediumImage();
 		table.setWidget(row, 0, medium);
 		table.setWidget(row, 1, this.createWidget(medium.getUrl()));
 		table.setText( row, 2, "local" );
 		table.setText(row, 3, "lazy");
 		row++;
 		
-		final Image largeLocal = factory.createLocalLargeImage();
+		final rocket.widget.client.Image largeLocal = factory.createLocalLargeImage();
 		table.setWidget(row, 0, largeLocal);
 		table.setWidget(row, 1, this.createWidget(largeLocal.getUrl()));
 		table.setText( row, 2, "local" );
 		table.setText(row, 3, "lazy");
 		row++;
 		
-		final Image largeLazyServer = factory.createLazyServerLargeImage();
+		final rocket.widget.client.Image largeLazyServer = factory.createLazyServerLargeImage();
 		table.setWidget(row, 0, largeLazyServer);
 		table.setWidget(row, 1, this.createWidget(largeLazyServer.getUrl()));
 		table.setText( row, 2, "server" );
@@ -131,32 +127,32 @@ public class ImageFactoryDemo implements EntryPoint {
 		 * @location local
 		 * @serverRequest lazy
 		 */
-		Image createLocalSmallImage();
+		rocket.widget.client.Image createLocalSmallImage();
 
 		/**
 		 * @file small.png
 		 * @location server
 		 * @serverRequest lazy
 		 */
-		Image createServerSmallImage();
+		rocket.widget.client.Image createServerSmallImage();
 		
 		/**
 		 * @file medium.jpg
 		 * @location local
 		 * @serverRequest eager
 		 */
-		Image createLocalMediumImage();
+		com.google.gwt.user.client.ui.Image createLocalMediumImage();
 		/**
 		 * @file large.jpg
 		 * @location local
 		 * @serverRequest eager
 		 */
-		Image createLocalLargeImage();
+		rocket.widget.client.Image createLocalLargeImage();
 		/**
 		 * @file large.jpg
 		 * @location server
 		 * @serverRequest eager
 		 */
-		Image createLazyServerLargeImage();
+		rocket.widget.client.Image createLazyServerLargeImage();
 	}
 }

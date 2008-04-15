@@ -18,6 +18,7 @@ package rocket.widget.rebind.imagefactory;
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.util.client.Checker;
+import rocket.generator.rebind.type.Type;
 
 public class CreateImageTemplatedFile extends TemplatedFileCodeBlock {
 
@@ -31,9 +32,29 @@ public class CreateImageTemplatedFile extends TemplatedFileCodeBlock {
 		if (Constants.URL_TEMPLATE_PLACEHOLDER.equals(name)) {
 			value = new StringLiteral(this.getUrl());
 		}
+		if( Constants.IMAGE_TYPE_TEMPLATE_PLACEHOLDER.equals( name ) ){
+			value = this.getType();
+		}
+		
 		return value;
 	}
 
+	/**
+	 * The image type which is typically either a {
+	 * @link com.google.gwt.user.client.ui.Image } or {@link rocket.widget.client.Image }
+	 */
+	private Type type;
+	
+	protected Type getType(){
+		Checker.notNull("field:type", type);
+		return this.type;
+	}
+	
+	public void setType( final Type type ){
+		Checker.notNull("parameter:type", type);
+		this.type = type;
+	}
+	
 	private String url;
 	
 	protected String getUrl(){

@@ -23,6 +23,7 @@ public class Constants {
 	final static String SUFFIX = "__{0}Impl";
 	final static String USER_AGENT = "user.agent";
 	final static String IMAGE_TYPE = Image.class.getName();
+	final static String GWT_IMAGE_TYPE = com.google.gwt.user.client.ui.Image.class.getName();
 	final static String IMAGE_FACTORY_IMPL_TYPE = ImageFactoryImpl.class.getName();
 	
 	private final static String IMAGE_FACTORY = ImageFactory.class.getName();
@@ -55,6 +56,7 @@ public class Constants {
 	final static String TEMPLATE = "create-image.txt";
 	final static String URL_PARAMETER = "url";
 	final static String URL_TEMPLATE_PLACEHOLDER = "url";
+	final static String IMAGE_TYPE_TEMPLATE_PLACEHOLDER = "imageType";
 	
 	final static String GET_PRELOAD_URLS = "getPreloadUrls";
 }
