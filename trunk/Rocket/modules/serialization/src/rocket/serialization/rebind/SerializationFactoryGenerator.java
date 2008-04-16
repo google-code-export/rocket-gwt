@@ -114,22 +114,45 @@ public class SerializationFactoryGenerator extends Generator {
 	/**
 	 * Checks and reports if a type matches any blacklist.
 	 * @param type
-	 * @return
+	 * @return Returns true if the type or any of its super types are blacklisted from serialization.
 	 */
 	protected boolean isBlackListed(final Type type) {
 		Checker.notNull("parameter:type", type);
 
 		boolean blacklisted = false;
 
-		// check black list...
-		final Iterator blackListers = this.getBlackList().iterator();
-		while (blackListers.hasNext()) {
-			final TypeMatcher matcher = (TypeMatcher) blackListers.next();
-			if (matcher.matches(type)) {
-				blacklisted = true;
-				break;
+		// FIXME FIXME FIXME JOE COLE FIX!!!
+
+			// check black list...
+			final Iterator blackListers = this.getBlackList().iterator();
+			final Type object = this.getGeneratorContext().getObject();
+			
+			while (blackListers.hasNext()) {
+				final TypeMatcher matcher = (TypeMatcher) blackListers.next();
+				
+				// scan entire type heirarchy just in case type or any super is blacklisted.
+				Type current = type;
+				while( true ){
+					if (matcher.matches(current)) {
+						blacklisted = true;
+						break;
+					}	
+					
+					current = current.getSuperType();
+					if( null == current ){
+						break;
+					}
+					// stop when we hit Object.
+					if( object.equals( current )){
+						break;
+					}
+				}
+				
+				// blacklisted stop searching
+				if( blacklisted ){
+					break;
+				}
 			}
-		}
 
 		return blacklisted;
 	}
@@ -141,7 +164,7 @@ public class SerializationFactoryGenerator extends Generator {
 	protected Set loadBlackLists() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Attempting to load and merge all expressions within all located blacklists with all packages(unsorted view).");
+		context.info("Attempting to load and merge all blacklist expressions (unsorted).");
 
 		final Set blackLists = new HashSet();
 
@@ -181,7 +204,7 @@ public class SerializationFactoryGenerator extends Generator {
 		Checker.notNull("parameter:package", packagee);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
+		context.delayedBranch();
 		context.debug(packagee.getName());
 
 		final Set expressions = new HashSet();
@@ -195,7 +218,7 @@ public class SerializationFactoryGenerator extends Generator {
 				if (null == inputStream) {
 					break;
 				}
-				context.debug(fileName);
+				//context.debug(fileName);
 
 				// use a BufferedReader to read a line at a time skipping comments and empty lines. 
 				final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -218,7 +241,7 @@ public class SerializationFactoryGenerator extends Generator {
 					expressions.add(typeNameMatcher);
 				}
 
-				context.debug("Located " + expressions.size() + " expressions.");
+				//context.debug("Located " + expressions.size() + " expressions.");
 				break;
 
 			} catch (final RuntimeException caught) {
@@ -235,7 +258,8 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	/**
-	 * A set of back list expressi
+	 * A set of back list expressions. One may iterate thru this set and ask each whether it matches a given type, 
+	 * if it does that type is blacklisted.
 	 */
 	private Set blackList;
 
@@ -297,6 +321,9 @@ public class SerializationFactoryGenerator extends Generator {
 		Checker.notNull("parameter:typeNames", typeNames);
 
 		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info( "Finding all serializable types.");
+		
 		final Set serializables = new TreeSet(TypeComparator.INSTANCE);
 		final Iterator iterator = typeNames.iterator();
 
@@ -317,6 +344,8 @@ public class SerializationFactoryGenerator extends Generator {
 		serializables.remove(string);
 		context.debug("Removed java.lang.String from serializable types (inbuilt support for java.lang.String already present).");
 
+		context.unbranch();
+		
 		return serializables;
 	}
 
@@ -670,7 +699,7 @@ public class SerializationFactoryGenerator extends Generator {
 		this.logBoundTypes("Listing discovered (existing) ObjectReaders.", existingObjectReaders);
 
 		objectReaders.putAll(existingObjectReaders);
-		this.logBoundTypes("Result of merging existing and types requiring objectReaders.", objectReaders);
+		this.logBoundTypes("Result of merging existing and types requiring objectReaders to be created.", objectReaders);
 
 		context.unbranch();
 
@@ -705,7 +734,7 @@ public class SerializationFactoryGenerator extends Generator {
 		this.logBoundTypes("Listing discovered (existing) ObjectWriters.", existingObjectWriters);
 
 		objectWriters.putAll(existingObjectWriters);
-		this.logBoundTypes("Result of merging existing and types requiring ObjectWriters.", objectWriters);
+		this.logBoundTypes("Result of merging existing and types requiring ObjectWriters to be created.", objectWriters);
 
 		return objectWriters;
 	}
@@ -816,10 +845,14 @@ public class SerializationFactoryGenerator extends Generator {
 			}
 
 			// find the super types object reader and extend that...			
-			objectReaderSuperType = (Type) serializables.get(type.getSuperType());
+			objectReaderSuperType = (Type) serializables.get(superType);
+
+			if( null == objectReaderSuperType ){
+				throw new IllegalStateException("Unable to fetch the reader for the super type \"" + superType + "\" whilst processing \"" + type.getName() + "\".");
+			}
 			break;
 		}
-
+		
 		newConcreteType.setSuperType(objectReaderSuperType);
 
 		// add an annotation that marks the type being handled by this ObjectReader
@@ -1166,6 +1199,9 @@ public class SerializationFactoryGenerator extends Generator {
 			}
 
 			objectWriterSuperType = (Type) serializables.get(type.getSuperType());
+			if( null == objectWriterSuperType ){
+				throw new IllegalStateException("Unable to fetch the writer for the super type \"" + superType + "\" whilst processing \"" + type.getName() + "\".");
+			}
 			break;
 		}
 
@@ -1632,7 +1668,13 @@ public class SerializationFactoryGenerator extends Generator {
 			if (false == type.equals(otherType)) {
 				final int i = this.getDepthFromObject(type);
 				final int j = this.getDepthFromObject(otherType);
-				difference = i <= j ? -1 : +1;
+				
+				difference = i - j;
+				
+				// ensure stable ordering.
+				if( 0 == difference ){
+					difference = type.getName().compareTo( otherType.getName());
+				}
 			}
 			return difference;
 		}
