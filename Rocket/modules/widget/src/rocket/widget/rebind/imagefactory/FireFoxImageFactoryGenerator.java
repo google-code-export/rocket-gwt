@@ -23,6 +23,6 @@ package rocket.widget.rebind.imagefactory;
 public class FireFoxImageFactoryGenerator extends ImageFactoryGenerator {
 
 	protected int getMaximumDataUrlLength(){	
-		return this.getMaximumDataUrlLength( Constants.FIREFOX_MAXIMUM_DATA_URL_SIZE, Constants.FIREFOX_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
+		return this.getMaximumDataUrlLength( ImageFactoryConstants.FIREFOX_MAXIMUM_DATA_URL_SIZE, ImageFactoryConstants.FIREFOX_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
 	}
 }

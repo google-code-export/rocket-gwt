@@ -19,7 +19,7 @@ import rocket.widget.client.Image;
 import rocket.widget.client.ImageFactory;
 import rocket.widget.client.ImageFactoryImpl;
 
-public class Constants {
+public class ImageFactoryConstants {
 	final static String SUFFIX = "__{0}Impl";
 	final static String USER_AGENT = "user.agent";
 	final static String IMAGE_TYPE = Image.class.getName();
@@ -27,15 +27,15 @@ public class Constants {
 	final static String IMAGE_FACTORY_IMPL_TYPE = ImageFactoryImpl.class.getName();
 	
 	private final static String IMAGE_FACTORY = ImageFactory.class.getName();
-	final static String IMAGE_FILE = "file";
+	public final static String IMAGE_FILE = "file";
 	
-	final static String LOCATION = "location";
-	final static String LOCATION_LOCAL = "local";
-	final static String LOCATION_SERVER = "server";
+	public final static String LOCATION = "location";
+	public final static String LOCATION_LOCAL = "local";
+	public final static String LOCATION_SERVER = "server";
 	
-	final static String SERVER_REQUEST = "serverRequest";
-	final static String SERVER_REQUEST_LAZY = "lazy";
-	final static String SERVER_REQUEST_EAGER = "eager";
+	public final static String SERVER_REQUEST = "serverRequest";
+	public final static String SERVER_REQUEST_LAZY = "lazy";
+	public final static String SERVER_REQUEST_EAGER = "eager";
 	
 	private final static String MAX_DATA_URL_LENGTH = "maxDataUrlLength"; 
 	
