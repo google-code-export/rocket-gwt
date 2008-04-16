@@ -23,6 +23,6 @@ package rocket.widget.rebind.imagefactory;
 public class InternetExplorerImageFactoryGenerator extends ImageFactoryGenerator {
 
 	protected int getMaximumDataUrlLength(){	
-		return this.getMaximumDataUrlLength( Constants.INTERNET_EXPLORER_MAXIMUM_DATA_URL_SIZE, Constants.INTERNET_EXPLORER_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
+		return this.getMaximumDataUrlLength( ImageFactoryConstants.INTERNET_EXPLORER_MAXIMUM_DATA_URL_SIZE, ImageFactoryConstants.INTERNET_EXPLORER_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
 	}
 }

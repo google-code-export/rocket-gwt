@@ -65,9 +65,9 @@ abstract public class ImageFactoryGenerator extends Generator {
 	 */
 	//@Override
 	protected String getGeneratedTypeNameSuffix() {
-		final String userAgent = this.getGeneratorContext().getProperty(Constants.USER_AGENT);
-		final MessageFormat message = new MessageFormat(Constants.SUFFIX);
-		return message.format(Constants.SUFFIX, new String[]{ userAgent });
+		final String userAgent = this.getGeneratorContext().getProperty(ImageFactoryConstants.USER_AGENT);
+		final MessageFormat message = new MessageFormat(ImageFactoryConstants.SUFFIX);
+		return message.format(ImageFactoryConstants.SUFFIX, new String[]{ userAgent });
 	}
 
 	/**
@@ -130,15 +130,15 @@ abstract public class ImageFactoryGenerator extends Generator {
 	}
 
 	protected void throwWrongReturnType(final Method method) {
-		this.throwException(new ImageFactoryGeneratorException("The method \"" + method.getName() + "\" must return a \"" + Constants.IMAGE_TYPE + "\" or \"" + Constants.GWT_IMAGE_TYPE + "\" and not \"" + method.getReturnType().getName() + "\"." ));
+		this.throwException(new ImageFactoryGeneratorException("The method \"" + method.getName() + "\" must return a \"" + ImageFactoryConstants.IMAGE_TYPE + "\" or \"" + ImageFactoryConstants.GWT_IMAGE_TYPE + "\" and not \"" + method.getReturnType().getName() + "\"." ));
 	}
 
 	protected Type getImage() {
-		return this.getGeneratorContext().getType(Constants.IMAGE_TYPE);
+		return this.getGeneratorContext().getType(ImageFactoryConstants.IMAGE_TYPE);
 	}
 
 	protected Type getGwtImage() {
-		return this.getGeneratorContext().getType(Constants.GWT_IMAGE_TYPE);
+		return this.getGeneratorContext().getType(ImageFactoryConstants.GWT_IMAGE_TYPE);
 	}
 
 	/**
@@ -175,7 +175,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 	}
 	
 	protected Type getImageFactoryImpl(){
-		return this.getGeneratorContext().getType( Constants.IMAGE_FACTORY_IMPL_TYPE );
+		return this.getGeneratorContext().getType( ImageFactoryConstants.IMAGE_FACTORY_IMPL_TYPE );
 	}
 	
 	/**
@@ -281,7 +281,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		// if a data url wasnt used copy the file and set the url to the server file name.
 		if( false == usingDataUrl ){
 			// data urls are supported, write the file 
-			final String suffix = Constants.IMAGE_RESOURCE_SUFFIX + image.getFileExtension();
+			final String suffix = ImageFactoryConstants.IMAGE_RESOURCE_SUFFIX + image.getFileExtension();
 			url = context.createResource( image.getContents(), suffix );
 			
 			context.debug( "Module relative server url: \"" + url + "\".");
@@ -314,7 +314,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected String getImageName( final Method method ){
-		final List filenames = method.getMetadataValues( Constants.IMAGE_FILE );
+		final List filenames = method.getMetadataValues( ImageFactoryConstants.IMAGE_FILE );
 		if( null == filenames || filenames.size() != 1 ){
 			throwExpectedOneImageFilename( method );
 		}
@@ -323,7 +323,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 	}
 	
 	protected void throwExpectedOneImageFilename( final Method method ){
-		throwException( new ImageFactoryGeneratorException( "Expected to find one \"" + Constants.IMAGE_FILE + "\" annotation on method: \"" + this.toString( method) + "\"."));
+		throwException( new ImageFactoryGeneratorException( "Expected to find one \"" + ImageFactoryConstants.IMAGE_FILE + "\" annotation on method: \"" + this.toString( method) + "\"."));
 	}
 	
 	/**
@@ -507,7 +507,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		boolean server = false;
 		
 		while( true ){
-			final List values = method.getMetadataValues( Constants.LOCATION );
+			final List values = method.getMetadataValues( ImageFactoryConstants.LOCATION );
 			if( null == values || values.size() == 0 ){
 				this.throwLocationAnnotationMissing( method );				
 			}
@@ -516,11 +516,11 @@ abstract public class ImageFactoryGenerator extends Generator {
 			}
 			
 			final String value = (String)values.get( 0 );
-			if( Constants.LOCATION_SERVER.equals( value)){
+			if( ImageFactoryConstants.LOCATION_SERVER.equals( value)){
 				server = true;
 				break;
 			}
-			if( Constants.LOCATION_LOCAL.equals( value)){
+			if( ImageFactoryConstants.LOCATION_LOCAL.equals( value)){
 				server = false;
 				break;
 			}
@@ -532,15 +532,15 @@ abstract public class ImageFactoryGenerator extends Generator {
 	}
 	
 	protected void throwLocationAnnotationMissing( final Method method ){
-		this.throwException( new ImageFactoryGeneratorException( "The \"" + Constants.LOCATION + "\" annotation is missing from the method: \"" + this.toString( method) + "\"."));
+		this.throwException( new ImageFactoryGeneratorException( "The \"" + ImageFactoryConstants.LOCATION + "\" annotation is missing from the method: \"" + this.toString( method) + "\"."));
 	}
 	
 	protected void throwLocationAnnotationFoundMoreThanOnce( final Method method, final List values ){
-		this.throwException( new ImageFactoryGeneratorException( "The \"" + Constants.LOCATION + "\" annotation contains more than one value (" + values + ") on the method: \"" + this.toString( method) + "\"."));
+		this.throwException( new ImageFactoryGeneratorException( "The \"" + ImageFactoryConstants.LOCATION + "\" annotation contains more than one value (" + values + ") on the method: \"" + this.toString( method) + "\"."));
 	}
 	
 	protected void throwInvalidLocationValue( final Method method, final String value ){
-		this.throwException( new ImageFactoryGeneratorException( "The method " + method + " contains an invalid \"" + Constants.LOCATION + "\" value of \"" + value + "\"."));
+		this.throwException( new ImageFactoryGeneratorException( "The method " + method + " contains an invalid \"" + ImageFactoryConstants.LOCATION + "\" value of \"" + value + "\"."));
 	}
 	
 	/**
@@ -552,7 +552,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		boolean eager = false;
 		
 		while( true ){
-			final List values = method.getMetadataValues( Constants.SERVER_REQUEST );
+			final List values = method.getMetadataValues( ImageFactoryConstants.SERVER_REQUEST );
 			if( null == values || values.size() == 0 ){
 				this.throwServerRequestAnnotationMissing( method );
 			}
@@ -562,11 +562,11 @@ abstract public class ImageFactoryGenerator extends Generator {
 			}
 			
 			final String value = (String)values.get( 0 );
-			if( Constants.SERVER_REQUEST_EAGER.equals( value)){
+			if( ImageFactoryConstants.SERVER_REQUEST_EAGER.equals( value)){
 				eager = true;
 				break;
 			}
-			if( Constants.SERVER_REQUEST_LAZY.equals( value)){
+			if( ImageFactoryConstants.SERVER_REQUEST_LAZY.equals( value)){
 				eager = false;
 				break;
 			}
@@ -578,15 +578,15 @@ abstract public class ImageFactoryGenerator extends Generator {
 	}
 	
 	protected void throwServerRequestAnnotationMissing( final Method method ){
-		this.throwException( new ImageFactoryGeneratorException( "The \"" + Constants.SERVER_REQUEST + "\" annotation is missing from the method: \"" + this.toString( method) + "\"."));
+		this.throwException( new ImageFactoryGeneratorException( "The \"" + ImageFactoryConstants.SERVER_REQUEST + "\" annotation is missing from the method: \"" + this.toString( method) + "\"."));
 	}
 	
 	protected void throwServerRequestAnnotationFoundMoreThanOnce( final Method method, final List values ){
-		this.throwException( new ImageFactoryGeneratorException( "The \"" + Constants.SERVER_REQUEST + "\" annotation contains more than one value (" + values + ") on the method: \"" + this.toString( method) + "\"."));
+		this.throwException( new ImageFactoryGeneratorException( "The \"" + ImageFactoryConstants.SERVER_REQUEST + "\" annotation contains more than one value (" + values + ") on the method: \"" + this.toString( method) + "\"."));
 	}
 	
 	protected void throwInvalidServerValue( final Method method, final String value ){
-		this.throwException( new ImageFactoryGeneratorException( "The method " + method + " contains an invalid \"" + Constants.SERVER_REQUEST + "\" value of \"" + value + "\"."));
+		this.throwException( new ImageFactoryGeneratorException( "The method " + method + " contains an invalid \"" + ImageFactoryConstants.SERVER_REQUEST + "\" value of \"" + value + "\"."));
 	}
 
 	/**
@@ -599,7 +599,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		Checker.notNull("parameter:preFetchUrls", preFetchUrls );
 		
 		final GeneratorContext context = this.getGeneratorContext();
-		final String methodName = Constants.GET_PRELOAD_URLS;
+		final String methodName = ImageFactoryConstants.GET_PRELOAD_URLS;
 		context.branch();
 		context.info("Overriding " + methodName + " to preload.");
 

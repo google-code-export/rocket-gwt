@@ -23,16 +23,16 @@ import rocket.generator.rebind.type.Type;
 public class CreateImageTemplatedFile extends TemplatedFileCodeBlock {
 
 	protected String getResourceName() {
-		return Constants.TEMPLATE;
+		return ImageFactoryConstants.TEMPLATE;
 	}
 	
 	protected Object getValue0(final String name) {
 		Object value = null;
 
-		if (Constants.URL_TEMPLATE_PLACEHOLDER.equals(name)) {
+		if (ImageFactoryConstants.URL_TEMPLATE_PLACEHOLDER.equals(name)) {
 			value = new StringLiteral(this.getUrl());
 		}
-		if( Constants.IMAGE_TYPE_TEMPLATE_PLACEHOLDER.equals( name ) ){
+		if( ImageFactoryConstants.IMAGE_TYPE_TEMPLATE_PLACEHOLDER.equals( name ) ){
 			value = this.getType();
 		}
 		

@@ -23,6 +23,6 @@ package rocket.widget.rebind.imagefactory;
 public class SafariImageFactoryGenerator extends ImageFactoryGenerator {
 
 	protected int getMaximumDataUrlLength(){	
-		return this.getMaximumDataUrlLength( Constants.SAFARI_MAXIMUM_DATA_URL_SIZE, Constants.SAFARI_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
+		return this.getMaximumDataUrlLength( ImageFactoryConstants.SAFARI_MAXIMUM_DATA_URL_SIZE, ImageFactoryConstants.SAFARI_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
 	}
 }

@@ -23,6 +23,6 @@ package rocket.widget.rebind.imagefactory;
 public class OperaImageFactoryGenerator extends ImageFactoryGenerator {
 
 		protected int getMaximumDataUrlLength(){	
-			return this.getMaximumDataUrlLength( Constants.OPERA_MAXIMUM_DATA_URL_SIZE, Constants.OPERA_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
+			return this.getMaximumDataUrlLength( ImageFactoryConstants.OPERA_MAXIMUM_DATA_URL_SIZE, ImageFactoryConstants.OPERA_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
 		}
 }
