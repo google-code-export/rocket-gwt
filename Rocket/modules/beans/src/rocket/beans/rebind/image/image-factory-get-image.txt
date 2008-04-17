@@ -1,0 +1,8 @@
+// /rocket/beans/rebind/image/image-factory-get-image.txt
+
+// cast
+(${imageType} ) 
+
+// getImageFactory() actually lives on the enclosing bean factory
+getImageFactory().${imageGetter}()
+

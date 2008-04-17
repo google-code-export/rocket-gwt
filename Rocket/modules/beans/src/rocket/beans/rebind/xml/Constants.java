@@ -27,7 +27,7 @@ class Constants {
 
 	static final String BEAN_FILE_SUFFIX = "xml";
 
-	static final String PUBLIC_ID = "-//rocket-gwt//Beans 0.40//EN";
+	static final String PUBLIC_ID = "-//rocket-gwt//Beans 0.48//EN";
 
 	static final String DTD_FILE_NAME = "bean-factory.dtd";
 
@@ -112,4 +112,17 @@ class Constants {
 	final static String ALIAS_NAME_ATTRIBUTE = "name";
 
 	final static String ALIAS_BEAN_ATTRIBUTE = "bean";
+	
+	final static String IMAGE_TAG = "image";
+	final static String IMAGE_FILE_ATTRIBUTE = "file";
+	
+	final static String IMAGE_LOCATION_ATTRIBUTE = "location";
+	final static String IMAGE_LOCAL = "local";
+	final static String IMAGE_SERVER = "server";
+	
+	final static String IMAGE_SERVER_REQUEST_ATTRIBUTE = "serverRequest";
+	final static String IMAGE_EAGER = "eager";
+	final static String IMAGE_LAZY = "lazy";
+	
+	
 }

@@ -49,6 +49,7 @@ import rocket.beans.rebind.Rpc;
 import rocket.beans.rebind.alias.Alias;
 import rocket.beans.rebind.beanreference.BeanReference;
 import rocket.beans.rebind.beanreference.BeanReferenceImpl;
+import rocket.beans.rebind.image.ImageValue;
 import rocket.beans.rebind.list.ListValue;
 import rocket.beans.rebind.map.MapValue;
 import rocket.beans.rebind.nullvalue.NullLiteral;
@@ -482,6 +483,11 @@ public class DocumentWalker {
 				value = this.visitMap(element);
 				break;
 			}
+			
+			if( tagName.equals( Constants.IMAGE_TAG )){
+				value = this.visitImage( element );
+				break;
+			}
 
 			throw new BeanFactoryGeneratorException("Unknown element \"" + tagName + "\".");
 		}
@@ -669,6 +675,30 @@ public class DocumentWalker {
 		return values;
 	}
 
+	/**
+	 * Creates an ImageValue from an image element.
+	 * @param element
+	 * @return
+	 */
+	protected ImageValue visitImage( final Element element ){
+		Checker.notNull("parameter:element", element );
+		
+		final ImageTag tag = new ImageTag();
+		tag.setElement(element);
+		tag.setFilename( this.getFilename() );
+		tag.setPlaceHolderResolver( this.getPlaceHolderResolver() );
+		
+		final ImageValue imageValue = new ImageValue();
+		imageValue.setFilename( this.getFilename() );
+		imageValue.setGeneratorContext( this.getGenerator().getGeneratorContext() );
+		
+		imageValue.setFile( tag.getFile() );
+		imageValue.setLocal( tag.isLocal()  );
+		imageValue.setLazy( tag.isLazy() );
+		
+		return imageValue;
+	}
+	
 	/**
 	 * Visits all alias tags and verifies that the name and bean are valid.
 	 */

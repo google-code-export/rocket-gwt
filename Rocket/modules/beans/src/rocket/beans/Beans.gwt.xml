@@ -1,6 +1,7 @@
 <module>
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="rocket.util.Util"/>
+	<inherits name="rocket.widget.Widget"/>
 	
 	<source path="client" />	
 
