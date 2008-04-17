@@ -16,7 +16,6 @@
 package rocket.generator.rebind;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import rocket.generator.rebind.gwt.TypeOracleGeneratorContext;
 import rocket.generator.rebind.packagee.Package;
@@ -181,7 +180,10 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 
 	/**
 	 * Helper which takes a package and filename within that package returning a
-	 * filename that may be loaded from the classpath
+	 * filename that may be loaded from the classpath. 
+	 * 
+	 * If the fileName is absolute aka starts with a slash the package parameter is ignored.
+	 * If the filename is relative the package is used to form an absolute classpath name.
 	 * 
 	 * @param javaLangPackage
 	 * @param fileName
@@ -191,7 +193,10 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 		Checker.notNull("parameter:javaLangPackage", javaLangPackage);
 		Checker.notNull("parameter:fileName", fileName);
 
-		final String resourceName = '/' + javaLangPackage.getName().replace('.', '/') + '/' + fileName;
+		String resourceName = fileName;
+		if( false == fileName.startsWith( "/")){
+			resourceName = '/' + javaLangPackage.getName().replace('.', '/') + '/' + fileName;	
+		}
 		return resourceName;
 	}
 
@@ -212,7 +217,10 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 
 	/**
 	 * Helper which takes a package and filename within that package returning a
-	 * filename that may be loaded from the classpath
+	 * filename that may be loaded from the classpath.
+	 * If filename is absolute aka starts with a slash the package is ignored when forming the absolute classpath 
+	 * resource name. 
+	 * If the filename is relative the package is used to form an absolute classpath name.
 	 * 
 	 * @param packagee
 	 * @param fileName
@@ -222,7 +230,10 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 		Checker.notNull("parameter:package", packagee);
 		Checker.notNull("parameter:fileName", fileName);
 
-		final String resourceName = '/' + packagee.getName().replace('.', '/') + '/' + fileName;
+		String resourceName = fileName;
+		if( false == fileName.startsWith("/")){
+			resourceName = '/' + packagee.getName().replace('.', '/') + '/' + fileName;
+		}
 		return resourceName;
 	}
 
