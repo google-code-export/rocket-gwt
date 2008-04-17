@@ -26,6 +26,7 @@ import rocket.beans.client.aop.MethodInterceptor;
 import rocket.beans.client.aop.MethodInvocation;
 import rocket.beans.client.aop.ProxyFactoryBean;
 import rocket.util.client.Utilities;
+import rocket.widget.client.ImageFactory;
 
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
@@ -134,4 +135,17 @@ class Constants {
 	 * beans
 	 */
 	final static String NESTED_BEAN_NAME_PREFIX = "nestedBean";
+	
+	final static String IMAGE_FACTORY_NESTED_CLASS_NAME = "BeanFactoryImageFactory";
+	final static String IMAGE_FACTORY = ImageFactory.class.getName();
+	final static String IMAGE_GETTER_PREFIX = "getImage";
+	
+	final static String IMAGE_FACTORY_FILE = "file";
+	
+	final static String IMAGE_FACTORY_FIELDNAME = "imageFactory";
+	
+	final static String IMAGE_FACTORY_SETTER_NAME = "setImageFactory";
+	final static String IMAGE_FACTORY_SETTER_PARAMETER_NAME = "imageFactory";
+	
+	final static String IMAGE_FACTORY_GETTER_NAME = "getImageFactory";
 }

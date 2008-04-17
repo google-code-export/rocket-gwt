@@ -22,6 +22,7 @@ import rocket.beans.test.generator.aspects.client.BeanFactoryGeneratorAspectsGwt
 import rocket.beans.test.generator.bean.BeanFactoryGeneratorBeanGwtTestCase;
 import rocket.beans.test.generator.beanreference.BeanFactoryGeneratorBeanReferenceGwtTestCase;
 import rocket.beans.test.generator.constructor.BeanFactoryGeneratorConstructorGwtTestCase;
+import rocket.beans.test.generator.image.BeanFactoryGeneratorImageGwtTestCase;
 import rocket.beans.test.generator.include.BeanFactoryGeneratorIncludeGwtTestCase;
 import rocket.beans.test.generator.placeholder.BeanFactoryGeneratorPlaceHolderGwtTestCase;
 import rocket.beans.test.generator.properties.BeanFactoryGeneratorPropertiesGwtTestCase;
@@ -60,6 +61,7 @@ public class BeanTestSuite {
 		suite.addTestSuite(BeanFactoryGeneratorConstructorGwtTestCase.class);
 		suite.addTestSuite(BeanFactoryGeneratorPropertiesGwtTestCase.class);
 		suite.addTestSuite(BeanFactoryGeneratorRpcGwtTestCase.class);
+		suite.addTestSuite(BeanFactoryGeneratorImageGwtTestCase.class);
 		suite.addTestSuite(BeanFactoryGeneratorBeanReferenceGwtTestCase.class);		
 		suite.addTestSuite(BeanFactoryGeneratorAspectsGwtTestCase.class);		
 	}

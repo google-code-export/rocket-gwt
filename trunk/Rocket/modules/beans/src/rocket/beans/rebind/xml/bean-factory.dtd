@@ -1,6 +1,6 @@
 <!ELEMENT bean-factory 							(
 		place-holders*, 
-			(bean|alias|rpc|aspect|include)*
+			(bean|alias|rpc|aspect|include|image)*
 		)>
 
 <!ELEMENT place-holders							EMPTY>
@@ -24,7 +24,7 @@
 	destroyMethod 	CDATA 						#IMPLIED	
 >
 
-<!ELEMENT constructor 							(null|value|bean-reference|bean|list|set|map)+ >
+<!ELEMENT constructor 							(null|value|bean-reference|bean|list|set|map|image)+ >
 <!ATTLIST constructor
 >
 
@@ -32,7 +32,7 @@
 <!ATTLIST properties
 >
 
-<!ELEMENT property 								(null|value|bean-reference|bean|list|set|map) >
+<!ELEMENT property 								(null|value|bean-reference|bean|list|set|map|image) >
 <!ATTLIST property
 	name 			CDATA 						#REQUIRED
 >
@@ -47,16 +47,16 @@
 	reference-id	CDATA 						#REQUIRED
 >
 
-<!ELEMENT list 									(null|value|bean-reference|bean|list|set|map)+>
+<!ELEMENT list 									(null|value|bean-reference|bean|list|set|map|image)+>
 <!ATTLIST list >
 
-<!ELEMENT set 									(null|value|bean-reference|bean|list|set|map)+>
+<!ELEMENT set 									(null|value|bean-reference|bean|list|set|map|image)+>
 <!ATTLIST set >
 
 <!ELEMENT map 									(map-entry+)>
 <!ATTLIST map >
 
-<!ELEMENT map-entry 							(null|value|bean-reference|bean|list|set|map)>
+<!ELEMENT map-entry 							(null|value|bean-reference|bean|list|set|map|image)>
 <!ATTLIST map-entry
 	key				CDATA						#REQUIRED
 >
@@ -79,4 +79,11 @@
 	advisor				CDATA 					#REQUIRED
 	target				CDATA 					#REQUIRED	
 	methods				CDATA 					#REQUIRED	
+>
+
+<!ELEMENT image									EMPTY >
+<!ATTLIST image
+	file				CDATA 					#REQUIRED
+	location			(local|server) 			#REQUIRED	
+	serverRequest		(lazy|eager)			#IMPLIED	
 >
