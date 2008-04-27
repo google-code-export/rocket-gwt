@@ -563,3 +563,45 @@ Compiler
 
 Remoting
 * Enriched Comet test allow for better simulation of various server conditions, including throwing of exceptions, failed connection attempts and more.
+
+0.48 XXXXXXX 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.48.zip
+
+Beans
+* Fixed a bug whereby prototypes referenced by a singletons sometimes failed with an exception complaining that prototypes cant be marked as eager.
+* Significantly improved the names allocated to nested / anonymous beans. The old naming scheme of "nestedBean" + sequence number has been replaced with nested beans being built from the parent id
+  parentBeanId + dash + nestedBeanIndexForParent eg the 2nd nested bean of parent would be called "parent-nestedBean1".
+* Improved exception messages when unable to find a property or there are too many properties due to overloaded methods.
+* Added detection of cycles between singletons one of which is the product of an incomplete FactoryBean.`
+* Improved logging messages. All properties are now processed in alphabetical order.
+* Added an image element to bean factory xml file to set image properties. This feature indirectly uses a image factory as the image provider facilitating data urls whereever possible etc.
+* Updated doctype version number from 0.40 to 0.48 to accomodate new image element.
+
+Compiler
+* Fixed a bug relating to always inserting clinits in front of a field after proving that its not necessary within jsni methods.
+
+Generator
+* Added an additional delayedBranch() method to GeneratorContext and GeneratorContextImpl to support delayed creation of any branch.
+* Fixed Generator.getResource() methods to handle absolute paths, previously only relative paths were correctly resolved.
+
+Event
+* Increased visibility of Event.isCancelled from package private(default) to public.
+ 
+Serialization
+* Improved messages logged by SerializationFactoryGenerator.
+* Improved filtering code to blacklist types that are a sub class of an already blacklisted type.
+
+Style
+* Fixed handling get inline width/height for IE. Previously attempts always failed returning null etc.
+* Improved caching of StyleSheet proxies.
+* Added FontMetrics a useful class to help determine the average width / height of any given font. Works best with fixed fonts.
+
+Utilities
+* Added helper methods to escape strings into their java string form.
+ 
+Widgets
+* Significantly improved ResizablePanel so that it works in a much more intuitive way. The panel now matches the size of the child widget.
+* Fixed text selection disabling whilst a ResizablePanel resize is in progress.
+* ResizablePanel now fires a change event each time it changes size.
+* Added support to ImageFactory to return com.google.gwt.user.client.ui.Image as well as rocket.widget.client.Image.

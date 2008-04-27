@@ -2,7 +2,7 @@
 <project name="Rocket" default="dist" basedir="c:/workspace.rocket/Rocket/">
 	<description>Ant build for the rocket framework.</description>
 
-	<property name="version" 				value="0.47"/>
+	<property name="version" 				value="0.48"/>
 	<property name="build-dir" 				location="${basedir}/build"/>	
 	<property name="test-dir" 				location="${build-dir}/test"/>	
 	<property name="src-dir" 				location="${build-dir}/src"/>	
@@ -237,14 +237,22 @@
   	        		author="yes"
 				classpathref="project.class.path"			
   	        		destdir="${doc-dir}"
-	  			doctitle="Rocket GWT ${version} Javadoc"
 		    		noindex="yes"
 		    		serialwarn="no"  	
   	        		sourcepath="${src-dir}"
   	        		splitindex="no"
-  	        		verbose="no"
-				packagenames="rocket.**"
-				excludepackagenames="rocket.*.test">
+  	        		verbose="no">
+			
+			 <packageset dir="modules" defaultexcludes="yes">
+			 	<exclude name="*/src/rocket/*/test/**"/>
+			 	<exclude name="*/src/com/google/**"/>
+			 	<include name="*/src/rocket/**"/>			     
+			 </packageset>
+			
+			<doctitle><![CDATA[Rocket GWT ${version} Javadoc]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; Rocket. All Rights Reserved.</i>]]></bottom>
+			<tag name="todo" scope="all" description="To do:"/>
+			<link href="http://code.google.com/p/rocket-gwt/"/>
 		</javadoc>
 	</target>
 
