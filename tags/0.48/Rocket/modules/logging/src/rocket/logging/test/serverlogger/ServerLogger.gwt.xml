@@ -1,0 +1,21 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.logging.Logging"/>
+	
+	<source path="client" />
+	
+	<!--
+	Set this value to "yes" which results in generator becoming the source of logger config
+	rather than hardcoding everything to none.
+	-->
+	<set-property name="rocket.logging.Logging.enable" value="yes"/>
+	
+	<servlet
+		path="/logging"
+		class="rocket.logging.test.serverlogger.server.TestLoggingServerService" />
+
+	<servlet
+		path="/loggedEvents"
+		class="rocket.logging.test.serverlogger.server.LoggedEventsServiceImpl" />
+</module>
+

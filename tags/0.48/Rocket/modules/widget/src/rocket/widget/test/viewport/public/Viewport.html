@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Viewport</title>
+		<style>
+			body,td,a,div,.p{font-family:arial,sans-serif}
+			div,td{color:#000000}
+			a:link,.w,.w a:link{color:#0000cc}
+			a:visited{color:#551a8b}
+			a:active{color:#ff0000}
+			
+			.rocket-viewport{
+				border-color: black;
+				border-style: solid;
+				border-width: 1px;
+			}
+			
+			.rocket-viewport-dragging {
+				opacity: 0.5;
+				filter: (alpha=50);
+			}
+			
+			.rocket-viewport-outOfBounds{
+				cursor: notAllowed;
+			}
+		</style>
+		<script language='javascript' src='rocket.widget.test.viewport.Viewport.nocache.js'></script>
+	</head>
+	<body>
+	<button onclick="prompt( '', document.body.innerHTML );">document.body.innerHTML</button>
+	
+	<h3>Things to test</h3>
+	<p>
+	The server contains a servlet that returns a tile (sub image) of a much larger world map, in a similar manner to that found in googlemaps albeit
+	in a much simpler manner. The zooming ability is achieved by simply scaling this same image when creating a tile.
+	</p>
+	<ul>
+	<li>The user may scroll around the world map by dragging.</li>
+	<li>If the user scrolls too much too the left, right, top or bottom the map wraps round.</li>
+	<li>The user may change the zoom setting by entering a new integer value and hitting enter in the zoom textbox.</li>
+	<li>The dotted/dashed lines on the map are part of the image and not the actual markers for the tile grid.</li>
+	<li>A embedded tomcat is required because of the need for a custom servlet which serves the individual tiles</li>
+	</ul>
+	</p>
+	</body>
+</html>

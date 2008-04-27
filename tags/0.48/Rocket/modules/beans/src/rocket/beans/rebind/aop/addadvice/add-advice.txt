@@ -1,0 +1,10 @@
+// /rocket/beans/rebind/aop/addadvice/add-advice.txt
+
+chain.addAdvice( 
+
+	// cast to Advice
+	(rocket.beans.client.aop.Advice) 
+
+	// fetch the advisor
+	${beanFactory}.this.getBean( ${beanId} ));
+

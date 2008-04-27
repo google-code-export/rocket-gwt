@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.48//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+<!--
+id attribute is missing.
+-->
+	<bean 
+		class="rocket.beans.test.generator.bean.Bean" 
+		scope="singleton">
+	</bean>
+</bean-factory>

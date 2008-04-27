@@ -1,0 +1,6 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.json.Json"/>
+	
+	<source path="client" />	
+</module>
