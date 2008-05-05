@@ -54,6 +54,7 @@ Just about all the property types supported by spring are supported in rocket.
   * list
   * set
   * map
+  * image
 
 ==Extras==
   * alias
@@ -118,13 +119,24 @@ Primitive values are any of the following:
 Any attempt to set a number value of say ( 1) upon a boolean field will thus fail because the types are incompatible.
 
 {{{
-{{{
 	<bean ... >
 		<properties>
 			<property name="name">
 				<value>true</value>
 			</property>
 }}}
+
+==images==
+The image tag may be used to set an image property. Behind the scenes an ImageFactory is generated which means that for supported browsers data urls will be used.
+
+The example below sets an image property belonging to a bean. Take note that IE clients will download the image from a server whilst users of other browsers will source the image from a data url.
+{{{
+	<bean ... >
+		<properties>
+			<property name="someImage">
+				<image file="/image.jpg" location="local"/>
+			</property>
+				
 }}}
 
 ==bean-reference==
@@ -153,6 +165,7 @@ The example below embeds the definition of theOtherBean rather than using the be
 			</property>
 				
 }}}
+
 
 ==list, set, map==
 The list, set, map tags may be used to set a list, set or map property belonging to a bean. Any valid value tag (null,value,bean,bean-reference) may be an element or value of these collection types. 
