@@ -19,6 +19,8 @@ import rocket.beans.client.BeanFactory;
 import rocket.beans.test.generator.constructor.ambiguous.AmbiguousConstructorsBeanFactory;
 import rocket.beans.test.generator.constructor.multiplearguments.HasMultipleArgumentsConstructor;
 import rocket.beans.test.generator.constructor.multiplearguments.MultipleArgumentsConstructorBeanFactory;
+import rocket.beans.test.generator.constructor.multiplevalues.HasMultipleValuesConstructor;
+import rocket.beans.test.generator.constructor.multiplevalues.MultipleValuesConstructorBeanFactory;
 import rocket.beans.test.generator.constructor.noarguments.HasNoArgumentsConstructor;
 import rocket.beans.test.generator.constructor.noarguments.NoArgumentsConstructorBeanFactory;
 import rocket.beans.test.generator.constructor.notfound.NotFoundBeanFactory;
@@ -28,7 +30,7 @@ import rocket.generator.client.GeneratorGwtTestCase;
 import com.google.gwt.core.client.GWT;
 
 /**
- * A series of tests for the BeanFactoryGenerator.
+ * A series of tests for the BeanFactoryGenerator in particularly how it handles the constructor tag.
  * 
  * @author Miroslav Pokorny
  */
@@ -44,35 +46,43 @@ public class BeanFactoryGeneratorConstructorGwtTestCase extends GeneratorGwtTest
 		return "rocket.beans.test.generator.constructor.BeanFactoryGeneratorConstructor";
 	}
 	
-	public void testConstructorNotFound() {
-		try {
-			assertBindingFailed(GWT.create(NotFoundBeanFactory.class));
-		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
-		}
-	}
+//	public void testConstructorNotFound() {
+//		try {
+//			assertBindingFailed(GWT.create(NotFoundBeanFactory.class));
+//		} catch (final FailedGenerateAttemptException failed) {
+//			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+//		}
+//	}
+//
+//	public void testAmbiguousConstructors() {
+//		try {
+//			assertBindingFailed(GWT.create(AmbiguousConstructorsBeanFactory.class));
+//		} catch (final FailedGenerateAttemptException failed) {
+//			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+//		}
+//	}
+//
+//	public void testNoArgumentsConstructor() {
+//		final BeanFactory factory = (BeanFactory) GWT.create(NoArgumentsConstructorBeanFactory.class);
+//		final HasNoArgumentsConstructor bean = (HasNoArgumentsConstructor) factory.getBean(BEAN);
+//		assertNotNull(bean);
+//	}
+//
+//	public void testConstructorWithMultipleParameters() {
+//		final BeanFactory factory = (BeanFactory) GWT.create(MultipleArgumentsConstructorBeanFactory.class);
+//		final HasMultipleArgumentsConstructor bean = (HasMultipleArgumentsConstructor) factory.getBean(BEAN);
+//		assertNotNull(bean);
+//
+//		assertEquals("foo", bean.getFirst());
+//		assertEquals("bar", bean.getSecond());
+//	}
 
-	public void testAmbiguousConstructors() {
-		try {
-			assertBindingFailed(GWT.create(AmbiguousConstructorsBeanFactory.class));
-		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
-		}
-	}
-
-	public void testNoArgumentsConstructor() {
-		final BeanFactory factory = (BeanFactory) GWT.create(NoArgumentsConstructorBeanFactory.class);
-		final HasNoArgumentsConstructor bean = (HasNoArgumentsConstructor) factory.getBean(BEAN);
+	public void testMultipleValues() {
+		final BeanFactory factory = (BeanFactory) GWT.create(MultipleValuesConstructorBeanFactory.class);
+		final HasMultipleValuesConstructor bean = (HasMultipleValuesConstructor) factory.getBean(BEAN);
 		assertNotNull(bean);
+
+		assertEquals(123, bean.getFirst());
+		assertEquals("foo", bean.getSecond());
 	}
-
-	public void testConstructorWithMultipleParameters() {
-		final BeanFactory factory = (BeanFactory) GWT.create(MultipleArgumentsConstructorBeanFactory.class);
-		final HasMultipleArgumentsConstructor bean = (HasMultipleArgumentsConstructor) factory.getBean(BEAN);
-		assertNotNull(bean);
-
-		assertEquals("foo", bean.getFirst());
-		assertEquals("bar", bean.getSecond());
-	}
-
 }
