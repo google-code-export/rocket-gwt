@@ -489,7 +489,9 @@ public class BeanFactoryGenerator extends Generator {
 			final Value value = (Value) argumentsIterator.next();
 			body.addArgument(value);
 
-			context.debug("" + value);
+			if( context.isDebugEnabled() ){
+				context.debug(value.toString());
+			}
 		}
 
 		context.unbranch();
@@ -552,12 +554,14 @@ public class BeanFactoryGenerator extends Generator {
 		while (constructorParameters.hasNext()) {
 			final ConstructorParameter constructorParameter = (ConstructorParameter) constructorParameters.next();
 			final Value value = (Value) valuesIterator.next();
-			value.setType(constructorParameter.getType());
+			value.setPropertyType(constructorParameter.getType());
 			
 			this.prepareValue(value);
 		}
 
-		context.debug("" + constructor);
+		if( context.isDebugEnabled()){
+			context.debug(constructor.toString());
+		}
 	}
 
 	/**
