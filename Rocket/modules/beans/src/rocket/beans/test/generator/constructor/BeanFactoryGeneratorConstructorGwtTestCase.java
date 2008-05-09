@@ -46,36 +46,36 @@ public class BeanFactoryGeneratorConstructorGwtTestCase extends GeneratorGwtTest
 		return "rocket.beans.test.generator.constructor.BeanFactoryGeneratorConstructor";
 	}
 	
-//	public void testConstructorNotFound() {
-//		try {
-//			assertBindingFailed(GWT.create(NotFoundBeanFactory.class));
-//		} catch (final FailedGenerateAttemptException failed) {
-//			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
-//		}
-//	}
-//
-//	public void testAmbiguousConstructors() {
-//		try {
-//			assertBindingFailed(GWT.create(AmbiguousConstructorsBeanFactory.class));
-//		} catch (final FailedGenerateAttemptException failed) {
-//			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
-//		}
-//	}
-//
-//	public void testNoArgumentsConstructor() {
-//		final BeanFactory factory = (BeanFactory) GWT.create(NoArgumentsConstructorBeanFactory.class);
-//		final HasNoArgumentsConstructor bean = (HasNoArgumentsConstructor) factory.getBean(BEAN);
-//		assertNotNull(bean);
-//	}
-//
-//	public void testConstructorWithMultipleParameters() {
-//		final BeanFactory factory = (BeanFactory) GWT.create(MultipleArgumentsConstructorBeanFactory.class);
-//		final HasMultipleArgumentsConstructor bean = (HasMultipleArgumentsConstructor) factory.getBean(BEAN);
-//		assertNotNull(bean);
-//
-//		assertEquals("foo", bean.getFirst());
-//		assertEquals("bar", bean.getSecond());
-//	}
+	public void testConstructorNotFound() {
+		try {
+			assertBindingFailed(GWT.create(NotFoundBeanFactory.class));
+		} catch (final FailedGenerateAttemptException failed) {
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+		}
+	}
+
+	public void testAmbiguousConstructors() {
+		try {
+			assertBindingFailed(GWT.create(AmbiguousConstructorsBeanFactory.class));
+		} catch (final FailedGenerateAttemptException failed) {
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
+		}
+	}
+
+	public void testNoArgumentsConstructor() {
+		final BeanFactory factory = (BeanFactory) GWT.create(NoArgumentsConstructorBeanFactory.class);
+		final HasNoArgumentsConstructor bean = (HasNoArgumentsConstructor) factory.getBean(BEAN);
+		assertNotNull(bean);
+	}
+
+	public void testConstructorWithMultipleParameters() {
+		final BeanFactory factory = (BeanFactory) GWT.create(MultipleArgumentsConstructorBeanFactory.class);
+		final HasMultipleArgumentsConstructor bean = (HasMultipleArgumentsConstructor) factory.getBean(BEAN);
+		assertNotNull(bean);
+
+		assertEquals("foo", bean.getFirst());
+		assertEquals("bar", bean.getSecond());
+	}
 
 	public void testMultipleValues() {
 		final BeanFactory factory = (BeanFactory) GWT.create(MultipleValuesConstructorBeanFactory.class);
