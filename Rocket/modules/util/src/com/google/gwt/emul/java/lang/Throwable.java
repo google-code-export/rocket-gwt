@@ -93,7 +93,7 @@ public class Throwable {
 	 * 
 	 * @return An array of StackTraceElements one for each level of the stack
 	 */
-	public StackTraceElement[] getStackTrace() {
+	public java.lang.StackTraceElement[] getStackTrace() {
 		if (this.stackTrace == null) {
 			final String[] functionNames = ThrowableHelper.getCallStackFunctionNames(this.getCallStack());
 			this.stackTrace = ThrowableHelper.buildStackTraceElements(functionNames);
@@ -131,14 +131,14 @@ public class Throwable {
 	/**
 	 * Stack traces are not currently supported.
 	 */
-	public void setStackTrace(StackTraceElement[] stackTrace) {
+	public void setStackTrace(final java.lang.StackTraceElement[] stackTrace) {
 		this.stackTrace = stackTrace;
 	}
 
 	/**
 	 * An array of populated StackTraceElements
 	 */
-	transient private StackTraceElement[] stackTrace;
+	transient private java.lang.StackTraceElement[] stackTrace;
 
 	public String toString() {
 		String className = GWT.getTypeName(this);
