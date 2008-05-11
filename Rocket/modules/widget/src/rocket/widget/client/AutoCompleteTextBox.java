@@ -104,7 +104,9 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	protected Html createListEntry(final String text) {
 		Checker.notEmpty("parameter:text", text);
 
-		return new Html(text);
+		final Html html = new Html(text);
+		html.setStyleName("");
+		return html;
 	}
 
 	public void clear() {

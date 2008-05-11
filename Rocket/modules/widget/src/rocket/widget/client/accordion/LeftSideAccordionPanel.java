@@ -32,21 +32,13 @@ public class LeftSideAccordionPanel extends TwoColumnAccordionPanel {
 	public LeftSideAccordionPanel() {
 	}
 
-	protected Widget createWidget() {
-		final HorizontalPanel panel = this.createPanel();
-		this.setPanel(panel);
-		return panel;
-	}
-
 	protected HorizontalPanel createPanel() {
 		final HorizontalPanel panel = new HorizontalPanel();
 
 		final DivPanel captionsPanel = this.createCaptionsPanel();
-		this.setCaptionsPanel(captionsPanel);
 		panel.add(captionsPanel);
 
 		final DeckPanel contentsPanel = this.createContentsPanel();
-		this.setContentsPanel(contentsPanel);
 		panel.add(contentsPanel);
 
 		return panel;
@@ -55,28 +47,36 @@ public class LeftSideAccordionPanel extends TwoColumnAccordionPanel {
 	protected String getInitialStyleName() {
 		return Constants.LEFT_SIDE_ACCORDION_PANEL_STYLE;
 	}
-
+	
+	protected DivPanel getCaptionsPanel(){
+		return (DivPanel) this.getPanel().getWidget( Constants.LEFT_SIDE_ACCORDION_PANEL_CAPTIONS_PANEL_INDEX );
+	}
+	
 	protected String getCaptionsPanelStyle() {
 		return Constants.LEFT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
 	}
 
+	protected String getCaptionStyle() {
+		return Constants.LEFT_SIDE_ACCORDION_PANEL_CAPTION_STYLE;
+	}
+
+	protected String getCaptionSelectedStyle() {
+		return Constants.LEFT_SIDE_ACCORDION_PANEL_CAPTION_SELECTED_STYLE;
+	}
+	
+	protected DeckPanel getContentsPanel(){
+		return (DeckPanel) this.getPanel().getWidget( Constants.LEFT_SIDE_ACCORDION_PANEL_CONTENTS_PANEL_INDEX );
+	}
+	
 	protected String getContentsPanelStyle() {
 		return Constants.LEFT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
 	}
 
-	protected String getCaptionSelectedStyle() {
-		return Constants.LEFT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_SELECTED_STYLE;
-	}
-
-	protected String getContentSelectedStyle() {
-		return Constants.LEFT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_SELECTED_STYLE;
-	}
-
-	protected String getCaptionStyle() {
-		return Constants.LEFT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE;
+	protected String getContentsStyle() {
+		return Constants.LEFT_SIDE_ACCORDION_PANEL_CONTENTS_STYLE;
 	}
 
 	protected String getContentStyle() {
-		return Constants.LEFT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE;
+		return Constants.LEFT_SIDE_ACCORDION_PANEL_CONTENT_STYLE;
 	}
 }

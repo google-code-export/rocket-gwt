@@ -20,6 +20,7 @@ import rocket.event.client.MouseEvent;
 import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
 import rocket.widget.client.Html;
+import rocket.widget.client.Widgets;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -112,7 +113,7 @@ public class MenuItem extends MenuWidget {
 	}
 
 	protected Html createHtml() {
-		return new Html();
+		return Widgets.createHtml(); 
 	}
 
 	String toString0() {

@@ -19,47 +19,35 @@ import rocket.widget.client.WidgetConstants;
 
 class Constants {
 
-	private final static String HANDLE = "-handle";
+	private final static String HANDLE = "handle";
 
-	private final static String BACKGROUND = "-background";
+	private final static String BACKGROUND = "background";
 
 	final static String DRAGGING = "-dragging";
 
-	final static String HORIZONTAL_SLIDER_STYLE = WidgetConstants.ROCKET
-			+ "-horizontalSlider";
+	final static String HORIZONTAL_SLIDER_STYLE = WidgetConstants.ROCKET + "-horizontalSlider";
 
-	final static String HORIZONTAL_SLIDER_HANDLE_STYLE = HORIZONTAL_SLIDER_STYLE
-			+ HANDLE;
+	final static String HORIZONTAL_SLIDER_HANDLE_STYLE = HANDLE;
 
-	final static String HORIZONTAL_SLIDER_BACKGROUND_STYLE = HORIZONTAL_SLIDER_STYLE
-			+ BACKGROUND;
+	final static String HORIZONTAL_SLIDER_BACKGROUND_STYLE = BACKGROUND;
 
-	final static String HORIZONTAL_SLIDER_DRAGGING_STYLE = HORIZONTAL_SLIDER_STYLE
-			+ DRAGGING;
+	final static String HORIZONTAL_SLIDER_DRAGGING_STYLE = DRAGGING;
 
-	final static String VERTICAL_SLIDER_STYLE = WidgetConstants.ROCKET
-			+ "-verticalSlider";
+	final static String VERTICAL_SLIDER_STYLE = WidgetConstants.ROCKET + "-verticalSlider";
 
-	final static String VERTICAL_SLIDER_HANDLE_STYLE = VERTICAL_SLIDER_STYLE
-			+ HANDLE;
+	final static String VERTICAL_SLIDER_HANDLE_STYLE = HANDLE;
 
-	final static String VERTICAL_SLIDER_BACKGROUND_STYLE = VERTICAL_SLIDER_STYLE
-			+ BACKGROUND;
+	final static String VERTICAL_SLIDER_BACKGROUND_STYLE = BACKGROUND;
 
-	final static String VERTICAL_SLIDER_DRAGGING_STYLE = VERTICAL_SLIDER_STYLE
-			+ DRAGGING;
+	final static String VERTICAL_SLIDER_DRAGGING_STYLE = DRAGGING;
 
-	final static String FLOATING_SLIDER_STYLE = WidgetConstants.ROCKET
-			+ "-floatingSlider";
+	final static String FLOATING_SLIDER_STYLE = WidgetConstants.ROCKET + "-floatingSlider";
 
-	final static String FLOATING_SLIDER_HANDLE_STYLE = FLOATING_SLIDER_STYLE
-			+ HANDLE;
+	final static String FLOATING_SLIDER_HANDLE_STYLE = HANDLE;
 
-	final static String FLOATING_SLIDER_BACKGROUND_STYLE = FLOATING_SLIDER_STYLE
-			+ BACKGROUND;
+	final static String FLOATING_SLIDER_BACKGROUND_STYLE = BACKGROUND;
 
-	final static String FLOATING_SLIDER_DRAGGING_STYLE = FLOATING_SLIDER_STYLE
-			+ DRAGGING;
+	final static String FLOATING_SLIDER_DRAGGING_STYLE = DRAGGING;
 
 	final static int BACKGROUND_WIDGET_INDEX = 0;
 

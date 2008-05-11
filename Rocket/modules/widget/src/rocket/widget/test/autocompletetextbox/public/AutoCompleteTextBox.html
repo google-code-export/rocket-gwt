@@ -10,12 +10,12 @@ BODY, TABLE, INPUT{
 	font-size: 11px;
 }
 
-.rocket-autoCompleteTextBox{
+INPUT.rocket-autoCompleteTextBox{
 	border-color: #001;
 	border-style: solid;
 	border-width: 1px;
 
-	padding: 4px;
+	padding: 2px;
 
 	background-color: #eef;
 	color: #000;
@@ -24,47 +24,53 @@ BODY, TABLE, INPUT{
 }
 
 .rocket-autoCompleteTextBox-dropDownList{
-	border-width: 1px;
+	margin: 0px;
+
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
 	border-color: black;
 	border-style: solid;
 
-	padding: 2px;
+	padding: 0px;
 
 	background-color: #eef;
 	
-	color: #000000;
-	font-family: Verdana, Arial, Sans-serif; 
+	color: #000;
+	font-family: Verdana, Arial, "Sans-serif"; 
 	font-size: 9px;
 	cursor: hand;
 }
 
-.rocket-autoCompleteTextBox-dropDownList-oddRow{
-	color: #000;
+.rocket-autoCompleteTextBox-dropDownList .oddRow {
 	background-color: #ddf;	
 }
 
-.rocket-autoCompleteTextBox-dropDownList-evenRow{
+.rocket-autoCompleteTextBox-dropDownList .evenRow {
 	color: #000;
 	background-color: #ccf;
 }
 
-.rocket-autoCompleteTextBox-dropDownList-oddRow, .rocket-autoCompleteTextBox-dropDownList-evenRow{
-	margin-top: 2px;
-	margin-bottom: 2px;
-	margin-left: 2px;
-	margin-right: 2px;
+.rocket-autoCompleteTextBox-dropDownList .oddRow, 
+.rocket-autoCompleteTextBox-dropDownList .evenRow{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
 	
-	padding-top: 2px;
-	padding-bottom: 2px;
-	padding-left: 4px;
-	padding-right: 4px;	
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 2px;
+	padding-right: 2px;	
+
+	color: #000;
 }
 
-.rocket-autoCompleteTextBox-dropDownList-selected{
+.rocket-autoCompleteTextBox-dropDownList .selected{
 	color: #ef0;
 	background-color: #321;
 }
-
 
 BUTTON{
 	margin: 4px;
@@ -84,7 +90,6 @@ The AutoCompleteTextBox below auto complete matches what is typed against the li
 </ul>
 
 <h4>Word list</h4>
-
 </body>
 
 </html>

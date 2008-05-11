@@ -43,35 +43,35 @@ public class TopTabPanel extends HorizonalTabPanel {
 	}
 
 	protected String getTabBarStyleName() {
-		return Constants.TOP_TAB_BAR_STYLE;
+		return Constants.TAB_BAR_STYLE;
 	}
 
 	protected String getTabBarBeforeSpacerStyleName() {
-		return Constants.TOP_TAB_BAR_BEFORE_SPACER_STYLE;
+		return Constants.BEFORE_SPACER_STYLE;
 	}
 
 	protected String getTabBarAfterSpacerStyleName() {
-		return Constants.TOP_TAB_BAR_AFTER_SPACER_STYLE;
+		return Constants.AFTER_SPACER_STYLE;
 	}
 
 	protected String getTabBarItemStyleName() {
-		return Constants.TOP_TAB_BAR_ITEM_STYLE;
+		return Constants.ITEM_STYLE;
 	}
 
 	protected String getTabBarItemLabelStyleName() {
-		return Constants.TOP_TAB_BAR_ITEM_LABEL_STYLE;
+		return Constants.ITEM_LABEL_STYLE;
 	}
 
 	protected String getTabBarItemWidgetStyleName() {
-		return Constants.TOP_TAB_BAR_ITEM_WIDGET_STYLE;
+		return Constants.ITEM_WIDGET_STYLE;
 	}
 
 	protected String getTabBarItemSelectedStyleName() {
-		return Constants.TOP_TAB_BAR_ITEM_SELECTED_STYLE;
+		return Constants.ITEM_SELECTED_STYLE;
 	}
 
 	protected String getContentPanelStyleName() {
-		return Constants.TOP_TAB_CONTENT_STYLE;
+		return Constants.CONTENT_STYLE;
 	}
 
 }

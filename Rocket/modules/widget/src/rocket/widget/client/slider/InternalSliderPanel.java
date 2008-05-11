@@ -22,6 +22,7 @@ import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.util.client.JavaScript;
 import rocket.widget.client.Html;
+import rocket.widget.client.Widgets;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -72,8 +73,8 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 	protected void afterCreatePanelElement() {
 		super.afterCreatePanelElement();
 
-		this.add(new Html());
-		this.add(new Html());
+		this.add( Widgets.createHtml());
+		this.add( Widgets.createHtml());
 	}
 
 	protected String getInitialStyleName() {

@@ -32,21 +32,13 @@ public class RightSideAccordionPanel extends TwoColumnAccordionPanel {
 	public RightSideAccordionPanel() {
 	}
 
-	protected Widget createWidget() {
-		final HorizontalPanel panel = this.createPanel();
-		this.setPanel(panel);
-		return panel;
-	}
-
 	protected HorizontalPanel createPanel() {
 		final HorizontalPanel panel = new HorizontalPanel();
 
 		final DeckPanel contentsPanel = this.createContentsPanel();
-		this.setContentsPanel(contentsPanel);
 		panel.add(contentsPanel);
 
 		final DivPanel captionsPanel = this.createCaptionsPanel();
-		this.setCaptionsPanel(captionsPanel);
 		panel.add(captionsPanel);
 
 		return panel;
@@ -56,27 +48,30 @@ public class RightSideAccordionPanel extends TwoColumnAccordionPanel {
 		return Constants.RIGHT_SIDE_ACCORDION_PANEL_STYLE;
 	}
 
+	protected DivPanel getCaptionsPanel(){
+		return (DivPanel) this.getPanel().getWidget( Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_PANEL_INDEX );
+	}
+	
 	protected String getCaptionsPanelStyle() {
 		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
+	}
+	
+	protected String getCaptionStyle() {
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTION_STYLE;
+	}
+	protected String getCaptionSelectedStyle() {
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTION_SELECTED_STYLE;
+	}
+
+	protected DeckPanel getContentsPanel(){
+		return (DeckPanel) this.getPanel().getWidget( Constants.RIGHT_SIDE_ACCORDION_PANEL_CONTENTS_PANEL_INDEX );
 	}
 
 	protected String getContentsPanelStyle() {
 		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
 	}
-
-	protected String getCaptionSelectedStyle() {
-		return Constants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_SELECTED_STYLE;
-	}
-
-	protected String getContentSelectedStyle() {
-		return Constants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_SELECTED_STYLE;
-	}
-
-	protected String getCaptionStyle() {
-		return Constants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CAPTION_STYLE;
-	}
-
+	
 	protected String getContentStyle() {
-		return Constants.RIGHT_SIDE_ACCORDION_PANEL_ITEM_CONTENT_STYLE;
+		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CONTENT_STYLE;
 	}
 }

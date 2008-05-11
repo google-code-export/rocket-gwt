@@ -30,6 +30,7 @@ import rocket.util.client.Checker;
 import rocket.widget.client.DivPanel;
 import rocket.widget.client.Html;
 import rocket.widget.client.Label;
+import rocket.widget.client.Widgets;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -253,33 +254,21 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 
 	protected DivPanel createDivPanel() {
 		final DivPanel divPanel = new DivPanel();
-
-		divPanel.add(new Label()); // placeholder for menu list...
+		
+		divPanel.add(Widgets.createHtml()); // placeholder for menu list...
 
 		final Html html = this.createHtml();
 		divPanel.add(html);
-		this.setHtml(html);
 
 		return divPanel;
 	}
 
-	/**
-	 * A Html widget contains the text or label of this item.
-	 */
-	private Html html;
-
 	protected Html getHtml() {
-		Checker.notNull("field:html", html);
-		return html;
-	}
-
-	protected void setHtml(final Html html) {
-		Checker.notNull("parameter:html", html);
-		this.html = html;
+		return (Html)this.getDivPanel().get( 1 );
 	}
 
 	protected Html createHtml() {
-		final Html html = new Html();
+		final Html html = Widgets.createHtml();
 		html.setWidth("100%");
 		return html;
 	}

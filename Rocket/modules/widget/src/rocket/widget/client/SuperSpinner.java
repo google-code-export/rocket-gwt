@@ -16,155 +16,121 @@
 package rocket.widget.client;
 
 import rocket.event.client.MouseClickEvent;
-import rocket.event.client.MouseEventAdapter;
 import rocket.util.client.Checker;
 
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
- * An extension of a regular spinner that includes two extra buttons to assist
+ * An extension of a regular spinner that includes two extra controls to assist
  * with modifying the value.
  * 
  * @author Miroslav Pokorny (mP)
- * 
+ * @deprecated This widget will be removed from future releases. 
  */
 public class SuperSpinner extends Spinner {
 
 	public SuperSpinner() {
 		super();
 	}
+	
+	protected Widget createWidget() {
+		return this.createHorizontalPanel();
+	}
 
+	/**
+	 * Creates an empty HorizontalPanel which will become the container of all images
+	 * 
+	 * @return
+	 */
+	protected HorizontalPanel createHorizontalPanel() {
+		final HorizontalPanel panel = new HorizontalPanel();
+		
+		panel.add( new DummyImage() );
+		panel.add( new DummyImage() );
+		panel.add( new DummyImage() );
+		panel.add( new DummyImage() );
+		return panel;
+	}
+	
+	protected HorizontalPanel getHorizontalPanel() {
+		return (HorizontalPanel) this.getWidget();
+	}
+	
 	protected String getInitialStyleName() {
 		return WidgetConstants.SUPER_SPINNER_STYLE;
 	}
 
-	/**
-	 * The left button that when clicked decreases the spinners value.
-	 */
-	private Image bigDownWidget;
+	final int BIG_UP_IMAGE_INDEX = DOWN_IMAGE_INDEX + 1;
+	final int BIG_DOWN_IMAGE_INDEX = BIG_UP_IMAGE_INDEX + 1;
 
-	protected Image getBigDownWidget() {
-		Checker.notNull("field:bigDownWidget", bigDownWidget);
-		return this.bigDownWidget;
+	public Image getBigUpImage() {
+		return this.getImage( BIG_UP_IMAGE_INDEX );
 	}
 
-	protected void setBigDownWidget(final Image bigDownWidget) {
-		Checker.notNull("parameter:bigDown", bigDownWidget);
-		this.bigDownWidget = bigDownWidget;
+	public void setBigUpImage(final Image bigUpImage) {
+		final String style = this.getBigUpArrowStyle();
+		this.setImage(bigUpImage, BIG_UP_IMAGE_INDEX, style );
 	}
 
-	protected Image createBigDownWidget() {
-		final Image image = new Image();
-		image.setStyleName(this.getBigDownArrowStyle());
+	protected String getBigUpArrowStyle() {
+		return WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE;
+	}
+	
+	public Image getBigDownImage() {
+		return this.getImage( BIG_DOWN_IMAGE_INDEX );
+	}
 
-		image.addMouseEventListener(new MouseEventAdapter() {
-
-			public void onClick(final MouseClickEvent event) {
-				SuperSpinner.this.onBigDownClick();
-			}
-		});
-		return image;
+	public void setBigDownImage(final Image bigDownImage) {
+		final String style = this.getBigDownArrowStyle();
+		this.setImage(bigDownImage, BIG_DOWN_IMAGE_INDEX, style );
 	}
 
 	protected String getBigDownArrowStyle() {
 		return WidgetConstants.SUPER_SPINNER_BIG_DOWN_STYLE;
 	}
 
-	protected void onDownClick() {
-		this.updateValue(this.getValue() - this.getDelta());
+	protected Image getImage( final int index ){
+		final Image image = (Image) this.getHorizontalPanel().getWidget( index );
+		return image instanceof DummyImage ? null : image;
+	}
+	
+	protected void setImage( final Image image, final int index, final String style ){
+		Checker.notNull("parameter:image", image );
+	
+		final HorizontalPanel horizontalPanel = this.getHorizontalPanel();
+		horizontalPanel.remove(index);
+		horizontalPanel.insert(image, index );
+		
+		image.addStyleName(style);
 	}
 
-	public String getBigDownImageUrl() {
-		return this.getBigDownWidget().getUrl();
-	}
-
-	public void setBigDownImageUrl(final String bigDownImageUrl) {
-		Checker.notEmpty("parameter:bigDownImageUrl", bigDownImageUrl);
-
-		this.getBigDownWidget().setUrl(bigDownImageUrl);
-	}
-
-	/**
-	 * The right button that when clicked decreases the spinners value.
-	 */
-	private Image bigUpWidget;
-
-	protected Image getBigUpWidget() {
-		Checker.notNull("field:bigUpWidget", bigUpWidget);
-		return this.bigUpWidget;
-	}
-
-	protected void setBigUpWidget(final Image bigUpWidget) {
-		Checker.notNull("parameter:bigUpWidget", bigUpWidget);
-		this.bigUpWidget = bigUpWidget;
-	}
-
-	protected Image createBigUpWidget() {
-		final Image image = new Image();
-		image.setStyleName(this.getBigUpArrowStyle());
-
-		image.addMouseEventListener(new MouseEventAdapter() {
-
-			public void onClick(final MouseClickEvent event) {
-				SuperSpinner.this.onBigUpClick();
+	protected void onMouseClick( final MouseClickEvent event ){
+		while( true ){
+			final Element target = event.getTarget();
+			final Element up = this.getBigUpImage().getElement();
+			if( DOM.isOrHasChild(target, up)){
+				this.onBigUpClick();
+				break;
 			}
-		});
-		return image;
+			final Element down = this.getBigDownImage().getElement();
+			if( DOM.isOrHasChild(target, down)){
+				this.onBigDownClick();
+				break;
+			}
+			super.onMouseClick(event);
+			break;
+		}
 	}
-
-	protected String getBigUpArrowStyle() {
-		return WidgetConstants.SUPER_SPINNER_BIG_UP_STYLE;
-	}
-
-	public void onUpClick() {
-		this.updateValue(this.getValue() + this.getDelta());
-	}
-
+	
 	protected void onBigUpClick() {
 		this.updateValue(this.getValue() + this.getBigDelta());
 	}
 
 	protected void onBigDownClick() {
 		this.updateValue(this.getValue() - this.getBigDelta());
-	}
-
-	public String getBigUpImageUrl() {
-		return this.getBigUpWidget().getUrl();
-	}
-
-	public void setBigUpImageUrl(final String bigUpImageUrl) {
-		Checker.notEmpty("parameter:bigUpImageUrl", bigUpImageUrl);
-
-		this.getBigUpWidget().setUrl(bigUpImageUrl);
-	}
-
-	/**
-	 * Creates a new HorizontalPanel and fills it with various clickable widgets
-	 * which may be used adjust the value.
-	 * 
-	 * @return
-	 */
-	protected Panel createPanel() {
-		final HorizontalPanel panel = new HorizontalPanel();
-
-		final Image upWidget = this.createUpWidget();
-		this.setUpWidget(upWidget);
-		panel.add(upWidget);
-
-		final Image downWidget = this.createDownWidget();
-		this.setDownWidget(downWidget);
-		panel.add(downWidget);
-
-		final Image bigUpWidget = this.createBigUpWidget();
-		this.setBigUpWidget(bigUpWidget);
-		panel.add(bigUpWidget);
-
-		final Image bigDownWidget = this.createBigDownWidget();
-		this.setBigDownWidget(bigDownWidget);
-		panel.add(bigDownWidget);
-
-		return panel;
 	}
 
 	/**
@@ -182,7 +148,7 @@ public class SuperSpinner extends Spinner {
 	}
 
 	public String toString() {
-		return super.toString() + ", bigUpWidget: " + bigUpWidget + ", bigDownWidget: " + bigDownWidget + ", bigDelta: " + bigDelta;
+		return super.toString() + ", bigDelta: " + bigDelta;
 	}
 
 }

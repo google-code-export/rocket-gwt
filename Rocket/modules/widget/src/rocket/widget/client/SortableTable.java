@@ -372,17 +372,16 @@ public abstract class SortableTable extends CompositeWidget {
 	 */
 	protected RowList createRows() {
 		return new RowList();
-	};
+	}; 
 
 	/**
-	 * Returns a read only list view of the sorted rows.
+	 * Returns a list view of the sorted rows. The indexes match the display.
 	 * 
 	 * This list takes a lazy approach to sorting the list of rows.
 	 * 
 	 * @return
 	 */
 	public List getTableRows() {
-
 		final RowList rowList = this.getRowsList();
 		final SortedRowList sortedRowList = rowList.getSorted();
 
@@ -414,8 +413,16 @@ public abstract class SortableTable extends CompositeWidget {
 				return removing;
 			}
 
+			// TODO make sure this only redraws the row.
 			public Object set(final int index, final Object element) {
-				throw new RuntimeException("Replacing a specific slot is not supported.");
+				final Object replaced = sortedRowList.set(index, element );
+				
+				final SortedRowListElement sortedRowListElement = sortedRowList.getSortedRowListElement(index);
+				sortedRowListElement.clear();
+				
+				SortableTable.this.redraw( sortedRowListElement, index);
+				
+				return replaced;
 			}
 		};
 	}
@@ -534,15 +541,23 @@ public abstract class SortableTable extends CompositeWidget {
 
 		for (int row = 0; row < rowSize; row++) {
 			final SortedRowListElement rowObject = (SortedRowListElement) rows.getSortedRowListElement(row);
-
-			for (int column = 0; column < columnCount; column++) {
-				final Widget cell = rowObject.getWidget(column);
-				table.setWidget(rowIndex, column, cell);
-			}
+			this.redraw( rowObject, rowIndex );
 			rowIndex++;
 		}
 	}
 
+	protected void redraw( final SortedRowListElement rowData, final int rowIndex ){
+		Checker.notNull("parameter:rowData", rowData );
+		Checker.greaterThanOrEqual("parameter:rowIndex", 0, rowIndex );
+		
+		final Grid table = this.getGrid();
+		final int columnCount = this.getColumnCount();
+		for (int column = 0; column < columnCount; column++) {
+			final Widget cell = rowData.getWidget(column);
+			table.setWidget(rowIndex, column, cell);	
+		}
+	}
+	
 	protected String getEvenRowStyle() {
 		return WidgetConstants.SORTABLE_TABLE_EVEN_ROW_STYLE;
 	}

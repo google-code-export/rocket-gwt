@@ -25,11 +25,11 @@ import rocket.widget.client.WidgetConstants;
  */
 class Constants {
 
-	final static String WIDGET_HOLDER = "-widgetHolder";
+	final static String WIDGET_HOLDER = "widgetHolder";
 
-	final static String SPLITTER = "-splitter";
+	final static String SPLITTER = "splitter";
 
-	final static String DRAGGING = "-dragging";
+	final static String DRAGGING = "dragging";
 
 	/**
 	 * This style is applied to the container element of the
@@ -42,18 +42,18 @@ class Constants {
 	 * This style is applied to the element that contains any of the added
 	 * widgets within a HorizontalSlider
 	 */
-	final static String HORIZONTAL_SPLITTER_PANEL_WIDGET_HOLDER_STYLE = HORIZONTAL_SPLITTER_PANEL_STYLE + WIDGET_HOLDER;
+	final static String HORIZONTAL_SPLITTER_PANEL_WIDGET_HOLDER_STYLE = WIDGET_HOLDER;
 
 	/**
 	 * This style is applied to any slider that appears between widgets
 	 * belonging to a HorizontalSlider
 	 */
-	final static String HORIZONTAL_SPLITTER_PANEL_SPLITTER_STYLE = HORIZONTAL_SPLITTER_PANEL_STYLE + SPLITTER;
+	final static String HORIZONTAL_SPLITTER_PANEL_SPLITTER_STYLE = SPLITTER;
 
 	/**
 	 * This style is applied to a slider when it is being dragged...
 	 */
-	final static String HORIZONTAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE = HORIZONTAL_SPLITTER_PANEL_SPLITTER_STYLE + DRAGGING;
+	final static String HORIZONTAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE = DRAGGING;
 
 	/**
 	 * This style is applied to the container element of the
@@ -66,16 +66,16 @@ class Constants {
 	 * This style is applied to the element that contains any of the added
 	 * widgets within a VerticalSlider
 	 */
-	final static String VERTICAL_SPLITTER_PANEL_WIDGET_HOLDER_STYLE = VERTICAL_SPLITTER_PANEL_STYLE + WIDGET_HOLDER;
+	final static String VERTICAL_SPLITTER_PANEL_WIDGET_HOLDER_STYLE = WIDGET_HOLDER;
 
 	/**
 	 * This style is applied to any slider that appears between widgets
 	 * belonging to a VerticalSlider
 	 */
-	final static String VERTICAL_SPLITTER_PANEL_SPLITTER_STYLE = VERTICAL_SPLITTER_PANEL_STYLE + SPLITTER;
+	final static String VERTICAL_SPLITTER_PANEL_SPLITTER_STYLE = SPLITTER;
 
 	/**
 	 * This style is applied to a slider when it is being dragged...
 	 */
-	final static String VERTICAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE = VERTICAL_SPLITTER_PANEL_SPLITTER_STYLE + DRAGGING;
+	final static String VERTICAL_SPLITTER_PANEL_SPLITTER_DRAGGING_STYLE = DRAGGING;
 }

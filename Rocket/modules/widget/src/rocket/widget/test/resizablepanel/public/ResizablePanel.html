@@ -37,30 +37,30 @@ TEXTAREA, IMG, SPAN {
 	background-color: #cde; /* the red background should never been seen on textareas and images*/
 }
 
-.rocket-resizablePanel-rightHandle,
-.rocket-resizablePanel-cornerHandle,
-.rocket-resizablePanel-bottomHandle{	
+.rocket-resizablePanel .rightHandle,
+.rocket-resizablePanel .cornerHandle,
+.rocket-resizablePanel .bottomHandle{	
 	background-color: #ccc;
 }	
 
-.rocket-resizablePanel-rightHandle {
+.rocket-resizablePanel .rightHandle {
 	width: 8px;
 	cursor: e-resize;
 }
 
-.rocket-resizablePanel-cornerHandle {
+.rocket-resizablePanel .cornerHandle {
 	width: 8px;
 	height: 8px;
 	cursor: se-resize;
 	background: url(corner.gif) bottom right no-repeat;
 }
 
-.rocket-resizablePanel-bottomHandle{
+.rocket-resizablePanel .bottomHandle{
 	height: 8px;
 	cursor: s-resize;
 }
 
-.rocket-resizablePanel-draggedWidget {
+.rocket-resizablePanel .draggedWidget {
 	cursor: pointer;
 	opacity: 0.5;
 	filter(alpha=50);

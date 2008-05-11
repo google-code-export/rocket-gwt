@@ -20,9 +20,9 @@ import rocket.widget.client.WidgetConstants;
 class Constants {
 	final static String MENU_STYLE = WidgetConstants.ROCKET + "-menu";
 
-	final static String SELECTED = "-selected";
+	final static String SELECTED = "selected";
 
-	final static String DISABLED = "-disabled";
+	final static String DISABLED = "disabled";
 
 	// menu bars...
 	final static String HORIZONTAL_MENU_BAR_STYLE = MENU_STYLE + "-horizontalMenuBar";
@@ -34,15 +34,15 @@ class Constants {
 	// menu widgets...
 	final static String SUB_MENU_ITEM_STYLE = MENU_STYLE + "-subMenuItem";
 
-	final static String SUB_MENU_ITEM_SELECTED_STYLE = SUB_MENU_ITEM_STYLE + SELECTED;
+	final static String SUB_MENU_ITEM_SELECTED_STYLE = SELECTED;
 
-	final static String SUB_MENU_ITEM_DISABLED_STYLE = SUB_MENU_ITEM_STYLE + DISABLED;
+	final static String SUB_MENU_ITEM_DISABLED_STYLE = DISABLED;
 
 	final static String MENU_ITEM_STYLE = MENU_STYLE + "-menuItem";
 
-	final static String MENU_ITEM_SELECTED_STYLE = MENU_ITEM_STYLE + SELECTED;
+	final static String MENU_ITEM_SELECTED_STYLE = SELECTED;
 
-	final static String MENU_ITEM_DISABLED_STYLE = MENU_ITEM_STYLE + DISABLED;
+	final static String MENU_ITEM_DISABLED_STYLE = DISABLED;
 
 	final static String SPACER_STYLE = MENU_STYLE + "-menuSpacer";
 

@@ -19,6 +19,7 @@ import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseOutEvent;
 import rocket.event.client.MouseOverEvent;
 import rocket.widget.client.Html;
+import rocket.widget.client.Widgets;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -74,7 +75,9 @@ public class MenuSpacer extends MenuWidget {
 	}
 
 	protected Widget createWidget() {
-		return new Html(Constants.SPACER_HTML);
+		final Html html = Widgets.createHtml();
+		html.setHtml(Constants.SPACER_HTML);
+		return html;
 	}
 
 	String toString0() {

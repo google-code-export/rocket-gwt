@@ -59,6 +59,10 @@ public abstract class TabPanel extends CompositeWidget {
 	protected Widget createWidget() {
 		return this.createDockPanel();
 	}
+	
+	protected DockPanel getDockPanel(){
+		return (DockPanel)this.getWidget();
+	}
 
 	protected int getSunkEventsBitMask() {
 		return 0;
@@ -117,7 +121,9 @@ public abstract class TabPanel extends CompositeWidget {
 		panel.setStyleName(this.getTabBarItemStyleName());
 
 		if (closable) {
-			panel.add(new Html("&nbsp;"));
+			final Html html = new Html( "&nbsp;");
+			html.setStyleName("");
+			panel.add( html );
 
 			final Image closeButton = this.createCloseButton();
 			closeButton.addMouseEventListener(new MouseEventAdapter() {
@@ -217,7 +223,7 @@ public abstract class TabPanel extends CompositeWidget {
 	protected abstract String getTabBarItemWidgetStyleName();
 
 	/**
-	 * . The url of the up icon
+	 * The url of the close image.
 	 */
 	private String closeButtonImageUrl;
 
@@ -300,11 +306,9 @@ public abstract class TabPanel extends CompositeWidget {
 		final DockPanel dockPanel = new DockPanel();
 
 		final TabBarPanel tabBarPanel = this.createTabBarPanel();
-		this.setTabBarPanel(tabBarPanel);
 		dockPanel.add((Widget) tabBarPanel, getTabBarDockPanelConstants());
 
 		final DeckPanel contentPanel = this.createContentPanel();
-		this.setContentPanel(contentPanel);
 
 		dockPanel.add(contentPanel, DockPanel.CENTER);
 		dockPanel.setCellHeight(contentPanel, "100%");
@@ -318,16 +322,9 @@ public abstract class TabPanel extends CompositeWidget {
 	/**
 	 * This panel is used to house tab title widgets.
 	 */
-	private TabBarPanel tabBarPanel;
 
 	protected TabBarPanel getTabBarPanel() {
-		Checker.notNull("field:tabBarPanel", tabBarPanel);
-		return tabBarPanel;
-	}
-
-	protected void setTabBarPanel(final TabBarPanel tabBarPanel) {
-		Checker.notNull("parameter:tabBarPanel", tabBarPanel);
-		this.tabBarPanel = tabBarPanel;
+		return (TabBarPanel)this.getDockPanel().getWidget( Constants.TAB_BAR_PANEL_INDEX );
 	}
 
 	protected abstract TabBarPanel createTabBarPanel();
@@ -336,16 +333,9 @@ public abstract class TabPanel extends CompositeWidget {
 	 * A DeckPanel is used to house all tab content. The selected tab selects
 	 * the appropriate item from the deckPanel to be visible.
 	 */
-	private DeckPanel contentPanel;
 
 	public DeckPanel getContentPanel() {
-		Checker.notNull("field:contentPanel", contentPanel);
-		return contentPanel;
-	}
-
-	public void setContentPanel(final DeckPanel contentPanel) {
-		Checker.notNull("parameter:contentPanel", contentPanel);
-		this.contentPanel = contentPanel;
+		return (DeckPanel) this.getDockPanel().getWidget( Constants.DECK_PANEL_INDEX );
 	}
 
 	protected DeckPanel createContentPanel() {

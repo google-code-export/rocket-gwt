@@ -29,7 +29,11 @@ public class WidgetConstants {
 	 */
 	public final static String ROCKET = "rocket";
 
-	final static String SELECTED = "-selected";
+	final static String SELECTED = "selected";
+	
+	final static String ODD_ROW = "oddRow";
+	
+	final static String EVEN_ROW = "evenRow";
 
 	// AUTO COMPLETE TEXT BOX
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -41,23 +45,23 @@ public class WidgetConstants {
 
 	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE = AUTO_COMPLETE_TEXT_BOX_STYLE + "-dropDownList";
 
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE = AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE + "-oddRow";
+	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE = ODD_ROW;
 
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE = AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE + "-evenRow";
+	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE = EVEN_ROW;
 
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE + SELECTED;
+	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = SELECTED;
 
 	// STYLESHEET PICKER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	final static String STYLESHEET_PICKER_STYLE = ROCKET + "-styleSheetPicker";
 
-	final static String STYLESHEET_PICKER_LABEL_STYLE = STYLESHEET_PICKER_STYLE + "-label";
+	final static String STYLESHEET_PICKER_LABEL_STYLE = "label";
 
 	final static String STYLESHEET_PICKER_LABEL_TEXT = "Text Size";
 
-	final static String STYLESHEET_ITEM_STYLE = STYLESHEET_PICKER_STYLE + "-item";
+	final static String STYLESHEET_ITEM_STYLE = "item";
 
-	final static String STYLESHEET_ITEM_SELECTED_STYLE = STYLESHEET_ITEM_STYLE + SELECTED;
+	final static String STYLESHEET_ITEM_SELECTED_STYLE = SELECTED;
 
 	// BREADCRUMB
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -67,13 +71,13 @@ public class WidgetConstants {
 	 */
 	final static String BREADCRUMB_PANEL_STYLE = ROCKET + "-breadcrumbPanel";
 
-	final static String BREADCRUMB_PANEL_CRUMB_STYLE = BREADCRUMB_PANEL_STYLE + "-item";
+	final static String BREADCRUMB_PANEL_CRUMB_STYLE = "item";
 
-	final static String BREADCRUMB_PANEL_LAST_CRUMB_STYLE = BREADCRUMB_PANEL_CRUMB_STYLE + "-last";
+	final static String BREADCRUMB_PANEL_LAST_CRUMB_STYLE = "last";
 
 	final static String BREADCRUMB_PANEL_SEPARATOR_HTML = ">";
 
-	final static String BREADCRUMB_PANEL_SEPARATOR_STYLE = BREADCRUMB_PANEL_STYLE + "-separator";
+	final static String BREADCRUMB_PANEL_SEPARATOR_STYLE = "separator";
 
 	// GRID
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -83,9 +87,9 @@ public class WidgetConstants {
 	 */
 	final static String GRIDVIEW_STYLE = ROCKET + "-gridview";
 
-	final static String GRIDVIEW_CELL_STYLE = GRIDVIEW_STYLE + "-cell";
+	final static String GRIDVIEW_CELL_STYLE = "cell";
 
-	final static String GRIDVIEW_FILLER_STYLE = GRIDVIEW_CELL_STYLE + "-filler";
+	final static String GRIDVIEW_FILLER_STYLE = "filler";
 
 	// SORTABLD TABLE
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -95,17 +99,17 @@ public class WidgetConstants {
 	 */
 	final static String SORTABLE_TABLE_STYLE = ROCKET + "-sortableTable";
 
-	final static String SORTABLE_TABLE_HEADER_ROW_STYLE = SORTABLE_TABLE_STYLE + "-headerRow";
+	final static String SORTABLE_TABLE_HEADER_ROW_STYLE = "headerRow";
 
-	final static String SORTABLE_TABLE_SORTABLE_COLUMN_STYLE = SORTABLE_TABLE_STYLE + "-sortableColumn";
+	final static String SORTABLE_TABLE_SORTABLE_COLUMN_STYLE = "sortableColumn";
 
-	final static String SORTABLE_TABLE_SORTED_COLUMN_STYLE = SORTABLE_TABLE_STYLE + "-sortedColumn";
+	final static String SORTABLE_TABLE_SORTED_COLUMN_STYLE = "sortedColumn";
 
-	final static String SORTABLE_TABLE_SORT_DIRECTIONS_ARROWS_STYLE = SORTABLE_TABLE_STYLE + "-sortDirectionArrows";
+	final static String SORTABLE_TABLE_SORT_DIRECTIONS_ARROWS_STYLE = "sortDirectionArrows";
 
-	final static String SORTABLE_TABLE_ODD_ROW_STYLE = SORTABLE_TABLE_STYLE + "-oddRow";
+	final static String SORTABLE_TABLE_ODD_ROW_STYLE = ODD_ROW;
 
-	final static String SORTABLE_TABLE_EVEN_ROW_STYLE = SORTABLE_TABLE_STYLE + "-evenRow";
+	final static String SORTABLE_TABLE_EVEN_ROW_STYLE = EVEN_ROW;
 
 	// ZEBRA
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -114,11 +118,11 @@ public class WidgetConstants {
 	 */
 	final static String ZEBRA_FLEX_TABLE_STYLE = ROCKET + "-zebraFlexTable";
 
-	final static String ZEBRA_FLEX_TABLE_HEADING_STYLE = ZEBRA_FLEX_TABLE_STYLE + "-heading";
+	final static String ZEBRA_FLEX_TABLE_HEADING_STYLE = "heading";
 
-	final static String ZEBRA_FLEX_TABLE_ODD_ROW_STYLE = ZEBRA_FLEX_TABLE_STYLE + "-oddRow";
+	final static String ZEBRA_FLEX_TABLE_ODD_ROW_STYLE = ODD_ROW;
 
-	final static String ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE = ZEBRA_FLEX_TABLE_STYLE + "-evenRow";
+	final static String ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE = EVEN_ROW;
 
 	// SPINNER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -127,9 +131,9 @@ public class WidgetConstants {
 	 */
 	final static String SPINNER_STYLE = ROCKET + "-spinner";
 
-	final static String SPINNER_UP_STYLE = SPINNER_STYLE + "-up";
+	final static String SPINNER_UP_STYLE = "up";
 
-	final static String SPINNER_DOWN_STYLE = SPINNER_STYLE + "-down";
+	final static String SPINNER_DOWN_STYLE = "down";
 
 	// SUPER SPINNER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -138,13 +142,13 @@ public class WidgetConstants {
 	 */
 	final static String SUPER_SPINNER_STYLE = ROCKET + "-superSpinner";
 
-	final static String SUPER_SPINNER_UP_STYLE = SUPER_SPINNER_STYLE + "-up";
+	final static String SUPER_SPINNER_UP_STYLE = "up";
 
-	final static String SUPER_SPINNER_DOWN_STYLE = SUPER_SPINNER_STYLE + "-down";
+	final static String SUPER_SPINNER_DOWN_STYLE = "down";
 
-	final static String SUPER_SPINNER_BIG_UP_STYLE = SUPER_SPINNER_STYLE + "-bigUp";
+	final static String SUPER_SPINNER_BIG_UP_STYLE = "bigUp";
 
-	final static String SUPER_SPINNER_BIG_DOWN_STYLE = SUPER_SPINNER_STYLE + "-bigDown";
+	final static String SUPER_SPINNER_BIG_DOWN_STYLE = "bigDown";
 
 	// PAGER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -162,7 +166,7 @@ public class WidgetConstants {
 	/**
 	 * This style is applied to the previous button
 	 */
-	final static String PAGER_PREVIOUS_BUTTON_STYLE = PAGER_STYLE + "-previous";
+	final static String PAGER_PREVIOUS_BUTTON_STYLE = "previous";
 
 	/**
 	 * The default text that appears on the next button.
@@ -172,18 +176,18 @@ public class WidgetConstants {
 	/**
 	 * This style is applied to the next button
 	 */
-	final static String PAGER_NEXT_BUTTON_STYLE = PAGER_STYLE + "-next";
+	final static String PAGER_NEXT_BUTTON_STYLE = "next";
 
 	/**
 	 * This style is applied to each of the page buttons that appear along the
 	 * pager widget
 	 */
-	final static String PAGER_GOTO_PAGE_STYLE = PAGER_STYLE + "-goto";
+	final static String PAGER_GOTO_PAGE_STYLE = "goto";
 
 	/**
 	 * This style is applied to the current page.
 	 */
-	final static String PAGER_CURRENT_PAGE_STYLE = PAGER_STYLE + "-current";
+	final static String PAGER_CURRENT_PAGE_STYLE = "current";
 
 	// SPAN PANEL
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -249,15 +253,15 @@ public class WidgetConstants {
 	 */
 	final static String RESIZABLE_PANEL_STYLE = ROCKET + "-resizablePanel";
 
-	final static String RESIZABLE_PANEL_WIDGET_STYLE = RESIZABLE_PANEL_STYLE + "-widget";
+	final static String RESIZABLE_PANEL_WIDGET_STYLE = "widget";
 
-	final static String RESIZABLE_PANEL_RIGHT_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-rightHandle";
+	final static String RESIZABLE_PANEL_RIGHT_HANDLE_STYLE = "rightHandle";
 
-	final static String RESIZABLE_PANEL_CORNER_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-cornerHandle";
+	final static String RESIZABLE_PANEL_CORNER_HANDLE_STYLE = "cornerHandle";
 
-	final static String RESIZABLE_PANEL_BOTTOM_HANDLE_STYLE = RESIZABLE_PANEL_STYLE + "-bottomHandle";
+	final static String RESIZABLE_PANEL_BOTTOM_HANDLE_STYLE = "bottomHandle";
 
-	final static String RESIZABLE_PANEL_DRAGGED_WIDGET_STYLE = RESIZABLE_PANEL_STYLE + "-draggedWidget";
+	final static String RESIZABLE_PANEL_DRAGGED_WIDGET_STYLE = "draggedWidget";
 
 	// CALENDAR
 
@@ -273,17 +277,17 @@ public class WidgetConstants {
 
 	final static String CALENDAR_STYLE = ROCKET + "-calendar";
 
-	final static String CALENDAR_HEADING_STYLE = CALENDAR_STYLE + "-heading";
+	final static String CALENDAR_HEADING_STYLE = "heading";
 
-	final static String CALENDAR_DAY_STYLE = CALENDAR_STYLE + "-day";
+	final static String CALENDAR_DAY_STYLE = "day";
 
-	final static String CALENDAR_PREVIOUS_MONTH_STYLE = CALENDAR_STYLE + "-previousMonth";
+	final static String CALENDAR_PREVIOUS_MONTH_STYLE = "previousMonth";
 
-	final static String CALENDAR_CURRENT_MONTH_STYLE = CALENDAR_STYLE + "-currentMonth";
+	final static String CALENDAR_CURRENT_MONTH_STYLE = "currentMonth";
 
-	final static String CALENDAR_NEXT_MONTH_STYLE = CALENDAR_STYLE + "-nextMonth";
+	final static String CALENDAR_NEXT_MONTH_STYLE = "nextMonth";
 
-	final static String READONLY = "-readOnly";
+	final static String READONLY = "readOnly";
 
 	// BASIC WIDGET CONSTANTS FOLLOW
 	// ::::::::::::::::::::::::::::::::::::::::::::
@@ -382,9 +386,9 @@ public class WidgetConstants {
 	 */
 	final static String VIEWPORT_STYLE = WidgetConstants.ROCKET + "-viewport";
 
-	final static String VIEWPORT_TILE_STYLE = VIEWPORT_STYLE + "-tile";
+	final static String VIEWPORT_TILE_STYLE = "tile";
 
-	final static String VIEWPORT_OUT_OF_BOUNDS_STYLE = VIEWPORT_STYLE + "-outOfBounds";
+	final static String VIEWPORT_OUT_OF_BOUNDS_STYLE = "outOfBounds";
 
 	final static String VIEWPORT_TILE_LEFT_ATTRIBUTE = "__tileLeft";
 

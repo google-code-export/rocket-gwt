@@ -17,13 +17,14 @@ package rocket.widget.test.superspinner.client;
 
 import rocket.event.client.ChangeEvent;
 import rocket.event.client.ChangeEventListener;
+import rocket.widget.client.Image;
+import rocket.widget.client.Label;
 import rocket.widget.client.SuperSpinner;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class SuperSpinnerTest implements EntryPoint {
@@ -48,8 +49,13 @@ public class SuperSpinnerTest implements EntryPoint {
 		spinner.setBigDelta(10);
 		spinner.setLowerBounds(0);
 		spinner.setUpperBounds(100);
-		spinner.setDownImageUrl("down.gif");
-		spinner.setUpImageUrl("up.gif");
+
+		spinner.setDownImage(new Image("down.gif"));
+		spinner.setUpImage(new Image("up.gif"));
+		spinner.setBigDownImage(new Image("bigDown.gif"));
+		spinner.setBigUpImage(new Image("bigUp.gif"));
+		
+		
 		spinner.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
 				value.setText("" + spinner.getValue());

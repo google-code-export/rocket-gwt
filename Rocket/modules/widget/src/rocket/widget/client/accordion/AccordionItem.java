@@ -105,7 +105,7 @@ public class AccordionItem {
 
 	protected HTML createCaptionWidget() {
 		final HTML html = new HTML();
-		DOM.setElementProperty(html.getElement(), "className", "");
+		html.setStyleName("");
 		html.setWidth("100%");
 		html.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {

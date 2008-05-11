@@ -19,13 +19,9 @@ import java.util.Iterator;
 
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
-import rocket.style.client.Css;
-import rocket.style.client.CssUnit;
-import rocket.style.client.InlineStyle;
 import rocket.util.client.Checker;
 import rocket.util.client.StackTrace;
 import rocket.widget.client.Button;
-import rocket.widget.client.Html;
 import rocket.widget.client.tabpanel.BeforeTabCloseEvent;
 import rocket.widget.client.tabpanel.BeforeTabSelectEvent;
 import rocket.widget.client.tabpanel.BottomTabPanel;
@@ -45,17 +41,15 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TabPanelTest implements EntryPoint {
 
-	/**
-	 * This is the entry point method.
-	 */
+	
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
@@ -63,98 +57,60 @@ public class TabPanelTest implements EntryPoint {
 				Window.alert(caught.getMessage() + "\n" + StackTrace.asString(caught));
 			}
 		});
+	
+		final DockPanel dockPanel = new DockPanel();
 		
-		final DockPanel topBottomDockPanel = new DockPanel();
+		final TabPanel topTabPanel = new TopTabPanel();
+		completeTabPanel(topTabPanel);
 		
-		final TabPanel bottomPanel = new BottomTabPanel();
-		completeTabPanel(bottomPanel);
-		topBottomDockPanel.add( bottomPanel, DockPanel.NORTH );
+		final TabPanel bottomTabPanel = new BottomTabPanel();
+		completeTabPanel(bottomTabPanel);
 		
-		final TabPanel topPanel = new TopTabPanel();
-		completeTabPanel(topPanel);
-		topBottomDockPanel.add( topPanel, DockPanel.SOUTH );
+		final TabPanel leftTabPanel = new LeftTabPanel();
+		completeTabPanel(leftTabPanel);
+		
+		final TabPanel rightTabPanel = new RightTabPanel();
+		completeTabPanel(rightTabPanel);
+		
+		TabPanelControl control = new TabPanelControl( topTabPanel );		
+		
+		final FlowPanel flowPanel = new FlowPanel();
+		flowPanel.add( this.createTabPanelButton( "TopTabPanel", topTabPanel, control, dockPanel ));
+		flowPanel.add( this.createTabPanelButton( "RightTabPanel", rightTabPanel, control, dockPanel));
+		flowPanel.add( this.createTabPanelButton( "BottomTabPanel", bottomTabPanel, control, dockPanel));
+		flowPanel.add( this.createTabPanelButton( "LeftTabPanel", leftTabPanel, control, dockPanel));
+		
+		dockPanel.add( flowPanel, DockPanel.NORTH );
+		dockPanel.add( control, DockPanel.NORTH );
+		
+		dockPanel.add( topTabPanel, DockPanel.CENTER );
 
-		final Html topBottomCenter = new Html();
-		topBottomCenter.setHeight( "100px");
-		topBottomDockPanel.add( topBottomCenter, DockPanel.CENTER );
-		
-		final DockPanel leftRightDockPanel = new DockPanel();
-		final TabPanel rightPanel = new RightTabPanel();
-		completeTabPanel(rightPanel);
-		leftRightDockPanel.add( rightPanel, DockPanel.WEST );
-
-		final TabPanel leftPanel = new LeftTabPanel();
-		completeTabPanel(leftPanel);
-		leftRightDockPanel.add( leftPanel, DockPanel.EAST );
-		
-		final Html leftRightCenter = new Html();
-		leftRightCenter.setWidth( "100px");
-		leftRightDockPanel.add( leftRightCenter, DockPanel.CENTER );
-		
-		final DeckPanel deckPanel = new DeckPanel();
-		deckPanel.add( topBottomDockPanel );
-		deckPanel.add( leftRightDockPanel );
-		deckPanel.showWidget( 0 );
-		
-		final RootPanel rootPanel = RootPanel.get();
-		rootPanel.add( deckPanel );
-		
-		final TabPanelControl topPanelControl = new TabPanelControl( topPanel );
-		final Element topPanelControlElement = topPanelControl.getElement();
-		InlineStyle.setString( topPanelControlElement, Css.POSITION, "absolute" );
-		InlineStyle.setInteger( topPanelControlElement, Css.LEFT, 10, CssUnit.PX );
-		InlineStyle.setInteger( topPanelControlElement, Css.BOTTOM, 50, CssUnit.PX );
-		InlineStyle.setInteger( topPanelControlElement, Css.Z_INDEX, 10, CssUnit.NONE );
-		rootPanel.add( topPanelControl );
-		
-		final TabPanelControl bottomPanelControl = new TabPanelControl( bottomPanel );
-		final Element bottomPanelControlElement = bottomPanelControl.getElement();
-		InlineStyle.setString( bottomPanelControlElement, Css.POSITION, "absolute" );
-		InlineStyle.setInteger( bottomPanelControlElement, Css.LEFT, 10, CssUnit.PX );
-		InlineStyle.setInteger( bottomPanelControlElement, Css.TOP, 50, CssUnit.PX );
-		InlineStyle.setInteger( bottomPanelControlElement, Css.Z_INDEX, 10, CssUnit.NONE );
-		rootPanel.add( bottomPanelControl );
-
-		final TabPanelControl leftPanelControl = new TabPanelControl( leftPanel );
-		leftPanelControl.setVisible( false );
-		final Element leftPanelControlElement = leftPanelControl.getElement();
-		InlineStyle.setString( leftPanelControlElement, Css.POSITION, "absolute" );
-		InlineStyle.setInteger( leftPanelControlElement, Css.LEFT, 10, CssUnit.PX );
-		InlineStyle.setInteger( leftPanelControlElement, Css.BOTTOM, 50, CssUnit.PX );
-		InlineStyle.setInteger( leftPanelControlElement, Css.Z_INDEX, 10, CssUnit.NONE );
-		rootPanel.add( leftPanelControl );
-		
-		final TabPanelControl rightPanelControl = new TabPanelControl( rightPanel );
-		rightPanelControl.setVisible( false );
-		final Element rightPanelControlElement = rightPanelControl.getElement();
-		InlineStyle.setString( rightPanelControlElement, Css.POSITION, "absolute" );
-		InlineStyle.setInteger( rightPanelControlElement, Css.LEFT, 10, CssUnit.PX );
-		InlineStyle.setInteger( rightPanelControlElement, Css.TOP, 50, CssUnit.PX );
-		InlineStyle.setInteger( rightPanelControlElement, Css.Z_INDEX, 10, CssUnit.NONE );
-		rootPanel.add( rightPanelControl );
-		
-		final Button button = new Button( "Swap");
-		button.addMouseEventListener( new MouseEventAdapter(){
-			public void onClick( final MouseClickEvent event) {
-				final int index = deckPanel.getVisibleWidget();
-				final boolean wasLeftRight = index == 1;
-				
-				topPanelControl.setVisible( wasLeftRight );
-				bottomPanelControl.setVisible( wasLeftRight );
-				leftPanelControl.setVisible( ! wasLeftRight );
-				rightPanelControl.setVisible( ! wasLeftRight );
-				
-				deckPanel.showWidget( wasLeftRight ? 0 : 1 );
-			}
-		});
-		rootPanel.add( button );
-		final Element buttonElement = button.getElement();
-		InlineStyle.setString( buttonElement, Css.POSITION, "absolute" );
-		InlineStyle.setInteger( buttonElement, Css.RIGHT, 10, CssUnit.PX );
-		InlineStyle.setInteger( buttonElement, Css.TOP, 10, CssUnit.PX );
-		InlineStyle.setInteger( buttonElement, Css.Z_INDEX, 30, CssUnit.NONE );
+		RootPanel.get().add( dockPanel );
 	}
-
+	
+	/**
+	 * Creates a button with the given label that when clicked makes the corresponding TabPanel visible by setting it
+	 * to the center of the dockPanel
+	 * @param label
+	 * @param tabPanel
+	 * @param control
+	 * @param dockPanel
+	 * @return
+	 */
+	Button createTabPanelButton( final String label, final TabPanel tabPanel, final TabPanelControl control, final DockPanel dockPanel ){
+		final Button button = new Button( label);
+		button.addMouseEventListener( new MouseEventAdapter(){
+			public void onClick(final MouseClickEvent event) {
+				control.setTabPanel( tabPanel );
+				
+				dockPanel.remove( dockPanel.getWidget( 2 ));// nasty hack but 2 is the center widget.
+				dockPanel.add( tabPanel, DockPanel.CENTER );
+			}
+		});	
+		return button;
+	}
+	
+	
 	/**
 	 * Adds a tabListener and creates a InteractiveList control enabling
 	 * manipulation of the TabPanel
@@ -168,7 +124,7 @@ public class TabPanelTest implements EntryPoint {
 
 		final TabItem item = new TabItem();
 		item.setCaption("Unremovable TabItem");
-		item.setContent(new HTML(TabPanelTest.createContent()));
+		item.setContent(new HTML(TabPanelTest.createContent( tabPanel )));
 		addTabItemWidgets(item);
 		tabPanel.add(item, false);
 		tabPanel.select(0);
@@ -209,10 +165,14 @@ public class TabPanelTest implements EntryPoint {
 		});
 	}
 
-	final static String createContent() {
+	final static String createContent( final TabPanel tabPanel ) {
+		
+		String typeName = GWT.getTypeName( tabPanel );
+		typeName = typeName.substring( typeName.lastIndexOf( '.') + 1);
+		
 		final Element element = DOM.getElementById("lorem");
-		Checker.notNull("hidden div with lorem text", element);
-		return DOM.getInnerHTML(element);
+		Checker.notNull("Unable to find hidden div with lorem text", element);
+		return "<h2>" + typeName + "</h2>" + DOM.getInnerHTML(element);
 	}
 
 	class TabPanelControl extends rocket.testing.client.InteractiveList {
@@ -265,7 +225,8 @@ public class TabPanelTest implements EntryPoint {
 		protected Object createElement() {
 			final TabItem item = new TabItem();
 			item.setCaption("" + System.currentTimeMillis());
-			item.setContent(new HTML(TabPanelTest.createContent()));
+			
+			item.setContent(new HTML(TabPanelTest.createContent( this.getTabPanel() )));
 
 			addTabItemWidgets(item);
 			return item;
@@ -282,7 +243,7 @@ public class TabPanelTest implements EntryPoint {
 		}
 
 		/**
-		 * Creates a listbox friendly string form for the given element.
+		 * Creates a friendly string form for the given element.
 		 * 
 		 * @param element
 		 * @return
@@ -313,11 +274,11 @@ public class TabPanelTest implements EntryPoint {
 	}
 
 	void addTabItemWidgets(final TabItem tabItem) {
-		tabItem.addTabWidget(createTabItemWidget("application_form_magnify.png", "1st icon before"), false);
-		tabItem.addTabWidget(createTabItemWidget("application_get.png", "2nd icon before"), false);
-		tabItem.addTabWidget(createTabItemWidget("application_go.png", "1st icon after"), true);
-		;
-		tabItem.addTabWidget(createTabItemWidget("application_home.png", "2nd icon after"), true);
+		tabItem.addTabWidget(createTabItemWidget("magnify.png", "1st icon before"), false);
+		tabItem.addTabWidget(createTabItemWidget("get.png", "2nd icon before"), false);
+		tabItem.addTabWidget(createTabItemWidget("go.png", "1st icon after"), true);
+		
+		tabItem.addTabWidget(createTabItemWidget("home.png", "2nd icon after"), true);
 	}
 
 	HTML createTabItemWidget(final String url, final String altText) {

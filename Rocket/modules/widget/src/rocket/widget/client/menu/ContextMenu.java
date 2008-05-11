@@ -30,6 +30,7 @@ import rocket.style.client.InlineStyle;
 import rocket.util.client.Checker;
 import rocket.widget.client.Html;
 import rocket.widget.client.SpanPanel;
+import rocket.widget.client.Widgets;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -91,7 +92,7 @@ public class ContextMenu extends Menu {
 
 	protected SpanPanel createSpanPanel() {
 		final SpanPanel panel = new SpanPanel();
-		panel.add(new Html(""));
+		panel.add( Widgets.createHtml());
 
 		final MenuList menuList = this.createMenuList();
 		this.setMenuList(menuList);
