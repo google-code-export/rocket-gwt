@@ -459,11 +459,6 @@ public class JavaToJavaScriptCompiler {
 
       // (9) Resolve all unresolved JsNameRefs
       JsSymbolResolver.exec(jsProgram);
-
-//      //if( invokeClinitsAtStartupMover instanceof InvokeClinitsAtStartupMover ){
-//    	  final JsEliminatedClinitRemover remover = new JsEliminatedClinitRemover();
-//    	  remover.work( jsProgram, logger ); // ??? DELETE
-//      //} DELETE @@@ TODO shouldnt be necessary
       
       // (10) Obfuscate
       if (obfuscate) {

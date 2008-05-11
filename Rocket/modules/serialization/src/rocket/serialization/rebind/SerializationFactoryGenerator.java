@@ -121,8 +121,6 @@ public class SerializationFactoryGenerator extends Generator {
 
 		boolean blacklisted = false;
 
-		// FIXME FIXME FIXME JOE COLE FIX!!!
-
 			// check black list...
 			final Iterator blackListers = this.getBlackList().iterator();
 			final Type object = this.getGeneratorContext().getObject();
