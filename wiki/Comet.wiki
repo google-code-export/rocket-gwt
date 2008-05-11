@@ -96,16 +96,16 @@ The sample shows a server class that continually increments a counter pausing fo
 {{{
 package example.server;
 
-import rocket.remoting.server.CometServerServlet;
+import rocket.remoting.server.comet.CometServerServlet;
 
 public SampleCometServletServlet extends CometServerServlet{
 
-	protected void poll(){		
+	protected void poll( CometConnection cometConnection ){		
 		try{
 			Thread.sleep( 1000 );
 		} catch ( InterruptedException ignore ){
 		}
-		this.push( new CometPayload( this.counter++ ));
+		cometConnection.push( new CometPayload( this.counter++ ));
 	}
 
         int counter; 
