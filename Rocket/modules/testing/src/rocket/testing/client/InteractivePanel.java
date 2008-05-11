@@ -313,7 +313,7 @@ public abstract class InteractivePanel extends Composite {
 		final Button button = new Button("iterator.remove()");
 		button.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
-				onIteratorNextClick();
+				onIteratorRemoveClick();
 			}
 		});
 		return button;
