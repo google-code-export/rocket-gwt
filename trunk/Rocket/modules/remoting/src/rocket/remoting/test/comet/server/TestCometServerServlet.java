@@ -7,7 +7,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import rocket.remoting.server.CometServerServlet;
+import rocket.remoting.server.comet.CometConnection;
+import rocket.remoting.server.comet.CometServerServlet;
 import rocket.remoting.test.comet.client.TestCometPayload;
 
 /**
@@ -41,16 +42,16 @@ public class TestCometServerServlet extends CometServerServlet {
 		}
 	}
 	
-	protected void poller(final ServletOutputStream output) throws IOException, ServletException {
-		super.poller(output);
+	protected void poller(final HttpServletResponse response ) throws IOException, ServletException {
+		super.poller(response);
 
-		this.log("Server is closing connection.");
+		this.log("Server is closing its connection.");
 	}
 
 	/**
 	 * This method pushes a test payload after blocking between 1 and 5 seconds.
 	 */
-	protected void poll() {
+	protected void poll(CometConnection cometConnection){
 		this.log("Server being polled ");
 
 		while( true ){
@@ -66,7 +67,7 @@ public class TestCometServerServlet extends CometServerServlet {
 			
 			// check if the session should terminate ?
 			if (CometServerActionServiceImpl.isTerminated()) {
-				this.terminate();
+				cometConnection.terminate();
 				break;
 			}	
 			
@@ -80,7 +81,7 @@ public class TestCometServerServlet extends CometServerServlet {
 
 			final TestCometPayload payload = new TestCometPayload();
 			payload.setTimestamp(System.currentTimeMillis());
-			this.push(payload);
+			cometConnection.push(payload);
 			break;
 		}
 	}
@@ -88,25 +89,6 @@ public class TestCometServerServlet extends CometServerServlet {
 	protected void fail() {
 		this.log("Server is failing during poll request." );
 		throw new RuntimeException( "Exception thrown on server.");
-	}
-
-	
-	protected void push(final Object object) {
-		this.log("Server is pushing " + object);
-		super.push(object);
-	}
-
-	protected void push(final Throwable throwable) {
-		this.log("Server is pushing " + throwable);
-		super.push(throwable);
-	}
-
-	/**
-	 * Sub classes may call this method to send a terminate message to the client.
-	 */
-	protected void terminate() {
-		this.log("Server terminating comet session");
-		super.terminate();
 	}
 	
 	protected void timeout(){
@@ -119,10 +101,10 @@ public class TestCometServerServlet extends CometServerServlet {
 		this.log( "Server has awaken from sleep, client should have dropped connection and attempted to reconnect.");
 	}
 
-	protected void flush(final ServletOutputStream servletOutputStream) throws IOException {
+	protected void flush(final HttpServletResponse response ) throws IOException {
 		this.log("Server is flushing buffers.");
 
-		super.flush(servletOutputStream);
+		super.flush( response );
 	}
 
 	protected void onByteWriteLimitExceeded(final int byteWriteCount) {

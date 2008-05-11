@@ -13,15 +13,19 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.remoting.server;
+package rocket.remoting.server.comet;
 
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * A collection of constants used exclusively within this package.
+ * @author Miroslav Pokorny
+ */
 class Constants {
-	static final String COMET_SERVER_RESPONSE_CONTENT_TYPE = "text/html; charset=utf-8";
+	static final String RESPONSE_CONTENT_TYPE = "text/html; charset=utf-8";
 
-	static final int COMET_SERVLET_STATUS_CODE = HttpServletResponse.SC_OK;
-	
+	static final int STATUS_CODE = HttpServletResponse.SC_OK;
+
 	final static String MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER = "maximum-bytes-written";
 
 	final static String CONNECTION_TIME_OUT_INIT_PARAMETER = "connection-timeout";
@@ -29,9 +33,9 @@ class Constants {
 	final static String DOCUMENT_START_HTML = "<html>\n<head>\n<script>\nwindow.parent.__cometOnConnect();\n</script>\n";
 
 	final static String DOCUMENT_END_HTML = "</head>\n</html>\n";
-	
-	final static int COMET_SERVER_BUFFER_SIZE = 512;
-	
+
+	final static int BUFFER_SIZE = 512;
+
 	final static String SCRIPT_TAG_OPEN = "<script>try{window.parent.__cometDispatch('";
 	final static String SCRIPT_TAG_CLOSE = "');}catch(e){}</script>";
 }
