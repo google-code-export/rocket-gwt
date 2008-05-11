@@ -607,4 +607,56 @@ public class Utilities {
 	public static String quotedEscape( final String string ){
 		return null == string ? null : "\"" + escape( string ) + "\"";
 	}
+	
+	/**
+	 * Useful method that only trims whitespace from the right or end of the given string
+	 * @param string
+	 * @return
+	 */
+	public static String trimRight( final String string ){
+		Checker.notNull("parameter:string", string);
+		
+		String trimmed = string;
+		final int length = string.length();
+		int i = length;
+		while( i > 0 ){
+			i--;
+			
+			final char c = string.charAt( i );
+			if( Character.isSpace( c )){
+				continue;
+			}
+			
+			trimmed = string.substring( 0, i+1 );
+			break;
+		}
+		
+		return trimmed;	
+	}
+
+	/**
+	 * Useful method that only trims whitespace from the left or beginning of the given string
+	 * @param string
+	 * @return
+	 */
+	public static String trimLeft( final String string ){
+		Checker.notNull("parameter:string", string);
+		
+		String trimmed = string;
+		final int length = string.length();
+		int i = 0;
+		while( i < length ){
+			final char c = string.charAt( i );
+			if( Character.isSpace( c )){
+				i++;
+				continue;
+			}
+			
+			trimmed = string.substring( i );
+			break;
+		}
+		
+		return trimmed;	
+	}
+
 }
