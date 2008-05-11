@@ -119,7 +119,7 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		this.writeNestedTypes(writer);
 		writer.outdent();
 
-		writer.println("} // " + this.getName());
+		writer.println("} // " + this.getNestedName());
 		
 		context.unbranch();
 	}
@@ -173,6 +173,35 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	}
 
 	protected void log() {
-		this.getGeneratorContext().debug( this.toString() );
+		final GeneratorContext context = this.getGeneratorContext();
+		
+		if( context.isDebugEnabled() ){
+			final StringBuffer buf = new StringBuffer();
+			
+			if( this.isStatic() ){
+				buf.append( "static ");
+			}
+			if( this.isAbstract() ){
+				buf.append( "abstract ");
+			}
+			if( this.isFinal() ){
+				buf.append( "final ");
+			}
+			buf.append( this.getVisibility().getName() );
+			buf.append( ' ');
+			
+			buf.append( this.isInterface() ? "interface " : "class ");
+			
+			buf.append( this.getSimpleName() );
+			
+			context.branch();
+			
+			context.debug( buf.toString() );
+			
+			this.logSuperType();
+			this.logImplementedInterfaces();
+			
+			context.unbranch();
+		}
 	}	
 }

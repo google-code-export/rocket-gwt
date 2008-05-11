@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import rocket.compiler.TreeLoggers;
 import rocket.generator.rebind.packagee.Package;
@@ -54,7 +53,6 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		this.setPackages(this.createPackages());
 		this.setTypes(this.createTypes());
 		this.setNewTypes(this.createNewTypes());
-		this.setLoggers( this.createLoggers() );
 	}
 
 	/**
@@ -459,7 +457,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 */
 	public String getProperty( final String name ) throws GeneratorException{
 		try{
-			final TreeLogger logger = this.getLogger();
+			final TreeLogger logger = this.getLogger().getTreeLogger();
 			return this.getPropertyOracle().getPropertyValue( logger, name );
 		} catch ( final BadPropertyValueException caught ){
 			throw new GeneratorException( "Unable to get property value for \"" + name + "\", message: " + caught.getMessage(), caught );
@@ -524,33 +522,43 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		return filename;
 	}	
 	
+	/**
+	 * The root logger
+	 */
+	private Logger rootLogger;
+	
+	protected Logger getRootLogger(){
+		Checker.notNull("field:rootLogger", rootLogger );
+		return this.rootLogger;
+	}
+	
+	protected void setRootLogger( final Logger rootLogger ){
+		Checker.notNull("parameter:rootLogger", rootLogger );
+		
+		this.rootLogger = rootLogger;
+	}
+	
+	public void setRootTreeLogger( final TreeLogger rootLogger ){
+		Checker.notNull("parameter:rootLogger", rootLogger );
+		
+		this.setRootLogger( new Logger( rootLogger ));
+	}
 	
 	/**
-	 * This stack maintains a stack reflecting the tree logger heirarchy.
+	 * Retrieves the most distant leaf node 
+	 * @return
 	 */
-	private Stack loggers;
-	
-	protected Stack getLoggers(){
-		Checker.notNull( "field:loggers", loggers);
-		return this.loggers;
+	protected Logger getLogger(){
+		Logger logger = this.getRootLogger();
+		while( logger.hasLogger() ){
+			logger = logger.getLogger();
+		}
+		
+		return logger;
 	}
 	
-	protected void setLoggers( final Stack loggers ){
-		Checker.notNull( "parameter:loggers", loggers);
-		this.loggers = loggers;
-	}
-	
-	protected Stack createLoggers(){
-		return new Stack();
-	}
-	
-	protected TreeLogger getLogger(){
-		return (TreeLogger) this.getLoggers().peek();
-	}
-	
-	public void setLogger( final TreeLogger logger ){
-		Checker.notNull("parameter:logger", logger );
-		this.getLoggers().push( logger );
+	public TreeLogger getTreeLogger(){
+		return this.getLogger().getTreeLogger();
 	}
 	
 	public void trace(final String message) {
@@ -597,22 +605,8 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		this.log(treeLoggerLevel, message, null);
 	}
 
-	protected void log(final TreeLogger.Type treeLoggerLevel, final String message, final Throwable throwable) {
-		final TreeLogger logger = this.getLogger();
-		if( this.isBranch() ){
-			final boolean delayed = this.isDelayedBranch();
-			final TreeLogger newTreeLogger = 
-				delayed ?
-				/* delayed branch */
-				TreeLoggers.delayedBranch(logger, treeLoggerLevel, message, throwable ) :
-				/* not delayed - immediate */
-				logger.branch( treeLoggerLevel, message, throwable );
-			this.getLoggers().push( newTreeLogger );
-			this.setBranch( false );
-			
-		} else {
-			logger.log(treeLoggerLevel, message, throwable);	
-		}
+	protected void log(final TreeLogger.Type level, final String message, final Throwable throwable) {
+		this.getLogger().log(level, message, throwable);
 	}
 
 	public boolean isTraceEnabled() {
@@ -628,50 +622,131 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 
 	public void branch() {
-		this.setBranch( true );
+		this.getLogger().setBranch( true );
 	}
 	
 	public void delayedBranch(){
-		this.setBranch( true );
-		this.setDelayedBranch( true );
+		this.getLogger().setDelayed(true);
 	}
 
 	public void unbranch(){
-		// if branch is set to true then no real branch has occured so theres no need to do anything (aka pop)
-		if( false == this.isBranch() ){
-			final Stack loggers = this.getLoggers();
-			
-			// cant pop the last logger...
-			if( loggers.size() == 1 ){
-				throw new GeneratorException( "An attempt has been made to unbranch further back up the tree than previous branches...");
-			}
-			loggers.pop();
+		Logger logger = this.getRootLogger();
+		Logger hasLogger = null;
+		
+		while( logger.hasLogger() ){
+			hasLogger = logger;
+			logger = logger.getLogger();
 		}
-		this.setBranch( false );
-		this.setDelayedBranch( false );
+		
+		if( null != hasLogger ){		
+			hasLogger.clearLogger();
+		}
 	}
 	
 	/**
-	 * This flag will become true indicating the next message should start a new branch.
+	 * A specialised logger that bridges the logger api with the gwt TreeLogger api.
 	 */
-	private boolean branch;
-	
-	private boolean isBranch(){
-		return this.branch;
-	}
-	private void setBranch( final boolean branch ){
-		this.branch = branch;
-	}
-	
-	/**
-	 * When true indicates the next branch should delay being created until an actual leaf results.
-	 */
-	private boolean delayedBranch;
-	
-	private boolean isDelayedBranch(){
-		return this.delayedBranch;
-	}
-	private void setDelayedBranch( final boolean delayedBranch ){
-		this.delayedBranch = delayedBranch;
+	static private class Logger {
+		Logger( final TreeLogger treeLogger ){
+			super();
+			this.setTreeLogger(treeLogger);
+			this.setBranch( false );
+			this.setDelayed( false );
+		}
+		
+		boolean isLoggable( final TreeLogger.Type type ){
+			return this.getTreeLogger().isLoggable(type);
+		}
+		
+		void log( final TreeLogger.Type level, final String message, final Throwable throwable ){
+			while( true ){
+				final TreeLogger treeLogger = this.getTreeLogger();
+				final boolean branch = this.isBranch();
+				final boolean delayed = this.isDelayed();
+				
+				if( false == branch && false == delayed ){
+					treeLogger.log(level, message, throwable);
+					break;
+				}	
+				
+				this.setDelayed( false );
+				this.setBranch( false );
+				
+				final TreeLogger newTreeLogger = 
+					delayed ?
+					/* delayed branch */
+					TreeLoggers.delayedBranch(treeLogger, level, message, throwable ) :
+					/* not delayed - immediate */
+					treeLogger.branch( level, message, throwable );
+					
+				this.setLogger(new Logger( newTreeLogger ));
+				break;
+			}
+		}
+		
+		/**
+		 * The current logger being wrapped.
+		 */
+		TreeLogger treeLogger;
+		
+		TreeLogger getTreeLogger(){
+			Checker.notNull("field:treeLogger", treeLogger );
+			return this.treeLogger;
+		}
+		
+		void setTreeLogger( final TreeLogger treeLogger ){
+			Checker.notNull("parameter:treeLogger", treeLogger );
+			this.treeLogger = treeLogger;
+		}
+		
+		/**
+		 * When true the next logging message will cause a branch.
+		 */
+		boolean branch;
+		
+		private boolean isBranch(){
+			return this.branch;
+		}
+		private void setBranch( final boolean branch ){
+			this.branch = branch;
+		}
+
+		/**
+		 * If this logger has a branched logger exists this is it.
+		 */
+		Logger logger;
+		
+		Logger getLogger(){
+			Checker.notNull("field:logger", logger );
+			return this.logger;
+		}
+		
+		boolean hasLogger(){
+			return null != this.logger;
+		}
+		
+		void setLogger( final Logger logger ){
+			Checker.notNull("parameter:logger", logger );
+			this.logger = logger;
+		}
+		
+		void clearLogger(){
+			if( null == this.logger ){
+				throw new IllegalStateException("Attempt to unbranch without initial matching branch");
+			}
+			this.logger = null;
+		}
+		
+		/**
+		 * When true the next logging message will cause a delayed branch
+		 */
+		boolean delayed;
+		
+		private boolean isDelayed(){
+			return this.delayed;
+		}
+		private void setDelayed( final boolean delayed ){
+			this.delayed = delayed;
+		}
 	}
 }

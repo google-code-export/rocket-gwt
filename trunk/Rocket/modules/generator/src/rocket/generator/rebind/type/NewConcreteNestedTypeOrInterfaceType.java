@@ -148,21 +148,23 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 		Checker.notNull("parameter:writer", writer);
 
 		final Set initializers = this.getInitializers();
-
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		
-		final String message = "Initializers: " + initializers.size();
-		context.debug( message );
-		
-		writer.beginJavaDocComment();
-		writer.print( message );
-		writer.endJavaDocComment();
-
-		writer.println();
-		GeneratorHelper.writeClassComponents(initializers, writer, false, true);
-		writer.println();
-		
-		context.unbranch();
+		if( false == initializers.isEmpty() ){
+			
+			final GeneratorContext context = this.getGeneratorContext();
+			context.branch();
+			
+			final String message = "Initializers";
+			context.debug( message );
+			
+			writer.beginJavaDocComment();
+			writer.print( message );
+			writer.endJavaDocComment();
+	
+			writer.println();
+			GeneratorHelper.writeClassComponents(initializers, writer, false, true);
+			writer.println();
+			
+			context.unbranch();
+		}
 	}	
 }
