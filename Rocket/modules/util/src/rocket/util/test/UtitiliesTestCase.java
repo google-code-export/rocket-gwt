@@ -460,4 +460,52 @@ public class UtitiliesTestCase extends TestCase {
 
 		assertEquals(expected, decoded);
 	}
+	
+	public void testTrimLeft0(){
+		final String input = " apple ";
+		final String actual = Utilities.trimLeft( input );
+		final String expected = "apple ";
+		
+		assertEquals( expected, actual );
+	}
+	
+	public void testTrimLeft1(){
+		final String input = "apple ";
+		final String actual = Utilities.trimLeft( input );
+		final String expected = "apple ";
+		
+		assertEquals( expected, actual );
+	}
+	
+	public void testTrimLeft2(){
+		final String input = "   apple ";
+		final String actual = Utilities.trimLeft( input );
+		final String expected = "apple ";
+		
+		assertEquals( expected, actual );
+	}
+	
+	public void testTrimRight0(){
+		final String input = " apple ";
+		final String actual = Utilities.trimRight( input );
+		final String expected = " apple";
+		
+		assertEquals( expected, actual );
+	}
+	
+	public void testTrimRight1(){
+		final String input = " apple";
+		final String actual = Utilities.trimRight( input );
+		final String expected = " apple";
+		
+		assertEquals( expected, actual );
+	}
+	
+	public void testTrimRight2(){
+		final String input = " apple   ";
+		final String actual = Utilities.trimRight( input );
+		final String expected = " apple";
+		
+		assertEquals( expected, actual );
+	}
 }
