@@ -15,7 +15,7 @@ BUTTON{
 }
 
 /* VERTICAL ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::*/
-DIV.rocket-verticalAccordionPanel{
+.rocket-verticalAccordionPanel{
 	margin: 0px;
 
 	border-style: dashed;
@@ -26,22 +26,7 @@ DIV.rocket-verticalAccordionPanel{
 	padding: 4px;
 }
 
-.rocket-verticalAccordionPanel-item{
-	margin: 0px;
-
-	border-style: solid;
-	border-color: #ffffff;
-	border-width: 4px;
-
-	background-color: #ffdddd;
-
-	padding-bottom: 4px;
-	padding-top: 4px;
-	padding-right: 0px;
-	padding-left: 0px;
-}
-
-.rocket-verticalAccordionPanel-item-caption{
+.rocket-verticalAccordionPanel .caption{
 	margin: 0px;
 	background-color: #ffdddd;
 	padding-bottom: 0px;
@@ -51,38 +36,23 @@ DIV.rocket-verticalAccordionPanel{
 	display: inline;
 	cursor: pointer;
 }
-.rocket-verticalAccordionPanel-item-content{
-	margin-left: 4px;
-	margin-right: 4px;
-	margin-top: 0px;
-	margin-bottom: 0px;
 
-	border-style: solid;
-	border-color: #888888;
-	border-width: 1px;
-
-	background-color: #ffffff;
-}
-.rocket-verticalAccordionPanel-item-selected 
-.rocket-verticalAccordionPanel-item-caption,
-DIV.rocket-verticalAccordionPanel-item-selected
-{
-	background-color: #ffaaaaa;
+.rocket-verticalAccordionPanel .caption-selected {
+	background-color: #ffaaaa;
 	color: #000000;
 	font-weight: bold;
 }
 
-.rocket-verticalAccordionPanel-item-caption{
-	cursor: default;
-}
+.rocket-verticalAccordionPanel .content{
+	border-style: solid;
+	border-color: #ffaaaa;
+	border-width: 4px;
 
-.rocket-verticalAccordionPanel-item-content{
-	background-color: #ffeeee;
-	color: #000000;
+	background-color: #ffffff;
 }
 
 /* LEFT SIDE ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::*/
-TABLE.rocket-leftSideAccordionPanel{
+.rocket-leftSideAccordionPanel{
 	margin: 0px;
 
 	border-style: dashed;
@@ -93,8 +63,8 @@ TABLE.rocket-leftSideAccordionPanel{
 	padding: 4px;
 }
 
-.rocket-leftSideAccordionPanel-item-caption,
-.rocket-leftSideAccordionPanel-item-content {
+.rocket-leftSideAccordionPanel .caption,
+.rocket-leftSideAccordionPanel .content {
 	margin: 0px;
 
 	border-style: solid;
@@ -108,7 +78,7 @@ TABLE.rocket-leftSideAccordionPanel{
 	padding-right: 4px;
 	padding-left: 4px;
 }
-.rocket-leftSideAccordionPanel-item-caption {
+.rocket-leftSideAccordionPanel .caption {
 	margin-bottom: 2px;
 
 	cursor: pointer;
@@ -116,21 +86,21 @@ TABLE.rocket-leftSideAccordionPanel{
 	border-color: #aaffaa;
 }
 
-.rocket-leftSideAccordionPanel-item-content { 
-	background-color: #eeffee;
-	border-color: #aaffaa;
-	cursor: default;
-}
-
-.rocket-leftSideAccordionPanel-item-caption-selected {
+.rocket-leftSideAccordionPanel .caption-selected {
 	cursor: default;
 	background-color: #aaffaa;
 	border-color: #aaffaa;
 	font-weight: bold;
 }
 
+.rocket-leftSideAccordionPanel .content { 
+	background-color: #eeffee;
+	border-color: #aaffaa;
+	cursor: default;
+}
+
 /* RIGHT SIDE ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::*/
-TABLE.rocket-rightSideAccordionPanel{
+.rocket-rightSideAccordionPanel{
 	margin: 0px;
 
 	border-style: dashed;
@@ -141,8 +111,8 @@ TABLE.rocket-rightSideAccordionPanel{
 	padding: 4px;
 }
 
-.rocket-rightSideAccordionPanel-item-caption,
-.rocket-rightSideAccordionPanel-item-content {
+.rocket-rightSideAccordionPanel .caption,
+.rocket-rightSideAccordionPanel .content {
 	background-color: #ffffff;
 
 	border-style: solid;
@@ -155,7 +125,8 @@ TABLE.rocket-rightSideAccordionPanel{
 	padding-right: 4px;
 	margin: 0px;
 }
-.rocket-rightSideAccordionPanel-item-caption {
+
+.rocket-rightSideAccordionPanel .caption {
 	margin-bottom: 2px;
 	
 	cursor: pointer;
@@ -163,17 +134,17 @@ TABLE.rocket-rightSideAccordionPanel{
 	border-color: #aaaaff;
 }
 
-.rocket-rightSideAccordionPanel-item-content { 
-	background-color: #ddddff;
-	border-color: #aaaaff;
-	cursor: default;
-}
-
-.rocket-rightSideAccordionPanel-item-caption-selected {
+.rocket-rightSideAccordionPanel .caption-selected {
 	cursor: default;
 	background-color: #aaaaff;
 	border-color: #aaaaff;
 	font-weight: bold;
+}
+
+.rocket-rightSideAccordionPanel .content { 
+	background-color: #ddddff;
+	border-color: #aaaaff;
+	cursor: default;
 }
 
 /* MISC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -192,6 +163,7 @@ TABLE.rocket-rightSideAccordionPanel{
 </head>
 
 <body>
+<button onclick="prompt('',document.body.innerHTML)">body.innerHTML</body>
 <div style="display: none" id="Lorem">
 <p>
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

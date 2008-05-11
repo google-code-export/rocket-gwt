@@ -108,4 +108,14 @@ public class Widgets{
 		
 		DOM.appendChild( body, after );		
 	}
+	
+	/**
+	 * Factory which creates a new Html widget without any style or classname set on the element.
+	 * @return
+	 */
+	public static Html createHtml(){
+		final Html html = new Html();
+		html.setStyleName("");
+		return html;
+	}
 }

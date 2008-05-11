@@ -69,7 +69,7 @@ public class TileMakingServlet extends HttpServlet {
 
 			final int imageHeight = image.getHeight(null);
 			y = (y + imageHeight) % imageHeight;
-			System.out.println("SERVER " + x + " imageWidth: " + imageWidth + " y: " + y + " imageheight: " + imageHeight);
+			this.log(request, "Creating tile image at " + x + "," + y + " imageWidth: " + imageWidth + " imageHeight: " + imageHeight);
 			tile.getGraphics().drawImage(image,
 			/* destination x, y, x + width, y + height */
 			0, 0, width, height,

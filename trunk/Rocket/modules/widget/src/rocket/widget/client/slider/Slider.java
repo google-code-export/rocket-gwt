@@ -32,6 +32,7 @@ import rocket.util.client.Checker;
 import rocket.widget.client.CompositeWidget;
 import rocket.widget.client.Html;
 import rocket.widget.client.Panel;
+import rocket.widget.client.Widgets;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -118,7 +119,7 @@ public abstract class Slider extends CompositeWidget {
 	}
 
 	protected Widget createHandle() {
-		return new Html();
+		return Widgets.createHtml();
 	}
 
 	abstract protected String getHandleStyleName();
@@ -134,7 +135,7 @@ public abstract class Slider extends CompositeWidget {
 	}
 
 	protected Widget createBackground() {
-		return new Html();
+		return Widgets.createHtml();
 	}
 
 	abstract protected String getBackgroundStyleName();

@@ -15,6 +15,8 @@
  */
 package rocket.widget.client.accordion;
 
+import rocket.style.client.Css;
+import rocket.style.client.InlineStyle;
 import rocket.util.client.Checker;
 import rocket.widget.client.DivPanel;
 
@@ -33,9 +35,7 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	}
 
 	protected Widget createWidget() {
-		final DivPanel panel = this.createPanel();
-		this.setPanel(panel);
-		return panel;
+		return this.createPanel();
 	}
 
 	protected int getSunkEventsBitMask() {
@@ -56,16 +56,8 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	/**
 	 * A DivPanel is used to house the entire Accordion.
 	 */
-	private DivPanel panel;
-
 	protected DivPanel getPanel() {
-		Checker.notNull("field:panel", panel);
-		return panel;
-	}
-
-	protected void setPanel(final DivPanel panel) {
-		Checker.notNull("parameter:panel", panel);
-		this.panel = panel;
+		return (DivPanel) this.getWidget();
 	}
 
 	protected DivPanel createPanel() {
@@ -82,47 +74,45 @@ public class VerticalAccordionPanel extends AccordionPanel {
 	protected void removeSelectedStyle(final AccordionItem item) {
 		Checker.notNull("parameter:item", item);
 
-		final int index = this.getIndex(item);
-		final Widget widget = this.getPanel().get(index);
-		widget.removeStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_SELECTED_STYLE);
+		final Widget caption = item.getCaptionWidget();
+		caption.removeStyleName(Constants.VERTICAL_ACCORDION_PANEL_CAPTION_SELECTED_STYLE);
 
-		item.getContent().setVisible(false);
+		InlineStyle.setString( item.getContent().getElement(), Css.DISPLAY, "none" );
 	}
 
 	protected void addSelectedStyle(final AccordionItem item) {
 		Checker.notNull("parameter:item", item);
 
-		final int index = this.getIndex(item);
-		final Widget widget = this.getPanel().get(index);
-		widget.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_SELECTED_STYLE);
+		final Widget caption = item.getCaptionWidget();
+		caption.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_CAPTION_SELECTED_STYLE);
 
-		item.getContent().setVisible(true);
+		InlineStyle.setString( item.getContent().getElement(), Css.DISPLAY, "block" );
 	}
 
 	protected void insert0(final int insertBefore, final AccordionItem item) {
 		Checker.notNull("parameter:item", item);
 
+		final DivPanel panel = this.getPanel(); 
+		final int index = insertBefore * 2;
+		
 		final Widget caption = item.getCaptionWidget();
-		caption.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_CAPTION_STYLE);
-
+		caption.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_CAPTION_STYLE);
+		panel.insert( caption, index + 0 );
+		
 		final Widget content = item.getContent();
-		content.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_CONTENT_STYLE);
-
-		final DivPanel panel = new DivPanel();
-		panel.setStyleName(Constants.VERTICAL_ACCORDION_PANEL_ITEM_STYLE);
-		panel.add(caption);
-		panel.add(content);
-		content.setVisible(false); // content is invisible when initially
-		// added.
-
-		this.getPanel().insert(panel, insertBefore);
+		InlineStyle.setString( content.getElement(), Css.DISPLAY, "none" );
+		content.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_CONTENT_STYLE);
+		panel.insert( content, index + 1 );		
 	}
 
 	protected void remove0(final int index) {
 		final AccordionItem item = this.get(index);
 
-		this.getPanel().remove(index);
+		final DivPanel panel = this.getPanel();
+		final int panelIndex = index * 2;
+		panel.remove( panelIndex );
+		panel.remove( panelIndex );
+		
 		item.clearAccordionPanel();
 	}
-
 }

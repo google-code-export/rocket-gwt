@@ -84,6 +84,7 @@ public class ResizablePanel extends CompositePanel {
 		grid.setBorderWidth(0);
 		grid.setCellPadding(0);
 		grid.setCellSpacing(0);
+		grid.setStyleName("");
 		
 		return grid;
 	}

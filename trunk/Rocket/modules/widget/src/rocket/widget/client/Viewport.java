@@ -100,6 +100,7 @@ abstract public class Viewport extends CompositeWidget {
 		this.setInnerPanel(widget);
 
 		final SimplePanel simplePanel = new SimplePanel();
+		simplePanel.setStylePrimaryName("");
 		simplePanel.setWidget(widget);
 
 		final Element element = simplePanel.getElement();

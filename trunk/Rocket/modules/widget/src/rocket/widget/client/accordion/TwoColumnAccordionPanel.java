@@ -34,6 +34,16 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 		super();
 	}
 
+	protected Widget createWidget() {
+		return this.createPanel();
+	}
+	
+	protected HorizontalPanel getPanel(){
+		return (HorizontalPanel) this.getWidget();
+	}
+	
+	protected abstract HorizontalPanel createPanel();
+	
 	protected void replaceContentWidget(final AccordionItem item) {
 		Checker.notNull("parameter:item", item);
 
@@ -44,36 +54,8 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 		contents.insert(content, index);
 	}
 
-	/**
-	 * A HorizontalPanel is used to house the entire Accordion.
-	 */
-	private HorizontalPanel panel;
-
-	protected HorizontalPanel getPanel() {
-		Checker.notNull("field:panel", panel);
-		return panel;
-	}
-
-	protected void setPanel(final HorizontalPanel panel) {
-		Checker.notNull("parameter:panel", panel);
-		this.panel = panel;
-	}
-
-	/**
-	 * A DivPanel is used to house the list of all captions.
-	 */
-	private DivPanel captionsPanel;
-
-	protected DivPanel getCaptionsPanel() {
-		Checker.notNull("field:captionsPanel", captionsPanel);
-		return captionsPanel;
-	}
-
-	protected void setCaptionsPanel(final DivPanel captionsPanel) {
-		Checker.notNull("parameter:captionsPanel", captionsPanel);
-		this.captionsPanel = captionsPanel;
-	}
-
+	protected abstract DivPanel getCaptionsPanel();
+	
 	protected DivPanel createCaptionsPanel() {
 		final DivPanel captionsPanel = new DivPanel();
 		captionsPanel.setStyleName(getCaptionsPanelStyle());
@@ -82,21 +64,8 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 
 	protected abstract String getCaptionsPanelStyle();
 
-	/**
-	 * A DeckPanel is used to house the content widgets.
-	 */
-	private DeckPanel contentsPanel;
-
-	protected DeckPanel getContentsPanel() {
-		Checker.notNull("field:contentsPanel", contentsPanel);
-		return contentsPanel;
-	}
-
-	protected void setContentsPanel(final DeckPanel contentsPanel) {
-		Checker.notNull("parameter:contentsPanel", contentsPanel);
-		this.contentsPanel = contentsPanel;
-	}
-
+	protected abstract DeckPanel getContentsPanel();
+	
 	protected DeckPanel createContentsPanel() {
 		final DeckPanel contentsPanel = new DeckPanel();
 		contentsPanel.setStyleName(this.getContentsPanelStyle());
@@ -110,21 +79,15 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 
 		final Widget caption = item.getCaptionWidget();
 		caption.removeStyleName(this.getCaptionSelectedStyle());
-		final Widget content = item.getContent();
-		content.removeStyleName(this.getContentSelectedStyle());
 	}
 
 	protected abstract String getCaptionSelectedStyle();
-
-	protected abstract String getContentSelectedStyle();
 
 	protected void addSelectedStyle(AccordionItem item) {
 		Checker.notNull("parameter:item", item);
 
 		final Widget caption = item.getCaptionWidget();
 		caption.addStyleName(this.getCaptionSelectedStyle());
-		final Widget content = item.getContent();
-		content.addStyleName(this.getContentSelectedStyle());
 
 		final int index = this.getIndex(item);
 		this.getContentsPanel().showWidget(index);

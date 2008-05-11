@@ -6,29 +6,28 @@
 <script language="javascript" src="gwt.js"></script>
 <style>
 BODY, TABLE{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Verdana, Arial;
 	font-size: 10px;
 }
 
 .rocket-styleSheetPicker{
-	background-color: #888888;
-	font: Verdana;
-}
-
-.rocket-styleSheetPicker-horizontalPanel{
 	margin-top: 0px;
 	margin-bottom: 2px;
 	margin-right: 8px;
 	margin-left: 8px;
+	
 	border-width: 1px;
 	border-style: dotted;
 	border-color: black;
 
+	background-color: #888888;
+	
+	font: Verdana;
 	vertical-align: middle;
 	width: auto;
 }
 
-.rocket-styleSheetPicker-label{
+.rocket-styleSheetPicker .label{
 	padding-left: 8px;
 	padding-top: 0px;
 	padding-right: 8px;
@@ -40,7 +39,7 @@ BODY, TABLE{
 	white-space: nowrap;
 }
 
-.rocket-styleSheetPicker-item{
+.rocket-styleSheetPicker .item{
 	cursor: pointer;
 
 	margin-top: 0px;
@@ -55,11 +54,11 @@ BODY, TABLE{
 	white-space: nowrap;
 }
 
-BUTTON.rocket-styleSheetPicker-item{
+BUTTON.rocket-styleSheetPicker .item{
 	background-color: transparent;
 	border-width: 0px;
 }
-.rocket-styleSheetPicker-item-selected{
+.rocket-styleSheetPicker-item .selected{
 	background-color: #ffffff;
 	color: #000000;
 	border-color: black;

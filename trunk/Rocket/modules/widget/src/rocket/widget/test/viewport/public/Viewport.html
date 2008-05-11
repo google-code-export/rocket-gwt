@@ -15,20 +15,18 @@
 				border-width: 1px;
 			}
 			
-			.rocket-viewport-dragging {
+			.rocket-viewport .dragging {
 				opacity: 0.5;
 				filter: (alpha=50);
 			}
 			
-			.rocket-viewport-outOfBounds{
+			.rocket-viewport .outOfBounds{
 				cursor: notAllowed;
 			}
 		</style>
 		<script language='javascript' src='rocket.widget.test.viewport.Viewport.nocache.js'></script>
 	</head>
 	<body>
-	<button onclick="prompt( '', document.body.innerHTML );">document.body.innerHTML</button>
-	
 	<h3>Things to test</h3>
 	<p>
 	The server contains a servlet that returns a tile (sub image) of a much larger world map, in a similar manner to that found in googlemaps albeit

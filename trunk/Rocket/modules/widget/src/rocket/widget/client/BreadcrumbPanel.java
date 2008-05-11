@@ -74,7 +74,9 @@ public class BreadcrumbPanel extends CompositeWidget {
 	}
 
 	protected HorizontalPanel createHorizontalPanel() {
-		return new HorizontalPanel();
+		final HorizontalPanel horizontalPanel = new HorizontalPanel();
+		horizontalPanel.setStyleName("");
+		return horizontalPanel;
 	}
 
 	/**
