@@ -17,6 +17,7 @@ package rocket.generator.rebind.type;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -49,15 +50,15 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	public NewTypeImpl() {
 		super();
 	}
-	
-	public Initializer newInitializer(){
+
+	public Initializer newInitializer() {
 		final InitializerImpl initializer = new InitializerImpl();
-		initializer.setEnclosingType( this );
-		initializer.setGeneratorContext( this.getGeneratorContext() );
+		initializer.setEnclosingType(this);
+		initializer.setGeneratorContext(this.getGeneratorContext());
 		this.addInitializer(initializer);
 		return initializer;
 	}
-	
+
 	public Package getPackage() {
 		Package packagee = null;
 
@@ -80,11 +81,11 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	final protected Package findPackage(final String packageName) {
 		return this.getGeneratorContextImpl().findPackage(packageName);
 	}
-	
-	protected GeneratorContextImpl getGeneratorContextImpl(){
+
+	protected GeneratorContextImpl getGeneratorContextImpl() {
 		return (GeneratorContextImpl) this.getGeneratorContext();
 	}
-	
+
 	public String getSimpleName() {
 		String name = this.getName();
 		final Package packagee = this.getPackage();
@@ -326,149 +327,191 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		return false;
 	}
 
+	protected void logSuperType() {
+		final GeneratorContext context = this.getGeneratorContext();
+		if (context.isDebugEnabled()) {
+			final Type superType = this.getSuperType();
+			final Type object = context.getObject();
+			if (false == superType.equals(object)) {
+				context.debug("extends " + this.getSuperType().getName());
+			}
+		}
+	}
+
+	protected void logImplementedInterfaces() {
+		final GeneratorContext context = this.getGeneratorContext();
+		if (context.isDebugEnabled()) {
+
+			final Set interfaces = this.getInterfaces();
+			if (false == interfaces.isEmpty()) {
+				context.branch();
+				context.debug("implements");
+
+				final Iterator interfacesIterator = interfaces.iterator();
+				while (interfacesIterator.hasNext()) {
+					final Type interfacee = (Type) interfacesIterator.next();
+					context.debug(interfacee.getName());
+				}
+
+				context.unbranch();
+			}
+		}
+	}
+
 	protected void writeConstructors(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
 		final Set constructors = this.getConstructors();
-		final Set sorted = new TreeSet( ConstructorComparator.INSTANCE );
-		sorted.addAll( constructors );
-		
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-	
-		final String message = "Constructors: " + constructors.size();
-		context.debug(message);
-		
-		writer.beginJavaDocComment();
-		writer.print( message );
-		writer.endJavaDocComment();
+		if (false == constructors.isEmpty()) {
 
-		writer.println();
-		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
-		writer.println();
-		
-		context.unbranch();
+			final Set sorted = new TreeSet(ConstructorComparator.INSTANCE);
+			sorted.addAll(constructors);
+
+			final GeneratorContext context = this.getGeneratorContext();
+			context.branch();
+
+			final String message = "Constructors";
+			context.debug(message);
+
+			writer.beginJavaDocComment();
+			writer.print(message);
+			writer.endJavaDocComment();
+
+			writer.println();
+			GeneratorHelper.writeClassComponents(sorted, writer, false, true);
+			writer.println();
+
+			context.unbranch();
+		}
 	}
 
 	protected void writeFields(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
 		final Set fields = this.getFields();
-		final Set sorted = new TreeSet( FieldComparator.INSTANCE );
-		sorted.addAll( fields );
-		
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		
-		final String message = "Fields: " + sorted.size();
-		context.debug(message);		
-		
-		writer.beginJavaDocComment();
-		writer.print( message );
-		writer.endJavaDocComment();
+		if (false == fields.isEmpty()) {
+			final Set sorted = new TreeSet(FieldComparator.INSTANCE);
+			sorted.addAll(fields);
 
-		writer.println();
-		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
-		writer.println();
-		
-		context.unbranch();
+			final GeneratorContext context = this.getGeneratorContext();
+			context.branch();
+
+			final String message = "Fields";
+			context.debug(message);
+
+			writer.beginJavaDocComment();
+			writer.print(message);
+			writer.endJavaDocComment();
+
+			writer.println();
+			GeneratorHelper.writeClassComponents(sorted, writer, false, true);
+			writer.println();
+
+			context.unbranch();
+		}
 	}
 
 	protected void writeMethods(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
 		final Set methods = this.getMethods();
-		final Set sorted = new TreeSet( MethodComparator.INSTANCE );
-		sorted.addAll( methods );		
-				
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		
-		final String message = "Methods: " + methods.size();
-		context.debug(message);
-		
-		writer.beginJavaDocComment();
-		writer.print( message );
-		writer.endJavaDocComment();
+		if (false == methods.isEmpty()) {
 
-		writer.println();
-		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
-		writer.println();
+			final Set sorted = new TreeSet(MethodComparator.INSTANCE);
+			sorted.addAll(methods);
 
-		context.unbranch();
+			final GeneratorContext context = this.getGeneratorContext();
+			context.branch();
+
+			final String message = "Methods";
+			context.debug(message);
+
+			writer.beginJavaDocComment();
+			writer.print(message);
+			writer.endJavaDocComment();
+
+			writer.println();
+			GeneratorHelper.writeClassComponents(sorted, writer, false, true);
+			writer.println();
+
+			context.unbranch();
+		}
 	}
 
 	protected void writeNestedTypes(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
 		final Set types = this.getNestedTypes();
-		final Set sorted = new TreeSet( TypeComparator.INSTANCE );
-		sorted.addAll( types );
-		
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		
-		final String message = "Nested Types: " + types.size();
-		context.debug(message);
-		
-		writer.beginJavaDocComment();
-		writer.print( message );
-		writer.endJavaDocComment();
+		if (false == types.isEmpty()) {
 
-		writer.println();
-		GeneratorHelper.writeClassComponents(sorted, writer, false, true);
-		writer.println();
+			final Set sorted = new TreeSet(TypeComparator.INSTANCE);
+			sorted.addAll(types);
 
-		context.unbranch();
+			final GeneratorContext context = this.getGeneratorContext();
+			context.branch();
+
+			final String message = "Nested Types";
+			context.debug(message);
+
+			writer.beginJavaDocComment();
+			writer.print(message);
+			writer.endJavaDocComment();
+
+			writer.println();
+			GeneratorHelper.writeClassComponents(sorted, writer, false, true);
+			writer.println();
+
+			context.unbranch();
+		}
 	}
 
 	protected void throwTypeAlreadyExistsException() {
 		throw new TypeAlreadyExistsException("A type with the name \"" + this.getName() + "\" already exists, code generation failed.");
 	}
-	
-	protected void writeComments( final SourceWriter writer ){		
-		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+
+	protected void writeComments(final SourceWriter writer) {
+		GeneratorHelper.writeComments(this.getComments(), this.getMetaData(), writer);
 	}
-	
+
 	/**
 	 * Any text which will appear within javadoc comments for this field.
 	 */
 	private String comments;
-	
-	public String getComments(){
-		Checker.notNull( "field:comments", comments );
+
+	public String getComments() {
+		Checker.notNull("field:comments", comments);
 		return comments;
 	}
-	
-	public void setComments( final String comments ){
-		Checker.notNull( "parameter:comments", comments );
+
+	public void setComments(final String comments) {
+		Checker.notNull("parameter:comments", comments);
 		this.comments = comments;
 	}
-	
-	public void addMetaData( final String name, final String value ){
-		this.getMetaData().add( name, value);
+
+	public void addMetaData(final String name, final String value) {
+		this.getMetaData().add(name, value);
 	}
-	
-	public List getMetadataValues( final String name ){
+
+	public List getMetadataValues(final String name) {
 		return this.getMetaData().getMetadataValues(name);
 	}
-	
+
 	/**
 	 * A container which holds any meta data that is added to a new field instance. 
 	 */
 	private MetaData metaData;
-	
-	protected MetaData getMetaData(){
-		Checker.notNull("field:metaData", metaData );
+
+	protected MetaData getMetaData() {
+		Checker.notNull("field:metaData", metaData);
 		return this.metaData;
 	}
-	
-	protected void setMetaData( final MetaData metaData ){
-		Checker.notNull("field:metaData", metaData );
+
+	protected void setMetaData(final MetaData metaData) {
+		Checker.notNull("field:metaData", metaData);
 		this.metaData = metaData;
 	}
-	
-	protected MetaData createMetaData(){
+
+	protected MetaData createMetaData() {
 		return new MetaData();
-	}	
+	}
 }

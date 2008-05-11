@@ -112,7 +112,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 
 		final String packageName = this.getPackageName(typeName);
 		final String simpleClassName = this.getSimpleClassName(typeName);
-		return this.getGeneratorContext().tryCreate(this.getLogger(), packageName, simpleClassName);
+		return this.getGeneratorContext().tryCreate(this.getTreeLogger(), packageName, simpleClassName);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 			}
 
 			public void commit() {
-				sourceWriter.commit(TypeOracleGeneratorContext.this.getLogger());
+				sourceWriter.commit(TypeOracleGeneratorContext.this.getTreeLogger());
 			}
 
 			public void rollback() {
@@ -428,7 +428,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	protected OutputStream createResource0( final String filename ) throws UnableToCompleteException{
 		OutputStream outputStream = null;
 		while( true ){
-			final TreeLogger logger = this.getLogger();
+			final TreeLogger logger = this.getTreeLogger();
 				final com.google.gwt.core.ext.GeneratorContext context = this.getGeneratorContext(); 
 				outputStream = context.tryCreateResource(logger, filename );
 				if( null == outputStream ){
@@ -479,7 +479,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		public void close() throws IOException{
 			try{
 				final OutputStream outputStream = this.getOutputStream();
-				final TreeLogger logger = TypeOracleGeneratorContext.this.getLogger(); 
+				final TreeLogger logger = TypeOracleGeneratorContext.this.getTreeLogger(); 
 				TypeOracleGeneratorContext.this.getGeneratorContext().commitResource(logger, outputStream );
 			} catch ( final UnableToCompleteException caught ){
 				throw new IOException( "Something went wrong whilst attempting to commit resource, reason: \"" + caught.getMessage() + "\"");

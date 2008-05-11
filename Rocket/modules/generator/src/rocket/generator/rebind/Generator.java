@@ -81,7 +81,6 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 					context.branch();
 					context.info("Assembling source for new type(s)...");
 					newType.write();
-					context.info("Completed...");
 					context.unbranch();
 
 					final long now = System.currentTimeMillis();
@@ -159,7 +158,7 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 		final TypeOracleGeneratorContext context = new TypeOracleGeneratorContext();
 		context.setGenerator( this );
 		context.setGeneratorContext( generatorContext );
-		context.setLogger( logger );
+		context.setRootTreeLogger( logger );
 		return context;
 	}
 

@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
 
+import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorException;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
@@ -118,7 +119,14 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	}
 
 	protected void log() {
-		this.getGeneratorContext().info("Writing " + this.getVisibility().getName() + ( this.isInterface() ? " class: " : " interface: " ) + this.getName() );
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info(this.getVisibility().getName() + ( this.isInterface() ? " class " : " interface " ) + this.getName() );
+		
+		this.logSuperType();
+		this.logImplementedInterfaces();
+		
+		context.unbranch();
 	}
 
 	/**

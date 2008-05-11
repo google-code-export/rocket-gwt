@@ -106,7 +106,7 @@ abstract public class TestGenerator extends Generator {
 			}
 		};
 		context.setGeneratorContext(generatorContext);
-		context.setLogger(logger);
+		context.setRootTreeLogger(logger);
 
 		final String generatedClassName = context.getGeneratedTypeName(typeName, this.getGeneratedTypeNameSuffix());
 		final PrintWriter printWriter = context.tryCreateTypePrintWriter(generatedClassName);

@@ -48,7 +48,7 @@ abstract public class TestGenerator extends Generator {
 		final TypeOracleGeneratorContext context = new TypeOracleGeneratorContext();
 		context.setGenerator( this );
 		context.setGeneratorContext( generatorContext );
-		context.setLogger( logger );
+		context.setRootTreeLogger( logger );
 		
 		return context;
 	}
