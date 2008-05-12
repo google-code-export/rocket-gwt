@@ -2,7 +2,7 @@
 <project name="Rocket" default="dist" basedir="c:/workspace.rocket/Rocket/">
 	<description>Ant build for the rocket framework.</description>
 
-	<property name="version" 				value="0.50"/>
+	<property name="version" 				value="0.49"/>
 	<property name="build-dir" 				location="${basedir}/build"/>	
 	<property name="test-dir" 				location="${build-dir}/test"/>	
 	<property name="src-dir" 				location="${build-dir}/src"/>	
