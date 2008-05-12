@@ -564,8 +564,8 @@ Compiler
 Remoting
 * Enriched Comet test allow for better simulation of various server conditions, including throwing of exceptions, failed connection attempts and more.
 
-0.48 XXXXXXX 2008
------------------
+0.48 24 April 2008
+------------------
 Download from http://rocket-gwt.googlecode.com/files/Rocket-0.48.zip
 
 Beans
@@ -605,3 +605,41 @@ Widgets
 * Fixed text selection disabling whilst a ResizablePanel resize is in progress.
 * ResizablePanel now fires a change event each time it changes size.
 * Added support to ImageFactory to return com.google.gwt.user.client.ui.Image as well as rocket.widget.client.Image.
+
+0.49 11 May 2008
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.49.zip
+
+Updated from GWT 1.4.60 to GWT 1.4.62. None of the modified GWT classes included in this library have changed so conflicts should be minimal if any.
+
+Beans
+* Fixed a bug which resulted in failures when attempting to create beans with constructors with primitive values from value tags.  
+* Added launch file for BeanFactoryGeneratorConstructorGwtTestCase.
+
+Generator
+* When emitting code within an outter type, the simple name of nested types is logged rather than the fully qualified form. 
+* When generating types javadoc comments are no longer emitted when initializers, constructors ,fields, methods ,nested types exist for the type being processed.
+* When generating types logging statements are no longer emitted when initializers, constructors ,fields, methods ,nested types exist for the type being processed. 
+
+Remoting
+* CometServlet has been reworked to pass a CometConnection instance to the poll() method. This call can be delegated to
+another class removing any dependency on the servlet sub class. Thanx John Chinton
+
+Utilities
+* Added trimLeft() and trimRight() methods to Utilities
+* Fully qualiied StackElement references removing one problem which was appearing in Eclipse.
+
+Widgets
+* Reworked styling of widgets to match the strategy used by GWT. Only the parent element has a fully qualified name, child
+  elements use short names.
+* For Accordion Panels renamed getItemSelectedStyle() to getCaptionSelectedStyle()
+* DivPanel no longer wraps each widget added to it within a DIV element.
+* SpanPanel no longer wraps each widget added to it within a SPAN element.
+
+0.50 11 May 2008
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.50.zip
+
+Collections
+* Changed SkippingIterator to throw NoSuchElementException without any message. Previously message fetched type using GWT.getTypeName(); 
+* Added constructor to SkippingIterator which accepts an iterator.
