@@ -1,0 +1,29 @@
+// json-rpc-invoker.txt
+
+final rocket.remoting.client.support.rpc.JsonRpcServiceInvoker invoker = new rocket.remoting.client.support.rpc.JsonRpcServiceInvoker(){
+    
+	protected java.lang.Object readObject( final com.google.gwt.json.client.JSONValue jsonValue ){
+		final rocket.json.client.JsonSerializer deserializer =
+			(rocket.json.client.JsonSerializer) 
+				com.google.gwt.core.client.GWT.create( ${returnType}.class );
+    
+   		return deserializer.readObject( jsonValue );
+  	} // readObject
+  	
+  	protected rocket.json.client.JsonSerializer createSerializer(){
+  		return (rocket.json.client.JsonSerializer) 
+  			com.google.gwt.core.client.GWT.create( ${parameterType}.class );
+  	}
+  	
+}; // rocket.remoting.client.support.rpc.JsonRpcServiceInvoker
+
+// copy authentication credentials, timeout and service entry point url
+invoker.prepare( this );
+
+// set parameter
+invoker.setParameter( parameter );
+
+// set callback and make request.
+invoker.setCallback( callback );
+invoker.makeRequest();
+

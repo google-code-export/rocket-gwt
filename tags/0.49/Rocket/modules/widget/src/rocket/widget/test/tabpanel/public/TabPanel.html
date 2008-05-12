@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>TabPanel</title>
+<meta name='gwt:module' content='rocket.widget.test.tabpanel.TabPanel'>
+<script language="javascript" src="gwt.js"></script>
+
+<style>
+/* DEFAULTS ::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+BODY, TABLE, P, BUTTON {
+	font-family: Verdana, Arial;
+	font-size: 10px;	
+}
+
+BODY {
+   margin: 0px;
+   background-color: #abc;
+}
+
+BUTTON, P {
+	margin: 4px;
+}
+
+IMG {
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+/* TAB PANEL :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-topTabPanel,
+.rocket-bottomTabPanel,
+.rocket-leftTabPanel,
+.rocket-rightTabPanel
+{
+	width: 100%;
+}
+
+.rocket-topTabPanel .item,
+.rocket-bottomTabPanel .item,
+.rocket-leftTabPanel .item,
+.rocket-rightTabPanel .item
+{
+	height: 1.25em;
+	background-color: #789;
+	cursor: hand;
+	
+	margin: 0px;
+	margin-left: 4px;
+    margin-right: 4px;
+    
+	border-style: solid;
+	border-width: 2px;
+    border-color: #789;
+    
+	padding: 2px;
+	
+	font-size: 10px;
+	white-space: nowrap;	
+}
+
+.rocket-topTabPanel .label,
+.rocket-bottomTabPanel .label,
+.rocket-leftTabPanel .label,
+.rocket-rightTabPanel .label
+{
+	white-space: nowrap;
+}
+
+.rocket-topTabPanel .item-selected,
+.rocket-bottomTabPanel .item-selected,
+.rocket-leftTabPanel .item-selected,
+.rocket-rightTabPanel .item-selected
+{
+	background-color: #fff;
+	cursor: pointer;
+    
+    border-color: #789;
+	font-size: 10px;
+	font-weight: bold;
+}
+
+.rocket-topTabPanel .content,
+.rocket-bottomTabPanel .content,
+.rocket-leftTabPanel .content,
+.rocket-rightTabPanel .content {
+	background-color: #fff;
+	border-width: 0px;
+	padding: 4em;
+	overflow: hidden;
+}
+
+/* TOP  & BOTTOM TAB PANEL :::::::::::::::::::::::::::::::::::::*/
+.rocket-topTabPanel .item,
+.rocket-bottomTabPanel .item {
+     width: 100px;
+}
+
+
+/* TOP  TAB PANEL ::::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-topTabPanel .content{
+      border-top-color: #789;
+      border-top-style: solid;
+      border-top-width: 3px;
+}
+
+.rocket-topTabPanel .item-selected {
+      position: relative;
+      top: 3px;
+      border-bottom-color: #fff;
+}
+
+/* BOTTOM TAB PANEL ::::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-bottomTabPanel .content{
+      border-bottom-color: #789;
+      border-bottom-style: solid;
+      border-bottom-width: 3px;
+}
+
+.rocket-bottomTabPanel .item-selected {
+      position: relative;
+      top: -3px;
+      border-top-color: #fff;
+}
+
+/* LEFT  & RIGHT TAB PANEL :::::::::::::::::::::::::::::::::::::*/
+.rocket-leftTabPanel .item,
+.rocket-rightTabPanel .item {
+     width: 100px;
+}
+
+
+/* LEFT  TAB PANEL ::::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-leftTabPanel .content{
+      border-left-color: #789;
+      border-left-style: solid;
+      border-left-width: 3px;
+}
+
+.rocket-leftTabPanel .item-selected {
+      position: relative;
+      left: 7px;
+      border-right-color: #fff;
+}
+
+
+/* RIGHT TAB PANEL ::::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-rightTabPanel .content{
+      border-right-color: #789;
+      border-right-style: solid;
+      border-right-width: 3px;
+}
+
+.rocket-rightTabPanel .item-selected {
+      position: relative;
+      left: -7px;
+      border-left-color: #fff;
+}
+
+/* MISC ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-interactiveList{
+	margin: 4px;
+	padding: 4px;
+	background-color: #ddd;
+}
+
+</style>
+</head>
+
+<body>
+<button style="position: absolute; right: 10px; top: 10px; zindex: 1; width: 50px; " onclick="prompt('',document.body.innerHTML);">dbi</button>
+<!--
+This div is always hidden, its contents are however sucked in and used as the contents of all tab panels
+-->
+<div id="lorem" style="display: none;">
+<h3>Things to test.</h3>
+<ul>
+<li>Only one tab may be active at any time. The active tab also shows its content</li>
+<li>Tabs may have any number of widgets both before and after the tab caption text.</li>
+<li>TabPanels include automatic support for the inclusion of a close button for tabs on a case by case basis</li>
+<li>Each tab includes a set of controls within an area with a grayish background. These may be used to add/insert/count/remove etc tabItems.</li>
+<li>The user is prompted to veto any of the possible tab events.</li>
+</ul>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<img src="pine-cone.jpg" alt="pine cone">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<img src="thistle.jpg" alt="thistle">
+
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<img src="pine-cone.jpg" alt="pine cone">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<img src="thistle.jpg" alt="thistle">
+</div>
+
+</body>
+</html>

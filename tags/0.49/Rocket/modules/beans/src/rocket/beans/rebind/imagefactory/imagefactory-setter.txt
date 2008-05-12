@@ -1,0 +1,5 @@
+// /rocket/beans/rebind/imagefactory/imagefactory-setter.txt
+
+rocket.util.client.Checker.notNull("parameter:imageFactory", imageFactory );
+this.imageFactory = imageFactory;
+

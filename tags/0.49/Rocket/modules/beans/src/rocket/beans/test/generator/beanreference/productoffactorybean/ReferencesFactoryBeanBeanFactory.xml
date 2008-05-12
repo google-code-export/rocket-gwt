@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.48//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+
+	<bean	id="bean" 
+			class="rocket.beans.test.generator.beanreference.productoffactorybean.HasProductOfFactoryBean" 
+			scope="singleton">
+		<properties>
+			<property name="bean">
+				<bean-reference reference-id="productOfFactoryBean" />
+			</property>			
+		</properties>
+	</bean>
+
+	<bean	id="productOfFactoryBean" 
+			class="rocket.beans.test.generator.beanreference.productoffactorybean.FactoryBeanImpl" 
+			scope="singleton">
+		<properties>
+			<property name="string">
+				<value>string</value>
+			</property>			
+		</properties>
+	</bean>
+	
+</bean-factory>

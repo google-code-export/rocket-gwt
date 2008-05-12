@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Pager</title>
+<meta name='gwt:module' content='rocket.widget.test.pager.demo.Pager'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+BODY, TABLE{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+/* PAGER :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+.rocket-pager {
+	width: 100%;
+	height: auto;
+	background-color: inherit;
+	margin: 4px;
+}
+
+.rocket-pager .previous, 
+.rocket-pager .next, 
+.rocket-pager .goto, 
+.rocket-pager .current{
+	margin: 4px;
+	padding: 0px;
+	border: none;
+	
+	background-color: #fff;
+	color: #45f;
+	
+	horizontal-align: center;
+	horizontal-alignment: center;
+	align: center;
+	
+	text-decoration: underline;
+	
+	cursor: pointer;	
+}
+
+.rocket-pager .current{
+	color: #000;
+	text-decoration: none;
+
+	cursor: default;	
+}
+
+/* TEST ::::::::::::::::::::::::::::::::::::::::::: */
+.pagerTest-summary{
+	width: 100%;
+	margin: 0px;
+	
+	border: none;
+	border-top-width: 1px;
+	border-top-color: #aaf;
+	border-top-style: solid;
+	
+	padding: 4px;
+	
+	background: #ddf;
+	color: #000;
+	
+	text-align: right;
+}
+
+</style>
+</head>
+
+<body>
+<div id="item" style="display: none">
+<div style="margin: 4px;">
+	<div style="color: blue; font-family: Verdana; font-size: 12px;">Lorem ipsum - Wikipedia, the free encyclopedia (${0})</div>
+		<div style="color: black; font-family: Verdana; font-size: 10px;">In publishing and graphic design, lorem ipsum is standard placeholder text used to demonstrate the graphic elements of a document or visual presentation, ...</div>
+		<div><span style="color: green; font-family: Verdana; font-size: 10px;">en.wikipedia.org/wiki/Lorem_ipsum - 41k</span><span style="color: #bbb; font-family: Verdana; font-size: 10px;">- Cached - Similar pages</span></div>
+	</div>
+</div>
+<p>
+<h1>Things to test</h1>
+<ul>
+	<li>Click on any of the blue links below and verify the results display the appropriate items.</li>
+</ul>
+</p>
+</body>
+</html>

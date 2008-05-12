@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Comet</title>
+<meta name='gwt:module' content='rocket.remoting.test.comet.Comet'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+BODY, TABLE{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+BUTTON {
+	margin-top: 2px;
+	margin-right: 4px;
+	margin-bottom: 2px;
+	margin-left: 4px;	
+	width: 250px;	
+}
+</style>
+</head>
+
+<body>
+	<p>
+	Numerous buttons below are available which provide the capability to test many of the comet features.
+	Each step that occurs in the browser or server is logged.
+	</p>
+	
+	<h6>Things being tested</h6>
+	<ul>
+		<li>Starting a comet session (by clicking on the <b>Start</b> button)</li>
+		<li>Starting a comet session with an invalid url (by clicking on the <b>Start using bad url</b> button)which should result in a Exception</li>
+		<li>Terminating a session.
+			<ul>
+				<li>Terminate from the client by clicking on <b>Client terminate</b></li>
+				<li>Terminate from the server by clicking on <b>Server terminate</b></li>
+				<li>Killing the embedded tomcat and checking that the client complained</li>
+			</ul>
+		</li>
+		<li>Server Timeout - Clicking on this button causes the next poll request on the server to sleep for a long time, which should cause the connection to time out and cause the client to reconnect.</li>
+		<li>Typically the <b>Fail next Server Connection</b> buttons is clicked after a server time out request to verify that the comet client reattempts to connect after a connection failure.</li> 
+		<li>Click on <b>Compile/Browse</b> and repeat the test with other browsers</li>
+		<li>The server drops the connection forcing the client to reconnect after approximately 3 messages, scan log for "Too many bytes written to client, server will drop connection"</li>
+		<li>The server also drops the connection when the connection is open for more than 5 seconds, scan log for "Connection open too long server will drop connection".</li>
+	<ul>
+</body>
+</html>
