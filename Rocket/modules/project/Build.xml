@@ -2,7 +2,7 @@
 <project name="Rocket" default="dist" basedir="c:/workspace.rocket/Rocket/">
 	<description>Ant build for the rocket framework.</description>
 
-	<property name="version" 				value="0.48"/>
+	<property name="version" 				value="0.50"/>
 	<property name="build-dir" 				location="${basedir}/build"/>	
 	<property name="test-dir" 				location="${build-dir}/test"/>	
 	<property name="src-dir" 				location="${build-dir}/src"/>	
@@ -14,7 +14,7 @@
 	<property name="www-dir" 				location="${build-dir}/www"/>
 	<property name="reports-dir" 			location="${build-dir}/reports"/>
 	<property name="lib-dir" 				location="c:/libraries/"/>
-	<property name="gwt-dir"		 		location="${lib-dir}/google/gwt/1.4.60"/>
+	<property name="gwt-dir"		 		location="${lib-dir}/google/gwt/1.4.62"/>
 	<property name="gwt-samples-dir"		location="${gwt-dir}/samples"/>		
 	<property name="junit-dir" 				location="${lib-dir}/junit/3.8"/>
 	<property name="flexjson-dir" 			location="${lib-dir}/flexjson/1.2"/>
@@ -235,24 +235,24 @@
 	<target name="javadoc" depends="compile" description="Create javadoc">
 		<javadoc 	access="private"
   	        		author="yes"
-				classpathref="project.class.path"			
+					classpathref="project.class.path"			
   	        		destdir="${doc-dir}"
 		    		noindex="yes"
 		    		serialwarn="no"  	
   	        		sourcepath="${src-dir}"
   	        		splitindex="no"
-  	        		verbose="no">
-			
-			 <packageset dir="modules" defaultexcludes="yes">
-			 	<exclude name="*/src/rocket/*/test/**"/>
-			 	<exclude name="*/src/com/google/**"/>
-			 	<include name="*/src/rocket/**"/>			     
-			 </packageset>
-			
+  	        		verbose="no">			
+			 <fileset dir="." defaultexcludes="yes">
+			 	<include name="rocket/**"/>				 	
+			 	<exclude name="rocket/**/test/**"/>
+			 	<exclude name="com/google/**"/>					 	
+			 </fileset>
+			 		
 			<doctitle><![CDATA[Rocket GWT ${version} Javadoc]]></doctitle>
 			<bottom><![CDATA[<i>Copyright &#169; Rocket. All Rights Reserved.</i>]]></bottom>
 			<tag name="todo" scope="all" description="To do:"/>
 			<link href="http://code.google.com/p/rocket-gwt/"/>
+	
 		</javadoc>
 	</target>
 
@@ -555,7 +555,7 @@ FIXME Fails with
 	<target name="gwt-samples-compile" depends="compile">
 
 		<delete failonerror="no">
-			<fileset dir="$${build-dir}/compiler/gwt-samples/">
+			<fileset dir="${build-dir}/compiler/gwt-samples/">
 				<include name="**"/>				
 			</fileset>
 		</delete>
