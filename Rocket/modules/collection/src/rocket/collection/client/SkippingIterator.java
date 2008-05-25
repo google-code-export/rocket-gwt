@@ -20,8 +20,6 @@ import java.util.NoSuchElementException;
 
 import rocket.util.client.Checker;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * This iterator may be used to skip elements from an underlying iterator via
  * the {@link #skip} method.
@@ -29,6 +27,16 @@ import com.google.gwt.core.client.GWT;
  * @author Miroslav Pokorny (mP)
  */
 public abstract class SkippingIterator extends IteratorWrapper implements Iterator {
+	
+	public SkippingIterator(){
+		super();
+	}
+	
+	public SkippingIterator( final Iterator iterator ){
+		super();
+		this.setIterator(iterator);
+	}
+	
 	public boolean hasNext() {
 		return this.findNext();
 	}
@@ -77,7 +85,7 @@ public abstract class SkippingIterator extends IteratorWrapper implements Iterat
 
 	public Object next() {
 		if (false == findNext()) {
-			throw new NoSuchElementException(GWT.getTypeName(this) + " is empty.");
+			throw new NoSuchElementException();
 		}
 		final Object next = this.getCache();
 		this.clearCache();
