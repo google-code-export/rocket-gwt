@@ -18,7 +18,7 @@ package rocket.util.test;
 import junit.framework.TestCase;
 import rocket.util.client.Utilities;
 
-public class UtitiliesTestCase extends TestCase {
+public class UtilitiesTestCase extends TestCase {
 
 	public void testPadLeft0() {
 		final String in = "apple";
@@ -484,6 +484,14 @@ public class UtitiliesTestCase extends TestCase {
 		
 		assertEquals( expected, actual );
 	}
+
+	public void testTrimLeft3(){
+		final String input = "   ";
+		final String actual = Utilities.trimLeft( input );
+		final String expected = "";
+		
+		assertEquals( expected, actual );
+	}
 	
 	public void testTrimRight0(){
 		final String input = " apple ";
@@ -505,6 +513,14 @@ public class UtitiliesTestCase extends TestCase {
 		final String input = " apple   ";
 		final String actual = Utilities.trimRight( input );
 		final String expected = " apple";
+		
+		assertEquals( expected, actual );
+	}
+	
+	public void testTrimRight3(){
+		final String input = "   ";
+		final String actual = Utilities.trimRight( input );
+		final String expected = "";
 		
 		assertEquals( expected, actual );
 	}
