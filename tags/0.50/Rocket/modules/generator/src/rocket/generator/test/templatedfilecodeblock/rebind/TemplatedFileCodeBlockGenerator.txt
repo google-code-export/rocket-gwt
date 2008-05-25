@@ -1,2 +1,0 @@
-final Object object = new Object();
-int a = 1 + 2;

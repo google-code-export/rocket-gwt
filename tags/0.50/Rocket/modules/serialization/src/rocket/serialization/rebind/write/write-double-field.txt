@@ -1,4 +1,0 @@
-// /rocket/serialization/rebind/write/write-double-field.txt
-
-objectOutputStream.writeDouble( this.${getter}( instance ) );
-

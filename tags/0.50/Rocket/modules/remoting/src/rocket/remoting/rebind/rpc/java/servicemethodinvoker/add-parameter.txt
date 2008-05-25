@@ -1,4 +1,0 @@
-// add-parameter.txt
-
-invoker.addParameter( ${parameter} );
-	

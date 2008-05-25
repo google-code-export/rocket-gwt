@@ -1,5 +1,0 @@
-Lorem <% 
-
-writer.print( "12345" ); 
-
-%> Ipsum

@@ -1,2 +1,0 @@
-this.${method}();
-return this.${method}();

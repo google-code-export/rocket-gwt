@@ -1,7 +1,0 @@
-// /rocket/beans/rebind/aop/rethrowdeclaredexception/rethrow-expected-exceptions.txt
-
-} catch ( final ${exception} rethrow ){
-	throw rethrow;
-	
-// dont worry about the closing brace it will be written...
-

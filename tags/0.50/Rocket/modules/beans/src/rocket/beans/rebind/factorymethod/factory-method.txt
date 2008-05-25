@@ -1,5 +1,0 @@
-// /rocket/beans/rebind/factorymethod/factory-method.txt
-
-// invokes a static method on a type.
-return ${factoryType}.${factoryMethod}();
-

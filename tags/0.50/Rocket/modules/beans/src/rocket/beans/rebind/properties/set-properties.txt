@@ -1,8 +1,0 @@
-// set-properties.txt
-
-// cast the instance parameter to a typed local variable called "instance0"
-final ${beanType} instance0 = (${beanType}) instance;
-
-// set the individual properties
-${setIndividualProperties}
-

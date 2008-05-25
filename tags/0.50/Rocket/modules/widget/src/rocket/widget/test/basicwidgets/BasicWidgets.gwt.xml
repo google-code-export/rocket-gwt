@@ -1,9 +1,0 @@
-<module>
-	<inherits name="rocket.testing.Testing" />	
-	<inherits name="rocket.widget.Widget" />	
-
-	<source path="client" />
-	<entry-point class='rocket.widget.test.basicwidgets.client.BasicWidgetsTest'/>  
-
-	<servlet path="/echo" class="rocket.widget.test.basicwidgets.server.EchoServlet"/>	
-</module>

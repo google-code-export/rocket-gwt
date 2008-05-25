@@ -1,3 +1,0 @@
-// /rocket/beans/rebind/map/map-add-entry.txt
-
-.add( ${key}, ${value} )
