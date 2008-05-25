@@ -36,8 +36,7 @@ import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamWriter;
 /**
  * This servlet forms the basis of any comet client. The {@link
  * 
- * @author mP
- * 
+ * @author Miroslav Pokorny
  */
 public abstract class CometServerServlet extends HttpServlet {
 
@@ -135,10 +134,12 @@ public abstract class CometServerServlet extends HttpServlet {
 	}
 
 	/**
-	 * The main method that
+	 * The main method that takes care of initiating a comet session.
 	 */
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
 		try {
+			this.setHttpServletRequest(request);
+			this.setHttpServletResponse(response);
 			this.poller(response);
 		} catch (final IOException ioException) {
 			ioException.printStackTrace();
@@ -146,6 +147,9 @@ public abstract class CometServerServlet extends HttpServlet {
 		} catch (final ServletException servletException) {
 			servletException.printStackTrace();
 			this.log(servletException.getMessage(), servletException);
+		} finally {
+			this.clearHttpServletRequest();
+			this.clearHttpServletResponse();
 		}
 	}
 
@@ -338,5 +342,34 @@ public abstract class CometServerServlet extends HttpServlet {
 	 *            The total time the connection was open.
 	 */
 	protected void onConnectionOpenTooLong(final long milliseconds) {
+	}
+	
+	
+	final static ThreadLocal httpServletRequests = new ThreadLocal();
+	
+	public HttpServletRequest getHttpServletRequest(){
+		return (HttpServletRequest) CometServerServlet.httpServletRequests.get();
+	}
+	
+	void setHttpServletRequest( final HttpServletRequest httpServletRequests ){
+		CometServerServlet.httpServletRequests.set(httpServletRequests);
+	}
+	
+	void clearHttpServletRequest(){
+		CometServerServlet.httpServletRequests.remove();
+	}
+	
+	final static ThreadLocal httpServletResponses = new ThreadLocal();
+	
+	public HttpServletResponse getHttpServletResponse(){
+		return (HttpServletResponse) CometServerServlet.httpServletResponses.get();
+	}
+	
+	void setHttpServletResponse( final HttpServletResponse httpServletResponses ){
+		CometServerServlet.httpServletResponses.set(httpServletResponses);
+	}
+	
+	void clearHttpServletResponse(){
+		CometServerServlet.httpServletResponses.remove();
 	}
 }
