@@ -616,7 +616,7 @@ public class Utilities {
 	public static String trimRight( final String string ){
 		Checker.notNull("parameter:string", string);
 		
-		String trimmed = string;
+		String trimmed = "";
 		final int length = string.length();
 		int i = length;
 		while( i > 0 ){
@@ -642,7 +642,7 @@ public class Utilities {
 	public static String trimLeft( final String string ){
 		Checker.notNull("parameter:string", string);
 		
-		String trimmed = string;
+		String trimmed = "";
 		final int length = string.length();
 		int i = 0;
 		while( i < length ){

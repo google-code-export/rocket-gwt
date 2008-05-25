@@ -34,7 +34,7 @@ public class UtilTestSuite {
 
 	public static void addTests(TestSuite suite) {
 		suite.addTestSuite(TesterTestCase.class);
-		suite.addTestSuite(UtitiliesTestCase.class);
+		suite.addTestSuite(UtilitiesTestCase.class);
 		suite.addTestSuite(Base64EncoderTestCase.class);
 		suite.addTestSuite(ColourTestCase.class);
 		suite.addTestSuite(HueSaturationValueTestCase.class);
