@@ -1,0 +1,7 @@
+// /rocket/logging/rebind/createrootlogger/create-root-logger.txt
+
+return 
+	new ${levelLogger}( 
+		new ${logger}(name)
+	);
+

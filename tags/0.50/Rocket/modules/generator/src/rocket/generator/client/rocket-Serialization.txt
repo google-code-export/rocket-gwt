@@ -1,0 +1,2 @@
+# rocket.generator
+rocket.generator.client.*

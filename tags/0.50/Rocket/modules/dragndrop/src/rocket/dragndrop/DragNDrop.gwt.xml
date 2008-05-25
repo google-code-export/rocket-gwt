@@ -1,0 +1,10 @@
+<module>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.browser.Browser" />	
+	<inherits name="rocket.dom.Dom" />	
+	<inherits name="rocket.event.Event" />			
+	<inherits name="rocket.selection.Selection" />	
+	<inherits name="rocket.style.Style" />	
+	<inherits name="rocket.util.Util" />	
+	<inherits name="rocket.widget.Widget" />		
+</module>

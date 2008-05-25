@@ -1,0 +1,25 @@
+# rocket.logging.client
+# Most of the classes in this package should not be serializable.
+rocket.logging.client.ConsoleLogger
+rocket.logging.client.DebugLevelLogger
+rocket.logging.client.ErrorLevelLogger
+rocket.logging.client.FatalLevelLogger
+rocket.logging.client.FirebugLogger
+rocket.logging.client.GwtLogger
+rocket.logging.client.InfoLevelLogger
+rocket.logging.client.Logger
+rocket.logging.client.LoggerFactory
+rocket.logging.client.LoggerFactoryImpl
+rocket.logging.client.LoggerImpl
+rocket.logging.client.LoggingConstants
+# rocket.logging.client.LoggingEvent
+# rocket.logging.client.LoggingLevel
+rocket.logging.client.LoggingLevelObjectReader
+rocket.logging.client.LoggingLevelObjectWriter
+rocket.logging.client.LoggingService
+rocket.logging.client.LoggingServiceAsync
+rocket.logging.client.NoneLevelLogger
+rocket.logging.client.NullLogger
+rocket.logging.client.ServerLogger
+rocket.logging.client.SystemLogger
+rocket.logging.client.WarnLevelLogger
