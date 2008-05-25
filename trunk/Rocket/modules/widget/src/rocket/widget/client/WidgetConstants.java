@@ -135,21 +135,6 @@ public class WidgetConstants {
 
 	final static String SPINNER_DOWN_STYLE = "down";
 
-	// SUPER SPINNER
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	/**
-	 * This style is applied to the container element of a SuperSpinnerWidget
-	 */
-	final static String SUPER_SPINNER_STYLE = ROCKET + "-superSpinner";
-
-	final static String SUPER_SPINNER_UP_STYLE = "up";
-
-	final static String SUPER_SPINNER_DOWN_STYLE = "down";
-
-	final static String SUPER_SPINNER_BIG_UP_STYLE = "bigUp";
-
-	final static String SUPER_SPINNER_BIG_DOWN_STYLE = "bigDown";
-
 	// PAGER
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
