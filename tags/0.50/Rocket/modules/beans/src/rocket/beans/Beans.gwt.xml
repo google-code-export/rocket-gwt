@@ -1,0 +1,11 @@
+<module>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="rocket.util.Util"/>
+	<inherits name="rocket.widget.Widget"/>
+	
+	<source path="client" />	
+
+	<generate-with class="rocket.beans.rebind.BeanFactoryGenerator">
+		<when-type-assignable class="rocket.beans.client.BeanFactory" />
+	</generate-with>	
+</module>

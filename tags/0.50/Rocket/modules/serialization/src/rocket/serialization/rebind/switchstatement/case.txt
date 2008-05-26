@@ -1,0 +1,6 @@
+// /rocket/serialization/rebind/switchstatement/case-statement.txt
+			// case-statement.txt
+			case ${serializedTypeRuntimeName}: 
+				object = ${singleton};
+				break;
+

@@ -1,0 +1,4 @@
+// /rocket/serialization/rebind/read/read-double-field.txt
+
+this.${setter}( instance, objectInputStream.readDouble() );
+

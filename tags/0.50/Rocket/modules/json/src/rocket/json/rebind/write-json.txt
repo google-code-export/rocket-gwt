@@ -1,0 +1,16 @@
+// write-json.txt
+com.google.gwt.json.client.JSONValue jsonValue = null;
+
+if( null != instance ){
+	com.google.gwt.json.client.JSONObject jsonObject = new com.google.gwt.json.client.JSONObject();
+	
+	this.writeFields( instance, jsonObject );
+	super.writeFields( instance, jsonObject );
+	
+	jsonValue = jsonObject;
+} else {
+	jsonValue = com.google.gwt.json.client.JSONNull.getInstance();
+}
+
+return jsonValue;
+

@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>AccordionPanel</title>
+<meta name='gwt:module' content='rocket.widget.test.accordionpanel.AccordionPanel'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+BODY, TABLE, DIV, BUTTON{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+BUTTON{
+	margin: 4px;
+	width: 200px;
+}
+
+/* VERTICAL ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-verticalAccordionPanel{
+	margin: 0px;
+
+	border-style: dashed;
+	border-color: #ffbbbb;
+	border-width: 1px;
+	background-color: #ffeeee;
+
+	padding: 4px;
+}
+
+.rocket-verticalAccordionPanel .caption{
+	margin: 0px;
+	background-color: #ffdddd;
+	padding-bottom: 0px;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-left: 4px;
+	display: inline;
+	cursor: pointer;
+}
+
+.rocket-verticalAccordionPanel .caption-selected {
+	background-color: #ffaaaa;
+	color: #000000;
+	font-weight: bold;
+}
+
+.rocket-verticalAccordionPanel .content{
+	border-style: solid;
+	border-color: #ffaaaa;
+	border-width: 4px;
+
+	background-color: #ffffff;
+}
+
+/* LEFT SIDE ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-leftSideAccordionPanel{
+	margin: 0px;
+
+	border-style: dashed;
+	border-color: #ddffdd;
+	border-width: 1px;
+	background-color: #ffffff;
+
+	padding: 4px;
+}
+
+.rocket-leftSideAccordionPanel .caption,
+.rocket-leftSideAccordionPanel .content {
+	margin: 0px;
+
+	border-style: solid;
+	border-color: #ddffdd;
+	border-width: 4px;
+
+	background-color: #ddffdd;
+
+	padding-bottom: 4px;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-left: 4px;
+}
+.rocket-leftSideAccordionPanel .caption {
+	margin-bottom: 2px;
+
+	cursor: pointer;
+	background-color: #ddffdd;
+	border-color: #aaffaa;
+}
+
+.rocket-leftSideAccordionPanel .caption-selected {
+	cursor: default;
+	background-color: #aaffaa;
+	border-color: #aaffaa;
+	font-weight: bold;
+}
+
+.rocket-leftSideAccordionPanel .content { 
+	background-color: #eeffee;
+	border-color: #aaffaa;
+	cursor: default;
+}
+
+/* RIGHT SIDE ACCORDION PANEL ::::::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-rightSideAccordionPanel{
+	margin: 0px;
+
+	border-style: dashed;
+	border-color: #aaaaff;
+	border-width: 1px;
+	background-color: #ffffff;
+
+	padding: 4px;
+}
+
+.rocket-rightSideAccordionPanel .caption,
+.rocket-rightSideAccordionPanel .content {
+	background-color: #ffffff;
+
+	border-style: solid;
+	border-color: #aaaaff;
+	border-width: 4px;
+
+	padding-bottom: 4px;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-right: 4px;
+	margin: 0px;
+}
+
+.rocket-rightSideAccordionPanel .caption {
+	margin-bottom: 2px;
+	
+	cursor: pointer;
+	background-color: #ddddff;
+	border-color: #aaaaff;
+}
+
+.rocket-rightSideAccordionPanel .caption-selected {
+	cursor: default;
+	background-color: #aaaaff;
+	border-color: #aaaaff;
+	font-weight: bold;
+}
+
+.rocket-rightSideAccordionPanel .content { 
+	background-color: #ddddff;
+	border-color: #aaaaff;
+	cursor: default;
+}
+
+/* MISC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+.rocket-interactiveList{
+	margin: 4px;
+	padding: 4px;
+	background-color: #dddddd;
+}
+
+.rocket-interactiveList BUTTON{
+	margin: 4px;
+}
+
+</style>
+</head>
+
+<body>
+<button onclick="prompt('',document.body.innerHTML)">body.innerHTML</body>
+<div style="display: none" id="Lorem">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+</div>
+</body>
+
+</html>

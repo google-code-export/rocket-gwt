@@ -1,0 +1,89 @@
+<!ELEMENT bean-factory 							(
+		place-holders*, 
+			(bean|alias|rpc|aspect|include|image)*
+		)>
+
+<!ELEMENT place-holders							EMPTY>
+<!ATTLIST place-holders
+	file			CDATA 						#REQUIRED
+>
+
+<!ELEMENT include								EMPTY>
+<!ATTLIST include
+	file			CDATA 						#REQUIRED
+>
+
+<!ELEMENT bean 									(constructor?, properties*)>
+<!ATTLIST bean
+	class 			CDATA 						#REQUIRED
+	id 				CDATA 						#IMPLIED
+	scope			(singleton|prototype) 		#REQUIRED
+	factoryMethod 	CDATA 						#IMPLIED
+	initMethod 		CDATA 						#IMPLIED
+	lazyInit		(true|false)				#IMPLIED
+	destroyMethod 	CDATA 						#IMPLIED	
+>
+
+<!ELEMENT constructor 							(null|value|bean-reference|bean|list|set|map|image)+ >
+<!ATTLIST constructor
+>
+
+<!ELEMENT properties 							(property+)>
+<!ATTLIST properties
+>
+
+<!ELEMENT property 								(null|value|bean-reference|bean|list|set|map|image) >
+<!ATTLIST property
+	name 			CDATA 						#REQUIRED
+>
+
+<!ELEMENT null									EMPTY >
+
+<!ELEMENT value									(#PCDATA) >
+<!ATTLIST value >
+
+<!ELEMENT bean-reference						EMPTY>
+<!ATTLIST bean-reference
+	reference-id	CDATA 						#REQUIRED
+>
+
+<!ELEMENT list 									(null|value|bean-reference|bean|list|set|map|image)+>
+<!ATTLIST list >
+
+<!ELEMENT set 									(null|value|bean-reference|bean|list|set|map|image)+>
+<!ATTLIST set >
+
+<!ELEMENT map 									(map-entry+)>
+<!ATTLIST map >
+
+<!ELEMENT map-entry 							(null|value|bean-reference|bean|list|set|map|image)>
+<!ATTLIST map-entry
+	key				CDATA						#REQUIRED
+>
+
+<!ELEMENT alias	 								EMPTY>
+<!ATTLIST alias
+	name			CDATA						#REQUIRED
+	bean			CDATA						#REQUIRED	
+>
+
+<!ELEMENT rpc									EMPTY >
+<!ATTLIST rpc
+	id 					ID						#REQUIRED
+	service-interface	CDATA 					#REQUIRED	
+	service-entry-point	CDATA 					#REQUIRED	
+>	
+
+<!ELEMENT aspect								EMPTY >
+<!ATTLIST aspect
+	advisor				CDATA 					#REQUIRED
+	target				CDATA 					#REQUIRED	
+	methods				CDATA 					#REQUIRED	
+>
+
+<!ELEMENT image									EMPTY >
+<!ATTLIST image
+	file				CDATA 					#REQUIRED
+	location			(local|server) 			#REQUIRED	
+	serverRequest		(lazy|eager)			#IMPLIED	
+>

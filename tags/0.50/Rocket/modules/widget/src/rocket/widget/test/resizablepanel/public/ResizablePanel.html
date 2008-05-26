@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>ResizablePanel</title>
+<meta name='gwt:module' content='rocket.widget.test.resizablepanel.ResizablePanel'>
+<script language="javascript" src="gwt.js"></script>
+<style>
+
+BODY {
+	margin: 10px;
+}
+
+BODY, TABLE{
+	font-family: Verdana, Arial;
+	font-size: 11px;
+}
+
+TABLE {
+	border-collapse: collapse;
+	border-spacing: none;
+}
+
+TEXTAREA, IMG, SPAN {
+	margin: 0px;
+	padding: 0px;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+}
+
+.rocket-resizablePanel {
+	background-color: #888;
+	border-width: 0px;
+}
+
+.rocket-resizablePanel-widget{
+	background-color: #cde; /* the red background should never been seen on textareas and images*/
+}
+
+.rocket-resizablePanel .rightHandle,
+.rocket-resizablePanel .cornerHandle,
+.rocket-resizablePanel .bottomHandle{	
+	background-color: #ccc;
+}	
+
+.rocket-resizablePanel .rightHandle {
+	width: 8px;
+	cursor: e-resize;
+}
+
+.rocket-resizablePanel .cornerHandle {
+	width: 8px;
+	height: 8px;
+	cursor: se-resize;
+	background: url(corner.gif) bottom right no-repeat;
+}
+
+.rocket-resizablePanel .bottomHandle{
+	height: 8px;
+	cursor: s-resize;
+}
+
+.rocket-resizablePanel .draggedWidget {
+	cursor: pointer;
+	opacity: 0.5;
+	filter(alpha=50);
+	
+	background-color: #abc;
+}
+
+.gwt-grid {
+	background-color: #eef;
+}
+
+</style>
+</head>
+
+<body>
+This test demonstrates several ResizablePanels each containing different content widgets.
+<ul>
+<li>TextArea</li>
+<li>Image</li>
+<li>Label (span)</li>
+<li>3x3 Grid(table)</li>
+<li>A FlowPanel with some other widgets</li>
+</ul>
+Two types of ResizablePanels are created three times to hold a TEXTAREA, IMAGE and SPAN elements.
+The first of the two may be freely resized whilst the second attempts to maintain its original aspect ratio.
+
+<h6>Things to test</h6>
+<ul>
+<li>Text selection is turned off whenever a handle drag starts, letting go of the handle should reenable
+text selection via dragging of the cursor</li>
+<li>A handle when being dragged should have an almost black (darkgray) background. The handle colour should return to its
+original colour when it is let go.</li>
+<li>Dragging a handle away from the center of the ResizablePanel should increase the width/height of the
+panel and child widget with dragging inwards decreasing.</li>
+</ul>
+
+<button onclick="prompt('document.body.innerHTML', document.body.innerHTML )">document.body.innerHTML</button>
+
+</body>
+</html>

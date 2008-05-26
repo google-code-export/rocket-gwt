@@ -1,0 +1,3 @@
+// /rocket/serialization/rebind/write/write-int-field.txt
+
+objectOutputStream.writeInt( this.${getter}( instance ) );
