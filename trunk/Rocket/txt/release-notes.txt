@@ -636,10 +636,23 @@ Widgets
 * DivPanel no longer wraps each widget added to it within a DIV element.
 * SpanPanel no longer wraps each widget added to it within a SPAN element.
 
-0.50 11 May 2008
+
+0.50 26 May 2008
 ----------------
 Download from http://rocket-gwt.googlecode.com/files/Rocket-0.50.zip
 
 Collections
 * Changed SkippingIterator to throw NoSuchElementException without any message. Previously message fetched type using GWT.getTypeName(); 
 * Added constructor to SkippingIterator which accepts an iterator.
+
+GWT
+* Incorporated issue 1390 which addresses an IE problem with Window.enableScrolling
+
+Remoting
+* Re-added static getters to CometServerServlet to fetching the current HttpServletRequest and HttpServletResponse.
+
+Utilities
+* Fixed Utilities.trimLeft/Right to correctly trim strings filled with only whitespace
+
+Widgets
+* Removed deprecated SuperSpinner widget.
