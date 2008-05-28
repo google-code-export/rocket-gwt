@@ -328,7 +328,7 @@ public class InterceptorChain {
 				this.addAfterThrowingAdvice((AfterThrowingAdvice) advice);
 				break;
 			}
-			if (advice instanceof BeforeAdviceMethodInterceptor) {
+			if (advice instanceof BeforeAdvice) {
 				this.addBeforeAdvice((BeforeAdvice) advice);
 				break;
 			}

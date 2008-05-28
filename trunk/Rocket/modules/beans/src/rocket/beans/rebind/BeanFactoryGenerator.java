@@ -1509,7 +1509,6 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param bean
 	 *            The bean being proxied
 	 */
-	// RENAME TARGET BEAN TO $beanName.
 	protected void buildProxyFactoryBean(final Bean bean) {
 		Checker.notNull("parameter:bean", bean);
 
@@ -1531,8 +1530,6 @@ public class BeanFactoryGenerator extends Generator {
 		bean.setProxyFactoryBean(proxyFactoryBean);
 
 		context.debug("ProxyFactoryBean superType: " + superType);
-
-		//this.overrideProxyFactoryBeanGetTargetFactoryBean(bean);
 
 		final NewNestedType proxy = this.createProxy(bean);
 		bean.setProxy(proxy);
