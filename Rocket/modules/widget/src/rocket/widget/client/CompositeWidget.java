@@ -139,12 +139,24 @@ abstract public class CompositeWidget extends com.google.gwt.user.client.ui.Comp
 	 * the sunk event target.
 	 */
 	protected void onDetach() {
-		if (0 != this.getSunkEventsBitMask()) {
-			DOM.setEventListener(this.getSunkEventsTarget(), this);
-		}
+		this.clearSinkEvents();
 		super.onDetach();
 	}
 
+	/**
+	 * This method is called when a widget is deatached from the dom, cleaning up any event listener references to avoid
+	 * memory leaks in certain browsers.
+	 */
+	protected void clearSinkEvents(){
+		Element element = this.getSunkEventsTarget();
+		if (0 != this.getSunkEventsBitMask()) {
+			element = this.getSunkEventsTarget();
+		} else {
+			element = this.getElement(); // prolly dont need but to be sure...
+		}
+		DOM.setEventListener(element, null );
+	}
+	
 	/**
 	 * Dispatches the and fires the appropriate listeners based on the event
 	 * type
