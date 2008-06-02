@@ -243,6 +243,7 @@ public class Dom {
 			if (null == name) {
 				continue;
 			}
+			
 			final String value = Dom.getFormSubmitValue(element);
 			map.put(name, value);
 		}
