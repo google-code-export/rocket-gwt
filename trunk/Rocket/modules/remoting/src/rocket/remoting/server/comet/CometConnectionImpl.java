@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rocket.util.client.Checker;
-import java.util.Iterator;
 
 /**
  * Convenient base class for any implementation of the CometConnection interface.

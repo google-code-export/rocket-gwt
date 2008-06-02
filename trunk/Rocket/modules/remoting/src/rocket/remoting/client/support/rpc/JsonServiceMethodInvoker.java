@@ -32,7 +32,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Miroslav Pokorny
  */
-abstract public class JsonServiceMethodInvoker extends RpcServiceMethodInvoker implements RequestCallback {
+abstract public class JsonServiceMethodInvoker<R> extends RpcServiceMethodInvoker<R> implements RequestCallback {
 
 	protected JsonServiceMethodInvoker() {
 		super();
@@ -43,6 +43,7 @@ abstract public class JsonServiceMethodInvoker extends RpcServiceMethodInvoker i
 	 *
 	 * @return A new RequestBuilder
 	 */
+	@Override
 	protected RequestBuilder createRequestBuilder() {
 		return new RequestBuilder(this.getRequestMethod(), this.buildUrl());
 	}
@@ -63,8 +64,8 @@ abstract public class JsonServiceMethodInvoker extends RpcServiceMethodInvoker i
 	 * @param response The response
 	 */
 	protected void onSuccessfulResponse(final Request request, final Response response) {
-		final AsyncCallback callback = this.getCallback();
-		Object object = null;
+		final AsyncCallback<R> callback = this.getCallback();
+		R object = null;
 		boolean skipOnFailure = false;
 
 		try {
@@ -93,5 +94,5 @@ abstract public class JsonServiceMethodInvoker extends RpcServiceMethodInvoker i
 	 * @param jsonValue The response from the json service.
 	 * @return The deserialized object
 	 */
-	abstract protected Object readObject(final JSONValue jsonValue);
+	abstract protected R readObject(final JSONValue jsonValue);
 }

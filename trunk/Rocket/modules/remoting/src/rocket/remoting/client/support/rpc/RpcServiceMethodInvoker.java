@@ -29,7 +29,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * Common base class for both java and json rpc method invokers.
  * @author Miroslav Pokorny
  */
-abstract public class RpcServiceMethodInvoker implements RequestCallback{
+abstract public class RpcServiceMethodInvoker<R> implements RequestCallback{
 	
 	/**
 	 * Copies over the user credentials, timeout and service entry point from the rpc service client
@@ -235,14 +235,14 @@ abstract public class RpcServiceMethodInvoker implements RequestCallback{
 	/**
 	 * The callback that will have either of its two method invoked depending on the result recieved from the server.
 	 */
-	private AsyncCallback callback;
+	private AsyncCallback<R> callback;
 
-	AsyncCallback getCallback() {
+	AsyncCallback<R> getCallback() {
 		Checker.notNull("field:callback", callback);
 		return this.callback;
 	}
 
-	public void setCallback(final AsyncCallback callback) {
+	public void setCallback(final AsyncCallback<R> callback) {
 		Checker.notNull("parameter:callback", callback);
 		this.callback = callback;
 	}

@@ -62,22 +62,27 @@ class ContentCapturingResponse extends HttpServletResponseWrapper {
 		this.headers = headers;
 	}
 
+	@Override
 	public void addHeader(final String name, final String value) {
 		this.getHeaders().add(name, value);
 	}
 
+	@Override
 	public void addIntHeader(final String name, final int intValue) {
 		this.addHeader(name, String.valueOf(intValue));
 	}
 
+	@Override
 	public boolean containsHeader(final String name) {
 		return this.getHeaders().contains(name);
 	}
 
+	@Override
 	public void addDateHeader(final String name, final long date) {
 		this.addHeader(name, this.formatDateHeader(date));
 	}
 
+	@Override
 	public void setDateHeader(final String name, final long date) {
 		this.getHeaders().add(name, this.formatDateHeader(date));
 	}
@@ -86,10 +91,12 @@ class ContentCapturingResponse extends HttpServletResponseWrapper {
 		return String.valueOf(date);
 	}
 	
+	@Override
 	public void setHeader(final String name, final String value) {
 		this.getHeaders().add(name, value);
 	}
 
+	@Override
 	public void setIntHeader(final String name, final int intValue) {
 		this.getHeaders().add(name, String.valueOf(intValue));
 	}
@@ -112,15 +119,18 @@ class ContentCapturingResponse extends HttpServletResponseWrapper {
 		this.message = message;
 	}
 
+	@Override
 	public void setStatus(final int code, final String message) {
 		super.setStatus(code, message);
 	}
 
+	@Override
 	public void setStatus(final int status) {
 		Checker.greaterThanOrEqual("parameter:status", 0, status);
 		this.status = status;
 	}
 
+	@Override
 	public void sendError(final int code, final String message) throws IOException {
 		this.setStatus(code);
 		this.setMessage(message);
@@ -131,6 +141,7 @@ class ContentCapturingResponse extends HttpServletResponseWrapper {
 		this.setStatus(code);
 	}
 
+	@Override
 	public void flushBuffer() throws IOException {
 		if (this.hasWriter()) {
 			this.getWriter().flush();
@@ -147,11 +158,13 @@ class ContentCapturingResponse extends HttpServletResponseWrapper {
 		}
 	}
 
+	@Override
 	public void reset() {
 		this.resetBuffer();
 		this.getHeaders().clear();
 	}
 
+	@Override
 	public boolean isCommitted() {
 		return false == this.hasByteArrayServletOutputStream() ? false : this.getByteArrayServletOutputStream().isCommitted();
 	}
@@ -182,6 +195,7 @@ class ContentCapturingResponse extends HttpServletResponseWrapper {
 		this.outputStreamGiven = outputStreamGiven;
 	}
 
+	@Override
 	public ServletOutputStream getOutputStream() {
 		if (this.hasWriter()) {
 			throw new IllegalStateException("getWriter() has already been called.");
@@ -227,6 +241,7 @@ class ContentCapturingResponse extends HttpServletResponseWrapper {
 	 */
 	private PrintWriter writer;
 
+	@Override
 	public PrintWriter getWriter() {
 		if (this.hasOutputStreamGiven()) {
 			throw new IllegalStateException("getOutputStream() has already been called");
@@ -254,6 +269,7 @@ class ContentCapturingResponse extends HttpServletResponseWrapper {
 		this.setWriter(writer);
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + ", byteArrayServletOutputStream: " + byteArrayServletOutputStream + ", writer: " + writer;
 	}

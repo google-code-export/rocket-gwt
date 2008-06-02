@@ -1,4 +1,4 @@
-// /rocket/remoting/rebind/comet/gwt/create-gwt-rpc-proxy.txt
+// /rocket/remoting/rebind/comet/gwtcreate/gwt-create.txt
 
 // use deferred binding to create a new instance.
 return com.google.gwt.core.client.GWT.create( ${type}.class );

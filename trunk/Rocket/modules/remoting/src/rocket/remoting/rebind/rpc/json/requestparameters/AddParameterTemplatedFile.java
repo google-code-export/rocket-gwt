@@ -63,14 +63,17 @@ class AddParameterTemplatedFile extends TemplatedFileCodeBlock {
 		this.httpRequestParameterName = httpRequestParameterName;
 	}
 
+	@Override
 	protected String getResourceName(){
 		return RequestParametersConstants.ADD_PARAMETER_TEMPLATE;
 	}
 	
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 	
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

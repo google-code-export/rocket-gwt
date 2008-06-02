@@ -84,7 +84,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 			final Object service = GWT.create(InterfaceWithMissingAsync.class);
 			fail("A \"" + EXCEPTION + "\" should have been thrown because InterfaceWithMissingAsyncAsync doesnt exist.");
 		} catch (final Exception expected) {
-			final String causeType = GWT.getTypeName(expected.getCause());
+			final String causeType = expected.getCause().getClass().getName();
 			assertTrue(causeType, causeType.equals(EXCEPTION));
 		}
 	}
@@ -103,7 +103,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 			final Object proxy = GWT.create(InterfaceWithMethodWhereParametersDontMatchUp.class);
 			fail("A \"" + EXCEPTION + "\" should have been thrown because the async is not compatible with the proxy interface.");
 		} catch (final Exception expected) {
-			final String causeType = GWT.getTypeName(expected.getCause());
+			final String causeType = expected.getCause().getClass().getName();
 			assertTrue(causeType, causeType.equals(EXCEPTION));
 		}
 	}
@@ -125,7 +125,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 			final Object service = GWT.create(AsyncInterfaceDoesntReturnVoid.class);
 			fail("A \"" + EXCEPTION + "\" should have been thrown because the async is not compatible with the service interface.");
 		} catch (final Exception expected) {
-			final String causeType = GWT.getTypeName(expected.getCause());
+			final String causeType = expected.getCause().getClass().getName();
 			assertTrue(causeType, causeType.equals(EXCEPTION));
 		}
 	}
@@ -147,7 +147,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 			final Object proxy = GWT.create(InterfaceWithUnmatchedMethod.class);
 			fail("A \"" + EXCEPTION + "\" should have been thrown because the async is not compatible with the proxy interface.");
 		} catch (final Exception expected) {
-			final String causeType = GWT.getTypeName(expected.getCause());
+			final String causeType = expected.getCause().getClass().getName();
 			assertTrue(causeType, causeType.equals(EXCEPTION));
 		}
 	}
@@ -170,7 +170,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 			final Object service = GWT.create(MissingHttpMethodAnnotations.class);
 			fail("A \"" + EXCEPTION + "\" should have been thrown because the httpMethod annotation is missing.");
 		} catch (final Exception expected) {
-			final String causeType = GWT.getTypeName(expected.getCause());
+			final String causeType = expected.getCause().getClass().getName();
 			assertTrue(causeType, causeType.equals(EXCEPTION));
 		}
 	}
@@ -196,7 +196,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 		service.makeGetRequest(value, new AsyncCallback() {
 			public void onSuccess(final Object result) {
 				JsonRpcGwtTestCase.assertNotNull("result", result);
-				JsonRpcGwtTestCase.assertTrue("result: " + GWT.getTypeName(result), result instanceof ClassWithStringField);
+				JsonRpcGwtTestCase.assertTrue("result: " + result.getClass().getName(), result instanceof ClassWithStringField);
 
 				final ClassWithStringField instance = (ClassWithStringField) result;
 				JsonRpcGwtTestCase.assertEquals(value, instance.field);
@@ -223,7 +223,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 		service.makePostRequest(value, new AsyncCallback() {
 			public void onSuccess(final Object result) {
 				JsonRpcGwtTestCase.assertNotNull("result", result);
-				JsonRpcGwtTestCase.assertTrue("result: " + GWT.getTypeName(result), result instanceof ClassWithStringField);
+				JsonRpcGwtTestCase.assertTrue("result: " + result.getClass().getName(), result instanceof ClassWithStringField);
 
 				final ClassWithStringField instance = (ClassWithStringField) result;
 				JsonRpcGwtTestCase.assertEquals(value, instance.field);
@@ -252,7 +252,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 		service.makeGetRequest(value1, value2, value3, new AsyncCallback() {
 			public void onSuccess(final Object result) {
 				JsonRpcGwtTestCase.assertNotNull("result", result);
-				JsonRpcGwtTestCase.assertTrue("result: " + GWT.getTypeName(result), result instanceof ClassWith3StringFields);
+				JsonRpcGwtTestCase.assertTrue("result: " + result.getClass().getName(), result instanceof ClassWith3StringFields);
 
 				final ClassWith3StringFields instance = (ClassWith3StringFields) result;
 				JsonRpcGwtTestCase.assertEquals(value1, instance.field1);

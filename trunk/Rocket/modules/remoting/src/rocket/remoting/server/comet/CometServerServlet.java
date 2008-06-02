@@ -44,6 +44,7 @@ public abstract class CometServerServlet extends HttpServlet {
 	 * This reads and saves the maximumBytesWritten and connectionTimeout init
 	 * parameters.
 	 */
+	@Override
 	public void init() throws ServletException {
 		final int maximumBytesWritten = this.getPositiveNumberInitParameter(Constants.MAXIMUM_BYTES_WRITTEN_INIT_PARAMETER);
 		this.setMaximumBytesWritten(maximumBytesWritten);
@@ -136,6 +137,7 @@ public abstract class CometServerServlet extends HttpServlet {
 	/**
 	 * The main method that takes care of initiating a comet session.
 	 */
+	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
 		try {
 			this.setHttpServletRequest(request);

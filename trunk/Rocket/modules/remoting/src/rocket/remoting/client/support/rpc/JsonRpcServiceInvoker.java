@@ -30,22 +30,26 @@ import com.google.gwt.json.client.JSONValue;
  *
  * @author Miroslav Pokorny
  */
-abstract public class JsonRpcServiceInvoker extends JsonServiceMethodInvoker {
+abstract public class JsonRpcServiceInvoker<R> extends JsonServiceMethodInvoker<R> {
 
+	@Override
 	protected String buildUrl() {
 		return this.getUrl();
 	}
 
+	@Override
 	String getRequestData() {
 		final JsonSerializer serializer = this.createSerializer();
 		final JSONValue json = serializer.writeJson(this.getParameter());
 		return json.toString();
 	}
 
+	@Override
 	Method getRequestMethod() {
 		return RequestBuilder.POST;
 	}
 
+	@Override
 	protected void setHeaders(final RequestBuilder request) {
 		request.setHeader(Constants.CONTENT_TYPE_HEADER, Constants.JSON_RPC_CONTENT_TYPE);
 		request.setHeader(Constants.CONTENT_LENGTH_HEADER, "" + this.getRequestData().length());

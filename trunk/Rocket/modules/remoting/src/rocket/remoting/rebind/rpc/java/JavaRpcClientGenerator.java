@@ -46,6 +46,7 @@ import rocket.util.client.Checker;
  */
 public class JavaRpcClientGenerator extends RpcClientGenerator {
 
+	@Override
 	protected NewConcreteType assembleNewType(final Type serviceInterface, final String newTypeName) {
 		Checker.notNull("parameter:serviceInterface", serviceInterface);
 		GeneratorHelper.checkJavaTypeName("parameter:TypeName", newTypeName);
@@ -117,10 +118,10 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 
 		final NewNestedInterfaceType serializationFactoryComposer = client.newNestedInterfaceType();
 
-		final List parameterTypes = new ArrayList();
-		final Iterator methodParameters = method.getParameters().iterator();
+		final List<Type> parameterTypes = new ArrayList<Type>();
+		final Iterator<MethodParameter> methodParameters = method.getParameters().iterator();
 		while (methodParameters.hasNext()) {
-			final MethodParameter parameter = (MethodParameter) methodParameters.next();
+			final MethodParameter parameter = methodParameters.next();
 			parameterTypes.add(parameter.getType());
 		}
 
@@ -137,8 +138,8 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 
 		// build up a set containing of readableType which will contain all
 		// throwable types and the method return type.
-		final Set readableTypes = new TreeSet( TypeComparator.INSTANCE );
-		final Set writableTypes = new TreeSet( TypeComparator.INSTANCE );
+		final Set<Type> readableTypes = new TreeSet( TypeComparator.INSTANCE );
+		final Set<Type> writableTypes = new TreeSet( TypeComparator.INSTANCE );
 		this.buildReadableAndWritableTypes(method, readableTypes, writableTypes);
 
 		this.addAnnotations(SerializationConstants.SERIALIZABLE_READABLE_TYPES, readableTypes, serializationFactoryComposer);
@@ -147,7 +148,7 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 		return serializationFactoryComposer;
 	}
 
-	protected void buildReadableAndWritableTypes(final Method method, final Set readableTypes, final Set writableTypes) {
+	protected void buildReadableAndWritableTypes(final Method method, final Set<Type> readableTypes, final Set<Type> writableTypes) {
 		Checker.notNull("parameter:method", method);
 		Checker.notNull("parameter:readableTypes", readableTypes);
 		Checker.notNull("parameter:writableTypes", writableTypes);

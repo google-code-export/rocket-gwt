@@ -22,6 +22,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.rpc.SerializationStreamReader;
 import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader;
+import com.google.gwt.user.client.rpc.impl.HasSerializer;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 
 /**

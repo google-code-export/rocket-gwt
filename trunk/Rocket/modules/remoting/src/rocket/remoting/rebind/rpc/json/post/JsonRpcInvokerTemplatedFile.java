@@ -60,10 +60,12 @@ public class JsonRpcInvokerTemplatedFile extends TemplatedFileCodeBlock {
 		this.returnType = returnType;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return JsonConstants.INVOKER_TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

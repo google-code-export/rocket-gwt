@@ -73,7 +73,7 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 		});
 		RootPanel.get().add(button);
 
-		Dom.setFocus(button.getElement());
+		button.setFocus(true);
 	}
 
 	static interface TestFinder extends TestBuilder {

@@ -42,6 +42,7 @@ public class JavaRpcServiceServlet extends HttpServlet {
 	/**
 	 * Handles GET requests.
 	 */
+	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		this.reportUnsupportedMethod(request, response);
 	}
@@ -58,6 +59,7 @@ public class JavaRpcServiceServlet extends HttpServlet {
 	 * @throws ServletException if anything goes wrong.
 	 * @throws IOException if anything goes wrong.
 	 */
+	@Override
 	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		try{
 			this.doPost0(request, response);

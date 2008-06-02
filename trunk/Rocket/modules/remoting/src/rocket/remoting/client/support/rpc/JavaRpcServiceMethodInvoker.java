@@ -46,7 +46,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * </ol>
  * @author Miroslav Pokorny
  */
-public class JavaRpcServiceMethodInvoker extends RpcServiceMethodInvoker implements RequestCallback {
+public class JavaRpcServiceMethodInvoker<R> extends RpcServiceMethodInvoker<R> implements RequestCallback {
 	
 	public JavaRpcServiceMethodInvoker(){
 		super();
@@ -110,16 +110,16 @@ public class JavaRpcServiceMethodInvoker extends RpcServiceMethodInvoker impleme
 	/**
 	 * Aggregates all parameter types until a parameter value is committed.
 	 */
-	private List parameterTypes;
+	private List<String> parameterTypes;
 	
-	protected List getParameterTypes(){
+	protected List<String> getParameterTypes(){
 		return this.parameterTypes;
 	}
-	protected void setParameterTypes( final List parameterTypes ){
+	protected void setParameterTypes( final List<String> parameterTypes ){
 		this.parameterTypes = parameterTypes;
 	}
-	protected List createParameterTypes(){
-		return new ArrayList();
+	protected List<String> createParameterTypes(){
+		return new ArrayList<String>();
 	}
 	
 	/**
@@ -142,12 +142,12 @@ public class JavaRpcServiceMethodInvoker extends RpcServiceMethodInvoker impleme
 	}
 		
 	protected void commitParameterTypes(){		
-			final List parameterTypes = this.getParameterTypes();
+			final List<String> parameterTypes = this.getParameterTypes();
 			
 			final ObjectOutputStream outputStream = this.getObjectOutputStream();
 			outputStream.writeInt( parameterTypes.size() );
 						
-			final Iterator iterator = parameterTypes.iterator();			
+			final Iterator <String>iterator = parameterTypes.iterator();			
 			while( iterator.hasNext() ){
 				outputStream.writeObject( iterator.next() );
 			}
@@ -244,7 +244,7 @@ public class JavaRpcServiceMethodInvoker extends RpcServiceMethodInvoker impleme
 				this.onFailedResponse(request, response);
 				break;
 			}
-			final AsyncCallback callback = this.getCallback();
+			final AsyncCallback<R> callback = this.getCallback();
 			
 			try {
 				final SerializationFactory serializationFactory = this.getSerializationFactory();
@@ -258,7 +258,7 @@ public class JavaRpcServiceMethodInvoker extends RpcServiceMethodInvoker impleme
 					break;
 				}
 
-				callback.onSuccess(result);
+				callback.onSuccess((R)result);
 				
 			} catch (final Throwable throwable) {
 				callback.onFailure(throwable);

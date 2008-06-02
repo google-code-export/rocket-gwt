@@ -28,6 +28,7 @@ import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedInterfaceType;
 import rocket.generator.rebind.type.Type;
+import rocket.remoting.rebind.comet.gwtcreate.GwtCreateTemplatedFile;
 import rocket.util.client.Checker;
 
 /**
@@ -225,7 +226,7 @@ public class GwtCometGenerator extends Generator {
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
 
-		final CreateGwtRpcProxyTemplatedFile template = new CreateGwtRpcProxyTemplatedFile();
+		final GwtCreateTemplatedFile template = new GwtCreateTemplatedFile();
 		template.setType(serviceInterface);
 		newMethod.setBody(template);
 	}

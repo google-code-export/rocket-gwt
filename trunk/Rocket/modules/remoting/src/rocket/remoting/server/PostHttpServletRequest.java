@@ -73,10 +73,12 @@ class PostHttpServletRequest extends GetOrPostHttpServletRequest implements Http
 		this.data = data;
 	}
 
+	@Override
 	public String getMethod() {
 		return "POST";
 	}
 
+	@Override
 	public int getContentLength() {
 		return this.getData().length;
 	}
@@ -87,6 +89,7 @@ class PostHttpServletRequest extends GetOrPostHttpServletRequest implements Http
 	 */
 	private ServletInputStream inputStream;
 
+	@Override
 	public ServletInputStream getInputStream() throws IOException {
 		if (false == this.hasInputStream()) {
 			this.createInputStream();
@@ -161,6 +164,7 @@ class PostHttpServletRequest extends GetOrPostHttpServletRequest implements Http
 		this.setRequestParameters(parameters);
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + ", data: " + data + ", inputStream: " + inputStream + ", reader: " + reader;
 	}
