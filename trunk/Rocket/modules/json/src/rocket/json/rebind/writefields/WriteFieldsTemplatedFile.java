@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.json.rebind;
+package rocket.json.rebind.writefields;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -61,18 +61,18 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	 */
 	private List fields;
 
-	protected List getFields() {
+	protected List<Holder> getFields() {
 		Checker.notNull("list:fields", fields);
 		return this.fields;
 	}
 
-	protected void setFields(final List fields) {
+	protected void setFields(final List<Holder> fields) {
 		Checker.notNull("parameter:fields", fields);
 		this.fields = fields;
 	}
 
-	protected List createFields() {
-		return new ArrayList();
+	protected List<Holder> createFields() {
+		return new ArrayList<Holder>();
 	}
 
 	public void addField(final String javascriptPropertyName, final Method fieldGetter, final Type serializer) {
@@ -93,18 +93,22 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 
 		return new CollectionTemplatedCodeBlock() {
 
+			@Override
 			public InputStream getInputStream() {
 				return template.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return template.getValue0(name);
 			}
 
+			@Override
 			protected Collection getCollection() {
 				return WriteFieldsTemplatedFile.this.getFields();
 			}
 
+			@Override
 			protected void prepareToWrite(Object element) {
 				final Holder holder = (Holder) element;
 				template.setJavascriptPropertyName(holder.getJavascriptPropertyName());
@@ -112,6 +116,7 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 				template.setSerializer(holder.getSerializer());
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 				writer.println("");
 			}
@@ -156,10 +161,10 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 		}
 	}
 
-	protected String getResourceName(){
+	protected String getResourceName() {
 		return Constants.WRITE_FIELDS_TEMPLATE;
 	}
-	
+
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

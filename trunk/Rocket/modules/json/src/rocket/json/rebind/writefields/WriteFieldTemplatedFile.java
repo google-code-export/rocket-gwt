@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.json.rebind;
+package rocket.json.rebind.writefields;
 
 import java.io.InputStream;
 
@@ -80,14 +80,14 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 		this.serializer = serializer;
 	}
 
-	protected String getResourceName(){
+	protected String getResourceName() {
 		return Constants.WRITE_FIELD_TEMPLATE;
 	}
 
 	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
-	
+
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

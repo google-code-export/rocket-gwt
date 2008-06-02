@@ -32,13 +32,15 @@ public class DoubleJsonSerializer extends JsonSerializer {
 		super();
 	}
 
+	@Override
 	public Object readObject(final JSONValue jsonValue) {
 		return new Double(read(jsonValue));
 	}
 
+	@Override
 	public JSONValue writeJson(final Object instance) {
 		final Double wrapper = (Double) instance;
-		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.doubleValue());
+		return wrapper == null ? (JSONValue) JSONNull.getInstance() : new JSONNumber(wrapper.doubleValue());
 	}
 
 	public double read(final JSONValue jsonValue) {

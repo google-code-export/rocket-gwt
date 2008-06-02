@@ -32,13 +32,15 @@ public class LongJsonSerializer extends JsonSerializer {
 		super();
 	}
 
+	@Override
 	public Object readObject(final JSONValue jsonValue) {
 		return new Long(this.read(jsonValue));
 	}
 
+	@Override
 	public JSONValue writeJson(final Object instance) {
 		final Long wrapper = (Long) instance;
-		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.longValue());
+		return wrapper == null ? (JSONValue) JSONNull.getInstance() : new JSONNumber(wrapper.longValue());
 	}
 
 	public long read(final JSONValue jsonValue) {

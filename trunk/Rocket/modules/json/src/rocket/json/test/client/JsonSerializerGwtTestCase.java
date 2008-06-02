@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.json.test.client;
+package rocket.json.test.jsonserializer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,8 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+import rocket.generator.client.FailedGenerateAttemptException;
+import rocket.generator.client.GeneratorGwtTestCase;
 import rocket.json.client.JsonSerializable;
 import rocket.json.client.JsonSerializer;
 
@@ -36,29 +37,26 @@ import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.junit.client.GWTTestCase;
 
 /**
  * A series of unit tests for the Json package.
  * 
  * @author Miroslav Pokorny
  */
-public class JsonSerializerGwtTestCase extends GWTTestCase {
+public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
+
+	final static String JSON_SERIALIZER_GENERATOR_EXCEPTION = "rocket.json.rebind.JsonSerializerGeneratorException";
 
 	public String getModuleName() {
-		return "rocket.json.test.JsonSerializerGwtTestCase";
+		return "rocket.json.test.jsonserializer.JsonSerializerGwtTestCase";
 	}
 
 	public void testMissingNoArgumentsConstructor() {
 		try {
-			final Object proxy = GWT.create(MissingNoArgumentsConstructor.class);
-			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because MissingNoArgumentsConstructor does not implement serializable, and not: "
-					+ proxy);
-		} catch (final AssertionFailedError error) {
-			throw error;
-		} catch (final Throwable caught) {
-			final String causeType = GWT.getTypeName(caught.getCause());
-			assertTrue(causeType, causeType.equals("rocket.json.rebind.JsonSerializerGeneratorException"));
+			final Object object = GWT.create(MissingNoArgumentsConstructor.class);
+			assertBindingFailed(object);
+		} catch (final FailedGenerateAttemptException failed) {
+			assertTrue("" + failed, failed.getCauseType().equals(JSON_SERIALIZER_GENERATOR_EXCEPTION));
 		}
 	}
 
@@ -76,14 +74,10 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		jsonObject.put("field", jsonBoolean);
 
 		try {
-			final Object proxy = GWT.create(HasFinalField.class);
-			fail("An exception should have been thrown rocket.json.rebind.JsonSerializerGeneratorException because the HasFinalField contains a final instance field, and not: "
-					+ proxy);
-		} catch (final AssertionFailedError error) {
-			throw error;
-		} catch (final Throwable caught) {
-			final String causeType = GWT.getTypeName(caught.getCause());
-			assertTrue(causeType, causeType.equals("rocket.json.rebind.JsonSerializerGeneratorException"));
+			final Object object = GWT.create(HasFinalField.class);
+			assertBindingFailed(object);
+		} catch (final FailedGenerateAttemptException failed) {
+			assertTrue("" + failed, failed.getCauseType().equals(JSON_SERIALIZER_GENERATOR_EXCEPTION));
 		}
 	}
 
@@ -1068,7 +1062,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 	static class HasObjectList implements JsonSerializable {
 		/**
 		 * @jsonSerialization-javascriptPropertyName list
-		 * @jsonSerialization-type rocket.json.test.client.JsonSerializerGwtTestCase.HasObjectListElement
+		 * @jsonSerialization-type rocket.json.test.jsonserializer.JsonSerializerGwtTestCase.HasObjectListElement
 		 */
 		List list;
 	}
@@ -1601,7 +1595,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 	static class HasObjectSet implements JsonSerializable {
 		/**
 		 * @jsonSerialization-javascriptPropertyName set
-		 * @jsonSerialization-type rocket.json.test.client.JsonSerializerGwtTestCase.HasObjectSetElement
+		 * @jsonSerialization-type rocket.json.test.jsonserializer.JsonSerializerGwtTestCase.HasObjectSetElement
 		 */
 		Set set;
 	}
@@ -2113,7 +2107,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 	static class HasObjectMap implements JsonSerializable {
 		/**
 		 * @jsonSerialization-javascriptPropertyName map
-		 * @jsonSerialization-type rocket.json.test.client.JsonSerializerGwtTestCase.HasObjectMapValue
+		 * @jsonSerialization-type rocket.json.test.jsonserializer.JsonSerializerGwtTestCase.HasObjectMapValue
 		 */
 		Map map;
 	}
@@ -2131,9 +2125,9 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		 */
 		String field;
 	}
-	
+
 	public void testReadDateField() {
-		final Date value = new Date( 12345678 );
+		final Date value = new Date(12345678);
 
 		final JSONNumber jsonNumber = new JSONNumber(value.getTime());
 		final JSONObject jsonObject = new JSONObject();
@@ -2146,7 +2140,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 	}
 
 	public void testWriteDateField() {
-		final Date value = new Date( 12345678 );
+		final Date value = new Date(12345678);
 
 		final HasDateField instance = new HasDateField();
 		instance.field = value;
@@ -2166,10 +2160,10 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 	}
 
 	public void testReadDateList() {
-		final Date date = new Date( 1234567 );
+		final Date date = new Date(1234567);
 
 		final JSONArray jsonArray = new JSONArray();
-		jsonArray.set(0, new JSONNumber( date.getTime() ));
+		jsonArray.set(0, new JSONNumber(date.getTime()));
 
 		final JSONObject jsonObject = new JSONObject();
 		jsonObject.put("list", jsonArray);
@@ -2180,13 +2174,13 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		assertNotNull(instance.field);
 
 		final Date readDate = (Date) instance.field.get(0);
-		assertEquals(date, readDate );
+		assertEquals(date, readDate);
 	}
 
 	public void testWriteDateList() {
 		final List list = new ArrayList();
-		final Date date = new Date( 1234567 );
-		list.add( date );
+		final Date date = new Date(1234567);
+		list.add(date);
 
 		final HasDateListField instance = new HasDateListField();
 		instance.field = list;
@@ -2214,7 +2208,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 	}
 
 	public void testReadDateSet() {
-		final Date date = new Date( 1234567 );
+		final Date date = new Date(1234567);
 
 		final JSONArray jsonArray = new JSONArray();
 		jsonArray.set(0, new JSONNumber(date.getTime()));
@@ -2233,7 +2227,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 	public void testWriteDateSet() {
 		final Set set = new HashSet();
-		final Date date = new Date( 1234567 );
+		final Date date = new Date(1234567);
 		set.add(date);
 
 		final HasDateSetField instance = new HasDateSetField();
@@ -2252,7 +2246,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		assertEquals(1, jsonArray.size());
 
 		assertEquals(1, jsonArray.size());
-		assertEquals(date.getTime(), (long)jsonArray.get(0).isNumber().getValue());
+		assertEquals(date.getTime(), (long) jsonArray.get(0).isNumber().getValue());
 	}
 
 	static class HasDateSetField implements JsonSerializable {
@@ -2262,12 +2256,12 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 		 */
 		Set field;
 	}
-	
+
 	public void testReadDateMap() {
-		final Date date = new Date( 1234567 );
+		final Date date = new Date(1234567);
 
 		final JSONObject map = new JSONObject();
-		map.put("0", new JSONNumber( date.getTime() ));
+		map.put("0", new JSONNumber(date.getTime()));
 
 		final JSONObject jsonObject = new JSONObject();
 		jsonObject.put("map", map);
@@ -2277,13 +2271,13 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		assertNotNull(instance.field);
 
-		assertEquals( date, instance.field.get("0"));
+		assertEquals(date, instance.field.get("0"));
 	}
 
 	public void testWriteDateMap() {
 		final Map map = new HashMap();
-		final Date date = new Date( 1234567);
-		map.put("0", date );
+		final Date date = new Date(1234567);
+		map.put("0", date);
 
 		final HasDateMapField instance = new HasDateMapField();
 		instance.field = map;
@@ -2300,7 +2294,7 @@ public class JsonSerializerGwtTestCase extends GWTTestCase {
 
 		assertEquals(1, actualMap.size());
 
-		assertEquals( date.getTime(), ((JSONNumber)actualMap.get( "0")).isNumber().getValue(), 0.1f );
+		assertEquals(date.getTime(), ((JSONNumber) actualMap.get("0")).isNumber().getValue(), 0.1f);
 	}
 
 	static class HasDateMapField implements JsonSerializable {

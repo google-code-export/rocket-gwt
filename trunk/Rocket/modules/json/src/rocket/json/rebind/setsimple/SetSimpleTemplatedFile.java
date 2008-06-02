@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.json.rebind;
+package rocket.json.rebind.setsimple;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
@@ -80,22 +80,24 @@ public class SetSimpleTemplatedFile extends TemplatedFileCodeBlock {
 		this.serializer = serializer;
 	}
 
+	@Override
 	protected String getResourceName() {
-		return Constants.SET_SIMPLE_TEMPLATE;
+		return Constants.TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.SET_SIMPLE_FIELD_SETTER.equals(name)) {
+			if (Constants.FIELD_SETTER.equals(name)) {
 				value = this.getFieldSetter();
 				break;
 			}
-			if (Constants.SET_SIMPLE_JAVASCRIPT_PROPERTY_NAME.equals(name)) {
+			if (Constants.JAVASCRIPT_PROPERTY_NAME.equals(name)) {
 				value = new StringLiteral(this.getJavascriptPropertyName());
 				break;
 			}
-			if (Constants.SET_SIMPLE_SERIALIZER.equals(name)) {
+			if (Constants.SERIALIZER.equals(name)) {
 				value = this.getSerializer();
 				break;
 			}

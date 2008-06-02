@@ -33,13 +33,15 @@ public class CharJsonSerializer extends JsonSerializer {
 		super();
 	}
 
+	@Override
 	public Object readObject(final JSONValue jsonValue) {
 		return new Character(read(jsonValue));
 	}
 
+	@Override
 	public JSONValue writeJson(final Object instance) {
 		final Character wrapper = (Character) instance;
-		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONString(Character.toString(wrapper.charValue()));
+		return wrapper == null ? (JSONValue) JSONNull.getInstance() : new JSONString(Character.toString(wrapper.charValue()));
 	}
 
 	public char read(final JSONValue jsonValue) {

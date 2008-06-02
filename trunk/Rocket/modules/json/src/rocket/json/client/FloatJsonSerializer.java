@@ -32,13 +32,15 @@ public class FloatJsonSerializer extends JsonSerializer {
 		super();
 	}
 
+	@Override
 	public Object readObject(final JSONValue jsonValue) {
 		return new Float(this.read(jsonValue));
 	}
 
+	@Override
 	public JSONValue writeJson(final Object instance) {
 		final Float wrapper = (Float) instance;
-		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.floatValue());
+		return wrapper == null ? (JSONValue) JSONNull.getInstance() : new JSONNumber(wrapper.floatValue());
 	}
 
 	public float read(final JSONValue jsonValue) {

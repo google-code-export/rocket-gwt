@@ -39,7 +39,8 @@ import com.google.gwt.json.client.JSONValue;
  * <li>All primitive types and String are automatically serializable</li>
  * <li>Static and transient fields are skipped just like
  * {@link java.io.Serializable}</li>
- * <li>For {@link java.util.List}, {@link java.util.Set} or {@link java.util.Map} fields a jsonSerializer-type </li>
+ * <li>For {@link java.util.List}, {@link java.util.Set} or
+ * {@link java.util.Map} fields a jsonSerializer-type </li>
  * <li>Map keys are assumed to always be {@link java.lang.String}
  * </ul>
  * 

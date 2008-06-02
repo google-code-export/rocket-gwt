@@ -32,13 +32,15 @@ public class IntJsonSerializer extends JsonSerializer {
 		super();
 	}
 
+	@Override
 	public Object readObject(final JSONValue jsonValue) {
 		return new Integer(this.read(jsonValue));
 	}
 
+	@Override
 	public JSONValue writeJson(final Object instance) {
 		final Integer wrapper = (Integer) instance;
-		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.intValue());
+		return wrapper == null ? (JSONValue) JSONNull.getInstance() : new JSONNumber(wrapper.intValue());
 	}
 
 	public int read(final JSONValue jsonValue) {

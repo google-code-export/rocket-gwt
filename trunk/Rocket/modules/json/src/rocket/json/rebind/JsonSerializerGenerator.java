@@ -35,6 +35,13 @@ import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
+import rocket.json.rebind.getfield.GetFieldTemplatedFile;
+import rocket.json.rebind.readcomplex.ReadComplexTemplatedFile;
+import rocket.json.rebind.setcomplex.SetComplexTemplatedFile;
+import rocket.json.rebind.setfield.SetFieldTemplatedFile;
+import rocket.json.rebind.setsimple.SetSimpleTemplatedFile;
+import rocket.json.rebind.writefields.WriteFieldsTemplatedFile;
+import rocket.json.rebind.writejson.WriteJsonTemplatedFile;
 import rocket.util.client.Checker;
 
 /**
@@ -53,6 +60,7 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param newTypeName
 	 *            The name of the new type being generated
 	 */
+	@Override
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		Checker.notNull("parameter:type", type);
 		GeneratorHelper.checkJavaTypeName("parameter:newTypeName", newTypeName);
@@ -99,7 +107,8 @@ public class JsonSerializerGenerator extends Generator {
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.debug("Overriding " + Constants.READ_FIELDS_METHOD + "() and creating list setters for type \"" + deserializer.getName() + "\".");
+		context.debug("Overriding " + Constants.READ_FIELDS_METHOD + "() and creating list setters for type \"" + deserializer.getName()
+				+ "\".");
 
 		final NewMethod readFields = deserializer.newMethod();
 		readFields.setAbstract(false);
@@ -153,19 +162,23 @@ public class JsonSerializerGenerator extends Generator {
 			// add its instance parameter
 			final NewMethodParameter setterInstanceParameter = setter.newParameter();
 			setterInstanceParameter.setFinal(true);
-			setterInstanceParameter.setName( Constants.SET_FIELD_INSTANCE_PARAMETER);
+			setterInstanceParameter.setName(Constants.SET_FIELD_INSTANCE_PARAMETER);
 			setterInstanceParameter.setType(type);
 
 			// add the value parameter
 			final NewMethodParameter setterValueParameter = setter.newParameter();
 			setterValueParameter.setFinal(true);
-			setterValueParameter.setName( Constants.SET_FIELD_VALUE_PARAMETER );
+			setterValueParameter.setName(Constants.SET_FIELD_VALUE_PARAMETER);
 			setterValueParameter.setType(field.getType());
 
 			final Type fieldType = field.getType();
 
-			context.debug( "Created setter for field " + field + " setter method " + setter );
-			
+			if (fieldType.equals(context.getLong())) {
+				setter.addMetaData("com.google.gwt.core.client.UnsafeNativeLong", "");
+			}
+
+			context.debug("Created setter for field " + field + " setter method " + setter);
+
 			// simple type ?
 			if (fieldType.isPrimitive() || fieldType.equals(stringType)) {
 				final SetSimpleTemplatedFile template = new SetSimpleTemplatedFile();
@@ -187,12 +200,12 @@ public class JsonSerializerGenerator extends Generator {
 			template.setSerializer(serializer);
 
 			final String readMethodName = this.selectReadMethod(fieldType);
-			final Method readMethod = serializer.getMostDerivedMethod(readMethodName, Collections.nCopies(1, this.getJsonValue() ));
+			final Method readMethod = serializer.getMostDerivedMethod(readMethodName, Collections.nCopies(1, this.getJsonValue()));
 			template.setReadMethod(readMethod);
 
 			body.add(template);
 		}
-		
+
 		context.unbranch();
 	}
 
@@ -246,9 +259,9 @@ public class JsonSerializerGenerator extends Generator {
 		newReadObject.setNative(false);
 
 		final NewMethodParameter jsonValue = (NewMethodParameter) newReadObject.getParameters().get(0);
-		jsonValue.setName( Constants.READ_COMPLEX_JSON_VALUE_PARAMETER );
-		jsonValue.setFinal( true );
-		
+		jsonValue.setName(Constants.READ_COMPLEX_JSON_VALUE_PARAMETER);
+		jsonValue.setFinal(true);
+
 		final ReadComplexTemplatedFile body = new ReadComplexTemplatedFile();
 		body.setDeserializerType(type);
 
@@ -286,7 +299,7 @@ public class JsonSerializerGenerator extends Generator {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.debug("Creating new type \"" + type.getName() + "\".");
 
-		final NewConcreteType newType = context.newConcreteType( newTypeName );
+		final NewConcreteType newType = context.newConcreteType(newTypeName);
 		newType.setAbstract(false);
 		newType.setFinal(false);
 
@@ -298,8 +311,8 @@ public class JsonSerializerGenerator extends Generator {
 		}
 		superType = context.getType(superTypeName);
 		newType.setSuperType(superType);
-		newType.setVisibility( Visibility.PUBLIC );
-		
+		newType.setVisibility(Visibility.PUBLIC);
+
 		return newType;
 	}
 
@@ -326,13 +339,10 @@ public class JsonSerializerGenerator extends Generator {
 		Checker.notNull("parameter:deserializer", deserializer);
 		Checker.notNull("parameter:type", type);
 
-		Checker.notNull("parameter:deserializer", deserializer);
-		Checker.notNull("parameter:type", type);
-
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.debug("Overriding " + Constants.WRITE_FIELDS_WRITE_METHODS + "() and creating list getters for type \"" + deserializer.getName()
-				+ "\".");
+		context.debug("Overriding " + Constants.WRITE_FIELDS_WRITE_METHODS + "() and creating list getters for type \""
+				+ deserializer.getName() + "\".");
 
 		final NewMethod writeFields = deserializer.newMethod();
 		writeFields.setAbstract(false);
@@ -345,12 +355,12 @@ public class JsonSerializerGenerator extends Generator {
 
 		final NewMethodParameter instanceParameter = writeFields.newParameter();
 		instanceParameter.setFinal(true);
-		instanceParameter.setName( Constants.WRITE_FIELDS_INSTANCE_PARAMETER );
+		instanceParameter.setName(Constants.WRITE_FIELDS_INSTANCE_PARAMETER);
 		instanceParameter.setType(context.getObject());
 
 		final NewMethodParameter jsonObjectParameter = writeFields.newParameter();
 		jsonObjectParameter.setFinal(true);
-		jsonObjectParameter.setName( Constants.WRITE_FIELD_JSON_OBJECT_PARAMETER );
+		jsonObjectParameter.setName(Constants.WRITE_FIELD_JSON_OBJECT_PARAMETER);
 		final Type jsonObjectType = this.getJsonObject();
 		jsonObjectParameter.setType(jsonObjectType);
 
@@ -372,7 +382,7 @@ public class JsonSerializerGenerator extends Generator {
 
 			body.addField(javascriptPropertyName, fieldGetter, serializer);
 		} // while
-		
+
 		context.unbranch();
 	}
 
@@ -383,14 +393,23 @@ public class JsonSerializerGenerator extends Generator {
 		Checker.notNull("parameter:deserializer", deserializer);
 		Checker.notNull("parameter:list", field);
 
+		final GeneratorContext context = this.getGeneratorContext();
+
 		final NewMethod getter = deserializer.newMethod();
 		getter.setAbstract(false);
 		getter.setFinal(false);
 		getter.setName(Constants.GET_FIELD_METHOD_PREFIX + this.capitalize(field.getName()));
 		getter.setNative(true);
-		getter.setReturnType(field.getType());
+
+		final Type fieldType = field.getType();
+		getter.setReturnType(fieldType);
+
 		getter.setStatic(false);
 		getter.setVisibility(Visibility.PRIVATE);
+
+		if (fieldType.equals(context.getLong())) {
+			getter.addMetaData("com.google.gwt.core.client.UnsafeNativeLong", "");
+		}
 
 		final NewMethodParameter instance = getter.newParameter();
 		instance.setName(Constants.GET_FIELD_INSTANCE_PARAMETER);
@@ -401,8 +420,8 @@ public class JsonSerializerGenerator extends Generator {
 		getterBody.setField(field);
 		getter.setBody(getterBody);
 
-		this.getGeneratorContext().debug( "Created getter for " + field + " getter method " + getter );
-		
+		context.debug("Created getter for " + field + " getter method " + getter);
+
 		return getter;
 	}
 
@@ -423,7 +442,7 @@ public class JsonSerializerGenerator extends Generator {
 
 		final Type jsonSerializer = this.getJsonSerializer();
 
-		final Method writeJson = jsonSerializer.getMethod(Constants.WRITE_JSON_METHOD_NAME, Collections.nCopies(1, context.getObject() ));
+		final Method writeJson = jsonSerializer.getMethod(Constants.WRITE_JSON_METHOD_NAME, Collections.nCopies(1, context.getObject()));
 		final NewMethod newWriteJson = writeJson.copy(deserializer);
 		newWriteJson.setAbstract(false);
 		newWriteJson.setFinal(false);
@@ -602,9 +621,10 @@ public class JsonSerializerGenerator extends Generator {
 		return serializer;
 	}
 
-	protected Type getTypeFromAnnotation( final Field field ){
-		return this.getTypeFromAnnotation(field, 0 );
+	protected Type getTypeFromAnnotation(final Field field) {
+		return this.getTypeFromAnnotation(field, 0);
 	}
+
 	/**
 	 * Retrieves the type after reading the type from an annotation belonging to
 	 * the given field.
@@ -612,15 +632,15 @@ public class JsonSerializerGenerator extends Generator {
 	 * @param field
 	 * @return
 	 */
-	protected Type getTypeFromAnnotation(final Field field, final int index ) {
+	protected Type getTypeFromAnnotation(final Field field, final int index) {
 		Checker.notNull("parameter:field", field);
 
-		final List values = field.getMetadataValues( Constants.TYPE);
-		if (values.size() <= index ) {
+		final List values = field.getMetadataValues(Constants.TYPE);
+		if (values.size() <= index) {
 			throw new JsonSerializerGeneratorException("Unable to find the \"" + Constants.TYPE + "\" annotation for the field " + field);
 		}
 
-		final String typeName = (String) values.get( index );
+		final String typeName = (String) values.get(index);
 		if (null == typeName) {
 			throw new JsonSerializerGeneratorException("Unable to find the \"" + Constants.TYPE + "\" annotation for the list " + field);
 		}
@@ -629,14 +649,15 @@ public class JsonSerializerGenerator extends Generator {
 	}
 
 	/**
-	 * Special test to check if type is a date, if it is return the {@link rocket.json.client.DateJsonSerializer} class.
+	 * Special test to check if type is a date, if it is return the
+	 * {@link rocket.json.client.DateJsonSerializer} class.
 	 */
-    public String getGeneratedTypeName(final String name) {
-    	return Constants.DATE.equals( name ) ? Constants.DATE_SERIALIZER : super.getGeneratedTypeName( name );
-    }
-	
-	protected String getGeneratedTypeNameSuffix(){
+	public String getGeneratedTypeName(final String name) {
+		return Constants.DATE.equals(name) ? Constants.DATE_SERIALIZER : super.getGeneratedTypeName(name);
+	}
+
+	protected String getGeneratedTypeNameSuffix() {
 		return Constants.SERIALIZER_SUFFIX;
 	}
-	
+
 }

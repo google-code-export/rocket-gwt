@@ -34,13 +34,15 @@ public class DateJsonSerializer extends JsonSerializer {
 		super();
 	}
 
+	@Override
 	public Object readObject(final JSONValue jsonValue) {
-		final long time = (long)this.readDouble(jsonValue);
-		return new Date( time );
+		final long time = (long) this.readDouble(jsonValue);
+		return new Date(time);
 	}
 
+	@Override
 	public JSONValue writeJson(final Object instance) {
 		final Date date = (Date) instance;
-		return null == date ? (JSONValue)JSONNull.getInstance() : new JSONNumber(date.getTime());
+		return null == date ? (JSONValue) JSONNull.getInstance() : new JSONNumber(date.getTime());
 	}
 }

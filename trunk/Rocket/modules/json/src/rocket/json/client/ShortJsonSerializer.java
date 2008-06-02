@@ -32,13 +32,15 @@ public class ShortJsonSerializer extends JsonSerializer {
 		super();
 	}
 
+	@Override
 	public Object readObject(final JSONValue jsonValue) {
 		return new Short(this.read(jsonValue));
 	}
 
+	@Override
 	public JSONValue writeJson(final Object instance) {
 		final Short wrapper = (Short) instance;
-		return wrapper == null ? (JSONValue)JSONNull.getInstance() : new JSONNumber(wrapper.shortValue());
+		return wrapper == null ? (JSONValue) JSONNull.getInstance() : new JSONNumber(wrapper.shortValue());
 	}
 
 	public short read(final JSONValue jsonValue) {

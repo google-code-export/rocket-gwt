@@ -13,30 +13,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.json.rebind;
+package rocket.json.rebind.setfield;
 
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.field.Field;
 import rocket.util.client.Checker;
 
 /**
- * An abstraction for the get-field templated file
+ * An abstraction for the set-field templated file
  * 
  * @author Miroslav Pokorny
  */
-public class GetFieldTemplatedFile extends TemplatedFileCodeBlock {
+public class SetFieldTemplatedFile extends TemplatedFileCodeBlock {
 
-	public GetFieldTemplatedFile() {
+	public SetFieldTemplatedFile() {
 		super();
 	}
 
-	public boolean isNative(){
+	@Override
+	public boolean isNative() {
 		return true;
 	}
-	
-	/**
-	 * The field being getted.
-	 */
+
 	private Field field;
 
 	protected Field getField() {
@@ -49,15 +47,18 @@ public class GetFieldTemplatedFile extends TemplatedFileCodeBlock {
 		this.field = field;
 	}
 
-	protected String getResourceName(){
-		return Constants.GET_FIELD_TEMPLATE;
+	@Override
+	protected String getResourceName() {
+		return Constants.TEMPLATE;
 	}
-	
+
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.GET_FIELD_FIELD.equals(name)) {
+			if (Constants.FIELD.equals(name)) {
 				value = this.getField();
+				break;
 			}
 			break;
 		}
