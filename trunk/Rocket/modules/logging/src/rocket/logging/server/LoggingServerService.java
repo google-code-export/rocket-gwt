@@ -175,6 +175,7 @@ abstract public class LoggingServerService extends JavaRpcServiceServlet impleme
 
 	protected JavaRpcServiceMethodInvoker createRpcServiceMethodInvoker() {
 		return new JavaRpcServiceMethodInvoker() {
+			@Override
 			protected ServerSerializationFactory createSerializationFactory() {
 				return new ServerSerializationFactory() {
 					protected List createObjectReaders() {

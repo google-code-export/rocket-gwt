@@ -45,6 +45,7 @@ import rocket.util.client.Checker;
  */
 public class LoggerFactoryGenerator extends Generator {
 
+	@Override
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		final NewConcreteType loggingFactory = this.subClassLoggingFactory(newTypeName);
 		this.overrideLoggingFactoryImplFindLogger(loggingFactory);
@@ -52,6 +53,7 @@ public class LoggerFactoryGenerator extends Generator {
 		return loggingFactory;
 	}
 
+	@Override
 	protected String getGeneratedTypeNameSuffix() {
 		// return Constants.GENERATED_TYPE_SUFFIX;
 		return "_" + this.getGeneratorContext().getProperty("rocket.logging.Logging.enable");
@@ -189,14 +191,17 @@ public class LoggerFactoryGenerator extends Generator {
 	 */
 	protected LoggingFactoryConfig getLoggingFactoryConfig() {
 		final LoggingPropertyReader reader = new LoggingPropertyReader() {
+			@Override
 			protected String getPropertyValue() {
 				return LoggerFactoryGenerator.this.getGeneratorContext().getProperty(this.getPropertyName());
 			}
 
+			@Override
 			protected void throwInvalidPropertyValue(final String propertyValue) {
 				throw new RuntimeException("Invalid " + this.getPropertyName() + " value of \"" + propertyValue + "\" encountered.");
 			}
 
+			@Override
 			protected Object handleDisableLoggingValue() {
 				return createNoneLoggingFactoryConfig();
 			}

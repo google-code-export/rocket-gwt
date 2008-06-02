@@ -33,6 +33,7 @@ public class NoneLoggingFactoryGetLoggerOptimiser extends LoggerOptimiser {
 		super();
 	}
 
+	@Override
 	protected void adjustMethod(final JMethodCall methodCall, final Context context) {
 		final JClassType logger = this.getNoneLevelLogger();
 		final JMethod loggerConstructor = this.findLevelLoggerConstructorMethod(logger);

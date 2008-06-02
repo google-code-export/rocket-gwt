@@ -35,6 +35,7 @@ public class LoggingLevelByNameAssigner extends LoggerOptimiser {
 		super();
 	}
 
+	@Override
 	protected void adjustMethod(final JMethodCall methodCall, final Context context) {
 		final JStringLiteral stringLiteral = (JStringLiteral) methodCall.getArgs().get(0);
 		final String name = stringLiteral.getValue();

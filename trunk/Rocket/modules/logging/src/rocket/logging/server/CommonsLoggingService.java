@@ -27,7 +27,7 @@ import rocket.logging.client.Logger;
  */
 public class CommonsLoggingService extends LoggingServerService {
 
-	// @Override
+	@Override
 	protected Logger createLoggerAdapter(final String loggerName) {
 		final Log log = LogFactory.getLog(loggerName);
 		return new Logger() {

@@ -27,6 +27,7 @@ public class SystemLogger extends LoggerImpl {
 		super(category);
 	}
 
+	@Override
 	protected void log(final LoggingLevel level, final String message) {
 		if (level.less(level)) {
 			System.out.println(level + "-" + message);
@@ -35,7 +36,7 @@ public class SystemLogger extends LoggerImpl {
 		}
 	}
 
-	// @Override
+	@Override
 	protected void log(final LoggingLevel level, final String message, final Throwable throwable) {
 		if (level.less(level)) {
 			System.out.println(level + "-" + message);

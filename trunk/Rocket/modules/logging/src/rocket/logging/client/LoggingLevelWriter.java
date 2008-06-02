@@ -35,6 +35,7 @@ public class LoggingLevelWriter extends ObjectWriterImpl implements ObjectWriter
 		super();
 	}
 
+	@Override
 	public void write0(final Object object, final ObjectOutputStream objectOutputStream) {
 		this.writeLoggingLevel((LoggingLevel) object, objectOutputStream);
 	}

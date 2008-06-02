@@ -35,6 +35,7 @@ public class LoggingLevelReader extends ObjectReaderImpl implements ObjectReader
 		super();
 	}
 
+	@Override
 	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream) {
 		Checker.equals("newInstance", "rocket.logging.client.LoggingLevel", typeName);
 
@@ -70,6 +71,7 @@ public class LoggingLevelReader extends ObjectReaderImpl implements ObjectReader
 		return level;
 	}
 
+	@Override
 	public void read(final Object instance, final ObjectInputStream objectInputStream) {
 	}
 }

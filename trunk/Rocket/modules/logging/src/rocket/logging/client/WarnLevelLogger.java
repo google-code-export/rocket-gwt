@@ -32,12 +32,15 @@ public class WarnLevelLogger extends InfoLevelLogger implements Logger {
 		super();
 	}
 
+	@Override
 	final public void info(final String message) {
 	}
 
+	@Override
 	final public void info(final String message, final Throwable throwable) {
 	}
 
+	@Override
 	public boolean isInfoEnabled() {
 		return false;
 	}

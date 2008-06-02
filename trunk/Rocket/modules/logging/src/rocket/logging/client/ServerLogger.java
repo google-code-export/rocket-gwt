@@ -70,12 +70,12 @@ abstract public class ServerLogger extends LoggerImpl implements JavaRpcService 
 		return service;
 	}
 
-	// @Override
+	@Override
 	protected void log(final LoggingLevel level, final String message) {
 		this.sendEvent(level, message, null);
 	}
 
-	// @Override
+	@Override
 	protected void log(final LoggingLevel level, final String message, final Throwable throwable) {
 		this.sendEvent(level, message, throwable);
 	}

@@ -88,6 +88,7 @@ public class LoggingEvent implements Serializable {
 		this.throwable = throwable;
 	}
 
+	@Override
 	public String toString() {
 		return loggingLevel + "-" + message + "-" + throwable;
 	}

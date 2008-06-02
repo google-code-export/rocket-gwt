@@ -25,12 +25,12 @@ package rocket.logging.client;
  */
 public class ConsoleLogger extends LoggerImpl {
 
-	// @Override
+	@Override
 	protected void log(final LoggingLevel level, final String message) {
 		this.log0(message);
 	}
 
-	// @Override
+	@Override
 	protected void log(final LoggingLevel level, final String message, final Throwable throwable) {
 		this.log0(message);
 	}

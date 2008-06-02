@@ -74,7 +74,7 @@ public abstract class LoggerOptimiser extends JModVisitor {
 		this.getLogger = getLogger;
 	}
 
-	// @Override
+	@Override
 	public void endVisit(final JMethodCall methodCall, final Context context) {
 		while (true) {
 			final JMethod method = methodCall.getTarget();

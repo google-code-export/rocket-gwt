@@ -27,7 +27,7 @@ import rocket.logging.client.Logger;
  */
 public class Log4jLoggingService extends LoggingServerService {
 
-	// @Override
+	@Override
 	protected Logger createLoggerAdapter(final String loggerName) {
 		final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(loggerName);
 		return new Logger() {

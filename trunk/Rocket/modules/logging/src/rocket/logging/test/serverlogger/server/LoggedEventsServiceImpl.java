@@ -18,11 +18,13 @@ package rocket.logging.test.serverlogger.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import rocket.logging.client.LoggingEvent;
 import rocket.logging.server.LoggingLevelWriter;
 import rocket.logging.test.serverlogger.client.LoggedEventsService;
 import rocket.remoting.server.java.JavaRpcServiceMethodInvoker;
 import rocket.remoting.server.java.JavaRpcServiceServlet;
 import rocket.remoting.server.java.ServerSerializationFactory;
+import rocket.serialization.client.ObjectWriter;
 
 public class LoggedEventsServiceImpl extends JavaRpcServiceServlet implements LoggedEventsService {
 
@@ -30,16 +32,18 @@ public class LoggedEventsServiceImpl extends JavaRpcServiceServlet implements Lo
 		TestAppender.clear();
 	}
 
-	public List getLoggedEvents() {
+	public List<LoggingEvent> getLoggedEvents() {
 		return TestAppender.getEvents();
 	}
 
 	protected JavaRpcServiceMethodInvoker createRpcServiceMethodInvoker() {
 		return new JavaRpcServiceMethodInvoker() {
+			
+			@Override
 			protected ServerSerializationFactory createSerializationFactory() {
 				return new ServerSerializationFactory() {
-					protected List createObjectWriters() {
-						final List writers = new ArrayList();
+					protected List<ObjectWriter> createObjectWriters() {
+						final List<ObjectWriter> writers = new ArrayList<ObjectWriter>();
 						writers.add(new LoggingLevelWriter());
 						writers.addAll(super.createObjectWriters());
 						return writers;

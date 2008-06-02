@@ -15,7 +15,6 @@
  */
 package rocket.logging.test.application.client;
 
-import rocket.browser.client.Location;
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
 import rocket.logging.client.Logger;
@@ -26,6 +25,9 @@ import rocket.widget.client.Html;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.BodyElement;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -33,6 +35,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -59,7 +62,7 @@ public class LoggingApplication implements EntryPoint {
 		final Button button = new Button(text);
 		button.addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
-				Location.getLocation().setHref(url);
+				Location.assign(url);
 			}
 		});
 
@@ -150,9 +153,10 @@ public class LoggingApplication implements EntryPoint {
 		RootPanel.get().add(button);
 	}
 
-	protected void fetchJavascriptSource() {
+	// FIXME Unable to read src from the iframe, therefore the code fails when attempting to build a request to the server for the appropriate file.
+	protected void fetchJavascriptSource() {		
 		try {
-			final Element iframe = DOM.getElementById(GWT.getModuleName());
+			final Element iframe = DOM.getElementById(GWT.getModuleName());		
 			final String iframeSourceUrl = JavaScript.getString(iframe, "src");
 			final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, iframeSourceUrl);
 			requestBuilder.sendRequest("", new RequestCallback() {

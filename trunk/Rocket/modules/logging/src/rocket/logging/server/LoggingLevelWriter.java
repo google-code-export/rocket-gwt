@@ -23,8 +23,4 @@ public class LoggingLevelWriter extends rocket.logging.client.LoggingLevelWriter
 	public boolean canWrite(final Object object) {
 		return object instanceof LoggingLevel;
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

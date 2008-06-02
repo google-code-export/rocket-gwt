@@ -36,12 +36,12 @@ import rocket.logging.client.LoggingLevel;
 public class TestAppender implements Appender {
 
 	static void clear() {
-		TestAppender.events = new ArrayList();
+		TestAppender.events = new ArrayList<rocket.logging.client.LoggingEvent>();
 	}
 
-	static List events;
+	static List<rocket.logging.client.LoggingEvent> events;
 
-	static List getEvents() {
+	static List<rocket.logging.client.LoggingEvent> getEvents() {
 		return TestAppender.events;
 	}
 
