@@ -24,5 +24,5 @@ import java.util.List;
  * @author Miroslav Pokorny
  */
 public interface HasMetadata {
-	List getMetadataValues(String name);
+	List<String> getMetadataValues(String name);
 }
