@@ -38,7 +38,7 @@ public class Dom {
 	 * @param element
 	 */
 	public static void removeFromParent(final Element element) {
-		element.removeChild( element.getParentNode() );
+		element.getParentNode().removeChild( element );
 	}
 	
 	/**
