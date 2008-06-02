@@ -55,20 +55,24 @@ public class DraggablePanel extends SimplePanel {
 		super();
 	}
 
+	@Override
 	protected void beforeCreatePanelElement() {
 		super.beforeCreatePanelElement();
 
 		this.setDragNDropListeners(createDragNDropListeners());
 	}
-
+	
+	@Override
 	protected Element createPanelElement() {
 		return DOM.createDiv();
 	}
 
+	@Override
 	protected void checkElement(final Element element) {
 		throw new UnsupportedOperationException("checkElement");
 	}
 
+	@Override
 	protected void afterCreatePanelElement() {
 		super.afterCreatePanelElement();
 
@@ -79,23 +83,25 @@ public class DraggablePanel extends SimplePanel {
 		});
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return Constants.DRAG_N_DROP_DRAGGABLE_WIDGET_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.MOUSE_DOWN;
 	}
 
+	@Override
 	protected void insert0(final Element element, final int index) {
-		DOM.appendChild(this.getElement(), element);
+		this.getElement().appendChild(element);
 	}
 
+	@Override
 	protected void remove0(final Element element, final int index) {
 		Dom.removeFromParent(element);
 	}
-
-	int q = 0;
 
 	/**
 	 * This event is fired whenever a user starts a drag of a draggable widget.
@@ -123,8 +129,8 @@ public class DraggablePanel extends SimplePanel {
 
 			Widget widget = this.getWidget();
 			final Element widgetElement = widget.getElement();
-			final int widgetLeft = DOM.getAbsoluteLeft(widgetElement);
-			final int widgetTop = DOM.getAbsoluteTop(widgetElement);
+			final int widgetLeft = widgetElement.getAbsoluteLeft();
+			final int widgetTop = widgetElement.getAbsoluteTop();
 			dragStartEvent.setWidget(widget);
 
 			final int mouseLeft = mouseDownEvent.getPageX();
@@ -171,8 +177,8 @@ public class DraggablePanel extends SimplePanel {
 			greedy.install();
 
 			final Element dragPanelElement = draggedPanel.getElement();
-			final int elementPageX = DOM.getAbsoluteLeft(dragPanelElement);
-			final int elementPageY = DOM.getAbsoluteTop(dragPanelElement);
+			final int elementPageX = dragPanelElement.getAbsoluteLeft();
+			final int elementPageY = dragPanelElement.getAbsoluteTop();
 			
 			// reposition the $dragged so it follows the mouse.
 			final int mousePageX = mouseDownEvent.getPageX();
@@ -288,27 +294,33 @@ public class DraggablePanel extends SimplePanel {
 	 */
 	class DraggedPanel extends rocket.widget.client.SimplePanel {
 
+		@Override
 		protected void checkElement(Element element) {
 			throw new UnsupportedOperationException("checkElement");
 		}
 
+		@Override
 		protected Element createPanelElement() {
 			return DOM.createDiv();
 		}
 
+		@Override
 		protected String getInitialStyleName() {
 			return "";
 		}
 
+		@Override
 		protected int getSunkEventsBitMask() {
-			return 0; // never receives any events as these are handled by a
-						// eventpreview(er)
+			// never receives any events as these are handled by a eventpreview(er)
+			return 0; 
 		}
 
+		@Override
 		protected void insert0(final Element element, final int index) {
 			DOM.insertChild(this.getElement(), element, 0);
 		}
 
+		@Override
 		protected void remove0(final Element element, final int index) {
 			Dom.removeFromParent(element);
 		}
@@ -425,19 +437,19 @@ public class DraggablePanel extends SimplePanel {
 	 */
 	protected DropTargetPanel findDropTarget(final int x, final int y) {
 		DropTargetPanel found = null;
-		final Iterator possibleTargets = DropTargetPanelCollection.getInstance().getDropTargetPanels().iterator();
+		final Iterator<DropTargetPanel> possibleTargets = DropTargetPanelCollection.getInstance().getDropTargetPanels().iterator();
 		while (possibleTargets.hasNext()) {
-			final DropTargetPanel possibleTarget = (DropTargetPanel) possibleTargets.next();
+			final DropTargetPanel possibleTarget = possibleTargets.next();
 			final Element otherElement = possibleTarget.getElement();
 
-			final int left = DOM.getAbsoluteLeft(otherElement);
+			final int left = otherElement.getAbsoluteLeft();
 			final int right = left + possibleTarget.getOffsetWidth();
 
 			if (x < left || x > right) {
 				continue;
 			}
 
-			final int top = DOM.getAbsoluteTop(otherElement);
+			final int top = otherElement.getAbsoluteTop();
 			final int bottom = top + possibleTarget.getOffsetHeight();
 			if (y < top || y > bottom) {
 				continue;

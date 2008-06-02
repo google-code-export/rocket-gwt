@@ -40,20 +40,20 @@ class DropTargetPanelCollection {
 	}
 
 	public DropTargetPanelCollection() {
-		this.setDropTargetPanels(new ArrayList());
+		this.setDropTargetPanels(new ArrayList<DropTargetPanel>());
 	}
 
 	/**
 	 * A list which contains all available drop target panels
 	 */
-	private List dropTargetPanels;
+	private List<DropTargetPanel> dropTargetPanels;
 
-	public List getDropTargetPanels() {
+	public List<DropTargetPanel> getDropTargetPanels() {
 		Checker.notNull("field:dropTargetPanels", dropTargetPanels);
 		return dropTargetPanels;
 	}
 
-	public void setDropTargetPanels(final List dropTargetPanels) {
+	public void setDropTargetPanels(final List<DropTargetPanel> dropTargetPanels) {
 		Checker.notNull("parameter:dropTargetPanels", dropTargetPanels);
 		this.dropTargetPanels = dropTargetPanels;
 	}
