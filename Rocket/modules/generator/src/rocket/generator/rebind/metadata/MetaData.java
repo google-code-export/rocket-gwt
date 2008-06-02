@@ -68,8 +68,8 @@ public class MetaData implements CodeBlock, HasMetadata {
 		list.add(value);
 	}
 
-	protected List get(final String key) {
-		return (List) this.getMetaData().get(key);
+	protected List<String> get(final String key) {
+		return this.getMetaData().get(key);
 	}
 
 	/**
