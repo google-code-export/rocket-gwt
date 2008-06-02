@@ -45,7 +45,7 @@ abstract public class ObjectReaderOrWriterFinder {
 	public Map<Type,Type> build(final Set<Type> types) {
 		Checker.notNull( "parameter:types", types );
 
-		final Map<Type,Type> accumulator = new HashMap<Type,Type>();
+		final Map<Type,List<Match>> accumulator = new HashMap<Type,List<Match>>();
 
 		final ConcreteTypesImplementingInterfaceVisitor visitor = new ConcreteTypesImplementingInterfaceVisitor() {
 			
@@ -206,10 +206,10 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @param serializableTypes
 	 * @return
 	 */
-	protected boolean findSingleMatch( final Map matches, final Set serializableTypes ){
+	protected boolean findSingleMatch( final Map matches, final Set<Type> serializableTypes ){
 		boolean found = false;
 		
-		final Iterator iterator = matches.keySet().iterator();
+		final Iterator<Type> iterator = matches.keySet().iterator();
 		while( iterator.hasNext() ){
 			final Type type = (Type) iterator.next();
 			if( serializableTypes.contains( type )){
@@ -228,27 +228,27 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @param newMatches
 	 * @param oldMatches
 	 */
-	protected void mergeMatches(final Map newMatches, final Map oldMatches) {
+	protected void mergeMatches(final Map<Type,Match> newMatches, final Map<Type,List<Match>> oldMatches) {
 		// need to check if any of the types in $newMatch exist in $oldMatches
 
-		final Iterator newMatchesIterator = newMatches.entrySet().iterator();
+		final Iterator<Map.Entry<Type, Match>> newMatchesIterator = newMatches.entrySet().iterator();
 		while (newMatchesIterator.hasNext()) {
-			final Map.Entry entry = (Map.Entry) newMatchesIterator.next();
-			final Type newType = (Type) entry.getKey();
-			final Match newMatch = (Match) entry.getValue();
+			final Map.Entry<Type,Match> entry = newMatchesIterator.next();
+			final Type newType = entry.getKey();
+			final Match newMatch = entry.getValue();
 
-			List listOfMatchesForType = (List) oldMatches.get(newType);
+			List<Match> listOfMatchesForType = (List<Match>) oldMatches.get(newType);
 			if (null == listOfMatchesForType) {
-				listOfMatchesForType = new ArrayList();
+				listOfMatchesForType = new ArrayList<Match>();
 
 				oldMatches.put(newType, listOfMatchesForType);
 			}
 			// only add if newMatch is not the same type as one of oldMatch's
 			final Type newMatchReaderOrWriter = newMatch.getReaderWriter();
-			final Iterator iterator = listOfMatchesForType.iterator();
+			final Iterator<Match> iterator = listOfMatchesForType.iterator();
 			boolean duplicate = false;
 			while (iterator.hasNext()) {
-				final Match otherMatch = (Match) iterator.next();
+				final Match otherMatch = iterator.next();
 				if (newMatchReaderOrWriter.equals(otherMatch.getReaderWriter())) {
 					duplicate = true;
 					break;
@@ -314,16 +314,12 @@ abstract public class ObjectReaderOrWriterFinder {
 	/**
 	 * Comparator which sorts all matches from highest to lowest score.
 	 */
-	static final Comparator DESCENDING_SCORE_COMPARATOR = new Comparator() {
-		public int compare(final Object object, final Object otherObject) {
-			return this.compare((Match) object, (Match) otherObject);
+	static final Comparator DESCENDING_SCORE_COMPARATOR = new Comparator<Match>() {
+		public boolean equals(final Match match, final Match otherMatch) {
+			return 0 == this.compare(match, otherMatch);
 		}
 
-		public boolean equals(final Object object, final Object otherObject) {
-			return 0 == this.compare((Match) object, (Match) otherObject);
-		}
-
-		int compare(final Match match, final Match otherMatch) {
+		public int compare(final Match match, final Match otherMatch) {
 			return otherMatch.getScore() - match.getScore();
 		}
 	};
@@ -335,16 +331,16 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @param matches
 	 * @return A map with the type as the key and reader/writer as the value. 
 	 */
-	protected Map<Type,Type> finalizeBindings(final Map matches) {
+	protected Map<Type,Type> finalizeBindings(final Map<Type,List<Match>> matches) {
 		Checker.notNull("parameter:matches", matches);
 
 		final Map<Type,Type> finalized = new HashMap<Type,Type>();
 
-		final Iterator entries = matches.entrySet().iterator();
+		final Iterator<Map.Entry<Type, List<Match>>> entries = matches.entrySet().iterator();
 		while (entries.hasNext()) {
-			final Map.Entry entry = (Map.Entry) entries.next();
-			final Type type = (Type) entry.getKey();
-			final List matchList = (List) entry.getValue();
+			final Map.Entry<Type,List<Match>> entry = entries.next();
+			final Type type = entry.getKey();
+			final List<Match> matchList = entry.getValue();
 
 			// sort $matchList so the highest score appears first...
 			Collections.sort(matchList, ObjectReaderOrWriterFinder.DESCENDING_SCORE_COMPARATOR);
