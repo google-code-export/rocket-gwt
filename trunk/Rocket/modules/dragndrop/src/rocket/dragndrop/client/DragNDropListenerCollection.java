@@ -27,23 +27,23 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class DragNDropListenerCollection {
+class DragNDropListenerCollection {
 
 	public DragNDropListenerCollection() {
-		this.setListeners(new ArrayList());
+		this.setListeners(new ArrayList<DragNDropListener>());
 	}
 
 	/**
 	 * A list containing listeners to the various drag events.
 	 */
-	private List listeners;
+	private List<DragNDropListener> listeners;
 
-	public List getListeners() {
+	public List<DragNDropListener> getListeners() {
 		Checker.notNull("field:listeners", listeners);
 		return listeners;
 	}
 
-	public void setListeners(final List listeners) {
+	public void setListeners(final List<DragNDropListener> listeners) {
 		Checker.notNull("parameter:listeners", listeners);
 		this.listeners = listeners;
 	}
