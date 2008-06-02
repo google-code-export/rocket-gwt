@@ -25,7 +25,7 @@ import rocket.collection.client.SkippingIterator;
 public class SkippingIteratorTestCase extends TestCase {
 	public void testHasNext0RepeatedWithoutNextAlwaysReturnsSameResult() {
 
-		final List list = new ArrayList();
+		final List<Object> list = new ArrayList<Object>();
 		list.add("apple");
 		list.add("banana");
 		list.add(new Integer(2));
@@ -39,7 +39,7 @@ public class SkippingIteratorTestCase extends TestCase {
 	}
 
 	public void testHasNext1AlwaysReturnsSameResult() {
-		final List list = new ArrayList();
+		final List<Object> list = new ArrayList<Object>();
 		list.add("apple");
 		list.add("banana");
 		list.add("carrot");
@@ -53,7 +53,7 @@ public class SkippingIteratorTestCase extends TestCase {
 	}
 
 	public void testHasNext2SkipsElementAndRepeatedNextsAlwaysReturnSameResult() {
-		final List list = new ArrayList();
+		final List<Object> list = new ArrayList<Object>();
 		list.add(new Integer(0));
 		list.add("banana");
 		list.add("carrot");
@@ -69,7 +69,7 @@ public class SkippingIteratorTestCase extends TestCase {
 	}
 
 	public void testNext0NextConsumesIterator() {
-		final List list = new ArrayList();
+		final List<Object> list = new ArrayList<Object>();
 		list.add("apple");
 		list.add("banana");
 		list.add("carrot");
@@ -90,8 +90,8 @@ public class SkippingIteratorTestCase extends TestCase {
 	}
 
 	public void testNext1NextConsumesIteratorSkippingElement() {
-		final List list = new ArrayList();
-		final List expected = new ArrayList();
+		final List<Object> list = new ArrayList<Object>();
+		final List<Object> expected = new ArrayList<Object>();
 
 		list.add("apple");
 		expected.add("apple");
@@ -116,8 +116,8 @@ public class SkippingIteratorTestCase extends TestCase {
 	}
 
 	public void testNext2NextConsumesIteratorSkippingElement() {
-		final List list = new ArrayList();
-		final List expected = new ArrayList();
+		final List<Object> list = new ArrayList<Object>();
+		final List<Object> expected = new ArrayList<Object>();
 
 		list.add("apple");
 		expected.add("apple");
@@ -151,8 +151,8 @@ public class SkippingIteratorTestCase extends TestCase {
 	}
 
 	public void testRemove0() {
-		final List list = new ArrayList();
-		final List expected = new ArrayList();
+		final List<Object> list = new ArrayList<Object>();
+		final List<Object> expected = new ArrayList<Object>();
 
 		list.add("apple");
 		expected.add("apple");

@@ -25,22 +25,23 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-public abstract class IteratorWrapper implements Iterator {
+public abstract class IteratorWrapper<E> implements Iterator {
 	/**
 	 * The iterator being wrapped.
 	 */
-	private Iterator iterator;
+	private Iterator<E> iterator;
 
-	public Iterator getIterator() {
+	public Iterator<E> getIterator() {
 		Checker.notNull("field:iterator", iterator);
 		return iterator;
 	}
 
-	public void setIterator(final Iterator iterator) {
+	public void setIterator(final Iterator<E> iterator) {
 		Checker.notNull("field:iterator", iterator);
 		this.iterator = iterator;
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + ", iterator: " + iterator;
 	}

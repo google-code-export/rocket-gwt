@@ -31,49 +31,49 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class MultiValueMap implements IsSerializable {
+public class MultiValueMap<K,V> implements IsSerializable {
 
 	public MultiValueMap() {
-		this.setMap(new HashMap());
+		this.setMap(new HashMap<K,List<V>>());
 	}
 
-	private Map map;
+	private Map<K,List<V>> map;
 
-	protected Map getMap() {
+	protected Map<K,List<V>> getMap() {
 		Checker.notNull("field:map", map);
 
 		return map;
 	}
 
-	protected void setMap(final Map map) {
+	protected void setMap(final Map<K,List<V>> map) {
 		Checker.notNull("parameter:map", map);
 
 		this.map = map;
 	}
 
-	public Iterator keys() {
+	public Iterator<K> keys() {
 		return this.getMap().keySet().iterator();
 	}
 
-	public boolean contains(final Object key) {
+	public boolean contains(final K key) {
 		return this.getMap().containsKey(key);
 	}
 
-	public Object getFirstValue(final Object key) {
+	public Object getFirstValue(final K key) {
 		final Object[] values = this.getValues(key);
 		return values != null && values.length > 0 ? values[0] : null;
 	}
 
-	public Object[] getValues(final Object key) {
+	public Object[] getValues(final K key) {
 		Checker.notNull("parameter:key", key);
 
 		Object[] values = null;
-		List list = (List) this.getMap().get(key);
+		List<V> list = (List<V>) this.getMap().get(key);
 		if (null != list && false == list.isEmpty()) {
 			final int size = list.size();
 			values = new Object[size];
 
-			final Iterator iterator = list.iterator();
+			final Iterator<V> iterator = list.iterator();
 			int i = 0;
 			while (iterator.hasNext()) {
 				values[i++] = iterator.next();
@@ -83,17 +83,17 @@ public class MultiValueMap implements IsSerializable {
 		return values;
 	}
 
-	public List getValuesList(final Object key) {
+	public List<V> getValuesList(final K key) {
 		Checker.notNull("parameter:key", key);
 
-		return (List) this.getMap().get(key);
+		return (List<V>) this.getMap().get(key);
 	}
 
-	public void add(final Object key, final Object value) {
-		final Map map = this.getMap();
-		List values = (List) this.getValuesList(key);
+	public void add(final K key, final V value) {
+		final Map<K,List<V>> map = this.getMap();
+		List<V> values = (List<V>) this.getValuesList(key);
 		if (values == null) {
-			values = new ArrayList();
+			values = new ArrayList<V>();
 			map.put(key, values);
 		}
 		values.add(value);
@@ -103,8 +103,8 @@ public class MultiValueMap implements IsSerializable {
 		this.getMap().clear();
 	}
 
-	public List remove(final Object key) {
-		return (List) this.getMap().remove(key);
+	public List<V> remove(final K key) {
+		return (List<V>) this.getMap().remove(key);
 	}
 
 	public String toString() {
