@@ -17,13 +17,21 @@ package rocket.serialization.server;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import rocket.generator.rebind.util.FieldComparator;
 import rocket.serialization.client.SerializationException;
 
 public class ReflectionHelper {
+	
+	final static Comparator<Field> FIELD_COMPARATOR = new Comparator<Field>() {
+
+		public int compare(final Field field, final Field otherField) {
+			return field.getName().compareTo(otherField.getName());
+		}
+	};
+	
 	/**
 	 * Builds a set that contains all the serializable fields sorted in alphabetical order
 	 * @param object
@@ -32,7 +40,7 @@ public class ReflectionHelper {
 	 */
 	static public Set<Field> buildSerializableFields(final Object object, final Class classs) {
 		final Field[] fields = classs.getDeclaredFields();
-		final Set<Field> serializableFields = new TreeSet<Field>( FieldComparator.INSTANCE );
+		final Set<Field> serializableFields = new TreeSet<Field>( ReflectionHelper.FIELD_COMPARATOR );
 		
 		for (int i = 0; i < fields.length; i++) {
 			final Field field = fields[i];
