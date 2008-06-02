@@ -424,7 +424,7 @@ public class DraggablePanel extends SimplePanel {
 	 */
 	protected Widget createDraggedWidget() {
 		final Element element = this.getWidget().getElement();
-		return new Html(Dom.cloneElement(element, true));
+		return new Html( (Element)element.cloneNode( true ).cast());
 	}
 
 	/**
