@@ -1,4 +1,4 @@
-// set-simple.txt
+// /rocket/json/rebind/setsimple/set-simple.txt
 
 // invoke the setter
 this.${setter}(

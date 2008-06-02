@@ -33,13 +33,15 @@ public class BooleanJsonSerializer extends JsonSerializer {
 		super();
 	}
 
+	@Override
 	public Object readObject(final JSONValue jsonValue) {
 		return read(jsonValue) ? Boolean.TRUE : Boolean.FALSE;
 	}
 
+	@Override
 	public JSONValue writeJson(final Object instance) {
 		final Boolean wrapper = (Boolean) instance;
-		return wrapper == null ? (JSONValue)JSONNull.getInstance() : JSONBoolean.getInstance(wrapper.booleanValue());
+		return wrapper == null ? (JSONValue) JSONNull.getInstance() : JSONBoolean.getInstance(wrapper.booleanValue());
 	}
 
 	public boolean read(final JSONValue jsonValue) {

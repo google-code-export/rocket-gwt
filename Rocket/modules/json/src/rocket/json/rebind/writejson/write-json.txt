@@ -1,4 +1,4 @@
-// write-json.txt
+// /rocket/json/rebind/writejson/write-json.txt
 com.google.gwt.json.client.JSONValue jsonValue = null;
 
 if( null != instance ){

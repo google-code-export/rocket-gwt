@@ -31,10 +31,12 @@ public class StringJsonSerializer extends JsonSerializer {
 		super();
 	}
 
+	@Override
 	public Object readObject(final JSONValue jsonValue) {
 		return this.read(jsonValue);
 	}
 
+	@Override
 	public JSONValue writeJson(final Object instance) {
 		return instance == null ? (JSONValue) JSONNull.getInstance() : (JSONValue) new JSONString((String) instance);
 	}

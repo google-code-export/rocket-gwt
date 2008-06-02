@@ -13,26 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.json.rebind;
 
-import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
+package rocket.json.test.rebind;
 
-/**
- * An abstraction for the as json method body templated file
- * 
- * @author Miroslav Pokorny
- */
-public class WriteJsonTemplatedFile extends TemplatedFileCodeBlock {
+import rocket.generator.rebind.TestGenerator;
+import rocket.json.rebind.JsonSerializerGenerator;
 
-	public WriteJsonTemplatedFile() {
-		super();
-	}
+import com.google.gwt.core.ext.Generator;
 
-	protected String getResourceName() {
-		return Constants.WRITE_JSON_TEMPLATE;
-	}
+public class TestJsonSerializerGenerator extends TestGenerator {
 
-	protected Object getValue0(final String name) {
-		return null;
+	protected Generator createGenerator() {
+		return new JsonSerializerGenerator();
 	}
 }

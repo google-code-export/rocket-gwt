@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.json.rebind;
+package rocket.json.rebind.readcomplex;
 
 import rocket.generator.rebind.codeblock.TemplatedCodeBlockException;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
@@ -46,14 +46,16 @@ public class ReadComplexTemplatedFile extends TemplatedFileCodeBlock {
 		this.deserializerType = deserializerType;
 	}
 
+	@Override
 	protected String getResourceName() {
-		return Constants.READ_COMPLEX_TEMPLATE;
+		return Constants.TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.READ_COMPLEX_TYPE.equals(name)) {
+			if (Constants.TYPE.equals(name)) {
 				value = this.getDeserializerType();
 				break;
 			}
@@ -63,7 +65,6 @@ public class ReadComplexTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in file \"" + Constants.READ_COMPLEX_TEMPLATE
-				+ "\".");
+		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in file \"" + Constants.TEMPLATE + "\".");
 	}
 }

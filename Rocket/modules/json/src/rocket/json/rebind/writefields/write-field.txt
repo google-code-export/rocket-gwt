@@ -1,4 +1,4 @@
-// write-field.txt
+// /rocket/json/rebind/writefields/write-field.txt
 
 // set the json object property.
 jsonObject.put( 
