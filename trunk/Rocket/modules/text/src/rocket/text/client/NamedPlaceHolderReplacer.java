@@ -24,12 +24,14 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-public class NamedPlaceHolderReplacer extends PlaceHolderReplacer {
+public class NamedPlaceHolderReplacer<V> extends PlaceHolderReplacer {
 
+	@Override
 	public String execute(final String text) {
 		return super.execute(text);
 	}
 
+	@Override
 	protected String getValue(final String placeHolder) {
 		final String value = (String) this.getValues().get(placeHolder);
 		if (null == value) {
@@ -38,14 +40,14 @@ public class NamedPlaceHolderReplacer extends PlaceHolderReplacer {
 		return value;
 	}
 
-	private Map values;
+	private Map<String,V> values;
 
-	protected Map getValues() {
+	protected Map<String,V> getValues() {
 		Checker.notNull("field:values", values);
 		return this.values;
 	}
 
-	public void setValues(final Map values) {
+	public void setValues(final Map<String,V> values) {
 		Checker.notNull("parameter:values", values);
 		this.values = values;
 	}

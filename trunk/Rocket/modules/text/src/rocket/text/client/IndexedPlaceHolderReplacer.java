@@ -25,10 +25,12 @@ import rocket.util.client.Checker;
  */
 public class IndexedPlaceHolderReplacer extends PlaceHolderReplacer {
 
+	@Override
 	public String execute(final String text) {
 		return super.execute(text);
 	}
 
+	@Override
 	protected String getValue(final String placeHolder) {
 		try {
 			final int index = Integer.parseInt(placeHolder);
