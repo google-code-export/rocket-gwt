@@ -15,7 +15,6 @@
  */
 package rocket.browser.client.support;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 
 /**
@@ -25,11 +24,13 @@ import com.google.gwt.user.client.Event;
  * @author Miroslav Pokorny (mP)
  */
 public class FirefoxBrowserSupport extends BrowserSupport {
+	@Override
 	public int getMousePageX(final Event event) {
-		return DOM.eventGetClientX(event);
+		return event.getClientX();
 	}
 
+	@Override
 	public int getMousePageY(final Event event) {
-		return DOM.eventGetClientY(event);
+		return event.getClientY();
 	}
 }

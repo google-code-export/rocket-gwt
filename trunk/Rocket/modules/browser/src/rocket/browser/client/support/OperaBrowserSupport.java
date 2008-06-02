@@ -23,10 +23,12 @@ package rocket.browser.client.support;
  */
 public class OperaBrowserSupport extends BrowserSupport {
 
+	@Override
 	native public int getScrollX()/*-{
 	 return $doc.body.scrollLeft;
 	 }-*/;
 
+	@Override
 	native public int getScrollY()/*-{
 	 return $doc.body.scrollTop;
 	 }-*/;
