@@ -28,7 +28,7 @@ public class DateReaderGwtTestCase extends ClientGwtTestCase {
 	final static long DATE_VALUE = 789;
 
 	public void testReadDate() {
-		final String stream = "[1,\"" + DATE + "\",1,2," + DATE_VALUE + "]";
+		final String stream = "[1,\"" + DATE + "\",1,2,0," + DATE_VALUE + "]";
 		final ClientObjectInputStream input = createObjectInputStream(stream, DATE, DateReader.instance);
 
 		final Date date = (Date) input.readObject();

@@ -26,7 +26,7 @@ public class LongArrayReaderGwtTestCase extends ClientGwtTestCase {
 	final static long LONG_VALUE = 34567;
 
 	public void testReadLong() {
-		final String stream = "[1,\"" + LONG_ARRAY + "\",1,2,1," + LONG_VALUE + "]";
+		final String stream = "[1,\"" + LONG_ARRAY + "\",1,2,1,0," + LONG_VALUE + "]";
 		final ClientObjectInputStream input = createObjectInputStream(stream, LONG_ARRAY, LongArrayReader.instance);
 
 		final long[] array = (long[]) input.readObject();

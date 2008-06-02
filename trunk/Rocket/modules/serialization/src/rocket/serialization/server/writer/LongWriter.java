@@ -32,8 +32,4 @@ public class LongWriter extends rocket.serialization.client.writer.LongWriter im
 	public boolean canWrite(final Object object) {
 		return object instanceof Long;
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

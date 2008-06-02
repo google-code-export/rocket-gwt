@@ -32,8 +32,4 @@ public class ByteArrayWriter extends rocket.serialization.client.writer.ByteArra
 	public boolean canWrite(final Object object) {
 		return object instanceof byte[];
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

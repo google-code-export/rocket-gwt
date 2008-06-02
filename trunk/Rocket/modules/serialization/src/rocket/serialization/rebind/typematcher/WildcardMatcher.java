@@ -48,6 +48,7 @@ public class WildcardMatcher implements TypeMatcher{
 		this.pattern = pattern.substring( 0, pattern.length() - 1 );
 	}
 	
+	@Override
 	public String toString(){
 		return super.toString() + ", pattern\"" + pattern + "*]";
 	}

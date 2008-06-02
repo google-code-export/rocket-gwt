@@ -15,29 +15,39 @@
  */
 package rocket.serialization.server.writer;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.TreeMap;
 
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.server.ServerObjectWriter;
 
 /**
- * Handles the serialization of any class that implements Map
+ * Handles the serialization of any type that implements TreeMap
  * 
  * @author Miroslav Pokorny
+ * 
+ * @serialization-type: java.util.TreeMap
  */
-public class MapWriter extends rocket.serialization.client.writer.MapWriter implements ServerObjectWriter {
+public class TreeMapWriter extends rocket.serialization.client.writer.MapWriter implements ServerObjectWriter {
 
-	static public final ServerObjectWriter instance = new MapWriter();
+	static public final ServerObjectWriter instance = new TreeMapWriter();
 
-	protected MapWriter() {
+	protected TreeMapWriter() {
 	}
 
 	public boolean canWrite(final Object object) {
-		return object instanceof Map;
+		return object instanceof TreeMap;
 	}
 
 	protected void writeTypeName(final Object object, final ObjectOutputStream objectOutputStream) {
-		objectOutputStream.writeObject(HashMap.class.getName());
+		objectOutputStream.writeObject(TreeMap.class.getName());
+	}
+	
+	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
+		this.writeTreeMap( (TreeMap) object, objectOutputStream );
+	}
+	
+	protected void writeTreeMap( final TreeMap treeMap, final ObjectOutputStream objectOutputStream ){
+		objectOutputStream.writeObject( treeMap.comparator() );
+		this.writeMap(treeMap, objectOutputStream);
 	}
 }

@@ -32,8 +32,4 @@ public class ShortWriter extends rocket.serialization.client.writer.ShortWriter 
 	public boolean canWrite(final Object object) {
 		return object instanceof Short;
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

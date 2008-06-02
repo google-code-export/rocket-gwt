@@ -32,8 +32,4 @@ public class DoubleArrayWriter extends rocket.serialization.client.writer.Double
 	public boolean canWrite(final Object object) {
 		return object instanceof double[];
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

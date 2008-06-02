@@ -87,7 +87,8 @@ public class ClientObjectInputStreamGwtTestCase extends GWTTestCase {
 	}
 
 	public void testReadLong() {
-		final String stream = "[0,1,2,-3]";
+		final String stream = "[0,0,1,0,2,-1,-3]";
+		
 		final ObjectInputStream reader = this.createSerializationFactory().createObjectInputStream(stream);
 		assertEquals(stream, 1, reader.readLong());
 		assertEquals(stream, 2, reader.readLong());

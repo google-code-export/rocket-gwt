@@ -44,8 +44,6 @@ import com.google.gwt.user.client.rpc.impl.Serializer;
  */
 public class SerializationBenchmarkingGwtTestCase extends GWTTestCase {
 
-	//final int SEED_COUNT = 2;
-
 	final int DELAY = 60 * 1000;
 
 	final String URL = "./service";

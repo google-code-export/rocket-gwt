@@ -32,7 +32,7 @@ public class LongArrayWriterTestCase extends ServerTestCase {
 		array[0] = LONG_VALUE;
 		output.writeObject(array);
 
-		final String expectedValues = "1,2,1," + LONG_VALUE;
+		final String expectedValues = "1,2,1,0," + LONG_VALUE;
 		final String text = output.getText();
 		assertEquals("[1,\"" + LONG_ARRAY + "\"," + expectedValues + "]", text);
 	}

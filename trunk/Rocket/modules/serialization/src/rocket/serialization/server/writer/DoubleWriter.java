@@ -32,8 +32,4 @@ public class DoubleWriter extends rocket.serialization.client.writer.DoubleWrite
 	public boolean canWrite(final Object object) {
 		return object instanceof Double;
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

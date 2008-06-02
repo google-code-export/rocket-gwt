@@ -32,8 +32,4 @@ public class IntegerWriter extends rocket.serialization.client.writer.IntegerWri
 	public boolean canWrite(final Object object) {
 		return object instanceof Integer;
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

@@ -39,7 +39,7 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	protected void addObject( Object object ){
 		Checker.notNull("parameter:object", object);
 
-		final Map objects = this.getObjectTable();
+		final Map<Object,Integer> objects = this.getObjectTable();
 		final int reference = (-1 - objects.size());
 		objects.put(object, new Integer( reference));		
 	}
@@ -66,8 +66,8 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 		this.objectTable = objectTable;
 	}
 
-	protected Map createObjectTable() {
-		return new java.util.IdentityHashMap();
+	protected Map<Object,Integer> createObjectTable() {
+		return new java.util.IdentityHashMap<Object,Integer>();
 	}
 
 	public void writeBoolean(final boolean booleanValue) {
@@ -103,11 +103,10 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	}
 
 	public void writeLong(final long longValue) {
-		final StringBuffer buf = this.getValues();
-		if (buf.length() > 0) {
-			buf.append(',');
-		}
-		buf.append(longValue);
+		final int hi = (int)(longValue >> 32);
+		final int lo = (int)longValue;
+		this.writeInt(hi);
+		this.writeInt(lo);
 	}
 
 	public void writeFloat(final float floatValue) {
@@ -200,11 +199,6 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	protected String getValuesText() {
 		return this.getValues().toString();
 	}
-
-//	public String getTypeName(final Object object) {
-//		Checker.checkNotNull("parameter:object", object);
-//		return object.getClass().getName();
-//	}
 
 	public String getText() {
 		final StringBuffer text = new StringBuffer();
@@ -334,19 +328,19 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 		throw new SerializationException("Unable to serialize " + object.getClass().getName() );
 	}
 
-	private List objectWriters;
+	private List<ServerObjectWriter> objectWriters;
 
-	protected List getObjectWriters() {
+	protected List<ServerObjectWriter> getObjectWriters() {
 		Checker.notNull("field:objectWriters", objectWriters);
 		return this.objectWriters;
 	}
 
-	public void setObjectWriters(final List objectWriters) {
+	public void setObjectWriters(final List<ServerObjectWriter> objectWriters) {
 		Checker.notNull("parameter:objectWriters", objectWriters);
 		this.objectWriters = objectWriters;
 	}
 
-	protected List createObjectWriters() {
-		return new ArrayList();
+	protected List<ServerObjectWriter> createObjectWriters() {
+		return new ArrayList<ServerObjectWriter>();
 	}
 }

@@ -32,8 +32,4 @@ public class ConcreteClassObjectWriter extends ObjectWriterImpl implements Serve
 	protected void writeFields(final ConcreteClass instance, final ObjectOutputStream objectOutputStream) {
 		objectOutputStream.writeInt(instance.value);
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

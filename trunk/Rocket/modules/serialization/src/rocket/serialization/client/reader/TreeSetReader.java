@@ -13,23 +13,26 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.serialization.server.writer;
+package rocket.serialization.client.reader;
 
-import rocket.serialization.server.ServerObjectWriter;
+import java.util.Comparator;
+import java.util.TreeSet;
+
+import rocket.serialization.client.ObjectInputStream;
+import rocket.serialization.client.ObjectReader;
 
 /**
- * Handles the serialization of a Byte wrapper
+ * A reader for {@link java.util.TreeSet}
  * 
  * @author Miroslav Pokorny
+ * 
+ * @serialization-type java.util.TreeSet
  */
-public class ByteWriter extends rocket.serialization.client.writer.ByteWriter implements ServerObjectWriter {
+public class TreeSetReader extends AbstractSetReader {
+	static public final ObjectReader instance = new TreeSetReader();
 
-	static public final ServerObjectWriter instance = new ByteWriter();
-
-	protected ByteWriter() {
-	}
-
-	public boolean canWrite(final Object object) {
-		return object instanceof Byte;
+	public Object newInstance(String typeName, ObjectInputStream objectInputStream){
+		final Comparator comparator = (Comparator)objectInputStream.readObject();
+		return comparator == null ? new TreeSet() : new TreeSet( comparator );
 	}
 }

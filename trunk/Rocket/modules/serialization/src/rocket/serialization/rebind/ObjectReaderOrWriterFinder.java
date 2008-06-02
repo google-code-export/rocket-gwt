@@ -36,20 +36,22 @@ abstract public class ObjectReaderOrWriterFinder {
 
 	/**
 	 * Builds up a map that contains every type along with its corresponding
-	 * Reader/Writer. Types that are not matched by a Reader/Writer do not
+	 * Reader/Writer. Types that are not matched by a Reader/Writer will not
 	 * appear in the map.
 	 * 
 	 * @param types
 	 * @return
 	 */
-	public Map build(final Set types) {
+	public Map<Type,Type> build(final Set<Type> types) {
 		Checker.notNull( "parameter:types", types );
 
-		final Map accumulator = new HashMap();
+		final Map<Type,Type> accumulator = new HashMap<Type,Type>();
 
 		final ConcreteTypesImplementingInterfaceVisitor visitor = new ConcreteTypesImplementingInterfaceVisitor() {
+			
+			@Override
 			protected boolean visit(final Type readerOrWriter) {
-				final Map matches = ObjectReaderOrWriterFinder.this.findMatchingType(readerOrWriter);
+				final Map<Type,Match> matches = ObjectReaderOrWriterFinder.this.findMatchingType(readerOrWriter);
 				while( true ){
 					// nothing to do...
 					if( matches.isEmpty() ){
@@ -66,6 +68,7 @@ abstract public class ObjectReaderOrWriterFinder {
 				return false;
 			}
 
+			@Override
 			protected boolean skipAbstractTypes() {
 				return true;
 			}
@@ -88,10 +91,10 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * Given a reader/writer builds a map of all the types that it should apply
 	 * too.
 	 */
-	protected Map findMatchingType(final Type readerOrWriter) {
+	protected Map<Type,Match> findMatchingType(final Type readerOrWriter) {
 		Checker.notNull("parameter:readerOrWriter", readerOrWriter);
 
-		Map matches = null;
+		Map<Type,Match> matches = null;
 
 		while (true) {
 			final Type type = this.getTypeFromAnnotation(readerOrWriter);
@@ -110,12 +113,8 @@ abstract public class ObjectReaderOrWriterFinder {
 				break;
 			}
 			// find all sub classes...
-			final Match match = new Match();
-			match.setScore(ObjectReaderOrWriterFinder.CLASS_MATCH);
-			match.setReaderWriter(readerOrWriter);
-
-			matches = new HashMap();
-			matches.put(type, match);
+			matches = new HashMap<Type,Match>();
+			matches.put(type, new Match( readerOrWriter,ObjectReaderOrWriterFinder.CLASS_MATCH ));
 			break;
 		}
 
@@ -130,14 +129,15 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @param readerOrWriter
 	 * @return
 	 */
-	protected Map findTypesImplementingInterface(final Type interfacee, final Type readerOrWriter) {
+	protected Map<Type,Match> findTypesImplementingInterface(final Type interfacee, final Type readerOrWriter) {
 		Checker.notNull("parameter:interfacee", interfacee);
 		Checker.notNull("parameter:readerOrWriter", readerOrWriter);
 
-		final Map matches = new HashMap();
+		final Map<Type,Match> matches = new HashMap<Type,Match>();
 
 		final ConcreteTypesImplementingInterfaceVisitor visitor = new ConcreteTypesImplementingInterfaceVisitor() {
 
+			@Override
 			protected boolean skip(final Type interfacee, final Type type) {
 				boolean skip = super.skip(interfacee, type);
 
@@ -148,15 +148,11 @@ abstract public class ObjectReaderOrWriterFinder {
 				return skip;
 			}
 
+			@Override
 			protected boolean visit(final Type type) {
 				final boolean previouslyVisited = matches.containsKey(type);
 				if (false == previouslyVisited) {
-
-					final Match match = new Match();
-					match.setScore(ObjectReaderOrWriterFinder.INTERFACE_MATCH);
-					match.setReaderWriter(readerOrWriter);
-
-					matches.put(type, match);
+					matches.put(type, new Match( readerOrWriter, ObjectReaderOrWriterFinder.INTERFACE_MATCH ));
 				}
 				return previouslyVisited;
 			}
@@ -196,14 +192,13 @@ abstract public class ObjectReaderOrWriterFinder {
 			final String typeName = (String) values.get(0);
 			if (null != typeName) {
 				typeFromAnnotation = type.getGeneratorContext().getType(typeName);
-				Checker.notNull("Unable to find annotated type" + typeName, typeFromAnnotation);
+				Checker.notNull("Unable to find annotated type \"" + typeName + "\".", typeFromAnnotation);
 			}
 			break;
 		}
 
 		return typeFromAnnotation;
 	}
-
 
 	/**
 	 * Loops thru all the types belonging to matches attempting to find at least one type in serializableTypes set.
@@ -281,6 +276,12 @@ abstract public class ObjectReaderOrWriterFinder {
 	 */
 	static private class Match {
 
+		Match( final Type readerWriter, final int score ){
+			super();
+			this.setReaderWriter(readerWriter);
+			this.setScore(score);
+		}
+		
 		Type readerWriter;
 
 		Type getReaderWriter() {
@@ -334,10 +335,10 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @param matches
 	 * @return A map with the type as the key and reader/writer as the value. 
 	 */
-	protected Map finalizeBindings(final Map matches) {
+	protected Map<Type,Type> finalizeBindings(final Map matches) {
 		Checker.notNull("parameter:matches", matches);
 
-		final Map finalized = new HashMap();
+		final Map<Type,Type> finalized = new HashMap<Type,Type>();
 
 		final Iterator entries = matches.entrySet().iterator();
 		while (entries.hasNext()) {

@@ -26,7 +26,7 @@ public class LongReaderTestCase extends ServerTestCase {
 	final static long LONG_VALUE = 123456;
 
 	public void testReadLong() {
-		final String stream = "[1,\"" + LONG + "\",1,2," + LONG_VALUE + "]";
+		final String stream = "[1,\"" + LONG + "\",1,2,0," + LONG_VALUE + "]";
 		final ObjectInputStream input = createObjectInputStream(stream, LongReader.instance);
 
 		final Long object = (Long) input.readObject();

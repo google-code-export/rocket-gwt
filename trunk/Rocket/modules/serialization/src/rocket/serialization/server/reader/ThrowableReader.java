@@ -15,7 +15,6 @@
  */
 package rocket.serialization.server.reader;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import rocket.serialization.client.ObjectInputStream;

@@ -42,8 +42,4 @@ public class SetWriter extends rocket.serialization.client.writer.SetWriter impl
 	protected void writeTypeName(final Object object, final ObjectOutputStream objectOutputStream) {
 		objectOutputStream.writeObject(HashSet.class.getName());
 	}
-
-	protected String getTypeName(final Object object) {
-		throw new UnsupportedOperationException();
-	}
 }

@@ -34,8 +34,4 @@ public class DateWriter extends rocket.serialization.client.writer.DateWriter im
 	protected void writeTypeName(final Object object, final ObjectOutputStream objectOutputStream) {
 		objectOutputStream.writeObject(Date.class.getName());
 	}
-
-	protected String getTypeName(final Object object) {
-		throw new UnsupportedOperationException();
-	}
 }

@@ -32,8 +32,4 @@ public class CharArrayWriter extends rocket.serialization.client.writer.CharArra
 	public boolean canWrite(final Object object) {
 		return object instanceof char[];
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

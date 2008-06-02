@@ -118,7 +118,7 @@ public class ClientObjectOutputStreamGwtTestCase extends GWTTestCase {
 		output.writeLong((long) -3);
 
 		final String text = output.getText();
-		assertEquals("" + output, "[0,0,1,2,-3]", text);
+		assertEquals("" + output, "[0,0,0,0,1,0,2,-1,-3]", text);
 	}
 
 	public void testWriteFloat() {

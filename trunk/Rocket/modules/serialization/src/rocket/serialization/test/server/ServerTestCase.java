@@ -24,6 +24,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import rocket.serialization.client.ObjectInputStream;
+import rocket.serialization.client.ObjectReader;
 import rocket.serialization.server.ServerObjectInputStream;
 import rocket.serialization.server.ServerObjectReader;
 import rocket.serialization.server.ServerObjectWriter;
@@ -49,15 +50,6 @@ abstract public class ServerTestCase extends TestCase {
 	public final static String HASHMAP = HashMap.class.getName();
 
 	public final static String STRING = String.class.getName();
-	
-//	static public void assertEquals( final String message, final int integer, final Object objectInteger ){
-//		int otherInt = 0;
-//		if( objectInteger instanceof Integer ){
-//			otherInt = ((Integer)objectInteger).intValue();
-//		}
-//		
-//		assertEquals( message, integer, otherInt );
-//	}
 
 	protected ConcreteClass createConcreteClass() {
 		final ConcreteClass concreteClass = new ConcreteClass();
@@ -71,20 +63,7 @@ abstract public class ServerTestCase extends TestCase {
 		subclass.value2 = ConcreteSubClass.VALUE;
 		return subclass;
 	}
-
-//	protected Map swapKeyWithValues(final Map map) {
-//		final Map otherMap = new HashMap();
-//		final Iterator entries = map.entrySet().iterator();
-//		while (entries.hasNext()) {
-//			final Map.Entry entry = (Map.Entry) entries.next();
-//			final Object value = entry.getKey();
-//			final Integer key = (Integer)entry.getValue();			
-//			otherMap.put( "" + key.intValue(), value );
-//		}
-//
-//		return otherMap;
-//	}
-
+	
 	protected void verifyFurtherReadsFail(final ObjectInputStream reader) {
 		try {
 			final int got = reader.readInt();
@@ -119,11 +98,11 @@ abstract public class ServerTestCase extends TestCase {
 	}
 
 	protected ObjectInputStream createObjectInputStream(final String stream, final ServerObjectReader reader) {
-		return this.createObjectInputStream(stream, Collections.nCopies(1, reader));
+		return this.createObjectInputStream(stream, (List<ServerObjectReader>) Collections.nCopies(1, reader));
 	}
 
-	protected ObjectInputStream createObjectInputStream(final String stream, final List readers) {
-		final List allReaders = new ArrayList();
+	protected ObjectInputStream createObjectInputStream(final String stream, final List<ServerObjectReader> readers) {
+		final List<ServerObjectReader> allReaders = new ArrayList<ServerObjectReader>();
 		allReaders.addAll( readers );
 		allReaders.add( ReflectiveReader.instance );
 		return new ServerObjectInputStream(stream) {
@@ -132,7 +111,7 @@ abstract public class ServerTestCase extends TestCase {
 				this.setObjectReaders( this.createObjectReaders() );
 			}
 			
-			protected List createObjectReaders() {
+			protected List<ServerObjectReader> createObjectReaders() {
 				return allReaders;
 			}
 		};

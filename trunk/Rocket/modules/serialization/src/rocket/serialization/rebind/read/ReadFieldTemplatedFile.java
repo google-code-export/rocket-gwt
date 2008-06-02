@@ -26,6 +26,7 @@ import rocket.util.client.Checker;
 
 class ReadFieldTemplatedFile extends TemplatedFileCodeBlock {
 
+	@Override
 	protected String getResourceName() {
 		String fileName = null;
 		while (true) {
@@ -70,10 +71,12 @@ class ReadFieldTemplatedFile extends TemplatedFileCodeBlock {
 		return fileName;
 	}
 
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 	
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 

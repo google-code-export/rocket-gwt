@@ -32,8 +32,4 @@ public class CharacterWriter extends rocket.serialization.client.writer.Characte
 	public boolean canWrite(final Object object) {
 		return object instanceof Character;
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

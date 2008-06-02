@@ -32,8 +32,4 @@ public class FloatArrayWriter extends rocket.serialization.client.writer.FloatAr
 	public boolean canWrite(final Object object) {
 		return object instanceof float[];
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }
