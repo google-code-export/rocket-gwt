@@ -36,9 +36,11 @@ public class NoneLevelLogger extends FatalLevelLogger implements Logger {
 		super();
 	}
 
+	@Override
 	final public void fatal(final String message) {
 	}
 
+	@Override
 	final public void fatal(final String message, final Throwable throwable) {
 	}
 }

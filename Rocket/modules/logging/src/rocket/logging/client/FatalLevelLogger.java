@@ -32,12 +32,15 @@ public class FatalLevelLogger extends ErrorLevelLogger implements Logger {
 		super();
 	}
 
+	@Override
 	final public void error(final String message) {
 	}
 
+	@Override
 	final public void error(final String message, final Throwable throwable) {
 	}
 
+	@Override
 	public boolean isErrorEnabled() {
 		return false;
 	}

@@ -32,12 +32,15 @@ public class ErrorLevelLogger extends WarnLevelLogger implements Logger {
 		super();
 	}
 
+	@Override
 	final public void warn(final String message) {
 	}
 
+	@Override
 	final public void warn(final String message, final Throwable throwable) {
 	}
 
+	@Override
 	public boolean isWarnEnabled() {
 		return false;
 	}

@@ -30,10 +30,12 @@ public class FirebugLogger extends LoggerImpl {
 		super();
 	}
 
+	@Override
 	public void debug(final String message) {
 		this.debug0(message);
 	}
-
+	
+	@Override
 	public void debug(final String message, final Throwable throwable) {
 		this.debug0(message);
 	}
@@ -42,10 +44,12 @@ public class FirebugLogger extends LoggerImpl {
 	 $wnd.console.debug( message );
 	 }-*/;
 
+	@Override
 	public void info(final String message) {
 		this.info0(message);
 	}
 
+	@Override
 	public void info(final String message, final Throwable throwable) {
 		this.info0(message);
 	}
@@ -54,10 +58,12 @@ public class FirebugLogger extends LoggerImpl {
 	 $wnd.console.info( message );
 	 }-*/;
 
+	@Override
 	public void warn(final String message) {
 		this.warn0(message);
 	}
 
+	@Override
 	public void warn(final String message, final Throwable throwable) {
 		this.warn0(message);
 	}
@@ -66,10 +72,12 @@ public class FirebugLogger extends LoggerImpl {
 	 $wnd.console.warn( message );
 	 }-*/;
 
+	@Override
 	public void error(final String message) {
 		this.log(LoggingLevel.ERROR, message);
 	}
 
+	@Override
 	public void error(final String message, final Throwable throwable) {
 		this.log(LoggingLevel.ERROR, message, throwable);
 	}
@@ -78,10 +86,12 @@ public class FirebugLogger extends LoggerImpl {
 	 $wnd.console.error( message );
 	 }-*/;
 
+	@Override
 	public void fatal(final String message) {
 		this.fatal0(message);
 	}
 
+	@Override
 	public void fatal(final String message, final Throwable throwable) {
 		this.fatal0(message);
 	}

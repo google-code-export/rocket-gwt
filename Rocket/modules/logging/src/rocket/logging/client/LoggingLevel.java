@@ -21,6 +21,7 @@ import java.io.Serializable;
  * This enum holds all the possible logging levels.
  * 
  * @author Miroslav Pokorny
+ * @TODO Make LoggingLevel a true enum.
  */
 final public class LoggingLevel implements Serializable{
 

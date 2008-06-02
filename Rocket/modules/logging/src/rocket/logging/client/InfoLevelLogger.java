@@ -32,12 +32,15 @@ public class InfoLevelLogger extends DebugLevelLogger implements Logger {
 		super();
 	}
 
+	@Override
 	final public void debug(final String message) {
 	}
 
+	@Override
 	final public void debug(final String message, final Throwable throwable) {
 	}
 
+	@Override
 	public boolean isDebugEnabled() {
 		return false;
 	}

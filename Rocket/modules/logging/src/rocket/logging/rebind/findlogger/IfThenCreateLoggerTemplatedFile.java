@@ -33,10 +33,12 @@ class IfThenCreateLoggerTemplatedFile extends TemplatedFileCodeBlock {
 		super();
 	}
 
+	@Override
 	public boolean isNative() {
 		return false;
 	}
 
+	@Override
 	public void setNative(final boolean ignored) {
 		throw new UnsupportedOperationException();
 	}
@@ -87,14 +89,17 @@ class IfThenCreateLoggerTemplatedFile extends TemplatedFileCodeBlock {
 		this.loggingLevelLogger = loggingLevelLogger;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.IF_THEN_CREATE_LOGGER_TEMPLATE;
 	}
 
+	@Override
 	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
