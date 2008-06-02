@@ -21,19 +21,22 @@ package rocket.browser.client.support;
  * @author Miroslav Pokorny (mP)
  */
 public class InternetExplorer6BrowserSupport extends BrowserSupport {
-
+	@Override
 	native public int getScrollX()/*-{
 	 return $doc.documentElement ? $doc.documentElement.scrollLeft: $doc.body.scrollLeft;
 	 }-*/;
 
+	@Override
 	native public int getScrollY()/*-{
 	 return $doc.documentElement ? $doc.documentElement.scrollTop: $doc.body.scrollTop;
 	 }-*/;
 
+	@Override
 	native public int getClientWidth()/*-{
 	 return $doc.documentElement ? $doc.documentElement.clientWidth: $doc.body.clientWidth;     
 	 }-*/;
 
+	@Override
 	native public int getClientHeight()/*-{
 	 return $doc.documentElement ? $doc.documentElement.clientHeight: $doc.body.clientHeight;     
 	 }-*/;

@@ -16,11 +16,11 @@
 package rocket.browser.client;
 
 import rocket.browser.client.support.BrowserSupport;
-import rocket.util.client.Checker;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 
 /**
  * A collection of helper methods related to the browser, often reporting values retrieved from
@@ -41,58 +41,12 @@ public class Browser {
 	}
 
 	/**
-	 * Retrieves the document object for the current page
-	 * 
-	 * @return The document
-	 */
-	public static native JavaScriptObject getDocument() /*-{
-	 return $doc;
-	 }-*/;
-
-	/**
 	 * Retrieves the window object for the current page.
 	 * 
 	 * @return The window
 	 */
 	public static native JavaScriptObject getWindow() /*-{
 	 return $wnd;
-	 }-*/;
-
-	/**
-	 * Retrieves the current window status.
-	 * 
-	 * @return The status text
-	 */
-	public static native String getStatus()/*-{
-	 return $wnd.status;
-	 }-*/;
-
-	/**
-	 * Sets or replaces the browser status.
-	 * 
-	 * @param status The new text
-	 */
-	public static native void setStatus(final String status)/*-{
-	 $wnd.status = status;
-	 }-*/;
-
-	/**
-	 * Prompts the user for a string allowing an initial value which may in turn
-	 * be modified by the user.
-	 * 
-	 * @param message The message that will be displayed
-	 * @param initialValue The initial value which may be overridden by the user
-	 * @return The actual entered text.
-	 */
-	public static String prompt(final String message, final String initialValue) {
-		Checker.notEmpty("parameter:message", message);
-		Checker.notNull("parameter:initialValue", initialValue);
-
-		return prompt0(message, initialValue);
-	}
-
-	private static native String prompt0(final String message, final String initialValue)/*-{
-	 return "" + $wnd.prompt( message, initialValue );
 	 }-*/;
 
 	/**
@@ -131,12 +85,10 @@ public class Browser {
 	public static String getContextPath() {
 		String url = GWT.getModuleBaseURL();
 		if (GWT.isScript()) {
-			final String location = Browser.getLocation();
-			final int afterScheme = location.indexOf("//");
-			final int webContextStart = location.indexOf('/', afterScheme + 3);
-			final int webContextEnd = location.indexOf('/', webContextStart + 1);
+			final String path = Window.Location.getPath();
+			final int webContextEnd = path.indexOf('/', 0 );
 
-			url = location.substring(webContextStart, webContextEnd);
+			url = path.substring(0, webContextEnd);
 		}
 
 		// drop trailing slash if one is present.
@@ -145,38 +97,6 @@ public class Browser {
 		}
 		return url;
 	}
-
-	/**
-	 * Adds the base url of the standard images directory on the server.
-	 */
-	public static String buildImageUrl(final String url) {
-		Checker.notEmpty("parameter:url", url);
-
-		return Browser.getContextPath() + Constants.IMAGES + url;
-	}
-
-	/**
-	 * Retrieves the current location.
-	 * 
-	 * @return The location
-	 */
-	public static native String getLocation()/*-{
-	 return $wnd.location.href;
-	 }-*/;
-
-	/**
-	 * Sets the location of the browser, which will trigger a new page load.
-	 * @param location
-	 */
-	public static void setLocation(final String location) {
-		Checker.notEmpty("parameter:location", location);
-
-		setLocation0(location);
-	}
-
-	private static native String setLocation0(final String location)/*-{
-	 $wnd.location.href = location;
-	 }-*/;
 
 	/**
 	 * Returns the available screen area within the browser
@@ -212,15 +132,6 @@ public class Browser {
 	public static int getClientHeight() {
 		return Browser.getSupport().getClientHeight();
 	}
-
-	/**
-	 * Sets the title of the window.
-	 * 
-	 * @param title The new title text
-	 */
-	public static native void setTitle(final String title) /*-{
-	 $doc.title = title;
-	 }-*/;
 
 	public static boolean isInternetExplorer() {
 		return getUserAgent().indexOf(Constants.INTERNET_EXPLORER_USER_AGENT) != -1 && false == isOpera();

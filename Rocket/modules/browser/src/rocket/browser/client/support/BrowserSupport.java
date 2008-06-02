@@ -15,7 +15,6 @@
  */
 package rocket.browser.client.support;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 
 /**
@@ -42,10 +41,10 @@ public class BrowserSupport {
 	 }-*/;
 
 	public int getMousePageX(final Event event) {
-		return this.getScrollX() + DOM.eventGetClientX(event);
+		return this.getScrollX() + event.getClientX();
 	}
 
 	public int getMousePageY(final Event event) {
-		return this.getScrollY() + DOM.eventGetClientY(event);
+		return this.getScrollY() + event.getClientY();
 	}
 }

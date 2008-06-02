@@ -16,12 +16,12 @@
 package rocket.browser.client;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import rocket.collection.client.CollectionsHelper;
 import rocket.util.client.Checker;
 import rocket.util.client.Utilities;
 
@@ -137,30 +137,30 @@ public class Location {
 	/**
 	 * A readonly map containing any parameters and values( as a readonly list).
 	 */
-	private Map allParameters;
+	private Map<String,List> allParameters;
 
-	public Map getAllParameters() {
+	public Map<String,List> getAllParameters() {
 		if (null == allParameters) {
 			this.setAllParameters(createAllParameters());
 		}
 		return this.allParameters;
 	}
 
-	protected void setAllParameters(final Map allParameters) {
+	protected void setAllParameters(final Map<String,List> allParameters) {
 		this.allParameters = allParameters;
 	}
 
-	protected Map createAllParameters() {
+	protected Map<String,List> createAllParameters() {
 		final String[] nameAndValues = this.createParameterNameAndValues();
-		final Map map = new HashMap();
+		final Map<String,List> map = new HashMap<String,List>();
 		for (int i = 0; i < nameAndValues.length;) {
 			final String name = nameAndValues[i++];
 			final String value = nameAndValues[i++];
 
-			List values = (List) map.get(name);
+			List<String> values = map.get(name);
 			if (null == values) {
 				// create list for $name and save...
-				values = new ArrayList();
+				values = new ArrayList<String>();
 				map.put(name, values);
 			}
 			values.add(value);
@@ -169,11 +169,11 @@ public class Location {
 		final Iterator entries = map.entrySet().iterator();
 		while (entries.hasNext()) {
 			final Map.Entry entry = (Map.Entry) entries.next();
-			final List writableList = (List) entry.getValue();
-			entry.setValue(CollectionsHelper.unmodifiableList(writableList));
+			final List<String> writableList = (List<String>) entry.getValue();
+			entry.setValue(Collections.unmodifiableList(writableList));
 		}
 
-		return CollectionsHelper.unmodifiableMap(map);
+		return Collections.unmodifiableMap(map);
 	}
 
 	/**
