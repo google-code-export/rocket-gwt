@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 Google Inc.
+ * Copyright 2007 Google Inc.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -23,14 +23,11 @@ import com.google.gwt.user.client.Element;
  */
 public class TextBoxImplIE6 extends TextBoxImpl {
 
-	public TextBoxImplIE6(){
-		super();		
-	}
-	
+  @Override
   public native int getCursorPos(Element elem) /*-{
     try {
       var tr = elem.document.selection.createRange();
-      if (tr.parentElement().uniqueID != elem.uniqueID)
+      if (tr.parentElement() !== elem)
         return -1;
       return -tr.move("character", -65535);
     }
@@ -38,10 +35,50 @@ public class TextBoxImplIE6 extends TextBoxImpl {
       return 0;
     }
   }-*/;
+
+  @Override
+  public native int getSelectionLength(Element elem) /*-{
+    try {
+      var tr = elem.document.selection.createRange();
+      if (tr.parentElement() !== elem)
+        return 0;
+      return tr.text.length;
+    }
+    catch (e) {
+      return 0;
+    }
+  }-*/;
+
+//  @Override
+//  public native int getTextAreaCursorPos(Element elem) /*-{
+//    try {
+//      var tr = elem.document.selection.createRange();
+//      var tr2 = tr.duplicate();
+//      tr2.moveToElementText(elem);
+//      tr.setEndPoint('EndToStart', tr2);
+//      return tr.text.length;
+//    }
+//    catch (e) {
+//      return 0;
+//    }
+//  }-*/;
+
+  @Override
+  public native void setSelectionRange(Element elem, int pos, int length) /*-{
+    try {
+      var tr = elem.createTextRange();
+      tr.collapse(true);
+      tr.moveStart('character', pos);
+      tr.moveEnd('character', length);
+      tr.select();
+    }
+    catch (e) {
+    }
+  }-*/;
+
+  // ROCKET The fields/methods below were added to assist the Rocket framework. When upgrading from GWT 1.5 RC1 reapply changes
   
   /**
-   * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
-   * 
    * Because of the changes to getTextAreaCursor it is possible for TextArea.getSelectedText() to throw exceptions because the cursor position +
    * selection length end up being greater than the actual length of the text area text.
    * 
@@ -72,8 +109,6 @@ public class TextBoxImplIE6 extends TextBoxImpl {
   }-*/;
   
   /**
-   * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
-   * 
    * Retrieving the cursor position within a TextArea is troublesome particularly if the cursor is after one or more CR or NL. 
    * Unfortunately IE reports the position of a cursor at the end of a line and at the start of the next line as the same value, making it impossible to say advance the cursor by a position of 1.
    * 
@@ -82,6 +117,7 @@ public class TextBoxImplIE6 extends TextBoxImpl {
    * 
    * This has the added advantage it is possible to insert text into a text area at the cursor position without any fudges.
    */
+  @Override
   public native int getTextAreaCursorPos(final Element elem) /*-{
     try {         
       var tr = elem.document.selection.createRange();
@@ -108,19 +144,6 @@ public class TextBoxImplIE6 extends TextBoxImpl {
     }
     catch (e) {
       return 0;
-    }
-  }-*/;
-
-
-  public native void setSelectionRange(Element elem, int pos, int length) /*-{
-    try {
-      var tr = elem.createTextRange();
-      tr.collapse(true);
-      tr.moveStart('character', pos);
-      tr.moveEnd('character', length);
-      tr.select();
-    }
-    catch (e) {
     }
   }-*/;
 
