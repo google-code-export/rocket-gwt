@@ -20,7 +20,6 @@ import java.util.Date;
 
 import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
-import rocket.remoting.client.HasSerializer;
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.SerializationFactory;
@@ -39,6 +38,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader;
 import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamWriter;
+import com.google.gwt.user.client.rpc.impl.HasSerializer;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;

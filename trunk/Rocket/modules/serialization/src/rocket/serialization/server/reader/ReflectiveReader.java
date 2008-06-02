@@ -70,12 +70,12 @@ public class ReflectiveReader implements ServerObjectReader {
 	}
 
 	protected void readFields0(final Object object, final Class classs, final ObjectInputStream objectInputStream ) throws IllegalAccessException {
-		final Set serializableFields = ReflectionHelper.buildSerializableFields(object, classs);
+		final Set<Field> serializableFields = ReflectionHelper.buildSerializableFields(object, classs);
 
 		// serialize fields in alphabetical order
-		final Iterator iterator = serializableFields.iterator();
+		final Iterator<Field> iterator = serializableFields.iterator();
 		while (iterator.hasNext()) {
-			final Field field = (Field) iterator.next();
+			final Field field = iterator.next();
 			field.setAccessible(true);
 
 			final Class fieldType = field.getType();
