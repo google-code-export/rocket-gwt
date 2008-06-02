@@ -23,7 +23,7 @@ public class LongWriterTestCase extends ServerTestCase {
 
 	final static String LONG = Long.class.getName();
 
-	final static long LONG_VALUE = 1234567;
+	final static long LONG_VALUE = 1234;
 
 	public void testWriteLong() {
 		final TestServerObjectOutputStream output = createObjectOutputStream(LongWriter.instance);
@@ -31,7 +31,8 @@ public class LongWriterTestCase extends ServerTestCase {
 		final Long object = new Long(LONG_VALUE);
 		output.writeObject(object);
 
-		final String expectedValues = "1,2," + LONG_VALUE;
+		//final String expectedValues = "1,2," + LONG_VALUE;
+		final String expectedValues = "1,2,0," + LONG_VALUE;
 		final String text = output.getText();
 		assertEquals("[1,\"" + LONG + "\"," + expectedValues + "]", text);
 	}

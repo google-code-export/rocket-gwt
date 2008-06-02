@@ -60,7 +60,7 @@ public class ServerObjectInputStreamTestCase extends ServerTestCase {
 	}
 
 	public void testReadLong() {
-		final String stream = "[0,1,2,-3]";
+		final String stream = "[0,0,1,0,2,-1,-3]";
 		final ObjectInputStream reader = createObjectInputStream(stream);
 		assertEquals(stream, 1, reader.readLong());
 		assertEquals(stream, 2, reader.readLong());

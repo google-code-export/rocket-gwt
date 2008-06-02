@@ -23,10 +23,10 @@ public class LongReaderGwtTestCase extends ClientGwtTestCase {
 
 	final static String LONG = "java.lang.Long";
 
-	final static long LONG_VALUE = 123456;
+	final static long LONG_VALUE = 12345;
 
 	public void testReadLong() {
-		final String stream = "[1,\"" + LONG + "\",1,2," + LONG_VALUE + "]";
+		final String stream = "[1,\"" + LONG + "\",1,2,0," + LONG_VALUE + "]";
 		final ClientObjectInputStream input = createObjectInputStream(stream, LONG, LongReader.instance);
 
 		final Long object = (Long) input.readObject();

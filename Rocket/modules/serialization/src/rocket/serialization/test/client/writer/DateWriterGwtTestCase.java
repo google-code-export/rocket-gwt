@@ -25,7 +25,7 @@ public class DateWriterGwtTestCase extends ClientGwtTestCase {
 
 	final static String DATE = "java.util.Date";
 
-	final static long DATE_VALUE = 123456;
+	final static long DATE_VALUE = 12345;
 
 	public void testWriteDate() {
 		final ClientObjectOutputStream output = createObjectOutputStream(DATE, DateWriter.instance);
@@ -33,7 +33,7 @@ public class DateWriterGwtTestCase extends ClientGwtTestCase {
 		final Date date = new Date(DATE_VALUE);
 		output.writeObject(date);
 
-		final String expectedValues = "1,2," + DATE_VALUE;
+		final String expectedValues = "1,2,0," + DATE_VALUE;
 		final String text = output.getText();
 		assertEquals("[1,\"" + DATE + "\"," + expectedValues + "]", text);
 	}

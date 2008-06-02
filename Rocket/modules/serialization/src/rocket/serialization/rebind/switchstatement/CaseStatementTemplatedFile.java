@@ -34,10 +34,12 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 		super();
 	}
 
+	@Override
 	public boolean isNative(){
 		return true;
 	}
 	
+	@Override
 	public void setNative( final boolean ignored ){
 		throw new UnsupportedOperationException();
 	}
@@ -72,14 +74,17 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 		this.objectWriterSingleton = objectWriterSingleton;
 	}
 
+	@Override
 	protected String getResourceName(){
 		return Constants.CASE_TEMPLATE;
 	}
 	
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 	
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

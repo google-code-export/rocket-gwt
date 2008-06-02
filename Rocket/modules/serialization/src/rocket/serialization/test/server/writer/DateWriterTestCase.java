@@ -26,7 +26,7 @@ public class DateWriterTestCase extends ServerTestCase {
 
 	final static String DATE = Date.class.getName();
 
-	final static long DATE_VALUE = 123456;
+	final static long DATE_VALUE = 1234;
 
 	final static String TIMESTAMP = Timestamp.class.getName();
 
@@ -36,7 +36,7 @@ public class DateWriterTestCase extends ServerTestCase {
 		final Date date = new Date(DATE_VALUE);
 		output.writeObject(date);
 
-		final String expectedValues = "1,2," + DATE_VALUE;
+		final String expectedValues = "1,2,0," + DATE_VALUE;
 		final String text = output.getText();
 		assertEquals("[1,\"" + DATE + "\"," + expectedValues + "]", text);
 	}
@@ -47,7 +47,7 @@ public class DateWriterTestCase extends ServerTestCase {
 		final Date date = new Timestamp(DATE_VALUE);
 		output.writeObject(date);
 
-		final String expectedValues = "1,2," + DATE_VALUE;
+		final String expectedValues = "1,2,0," + DATE_VALUE;
 		final String text = output.getText();
 		assertEquals("[1,\"" + DATE + "\"," + expectedValues + "]", text);
 	}

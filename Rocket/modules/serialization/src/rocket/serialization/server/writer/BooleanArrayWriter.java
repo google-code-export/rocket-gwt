@@ -32,8 +32,4 @@ public class BooleanArrayWriter extends rocket.serialization.client.writer.Boole
 	public boolean canWrite(final Object object) {
 		return object instanceof boolean[];
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

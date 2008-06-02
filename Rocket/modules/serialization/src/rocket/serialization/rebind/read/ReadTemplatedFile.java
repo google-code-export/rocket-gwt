@@ -47,14 +47,17 @@ public class ReadTemplatedFile extends TemplatedFileCodeBlock {
 		this.type = type;
 	} 
 
+	@Override
 	protected String getResourceName() {
 		return Constants.READ_TEMPLATE;
 	}
 	
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 

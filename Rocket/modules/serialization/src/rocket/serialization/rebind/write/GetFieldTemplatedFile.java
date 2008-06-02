@@ -21,14 +21,17 @@ import rocket.util.client.Checker;
 
 public class GetFieldTemplatedFile extends TemplatedFileCodeBlock {
 
+	@Override
 	public boolean isNative(){
 		return true;
 	}
 	
+	@Override
 	protected String getResourceName() {
 		return Constants.GET_FIELD_TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 

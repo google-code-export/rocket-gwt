@@ -32,8 +32,4 @@ public class FloatWriter extends rocket.serialization.client.writer.FloatWriter 
 	public boolean canWrite(final Object object) {
 		return object instanceof Float;
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

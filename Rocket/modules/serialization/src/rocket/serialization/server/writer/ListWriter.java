@@ -40,8 +40,4 @@ public class ListWriter extends rocket.serialization.client.writer.ListWriter im
 	protected void writeTypeName(final Object object, final ObjectOutputStream objectOutputStream) {
 		objectOutputStream.writeObject(ArrayList.class.getName());
 	}
-
-	protected String getTypeName(final Object object) {
-		throw new UnsupportedOperationException();
-	}
 }

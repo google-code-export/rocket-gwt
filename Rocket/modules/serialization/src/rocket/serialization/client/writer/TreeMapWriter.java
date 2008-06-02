@@ -15,32 +15,31 @@
  */
 package rocket.serialization.client.writer;
 
+import java.util.TreeMap;
+
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.ObjectWriter;
 
-abstract public class ObjectWriterImpl implements ObjectWriter {
+/**
+ * Handles the reading of {@link java.util.TreeMap} from a stream.
+ * 
+ * @author Miroslav Pokorny
+ * 
+* @serialization-type java.util.TreeMap
+ */
+public class TreeMapWriter extends MapWriter implements ObjectWriter {
 
-	public void write(final Object object, final ObjectOutputStream objectOutputStream) {
-		if (null == object) {
-			this.writeNull(objectOutputStream);
-		} else {
-			this.writeTypeName(object, objectOutputStream);
-			this.write0(object, objectOutputStream);
-		}
-	}
+	static public final ObjectWriter instance = new TreeMapWriter();
 
-	public void writeNull(final ObjectOutputStream objectOutputStream) {
-		objectOutputStream.writeObject(null);
-	}
-
-	protected void writeTypeName(final Object object, final ObjectOutputStream objectOutputStream) {
-		final String type = object.getClass().getName();
-		objectOutputStream.writeObject(type);
-	}
-
-	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
+	protected TreeMapWriter() {
 	}
 	
-	protected void writeFields(final Object object, final ObjectOutputStream objectOutputStream) {
+	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
+		this.writeTreeMap((TreeMap) object, objectOutputStream);
+	}
+	
+	protected void writeTreeMap(final TreeMap treeMap, final ObjectOutputStream objectOutputStream) {
+		objectOutputStream.writeObject( treeMap.comparator() );
+		this.writeMap( treeMap, objectOutputStream);
 	}
 }

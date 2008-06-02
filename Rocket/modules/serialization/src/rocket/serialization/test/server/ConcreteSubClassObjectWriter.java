@@ -33,8 +33,4 @@ public class ConcreteSubClassObjectWriter extends ConcreteClassObjectWriter impl
 
 		super.writeFields(instance, objectOutputStream);
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

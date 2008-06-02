@@ -65,7 +65,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 		} catch (final FailedGenerateAttemptException failed) {
 			assertTrue("" + failed, failed.getCauseType().equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
 		} catch (final Exception failed ) {
-			assertTrue("" + failed, GWT.getTypeName( failed.getCause() ).equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCause().getClass().getName().equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
@@ -83,7 +83,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 		} catch (final FailedGenerateAttemptException failed) {
 			assertTrue("" + failed, failed.getCauseType().equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
 		} catch (final Exception failed ) {
-			assertTrue("" + failed, GWT.getTypeName( failed.getCause() ).equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCause().getClass().getName().equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
@@ -1377,6 +1377,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	static class SubClassWithUnserializableSuperType extends UnserializableConcreteClass implements Serializable {
 		int subClassValue;
 
+		@Override
 		public String toString() {
 			return super.toString() + ", subClassValue: " + subClassValue;
 		}
@@ -1385,6 +1386,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	static class UnserializableConcreteClass {
 		int superClassValue;
 
+		@Override
 		public String toString() {
 			return super.toString() + ", superClassValue: " + superClassValue;
 		}

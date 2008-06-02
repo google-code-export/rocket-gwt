@@ -58,20 +58,20 @@ public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	/**
 	 * A list of all setters for all the fields being un-serialized.
 	 */
-	private List fieldSetters;
+	private List<Method> fieldSetters;
 
-	protected List getFieldSetters() {
+	protected List<Method> getFieldSetters() {
 		Checker.notNull("field:setters", fieldSetters);
 		return this.fieldSetters;
 	}
 
-	protected void setFieldSetters(final List fieldSetters) {
+	protected void setFieldSetters(final List<Method> fieldSetters) {
 		Checker.notNull("parameter:fieldSetters", fieldSetters);
 		this.fieldSetters = fieldSetters;
 	}
 
-	protected List createFieldSetters() {
-		return new ArrayList();
+	protected List<Method> createFieldSetters() {
+		return new ArrayList<Method>();
 	}
 
 	public void addFieldSetter(final Method setter) {
@@ -85,32 +85,39 @@ public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 
 		return new CollectionTemplatedCodeBlock() {
 
+			@Override
 			public InputStream getInputStream() {
 				return template.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return template.getValue0(name);
 			}
 
+			@Override
 			protected Collection getCollection() {
 				return ReadFieldsTemplatedFile.this.getFieldSetters();
 			}
 
+			@Override
 			protected void prepareToWrite(final Object element) {
 				template.setSetter((Method) element);
 			}
 
+			@Override
 			protected void writeBetweenElements(final SourceWriter writer) {
 				writer.println("");
 			}
 		};
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.READ_FIELDS_TEMPLATE;
 	}
 	
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

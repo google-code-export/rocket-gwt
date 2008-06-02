@@ -26,7 +26,8 @@ public class LongArrayReaderTestCase extends ServerTestCase {
 	final static long LONG_VALUE = 34567;
 
 	public void testReadLongArray() {
-		final String stream = "[1,\"" + LONG_ARRAY + "\",1,2,1," + LONG_VALUE + "]";
+//		final String stream = "[1,\"" + LONG_ARRAY + "\",1,2,1," + LONG_VALUE + "]";
+		final String stream = "[1,\"" + LONG_ARRAY + "\",1,2,1,0," + LONG_VALUE + "]";
 		final ObjectInputStream input = createObjectInputStream(stream, LongArrayReader.instance);
 
 		final long[] array = (long[]) input.readObject();

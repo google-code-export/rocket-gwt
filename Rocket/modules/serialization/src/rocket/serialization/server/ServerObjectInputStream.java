@@ -36,34 +36,45 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 		this.prepare(stream);
 	}
 
+	@Override
 	public boolean readBoolean() {
 		return this.nextValue().equals("true");
 	}
 
+	@Override
 	public byte readByte() {
 		return Byte.parseByte(this.nextValue());
 	}
 
+	@Override
 	public short readShort() {
 		return Short.parseShort(this.nextValue());
 	}
 
+	@Override
 	public int readInt() {
 		return Integer.parseInt(this.nextValue());
 	}
 
+	@Override
 	public long readLong() {
-		return Long.parseLong(this.nextValue());
+		final long hi = this.readInt();
+		final long lo = this.readInt();
+		
+		return (hi << 32 ) | (lo & 0xffffffff);
 	}
 
+	@Override
 	public float readFloat() {
 		return Float.parseFloat(this.nextValue());
 	}
 
+	@Override
 	public double readDouble() {
 		return Double.parseDouble(this.nextValue());
 	}
 
+	@Override
 	public char readChar() {
 		return (char) Integer.parseInt(this.nextValue());
 	}
@@ -75,22 +86,22 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 	/**
 	 * A cache of all the string values that have been scene...
 	 */
-	private Map strings;
+	private Map<Integer,String> strings;
 
-	protected Map getStrings() {
+	protected Map<Integer,String> getStrings() {
 		return this.strings;
 	}
 
-	protected void setStrings(final Map strings) {
+	protected void setStrings(final Map<Integer,String> strings) {
 		this.strings = strings;
 	}
 
-	protected Map createStrings() {
-		return new HashMap();
+	protected Map<Integer,String> createStrings() {
+		return new HashMap<Integer,String>();
 	}
 
 	protected String getString(final int reference) {
-		final String string = (String) this.getStrings().get(new Integer( reference));
+		final String string = this.getStrings().get(reference);
 		if (null == string) {
 			throwInvalidStringReference( reference );
 		}
@@ -100,22 +111,22 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 	/**
 	 * key: Objects value2: reference
 	 */
-	private Map objects;
+	private Map<Integer,Object> objects;
 
-	protected Map getObjects() {
+	protected Map<Integer,Object> getObjects() {
 		return this.objects;
 	}
 
-	protected void setObjects(final Map objects) {
+	protected void setObjects(final Map<Integer,Object> objects) {
 		this.objects = objects;
 	}
 
-	protected Map createObjects() {
-		return new HashMap();
+	protected Map<Integer,Object> createObjects() {
+		return new HashMap<Integer,Object>();
 	}
 
 	protected int addObject(final Object object) {
-		final Map objects = this.getObjects();
+		final Map<Integer,Object> objects = this.getObjects();
 		final int reference = - (objects.size() + 1);
 		objects.put(new Integer( reference ), object);
 
@@ -124,12 +135,12 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 
 	protected void replaceObject(final int reference, final Object object) {
 		final Map objects = this.getObjects();
-		objects.put(new Integer( reference ), object);
+		objects.put(reference, object);
 	}
 
 	protected Object getObject(final int reference) {
 		final Map objects = this.getObjects();
-		Object object = objects.get( new Integer( reference));
+		Object object = objects.get( reference);
 		if (null == object) {
 			this.throwInvalidObjectReference(reference);
 		}
@@ -157,7 +168,7 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 		}
 
 		// extract strings and add them to the string table...
-		final Map strings = this.createStrings();
+		final Map<Integer,String> strings = this.createStrings();
 		int j = comma + 1;
 		for (int i = 0; i < count; i++) {
 			final StringBuffer buf = new StringBuffer();

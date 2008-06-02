@@ -31,7 +31,7 @@ public class LongWriterGwtTestCase extends ClientGwtTestCase {
 		final Long object = new Long(LONG_VALUE);
 		output.writeObject(object);
 
-		final String expectedValues = "1,2," + LONG_VALUE;
+		final String expectedValues = "1,2,0," + LONG_VALUE;
 		final String text = output.getText();
 		assertEquals("[1,\"" + LONG + "\"," + expectedValues+"]", text);
 	}

@@ -15,32 +15,31 @@
  */
 package rocket.serialization.client.writer;
 
+import java.util.TreeSet;
+
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.ObjectWriter;
 
-abstract public class ObjectWriterImpl implements ObjectWriter {
+/**
+ * Handles the reading of {@link java.util.TreeSet} from a stream.
+ * 
+ * @author Miroslav Pokorny
+ * 
+* @serialization-type java.util.TreeSet
+ */
+public class TreeSetWriter extends SetWriter implements ObjectWriter {
 
-	public void write(final Object object, final ObjectOutputStream objectOutputStream) {
-		if (null == object) {
-			this.writeNull(objectOutputStream);
-		} else {
-			this.writeTypeName(object, objectOutputStream);
-			this.write0(object, objectOutputStream);
-		}
-	}
+	static public final ObjectWriter instance = new TreeSetWriter();
 
-	public void writeNull(final ObjectOutputStream objectOutputStream) {
-		objectOutputStream.writeObject(null);
-	}
-
-	protected void writeTypeName(final Object object, final ObjectOutputStream objectOutputStream) {
-		final String type = object.getClass().getName();
-		objectOutputStream.writeObject(type);
-	}
-
-	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
+	protected TreeSetWriter() {
 	}
 	
-	protected void writeFields(final Object object, final ObjectOutputStream objectOutputStream) {
+	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
+		this.writeTreeSet((TreeSet) object, objectOutputStream);
+	}
+	
+	protected void writeTreeSet(final TreeSet treeSet, final ObjectOutputStream objectOutputStream) {
+		objectOutputStream.writeObject( treeSet.comparator() );
+		this.writeCollection( treeSet, objectOutputStream);
 	}
 }

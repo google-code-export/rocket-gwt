@@ -70,10 +70,16 @@ abstract public class ClientObjectInputStream extends ObjectInputStreamImpl impl
 	 return this.@rocket.serialization.client.ClientObjectInputStream::stream[ this.@rocket.serialization.client.ClientObjectInputStream::valueIndex++ ];
 	 }-*/;
 
-	native public long readLong() /*-{
-	 return this.@rocket.serialization.client.ClientObjectInputStream::stream[ this.@rocket.serialization.client.ClientObjectInputStream::valueIndex++ ];
-	 }-*/;
+//	native public long readLong() /*-{
+//	 return this.@rocket.serialization.client.ClientObjectInputStream::stream[ this.@rocket.serialization.client.ClientObjectInputStream::valueIndex++ ];
+//	 }-*/;
 
+	public long readLong(){
+		final long hi = this.readInt();
+		final long lo = this.readInt();
+		return ( hi << 32 ) | ( lo & 0xffffffff);
+	}
+	
 	native public float readFloat() /*-{
 	 return this.@rocket.serialization.client.ClientObjectInputStream::stream[ this.@rocket.serialization.client.ClientObjectInputStream::valueIndex++ ];
 	 }-*/;

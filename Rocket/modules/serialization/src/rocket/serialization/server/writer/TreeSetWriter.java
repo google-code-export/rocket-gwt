@@ -15,29 +15,39 @@
  */
 package rocket.serialization.server.writer;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.TreeSet;
 
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.server.ServerObjectWriter;
 
 /**
- * Handles the serialization of any class that implements Map
+ * Handles the serialization of any type that implements TreeSet
  * 
  * @author Miroslav Pokorny
+ * 
+ * @serialization-type: java.util.TreeSet
  */
-public class MapWriter extends rocket.serialization.client.writer.MapWriter implements ServerObjectWriter {
+public class TreeSetWriter extends rocket.serialization.client.writer.SetWriter implements ServerObjectWriter {
 
-	static public final ServerObjectWriter instance = new MapWriter();
+	static public final ServerObjectWriter instance = new TreeSetWriter();
 
-	protected MapWriter() {
+	protected TreeSetWriter() {
 	}
 
 	public boolean canWrite(final Object object) {
-		return object instanceof Map;
+		return object instanceof TreeSet;
 	}
 
 	protected void writeTypeName(final Object object, final ObjectOutputStream objectOutputStream) {
-		objectOutputStream.writeObject(HashMap.class.getName());
+		objectOutputStream.writeObject(TreeSet.class.getName());
+	}
+	
+	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
+		this.writeTreeSet( (TreeSet) object, objectOutputStream );
+	}
+	
+	protected void writeTreeSet( final TreeSet treeSet, final ObjectOutputStream objectOutputStream ){
+		objectOutputStream.writeObject( treeSet.comparator() );
+		this.writeCollection(treeSet, objectOutputStream);
 	}
 }

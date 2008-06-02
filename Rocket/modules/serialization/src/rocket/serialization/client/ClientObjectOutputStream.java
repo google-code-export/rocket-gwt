@@ -112,10 +112,17 @@ abstract public class ClientObjectOutputStream extends ObjectOutputStreamImpl {
 	 this.@rocket.serialization.client.ClientObjectOutputStream::values.push( intValue );
 	 }-*/;
 
-	native public void writeLong(final long longValue) /*-{
-	 this.@rocket.serialization.client.ClientObjectOutputStream::values.push( longValue );
-	 }-*/;
+//	native public void writeLong(final long longValue) /*-{
+//	 this.@rocket.serialization.client.ClientObjectOutputStream::values.push( longValue );
+//	 }-*/;
 
+	public void writeLong( final long longValue ){
+		final int hi = (int)(longValue >> 32);
+		final int lo = (int)longValue;
+		this.writeInt( hi );
+		this.writeInt(lo);
+	}
+	
 	native public void writeFloat(final float floatValue) /*-{
 	 this.@rocket.serialization.client.ClientObjectOutputStream::values.push( floatValue );
 	 }-*/;
@@ -131,14 +138,14 @@ abstract public class ClientObjectOutputStream extends ObjectOutputStreamImpl {
 	/**
 	 * Hack as String.equals(Object/String) is slower than the javascript snippet below.
 	 */
-	native protected boolean isString( final Object object )/*-{
-		return "java.lang.String" == @com.google.gwt.core.client.GWT::getTypeName(Ljava/lang/Object;)(object);	
-	}-*/;
+	protected boolean isString( final Object object ){
+		return "java.lang.String".equals( object.getClass().getName() );
+	}
 		
 	protected void writeNewObject(final Object object) {
 		Checker.notNull("parameter:object", object);
 
-		final String typeName = GWT.getTypeName(object);
+		final String typeName = object.getClass().getName();
 		final ObjectWriter objectWriter = this.getObjectWriter(typeName);
 		if (null == objectWriter) {
 			this.throwUnableToSerializable(typeName);
@@ -195,10 +202,6 @@ abstract public class ClientObjectOutputStream extends ObjectOutputStreamImpl {
 		// if the object wasnt found return 0...
 		return reference ? reference : 0;
 	}-*/;
-	
-	public String getTypeName(final Object object) {
-		return GWT.getTypeName(object);
-	}
 
 	/**
 	 * Builds a json string that includes the string table at the beginning followed by the values.

@@ -32,8 +32,4 @@ public class IntArrayWriter extends rocket.serialization.client.writer.IntArrayW
 	public boolean canWrite(final Object object) {
 		return object instanceof int[];
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

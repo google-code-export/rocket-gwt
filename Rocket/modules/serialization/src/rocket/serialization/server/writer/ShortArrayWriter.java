@@ -32,8 +32,4 @@ public class ShortArrayWriter extends rocket.serialization.client.writer.ShortAr
 	public boolean canWrite(final Object object) {
 		return object instanceof short[];
 	}
-
-	protected String getTypeName(final Object object) {
-		return object.getClass().getName();
-	}
 }

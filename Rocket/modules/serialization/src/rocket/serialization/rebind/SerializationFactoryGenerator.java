@@ -43,10 +43,12 @@ import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
+import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.methodparameter.NewMethodParameter;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
+import rocket.generator.rebind.util.FieldComparator;
 import rocket.generator.rebind.util.TypeComparator;
 import rocket.generator.rebind.visitor.ReachableTypesVisitor;
 import rocket.generator.rebind.visitor.SubTypesVisitor;
@@ -70,142 +72,155 @@ import rocket.util.server.InputOutput;
 
 /**
  * This generator creates not only the SerializationFactory but also creates on
- * demand all the ObjectReader/Writers for each serializable type if they dont already exist.
+ * demand all the ObjectReader/Writers for each serializable type if they dont
+ * already exist.
  * 
  * @author Miroslav Pokorny
  */
 public class SerializationFactoryGenerator extends Generator {
 
+	protected String getGeneratedTypeNameSuffix() {
+		return SerializationConstants.SERIALIZATION_FACTORY_GENERATED_TYPE_SUFFIX;
+	}
+
+	@Override
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		this.setBlackList(this.loadBlackLists());
 
-		// readable types
-		final Set readableTypeNames = this.getReadableTypesListFromAnnotation(type);
-		final Set writeableTypeNames = this.getWritableTypesListFromAnnotation(type);
+		// find all preexisting readers/writers
+		final Set<Type> allSerializableTypes = this.getAllSerializableTypes();
+		final Map<Type, Type> typesToReaders = this.findAllReaders(allSerializableTypes);
+		final Map<Type, Type> typesToWriters = this.findAllWriters(allSerializableTypes);
 
-		final Set readableTypes = this.findReadableSerializableTypes(readableTypeNames);
-		this.warnIfNativeMethodsFound(readableTypes);
+		// get the root types to be serialized. all types referenced from the roots will be present in the built set.
+		final Set<Type> readableTypes = this.getReadableTypesListFromAnnotation(type);
+		final Set<Type> writeableTypes = this.getWritableTypesListFromAnnotation(type);
 
-		// find any preexisting readers/writers.
-		final Map typesToObjectReaders = this.findObjectReaders(readableTypes);
+		// find all reachable readable/writable types
+		final Set<Type> serializableReadableTypes = this.findSerializableTypes(readableTypes, typesToReaders);
+		final Set<Type> serializableWritableTypes = this.findSerializableTypes(writeableTypes, typesToWriters);
 
-		// process writers...		
-		final Set writeableTypes = this.findWritableSerializableTypes(writeableTypeNames);
-		this.warnIfNativeMethodsFound(writeableTypes);
-		final Map typesToObjectWriters = this.findObjectWriters(writeableTypes);
+		// after this can ignore typesToReaders and typesToWriters
 
 		// generate readers and then writers
-		this.generateObjectReaders(typesToObjectReaders);
-		this.generateObjectWriters(typesToObjectWriters);
+		this.createObjectReaders(serializableReadableTypes, typesToReaders);
+		this.createObjectWriters(serializableWritableTypes, typesToWriters);
 
 		// nows the time to create the SerializationFactory
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		final NewConcreteType serializationFactory = this.createSerializableFactory(newTypeName);
 
-		this.overrideSerializationFactoryGetObjectReader(serializationFactory, typesToObjectReaders);
-		this.overrideSerializationFactoryGetObjectWriter(serializationFactory, typesToObjectWriters);
-
+		this.overrideSerializationFactoryGetObjectReader(serializationFactory, typesToReaders);
+		this.overrideSerializationFactoryGetObjectWriter(serializationFactory, typesToWriters);
 		context.unbranch();
-
+		
 		return serializationFactory;
+
 	}
 
 	/**
 	 * Checks and reports if a type matches any blacklist.
+	 * 
 	 * @param type
-	 * @return Returns true if the type or any of its super types are blacklisted from serialization.
+	 * @return Returns true if the type or any of its super types are
+	 *         blacklisted from serialization.
 	 */
 	protected boolean isBlackListed(final Type type) {
 		Checker.notNull("parameter:type", type);
 
 		boolean blacklisted = false;
 
-			// check black list...
-			final Iterator blackListers = this.getBlackList().iterator();
-			final Type object = this.getGeneratorContext().getObject();
-			
-			while (blackListers.hasNext()) {
-				final TypeMatcher matcher = (TypeMatcher) blackListers.next();
-				
-				// scan entire type heirarchy just in case type or any super is blacklisted.
-				Type current = type;
-				while( true ){
-					if (matcher.matches(current)) {
-						blacklisted = true;
-						break;
-					}	
-					
-					current = current.getSuperType();
-					if( null == current ){
-						break;
-					}
-					// stop when we hit Object.
-					if( object.equals( current )){
-						break;
-					}
+		// check black list...
+		final Iterator<TypeMatcher> blackListers = this.getBlackList().iterator();
+		final Type object = this.getGeneratorContext().getObject();
+
+		while (blackListers.hasNext()) {
+			final TypeMatcher matcher = blackListers.next();
+
+			// scan entire type heirarchy just in case type or any super is
+			// blacklisted.
+			Type current = type;
+			while (true) {
+				if (matcher.matches(current)) {
+					blacklisted = true;
+					break;
 				}
-				
-				// blacklisted stop searching
-				if( blacklisted ){
+
+				current = current.getSuperType();
+				if (null == current) {
+					break;
+				}
+				// stop when we hit Object.
+				if (object.equals(current)) {
 					break;
 				}
 			}
+
+			// blacklisted stop searching
+			if (blacklisted) {
+				break;
+			}
+		}
 
 		return blacklisted;
 	}
 
 	/**
-	 * Scans each and every package for a blacklist file and loads the embedded expressions. 
+	 * Scans each and every package for a blacklist file and loads the embedded
+	 * expressions.
+	 * 
 	 * @return A set containing all blacklisted packages.
 	 */
-	protected Set loadBlackLists() {
+	protected Set<TypeMatcher> loadBlackLists() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Attempting to load and merge all blacklist expressions (unsorted).");
+		context.info("Attempting to load and merge all blacklists (unsorted).");
 
-		final Set blackLists = new HashSet();
+		final Set<TypeMatcher> blackLists = new HashSet<TypeMatcher>();
 
 		final SubTypesVisitor packageVisitor = new SubTypesVisitor() {
+
+			@Override
 			protected boolean visit(final Type type) {
 				final Package packagee = type.getPackage();
 				if (false == this.packages.contains(packagee)) {
 					this.packages.add(packagee);
 
-					final Set loaded = SerializationFactoryGenerator.this.loadBlackListFromPackage(packagee);
+					final Set<TypeMatcher> loaded = SerializationFactoryGenerator.this.loadBlackListFromPackage(packagee);
 					blackLists.addAll(loaded);
 				}
 				return false;
 			}
 
+			@Override
 			protected boolean skipInitialType() {
 				return false;
 			}
 
-			Set packages = new HashSet();
+			Set<Package> packages = new HashSet<Package>();
 		};
 		packageVisitor.start(context.getObject());
 
-		context.debug("Located " + blackLists.size() + " expressions in total after searching all packages for \""
-				+ SerializationConstants.BLACKLIST_FILENAME + "\" files.");
 		context.unbranch();
 
 		return blackLists;
 	}
 
 	/**
-	 * Attempts to load the black list file from the given package. 
+	 * Attempts to load the black list file from the given package.
+	 * 
 	 * @param packagee
 	 * @return A set of types or an empty set if the black list was not found.
 	 */
-	protected Set loadBlackListFromPackage(final Package packagee) {
+	protected Set<TypeMatcher> loadBlackListFromPackage(final Package packagee) {
 		Checker.notNull("parameter:package", packagee);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.delayedBranch();
 		context.debug(packagee.getName());
 
-		final Set expressions = new HashSet();
+		final Set<TypeMatcher> expressions = new HashSet<TypeMatcher>();
 
 		final String fileName = this.getResourceName(packagee, SerializationConstants.BLACKLIST_FILENAME);
 		InputStream inputStream = null;
@@ -216,9 +231,10 @@ public class SerializationFactoryGenerator extends Generator {
 				if (null == inputStream) {
 					break;
 				}
-				//context.debug(fileName);
+				// context.debug(fileName);
 
-				// use a BufferedReader to read a line at a time skipping comments and empty lines. 
+				// use a BufferedReader to read a line at a time skipping
+				// comments and empty lines.
 				final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
 				while (true) {
@@ -239,7 +255,6 @@ public class SerializationFactoryGenerator extends Generator {
 					expressions.add(typeNameMatcher);
 				}
 
-				//context.debug("Located " + expressions.size() + " expressions.");
 				break;
 
 			} catch (final RuntimeException caught) {
@@ -256,95 +271,202 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	/**
-	 * A set of back list expressions. One may iterate thru this set and ask each whether it matches a given type, 
-	 * if it does that type is blacklisted.
+	 * A set of back list expressions. One may iterate thru this set and ask
+	 * each whether it matches a given type, if it does that type is
+	 * blacklisted.
 	 */
-	private Set blackList;
+	private Set<TypeMatcher> blackList;
 
-	protected Set getBlackList() {
+	protected Set<TypeMatcher> getBlackList() {
 		Checker.notNull("field:blackList", blackList);
 		return this.blackList;
 	}
 
-	protected void setBlackList(final Set blackList) {
+	protected void setBlackList(final Set<TypeMatcher> blackList) {
 		Checker.notNull("parameter:blackList", blackList);
 		this.blackList = blackList;
 	}
 
-	protected Set getReadableTypesListFromAnnotation(final Type type) {
-		final Set readableTypeNames = this.getTypeNamesListFromAnnotation(type, SerializationConstants.SERIALIZABLE_READABLE_TYPES);
-		this.logTypeNames("Listing readable types from annotations", readableTypeNames);
-		return readableTypeNames;
-	}
-
-	protected Set getWritableTypesListFromAnnotation(final Type type) {
-		final Set writableTypeNames = this.getTypeNamesListFromAnnotation(type, SerializationConstants.SERIALIZABLE_WRITABLE_TYPES);
-		this.logTypeNames("Listing writable types from annotations", writableTypeNames);
-		return writableTypeNames;
-	}
-
 	/**
-	 * Helper which takes a list of types from an annotation from the given type.
-	 * @param type
-	 * @param annotation
+	 * Returns all types that are candidates for serialization less those that
+	 * have been blacklisted.
+	 * 
 	 * @return
 	 */
-	protected Set getTypeNamesListFromAnnotation(final Type type, final String annotation) {
-		Checker.notNull("parameter:type", type);
+	protected Set<Type> getAllSerializableTypes() {
+		final Set<Type> allTypes = new HashSet<Type>();
 
-		final List typeNames = type.getMetadataValues(annotation);
-		return new TreeSet(typeNames);
-	}
+		final GeneratorContext context = this.getGeneratorContext();
+		final Iterator<Type> types = context.getObject().getSubTypes().iterator();
+		while (types.hasNext()) {
+			final Type type = types.next();
+			if (this.isBlackListed(type)) {
+				continue;
+			}
 
-	protected Set findReadableSerializableTypes(final Set typeNames) {
-		final Set types = this.findSerializablesTypes(typeNames);
-
-		this.logTypes("Listing readable serializable types", types);
-		return types;
-	}
-
-	protected Set findWritableSerializableTypes(final Set typeNames) {
-		final Set types = this.findSerializablesTypes(typeNames);
-
-		this.logTypes("Listing writable serializable types", types);
-		return types;
+			allTypes.add(type);
+		}
+		
+		// TODO hack need to add proper support for arrays
+		allTypes.add( context.getType( "boolean[]"));
+		allTypes.add( context.getType( "byte[]"));
+		allTypes.add( context.getType( "short[]"));
+		allTypes.add( context.getType( "int[]"));
+		allTypes.add( context.getType( "long[]"));
+		allTypes.add( context.getType( "float[]"));
+		allTypes.add( context.getType( "double[]"));
+		allTypes.add( context.getType( "char[]"));
+		return allTypes;
 	}
 
 	/**
-	 * Builds up a set that contains all the reachable types branching from the types found in the given list.
-	 * @param typeNames
-	 * @return A set of types
+	 * Builds a map that contains for each of the input types its corresponding
+	 * ObjectReader.
+	 * 
+	 * @param types
+	 * @return
 	 */
-	protected Set findSerializablesTypes(final Set typeNames) {
-		Checker.notNull("parameter:typeNames", typeNames);
+	protected Map<Type, Type> findAllReaders(final Set<Type> types) {
+		Checker.notNull("parameter:types", types);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info( "Finding all serializable types.");
-		
-		final Set serializables = new TreeSet(TypeComparator.INSTANCE);
-		final Iterator iterator = typeNames.iterator();
+		context.info("Finding existing ObjectReaders...");
 
-		while (iterator.hasNext()) {
-			final String typeName = (String) iterator.next();
-			final Type type = context.getType(typeName);
-			final Set serializablesFoundForSerializableType = this.findSerializableTypes(type);
+		final ObjectReaderFinder finder = new ObjectReaderFinder() {
+			@Override
+			protected Type getImplementingInterface() {
+				return SerializationFactoryGenerator.this.getObjectReader();
+			}
 
-			serializables.addAll(serializablesFoundForSerializableType);
-		}
+			@Override
+			protected boolean shouldBeSerialized(final Type type) {
+				return SerializationFactoryGenerator.this.isOrHasSerializableSubType(type);
+			}
+		};
 
-		// removing java.lang.Object
-		final Type object = context.getObject();
-		serializables.remove(object);
-		context.debug("Removed java.lang.Object from serializable types (java.lang.Object has no fields to serialize anyway).");
+		final Map<Type, Type> typesToReaders = finder.build(types);
 
-		final Type string = context.getString();
-		serializables.remove(string);
-		context.debug("Removed java.lang.String from serializable types (inbuilt support for java.lang.String already present).");
+		this.logMapping(typesToReaders);
 
 		context.unbranch();
-		
-		return serializables;
+
+		return typesToReaders;
+	}
+
+	protected Map<Type, Type> findAllWriters(final Set<Type> types) {
+		Checker.notNull("parameter:types", types);
+
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.info("Finding existing ObjectWriters...");
+
+		final ObjectWriterFinder finder = new ObjectWriterFinder() {
+			@Override
+			protected Type getImplementingInterface() {
+				return SerializationFactoryGenerator.this.getObjectWriter();
+			}
+
+			@Override
+			protected boolean shouldBeSerialized(final Type type) {
+				return SerializationFactoryGenerator.this.isOrHasSerializableSubType(type);
+			}
+		};
+
+		final Map<Type, Type> typesToWriters = finder.build(types);
+
+		this.logMapping(typesToWriters);
+
+		context.unbranch();
+
+		return typesToWriters;
+	}
+
+	protected void logMapping(final Map<Type, Type> types) {
+		Checker.notNull("parameter:types", types);
+
+		final GeneratorContext context = this.getGeneratorContext();
+
+		if (context.isDebugEnabled()) {
+			final TreeMap<Type, Type> sorted = new TreeMap<Type, Type>(TypeComparator.INSTANCE);
+			sorted.putAll(types);
+
+			final Iterator<Map.Entry<Type,Type>> iterator = sorted.entrySet().iterator();
+			while (iterator.hasNext()) {
+				final Map.Entry<Type,Type> entry = iterator.next();
+
+				final Type type = entry.getKey();
+				final Type type1 = entry.getValue();
+
+				String message = type.getName();
+				if (null != type1) {
+					message = message + " = " + type1.getName();
+				}
+				context.debug(message);
+			}
+		}
+	}
+
+	protected Set<Type> getReadableTypesListFromAnnotation(final Type type) {
+		return this.getTypesFromAnnotation("Listing readable annotated types", type, SerializationConstants.SERIALIZABLE_READABLE_TYPES);
+	}
+
+	protected Set<Type> getWritableTypesListFromAnnotation(final Type type) {
+		return this.getTypesFromAnnotation("Listing writable annotated types", type, SerializationConstants.SERIALIZABLE_WRITABLE_TYPES);
+	}
+
+	protected Set<Type> getTypesFromAnnotation(final String title, final Type type, final String annotation) {
+		Checker.notNull("parameter:type", type);
+		Checker.notEmpty("parameter:annotation", annotation);
+
+		final GeneratorContext context = this.getGeneratorContext();
+		context.branch();
+		context.debug(title);
+
+		final TreeSet<Type> types = new TreeSet<Type>( TypeComparator.INSTANCE );
+
+		final Iterator<String> typeNames = type.getMetadataValues(annotation).iterator();
+		while (typeNames.hasNext()) {
+			final String typeName = typeNames.next();
+			final Type listedType = context.findType(typeName);
+			if (null == listedType) {
+				this.throwUnableToFindAnnotatedType(typeName, type);
+			}
+
+			types.add(listedType);
+			context.debug(listedType.getName());
+		}
+
+		context.unbranch();
+		return types;
+	}
+
+	protected void throwUnableToFindAnnotatedType(final String annotatedTypeName, final Type parentType) {
+		throw new SerializationFactoryGeneratorException("Unable to find annotated type \"" + annotatedTypeName
+				+ "\" which was listed on \"" + parentType.getName() + "\".");
+	}
+
+	/**
+	 * Builds a map that includes all reachable serializable types from the
+	 * incoming set. For each type if an existing ObjectReader or ObjectWriter
+	 * exists its type will be the value of the map entry.
+	 * 
+	 * @param types
+	 * @param typesToReadersOrWriters
+	 * @return
+	 */
+
+	protected Set<Type> findSerializableTypes(final Set<Type> types, final Map<Type, Type> typesToReadersOrWriters) {
+		final Set<Type> serializableTypes = new HashSet<Type>();
+
+		final Iterator<Type> i = types.iterator();
+		while (i.hasNext()) {
+			final Type type = i.next();
+			final Set<Type> newSerializableTypes = this.findSerializableTypes(type, typesToReadersOrWriters);
+			serializableTypes.addAll(newSerializableTypes);
+		}
+
+		return serializableTypes;
 	}
 
 	/**
@@ -353,10 +475,12 @@ public class SerializationFactoryGenerator extends Generator {
 	 * be thrown if any unserializable type is encountered.
 	 * 
 	 * @param type
-	 * @return A set containing all reachable serializable types.
+	 * @param typesToReadersOrWriters
+	 * @return A set of serializable types
 	 */
-	protected Set findSerializableTypes(final Type type) {
+	protected Set<Type> findSerializableTypes(final Type type, final Map<Type, Type> typesToReadersOrWriters) {
 		Checker.notNull("parameter:type", type);
+		Checker.notNull("typesToReadersOrWriters", typesToReadersOrWriters);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -365,24 +489,43 @@ public class SerializationFactoryGenerator extends Generator {
 		final Type map = this.getMap();
 		final Type list = this.getList();
 		final Type set = this.getSet();
-		
+
 		final ReachableTypesVisitor visitor = new ReachableTypesVisitor() {
 
+			@Override
 			protected boolean skipTypeThatImplementsInterface(final Type type, final Type interfacee) {
 				return false == SerializationFactoryGenerator.this.isOrHasSerializableSubType(type);
 			}
 
+			@Override
 			protected boolean skipArray(final Type array) {
-				Checker.notNull("parameter:array", array );
-				
+				Checker.notNull("parameter:array", array);
+
 				return false;
 			}
 
+			@Override
 			protected boolean skipType(final Type type) {
-				final boolean skip = !SerializationFactoryGenerator.this.isOrHasSerializableSubType(type);
+				boolean skip = false;
+
+				while (true) {
+					// we dont want to visit the fields of $type we already have a reader/writer.
+					if (typesToReadersOrWriters.containsKey(type)) {
+						skip = true;
+						break;
+					}
+					if (SerializationFactoryGenerator.this.isOrHasSerializableSubType(type)) {
+						skip = false;
+						break;
+					}
+					skip = false;
+					break;
+				}
+
 				return skip;
 			}
-			
+
+			@Override
 			protected void visitType(final Type type) {
 				if (false == SerializationFactoryGenerator.this.isOrHasSerializableSubType(type)) {
 					SerializationFactoryGenerator.this.throwEncounteredUnserializableType(type);
@@ -393,10 +536,12 @@ public class SerializationFactoryGenerator extends Generator {
 				context.unbranch();
 			}
 
+			@Override
 			protected boolean skipSuperType(final Type superType) {
 				return !SerializationFactoryGenerator.this.isOrHasSerializableSubType(superType);
 			}
-			
+
+			@Override
 			protected void visitSuperType(final Type superType) {
 				context.branch();
 				context.debug(superType.getName());
@@ -404,37 +549,49 @@ public class SerializationFactoryGenerator extends Generator {
 				context.unbranch();
 			}
 
+			@Override
 			protected boolean skipSubType(final Type subType) {
 				return !SerializationFactoryGenerator.this.isOrHasSerializableSubType(subType);
 			}
-			
-			protected void visitSubType( final Type subType ){
+
+			@Override
+			protected void visitSubType(final Type subType) {
 				context.branch();
 				context.debug(subType.getName());
 				super.visitSubType(subType);
-				context.unbranch();				
+				context.unbranch();
+			}
+
+			@Override
+			protected void visitFields(final Type type) {
+				if (false == typesToReadersOrWriters.containsKey(type)) {
+					super.visitFields(type);
+				}
 			}
 
 			/**
 			 * Skip transient or static fields.
 			 */
+			@Override
 			protected boolean skipField(final Field field) {
-				Checker.notNull("parameter:field", field );
-				
+				Checker.notNull("parameter:field", field);
+
 				return field.isStatic() || field.isTransient();
 			}
 
 			/**
-			 * This method includes special tests to ensure that list/set/map element types are visited.
+			 * This method includes special tests to ensure that list/set/map
+			 * element types are visited.
 			 * 
 			 * @param field
 			 */
+			@Override
 			protected void visitField(final Field field) {
-				Checker.notNull("parameter:field", field );
+				Checker.notNull("parameter:field", field);
 
 				context.branch();
-				context.debug( "Field: " + field.getName() );
-				
+				context.debug("Field: " + field.getName());
+
 				while (true) {
 					final Type fieldType = field.getType();
 
@@ -442,7 +599,7 @@ public class SerializationFactoryGenerator extends Generator {
 						SerializationFactoryGenerator.this.throwFinalFieldEncountered(field);
 					}
 
-					if (list.equals( fieldType )) {
+					if (list.equals(fieldType)) {
 						this.processInterface(fieldType);
 
 						final Type elementType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field);
@@ -450,7 +607,7 @@ public class SerializationFactoryGenerator extends Generator {
 						this.visitType(elementType);
 						break;
 					}
-					if ( set.equals(fieldType)) {
+					if (set.equals(fieldType)) {
 						this.processInterface(fieldType);
 
 						final Type elementType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field);
@@ -461,8 +618,8 @@ public class SerializationFactoryGenerator extends Generator {
 					if (map.equals(fieldType)) {
 						this.processInterface(fieldType);
 
-						final Type keyType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field, 0 );
-						final Type valueType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field, 1 );
+						final Type keyType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field, 0);
+						final Type valueType = SerializationFactoryGenerator.this.getTypeFromAnnotation(field, 1);
 						context.debug(keyType + " (Map key)");
 						context.debug(valueType + " (Map value)");
 
@@ -474,15 +631,18 @@ public class SerializationFactoryGenerator extends Generator {
 					this.visitType(fieldType);
 					break;
 				}
-				
+
 				context.unbranch();
 			}
 		};
 		visitor.start(type);
 
-		final Set found = visitor.getConcreteTypes();
+		final Set<Type> found = visitor.getConcreteTypes();
 
-		context.info("Found " + found.size() + " reachable type(s).");
+		found.remove(context.getString());
+		found.remove(context.getObject());
+		context.debug("Removing special cases types \"java.lang.Object\" and \"java.lang.String\".");
+
 		context.unbranch();
 		return found;
 	}
@@ -492,7 +652,7 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	/**
-	 * Tests if the given type is serializable or has a serializable sub type. 
+	 * Tests if the given type is serializable or has a serializable sub type.
 	 * 
 	 * @param type
 	 * @return
@@ -526,6 +686,7 @@ public class SerializationFactoryGenerator extends Generator {
 
 	/**
 	 * Tests if the given type is serializable.
+	 * 
 	 * @param type
 	 * @return
 	 */
@@ -538,7 +699,8 @@ public class SerializationFactoryGenerator extends Generator {
 				break;
 			}
 
-			// special test for arrays, all array are considered to be serializable.
+			// special test for arrays, all array are considered to be
+			// serializable.
 			if (type.isArray()) {
 				serialize = true;
 				break;
@@ -555,13 +717,18 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	/**
-	 * This class will continue visit all sub types of the given type until it runs out of sub types or a serializable type is found.
-	 * If a serializable sub type is found thats also not blacklisted then the {@link #hasSerializableSubType()} will return true. 
+	 * This class will continue visit all sub types of the given type until it
+	 * runs out of sub types or a serializable type is found. If a serializable
+	 * sub type is found thats also not blacklisted then the
+	 * {@link #hasSerializableSubType()} will return true.
 	 */
 	class SerializableSubTypeFinder extends SubTypesVisitor {
+
+		@Override
 		protected boolean visit(final Type type) {
 			boolean skipRemainder = false;
-			// only visit if sub type is not blacklisted and is also serializable.
+			// only visit if sub type is not blacklisted and is also
+			// serializable.
 			if (false == SerializationFactoryGenerator.this.isBlackListed(type)
 					&& SerializationFactoryGenerator.this.implementsSerializable(type)) {
 				this.setSerializableSubType(true);
@@ -570,6 +737,7 @@ public class SerializationFactoryGenerator extends Generator {
 			return skipRemainder;
 		}
 
+		@Override
 		protected boolean skipInitialType() {
 			return true;
 		}
@@ -595,235 +763,128 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	protected void throwTypeIsNotSerializable(final Type type) {
-		throw new SerializationFactoryGeneratorException("The type \"" + type + "\" is not serializable (doesnt implement " + SerializationConstants.SERIALIZABLE + ")");
+		throw new SerializationFactoryGeneratorException("The type \"" + type + "\" is not serializable (doesnt implement "
+				+ SerializationConstants.SERIALIZABLE + ")");
 	}
 
 	protected void throwFinalFieldEncountered(final Field field) {
 		throw new SerializationFactoryGeneratorException("Fields that are final cannot be deserialized, " + field);
 	}
 
-	/**
-	 * Visits all methods for all types and spits out warning messages for each
-	 * native method found.
-	 * 
-	 * @param types
-	 */
-	protected void warnIfNativeMethodsFound(final Set types) {
-		Checker.notNull("parameter:types", types);
-
-		int nativeMethodTotal = 0;
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.debug("Listing native jsni methods of all serializable types.");
-
-		final Iterator typesIterator = types.iterator();
-		while (typesIterator.hasNext()) {
-			final Type type = (Type) typesIterator.next();
-			nativeMethodTotal = nativeMethodTotal + this.warnIfNativeMethodsFound(type);
-		}
-
-		if (nativeMethodTotal > 0) {
-			context.warn("The " + types.size() + " serializables types contain " + nativeMethodTotal + " native (jsni) methods in total.");
-		}
-		context.unbranch();
+	protected Type getList() {
+		return this.getGeneratorContext().getType(SerializationConstants.LIST);
 	}
 
-	/**
-	 * This method only checks declared in the current type and not methods that
-	 * belong to super types.
-	 * 
-	 * @param type
-	 * @return The number of native methods found on the given type.
-	 */
-	protected int warnIfNativeMethodsFound(final Type type) {
-		Checker.notNull("parameter:type", type);
-
-		final Iterator methods = type.getMethods().iterator();
-
-		int nativeMethodCount = 0;
-		int methodCount = 0;
-		final GeneratorContext context = this.getGeneratorContext();
-
-		while (methods.hasNext()) {
-			final Method method = (Method) methods.next();
-			if (method.isNative()) {
-				nativeMethodCount++;
-
-				if (nativeMethodCount == 1) {
-					context.branch();
-					context.debug(type.getName());
-				}
-
-				context.debug(method.toString());
-			}
-			methodCount++;
-		}
-
-		if (nativeMethodCount > 0) {
-			context.debug(nativeMethodCount + " native methods found out of a total of " + methodCount + " methods ");
-			context.unbranch();
-		}
-
-		return nativeMethodCount;
+	protected Type getSet() {
+		return this.getGeneratorContext().getType(SerializationConstants.SET);
 	}
 
+	protected Type getMap() {
+		return this.getGeneratorContext().getType(SerializationConstants.MAP);
+	}
+
+	// TODO Need to read any attached annotations to find out the exact types
+	protected Type getTypeFromAnnotation(final Field field) {
+		return this.getTypeFromAnnotation(field, 0);
+	}
+
+	protected Type getTypeFromAnnotation(final Field field, final int index) {
+		Checker.notNull("parameter:field", field);
+
+		final List<String> values = field.getMetadataValues(SerializationConstants.CONTAINER_TYPE);
+		if (values.size() < index) {
+			throw new SerializationException("Unable to locate \"" + SerializationConstants.CONTAINER_TYPE + "\" on field " + field);
+		}
+		final String typeName = (String) values.get(index);
+		final Type type = this.getGeneratorContext().findType(typeName);
+		if (null == type) {
+			throw new SerializationException("Unable to find type \"" + typeName + "\" which was taken from the annotation \""
+					+ SerializationConstants.CONTAINER_TYPE + "\" from field: " + field);
+		}
+		return type;
+	}
+
+	protected Type getObjectReader() {
+		return this.getGeneratorContext().getType(SerializationConstants.OBJECT_READER);
+	}
+
+	protected Type getObjectWriter() {
+		return this.getGeneratorContext().getType(SerializationConstants.OBJECT_WRITER);
+	}
+
+	
+	
 	/**
-	 * Returns a map that is keyed on type and the value is the existing
-	 * ObjectReader
+	 * Loops thru the map of serializable types and creates an ObjectReader for
+	 * each every type that requires one.
 	 * 
 	 * @param serializables
-	 * @return
+	 *            A set of types needing to be serialized
+	 * @param typesToReaders
+	 *            A map containing all types and their corresponding existing
+	 *            readers
 	 */
-	protected Map findObjectReaders(final Set serializables) {
+	protected void createObjectReaders(final Set<Type> serializables, final Map<Type, Type> typesToReaders) {
 		Checker.notNull("parameter:serializables", serializables);
+		Checker.notNull("parameter:typesToReaders", typesToReaders);
 
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info("Finding existing ObjectReaders...");
-
-		final ObjectReaderFinder finder = new ObjectReaderFinder() {
-			protected Type getImplementingInterface() {
-				return SerializationFactoryGenerator.this.getObjectReader();
-			}
-
-			protected boolean shouldBeSerialized(final Type type) {
-				return SerializationFactoryGenerator.this.isOrHasSerializableSubType(type);
-			}
-		};
-
-		final Map objectReaders = createMapFromSet(serializables);
-		final Map existingObjectReaders = finder.build(serializables);
-
-		this.logBoundTypes("Listing discovered (existing) ObjectReaders.", existingObjectReaders);
-
-		objectReaders.putAll(existingObjectReaders);
-		this.logBoundTypes("Result of merging existing and types requiring objectReaders to be created.", objectReaders);
-
-		context.unbranch();
-
-		return objectReaders;
-	}
-
-	/**
-	 * Returns a map that is keyed on type and the value is the existing
-	 * ObjectWriter
-	 * 
-	 * @param serializables
-	 * @return
-	 */
-	protected Map findObjectWriters(final Set serializables) {
-		Checker.notNull("parameter:serializables", serializables);
-
-		final GeneratorContext context = this.getGeneratorContext();
-		context.info("Finding existing ObjectWriters...");
-
-		final ObjectWriterFinder finder = new ObjectWriterFinder() {
-			protected Type getImplementingInterface() {
-				return SerializationFactoryGenerator.this.getObjectWriter();
-			}
-
-			protected boolean shouldBeSerialized(final Type type) {
-				return SerializationFactoryGenerator.this.isOrHasSerializableSubType(type);
-			}
-		};
-		final Map objectWriters = createMapFromSet(serializables);
-
-		final Map existingObjectWriters = finder.build(serializables);
-		this.logBoundTypes("Listing discovered (existing) ObjectWriters.", existingObjectWriters);
-
-		objectWriters.putAll(existingObjectWriters);
-		this.logBoundTypes("Result of merging existing and types requiring ObjectWriters to be created.", objectWriters);
-
-		return objectWriters;
-	}
-
-	/**
-	 * Creates a map and proceeds to add the elements of the set with null
-	 * values to a new map.
-	 * 
-	 * @param set
-	 * @return
-	 */
-	protected Map createMapFromSet(final Set set) {
-		Checker.notNull("parameter:set", set);
-
-		final Map map = new TreeMap(TypeComparator.INSTANCE);
-		final Iterator iterator = set.iterator();
-		while (iterator.hasNext()) {
-			map.put(iterator.next(), null);
-		}
-		return map;
-	}
-
-	/**
-	 * Generates ObjectReaders if necessary for each of the types found in the
-	 * given set
-	 * 
-	 * @param serializables
-	 *            A map of types and possibly preexisting ObjectReaders
-	 */
-	protected void generateObjectReaders(final Map serializables) {
-		Checker.notNull("parameter:serializables", serializables);
-
-		final Map newObjectReaders = this.createObjectReaders(serializables);
-
-		this.overrideObjectReadersNewInstanceMethods(newObjectReaders);
-		this.overrideObjectReadersReadMethod(newObjectReaders);
-		this.addSingletonFields(newObjectReaders.values(), this.getObjectReader());
-		this.writeTypes(newObjectReaders.values());
-	}
-
-	/**
-	 * Loops thru the map of serializable types and creates an ObjectReader for each every type that requires one.
-	 * @param serializables
-	 * @return An set of generated ObjectReaders
-	 */
-	protected Map createObjectReaders(final Map serializables) {
-		Checker.notNull("parameter:serializables", serializables);
-
-		final Map orderedSerializables = this.sortSerializablesIntoHeirarchyOrder(serializables);
+		final Set<Type> orderedSerializables = this.sortSerializablesIntoHeirarchyOrder(serializables);
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		context.info("Creating necessary ObjectReaders.");
 
-		final Iterator types = orderedSerializables.entrySet().iterator();
-		final Map newObjectReaders = new TreeMap(TypeComparator.INSTANCE);
+		final Iterator<Type> types = orderedSerializables.iterator();
 		int skippedGeneratingCount = 0;
-
+		final Set<Type> newReaders = new TreeSet<Type>( TypeComparator.INSTANCE );
+		
 		while (types.hasNext()) {
-			final Map.Entry entry = (Map.Entry) types.next();
-
-			final Type type = (Type) entry.getKey();
-			final Object reader = entry.getValue();
+			final Type type = (Type) types.next();
+			final Object reader = typesToReaders.get( type );
 			if (null != reader) {
 				skippedGeneratingCount++;
 				continue;
 			}
 
-			final NewConcreteType newReader = this.createObjectReader(type, serializables);
-			newObjectReaders.put(type, newReader);
-			serializables.put(type, newReader);
+			context.branch();
+			final NewConcreteType newReader = this.createObjectReader(type, typesToReaders );
+			typesToReaders.put(type, newReader);
+	
+			context.branch();
+			this.overrideObjectReaderNewInstanceMethod(type, newReader );
+			
+			if( false == type.isArray() ){
+				this.overrideObjectReaderReadFieldsMethod(newReader, type);
+				this.overrideObjectReaderReadMethod(newReader, type);
+			}
+			this.addSingletonField( newReader );
+			context.unbranch();
+			context.unbranch();
+			
+			newReaders.add( newReader );
 		}
-		context.debug("Created new " + newObjectReaders.size() + " ObjectReaders.");
+		
+		this.writeTypes( newReaders );
 		context.unbranch();
-
-		return newObjectReaders;
 	}
 
 	/**
-	 * Factory method that creates a new NewConcreteType that will become the ObjectReader for the given type.
+	 * Factory method that creates a new NewConcreteType that will become the
+	 * ObjectReader for the given type.
+	 * 
 	 * @param type
-	 * @param newTypeName
+	 * @param newtypesToReaders
 	 * @return
 	 */
-	protected NewConcreteType createObjectReader(final Type type, final Map serializables) {
+	protected NewConcreteType createObjectReader(final Type type, final Map<Type, Type> typesToReaders ) {
 		final GeneratorContext context = this.getGeneratorContext();
+		context.debug(type.getName());
 
-		final String newTypeName = this.getGeneratedTypeName(type, SerializationConstants.OBJECT_READER_GENERATED_TYPE_SUFFIX,
-				"rocket.serialization.client.reader");
+		final String newTypeName = this.getGeneratedTypeName(type, SerializationConstants.OBJECT_READER_GENERATED_TYPE_SUFFIX, "rocket.serialization.client.reader");
 		final NewConcreteType newConcreteType = context.newConcreteType(newTypeName);
 		newConcreteType.setAbstract(false);
 		newConcreteType.setFinal(false);
+
+		context.debug(newTypeName);
 
 		// pick the right super type.
 		Type objectReaderSuperType = null;
@@ -842,18 +903,20 @@ public class SerializationFactoryGenerator extends Generator {
 				break;
 			}
 
-			// find the super types object reader and extend that...			
-			objectReaderSuperType = (Type) serializables.get(superType);
+			// find the super types object reader and extend that...
+			objectReaderSuperType = (Type) typesToReaders.get(superType);
 
-			if( null == objectReaderSuperType ){
+			if (null == objectReaderSuperType) {
 				throw new IllegalStateException("Unable to fetch the reader for the super type \"" + superType + "\" whilst processing \"" + type.getName() + "\".");
 			}
 			break;
 		}
-		
-		newConcreteType.setSuperType(objectReaderSuperType);
 
-		// add an annotation that marks the type being handled by this ObjectReader
+		newConcreteType.setSuperType(objectReaderSuperType);
+		context.debug("extends " + objectReaderSuperType);
+
+		// add an annotation that marks the type being handled by this
+		// ObjectReader
 		newConcreteType.addMetaData(SerializationConstants.SERIALIZABLE_TYPE, type.getName());
 
 		// create a public no arguments constructor.
@@ -861,31 +924,9 @@ public class SerializationFactoryGenerator extends Generator {
 		constructor.setBody(EmptyCodeBlock.INSTANCE);
 		constructor.setVisibility(Visibility.PUBLIC);
 
-		context.debug(newConcreteType.getName());
 		return newConcreteType;
 	}
 
-	/**
-	 * Loops thru and overrides the newInstance method belonging to each and every ObjectReader
-	 * @param objectReadersToTypes
-	 */
-	protected void overrideObjectReadersNewInstanceMethods(final Map objectReadersToTypes) {
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info("Overriding all ObjectReader newInstance methods.");
-
-		final Iterator iterator = objectReadersToTypes.entrySet().iterator();
-		while (iterator.hasNext()) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-
-			final Type type = (Type) entry.getKey();
-			final NewConcreteType reader = (NewConcreteType) entry.getValue();
-
-			this.overrideObjectReaderNewInstanceMethod(type, reader);
-		}
-
-		context.unbranch();
-	}
 
 	/**
 	 * Overrides the abstract {@link ObjectReaderImpl#newInstance} method to
@@ -898,10 +939,10 @@ public class SerializationFactoryGenerator extends Generator {
 				this.overrideObjectReaderNewInstanceMethodForArrayType(type, reader);
 				break;
 			}
-			if( false == type.hasNoArgumentsConstructor() ){
+			if (false == type.hasNoArgumentsConstructor()) {
 				break;
 			}
-			
+
 			if (type.isAbstract()) {
 				break;
 			}
@@ -916,7 +957,7 @@ public class SerializationFactoryGenerator extends Generator {
 
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final List parameters = new ArrayList();
+		final List<Type> parameters = new ArrayList<Type>();
 		parameters.add(context.getString());
 		parameters.add(this.getObjectInputStream());
 
@@ -936,11 +977,11 @@ public class SerializationFactoryGenerator extends Generator {
 		Checker.notNull("parameter:reader", reader);
 
 		final GeneratorContext context = this.getGeneratorContext();
-		final List parameters = new ArrayList();
+		final List<Type> parameters = new ArrayList<Type>();
 		parameters.add(context.getString());
 		parameters.add(this.getObjectInputStream());
 
-		final Method method = reader.getMostDerivedMethod(SerializationConstants.CLIENT_OBJECT_READER_IMPL_NEW_INSTANCE_METHOD, parameters);
+		final Method method = reader.getMostDerivedMethod(SerializationConstants.CLIENT_OBJECT_READER_IMPL_NEW_INSTANCE_METHOD,parameters);
 		final NewMethod newMethod = method.copy(reader);
 		newMethod.setAbstract(false);
 
@@ -963,37 +1004,7 @@ public class SerializationFactoryGenerator extends Generator {
 
 		context.debug("Overridden " + newMethod);
 	}
-
-	/**
-	 * Loops thru and overrides the read method belonging to each and every ObjectReader
-	 * @param typesAndObjectReaders
-	 */
-	protected void overrideObjectReadersReadMethod(final Map typesAndObjectReaders) {
-		
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info( "Overriding object readers read method");
-		
-		final Iterator iterator = typesAndObjectReaders.entrySet().iterator();
-		while (iterator.hasNext()) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-
-			final Type type = (Type) entry.getKey();
-			final NewConcreteType reader = (NewConcreteType) entry.getValue();
-
-			this.overrideObjectReaderReadMethod(type, reader);
-		}
-		
-		context.unbranch();
-	}
-
-	protected void overrideObjectReaderReadMethod(final Type type, final NewConcreteType reader) {
-		if (false == reader.isArray()) {
-			this.overrideObjectReaderReadFieldsMethod(reader, type);
-			this.overrideObjectReaderReadMethod(reader, type);
-		}
-	}
-
+	
 	protected void overrideObjectReaderReadMethod(final NewConcreteType reader, final Type type) {
 		Checker.notNull("parameter:reader", reader);
 		Checker.notNull("parameter:type", type);
@@ -1001,7 +1012,7 @@ public class SerializationFactoryGenerator extends Generator {
 		final GeneratorContext context = this.getGeneratorContext();
 
 		// locate the writeFields method that will be overridden.
-		final List parameterTypes = new ArrayList();
+		final List<Type> parameterTypes = new ArrayList<Type>();
 		parameterTypes.add(context.getObject());
 		final Type objectInputStreamType = this.getObjectInputStream();
 		parameterTypes.add(objectInputStreamType);
@@ -1011,8 +1022,8 @@ public class SerializationFactoryGenerator extends Generator {
 		newMethod.setNative(false);
 
 		// rename parameters to the same names used in templates...
-		final List newMethodParameters = newMethod.getParameters();
-		final NewMethodParameter object = (NewMethodParameter) newMethodParameters.get(0);
+		final List<MethodParameter> newMethodParameters = (List<MethodParameter>)newMethod.getParameters();
+		final NewMethodParameter object = (NewMethodParameter)newMethodParameters.get(0);
 		object.setName(SerializationConstants.CLIENT_OBJECT_READER_IMPL_READ_INSTANCE_PARAMETER);
 		object.setFinal(true);
 
@@ -1057,12 +1068,12 @@ public class SerializationFactoryGenerator extends Generator {
 		body.setType(type);
 
 		// add all fields to the template
-		final Iterator fields = this.filterSerializableFields(type.getFields()).iterator();
+		final Iterator<Field> fields = this.filterSerializableFields(type.getFields()).iterator();
 		int fieldCount = 0;
 		context.branch();
-		
+
 		while (fields.hasNext()) {
-			final Field field = (Field) fields.next();
+			final Field field = fields.next();
 			final Method setter = this.createFieldSetter(reader, field);
 			body.addFieldSetter(setter);
 
@@ -1109,77 +1120,95 @@ public class SerializationFactoryGenerator extends Generator {
 		final NewMethodParameter value = method.newParameter();
 		value.setFinal(true);
 		value.setName(SerializationConstants.CLIENT_OBJECT_READER_IMPL_FIELD_SETTER_VALUE_PARAMETER);
-		value.setType(field.getType());
 
-		context.debug( field.getName() );
+		final Type fieldType = field.getType();
+		value.setType(fieldType);
+
+		if (fieldType.equals(context.getLong())) {
+			method.addMetaData("com.google.gwt.core.client.UnsafeNativeLong", "");
+		}
+
+		context.debug(field.getName());
 
 		return method;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	/**
-	 * Generates ObjectWriters if necessary for each of the types found in the
-	 * given set
+	 * Loops thru the map of serializable types and creates an ObjectWriter for
+	 * each every type that requires one.
 	 * 
 	 * @param serializables
-	 *            A map of types and possibly preexisting ObjectWriters
+	 *            A set of types needing to be serialized
+	 * @param typesToWriters
+	 *            A map containing all types and their corresponding existing
+	 *            readers
 	 */
-	protected void generateObjectWriters(final Map serializables) {
+	protected void createObjectWriters(final Set<Type> serializables, final Map<Type, Type> typesToWriters) {
 		Checker.notNull("parameter:serializables", serializables);
+		Checker.notNull("parameter:typesToWriters", typesToWriters);
 
-		final Map newObjectWriters = this.createObjectWriters(serializables);
-		this.overrideObjectWritersWriteMethods(newObjectWriters);
-		this.addSingletonFields(newObjectWriters.values(), this.getObjectWriter());
-		this.writeTypes(newObjectWriters.values());
-	}
-
-	/**
-	 * Loops thru the map of serializable types and creates an ObjectWriter for each every type that requires one.
-	 * @param serializables
-	 * @return A map containing any new generated ObjectWriters
-	 */
-	protected Map createObjectWriters(final Map serializables) {
-		Checker.notNull("parameter:serializables", serializables);
-
+		final Set<Type> orderedSerializables = this.sortSerializablesIntoHeirarchyOrder(serializables);
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info("Creating necessary object writers.");
+		context.info("Creating necessary ObjectWriters.");
 
-		final Map orderedSerializables = this.sortSerializablesIntoHeirarchyOrder(serializables);
-		final Iterator types = orderedSerializables.entrySet().iterator();
-		final Map newObjectWriters = new TreeMap(TypeComparator.INSTANCE);
+		final Iterator<Type> types = orderedSerializables.iterator();
 		int skippedGeneratingCount = 0;
-
+		final Set<Type> newWriters = new TreeSet<Type>( TypeComparator.INSTANCE );
+		
 		while (types.hasNext()) {
-			final Map.Entry entry = (Map.Entry) types.next();
+			final Type type = (Type) types.next();
+			final Object writer = typesToWriters.get( type );
 
-			final Type type = (Type) entry.getKey();
-			final Object writer = entry.getValue();
 			if (null != writer) {
 				skippedGeneratingCount++;
 				continue;
 			}
 
-			final NewConcreteType newWriter = this.createObjectWriter(type, serializables);
-			newObjectWriters.put(type, newWriter);
-			serializables.put(type, newWriter);
+			context.branch();
+			final NewConcreteType newWriter = this.createObjectWriter(type, typesToWriters );
+			typesToWriters.put(type, newWriter);
+			
+			context.branch();
+			this.overrideObjectWriterWrite0Method(newWriter, type);
+			this.addSingletonField( newWriter );
+			
+			context.unbranch();
+			context.unbranch();
+			
+			newWriters.add( newWriter );
 		}
-
-		context.debug("Created " + newObjectWriters.size() + " new ObjectWriters.");
+		
+		this.writeTypes( newWriters );
 		context.unbranch();
-
-		return newObjectWriters;
 	}
 
 	protected NewConcreteType createObjectWriter(final Type type, final Map serializables) {
 		Checker.notNull("parameter:type", type);
-		Checker.notNull( "parameter:serializables", serializables );
-		
+		Checker.notNull("parameter:serializables", serializables);
+
 		final GeneratorContext context = this.getGeneratorContext();
+		context.debug(type.getName());
 
 		final String newTypeName = this.getGeneratedTypeName(type, SerializationConstants.OBJECT_WRITER_GENERATED_TYPE_SUFFIX, "rocket.serialization.client.writer");
 		final NewConcreteType newConcreteType = context.newConcreteType(newTypeName);
 		newConcreteType.setAbstract(false);
 		newConcreteType.setFinal(false);
+
+		context.debug(newTypeName);
 
 		// check super class of type. if its not object extend its object writer
 		// rather than cowi.
@@ -1197,52 +1226,28 @@ public class SerializationFactoryGenerator extends Generator {
 			}
 
 			objectWriterSuperType = (Type) serializables.get(type.getSuperType());
-			if( null == objectWriterSuperType ){
-				throw new IllegalStateException("Unable to fetch the writer for the super type \"" + superType + "\" whilst processing \"" + type.getName() + "\".");
+			if (null == objectWriterSuperType) {
+				throw new IllegalStateException("Unable to fetch the writer for the super type \"" + superType
+						+ "\" whilst processing \"" + type.getName() + "\".");
 			}
 			break;
 		}
 
 		newConcreteType.setSuperType(objectWriterSuperType);
+		context.debug("extends " + objectWriterSuperType);
 
 		newConcreteType.addMetaData(SerializationConstants.SERIALIZABLE_TYPE, type.getName());
 
 		final NewConstructor constructor = newConcreteType.newConstructor();
 		constructor.setBody(EmptyCodeBlock.INSTANCE);
 		constructor.setVisibility(Visibility.PUBLIC);
-
-		context.info(newConcreteType.getName() + " for " + type.getName());
 		return newConcreteType;
 	}
 
-	/**
-	 * Loops thru and overrides the write method belonging to each and every ObjectWriter
-	 * @param objectWritersToTypes
-	 */
-	protected void overrideObjectWritersWriteMethods(final Map objectWritersToTypes) {
-		Checker.notNull( "parameter:objectWritersToTypes", objectWritersToTypes );
-		
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info( "Overriding all object writers write method");
-		
-		final Iterator iterator = objectWritersToTypes.entrySet().iterator();
-		while (iterator.hasNext()) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-
-			final Type type = (Type) entry.getKey();
-			final NewConcreteType writer = (NewConcreteType) entry.getValue();
-
-			this.overrideObjectWriterWrite0Method(writer, type);
-		}
-		
-		context.unbranch();
-	}
-
 	protected void overrideObjectWriterWrite0Method(final NewConcreteType writer, final Type type) {
-		Checker.notNull( "parameter:writer", writer );
-		Checker.notNull( "parameter:type", type );
-		
+		Checker.notNull("parameter:writer", writer);
+		Checker.notNull("parameter:type", type);
+
 		if (type.isArray()) {
 			this.overrideObjectWriterWriteMethod0ForArrayType(writer, type);
 		} else {
@@ -1252,13 +1257,13 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	protected void overrideObjectWriterWriteMethod0ForArrayType(final NewConcreteType writer, final Type type) {
-		Checker.notNull( "parameter:writer", writer );
-		Checker.notNull( "parameter:type", type );
-		
+		Checker.notNull("parameter:writer", writer);
+		Checker.notNull("parameter:type", type);
+
 		final GeneratorContext context = this.getGeneratorContext();
 
 		// locate the writeFields method that will be overridden.
-		final List parameterTypes = new ArrayList();
+		final List<Type> parameterTypes = new ArrayList<Type>();
 		parameterTypes.add(context.getObject());
 		parameterTypes.add(this.getObjectOutputStream());
 
@@ -1280,26 +1285,31 @@ public class SerializationFactoryGenerator extends Generator {
 		body.setType(type);
 		newMethod.setBody(body);
 
-		context.debug("Overridden " + newMethod );
+		if ( type.getComponentType() == context.getLong() ){
+			newMethod.addMetaData("com.google.gwt.core.client.UnsafeNativeLong", "");
+		}
+		
+		context.debug("Overridden " + newMethod);
 	}
 
 	protected void overrideObjectWriterWrite0MethodForNonArrayType(final NewConcreteType writer, final Type type) {
-		Checker.notNull( "parameter:writer", writer );
-		Checker.notNull( "parameter:type", type );
-		
+		Checker.notNull("parameter:writer", writer);
+		Checker.notNull("parameter:type", type);
+
 		final GeneratorContext context = this.getGeneratorContext();
 
 		// locate the writeFields method that will be overridden.
-		final List parameterTypes = new ArrayList();
+		final List<Type> parameterTypes = new ArrayList<Type>();
 		parameterTypes.add(context.getObject());
 		parameterTypes.add(this.getObjectOutputStream());
 
-		final Method method = writer.getMostDerivedMethod(SerializationConstants.CLIENT_OBJECT_WRITER_IMPL_WRITE0_METHOD, parameterTypes);
+		final Method method = writer
+				.getMostDerivedMethod(SerializationConstants.CLIENT_OBJECT_WRITER_IMPL_WRITE0_METHOD, parameterTypes);
 		final NewMethod newMethod = method.copy(writer);
 		newMethod.setAbstract(false);
 
 		// rename parameters to the same names used in templates...
-		final List newMethodParameters = newMethod.getParameters();
+		final List<MethodParameter> newMethodParameters = newMethod.getParameters();
 		final NewMethodParameter object = (NewMethodParameter) newMethodParameters.get(0);
 		object.setFinal(true);
 		object.setName(SerializationConstants.CLIENT_OBJECT_WRITER_IMPL_WRITE0_INSTANCE_PARAMETER);
@@ -1312,13 +1322,14 @@ public class SerializationFactoryGenerator extends Generator {
 		body.setType(type);
 		newMethod.setBody(body);
 
+		newMethod.addMetaData(com.google.gwt.core.client.UnsafeNativeLong.class.getName(), "");
 		context.debug("Overridden " + newMethod);
 	}
 
 	protected void overrideObjectWriterWriteFieldsMethod(final NewConcreteType writer, final Type type) {
-		Checker.notNull( "parameter:writer", writer );
-		Checker.notNull( "parameter:type", type );
-		
+		Checker.notNull("parameter:writer", writer);
+		Checker.notNull("parameter:type", type);
+
 		final GeneratorContext context = this.getGeneratorContext();
 
 		final NewMethod newMethod = writer.newMethod();
@@ -1349,7 +1360,7 @@ public class SerializationFactoryGenerator extends Generator {
 		int fieldCount = 0;
 
 		context.branch();
-		
+
 		while (fields.hasNext()) {
 			final Field field = (Field) fields.next();
 			final Method getter = this.createFieldGetter(writer, field);
@@ -1375,6 +1386,7 @@ public class SerializationFactoryGenerator extends Generator {
 		Checker.notNull("parameter:writer", writer);
 		Checker.notNull("parameter:field", field);
 
+		final GeneratorContext context = this.getGeneratorContext();
 		final GetFieldTemplatedFile body = new GetFieldTemplatedFile();
 		body.setField(field);
 
@@ -1384,73 +1396,188 @@ public class SerializationFactoryGenerator extends Generator {
 		method.setFinal(true);
 		method.setName(GeneratorHelper.buildGetterName(field.getName()));
 		method.setNative(true);
-		method.setReturnType(field.getType());
+
+		final Type fieldType = field.getType();
+		method.setReturnType(fieldType);
 		method.setStatic(false);
 		method.setVisibility(Visibility.PRIVATE);
 
+		if (fieldType.equals(context.getLong())) {
+			method.addMetaData("com.google.gwt.core.client.UnsafeNativeLong", "");
+		}
 		// add a parameter
 		final NewMethodParameter instance = method.newParameter();
 		instance.setFinal(true);
 		instance.setName(SerializationConstants.CLIENT_OBJECT_WRITER_IMPL_FIELD_GETTER_INSTANCE_PARAMETER);
 		instance.setType(field.getEnclosingType());
 
-		this.getGeneratorContext().debug( field.getName() );
+		context.debug(field.getName());
 		return method;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
-	 * Loops thru and adds a singleton to each and every ObjectReader/Writer.
-	 * @param readerOrWriters
-	 * @param fieldType
+	 * This comparator may be used to sort a collection so that types closer to
+	 * Object appear first. SubTypes will always appear after their super type.
 	 */
-	protected void addSingletonFields(final Collection readerOrWriters, Type fieldType) {
-		Checker.notNull("parameter:readerOrWriters", readerOrWriters);
-
-		final GeneratorContext context = this.getGeneratorContext();
-		context.branch();
-		context.info("Adding singleton fields to hold each reader/writer.");
-
-		final Iterator iterator = readerOrWriters.iterator();
-
-		while (iterator.hasNext()) {
-			final NewConcreteType readerOrWriter = (NewConcreteType) iterator.next();
-
-			this.addSingletonField(readerOrWriter, fieldType);
+	static Comparator TYPE_HEIRARCHY_SORTER = new Comparator() {
+		public int compare(final Object object, final Object otherObject) {
+			return compare((Type) object, (Type) otherObject);
 		}
 
-		context.unbranch();
-	}
+		int compare(final Type type, final Type otherType) {
+			int difference = 0;
+
+			if (false == type.equals(otherType)) {
+				final int i = this.getDepthFromObject(type);
+				final int j = this.getDepthFromObject(otherType);
+
+				difference = i - j;
+
+				// ensure stable ordering.
+				if (0 == difference) {
+					difference = type.getName().compareTo(otherType.getName());
+				}
+			}
+			return difference;
+		}
+
+		int getDepthFromObject(final Type type) {
+			int depth = 0;
+
+			Type temp = type;
+			while (null != temp) {
+				if (temp.getName().equals(OBJECT)) {
+					break;
+				}
+				depth++;
+				temp = temp.getSuperType();
+			}
+			return depth;
+		}
+	};
+
+	static String OBJECT = Object.class.getName();
 
 	/**
-	 * Adds a singleton method to the given
+	 * Creates a new map that is ordered so that it is a heirarchical view of
+	 * types.
+	 * 
+	 * @param serializables
+	 * @return
+	 */
+	protected Set<Type> sortSerializablesIntoHeirarchyOrder(final Set<Type> serializables) {
+		Checker.notNull("parameter:serializables", serializables);
+
+		final Set<Type> sorted = new TreeSet(TYPE_HEIRARCHY_SORTER);
+		sorted.addAll(serializables);
+		Checker.equals("sorted", serializables.size(), sorted.size());
+		return sorted;
+	}
+	
+	
+	/**
+	 * This helper builds a set that contains only serializable fields skipping
+	 * static and transient fields. The set is also sorted in alphabetical order
+	 * using the individual field names.
+	 * 
+	 * @param fields
+	 * @return
+	 */
+	protected Set<Field> filterSerializableFields(final Set<Field> fields) {
+		Checker.notNull("parameter:fields", fields);
+
+		final Set<Field> sorted = new TreeSet<Field>(FieldComparator.INSTANCE);
+
+		final Iterator<Field> iterator = fields.iterator();
+		while (iterator.hasNext()) {
+			final Field field = iterator.next();
+
+			if (field.isStatic()) {
+				continue;
+			}
+			if (field.isTransient()) {
+				continue;
+			}
+
+			sorted.add(field);
+		}
+		return sorted;
+	}
+
+
+	/**
+	 * Adds a singleton method to the access a 
 	 * {@link rocket.serialization.client.reader.ObjectReader} or
 	 * {@link rocket.serialization.client.writer.ObjectWriter}
 	 * 
-	 * @param readerOrWriter
-	 * @param fieldType
+	 * @param type
 	 */
-	protected void addSingletonField(final NewConcreteType readerOrWriter, final Type fieldType) {
-		Checker.notNull("parameter:readerOrWriter", readerOrWriter);
-		Checker.notNull("parameter:fieldType", fieldType);
+	protected void addSingletonField(final NewConcreteType type) {
+		Checker.notNull("parameter:type", type);
 
-		final NewField singleton = readerOrWriter.newField();
+		final NewField singleton = type.newField();
 
 		final NewInstanceTemplatedFile body = new NewInstanceTemplatedFile();
-		final Constructor constructor = readerOrWriter.getConstructor(Collections.EMPTY_LIST);
+		final Constructor constructor = type.getConstructor(Collections.EMPTY_LIST);
 		body.setConstructor(constructor);
 
 		singleton.setValue(body);
 
 		singleton.setFinal(true);
 		singleton.setName(SerializationConstants.SINGLETON);
-		final Type returnType = fieldType;
+		final Type returnType = type;
 		singleton.setType(returnType);
 		singleton.setStatic(true);
 		singleton.setVisibility(Visibility.PUBLIC);
 
-		this.getGeneratorContext().debug(readerOrWriter.getName());
+		this.getGeneratorContext().debug(type.getName());
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Creates a NewConcreteType which contains the serialization factory type
 	 * being assembled. At this stage no methods have been overridden or changed
@@ -1479,17 +1606,15 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @param serializationFactory
 	 * @param objectReaders
 	 */
-	protected void overrideSerializationFactoryGetObjectReader(final NewConcreteType serializationFactory, final Map objectReaders) {
+	protected void overrideSerializationFactoryGetObjectReader(final NewConcreteType serializationFactory, final Map<Type,Type> objectReaders) {
 		Checker.notNull("parameter:serializationFactory", serializationFactory);
 		Checker.notNull("parameter:objectReaders", objectReaders);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.debug("Listing ObjectReaders that are visible to this serialization factory.");
-		context.branch();
+		context.debug("Overriding \"" + SerializationConstants.SERIALIZATION_FACTORY_GET_OBJECT_READER + "\" to register needed ObjectReaders.");
 
-		final Method method = serializationFactory.getMostDerivedMethod(SerializationConstants.SERIALIZATION_FACTORY_GET_OBJECT_READER,
-				Collections.nCopies(1, context.getString()));
+		final Method method = serializationFactory.getMostDerivedMethod(SerializationConstants.SERIALIZATION_FACTORY_GET_OBJECT_READER, Collections.nCopies(1, context.getString()));
 		final NewMethod newMethod = method.copy(serializationFactory);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
@@ -1497,23 +1622,26 @@ public class SerializationFactoryGenerator extends Generator {
 
 		final SwitchTemplatedFile body = new SwitchTemplatedFile();
 
-		final Iterator iterator = objectReaders.entrySet().iterator();
+		final Iterator<Map.Entry<Type,Type>> iterator = objectReaders.entrySet().iterator();
 		while (iterator.hasNext()) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
+			final Map.Entry<Type,Type> entry = iterator.next();
 
-			final Type type = (Type) entry.getKey();
-			final Type objectReader = (Type) entry.getValue();
+			final Type type = entry.getKey();
+			if( false == this.isSerializable(type)){
+				continue;
+			}
+			
+			
+			final Type objectReader = entry.getValue();
 			final Field objectReaderSingleton = objectReader.getField(SerializationConstants.SINGLETON);
 
 			body.register(type, objectReaderSingleton);
 			
-			context.debug( type.getName() );
+			context.debug( type.getName() + " = " + objectReader.getName() );
 		}
 
 		newMethod.setBody(body);
 
-		context.unbranch();
-		context.info("Overridden " + newMethod);
 		context.unbranch();
 	}
 
@@ -1522,17 +1650,15 @@ public class SerializationFactoryGenerator extends Generator {
 	 * @param serializationFactory
 	 * @param objectWriters
 	 */
-	protected void overrideSerializationFactoryGetObjectWriter(final NewConcreteType serializationFactory, final Map objectWriters) {
+	protected void overrideSerializationFactoryGetObjectWriter(final NewConcreteType serializationFactory, final Map<Type,Type> objectWriters) {
 		Checker.notNull("parameter:serializationFactory", serializationFactory);
 		Checker.notNull("parameter:objectWriters", objectWriters);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.debug("Listing ObjectWriters that are visible to this serialization factory.");
-		context.branch();
+		context.debug("Overriding \"" + SerializationConstants.SERIALIZATION_FACTORY_GET_OBJECT_WRITER + "\" to register needed ObjectWriters.");
 
-		final Method method = serializationFactory.getMostDerivedMethod(SerializationConstants.SERIALIZATION_FACTORY_GET_OBJECT_WRITER,
-				Collections.nCopies(1, context.getString()));
+		final Method method = serializationFactory.getMostDerivedMethod(SerializationConstants.SERIALIZATION_FACTORY_GET_OBJECT_WRITER, Collections.nCopies(1, context.getString()));
 		final NewMethod newMethod = method.copy(serializationFactory);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
@@ -1540,23 +1666,25 @@ public class SerializationFactoryGenerator extends Generator {
 
 		final SwitchTemplatedFile body = new SwitchTemplatedFile();
 
-		final Iterator iterator = objectWriters.entrySet().iterator();
+		final Iterator<Map.Entry<Type, Type>> iterator = objectWriters.entrySet().iterator();
 		while (iterator.hasNext()) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
+			final Map.Entry<Type,Type> entry = iterator.next();
 
-			final Type type = (Type) entry.getKey();
-			final Type objectWriter = (Type) entry.getValue();
+			final Type type = entry.getKey();
+			if( false == this.isSerializable(type)){
+				continue;
+			}
+			
+			final Type objectWriter = entry.getValue();
 			final Field objectWriterSingleton = objectWriter.getField(SerializationConstants.SINGLETON);
 
 			body.register(type, objectWriterSingleton);
 			
-			context.debug( type.getName() );
+			context.debug( type.getName() + " = " + objectWriter.getName() );
 		}
 
 		newMethod.setBody(body);
 
-		context.unbranch();
-		context.info("Overridden " + newMethod);
 		context.unbranch();
 	}
 
@@ -1564,45 +1692,7 @@ public class SerializationFactoryGenerator extends Generator {
 		return this.getGeneratorContext().getType(SerializationConstants.SERIALIZATION_FACTORY);
 	}
 
-	protected Type getList() {
-		return this.getGeneratorContext().getType(SerializationConstants.LIST);
-	}
-
-
-	protected Type getSet() {
-		return this.getGeneratorContext().getType(SerializationConstants.SET);
-	}
-
-	protected Type getMap() {
-		return this.getGeneratorContext().getType(SerializationConstants.MAP);
-	}
-
-	protected Type getTypeFromAnnotation( final Field field ){
-		return this.getTypeFromAnnotation( field, 0 );
-	}
 	
-	protected Type getTypeFromAnnotation( final Field field, final int index ){
-		Checker.notNull( "parameter:field", field );
-		
-		final List values = field.getMetadataValues( SerializationConstants.CONTAINER_TYPE );
-		if (values.size() < index ) {
-			throw new SerializationException("Unable to locate \"" + SerializationConstants.CONTAINER_TYPE + "\" on field " + field);
-		}
-		final String typeName = (String) values.get( index );
-		final Type type = this.getGeneratorContext().findType(typeName);
-		if (null == type) {
-			throw new SerializationException("Unable to find type \"" + typeName + "\" which was taken from the annotation \"" + SerializationConstants.CONTAINER_TYPE + "\" from field: " + field);
-		}
-		return type;		
-	}
-
-	protected String getGeneratedTypeNameSuffix() {
-		return SerializationConstants.SERIALIZATION_FACTORY_GENERATED_TYPE_SUFFIX;
-	}
-
-	protected Type getObjectReader() {
-		return this.getGeneratorContext().getType(SerializationConstants.OBJECT_READER);
-	}
 
 	protected Type getObjectReaderImpl() {
 		return this.getGeneratorContext().getType(SerializationConstants.OBJECT_READER_IMPL);
@@ -1614,10 +1704,6 @@ public class SerializationFactoryGenerator extends Generator {
 
 	protected Type getObjectInputStream() {
 		return this.getGeneratorContext().getType(SerializationConstants.OBJECT_INPUT_STREAM);
-	}
-
-	protected Type getObjectWriter() {
-		return this.getGeneratorContext().getType(SerializationConstants.OBJECT_WRITER);
 	}
 
 	protected Type getObjectWriterImpl() {
@@ -1633,128 +1719,26 @@ public class SerializationFactoryGenerator extends Generator {
 	}
 
 	/**
-	 * Helper which includes a special case if the the type being generated is part of java.lang or java.util.
+	 * Helper which includes a special case if the the type being generated is
+	 * part of java.lang or java.util.
+	 * 
 	 * @param type
 	 * @param suffix
 	 * @param packageName
 	 * @return
 	 */
 	public String getGeneratedTypeName(final Type type, final String suffix, final String packageName) {
-		Checker.notNull( "parameter:type", type );
-		Checker.notEmpty( "parameter:suffix", suffix );
-		Checker.notNull( "parameter:packageName", packageName );
-		
+		Checker.notNull("parameter:type", type);
+		Checker.notEmpty("parameter:suffix", suffix);
+		Checker.notNull("parameter:packageName", packageName);
+
 		String generatedTypeName = this.getGeneratorContext().getGeneratedTypeName(type.getName(), suffix);
-		if (generatedTypeName.startsWith( SerializationConstants.JAVA_LANG )) {
-			generatedTypeName = packageName + '.' + generatedTypeName.replace( '.', '_' ); 
+		if (generatedTypeName.startsWith(SerializationConstants.JAVA_LANG)) {
+			generatedTypeName = packageName + '.' + generatedTypeName.replace('.', '_');
 		}
 		return generatedTypeName;
 	}
-
-	/**
-	 * This comparator may be used to sort a collection so that types closer to Object appear first.
-	 * SubTypes will always appear after their super type.
-	 */
-	static Comparator TYPE_HEIRARCHY_SORTER = new Comparator() {
-		public int compare(final Object object, final Object otherObject) {
-			return compare((Type) object, (Type) otherObject);
-		}
-
-		int compare(final Type type, final Type otherType) {
-			int difference = 0;
-
-			if (false == type.equals(otherType)) {
-				final int i = this.getDepthFromObject(type);
-				final int j = this.getDepthFromObject(otherType);
-				
-				difference = i - j;
-				
-				// ensure stable ordering.
-				if( 0 == difference ){
-					difference = type.getName().compareTo( otherType.getName());
-				}
-			}
-			return difference;
-		}
-
-		int getDepthFromObject(final Type type) {
-			int depth = 0;
-
-			Type temp = type;
-			while (null != temp) {
-				if (temp.getName().equals(OBJECT)) {
-					break;
-				}
-				depth++;
-				temp = temp.getSuperType();
-			}
-			return depth;
-		}
-	};
-
-	static String OBJECT = Object.class.getName();
-
-	/**
-	 * Creates a new map that is ordered so that it is a heirarchical view of types.
-	 * @param serializables
-	 * @return
-	 */
-	protected Map sortSerializablesIntoHeirarchyOrder(final Map serializables) {
-		Checker.notNull("parameter:serializables", serializables);
-
-		final Map sorted = new TreeMap(TYPE_HEIRARCHY_SORTER);
-
-		final Iterator iterator = serializables.entrySet().iterator();
-		while (iterator.hasNext()) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-			sorted.put(entry.getKey(), entry.getValue());
-		}
-
-		Checker.equals("sorted", serializables.size(), sorted.size());
-		return sorted;
-	}
-
-	/**
-	 * This comparator sorts two fields using their names.
-	 */
-	static Comparator FIELD_ALPHABETICAL_ORDER_SORTER = new Comparator() {
-		public int compare(final Object object, final Object otherObject) {
-			return compare((Field) object, (Field) otherObject);
-		}
-
-		int compare(final Field field, final Field otherField) {
-			return field.getName().compareTo(otherField.getName());
-		}
-	};
-
-	/**
-	 * This helper builds a set that contains only serializable fields skipping
-	 * static and transient fields. The set is also sorted in alphabetical order
-	 * using the individual field names.
-	 * 
-	 * @param fields
-	 * @return
-	 */
-	protected Set filterSerializableFields(final Set fields) {		
-		Checker.notNull( "parameter:fields", fields );
-		
-		final Set sorted = new TreeSet(SerializationFactoryGenerator.FIELD_ALPHABETICAL_ORDER_SORTER);
-
-		final Iterator iterator = fields.iterator();
-		while (iterator.hasNext()) {
-			final Field field = (Field) iterator.next();
-
-			if (field.isStatic()) {
-				continue;
-			}
-			if (field.isTransient()) {
-				continue;
-			}
-
-			sorted.add(field);
-		}
-		return sorted;
-	}
+	
 
 	/**
 	 * Helper which writes out each and every NewConcreteType found in the given collection
@@ -1770,70 +1754,4 @@ public class SerializationFactoryGenerator extends Generator {
 		}
 	}
 
-	protected void logTypes(final String title, final Collection types) {
-		Checker.notEmpty( "parameter:title", title );
-		Checker.notNull( "parameter:types", types );
-		
-		final GeneratorContext context = this.getGeneratorContext();
-
-		if (context.isDebugEnabled()) {
-			context.branch();
-			context.debug(title);
-
-			final Iterator iterator = types.iterator();
-			while (iterator.hasNext()) {
-				final Type type = (Type) iterator.next();
-				context.debug(type.getName());
-			}
-
-			context.unbranch();
-		}
-	}
-
-	protected void logTypeNames(final String title, final Collection typeNames) {
-		Checker.notEmpty( "parameter:title", title );
-		Checker.notNull( "parameter:typeNames", typeNames );
-		
-		final GeneratorContext context = this.getGeneratorContext();
-		if (context.isDebugEnabled()) {
-			context.branch();
-			context.debug(title);
-
-			final Iterator iterator = typeNames.iterator();
-			while (iterator.hasNext()) {
-				final String typeName = (String) iterator.next();
-				context.debug(typeName);
-			}
-
-			context.unbranch();
-		}
-	}
-
-	protected void logBoundTypes(final String title, final Map types) {
-		Checker.notEmpty( "parameter:title", title );
-		Checker.notNull( "parameter:types", types );
-		
-		final GeneratorContext context = this.getGeneratorContext();
-
-		if (context.isDebugEnabled()) {
-			context.branch();
-			context.debug(title);
-
-			final Iterator iterator = types.entrySet().iterator();
-			while (iterator.hasNext()) {
-				final Map.Entry entry = (Map.Entry) iterator.next();
-
-				final Type type = (Type) entry.getKey();
-				final Type type1 = (Type) entry.getValue();
-
-				String message = type.getName();
-				if (null != type1) {
-					message = message + "=" + type1.getName();
-				}
-				context.debug(message);
-			}
-
-			context.unbranch();
-		}
-	}
 }
