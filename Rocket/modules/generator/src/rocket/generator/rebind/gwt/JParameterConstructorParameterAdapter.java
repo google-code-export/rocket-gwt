@@ -38,6 +38,7 @@ public class JParameterConstructorParameterAdapter extends AbstractConstructorPa
 		return this.getType().getJsniNotation();
 	}
 
+	@Override
 	public Type getType() {
 		if (false == this.hasType()) {
 			this.setType(this.createType());
@@ -47,9 +48,10 @@ public class JParameterConstructorParameterAdapter extends AbstractConstructorPa
 	}
 
 	protected Type createType() {
-		return this.findType(this.getJParameter().getType().getQualifiedSourceName());
+		return this.getGeneratorContext().getType(this.getJParameter().getType().getErasedType().getQualifiedSourceName());
 	}
 
+	@Override
 	public void setEnclosingConstructor(final Constructor enclosingConstructor) {
 		super.setEnclosingConstructor(enclosingConstructor);
 	}
@@ -69,6 +71,7 @@ public class JParameterConstructorParameterAdapter extends AbstractConstructorPa
 		this.jParameter = jParameter;
 	}
 
+	@Override
 	public String toString() {
 		return "JConstructorParameter: " + this.jParameter;
 	}

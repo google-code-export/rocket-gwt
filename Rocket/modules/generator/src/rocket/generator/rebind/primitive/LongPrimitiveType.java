@@ -24,10 +24,10 @@ import rocket.generator.rebind.type.Type;
  */
 abstract public class LongPrimitiveType extends PrimitiveType {
 
-	public String getRuntimeName(){
+	public String getRuntimeName() {
 		return Constants.LONG_RUNTIME_NAME;
 	}
-	
+
 	public boolean isAssignableFrom(final Type type) {
 		return this.equals(type) || this.getByte().equals(type) || this.getShort().equals(type) || this.getInt().equals(type)
 				|| this.getLong().equals(type);

@@ -15,21 +15,27 @@
  */
 package rocket.generator.rebind;
 
-
 /**
  * Defines a writer which may be used to write or generate a new type
+ * 
  * @author Miroslav Pokorny
  */
 public interface SourceWriter {
 	void beginJavaDocComment();
+
 	void endJavaDocComment();
-	
+
 	void indent();
+
 	void outdent();
+
 	void print(String string);
+
 	void println();
-	void println(String string );
+
+	void println(String string);
 
 	void commit();
+
 	void rollback();
 }

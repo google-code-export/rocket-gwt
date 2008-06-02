@@ -21,6 +21,9 @@ import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.constructor.Constructor;
+import rocket.generator.rebind.field.Field;
+import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.AbstractType;
 import rocket.generator.rebind.type.Type;
@@ -33,8 +36,11 @@ import com.google.gwt.core.ext.typeinfo.JType;
 /**
  * An adapter between the Type and GWT JArrayType classes.
  * 
- * Array types arent proper types so they dont have constructors, fields, implement interfaces, methods or contain nested methods therefore many of these methods throw an {@link UnsupportedOperationException} when attempts
+ * Array types arent proper types so they dont have constructors, fields,
+ * implement interfaces, methods or contain nested methods therefore many of
+ * these methods throw an {@link UnsupportedOperationException} when attempts
  * are made to access them.
+ * 
  * @author Miroslav Pokorny
  */
 public class JArrayTypeTypeAdapter extends AbstractType {
@@ -42,85 +48,105 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	/**
 	 * Arrays dont have constructors.
 	 */
-	public Set getConstructors(){
+	public Set<Constructor> getConstructors() {
 		return Collections.EMPTY_SET;
 	}
 
-	protected Set createConstructors() {
+	protected Set<Constructor> createConstructors() {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Arrays dont have fields, dont worry about length its a special case
 	 */
-	
-	public Set getFields(){
+
+	public Set<Field> getFields() {
 		return Collections.EMPTY_SET;
 	}
-	protected Set createFields() {
+
+	protected Set<Field> createFields() {
 		throw new UnsupportedOperationException();
 	}
-
 
 	/**
 	 * Arrays dont implement interfaces
 	 */
-	public Set getInterfaces(){
+	public Set<Type> getInterfaces() {
 		return Collections.EMPTY_SET;
 	}
-	
-	protected Set createInterfaces() {
+
+	@Override
+	protected Set<Type> createInterfaces() {
 		throw new UnsupportedOperationException();
 	}
-
 
 	/**
 	 * Arrays dont have methods
 	 */
-	public Set getMethods() {
+	public Set<Method> getMethods() {
 		return Collections.EMPTY_SET;
 	}
-	protected Set createMethods() {
+
+	@Override
+	protected Set<Method> createMethods() {
 		throw new UnsupportedOperationException();
 	}
-
 
 	/**
 	 * Arrays cant have nested types.
 	 */
-	public Set getNestedTypes() {
+	public Set<Type> getNestedTypes() {
 		return Collections.EMPTY_SET;
 	}
 
-	protected Set createNestedTypes() {
+	protected Set<Type> createNestedTypes() {
 		throw new UnsupportedOperationException();
 	}
-
 
 	/**
 	 * Arrays cant be sub classed
 	 */
-	public Set getSubTypes() {
+	public Set<Type> getSubTypes() {
 		return Collections.EMPTY_SET;
 	}
-	protected Set createSubTypes() {
+
+	protected Set<Type> createSubTypes() {
 		throw new UnsupportedOperationException();
 	}
 
 	public boolean isArray() {
 		return true;
 	}
-	
+
 	/**
 	 * All array types have a component type.
 	 */
+	private Type componentType;
+
 	public Type getComponentType() {
+		if (false == hasComponentType()) {
+			this.setComponentType(this.createComponentType());
+		}
+		Checker.notNull("field:componentType", componentType);
+		return componentType;
+	}
+
+	protected boolean hasComponentType() {
+		return null != this.componentType;
+	}
+
+	protected void setComponentType(final Type componentType) {
+		Checker.notNull("parameter:componentType", componentType);
+		this.componentType = componentType;
+	}
+
+	protected Type createComponentType() {
 		final JArrayType array = this.getJArrayType().isArray();
-		Checker.notNull( "The " + this.getName() + " is an array.", array );
-		
+		Checker.notNull("The " + this.getName() + " is an array.", array);
+
 		final JType componentType = array.getComponentType();
-		final String componentTypeName = componentType.getQualifiedSourceName();
-		return this.getType( componentTypeName );
+
+		return this.getGeneratorContext().getType(componentType.getErasedType().getQualifiedSourceName());
 	}
 
 	public String getJsniNotation() {
@@ -134,7 +160,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	public Package getPackage() {
 		return this.getComponentType().getPackage();
 	}
-	
+
 	final protected Package findPackage(final String packageName) {
 		return this.getGeneratorContextImpl().findPackage(packageName);
 	}
@@ -142,54 +168,56 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	public String getSimpleName() {
 		return this.getJArrayType().getSimpleSourceName();
 	}
-	
+
 	/**
-	 * Returns the runtime name of the class. This method is only necessary due to the use of dollar signs "$"
-	 * within inner classes rather than dot ".".
+	 * Returns the runtime name of the class. This method is only necessary due
+	 * to the use of dollar signs "$" within inner classes rather than dot ".".
 	 */
-	public String getRuntimeName(){
-		// for java.lang.String array the runtime name or signature is [Ljava.lang.String;
-		// for a two dimensioned String array the runtime name is [[Ljava.lang.String;
+	public String getRuntimeName() {
+		// for java.lang.String array the runtime name or signature is
+		// [Ljava.lang.String;
+		// for a two dimensioned String array the runtime name is
+		// [[Ljava.lang.String;
 		final Type componentType = this.getComponentType();
 		final boolean primitiveComponentType = componentType.isPrimitive();
-		
-		final StringBuffer runtimeName = new StringBuffer();		
+
+		final StringBuffer runtimeName = new StringBuffer();
 		final JArrayType jArrayType = this.getJArrayType();
-		
+
 		// prefix a [ for each rank.
 		final int rank = jArrayType.getRank();
-		for( int i = 0; i < rank; i++ ){
+		for (int i = 0; i < rank; i++) {
 			runtimeName.append('[');
-		}		
-		
-		if( false == primitiveComponentType ){
-			runtimeName.append( "L");
 		}
-		
+
+		if (false == primitiveComponentType) {
+			runtimeName.append("L");
+		}
+
 		// insert the name.
 		final String name = componentType.getRuntimeName();
 		final Package packagee = componentType.getPackage();
 		final String packageName = null == packagee ? null : packagee.getName();
 		String nameLessPackageName = name;
-		
-		if( false == Tester.isNullOrEmpty( packageName ) ){
-			runtimeName.append( packageName );
-			runtimeName.append( '.');
-			
-			nameLessPackageName = name.substring( packageName.length() + 1 );
+
+		if (false == Tester.isNullOrEmpty(packageName)) {
+			runtimeName.append(packageName);
+			runtimeName.append('.');
+
+			nameLessPackageName = name.substring(packageName.length() + 1);
 		}
-		
-		nameLessPackageName = nameLessPackageName.replace( '.', '$');
-		runtimeName.append( nameLessPackageName );
-		
+
+		nameLessPackageName = nameLessPackageName.replace('.', '$');
+		runtimeName.append(nameLessPackageName);
+
 		// append a semi-colon
-		if( false == primitiveComponentType ){
-			runtimeName.append( ';' );
+		if (false == primitiveComponentType) {
+			runtimeName.append(';');
 		}
-		
+
 		return runtimeName.toString();
 	}
-	
+
 	/**
 	 * Array types always extend Object
 	 */
@@ -213,20 +241,20 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 */
 	public boolean isAbstract() {
 		return false;
-	}	
+	}
 
 	/**
 	 * Array types can only be assigned from their own type without casting.
 	 */
 	public boolean isAssignableFrom(final Type type) {
-		return this.equals( type );
+		return this.equals(type);
 	}
 
 	/**
-	 * Array types can only be assigned to their own type or Object 
+	 * Array types can only be assigned to their own type or Object
 	 */
 	public boolean isAssignableTo(final Type type) {
-		return this.equals( type ) || type.equals( this.getObject() );
+		return this.equals(type) || type.equals(this.getObject());
 	}
 
 	public boolean isFinal() {
@@ -242,7 +270,8 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	}
 
 	/**
-	 * Array types never have annotations as they are actually created at runtime by the runtime and not taken from source. 
+	 * Array types never have annotations as they are actually created at
+	 * runtime by the runtime and not taken from source.
 	 */
 	public List getMetadataValues(String name) {
 		return null;
@@ -263,11 +292,11 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 		this.jArrayType = jArrayType;
 	}
 
-	protected GeneratorContextImpl getGeneratorContextImpl(){
+	protected GeneratorContextImpl getGeneratorContextImpl() {
 		return (GeneratorContextImpl) this.getGeneratorContext();
 	}
-	
-	
+
+	@Override
 	public String toString() {
 		return "" + this.jArrayType;
 	}

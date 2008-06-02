@@ -61,10 +61,10 @@ public class AbstractClassComponent implements ClassComponent {
 	 * @param annotationName
 	 * @return
 	 */
-	protected List getAnnotationValues(final HasMetaData source, final String annotationName) {
+	protected List<String> getAnnotationValues(final HasMetaData source, final String annotationName) {
 		final String[][] values = source.getMetaData(annotationName);
 
-		final List list = new ArrayList();
+		final List<String> list = new ArrayList<String>();
 		if (null != values) {
 			for (int i = 0; i < values.length; i++) {
 				list.add(values[i][0]);

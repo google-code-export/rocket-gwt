@@ -15,7 +15,9 @@
  */
 package rocket.generator.rebind.field;
 
+import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.util.AbstractConstructorMethodOrField;
+import rocket.util.client.Checker;
 
 /**
  * A convenient base class for any field implementation.
@@ -40,4 +42,34 @@ abstract public class AbstractField extends AbstractConstructorMethodOrField imp
 		field.setVisibility(this.getVisibility());
 		return field;
 	}
+
+	/**
+	 * The raw type of this field
+	 */
+	private Type type;
+
+	public Type getType() {
+		if (false == this.hasType()) {
+			this.setType(this.createType());
+		}
+		Checker.notNull("parameter:type", type);
+		return this.type;
+	}
+
+	protected boolean hasType() {
+		return null != this.type;
+	}
+
+	protected void setType(final Type type) {
+		Checker.notNull("parameter:type", type);
+		this.type = type;
+	}
+
+	/**
+	 * This method is called lazily when it becomes necessary to create the
+	 * field type
+	 * 
+	 * @return
+	 */
+	abstract protected Type createType();
 }

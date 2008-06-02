@@ -28,47 +28,48 @@ import rocket.util.client.Checker;
  * @author Miroslav Pokorny
  */
 abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterfaceType {
-	
-	protected NewNestedTypeOrInterface(){
-		super();		
+
+	protected NewNestedTypeOrInterface() {
+		super();
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return this.getEnclosingType().getName() + '.' + this.getNestedName();
 	}
-	
-	public boolean hasName(){
+
+	public boolean hasName() {
 		boolean hasName = false;
-		try{
+		try {
 			this.getName();
 			hasName = true;
-		} catch ( final Exception ignored ){
+		} catch (final Exception ignored) {
 			// ignore
 		}
 		return hasName;
 	}
-	
-	public void setName( final String name ){
-		throw new UnsupportedOperationException( "Set name using setNestedName()...");
+
+	public void setName(final String name) {
+		throw new UnsupportedOperationException("Set name using setNestedName()...");
 	}
-	
+
 	/**
-	 * The nested name of this type. 
+	 * The nested name of this type.
 	 * 
-	 * The fully qualified class name is never recorded and must be fetched using {@link #getName()}
+	 * The fully qualified class name is never recorded and must be fetched
+	 * using {@link #getName()}
 	 */
 	private String nestedName;
 
-	public String getNestedName(){
+	public String getNestedName() {
 		GeneratorHelper.checkNestedJavaTypeName("field:nestedName", nestedName);
-		return nestedName;		
+		return nestedName;
 	}
 
-	public void setNestedName( final String nestedName ){
+	public void setNestedName(final String nestedName) {
 		GeneratorHelper.checkNestedJavaTypeName("parameter:nestedName", nestedName);
 		this.nestedName = nestedName;
 	}
-	
+
 	/**
 	 * The outter class containing this nested class.
 	 */
@@ -78,8 +79,8 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		Checker.notNull("field:enclosingType", enclosingType);
 		return this.enclosingType;
 	}
-	
-	protected boolean hasEnclosingType(){
+
+	protected boolean hasEnclosingType() {
 		return null != this.enclosingType;
 	}
 
@@ -100,16 +101,16 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 	public void setStatic(final boolean staticc) {
 		this.staticc = staticc;
 	}
-	
+
 	public void write(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		this.log();
-		
-		this.writeComments( writer );
-		
+
+		this.writeComments(writer);
+
 		this.writeDeclaration(writer);
 		writer.indent();
 		this.writeInitializers(writer);
@@ -120,12 +121,12 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		writer.outdent();
 
 		writer.println("} // " + this.getNestedName());
-		
+
 		context.unbranch();
 	}
-	
-	protected void writeComments( final SourceWriter writer ){		
-		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+
+	protected void writeComments(final SourceWriter writer) {
+		GeneratorHelper.writeComments(this.getComments(), this.getMetaData(), writer);
 	}
 
 	protected void writeDeclaration(final SourceWriter writer) {
@@ -174,34 +175,34 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 
 	protected void log() {
 		final GeneratorContext context = this.getGeneratorContext();
-		
-		if( context.isDebugEnabled() ){
+
+		if (context.isDebugEnabled()) {
 			final StringBuffer buf = new StringBuffer();
-			
-			if( this.isStatic() ){
-				buf.append( "static ");
+
+			if (this.isStatic()) {
+				buf.append("static ");
 			}
-			if( this.isAbstract() ){
-				buf.append( "abstract ");
+			if (this.isAbstract()) {
+				buf.append("abstract ");
 			}
-			if( this.isFinal() ){
-				buf.append( "final ");
+			if (this.isFinal()) {
+				buf.append("final ");
 			}
-			buf.append( this.getVisibility().getName() );
-			buf.append( ' ');
-			
-			buf.append( this.isInterface() ? "interface " : "class ");
-			
-			buf.append( this.getSimpleName() );
-			
+			buf.append(this.getVisibility().getName());
+			buf.append(' ');
+
+			buf.append(this.isInterface() ? "interface " : "class ");
+
+			buf.append(this.getSimpleName());
+
 			context.branch();
-			
-			context.debug( buf.toString() );
-			
+
+			context.debug(buf.toString());
+
 			this.logSuperType();
 			this.logImplementedInterfaces();
-			
+
 			context.unbranch();
 		}
-	}	
+	}
 }

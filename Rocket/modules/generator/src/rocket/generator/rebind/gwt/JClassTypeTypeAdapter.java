@@ -79,23 +79,26 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return this.getJClassType().getJNISignature();
 	}
 
-	public Set getInterfaces() {
+	@Override
+	public Set<Type> getInterfaces() {
 		return Collections.unmodifiableSet(super.getInterfaces());
 	}
 
-	protected Set createInterfaces() {
+	@Override
+	protected Set<Type> createInterfaces() {
 		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJClassType().getImplementedInterfaces());
 	}
 
-	public Set getSubType() {
+	public Set<Type> getSubType() {
 		return Collections.unmodifiableSet(super.getSubTypes());
 	}
 
-	public Set getModifiableSubTypesList() {
+	public Set<Type> getModifiableSubTypesList() {
 		return super.getSubTypes();
 	}
 
-	protected Set createSubTypes() {
+	@Override
+	protected Set<Type> createSubTypes() {
 		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJClassType().getSubtypes());
 	}
 
@@ -107,20 +110,25 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return this.getGeneratorContextImpl().findPackage(packageName);
 	}
 
-	protected GeneratorContextImpl getGeneratorContextImpl(){
+	protected GeneratorContextImpl getGeneratorContextImpl() {
 		return (GeneratorContextImpl) this.getGeneratorContext();
 	}
-	
+
 	public Type getSuperType() {
-		final JType superType = this.getJClassType().getSuperclass();
-		return null == superType ? null : this.findType(superType.getQualifiedSourceName());
+		Type superType = null;
+		final JType superJType = this.getJClassType().getSuperclass();
+		if (null != superJType) {
+			superType = this.getType(superJType.getErasedType().getQualifiedSourceName());
+		}
+
+		return superType;
 	}
 
 	/**
 	 * Factory method which creates a set of constructors.
 	 */
-	protected Set createConstructors() {
-		final Set constructors = new HashSet();
+	protected Set<Constructor> createConstructors() {
+		final Set<Constructor> constructors = new HashSet<Constructor>();
 
 		final JConstructor[] jConstructors = this.getJClassType().getConstructors();
 		for (int i = 0; i < jConstructors.length; i++) {
@@ -153,8 +161,8 @@ public class JClassTypeTypeAdapter extends AbstractType {
 	/**
 	 * Factory method which creates a set of fields.
 	 */
-	protected Set createFields() {
-		final Set fields = new HashSet();
+	protected Set<Field> createFields() {
+		final Set<Field> fields = new HashSet<Field>();
 
 		final JField[] jFields = this.getJClassType().getFields();
 		for (int i = 0; i < jFields.length; i++) {
@@ -182,8 +190,8 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return adapter;
 	}
 
-	protected Set createMethods() {
-		final Set methods = new HashSet();
+	protected Set<Method> createMethods() {
+		final Set<Method> methods = new HashSet<Method>();
 
 		final JMethod[] jMethods = this.getJClassType().getMethods();
 		for (int i = 0; i < jMethods.length; i++) {
@@ -209,23 +217,24 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return adapter;
 	}
 
-	protected Set createNestedTypes() {
+	protected Set<Type> createNestedTypes() {
 		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJClassType().getNestedTypes());
 	}
 
 	public boolean isArray() {
 		return false;
 	}
-	
+
 	/**
-	 * This method complains if this adapter is not referring to an actual array type. 
+	 * This method complains if this adapter is not referring to an actual array
+	 * type.
 	 * 
 	 * This must be tested via {@link #sisArray }
 	 */
 	public Type getComponentType() {
-		throw new UnsupportedOperationException( "Only array types can have a component type" );
+		throw new UnsupportedOperationException("Only array types can have a component type");
 	}
-	
+
 	public boolean isAbstract() {
 		return this.getJClassType().isAbstract();
 	}
@@ -241,7 +250,7 @@ public class JClassTypeTypeAdapter extends AbstractType {
 	public boolean isPrimitive() {
 		return false;
 	}
-	
+
 	public boolean isAssignableFrom(final Type otherType) {
 		boolean assignable = false;
 
@@ -273,7 +282,7 @@ public class JClassTypeTypeAdapter extends AbstractType {
 	public Type getWrapper() {
 		return null;
 	}
-	
+
 	/**
 	 * The JClassType providing the source for type and related data.
 	 */
@@ -289,6 +298,7 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		this.jClassType = jClassType;
 	}
 
+	@Override
 	public String toString() {
 		return "" + this.jClassType;
 	}

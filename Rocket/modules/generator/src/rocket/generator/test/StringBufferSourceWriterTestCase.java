@@ -221,8 +221,8 @@ public class StringBufferSourceWriterTestCase extends TestCase {
 		writer.endJavaDocComment();
 
 		final String actual = writer.getBuffer();
-		final String expected = "  123" + EOL + "/**" + EOL + " * 456" + EOL + " */" + EOL + "  789" + EOL + "  /**" + EOL + "   * 0" + EOL
-				+ "   */" + EOL;
+		final String expected = "  123" + EOL + "/**" + EOL + " * 456" + EOL + " */" + EOL + "  789" + EOL + "  /**" + EOL + "   * 0"
+				+ EOL + "   */" + EOL;
 		assertEquals(expected, actual);
 	}
 

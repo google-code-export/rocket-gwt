@@ -29,6 +29,7 @@ import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * An adapter between a JMethod and a Method
@@ -108,15 +109,15 @@ public class JMethodMethodAdapter extends AbstractMethod {
 		return jsni.toString();
 	}
 
-	public List getParameters() {
+	public List<MethodParameter> getParameters() {
 		if (false == this.hasParameters()) {
 			this.setParameters(this.createParameters());
 		}
 		return super.getParameters();
 	}
 
-	protected List createParameters() {
-		final List list = new ArrayList();
+	protected List<MethodParameter> createParameters() {
+		final List<MethodParameter> list = new ArrayList<MethodParameter>();
 
 		final JParameter[] parameters = this.getJMethod().getParameters();
 		for (int i = 0; i < parameters.length; i++) {
@@ -142,6 +143,7 @@ public class JMethodMethodAdapter extends AbstractMethod {
 		return adapter;
 	}
 
+	@Override
 	public Type getReturnType() {
 		if (false == this.hasReturnType()) {
 			this.setReturnType(this.createReturnType());
@@ -150,10 +152,11 @@ public class JMethodMethodAdapter extends AbstractMethod {
 	}
 
 	public Type createReturnType() {
-		return this.findType(this.getJMethod().getReturnType().getQualifiedSourceName());
+		final JType returnType = this.getJMethod().getReturnType();
+		return this.getGeneratorContext().getType(returnType.getErasedType().getQualifiedSourceName());
 	}
 
-	protected Set createThrownTypes() {
+	protected Set<Type> createThrownTypes() {
 		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJMethod().getThrows());
 	}
 
@@ -176,6 +179,7 @@ public class JMethodMethodAdapter extends AbstractMethod {
 		this.jMethod = jMethod;
 	}
 
+	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Method: ");

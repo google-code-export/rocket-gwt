@@ -21,9 +21,10 @@ import rocket.generator.rebind.type.Type;
 
 /**
  * This comparator is used to sort types based on name.
+ * 
  * @author Miroslav Pokorny
  */
-public class TypeComparator implements Comparator {
+public class TypeComparator implements Comparator<Type> {
 
 	public final static Comparator INSTANCE = new TypeComparator();
 
@@ -31,11 +32,7 @@ public class TypeComparator implements Comparator {
 		super();
 	}
 
-	public int compare(final Object object, final Object otherObject) {
-		return this.compare((Type) object, (Type) otherObject);
-	}
-
-	int compare(final Type type, final Type otherType) {
+	public int compare(final Type type, final Type otherType) {
 		return type.getName().compareTo(otherType.getName());
 	}
 }

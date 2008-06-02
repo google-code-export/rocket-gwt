@@ -38,6 +38,7 @@ public class JParameterMethodParameterAdapter extends AbstractMethodParameter {
 		return this.getType().getJsniNotation();
 	}
 
+	@Override
 	public Type getType() {
 		if (false == this.hasType()) {
 			this.setType(this.createType());
@@ -47,9 +48,10 @@ public class JParameterMethodParameterAdapter extends AbstractMethodParameter {
 	}
 
 	protected Type createType() {
-		return this.findType(this.getJParameter().getType().getQualifiedSourceName());
+		return this.getGeneratorContext().getType(this.getJParameter().getType().getErasedType().getQualifiedSourceName());
 	}
 
+	@Override
 	public void setEnclosingMethod(final Method method) {
 		super.setEnclosingMethod(method);
 	}
@@ -69,6 +71,7 @@ public class JParameterMethodParameterAdapter extends AbstractMethodParameter {
 		this.jParameter = jParameter;
 	}
 
+	@Override
 	public String toString() {
 		return null == jParameter ? super.toString() : this.jParameter.toString();
 	}

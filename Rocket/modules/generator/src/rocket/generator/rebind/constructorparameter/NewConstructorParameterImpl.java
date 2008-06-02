@@ -31,14 +31,17 @@ public class NewConstructorParameterImpl extends AbstractConstructorParameter im
 		super.setFinal(finall);
 	}
 
+	@Override
 	public void setName(final String name) {
 		super.setName(name);
 	}
 
+	@Override
 	public void setType(final Type type) {
 		super.setType(type);
 	}
 
+	@Override
 	public void setEnclosingConstructor(final Constructor enclosingConstructor) {
 		super.setEnclosingConstructor(enclosingConstructor);
 	}
@@ -54,6 +57,7 @@ public class NewConstructorParameterImpl extends AbstractConstructorParameter im
 		writer.print(this.getName());
 	}
 
+	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("NewConstructorParameter ");

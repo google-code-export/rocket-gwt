@@ -58,6 +58,7 @@ abstract public class AbstractConstructorParameter extends AbstractParameter imp
 		return parameter;
 	}
 
+	@Override
 	public String toString() {
 		return "NewConstructorParameterImpl " + super.toString();
 	}

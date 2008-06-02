@@ -42,6 +42,7 @@ public class CharJPrimitiveTypeTypeAdapter extends CharPrimitiveType {
 		return JPrimitiveType.CHAR;
 	}
 
+	@Override
 	public String toString() {
 		return "char";
 	}

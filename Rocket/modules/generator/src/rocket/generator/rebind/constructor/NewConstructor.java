@@ -43,6 +43,6 @@ public interface NewConstructor extends Constructor, CodeGenerator, HasMetadata,
 	CodeBlock getBody();
 
 	void setBody(final CodeBlock body);
-	
-	void addMetaData( String name, String value );
+
+	void addMetaData(String name, String value);
 }

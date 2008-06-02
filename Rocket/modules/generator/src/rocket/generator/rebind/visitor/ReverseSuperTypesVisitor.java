@@ -33,9 +33,9 @@ abstract public class ReverseSuperTypesVisitor {
 	public void start(final Type type) {
 		Checker.notNull("type:type", type);
 
-		final List superTypes = this.accumulateSuperTypes(type);
+		final List<Type> superTypes = this.accumulateSuperTypes(type);
 
-		final Iterator iterator = superTypes.iterator();
+		final Iterator<Type> iterator = superTypes.iterator();
 		boolean first = true;
 		while (iterator.hasNext()) {
 			final Type visit = (Type) iterator.next();
@@ -59,10 +59,10 @@ abstract public class ReverseSuperTypesVisitor {
 	 * @param type
 	 * @return
 	 */
-	protected List accumulateSuperTypes(final Type type) {
+	protected List<Type> accumulateSuperTypes(final Type type) {
 		Checker.notNull("parameter:type", type);
 
-		final List types = new LinkedList();
+		final List<Type> types = new LinkedList<Type>();
 
 		Type type0 = type;
 

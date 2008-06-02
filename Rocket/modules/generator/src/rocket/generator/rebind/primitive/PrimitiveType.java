@@ -38,19 +38,19 @@ abstract public class PrimitiveType extends AbstractType {
 		throw new UnsupportedOperationException();
 	}
 
-	public Set getInterfaces(){
-		return Collections.EMPTY_SET;
-	}
-	
-	protected Set createInterfaces() {
-		throw new UnsupportedOperationException();
-	}
-	
-	public Set getSubTypes(){
+	public Set<Type> getInterfaces() {
 		return Collections.EMPTY_SET;
 	}
 
-	protected Set createSubTypes() {
+	protected Set<Type> createInterfaces() {
+		throw new UnsupportedOperationException();
+	}
+
+	public Set<Type> getSubTypes() {
+		return Collections.EMPTY_SET;
+	}
+
+	protected Set<Type> createSubTypes() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -62,11 +62,11 @@ abstract public class PrimitiveType extends AbstractType {
 		return null;
 	}
 
-	public Set getConstructors() {
+	public Set<Constructor> getConstructors() {
 		return Collections.EMPTY_SET;
 	}
 
-	protected Set createConstructors() {
+	protected Set<Constructor> createConstructors() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -74,11 +74,11 @@ abstract public class PrimitiveType extends AbstractType {
 		return null;
 	}
 
-	public Set getFields() {
+	public Set<Field> getFields() {
 		return Collections.EMPTY_SET;
 	}
 
-	protected Set createFields() {
+	protected Set<Field> createFields() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -86,11 +86,11 @@ abstract public class PrimitiveType extends AbstractType {
 		return null;
 	}
 
-	public Set getMethods() {
+	public Set<Method> getMethods() {
 		return Collections.EMPTY_SET;
 	}
 
-	protected Set createMethods() {
+	protected Set<Method> createMethods() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -98,7 +98,7 @@ abstract public class PrimitiveType extends AbstractType {
 	 * Primitive types dont have methods so this method always fails returning
 	 * null.
 	 */
-	public Method findMethod(final String method, final List parameterTypes) {
+	public Method findMethod(final String method, final List<Type> parameterTypes) {
 		return null;
 	}
 
@@ -126,15 +126,15 @@ abstract public class PrimitiveType extends AbstractType {
 		return true;
 	}
 
-	public List getMetadataValues(final String name) {
+	public List<String> getMetadataValues(final String name) {
 		return Collections.EMPTY_LIST;
 	}
 
-	public Set getNestedTypes(){
+	public Set<Type> getNestedTypes() {
 		return Collections.EMPTY_SET;
 	}
-	
-	protected Set createNestedTypes() {
+
+	protected Set<Type> createNestedTypes() {
 		throw new UnsupportedOperationException();
 	}
 }

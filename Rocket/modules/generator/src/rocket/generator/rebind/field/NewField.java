@@ -47,5 +47,5 @@ public interface NewField extends Field, CodeGenerator, HasComments, HasMetadata
 
 	void setValue(CodeBlock value);
 
-	void addMetaData( String key, String value );
+	void addMetaData(String key, String value);
 }

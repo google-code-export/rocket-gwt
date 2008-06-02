@@ -31,14 +31,16 @@ abstract public class TemplatedFileCodeBlock extends TemplatedCodeBlock implemen
 	}
 
 	/**
-	 * Sub classes must override this to return the fully qualified name of the resource
+	 * Sub classes must override this to return the fully qualified name of the
+	 * resource
+	 * 
 	 * @return The name.
 	 */
-	abstract protected String getResourceName(); 
-	
+	abstract protected String getResourceName();
+
 	/**
-	 * Locates a resource taking its name from {@link #getResourceName()} throwing an exception if the InputStream
-	 * cannot be found.
+	 * Locates a resource taking its name from {@link #getResourceName()}
+	 * throwing an exception if the InputStream cannot be found.
 	 * 
 	 * @return The located InputStream
 	 */
@@ -50,9 +52,10 @@ abstract public class TemplatedFileCodeBlock extends TemplatedCodeBlock implemen
 		}
 		return inputStream;
 	}
-	
+
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in template \"" + this.getResourceName() + "\".");
+		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found in template \"" + this.getResourceName()
+				+ "\".");
 	}
 
 }

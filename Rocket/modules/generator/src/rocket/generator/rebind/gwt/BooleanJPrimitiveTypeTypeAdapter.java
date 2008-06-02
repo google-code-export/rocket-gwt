@@ -42,6 +42,7 @@ public class BooleanJPrimitiveTypeTypeAdapter extends BooleanPrimitiveType {
 		return JPrimitiveType.BOOLEAN;
 	}
 
+	@Override
 	public String toString() {
 		return "boolean";
 	}

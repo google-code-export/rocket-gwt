@@ -24,10 +24,11 @@ import rocket.generator.rebind.type.Type;
  */
 abstract public class CharPrimitiveType extends PrimitiveType {
 
-	public String getRuntimeName(){
+	@Override
+	public String getRuntimeName() {
 		return Constants.CHAR_RUNTIME_NAME;
 	}
-	
+
 	public boolean isAssignableFrom(final Type type) {
 		return this.equals(type);
 	}
@@ -40,6 +41,7 @@ abstract public class CharPrimitiveType extends PrimitiveType {
 		return this.getType(Constants.CHARACTER_WRAPPER);
 	}
 
+	@Override
 	public String toString() {
 		return "char";
 	}

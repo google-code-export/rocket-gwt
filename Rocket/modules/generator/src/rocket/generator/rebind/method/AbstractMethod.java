@@ -15,6 +15,7 @@
  */
 package rocket.generator.rebind.method;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,7 +24,6 @@ import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.util.AbstractConstructorOrMethod;
-import rocket.generator.rebind.util.Parameter;
 import rocket.generator.rebind.visitor.SuperTypesVisitor;
 import rocket.util.client.Checker;
 
@@ -42,9 +42,9 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 		jsni.append(this.getName());
 		jsni.append('(');
 
-		final Iterator parameters = this.getParameters().iterator();
+		final Iterator<MethodParameter> parameters = this.getParameters().iterator();
 		while (parameters.hasNext()) {
-			final Parameter parameter = (Parameter) parameters.next();
+			final MethodParameter parameter = parameters.next();
 			jsni.append(parameter.getJsniNotation());
 		}
 
@@ -118,6 +118,7 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 	 */
 	class OverriddenMethodSearcher extends SuperTypesVisitor {
 
+		@Override
 		protected boolean visit(final Type type) {
 			boolean stopSearching = false;
 
@@ -131,7 +132,14 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 				}
 
 				final String methodName = AbstractMethod.this.getName();
-				Method method = type.findMethod(methodName, AbstractMethod.this.getParameters());
+				final List<Type> parameterTypes = new ArrayList<Type>();
+				final Iterator<MethodParameter> methodParameters = AbstractMethod.this.getParameters().iterator();
+				while (methodParameters.hasNext()) {
+					final MethodParameter methodParameter = methodParameters.next();
+					parameterTypes.add(methodParameter.getType());
+				}
+
+				Method method = type.findMethod(methodName, parameterTypes);
 				if (null == method) {
 					break;
 				}
@@ -149,6 +157,7 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 			return stopSearching;
 		}
 
+		@Override
 		protected boolean skipInitialType() {
 			return true;
 		}
@@ -182,18 +191,18 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 		method.setName(this.getName());
 		method.setNative(false);
 
-		final Iterator parameters = this.getParameters().iterator();
+		final Iterator<MethodParameter> parameters = this.getParameters().iterator();
 		while (parameters.hasNext()) {
-			final MethodParameter parameter = (MethodParameter) parameters.next();
+			final MethodParameter parameter = parameters.next();
 			method.addParameter(parameter.copy());
 		}
 
 		method.setReturnType(this.getReturnType());
 		method.setStatic(this.isStatic());
 
-		final Iterator thrownTypes = this.getThrownTypes().iterator();
+		final Iterator<Type> thrownTypes = this.getThrownTypes().iterator();
 		while (thrownTypes.hasNext()) {
-			method.addThrownTypes((Type) thrownTypes.next());
+			method.addThrownTypes(thrownTypes.next());
 		}
 
 		method.setVisibility(this.getVisibility());
@@ -219,18 +228,18 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 			}
 
 			// parameter types must match.
-			final List parameters = this.getParameters();
-			final List otherParameters = otherMethod.getParameters();
+			final List<MethodParameter> parameters = this.getParameters();
+			final List<MethodParameter> otherParameters = otherMethod.getParameters();
 			if (parameters.size() != otherParameters.size()) {
 				break;
 			}
 			same = true;
-			final Iterator parametersIterator = parameters.iterator();
-			final Iterator otherParametersIterator = otherParameters.iterator();
+			final Iterator<MethodParameter> parametersIterator = parameters.iterator();
+			final Iterator<MethodParameter> otherParametersIterator = otherParameters.iterator();
 
 			while (parametersIterator.hasNext()) {
-				final MethodParameter parameter = (MethodParameter) parametersIterator.next();
-				final MethodParameter otherParameter = (MethodParameter) otherParametersIterator.next();
+				final MethodParameter parameter = parametersIterator.next();
+				final MethodParameter otherParameter = otherParametersIterator.next();
 
 				if (parameter.getType().equals(otherParameter.getType())) {
 					same = false;
@@ -243,4 +252,27 @@ abstract public class AbstractMethod extends AbstractConstructorOrMethod impleme
 
 		return same;
 	}
+
+	/**
+	 * A lazy loaded list containing all the parameters for this method
+	 */
+	private List<MethodParameter> parameters;
+
+	public List<MethodParameter> getParameters() {
+		if (false == hasParameters()) {
+			this.setParameters(this.createParameters());
+		}
+		return this.parameters;
+	}
+
+	protected boolean hasParameters() {
+		return this.parameters != null;
+	}
+
+	protected void setParameters(final List<MethodParameter> parameters) {
+		Checker.notNull("parameter:parameters", parameters);
+		this.parameters = parameters;
+	}
+
+	abstract protected List<MethodParameter> createParameters();
 }

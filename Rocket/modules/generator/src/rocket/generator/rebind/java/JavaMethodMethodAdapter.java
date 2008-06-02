@@ -25,6 +25,7 @@ import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.method.AbstractMethod;
 import rocket.generator.rebind.method.Method;
+import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.util.client.Checker;
 
 /**
@@ -45,9 +46,9 @@ public class JavaMethodMethodAdapter extends AbstractMethod implements Method {
 		return JavaAdapterHelper.getVisibility(this.getJavaMethod().getModifiers());
 	}
 
-	protected List createParameters() {
+	protected List<MethodParameter> createParameters() {
 		final GeneratorContext context = this.getGeneratorContext();
-		final List parameters = new ArrayList();
+		final List<MethodParameter> parameters = new ArrayList<MethodParameter>();
 		final Class[] parameterTypes = this.getJavaMethod().getParameterTypes();
 		final java.lang.reflect.Method javaMethod = this.getJavaMethod();
 

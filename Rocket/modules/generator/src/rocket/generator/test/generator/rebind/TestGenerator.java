@@ -39,17 +39,17 @@ abstract public class TestGenerator extends Generator {
 	 * 
 	 * @return
 	 */
-	protected String getGeneratedTypeNameSuffix(){
+	protected String getGeneratedTypeNameSuffix() {
 		return "1";
 	}
 
-	
-	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+	protected GeneratorContext createGeneratorContext(final com.google.gwt.core.ext.GeneratorContext generatorContext,
+			final TreeLogger logger) {
 		final TypeOracleGeneratorContext context = new TypeOracleGeneratorContext();
-		context.setGenerator( this );
-		context.setGeneratorContext( generatorContext );
-		context.setRootTreeLogger( logger );
-		
+		context.setGenerator(this);
+		context.setGeneratorContext(generatorContext);
+		context.setRootTreeLogger(logger);
+
 		return context;
 	}
 

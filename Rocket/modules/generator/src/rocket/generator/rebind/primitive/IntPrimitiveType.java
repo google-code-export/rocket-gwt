@@ -24,10 +24,11 @@ import rocket.generator.rebind.type.Type;
  */
 abstract public class IntPrimitiveType extends PrimitiveType {
 
-	public String getRuntimeName(){
+	@Override
+	public String getRuntimeName() {
 		return Constants.INT_RUNTIME_NAME;
 	}
-	
+
 	public boolean isAssignableFrom(final Type type) {
 		return this.equals(type) || this.getByte().equals(type) || this.getShort().equals(type);
 	}
@@ -40,6 +41,7 @@ abstract public class IntPrimitiveType extends PrimitiveType {
 		return this.getType(Constants.INTEGER_WRAPPER);
 	}
 
+	@Override
 	public String toString() {
 		return "int";
 	}

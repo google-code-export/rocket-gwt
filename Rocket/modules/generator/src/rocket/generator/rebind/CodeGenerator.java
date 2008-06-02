@@ -15,7 +15,6 @@
  */
 package rocket.generator.rebind;
 
-
 /**
  * This interface notes that a class can write java code typically a method
  * 

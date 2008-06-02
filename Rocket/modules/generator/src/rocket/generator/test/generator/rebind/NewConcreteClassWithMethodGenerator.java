@@ -28,9 +28,9 @@ public class NewConcreteClassWithMethodGenerator extends TestGenerator {
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final NewConcreteType newType = context.newConcreteType( newTypeName );
+		final NewConcreteType newType = context.newConcreteType(newTypeName);
 		newType.setSuperType(type);
-		newType.setVisibility( Visibility.PUBLIC );
+		newType.setVisibility(Visibility.PUBLIC);
 
 		final NewMethod instanceMethod = newType.newMethod();
 

@@ -26,6 +26,8 @@ import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.SourceWriter;
+import rocket.generator.rebind.constructor.Constructor;
+import rocket.generator.rebind.field.Field;
 import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.field.NewFieldImpl;
 import rocket.generator.rebind.initializer.Initializer;
@@ -92,8 +94,8 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		return packagee.isUnnamed() ? name : name.substring(packagee.getName().length() + 1);
 	}
 
-	protected Set createInterfaces() {
-		return new HashSet();
+	protected Set<Type> createInterfaces() {
+		return new HashSet<Type>();
 	}
 
 	public void addInterface(final Type interfacee) {
@@ -117,12 +119,12 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		throw new NotAnInterfaceException(interfacee.getName() + " is not an interface.");
 	}
 
-	protected Set createConstructors() {
-		return new HashSet();
+	protected Set<Constructor> createConstructors() {
+		return new HashSet<Constructor>();
 	}
 
-	protected Set createFields() {
-		return new HashSet();
+	protected Set<Field> createFields() {
+		return new HashSet<Field>();
 	}
 
 	public void addField(final NewField field) {
@@ -161,14 +163,14 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		return method;
 	}
 
-	protected Set createNestedTypes() {
-		return new HashSet();
+	protected Set<Type> createNestedTypes() {
+		return new HashSet<Type>();
 	}
 
 	/**
 	 * Generated types never have sub types.
 	 */
-	protected Set createSubTypes() {
+	protected Set<Type> createSubTypes() {
 		return Collections.EMPTY_SET;
 	}
 
@@ -492,12 +494,13 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		this.getMetaData().add(name, value);
 	}
 
-	public List getMetadataValues(final String name) {
+	public List<String> getMetadataValues(final String name) {
 		return this.getMetaData().getMetadataValues(name);
 	}
 
 	/**
-	 * A container which holds any meta data that is added to a new field instance. 
+	 * A container which holds any meta data that is added to a new field
+	 * instance.
 	 */
 	private MetaData metaData;
 

@@ -21,9 +21,10 @@ import rocket.generator.rebind.field.Field;
 
 /**
  * This comparator is used to sort fields based on name and staticness
+ * 
  * @author Miroslav Pokorny
  */
-public class FieldComparator implements Comparator {
+public class FieldComparator implements Comparator<Field> {
 
 	public final static Comparator INSTANCE = new FieldComparator();
 
@@ -31,29 +32,25 @@ public class FieldComparator implements Comparator {
 		super();
 	}
 
-	public int compare(final Object object, final Object otherObject) {
-		return this.compare((Field) object, (Field) otherObject);
-	}
-
-	int compare(final Field field, final Field otherField) {
+	public int compare(final Field field, final Field otherField) {
 		int value = 0;
-		
-		while( true ){
+
+		while (true) {
 			final boolean staticField = field.isStatic();
 			final boolean otherStaticField = otherField.isStatic();
-			if( staticField && false == otherStaticField ){
+			if (staticField && false == otherStaticField) {
 				value = 1;
 				break;
 			}
-			if( false == staticField && otherStaticField ){
+			if (false == staticField && otherStaticField) {
 				value = -1;
 				break;
 			}
-			
+
 			value = field.getName().compareTo(otherField.getName());
 			break;
 		}
-		
-		return value;		
+
+		return value;
 	}
 }

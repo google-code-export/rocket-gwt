@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
@@ -34,9 +35,9 @@ public interface Constructor {
 
 	Type getEnclosingType();
 
-	List getParameters();
+	List<ConstructorParameter> getParameters();
 
-	Set getThrownTypes();
+	Set<Type> getThrownTypes();
 
 	NewConstructor copy(NewConcreteType newConcreteType);
 

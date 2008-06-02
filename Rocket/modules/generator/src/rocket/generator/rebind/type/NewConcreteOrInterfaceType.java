@@ -33,19 +33,20 @@ import rocket.util.client.Tester;
 
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
-abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfaceType{
-	
-	public NewConcreteOrInterfaceType(){
+abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfaceType {
+
+	public NewConcreteOrInterfaceType() {
 		super();
 	}
-	
+
 	/**
-	 * NewConcrete and NewInterfaceTypeImpls must be written using the GWT way using a ComposerFactory etc.
+	 * NewConcrete and NewInterfaceTypeImpls must be written using the GWT way
+	 * using a ComposerFactory etc.
 	 */
 	public void write(final SourceWriter writer) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * Requests this generated type to write out its definition including its
 	 * constructors, methods and fields. This operation may only be attempted
@@ -55,21 +56,21 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	 *            The printwriter returned by
 	 *            context.tryCreateTypePrintWriter(packageName,
 	 *            simpleClassName);
-	 */	
+	 */
 	public void write() {
 		final String packageName = this.getPackage().getName();
 		final String simpleClassName = this.getSimpleName();
 
 		final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, simpleClassName);
-		if( this.isInterface() ){
+		if (this.isInterface()) {
 			composerFactory.makeInterface();
 		}
-		
+
 		this.setSuperClassUponClassSourceFileComposerFactory(composerFactory);
 		this.addImplementedInterfacesToClassSourceFileComposerFactory(composerFactory);
 		this.setClassJavaDoc(composerFactory);
 
-		final TypeOracleGeneratorContext context = (TypeOracleGeneratorContext)this.getGeneratorContext();
+		final TypeOracleGeneratorContext context = (TypeOracleGeneratorContext) this.getGeneratorContext();
 		final PrintWriter printWriter = this.getPrintWriter();
 		final SourceWriter writer = context.createSourceWriter(composerFactory, printWriter);
 
@@ -83,7 +84,7 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 			this.writeMethods(writer);
 			this.writeNestedTypes(writer);
 			context.unbranch();
-			
+
 		} catch (final GeneratorException caught) {
 			this.handleWriteFailure(writer, caught);
 
@@ -121,11 +122,11 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	protected void log() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info(this.getVisibility().getName() + ( this.isInterface() ? " class " : " interface " ) + this.getName() );
-		
+		context.info(this.getVisibility().getName() + (this.isInterface() ? " class " : " interface ") + this.getName());
+
 		this.logSuperType();
 		this.logImplementedInterfaces();
-		
+
 		context.unbranch();
 	}
 
@@ -157,7 +158,6 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 		}
 	}
 
-	
 	/**
 	 * Adds a java doc comment that includes a variety of statistics about the
 	 * class thats about to be generated.
@@ -175,35 +175,35 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 		final MetaData metaData = this.getMetaData();
 
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
-		while( true ){
-			final boolean noComments = Tester.isNullOrEmpty(comments);			
+		while (true) {
+			final boolean noComments = Tester.isNullOrEmpty(comments);
 			final boolean noAnnotations = metaData.isEmpty();
-			
-			if( noComments && noAnnotations ){
+
+			if (noComments && noAnnotations) {
 				break;
 			}
-			
+
 			// only has annotations...
-			if( noComments && false == noAnnotations ){
+			if (noComments && false == noAnnotations) {
 				metaData.write(writer);
 				break;
 			}
-			//only has comments...
-			if( noComments && false == noAnnotations ){
-				writer.println( comments );
+			// only has comments...
+			if (noComments && false == noAnnotations) {
+				writer.println(comments);
 				break;
 			}
-			
+
 			// must have both annotations and comments...
-				writer.println( comments );
-				writer.println();
-				metaData.write(writer);
-				break;
-		}			
+			writer.println(comments);
+			writer.println();
+			metaData.write(writer);
+			break;
+		}
 
 		composerFactory.setJavaDocCommentForClass(writer.getBuffer().toString());
 	}
-	
+
 	/**
 	 * The name of the type being generated.
 	 */
@@ -218,24 +218,25 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 		return this.name != null;
 	}
 
-	public void setName(final String name) {		
+	public void setName(final String name) {
 		GeneratorHelper.checkJavaTypeName("parameter:name", name);
 		this.name = name;
 	}
-	
+
 	private PrintWriter printWriter;
-	
-	protected PrintWriter getPrintWriter(){
-		Checker.notNull("field:printWriter", printWriter );
+
+	protected PrintWriter getPrintWriter() {
+		Checker.notNull("field:printWriter", printWriter);
 		return this.printWriter;
 	}
-	
-	public void setPrintWriter( final PrintWriter printWriter ){
-		Checker.notNull("parameter:printWriter", printWriter );
+
+	public void setPrintWriter(final PrintWriter printWriter) {
+		Checker.notNull("parameter:printWriter", printWriter);
 		this.printWriter = printWriter;
 	}
-	
-	public String toString(){
+
+	@Override
+	public String toString() {
 		return super.toString() + ' ' + this.getName();
 	}
 }

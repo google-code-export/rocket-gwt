@@ -32,9 +32,9 @@ abstract public class ConstructorParameterVisitor {
 	public void start(final Constructor constructor) {
 		Checker.notNull("parameter:constructor", constructor);
 
-		final Iterator parameters = constructor.getParameters().iterator();
+		final Iterator<ConstructorParameter> parameters = constructor.getParameters().iterator();
 		while (parameters.hasNext()) {
-			final ConstructorParameter parameter = (ConstructorParameter) parameters.next();
+			final ConstructorParameter parameter = parameters.next();
 			if (this.visit(parameter)) {
 				break;
 			}

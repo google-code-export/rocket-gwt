@@ -78,14 +78,14 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 	public void testNewConcreteClass() {
 		final NewConcreteClass instance = (NewConcreteClass) GWT.create(NewConcreteClass.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewConcreteClass1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewConcreteClass1", instance.getClass().getName());
 	}
 
 	public void testNewConcreteClassWithInitializer() throws Exception {
 		final NewConcreteClassWithInitializer instance = (NewConcreteClassWithInitializer) GWT
 				.create(NewConcreteClassWithInitializer.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithInitializer1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithInitializer1", instance.getClass().getName());
 
 		assertTrue(NewConcreteClassWithInitializer.staticInitializerRun);
 		assertTrue(NewConcreteClassWithInitializer.instanceInitializerRun);
@@ -95,19 +95,19 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 		final NewConcreteClassWithConstructor instance = (NewConcreteClassWithConstructor) GWT
 				.create(NewConcreteClassWithConstructor.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithConstructor1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithConstructor1", instance.getClass().getName());
 	}
 
 	public void testNewConcreteClassWithField() {
 		final NewConcreteClassWithField instance = (NewConcreteClassWithField) GWT.create(NewConcreteClassWithField.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithField1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithField1", instance.getClass().getName());
 	}
 
 	public void testNewConcreteClassWithMethod() throws Exception {
 		final NewConcreteClassWithMethod instance = (NewConcreteClassWithMethod) GWT.create(NewConcreteClassWithMethod.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithMethod1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithMethod1", instance.getClass().getName());
 
 		assertEquals(1 + 2, instance.add(1, 2));
 	}
@@ -116,13 +116,14 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 		final NewConcreteClassWithConstructorsFieldsAndMethods instance = (NewConcreteClassWithConstructorsFieldsAndMethods) GWT
 				.create(NewConcreteClassWithConstructorsFieldsAndMethods.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithConstructorsFieldsAndMethods1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewConcreteClassWithConstructorsFieldsAndMethods1", instance.getClass()
+				.getName());
 	}
 
 	public void testNewNestedConcreteClass() {
 		final NewNestedClass instance = (NewNestedClass) GWT.create(NewNestedClass.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewNestedClass1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewNestedClass1", instance.getClass().getName());
 
 		assertNotNull(instance.getNested());
 	}
@@ -130,7 +131,7 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 	public void testNewNestedInterface() {
 		final NewNestedInterface instance = (NewNestedInterface) GWT.create(NewNestedInterface.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewNestedInterface1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewNestedInterface1", instance.getClass().getName());
 
 		assertNotNull(instance.getNested());
 	}
@@ -138,7 +139,7 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 	public void testNewNestedAnonymousConcreteClass() {
 		final NewNestedAnonymousClass instance = (NewNestedAnonymousClass) GWT.create(NewNestedAnonymousClass.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewNestedAnonymousClass1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewNestedAnonymousClass1", instance.getClass().getName());
 
 		assertNotNull(instance.getNested());
 	}
@@ -146,7 +147,7 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 	public void testNewNestedAnonymousInterface() {
 		final NewNestedAnonymousInterface instance = (NewNestedAnonymousInterface) GWT.create(NewNestedAnonymousInterface.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewNestedAnonymousInterface1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewNestedAnonymousInterface1", instance.getClass().getName());
 
 		assertNotNull(instance.getNested());
 	}
@@ -154,7 +155,7 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 	public void testNewJsniField() {
 		final NewJsniField instance = (NewJsniField) GWT.create(NewJsniField.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewJsniField1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewJsniField1", instance.getClass().getName());
 
 		instance.setField("apple");
 		assertEquals("apple", instance.getField());
@@ -163,7 +164,7 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 	public void testNewJsniMethod() {
 		final NewJsniMethod instance = (NewJsniMethod) GWT.create(NewJsniMethod.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.NewJsniMethod1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.NewJsniMethod1", instance.getClass().getName());
 
 		assertEquals(1 + 2, instance.add(1, 2));
 	}
@@ -171,18 +172,20 @@ public class GeneratorGwtTestCase extends rocket.generator.client.GeneratorGwtTe
 	public void testSuperType() {
 		final SuperType instance = (SuperType) GWT.create(SuperType.class);
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.SuperType", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.SuperType", instance.getClass().getName());
 	}
 
 	public void testSubTypes() {
-		final Object instance = GWT.create(SubTypes.class); // generated class is not a sub class of SubTypes
+		final Object instance = GWT.create(SubTypes.class); // generated class
+															// is not a sub
+															// class of SubTypes
 		assertNotNull(instance);
-		assertEquals("rocket.generator.test.generator.client.SubTypes1", GWT.getTypeName(instance));
+		assertEquals("rocket.generator.test.generator.client.SubTypes1", instance.getClass().getName());
 	}
-	
-	public void testCommentsAndMetaData(){
-		final Object instance = GWT.create( CommentsAndMetaData.class );
-		assertNotNull( instance );
-		assertEquals("rocket.generator.test.generator.client.CommentsAndMetaData1", GWT.getTypeName(instance));
+
+	public void testCommentsAndMetaData() {
+		final Object instance = GWT.create(CommentsAndMetaData.class);
+		assertNotNull(instance);
+		assertEquals("rocket.generator.test.generator.client.CommentsAndMetaData1", instance.getClass().getName());
 	}
 }

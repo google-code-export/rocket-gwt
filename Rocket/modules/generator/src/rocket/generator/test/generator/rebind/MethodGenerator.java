@@ -60,8 +60,7 @@ public class MethodGenerator extends TestGenerator {
 		final Type shortType = context.getShort();
 		final Method packagePrivateShortMethod = type.getMethod("packagePrivateShortMethod", Arrays.asList(new Type[] { shortType }));
 
-		Checker.same("packagePrivateShortMethod visibility", Visibility.PACKAGE_PRIVATE, packagePrivateShortMethod
-				.getVisibility());
+		Checker.same("packagePrivateShortMethod visibility", Visibility.PACKAGE_PRIVATE, packagePrivateShortMethod.getVisibility());
 		Checker.equals("packagePrivateShortMethod name", "packagePrivateShortMethod", packagePrivateShortMethod.getName());
 		Checker.same("packagePrivateShortMethod returnType", shortType, packagePrivateShortMethod.getReturnType());
 		Checker.same("packagePrivateShortMethod enclosing type", type, packagePrivateShortMethod.getEnclosingType());

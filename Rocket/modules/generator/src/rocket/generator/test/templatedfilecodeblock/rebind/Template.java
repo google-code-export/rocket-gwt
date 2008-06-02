@@ -22,10 +22,10 @@ import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 
 public class Template extends TemplatedFileCodeBlock {
 
-	public void setNative( final boolean nativee ){
+	public void setNative(final boolean nativee) {
 		super.setNative(nativee);
 	}
-	
+
 	private String resourceName;
 
 	protected String getResourceName() {

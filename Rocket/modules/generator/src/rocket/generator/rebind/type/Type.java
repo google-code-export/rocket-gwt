@@ -42,34 +42,34 @@ public interface Type extends HasMetadata, ClassComponent {
 	String getJsniNotation();
 
 	String getRuntimeName();
-	
+
 	Package getPackage();
 
-	Set getInterfaces();
+	Set<Type> getInterfaces();
 
 	Type getSuperType();
 
-	Set getSubTypes();
+	Set<Type> getSubTypes();
 
-	Set getConstructors();
+	Set<Constructor> getConstructors();
 
-	Constructor findConstructor(List parameterTypes);
+	Constructor findConstructor(List<Type> parameterTypes);
 
-	Constructor getConstructor(List parameterTypes);
+	Constructor getConstructor(List<Type> parameterTypes);
 
 	boolean hasNoArgumentsConstructor();
 
-	Set getMethods();
+	Set<Method> getMethods();
 
-	Method findMethod(String methodName, List parameterTypes);
+	Method findMethod(String methodName, List<Type> parameterTypes);
 
-	Method getMethod(String methodName, List parameterTypes);
+	Method getMethod(String methodName, List<Type> parameterTypes);
 
-	Method findMostDerivedMethod(String methodName, List parameterTypes);
+	Method findMostDerivedMethod(String methodName, List<Type> parameterTypes);
 
-	Method getMostDerivedMethod(String methodName, List parameterTypes);
+	Method getMostDerivedMethod(String methodName, List<Type> parameterTypes);
 
-	Set getFields();
+	Set<Field> getFields();
 
 	Field findField(String name);
 
@@ -98,5 +98,5 @@ public interface Type extends HasMetadata, ClassComponent {
 	 */
 	Type getWrapper();
 
-	Set getNestedTypes();
+	Set<Type> getNestedTypes();
 }

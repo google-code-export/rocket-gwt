@@ -45,35 +45,35 @@ import rocket.util.client.Tester;
 abstract public class AbstractType extends AbstractClassComponent implements Type {
 
 	/**
-	 * Returns the runtime name of the class. This method is only necessary due to the use of dollar signs "$"
-	 * within inner classes rather than dot ".".
+	 * Returns the runtime name of the class. This method is only necessary due
+	 * to the use of dollar signs "$" within inner classes rather than dot ".".
 	 */
-	public String getRuntimeName(){
+	public String getRuntimeName() {
 		final StringBuffer runtimeName = new StringBuffer();
 		final String name = this.getName();
 		final Package packagee = this.getPackage();
 		final String packageName = null == packagee ? null : packagee.getName();
 		String nameLessPackageName = name;
-		
-		if( false == Tester.isNullOrEmpty( packageName ) ){
-			runtimeName.append( packageName );
-			runtimeName.append( '.');
-			
-			nameLessPackageName = name.substring( packageName.length() + 1 );
+
+		if (false == Tester.isNullOrEmpty(packageName)) {
+			runtimeName.append(packageName);
+			runtimeName.append('.');
+
+			nameLessPackageName = name.substring(packageName.length() + 1);
 		}
-		
-		nameLessPackageName = nameLessPackageName.replace( '.', '$');
-		runtimeName.append( nameLessPackageName );
-		
+
+		nameLessPackageName = nameLessPackageName.replace('.', '$');
+		runtimeName.append(nameLessPackageName);
+
 		return runtimeName.toString();
 	}
-	
+
 	/**
 	 * A lazy loaded set containing all the interfaces implemented by this type
 	 */
-	private Set interfaces;
+	private Set<Type> interfaces;
 
-	public Set getInterfaces() {
+	public Set<Type> getInterfaces() {
 		if (false == hasInterfaces()) {
 			this.setInterfaces(this.createInterfaces());
 		}
@@ -84,19 +84,19 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return this.interfaces != null;
 	}
 
-	protected void setInterfaces(final Set interfaces) {
+	protected void setInterfaces(final Set<Type> interfaces) {
 		Checker.notNull("parameter:interfaces", interfaces);
 		this.interfaces = interfaces;
 	}
 
-	abstract protected Set createInterfaces();
+	abstract protected Set<Type> createInterfaces();
 
 	/**
 	 * A lazy loaded set containing all the declared constructor for this type.
 	 */
-	private Set constructors;
+	private Set<Constructor> constructors;
 
-	public Set getConstructors() {
+	public Set<Constructor> getConstructors() {
 		if (false == this.hasConstructors()) {
 			this.setConstructors(this.createConstructors());
 		}
@@ -108,12 +108,12 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return this.constructors != null;
 	}
 
-	protected void setConstructors(final Set constructors) {
+	protected void setConstructors(final Set<Constructor> constructors) {
 		Checker.notNull("parameter:constructors", constructors);
 		this.constructors = constructors;
 	}
 
-	abstract protected Set createConstructors();
+	abstract protected Set<Constructor> createConstructors();
 
 	/**
 	 * Finds a matching constructor given its parameter types.
@@ -122,7 +122,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 *            array of parameter types
 	 * @return The matching constructor or null if none was found.
 	 */
-	public Constructor findConstructor(final List parameterTypes) {
+	public Constructor findConstructor(final List<Type> parameterTypes) {
 		Checker.notNull("parameter:parameterTypes", parameterTypes);
 
 		Constructor found = null;
@@ -157,7 +157,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return found;
 	}
 
-	public Constructor getConstructor(final List parameterTypes) {
+	public Constructor getConstructor(final List<Type> parameterTypes) {
 		Constructor constructor = this.findConstructor(parameterTypes);
 		if (null == constructor) {
 			this.throwConstructorNotFoundException(parameterTypes);
@@ -165,7 +165,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return constructor;
 	}
 
-	protected void throwConstructorNotFoundException(final List parameterTypes) {
+	protected void throwConstructorNotFoundException(final List<Type> parameterTypes) {
 		throw new ConstructorNotFoundException("Unable to find a constructor belonging to " + this.getName() + " with parameters "
 				+ parameterTypes);
 	}
@@ -177,9 +177,9 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	/**
 	 * A lazy loaded set containing all the declared fields for this type.
 	 */
-	private Set fields;
+	private Set<Field> fields;
 
-	public Set getFields() {
+	public Set<Field> getFields() {
 		if (false == this.hasFields()) {
 			this.setFields(this.createFields());
 		}
@@ -191,12 +191,12 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return this.fields != null;
 	}
 
-	protected void setFields(final Set fields) {
+	protected void setFields(final Set<Field> fields) {
 		Checker.notNull("parameter:fields", fields);
 		this.fields = fields;
 	}
 
-	abstract protected Set createFields();
+	abstract protected Set<Field> createFields();
 
 	/**
 	 * Finds a field by name.
@@ -232,9 +232,9 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	/**
 	 * A lazy loaded set containing all the methods declared by this type
 	 */
-	private Set methods;
+	private Set<Method> methods;
 
-	public Set getMethods() {
+	public Set<Method> getMethods() {
 		if (false == hasMethods()) {
 			this.setMethods(this.createMethods());
 		}
@@ -245,7 +245,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return this.methods != null;
 	}
 
-	protected void setMethods(final Set methods) {
+	protected void setMethods(final Set<Method> methods) {
 		Checker.notNull("parameter:methods", methods);
 		this.methods = methods;
 	}
@@ -255,7 +255,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 * 
 	 * @return
 	 */
-	abstract protected Set createMethods();
+	abstract protected Set<Method> createMethods();
 
 	/**
 	 * Finds a method using its name and parameter types.
@@ -266,33 +266,33 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 *            array of parameter types.
 	 * @return The found method or null if none was found.
 	 */
-	public Method findMethod(final String methodName, final List parameterTypes) {
+	public Method findMethod(final String methodName, final List<Type> parameterTypes) {
 		GeneratorHelper.checkJavaMethodName("parameter:methodName", methodName);
 		Checker.notNull("parameter:parameterTypes", parameterTypes);
 
 		Method found = null;
 
-		final Iterator methods = this.getMethods().iterator();
+		final Iterator<Method> methods = this.getMethods().iterator();
 
 		while (methods.hasNext()) {
-			final Method method = (Method) methods.next();
+			final Method method = methods.next();
 			if (false == method.getName().equals(methodName)) {
 				continue;
 			}
 
-			final List methodParameters = method.getParameters();
+			final List<MethodParameter> methodParameters = method.getParameters();
 			if (methodParameters.size() != parameterTypes.size()) {
 				continue;
 			}
 
 			found = method;
 
-			final Iterator methodParametersIterator = methodParameters.iterator();
-			final Iterator parameterTypesIterator = parameterTypes.iterator();
+			final Iterator<MethodParameter> methodParametersIterator = methodParameters.iterator();
+			final Iterator<Type> parameterTypesIterator = parameterTypes.iterator();
 
 			while (parameterTypesIterator.hasNext()) {
-				final Type type = (Type) parameterTypesIterator.next();
-				final MethodParameter parameter = (MethodParameter) methodParametersIterator.next();
+				final Type type = parameterTypesIterator.next();
+				final MethodParameter parameter = methodParametersIterator.next();
 				if (false == type.equals(parameter.getType())) {
 					found = null;
 					break;
@@ -306,7 +306,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return found;
 	}
 
-	public Method getMethod(final String methodName, final List parameterTypes) {
+	public Method getMethod(final String methodName, final List<Type> parameterTypes) {
 		final Method method = this.findMethod(methodName, parameterTypes);
 		if (null == method) {
 			this.throwMethodNotFoundException(methodName, parameterTypes);
@@ -323,7 +323,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 * @param The
 	 *            parameter types to search for
 	 */
-	public Method findMostDerivedMethod(final String methodName, final List parameterTypes) {
+	public Method findMostDerivedMethod(final String methodName, final List<Type> parameterTypes) {
 		Checker.notNull("parameter:methodName", methodName);
 		Checker.notNull("parameter:parameterTypes", parameterTypes);
 
@@ -342,6 +342,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		 * @param type
 		 * @return return true to skip remaining types.
 		 */
+		@Override
 		protected boolean visit(final Type type) {
 			Checker.notNull("parameter:type", type);
 
@@ -357,6 +358,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		 * Dont skip the most derived test when searching for the most derived
 		 * method.
 		 */
+		@Override
 		protected boolean skipInitialType() {
 			return false;
 		}
@@ -376,14 +378,14 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 			this.methodName = methodName;
 		}
 
-		private List parameterTypes;
+		private List<Type> parameterTypes;
 
-		protected List getParameterTypes() {
+		protected List<Type> getParameterTypes() {
 			Checker.notNull("field:parameterTypes", parameterTypes);
 			return this.parameterTypes;
 		}
 
-		protected void setParameterTypes(final List parameterTypes) {
+		protected void setParameterTypes(final List<Type> parameterTypes) {
 			Checker.notNull("parameter:parameterTypes", parameterTypes);
 			this.parameterTypes = parameterTypes;
 		}
@@ -408,7 +410,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 * @param The
 	 *            parameter types to search for
 	 */
-	public Method getMostDerivedMethod(final String methodName, final List parameterTypes) {
+	public Method getMostDerivedMethod(final String methodName, final List<Type> parameterTypes) {
 		final Method method = this.findMostDerivedMethod(methodName, parameterTypes);
 		if (null == method) {
 			this.throwMethodNotFoundException(methodName, parameterTypes);
@@ -416,7 +418,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return method;
 	}
 
-	protected void throwMethodNotFoundException(final String methodName, final List parameterTypes) {
+	protected void throwMethodNotFoundException(final String methodName, final List<Type> parameterTypes) {
 		throw new MethodNotFoundException("Unable to find a method called \"" + methodName + "\" within " + this.getName()
 				+ " with parameters " + parameterTypes + " upon " + this.getName());
 	}
@@ -424,17 +426,17 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	/**
 	 * Retrieves a Set containing all the SubTypes of this type.
 	 */
-	public Set getSubTypes() {
-		final Set subTypes = this.createSubTypes();
+	public Set<Type> getSubTypes() {
+		final Set<Type> subTypes = this.createSubTypes();
 
-		final Set merged = new HashSet();
+		final Set<Type> merged = new HashSet<Type>();
 		merged.addAll(subTypes);
 		merged.addAll(this.getNewSubTypes());
 
 		return Collections.unmodifiableSet(merged);
 	}
 
-	abstract protected Set createSubTypes();
+	abstract protected Set<Type> createSubTypes();
 
 	/**
 	 * Searches all NewTypes super type chain to determine if any of them are
@@ -442,18 +444,18 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 * 
 	 * @return a Set of NewType sub types
 	 */
-	protected Set getNewSubTypes() {
-		final Set subTypes = new HashSet();
+	protected Set<Type> getNewSubTypes() {
+		final Set<Type> subTypes = new HashSet<Type>();
 
 		final GeneratorContext context = this.getGeneratorContext();
-		final Set newTypes = context.getNewTypes();
-		final Iterator newTypesIterator = newTypes.iterator();
-		
+		final Set<Type> newTypes = context.getNewTypes();
+		final Iterator<Type> newTypesIterator = newTypes.iterator();
+
 		while (newTypesIterator.hasNext()) {
-			final Type newType = (Type) newTypesIterator.next();
-			if( newType.getSuperType() == this ){
-				subTypes.add( newType );
-			}			
+			final Type newType = newTypesIterator.next();
+			if (newType.getSuperType() == this) {
+				subTypes.add(newType);
+			}
 		}
 
 		return subTypes;
@@ -462,9 +464,9 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	/**
 	 * A lazy loaded set containing all the declared nested types for this type.
 	 */
-	private Set nestedTypes;
+	private Set<Type> nestedTypes;
 
-	public Set getNestedTypes() {
+	public Set<Type> getNestedTypes() {
 		if (false == this.hasNestedTypes()) {
 			this.setNestedTypes(this.createNestedTypes());
 		}
@@ -476,12 +478,12 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 		return this.nestedTypes != null;
 	}
 
-	protected void setNestedTypes(final Set nestedTypes) {
+	protected void setNestedTypes(final Set<Type> nestedTypes) {
 		Checker.notNull("parameter:nestedTypes", nestedTypes);
 		this.nestedTypes = nestedTypes;
 	}
 
-	abstract protected Set createNestedTypes();
+	abstract protected Set<Type> createNestedTypes();
 
 	protected Type getBoolean() {
 		return this.getGeneratorContext().getBoolean();

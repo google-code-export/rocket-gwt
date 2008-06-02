@@ -22,6 +22,7 @@ import java.util.Set;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.AbstractConstructor;
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
+import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JConstructor;
@@ -34,6 +35,7 @@ import com.google.gwt.core.ext.typeinfo.JParameter;
  */
 public class JConstructorConstructorAdapter extends AbstractConstructor {
 
+	@Override
 	public Visibility getVisibility() {
 		if (false == this.hasVisibility()) {
 			this.setVisibility(this.createVisibility());
@@ -66,8 +68,8 @@ public class JConstructorConstructorAdapter extends AbstractConstructor {
 		return visibility;
 	}
 
-	protected List createParameters() {
-		final List list = new ArrayList();
+	protected List<ConstructorParameter> createParameters() {
+		final List<ConstructorParameter> list = new ArrayList<ConstructorParameter>();
 
 		final JParameter[] parameters = this.getJConstructor().getParameters();
 		for (int i = 0; i < parameters.length; i++) {
@@ -93,7 +95,7 @@ public class JConstructorConstructorAdapter extends AbstractConstructor {
 		return adapter;
 	}
 
-	protected Set createThrownTypes() {
+	protected Set<Type> createThrownTypes() {
 		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJConstructor().getThrows());
 	}
 
@@ -109,6 +111,7 @@ public class JConstructorConstructorAdapter extends AbstractConstructor {
 		this.jConstructor = jConstructor;
 	}
 
+	@Override
 	public String toString() {
 		return "Constructor: " + this.jConstructor;
 	}

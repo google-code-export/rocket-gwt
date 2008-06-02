@@ -46,12 +46,13 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 		this.setMetaData(this.createMetaData());
 	}
 
+	@Override
 	public void setVisibility(final Visibility visibility) {
 		super.setVisibility(visibility);
 	}
 
-	protected List createParameters() {
-		return new ArrayList();
+	protected List<ConstructorParameter> createParameters() {
+		return new ArrayList<ConstructorParameter>();
 	}
 
 	public NewConstructorParameter newParameter() {
@@ -70,8 +71,8 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 		parameter.setEnclosingConstructor(this);
 	}
 
-	protected Set createThrownTypes() {
-		return new HashSet();
+	protected Set<Type> createThrownTypes() {
+		return new HashSet<Type>();
 	}
 
 	public void addThrownType(final Type thrownTypes) {
@@ -103,7 +104,8 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 	}
 
 	/**
-	 * A container which holds any meta data that is added to a new field instance. 
+	 * A container which holds any meta data that is added to a new field
+	 * instance.
 	 */
 	private MetaData metaData;
 
@@ -145,17 +147,18 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 
 	protected void log() {
 		final StringBuffer buf = new StringBuffer();
-		
-		buf.append( this.getVisibility().toString() );
-		buf.append( ' '); // yes two spaces will be emitted for package private constructors.
-		
+
+		buf.append(this.getVisibility().toString());
+		buf.append(' '); // yes two spaces will be emitted for package
+							// private constructors.
+
 		String constructor = this.getEnclosingType().getName();
-		final int dot = constructor.lastIndexOf( '.');
-		if( dot != -1 ){
-			constructor = constructor.substring( dot );
+		final int dot = constructor.lastIndexOf('.');
+		if (dot != -1) {
+			constructor = constructor.substring(dot + 1);
 		}
-		
-		buf.append( constructor );
+
+		buf.append(constructor);
 		buf.append('(');
 
 		final Iterator parameters = this.getParameters().iterator();
@@ -273,15 +276,15 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 		builder.append(this.getVisibility());
 
 		if (this.hasEnclosingType()) {
-			builder.append(this.getEnclosingType());
+			builder.append(this.getEnclosingType().getSimpleName());
 			builder.append(' ');
 		}
 
 		builder.append('(');
 
-		final Iterator parameters = this.getParameters().iterator();
+		final Iterator<ConstructorParameter> parameters = this.getParameters().iterator();
 		while (parameters.hasNext()) {
-			final NewConstructorParameter parameter = (NewConstructorParameter) parameters.next();
+			final ConstructorParameter parameter = parameters.next();
 			builder.append(parameter.getType());
 
 			if (parameters.hasNext()) {

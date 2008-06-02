@@ -94,7 +94,8 @@ public class TemplatedFileCodeBlockGwtTestCase extends rocket.generator.client.G
 	}
 
 	public void testNestedAnonymousTypePlaceHolder() {
-		final NestedAnonymousTypePlaceHolder instance = (NestedAnonymousTypePlaceHolder) GWT.create(NestedAnonymousTypePlaceHolder.class);
+		final NestedAnonymousTypePlaceHolder instance = (NestedAnonymousTypePlaceHolder) GWT
+				.create(NestedAnonymousTypePlaceHolder.class);
 		assertNotNull(instance);
 
 		assertNotNull(instance.getAnonymousInstance());

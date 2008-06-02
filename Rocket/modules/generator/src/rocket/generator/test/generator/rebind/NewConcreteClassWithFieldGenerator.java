@@ -27,10 +27,10 @@ public class NewConcreteClassWithFieldGenerator extends TestGenerator {
 	protected NewConcreteType assembleNewType(final Type superType, final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final NewConcreteType newType = context.newConcreteType( newTypeName );
+		final NewConcreteType newType = context.newConcreteType(newTypeName);
 		newType.setSuperType(superType);
-		newType.setVisibility( Visibility.PUBLIC );
-		
+		newType.setVisibility(Visibility.PUBLIC);
+
 		final Type stringType = context.getString();
 
 		final NewField instanceField = newType.newField();

@@ -24,10 +24,11 @@ import rocket.generator.rebind.type.Type;
  */
 abstract public class ShortPrimitiveType extends PrimitiveType {
 
-	public String getRuntimeName(){
+	@Override
+	public String getRuntimeName() {
 		return Constants.SHORT_RUNTIME_NAME;
 	}
-	
+
 	public boolean isAssignableFrom(final Type type) {
 		return type.equals(this.getByte()) || this.getShort().equals(type);
 	}
@@ -41,6 +42,7 @@ abstract public class ShortPrimitiveType extends PrimitiveType {
 		return this.getType(Constants.SHORT_WRAPPER);
 	}
 
+	@Override
 	public String toString() {
 		return "short";
 	}

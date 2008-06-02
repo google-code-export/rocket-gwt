@@ -24,9 +24,10 @@ import rocket.generator.rebind.methodparameter.MethodParameter;
 
 /**
  * This comparator is used to sort method based on name and staticness
+ * 
  * @author Miroslav Pokorny
  */
-public class MethodComparator implements Comparator {
+public class MethodComparator implements Comparator<Method> {
 
 	public final static Comparator INSTANCE = new MethodComparator();
 
@@ -34,63 +35,59 @@ public class MethodComparator implements Comparator {
 		super();
 	}
 
-	public int compare(final Object object, final Object otherObject) {
-		return this.compareMethod((Method) object, (Method) otherObject);
-	}
-
-	int compareMethod(final Method method, final Method otherMethod) {
+	public int compare(final Method method, final Method otherMethod) {
 		int value = 0;
-		
-		while( true ){
+
+		while (true) {
 			final boolean staticMethod = method.isStatic();
 			final boolean otherStaticMethod = otherMethod.isStatic();
-			if( staticMethod && false == otherStaticMethod ){
+			if (staticMethod && false == otherStaticMethod) {
 				value = 1;
 				break;
 			}
-			if( false == staticMethod && otherStaticMethod ){
+			if (false == staticMethod && otherStaticMethod) {
 				value = -1;
 				break;
 			}
-			
+
 			value = method.getName().compareTo(otherMethod.getName());
-			
-			if( 0 == value ){
-				value = this.compareMethodArguments( method.getParameters(), otherMethod.getParameters());				
-			}			
+
+			if (0 == value) {
+				value = this.compareMethodArguments(method.getParameters(), otherMethod.getParameters());
+			}
 			break;
 		}
-		
-		return value;		
+
+		return value;
 	}
-	
-	public int compareMethodArguments( final List arguments, final List otherArguments ) {
+
+	public int compareMethodArguments(final List<MethodParameter> arguments, final List<MethodParameter> otherArguments) {
 		int value = 0;
-		
-		while( true ){
+
+		while (true) {
 			// short argument list comes first...
 			value = arguments.size() - otherArguments.size();
-			if( value != 0 ){
+			if (value != 0) {
 				break;
 			}
 			// compare argument types one by one...
-			final Iterator parameters = arguments.iterator();
-			final Iterator otherParameters = otherArguments.iterator();
+			final Iterator<MethodParameter> parameters = arguments.iterator();
+			final Iterator<MethodParameter> otherParameters = otherArguments.iterator();
 			final Comparator typeComparator = TypeComparator.INSTANCE;
-			
-			while( parameters.hasNext() ){
-				final MethodParameter parameter = (MethodParameter)parameters.next(); 
-				final MethodParameter otherParameter = (MethodParameter)otherParameters.next(); 
-				
-				value = typeComparator.compare( parameter.getType(), otherParameter.getType() );
-				
-				if( 0 != value ){
+
+			while (parameters.hasNext()) {
+				final MethodParameter parameter = parameters.next();
+				final MethodParameter otherParameter = otherParameters.next();
+
+				value = typeComparator.compare(parameter.getType(), otherParameter.getType());
+
+				if (0 != value) {
 					break;
 				}
 			}
 			break;
 		}
-		
+
 		return value;
 	}
 }

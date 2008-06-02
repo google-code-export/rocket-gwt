@@ -36,6 +36,7 @@ abstract public class VoidPrimitiveType extends PrimitiveType {
 		return null;
 	}
 
+	@Override
 	public String toString() {
 		return "void";
 	}

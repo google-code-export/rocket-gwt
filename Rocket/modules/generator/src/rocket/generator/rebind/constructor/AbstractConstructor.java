@@ -16,12 +16,14 @@
 package rocket.generator.rebind.constructor;
 
 import java.util.Iterator;
+import java.util.List;
 
 import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.util.AbstractConstructorOrMethod;
+import rocket.util.client.Checker;
 
 /**
  * Base class for any constructor implementation.
@@ -61,4 +63,28 @@ abstract public class AbstractConstructor extends AbstractConstructorOrMethod im
 
 		constructor.setVisibility(this.getVisibility());
 	}
+
+	/**
+	 * A lazy loaded list containing all the parameters for this method
+	 */
+	private List<ConstructorParameter> parameters;
+
+	public List<ConstructorParameter> getParameters() {
+		if (false == hasParameters()) {
+			this.setParameters(this.createParameters());
+		}
+		return this.parameters;
+	}
+
+	protected boolean hasParameters() {
+		return this.parameters != null;
+	}
+
+	protected void setParameters(final List<ConstructorParameter> parameters) {
+		Checker.notNull("parameter:parameters", parameters);
+		this.parameters = parameters;
+	}
+
+	abstract protected List<ConstructorParameter> createParameters();
+
 }

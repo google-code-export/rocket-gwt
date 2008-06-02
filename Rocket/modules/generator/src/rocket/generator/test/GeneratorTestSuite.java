@@ -21,7 +21,8 @@ import rocket.generator.test.generator.client.GeneratorGwtTestCase;
 import rocket.generator.test.templatedfilecodeblock.client.TemplatedFileCodeBlockGwtTestCase;
 
 /**
- * TestSuite that executes all unit tests relating to the rocket.Generator module
+ * TestSuite that executes all unit tests relating to the rocket.Generator
+ * module
  * 
  * @author Miroslav Pokorny
  */
@@ -29,7 +30,7 @@ public class GeneratorTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket.Generator");
-		addTests( suite );
+		addTests(suite);
 		return suite;
 	}
 
@@ -43,8 +44,8 @@ public class GeneratorTestSuite {
 		suite.addTestSuite(TemplatedFileCodeBlockGwtTestCase.class);
 		suite.addTestSuite(VirtualMethodTestCase.class);
 		suite.addTestSuite(CollectionTemplatedCodeBlockTestCase.class);
-		suite.addTestSuite(SubClassVisitorTestCase.class );
-		suite.addTestSuite(ConcreteTypesImplementingInterfaceVisitorTestCase.class );
-		suite.addTestSuite(ReachableTypesVisitorTestCase.class );
+		suite.addTestSuite(SubClassVisitorTestCase.class);
+		suite.addTestSuite(ConcreteTypesImplementingInterfaceVisitorTestCase.class);
+		suite.addTestSuite(ReachableTypesVisitorTestCase.class);
 	}
 }

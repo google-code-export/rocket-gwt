@@ -58,6 +58,6 @@ public interface NewMethod extends Method, CodeGenerator, HasComments, HasMetada
 	CodeBlock getBody();
 
 	void setBody(CodeBlock body);
-	
-	void addMetaData( String key, String value );
+
+	void addMetaData(String key, String value);
 }

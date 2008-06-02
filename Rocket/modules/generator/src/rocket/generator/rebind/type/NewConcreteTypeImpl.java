@@ -15,7 +15,6 @@
  */
 package rocket.generator.rebind.type;
 
-
 /**
  * Base class for any generated concrete type that is not an anonymous inner
  * class.

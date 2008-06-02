@@ -77,8 +77,8 @@ abstract public class TestGenerator extends Generator {
 	 * @param cause
 	 * @return
 	 */
-	public String generateFailedGenerateAttempt(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext,
-			final String typeName, final Throwable cause) {
+	public String generateFailedGenerateAttempt(final TreeLogger logger,
+			final com.google.gwt.core.ext.GeneratorContext generatorContext, final String typeName, final Throwable cause) {
 
 		final TypeOracleGeneratorContext context = new TypeOracleGeneratorContext() {
 
@@ -145,7 +145,8 @@ abstract public class TestGenerator extends Generator {
 	protected void writeGetMessage(final SourceWriter writer, final String typeName, final Throwable cause) {
 		writer.println("public String getMessage(){");
 		writer.indent();
-		writer.println("return \"Attempt to generate for \\\"" + typeName + "\\\" failed because " + Generator.escape(cause.getMessage())+ "\" ;");
+		writer.println("return \"Attempt to generate for \\\"" + typeName + "\\\" failed because "
+				+ Generator.escape(cause.getMessage()) + "\" ;");
 		writer.outdent();
 		writer.println("}");
 	}

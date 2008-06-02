@@ -15,7 +15,6 @@
  */
 package rocket.generator.test.templatedfilecodeblock.rebind;
 
-
 public class TemplatedFileCodeBlockGenerator extends AbstractTemplatedFileCodeBlockGenerator {
 
 	protected String getTemplateFilename() {

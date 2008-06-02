@@ -32,7 +32,7 @@ public interface NewNestedType extends NewType {
 	Type getEnclosingType();
 
 	String getNestedName();
-	
+
 	void setNestedName(String name);
 
 	void setAbstract(boolean abstractt);

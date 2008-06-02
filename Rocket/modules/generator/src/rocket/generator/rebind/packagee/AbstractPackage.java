@@ -28,6 +28,7 @@ abstract public class AbstractPackage extends AbstractClassComponent implements 
 		return "".equals(this.getName());
 	}
 
+	@Override
 	public String toString() {
 		return "package " + this.getName();
 	}

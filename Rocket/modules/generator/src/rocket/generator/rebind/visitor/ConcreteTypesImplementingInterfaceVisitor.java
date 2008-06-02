@@ -19,69 +19,75 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
- * This visitor may be used to discover all the concrete types that implement a given interface.
+ * This visitor may be used to discover all the concrete types that implement a
+ * given interface.
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class ConcreteTypesImplementingInterfaceVisitor {
-	
-	
-	public void start( final Type interfacee ){
-		Checker.trueValue( "The type " + interfacee + " is not an interface.", interfacee.isInterface() );
-		
-		final SubTypesVisitor types = new SubTypesVisitor(){
-			protected boolean visit(final Type type){
+
+	public void start(final Type interfacee) {
+		Checker.trueValue("The type " + interfacee + " is not an interface.", interfacee.isInterface());
+
+		final SubTypesVisitor types = new SubTypesVisitor() {
+
+			@Override
+			protected boolean visit(final Type type) {
 				boolean skipRemaining = false;
-				if( false == ConcreteTypesImplementingInterfaceVisitor.this.skip( interfacee, type )){
+				if (false == ConcreteTypesImplementingInterfaceVisitor.this.skip(interfacee, type)) {
 					skipRemaining = ConcreteTypesImplementingInterfaceVisitor.this.visit(type);
 				}
 				return skipRemaining;
 			}
-			protected boolean skipInitialType(){
+
+			@Override
+			protected boolean skipInitialType() {
 				return false;
 			}
 		};
-		types.start( interfacee.getGeneratorContext().getObject() );
+		types.start(interfacee.getGeneratorContext().getObject());
 	}
-	
-	protected boolean skip( final Type interfacee, final Type type ){
+
+	protected boolean skip(final Type interfacee, final Type type) {
 		boolean skip = false;
-		
-		while( true ){
+
+		while (true) {
 			// skip interfaces...
-			if( type.isInterface() ){
+			if (type.isInterface()) {
 				skip = true;
 				break;
 			}
-			
+
 			// skip abstract classes...
-			if( type.isAbstract() && this.skipAbstractTypes() ){
+			if (type.isAbstract() && this.skipAbstractTypes()) {
 				skip = true;
 				break;
 			}
-			
-			//does type implement interfacee ?
-			if( false == type.isAssignableTo( interfacee )){
+
+			// does type implement interfacee ?
+			if (false == type.isAssignableTo(interfacee)) {
 				skip = true;
 			}
 			break;
 		}
-		
+
 		return skip;
 	}
-	
+
 	/**
-	 * Each type that implements the given interface is passed by to this method.
+	 * Each type that implements the given interface is passed by to this
+	 * method.
 	 * 
 	 * @param type
 	 * @return return true to skip remaining types.
 	 */
 	abstract protected boolean visit(final Type type);
-	
-	
+
 	/**
 	 * Return true to skip all abstract types and only visit concrete types.
+	 * 
 	 * @return
 	 */
 	abstract protected boolean skipAbstractTypes();
-	
+
 }

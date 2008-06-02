@@ -23,6 +23,8 @@ import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.AbstractConstructor;
 import rocket.generator.rebind.constructor.Constructor;
+import rocket.generator.rebind.constructorparameter.ConstructorParameter;
+import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
@@ -43,9 +45,9 @@ public class JavaConstructorConstructorAdapter extends AbstractConstructor imple
 		return JavaAdapterHelper.getVisibility(this.getJavaConstructor().getModifiers());
 	}
 
-	protected List createParameters() {
+	protected List<ConstructorParameter> createParameters() {
 		final GeneratorContext context = this.getGeneratorContext();
-		final List parameters = new ArrayList();
+		final List<ConstructorParameter> parameters = new ArrayList<ConstructorParameter>();
 
 		final Class[] parameterTypes = this.getJavaConstructor().getParameterTypes();
 		for (int i = 0; i < parameterTypes.length; i++) {
@@ -60,7 +62,7 @@ public class JavaConstructorConstructorAdapter extends AbstractConstructor imple
 		return parameters;
 	}
 
-	protected Set createThrownTypes() {
+	protected Set<Type> createThrownTypes() {
 		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaConstructor().getExceptionTypes());
 	}
 

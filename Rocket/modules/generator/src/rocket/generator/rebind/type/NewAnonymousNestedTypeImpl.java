@@ -63,6 +63,7 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 		this.setInterface(interfacee);
 	}
 
+	@Override
 	public void setSuperType(final Type superType) {
 		if (this.hasInterface()) {
 			this.throwAnonymousNestedTypeException("Unable to set the super type " + superType.getName()
@@ -163,7 +164,7 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 
 	public void write(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
-		
+
 		final Type type = this.hasInterface() ? this.getInterface() : this.getSuperType();
 		final String name = type.getName();
 		writer.print(name);
@@ -177,16 +178,19 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 		writer.outdent();
 		writer.println("}// " + name);
 	}
-	
-	public void addMetaData( final String name, final String value ){
+
+	@Override
+	public void addMetaData(final String name, final String value) {
 		throw new UnsupportedOperationException();
 	}
-	
-	public String getComments(){
+
+	@Override
+	public String getComments() {
 		throw new UnsupportedOperationException();
 	}
-	
-	public void setComments( final String comments ){
+
+	@Override
+	public void setComments(final String comments) {
 		throw new UnsupportedOperationException();
 	}
 }

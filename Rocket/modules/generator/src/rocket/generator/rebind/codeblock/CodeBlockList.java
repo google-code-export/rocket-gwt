@@ -42,27 +42,27 @@ public class CodeBlockList implements CodeBlock, CodeGenerator {
 		this.getCodeBlocks().add(codeBlock);
 	}
 
-	private List codeBlocks;
+	private List<CodeBlock> codeBlocks;
 
-	protected List getCodeBlocks() {
+	protected List<CodeBlock> getCodeBlocks() {
 		Checker.notNull("field:codeBlocks", codeBlocks);
 		return this.codeBlocks;
 	}
 
-	protected void setCodeBlocks(final List codeBlocks) {
+	protected void setCodeBlocks(final List<CodeBlock> codeBlocks) {
 		Checker.notNull("parameter:codeBlocks", codeBlocks);
 		this.codeBlocks = codeBlocks;
 	}
 
-	protected List createCodeBlocks() {
-		return new ArrayList();
+	protected List<CodeBlock> createCodeBlocks() {
+		return new ArrayList<CodeBlock>();
 	}
 
 	public boolean isEmpty() {
 		boolean empty = true;
-		final Iterator iterator = this.getCodeBlocks().iterator();
+		final Iterator<CodeBlock> iterator = this.getCodeBlocks().iterator();
 		while (iterator.hasNext()) {
-			final CodeBlock codeBlock = (CodeBlock) iterator.next();
+			final CodeBlock codeBlock = iterator.next();
 			if (false == codeBlock.isEmpty()) {
 				empty = false;
 				break;
@@ -74,9 +74,9 @@ public class CodeBlockList implements CodeBlock, CodeGenerator {
 	public void write(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
-		final Iterator iterator = this.getCodeBlocks().iterator();
+		final Iterator<CodeBlock> iterator = this.getCodeBlocks().iterator();
 		while (iterator.hasNext()) {
-			final CodeBlock codeBlock = (CodeBlock) iterator.next();
+			final CodeBlock codeBlock = iterator.next();
 			if (codeBlock.isEmpty()) {
 				continue;
 			}

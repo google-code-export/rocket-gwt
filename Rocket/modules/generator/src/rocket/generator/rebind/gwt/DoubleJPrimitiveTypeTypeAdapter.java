@@ -42,6 +42,7 @@ public class DoubleJPrimitiveTypeTypeAdapter extends DoublePrimitiveType {
 		return JPrimitiveType.DOUBLE;
 	}
 
+	@Override
 	public String toString() {
 		return "double";
 	}

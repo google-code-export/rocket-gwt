@@ -30,10 +30,10 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 		final GeneratorContext context = this.getGeneratorContext();
 		this.setType(superType);
 
-		final NewConcreteType newType = context.newConcreteType( newTypeName );
+		final NewConcreteType newType = context.newConcreteType(newTypeName);
 		newType.setSuperType(superType);
-		newType.setVisibility( Visibility.PUBLIC );
-		this.setNewType(newType);		
+		newType.setVisibility(Visibility.PUBLIC);
+		this.setNewType(newType);
 
 		this.addNewConstructor();
 		this.addNewField();
@@ -56,8 +56,8 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 		newMethod.setAbstract(false);
 
 		final Template body = new Template();
-		body.setNative( this.isNewMethodNative() );
-		body.setResourceName( this.getResourceNameFromGeneratorPackage(this.getTemplateFilename()));
+		body.setNative(this.isNewMethodNative());
+		body.setResourceName(this.getResourceNameFromGeneratorPackage(this.getTemplateFilename()));
 		newMethod.setBody(body);
 
 		newMethod.setFinal(false);
@@ -68,10 +68,10 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 		newMethod.setVisibility(Visibility.PUBLIC);
 
 		this.postNewMethodCreate(newMethod);
-		
+
 		this.visitTemplate(body);
 	}
-	
+
 	protected void postNewMethodCreate(final NewMethod method) {
 	}
 
@@ -112,7 +112,7 @@ abstract public class AbstractTemplatedFileCodeBlockGenerator extends Generator 
 		Checker.notNull("parameter:newType", newType);
 		this.newType = newType;
 	}
-	
+
 	protected String getGeneratedTypeNameSuffix() {
 		return "1";
 	}
