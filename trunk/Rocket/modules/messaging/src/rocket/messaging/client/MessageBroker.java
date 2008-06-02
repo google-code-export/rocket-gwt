@@ -36,12 +36,12 @@ public class MessageBroker {
 		this.setSubscribers(new HashMap());
 	}
 
-	public void publishMessages(final List messages) {
+	public void publishMessages(final List<Message> messages) {
 		Checker.notNull("parameter:messages", messages);
 
-		final Iterator iterator = messages.iterator();
+		final Iterator<Message> iterator = messages.iterator();
 		while (iterator.hasNext()) {
-			final Message message = (Message) iterator.next();
+			final Message message = iterator.next();
 			this.publish(message);
 		}
 	}
@@ -65,14 +65,14 @@ public class MessageBroker {
 	 * A map which contains a registry of subscribers, key = commandName value =
 	 * Command.
 	 */
-	private Map subscribers;
+	private Map<String,List<TopicSubscriber>> subscribers;
 
-	protected Map getSubscribers() {
+	protected Map<String,List<TopicSubscriber>> getSubscribers() {
 		Checker.notNull("field:subscribers", subscribers);
 		return subscribers;
 	}
 
-	protected void setSubscribers(final Map subscribers) {
+	protected void setSubscribers(final Map<String,List<TopicSubscriber>> subscribers) {
 		Checker.notNull("parameter:subscribers", subscribers);
 		this.subscribers = subscribers;
 	}
@@ -87,10 +87,10 @@ public class MessageBroker {
 		Checker.notEmpty("parameter:name", name);
 		Checker.notNull("parameter:subscriber", subscriber);
 
-		final Map subscribers = this.getSubscribers();
-		List listeners = (List) subscribers.get(name);
+		final Map<String,List<TopicSubscriber>> subscribers = this.getSubscribers();
+		List<TopicSubscriber> listeners = subscribers.get(name);
 		if (null == listeners) {
-			listeners = new ArrayList();
+			listeners = new ArrayList<TopicSubscriber>();
 			subscribers.put(name, listeners);
 		}
 		listeners.add(subscriber);
@@ -100,8 +100,8 @@ public class MessageBroker {
 		Checker.notEmpty("parameter:name", name);
 		Checker.notNull("parameter:subscriber", subscriber);
 
-		final Map subscribers = this.getSubscribers();
-		List listeners = (List) subscribers.get(name);
+		final Map<String,List<TopicSubscriber>> subscribers = this.getSubscribers();
+		List<TopicSubscriber> listeners = (List<TopicSubscriber>) subscribers.get(name);
 		if (null != listeners) {
 			listeners.remove(subscriber);
 

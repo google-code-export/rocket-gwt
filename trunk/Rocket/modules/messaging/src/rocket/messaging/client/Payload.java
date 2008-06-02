@@ -16,7 +16,7 @@
 package rocket.messaging.client;
 
 /**
- * The payload of a message
+ * A marker interface that marks a type as being a message payload.
  * 
  * @author Miroslav Pokorny (mP)
  */
