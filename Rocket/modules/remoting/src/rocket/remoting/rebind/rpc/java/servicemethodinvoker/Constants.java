@@ -20,7 +20,7 @@ package rocket.remoting.rebind.rpc.java.servicemethodinvoker;
  * 
  * @author Miroslav Pokorny
  */
-public class ServiceMethodInvokerConstants {
+class Constants {
 	static final String SERVICE_METHOD_INVOKER_TEMPLATE = "service-method-invoker.txt";
 
 	static final String SERVICE_METHOD_INVOKER_SERIALIZATION_FACTORY_COMPOSER = "serializationFactoryComposer";

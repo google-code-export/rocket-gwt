@@ -49,79 +49,97 @@ class ByteArrayServletOutputStream extends ServletOutputStream {
 
 	private final String NULL = "null";
 
+	@Override
 	public void print(final String string) throws IOException {
 		final String write = string == null ? NULL : string;
 		this.getByteArrayOutputStream().write(write.getBytes());
 	}
 
+	@Override
 	public void print(final boolean b) throws IOException {
 		this.print(String.valueOf(b));
 	}
 
+	@Override
 	public void print(final char c) throws IOException {
 		this.print(String.valueOf(c));
 	}
 
+	@Override
 	public void print(final int intValue) throws IOException {
 		this.print(String.valueOf(intValue));
 	}
 
+	@Override
 	public void print(final long longValue) throws IOException {
 		this.print(String.valueOf(longValue));
 	}
 
+	@Override
 	public void print(final float floatValue) throws IOException {
 		this.print(String.valueOf(floatValue));
 	}
 
+	@Override
 	public void print(final double doubleValue) throws IOException {
 		this.print(String.valueOf(doubleValue));
 	}
 
 	static final String EOL = System.getProperty("line.separator");
 
+	@Override
 	public void println() throws IOException {
 		this.print(EOL);
 	}
 
+	@Override
 	public void println(final String string) throws IOException {
 		this.print(string);
 		this.println();
 	}
 
+	@Override
 	public void println(final boolean b) throws IOException {
 		this.println(String.valueOf(b));
 	}
 
+	@Override
 	public void println(final char c) throws IOException {
 		this.println(String.valueOf(c));
 	}
 
+	@Override
 	public void println(final int intValue) throws IOException {
 		this.println(String.valueOf(intValue));
 	}
 
+	@Override
 	public void println(final long longValue) throws IOException {
 		this.println(String.valueOf(longValue));
 	}
 
+	@Override
 	public void println(final float floatValue) throws IOException {
 		this.println(String.valueOf(floatValue));
 	}
 
+	@Override
 	public void println(final double doubleValue) throws IOException {
 		this.println(String.valueOf(doubleValue));
 	}
 
+	@Override
 	public void write(final int intValue) throws IOException {
 		this.getByteArrayOutputStream().write(intValue);
 	}
 
+	@Override
 	public void write(final byte[] bytes) throws IOException {
 		Checker.notNull("parameter:bytes", bytes);
 		this.write(bytes, 0, bytes.length);
 	}
 
+	@Override
 	public void write(final byte[] bytes, final int offset, final int length) throws IOException {
 		Checker.notNull("parameter:bytes", bytes);
 		final int bytesCount = bytes.length;

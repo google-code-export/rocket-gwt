@@ -30,6 +30,7 @@ public class SafariCometSuport extends CometSupport {
 	 * Because safari does not support an onload event or equivalent a timer is
 	 * used to poll the status of the iframe.
 	 */
+	@Override
 	native protected void registerDisconnectHandler(final CometClient cometClient, final Element iframe)/*-{
 	 var callback = @rocket.remoting.client.CometClient::onDisconnect(Lrocket/remoting/client/CometClient;Z);
 	 var poller = setInterval( function(){

@@ -32,6 +32,7 @@ class ByteArrayServletInputStream extends ServletInputStream {
 		this.setByteArrayInputStream(new ByteArrayInputStream(bytes));
 	}
 
+	@Override
 	public int read() {
 		return 0;
 	}

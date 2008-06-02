@@ -25,6 +25,7 @@ import rocket.util.client.Checker;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * There should only ever be one instance of this class which is used to receive
@@ -69,7 +70,7 @@ public abstract class CometClient {
 		// avoids the nasty clicking noises in ie.
 		DOM.setElementProperty(frame, "src", this.getServiceEntryPoint() + "?serializationEngine=Gwt&" + System.currentTimeMillis());
 
-		final Element body = Dom.getBody();
+		final Element body = RootPanel.getBodyElement();
 		DOM.appendChild(body, frame);
 	}
 

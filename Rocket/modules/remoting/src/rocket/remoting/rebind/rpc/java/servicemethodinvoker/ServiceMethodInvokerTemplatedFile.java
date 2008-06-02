@@ -89,48 +89,55 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 	/**
 	 * The method parameters for the method being implemented.
 	 */
-	private List parameters;
+	private List<MethodParameter> parameters;
 
-	protected List getParameters() {
+	protected List<MethodParameter> getParameters() {
 		Checker.notNull("parameters:parameters", parameters);
 		return this.parameters;
 	}
 
-	public void setParameters(final List parameters) {
+	public void setParameters(final List<MethodParameter> parameters) {
 		Checker.notNull("parameter:parameters", parameters);
 		this.parameters = parameters;
 	}
 
 	protected CodeBlock getAddParameters() {
-		final List parameters = this.getParameters();
-		final List parametersLessCallback = parameters.subList(0, parameters.size() - 1);
+		final List<MethodParameter> parameters = this.getParameters();
+		final List<MethodParameter> parametersLessCallback = parameters.subList(0, parameters.size() - 1);
 
 		// parameter
 
 		final AddParameterTemplatedFile repeated = new AddParameterTemplatedFile();
 
 		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock() {
+			
+			@Override
 			protected Collection getCollection() {
 				return parametersLessCallback;
 			}
 
+			@Override
 			protected void prepareToWrite(final Object element) {
 				final MethodParameter methodParameter = (MethodParameter) element;
 				repeated.setParameter(methodParameter);
 			}
 
+			@Override
 			protected void write0(final SourceWriter writer) {
 				repeated.write(writer);
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 				writer.println();
 			}
 
+			@Override
 			protected InputStream getInputStream() {
 				return repeated.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return repeated.getValue0(name);
 			}
@@ -140,7 +147,7 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	protected CodeBlock getAddParameterTypeNames() {
-		final List parameters = new ArrayList();
+		final List<MethodParameter> parameters = new ArrayList<MethodParameter>();
 		parameters.addAll(this.getParameters());
 		parameters.remove(parameters.size() - 1); // remove the callback
 		// parameter
@@ -148,27 +155,34 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 		final AddParameterTypeNameTemplatedFile repeated = new AddParameterTypeNameTemplatedFile();
 
 		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock() {
+			
+			@Override
 			protected Collection getCollection() {
 				return parameters;
 			}
 
+			@Override
 			protected void prepareToWrite(final Object element) {
 				final MethodParameter methodParameter = (MethodParameter) element;
 				repeated.setParameter(methodParameter);
 			}
 
+			@Override
 			protected void write0(final SourceWriter writer) {
 				repeated.write(writer);
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 				writer.println();
 			}
 
+			@Override
 			protected InputStream getInputStream() {
 				return repeated.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return repeated.getValue0(name);
 			}
@@ -177,30 +191,32 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 		return template;
 	}
 
+	@Override
 	protected String getResourceName() {
-		return ServiceMethodInvokerConstants.SERVICE_METHOD_INVOKER_TEMPLATE;
+		return Constants.SERVICE_METHOD_INVOKER_TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (ServiceMethodInvokerConstants.SERVICE_METHOD_INVOKER_SERIALIZATION_FACTORY_COMPOSER.equals(name)) {
+			if (Constants.SERVICE_METHOD_INVOKER_SERIALIZATION_FACTORY_COMPOSER.equals(name)) {
 				value = this.getSerializationFactoryComposer();
 				break;
 			}
-			if (ServiceMethodInvokerConstants.SERVICE_METHOD_INVOKER_INTERFACE_TYPENAME.equals(name)) {
+			if (Constants.SERVICE_METHOD_INVOKER_INTERFACE_TYPENAME.equals(name)) {
 				value = new StringLiteral(this.getServiceInterface().getName());
 				break;
 			}
-			if (ServiceMethodInvokerConstants.SERVICE_METHOD_INVOKER_METHOD_NAME.equals(name)) {
+			if (Constants.SERVICE_METHOD_INVOKER_METHOD_NAME.equals(name)) {
 				value = new StringLiteral(this.getMethod().getName());
 				break;
 			}
-			if (ServiceMethodInvokerConstants.SERVICE_METHOD_INVOKER_ADD_PARAMETER_TYPENAMES.equals(name)) {
+			if (Constants.SERVICE_METHOD_INVOKER_ADD_PARAMETER_TYPENAMES.equals(name)) {
 				value = this.getAddParameterTypeNames();
 				break;
 			}
-			if (ServiceMethodInvokerConstants.SERVICE_METHOD_INVOKER_ADD_PARAMETERS.equals(name)) {
+			if (Constants.SERVICE_METHOD_INVOKER_ADD_PARAMETERS.equals(name)) {
 				value = this.getAddParameters();
 				break;
 			}

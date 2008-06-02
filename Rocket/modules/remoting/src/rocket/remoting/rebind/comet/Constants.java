@@ -39,8 +39,4 @@ public class Constants {
 	final static String PROXY_CREATOR = "com.google.gwt.user.rebind.rpc.ProxyCreator";
 
 	final static String CUSTOMISED_PROXY_CREATOR_MARKER_FIELD = "ROCKET";
-
-	final static String CREATE_GWT_RPC_PROXY_TEMPLATE = "create-gwt-rpc-proxy.txt";
-
-	final static String CREATE_PROXY_TYPE = "type";
 }

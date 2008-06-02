@@ -47,6 +47,7 @@ public class GetHttpServletRequest extends GetOrPostHttpServletRequest implement
 		this.setRequestParameters(parameters);
 	}
 
+	@Override
 	public String getMethod() {
 		return "GET";
 	}
@@ -54,6 +55,7 @@ public class GetHttpServletRequest extends GetOrPostHttpServletRequest implement
 	/**
 	 * Gets by definition GETS dont have any body.
 	 */
+	@Override
 	public int getContentLength() {
 		throw new UnsupportedOperationException("getContentLength() is not supported for GET requests");
 	}
@@ -61,14 +63,17 @@ public class GetHttpServletRequest extends GetOrPostHttpServletRequest implement
 	/**
 	 * There is no body and no content type.
 	 */
+	@Override
 	public String getContentType() {
 		throw new UnsupportedOperationException("getContentType() is not supported for GET requests");
 	}
 
+	@Override
 	public ServletInputStream getInputStream() throws IOException {
 		throw new UnsupportedOperationException("getInputStream() is not supported for GET requests");
 	}
 
+	@Override
 	public BufferedReader getReader() throws IOException {
 		throw new UnsupportedOperationException("getReader() is not supported for GET requests");
 	}

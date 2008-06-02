@@ -23,20 +23,24 @@ import com.google.gwt.http.client.RequestBuilder;
  *
  * @author Miroslav Pokorny
  */
-abstract public class GetJsonRpcServiceMethodInvoker extends GetOrPostJsonServiceMethodInvoker {
+abstract public class GetJsonRpcServiceMethodInvoker<R> extends GetOrPostJsonServiceMethodInvoker<R> {
 
+	@Override
 	final protected String buildUrl() {
 		return this.getUrl() + '?' + this.getParameters().toString();
 	}
 
+	@Override
 	final protected String getRequestData() {
 		return "";
 	}
 
+	@Override
 	final protected RequestBuilder.Method getRequestMethod() {
 		return RequestBuilder.GET;
 	}
 
+	@Override
 	protected void setHeaders(final RequestBuilder request) {
 		request.setHeader(Constants.CONTENT_TYPE_HEADER, Constants.GET_CONTENT_TYPE);
 	}

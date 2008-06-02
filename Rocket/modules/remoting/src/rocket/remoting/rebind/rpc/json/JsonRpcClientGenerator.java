@@ -43,6 +43,7 @@ import rocket.util.client.Tester;
  */
 public class JsonRpcClientGenerator extends RpcClientGenerator {
 
+	@Override
 	protected NewConcreteType assembleNewType(final Type serviceInterface, final String newTypeName) {
 		Checker.notNull("parameter:serviceInterface", serviceInterface);
 		GeneratorHelper.checkJavaTypeName("parameter:TypeName", newTypeName);

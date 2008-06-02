@@ -44,6 +44,8 @@ import rocket.serialization.server.reader.SetReader;
 import rocket.serialization.server.reader.ShortArrayReader;
 import rocket.serialization.server.reader.ShortReader;
 import rocket.serialization.server.reader.ThrowableReader;
+import rocket.serialization.server.reader.TreeMapReader;
+import rocket.serialization.server.reader.TreeSetReader;
 import rocket.serialization.server.writer.BooleanArrayWriter;
 import rocket.serialization.server.writer.BooleanWriter;
 import rocket.serialization.server.writer.ByteArrayWriter;
@@ -67,6 +69,8 @@ import rocket.serialization.server.writer.SetWriter;
 import rocket.serialization.server.writer.ShortArrayWriter;
 import rocket.serialization.server.writer.ShortWriter;
 import rocket.serialization.server.writer.ThrowableWriter;
+import rocket.serialization.server.writer.TreeMapWriter;
+import rocket.serialization.server.writer.TreeSetWriter;
 
 /**
  * Factory method which provides the capability to customise how incoming and
@@ -130,7 +134,9 @@ public class ServerSerializationFactory {
 	 */
 	protected void addCollectionObjectReaders(final List readers) {
 		readers.add(ListReader.instance);
+		readers.add(TreeSetReader.instance);
 		readers.add(SetReader.instance);
+		readers.add(TreeMapReader.instance);
 		readers.add(MapReader.instance);
 	}
 
@@ -229,7 +235,9 @@ public class ServerSerializationFactory {
 	 */
 	protected void addCollectionObjectWriters(final List writers) {
 		writers.add(ListWriter.instance);
+		writers.add(TreeSetWriter.instance);
 		writers.add(SetWriter.instance);
+		writers.add(TreeMapWriter.instance);
 		writers.add(MapWriter.instance);
 	}
 

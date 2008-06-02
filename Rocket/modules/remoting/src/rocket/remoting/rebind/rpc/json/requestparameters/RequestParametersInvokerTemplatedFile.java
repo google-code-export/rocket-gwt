@@ -87,14 +87,14 @@ public class RequestParametersInvokerTemplatedFile extends TemplatedFileCodeBloc
 	/**
 	 * A list that includes the request names for each method parameter.
 	 */
-	private List httpRequestParameterNames;
+	private List<String> httpRequestParameterNames;
 
-	protected List getHttpRequestParameterNames() {
+	protected List<String> getHttpRequestParameterNames() {
 		Checker.notNull("field:httpRequestParameterNames", httpRequestParameterNames);
 		return this.httpRequestParameterNames;
 	}
 
-	public void setHttpRequestParameterNames(final List httpRequestParameterNames) {
+	public void setHttpRequestParameterNames(final List<String> httpRequestParameterNames) {
 		Checker.notNull("parameter:httpRequestParameterNames", httpRequestParameterNames);
 		this.httpRequestParameterNames = httpRequestParameterNames;
 	}
@@ -106,33 +106,40 @@ public class RequestParametersInvokerTemplatedFile extends TemplatedFileCodeBloc
 													// parameter
 
 		final AddParameterTemplatedFile repeated = new AddParameterTemplatedFile();
-		final List httpRequestParameterNames = this.getHttpRequestParameterNames();
+		final List<String> httpRequestParameterNames = this.getHttpRequestParameterNames();
 
 		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock() {
+
+			@Override
 			protected Collection getCollection() {
 				return parameters;
 			}
 
+			@Override
 			protected void prepareToWrite(Object element) {
 				final MethodParameter methodParameter = (MethodParameter) element;
 
-				final String name = (String) httpRequestParameterNames.get(this.getIndex());
+				final String name = httpRequestParameterNames.get(this.getIndex());
 				repeated.setHttpRequestParameterName(name);
 				repeated.setParameter(methodParameter);
 			}
 
+			@Override
 			protected void write0(final SourceWriter writer) {
 				repeated.write(writer);
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 				writer.println();
 			}
 
+			@Override
 			protected InputStream getInputStream() {
 				return repeated.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return repeated.getValue0(name);
 			}
@@ -141,10 +148,12 @@ public class RequestParametersInvokerTemplatedFile extends TemplatedFileCodeBloc
 		return template;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return RequestParametersConstants.REQUEST_PARAMETERS_TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

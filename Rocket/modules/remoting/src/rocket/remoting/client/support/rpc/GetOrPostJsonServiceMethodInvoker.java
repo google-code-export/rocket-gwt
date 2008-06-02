@@ -25,7 +25,7 @@ import com.google.gwt.http.client.URL;
  *
  * @author Miroslav Pokorny
  */
-abstract public class GetOrPostJsonServiceMethodInvoker extends JsonServiceMethodInvoker {
+abstract public class GetOrPostJsonServiceMethodInvoker<R> extends JsonServiceMethodInvoker<R> {
 	/**
 	 * Accumulates any parameters that accompany the request.
 	 */

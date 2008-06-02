@@ -13,20 +13,20 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package rocket.remoting.rebind.comet;
+package rocket.remoting.rebind.comet.gwtcreate;
 
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
- * An abstraction for the create-gwt rpc proxy template
+ * An abstraction for the gwt-create template
  * 
  * @author Miroslav Pokorny
  */
-class CreateGwtRpcProxyTemplatedFile extends TemplatedFileCodeBlock {
+public class GwtCreateTemplatedFile extends TemplatedFileCodeBlock {
 
-	public CreateGwtRpcProxyTemplatedFile() {
+	public GwtCreateTemplatedFile() {
 		super();
 	}
 
@@ -45,14 +45,16 @@ class CreateGwtRpcProxyTemplatedFile extends TemplatedFileCodeBlock {
 		this.type = type;
 	}
 
+	@Override
 	protected String getResourceName() {
-		return Constants.CREATE_GWT_RPC_PROXY_TEMPLATE;
+		return Constants.TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
-			if (Constants.CREATE_PROXY_TYPE.equals(name)) {
+			if (Constants.TYPE.equals(name)) {
 				value = this.getType();
 				break;
 			}
