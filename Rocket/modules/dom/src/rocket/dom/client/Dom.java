@@ -15,19 +15,15 @@
  */
 package rocket.dom.client;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import rocket.collection.client.CollectionsHelper;
 import rocket.util.client.Checker;
-import rocket.util.client.Destroyable;
 import rocket.util.client.JavaScript;
 
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.FormElement;
+import com.google.gwt.dom.client.NodeCollection;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 
 /**
  * A collection of useful methods relating to manipulating the DOM
@@ -42,7 +38,7 @@ public class Dom {
 	 * @param element
 	 */
 	public static void removeFromParent(final Element element) {
-		DOM.removeChild(DOM.getParent(element), element);
+		element.removeChild( element.getParentNode() );
 	}
 	
 	/**
@@ -143,15 +139,9 @@ public class Dom {
 	public static boolean isTag(final Element element, final String tagName) {
 		Checker.notNull("parameter:element", element);
 		Checker.notEmpty("parameter:tagName", tagName);
-
-		final String actualTagName = getTagName(element);
+		
+		final String actualTagName = element.getTagName();
 		return actualTagName == null ? false : compareTagNames(actualTagName, tagName);
-	}
-
-	public static String getTagName(final Element element) {
-		Checker.notNull("parameter:element", element);
-		final String tagName = DOM.getElementProperty(element, DomConstants.TAG_NAME);
-		return tagName;
 	}
 
 	public static void checkTagName(final String name, final Element element, final String expectedTagName) {
@@ -160,14 +150,18 @@ public class Dom {
 
 		if (false == isTag(element, expectedTagName)) {
 			Checker.fail(name, "The " + name + " is not of the expected tag type, expected \"" + expectedTagName + "\", but got \""
-					+ getTagName(element) + "\".");
+					+ element.getTagName() + "\".");
 		}
 	}
 
 	public static void checkInput(final String name, final Element element, final String type) {
-		if (false == isInput(element, type)) {
-			Checker.fail("parameter:element", "The input field " + name + " is not of the expected type, type\"" + type
-					+ "\", element: " + DOM.toString(element));
+		if (false == isInput(element, type)) {			
+			String message = name;
+			if( message.startsWith("parameter:") || message.startsWith( "field:") ){
+				message = "The element which is a " + element.getTagName() + " is not an input with a type of \"" + type + "\".";
+			}
+			
+			Checker.fail(name, message );
 		}
 	}
 
@@ -189,7 +183,7 @@ public class Dom {
 				break;
 			}
 
-			final String actualType = DOM.getElementAttribute(element, DomConstants.INPUT_TAG_TYPE);
+			final String actualType = element.getAttribute(DomConstants.INPUT_TAG_TYPE);
 			is = type.equalsIgnoreCase(actualType);
 			break;
 		}
@@ -201,122 +195,6 @@ public class Dom {
 		Checker.notNull("parameter:otherTagName", otherTagName);
 
 		return tagName.equalsIgnoreCase(otherTagName);
-	}
-
-	// VIEWS OF DOM COLLECTIONS
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-	/**
-	 * This method may be used to find the first child of the same tag type as
-	 * specified by the parameter:childTagName. If none is found a null is
-	 * returned.
-	 * 
-	 * @param parent
-	 * @param childTagNameToFind
-	 * @return
-	 */
-	public static Element findFirstChildOfType(final Element parent, final String childTagNameToFind) {
-		Checker.notNull("parameter:parent", parent);
-		Checker.notEmpty("parameter:childTagNameToFind", childTagNameToFind);
-
-		Element found = null;
-		final int childCount = DOM.getChildCount(parent);
-		for (int i = 0; i < childCount; i++) {
-			final Element child = DOM.getChild(parent, i);
-			if (isTag(child, childTagNameToFind)) {
-				found = child;
-				break;
-			}
-		}
-
-		return found;
-	}
-
-	/**
-	 * Creates a list and populates it with all immediate child elements of the
-	 * given element.
-	 * 
-	 * @param parent
-	 * @param childTagNameToFind
-	 * @return A read only list of Elements.
-	 */
-	public static List findAllChildrenOfType(final Element parent, final String childTagNameToFind) {
-		Checker.notNull("parameter:parent", parent);
-		Checker.notEmpty("parameter:childTagNameToFind", childTagNameToFind);
-
-		final List found = new ArrayList();
-		final int childCount = DOM.getChildCount(parent);
-		for (int i = 0; i < childCount; i++) {
-			final Element child = DOM.getChild(parent, i);
-			if (isTag(child, childTagNameToFind)) {
-				found.add(child);
-			}
-		}
-		return CollectionsHelper.unmodifiableList(found);
-	}
-
-	/**
-	 * Requests the browser to set focus on the given element.
-	 * 
-	 * @param focusElement
-	 *            the element to receive focus.
-	 */
-	public static void setFocus(final Element focusElement) {
-		Checker.notNull("paraemter:focusElement", focusElement);
-
-		setFocus0(focusElement);
-	}
-
-	private native static void setFocus0(final Element element)/*-{
-	 if( element.focus ){
-	 element.focus();
-	 };
-	 }-*/;
-
-	/**
-	 * Makes a clone of the given element.
-	 * 
-	 * @param element
-	 * @param deepCopy
-	 *            When true performs a deep copy (ie children are also cloned).
-	 * @return The cloned element
-	 */
-	public static Element cloneElement(final Element element, final boolean deepCopy) {
-		Checker.notNull("parameter:element", element);
-		return cloneElement0(element, deepCopy);
-	}
-
-	native private static Element cloneElement0(final Element element, final boolean deepCopy)/*-{
-	 return element.cloneNode( deepCopy );
-	 }-*/;
-
-	/**
-	 * Retrieves the body of the current document.
-	 * 
-	 * @return The body element
-	 */
-	native public static Element getBody()/*-{
-	 return $doc.body;
-	 }-*/;
-
-	/**
-	 * Retrieves the x offset between a child and its parent container in pixels
-	 * 
-	 * @param element
-	 * @return The value in pixels
-	 */
-	public static int getOffsetLeft(final Element element) {
-		return JavaScript.getInteger(element, "offsetLeft");
-	}
-
-	/**
-	 * Retrieves the y offset between a child and its parent container in pixels
-	 * 
-	 * @param element
-	 * @return The value in pixels
-	 */
-	public static int getOffsetTop(final Element element) {
-		return JavaScript.getInteger(element, "offsetTop");
 	}
 
 	/**
@@ -340,16 +218,6 @@ public class Dom {
 	public static int getClientHeight(final Element element) {
 		return JavaScript.getInteger(element, "clientHeight");
 	}
-
-	/**
-	 * Tests if the given element is attached to the dom.
-	 * 
-	 * @param element
-	 * @return A flag indicating whether or not the element is in fact attached to the document.
-	 */
-	public static boolean isAttached(final Element element) {
-		return DOM.isOrHasChild(Dom.getBody(), element);
-	}
 	
 	/**
 	 * Populates the given map with the values of the elements belonging to the
@@ -363,19 +231,19 @@ public class Dom {
 	 * @param form
 	 *            The form containing the elements.
 	 */
-	public static void populateMapFromForm(final Map map, final Element form) {
+	public static void populateMapFromForm(final Map<String,String> map, final FormElement form) {
 		Checker.notNull("parameter:map", map);
 		Checker.notNull("parameter:form", form);
-
-		final Iterator formElements = Dom.getFormElements(form);
-		while (formElements.hasNext()) {
-			final Element formElement = (Element) formElements.next();
-			final String name = DOM.getElementProperty(formElement, DomConstants.NAME);
+		
+		final NodeCollection<Element> formElements = form.getElements();
+		final int count = formElements.getLength();
+		for( int i = 0; i < count; i++ ){
+			final Element element = formElements.getItem( i );
+			final String name = element.getAttribute(DomConstants.NAME);
 			if (null == name) {
 				continue;
 			}
-			final String value = Dom.getFormSubmitValue(formElement);
-
+			final String value = Dom.getFormSubmitValue(element);
 			map.put(name, value);
 		}
 	}
@@ -387,21 +255,26 @@ public class Dom {
 	 * @param form
 	 * @return
 	 */
-	public static String urlEncodeForm(final Element form) {
+	public static String urlEncodeForm(final FormElement form) {
 		Checker.notNull("parameter:form", form);
 
 		final StringBuffer urlEncoded = new StringBuffer();
 		boolean addSeparator = false;
 
-		final Iterator formElements = Dom.getFormElements(form);
-		while (formElements.hasNext()) {
+		final NodeCollection<Element> formElements = form.getElements();
+		final int count = formElements.getLength();
+		for( int i = 0; i < count; i++ ){
+			final Element element = formElements.getItem( i );
+			final String name = element.getAttribute(DomConstants.NAME);
+			if (null == name) {
+				continue;
+			}
+			
 			if (addSeparator) {
 				urlEncoded.append('&');
 			}
-
-			final Element formElement = (Element) formElements.next();
-			final String name = JavaScript.getString(JavaScript.castFromElement(formElement), DomConstants.NAME);
-			final String value = URL.encodeComponent(Dom.getFormSubmitValue(formElement));
+			
+			final String value = URL.encodeComponent( Dom.getFormSubmitValue(element));
 			urlEncoded.append(name);
 			urlEncoded.append('=');
 			urlEncoded.append(value);
@@ -426,117 +299,24 @@ public class Dom {
 
 		String value = null;
 		while (true) {
-			if (Dom.isTag(element, DomConstants.LISTBOX_TAG)) {
-				value = DOM.getElementProperty(element, DomConstants.VALUE);
+			final String tagName = element.getTagName();
+			if ( DomConstants.LISTBOX_TAG.equals(tagName)) {
+				value = element.getAttribute(DomConstants.VALUE);
 				break;
 			}
-			if (Dom.isTag(element, DomConstants.TEXTAREA_TAG)) {
-				value = DOM.getInnerText(element);
-				break;
-			}
-
-			if (Dom.isTag(element, DomConstants.INPUT_TAG)) {
-				value = DOM.getElementProperty(element, DomConstants.VALUE);
+			if ( DomConstants.TEXTAREA_TAG.equals(tagName)) {
+				value = element.getInnerText();
 				break;
 			}
 
-			throw new UnsupportedOperationException("Cannot get the formSubmitValue for the element, element: " + DOM.toString(element));
+			if ( DomConstants.INPUT_TAG.equals( tagName )) {
+				value = element.getAttribute(DomConstants.VALUE);
+				break;
+			}
+
+			throw new UnsupportedOperationException("Cannot get the formSubmitValue for the element, element: " + element.toString() );
 		}
 
 		return value;
 	}
-
-	/**
-	 * Returns an iterator which may be used to visit all the elements for a
-	 * particular form. Because the form.elements collection cannot have
-	 * elements added / removed this iterator is read only(aka the remove() )
-	 * doesnt work. The iterator is also not fail safe.
-	 * 
-	 * @param form
-	 * @return
-	 */
-	public static Iterator getFormElements(final Element form) {
-		Dom.checkTagName("parameter:form", form, DomConstants.FORM_TAG);
-
-		final FormElementsIterator iterator = new FormElementsIterator();
-		iterator.setForm(form);
-		return iterator;
-	}
-
-	/**
-	 * This iterator also implements Destroyable. This faciliates allowing the
-	 * user to cleanup once the iterator has been used/exhausted.
-	 */
-	static class FormElementsIterator implements Iterator, Destroyable {
-
-		public boolean hasNext() {
-			return this.getCursor() < DOM.getElementPropertyInt(this.getForm(), DomConstants.LENGTH_PROPERTY);
-		}
-
-		public Object next() {
-			final int cursor = this.getCursor();
-			final Object object = this.next0(this.getForm(), cursor);
-			this.setCursor(cursor + 1);
-			return object;
-		}
-
-		native private Element next0(final Element form, final int index)/*-{
-		 var element = form.elements[ index ];
-		 return element ? element : null;
-		 }-*/;
-
-		public void remove() {
-			throw new UnsupportedOperationException("Form elements may not be removed using this iterator. this: " + this);
-		}
-
-		public void destroy() {
-			this.clearForm();
-		}
-
-		Element form;
-
-		Element getForm() {
-			return form;
-		}
-
-		void setForm(final Element form) {
-			this.form = form;
-		}
-
-		void clearForm() {
-			this.form = null;
-		}
-
-		int cursor = 0;
-
-		int getCursor() {
-			return cursor;
-		}
-
-		void setCursor(final int cursor) {
-			this.cursor = cursor;
-		}
-	}
-
-	/**
-	 * Helper which attempts to find and fetch an element belonging to the given
-	 * form by name.
-	 * 
-	 * @param form
-	 * @param elementName
-	 * @return
-	 */
-	public static Element getFormElement(final Element form, final String elementName) {
-		Checker.notNull("parameter:form", form);
-		Checker.notEmpty("parameter:elementName", elementName);
-
-		return getFormElement0(form, elementName);
-	}
-
-	native private static Element getFormElement0(final Element form, final String elementName)/*-{
-	 var element = null;
-
-	 element = form.elements[ elementName ];
-	 return element ? element : null;}-*/;
-
 }
