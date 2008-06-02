@@ -52,20 +52,20 @@ public class MapValue extends AbstractValue implements Value{
 	/**
 	 * A entries that accumulates entries entries.
 	 */
-	private Map entries;
+	private Map<String,Value> entries;
 
-	public Map getEntries() {
+	public Map<String,Value> getEntries() {
 		Checker.notNull("field:entries", entries);
 		return this.entries;
 	}
 
-	protected void setEntries(final Map entries) {
+	protected void setEntries(final Map<String,Value> entries) {
 		Checker.notNull("parameter:entries", entries);
 		this.entries = entries;
 	}
 
-	protected Map createEntries() {
-		return new HashMap();
+	protected Map<String,Value> createEntries() {
+		return new HashMap<String,Value>();
 	}
 
 	/**
@@ -73,6 +73,7 @@ public class MapValue extends AbstractValue implements Value{
 	 * 
 	 * @return true if the type is compatible
 	 */
+	@Override
 	public boolean isCompatibleWith(final Type type) {
 		Checker.notNull("parameter:type", type);
 
@@ -96,6 +97,7 @@ public class MapValue extends AbstractValue implements Value{
 		template.write(writer);
 	}
 	
+	@Override
 	public String toString(){
 		return this.getEntries().toString();
 	}

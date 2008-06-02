@@ -57,20 +57,20 @@ public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 		this.bean = bean;
 	}
 
-	private Map properties;
+	private Map<Method,Value> properties;
 
-	protected Map getProperties() {
+	protected Map<Method,Value> getProperties() {
 		Checker.notNull("field:properties", properties);
 		return this.properties;
 	}
 
-	protected void setProperties(final Map properties) {
+	protected void setProperties(final Map<Method,Value> properties) {
 		Checker.notNull("parameter:properties", properties);
 		this.properties = properties;
 	}
 
-	protected Map createProperties() {
-		return new TreeMap( MethodComparator.INSTANCE );
+	protected Map<Method,Value> createProperties() {
+		return new TreeMap<Method,Value>( MethodComparator.INSTANCE );
 	}
 
 	public void addProperty(final Method setter, final Value value) {
@@ -85,18 +85,22 @@ public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 
 		return new CollectionTemplatedCodeBlock() {
 
+			@Override
 			public InputStream getInputStream() {
 				return template.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return template.getValue0(name);
 			}
 
+			@Override
 			protected Collection getCollection() {
 				return SetPropertiesTemplatedFile.this.getProperties().entrySet();
 			}
 
+			@Override
 			protected void prepareToWrite(final Object element) {
 				final Map.Entry entry = (Map.Entry) element;
 
@@ -104,16 +108,19 @@ public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 				template.setValue((Value) entry.getValue());
 			}
 
+			@Override
 			protected void writeBetweenElements(final SourceWriter writer) {
 				writer.println("");
 			}
 		};
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.SET_PROPERTIES_TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

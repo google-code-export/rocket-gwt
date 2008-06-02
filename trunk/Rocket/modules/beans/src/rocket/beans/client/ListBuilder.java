@@ -24,9 +24,10 @@ import java.util.Collection;
  * 
  * @author Miroslav Pokorny
  */
-public class ListBuilder extends CollectionBuilder {
+public class ListBuilder<E> extends CollectionBuilder<E> {
 
-	protected Collection createCollection() {
-		return new ArrayList();
+	@Override
+	protected Collection<E> createCollection() {
+		return new ArrayList<E>();
 	}
 }

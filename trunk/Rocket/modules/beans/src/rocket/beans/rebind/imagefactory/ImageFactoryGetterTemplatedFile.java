@@ -17,9 +17,7 @@ package rocket.beans.rebind.imagefactory;
 
 import java.io.InputStream;
 
-import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
-import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
@@ -33,15 +31,18 @@ public class ImageFactoryGetterTemplatedFile extends TemplatedFileCodeBlock {
 	public ImageFactoryGetterTemplatedFile() {
 		super();
 	}
-	
+
+	@Override
 	protected String getResourceName() {
 		return Constants.GETTER_TEMPLATE;
 	}
 	
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		

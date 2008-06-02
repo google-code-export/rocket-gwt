@@ -15,8 +15,6 @@
  */
 package rocket.beans.test.generator.alias;
 
-import rocket.beans.client.BeanFactory;
-import rocket.beans.client.BeanFactoryImpl;
 import rocket.beans.test.generator.alias.alias.AliasBeanFactory;
 import rocket.beans.test.generator.alias.duplicate.AliasNotUniqueBeanFactory;
 import rocket.beans.test.generator.alias.notfound.AliasedBeanNotFoundBeanFactory;

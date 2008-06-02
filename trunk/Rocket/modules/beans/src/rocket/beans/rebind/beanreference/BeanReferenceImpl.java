@@ -28,6 +28,7 @@ import rocket.util.client.Checker;
  */
 public class BeanReferenceImpl extends AbstractValue implements BeanReference, Value {
 
+	@Override
 	public boolean isCompatibleWith(final Type type) {
 		Checker.notNull("parameter:type", type);
 

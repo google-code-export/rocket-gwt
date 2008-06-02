@@ -53,31 +53,33 @@ public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 		this.bean = bean;
 	}
 
-	private List arguments;
+	private List<Value> arguments;
 
-	protected List getArguments() {
+	protected List<Value> getArguments() {
 		Checker.notNull("field:addParameters", arguments);
 		return this.arguments;
 	}
 
-	protected void setArguments(final List arguments) {
+	protected void setArguments(final List<Value> arguments) {
 		Checker.notNull("parameter:arguments", arguments);
 		this.arguments = arguments;
 	}
 
-	protected List createArguments() {
-		return new ArrayList();
+	protected List<Value> createArguments() {
+		return new ArrayList<Value>();
 	}
 
 	public void addArgument(final Value value) {
 		Checker.notNull("parameter:value", value);
 		this.getArguments().add(value);
 	}
-
+	
+	@Override
 	protected String getResourceName(){
 		return Constants.TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -98,21 +100,26 @@ public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 		final List parameters = this.getArguments();
 		return new CollectionTemplatedCodeBlock() {
 
+			@Override
 			public InputStream getInputStream() {
 				return new StringBufferInputStream("${value}");
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return parameters.get(this.getIndex());
 			}
 
+			@Override
 			protected Collection getCollection() {
 				return parameters;
 			}
 
+			@Override
 			protected void prepareToWrite(Object element) {
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 				writer.print(",");
 			}

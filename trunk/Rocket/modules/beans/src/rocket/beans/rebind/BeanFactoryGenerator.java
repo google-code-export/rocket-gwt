@@ -102,6 +102,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param newTypeName
 	 *            The name of the type being generated.
 	 */
+	@Override
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		this.verifyBeanFactory(type);
 
@@ -110,14 +111,14 @@ public class BeanFactoryGenerator extends Generator {
 		final NewConcreteType beanFactory = this.createBeanFactory(newTypeName, type);
 		this.setBeanFactory(beanFactory);
 
-		final Set beans = document.getBeans();
+		final Set<Bean> beans = document.getBeans();
 
 		this.setBeans(this.createBeans());
 		this.setAliases(this.createAliases());
 
 		this.buildFactoryBeans(beans);
 
-		final Set aliases = document.getAliases();
+		final Set<Alias> aliases = document.getAliases();
 		this.recordAliases(aliases);
 
 		this.setImageValues( this.createImageValues() );
@@ -186,13 +187,15 @@ public class BeanFactoryGenerator extends Generator {
 		}
 
 		// verify has no public methods (ignore those belonging to java.lang.Object)
-		final List publicMethods = new ArrayList();
+		final List<Method> publicMethods = new ArrayList<Method>();
 		final VirtualMethodVisitor methodFinder = new VirtualMethodVisitor() {
+			@Override
 			protected boolean visit(final Method method) {
 				publicMethods.add(method);
 				return false;
 			}
 
+			@Override
 			protected boolean skipJavaLangObjectMethods() {
 				return true;
 			}
@@ -242,20 +245,20 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param beans
 	 *            A set containing all beans
 	 */
-	protected void buildFactoryBeans(final Set beans) {
+	protected void buildFactoryBeans(final Set<Bean> beans) {
 		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		context.info("Creating FactoryBean's for all beans.");
 
-		final Iterator iterator = beans.iterator();
+		final Iterator<Bean> iterator = beans.iterator();
 		int nestedBeanCounter = 0;
 		int rpcCounter = 0;
 		int beansCounter = 0;
 
 		while (iterator.hasNext()) {
-			final Bean bean = (Bean) iterator.next();
+			final Bean bean = iterator.next();
 			context.branch();
 
 			context.debug( bean.getId());
@@ -483,10 +486,10 @@ public class BeanFactoryGenerator extends Generator {
 		context.delayedBranch();
 		context.debug("Constructor parameter values.");
 
-		final List arguments = bean.getConstructorValues();
-		final Iterator argumentsIterator = arguments.iterator();
+		final List<Value> arguments = bean.getConstructorValues();
+		final Iterator<Value> argumentsIterator = arguments.iterator();
 		while (argumentsIterator.hasNext()) {
-			final Value value = (Value) argumentsIterator.next();
+			final Value value = argumentsIterator.next();
 			body.addArgument(value);
 
 			if( context.isDebugEnabled() ){
@@ -499,7 +502,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 		context.debug("Matching constructors.");
 
-		final List matchingConstructors = new ArrayList();
+		final List<Constructor> matchingConstructors = new ArrayList<Constructor>();
 		final TypeConstructorsVisitor visitor = new TypeConstructorsVisitor() {
 
 			protected boolean visit(final Constructor constructor) {
@@ -507,19 +510,19 @@ public class BeanFactoryGenerator extends Generator {
 
 				// skip non public constructors
 				if (constructor.getVisibility() == Visibility.PUBLIC) {
-					final List constructorParameters = constructor.getParameters();
+					final List<ConstructorParameter> constructorParameters = constructor.getParameters();
 
 					// skip the given constructor with different numbers of
 					// parameters.
 					if (constructorParameters.size() == arguments.size()) {
 
 						match = true;
-						final Iterator valuesIterator = arguments.iterator();
-						final Iterator parametersIterator = constructorParameters.iterator();
+						final Iterator<Value> valuesIterator = arguments.iterator();
+						final Iterator<ConstructorParameter> parametersIterator = constructorParameters.iterator();
 
 						while (valuesIterator.hasNext()) {
-							final ConstructorParameter parameter = (ConstructorParameter) parametersIterator.next();
-							final Value value0 = (Value) valuesIterator.next();
+							final ConstructorParameter parameter = parametersIterator.next();
+							final Value value0 = valuesIterator.next();
 							if (false == value0.isCompatibleWith(parameter.getType())) {
 								match = false;
 							}
@@ -549,11 +552,11 @@ public class BeanFactoryGenerator extends Generator {
 		final Constructor constructor = (Constructor) matchingConstructors.get(0);
 		body.setBean(constructor);
 
-		final Iterator constructorParameters = constructor.getParameters().iterator();
-		final Iterator valuesIterator = arguments.iterator();
+		final Iterator<ConstructorParameter> constructorParameters = constructor.getParameters().iterator();
+		final Iterator<Value> valuesIterator = arguments.iterator();
 		while (constructorParameters.hasNext()) {
-			final ConstructorParameter constructorParameter = (ConstructorParameter) constructorParameters.next();
-			final Value value = (Value) valuesIterator.next();
+			final ConstructorParameter constructorParameter = constructorParameters.next();
+			final Value value = valuesIterator.next();
 			value.setPropertyType(constructorParameter.getType());
 			
 			this.prepareValue(value);
@@ -724,19 +727,19 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param beans
 	 *            The beans
 	 */
-	protected void overrideAllFactoryBeanSatisfyProperties(final Set beans) {
+	protected void overrideAllFactoryBeanSatisfyProperties(final Set<Bean> beans) {
 		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		context.info("Overriding satisfyProperties method for bean(s) with 1 or more properties.");
 
-		final Iterator iterator = beans.iterator();
+		final Iterator<Bean> iterator = beans.iterator();
 		while (iterator.hasNext()) {
 
 			context.delayedBranch();
 
-			final Bean bean = (Bean) iterator.next();
+			final Bean bean = iterator.next();
 			final String id = bean.getId();
 			context.debug(id);
 
@@ -819,7 +822,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		final NewType factoryBean = bean.getFactoryBean();
 		final Method method = factoryBean.getMostDerivedMethod(Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject());
-
+		
 		final NewMethod newMethod = method.copy(factoryBean);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
@@ -830,19 +833,19 @@ public class BeanFactoryGenerator extends Generator {
 		instanceParameter.setName(Constants.SATISFY_PROPERTIES_INSTANCE_PARAMETER);
 
 		newMethod.setBody(body);
-
+		
 		// loop thru all properties
-		final Set properties = bean.getProperties();
-		final Iterator propertyIterator = properties.iterator();
+		final Set<Property> properties = bean.getProperties();
+		final Iterator<Property> propertyIterator = properties.iterator();
 		while (propertyIterator.hasNext()) {
-			final Property property = (Property) propertyIterator.next();
+			final Property property = propertyIterator.next();
 			final String propertyName = property.getName();
 			final String setterName = GeneratorHelper.buildSetterName(propertyName);
 
 			final Value value = property.getValue();
 			this.prepareValue(value);
 
-			final List matchingSetters = new ArrayList();
+			final List<Method> matchingSetters = new ArrayList<Method>();
 
 			final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
 				protected boolean visit(final Method method) {
@@ -857,7 +860,7 @@ public class BeanFactoryGenerator extends Generator {
 							break;
 						}
 						// parameter types must be compatible...
-						final List parameters = method.getParameters();
+						final List<MethodParameter> parameters = method.getParameters();
 						if (parameters.size() != 1) {
 							break;
 						}
@@ -927,26 +930,26 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param imageValue
 	 */
 	protected void prepareImageValue( final ImageValue imageValue ){
-		final List imageValues = this.getImageValues();
+		final List<ImageValue> imageValues = this.getImageValues();
 		final int index = imageValues.size();
 		imageValue.setImageIndex( index );
 		
 		imageValues.add( imageValue );
 	}
 	
-	private List imageValues;
+	private List<ImageValue> imageValues;
 	
-	protected List getImageValues(){
+	protected List<ImageValue> getImageValues(){
 		Checker.notNull("field:imageValues", this.imageValues );
 		return this.imageValues;
 	}
-	protected void setImageValues( final List imageValues ){
+	protected void setImageValues( final List<ImageValue> imageValues ){
 		Checker.notNull("parameter:imageValues", imageValues );
 		this.imageValues = imageValues;
 	}
 	
-	protected List createImageValues(){
-		return new ArrayList();
+	protected List<ImageValue> createImageValues(){
+		return new ArrayList<ImageValue>();
 	}
 
 	protected void prepareBeanReferenceImpl(final BeanReferenceImpl beanReference) {
@@ -966,10 +969,10 @@ public class BeanFactoryGenerator extends Generator {
 		this.prepareCollection(map.getEntries().values());
 	}
 
-	protected void prepareCollection(final Collection values) {
-		final Iterator iterator = values.iterator();
+	protected void prepareCollection(final Collection<Value> values) {
+		final Iterator<Value> iterator = values.iterator();
 		while (iterator.hasNext()) {
-			this.prepareValue((Value) iterator.next());
+			this.prepareValue(iterator.next());
 		}
 	}
 
@@ -993,7 +996,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.delayedBranch();
 		context.info( "Creating an ImageFactory which will supply all images.");
 		
-		final Iterator i = this.getImageValues().iterator();
+		final Iterator<ImageValue> i = this.getImageValues().iterator();
 		NewType imageFactory = null;
 		while( i.hasNext() ){
 			if( null == imageFactory ){
@@ -1003,7 +1006,7 @@ public class BeanFactoryGenerator extends Generator {
 				context.debug("Creating abstract getters on image factory");
 			}
 			
-			final ImageValue imageValue = (ImageValue) i.next();
+			final ImageValue imageValue = i.next();
 		
 			// create abstract getter
 			this.addImageFactoryAbstractImageGetter(imageValue, imageFactory);
@@ -1157,14 +1160,14 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param beans
 	 *            The beans
 	 */
-	protected void overrideAllSingletonFactoryBeanToInvokeCustomDestroy(final Set beans) {
+	protected void overrideAllSingletonFactoryBeanToInvokeCustomDestroy(final Set<Bean> beans) {
 		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		context.info("Visiting singleton beans.");
 
-		final Iterator iterator = beans.iterator();
+		final Iterator<Bean> iterator = beans.iterator();
 		int singletonCount = 0;
 		int customDestroyMethodCount = 0;
 
@@ -1315,7 +1318,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param aspects
 	 *            All the aspects within all xml files.
 	 */
-	protected void buildAspects(final Set aspects) {
+	protected void buildAspects(final Set<Aspect> aspects) {
 		Checker.notNull("parameter:aspects", aspects);
 
 		final GeneratorContext context = this.getGeneratorContext();
@@ -1324,9 +1327,9 @@ public class BeanFactoryGenerator extends Generator {
 
 		final MethodMatcherFactory methodMatcherFactory = createMethodMatcherFactory();
 
-		final Iterator iterator = aspects.iterator();
+		final Iterator<Aspect> iterator = aspects.iterator();
 		while (iterator.hasNext()) {
-			final Aspect aspect = (Aspect) iterator.next();
+			final Aspect aspect = iterator.next();
 
 			context.branch();
 			final String advisorId = aspect.getAdvisor();
@@ -1412,10 +1415,12 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 		context.debug("Discovering methods that match: " + matcher + " against " + type);
 
-		final List matchedMethods = new ArrayList();
+		final List<Method> matchedMethods = new ArrayList<Method>();
 		final Type object = context.getObject();
 
 		final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
+			
+			@Override
 			protected boolean visit(final Method method) {
 				while (true) {
 					if (method.isFinal()) {
@@ -1433,6 +1438,7 @@ public class BeanFactoryGenerator extends Generator {
 				return false;
 			}
 
+			@Override
 			protected boolean skipJavaLangObjectMethods() {
 				return false;
 			}
@@ -1464,11 +1470,11 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 		context.info("Checking for beans with one or more aspects.");
 
-		final Set beans = this.filterBeansRequiringInterceptors();
+		final Set<Bean> beans = this.filterBeansRequiringInterceptors();
 
-		final Iterator advisedIterator = beans.iterator();
+		final Iterator<Bean> advisedIterator = beans.iterator();
 		while (advisedIterator.hasNext()) {
-			final Bean bean = (Bean) advisedIterator.next();
+			final Bean bean = advisedIterator.next();
 			this.buildProxyFactoryBean(bean);
 			
 			this.registerProxiedBean( bean );
@@ -1477,18 +1483,18 @@ public class BeanFactoryGenerator extends Generator {
 		context.unbranch();
 	}
 
-	protected Set filterBeansRequiringInterceptors() {
+	protected Set<Bean> filterBeansRequiringInterceptors() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		context.debug("Filtering out Beans that dont have any aspects.");
 
-		final Set advised = new HashSet();
+		final Set<Bean> advised = new HashSet<Bean>();
 
 		final Map beans = this.getBeans();
-		final Iterator beansIterator = beans.values().iterator();
+		final Iterator<Bean> beansIterator = beans.values().iterator();
 
 		while (beansIterator.hasNext()) {
-			final Bean bean = (Bean) beansIterator.next();
+			final Bean bean = beansIterator.next();
 			final List aspectss = bean.getAspects();
 			if (aspectss.isEmpty()) {
 				context.debug(bean.getId());
@@ -1580,9 +1586,11 @@ public class BeanFactoryGenerator extends Generator {
 		field.setValue(EmptyCodeBlock.INSTANCE);
 		field.setVisibility(Visibility.PUBLIC);
 
-		final List aspects = bean.getAspects();
+		final List<Aspect> aspects = bean.getAspects();
 
 		final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
+			
+			@Override
 			protected boolean visit(final Method method) {
 
 				while (true) {
@@ -1594,8 +1602,13 @@ public class BeanFactoryGenerator extends Generator {
 						break;
 					}
 
+					// dont proxy getClass()
+					if( method.getName().equals("getClass") && method.getParameters().isEmpty() ){
+						break;
+					}
+					
 					// the public methods remain...
-					final List matched = BeanFactoryGenerator.this.findMatchingAdvices(method, aspects);
+					final List<Aspect> matched = BeanFactoryGenerator.this.findMatchingAdvices(method, aspects);
 					if (matched.isEmpty()) {
 						BeanFactoryGenerator.this.createProxyMethod(proxy, method);
 						break;
@@ -1607,6 +1620,7 @@ public class BeanFactoryGenerator extends Generator {
 				return false;
 			}
 
+			@Override
 			protected boolean skipJavaLangObjectMethods() {
 				return false;
 			}
@@ -1625,12 +1639,12 @@ public class BeanFactoryGenerator extends Generator {
 	 *            A list of all advices for the bean
 	 * @return A list of only matching advices
 	 */
-	protected List findMatchingAdvices(final Method method, final List aspects) {
-		final Iterator advicesIterator = aspects.iterator();
-		final List applicable = new ArrayList();
+	protected List<Aspect> findMatchingAdvices(final Method method, final List<Aspect> aspects) {
+		final Iterator<Aspect> advicesIterator = aspects.iterator();
+		final List<Aspect> applicable = new ArrayList<Aspect>();
 
 		while (advicesIterator.hasNext()) {
-			final Aspect aspect = (Aspect) advicesIterator.next();
+			final Aspect aspect = advicesIterator.next();
 			if (aspect.getMethodMatcher().matches(method)) {
 				applicable.add(aspect);
 			}
@@ -1695,7 +1709,7 @@ public class BeanFactoryGenerator extends Generator {
 		body.setTargetMethod(method);
 
 		final Type methodInterceptor = this.getMethodInterceptor();
-		final List methodInvocationParameterList = Arrays.asList(new Type[] { this.getMethodInvocation() });
+		final List<Type> methodInvocationParameterList = Arrays.asList(new Type[] { this.getMethodInvocation() });
 		final Method invoke = methodInterceptor.getMethod(Constants.METHOD_INTERCEPTOR_INVOKE, methodInvocationParameterList);
 		final MethodParameter target = (MethodParameter) invoke.getParameters().get(0);
 
@@ -1713,7 +1727,7 @@ public class BeanFactoryGenerator extends Generator {
 		Checker.notNull("parameter:bean", bean);
 
 		final NewNestedType proxyFactoryBean = bean.getProxyFactoryBean();
-		final List objectParameterList = this.getParameterListWithOnlyObject();
+		final List<Type> objectParameterList = this.getParameterListWithOnlyObject();
 		final Method method = proxyFactoryBean.getMostDerivedMethod(Constants.CREATE_PROXY, objectParameterList);
 
 		final NewMethod newMethod = method.copy(proxyFactoryBean);
@@ -1821,10 +1835,10 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 		context.info("Overriding " + newMethod + " to register all beans.");
 
-		final Iterator beansIterator = beans.values().iterator();
+		final Iterator<Bean> beansIterator = this.getBeans().values().iterator();
 
 		while (beansIterator.hasNext()) {
-			final Bean bean = (Bean) beansIterator.next();
+			final Bean bean = beansIterator.next();
 			body.addBean(bean);
 
 			context.debug(bean.getId());
@@ -1885,7 +1899,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * initialized on factory startup.
 	 */
 	protected void overrideLoadEagerBeans() {
-		final Map beans = this.getBeans();
+		final Map<String,Bean> beans = this.getBeans();
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1974,8 +1988,8 @@ public class BeanFactoryGenerator extends Generator {
 	 * 
 	 * @return A map
 	 */
-	protected Map createBeans() {
-		return new TreeMap(String.CASE_INSENSITIVE_ORDER);
+	protected Map<String,Bean> createBeans() {
+		return new TreeMap<String,Bean>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	protected void checkIdIsUnique(final Bean bean) {
@@ -2201,7 +2215,7 @@ public class BeanFactoryGenerator extends Generator {
 		return type;
 	}
 
-	protected List getParameterListWithOnlyObject() {
+	protected List<Type> getParameterListWithOnlyObject() {
 		return Collections.nCopies(1, this.getGeneratorContext().getObject());
 	}
 

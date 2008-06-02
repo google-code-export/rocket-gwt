@@ -49,6 +49,7 @@ abstract public class CollectionValue extends AbstractValue implements Value {
 		this.elements = elements;
 	}
 
+	@Override
 	public boolean isCompatibleWith(final Type type) {
 		return this.getGeneratorContext().getType(this.getCollectionTypeName()).equals(type);
 	}
@@ -83,6 +84,7 @@ abstract public class CollectionValue extends AbstractValue implements Value {
 	 */
 	abstract protected CollectionTemplatedFile createTemplate();
 	
+	@Override
 	public String toString(){
 		return this.getElements().toString();
 	}

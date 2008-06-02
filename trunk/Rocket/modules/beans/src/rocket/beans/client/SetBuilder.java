@@ -24,9 +24,10 @@ import java.util.HashSet;
  * 
  * @author Miroslav Pokorny
  */
-public class SetBuilder extends CollectionBuilder {
+public class SetBuilder<E> extends CollectionBuilder<E> {
 
-	protected Collection createCollection() {
-		return new HashSet();
+	@Override
+	protected Collection<E> createCollection() {
+		return new HashSet<E>();
 	}
 }

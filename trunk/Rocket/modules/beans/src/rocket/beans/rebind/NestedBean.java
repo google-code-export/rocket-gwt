@@ -49,9 +49,11 @@ public class NestedBean extends Bean implements Value, BeanReference{
 	
 	protected BeanReferenceImpl createBeanReference(){
 		return new BeanReferenceImpl(){
+			@Override
 			public String getId(){
 				return NestedBean.this.getId();
 			}
+			@Override
 			public Type getType(){
 				return NestedBean.this.getValueType();
 			}

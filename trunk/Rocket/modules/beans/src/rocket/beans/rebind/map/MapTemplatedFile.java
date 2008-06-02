@@ -39,24 +39,24 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 		this.setEntries(this.createEntries());
 	}
 
-	private Map entries;
+	private Map<String,Value> entries;
 
-	protected Map getEntries() {
+	protected Map<String,Value> getEntries() {
 		Checker.notNull("field:entries", entries);
 		return this.entries;
 	}
 
-	protected void setEntries(final Map entries) {
+	protected void setEntries(final Map<String,Value> entries) {
 		Checker.notNull("parameter:entries", entries);
 		this.entries = entries;
 	}
 
-	protected Map createEntries() {
-		return new HashMap();
+	protected Map<String,Value> createEntries() {
+		return new HashMap<String,Value>();
 	}
 
 	public void add(final String key, final Value value) {
-		final Map entries = this.getEntries();
+		final Map<String,Value> entries = this.getEntries();
 		if (entries.containsKey(key)) {
 			this.throwMapEntryAlreadyUsed(key);
 		}
@@ -68,10 +68,12 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 		throw new MapEntryAlreadyUsedException("A map entry with a key of \"" + key + "\" has already been defined");
 	}
 
+	@Override
 	protected String getResourceName(){
 		return Constants.MAP_TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -86,28 +88,32 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 
 	protected CodeBlock getEntriesCodeBlock() {
 		final MapAddEntryTemplatedFile template = new MapAddEntryTemplatedFile();
-		final Map entries = this.getEntries();
+		final Map<String,Value> entries = this.getEntries();
 
 		return new CollectionTemplatedCodeBlock() {
-
+			@Override
 			public InputStream getInputStream() {
 				return template.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return template.getValue0(name);
 			}
 
+			@Override
 			protected Collection getCollection() {
 				return entries.entrySet();
 			}
 
+			@Override
 			protected void prepareToWrite(final Object element) {
 				final Map.Entry entry = (Map.Entry) element;
 				template.setKey((String) entry.getKey());
 				template.setValue((Value) entry.getValue());
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 			}
 		};

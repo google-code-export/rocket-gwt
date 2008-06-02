@@ -39,20 +39,20 @@ abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 		this.setElements(this.createElements());
 	}
 
-	private List elements;
+	private List<Value> elements;
 
-	protected List getElements() {
+	protected List<Value> getElements() {
 		Checker.notNull("field:elements", elements);
 		return this.elements;
 	}
 
-	protected void setElements(final List entries) {
+	protected void setElements(final List<Value> entries) {
 		Checker.notNull("parameter:elements", entries);
 		this.elements = entries;
 	}
 
-	protected List createElements() {
-		return new ArrayList();
+	protected List<Value> createElements() {
+		return new ArrayList<Value>();
 	}
 
 	public void add(final Value value) {
@@ -67,22 +67,27 @@ abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 
 		return new CollectionTemplatedCodeBlock() {
 
+			@Override
 			public InputStream getInputStream() {
 				return template.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return template.getValue0(name);
 			}
 
+			@Override
 			protected Collection getCollection() {
 				return elements;
 			}
 
+			@Override
 			protected void prepareToWrite(Object element) {
 				template.setValue((Value) elements.get(this.getIndex()));
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 			}
 		};
@@ -90,6 +95,7 @@ abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 
 	abstract protected String getResourceName();
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

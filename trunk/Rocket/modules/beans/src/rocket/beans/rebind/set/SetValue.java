@@ -19,17 +19,19 @@ import rocket.beans.rebind.collection.CollectionTemplatedFile;
 import rocket.beans.rebind.collection.CollectionValue;
 
 /**
- * Eadch instance represents a set of values before they are realised within a
+ * Each instance represents a set of values before they are realised within a
  * FactoryBean
  * 
  * @author Miroslav Pokorny
  */
 public class SetValue extends CollectionValue {
 
+	@Override
 	protected CollectionTemplatedFile createTemplate() {
 		return new SetTemplatedFile();
 	}
 
+	@Override
 	protected String getCollectionTypeName() {
 		return Constants.SET_TYPE;
 	}

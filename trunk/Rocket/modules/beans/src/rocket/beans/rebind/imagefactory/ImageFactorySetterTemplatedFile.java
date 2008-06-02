@@ -29,15 +29,18 @@ public class ImageFactorySetterTemplatedFile extends TemplatedFileCodeBlock {
 	public ImageFactorySetterTemplatedFile() {
 		super();
 	}
-	
+
+	@Override
 	protected String getResourceName() {
 		return Constants.SETTER_TEMPLATE;
 	}
 	
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		throw new UnsupportedOperationException();
 	}

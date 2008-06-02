@@ -20,11 +20,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import rocket.beans.rebind.value.Value;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.type.NewNestedType;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 import rocket.util.client.Tester;
+import rocket.util.client.Utilities;
 
 /**
  * Represents a bean being constructed.
@@ -56,11 +58,11 @@ public class Bean{
 
 		if (type.isAssignableTo(factoryBean)) {
 			// locate the annotation and get the type from there...
-			final List factoryBeanObjectTypes = type.getMetadataValues(Constants.FACTORY_BEAN_OBJECT_TYPE);
+			final List<String> factoryBeanObjectTypes = type.getMetadataValues(Constants.FACTORY_BEAN_OBJECT_TYPE);
 			if (null == factoryBeanObjectTypes || factoryBeanObjectTypes.size() != 1) {
 				throwFactoryBeanObjectTypeAnnotationMissing();
 			}
-			final String factoryBeanObjectTypeName = (String) factoryBeanObjectTypes.get(0);
+			final String factoryBeanObjectTypeName = factoryBeanObjectTypes.get(0);
 			valueType = context.getType(factoryBeanObjectTypeName);
 		}
 		
@@ -169,14 +171,14 @@ public class Bean{
 	/**
 	 * A list of all constructor values if any exist.
 	 */
-	private List constructorValues;
+	private List<Value> constructorValues;
 
-	public List getConstructorValues() {
+	public List<Value> getConstructorValues() {
 		Checker.notNull("field:constructorValues", constructorValues);
 		return this.constructorValues;
 	}
 
-	public void setConstructorValues(final List constructorValues) {
+	public void setConstructorValues(final List<Value> constructorValues) {
 		Checker.notNull("parameter:constructorValues", constructorValues);
 		this.constructorValues = constructorValues;
 	}
@@ -184,14 +186,14 @@ public class Bean{
 	/**
 	 * A set of property for this bean.
 	 */
-	private Set properties;
+	private Set<Property> properties;
 
-	public Set getProperties() {
+	public Set<Property> getProperties() {
 		Checker.notNull("field:properties", properties);
 		return this.properties;
 	}
 
-	public void setProperties(final Set properties) {
+	public void setProperties(final Set<Property> properties) {
 		Checker.notNull("parameter:properties", properties);
 		this.properties = properties;
 	}
@@ -229,20 +231,20 @@ public class Bean{
 	/**
 	 * A list of aspects that apply to this bean.
 	 */
-	private List aspects;
+	private List<Aspect> aspects;
 
-	public List getAspects() {
+	public List<Aspect> getAspects() {
 		Checker.notNull("field:aspects", aspects);
 		return this.aspects;
 	}
 
-	protected void setAspects(final List aspects) {
+	protected void setAspects(final List<Aspect> aspects) {
 		Checker.notNull("parameter:aspects", aspects);
 		this.aspects = aspects;
 	}
 
-	protected List createAspects() {
-		return new ArrayList();
+	protected List<Aspect> createAspects() {
+		return new ArrayList<Aspect>();
 	}
 
 	public void addAspect(final Aspect aspect) {
@@ -300,21 +302,22 @@ public class Bean{
 		this.filename = filename;
 	}
 	
+	@Override
 	public String toString() {
 		final StringBuffer buf = new StringBuffer();
 		
 		buf.append( "Bean " );
 		
 		if( false == Tester.isNullOrEmpty( this.id )){
-			buf.append( "id: \"");
-			buf.append( this.id );
-			buf.append( "\", ");
+			buf.append( "id: ");
+			buf.append( Utilities.quotedEscape(this.id) );
+			buf.append( ", ");
 		}
 		
 		if( false == Tester.isNullOrEmpty( this.typeName ) && null == this.type ){
-			buf.append( "typeName: \"");
-			buf.append( this.typeName );
-			buf.append( "\", ");
+			buf.append( "typeName: ");
+			buf.append( Utilities.quotedEscape(this.typeName ));
+			buf.append( ", ");
 		}
 		
 		
@@ -324,8 +327,8 @@ public class Bean{
 		}
 		
 		if( this.isSingleton() ){
-			buf.append( "singleton, ");
 			buf.append( this.isEagerLoaded() ? "eager" : "lazy");
+			buf.append( " singleton, ");
 		} else {
 			buf.append( "prototype");
 		}

@@ -51,6 +51,7 @@ public class InvokeInterceptorChainProceedTemplatedFile extends TemplatedFileCod
 	 * 
 	 * @return
 	 */
+	@Override
 	protected String getResourceName() {
 		String fileName = null;
 
@@ -100,6 +101,7 @@ public class InvokeInterceptorChainProceedTemplatedFile extends TemplatedFileCod
 		return fileName;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

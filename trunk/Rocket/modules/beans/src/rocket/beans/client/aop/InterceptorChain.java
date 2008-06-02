@@ -31,7 +31,7 @@ public class InterceptorChain {
 	public InterceptorChain() {
 		super();
 
-		this.setMethodInterceptors(new ArrayList());
+		this.setMethodInterceptors(new ArrayList<MethodInterceptor>());
 	}
 
 	/**
@@ -295,14 +295,14 @@ public class InterceptorChain {
 	/**
 	 * A list containing all method interceptors
 	 */
-	private List methodInterceptors;
+	private List<MethodInterceptor> methodInterceptors;
 
-	protected List getMethodInterceptors() {
+	protected List<MethodInterceptor> getMethodInterceptors() {
 		Checker.notNull("field:methodInterceptors", methodInterceptors);
 		return this.methodInterceptors;
 	}
 
-	protected void setMethodInterceptors(final List methodInterceptors) {
+	protected void setMethodInterceptors(final List<MethodInterceptor> methodInterceptors) {
 		Checker.notNull("parameter:methodInterceptors", methodInterceptors);
 		this.methodInterceptors = methodInterceptors;
 	}

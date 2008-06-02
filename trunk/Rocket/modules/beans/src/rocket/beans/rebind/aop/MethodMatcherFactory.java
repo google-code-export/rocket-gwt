@@ -44,19 +44,21 @@ public class MethodMatcherFactory {
 
 		final String[] components = Utilities.split(expression, ",", true);
 		final int count = components.length;
-		final List methodMatchers = new ArrayList();
+		final List<MethodMatcher> methodMatchers = new ArrayList<MethodMatcher>();
 
 		for (int i = 0; i < count; i++) {
 			methodMatchers.add(this.createMethodMatcher(components[i]));
 		}
 
 		return new MethodMatcher() {
+			
+			@Override
 			public boolean matches(Method method) {
 				boolean matched = false;
 
-				final Iterator iterator = methodMatchers.iterator();
+				final Iterator<MethodMatcher> iterator = methodMatchers.iterator();
 				while (iterator.hasNext()) {
-					final MethodMatcher matcher = (MethodMatcher) iterator.next();
+					final MethodMatcher matcher = iterator.next();
 					if (matcher.matches(method)) {
 						matched = true;
 						break;
@@ -66,6 +68,7 @@ public class MethodMatcherFactory {
 				return matched;
 			}
 
+			@Override
 			public String toString() {
 				return methodMatchers.toString();
 			}

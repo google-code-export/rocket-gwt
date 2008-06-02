@@ -46,6 +46,7 @@ public class CollectionElementAddTemplatedFile extends TemplatedCodeBlock {
 		this.value = value;
 	}
 
+	@Override
 	protected InputStream getInputStream() {
 		final String filename = Constants.TEMPLATE;
 		final InputStream inputStream = this.getClass().getResourceAsStream(filename);
@@ -55,6 +56,7 @@ public class CollectionElementAddTemplatedFile extends TemplatedCodeBlock {
 		return inputStream;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -67,6 +69,7 @@ public class CollectionElementAddTemplatedFile extends TemplatedCodeBlock {
 		return value;
 	}
 
+	@Override
 	protected void throwValueNotFoundException(final String name) {
 		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.TEMPLATE + "\".");
 	}

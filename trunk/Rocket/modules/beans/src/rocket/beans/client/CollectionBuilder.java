@@ -27,7 +27,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class CollectionBuilder {
+abstract public class CollectionBuilder<E> {
 
 	protected CollectionBuilder() {
 		super();
@@ -35,39 +35,39 @@ abstract public class CollectionBuilder {
 		this.setCollection(this.createCollection());
 	}
 
-	public CollectionBuilder add(final boolean booleanValue) {
+	public CollectionBuilder<E> add(final boolean booleanValue) {
 		return this.add(Boolean.valueOf(booleanValue));
 	}
 
-	public CollectionBuilder add(final byte byteValue) {
+	public CollectionBuilder<E> add(final byte byteValue) {
 		return this.add(new Byte(byteValue));
 	}
 
-	public CollectionBuilder add(final short shortValue) {
+	public CollectionBuilder<E> add(final short shortValue) {
 		return this.add(new Short(shortValue));
 	}
 
-	public CollectionBuilder add(final int intValue) {
+	public CollectionBuilder<E> add(final int intValue) {
 		return this.add(new Integer(intValue));
 	}
 
-	public CollectionBuilder add(final long longValue) {
+	public CollectionBuilder<E> add(final long longValue) {
 		return this.add(new Long(longValue));
 	}
 
-	public CollectionBuilder add(final float floatValue) {
+	public CollectionBuilder<E> add(final float floatValue) {
 		return this.add(new Float(floatValue));
 	}
 
-	public CollectionBuilder add(final double doubleValue) {
+	public CollectionBuilder<E> add(final double doubleValue) {
 		return this.add(new Double(doubleValue));
 	}
 
-	public CollectionBuilder add(final char charValue) {
+	public CollectionBuilder<E> add(final char charValue) {
 		return this.add(new Character(charValue));
 	}
 
-	public CollectionBuilder add(final Object object) {
+	public CollectionBuilder<E> add(final E object) {
 		this.getCollection().add(object);
 		return this;
 	}
@@ -75,25 +75,25 @@ abstract public class CollectionBuilder {
 	/**
 	 * A collection (list or set) containing values.
 	 */
-	private Collection collection;
+	private Collection<E> collection;
 
-	protected Collection getCollection() {
+	protected Collection<E> getCollection() {
 		Checker.notNull("field:collection", collection);
 		return this.collection;
 	}
 
-	protected void setCollection(final Collection collection) {
+	protected void setCollection(final Collection<E> collection) {
 		Checker.notNull("parameter:collection", collection);
 		this.collection = collection;
 	}
 
-	abstract protected Collection createCollection();
+	abstract protected Collection<E> createCollection();
 
-	public List getList() {
-		return (List) this.getCollection();
+	public List<E> getList() {
+		return (List<E>) this.getCollection();
 	}
 
-	public Set getSet() {
-		return (Set) this.getCollection();
+	public Set<E> getSet() {
+		return (Set<E>) this.getCollection();
 	}
 }

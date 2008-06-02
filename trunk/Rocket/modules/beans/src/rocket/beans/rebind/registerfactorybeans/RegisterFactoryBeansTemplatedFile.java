@@ -45,18 +45,18 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 
 	private List beans;
 
-	protected List getBeans() {
+	protected List<Bean> getBeans() {
 		Checker.notNull("field:beans", beans);
 		return this.beans;
 	}
 
-	protected void setBeans(final List beans) {
+	protected void setBeans(final List<Bean> beans) {
 		Checker.notNull("parameter:beans", beans);
 		this.beans = beans;
 	}
 
-	protected List createBeans() {
-		return new ArrayList();
+	protected List<Bean> createBeans() {
+		return new ArrayList<Bean>();
 	}
 
 	public void addBean(final Bean bean) {
@@ -69,30 +69,36 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 
 		return new CollectionTemplatedCodeBlock() {
 
+			@Override
 			public InputStream getInputStream() {
 				return registerBean.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return registerBean.getValue0(name);
 			}
 
+			@Override
 			protected Collection getCollection() {
 				return RegisterFactoryBeansTemplatedFile.this.getBeans();
 			}
 
+			@Override
 			protected void prepareToWrite(Object element) {
 				final Bean bean = (Bean) element;
 				registerBean.setBeanId(bean.getId());
 				registerBean.setFactoryBean(bean.hasProxy() ? bean.getProxyFactoryBean() : bean.getFactoryBean());
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 				writer.println();
 			}
 		};
 	}
-	
+
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

@@ -45,10 +45,12 @@ public class DeferredBindingTemplatedFile extends TemplatedFileCodeBlock {
 		this.type = type;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
-
+	
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
