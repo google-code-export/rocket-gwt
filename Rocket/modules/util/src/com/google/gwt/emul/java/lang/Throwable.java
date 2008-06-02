@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 Google Inc.
+ * Copyright 2008 Google Inc.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,151 +15,157 @@
  */
 package java.lang;
 
-import rocket.util.client.Checker;
-import rocket.util.client.ThrowableHelper;
+import java.io.PrintStream;
+import java.io.Serializable;
 
-import com.google.gwt.core.client.GWT;
+import rocket.util.client.Checker;
+import rocket.util.client.StackTrace;
+
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * This class has been modified as part of the Rocket-gwt framework to capturing
- * stacktraces from JavaScript
- * 
- * @author Miroslav Pokorny (mP)
+ * See <a
+ * href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Throwable.html">the
+ * official Java API doc</a> for details.
  */
-public class Throwable {
+public class Throwable implements Serializable {
+  /*
+   * NOTE: We cannot use custom field serializers because we need the client and
+   * server to use different serialization strategies to deal with this type.
+   * The client uses the generated field serializers which can use JSNI. That
+   * leaves the server free to special case Throwable so that only the
+   * detailMessage field is serialized.
+   * 
+   * Throwable is given special treatment by server's SerializabilityUtil class
+   * to ensure that only the detailMessage field is serialized. Changing the
+   * field modifiers below may necessitate a change to the server's
+   * SerializabilityUtil.fieldQualifiesForSerialization(Field) method.
+   */
+  private transient Throwable cause;
+  private String detailMessage;
+  private transient java.lang.StackTraceElement[] stackTrace;
 
-	/**
-	 * This field is no longer used as real stack traces are being built and
-	 * returned in {@link #getStackTrace() }
-	 * 
-	 */
-	// private static final StackTraceElement[] NO_STACK_TRACE = new
-	// StackTraceElement[0];
-	public Throwable() {
-		super();
+  public Throwable() {
+  }
 
-		this.saveCallStack();
-	}
+  public Throwable(String message) {
+    this.detailMessage = message;
 
-	public Throwable(String message) {
-		super();
-		fMessage = message;
+    this.saveCallStack();
+  }
 
-		this.saveCallStack();
-	}
+  public Throwable(String message, Throwable cause) {
+    this.cause = cause;
+    this.detailMessage = message;
+    
+    this.saveCallStack();
+  }
 
-	public Throwable(String message, Throwable cause) {
-		super();
+  public Throwable(Throwable cause) {
+    this.detailMessage = (cause == null) ? null : cause.toString();
+    this.cause = cause;
+    
+    this.saveCallStack();
+  }
 
-		fCause = cause;
-		fMessage = message;
+  /**
+   * Stack traces are not currently populated by GWT. This method does nothing.
+   * 
+   * @return this
+   */
+  public Throwable fillInStackTrace() {
+    return this;
+  }
 
-		this.saveCallStack();
-	}
+  public Throwable getCause() {
+    return cause;
+  }
 
-	public Throwable(Throwable cause) {
-		super();
+  public String getLocalizedMessage() {
+    return getMessage();
+  }
 
-		fMessage = (cause == null) ? null : cause.toString();
-		fCause = cause;
+  public String getMessage() {
+    return detailMessage;
+  }
 
-		this.saveCallStack();
-	}
+  /**
+   * Stack traces are not currently populated by GWT. This method will return a
+   * zero-length array unless a stack trace has been explicitly set with
+   * {@link #setStackTrace(StackTraceElement[])}
+   * 
+   * @return the current stack trace
+   */
+  public java.lang.StackTraceElement[] getStackTrace() {
+    if (stackTrace == null) {
+    	// ROCKET builde the stack trace elements from the previously captured javascript call stack
+		final String[] functionNames = StackTrace.getCallStackFunctionNames(this.getCallStack());
+		this.stackTrace = StackTrace.buildStackTraceElements(functionNames);
+    }
+    return stackTrace;
+  }
 
-	/**
-	 * Stack traces are not currently supported.
-	 * 
-	 * @return this
-	 */
-	public Throwable fillInStackTrace() {
-		return this;
-	}
+  public Throwable initCause(Throwable cause) {
+    if (this.cause != null) {
+      throw new IllegalStateException("Can't overwrite cause");
+    }
+    if (cause == this) {
+      throw new IllegalArgumentException("Self-causation not permitted");
+    }
+    this.cause = cause;
+    return this;
+  }
 
-	public Throwable getCause() {
-		return fCause;
-	}
+  public void printStackTrace() {
+    printStackTrace(System.err);
+  }
 
-	public String getLocalizedMessage() {
-		return getMessage();
-	}
+  public void printStackTrace(PrintStream out) {
+    StringBuffer msg = new StringBuffer();
+    Throwable currentCause = this;
+    while (currentCause != null) {
+      String causeMessage = currentCause.getMessage();
+      if (currentCause != this) {
+        msg.append("Caused by: ");
+      }
+      msg.append(currentCause.getClass().getName());
+      msg.append(": ");
+      msg.append(causeMessage == null ? "(No exception detail)" : causeMessage);
+      msg.append("\n");
+      currentCause = currentCause.getCause();
+    }
+    out.println(msg);
+  }
 
-	public String getMessage() {
-		return fMessage;
-	}
+  public void setStackTrace(java.lang.StackTraceElement[] stackTrace) {
+    java.lang.StackTraceElement[] copy = new java.lang.StackTraceElement[stackTrace.length];
+    for (int i = 0, c = stackTrace.length; i < c; ++i) {
+      if (stackTrace[i] == null) {
+        throw new NullPointerException();
+      }
+      copy[i] = stackTrace[i];
+    }
+    this.stackTrace = copy;
+  }
 
-	/**
-	 * Stack traces are not currently supported.
-	 * 
-	 * @return An array of StackTraceElements one for each level of the stack
-	 */
-	public java.lang.StackTraceElement[] getStackTrace() {
-		if (this.stackTrace == null) {
-			final String[] functionNames = ThrowableHelper.getCallStackFunctionNames(this.getCallStack());
-			this.stackTrace = ThrowableHelper.buildStackTraceElements(functionNames);
-		}
+  @Override
+  public String toString() {
+    String className = this.getClass().getName();
+    String msg = getMessage();
+    if (msg != null) {
+      return className + ": " + msg;
+    } else {
+      return className;
+    }
+  }
 
-		return this.stackTrace;
-	}
-
-	public Throwable initCause(Throwable cause) {
-		if (fCause != null)
-			throw new IllegalStateException("Can't overwrite cause");
-		if (cause == this)
-			throw new IllegalArgumentException("Self-causation not permitted");
-		fCause = cause;
-		return this;
-	}
-
-	public void printStackTrace() {
-		StringBuffer msg = new StringBuffer();
-		Throwable currentCause = this;
-		while (currentCause != null) {
-			String causeMessage = currentCause.getMessage();
-			if (currentCause != this) {
-				msg.append("Caused by: ");
-			}
-			msg.append(GWT.getTypeName(currentCause));
-			msg.append(": ");
-			msg.append(causeMessage == null ? "(No exception detail)" : causeMessage);
-			msg.append("\n");
-			currentCause = currentCause.getCause();
-		}
-		System.err.println(msg);
-	}
-
-	/**
-	 * Stack traces are not currently supported.
-	 */
-	public void setStackTrace(final java.lang.StackTraceElement[] stackTrace) {
-		this.stackTrace = stackTrace;
-	}
-
-	/**
-	 * An array of populated StackTraceElements
-	 */
-	transient private java.lang.StackTraceElement[] stackTrace;
-
-	public String toString() {
-		String className = GWT.getTypeName(this);
-		String msg = getMessage();
-		if (msg != null) {
-			return className + ": " + msg;
-		} else {
-			return className;
-		}
-	}
-
-	private Throwable fCause;
-
-	private String fMessage;
-
+  
 	// ----------------------ROCKET-------------
 	/**
 	 * Saves the callStack at the time that this Exception was created.
 	 */
 	private void saveCallStack() {
-		this.setCallStack(this.setCallStack0(ThrowableHelper.getCallStackFunctions()));
+		this.setCallStack(this.setCallStack0(StackTrace.getCallStackFunctions()));
 	}
 
 	/**
@@ -189,4 +195,5 @@ public class Throwable {
 		Checker.notNull("parameter:callStack", callStack);
 		this.callStack = callStack;
 	}
+
 }

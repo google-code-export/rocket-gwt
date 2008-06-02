@@ -38,7 +38,7 @@ public class UtilTestSuite {
 		suite.addTestSuite(Base64EncoderTestCase.class);
 		suite.addTestSuite(ColourTestCase.class);
 		suite.addTestSuite(HueSaturationValueTestCase.class);
-		suite.addTestSuite(ThrowableHelperTestCase.class);
+		suite.addTestSuite(StackTraceTestCase.class);
 	
 		suite.addTestSuite(StackTraceGwtTestCase.class);
 	}
