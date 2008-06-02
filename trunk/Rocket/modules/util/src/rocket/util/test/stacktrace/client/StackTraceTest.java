@@ -87,7 +87,7 @@ public class StackTraceTest implements EntryPoint {
 	}
 
 	protected void handleUnexpectedResult(final Object result) {
-		this.log("Service unexpectedly returned " + GWT.getTypeName(result));
+		this.log("Service unexpectedly returned " + result.getClass().getName());
 	}
 
 	protected void handleExpectedException(final Throwable throwable) {
@@ -117,7 +117,7 @@ public class StackTraceTest implements EntryPoint {
 		try {
 			this.log("<b>Expected stacktrace</b>");
 
-			final String className = GWT.getTypeName(this);
+			final String className = this.getClass().getName();
 
 			final String expectedStackTrace = "java.lang.RuntimeException:\n" + "\tat " + className + ".throwRuntimeException()\n"
 					+ "\tat " + className + ".twoFramesAwayFromMethodWhichThrowsException()\n" + "\tat " + className

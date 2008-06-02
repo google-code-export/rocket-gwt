@@ -22,8 +22,6 @@ import java.util.Map;
 import rocket.text.client.IndexedPlaceHolderReplacer;
 import rocket.text.client.NamedPlaceHolderReplacer;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * The Checker class is a compilation of methods that check or assert that a value satisfies a particular constraint.
  * 
@@ -254,7 +252,7 @@ public class Utilities {
 		Checker.notNull("parameter:input", input);
 		Checker.notEmpty("parameter:delimiter", delimiter);
 
-		final List tokens = new ArrayList();
+		final List<String> tokens = new ArrayList<String>();
 		final int stringLength = input.length();
 		if (stringLength > 0) {
 			final char[] chars = input.toCharArray();
@@ -287,7 +285,7 @@ public class Utilities {
 		/* copy the splitted strings into a String array */
 		final String[] array = new String[tokens.size()];
 		for (int i = 0; i < array.length; i++) {
-			array[i] = (String) tokens.get(i);
+			array[i] = tokens.get(i);
 		}
 
 		return array;
@@ -572,7 +570,7 @@ public class Utilities {
 		/* handle null */
 		String.valueOf(object) :
 		/* class name including the leading package name */
-		GWT.getTypeName(object) + '@' +
+		object.getClass().getName() + '@' +
 		/* hashcode */
 		Integer.toHexString(System.identityHashCode(object));
 	} // defaultToString

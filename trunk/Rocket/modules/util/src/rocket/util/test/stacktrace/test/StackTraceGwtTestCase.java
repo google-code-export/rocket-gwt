@@ -18,7 +18,6 @@ package rocket.util.test.stacktrace.test;
 import junit.framework.TestCase;
 import rocket.util.client.JavaScript;
 import rocket.util.client.StackTrace;
-import rocket.util.client.ThrowableHelper;
 import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.GWT;
@@ -59,7 +58,7 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 	}
 
 	public void testGetCallStackFunctions0() {
-		final JavaScriptObject stackTrace = ThrowableHelper.getCallStackFunctions();
+		final JavaScriptObject stackTrace = StackTrace.getCallStackFunctions();
 		assertNotNull("stackTrace", stackTrace);
 
 		final int actual = JavaScript.getPropertyCount(stackTrace);
@@ -90,14 +89,14 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 	 }-*/;
 
 	protected JavaScriptObject javaMethod() {
-		return ThrowableHelper.getCallStackFunctions();
+		return StackTrace.getCallStackFunctions();
 	}
 
 	public void testGetCallStackFunctionNames0() {
-		final JavaScriptObject callStackFunctions = ThrowableHelper.getCallStackFunctions();
+		final JavaScriptObject callStackFunctions = StackTrace.getCallStackFunctions();
 		assertNotNull("callStackFunctions", callStackFunctions);
 
-		final String[] functionNames = ThrowableHelper.getCallStackFunctionNames(callStackFunctions);
+		final String[] functionNames = StackTrace.getCallStackFunctionNames(callStackFunctions);
 		assertNotNull("functionNames", functionNames);
 
 		assertTrue("functionNames.length: " + functionNames.length, functionNames.length > 3);
@@ -129,10 +128,10 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 	}
 
 	protected String[] javaFunctionNames() {
-		final JavaScriptObject callStackFunctions = ThrowableHelper.getCallStackFunctions();
+		final JavaScriptObject callStackFunctions = StackTrace.getCallStackFunctions();
 		assertNotNull("callStackFunctions", callStackFunctions);
 
-		final String[] functionNames = ThrowableHelper.getCallStackFunctionNames(callStackFunctions);
+		final String[] functionNames = StackTrace.getCallStackFunctionNames(callStackFunctions);
 		assertNotNull("functionNames", functionNames);
 		return functionNames;
 	}
@@ -153,7 +152,7 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 		final String[] lines = Utilities.split(stackTrace, "\n", true);
 		assertTrue(lines.length > 5);
 
-		final String thisClassName = GWT.getTypeName(this);
+		final String thisClassName = this.getClass().getName();
 
 		int i = 0;
 		final String topLine = lines[i++];

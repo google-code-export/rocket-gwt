@@ -16,7 +16,7 @@
 package rocket.util.test;
 
 import junit.framework.TestCase;
-import rocket.util.client.ThrowableHelper;
+import rocket.util.client.StackTrace;
 
 /**
  * This testcase is designed to only test portions of StackTrace that do not
@@ -24,10 +24,10 @@ import rocket.util.client.ThrowableHelper;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class ThrowableHelperTestCase extends TestCase {
+public class StackTraceTestCase extends TestCase {
 	public void testBuildStackTraceElementsAnonymousFunction() {
 		final String[] functionNames = { "anonymous" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -37,7 +37,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsNonGWTGeneratedFunctionName() {
 		final String[] functionNames = { "abc" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -47,7 +47,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsNonGWTGeneratedFunctionNameWithFakeDoubleUnderscore() {
 		final String[] functionNames = { "abc__de" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -57,7 +57,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsInstanceMethodFunction() {
 		final String[] functionNames = { "java_lang_Object_toString__" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -67,7 +67,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsConstructorFunction() {
 		final String[] functionNames = { "com_google_gwt_user_client_impl_DOMImplStandard" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -77,7 +77,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsUnnamedPackageConstructorFunction() {
 		final String[] functionNames = { "MyClass" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -87,7 +87,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsStaticInitializerFunction() {
 		final String[] functionNames = { "java_lang_Throwable_$clint__()" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -97,7 +97,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsStaticMethodFunction() {
 		final String[] functionNames = { "rocket_browser_client_Browser_getContextPath__" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -107,7 +107,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsStaticMethodWithSingleArgumentsFunction() {
 		final String[] functionNames = { "com_google_gwt_core_client_GWT_getTypeName__Ljava_lang_Object_2" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -119,7 +119,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsStaticMethodWithManyArgumentsFunction() {
 		final String[] functionNames = { "com_google_gwt_user_client_DOM_setStyleAttribute__Lcom_google_gwt_user_client_Element_2Ljava_lang_String_2Ljava_lang_String_2" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -132,7 +132,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsInstanceMethodWithSingleArgumentsFunction() {
 		final String[] functionNames = { "com_google_gwt_core_client_GWT_getTypeName__Ljava_lang_Object_2" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];
@@ -144,7 +144,7 @@ public class ThrowableHelperTestCase extends TestCase {
 
 	public void testBuildStackTraceElementsInstanceMethodWithManyArgumentsFunction() {
 		final String[] functionNames = { "a_b_C_method__Ljava_lang_String_2ZBCSIJF[[D" };
-		final StackTraceElement[] elements = ThrowableHelper.buildStackTraceElements(functionNames);
+		final StackTraceElement[] elements = StackTrace.buildStackTraceElements(functionNames);
 		assertEquals("element count", 1, elements.length);
 
 		final StackTraceElement element = elements[0];

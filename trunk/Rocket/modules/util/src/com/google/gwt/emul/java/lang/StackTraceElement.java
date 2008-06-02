@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 Google Inc.
+ * Copyright 2008 Google Inc.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,13 +15,22 @@
  */
 package java.lang;
 
+import java.io.Serializable;
+
 /**
  * Included for hosted mode source compatibility. Not yet implemented.
  * 
  * @skip
  */
-public class StackTraceElement {
+public final class StackTraceElement implements Serializable {
 
+	/**
+	 * ROCKET Constructor added to as part of support for web mode stacktraces.
+	 * @param declaringClass
+	 * @param methodName
+	 * @param fileName
+	 * @param lineNumber
+	 */
 	public StackTraceElement(final String declaringClass, final String methodName, final String fileName, final int lineNumber) {
 		super();
 
@@ -30,41 +39,37 @@ public class StackTraceElement {
 		this.setFileName(fileName);
 		this.setLineNumber(lineNumber);
 	}
-
-	public String getClassName() {
-		return className;
+	
+	public StackTraceElement(){
+		super();
 	}
+	
+  private String className;
 
-	public String getFileName() {
-		return fileName;
-	}
+  private String fileName;
 
-	public int getLineNumber() {
-		return lineNumber;
-	}
+  private int lineNumber;
 
-	public String getMethodName() {
-		return methodName;
-	}
+  private String methodName;
 
-	/**
-	 * The className will be empty when the function was anonymous.
-	 */
-	private String className;
+  public String getClassName() {
+    return className;
+  }
 
-	/**
-	 * This will contain the module name.
-	 */
-	private String fileName;
+  public String getFileName() {
+    return fileName;
+  }
 
-	/**
-	 * This cannot be determined and should contain -1
-	 */
-	private int lineNumber;
+  public int getLineNumber() {
+    return lineNumber;
+  }
 
-	private String methodName;
+  public String getMethodName() {
+    return methodName;
+  }
+  
 
-	// ROCKET The setters below were added to support hosted mode stacktraces
+	// ROCKET The setters below were added to support web mode stacktraces
 	void setClassName(final String className) {
 		this.className = className;
 	}
