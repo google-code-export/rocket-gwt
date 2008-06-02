@@ -24,6 +24,9 @@ import java.util.Set;
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.constructor.Constructor;
+import rocket.generator.rebind.field.Field;
+import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.AbstractType;
 import rocket.generator.rebind.type.Type;
@@ -40,10 +43,10 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return JavaAdapterHelper.getVisibility(this.getJavaClass().getModifiers());
 	}
 
-	protected Set createConstructors() {
+	protected Set<Constructor> createConstructors() {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final Set constructors = new HashSet();
+		final Set<Constructor> constructors = new HashSet<Constructor>();
 
 		final java.lang.reflect.Constructor[] javaConstructors = this.getJavaClass().getDeclaredConstructors();
 		for (int i = 0; i < javaConstructors.length; i++) {
@@ -60,10 +63,10 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return Collections.unmodifiableSet(constructors);
 	}
 
-	protected Set createFields() {
+	protected Set<Field> createFields() {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final Set fields = new HashSet();
+		final Set<Field> fields = new HashSet<Field>();
 
 		final java.lang.reflect.Field[] javaFields = this.getJavaClass().getDeclaredFields();
 		for (int i = 0; i < javaFields.length; i++) {
@@ -80,14 +83,14 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return Collections.unmodifiableSet(fields);
 	}
 
-	protected Set createInterfaces() {
+	protected Set<Type> createInterfaces() {
 		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaClass().getInterfaces());
 	}
 
-	protected Set createMethods() {
+	protected Set<Method> createMethods() {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final Set methods = new HashSet();
+		final Set<Method> methods = new HashSet<Method>();
 		final java.lang.reflect.Method[] javaMethods = this.getJavaClass().getDeclaredMethods();
 		for (int i = 0; i < javaMethods.length; i++) {
 			final java.lang.reflect.Method javaMethod = javaMethods[i];
@@ -103,11 +106,11 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return Collections.unmodifiableSet(methods);
 	}
 
-	protected Set createNestedTypes() {
+	protected Set<Type> createNestedTypes() {
 		throw new UnsupportedOperationException();
 	}
 
-	protected Set createSubTypes() {
+	protected Set<Type> createSubTypes() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -127,11 +130,13 @@ public class JavaClassTypeAdapter extends AbstractType {
 	public Package getPackage() {
 		return this.getPackage(this.getJavaClass().getPackage().getName());
 	}
+
 	final protected Package getPackage(final String packageName) {
 		return this.getGeneratorContextImpl().getPackage(packageName);
 	}
-	protected GeneratorContextImpl getGeneratorContextImpl(){
-		return(GeneratorContextImpl) this.getGeneratorContext();
+
+	protected GeneratorContextImpl getGeneratorContextImpl() {
+		return (GeneratorContextImpl) this.getGeneratorContext();
 	}
 
 	public String getSimpleName() {
@@ -195,6 +200,7 @@ public class JavaClassTypeAdapter extends AbstractType {
 		this.javaClass = javaClass;
 	}
 
+	@Override
 	public String toString() {
 		return "Class: " + this.javaClass;
 	}

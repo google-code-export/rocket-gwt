@@ -17,6 +17,7 @@ package rocket.generator.rebind.codeblock;
 
 import rocket.generator.rebind.SourceWriter;
 import rocket.util.client.Checker;
+
 /**
  * A CodeBlock that contains a long literal.
  * 

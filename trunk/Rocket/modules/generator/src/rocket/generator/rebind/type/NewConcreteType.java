@@ -35,7 +35,7 @@ public interface NewConcreteType extends NewType {
 
 	void setFinal(boolean finall);
 
-	void setVisibility( Visibility visibility );
-	
+	void setVisibility(Visibility visibility);
+
 	void write();
 }

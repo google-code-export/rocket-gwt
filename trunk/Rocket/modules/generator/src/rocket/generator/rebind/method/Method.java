@@ -21,6 +21,7 @@ import java.util.Set;
 import rocket.generator.rebind.ClassComponent;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.metadata.HasMetadata;
+import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 
@@ -39,7 +40,7 @@ public interface Method extends ClassComponent, HasMetadata {
 
 	boolean returnsVoid();
 
-	List getParameters();
+	List<MethodParameter> getParameters();
 
 	Visibility getVisibility();
 
@@ -53,7 +54,7 @@ public interface Method extends ClassComponent, HasMetadata {
 
 	boolean isNative();
 
-	Set getThrownTypes();
+	Set<Type> getThrownTypes();
 
 	Method findOverriddenMethod();
 

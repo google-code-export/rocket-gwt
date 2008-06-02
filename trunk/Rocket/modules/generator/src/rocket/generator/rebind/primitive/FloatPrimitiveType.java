@@ -23,9 +23,12 @@ import rocket.generator.rebind.type.Type;
  * @author Miroslav Pokorny
  */
 abstract public class FloatPrimitiveType extends PrimitiveType {
-	public String getRuntimeName(){
+
+	@Override
+	public String getRuntimeName() {
 		return Constants.FLOAT_RUNTIME_NAME;
 	}
+
 	public boolean isAssignableFrom(final Type type) {
 		return this.equals(type) || this.getByte().equals(type) || this.getShort().equals(type) || this.getInt().equals(type)
 				|| this.getLong().equals(type);
@@ -39,6 +42,7 @@ abstract public class FloatPrimitiveType extends PrimitiveType {
 		return this.getType(Constants.FLOAT_WRAPPER);
 	}
 
+	@Override
 	public String toString() {
 		return "float";
 	}

@@ -29,12 +29,12 @@ import rocket.util.client.Checker;
  */
 abstract public class SubTypesVisitor {
 
-	protected SubTypesVisitor(){
+	protected SubTypesVisitor() {
 		super();
-		
-		this.setVisited( this.createVisited() );
+
+		this.setVisited(this.createVisited());
 	}
-	
+
 	public void start(final Type type) {
 		Checker.notNull("type:type", type);
 
@@ -51,21 +51,24 @@ abstract public class SubTypesVisitor {
 	}
 
 	/**
-	 * Handles the logic involved in visiting all the sub types for a given type without ever visiting the same type more than once.
-	 * @param type A type 
+	 * Handles the logic involved in visiting all the sub types for a given type
+	 * without ever visiting the same type more than once.
+	 * 
+	 * @param type
+	 *            A type
 	 */
 	protected void visitSubTypes(final Type type) {
 		Checker.notNull("parameter:type", type);
 
-		final Set visited = this.getVisited();
-		
-		final Iterator subTypes = type.getSubTypes().iterator();
+		final Set<Type> visited = this.getVisited();
+
+		final Iterator<Type> subTypes = type.getSubTypes().iterator();
 		while (subTypes.hasNext()) {
 			final Type subType = (Type) subTypes.next();
-			if( visited.contains( subType )){
+			if (visited.contains(subType)) {
 				continue;
-			}			
-			
+			}
+
 			if (this.visit(subType)) {
 				break;
 			}
@@ -88,24 +91,25 @@ abstract public class SubTypesVisitor {
 	 * @return
 	 */
 	abstract protected boolean skipInitialType();
-	
+
 	/**
-	 * A set which keeps track of types that have already been visited. 
-	 * This guarantees that types are only ever seen once by the {@link #visit(Type)} method.
+	 * A set which keeps track of types that have already been visited. This
+	 * guarantees that types are only ever seen once by the {@link #visit(Type)}
+	 * method.
 	 */
-	private Set visited;
-	
-	protected Set getVisited(){
-		Checker.notNull("field:visited", visited );
+	private Set<Type> visited;
+
+	protected Set<Type> getVisited() {
+		Checker.notNull("field:visited", visited);
 		return this.visited;
 	}
-	
-	protected void setVisited( final Set visited ){
-		Checker.notNull("parameter:visited", visited );
+
+	protected void setVisited(final Set<Type> visited) {
+		Checker.notNull("parameter:visited", visited);
 		this.visited = visited;
 	}
-	
-	protected Set createVisited(){
-		return new HashSet();
+
+	protected Set<Type> createVisited() {
+		return new HashSet<Type>();
 	}
 }

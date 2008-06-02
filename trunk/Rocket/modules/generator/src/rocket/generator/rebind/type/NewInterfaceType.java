@@ -26,7 +26,7 @@ public interface NewInterfaceType extends NewType {
 
 	void setName(String name);
 
-	void setVisibility( Visibility visibility );
-	
+	void setVisibility(Visibility visibility);
+
 	void write();
 }

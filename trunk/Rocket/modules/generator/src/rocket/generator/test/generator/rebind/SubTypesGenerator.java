@@ -32,44 +32,44 @@ public class SubTypesGenerator extends TestGenerator {
 		final Set subTypesSubTypes = subType.getSubTypes();
 		Checker.equals("" + subTypesSubTypes, 0, subTypesSubTypes.size());
 
-		final NewConcreteType newConcreteType = context.newConcreteType( newTypeName );
+		final NewConcreteType newConcreteType = context.newConcreteType(newTypeName);
 		newConcreteType.setAbstract(false);
 		newConcreteType.setFinal(false);
-		newConcreteType.setSuperType( context.getObject() );
-		newConcreteType.setVisibility( Visibility.PUBLIC );
-		
+		newConcreteType.setSuperType(context.getObject());
+		newConcreteType.setVisibility(Visibility.PUBLIC);
+
 		final NewNestedType newSubType = newConcreteType.newNestedType();
 		newSubType.setAbstract(false);
 		newSubType.setFinal(false);
 		newSubType.setNestedName("Nested1");
-		newSubType.setStatic( true );
-		newSubType.setSuperType( newConcreteType );
+		newSubType.setStatic(true);
+		newSubType.setSuperType(newConcreteType);
 		newSubType.setVisibility(Visibility.PUBLIC);
 
 		final NewNestedType newSubSubType0 = newSubType.newNestedType();
 		newSubSubType0.setAbstract(false);
 		newSubSubType0.setFinal(false);
 		newSubSubType0.setNestedName("Nested2");
-		newSubSubType0.setStatic( true );
-		newSubSubType0.setSuperType( newSubType );
+		newSubSubType0.setStatic(true);
+		newSubSubType0.setSuperType(newSubType);
 		newSubSubType0.setVisibility(Visibility.PUBLIC);
 
 		final NewNestedType newSubSubType1 = newSubType.newNestedType();
 		newSubSubType1.setAbstract(false);
 		newSubSubType1.setFinal(false);
 		newSubSubType1.setNestedName("Nested3");
-		newSubSubType1.setStatic( true );
-		newSubSubType1.setSuperType( newSubType );
+		newSubSubType1.setStatic(true);
+		newSubSubType1.setSuperType(newSubType);
 		newSubSubType1.setVisibility(Visibility.PUBLIC);
-		
+
 		final NewNestedType newSubSubSubType = newConcreteType.newNestedType();
 		newSubSubSubType.setAbstract(false);
 		newSubSubSubType.setFinal(false);
 		newSubSubSubType.setNestedName("Nested4");
-		newSubSubSubType.setStatic( true );
-		newSubSubSubType.setSuperType( newSubSubType0 );
+		newSubSubSubType.setStatic(true);
+		newSubSubSubType.setSuperType(newSubSubType0);
 		newSubSubSubType.setVisibility(Visibility.PUBLIC);
-		
+
 		final Set objectSubTypes = context.getObject().getSubTypes();
 		Checker.trueValue("newConcreteType" + objectSubTypes, objectSubTypes.contains(newConcreteType));
 		Checker.trueValue("String", objectSubTypes.contains(context.getString()));
@@ -86,8 +86,7 @@ public class SubTypesGenerator extends TestGenerator {
 		final Set newSubSubSubTypeSubTypes = newSubSubType0.getSubTypes();
 		Checker.equals("", 1, newSubSubSubTypeSubTypes.size());
 		Checker.trueValue("Nested4", newSubSubSubTypeSubTypes.contains(newSubSubSubType));
-		
-		
+
 		return newConcreteType;
 	}
 }

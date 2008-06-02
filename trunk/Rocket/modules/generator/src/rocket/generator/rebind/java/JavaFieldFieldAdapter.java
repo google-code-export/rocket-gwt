@@ -30,6 +30,7 @@ import rocket.util.client.Checker;
  */
 public class JavaFieldFieldAdapter extends AbstractField {
 
+	@Override
 	public Visibility getVisibility() {
 		if (false == this.hasVisibility()) {
 			this.setVisibility(this.createVisibility());
@@ -49,7 +50,8 @@ public class JavaFieldFieldAdapter extends AbstractField {
 		return this.getJavaField().getName();
 	}
 
-	public Type getType() {
+	@Override
+	public Type createType() {
 		return this.getType(this.getJavaField().getType().getName());
 	}
 
@@ -81,6 +83,7 @@ public class JavaFieldFieldAdapter extends AbstractField {
 		this.javaField = javaField;
 	}
 
+	@Override
 	public String toString() {
 		return "Field: " + this.javaField;
 	}

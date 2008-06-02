@@ -46,6 +46,7 @@ abstract public class AllMethodsVisitor {
 	 */
 	private class AllMethodsVisitorSuperTypesVisitor extends SuperTypesVisitor {
 
+		@Override
 		protected boolean visit(final Type type) {
 			Checker.notNull("parameter:type", type);
 
@@ -63,6 +64,7 @@ abstract public class AllMethodsVisitor {
 			return this.isSkipRemaining();
 		}
 
+		@Override
 		protected boolean skipInitialType() {
 			return false;
 		}

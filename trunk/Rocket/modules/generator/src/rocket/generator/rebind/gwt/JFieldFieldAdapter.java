@@ -23,6 +23,7 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Acts as an adapter between a JField and a Field
@@ -76,9 +77,10 @@ public class JFieldFieldAdapter extends AbstractField {
 		return visibility;
 	}
 
-	public Type getType() {
-		final String fieldTypeName = this.getJField().getType().getQualifiedSourceName();
-		return this.findType(fieldTypeName);
+	@Override
+	protected Type createType() {
+		final JType type = this.getJField().getType().getErasedType();
+		return this.getGeneratorContext().getType(type.getQualifiedSourceName());
 	}
 
 	public boolean isFinal() {
@@ -112,6 +114,7 @@ public class JFieldFieldAdapter extends AbstractField {
 		this.jField = jField;
 	}
 
+	@Override
 	public String toString() {
 		return "Field: " + this.jField + ", enclosingType: " + this.jField.getEnclosingType();
 	}

@@ -24,13 +24,16 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
- * This visitor may be used to visit all types that are reachable from a particular starting type.
- * All super/sub classes of the every type will be scanned.
+ * This visitor may be used to visit all types that are reachable from a
+ * particular starting type. All super/sub classes of the every type will be
+ * scanned.
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class ReachableTypesVisitor {
 	/**
 	 * Starts the visiting process.
+	 * 
 	 * @param type
 	 */
 	public void start(final Type type) {
@@ -43,12 +46,14 @@ abstract public class ReachableTypesVisitor {
 	/**
 	 * Attempts to find all reachable types for the given type.
 	 * 
-	 * This method is smart and will skip and do nothing for types that have already been visited previously. Without this this visitor could potentially
-	 * loop forever.
+	 * This method is smart and will skip and do nothing for types that have
+	 * already been visited previously. Without this this visitor could
+	 * potentially loop forever.
+	 * 
 	 * @param type
 	 */
 	protected void visitType(final Type type) {
-		Checker.notNull("parameter:type", type );
+		Checker.notNull("parameter:type", type);
 
 		while (true) {
 			if (this.hasAlreadyBeenVisited(type)) {
@@ -60,8 +65,8 @@ abstract public class ReachableTypesVisitor {
 			if (this.skipType(type)) {
 				break;
 			}
-			
-			if( type.isPrimitive() ){
+
+			if (type.isPrimitive()) {
 				break;
 			}
 
@@ -82,6 +87,7 @@ abstract public class ReachableTypesVisitor {
 
 	/**
 	 * Processes any encountered array type.
+	 * 
 	 * @param array
 	 */
 	protected void processArray(final Type array) {
@@ -98,12 +104,14 @@ abstract public class ReachableTypesVisitor {
 
 	protected void visitArray(final Type array) {
 		final Type componentType = array.getComponentType();
-		
-		this.visitType(componentType);			
+
+		this.visitType(componentType);
 	}
 
 	/**
-	 * Processes an encountered type, first by finding reachable types from the super types and then sub types of the given type.
+	 * Processes an encountered type, first by finding reachable types from the
+	 * super types and then sub types of the given type.
+	 * 
 	 * @param type
 	 */
 	protected void processType(final Type type) {
@@ -127,11 +135,14 @@ abstract public class ReachableTypesVisitor {
 
 	protected void visitSuperTypes0(final Type type) {
 		final SuperTypesVisitor superTypes = new SuperTypesVisitor() {
+
+			@Override
 			protected boolean visit(final Type superType) {
 				ReachableTypesVisitor.this.processSuperType(superType);
 				return false;
 			}
 
+			@Override
 			protected boolean skipInitialType() {
 				return true;
 			}
@@ -157,6 +168,7 @@ abstract public class ReachableTypesVisitor {
 
 	/**
 	 * Triggers the visiting of all immediate sub types of the given type.
+	 * 
 	 * @param type
 	 */
 	protected void visitSubTypes(final Type type) {
@@ -164,11 +176,13 @@ abstract public class ReachableTypesVisitor {
 
 		final SubTypesVisitor subTypes = new SubTypesVisitor() {
 
+			@Override
 			protected boolean visit(final Type subType) {
 				ReachableTypesVisitor.this.processSubType(subType);
 				return false;
 			}
 
+			@Override
 			protected boolean skipInitialType() {
 				return ReachableTypesVisitor.this.skipInitialSubType();
 			}
@@ -197,9 +211,9 @@ abstract public class ReachableTypesVisitor {
 	}
 
 	protected void visitFields(final Type type) {
-		final Iterator fields = type.getFields().iterator();
+		final Iterator<Field> fields = type.getFields().iterator();
 		while (fields.hasNext()) {
-			final Field field = (Field) fields.next();
+			final Field field = fields.next();
 			if (this.skipField(field)) {
 				continue;
 			}
@@ -216,14 +230,17 @@ abstract public class ReachableTypesVisitor {
 
 	/**
 	 * Provides an opportunity to skip processing of a particular type.
+	 * 
 	 * @param type
 	 * @return
 	 */
 	abstract protected boolean skipType(Type type);
 
 	/**
-	 * Provides an opportunity to skip processing of a particular field.
-	 * This makes it easy to skip static, transient fields as would be required by a serialization generator.
+	 * Provides an opportunity to skip processing of a particular field. This
+	 * makes it easy to skip static, transient fields as would be required by a
+	 * serialization generator.
+	 * 
 	 * @param field
 	 * @return Return true to skip processing this field.
 	 */
@@ -231,17 +248,21 @@ abstract public class ReachableTypesVisitor {
 
 	/**
 	 * Finds all types that are implemented by the given interface.
+	 * 
 	 * @param interfacee
 	 */
 	protected void processInterface(final Type interfacee) {
 		Checker.trueValue("The parameter:interface is not an interface, interface: " + interfacee, interfacee.isInterface());
 
 		final ConcreteTypesImplementingInterfaceVisitor implementedVisitor = new ConcreteTypesImplementingInterfaceVisitor() {
+
+			@Override
 			protected boolean visit(final Type type) {
 				ReachableTypesVisitor.this.processTypeThatImplementsInterface(type, interfacee);
 				return false;
 			}
 
+			@Override
 			protected boolean skipAbstractTypes() {
 				return ReachableTypesVisitor.this.skipAbstractTypesImplementingInterface();
 			}
@@ -249,17 +270,17 @@ abstract public class ReachableTypesVisitor {
 		implementedVisitor.start(interfacee);
 	}
 
-	protected boolean processTypeThatImplementsInterface(final Type type, final Type interfacee){
+	protected boolean processTypeThatImplementsInterface(final Type type, final Type interfacee) {
 		if (false == ReachableTypesVisitor.this.hasAlreadyBeenVisited(type)) {
-			if( false == this.skipTypeThatImplementsInterface( type, interfacee )){
-				this.visitTypeThatImplementsInterface(type, interfacee);	
-			}										
+			if (false == this.skipTypeThatImplementsInterface(type, interfacee)) {
+				this.visitTypeThatImplementsInterface(type, interfacee);
+			}
 		}
 		return false;
 	}
-	
+
 	abstract protected boolean skipTypeThatImplementsInterface(final Type type, final Type interfacee);
-	
+
 	protected void visitTypeThatImplementsInterface(final Type type, final Type interfacee) {
 		this.visitType(type);
 	}
@@ -269,23 +290,25 @@ abstract public class ReachableTypesVisitor {
 	}
 
 	/**
-	 * Accumulates all types that are reachable from the starting type after being potentially filtered by {@link #skipType(Type)} and {@link #skipField(Field)}.
-	 * Because this is a set no duplicates are recorded.
+	 * Accumulates all types that are reachable from the starting type after
+	 * being potentially filtered by {@link #skipType(Type)} and
+	 * {@link #skipField(Field)}. Because this is a set no duplicates are
+	 * recorded.
 	 */
-	private Set concreteTypes;
+	private Set<Type> concreteTypes;
 
-	public Set getConcreteTypes() {
+	public Set<Type> getConcreteTypes() {
 		Checker.notNull("field:types", concreteTypes);
 		return this.concreteTypes;
 	}
 
-	protected void setConcreteTypes(final Set concreteTypes) {
+	protected void setConcreteTypes(final Set<Type> concreteTypes) {
 		Checker.notNull("parameter:types", concreteTypes);
 		this.concreteTypes = concreteTypes;
 	}
 
-	protected Set createConcreteTypes() {
-		return new HashSet();
+	protected Set<Type> createConcreteTypes() {
+		return new HashSet<Type>();
 	}
 
 	protected void addConcreteType(final Type type) {
@@ -296,22 +319,23 @@ abstract public class ReachableTypesVisitor {
 	}
 
 	/**
-	 * This set records types that have already been visited, avoiding the need to repeatedly revisit the same type
+	 * This set records types that have already been visited, avoiding the need
+	 * to repeatedly revisit the same type
 	 */
-	private Set types;
+	private Set<Type> types;
 
-	protected Set getTypes() {
+	protected Set<Type> getTypes() {
 		Checker.notNull("field:types", types);
 		return this.types;
 	}
 
-	protected void setTypes(final Set types) {
+	protected void setTypes(final Set<Type> types) {
 		Checker.notNull("parameter:types", types);
 		this.types = types;
 	}
 
-	protected Set createTypes() {
-		return new HashSet();
+	protected Set<Type> createTypes() {
+		return new HashSet<Type>();
 	}
 
 	protected void addType(final Type type) {

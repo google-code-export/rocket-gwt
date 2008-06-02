@@ -30,25 +30,31 @@ public class NewInterfaceTypeImpl extends NewConcreteOrInterfaceType implements 
 		super();
 	}
 
+	@Override
 	public void addInterface(Type interfacee) {
 		throw new UnsupportedOperationException("Interfaces do not implement other interfaces, interface: " + this);
 	}
 
+	@Override
 	public NewConstructor newConstructor() {
 		throw new UnsupportedOperationException("Interfaces do not have constructors, interface: " + this);
 	}
 
+	@Override
 	public void addConstructor(final NewConstructor constructor) {
 		throw new UnsupportedOperationException("Interfaces do not have constructors, interface: " + this);
 	}
 
+	@Override
 	public NewAnonymousNestedType newAnonymousNestedType() {
 		throw new UnsupportedOperationException("Interfaces cannot have anonymous nested types, interface: " + this);
 	}
-	
+
 	/**
-	 * Interfaces cant have constructors so theres nothing to write skip the constructor header etc...
+	 * Interfaces cant have constructors so theres nothing to write skip the
+	 * constructor header etc...
 	 */
-	protected void writeConstructors(final SourceWriter writer) {		
+	@Override
+	protected void writeConstructors(final SourceWriter writer) {
 	}
 }

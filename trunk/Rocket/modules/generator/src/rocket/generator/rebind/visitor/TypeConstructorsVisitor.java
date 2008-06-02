@@ -31,9 +31,9 @@ abstract public class TypeConstructorsVisitor {
 	public void start(final Type type) {
 		Checker.notNull("constructor:type", type);
 
-		final Iterator constructors = type.getConstructors().iterator();
+		final Iterator<Constructor> constructors = type.getConstructors().iterator();
 		while (constructors.hasNext()) {
-			final Constructor constructor = (Constructor) constructors.next();
+			final Constructor constructor = constructors.next();
 			if (this.visit(constructor)) {
 				break;
 			}

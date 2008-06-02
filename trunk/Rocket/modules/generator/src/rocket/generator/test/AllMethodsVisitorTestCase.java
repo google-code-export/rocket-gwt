@@ -32,7 +32,7 @@ public class AllMethodsVisitorTestCase extends TestCase {
 	public void testVisitAllJavaLangObjectMethods() {
 		final GeneratorContext context = this.createGeneratorContext();
 
-		final List methodsVisited = new ArrayList();
+		final List<Method> methodsVisited = new ArrayList<Method>();
 
 		final AllMethodsVisitor visitor = new AllMethodsVisitor() {
 			protected boolean visit(final Method method) {
@@ -69,7 +69,7 @@ public class AllMethodsVisitorTestCase extends TestCase {
 	public void testVisitSubClassOfObjectMethods() {
 		final GeneratorContext context = this.createGeneratorContext();
 
-		final List methodsVisited = new ArrayList();
+		final List<Method> methodsVisited = new ArrayList<Method>();
 
 		final AllMethodsVisitor visitor = new AllMethodsVisitor() {
 			protected boolean visit(final Method method) {
@@ -109,7 +109,7 @@ public class AllMethodsVisitorTestCase extends TestCase {
 	public void testSkipJavaLangObjectMethods() {
 		final GeneratorContext context = this.createGeneratorContext();
 
-		final List methodsVisited = new ArrayList();
+		final List<Method> methodsVisited = new ArrayList<Method>();
 
 		final AllMethodsVisitor visitor = new AllMethodsVisitor() {
 			protected boolean visit(final Method method) {
@@ -132,7 +132,7 @@ public class AllMethodsVisitorTestCase extends TestCase {
 	public void testSkipRemainingMethods() {
 		final GeneratorContext context = this.createGeneratorContext();
 
-		final List methodsVisited = new ArrayList();
+		final List<Method> methodsVisited = new ArrayList<Method>();
 
 		final AllMethodsVisitor visitor = new AllMethodsVisitor() {
 			protected boolean visit(final Method method) {

@@ -30,10 +30,11 @@ import rocket.util.client.Checker;
  */
 public class JavaConstructorParameterAdapter extends AbstractConstructorParameter implements ConstructorParameter {
 
-	protected Set createThrownTypes() {
+	protected Set<Type> createThrownTypes() {
 		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaConstructor().getExceptionTypes());
 	}
 
+	@Override
 	public void setType(final Type type) {
 		super.setType(type);
 	}

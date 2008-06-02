@@ -37,10 +37,11 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	public NewFieldImpl() {
 		super();
 
-		this.setComments( "" );
-		this.setMetaData( this.createMetaData() );
+		this.setComments("");
+		this.setMetaData(this.createMetaData());
 	}
 
+	@Override
 	public void setVisibility(final Visibility visibility) {
 		super.setVisibility(visibility);
 	}
@@ -89,18 +90,24 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 	 */
 	private Type type;
 
+	@Override
 	public Type getType() {
 		Checker.notNull("field:type", type);
 		return type;
 	}
 
-	protected boolean hasType(){
-		return null != this.type;
-	}
-	
+	@Override
 	public void setType(final Type type) {
 		Checker.notNull("parameter:type", type);
 		this.type = type;
+	}
+
+	/**
+	 * This method is never called
+	 */
+	@Override
+	protected Type createType() {
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -138,67 +145,67 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 		this.value = value;
 	}
 
-	
 	/**
 	 * Any text which will appear within javadoc comments for this field.
 	 */
 	private String comments;
-	
-	public String getComments(){
-		Checker.notNull( "field:comments", comments );
+
+	public String getComments() {
+		Checker.notNull("field:comments", comments);
 		return comments;
 	}
-	
-	public void setComments( final String comments ){
-		Checker.notNull( "parameter:comments", comments );
+
+	public void setComments(final String comments) {
+		Checker.notNull("parameter:comments", comments);
 		this.comments = comments;
 	}
-	
-	public void addMetaData( final String name, final String value ){
-		this.getMetaData().add( name, value);
+
+	public void addMetaData(final String name, final String value) {
+		this.getMetaData().add(name, value);
 	}
-	
-	public List getMetadataValues( final String name ){
+
+	public List getMetadataValues(final String name) {
 		return this.getMetaData().getMetadataValues(name);
 	}
-	
+
 	/**
-	 * A container which holds any meta data that is added to a new field instance. 
+	 * A container which holds any meta data that is added to a new field
+	 * instance.
 	 */
 	private MetaData metaData;
-	
-	protected MetaData getMetaData(){
-		Checker.notNull("field:metaData", metaData );
+
+	protected MetaData getMetaData() {
+		Checker.notNull("field:metaData", metaData);
 		return this.metaData;
 	}
-	
-	protected void setMetaData( final MetaData metaData ){
-		Checker.notNull("parameter:metaData", metaData );
+
+	protected void setMetaData(final MetaData metaData) {
+		Checker.notNull("parameter:metaData", metaData);
 		this.metaData = metaData;
 	}
-	
-	protected MetaData createMetaData(){
+
+	protected MetaData createMetaData() {
 		return new MetaData();
 	}
-	
+
 	public void write(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
 		this.log();
 
-		this.writeComments( writer );
+		this.writeComments(writer);
 		this.writeDeclaration(writer);
 		this.writeValue(writer);
 	}
 
 	protected void log() {
-		this.getGeneratorContext().debug( this.toString() );
+		this.getGeneratorContext().debug(this.toString());
 	}
 
-	protected void writeComments( final SourceWriter writer ){		
-		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+	protected void writeComments(final SourceWriter writer) {
+		GeneratorHelper.writeComments(this.getComments(), this.getMetaData(), writer);
 	}
-	
+
 	protected void writeDeclaration(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
@@ -227,40 +234,40 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 		} else {
 			writer.print("=");
 			codeBlock.write(writer);
-			
+
 			// terminate any literal with a semi colon.
-			if( codeBlock instanceof Literal ){
-				writer.println( ";");
+			if (codeBlock instanceof Literal) {
+				writer.println(";");
 			}
 		}
 	}
-
 
 	/**
 	 * Builds a string representation of this method in the following form
 	 * 
 	 * <ul>
 	 * <li>final</li>
-	 * <li>Static</li> 
+	 * <li>Static</li>
 	 * <li>Visibility</li>
 	 * <li>Type</li>
 	 * <li>Enclosing type\</li>
 	 * <li>name</li>
 	 * </ul>
 	 */
+	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 
-		if( this.isFinal() ){
-			builder.append( "final ");
+		if (this.isFinal()) {
+			builder.append("final ");
 		}
-		if( this.isStatic() ){
-			builder.append( "static ");
+		if (this.isStatic()) {
+			builder.append("static ");
 		}
 
-		builder.append( this.getVisibility() );
-		builder.append( ' ');
-		
+		builder.append(this.getVisibility());
+		builder.append(' ');
+
 		builder.append(this.getType().getName());
 		builder.append(' ');
 
@@ -272,5 +279,5 @@ public class NewFieldImpl extends AbstractField implements NewField, HasComments
 		builder.append(this.getName());
 
 		return builder.toString();
-	}	
+	}
 }

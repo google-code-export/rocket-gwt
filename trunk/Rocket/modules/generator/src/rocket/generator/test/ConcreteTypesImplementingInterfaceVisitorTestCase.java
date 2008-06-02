@@ -30,38 +30,40 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 
 	public void testFind() {
 		final GeneratorContext context = this.createGeneratorContext();
-		
+
 		final TestConcreteTypesImplementingInterfaceFinder finder = new TestConcreteTypesImplementingInterfaceFinder();
-		finder.start( context.getType( Interface.class.getName() ));
-		
+		finder.start(context.getType(Interface.class.getName()));
+
 		final Set types = finder.getTypes();
-		assertNotNull( "types", types );
-		
-		assertEquals( 2, types.size() );
-		assertTrue( "" + SubClassThatImplementsInterface.class, types.contains( context.getType( SubClassThatImplementsInterface.class.getName() )));
-		assertTrue( "" + SubSubClassThatImplementsInterface.class, types.contains( context.getType( SubSubClassThatImplementsInterface.class.getName() )));
+		assertNotNull("types", types);
+
+		assertEquals(2, types.size());
+		assertTrue("" + SubClassThatImplementsInterface.class, types.contains(context.getType(SubClassThatImplementsInterface.class
+				.getName())));
+		assertTrue("" + SubSubClassThatImplementsInterface.class, types.contains(context
+				.getType(SubSubClassThatImplementsInterface.class.getName())));
 	}
-	
-	class TestConcreteTypesImplementingInterfaceFinder extends ConcreteTypesImplementingInterfaceVisitor{
-		protected boolean visit(final Type type){
-			this.types.add( type); 
+
+	class TestConcreteTypesImplementingInterfaceFinder extends ConcreteTypesImplementingInterfaceVisitor {
+		protected boolean visit(final Type type) {
+			this.types.add(type);
 			return false;
 		}
 
-		protected boolean skipAbstractTypes(){
+		protected boolean skipAbstractTypes() {
 			return true;
-		}		
-		
+		}
+
 		Set types = new HashSet();
-		
-		Set getTypes(){
+
+		Set getTypes() {
 			return this.types;
 		}
 	}
-	
+
 	GeneratorContext createGeneratorContext() {
 		return new JavaGeneratorContext() {
-			
+
 			protected Type createClassType(final String name) {
 				TestJavaClassTypeAdapter adapter = null;
 
@@ -69,13 +71,13 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 					final Class javaClass = Class.forName(name);
 					Class adapterClass = null;
 					try {
-						adapterClass = Class.forName(name+ "JavaClassTypeAdapter");
+						adapterClass = Class.forName(name + "JavaClassTypeAdapter");
 						adapter = (TestJavaClassTypeAdapter) adapterClass.newInstance();
 					} catch (final Exception useDefault) {
-						if( false == name.equals("java.lang.Object")){
-							throw new RuntimeException( name );	
+						if (false == name.equals("java.lang.Object")) {
+							throw new RuntimeException(name);
 						}
-						adapter = new ObjectJavaClassTypeAdapter();						
+						adapter = new ObjectJavaClassTypeAdapter();
 					}
 					adapter.setGeneratorContext(this);
 					adapter.setJavaClass(javaClass);
@@ -98,41 +100,41 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	final static String SUB_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE = SubSubClassThatImplementsInterface.class.getName();
 	final static String CONCRETE_CLASS = ConcreteClass.class.getName();
 	final static String ANOTHER_CONCRETE_CLASS = AnotherConcreteClass.class.getName();
-	
+
 	static abstract class TestJavaClassTypeAdapter extends JavaClassTypeAdapter {
 		public void setJavaClass(final Class javaClass) {
 			super.setJavaClass(javaClass);
 		}
 
-		protected Set createSubTypes(){
-			throw new UnsupportedOperationException( this.getName() + ".createSubTypes() , adapter: " + this.getClass() ); 
+		protected Set createSubTypes() {
+			throw new UnsupportedOperationException(this.getName() + ".createSubTypes() , adapter: " + this.getClass());
 		}
 	}
-	
+
 	static class ObjectJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public void setJavaClass(final Class javaClass) {
 			super.setJavaClass(javaClass);
 		}
 
-		protected Set createSubTypes(){
+		protected Set createSubTypes() {
 			final Set subTypes = new HashSet();
-			subTypes.add( getType( INTERFACE ));
-			subTypes.add( getType( CONCRETE_CLASS ));
-			subTypes.add( getType( ANOTHER_CONCRETE_CLASS ));			
-			return subTypes; 
+			subTypes.add(getType(INTERFACE));
+			subTypes.add(getType(CONCRETE_CLASS));
+			subTypes.add(getType(ANOTHER_CONCRETE_CLASS));
+			return subTypes;
 		}
 	}
 
-	static interface Interface{
+	static interface Interface {
 	}
 
 	static class InterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set getSubTypes() {
-			return new HashSet( Collections.nCopies( 1, getType( SUB_INTERFACE )));
+			return new HashSet(Collections.nCopies(1, getType(SUB_INTERFACE)));
 		}
 	}
 
-	static interface SubInterface extends Interface{
+	static interface SubInterface extends Interface {
 	}
 
 	static class SubInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
@@ -141,14 +143,14 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 		}
 	}
 
-	static class ConcreteClass{
+	static class ConcreteClass {
 	}
 
 	static class ConcreteClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set getSubTypes() {
-			return new HashSet( Collections.nCopies( 1, getType( SUB_CLASS_THAT_IMPLEMENTS_INTERFACE )));
+			return new HashSet(Collections.nCopies(1, getType(SUB_CLASS_THAT_IMPLEMENTS_INTERFACE)));
 		}
-	} 
+	}
 
 	static class SubClass extends ConcreteClass {
 	}
@@ -159,22 +161,19 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 		}
 	}
 
-	static class SubClassThatImplementsInterface extends ConcreteClass implements Interface{
+	static class SubClassThatImplementsInterface extends ConcreteClass implements Interface {
 	}
 
-	static class SubClassThatImplementsInterfaceJavaClassTypeAdapter extends
-			TestJavaClassTypeAdapter {
+	static class SubClassThatImplementsInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set getSubTypes() {
-			return new HashSet( Collections.nCopies( 1, getType( SUB_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE )));			
+			return new HashSet(Collections.nCopies(1, getType(SUB_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE)));
 		}
 	}
 
-	static class SubSubClassThatImplementsInterface extends
-			SubClassThatImplementsInterface {
+	static class SubSubClassThatImplementsInterface extends SubClassThatImplementsInterface {
 	}
 
-	static class SubSubClassThatImplementsInterfaceJavaClassTypeAdapter extends
-			TestJavaClassTypeAdapter {
+	static class SubSubClassThatImplementsInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
 		public Set getSubTypes() {
 			return Collections.EMPTY_SET;
 		}

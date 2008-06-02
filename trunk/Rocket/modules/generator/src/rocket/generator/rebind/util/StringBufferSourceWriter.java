@@ -189,7 +189,8 @@ public class StringBufferSourceWriter implements SourceWriter {
 
 	public void commit() {
 	}
-	public void rollback(){
+
+	public void rollback() {
 		throw new UnsupportedOperationException();
 	}
 

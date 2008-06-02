@@ -35,8 +35,8 @@ class Constants {
 
 	final static String DOUBLE_RUNTIME_NAME = "D";
 
-	final static String CHAR_RUNTIME_NAME = "C";	
-	
+	final static String CHAR_RUNTIME_NAME = "C";
+
 	final static String BOOLEAN_WRAPPER = Boolean.class.getName();
 
 	final static String BYTE_WRAPPER = Byte.class.getName();

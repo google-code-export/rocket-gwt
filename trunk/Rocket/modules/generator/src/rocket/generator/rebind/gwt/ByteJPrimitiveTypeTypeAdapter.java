@@ -42,6 +42,7 @@ public class ByteJPrimitiveTypeTypeAdapter extends BytePrimitiveType {
 		return JPrimitiveType.BYTE;
 	}
 
+	@Override
 	public String toString() {
 		return "byte";
 	}

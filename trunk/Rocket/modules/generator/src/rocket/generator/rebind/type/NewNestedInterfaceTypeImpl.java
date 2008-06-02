@@ -28,6 +28,7 @@ public class NewNestedInterfaceTypeImpl extends NewNestedTypeOrInterface impleme
 		super();
 	}
 
+	@Override
 	public boolean isInterface() {
 		return true;
 	}
@@ -35,35 +36,38 @@ public class NewNestedInterfaceTypeImpl extends NewNestedTypeOrInterface impleme
 	public void setInterface(final boolean interfacee) {
 		throw new UnsupportedOperationException("setInterface");
 	}
-	
+
 	/**
-	 * Interfaces cant have constructors so theres nothing to write skip the constructor header etc...
+	 * Interfaces cant have constructors so theres nothing to write skip the
+	 * constructor header etc...
 	 */
-	protected void writeConstructors(final SourceWriter writer) {		
+	@Override
+	protected void writeConstructors(final SourceWriter writer) {
 	}
-	
-	public String toString(){
+
+	@Override
+	public String toString() {
 		final StringBuffer buf = new StringBuffer();
-		
-		buf.append( this.getVisibility().toString() );
-		buf.append( ' ' );
-		
-		if( this.isFinal() ){
-			buf.append( "final ");
+
+		buf.append(this.getVisibility().toString());
+		buf.append(' ');
+
+		if (this.isFinal()) {
+			buf.append("final ");
 		}
-		
-		if( this.isStatic() ){
-			buf.append( "static ");
+
+		if (this.isStatic()) {
+			buf.append("static ");
 		}
-		if( this.isAbstract() ){
-			buf.append( "abstract ");
+		if (this.isAbstract()) {
+			buf.append("abstract ");
 		}
-		
-		buf.append( "interface ");
-		buf.append( this.getName() );
-		buf.append( ", enclosingType: ");
-		buf.append( this.getEnclosingType().getName() );
-		
-		return buf.toString();		
+
+		buf.append("interface ");
+		buf.append(this.getName());
+		buf.append(", enclosingType: ");
+		buf.append(this.getEnclosingType().getName());
+
+		return buf.toString();
 	}
 }

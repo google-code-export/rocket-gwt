@@ -75,7 +75,8 @@ public class FieldGenerator extends TestGenerator {
 
 		Checker.same("finalStaticTransientLongField visibility", Visibility.PUBLIC, finalStaticTransientLongField.getVisibility());
 		Checker.equals("finalStaticTransientLongField name", "finalStaticTransientLongField", finalStaticTransientLongField.getName());
-		Checker.same("finalStaticTransientLongField type", context.findType(Long.TYPE.getName()), finalStaticTransientLongField.getType());
+		Checker.same("finalStaticTransientLongField type", context.findType(Long.TYPE.getName()), finalStaticTransientLongField
+				.getType());
 		Checker.same("finalStaticTransientLongField enclosing type", type, finalStaticTransientLongField.getEnclosingType());
 		Checker.trueValue("finalStaticTransientLongField static", finalStaticTransientLongField.isStatic());
 		Checker.trueValue("finalStaticTransientLongField transient", finalStaticTransientLongField.isTransient());

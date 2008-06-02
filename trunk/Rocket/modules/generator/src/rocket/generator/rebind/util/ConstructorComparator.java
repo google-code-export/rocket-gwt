@@ -24,6 +24,7 @@ import rocket.generator.rebind.constructorparameter.ConstructorParameter;
 
 /**
  * This comparator is used to sort constructors based on argument types
+ * 
  * @author Miroslav Pokorny
  */
 public class ConstructorComparator implements Comparator {
@@ -39,36 +40,36 @@ public class ConstructorComparator implements Comparator {
 	}
 
 	int compareConstructors(final Constructor constructor, final Constructor otherConstructor) {
-		return this.compareConstructorArguments( constructor.getParameters(), otherConstructor.getParameters());
+		return this.compareConstructorArguments(constructor.getParameters(), otherConstructor.getParameters());
 	}
-	
-	public int compareConstructorArguments( final List parameters, final List otherParameters ) {
+
+	public int compareConstructorArguments(final List<ConstructorParameter> parameters, final List<ConstructorParameter> otherParameters) {
 		int value = 0;
-		
-		while( true ){
+
+		while (true) {
 			// short argument list comes first...
 			value = parameters.size() - otherParameters.size();
-			if( value != 0 ){
+			if (value != 0) {
 				break;
 			}
 			// compare argument types one by one...
 			final Iterator parametersIterator = parameters.iterator();
 			final Iterator otherParametersIterator = otherParameters.iterator();
 			final Comparator typeComparator = TypeComparator.INSTANCE;
-			
-			while( parametersIterator.hasNext() ){
-				final ConstructorParameter parameter = (ConstructorParameter)parametersIterator.next(); 
-				final ConstructorParameter otherParameter = (ConstructorParameter)otherParametersIterator.next(); 
-				
-				value = typeComparator.compare( parameter.getType(), otherParameter.getType() );
-				
-				if( 0 != value ){
+
+			while (parametersIterator.hasNext()) {
+				final ConstructorParameter parameter = (ConstructorParameter) parametersIterator.next();
+				final ConstructorParameter otherParameter = (ConstructorParameter) otherParametersIterator.next();
+
+				value = typeComparator.compare(parameter.getType(), otherParameter.getType());
+
+				if (0 != value) {
 					break;
 				}
 			}
 			break;
 		}
-		
+
 		return value;
 	}
 }

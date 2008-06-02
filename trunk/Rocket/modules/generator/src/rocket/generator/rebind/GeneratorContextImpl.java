@@ -170,20 +170,20 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	/**
 	 * A cache of all packages.
 	 */
-	private Map packages;
+	private Map<String, Package> packages;
 
-	protected Map getPackages() {
+	protected Map<String, Package> getPackages() {
 		Checker.notNull("field:packages", packages);
 		return this.packages;
 	}
 
-	protected void setPackages(final Map packages) {
+	protected void setPackages(final Map<String, Package> packages) {
 		Checker.notNull("parameter:packages", packages);
 		this.packages = packages;
 	}
 
-	protected Map createPackages() {
-		return new HashMap();
+	protected Map<String, Package> createPackages() {
+		return new HashMap<String, Package>();
 	}
 
 	/**
@@ -308,14 +308,20 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 
 	/**
-	 * Factory method which creates an adapter for any array type. This method should only ever be called once for each array type after which all references are cached.
+	 * Factory method which creates an adapter for any array type. This method
+	 * should only ever be called once for each array type after which all
+	 * references are cached.
+	 * 
 	 * @param name
 	 * @return A Type
 	 */
 	abstract protected Type createArrayType(final String name);
 
 	/**
-	 * Factory method which creates an adapter for any type. This method should only ever be called once for each array type after which all references are cached.
+	 * Factory method which creates an adapter for any type. This method should
+	 * only ever be called once for each array type after which all references
+	 * are cached.
+	 * 
 	 * @param name
 	 * @return a new JClassTypeTypeAdapter
 	 */
@@ -337,39 +343,39 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	/**
 	 * A cache of all types.
 	 */
-	private Map types;
+	private Map<String, Type> types;
 
-	protected Map getTypes() {
+	protected Map<String, Type> getTypes() {
 		Checker.notNull("field:types", types);
 		return this.types;
 	}
 
-	protected void setTypes(final Map types) {
+	protected void setTypes(final Map<String, Type> types) {
 		Checker.notNull("parameter:types", types);
 		this.types = types;
 	}
 
-	protected Map createTypes() {
-		return new HashMap();
+	protected Map<String, Type> createTypes() {
+		return new HashMap<String, Type>();
 	}
 
 	/**
 	 * A cache of all NewTypes.
 	 */
-	private Set newTypes;
+	private Set<Type> newTypes;
 
-	public Set getNewTypes() {
+	public Set<Type> getNewTypes() {
 		Checker.notNull("field:newTypes", newTypes);
 		return this.newTypes;
 	}
 
-	protected void setNewTypes(final Set newTypes) {
+	protected void setNewTypes(final Set<Type> newTypes) {
 		Checker.notNull("parameter:newTypes", newTypes);
 		this.newTypes = newTypes;
 	}
 
-	protected Set createNewTypes() {
-		return new HashSet();
+	protected Set<Type> createNewTypes() {
+		return new HashSet<Type>();
 	}
 
 	protected void addNewType(final NewType type) {
@@ -451,19 +457,22 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 
 	/**
 	 * Retrieves the value for a given property name.
-	 * @param name The property name
+	 * 
+	 * @param name
+	 *            The property name
 	 * @return The value
-	 * @throws GeneratorException if the property was not found.
+	 * @throws GeneratorException
+	 *             if the property was not found.
 	 */
-	public String getProperty( final String name ) throws GeneratorException{
-		try{
+	public String getProperty(final String name) throws GeneratorException {
+		try {
 			final TreeLogger logger = this.getLogger().getTreeLogger();
-			return this.getPropertyOracle().getPropertyValue( logger, name );
-		} catch ( final BadPropertyValueException caught ){
-			throw new GeneratorException( "Unable to get property value for \"" + name + "\", message: " + caught.getMessage(), caught );
-		}		
+			return this.getPropertyOracle().getPropertyValue(logger, name);
+		} catch (final BadPropertyValueException caught) {
+			throw new GeneratorException("Unable to get property value for \"" + name + "\", message: " + caught.getMessage(), caught);
+		}
 	}
-	
+
 	/**
 	 * The GeneratorContext for this code generation session.
 	 */
@@ -483,84 +492,88 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		return this.getGeneratorContext().getTypeOracle();
 	}
 
-	protected PropertyOracle getPropertyOracle(){
+	protected PropertyOracle getPropertyOracle() {
 		return this.getGeneratorContext().getPropertyOracle();
 	}
-	
-	
+
 	/**
 	 * Only GWT backed TypeOracleGenerator actually support creating resources.
 	 */
-	public OutputStream createResource( final String filename ){
+	public OutputStream createResource(final String filename) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
-	 * Helper which writes a resource if it doesnt already exist generating a strong filename to guarantee uniqueness.
+	 * Helper which writes a resource if it doesnt already exist generating a
+	 * strong filename to guarantee uniqueness.
+	 * 
 	 * @param contents
-	 * @param suffix A suffix which is appended to the hash. Typically this will include "nocache." + the file extension.
+	 * @param suffix
+	 *            A suffix which is appended to the hash. Typically this will
+	 *            include "nocache." + the file extension.
 	 * @return The partial path of the written file.
 	 */
-	public String createResource( final byte[] contents, final String suffix ){
-		Checker.notNull("parameter:contents", contents );
-		Checker.notEmpty( "parameter:suffix", suffix );
-		
+	public String createResource(final byte[] contents, final String suffix) {
+		Checker.notNull("parameter:contents", contents);
+		Checker.notEmpty("parameter:suffix", suffix);
+
 		final String hash = Util.computeStrongName(contents);
 		final String filename = hash + suffix;
-		
+
 		OutputStream outputStream = this.createResource(filename);
-		if( null != outputStream ){
-			try{
-				outputStream.write( contents );
+		if (null != outputStream) {
+			try {
+				outputStream.write(contents);
 				outputStream.flush();
-			} catch ( final IOException io ){
-				InputOutput.throwIOException( io );
+			} catch (final IOException io) {
+				InputOutput.throwIOException(io);
 			} finally {
 				InputOutput.closeIfNecessary(outputStream);
 			}
 		}
 		return filename;
-	}	
-	
+	}
+
 	/**
 	 * The root logger
 	 */
 	private Logger rootLogger;
-	
-	protected Logger getRootLogger(){
-		Checker.notNull("field:rootLogger", rootLogger );
+
+	protected Logger getRootLogger() {
+		Checker.notNull("field:rootLogger", rootLogger);
 		return this.rootLogger;
 	}
-	
-	protected void setRootLogger( final Logger rootLogger ){
-		Checker.notNull("parameter:rootLogger", rootLogger );
-		
+
+	protected void setRootLogger(final Logger rootLogger) {
+		Checker.notNull("parameter:rootLogger", rootLogger);
+
 		this.rootLogger = rootLogger;
 	}
-	
-	public void setRootTreeLogger( final TreeLogger rootLogger ){
-		Checker.notNull("parameter:rootLogger", rootLogger );
-		
-		this.setRootLogger( new Logger( rootLogger ));
+
+	public void setRootTreeLogger(final TreeLogger rootLogger) {
+		Checker.notNull("parameter:rootLogger", rootLogger);
+
+		this.setRootLogger(new Logger(rootLogger));
 	}
-	
+
 	/**
-	 * Retrieves the most distant leaf node 
+	 * Retrieves the most distant leaf node
+	 * 
 	 * @return
 	 */
-	protected Logger getLogger(){
+	protected Logger getLogger() {
 		Logger logger = this.getRootLogger();
-		while( logger.hasLogger() ){
+		while (logger.hasLogger()) {
 			logger = logger.getLogger();
 		}
-		
+
 		return logger;
 	}
-	
-	public TreeLogger getTreeLogger(){
+
+	public TreeLogger getTreeLogger() {
 		return this.getLogger().getTreeLogger();
 	}
-	
+
 	public void trace(final String message) {
 		this.log(TreeLogger.TRACE, message);
 	}
@@ -610,104 +623,105 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 
 	public boolean isTraceEnabled() {
-		return this.getLogger().isLoggable( TreeLogger.TRACE );
+		return this.getLogger().isLoggable(TreeLogger.TRACE);
 	}
 
 	public boolean isDebugEnabled() {
-		return this.getLogger().isLoggable( TreeLogger.DEBUG );
+		return this.getLogger().isLoggable(TreeLogger.DEBUG);
 	}
 
 	public boolean isInfoEnabled() {
-		return this.getLogger().isLoggable( TreeLogger.INFO );
+		return this.getLogger().isLoggable(TreeLogger.INFO);
 	}
 
 	public void branch() {
-		this.getLogger().setBranch( true );
+		this.getLogger().setBranch(true);
 	}
-	
-	public void delayedBranch(){
+
+	public void delayedBranch() {
 		this.getLogger().setDelayed(true);
 	}
 
-	public void unbranch(){
+	public void unbranch() {
 		Logger logger = this.getRootLogger();
 		Logger hasLogger = null;
-		
-		while( logger.hasLogger() ){
+
+		while (logger.hasLogger()) {
 			hasLogger = logger;
 			logger = logger.getLogger();
 		}
-		
-		if( null != hasLogger ){		
+
+		if (null != hasLogger) {
 			hasLogger.clearLogger();
 		}
 	}
-	
+
 	/**
-	 * A specialised logger that bridges the logger api with the gwt TreeLogger api.
+	 * A specialised logger that bridges the logger api with the gwt TreeLogger
+	 * api.
 	 */
 	static private class Logger {
-		Logger( final TreeLogger treeLogger ){
+		Logger(final TreeLogger treeLogger) {
 			super();
 			this.setTreeLogger(treeLogger);
-			this.setBranch( false );
-			this.setDelayed( false );
+			this.setBranch(false);
+			this.setDelayed(false);
 		}
-		
-		boolean isLoggable( final TreeLogger.Type type ){
+
+		boolean isLoggable(final TreeLogger.Type type) {
 			return this.getTreeLogger().isLoggable(type);
 		}
-		
-		void log( final TreeLogger.Type level, final String message, final Throwable throwable ){
-			while( true ){
+
+		void log(final TreeLogger.Type level, final String message, final Throwable throwable) {
+			while (true) {
 				final TreeLogger treeLogger = this.getTreeLogger();
 				final boolean branch = this.isBranch();
 				final boolean delayed = this.isDelayed();
-				
-				if( false == branch && false == delayed ){
+
+				if (false == branch && false == delayed) {
 					treeLogger.log(level, message, throwable);
 					break;
-				}	
-				
-				this.setDelayed( false );
-				this.setBranch( false );
-				
-				final TreeLogger newTreeLogger = 
-					delayed ?
-					/* delayed branch */
-					TreeLoggers.delayedBranch(treeLogger, level, message, throwable ) :
-					/* not delayed - immediate */
-					treeLogger.branch( level, message, throwable );
-					
-				this.setLogger(new Logger( newTreeLogger ));
+				}
+
+				this.setDelayed(false);
+				this.setBranch(false);
+
+				final TreeLogger newTreeLogger = delayed ?
+				/* delayed branch */
+				TreeLoggers.delayedBranch(treeLogger, level, message, throwable, null) :
+				/* not delayed - immediate */
+				treeLogger.branch(level, message, throwable);
+
+				this.setLogger(new Logger(newTreeLogger));
 				break;
 			}
 		}
-		
+
 		/**
 		 * The current logger being wrapped.
 		 */
 		TreeLogger treeLogger;
-		
-		TreeLogger getTreeLogger(){
-			Checker.notNull("field:treeLogger", treeLogger );
+
+		TreeLogger getTreeLogger() {
+			Checker.notNull("field:treeLogger", treeLogger);
 			return this.treeLogger;
 		}
-		
-		void setTreeLogger( final TreeLogger treeLogger ){
-			Checker.notNull("parameter:treeLogger", treeLogger );
+
+		void setTreeLogger(final TreeLogger treeLogger) {
+			Checker.notNull("parameter:treeLogger", treeLogger);
 			this.treeLogger = treeLogger;
 		}
-		
+
 		/**
 		 * When true the next logging message will cause a branch.
 		 */
 		boolean branch;
-		
-		private boolean isBranch(){
+
+		private boolean isBranch() {
 			return this.branch;
 		}
-		private void setBranch( final boolean branch ){
+
+		private void setBranch(final boolean branch) {
 			this.branch = branch;
 		}
 
@@ -715,37 +729,38 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 		 * If this logger has a branched logger exists this is it.
 		 */
 		Logger logger;
-		
-		Logger getLogger(){
-			Checker.notNull("field:logger", logger );
+
+		Logger getLogger() {
+			Checker.notNull("field:logger", logger);
 			return this.logger;
 		}
-		
-		boolean hasLogger(){
+
+		boolean hasLogger() {
 			return null != this.logger;
 		}
-		
-		void setLogger( final Logger logger ){
-			Checker.notNull("parameter:logger", logger );
+
+		void setLogger(final Logger logger) {
+			Checker.notNull("parameter:logger", logger);
 			this.logger = logger;
 		}
-		
-		void clearLogger(){
-			if( null == this.logger ){
+
+		void clearLogger() {
+			if (null == this.logger) {
 				throw new IllegalStateException("Attempt to unbranch without initial matching branch");
 			}
 			this.logger = null;
 		}
-		
+
 		/**
 		 * When true the next logging message will cause a delayed branch
 		 */
 		boolean delayed;
-		
-		private boolean isDelayed(){
+
+		private boolean isDelayed() {
 			return this.delayed;
 		}
-		private void setDelayed( final boolean delayed ){
+
+		private void setDelayed(final boolean delayed) {
 			this.delayed = delayed;
 		}
 	}

@@ -18,7 +18,8 @@ package rocket.generator.rebind.codeblock;
 import rocket.generator.rebind.SourceWriter;
 
 /**
- * Represents an empty code block. Any attempt to write it out will result in an exception being thrown.
+ * Represents an empty code block. Any attempt to write it out will result in an
+ * exception being thrown.
  * 
  * @author Miroslav Pokorny
  */

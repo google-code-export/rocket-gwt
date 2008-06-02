@@ -62,7 +62,8 @@ public class GeneratorHelper {
 
 	/**
 	 * Convenience method which calculates the setter name for a given field.
-	 * Because no property type is passed all names will start with get and not is for boolean properties.
+	 * Because no property type is passed all names will start with get and not
+	 * is for boolean properties.
 	 * 
 	 * @param propertyName
 	 * @return The getter name.
@@ -174,13 +175,15 @@ public class GeneratorHelper {
 			Checker.fail(name, "The name \"" + className + "\" is not a valid java class name.");
 		}
 	}
-	
+
 	static public void checkNestedJavaTypeName(final String name, final String className) {
 		if (false == isValidJavaTypeName(className)) {
 			Checker.fail(name, "The name \"" + className + "\" is not a valid java class name.");
 		}
-		if( -1 != className.indexOf( '.')){
-			Checker.fail(name, "When naming a nested type the name\"" + className + "\" must not be fully qualified (contain dots '.').");
+		if (-1 != className.indexOf('.')) {
+			Checker
+					.fail(name, "When naming a nested type the name\"" + className
+							+ "\" must not be fully qualified (contain dots '.').");
 		}
 	}
 
@@ -269,10 +272,13 @@ public class GeneratorHelper {
 	 * 
 	 * @param components
 	 * @param writer
-	 * @param comma When true a comma is printed between each written component.
-	 * @param eol Print a new line after each component.
+	 * @param comma
+	 *            When true a comma is printed between each written component.
+	 * @param eol
+	 *            Print a new line after each component.
 	 */
-	static public void writeClassComponents(final Collection components, final SourceWriter writer, final boolean comma, final boolean eol) {
+	static public void writeClassComponents(final Collection components, final SourceWriter writer, final boolean comma,
+			final boolean eol) {
 		Checker.notNull("parameter:components", components);
 		Checker.notNull("parameter:writer", writer);
 
@@ -283,7 +289,7 @@ public class GeneratorHelper {
 
 			if (componentsIterator.hasNext()) {
 				if (comma) {
-					writer.print(",");
+					writer.print(", ");
 				}
 				if (eol) {
 					writer.println();
@@ -363,7 +369,7 @@ public class GeneratorHelper {
 	static public void makeAllParametersFinal(final NewConstructor constructor) {
 		Checker.notNull("parameter:constructor", constructor);
 
-		final Iterator parameters = constructor.getParameters().iterator();
+		final Iterator<ConstructorParameter> parameters = constructor.getParameters().iterator();
 		while (parameters.hasNext()) {
 			final NewConstructorParameter parameter = (NewConstructorParameter) parameters.next();
 			parameter.setFinal(true);
@@ -378,7 +384,7 @@ public class GeneratorHelper {
 	static public void makeAllParametersFinal(final NewMethod method) {
 		Checker.notNull("parameter:method", method);
 
-		final Iterator parameters = method.getParameters().iterator();
+		final Iterator<MethodParameter> parameters = method.getParameters().iterator();
 		while (parameters.hasNext()) {
 			final NewMethodParameter parameter = (NewMethodParameter) parameters.next();
 			parameter.setFinal(true);
@@ -386,46 +392,51 @@ public class GeneratorHelper {
 	}
 
 	/**
-	 * Writes out the comments and annotations (metaData) within a javadoc comment.
-	 * @param comments A string which may be empty of text
+	 * Writes out the comments and annotations (metaData) within a javadoc
+	 * comment.
+	 * 
+	 * @param comments
+	 *            A string which may be empty of text
 	 * @param metaData
-	 * @param writer The writer typically invoked inside a ClassComponent when its writing itself.
+	 * @param writer
+	 *            The writer typically invoked inside a ClassComponent when its
+	 *            writing itself.
 	 */
-	static public void writeComments( final String comments, final MetaData metaData, final SourceWriter writer ){
-		Checker.notNull( "parameter:comments", comments );
-		Checker.notNull( "parameter:metaData", metaData );
-		Checker.notNull( "parameter:sourceWriter", writer );
-	
-		while( true ){ 
-			final boolean noComments = Tester.isNullOrEmpty(comments);			
+	static public void writeComments(final String comments, final MetaData metaData, final SourceWriter writer) {
+		Checker.notNull("parameter:comments", comments);
+		Checker.notNull("parameter:metaData", metaData);
+		Checker.notNull("parameter:sourceWriter", writer);
+
+		while (true) {
+			final boolean noComments = Tester.isNullOrEmpty(comments);
 			final boolean noAnnotations = metaData.isEmpty();
-			
-			if( noComments && noAnnotations ){
+
+			if (noComments && noAnnotations) {
 				break;
 			}
-			
+
 			// only has annotations...
-			if( noComments && false == noAnnotations ){
+			if (noComments && false == noAnnotations) {
 				writer.beginJavaDocComment();
 				metaData.write(writer);
 				writer.endJavaDocComment();
 				break;
 			}
-			//only has comments...
-			if( noComments && false == noAnnotations ){
+			// only has comments...
+			if (noComments && false == noAnnotations) {
 				writer.beginJavaDocComment();
-				writer.println( comments );
+				writer.println(comments);
 				writer.endJavaDocComment();
 				break;
 			}
-			
+
 			// must have both annotations and comments...
-				writer.beginJavaDocComment();
-				writer.println( comments );
-				writer.println();
-				metaData.write(writer);
-				writer.endJavaDocComment();
-				break;
-		}			
+			writer.beginJavaDocComment();
+			writer.println(comments);
+			writer.println();
+			metaData.write(writer);
+			writer.endJavaDocComment();
+			break;
+		}
 	}
 }

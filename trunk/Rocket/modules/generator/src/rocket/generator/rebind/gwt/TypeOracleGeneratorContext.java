@@ -18,7 +18,6 @@ package rocket.generator.rebind.gwt;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 
 import rocket.generator.rebind.GeneratorConstants;
 import rocket.generator.rebind.GeneratorContextImpl;
@@ -33,7 +32,6 @@ import rocket.generator.rebind.type.NewInterfaceType;
 import rocket.generator.rebind.type.NewInterfaceTypeImpl;
 import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
-import rocket.util.server.InputOutput;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -42,19 +40,20 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.dev.util.Util;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
 /**
  * This GeneratorContext sources all its type info from the GWT TypeOracle.
+ * 
  * @author Miroslav Pokorny
  */
 public class TypeOracleGeneratorContext extends GeneratorContextImpl {
-	
+
 	/**
 	 * Factory method which creates a new concrete type.
 	 * 
-	 * @param name The name of the new concrete type
+	 * @param name
+	 *            The name of the new concrete type
 	 * @return The new concrete type.
 	 */
 	public NewConcreteType newConcreteType(final String name) {
@@ -78,7 +77,8 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	/**
 	 * Factory method which creates a new interface type.
 	 * 
-	 * @param name The name of the new interface
+	 * @param name
+	 *            The name of the new interface
 	 * @return The new interface type.
 	 */
 	public NewInterfaceType newInterfaceType(final String name) {
@@ -122,7 +122,8 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	 * 
 	 * @param composerFactory
 	 * @param printWriter
-	 * @return A SourceWriter instance which may be used to emit a new standalone type.
+	 * @return A SourceWriter instance which may be used to emit a new
+	 *         standalone type.
 	 */
 	public SourceWriter createSourceWriter(final ClassSourceFileComposerFactory composerFactory, final PrintWriter printWriter) {
 		final com.google.gwt.user.rebind.SourceWriter sourceWriter = composerFactory.createSourceWriter(this.getGeneratorContext(),
@@ -167,26 +168,33 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		};
 	}
 
+	@Override
 	public void setGeneratorContext(final com.google.gwt.core.ext.GeneratorContext generatorContext) {
 		super.setGeneratorContext(generatorContext);
 		this.preloadTypes();
 	}
 
 	/**
-	 * Factory method which creates an adapter for any array type. This method should only ever be called once for each array type after which all references are cached.
-	 * @param name The array type name
+	 * Factory method which creates an adapter for any array type. This method
+	 * should only ever be called once for each array type after which all
+	 * references are cached.
+	 * 
+	 * @param name
+	 *            The array type name
 	 * @return A new JArrayTypeTypeAdapter
 	 */
 	protected Type createArrayType(final String name) {
 		final String componentTypeName = name.substring(0, name.length() - 2);
 		final JClassType componentType = this.getTypeOracle().findType(componentTypeName);
-		Checker.notNull("Unable to find component type \"" + componentTypeName + "\".", componentType);
+		Checker.notNull("Unable to find array component type \"" + componentTypeName + "\".", componentType);
 
 		return this.createArrayType(componentType);
 	}
 
 	protected Type createArrayType(final JType componentType) {
 		Checker.notNull("parameter:componentType", componentType);
+
+		// FIX RAW HERE
 
 		final JArrayType jArrayType = (JArrayType) this.getTypeOracle().getArrayType(componentType);
 		JArrayTypeTypeAdapter adapter = new JArrayTypeTypeAdapter();
@@ -196,64 +204,35 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	}
 
 	/**
-	 * Factory method which creates an adapter for any type. This method should only ever be called once for each array type after which all references are cached.
+	 * Factory method which creates an adapter for any type. This method should
+	 * only ever be called once for each array type after which all references
+	 * are cached.
+	 * 
 	 * @param name
 	 * @return a new JClassTypeTypeAdapter
 	 */
 	protected Type createClassType(final String name) {
+		Checker.notEmpty("parameter:name", name);
+
 		final JClassType jClassType = (JClassType) this.getTypeOracle().findType(name);
 		JClassTypeTypeAdapter adapter = null;
 		if (null != jClassType) {
-			adapter = this.shouldBeSerializable( jClassType ) ? new ShouldBeSerializableJClassTypeAdapter() : new JClassTypeTypeAdapter();
+			adapter = new JClassTypeTypeAdapter();
 			adapter.setGeneratorContext(this);
 			adapter.setJClassType(jClassType);
 		}
 		return adapter;
-	}
-	
-	protected boolean shouldBeSerializable( final JClassType jClassType ){
-		boolean serializable = false;
-		
-		while( true ){
-			if( this.isJdkCounterpartSerializable(jClassType)){
-				serializable = true;
-			}
-			break;			
-		}
-		
-		return serializable;
-	}
-	
-	/**
-	 * Reports if a jdk class with the same is serializable.
-	 * @param jClassType
-	 * @return
-	 */
-	protected boolean isJdkCounterpartSerializable( final JClassType jClassType ){
-		boolean shouldBeSerializable = false;
-		
-		final String name = jClassType.getQualifiedSourceName();
-		//if( name.startsWith( "java.lang") || name.startsWith( "java.util")){
-			try{
-				final Class classs = Class.forName( name );
-				shouldBeSerializable = Serializable.class.isAssignableFrom( classs );
-			} catch ( final Exception ignore ){
-				shouldBeSerializable = false;
-			} catch ( final Error ignore ){
-				shouldBeSerializable = false;
-			}
-		//}
-	
-		return shouldBeSerializable;
 	}
 
 	/**
 	 * Factory method which creates a package instance the first time a request
 	 * is made.
 	 * 
-	 * @param name The name of the package
+	 * @param name
+	 *            The name of the package
 	 * @return The package
 	 */
+	@Override
 	protected Package createPackage(final String name) {
 		JPackagePackageAdapter packagee = null;
 		final JPackage jPackage = this.findJPackage(name);
@@ -270,6 +249,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		return this.getTypeOracle().findPackage(name);
 	}
 
+	@Override
 	protected void preloadTypes() {
 		this.addType(this.createBooleanType());
 		this.addType(this.createBooleanArrayType());
@@ -308,6 +288,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		return this.createArrayType(JPrimitiveType.BOOLEAN);
 	}
 
+	@Override
 	public Type getBoolean() {
 		return this.getType(GeneratorConstants.BOOLEAN);
 	}
@@ -322,6 +303,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		return this.createArrayType(JPrimitiveType.BYTE);
 	}
 
+	@Override
 	public Type getByte() {
 		return this.getType(GeneratorConstants.BYTE);
 	}
@@ -336,6 +318,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		return this.createArrayType(JPrimitiveType.SHORT);
 	}
 
+	@Override
 	public Type getShort() {
 		return this.getType(GeneratorConstants.SHORT);
 	}
@@ -350,6 +333,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		return this.createArrayType(JPrimitiveType.INT);
 	}
 
+	@Override
 	public Type getInt() {
 		return this.getType(GeneratorConstants.INT);
 	}
@@ -364,6 +348,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		return this.createArrayType(JPrimitiveType.LONG);
 	}
 
+	@Override
 	public Type getLong() {
 		return this.getType(GeneratorConstants.LONG);
 	}
@@ -378,6 +363,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		return this.createArrayType(JPrimitiveType.FLOAT);
 	}
 
+	@Override
 	public Type getFloat() {
 		return this.getType(GeneratorConstants.FLOAT);
 	}
@@ -392,6 +378,7 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		return this.createArrayType(JPrimitiveType.DOUBLE);
 	}
 
+	@Override
 	public Type getDouble() {
 		return this.getType(GeneratorConstants.DOUBLE);
 	}
@@ -411,78 +398,94 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		type.setGeneratorContext(this);
 		return type;
 	}
-	
+
 	/**
-	 * This method maybe used to create a resource or file that will be available to the public path of an application or compilation.
+	 * This method maybe used to create a resource or file that will be
+	 * available to the public path of an application or compilation.
+	 * 
 	 * @param filename
-	 * @return Null if the resource already existed otherwise returns a stream. When closed the stream will be committed.
+	 * @return Null if the resource already existed otherwise returns a stream.
+	 *         When closed the stream will be committed.
 	 */
-	public OutputStream createResource( final String filename ){
-		try{
+	@Override
+	public OutputStream createResource(final String filename) {
+		try {
 			return this.createResource0(filename);
-		} catch ( final UnableToCompleteException caught ){
-			throw new GeneratorException( "Something went wrong whilst attempting to retrieve an OutputStream for the resource \"" + filename + "\".");
-		}		
+		} catch (final UnableToCompleteException caught) {
+			throw new GeneratorException("Something went wrong whilst attempting to retrieve an OutputStream for the resource \""
+					+ filename + "\".");
+		}
 	}
-	
-	protected OutputStream createResource0( final String filename ) throws UnableToCompleteException{
+
+	protected OutputStream createResource0(final String filename) throws UnableToCompleteException {
 		OutputStream outputStream = null;
-		while( true ){
+		while (true) {
 			final TreeLogger logger = this.getTreeLogger();
-				final com.google.gwt.core.ext.GeneratorContext context = this.getGeneratorContext(); 
-				outputStream = context.tryCreateResource(logger, filename );
-				if( null == outputStream ){
-					break;
-				}
-				
-				outputStream = new ResourceOutputStream( outputStream );
+			final com.google.gwt.core.ext.GeneratorContext context = this.getGeneratorContext();
+			outputStream = context.tryCreateResource(logger, filename);
+			if (null == outputStream) {
+				break;
+			}
+
+			outputStream = new ResourceOutputStream(outputStream);
 			break;
 		}
 		return outputStream;
 
 	}
-	
+
 	/**
-	 * Wrapper around a GWT provided OutputStream that commits a resource when this stream is closed.
+	 * Wrapper around a GWT provided OutputStream that commits a resource when
+	 * this stream is closed.
 	 */
-	class ResourceOutputStream extends OutputStream{
-		ResourceOutputStream( final OutputStream outputStream  ){
+	class ResourceOutputStream extends OutputStream {
+		ResourceOutputStream(final OutputStream outputStream) {
 			super();
-			
-			this.setOutputStream( outputStream );
+
+			this.setOutputStream(outputStream);
 		}
-		
+
 		OutputStream outputStream;
-		
-		OutputStream getOutputStream(){
-			Checker.notNull("field:outputStream", outputStream );
+
+		OutputStream getOutputStream() {
+			Checker.notNull("field:outputStream", outputStream);
 			return this.outputStream;
 		}
-		void setOutputStream( final OutputStream outputStream ){
-			Checker.notNull("parameter:outputStream", outputStream );
+
+		void setOutputStream(final OutputStream outputStream) {
+			Checker.notNull("parameter:outputStream", outputStream);
 			this.outputStream = outputStream;
 		}
-		
-		public void write( final byte[] bytes ) throws IOException{
+
+		@Override
+		public void write(final byte[] bytes) throws IOException {
 			this.getOutputStream().write(bytes);
 		}
-		public void write( final byte[] bytes, final int start, final int length ) throws IOException{
-			this.getOutputStream().write(bytes, start, length );
+
+		@Override
+		public void write(final byte[] bytes, final int start, final int length) throws IOException {
+			this.getOutputStream().write(bytes, start, length);
 		}
-		public void write( final int byteValue ) throws IOException{
+
+		@Override
+		public void write(final int byteValue) throws IOException {
 			this.getOutputStream().write(byteValue);
 		}
-		
-		public void flush() throws IOException{
+
+		@Override
+		public void flush() throws IOException {
 			this.getOutputStream().flush();
 		}
-		public void close() throws IOException{
-			try{
+
+		@Override
+		public void close() throws IOException {
+			try {
 				final OutputStream outputStream = this.getOutputStream();
-				final TreeLogger logger = TypeOracleGeneratorContext.this.getTreeLogger(); 
-				TypeOracleGeneratorContext.this.getGeneratorContext().commitResource(logger, outputStream );
-			} catch ( final UnableToCompleteException caught ){
-				throw new IOException( "Something went wrong whilst attempting to commit resource, reason: \"" + caught.getMessage() + "\"");
+				final TreeLogger logger = TypeOracleGeneratorContext.this.getTreeLogger();
+				TypeOracleGeneratorContext.this.getGeneratorContext().commitResource(logger, outputStream);
+			} catch (final UnableToCompleteException caught) {
+				throw new IOException("Something went wrong whilst attempting to commit resource, reason: \"" + caught.getMessage()
+						+ "\"");
 			}
 		}
 	}

@@ -31,9 +31,9 @@ abstract public class TypeMethodsVisitor {
 	public void start(final Type type) {
 		Checker.notNull("method:type", type);
 
-		final Iterator methods = type.getMethods().iterator();
+		final Iterator<Method> methods = type.getMethods().iterator();
 		while (methods.hasNext()) {
-			final Method method = (Method) methods.next();
+			final Method method = methods.next();
 			if (this.visit(method)) {
 				break;
 			}

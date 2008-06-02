@@ -52,9 +52,11 @@ abstract public class VirtualMethodVisitor {
 		Checker.notNull("parameter:derivedType", derivedType);
 
 		final Package packagee = derivedType.getPackage();
-		final Set visited = this.createVisited();
+		final Set<Method> visited = this.createVisited();
 
 		final AllMethodsVisitor visitor = new AllMethodsVisitor() {
+
+			@Override
 			protected boolean visit(final Method method) {
 				boolean skipRemaining = false;
 				while (true) {
@@ -84,6 +86,7 @@ abstract public class VirtualMethodVisitor {
 				return skipRemaining;
 			}
 
+			@Override
 			protected boolean skipJavaLangObjectMethods() {
 				return VirtualMethodVisitor.this.skipJavaLangObjectMethods();
 			}
@@ -112,30 +115,28 @@ abstract public class VirtualMethodVisitor {
 	 * 
 	 * @return
 	 */
-	protected Set createVisited() {
-		final Comparator comparator = new Comparator() {
-			public int compare(final Object object, final Object otherObject) {
+	protected Set<Method> createVisited() {
+		final Comparator<Method> comparator = new Comparator<Method>() {
+			public int compare(final Method method, final Method otherMethod) {
 				int value = 0;
 				while (true) {
-					final Method method = (Method) object;
-					final Method otherMethod = (Method) otherObject;
 					value = method.getName().compareTo(otherMethod.getName());
 					if (value != 0) {
 						break;
 					}
 
-					final List methodParameters = method.getParameters();
-					final List otherMethodParameters = otherMethod.getParameters();
+					final List<MethodParameter> methodParameters = method.getParameters();
+					final List<MethodParameter> otherMethodParameters = otherMethod.getParameters();
 					value = methodParameters.size() - otherMethodParameters.size();
 					if (value != 0) {
 						break;
 					}
 
-					final Iterator parametersIterator = methodParameters.iterator();
-					final Iterator otherParametersIterator = otherMethodParameters.iterator();
+					final Iterator<MethodParameter> parametersIterator = methodParameters.iterator();
+					final Iterator<MethodParameter> otherParametersIterator = otherMethodParameters.iterator();
 					while (parametersIterator.hasNext()) {
-						final MethodParameter parameter = (MethodParameter) parametersIterator.next();
-						final MethodParameter otherParameter = (MethodParameter) otherParametersIterator.next();
+						final MethodParameter parameter = parametersIterator.next();
+						final MethodParameter otherParameter = otherParametersIterator.next();
 						value = parameter.getType().getName().compareTo(otherParameter.getType().getName());
 						if (value != 0) {
 							break;
@@ -149,6 +150,6 @@ abstract public class VirtualMethodVisitor {
 			}
 		};
 
-		return new TreeSet(comparator);
+		return new TreeSet<Method>(comparator);
 	}
 }

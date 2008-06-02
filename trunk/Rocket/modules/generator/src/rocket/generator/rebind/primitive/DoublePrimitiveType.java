@@ -23,9 +23,12 @@ import rocket.generator.rebind.type.Type;
  * @author Miroslav Pokorny
  */
 abstract public class DoublePrimitiveType extends PrimitiveType {
-	public String getRuntimeName(){
+
+	@Override
+	public String getRuntimeName() {
 		return Constants.DOUBLE_RUNTIME_NAME;
 	}
+
 	public boolean isAssignableFrom(final Type type) {
 		return this.equals(type);
 	}
@@ -38,6 +41,7 @@ abstract public class DoublePrimitiveType extends PrimitiveType {
 		return this.getType(Constants.DOUBLE_WRAPPER);
 	}
 
+	@Override
 	public String toString() {
 		return "double";
 	}

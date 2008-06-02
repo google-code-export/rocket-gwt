@@ -3,9 +3,9 @@
  */
 package rocket.generator.rebind.util;
 
-import java.util.List;
 import java.util.Set;
 
+import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
@@ -14,35 +14,13 @@ import rocket.util.client.Checker;
  * @author Miroslav Pokorny
  */
 abstract public class AbstractConstructorOrMethod extends AbstractConstructorMethodOrField {
-	/**
-	 * A lazy loaded list containing all the parameters for this method
-	 */
-	private List parameters;
-
-	public List getParameters() {
-		if (false == hasParameters()) {
-			this.setParameters(this.createParameters());
-		}
-		return this.parameters;
-	}
-
-	protected boolean hasParameters() {
-		return this.parameters != null;
-	}
-
-	protected void setParameters(final List parameters) {
-		Checker.notNull("parameter:parameters", parameters);
-		this.parameters = parameters;
-	}
-
-	abstract protected List createParameters();
 
 	/**
 	 * A lazy loaded set containing all the thrown types for this method
 	 */
-	private Set thrownTypes;
+	private Set<Type> thrownTypes;
 
-	public Set getThrownTypes() {
+	public Set<Type> getThrownTypes() {
 		if (false == hasThrows()) {
 			this.setThrownTypes(this.createThrownTypes());
 		}
@@ -53,7 +31,7 @@ abstract public class AbstractConstructorOrMethod extends AbstractConstructorMet
 		return this.thrownTypes != null;
 	}
 
-	protected void setThrownTypes(final Set thrownTypes) {
+	protected void setThrownTypes(final Set<Type> thrownTypes) {
 		Checker.notNull("parameter:thrownTypes", thrownTypes);
 		this.thrownTypes = thrownTypes;
 	}

@@ -42,9 +42,9 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 
 	public NewMethodImpl() {
 		super();
-		
-		this.setComments( "" );
-		this.setMetaData( this.createMetaData() );
+
+		this.setComments("");
+		this.setMetaData(this.createMetaData());
 	}
 
 	/**
@@ -122,8 +122,8 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		this.name = name;
 	}
 
-	protected List createParameters() {
-		return new ArrayList();
+	protected List<MethodParameter> createParameters() {
+		return new ArrayList<MethodParameter>();
 	}
 
 	public NewMethodParameter newParameter() {
@@ -165,8 +165,8 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		Checker.notNull("field:body", body);
 		return this.body;
 	}
-	
-	public boolean hasBody(){
+
+	public boolean hasBody() {
 		return null != this.body;
 	}
 
@@ -179,44 +179,45 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	 * Any text which will appear within javadoc comments for this field.
 	 */
 	private String comments;
-	
-	public String getComments(){
-		Checker.notNull( "field:comments", comments );
+
+	public String getComments() {
+		Checker.notNull("field:comments", comments);
 		return comments;
 	}
-	
-	public void setComments( final String comments ){
-		Checker.notNull( "parameter:comments", comments );
+
+	public void setComments(final String comments) {
+		Checker.notNull("parameter:comments", comments);
 		this.comments = comments;
 	}
-	
-	public void addMetaData( final String name, final String value ){
-		this.getMetaData().add( name, value);
+
+	public void addMetaData(final String name, final String value) {
+		this.getMetaData().add(name, value);
 	}
-	
-	public List getMetadataValues( final String name ){
+
+	public List<String> getMetadataValues(final String name) {
 		return this.getMetaData().getMetadataValues(name);
 	}
-	
+
 	/**
-	 * A container which holds any meta data that is added to a new field instance. 
+	 * A container which holds any meta data that is added to a new field
+	 * instance.
 	 */
 	private MetaData metaData;
-	
-	protected MetaData getMetaData(){
-		Checker.notNull("field:metaData", metaData );
+
+	protected MetaData getMetaData() {
+		Checker.notNull("field:metaData", metaData);
 		return this.metaData;
 	}
-	
-	protected void setMetaData( final MetaData metaData ){
-		Checker.notNull("parameter:metaData", metaData );
+
+	protected void setMetaData(final MetaData metaData) {
+		Checker.notNull("parameter:metaData", metaData);
 		this.metaData = metaData;
 	}
-	
-	protected MetaData createMetaData(){
+
+	protected MetaData createMetaData() {
 		return new MetaData();
-	}	
-	
+	}
+
 	/**
 	 * Writes the method in its entirety to the provided SourceWriter
 	 * 
@@ -228,11 +229,16 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		this.log();
 
 		this.writeComments(writer);
+
+		// FIXME HACK HACK - get rid of this when everything hass been moved
+		// over to proper annotations.
+		writer.println("@com.google.gwt.core.client.UnsafeNativeLong");
+
 		this.writeDeclaration(writer);
 
 		if (this.isAbstract()) {
-			this.writeAbstractMethod( writer );
-			
+			this.writeAbstractMethod(writer);
+
 		} else {
 			this.writeBodyOpen(writer);
 
@@ -246,49 +252,50 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 
 	protected void log() {
 		final StringBuffer buf = new StringBuffer();
-		
-		if( this.isFinal() ){
-			buf.append( "final ");
+
+		if (this.isFinal()) {
+			buf.append("final ");
 		}
-		if( this.isAbstract() ){
-			buf.append( "abstract ");
+		if (this.isAbstract()) {
+			buf.append("abstract ");
 		}
-		if( this.isStatic() ){
-			buf.append( "static ");
+		if (this.isStatic()) {
+			buf.append("static ");
 		}
-		if( this.isNative() ){
-			buf.append( "native ");
+		if (this.isNative()) {
+			buf.append("native ");
 		}
-		buf.append( this.getVisibility().toString() );
-		buf.append( ' ');// Yes package private methods will have two spaces here...
-		
+		buf.append(this.getVisibility().toString());
+		buf.append(' ');// Yes package private methods will have two spaces
+						// here...
+
 		final Type returnType = this.getReturnType();
-		buf.append( returnType.getName() );
-		buf.append( ' ');		
-		
-		buf.append( this.getName() );
-		buf.append( '(');
-		
-		final Iterator parameters = this.getParameters().iterator();
-		while( parameters.hasNext() ){
-			final MethodParameter parameter = (MethodParameter)parameters.next();
+		buf.append(returnType.getName());
+		buf.append(' ');
+
+		buf.append(this.getName());
+		buf.append('(');
+
+		final Iterator<MethodParameter> parameters = this.getParameters().iterator();
+		while (parameters.hasNext()) {
+			final MethodParameter parameter = parameters.next();
 			final Type parameterType = parameter.getType();
-			buf.append( parameterType.getName() );
-			
-			if( parameters.hasNext() ){
-				buf.append( ',');
+			buf.append(parameterType.getName());
+
+			if (parameters.hasNext()) {
+				buf.append(',');
 			}
 		}
-		
-		buf.append( ')');		
-		
-		this.getGeneratorContext().debug( buf.toString() );
+
+		buf.append(')');
+
+		this.getGeneratorContext().debug(buf.toString());
 	}
 
-	protected void writeComments( final SourceWriter writer ){		
-		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+	protected void writeComments(final SourceWriter writer) {
+		GeneratorHelper.writeComments(this.getComments(), this.getMetaData(), writer);
 	}
-	
+
 	/**
 	 * Writes the method declaration of this method. final static ${visibility}
 	 * ${name} ( ${parameter-type parameter-name} )
@@ -368,14 +375,14 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		}
 	}
 
-	protected void writeAbstractMethod( final SourceWriter writer ){
+	protected void writeAbstractMethod(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
-		
-		if( this.hasBody() ){
-			throw new GeneratorException("Inconsistent state abstract method contains a body " + this ); 
+
+		if (this.hasBody()) {
+			throw new GeneratorException("Inconsistent state abstract method contains a body " + this);
 		}
-		
-		writer.println(";");	
+
+		writer.println(";");
 	}
 
 	/**
@@ -385,7 +392,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	 * <li>Native</li>
 	 * <li>final</li>
 	 * <li>Static</li>
-	 * <li>Abstract</li> 
+	 * <li>Abstract</li>
 	 * <li>Visibility</li>
 	 * <li>Return type</li>
 	 * <li>Enclosing type</li>
@@ -395,25 +402,26 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 	 * <li>Right parenethesis</li>
 	 * </ul>
 	 */
+	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 
-		if( this.isNative() ){
-			builder.append( "native ");
+		if (this.isNative()) {
+			builder.append("native ");
 		}
-		if( this.isFinal() ){
-			builder.append( "final ");
+		if (this.isFinal()) {
+			builder.append("final ");
 		}
-		if( this.isStatic() ){
-			builder.append( "static ");
+		if (this.isStatic()) {
+			builder.append("static ");
 		}
-		if( this.isAbstract() ){
-			builder.append( "abstract ");
+		if (this.isAbstract()) {
+			builder.append("abstract ");
 		}
 
-		builder.append( this.getVisibility() );
-		builder.append( ' ');
-		
+		builder.append(this.getVisibility());
+		builder.append(' ');
+
 		if (this.hasReturnType()) {
 			builder.append(this.getReturnType().getName());
 			builder.append(' ');

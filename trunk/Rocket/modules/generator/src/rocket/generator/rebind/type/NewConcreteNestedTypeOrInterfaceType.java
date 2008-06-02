@@ -39,16 +39,16 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 
 	public NewConcreteNestedTypeOrInterfaceType() {
 		super();
-		
+
 		this.setInitializers(this.createInitializers());
-		this.setComments( "" );
-		this.setMetaData( this.createMetaData() );
+		this.setComments("");
+		this.setMetaData(this.createMetaData());
 	}
-	
-	public Initializer newInitializer(){
+
+	public Initializer newInitializer() {
 		final InitializerImpl initializer = new InitializerImpl();
-		initializer.setEnclosingType( this );
-		initializer.setGeneratorContext( this.getGeneratorContext() );
+		initializer.setEnclosingType(this);
+		initializer.setGeneratorContext(this.getGeneratorContext());
 		this.addInitializer(initializer);
 		return initializer;
 	}
@@ -143,28 +143,28 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	public boolean hasNoArgumentsConstructor() {
 		return this.getConstructors().isEmpty() ? true : null != this.findConstructor(Collections.EMPTY_LIST);
 	}
-	
+
 	protected void writeInitializers(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
 		final Set initializers = this.getInitializers();
-		if( false == initializers.isEmpty() ){
-			
+		if (false == initializers.isEmpty()) {
+
 			final GeneratorContext context = this.getGeneratorContext();
 			context.branch();
-			
+
 			final String message = "Initializers";
-			context.debug( message );
-			
+			context.debug(message);
+
 			writer.beginJavaDocComment();
-			writer.print( message );
+			writer.print(message);
 			writer.endJavaDocComment();
-	
+
 			writer.println();
 			GeneratorHelper.writeClassComponents(initializers, writer, false, true);
 			writer.println();
-			
+
 			context.unbranch();
 		}
-	}	
+	}
 }

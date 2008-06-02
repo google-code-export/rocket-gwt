@@ -32,7 +32,7 @@ abstract public class MethodParameterVisitor {
 	public void start(final Method method) {
 		Checker.notNull("parameter:method", method);
 
-		final Iterator parameters = method.getParameters().iterator();
+		final Iterator<MethodParameter> parameters = method.getParameters().iterator();
 		while (parameters.hasNext()) {
 			final MethodParameter parameter = (MethodParameter) parameters.next();
 			if (this.visit(parameter)) {

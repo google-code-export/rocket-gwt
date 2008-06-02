@@ -42,8 +42,8 @@ public class IntJPrimitiveTypeTypeAdapter extends IntPrimitiveType {
 		return JPrimitiveType.INT;
 	}
 
+	@Override
 	public String toString() {
 		return "int";
 	}
-
 }

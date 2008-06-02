@@ -42,6 +42,7 @@ public class FloatJPrimitiveTypeTypeAdapter extends FloatPrimitiveType {
 		return JPrimitiveType.FLOAT;
 	}
 
+	@Override
 	public String toString() {
 		return "float";
 	}

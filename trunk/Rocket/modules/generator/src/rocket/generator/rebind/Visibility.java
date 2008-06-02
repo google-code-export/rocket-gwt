@@ -106,6 +106,7 @@ public class Visibility {
 		this.javaName = javaName;
 	}
 
+	@Override
 	public String toString() {
 		return this.javaName;
 	}

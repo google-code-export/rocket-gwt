@@ -34,16 +34,16 @@ public class NewJsniMethodGenerator extends TestGenerator {
 
 		final Type intType = context.getInt();
 
-		final List parameterTypes = new ArrayList();
+		final List<Type> parameterTypes = new ArrayList<Type>();
 		parameterTypes.add(intType);
 		parameterTypes.add(intType);
 
 		final Method method = superType.getMethod("add0", parameterTypes);
 
-		final NewConcreteType newType = context.newConcreteType( newTypeName );
+		final NewConcreteType newType = context.newConcreteType(newTypeName);
 		newType.setSuperType(superType);
-		newType.setVisibility( Visibility.PUBLIC );
-		
+		newType.setVisibility(Visibility.PUBLIC);
+
 		final NewMethod newMethod = newType.newMethod();
 
 		final NewMethodParameter firstParameter = newMethod.newParameter();

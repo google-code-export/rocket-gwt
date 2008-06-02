@@ -27,18 +27,18 @@ public class NewConstructorWithInitializerGenerator extends TestGenerator {
 	protected NewConcreteType assembleNewType(final Type superType, final String newTypeName) {
 		final GeneratorContext context = this.getGeneratorContext();
 
-		final NewConcreteType newType = context.newConcreteType( newTypeName );
+		final NewConcreteType newType = context.newConcreteType(newTypeName);
 		newType.setSuperType(superType);
-		newType.setVisibility( Visibility.PUBLIC );
+		newType.setVisibility(Visibility.PUBLIC);
 
-		final Initializer staticInitializer = newType.newInitializer();		
+		final Initializer staticInitializer = newType.newInitializer();
 		staticInitializer.setBody(new StringCodeBlock(superType.getName() + ".staticInitializerRun = true;"));
-		staticInitializer.setStatic( true );
-		
+		staticInitializer.setStatic(true);
+
 		final Initializer instanceInitializer = newType.newInitializer();
 		instanceInitializer.setBody(new StringCodeBlock(superType.getName() + ".instanceInitializerRun = true;"));
-		instanceInitializer.setStatic( false );
-		
+		instanceInitializer.setStatic(false);
+
 		return newType;
 	}
 }

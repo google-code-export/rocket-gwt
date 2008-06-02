@@ -28,6 +28,7 @@ import rocket.util.client.Checker;
 
 /**
  * A container that holds any meta data added to any new types being generated.
+ * 
  * @author Miroslav Pokorny
  */
 public class MetaData implements CodeBlock, HasMetadata {
@@ -39,28 +40,28 @@ public class MetaData implements CodeBlock, HasMetadata {
 	}
 
 	/**
-	 * This map holds an arrangment of keys to values in add order. 
+	 * This map holds an arrangment of keys to values in add order.
 	 */
-	private Map metaData;
+	private Map<String, List<String>> metaData;
 
-	protected Map getMetaData() {
+	protected Map<String, List<String>> getMetaData() {
 		Checker.notNull("field:metaData", metaData);
 		return this.metaData;
 	}
 
-	protected void setMetaData(final Map metaData) {
+	protected void setMetaData(final Map<String, List<String>> metaData) {
 		Checker.notNull("parameter:metaData", metaData);
 		this.metaData = metaData;
 	}
 
-	protected Map createMetaData() {
-		return new LinkedHashMap();
+	protected Map<String, List<String>> createMetaData() {
+		return new LinkedHashMap<String, List<String>>();
 	}
 
 	public void add(final String key, final String value) {
-		List list = this.get(key);
+		List<String> list = this.get(key);
 		if (null == list) {
-			list = new ArrayList();
+			list = new ArrayList<String>();
 			this.getMetaData().put(key, list);
 		}
 
@@ -72,10 +73,11 @@ public class MetaData implements CodeBlock, HasMetadata {
 	}
 
 	/**
-	 * Returns a read only value of all current meta data values for the given name.
+	 * Returns a read only value of all current meta data values for the given
+	 * name.
 	 */
-	public List getMetadataValues(final String name) {
-		final List values = this.get(name);
+	public List<String> getMetadataValues(final String name) {
+		final List<String> values = this.get(name);
 		return values == null ? null : Collections.unmodifiableList(values);
 	}
 
@@ -84,19 +86,19 @@ public class MetaData implements CodeBlock, HasMetadata {
 	}
 
 	public void write(final SourceWriter writer) {
-		final Iterator entries = this.getMetaData().entrySet().iterator();
+		final Iterator<Map.Entry<String, List<String>>> entries = this.getMetaData().entrySet().iterator();
 		while (entries.hasNext()) {
-			final Map.Entry entry = (Map.Entry) entries.next();
+			final Map.Entry<String, List<String>> entry = entries.next();
 			final String name = (String) entry.getKey();
-			final List values = (List) entry.getValue();
+			final List<String> values = entry.getValue();
 
 			this.writeMetaDataEntries(name, values, writer);
 		}
 	}
 
-	protected void writeMetaDataEntries(final String name, final List values, final SourceWriter writer) {
+	protected void writeMetaDataEntries(final String name, final List<String> values, final SourceWriter writer) {
 
-		final Iterator valuesIterator = values.iterator();
+		final Iterator<String> valuesIterator = values.iterator();
 		while (valuesIterator.hasNext()) {
 			final String value = (String) valuesIterator.next();
 			this.writeMetaDataEntry(name, value, writer);

@@ -32,61 +32,62 @@ import rocket.util.client.Checker;
  */
 public class InitializerImpl implements Initializer {
 
-	public InitializerImpl(){
+	public InitializerImpl() {
 		super();
-		
-		this.setComments( "" );
-		this.setMetaData( this.createMetaData() );
+
+		this.setComments("");
+		this.setMetaData(this.createMetaData());
 	}
-	
+
 	/**
 	 * Any text which will appear within javadoc comments for this field.
 	 */
 	private String comments;
-	
-	public String getComments(){
-		Checker.notNull( "field:comments", comments );
+
+	public String getComments() {
+		Checker.notNull("field:comments", comments);
 		return comments;
 	}
-	
-	public void setComments( final String comments ){
-		Checker.notNull( "parameter:comments", comments );
+
+	public void setComments(final String comments) {
+		Checker.notNull("parameter:comments", comments);
 		this.comments = comments;
 	}
-	
-	public void addMetaData( final String name, final String value ){
-		this.getMetaData().add( name, value);
+
+	public void addMetaData(final String name, final String value) {
+		this.getMetaData().add(name, value);
 	}
-	
-	public List getMetadataValues( final String name ){
+
+	public List getMetadataValues(final String name) {
 		return this.getMetaData().getMetadataValues(name);
 	}
-	
+
 	/**
-	 * A container which holds any meta data that is added to a new field instance. 
+	 * A container which holds any meta data that is added to a new field
+	 * instance.
 	 */
 	private MetaData metaData;
-	
-	protected MetaData getMetaData(){
-		Checker.notNull("field:metaData", metaData );
+
+	protected MetaData getMetaData() {
+		Checker.notNull("field:metaData", metaData);
 		return this.metaData;
 	}
-	
-	protected void setMetaData( final MetaData metaData ){
-		Checker.notNull("parameter:metaData", metaData );
+
+	protected void setMetaData(final MetaData metaData) {
+		Checker.notNull("parameter:metaData", metaData);
 		this.metaData = metaData;
 	}
-	
-	protected MetaData createMetaData(){
+
+	protected MetaData createMetaData() {
 		return new MetaData();
 	}
-	
+
 	public void write(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
 		this.writeLogger();
-		this.writeComments( writer );
-		
+		this.writeComments(writer);
+
 		if (this.isStatic()) {
 			writer.print("static ");
 		}
@@ -99,14 +100,14 @@ public class InitializerImpl implements Initializer {
 		writer.println("};");
 	}
 
-	protected void writeLogger() {		
-		this.getGeneratorContext().debug( this.toString() );
+	protected void writeLogger() {
+		this.getGeneratorContext().debug(this.toString());
 	}
 
-	protected void writeComments( final SourceWriter writer ){		
-		GeneratorHelper.writeComments( this.getComments(), this.getMetaData(), writer);
+	protected void writeComments(final SourceWriter writer) {
+		GeneratorHelper.writeComments(this.getComments(), this.getMetaData(), writer);
 	}
-	
+
 	/**
 	 * When true indicates that this initializer
 	 */

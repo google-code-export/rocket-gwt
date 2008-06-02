@@ -31,18 +31,22 @@ public class NewMethodParameterImpl extends AbstractMethodParameter implements N
 		super.setFinal(finall);
 	}
 
+	@Override
 	public void setName(final String name) {
 		super.setName(name);
 	}
 
+	@Override
 	public boolean hasType() {
 		return super.hasType();
 	}
 
+	@Override
 	public void setType(final Type type) {
 		super.setType(type);
 	}
 
+	@Override
 	public void setEnclosingMethod(final Method enclosingMethod) {
 		super.setEnclosingMethod(enclosingMethod);
 	}
@@ -58,6 +62,7 @@ public class NewMethodParameterImpl extends AbstractMethodParameter implements N
 		writer.print(this.getName());
 	}
 
+	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("NewMethodParameter ");

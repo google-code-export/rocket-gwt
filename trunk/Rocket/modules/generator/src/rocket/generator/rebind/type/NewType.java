@@ -33,7 +33,7 @@ public interface NewType extends Type, CodeGenerator, HasComments, HasMetadata {
 	void addInterface(Type interfacee);
 
 	Initializer newInitializer();
-	
+
 	void addInitializer(Initializer initializer);
 
 	boolean hasName();
@@ -57,6 +57,6 @@ public interface NewType extends Type, CodeGenerator, HasComments, HasMetadata {
 	NewAnonymousNestedType newAnonymousNestedType();
 
 	NewNestedInterfaceType newNestedInterfaceType();
-	
-	public void addMetaData( String name, String value );
+
+	public void addMetaData(String name, String value);
 }

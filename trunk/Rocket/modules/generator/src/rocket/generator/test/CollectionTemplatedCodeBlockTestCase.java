@@ -39,7 +39,8 @@ public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	}
 
 	public void testCollectionWithOneElement() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.nCopies(1, EmptyCodeBlock.INSTANCE));
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections
+				.nCopies(1, EmptyCodeBlock.INSTANCE));
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
 
@@ -49,7 +50,8 @@ public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	}
 
 	public void testCollectionWithTwoElements() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.nCopies(2, EmptyCodeBlock.INSTANCE));
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections
+				.nCopies(2, EmptyCodeBlock.INSTANCE));
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
 
@@ -59,7 +61,8 @@ public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	}
 
 	public void testCollectionWithThreeElements() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.nCopies(3, EmptyCodeBlock.INSTANCE));
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections
+				.nCopies(3, EmptyCodeBlock.INSTANCE));
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
 

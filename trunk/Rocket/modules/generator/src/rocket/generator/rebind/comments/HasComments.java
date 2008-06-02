@@ -15,7 +15,6 @@
  */
 package rocket.generator.rebind.comments;
 
-
 /**
  * This interface is implemented by compile time components that can potentially
  * include comments.
@@ -24,6 +23,6 @@ package rocket.generator.rebind.comments;
  */
 public interface HasComments {
 	String getComments();
-	
-	void setComments( String comments );
+
+	void setComments(String comments);
 }

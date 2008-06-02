@@ -37,44 +37,51 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * Starts the code generation process including the construction of a new
 	 * Context. This method is called by GWT for each deferred binding request.
 	 */
-	public String generate(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext, final String typeName) {
-		final GeneratorContext context = this.createGeneratorContext( generatorContext, logger );
+	@Override
+	public String generate(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext,
+			final String typeName) {
+		final GeneratorContext context = this.createGeneratorContext(generatorContext, logger);
 		return this.generate(context, typeName);
 	}
 
 	/**
-	 * This method is called typically from another generator reusing an existing context.
-	 * @param context An existing context
-	 * @param typeName The name of the type being rebound.
+	 * This method is called typically from another generator reusing an
+	 * existing context.
+	 * 
+	 * @param context
+	 *            An existing context
+	 * @param typeName
+	 *            The name of the type being rebound.
 	 * @return The name of the type just that was generated.
 	 */
-	public String generate( final GeneratorContext context, final String typeName ){
-		try{
+	public String generate(final GeneratorContext context, final String typeName) {
+		try {
 			this.setGeneratorContext(context);
 			return this.createNewTypeIfNecessary(typeName);
 		} finally {
 			this.clearGeneratorContext();
 		}
 	}
-	
+
 	/**
 	 * Tests if a Type already exists and if it doesnt invokes
 	 * {@link #assembleNewType(String, String)} which will build a
 	 * {@link NewConcreteType}
 	 * 
-	 * @param typeName The name of type which will be used to generate a new type.
+	 * @param typeName
+	 *            The name of type which will be used to generate a new type.
 	 * @return The name of the new type
 	 */
 	public String createNewTypeIfNecessary(final String typeName) {
 		final GeneratorContext context = this.getGeneratorContext();
-		context.info( "Recieved type \"" + typeName + "\".");
-		
+		context.info("Recieved type \"" + typeName + "\".");
+
 		final String newTypeName = this.getGeneratedTypeName(typeName);
 		String bindTypeName = newTypeName;
 		final long started = System.currentTimeMillis();
 
-		if( null == context.findType( newTypeName )){
-		
+		if (null == context.findType(newTypeName)) {
+
 			try {
 				final NewConcreteType newType = this.assembleNewType(typeName, newTypeName);
 				if (null != newType) {
@@ -109,16 +116,17 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	}
 
 	public String getGeneratedTypeName(final String name) {
-		return this.getGeneratorContext().getGeneratedTypeName(name, this.getGeneratedTypeNameSuffix() );
+		return this.getGeneratorContext().getGeneratedTypeName(name, this.getGeneratedTypeNameSuffix());
 	}
-	
+
 	/**
 	 * The hardcoded suffix that gets appended to each generated type
 	 * 
-	 * @return The suffix to appended. This typically starts with an underscore or two ...
+	 * @return The suffix to appended. This typically starts with an underscore
+	 *         or two ...
 	 */
 	abstract protected String getGeneratedTypeNameSuffix();
-	
+
 	protected NewConcreteType assembleNewType(final String typeName, final String newTypeName) {
 		return this.assembleNewType(this.getGeneratorContext().getType(typeName), newTypeName);
 	}
@@ -144,8 +152,8 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 		Checker.notNull("parameter:generatorContext", generatorContext);
 		this.generatorContext = generatorContext;
 	}
-	
-	protected void clearGeneratorContext(){
+
+	protected void clearGeneratorContext() {
 		this.generatorContext = null;
 	}
 
@@ -154,11 +162,12 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * 
 	 * @return
 	 */
-	protected GeneratorContext createGeneratorContext( final com.google.gwt.core.ext.GeneratorContext generatorContext, final TreeLogger logger){
+	protected GeneratorContext createGeneratorContext(final com.google.gwt.core.ext.GeneratorContext generatorContext,
+			final TreeLogger logger) {
 		final TypeOracleGeneratorContext context = new TypeOracleGeneratorContext();
-		context.setGenerator( this );
-		context.setGeneratorContext( generatorContext );
-		context.setRootTreeLogger( logger );
+		context.setGenerator(this);
+		context.setGeneratorContext(generatorContext);
+		context.setRootTreeLogger(logger);
 		return context;
 	}
 
@@ -179,10 +188,11 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 
 	/**
 	 * Helper which takes a package and filename within that package returning a
-	 * filename that may be loaded from the classpath. 
+	 * filename that may be loaded from the classpath.
 	 * 
-	 * If the fileName is absolute aka starts with a slash the package parameter is ignored.
-	 * If the filename is relative the package is used to form an absolute classpath name.
+	 * If the fileName is absolute aka starts with a slash the package parameter
+	 * is ignored. If the filename is relative the package is used to form an
+	 * absolute classpath name.
 	 * 
 	 * @param javaLangPackage
 	 * @param fileName
@@ -193,8 +203,8 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 		Checker.notNull("parameter:fileName", fileName);
 
 		String resourceName = fileName;
-		if( false == fileName.startsWith( "/")){
-			resourceName = '/' + javaLangPackage.getName().replace('.', '/') + '/' + fileName;	
+		if (false == fileName.startsWith("/")) {
+			resourceName = '/' + javaLangPackage.getName().replace('.', '/') + '/' + fileName;
 		}
 		return resourceName;
 	}
@@ -205,7 +215,8 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	 * 
 	 * @param type
 	 * @param fileExtension
-	 * @return The resource name as a fully qualified class name (with dots replaced by slashes).
+	 * @return The resource name as a fully qualified class name (with dots
+	 *         replaced by slashes).
 	 */
 	public String getResourceName(final Type type, final String fileExtension) {
 		Checker.notNull("parameter:type", type);
@@ -216,21 +227,22 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 
 	/**
 	 * Helper which takes a package and filename within that package returning a
-	 * filename that may be loaded from the classpath.
-	 * If filename is absolute aka starts with a slash the package is ignored when forming the absolute classpath 
-	 * resource name. 
-	 * If the filename is relative the package is used to form an absolute classpath name.
+	 * filename that may be loaded from the classpath. If filename is absolute
+	 * aka starts with a slash the package is ignored when forming the absolute
+	 * classpath resource name. If the filename is relative the package is used
+	 * to form an absolute classpath name.
 	 * 
 	 * @param packagee
 	 * @param fileName
-	 * @return The resource name as a fully qualified class name (with dots replaced by slashes).
+	 * @return The resource name as a fully qualified class name (with dots
+	 *         replaced by slashes).
 	 */
 	public String getResourceName(final Package packagee, final String fileName) {
 		Checker.notNull("parameter:package", packagee);
 		Checker.notNull("parameter:fileName", fileName);
 
 		String resourceName = fileName;
-		if( false == fileName.startsWith("/")){
+		if (false == fileName.startsWith("/")) {
 			resourceName = '/' + packagee.getName().replace('.', '/') + '/' + fileName;
 		}
 		return resourceName;
@@ -241,7 +253,8 @@ abstract public class Generator extends com.google.gwt.core.ext.Generator {
 	}
 
 	/**
-	 * Retrieves a resource by name. If the resource is not located on as a classpath resource an exception will be thrown.
+	 * Retrieves a resource by name. If the resource is not located on as a
+	 * classpath resource an exception will be thrown.
 	 * 
 	 * @param resourceName
 	 * @return The InputStream for the given resourceName.
