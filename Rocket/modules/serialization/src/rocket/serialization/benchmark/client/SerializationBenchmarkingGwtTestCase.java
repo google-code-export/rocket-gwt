@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import rocket.remoting.client.HasSerializer;
 import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.SerializationFactory;
@@ -34,6 +33,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader;
 import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamWriter;
+import com.google.gwt.user.client.rpc.impl.HasSerializer;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 
 /**
