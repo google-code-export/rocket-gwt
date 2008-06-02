@@ -35,25 +35,31 @@ public class DropTargetPanel extends SimplePanel {
 
 	}
 
+	@Override
 	protected Element createPanelElement() {
 		return DOM.createDiv();
 	}
 
+	@Override
 	protected void checkElement(final Element element) {
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return Constants.DRAG_N_DROP_DROP_TARGET_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
 
+	@Override
 	protected void insert0(final Element element, final int index) {
-		DOM.appendChild(this.getElement(), element);
+		this.getElement().appendChild(element);
 	}
 
+	@Override
 	protected void remove0(final Element element, final int index) {
 		Dom.removeFromParent(element);
 	}
@@ -74,11 +80,13 @@ public class DropTargetPanel extends SimplePanel {
 		this.setWidget(widget);
 	}
 
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 		DropTargetPanelCollection.getInstance().add(this);
 	}
 
+	@Override
 	protected void onDetach() {
 		super.onDetach();
 		DropTargetPanelCollection.getInstance().remove(this);
