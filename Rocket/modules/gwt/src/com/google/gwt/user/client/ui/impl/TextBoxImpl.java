@@ -43,20 +43,21 @@ public class TextBoxImpl {
   public int getTextAreaCursorPos(Element elem) {
     return getCursorPos(elem);
   }
-  
-  /**
-   * Delegates to {@link #getSelectionLength(Element)}.
-   * The TextBox widget calls this method instead allowing customisation for the IE special case.
-   * 
-   * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
-   * @param element
-   * @return
-   */
-  public int getTextAreaSelectionLength( final Element element ){
-  		return this.getSelectionLength(element);
-  }
 
   public native void setSelectionRange(Element elem, int pos, int length) /*-{
     elem.setSelectionRange(pos, pos + length);
   }-*/;
+
+  // ROCKET The fields/methods below were added to assist the Rocket framework. When upgrading from GWT 1.5 RC1 reapply changes
+  
+  /**
+   * Delegates to {@link #getSelectionLength(Element)}.
+   * The TextBox widget calls this method instead allowing customisation for the IE special case.
+   * @param element
+   * @return
+   */
+  public int getTextAreaSelectionLength( final Element element ){
+  	return this.getSelectionLength(element);
+  }
+
 }
