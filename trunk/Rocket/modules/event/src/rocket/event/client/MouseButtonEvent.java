@@ -15,7 +15,6 @@
  */
 package rocket.event.client;
 
-import com.google.gwt.user.client.DOM;
 
 /**
  * A common base class for any mouse button event.
@@ -28,17 +27,18 @@ class MouseButtonEvent extends MouseEvent {
 	}
 
 	public boolean isLeftButton() {
-		return com.google.gwt.user.client.Event.BUTTON_LEFT == DOM.eventGetButton(this.getEvent());
+		return com.google.gwt.user.client.Event.BUTTON_LEFT == this.getEvent().getButton();
 	}
 
 	public boolean isMiddleButton() {
-		return com.google.gwt.user.client.Event.BUTTON_MIDDLE == DOM.eventGetButton(this.getEvent());
+		return com.google.gwt.user.client.Event.BUTTON_MIDDLE == this.getEvent().getButton();
 	}
 
 	public boolean isRightButton() {
-		return com.google.gwt.user.client.Event.BUTTON_RIGHT == DOM.eventGetButton(this.getEvent());
+		return com.google.gwt.user.client.Event.BUTTON_RIGHT == this.getEvent().getButton();
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + ", button="
 				+ (this.isLeftButton() ? " Left" : (this.isMiddleButton() ? " Middle" : (this.isRightButton() ? " Right" : "???")));

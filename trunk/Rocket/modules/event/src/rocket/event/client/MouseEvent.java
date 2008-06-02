@@ -17,8 +17,6 @@ package rocket.event.client;
 
 import rocket.browser.client.Browser;
 
-import com.google.gwt.user.client.DOM;
-
 /**
  * Contains a number of common mouse event related methods including
  * <ul>
@@ -34,11 +32,11 @@ public class MouseEvent extends Event {
 	}
 
 	public int getClientX() {
-		return DOM.eventGetClientX(this.getEvent());
+		return this.getEvent().getClientX();
 	}
 
 	public int getClientY() {
-		return DOM.eventGetClientY(this.getEvent());
+		return this.getEvent().getClientY();
 	}
 
 	public int getPageX() {
@@ -50,11 +48,11 @@ public class MouseEvent extends Event {
 	}
 
 	public int getScreenX() {
-		return DOM.eventGetScreenX(this.getEvent());
+		return this.getEvent().getScreenX(); 
 	}
 
 	public int getScreenY() {
-		return DOM.eventGetScreenY(this.getEvent());
+		return this.getEvent().getScreenY(); 
 	}
 	
 	/**
@@ -62,12 +60,13 @@ public class MouseEvent extends Event {
 	 * @return The relative x coordinate value.
 	 */
 	public int getTargetElementX(){
-		return this.getPageX() - DOM.getAbsoluteLeft( this.getTarget() );
+		return this.getPageX() - this.getTarget().getAbsoluteLeft();
 	}
 	public int getTargetElementY(){
-		return this.getPageY() - DOM.getAbsoluteTop( this.getTarget() );
+		return this.getPageY() - this.getTarget().getAbsoluteTop();
 	}
-	
+
+	@Override
 	public String toString(){
 		return super.toString() + ", pageCoordinates: " + this.getPageX() + "," + this.getPageY();
 	}

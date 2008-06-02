@@ -15,18 +15,18 @@
  */
 package rocket.event.client;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 public class MouseOutEvent extends MouseEvent {
 	public MouseOutEvent() {
 	}
 
+	@Override
 	public MouseOutEvent asMouseOutEvent() {
 		return this;
 	}
 
 	public Element getTo() {
-		return DOM.eventGetToElement(this.getEvent());
+		return (Element)this.getEvent().getToElement().cast();
 	}
 }

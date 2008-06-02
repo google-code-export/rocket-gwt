@@ -20,6 +20,7 @@ public class KeyPressEvent extends KeyEvent {
 
 	}
 
+	@Override
 	public KeyPressEvent asKeyPressEvent() {
 		return this;
 	}

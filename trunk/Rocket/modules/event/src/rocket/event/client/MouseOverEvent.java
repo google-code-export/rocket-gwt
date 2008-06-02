@@ -15,7 +15,6 @@
  */
 package rocket.event.client;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 public class MouseOverEvent extends MouseEvent {
@@ -23,11 +22,12 @@ public class MouseOverEvent extends MouseEvent {
 
 	}
 
+	@Override
 	public MouseOverEvent asMouseOverEvent() {
 		return this;
 	}
 
 	public Element getFrom() {
-		return DOM.eventGetFromElement(this.getEvent());
+		return (Element)this.getEvent().getFromElement().cast();
 	}
 }

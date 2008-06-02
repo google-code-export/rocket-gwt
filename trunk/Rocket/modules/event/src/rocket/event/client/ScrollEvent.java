@@ -19,6 +19,7 @@ public class ScrollEvent extends Event {
 	public ScrollEvent() {
 	}
 
+	@Override
 	public ScrollEvent asScrollEvent() {
 		return this;
 	}

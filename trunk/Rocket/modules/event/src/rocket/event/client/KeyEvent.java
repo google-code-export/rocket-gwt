@@ -29,7 +29,7 @@ public class KeyEvent extends Event {
 	}
 
 	public int getKey() {
-	 return DOM.eventGetKeyCode(this.getEvent());
+	 return this.getEvent().getKeyCode();
 	}
 	
 	public void setKey(final int key) {
@@ -89,19 +89,19 @@ public class KeyEvent extends Event {
 	}
 	
 	public boolean isShift() {
-		return DOM.eventGetShiftKey(this.getEvent());
+		return this.getEvent().getShiftKey();
 	}
 
 	public boolean isControl() {
-		return DOM.eventGetCtrlKey(this.getEvent());
+		return this.getEvent().getCtrlKey();
 	}
 
 	public boolean isAlt() {
-		return DOM.eventGetAltKey(this.getEvent());
+		return this.getEvent().getAltKey();
 	}
 
 	public boolean isMeta() {
-		return DOM.eventGetMetaKey(this.getEvent());
+		return this.getEvent().getMetaKey();
 	}
 
 	/**

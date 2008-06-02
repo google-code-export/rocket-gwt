@@ -20,6 +20,7 @@ public class MouseMoveEvent extends MouseEvent {
 
 	}
 
+	@Override
 	public MouseMoveEvent asMouseMoveEvent() {
 		return this;
 	}

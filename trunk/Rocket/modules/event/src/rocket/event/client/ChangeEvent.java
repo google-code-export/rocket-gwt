@@ -19,6 +19,7 @@ public class ChangeEvent extends Event {
 	public ChangeEvent() {
 	}
 
+	@Override
 	public ChangeEvent asChangeEvent() {
 		return this;
 	}

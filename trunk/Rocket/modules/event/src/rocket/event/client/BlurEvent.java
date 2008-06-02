@@ -19,6 +19,7 @@ public class BlurEvent extends Event {
 	public BlurEvent() {
 	}
 
+	@Override
 	public BlurEvent asBlurEvent() {
 		return this;
 	}

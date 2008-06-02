@@ -19,6 +19,7 @@ public class KeyUpEvent extends KeyEvent {
 	public KeyUpEvent() {
 	}
 
+	@Override
 	public KeyUpEvent asKeyUpEvent() {
 		return this;
 	}
