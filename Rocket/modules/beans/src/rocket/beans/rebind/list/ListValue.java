@@ -26,10 +26,12 @@ import rocket.beans.rebind.collection.CollectionValue;
  */
 public class ListValue extends CollectionValue {
 
+	@Override
 	protected CollectionTemplatedFile createTemplate() {
 		return new ListTemplatedFile();
 	}
 
+	@Override
 	protected String getCollectionTypeName() {
 		return Constants.LIST_TYPE;
 	}

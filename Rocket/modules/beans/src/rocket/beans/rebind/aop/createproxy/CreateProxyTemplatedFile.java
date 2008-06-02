@@ -75,10 +75,12 @@ public class CreateProxyTemplatedFile extends TemplatedFileCodeBlock {
 		this.targetBeanType = targetBeanType;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

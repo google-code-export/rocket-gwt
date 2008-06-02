@@ -31,6 +31,7 @@ public class NullLiteral extends AbstractValue implements Value {
 	/**
 	 * Null can be set on any property type except for the primitives.
 	 */
+	@Override
 	public boolean isCompatibleWith(final Type type) {
 		Checker.notNull("parameter:type", type);
 		
@@ -44,6 +45,7 @@ public class NullLiteral extends AbstractValue implements Value {
 		writer.print( "" + null );
 	}
 	
+	@Override
 	public String toString(){
 		return "null";
 	}

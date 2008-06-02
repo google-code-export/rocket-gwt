@@ -29,7 +29,7 @@ public class ParameterBuilder {
 	public ParameterBuilder() {
 		super();
 
-		this.setParameters(new ArrayList());
+		this.setParameters(new ArrayList<Object>());
 	}
 
 	public ParameterBuilder add(final boolean booleanValue) {
@@ -80,13 +80,13 @@ public class ParameterBuilder {
 	/**
 	 * This list accumulates all the parameters that are added to this builder.
 	 */
-	private List parameters;
+	private List<Object> parameters;
 
-	protected List getParameters() {
+	protected List<Object> getParameters() {
 		return this.parameters;
 	}
 
-	protected void setParameters(final List parameters) {
+	protected void setParameters(final List<Object> parameters) {
 		this.parameters = parameters;
 	}
 

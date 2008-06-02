@@ -64,6 +64,7 @@ public class UnwrapParameterTemplatedFile extends TemplatedFileCodeBlock {
 	 *
 	 * @return
 	 */
+	@Override
 	protected String getResourceName() {
 		String fileName = null;
 
@@ -109,10 +110,12 @@ public class UnwrapParameterTemplatedFile extends TemplatedFileCodeBlock {
 		return fileName;
 	}
 
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 
+	@Override
 	public Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

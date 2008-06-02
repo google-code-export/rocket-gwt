@@ -60,14 +60,17 @@ public class MapAddEntryTemplatedFile extends TemplatedFileCodeBlock {
 		this.value = value;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.MAP_ENTRY_ADD_TEMPLATE;
 	}
 	
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

@@ -21,6 +21,7 @@ package rocket.beans.rebind.xml;
  * @author Miroslav Pokorny
  */
 class AliasTag extends ValueTag {
+
 	public String getName() {
 		return this.getAttribute(Constants.ALIAS_NAME_ATTRIBUTE);
 	}

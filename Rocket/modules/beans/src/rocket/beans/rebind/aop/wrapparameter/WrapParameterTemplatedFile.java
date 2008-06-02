@@ -47,14 +47,17 @@ public class WrapParameterTemplatedFile extends TemplatedFileCodeBlock {
 		this.parameter = parameter;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
 
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 
+	@Override
 	public Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

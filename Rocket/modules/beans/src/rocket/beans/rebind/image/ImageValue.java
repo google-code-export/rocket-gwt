@@ -33,6 +33,7 @@ public class ImageValue extends AbstractValue implements Value {
 		super();
 	}
 	
+	@Override
 	public boolean isCompatibleWith(final Type type) {
 		Checker.notNull("parameter:type", type );
 		
@@ -116,6 +117,7 @@ public class ImageValue extends AbstractValue implements Value {
 		return super.getType();
 	}
 	
+	@Override
 	public void setPropertyType( final Type propertyType ){
 		super.setType(propertyType);
 	}

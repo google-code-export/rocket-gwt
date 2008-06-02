@@ -15,9 +15,7 @@
  */
 package rocket.beans.test.generator.beanreference.complex;
 
-import rocket.beans.client.FactoryBean;
 import rocket.beans.test.generator.beanreference.Bean;
-import rocket.util.client.Checker;
 
 public class HasProductOfFactoryBean{
 	

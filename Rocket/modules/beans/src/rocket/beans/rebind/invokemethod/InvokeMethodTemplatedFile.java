@@ -61,10 +61,12 @@ public class InvokeMethodTemplatedFile extends TemplatedFileCodeBlock {
 		this.method = method;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
-		
+
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

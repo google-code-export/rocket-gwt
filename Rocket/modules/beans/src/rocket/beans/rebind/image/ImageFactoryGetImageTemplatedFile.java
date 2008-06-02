@@ -31,11 +31,13 @@ class ImageFactoryGetImageTemplatedFile extends TemplatedFileCodeBlock {
 	public ImageFactoryGetImageTemplatedFile() {
 		super();
 	}
-	
+
+	@Override
 	public boolean isNative(){
 		return false;
 	}
 	
+	@Override
 	public void setNative( final boolean nativee ){
 		throw new UnsupportedOperationException();
 	}
@@ -74,10 +76,12 @@ class ImageFactoryGetImageTemplatedFile extends TemplatedFileCodeBlock {
 		return this.getImageGetter().getReturnType();
 	}
 	
+	@Override
 	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

@@ -24,10 +24,12 @@ import rocket.beans.rebind.collection.CollectionTemplatedFile;
  */
 public class SetTemplatedFile extends CollectionTemplatedFile {
 
+	@Override
 	protected String getElementsPlaceHolder() {
 		return Constants.SET_ADD_ELEMENTS;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.SET_TEMPLATE;
 	}

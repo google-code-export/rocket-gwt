@@ -363,20 +363,20 @@ public class DocumentWalker {
 	/**
 	 * A set which aggregates all beans encountered within all xml documents.
 	 */
-	private Set beans;
+	private Set<Bean> beans;
 
-	public Set getBeans() {
+	public Set<Bean> getBeans() {
 		Checker.notNull("field:beans", beans);
 		return this.beans;
 	}
 
-	protected void setBeans(final Set beans) {
+	protected void setBeans(final Set<Bean> beans) {
 		Checker.notNull("parameter:beans", beans);
 		this.beans = beans;
 	}
 
-	protected Set createBeans() {
-		return new TreeSet( BEAN_ID_SORTER);
+	protected Set<Bean> createBeans() {
+		return new TreeSet<Bean>( BEAN_ID_SORTER);
 	}
 	
 	/**
@@ -402,8 +402,8 @@ public class DocumentWalker {
 		return this.visitValues(values);
 	}
 
-	protected Set visitProperties(final List propertys) {
-		final Set properties = new TreeSet( PROPERTY_NAME_SORTER );
+	protected Set<Property> visitProperties(final List propertys) {
+		final Set<Property> properties = new TreeSet<Property>( PROPERTY_NAME_SORTER );
 
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
 		
@@ -726,20 +726,20 @@ public class DocumentWalker {
 	/**
 	 * This set aggregates all the aliases found whilst parsing.
 	 */
-	private Set aliases;
+	private Set<Alias> aliases;
 
-	public Set getAliases() {
+	public Set<Alias> getAliases() {
 		Checker.notNull("field:aliases", aliases);
 		return this.aliases;
 	}
 
-	protected void setAliases(final Set aliases) {
+	protected void setAliases(final Set<Alias> aliases) {
 		Checker.notNull("parameter:aliases", aliases);
 		this.aliases = aliases;
 	}
 
-	protected Set createAliases() {
-		return new TreeSet();
+	protected Set<Alias> createAliases() {
+		return new TreeSet<Alias>();
 	}
 
 	protected void addAlias(final Alias alias) {
@@ -813,20 +813,20 @@ public class DocumentWalker {
 	/**
 	 * A set which aggregates all aspects found
 	 */
-	private Set aspects;
+	private Set<Aspect> aspects;
 
-	public Set getAspects() {
+	public Set<Aspect> getAspects() {
 		Checker.notNull("field:aspects", aspects);
 		return this.aspects;
 	}
 
-	protected void setAspects(final Set aspects) {
+	protected void setAspects(final Set<Aspect> aspects) {
 		Checker.notNull("parameter:aspects", aspects);
 		this.aspects = aspects;
 	}
 
-	protected Set createAspects() {
-		return new HashSet();
+	protected Set<Aspect> createAspects() {
+		return new HashSet<Aspect>();
 	}
 
 	protected void addAspect(final Aspect aspect) {

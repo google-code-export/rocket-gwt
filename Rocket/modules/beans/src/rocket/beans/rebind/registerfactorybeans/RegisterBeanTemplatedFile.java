@@ -57,14 +57,17 @@ public class RegisterBeanTemplatedFile extends TemplatedFileCodeBlock {
 		this.factoryBean = factoryBean;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.REGISTER_FACTORY_BEAN_TEMPLATE;
 	}
-	
+
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

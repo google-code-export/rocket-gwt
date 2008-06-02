@@ -63,14 +63,17 @@ class SetPropertyTemplatedFile extends TemplatedFileCodeBlock {
 		this.value = bean;
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.SET_PROPERTY_TEMPLATE;
 	}
 
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
 	
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {

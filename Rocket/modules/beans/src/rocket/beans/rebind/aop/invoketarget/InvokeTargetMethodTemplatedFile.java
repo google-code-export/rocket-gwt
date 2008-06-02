@@ -38,10 +38,12 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 		super();
 	}
 	
+	@Override
 	public boolean isNative(){
 		return false;
 	}
-	
+
+	@Override
 	public void setNative( final boolean ignored ){
 		throw new UnsupportedOperationException();
 	}
@@ -67,14 +69,17 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 	 * 
 	 * @return The file name
 	 */
+	@Override
 	protected String getResourceName() {
 		return this.getMethod().returnsVoid() ? Constants.VOID_TEMPLATE : Constants.TEMPLATE;
 	}
 
+	@Override
 	public InputStream getInputStream(){
 		return super.getInputStream();
 	}
-	
+
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -102,22 +107,27 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 
 		return new CollectionTemplatedCodeBlock() {
 
+			@Override
 			public InputStream getInputStream() {
 				return unwrap.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return unwrap.getValue0(name);
 			}
 
+			@Override
 			protected Collection getCollection() {
 				return InvokeTargetMethodTemplatedFile.this.getMethod().getParameters();
 			}
 
+			@Override
 			protected void prepareToWrite(Object element) {
 				unwrap.setParameter((MethodParameter) element);
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 				writer.print(",");
 			}

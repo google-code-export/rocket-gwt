@@ -42,7 +42,8 @@ public class StringValue extends AbstractValue implements Value {
 	public StringValue(){
 		super();
 	}
-	
+
+	@Override
 	public boolean isCompatibleWith(final Type type) {
 		Checker.notNull("parameter:type", type);
 
@@ -221,12 +222,12 @@ public class StringValue extends AbstractValue implements Value {
 		return this.propertyType;
 	}
 	
+	@Override
 	public void setPropertyType( final Type propertyType ){
 		Checker.notNull("parameter:propertyType", propertyType );
 		this.propertyType = propertyType;
 	}
 	
-
 	public void write(final SourceWriter writer) {
 		Checker.notNull( "parameter:writer", writer );
 		
@@ -276,6 +277,7 @@ public class StringValue extends AbstractValue implements Value {
 		literal.write(writer);
 	}
 
+	@Override
 	public String toString() {
 		return "\"" + this.getValue() + "\"";
 	}

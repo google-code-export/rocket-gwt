@@ -61,10 +61,12 @@ public class ProxyMethodTemplatedFile extends TemplatedFileCodeBlock {
 	 * 
 	 * @return
 	 */
+	@Override
 	protected String getResourceName() {
 		return this.getMethod().returnsVoid() ? Constants.VOID_TEMPLATE : Constants.TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		while (true) {
@@ -82,14 +84,14 @@ public class ProxyMethodTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	protected CodeBlock getParameters() {
-		final List parameters = this.getMethod().getParameters();
-		final Map bindings = new HashMap();
+		final List<MethodParameter> parameters = this.getMethod().getParameters();
+		final Map<String,MethodParameter> bindings = new HashMap<String,MethodParameter>();
 
 		final StringBuilder templateContent = new StringBuilder();
-		final Iterator iterator = parameters.iterator();
+		final Iterator<MethodParameter> iterator = parameters.iterator();
 		int i = 0;
 		while (iterator.hasNext()) {
-			final MethodParameter parameter = (MethodParameter) iterator.next();
+			final MethodParameter parameter = iterator.next();
 
 			final String key = "parameter" + i;
 			bindings.put(key, parameter);
@@ -104,10 +106,12 @@ public class ProxyMethodTemplatedFile extends TemplatedFileCodeBlock {
 		}
 
 		final TemplatedCodeBlock codeBlock = new TemplatedCodeBlock() {
+			@Override
 			protected InputStream getInputStream() {
 				return new StringBufferInputStream(templateContent.toString());
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return bindings.get(name);
 			}

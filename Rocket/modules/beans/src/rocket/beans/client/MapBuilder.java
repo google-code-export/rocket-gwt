@@ -26,46 +26,46 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-public class MapBuilder {
+public class MapBuilder<V> {
 	public MapBuilder() {
 		super();
 
 		this.setMap(this.createMap());
 	}
 
-	public MapBuilder add(final String key, final boolean booleanValue) {
+	public MapBuilder<V> add(final String key, final boolean booleanValue) {
 		return this.add(key, Boolean.valueOf(booleanValue));
 	}
 
-	public MapBuilder add(final String key, final byte byteValue) {
+	public MapBuilder<V> add(final String key, final byte byteValue) {
 		return this.add(key, new Byte(byteValue));
 	}
 
-	public MapBuilder add(final String key, final short shortValue) {
+	public MapBuilder<V> add(final String key, final short shortValue) {
 		return this.add(key, new Short(shortValue));
 	}
 
-	public MapBuilder add(final String key, final int intValue) {
+	public MapBuilder<V> add(final String key, final int intValue) {
 		return this.add(key, new Integer(intValue));
 	}
 
-	public MapBuilder add(final String key, final long longValue) {
+	public MapBuilder<V> add(final String key, final long longValue) {
 		return this.add(key, new Long(longValue));
 	}
 
-	public MapBuilder add(final String key, final float floatValue) {
+	public MapBuilder<V> add(final String key, final float floatValue) {
 		return this.add(key, new Float(floatValue));
 	}
 
-	public MapBuilder add(final String key, final double doubleValue) {
+	public MapBuilder<V> add(final String key, final double doubleValue) {
 		return this.add(key, new Double(doubleValue));
 	}
 
-	public MapBuilder add(final String key, final char charValue) {
+	public MapBuilder<V> add(final String key, final char charValue) {
 		return this.add(key, new Character(charValue));
 	}
 
-	public MapBuilder add(final String key, final Object object) {
+	public MapBuilder<V> add(final String key, final V object) {
 		this.getMap().put(key, object);
 		return this;
 	}
@@ -73,19 +73,19 @@ public class MapBuilder {
 	/**
 	 * A map of values.
 	 */
-	private Map map;
+	private Map<String,V> map;
 
-	public Map getMap() {
+	public Map<String,V> getMap() {
 		Checker.notNull("field:map", map);
 		return this.map;
 	}
 
-	protected void setMap(final Map map) {
+	protected void setMap(final Map<String,V> map) {
 		Checker.notNull("parameter:map", map);
 		this.map = map;
 	}
 
-	protected Map createMap() {
-		return new HashMap();
+	protected Map<String,V> createMap() {
+		return new HashMap<String,V>();
 	}
 }
