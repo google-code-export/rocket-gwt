@@ -20,6 +20,7 @@ public class MouseDownEvent extends MouseButtonEvent {
 
 	}
 
+	@Override
 	public MouseDownEvent asMouseDownEvent() {
 		return this;
 	}

@@ -19,6 +19,7 @@ public class KeyDownEvent extends KeyEvent {
 	public KeyDownEvent() {
 	}
 
+	@Override
 	public KeyDownEvent asKeyDownEvent() {
 		return this;
 	}

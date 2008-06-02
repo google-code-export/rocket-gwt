@@ -31,20 +31,20 @@ abstract public class ListenerCollection {
 	/**
 	 * A list of registered listeners.
 	 */
-	private List listeners;
+	private List<Object> listeners;
 
-	private List getListeners() {
+	private List<Object> getListeners() {
 		Checker.notNull("field:listeners", listeners);
 		return this.listeners;
 	}
 
-	private void setListeners(final List listeners) {
+	private void setListeners(final List<Object> listeners) {
 		Checker.notNull("parameter:listeners", listeners);
 		this.listeners = listeners;
 	}
 
-	protected List createListeners() {
-		return new ArrayList();
+	protected List<Object> createListeners() {
+		return new ArrayList<Object>();
 	}
 
 	/**

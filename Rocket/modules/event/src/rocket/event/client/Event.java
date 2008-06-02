@@ -43,7 +43,7 @@ abstract public class Event implements Destroyable {
 			disableContextMenu0();
 			disabled = true;
 
-			GWT.log("Browser context menu's has been disabled for entire window...", null);
+			GWT.log("Browser context menu's has been disabled for the entire window...", null);
 		}
 	}
 
@@ -83,7 +83,7 @@ abstract public class Event implements Destroyable {
 	static public Event getEvent(final com.google.gwt.user.client.Event rawEvent) {
 		Checker.notNull("parameter:rawEvent", rawEvent);
 
-		final Event event = getEvent(DOM.eventGetType(rawEvent));
+		final Event event = getEvent(rawEvent.getTypeInt());
 		event.setEvent(rawEvent);
 		return event;
 	}
@@ -204,7 +204,7 @@ abstract public class Event implements Destroyable {
 	 * Prevents the browser from completing the default action for this event.
 	 */
 	public void stop() {
-		DOM.eventPreventDefault(this.getEvent());
+		this.getEvent().preventDefault();
 	}
 
 	private boolean cancelled = false;
@@ -234,7 +234,7 @@ abstract public class Event implements Destroyable {
 	 * @return
 	 */
 	public Element getTarget() {
-		return this.hasTarget() ? this.target : DOM.eventGetTarget(this.getEvent());
+		return this.hasTarget() ? this.target : (Element)this.getEvent().getTarget().cast();
 	}
 
 	protected boolean hasTarget() {
@@ -337,7 +337,7 @@ abstract public class Event implements Destroyable {
 	}
 
 	public String toString() {
-		return DOM.eventGetTypeString(this.getEvent());
+		return this.getEvent().getType();
 	}
 
 	public void destroy() {
@@ -346,6 +346,6 @@ abstract public class Event implements Destroyable {
 	}
 
 	public int getBitMask() {
-		return DOM.eventGetType(this.getEvent());
+		return this.getEvent().getTypeInt();
 	}
 }

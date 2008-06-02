@@ -19,6 +19,7 @@ public class MouseUpEvent extends MouseButtonEvent {
 	public MouseUpEvent() {
 	}
 
+	@Override
 	public MouseUpEvent asMouseUpEvent() {
 		return this;
 	}

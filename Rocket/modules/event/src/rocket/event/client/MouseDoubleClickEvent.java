@@ -19,6 +19,7 @@ public class MouseDoubleClickEvent extends MouseButtonEvent {
 	public MouseDoubleClickEvent() {
 	}
 
+	@Override
 	public MouseDoubleClickEvent asMouseDoubleClickEvent() {
 		return this;
 	}

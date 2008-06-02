@@ -19,6 +19,7 @@ public class FocusEvent extends Event {
 	public FocusEvent() {
 	}
 
+	@Override
 	public FocusEvent asFocusEvent() {
 		return this;
 	}
