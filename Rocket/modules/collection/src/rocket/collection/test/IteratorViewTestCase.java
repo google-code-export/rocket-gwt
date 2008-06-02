@@ -26,12 +26,12 @@ import rocket.util.client.Checker;
 
 public class IteratorViewTestCase extends TestCase {
 	public void testIterator0WithNoModifications() {
-		final List list = new ArrayList();
+		final List<String> list = new ArrayList<String>();
 		final Container container = new Container();
 
-		final Object first = "1";
-		final Object second = "2";
-		final Object third = "3";
+		final String first = "1";
+		final String second = "2";
+		final String third = "3";
 
 		list.add(first);
 		container.add(first);
@@ -40,13 +40,13 @@ public class IteratorViewTestCase extends TestCase {
 		list.add(third);
 		container.add(third);
 
-		final Iterator controlIterator = list.iterator();
-		final Iterator iterator = container.iterator();
+		final Iterator<String> controlIterator = list.iterator();
+		final Iterator<String> iterator = container.iterator();
 		while (controlIterator.hasNext()) {
 			assertTrue(iterator.hasNext());
 
-			final Object expectedElement = controlIterator.next();
-			final Object actualElement = iterator.next();
+			final String expectedElement = controlIterator.next();
+			final String actualElement = iterator.next();
 			assertSame(expectedElement, actualElement);
 		}
 
@@ -56,12 +56,12 @@ public class IteratorViewTestCase extends TestCase {
 	}
 
 	public void testIterator1WithRemoves() {
-		final List list = new ArrayList();
+		final List<String> list = new ArrayList<String>();
 		final Container container = new Container();
 
-		final Object first = "1";
-		final Object second = "2";
-		final Object third = "3";
+		final String first = "1";
+		final String second = "2";
+		final String third = "3";
 
 		list.add(first);
 		container.add(first);
@@ -70,13 +70,13 @@ public class IteratorViewTestCase extends TestCase {
 		list.add(third);
 		container.add(third);
 
-		final Iterator controlIterator = list.iterator();
-		final Iterator iterator = container.iterator();
+		final Iterator<String> controlIterator = list.iterator();
+		final Iterator<String> iterator = container.iterator();
 		while (controlIterator.hasNext()) {
 			assertTrue(iterator.hasNext());
 
-			final Object expectedElement = controlIterator.next();
-			final Object actualElement = iterator.next();
+			final String expectedElement = controlIterator.next();
+			final String actualElement = iterator.next();
 			assertSame(expectedElement, actualElement);
 
 			controlIterator.remove();
@@ -91,21 +91,21 @@ public class IteratorViewTestCase extends TestCase {
 	public void testIterator2WithNextThrowingConcurrentModification() {
 		final Container container = new Container();
 
-		final Object first = "1";
-		final Object second = "2";
-		final Object third = "3";
+		final String first = "1";
+		final String second = "2";
+		final String third = "3";
 
 		container.add(first);
 		container.add(second);
 		container.add(third);
 
-		final Iterator iterator = container.iterator();
+		final Iterator<String> iterator = container.iterator();
 
-		final Object fourth = "4";
+		final String fourth = "4";
 		container.add(fourth);
 
 		try {
-			final Object visited = iterator.next();
+			final String visited = iterator.next();
 			fail("Iterator.next should have thrown an Exception and not returned \"" + visited + "\".");
 		} catch (ConcurrentModificationException expected) {
 		}
@@ -114,17 +114,17 @@ public class IteratorViewTestCase extends TestCase {
 	public void testIterator3WithNextFollowedByModificationThenRemoveThrowingConcurrentModification() {
 		final Container container = new Container();
 
-		final Object first = "1";
-		final Object second = "2";
-		final Object third = "3";
+		final String first = "1";
+		final String second = "2";
+		final String third = "3";
 
 		container.add(first);
 		container.add(second);
 		container.add(third);
 
-		final Iterator iterator = container.iterator();
+		final Iterator<String> iterator = container.iterator();
 
-		final Object fourth = "4";
+		final String fourth = "4";
 		iterator.next();
 		container.add(fourth);
 
@@ -138,16 +138,16 @@ public class IteratorViewTestCase extends TestCase {
 	class Container {
 
 		public Container() {
-			this.setList(new ArrayList());
+			this.setList(new ArrayList<String>());
 		}
 
-		void add(Object element) {
+		void add(String element) {
 			this.getList().add(element);
 		}
 
 		Iterator iterator() {
 			final Container that = this;
-			final Iterator wrapped = this.getList().iterator();
+			final Iterator<String> wrapped = this.getList().iterator();
 
 			final IteratorView iterator = new IteratorView() {
 				protected boolean hasNext0() {
@@ -173,14 +173,14 @@ public class IteratorViewTestCase extends TestCase {
 			return iterator;
 		}
 
-		List list;
+		List<String> list;
 
-		List getList() {
+		List<String> getList() {
 			Checker.notNull("field:list", list);
 			return list;
 		}
 
-		void setList(final List list) {
+		void setList(final List<String> list) {
 			Checker.notNull("parameter:list", list);
 			this.list = list;
 		}

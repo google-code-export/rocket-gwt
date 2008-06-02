@@ -26,7 +26,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class VisitedRememberingIterator extends IteratorWrapper implements Iterator {
+public class VisitedRememberingIterator<E> extends IteratorWrapper<E> implements Iterator {
 
 	// ITERATOR
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -34,8 +34,8 @@ public class VisitedRememberingIterator extends IteratorWrapper implements Itera
 		return this.getIterator().hasNext();
 	}
 
-	public Object next() {
-		final Object lastVisited = this.getIterator().next();
+	public E next() {
+		final E lastVisited = this.getIterator().next();
 		this.setLastVisited(lastVisited);
 		return lastVisited;
 	}
@@ -57,9 +57,9 @@ public class VisitedRememberingIterator extends IteratorWrapper implements Itera
 	 * The object that was last visited ie the object returned by the last call
 	 * to {@link #next}
 	 */
-	private Object lastVisited = LAST_VISITED_SET;
+	private E lastVisited = (E)LAST_VISITED_SET;
 
-	public Object getLastVisited() {
+	public E getLastVisited() {
 		Checker.trueValue("lastVisited", LAST_VISITED_SET != this.lastVisited);
 		return lastVisited;
 	}
@@ -68,14 +68,15 @@ public class VisitedRememberingIterator extends IteratorWrapper implements Itera
 		return this.lastVisited == LAST_VISITED_SET;
 	}
 
-	public void setLastVisited(final Object lastVisited) {
+	public void setLastVisited(final E lastVisited) {
 		this.lastVisited = lastVisited;
 	}
 
 	public void clearLastVisited() {
-		this.lastVisited = LAST_VISITED_SET;
+		this.lastVisited = (E)LAST_VISITED_SET;
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + ", lastVisited: " + lastVisited;
 	}

@@ -26,13 +26,13 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class SkippingIterator extends IteratorWrapper implements Iterator {
+public abstract class SkippingIterator<E> extends IteratorWrapper<E> implements Iterator {
 	
 	public SkippingIterator(){
 		super();
 	}
 	
-	public SkippingIterator( final Iterator iterator ){
+	public SkippingIterator( final Iterator<E> iterator ){
 		super();
 		this.setIterator(iterator);
 	}
@@ -59,13 +59,13 @@ public abstract class SkippingIterator extends IteratorWrapper implements Iterat
 
 			// keep looping until the iterator is exhaused or an element that
 			// should not be skipped is found.
-			final Iterator iterator = this.getIterator();
+			final Iterator<E> iterator = this.getIterator();
 			while (true) {
 				if (false == iterator.hasNext()) {
 					break;
 				}
 
-				final Object next = this.getIterator().next();
+				final E next = this.getIterator().next();
 
 				// try next...
 				if (this.skip(next)) {
@@ -81,7 +81,7 @@ public abstract class SkippingIterator extends IteratorWrapper implements Iterat
 		return hasMore;
 	}
 
-	protected abstract boolean skip(Object object);
+	protected abstract boolean skip(E object);
 
 	public Object next() {
 		if (false == findNext()) {
@@ -107,9 +107,9 @@ public abstract class SkippingIterator extends IteratorWrapper implements Iterat
 	 * finding an element that should not be skipped and stores its value here
 	 * ready for {@link #next()}.
 	 */
-	private Object cache = CACHE_NOT_SET;
+	private E cache = (E) CACHE_NOT_SET;
 
-	protected Object getCache() {
+	protected E getCache() {
 		Checker.trueValue("cache", cache != CACHE_NOT_SET);
 		return cache;
 	}
@@ -118,14 +118,15 @@ public abstract class SkippingIterator extends IteratorWrapper implements Iterat
 		return cache != CACHE_NOT_SET;
 	}
 
-	protected void setCache(Object cache) {
+	protected void setCache(E cache) {
 		this.cache = cache;
 	}
 
 	protected void clearCache() {
-		this.cache = CACHE_NOT_SET;
+		this.cache = (E)CACHE_NOT_SET;
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + ", cache: " + cache;
 	}

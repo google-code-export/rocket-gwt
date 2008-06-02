@@ -32,7 +32,7 @@ import java.util.NoSuchElementException;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class IteratorView implements Iterator {
+public abstract class IteratorView<E> implements Iterator {
 
 	protected IteratorView() {
 	}
@@ -44,19 +44,19 @@ public abstract class IteratorView implements Iterator {
 
 	protected abstract boolean hasNext0();
 
-	public Object next() {
+	public E next() {
 		this.modificationGuard();
 		if (false == this.hasNext()) {
 			throw new NoSuchElementException();
 		}
 
-		final Object nexted = this.next0();
+		final E nexted = this.next0();
 		this.afterNext();
 		this.syncModificationCounters();
 		return nexted;
 	}
 
-	protected abstract Object next0();
+	protected abstract E next0();
 
 	protected abstract void afterNext();
 
@@ -93,6 +93,7 @@ public abstract class IteratorView implements Iterator {
 
 	protected abstract int getModificationCounter();
 
+	@Override
 	public String toString() {
 		return super.toString() + ", modificationCounter: " + expectedModificationCount;
 	}

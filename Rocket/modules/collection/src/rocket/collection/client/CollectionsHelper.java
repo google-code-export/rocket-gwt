@@ -15,14 +15,10 @@
  */
 package rocket.collection.client;
 
-import java.util.AbstractList;
-import java.util.AbstractMap;
-import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import rocket.util.client.Checker;
 
@@ -95,79 +91,5 @@ public class CollectionsHelper{
 			}
 		}
 		return key;
-	}
-	
-	/**
-	 * Returns an unmodifiable view of a List. 
-	 * 
-	 * Using this reference the given list may not be modified in any manner, with its references remaining
-	 * constant and with the list only being modifiable using the original list
-	 * reference.
-	 * 
-	 * @param list The source list.
-	 * @return The read only list. Mutator methods throw UnsupportedOperationException...
-	 */
-	public static List unmodifiableList(final List list) {
-		return new AbstractList(){
-
-			public Object get(final int index) {
-				return list.get(index);
-			}
-
-			public int size() {
-				return list.size();
-			}
-		};
-	}
-	/**
-	 * Returns a readonly view of the given set.
-	 * @param set The set
-	 * @return The readonly view
-	 */
-	static public Set unmodifiableSet( final Set set ){
-		return new AbstractSet(){
-			public Iterator iterator() {				
-				final Iterator iterator = set.iterator();
-				return new Iterator(){
-					public boolean hasNext(){
-						return iterator.hasNext();
-					}
-					public Object next(){
-						return iterator.next();
-					}
-					public void remove(){
-						throw new UnsupportedOperationException();
-					}
-				};
-			}
-
-			public int size() {
-				return set.size();
-			}
-
-		};
-	}
-	
-	/**
-	 * Returns a unmodifiable view of the given map.
-	 * @param map The map
-	 * @return The readonly view
-	 */
-	static public Map unmodifiableMap( final Map map ){
-	
-		return new AbstractMap(){
-			
-			public boolean containsKey( final Object key ){
-				return map.containsKey(key);
-			}
-			
-			public Object get( final Object key ){
-				return map.get( key );
-			}
-			
-			public Set entrySet() {
-				return CollectionsHelper.unmodifiableSet(map.entrySet());
-			}		
-		};
 	}
 }
