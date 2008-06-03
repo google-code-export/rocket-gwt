@@ -19,15 +19,14 @@ import java.util.Iterator;
 
 import rocket.testing.client.InteractivePanel;
 import rocket.util.client.Checker;
+import rocket.widget.client.Html;
 import rocket.widget.client.UnorderedListPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 public class UnorderedListPanelTest implements EntryPoint {
 
@@ -46,47 +45,46 @@ public class UnorderedListPanelTest implements EntryPoint {
 		final UnorderedListPanel panel = new UnorderedListPanel();
 		rootPanel.add(panel);
 
-		final InteractivePanel interactivePanel = new InteractivePanel() {
+		final InteractivePanel interactivePanel = new InteractivePanel<Html>() {
 			protected String getCollectionTypeName() {
-				return GWT.getTypeName(panel);
+				return panel.getClass().getName();
 			}
 
 			protected int getPanelWidgetCount() {
 				return panel.getWidgetCount();
 			}
 
-			protected void panelAdd(final Widget widget) {
+			protected void panelAdd(final Html widget) {
 				panel.add(widget);
 			}
 
-			protected void panelInsert(final Widget widget, final int index) {
+			protected void panelInsert(final Html widget, final int index) {
 				panel.insert(widget, index);
 			}
 
-			protected Widget panelGet(final int index) {
-				return panel.get(index);
+			protected Html panelGet(final int index) {
+				return (Html) panel.get(index);
 			}
 
-			protected void panelRemove(final Widget widget) {
+			protected void panelRemove(final Html widget) {
 				panel.remove(widget);
 			}
 
-			protected Widget createElement() {
-				return new HTML("" + System.currentTimeMillis());
+			protected Html createElement() {
+				return new Html("" + System.currentTimeMillis());
 			}
 
-			protected Iterator panelIterator() {
-				return panel.iterator();
+			protected Iterator<Html> panelIterator() {
+				return (Iterator) panel.iterator();
 			}
 
-			protected void checkType(Object element) {
-				if (false == (element instanceof HTML)) {
-					Checker.fail("Unknown element type type:" + GWT.getTypeName(element));
+			protected void checkType(final Html element) {
+				if (false == (element instanceof Html)) {
+					Checker.fail("Unknown element type type:" + element.getClass().getName());
 				}
 			}
 
-			protected String toString(final Object element) {
-				final HTML html = (HTML) element;
+			protected String toString(final Html html) {
 				return html.getText();
 			}
 		};

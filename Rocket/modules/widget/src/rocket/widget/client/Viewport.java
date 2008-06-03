@@ -35,7 +35,6 @@ import rocket.style.client.InlineStyle;
 import rocket.util.client.Checker;
 import rocket.util.client.JavaScript;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -83,6 +82,7 @@ abstract public class Viewport extends CompositeWidget {
 		super();
 	}
 
+	@Override
 	protected void beforeCreateWidget() {
 		super.beforeCreateWidget();
 
@@ -95,35 +95,33 @@ abstract public class Viewport extends CompositeWidget {
 		dispatcher.prepareListenerCollections(EventBitMaskConstants.CHANGE);
 	}
 
+	@Override
 	protected Widget createWidget() {
 		final TileDivPanel widget = this.createInnerPanel();
 		this.setInnerPanel(widget);
 
 		final SimplePanel simplePanel = new SimplePanel();
-		simplePanel.setStylePrimaryName("");
 		simplePanel.setWidget(widget);
 
 		final Element element = simplePanel.getElement();
 		InlineStyle.setString(element, Css.OVERFLOW, "hidden");
-		InlineStyle.setString(element, Css.POSITION, "relative"); // required
-		// to
-		// make
-		// the
-		// inner
-		// div
-		// not
-		// overflow.
+
+		// required to make the inner div not overflow.
+		InlineStyle.setString(element, Css.POSITION, "relative");
 		return simplePanel;
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.VIEWPORT_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.MOUSE_DOWN;
 	}
 
+	@Override
 	protected Element getSunkEventsTarget() {
 		return this.getInnerPanel().getElement();
 	}
@@ -131,6 +129,7 @@ abstract public class Viewport extends CompositeWidget {
 	/**
 	 * Called when this viewport is attached to the DOM.
 	 */
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 		this.redraw();
@@ -193,18 +192,22 @@ abstract public class Viewport extends CompositeWidget {
 	 * at the start of the drag.
 	 */
 	private class ViewportEventPreviewAdapter extends EventPreviewAdapter {
+		@Override
 		protected void onMouseMove(final MouseMoveEvent event) {
 			Viewport.this.onDragMouseMove(event);
 		}
 
+		@Override
 		protected void onMouseOut(final MouseOutEvent event) {
 			Viewport.this.onDragMouseOut(event);
 		}
 
+		@Override
 		protected void onMouseOver(final MouseOverEvent event) {
 			Viewport.this.onDragMouseOver(event);
 		}
 
+		@Override
 		protected void onMouseUp(final MouseUpEvent event) {
 			Viewport.this.onDragMouseUp(event);
 		}
@@ -293,7 +296,7 @@ abstract public class Viewport extends CompositeWidget {
 
 		final Element element = this.getElement();
 		final Element eventTarget = event.getTarget();
-		if (false == DOM.isOrHasChild(element, eventTarget)) {
+		if (false == element.isOrHasChild(eventTarget)) {
 			this.addStyleName(this.getOutOfBoundsStyle());
 		}
 
@@ -311,7 +314,7 @@ abstract public class Viewport extends CompositeWidget {
 
 		final Element element = this.getElement();
 		final Element eventTarget = event.getTarget();
-		if (DOM.isOrHasChild(element, eventTarget)) {
+		if (element.isOrHasChild(eventTarget)) {
 			this.removeStyleName(this.getOutOfBoundsStyle());
 		}
 		event.cancelBubble(true);
@@ -372,7 +375,7 @@ abstract public class Viewport extends CompositeWidget {
 	 * not within the viewport
 	 */
 	protected void removeTilesThatAreOutOfView() {
-		final Iterator iterator = this.getInnerPanel().iterator();
+		final Iterator<Widget> iterator = this.getInnerPanel().iterator();
 		while (iterator.hasNext()) {
 			final Widget tile = (Widget) iterator.next();
 			if (this.isOutOfView(tile)) {
@@ -601,9 +604,10 @@ abstract public class Viewport extends CompositeWidget {
 		}
 
 		public Widget getTile(final int column, final int row) {
-			return (Widget) this.getWidgets().get(this.buildKey(column, row));
+			return this.getWidgets().get(this.buildKey(column, row));
 		}
 
+		@Override
 		public void add(final Widget widget) {
 			super.add(widget);
 
@@ -611,6 +615,7 @@ abstract public class Viewport extends CompositeWidget {
 			this.getWidgets().put(key, widget);
 		}
 
+		@Override
 		public boolean remove(final int index) {
 			final Widget widget = this.get(index);
 			this.getWidgets().remove(this.buildKey(widget));
@@ -626,18 +631,18 @@ abstract public class Viewport extends CompositeWidget {
 			return "" + column + "," + row;
 		}
 
-		Map widgets;
+		Map<String, Widget> widgets;
 
-		Map getWidgets() {
+		Map<String, Widget> getWidgets() {
 			return widgets;
 		}
 
-		void setWidgets(final Map widgets) {
+		void setWidgets(final Map<String, Widget> widgets) {
 			this.widgets = widgets;
 		}
 
-		Map createWidgets() {
-			return new HashMap();
+		Map<String, Widget> createWidgets() {
+			return new HashMap<String, Widget>();
 		}
 	}
 

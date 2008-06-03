@@ -23,18 +23,20 @@ import rocket.util.client.Checker;
 
 public class BindWidgetTemplatedFile extends TemplatedFileCodeBlock {
 
-	public BindWidgetTemplatedFile( final String resourceName, final String id ){
+	public BindWidgetTemplatedFile(final String resourceName, final String id) {
 		super();
-		
+
 		this.setId(id);
 		this.setResourceName(resourceName);
 	}
-	
+
+	@Override
 	protected InputStream getInputStream() {
 		final String fileName = this.getResourceName();
-		return this.getClass().getResourceAsStream( fileName );
+		return this.getClass().getResourceAsStream(fileName);
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 
@@ -45,26 +47,26 @@ public class BindWidgetTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	private String resourceName;
-	
-	protected String getResourceName(){
-		Checker.notEmpty( "field:resourceName", resourceName);
+
+	protected String getResourceName() {
+		Checker.notEmpty("field:resourceName", resourceName);
 		return this.resourceName;
 	}
-	
-	public void setResourceName( final String resourceName ){
-		Checker.notEmpty( "parameter:resourceName", resourceName);
+
+	public void setResourceName(final String resourceName) {
+		Checker.notEmpty("parameter:resourceName", resourceName);
 		this.resourceName = resourceName;
 	}
 
 	private String id;
-	
-	protected String getId(){
-		Checker.notEmpty( "field:id", id);
+
+	protected String getId() {
+		Checker.notEmpty("field:id", id);
 		return this.id;
 	}
-	
-	public void setId( final String id ){
-		Checker.notEmpty( "parameter:id", id);
+
+	public void setId(final String id) {
+		Checker.notEmpty("parameter:id", id);
 		this.id = id;
 	}
 }

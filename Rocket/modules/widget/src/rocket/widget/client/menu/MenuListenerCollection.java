@@ -23,6 +23,7 @@ import rocket.util.client.Checker;
 
 /**
  * A collection of menu event listeners.
+ * 
  * @author Miroslav Pokorny
  */
 class MenuListenerCollection {
@@ -31,17 +32,17 @@ class MenuListenerCollection {
 		this.setListeners(this.createListeners());
 	}
 
-	public void fireMenuOpened( final MenuOpenEvent event ){
+	public void fireMenuOpened(final MenuOpenEvent event) {
 		Checker.notNull("parameter:event", event);
-		
-		final Iterator listeners = this.iterator();
+
+		final Iterator<MenuListener> listeners = this.iterator();
 
 		while (listeners.hasNext()) {
 			final MenuListener listener = (MenuListener) listeners.next();
 			listener.onOpen(event);
-		}	
+		}
 	}
-	
+
 	public void add(final MenuListener menuListener) {
 		Checker.notNull("parameter:menuListener", menuListener);
 		this.getListeners().add(menuListener);
@@ -52,24 +53,24 @@ class MenuListenerCollection {
 		this.getListeners().remove(menuListener);
 	}
 
-	protected Iterator iterator() {
+	protected Iterator<MenuListener> iterator() {
 		return this.getListeners().iterator();
 	}
 
 	/**
 	 * A list that aggregates MenuListeners.
 	 */
-	private List listeners;
+	private List<MenuListener> listeners;
 
-	protected List getListeners() {
+	protected List<MenuListener> getListeners() {
 		return listeners;
 	}
 
-	protected void setListeners(final List listeners) {
+	protected void setListeners(final List<MenuListener> listeners) {
 		this.listeners = listeners;
 	}
 
-	protected List createListeners() {
-		return new ArrayList();
+	protected List<MenuListener> createListeners() {
+		return new ArrayList<MenuListener>();
 	}
 }

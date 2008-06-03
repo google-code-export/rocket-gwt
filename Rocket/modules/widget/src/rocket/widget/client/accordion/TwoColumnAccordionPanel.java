@@ -34,16 +34,17 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 		super();
 	}
 
+	@Override
 	protected Widget createWidget() {
 		return this.createPanel();
 	}
-	
-	protected HorizontalPanel getPanel(){
+
+	protected HorizontalPanel getPanel() {
 		return (HorizontalPanel) this.getWidget();
 	}
-	
+
 	protected abstract HorizontalPanel createPanel();
-	
+
 	protected void replaceContentWidget(final AccordionItem item) {
 		Checker.notNull("parameter:item", item);
 
@@ -55,7 +56,7 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 	}
 
 	protected abstract DivPanel getCaptionsPanel();
-	
+
 	protected DivPanel createCaptionsPanel() {
 		final DivPanel captionsPanel = new DivPanel();
 		captionsPanel.setStyleName(getCaptionsPanelStyle());
@@ -65,7 +66,7 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 	protected abstract String getCaptionsPanelStyle();
 
 	protected abstract DeckPanel getContentsPanel();
-	
+
 	protected DeckPanel createContentsPanel() {
 		final DeckPanel contentsPanel = new DeckPanel();
 		contentsPanel.setStyleName(this.getContentsPanelStyle());
@@ -94,6 +95,7 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 
 	}
 
+	@Override
 	protected void insert0(int insertBefore, AccordionItem item) {
 		Checker.notNull("parameter:item", item);
 
@@ -110,6 +112,7 @@ abstract class TwoColumnAccordionPanel extends AccordionPanel {
 
 	protected abstract String getContentStyle();
 
+	@Override
 	protected void remove0(final int index) {
 		final AccordionItem item = this.get(index);
 		item.getCaptionWidget().removeStyleName(this.getCaptionStyle());

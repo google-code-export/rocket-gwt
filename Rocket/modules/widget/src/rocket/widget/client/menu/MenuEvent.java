@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * This common base class contains stuff common to all menu events.
+ * 
  * @author Miroslav Pokorny
  */
 abstract class MenuEvent {
@@ -31,32 +32,33 @@ abstract class MenuEvent {
 	private Menu menu;
 
 	public Menu getMenu() {
-		Checker.notNull( "field:menu", menu );
+		Checker.notNull("field:menu", menu);
 		return menu;
 	}
-	
-	void setMenu( final Menu menu ){
-		Checker.notNull( "parameter:menu", menu );
+
+	void setMenu(final Menu menu) {
+		Checker.notNull("parameter:menu", menu);
 		this.menu = menu;
 	}
-	
+
 	/**
 	 * The menu widget that is being opened, typically a menu list of some sort.
 	 */
 	private Widget widget;
 
 	Widget getWidget() {
-		Checker.notNull("field:widget", widget );
+		Checker.notNull("field:widget", widget);
 		return this.widget;
 	}
 
 	void setWidget(final Widget widget) {
-		Checker.notNull("parameter:widget", widget );
+		Checker.notNull("parameter:widget", widget);
 		this.widget = widget;
 	}
 
 	/**
 	 * May be used to test and retrieve the MenuItem that was opened/selected.
+	 * 
 	 * @return May be null if the selected widget was a SubMenuItem
 	 */
 	public MenuItem getMenuItem() {
@@ -65,7 +67,9 @@ abstract class MenuEvent {
 	}
 
 	/**
-	 * May be used to test and retrieve the SubMenuItem that was opened/selected.
+	 * May be used to test and retrieve the SubMenuItem that was
+	 * opened/selected.
+	 * 
 	 * @return May be null if the selected widget was a MenuItem
 	 */
 	public SubMenuItem getSubMenuItem() {

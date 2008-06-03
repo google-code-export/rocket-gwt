@@ -49,7 +49,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class TabPanelTest implements EntryPoint {
 
-	
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
@@ -57,60 +56,63 @@ public class TabPanelTest implements EntryPoint {
 				Window.alert(caught.getMessage() + "\n" + StackTrace.asString(caught));
 			}
 		});
-	
+
 		final DockPanel dockPanel = new DockPanel();
-		
+
 		final TabPanel topTabPanel = new TopTabPanel();
 		completeTabPanel(topTabPanel);
-		
+
 		final TabPanel bottomTabPanel = new BottomTabPanel();
 		completeTabPanel(bottomTabPanel);
-		
+
 		final TabPanel leftTabPanel = new LeftTabPanel();
 		completeTabPanel(leftTabPanel);
-		
+
 		final TabPanel rightTabPanel = new RightTabPanel();
 		completeTabPanel(rightTabPanel);
-		
-		TabPanelControl control = new TabPanelControl( topTabPanel );		
-		
-		final FlowPanel flowPanel = new FlowPanel();
-		flowPanel.add( this.createTabPanelButton( "TopTabPanel", topTabPanel, control, dockPanel ));
-		flowPanel.add( this.createTabPanelButton( "RightTabPanel", rightTabPanel, control, dockPanel));
-		flowPanel.add( this.createTabPanelButton( "BottomTabPanel", bottomTabPanel, control, dockPanel));
-		flowPanel.add( this.createTabPanelButton( "LeftTabPanel", leftTabPanel, control, dockPanel));
-		
-		dockPanel.add( flowPanel, DockPanel.NORTH );
-		dockPanel.add( control, DockPanel.NORTH );
-		
-		dockPanel.add( topTabPanel, DockPanel.CENTER );
 
-		RootPanel.get().add( dockPanel );
+		TabPanelControl control = new TabPanelControl(topTabPanel);
+
+		final FlowPanel flowPanel = new FlowPanel();
+		flowPanel.add(this.createTabPanelButton("TopTabPanel", topTabPanel, control, dockPanel));
+		flowPanel.add(this.createTabPanelButton("RightTabPanel", rightTabPanel, control, dockPanel));
+		flowPanel.add(this.createTabPanelButton("BottomTabPanel", bottomTabPanel, control, dockPanel));
+		flowPanel.add(this.createTabPanelButton("LeftTabPanel", leftTabPanel, control, dockPanel));
+
+		dockPanel.add(flowPanel, DockPanel.NORTH);
+		dockPanel.add(control, DockPanel.NORTH);
+
+		dockPanel.add(topTabPanel, DockPanel.CENTER);
+
+		RootPanel.get().add(dockPanel);
 	}
-	
+
 	/**
-	 * Creates a button with the given label that when clicked makes the corresponding TabPanel visible by setting it
-	 * to the center of the dockPanel
+	 * Creates a button with the given label that when clicked makes the
+	 * corresponding TabPanel visible by setting it to the center of the
+	 * dockPanel
+	 * 
 	 * @param label
 	 * @param tabPanel
 	 * @param control
 	 * @param dockPanel
 	 * @return
 	 */
-	Button createTabPanelButton( final String label, final TabPanel tabPanel, final TabPanelControl control, final DockPanel dockPanel ){
-		final Button button = new Button( label);
-		button.addMouseEventListener( new MouseEventAdapter(){
+	Button createTabPanelButton(final String label, final TabPanel tabPanel, final TabPanelControl control, final DockPanel dockPanel) {
+		final Button button = new Button(label);
+		button.addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
-				control.setTabPanel( tabPanel );
-				
-				dockPanel.remove( dockPanel.getWidget( 2 ));// nasty hack but 2 is the center widget.
-				dockPanel.add( tabPanel, DockPanel.CENTER );
+				control.setTabPanel(tabPanel);
+
+				dockPanel.remove(dockPanel.getWidget(2));// nasty hack but 2
+				// is the center
+				// widget.
+				dockPanel.add(tabPanel, DockPanel.CENTER);
 			}
-		});	
+		});
 		return button;
 	}
-	
-	
+
 	/**
 	 * Adds a tabListener and creates a InteractiveList control enabling
 	 * manipulation of the TabPanel
@@ -124,7 +126,7 @@ public class TabPanelTest implements EntryPoint {
 
 		final TabItem item = new TabItem();
 		item.setCaption("Unremovable TabItem");
-		item.setContent(new HTML(TabPanelTest.createContent( tabPanel )));
+		item.setContent(new HTML(TabPanelTest.createContent(tabPanel)));
 		addTabItemWidgets(item);
 		tabPanel.add(item, false);
 		tabPanel.select(0);
@@ -145,7 +147,7 @@ public class TabPanelTest implements EntryPoint {
 				Checker.notNull("TabSelectEvent.previouslySelected", event.getPreviouslySelected());
 				final TabItem item = event.getCurrentSelection();
 				final String caption = item.getCaption();
-				//control.log("tabSelected caption\"" + caption + "\".");
+				// control.log("tabSelected caption\"" + caption + "\".");
 			}
 
 			public void onBeforeTabClose(final BeforeTabCloseEvent event) {
@@ -160,25 +162,25 @@ public class TabPanelTest implements EntryPoint {
 			public void onTabClose(final TabCloseEvent event) {
 				final TabItem item = event.getClosed();
 				final String caption = item.getCaption();
-				//control.log("tabClosed \"" + caption + "\".");
+				// control.log("tabClosed \"" + caption + "\".");
 			}
 		});
 	}
 
-	final static String createContent( final TabPanel tabPanel ) {
-		
-		String typeName = GWT.getTypeName( tabPanel );
-		typeName = typeName.substring( typeName.lastIndexOf( '.') + 1);
-		
+	final static String createContent(final TabPanel tabPanel) {
+
+		String typeName = tabPanel.getClass().getName();
+		typeName = typeName.substring(typeName.lastIndexOf('.') + 1);
+
 		final Element element = DOM.getElementById("lorem");
 		Checker.notNull("Unable to find hidden div with lorem text", element);
 		return "<h2>" + typeName + "</h2>" + DOM.getInnerHTML(element);
 	}
 
-	class TabPanelControl extends rocket.testing.client.InteractiveList {
-		TabPanelControl( final TabPanel tabPanel ) {
+	class TabPanelControl extends rocket.testing.client.InteractiveList<TabItem> {
+		TabPanelControl(final TabPanel tabPanel) {
 			super();
-			
+
 			this.setTabPanel(tabPanel);
 		}
 
@@ -194,12 +196,12 @@ public class TabPanelTest implements EntryPoint {
 			throw new UnsupportedOperationException("isEmpty()");
 		}
 
-		protected boolean listAdd(final Object element) {
+		protected boolean listAdd(final TabItem element) {
 			this.getTabPanel().add((TabItem) element, closablePrompt());
 			return true;
 		}
 
-		protected void listInsert(final int index, final Object element) {
+		protected void listInsert(final int index, final TabItem element) {
 			this.getTabPanel().insert(index, (TabItem) element, closablePrompt());
 		}
 
@@ -207,36 +209,36 @@ public class TabPanelTest implements EntryPoint {
 			return Window.confirm("Should the new tabPanel be closable ?\nOk=YES / Cancel=NO");
 		}
 
-		protected Object listGet(final int index) {
+		protected TabItem listGet(final int index) {
 			return this.getTabPanel().get(index);
 		}
 
-		protected Object listRemove(final int index) {
+		protected TabItem listRemove(final int index) {
 			final TabPanel tabPanel = this.getTabPanel();
 			final TabItem tabItem = tabPanel.get(index);
 			tabPanel.remove(index);
 			return tabItem;
 		}
 
-		protected Object listSet(final int index, final Object element) {
+		protected TabItem listSet(final int index, final TabItem element) {
 			throw new UnsupportedOperationException("set()");
 		}
 
-		protected Object createElement() {
+		protected TabItem createElement() {
 			final TabItem item = new TabItem();
 			item.setCaption("" + System.currentTimeMillis());
-			
-			item.setContent(new HTML(TabPanelTest.createContent( this.getTabPanel() )));
+
+			item.setContent(new HTML(TabPanelTest.createContent(this.getTabPanel())));
 
 			addTabItemWidgets(item);
 			return item;
 		}
 
-		protected Iterator listIterator() {
+		protected Iterator<TabItem> listIterator() {
 			return this.getTabPanel().iterator();
 		}
 
-		protected void checkType(Object element) {
+		protected void checkType(TabItem element) {
 			if (false == (element instanceof TabItem)) {
 				Checker.fail("Unknown element type. element ");
 			}
@@ -248,8 +250,7 @@ public class TabPanelTest implements EntryPoint {
 		 * @param element
 		 * @return
 		 */
-		protected String toString(final Object element) {
-			final TabItem tabItem = (TabItem) element;
+		protected String toString(final TabItem tabItem) {
 			return tabItem.getCaption();
 		}
 
@@ -277,7 +278,7 @@ public class TabPanelTest implements EntryPoint {
 		tabItem.addTabWidget(createTabItemWidget("magnify.png", "1st icon before"), false);
 		tabItem.addTabWidget(createTabItemWidget("get.png", "2nd icon before"), false);
 		tabItem.addTabWidget(createTabItemWidget("go.png", "1st icon after"), true);
-		
+
 		tabItem.addTabWidget(createTabItemWidget("home.png", "2nd icon after"), true);
 	}
 

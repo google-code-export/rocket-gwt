@@ -66,18 +66,20 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
  * 
  * </ul>
  * 
- * @author Miroslav Pokorny (mP)
+ * @author Miroslav Pokorny (mP) ROCKET add generics to the list views
  */
-public abstract class SortableTable extends CompositeWidget {
+public abstract class SortableTable<R> extends CompositeWidget {
 
 	public SortableTable() {
 		super();
 	}
 
+	@Override
 	protected Widget createWidget() {
 		return this.createGrid();
 	}
 
+	@Override
 	protected void afterCreateWidget() {
 		this.setColumnComparators(this.createColumnComparators());
 		this.setRows(this.createRows());
@@ -91,6 +93,7 @@ public abstract class SortableTable extends CompositeWidget {
 		return WidgetConstants.SORTABLE_TABLE_HEADER_ROW_STYLE;
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.SORTABLE_TABLE_STYLE;
 	}
@@ -228,7 +231,8 @@ public abstract class SortableTable extends CompositeWidget {
 	 * also factors into whether the column is sorted in ascending or descending
 	 * mode.
 	 * 
-	 * @param column The column
+	 * @param column
+	 *            The column
 	 * @return The matching Comparator for the given column
 	 */
 	protected Comparator getColumnComparator(final int column) {
@@ -269,7 +273,7 @@ public abstract class SortableTable extends CompositeWidget {
 	private int sortedColumn = -1;
 
 	public int getSortedColumn() {
-		Checker.greaterThanOrEqual("field:sortedColumn", 0, this.sortedColumn );
+		Checker.greaterThanOrEqual("field:sortedColumn", 0, this.sortedColumn);
 		return this.sortedColumn;
 	}
 
@@ -279,8 +283,7 @@ public abstract class SortableTable extends CompositeWidget {
 
 	public void setSortedColumn(final int sortedColumn) {
 		if (false == this.isColumnSortable(sortedColumn)) {
-			Checker.fail("parameter:sortedColumn", "The parameter:sortedColumn is not a sortable column. sortedColumn: "
-					+ sortedColumn);
+			Checker.fail("parameter:sortedColumn", "The parameter:sortedColumn is not a sortable column. sortedColumn: " + sortedColumn);
 		}
 
 		if (this.isAutoRedraw()) {
@@ -372,7 +375,7 @@ public abstract class SortableTable extends CompositeWidget {
 	 */
 	protected RowList createRows() {
 		return new RowList();
-	}; 
+	};
 
 	/**
 	 * Returns a list view of the sorted rows. The indexes match the display.
@@ -386,27 +389,33 @@ public abstract class SortableTable extends CompositeWidget {
 		final SortedRowList sortedRowList = rowList.getSorted();
 
 		return new AbstractList() {
+			@Override
 			public int size() {
 				return rowList.size();
 			}
 
+			@Override
 			public boolean add(final Object element) {
 				rowList.add(element);
 				return true;
 			}
 
+			@Override
 			public void add(final int index, final Object element) {
-				throw new RuntimeException("Adding in a specific slot is not supported, add with add( Object )");
+				throw new UnsupportedOperationException("Adding in a specific slot is not supported, add with add( Object )");
 			}
 
+			@Override
 			public Object get(final int index) {
 				return sortedRowList.get(index);
 			}
 
+			@Override
 			public boolean remove(final Object row) {
 				return rowList.remove(row);
 			}
 
+			@Override
 			public Object remove(final int index) {
 				final Object removing = this.get(index);
 				rowList.remove(removing);
@@ -414,14 +423,15 @@ public abstract class SortableTable extends CompositeWidget {
 			}
 
 			// TODO make sure this only redraws the row.
+			@Override
 			public Object set(final int index, final Object element) {
-				final Object replaced = sortedRowList.set(index, element );
-				
+				final Object replaced = sortedRowList.set(index, element);
+
 				final SortedRowListElement sortedRowListElement = sortedRowList.getSortedRowListElement(index);
 				sortedRowListElement.clear();
-				
-				SortableTable.this.redraw( sortedRowListElement, index);
-				
+
+				SortableTable.this.redraw(sortedRowListElement, index);
+
 				return replaced;
 			}
 		};
@@ -541,23 +551,23 @@ public abstract class SortableTable extends CompositeWidget {
 
 		for (int row = 0; row < rowSize; row++) {
 			final SortedRowListElement rowObject = (SortedRowListElement) rows.getSortedRowListElement(row);
-			this.redraw( rowObject, rowIndex );
+			this.redraw(rowObject, rowIndex);
 			rowIndex++;
 		}
 	}
 
-	protected void redraw( final SortedRowListElement rowData, final int rowIndex ){
-		Checker.notNull("parameter:rowData", rowData );
-		Checker.greaterThanOrEqual("parameter:rowIndex", 0, rowIndex );
-		
+	protected void redraw(final SortedRowListElement rowData, final int rowIndex) {
+		Checker.notNull("parameter:rowData", rowData);
+		Checker.greaterThanOrEqual("parameter:rowIndex", 0, rowIndex);
+
 		final Grid table = this.getGrid();
 		final int columnCount = this.getColumnCount();
 		for (int column = 0; column < columnCount; column++) {
 			final Widget cell = rowData.getWidget(column);
-			table.setWidget(rowIndex, column, cell);	
+			table.setWidget(rowIndex, column, cell);
 		}
 	}
-	
+
 	protected String getEvenRowStyle() {
 		return WidgetConstants.SORTABLE_TABLE_EVEN_ROW_STYLE;
 	}
@@ -661,6 +671,7 @@ public abstract class SortableTable extends CompositeWidget {
 			this.ascendingSort = ascendingSort;
 		}
 
+		@Override
 		public String toString() {
 			return super.toString() + ", comparator:" + comparator + ", ascendingSort: " + ascendingSort;
 		}
@@ -689,6 +700,7 @@ public abstract class SortableTable extends CompositeWidget {
 			this.sorted = sorted;
 		}
 
+		@Override
 		public boolean add(final Object element) {
 			Checker.notNull("parameter:element", element);
 
@@ -703,6 +715,7 @@ public abstract class SortableTable extends CompositeWidget {
 			return true;
 		}
 
+		@Override
 		public void add(final int index, final Object element) {
 			Checker.notNull("parameter:element", element);
 
@@ -716,6 +729,7 @@ public abstract class SortableTable extends CompositeWidget {
 			SortableTable.this.redrawIfAutoEnabled();
 		}
 
+		@Override
 		public boolean addAll(final Collection collection) {
 			final boolean redraw = SortableTable.this.isAutoRedraw();
 			SortableTable.this.setAutoRedraw(false);
@@ -735,6 +749,7 @@ public abstract class SortableTable extends CompositeWidget {
 			return modified;
 		}
 
+		@Override
 		public boolean addAll(final int index, final Collection collection) {
 			final boolean redraw = SortableTable.this.isAutoRedraw();
 			SortableTable.this.setAutoRedraw(false);
@@ -756,6 +771,7 @@ public abstract class SortableTable extends CompositeWidget {
 			return modified;
 		}
 
+		@Override
 		public void clear() {
 			// backup autoRedraw flag
 			final boolean autoRedraw = SortableTable.this.isAutoRedraw();
@@ -769,6 +785,7 @@ public abstract class SortableTable extends CompositeWidget {
 			SortableTable.this.redrawIfAutoEnabled();
 		}
 
+		@Override
 		public Object remove(final int index) {
 			final Object removed = super.remove(index);
 
@@ -783,6 +800,7 @@ public abstract class SortableTable extends CompositeWidget {
 			return removed;
 		}
 
+		@Override
 		public boolean remove(final Object row) {
 			final boolean removed = super.remove(row);
 
@@ -797,6 +815,7 @@ public abstract class SortableTable extends CompositeWidget {
 			return removed;
 		}
 
+		@Override
 		public Object set(final int index, final Object element) {
 			final Object replaced = super.set(index, element);
 			this.getSorted().set(index, element);
@@ -836,14 +855,18 @@ public abstract class SortableTable extends CompositeWidget {
 				 * default behaviour which unwraps the row object.
 				 */
 				new AbstractList() {
+
+					@Override
 					public Object get(final int index) {
 						return SortedRowList.this.getSortedRowListElement(index);
 					}
 
+					@Override
 					public Object set(final int index, final Object element) {
 						return SortedRowList.this.setSortedRowListElement(index, (SortedRowListElement) element);
 					}
 
+					@Override
 					public int size() {
 						return SortedRowList.this.size();
 					}
@@ -865,7 +888,7 @@ public abstract class SortableTable extends CompositeWidget {
 
 		public boolean add(final Object row) {
 			final SortedRowListElement sortedRowListElement = new SortedRowListElement(SortableTable.this.getColumnCount());
-			sortedRowListElement.setRow(row);
+			sortedRowListElement.setRow((R) row);
 
 			super.add(sortedRowListElement);
 			this.setUnsorted(true);
@@ -873,6 +896,7 @@ public abstract class SortableTable extends CompositeWidget {
 			return true;
 		}
 
+		@Override
 		public void add(final int index, final Object row) {
 			throw new UnsupportedOperationException("Adding an element in a specific slot is not supported.");
 		}
@@ -881,6 +905,7 @@ public abstract class SortableTable extends CompositeWidget {
 			throw new UnsupportedOperationException("Adding a collection in a specific slot is not supported.");
 		}
 
+		@Override
 		public Object get(final int index) {
 			final SortedRowListElement sortedRowListElement = (SortedRowListElement) super.get(index);
 			return null == sortedRowListElement ? null : sortedRowListElement.getRow();
@@ -893,12 +918,14 @@ public abstract class SortableTable extends CompositeWidget {
 		/**
 		 * Assumes that the list is sorted so be careful when removing...
 		 */
+		@Override
 		public Object remove(final int index) {
 			final SortedRowListElement sortedRowListElement = (SortedRowListElement) super.remove(index);
 			sortedRowListElement.clear();
 			return sortedRowListElement.getRow();
 		}
 
+		@Override
 		public boolean remove(final Object row) {
 
 			int index = -1;
@@ -916,8 +943,9 @@ public abstract class SortableTable extends CompositeWidget {
 			return -1 != index;
 		}
 
+		@Override
 		public Object set(final int index, final Object row) {
-			throw new RuntimeException("Replacing an element in a specific slot is not supported.");
+			throw new UnsupportedOperationException("Replacing an element in a specific slot is not supported.");
 		}
 
 		public Object setSortedRowListElement(final int index, final SortedRowListElement element) {
@@ -971,14 +999,14 @@ public abstract class SortableTable extends CompositeWidget {
 		/**
 		 * The source value object
 		 */
-		private Object row;
+		private R row;
 
-		Object getRow() {
+		R getRow() {
 			Checker.notNull("field:row", row);
 			return this.row;
 		}
 
-		void setRow(final Object row) {
+		void setRow(final R row) {
 			Checker.notNull("parameter:row", row);
 			this.row = row;
 		}

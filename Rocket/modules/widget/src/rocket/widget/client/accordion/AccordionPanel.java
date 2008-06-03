@@ -36,6 +36,7 @@ public abstract class AccordionPanel extends CompositeWidget {
 		super();
 	}
 
+	@Override
 	protected void beforeCreateWidget() {
 		super.beforeCreateWidget();
 
@@ -43,6 +44,7 @@ public abstract class AccordionPanel extends CompositeWidget {
 		this.setAccordionListeners(createAccordionListeners());
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS;
 	}

@@ -73,8 +73,8 @@ public class SliderTest implements EntryPoint {
 		this.buildHorizontalSlider(grid);
 		this.buildVerticalSlider(grid);
 		this.buildFloatingSlider(grid);
-		
-		Widgets.forceDocumentContentsToScroll( 100 );
+
+		Widgets.forceDocumentContentsToScroll(100);
 	}
 
 	void buildFloatingSlider(final Grid grid) {
@@ -99,7 +99,8 @@ public class SliderTest implements EntryPoint {
 
 		slider.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
-				value.setText("Values: " + slider.getXValue() + "," + slider.getYValue() + " of " + slider.getMaximumXValue() + "," + slider.getMaximumYValue() );
+				value.setText("Values: " + slider.getXValue() + "," + slider.getYValue() + " of " + slider.getMaximumXValue() + ","
+						+ slider.getMaximumYValue());
 
 				counter++;
 				changeCounter.setText("ChangeEvent counter: " + counter);
@@ -134,7 +135,7 @@ public class SliderTest implements EntryPoint {
 
 		slider.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
-				value.setText("Value: " + slider.getValue() + " of " + slider.getMaximumValue() );
+				value.setText("Value: " + slider.getValue() + " of " + slider.getMaximumValue());
 
 				counter++;
 				changeCounter.setText("ChangeEvent counter: " + counter);
@@ -168,7 +169,7 @@ public class SliderTest implements EntryPoint {
 
 		slider.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
-				value.setText("Value: " + slider.getValue() + " of " + slider.getMaximumValue() );
+				value.setText("Value: " + slider.getValue() + " of " + slider.getMaximumValue());
 
 				counter++;
 				changeCounter.setText("ChangeEvent counter: " + counter);
@@ -193,10 +194,10 @@ public class SliderTest implements EntryPoint {
 		final int columns = 10;
 
 		final Grid grid = new Grid(rows, columns);
-		
+
 		final Element gridElement = grid.getElement();
-		InlineStyle.setString( gridElement, Css.BORDER_COLLAPSE, "collapse" );
-		InlineStyle.setString( gridElement, Css.BORDER_SPACING, "0" );
+		InlineStyle.setString(gridElement, Css.BORDER_COLLAPSE, "collapse");
+		InlineStyle.setString(gridElement, Css.BORDER_SPACING, "0");
 
 		final CellFormatter cellFormatter = grid.getCellFormatter();
 
@@ -208,8 +209,7 @@ public class SliderTest implements EntryPoint {
 				final int green = 224 - c * 4;
 				final int blue = 224 ^ r ^ c;
 				final int rgb = red * 256 * 256 + green * 256 + blue;
-				InlineStyle.setString(element, Css.BACKGROUND_COLOR,
-						"#" + Integer.toHexString(rgb));
+				InlineStyle.setString(element, Css.BACKGROUND_COLOR, "#" + Integer.toHexString(rgb));
 			}
 		}
 		return grid;

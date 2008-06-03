@@ -40,43 +40,43 @@ public class PagerTest implements EntryPoint {
 				Window.alert("Caught:" + caught + "\nmessage\"" + caught.getMessage() + "\".");
 			}
 		});
-		
-		final Label summary = new Label( "");
-		summary.addStyleName( "pagerTest-summary");
-		
-		final DockPanel dockPanel = new DockPanel();
-		dockPanel.add( summary, DockPanel.NORTH );
 
-		final String item = DOM.getInnerHTML(DOM.getElementById( "item"));
-		
+		final Label summary = new Label("");
+		summary.addStyleName("pagerTest-summary");
+
+		final DockPanel dockPanel = new DockPanel();
+		dockPanel.add(summary, DockPanel.NORTH);
+
+		final String item = DOM.getInnerHTML(DOM.getElementById("item"));
+
 		final VerticalPanel list = new VerticalPanel();
-		
+
 		final Pager pager = new Pager();
-		pager.setFirstItem( 0 );
-		pager.setLastItem( 1000 );
-		pager.setPageLinksAcrossCount( 10 );
-		pager.setItemsPerPage( 10 );
-		
+		pager.setFirstItem(0);
+		pager.setLastItem(1000);
+		pager.setPageLinksAcrossCount(10);
+		pager.setItemsPerPage(10);
+
 		pager.addChangeEventListener(new ChangeEventListener() {
 			public void onChange(final ChangeEvent event) {
 				final int currentPage = pager.getCurrentItem();
 				final int itemsPerPage = pager.getItemsPerPage();
 				final int lastItem = pager.getLastItem();
-				final int last = Math.min( currentPage + itemsPerPage, lastItem ) - 1;
-				
-				summary.setText("Results: " + pager.getCurrentItem() + "-" + last + " of " + lastItem );
-				
+				final int last = Math.min(currentPage + itemsPerPage, lastItem) - 1;
+
+				summary.setText("Results: " + pager.getCurrentItem() + "-" + last + " of " + lastItem);
+
 				list.clear();
-				for( int i= currentPage; i < last; i++ ){
-					final String html = Utilities.format( item, new Object[]{ "" + i });
-					list.add( new Html( html ));
+				for (int i = currentPage; i < last; i++) {
+					final String html = Utilities.format(item, new Object[] { "" + i });
+					list.add(new Html(html));
 				}
 			}
 		});
 
-		pager.setCurrentItem( 0 );
-		dockPanel.add( pager, DockPanel.SOUTH );
-		dockPanel.add( list, DockPanel.CENTER );
-		RootPanel.get().add( dockPanel );
+		pager.setCurrentItem(0);
+		dockPanel.add(pager, DockPanel.SOUTH);
+		dockPanel.add(list, DockPanel.CENTER);
+		RootPanel.get().add(dockPanel);
 	}
 }

@@ -23,7 +23,7 @@ import com.google.gwt.user.client.Element;
 
 /**
  * A SpanPanel is a panel that uses a span as the primary container widget.
- *  
+ * 
  * @author Miroslav Pokorny (mP)
  */
 public class SpanPanel extends Panel {
@@ -36,6 +36,7 @@ public class SpanPanel extends Panel {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(final Element element) {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.SPAN_TAG);
 	}
@@ -46,14 +47,17 @@ public class SpanPanel extends Panel {
 	 * 
 	 * @return A new span element
 	 */
+	@Override
 	protected Element createPanelElement() {
 		return DOM.createSpan();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.SPAN_PANEL_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
@@ -67,12 +71,14 @@ public class SpanPanel extends Panel {
 		return this.getElement();
 	}
 
+	@Override
 	protected void insert0(final Element element, final int indexBefore) {
 		Checker.notNull("parameter:element", element);
 
 		DOM.insertChild(this.getParentElement(), element, indexBefore);
 	}
 
+	@Override
 	protected void remove0(final Element element, final int index) {
 		Checker.notNull("parameter:element", element);
 

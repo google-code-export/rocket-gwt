@@ -73,10 +73,10 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.MOUSE_CLICK | EventBitMaskConstants.MOUSE_OVER | EventBitMaskConstants.MOUSE_OUT;
 	}
-	
-	protected void onDetach(){
+
+	protected void onDetach() {
 		super.onDetach();
-		
+
 		this.hide();
 	}
 
@@ -183,12 +183,15 @@ public abstract class Menu extends CompositePanel implements HasWidgets {
 
 	/**
 	 * This method is respsonible for notifying or firing the MenuOpenEvent
-	 * @param event The mouse event that triggered the menu event
-	 * @param source The widget that recieved
+	 * 
+	 * @param event
+	 *            The mouse event that triggered the menu event
+	 * @param source
+	 *            The widget that recieved
 	 */
 	protected void fireMenuOpened(final MouseEvent event, final Widget source) {
 		final MenuOpenEvent menuOpenEvent = new MenuOpenEvent();
-		menuOpenEvent.setMenu( this );
+		menuOpenEvent.setMenu(this);
 		menuOpenEvent.setWidget(source);
 
 		this.getMenuListeners().fireMenuOpened(menuOpenEvent);

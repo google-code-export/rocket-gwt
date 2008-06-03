@@ -42,14 +42,17 @@ public class TextArea extends TextEntryWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(Element element) {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.TEXTAREA_TAG);
 	}
 
+	@Override
 	protected Element createElement() {
 		return DOM.createTextArea();
 	}
 
+	@Override
 	protected void afterCreateElement() {
 		final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
 		this.setEventListenerDispatcher(dispatcher);
@@ -59,10 +62,12 @@ public class TextArea extends TextEntryWidget {
 		dispatcher.setKeyEventListeners(dispatcher.createKeyEventListeners());
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.TEXTAREA_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.KEY_EVENTS | EventBitMaskConstants.CHANGE;
 	}
@@ -80,7 +85,7 @@ public class TextArea extends TextEntryWidget {
 	}
 
 	public int getColumns() {
-		return DOM.getElementPropertyInt(getElement(), "cols");
+		return this.getElement().getPropertyInt("cols");
 	}
 
 	public void setColumns(final int columns) {
@@ -88,10 +93,10 @@ public class TextArea extends TextEntryWidget {
 	}
 
 	public int getRows() {
-		return DOM.getElementPropertyInt(getElement(), "rows");
+		return getElement().getPropertyInt("rows");
 	}
 
 	public void setRows(final int rows) {
-		DOM.setElementPropertyInt(getElement(), "rows", rows);
+		getElement().setPropertyInt("rows", rows);
 	}
 }

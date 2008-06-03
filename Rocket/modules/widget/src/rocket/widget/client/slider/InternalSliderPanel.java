@@ -21,7 +21,6 @@ import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.util.client.JavaScript;
-import rocket.widget.client.Html;
 import rocket.widget.client.Widgets;
 
 import com.google.gwt.user.client.DOM;
@@ -48,13 +47,13 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		InlineStyle.setInteger(panel, Css.TOP, 0, CssUnit.PX);
 
 		final Element background = DOM.createSpan();
-		JavaScript.setString(background, "className", this.getBackgroundStyleName());
-		DOM.appendChild(panel, background);
+		background.setClassName(this.getBackgroundStyleName());
+		panel.appendChild(background);
 
 		final Element handle = DOM.createDiv();
-		JavaScript.setString(handle, "className", this.getHandleStyleName());
+		background.setClassName(this.getHandleStyleName());
 		InlineStyle.setString(background, Css.Z_INDEX, "1");
-		DOM.appendChild(panel, handle);
+		panel.appendChild(handle);
 
 		InlineStyle.setString(panel, Css.OVERFLOW_X, "hidden");
 		InlineStyle.setString(panel, Css.OVERFLOW_Y, "hidden");
@@ -73,8 +72,8 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 	protected void afterCreatePanelElement() {
 		super.afterCreatePanelElement();
 
-		this.add( Widgets.createHtml());
-		this.add( Widgets.createHtml());
+		this.add(Widgets.createHtml());
+		this.add(Widgets.createHtml());
 	}
 
 	protected String getInitialStyleName() {
@@ -89,7 +88,7 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		final Element childParent = DOM.getChild(this.getElement(), index);
 
 		if (index == Constants.BACKGROUND_WIDGET_INDEX) {
-			if( this.isAttached() ){
+			if (this.isAttached()) {
 				this.updateBackgroundDimensions();
 			}
 		}
@@ -97,30 +96,30 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		DOM.appendChild(childParent, element);
 	}
 
-	protected void updateBackgroundDimensions(){
+	protected void updateBackgroundDimensions() {
 		final Element element = this.getBackgroundWidgetElement();
-		
+
 		final String originalWidth = InlineStyle.getString(element, Css.WIDTH);
 		final String originalHeight = InlineStyle.getString(element, Css.HEIGHT);
 
 		JavaScript.setString(element, "_" + Css.WIDTH, originalWidth);
 		JavaScript.setString(element, "_" + Css.HEIGHT, originalHeight);
 
-		final int widthInPixels = ComputedStyle.getInteger( this.getElement(), Css.WIDTH, CssUnit.PX, 0 );
-		InlineStyle.setInteger(element, Css.WIDTH, widthInPixels, CssUnit.PX );
-		
-		final int heightInPixels = ComputedStyle.getInteger( this.getElement(), Css.HEIGHT, CssUnit.PX, 0 );
-		InlineStyle.setInteger(element, Css.HEIGHT, heightInPixels, CssUnit.PX );
+		final int widthInPixels = ComputedStyle.getInteger(this.getElement(), Css.WIDTH, CssUnit.PX, 0);
+		InlineStyle.setInteger(element, Css.WIDTH, widthInPixels, CssUnit.PX);
+
+		final int heightInPixels = ComputedStyle.getInteger(this.getElement(), Css.HEIGHT, CssUnit.PX, 0);
+		InlineStyle.setInteger(element, Css.HEIGHT, heightInPixels, CssUnit.PX);
 	}
-	
+
 	protected void remove0(final Element element, final int index) {
 		if (index == Constants.BACKGROUND_WIDGET_INDEX) {
 			this.restoreBackgroundWidgetDimensions();
 		}
 		Dom.removeFromParent(element);
 	}
-	
-	protected void restoreBackgroundWidgetDimensions(){
+
+	protected void restoreBackgroundWidgetDimensions() {
 		final Element element = this.getBackgroundWidgetElement();
 		final String width = JavaScript.getString(element, "_" + Css.WIDTH);
 		final String height = JavaScript.getString(element, "_" + Css.HEIGHT);
@@ -129,15 +128,15 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		InlineStyle.setString(element, Css.HEIGHT, height);
 	}
 
-	protected Element getBackgroundWidgetElement(){
+	protected Element getBackgroundWidgetElement() {
 		final Element parent = DOM.getChild(this.getElement(), Constants.BACKGROUND_WIDGET_INDEX);
-		return DOM.getChild(parent, 0 );
+		return DOM.getChild(parent, 0);
 	}
-	
-	public void onAttach(){
+
+	public void onAttach() {
 		super.onAttach();
-		
-		if( this.getWidgetCount() > Constants.BACKGROUND_WIDGET_INDEX ){
+
+		if (this.getWidgetCount() > Constants.BACKGROUND_WIDGET_INDEX) {
 			this.updateBackgroundDimensions();
 		}
 	}

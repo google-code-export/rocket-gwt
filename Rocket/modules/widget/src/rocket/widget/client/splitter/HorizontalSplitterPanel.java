@@ -161,9 +161,9 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 			beforeWidget.setHeight("100%");
 			splitter.setHeight("100%");
 			afterWidget.setHeight("100%");
-			
-			
-			// its necessary to prevent the event to stop text selection in opera.
+
+			// its necessary to prevent the event to stop text selection in
+			// opera.
 			event.stop();
 			break;
 		}

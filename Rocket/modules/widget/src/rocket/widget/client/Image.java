@@ -61,14 +61,17 @@ public class Image extends FocusWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(Element element) {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.IMAGE_TAG);
 	}
 
+	@Override
 	protected Element createElement() {
 		return DOM.createImg();
 	}
 
+	@Override
 	protected void afterCreateElement() {
 		final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
 		this.setEventListenerDispatcher(dispatcher);
@@ -78,10 +81,12 @@ public class Image extends FocusWidget {
 		dispatcher.setMouseEventListeners(dispatcher.createMouseEventListeners());
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.IMAGE_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.MOUSE_EVENTS | EventBitMaskConstants.IMAGE_EVENTS;
 	}

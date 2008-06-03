@@ -23,6 +23,7 @@ import rocket.util.client.Tester;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.dom.client.FormElement;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
@@ -50,7 +51,6 @@ import com.google.gwt.user.client.ui.impl.FormPanelImplHost;
  */
 public class FormPanel extends Panel {
 
-
 	/**
 	 * Reuse the GWT FormPanel support.
 	 */
@@ -59,11 +59,11 @@ public class FormPanel extends Panel {
 	static FormPanelImpl getSupport() {
 		return support;
 	}
-	
+
 	static FormPanelImpl createSupport() {
 		return (FormPanelImpl) GWT.create(FormPanelImpl.class);
 	}
-	
+
 	/**
 	 * A generator that is continually incremented to guaranteed that unique
 	 * target values are used when invoking {@link #FormPanel()}
@@ -105,25 +105,31 @@ public class FormPanel extends Panel {
 		}
 	}
 
+	@Override
 	protected void checkElement(final Element element) {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.FORM_TAG);
 	}
 
+	@Override
 	protected void beforeCreatePanelElement() {
 	}
 
+	@Override
 	protected Element createPanelElement() {
 		return DOM.createForm();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.FORM_PANEL_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
 
+	@Override
 	protected void afterCreatePanelElement() {
 		this.setTarget(generateTargetId());
 		this.setFormHandlers(this.createFormHandlers());
@@ -143,7 +149,8 @@ public class FormPanel extends Panel {
 			final Element formElement = JavaScript.getElement(collection, i);
 
 			while (true) {
-				if (Dom.isTag(formElement, WidgetConstants.BUTTON_TAG) || Dom.isInput(formElement, WidgetConstants.BUTTON_INPUT_RESET_TYPE)
+				if (Dom.isTag(formElement, WidgetConstants.BUTTON_TAG)
+						|| Dom.isInput(formElement, WidgetConstants.BUTTON_INPUT_RESET_TYPE)
 						|| Dom.isInput(formElement, WidgetConstants.BUTTON_INPUT_SUBMIT_TYPE)) {
 					widget = new Button(formElement);
 					break;
@@ -219,13 +226,14 @@ public class FormPanel extends Panel {
 		}
 	}
 
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 
 		// Create and attach a hidden iframe to the body element.
 		final Element iframe = createIFrame();
 		this.setIFrame(iframe);
-		DOM.appendChild(RootPanel.getBodyElement(), iframe);
+		RootPanel.getBodyElement().appendChild(iframe);
 
 		// Hook up the underlying iframe's onLoad event when attached to the
 		// DOM.
@@ -299,6 +307,7 @@ public class FormPanel extends Panel {
 		}
 	}
 
+	@Override
 	protected void onDetach() {
 		super.onDetach();
 
@@ -310,10 +319,12 @@ public class FormPanel extends Panel {
 		this.clearIFrame();
 	}
 
+	@Override
 	protected void insert0(final Element element, final int indexBefore) {
 		DOM.insertChild(this.getElement(), element, indexBefore);
 	}
 
+	@Override
 	protected void remove0(final Element element, final int index) {
 		Dom.removeFromParent(element);
 	}
@@ -325,7 +336,7 @@ public class FormPanel extends Panel {
 	 * @return the form's action
 	 */
 	public String getAction() {
-		return DOM.getElementProperty(getElement(), "action");
+		return ((FormElement) this.getElement().cast()).getAction();
 	}
 
 	/**
@@ -336,7 +347,7 @@ public class FormPanel extends Panel {
 	 *            the form's action
 	 */
 	public void setAction(String url) {
-		DOM.setElementProperty(getElement(), "action", url);
+		((FormElement) this.getElement().cast()).setAction(url);
 	}
 
 	/**
@@ -346,7 +357,7 @@ public class FormPanel extends Panel {
 	 * @return the form's encoding
 	 */
 	public String getEncoding() {
-		return FormPanel.getSupport().getEncoding(getElement());
+		return ((FormElement) this.getElement().cast()).getEnctype();
 	}
 
 	/**
@@ -357,7 +368,7 @@ public class FormPanel extends Panel {
 	 *            the form's encoding
 	 */
 	public void setEncoding(String encodingType) {
-		FormPanel.getSupport().setEncoding(getElement(), encodingType);
+		((FormElement) this.getElement().cast()).setEnctype(encodingType);
 	}
 
 	/**
@@ -367,7 +378,7 @@ public class FormPanel extends Panel {
 	 * @return the form's method
 	 */
 	public String getMethod() {
-		return DOM.getElementProperty(getElement(), "method");
+		return ((FormElement) this.getElement().cast()).getMethod();
 	}
 
 	/**
@@ -378,7 +389,7 @@ public class FormPanel extends Panel {
 	 *            the form's method
 	 */
 	public void setMethod(String method) {
-		DOM.setElementProperty(getElement(), "method", method);
+		((FormElement) this.getElement().cast()).setMethod(method);
 	}
 
 	/**

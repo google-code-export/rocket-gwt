@@ -18,6 +18,7 @@ package rocket.widget.client;
 import rocket.dom.client.Dom;
 import rocket.util.client.Checker;
 
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -77,18 +78,18 @@ public class Hijacker {
 	private int childIndex;
 
 	int getChildIndex() {
-		Checker.greaterThanOrEqual("field:childIndex", 0, childIndex );
+		Checker.greaterThanOrEqual("field:childIndex", 0, childIndex);
 		return this.childIndex;
 	}
 
 	void setChildIndex(final int childIndex) {
-		Checker.greaterThanOrEqual("parameter:childIndex", 0, childIndex );
+		Checker.greaterThanOrEqual("parameter:childIndex", 0, childIndex);
 		this.childIndex = childIndex;
 	}
 
 	void save() {
 		final Element element = this.getElement();
-		if (Dom.isAttached(element)) {
+		if (Document.get().getBody().isOrHasChild(element)) {
 
 			final Element parent = DOM.getParent(element);
 			final int childIndex = DOM.getChildIndex(parent, element);
@@ -104,7 +105,7 @@ public class Hijacker {
 		if (null != parent) {
 			DOM.insertChild(parent, element, this.getChildIndex());
 		} else {
-			if (DOM.getParent(element) != null) {
+			if (element.getParentElement() != null) {
 				Dom.removeFromParent(element);
 			}
 		}

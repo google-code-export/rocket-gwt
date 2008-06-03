@@ -15,14 +15,15 @@
  */
 package rocket.widget.rebind.imagefactory;
 
-
 /**
- * This ImageFactory implementation contains internet explorer specific values. 
+ * This ImageFactory implementation contains internet explorer specific values.
+ * 
  * @author Miroslav Pokorny
  */
 public class InternetExplorerImageFactoryGenerator extends ImageFactoryGenerator {
 
-	protected int getMaximumDataUrlLength(){	
-		return this.getMaximumDataUrlLength( ImageFactoryConstants.INTERNET_EXPLORER_MAXIMUM_DATA_URL_SIZE, ImageFactoryConstants.INTERNET_EXPLORER_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
+	protected int getMaximumDataUrlLength() {
+		return this.getMaximumDataUrlLength(ImageFactoryConstants.INTERNET_EXPLORER_MAXIMUM_DATA_URL_SIZE,
+				ImageFactoryConstants.INTERNET_EXPLORER_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE);
 	}
 }

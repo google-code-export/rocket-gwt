@@ -132,7 +132,8 @@ public class BasicWidgetsTest implements EntryPoint {
 
 	final static String BUTTON_HTML_FRAGMENT = "<button id=\"" + BUTTON_ID
 			+ "\">click here(true button)</button>\n<input type=\"reset\" id=\"" + RESET_BUTTON_ID
-			+ "\" value=\"click here(reset)\" />\n<input type=\"submit\" id=\"" + SUBMIT_BUTTON_ID + "\" value=\"click here(submit)\" />";
+			+ "\" value=\"click here(reset)\" />\n<input type=\"submit\" id=\"" + SUBMIT_BUTTON_ID
+			+ "\" value=\"click here(submit)\" />";
 
 	final static String FORM_PANEL_ID = "form";
 
@@ -240,7 +241,7 @@ public class BasicWidgetsTest implements EntryPoint {
 
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("TextBox"));
 		final TextBox textBox = createTextBox(row);
-		grid.setWidget(row, WIDGET, this.monitorCursor( textBox));
+		grid.setWidget(row, WIDGET, this.monitorCursor(textBox));
 		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(TEXTBOX_HTML_FRAGMENT));
 		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(TEXTBOX_HTML_FRAGMENT));
 		final TextBox hijackedTextBox = hijackTextBox(row);
@@ -260,7 +261,7 @@ public class BasicWidgetsTest implements EntryPoint {
 
 		grid.setWidget(row, WIDGET_LABEL, createGwtHTML("TextArea"));
 		final TextArea textArea = createTextArea(row);
-		grid.setWidget(row, WIDGET, this.monitorCursor( textArea));
+		grid.setWidget(row, WIDGET, this.monitorCursor(textArea));
 		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(TEXTAREA_HTML_FRAGMENT));
 		grid.setWidget(row, HIJACKED_WIDGET, createGwtHTML(TEXTAREA_HTML_FRAGMENT));
 		final TextArea hijackedTextArea = hijackTextArea(row);
@@ -350,9 +351,8 @@ public class BasicWidgetsTest implements EntryPoint {
 
 		row++;
 
-		grid
-				.setWidget(row, WIDGET_LABEL,
-						createGwtHTML("FormPanel with three fields<ul><li>TextBox</li><li>Hidden</li><li>File</li></ul>"));
+		grid.setWidget(row, WIDGET_LABEL,
+				createGwtHTML("FormPanel with three fields<ul><li>TextBox</li><li>Hidden</li><li>File</li></ul>"));
 		final FormPanel formPanel = createFormPanel(row);
 		grid.setWidget(row, WIDGET, formPanel);
 		grid.setWidget(row, HTML_FRAGMENT, createHtmlFragment(FORM_PANEL_HTML_FRAGMENT));
@@ -497,10 +497,12 @@ public class BasicWidgetsTest implements EntryPoint {
 
 	TextArea createTextArea(final int row) {
 		final TextArea textArea = new TextArea();
-		textArea.setText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-		textArea.setText( "01\n45\n89");// becomes 01\n\r45\n\r89 in IE if read back.
-		textArea.setColumns( 30 );
-		textArea.setRows( 5 );
+		textArea
+				.setText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+		textArea.setText("01\n45\n89");// becomes 01\n\r45\n\r89 in IE if read
+		// back.
+		textArea.setColumns(30);
+		textArea.setRows(5);
 		this.addTextAreaEventListeners(textArea, row);
 		return textArea;
 	}
@@ -694,7 +696,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		final com.google.gwt.user.client.ui.Button listBoxGetItem = new com.google.gwt.user.client.ui.Button("getItem");
 		listBoxGetItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + listBox.getItemCount() + ")", "0"));
+				final int index = Integer.parseInt(Window.prompt("index ( 0..." + listBox.getItemCount() + ")", "0"));
 				Window.alert("" + listBox.getValue(index));
 			}
 		});
@@ -704,8 +706,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		listBoxSetItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
-				final String text = Browser.prompt("item text", "item-" + count);
+				final int index = Integer.parseInt(Window.prompt("index ( 0..." + count + ")", "0"));
+				final String text = Window.prompt("item text", "item-" + count);
 				listBox.setItemText(index, text);
 			}
 		});
@@ -715,7 +717,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		listBoxAddItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final String text = Browser.prompt("item text", "item-" + count);
+				final String text = Window.prompt("item text", "item-" + count);
 				listBox.addItem(text);
 			}
 		});
@@ -725,7 +727,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		listBoxRemoveItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
+				final int index = Integer.parseInt(Window.prompt("index ( 0..." + count + ")", "0"));
 				listBox.removeItem(index);
 			}
 		});
@@ -735,16 +737,16 @@ public class BasicWidgetsTest implements EntryPoint {
 		listBoxSelectItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
-				listBox.setItemSelected(index, true );
+				final int index = Integer.parseInt(Window.prompt("index ( 0..." + count + ")", "0"));
+				listBox.setItemSelected(index, true);
 			}
 		});
 		panel.add(listBoxSelectItem);
-		
+
 		final com.google.gwt.user.client.ui.Button hijackedListBoxGetItem = new com.google.gwt.user.client.ui.Button("getItem (*)");
 		hijackedListBoxGetItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + hijackedListBox.getItemCount() + ")", "0"));
+				final int index = Integer.parseInt(Window.prompt("index ( 0..." + hijackedListBox.getItemCount() + ")", "0"));
 				Window.alert("" + hijackedListBox.getValue(index));
 			}
 		});
@@ -754,8 +756,8 @@ public class BasicWidgetsTest implements EntryPoint {
 		hijackedListBoxSetItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = hijackedListBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
-				final String text = Browser.prompt("item text", "item-" + count);
+				final int index = Integer.parseInt(Window.prompt("index ( 0..." + count + ")", "0"));
+				final String text = Window.prompt("item text", "item-" + count);
 				hijackedListBox.setItemText(index, text);
 			}
 		});
@@ -765,7 +767,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		hijackedListBoxAddItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = hijackedListBox.getItemCount();
-				final String text = Browser.prompt("item text", "item-" + count);
+				final String text = Window.prompt("item text", "item-" + count);
 				hijackedListBox.addItem(text);
 			}
 		});
@@ -775,17 +777,18 @@ public class BasicWidgetsTest implements EntryPoint {
 		hijackedListBoxRemoveItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
+				final int index = Integer.parseInt(Window.prompt("index ( 0..." + count + ")", "0"));
 				hijackedListBox.removeItem(index);
 			}
 		});
 		panel.add(hijackedListBoxRemoveItem);
 
-		final com.google.gwt.user.client.ui.Button hijackedListBoxSelectItem = new com.google.gwt.user.client.ui.Button("setSelectItem (*)");
+		final com.google.gwt.user.client.ui.Button hijackedListBoxSelectItem = new com.google.gwt.user.client.ui.Button(
+				"setSelectItem (*)");
 		hijackedListBoxSelectItem.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				final int count = listBox.getItemCount();
-				final int index = Integer.parseInt(Browser.prompt("index ( 0..." + count + ")", "0"));
+				final int index = Integer.parseInt(Window.prompt("index ( 0..." + count + ")", "0"));
 				hijackedListBox.setItemSelected(index, true);
 			}
 		});
@@ -863,7 +866,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		final com.google.gwt.user.client.ui.Button labelSetText = new com.google.gwt.user.client.ui.Button("setText");
 		labelSetText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				label.setText(Browser.prompt("Text", label.getText()));
+				label.setText(Window.prompt("Text", label.getText()));
 			}
 		});
 		panel.add(labelSetText);
@@ -871,7 +874,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		final com.google.gwt.user.client.ui.Button hijackedLabelSetText = new com.google.gwt.user.client.ui.Button("setText (*)");
 		hijackedLabelSetText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedLabel.setText(Browser.prompt("Text", hijackedLabel.getText()));
+				hijackedLabel.setText(Window.prompt("Text", hijackedLabel.getText()));
 			}
 		});
 		panel.add(hijackedLabelSetText);
@@ -903,7 +906,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		final com.google.gwt.user.client.ui.Button htmlSetText = new com.google.gwt.user.client.ui.Button("setText");
 		htmlSetText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				html.setText(Browser.prompt("Text", html.getText()));
+				html.setText(Window.prompt("Text", html.getText()));
 			}
 		});
 		panel.add(htmlSetText);
@@ -911,7 +914,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		final com.google.gwt.user.client.ui.Button htmlSetHtml = new com.google.gwt.user.client.ui.Button("setHtml");
 		htmlSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				html.setHtml(Browser.prompt("Html", html.getHtml()));
+				html.setHtml(Window.prompt("Html", html.getHtml()));
 			}
 		});
 		panel.add(htmlSetHtml);
@@ -919,7 +922,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		final com.google.gwt.user.client.ui.Button hijackedHtmlSetText = new com.google.gwt.user.client.ui.Button("setText (*)");
 		hijackedHtmlSetText.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedHtml.setText(Browser.prompt("Text", hijackedHtml.getText()));
+				hijackedHtml.setText(Window.prompt("Text", hijackedHtml.getText()));
 			}
 		});
 		panel.add(hijackedHtmlSetText);
@@ -927,7 +930,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		final com.google.gwt.user.client.ui.Button hijackedHtmlSetHijackedHtml = new com.google.gwt.user.client.ui.Button("setHtml (*)");
 		hijackedHtmlSetHijackedHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedHtml.setHtml(Browser.prompt("Html", hijackedHtml.getHtml()));
+				hijackedHtml.setHtml(Window.prompt("Html", hijackedHtml.getHtml()));
 			}
 		});
 		panel.add(hijackedHtmlSetHijackedHtml);
@@ -1004,7 +1007,7 @@ public class BasicWidgetsTest implements EntryPoint {
 		final com.google.gwt.user.client.ui.Button buttonSetHtml = new com.google.gwt.user.client.ui.Button("setHtml");
 		buttonSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				button.setHtml(Browser.prompt("Html", button.getText()));
+				button.setHtml(Window.prompt("Html", button.getText()));
 			}
 		});
 		panel.add(buttonSetHtml);
@@ -1012,15 +1015,16 @@ public class BasicWidgetsTest implements EntryPoint {
 		final com.google.gwt.user.client.ui.Button hijackedButtonSetHtml = new com.google.gwt.user.client.ui.Button("setHtml (button*)");
 		hijackedButtonSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedButton.setHtml(Browser.prompt("Html", hijackedButton.getText()));
+				hijackedButton.setHtml(Window.prompt("Html", hijackedButton.getText()));
 			}
 		});
 		panel.add(hijackedButtonSetHtml);
 
-		final com.google.gwt.user.client.ui.Button hijackedResetButtonSetHtml = new com.google.gwt.user.client.ui.Button("setHtml (reset*)");
+		final com.google.gwt.user.client.ui.Button hijackedResetButtonSetHtml = new com.google.gwt.user.client.ui.Button(
+				"setHtml (reset*)");
 		hijackedResetButtonSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedResetButton.setHtml(Browser.prompt("Html", hijackedResetButton.getText()));
+				hijackedResetButton.setHtml(Window.prompt("Html", hijackedResetButton.getText()));
 			}
 		});
 		panel.add(hijackedResetButtonSetHtml);
@@ -1029,7 +1033,7 @@ public class BasicWidgetsTest implements EntryPoint {
 				"setHtml (submit*)");
 		hijackedSubmitButtonSetHtml.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				hijackedSubmitButton.setHtml(Browser.prompt("Html", hijackedSubmitButton.getText()));
+				hijackedSubmitButton.setHtml(Window.prompt("Html", hijackedSubmitButton.getText()));
 			}
 		});
 		panel.add(hijackedSubmitButtonSetHtml);
@@ -1257,98 +1261,98 @@ public class BasicWidgetsTest implements EntryPoint {
 		return element;
 	}
 
-	Widget monitorCursor( final TextBox textBox ){
+	Widget monitorCursor(final TextBox textBox) {
 		final Label label = new Label("");
-		
-		textBox.addFocusEventListener( new FocusEventAdapter(){
-			public void onFocus( final FocusEvent event ){
-				updateLabel( textBox,label);
+
+		textBox.addFocusEventListener(new FocusEventAdapter() {
+			public void onFocus(final FocusEvent event) {
+				updateLabel(textBox, label);
 			}
 		});
-		
-		textBox.addChangeEventListener( new ChangeEventListener(){
-			public void onChange( final ChangeEvent event ){
-				updateLabel( textBox,label);
+
+		textBox.addChangeEventListener(new ChangeEventListener() {
+			public void onChange(final ChangeEvent event) {
+				updateLabel(textBox, label);
 			}
 		});
-				
-		textBox.addKeyEventListener( new KeyEventAdapter(){
+
+		textBox.addKeyEventListener(new KeyEventAdapter() {
 			public void onKeyUp(final KeyUpEvent event) {
-				updateLabel( textBox,label);
+				updateLabel(textBox, label);
 			}
 		});
-		
-		return this.embedWithinFlowPanel(textBox, label );
+
+		return this.embedWithinFlowPanel(textBox, label);
 	}
-	
-	void updateLabel( final TextBox textBox, final Label label ){
+
+	void updateLabel(final TextBox textBox, final Label label) {
 		final int cursor = textBox.getCursorPos();
 		final int selectionLength = textBox.getSelectionLength();
 		final String selectedText = textBox.getSelectedText();
-		updateLabel( label, selectionLength, cursor, selectedText );
+		updateLabel(label, selectionLength, cursor, selectedText);
 	}
-	
-	
-	Widget monitorCursor( final TextArea textArea ){
+
+	Widget monitorCursor(final TextArea textArea) {
 		final Label label = new Label("");
-		
-		textArea.addFocusEventListener( new FocusEventAdapter(){
-			public void onFocus( final FocusEvent event ){
-				updateLabel( textArea, label );
+
+		textArea.addFocusEventListener(new FocusEventAdapter() {
+			public void onFocus(final FocusEvent event) {
+				updateLabel(textArea, label);
 			}
 		});
-		
-		textArea.addChangeEventListener( new ChangeEventListener(){
-			public void onChange( final ChangeEvent event ){
-				updateLabel( textArea, label );
+
+		textArea.addChangeEventListener(new ChangeEventListener() {
+			public void onChange(final ChangeEvent event) {
+				updateLabel(textArea, label);
 			}
 		});
-		
-		textArea.addKeyEventListener( new KeyEventAdapter(){
+
+		textArea.addKeyEventListener(new KeyEventAdapter() {
 			public void onKeyUp(final KeyUpEvent event) {
-				updateLabel( textArea, label );
+				updateLabel(textArea, label);
 			}
-			
-			public void onKeyDown( final KeyDownEvent event ){
-				if( event.isTab() ){
-					// stop the default action which causes the browser to tab to the next widget.
+
+			public void onKeyDown(final KeyDownEvent event) {
+				if (event.isTab()) {
+					// stop the default action which causes the browser to tab
+					// to the next widget.
 					event.stop();
-				
+
 					final int cursor = textArea.getCursorPos();
-					String text = textArea.getText();					
-					textArea.setText( text.substring( 0, cursor ) + "\t" + text.substring( cursor ));
-					textArea.setCursorPos( cursor + 1);
-					
+					String text = textArea.getText();
+					textArea.setText(text.substring(0, cursor) + "\t" + text.substring(cursor));
+					textArea.setCursorPos(cursor + 1);
+
 				}
 			}
 		});
-		
-		return this.embedWithinFlowPanel(textArea, label );
+
+		return this.embedWithinFlowPanel(textArea, label);
 	}
-	
-	void updateLabel( final TextArea textArea, final Label label ){
-		final int cursor = textArea.getCursorPos();		
+
+	void updateLabel(final TextArea textArea, final Label label) {
+		final int cursor = textArea.getCursorPos();
 		final int selectionLength = textArea.getSelectionLength();
-		final String selectedText = textArea.getSelectedText().replaceAll("\n", "\\\\n").replaceAll( "\r", "\\\\r" );
-		
-		updateLabel( label, cursor, selectionLength, selectedText );		
+		final String selectedText = textArea.getSelectedText().replaceAll("\n", "\\\\n").replaceAll("\r", "\\\\r");
+
+		updateLabel(label, cursor, selectionLength, selectedText);
 	}
-	
-	void updateLabel( final Label label, final int cursor, final int selectionLength, String selectedText ){
-		if( Tester.isNullOrEmpty( selectedText )){
+
+	void updateLabel(final Label label, final int cursor, final int selectionLength, String selectedText) {
+		if (Tester.isNullOrEmpty(selectedText)) {
 			selectedText = "(none)";
 		} else {
 			selectedText = "\"" + selectedText + "\"";
 		}
-				
-		final String labelText = "Cursor: " + cursor + ", selectionLength: " + selectionLength + ", SelectedText " + selectedText; 
-		label.setText( labelText );
+
+		final String labelText = "Cursor: " + cursor + ", selectionLength: " + selectionLength + ", SelectedText " + selectedText;
+		label.setText(labelText);
 	}
-	
-	Widget embedWithinFlowPanel( final Widget widget, final Label label ){
+
+	Widget embedWithinFlowPanel(final Widget widget, final Label label) {
 		final FlowPanel flowPanel = new FlowPanel();
-		flowPanel.add( widget );
-		flowPanel.add( label );
-		return flowPanel;		
+		flowPanel.add(widget);
+		flowPanel.add(label);
+		return flowPanel;
 	}
 }

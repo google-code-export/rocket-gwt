@@ -22,7 +22,6 @@ import rocket.event.client.MouseClickEvent;
 import rocket.event.client.MouseEventAdapter;
 import rocket.util.client.Checker;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,7 +29,8 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * A spinner is a simple widget which allows a user to increase or decrease a
  * number keeping it within a defined range. Two methods are available if
- * sub-classes wish to handle when the upper or lower bounds of the spinner value are reached.
+ * sub-classes wish to handle when the upper or lower bounds of the spinner
+ * value are reached.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -39,10 +39,10 @@ public class Spinner extends CompositeWidget {
 	public Spinner() {
 	}
 
+	@Override
 	protected Widget createWidget() {
 		return this.createVerticalPanel();
 	}
-
 
 	protected VerticalPanel getVerticalPanel() {
 		return (VerticalPanel) this.getWidget();
@@ -56,16 +56,16 @@ public class Spinner extends CompositeWidget {
 	 */
 	protected VerticalPanel createVerticalPanel() {
 		final VerticalPanel verticalPanel = new VerticalPanel();
-		
-		verticalPanel.add( new DummyImage() );
-		verticalPanel.add( new DummyImage() );
+
+		verticalPanel.add(new DummyImage());
+		verticalPanel.add(new DummyImage());
 
 		return verticalPanel;
 	}
 
-	
+	@Override
 	protected void afterCreateWidget() {
-		this.getEventListenerDispatcher().addMouseEventListener( new MouseEventAdapter(){
+		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
 				Spinner.this.onMouseClick(event);
 			}
@@ -73,31 +73,33 @@ public class Spinner extends CompositeWidget {
 		this.setDelta(1);
 		this.updateValue(this.getValue());
 	}
-	
-	protected void onMouseClick( final MouseClickEvent event ){
-		while( true ){
+
+	protected void onMouseClick(final MouseClickEvent event) {
+		while (true) {
 			final Element target = event.getTarget();
 			final Element up = this.getUpImage().getElement();
-			if( DOM.isOrHasChild(target, up)){
+			if (target.isOrHasChild(up)) {
 				this.onUpClick();
 				break;
 			}
 			final Element down = this.getDownImage().getElement();
-			if( DOM.isOrHasChild(target, down)){
+			if (target.isOrHasChild(down)) {
 				this.onDownClick();
 				break;
 			}
-			
+
 			break;
 		}
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.SPINNER_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
-		return EventBitMaskConstants.CHANGE | EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.MOUSE_CLICK ;
+		return EventBitMaskConstants.CHANGE | EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.MOUSE_CLICK;
 	}
 
 	/**
@@ -143,16 +145,16 @@ public class Spinner extends CompositeWidget {
 
 	final int UP_IMAGE_INDEX = 0;
 	final int DOWN_IMAGE_INDEX = UP_IMAGE_INDEX + 1;
-	
+
 	public Image getUpImage() {
-		return this.getImage( UP_IMAGE_INDEX );
+		return this.getImage(UP_IMAGE_INDEX);
 	}
 
 	public void setUpImage(final Image upImage) {
 		Checker.notNull("parameter:upImage", upImage);
-		
+
 		final String style = this.getUpArrowStyle();
-		this.setImage( upImage, UP_IMAGE_INDEX, style );
+		this.setImage(upImage, UP_IMAGE_INDEX, style);
 	}
 
 	protected String getUpArrowStyle() {
@@ -168,34 +170,34 @@ public class Spinner extends CompositeWidget {
 	}
 
 	public Image getDownImage() {
-		return this.getImage( DOWN_IMAGE_INDEX );
+		return this.getImage(DOWN_IMAGE_INDEX);
 	}
 
 	public void setDownImage(final Image upImage) {
 		Checker.notNull("parameter:upImage", upImage);
-		
+
 		final String style = this.getDownArrowStyle();
-		this.setImage( upImage, DOWN_IMAGE_INDEX, style );
+		this.setImage(upImage, DOWN_IMAGE_INDEX, style);
 	}
 
 	protected String getDownArrowStyle() {
 		return WidgetConstants.SPINNER_DOWN_STYLE;
 	}
-	
-	protected Image getImage( final int index ){
-		final Image image = (Image) this.getVerticalPanel().getWidget( index );
+
+	protected Image getImage(final int index) {
+		final Image image = (Image) this.getVerticalPanel().getWidget(index);
 		return image instanceof DummyImage ? null : image;
 	}
-	
-	protected void setImage( final Image image, final int index, final String style ){
-		Checker.notNull("parameter:image", image );
+
+	protected void setImage(final Image image, final int index, final String style) {
+		Checker.notNull("parameter:image", image);
 		final VerticalPanel verticalPanel = this.getVerticalPanel();
 		verticalPanel.remove(index);
-		verticalPanel.insert(image, index );
-		
+		verticalPanel.insert(image, index);
+
 		image.addStyleName(style);
 	}
-	
+
 	/**
 	 * This method is fired whenever the down widget is clicked
 	 */
@@ -233,7 +235,7 @@ public class Spinner extends CompositeWidget {
 
 	protected void onLowerLimitReached() {
 	}
-	
+
 	/**
 	 * The amount the value is increased/decreased each time an up or down
 	 * widget is clicked.
@@ -267,8 +269,8 @@ public class Spinner extends CompositeWidget {
 	public String toString() {
 		return super.toString() + ", value: " + value;
 	}
-	
-	static class DummyImage extends Image{
-		
+
+	static class DummyImage extends Image {
+
 	}
 }

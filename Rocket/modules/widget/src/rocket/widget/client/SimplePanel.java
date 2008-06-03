@@ -15,7 +15,6 @@
  */
 package rocket.widget.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -35,12 +34,14 @@ abstract public class SimplePanel extends Panel {
 		super(element);
 	}
 
+	@Override
 	public void add(final Widget widget) {
 		this.oneWidgetOnlyGuard(this.getWidgetCount());
 
 		super.add(widget);
 	}
 
+	@Override
 	public void insert(final Widget widget, final int indexBefore) {
 		this.oneWidgetOnlyGuard(indexBefore);
 
@@ -49,7 +50,7 @@ abstract public class SimplePanel extends Panel {
 
 	protected void oneWidgetOnlyGuard(final int index) {
 		if (this.getWidgetCount() > 0 || index > 0) {
-			throw new UnsupportedOperationException("Unable to add more than one widget to this " + GWT.getTypeName(this));
+			throw new UnsupportedOperationException("Unable to add more than one widget to this " + this.getClass().getName());
 		}
 	}
 

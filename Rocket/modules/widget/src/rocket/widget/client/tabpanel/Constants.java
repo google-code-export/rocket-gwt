@@ -15,11 +15,10 @@
  */
 package rocket.widget.client.tabpanel;
 
-import rocket.browser.client.Browser;
 import rocket.widget.client.WidgetConstants;
 
 class Constants {
-	final static String TAB_CLOSE_BUTTON_IMAGE_URL = Browser.buildImageUrl("/tab/close.gif");
+	final static String TAB_CLOSE_BUTTON_IMAGE_URL = "./tab/close.gif";
 
 	final static String TAB_BAR_STYLE = "tabBar";
 	final static String BEFORE_SPACER_STYLE = "beforeSpacer";

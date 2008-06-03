@@ -47,10 +47,12 @@ public class Hyperlink extends FocusWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(Element element) {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.HYPERLINK_TAG);
 	}
 
+	@Override
 	protected Element createElement() {
 		return DOM.createAnchor();
 	}
@@ -73,19 +75,19 @@ public class Hyperlink extends FocusWidget {
 	}
 
 	public String getText() {
-		return DOM.getInnerText(this.getElement());
+		return this.getElement().getInnerText();
 	}
 
 	public void setText(final String text) {
-		DOM.setInnerText(this.getElement(), text);
+		this.getElement().setInnerText(text);
 	}
 
 	public String getHtml() {
-		return DOM.getInnerHTML(this.getElement());
+		return this.getElement().getInnerHTML();
 	}
 
 	public void setHtml(final String html) {
-		DOM.setInnerHTML(this.getElement(), html);
+		this.getElement().setInnerHTML(html);
 	}
 
 	private String targetHistoryToken;

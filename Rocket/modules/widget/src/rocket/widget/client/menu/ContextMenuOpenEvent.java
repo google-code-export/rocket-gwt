@@ -23,102 +23,108 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * This sub class of MenuOpenEvent is fired whenever a ContextMenu opens.
- * Listeners should therefore cast to ContextMenuOpenEvent to be able to receive the additional context menu details.
+ * Listeners should therefore cast to ContextMenuOpenEvent to be able to receive
+ * the additional context menu details.
+ * 
  * @author Miroslav Pokorny
  */
-public class ContextMenuOpenEvent extends MenuOpenEvent{
+public class ContextMenuOpenEvent extends MenuOpenEvent {
 
-	protected ContextMenuOpenEvent(){
+	protected ContextMenuOpenEvent() {
 		super();
 	}
-	
-	public ContextMenu getContextMenu(){
-		return (ContextMenu)this.getMenu();
+
+	public ContextMenu getContextMenu() {
+		return (ContextMenu) this.getMenu();
 	}
-	
+
 	/**
-	 * May be used to test and retrieve the context menu widget if its clicking triggered the showing of the context menu.
+	 * May be used to test and retrieve the context menu widget if its clicking
+	 * triggered the showing of the context menu.
 	 * 
 	 * @return May be null.
 	 */
 	public Widget getContextMenuWidget() {
 		final Widget widget = this.getWidget();
-		return widget instanceof MenuItem || widget instanceof SubMenuItem ? null : widget; 
+		return widget instanceof MenuItem || widget instanceof SubMenuItem ? null : widget;
 	}
-	
+
 	/**
 	 * The element that recieved the initial right mouse click.
 	 * 
-	 * To learn of the widget that was clicked upon get the MenuItem 
+	 * To learn of the widget that was clicked upon get the MenuItem
 	 */
 	private Element initialTargetElement;
-	
-	public Element getInitialTargetElement(){
-		Checker.notNull( "field:initialTargetElement", initialTargetElement );
+
+	public Element getInitialTargetElement() {
+		Checker.notNull("field:initialTargetElement", initialTargetElement);
 		return this.initialTargetElement;
 	}
-	
-	void setInitialTargetElement( final Element initialTargetElement ){
-		Checker.notNull( "parameter:initialTargetElement", initialTargetElement );
+
+	void setInitialTargetElement(final Element initialTargetElement) {
+		Checker.notNull("parameter:initialTargetElement", initialTargetElement);
 		this.initialTargetElement = initialTargetElement;
 	}
-	
+
 	/**
-	 * The widget that recieved the initial right mouse click. 
+	 * The widget that recieved the initial right mouse click.
 	 */
 	private Widget initialTargetWidget;
-	
-	public Widget getInitialTargetWidget(){
-		Checker.notNull( "field:initialTargetWidget", initialTargetWidget );
+
+	public Widget getInitialTargetWidget() {
+		Checker.notNull("field:initialTargetWidget", initialTargetWidget);
 		return this.initialTargetWidget;
 	}
-	
-	void setInitialTargetWidget( final Widget initialTargetWidget ){
-		Checker.notNull( "parameter:initialTargetWidget", initialTargetWidget );
+
+	void setInitialTargetWidget(final Widget initialTargetWidget) {
+		Checker.notNull("parameter:initialTargetWidget", initialTargetWidget);
 		this.initialTargetWidget = initialTargetWidget;
 	}
-	
-	
-	public int getClientX(){
+
+	public int getClientX() {
 		return this.getMouseEvent().getClientX();
 	}
-	public int getClientY(){
+
+	public int getClientY() {
 		return this.getMouseEvent().getClientY();
 	}
-	
-	public int getPageX(){
+
+	public int getPageX() {
 		return this.getMouseEvent().getPageX();
 	}
-	public int getPageY(){
+
+	public int getPageY() {
 		return this.getMouseEvent().getPageY();
 	}
-	
-	public int getScreenX(){
+
+	public int getScreenX() {
 		return this.getMouseEvent().getScreenX();
 	}
-	public int getScreenY(){
+
+	public int getScreenY() {
 		return this.getMouseEvent().getScreenY();
 	}
-	
-	public int getElementX(){
+
+	public int getElementX() {
 		return this.getMouseEvent().getTargetElementX();
 	}
-	public int getElementY(){
+
+	public int getElementY() {
 		return this.getMouseEvent().getTargetElementY();
 	}
-	
+
 	/**
 	 * The source MouseEvent provider of all mouse event details.
 	 */
 	protected MouseEvent mouseEvent;
-	
-	protected MouseEvent getMouseEvent(){
-		Checker.notNull( "field:mouseEvent", mouseEvent );
+
+	protected MouseEvent getMouseEvent() {
+		Checker.notNull("field:mouseEvent", mouseEvent);
 		return this.mouseEvent;
 	}
-	
-	void setMouseEvent( final MouseEvent mouseEvent){
-		Checker.notNull( "parameter:mouseEvent", mouseEvent );
+
+	void setMouseEvent(final MouseEvent mouseEvent) {
+		Checker.notNull("parameter:mouseEvent", mouseEvent);
 		this.mouseEvent = mouseEvent;
 	}
 }

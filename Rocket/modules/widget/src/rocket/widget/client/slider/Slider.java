@@ -30,7 +30,6 @@ import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.util.client.Checker;
 import rocket.widget.client.CompositeWidget;
-import rocket.widget.client.Html;
 import rocket.widget.client.Panel;
 import rocket.widget.client.Widgets;
 
@@ -143,12 +142,11 @@ public abstract class Slider extends CompositeWidget {
 	protected void afterCreateWidget() {
 		super.afterCreateWidget();
 
-		this.getEventListenerDispatcher().addMouseEventListener(
-				new MouseEventAdapter() {
-					public void onMouseDown(final MouseDownEvent event) {
-						Slider.this.onMouseDown(event);
-					}
-				});
+		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
+			public void onMouseDown(final MouseDownEvent event) {
+				Slider.this.onMouseDown(event);
+			}
+		});
 
 		// now add the handle and background widgets..
 		this.setHandle(this.createHandle());
@@ -156,12 +154,8 @@ public abstract class Slider extends CompositeWidget {
 	}
 
 	protected int getSunkEventsBitMask() {
-		return EventBitMaskConstants.FOCUS_EVENTS
-				| EventBitMaskConstants.CHANGE
-				| EventBitMaskConstants.MOUSE_DOWN
-				| EventBitMaskConstants.MOUSE_UP
-				| EventBitMaskConstants.MOUSE_OUT
-				| EventBitMaskConstants.MOUSE_MOVE;
+		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.CHANGE | EventBitMaskConstants.MOUSE_DOWN
+				| EventBitMaskConstants.MOUSE_UP | EventBitMaskConstants.MOUSE_OUT | EventBitMaskConstants.MOUSE_MOVE;
 	}
 
 	public void onAttach() {
@@ -229,8 +223,7 @@ public abstract class Slider extends CompositeWidget {
 	private EventPreview draggingEventPreview;
 
 	protected EventPreview getDraggingEventPreview() {
-		Checker.notNull("field:draggingEventPreview",
-				draggingEventPreview);
+		Checker.notNull("field:draggingEventPreview", draggingEventPreview);
 		return this.draggingEventPreview;
 	}
 
@@ -238,10 +231,8 @@ public abstract class Slider extends CompositeWidget {
 		return null != this.draggingEventPreview;
 	}
 
-	protected void setDraggingEventPreview(
-			final EventPreview draggingEventPreview) {
-		Checker.notNull("parameter:draggingEventPreview",
-				draggingEventPreview);
+	protected void setDraggingEventPreview(final EventPreview draggingEventPreview) {
+		Checker.notNull("parameter:draggingEventPreview", draggingEventPreview);
 		this.draggingEventPreview = draggingEventPreview;
 	}
 
@@ -271,8 +262,7 @@ public abstract class Slider extends CompositeWidget {
 	protected void onMouseMove(final MouseMoveEvent event) {
 		final int range = this.getSliderLength() - this.getHandleLength();
 
-		int value = this.getMousePageCoordinate(event)
-				- this.getAbsoluteWidgetCoordinate();
+		int value = this.getMousePageCoordinate(event) - this.getAbsoluteWidgetCoordinate();
 		if (value < 0) {
 			value = 0;
 		}
@@ -280,8 +270,7 @@ public abstract class Slider extends CompositeWidget {
 			value = range;
 		}
 
-		final float newValue = (float) value / range * this.getMaximumValue()
-				+ 0.5f;
+		final float newValue = (float) value / range * this.getMaximumValue() + 0.5f;
 		this.setValue((int) newValue);
 
 		this.clearTimer();
@@ -291,9 +280,7 @@ public abstract class Slider extends CompositeWidget {
 	}
 
 	protected void onBackgroundMouseDown(final MouseDownEvent event) {
-		final int mouse = this.getMousePageCoordinate(event)
-				- this.getAbsoluteWidgetCoordinate() - this.getHandleLength()
-				/ 2;
+		final int mouse = this.getMousePageCoordinate(event) - this.getAbsoluteWidgetCoordinate() - this.getHandleLength() / 2;
 		final HandleSlidingTimer timer = this.getTimer();
 		timer.setMouse(mouse);
 
@@ -303,7 +290,7 @@ public abstract class Slider extends CompositeWidget {
 	protected void onBackgroundMouseDown(final int mouse) {
 		while (true) {
 			final int handleBeforeUpdate = this.getRelativeHandleCoordinate();
-			//final int valueBefore = this.getValue();
+			// final int valueBefore = this.getValue();
 
 			if (mouse == handleBeforeUpdate) {
 				this.clearTimer();
@@ -316,7 +303,7 @@ public abstract class Slider extends CompositeWidget {
 				this.onBeforeHandleMouseDown();
 			}
 			final int handleAfterUpdate = this.getRelativeHandleCoordinate();
-			//final int valueAfter = this.getValue();
+			// final int valueAfter = this.getValue();
 
 			final boolean handleBeforeMouseAfter = handleAfterUpdate <= mouse;
 			if (handleBeforeMouseBefore != handleBeforeMouseAfter) {
@@ -343,8 +330,7 @@ public abstract class Slider extends CompositeWidget {
 	 * maximum value of this slider.
 	 */
 	protected void onAfterHandleMouseDown() {
-		final int newValue = Math.min(this.getValue() + this.getDelta(), this
-				.getMaximumValue());
+		final int newValue = Math.min(this.getValue() + this.getDelta(), this.getMaximumValue());
 		final int coordinate = this.getRelativeHandleCoordinate() + 1;
 		this.setValue(newValue);
 		this.setRelativeHandleCoordinate(coordinate);
@@ -441,14 +427,12 @@ public abstract class Slider extends CompositeWidget {
 	private int mouseDownRepeatRate;
 
 	public int getMouseDownRepeatRate() {
-		Checker.greaterThan("field:mouseDownRepeatRate", 0,
-				mouseDownRepeatRate);
+		Checker.greaterThan("field:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		return this.mouseDownRepeatRate;
 	}
 
 	public void setMouseDownRepeatRate(final int mouseDownRepeatRate) {
-		Checker.greaterThan("parameter:mouseDownRepeatRate", 0,
-				mouseDownRepeatRate);
+		Checker.greaterThan("parameter:mouseDownRepeatRate", 0, mouseDownRepeatRate);
 		this.mouseDownRepeatRate = mouseDownRepeatRate;
 	}
 
@@ -467,19 +451,15 @@ public abstract class Slider extends CompositeWidget {
 
 	public void setValue(final int value) {
 		final int maximumValue = this.getMaximumValue();
-		Checker.between("parameter:value", value, 0,
-				maximumValue + 1);
+		Checker.between("parameter:value", value, 0, maximumValue + 1);
 
 		this.value = value;
 
-		final int sliderLength = this.getSliderLength()
-				- this.getHandleLength();
-		final int coordinate = Math.round(1.0f * this.getValue() * sliderLength
-				/ this.getMaximumValue());
+		final int sliderLength = this.getSliderLength() - this.getHandleLength();
+		final int coordinate = Math.round(1.0f * this.getValue() * sliderLength / this.getMaximumValue());
 		this.setRelativeHandleCoordinate(coordinate);
 
-		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(
-				this);
+		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
 
 	/**
@@ -495,8 +475,7 @@ public abstract class Slider extends CompositeWidget {
 	}
 
 	public void setMaximumValue(final int maximumValue) {
-		Checker.greaterThan("parameter:maximumValue", 0,
-				maximumValue);
+		Checker.greaterThan("parameter:maximumValue", 0, maximumValue);
 		this.maximumValue = maximumValue;
 	}
 
@@ -515,34 +494,25 @@ public abstract class Slider extends CompositeWidget {
 		this.delta = delta;
 	}
 
-	public void addChangeEventListener(
-			final ChangeEventListener changeEventListener) {
-		this.getEventListenerDispatcher().addChangeEventListener(
-				changeEventListener);
+	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().addChangeEventListener(changeEventListener);
 	}
 
-	public void removeChangeEventListener(
-			final ChangeEventListener changeEventListener) {
-		this.getEventListenerDispatcher().removeChangeEventListener(
-				changeEventListener);
+	public void removeChangeEventListener(final ChangeEventListener changeEventListener) {
+		this.getEventListenerDispatcher().removeChangeEventListener(changeEventListener);
 	}
 
-	public void addFocusEventListener(
-			final FocusEventListener focusEventListener) {
-		this.getEventListenerDispatcher().addFocusEventListener(
-				focusEventListener);
+	public void addFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().addFocusEventListener(focusEventListener);
 	}
 
-	public void removeFocusEventListener(
-			final FocusEventListener focusEventListener) {
-		this.getEventListenerDispatcher().removeFocusEventListener(
-				focusEventListener);
+	public void removeFocusEventListener(final FocusEventListener focusEventListener) {
+		this.getEventListenerDispatcher().removeFocusEventListener(focusEventListener);
 	}
 
 	protected int getRelativeHandleCoordinate() {
 		final Element element = this.getHandle().getElement();
-		return InlineStyle.getInteger(element, this
-				.getHandleCoordinateStylePropertyName(), CssUnit.PX, 0);
+		return InlineStyle.getInteger(element, this.getHandleCoordinateStylePropertyName(), CssUnit.PX, 0);
 	}
 
 	protected void setRelativeHandleCoordinate(final int coordinate) {
@@ -550,10 +520,7 @@ public abstract class Slider extends CompositeWidget {
 		InlineStyle.setString(element, Css.POSITION, "absolute");
 		InlineStyle.setString(element, Css.LEFT, "0px");
 		InlineStyle.setString(element, Css.TOP, "0px");
-		InlineStyle
-				.setInteger(element, this
-						.getHandleCoordinateStylePropertyName(), coordinate,
-						CssUnit.PX);
+		InlineStyle.setInteger(element, this.getHandleCoordinateStylePropertyName(), coordinate, CssUnit.PX);
 	}
 
 	public String toString() {

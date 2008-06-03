@@ -63,7 +63,7 @@ public class ViewportTest implements EntryPoint {
 	static final int ZOOM = 100;
 
 	public void onModuleLoad() {
-		final RootPanel rootPanel = RootPanel.get();		
+		final RootPanel rootPanel = RootPanel.get();
 		final Counter changeEvent = new Counter("ChangeEvent: ");
 		rootPanel.add(changeEvent);
 
@@ -113,8 +113,8 @@ public class ViewportTest implements EntryPoint {
 				}
 			}
 		});
-		
-		Widgets.forceDocumentContentsToScroll( 100 );
+
+		Widgets.forceDocumentContentsToScroll(100);
 	}
 
 	class Counter extends Label {
@@ -141,8 +141,9 @@ public class ViewportTest implements EntryPoint {
 			final int x = column * TILE_WIDTH;
 			final int y = row * TILE_HEIGHT;
 
-			image.setUrl(Browser.getContextPath() + "/tiles?" + ViewportTestConstants.X + '=' + x + '&' + ViewportTestConstants.Y + '=' + y + '&' + ViewportTestConstants.WIDTH
-					+ '=' + TILE_WIDTH + '&' + ViewportTestConstants.HEIGHT + '=' + TILE_HEIGHT + '&' + ViewportTestConstants.ZOOM + '=' + 100);
+			image.setUrl(Browser.getContextPath() + "/tiles?" + ViewportTestConstants.X + '=' + x + '&' + ViewportTestConstants.Y + '='
+					+ y + '&' + ViewportTestConstants.WIDTH + '=' + TILE_WIDTH + '&' + ViewportTestConstants.HEIGHT + '=' + TILE_HEIGHT
+					+ '&' + ViewportTestConstants.ZOOM + '=' + 100);
 
 			ViewportTest.log("Requesting new tile at " + x + ", " + y);
 			return image;

@@ -23,7 +23,6 @@ import rocket.event.client.EventListener;
 import rocket.util.client.Checker;
 import rocket.util.client.Utilities;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -158,6 +157,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	 */
 	abstract protected String getInitialStyleName();
 
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 
@@ -171,7 +171,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 		final Element original = this.getElement();
 		final Element target = this.getSunkEventsTarget();
 
-		if (false == DOM.compare(original, target)) {
+		if (original != target) {
 			DOM.sinkEvents(original, 0);
 		}
 		final int mask = this.getSunkEventsBitMask();
@@ -244,7 +244,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 		if (widget.getParent() != null) {
 			throw new IllegalArgumentException(
 					"The parameter:widget already has a parent, remove from that first and then add/insert again to this "
-							+ GWT.getTypeName(this));
+							+ this.getClass().getName());
 		}
 
 		this.insert0(widget, indexBefore);
@@ -327,7 +327,7 @@ abstract public class Panel extends com.google.gwt.user.client.ui.Panel implemen
 	 * Returns an iterator which may be used to visit all the widgets belonging
 	 * to this panel.
 	 */
-	public Iterator iterator() {
+	public Iterator<Widget> iterator() {
 		return this.getWidgetCollection().iterator();
 	}
 

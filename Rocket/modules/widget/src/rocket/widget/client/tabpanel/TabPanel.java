@@ -59,9 +59,9 @@ public abstract class TabPanel extends CompositeWidget {
 	protected Widget createWidget() {
 		return this.createDockPanel();
 	}
-	
-	protected DockPanel getDockPanel(){
-		return (DockPanel)this.getWidget();
+
+	protected DockPanel getDockPanel() {
+		return (DockPanel) this.getWidget();
 	}
 
 	protected int getSunkEventsBitMask() {
@@ -121,9 +121,9 @@ public abstract class TabPanel extends CompositeWidget {
 		panel.setStyleName(this.getTabBarItemStyleName());
 
 		if (closable) {
-			final Html html = new Html( "&nbsp;");
+			final Html html = new Html("&nbsp;");
 			html.setStyleName("");
-			panel.add( html );
+			panel.add(html);
 
 			final Image closeButton = this.createCloseButton();
 			closeButton.addMouseEventListener(new MouseEventAdapter() {
@@ -324,7 +324,7 @@ public abstract class TabPanel extends CompositeWidget {
 	 */
 
 	protected TabBarPanel getTabBarPanel() {
-		return (TabBarPanel)this.getDockPanel().getWidget( Constants.TAB_BAR_PANEL_INDEX );
+		return (TabBarPanel) this.getDockPanel().getWidget(Constants.TAB_BAR_PANEL_INDEX);
 	}
 
 	protected abstract TabBarPanel createTabBarPanel();
@@ -335,7 +335,7 @@ public abstract class TabPanel extends CompositeWidget {
 	 */
 
 	public DeckPanel getContentPanel() {
-		return (DeckPanel) this.getDockPanel().getWidget( Constants.DECK_PANEL_INDEX );
+		return (DeckPanel) this.getDockPanel().getWidget(Constants.DECK_PANEL_INDEX);
 	}
 
 	protected DeckPanel createContentPanel() {

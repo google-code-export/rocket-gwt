@@ -20,8 +20,8 @@ import com.google.gwt.user.client.Element;
 /**
  * Pretty much a copy of the private inner type ListBox.Impl.
  * 
- * TODO ROCKET When upgrading from GWT 1.4.6x, replace all methods below with the inner
- * class com.google.gwt.user.client.ui.Listbox.SafariImpl
+ * TODO ROCKET When upgrading from GWT 1.4.6x, replace all methods below with
+ * the inner class com.google.gwt.user.client.ui.Listbox.SafariImpl
  */
 public class ListBoxSupport {
 	native public void clear(Element select) /*-{

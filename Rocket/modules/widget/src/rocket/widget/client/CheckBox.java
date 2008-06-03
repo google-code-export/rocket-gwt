@@ -44,24 +44,29 @@ public class CheckBox extends FocusWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(Element element) {
 		Dom.checkInput("parameter:element", element, WidgetConstants.CHECKBOX_INPUT_TYPE);
 	}
 
+	@Override
 	protected Element createElement() {
 		return DOM.createInputCheck();
 	}
 
+	@Override
 	protected void afterCreateElement() {
 		final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
 		dispatcher.setChangeEventListeners(dispatcher.createChangeEventListeners());
 		dispatcher.setFocusEventListeners(dispatcher.createFocusEventListeners());
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.CHECKBOX_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.CHANGE;
 	}
@@ -73,7 +78,7 @@ public class CheckBox extends FocusWidget {
 	 */
 	public boolean isChecked() {
 		String propName = isAttached() ? "checked" : "defaultChecked";
-		return DOM.getElementPropertyBoolean(this.getElement(), propName);
+		return this.getElement().getPropertyBoolean(propName);
 	}
 
 	/**
@@ -84,8 +89,8 @@ public class CheckBox extends FocusWidget {
 	 */
 	public void setChecked(final boolean checked) {
 		final Element element = this.getElement();
-		DOM.setElementPropertyBoolean(element, "checked", checked);
-		DOM.setElementPropertyBoolean(element, "defaultChecked", checked);
+		element.setPropertyBoolean("checked", checked);
+		element.setPropertyBoolean("defaultChecked", checked);
 	}
 
 	public void addChangeEventListener(final ChangeEventListener changeEventListener) {

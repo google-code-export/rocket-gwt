@@ -403,7 +403,8 @@ abstract public class SplitterPanel extends CompositeWidget {
 			DOM.addEventPreview(preview);
 
 			this.addStyleName(this.getDraggingStyleName());
-			event.stop(); // cancel event so text selection doesnt happen in Opera.
+			event.stop(); // cancel event so text selection doesnt happen in
+			// Opera.
 		}
 
 		private EventPreview eventPreview;
@@ -424,8 +425,8 @@ abstract public class SplitterPanel extends CompositeWidget {
 
 		/**
 		 * This EventPreview dispatches to the either
-		 * {@link #onMouseMove(Event)} or {@link #onMouseUp(Event)}
-		 * depending on the event type.
+		 * {@link #onMouseMove(Event)} or {@link #onMouseUp(Event)} depending on
+		 * the event type.
 		 * 
 		 * @return
 		 */

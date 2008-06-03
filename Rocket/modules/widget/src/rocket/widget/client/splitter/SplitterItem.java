@@ -102,6 +102,7 @@ public class SplitterItem {
 		this.sizeShare = sizeShare;
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + ", minimumSize: " + minimumSize + ", sizeShare: " + sizeShare + ", widget: " + widget;
 	}

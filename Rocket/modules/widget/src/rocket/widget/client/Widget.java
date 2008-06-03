@@ -15,12 +15,12 @@
  */
 package rocket.widget.client;
 
-import rocket.dom.client.Dom;
 import rocket.event.client.Event;
 import rocket.event.client.EventListener;
 import rocket.util.client.Checker;
 import rocket.util.client.Utilities;
 
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -104,7 +104,7 @@ abstract public class Widget extends com.google.gwt.user.client.ui.Widget implem
 
 		// if element is attached to the dom, then logically attach the widget
 		// to RootPanel.
-		if (Dom.isAttached(element)) {
+		if (Document.get().getBody().isOrHasChild(element)) {
 			RootPanel.get().add(this);
 			hijacker.restore();
 		}
@@ -159,6 +159,7 @@ abstract public class Widget extends com.google.gwt.user.client.ui.Widget implem
 	 */
 	abstract protected String getInitialStyleName();
 
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 
@@ -198,6 +199,7 @@ abstract public class Widget extends com.google.gwt.user.client.ui.Widget implem
 	 * The complement of onAttach. This method removes the event listener for
 	 * the sunk event target.
 	 */
+	@Override
 	protected void onDetach() {
 		if (0 != this.getSunkEventsBitMask()) {
 			DOM.setEventListener(this.getSunkEventsTarget(), this);

@@ -41,87 +41,87 @@ public class ImageFactoryDemo implements EntryPoint {
 			}
 		});
 
-		final TestImageFactory factory = (TestImageFactory)GWT.create(TestImageFactory.class);
+		final TestImageFactory factory = (TestImageFactory) GWT.create(TestImageFactory.class);
 
 		final ZebraFlexTable table = new ZebraFlexTable();
-		
+
 		int row = 0;
-		
-		table.setText( row, 0, "Image" );
-		table.setText( row, 1, "Url" );
-		table.setText( row, 2, "Local/Server" );
-		table.setText( row, 3, "Server lazy/eager" );		
+
+		table.setText(row, 0, "Image");
+		table.setText(row, 1, "Url");
+		table.setText(row, 2, "Local/Server");
+		table.setText(row, 3, "Server lazy/eager");
 		row++;
-		
+
 		table.addHeadingStyleToFirstRow();
-		
+
 		final rocket.widget.client.Image smallLocal = factory.createLocalSmallImage();
 		table.setWidget(row, 0, smallLocal);
 		table.setWidget(row, 1, this.createWidget(smallLocal.getUrl()));
-		table.setText( row, 2, "local" );
+		table.setText(row, 2, "local");
 		table.setText(row, 3, "lazy");
 		row++;
-		
+
 		final rocket.widget.client.Image smallServer = factory.createServerSmallImage();
 		table.setWidget(row, 0, smallServer);
 		table.setWidget(row, 1, this.createWidget(smallServer.getUrl()));
-		table.setText( row, 2, "server" );
+		table.setText(row, 2, "server");
 		table.setText(row, 3, "lazy");
 		row++;
-		
+
 		final com.google.gwt.user.client.ui.Image medium = factory.createLocalMediumImage();
 		table.setWidget(row, 0, medium);
 		table.setWidget(row, 1, this.createWidget(medium.getUrl()));
-		table.setText( row, 2, "local" );
+		table.setText(row, 2, "local");
 		table.setText(row, 3, "lazy");
 		row++;
-		
+
 		final rocket.widget.client.Image largeLocal = factory.createLocalLargeImage();
 		table.setWidget(row, 0, largeLocal);
 		table.setWidget(row, 1, this.createWidget(largeLocal.getUrl()));
-		table.setText( row, 2, "local" );
+		table.setText(row, 2, "local");
 		table.setText(row, 3, "lazy");
 		row++;
-		
+
 		final rocket.widget.client.Image largeLazyServer = factory.createLazyServerLargeImage();
 		table.setWidget(row, 0, largeLazyServer);
 		table.setWidget(row, 1, this.createWidget(largeLazyServer.getUrl()));
-		table.setText( row, 2, "server" );
+		table.setText(row, 2, "server");
 		table.setText(row, 3, "eager");
 		row++;
-		
+
 		final CellFormatter cellFormatter = table.getCellFormatter();
-		for( int r = 0; r < row; r++ ){
-			for( int c = 0; c < 4; c++ ){
-				cellFormatter.setAlignment(r, c, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE );
+		for (int r = 0; r < row; r++) {
+			for (int c = 0; c < 4; c++) {
+				cellFormatter.setAlignment(r, c, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 			}
 		}
-		
+
 		final RootPanel rootPanel = RootPanel.get();
 		rootPanel.add(table);
 	}
-	
-	protected Widget createWidget( final String url ){
+
+	protected Widget createWidget(final String url) {
 		String url0 = url;
-		
-		if( url.startsWith( "data")){
+
+		if (url.startsWith("data")) {
 			final StringBuffer buf = new StringBuffer();
-			buf.append( "<pre>");
-			
+			buf.append("<pre>");
+
 			final int length = url.length();
-			for( int i = 0; i < length; i=i+ 64 ){
-				final int end = Math.min( i + 64, length );
-				buf.append( url.substring( i, end ));
-				buf.append( "\n");
+			for (int i = 0; i < length; i = i + 64) {
+				final int end = Math.min(i + 64, length);
+				buf.append(url.substring(i, end));
+				buf.append("\n");
 			}
-			buf.append( "</pre>");
+			buf.append("</pre>");
 			url0 = buf.toString();
-		}		
-		
-		return new ScrollPanel( new Html( url0 ));
+		}
+
+		return new ScrollPanel(new Html(url0));
 	}
-	
-	public interface TestImageFactory extends ImageFactory{
+
+	public interface TestImageFactory extends ImageFactory {
 		/**
 		 * @file small.png
 		 * @location local
@@ -135,19 +135,21 @@ public class ImageFactoryDemo implements EntryPoint {
 		 * @serverRequest lazy
 		 */
 		rocket.widget.client.Image createServerSmallImage();
-		
+
 		/**
 		 * @file medium.jpg
 		 * @location local
 		 * @serverRequest eager
 		 */
 		com.google.gwt.user.client.ui.Image createLocalMediumImage();
+
 		/**
 		 * @file large.jpg
 		 * @location local
 		 * @serverRequest eager
 		 */
 		rocket.widget.client.Image createLocalLargeImage();
+
 		/**
 		 * @file large.jpg
 		 * @location server

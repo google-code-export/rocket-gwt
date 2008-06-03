@@ -38,6 +38,7 @@ public class UnorderedListPanel extends Panel implements HasWidgets {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(final Element element) {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.UNORDERED_LIST_TAG);
 	}
@@ -47,6 +48,7 @@ public class UnorderedListPanel extends Panel implements HasWidgets {
 	 * 
 	 * @return
 	 */
+	@Override
 	protected Element createPanelElement() {
 		return DOM.createElement(WidgetConstants.UNORDERED_LIST_TAG);
 	}
@@ -68,22 +70,22 @@ public class UnorderedListPanel extends Panel implements HasWidgets {
 		return this.getElement();
 	}
 
+	@Override
 	protected void insert0(final Element element, final int indexBefore) {
 		Checker.notNull("parameter:element", element);
 
 		final Element child = this.createElement();
 		DOM.insertChild(this.getParentElement(), child, indexBefore);
-		DOM.appendChild(child, element);
+		child.appendChild(element);
 	}
 
 	protected Element createElement() {
 		return DOM.createElement(WidgetConstants.UNORDERED_LIST_ITEM_TAG);
 	}
 
+	@Override
 	protected void remove0(final Element element, final int index) {
 		Checker.notNull("parameter:element", element);
-
-		final Element child = DOM.getChild(this.getParentElement(), index);
-		Dom.removeFromParent(child);
+		Dom.removeFromParent(element.getParentElement());
 	}
 }

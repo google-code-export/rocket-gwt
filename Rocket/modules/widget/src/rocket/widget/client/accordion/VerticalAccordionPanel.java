@@ -34,10 +34,12 @@ public class VerticalAccordionPanel extends AccordionPanel {
 		super();
 	}
 
+	@Override
 	protected Widget createWidget() {
 		return this.createPanel();
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
@@ -64,6 +66,7 @@ public class VerticalAccordionPanel extends AccordionPanel {
 		return new DivPanel();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return Constants.VERTICAL_ACCORDION_PANEL_STYLE;
 	}
@@ -77,7 +80,7 @@ public class VerticalAccordionPanel extends AccordionPanel {
 		final Widget caption = item.getCaptionWidget();
 		caption.removeStyleName(Constants.VERTICAL_ACCORDION_PANEL_CAPTION_SELECTED_STYLE);
 
-		InlineStyle.setString( item.getContent().getElement(), Css.DISPLAY, "none" );
+		InlineStyle.setString(item.getContent().getElement(), Css.DISPLAY, "none");
 	}
 
 	protected void addSelectedStyle(final AccordionItem item) {
@@ -86,23 +89,23 @@ public class VerticalAccordionPanel extends AccordionPanel {
 		final Widget caption = item.getCaptionWidget();
 		caption.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_CAPTION_SELECTED_STYLE);
 
-		InlineStyle.setString( item.getContent().getElement(), Css.DISPLAY, "block" );
+		InlineStyle.setString(item.getContent().getElement(), Css.DISPLAY, "block");
 	}
 
 	protected void insert0(final int insertBefore, final AccordionItem item) {
 		Checker.notNull("parameter:item", item);
 
-		final DivPanel panel = this.getPanel(); 
+		final DivPanel panel = this.getPanel();
 		final int index = insertBefore * 2;
-		
+
 		final Widget caption = item.getCaptionWidget();
 		caption.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_CAPTION_STYLE);
-		panel.insert( caption, index + 0 );
-		
+		panel.insert(caption, index + 0);
+
 		final Widget content = item.getContent();
-		InlineStyle.setString( content.getElement(), Css.DISPLAY, "none" );
+		InlineStyle.setString(content.getElement(), Css.DISPLAY, "none");
 		content.addStyleName(Constants.VERTICAL_ACCORDION_PANEL_CONTENT_STYLE);
-		panel.insert( content, index + 1 );		
+		panel.insert(content, index + 1);
 	}
 
 	protected void remove0(final int index) {
@@ -110,9 +113,9 @@ public class VerticalAccordionPanel extends AccordionPanel {
 
 		final DivPanel panel = this.getPanel();
 		final int panelIndex = index * 2;
-		panel.remove( panelIndex );
-		panel.remove( panelIndex );
-		
+		panel.remove(panelIndex);
+		panel.remove(panelIndex);
+
 		item.clearAccordionPanel();
 	}
 }

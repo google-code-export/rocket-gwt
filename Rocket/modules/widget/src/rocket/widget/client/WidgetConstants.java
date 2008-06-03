@@ -14,7 +14,6 @@
  */
 package rocket.widget.client;
 
-
 /**
  * This class contains primarily constants related to Widgets. Most constants
  * here are the names of various styles for the available widgets.
@@ -30,9 +29,9 @@ public class WidgetConstants {
 	public final static String ROCKET = "rocket";
 
 	final static String SELECTED = "selected";
-	
+
 	final static String ODD_ROW = "oddRow";
-	
+
 	final static String EVEN_ROW = "evenRow";
 
 	// AUTO COMPLETE TEXT BOX

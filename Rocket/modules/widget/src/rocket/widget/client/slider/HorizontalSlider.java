@@ -18,8 +18,6 @@ package rocket.widget.client.slider;
 import rocket.event.client.MouseEvent;
 import rocket.style.client.Css;
 
-import com.google.gwt.user.client.DOM;
-
 /**
  * A HorizontalSlider is a widget which allows a user to manipulate number value
  * by clicking on different areas of the widget along the x-axis.
@@ -31,38 +29,47 @@ public class HorizontalSlider extends Slider {
 		super();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return Constants.HORIZONTAL_SLIDER_STYLE;
 	}
 
+	@Override
 	protected String getHandleStyleName() {
 		return Constants.HORIZONTAL_SLIDER_HANDLE_STYLE;
 	}
 
+	@Override
 	protected String getBackgroundStyleName() {
 		return Constants.HORIZONTAL_SLIDER_BACKGROUND_STYLE;
 	}
 
+	@Override
 	protected String getSliderDraggingStyleName() {
 		return Constants.HORIZONTAL_SLIDER_DRAGGING_STYLE;
 	}
 
+	@Override
 	protected int getMousePageCoordinate(final MouseEvent event) {
 		return event.getPageX();
 	}
 
+	@Override
 	protected int getAbsoluteWidgetCoordinate() {
-		return DOM.getAbsoluteLeft(this.getElement());
+		return this.getElement().getAbsoluteLeft();
 	}
 
+	@Override
 	protected String getHandleCoordinateStylePropertyName() {
 		return Css.LEFT;
 	}
 
+	@Override
 	protected int getSliderLength() {
 		return this.getOffsetWidth();
 	}
 
+	@Override
 	protected int getHandleLength() {
 		return this.getHandle().getOffsetWidth();
 	}

@@ -15,11 +15,12 @@
  */
 package rocket.widget.client.menu;
 
-
 /**
- * This event is fired whenever a context menu, menu item or sub menu item is selected or opened.
+ * This event is fired whenever a context menu, menu item or sub menu item is
+ * selected or opened.
+ * 
  * @author Miroslav Pokorny
  */
 
-public class BeforeMenuOpenEvent extends MenuEvent{
+public class BeforeMenuOpenEvent extends MenuEvent {
 }
