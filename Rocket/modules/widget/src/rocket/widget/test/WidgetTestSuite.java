@@ -18,7 +18,6 @@ package rocket.widget.test;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import rocket.widget.test.htmltemplatefactory.client.HtmlTemplateFactoryGwtTestCase;
-import rocket.widget.test.pager.unit.PagerGwtTestCase;
 
 /**
  * TestSuite that executes all unit tests relating to the Widget module
@@ -35,7 +34,5 @@ public class WidgetTestSuite {
 
 	public static void addTests(TestSuite suite) {
 		suite.addTestSuite(HtmlTemplateFactoryGwtTestCase.class);
-		suite.addTestSuite(PagerGwtTestCase.class);
 	}
-
 }
