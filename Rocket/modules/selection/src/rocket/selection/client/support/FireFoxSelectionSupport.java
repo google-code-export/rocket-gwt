@@ -15,6 +15,8 @@
  */
 package rocket.selection.client.support;
 
+import rocket.selection.client.Selection;
+
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
@@ -25,7 +27,8 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class FireFoxSelectionSupport extends SelectionSupport {
 
-	native protected JavaScriptObject getNativeSelection()/*-{
-	 return $wnd.getSelection();
-	 }-*/;
+	@Override
+	native public Selection getSelection(final JavaScriptObject window)/*-{
+		 return window.getSelection();
+		 }-*/;
 }

@@ -15,6 +15,8 @@
  */
 package rocket.selection.test.selection.client;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import rocket.dom.client.Dom;
@@ -31,6 +33,9 @@ import rocket.util.client.JavaScript;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.Text;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
@@ -67,7 +72,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		});
 		rootPanel.add(button);
 
-		Dom.setFocus(button.getElement());
+		button.setFocus(true);
 	}
 
 	static interface TestMethodFinder extends TestBuilder {
@@ -171,7 +176,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	 * @testing-testMethodOrder 3
 	 */
 	public void testIsTextSelectionEnabled() {
-		final Element body = Dom.getBody();
+		final Element body = RootPanel.getBodyElement();
 
 		Selection.enableTextSelection();
 		Test.assertTrue("selection should be enabled.", Selection.isEnabled(body));
@@ -237,7 +242,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		final Element div = DOM.createDiv();
 		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "skyblue");
 		DOM.setInnerText(div, TEXT);
-		DOM.appendChild(Dom.getBody(), div);
+		RootPanel.getBodyElement().appendChild(div);
 
 		final SelectionEndPoint start = new SelectionEndPoint();
 		start.setTextNode(this.findFirstTextNode(div));
@@ -267,10 +272,10 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 
 		final Element div = DOM.createDiv();
 		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "lightGreen");
-		DOM.setInnerHTML(div, HTML);
-		DOM.appendChild(Dom.getBody(), div);
+		div.setInnerHTML(HTML);
+		RootPanel.getBodyElement().appendChild(div);
 
-		final JavaScriptObject startTextNode = this.findTextNode(div, "PSUM");
+		final Text startTextNode = this.findTextNode(div, "PSUM");
 
 		final String startTextNodeText = this.getTextNodeText(startTextNode);
 		final int startTextNodeOffset = startTextNodeText.indexOf("PSUM");
@@ -280,7 +285,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		start.setOffset(startTextNodeOffset);
 		selection.setStart(start);
 
-		final JavaScriptObject endTextNode = this.findTextNode(div, "uer");
+		final Text endTextNode = this.findTextNode(div, "uer");
 		final String endTextNodeText = this.getTextNodeText(endTextNode);
 		final int endTextNodeOffset = endTextNodeText.indexOf("uer");
 
@@ -307,12 +312,12 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 
 		final Element div = DOM.createDiv();
 		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "yellow");
-		DOM.setInnerHTML(div, HTML);
-		DOM.appendChild(Dom.getBody(), div);
+		div.setInnerHTML(HTML);
+		RootPanel.getBodyElement().appendChild(div);
 
-		final Element bold = Dom.findFirstChildOfType(div, "B");
-		final Element italic = Dom.findFirstChildOfType(bold, "I");
-		final JavaScriptObject italicTextNode = this.findTextNode(italic, "LOR");
+		final Element bold = SelectionTest.findFirstChild(div, "B");
+		final Element italic = SelectionTest.findFirstChild(bold, "I");
+		final Text italicTextNode = this.findTextNode(italic, "LOR");
 		final int startTextNodeOffset = this.getTextNodeText(italicTextNode).indexOf("LOR");
 
 		final SelectionEndPoint start = new SelectionEndPoint();
@@ -320,7 +325,7 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		start.setOffset(startTextNodeOffset);
 		selection.setStart(start);
 
-		final JavaScriptObject endTextNode = this.findTextNode(div, "uer");
+		final Text endTextNode = this.findTextNode(div, "uer");
 		final String endTextNodeText = this.getTextNodeText(endTextNode);
 		final int endTextNodeOffset = endTextNodeText.indexOf("uer");
 
@@ -351,8 +356,8 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 
 		final Element div = DOM.createDiv();
 		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "lightBlue");
-		DOM.setInnerHTML(div, HTML);
-		DOM.appendChild(Dom.getBody(), div);
+		div.setInnerHTML(HTML);
+		RootPanel.getBodyElement().appendChild(div);
 
 		final SelectionEndPoint start = new SelectionEndPoint();
 		start.setTextNode(this.findFirstTextNode(div));
@@ -364,14 +369,14 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		end.setOffset(5);
 		selection.setEnd(end);
 
-		final JavaScriptObject textNode = this.getTextNode(div, 0);
+		final Text textNode = this.getTextNode(div, 0);
 
 		final SelectionEndPoint actualStart = selection.getStart();
-		SelectionTest.assertSameTextNode(textNode, actualStart.getTextNode());
+		Test.assertSame(textNode, actualStart.getTextNode());
 		Test.assertEquals(0, actualStart.getOffset());
 
 		final SelectionEndPoint actualEnd = selection.getEnd();
-		SelectionTest.assertSameTextNode(textNode, actualEnd.getTextNode());
+		Test.assertSame(textNode, actualEnd.getTextNode());
 		Test.assertEquals(5, actualEnd.getOffset());
 	}
 
@@ -386,32 +391,32 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 
 		final Element div = DOM.createDiv();
 		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "cyan");
-		DOM.setInnerHTML(div, HTML);
-		DOM.appendChild(Dom.getBody(), div);
+		div.setInnerHTML(HTML);
+		RootPanel.getBodyElement().appendChild(div);
 
-		final Element bold = Dom.findFirstChildOfType(div, "B");
+		final Element bold = SelectionTest.findFirstChild(div, "B");
 
 		final SelectionEndPoint start = new SelectionEndPoint();
 		start.setTextNode(this.findFirstTextNode(bold));
 		start.setOffset(1);
 		selection.setStart(start);
 
-		final Element italic = Dom.findFirstChildOfType(bold, "I");
+		final Element italic = SelectionTest.findFirstChild(bold, "I");
 
 		final SelectionEndPoint end = new SelectionEndPoint();
 		end.setTextNode(this.findFirstTextNode(italic));
 		end.setOffset(2);
 		selection.setEnd(end);
 
-		final JavaScriptObject boldTextNode = this.getTextNode(bold, 0);
-		final JavaScriptObject italicTextNode = this.getTextNode(italic, 0);
+		final Text boldTextNode = this.getTextNode(bold, 0);
+		final Text italicTextNode = this.getTextNode(italic, 0);
 
 		final SelectionEndPoint actualStart = selection.getStart();
-		SelectionTest.assertSameTextNode(boldTextNode, actualStart.getTextNode());
+		Test.assertSame(boldTextNode, actualStart.getTextNode());
 		Test.assertEquals(1, actualStart.getOffset());
 
 		final SelectionEndPoint actualEnd = selection.getEnd();
-		SelectionTest.assertSameTextNode(italicTextNode, actualEnd.getTextNode());
+		Test.assertSame(italicTextNode, actualEnd.getTextNode());
 		Test.assertEquals(2, actualEnd.getOffset());
 	}
 
@@ -426,19 +431,19 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 
 		final Element div = DOM.createDiv();
 		InlineStyle.setString(div, Css.BACKGROUND_COLOR, "turquoise");
-		DOM.setInnerHTML(div, HTML);
-		DOM.appendChild(Dom.getBody(), div);
+		div.setInnerHTML(HTML);
+		RootPanel.getBodyElement().appendChild(div);
 
-		final Element bold = Dom.findFirstChildOfType(div, "B");
-		final Element italic = Dom.findFirstChildOfType(bold, "I");
-		final JavaScriptObject italicTextNode = this.findFirstTextNode(italic);
+		final Element bold = SelectionTest.findFirstChild(div, "B");
+		final Element italic = SelectionTest.findFirstChild(bold, "I");
+		final Text italicTextNode = this.findFirstTextNode(italic);
 
 		final SelectionEndPoint start = new SelectionEndPoint();
 		start.setTextNode(italicTextNode);
 		start.setOffset(1);
 		selection.setStart(start);
 
-		final JavaScriptObject ametTextNode = this.findTextNode(div, "AMET");
+		final Text ametTextNode = this.findTextNode(div, "AMET");
 
 		final SelectionEndPoint end = new SelectionEndPoint();
 		end.setTextNode(ametTextNode);
@@ -446,11 +451,11 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		selection.setEnd(end);
 
 		final SelectionEndPoint actualStart = selection.getStart();
-		SelectionTest.assertSameTextNode(italicTextNode, actualStart.getTextNode());
+		Test.assertSame(italicTextNode, actualStart.getTextNode());
 		Test.assertEquals(1, actualStart.getOffset());
 
 		final SelectionEndPoint actualEnd = selection.getEnd();
-		SelectionTest.assertSameTextNode(ametTextNode, actualEnd.getTextNode());
+		Test.assertSame(ametTextNode, actualEnd.getTextNode());
 		Test.assertEquals(1, actualEnd.getOffset());
 	}
 
@@ -466,11 +471,11 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 				final Element element = selection.extract();
 				Test.assertNotNull("element", element);
 
-				DOM.appendChild(Dom.getBody(), element);
+				RootPanel.getBodyElement().appendChild(element);
 
-				if (DOM.getInnerHTML(element).length() == 0) {
+				if (element.getInnerHTML().length() == 0) {
 					if (false == Window.confirm("The innerHTML of the EXTRACTED element is empty is this correct ?")) {
-						Test.assertNotEquals("element.innerHTML not empty", DOM.getInnerHTML(element).length(), 0);
+						Test.assertNotEquals("element.innerHTML not empty", element.getInnerHTML().length(), 0);
 					}
 				}
 			}
@@ -580,99 +585,101 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 		SelectionTest.postponeCurrentTest(60 * 1000);
 	}
 
-	protected JavaScriptObject getTextNode(final Element element, final int index) {
+	protected Text getTextNode(final Element element, final int index) {
 		Checker.notNull("parameter:element", element);
-		return this.getTextNode0(element, index);
+
+		return element.getChildNodes().getItem(index).cast();
 	}
 
-	native private JavaScriptObject getTextNode0(final Element element, final int index)/*-{
-	 return element.childNodes[ index ];
-	 }-*/;
-
-	protected JavaScriptObject findFirstTextNode(final Element element) {
+	protected Text findFirstTextNode(final Element element) {
 		Checker.notNull("parameter:element", element);
-		return this.findFirstTextNode0(element);
-	}
 
-	native private JavaScriptObject findFirstTextNode0(final Element element)/*-{
-	 var textNode = null;
-	 var childNodes = element.childNodes;
-	 for( var i = 0; i < childNodes.length; i++ ){
-	 var childNode = childNodes[ i ];
-	 
-	 // found a textNode!
-	 if( childNode.nodeType == 3 ){
-	 textNode = childNode;
-	 break;
-	 }
-	 }
-	 return textNode;
-	 }-*/;
+		final NodeList<Node> children = element.getChildNodes();
+		Text text = null;
 
-	protected JavaScriptObject findTextNode(final Element element, final String searchText) {
-		Checker.notNull("parameter:element", element);
-		Checker.notEmpty("parameter:searchText", searchText);
-		final JavaScriptObject textNode = this.findTextNode0(element, searchText);
-		if (textNode == null) {
-			throw new RuntimeException("Unable to find a textNode that is a child of element with the text \"" + searchText + "\", element: "
-					+ DOM.getInnerText(element));
-		}
-		return textNode;
-	}
+		for (int i = 0; i < children.getLength(); i++) {
+			final Node node = children.getItem(i);
+			final int type = node.getNodeType();
 
-	native protected JavaScriptObject findTextNode0(final Element element, final String text)/*-{    
-	 var textNode = null;
-	 var childNodes = element.childNodes;
-	 
-	 for( var i = 0; i < childNodes.length; i++ ){
-	 var node = childNodes[ i ];                
-	 var type = node.nodeType;
-	 
-	 // if node is an element...
-	 if( type == 1 ){
-	 textNode = this.@rocket.selection.test.selection.client.SelectionTest::findTextNode0(Lcom/google/gwt/user/client/Element;Ljava/lang/String;)(node,text);
-	 
-	 // stop searching if a textNode was found...
-	 if( null != textNode ){
-	 break;
-	 }
-	 // otherwise continue searching...
-	 continue;
-	 }
-	 
-	 if( node.nodeType == 3 ){
-	 if( node.data.indexOf( text ) != -1 ){
-	 textNode = node;
-	 break;
-	 }
-	 }
-	 }        
-	 
-	 return textNode;
-	 }-*/;
-
-	static void assertSameTextNode(final JavaScriptObject object, final JavaScriptObject otherObject) {
-		while (true) {
-			final String nodeType = JavaScript.getString(object, "nodeName");
-			if (false == nodeType.equals("#text")) {
-				Test.fail("Expected object is not a text node, but a " + nodeType);
-			}
-
-			final String otherNodeType = JavaScript.getString(otherObject, "nodeName");
-			if (false == otherNodeType.equals("#text")) {
-				Test.fail("Expected otherObject is not a text node, but a " + otherNodeType);
-			}
-
-			if (DOM.compare(getParent(object), getParent(otherObject))) {
+			if (type == Node.TEXT_NODE) {
+				text = (Text) node.cast();
 				break;
 			}
-
-			Test.fail("Both text nodes do not have the same parent.");
 		}
+		Checker.notNull("Unable to find a text node child of " + element.toString(), text);
+		return text;
+	}
+
+	protected Text findTextNode(final Element element, final String searchText) {
+		Checker.notNull("parameter:element", element);
+		Checker.notEmpty("parameter:searchText", searchText);
+
+		final Text text = this.findTextNode0(element, searchText);
+		Checker.notNull(searchText, text);
+		return text;
+	}
+
+	protected Text findTextNode0(final Element element, final String searchText) {
+		final NodeList<Node> children = element.getChildNodes();
+		Text text = null;
+
+		for (int i = 0; i < children.getLength(); i++) {
+			final Node node = children.getItem(i);
+			final int type = node.getNodeType();
+
+			if (type == Node.ELEMENT_NODE) {
+				text = this.findTextNode0((Element) node.cast(), searchText);
+				if (null != text) {
+					break;
+				}
+			}
+
+			if (type == Node.TEXT_NODE) {
+				final Text test = (Text) node.cast();
+				if (test.getData().indexOf(searchText) != -1) {
+					text = test;
+					break;
+				}
+			}
+		}
+		return text;
 	}
 
 	native static Element getParent(final JavaScriptObject object)/*-{
-	 return object.parentNode || object.parentElement || null;
-	 }-*/;
+				 return object.parentNode || object.parentElement || null;
+				 }-*/;
 
+	public static Element findFirstChild(final Element parent, final String tagName) {
+		Checker.notNull("parameter:parent", parent);
+		Checker.notEmpty("parameter:tagName", tagName);
+
+		return findImmediateChildren(parent, tagName).get(0);
+	}
+
+	/**
+	 * Creates a list and populates it with all immediate child elements of the
+	 * given element.
+	 * 
+	 * @param parent
+	 * @param tagName
+	 * @return A read only list of Elements.
+	 */
+	public static List<Element> findImmediateChildren(final Element parent, final String tagName) {
+		Checker.notNull("parameter:parent", parent);
+		Checker.notEmpty("parameter:tagName", tagName);
+
+		final List<Element> found = new ArrayList<Element>();
+		final NodeList<Node> children = parent.getChildNodes();
+		final int childCount = children.getLength();
+		for (int i = 0; i < childCount; i++) {
+			final Node child = children.getItem(i).cast();
+			if (child.getNodeType() == Node.ELEMENT_NODE) {
+				final Element element = child.cast();
+				if (Dom.isTag(element, tagName)) {
+					found.add(element);
+				}
+			}
+		}
+		return Collections.unmodifiableList(found);
+	}
 }
