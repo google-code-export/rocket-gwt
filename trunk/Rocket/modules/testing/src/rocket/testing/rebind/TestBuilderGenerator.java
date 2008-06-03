@@ -56,7 +56,7 @@ public class TestBuilderGenerator extends Generator {
 	 * @return
 	 */
 	protected NewConcreteType createTestBuilder(final String newTypeName) {
-		final NewConcreteType testBuilder = this.getGeneratorContext().newConcreteType( newTypeName );
+		final NewConcreteType testBuilder = this.getGeneratorContext().newConcreteType(newTypeName);
 		testBuilder.setAbstract(false);
 		testBuilder.setFinal(true);
 		testBuilder.setSuperType(this.getTestMethodTestBuilder());
@@ -203,7 +203,7 @@ public class TestBuilderGenerator extends Generator {
 	protected String getGeneratedTypeNameSuffix() {
 		return Constants.TEST_BUILDER_SUFFIX;
 	}
-	
+
 	/**
 	 * Helper which returns the TestBuilder type
 	 * 

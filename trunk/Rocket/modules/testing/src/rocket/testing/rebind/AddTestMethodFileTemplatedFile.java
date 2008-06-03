@@ -56,12 +56,12 @@ class AddTestTemplatedFile extends TemplatedFileCodeBlock {
 	protected Type getTest() {
 		return this.getMethod().getEnclosingType();
 	}
-	
-	protected String getResourceName(){
+
+	protected String getResourceName() {
 		return Constants.ADD_TEST_METHOD_TEMPLATE;
 	}
-	
-	public InputStream getInputStream(){
+
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 

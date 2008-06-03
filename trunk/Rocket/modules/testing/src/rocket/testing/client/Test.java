@@ -245,7 +245,8 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final double expected, final double actual, final double delta) {
 		if (actual > (expected + delta) || actual < (expected - delta)) {
-			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\nactual: " + actual + "\ndelta: "
+					+ delta);
 		}
 	}
 
@@ -257,7 +258,8 @@ abstract public class Test {
 
 	public static void assertNotEquals(final String message, final float expected, final float actual, final float delta) {
 		if (actual > (expected + delta) || actual < (expected - delta)) {
-			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\nactual: " + actual + "\ndelta: " + delta);
+			Test.fail("assertNotEquals()\nmessage\"" + message + "\"\nexpected: " + expected + "\nactual: " + actual + "\ndelta: "
+					+ delta);
 		}
 	}
 
@@ -549,26 +551,27 @@ abstract public class Test {
 	 * A list of messages accumulated whilst the test was run. Typically these
 	 * will be shown if a test fails.
 	 */
-	private List messages;
+	private List<String> messages;
 
-	public List getMessages() {
+	public List<String> getMessages() {
 		Checker.notNull("field:messages", messages);
 		return this.messages;
 	}
 
-	private void setMessages(final List messages) {
+	private void setMessages(final List<String> messages) {
 		Checker.notNull("field:messages", messages);
 		this.messages = messages;
 	}
 
-	private List createMessages() {
-		return new ArrayList();
+	private List<String> createMessages() {
+		return new ArrayList<String>();
 	}
 
 	public void log(final String message) {
 		this.getMessages().add(message);
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + ", name: " + this.getName() + ", startTimestamp: " + this.startTimestamp + ", endTimestamp: "
 				+ this.endTimestamp + ", state: " + state + ", postponedFinishDelay: " + this.postponedFinishDelay;

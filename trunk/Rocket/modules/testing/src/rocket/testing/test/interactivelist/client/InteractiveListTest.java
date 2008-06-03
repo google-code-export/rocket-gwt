@@ -45,10 +45,10 @@ public class InteractiveListTest implements EntryPoint {
 		rootPanel.add(new InteractiveList());
 	}
 
-	public class InteractiveList extends rocket.testing.client.InteractiveList {
+	public class InteractiveList extends rocket.testing.client.InteractiveList<HTML> {
 
 		InteractiveList() {
-			this.createList();
+			this.setList(this.createList());
 		}
 
 		protected String getCollectionTypeName() {
@@ -63,35 +63,35 @@ public class InteractiveListTest implements EntryPoint {
 			return this.getList().isEmpty();
 		}
 
-		protected boolean listAdd(final Object element) {
+		protected boolean listAdd(final HTML element) {
 			return this.getList().add(element);
 		}
 
-		protected void listInsert(final int index, final Object element) {
+		protected void listInsert(final int index, final HTML element) {
 			this.getList().add(index, element);
 		}
 
-		protected Object listGet(final int index) {
+		protected HTML listGet(final int index) {
 			return this.getList().get(index);
 		}
 
-		protected Object listRemove(final int index) {
+		protected HTML listRemove(final int index) {
 			return this.getList().remove(index);
 		}
 
-		protected Object listSet(final int index, final Object element) {
+		protected HTML listSet(final int index, final HTML element) {
 			return this.getList().set(index, element);
 		}
 
-		protected Object createElement() {
+		protected HTML createElement() {
 			return new HTML("" + System.currentTimeMillis());
 		}
 
-		protected Iterator listIterator() {
+		protected Iterator<HTML> listIterator() {
 			return this.getList().iterator();
 		}
 
-		protected void checkType(Object element) {
+		protected void checkType(HTML element) {
 			if (false == (element instanceof HTML)) {
 				Checker.fail("Unknown element type. element ");
 			}
@@ -103,30 +103,27 @@ public class InteractiveListTest implements EntryPoint {
 		 * @param element
 		 * @return
 		 */
-		protected String toString(final Object element) {
-			final HTML html = (HTML) element;
+		protected String toString(final HTML html) {
 			return html.getText();
 		}
 
 		/**
 		 * Contains the list being interactively controlled.
 		 */
-		private List list;
+		private List<HTML> list;
 
-		protected List getList() {
+		protected List<HTML> getList() {
 			Checker.notNull("field:list", list);
 			return this.list;
 		}
 
-		protected void setList(final List list) {
+		protected void setList(final List<HTML> list) {
 			Checker.notNull("parameter:list", list);
 			this.list = list;
 		}
 
-		protected List createList() {
-			final List list = new ArrayList();
-			this.setList(list);
-			return list;
+		protected List<HTML> createList() {
+			return new ArrayList<HTML>();
 		}
 	}
 }

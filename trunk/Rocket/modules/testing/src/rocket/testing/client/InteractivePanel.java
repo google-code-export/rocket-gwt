@@ -17,10 +17,8 @@ package rocket.testing.client;
 
 import java.util.Iterator;
 
-import rocket.browser.client.Browser;
 import rocket.util.client.Checker;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -37,7 +35,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class InteractivePanel extends Composite {
+public abstract class InteractivePanel<W> extends Composite {
 
 	public InteractivePanel() {
 		this.initWidget(this.createWidget());
@@ -114,7 +112,7 @@ public abstract class InteractivePanel extends Composite {
 
 	protected void onPanelAddClick() {
 		String message = "panel.add(";
-		Widget widget = null;
+		W widget = null;
 		try {
 
 			widget = this.createElement();
@@ -131,7 +129,7 @@ public abstract class InteractivePanel extends Composite {
 	 * Sub-classes must delegate to the panel implementation and add the given
 	 * widget
 	 */
-	protected abstract void panelAdd(Widget widget);
+	protected abstract void panelAdd(W widget);
 
 	protected Button createPanelInsertButton() {
 		final Button button = new Button("panel.insert(int)");
@@ -146,9 +144,9 @@ public abstract class InteractivePanel extends Composite {
 	protected void onPanelInsertClick() {
 		String message = "panel.insert(";
 		int index = -1;
-		Widget widget = null;
+		W widget = null;
 		try {
-			index = Integer.parseInt(Browser.prompt("insert beforeIndex", "0"));
+			index = Integer.parseInt(Window.prompt("insert beforeIndex", "0"));
 			widget = this.createElement();
 			this.panelInsert(widget, index);
 			message = message + index + ", " + this.toString(widget) + ") returned";
@@ -163,7 +161,7 @@ public abstract class InteractivePanel extends Composite {
 	 * Sub-classes must delegate to the panel implementation and insert the
 	 * given widget at the given slot
 	 */
-	protected abstract void panelInsert(Widget widget, int index);
+	protected abstract void panelInsert(W widget, int index);
 
 	protected Button createPanelGetButton() {
 		final Button button = new Button("panel.get()");
@@ -179,8 +177,8 @@ public abstract class InteractivePanel extends Composite {
 		String message = "panel.get(";
 		int index = -1;
 		try {
-			index = Integer.parseInt(Browser.prompt("get index", "0"));
-			final Widget widget = this.panelGet(index);
+			index = Integer.parseInt(Window.prompt("get index", "0"));
+			final W widget = this.panelGet(index);
 			this.checkType(widget);
 			message = message + index + ") returned " + this.toString(widget);
 		} catch (final Exception caught) {
@@ -194,7 +192,7 @@ public abstract class InteractivePanel extends Composite {
 	 * Sub-classes must delegate to the panel implementation and get the widget
 	 * at the given slot.
 	 */
-	protected abstract Widget panelGet(int index);
+	protected abstract W panelGet(int index);
 
 	protected Button createPanelRemoveButton() {
 		final Button button = new Button("panel.remove(Widget)");
@@ -210,7 +208,7 @@ public abstract class InteractivePanel extends Composite {
 		String message = "panel.remove(";
 		int index = -1;
 		try {
-			index = Integer.parseInt(Browser.prompt("remove index", "0"));
+			index = Integer.parseInt(Window.prompt("remove index", "0"));
 			this.panelRemove(this.panelGet(index));
 			message = message + index + ") returned";
 		} catch (final Exception caught) {
@@ -224,7 +222,7 @@ public abstract class InteractivePanel extends Composite {
 	 * Sub-classes must delegate to the panel implementation and remove the
 	 * widget at the given slot.
 	 */
-	protected abstract void panelRemove(Widget widget);
+	protected abstract void panelRemove(W widget);
 
 	/**
 	 * Sub-classes must create a new Widgets whenever this factory method is
@@ -232,7 +230,7 @@ public abstract class InteractivePanel extends Composite {
 	 * 
 	 * @return
 	 */
-	protected abstract Widget createElement();
+	protected abstract W createElement();
 
 	protected Button createPanelIteratorButton() {
 		final Button button = new Button("panel.iterator()");
@@ -246,14 +244,14 @@ public abstract class InteractivePanel extends Composite {
 
 	protected void onPanelIteratorClick() {
 		String message = "panel.iterator()";
-		Iterator iterator = null;
+		Iterator<W> iterator = null;
 		try {
 			iterator = this.panelIterator();
 			this.setIterator(iterator);
 			message = message + " returned " + iterator;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
+			message = message + " threw " + caught.getClass().getName() + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -262,7 +260,7 @@ public abstract class InteractivePanel extends Composite {
 	 * Sub-classes must delegate to the panel implementation and fetch the
 	 * iterator
 	 */
-	protected abstract Iterator panelIterator();
+	protected abstract Iterator<W> panelIterator();
 
 	protected Button createIteratorHasNextButton() {
 		final Button button = new Button("iterator.hasNext()");
@@ -281,7 +279,7 @@ public abstract class InteractivePanel extends Composite {
 			message = message + " returned " + hasNext;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
+			message = message + " threw " + caught.getClass().getName() + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -299,12 +297,12 @@ public abstract class InteractivePanel extends Composite {
 	protected void onIteratorNextClick() {
 		String message = "iterator.next()";
 		try {
-			final Object element = this.getIterator().next();
+			final W element = this.getIterator().next();
 			this.checkType(element);
 			message = message + " returned " + this.toString(element);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
+			message = message + " threw " + caught.getClass().getName() + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -326,7 +324,7 @@ public abstract class InteractivePanel extends Composite {
 			message = message + " returned";
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
+			message = message + " threw " + caught.getClass().getName() + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -337,14 +335,14 @@ public abstract class InteractivePanel extends Composite {
 	 * 
 	 * @param element
 	 */
-	protected abstract void checkType(Object element);
+	protected abstract void checkType(W element);
 
 	/**
 	 * Contains the iterator being iterated over.
 	 */
-	private Iterator iterator;
+	private Iterator<W> iterator;
 
-	protected Iterator getIterator() {
+	protected Iterator<W> getIterator() {
 		Checker.notNull("field:iterator", iterator);
 		return this.iterator;
 	}
@@ -353,7 +351,7 @@ public abstract class InteractivePanel extends Composite {
 		return null != this.iterator;
 	}
 
-	protected void setIterator(final Iterator iterator) {
+	protected void setIterator(final Iterator<W> iterator) {
 		Checker.notNull("parameter:iterator", iterator);
 		this.iterator = iterator;
 	}
@@ -362,5 +360,5 @@ public abstract class InteractivePanel extends Composite {
 		Window.alert(message);
 	}
 
-	protected abstract String toString(Object element);
+	protected abstract String toString(W element);
 }

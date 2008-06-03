@@ -18,7 +18,6 @@ package rocket.testing.client;
 import java.util.Iterator;
 import java.util.List;
 
-import rocket.dom.client.Dom;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
@@ -52,8 +51,8 @@ public class WebPageTestRunner extends TestRunner {
 		super();
 
 		final FlexTable table = this.createTable();
-		this.setTable( table );
-		RootPanel.get().add( table );
+		this.setTable(table);
+		RootPanel.get().add(table);
 	}
 
 	/**
@@ -180,12 +179,16 @@ public class WebPageTestRunner extends TestRunner {
 	}
 
 	protected void scrollToBottom() {
-		final Element body = Dom.getBody();
+		final Element body = RootPanel.getBodyElement();
 		final int childCount = DOM.getChildCount(body);
 		final Element element = DOM.getChild(body, childCount - 1);
 		DOM.scrollIntoView(element);
-		Dom.setFocus(element);
+		this.invokeSetFocus(element);
 	}
+
+	native protected void invokeSetFocus(final Element element)/*-{
+				element.focus();
+			}-*/;
 
 	protected String buildFailedTestSummary(final Test test) {
 		Checker.notNull("parameter:test", test);
@@ -260,16 +263,16 @@ public class WebPageTestRunner extends TestRunner {
 	}
 
 	private FlexTable createTable() {
-		final ZebraFlexTable table = new ZebraFlexTable(){
+		final ZebraFlexTable table = new ZebraFlexTable() {
 			protected String getInitialStyleName() {
 				return Constants.WEBPAGE_TESTRUNNER_TABLE;
 			}
-		};		
+		};
 		table.setText(0, 0, "Test name");
 		table.setText(0, 1, "Outcome");
 		table.setText(0, 2, "Time taken (millis)");
 		table.addHeadingStyleToFirstRow();
-		
+
 		return table;
 	}
 }
