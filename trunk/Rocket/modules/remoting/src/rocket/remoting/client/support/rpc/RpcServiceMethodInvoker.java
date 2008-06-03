@@ -27,32 +27,35 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * Common base class for both java and json rpc method invokers.
+ * 
  * @author Miroslav Pokorny
  */
-abstract public class RpcServiceMethodInvoker<R> implements RequestCallback{
-	
-	/**
-	 * Copies over the user credentials, timeout and service entry point from the rpc service client
-	 * to this particular method invoker.
-	 * @param client The source
-	 */
-	public void prepare( final RpcServiceClient client ){
-		Checker.notNull("parameter:client", client );
-		
-		this.setUrl( client.getServiceEntryPoint());
+abstract public class RpcServiceMethodInvoker<R> implements RequestCallback {
 
-		// copy over any authentication details 
-		if( client.hasUsername() ){
-			this.setUsername( this.getUsername() );
-			this.setPassword( this.getPassword() );
+	/**
+	 * Copies over the user credentials, timeout and service entry point from
+	 * the rpc service client to this particular method invoker.
+	 * 
+	 * @param client
+	 *            The source
+	 */
+	public void prepare(final RpcServiceClient client) {
+		Checker.notNull("parameter:client", client);
+
+		this.setUrl(client.getServiceEntryPoint());
+
+		// copy over any authentication details
+		if (client.hasUsername()) {
+			this.setUsername(this.getUsername());
+			this.setPassword(this.getPassword());
 		}
-		
+
 		// copy timeout value if present...
-		if( client.hasTimeout() ){
-			this.setTimeout( this.getTimeout() );
+		if (client.hasTimeout()) {
+			this.setTimeout(this.getTimeout());
 		}
 	}
-	
+
 	/**
 	 * Initiates a Http Request to the given url and provides a bridge between
 	 * the {@link RequestCallback} and the given {@link AsyncCallback}.
@@ -118,14 +121,17 @@ abstract public class RpcServiceMethodInvoker<R> implements RequestCallback{
 			this.onFailedResponse(request, response);
 		}
 	}
-	
+
 	/**
 	 * Handles a successful response (status code =200) reply from the server.
-	 * @param request The initial request
-	 * @param response The server response
+	 * 
+	 * @param request
+	 *            The initial request
+	 * @param response
+	 *            The server response
 	 */
 	abstract void onSuccessfulResponse(final Request request, final Response response);
-	
+
 	/**
 	 * Dispatches to one of two methods depending on the response code.
 	 */
@@ -136,8 +142,9 @@ abstract public class RpcServiceMethodInvoker<R> implements RequestCallback{
 	/**
 	 * This method is invoked if a request fails for any reason that is not the
 	 * result of a server failure.
-	 *
-	 * @param throwable A throwable holding what went wrong.
+	 * 
+	 * @param throwable
+	 *            A throwable holding what went wrong.
 	 */
 	protected void onFailedRequest(final Throwable throwable) {
 		final Throwable wrapper = new RpcException("Call to server failed: " + throwable.getMessage(), throwable);
@@ -147,14 +154,15 @@ abstract public class RpcServiceMethodInvoker<R> implements RequestCallback{
 	/**
 	 * Creates an exception that expresses the reason why the server invocation
 	 * failed, and executes the {@link AsyncCallback#onFailure(Throwable)}
-	 *
+	 * 
 	 * @param request
 	 * @param response
 	 */
 	protected void onFailedResponse(final Request request, final Response response) {
-		this.getCallback().onFailure( new RpcException("Call failed on server, " + response.getStatusText() + "(" + response.getStatusCode() + ")"));
+		this.getCallback().onFailure(
+				new RpcException("Call failed on server, " + response.getStatusText() + "(" + response.getStatusCode() + ")"));
 	}
-	
+
 	/**
 	 * This property will be set by copying the serviceEntryPoint property from
 	 * the matching JsonRpcServiceClient.
@@ -170,9 +178,7 @@ abstract public class RpcServiceMethodInvoker<R> implements RequestCallback{
 		Checker.notEmpty("parameter:url", url);
 		this.url = url;
 	}
-	
-	
-	
+
 	/**
 	 * When present a username and password is also attached to the request.
 	 */
@@ -227,13 +233,13 @@ abstract public class RpcServiceMethodInvoker<R> implements RequestCallback{
 	}
 
 	public void setTimeout(final int timeout) {
-		Checker.greaterThan("parameter:timeout", 0, timeout );
+		Checker.greaterThan("parameter:timeout", 0, timeout);
 		this.timeout = timeout;
 	}
-	
 
 	/**
-	 * The callback that will have either of its two method invoked depending on the result recieved from the server.
+	 * The callback that will have either of its two method invoked depending on
+	 * the result recieved from the server.
 	 */
 	private AsyncCallback<R> callback;
 

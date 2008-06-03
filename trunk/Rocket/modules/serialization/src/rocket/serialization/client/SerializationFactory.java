@@ -15,7 +15,6 @@
  */
 package rocket.serialization.client;
 
-
 /**
  * Base class for any of the generated serialization factories classes.
  * 
@@ -23,60 +22,61 @@ package rocket.serialization.client;
  */
 abstract public class SerializationFactory {
 
-//	public ObjectInputStream createObjectInputStream(String stream) {
-//		final ClientObjectInputStream clientObjectInputStream = new ClientObjectInputStream();
-//		clientObjectInputStream.setObjectReaders(this.getObjectReaders());
-//		clientObjectInputStream.prepare(stream);
-//		return clientObjectInputStream;
-//	}
-//
-//	/**
-//	 * This method is typically overwritten by the generator to return a map
-//	 * that binds type names to a {@link ObjectReader}
-//	 * 
-//	 * @return
-//	 */
-//	abstract protected Map getObjectReaders();
+	// public ObjectInputStream createObjectInputStream(String stream) {
+	// final ClientObjectInputStream clientObjectInputStream = new
+	// ClientObjectInputStream();
+	// clientObjectInputStream.setObjectReaders(this.getObjectReaders());
+	// clientObjectInputStream.prepare(stream);
+	// return clientObjectInputStream;
+	// }
+	//
+	// /**
+	// * This method is typically overwritten by the generator to return a map
+	// * that binds type names to a {@link ObjectReader}
+	// *
+	// * @return
+	// */
+	// abstract protected Map getObjectReaders();
 
-	public ObjectInputStream createObjectInputStream(final String stream ){
-		final ClientObjectInputStream objectInputStream = new ClientObjectInputStream(){
-			protected ObjectReader getObjectReader( final String typeName ){
-				return SerializationFactory.this.getObjectReader( typeName );
+	public ObjectInputStream createObjectInputStream(final String stream) {
+		final ClientObjectInputStream objectInputStream = new ClientObjectInputStream() {
+			protected ObjectReader getObjectReader(final String typeName) {
+				return SerializationFactory.this.getObjectReader(typeName);
 			}
 		};
 		objectInputStream.prepare(stream);
 		return objectInputStream;
 	}
-	
-	abstract protected ObjectReader getObjectReader( String typeName );
-	
-	
-	public ObjectOutputStream createObjectOutputStream(){
-		return new ClientObjectOutputStream(){
-			protected ObjectWriter getObjectWriter( final String typeName ){
-				return SerializationFactory.this.getObjectWriter( typeName );
+
+	abstract protected ObjectReader getObjectReader(String typeName);
+
+	public ObjectOutputStream createObjectOutputStream() {
+		return new ClientObjectOutputStream() {
+			protected ObjectWriter getObjectWriter(final String typeName) {
+				return SerializationFactory.this.getObjectWriter(typeName);
 			}
 		};
 	}
-	
-	abstract protected ObjectWriter getObjectWriter( String typeName );
-	
-	//public ObjectOutputStream createObjectOutputStream() {
-	//	//final ClientObjectOutputStream clientObjectOutputStream = new ClientObjectOutputStream();
-	//	//clientObjectOutputStream.setObjectWriters(this.getObjectWriters());
-	//	//return clientObjectOutputStream;
-	//	return new ClientObjectOutputStream(){
-	//		protected ObjectWriter getObjectWriter( String typeName )
-	//	}
-	//}
-	
-	//abstract protected ObjectWriter getObjectWriter( String typeName );
-	
+
+	abstract protected ObjectWriter getObjectWriter(String typeName);
+
+	// public ObjectOutputStream createObjectOutputStream() {
+	// //final ClientObjectOutputStream clientObjectOutputStream = new
+	// ClientObjectOutputStream();
+	// //clientObjectOutputStream.setObjectWriters(this.getObjectWriters());
+	// //return clientObjectOutputStream;
+	// return new ClientObjectOutputStream(){
+	// protected ObjectWriter getObjectWriter( String typeName )
+	// }
+	// }
+
+	// abstract protected ObjectWriter getObjectWriter( String typeName );
+
 	/**
 	 * This method is typically overwritten by the generator to return a map
 	 * that binds type names to a {@link ObjectWriter}
 	 * 
 	 * @return
 	 */
-	//abstract protected Map getObjectWriters();
+	// abstract protected Map getObjectWriters();
 }

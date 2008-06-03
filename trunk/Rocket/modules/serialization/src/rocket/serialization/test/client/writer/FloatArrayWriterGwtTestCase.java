@@ -34,6 +34,6 @@ public class FloatArrayWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2,1," + FLOAT_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + FLOAT_ARRAY + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + FLOAT_ARRAY + "\"," + expectedValues + "]", text);
 	}
 }

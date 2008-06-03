@@ -29,11 +29,11 @@ public class SafariSelectionSupport extends SelectionSupport {
 
 	@Override
 	native public Selection getSelection(JavaScriptObject window)/*-{
-		 return window.getSelection();
-		 }-*/;
+			 return window.getSelection();
+			 }-*/;
 
 	@Override
 	native public void clear(final Selection selection)/*-{
-		 selection.collapse();
-		 }-*/;
+			 selection.collapse();
+			 }-*/;
 }

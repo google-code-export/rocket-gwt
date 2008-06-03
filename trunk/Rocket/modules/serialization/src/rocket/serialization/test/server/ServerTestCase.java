@@ -63,7 +63,7 @@ abstract public class ServerTestCase extends TestCase {
 		subclass.value2 = ConcreteSubClass.VALUE;
 		return subclass;
 	}
-	
+
 	protected void verifyFurtherReadsFail(final ObjectInputStream reader) {
 		try {
 			final int got = reader.readInt();
@@ -83,9 +83,9 @@ abstract public class ServerTestCase extends TestCase {
 
 	protected TestServerObjectOutputStream createObjectOutputStream(final List writers) {
 		final List allWriters = new ArrayList();
-		allWriters.addAll( writers );
-		allWriters.add( ReflectiveWriter.instance );
-		
+		allWriters.addAll(writers);
+		allWriters.add(ReflectiveWriter.instance);
+
 		return new TestServerObjectOutputStream() {
 			protected List createObjectWriters() {
 				return allWriters;
@@ -103,14 +103,14 @@ abstract public class ServerTestCase extends TestCase {
 
 	protected ObjectInputStream createObjectInputStream(final String stream, final List<ServerObjectReader> readers) {
 		final List<ServerObjectReader> allReaders = new ArrayList<ServerObjectReader>();
-		allReaders.addAll( readers );
-		allReaders.add( ReflectiveReader.instance );
+		allReaders.addAll(readers);
+		allReaders.add(ReflectiveReader.instance);
 		return new ServerObjectInputStream(stream) {
-			
+
 			{
-				this.setObjectReaders( this.createObjectReaders() );
+				this.setObjectReaders(this.createObjectReaders());
 			}
-			
+
 			protected List<ServerObjectReader> createObjectReaders() {
 				return allReaders;
 			}

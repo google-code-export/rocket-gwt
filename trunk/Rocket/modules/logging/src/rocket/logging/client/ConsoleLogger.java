@@ -36,9 +36,9 @@ public class ConsoleLogger extends LoggerImpl {
 	}
 
 	native private void log0(final String message)/*-{
-	 if( $wnd.console && $wnd.console.log ){
-	 $wnd.console.log( message );
-	 }
-	 }-*/;
+		 if( $wnd.console && $wnd.console.log ){
+		 $wnd.console.log( message );
+		 }
+		 }-*/;
 
 }

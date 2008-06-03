@@ -28,7 +28,7 @@ import rocket.serialization.client.ObjectReader;
  * @serialization-type java.util.HashMap
  */
 public class HashMapReader extends AbstractMapReader implements ObjectReader {
-	
+
 	static public final ObjectReader instance = new HashMapReader();
 
 	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream) {

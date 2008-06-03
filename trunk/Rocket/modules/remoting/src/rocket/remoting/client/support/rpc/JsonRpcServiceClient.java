@@ -20,22 +20,22 @@ import rocket.remoting.client.JsonRpcService;
 /**
  * This is the base class for all generated client proxies created by the
  * RpcClientGenerator tool.
- *
+ * 
  * It holds a number of properties which will be common to all generated
  * clients. The tool will create sub-classes of this class and add additional
  * bridge methods between the service interface being implement and
  * RemoteJsonServiceMethodInvokers which take care of the json to java.
- *
+ * 
  * A number of limitations are imposed on all RemoteJsonServiceClients
  * <ul>
  * <li>The service interface may have only one method</li>
  * <li>All parameters for the method must be either primitives and String.</li>
  * <li>The return type must be an Object which is serializable.</li>
  * </ul>
- *
+ * 
  * @author Miroslav Pokorny
  */
-abstract public class JsonRpcServiceClient extends RpcServiceClient implements JsonRpcService{
+abstract public class JsonRpcServiceClient extends RpcServiceClient implements JsonRpcService {
 
 	protected JsonRpcServiceClient() {
 		super();

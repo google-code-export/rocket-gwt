@@ -23,7 +23,8 @@ import rocket.serialization.server.ReflectionHelper;
 import rocket.serialization.server.ServerObjectReader;
 
 /**
- * A reader for uses reflection to set fields upon a new instance except for the fields belonging to Throwable.
+ * A reader for uses reflection to set fields upon a new instance except for the
+ * fields belonging to Throwable.
  * 
  * @author Miroslav Pokorny
  */
@@ -34,20 +35,20 @@ public class ThrowableReader extends ReflectiveReader implements ServerObjectRea
 	protected ThrowableReader() {
 		this.cacheFields();
 	}
-	
-	protected void cacheFields(){
-		this.setMessage( ReflectionHelper.getThrowableMessageField() );
-		this.setCause( ReflectionHelper.getThrowableCauseField() );
-		this.setStackTraceElements( ReflectionHelper.getThrowableStackTraceElementField() );
+
+	protected void cacheFields() {
+		this.setMessage(ReflectionHelper.getThrowableMessageField());
+		this.setCause(ReflectionHelper.getThrowableCauseField());
+		this.setStackTraceElements(ReflectionHelper.getThrowableStackTraceElementField());
 	}
 
 	public boolean canRead(final Class classs) {
-		return Throwable.class.isAssignableFrom( classs );
+		return Throwable.class.isAssignableFrom(classs);
 	}
 
 	protected void readFields(final Object object, final Class classs, final ObjectInputStream objectInputStream) {
-		if( Throwable.class.equals( classs )){
-			this.readThrowableFields( (Throwable)object, objectInputStream );
+		if (Throwable.class.equals(classs)) {
+			this.readThrowableFields((Throwable) object, objectInputStream);
 		} else {
 			super.readFields(object, classs, objectInputStream);
 		}
@@ -55,43 +56,46 @@ public class ThrowableReader extends ReflectiveReader implements ServerObjectRea
 
 	/**
 	 * Handles the special case of fields belonging to the Throwable class.
-	 * @param throwable The instance being reconsituted.
+	 * 
+	 * @param throwable
+	 *            The instance being reconsituted.
 	 * @param classs
 	 * @param objectInputStream
 	 */
-	protected void readThrowableFields(final Throwable throwable, final ObjectInputStream objectInputStream ){
-		try{			
+	protected void readThrowableFields(final Throwable throwable, final ObjectInputStream objectInputStream) {
+		try {
 			final String message = (String) objectInputStream.readObject();
-			this.getMessage().set( throwable, message );
-			
+			this.getMessage().set(throwable, message);
+
 			final Throwable cause = (Throwable) objectInputStream.readObject();
-			this.getCause().set( throwable, cause);
-			
+			this.getCause().set(throwable, cause);
+
 			final int elementCount = objectInputStream.readInt();
-			final StackTraceElement[] stackTraceElements = new StackTraceElement[ elementCount ];
-			
-			for( int i = 0; i < elementCount; i++ ){
-				final String className = (String)objectInputStream.readObject();
-				final String methodName = (String)objectInputStream.readObject();
-				final String fileName = (String)objectInputStream.readObject();
+			final StackTraceElement[] stackTraceElements = new StackTraceElement[elementCount];
+
+			for (int i = 0; i < elementCount; i++) {
+				final String className = (String) objectInputStream.readObject();
+				final String methodName = (String) objectInputStream.readObject();
+				final String fileName = (String) objectInputStream.readObject();
 				final int lineNumber = objectInputStream.readInt();
-				
-				stackTraceElements[ i ] = new StackTraceElement( className, methodName, fileName, lineNumber );
-			}		
-		} catch ( final Exception caught ){
-			throw new SerializationException( "Unable to serialize Throwable instance, " + caught.getMessage() );
+
+				stackTraceElements[i] = new StackTraceElement(className, methodName, fileName, lineNumber);
+			}
+		} catch (final Exception caught) {
+			throw new SerializationException("Unable to serialize Throwable instance, " + caught.getMessage());
 		}
 	}
-	
+
 	/**
 	 * A cached copy of the {@link java.lang.Throwable#detailMessage } field
 	 */
 	private Field message;
-	
-	protected Field getMessage(){
+
+	protected Field getMessage() {
 		return this.message;
 	}
-	protected void setMessage( final Field message ){
+
+	protected void setMessage(final Field message) {
 		this.message = message;
 	}
 
@@ -99,23 +103,25 @@ public class ThrowableReader extends ReflectiveReader implements ServerObjectRea
 	 * A cached copy of the {@link java.lang.Throwable#cause } field
 	 */
 	private Field cause;
-	
-	protected Field getCause(){
+
+	protected Field getCause() {
 		return this.cause;
 	}
-	protected void setCause( final Field cause ){
+
+	protected void setCause(final Field cause) {
 		this.cause = cause;
 	}
-	
+
 	/**
 	 * A cached copy of the {@link java.lang.Throwable#stacktrace } field
 	 */
-private Field stackTraceElements;
-	
-	protected Field getStackTraceElements(){
+	private Field stackTraceElements;
+
+	protected Field getStackTraceElements() {
 		return this.stackTraceElements;
 	}
-	protected void setStackTraceElements( final Field stackTrace ){
+
+	protected void setStackTraceElements(final Field stackTrace) {
 		this.stackTraceElements = stackTrace;
 	}
 }

@@ -52,7 +52,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 			}
 		};
 
-		final ObjectReaderOrWriterFinder finder = this.createFinder( context.getObjectReaderWriter() );
+		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
 		final Set serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
@@ -63,7 +63,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 		final Type objectReaderWriter1 = context.getObjectReaderWriter1();
 		assertEquals("" + readersWriters, objectReaderWriter1, readersWriters.get(concreteSubClass1));
 	}
-	
+
 	public void testFindObjectReaderMatchingInterfaceWhichMatchesOneType() {
 		final TestGeneratorContext context = new TestGeneratorContext() {
 			boolean includeSecondConcreteInterfaceInTypeHeirarchy() {
@@ -83,7 +83,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 			}
 		};
 
-		final ObjectReaderOrWriterFinder finder = this.createFinder( context.getObjectReaderWriter() );
+		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
 		final Set serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
@@ -114,7 +114,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 			}
 		};
 
-		final ObjectReaderOrWriterFinder finder = this.createFinder( context.getObjectReaderWriter() );
+		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
 		final Set serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
@@ -148,7 +148,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 			}
 		};
 
-		final ObjectReaderOrWriterFinder finder = this.createFinder( context.getObjectReaderWriter() );
+		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
 		final Set serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
@@ -183,7 +183,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 			}
 		};
 
-		final ObjectReaderOrWriterFinder finder = this.createFinder( context.getObjectReaderWriter() );
+		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
 		final Set serializableTypes = context.getSerializableTypes();
 
 		try {
@@ -213,7 +213,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 			}
 		};
 
-		final ObjectReaderOrWriterFinder finder = this.createFinder( context.getObjectReaderWriter() );
+		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
 		final Set serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
@@ -222,22 +222,23 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 		final Type objectReaderWriter1 = context.getObjectReaderWriter1();
 		assertEquals("" + readersWriters, objectReaderWriter1, readersWriters.get(concreteInterface1));
 	}
-	
-	ObjectReaderOrWriterFinder createFinder( final Type interfacee ){
-		return new ObjectReaderOrWriterFinder(){
-			
-			protected Type getImplementingInterface(){
+
+	ObjectReaderOrWriterFinder createFinder(final Type interfacee) {
+		return new ObjectReaderOrWriterFinder() {
+
+			protected Type getImplementingInterface() {
 				return interfacee;
 			}
-			
-			protected void throwAmbiguousMatches(final Type type, final Type readerOrWriter, final Type secondReaderOrWriter){
-				throw new SerializationFactoryGeneratorException("Ambiguous match to more than one ObjectReader/Writer for the type " + type );
+
+			protected void throwAmbiguousMatches(final Type type, final Type readerOrWriter, final Type secondReaderOrWriter) {
+				throw new SerializationFactoryGeneratorException("Ambiguous match to more than one ObjectReader/Writer for the type "
+						+ type);
 			}
-			
-			protected boolean shouldBeSerialized( final Type type ){
+
+			protected boolean shouldBeSerialized(final Type type) {
 				return true;
 			}
-		};////
+		};// //
 	}
 
 	static final String[] EMPTY_STRING_ARRAY = new String[0];

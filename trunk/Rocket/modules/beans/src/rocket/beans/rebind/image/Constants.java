@@ -24,6 +24,6 @@ class Constants {
 	final static String TEMPLATE = "image-factory-get-image.txt";
 
 	final static String IMAGE_GETTER_METHOD = "imageGetter";
-	
+
 	final static String IMAGE_TYPE = "imageType";
 }

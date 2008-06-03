@@ -32,7 +32,7 @@ class Constants {
 	final static String WRITE_FIELDS_TYPE = "type";
 
 	final static String WRITE_FIELDS_GET_AND_WRITE_INDIVIDUAL_FIELDS = "getAndWriteIndividualFields";
-	
+
 	final static String WRITE_FIELD_TEMPLATE = "write-field.txt";
 
 	final static String WRITE_FIELD_GETTER_METHOD = "getter";

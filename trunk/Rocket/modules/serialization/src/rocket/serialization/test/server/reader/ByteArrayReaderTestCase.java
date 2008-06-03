@@ -26,7 +26,7 @@ public class ByteArrayReaderTestCase extends ServerTestCase {
 	final static byte BYTE_VALUE = 34;
 
 	public void testReadByteArray() {
-		final String stream = "[1,\"" + BYTE_ARRAY + "\",1,2,1," + BYTE_VALUE +"]";
+		final String stream = "[1,\"" + BYTE_ARRAY + "\",1,2,1," + BYTE_VALUE + "]";
 		final ObjectInputStream input = createObjectInputStream(stream, ByteArrayReader.instance);
 
 		final byte[] array = (byte[]) input.readObject();

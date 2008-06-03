@@ -79,8 +79,8 @@ public class DomConstants {
 	public final static String PARAM_TAG = "PARAM";
 
 	public final static String VALUE_ATTRIBUTE = "value";
-	
+
 	public final static String TEXTAREA_TAG = "textarea";
-	
+
 	public final static String LISTBOX_TAG = "select";
 }

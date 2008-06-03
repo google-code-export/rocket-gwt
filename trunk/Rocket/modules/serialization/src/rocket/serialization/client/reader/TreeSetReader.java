@@ -31,8 +31,8 @@ import rocket.serialization.client.ObjectReader;
 public class TreeSetReader extends AbstractSetReader {
 	static public final ObjectReader instance = new TreeSetReader();
 
-	public Object newInstance(String typeName, ObjectInputStream objectInputStream){
-		final Comparator comparator = (Comparator)objectInputStream.readObject();
-		return comparator == null ? new TreeSet() : new TreeSet( comparator );
+	public Object newInstance(String typeName, ObjectInputStream objectInputStream) {
+		final Comparator comparator = (Comparator) objectInputStream.readObject();
+		return comparator == null ? new TreeSet() : new TreeSet(comparator);
 	}
 }

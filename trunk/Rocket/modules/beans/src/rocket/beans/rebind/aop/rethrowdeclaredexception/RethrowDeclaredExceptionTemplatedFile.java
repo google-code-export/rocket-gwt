@@ -53,10 +53,10 @@ public class RethrowDeclaredExceptionTemplatedFile extends TemplatedFileCodeBloc
 	}
 
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
-	
+
 	@Override
 	public Object getValue0(final String name) {
 		Object value = null;

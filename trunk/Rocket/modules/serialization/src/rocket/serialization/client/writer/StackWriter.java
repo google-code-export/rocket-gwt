@@ -19,6 +19,7 @@ import rocket.serialization.client.ObjectWriter;
 
 /**
  * ObjectWriter for {@link java.util.Stack}
+ * 
  * @author Miroslav Pokorny
  * @serialization-type java.util.Stack
  */

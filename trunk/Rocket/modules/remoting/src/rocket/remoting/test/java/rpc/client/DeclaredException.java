@@ -17,8 +17,8 @@ package rocket.remoting.test.java.rpc.client;
 
 import java.io.Serializable;
 
-public class DeclaredException extends Exception implements Serializable{
-	public DeclaredException(){
+public class DeclaredException extends Exception implements Serializable {
+	public DeclaredException() {
 		super();
 	}
 }

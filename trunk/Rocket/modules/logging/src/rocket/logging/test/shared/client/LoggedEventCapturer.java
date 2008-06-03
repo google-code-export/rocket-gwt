@@ -39,10 +39,10 @@ public class LoggedEventCapturer extends LoggerImpl implements Logger {
 	 * beginning of a test.
 	 */
 	static public void reset() {
-		messages = new ArrayList();
+		messages = new ArrayList<LoggingEvent>();
 	}
 
-	public static List messages;
+	public static List<LoggingEvent> messages;
 
 	public LoggedEventCapturer(String category) {
 		super(category);

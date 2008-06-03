@@ -21,8 +21,9 @@ import java.util.List;
 import rocket.util.client.Checker;
 
 /**
- * Provides a chain of methodInterceptors for a aspect.
- * This class also acts as an adapter doing boring stuff like wrapping / unwrapping between primitive values and object.
+ * Provides a chain of methodInterceptors for a aspect. This class also acts as
+ * an adapter doing boring stuff like wrapping / unwrapping between primitive
+ * values and object.
  * 
  * @author Miroslav Pokorny
  */
@@ -99,19 +100,22 @@ public class InterceptorChain {
 	 * 
 	 * @return The new MethodInvocation
 	 */
-	
+
 	protected MethodInvocation createMethodInvocation() {
-		return createMethodInvocation( 0 );
+		return createMethodInvocation(0);
 	}
 
 	/**
-	 * Helper which creates a MethodInvocation for each interceptor. The last interceptor is actually responsible for invoking the
-	 * target.
-	 * @param interceptorIndex Must be a valid index between 0 and the number of method interceptors.
+	 * Helper which creates a MethodInvocation for each interceptor. The last
+	 * interceptor is actually responsible for invoking the target.
+	 * 
+	 * @param interceptorIndex
+	 *            Must be a valid index between 0 and the number of method
+	 *            interceptors.
 	 * @return A new MethodInvocation
 	 */
-	protected MethodInvocation createMethodInvocation( final int interceptorIndex ) {
-		return new MethodInvocation(){
+	protected MethodInvocation createMethodInvocation(final int interceptorIndex) {
+		return new MethodInvocation() {
 
 			/**
 			 * Returns the this reference for the object being proxied
@@ -127,9 +131,10 @@ public class InterceptorChain {
 			}
 
 			public Object proceed() throws Throwable {
-				final MethodInterceptor methodInterceptor = (MethodInterceptor) InterceptorChain.this.getMethodInterceptors().get( interceptorIndex );
-				final MethodInvocation methodInvocation = InterceptorChain.this.createMethodInvocation( interceptorIndex + 1 );
-				return methodInterceptor.invoke( methodInvocation );
+				final MethodInterceptor methodInterceptor = (MethodInterceptor) InterceptorChain.this.getMethodInterceptors().get(
+						interceptorIndex);
+				final MethodInvocation methodInvocation = InterceptorChain.this.createMethodInvocation(interceptorIndex + 1);
+				return methodInterceptor.invoke(methodInvocation);
 			}
 
 			public String getMethod() {
@@ -159,9 +164,9 @@ public class InterceptorChain {
 			public String getEnclosingType() {
 				return InterceptorChain.this.getEnclosingType();
 			}
-		};		
+		};
 	}
-	
+
 	/**
 	 * The parameters of the method being proxied.
 	 */
@@ -193,7 +198,8 @@ public class InterceptorChain {
 	}
 
 	/**
-	 * The names of the parameter types taken from the method not the input parameters. 
+	 * The names of the parameter types taken from the method not the input
+	 * parameters.
 	 */
 	private String[] parameterTypes;
 

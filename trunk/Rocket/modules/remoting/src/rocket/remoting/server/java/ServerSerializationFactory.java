@@ -22,6 +22,8 @@ import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.server.ServerObjectInputStream;
 import rocket.serialization.server.ServerObjectOutputStream;
+import rocket.serialization.server.ServerObjectReader;
+import rocket.serialization.server.ServerObjectWriter;
 import rocket.serialization.server.reader.BooleanArrayReader;
 import rocket.serialization.server.reader.BooleanReader;
 import rocket.serialization.server.reader.ByteArrayReader;
@@ -106,8 +108,8 @@ public class ServerSerializationFactory {
 	 * 
 	 * @return A list of ObjectReaders
 	 */
-	protected List createObjectReaders() {
-		final List readers = new ArrayList();
+	protected List<ServerObjectReader> createObjectReaders() {
+		final List<ServerObjectReader> readers = new ArrayList<ServerObjectReader>();
 		this.addCollectionObjectReaders(readers);
 		this.addPrimitiveWrapperObjectReaders(readers);
 		this.addPrimitiveArrayObjectReaders(readers);
@@ -122,7 +124,7 @@ public class ServerSerializationFactory {
 	 * 
 	 * @param readers
 	 */
-	protected void addDateObjectReader(final List readers) {
+	protected void addDateObjectReader(final List<ServerObjectReader> readers) {
 		readers.add(DateReader.instance);
 	}
 
@@ -132,7 +134,7 @@ public class ServerSerializationFactory {
 	 * 
 	 * @param readers
 	 */
-	protected void addCollectionObjectReaders(final List readers) {
+	protected void addCollectionObjectReaders(final List<ServerObjectReader> readers) {
 		readers.add(ListReader.instance);
 		readers.add(TreeSetReader.instance);
 		readers.add(SetReader.instance);
@@ -146,7 +148,7 @@ public class ServerSerializationFactory {
 	 * 
 	 * @param readers
 	 */
-	protected void addPrimitiveWrapperObjectReaders(final List readers) {
+	protected void addPrimitiveWrapperObjectReaders(final List<ServerObjectReader> readers) {
 		readers.add(BooleanReader.instance);
 		readers.add(ByteReader.instance);
 		readers.add(ShortReader.instance);
@@ -163,7 +165,7 @@ public class ServerSerializationFactory {
 	 * 
 	 * @param readers
 	 */
-	protected void addPrimitiveArrayObjectReaders(final List readers) {
+	protected void addPrimitiveArrayObjectReaders(final List<ServerObjectReader> readers) {
 		readers.add(BooleanArrayReader.instance);
 		readers.add(ByteArrayReader.instance);
 		readers.add(ShortArrayReader.instance);
@@ -174,12 +176,12 @@ public class ServerSerializationFactory {
 		readers.add(CharArrayReader.instance);
 	}
 
-	protected void addThrowableObjectReader(final List writers) {
-		writers.add(ThrowableReader.instance);
+	protected void addThrowableObjectReader(final List<ServerObjectReader> readers) {
+		readers.add(ThrowableReader.instance);
 	}
 
-	protected void addDefaultObjectReader(final List writers) {
-		writers.add(ReflectiveReader.instance);
+	protected void addDefaultObjectReader(final List<ServerObjectReader> readers) {
+		readers.add(ReflectiveReader.instance);
 	}
 
 	/**
@@ -199,8 +201,8 @@ public class ServerSerializationFactory {
 	 * 
 	 * @return
 	 */
-	protected List createObjectWriters() {
-		final List writers = new ArrayList();
+	protected List<ServerObjectWriter> createObjectWriters() {
+		final List<ServerObjectWriter> writers = new ArrayList<ServerObjectWriter>();
 		this.addCollectionObjectWriters(writers);
 		this.addPrimitiveWrapperObjectWriters(writers);
 		this.addPrimitiveArrayObjectWriters(writers);
@@ -210,11 +212,11 @@ public class ServerSerializationFactory {
 		return writers;
 	}
 
-	protected void addThrowablesObjectWriter(final List writers) {
+	protected void addThrowablesObjectWriter(final List<ServerObjectWriter> writers) {
 		writers.add(ThrowableWriter.instance);
 	}
 
-	protected void addDefaultObjectWriter(final List writers) {
+	protected void addDefaultObjectWriter(final List<ServerObjectWriter> writers) {
 		writers.add(ReflectiveWriter.instance);
 	}
 
@@ -223,7 +225,7 @@ public class ServerSerializationFactory {
 	 * 
 	 * @param writers
 	 */
-	protected void addDateObjectWriter(final List writers) {
+	protected void addDateObjectWriter(final List<ServerObjectWriter> writers) {
 		writers.add(DateWriter.instance);
 	}
 
@@ -233,7 +235,7 @@ public class ServerSerializationFactory {
 	 * 
 	 * @param writers
 	 */
-	protected void addCollectionObjectWriters(final List writers) {
+	protected void addCollectionObjectWriters(final List<ServerObjectWriter> writers) {
 		writers.add(ListWriter.instance);
 		writers.add(TreeSetWriter.instance);
 		writers.add(SetWriter.instance);
@@ -247,7 +249,7 @@ public class ServerSerializationFactory {
 	 * 
 	 * @param writers
 	 */
-	protected void addPrimitiveWrapperObjectWriters(final List writers) {
+	protected void addPrimitiveWrapperObjectWriters(final List<ServerObjectWriter> writers) {
 		writers.add(BooleanWriter.instance);
 		writers.add(ByteWriter.instance);
 		writers.add(ShortWriter.instance);
@@ -264,7 +266,7 @@ public class ServerSerializationFactory {
 	 * 
 	 * @param writers
 	 */
-	protected void addPrimitiveArrayObjectWriters(final List writers) {
+	protected void addPrimitiveArrayObjectWriters(final List<ServerObjectWriter> writers) {
 		writers.add(BooleanArrayWriter.instance);
 		writers.add(ByteArrayWriter.instance);
 		writers.add(ShortArrayWriter.instance);

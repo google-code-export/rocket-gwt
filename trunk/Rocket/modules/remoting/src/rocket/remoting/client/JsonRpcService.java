@@ -22,9 +22,9 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
  * A maker interface that marks a interface as being a JsonRpcService.
- *
- * Many of the steps involved in creating a JsonRpcService are similar to
- * those required to create a GWT JsonRpcService.
+ * 
+ * Many of the steps involved in creating a JsonRpcService are similar to those
+ * required to create a GWT JsonRpcService.
  * <ul>
  * <li>A service interface which must extends {@link JsonRpcService}.</li>
  * <li>The return type of the service interface and all types referenced must
@@ -38,7 +38,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * <li>The service address must be set after casting to
  * {@link ServiceDefTarget} and calling {@link ServiceDefTarget#setServiceEntry}
  * </ul>
- *
+ * 
  * @author Miroslav Pokorny
  */
 public interface JsonRpcService {

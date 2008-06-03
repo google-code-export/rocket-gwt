@@ -25,7 +25,7 @@ import rocket.util.client.Checker;
  * @author Miroslav Pokorny
  */
 abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAware, BeanNameAware {
-	
+
 	/**
 	 * Creates a new bean instance.
 	 * 
@@ -93,8 +93,7 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 
 	/**
 	 * If the new instance is a BeanNameAware call its
-	 * {@link BeanNameAware#setBeanName(BeanName)} otherwise do
-	 * nothing.
+	 * {@link BeanNameAware#setBeanName(BeanName)} otherwise do nothing.
 	 * 
 	 * @param instance
 	 */
@@ -106,21 +105,22 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 			aware.setBeanName(this.getName());
 		}
 	}
-	
+
 	/**
 	 * The name of the bean
 	 */
 	private String name;
-	
-	protected String getName(){
-		Checker.notEmpty( "field:name", name );
+
+	protected String getName() {
+		Checker.notEmpty("field:name", name);
 		return this.name;
 	}
-	public void setBeanName( final String name ){
-		Checker.notEmpty( "parameter:name", name );
+
+	public void setBeanName(final String name) {
+		Checker.notEmpty("parameter:name", name);
 		this.name = name;
 	}
-	
+
 	/**
 	 * If the given instance implements InitializingBean then a cast is
 	 * performed followed by a call to

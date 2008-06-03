@@ -59,7 +59,7 @@ public class ListWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2,5,0,0,0,0,0";
 		final String text = output.getText();
-		assertEquals("[1,\"" + ARRAYLIST + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + ARRAYLIST + "\"," + expectedValues + "]", text);
 	}
 
 	public void testSingleObjectElement() {

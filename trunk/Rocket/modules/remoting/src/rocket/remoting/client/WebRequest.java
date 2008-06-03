@@ -71,7 +71,8 @@ public class WebRequest implements IsSerializable, Serializable {
 	}
 
 	/**
-	 * None or more headers that should be sent when requesting the server resource
+	 * None or more headers that should be sent when requesting the server
+	 * resource
 	 */
 	private Headers headers;
 

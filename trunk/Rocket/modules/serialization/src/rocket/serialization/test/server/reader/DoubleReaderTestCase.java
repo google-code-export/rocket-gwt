@@ -32,7 +32,7 @@ public class DoubleReaderTestCase extends ServerTestCase {
 		final Double object = (Double) input.readObject();
 		assertNotNull(stream, object);
 
-		assertEquals(DOUBLE_VALUE, object.doubleValue(), 0.1 );
+		assertEquals(DOUBLE_VALUE, object.doubleValue(), 0.1);
 
 		this.verifyFurtherReadsFail(input);
 	}

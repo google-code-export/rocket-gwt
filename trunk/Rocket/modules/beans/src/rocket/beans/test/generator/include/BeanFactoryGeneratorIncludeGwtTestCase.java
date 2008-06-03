@@ -39,16 +39,16 @@ public class BeanFactoryGeneratorIncludeGwtTestCase extends GeneratorGwtTestCase
 	public String getModuleName() {
 		return "rocket.beans.test.generator.include.BeanFactoryGeneratorInclude";
 	}
-	
+
 	public void testMultipleIncludedFiles() {
 		final BeanFactory factory = (BeanFactory) GWT.create(MultipleIncludedFilesBeanFactory.class);
-		final Bean bean = (Bean)factory.getBean(BEAN);
+		final Bean bean = (Bean) factory.getBean(BEAN);
 		assertNotNull(bean);
 
-		final Bean beanFromSecondFile = (Bean)factory.getBean("beanFromSecondFile");
+		final Bean beanFromSecondFile = (Bean) factory.getBean("beanFromSecondFile");
 		assertNotNull(beanFromSecondFile);
 
-		final Bean beanFromThirdFile = (Bean)factory.getBean("beanFromThirdFile");
+		final Bean beanFromThirdFile = (Bean) factory.getBean("beanFromThirdFile");
 		assertNotNull(beanFromThirdFile);
 	}
 
@@ -57,11 +57,10 @@ public class BeanFactoryGeneratorIncludeGwtTestCase extends GeneratorGwtTestCase
 			assertBindingFailed(GWT.create(CycleBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
 			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
-			
-			final String message = failed.getMessage();
-			assertTrue( "" + message, message.indexOf("ActualBeanFactoryWithCycle.xml") != -1 );
-		} 
-	}
 
+			final String message = failed.getMessage();
+			assertTrue("" + message, message.indexOf("ActualBeanFactoryWithCycle.xml") != -1);
+		}
+	}
 
 }

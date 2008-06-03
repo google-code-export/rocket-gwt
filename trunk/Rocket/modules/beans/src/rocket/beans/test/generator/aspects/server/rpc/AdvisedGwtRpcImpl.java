@@ -20,7 +20,7 @@ import rocket.beans.test.generator.aspects.client.rpc.AdvisedGwtRpc;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class AdvisedGwtRpcImpl extends RemoteServiceServlet implements AdvisedGwtRpc {
-	public String addStar(final String string){
+	public String addStar(final String string) {
 		return string + "*";
 	}
 }

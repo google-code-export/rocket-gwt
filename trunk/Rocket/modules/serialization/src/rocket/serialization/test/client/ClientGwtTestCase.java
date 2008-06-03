@@ -63,7 +63,7 @@ abstract public class ClientGwtTestCase extends GWTTestCase {
 		subclass.value2 = ConcreteSubClass.VALUE;
 		return subclass;
 	}
-	
+
 	protected ClientObjectOutputStream createObjectOutputStream(final String typeName, final ObjectWriter writer) {
 		final Map writers = new HashMap();
 		writers.put(typeName, writer);
@@ -71,15 +71,15 @@ abstract public class ClientGwtTestCase extends GWTTestCase {
 	}
 
 	protected ClientObjectOutputStream createObjectOutputStream(final Map writers) {
-		return new ClientObjectOutputStream(){
-			protected ObjectWriter getObjectWriter( final String typeName ){
-				return (ObjectWriter)writers.get( typeName );
+		return new ClientObjectOutputStream() {
+			protected ObjectWriter getObjectWriter(final String typeName) {
+				return (ObjectWriter) writers.get(typeName);
 			}
 		};
 	}
 
 	protected void verifyFurtherReadsFail(final ObjectInputStream inputStream) {
-		Checker.notNull("parameter:inputStream", inputStream );
+		Checker.notNull("parameter:inputStream", inputStream);
 		try {
 			final int got = inputStream.readInt();
 			fail("An exception should have been thrown when attempting to read a consumed reader, but \"" + got + "\" was returned...");
@@ -95,9 +95,9 @@ abstract public class ClientGwtTestCase extends GWTTestCase {
 	}
 
 	protected ClientObjectInputStream createObjectInputStream(final String stream, final Map readers) {
-		final ClientObjectInputStream objectInputStream = new ClientObjectInputStream(){
-			public ObjectReader getObjectReader( final String typeName ){
-				return (ObjectReader)readers.get( typeName );
+		final ClientObjectInputStream objectInputStream = new ClientObjectInputStream() {
+			public ObjectReader getObjectReader(final String typeName) {
+				return (ObjectReader) readers.get(typeName);
 			}
 		};
 		objectInputStream.prepare(stream);

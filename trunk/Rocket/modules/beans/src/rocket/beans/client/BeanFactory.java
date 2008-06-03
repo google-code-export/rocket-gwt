@@ -34,7 +34,8 @@ public interface BeanFactory {
 	 * Tests if the bean with the given name is a singleton.
 	 * 
 	 * @param name
-	 * @return A flag indicating whether or not this BeanFactory holds a singleton.
+	 * @return A flag indicating whether or not this BeanFactory holds a
+	 *         singleton.
 	 */
 	boolean isSingleton(String name);
 }

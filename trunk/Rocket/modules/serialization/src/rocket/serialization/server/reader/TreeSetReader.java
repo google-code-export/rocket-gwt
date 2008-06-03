@@ -36,10 +36,10 @@ public class TreeSetReader extends rocket.serialization.client.reader.SetReader 
 	public boolean canRead(final Class classs) {
 		return TreeSet.class.isAssignableFrom(classs);
 	}
-	
-	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream){
+
+	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream) {
 		final Comparator comparator = (Comparator) objectInputStream;
-		return null == comparator ? new TreeSet() : new TreeSet( comparator );
+		return null == comparator ? new TreeSet() : new TreeSet(comparator);
 	}
 
 }

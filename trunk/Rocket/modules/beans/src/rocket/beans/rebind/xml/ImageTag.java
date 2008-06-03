@@ -26,14 +26,14 @@ class ImageTag extends XmlDocumentComponent {
 		return this.getAttribute(Constants.IMAGE_FILE_ATTRIBUTE);
 	}
 
-	public boolean isLocal(){
-		return Constants.IMAGE_LOCAL.equals( this.getLocation() );
+	public boolean isLocal() {
+		return Constants.IMAGE_LOCAL.equals(this.getLocation());
 	}
-	
-	public boolean isServer(){
-		return Constants.IMAGE_SERVER.equals( this.getLocation() );
+
+	public boolean isServer() {
+		return Constants.IMAGE_SERVER.equals(this.getLocation());
 	}
-	
+
 	protected String getLocation() {
 		return this.getAttribute(Constants.IMAGE_LOCATION_ATTRIBUTE);
 	}
@@ -41,8 +41,8 @@ class ImageTag extends XmlDocumentComponent {
 	protected String getServerRequest() {
 		return this.getAttribute(Constants.IMAGE_SERVER_REQUEST_ATTRIBUTE);
 	}
-	
-	public boolean isLazy(){
-		return Constants.IMAGE_LAZY.equals( this.getServerRequest() );
+
+	public boolean isLazy() {
+		return Constants.IMAGE_LAZY.equals(this.getServerRequest());
 	}
 }

@@ -30,158 +30,158 @@ import rocket.serialization.rebind.typematcher.TypeMatcher;
 import rocket.serialization.rebind.typematcher.TypeMatcherFactory;
 
 public class TypeMatcherTestCase extends TestCase {
-	public void testExact(){
-		final TypeMatcher matcher = TypeMatcherFactory.createTypeNameMatcher( "a.b.C");
-		final Type abC = createType( "a.b.C");
-		assertTrue( matcher.matches( abC ));
-		
-		final Type deF = createType( "d.e.F");
-		assertFalse( matcher.matches( deF ));
+	public void testExact() {
+		final TypeMatcher matcher = TypeMatcherFactory.createTypeNameMatcher("a.b.C");
+		final Type abC = createType("a.b.C");
+		assertTrue(matcher.matches(abC));
+
+		final Type deF = createType("d.e.F");
+		assertFalse(matcher.matches(deF));
 	}
-	
-	public void testWildcard(){
-		final TypeMatcher matcher = TypeMatcherFactory.createTypeNameMatcher( "a.b.*");
-		final Type abC = createType( "a.b.C");
-		assertTrue( matcher.matches( abC ));
-		
-		final Type deF = createType( "d.e.F");
-		assertFalse( matcher.matches( deF ));
+
+	public void testWildcard() {
+		final TypeMatcher matcher = TypeMatcherFactory.createTypeNameMatcher("a.b.*");
+		final Type abC = createType("a.b.C");
+		assertTrue(matcher.matches(abC));
+
+		final Type deF = createType("d.e.F");
+		assertFalse(matcher.matches(deF));
 	}
-	
-	Type createType( final String name ){
-	
-		return new Type(){
-		public Constructor findConstructor(List parameterTypes) {
-			throw new UnsupportedOperationException();
-		}
 
-		public Field findField(String name) {
-			throw new UnsupportedOperationException();
-		}
+	Type createType(final String name) {
 
-		public Method findMethod(String methodName, List parameterTypes) {
-			throw new UnsupportedOperationException();
-		}
+		return new Type() {
+			public Constructor findConstructor(List parameterTypes) {
+				throw new UnsupportedOperationException();
+			}
 
-		public Method findMostDerivedMethod(String methodName, List parameterTypes) {
-			throw new UnsupportedOperationException();
-		}
+			public Field findField(String name) {
+				throw new UnsupportedOperationException();
+			}
 
-		public Type getComponentType() {
-			throw new UnsupportedOperationException();
-		}
+			public Method findMethod(String methodName, List parameterTypes) {
+				throw new UnsupportedOperationException();
+			}
 
-		public Constructor getConstructor(List parameterTypes) {
-			throw new UnsupportedOperationException();
-		}
+			public Method findMostDerivedMethod(String methodName, List parameterTypes) {
+				throw new UnsupportedOperationException();
+			}
 
-		public Set getConstructors() {
-			throw new UnsupportedOperationException();
-		}
+			public Type getComponentType() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Field getField(String name) {
-			throw new UnsupportedOperationException();
-		}
+			public Constructor getConstructor(List parameterTypes) {
+				throw new UnsupportedOperationException();
+			}
 
-		public Set getFields() {
-			throw new UnsupportedOperationException();
-		}
+			public Set getConstructors() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Set getInterfaces() {
-			throw new UnsupportedOperationException();
-		}
+			public Field getField(String name) {
+				throw new UnsupportedOperationException();
+			}
 
-		public String getJsniNotation() {
-			throw new UnsupportedOperationException();		
-		}
+			public Set getFields() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Method getMethod(String methodName, List parameterTypes) {
-			throw new UnsupportedOperationException();
-		}
+			public Set getInterfaces() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Set getMethods() {
-			throw new UnsupportedOperationException();
-		}
+			public String getJsniNotation() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Method getMostDerivedMethod(String methodName, List parameterTypes) {
-			throw new UnsupportedOperationException();
-		}
+			public Method getMethod(String methodName, List parameterTypes) {
+				throw new UnsupportedOperationException();
+			}
 
-		public String getName() {
-			return name;
-		}
+			public Set getMethods() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Set getNestedTypes() {
-			throw new UnsupportedOperationException();
-		}
+			public Method getMostDerivedMethod(String methodName, List parameterTypes) {
+				throw new UnsupportedOperationException();
+			}
 
-		public Package getPackage() {
-			throw new UnsupportedOperationException();
-		}
+			public String getName() {
+				return name;
+			}
 
-		public String getRuntimeName() {
-			throw new UnsupportedOperationException();
-		}
+			public Set getNestedTypes() {
+				throw new UnsupportedOperationException();
+			}
 
-		public String getSimpleName() {
-			throw new UnsupportedOperationException();
-		}
+			public Package getPackage() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Set getSubTypes() {
-			throw new UnsupportedOperationException();
-		}
+			public String getRuntimeName() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Type getSuperType() {
-			throw new UnsupportedOperationException();
-		}
+			public String getSimpleName() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Visibility getVisibility() {
-			throw new UnsupportedOperationException();
-		}
+			public Set getSubTypes() {
+				throw new UnsupportedOperationException();
+			}
 
-		public Type getWrapper() {
-			throw new UnsupportedOperationException();
-		}
+			public Type getSuperType() {
+				throw new UnsupportedOperationException();
+			}
 
-		public boolean hasNoArgumentsConstructor() {
-			throw new UnsupportedOperationException();
-		}
+			public Visibility getVisibility() {
+				throw new UnsupportedOperationException();
+			}
 
-		public boolean isAbstract() {
-			throw new UnsupportedOperationException();
-		}
+			public Type getWrapper() {
+				throw new UnsupportedOperationException();
+			}
 
-		public boolean isArray() {
-			throw new UnsupportedOperationException();
-		}
+			public boolean hasNoArgumentsConstructor() {
+				throw new UnsupportedOperationException();
+			}
 
-		public boolean isAssignableFrom(Type type) {
-			throw new UnsupportedOperationException();
-		}
+			public boolean isAbstract() {
+				throw new UnsupportedOperationException();
+			}
 
-		public boolean isAssignableTo(Type type) {
-			throw new UnsupportedOperationException();
-		}
+			public boolean isArray() {
+				throw new UnsupportedOperationException();
+			}
 
-		public boolean isFinal() {
-			throw new UnsupportedOperationException();
-		}
+			public boolean isAssignableFrom(Type type) {
+				throw new UnsupportedOperationException();
+			}
 
-		public boolean isInterface() {
-			throw new UnsupportedOperationException();
-		}
+			public boolean isAssignableTo(Type type) {
+				throw new UnsupportedOperationException();
+			}
 
-		public boolean isPrimitive() {
-			throw new UnsupportedOperationException();
-		}
+			public boolean isFinal() {
+				throw new UnsupportedOperationException();
+			}
 
-		public List getMetadataValues(String name) {
-			throw new UnsupportedOperationException();
-		}
+			public boolean isInterface() {
+				throw new UnsupportedOperationException();
+			}
 
-		public GeneratorContext getGeneratorContext() {
-			throw new UnsupportedOperationException();
-		}
-	};
+			public boolean isPrimitive() {
+				throw new UnsupportedOperationException();
+			}
+
+			public List getMetadataValues(String name) {
+				throw new UnsupportedOperationException();
+			}
+
+			public GeneratorContext getGeneratorContext() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 }

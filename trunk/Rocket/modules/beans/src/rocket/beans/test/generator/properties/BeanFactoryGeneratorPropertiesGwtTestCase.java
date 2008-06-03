@@ -73,7 +73,7 @@ public class BeanFactoryGeneratorPropertiesGwtTestCase extends GeneratorGwtTestC
 	public String getModuleName() {
 		return "rocket.beans.test.generator.properties.BeanFactoryGeneratorProperties";
 	}
-	
+
 	public void testAmbiguousPropertySetters() {
 		try {
 			assertBindingFailed(GWT.create(AmbiguousSettersBeanFactory.class));
@@ -82,13 +82,12 @@ public class BeanFactoryGeneratorPropertiesGwtTestCase extends GeneratorGwtTestC
 		}
 	}
 
-	
 	public void testNullLiteral() {
 		final BeanFactory factory = (BeanFactory) GWT.create(NullLiteralBeanFactory.class);
 		final NullTestBean bean = (NullTestBean) factory.getBean(BEAN);
 		assertNull(bean.getProperty());
 	}
-	
+
 	public void testBooleanProperty() {
 		final BeanFactory factory = (BeanFactory) GWT.create(BooleanPropertyBeanFactory.class);
 		final HasBooleanProperty bean = (HasBooleanProperty) factory.getBean(BEAN);

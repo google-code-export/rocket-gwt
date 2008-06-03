@@ -26,7 +26,7 @@ import com.google.gwt.core.client.GWT;
 
 /**
  * A series of tests for the BeanFactoryGenerator.
- *
+ * 
  * @author Miroslav Pokorny
  */
 public class BeanFactoryGeneratorImageGwtTestCase extends GeneratorGwtTestCase {
@@ -37,31 +37,31 @@ public class BeanFactoryGeneratorImageGwtTestCase extends GeneratorGwtTestCase {
 		return "rocket.beans.test.generator.image.BeanFactoryGeneratorImage";
 	}
 
-	public void testGwtImage(){
-		final BeanFactory factory = (BeanFactory) GWT.create( HasGwtImageBeanFactory.class );
+	public void testGwtImage() {
+		final BeanFactory factory = (BeanFactory) GWT.create(HasGwtImageBeanFactory.class);
 		assertNotNull(factory);
-		
-		final HasGwtImage bean = (HasGwtImage) factory.getBean( BEAN );
-		assertNotNull( bean );
-		
+
+		final HasGwtImage bean = (HasGwtImage) factory.getBean(BEAN);
+		assertNotNull(bean);
+
 		final com.google.gwt.user.client.ui.Image image = bean.getImage();
-		assertNotNull( bean );
-		
+		assertNotNull(bean);
+
 		final String url = image.getUrl();
-		assertTrue( url, url.length() > 0 );
+		assertTrue(url, url.length() > 0);
 	}
-	
-	public void testRocketImage(){
-		final BeanFactory factory = (BeanFactory) GWT.create( HasRocketImageBeanFactory.class );
+
+	public void testRocketImage() {
+		final BeanFactory factory = (BeanFactory) GWT.create(HasRocketImageBeanFactory.class);
 		assertNotNull(factory);
-		
-		final HasRocketImage bean = (HasRocketImage) factory.getBean( BEAN );
-		assertNotNull( bean );
-		
+
+		final HasRocketImage bean = (HasRocketImage) factory.getBean(BEAN);
+		assertNotNull(bean);
+
 		final rocket.widget.client.Image image = bean.getImage();
-		assertNotNull( bean );
-		
+		assertNotNull(bean);
+
 		final String url = image.getUrl();
-		assertTrue( url, url.length() > 0 );
+		assertTrue(url, url.length() > 0);
 	}
 }

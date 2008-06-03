@@ -41,12 +41,12 @@ public class ReflectiveReader implements ServerObjectReader {
 	 * This class can read anything thats serializable.
 	 */
 	public boolean canRead(final Class classs) {
-		return Serializable.class.isAssignableFrom( classs );
+		return Serializable.class.isAssignableFrom(classs);
 	}
 
 	public Object newInstance(final String name, final ObjectInputStream objectInputStream) {
 		try {
-			final Class classs = Class.forName( name );
+			final Class classs = Class.forName(name);
 			return classs.newInstance();
 		} catch (final ClassNotFoundException classNotFound) {
 			throw new SerializationException("Unable to find class \"" + name + "\".", classNotFound);
@@ -57,19 +57,20 @@ public class ReflectiveReader implements ServerObjectReader {
 		}
 	}
 
-	public void read(final Object instance, final ObjectInputStream objectInputStream){
-		this.readFields(instance, instance.getClass(), objectInputStream );
+	public void read(final Object instance, final ObjectInputStream objectInputStream) {
+		this.readFields(instance, instance.getClass(), objectInputStream);
 	}
 
 	protected void readFields(final Object object, final Class classs, final ObjectInputStream objectInputStream) {
 		try {
-			this.readFields0(object, classs, objectInputStream );
+			this.readFields0(object, classs, objectInputStream);
 		} catch (final IllegalAccessException illegalAccessException) {
 			throw new SerializationException(illegalAccessException);
 		}
 	}
 
-	protected void readFields0(final Object object, final Class classs, final ObjectInputStream objectInputStream ) throws IllegalAccessException {
+	protected void readFields0(final Object object, final Class classs, final ObjectInputStream objectInputStream)
+			throws IllegalAccessException {
 		final Set<Field> serializableFields = ReflectionHelper.buildSerializableFields(object, classs);
 
 		// serialize fields in alphabetical order
@@ -117,7 +118,7 @@ public class ReflectiveReader implements ServerObjectReader {
 
 		final Class superType = classs.getSuperclass();
 		if (false == superType.equals(Object.class)) {
-			this.readFields(object, superType, objectInputStream );
+			this.readFields(object, superType, objectInputStream);
 		}
 	}
 

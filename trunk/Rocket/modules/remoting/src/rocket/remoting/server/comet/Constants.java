@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * A collection of constants used exclusively within this package.
+ * 
  * @author Miroslav Pokorny
  */
 class Constants {

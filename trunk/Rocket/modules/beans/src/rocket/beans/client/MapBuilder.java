@@ -73,19 +73,19 @@ public class MapBuilder<V> {
 	/**
 	 * A map of values.
 	 */
-	private Map<String,V> map;
+	private Map<String, V> map;
 
-	public Map<String,V> getMap() {
+	public Map<String, V> getMap() {
 		Checker.notNull("field:map", map);
 		return this.map;
 	}
 
-	protected void setMap(final Map<String,V> map) {
+	protected void setMap(final Map<String, V> map) {
 		Checker.notNull("parameter:map", map);
 		this.map = map;
 	}
 
-	protected Map<String,V> createMap() {
-		return new HashMap<String,V>();
+	protected Map<String, V> createMap() {
+		return new HashMap<String, V>();
 	}
 }

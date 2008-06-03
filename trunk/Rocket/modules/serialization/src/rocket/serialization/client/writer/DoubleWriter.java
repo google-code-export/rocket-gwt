@@ -23,9 +23,9 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.lang.Double
+ * @serialization-type java.lang.Double
  */
-public class DoubleWriter extends NumberWriter implements ObjectWriter{
+public class DoubleWriter extends NumberWriter implements ObjectWriter {
 
 	static public final ObjectWriter instance = new DoubleWriter();
 

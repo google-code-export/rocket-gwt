@@ -40,7 +40,7 @@ public class BeanFactoryGeneratorRpcGwtTestCase extends GeneratorGwtTestCase {
 	public String getModuleName() {
 		return "rocket.beans.test.generator.rpc.BeanFactoryGeneratorRpc";
 	}
-	
+
 	public void testGwtRpcService() {
 		final GwtRpcServiceBeanFactory factory = (GwtRpcServiceBeanFactory) GWT.create(GwtRpcServiceBeanFactory.class);
 		final GwtRpcServiceAsync bean = (GwtRpcServiceAsync) factory.getBean(BEAN);

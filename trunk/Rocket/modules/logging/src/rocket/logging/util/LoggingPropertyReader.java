@@ -27,9 +27,9 @@ abstract public class LoggingPropertyReader {
 		Object object = null;
 
 		String propertyValue = null;
-		try{
+		try {
 			propertyValue = this.getPropertyValue();
-		} catch ( final Exception caught ){
+		} catch (final Exception caught) {
 			propertyValue = Constants.EXCLUDE;
 		}
 

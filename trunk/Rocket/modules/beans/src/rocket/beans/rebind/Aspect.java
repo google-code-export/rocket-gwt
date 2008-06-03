@@ -20,6 +20,7 @@ import rocket.util.client.Checker;
 
 /**
  * Represents a single aspect found within a bean factory xml file
+ * 
  * @author Miroslav Pokorny
  */
 public class Aspect {
@@ -51,7 +52,8 @@ public class Aspect {
 	}
 
 	/**
-	 * An expression that will be used to match public methods as candidates for the advisor.
+	 * An expression that will be used to match public methods as candidates for
+	 * the advisor.
 	 */
 	private String methodExpression;
 
@@ -75,7 +77,8 @@ public class Aspect {
 		this.methodMatcher = methodMatcher;
 	}
 
-	public String toString(){
-		return super.toString() + ", advisor: \"" + this.advisor + "\", target: \"" + target + "\", methodExpression: \"" + methodExpression + "\"";
+	public String toString() {
+		return super.toString() + ", advisor: \"" + this.advisor + "\", target: \"" + target + "\", methodExpression: \""
+				+ methodExpression + "\"";
 	}
 }

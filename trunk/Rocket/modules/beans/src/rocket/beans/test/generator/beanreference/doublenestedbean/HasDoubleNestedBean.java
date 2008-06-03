@@ -17,14 +17,14 @@ package rocket.beans.test.generator.beanreference.doublenestedbean;
 
 import rocket.beans.test.generator.beanreference.HasNestedBean;
 
-public class HasDoubleNestedBean{
+public class HasDoubleNestedBean {
 	private HasNestedBean nestedBean;
-	
-	public HasNestedBean getNestedBean(){
+
+	public HasNestedBean getNestedBean() {
 		return this.nestedBean;
 	}
-	
-	public void setNestedBean( final HasNestedBean hasNestedBean ){
+
+	public void setNestedBean(final HasNestedBean hasNestedBean) {
 		this.nestedBean = hasNestedBean;
 	}
 }

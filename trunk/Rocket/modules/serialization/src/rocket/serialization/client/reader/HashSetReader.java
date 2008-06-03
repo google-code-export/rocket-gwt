@@ -30,7 +30,7 @@ import rocket.serialization.client.ObjectReader;
 public class HashSetReader extends AbstractSetReader {
 	static public final ObjectReader instance = new HashSetReader();
 
-	public Object newInstance(String typeName, ObjectInputStream objectInputStream){
+	public Object newInstance(String typeName, ObjectInputStream objectInputStream) {
 		return new HashSet();
 	}
 }

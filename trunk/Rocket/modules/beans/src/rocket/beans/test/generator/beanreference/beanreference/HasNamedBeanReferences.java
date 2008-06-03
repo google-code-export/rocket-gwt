@@ -25,7 +25,7 @@ public class HasNamedBeanReferences {
 	public ConcreteClass getConcreteClass() {
 		return this.concreteClass;
 	}
-	
+
 	private Interface interfacee;
 
 	public void setInterface(final Interface interfacee) {

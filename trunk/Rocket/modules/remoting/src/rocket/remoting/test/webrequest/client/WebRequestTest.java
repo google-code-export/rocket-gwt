@@ -112,7 +112,8 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 				final String actualBody = response.getBody();
 				final String expectedBody = "";
 				if (!expectedBody.equals(expectedBody)) {
-					Test.fail("The response returned an incorrect content, expected\"" + expectedBody + "\", actual\"" + actualBody + "\".");
+					Test.fail("The response returned an incorrect content, expected\"" + expectedBody + "\", actual\"" + actualBody
+							+ "\".");
 				}
 				TestRunner.finishTest();
 			}
@@ -159,7 +160,8 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 				final String actualBody = response.getBody();
 				final String expectedBody = NAME0 + '=' + VALUE0 + "&" + NAME1 + '=' + VALUE1;
 				if (!expectedBody.equals(expectedBody)) {
-					Test.fail("The response returned an incorrect content, expected\"" + expectedBody + "\", actual\"" + actualBody + "\".");
+					Test.fail("The response returned an incorrect content, expected\"" + expectedBody + "\", actual\"" + actualBody
+							+ "\".");
 				}
 
 				TestRunner.finishTest();
@@ -224,7 +226,8 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 				final String actualBody = response.getBody();
 				final String expectedBody = "";
 				if (!expectedBody.equals(expectedBody)) {
-					Test.fail("The response returned an incorrect content, expected\"" + expectedBody + "\", actual\"" + actualBody + "\".");
+					Test.fail("The response returned an incorrect content, expected\"" + expectedBody + "\", actual\"" + actualBody
+							+ "\".");
 				}
 				TestRunner.finishTest();
 			}
@@ -268,7 +271,8 @@ public class WebRequestTest extends WebPageTestRunner implements EntryPoint {
 				final String actualBody = response.getBody();
 				final String expectedBody = NAME + '=' + VALUE;
 				if (!expectedBody.equals(expectedBody)) {
-					Test.fail("The response returned an incorrect content, expected\"" + expectedBody + "\", actual\"" + actualBody + "\".");
+					Test.fail("The response returned an incorrect content, expected\"" + expectedBody + "\", actual\"" + actualBody
+							+ "\".");
 				}
 				TestRunner.finishTest();
 			}

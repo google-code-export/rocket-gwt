@@ -52,9 +52,13 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	abstract protected void registerFactoryBeans();
 
 	/**
-	 * Performs a dual role firstly it registers a bean and also sets the bean name upon the factory bean.
-	 * @param name The bean name
-	 * @param factoryBean The matching factory bean
+	 * Performs a dual role firstly it registers a bean and also sets the bean
+	 * name upon the factory bean.
+	 * 
+	 * @param name
+	 *            The bean name
+	 * @param factoryBean
+	 *            The matching factory bean
 	 */
 	public void registerFactoryBean(final String name, final FactoryBean factoryBean) {
 		if (factoryBean instanceof BeanNameAware) {
@@ -90,8 +94,9 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	}
 
 	/**
-	 * Updates the {@link #factoryBeans} map with aliases taken from {@link #getAliasesToBeans()} so that
-	 * factory bean instances will exist at the original bean name and any aliases.
+	 * Updates the {@link #factoryBeans} map with aliases taken from
+	 * {@link #getAliasesToBeans()} so that factory bean instances will exist at
+	 * the original bean name and any aliases.
 	 */
 	protected void registerAliases() {
 		final String aliasesToBeans = this.getAliasesToBeans();
@@ -111,6 +116,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 
 	/**
 	 * A list of comma separated alias to bean mappings.
+	 * 
 	 * @return
 	 */
 	abstract protected String getAliasesToBeans();
@@ -132,9 +138,11 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	}
 
 	/**
-	 * A comma separated list of beans that wish to be eagerly and not lazy loaded.
+	 * A comma separated list of beans that wish to be eagerly and not lazy
+	 * loaded.
 	 * 
 	 * Eager beans will be loaded when the factory starts up.
+	 * 
 	 * @return An array of beans which may be empty
 	 */
 	abstract protected String getEagerSingletonBeanNames();
@@ -179,9 +187,11 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * Attempts to get the FactoryMethodBean given a name. If the factory is not
 	 * found an exception is thrown.
 	 * 
-	 * @param name The bean name
+	 * @param name
+	 *            The bean name
 	 * @return The FactoryBean identified by the given bean name.
-	 * @throws UnableToFindBeanException if the bean doesnt exist.
+	 * @throws UnableToFindBeanException
+	 *             if the bean doesnt exist.
 	 */
 	protected FactoryBean getFactoryBean(final String name) throws UnableToFindBeanException {
 		final FactoryBean factory = (FactoryBean) this.getFactoryBeans().get(name);
@@ -194,50 +204,56 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	protected void throwUnableToFindBean(final String message) throws UnableToFindBeanException {
 		throw new UnableToFindBeanException(message);
 	}
-	
-	protected void registerShutdownHook(){
-		Window.addWindowCloseListener( new WindowCloseListener(){
-			public String onWindowClosing(){
-				  return null;
-			  }
-			  public void onWindowClosed(){
-				  BeanFactoryImpl.this.shutdown();
-			  }
+
+	protected void registerShutdownHook() {
+		Window.addWindowCloseListener(new WindowCloseListener() {
+			public String onWindowClosing() {
+				return null;
+			}
+
+			public void onWindowClosed() {
+				BeanFactoryImpl.this.shutdown();
+			}
 		});
 	}
-	
+
 	/**
 	 * This method is invoked when a application is shutting down prompting all
 	 * singletons to be destroyed.
 	 * 
 	 * This method is only public for testing purposes.
 	 */
-	public void shutdown(){
+	public void shutdown() {
 		final Iterator factoryBeans = this.getFactoryBeans().entrySet().iterator();
-		while( factoryBeans.hasNext() ){								
+		while (factoryBeans.hasNext()) {
 			final Map.Entry entry = (Map.Entry) factoryBeans.next();
 			final String beanName = (String) entry.getKey();
 			final FactoryBean factoryBean = (FactoryBean) entry.getValue();
-			
-			if( factoryBean instanceof DisposableBean ){
-				this.shutdownSingleton( beanName, factoryBean );
+
+			if (factoryBean instanceof DisposableBean) {
+				this.shutdownSingleton(beanName, factoryBean);
 			}
 		}
 	}
-	
+
 	/**
 	 * Carefully destroys the given singleton via its factory bean.
 	 * 
-	 * Any exceptions thrown by the factory bean do not leak with a message logged.
-	 * @param beanName The name of the singleton
-	 * @param factoryBean The singleton's factory bean.
+	 * Any exceptions thrown by the factory bean do not leak with a message
+	 * logged.
+	 * 
+	 * @param beanName
+	 *            The name of the singleton
+	 * @param factoryBean
+	 *            The singleton's factory bean.
 	 */
-	protected void shutdownSingleton( final String beanName, final FactoryBean factoryBean ){
+	protected void shutdownSingleton(final String beanName, final FactoryBean factoryBean) {
 		final DisposableBean disposableBean = (DisposableBean) factoryBean;
-		try{
+		try {
 			disposableBean.destroy();
-		} catch ( final Throwable caught ){			
-			GWT.log("When attempting to destroy the singleton \"" + beanName + "\" an exception was thrown, message: " + caught.getMessage(), caught );
+		} catch (final Throwable caught) {
+			GWT.log("When attempting to destroy the singleton \"" + beanName + "\" an exception was thrown, message: "
+					+ caught.getMessage(), caught);
 			caught.printStackTrace();
 		}
 

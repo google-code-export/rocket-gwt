@@ -29,11 +29,11 @@ import rocket.serialization.client.ObjectReader;
  * @serialization-type java.util.TreeMap
  */
 public class TreeMapReader extends AbstractMapReader implements ObjectReader {
-	
+
 	static public final ObjectReader instance = new TreeMapReader();
 
 	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream) {
-		final Comparator comparator = (Comparator)objectInputStream.readObject();
-		return comparator == null ? new TreeMap() : new TreeMap( comparator );
+		final Comparator comparator = (Comparator) objectInputStream.readObject();
+		return comparator == null ? new TreeMap() : new TreeMap(comparator);
 	}
 }

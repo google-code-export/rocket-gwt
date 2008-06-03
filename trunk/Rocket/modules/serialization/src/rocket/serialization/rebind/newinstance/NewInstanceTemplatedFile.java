@@ -43,7 +43,7 @@ public class NewInstanceTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	protected String getResourceName(){
+	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
 

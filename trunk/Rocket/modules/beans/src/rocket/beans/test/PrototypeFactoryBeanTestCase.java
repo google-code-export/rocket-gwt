@@ -116,21 +116,21 @@ public class PrototypeFactoryBeanTestCase extends TestCase {
 		}
 	}
 
-	public void testInitializingBean(){
+	public void testInitializingBean() {
 		final PrototypeFactoryBean factoryBean = new PrototypeFactoryBean() {
 			protected Object createInstance() {
 				return new ImplementsInitializingBean();
 			}
 		};
-		final ImplementsInitializingBean bean = (ImplementsInitializingBean)factoryBean.getObject();		
-		assertEquals( 1, bean.initialized);
+		final ImplementsInitializingBean bean = (ImplementsInitializingBean) factoryBean.getObject();
+		assertEquals(1, bean.initialized);
 	}
-	
-	static class ImplementsInitializingBean implements InitializingBean{
-		public void afterPropertiesSet(){
+
+	static class ImplementsInitializingBean implements InitializingBean {
+		public void afterPropertiesSet() {
 			this.initialized++;
 		}
-		
+
 		int initialized = 0;
 	}
 }

@@ -18,15 +18,15 @@ package rocket.beans.test.generator.image.rocketimage;
 
 import rocket.widget.client.Image;
 
-public class HasRocketImage{
+public class HasRocketImage {
 
 	private Image image;
 
-	public Image getImage(){
+	public Image getImage() {
 		return this.image;
 	}
 
-	public void setImage( final Image image ){
+	public void setImage(final Image image) {
 		this.image = image;
 	}
 }

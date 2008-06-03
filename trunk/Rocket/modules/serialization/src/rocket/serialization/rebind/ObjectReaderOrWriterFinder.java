@@ -42,29 +42,30 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @param types
 	 * @return
 	 */
-	public Map<Type,Type> build(final Set<Type> types) {
-		Checker.notNull( "parameter:types", types );
+	public Map<Type, Type> build(final Set<Type> types) {
+		Checker.notNull("parameter:types", types);
 
-		final Map<Type,List<Match>> accumulator = new HashMap<Type,List<Match>>();
+		final Map<Type, List<Match>> accumulator = new HashMap<Type, List<Match>>();
 
 		final ConcreteTypesImplementingInterfaceVisitor visitor = new ConcreteTypesImplementingInterfaceVisitor() {
-			
+
 			@Override
 			protected boolean visit(final Type readerOrWriter) {
-				final Map<Type,Match> matches = ObjectReaderOrWriterFinder.this.findMatchingType(readerOrWriter);
-				while( true ){
+				final Map<Type, Match> matches = ObjectReaderOrWriterFinder.this.findMatchingType(readerOrWriter);
+				while (true) {
 					// nothing to do...
-					if( matches.isEmpty() ){
+					if (matches.isEmpty()) {
 						break;
 					}
-					// check if any of the matched types overlap any of the serializedtypes.. if result is none do nothing...
-					if( false == ObjectReaderOrWriterFinder.this.findSingleMatch( matches, types )){
+					// check if any of the matched types overlap any of the
+					// serializedtypes.. if result is none do nothing...
+					if (false == ObjectReaderOrWriterFinder.this.findSingleMatch(matches, types)) {
 						break;
 					}
-					
+
 					ObjectReaderOrWriterFinder.this.mergeMatches(matches, accumulator);
 					break;
-				}				
+				}
 				return false;
 			}
 
@@ -80,7 +81,8 @@ abstract public class ObjectReaderOrWriterFinder {
 	}
 
 	/**
-	 * Sub classes should return either {@link rocket.serialization.client.ObjectReader} or
+	 * Sub classes should return either
+	 * {@link rocket.serialization.client.ObjectReader} or
 	 * {@link rocket.serialization.client.ObjectWriter} type.
 	 * 
 	 * @return
@@ -91,10 +93,10 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * Given a reader/writer builds a map of all the types that it should apply
 	 * too.
 	 */
-	protected Map<Type,Match> findMatchingType(final Type readerOrWriter) {
+	protected Map<Type, Match> findMatchingType(final Type readerOrWriter) {
 		Checker.notNull("parameter:readerOrWriter", readerOrWriter);
 
-		Map<Type,Match> matches = null;
+		Map<Type, Match> matches = null;
 
 		while (true) {
 			final Type type = this.getTypeFromAnnotation(readerOrWriter);
@@ -113,8 +115,8 @@ abstract public class ObjectReaderOrWriterFinder {
 				break;
 			}
 			// find all sub classes...
-			matches = new HashMap<Type,Match>();
-			matches.put(type, new Match( readerOrWriter,ObjectReaderOrWriterFinder.CLASS_MATCH ));
+			matches = new HashMap<Type, Match>();
+			matches.put(type, new Match(readerOrWriter, ObjectReaderOrWriterFinder.CLASS_MATCH));
 			break;
 		}
 
@@ -129,11 +131,11 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @param readerOrWriter
 	 * @return
 	 */
-	protected Map<Type,Match> findTypesImplementingInterface(final Type interfacee, final Type readerOrWriter) {
+	protected Map<Type, Match> findTypesImplementingInterface(final Type interfacee, final Type readerOrWriter) {
 		Checker.notNull("parameter:interfacee", interfacee);
 		Checker.notNull("parameter:readerOrWriter", readerOrWriter);
 
-		final Map<Type,Match> matches = new HashMap<Type,Match>();
+		final Map<Type, Match> matches = new HashMap<Type, Match>();
 
 		final ConcreteTypesImplementingInterfaceVisitor visitor = new ConcreteTypesImplementingInterfaceVisitor() {
 
@@ -152,7 +154,7 @@ abstract public class ObjectReaderOrWriterFinder {
 			protected boolean visit(final Type type) {
 				final boolean previouslyVisited = matches.containsKey(type);
 				if (false == previouslyVisited) {
-					matches.put(type, new Match( readerOrWriter, ObjectReaderOrWriterFinder.INTERFACE_MATCH ));
+					matches.put(type, new Match(readerOrWriter, ObjectReaderOrWriterFinder.INTERFACE_MATCH));
 				}
 				return previouslyVisited;
 			}
@@ -184,8 +186,8 @@ abstract public class ObjectReaderOrWriterFinder {
 				break;
 			}
 			if (values.size() != 1) {
-				throw new SerializationFactoryGeneratorException("Type contains more than one " + SerializationConstants.SERIALIZABLE_TYPE
-						+ " annotation.");
+				throw new SerializationFactoryGeneratorException("Type contains more than one "
+						+ SerializationConstants.SERIALIZABLE_TYPE + " annotation.");
 			}
 
 			// type must be found if annotation exists...
@@ -201,26 +203,28 @@ abstract public class ObjectReaderOrWriterFinder {
 	}
 
 	/**
-	 * Loops thru all the types belonging to matches attempting to find at least one type in serializableTypes set.
+	 * Loops thru all the types belonging to matches attempting to find at least
+	 * one type in serializableTypes set.
+	 * 
 	 * @param matches
 	 * @param serializableTypes
 	 * @return
 	 */
-	protected boolean findSingleMatch( final Map matches, final Set<Type> serializableTypes ){
+	protected boolean findSingleMatch(final Map matches, final Set<Type> serializableTypes) {
 		boolean found = false;
-		
+
 		final Iterator<Type> iterator = matches.keySet().iterator();
-		while( iterator.hasNext() ){
+		while (iterator.hasNext()) {
 			final Type type = (Type) iterator.next();
-			if( serializableTypes.contains( type )){
+			if (serializableTypes.contains(type)) {
 				found = true;
 				break;
 			}
 		}
-		
+
 		return found;
 	}
-	
+
 	/**
 	 * Adds to the list of matches for every type in old matches. If a type
 	 * doesnt exist in oldMatch a new entry is created.
@@ -228,12 +232,12 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @param newMatches
 	 * @param oldMatches
 	 */
-	protected void mergeMatches(final Map<Type,Match> newMatches, final Map<Type,List<Match>> oldMatches) {
+	protected void mergeMatches(final Map<Type, Match> newMatches, final Map<Type, List<Match>> oldMatches) {
 		// need to check if any of the types in $newMatch exist in $oldMatches
 
 		final Iterator<Map.Entry<Type, Match>> newMatchesIterator = newMatches.entrySet().iterator();
 		while (newMatchesIterator.hasNext()) {
-			final Map.Entry<Type,Match> entry = newMatchesIterator.next();
+			final Map.Entry<Type, Match> entry = newMatchesIterator.next();
 			final Type newType = entry.getKey();
 			final Match newMatch = entry.getValue();
 
@@ -276,12 +280,12 @@ abstract public class ObjectReaderOrWriterFinder {
 	 */
 	static private class Match {
 
-		Match( final Type readerWriter, final int score ){
+		Match(final Type readerWriter, final int score) {
 			super();
 			this.setReaderWriter(readerWriter);
 			this.setScore(score);
 		}
-		
+
 		Type readerWriter;
 
 		Type getReaderWriter() {
@@ -329,16 +333,16 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * best match, ie assign a reader/writer for a type.
 	 * 
 	 * @param matches
-	 * @return A map with the type as the key and reader/writer as the value. 
+	 * @return A map with the type as the key and reader/writer as the value.
 	 */
-	protected Map<Type,Type> finalizeBindings(final Map<Type,List<Match>> matches) {
+	protected Map<Type, Type> finalizeBindings(final Map<Type, List<Match>> matches) {
 		Checker.notNull("parameter:matches", matches);
 
-		final Map<Type,Type> finalized = new HashMap<Type,Type>();
+		final Map<Type, Type> finalized = new HashMap<Type, Type>();
 
 		final Iterator<Map.Entry<Type, List<Match>>> entries = matches.entrySet().iterator();
 		while (entries.hasNext()) {
-			final Map.Entry<Type,List<Match>> entry = entries.next();
+			final Map.Entry<Type, List<Match>> entry = entries.next();
 			final Type type = entry.getKey();
 			final List<Match> matchList = entry.getValue();
 
@@ -367,7 +371,9 @@ abstract public class ObjectReaderOrWriterFinder {
 	abstract protected void throwAmbiguousMatches(final Type type, final Type readerOrWriter, final Type secondReaderOrWriter);
 
 	/**
-	 * Tests if the given type should be ignored when attempting to match a ObjectReader/ObjectWriter
+	 * Tests if the given type should be ignored when attempting to match a
+	 * ObjectReader/ObjectWriter
+	 * 
 	 * @return
 	 */
 	abstract protected boolean shouldBeSerialized(Type type);

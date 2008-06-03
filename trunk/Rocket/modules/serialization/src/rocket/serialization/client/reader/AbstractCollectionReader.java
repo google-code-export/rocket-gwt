@@ -22,18 +22,20 @@ import rocket.serialization.client.ObjectReader;
 import rocket.util.client.Checker;
 
 /**
- * ObjectReader that provides common serialization of collection and its sub classes.
+ * ObjectReader that provides common serialization of collection and its sub
+ * classes.
+ * 
  * @author Miroslav Pokorny
  * @serialization-type java.util.AbstractCollection
  */
 public class AbstractCollectionReader extends ObjectReaderImpl implements ObjectReader {
 
 	static public final ObjectReader instance = new AbstractCollectionReader();
-	
-	public void read(final Object collection, final ObjectInputStream objectInputStream){
-		this.readCollection( (Collection) collection, objectInputStream);
+
+	public void read(final Object collection, final ObjectInputStream objectInputStream) {
+		this.readCollection((Collection) collection, objectInputStream);
 	}
-	
+
 	protected void readCollection(final Collection collection, final ObjectInputStream objectInputStream) {
 		Checker.notNull("parameter:collection", collection);
 		Checker.notNull("parameter:objectInputStream", objectInputStream);

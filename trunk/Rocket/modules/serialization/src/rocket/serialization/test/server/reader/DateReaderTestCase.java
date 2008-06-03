@@ -28,7 +28,7 @@ public class DateReaderTestCase extends ServerTestCase {
 	final static long DATE_VALUE = 789;
 
 	public void testReadDate() {
-//		final String stream = "[1,\"" + DATE + "\",1,2," + DATE_VALUE + "]";
+		// final String stream = "[1,\"" + DATE + "\",1,2," + DATE_VALUE + "]";
 		final String stream = "[1,\"" + DATE + "\",1,2,0," + DATE_VALUE + "]";
 		final ObjectInputStream input = createObjectInputStream(stream, DateReader.instance);
 

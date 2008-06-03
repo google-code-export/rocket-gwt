@@ -19,7 +19,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * TestSuite that executes all unit tests relating to the rocket.Collection module
+ * TestSuite that executes all unit tests relating to the rocket.Collection
+ * module
  * 
  * @author Miroslav Pokorny
  */
@@ -27,7 +28,7 @@ public class CollectionTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket.Collection");
-		addTests( suite );
+		addTests(suite);
 		return suite;
 	}
 

@@ -26,11 +26,12 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
- * Contains a Map property value for a bean, including the many entries and values that may have been specified.
+ * Contains a Map property value for a bean, including the many entries and
+ * values that may have been specified.
  * 
  * @author Miroslav Pokorny
  */
-public class MapValue extends AbstractValue implements Value{
+public class MapValue extends AbstractValue implements Value {
 
 	public MapValue() {
 		this.setEntries(createEntries());
@@ -52,20 +53,20 @@ public class MapValue extends AbstractValue implements Value{
 	/**
 	 * A entries that accumulates entries entries.
 	 */
-	private Map<String,Value> entries;
+	private Map<String, Value> entries;
 
-	public Map<String,Value> getEntries() {
+	public Map<String, Value> getEntries() {
 		Checker.notNull("field:entries", entries);
 		return this.entries;
 	}
 
-	protected void setEntries(final Map<String,Value> entries) {
+	protected void setEntries(final Map<String, Value> entries) {
 		Checker.notNull("parameter:entries", entries);
 		this.entries = entries;
 	}
 
-	protected Map<String,Value> createEntries() {
-		return new HashMap<String,Value>();
+	protected Map<String, Value> createEntries() {
+		return new HashMap<String, Value>();
 	}
 
 	/**
@@ -96,9 +97,9 @@ public class MapValue extends AbstractValue implements Value{
 
 		template.write(writer);
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return this.getEntries().toString();
 	}
 }

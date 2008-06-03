@@ -52,7 +52,7 @@ public abstract class Throttler {
 	}
 
 	public void setPeriod(final int period) {
-		Checker.greaterThan("parameter:period", 0, period );
+		Checker.greaterThan("parameter:period", 0, period);
 		this.period = period;
 	}
 

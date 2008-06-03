@@ -64,14 +64,14 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 			assertBindingFailed(GWT.create(UnserializableSerializationFactoryComposer.class));
 		} catch (final FailedGenerateAttemptException failed) {
 			assertTrue("" + failed, failed.getCauseType().equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
-		} catch (final Exception failed ) {
+		} catch (final Exception failed) {
 			assertTrue("" + failed, failed.getCause().getClass().getName().equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.Unserializable
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.Unserializable 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.Unserializable
 	 */
 	static class UnserializableSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -79,10 +79,10 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	public void testClassThatHasAnUnserializableField() {
 		try {
 			final Object object = GWT.create(ClassWithUnserializableFieldSerializationFactoryComposer.class);
-			assertBindingFailed( object );
+			assertBindingFailed(object);
 		} catch (final FailedGenerateAttemptException failed) {
 			assertTrue("" + failed, failed.getCauseType().equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
-		} catch (final Exception failed ) {
+		} catch (final Exception failed) {
 			assertTrue("" + failed, failed.getCause().getClass().getName().equals(SERIALIZATION_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
@@ -94,13 +94,13 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	static class ClassWithUnserializableFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
 
-	static class ClassWithUnserializableField implements Serializable{
+	static class ClassWithUnserializableField implements Serializable {
 		Unserializable field;
 	}
-	
+
 	static class Unserializable {
 	}
-	
+
 	public void testClassWithBooleanField() {
 		final SerializationFactory factory = (SerializationFactory) GWT.create(ClassWithBooleanFieldSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
@@ -124,7 +124,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithBooleanField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithBooleanField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithBooleanField
 	 */
 	static class ClassWithBooleanFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -160,7 +160,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithByteField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithByteField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithByteField
 	 */
 	static class ClassWithByteFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -195,7 +195,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	/**
-	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithShortField 
+	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithShortField
 	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithShortField
 	 */
 	static class ClassWithShortFieldSerializationFactoryComposer implements SerializationFactoryComposer {
@@ -231,7 +231,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	/**
-	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithIntField 
+	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithIntField
 	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithIntField
 	 */
 	static class ClassWithIntFieldSerializationFactoryComposer implements SerializationFactoryComposer {
@@ -268,7 +268,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithLongField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithLongField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithLongField
 	 */
 	static class ClassWithLongFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 
@@ -305,7 +305,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithFloatField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithFloatField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithFloatField
 	 */
 	static class ClassWithFloatFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 
@@ -342,7 +342,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithDoubleField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithDoubleField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithDoubleField
 	 */
 	static class ClassWithDoubleFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -378,7 +378,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithCharField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithCharField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithCharField
 	 */
 	static class ClassWithCharFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -417,7 +417,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithAnotherClassField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithAnotherClassField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithAnotherClassField
 	 */
 	static class ClassWithAnotherClassFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 
@@ -521,7 +521,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithSetField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithSetField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithSetField
 	 */
 	static class ClassWithSetFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -573,7 +573,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithMapField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithMapField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithMapField
 	 */
 	static class ClassWithMapFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -618,7 +618,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithBooleanWrapperField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithBooleanWrapperField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithBooleanWrapperField
 	 */
 	static class ClassWithBooleanWrapperFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 
@@ -633,7 +633,8 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	public void testClassWithByteWrapper() {
-		final SerializationFactory factory = (SerializationFactory) GWT.create(ClassWithByteWrapperFieldSerializationFactoryComposer.class);
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(ClassWithByteWrapperFieldSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -656,7 +657,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithByteWrapperField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithByteWrapperField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithByteWrapperField
 	 */
 	static class ClassWithByteWrapperFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 
@@ -694,7 +695,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	/**
-	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithShortWrapperField 
+	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithShortWrapperField
 	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithShortWrapperField
 	 */
 	static class ClassWithShortWrapperFieldSerializationFactoryComposer implements SerializationFactoryComposer {
@@ -734,7 +735,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithIntegerWrapperField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithIntegerWrapperField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithIntegerWrapperField
 	 */
 	static class ClassWithIntegerWrapperFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -748,7 +749,8 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	public void testClassWithLongWrapper() {
-		final SerializationFactory factory = (SerializationFactory) GWT.create(ClassWithLongWrapperFieldSerializationFactoryComposer.class);
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(ClassWithLongWrapperFieldSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -771,7 +773,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithLongWrapperField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithLongWrapperField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithLongWrapperField
 	 */
 	static class ClassWithLongWrapperFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -809,7 +811,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithFloatWrapperField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithFloatWrapperField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithFloatWrapperField
 	 */
 	static class ClassWithFloatWrapperFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -847,7 +849,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithDoubleWrapperField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithDoubleWrapperField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithDoubleWrapperField
 	 */
 	static class ClassWithDoubleWrapperFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -885,7 +887,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithCharacterWrapperField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithCharacterWrapperField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithCharacterWrapperField
 	 */
 	static class ClassWithCharacterWrapperFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -924,7 +926,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithBooleanArrayField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithBooleanArrayField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithBooleanArrayField
 	 */
 	static class ClassWithBooleanArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 
@@ -939,7 +941,8 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	public void testClassWithByteArray() {
-		final SerializationFactory factory = (SerializationFactory) GWT.create(ClassWithByteArrayFieldSerializationFactoryComposer.class);
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(ClassWithByteArrayFieldSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -963,7 +966,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithByteArrayField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithByteArrayField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithByteArrayField
 	 */
 	static class ClassWithByteArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 
@@ -978,7 +981,8 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	public void testClassWithShortArray() {
-		final SerializationFactory factory = (SerializationFactory) GWT.create(ClassWithShortArrayFieldSerializationFactoryComposer.class);
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(ClassWithShortArrayFieldSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -1001,7 +1005,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	/**
-	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithShortArrayField 
+	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithShortArrayField
 	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithShortArrayField
 	 */
 	static class ClassWithShortArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
@@ -1042,7 +1046,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithIntegerArrayField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithIntegerArrayField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithIntegerArrayField
 	 */
 	static class ClassWithIntegerArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -1056,7 +1060,8 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	public void testClassWithLongArray() {
-		final SerializationFactory factory = (SerializationFactory) GWT.create(ClassWithLongArrayFieldSerializationFactoryComposer.class);
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(ClassWithLongArrayFieldSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -1079,7 +1084,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithLongArrayField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithLongArrayField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithLongArrayField
 	 */
 	static class ClassWithLongArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -1093,7 +1098,8 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	public void testClassWithFloatArray() {
-		final SerializationFactory factory = (SerializationFactory) GWT.create(ClassWithFloatArrayFieldSerializationFactoryComposer.class);
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(ClassWithFloatArrayFieldSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -1117,7 +1123,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithFloatArrayField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithFloatArrayField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithFloatArrayField
 	 */
 	static class ClassWithFloatArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -1131,7 +1137,8 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	public void testClassWithDoubleArray() {
-		final SerializationFactory factory = (SerializationFactory) GWT.create(ClassWithDoubleArrayFieldSerializationFactoryComposer.class);
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(ClassWithDoubleArrayFieldSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -1155,7 +1162,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithDoubleArrayField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithDoubleArrayField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithDoubleArrayField
 	 */
 	static class ClassWithDoubleArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -1194,7 +1201,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithCharacterArrayField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithCharacterArrayField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithCharacterArrayField
 	 */
 	static class ClassWithCharacterArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -1230,7 +1237,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithStringField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithStringField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithStringField
 	 */
 	static class ClassWithStringFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -1244,7 +1251,8 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	}
 
 	public void testClassWithStringArray() {
-		final SerializationFactory factory = (SerializationFactory) GWT.create(ClassWithStringArrayFieldSerializationFactoryComposer.class);
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(ClassWithStringArrayFieldSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -1268,7 +1276,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithStringArrayField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithStringArrayField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithStringArrayField
 	 */
 	static class ClassWithStringArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -1307,7 +1315,7 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 	/**
 	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithConcreteClassArrayField
-	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithConcreteClassArrayField 
+	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.ClassWithConcreteClassArrayField
 	 */
 	static class ClassWithConcreteClassArrayFieldSerializationFactoryComposer implements SerializationFactoryComposer {
 	}
@@ -1326,9 +1334,10 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 	final static int SUB_CLASS_VALUE = 123;
 
 	final static int SUPER_CLASS_VALUE = 456;
-	
+
 	public void testSubClassWithSuperTypeThatIsNotSerializable() {
-		final SerializationFactory factory = (SerializationFactory) GWT.create(SubClassWithUnserializableSuperTypeSerializationFactoryComposer.class);
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(SubClassWithUnserializableSuperTypeSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -1347,11 +1356,12 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 		assertNotNull("readInstance", readInstance);
 
 		assertEquals("" + readInstance, SUPER_CLASS_VALUE, readInstance.superClassValue);
-		assertEquals("" + readInstance, SUB_CLASS_VALUE, readInstance.subClassValue);		
+		assertEquals("" + readInstance, SUB_CLASS_VALUE, readInstance.subClassValue);
 	}
-	
-	public void testAttemptToWriteUnserializableTypeFails(){
-		final SerializationFactory factory = (SerializationFactory) GWT.create(SubClassWithUnserializableSuperTypeSerializationFactoryComposer.class);
+
+	public void testAttemptToWriteUnserializableTypeFails() {
+		final SerializationFactory factory = (SerializationFactory) GWT
+				.create(SubClassWithUnserializableSuperTypeSerializationFactoryComposer.class);
 		assertNotNull("factory", factory);
 
 		final ObjectOutputStream objectOutputStream = factory.createObjectOutputStream();
@@ -1359,16 +1369,16 @@ public class SerializationFactoryGeneratorGwtTestCase extends GeneratorGwtTestCa
 
 		final UnserializableConcreteClass writeInstance = new UnserializableConcreteClass();
 		writeInstance.superClassValue = SUPER_CLASS_VALUE;
-		
-		try{
+
+		try {
 			objectOutputStream.writeObject(writeInstance);
-			fail( "A SerializationException should have been thrown because " + writeInstance + " is not serializable.");
-		} catch ( SerializationException expected ){			
+			fail("A SerializationException should have been thrown because " + writeInstance + " is not serializable.");
+		} catch (SerializationException expected) {
 		}
 	}
 
 	/**
-	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.SubClassWithUnserializableSuperType 
+	 * @serialization-readableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.SubClassWithUnserializableSuperType
 	 * @serialization-writableTypes rocket.serialization.test.rebind.serializationfactorygenerator.client.SerializationFactoryGeneratorGwtTestCase.SubClassWithUnserializableSuperType
 	 */
 	static class SubClassWithUnserializableSuperTypeSerializationFactoryComposer implements SerializationFactoryComposer {

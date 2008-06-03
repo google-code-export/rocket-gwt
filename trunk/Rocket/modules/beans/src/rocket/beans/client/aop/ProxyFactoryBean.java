@@ -23,15 +23,15 @@ import rocket.util.client.Checker;
 
 /**
  * A convenient base class for any FactoryBean that gives out proxies.
- *  
+ * 
  * @author Miroslav Pokorny
  */
-abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, BeanFactoryAware{
+abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, BeanFactoryAware {
 
 	/**
 	 * Creates a new ProxyFactoryBean
 	 */
-	public ProxyFactoryBean(){
+	public ProxyFactoryBean() {
 		super();
 	}
 
@@ -85,17 +85,19 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	}
 
 	/**
-	 * This method will be overridden to fetch the proxy target from the bean factory.
+	 * This method will be overridden to fetch the proxy target from the bean
+	 * factory.
+	 * 
 	 * @return
 	 */
-	protected Object createProxy(){
+	protected Object createProxy() {
 		final String name = this.getTargetBeanName();
-		final Object target = this.getBeanFactory().getBean( name );
-		return this.createProxy0( target );
+		final Object target = this.getBeanFactory().getBean(name);
+		return this.createProxy0(target);
 	}
-	
-	protected String getTargetBeanName(){
-		return '$' + this.getBeanName();		
+
+	protected String getTargetBeanName() {
+		return '$' + this.getBeanName();
 	}
 
 	/**
@@ -112,25 +114,27 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	 * @return A new Proxy
 	 */
 	abstract protected Object createProxy0(Object target);
-	
+
 	private BeanFactory beanFactory;
-	
-	protected BeanFactory getBeanFactory(){
+
+	protected BeanFactory getBeanFactory() {
 		Checker.notNull("field:beanFactory", beanFactory);
 		return this.beanFactory;
 	}
-	public void setBeanFactory( final BeanFactory beanFactory ){
+
+	public void setBeanFactory(final BeanFactory beanFactory) {
 		Checker.notNull("parameter:beanFactory", beanFactory);
 		this.beanFactory = beanFactory;
 	}
-	
+
 	private String beanName;
-	
-	protected String getBeanName(){
+
+	protected String getBeanName() {
 		return this.beanName;
 	}
-	public void setBeanName( final String beanName ){
+
+	public void setBeanName(final String beanName) {
 		this.beanName = beanName;
 	}
-	
+
 }

@@ -40,30 +40,30 @@ public class BeanFactoryGeneratorAliasGwtTestCase extends GeneratorGwtTestCase {
 		return "rocket.beans.test.generator.alias.BeanFactoryGeneratorAlias";
 	}
 
-	public void testAlias(){
+	public void testAlias() {
 		final AliasBeanFactory factory = (AliasBeanFactory) GWT.create(AliasBeanFactory.class);
-		final Bean aliased = (Bean)factory.getBean( "alias");
+		final Bean aliased = (Bean) factory.getBean("alias");
 		assertNotNull(aliased);
-		
-		final Object bean = factory.getBean( BEAN );
+
+		final Object bean = factory.getBean(BEAN);
 		assertNotNull(bean);
-		assertSame( bean, aliased );
+		assertSame(bean, aliased);
 	}
-	
-	public void testAliasNameIsNotUnique(){
+
+	public void testAliasNameIsNotUnique() {
 		try {
 			assertBindingFailed(GWT.create(AliasNotUniqueBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
 			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
-		}		
+		}
 	}
 
-	public void testAliasToBeanIdDoesntExist(){
+	public void testAliasToBeanIdDoesntExist() {
 		try {
 			assertBindingFailed(GWT.create(AliasedBeanNotFoundBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
 			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
-		}		
+		}
 	}
 
 }

@@ -26,7 +26,7 @@ public class BooleanArrayReaderTestCase extends ServerTestCase {
 	final static boolean BOOLEAN_VALUE = true;
 
 	public void testReadBooleanArray() {
-		final String stream = "[1,\"" + BOOLEAN_ARRAY + "\",1,2,1," + BOOLEAN_VALUE +"]";
+		final String stream = "[1,\"" + BOOLEAN_ARRAY + "\",1,2,1," + BOOLEAN_VALUE + "]";
 		final ObjectInputStream input = createObjectInputStream(stream, BooleanArrayReader.instance);
 
 		final boolean[] array = (boolean[]) input.readObject();

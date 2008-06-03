@@ -34,6 +34,6 @@ public class LongArrayWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2,1,0," + LONG_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + LONG_ARRAY + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + LONG_ARRAY + "\"," + expectedValues + "]", text);
 	}
 }

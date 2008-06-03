@@ -32,7 +32,7 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 	public ServerObjectInputStream(final String stream) {
 		super();
 
-		this.setObjects( this.createObjects() );
+		this.setObjects(this.createObjects());
 		this.prepare(stream);
 	}
 
@@ -60,8 +60,8 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 	public long readLong() {
 		final long hi = this.readInt();
 		final long lo = this.readInt();
-		
-		return (hi << 32 ) | (lo & 0xffffffff);
+
+		return (hi << 32) | (lo & 0xffffffff);
 	}
 
 	@Override
@@ -86,49 +86,49 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 	/**
 	 * A cache of all the string values that have been scene...
 	 */
-	private Map<Integer,String> strings;
+	private Map<Integer, String> strings;
 
-	protected Map<Integer,String> getStrings() {
+	protected Map<Integer, String> getStrings() {
 		return this.strings;
 	}
 
-	protected void setStrings(final Map<Integer,String> strings) {
+	protected void setStrings(final Map<Integer, String> strings) {
 		this.strings = strings;
 	}
 
-	protected Map<Integer,String> createStrings() {
-		return new HashMap<Integer,String>();
+	protected Map<Integer, String> createStrings() {
+		return new HashMap<Integer, String>();
 	}
 
 	protected String getString(final int reference) {
 		final String string = this.getStrings().get(reference);
 		if (null == string) {
-			throwInvalidStringReference( reference );
+			throwInvalidStringReference(reference);
 		}
 		return string;
 	}
-	
+
 	/**
 	 * key: Objects value2: reference
 	 */
-	private Map<Integer,Object> objects;
+	private Map<Integer, Object> objects;
 
-	protected Map<Integer,Object> getObjects() {
+	protected Map<Integer, Object> getObjects() {
 		return this.objects;
 	}
 
-	protected void setObjects(final Map<Integer,Object> objects) {
+	protected void setObjects(final Map<Integer, Object> objects) {
 		this.objects = objects;
 	}
 
-	protected Map<Integer,Object> createObjects() {
-		return new HashMap<Integer,Object>();
+	protected Map<Integer, Object> createObjects() {
+		return new HashMap<Integer, Object>();
 	}
 
 	protected int addObject(final Object object) {
-		final Map<Integer,Object> objects = this.getObjects();
-		final int reference = - (objects.size() + 1);
-		objects.put(new Integer( reference ), object);
+		final Map<Integer, Object> objects = this.getObjects();
+		final int reference = -(objects.size() + 1);
+		objects.put(new Integer(reference), object);
 
 		return reference;
 	}
@@ -140,26 +140,26 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 
 	protected Object getObject(final int reference) {
 		final Map objects = this.getObjects();
-		Object object = objects.get( reference);
+		Object object = objects.get(reference);
 		if (null == object) {
 			this.throwInvalidObjectReference(reference);
 		}
 		return object;
 	}
-	
 
 	// build string table...
 	// build a different array of values.
 	protected void prepare(final String stream) {
 		Checker.notEmpty("parameter:stream", stream);
 
-		if( false == stream.startsWith("[" ) && false == stream.endsWith( "]")){
+		if (false == stream.startsWith("[") && false == stream.endsWith("]")) {
 			throw new SerializationException("Stream is not valid json.");
 		}
-		
-		this.prepare0(stream.substring( 1, stream.length() - 1 ));		
+
+		this.prepare0(stream.substring(1, stream.length() - 1));
 	}
-	protected void prepare0( final String stream ){
+
+	protected void prepare0(final String stream) {
 		final int comma = stream.indexOf(',');
 		final String countString = stream.substring(0, comma);
 		int count = Integer.parseInt(countString);
@@ -168,7 +168,7 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 		}
 
 		// extract strings and add them to the string table...
-		final Map<Integer,String> strings = this.createStrings();
+		final Map<Integer, String> strings = this.createStrings();
 		int j = comma + 1;
 		for (int i = 0; i < count; i++) {
 			final StringBuffer buf = new StringBuffer();
@@ -304,7 +304,7 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 			}
 		}
 		if (false == read) {
-			this.throwUnableToDeserialize( typeName );
+			this.throwUnableToDeserialize(typeName);
 		}
 
 		return object;

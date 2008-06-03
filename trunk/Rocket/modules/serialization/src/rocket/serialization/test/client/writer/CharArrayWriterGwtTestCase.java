@@ -34,6 +34,6 @@ public class CharArrayWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2,1," + (int) CHAR_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + CHAR_ARRAY + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + CHAR_ARRAY + "\"," + expectedValues + "]", text);
 	}
 }

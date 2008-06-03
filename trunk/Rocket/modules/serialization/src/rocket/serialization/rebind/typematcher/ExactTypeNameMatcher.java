@@ -18,36 +18,36 @@ package rocket.serialization.rebind.typematcher;
 import rocket.generator.rebind.GeneratorHelper;
 import rocket.generator.rebind.type.Type;
 
-public class ExactTypeNameMatcher implements TypeMatcher{
+public class ExactTypeNameMatcher implements TypeMatcher {
 
-	public ExactTypeNameMatcher(){
+	public ExactTypeNameMatcher() {
 		super();
 	}
-	
-	public ExactTypeNameMatcher( final String name ){
+
+	public ExactTypeNameMatcher(final String name) {
 		this();
-		
+
 		this.setName(name);
 	}
-	
-	public boolean matches( Type type ){
-		return this.getName().equals( type.getName() );
+
+	public boolean matches(Type type) {
+		return this.getName().equals(type.getName());
 	}
-	
+
 	private String name;
-	
-	private String getName(){
-		GeneratorHelper.checkJavaTypeName( "field:name", name );
+
+	private String getName() {
+		GeneratorHelper.checkJavaTypeName("field:name", name);
 		return this.name;
 	}
-	
-	public void setName( final String name ){
-		GeneratorHelper.checkJavaTypeName( "parameter:name", name );
+
+	public void setName(final String name) {
+		GeneratorHelper.checkJavaTypeName("parameter:name", name);
 		this.name = name;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return super.toString() + ", name\"" + name + "\".";
 	}
 }

@@ -17,7 +17,7 @@ package rocket.beans.rebind.aop.unwrapparameter;
 
 /**
  * A collection constants used by various classes within this package.
- *
+ * 
  * @author Miroslav Pokorny
  */
 class Constants {

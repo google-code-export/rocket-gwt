@@ -23,7 +23,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.lang.Integer
+ * @serialization-type java.lang.Integer
  */
 public class IntegerWriter extends NumberWriter implements ObjectWriter {
 

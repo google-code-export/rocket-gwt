@@ -29,7 +29,8 @@ abstract public class AbstractValue implements CodeBlock {
 	/**
 	 * Tests if this property value entry is compatible with its field type.
 	 * 
-	 * @param type The type being tested
+	 * @param type
+	 *            The type being tested
 	 * @return True if the type is compatible false otherwise
 	 */
 	abstract public boolean isCompatibleWith(Type type);
@@ -61,24 +62,24 @@ abstract public class AbstractValue implements CodeBlock {
 	public boolean isEmpty() {
 		return false;
 	}
-	
-	public void setPropertyType( final Type ignored ){		
+
+	public void setPropertyType(final Type ignored) {
 	}
-	
+
 	/**
 	 * 
 	 */
 	private String filename;
-	
-	protected String getFilename(){
+
+	protected String getFilename() {
 		return this.filename;
 	}
-	
-	public void setFilename( final String filename ){
+
+	public void setFilename(final String filename) {
 		this.filename = filename;
 	}
 
-	public String toString(){
+	public String toString() {
 		return super.toString() + ", type: " + type;
 	}
 }

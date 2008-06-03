@@ -29,7 +29,7 @@ abstract public class PrototypeFactoryBean extends SingletonOrPrototypeFactoryBe
 		try {
 			object = this.createObject();
 			this.postCreate(object);
-			
+
 			object = this.getObject(object);
 		} catch (final Throwable caught) {
 			throwBeanException("Unable to create bean, because " + caught.getMessage(), caught);
@@ -39,8 +39,11 @@ abstract public class PrototypeFactoryBean extends SingletonOrPrototypeFactoryBe
 	}
 
 	/**
-	 * Handles the final step involved in initializing a bean. If the bean is actually a FactoryBean ask it for its actual Object, this will continue
-	 * until no more FactoryBeans are present in the chain and a true bean is located.
+	 * Handles the final step involved in initializing a bean. If the bean is
+	 * actually a FactoryBean ask it for its actual Object, this will continue
+	 * until no more FactoryBeans are present in the chain and a true bean is
+	 * located.
+	 * 
 	 * @param object
 	 * @return
 	 * @throws Exception

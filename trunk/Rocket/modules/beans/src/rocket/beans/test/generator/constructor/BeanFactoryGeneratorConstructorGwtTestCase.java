@@ -30,7 +30,8 @@ import rocket.generator.client.GeneratorGwtTestCase;
 import com.google.gwt.core.client.GWT;
 
 /**
- * A series of tests for the BeanFactoryGenerator in particularly how it handles the constructor tag.
+ * A series of tests for the BeanFactoryGenerator in particularly how it handles
+ * the constructor tag.
  * 
  * @author Miroslav Pokorny
  */
@@ -45,7 +46,7 @@ public class BeanFactoryGeneratorConstructorGwtTestCase extends GeneratorGwtTest
 	public String getModuleName() {
 		return "rocket.beans.test.generator.constructor.BeanFactoryGeneratorConstructor";
 	}
-	
+
 	public void testConstructorNotFound() {
 		try {
 			assertBindingFailed(GWT.create(NotFoundBeanFactory.class));

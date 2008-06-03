@@ -24,10 +24,10 @@ import com.google.gwt.json.client.JSONValue;
 
 /**
  * Convenient base class invoker for any json rpc poster.
- *
+ * 
  * The generator will implement the {@link #readObject(JSONValue)} and
  * {@link #createSerializer()}.
- *
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class JsonRpcServiceInvoker<R> extends JsonServiceMethodInvoker<R> {
@@ -74,7 +74,7 @@ abstract public class JsonRpcServiceInvoker<R> extends JsonServiceMethodInvoker<
 	/**
 	 * The generator will override this method and use deferred binding to
 	 * locate the appropriate json serializer for the parameter.
-	 *
+	 * 
 	 * @return
 	 */
 	abstract protected JsonSerializer createSerializer();

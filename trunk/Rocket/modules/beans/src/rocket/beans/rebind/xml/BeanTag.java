@@ -81,8 +81,8 @@ class BeanTag extends XmlDocumentComponent {
 	 * 
 	 * @return A list of elements which are all values.
 	 */
-	public List getConstructorValues() {
-		List values = new ArrayList();
+	public List<Element> getConstructorValues() {
+		List<Element> values = new ArrayList<Element>();
 
 		final Element constructor = this.getFirstChildByTagName(this.getElement(), Constants.CONSTRUCTOR_TAG);
 		if (null != constructor) {
@@ -98,8 +98,8 @@ class BeanTag extends XmlDocumentComponent {
 	 * 
 	 * @return A list of property elements.
 	 */
-	public List getProperties() {
-		List properties = new ArrayList();
+	public List<Element> getProperties() {
+		List<Element> properties = new ArrayList<Element>();
 
 		final Element propertiesElement = this.getFirstChildByTagName(this.getElement(), Constants.PROPERTIES_TAG);
 		if (null != propertiesElement) {

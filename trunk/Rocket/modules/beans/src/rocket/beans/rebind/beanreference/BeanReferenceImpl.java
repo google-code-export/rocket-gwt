@@ -42,7 +42,7 @@ public class BeanReferenceImpl extends AbstractValue implements BeanReference, V
 	public void write(final SourceWriter writer) {
 		final BeanReferenceTemplatedFile template = new BeanReferenceTemplatedFile();
 
-		template.setType(this.getType()); 
+		template.setType(this.getType());
 		template.setId(this.getId());
 
 		template.write(writer);
@@ -63,11 +63,11 @@ public class BeanReferenceImpl extends AbstractValue implements BeanReference, V
 		this.id = id;
 	}
 
-	public Type getType(){
+	public Type getType() {
 		return super.getType();
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return "bean reference: \"" + this.getId() + "\".";
 	}
 }

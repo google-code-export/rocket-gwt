@@ -34,6 +34,6 @@ public class BooleanArrayWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2,1," + BOOLEAN_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + BOOLEAN_ARRAY + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + BOOLEAN_ARRAY + "\"," + expectedValues + "]", text);
 	}
 }

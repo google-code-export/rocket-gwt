@@ -21,7 +21,8 @@ import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.util.client.Checker;
 
 /**
- * An abstraction for providing the body of a {@link rocket.beans.client.BeanFactoryImpl#getEagerSingletonBeanNames} 
+ * An abstraction for providing the body of a
+ * {@link rocket.beans.client.BeanFactoryImpl#getEagerSingletonBeanNames}
  * 
  * @author Miroslav Pokorny
  */
@@ -31,17 +32,18 @@ public class GetEagerSingletonBeanNames implements CodeBlock {
 		super();
 		this.setBuffer(this.createBuffer());
 	}
-	
-	public boolean isNative(){
+
+	public boolean isNative() {
 		return false;
 	}
-	
-	public void setNative( final boolean ignored){
+
+	public void setNative(final boolean ignored) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
-	 * A buffer that accumulates all eager singleton beans as a comma separated string.
+	 * A buffer that accumulates all eager singleton beans as a comma separated
+	 * string.
 	 */
 	private StringBuffer buffer;
 
@@ -59,27 +61,27 @@ public class GetEagerSingletonBeanNames implements CodeBlock {
 		return new StringBuffer();
 	}
 
-	public void addBean(final String beanId ) {
-		Checker.notEmpty("parameter:beanId", beanId );
-		
+	public void addBean(final String beanId) {
+		Checker.notEmpty("parameter:beanId", beanId);
+
 		final StringBuffer buf = this.getBuffer();
-		if( buf.length() > 0 ){
+		if (buf.length() > 0) {
 			buf.append(',');
 		}
-		
-		buf.append( beanId );
+
+		buf.append(beanId);
 	}
 
-	public boolean isEmpty(){
+	public boolean isEmpty() {
 		return false;
 	}
-	
-	public void write( final SourceWriter writer ){
-		writer.print( "return " );
-		
+
+	public void write(final SourceWriter writer) {
+		writer.print("return ");
+
 		final StringBuffer buffer = this.getBuffer();
-		new StringLiteral( buffer.toString() ).write( writer );
-		
-		writer.println( ";");
+		new StringLiteral(buffer.toString()).write(writer);
+
+		writer.println(";");
 	}
 }

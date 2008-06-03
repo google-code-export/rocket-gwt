@@ -29,12 +29,13 @@ abstract public class ObjectArrayReader extends ObjectReaderImpl implements Obje
 
 	/**
 	 * Generators should generate code that looks something like this.
+	 * 
 	 * <pre>
 	 * int elementCount = objectInputStream.readInt();
-	 * Type instance = new Type[ elementCount ];
+	 * Type instance = new Type[elementCount];
 	 * 
-	 * for( int i = 0; i < elementCount; i++ ){
-	 *   instance[ i ] = objectInputStream.readObject();
+	 * for (int i = 0; i &lt; elementCount; i++) {
+	 * 	instance[i] = objectInputStream.readObject();
 	 * }
 	 * </pre>
 	 * 

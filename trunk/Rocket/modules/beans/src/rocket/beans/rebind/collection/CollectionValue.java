@@ -55,7 +55,9 @@ abstract public class CollectionValue extends AbstractValue implements Value {
 	}
 
 	/**
-	 * Either of the list or set sub classes implement this method to return either List or Set
+	 * Either of the list or set sub classes implement this method to return
+	 * either List or Set
+	 * 
 	 * @return
 	 */
 	abstract protected String getCollectionTypeName();
@@ -83,9 +85,9 @@ abstract public class CollectionValue extends AbstractValue implements Value {
 	 * @return The templated file instance.
 	 */
 	abstract protected CollectionTemplatedFile createTemplate();
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return this.getElements().toString();
 	}
 }

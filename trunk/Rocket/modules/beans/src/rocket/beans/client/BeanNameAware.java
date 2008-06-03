@@ -18,7 +18,8 @@ package rocket.beans.client;
 /**
  * Beans wishing to recieve the name they were originally registered as.
  * 
- * Functionality wise it is pretty much equivalent to the class of the same name found in Spring.
+ * Functionality wise it is pretty much equivalent to the class of the same name
+ * found in Spring.
  * 
  * @author Miroslav Pokorny
  */

@@ -32,13 +32,13 @@ import rocket.serialization.client.writer.ArrayWriter;
 import rocket.serialization.client.writer.ObjectWriterImpl;
 
 public class SerializationConstants {
-	
+
 	private final static String ANNOTATION_PREFIX = "serialization";
 
 	public final static String SERIALIZABLE_READABLE_TYPES = ANNOTATION_PREFIX + "-readableTypes";
 	public final static String SERIALIZABLE_WRITABLE_TYPES = ANNOTATION_PREFIX + "-writableTypes";
 	public final static String SERIALIZABLE_TYPE = ANNOTATION_PREFIX + "-type";
-	
+
 	public final static String CONTAINER_TYPE = ANNOTATION_PREFIX + "-type";
 	final static String LIST = List.class.getName();
 	final static String SET = Set.class.getName();
@@ -74,7 +74,7 @@ public class SerializationConstants {
 	final static String CLIENT_OBJECT_READER_IMPL_READ_FIELDS_INSTANCE_PARAMETER = "instance";
 
 	final static String CLIENT_OBJECT_READER_IMPL_READ_FIELDS_OBJECT_INPUT_STREAM_PARAMETER = "objectInputStream";
-	
+
 	final static String CLIENT_OBJECT_READER_IMPL_FIELD_SETTER_INSTANCE_PARAMETER = "instance";
 
 	final static String CLIENT_OBJECT_READER_IMPL_FIELD_SETTER_VALUE_PARAMETER = "value";
@@ -102,19 +102,19 @@ public class SerializationConstants {
 	final static String CLIENT_OBJECT_WRITER_IMPL_WRITE_FIELDS_INSTANCE_PARAMETER = "instance";
 
 	final static String CLIENT_OBJECT_WRITER_IMPL_WRITE_FIELDS_OBJECT_OUTPUT_STREAM_PARAMETER = "objectOutputStream";
-	
+
 	final static String CLIENT_OBJECT_WRITER_IMPL_FIELD_GETTER_INSTANCE_PARAMETER = "instance";
 
 	final static String OBJECT_OUTPUT_STREAM = ObjectOutputStream.class.getName();
 
 	final static String SINGLETON = "instance";
-	
+
 	final static String SERIALIZATION_FACTORY_GET_OBJECT_READER = "getObjectReader";
 	final static String SERIALIZATION_FACTORY_GET_OBJECT_WRITER = "getObjectWriter";
-	
+
 	public final static String BLACKLIST_FILENAME = "rocket-Serialization.txt";
-	
+
 	final static String ARRAY_WRITER = ArrayWriter.class.getName();
-	
-	final static String JAVA_LANG = "java.lang"; 
+
+	final static String JAVA_LANG = "java.lang";
 }

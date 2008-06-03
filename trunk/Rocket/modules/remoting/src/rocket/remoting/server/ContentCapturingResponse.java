@@ -90,7 +90,7 @@ class ContentCapturingResponse extends HttpServletResponseWrapper {
 	protected String formatDateHeader(final long date) {
 		return String.valueOf(date);
 	}
-	
+
 	@Override
 	public void setHeader(final String name, final String value) {
 		this.getHeaders().add(name, value);

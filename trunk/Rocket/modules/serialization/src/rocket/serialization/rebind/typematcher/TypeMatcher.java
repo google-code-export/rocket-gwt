@@ -17,7 +17,7 @@ package rocket.serialization.rebind.typematcher;
 
 import rocket.generator.rebind.type.Type;
 
-public interface TypeMatcher {	
-	
-	boolean matches( Type type );
+public interface TypeMatcher {
+
+	boolean matches(Type type);
 }

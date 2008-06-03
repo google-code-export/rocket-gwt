@@ -33,6 +33,6 @@ public class IntegerWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2," + INTEGER_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + INTEGER + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + INTEGER + "\"," + expectedValues + "]", text);
 	}
 }

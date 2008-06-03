@@ -153,10 +153,11 @@ public class LoggingApplication implements EntryPoint {
 		RootPanel.get().add(button);
 	}
 
-	// FIXME Unable to read src from the iframe, therefore the code fails when attempting to build a request to the server for the appropriate file.
-	protected void fetchJavascriptSource() {		
+	// FIXME Unable to read src from the iframe, therefore the code fails when
+	// attempting to build a request to the server for the appropriate file.
+	protected void fetchJavascriptSource() {
 		try {
-			final Element iframe = DOM.getElementById(GWT.getModuleName());		
+			final Element iframe = DOM.getElementById(GWT.getModuleName());
 			final String iframeSourceUrl = JavaScript.getString(iframe, "src");
 			final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, iframeSourceUrl);
 			requestBuilder.sendRequest("", new RequestCallback() {

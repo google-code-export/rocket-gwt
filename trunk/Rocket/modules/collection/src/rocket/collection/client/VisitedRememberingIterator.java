@@ -57,7 +57,7 @@ public class VisitedRememberingIterator<E> extends IteratorWrapper<E> implements
 	 * The object that was last visited ie the object returned by the last call
 	 * to {@link #next}
 	 */
-	private E lastVisited = (E)LAST_VISITED_SET;
+	private E lastVisited = (E) LAST_VISITED_SET;
 
 	public E getLastVisited() {
 		Checker.trueValue("lastVisited", LAST_VISITED_SET != this.lastVisited);
@@ -73,7 +73,7 @@ public class VisitedRememberingIterator<E> extends IteratorWrapper<E> implements
 	}
 
 	public void clearLastVisited() {
-		this.lastVisited = (E)LAST_VISITED_SET;
+		this.lastVisited = (E) LAST_VISITED_SET;
 	}
 
 	@Override

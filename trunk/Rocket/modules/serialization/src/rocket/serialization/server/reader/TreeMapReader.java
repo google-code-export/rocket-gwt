@@ -36,10 +36,10 @@ public class TreeMapReader extends rocket.serialization.client.reader.MapReader 
 	public boolean canRead(final Class classs) {
 		return TreeMap.class.isAssignableFrom(classs);
 	}
-	
-	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream){
+
+	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream) {
 		final Comparator comparator = (Comparator) objectInputStream;
-		return null == comparator ? new TreeMap() : new TreeMap( comparator );
+		return null == comparator ? new TreeMap() : new TreeMap(comparator);
 	}
 
 }

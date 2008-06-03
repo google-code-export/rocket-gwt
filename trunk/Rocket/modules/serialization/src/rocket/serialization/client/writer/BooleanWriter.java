@@ -23,7 +23,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.lang.Boolean
+ * @serialization-type java.lang.Boolean
  */
 public class BooleanWriter extends ObjectWriterImpl {
 

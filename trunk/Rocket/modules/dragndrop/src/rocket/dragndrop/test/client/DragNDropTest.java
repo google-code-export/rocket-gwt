@@ -70,7 +70,7 @@ public class DragNDropTest implements EntryPoint {
 		});
 
 		final RootPanel rootPanel = RootPanel.get();
-		
+
 		this.dragStarts = new Counter("Drag starts: ");
 		rootPanel.add(dragStarts);
 
@@ -103,8 +103,8 @@ public class DragNDropTest implements EntryPoint {
 
 		rootPanel.add(new Label("Bin"));
 		rootPanel.add(createBin());
-		
-		Widgets.forceDocumentContentsToScroll( 100 );
+
+		Widgets.forceDocumentContentsToScroll(100);
 	}
 
 	Widget createGrid() {
@@ -112,8 +112,8 @@ public class DragNDropTest implements EntryPoint {
 		final Grid grid = new Grid(3, 3);
 		grid.setStyleName("rocket-dragNDropTest-grid");
 		grid.setBorderWidth(0);
-		grid.setCellPadding( 1);
-		grid.setCellSpacing( 1 );
+		grid.setCellPadding(1);
+		grid.setCellSpacing(1);
 		grid.setWidget(0, 0, new Image("anchor.png"));
 		grid.setWidget(1, 1, new Image("bell.png"));
 		grid.setWidget(2, 2, new Image("bomb.png"));

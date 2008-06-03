@@ -15,15 +15,14 @@
  */
 package rocket.beans.test.generator.beanreference;
 
-
-public class HasNestedBean extends Bean{
+public class HasNestedBean extends Bean {
 	private Bean nestedBean;
-	
-	public Bean getNestedBean(){
+
+	public Bean getNestedBean() {
 		return this.nestedBean;
 	}
-	
-	public void setNestedBean( final Bean nestedBean ){
+
+	public void setNestedBean(final Bean nestedBean) {
 		this.nestedBean = nestedBean;
 	}
 }

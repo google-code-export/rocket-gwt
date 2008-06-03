@@ -22,17 +22,18 @@ import rocket.serialization.client.SerializationException;
 abstract public class ObjectReaderImpl implements ObjectReader {
 
 	/**
-	 * This method is overridden by the generator for concrete types.
-	 * The generator will not override this method for abstract types, thus any attempt to deserialize
-	 * an abstract type will result in an exception being thrown.
+	 * This method is overridden by the generator for concrete types. The
+	 * generator will not override this method for abstract types, thus any
+	 * attempt to deserialize an abstract type will result in an exception being
+	 * thrown.
 	 */
-	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream){
-		throw new SerializationException( "Unable to deserialize \"" + typeName + "\".");
+	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream) {
+		throw new SerializationException("Unable to deserialize \"" + typeName + "\".");
 	}
 
 	public void read(final Object instance, final ObjectInputStream objectInputStream) {
 	}
 
-	public void readFields( final Object instance, final ObjectInputStream objectInputStream) {
+	public void readFields(final Object instance, final ObjectInputStream objectInputStream) {
 	}
 }

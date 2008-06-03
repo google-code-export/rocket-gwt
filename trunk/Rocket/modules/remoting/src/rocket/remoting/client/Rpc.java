@@ -21,63 +21,80 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
  * A collection of helper methods related to rpc.
+ * 
  * @author Miroslav Pokorny
  */
 public class Rpc {
 	/**
 	 * Sets the service def target upon the given rpc client.
 	 * 
-	 * @param client A rpc client be it a gwt, rocket java or json client.
-	 * @param url The url to set
+	 * @param client
+	 *            A rpc client be it a gwt, rocket java or json client.
+	 * @param url
+	 *            The url to set
 	 */
-	public static void setServiceDefTarget( final Object client, final String url ){
+	public static void setServiceDefTarget(final Object client, final String url) {
 		final ServiceDefTarget serviceDefTarget = Rpc.getServiceDefTarget(client);
-		serviceDefTarget.setServiceEntryPoint( url );
+		serviceDefTarget.setServiceEntryPoint(url);
 	}
-	
+
 	/**
-	 * Helper which checks and then casts the given client to ServiceDefTarget reference.
-	 * @param client A rpc client.
+	 * Helper which checks and then casts the given client to ServiceDefTarget
+	 * reference.
+	 * 
+	 * @param client
+	 *            A rpc client.
 	 * @return
 	 */
-	static ServiceDefTarget getServiceDefTarget( final Object client ){
-		if( false == client instanceof ServiceDefTarget ){
-			throw new RuntimeException( "The parameter:client is not a rpc client (gwt or rocket): " + client );
+	static ServiceDefTarget getServiceDefTarget(final Object client) {
+		if (false == client instanceof ServiceDefTarget) {
+			throw new RuntimeException("The parameter:client is not a rpc client (gwt or rocket): " + client);
 		}
-		return (ServiceDefTarget)client;
+		return (ServiceDefTarget) client;
 	}
-	
+
 	/**
 	 * Sets the authentication credentials upon the given rpc client.
-	 * @param client A rpc client 
-	 * @param username The username to set
-	 * @param password The password to set
+	 * 
+	 * @param client
+	 *            A rpc client
+	 * @param username
+	 *            The username to set
+	 * @param password
+	 *            The password to set
 	 */
-	public static void setCredentials( final Object client, final String username, final String password ){
-		final RpcServiceClient rpcServiceClient = Rpc.getServiceClient(client); 
-		rpcServiceClient.setUsername( username );
-		rpcServiceClient.setPassword( password );
+	public static void setCredentials(final Object client, final String username, final String password) {
+		final RpcServiceClient rpcServiceClient = Rpc.getServiceClient(client);
+		rpcServiceClient.setUsername(username);
+		rpcServiceClient.setPassword(password);
 	}
 
 	/**
-	 * Sets the common timeout for any future requests upon the given rpc client.
-	 * @param client A rpc client
-	 * @param timeout Timeout value in milliseconds
+	 * Sets the common timeout for any future requests upon the given rpc
+	 * client.
+	 * 
+	 * @param client
+	 *            A rpc client
+	 * @param timeout
+	 *            Timeout value in milliseconds
 	 */
-	public static void setTimeout( final Object client, final int timeout ){
-		final RpcServiceClient rpcServiceClient = Rpc.getServiceClient(client); 
-		rpcServiceClient.setTimeout( timeout );
+	public static void setTimeout(final Object client, final int timeout) {
+		final RpcServiceClient rpcServiceClient = Rpc.getServiceClient(client);
+		rpcServiceClient.setTimeout(timeout);
 	}
 
 	/**
-	 * Helper which checks and then casts the given client to RpcServiceClient reference.
-	 * @param client A rpc client.
+	 * Helper which checks and then casts the given client to RpcServiceClient
+	 * reference.
+	 * 
+	 * @param client
+	 *            A rpc client.
 	 * @return
 	 */
-	static RpcServiceClient getServiceClient( final Object client ){
-		if( client instanceof RpcServiceClient ){
-			throw new RuntimeException( "The parameter:client is not a Java or Json rpc client, proxy: " + client );
+	static RpcServiceClient getServiceClient(final Object client) {
+		if (client instanceof RpcServiceClient) {
+			throw new RuntimeException("The parameter:client is not a Java or Json rpc client, proxy: " + client);
 		}
-		return (RpcServiceClient)client;
+		return (RpcServiceClient) client;
 	}
 }

@@ -16,8 +16,9 @@
 package rocket.beans.rebind.xml;
 
 /**
- * A collection constants used by various classes within this package.
- * Most of the constants below are either element / tag names as well as attribute names.
+ * A collection constants used by various classes within this package. Most of
+ * the constants below are either element / tag names as well as attribute
+ * names.
  * 
  * @author Miroslav Pokorny
  */
@@ -80,15 +81,15 @@ class Constants {
 	static final String MAP_ENTRY_KEY_ATTRIBUTE = "key";
 
 	static final String NULL_TAG = "null";
-	
+
 	final static String RPC_TAG = "rpc";
 
 	final static String RPC_BEAN_ID_ATTRIBUTE = "id";
-	
+
 	final static String RPC_SERVICE_INTERFACE_ATTRIBUTE = "service-interface";
-	
+
 	final static String RPC_SERVICE_ENTRY_POINT_ATTRIBUTE = "service-entry-point";
-	
+
 	final static String ASPECT_TAG = "aspect";
 
 	final static String ASPECT_ADVISOR_ATTRIBUTE = "advisor";
@@ -112,17 +113,16 @@ class Constants {
 	final static String ALIAS_NAME_ATTRIBUTE = "name";
 
 	final static String ALIAS_BEAN_ATTRIBUTE = "bean";
-	
+
 	final static String IMAGE_TAG = "image";
 	final static String IMAGE_FILE_ATTRIBUTE = "file";
-	
+
 	final static String IMAGE_LOCATION_ATTRIBUTE = "location";
 	final static String IMAGE_LOCAL = "local";
 	final static String IMAGE_SERVER = "server";
-	
+
 	final static String IMAGE_SERVER_REQUEST_ATTRIBUTE = "serverRequest";
 	final static String IMAGE_EAGER = "eager";
 	final static String IMAGE_LAZY = "lazy";
-	
-	
+
 }

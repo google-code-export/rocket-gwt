@@ -24,24 +24,26 @@ import java.util.TreeSet;
 import rocket.serialization.client.SerializationException;
 
 public class ReflectionHelper {
-	
+
 	final static Comparator<Field> FIELD_COMPARATOR = new Comparator<Field>() {
 
 		public int compare(final Field field, final Field otherField) {
 			return field.getName().compareTo(otherField.getName());
 		}
 	};
-	
+
 	/**
-	 * Builds a set that contains all the serializable fields sorted in alphabetical order
+	 * Builds a set that contains all the serializable fields sorted in
+	 * alphabetical order
+	 * 
 	 * @param object
 	 * @param classs
 	 * @return A set containing all the fields.
 	 */
 	static public Set<Field> buildSerializableFields(final Object object, final Class classs) {
 		final Field[] fields = classs.getDeclaredFields();
-		final Set<Field> serializableFields = new TreeSet<Field>( ReflectionHelper.FIELD_COMPARATOR );
-		
+		final Set<Field> serializableFields = new TreeSet<Field>(ReflectionHelper.FIELD_COMPARATOR);
+
 		for (int i = 0; i < fields.length; i++) {
 			final Field field = fields[i];
 			field.setAccessible(true);
@@ -69,27 +71,29 @@ public class ReflectionHelper {
 
 		return serializableFields;
 	}
-	
-	static public Field getThrowableMessageField(){
-		return getThrowableField(Constants.MESSAGE_FIELD );
+
+	static public Field getThrowableMessageField() {
+		return getThrowableField(Constants.MESSAGE_FIELD);
 	}
-static public Field getThrowableCauseField(){
-		return getThrowableField(Constants.CAUSE_FIELD );
+
+	static public Field getThrowableCauseField() {
+		return getThrowableField(Constants.CAUSE_FIELD);
 	}
-	static public Field getThrowableStackTraceElementField(){
-		return getThrowableField(Constants.STACK_TRACE_FIELD );
+
+	static public Field getThrowableStackTraceElementField() {
+		return getThrowableField(Constants.STACK_TRACE_FIELD);
 	}
-	
-	static protected Field getThrowableField( final String fieldName ){
-		try{
+
+	static protected Field getThrowableField(final String fieldName) {
+		try {
 			final Class throwable = Throwable.class;
-			
-			final Field field = throwable.getDeclaredField( fieldName );
-			field.setAccessible( true );
+
+			final Field field = throwable.getDeclaredField(fieldName);
+			field.setAccessible(true);
 			return field;
-			
-		} catch ( final Exception exception ){
-			throw new RuntimeException( exception );
+
+		} catch (final Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 }

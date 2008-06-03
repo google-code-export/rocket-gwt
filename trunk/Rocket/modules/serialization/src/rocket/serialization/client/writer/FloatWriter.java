@@ -23,9 +23,9 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.lang.Float
+ * @serialization-type java.lang.Float
  */
-public class FloatWriter extends NumberWriter implements ObjectWriter{
+public class FloatWriter extends NumberWriter implements ObjectWriter {
 
 	static public final ObjectWriter instance = new FloatWriter();
 

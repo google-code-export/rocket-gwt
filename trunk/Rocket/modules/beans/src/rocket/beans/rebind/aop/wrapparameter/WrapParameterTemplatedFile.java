@@ -53,7 +53,7 @@ public class WrapParameterTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 

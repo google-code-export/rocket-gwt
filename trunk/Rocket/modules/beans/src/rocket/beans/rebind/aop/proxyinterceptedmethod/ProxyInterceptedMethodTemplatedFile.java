@@ -96,14 +96,14 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 		this.targetMethod = targetMethod;
 	}
 
-	protected BooleanLiteral isMethodNative(){
-		return new BooleanLiteral( this.getTargetMethod().isNative() );
+	protected BooleanLiteral isMethodNative() {
+		return new BooleanLiteral(this.getTargetMethod().isNative());
 	}
 
-	protected StringLiteral getEnclosingType(){
-		return new StringLiteral( this.getTargetMethod().getEnclosingType().getName() );
+	protected StringLiteral getEnclosingType() {
+		return new StringLiteral(this.getTargetMethod().getEnclosingType().getName());
 	}
-	
+
 	/**
 	 * The target method parameter
 	 */
@@ -282,42 +282,44 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 		};
 	}
 
-	protected StringLiteral getMethodName(){
-		return new StringLiteral( this.getMethod().getName() );
+	protected StringLiteral getMethodName() {
+		return new StringLiteral(this.getMethod().getName());
 	}
-		
-	protected StringLiteral getMethodReturnType(){
-		return new StringLiteral( this.getMethod().getReturnType().getName() );
+
+	protected StringLiteral getMethodReturnType() {
+		return new StringLiteral(this.getMethod().getReturnType().getName());
 	}
-	
-	protected CodeBlock getMethodParameterTypes(){
+
+	protected CodeBlock getMethodParameterTypes() {
 		final List<MethodParameter> parameters = this.getMethod().getParameters();
-		
-		// this code block creates a String array holding the parameter type names.
-		return new CodeBlock(){
-			public boolean isEmpty(){
+
+		// this code block creates a String array holding the parameter type
+		// names.
+		return new CodeBlock() {
+			public boolean isEmpty() {
 				return false;
 			}
-			public void write(final SourceWriter writer){
-				writer.print( "new String[]{");
-				
+
+			public void write(final SourceWriter writer) {
+				writer.print("new String[]{");
+
 				final Iterator<MethodParameter> iterator = parameters.iterator();
-				while( iterator.hasNext() ){
+				while (iterator.hasNext()) {
 					final MethodParameter parameter = iterator.next();
-					
+
 					// write a quoted string holding the parameter type
-					new StringLiteral( parameter.getType().getRuntimeName() ).write(writer);
-					
-					if( iterator.hasNext() ){
-						writer.print( ",");
+					new StringLiteral(parameter.getType().getRuntimeName()).write(writer);
+
+					if (iterator.hasNext()) {
+						writer.print(",");
 					}
 				}
-				
-				writer.print( "}");
+
+				writer.print("}");
 			}
 		};
 	}
-	
+
 	/**
 	 * The actual template file is selected depending on whether the method
 	 * returns void or not.
@@ -378,7 +380,7 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 				value = this.getMethodParameterTypes();
 				break;
 			}
-			
+
 			break;
 		}
 		return value;

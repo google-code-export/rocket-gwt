@@ -23,7 +23,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.lang.Character
+ * @serialization-type java.lang.Character
  */
 public class CharacterWriter extends ObjectWriterImpl {
 

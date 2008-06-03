@@ -33,11 +33,12 @@ public class CometSupport {
 	 * calls registered callbacks.
 	 * 
 	 * @param cometClient
-	 * @param frame The hidden frame being feed incoming payloads.
+	 * @param frame
+	 *            The hidden frame being feed incoming payloads.
 	 */
 	public void start(CometClient cometClient, Element frame) {
 		Checker.notNull("parameter:cometClient", cometClient);
-		
+
 		this.registerConnectHandler(cometClient, frame);
 		this.registerDisconnectHandler(cometClient, frame);
 		this.registerObjectRecievedDispatcher(cometClient, frame);
@@ -51,25 +52,25 @@ public class CometSupport {
 	 * @param frame
 	 */
 	native protected void registerConnectHandler(final CometClient cometClient, final Element frame)/*-{
-	 $wnd.__cometOnConnect = function(){
-	 	frame.__connected=true;
-	 };
-	 }-*/;
+		 $wnd.__cometOnConnect = function(){
+		 	frame.__connected=true;
+		 };
+		 }-*/;
 
 	native protected void registerDisconnectHandler(final CometClient cometClient, final Element iframe)/*-{
-	 var callback = @rocket.remoting.client.CometClient::onDisconnect(Lrocket/remoting/client/CometClient;);
-	 iframe.onload=function(){
-	 	callback( cometClient );
-	 }
-	 }-*/;
+		 var callback = @rocket.remoting.client.CometClient::onDisconnect(Lrocket/remoting/client/CometClient;);
+		 iframe.onload=function(){
+		 	callback( cometClient );
+		 }
+		 }-*/;
 
 	native protected void registerObjectRecievedDispatcher(final CometClient cometClient, final Element frame)/*-{
-	 var callback = @rocket.remoting.client.CometClient::dispatch(Lrocket/remoting/client/CometClient;Ljava/lang/String;)
-	 var dispatch = function( serializedForm ){
-	 	callback( cometClient, serializedForm );     	
-	 }
-	 $wnd.__cometDispatch = dispatch;
-	 }-*/;
+		 var callback = @rocket.remoting.client.CometClient::dispatch(Lrocket/remoting/client/CometClient;Ljava/lang/String;)
+		 var dispatch = function( serializedForm ){
+		 	callback( cometClient, serializedForm );     	
+		 }
+		 $wnd.__cometDispatch = dispatch;
+		 }-*/;
 
 	/**
 	 * Standards compliant browsers dont need to anything extra to stop a comet

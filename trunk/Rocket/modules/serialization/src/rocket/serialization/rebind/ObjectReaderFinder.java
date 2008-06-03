@@ -20,6 +20,7 @@ import rocket.generator.rebind.type.Type;
 abstract public class ObjectReaderFinder extends ObjectReaderOrWriterFinder {
 
 	protected void throwAmbiguousMatches(Type type, Type first, Type second) {
-		throw new SerializationFactoryGeneratorException("Ambiguous match to more than one ObjectReader for the type " + type + ", " + first + ", " + second );
+		throw new SerializationFactoryGeneratorException("Ambiguous match to more than one ObjectReader for the type " + type + ", "
+				+ first + ", " + second);
 	}
 }

@@ -17,15 +17,15 @@ package rocket.beans.test.generator.beanreference.productofnestedfactorybean;
 
 import rocket.beans.test.generator.beanreference.Bean;
 
-public class HasProductOfNestedFactoryBean{
-	
+public class HasProductOfNestedFactoryBean {
+
 	private Bean bean;
-	
-	public Bean getBean(){
+
+	public Bean getBean() {
 		return this.bean;
 	}
 
-	public void setBean( final Bean bean){
+	public void setBean(final Bean bean) {
 		this.bean = bean;
 	}
 }

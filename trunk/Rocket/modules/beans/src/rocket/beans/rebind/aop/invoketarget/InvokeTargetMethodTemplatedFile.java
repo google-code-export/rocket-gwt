@@ -37,14 +37,14 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 	public InvokeTargetMethodTemplatedFile() {
 		super();
 	}
-	
+
 	@Override
-	public boolean isNative(){
+	public boolean isNative() {
 		return false;
 	}
 
 	@Override
-	public void setNative( final boolean ignored ){
+	public void setNative(final boolean ignored) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -75,7 +75,7 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 

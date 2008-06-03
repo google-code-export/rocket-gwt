@@ -35,15 +35,15 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	public boolean isNative(){
+	public boolean isNative() {
 		return true;
 	}
-	
+
 	@Override
-	public void setNative( final boolean ignored ){
+	public void setNative(final boolean ignored) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The serializedType whose object writer is being registered
 	 */
@@ -75,15 +75,15 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	protected String getResourceName(){
+	protected String getResourceName() {
 		return Constants.CASE_TEMPLATE;
 	}
-	
+
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
-	
+
 	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;

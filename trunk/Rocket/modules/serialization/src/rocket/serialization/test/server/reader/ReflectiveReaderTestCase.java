@@ -23,27 +23,27 @@ import rocket.serialization.test.server.ServerTestCase;
 
 public class ReflectiveReaderTestCase extends ServerTestCase {
 
-	public void testReadObject() {		
+	public void testReadObject() {
 		final String STRING = "hello";
 		final String TEST = Test.class.getName();
-		
+
 		final String stream = "[2,\"" + TEST + "\",\"" + STRING + "\",1,2,3]";
 		final ObjectInputStream input = createObjectInputStream(stream, ReflectiveReader.instance);
 
 		final Test object = (Test) input.readObject();
 		assertNotNull(stream, object);
 
-		assertEquals( STRING, object.string );
+		assertEquals(STRING, object.string);
 
 		this.verifyFurtherReadsFail(input);
 	}
-	
-	static public class Test implements Serializable{
-		
-		public Test(){
+
+	static public class Test implements Serializable {
+
+		public Test() {
 			super();
 		}
-		
+
 		String string;
 	}
 }

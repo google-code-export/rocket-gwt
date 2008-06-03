@@ -24,7 +24,7 @@ import rocket.serialization.server.writer.PropertyWriter;
 
 public class PropertyWriterTestCase extends TestCase {
 
-	static final byte BYTE = 1;	
+	static final byte BYTE = 1;
 	static final short SHORT = 2;
 	static final int INT = 3;
 	static final long LONG = 4;
@@ -33,295 +33,296 @@ public class PropertyWriterTestCase extends TestCase {
 	static final char CHAR = 'a';
 	static final Object OBJECT = "apple";
 	static final String STRING = "apple";
-	
-	public void testStaticProperty(){
+
+	public void testStaticProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithStaticProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 1, values.size() );				
+		assertNotNull(values);
+		assertEquals("" + values, 1, values.size());
 	}
 
 	static class ConcreteClassWithStaticProperty {
-		
-		static public Object getProperty(){
+
+		static public Object getProperty() {
 			return null;
-		}		
+		}
 	}
 
-	public void testNotPublicProperty(){
+	public void testNotPublicProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithNotPublicPropertyGetter();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 1, values.size() );				
+		assertNotNull(values);
+		assertEquals("" + values, 1, values.size());
 	}
 
 	static class ConcreteClassWithNotPublicPropertyGetter {
-		
-		protected Object getProperty(){
+
+		protected Object getProperty() {
 			return null;
-		}		
+		}
 	}
-	
-	public void testNotAPropertyGetter(){
+
+	public void testNotAPropertyGetter() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithNotAPropertyGetter();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 1, values.size() );				
+		assertNotNull(values);
+		assertEquals("" + values, 1, values.size());
 	}
 
 	static class ConcreteClassWithNotAPropertyGetter {
-		
-		protected Object getProperty(){
+
+		protected Object getProperty() {
 			return null;
-		}		
+		}
 	}
-	
-	
-	public void testBooleanProperty(){
+
+	public void testBooleanProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithBooleanProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 2, values.size() );
-		assertEquals( "" + values, Boolean.TRUE, values.get( 1 ) );				
+		assertNotNull(values);
+		assertEquals("" + values, 2, values.size());
+		assertEquals("" + values, Boolean.TRUE, values.get(1));
 	}
 
 	static class ConcreteClassWithBooleanProperty {
-		public boolean isBoolean(){
+		public boolean isBoolean() {
 			return true;
 		}
 	}
 
-	public void testByteProperty(){
+	public void testByteProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithByteProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 2, values.size() );
-		assertEquals( "" + values, new Byte( BYTE ), values.get( 1 ) );				
+		assertNotNull(values);
+		assertEquals("" + values, 2, values.size());
+		assertEquals("" + values, new Byte(BYTE), values.get(1));
 	}
 
 	static class ConcreteClassWithByteProperty {
-		public byte getByte(){
+		public byte getByte() {
 			return BYTE;
 		}
 	}
 
-	public void testShortProperty(){
+	public void testShortProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithShortProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 2, values.size() );
-		assertEquals( "" + values, new Short( SHORT ), values.get( 1 ) );				
+		assertNotNull(values);
+		assertEquals("" + values, 2, values.size());
+		assertEquals("" + values, new Short(SHORT), values.get(1));
 	}
 
 	static class ConcreteClassWithShortProperty {
-		public short getShort(){
+		public short getShort() {
 			return SHORT;
 		}
 	}
-	
-	public void testIntProperty(){
+
+	public void testIntProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithIntProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 2, values.size() );
-		assertEquals( "" + values, new Integer( INT ), values.get( 1 ) );				
+		assertNotNull(values);
+		assertEquals("" + values, 2, values.size());
+		assertEquals("" + values, new Integer(INT), values.get(1));
 	}
 
 	static class ConcreteClassWithIntProperty {
-		public int getInt(){
+		public int getInt() {
 			return INT;
 		}
 	}
-	
-	public void testLongProperty(){
+
+	public void testLongProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithLongProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 2, values.size() );
-		assertEquals( "" + values, new Long( LONG ), values.get( 1 ) );				
+		assertNotNull(values);
+		assertEquals("" + values, 2, values.size());
+		assertEquals("" + values, new Long(LONG), values.get(1));
 	}
 
 	static class ConcreteClassWithLongProperty {
-		public long getLong(){
+		public long getLong() {
 			return LONG;
 		}
 	}
-	
-	public void testFloatProperty(){
+
+	public void testFloatProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithFloatProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 2, values.size() );
-		assertEquals( "" + values, new Float(FLOAT), values.get( 1 ) );				
+		assertNotNull(values);
+		assertEquals("" + values, 2, values.size());
+		assertEquals("" + values, new Float(FLOAT), values.get(1));
 	}
 
 	static class ConcreteClassWithFloatProperty {
-		public float getFloat(){
+		public float getFloat() {
 			return FLOAT;
 		}
 	}
-	
-	public void testDoubleProperty(){
+
+	public void testDoubleProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithDoubleProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 2, values.size() );
-		assertEquals( "" + values, new Double( DOUBLE ), values.get( 1 ) );				
+		assertNotNull(values);
+		assertEquals("" + values, 2, values.size());
+		assertEquals("" + values, new Double(DOUBLE), values.get(1));
 	}
 
 	static class ConcreteClassWithDoubleProperty {
-		public double getDouble(){
+		public double getDouble() {
 			return DOUBLE;
 		}
 	}
-	
-	public void testCharProperty(){
+
+	public void testCharProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithCharProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 2, values.size() );
-		assertEquals( "" + values, new Character( CHAR ), values.get( 1 ) );				
+		assertNotNull(values);
+		assertEquals("" + values, 2, values.size());
+		assertEquals("" + values, new Character(CHAR), values.get(1));
 	}
 
 	static class ConcreteClassWithCharProperty {
-		public char getChar(){
+		public char getChar() {
 			return CHAR;
 		}
 	}
-	
-	public void testObjectProperty(){
+
+	public void testObjectProperty() {
 		final PropertyWriter writer = this.createPropertyWriter();
 		final TestObjectOutputStream outputStream = this.createObjectOutputStream();
-		
+
 		final Object instance = new ConcreteClassWithObjectProperty();
-		writer.write( instance, outputStream);
-		
+		writer.write(instance, outputStream);
+
 		final List values = outputStream.getValues();
-		assertNotNull( values );
-		assertEquals( "" + values, 3, values.size() );
-		assertTrue( "" + values, values.remove(STRING) );	
-		assertEquals( "" + values, OBJECT, values.get( 1 ) );		
+		assertNotNull(values);
+		assertEquals("" + values, 3, values.size());
+		assertTrue("" + values, values.remove(STRING));
+		assertEquals("" + values, OBJECT, values.get(1));
 	}
 
 	static class ConcreteClassWithObjectProperty {
-		public Object getObject(){
+		public Object getObject() {
 			return OBJECT;
 		}
-		public String getString(){
+
+		public String getString() {
 			return STRING;
 		}
 	}
-	
-	PropertyWriter createPropertyWriter(){
-		return new PropertyWriter(){
-			public boolean canWrite(final Object instance ){
+
+	PropertyWriter createPropertyWriter() {
+		return new PropertyWriter() {
+			public boolean canWrite(final Object instance) {
 				return true;
 			}
 		};
 	}
-	
-	final TestObjectOutputStream createObjectOutputStream(){
+
+	final TestObjectOutputStream createObjectOutputStream() {
 		return new TestObjectOutputStream();
 	}
-	
-	static class TestObjectOutputStream implements ObjectOutputStream{
-		public void writeBoolean(boolean booleanValue){
-			this.getValues().add( Boolean.valueOf( booleanValue ) );			
+
+	static class TestObjectOutputStream implements ObjectOutputStream {
+		public void writeBoolean(boolean booleanValue) {
+			this.getValues().add(Boolean.valueOf(booleanValue));
 		}
 
-		public void writeByte(byte byteValue){
-			this.getValues().add( new Byte( byteValue ) );
+		public void writeByte(byte byteValue) {
+			this.getValues().add(new Byte(byteValue));
 		}
 
-		public void writeShort(short shortValue){
-			this.getValues().add( new Short( shortValue ) );
+		public void writeShort(short shortValue) {
+			this.getValues().add(new Short(shortValue));
 		}
 
-		public void writeInt(int intValue){
-			this.getValues().add( new Integer( intValue ) );
+		public void writeInt(int intValue) {
+			this.getValues().add(new Integer(intValue));
 		}
 
-		public void writeLong(final long longValue){
-			this.getValues().add( new Long( longValue ) );
+		public void writeLong(final long longValue) {
+			this.getValues().add(new Long(longValue));
 		}
 
-		public void writeFloat(float floatValue){
-		this.getValues().add( new Float( floatValue ) );
-	}
-		public void writeDouble(double doubleValue){
-			this.getValues().add( new Double( doubleValue ) );
+		public void writeFloat(float floatValue) {
+			this.getValues().add(new Float(floatValue));
 		}
 
-		public void writeChar(char charValue){
-			this.getValues().add( new Character( charValue ) );
+		public void writeDouble(double doubleValue) {
+			this.getValues().add(new Double(doubleValue));
 		}
 
-		public void writeObject(Object object){
-			this.getValues().add( object );
+		public void writeChar(char charValue) {
+			this.getValues().add(new Character(charValue));
 		}
-		
+
+		public void writeObject(Object object) {
+			this.getValues().add(object);
+		}
+
 		private List values = new ArrayList();
-		
-		public List getValues(){
+
+		public List getValues() {
 			return this.values;
 		}
 
-		public String getText(){
+		public String getText() {
 			throw new UnsupportedOperationException();
 		}
 	}

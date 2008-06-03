@@ -32,7 +32,7 @@ public class RegisterBeanTemplatedFile extends TemplatedFileCodeBlock {
 	public RegisterBeanTemplatedFile() {
 		super();
 	}
-	
+
 	private String beanId;
 
 	protected String getBeanId() {
@@ -63,7 +63,7 @@ public class RegisterBeanTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 

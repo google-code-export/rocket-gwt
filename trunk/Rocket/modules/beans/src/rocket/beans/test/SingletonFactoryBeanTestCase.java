@@ -130,8 +130,8 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 			}
 		};
 		factoryBean.setBeanFactory(this.createBeanFactory());
-		factoryBean.setBeanName( "bean");
-		
+		factoryBean.setBeanName("bean");
+
 		final Object bean = factoryBean.getObject();
 		assertNotNull(bean);
 		assertTrue("" + bean, bean instanceof Bean);
@@ -152,7 +152,7 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		};
 		factoryBean.setBeanFactory(this.createBeanFactory());
 		factoryBean.setBeanName("bean");
-		
+
 		final Object bean = factoryBean.getObject();
 		assertNotNull(bean);
 		assertTrue("" + bean, bean instanceof Bean);
@@ -161,7 +161,7 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		assertSame(bean, secondBean);
 	}
 
-	public void testInitializingBean(){
+	public void testInitializingBean() {
 		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
 			protected Object createInstance() {
 				return new ImplementsInitializingBean();
@@ -169,20 +169,20 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		};
 		factoryBean.setBeanFactory(this.createBeanFactory());
 		factoryBean.setBeanName("bean");
-		
-		final ImplementsInitializingBean bean = (ImplementsInitializingBean)factoryBean.getObject();		
-		assertEquals( 1, bean.initialized);
+
+		final ImplementsInitializingBean bean = (ImplementsInitializingBean) factoryBean.getObject();
+		assertEquals(1, bean.initialized);
 	}
-	
-	static class ImplementsInitializingBean implements InitializingBean{
-		public void afterPropertiesSet(){
+
+	static class ImplementsInitializingBean implements InitializingBean {
+		public void afterPropertiesSet() {
 			this.initialized++;
 		}
-		
+
 		int initialized = 0;
 	}
-	
-	public void testDisposableBean(){
+
+	public void testDisposableBean() {
 		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
 			protected Object createInstance() {
 				return new ImplementsDisposableBean();
@@ -190,22 +190,22 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		};
 		factoryBean.setBeanFactory(this.createBeanFactory());
 		factoryBean.setBeanName("bean");
-		
-		final ImplementsDisposableBean bean = (ImplementsDisposableBean)factoryBean.getObject();
-		
+
+		final ImplementsDisposableBean bean = (ImplementsDisposableBean) factoryBean.getObject();
+
 		factoryBean.destroy();
-		
-		assertEquals( 1, bean.destroyed);
+
+		assertEquals(1, bean.destroyed);
 	}
-	
-	static class ImplementsDisposableBean implements DisposableBean{
-		public void destroy(){
+
+	static class ImplementsDisposableBean implements DisposableBean {
+		public void destroy() {
 			this.destroyed++;
 		}
-		
+
 		int destroyed = 0;
 	}
-	
+
 	BeanFactory createBeanFactory() {
 		return new BeanFactory() {
 			public Object getBean(final String name) {

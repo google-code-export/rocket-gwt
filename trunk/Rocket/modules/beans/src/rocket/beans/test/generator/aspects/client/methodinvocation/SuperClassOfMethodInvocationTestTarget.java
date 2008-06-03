@@ -17,7 +17,7 @@ package rocket.beans.test.generator.aspects.client.methodinvocation;
 
 public class SuperClassOfMethodInvocationTestTarget {
 
-	public Object method( boolean z, byte b, short s, int i, long j, float f, double d, char c, String string ){
+	public Object method(boolean z, byte b, short s, int i, long j, float f, double d, char c, String string) {
 		return null;
 	}
 }

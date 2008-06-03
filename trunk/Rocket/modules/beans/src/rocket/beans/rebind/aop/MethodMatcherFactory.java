@@ -51,7 +51,7 @@ public class MethodMatcherFactory {
 		}
 
 		return new MethodMatcher() {
-			
+
 			@Override
 			public boolean matches(Method method) {
 				boolean matched = false;

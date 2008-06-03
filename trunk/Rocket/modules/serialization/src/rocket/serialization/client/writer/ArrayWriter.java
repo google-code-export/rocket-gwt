@@ -19,7 +19,8 @@ import rocket.serialization.client.ObjectOutputStream;
 import rocket.serialization.client.ObjectWriter;
 
 /**
- * Common base class for all generated ObjectWriters that writes non null array instances.
+ * Common base class for all generated ObjectWriters that writes non null array
+ * instances.
  * 
  * @author Miroslav Pokorny
  */

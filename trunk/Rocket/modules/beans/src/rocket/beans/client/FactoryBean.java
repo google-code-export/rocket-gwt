@@ -18,7 +18,8 @@ package rocket.beans.client;
 /**
  * A FactoryBean is a class that can on demand return a bean.
  * 
- * An additional annotation (factoryBean-objectType)must be specified at the class level to declare the type of bean produced by this factory.
+ * An additional annotation (factoryBean-objectType)must be specified at the
+ * class level to declare the type of bean produced by this factory.
  * 
  * @author Miroslav Pokorny
  */

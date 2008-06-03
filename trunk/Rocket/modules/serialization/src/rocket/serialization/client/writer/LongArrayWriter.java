@@ -23,7 +23,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type long[]
+ * @serialization-type long[]
  */
 public class LongArrayWriter extends ObjectWriterImpl {
 

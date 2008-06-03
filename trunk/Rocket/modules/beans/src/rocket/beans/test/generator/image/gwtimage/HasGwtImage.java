@@ -18,15 +18,15 @@ package rocket.beans.test.generator.image.gwtimage;
 
 import com.google.gwt.user.client.ui.Image;
 
-public class HasGwtImage{
+public class HasGwtImage {
 
 	private Image image;
 
-	public Image getImage(){
+	public Image getImage() {
 		return this.image;
 	}
 
-	public void setImage( final Image image ){
+	public void setImage(final Image image) {
 		this.image = image;
 	}
 }

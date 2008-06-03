@@ -33,7 +33,7 @@ public class DoubleArrayReaderTestCase extends ServerTestCase {
 		assertNotNull(stream, array);
 		assertEquals("size", 1, array.length);
 
-		assertEquals(DOUBLE_VALUE, array[0], 0.1 );
+		assertEquals(DOUBLE_VALUE, array[0], 0.1);
 
 		this.verifyFurtherReadsFail(input);
 	}

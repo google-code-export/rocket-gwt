@@ -154,7 +154,8 @@ public class LoggerFactoryGenerator extends Generator {
 		context.info("Overriding " + Constants.CREATE_ROOT_LOGGER_METHOD);
 
 		final List createDefaultLoggerMethodArguments = Collections.nCopies(1, context.getString());
-		final Method method = loggerFactory.findMostDerivedMethod(Constants.CREATE_ROOT_LOGGER_METHOD, createDefaultLoggerMethodArguments);
+		final Method method = loggerFactory.findMostDerivedMethod(Constants.CREATE_ROOT_LOGGER_METHOD,
+				createDefaultLoggerMethodArguments);
 
 		final NewMethod newMethod = method.copy(loggerFactory);
 		newMethod.setAbstract(false);

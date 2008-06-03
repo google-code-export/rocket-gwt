@@ -36,10 +36,10 @@ public class MapReader extends ObjectReaderImpl implements ObjectReader {
 		return new HashMap();
 	}
 
-	public void read( final Object map, final ObjectInputStream objectInputStream ){
-		this.readMap( (Map) map, objectInputStream);
+	public void read(final Object map, final ObjectInputStream objectInputStream) {
+		this.readMap((Map) map, objectInputStream);
 	}
-	
+
 	protected void readMap(final Map map, final ObjectInputStream objectInputStream) {
 		Checker.notNull("parameter:map", map);
 		Checker.notNull("parameter:objectInputStream", objectInputStream);

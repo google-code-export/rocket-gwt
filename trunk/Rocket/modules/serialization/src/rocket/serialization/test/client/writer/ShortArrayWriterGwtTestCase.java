@@ -34,6 +34,6 @@ public class ShortArrayWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2,1," + SHORT_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + SHORT_ARRAY + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + SHORT_ARRAY + "\"," + expectedValues + "]", text);
 	}
 }

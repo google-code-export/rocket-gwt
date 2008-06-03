@@ -22,7 +22,8 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
- * A StringValue holds a string literal which may be converted to any of the primitive or String types. 
+ * A StringValue holds a string literal which may be converted to any of the
+ * primitive or String types.
  * 
  * @author Miroslav Pokorny
  */
@@ -34,19 +35,18 @@ public class NullLiteral extends AbstractValue implements Value {
 	@Override
 	public boolean isCompatibleWith(final Type type) {
 		Checker.notNull("parameter:type", type);
-		
+
 		return false == type.isPrimitive();
 	}
 
-
 	public void write(final SourceWriter writer) {
-		Checker.notNull( "parameter:writer", writer );
-	
-		writer.print( "" + null );
+		Checker.notNull("parameter:writer", writer);
+
+		writer.print("" + null);
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return "null";
 	}
 }

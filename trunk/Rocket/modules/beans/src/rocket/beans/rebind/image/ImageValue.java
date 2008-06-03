@@ -24,101 +24,104 @@ import rocket.util.client.Checker;
 
 /**
  * Represents an image being fetched from a ImageFactory
+ * 
  * @author Miroslav Pokorny
- *
+ * 
  */
 public class ImageValue extends AbstractValue implements Value {
 
-	public ImageValue(){
+	public ImageValue() {
 		super();
 	}
-	
+
 	@Override
 	public boolean isCompatibleWith(final Type type) {
-		Checker.notNull("parameter:type", type );
-		
+		Checker.notNull("parameter:type", type);
+
 		final String name = type.getName();
-		return rocket.widget.client.Image.class.getName().equals( name ) || com.google.gwt.user.client.ui.Image.class.getName().equals( name );
+		return rocket.widget.client.Image.class.getName().equals(name)
+				|| com.google.gwt.user.client.ui.Image.class.getName().equals(name);
 	}
 
 	public void write(final SourceWriter writer) {
-		Checker.notNull("parameter:writer", writer );
-		
+		Checker.notNull("parameter:writer", writer);
+
 		final ImageFactoryGetImageTemplatedFile template = new ImageFactoryGetImageTemplatedFile();
-		template.setImageGetter( this.getImageFactoryGetter() );
+		template.setImageGetter(this.getImageFactoryGetter());
 
 		template.write(writer);
 	}
-	
+
 	private String file;
-	
-	public String getFile(){
+
+	public String getFile() {
 		Checker.notEmpty("field:file", file);
 		return this.file;
 	}
-	
-	public void setFile( final String file ){
+
+	public void setFile(final String file) {
 		Checker.notEmpty("parameter:file", file);
 		this.file = file;
 	}
 
 	private boolean local;
-	
-	public boolean isLocal(){
+
+	public boolean isLocal() {
 		return this.local;
 	}
-	
-	public void setLocal( final boolean local ){
+
+	public void setLocal(final boolean local) {
 		this.local = local;
 	}
 
 	private boolean lazy;
-	
-	public boolean isLazy(){
+
+	public boolean isLazy() {
 		return this.lazy;
 	}
-	
-	public void setLazy( final boolean lazy ){
+
+	public void setLazy(final boolean lazy) {
 		this.lazy = lazy;
 	}
 
 	/**
-	 * The index of this particular image within the image factory being generated.
-	 * This will be used to form the name of the image factory getter.
+	 * The index of this particular image within the image factory being
+	 * generated. This will be used to form the name of the image factory
+	 * getter.
 	 */
 	private int imageIndex;
-	
-	public int getImageIndex(){
-		Checker.greaterThanOrEqual("field:imageIndex", 0, imageIndex );
+
+	public int getImageIndex() {
+		Checker.greaterThanOrEqual("field:imageIndex", 0, imageIndex);
 		return this.imageIndex;
 	}
-	
-	public void setImageIndex( final int imageIndex ){
-		Checker.greaterThanOrEqual("parameter:imageIndex", 0, imageIndex );
+
+	public void setImageIndex(final int imageIndex) {
+		Checker.greaterThanOrEqual("parameter:imageIndex", 0, imageIndex);
 		this.imageIndex = imageIndex;
 	}
-	
+
 	/**
 	 * The image factory getter that will fetch the image.
 	 */
 	private Method imageFactoryGetter;
-	
-	public Method getImageFactoryGetter(){
-		Checker.notNull( "field:imageFactoryGetter", imageFactoryGetter );
+
+	public Method getImageFactoryGetter() {
+		Checker.notNull("field:imageFactoryGetter", imageFactoryGetter);
 		return this.imageFactoryGetter;
 	}
-	
-	public void setImageFactoryGetter( final Method imageFactoryGetter ){
-		Checker.notNull( "parameter:imageFactoryGetter", imageFactoryGetter );
+
+	public void setImageFactoryGetter(final Method imageFactoryGetter) {
+		Checker.notNull("parameter:imageFactoryGetter", imageFactoryGetter);
 		this.imageFactoryGetter = imageFactoryGetter;
 	}
-	
+
 	public Type getPropertyType() {
 		return super.getType();
 	}
-	
+
 	@Override
-	public void setPropertyType( final Type propertyType ){
+	public void setPropertyType(final Type propertyType) {
 		super.setType(propertyType);
 	}
 

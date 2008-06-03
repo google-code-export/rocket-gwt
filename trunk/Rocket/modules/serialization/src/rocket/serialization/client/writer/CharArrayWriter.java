@@ -23,7 +23,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type char[]
+ * @serialization-type char[]
  */
 public class CharArrayWriter extends ObjectWriterImpl {
 

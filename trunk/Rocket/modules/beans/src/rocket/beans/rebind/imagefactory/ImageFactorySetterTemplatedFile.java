@@ -34,9 +34,9 @@ public class ImageFactorySetterTemplatedFile extends TemplatedFileCodeBlock {
 	protected String getResourceName() {
 		return Constants.SETTER_TEMPLATE;
 	}
-	
+
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 

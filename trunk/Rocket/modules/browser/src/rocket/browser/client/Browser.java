@@ -23,8 +23,8 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 
 /**
- * A collection of helper methods related to the browser, often reporting values retrieved from
- * the known browser properties.
+ * A collection of helper methods related to the browser, often reporting values
+ * retrieved from the known browser properties.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -50,7 +50,9 @@ public class Browser {
 	 }-*/;
 
 	/**
-	 * The horizontal scroll offset of the client window relative to the actual document
+	 * The horizontal scroll offset of the client window relative to the actual
+	 * document
+	 * 
 	 * @return The value in pixels.
 	 */
 	public static int getScrollX() {
@@ -58,7 +60,9 @@ public class Browser {
 	}
 
 	/**
-	 * The vertical scroll offset of the client window relative to the actual document
+	 * The vertical scroll offset of the client window relative to the actual
+	 * document
+	 * 
 	 * @return The value in pixels.
 	 */
 	public static int getScrollY() {
@@ -69,12 +73,14 @@ public class Browser {
 	 * Scrolls the top left of the window to the position denoted by the given
 	 * x/y coordinates
 	 * 
-	 * @param x The horizontal offset in pixels
-	 * @param y The vertical offset in pixels
+	 * @param x
+	 *            The horizontal offset in pixels
+	 * @param y
+	 *            The vertical offset in pixels
 	 */
 	public static native void scrollTo(final int x, final int y)/*-{
-	 $wnd.scroll( x, y );
-	 }-*/;
+		 $wnd.scroll( x, y );
+		 }-*/;
 
 	/**
 	 * Returns the contextPath of this web application, this concept is
@@ -86,7 +92,7 @@ public class Browser {
 		String url = GWT.getModuleBaseURL();
 		if (GWT.isScript()) {
 			final String path = Window.Location.getPath();
-			final int webContextEnd = path.indexOf('/', 0 );
+			final int webContextEnd = path.indexOf('/', 0);
 
 			url = path.substring(0, webContextEnd);
 		}
@@ -104,8 +110,8 @@ public class Browser {
 	 * @return The width in pixels
 	 */
 	public native static int getAvailableScreenWidth()/*-{
-	 return $wnd.screen.availWidth;
-	 }-*/;
+		 return $wnd.screen.availWidth;
+		 }-*/;
 
 	/**
 	 * Returns the available screen area within the browser
@@ -113,20 +119,21 @@ public class Browser {
 	 * @return The height in pixels.
 	 */
 	public native static int getAvailableScreenHeight()/*-{
-	 return $wnd.screen.availHeight;
-	 }-*/;
+		 return $wnd.screen.availHeight;
+		 }-*/;
 
 	/**
 	 * Retrieves the client area width
+	 * 
 	 * @return The width in pixels
 	 */
 	public static int getClientWidth() {
 		return Browser.getSupport().getClientWidth();
 	}
 
-
 	/**
 	 * Retrieves the client area height
+	 * 
 	 * @return The height in pixels
 	 */
 	public static int getClientHeight() {
@@ -163,8 +170,8 @@ public class Browser {
 	 * @return the reported user agent
 	 */
 	public static native String getUserAgent()/*-{
-	 return $wnd.navigator.userAgent;
-	 }-*/;
+		 return $wnd.navigator.userAgent;
+		 }-*/;
 
 	/**
 	 * Returns the host operating system that the browser is running under.
@@ -191,15 +198,18 @@ public class Browser {
 	/**
 	 * This method tests if the browser is in quirks mode.
 	 * 
-	 * @return true if the browser is operating in quirks mode otherwise returns false
+	 * @return true if the browser is operating in quirks mode otherwise returns
+	 *         false
 	 */
 	native static public boolean isQuirksMode()/*-{        
-	 return "BackCompat" == $doc.compatMode;
-	 }-*/;
+		 return "BackCompat" == $doc.compatMode;
+		 }-*/;
 
 	/**
 	 * Retrieves the mouse x position
-	 * @param event The source event
+	 * 
+	 * @param event
+	 *            The source event
 	 * @return The x coordinate in pixels.
 	 */
 	static public int getMousePageX(final Event event) {
@@ -208,7 +218,9 @@ public class Browser {
 
 	/**
 	 * Retrieves the mouse y position
-	 * @param event The source event
+	 * 
+	 * @param event
+	 *            The source event
 	 * @return The y coordinate in pixels.
 	 */
 	static public int getMousePageY(final Event event) {

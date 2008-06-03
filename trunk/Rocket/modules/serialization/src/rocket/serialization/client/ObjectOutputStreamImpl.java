@@ -15,21 +15,20 @@
  */
 package rocket.serialization.client;
 
-
 abstract public class ObjectOutputStreamImpl implements ObjectOutputStream {
 
 	public ObjectOutputStreamImpl() {
 		super();
 	}
-		
+
 	abstract protected int getStringCount();
 
 	abstract protected int findStringReference(String string);
 
 	abstract protected int addString(String string);
 
-	abstract protected void writeString( Object string );
-	
+	abstract protected void writeString(Object string);
+
 	public void writeString(final String string) {
 		int reference = this.findStringReference(string);
 		if (0 == reference) {
@@ -38,7 +37,7 @@ abstract public class ObjectOutputStreamImpl implements ObjectOutputStream {
 
 		this.writeInt(reference);
 	}
-	
+
 	abstract public void writeBoolean(boolean booleanValue);
 
 	abstract public void writeByte(byte byteValue);
@@ -59,10 +58,10 @@ abstract public class ObjectOutputStreamImpl implements ObjectOutputStream {
 		this.writeInt(Constants.NULL);
 	}
 
-	abstract protected void addObject( Object object );
+	abstract protected void addObject(Object object);
 
 	abstract protected int findReference(final Object object);
-	
+
 	public void writeObject(final Object object) throws SerializationException {
 
 		while (true) {
@@ -73,8 +72,8 @@ abstract public class ObjectOutputStreamImpl implements ObjectOutputStream {
 			}
 
 			// special case for string...saves a instanceof
-			if( this.isString( object )){
-				this.writeString( object );
+			if (this.isString(object)) {
+				this.writeString(object);
 				break;
 			}
 
@@ -83,7 +82,7 @@ abstract public class ObjectOutputStreamImpl implements ObjectOutputStream {
 
 			// check object cache...
 			final int reference = this.findReference(object);
-			if ( 0 != reference) {
+			if (0 != reference) {
 				this.writeInt(reference);
 				break;
 			}
@@ -103,7 +102,7 @@ abstract public class ObjectOutputStreamImpl implements ObjectOutputStream {
 		this.writeInt(Constants.NEW_OBJECT);
 	}
 
-	protected void throwUnableToSerializable( final String typeName ){
+	protected void throwUnableToSerializable(final String typeName) {
 		throw new SerializationException("Unable to find ObjectWriter for \"" + typeName + "\".");
 	}
 }

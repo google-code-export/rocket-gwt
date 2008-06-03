@@ -33,7 +33,7 @@ public class FloatArrayReaderTestCase extends ServerTestCase {
 		assertNotNull(stream, array);
 		assertEquals("size", 1, array.length);
 
-		assertEquals(FLOAT_VALUE, array[0], 0.1f );
+		assertEquals(FLOAT_VALUE, array[0], 0.1f);
 
 		this.verifyFurtherReadsFail(input);
 	}

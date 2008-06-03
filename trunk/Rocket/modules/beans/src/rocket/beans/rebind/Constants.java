@@ -85,13 +85,13 @@ class Constants {
 	final static String ADVICE = Advice.class.getName();
 
 	final static String PROXY_FACTORY_BEAN = ProxyFactoryBean.class.getName();
- 
+
 	final static String PROXY_FACTORY_CREATE_PROXY_METHOD_NAME = "createProxy";
 
 	final static String PROXY_FACTORY_BEAN_SUFFIX = "__ProxyFactoryBean";
 
 	final static String PROXY_TARGET_FACTORY_BEAN_PREFIX = "$";
-	
+
 	final static String CREATE_PROXY = "createProxy0";
 
 	final static String PROXY_SUFFIX = "__Proxy";
@@ -135,17 +135,17 @@ class Constants {
 	 * beans
 	 */
 	final static String NESTED_BEAN_NAME_PREFIX = "nestedBean";
-	
+
 	final static String IMAGE_FACTORY_NESTED_CLASS_NAME = "BeanFactoryImageFactory";
 	final static String IMAGE_FACTORY = ImageFactory.class.getName();
 	final static String IMAGE_GETTER_PREFIX = "getImage";
-	
+
 	final static String IMAGE_FACTORY_FILE = "file";
-	
+
 	final static String IMAGE_FACTORY_FIELDNAME = "imageFactory";
-	
+
 	final static String IMAGE_FACTORY_SETTER_NAME = "setImageFactory";
 	final static String IMAGE_FACTORY_SETTER_PARAMETER_NAME = "imageFactory";
-	
+
 	final static String IMAGE_FACTORY_GETTER_NAME = "getImageFactory";
 }

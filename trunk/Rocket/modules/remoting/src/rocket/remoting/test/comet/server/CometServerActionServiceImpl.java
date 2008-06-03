@@ -20,78 +20,83 @@ import rocket.remoting.test.comet.client.CometServerActionService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * This service is used as a sink for any messages from the client to terminate an existing
- * comet session. 
+ * This service is used as a sink for any messages from the client to terminate
+ * an existing comet session.
+ * 
  * @author Miroslav Pokorny
  */
 public class CometServerActionServiceImpl extends RemoteServiceServlet implements CometServerActionService {
 
 	/**
-	 * When true the test comet servlet will send a 500 and close the connection when doGet is invoked
+	 * When true the test comet servlet will send a 500 and close the connection
+	 * when doGet is invoked
 	 */
 	private static boolean failNextConnection;
-	
-	static public boolean isFailNextConnection(){
-		try{
+
+	static public boolean isFailNextConnection() {
+		try {
 			return failNextConnection;
 		} finally {
 			failNextConnection = false;
 		}
 	}
-	
-	public void failNextConnection(){
+
+	public void failNextConnection() {
 		failNextConnection = true;
 	}
-	
+
 	/**
-	 * When true the next time the poll method of the test comet service is invoked it will throw an exception 
+	 * When true the next time the poll method of the test comet service is
+	 * invoked it will throw an exception
 	 */
 	private static boolean failNextPoll;
-	
-	static public boolean isFailNextPoll(){
-		try{
+
+	static public boolean isFailNextPoll() {
+		try {
 			return failNextPoll;
 		} finally {
 			failNextPoll = false;
 		}
 	}
-	
-	public void failNextPoll(){
+
+	public void failNextPoll() {
 		failNextPoll = true;
 	}
-	
+
 	/**
-	 * When true the next time the test comet service is polled it will make a request to terminate the session from the server.
+	 * When true the next time the test comet service is polled it will make a
+	 * request to terminate the session from the server.
 	 */
 	private static boolean terminated;
-	
-	static public boolean isTerminated(){
-		try{
+
+	static public boolean isTerminated() {
+		try {
 			return terminated;
 		} finally {
 			terminated = false;
 		}
 	}
-	
+
 	public void terminate() {
 		terminated = true;
 	}
-	
+
 	/**
-	 * When true the next time the service is polled it will enter a really long sleep which will cause the connection to time out
-	 * , close and force the client(browser) to open a new connection.
+	 * When true the next time the service is polled it will enter a really long
+	 * sleep which will cause the connection to time out , close and force the
+	 * client(browser) to open a new connection.
 	 */
 	private static boolean timeoutNextPoll;
-	
-	static public boolean isTimeoutNextPoll(){
-		try{
+
+	static public boolean isTimeoutNextPoll() {
+		try {
 			return timeoutNextPoll;
 		} finally {
 			timeoutNextPoll = false;
 		}
 	}
-	
-	public void timeoutNextPoll(){
+
+	public void timeoutNextPoll() {
 		timeoutNextPoll = true;
-	}	
+	}
 }

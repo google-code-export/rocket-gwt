@@ -18,25 +18,28 @@ package rocket.remoting.server.comet;
 import rocket.remoting.client.CometConstants;
 
 /**
- * Instances represent a single object being pushed from the server to the client.
+ * Instances represent a single object being pushed from the server to the
+ * client.
  * 
  * @author Miroslav Pokorny
  */
-public class ObjectPayload implements Message{
-  
-	public ObjectPayload( final Object object ){
-    this.setObject(object);
-  }
-  
-  public int getCommand(){
-    return CometConstants.OBJECT_PAYLOAD;
-  }
-  
-  private Object object;
-  public Object getObject(){
-    return object;
-  }
-  void setObject( final Object object ){
-    this.object = object;
-  }
+public class ObjectPayload implements Message {
+
+	public ObjectPayload(final Object object) {
+		this.setObject(object);
+	}
+
+	public int getCommand() {
+		return CometConstants.OBJECT_PAYLOAD;
+	}
+
+	private Object object;
+
+	public Object getObject() {
+		return object;
+	}
+
+	void setObject(final Object object) {
+		this.object = object;
+	}
 }

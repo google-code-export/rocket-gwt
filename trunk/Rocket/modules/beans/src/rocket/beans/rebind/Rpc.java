@@ -17,14 +17,15 @@ package rocket.beans.rebind;
 
 /**
  * Instances of this class represent a json or java rpc being constructed.
+ * 
  * @author Miroslav Pokorny
  */
 public class Rpc extends Bean {
-	
-	
-	public Rpc(){
+
+	public Rpc() {
 		super();
 	}
+
 	/**
 	 * The service def target url
 	 */
@@ -39,7 +40,7 @@ public class Rpc extends Bean {
 	}
 
 	/**
-	 * The service interface 
+	 * The service interface
 	 */
 	private String serviceInterface;
 
@@ -50,8 +51,8 @@ public class Rpc extends Bean {
 	public void setServiceInterface(final String serviceInterface) {
 		this.serviceInterface = serviceInterface;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return super.toString() + ", serviceEntryPoint: \"" + serviceEntryPoint + "\", serviceInterface: " + serviceInterface;
 	}
 }

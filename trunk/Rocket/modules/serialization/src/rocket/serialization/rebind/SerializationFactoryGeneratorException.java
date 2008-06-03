@@ -22,7 +22,8 @@ public class SerializationFactoryGeneratorException extends GeneratorException {
 	public SerializationFactoryGeneratorException(final String message) {
 		super(message);
 	}
-	public SerializationFactoryGeneratorException(final String message, final Throwable cause ) {
-		super(message, cause );
+
+	public SerializationFactoryGeneratorException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 }

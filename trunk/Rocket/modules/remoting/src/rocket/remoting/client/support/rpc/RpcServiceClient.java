@@ -86,7 +86,7 @@ abstract public class RpcServiceClient implements JsonRpcService, ServiceDefTarg
 	}
 
 	public void setTimeout(final int timeout) {
-		Checker.greaterThan("parameter:timeout", 0, timeout );
+		Checker.greaterThan("parameter:timeout", 0, timeout);
 		this.timeout = timeout;
 	}
 
@@ -104,7 +104,7 @@ abstract public class RpcServiceClient implements JsonRpcService, ServiceDefTarg
 	}
 
 	public String toString() {
-		return super.toString() + ", username\"" + username + "\", password\"" + password + "\", timeout: " + timeout + ", serviceEntryPoint\""
-				+ serviceEntryPoint + "\".";
+		return super.toString() + ", username\"" + username + "\", password\"" + password + "\", timeout: " + timeout
+				+ ", serviceEntryPoint\"" + serviceEntryPoint + "\".";
 	}
 }

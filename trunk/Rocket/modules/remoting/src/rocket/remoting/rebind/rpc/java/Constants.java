@@ -46,7 +46,7 @@ class Constants {
 	static final String NESTED_SERIALIZATION_FACTORY_COMPOSER = "SerializationFactoryComposer";
 
 	static final String RPC_EXCEPTION = RpcException.class.getName();
-	
+
 	static final String LIST = List.class.getName();
 	static final String SET = Set.class.getName();
 	static final String MAP = Map.class.getName();

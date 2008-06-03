@@ -33,6 +33,6 @@ public class FloatWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2," + FLOAT_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + FLOAT + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + FLOAT + "\"," + expectedValues + "]", text);
 	}
 }

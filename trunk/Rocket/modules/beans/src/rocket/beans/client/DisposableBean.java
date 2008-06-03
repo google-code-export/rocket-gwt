@@ -18,11 +18,11 @@ package rocket.beans.client;
 import rocket.util.client.Destroyable;
 
 /**
- * This interface should be implemented by singletons that wish to recieve notice of
- * BeanFactories that are being shut down.
+ * This interface should be implemented by singletons that wish to recieve
+ * notice of BeanFactories that are being shut down.
  * 
  * @author Miroslav Pokorny
  */
-public interface DisposableBean extends Destroyable{
+public interface DisposableBean extends Destroyable {
 
 }

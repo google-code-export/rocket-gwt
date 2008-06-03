@@ -44,12 +44,12 @@ public class OustandingRpcTracker {
 	private int outstandingCount;
 
 	protected int getOutstandingCount() {
-		Checker.greaterThanOrEqual("field:outstandingCount", 0, outstandingCount );
+		Checker.greaterThanOrEqual("field:outstandingCount", 0, outstandingCount);
 		return this.outstandingCount;
 	}
 
 	protected void setOutstandingCount(final int outstandingCount) {
-		Checker.greaterThanOrEqual("parameter:outstandingCount", 0, outstandingCount );
+		Checker.greaterThanOrEqual("parameter:outstandingCount", 0, outstandingCount);
 		this.outstandingCount = outstandingCount;
 
 		this.getWidget().setVisible(outstandingCount > 0);

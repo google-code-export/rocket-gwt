@@ -20,15 +20,16 @@ import rocket.remoting.test.java.rpc.client.DeclaredException;
 import rocket.remoting.test.java.rpc.client.Payload;
 import rocket.remoting.test.java.rpc.client.Service;
 
-public class ServiceRpcServlet extends JavaRpcServiceServlet implements Service{
-	public Payload echo( final Payload payload ){
+public class ServiceRpcServlet extends JavaRpcServiceServlet implements Service {
+	public Payload echo(final Payload payload) {
 		return payload;
 	}
-	
-	public void throwsDeclaredException() throws DeclaredException{
+
+	public void throwsDeclaredException() throws DeclaredException {
 		throw new DeclaredException();
 	}
+
 	public void throwsUndeclaredException() {
 		throw new RuntimeException();
-	}	
+	}
 }

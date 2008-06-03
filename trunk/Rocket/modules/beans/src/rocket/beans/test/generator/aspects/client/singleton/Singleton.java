@@ -15,19 +15,18 @@
  */
 package rocket.beans.test.generator.aspects.client.singleton;
 
+public class Singleton {
 
-public class Singleton{
-	
 	static int counter = 0;
-	
-	public Singleton(){
+
+	public Singleton() {
 		this.number = counter;
 		counter++;
 	}
-	
+
 	int number;
-	
-	public int getNumber(){
+
+	public int getNumber() {
 		return number;
 	}
 }

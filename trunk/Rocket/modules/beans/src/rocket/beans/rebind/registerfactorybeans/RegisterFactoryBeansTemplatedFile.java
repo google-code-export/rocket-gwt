@@ -38,8 +38,8 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 		super();
 		this.setBeans(this.createBeans());
 	}
-	
-	protected String getResourceName(){
+
+	protected String getResourceName() {
 		return Constants.REGISTER_FACTORY_BEANS_TEMPLATE;
 	}
 
@@ -63,7 +63,7 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 		Checker.notNull("parameter:bean", bean);
 		this.getBeans().add(bean);
 	}
-	
+
 	protected CodeBlock getBeansCodeBlock() {
 		final RegisterBeanTemplatedFile registerBean = new RegisterBeanTemplatedFile();
 

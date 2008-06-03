@@ -15,7 +15,6 @@
  */
 package rocket.serialization.server;
 
-
 /**
  * A collection constants used by various classes within this package.
  * 

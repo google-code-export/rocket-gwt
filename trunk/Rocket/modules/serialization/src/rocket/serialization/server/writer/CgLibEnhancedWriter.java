@@ -14,9 +14,13 @@
  * the License.
  */
 package rocket.serialization.server.writer;
+
 import net.sf.cglib.proxy.Enhancer;
+
 /**
- * A PropertyWriter specialisation that detects and handles CGLib enhanced instances.
+ * A PropertyWriter specialisation that detects and handles CGLib enhanced
+ * instances.
+ * 
  * @author Miroslav Pokorny
  */
 public class CgLibEnhancedWriter extends PropertyWriter {
@@ -25,7 +29,7 @@ public class CgLibEnhancedWriter extends PropertyWriter {
 	 * Asks CGLIB whether or not this instance is instrumented
 	 */
 	public boolean canWrite(final Object instance) {
-		return Enhancer.isEnhanced( instance.getClass() );
+		return Enhancer.isEnhanced(instance.getClass());
 	}
 
 }

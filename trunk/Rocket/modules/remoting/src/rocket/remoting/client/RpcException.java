@@ -16,8 +16,9 @@
 package rocket.remoting.client;
 
 /**
- * This exception is called whenever a rpc service invocation fails for whatever reason.
- *
+ * This exception is called whenever a rpc service invocation fails for whatever
+ * reason.
+ * 
  * @author Miroslav Pokorny
  */
 public class RpcException extends RuntimeException {
@@ -29,22 +30,26 @@ public class RpcException extends RuntimeException {
 	}
 
 	/**
-	 * @param message A message
+	 * @param message
+	 *            A message
 	 */
 	public RpcException(final String message) {
 		super(message);
 	}
 
 	/**
-	 * @param cause The cause being wrapped
+	 * @param cause
+	 *            The cause being wrapped
 	 */
 	public RpcException(final Throwable cause) {
 		super(cause);
 	}
 
 	/**
-	 * @param message An accompanying message
-	 * @param cause The cause
+	 * @param message
+	 *            An accompanying message
+	 * @param cause
+	 *            The cause
 	 */
 	public RpcException(final String message, final Throwable cause) {
 		super(message, cause);

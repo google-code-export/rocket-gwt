@@ -15,58 +15,62 @@
  */
 package rocket.serialization.client;
 
-
 abstract public class ObjectInputStreamImpl implements ObjectInputStream {
 
 	public ObjectInputStreamImpl() {
-		//this.setObjects(this.createObjects());
+		// this.setObjects(this.createObjects());
 	}
 
 	abstract protected void prepare(String stream);
-//
-//	/**
-//	 * key: Objects value2: reference
-//	 */
-//	private Map objects;
-//
-//	protected Map getObjects() {
-//		return this.objects;
-//	}
-//
-//	protected void setObjects(final Map objects) {
-//		this.objects = objects;
-//	}
-//
-//	protected Map createObjects() {
-//		return new HashMap();
-//	}
-//
-//	protected String addObject(final Object object) {
-//		final Map objects = this.getObjects();
-//		final String reference = "-" + (objects.size() + 1);
-//		objects.put(reference, object);
-//
-//		return reference;
-//	}
-//
-//	protected void replaceObject(final String reference, final Object object) {
-//		final Map objects = this.getObjects();
-//		objects.put(reference, object);
-//	}
-//
-//	protected Object getObject(final String reference) {
-//		final Map objects = this.getObjects();
-//		Object object = objects.get(reference);
-//		if (null == object) {
-//			throw new SerializationException("Object reference does not exist \"" + reference + "\".");
-//		}
-//		return object;
-//	}
 
-	abstract protected int addObject( Object object );
-	abstract protected void replaceObject( int reference, Object object );
-	abstract protected Object getObject( int reference );
-	
+	//
+	// /**
+	// * key: Objects value2: reference
+	// */
+	// private Map objects;
+	//
+	// protected Map getObjects() {
+	// return this.objects;
+	// }
+	//
+	// protected void setObjects(final Map objects) {
+	// this.objects = objects;
+	// }
+	//
+	// protected Map createObjects() {
+	// return new HashMap();
+	// }
+	//
+	// protected String addObject(final Object object) {
+	// final Map objects = this.getObjects();
+	// final String reference = "-" + (objects.size() + 1);
+	// objects.put(reference, object);
+	//
+	// return reference;
+	// }
+	//
+	// protected void replaceObject(final String reference, final Object object)
+	// {
+	// final Map objects = this.getObjects();
+	// objects.put(reference, object);
+	// }
+	//
+	// protected Object getObject(final String reference) {
+	// final Map objects = this.getObjects();
+	// Object object = objects.get(reference);
+	// if (null == object) {
+	// throw new SerializationException("Object reference does not exist \"" +
+	// reference + "\".");
+	// }
+	// return object;
+	// }
+
+	abstract protected int addObject(Object object);
+
+	abstract protected void replaceObject(int reference, Object object);
+
+	abstract protected Object getObject(int reference);
+
 	abstract public boolean readBoolean();
 
 	abstract public byte readByte();
@@ -83,16 +87,16 @@ abstract public class ObjectInputStreamImpl implements ObjectInputStream {
 
 	abstract public char readChar();
 
-//	protected int readReference() {
-//		return this.readInt();
-//	}
+	// protected int readReference() {
+	// return this.readInt();
+	// }
 
 	abstract protected String getString(int reference);
 
-	protected void throwInvalidStringReference( final int reference ){
+	protected void throwInvalidStringReference(final int reference) {
 		throw new SerializationException("Encountered invalid reference " + reference + " whilst reading stream.");
 	}
-	
+
 	protected boolean isNull(final int reference) {
 		return Constants.NULL == reference;
 	}
@@ -143,13 +147,12 @@ abstract public class ObjectInputStreamImpl implements ObjectInputStream {
 	}
 
 	abstract protected Object readNewObject0(String className);
-	
-	protected void throwUnableToDeserialize( final String typeName ){
-		throw new SerializationException("Unable to find ObjectReader for \"" + typeName + "\"." );
-		}
 
-	
-	protected void throwInvalidObjectReference( final int reference ){
+	protected void throwUnableToDeserialize(final String typeName) {
+		throw new SerializationException("Unable to find ObjectReader for \"" + typeName + "\".");
+	}
+
+	protected void throwInvalidObjectReference(final int reference) {
 		throw new SerializationException("Invalid object reference " + reference + " encountered within stream.");
 	}
 }

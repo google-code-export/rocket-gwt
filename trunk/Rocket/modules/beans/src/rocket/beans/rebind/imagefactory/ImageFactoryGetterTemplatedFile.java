@@ -36,32 +36,32 @@ public class ImageFactoryGetterTemplatedFile extends TemplatedFileCodeBlock {
 	protected String getResourceName() {
 		return Constants.GETTER_TEMPLATE;
 	}
-	
+
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 
 	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
-		
+
 		if (Constants.GETTER_IMAGE_FACTORY_TYPE.equals(name)) {
 			value = this.getImageFactory();
 		}
-		
+
 		return value;
 	}
-	
+
 	private Type imageFactory;
-	
-	protected Type getImageFactory(){
-		Checker.notNull("field:imageFactory", imageFactory );
+
+	protected Type getImageFactory() {
+		Checker.notNull("field:imageFactory", imageFactory);
 		return this.imageFactory;
 	}
-	
-	public void setImageFactory( final Type imageFactory ){
-		Checker.notNull("parameter:imageFactory", imageFactory );
+
+	public void setImageFactory(final Type imageFactory) {
+		Checker.notNull("parameter:imageFactory", imageFactory);
 		this.imageFactory = imageFactory;
 	}
 }

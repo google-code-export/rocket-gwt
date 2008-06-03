@@ -44,25 +44,26 @@ public class SwitchTemplatedFile extends TemplatedFileCodeBlock {
 	/**
 	 * A map that aggregates type names to ObjectWriters
 	 */
-	private Map<Type,Field> registered;
+	private Map<Type, Field> registered;
 
-	protected Map<Type,Field> getRegistered() {
+	protected Map<Type, Field> getRegistered() {
 		Checker.notNull("field:registered", registered);
 		return this.registered;
 	}
 
-	protected void setRegistered(final Map<Type,Field> registered) {
+	protected void setRegistered(final Map<Type, Field> registered) {
 		Checker.notNull("parameter:registered", registered);
 		this.registered = registered;
 	}
 
-	protected Map<Type,Field> createRegistered() {
-		return new TreeMap( new Comparator(){
-			public int compare( final Object object, final Object otherObject ){
-				return compare( (Type) object, (Type) otherObject );
+	protected Map<Type, Field> createRegistered() {
+		return new TreeMap(new Comparator() {
+			public int compare(final Object object, final Object otherObject) {
+				return compare((Type) object, (Type) otherObject);
 			}
-			int compare( final Type type, final Type otherType ){
-				return type.getName().compareTo( otherType.getName() );
+
+			int compare(final Type type, final Type otherType) {
+				return type.getName().compareTo(otherType.getName());
 			}
 		});
 	}
@@ -80,10 +81,10 @@ public class SwitchTemplatedFile extends TemplatedFileCodeBlock {
 		return new CollectionTemplatedCodeBlock() {
 
 			@Override
-			public boolean isNative(){
+			public boolean isNative() {
 				return template.isNative();
 			}
-			
+
 			@Override
 			public InputStream getInputStream() {
 				return template.getInputStream();

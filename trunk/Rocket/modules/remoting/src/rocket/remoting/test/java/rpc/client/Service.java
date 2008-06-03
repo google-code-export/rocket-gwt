@@ -17,8 +17,10 @@ package rocket.remoting.test.java.rpc.client;
 
 import rocket.remoting.client.JavaRpcService;
 
-public interface Service extends JavaRpcService{
-	Payload echo( Payload payload );
+public interface Service extends JavaRpcService {
+	Payload echo(Payload payload);
+
 	void throwsDeclaredException() throws DeclaredException;
+
 	void throwsUndeclaredException();
 }

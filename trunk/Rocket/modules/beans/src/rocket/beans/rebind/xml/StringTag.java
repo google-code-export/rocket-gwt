@@ -16,7 +16,8 @@
 package rocket.beans.rebind.xml;
 
 /**
- * Instances of this class represent a String literal encountered during parsing.
+ * Instances of this class represent a String literal encountered during
+ * parsing.
  * 
  * @author Miroslav Pokorny
  */

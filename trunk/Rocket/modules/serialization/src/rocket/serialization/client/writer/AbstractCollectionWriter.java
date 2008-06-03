@@ -23,13 +23,14 @@ import rocket.serialization.client.ObjectWriter;
 
 /**
  * ObjectWriter for java.util.AbstractCollection
+ * 
  * @author Miroslav Pokorny
  * @serialization-type java.util.AbstractCollection
  */
 public class AbstractCollectionWriter extends ObjectWriterImpl implements ObjectWriter {
 
 	static public final ObjectWriter instance = new AbstractCollectionWriter();
-	
+
 	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
 		this.writeCollection((Collection) object, objectOutputStream);
 	}
