@@ -786,8 +786,8 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 
 	public void testWriteLongList() {
 		final List<Long> list = new ArrayList<Long>();
-		list.add( 0L);
-		list.add( 1L );
+		list.add(0L);
+		list.add(1L);
 
 		final HasLongListField instance = new HasLongListField();
 		instance.field = list;
@@ -835,8 +835,8 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 
 	public void testWriteFloatList() {
 		final List<Float> list = new ArrayList<Float>();
-		list.add( 0.0f );
-		list.add( 1.0f );
+		list.add(0.0f);
+		list.add(1.0f);
 
 		final HasFloatListField instance = new HasFloatListField();
 		instance.field = list;
@@ -884,8 +884,8 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 
 	public void testWriteDoubleList() {
 		final List<Double> list = new ArrayList<Double>();
-		list.add( 0.0 );
-		list.add( 1.0 );
+		list.add(0.0);
+		list.add(1.0);
 
 		final HasDoubleListField instance = new HasDoubleListField();
 		instance.field = list;
@@ -1632,7 +1632,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteBooleanMap() {
-		final Map<String,Boolean> map = new HashMap<String,Boolean>();
+		final Map<String, Boolean> map = new HashMap<String, Boolean>();
 		map.put("0", true);
 		map.put("1", false);
 
@@ -1681,7 +1681,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteByteMap() {
-		final Map<String,Byte> map = new HashMap<String,Byte>();
+		final Map<String, Byte> map = new HashMap<String, Byte>();
 		map.put("0", (byte) 123);
 		map.put("1", (byte) 456);
 
@@ -1730,7 +1730,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteShortMap() {
-		final Map<String,Short> map = new HashMap<String,Short>();
+		final Map<String, Short> map = new HashMap<String, Short>();
 		map.put("0", (short) 123);
 		map.put("1", (short) 456);
 
@@ -1779,9 +1779,9 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteIntMap() {
-		final Map<String,Integer> map = new HashMap<String,Integer>();
+		final Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("0", 123);
-		map.put("1", 456 );
+		map.put("1", 456);
 
 		final HasIntMapField instance = new HasIntMapField();
 		instance.field = map;
@@ -1807,7 +1807,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 		 * @jsonSerialization-javascriptPropertyName map
 		 * @jsonSerialization-type java.lang.Integer
 		 */
-		Map<String,Integer> field;
+		Map<String, Integer> field;
 	}
 
 	public void testReadLongMap() {
@@ -1828,7 +1828,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteLongMap() {
-		final Map<String,Long> map = new HashMap<String,Long>();
+		final Map<String, Long> map = new HashMap<String, Long>();
 		map.put("0", 123L);
 		map.put("1", 456L);
 
@@ -1877,7 +1877,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteFloatMap() {
-		final Map<String,Float> map = new HashMap<String,Float>();
+		final Map<String, Float> map = new HashMap<String, Float>();
 		map.put("0", 123f);
 		map.put("1", 456f);
 
@@ -1905,7 +1905,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 		 * @jsonSerialization-javascriptPropertyName map
 		 * @jsonSerialization-type java.lang.Float
 		 */
-		Map<String,Float> field;
+		Map<String, Float> field;
 	}
 
 	public void testReadDoubleMap() {
@@ -1926,7 +1926,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteDoubleMap() {
-		final Map<String,Double> map = new HashMap<String,Double>();
+		final Map<String, Double> map = new HashMap<String, Double>();
 		map.put("0", 123.0);
 		map.put("1", 456.0);
 
@@ -1954,7 +1954,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 		 * @jsonSerialization-javascriptPropertyName map
 		 * @jsonSerialization-type java.lang.Double
 		 */
-		Map<String,Double> field;
+		Map<String, Double> field;
 	}
 
 	public void testReadCharacterMap() {
@@ -1975,7 +1975,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteCharacterMap() {
-		final Map<String,Character> map = new HashMap<String,Character>();
+		final Map<String, Character> map = new HashMap<String, Character>();
 		map.put("0", 'a');
 		map.put("1", 'b');
 
@@ -2024,7 +2024,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteStringMap() {
-		final Map<String,String> map = new HashMap<String,String>();
+		final Map<String, String> map = new HashMap<String, String>();
 		map.put("0", "apple");
 		map.put("1", "banana");
 
@@ -2081,7 +2081,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteObjectMap() {
-		final Map<String,HasObjectMapValue> map = new HashMap<String,HasObjectMapValue>();
+		final Map<String, HasObjectMapValue> map = new HashMap<String, HasObjectMapValue>();
 		map.put("0", new HasObjectMapValue("apple"));
 		map.put("1", new HasObjectMapValue("banana"));
 
@@ -2275,7 +2275,7 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testWriteDateMap() {
-		final Map<String,Date> map = new HashMap<String,Date>();
+		final Map<String, Date> map = new HashMap<String, Date>();
 		final Date date = new Date(1234567);
 		map.put("0", date);
 
@@ -2302,6 +2302,6 @@ public class JsonSerializerGwtTestCase extends GeneratorGwtTestCase {
 		 * @jsonSerialization-javascriptPropertyName map
 		 * @jsonSerialization-type java.util.Date
 		 */
-		Map<String,Date> field;
+		Map<String, Date> field;
 	}
 }

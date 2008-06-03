@@ -59,14 +59,14 @@ abstract public class JsonSerializer {
 	 */
 	abstract public Object readObject(JSONValue jsonValue);
 
-	public List readList(final JSONValue jsonValue) {
-		final List list = new ArrayList();
+	public List<Object> readList(final JSONValue jsonValue) {
+		final List<Object> list = new ArrayList<Object>();
 		this.readCollection(jsonValue.isArray(), list);
 		return list;
 	}
 
-	public Set readSet(final JSONValue jsonValue) {
-		final Set set = new HashSet();
+	public Set<Object> readSet(final JSONValue jsonValue) {
+		final Set<Object> set = new HashSet<Object>();
 		this.readCollection(jsonValue.isArray(), set);
 		return set;
 	}
@@ -81,11 +81,11 @@ abstract public class JsonSerializer {
 		}
 	}
 
-	public Map readMap(final JSONValue jsonValue) {
-		final Map map = new HashMap();
+	public Map<String,Object> readMap(final JSONValue jsonValue) {
+		final Map<String,Object> map = new HashMap<String,Object>();
 		if (null != jsonValue) {
 			final JSONObject object = jsonValue.isObject();
-			final Iterator keys = object.keySet().iterator();
+			final Iterator<String> keys = object.keySet().iterator();
 			while (keys.hasNext()) {
 				final String key = (String) keys.next();
 				final JSONValue value = (JSONValue) object.get(key);
