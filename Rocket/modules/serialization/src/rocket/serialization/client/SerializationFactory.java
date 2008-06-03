@@ -22,22 +22,6 @@ package rocket.serialization.client;
  */
 abstract public class SerializationFactory {
 
-	// public ObjectInputStream createObjectInputStream(String stream) {
-	// final ClientObjectInputStream clientObjectInputStream = new
-	// ClientObjectInputStream();
-	// clientObjectInputStream.setObjectReaders(this.getObjectReaders());
-	// clientObjectInputStream.prepare(stream);
-	// return clientObjectInputStream;
-	// }
-	//
-	// /**
-	// * This method is typically overwritten by the generator to return a map
-	// * that binds type names to a {@link ObjectReader}
-	// *
-	// * @return
-	// */
-	// abstract protected Map getObjectReaders();
-
 	public ObjectInputStream createObjectInputStream(final String stream) {
 		final ClientObjectInputStream objectInputStream = new ClientObjectInputStream() {
 			protected ObjectReader getObjectReader(final String typeName) {
@@ -59,24 +43,4 @@ abstract public class SerializationFactory {
 	}
 
 	abstract protected ObjectWriter getObjectWriter(String typeName);
-
-	// public ObjectOutputStream createObjectOutputStream() {
-	// //final ClientObjectOutputStream clientObjectOutputStream = new
-	// ClientObjectOutputStream();
-	// //clientObjectOutputStream.setObjectWriters(this.getObjectWriters());
-	// //return clientObjectOutputStream;
-	// return new ClientObjectOutputStream(){
-	// protected ObjectWriter getObjectWriter( String typeName )
-	// }
-	// }
-
-	// abstract protected ObjectWriter getObjectWriter( String typeName );
-
-	/**
-	 * This method is typically overwritten by the generator to return a map
-	 * that binds type names to a {@link ObjectWriter}
-	 * 
-	 * @return
-	 */
-	// abstract protected Map getObjectWriters();
 }
