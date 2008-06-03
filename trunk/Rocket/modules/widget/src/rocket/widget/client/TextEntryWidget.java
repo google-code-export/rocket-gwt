@@ -21,7 +21,7 @@ import rocket.event.client.FocusEventListener;
 import rocket.event.client.KeyEventListener;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.impl.TextBoxImpl;
 
@@ -46,7 +46,6 @@ abstract class TextEntryWidget extends FocusWidget {
 		return (TextBoxImpl) GWT.create(TextBoxImpl.class);
 	}
 
-	
 	public TextEntryWidget() {
 		super();
 	}
@@ -55,6 +54,7 @@ abstract class TextEntryWidget extends FocusWidget {
 		super(element);
 	}
 
+	@Override
 	protected void afterCreateElement() {
 		final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
 		this.setEventListenerDispatcher(dispatcher);
@@ -64,16 +64,17 @@ abstract class TextEntryWidget extends FocusWidget {
 		dispatcher.setKeyEventListeners(dispatcher.createKeyEventListeners());
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.KEY_EVENTS | EventBitMaskConstants.CHANGE;
 	}
 
 	public String getText() {
-		return DOM.getElementProperty(getElement(), "value");
+		return ((InputElement) this.getElement().cast()).getValue();
 	}
 
 	public void setText(String text) {
-		DOM.setElementProperty(getElement(), "value", text != null ? text : "");
+		((InputElement) this.getElement().cast()).setValue(text != null ? text : "");
 	}
 
 	/**
@@ -83,8 +84,8 @@ abstract class TextEntryWidget extends FocusWidget {
 	 *            if <code>true</code>, the widget becomes read-only; if
 	 *            <code>false</code> the widget becomes editable
 	 */
-	public void setReadOnly(boolean readOnly) {
-		DOM.setElementPropertyBoolean(getElement(), "readOnly", readOnly);
+	public void setReadOnly(final boolean readOnly) {
+		((InputElement) this.getElement().cast()).setReadOnly(readOnly);
 
 		final String readOnlyStyle = this.getReadOnlyStyleName();
 		if (readOnly) {
@@ -107,7 +108,7 @@ abstract class TextEntryWidget extends FocusWidget {
 	public String getSelectedText() {
 		final int start = getCursorPos();
 		final int length = getSelectionLength();
-		return getText().substring(start, start + length);
+		return -1 == length ? "" : getText().substring(start, start + length);
 	}
 
 	public void selectAll() {
@@ -160,6 +161,7 @@ abstract class TextEntryWidget extends FocusWidget {
 		this.getEventListenerDispatcher().removeKeyEventListener(keyEventListener);
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + ", text\"" + this.getText() + "\".";
 	}

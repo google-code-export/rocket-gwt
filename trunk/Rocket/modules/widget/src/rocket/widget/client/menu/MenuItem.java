@@ -46,15 +46,15 @@ public class MenuItem extends MenuWidget {
 
 	// ACTIONS :::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void open( final MouseEvent event ) {
+	public void open(final MouseEvent event) {
 		final MenuList menuList = this.getParentMenuList();
 		final Menu menu = menuList.getMenu();
-		
+
 		// notify listeners...
-		menu.fireMenuOpened(event, this );
-		
+		menu.fireMenuOpened(event, this);
+
 		// hide...
-		menu.hide();		
+		menu.hide();
 	}
 
 	public void hide() {
@@ -76,7 +76,7 @@ public class MenuItem extends MenuWidget {
 	 */
 	protected void onMouseClick(final MouseClickEvent event) {
 		if (false == this.isDisabled()) {
-			this.open( event );
+			this.open(event);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class MenuItem extends MenuWidget {
 	}
 
 	protected Html createHtml() {
-		return Widgets.createHtml(); 
+		return Widgets.createHtml();
 	}
 
 	String toString0() {

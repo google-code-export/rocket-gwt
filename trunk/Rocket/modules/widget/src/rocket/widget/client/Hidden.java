@@ -47,23 +47,26 @@ public class Hidden extends Widget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(Element element) {
 		Dom.checkInput("parameter:element", element, WidgetConstants.HIDDEN_INPUT_TYPE);
 	}
 
 	protected Element createElement() {
 		final Element element = DOM.createElement("input");
-		DOM.setElementProperty(element, "type", WidgetConstants.HIDDEN_INPUT_TYPE);
+		element.setPropertyString("type", WidgetConstants.HIDDEN_INPUT_TYPE);
 		return element;
 	}
 
 	protected void applyStyleName() {
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		throw new UnsupportedOperationException("getWidgetStyleName");
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
@@ -82,7 +85,7 @@ public class Hidden extends Widget {
 	 * @return the default value
 	 */
 	public String getDefaultValue() {
-		return DOM.getElementProperty(getElement(), "defaultValue");
+		return this.getElement().getPropertyString("defaultValue");
 	}
 
 	/**
@@ -91,8 +94,8 @@ public class Hidden extends Widget {
 	 * @param defaultValue
 	 *            default value to set
 	 */
-	public void setDefaultValue(String defaultValue) {
-		DOM.setElementProperty(getElement(), "defaultValue", defaultValue);
+	public void setDefaultValue(final String defaultValue) {
+		this.getElement().setPropertyString("defaultValue", defaultValue);
 	}
 
 	/**
@@ -101,10 +104,10 @@ public class Hidden extends Widget {
 	 * @return the value
 	 */
 	public String getValue() {
-		return DOM.getElementProperty(getElement(), "value");
+		return this.getElement().getPropertyString("value");
 	}
 
 	public void setValue(String value) {
-		DOM.setElementProperty(getElement(), "value", value);
+		this.getElement().setPropertyString("value", value);
 	}
 }

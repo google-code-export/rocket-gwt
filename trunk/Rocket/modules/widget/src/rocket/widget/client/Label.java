@@ -43,6 +43,7 @@ public class Label extends HtmlOrLabel {
 		super(element);
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.LABEL_STYLE;
 	}

@@ -45,6 +45,7 @@ public class Html extends HtmlOrLabel {
 		super(element);
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.HTML;
 	}

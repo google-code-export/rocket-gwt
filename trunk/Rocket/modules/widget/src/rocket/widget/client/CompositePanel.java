@@ -118,6 +118,7 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 		this.panel = panel;
 	}
 
+	@Override
 	protected void onAttach() {
 		if (isAttached()) {
 			throw new IllegalStateException("Should only call onAttach when the widget is detached from the browser's document");
@@ -128,13 +129,14 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 	}
 
 	native private void setAttachFlag(final Widget widget, final boolean attached)/*-{
-	 widget.@com.google.gwt.user.client.ui.Widget::attached=attached;
-	 }-*/;
+				 widget.@com.google.gwt.user.client.ui.Widget::attached=attached;
+				 }-*/;
 
 	native private void invokePanelOnAttach(final Panel panel)/*-{
-	 panel.@com.google.gwt.user.client.ui.Widget::onAttach()();
-	 }-*/;
+				 panel.@com.google.gwt.user.client.ui.Widget::onAttach()();
+				 }-*/;
 
+	@Override
 	protected void onDetach() {
 		if (false == isAttached()) {
 			throw new IllegalStateException("Should only call onDetach when the widget is attached to the browser's document");
@@ -153,11 +155,12 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 	}
 
 	native private void invokePanelOnDetach(final Panel panel)/*-{
-	 panel.@com.google.gwt.user.client.ui.Widget::onDetach()();
-	 }-*/;
+				 panel.@com.google.gwt.user.client.ui.Widget::onDetach()();
+				 }-*/;
 
 	abstract public void insert(final Widget widget, final int indexBefore);
 
+	@Override
 	public Widget get(final int index) {
 		Widget found = null;
 
@@ -198,6 +201,7 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 		return count;
 	}
 
+	@Override
 	public Iterator iterator() {
 		return this.getPanel().iterator();
 	}
@@ -209,18 +213,22 @@ abstract public class CompositePanel extends rocket.widget.client.Panel implemen
 	}
 
 	// THE METHODS BELOW SHOULD BE IGNORED
+	@Override
 	final protected void checkElement(final Element element) {
 		throw new UnsupportedOperationException("checkElement");
 	}
 
+	@Override
 	final protected Element createPanelElement() {
 		throw new UnsupportedOperationException("createPanelElement");
 	}
 
+	@Override
 	final protected void insert0(final Element element, final int indexBefore) {
 		throw new UnsupportedOperationException("insert0");
 	}
 
+	@Override
 	final protected void remove0(final Element element, final int index) {
 		throw new UnsupportedOperationException("remove0");
 	}

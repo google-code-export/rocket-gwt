@@ -15,14 +15,15 @@
  */
 package rocket.widget.rebind.imagefactory;
 
-
 /**
- *This ImageFactory implementation contains firefox specific values. 
+ * This ImageFactory implementation contains firefox specific values.
+ * 
  * @author Miroslav Pokorny
  */
 public class FireFoxImageFactoryGenerator extends ImageFactoryGenerator {
 
-	protected int getMaximumDataUrlLength(){	
-		return this.getMaximumDataUrlLength( ImageFactoryConstants.FIREFOX_MAXIMUM_DATA_URL_SIZE, ImageFactoryConstants.FIREFOX_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
+	protected int getMaximumDataUrlLength() {
+		return this.getMaximumDataUrlLength(ImageFactoryConstants.FIREFOX_MAXIMUM_DATA_URL_SIZE,
+				ImageFactoryConstants.FIREFOX_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE);
 	}
 }

@@ -23,7 +23,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 /**
- * A DivPanel is a panel that uses a div as the primary container widget. 
+ * A DivPanel is a panel that uses a div as the primary container widget.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -37,6 +37,7 @@ public class DivPanel extends Panel implements HasWidgets {
 		super(div);
 	}
 
+	@Override
 	protected void checkElement(final Element element) {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.DIV_TAG);
 	}
@@ -46,14 +47,17 @@ public class DivPanel extends Panel implements HasWidgets {
 	 * 
 	 * @return A new DIV element
 	 */
+	@Override
 	protected Element createPanelElement() {
 		return DOM.createDiv();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.DIV_PANEL_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
@@ -67,12 +71,14 @@ public class DivPanel extends Panel implements HasWidgets {
 		return this.getElement();
 	}
 
+	@Override
 	protected void insert0(final Element element, final int indexBefore) {
 		Checker.notNull("parameter:element", element);
-		
+
 		DOM.insertChild(this.getParentElement(), element, indexBefore);
 	}
 
+	@Override
 	protected void remove0(final Element element, final int index) {
 		Checker.notNull("parameter:element", element);
 

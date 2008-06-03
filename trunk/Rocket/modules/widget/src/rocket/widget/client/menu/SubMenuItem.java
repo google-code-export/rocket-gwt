@@ -29,10 +29,8 @@ import rocket.style.client.InlineStyle;
 import rocket.util.client.Checker;
 import rocket.widget.client.DivPanel;
 import rocket.widget.client.Html;
-import rocket.widget.client.Label;
 import rocket.widget.client.Widgets;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -102,7 +100,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	// ACTIONS
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void open( final MouseEvent event ) {
+	public void open(final MouseEvent event) {
 		final MenuList menuList = this.getMenuList();
 		InlineStyle.setInteger(this.getElement(), Css.Z_INDEX, 1, CssUnit.NONE);
 
@@ -113,7 +111,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		final Element parentMenuList = this.getParentMenuList().getElement();
 
 		// position the opened menuList...
-		
+
 		// Must set absolute coordinates in order to read the coordinates of
 		// element accurately IE6 bug
 		final Element menuListElement = menuList.getElement();
@@ -166,7 +164,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		InlineStyle.setInteger(menuListElement, Css.Z_INDEX, 1, CssUnit.NONE);
 
 		// notify listeners
-		menuList.getMenu().fireMenuOpened(event, this );
+		menuList.getMenu().fireMenuOpened(event, this);
 	}
 
 	/**
@@ -198,7 +196,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		// ignore event if menu list is already opened...
 		if (false == this.isDisabled()) {
 			if ("hidden".equals(ComputedStyle.getString(this.getMenuList().getElement(), Css.VISIBILITY))) {
-				this.open( event );
+				this.open(event);
 			}
 		}
 		event.cancelBubble(true);
@@ -213,7 +211,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 			this.addHighlight();
 
 			if (this.isAutoOpen()) {
-				this.open( event );
+				this.open(event);
 			}
 		}
 		event.cancelBubble(true);
@@ -230,7 +228,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 		while (true) {
 			final Element targetElement = event.getTo();
 
-			if (DOM.isOrHasChild(this.getElement(), targetElement)) {
+			if (this.getElement().isOrHasChild(targetElement)) {
 				event.cancelBubble(true);
 				break;
 			}
@@ -254,7 +252,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 
 	protected DivPanel createDivPanel() {
 		final DivPanel divPanel = new DivPanel();
-		
+
 		divPanel.add(Widgets.createHtml()); // placeholder for menu list...
 
 		final Html html = this.createHtml();
@@ -264,7 +262,7 @@ public class SubMenuItem extends MenuWidget implements HasWidgets {
 	}
 
 	protected Html getHtml() {
-		return (Html)this.getDivPanel().get( 1 );
+		return (Html) this.getDivPanel().get(1);
 	}
 
 	protected Html createHtml() {

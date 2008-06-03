@@ -33,50 +33,35 @@ import com.google.gwt.user.client.ui.Widget;
  * pushed or popped and cannot be inserted in the middle of the chain.
  * 
  * @author Miroslav Pokorny (mP)
+ * 
+ * FIXME rework so it doesnt have a horizontalPanel property.
  */
 public class BreadcrumbPanel extends CompositeWidget {
 
 	public BreadcrumbPanel() {
 	}
 
+	@Override
 	protected Widget createWidget() {
-		final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
-		this.setHorizontalPanel(horizontalPanel);
-		return horizontalPanel;
+		return this.createHorizontalPanel();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.BREADCRUMB_PANEL_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
 
-	/**
-	 * A horizontal panel contains all the individual breadcrumbs and their
-	 * corresponding separators.
-	 */
-	private HorizontalPanel horizontalPanel;
-
 	protected HorizontalPanel getHorizontalPanel() {
-		Checker.notNull("field:horizontalPanel", horizontalPanel);
-		return this.horizontalPanel;
-	}
-
-	protected boolean hasHorizontalPanel() {
-		return null != this.horizontalPanel;
-	}
-
-	protected void setHorizontalPanel(final HorizontalPanel horizontalPanel) {
-		Checker.notNull("field:horizontalPanel", horizontalPanel);
-		this.horizontalPanel = horizontalPanel;
+		return (HorizontalPanel) this.getWidget();
 	}
 
 	protected HorizontalPanel createHorizontalPanel() {
-		final HorizontalPanel horizontalPanel = new HorizontalPanel();
-		horizontalPanel.setStyleName("");
-		return horizontalPanel;
+		return new HorizontalPanel();
 	}
 
 	/**
@@ -103,7 +88,6 @@ public class BreadcrumbPanel extends CompositeWidget {
 
 		// create and add the new breadcrumb.
 		final Breadcrumb breadcrumb = this.createBreadcrumb(text);
-		breadcrumb.setBreadcrumbPanel(this);
 		final boolean disabled = clickListener == null;
 		breadcrumb.setDisabled(disabled);
 		if (!disabled) {
@@ -132,26 +116,15 @@ public class BreadcrumbPanel extends CompositeWidget {
 
 	class Breadcrumb extends Hyperlink {
 
+		@Override
 		public void onBrowserEvent(final Event event) {
 			Checker.notNull("parameter:event", event);
 
 			// if this breadcrumb is the last or disabled cancel any click
 			// events.
-			if (false == this.isDisabled() && false == this.getBreadcrumbPanel().isLastBreadcrumb(this)) {
+			if (false == this.isDisabled() && false == BreadcrumbPanel.this.isLastBreadcrumb(this)) {
 				super.onBrowserEvent(event);
 			}
-		}
-
-		BreadcrumbPanel breadcrumbPanel;
-
-		BreadcrumbPanel getBreadcrumbPanel() {
-			Checker.notNull("field:breadcrumbPanel", breadcrumbPanel);
-			return breadcrumbPanel;
-		}
-
-		void setBreadcrumbPanel(final BreadcrumbPanel breadcrumbPanel) {
-			Checker.notNull("parameter:breadcrumbPanel", breadcrumbPanel);
-			this.breadcrumbPanel = breadcrumbPanel;
 		}
 
 		boolean disabled;

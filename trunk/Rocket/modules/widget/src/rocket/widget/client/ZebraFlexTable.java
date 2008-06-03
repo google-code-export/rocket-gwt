@@ -56,6 +56,7 @@ public class ZebraFlexTable extends FlexTable {
 	 * @throws IndexOutOfBoundsException
 	 *             if the row is negative
 	 */
+	@Override
 	protected void prepareCell(final int row, final int column) {
 		prepareRow(row);
 		if (column < 0) {
@@ -64,12 +65,13 @@ public class ZebraFlexTable extends FlexTable {
 
 		// Ensure that the requested column exists.
 		final int cellCount = getCellCount(row);
-		
+
 		for (int i = cellCount; i <= column; i++) {
 			this.insertCell(row, i);
 		}
 	}
 
+	@Override
 	public void insertCell(final int row, final int cell) {
 		final boolean newRow = row < this.getRowCount();
 
@@ -88,6 +90,7 @@ public class ZebraFlexTable extends FlexTable {
 		return value;
 	}
 
+	@Override
 	public void removeRow(final int row) {
 		super.removeRow(row);
 
@@ -106,7 +109,7 @@ public class ZebraFlexTable extends FlexTable {
 	}
 
 	protected void updateRowBackgroundColour(final int row) {
-		Checker.greaterThanOrEqual("parameter:row", 0, row );
+		Checker.greaterThanOrEqual("parameter:row", 0, row);
 
 		final String oddRowStyle = this.getOddRowStyle();
 		final String evenRowStyle = this.getEvenRowStyle();

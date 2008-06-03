@@ -35,6 +35,7 @@ public class HyperlinkPanel extends SimplePanel {
 		super(anchorElement);
 	}
 
+	@Override
 	protected void checkElement(final Element element) {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.HYPERLINK_TAG);
 	}
@@ -45,14 +46,17 @@ public class HyperlinkPanel extends SimplePanel {
 	 * 
 	 * @return The new anchor
 	 */
+	@Override
 	protected Element createPanelElement() {
 		return DOM.createAnchor();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.HYPERLINK_PANEL_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.MOUSE_CLICK | EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.MOUSE_EVENTS;
 	}
@@ -66,6 +70,7 @@ public class HyperlinkPanel extends SimplePanel {
 		return this.getElement();
 	}
 
+	@Override
 	protected void insert0(final Element element, final int indexBefore) {
 		Checker.notNull("parameter:element", element);
 
@@ -84,6 +89,7 @@ public class HyperlinkPanel extends SimplePanel {
 		return DOM.createSpan();
 	}
 
+	@Override
 	protected void remove0(final Element element, final int index) {
 		Checker.notNull("parameter:element", element);
 

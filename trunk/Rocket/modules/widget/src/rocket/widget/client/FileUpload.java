@@ -44,16 +44,19 @@ public class FileUpload extends FocusWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(Element element) {
 		Dom.checkInput("parameter:element", element, WidgetConstants.FILE_UPLOAD_INPUT_TYPE);
 	}
 
+	@Override
 	protected Element createElement() {
 		final Element element = DOM.createElement("input");
 		DOM.setElementProperty(element, "type", WidgetConstants.FILE_UPLOAD_INPUT_TYPE);
 		return element;
 	}
 
+	@Override
 	protected void afterCreateElement() {
 		final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
 		this.setEventListenerDispatcher(dispatcher);
@@ -62,10 +65,12 @@ public class FileUpload extends FocusWidget {
 		dispatcher.setFocusEventListeners(dispatcher.createFocusEventListeners());
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.FILE_UPLOAD_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.CHANGE;
 	}

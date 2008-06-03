@@ -15,14 +15,15 @@
  */
 package rocket.widget.rebind.imagefactory;
 
-
 /**
- * This ImageFactory implementation contains opera specific values. 
+ * This ImageFactory implementation contains opera specific values.
+ * 
  * @author Miroslav Pokorny
  */
 public class OperaImageFactoryGenerator extends ImageFactoryGenerator {
 
-		protected int getMaximumDataUrlLength(){	
-			return this.getMaximumDataUrlLength( ImageFactoryConstants.OPERA_MAXIMUM_DATA_URL_SIZE, ImageFactoryConstants.OPERA_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
-		}
+	protected int getMaximumDataUrlLength() {
+		return this.getMaximumDataUrlLength(ImageFactoryConstants.OPERA_MAXIMUM_DATA_URL_SIZE,
+				ImageFactoryConstants.OPERA_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE);
+	}
 }

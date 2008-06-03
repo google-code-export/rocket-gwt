@@ -58,6 +58,7 @@ public class Button extends FocusWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(Element element) {
 		while (true) {
 			if (Dom.isTag(element, WidgetConstants.BUTTON_TAG)) {
@@ -73,10 +74,12 @@ public class Button extends FocusWidget {
 		}
 	}
 
+	@Override
 	protected Element createElement() {
 		return DOM.createButton();
 	}
 
+	@Override
 	protected void afterCreateElement() {
 		final Element element = this.getElement();
 		if (Dom.isTag(element, WidgetConstants.BUTTON_TAG)) {
@@ -94,6 +97,7 @@ public class Button extends FocusWidget {
 	 }
 	 }-*/;
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.KEY_EVENTS | EventBitMaskConstants.MOUSE_CLICK
 				| EventBitMaskConstants.MOUSE_DOUBLE_CLICK;
@@ -104,19 +108,19 @@ public class Button extends FocusWidget {
 	}
 
 	public String getHtml() {
-		return DOM.getInnerHTML(getElement());
+		return getElement().getInnerHTML();
 	}
 
 	public void setHtml(final String html) {
-		DOM.setInnerHTML(getElement(), html);
+		this.getElement().setInnerHTML(html);
 	}
 
 	public String getText() {
-		return DOM.getInnerText(getElement());
+		return getElement().getInnerText();
 	}
 
 	public void setText(final String text) {
-		DOM.setInnerText(getElement(), text);
+		getElement().setInnerText(text);
 	}
 
 	/**

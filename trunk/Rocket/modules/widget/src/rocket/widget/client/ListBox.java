@@ -53,7 +53,7 @@ public class ListBox extends FocusWidget {
 	static ListBoxSupport createSupport() {
 		return (ListBoxSupport) GWT.create(ListBoxSupport.class);
 	}
-	
+
 	public ListBox() {
 		super();
 	}
@@ -62,14 +62,17 @@ public class ListBox extends FocusWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(Element element) {
 		Dom.checkTagName("parameter:element", element, WidgetConstants.LISTBOX_TAG);
 	}
 
+	@Override
 	protected Element createElement() {
 		return DOM.createSelect();
 	}
 
+	@Override
 	protected void afterCreateElement() {
 		final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
 		this.setEventListenerDispatcher(dispatcher);
@@ -78,10 +81,12 @@ public class ListBox extends FocusWidget {
 		dispatcher.setFocusEventListeners(dispatcher.createFocusEventListeners());
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.LISTBOX_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.CHANGE;
 	}
@@ -162,7 +167,7 @@ public class ListBox extends FocusWidget {
 	 * @return the selected index, or <code>-1</code> if none is selected
 	 */
 	public int getSelectedIndex() {
-		return DOM.getElementPropertyInt(getElement(), "selectedIndex");
+		return this.getElement().getPropertyInt("selectedIndex");
 	}
 
 	/**
@@ -276,7 +281,7 @@ public class ListBox extends FocusWidget {
 	 * @return <code>true</code> if multiple selection is allowed
 	 */
 	public boolean isMultipleSelect() {
-		return DOM.getElementPropertyBoolean(getElement(), "multiple");
+		return getElement().getPropertyBoolean("multiple");
 	}
 
 	/**
@@ -292,7 +297,7 @@ public class ListBox extends FocusWidget {
 	public void setMultipleSelect(boolean multiple) {
 		// TODO: we can remove the above doc admonition once we address issue
 		// 1007
-		DOM.setElementPropertyBoolean(getElement(), "multiple", multiple);
+		getElement().setPropertyBoolean("multiple", multiple);
 	}
 
 	/**
@@ -302,7 +307,7 @@ public class ListBox extends FocusWidget {
 	 * @return the visible item count
 	 */
 	public int getVisibleItemCount() {
-		return DOM.getElementPropertyInt(getElement(), "size");
+		return getElement().getPropertyInt("size");
 	}
 
 	/**
@@ -313,7 +318,7 @@ public class ListBox extends FocusWidget {
 	 *            the visible item count
 	 */
 	public void setVisibleItemCount(int visibleItems) {
-		DOM.setElementPropertyInt(getElement(), "size", visibleItems);
+		getElement().setPropertyInt("size", visibleItems);
 	}
 
 	/**
@@ -342,7 +347,7 @@ public class ListBox extends FocusWidget {
 	 *            the index of the item to be selected
 	 */
 	public void setSelectedIndex(int index) {
-		DOM.setElementPropertyInt(getElement(), "selectedIndex", index);
+		this.getElement().setPropertyInt("selectedIndex", index);
 	}
 
 	private void checkIndex(int index) {

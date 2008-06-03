@@ -29,7 +29,7 @@ public class WidgetTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket.Beans");
-		addTests( suite );
+		addTests(suite);
 		return suite;
 	}
 

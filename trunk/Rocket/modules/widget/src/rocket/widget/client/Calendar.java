@@ -71,22 +71,26 @@ abstract public class Calendar extends CompositeWidget {
 		super();
 	}
 
+	@Override
 	protected Widget createWidget() {
 		this.setDate(this.createDate());
 		return this.createCalendarGrid();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.CALENDAR_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
 
+	@Override
 	public void onAttach() {
 		super.onAttach();
-		
+
 		this.redraw();
 	}
 
@@ -205,52 +209,52 @@ abstract public class Calendar extends CompositeWidget {
 		 * This mapping uses the year/month/dayOfMonth as the key with the value
 		 * being the widget itself.
 		 */
-		private Map datesToWidgets;
+		private Map<String, Widget> datesToWidgets;
 
-		Map getDatesToWidgets() {
+		Map<String, Widget> getDatesToWidgets() {
 			return this.datesToWidgets;
 		}
 
-		void setDatesToWidgets(final Map datesToWidgets) {
+		void setDatesToWidgets(final Map<String, Widget> datesToWidgets) {
 			this.datesToWidgets = datesToWidgets;
 		}
 
-		Map createDatesToWidgets() {
-			return new HashMap();
+		Map<String, Widget> createDatesToWidgets() {
+			return new HashMap<String, Widget>();
 		}
 
 		/**
 		 * This mapping uses the widget as the key and the value is the
 		 * year/month/dayOfMonth
 		 */
-		private Map widgetsToDates;
+		private Map<Widget, String> widgetsToDates;
 
-		Map getWidgetsToDates() {
+		Map<Widget, String> getWidgetsToDates() {
 			return this.widgetsToDates;
 		}
 
-		void setWidgetsToDates(final Map widgetsToDates) {
+		void setWidgetsToDates(final Map<Widget, String> widgetsToDates) {
 			this.widgetsToDates = widgetsToDates;
 		}
 
-		Map createWidgetsToDates() {
-			return new HashMap();
+		Map<Widget, String> createWidgetsToDates() {
+			return new HashMap<Widget, String>();
 		}
 
 		Widget getWidget(final int year, final int month, final int dayOfMonth) {
 			final Object key = buildKey(year, month, dayOfMonth);
 
-			return (Widget) this.getDatesToWidgets().get(key);
+			return this.getDatesToWidgets().get(key);
 		}
 
 		void setWidget(final int row, final int column, final Widget widget, final int year, final int month, final int dayOfMonth) {
-			final Map widgetsToDates = this.getWidgetsToDates();
-			final Map datesToWidgets = this.getDatesToWidgets();
+			final Map<Widget, String> widgetsToDates = this.getWidgetsToDates();
+			final Map<String, Widget> datesToWidgets = this.getDatesToWidgets();
 
 			// remove the previous widget the caches.
 			final Widget previous = this.getWidget(row, column);
 			if (null != previous) {
-				final Object previousKey = widgetsToDates.remove(widget);
+				final String previousKey = widgetsToDates.remove(widget);
 				datesToWidgets.remove(previousKey);
 			}
 
@@ -258,12 +262,12 @@ abstract public class Calendar extends CompositeWidget {
 			this.setWidget(row, column, widget);
 
 			// update the caches.
-			final Object key = buildKey(year, month, dayOfMonth);
-			widgetsToDates.put(key, widget);
-			datesToWidgets.put(widget, key);
+			final String key = buildKey(year, month, dayOfMonth);
+			widgetsToDates.put(widget, key);
+			datesToWidgets.put(key, widget);
 		}
 
-		protected Object buildKey(final int year, final int month, final int dayOfMonth) {
+		protected String buildKey(final int year, final int month, final int dayOfMonth) {
 			return year + "/" + month + "/" + dayOfMonth;
 		}
 	}
@@ -273,7 +277,8 @@ abstract public class Calendar extends CompositeWidget {
 	 * This method should only be invoked once usually as part of the
 	 * {@link #createWidget()} method.
 	 * 
-	 * @param grid The new grid
+	 * @param grid
+	 *            The new grid
 	 */
 	protected void addHeadings(final Grid grid) {
 		for (int dayOfWeek = 0; dayOfWeek < WidgetConstants.CALENDAR_COLUMNS; dayOfWeek++) {
@@ -361,9 +366,9 @@ abstract public class Calendar extends CompositeWidget {
 
 	protected void setDate(final Date date) {
 		Checker.notNull("parameter:date", date);
-		this.date = new Date( date.getTime() );		
+		this.date = new Date(date.getTime());
 	}
-	
+
 	/**
 	 * Factory which creates the date that will become the starting point for
 	 * this calendar.
@@ -372,7 +377,7 @@ abstract public class Calendar extends CompositeWidget {
 	 */
 	protected Date createDate() {
 		final Date date = new Date();
-		date.setDate( 1 );
+		date.setDate(1);
 		return date;
 	}
 
@@ -395,8 +400,8 @@ abstract public class Calendar extends CompositeWidget {
 		date.setMonth(month);
 		this.setDate(date);
 	}
-	
-	public String toString(){
-		return Utilities.defaultToString( this) + ", date: " + this.getDate();
+
+	public String toString() {
+		return Utilities.defaultToString(this) + ", date: " + this.getDate();
 	}
 }

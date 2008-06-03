@@ -50,6 +50,7 @@ public class TextBox extends TextEntryWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(final Element element) {
 		if (false == Dom.isInput(element, WidgetConstants.TEXTBOX_INPUT_TYPE)
 				&& false == Dom.isInput(element, WidgetConstants.PASSWORD_TEXTBOX_INPUT_TYPE)) {
@@ -57,10 +58,12 @@ public class TextBox extends TextEntryWidget {
 		}
 	}
 
+	@Override
 	protected Element createElement() {
 		return DOM.createInputText();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.TEXTBOX_STYLE;
 	}

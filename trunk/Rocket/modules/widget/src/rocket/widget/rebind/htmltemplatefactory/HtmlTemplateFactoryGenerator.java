@@ -50,10 +50,11 @@ import rocket.widget.rebind.htmltemplatefactory.createhtmlfromtemplate.CreateHtm
  */
 public class HtmlTemplateFactoryGenerator extends Generator {
 
+	@Override
 	protected NewConcreteType assembleNewType(final Type interfacee, final String newTypeName) {
 		this.verifyImplementsHtmlTemplate(interfacee);
 
-		final NewConcreteType newType = this.getGeneratorContext().newConcreteType( newTypeName );		
+		final NewConcreteType newType = this.getGeneratorContext().newConcreteType(newTypeName);
 		newType.setAbstract(false);
 		newType.setFinal(true);
 		newType.setSuperType(this.getHtmlTemplateFactoryImpl());
@@ -78,7 +79,8 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 	}
 
 	protected void throwDoesntImplementHtmlTemplate(final Type interfacee) {
-		throwException( new HtmlTemplateFactoryGeneratorException("The type " + interfacee + " is not an interface or doesnt implement " + Constants.HTML_TEMPLATE_FACTORY));
+		throwException(new HtmlTemplateFactoryGeneratorException("The type " + interfacee + " is not an interface or doesnt implement "
+				+ Constants.HTML_TEMPLATE_FACTORY));
 	}
 
 	/**
@@ -123,8 +125,8 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info( "Implementing " + method.getName() );
-		
+		context.info("Implementing " + method.getName());
+
 		final NewMethod newMethod = method.copy(newType);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
@@ -183,10 +185,9 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 			break;
 		}
 		newMethod.setBody(body);
-		
+
 		context.unbranch();
 	}
-
 
 	protected Type getTextBox() {
 		return this.getGeneratorContext().getType(Constants.TEXTBOX);
@@ -231,7 +232,7 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 	protected Type getFormPanel() {
 		return this.getGeneratorContext().getType(Constants.FORM_PANEL);
 	}
-	
+
 	/**
 	 * Builds a codeblock that can be used to bind a textbox to a input element
 	 * of type after locating it by id.
@@ -244,14 +245,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.TEXTBOX );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.TEXTBOX_TEMPLATE, id );
+		context.debug(Constants.TEXTBOX);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.TEXTBOX_TEMPLATE, id);
 	}
 
 	/**
@@ -266,14 +267,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.PASSWORD_TEXTBOX );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.PASSWORD_TEXTBOX_TEMPLATE, id );
+		context.debug(Constants.PASSWORD_TEXTBOX);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.PASSWORD_TEXTBOX_TEMPLATE, id);
 	}
 
 	/**
@@ -288,14 +289,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.TEXTAREA );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.TEXTAREA_TEMPLATE, id );
+		context.debug(Constants.TEXTAREA);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.TEXTAREA_TEMPLATE, id);
 	}
 
 	/**
@@ -310,14 +311,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.LISTBOX );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.LISTBOX_TEMPLATE, id );
+		context.debug(Constants.LISTBOX);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.LISTBOX_TEMPLATE, id);
 	}
 
 	/**
@@ -332,14 +333,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.CHECKBOX );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.CHECKBOX_TEMPLATE, id );
+		context.debug(Constants.CHECKBOX);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.CHECKBOX_TEMPLATE, id);
 	}
 
 	/**
@@ -354,14 +355,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.RADIO_BUTTON );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.RADIO_BUTTON_TEMPLATE, id );
+		context.debug(Constants.RADIO_BUTTON);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.RADIO_BUTTON_TEMPLATE, id);
 	}
 
 	/**
@@ -376,14 +377,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.LABEL );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.LABEL_TEMPLATE, id );
+		context.debug(Constants.LABEL);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.LABEL_TEMPLATE, id);
 	}
 
 	/**
@@ -398,14 +399,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.BUTTON );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.BUTTON_TEMPLATE, id );
+		context.debug(Constants.BUTTON);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.BUTTON_TEMPLATE, id);
 	}
 
 	/**
@@ -420,14 +421,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.IMAGE );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.IMAGE_TEMPLATE, id );
+		context.debug(Constants.IMAGE);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.IMAGE_TEMPLATE, id);
 	}
 
 	/**
@@ -442,14 +443,14 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		this.checkMethodHasNoParameters(method);
-		
+
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.HYPERLINK );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.HYPERLINK_TEMPLATE, id );
+		context.debug(Constants.HYPERLINK);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.HYPERLINK_TEMPLATE, id);
 	}
 
 	/**
@@ -463,16 +464,16 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 	protected CodeBlock buildFormPanelGetterMethodBody(final Method method) {
 		Checker.notNull("parameter:method", method);
 
-		this.checkMethodHasNoParameters(method);			
+		this.checkMethodHasNoParameters(method);
 		final String id = this.getId(method);
-		
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.FORM_PANEL );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.FORM_TEMPLATE, id );
+		context.debug(Constants.FORM_PANEL);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.FORM_TEMPLATE, id);
 	}
-	
+
 	/**
 	 * Builds a codeblock that can be used to bind a html (a div element) to an
 	 * element after locating it by id.
@@ -485,57 +486,62 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		CodeBlock body = null;
-		
+
 		// need to test if Html is coming from id or file.
-		while( true ){
+		while (true) {
 			String file = null;
 			String id = null;
-			try{
-				file = this.getFile( method );
-			} catch ( final Exception ignored ){
+			try {
+				file = this.getFile(method);
+			} catch (final Exception ignored) {
 			}
-			try{
-				id = this.getId( method );
-			} catch ( final Exception ignored ){
+			try {
+				id = this.getId(method);
+			} catch (final Exception ignored) {
 			}
-					
-			if( null != file && null != id ){
-				throwMethodReturningHtmlHasBothFileAndIdAnnotations( method );
+
+			if (null != file && null != id) {
+				throwMethodReturningHtmlHasBothFileAndIdAnnotations(method);
 				break;
 			}
-			if( null != id ){
-				body = this.buildHtmlGetHtmlFromId( id );
-				break;
-			} 
-			if( null != file ){
-				body = this.buildHtmlGetterMethodBodyFromATemplate( file, method.getEnclosingType() );
+			if (null != id) {
+				body = this.buildHtmlGetHtmlFromId(id);
 				break;
 			}
-			throwMethodReturningHtmlIsMissingBothFileAndIdAnnotations( method );
+			if (null != file) {
+				body = this.buildHtmlGetterMethodBodyFromATemplate(file, method.getEnclosingType());
+				break;
+			}
+			throwMethodReturningHtmlIsMissingBothFileAndIdAnnotations(method);
 			break;
-		} 
-		
+		}
+
 		return body;
 	}
-	
-	protected void throwMethodReturningHtmlIsMissingBothFileAndIdAnnotations( final Method method ){
-		this.throwException( new HtmlTemplateFactoryGeneratorException( "Unable to find a \"" + Constants.FILE_ANNOTATION + "\" or \"" + Constants.ID_ANNOTATION + "\" annotation upon method \"" + this.toString( method ) + "\"."));
+
+	protected void throwMethodReturningHtmlIsMissingBothFileAndIdAnnotations(final Method method) {
+		this.throwException(new HtmlTemplateFactoryGeneratorException("Unable to find a \"" + Constants.FILE_ANNOTATION + "\" or \""
+				+ Constants.ID_ANNOTATION + "\" annotation upon method \"" + this.toString(method) + "\"."));
 	}
-	
-	protected void throwMethodReturningHtmlHasBothFileAndIdAnnotations( final Method method ){
-		this.throwException( new HtmlTemplateFactoryGeneratorException( "A factory method returning a Html widget cannot have both a \"" + Constants.FILE_ANNOTATION + "\" or \"" + Constants.ID_ANNOTATION + "\" annotation, method \"" + this.toString( method ) + "\"."));
+
+	protected void throwMethodReturningHtmlHasBothFileAndIdAnnotations(final Method method) {
+		this.throwException(new HtmlTemplateFactoryGeneratorException("A factory method returning a Html widget cannot have both a \""
+				+ Constants.FILE_ANNOTATION + "\" or \"" + Constants.ID_ANNOTATION + "\" annotation, method \"" + this.toString(method)
+				+ "\"."));
 	}
+
 	/**
 	 * Helper which locates an File value from an annotation.
 	 * 
-	 * @param method The interface method
+	 * @param method
+	 *            The interface method
 	 * @return The Filename
 	 */
 	protected String getFile(final Method method) {
 		Checker.notNull("parameter:method", method);
 
 		final List values = method.getMetadataValues(Constants.FILE_ANNOTATION);
-		if (null == values || values.size() == 0 ) {
+		if (null == values || values.size() == 0) {
 			throwUnableToFindFileAnnotation(method);
 		}
 		if (values.size() != 1) {
@@ -545,253 +551,274 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 	}
 
 	protected void throwUnableToFindFileAnnotation(final Method method) {
-		throwException( new HtmlTemplateFactoryGeneratorException("Unable to find an \"" + Constants.FILE_ANNOTATION + "\" annotation upon the method \"" + this.toString( method ) + "\"."));
+		throwException(new HtmlTemplateFactoryGeneratorException("Unable to find an \"" + Constants.FILE_ANNOTATION
+				+ "\" annotation upon the method \"" + this.toString(method) + "\"."));
 	}
 
-	protected void throwFileAnnotationHasMoreThanOneValue(final Method method, final List values ) {
-		throwException( new HtmlTemplateFactoryGeneratorException("The \"" + Constants.FILE_ANNOTATION + "\" annotation has more than one value \"" + values + "\" upon the method \"" + this.toString( method ) + "\"."));
+	protected void throwFileAnnotationHasMoreThanOneValue(final Method method, final List values) {
+		throwException(new HtmlTemplateFactoryGeneratorException("The \"" + Constants.FILE_ANNOTATION
+				+ "\" annotation has more than one value \"" + values + "\" upon the method \"" + this.toString(method) + "\"."));
 	}
-	
+
 	/**
-	 * This method creates a CodeBlock which contains the body of a method which when executed returns a Html which hijackes an existing element identified by an id.
+	 * This method creates a CodeBlock which contains the body of a method which
+	 * when executed returns a Html which hijackes an existing element
+	 * identified by an id.
+	 * 
 	 * @param id
 	 * @return
 	 */
-	protected CodeBlock buildHtmlGetHtmlFromId( final String id ){
-		Checker.notEmpty( "parameter:id", id );
-		
+	protected CodeBlock buildHtmlGetHtmlFromId(final String id) {
+		Checker.notEmpty("parameter:id", id);
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.HTML );
-		context.debug( "id=" + id );
-		
-		return new BindWidgetTemplatedFile( Constants.HTML_TEMPLATE, id );
+		context.debug(Constants.HTML);
+		context.debug("id=" + id);
+
+		return new BindWidgetTemplatedFile(Constants.HTML_TEMPLATE, id);
 	}
-	
+
 	/**
-	 * This method creates a CodeBlock which contains as its body a template which is a combination of html/text with values and java code. 
-	 * @param fileName an absolute or relative classpath reference
+	 * This method creates a CodeBlock which contains as its body a template
+	 * which is a combination of html/text with values and java code.
+	 * 
+	 * @param fileName
+	 *            an absolute or relative classpath reference
 	 * @return
 	 */
-	protected CodeBlock buildHtmlGetterMethodBodyFromATemplate( final String fileName, final Type type ){
-		Checker.notEmpty( "parameter:fileName", fileName );
-		
+	protected CodeBlock buildHtmlGetterMethodBodyFromATemplate(final String fileName, final Type type) {
+		Checker.notEmpty("parameter:fileName", fileName);
+
 		final GeneratorContext context = this.getGeneratorContext();
-		context.debug( Constants.HTML );
-		context.debug( "file=" + fileName );
-		
-		final String resolvedFileName = this.getResourceName( type.getPackage(), fileName );
-		final String fileContents = this.loadFile( resolvedFileName );
-		context.debug( "File loaded.");
-		
+		context.debug(Constants.HTML);
+		context.debug("file=" + fileName);
+
+		final String resolvedFileName = this.getResourceName(type.getPackage(), fileName);
+		final String fileContents = this.loadFile(resolvedFileName);
+		context.debug("File loaded.");
+
 		final String statements = this.convertToJavaStatements(fileContents);
-		
-		return new CreateHtmlFromTemplateTemplatedFile( statements );
+
+		return new CreateHtmlFromTemplateTemplatedFile(statements);
 	}
-	
+
 	/**
-	 * This method locates and locates the entire contents of a file identified by fileName.
+	 * This method locates and locates the entire contents of a file identified
+	 * by fileName.
+	 * 
 	 * @param fileName
 	 * @param type
 	 * @return
 	 */
-	protected String loadFile( final String resourceName ){
-		Checker.notEmpty( "parameter:resourceName", resourceName );
-		final InputStream inputStream = this.getResource( resourceName );
-		if( null == inputStream ){
-			throwUnableToReadTemplate( resourceName );
+	protected String loadFile(final String resourceName) {
+		Checker.notEmpty("parameter:resourceName", resourceName);
+		final InputStream inputStream = this.getResource(resourceName);
+		if (null == inputStream) {
+			throwUnableToReadTemplate(resourceName);
 		}
-		
+
 		InputStreamReader reader = null;
 		StringWriter writer = new StringWriter();
-		try{
-			reader = new InputStreamReader( inputStream );	
+		try {
+			reader = new InputStreamReader(inputStream);
 			writer = new StringWriter();
-			final char[] buffer = new char[ 4096 ];
-			while( true ){
-				final int readCount = reader.read( buffer );
-				if( -1 == readCount ){
+			final char[] buffer = new char[4096];
+			while (true) {
+				final int readCount = reader.read(buffer);
+				if (-1 == readCount) {
 					break;
 				}
-				writer.write( buffer, 0, readCount );
+				writer.write(buffer, 0, readCount);
 			}
-		} catch ( final IOException ioException ){
+		} catch (final IOException ioException) {
 			this.throwUnableToReadTemplate(resourceName);
 		}
-		
+
 		return writer.toString();
 	}
-	
-	protected void throwUnableToReadTemplate( final String resourceName ){
-		throwException( new HtmlTemplateFactoryGeneratorException( "Unable to read the template file \"" + resourceName + "\"."));
-	}	
-	
+
+	protected void throwUnableToReadTemplate(final String resourceName) {
+		throwException(new HtmlTemplateFactoryGeneratorException("Unable to read the template file \"" + resourceName + "\"."));
+	}
+
 	/**
-	 * This method is responsible for converting the entire file into a series of java statements. These statements will print html or values
-	 * and include java code verbatim.
-	 * It also includes as its first statement a local variable which creates a new HtmlWriter instance.
+	 * This method is responsible for converting the entire file into a series
+	 * of java statements. These statements will print html or values and
+	 * include java code verbatim. It also includes as its first statement a
+	 * local variable which creates a new HtmlWriter instance.
+	 * 
 	 * @param template
 	 * @return
 	 */
-	protected String convertToJavaStatements( final String template ){
-		Checker.notEmpty("parameter:template", template );
-		
+	protected String convertToJavaStatements(final String template) {
+		Checker.notEmpty("parameter:template", template);
+
 		final StringBuffer statements = new StringBuffer();
-		
+
 		int pos = 0;
 		final int length = template.length();
-		
-		while( pos < length ){
-						
-				// try and find a <%
-				final int open = template.indexOf( "<%", pos );
-				
-				int endOfHtml = open;
-				if( -1 == open ){
-					endOfHtml = length;
-				}
-				
-				// insert a print statement to print the current html block.
-				final String html = template.substring( pos, endOfHtml );
-				if( false == Tester.isNullOrEmpty( html )){
-					statements.append( Constants.HTML_WRITER_PRINT );
-					statements.append( "(\"");
-					statements.append( Generator.escape( html ));
-					statements.append( "\");" + Constants.EOL );
-				}
-				
-				// if theres no more template to process finish.
-				if( -1 == open ){
+
+		while (pos < length) {
+
+			// try and find a <%
+			final int open = template.indexOf("<%", pos);
+
+			int endOfHtml = open;
+			if (-1 == open) {
+				endOfHtml = length;
+			}
+
+			// insert a print statement to print the current html block.
+			final String html = template.substring(pos, endOfHtml);
+			if (false == Tester.isNullOrEmpty(html)) {
+				statements.append(Constants.HTML_WRITER_PRINT);
+				statements.append("(\"");
+				statements.append(Generator.escape(html));
+				statements.append("\");" + Constants.EOL);
+			}
+
+			// if theres no more template to process finish.
+			if (-1 == open) {
+				break;
+			}
+
+			// advance pos to the character after <%
+			pos = open + 2;
+
+			// try and find the closing %>
+			final int close = template.indexOf("%>", open);
+
+			// if unable to find %> template is incomplete complain
+			if (-1 == close) {
+				final int blockStartingLineNumber = this.countLines(template, pos);
+				this.throwTemplateContainsUnclosedBlock(blockStartingLineNumber);
+			}
+
+			// get the entire block contents.
+			final String block = template.substring(open, close);
+			if (block.length() == 0) {
+				final int blockLineNumber = this.countLines(template, pos);
+				this.throwTemplateContainsEmptyBlock(blockLineNumber);
+			}
+
+			// found a value ?
+			if (block.charAt(2) == '=') {
+				int start = 3;
+
+				// find the first non whitespace/nl/cr char
+				int end = block.length();
+				for (int i = 3; i < end; i++) {
+					final char c = block.charAt(i);
+					if (Character.isWhitespace(c)) {
+						continue;
+					}
+					if (c == '\n') {
+						continue;
+					}
+					if (c == '\r') {
+						continue;
+					}
+
+					start = i;
 					break;
 				}
-				
-				// advance pos to the character after <%
-				pos = open + 2;
-				
-				// try and find the closing %>
-				final int close = template.indexOf( "%>", open );
-				
-				// if unable to find %> template is incomplete complain
-				if( -1 == close ){
-					final int blockStartingLineNumber = this.countLines( template, pos );
-					this.throwTemplateContainsUnclosedBlock( blockStartingLineNumber );
-				}
-				
-				// get the entire block contents.
-				final String block = template.substring( open, close );
-				if( block.length() == 0 ){
-					final int blockLineNumber = this.countLines( template, pos );
-					this.throwTemplateContainsEmptyBlock( blockLineNumber );
-				}
-				
-				// found a value ?
-				if( block.charAt( 2 ) == '='){
-					int start = 3;
-					
-					// find the first non whitespace/nl/cr char
-					int end = block.length();
-					for( int i = 3; i < end; i++ ){
-						final char c = block.charAt( i );
-						if( Character.isWhitespace( c )){
-							continue;
-						}
-						if( c == '\n'){
-							continue;
-						}
-						if( c == '\r'){
-							continue;
-						}
-						
-						start = i;
-						break;
+
+				while (end > start) {
+					end--;
+					final char c = block.charAt(end);
+					if (Character.isWhitespace(c)) {
+						continue;
 					}
-					
-					while( end > start ){
-						end--;
-						final char c = block.charAt( end );
-						if( Character.isWhitespace( c )){
-							continue;
-						}
-						if( c == '\n'){
-							continue;
-						}
-						if( c == '\r'){
-							continue;
-						}
-						
-						// adjust because we dont want $end to be inclusive
-						 end++;
-						break;						
+					if (c == '\n') {
+						continue;
 					}
-										
-					final String value = block.substring( start, end );					
-					
-					statements.append( Constants.HTML_WRITER_PRINT );
-					statements.append( "(");
-					statements.append( value );
-					statements.append( ");" );
-					statements.append( Constants.EOL );
-					// advance pointers...
-					pos = close + 2;
-					continue;
+					if (c == '\r') {
+						continue;
+					}
+
+					// adjust because we dont want $end to be inclusive
+					end++;
+					break;
 				}
-			
-				// insert java code block as is - no attempt is made to parse, let the compiler do that.
-				statements.append( block.substring( 2 ));
-				statements.append( Constants.EOL );
-				pos = close + 2;			
-		}		
-		
+
+				final String value = block.substring(start, end);
+
+				statements.append(Constants.HTML_WRITER_PRINT);
+				statements.append("(");
+				statements.append(value);
+				statements.append(");");
+				statements.append(Constants.EOL);
+				// advance pointers...
+				pos = close + 2;
+				continue;
+			}
+
+			// insert java code block as is - no attempt is made to parse, let
+			// the compiler do that.
+			statements.append(block.substring(2));
+			statements.append(Constants.EOL);
+			pos = close + 2;
+		}
+
 		return statements.toString();
 	}
-	
+
 	/**
-	 * Simply counts the number of lines between the start of the content and the given character position.
+	 * Simply counts the number of lines between the start of the content and
+	 * the given character position.
+	 * 
 	 * @param contents
 	 * @param upToCharPosition
 	 * @return The number of lines start at 1.
 	 */
-	protected int countLines( final String contents, final int upToCharPosition ){		
+	protected int countLines(final String contents, final int upToCharPosition) {
 		int lineNumber = 0;
-		try{
-			final String textBeforeCharPosition = contents.substring( 0, upToCharPosition );
-			final BufferedReader reader = new BufferedReader( new StringReader( textBeforeCharPosition ));
-			while( true ){
+		try {
+			final String textBeforeCharPosition = contents.substring(0, upToCharPosition);
+			final BufferedReader reader = new BufferedReader(new StringReader(textBeforeCharPosition));
+			while (true) {
 				final String line = reader.readLine();
-				if( null == line ){
+				if (null == line) {
 					break;
 				}
 				lineNumber++;
 			}
-		} catch ( final IOException shouldntHappen ){
-			throw new RuntimeException( shouldntHappen );
+		} catch (final IOException shouldntHappen) {
+			throw new RuntimeException(shouldntHappen);
 		}
-		
+
 		return lineNumber + 1;// the first line is 1 not 0.
 	}
-	
-	protected void throwTemplateContainsUnclosedBlock( final int lineNumber ){
-		this.throwException( new HtmlTemplateFactoryGeneratorException("Unable to find the closing %> for a value or java code block starting at line: " + lineNumber ));
+
+	protected void throwTemplateContainsUnclosedBlock(final int lineNumber) {
+		this.throwException(new HtmlTemplateFactoryGeneratorException(
+				"Unable to find the closing %> for a value or java code block starting at line: " + lineNumber));
 	}
-	protected void throwTemplateContainsEmptyBlock(final int lineNumber ){
-		this.throwException( new HtmlTemplateFactoryGeneratorException("A block within the template is empty on line: " + lineNumber ));
+
+	protected void throwTemplateContainsEmptyBlock(final int lineNumber) {
+		this.throwException(new HtmlTemplateFactoryGeneratorException("A block within the template is empty on line: " + lineNumber));
 	}
-	
+
 	/**
 	 * A checker method that verifies that the given method has no parameters.
-	 * @param method The method to check
+	 * 
+	 * @param method
+	 *            The method to check
 	 */
-	protected void checkMethodHasNoParameters( final Method method ){
+	protected void checkMethodHasNoParameters(final Method method) {
 		if (method.getParameters().size() != 0) {
 			throwMethodHasParameters(method);
-		} 
+		}
 	}
 
 	protected void throwMethodHasParameters(final Method method) {
-		throwException( new HtmlTemplateFactoryGeneratorException("HtmlTemplateFactory methods such as \"" + this.toString( method ) + "\" must not have any parameters."));
+		throwException(new HtmlTemplateFactoryGeneratorException("HtmlTemplateFactory methods such as \"" + this.toString(method)
+				+ "\" must not have any parameters."));
 	}
 
 	protected void throwUnsupportedWidgetType(final Method method) {
-		throwException( new HtmlTemplateFactoryGeneratorException("The return type of the method \"" + this.toString( method ) + "\" is not of a supported widget type."));
+		throwException(new HtmlTemplateFactoryGeneratorException("The return type of the method \"" + this.toString(method)
+				+ "\" is not of a supported widget type."));
 	}
 
 	/**
@@ -805,7 +832,7 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 		Checker.notNull("parameter:method", method);
 
 		final List values = method.getMetadataValues(Constants.ID_ANNOTATION);
-		if (null == values || values.size() == 0 ) {
+		if (null == values || values.size() == 0) {
 			throwUnableToFindIdAnnotation(method);
 		}
 		if (values.size() != 1) {
@@ -815,17 +842,19 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 	}
 
 	protected void throwUnableToFindIdAnnotation(final Method method) {
-		throwException( new HtmlTemplateFactoryGeneratorException("Unable to find an \"" + Constants.ID_ANNOTATION + "\" annotation upon the method: \"" + this.toString( method) + "\"."));
+		throwException(new HtmlTemplateFactoryGeneratorException("Unable to find an \"" + Constants.ID_ANNOTATION
+				+ "\" annotation upon the method: \"" + this.toString(method) + "\"."));
 	}
 
-	protected void throwIdAnnotationHasMoreThanOneValue(final Method method, final List values ) {
-		throwException( new HtmlTemplateFactoryGeneratorException("The \"" + Constants.ID_ANNOTATION + "\" annotation has more than one value \"" + values + "\" upon the method: \"" + this.toString( method) + "\"."));
+	protected void throwIdAnnotationHasMoreThanOneValue(final Method method, final List values) {
+		throwException(new HtmlTemplateFactoryGeneratorException("The \"" + Constants.ID_ANNOTATION
+				+ "\" annotation has more than one value \"" + values + "\" upon the method: \"" + this.toString(method) + "\"."));
 	}
-	
+
 	protected String getGeneratedTypeNameSuffix() {
 		return Constants.SUFFIX;
 	}
-	
+
 	protected Type getHtmlTemplateFactory() {
 		return this.getGeneratorContext().getType(Constants.HTML_TEMPLATE_FACTORY);
 	}
@@ -833,12 +862,12 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 	protected Type getHtmlTemplateFactoryImpl() {
 		return this.getGeneratorContext().getType(Constants.HTML_TEMPLATE_FACTORY_IMPL);
 	}
-	
-	protected void throwException( final HtmlTemplateFactoryGeneratorException exception ){
+
+	protected void throwException(final HtmlTemplateFactoryGeneratorException exception) {
 		throw exception;
 	}
-	
-	protected String toString( final Method method ){
+
+	protected String toString(final Method method) {
 		return method.getEnclosingType() + "." + method.getName();
 	}
 }

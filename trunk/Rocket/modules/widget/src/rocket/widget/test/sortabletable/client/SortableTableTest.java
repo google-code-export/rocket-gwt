@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import rocket.browser.client.Browser;
 import rocket.util.client.Checker;
 import rocket.util.client.StringComparator;
 import rocket.widget.client.SortableTable;
@@ -202,11 +201,11 @@ public class SortableTableTest implements EntryPoint {
 		adder.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignore) {
 				final Fruit fruit = new Fruit();
-				fruit.name = Browser.prompt("Fruit name", "");
-				fruit.colour = Browser.prompt("Colour", "red");
-				fruit.seedCount = Integer.parseInt(Browser.prompt("Seed count", "10"));
-				fruit.shiny = "true".equalsIgnoreCase(Browser.prompt("Shiny ?(true/false)", "false"));
-				fruit.weight = Integer.parseInt(Browser.prompt("Avg weight", "10"));
+				fruit.name = Window.prompt("Fruit name", "");
+				fruit.colour = Window.prompt("Colour", "red");
+				fruit.seedCount = Integer.parseInt(Window.prompt("Seed count", "10"));
+				fruit.shiny = "true".equalsIgnoreCase(Window.prompt("Shiny ?(true/false)", "false"));
+				fruit.weight = Integer.parseInt(Window.prompt("Avg weight", "10"));
 
 				table.getRows().add(fruit);
 			}
@@ -217,7 +216,7 @@ public class SortableTableTest implements EntryPoint {
 		rootPanel.add(removeFruit);
 		removeFruit.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignore) {
-				final int index = Integer.parseInt(Browser.prompt("Fruit index", "0"));
+				final int index = Integer.parseInt(Window.prompt("Fruit index", "0"));
 				table.getRows().remove(index);
 			}
 		});
@@ -226,7 +225,7 @@ public class SortableTableTest implements EntryPoint {
 		rootPanel.add(removeRow);
 		removeRow.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignore) {
-				final int index = Integer.parseInt(Browser.prompt("Remove row", "0"));
+				final int index = Integer.parseInt(Window.prompt("Remove row", "0"));
 				table.getTableRows().remove(index);
 
 			}
@@ -236,7 +235,7 @@ public class SortableTableTest implements EntryPoint {
 		rootPanel.add(fruitGetter);
 		fruitGetter.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignore) {
-				final int index = Integer.parseInt(Browser.prompt("Fruit index", "0"));
+				final int index = Integer.parseInt(Window.prompt("Fruit index", "0"));
 				final Object fruit = table.getRows().get(index);
 				Window.alert("Fruit Index: " + index + "\n" + fruit);
 			}
@@ -246,7 +245,7 @@ public class SortableTableTest implements EntryPoint {
 		rootPanel.add(tableRowGetter);
 		tableRowGetter.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignore) {
-				final int row = Integer.parseInt(Browser.prompt("Table row", "0"));
+				final int row = Integer.parseInt(Window.prompt("Table row", "0"));
 				final Object fruit = table.getTableRows().get(row);
 				Window.alert("row: " + row + "\n" + fruit);
 			}
@@ -256,7 +255,7 @@ public class SortableTableTest implements EntryPoint {
 		rootPanel.add(bulkAdder);
 		bulkAdder.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final String countString = Browser.prompt("Enter the number of fruits to add", "10");
+				final String countString = Window.prompt("Enter the number of fruits to add", "10");
 
 				final int count = Integer.parseInt(countString.trim());
 				final List newFruits = SortableTableTest.this.generateFruit(count);

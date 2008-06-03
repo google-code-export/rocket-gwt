@@ -37,6 +37,8 @@ import com.google.gwt.user.client.ui.Widget;
  * should be active with all others disabled.
  * 
  * @author Miroslav Pokorny (mP)
+ * 
+ * FIXME get rid of HorizontalPanel property
  */
 public class StyleSheetPicker extends CompositeWidget {
 
@@ -44,28 +46,33 @@ public class StyleSheetPicker extends CompositeWidget {
 		super();
 	}
 
+	@Override
 	protected void beforeCreateWidget() {
 		super.beforeCreateWidget();
 
 		this.setMappings(new HashMap());
 	}
 
+	@Override
 	protected Widget createWidget() {
 		final HorizontalPanel horizontalPanel = this.createHorizontalPanel();
 		this.setHorizontalPanel(horizontalPanel);
 		return horizontalPanel;
 	}
 
+	@Override
 	protected void afterCreateWidget() {
 		super.afterCreateWidget();
 
 		this.setText(WidgetConstants.STYLESHEET_PICKER_LABEL_TEXT);
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.STYLESHEET_PICKER_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS;
 	}
@@ -165,20 +172,13 @@ public class StyleSheetPicker extends CompositeWidget {
 
 	public Button getButton(final int index) {
 		Checker.isPositive("parameter:index", index);
-		return (Button) this.getHorizontalPanel().getWidget(index + 1);// skip
-		// the
-		// first
-		// Label
-		// widget
+		// skip the label widget
+		return (Button) this.getHorizontalPanel().getWidget(index + 1);
 	}
 
 	public int getButtonCount() {
-		return this.getHorizontalPanel().getWidgetCount() - 1; // less 1
-		// because the
-		// count
-		// shouldnt
-		// include the
-		// Label widget
+		// take 1 because we dont want to include the label widget
+		return this.getHorizontalPanel().getWidgetCount() - 1;
 	}
 
 	/**

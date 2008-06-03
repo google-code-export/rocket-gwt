@@ -47,9 +47,11 @@ abstract class HtmlOrLabel extends FocusWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(Element element) {
 	}
 
+	@Override
 	protected Element createElement() {
 		return DOM.createDiv();
 	}
@@ -67,11 +69,11 @@ abstract class HtmlOrLabel extends FocusWidget {
 	}
 
 	public String getText() {
-		return DOM.getInnerText(getElement());
+		return this.getElement().getInnerText();
 	}
 
 	public void setText(final String text) {
-		DOM.setInnerText(getElement(), text);
+		this.getElement().setInnerText(text);
 	}
 
 	public boolean getWordWrap() {

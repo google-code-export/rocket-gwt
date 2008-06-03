@@ -17,53 +17,55 @@ package rocket.widget.rebind.imagefactory;
 
 import rocket.generator.rebind.codeblock.StringLiteral;
 import rocket.generator.rebind.codeblock.TemplatedFileCodeBlock;
-import rocket.util.client.Checker;
 import rocket.generator.rebind.type.Type;
+import rocket.util.client.Checker;
 
 public class CreateImageTemplatedFile extends TemplatedFileCodeBlock {
 
 	protected String getResourceName() {
 		return ImageFactoryConstants.TEMPLATE;
 	}
-	
+
 	protected Object getValue0(final String name) {
 		Object value = null;
 
 		if (ImageFactoryConstants.URL_TEMPLATE_PLACEHOLDER.equals(name)) {
 			value = new StringLiteral(this.getUrl());
 		}
-		if( ImageFactoryConstants.IMAGE_TYPE_TEMPLATE_PLACEHOLDER.equals( name ) ){
+		if (ImageFactoryConstants.IMAGE_TYPE_TEMPLATE_PLACEHOLDER.equals(name)) {
 			value = this.getType();
 		}
-		
+
 		return value;
 	}
 
 	/**
 	 * The image type which is typically either a {
-	 * @link com.google.gwt.user.client.ui.Image } or {@link rocket.widget.client.Image }
+	 * 
+	 * @link com.google.gwt.user.client.ui.Image } or
+	 *       {@link rocket.widget.client.Image }
 	 */
 	private Type type;
-	
-	protected Type getType(){
+
+	protected Type getType() {
 		Checker.notNull("field:type", type);
 		return this.type;
 	}
-	
-	public void setType( final Type type ){
+
+	public void setType(final Type type) {
 		Checker.notNull("parameter:type", type);
 		this.type = type;
 	}
-	
+
 	private String url;
-	
-	protected String getUrl(){
-		Checker.notEmpty( "field:url", url );
+
+	protected String getUrl() {
+		Checker.notEmpty("field:url", url);
 		return this.url;
 	}
-	
-	public void setUrl( final String url ){
-		Checker.notEmpty( "parameter:url", url );
+
+	public void setUrl(final String url) {
+		Checker.notEmpty("parameter:url", url);
 		this.url = url;
 	}
 }

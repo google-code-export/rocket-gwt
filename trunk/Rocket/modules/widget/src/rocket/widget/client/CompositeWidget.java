@@ -64,7 +64,6 @@ abstract public class CompositeWidget extends com.google.gwt.user.client.ui.Comp
 
 	/**
 	 * This method is called prior to {@link #createWidget()}
-	 * 
 	 */
 	protected void beforeCreateWidget() {
 		final int eventBitsSunk = this.getSunkEventsBitMask();
@@ -99,6 +98,7 @@ abstract public class CompositeWidget extends com.google.gwt.user.client.ui.Comp
 	 */
 	abstract protected String getInitialStyleName();
 
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 
@@ -138,25 +138,28 @@ abstract public class CompositeWidget extends com.google.gwt.user.client.ui.Comp
 	 * The complement of onAttach. This method removes the event listener for
 	 * the sunk event target.
 	 */
+	@Override
 	protected void onDetach() {
 		this.clearSinkEvents();
 		super.onDetach();
 	}
 
 	/**
-	 * This method is called when a widget is deatached from the dom, cleaning up any event listener references to avoid
-	 * memory leaks in certain browsers.
+	 * This method is called when a widget is deatached from the dom, cleaning
+	 * up any event listener references to avoid memory leaks in certain
+	 * browsers.
 	 */
-	protected void clearSinkEvents(){
+	protected void clearSinkEvents() {
 		Element element = this.getSunkEventsTarget();
 		if (0 != this.getSunkEventsBitMask()) {
 			element = this.getSunkEventsTarget();
 		} else {
-			element = this.getElement(); // prolly dont need but to be sure...
+			element = this.getElement(); // prolly dont need but to be
+			// sure...
 		}
-		DOM.setEventListener(element, null );
+		DOM.setEventListener(element, null);
 	}
-	
+
 	/**
 	 * Dispatches the and fires the appropriate listeners based on the event
 	 * type

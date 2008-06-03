@@ -74,7 +74,7 @@ public class AccordionPanelTest implements EntryPoint {
 	protected void completeAccordionPanel(final AccordionPanel accordionPanel) {
 		Checker.notNull("parameter:accordionPanel", accordionPanel);
 
-		String text = GWT.getTypeName(accordionPanel);
+		String text = accordionPanel.getClass().getName();
 		text = text.substring(1 + text.lastIndexOf('.'));
 
 		final AccordionItem item = new AccordionItem();
@@ -117,7 +117,7 @@ public class AccordionPanelTest implements EntryPoint {
 		return DOM.getInnerHTML(element);
 	}
 
-	class AccordionPanelTestInterativeList extends rocket.testing.client.InteractiveList {
+	class AccordionPanelTestInterativeList extends rocket.testing.client.InteractiveList<AccordionItem> {
 		AccordionPanelTestInterativeList() {
 			super();
 		}
@@ -134,42 +134,42 @@ public class AccordionPanelTest implements EntryPoint {
 			throw new UnsupportedOperationException("isEmpty()");
 		}
 
-		protected boolean listAdd(final Object element) {
-			this.getAccordionPanel().add((AccordionItem) element);
+		protected boolean listAdd(final AccordionItem element) {
+			this.getAccordionPanel().add(element);
 			return true;
 		}
 
-		protected void listInsert(final int index, final Object element) {
-			this.getAccordionPanel().insert(index, (AccordionItem) element);
+		protected void listInsert(final int index, final AccordionItem element) {
+			this.getAccordionPanel().insert(index, element);
 		}
 
-		protected Object listGet(final int index) {
+		protected AccordionItem listGet(final int index) {
 			return this.getAccordionPanel().get(index);
 		}
 
-		protected Object listRemove(final int index) {
+		protected AccordionItem listRemove(final int index) {
 			final AccordionPanel accordionPanel = this.getAccordionPanel();
 			final AccordionItem accordionItem = accordionPanel.get(index);
 			accordionPanel.remove(index);
 			return accordionItem;
 		}
 
-		protected Object listSet(final int index, final Object element) {
+		protected AccordionItem listSet(final int index, final AccordionItem element) {
 			throw new UnsupportedOperationException("set()");
 		}
 
-		protected Object createElement() {
+		protected AccordionItem createElement() {
 			final AccordionItem item = new AccordionItem();
 			item.setCaption("" + new Date());
 			item.setContent(new HTML(AccordionPanelTest.this.getContent()));
 			return item;
 		}
 
-		protected Iterator listIterator() {
+		protected Iterator<AccordionItem> listIterator() {
 			return this.getAccordionPanel().iterator();
 		}
 
-		protected void checkType(Object element) {
+		protected void checkType(AccordionItem element) {
 			if (false == (element instanceof AccordionItem)) {
 				Checker.fail("Unknown element type. element ");
 			}
@@ -178,11 +178,10 @@ public class AccordionPanelTest implements EntryPoint {
 		/**
 		 * Creates a listbox friendly string form for the given element.
 		 * 
-		 * @param element
+		 * @param accordionItem
 		 * @return
 		 */
-		protected String toString(final Object element) {
-			final AccordionItem accordionItem = (AccordionItem) element;
+		protected String toString(final AccordionItem accordionItem) {
 			return accordionItem.getCaption();
 		}
 

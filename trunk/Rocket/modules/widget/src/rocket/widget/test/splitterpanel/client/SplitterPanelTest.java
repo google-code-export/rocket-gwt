@@ -18,7 +18,6 @@ package rocket.widget.test.splitterpanel.client;
 import java.util.Date;
 import java.util.Iterator;
 
-import rocket.browser.client.Browser;
 import rocket.testing.client.InteractiveList;
 import rocket.util.client.Checker;
 import rocket.util.client.StackTrace;
@@ -60,7 +59,7 @@ public class SplitterPanelTest implements EntryPoint {
 		root.add(this.createVerticalSplitterPanelListView());
 		root.add(this.createVerticalSplitterPanel());
 
-		Widgets.forceDocumentContentsToScroll( 100 );
+		Widgets.forceDocumentContentsToScroll(100);
 	}
 
 	HorizontalSplitterPanel horizontalSplitterPanel;
@@ -92,7 +91,7 @@ public class SplitterPanelTest implements EntryPoint {
 	 */
 	protected Widget createHorizontalSplitterPanelListView() {
 
-		final InteractiveList list = new InteractiveList() {
+		final InteractiveList list = new InteractiveList<SplitterItem>() {
 
 			protected String getCollectionTypeName() {
 				return "HorizontalSplitterPanel";
@@ -106,51 +105,50 @@ public class SplitterPanelTest implements EntryPoint {
 				throw new UnsupportedOperationException();
 			}
 
-			protected boolean listAdd(Object element) {
+			protected boolean listAdd(SplitterItem element) {
 				SplitterPanelTest.this.getHorizontalSplitterPanel().add((SplitterItem) element);
 				return true;
 			}
 
-			protected void listInsert(final int index, final Object element) {
+			protected void listInsert(final int index, final SplitterItem element) {
 				SplitterPanelTest.this.getHorizontalSplitterPanel().insert(index, (SplitterItem) element);
 			}
 
-			protected Object listGet(final int index) {
+			protected SplitterItem listGet(final int index) {
 				return SplitterPanelTest.this.getHorizontalSplitterPanel().get(index);
 			}
 
-			protected Object listRemove(final int index) {
+			protected SplitterItem listRemove(final int index) {
 				final SplitterItem item = SplitterPanelTest.this.getHorizontalSplitterPanel().get(index);
 				SplitterPanelTest.this.getHorizontalSplitterPanel().remove(index);
 				return item;
 			}
 
-			protected Object listSet(int index, Object element) {
+			protected SplitterItem listSet(int index, SplitterItem element) {
 				throw new UnsupportedOperationException();
 			}
 
-			protected Object createElement() {
+			protected SplitterItem createElement() {
 				final SplitterItem item = new SplitterItem();
-				item.setMinimumSize(Integer.parseInt(Browser.prompt("MinimumSize in pixels", "100")));
-				item.setSizeShare(Integer.parseInt(Browser.prompt("ShareSize", "100")));
+				item.setMinimumSize(Integer.parseInt(Window.prompt("MinimumSize in pixels", "100")));
+				item.setSizeShare(Integer.parseInt(Window.prompt("ShareSize", "100")));
 				item.setWidget(SplitterPanelTest.createWidget());
 				return item;
 			}
 
-			protected Iterator listIterator() {
+			protected Iterator<SplitterItem> listIterator() {
 				return SplitterPanelTest.this.getHorizontalSplitterPanel().iterator();
 			}
 
-			protected void checkType(Object element) {
+			protected void checkType(SplitterItem element) {
 				if (false == (element instanceof SplitterItem)) {
 					Checker.fail("");
 				}
 			}
 
-			protected String toString(final Object element) {
-				final SplitterItem item = (SplitterItem) element;
-				final Widget widget = item.getWidget();
-				return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText\""
+			protected String toString(final SplitterItem splitterItem) {
+				final Widget widget = splitterItem.getWidget();
+				return "minimumSize: " + splitterItem.getMinimumSize() + ", sizeShare: " + splitterItem.getSizeShare() + ", innerText\""
 						+ DOM.getInnerText(widget.getElement()).substring(0, 100) + "...]";
 			}
 		};
@@ -187,7 +185,7 @@ public class SplitterPanelTest implements EntryPoint {
 	 */
 	protected Widget createVerticalSplitterPanelListView() {
 
-		final InteractiveList list = new InteractiveList() {
+		final InteractiveList list = new InteractiveList<SplitterItem>() {
 
 			protected String getCollectionTypeName() {
 				return "VerticalSplitterPanel";
@@ -201,52 +199,51 @@ public class SplitterPanelTest implements EntryPoint {
 				throw new UnsupportedOperationException();
 			}
 
-			protected boolean listAdd(Object element) {
+			protected boolean listAdd(SplitterItem element) {
 				SplitterPanelTest.this.getVerticalSplitterPanel().add((SplitterItem) element);
 				return true;
 			}
 
-			protected void listInsert(final int index, final Object element) {
+			protected void listInsert(final int index, final SplitterItem element) {
 				SplitterPanelTest.this.getVerticalSplitterPanel().insert(index, (SplitterItem) element);
 			}
 
-			protected Object listGet(final int index) {
+			protected SplitterItem listGet(final int index) {
 				return SplitterPanelTest.this.getVerticalSplitterPanel().get(index);
 			}
 
-			protected Object listRemove(final int index) {
+			protected SplitterItem listRemove(final int index) {
 				final SplitterItem item = SplitterPanelTest.this.getVerticalSplitterPanel().get(index);
 				SplitterPanelTest.this.getVerticalSplitterPanel().remove(index);
 				return item;
 			}
 
-			protected Object listSet(int index, Object element) {
+			protected SplitterItem listSet(int index, SplitterItem element) {
 				throw new UnsupportedOperationException();
 			}
 
-			protected Object createElement() {
+			protected SplitterItem createElement() {
 				final SplitterItem item = new SplitterItem();
 
-				item.setMinimumSize(Integer.parseInt(Browser.prompt("MinimumSize in pixels", "100")));
-				item.setSizeShare(Integer.parseInt(Browser.prompt("SizeShare", "100")));
+				item.setMinimumSize(Integer.parseInt(Window.prompt("MinimumSize in pixels", "100")));
+				item.setSizeShare(Integer.parseInt(Window.prompt("SizeShare", "100")));
 				item.setWidget(SplitterPanelTest.createWidget());
 				return item;
 			}
 
-			protected Iterator listIterator() {
+			protected Iterator<SplitterItem> listIterator() {
 				return SplitterPanelTest.this.getVerticalSplitterPanel().iterator();
 			}
 
-			protected void checkType(Object element) {
+			protected void checkType(SplitterItem element) {
 				if (false == (element instanceof SplitterItem)) {
 					Checker.fail("");
 				}
 			}
 
-			protected String toString(final Object element) {
-				final SplitterItem item = (SplitterItem) element;
-				final Widget widget = item.getWidget();
-				return "minimumSize: " + item.getMinimumSize() + ", sizeShare: " + item.getSizeShare() + ", innerText\""
+			protected String toString(final SplitterItem splitterItem) {
+				final Widget widget = splitterItem.getWidget();
+				return "minimumSize: " + splitterItem.getMinimumSize() + ", sizeShare: " + splitterItem.getSizeShare() + ", innerText\""
 						+ DOM.getInnerText(widget.getElement()).substring(0, 100) + "...]";
 			}
 		};

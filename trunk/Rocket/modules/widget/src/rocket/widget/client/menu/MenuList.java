@@ -28,7 +28,6 @@ import rocket.util.client.Checker;
 import rocket.util.client.Utilities;
 import rocket.widget.client.CompositePanel;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
@@ -86,7 +85,7 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 
 		while (true) {
 			final Element targetElement = event.getTo();
-			if (DOM.isOrHasChild(this.getElement(), targetElement)) {
+			if (this.getElement().isOrHasChild(targetElement)) {
 				event.cancelBubble(true);
 				break;
 			}

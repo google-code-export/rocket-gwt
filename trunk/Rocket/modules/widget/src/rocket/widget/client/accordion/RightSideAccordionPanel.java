@@ -19,7 +19,6 @@ import rocket.widget.client.DivPanel;
 
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * A RightSideAccordion compromises a menu on the right with the visible content
@@ -44,33 +43,35 @@ public class RightSideAccordionPanel extends TwoColumnAccordionPanel {
 		return panel;
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return Constants.RIGHT_SIDE_ACCORDION_PANEL_STYLE;
 	}
 
-	protected DivPanel getCaptionsPanel(){
-		return (DivPanel) this.getPanel().getWidget( Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_PANEL_INDEX );
+	protected DivPanel getCaptionsPanel() {
+		return (DivPanel) this.getPanel().getWidget(Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_PANEL_INDEX);
 	}
-	
+
 	protected String getCaptionsPanelStyle() {
 		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
 	}
-	
+
 	protected String getCaptionStyle() {
 		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTION_STYLE;
 	}
+
 	protected String getCaptionSelectedStyle() {
 		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTION_SELECTED_STYLE;
 	}
 
-	protected DeckPanel getContentsPanel(){
-		return (DeckPanel) this.getPanel().getWidget( Constants.RIGHT_SIDE_ACCORDION_PANEL_CONTENTS_PANEL_INDEX );
+	protected DeckPanel getContentsPanel() {
+		return (DeckPanel) this.getPanel().getWidget(Constants.RIGHT_SIDE_ACCORDION_PANEL_CONTENTS_PANEL_INDEX);
 	}
 
 	protected String getContentsPanelStyle() {
 		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CAPTIONS_STYLE;
 	}
-	
+
 	protected String getContentStyle() {
 		return Constants.RIGHT_SIDE_ACCORDION_PANEL_CONTENT_STYLE;
 	}

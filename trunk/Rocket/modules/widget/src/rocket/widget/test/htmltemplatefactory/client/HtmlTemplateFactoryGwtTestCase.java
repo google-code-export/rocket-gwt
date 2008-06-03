@@ -15,7 +15,6 @@
  */
 package rocket.widget.test.htmltemplatefactory.client;
 
-import rocket.dom.client.Dom;
 import rocket.widget.client.Button;
 import rocket.widget.client.CheckBox;
 import rocket.widget.client.FormPanel;
@@ -30,6 +29,9 @@ import rocket.widget.client.TextArea;
 import rocket.widget.client.TextBox;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.FormElement;
+import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -44,23 +46,28 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testTextBox() {
 		final TestTemplate test = new TestTemplate() {
+
+			@Override
 			Element createElement() {
 				return DOM.createInputText();
 			}
 
+			@Override
 			String getId() {
 				return "testTextBox";
 			}
 
+			@Override
 			Widget getInstance() {
 				final TextBoxHtmlTemplateFactory factory = (TextBoxHtmlTemplateFactory) GWT.create(TextBoxHtmlTemplateFactory.class);
 				return factory.getTextBox();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final TextBox textBox = (TextBox) widget;
 				final String value = "apple";
-				DOM.setElementProperty(element, "value", value);
+				element.setPropertyString("value", value);
 				assertEquals("" + textBox, value, textBox.getText());
 			}
 		};
@@ -77,24 +84,28 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testPasswordTextBox() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				return DOM.createInputPassword();
 			}
 
+			@Override
 			String getId() {
 				return "testPasswordTextBox";
 			}
 
+			@Override
 			Widget getInstance() {
 				final PasswordTextBoxHtmlTemplateFactory factory = (PasswordTextBoxHtmlTemplateFactory) GWT
 						.create(PasswordTextBoxHtmlTemplateFactory.class);
 				return factory.getPasswordTextBox();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final TextBox password = (TextBox) widget;
 				final String value = "apple";
-				DOM.setElementProperty(element, "value", value);
+				element.setPropertyString("value", value);
 				assertEquals("" + password, value, password.getText());
 			}
 		};
@@ -111,23 +122,27 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testTextArea() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				return DOM.createTextArea();
 			}
 
+			@Override
 			String getId() {
 				return "testTextArea";
 			}
 
+			@Override
 			Widget getInstance() {
 				final TextAreaHtmlTemplateFactory factory = (TextAreaHtmlTemplateFactory) GWT.create(TextAreaHtmlTemplateFactory.class);
 				return factory.getTextArea();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final TextArea textArea = (TextArea) widget;
 				final String value = "apple";
-				DOM.setElementProperty(element, "value", value);
+				element.setPropertyString("value", value);
 				assertEquals("" + textArea, value, textArea.getText());
 			}
 		};
@@ -144,26 +159,30 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testRadioButton() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				return DOM.createInputRadio("group");
 			}
 
+			@Override
 			String getId() {
 				return "testRadioButton";
 			}
 
+			@Override
 			Widget getInstance() {
 				final RadioButtonHtmlTemplateFactory factory = (RadioButtonHtmlTemplateFactory) GWT
 						.create(RadioButtonHtmlTemplateFactory.class);
 				return factory.getRadioButton();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final RadioButton radioButton = (RadioButton) widget;
 
 				final String name = "testRadioButton";
 				radioButton.setName(name);
-				assertEquals("element: " + DOM.toString(element) + "\nradioButton: " + radioButton + "\n", name, radioButton.getName());
+				assertEquals("element: " + element.toString() + "\nradioButton: " + radioButton + "\n", name, radioButton.getName());
 			}
 		};
 		test.run();
@@ -179,24 +198,28 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testCheckBox() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				return DOM.createInputCheck();
 			}
 
+			@Override
 			String getId() {
 				return "testCheckBox";
 			}
 
+			@Override
 			Widget getInstance() {
 				final CheckBoxHtmlTemplateFactory factory = (CheckBoxHtmlTemplateFactory) GWT.create(CheckBoxHtmlTemplateFactory.class);
 				return factory.getCheckBox();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final CheckBox checkBox = (CheckBox) widget;
 				final String name = "testCheckBox";
 				checkBox.setName(name);
-				assertEquals("element: " + DOM.toString(element) + "\ncheckBox: " + checkBox + "\n", name, checkBox.getName());
+				assertEquals("element: " + element.toString() + "\ncheckBox: " + checkBox + "\n", name, checkBox.getName());
 			}
 		};
 		test.run();
@@ -212,31 +235,35 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testListBox() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				final Element select = DOM.createSelect();
 				final Element firstOption = DOM.createElement("option");
-				DOM.setElementProperty(firstOption, "value", "first");
-				DOM.setInnerHTML(firstOption, "first");
-				DOM.appendChild(select, firstOption);
+				firstOption.setPropertyString("value", "first");
+				firstOption.setInnerHTML("first");
+				select.appendChild(firstOption);
 
 				final Element secondOption = DOM.createElement("option");
-				DOM.setElementPropertyBoolean(secondOption, "selected", true);
-				DOM.setElementProperty(secondOption, "value", "two");
-				DOM.setInnerHTML(secondOption, "two");
-				DOM.appendChild(select, secondOption);
+				secondOption.setPropertyBoolean("selected", true);
+				secondOption.setPropertyString("value", "two");
+				secondOption.setInnerHTML("two");
+				select.appendChild(secondOption);
 
 				return select;
 			}
 
+			@Override
 			String getId() {
 				return "testListBox";
 			}
 
+			@Override
 			Widget getInstance() {
 				final ListBoxHtmlTemplateFactory factory = (ListBoxHtmlTemplateFactory) GWT.create(ListBoxHtmlTemplateFactory.class);
 				return factory.getListBox();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final ListBox listBox = (ListBox) widget;
 				assertEquals("" + listBox, 2, listBox.getItemCount());
@@ -256,23 +283,27 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testLabel() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				return DOM.createDiv();
 			}
 
+			@Override
 			String getId() {
 				return "testLabel";
 			}
 
+			@Override
 			Widget getInstance() {
 				final LabelHtmlTemplateFactory factory = (LabelHtmlTemplateFactory) GWT.create(LabelHtmlTemplateFactory.class);
 				return factory.getLabel();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final Label label = (Label) widget;
 				final String value = "apple";
-				DOM.setInnerHTML(element, value);
+				element.setInnerHTML(value);
 				assertEquals("" + label, value, label.getText());
 			}
 		};
@@ -289,23 +320,27 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testButton() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				return DOM.createButton();
 			}
 
+			@Override
 			String getId() {
 				return "testButton";
 			}
 
+			@Override
 			Widget getInstance() {
 				final ButtonHtmlTemplateFactory factory = (ButtonHtmlTemplateFactory) GWT.create(ButtonHtmlTemplateFactory.class);
 				return factory.getButton();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final Button button = (Button) widget;
 				final String value = "apple";
-				DOM.setInnerHTML(element, value);
+				element.setInnerHTML(value);
 				assertEquals("" + button, value, button.getText());
 			}
 		};
@@ -322,23 +357,27 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testImage() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				return DOM.createImg();
 			}
 
+			@Override
 			String getId() {
 				return "testImage";
 			}
 
+			@Override
 			Widget getInstance() {
 				final ImageHtmlTemplateFactory factory = (ImageHtmlTemplateFactory) GWT.create(ImageHtmlTemplateFactory.class);
 				return factory.getImage();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final Image image = (Image) widget;
 				final String value = "apple";
-				DOM.setElementProperty(element, "title", value);
+				element.setPropertyString("title", value);
 				assertEquals("" + image, value, image.getTitle());
 			}
 		};
@@ -355,23 +394,28 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testHyperlink() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				return DOM.createAnchor();
 			}
 
+			@Override
 			String getId() {
 				return "testHyperlink";
 			}
 
+			@Override
 			Widget getInstance() {
-				final HyperlinkHtmlTemplateFactory factory = (HyperlinkHtmlTemplateFactory) GWT.create(HyperlinkHtmlTemplateFactory.class);
+				final HyperlinkHtmlTemplateFactory factory = (HyperlinkHtmlTemplateFactory) GWT
+						.create(HyperlinkHtmlTemplateFactory.class);
 				return factory.getHyperlink();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final Hyperlink hyperlink = (Hyperlink) widget;
 				final String value = "apple";
-				DOM.setInnerHTML(element, value);
+				element.setInnerHTML(value);
 				assertTrue("HyperLink:" + hyperlink + "\nelement:" + element, hyperlink.getHtml().indexOf(value) != -1);
 			}
 		};
@@ -388,23 +432,27 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 
 	public void testHtml() {
 		final TestTemplate test = new TestTemplate() {
+			@Override
 			Element createElement() {
 				return DOM.createDiv();
 			}
 
+			@Override
 			String getId() {
 				return "testHtml";
 			}
 
+			@Override
 			Widget getInstance() {
 				final HtmlHtmlTemplateFactory factory = (HtmlHtmlTemplateFactory) GWT.create(HtmlHtmlTemplateFactory.class);
 				return factory.getHtml();
 			}
 
+			@Override
 			void doRemainingTests(final Element element, final Widget widget) {
 				final Html html = (Html) widget;
 				final String value = "<b>apple</b>";
-				DOM.setInnerHTML(element, value);
+				element.setInnerHTML(value);
 				assertEquals("" + html, value.toLowerCase(), html.getHtml().toLowerCase());
 			}
 		};
@@ -423,34 +471,34 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 	public void testForm() {
 		final TestTemplate test = new TestTemplate() {
 			Element createElement() {
-				final Element form = DOM.createForm();
-				DOM.setElementAttribute(form, "method", "POST");
-				DOM.setElementAttribute(form, "action", "test");
+				final FormElement form = DOM.createForm().cast();
+				form.setMethod("POST");
+				form.setAction("test");
 
 				// add some form elements.
-				final Element text = DOM.createInputText();
-				DOM.setElementAttribute(text, "value", "apple");
-				DOM.setElementAttribute(text, "id", "testFormTextBox");
-				DOM.appendChild(form, text);
+				final InputElement text = DOM.createInputText().cast();
+				text.setValue("apple");
+				text.setId("testFormTextBox");
+				form.appendChild(text);
 
-				final Element password = DOM.createInputPassword();
-				DOM.setElementAttribute(password, "value", "banana");
-				DOM.setElementAttribute(password, "id", "testFormPasswordTextBox");
-				DOM.appendChild(form, password);
+				final InputElement password = DOM.createInputPassword().cast();
+				password.setValue("banana");
+				password.setId("testFormPasswordTextBox");
+				form.appendChild(password);
 
-				final Element listBox = DOM.createSelect();
-				DOM.setElementAttribute(listBox, "id", "testFormListBox");
-				DOM.appendChild(form, listBox);
+				final SelectElement listBox = DOM.createSelect().cast();
+				listBox.setId("testFormListBox");
+				form.appendChild(listBox);
 
-				final Element checkBox = DOM.createInputCheck();
-				DOM.setElementAttribute(checkBox, "id", "testFormCheckBox");
-				DOM.appendChild(form, checkBox);
+				final InputElement checkBox = DOM.createInputCheck().cast();
+				checkBox.setId("testFormCheckBox");
+				form.appendChild(checkBox);
 
-				final Element radioBox = DOM.createInputRadio("group");
-				DOM.setElementAttribute(checkBox, "id", "testFormRadioButton");
-				DOM.appendChild(form, radioBox);
+				final InputElement radioBox = DOM.createInputRadio("group").cast();
+				radioBox.setId("testFormRadioButton");
+				form.appendChild(radioBox);
 
-				return form;
+				return form.cast();
 			}
 
 			String getId() {
@@ -517,80 +565,82 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 		 */
 		FormPanel getForm();
 	}
-	
-	public void testIncludesHtmlFile(){
-		final HasOnlyHtml template = (HasOnlyHtml )GWT.create( HasOnlyHtml.class );
+
+	public void testIncludesHtmlFile() {
+		final HasOnlyHtml template = (HasOnlyHtml) GWT.create(HasOnlyHtml.class);
 		final Html html = template.getHtml();
 		final String expected = "Lorem";
 		final String actual = html.getHtml();
-		assertEquals( expected, actual );
+		assertEquals(expected, actual);
 	}
 
-	static interface HasOnlyHtml extends HtmlTemplateFactory{
+	static interface HasOnlyHtml extends HtmlTemplateFactory {
 		/**
 		 * @file html.txt
-		 * @return A new Html file containing the entire contents of the text file.
+		 * @return A new Html file containing the entire contents of the text
+		 *         file.
 		 */
 		Html getHtml();
 	}
-	
-	public void testTemplateIncludesAValue(){
-		final HasHtmlAndValue template = (HasHtmlAndValue) GWT.create( HasHtmlAndValue.class );
+
+	public void testTemplateIncludesAValue() {
+		final HasHtmlAndValue template = (HasHtmlAndValue) GWT.create(HasHtmlAndValue.class);
 		final Html html = template.getHtml();
 		final String expected = "Lorem";
 		final String actual = html.getHtml();
-		assertEquals( expected, actual );
+		assertEquals(expected, actual);
 	}
-	
 
-	static interface HasHtmlAndValue extends HtmlTemplateFactory{
+	static interface HasHtmlAndValue extends HtmlTemplateFactory {
 		/**
 		 * @file value.txt
-		 * @return A new Html file containing the entire contents of the text file.
+		 * @return A new Html file containing the entire contents of the text
+		 *         file.
 		 */
 		Html getHtml();
 	}
 
-	public void testTemplateFileIncludesJavaCode(){
-		final HasHtmlAndJava template = (HasHtmlAndJava) GWT.create( HasHtmlAndJava.class );
+	public void testTemplateFileIncludesJavaCode() {
+		final HasHtmlAndJava template = (HasHtmlAndJava) GWT.create(HasHtmlAndJava.class);
 		final Html html = template.getHtml();
 		final String expected = "Lorem 12345 Ipsum";
 		final String actual = html.getHtml();
-		assertEquals( expected, actual );
+		assertEquals(expected, actual);
 	}
-	
 
-	static interface HasHtmlAndJava extends HtmlTemplateFactory{
+	static interface HasHtmlAndJava extends HtmlTemplateFactory {
 		/**
 		 * @file html-with-java.txt
-		 * @return A new Html file containing the entire contents of the text file.
+		 * @return A new Html file containing the entire contents of the text
+		 *         file.
 		 */
 		Html getHtml();
 	}
 
-	public void testTemplateReferencesASingleParameter(){
-		final HasHtmlAndReferencesParameter template = (HasHtmlAndReferencesParameter) GWT.create( HasHtmlAndReferencesParameter.class );
-		
-		for( int i = 0; i < 10; i++ ){
-			final Html html = template.getHtml( i );
+	public void testTemplateReferencesASingleParameter() {
+		final HasHtmlAndReferencesParameter template = (HasHtmlAndReferencesParameter) GWT.create(HasHtmlAndReferencesParameter.class);
+
+		for (int i = 0; i < 10; i++) {
+			final Html html = template.getHtml(i);
 			final String expected = "" + i;
 			final String actual = html.getHtml();
-			assertEquals( expected, actual );			
+			assertEquals(expected, actual);
 		}
 	}
-	
 
-	static interface HasHtmlAndReferencesParameter extends HtmlTemplateFactory{
+	static interface HasHtmlAndReferencesParameter extends HtmlTemplateFactory {
 		/**
 		 * @file parameter.txt
-		 * @return A new Html file containing the entire contents of the text file.
+		 * @return A new Html file containing the entire contents of the text
+		 *         file.
 		 */
-		Html getHtml( int value );
+		Html getHtml(int value);
 	}
 
-	public void testTemplateReferencesParameters(){
-		final HasHtmlAndReferencesParameters template = (HasHtmlAndReferencesParameters) GWT.create( HasHtmlAndReferencesParameters.class );
-		
+	public void testTemplateReferencesParameters() {
+		final HasHtmlAndReferencesParameters template = (HasHtmlAndReferencesParameters) GWT
+				.create(HasHtmlAndReferencesParameters.class);
+
 		final boolean booleanValue = true;
 		final byte byteValue = 1;
 		final short shortValue = 2;
@@ -601,59 +651,61 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 		final char charValue = 7;
 		final String string = "apple";
 		final Object object = "banana";
-		
-			final Html html = template.getHtml( booleanValue, byteValue, shortValue, intValue, longValue, floatValue, doubleValue, charValue, string, object );
-			final String expected = "Lorem " + booleanValue + byteValue + shortValue + intValue + longValue + floatValue + doubleValue + charValue + string + object;
-			final String actual = html.getHtml();
-			assertEquals( expected, actual );			
-	}
-	
 
-	static interface HasHtmlAndReferencesParameters extends HtmlTemplateFactory{
+		final Html html = template.getHtml(booleanValue, byteValue, shortValue, intValue, longValue, floatValue, doubleValue, charValue,
+				string, object);
+		final String expected = "Lorem " + booleanValue + byteValue + shortValue + intValue + longValue + floatValue + doubleValue
+				+ charValue + string + object;
+		final String actual = html.getHtml();
+		assertEquals(expected, actual);
+	}
+
+	static interface HasHtmlAndReferencesParameters extends HtmlTemplateFactory {
 		/**
 		 * @file parameters.txt
-		 * @return A new Html file containing the entire contents of the text file.
+		 * @return A new Html file containing the entire contents of the text
+		 *         file.
 		 */
-		Html getHtml( boolean booleanValue, byte byteValue, short shortValue, int intValue, long longValue, float floatValue, double doubleValue, char charValue, String string, Object object );
+		Html getHtml(boolean booleanValue, byte byteValue, short shortValue, int intValue, long longValue, float floatValue,
+				double doubleValue, char charValue, String string, Object object);
 	}
-	
 
-	public void testComplexTemplate(){
-		final Complex template = (Complex) GWT.create( Complex.class );
-		
-		for( int i = 0; i < 10; i++ ){			
-			final Html html = template.getHtml( i );			
-			final String actual = html.getHtml().replaceAll( "\n\r", "\n" ).replace('\r', '\n');
-			
-			assertTrue( actual, actual.indexOf( "Lorem") != -1 );
-			
-			for( int j = 0; j < i; j++ ){
-				assertTrue( actual, actual.indexOf( String.valueOf( j )) != -1 );	
+	public void testComplexTemplate() {
+		final Complex template = (Complex) GWT.create(Complex.class);
+
+		for (int i = 0; i < 10; i++) {
+			final Html html = template.getHtml(i);
+			final String actual = html.getHtml().replaceAll("\n\r", "\n").replace('\r', '\n');
+
+			assertTrue(actual, actual.indexOf("Lorem") != -1);
+
+			for (int j = 0; j < i; j++) {
+				assertTrue(actual, actual.indexOf(String.valueOf(j)) != -1);
 			}
-			
-		}			
-	}
-	
 
-	static interface Complex extends HtmlTemplateFactory{
+		}
+	}
+
+	static interface Complex extends HtmlTemplateFactory {
 		/**
 		 * @file complex.txt
-		 * @return A new Html file containing the entire contents of the text file.
+		 * @return A new Html file containing the entire contents of the text
+		 *         file.
 		 */
-		Html getHtml( int i );
+		Html getHtml(int i);
 	}
 
-	
 	/**
 	 * A simple template that makes it easy to test wrapping of an elemetn
 	 */
 	static abstract class TestTemplate {
+
 		public void run() {
 			final Element element = this.createElement();
-			DOM.setElementProperty(element, "id", this.getId());
+			element.setPropertyString("id", this.getId());
 
-			final Element parent = Dom.getBody();
-			DOM.appendChild(parent, element);
+			final Element parent = RootPanel.getBodyElement();
+			parent.appendChild(element);
 			final int index = DOM.getChildIndex(parent, element);
 
 			final Widget widget = this.getInstance();
@@ -664,7 +716,7 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			final Element widgetElement = widget.getElement();
 			assertTrue("element is attached", DOM.isOrHasChild(parent, widgetElement));
 
-			assertTrue("parent", DOM.compare(parent, DOM.getParent(widgetElement)));
+			assertTrue("parent", parent == DOM.getParent(widgetElement));
 			assertEquals("child index", index, DOM.getChildIndex(parent, widgetElement));
 
 			this.doRemainingTests(element, widget);
@@ -712,13 +764,13 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			assertNotNull("parent before removing from parent", widget.getParent());
 
 			final Element element = widget.getElement();
-			assertNotNull("" + element, DOM.getParent(element));
+			assertNotNull("" + element, element.getParentElement());
 
 			widget.removeFromParent();
 
 			assertFalse(widget.isAttached());
 			assertNull("parent after removing from parent", widget.getParent());
-			assertNull(DOM.getParent(element));
+			assertNull(element.getParentElement());
 		}
 
 		void addToAnotherPanel(final Widget widget) {
@@ -726,18 +778,18 @@ public class HtmlTemplateFactoryGwtTestCase extends GWTTestCase {
 			assertNull("before adding to RootPanel", widget.getParent());
 
 			final Element element = widget.getElement();
-			assertNull(DOM.getParent(element));
+			assertNull(element.getParentElement());
 
 			final RootPanel rootPanel = RootPanel.get();
 			rootPanel.add(widget);
 
 			assertTrue(widget.isAttached());
 			assertSame("parent after adding to RootPanel", rootPanel, widget.getParent());
-			assertNotNull(DOM.getParent(element));
+			assertNotNull(element.getParentElement());
 		}
 	}
-	
+
 	static void log(final String message) {
-		 System.out.println( message );
+		System.out.println(message);
 	}
 }

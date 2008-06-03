@@ -20,6 +20,7 @@ import rocket.event.client.ChangeEventListener;
 import rocket.event.client.EventBitMaskConstants;
 import rocket.event.client.FocusEventListener;
 
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -30,7 +31,7 @@ import com.google.gwt.user.client.Element;
  * Most of the internals have been ripped and reworked from the original GWT
  * RadioButton widget.
  * 
- * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
+ * TODO ROCKET When upgrading from GWT 1.5 RC1 reapply changes
  * 
  * @author Miroslav Pokorny
  */
@@ -45,10 +46,12 @@ public class RadioButton extends FocusWidget {
 		super(element);
 	}
 
+	@Override
 	protected void checkElement(final Element element) {
 		Dom.checkInput("parameter:element", element, WidgetConstants.RADIO_BUTTON_INPUT_TYPE);
 	}
 
+	@Override
 	protected Element createElement() {
 		return DOM.createInputRadio(this.getGroupName());
 	}
@@ -67,6 +70,7 @@ public class RadioButton extends FocusWidget {
 		this.groupName = groupName;
 	}
 
+	@Override
 	protected void afterCreateElement() {
 		final EventListenerDispatcher dispatcher = this.createEventListenerDispatcher();
 		this.setEventListenerDispatcher(dispatcher);
@@ -75,10 +79,12 @@ public class RadioButton extends FocusWidget {
 		dispatcher.setFocusEventListeners(dispatcher.createFocusEventListeners());
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.RADIO_BUTTON_STYLE;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return EventBitMaskConstants.FOCUS_EVENTS | EventBitMaskConstants.CHANGE;
 	}
@@ -131,37 +137,46 @@ public class RadioButton extends FocusWidget {
 	protected void replaceInputElement(final Element newElement) {
 		// Collect information we need to set
 
-		final Element oldInputElement = this.getElement();
+		final InputElement oldInputElement = this.getElement().cast();
 
 		int tabIndex = getTabIndex();
 		boolean checked = isChecked();
 		boolean enabled = isEnabled();
-		String uid = DOM.getElementProperty(oldInputElement, "id");
-		String accessKey = DOM.getElementProperty(oldInputElement, "accessKey");
+		String uid = oldInputElement.getId();
+		String accessKey = oldInputElement.getAccessKey();
 
 		// Clear out the old input element
 		setChecked(false);
-		DOM.setElementProperty(oldInputElement, "id", "");
-		DOM.setElementProperty(oldInputElement, "accessKey", "");
+		oldInputElement.setId("");
+		oldInputElement.setAccessKey("");
 
 		// Quickly do the actual replace
-		final Element parent = DOM.getParent(oldInputElement);
-		final int index = DOM.getChildIndex(parent, oldInputElement);
-		DOM.removeChild(parent, oldInputElement);
-		DOM.insertChild(parent, newElement, index);
-		this.setElement(newElement);
+		final Element parent = oldInputElement.getParentElement().cast();
+		final int index = DOM.getChildIndex(parent, (Element) oldInputElement.cast());
+		parent.removeChild(oldInputElement);
+		DOM.insertChild(parent, (Element) newElement.cast(), index);
+		this.invokeReplaceElement(newElement);
 
 		// Setup the new element
-		DOM.sinkEvents(oldInputElement, DOM.getEventsSunk(this.getElement()));
-		DOM.setEventListener(oldInputElement, this);
-		DOM.setElementProperty(oldInputElement, "id", uid);
+		DOM.sinkEvents((Element) oldInputElement.cast(), DOM.getEventsSunk(this.getElement()));
+		DOM.setEventListener((Element) oldInputElement.cast(), this);
+		oldInputElement.setId(uid);
 		if (accessKey != "") {
-			DOM.setElementProperty(oldInputElement, "accessKey", accessKey);
+			oldInputElement.setAccessKey(accessKey);
 		}
 		setTabIndex(tabIndex);
 		setChecked(checked);
 		setEnabled(enabled);
 	}
+
+	/**
+	 * A hack to gain access to the package private replaceElement method
+	 * 
+	 * @param newElement
+	 */
+	native protected void invokeReplaceElement(final Element newElement)/*-{
+			this.@com.google.gwt.user.client.ui.UIObject::replaceElement(Lcom/google/gwt/dom/client/Element;)(newElement);
+		}-*/;
 
 	public void addChangeEventListener(final ChangeEventListener changeEventListener) {
 		this.getEventListenerDispatcher().addChangeEventListener(changeEventListener);

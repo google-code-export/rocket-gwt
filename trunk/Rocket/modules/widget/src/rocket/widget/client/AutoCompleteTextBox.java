@@ -55,6 +55,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 		super(element);
 	}
 
+	@Override
 	public void afterCreateElement() {
 		super.afterCreateElement();
 
@@ -70,6 +71,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 		});
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return WidgetConstants.AUTO_COMPLETE_TEXT_BOX_STYLE;
 	}
@@ -85,12 +87,9 @@ abstract public class AutoCompleteTextBox extends TextBox {
 		final DropDownList dropDownList = this.getDropDownList();
 		final List htmlWidgets = CollectionsHelper.copyIntoList(dropDownList.iterator());
 		htmlWidgets.add(entry);
-		
-		Collections.sort(htmlWidgets, new Comparator() {
-			public int compare(final Object object, final Object otherObject) {
-				final Html html = (Html) object;
-				final Html otherHtml = (Html) otherObject;
 
+		Collections.sort(htmlWidgets, new Comparator<Html>() {
+			public int compare(final Html html, final Html otherHtml) {
 				return html.getText().toLowerCase().compareTo(otherHtml.getText().toLowerCase());
 			}
 		});
@@ -211,6 +210,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	}
 
 	class DropDownList extends DivPanel {
+		@Override
 		public void insert(final Widget widget, final int indexBefore) {
 			super.insert(widget, indexBefore);
 
@@ -241,6 +241,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 			}
 		}
 
+		@Override
 		public boolean remove(final int index) {
 			super.remove(index);
 
@@ -279,9 +280,10 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	 */
 	protected void onTextBoxKeyUp(final KeyUpEvent event) {
 		while (true) {
-			if( event.isEscape() || event.isEnter() || event.isCursorUp() || event.isCursorDown() || event.isCursorLeft() || event.isCursorRight() ){
+			if (event.isEscape() || event.isEnter() || event.isCursorUp() || event.isCursorDown() || event.isCursorLeft()
+					|| event.isCursorRight()) {
 				break;
-			}			
+			}
 			event.stop();
 
 			this.buildDropDownList();
@@ -296,7 +298,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 			// show the list...
 			this.showDropDownList();
 
-			if ( event.isBackspace()) {
+			if (event.isBackspace()) {
 				event.stop();
 				break;
 			}
@@ -326,12 +328,12 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	 */
 	protected void onTextBoxKeyDown(final KeyDownEvent event) {
 		while (true) {
-			if ( event.isEscape()) {
+			if (event.isEscape()) {
 				this.cancelDropDown();
 				event.stop();
 				break;
 			}
-			if ( event.isEnter()) {
+			if (event.isEnter()) {
 				if (this.hasSelected()) {
 					this.copyValue(this.getSelected());
 				}
@@ -340,12 +342,12 @@ abstract public class AutoCompleteTextBox extends TextBox {
 				break;
 			}
 
-			if ( event.isCursorUp()) {
+			if (event.isCursorUp()) {
 				this.moveUpOneItem();
 				event.stop();
 				break;
 			}
-			if ( event.isCursorDown() ) {
+			if (event.isCursorDown()) {
 				this.moveDownOneItem();
 				event.stop();
 				break;
@@ -404,7 +406,7 @@ abstract public class AutoCompleteTextBox extends TextBox {
 	 * the user clicks on something else.
 	 * 
 	 * @param event
-	 * @return A flag indicating whether or not to cancel the event. 
+	 * @return A flag indicating whether or not to cancel the event.
 	 */
 	protected boolean onDropDownListEventPreview(final Event event) {
 		boolean dontCancel = true;

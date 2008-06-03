@@ -15,14 +15,15 @@
  */
 package rocket.widget.rebind.imagefactory;
 
-
 /**
- * This ImageFactory implementation contains safari specific values. 
+ * This ImageFactory implementation contains safari specific values.
+ * 
  * @author Miroslav Pokorny
  */
 public class SafariImageFactoryGenerator extends ImageFactoryGenerator {
 
-	protected int getMaximumDataUrlLength(){	
-		return this.getMaximumDataUrlLength( ImageFactoryConstants.SAFARI_MAXIMUM_DATA_URL_SIZE, ImageFactoryConstants.SAFARI_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE );
+	protected int getMaximumDataUrlLength() {
+		return this.getMaximumDataUrlLength(ImageFactoryConstants.SAFARI_MAXIMUM_DATA_URL_SIZE,
+				ImageFactoryConstants.SAFARI_MAXIMUM_DATA_URL_SIZE_DEFAULT_VALUE);
 	}
 }

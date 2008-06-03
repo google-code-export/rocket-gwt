@@ -23,20 +23,20 @@ import rocket.util.client.Checker;
 
 class TabListenerCollection {
 	public TabListenerCollection() {
-		this.setListeners(new ArrayList());
+		this.setListeners(new ArrayList<TabListener>());
 	}
 
 	/**
 	 * A list containing listeners to the various page change events.
 	 */
-	private List listeners;
+	private List<TabListener> listeners;
 
-	protected List getListeners() {
+	protected List<TabListener> getListeners() {
 		Checker.notNull("field:listeners", listeners);
 		return listeners;
 	}
 
-	protected void setListeners(final List listeners) {
+	protected void setListeners(final List<TabListener> listeners) {
 		Checker.notNull("parameter:listeners", listeners);
 		this.listeners = listeners;
 	}
@@ -54,10 +54,10 @@ class TabListenerCollection {
 	}
 
 	public void fireBeforeTabSelected(final BeforeTabSelectEvent event) {
-		final Iterator listeners = this.getListeners().iterator();
+		final Iterator<TabListener> listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
-			final TabListener listener = (TabListener) listeners.next();
+			final TabListener listener = listeners.next();
 			listener.onBeforeTabSelect(event);
 
 			if (event.isCancelled()) {
@@ -67,19 +67,19 @@ class TabListenerCollection {
 	}
 
 	public void fireTabSelected(final TabSelectEvent event) {
-		final Iterator listeners = this.getListeners().iterator();
+		final Iterator<TabListener> listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
-			final TabListener listener = (TabListener) listeners.next();
+			final TabListener listener = listeners.next();
 			listener.onTabSelect(event);
 		}
 	}
 
 	public void fireBeforeTabClosed(final BeforeTabCloseEvent event) {
-		final Iterator listeners = this.getListeners().iterator();
+		final Iterator<TabListener> listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
-			final TabListener listener = (TabListener) listeners.next();
+			final TabListener listener = listeners.next();
 			listener.onBeforeTabClose(event);
 
 			if (event.isCancelled()) {
@@ -89,10 +89,10 @@ class TabListenerCollection {
 	}
 
 	public void fireTabClosed(final TabCloseEvent event) {
-		final Iterator listeners = this.getListeners().iterator();
+		final Iterator<TabListener> listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
-			final TabListener listener = (TabListener) listeners.next();
+			final TabListener listener = listeners.next();
 			listener.onTabClose(event);
 		}
 	}

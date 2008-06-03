@@ -17,7 +17,6 @@ package rocket.widget.client.accordion;
 
 import rocket.util.client.Checker;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;

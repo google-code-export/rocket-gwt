@@ -18,7 +18,9 @@ package rocket.widget.rebind.imagefactory;
 import rocket.generator.rebind.GeneratorException;
 
 /**
- * This exception is thrown whenver something goes wrong during a ImageFactoryGenerator session.
+ * This exception is thrown whenver something goes wrong during a
+ * ImageFactoryGenerator session.
+ * 
  * @author Miroslav Pokorny
  */
 public class ImageFactoryGeneratorException extends GeneratorException {

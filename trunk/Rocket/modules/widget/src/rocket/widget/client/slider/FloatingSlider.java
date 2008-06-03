@@ -32,7 +32,6 @@ import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.util.client.Checker;
 import rocket.widget.client.CompositeWidget;
-import rocket.widget.client.Html;
 import rocket.widget.client.Panel;
 import rocket.widget.client.Widgets;
 
@@ -120,7 +119,7 @@ public class FloatingSlider extends CompositeWidget {
 			}
 		});
 		this.setHandle(this.createHandle());
-		this.setBackground(this.createBackground());		
+		this.setBackground(this.createBackground());
 	}
 
 	protected String getInitialStyleName() {
@@ -158,13 +157,13 @@ public class FloatingSlider extends CompositeWidget {
 			final Element target = event.getTarget();
 
 			// check if the handle widget has been clicked...
-			if (DOM.isOrHasChild(this.getHandle().getElement(), target)) {
+			if (this.getHandle().getElement().isOrHasChild(target)) {
 				this.onHandleMouseDown(event);
 				break;
 			}
 
 			// was the slider background itself clicked ?
-			if (DOM.isOrHasChild(this.getElement(), target)) {
+			if (this.getElement().isOrHasChild(target)) {
 				this.onBackgroundMouseDown(event);
 				break;
 			}
@@ -370,8 +369,8 @@ public class FloatingSlider extends CompositeWidget {
 		Checker.notNull("parameter:event", event);
 
 		final Element sliderElement = this.getElement();
-		final int widgetX = DOM.getAbsoluteLeft(sliderElement);
-		final int widgetY = DOM.getAbsoluteTop(sliderElement);
+		final int widgetX = sliderElement.getAbsoluteLeft();
+		final int widgetY = sliderElement.getAbsoluteTop();
 		final int sliderWidth = this.getOffsetWidth();
 		final int sliderHeight = this.getOffsetHeight();
 

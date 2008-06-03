@@ -29,20 +29,23 @@ public class CreateHtmlFromTemplateTemplatedFile extends TemplatedFileCodeBlock 
 		this.setStatements(statements);
 	}
 
+	@Override
 	protected InputStream getInputStream() {
 		final String fileName = this.getResourceName();
 		return this.getClass().getResourceAsStream(fileName);
 	}
 
+	@Override
 	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
 
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 
 		if (Constants.STATEMENTS.equals(name)) {
-			value = new StringCodeBlock( this.getStatements());
+			value = new StringCodeBlock(this.getStatements());
 		}
 		return value;
 	}
