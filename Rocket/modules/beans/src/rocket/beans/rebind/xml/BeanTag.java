@@ -103,7 +103,7 @@ class BeanTag extends XmlDocumentComponent {
 
 		final Element propertiesElement = this.getFirstChildByTagName(this.getElement(), Constants.PROPERTIES_TAG);
 		if (null != propertiesElement) {
-			properties = this.getElements(propertiesElement);			
+			properties = this.getElements(propertiesElement);
 		}
 
 		return properties;

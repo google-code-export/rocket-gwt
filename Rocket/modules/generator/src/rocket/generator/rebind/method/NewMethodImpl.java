@@ -267,7 +267,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		}
 		buf.append(this.getVisibility().toString());
 		buf.append(' ');// Yes package private methods will have two spaces
-						// here...
+		// here...
 
 		final Type returnType = this.getReturnType();
 		buf.append(returnType.getName());

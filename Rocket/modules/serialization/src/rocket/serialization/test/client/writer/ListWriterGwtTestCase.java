@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import rocket.serialization.client.ClientObjectOutputStream;
+import rocket.serialization.client.ObjectWriter;
 import rocket.serialization.client.writer.ListWriter;
 import rocket.serialization.test.client.ClientGwtTestCase;
 import rocket.serialization.test.client.ConcreteClass;
@@ -33,7 +34,7 @@ public class ListWriterGwtTestCase extends ClientGwtTestCase {
 	final static String LIST = "java.util.List";
 
 	public void testWriteNullElement() {
-		final List list = new ArrayList();
+		final List<Object> list = new ArrayList<Object>();
 		list.add(null);
 
 		final ClientObjectOutputStream output = createObjectOutputStream(ARRAYLIST, ListWriter.instance);
@@ -46,7 +47,7 @@ public class ListWriterGwtTestCase extends ClientGwtTestCase {
 	}
 
 	public void testWriteSeveralNullElements() {
-		final List list = new ArrayList();
+		final List<Object> list = new ArrayList<Object>();
 		list.add(null);
 		list.add(null);
 		list.add(null);
@@ -63,12 +64,12 @@ public class ListWriterGwtTestCase extends ClientGwtTestCase {
 	}
 
 	public void testSingleObjectElement() {
-		final List list = new ArrayList();
+		final List<ConcreteClass> list = new ArrayList<ConcreteClass>();
 
 		final ConcreteClass concreteClass = createConcreteClass();
 		list.add(concreteClass);
 
-		final Map writers = new HashMap();
+		final Map<String,ObjectWriter> writers = new HashMap<String,ObjectWriter>();
 		writers.put(ARRAYLIST, ListWriter.instance);
 		writers.put(CONCRETE_CLASS, new ConcreteClassObjectWriter());
 
@@ -82,7 +83,7 @@ public class ListWriterGwtTestCase extends ClientGwtTestCase {
 	}
 
 	public void testSeveralObjectsAndNullElements() {
-		final List list = new ArrayList();
+		final List<ConcreteClass> list = new ArrayList<ConcreteClass>();
 
 		final ConcreteClass concreteClass = new ConcreteClass();
 		concreteClass.value = ConcreteClass.VALUE;
@@ -91,7 +92,7 @@ public class ListWriterGwtTestCase extends ClientGwtTestCase {
 		list.add(concreteClass);
 		list.add(null);
 
-		final Map writers = new HashMap();
+		final Map<String,ObjectWriter> writers = new HashMap<String,ObjectWriter>();
 		writers.put(ARRAYLIST, ListWriter.instance);
 		writers.put(CONCRETE_CLASS, new ConcreteClassObjectWriter());
 

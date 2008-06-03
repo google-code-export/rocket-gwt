@@ -20,11 +20,13 @@ import rocket.browser.client.Browser;
 /**
  * Contains a number of common mouse event related methods including
  * <ul>
- * <li>Fetching the mouse coordinates relative to the client (visible browser window)</li>
+ * <li>Fetching the mouse coordinates relative to the client (visible browser
+ * window)</li>
  * <li>Fetching the mouse coordinates relative to the entire page.</li>
  * <li>Fetching the mouse screen coordinates (pretty useless...)</li>
  * <li>Fetching the mouse coordinates relative to the event's target element</li>
  * </ul>
+ * 
  * @author Miroslav Pokorny
  */
 public class MouseEvent extends Event {
@@ -48,26 +50,29 @@ public class MouseEvent extends Event {
 	}
 
 	public int getScreenX() {
-		return this.getEvent().getScreenX(); 
+		return this.getEvent().getScreenX();
 	}
 
 	public int getScreenY() {
-		return this.getEvent().getScreenY(); 
+		return this.getEvent().getScreenY();
 	}
-	
+
 	/**
-	 * Returns the coordinates of the mouse relative to the element that was the target of the mouse event.
+	 * Returns the coordinates of the mouse relative to the element that was the
+	 * target of the mouse event.
+	 * 
 	 * @return The relative x coordinate value.
 	 */
-	public int getTargetElementX(){
+	public int getTargetElementX() {
 		return this.getPageX() - this.getTarget().getAbsoluteLeft();
 	}
-	public int getTargetElementY(){
+
+	public int getTargetElementY() {
 		return this.getPageY() - this.getTarget().getAbsoluteTop();
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		return super.toString() + ", pageCoordinates: " + this.getPageX() + "," + this.getPageY();
 	}
 }

@@ -22,42 +22,44 @@ import com.google.gwt.user.client.Element;
  */
 public class TextBoxImpl {
 
-  public native int getCursorPos(Element elem) /*-{
-    // Guard needed for FireFox.
-     try{
-       return elem.selectionStart;
-     } catch (e) {
-       return 0;
-     }
-  }-*/;
+	public native int getCursorPos(Element elem) /*-{
+	   // Guard needed for FireFox.
+	    try{
+	      return elem.selectionStart;
+	    } catch (e) {
+	      return 0;
+	    }
+	 }-*/;
 
-  public native int getSelectionLength(Element elem) /*-{
-    // Guard needed for FireFox.
-    try{
-      return elem.selectionEnd - elem.selectionStart;
-    } catch (e) {
-      return 0;
-    }
-  }-*/;
+	public native int getSelectionLength(Element elem) /*-{
+	   // Guard needed for FireFox.
+	   try{
+	     return elem.selectionEnd - elem.selectionStart;
+	   } catch (e) {
+	     return 0;
+	   }
+	 }-*/;
 
-  public int getTextAreaCursorPos(Element elem) {
-    return getCursorPos(elem);
-  }
+	public int getTextAreaCursorPos(Element elem) {
+		return getCursorPos(elem);
+	}
 
-  public native void setSelectionRange(Element elem, int pos, int length) /*-{
-    elem.setSelectionRange(pos, pos + length);
-  }-*/;
+	public native void setSelectionRange(Element elem, int pos, int length) /*-{
+	   elem.setSelectionRange(pos, pos + length);
+	 }-*/;
 
-  // ROCKET The fields/methods below were added to assist the Rocket framework. When upgrading from GWT 1.5 RC1 reapply changes
-  
-  /**
-   * Delegates to {@link #getSelectionLength(Element)}.
-   * The TextBox widget calls this method instead allowing customisation for the IE special case.
-   * @param element
-   * @return
-   */
-  public int getTextAreaSelectionLength( final Element element ){
-  	return this.getSelectionLength(element);
-  }
+	// ROCKET The fields/methods below were added to assist the Rocket
+	// framework. When upgrading from GWT 1.5 RC1 reapply changes
+
+	/**
+	 * Delegates to {@link #getSelectionLength(Element)}. The TextBox widget
+	 * calls this method instead allowing customisation for the IE special case.
+	 * 
+	 * @param element
+	 * @return
+	 */
+	public int getTextAreaSelectionLength(final Element element) {
+		return this.getSelectionLength(element);
+	}
 
 }

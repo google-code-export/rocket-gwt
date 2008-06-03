@@ -138,8 +138,8 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 
 		// build up a set containing of readableType which will contain all
 		// throwable types and the method return type.
-		final Set<Type> readableTypes = new TreeSet( TypeComparator.INSTANCE );
-		final Set<Type> writableTypes = new TreeSet( TypeComparator.INSTANCE );
+		final Set<Type> readableTypes = new TreeSet(TypeComparator.INSTANCE);
+		final Set<Type> writableTypes = new TreeSet(TypeComparator.INSTANCE);
 		this.buildReadableAndWritableTypes(method, readableTypes, writableTypes);
 
 		this.addAnnotations(SerializationConstants.SERIALIZABLE_READABLE_TYPES, readableTypes, serializationFactoryComposer);
@@ -172,8 +172,8 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 			final MethodParameter parameter = (MethodParameter) parameters.next();
 			final Type parameterType = parameter.getType();
 
-			context.debug( parameterType.getName() );
-			
+			context.debug(parameterType.getName());
+
 			// skip primitive types...
 			if (parameterType.isPrimitive()) {
 				continue;
@@ -214,11 +214,11 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 		context.debug("Return type");
 
 		// process return type...
-		final Type returnType = method.getReturnType();		
+		final Type returnType = method.getReturnType();
 		final Type voidd = this.getGeneratorContext().getVoid();
 
-		context.debug( returnType.getName() );
-		
+		context.debug(returnType.getName());
+
 		// dont add if its primitive or void...
 		if (false == (returnType.equals(voidd) || returnType.isPrimitive())) {
 			readableTypes.add(returnType);
@@ -268,9 +268,9 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 		final Iterator thrownTypes = method.getThrownTypes().iterator();
 		while (thrownTypes.hasNext()) {
 			final Type type = (Type) thrownTypes.next();
-			
-			context.debug( type.getName() );
-			
+
+			context.debug(type.getName());
+
 			readableTypes.add(type);
 		}
 

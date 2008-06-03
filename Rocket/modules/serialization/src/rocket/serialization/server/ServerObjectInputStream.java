@@ -318,19 +318,19 @@ public class ServerObjectInputStream extends ObjectInputStreamImpl {
 		}
 	}
 
-	private List objectReaders;
+	private List<ServerObjectReader> objectReaders;
 
-	protected List getObjectReaders() {
+	protected List<ServerObjectReader> getObjectReaders() {
 		Checker.notNull("field:objectReaders", objectReaders);
 		return this.objectReaders;
 	}
 
-	public void setObjectReaders(final List objectReaders) {
+	public void setObjectReaders(final List<ServerObjectReader> objectReaders) {
 		Checker.notNull("parameter:objectReaders", objectReaders);
 		this.objectReaders = objectReaders;
 	}
 
-	protected List createObjectReaders() {
-		return new ArrayList();
+	protected List<ServerObjectReader> createObjectReaders() {
+		return new ArrayList<ServerObjectReader>();
 	}
 }

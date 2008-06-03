@@ -150,7 +150,7 @@ public class NewConstructorImpl extends AbstractConstructor implements NewConstr
 
 		buf.append(this.getVisibility().toString());
 		buf.append(' '); // yes two spaces will be emitted for package
-							// private constructors.
+		// private constructors.
 
 		String constructor = this.getEnclosingType().getName();
 		final int dot = constructor.lastIndexOf('.');

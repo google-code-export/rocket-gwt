@@ -15,7 +15,6 @@
  */
 package rocket.event.client;
 
-
 /**
  * A common base class for any mouse button event.
  * 

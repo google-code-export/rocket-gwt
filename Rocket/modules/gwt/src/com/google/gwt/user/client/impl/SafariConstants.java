@@ -21,15 +21,15 @@ class SafariConstants {
 	public final static int CURSOR_UP = 63233;
 	public final static int CURSOR_RIGHT = 63234;
 	public final static int CURSOR_DOWN = 63235;
-	
-	public final static int DELETE = 63272; 
+
+	public final static int DELETE = 63272;
 	public final static int END = 63275;
-	
+
 	public final static int HOME = 63273;
-	
+
 	public final static int PAGE_DOWN = 63277;
 	public final static int PAGE_UP = 63276;
-	
+
 	public final static int FUNCTION_F1 = 63236;
 	public final static int FUNCTION_F12 = 63247;
 }

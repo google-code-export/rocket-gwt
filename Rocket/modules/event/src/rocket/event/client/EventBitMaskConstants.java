@@ -53,8 +53,8 @@ public class EventBitMaskConstants {
 
 	public final static int MOUSE_WHEEL = com.google.gwt.user.client.Event.ONMOUSEWHEEL;
 
-	public final static int MOUSE_EVENTS = MOUSE_CLICK | MOUSE_DOUBLE_CLICK | MOUSE_DOWN | MOUSE_OUT | MOUSE_OVER | MOUSE_OVER | MOUSE_UP
-			| MOUSE_WHEEL;
+	public final static int MOUSE_EVENTS = MOUSE_CLICK | MOUSE_DOUBLE_CLICK | MOUSE_DOWN | MOUSE_OUT | MOUSE_OVER | MOUSE_OVER
+			| MOUSE_UP | MOUSE_WHEEL;
 
 	public final static int CHANGE = com.google.gwt.user.client.Event.ONCHANGE;
 

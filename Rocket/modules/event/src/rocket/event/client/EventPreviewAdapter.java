@@ -65,8 +65,8 @@ public class EventPreviewAdapter extends EventDispatcher implements com.google.g
 			this.afterDispatching(event);
 
 			cancelled = event.isCancelled(); // FIXME is a hack should use
-												// another method. stopProp eg
-												// ???
+			// another method. stopProp eg
+			// ???
 
 		} finally {
 			Utilities.destroyIfNecessary(event);

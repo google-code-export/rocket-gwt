@@ -81,8 +81,8 @@ abstract public class ServerTestCase extends TestCase {
 		return this.createObjectOutputStream(Collections.nCopies(1, writer));
 	}
 
-	protected TestServerObjectOutputStream createObjectOutputStream(final List writers) {
-		final List allWriters = new ArrayList();
+	protected TestServerObjectOutputStream createObjectOutputStream(final List<ServerObjectWriter> writers) {
+		final List<ServerObjectWriter> allWriters = new ArrayList<ServerObjectWriter>();
 		allWriters.addAll(writers);
 		allWriters.add(ReflectiveWriter.instance);
 

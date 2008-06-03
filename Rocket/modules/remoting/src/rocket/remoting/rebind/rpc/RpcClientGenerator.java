@@ -160,7 +160,8 @@ abstract public class RpcClientGenerator extends Generator {
 		publicMethodFinder.start(serviceInterface);
 	}
 
-	abstract protected void implementPublicMethod(Method method, Type serviceInterface, Type asyncServiceInterface, NewConcreteType client);
+	abstract protected void implementPublicMethod(Method method, Type serviceInterface, Type asyncServiceInterface,
+			NewConcreteType client);
 
 	/**
 	 * Attempts to find the corresponding method on the async interface.

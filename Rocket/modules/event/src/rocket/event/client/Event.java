@@ -36,7 +36,8 @@ abstract public class Event implements Destroyable {
 	private static boolean disabled = false;
 
 	/**
-	 * This method includes a guard that ensures the context menu disabler is only installed once.
+	 * This method includes a guard that ensures the context menu disabler is
+	 * only installed once.
 	 */
 	static public void disableContextMenu() {
 		if (false == disabled) {
@@ -48,18 +49,18 @@ abstract public class Event implements Destroyable {
 	}
 
 	native static void disableContextMenu0()/*-{
-	 var block = function( event ){
-	 	return false;
-	 };
+		 var block = function( event ){
+		 	return false;
+		 };
 
-	 var body = $doc.body;
-	 if( body.attachEvent ){
-	 	body.attachEvent( "oncontextmenu", block );
-	 }else {
-	 	body.addEventListener( "contextmenu", block, false );
-	 }
-	 body.oncontextmenu = block;
-	 }-*/;
+		 var body = $doc.body;
+		 if( body.attachEvent ){
+		 	body.attachEvent( "oncontextmenu", block );
+		 }else {
+		 	body.addEventListener( "contextmenu", block, false );
+		 }
+		 body.oncontextmenu = block;
+		 }-*/;
 
 	static public Event getEvent(final Widget widget, final int bitMask) {
 		Checker.notNull("parameter:widget", widget);
@@ -234,7 +235,7 @@ abstract public class Event implements Destroyable {
 	 * @return
 	 */
 	public Element getTarget() {
-		return this.hasTarget() ? this.target : (Element)this.getEvent().getTarget().cast();
+		return this.hasTarget() ? this.target : (Element) this.getEvent().getTarget().cast();
 	}
 
 	protected boolean hasTarget() {

@@ -146,7 +146,7 @@ abstract public class PropertyWriter extends ServerObjectWriterImpl implements S
 	 * @return
 	 */
 	protected Method[] findGetters(final Class classs) {
-		final List getters = new ArrayList();
+		final List<Method> getters = new ArrayList<Method>();
 
 		final Method[] allMethods = classs.getDeclaredMethods();
 		for (int i = 0; i < allMethods.length; i++) {

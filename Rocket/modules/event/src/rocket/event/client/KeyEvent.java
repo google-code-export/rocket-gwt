@@ -18,8 +18,8 @@ package rocket.event.client;
 import com.google.gwt.user.client.DOM;
 
 /**
- * A common base class for all key events.
- * Many convenience methods are available for testing which key was involved in the event, removing the need
+ * A common base class for all key events. Many convenience methods are
+ * available for testing which key was involved in the event, removing the need
  * to test a key code using {@link #getKey()}.
  * 
  * @author Miroslav Pokorny
@@ -29,65 +29,80 @@ public class KeyEvent extends Event {
 	}
 
 	public int getKey() {
-	 return this.getEvent().getKeyCode();
-	}
-	
-	public void setKey(final int key) {
-		DOM.eventSetKeyCode(this.getEvent(), (char)key);
+		return this.getEvent().getKeyCode();
 	}
 
-	public boolean isBackspace(){
+	public void setKey(final int key) {
+		DOM.eventSetKeyCode(this.getEvent(), (char) key);
+	}
+
+	public boolean isBackspace() {
 		return this.getKey() == EventConstants.BACKSPACE;
 	}
-	public boolean isCursorLeft(){
+
+	public boolean isCursorLeft() {
 		return this.getKey() == EventConstants.CURSOR_LEFT;
 	}
-	public boolean isCursorUp(){
+
+	public boolean isCursorUp() {
 		return this.getKey() == EventConstants.CURSOR_UP;
 	}
-	public boolean isCursorRight(){
+
+	public boolean isCursorRight() {
 		return this.getKey() == EventConstants.CURSOR_RIGHT;
 	}
-	public boolean isCursorDown(){
+
+	public boolean isCursorDown() {
 		return this.getKey() == EventConstants.CURSOR_DOWN;
 	}
-	public boolean isDelete(){
+
+	public boolean isDelete() {
 		return this.getKey() == EventConstants.DELETE;
 	}
-	public boolean isEnd(){
+
+	public boolean isEnd() {
 		return this.getKey() == EventConstants.END;
 	}
-	public boolean isEnter(){
+
+	public boolean isEnter() {
 		return this.getKey() == EventConstants.ENTER;
 	}
-	public boolean isEscape(){
+
+	public boolean isEscape() {
 		return this.getKey() == EventConstants.ESCAPE;
 	}
-	public boolean isHome(){
+
+	public boolean isHome() {
 		return this.getKey() == EventConstants.HOME;
 	}
-	public boolean isInsert(){
+
+	public boolean isInsert() {
 		return this.getKey() == EventConstants.INSERT;
 	}
-	public boolean isPageDown(){
+
+	public boolean isPageDown() {
 		return this.getKey() == EventConstants.PAGE_DOWN;
 	}
-	public boolean isPageUp(){
+
+	public boolean isPageUp() {
 		return this.getKey() == EventConstants.PAGE_UP;
 	}
-	public boolean isTab(){
+
+	public boolean isTab() {
 		return this.getKey() == EventConstants.TAB;
 	}
+
 	/**
 	 * If the key was a function key return 1 thru 12 otherwise returns -1
+	 * 
 	 * @return
 	 */
-	
-	public int getFunctionKey(){
+
+	public int getFunctionKey() {
 		final int key = this.getKey();
 		return key < EventConstants.FUNCTION_F1 ? -1 : key > EventConstants.FUNCTION_F12 ? -1 : key - EventConstants.FUNCTION_F1 + 1;
 	}
-	
+
 	public boolean isShift() {
 		return this.getEvent().getShiftKey();
 	}
@@ -105,49 +120,52 @@ public class KeyEvent extends Event {
 	}
 
 	/**
-	 * Tests if this key event occured due to one of the modifier keys being pressed/let go.
+	 * Tests if this key event occured due to one of the modifier keys being
+	 * pressed/let go.
+	 * 
 	 * @return
 	 */
-	public boolean isModifier(){
+	public boolean isModifier() {
 		return this.isShift() || this.isControl() || this.isAlt() || this.isMeta();
 	}
 
 	/**
-	 * Tests if the key event occured due to a navigation key being pressed/let go.
-	 * The navigation keys are
+	 * Tests if the key event occured due to a navigation key being pressed/let
+	 * go. The navigation keys are
 	 * <ul>
 	 * <li>any Cursor key</li>
 	 * <li>home</li>
 	 * <li>end</li>
 	 * </ul>
+	 * 
 	 * @return
 	 */
-	public boolean isNavigation(){
+	public boolean isNavigation() {
 		return this.isCursorDown() || this.isCursorLeft() || this.isCursorRight() || this.isCursorUp() || this.isHome() || this.isEnd();
 	}
 
 	/**
-	 * Tests if this event occured due to a editing key.
-	 * The editing keys are
+	 * Tests if this event occured due to a editing key. The editing keys are
 	 * <ul>
 	 * <li>Backspace</li>
 	 * <li>Delete</li>
 	 * </ul>
+	 * 
 	 * @return
 	 */
-	public boolean isEditing(){
+	public boolean isEditing() {
 		return this.isBackspace() || this.isDelete();
 	}
-	
-	public boolean isDigit(){
-		return Character.isDigit( (char)this.getKey() );
+
+	public boolean isDigit() {
+		return Character.isDigit((char) this.getKey());
 	}
-	
-	public boolean isAlpha(){
-		final char c = (char)this.getKey();
-		return c >= 'A' && c<= 'Z';
+
+	public boolean isAlpha() {
+		final char c = (char) this.getKey();
+		return c >= 'A' && c <= 'Z';
 	}
-	
+
 	public boolean isRepeatedKey() {
 		return DOM.eventGetRepeat(this.getEvent());
 	}
