@@ -316,9 +316,9 @@ public class Colour implements java.io.Serializable, IsSerializable {
 	public Colour(final int colour) {
 		this((colour >> 16) & 0xff, (colour >> 8) & 0xff, colour & 0x0ff);
 	}
-	
-	public Colour(){
-		this( 0 );
+
+	public Colour() {
+		this(0);
 	}
 
 	public Colour(final int red, final int green, final int blue) {

@@ -289,8 +289,8 @@ public class ColourTestCase extends TestCase {
 			final float hue1 = hueSaturationValue.getHue() % 0.999f;
 
 			if (false == Tester.equals(hue0, hue1, 0.03)) {
-				if (false == (Tester.equals(hue0, 0.0, 0.01) || Tester.equals(hue0, 1.0, 0.01))
-						&& Tester.equals(hue1, 0.0, 0.01) || Tester.equals(hue1, 1.0, 0.01)) {
+				if (false == (Tester.equals(hue0, 0.0, 0.01) || Tester.equals(hue0, 1.0, 0.01)) && Tester.equals(hue1, 0.0, 0.01)
+						|| Tester.equals(hue1, 1.0, 0.01)) {
 					break;
 				}
 			}

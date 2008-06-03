@@ -29,137 +29,138 @@ import com.google.gwt.core.client.JavaScriptObject;
  * official Java API doc</a> for details.
  */
 public class Throwable implements Serializable {
-  /*
-   * NOTE: We cannot use custom field serializers because we need the client and
-   * server to use different serialization strategies to deal with this type.
-   * The client uses the generated field serializers which can use JSNI. That
-   * leaves the server free to special case Throwable so that only the
-   * detailMessage field is serialized.
-   * 
-   * Throwable is given special treatment by server's SerializabilityUtil class
-   * to ensure that only the detailMessage field is serialized. Changing the
-   * field modifiers below may necessitate a change to the server's
-   * SerializabilityUtil.fieldQualifiesForSerialization(Field) method.
-   */
-  private transient Throwable cause;
-  private String detailMessage;
-  private transient java.lang.StackTraceElement[] stackTrace;
+	/*
+	 * NOTE: We cannot use custom field serializers because we need the client
+	 * and server to use different serialization strategies to deal with this
+	 * type. The client uses the generated field serializers which can use JSNI.
+	 * That leaves the server free to special case Throwable so that only the
+	 * detailMessage field is serialized.
+	 * 
+	 * Throwable is given special treatment by server's SerializabilityUtil
+	 * class to ensure that only the detailMessage field is serialized. Changing
+	 * the field modifiers below may necessitate a change to the server's
+	 * SerializabilityUtil.fieldQualifiesForSerialization(Field) method.
+	 */
+	private transient Throwable cause;
+	private String detailMessage;
+	private transient java.lang.StackTraceElement[] stackTrace;
 
-  public Throwable() {
-  }
+	public Throwable() {
+	}
 
-  public Throwable(String message) {
-    this.detailMessage = message;
+	public Throwable(String message) {
+		this.detailMessage = message;
 
-    this.saveCallStack();
-  }
+		this.saveCallStack();
+	}
 
-  public Throwable(String message, Throwable cause) {
-    this.cause = cause;
-    this.detailMessage = message;
-    
-    this.saveCallStack();
-  }
+	public Throwable(String message, Throwable cause) {
+		this.cause = cause;
+		this.detailMessage = message;
 
-  public Throwable(Throwable cause) {
-    this.detailMessage = (cause == null) ? null : cause.toString();
-    this.cause = cause;
-    
-    this.saveCallStack();
-  }
+		this.saveCallStack();
+	}
 
-  /**
-   * Stack traces are not currently populated by GWT. This method does nothing.
-   * 
-   * @return this
-   */
-  public Throwable fillInStackTrace() {
-    return this;
-  }
+	public Throwable(Throwable cause) {
+		this.detailMessage = (cause == null) ? null : cause.toString();
+		this.cause = cause;
 
-  public Throwable getCause() {
-    return cause;
-  }
+		this.saveCallStack();
+	}
 
-  public String getLocalizedMessage() {
-    return getMessage();
-  }
+	/**
+	 * Stack traces are not currently populated by GWT. This method does
+	 * nothing.
+	 * 
+	 * @return this
+	 */
+	public Throwable fillInStackTrace() {
+		return this;
+	}
 
-  public String getMessage() {
-    return detailMessage;
-  }
+	public Throwable getCause() {
+		return cause;
+	}
 
-  /**
-   * Stack traces are not currently populated by GWT. This method will return a
-   * zero-length array unless a stack trace has been explicitly set with
-   * {@link #setStackTrace(StackTraceElement[])}
-   * 
-   * @return the current stack trace
-   */
-  public java.lang.StackTraceElement[] getStackTrace() {
-    if (stackTrace == null) {
-    	// ROCKET builde the stack trace elements from the previously captured javascript call stack
-		final String[] functionNames = StackTrace.getCallStackFunctionNames(this.getCallStack());
-		this.stackTrace = StackTrace.buildStackTraceElements(functionNames);
-    }
-    return stackTrace;
-  }
+	public String getLocalizedMessage() {
+		return getMessage();
+	}
 
-  public Throwable initCause(Throwable cause) {
-    if (this.cause != null) {
-      throw new IllegalStateException("Can't overwrite cause");
-    }
-    if (cause == this) {
-      throw new IllegalArgumentException("Self-causation not permitted");
-    }
-    this.cause = cause;
-    return this;
-  }
+	public String getMessage() {
+		return detailMessage;
+	}
 
-  public void printStackTrace() {
-    printStackTrace(System.err);
-  }
+	/**
+	 * Stack traces are not currently populated by GWT. This method will return
+	 * a zero-length array unless a stack trace has been explicitly set with
+	 * {@link #setStackTrace(StackTraceElement[])}
+	 * 
+	 * @return the current stack trace
+	 */
+	public java.lang.StackTraceElement[] getStackTrace() {
+		if (stackTrace == null) {
+			// ROCKET builde the stack trace elements from the previously
+			// captured javascript call stack
+			final String[] functionNames = StackTrace.getCallStackFunctionNames(this.getCallStack());
+			this.stackTrace = StackTrace.buildStackTraceElements(functionNames);
+		}
+		return stackTrace;
+	}
 
-  public void printStackTrace(PrintStream out) {
-    StringBuffer msg = new StringBuffer();
-    Throwable currentCause = this;
-    while (currentCause != null) {
-      String causeMessage = currentCause.getMessage();
-      if (currentCause != this) {
-        msg.append("Caused by: ");
-      }
-      msg.append(currentCause.getClass().getName());
-      msg.append(": ");
-      msg.append(causeMessage == null ? "(No exception detail)" : causeMessage);
-      msg.append("\n");
-      currentCause = currentCause.getCause();
-    }
-    out.println(msg);
-  }
+	public Throwable initCause(Throwable cause) {
+		if (this.cause != null) {
+			throw new IllegalStateException("Can't overwrite cause");
+		}
+		if (cause == this) {
+			throw new IllegalArgumentException("Self-causation not permitted");
+		}
+		this.cause = cause;
+		return this;
+	}
 
-  public void setStackTrace(java.lang.StackTraceElement[] stackTrace) {
-    java.lang.StackTraceElement[] copy = new java.lang.StackTraceElement[stackTrace.length];
-    for (int i = 0, c = stackTrace.length; i < c; ++i) {
-      if (stackTrace[i] == null) {
-        throw new NullPointerException();
-      }
-      copy[i] = stackTrace[i];
-    }
-    this.stackTrace = copy;
-  }
+	public void printStackTrace() {
+		printStackTrace(System.err);
+	}
 
-  @Override
-  public String toString() {
-    String className = this.getClass().getName();
-    String msg = getMessage();
-    if (msg != null) {
-      return className + ": " + msg;
-    } else {
-      return className;
-    }
-  }
+	public void printStackTrace(PrintStream out) {
+		StringBuffer msg = new StringBuffer();
+		Throwable currentCause = this;
+		while (currentCause != null) {
+			String causeMessage = currentCause.getMessage();
+			if (currentCause != this) {
+				msg.append("Caused by: ");
+			}
+			msg.append(currentCause.getClass().getName());
+			msg.append(": ");
+			msg.append(causeMessage == null ? "(No exception detail)" : causeMessage);
+			msg.append("\n");
+			currentCause = currentCause.getCause();
+		}
+		out.println(msg);
+	}
 
-  
+	public void setStackTrace(java.lang.StackTraceElement[] stackTrace) {
+		java.lang.StackTraceElement[] copy = new java.lang.StackTraceElement[stackTrace.length];
+		for (int i = 0, c = stackTrace.length; i < c; ++i) {
+			if (stackTrace[i] == null) {
+				throw new NullPointerException();
+			}
+			copy[i] = stackTrace[i];
+		}
+		this.stackTrace = copy;
+	}
+
+	@Override
+	public String toString() {
+		String className = this.getClass().getName();
+		String msg = getMessage();
+		if (msg != null) {
+			return className + ": " + msg;
+		} else {
+			return className;
+		}
+	}
+
 	// ----------------------ROCKET-------------
 	/**
 	 * Saves the callStack at the time that this Exception was created.
@@ -175,10 +176,10 @@ public class Throwable implements Serializable {
 	 * @return
 	 */
 	native private JavaScriptObject setCallStack0(final JavaScriptObject array)/*-{
-	 array.shift(); // remove the StackTrace.getCallStackFunctions() frame
-	 array.shift(); // remove the Throwable constructor frame
-	 return array;
-	 }-*/;
+		 array.shift(); // remove the StackTrace.getCallStackFunctions() frame
+		 array.shift(); // remove the Throwable constructor frame
+		 return array;
+		 }-*/;
 
 	/**
 	 * This field holds the callStack object of the function that created this

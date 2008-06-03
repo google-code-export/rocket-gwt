@@ -84,9 +84,9 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 	}
 
 	native private JavaScriptObject nativeMethod()/*-{
-	 var a = this.@rocket.util.test.stacktrace.test.StackTraceGwtTestCase::javaMethod()();
-	 return a;
-	 }-*/;
+		 var a = this.@rocket.util.test.stacktrace.test.StackTraceGwtTestCase::javaMethod()();
+		 return a;
+		 }-*/;
 
 	protected JavaScriptObject javaMethod() {
 		return StackTrace.getCallStackFunctions();
@@ -178,7 +178,8 @@ public class StackTraceGwtTestCase extends GWTTestCase {
 
 		final String fourthStackElement = lines[i++];
 		assertTrue(stackTrace + "\n" + fourthStackElement, -1 != fourthStackElement.indexOf("at"));
-		assertTrue(stackTrace + "\n" + fourthStackElement, -1 != fourthStackElement.indexOf(thisClassName + ".testGetStackTraceAsString"));
+		assertTrue(stackTrace + "\n" + fourthStackElement, -1 != fourthStackElement
+				.indexOf(thisClassName + ".testGetStackTraceAsString"));
 	}
 
 	static void threeFramesAwayFromMethodWhichThrowsException() {

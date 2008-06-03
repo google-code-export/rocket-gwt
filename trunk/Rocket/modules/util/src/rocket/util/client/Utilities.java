@@ -23,7 +23,8 @@ import rocket.text.client.IndexedPlaceHolderReplacer;
 import rocket.text.client.NamedPlaceHolderReplacer;
 
 /**
- * The Checker class is a compilation of methods that check or assert that a value satisfies a particular constraint.
+ * The Checker class is a compilation of methods that check or assert that a
+ * value satisfies a particular constraint.
  * 
  * It is useful for checking incoming parameters, verifying state etc.
  * 
@@ -59,8 +60,8 @@ public class Utilities {
 		final int requiredPadding = length - textLength;
 		if (requiredPadding < 0) {
 			Checker.fail("parameter:text",
-					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text\"" + text
-							+ "\", text.length: " + textLength + ", length: " + length);
+					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text\""
+							+ text + "\", text.length: " + textLength + ", length: " + length);
 		}
 
 		final StringBuffer buf = new StringBuffer(textLength + requiredPadding);
@@ -101,8 +102,8 @@ public class Utilities {
 		final int requiredPadding = length - textLength;
 		if (requiredPadding < 0) {
 			Checker.fail("parameter:text",
-					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text\"" + text
-							+ "\", text.length: " + textLength + ", length: " + length);
+					"THe parameter:text is longer than the given lineLength which is used to determine the required padding, text\""
+							+ text + "\", text.length: " + textLength + ", length: " + length);
 		}
 
 		final StringBuffer buf = new StringBuffer(textLength + requiredPadding);
@@ -391,10 +392,10 @@ public class Utilities {
 				buf.append("&amp;");
 				continue;
 			}
-//			if ('\'' == c) {
-//				buf.append("&apos;");
-//				continue;
-//			}
+			// if ('\'' == c) {
+			// buf.append("&apos;");
+			// continue;
+			// }
 			if ('"' == c) {
 				buf.append("&quot;");
 				continue;
@@ -496,8 +497,8 @@ public class Utilities {
 	}
 
 	native private static String toCssPropertyName0(final String propertyName)/*-{
-	 return propertyName.replace(/([A-Z])/g, "-$1" ).toLowerCase()
-	 }-*/;
+		 return propertyName.replace(/([A-Z])/g, "-$1" ).toLowerCase()
+		 }-*/;
 
 	/**
 	 * Convenient method which replaces all nbsp with a regular space.
@@ -574,12 +575,12 @@ public class Utilities {
 		/* hashcode */
 		Integer.toHexString(System.identityHashCode(object));
 	} // defaultToString
-	
 
 	/**
 	 * Calls the destroy method on the given object if it is destroyable.
 	 * 
-	 * @param object A potentially destroyable object.
+	 * @param object
+	 *            A potentially destroyable object.
 	 */
 	public static void destroyIfNecessary(final Object object) {
 		if (object instanceof Destroyable) {
@@ -587,74 +588,82 @@ public class Utilities {
 			destroyable.destroy();
 		}
 	}
-	
+
 	/**
-	 * Convenience method that escapes all newline, carriage returns and double quotes into their java string form.
+	 * Convenience method that escapes all newline, carriage returns and double
+	 * quotes into their java string form.
+	 * 
 	 * @param string
 	 * @return
 	 */
-	public static String escape( final String string ){
-		return null == string ? null : string.replaceAll("\n", "\\n").replaceAll("\r", "\\\r" ).replaceAll("\"", "\\\""); 
-	}
-	
-	/**
-	 * Convenience method which quotes non null strings as well as escaping newlines, carriage returns and double quotes.
-	 * @param string
-	 * @return
-	 */
-	public static String quotedEscape( final String string ){
-		return null == string ? null : "\"" + escape( string ) + "\"";
-	}
-	
-	/**
-	 * Useful method that only trims whitespace from the right or end of the given string
-	 * @param string
-	 * @return
-	 */
-	public static String trimRight( final String string ){
-		Checker.notNull("parameter:string", string);
-		
-		String trimmed = "";
-		final int length = string.length();
-		int i = length;
-		while( i > 0 ){
-			i--;
-			
-			final char c = string.charAt( i );
-			if( Character.isSpace( c )){
-				continue;
-			}
-			
-			trimmed = string.substring( 0, i+1 );
-			break;
-		}
-		
-		return trimmed;	
+	public static String escape(final String string) {
+		return null == string ? null : string.replaceAll("\n", "\\n").replaceAll("\r", "\\\r").replaceAll("\"", "\\\"");
 	}
 
 	/**
-	 * Useful method that only trims whitespace from the left or beginning of the given string
+	 * Convenience method which quotes non null strings as well as escaping
+	 * newlines, carriage returns and double quotes.
+	 * 
 	 * @param string
 	 * @return
 	 */
-	public static String trimLeft( final String string ){
+	public static String quotedEscape(final String string) {
+		return null == string ? null : "\"" + escape(string) + "\"";
+	}
+
+	/**
+	 * Useful method that only trims whitespace from the right or end of the
+	 * given string
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public static String trimRight(final String string) {
 		Checker.notNull("parameter:string", string);
-		
+
+		String trimmed = "";
+		final int length = string.length();
+		int i = length;
+		while (i > 0) {
+			i--;
+
+			final char c = string.charAt(i);
+			if (Character.isSpace(c)) {
+				continue;
+			}
+
+			trimmed = string.substring(0, i + 1);
+			break;
+		}
+
+		return trimmed;
+	}
+
+	/**
+	 * Useful method that only trims whitespace from the left or beginning of
+	 * the given string
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public static String trimLeft(final String string) {
+		Checker.notNull("parameter:string", string);
+
 		String trimmed = "";
 		final int length = string.length();
 		int i = 0;
-		while( i < length ){
-			final char c = string.charAt( i );
-			if( Character.isSpace( c )){
+		while (i < length) {
+			final char c = string.charAt(i);
+			if (Character.isSpace(c)) {
 				i++;
 				continue;
 			}
-			
-			trimmed = string.substring( i );
+
+			trimmed = string.substring(i);
 			break;
 		}
-		
-		return trimmed;	
+
+		return trimmed;
 	}
 
 }

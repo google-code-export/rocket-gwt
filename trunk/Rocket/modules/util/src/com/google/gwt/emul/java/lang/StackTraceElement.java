@@ -26,6 +26,7 @@ public final class StackTraceElement implements Serializable {
 
 	/**
 	 * ROCKET Constructor added to as part of support for web mode stacktraces.
+	 * 
 	 * @param declaringClass
 	 * @param methodName
 	 * @param fileName
@@ -39,35 +40,34 @@ public final class StackTraceElement implements Serializable {
 		this.setFileName(fileName);
 		this.setLineNumber(lineNumber);
 	}
-	
-	public StackTraceElement(){
+
+	public StackTraceElement() {
 		super();
 	}
-	
-  private String className;
 
-  private String fileName;
+	private String className;
 
-  private int lineNumber;
+	private String fileName;
 
-  private String methodName;
+	private int lineNumber;
 
-  public String getClassName() {
-    return className;
-  }
+	private String methodName;
 
-  public String getFileName() {
-    return fileName;
-  }
+	public String getClassName() {
+		return className;
+	}
 
-  public int getLineNumber() {
-    return lineNumber;
-  }
+	public String getFileName() {
+		return fileName;
+	}
 
-  public String getMethodName() {
-    return methodName;
-  }
-  
+	public int getLineNumber() {
+		return lineNumber;
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
 
 	// ROCKET The setters below were added to support web mode stacktraces
 	void setClassName(final String className) {

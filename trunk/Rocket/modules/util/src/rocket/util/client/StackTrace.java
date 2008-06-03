@@ -80,7 +80,7 @@ public class StackTrace {
 		}
 		return buf.toString();
 	}
-	
+
 	/**
 	 * Returns as an array the names of all the functions that make up the
 	 * current callstack.
@@ -95,39 +95,39 @@ public class StackTrace {
 	}
 
 	native private static String getCallStackFunctionNames0(final JavaScriptObject functions)/*-{
-	 var names = "";
+		 var names = "";
 
-	 for( var i = 0; i < functions.length; i++ ){
-	 var s = functions[ i ];
-	 var n = null;
+		 for( var i = 0; i < functions.length; i++ ){
+		 var s = functions[ i ];
+		 var n = null;
 
-	 while( true ){
-	 if( s.name ){
-	 n = s.name;
-	 break;
-	 }
+		 while( true ){
+		 if( s.name ){
+		 n = s.name;
+		 break;
+		 }
 
-	 n = s.toString().match(/function ([$\w]*)/);
-	 if( ! n ){
-	 n = "anonymous";
-	 break;
-	 }
+		 n = s.toString().match(/function ([$\w]*)/);
+		 if( ! n ){
+		 n = "anonymous";
+		 break;
+		 }
 
-	 n = n[ 1 ];
-	 if( ! n ){
-	 n = "anonymous";
-	 break;
-	 }
+		 n = n[ 1 ];
+		 if( ! n ){
+		 n = "anonymous";
+		 break;
+		 }
 
-	 break;
-	 }
-	 if( names.length > 0 ){
-	 names = names + ",";
-	 }
-	 names = names + n;
-	 }
-	 return names;
-	 }-*/;
+		 break;
+		 }
+		 if( names.length > 0 ){
+		 names = names + ",";
+		 }
+		 names = names + n;
+		 }
+		 return names;
+		 }-*/;
 
 	/**
 	 * Builds and returns an array of function objects for each level of the
@@ -376,32 +376,32 @@ public class StackTrace {
 	 * @return A string containing the function names each separated by commas
 	 */
 	native private static String getFunctionNames0(final JavaScriptObject context)/*-{
-	 // this array will be filled with the names of each level of the stack trace...
-	 var names = "";
-	 var addSeparator = false;
+		 // this array will be filled with the names of each level of the stack trace...
+		 var names = "";
+		 var addSeparator = false;
 
-	 while( context ){
-	 var name = context.name | context.callee;
-	 // is name is missing assign "anonymous"
-	 if( ! name ){
-	 name = "anonymous";
-	 }                
-	 if( addSeparator ){
-	 names = names + ",";
-	 }
+		 while( context ){
+		 var name = context.name | context.callee;
+		 // is name is missing assign "anonymous"
+		 if( ! name ){
+		 name = "anonymous";
+		 }                
+		 if( addSeparator ){
+		 names = names + ",";
+		 }
 
-	 names = names + name;
-	 addSeparator = true;
+		 names = names + name;
+		 addSeparator = true;
 
-	 // if function call is the result of a recursive call stop looping. 
-	 var parent = context.caller;
-	 if( context == parent ){
-	 break;
-	 }
-	 context = parent; 
-	 }
+		 // if function call is the result of a recursive call stop looping. 
+		 var parent = context.caller;
+		 if( context == parent ){
+		 break;
+		 }
+		 context = parent; 
+		 }
 
-	 return names;
-	 }-*/;
+		 return names;
+		 }-*/;
 
 }
