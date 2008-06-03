@@ -31,6 +31,6 @@ public class ArrayListReader extends AbstractCollectionReader {
 	static public final ObjectReader instance = new ArrayListReader();
 
 	public Object newInstance(String typeName, ObjectInputStream objectInputStream) {
-		return new ArrayList();
+		return new ArrayList<Object>();
 	}
 }

@@ -88,7 +88,7 @@ public class DocumentWalker {
 			final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			documentBuilder.setErrorHandler(this.getErrorHandler());
 			documentBuilder.setEntityResolver(this.getEntityResolver());
-			this.setDocumentBuilder( documentBuilder );
+			this.setDocumentBuilder(documentBuilder);
 
 			this.setIncludedFiles(createIncludedFiles());
 			this.setBeans(this.createBeans());
@@ -103,7 +103,6 @@ public class DocumentWalker {
 					caught);
 		}
 	}
-	
 
 	/**
 	 * The DocumentBuilder which is used to provide DocumentBuilders.
@@ -121,18 +120,21 @@ public class DocumentWalker {
 	}
 
 	/**
-	 * Simply wraps and catches any exceptions thrown by {@link #processDocument0()} rethrowing them 
-	 * with additional detail.
+	 * Simply wraps and catches any exceptions thrown by
+	 * {@link #processDocument0()} rethrowing them with additional detail.
 	 */
 	protected void processDocument() {
 		try {
 			this.processDocument0();
 		} catch (final SAXParseException caught) {
-			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + this.getFilename() + "\" at line: "+ caught.getLineNumber() + ", column: " + caught.getColumnNumber(), caught);
+			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + this.getFilename()
+					+ "\" at line: " + caught.getLineNumber() + ", column: " + caught.getColumnNumber(), caught);
 		} catch (final SAXException caught) {
-			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst parsing the xml file \"" + this.getFilename() + "\".", caught);
+			throw new BeanFactoryGeneratorException(
+					caught.getMessage() + " whilst parsing the xml file \"" + this.getFilename() + "\".", caught);
 		} catch (final IOException caught) {
-			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst reading the file \"" + this.getFilename() + "\".", caught);
+			throw new BeanFactoryGeneratorException(caught.getMessage() + " whilst reading the file \"" + this.getFilename() + "\".",
+					caught);
 		} catch (final RuntimeException caught) {
 			throw caught;
 		}
@@ -153,7 +155,7 @@ public class DocumentWalker {
 		final InputStream inputStream = generator.getResource(fileName);
 		final Document document = this.getDocumentBuilder().parse(inputStream);
 		this.setDocument(document);
-		
+
 		// process the local tags within this document
 		final PlaceHolderResolver placeHolderResolver = this.loadPlaceholderFiles(document);
 		this.setPlaceHolderResolver(placeHolderResolver);
@@ -170,7 +172,7 @@ public class DocumentWalker {
 		while (includedFilesIterator.hasNext()) {
 			final IncludeTag includeFile = (IncludeTag) includedFilesIterator.next();
 			final String includedFileFileName = includeFile.getFile();
-			this.setFilename(includedFileFileName );
+			this.setFilename(includedFileFileName);
 			this.processDocument();
 		}
 	}
@@ -178,7 +180,8 @@ public class DocumentWalker {
 	/**
 	 * This method is invoked to report included file cycles.
 	 * 
-	 * @param fileName The cycle file.
+	 * @param fileName
+	 *            The cycle file.
 	 */
 	protected void throwIncludedFileCycle(final String fileName) {
 		throw new BeanFactoryGeneratorException("The file \"" + fileName + "\" has previously been included causing a cycle.");
@@ -276,71 +279,76 @@ public class DocumentWalker {
 	 */
 	private Stack beanStack = new Stack();
 
-	protected Stack getBeanStack(){
+	protected Stack getBeanStack() {
 		return this.beanStack;
 	}
-	
-	protected void setParentBean( final Bean bean ){
-		Checker.notNull("parameter:bean", bean );
-		
+
+	protected void setParentBean(final Bean bean) {
+		Checker.notNull("parameter:bean", bean);
+
 		final EnclosingBean parent = new EnclosingBean();
-		parent.setNestedBeanCount( 0 );
-		parent.setId( bean.getId() );
-		 
-		this.getBeanStack().push( parent );
+		parent.setNestedBeanCount(0);
+		parent.setId(bean.getId());
+
+		this.getBeanStack().push(parent);
 	}
-	
-	protected void removeParentBean(){
+
+	protected void removeParentBean() {
 		this.getBeanStack().pop();
 	}
-	
-	protected void addNestedBean(){
+
+	protected void addNestedBean() {
 		final EnclosingBean parent = (EnclosingBean) this.getBeanStack().peek();
-		parent.setNestedBeanCount( parent.getNestedBeanCount() + 1 );
+		parent.setNestedBeanCount(parent.getNestedBeanCount() + 1);
 	}
-	
-	protected String getParentBeanId(){
+
+	protected String getParentBeanId() {
 		final EnclosingBean parent = (EnclosingBean) this.getBeanStack().peek();
 		return parent.getId();
 	}
-	
-	protected int getParentBeanNestedBeanCount(){
+
+	protected int getParentBeanNestedBeanCount() {
 		final EnclosingBean parent = (EnclosingBean) this.getBeanStack().peek();
 		return parent.getNestedBeanCount();
 	}
-	
+
 	private static class EnclosingBean {
-		
+
 		int nestedBeanCount = 0;
-		
-		int getNestedBeanCount(){
+
+		int getNestedBeanCount() {
 			return this.nestedBeanCount;
 		}
-		void setNestedBeanCount( final int nestedBeanCount ){
+
+		void setNestedBeanCount(final int nestedBeanCount) {
 			this.nestedBeanCount = nestedBeanCount;
 		}
+
 		String id;
-		
-		String getId(){
+
+		String getId() {
 			return this.id;
 		}
-		void setId( final String id ){
+
+		void setId(final String id) {
 			this.id = id;
 		}
 	}
-	
+
 	/**
-	 * Visits a single bean copying values from the xml document into the given bean.
+	 * Visits a single bean copying values from the xml document into the given
+	 * bean.
 	 * 
-	 * @param element The bean element
+	 * @param element
+	 *            The bean element
 	 */
 	protected void visitBean(final Element element) {
-		Checker.notNull( "parameter:element", element );
-		
+		Checker.notNull("parameter:element", element);
+
 		final BeanTag tag = new BeanTag();
 		tag.setElement(element);
-		tag.setFilename( this.getFilename() );
-		tag.setPlaceHolderResolver( this.getPlaceHolderResolver() );
+		tag.setFilename(this.getFilename());
+		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
 
 		final Bean bean = new Bean();
 		bean.setEagerLoaded(tag.isEagerLoaded());
@@ -352,14 +360,14 @@ public class DocumentWalker {
 		bean.setDestroyMethod(tag.getDestroyMethod());
 
 		this.addBean(bean);
-		
-		this.setParentBean( bean );
+
+		this.setParentBean(bean);
 		bean.setConstructorValues(this.visitConstructorValues(tag.getConstructorValues()));
 		bean.setProperties(this.visitProperties(tag.getProperties()));
-		
+
 		this.removeParentBean();
 	}
-	
+
 	/**
 	 * A set which aggregates all beans encountered within all xml documents.
 	 */
@@ -376,20 +384,20 @@ public class DocumentWalker {
 	}
 
 	protected Set<Bean> createBeans() {
-		return new TreeSet<Bean>( BEAN_ID_SORTER);
+		return new TreeSet<Bean>(BEAN_ID_SORTER);
 	}
-	
+
 	/**
 	 * This comparator may be used to produce a TreeSet sorted by bean id.
 	 */
-	static Comparator BEAN_ID_SORTER = new Comparator(){
-		public int compare( final Object bean, final Object otherBean ){
-			return compare( (Bean) bean, (Bean) otherBean );
+	static Comparator BEAN_ID_SORTER = new Comparator() {
+		public int compare(final Object bean, final Object otherBean) {
+			return compare((Bean) bean, (Bean) otherBean);
 		}
-		
-		int compare( final Bean bean, final Bean otherBean ){
-			return bean.getId().compareTo( otherBean.getId() );		
-		}		
+
+		int compare(final Bean bean, final Bean otherBean) {
+			return bean.getId().compareTo(otherBean.getId());
+		}
 	};
 
 	protected void addBean(final Bean bean) {
@@ -403,10 +411,10 @@ public class DocumentWalker {
 	}
 
 	protected Set<Property> visitProperties(final List propertys) {
-		final Set<Property> properties = new TreeSet<Property>( PROPERTY_NAME_SORTER );
+		final Set<Property> properties = new TreeSet<Property>(PROPERTY_NAME_SORTER);
 
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
-		
+
 		final Iterator iterator = propertys.iterator();
 		while (iterator.hasNext()) {
 			final Element element = (Element) iterator.next();
@@ -426,21 +434,22 @@ public class DocumentWalker {
 
 		return properties;
 	}
-	
-	static Comparator PROPERTY_NAME_SORTER = new Comparator(){
-		public int compare( final Object property, final Object otherProperty ){
-			return this.compare( (Property) property, (Property) otherProperty );
+
+	static Comparator PROPERTY_NAME_SORTER = new Comparator() {
+		public int compare(final Object property, final Object otherProperty) {
+			return this.compare((Property) property, (Property) otherProperty);
 		}
-		
-		int compare( final Property property, final Property otherProperty ){
-			return property.getName().compareTo( otherProperty.getName() );
+
+		int compare(final Property property, final Property otherProperty) {
+			return property.getName().compareTo(otherProperty.getName());
 		}
 	};
 
 	/**
 	 * Factory method which creates a Value from the given element
 	 * 
-	 * @param element The source element
+	 * @param element
+	 *            The source element
 	 * @return The built value.
 	 */
 	protected Value visitConstructorOrPropertyValue(final Element element) {
@@ -483,9 +492,9 @@ public class DocumentWalker {
 				value = this.visitMap(element);
 				break;
 			}
-			
-			if( tagName.equals( Constants.IMAGE_TAG )){
-				value = this.visitImage( element );
+
+			if (tagName.equals(Constants.IMAGE_TAG)) {
+				value = this.visitImage(element);
 				break;
 			}
 
@@ -510,7 +519,7 @@ public class DocumentWalker {
 		final String text = this.getPlaceHolderResolver().resolve(element.getTextContent());
 
 		final GeneratorContext context = this.getGenerator().getGeneratorContext();
-		stringValue.setFilename( this.getFilename() );
+		stringValue.setFilename(this.getFilename());
 		stringValue.setGeneratorContext(context);
 		stringValue.setType(context.getString());
 		stringValue.setValue(text);
@@ -524,7 +533,7 @@ public class DocumentWalker {
 		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
 
 		final BeanReferenceImpl beanReference = new BeanReferenceImpl();
-		beanReference.setFilename( this.getFilename() );
+		beanReference.setFilename(this.getFilename());
 		beanReference.setGeneratorContext(this.getGenerator().getGeneratorContext());
 		beanReference.setId(tag.getId());
 
@@ -532,72 +541,75 @@ public class DocumentWalker {
 	}
 
 	/**
-	 * Visits a single bean copying values from the xml document into the given bean.
+	 * Visits a single bean copying values from the xml document into the given
+	 * bean.
 	 * 
-	 * @param element The bean element
+	 * @param element
+	 *            The bean element
 	 * @return The new nested bean
 	 */
-	protected NestedBean visitNestedBean(final Element element ) {
-		Checker.notNull( "parameter:element", element );
-		
+	protected NestedBean visitNestedBean(final Element element) {
+		Checker.notNull("parameter:element", element);
+
 		final BeanTag tag = new BeanTag();
 		tag.setElement(element);
-						
-		tag.setPlaceHolderResolver( this.getPlaceHolderResolver() );
+
+		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
 
 		final NestedBean bean = new NestedBean();
-		bean.setFilename( this.getFilename() );
+		bean.setFilename(this.getFilename());
 		bean.setEagerLoaded(tag.isEagerLoaded());
 		bean.setSingleton(tag.isSingleton());
 		bean.setTypeName(tag.getClassName());
 		bean.setFactoryMethod(tag.getFactoryMethod());
 		bean.setInitMethod(tag.getInitMethod());
 		bean.setDestroyMethod(tag.getDestroyMethod());
-		
-		if( tag.getElement().hasAttribute( Constants.BEAN_ID_ATTRIBUTE )){
+
+		if (tag.getElement().hasAttribute(Constants.BEAN_ID_ATTRIBUTE)) {
 			this.throwNestedBeansMustNotHaveIds(bean);
 		}
-		
-		bean.setId( this.buildNestedBeanName() );
-		
+
+		bean.setId(this.buildNestedBeanName());
+
 		this.addBean(bean);
-		
+
 		this.addNestedBean();
-		this.setParentBean( bean );
-		
+		this.setParentBean(bean);
+
 		bean.setConstructorValues(this.visitConstructorValues(tag.getConstructorValues()));
 		bean.setProperties(this.visitProperties(tag.getProperties()));
 
 		this.removeParentBean();
-		
+
 		return bean;
 	}
-	
+
 	protected void throwNestedBeansMustNotHaveIds(final Bean bean) {
 		throw new BeanFactoryGeneratorException("Nested beans should not have an id set, bean: " + bean);
 	}
 
-	protected String buildNestedBeanName(){
+	protected String buildNestedBeanName() {
 		final String parentId = this.getParentBeanId();
 		final int nestedBeanCount = this.getParentBeanNestedBeanCount();
-		return parentId + "-nestedBean" + nestedBeanCount;		
+		return parentId + "-nestedBean" + nestedBeanCount;
 	}
-	
+
 	/**
 	 * Creates a ListValue from a list value element
 	 * 
-	 * @param element The list element
+	 * @param element
+	 *            The list element
 	 * @return A list containing the list values
 	 */
 	protected ListValue visitList(final Element element) {
 		final ListTag tag = new ListTag();
 		tag.setElement(element);
-		tag.setPlaceHolderResolver( this.getPlaceHolderResolver());
+		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
 
 		final ListValue list = new ListValue();
 		final List elements = this.visitValues(tag.getValues());
 		list.setElements(elements);
-		list.setFilename( this.getFilename() );
+		list.setFilename(this.getFilename());
 		list.setGeneratorContext(this.getGenerator().getGeneratorContext());
 		return list;
 	}
@@ -605,7 +617,8 @@ public class DocumentWalker {
 	/**
 	 * Creates a SetValue from a set value element.
 	 * 
-	 * @param element The set element
+	 * @param element
+	 *            The set element
 	 * @return A list containing the set values
 	 */
 	protected SetValue visitSet(final Element element) {
@@ -624,12 +637,12 @@ public class DocumentWalker {
 	protected MapValue visitMap(final Element element) {
 		final MapTag tag = new MapTag();
 		tag.setElement(element);
-		
+
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
 		tag.setPlaceHolderResolver(placeHolderResolver);
 
 		final MapValue map = new MapValue();
-		map.setFilename( this.getFilename());
+		map.setFilename(this.getFilename());
 		map.setGeneratorContext(this.getGenerator().getGeneratorContext());
 
 		final NodeList entriesNodeList = element.getChildNodes();
@@ -659,7 +672,8 @@ public class DocumentWalker {
 	 * Visits all the value elements and builds a list containing the values
 	 * found.
 	 * 
-	 * @param valueElements A nodelist of value elements.
+	 * @param valueElements
+	 *            A nodelist of value elements.
 	 * @return A list of values
 	 */
 	protected List<Value> visitValues(final List<Element> valueElements) {
@@ -677,28 +691,29 @@ public class DocumentWalker {
 
 	/**
 	 * Creates an ImageValue from an image element.
+	 * 
 	 * @param element
 	 * @return
 	 */
-	protected ImageValue visitImage( final Element element ){
-		Checker.notNull("parameter:element", element );
-		
+	protected ImageValue visitImage(final Element element) {
+		Checker.notNull("parameter:element", element);
+
 		final ImageTag tag = new ImageTag();
 		tag.setElement(element);
-		tag.setFilename( this.getFilename() );
-		tag.setPlaceHolderResolver( this.getPlaceHolderResolver() );
-		
+		tag.setFilename(this.getFilename());
+		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
+
 		final ImageValue imageValue = new ImageValue();
-		imageValue.setFilename( this.getFilename() );
-		imageValue.setGeneratorContext( this.getGenerator().getGeneratorContext() );
-		
-		imageValue.setFile( tag.getFile() );
-		imageValue.setLocal( tag.isLocal()  );
-		imageValue.setLazy( tag.isLazy() );
-		
+		imageValue.setFilename(this.getFilename());
+		imageValue.setGeneratorContext(this.getGenerator().getGeneratorContext());
+
+		imageValue.setFile(tag.getFile());
+		imageValue.setLocal(tag.isLocal());
+		imageValue.setLazy(tag.isLazy());
+
 		return imageValue;
 	}
-	
+
 	/**
 	 * Visits all alias tags and verifies that the name and bean are valid.
 	 */
@@ -757,7 +772,8 @@ public class DocumentWalker {
 	}
 
 	/**
-	 * Visits all the rpc tags creating beans for each element that is encountered.
+	 * Visits all the rpc tags creating beans for each element that is
+	 * encountered.
 	 */
 	protected void visitRpcs() {
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
@@ -780,7 +796,7 @@ public class DocumentWalker {
 			service.setId(tag.getId());
 			service.setServiceEntryPoint(tag.getServiceEntryPoint());
 			service.setServiceInterface(tag.getServiceInterface());
-			
+
 			this.addBean(service);
 		}
 	}
@@ -788,7 +804,7 @@ public class DocumentWalker {
 	protected void visitAspects() {
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
 		final String filename = this.getFilename();
-		
+
 		final NodeList nodeList = this.getDocument().getElementsByTagName(Constants.ASPECT_TAG);
 		final int count = nodeList.getLength();
 		for (int i = 0; i < count; i++) {
@@ -831,11 +847,12 @@ public class DocumentWalker {
 
 	protected void addAspect(final Aspect aspect) {
 		Checker.notNull("parameter:aspect", aspect);
-		
+
 		this.getAspects().add(aspect);
 	}
 
-	protected List<IncludeTag> visitIncludedFiles(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
+	protected List<IncludeTag> visitIncludedFiles(final Document document, final String filename,
+			final PlaceHolderResolver placeHolderResolver) {
 		Checker.notNull("parameter:document", document);
 		Checker.notEmpty("parameter:filename", filename);
 		Checker.notNull("parameter:placeHolderResolver", placeHolderResolver);

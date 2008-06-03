@@ -41,7 +41,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithStaticProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 1, values.size());
 	}
@@ -60,7 +60,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithNotPublicPropertyGetter();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 1, values.size());
 	}
@@ -79,7 +79,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithNotAPropertyGetter();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 1, values.size());
 	}
@@ -98,7 +98,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithBooleanProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 2, values.size());
 		assertEquals("" + values, Boolean.TRUE, values.get(1));
@@ -117,7 +117,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithByteProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 2, values.size());
 		assertEquals("" + values, new Byte(BYTE), values.get(1));
@@ -136,7 +136,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithShortProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 2, values.size());
 		assertEquals("" + values, new Short(SHORT), values.get(1));
@@ -155,7 +155,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithIntProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 2, values.size());
 		assertEquals("" + values, new Integer(INT), values.get(1));
@@ -174,7 +174,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithLongProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 2, values.size());
 		assertEquals("" + values, new Long(LONG), values.get(1));
@@ -193,7 +193,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithFloatProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 2, values.size());
 		assertEquals("" + values, new Float(FLOAT), values.get(1));
@@ -212,7 +212,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithDoubleProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 2, values.size());
 		assertEquals("" + values, new Double(DOUBLE), values.get(1));
@@ -231,7 +231,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithCharProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 2, values.size());
 		assertEquals("" + values, new Character(CHAR), values.get(1));
@@ -250,7 +250,7 @@ public class PropertyWriterTestCase extends TestCase {
 		final Object instance = new ConcreteClassWithObjectProperty();
 		writer.write(instance, outputStream);
 
-		final List values = outputStream.getValues();
+		final List<Object> values = outputStream.getValues();
 		assertNotNull(values);
 		assertEquals("" + values, 3, values.size());
 		assertTrue("" + values, values.remove(STRING));
@@ -316,9 +316,9 @@ public class PropertyWriterTestCase extends TestCase {
 			this.getValues().add(object);
 		}
 
-		private List values = new ArrayList();
+		private List<Object> values = new ArrayList<Object>();
 
-		public List getValues() {
+		public List<Object> getValues() {
 			return this.values;
 		}
 

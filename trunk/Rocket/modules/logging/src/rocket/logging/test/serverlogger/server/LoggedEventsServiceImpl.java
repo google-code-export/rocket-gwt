@@ -25,6 +25,7 @@ import rocket.remoting.server.java.JavaRpcServiceMethodInvoker;
 import rocket.remoting.server.java.JavaRpcServiceServlet;
 import rocket.remoting.server.java.ServerSerializationFactory;
 import rocket.serialization.client.ObjectWriter;
+import rocket.serialization.server.ServerObjectWriter;
 
 public class LoggedEventsServiceImpl extends JavaRpcServiceServlet implements LoggedEventsService {
 
@@ -42,8 +43,9 @@ public class LoggedEventsServiceImpl extends JavaRpcServiceServlet implements Lo
 			@Override
 			protected ServerSerializationFactory createSerializationFactory() {
 				return new ServerSerializationFactory() {
-					protected List<ObjectWriter> createObjectWriters() {
-						final List<ObjectWriter> writers = new ArrayList<ObjectWriter>();
+					@Override
+					protected List<ServerObjectWriter> createObjectWriters() {
+						final List<ServerObjectWriter> writers = new ArrayList<ServerObjectWriter>();
 						writers.add(new LoggingLevelWriter());
 						writers.addAll(super.createObjectWriters());
 						return writers;

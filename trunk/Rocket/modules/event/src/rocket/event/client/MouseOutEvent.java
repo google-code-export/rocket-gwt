@@ -27,6 +27,6 @@ public class MouseOutEvent extends MouseEvent {
 	}
 
 	public Element getTo() {
-		return (Element)this.getEvent().getToElement().cast();
+		return (Element) this.getEvent().getToElement().cast();
 	}
 }

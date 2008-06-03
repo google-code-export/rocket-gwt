@@ -15,7 +15,6 @@
  */
 package rocket.event.client;
 
-
 public class MouseWheelEvent extends MouseEvent {
 	public MouseWheelEvent() {
 	}

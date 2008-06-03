@@ -22,35 +22,37 @@ import java.util.List;
 import rocket.util.client.Checker;
 
 /**
- * Convenient base class for any implementation of the CometConnection interface.
- * Instances of this class buffer messages until they are committed by the CometServlet etc.
+ * Convenient base class for any implementation of the CometConnection
+ * interface. Instances of this class buffer messages until they are committed
+ * by the CometServlet etc.
  * 
  * @author Miroslav Pokorny
  */
 public class CometConnectionImpl implements CometConnection {
 
-	public CometConnectionImpl(){
+	public CometConnectionImpl() {
 		super();
-		
-		this.setMessages( this.createMessages() ); 
+
+		this.setMessages(this.createMessages());
 	}
-	
+
 	/**
 	 * Pushes a single object over this comet connection.
+	 * 
 	 * @param object
 	 * @return
 	 * @throws IOException
 	 */
-	public void push(final Object object){
+	public void push(final Object object) {
 		final ObjectPayload objectPayload = new ObjectPayload(object);
 		this.pushMessage(objectPayload);
 	}
 
 	/**
-	 * Sends a terminate message to the client. 
-	 * All subsequent pushes will fail and this session will be terminated.
+	 * Sends a terminate message to the client. All subsequent pushes will fail
+	 * and this session will be terminated.
 	 */
-	public void terminate(){
+	public void terminate() {
 		this.pushMessage(new Terminate());
 		this.setTerminated(true);
 	}
@@ -74,28 +76,29 @@ public class CometConnectionImpl implements CometConnection {
 		this.terminated = terminated;
 	}
 
-	protected void pushMessage(final Message message){
-		Checker.notNull("parameter:message", message );
+	protected void pushMessage(final Message message) {
+		Checker.notNull("parameter:message", message);
 		this.terminatedGuard();
-		
-		this.getMessages().add( message );
+
+		this.getMessages().add(message);
 	}
-	
+
 	/**
 	 * This list accumulates any messages that will be sent to the client.
 	 */
 	protected List<Message> messages;
-	
-	protected List<Message> getMessages(){
-		Checker.notNull("field:messages", messages );
+
+	protected List<Message> getMessages() {
+		Checker.notNull("field:messages", messages);
 		return this.messages;
 	}
-	protected void setMessages( final List<Message> messages ){
-		Checker.notNull("parameter:messages", messages );
+
+	protected void setMessages(final List<Message> messages) {
+		Checker.notNull("parameter:messages", messages);
 		this.messages = messages;
 	}
-	
-	protected List<Message> createMessages(){
+
+	protected List<Message> createMessages() {
 		return new ArrayList<Message>();
 	}
 }

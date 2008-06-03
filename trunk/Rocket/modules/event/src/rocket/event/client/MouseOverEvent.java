@@ -28,6 +28,6 @@ public class MouseOverEvent extends MouseEvent {
 	}
 
 	public Element getFrom() {
-		return (Element)this.getEvent().getFromElement().cast();
+		return (Element) this.getEvent().getFromElement().cast();
 	}
 }

@@ -251,7 +251,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 				if (OBJECT.equals(name)) {
 					type = new TestJavaClassTypeAdapter() {
 						String[] getSubTypeNames() {
-							final List subTypes = new ArrayList();
+							final List<String> subTypes = new ArrayList<String>();
 							subTypes.add(SERIALIZABLE);
 							subTypes.add(CONCRETE_CLASS);
 							subTypes.add(INTERFACE);
