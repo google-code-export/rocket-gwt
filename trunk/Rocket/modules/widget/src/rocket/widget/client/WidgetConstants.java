@@ -50,34 +50,6 @@ public class WidgetConstants {
 
 	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = SELECTED;
 
-	// STYLESHEET PICKER
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	final static String STYLESHEET_PICKER_STYLE = ROCKET + "-styleSheetPicker";
-
-	final static String STYLESHEET_PICKER_LABEL_STYLE = "label";
-
-	final static String STYLESHEET_PICKER_LABEL_TEXT = "Text Size";
-
-	final static String STYLESHEET_ITEM_STYLE = "item";
-
-	final static String STYLESHEET_ITEM_SELECTED_STYLE = SELECTED;
-
-	// BREADCRUMB
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	/**
-	 * This style is applied to the container element of a BreadcrumbPanel
-	 * {@link BreadcrumbPanel}
-	 */
-	final static String BREADCRUMB_PANEL_STYLE = ROCKET + "-breadcrumbPanel";
-
-	final static String BREADCRUMB_PANEL_CRUMB_STYLE = "item";
-
-	final static String BREADCRUMB_PANEL_LAST_CRUMB_STYLE = "last";
-
-	final static String BREADCRUMB_PANEL_SEPARATOR_HTML = ">";
-
-	final static String BREADCRUMB_PANEL_SEPARATOR_STYLE = "separator";
-
 	// SORTABLD TABLE
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
