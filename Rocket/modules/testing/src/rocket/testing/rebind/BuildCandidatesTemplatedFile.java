@@ -37,31 +37,32 @@ public class BuildCandidatesTemplatedFile extends TemplatedFileCodeBlock {
 
 	public BuildCandidatesTemplatedFile() {
 		super();
-		
+
 		this.setTestMethods(this.createTestMethods());
 	}
-	
-	public void setNative( final boolean ignored ){
+
+	@Override
+	public void setNative(final boolean ignored) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * This list accumulates all the test methods that make up the test.
 	 */
-	private List testMethods;
+	private List<Method> testMethods;
 
-	protected List getTestMethods() {
+	protected List<Method> getTestMethods() {
 		Checker.notNull("field:testMethods", testMethods);
 		return this.testMethods;
 	}
 
-	protected void setTestMethods(final List testMethods) {
+	protected void setTestMethods(final List<Method> testMethods) {
 		Checker.notNull("parameter:testMethods", testMethods);
 		this.testMethods = testMethods;
 	}
 
-	protected List createTestMethods() {
-		return new ArrayList();
+	protected List<Method> createTestMethods() {
+		return new ArrayList<Method>();
 	}
 
 	public void addTestMethod(final Method method) {
@@ -75,24 +76,29 @@ public class BuildCandidatesTemplatedFile extends TemplatedFileCodeBlock {
 
 		return new CollectionTemplatedCodeBlock() {
 
+			@Override
 			public InputStream getInputStream() {
 				return template.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return template.getValue0(name);
 			}
 
+			@Override
 			protected Collection getCollection() {
 				return BuildCandidatesTemplatedFile.this.getTestMethods();
 			}
 
+			@Override
 			protected void prepareToWrite(Object element) {
 				final Method testMethod = (Method) element;
 
 				template.setMethod(testMethod);
 			}
 
+			@Override
 			protected void writeBetweenElements(SourceWriter writer) {
 				writer.println("");
 			}
@@ -114,10 +120,12 @@ public class BuildCandidatesTemplatedFile extends TemplatedFileCodeBlock {
 		this.testRunner = testRunner;
 	}
 
-	protected String getResourceName(){
+	@Override
+	protected String getResourceName() {
 		return Constants.BUILD_CANDIDATES_TEMPLATE;
 	}
-	
+
+	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;
 		if (Constants.BUILD_CANDIDATES_ADD_TESTS.equals(name)) {

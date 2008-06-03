@@ -40,7 +40,8 @@ class Constants {
 	final static String INTERACTIVE_PANEL_WIDGET_LOG_STYLE = INTERACTIVE_PANEL_STYLE + "-log";
 
 	/**
-	 * This is the style that is applied to the table used to display on going test results.
+	 * This is the style that is applied to the table used to display on going
+	 * test results.
 	 */
 	public final static String WEBPAGE_TESTRUNNER_TABLE = "rocket-testing-webPageTestRunner-table";
 }

@@ -17,10 +17,8 @@ package rocket.testing.client;
 
 import java.util.Iterator;
 
-import rocket.browser.client.Browser;
 import rocket.util.client.Checker;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -37,7 +35,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class InteractiveList extends Composite {
+public abstract class InteractiveList<E> extends Composite {
 
 	public InteractiveList() {
 		this.initWidget(this.createWidget());
@@ -91,7 +89,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + "returned " + size;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + "threw " + GWT.getTypeName(caught) + ", message\"" + caught.getMessage() + "\".";
+			message = message + "threw " + caught.getClass().getName() + ", message\"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -122,7 +120,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + "returned " + empty;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
+			message = message + " threw " + caught.getClass().getName() + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -147,7 +145,7 @@ public abstract class InteractiveList extends Composite {
 
 	protected void onListAddClick() {
 		String message = "list.add(";
-		Object element = null;
+		E element = null;
 		boolean added = false;
 		try {
 
@@ -156,7 +154,8 @@ public abstract class InteractiveList extends Composite {
 			message = message + this.toString(element) + ") returned " + added;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + this.toString(element) + ") threw " + GWT.getTypeName(caught) + ", message\"" + caught.getMessage() + "\".";
+			message = message + this.toString(element) + ") threw " + caught.getClass().getName() + ", message\"" + caught.getMessage()
+					+ "\".";
 		}
 		this.log(message);
 	}
@@ -165,7 +164,7 @@ public abstract class InteractiveList extends Composite {
 	 * Sub-classes must delegate to the list implementation and add the given
 	 * element
 	 */
-	protected abstract boolean listAdd(Object element);
+	protected abstract boolean listAdd(E element);
 
 	protected Button createListInsertButton() {
 		final Button button = new Button("list.add(int)");
@@ -180,15 +179,15 @@ public abstract class InteractiveList extends Composite {
 	protected void onListInsertClick() {
 		String message = "list.add(";
 		int index = -1;
-		Object element = null;
+		E element = null;
 		try {
-			index = Integer.parseInt(Browser.prompt("add index", "0"));
+			index = Integer.parseInt(Window.prompt("add index", "0"));
 			element = this.createElement();
 			this.listInsert(index, element);
 			message = message + index + ", " + this.toString(element) + ") returned";
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + index + "," + this.toString(element) + ") threw " + GWT.getTypeName(caught) + ", message\""
+			message = message + index + "," + this.toString(element) + ") threw " + caught.getClass().getName() + ", message\""
 					+ caught.getMessage() + "\".";
 		}
 		this.log(message);
@@ -198,7 +197,7 @@ public abstract class InteractiveList extends Composite {
 	 * Sub-classes must delegate to the list implementation and insert the given
 	 * element at the given slot
 	 */
-	protected abstract void listInsert(int index, Object element);
+	protected abstract void listInsert(int index, E element);
 
 	protected Button createListGetButton() {
 		final Button button = new Button("list.get()");
@@ -214,13 +213,13 @@ public abstract class InteractiveList extends Composite {
 		String message = "list.get(";
 		int index = -1;
 		try {
-			index = Integer.parseInt(Browser.prompt("get index", "0"));
-			final Object element = this.listGet(index);
+			index = Integer.parseInt(Window.prompt("get index", "0"));
+			final E element = this.listGet(index);
 			this.checkType(element);
 			message = message + index + ") returned " + this.toString(element);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + index + ") threw " + GWT.getTypeName(caught) + ", message\"" + caught.getMessage() + "\".";
+			message = message + index + ") threw " + caught.getClass().getName() + ", message\"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -229,7 +228,7 @@ public abstract class InteractiveList extends Composite {
 	 * Sub-classes must delegate to the list implementation and get the element
 	 * at the given slot.
 	 */
-	protected abstract Object listGet(int index);
+	protected abstract E listGet(int index);
 
 	protected Button createListRemoveButton() {
 		final Button button = new Button("list.remove()");
@@ -245,13 +244,13 @@ public abstract class InteractiveList extends Composite {
 		String message = "list.remove(";
 		int index = -1;
 		try {
-			index = Integer.parseInt(Browser.prompt("remove index", "0"));
-			final Object element = this.listRemove(index);
+			index = Integer.parseInt(Window.prompt("remove index", "0"));
+			final E element = this.listRemove(index);
 			this.checkType(element);
 			message = message + index + ") returned " + this.toString(element);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + index + ") threw " + GWT.getTypeName(caught) + ", message\"" + caught.getMessage() + "\".";
+			message = message + index + ") threw " + caught.getClass().getName() + ", message\"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -260,7 +259,7 @@ public abstract class InteractiveList extends Composite {
 	 * Sub-classes must delegate to the list implementation and remove the
 	 * element at the given slot.
 	 */
-	protected abstract Object listRemove(int index);
+	protected abstract E listRemove(int index);
 
 	protected Button createListSetButton() {
 		final Button button = new Button("list.set()");
@@ -275,16 +274,16 @@ public abstract class InteractiveList extends Composite {
 	protected void onListSetClick() {
 		String message = "list.set(";
 		int index = -1;
-		Object element = null;
+		E element = null;
 		try {
-			index = Integer.parseInt(Browser.prompt("set index", "0"));
+			index = Integer.parseInt(Window.prompt("set index", "0"));
 			element = this.createElement();
-			final Object previous = this.listSet(index, element);
+			final E previous = this.listSet(index, element);
 			this.checkType(previous);
 			message = message + index + ", " + this.toString(element) + ") returned " + this.toString(previous);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + index + "," + this.toString(element) + ") threw " + GWT.getTypeName(caught) + ", message\""
+			message = message + index + "," + this.toString(element) + ") threw " + caught.getClass().getName() + ", message\""
 					+ caught.getMessage() + "\".";
 		}
 		this.log(message);
@@ -294,7 +293,7 @@ public abstract class InteractiveList extends Composite {
 	 * Sub-classes must delegate to the list implementation and set the element
 	 * at the given slot.
 	 */
-	protected abstract Object listSet(int index, Object element);
+	protected abstract E listSet(int index, E element);
 
 	/**
 	 * Sub-classes must create a new element whenever this factory method is
@@ -302,7 +301,7 @@ public abstract class InteractiveList extends Composite {
 	 * 
 	 * @return
 	 */
-	protected abstract Object createElement();
+	protected abstract E createElement();
 
 	protected Button createListIteratorButton() {
 		final Button button = new Button("list.iterator()");
@@ -316,14 +315,14 @@ public abstract class InteractiveList extends Composite {
 
 	protected void onListIteratorClick() {
 		String message = "list.iterator()";
-		Iterator iterator = null;
+		Iterator<E> iterator = null;
 		try {
 			iterator = this.listIterator();
 			this.setIterator(iterator);
 			message = message + " returned " + iterator;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
+			message = message + " threw " + caught.getClass().getName() + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -332,7 +331,7 @@ public abstract class InteractiveList extends Composite {
 	 * Sub-classes must delegate to the list implementation and fetch the
 	 * iterator
 	 */
-	protected abstract Iterator listIterator();
+	protected abstract Iterator<E> listIterator();
 
 	protected Button createIteratorHasNextButton() {
 		final Button button = new Button("iterator.hasNext()");
@@ -351,7 +350,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + " returned " + hasNext;
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
+			message = message + " threw " + caught.getClass().getName() + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -369,12 +368,12 @@ public abstract class InteractiveList extends Composite {
 	protected void onIteratorNextClick() {
 		String message = "iterator.next()";
 		try {
-			final Object element = this.getIterator().next();
+			final E element = this.getIterator().next();
 			this.checkType(element);
 			message = message + " returned " + this.toString(element);
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
+			message = message + " threw " + caught.getClass().getName() + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -396,7 +395,7 @@ public abstract class InteractiveList extends Composite {
 			message = message + " returned";
 		} catch (final Exception caught) {
 			caught.printStackTrace();
-			message = message + " threw " + GWT.getTypeName(caught) + " with a message of \"" + caught.getMessage() + "\".";
+			message = message + " threw " + caught.getClass().getName() + " with a message of \"" + caught.getMessage() + "\".";
 		}
 		this.log(message);
 	}
@@ -407,14 +406,14 @@ public abstract class InteractiveList extends Composite {
 	 * 
 	 * @param element
 	 */
-	protected abstract void checkType(Object element);
+	protected abstract void checkType(E element);
 
 	/**
 	 * Contains the iterator being iterated over.
 	 */
-	private Iterator iterator;
+	private Iterator<E> iterator;
 
-	protected Iterator getIterator() {
+	protected Iterator<E> getIterator() {
 		Checker.notNull("field:iterator", iterator);
 		return this.iterator;
 	}
@@ -423,7 +422,7 @@ public abstract class InteractiveList extends Composite {
 		return null != this.iterator;
 	}
 
-	protected void setIterator(final Iterator iterator) {
+	protected void setIterator(final Iterator<E> iterator) {
 		Checker.notNull("parameter:iterator", iterator);
 		this.iterator = iterator;
 	}
@@ -434,5 +433,5 @@ public abstract class InteractiveList extends Composite {
 		Window.alert(message);
 	}
 
-	protected abstract String toString(Object element);
+	protected abstract String toString(E element);
 }
