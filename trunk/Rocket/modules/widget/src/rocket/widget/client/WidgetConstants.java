@@ -50,7 +50,7 @@ public class WidgetConstants {
 
 	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = SELECTED;
 
-	// SORTABLD TABLE
+	// SORTABLE TABLE
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
 	 * This style is applied to the container element of a SortableTable
