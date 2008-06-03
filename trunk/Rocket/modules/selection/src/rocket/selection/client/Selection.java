@@ -15,13 +15,15 @@
  */
 package rocket.selection.client;
 
-import rocket.dom.client.Dom;
+import rocket.browser.client.Browser;
 import rocket.selection.client.support.SelectionSupport;
 import rocket.style.client.Css;
 import rocket.style.client.InlineStyle;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * The Selection class is a singleton that represents any selection made by the
@@ -29,18 +31,7 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Selection {
-
-	final static Selection selection = new Selection();
-
-	/**
-	 * Returns the document Selection singleton
-	 * 
-	 * @return The singleton instance
-	 */
-	static public Selection getSelection() {
-		return selection;
-	}
+public class Selection extends JavaScriptObject {
 
 	/**
 	 * The browser aware support that takes care of browser difference nasties.
@@ -49,6 +40,24 @@ public class Selection {
 
 	static SelectionSupport getSupport() {
 		return Selection.support;
+	}
+
+	/**
+	 * Returns the document Selection singleton
+	 * 
+	 * @return The singleton instance
+	 */
+	static public Selection getSelection() {
+		return Selection.getSelection(Browser.getWindow());
+	}
+
+	/**
+	 * Returns the document Selection singleton
+	 * 
+	 * @return The singleton instance
+	 */
+	static public Selection getSelection(final JavaScriptObject window) {
+		return Selection.support.getSelection(window);
 	}
 
 	/**
@@ -64,7 +73,7 @@ public class Selection {
 	}
 
 	public static void disableTextSelection() {
-		disableTextSelection(Dom.getBody());
+		disableTextSelection(RootPanel.getBodyElement());
 	}
 
 	/**
@@ -81,7 +90,7 @@ public class Selection {
 	}
 
 	public static void enableTextSelection() {
-		enableTextSelection(Dom.getBody());
+		enableTextSelection(RootPanel.getBodyElement());
 	}
 
 	/**
@@ -105,24 +114,24 @@ public class Selection {
 		return Selection.getSupport().isEnabled(element);
 	}
 
-	Selection() {
+	protected Selection() {
 		super();
 	}
 
-	public SelectionEndPoint getStart() {
-		return Selection.getSupport().getStart();
+	final public SelectionEndPoint getStart() {
+		return Selection.getSupport().getStart(this);
 	}
 
-	public void setStart(final SelectionEndPoint start) {
-		Selection.getSupport().setStart(start);
+	final public void setStart(final SelectionEndPoint start) {
+		Selection.getSupport().setStart(this, start);
 	}
 
-	public SelectionEndPoint getEnd() {
-		return Selection.getSupport().getEnd();
+	final public SelectionEndPoint getEnd() {
+		return Selection.getSupport().getEnd(this);
 	}
 
-	public void setEnd(final SelectionEndPoint end) {
-		Selection.getSupport().setEnd(end);
+	final public void setEnd(final SelectionEndPoint end) {
+		Selection.getSupport().setEnd(this, end);
 	}
 
 	/**
@@ -130,15 +139,15 @@ public class Selection {
 	 * 
 	 * @return True if empty false otherwise
 	 */
-	public boolean isEmpty() {
-		return Selection.getSupport().isEmpty();
+	final public boolean isEmpty() {
+		return Selection.getSupport().isEmpty(this);
 	}
 
 	/**
 	 * Clears any current selection.
 	 */
-	public void clear() {
-		Selection.getSupport().clear();
+	final public void clear() {
+		Selection.getSupport().clear(this);
 	}
 
 	/**
@@ -148,8 +157,8 @@ public class Selection {
 	 * If not selection is active the returned element will have no child / its
 	 * innerHTML property will be an empty String.
 	 */
-	public Element extract() {
-		return Selection.getSupport().extract();
+	final public Element extract() {
+		return Selection.getSupport().extract(this);
 	}
 
 	/**
@@ -161,14 +170,14 @@ public class Selection {
 	 * 
 	 * @param element
 	 */
-	public void surround(final Element element) {
-		Selection.getSupport().surround(element);
+	final public void surround(final Element element) {
+		Selection.getSupport().surround(this, element);
 	}
 
 	/**
-	 * Delets the selection's content from the document.
+	 * Deletes the selection's content from the document.
 	 */
-	public void delete() {
-		Selection.getSupport().delete();
+	final public void delete() {
+		Selection.getSupport().delete(this);
 	}
 }

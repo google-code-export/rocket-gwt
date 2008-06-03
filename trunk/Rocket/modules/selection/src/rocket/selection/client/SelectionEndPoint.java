@@ -17,7 +17,7 @@ package rocket.selection.client;
 
 import rocket.util.client.Checker;
 
-import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Text;
 
 /**
  * An end point uses a combination of a textNode and offset to mark the
@@ -26,17 +26,29 @@ import com.google.gwt.core.client.JavaScriptObject;
  * @author Miroslav Pokorny (mP)
  */
 public class SelectionEndPoint {
+
+	public SelectionEndPoint() {
+		super();
+	}
+
+	public SelectionEndPoint(Text text, final int offset) {
+		super();
+
+		this.setTextNode(text);
+		this.setOffset(offset);
+	}
+
 	/**
 	 * The textNode containing the start/end of the selection.
 	 */
-	private JavaScriptObject textNode;
+	private Text textNode;
 
-	public JavaScriptObject getTextNode() {
+	public Text getTextNode() {
 		Checker.notNull("field:textNode", textNode);
 		return textNode;
 	}
 
-	public void setTextNode(final JavaScriptObject textNode) {
+	public void setTextNode(final Text textNode) {
 		Checker.notNull("parameter:textNode", textNode);
 		this.textNode = textNode;
 	}
@@ -56,6 +68,6 @@ public class SelectionEndPoint {
 	}
 
 	public String toString() {
-		return super.toString() + ", textNode\"" + this.textNode + "\", offset: " + offset;
+		return super.toString() + ", offset: " + offset + ", textNode\"" + this.textNode + "\"";
 	}
 }

@@ -15,6 +15,8 @@
  */
 package rocket.selection.client.support;
 
+import rocket.selection.client.Selection;
+
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
@@ -25,16 +27,13 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class SafariSelectionSupport extends SelectionSupport {
 
-	native protected JavaScriptObject getNativeSelection()/*-{
-	 return $wnd.getSelection();
-	 }-*/;
+	@Override
+	native public Selection getSelection(JavaScriptObject window)/*-{
+		 return window.getSelection();
+		 }-*/;
 
-	public void clear() {
-		final JavaScriptObject selection = this.getNativeSelection();
-		this.clear0(selection);
-	}
-
-	native private void clear0(final JavaScriptObject selection)/*-{
-	 selection.collapse();
-	 }-*/;
+	@Override
+	native public void clear(final Selection selection)/*-{
+		 selection.collapse();
+		 }-*/;
 }
