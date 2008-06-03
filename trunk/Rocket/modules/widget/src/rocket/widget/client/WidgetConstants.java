@@ -78,18 +78,6 @@ public class WidgetConstants {
 
 	final static String BREADCRUMB_PANEL_SEPARATOR_STYLE = "separator";
 
-	// GRID
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	/**
-	 * This style is applied to the container element of a GridView
-	 * {@link GridView}
-	 */
-	final static String GRIDVIEW_STYLE = ROCKET + "-gridview";
-
-	final static String GRIDVIEW_CELL_STYLE = "cell";
-
-	final static String GRIDVIEW_FILLER_STYLE = "filler";
-
 	// SORTABLD TABLE
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
@@ -133,45 +121,6 @@ public class WidgetConstants {
 	final static String SPINNER_UP_STYLE = "up";
 
 	final static String SPINNER_DOWN_STYLE = "down";
-
-	// PAGER
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	/**
-	 * This style is applied to the container element of a Pager widget
-	 * {@link rocket.widget.client.Pager}
-	 */
-	final static String PAGER_STYLE = ROCKET + "-pager";
-
-	/**
-	 * The default text that appears on the previous button
-	 */
-	final static String PAGER_PREVIOUS_BUTTON_TEXT = "<< Previous";
-
-	/**
-	 * This style is applied to the previous button
-	 */
-	final static String PAGER_PREVIOUS_BUTTON_STYLE = "previous";
-
-	/**
-	 * The default text that appears on the next button.
-	 */
-	final static String PAGER_NEXT_BUTTON_TEXT = "Next >>";
-
-	/**
-	 * This style is applied to the next button
-	 */
-	final static String PAGER_NEXT_BUTTON_STYLE = "next";
-
-	/**
-	 * This style is applied to each of the page buttons that appear along the
-	 * pager widget
-	 */
-	final static String PAGER_GOTO_PAGE_STYLE = "goto";
-
-	/**
-	 * This style is applied to the current page.
-	 */
-	final static String PAGER_CURRENT_PAGE_STYLE = "current";
 
 	// SPAN PANEL
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
