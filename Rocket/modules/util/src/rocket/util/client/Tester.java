@@ -16,7 +16,8 @@
 package rocket.util.client;
 
 /**
- * The Tester class is a compilation of useful test methods, ie most of them return booleans.
+ * The Tester class is a compilation of useful test methods, ie most of them
+ * return booleans.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -48,11 +49,11 @@ public class Tester {
 	public static boolean nullSafeIdentity(final Object first, final Object second) {
 		return null == first && null == second ? true : first == second;
 	}
-	
+
 	public static boolean isNullOrEmpty(final String string) {
 		return string == null || string.length() == 0;
 	}
-	
+
 	static public boolean equals(final double value, final double otherValue, final double epsilon) {
 		return (value - epsilon <= otherValue) && (value + epsilon >= otherValue);
 	}
@@ -60,7 +61,6 @@ public class Tester {
 	static public boolean equals(final long value, final long otherValue, final long epsilon) {
 		return (value - epsilon <= otherValue) && (value + epsilon >= otherValue);
 	}
-
 
 	public static boolean isHttp(final String protocol) {
 		return Constants.HTTP.equals(protocol);

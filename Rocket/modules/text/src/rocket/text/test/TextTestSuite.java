@@ -27,7 +27,7 @@ public class TextTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket.Text");
-		addTests( suite );
+		addTests(suite);
 		return suite;
 	}
 

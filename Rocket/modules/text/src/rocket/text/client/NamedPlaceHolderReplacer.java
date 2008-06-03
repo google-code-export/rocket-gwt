@@ -40,14 +40,14 @@ public class NamedPlaceHolderReplacer<V> extends PlaceHolderReplacer {
 		return value;
 	}
 
-	private Map<String,V> values;
+	private Map<String, V> values;
 
-	protected Map<String,V> getValues() {
+	protected Map<String, V> getValues() {
 		Checker.notNull("field:values", values);
 		return this.values;
 	}
 
-	public void setValues(final Map<String,V> values) {
+	public void setValues(final Map<String, V> values) {
 		Checker.notNull("parameter:values", values);
 		this.values = values;
 	}

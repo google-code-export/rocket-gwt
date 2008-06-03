@@ -209,7 +209,7 @@ public class UtilitiesTestCase extends TestCase {
 		assertEquals("The second token should be", second, tokens[1]);
 		assertEquals("The third token should be", third, tokens[2]);
 	}
-	
+
 	public void testSplitIgnoringDelimitersWithEmptyLastToken() {
 		final String first = "a";
 		final String second = "b";
@@ -228,7 +228,6 @@ public class UtilitiesTestCase extends TestCase {
 		assertEquals("The third token should be", third, tokens[2]);
 	}
 
-	
 	public void testSplitIgnoringDelimitersWithTrailingDelimiter() {
 		final String first = "the";
 		final String second = "quick";
@@ -332,9 +331,8 @@ public class UtilitiesTestCase extends TestCase {
 		final String first = "green.apple";
 		final String second = "green";
 
-		assertTrue(
-				"Utility.startsWithIgnoringCase() should return true when querying if \"" + first + "\" starts with \"" + second + "\".",
-				Utilities.startsWithIgnoringCase(first, second));
+		assertTrue("Utility.startsWithIgnoringCase() should return true when querying if \"" + first + "\" starts with \"" + second
+				+ "\".", Utilities.startsWithIgnoringCase(first, second));
 	}
 
 	public void testStartsWithIgnoringCaseWhichFails() {
@@ -460,68 +458,68 @@ public class UtilitiesTestCase extends TestCase {
 
 		assertEquals(expected, decoded);
 	}
-	
-	public void testTrimLeft0(){
+
+	public void testTrimLeft0() {
 		final String input = " apple ";
-		final String actual = Utilities.trimLeft( input );
+		final String actual = Utilities.trimLeft(input);
 		final String expected = "apple ";
-		
-		assertEquals( expected, actual );
-	}
-	
-	public void testTrimLeft1(){
-		final String input = "apple ";
-		final String actual = Utilities.trimLeft( input );
-		final String expected = "apple ";
-		
-		assertEquals( expected, actual );
-	}
-	
-	public void testTrimLeft2(){
-		final String input = "   apple ";
-		final String actual = Utilities.trimLeft( input );
-		final String expected = "apple ";
-		
-		assertEquals( expected, actual );
+
+		assertEquals(expected, actual);
 	}
 
-	public void testTrimLeft3(){
-		final String input = "   ";
-		final String actual = Utilities.trimLeft( input );
-		final String expected = "";
-		
-		assertEquals( expected, actual );
+	public void testTrimLeft1() {
+		final String input = "apple ";
+		final String actual = Utilities.trimLeft(input);
+		final String expected = "apple ";
+
+		assertEquals(expected, actual);
 	}
-	
-	public void testTrimRight0(){
+
+	public void testTrimLeft2() {
+		final String input = "   apple ";
+		final String actual = Utilities.trimLeft(input);
+		final String expected = "apple ";
+
+		assertEquals(expected, actual);
+	}
+
+	public void testTrimLeft3() {
+		final String input = "   ";
+		final String actual = Utilities.trimLeft(input);
+		final String expected = "";
+
+		assertEquals(expected, actual);
+	}
+
+	public void testTrimRight0() {
 		final String input = " apple ";
-		final String actual = Utilities.trimRight( input );
+		final String actual = Utilities.trimRight(input);
 		final String expected = " apple";
-		
-		assertEquals( expected, actual );
+
+		assertEquals(expected, actual);
 	}
-	
-	public void testTrimRight1(){
+
+	public void testTrimRight1() {
 		final String input = " apple";
-		final String actual = Utilities.trimRight( input );
+		final String actual = Utilities.trimRight(input);
 		final String expected = " apple";
-		
-		assertEquals( expected, actual );
+
+		assertEquals(expected, actual);
 	}
-	
-	public void testTrimRight2(){
+
+	public void testTrimRight2() {
 		final String input = " apple   ";
-		final String actual = Utilities.trimRight( input );
+		final String actual = Utilities.trimRight(input);
 		final String expected = " apple";
-		
-		assertEquals( expected, actual );
+
+		assertEquals(expected, actual);
 	}
-	
-	public void testTrimRight3(){
+
+	public void testTrimRight3() {
 		final String input = "   ";
-		final String actual = Utilities.trimRight( input );
+		final String actual = Utilities.trimRight(input);
 		final String expected = "";
-		
-		assertEquals( expected, actual );
+
+		assertEquals(expected, actual);
 	}
 }

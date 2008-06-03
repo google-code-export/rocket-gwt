@@ -28,7 +28,7 @@ public class UtilTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket.Util");
-		addTests( suite );
+		addTests(suite);
 		return suite;
 	}
 
@@ -39,7 +39,7 @@ public class UtilTestSuite {
 		suite.addTestSuite(ColourTestCase.class);
 		suite.addTestSuite(HueSaturationValueTestCase.class);
 		suite.addTestSuite(StackTraceTestCase.class);
-	
+
 		suite.addTestSuite(StackTraceGwtTestCase.class);
 	}
 }
