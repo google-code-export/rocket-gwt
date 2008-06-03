@@ -142,7 +142,8 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 
 		this.getGeneratorContext().info("Implementing json rpc method, method: " + method);
 
-		final NewMethod asyncMethod = this.createCorrespondingAsyncServiceInterfaceMethod(method, asyncServiceInterface, remoteJsonClient);
+		final NewMethod asyncMethod = this.createCorrespondingAsyncServiceInterfaceMethod(method, asyncServiceInterface,
+				remoteJsonClient);
 		final List parameters = asyncMethod.getParameters();
 		if (parameters.size() != 2) {
 			throwInvalidJsonRpcMethod(method);
@@ -187,7 +188,8 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 			}
 		}
 
-		final NewMethod asyncMethod = this.createCorrespondingAsyncServiceInterfaceMethod(method, asyncServiceInterface, remoteJsonClient);
+		final NewMethod asyncMethod = this.createCorrespondingAsyncServiceInterfaceMethod(method, asyncServiceInterface,
+				remoteJsonClient);
 
 		final RequestParametersInvokerTemplatedFile body = new RequestParametersInvokerTemplatedFile();
 		body.setHttpRequestParameterNames(this.getHttpRequestParameterNamesFromMethodAnnotation(method));
@@ -219,8 +221,8 @@ public class JsonRpcClientGenerator extends RpcClientGenerator {
 	}
 
 	protected void throwHttpRequestParameterNameMissing(final MethodParameter parameter) {
-		this.throwException("Unable to find the \"" + Constants.HTTP_REQUEST_PARAMETER_NAME_ANNOTATION + "\" annotation for the parameter "
-				+ parameter);
+		this.throwException("Unable to find the \"" + Constants.HTTP_REQUEST_PARAMETER_NAME_ANNOTATION
+				+ "\" annotation for the parameter " + parameter);
 	}
 
 	/**

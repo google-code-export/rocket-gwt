@@ -38,9 +38,9 @@ public class Dom {
 	 * @param element
 	 */
 	public static void removeFromParent(final Element element) {
-		element.getParentNode().removeChild( element );
+		element.getParentNode().removeChild(element);
 	}
-	
+
 	/**
 	 * Retrieves the container element which contains this child element. This
 	 * is particularly useful when calculating coordinates for positioned
@@ -55,19 +55,19 @@ public class Dom {
 	}
 
 	native static private Element getContainer0(final Element element)/*-{
-	 var container = null;
-	 var element0 = element;
-	 while( element0 ){
-	 // stop if this element is absolutely/relative positioned. 
-	 var position = element0.style.position.toLowerCase();
-	 if( "absolute" == position || "relative" == position ){
-	 container = element0;
-	 break;
-	 }             
-	 element0 = element0.offsetParent;
-	 }
-	 return container;    
-	 }-*/;
+		 var container = null;
+		 var element0 = element;
+		 while( element0 ){
+		 // stop if this element is absolutely/relative positioned. 
+		 var position = element0.style.position.toLowerCase();
+		 if( "absolute" == position || "relative" == position ){
+		 container = element0;
+		 break;
+		 }             
+		 element0 = element0.offsetParent;
+		 }
+		 return container;    
+		 }-*/;
 
 	/**
 	 * Retrieves the relative x/left coordinates of the given element relative
@@ -139,7 +139,7 @@ public class Dom {
 	public static boolean isTag(final Element element, final String tagName) {
 		Checker.notNull("parameter:element", element);
 		Checker.notEmpty("parameter:tagName", tagName);
-		
+
 		final String actualTagName = element.getTagName();
 		return actualTagName == null ? false : compareTagNames(actualTagName, tagName);
 	}
@@ -155,21 +155,23 @@ public class Dom {
 	}
 
 	public static void checkInput(final String name, final Element element, final String type) {
-		if (false == isInput(element, type)) {			
+		if (false == isInput(element, type)) {
 			String message = name;
-			if( message.startsWith("parameter:") || message.startsWith( "field:") ){
+			if (message.startsWith("parameter:") || message.startsWith("field:")) {
 				message = "The element which is a " + element.getTagName() + " is not an input with a type of \"" + type + "\".";
 			}
-			
-			Checker.fail(name, message );
+
+			Checker.fail(name, message);
 		}
 	}
 
 	/**
 	 * Tests if the given element is an INPUT tag of the requested type.
 	 * 
-	 * @param element The element being tested.
-	 * @param type The type attribute
+	 * @param element
+	 *            The element being tested.
+	 * @param type
+	 *            The type attribute
 	 * @return True if the element is the specified INPUT tag.
 	 */
 	public static boolean isInput(final Element element, final String type) {
@@ -218,7 +220,7 @@ public class Dom {
 	public static int getClientHeight(final Element element) {
 		return JavaScript.getInteger(element, "clientHeight");
 	}
-	
+
 	/**
 	 * Populates the given map with the values of the elements belonging to the
 	 * given form. The element name becomes the key and teh value the entry
@@ -231,19 +233,19 @@ public class Dom {
 	 * @param form
 	 *            The form containing the elements.
 	 */
-	public static void populateMapFromForm(final Map<String,String> map, final FormElement form) {
+	public static void populateMapFromForm(final Map<String, String> map, final FormElement form) {
 		Checker.notNull("parameter:map", map);
 		Checker.notNull("parameter:form", form);
-		
+
 		final NodeCollection<Element> formElements = form.getElements();
 		final int count = formElements.getLength();
-		for( int i = 0; i < count; i++ ){
-			final Element element = formElements.getItem( i );
+		for (int i = 0; i < count; i++) {
+			final Element element = formElements.getItem(i);
 			final String name = element.getAttribute(DomConstants.NAME);
 			if (null == name) {
 				continue;
 			}
-			
+
 			final String value = Dom.getFormSubmitValue(element);
 			map.put(name, value);
 		}
@@ -264,18 +266,18 @@ public class Dom {
 
 		final NodeCollection<Element> formElements = form.getElements();
 		final int count = formElements.getLength();
-		for( int i = 0; i < count; i++ ){
-			final Element element = formElements.getItem( i );
+		for (int i = 0; i < count; i++) {
+			final Element element = formElements.getItem(i);
 			final String name = element.getAttribute(DomConstants.NAME);
 			if (null == name) {
 				continue;
 			}
-			
+
 			if (addSeparator) {
 				urlEncoded.append('&');
 			}
-			
-			final String value = URL.encodeComponent( Dom.getFormSubmitValue(element));
+
+			final String value = URL.encodeComponent(Dom.getFormSubmitValue(element));
 			urlEncoded.append(name);
 			urlEncoded.append('=');
 			urlEncoded.append(value);
@@ -301,21 +303,21 @@ public class Dom {
 		String value = null;
 		while (true) {
 			final String tagName = element.getTagName();
-			if ( DomConstants.LISTBOX_TAG.equals(tagName)) {
+			if (DomConstants.LISTBOX_TAG.equals(tagName)) {
 				value = element.getAttribute(DomConstants.VALUE);
 				break;
 			}
-			if ( DomConstants.TEXTAREA_TAG.equals(tagName)) {
+			if (DomConstants.TEXTAREA_TAG.equals(tagName)) {
 				value = element.getInnerText();
 				break;
 			}
 
-			if ( DomConstants.INPUT_TAG.equals( tagName )) {
+			if (DomConstants.INPUT_TAG.equals(tagName)) {
 				value = element.getAttribute(DomConstants.VALUE);
 				break;
 			}
 
-			throw new UnsupportedOperationException("Cannot get the formSubmitValue for the element, element: " + element.toString() );
+			throw new UnsupportedOperationException("Cannot get the formSubmitValue for the element, element: " + element.toString());
 		}
 
 		return value;

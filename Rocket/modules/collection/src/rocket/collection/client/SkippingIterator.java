@@ -27,16 +27,16 @@ import rocket.util.client.Checker;
  * @author Miroslav Pokorny (mP)
  */
 public abstract class SkippingIterator<E> extends IteratorWrapper<E> implements Iterator {
-	
-	public SkippingIterator(){
+
+	public SkippingIterator() {
 		super();
 	}
-	
-	public SkippingIterator( final Iterator<E> iterator ){
+
+	public SkippingIterator(final Iterator<E> iterator) {
 		super();
 		this.setIterator(iterator);
 	}
-	
+
 	public boolean hasNext() {
 		return this.findNext();
 	}
@@ -50,7 +50,8 @@ public abstract class SkippingIterator<E> extends IteratorWrapper<E> implements 
 	 * asking skip if the object should be skipped. This continues until the
 	 * iterator is exhausted or a non skipped element is found.
 	 * 
-	 * @return A flag is returned indicating whether or not an element was found.
+	 * @return A flag is returned indicating whether or not an element was
+	 *         found.
 	 */
 	protected boolean findNext() {
 		boolean hasMore = this.hasCache();
@@ -123,7 +124,7 @@ public abstract class SkippingIterator<E> extends IteratorWrapper<E> implements 
 	}
 
 	protected void clearCache() {
-		this.cache = (E)CACHE_NOT_SET;
+		this.cache = (E) CACHE_NOT_SET;
 	}
 
 	@Override

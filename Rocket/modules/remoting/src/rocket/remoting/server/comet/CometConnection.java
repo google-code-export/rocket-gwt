@@ -15,14 +15,15 @@
  */
 package rocket.remoting.server.comet;
 
-
 /**
  * Instances of this interface represent a comet connection.
+ * 
  * @author Miroslav Pokorny
  */
 public interface CometConnection {
 	/**
 	 * Pushes a single object to the client.
+	 * 
 	 * @param object
 	 */
 	void push(Object object);
@@ -30,5 +31,5 @@ public interface CometConnection {
 	/**
 	 * Sends a message to the client to terminate the current session
 	 */
-	  void terminate();
+	void terminate();
 }

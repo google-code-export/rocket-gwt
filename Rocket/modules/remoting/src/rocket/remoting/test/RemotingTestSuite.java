@@ -30,13 +30,13 @@ public class RemotingTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket.Remoting");
-		addTests( suite );
+		addTests(suite);
 		return suite;
 	}
 
 	public static void addTests(TestSuite suite) {
 		suite.addTestSuite(JsonRpcGwtTestCase.class);
-		suite.addTestSuite(JavaRpcServiceClientGwtTestCase.class );
-		suite.addTestSuite(JavaRpcServiceMethodInvokerTestCase.class );
+		suite.addTestSuite(JavaRpcServiceClientGwtTestCase.class);
+		suite.addTestSuite(JavaRpcServiceMethodInvokerTestCase.class);
 	}
 }

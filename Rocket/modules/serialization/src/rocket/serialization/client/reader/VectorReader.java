@@ -30,7 +30,7 @@ import rocket.serialization.client.ObjectReader;
 public class VectorReader extends AbstractCollectionReader {
 	static public final ObjectReader instance = new VectorReader();
 
-	public Object newInstance(String typeName, ObjectInputStream objectInputStream){
+	public Object newInstance(String typeName, ObjectInputStream objectInputStream) {
 		return new Vector();
 	}
 }

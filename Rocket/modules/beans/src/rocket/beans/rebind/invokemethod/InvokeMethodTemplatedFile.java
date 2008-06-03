@@ -32,7 +32,7 @@ public class InvokeMethodTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	/**
-	 * The type 
+	 * The type
 	 */
 	private Type type;
 

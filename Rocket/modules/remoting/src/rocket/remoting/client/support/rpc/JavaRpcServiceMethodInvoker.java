@@ -14,6 +14,7 @@
  * the License.
  */
 package rocket.remoting.client.support.rpc;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +32,8 @@ import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * This class is intended to be only used by the rpc generator as a bridge between the service interface method and a request to the server.
+ * This class is intended to be only used by the rpc generator as a bridge
+ * between the service interface method and a request to the server.
  * 
  * The generator should perform the following operations in this order.
  * <ol>
@@ -44,21 +46,23 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * <li>set the async callback</li>
  * <li>make the request</li>
  * </ol>
+ * 
  * @author Miroslav Pokorny
  */
 public class JavaRpcServiceMethodInvoker<R> extends RpcServiceMethodInvoker<R> implements RequestCallback {
-	
-	public JavaRpcServiceMethodInvoker(){
+
+	public JavaRpcServiceMethodInvoker() {
 		super();
-		this.setParameterTypes( this.createParameterTypes());
+		this.setParameterTypes(this.createParameterTypes());
 	}
 
 	/**
-	 * Holds the serialization factory which will be used to provide both the ObjectInputStream and ObjectOutputStreams.
+	 * Holds the serialization factory which will be used to provide both the
+	 * ObjectInputStream and ObjectOutputStreams.
 	 */
 	private SerializationFactory serializationFactory;
 
-	protected SerializationFactory getSerializationFactory() {		
+	protected SerializationFactory getSerializationFactory() {
 		Checker.notNull("field:serializationFactory", serializationFactory);
 		return this.serializationFactory;
 	}
@@ -67,185 +71,194 @@ public class JavaRpcServiceMethodInvoker<R> extends RpcServiceMethodInvoker<R> i
 		Checker.notNull("parameter:serializationFactory", serializationFactory);
 		this.serializationFactory = serializationFactory;
 	}
-	
+
 	/**
-	 * The ObjectOutputStream that will be serializing the entire rpc request, this includes the service method and
-	 * parameters.
+	 * The ObjectOutputStream that will be serializing the entire rpc request,
+	 * this includes the service method and parameters.
 	 */
 	private ObjectOutputStream objectOutputStream;
-	
-	protected ObjectOutputStream getObjectOutputStream(){
-		if( false == this.hasObjectOutputStream() ){
-			this.setObjectOutputStream( this.getSerializationFactory().createObjectOutputStream() );
+
+	protected ObjectOutputStream getObjectOutputStream() {
+		if (false == this.hasObjectOutputStream()) {
+			this.setObjectOutputStream(this.getSerializationFactory().createObjectOutputStream());
 		}
-		
+
 		return this.objectOutputStream;
 	}
-	
-	protected boolean hasObjectOutputStream(){
+
+	protected boolean hasObjectOutputStream() {
 		return null != this.objectOutputStream;
 	}
-	
-	protected void setObjectOutputStream( final ObjectOutputStream objectOutputStream ){
-		Checker.notNull( "parameter:objectOutputStream", objectOutputStream);
+
+	protected void setObjectOutputStream(final ObjectOutputStream objectOutputStream) {
+		Checker.notNull("parameter:objectOutputStream", objectOutputStream);
 		this.objectOutputStream = objectOutputStream;
 	}
-	
+
 	/**
-	 * The interface name of the rpc service may only be set once at the beginning of building.
+	 * The interface name of the rpc service may only be set once at the
+	 * beginning of building.
+	 * 
 	 * @param interfaceName
 	 */
-	public void setInterfaceName(final String interfaceName ){
-		this.getObjectOutputStream().writeObject( interfaceName );
+	public void setInterfaceName(final String interfaceName) {
+		this.getObjectOutputStream().writeObject(interfaceName);
 	}
 
 	/**
 	 * The method name of the rpc may only be set once.
+	 * 
 	 * @param methodName
 	 */
-	public void setMethodName( final String methodName ){
-		this.getObjectOutputStream().writeObject( methodName );
+	public void setMethodName(final String methodName) {
+		this.getObjectOutputStream().writeObject(methodName);
 	}
-	
+
 	/**
 	 * Aggregates all parameter types until a parameter value is committed.
 	 */
 	private List<String> parameterTypes;
-	
-	protected List<String> getParameterTypes(){
+
+	protected List<String> getParameterTypes() {
 		return this.parameterTypes;
 	}
-	protected void setParameterTypes( final List<String> parameterTypes ){
+
+	protected void setParameterTypes(final List<String> parameterTypes) {
 		this.parameterTypes = parameterTypes;
 	}
-	protected List<String> createParameterTypes(){
+
+	protected List<String> createParameterTypes() {
 		return new ArrayList<String>();
 	}
-	
+
 	/**
-	 * This flag keeps track of whether parameter types have already been written.
+	 * This flag keeps track of whether parameter types have already been
+	 * written.
 	 */
 	private boolean parameterTypesWritten;
-	
-	protected boolean hasParameterTypesWritten(){
+
+	protected boolean hasParameterTypesWritten() {
 		return this.parameterTypesWritten;
 	}
-	protected void setParameterTypesWritten( final boolean parameterTypesWritten ){
+
+	protected void setParameterTypesWritten(final boolean parameterTypesWritten) {
 		this.parameterTypesWritten = parameterTypesWritten;
 	}
-	     
-	protected void commitParameterTypesIfNecessary(){
-		if( false == this.hasParameterTypesWritten() ){
-			this.setParameterTypesWritten( true );
+
+	protected void commitParameterTypesIfNecessary() {
+		if (false == this.hasParameterTypesWritten()) {
+			this.setParameterTypesWritten(true);
 			this.commitParameterTypes();
 		}
 	}
-		
-	protected void commitParameterTypes(){		
-			final List<String> parameterTypes = this.getParameterTypes();
-			
-			final ObjectOutputStream outputStream = this.getObjectOutputStream();
-			outputStream.writeInt( parameterTypes.size() );
-						
-			final Iterator <String>iterator = parameterTypes.iterator();			
-			while( iterator.hasNext() ){
-				outputStream.writeObject( iterator.next() );
-			}
+
+	protected void commitParameterTypes() {
+		final List<String> parameterTypes = this.getParameterTypes();
+
+		final ObjectOutputStream outputStream = this.getObjectOutputStream();
+		outputStream.writeInt(parameterTypes.size());
+
+		final Iterator<String> iterator = parameterTypes.iterator();
+		while (iterator.hasNext()) {
+			outputStream.writeObject(iterator.next());
+		}
 	}
-	
+
 	/**
-	 * Parameter types must be added before parameter values are added.
-	 * Upon adding a parameter parameter types will be committed to the underlying ObjectOutputStream once.
+	 * Parameter types must be added before parameter values are added. Upon
+	 * adding a parameter parameter types will be committed to the underlying
+	 * ObjectOutputStream once.
+	 * 
 	 * @param parameterType
 	 */
-	public void addParameterType( final String parameterType ){
-		Checker.falseValue( "parameterTypesWritten", this.hasParameterTypesWritten() );
-		this.getParameterTypes().add( parameterType );
+	public void addParameterType(final String parameterType) {
+		Checker.falseValue("parameterTypesWritten", this.hasParameterTypesWritten());
+		this.getParameterTypes().add(parameterType);
 	}
-	
-	public void addParameter( final boolean booleanValue ){
+
+	public void addParameter(final boolean booleanValue) {
 		this.commitParameterTypesIfNecessary();
 		this.getObjectOutputStream().writeBoolean(booleanValue);
 	}
-	
-	public void addParameter( final byte byteValue ){
+
+	public void addParameter(final byte byteValue) {
 		this.commitParameterTypesIfNecessary();
 		this.getObjectOutputStream().writeByte(byteValue);
 	}
-	
-	public void addParameter( final short shortValue ){
+
+	public void addParameter(final short shortValue) {
 		this.commitParameterTypesIfNecessary();
 		this.getObjectOutputStream().writeShort(shortValue);
 	}
-	
-	public void addParameter( final int intValue ){
+
+	public void addParameter(final int intValue) {
 		this.commitParameterTypesIfNecessary();
 		this.getObjectOutputStream().writeInt(intValue);
 	}
-	
-	public void addParameter( final long longValue ){
+
+	public void addParameter(final long longValue) {
 		this.commitParameterTypesIfNecessary();
 		this.getObjectOutputStream().writeLong(longValue);
 	}
-	
-	public void addParameter( final float floatValue ){
+
+	public void addParameter(final float floatValue) {
 		this.commitParameterTypesIfNecessary();
 		this.getObjectOutputStream().writeFloat(floatValue);
 	}
-	
-	public void addParameter( final double doubleValue ){
+
+	public void addParameter(final double doubleValue) {
 		this.commitParameterTypesIfNecessary();
 		this.getObjectOutputStream().writeDouble(doubleValue);
 	}
-	
-	public void addParameter( final char charValue ){
+
+	public void addParameter(final char charValue) {
 		this.commitParameterTypesIfNecessary();
 		this.getObjectOutputStream().writeChar(charValue);
 	}
-	
-	public void addParameter( final Object object ){
+
+	public void addParameter(final Object object) {
 		this.commitParameterTypesIfNecessary();
-		this.getObjectOutputStream().writeObject( object);
+		this.getObjectOutputStream().writeObject(object);
 	}
-	
+
 	/**
 	 * Factory method which creates a new RequestBuilder.
-	 *
+	 * 
 	 * @return A new RequestBuilder
 	 */
 	protected RequestBuilder createRequestBuilder() {
 		return new RequestBuilder(this.getRequestMethod(), this.getUrl());
 	}
-	
+
 	/**
 	 * Java rpcs use ajax and are always POSTS...
 	 */
-	protected Method getRequestMethod(){
+	protected Method getRequestMethod() {
 		return RequestBuilder.POST;
 	}
-	
+
 	/**
 	 * The post data will contain the serialized form of the rpc request.
 	 */
-	protected String getRequestData(){
+	protected String getRequestData() {
 		commitParameterTypesIfNecessary();
 		return this.getObjectOutputStream().getText();
 	}
-	
+
 	protected void setHeaders(final RequestBuilder request) {
 		request.setHeader(Constants.CONTENT_TYPE_HEADER, Constants.POST_CONTENT_TYPE);
 	}
 
-	protected void onSuccessfulResponse(final Request request, final Response response){
+	protected void onSuccessfulResponse(final Request request, final Response response) {
 		while (true) {
-			
+
 			final int status = response.getStatusCode();
 			if (Constants.HTTP_RESPONSE_OK != status) {
 				this.onFailedResponse(request, response);
 				break;
 			}
 			final AsyncCallback<R> callback = this.getCallback();
-			
+
 			try {
 				final SerializationFactory serializationFactory = this.getSerializationFactory();
 				final String stream = response.getText();
@@ -258,8 +271,8 @@ public class JavaRpcServiceMethodInvoker<R> extends RpcServiceMethodInvoker<R> i
 					break;
 				}
 
-				callback.onSuccess((R)result);
-				
+				callback.onSuccess((R) result);
+
 			} catch (final Throwable throwable) {
 				callback.onFailure(throwable);
 			}

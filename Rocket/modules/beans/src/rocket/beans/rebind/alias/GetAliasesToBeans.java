@@ -28,42 +28,44 @@ public class GetAliasesToBeans implements CodeBlock {
 
 	public GetAliasesToBeans() {
 		super();
-		
-		this.setBuffer( createBuffer() );
+
+		this.setBuffer(createBuffer());
 	}
 
-	public boolean isEmpty(){
+	public boolean isEmpty() {
 		return false;
 	}
-	
-	public void write(final SourceWriter writer){
-		writer.print( "return " );
-		
+
+	public void write(final SourceWriter writer) {
+		writer.print("return ");
+
 		final StringBuffer buffer = this.getBuffer();
-		new StringLiteral( buffer.toString() ).write( writer );
-		
-		writer.println( ";");
+		new StringLiteral(buffer.toString()).write(writer);
+
+		writer.println(";");
 	}
-	
-	public void register( final String alias, final String bean ){
+
+	public void register(final String alias, final String bean) {
 		final StringBuffer buffer = this.getBuffer();
-		if( buffer.length() > 0 ){
+		if (buffer.length() > 0) {
 			buffer.append(',');
 		}
-		buffer.append( alias );
-		buffer.append( '=');
-		buffer.append( bean );		
+		buffer.append(alias);
+		buffer.append('=');
+		buffer.append(bean);
 	}
-	
+
 	private StringBuffer buffer;
-	
-	protected StringBuffer getBuffer(){
+
+	protected StringBuffer getBuffer() {
 		return this.buffer;
 	}
-	protected void setBuffer( final StringBuffer buffer ){
+
+	protected void setBuffer(final StringBuffer buffer) {
 		this.buffer = buffer;
 	}
-	protected StringBuffer createBuffer(){
+
+	protected StringBuffer createBuffer() {
 		return new StringBuffer();
 	}
 }

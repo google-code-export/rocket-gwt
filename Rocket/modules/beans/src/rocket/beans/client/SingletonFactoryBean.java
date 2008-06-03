@@ -34,49 +34,55 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 	 * The singleton instance.
 	 */
 	private Object object;
-	
+
 	public Object getObject() {
-		if( false == this.hasObject() ){
-		
-		try {
-			final Object object = this.createObject();
-			// Kind of a hack to make cycles between singletons work, potentially fails when one singleton is the product of a FactoryBean
-			this.setObject( object );
-			this.postCreate(object);
-			final Object returned = this.getObject(object);
-			
-			if( returned != object ){
-				this.setObject( returned );
+		if (false == this.hasObject()) {
+
+			try {
+				final Object object = this.createObject();
+				// Kind of a hack to make cycles between singletons work,
+				// potentially fails when one singleton is the product of a
+				// FactoryBean
+				this.setObject(object);
+				this.postCreate(object);
+				final Object returned = this.getObject(object);
+
+				if (returned != object) {
+					this.setObject(returned);
+				}
+
+			} catch (final Throwable caught) {
+				throwBeanException("Unable to create bean, because " + caught.getMessage(), caught);
+				return null;
 			}
-			
-		} catch (final Throwable caught) {
-			throwBeanException("Unable to create bean, because " + caught.getMessage(), caught);
-			return null;
 		}
-		}
-		if( this.object instanceof FactoryBean ){
-			this.throwBeanException( "The FactoryBean of \"" + this.getName() + "\" has not had all its properties set and is involved in a cycle, break cycle.", null );
+		if (this.object instanceof FactoryBean) {
+			this.throwBeanException("The FactoryBean of \"" + this.getName()
+					+ "\" has not had all its properties set and is involved in a cycle, break cycle.", null);
 		}
 
 		return this.object;
 	}
 
 	/**
-	 * Handles the final step involved in initializing a bean. If the bean is actually a FactoryBean ask it for its actual Object, this will continue
-	 * until no more FactoryBeans are present in the chain and a true bean is located.
+	 * Handles the final step involved in initializing a bean. If the bean is
+	 * actually a FactoryBean ask it for its actual Object, this will continue
+	 * until no more FactoryBeans are present in the chain and a true bean is
+	 * located.
+	 * 
 	 * @param object
 	 * @return The final bean
 	 * @throws Exception
 	 */
 	protected Object getObject(final Object object) throws Exception {
-		Object returned = object;		
-		
+		Object returned = object;
+
 		if (returned instanceof FactoryBean) {
 			// temp will be overridden when the true bean comes back.
 			final FactoryBean factoryBean = (FactoryBean) object;
 			returned = factoryBean.getObject();
 		}
-		
+
 		return returned;
 	}
 
@@ -85,22 +91,22 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 	}
 
 	protected void setObject(final Object object) {
-		Checker.notNull("parameter:object", object );
+		Checker.notNull("parameter:object", object);
 		this.object = object;
 	}
 
 	public boolean isSingleton() {
 		return true;
 	}
-	
-	public void destroy(){
-		if( this.hasObject() ){
-			this.destroy( this.getObject() );
+
+	public void destroy() {
+		if (this.hasObject()) {
+			this.destroy(this.getObject());
 		}
 	}
-	
-	protected void destroy( final Object instance ){
-		if( instance instanceof DisposableBean ){
+
+	protected void destroy(final Object instance) {
+		if (instance instanceof DisposableBean) {
 			final DisposableBean disposableBean = (DisposableBean) instance;
 			disposableBean.destroy();
 		}

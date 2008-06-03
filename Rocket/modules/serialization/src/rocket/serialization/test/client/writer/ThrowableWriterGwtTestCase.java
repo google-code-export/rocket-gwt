@@ -22,32 +22,33 @@ import rocket.serialization.test.client.ClientGwtTestCase;
 public class ThrowableWriterGwtTestCase extends ClientGwtTestCase {
 
 	final static String THROWABLE = "java.lang.Throwable";
-	
-	public void testWriteThrowableWithNoMessage() {
-		final ClientObjectOutputStream output = createObjectOutputStream( THROWABLE, ThrowableWriter.instance);
 
-		final Throwable throwable= new Throwable();
+	public void testWriteThrowableWithNoMessage() {
+		final ClientObjectOutputStream output = createObjectOutputStream(THROWABLE, ThrowableWriter.instance);
+
+		final Throwable throwable = new Throwable();
 		output.writeObject(throwable);
 
 		final String expectedValues = "1,2,0,0,0";
 
 		final String text = output.getText();
-		assertEquals("[1,\"" + THROWABLE + "\","+ expectedValues + "]", text);
+		assertEquals("[1,\"" + THROWABLE + "\"," + expectedValues + "]", text);
 	}
-	
+
 	/**
-	 * This test will fail in hosted mode because the emulated Throwable will not be used.
+	 * This test will fail in hosted mode because the emulated Throwable will
+	 * not be used.
 	 */
-	public void testWriteThrowableWithMessage() {		
-		final ClientObjectOutputStream output = createObjectOutputStream( THROWABLE, ThrowableWriter.instance);
+	public void testWriteThrowableWithMessage() {
+		final ClientObjectOutputStream output = createObjectOutputStream(THROWABLE, ThrowableWriter.instance);
 		final String message = "apple";
-		
-		final Throwable throwable= new Throwable( message );
+
+		final Throwable throwable = new Throwable(message);
 		output.writeObject(throwable);
 
 		final String expectedValues = "1,2,3,0,0";
 
 		final String text = output.getText();
-		assertEquals("[2,\"" + THROWABLE + "\",\"" + message + "\","+ expectedValues + "]", text);		
+		assertEquals("[2,\"" + THROWABLE + "\",\"" + message + "\"," + expectedValues + "]", text);
 	}
 }

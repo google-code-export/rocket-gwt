@@ -49,24 +49,24 @@ public class ClientObjectOutputStreamGwtTestCase extends GWTTestCase {
 
 	final static String STRING = "java.lang.String";
 
-	 public void testEscape() {
-	 final TestClientObjectOutputStream output = createObjectOutputStream();
-	 final String input = "apple";
-	 final String actual = output.escape(input);
-	 final String expected = actual;
-	
-	 assertEquals(input, expected, actual);
-	 }
-	
-	 public void testEscapeDoubleQuote() {
-	 final TestClientObjectOutputStream output = createObjectOutputStream();
-	 final String input = "\"apple\"";
-	 final String actual = output.escape(input);
-	 final String expected = "\\\"apple\\\"";
-	
-	 assertEquals(input, expected, actual);
-	 }
-	
+	public void testEscape() {
+		final TestClientObjectOutputStream output = createObjectOutputStream();
+		final String input = "apple";
+		final String actual = output.escape(input);
+		final String expected = actual;
+
+		assertEquals(input, expected, actual);
+	}
+
+	public void testEscapeDoubleQuote() {
+		final TestClientObjectOutputStream output = createObjectOutputStream();
+		final String input = "\"apple\"";
+		final String actual = output.escape(input);
+		final String expected = "\\\"apple\\\"";
+
+		assertEquals(input, expected, actual);
+	}
+
 	public void testWriteBoolean() {
 		final TestClientObjectOutputStream output = createObjectOutputStream();
 		output.writeBoolean(true);
@@ -244,7 +244,8 @@ public class ClientObjectOutputStreamGwtTestCase extends GWTTestCase {
 		output.writeObject(concreteSubClass);
 
 		final String text = output.getText();
-		assertEquals("" + output, "[1,\"" + CONCRETE_SUBCLASS + "\",1,2," + ConcreteSubClass.VALUE + "," + ConcreteClass.VALUE + "]", text);
+		assertEquals("" + output, "[1,\"" + CONCRETE_SUBCLASS + "\",1,2," + ConcreteSubClass.VALUE + "," + ConcreteClass.VALUE + "]",
+				text);
 	}
 
 	protected ConcreteClass createConcreteClass() {
@@ -285,25 +286,26 @@ public class ClientObjectOutputStreamGwtTestCase extends GWTTestCase {
 			super();
 		}
 
-		public String escape( final String unescaped ){
+		public String escape(final String unescaped) {
 			return super.escape(unescaped);
 		}
-		
-		protected ObjectWriter getObjectWriter( final String typeName ){
-			return (ObjectWriter)this.getObjectWriters().get( typeName );
+
+		protected ObjectWriter getObjectWriter(final String typeName) {
+			return (ObjectWriter) this.getObjectWriters().get(typeName);
 		}
-		
+
 		/**
-		 * A map that maps type names to ObjectWriters.
-		 * If an entry is not found this indicates the type is not serializable or something went wrong within the generator.
+		 * A map that maps type names to ObjectWriters. If an entry is not found
+		 * this indicates the type is not serializable or something went wrong
+		 * within the generator.
 		 */
 		private Map objectWriters;
-	
+
 		protected Map getObjectWriters() {
 			Checker.notNull("field:objectWriters", objectWriters);
 			return this.objectWriters;
 		}
-	
+
 		public void setObjectWriters(final Map objectWriters) {
 			Checker.notNull("parameter:objectWriters", objectWriters);
 			this.objectWriters = objectWriters;

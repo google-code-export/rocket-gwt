@@ -40,7 +40,7 @@ abstract public class ObjectWriterImpl implements ObjectWriter {
 
 	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
 	}
-	
+
 	protected void writeFields(final Object object, final ObjectOutputStream objectOutputStream) {
 	}
 }

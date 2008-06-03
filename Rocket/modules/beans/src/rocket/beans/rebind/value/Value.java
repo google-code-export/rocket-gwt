@@ -19,7 +19,8 @@ import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.type.Type;
 
 /**
- * Concrete values are values for constructor or properties these typically include.
+ * Concrete values are values for constructor or properties these typically
+ * include.
  * <ul>
  * <li>null references</li>
  * <li>String literals</li>
@@ -36,25 +37,32 @@ public interface Value extends CodeBlock {
 	/**
 	 * Tests if this property value entry is compatible with its field type.
 	 * 
-	 * @param type The type being tested
+	 * @param type
+	 *            The type being tested
 	 * @return true if the type is compatible with the value.
 	 */
 	abstract boolean isCompatibleWith(Type type);
-	
+
 	/**
 	 * The explicit value type.
-	 * @param type The value type.
+	 * 
+	 * @param type
+	 *            The value type.
 	 */
-	void setType( Type type );
-	
+	void setType(Type type);
+
 	/**
 	 * This method should be called after the property type has been identified.
+	 * 
 	 * @param type
 	 */
-	void setPropertyType( Type type );
+	void setPropertyType(Type type);
+
 	/**
 	 * The source file that contained this value.
-	 * @param filename The filename
+	 * 
+	 * @param filename
+	 *            The filename
 	 */
-	void setFilename( String filename );
+	void setFilename(String filename);
 }

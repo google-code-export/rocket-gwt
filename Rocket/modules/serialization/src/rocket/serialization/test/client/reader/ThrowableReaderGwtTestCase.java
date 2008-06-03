@@ -20,40 +20,42 @@ import rocket.serialization.client.reader.ThrowableReader;
 import rocket.serialization.test.client.ClientGwtTestCase;
 
 /**
- * These tests will fail in hosted mode, because the jdk Throwable rather than emulated Throwable will be used.
+ * These tests will fail in hosted mode, because the jdk Throwable rather than
+ * emulated Throwable will be used.
+ * 
  * @author Miroslav Pokorny
  */
 public class ThrowableReaderGwtTestCase extends ClientGwtTestCase {
 
-final static String THROWABLE = "java.lang.Throwable";
-	
+	final static String THROWABLE = "java.lang.Throwable";
+
 	public void testReadThrowableWithNoMessage() {
 		final String stream = "[1,\"" + THROWABLE + "\",1,2,0,0,0]";
 		final ClientObjectInputStream input = this.createObjectInputStream(stream, THROWABLE, ThrowableReader.instance);
-		final Throwable instance = (Throwable)input.readObject(); 
+		final Throwable instance = (Throwable) input.readObject();
 
-		assertNull( instance.getMessage() );
-		assertNull( instance.getCause() );
-		
-		//final StackTraceElement[] elements = instance.getStackTrace(); 
-		//assertNotNull( elements );
-		//assertEquals( 0, elements.length );
-		
-		//this.verifyFurtherReadsFail(input);
+		assertNull(instance.getMessage());
+		assertNull(instance.getCause());
+
+		// final StackTraceElement[] elements = instance.getStackTrace();
+		// assertNotNull( elements );
+		// assertEquals( 0, elements.length );
+
+		// this.verifyFurtherReadsFail(input);
 	}
-	
+
 	public void testReadThrowableWithMessage() {
 		final String message = "apple";
 		final String stream = "[2,\"" + THROWABLE + "\",\"" + message + "\",1,2,3,0,0]";
 		final ClientObjectInputStream input = this.createObjectInputStream(stream, THROWABLE, ThrowableReader.instance);
-		final Throwable instance = (Throwable)input.readObject(); 
-		assertEquals( message, instance.getMessage() );
-		assertNull( instance.getCause() );
-		
-		final StackTraceElement[] elements = instance.getStackTrace(); 
-		assertNotNull( elements );
-		assertEquals( 0, elements.length );
-		
-		//this.verifyFurtherReadsFail(input);
-	}	
+		final Throwable instance = (Throwable) input.readObject();
+		assertEquals(message, instance.getMessage());
+		assertNull(instance.getCause());
+
+		final StackTraceElement[] elements = instance.getStackTrace();
+		assertNotNull(elements);
+		assertEquals(0, elements.length);
+
+		// this.verifyFurtherReadsFail(input);
+	}
 }

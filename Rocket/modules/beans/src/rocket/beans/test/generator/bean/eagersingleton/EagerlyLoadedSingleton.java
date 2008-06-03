@@ -21,8 +21,8 @@ public class EagerlyLoadedSingleton {
 	 * When this bean gets created this flag will be set to true.
 	 */
 	public static boolean loaded = false;
-	
-	public EagerlyLoadedSingleton(){
+
+	public EagerlyLoadedSingleton() {
 		loaded = true;
 	}
 }

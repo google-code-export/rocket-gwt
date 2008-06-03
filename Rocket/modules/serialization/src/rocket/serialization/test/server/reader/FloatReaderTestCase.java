@@ -26,13 +26,13 @@ public class FloatReaderTestCase extends ServerTestCase {
 	final static float FLOAT_VALUE = 1234.5f;
 
 	public void testReadFloat() {
-		final String stream = "[1,\"" + FLOAT + "\",1,2," + FLOAT_VALUE +"]";
+		final String stream = "[1,\"" + FLOAT + "\",1,2," + FLOAT_VALUE + "]";
 		final ObjectInputStream input = createObjectInputStream(stream, FloatReader.instance);
 
 		final Float object = (Float) input.readObject();
 		assertNotNull(stream, object);
 
-		assertEquals(FLOAT_VALUE, object.floatValue(), 0.1f );
+		assertEquals(FLOAT_VALUE, object.floatValue(), 0.1f);
 
 		this.verifyFurtherReadsFail(input);
 	}

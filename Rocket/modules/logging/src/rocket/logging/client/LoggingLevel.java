@@ -23,38 +23,39 @@ import java.io.Serializable;
  * @author Miroslav Pokorny
  * @TODO Make LoggingLevel a true enum.
  */
-final public class LoggingLevel implements Serializable{
+final public class LoggingLevel implements Serializable {
 
 	/**
 	 * This method only exists to assist the custom deserializer.
+	 * 
 	 * @param loggingLevel
 	 * @return
 	 */
-	static LoggingLevel getLoggingLevel( final int loggingLevel ){
+	static LoggingLevel getLoggingLevel(final int loggingLevel) {
 		LoggingLevel level = null;
 
 		while (true) {
-			if (LoggingLevel.DEBUG.getValue() == loggingLevel ) {
+			if (LoggingLevel.DEBUG.getValue() == loggingLevel) {
 				level = LoggingLevel.DEBUG;
 				break;
 			}
-			if (LoggingLevel.INFO.getValue() == loggingLevel ) {
+			if (LoggingLevel.INFO.getValue() == loggingLevel) {
 				level = LoggingLevel.INFO;
 				break;
 			}
-			if (LoggingLevel.WARN.getValue() == loggingLevel ) {
+			if (LoggingLevel.WARN.getValue() == loggingLevel) {
 				level = LoggingLevel.WARN;
 				break;
 			}
-			if (LoggingLevel.ERROR.getValue() == loggingLevel ) {
+			if (LoggingLevel.ERROR.getValue() == loggingLevel) {
 				level = LoggingLevel.ERROR;
 				break;
 			}
-			if (LoggingLevel.FATAL.getValue() == loggingLevel ) {
+			if (LoggingLevel.FATAL.getValue() == loggingLevel) {
 				level = LoggingLevel.FATAL;
 				break;
 			}
-			if (LoggingLevel.NONE.getValue() == loggingLevel ) {
+			if (LoggingLevel.NONE.getValue() == loggingLevel) {
 				level = LoggingLevel.NONE;
 				break;
 			}
@@ -64,7 +65,7 @@ final public class LoggingLevel implements Serializable{
 		return level;
 
 	}
-	
+
 	static public LoggingLevel getLoggingLevel(final String levelName) {
 		LoggingLevel level = null;
 
@@ -110,15 +111,16 @@ final public class LoggingLevel implements Serializable{
 	static public final LoggingLevel FATAL = new LoggingLevel(LoggingConstants.FATAL, 4);
 
 	static public final LoggingLevel NONE = new LoggingLevel(LoggingConstants.NONE, 5);
-	
+
 	/**
-	 * Dont call this constructor it only exists to keep the serialization generator happy.
-	 * A custom FieldSerializer takes care of avoiding extra instances being created.
+	 * Dont call this constructor it only exists to keep the serialization
+	 * generator happy. A custom FieldSerializer takes care of avoiding extra
+	 * instances being created.
 	 */
-	public LoggingLevel(){
-		
+	public LoggingLevel() {
+
 	}
-	
+
 	protected LoggingLevel(final String name, final int value) {
 		super();
 

@@ -15,14 +15,13 @@
  */
 package rocket.logging.server;
 
-
 import java.util.logging.Level;
 
 import rocket.logging.client.Logger;
 
 /**
- * This logging services sends all incoming logging events to log4j sourced loggers.
- * Fatal level messages are piped to severe.
+ * This logging services sends all incoming logging events to log4j sourced
+ * loggers. Fatal level messages are piped to severe.
  * 
  * @author Miroslav Pokorny
  */
@@ -37,7 +36,7 @@ public class JdkLoggingService extends LoggingServerService {
 			}
 
 			public void debug(final String message, final Throwable throwable) {
-				logger.log( Level.FINE, message, throwable);
+				logger.log(Level.FINE, message, throwable);
 			}
 
 			public void info(final String message) {
@@ -45,7 +44,7 @@ public class JdkLoggingService extends LoggingServerService {
 			}
 
 			public void info(final String message, final Throwable throwable) {
-				logger.log( Level.INFO, message, throwable);
+				logger.log(Level.INFO, message, throwable);
 			}
 
 			public void warn(final String message) {
@@ -53,7 +52,7 @@ public class JdkLoggingService extends LoggingServerService {
 			}
 
 			public void warn(final String message, final Throwable throwable) {
-				logger.log( Level.WARNING, message, throwable);
+				logger.log(Level.WARNING, message, throwable);
 			}
 
 			public void error(final String message) {
@@ -61,7 +60,7 @@ public class JdkLoggingService extends LoggingServerService {
 			}
 
 			public void error(final String message, final Throwable throwable) {
-				logger.log( Level.SEVERE, message, throwable);
+				logger.log(Level.SEVERE, message, throwable);
 			}
 
 			public void fatal(final String message) {
@@ -69,27 +68,27 @@ public class JdkLoggingService extends LoggingServerService {
 			}
 
 			public void fatal(final String message, final Throwable throwable) {
-				logger.log( Level.INFO, message, throwable);
+				logger.log(Level.INFO, message, throwable);
 			}
 
 			public boolean isDebugEnabled() {
-				return logger.isLoggable( Level.FINE );
+				return logger.isLoggable(Level.FINE);
 			}
 
 			public boolean isInfoEnabled() {
-				return logger.isLoggable( Level.INFO );
+				return logger.isLoggable(Level.INFO);
 			}
 
 			public boolean isWarnEnabled() {
-				return logger.isLoggable( Level.WARNING );
+				return logger.isLoggable(Level.WARNING);
 			}
 
 			public boolean isErrorEnabled() {
-				return logger.isLoggable( Level.SEVERE );
+				return logger.isLoggable(Level.SEVERE);
 			}
 
 			public boolean isFatalEnabled() {
-				return logger.isLoggable( Level.SEVERE );
+				return logger.isLoggable(Level.SEVERE);
 			}
 		};
 	}

@@ -41,10 +41,10 @@ public class WriteArrayTemplatedFile extends TemplatedFileCodeBlock {
 		Checker.notNull("parameter:type", type);
 		this.type = type;
 	}
-	
+
 	@Override
-	protected String getResourceName(){
-		return Constants.TEMPLATE;	
+	protected String getResourceName() {
+		return Constants.TEMPLATE;
 	}
 
 	@Override

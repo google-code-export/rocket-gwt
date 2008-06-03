@@ -71,6 +71,7 @@ public class CollectionElementAddTemplatedFile extends TemplatedCodeBlock {
 
 	@Override
 	protected void throwValueNotFoundException(final String name) {
-		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.TEMPLATE + "\".");
+		throw new TemplatedCodeBlockException("Value for placeholder \"" + name + "\" not found, template file \"" + Constants.TEMPLATE
+				+ "\".");
 	}
 }

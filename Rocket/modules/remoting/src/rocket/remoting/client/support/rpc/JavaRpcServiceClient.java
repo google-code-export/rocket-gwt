@@ -21,14 +21,15 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 /**
  * Convenient base class for any rpc proxy.
  * 
- * A generator will create methods for each of the public interface methods that handle the task of serializing incoming parameters and invoking the {@link #makeRequest(String, String[], String, AsyncCallback)}
- * method.
+ * A generator will create methods for each of the public interface methods that
+ * handle the task of serializing incoming parameters and invoking the
+ * {@link #makeRequest(String, String[], String, AsyncCallback)} method.
  * 
  * @author Miroslav Pokorny
  */
 abstract public class JavaRpcServiceClient extends RpcServiceClient implements ServiceDefTarget {
 
-	protected JavaRpcServiceClient(){
-		super();	
+	protected JavaRpcServiceClient() {
+		super();
 	}
 }

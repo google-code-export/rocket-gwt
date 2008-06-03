@@ -110,7 +110,8 @@ import rocket.serialization.test.server.writer.ShortArrayWriterTestCase;
 import rocket.serialization.test.server.writer.ShortWriterTestCase;
 
 /**
- * TestSuite that executes all unit tests relating to the rocket.Serialization module
+ * TestSuite that executes all unit tests relating to the rocket.Serialization
+ * module
  * 
  * @author Miroslav Pokorny
  */
@@ -118,10 +119,9 @@ public class SerializationTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket.Serialization");
-		addTests( suite );
+		addTests(suite);
 		return suite;
 	}
-
 
 	public static void addTests(TestSuite suite) {
 		addClientReaderTests(suite);
@@ -131,18 +131,18 @@ public class SerializationTestSuite {
 		addServerReaderTests(suite);
 		addServerWriterTests(suite);
 	}
-	
+
 	static void addClientReaderTests(TestSuite suite) {
 		suite.addTestSuite(ClientObjectInputStreamGwtTestCase.class);
 		suite.addTestSuite(ClientObjectOutputStreamGwtTestCase.class);
-		
+
 		suite.addTestSuite(ListReaderGwtTestCase.class);
 		suite.addTestSuite(SetReaderGwtTestCase.class);
 		suite.addTestSuite(MapReaderGwtTestCase.class);
 		suite.addTestSuite(DateReaderGwtTestCase.class);
 
 		suite.addTestSuite(ThrowableReaderGwtTestCase.class);
-		
+
 		suite.addTestSuite(BooleanReaderGwtTestCase.class);
 		suite.addTestSuite(ByteReaderGwtTestCase.class);
 		suite.addTestSuite(ShortReaderGwtTestCase.class);
@@ -170,7 +170,7 @@ public class SerializationTestSuite {
 		suite.addTestSuite(DateWriterGwtTestCase.class);
 
 		suite.addTestSuite(ThrowableWriterGwtTestCase.class);
-		
+
 		suite.addTestSuite(BooleanWriterGwtTestCase.class);
 		suite.addTestSuite(ByteWriterGwtTestCase.class);
 		suite.addTestSuite(ShortWriterGwtTestCase.class);
@@ -206,8 +206,8 @@ public class SerializationTestSuite {
 		suite.addTestSuite(DoubleReaderTestCase.class);
 		suite.addTestSuite(CharacterReaderTestCase.class);
 
-		suite.addTestSuite(ReflectiveReaderTestCase.class );
-		
+		suite.addTestSuite(ReflectiveReaderTestCase.class);
+
 		suite.addTestSuite(BooleanArrayReaderTestCase.class);
 		suite.addTestSuite(ByteArrayReaderTestCase.class);
 		suite.addTestSuite(ShortArrayReaderTestCase.class);
@@ -217,11 +217,10 @@ public class SerializationTestSuite {
 		suite.addTestSuite(DoubleArrayReaderTestCase.class);
 		suite.addTestSuite(CharArrayReaderTestCase.class);
 
-		
 		suite.addTestSuite(ListReaderTestCase.class);
 		suite.addTestSuite(SetReaderTestCase.class);
 		suite.addTestSuite(MapReaderTestCase.class);
-		suite.addTestSuite(DateReaderTestCase.class);		
+		suite.addTestSuite(DateReaderTestCase.class);
 	}
 
 	static void addServerTests(TestSuite suite) {
@@ -234,7 +233,7 @@ public class SerializationTestSuite {
 		suite.addTestSuite(SetWriterTestCase.class);
 		suite.addTestSuite(MapWriterTestCase.class);
 		suite.addTestSuite(DateWriterTestCase.class);
-		
+
 		suite.addTestSuite(BooleanWriterTestCase.class);
 		suite.addTestSuite(ByteWriterTestCase.class);
 		suite.addTestSuite(ShortWriterTestCase.class);
@@ -243,8 +242,8 @@ public class SerializationTestSuite {
 		suite.addTestSuite(FloatWriterTestCase.class);
 		suite.addTestSuite(DoubleWriterTestCase.class);
 		suite.addTestSuite(CharacterWriterTestCase.class);
-		suite.addTestSuite(ReflectiveWriterTestCase.class );
-		
+		suite.addTestSuite(ReflectiveWriterTestCase.class);
+
 		suite.addTestSuite(BooleanArrayWriterTestCase.class);
 		suite.addTestSuite(ByteArrayWriterTestCase.class);
 		suite.addTestSuite(ShortArrayWriterTestCase.class);

@@ -27,27 +27,28 @@ import rocket.serialization.server.ServerObjectWriter;
 import rocket.util.client.Checker;
 
 /**
- * This writer should be considered the default writer and uses reflection to write all
- * serializable fields from an instance
+ * This writer should be considered the default writer and uses reflection to
+ * write all serializable fields from an instance
+ * 
  * @author Miroslav Pokorny
  */
-public class ReflectiveWriter implements ServerObjectWriter{
-	
+public class ReflectiveWriter implements ServerObjectWriter {
+
 	static public final ServerObjectWriter instance = new ReflectiveWriter();
-	
-	protected ReflectiveWriter(){
+
+	protected ReflectiveWriter() {
 		super();
 	}
-	
-	public boolean canWrite(final Object object){
+
+	public boolean canWrite(final Object object) {
 		return object instanceof Serializable;
 	}
-	
-	public void write(final Object object, final ObjectOutputStream objectOutputStream){
+
+	public void write(final Object object, final ObjectOutputStream objectOutputStream) {
 		try {
 			final Class classs = object.getClass();
 			objectOutputStream.writeObject(classs.getName());
-			this.writeFields(object, classs, objectOutputStream );
+			this.writeFields(object, classs, objectOutputStream);
 
 		} catch (IllegalAccessException illegalAccess) {
 			throw new SerializationException(illegalAccess);
@@ -55,17 +56,21 @@ public class ReflectiveWriter implements ServerObjectWriter{
 	}
 
 	/**
-	 * Writes all the serializable fields from the object instance for the given class.
-	 * THis method continues to call itself recursively until java.lang.Object is reached.
-	 * @param object A non null instance being serialized
+	 * Writes all the serializable fields from the object instance for the given
+	 * class. THis method continues to call itself recursively until
+	 * java.lang.Object is reached.
+	 * 
+	 * @param object
+	 *            A non null instance being serialized
 	 * @param classs
 	 * @param objectOutputStream
 	 * @throws IllegalAccessException
 	 */
-	protected void writeFields(final Object object, final Class classs, final ObjectOutputStream objectOutputStream ) throws IllegalAccessException {
+	protected void writeFields(final Object object, final Class classs, final ObjectOutputStream objectOutputStream)
+			throws IllegalAccessException {
 		Checker.notNull("parameter:object", object);
 		Checker.notNull("parameter:classs", classs);
-		Checker.notNull("parameter:objectOutputStream", objectOutputStream );
+		Checker.notNull("parameter:objectOutputStream", objectOutputStream);
 
 		final Set serializableFields = ReflectionHelper.buildSerializableFields(object, classs);
 
@@ -113,7 +118,7 @@ public class ReflectiveWriter implements ServerObjectWriter{
 		// serialize the fields belonging to the super type...
 		final Class superType = classs.getSuperclass();
 		if (false == superType.equals(Object.class)) {
-			this.writeFields(object, superType, objectOutputStream );
+			this.writeFields(object, superType, objectOutputStream);
 		}
 	}
 }

@@ -57,20 +57,20 @@ public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 		this.bean = bean;
 	}
 
-	private Map<Method,Value> properties;
+	private Map<Method, Value> properties;
 
-	protected Map<Method,Value> getProperties() {
+	protected Map<Method, Value> getProperties() {
 		Checker.notNull("field:properties", properties);
 		return this.properties;
 	}
 
-	protected void setProperties(final Map<Method,Value> properties) {
+	protected void setProperties(final Map<Method, Value> properties) {
 		Checker.notNull("parameter:properties", properties);
 		this.properties = properties;
 	}
 
-	protected Map<Method,Value> createProperties() {
-		return new TreeMap<Method,Value>( MethodComparator.INSTANCE );
+	protected Map<Method, Value> createProperties() {
+		return new TreeMap<Method, Value>(MethodComparator.INSTANCE);
 	}
 
 	public void addProperty(final Method setter, final Value value) {

@@ -6,21 +6,21 @@ import rocket.util.client.Tester;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class Worm extends Pest implements Serializable, IsSerializable{
+public class Worm extends Pest implements Serializable, IsSerializable {
 	boolean legless;
-	
+
 	String text;
-	
-	public boolean equals( final Object otherObject ){
+
+	public boolean equals(final Object otherObject) {
 		boolean same = false;
-		
-		if( otherObject instanceof Worm ){
+
+		if (otherObject instanceof Worm) {
 			final Worm otherWorm = (Worm) otherObject;
-			if( this.legless == otherWorm.legless ){
-				same = Tester.nullSafeEquals( this.text, otherWorm.text );
-			}				
+			if (this.legless == otherWorm.legless) {
+				same = Tester.nullSafeEquals(this.text, otherWorm.text);
+			}
 		}
-		
-		return same;			
+
+		return same;
 	}
 }

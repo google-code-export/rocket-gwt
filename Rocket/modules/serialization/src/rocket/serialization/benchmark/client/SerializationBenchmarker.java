@@ -98,8 +98,8 @@ public class SerializationBenchmarker implements EntryPoint {
 		createInstance.addMouseEventListener(new MouseEventAdapter() {
 			public void onClick(final MouseClickEvent event) {
 				final int elementCount = Integer.parseInt(arrayElementCount.getText());
-				SerializationBenchmarker.this.setObject(createTree( elementCount ));
-				SerializationBenchmarker.this.log( "", "Created instance that will be serialized, with " + elementCount + " elements.");
+				SerializationBenchmarker.this.setObject(createTree(elementCount));
+				SerializationBenchmarker.this.log("", "Created instance that will be serialized, with " + elementCount + " elements.");
 			}
 		});
 		panel.add(createInstance);
@@ -168,7 +168,7 @@ public class SerializationBenchmarker implements EntryPoint {
 			}
 		});
 		panel.add(clearLog);
-		
+
 		final Html logger = new Html();
 		this.setLogger(logger);
 		rootPanel.add(logger);
@@ -383,11 +383,10 @@ public class SerializationBenchmarker implements EntryPoint {
 		final Html logger = this.getLogger();
 		logger.setHtml(logger.getHtml() + lineOfText + "<br>");
 	}
-	
-	void clearLog(){
+
+	void clearLog() {
 		this.getLogger().setHtml("");
 	}
-
 
 	private Html logger;
 
@@ -398,7 +397,7 @@ public class SerializationBenchmarker implements EntryPoint {
 	void setLogger(final Html logger) {
 		this.logger = logger;
 	}
-	
+
 	/**
 	 * An instance of the Tree being serialized/deserialized.
 	 */

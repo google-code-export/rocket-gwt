@@ -21,18 +21,18 @@ import rocket.beans.test.generator.beanreference.Bean;
 /**
  * @factoryBean-objectType rocket.beans.test.generator.beanreference.Bean
  */
-public class NestedFactoryBeanImpl implements FactoryBean{
-	public Object getObject(){
+public class NestedFactoryBeanImpl implements FactoryBean {
+	public Object getObject() {
 		return new Bean();
 	}
 
-	public boolean isSingleton(){
+	public boolean isSingleton() {
 		return true;
 	}
-	
+
 	static public String string;
-	
-	public void setString( final String string ){
+
+	public void setString(final String string) {
 		NestedFactoryBeanImpl.string = string;
 	}
 }

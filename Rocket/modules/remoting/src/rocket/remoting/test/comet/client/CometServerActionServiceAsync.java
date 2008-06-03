@@ -18,17 +18,18 @@ package rocket.remoting.test.comet.client;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * The async counterpart of {@link CometServerActionService}
- * Defines a service which invokes tells the test comet service to request a terminate.
+ * The async counterpart of {@link CometServerActionService} Defines a service
+ * which invokes tells the test comet service to request a terminate.
+ * 
  * @author Miroslav Pokorny
  */
-public interface CometServerActionServiceAsync{
+public interface CometServerActionServiceAsync {
 
-	void failNextConnection( AsyncCallback callback );
-	
-	void failNextPoll( AsyncCallback callback);
-	
-	void terminate( AsyncCallback callback );
-	
-	void timeoutNextPoll( AsyncCallback callback );
+	void failNextConnection(AsyncCallback callback);
+
+	void failNextPoll(AsyncCallback callback);
+
+	void terminate(AsyncCallback callback);
+
+	void timeoutNextPoll(AsyncCallback callback);
 }

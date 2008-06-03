@@ -38,7 +38,7 @@ public class LoggedEventsServiceImpl extends JavaRpcServiceServlet implements Lo
 
 	protected JavaRpcServiceMethodInvoker createRpcServiceMethodInvoker() {
 		return new JavaRpcServiceMethodInvoker() {
-			
+
 			@Override
 			protected ServerSerializationFactory createSerializationFactory() {
 				return new ServerSerializationFactory() {

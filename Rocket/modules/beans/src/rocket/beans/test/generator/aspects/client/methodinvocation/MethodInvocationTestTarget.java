@@ -15,5 +15,5 @@
  */
 package rocket.beans.test.generator.aspects.client.methodinvocation;
 
-public class MethodInvocationTestTarget extends SuperClassOfMethodInvocationTestTarget{
+public class MethodInvocationTestTarget extends SuperClassOfMethodInvocationTestTarget {
 }

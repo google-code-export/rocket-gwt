@@ -33,28 +33,31 @@ import rocket.util.client.Utilities;
  * 
  * @author Miroslav Pokorny
  */
-public class Bean{
+public class Bean {
 
 	public Bean() {
 		super();
 
 		this.setAspects(this.createAspects());
-		this.setConstructorValues( Collections.EMPTY_LIST );
-		this.setProperties( Collections.EMPTY_SET );
+		this.setConstructorValues(Collections.EMPTY_LIST);
+		this.setProperties(Collections.EMPTY_SET);
 	}
-	
+
 	/**
-	 * Returns the ultimately delivered type of this bean, ie the type that is returned
-	 * by the bean factory.
-	 * @return The type of the bean thats actually the product of this definition.
+	 * Returns the ultimately delivered type of this bean, ie the type that is
+	 * returned by the bean factory.
+	 * 
+	 * @return The type of the bean thats actually the product of this
+	 *         definition.
 	 */
-	public Type getValueType(){		
-		// if bean type is a factoryBean read get the bean's actual delivered type from the annotation.
+	public Type getValueType() {
+		// if bean type is a factoryBean read get the bean's actual delivered
+		// type from the annotation.
 		final Type type = this.getType();
 		Type valueType = type;
-		
+
 		final GeneratorContext context = type.getGeneratorContext();
-		final Type factoryBean = context.getType( Constants.FACTORY_BEAN );
+		final Type factoryBean = context.getType(Constants.FACTORY_BEAN);
 
 		if (type.isAssignableTo(factoryBean)) {
 			// locate the annotation and get the type from there...
@@ -65,15 +68,15 @@ public class Bean{
 			final String factoryBeanObjectTypeName = factoryBeanObjectTypes.get(0);
 			valueType = context.getType(factoryBeanObjectTypeName);
 		}
-		
+
 		return valueType;
 	}
-	
+
 	protected void throwFactoryBeanObjectTypeAnnotationMissing() {
 		throw new BeanFactoryGeneratorException("Unable to find \"" + Constants.FACTORY_BEAN_OBJECT_TYPE
-				+ "\" annotation on the factoryBean type declared for bean: " + this );
+				+ "\" annotation on the factoryBean type declared for bean: " + this);
 	}
-	
+
 	/**
 	 * The id of the bean
 	 */
@@ -291,48 +294,47 @@ public class Bean{
 	 * The source file that contained the bean definition.
 	 */
 	private String filename;
-	
-	protected String getFilename(){
-		Checker.notEmpty("field:filename", filename );
+
+	protected String getFilename() {
+		Checker.notEmpty("field:filename", filename);
 		return this.filename;
 	}
-	
-	public void setFilename( final String filename ){
-		Checker.notEmpty("parameter:filename", filename );
+
+	public void setFilename(final String filename) {
+		Checker.notEmpty("parameter:filename", filename);
 		this.filename = filename;
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuffer buf = new StringBuffer();
-		
-		buf.append( "Bean " );
-		
-		if( false == Tester.isNullOrEmpty( this.id )){
-			buf.append( "id: ");
-			buf.append( Utilities.quotedEscape(this.id) );
-			buf.append( ", ");
+
+		buf.append("Bean ");
+
+		if (false == Tester.isNullOrEmpty(this.id)) {
+			buf.append("id: ");
+			buf.append(Utilities.quotedEscape(this.id));
+			buf.append(", ");
 		}
-		
-		if( false == Tester.isNullOrEmpty( this.typeName ) && null == this.type ){
-			buf.append( "typeName: ");
-			buf.append( Utilities.quotedEscape(this.typeName ));
-			buf.append( ", ");
+
+		if (false == Tester.isNullOrEmpty(this.typeName) && null == this.type) {
+			buf.append("typeName: ");
+			buf.append(Utilities.quotedEscape(this.typeName));
+			buf.append(", ");
 		}
-		
-		
-		if( null != this.type ){
-			buf.append( this.type );
-			buf.append( ", ");
+
+		if (null != this.type) {
+			buf.append(this.type);
+			buf.append(", ");
 		}
-		
-		if( this.isSingleton() ){
-			buf.append( this.isEagerLoaded() ? "eager" : "lazy");
-			buf.append( " singleton, ");
+
+		if (this.isSingleton()) {
+			buf.append(this.isEagerLoaded() ? "eager" : "lazy");
+			buf.append(" singleton, ");
 		} else {
-			buf.append( "prototype");
+			buf.append("prototype");
 		}
-		
+
 		return buf.toString();
 	}
 }

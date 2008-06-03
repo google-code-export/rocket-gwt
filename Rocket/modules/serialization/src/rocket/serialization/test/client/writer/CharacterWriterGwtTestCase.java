@@ -33,6 +33,6 @@ public class CharacterWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2," + (int) CHARACTER_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + CHARACTER + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + CHARACTER + "\"," + expectedValues + "]", text);
 	}
 }

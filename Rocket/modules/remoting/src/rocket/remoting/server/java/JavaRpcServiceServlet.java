@@ -47,27 +47,34 @@ public class JavaRpcServiceServlet extends HttpServlet {
 		this.reportUnsupportedMethod(request, response);
 	}
 
-	protected void reportUnsupportedMethod(final HttpServletRequest request, final HttpServletResponse response) throws ServletException,
-			IOException {
+	protected void reportUnsupportedMethod(final HttpServletRequest request, final HttpServletResponse response)
+			throws ServletException, IOException {
 		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 	}
 
 	/**
-	 * Accepts a rpc via the post method, invokes the method and writes the result returned by the invoker
-	 * @param request The request
-	 * @param response The response
-	 * @throws ServletException if anything goes wrong.
-	 * @throws IOException if anything goes wrong.
+	 * Accepts a rpc via the post method, invokes the method and writes the
+	 * result returned by the invoker
+	 * 
+	 * @param request
+	 *            The request
+	 * @param response
+	 *            The response
+	 * @throws ServletException
+	 *             if anything goes wrong.
+	 * @throws IOException
+	 *             if anything goes wrong.
 	 */
 	@Override
 	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		try{
+		try {
 			this.doPost0(request, response);
-		} catch( final Throwable caught ){			
-			response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR, caught.getMessage());
+		} catch (final Throwable caught) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, caught.getMessage());
 			response.flushBuffer();
 		}
 	}
+
 	protected void doPost0(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		final String serializedRequest = consumePostData(request);
 		final String output = this.invoke(serializedRequest.toString());
@@ -86,8 +93,8 @@ public class JavaRpcServiceServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	protected String consumePostData(final HttpServletRequest request) throws IOException {
-		Checker.notNull("parameter:request", request );
-		
+		Checker.notNull("parameter:request", request);
+
 		final StringBuffer buf = new StringBuffer();
 		final char[] chars = new char[1024];
 		BufferedReader reader = null;

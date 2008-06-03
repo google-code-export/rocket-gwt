@@ -39,7 +39,7 @@ public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 		super();
 		this.setFieldSetters(this.createFieldSetters());
 	}
-	
+
 	/**
 	 * The type having its fields written
 	 */
@@ -116,7 +116,7 @@ public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	protected String getResourceName() {
 		return Constants.READ_FIELDS_TEMPLATE;
 	}
-	
+
 	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;

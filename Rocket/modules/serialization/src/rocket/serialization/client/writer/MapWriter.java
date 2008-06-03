@@ -26,7 +26,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.util.Map
+ * @serialization-type java.util.Map
  */
 public class MapWriter extends ObjectWriterImpl implements ObjectWriter {
 

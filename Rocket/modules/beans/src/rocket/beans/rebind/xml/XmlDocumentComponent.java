@@ -24,6 +24,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import rocket.beans.rebind.placeholder.PlaceHolderResolver;
+import rocket.beans.rebind.value.Value;
 import rocket.util.client.Checker;
 import rocket.util.client.Tester;
 
@@ -137,8 +138,8 @@ class XmlDocumentComponent {
 	 *            The parent element
 	 * @return A list which may be empty if the parent has no child elements.
 	 */
-	protected List getElements(final Element parent) {
-		final List elements = new ArrayList();
+	protected List<Element> getElements(final Element parent) {
+		final List<Element> elements = new ArrayList<Element>();
 
 		final NodeList nodeList = parent.getChildNodes();
 		final int nodeCount = nodeList.getLength();

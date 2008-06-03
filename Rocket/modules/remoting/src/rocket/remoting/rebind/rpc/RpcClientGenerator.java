@@ -184,10 +184,10 @@ abstract public class RpcClientGenerator extends Generator {
 		final String methodName = method.getName();
 
 		// build up a list of the parameter types for the async method...
-		final List asyncMethodParameters = new ArrayList();
-		final Iterator serviceMethodParameters = method.getParameters().iterator();
+		final List<Type> asyncMethodParameters = new ArrayList<Type>();
+		final Iterator<MethodParameter> serviceMethodParameters = method.getParameters().iterator();
 		while (serviceMethodParameters.hasNext()) {
-			final MethodParameter methodParameter = (MethodParameter) serviceMethodParameters.next();
+			final MethodParameter methodParameter = serviceMethodParameters.next();
 			asyncMethodParameters.add(methodParameter.getType());
 		}
 		asyncMethodParameters.add(this.getAsyncCallback());

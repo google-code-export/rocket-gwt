@@ -28,7 +28,7 @@ class Constants {
 	final static String READ_FIELDS_TEMPLATE = "read-fields.txt";
 
 	final static String READ_FIELDS_TYPE = "type";
-	
+
 	final static String READ_FIELDS_READ_AND_SET_INDIVIDUAL_FIELDS = "readAndSetIndividualFields";
 
 	final static String READ_FIELD_BOOLEAN_FIELD_TEMPLATE = "read-boolean-field.txt";

@@ -21,12 +21,12 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 /**
  * A maker interface that marks a interface as being a JavaRpcService that
  * returns a java or json encoded response.
- *
- * Many of the steps involved in creating a JavaRpcService are similar to
- * those required to create a GWT JavaRpcService.
+ * 
+ * Many of the steps involved in creating a JavaRpcService are similar to those
+ * required to create a GWT JavaRpcService.
  * <ul>
- * <li>A service interface which must extends {@link JavaRpcService} instead
- * of {@link JavaRpcService}</li>
+ * <li>A service interface which must extends {@link JavaRpcService} instead of
+ * {@link JavaRpcService}</li>
  * <li>The return type of the service interface and all types referenced must
  * implement {@link java.io.Serializable}</li>
  * <li>An async interface following similar rules to that of
@@ -38,7 +38,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * <li>The service address must be set after casting to
  * {@link ServiceDefTarget} and calling {@link ServiceDefTarget#setServiceEntry}
  * </ul>
- *
+ * 
  * @author Miroslav Pokorny
  */
 public interface JavaRpcService {

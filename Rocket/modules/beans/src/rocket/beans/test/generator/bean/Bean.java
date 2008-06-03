@@ -15,12 +15,11 @@
  */
 package rocket.beans.test.generator.bean;
 
-
 /**
  * A general class that is used as a bean.
  * 
  * @author Miroslav Pokorny
  * 
  */
-public class Bean{
+public class Bean {
 }

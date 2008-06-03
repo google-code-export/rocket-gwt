@@ -84,18 +84,18 @@ public class CometConnectionImpl implements CometConnection {
 	/**
 	 * This list accumulates any messages that will be sent to the client.
 	 */
-	protected List messages;
+	protected List<Message> messages;
 	
-	protected List getMessages(){
+	protected List<Message> getMessages(){
 		Checker.notNull("field:messages", messages );
 		return this.messages;
 	}
-	protected void setMessages( final List messages ){
+	protected void setMessages( final List<Message> messages ){
 		Checker.notNull("parameter:messages", messages );
 		this.messages = messages;
 	}
 	
-	protected List createMessages(){
-		return new ArrayList();
+	protected List<Message> createMessages(){
+		return new ArrayList<Message>();
 	}
 }

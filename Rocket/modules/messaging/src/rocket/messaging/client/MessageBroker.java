@@ -65,14 +65,14 @@ public class MessageBroker {
 	 * A map which contains a registry of subscribers, key = commandName value =
 	 * Command.
 	 */
-	private Map<String,List<TopicSubscriber>> subscribers;
+	private Map<String, List<TopicSubscriber>> subscribers;
 
-	protected Map<String,List<TopicSubscriber>> getSubscribers() {
+	protected Map<String, List<TopicSubscriber>> getSubscribers() {
 		Checker.notNull("field:subscribers", subscribers);
 		return subscribers;
 	}
 
-	protected void setSubscribers(final Map<String,List<TopicSubscriber>> subscribers) {
+	protected void setSubscribers(final Map<String, List<TopicSubscriber>> subscribers) {
 		Checker.notNull("parameter:subscribers", subscribers);
 		this.subscribers = subscribers;
 	}
@@ -87,7 +87,7 @@ public class MessageBroker {
 		Checker.notEmpty("parameter:name", name);
 		Checker.notNull("parameter:subscriber", subscriber);
 
-		final Map<String,List<TopicSubscriber>> subscribers = this.getSubscribers();
+		final Map<String, List<TopicSubscriber>> subscribers = this.getSubscribers();
 		List<TopicSubscriber> listeners = subscribers.get(name);
 		if (null == listeners) {
 			listeners = new ArrayList<TopicSubscriber>();
@@ -100,7 +100,7 @@ public class MessageBroker {
 		Checker.notEmpty("parameter:name", name);
 		Checker.notNull("parameter:subscriber", subscriber);
 
-		final Map<String,List<TopicSubscriber>> subscribers = this.getSubscribers();
+		final Map<String, List<TopicSubscriber>> subscribers = this.getSubscribers();
 		List<TopicSubscriber> listeners = (List<TopicSubscriber>) subscribers.get(name);
 		if (null != listeners) {
 			listeners.remove(subscriber);

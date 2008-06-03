@@ -62,9 +62,9 @@ class AddParameterTypeNameTemplatedFile extends TemplatedFileCodeBlock {
 	protected String getResourceName() {
 		return Constants.ADD_PARAMETER_TYPENAME_TEMPLATE;
 	}
-	
+
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 

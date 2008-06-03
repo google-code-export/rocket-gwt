@@ -662,12 +662,12 @@ public class DocumentWalker {
 	 * @param valueElements A nodelist of value elements.
 	 * @return A list of values
 	 */
-	protected List visitValues(final List valueElements) {
-		final List values = new ArrayList();
+	protected List<Value> visitValues(final List<Element> valueElements) {
+		final List<Value> values = new ArrayList<Value>();
 
-		final Iterator iterator = valueElements.iterator();
+		final Iterator<Element> iterator = valueElements.iterator();
 		while (iterator.hasNext()) {
-			final Element element = (Element) iterator.next();
+			final Element element = iterator.next();
 			final Value value = this.visitConstructorOrPropertyValue(element);
 			values.add(value);
 		}
@@ -835,7 +835,7 @@ public class DocumentWalker {
 		this.getAspects().add(aspect);
 	}
 
-	protected List visitIncludedFiles(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
+	protected List<IncludeTag> visitIncludedFiles(final Document document, final String filename, final PlaceHolderResolver placeHolderResolver) {
 		Checker.notNull("parameter:document", document);
 		Checker.notEmpty("parameter:filename", filename);
 		Checker.notNull("parameter:placeHolderResolver", placeHolderResolver);
@@ -843,7 +843,7 @@ public class DocumentWalker {
 		final NodeList nodeList = document.getElementsByTagName(Constants.INCLUDE_TAG);
 		final int count = nodeList.getLength();
 
-		final List includedFiles = new ArrayList();
+		final List<IncludeTag> includedFiles = new ArrayList<IncludeTag>();
 		for (int i = 0; i < count; i++) {
 			final IncludeTag includedFile = new IncludeTag();
 			includedFile.setElement((Element) nodeList.item(i));

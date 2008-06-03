@@ -33,13 +33,14 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
- * A StringValue holds a string literal which may be converted to any of the primitive or String types. 
+ * A StringValue holds a string literal which may be converted to any of the
+ * primitive or String types.
  * 
  * @author Miroslav Pokorny
  */
 public class StringValue extends AbstractValue implements Value {
 
-	public StringValue(){
+	public StringValue() {
 		super();
 	}
 
@@ -215,22 +216,22 @@ public class StringValue extends AbstractValue implements Value {
 		Checker.notNull("parameter:value", value);
 		this.value = value;
 	}
-	
+
 	private Type propertyType;
-	
-	protected Type getPropertyType(){
+
+	protected Type getPropertyType() {
 		return this.propertyType;
 	}
-	
+
 	@Override
-	public void setPropertyType( final Type propertyType ){
-		Checker.notNull("parameter:propertyType", propertyType );
+	public void setPropertyType(final Type propertyType) {
+		Checker.notNull("parameter:propertyType", propertyType);
 		this.propertyType = propertyType;
 	}
-	
+
 	public void write(final SourceWriter writer) {
-		Checker.notNull( "parameter:writer", writer );
-		
+		Checker.notNull("parameter:writer", writer);
+
 		CodeBlock literal = null;
 
 		while (true) {
@@ -268,8 +269,9 @@ public class StringValue extends AbstractValue implements Value {
 				literal = new CharLiteral(this.getCharValue());
 				break;
 			}
-			
-			// will default to String for List/Set/Map which wont have set the propertyType of any StringValues
+
+			// will default to String for List/Set/Map which wont have set the
+			// propertyType of any StringValues
 			literal = new StringLiteral(this.getValue());
 			break;
 		}

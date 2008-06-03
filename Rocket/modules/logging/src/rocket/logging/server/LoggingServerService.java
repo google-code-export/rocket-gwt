@@ -27,6 +27,7 @@ import rocket.logging.client.LoggingService;
 import rocket.remoting.server.java.JavaRpcServiceMethodInvoker;
 import rocket.remoting.server.java.JavaRpcServiceServlet;
 import rocket.remoting.server.java.ServerSerializationFactory;
+import rocket.serialization.client.ObjectReader;
 import rocket.util.client.Checker;
 
 /**
@@ -159,18 +160,18 @@ abstract public class LoggingServerService extends JavaRpcServiceServlet impleme
 	/**
 	 * This cache holds adapters between logger to logging implementation.
 	 */
-	private Map loggers;
+	private Map<String,Logger> loggers;
 
-	protected Map getLoggers() {
+	protected Map<String,Logger> getLoggers() {
 		return this.loggers;
 	}
 
-	protected void setLoggers(final Map loggers) {
+	protected void setLoggers(final Map<String,Logger> loggers) {
 		this.loggers = loggers;
 	}
 
-	protected Map createLoggers() {
-		return new HashMap();
+	protected Map<String,Logger> createLoggers() {
+		return new HashMap<String,Logger>();
 	}
 
 	protected JavaRpcServiceMethodInvoker createRpcServiceMethodInvoker() {
@@ -178,8 +179,8 @@ abstract public class LoggingServerService extends JavaRpcServiceServlet impleme
 			@Override
 			protected ServerSerializationFactory createSerializationFactory() {
 				return new ServerSerializationFactory() {
-					protected List createObjectReaders() {
-						final List readers = new ArrayList();
+					protected List<ObjectReader> createObjectReaders() {
+						final List<ObjectReader> readers = new ArrayList<ObjectReader>();
 						readers.add(new LoggingLevelReader());
 						readers.addAll(super.createObjectReaders());
 						return readers;

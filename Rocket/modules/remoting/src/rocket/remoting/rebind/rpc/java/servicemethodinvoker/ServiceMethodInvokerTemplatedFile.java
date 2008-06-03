@@ -110,7 +110,7 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 		final AddParameterTemplatedFile repeated = new AddParameterTemplatedFile();
 
 		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock() {
-			
+
 			@Override
 			protected Collection getCollection() {
 				return parametersLessCallback;
@@ -155,7 +155,7 @@ public class ServiceMethodInvokerTemplatedFile extends TemplatedFileCodeBlock {
 		final AddParameterTypeNameTemplatedFile repeated = new AddParameterTypeNameTemplatedFile();
 
 		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock() {
-			
+
 			@Override
 			protected Collection getCollection() {
 				return parameters;

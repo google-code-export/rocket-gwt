@@ -25,12 +25,14 @@ import rocket.util.client.Checker;
 
 /**
  * This class takes a stream and attempts to invoke a service method including
- * parameters upon a service implementation. The result (either the returned value or an exception) of invoking method is then serialized.
+ * parameters upon a service implementation. The result (either the returned
+ * value or an exception) of invoking method is then serialized.
  * 
- * The located method and parameters are actually executed at {@link #invoke(Object, Method, Object[])
- * which provides an opportunity to change behaviour. The other {@link #invoke(String, Object)} method takes
- * care of marshalling/unmarshalling.
- *
+ * The located method and parameters are actually executed at
+ * {@link #invoke(Object, Method, Object[]) which provides an opportunity to
+ * change behaviour. The other {@link #invoke(String, Object)} method takes care
+ * of marshalling/unmarshalling.
+ * 
  * Instances of this class are threadsafe and idepotent.
  * 
  * @author Miroslav Pokorny
@@ -40,13 +42,17 @@ public class JavaRpcServiceMethodInvoker {
 	 * Processes an incoming Http request which contains a rpc service that
 	 * needs to be executed.
 	 * 
-	 * @param input The serialized form of the request.
-	 * @param serviceProvider the instance that contains the service method which will be executed once parameters are unmarshalled.
-	 * @return A string containing the serialized result of invoking the given method.	
+	 * @param input
+	 *            The serialized form of the request.
+	 * @param serviceProvider
+	 *            the instance that contains the service method which will be
+	 *            executed once parameters are unmarshalled.
+	 * @return A string containing the serialized result of invoking the given
+	 *         method.
 	 */
-	public String invoke(final String input, final Object serviceProvider ) {
-		Checker.notNull( "parameter:serviceProvider", serviceProvider);
-		
+	public String invoke(final String input, final Object serviceProvider) {
+		Checker.notNull("parameter:serviceProvider", serviceProvider);
+
 		ServerSerializationFactory serializationFactory = createSerializationFactory();
 
 		final ObjectInputStream inputStream = serializationFactory.createObjectInputStream(input);
@@ -123,16 +129,22 @@ public class JavaRpcServiceMethodInvoker {
 
 		return outputStream.getText();
 	}
-	
+
 	/**
 	 * Invokes the located method belonging to the given provider.
-	 * @param provider The service provider which contains the method about to be executed.
-	 * @param method The method to invoke
-	 * @param parameters An array holding parameters 
+	 * 
+	 * @param provider
+	 *            The service provider which contains the method about to be
+	 *            executed.
+	 * @param method
+	 *            The method to invoke
+	 * @param parameters
+	 *            An array holding parameters
 	 * @return The result returned by the method
-	 * @throws Throwable The exception that was thrown.
+	 * @throws Throwable
+	 *             The exception that was thrown.
 	 */
-	protected Object invoke( final Object serviceProvider, final Method method, final Object[] parameters ) throws Throwable{
+	protected Object invoke(final Object serviceProvider, final Method method, final Object[] parameters) throws Throwable {
 		return method.invoke(serviceProvider, parameters);
 	}
 

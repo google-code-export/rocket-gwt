@@ -18,16 +18,18 @@ package rocket.remoting.server.comet;
 import rocket.remoting.client.CometConstants;
 
 /**
- * Instances of this class represent a request from the server to terminates an active comet session.
+ * Instances of this class represent a request from the server to terminates an
+ * active comet session.
+ * 
  * @author Miroslav Pokorny
  */
-public class Terminate implements Message{
-  
-  public int getCommand(){
-    return CometConstants.TERMINATE_COMET_SESSION;
-  }
-  
-  public Object getObject(){
-    return null;
-  }
+public class Terminate implements Message {
+
+	public int getCommand() {
+		return CometConstants.TERMINATE_COMET_SESSION;
+	}
+
+	public Object getObject() {
+		return null;
+	}
 }

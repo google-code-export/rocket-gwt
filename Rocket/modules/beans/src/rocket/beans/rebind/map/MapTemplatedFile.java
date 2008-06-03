@@ -39,24 +39,24 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 		this.setEntries(this.createEntries());
 	}
 
-	private Map<String,Value> entries;
+	private Map<String, Value> entries;
 
-	protected Map<String,Value> getEntries() {
+	protected Map<String, Value> getEntries() {
 		Checker.notNull("field:entries", entries);
 		return this.entries;
 	}
 
-	protected void setEntries(final Map<String,Value> entries) {
+	protected void setEntries(final Map<String, Value> entries) {
 		Checker.notNull("parameter:entries", entries);
 		this.entries = entries;
 	}
 
-	protected Map<String,Value> createEntries() {
-		return new HashMap<String,Value>();
+	protected Map<String, Value> createEntries() {
+		return new HashMap<String, Value>();
 	}
 
 	public void add(final String key, final Value value) {
-		final Map<String,Value> entries = this.getEntries();
+		final Map<String, Value> entries = this.getEntries();
 		if (entries.containsKey(key)) {
 			this.throwMapEntryAlreadyUsed(key);
 		}
@@ -69,7 +69,7 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	protected String getResourceName(){
+	protected String getResourceName() {
 		return Constants.MAP_TEMPLATE;
 	}
 
@@ -88,7 +88,7 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 
 	protected CodeBlock getEntriesCodeBlock() {
 		final MapAddEntryTemplatedFile template = new MapAddEntryTemplatedFile();
-		final Map<String,Value> entries = this.getEntries();
+		final Map<String, Value> entries = this.getEntries();
 
 		return new CollectionTemplatedCodeBlock() {
 			@Override

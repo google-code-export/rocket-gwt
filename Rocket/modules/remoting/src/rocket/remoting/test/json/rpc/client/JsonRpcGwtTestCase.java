@@ -43,7 +43,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 	final String INTERNAL_SERVER_ERROR_URL = "/internalServerError";
 
 	final String JSON_RPC_URL = "/jsonRpc";
-	
+
 	final String EXCEPTION = "rocket.remoting.rebind.rpc.json.JsonRpcClientGeneratorException";
 
 	public String getModuleName() {
@@ -301,8 +301,7 @@ public class JsonRpcGwtTestCase extends GWTTestCase {
 
 		service.makeGetRequest(value, new AsyncCallback() {
 			public void onSuccess(final Object result) {
-				JsonRpcGwtTestCase
-						.fail("The onSuccess method should not have been called because the server returned a non 200 code.");
+				JsonRpcGwtTestCase.fail("The onSuccess method should not have been called because the server returned a non 200 code.");
 			}
 
 			public void onFailure(final Throwable cause) {

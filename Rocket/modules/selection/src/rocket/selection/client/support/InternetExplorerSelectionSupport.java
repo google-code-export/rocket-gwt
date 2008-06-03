@@ -37,18 +37,18 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 
 	@Override
 	native public Selection getSelection(JavaScriptObject window)/*-{
-		 return window.document.selection;
-		 }-*/;
+			 return window.document.selection;
+			 }-*/;
 
 	@Override
 	native public void clear(final Selection selection)/*-{
-		 	selection.empty();
-		 }-*/;
+			 	selection.empty();
+			 }-*/;
 
 	@Override
 	native public boolean isEmpty(final Selection selection)/*-{
-		 return selection.type == "None";
-		 }-*/;
+			 return selection.type == "None";
+			 }-*/;
 
 	@Override
 	native public void delete(final Selection selection) /*-{
@@ -57,8 +57,8 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 
 	@Override
 	native public void clearAnySelectedText(final Selection selection)/*-{
-		 selection.empty();
-		 }-*/;
+			 selection.empty();
+			 }-*/;
 
 	@Override
 	public SelectionEndPoint getStart(final Selection selection) {
@@ -74,56 +74,56 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 	 }-*/;
 
 	native protected SelectionEndPoint getStart1(final Selection selection, final Element element)/*-{
-		 var endPoint = null;
-		 
-		 if(! selection.createRange ){
-		 	alert( "selection.createRange" + selection.createRange );
-		 }
-		 
-		 var selectionRange = selection.createRange();
+			 var endPoint = null;
+			 
+			 if(! selection.createRange ){
+			 	alert( "selection.createRange" + selection.createRange );
+			 }
+			 
+			 var selectionRange = selection.createRange();
 
-		 var range = selectionRange.duplicate();
-		 range.moveToElementText( element );
-		 range.collapse();        
-		 
-		 // loop thru all the childNodes belonging to element.
-		 var childNodes = element.childNodes;
-		 for( var i = 0; i < childNodes.length; i++ ){
-		 var node = childNodes[ i ];
-		 var nodeType = node.nodeType;
-		 
-		 // found an element check its child nodes...
-		 if( 1 == nodeType ){
-		 endPoint = this.@rocket.selection.client.support.InternetExplorerSelectionSupport::getStart1(Lrocket/selection/client/Selection;Lcom/google/gwt/user/client/Element;)(selection,node);
-		 
-		 if( null == endPoint ){
-		 range.move( "character", node.innerText.toString().length );
-		 continue;
-		 }
-		 // endPoint found stop searching....
-		 break;                
-		 }
-		 
-		 // found a textNode...
-		 if( 3 == nodeType ){
-		 var text = node.data;
-		 for( var j = 0; j < text.length; j++ ){
-		 // found selection start stop searching!
-		 if( selectionRange.compareEndPoints( "StartToStart", range ) == 0 ){
-		 endPoint = @rocket.selection.client.SelectionEndPoint::new(Lcom/google/gwt/dom/client/Text;I)(node,j);
-		 break;
-		 }
-		 range.move("character", 1 );
-		 }
-		 // did the above for loop find the start ? if so stop escape!
-		 if( null != endPoint ){
-		 break;
-		 }
-		 }         
-		 }
-		 
-		 return endPoint;
-		 }-*/;
+			 var range = selectionRange.duplicate();
+			 range.moveToElementText( element );
+			 range.collapse();        
+			 
+			 // loop thru all the childNodes belonging to element.
+			 var childNodes = element.childNodes;
+			 for( var i = 0; i < childNodes.length; i++ ){
+			 var node = childNodes[ i ];
+			 var nodeType = node.nodeType;
+			 
+			 // found an element check its child nodes...
+			 if( 1 == nodeType ){
+			 endPoint = this.@rocket.selection.client.support.InternetExplorerSelectionSupport::getStart1(Lrocket/selection/client/Selection;Lcom/google/gwt/user/client/Element;)(selection,node);
+			 
+			 if( null == endPoint ){
+			 range.move( "character", node.innerText.toString().length );
+			 continue;
+			 }
+			 // endPoint found stop searching....
+			 break;                
+			 }
+			 
+			 // found a textNode...
+			 if( 3 == nodeType ){
+			 var text = node.data;
+			 for( var j = 0; j < text.length; j++ ){
+			 // found selection start stop searching!
+			 if( selectionRange.compareEndPoints( "StartToStart", range ) == 0 ){
+			 endPoint = @rocket.selection.client.SelectionEndPoint::new(Lcom/google/gwt/dom/client/Text;I)(node,j);
+			 break;
+			 }
+			 range.move("character", 1 );
+			 }
+			 // did the above for loop find the start ? if so stop escape!
+			 if( null != endPoint ){
+			 break;
+			 }
+			 }         
+			 }
+			 
+			 return endPoint;
+			 }-*/;
 
 	@Override
 	public void setStart(final Selection selection, final SelectionEndPoint start) {
@@ -136,41 +136,41 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 	}
 
 	native private void setStart0(final Selection selection, final Text textNode, final int offset)/*-{
-		 var rangeOffset = offset;
-		 var moveToElement = null;
-		 
-		 // try an element before $textNode counting the number of characters one has moved backwards...
-		 var node = textNode.previousSibling;
-		 
-		 while( node ){
-		 // if a textNode is try its previous sibling...
-		 if( node.nodeType == 3 ){
-		 rangeOffset = rangeOffset + node.data.length;
-		 continue;
-		 }
-		 
-		 // found an element stop searching...
-		 if( node.nodeType == 1 ){
-		 moveToElement = node; 
-		 rangeOffset = rangeOffset + node.innerText.toString().length;
-		 break;
-		 }
-		 
-		 // ignore other types...
-		 node = node.previousSibling;
-		 }
-		 
-		 // if moveToElement is null use textNode's parent.
-		 if( ! moveToElement ){
-		 moveToElement = textNode.parentNode;
-		 }
-		 
-		 // update the start of selection range...
-		 var range = selection.createRange();
-		 range.moveToElementText( moveToElement );
-		 range.moveStart( "character", rangeOffset );
-		 range.select();                        
-		 }-*/;
+			 var rangeOffset = offset;
+			 var moveToElement = null;
+			 
+			 // try an element before $textNode counting the number of characters one has moved backwards...
+			 var node = textNode.previousSibling;
+			 
+			 while( node ){
+			 // if a textNode is try its previous sibling...
+			 if( node.nodeType == 3 ){
+			 rangeOffset = rangeOffset + node.data.length;
+			 continue;
+			 }
+			 
+			 // found an element stop searching...
+			 if( node.nodeType == 1 ){
+			 moveToElement = node; 
+			 rangeOffset = rangeOffset + node.innerText.toString().length;
+			 break;
+			 }
+			 
+			 // ignore other types...
+			 node = node.previousSibling;
+			 }
+			 
+			 // if moveToElement is null use textNode's parent.
+			 if( ! moveToElement ){
+			 moveToElement = textNode.parentNode;
+			 }
+			 
+			 // update the start of selection range...
+			 var range = selection.createRange();
+			 range.moveToElementText( moveToElement );
+			 range.moveStart( "character", rangeOffset );
+			 range.select();                        
+			 }-*/;
 
 	@Override
 	public void setEnd(final Selection selection, final SelectionEndPoint end) {
@@ -183,45 +183,45 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 	}
 
 	native private void setEnd0(final Selection selection, final Text textNode, final int offset)/*-{    
-		 var rangeOffset = offset;
-		 var moveToElement = null;
-		 
-		 // try an element before $textNode counting the number of characters one has moved backwards...
-		 var node = textNode.previousSibling;
-		 
-		 while( node ){
-		 // if textNode is try its previous sibling...
-		 if( node.nodeType == 3 ){        
-		 rangeOffset = rangeOffset + node.data.length;
-		 continue;
-		 }
-		 
-		 // found an element stop searching...
-		 if( node.nodeType == 1 ){
-		 moveToElement = node;
-		 rangeOffset = rangeOffset + node.innerText.toString().length;
-		 break;
-		 }
-		 
-		 // ignore other types...
-		 node = node.previousSibling;
-		 }           
-		 
-		 // if moveToElement is null use textNode's parent.
-		 if( ! moveToElement ){
-		 moveToElement = textNode.parentNode;
-		 }
-		 
-		 // update the end of selection range...
-		 var range = selection.createRange();
-		 range.moveToElementText( moveToElement );
-		 range.moveStart( "character", rangeOffset );
-		 range.collapse();
-		 
-		 var selectionRange = selection.createRange();
-		 selectionRange.setEndPoint( "EndToStart", range );
-		 selectionRange.select();                                 
-		 }-*/;
+			 var rangeOffset = offset;
+			 var moveToElement = null;
+			 
+			 // try an element before $textNode counting the number of characters one has moved backwards...
+			 var node = textNode.previousSibling;
+			 
+			 while( node ){
+			 // if textNode is try its previous sibling...
+			 if( node.nodeType == 3 ){        
+			 rangeOffset = rangeOffset + node.data.length;
+			 continue;
+			 }
+			 
+			 // found an element stop searching...
+			 if( node.nodeType == 1 ){
+			 moveToElement = node;
+			 rangeOffset = rangeOffset + node.innerText.toString().length;
+			 break;
+			 }
+			 
+			 // ignore other types...
+			 node = node.previousSibling;
+			 }           
+			 
+			 // if moveToElement is null use textNode's parent.
+			 if( ! moveToElement ){
+			 moveToElement = textNode.parentNode;
+			 }
+			 
+			 // update the end of selection range...
+			 var range = selection.createRange();
+			 range.moveToElementText( moveToElement );
+			 range.moveStart( "character", rangeOffset );
+			 range.collapse();
+			 
+			 var selectionRange = selection.createRange();
+			 selectionRange.setEndPoint( "EndToStart", range );
+			 selectionRange.select();                                 
+			 }-*/;
 
 	@Override
 	public SelectionEndPoint getEnd(final Selection selection) {
@@ -236,52 +236,52 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 	 }-*/;
 
 	protected native SelectionEndPoint getEnd1(final Selection selection, final Element element)/*-{
-		 var endPoint = null;
-		 
-		 var selectionRange = selection.createRange();
+			 var endPoint = null;
+			 
+			 var selectionRange = selection.createRange();
 
-		 var range = selectionRange.duplicate();
-		 range.moveToElementText( element );
-		 range.collapse( true );        
-		 
-		 // loop thru all the childNodes belonging to element.
-		 var childNodes = element.childNodes;
-		 for( var i = 0; i < childNodes.length; i++ ){
-		 var node = childNodes[ i ];
-		 var nodeType = node.nodeType;
-		 
-		 // found an element check its child nodes...
-		 if( 1 == nodeType ){
-		 endPoint = this.@rocket.selection.client.support.InternetExplorerSelectionSupport::getEnd1(Lrocket/selection/client/Selection;Lcom/google/gwt/user/client/Element;)(selection,node);
-		 
-		 if( null == endPoint ){
-		 range.move( "character", node.innerText.toString().length );
-		 continue;
-		 }
-		 // endPoint found stop searching....
-		 break;                
-		 }
-		 
-		 // found a textNode...
-		 if( 3 == nodeType ){
-		 var text = node.data;
-		 for( var j = 0; j < text.length; j++ ){
-		 // found selection end stop searching!
-		 if( selectionRange.compareEndPoints( "EndToStart", range ) == 0 ){
-		 endPoint = @rocket.selection.client.SelectionEndPoint::new(Lcom/google/gwt/dom/client/Text;I)(node,j);
-		 break;
-		 }
-		 range.move( "character", 1 );
-		 }
-		 // did the above for loop find the end ? if so stop escape!
-		 if( null != endPoint ){
-		 break;
-		 }
-		 }         
-		 }
-		 
-		 return endPoint;
-		 }-*/;
+			 var range = selectionRange.duplicate();
+			 range.moveToElementText( element );
+			 range.collapse( true );        
+			 
+			 // loop thru all the childNodes belonging to element.
+			 var childNodes = element.childNodes;
+			 for( var i = 0; i < childNodes.length; i++ ){
+			 var node = childNodes[ i ];
+			 var nodeType = node.nodeType;
+			 
+			 // found an element check its child nodes...
+			 if( 1 == nodeType ){
+			 endPoint = this.@rocket.selection.client.support.InternetExplorerSelectionSupport::getEnd1(Lrocket/selection/client/Selection;Lcom/google/gwt/user/client/Element;)(selection,node);
+			 
+			 if( null == endPoint ){
+			 range.move( "character", node.innerText.toString().length );
+			 continue;
+			 }
+			 // endPoint found stop searching....
+			 break;                
+			 }
+			 
+			 // found a textNode...
+			 if( 3 == nodeType ){
+			 var text = node.data;
+			 for( var j = 0; j < text.length; j++ ){
+			 // found selection end stop searching!
+			 if( selectionRange.compareEndPoints( "EndToStart", range ) == 0 ){
+			 endPoint = @rocket.selection.client.SelectionEndPoint::new(Lcom/google/gwt/dom/client/Text;I)(node,j);
+			 break;
+			 }
+			 range.move( "character", 1 );
+			 }
+			 // did the above for loop find the end ? if so stop escape!
+			 if( null != endPoint ){
+			 break;
+			 }
+			 }         
+			 }
+			 
+			 return endPoint;
+			 }-*/;
 
 	@Override
 	public Element extract(final Selection selection) {
@@ -302,12 +302,12 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 	 * @param element
 	 */
 	native private void extract0(final Selection selection, final Element element)/*-{        
-		 // extract the selected area and assign to $html.
-		 var html = selection.createRange().htmlText;
-		 
-		 // set the innerHTML of $element to $html
-		 element.innerHTML = html;                
-		 }-*/;
+			 // extract the selected area and assign to $html.
+			 var html = selection.createRange().htmlText;
+			 
+			 // set the innerHTML of $element to $html
+			 element.innerHTML = html;                
+			 }-*/;
 
 	@Override
 	protected void surround0(final Selection selection, final Element element) {
@@ -332,19 +332,19 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 	}
 
 	native private int getChildIndexOfTextNode(final Text textNode)/*-{
-		 var i = 0;
-		 
-		 var children = textNode.parentNode.childNodes;
-		 var count = children.length;        
-		 for( var j = 0; j < count; j++ ){           
-		 if( textNode === children[ j ] ){
-		 i = j;
-		 break;
-		 }            
-		 }
-		 
-		 return i;
-		 }-*/;
+			 var i = 0;
+			 
+			 var children = textNode.parentNode.childNodes;
+			 var count = children.length;        
+			 for( var j = 0; j < count; j++ ){           
+			 if( textNode === children[ j ] ){
+			 i = j;
+			 break;
+			 }            
+			 }
+			 
+			 return i;
+			 }-*/;
 
 	/**
 	 * This method is necessary because GWT's DOM.insertChild( Element parent,
@@ -355,12 +355,12 @@ public class InternetExplorerSelectionSupport extends SelectionSupport {
 	 * @return
 	 */
 	native private void insertChild(final Element parent, final Element element, final int index)/*-{
-		 var childNodes = parent.childNodes;
-		 if( index >= childNodes.length ){
-		 parent.appendChild( element );
-		 } else {
-		 parent.insertBefore( element, childNodes[ index ]);
-		 }
-		 }-*/;
+			 var childNodes = parent.childNodes;
+			 if( index >= childNodes.length ){
+			 parent.appendChild( element );
+			 } else {
+			 parent.insertBefore( element, childNodes[ index ]);
+			 }
+			 }-*/;
 
 }

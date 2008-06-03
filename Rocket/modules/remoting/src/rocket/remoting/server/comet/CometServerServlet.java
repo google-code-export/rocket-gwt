@@ -87,7 +87,8 @@ public abstract class CometServerServlet extends HttpServlet {
 	}
 
 	protected void throwInitParameterDoesntContainAPositiveNumber(final String name, final String value) throws ServletException {
-		this.throwServletException("The required init parameter \"" + name + "\" with a value of \"" + value + "\" doesnt contain a positive number,");
+		this.throwServletException("The required init parameter \"" + name + "\" with a value of \"" + value
+				+ "\" doesnt contain a positive number,");
 	}
 
 	protected void throwServletException(final String message) throws ServletException {
@@ -345,33 +346,32 @@ public abstract class CometServerServlet extends HttpServlet {
 	 */
 	protected void onConnectionOpenTooLong(final long milliseconds) {
 	}
-	
-	
+
 	final static ThreadLocal httpServletRequests = new ThreadLocal();
-	
-	public HttpServletRequest getHttpServletRequest(){
+
+	public HttpServletRequest getHttpServletRequest() {
 		return (HttpServletRequest) CometServerServlet.httpServletRequests.get();
 	}
-	
-	void setHttpServletRequest( final HttpServletRequest httpServletRequests ){
+
+	void setHttpServletRequest(final HttpServletRequest httpServletRequests) {
 		CometServerServlet.httpServletRequests.set(httpServletRequests);
 	}
-	
-	void clearHttpServletRequest(){
+
+	void clearHttpServletRequest() {
 		CometServerServlet.httpServletRequests.remove();
 	}
-	
+
 	final static ThreadLocal httpServletResponses = new ThreadLocal();
-	
-	public HttpServletResponse getHttpServletResponse(){
+
+	public HttpServletResponse getHttpServletResponse() {
 		return (HttpServletResponse) CometServerServlet.httpServletResponses.get();
 	}
-	
-	void setHttpServletResponse( final HttpServletResponse httpServletResponses ){
+
+	void setHttpServletResponse(final HttpServletResponse httpServletResponses) {
 		CometServerServlet.httpServletResponses.set(httpServletResponses);
 	}
-	
-	void clearHttpServletResponse(){
+
+	void clearHttpServletResponse() {
 		CometServerServlet.httpServletResponses.remove();
 	}
 }

@@ -19,6 +19,7 @@ import rocket.serialization.client.ObjectWriter;
 
 /**
  * ObjectWriter for {@link java.util.HashSet}
+ * 
  * @author Miroslav Pokorny
  * @serialization-type java.util.HashSet
  */

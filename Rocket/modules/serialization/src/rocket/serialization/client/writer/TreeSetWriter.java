@@ -25,7 +25,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.util.TreeSet
+ * @serialization-type java.util.TreeSet
  */
 public class TreeSetWriter extends SetWriter implements ObjectWriter {
 
@@ -33,13 +33,13 @@ public class TreeSetWriter extends SetWriter implements ObjectWriter {
 
 	protected TreeSetWriter() {
 	}
-	
+
 	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
 		this.writeTreeSet((TreeSet) object, objectOutputStream);
 	}
-	
+
 	protected void writeTreeSet(final TreeSet treeSet, final ObjectOutputStream objectOutputStream) {
-		objectOutputStream.writeObject( treeSet.comparator() );
-		this.writeCollection( treeSet, objectOutputStream);
+		objectOutputStream.writeObject(treeSet.comparator());
+		this.writeCollection(treeSet, objectOutputStream);
 	}
 }

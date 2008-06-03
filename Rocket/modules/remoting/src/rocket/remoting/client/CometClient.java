@@ -44,20 +44,20 @@ public abstract class CometClient {
 	/**
 	 * Singleton that holds the comet support class.
 	 */
-	static CometSupport support = (CometSupport) GWT.create(CometSupport.class); 	
-	
+	static CometSupport support = (CometSupport) GWT.create(CometSupport.class);
+
 	protected CometClient() {
 		super();
 	}
 
-	CometSupport getSupport(){
+	CometSupport getSupport() {
 		return support;
 	}
-	
+
 	/**
 	 * Invoking this method opens the channel betweeen the client and the
-	 * server. The server will periodicly continue to send objects to the
-	 * client as they are streamed to the server.
+	 * server. The server will periodicly continue to send objects to the client
+	 * as they are streamed to the server.
 	 */
 	public void start() {
 		final Element frame = this.createFrame();
@@ -74,9 +74,9 @@ public abstract class CometClient {
 		DOM.appendChild(body, frame);
 	}
 
-
 	/**
-	 * Stops an existing comet session by closing the connection between the client and the server.
+	 * Stops an existing comet session by closing the connection between the
+	 * client and the server.
 	 */
 	public void stop() {
 		if (this.hasFrame()) {
@@ -86,21 +86,22 @@ public abstract class CometClient {
 			this.getSupport().stop(this, frame);
 		}
 	}
-	
+
 	/**
 	 * This method is called by whenever a iframe finishes loading its document.
-	 * This may be caused by the server dropping its connect or failing the locate a CometServer.
+	 * This may be caused by the server dropping its connect or failing the
+	 * locate a CometServer.
 	 * 
 	 * @param cometClient
 	 */
 	static void onDisconnect(final CometClient cometClient) {
 		Checker.notNull("parameter:cometClient", cometClient);
-		
+
 		cometClient.disconnect();
 	}
-	
-	protected void disconnect(){
-		//	checks if the iframe has its connected flag set.. if not report
+
+	protected void disconnect() {
+		// checks if the iframe has its connected flag set.. if not report
 		// connection failure...
 		if (false == DOM.getElementPropertyBoolean(this.getFrame(), "__connected")) {
 			this.onUnableToConnect();
@@ -108,9 +109,9 @@ public abstract class CometClient {
 			this.restart();
 		}
 	}
-	
-	protected void onUnableToConnect(){
-		this.getCallback().onFailure( new CometException("Unable to connect to \"" + this.getServiceEntryPoint() + "\"."));
+
+	protected void onUnableToConnect() {
+		this.getCallback().onFailure(new CometException("Unable to connect to \"" + this.getServiceEntryPoint() + "\"."));
 	}
 
 	/**
@@ -128,24 +129,29 @@ public abstract class CometClient {
 	 * @param cometClient
 	 * @param serializedForm
 	 */
-	static void dispatch(final CometClient cometClient, final String serializedForm){
+	static void dispatch(final CometClient cometClient, final String serializedForm) {
 		cometClient.dispatch(serializedForm);
 	}
 
 	/**
-	 * This method is overridden to deserialize and then dispatch the object to the registered payload
-	 * @param serializedForm The serialized form of the incoming object.
+	 * This method is overridden to deserialize and then dispatch the object to
+	 * the registered payload
+	 * 
+	 * @param serializedForm
+	 *            The serialized form of the incoming object.
 	 */
 	abstract public void dispatch(final String serializedForm);
 
 	/**
-	 * This method is invoked whenever a command received from the server is unknown, by default an exception is thrown.
+	 * This method is invoked whenever a command received from the server is
+	 * unknown, by default an exception is thrown.
+	 * 
 	 * @param command
 	 */
-	protected void onUnknownCommand( final int command ){
+	protected void onUnknownCommand(final int command) {
 		throw new CometException("Unknown command recieved from server, command: " + command);
 	}
-	
+
 	/**
 	 * A reference to the hidden iframe which is used to make a connection which
 	 * is kept open for a long time. The server will periodically write objects
@@ -210,8 +216,8 @@ public abstract class CometClient {
 		Checker.notNull("parameter:callback", callback);
 		this.callback = callback;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return super.toString() + ", serviceEntryPoint: \"" + this.serviceEntryPoint + "\", callback: " + this.callback;
 	}
 }

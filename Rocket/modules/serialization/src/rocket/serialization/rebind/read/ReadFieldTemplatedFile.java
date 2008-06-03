@@ -72,10 +72,10 @@ class ReadFieldTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
-	
+
 	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;

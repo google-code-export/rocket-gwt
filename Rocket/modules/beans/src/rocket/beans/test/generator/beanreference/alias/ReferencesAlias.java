@@ -19,11 +19,12 @@ import rocket.beans.test.generator.beanreference.Bean;
 
 public class ReferencesAlias {
 	private Bean aliasedBean;
-	
-	public Bean getAliasedBean(){
+
+	public Bean getAliasedBean() {
 		return this.aliasedBean;
 	}
-	public void setAliasedBean( final Bean aliasedBean ){
+
+	public void setAliasedBean(final Bean aliasedBean) {
 		this.aliasedBean = aliasedBean;
 	}
 }

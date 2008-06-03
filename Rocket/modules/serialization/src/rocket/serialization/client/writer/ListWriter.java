@@ -22,7 +22,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.util.List
+ * @serialization-type java.util.List
  */
 public class ListWriter extends AbstractCollectionWriter {
 

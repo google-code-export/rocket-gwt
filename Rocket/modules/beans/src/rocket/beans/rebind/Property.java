@@ -19,6 +19,7 @@ import rocket.beans.rebind.value.Value;
 
 /**
  * Holds a single property and value.
+ * 
  * @author Miroslav Pokorny
  */
 public class Property {
@@ -36,7 +37,7 @@ public class Property {
 	}
 
 	/**
-	 * The value that will be assigned to the property. 
+	 * The value that will be assigned to the property.
 	 */
 	private Value value;
 
@@ -47,8 +48,8 @@ public class Property {
 	public void setValue(final Value value) {
 		this.value = value;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return this.name + "=" + this.value;
 	}
 }

@@ -25,97 +25,95 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 public class JavaRpcGwtTestCase extends GWTTestCase {
 
 	static final int DELAY = 100 * 1000;
-	
+
 	static final String SERVICE_ENTRY_POINT = "./service";
-	
+
 	public String getModuleName() {
 		return "rocket.remoting.test.java.rpc.JavaRpcGwtTestCase";
 	}
-	
-	public void testRpcCompletedSuccessfully(){		
+
+	public void testRpcCompletedSuccessfully() {
 		final ServiceAsync client = this.createClient();
-		((ServiceDefTarget)client).setServiceEntryPoint( SERVICE_ENTRY_POINT );
-		
+		((ServiceDefTarget) client).setServiceEntryPoint(SERVICE_ENTRY_POINT);
+
 		final Payload payload = new Payload();
 		payload.value = 123;
-				
-		client.echo(payload, new AsyncCallback(){
-			public void onSuccess( final Object result ){
-				assertTrue( "" + result, result instanceof Payload );
-				
+
+		client.echo(payload, new AsyncCallback() {
+			public void onSuccess(final Object result) {
+				assertTrue("" + result, result instanceof Payload);
+
 				final Payload payloadResult = (Payload) result;
-				assertEquals( "" + result, payload, payloadResult );
+				assertEquals("" + result, payload, payloadResult);
 				finishTest();
 			}
-			
-			public void onFailure( final Throwable cause ){
+
+			public void onFailure(final Throwable cause) {
 				cause.printStackTrace();
-				fail( cause.getMessage() );
+				fail(cause.getMessage());
 			}
 		});
-		
-		this.delayTestFinish( DELAY );		
+
+		this.delayTestFinish(DELAY);
 	}
 
-	public void testInvalidServiceEntryPointSet(){		
+	public void testInvalidServiceEntryPointSet() {
 		final ServiceAsync client = this.createClient();
-		((ServiceDefTarget)client).setServiceEntryPoint( "./invalid");
-		
+		((ServiceDefTarget) client).setServiceEntryPoint("./invalid");
+
 		final Payload payload = new Payload();
 		payload.value = 123;
-				
-		client.echo(payload, new AsyncCallback(){
-			public void onSuccess( final Object result ){
-				fail( "This rpc should have failed because the service entry point is invalid.");
+
+		client.echo(payload, new AsyncCallback() {
+			public void onSuccess(final Object result) {
+				fail("This rpc should have failed because the service entry point is invalid.");
 			}
-			
-			public void onFailure( final Throwable cause ){
+
+			public void onFailure(final Throwable cause) {
 				finishTest();
 			}
 		});
-		
-		this.delayTestFinish( DELAY );		
+
+		this.delayTestFinish(DELAY);
 	}
 
-
-	public void testServerThrowsDeclaredException(){
+	public void testServerThrowsDeclaredException() {
 		final ServiceAsync client = this.createClient();
-		((ServiceDefTarget)client).setServiceEntryPoint( SERVICE_ENTRY_POINT);
-		
-		client.throwsDeclaredException(new AsyncCallback(){
-			public void onSuccess( final Object result ){
-				fail( "This rpc should have failed because the server service method threw an declared exception.");
+		((ServiceDefTarget) client).setServiceEntryPoint(SERVICE_ENTRY_POINT);
+
+		client.throwsDeclaredException(new AsyncCallback() {
+			public void onSuccess(final Object result) {
+				fail("This rpc should have failed because the server service method threw an declared exception.");
 			}
-			
-			public void onFailure( final Throwable cause ){
-				assertTrue( "" + cause, cause instanceof DeclaredException );
+
+			public void onFailure(final Throwable cause) {
+				assertTrue("" + cause, cause instanceof DeclaredException);
 				finishTest();
 			}
 		});
-		
-		this.delayTestFinish( DELAY );		
+
+		this.delayTestFinish(DELAY);
 	}
 
-	
-	public void testServerThrowsUndeclaredException(){		
+	public void testServerThrowsUndeclaredException() {
 		final ServiceAsync client = this.createClient();
-		((ServiceDefTarget)client).setServiceEntryPoint( SERVICE_ENTRY_POINT );
-		
-		client.throwsUndeclaredException(new AsyncCallback(){
-			public void onSuccess( final Object result ){
-				fail( "This rpc should have failed because the server service method threw an undeclared exception.");
+		((ServiceDefTarget) client).setServiceEntryPoint(SERVICE_ENTRY_POINT);
+
+		client.throwsUndeclaredException(new AsyncCallback() {
+			public void onSuccess(final Object result) {
+				fail("This rpc should have failed because the server service method threw an undeclared exception.");
 			}
-			
-			public void onFailure( final Throwable cause ){
-				assertTrue( "" + cause, cause instanceof RpcException );
+
+			public void onFailure(final Throwable cause) {
+				assertTrue("" + cause, cause instanceof RpcException);
 				finishTest();
 			}
 		});
-		
-		this.delayTestFinish( DELAY );		
+
+		this.delayTestFinish(DELAY);
 	}
 
 	ServiceAsync createClient() {
-		return (ServiceAsync) GWT.create( Service.class );
+		return (ServiceAsync) GWT.create(Service.class);
 	}
 }

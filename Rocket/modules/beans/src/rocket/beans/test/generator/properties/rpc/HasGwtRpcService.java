@@ -17,14 +17,14 @@
 package rocket.beans.test.generator.properties.rpc;
 
 public class HasGwtRpcService {
-	
+
 	private GwtRpcAsync rpc;
-	
-	public GwtRpcAsync getRpc(){
+
+	public GwtRpcAsync getRpc() {
 		return rpc;
 	}
-	
-	public void setRpc( final GwtRpcAsync service ){
+
+	public void setRpc(final GwtRpcAsync service) {
 		this.rpc = service;
 	}
 }

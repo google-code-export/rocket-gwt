@@ -23,17 +23,19 @@ import java.util.Map;
 import rocket.util.client.Checker;
 
 /**
- * A collection of missing methods that have not yet been implemented in the emulated Collections
- * as well as other useful collection related methods.
+ * A collection of missing methods that have not yet been implemented in the
+ * emulated Collections as well as other useful collection related methods.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class CollectionsHelper{
-		
+public class CollectionsHelper {
+
 	/**
-	 * Removes all the remaining elements of the given iterator by visiting and removing each and every element.
+	 * Removes all the remaining elements of the given iterator by visiting and
+	 * removing each and every element.
 	 * 
-	 * @param iterator The iterator being cleared
+	 * @param iterator
+	 *            The iterator being cleared
 	 */
 	public static void removeAll(final Iterator iterator) {
 		Checker.notNull("parameter:iterator", iterator);
@@ -47,7 +49,8 @@ public class CollectionsHelper{
 	/**
 	 * Copies all the elements from the iterator into an array.
 	 * 
-	 * @param iterator The source
+	 * @param iterator
+	 *            The source
 	 * @return The new array containing the values
 	 */
 	public static Object[] copyIntoArray(final Iterator iterator) {
@@ -57,7 +60,8 @@ public class CollectionsHelper{
 	/**
 	 * Copies all the elements from the iterator into a List
 	 * 
-	 * @param iterator The source
+	 * @param iterator
+	 *            The source
 	 * @return The filled List
 	 */
 	public static List copyIntoList(final Iterator iterator) {
@@ -73,8 +77,10 @@ public class CollectionsHelper{
 	/**
 	 * Searches the given map for the key that contains the parameter value
 	 * 
-	 * @param map The map
-	 * @param value The value being searched for
+	 * @param map
+	 *            The map
+	 * @param value
+	 *            The value being searched for
 	 * @return The key or null if value is not present in the parameter:map
 	 */
 	public static Object getKey(final Map map, final Object value) {

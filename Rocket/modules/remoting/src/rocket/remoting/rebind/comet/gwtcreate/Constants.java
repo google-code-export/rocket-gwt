@@ -14,7 +14,6 @@
  * the License.
  */package rocket.remoting.rebind.comet.gwtcreate;
 
-
 public class Constants {
 	final static String TEMPLATE = "gwt-create.txt";
 

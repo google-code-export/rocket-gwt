@@ -19,6 +19,7 @@ import rocket.serialization.client.ObjectWriter;
 
 /**
  * Specialised ObjectWriter that knows how to serialize AbstractSet's
+ * 
  * @author Miroslav Pokorny
  * @serialization-type java.util.AbstractSet
  */

@@ -34,6 +34,6 @@ public class IntArrayWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2,1," + INT_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + INT_ARRAY + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + INT_ARRAY + "\"," + expectedValues + "]", text);
 	}
 }

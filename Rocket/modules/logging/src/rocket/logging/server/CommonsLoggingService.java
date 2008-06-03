@@ -21,7 +21,8 @@ import org.apache.commons.logging.LogFactory;
 import rocket.logging.client.Logger;
 
 /**
- * This logging services sends all incoming logging events to loggers sourced from commons logging
+ * This logging services sends all incoming logging events to loggers sourced
+ * from commons logging
  * 
  * @author Miroslav Pokorny
  */

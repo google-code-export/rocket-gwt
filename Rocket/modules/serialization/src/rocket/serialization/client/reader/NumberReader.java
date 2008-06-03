@@ -19,7 +19,8 @@ import rocket.serialization.client.ObjectInputStream;
 import rocket.serialization.client.ObjectReader;
 
 /**
- * This type is never actually used and only exists to keep the SerializationGenerator happy.
+ * This type is never actually used and only exists to keep the
+ * SerializationGenerator happy.
  * 
  * @author Miroslav Pokorny
  * 

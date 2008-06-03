@@ -61,7 +61,7 @@ public class DraggablePanel extends SimplePanel {
 
 		this.setDragNDropListeners(createDragNDropListeners());
 	}
-	
+
 	@Override
 	protected Element createPanelElement() {
 		return DOM.createDiv();
@@ -115,7 +115,7 @@ public class DraggablePanel extends SimplePanel {
 			// first disable / clear any selections...
 			Selection.disableTextSelection();
 			Selection.clearAnySelectedText();
-			
+
 			mouseDownEvent.stop();
 
 			// fire the event...
@@ -179,13 +179,13 @@ public class DraggablePanel extends SimplePanel {
 			final Element dragPanelElement = draggedPanel.getElement();
 			final int elementPageX = dragPanelElement.getAbsoluteLeft();
 			final int elementPageY = dragPanelElement.getAbsoluteTop();
-			
+
 			// reposition the $dragged so it follows the mouse.
 			final int mousePageX = mouseDownEvent.getPageX();
 			final int mousePageY = mouseDownEvent.getPageY();
 			dragStartEvent.setMousePageX(mousePageX);
 			dragStartEvent.setMousePageY(mousePageY);
-	
+
 			final int newX = mousePageX + xOffset - elementPageX;
 			final int newY = mousePageY + yOffset - elementPageY;
 
@@ -311,8 +311,9 @@ public class DraggablePanel extends SimplePanel {
 
 		@Override
 		protected int getSunkEventsBitMask() {
-			// never receives any events as these are handled by a eventpreview(er)
-			return 0; 
+			// never receives any events as these are handled by a
+			// eventpreview(er)
+			return 0;
 		}
 
 		@Override
@@ -424,7 +425,7 @@ public class DraggablePanel extends SimplePanel {
 	 */
 	protected Widget createDraggedWidget() {
 		final Element element = this.getWidget().getElement();
-		return new Html( (Element)element.cloneNode( true ).cast());
+		return new Html((Element) element.cloneNode(true).cast());
 	}
 
 	/**

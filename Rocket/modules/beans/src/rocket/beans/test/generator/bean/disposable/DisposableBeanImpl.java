@@ -18,7 +18,7 @@ package rocket.beans.test.generator.bean.disposable;
 
 import rocket.beans.client.DisposableBean;
 
-public class DisposableBeanImpl implements DisposableBean{
+public class DisposableBeanImpl implements DisposableBean {
 	public void destroy() {
 		this.destroyed++;
 	}

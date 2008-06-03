@@ -39,7 +39,7 @@ public class WebResponse implements IsSerializable {
 	}
 
 	public void setCode(final int code) {
-		Checker.greaterThan("parameter:code", 0, code );
+		Checker.greaterThan("parameter:code", 0, code);
 		this.code = code;
 	}
 

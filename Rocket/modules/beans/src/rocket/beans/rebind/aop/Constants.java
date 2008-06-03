@@ -31,8 +31,6 @@ class Constants {
 
 	final static String INVOKE_TARGET_METHOD_UNWRAP_PARAMETERS = "unwrapParameters";
 
-
-	
 	// interceptor proceed template 1 for each primitive, void, object return
 	// type.
 	final static String INVOKE_INTERCEPTOR_CHAIN_PROCEED_BOOLEAN_TEMPLATE = "invoke-interceptor-chain-proceed-boolean.txt";

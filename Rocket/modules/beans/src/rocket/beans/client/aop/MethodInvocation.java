@@ -45,33 +45,39 @@ public interface MethodInvocation {
 	 *             any exception may be thrown
 	 */
 	Object proceed() throws Throwable;
-	
+
 	/**
 	 * Retrieves the name of the current method.
+	 * 
 	 * @return
 	 */
 	String getMethod();
-	
+
 	/**
-	 * Returns the actual parameter types for the method not the typs of the incoming parameters.
+	 * Returns the actual parameter types for the method not the typs of the
+	 * incoming parameters.
+	 * 
 	 * @return An array of Strings.
 	 */
 	String[] getParameterTypes();
-	
+
 	/**
 	 * Returns the fully qualified name of the return type for this method.
+	 * 
 	 * @return
 	 */
 	String getReturnType();
-		
+
 	/**
 	 * Tests if the current method is native (jsni)
+	 * 
 	 * @return True if it is false otherwise.
 	 */
 	boolean isNative();
-	
+
 	/**
 	 * Returns the name of the class containing this method.
+	 * 
 	 * @return The fully qualified name of the class
 	 */
 	String getEnclosingType();

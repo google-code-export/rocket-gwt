@@ -28,9 +28,10 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * This test consists of a logger which uses an rpc to send logging events to the server.
- * A customised Log4J Appender then logs the events to a list whose contents can be fetched by a second service.
- * The tests then query the second service to determine what was actually logged by LOG4J.
+ * This test consists of a logger which uses an rpc to send logging events to
+ * the server. A customised Log4J Appender then logs the events to a list whose
+ * contents can be fetched by a second service. The tests then query the second
+ * service to determine what was actually logged by LOG4J.
  * 
  * @author Miroslav Pokorny
  */
@@ -142,7 +143,7 @@ public class ServerLoggerGwtTestCase extends GWTTestCase {
 	}
 
 	ServerLogger createLogger() {
-		return new TestServerLogger( LOGGER_NAME );
+		return new TestServerLogger(LOGGER_NAME);
 	}
 
 	static class TestServerLogger extends ServerLogger {

@@ -29,7 +29,7 @@ public class WriteTemplatedFile extends TemplatedFileCodeBlock {
 	public WriteTemplatedFile() {
 		super();
 	}
-	
+
 	/**
 	 * The type having its fields written
 	 */
@@ -53,9 +53,9 @@ public class WriteTemplatedFile extends TemplatedFileCodeBlock {
 		Object value = null;
 
 		if (Constants.WRITE0_TYPE.equals(name)) {
-				value = this.getType();
-			}
-		
+			value = this.getType();
+		}
+
 		return value;
 	}
 };

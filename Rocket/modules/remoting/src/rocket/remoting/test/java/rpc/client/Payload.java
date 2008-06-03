@@ -17,13 +17,14 @@ package rocket.remoting.test.java.rpc.client;
 
 import java.io.Serializable;
 
-public class Payload implements Serializable{
+public class Payload implements Serializable {
 	int value = 0;
-	
-	public boolean equals( final Object otherObject ){
-		return otherObject instanceof Payload ? equals( (Payload) otherObject ) : false;
+
+	public boolean equals(final Object otherObject) {
+		return otherObject instanceof Payload ? equals((Payload) otherObject) : false;
 	}
-	boolean equals( final Payload otherPayload ){
+
+	boolean equals(final Payload otherPayload) {
 		return this.value == otherPayload.value;
 	}
 }

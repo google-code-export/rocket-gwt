@@ -25,11 +25,11 @@ public class OperaBrowserSupport extends BrowserSupport {
 
 	@Override
 	native public int getScrollX()/*-{
-	 return $doc.body.scrollLeft;
-	 }-*/;
+		 return $doc.body.scrollLeft;
+		 }-*/;
 
 	@Override
 	native public int getScrollY()/*-{
-	 return $doc.body.scrollTop;
-	 }-*/;
+		 return $doc.body.scrollTop;
+		 }-*/;
 }

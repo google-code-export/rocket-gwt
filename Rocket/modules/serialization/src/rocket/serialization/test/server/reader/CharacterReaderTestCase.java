@@ -26,7 +26,7 @@ public class CharacterReaderTestCase extends ServerTestCase {
 	final static char CHARACTER_VALUE = 'a';
 
 	public void testReadCharacter() {
-		final String stream = "[1,\"" + CHARACTER + "\",1,2," + (int) CHARACTER_VALUE +"]";
+		final String stream = "[1,\"" + CHARACTER + "\",1,2," + (int) CHARACTER_VALUE + "]";
 		final ObjectInputStream input = createObjectInputStream(stream, CharacterReader.instance);
 
 		final Character object = (Character) input.readObject();

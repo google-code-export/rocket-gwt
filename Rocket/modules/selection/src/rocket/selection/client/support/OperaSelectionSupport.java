@@ -29,6 +29,6 @@ public class OperaSelectionSupport extends SelectionSupport {
 
 	@Override
 	native public Selection getSelection(final JavaScriptObject window)/*-{
-		 return window.getSelection();
-		 }-*/;
+			 return window.getSelection();
+			 }-*/;
 }

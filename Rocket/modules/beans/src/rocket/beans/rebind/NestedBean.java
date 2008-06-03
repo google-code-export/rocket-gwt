@@ -27,51 +27,52 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-public class NestedBean extends Bean implements Value, BeanReference{
+public class NestedBean extends Bean implements Value, BeanReference {
 
 	public NestedBean() {
-		super();		
-		
-		this.setBeanReference( this.createBeanReference() );
+		super();
+
+		this.setBeanReference(this.createBeanReference());
 	}
-	
+
 	private BeanReferenceImpl beanReference;
-	
-	protected BeanReferenceImpl getBeanReference(){
+
+	protected BeanReferenceImpl getBeanReference() {
 		Checker.notNull("field:beanReference", beanReference);
 		return this.beanReference;
 	}
-	
-	protected void setBeanReference( final BeanReferenceImpl beanReference ){
+
+	protected void setBeanReference(final BeanReferenceImpl beanReference) {
 		Checker.notNull("parameter:beanReference", beanReference);
 		this.beanReference = beanReference;
 	}
-	
-	protected BeanReferenceImpl createBeanReference(){
-		return new BeanReferenceImpl(){
+
+	protected BeanReferenceImpl createBeanReference() {
+		return new BeanReferenceImpl() {
 			@Override
-			public String getId(){
+			public String getId() {
 				return NestedBean.this.getId();
 			}
+
 			@Override
-			public Type getType(){
+			public Type getType() {
 				return NestedBean.this.getValueType();
 			}
 		};
 	}
-	
-	public void setPropertyType( final Type ignored ){		
+
+	public void setPropertyType(final Type ignored) {
 	}
-	
+
 	public boolean isCompatibleWith(final Type type) {
 		return this.getBeanReference().isCompatibleWith(type);
 	}
-	
+
 	public boolean isEmpty() {
 		return this.getBeanReference().isEmpty();
 	}
-	
+
 	public void write(final SourceWriter writer) {
-		this.getBeanReference().write( writer );
+		this.getBeanReference().write(writer);
 	}
 }

@@ -80,8 +80,8 @@ import rocket.util.client.Utilities;
 import rocket.widget.rebind.imagefactory.ImageFactoryConstants;
 
 /**
- * This code generator generates a BeanFactory which will create or provide theCreating FactoryBean's for all beans
- * beans defined in an xml file.
+ * This code generator generates a BeanFactory which will create or provide
+ * theCreating FactoryBean's for all beans beans defined in an xml file.
  * 
  * A standalone class is created to implement the BeanFactory. Within this
  * BeanFactory private nested inner FactoryBean classes are created for each
@@ -121,14 +121,14 @@ public class BeanFactoryGenerator extends Generator {
 		final Set<Alias> aliases = document.getAliases();
 		this.recordAliases(aliases);
 
-		this.setImageValues( this.createImageValues() );
-		
+		this.setImageValues(this.createImageValues());
+
 		this.overrideAllFactoryBeanCreateInstances(beans);
 		this.overrideAllFactoryBeanSatisfyInits(beans);
 		this.overrideAllFactoryBeanSatisfyProperties(beans);
-	
+
 		this.createImageFactoryIfNecessary();
-		
+
 		this.overrideAllSingletonFactoryBeanToInvokeCustomDestroy(beans);
 
 		this.buildAspects(document.getAspects());
@@ -186,7 +186,8 @@ public class BeanFactoryGenerator extends Generator {
 			throwNotABeanFactory("The type \"" + type + "\" is not a " + beanFactory);
 		}
 
-		// verify has no public methods (ignore those belonging to java.lang.Object)
+		// verify has no public methods (ignore those belonging to
+		// java.lang.Object)
 		final List<Method> publicMethods = new ArrayList<Method>();
 		final VirtualMethodVisitor methodFinder = new VirtualMethodVisitor() {
 			@Override
@@ -211,7 +212,8 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwBeanFactoryInterfaceHasPublicMethods(final Type beanFactory, final int methodCount) {
-		throw new BeanFactoryGeneratorException( "The type \"" + beanFactory.getName() + "\" contains " + methodCount + " when it should not contain any methods.");
+		throw new BeanFactoryGeneratorException("The type \"" + beanFactory.getName() + "\" contains " + methodCount
+				+ " when it should not contain any methods.");
 	}
 
 	/**
@@ -261,7 +263,7 @@ public class BeanFactoryGenerator extends Generator {
 			final Bean bean = iterator.next();
 			context.branch();
 
-			context.debug( bean.getId());
+			context.debug(bean.getId());
 
 			while (true) {
 				if (bean instanceof Rpc) {
@@ -283,7 +285,8 @@ public class BeanFactoryGenerator extends Generator {
 			context.unbranch();
 		}
 
-		context.debug("Total: " + beans.size() + ", beans: " + beansCounter + ", nested(anonymous): " + nestedBeanCounter + ", rpcs: " + rpcCounter);
+		context.debug("Total: " + beans.size() + ", beans: " + beansCounter + ", nested(anonymous): " + nestedBeanCounter + ", rpcs: "
+				+ rpcCounter);
 		context.unbranch();
 	}
 
@@ -319,9 +322,9 @@ public class BeanFactoryGenerator extends Generator {
 		context.debug(singleton ? "singleton" : "prototype");
 
 		// process the eager/lazy attribute
-		final boolean eager = bean.isEagerLoaded();		
+		final boolean eager = bean.isEagerLoaded();
 		bean.setEagerLoaded(eager);
-		this.checkPrototypesAreNotMarkedAsEager( bean );
+		this.checkPrototypesAreNotMarkedAsEager(bean);
 
 		if (singleton) {
 			context.debug(eager ? "eager" : "lazyloaded");
@@ -353,7 +356,7 @@ public class BeanFactoryGenerator extends Generator {
 		factoryBean.addMetaData(Constants.FACTORY_BEAN_OBJECT_TYPE, bean.getType().getName());
 
 		bean.setFactoryBean(factoryBean);
-		context.debug("FactoryBean: " + factoryBean.getName() );
+		context.debug("FactoryBean: " + factoryBean.getName());
 
 		this.addBean(bean);
 	}
@@ -363,7 +366,9 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwPrototypesCantBeEagerlyLoaded(final Bean bean) {
-		throw new BeanFactoryGeneratorException("Prototype beans cannot be eagerly loaded (only singleton's can be - remove \"lazyInit\" attribute from its bean definition), bean: " + bean);
+		throw new BeanFactoryGeneratorException(
+				"Prototype beans cannot be eagerly loaded (only singleton's can be - remove \"lazyInit\" attribute from its bean definition), bean: "
+						+ bean);
 	}
 
 	/**
@@ -492,7 +497,7 @@ public class BeanFactoryGenerator extends Generator {
 			final Value value = argumentsIterator.next();
 			body.addArgument(value);
 
-			if( context.isDebugEnabled() ){
+			if (context.isDebugEnabled()) {
 				context.debug(value.toString());
 			}
 		}
@@ -558,11 +563,11 @@ public class BeanFactoryGenerator extends Generator {
 			final ConstructorParameter constructorParameter = constructorParameters.next();
 			final Value value = valuesIterator.next();
 			value.setPropertyType(constructorParameter.getType());
-			
+
 			this.prepareValue(value);
 		}
 
-		if( context.isDebugEnabled()){
+		if (context.isDebugEnabled()) {
 			context.debug(constructor.toString());
 		}
 	}
@@ -691,8 +696,8 @@ public class BeanFactoryGenerator extends Generator {
 		context.debug("Overriding satisfyInit to call " + initMethod);
 
 		final NewType beanFactory = bean.getFactoryBean();
-		final Method beanFactoryInitMethod = beanFactory
-				.getMostDerivedMethod(Constants.SATISFY_INIT, this.getParameterListWithOnlyObject());
+		final Method beanFactoryInitMethod = beanFactory.getMostDerivedMethod(Constants.SATISFY_INIT, this
+				.getParameterListWithOnlyObject());
 		final NewMethod newMethod = beanFactoryInitMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
@@ -822,7 +827,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		final NewType factoryBean = bean.getFactoryBean();
 		final Method method = factoryBean.getMostDerivedMethod(Constants.SATISFY_PROPERTIES, this.getParameterListWithOnlyObject());
-		
+
 		final NewMethod newMethod = method.copy(factoryBean);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
@@ -833,7 +838,7 @@ public class BeanFactoryGenerator extends Generator {
 		instanceParameter.setName(Constants.SATISFY_PROPERTIES_INSTANCE_PARAMETER);
 
 		newMethod.setBody(body);
-		
+
 		// loop thru all properties
 		final Set<Property> properties = bean.getProperties();
 		final Iterator<Property> propertyIterator = properties.iterator();
@@ -870,7 +875,7 @@ public class BeanFactoryGenerator extends Generator {
 						if (false == value.isCompatibleWith(propertyType)) {
 							break;
 						}
-						
+
 						value.setPropertyType(propertyType);
 						matchingSetters.add(method);
 						break;
@@ -924,31 +929,34 @@ public class BeanFactoryGenerator extends Generator {
 			break;
 		}
 	}
-	
+
 	/**
-	 * Allocates the getter name (getImage#) for the given imageValue, and also adds the imageValue to a list.
+	 * Allocates the getter name (getImage#) for the given imageValue, and also
+	 * adds the imageValue to a list.
+	 * 
 	 * @param imageValue
 	 */
-	protected void prepareImageValue( final ImageValue imageValue ){
+	protected void prepareImageValue(final ImageValue imageValue) {
 		final List<ImageValue> imageValues = this.getImageValues();
 		final int index = imageValues.size();
-		imageValue.setImageIndex( index );
-		
-		imageValues.add( imageValue );
+		imageValue.setImageIndex(index);
+
+		imageValues.add(imageValue);
 	}
-	
+
 	private List<ImageValue> imageValues;
-	
-	protected List<ImageValue> getImageValues(){
-		Checker.notNull("field:imageValues", this.imageValues );
+
+	protected List<ImageValue> getImageValues() {
+		Checker.notNull("field:imageValues", this.imageValues);
 		return this.imageValues;
 	}
-	protected void setImageValues( final List<ImageValue> imageValues ){
-		Checker.notNull("parameter:imageValues", imageValues );
+
+	protected void setImageValues(final List<ImageValue> imageValues) {
+		Checker.notNull("parameter:imageValues", imageValues);
 		this.imageValues = imageValues;
 	}
-	
-	protected List<ImageValue> createImageValues(){
+
+	protected List<ImageValue> createImageValues() {
 		return new ArrayList<ImageValue>();
 	}
 
@@ -976,183 +984,196 @@ public class BeanFactoryGenerator extends Generator {
 		}
 	}
 
-	protected void throwTooManySettersFound(final Bean bean, final Property property ) {
+	protected void throwTooManySettersFound(final Bean bean, final Property property) {
 		final String name = property.getName();
 		final Value value = property.getValue();
-		throw new BeanFactoryGeneratorException("The bean \"" + bean.getId() + "\" contains more than one setter for the property " + property + " with a value of " + value + " on type \"" + bean.getTypeName() + "\".");
+		throw new BeanFactoryGeneratorException("The bean \"" + bean.getId() + "\" contains more than one setter for the property "
+				+ property + " with a value of " + value + " on type \"" + bean.getTypeName() + "\".");
 	}
 
-	protected void throwUnableToFindSetter(final Bean bean, final Property property ) {
+	protected void throwUnableToFindSetter(final Bean bean, final Property property) {
 		final String name = property.getName();
 		final Value value = property.getValue();
-		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + name + "\" on the bean \"" + bean.getId() + "\" which is a \"" + bean.getTypeName() + "\"." );
+		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + name + "\" on the bean \""
+				+ bean.getId() + "\" which is a \"" + bean.getTypeName() + "\".");
 	}
-	
+
 	/**
-	 * Creates an inner class belonging to the BeanFactory being generated with getters for each image property.
+	 * Creates an inner class belonging to the BeanFactory being generated with
+	 * getters for each image property.
 	 */
-	protected void createImageFactoryIfNecessary(){
+	protected void createImageFactoryIfNecessary() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.delayedBranch();
-		context.info( "Creating an ImageFactory which will supply all images.");
-		
+		context.info("Creating an ImageFactory which will supply all images.");
+
 		final Iterator<ImageValue> i = this.getImageValues().iterator();
 		NewType imageFactory = null;
-		while( i.hasNext() ){
-			if( null == imageFactory ){
+		while (i.hasNext()) {
+			if (null == imageFactory) {
 				imageFactory = this.createImageFactory();
-				
+
 				context.branch();
 				context.debug("Creating abstract getters on image factory");
 			}
-			
+
 			final ImageValue imageValue = i.next();
-		
+
 			// create abstract getter
 			this.addImageFactoryAbstractImageGetter(imageValue, imageFactory);
 		}
-		
-		if( null != imageFactory ){
+
+		if (null != imageFactory) {
 			context.unbranch();
 		}
 		context.unbranch();
 	}
 
-	
 	/**
-	 * Creates a ImageFactory as nested type of the bean factory being generated.
+	 * Creates a ImageFactory as nested type of the bean factory being
+	 * generated.
+	 * 
 	 * @return
 	 */
-	protected NewType createImageFactory(){		
+	protected NewType createImageFactory() {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
-		context.info( "Creating Image Factory");
-		
+		context.info("Creating Image Factory");
+
 		final NewType beanFactory = this.getBeanFactory();
-		
+
 		final NewNestedInterfaceType imageFactory = beanFactory.newNestedInterfaceType();
-		imageFactory.setNestedName( Constants.IMAGE_FACTORY_NESTED_CLASS_NAME );
-		imageFactory.setStatic( true );
-		imageFactory.setSuperType( this.getImageFactory() );
-		imageFactory.setVisibility( Visibility.PACKAGE_PRIVATE );
-	
-		this.addImageFactoryField( imageFactory );
+		imageFactory.setNestedName(Constants.IMAGE_FACTORY_NESTED_CLASS_NAME);
+		imageFactory.setStatic(true);
+		imageFactory.setSuperType(this.getImageFactory());
+		imageFactory.setVisibility(Visibility.PACKAGE_PRIVATE);
+
+		this.addImageFactoryField(imageFactory);
 		this.addImageFactoryGetter(imageFactory);
 		this.addImageFactorySetter(imageFactory);
-		
+
 		context.unbranch();
-		
+
 		return imageFactory;
 	}
-	
+
 	/**
 	 * Adds a field to the bean factory to hold the image factory.
+	 * 
 	 * @param imageFactory
 	 */
-	protected void addImageFactoryField( final Type imageFactory ){
-		Checker.notNull("parameter:imageFactory", imageFactory );
-		
-		this.getGeneratorContext().debug( "Created field." );
-		
+	protected void addImageFactoryField(final Type imageFactory) {
+		Checker.notNull("parameter:imageFactory", imageFactory);
+
+		this.getGeneratorContext().debug("Created field.");
+
 		// add a field to hold the new imageFactory type.
 		final NewType beanFactory = this.getBeanFactory();
 		final NewField field = beanFactory.newField();
-		field.setFinal( false );
-		field.setName( Constants.IMAGE_FACTORY_FIELDNAME );
-		field.setStatic( false );
-		field.setTransient( false );
-		field.setType( imageFactory );
-		field.setValue( EmptyCodeBlock.INSTANCE );
-		field.setVisibility( Visibility.PRIVATE );
+		field.setFinal(false);
+		field.setName(Constants.IMAGE_FACTORY_FIELDNAME);
+		field.setStatic(false);
+		field.setTransient(false);
+		field.setType(imageFactory);
+		field.setValue(EmptyCodeBlock.INSTANCE);
+		field.setVisibility(Visibility.PRIVATE);
 	}
-	
+
 	/**
-	 * Creates and adds a setter for the image factory belonging to the bean factory.
+	 * Creates and adds a setter for the image factory belonging to the bean
+	 * factory.
+	 * 
 	 * @param imageFactory
 	 */
-	protected void addImageFactorySetter( final Type imageFactory ){
-		Checker.notNull("parameter:imageFactory", imageFactory );
-		
-		this.getGeneratorContext().debug( "Created setter." );
-		
+	protected void addImageFactorySetter(final Type imageFactory) {
+		Checker.notNull("parameter:imageFactory", imageFactory);
+
+		this.getGeneratorContext().debug("Created setter.");
+
 		final NewType beanFactory = this.getBeanFactory();
-		
+
 		final NewMethod setter = beanFactory.newMethod();
-		setter.setAbstract( false );
-		setter.setBody( new ImageFactorySetterTemplatedFile() );
-		setter.setFinal( true );
-		setter.setName( Constants.IMAGE_FACTORY_SETTER_NAME );
-		setter.setNative( false );
-		setter.setReturnType( this.getGeneratorContext().getVoid() );
-		setter.setStatic( false );
-		setter.setVisibility( Visibility.PROTECTED );
-		
+		setter.setAbstract(false);
+		setter.setBody(new ImageFactorySetterTemplatedFile());
+		setter.setFinal(true);
+		setter.setName(Constants.IMAGE_FACTORY_SETTER_NAME);
+		setter.setNative(false);
+		setter.setReturnType(this.getGeneratorContext().getVoid());
+		setter.setStatic(false);
+		setter.setVisibility(Visibility.PROTECTED);
+
 		final NewMethodParameter setterParameter = setter.newParameter();
-		setterParameter.setFinal( true );
-		setterParameter.setName( Constants.IMAGE_FACTORY_SETTER_PARAMETER_NAME );
-		setterParameter.setType( imageFactory );		
+		setterParameter.setFinal(true);
+		setterParameter.setName(Constants.IMAGE_FACTORY_SETTER_PARAMETER_NAME);
+		setterParameter.setType(imageFactory);
 	}
-	
+
 	/**
-	 * Creates and adds a getter method which lazy loads the created image factory via deferred binding.
+	 * Creates and adds a getter method which lazy loads the created image
+	 * factory via deferred binding.
+	 * 
 	 * @param imageFactory
 	 */
-	protected void addImageFactoryGetter( final Type imageFactory ){
-		Checker.notNull("parameter:imageFactory", imageFactory );
-	
-		this.getGeneratorContext().debug( "Created getter." );
-		
+	protected void addImageFactoryGetter(final Type imageFactory) {
+		Checker.notNull("parameter:imageFactory", imageFactory);
+
+		this.getGeneratorContext().debug("Created getter.");
+
 		final NewType beanFactory = this.getBeanFactory();
-		
+
 		final NewMethod getter = beanFactory.newMethod();
-		getter.setAbstract( false );
-		getter.setFinal( true );
-		getter.setName( Constants.IMAGE_FACTORY_GETTER_NAME );
-		getter.setNative( false );
-		getter.setReturnType( imageFactory );
-		getter.setStatic( false );
-		getter.setVisibility( Visibility.PROTECTED );
-		
+		getter.setAbstract(false);
+		getter.setFinal(true);
+		getter.setName(Constants.IMAGE_FACTORY_GETTER_NAME);
+		getter.setNative(false);
+		getter.setReturnType(imageFactory);
+		getter.setStatic(false);
+		getter.setVisibility(Visibility.PROTECTED);
+
 		final ImageFactoryGetterTemplatedFile body = new ImageFactoryGetterTemplatedFile();
 		body.setImageFactory(imageFactory);
-		getter.setBody( body );
+		getter.setBody(body);
 	}
-	
+
 	/**
 	 * Helper to fetch the ImageFactory type.
+	 * 
 	 * @return
 	 */
-	protected Type getImageFactory(){
-		return this.getGeneratorContext().getType( Constants.IMAGE_FACTORY );
+	protected Type getImageFactory() {
+		return this.getGeneratorContext().getType(Constants.IMAGE_FACTORY);
 	}
-	
+
 	/**
-	 * This method adds an abstract method to the provided image factory marking it with annotations containing
-	 * the image details. 
+	 * This method adds an abstract method to the provided image factory marking
+	 * it with annotations containing the image details.
+	 * 
 	 * @param imageValue
 	 * @param imageFactory
 	 */
-	protected void addImageFactoryAbstractImageGetter( final ImageValue imageValue, final NewType imageFactory ){
-		Checker.notNull("parameter:imageValue", imageValue );
-		Checker.notNull("parameter:imageFactory", imageFactory );
-		
+	protected void addImageFactoryAbstractImageGetter(final ImageValue imageValue, final NewType imageFactory) {
+		Checker.notNull("parameter:imageValue", imageValue);
+		Checker.notNull("parameter:imageFactory", imageFactory);
+
 		final NewMethod newMethod = imageFactory.newMethod();
-		newMethod.setAbstract( true );
-		newMethod.setFinal( false );
-		newMethod.setName( Constants.IMAGE_GETTER_PREFIX + imageValue.getImageIndex() );
-		newMethod.setNative( false );
-		newMethod.setReturnType( imageValue.getPropertyType() );
-		newMethod.setStatic( false );
-		newMethod.setVisibility( Visibility.PUBLIC );
-		
+		newMethod.setAbstract(true);
+		newMethod.setFinal(false);
+		newMethod.setName(Constants.IMAGE_GETTER_PREFIX + imageValue.getImageIndex());
+		newMethod.setNative(false);
+		newMethod.setReturnType(imageValue.getPropertyType());
+		newMethod.setStatic(false);
+		newMethod.setVisibility(Visibility.PUBLIC);
+
 		// add annotations
-		newMethod.addMetaData( ImageFactoryConstants.IMAGE_FILE, imageValue.getFile() );
-		newMethod.addMetaData( ImageFactoryConstants.LOCATION, imageValue.isLocal() ? ImageFactoryConstants.LOCATION_LOCAL : ImageFactoryConstants.LOCATION_SERVER );
-		newMethod.addMetaData( ImageFactoryConstants.SERVER_REQUEST, imageValue.isLazy() ? ImageFactoryConstants.SERVER_REQUEST_LAZY : ImageFactoryConstants.SERVER_REQUEST_EAGER );
-		
-		imageValue.setImageFactoryGetter( newMethod );
+		newMethod.addMetaData(ImageFactoryConstants.IMAGE_FILE, imageValue.getFile());
+		newMethod.addMetaData(ImageFactoryConstants.LOCATION, imageValue.isLocal() ? ImageFactoryConstants.LOCATION_LOCAL
+				: ImageFactoryConstants.LOCATION_SERVER);
+		newMethod.addMetaData(ImageFactoryConstants.SERVER_REQUEST, imageValue.isLazy() ? ImageFactoryConstants.SERVER_REQUEST_LAZY
+				: ImageFactoryConstants.SERVER_REQUEST_EAGER);
+
+		imageValue.setImageFactoryGetter(newMethod);
 	}
-	
+
 	/**
 	 * Visit all defined beans singling singleton beans with custom destroy
 	 * methods.
@@ -1239,7 +1260,8 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param destroyMethodName
 	 */
 	protected void throwCustomMethodNotFound(final Bean bean, final String destroyMethodName) {
-		throw new BeanFactoryGeneratorException("Unable to find a public method called \"" + destroyMethodName + "\" on the bean " + bean);
+		throw new BeanFactoryGeneratorException("Unable to find a public method called \"" + destroyMethodName + "\" on the bean "
+				+ bean);
 	}
 
 	/**
@@ -1306,7 +1328,7 @@ public class BeanFactoryGenerator extends Generator {
 		factoryBean.setVisibility(Visibility.PRIVATE);
 		rpc.setFactoryBean(factoryBean);
 
-		context.debug("FactoryBean: " + factoryBean.getName() );
+		context.debug("FactoryBean: " + factoryBean.getName());
 
 		this.addBean(rpc);
 	}
@@ -1419,7 +1441,7 @@ public class BeanFactoryGenerator extends Generator {
 		final Type object = context.getObject();
 
 		final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
-			
+
 			@Override
 			protected boolean visit(final Method method) {
 				while (true) {
@@ -1476,8 +1498,8 @@ public class BeanFactoryGenerator extends Generator {
 		while (advisedIterator.hasNext()) {
 			final Bean bean = advisedIterator.next();
 			this.buildProxyFactoryBean(bean);
-			
-			this.registerProxiedBean( bean );
+
+			this.registerProxiedBean(bean);
 		}
 
 		context.unbranch();
@@ -1501,8 +1523,8 @@ public class BeanFactoryGenerator extends Generator {
 				continue;
 			}
 			advised.add(bean);
-			
-			context.debug( bean.getId() );
+
+			context.debug(bean.getId());
 		}
 		context.unbranch();
 
@@ -1589,7 +1611,7 @@ public class BeanFactoryGenerator extends Generator {
 		final List<Aspect> aspects = bean.getAspects();
 
 		final VirtualMethodVisitor visitor = new VirtualMethodVisitor() {
-			
+
 			@Override
 			protected boolean visit(final Method method) {
 
@@ -1603,10 +1625,10 @@ public class BeanFactoryGenerator extends Generator {
 					}
 
 					// dont proxy getClass()
-					if( method.getName().equals("getClass") && method.getParameters().isEmpty() ){
+					if (method.getName().equals("getClass") && method.getParameters().isEmpty()) {
 						break;
 					}
-					
+
 					// the public methods remain...
 					final List<Aspect> matched = BeanFactoryGenerator.this.findMatchingAdvices(method, aspects);
 					if (matched.isEmpty()) {
@@ -1747,69 +1769,73 @@ public class BeanFactoryGenerator extends Generator {
 		body.setTargetBeanType(bean.getType());
 
 		newMethod.setBody(body);
-	} 
-	
+	}
+
 	/**
-	 * Re ads the given proxy target under a new name. The proxy factory bean will retain the original name and will refer to this factory bean as the source of the bean being advised.
-	 * @param bean The proxy bean.
+	 * Re ads the given proxy target under a new name. The proxy factory bean
+	 * will retain the original name and will refer to this factory bean as the
+	 * source of the bean being advised.
+	 * 
+	 * @param bean
+	 *            The proxy bean.
 	 */
-	protected void registerProxiedBean( final Bean bean ){
+	protected void registerProxiedBean(final Bean bean) {
 		Bean copy = null;
-		while( true ){
-			if( bean instanceof NestedBean ){
-				copy = this.copyNestedBean( (NestedBean) bean );
+		while (true) {
+			if (bean instanceof NestedBean) {
+				copy = this.copyNestedBean((NestedBean) bean);
 				break;
 			}
-			if( bean instanceof Rpc ){
-				copy = this.copyRpc( (Rpc) bean );
+			if (bean instanceof Rpc) {
+				copy = this.copyRpc((Rpc) bean);
 				break;
 			}
-			
-			copy = this.copyBean( bean );
+
+			copy = this.copyBean(bean);
 			break;
 		}
-		
-		this.addBean( copy );
+
+		this.addBean(copy);
 	}
-	
-	protected Bean copyRpc( final Rpc rpc ){
-		Checker.notNull( "parameter:rpc", rpc );
-		
+
+	protected Bean copyRpc(final Rpc rpc) {
+		Checker.notNull("parameter:rpc", rpc);
+
 		final Rpc copy = new Rpc();
-		copy.setEagerLoaded( rpc.isEagerLoaded() );
-		copy.setFactoryBean( rpc.getFactoryBean() );
-		copy.setFactoryMethod( rpc.getFactoryMethod() );
-		copy.setId( Constants.PROXY_TARGET_FACTORY_BEAN_PREFIX + rpc.getId() );
-		copy.setSingleton( rpc.isSingleton() );
-		copy.setServiceEntryPoint( rpc.getServiceEntryPoint() );
-		copy.setServiceInterface( rpc.getServiceInterface() );
+		copy.setEagerLoaded(rpc.isEagerLoaded());
+		copy.setFactoryBean(rpc.getFactoryBean());
+		copy.setFactoryMethod(rpc.getFactoryMethod());
+		copy.setId(Constants.PROXY_TARGET_FACTORY_BEAN_PREFIX + rpc.getId());
+		copy.setSingleton(rpc.isSingleton());
+		copy.setServiceEntryPoint(rpc.getServiceEntryPoint());
+		copy.setServiceInterface(rpc.getServiceInterface());
 		return copy;
 	}
-	
-	protected NestedBean copyNestedBean( final NestedBean nestedBean ){
-		Checker.notNull( "parameter:nestedBean", nestedBean );
-		
+
+	protected NestedBean copyNestedBean(final NestedBean nestedBean) {
+		Checker.notNull("parameter:nestedBean", nestedBean);
+
 		final NestedBean copy = new NestedBean();
-		this.copyProxiedBeanProperties( nestedBean, copy);
-		return copy;		
+		this.copyProxiedBeanProperties(nestedBean, copy);
+		return copy;
 	}
-	
-	protected Bean copyBean( final Bean bean ){
-		Checker.notNull( "parameter:bean", bean );
-		
+
+	protected Bean copyBean(final Bean bean) {
+		Checker.notNull("parameter:bean", bean);
+
 		final Bean copy = new Bean();
-		this.copyProxiedBeanProperties( bean, copy);
-		return copy;		
+		this.copyProxiedBeanProperties(bean, copy);
+		return copy;
 	}
-	
-	protected void copyProxiedBeanProperties( final Bean source, final Bean target ){
-		target.setEagerLoaded( target.isEagerLoaded() );
-		target.setFactoryBean( source.getFactoryBean() );
-		target.setFactoryMethod( source.getFactoryMethod() );
-		target.setId( Constants.PROXY_TARGET_FACTORY_BEAN_PREFIX + source.getId() );
-		target.setSingleton( source.isSingleton() );
-		target.setType( source.getType() );
-		target.setTypeName( source.getTypeName() );		
+
+	protected void copyProxiedBeanProperties(final Bean source, final Bean target) {
+		target.setEagerLoaded(target.isEagerLoaded());
+		target.setFactoryBean(source.getFactoryBean());
+		target.setFactoryMethod(source.getFactoryMethod());
+		target.setId(Constants.PROXY_TARGET_FACTORY_BEAN_PREFIX + source.getId());
+		target.setSingleton(source.isSingleton());
+		target.setType(source.getType());
+		target.setTypeName(source.getTypeName());
 	}
 
 	/**
@@ -1899,7 +1925,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * initialized on factory startup.
 	 */
 	protected void overrideLoadEagerBeans() {
-		final Map<String,Bean> beans = this.getBeans();
+		final Map<String, Bean> beans = this.getBeans();
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
@@ -1988,8 +2014,8 @@ public class BeanFactoryGenerator extends Generator {
 	 * 
 	 * @return A map
 	 */
-	protected Map<String,Bean> createBeans() {
-		return new TreeMap<String,Bean>(String.CASE_INSENSITIVE_ORDER);
+	protected Map<String, Bean> createBeans() {
+		return new TreeMap<String, Bean>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	protected void checkIdIsUnique(final Bean bean) {
@@ -2004,19 +2030,21 @@ public class BeanFactoryGenerator extends Generator {
 		throw new BeanFactoryGeneratorException("The id \"" + id + "\" is used by more than bean: " + bean + ", other bean: "
 				+ this.getBean(id));
 	}
-	
+
 	/**
-	 * Simply asserts that the given bean if it itsa prototype has not been marked as eager=true.
+	 * Simply asserts that the given bean if it itsa prototype has not been
+	 * marked as eager=true.
+	 * 
 	 * @param bean
 	 */
-	protected void checkPrototypesAreNotMarkedAsEager( final Bean bean ){
-		Checker.notNull( "parameter:bean", bean );
+	protected void checkPrototypesAreNotMarkedAsEager(final Bean bean) {
+		Checker.notNull("parameter:bean", bean);
 
-		if( false == bean.isSingleton() ){
-			if( bean.isEagerLoaded() ){
-				this.throwPrototypesCantBeEagerlyLoaded(bean);	
+		if (false == bean.isSingleton()) {
+			if (bean.isEagerLoaded()) {
+				this.throwPrototypesCantBeEagerlyLoaded(bean);
 			}
-		}		
+		}
 	}
 
 	/**
@@ -2220,7 +2248,8 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwBeanTypeNotFound(final String id, final String className) {
-		throw new BeanFactoryGeneratorException("Unable to find the type \"" + className + "\" for the bean with an id of \"" + id + "\".");
+		throw new BeanFactoryGeneratorException("Unable to find the type \"" + className + "\" for the bean with an id of \"" + id
+				+ "\".");
 	}
 
 	protected void throwBeanTypeIsNotConcrete(final String id, final Type type) {

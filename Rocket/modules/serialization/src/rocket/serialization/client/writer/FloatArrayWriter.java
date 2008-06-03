@@ -23,7 +23,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type float[]
+ * @serialization-type float[]
  */
 public class FloatArrayWriter extends ObjectWriterImpl {
 

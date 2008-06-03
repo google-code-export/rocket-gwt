@@ -64,15 +64,15 @@ class AddParameterTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	protected String getResourceName(){
+	protected String getResourceName() {
 		return RequestParametersConstants.ADD_PARAMETER_TEMPLATE;
 	}
-	
+
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
-	
+
 	@Override
 	protected Object getValue0(final String name) {
 		Object value = null;

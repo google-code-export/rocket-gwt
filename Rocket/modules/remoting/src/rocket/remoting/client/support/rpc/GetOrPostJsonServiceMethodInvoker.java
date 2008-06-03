@@ -22,7 +22,7 @@ import com.google.gwt.http.client.URL;
 /**
  * Adds the capability to accumulate parameters which are either added to the
  * url or post data.
- *
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class GetOrPostJsonServiceMethodInvoker<R> extends JsonServiceMethodInvoker<R> {
@@ -44,7 +44,7 @@ abstract public class GetOrPostJsonServiceMethodInvoker<R> extends JsonServiceMe
 	/**
 	 * Adds a new boolean value parameter to the parameters that will be sent
 	 * when the request is made.
-	 *
+	 * 
 	 * @param name
 	 * @param booleanValue
 	 */

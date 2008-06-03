@@ -29,7 +29,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * that handles POST and the other GET requests. The json response is
  * deserialized using the json serialization api, and then the given
  * AsyncCallback is invoked.
- *
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class JsonServiceMethodInvoker<R> extends RpcServiceMethodInvoker<R> implements RequestCallback {
@@ -40,7 +40,7 @@ abstract public class JsonServiceMethodInvoker<R> extends RpcServiceMethodInvoke
 
 	/**
 	 * Factory method which creates a new RequestBuilder.
-	 *
+	 * 
 	 * @return A new RequestBuilder
 	 */
 	@Override
@@ -51,7 +51,7 @@ abstract public class JsonServiceMethodInvoker<R> extends RpcServiceMethodInvoke
 	/**
 	 * This method will be used to build a url for the request that is about to
 	 * be submitted.
-	 *
+	 * 
 	 * @return The final url given to the RequestBuilder
 	 */
 	abstract protected String buildUrl();
@@ -59,9 +59,11 @@ abstract public class JsonServiceMethodInvoker<R> extends RpcServiceMethodInvoke
 	/**
 	 * Takes the response and converts the json payload to a java instance using
 	 * {@link #deserializeJsonPayload(String)}
-	 *
-	 * @param request The request
-	 * @param response The response
+	 * 
+	 * @param request
+	 *            The request
+	 * @param response
+	 *            The response
 	 */
 	protected void onSuccessfulResponse(final Request request, final Response response) {
 		final AsyncCallback<R> callback = this.getCallback();
@@ -90,8 +92,9 @@ abstract public class JsonServiceMethodInvoker<R> extends RpcServiceMethodInvoke
 	 * This method is implemented by the generator and acts a bridge calling GWT
 	 * to create a Serializer which will deserialize the incoming JSON stream
 	 * into a java object.
-	 *
-	 * @param jsonValue The response from the json service.
+	 * 
+	 * @param jsonValue
+	 *            The response from the json service.
 	 * @return The deserialized object
 	 */
 	abstract protected R readObject(final JSONValue jsonValue);

@@ -22,7 +22,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.util.AbstractMap
+ * @serialization-type java.util.AbstractMap
  */
 public class AbstractMapWriter extends MapWriter implements ObjectWriter {
 

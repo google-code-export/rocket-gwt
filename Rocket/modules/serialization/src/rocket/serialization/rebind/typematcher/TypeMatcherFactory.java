@@ -16,18 +16,18 @@
 package rocket.serialization.rebind.typematcher;
 
 public class TypeMatcherFactory {
-	static public TypeMatcher createTypeNameMatcher( final String string ){
+	static public TypeMatcher createTypeNameMatcher(final String string) {
 		TypeMatcher matcher = null;
-		
-		while( true ){
-			if( string.indexOf( "*") != -1 ){
-				matcher = new WildcardMatcher( string );
+
+		while (true) {
+			if (string.indexOf("*") != -1) {
+				matcher = new WildcardMatcher(string);
 				break;
 			}
-			matcher = new ExactTypeNameMatcher( string );
+			matcher = new ExactTypeNameMatcher(string);
 			break;
 		}
-		
+
 		return matcher;
 	}
 }

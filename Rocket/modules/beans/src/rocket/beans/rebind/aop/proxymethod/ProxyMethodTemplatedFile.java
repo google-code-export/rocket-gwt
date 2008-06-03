@@ -39,7 +39,7 @@ public class ProxyMethodTemplatedFile extends TemplatedFileCodeBlock {
 	public ProxyMethodTemplatedFile() {
 		super();
 	}
-	
+
 	/**
 	 * The method being proxied
 	 */
@@ -85,7 +85,7 @@ public class ProxyMethodTemplatedFile extends TemplatedFileCodeBlock {
 
 	protected CodeBlock getParameters() {
 		final List<MethodParameter> parameters = this.getMethod().getParameters();
-		final Map<String,MethodParameter> bindings = new HashMap<String,MethodParameter>();
+		final Map<String, MethodParameter> bindings = new HashMap<String, MethodParameter>();
 
 		final StringBuilder templateContent = new StringBuilder();
 		final Iterator<MethodParameter> iterator = parameters.iterator();

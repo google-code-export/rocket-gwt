@@ -20,12 +20,13 @@ import rocket.serialization.client.ObjectReader;
 
 /**
  * Specialised ObjectReader that knows how to deserialize AbstractList's
+ * 
  * @author Miroslav Pokorny
  * @serialization-type java.util.AbstractList
  */
 abstract class AbstractListReader extends SetReader implements ObjectReader {
 
-	public Object newInstance(final Object collection, final ObjectInputStream objectInputStream){
+	public Object newInstance(final Object collection, final ObjectInputStream objectInputStream) {
 		throw new UnsupportedOperationException();
 	}
 }

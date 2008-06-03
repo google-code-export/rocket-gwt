@@ -17,7 +17,6 @@ package rocket.serialization.test.rebind.serializationfactorygenerator.client;
 
 import java.io.Serializable;
 
-
 public class ConcreteClass implements Serializable {
 
 	static public final int VALUE = 1234567;

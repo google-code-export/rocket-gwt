@@ -21,8 +21,8 @@ public class LazySingleton {
 	 * When this bean gets created this flag will be set to true.
 	 */
 	public static boolean loaded = false;
-	
-	public LazySingleton(){
+
+	public LazySingleton() {
 		loaded = true;
 	}
 }

@@ -25,7 +25,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.util.Set
+ * @serialization-type java.util.Set
  */
 public class SetWriter extends AbstractCollectionWriter {
 

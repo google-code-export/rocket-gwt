@@ -33,6 +33,6 @@ public class DoubleWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2," + DOUBLE_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + DOUBLE + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + DOUBLE + "\"," + expectedValues + "]", text);
 	}
 }

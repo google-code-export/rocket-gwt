@@ -27,17 +27,17 @@ public class ReflectiveWriterTestCase extends ServerTestCase {
 		final TestServerObjectOutputStream output = createObjectOutputStream(ReflectiveWriter.instance);
 
 		final String STRING = "hello";
-		
+
 		final Test test = new Test();
 		test.string = STRING;
 		output.writeObject(test);
 
 		final String expectedValues = "1,2,3";
 		final String text = output.getText();
-		assertEquals("[2,\"" + Test.class.getName() + "\",\"" + STRING + "\","+ expectedValues + "]", text);
+		assertEquals("[2,\"" + Test.class.getName() + "\",\"" + STRING + "\"," + expectedValues + "]", text);
 	}
-	
-	static public class Test implements Serializable{
+
+	static public class Test implements Serializable {
 		String string;
 	}
 }

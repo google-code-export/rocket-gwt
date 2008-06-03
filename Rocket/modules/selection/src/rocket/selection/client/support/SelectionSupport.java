@@ -75,23 +75,23 @@ abstract public class SelectionSupport {
 	}
 
 	native private void setStart0(final Selection selection, final Text textNode, final int offset)/*-{                        
-		 // if an existing end exists use that otherwise set the end to the new start
-		 var endNode = selection.focusNode;
-		 var endOffset = selection.focusOffset;
-		 if( ! endNode ){
-		 endNode = textNode;
-		 endOffset = offset;
-		 }
-		 
-		 var range = textNode.ownerDocument.createRange();
-		 range.setStart( textNode, offset );        
+			 // if an existing end exists use that otherwise set the end to the new start
+			 var endNode = selection.focusNode;
+			 var endOffset = selection.focusOffset;
+			 if( ! endNode ){
+			 endNode = textNode;
+			 endOffset = offset;
+			 }
+			 
+			 var range = textNode.ownerDocument.createRange();
+			 range.setStart( textNode, offset );        
 
-		 range.setEnd( endNode, endOffset );
-		 
-		 // delete all ranges then recreate...
-		 selection.removeAllRanges();
-		 selection.addRange( range );
-		 }-*/;
+			 range.setEnd( endNode, endOffset );
+			 
+			 // delete all ranges then recreate...
+			 selection.removeAllRanges();
+			 selection.addRange( range );
+			 }-*/;
 
 	public SelectionEndPoint getEnd(final Selection selection) {
 		final SelectionEndPoint end = new SelectionEndPoint();
@@ -108,32 +108,32 @@ abstract public class SelectionSupport {
 	}
 
 	native private void setEnd0(final Selection selection, final Text textNode, final int offset)/*-{
-		 // if an existing selection exists use that otherwise set the start to the new end.
-		 var startNode = selection.anchorNode;
-		 var startOffset = selection.anchorOffset;
-		 if( ! startNode ){
-		 startNode = textNode;
-		 startOffset = offset;
-		 }
+			 // if an existing selection exists use that otherwise set the start to the new end.
+			 var startNode = selection.anchorNode;
+			 var startOffset = selection.anchorOffset;
+			 if( ! startNode ){
+			 startNode = textNode;
+			 startOffset = offset;
+			 }
 
-		 // create a new range that will join the old end and the new start...
-		 var range = textNode.ownerDocument.createRange();
-		 range.setStart( startNode, startOffset );
-		 
-		 range.setEnd( textNode, offset );        
-		 
-		 // delete all ranges then recreate...
-		 selection.removeAllRanges();
-		 selection.addRange( range );
-		 }-*/;
+			 // create a new range that will join the old end and the new start...
+			 var range = textNode.ownerDocument.createRange();
+			 range.setStart( startNode, startOffset );
+			 
+			 range.setEnd( textNode, offset );        
+			 
+			 // delete all ranges then recreate...
+			 selection.removeAllRanges();
+			 selection.addRange( range );
+			 }-*/;
 
 	public boolean isEmpty(final Selection selection) {
 		return JavaScript.getBoolean(selection, Constants.IS_COLLAPSED);
 	}
 
 	native public void clear(final Selection selection)/*-{
-		 selection.removeAllRanges();
-		 }-*/;
+			 selection.removeAllRanges();
+			 }-*/;
 
 	/**
 	 * Extracts any selection and makes it a child of an element not attached to
@@ -146,14 +146,14 @@ abstract public class SelectionSupport {
 	}
 
 	native private Element extract0(final Selection selection)/*-{
-			var element = selection.anchorNode.ownerDocument.createElement("span");
-		
-		 var range = selection.getRangeAt( 0 );
-		 if( range ){
-		 range.surroundContents( element );
-		 }
-		 return element;
-		 }-*/;
+				var element = selection.anchorNode.ownerDocument.createElement("span");
+			
+			 var range = selection.getRangeAt( 0 );
+			 if( range ){
+			 range.surroundContents( element );
+			 }
+			 return element;
+			 }-*/;
 
 	final public void surround(final Selection selection, final Element element) {
 		if (this.isEmpty(selection)) {
@@ -163,9 +163,9 @@ abstract public class SelectionSupport {
 	}
 
 	native protected void surround0(final Selection selection, final Element element)/*-{
-		 var range = selection.getRangeAt( 0 );
-		 range.surroundContents( element );        
-		 }-*/;
+			 var range = selection.getRangeAt( 0 );
+			 range.surroundContents( element );        
+			 }-*/;
 
 	/**
 	 * Deletes or removes the selected dom objects from the object.
@@ -181,11 +181,11 @@ abstract public class SelectionSupport {
 	}
 
 	native private void delete0(final Selection selection)/*-{
-		 var range = selection.getRangeAt( 0 );
-		 range.deleteContents();     
-		 }-*/;
+			 var range = selection.getRangeAt( 0 );
+			 range.deleteContents();     
+			 }-*/;
 
 	native public void clearAnySelectedText(final Selection selection)/*-{
-		 selection.removeAllRanges();
-		 }-*/;
+			 selection.removeAllRanges();
+			 }-*/;
 }

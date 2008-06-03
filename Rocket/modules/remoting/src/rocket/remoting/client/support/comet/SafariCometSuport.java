@@ -32,25 +32,25 @@ public class SafariCometSuport extends CometSupport {
 	 */
 	@Override
 	native protected void registerDisconnectHandler(final CometClient cometClient, final Element iframe)/*-{
-	 var callback = @rocket.remoting.client.CometClient::onDisconnect(Lrocket/remoting/client/CometClient;Z);
-	 var poller = setInterval( function(){
-	 var iframeDocument = iframe.document || iframe.contentDocument;
-	 var currentReadyState = iframeDocument.readyState;
-	 if( currentReadyState == "loaded" || currentReadyState == "complete" ){
-	 clearInterval( poller );
-	 delete iframe.__cometSafariOnLoadPoller;
-	 
-	 // if a title tag is not or doesnt contain the magic text count it as a connection failure
-	 var connectionFailed = true;
-	 var title = window.document.getElementsByTagName( "TITLE" );
-	 if( title && title.length == 1 ){
-	 connectionFailed = title[ 0 ].innerHTML().indexOf( "RocketCometServer" ) == -1;
-	 }
-	 callback( cometClient, connectionFailed );                
-	 }
-	 iframe.__cometSafariOnLoadPoller = poller;
-	 };     
-	 }-*/;
+		 var callback = @rocket.remoting.client.CometClient::onDisconnect(Lrocket/remoting/client/CometClient;Z);
+		 var poller = setInterval( function(){
+		 var iframeDocument = iframe.document || iframe.contentDocument;
+		 var currentReadyState = iframeDocument.readyState;
+		 if( currentReadyState == "loaded" || currentReadyState == "complete" ){
+		 clearInterval( poller );
+		 delete iframe.__cometSafariOnLoadPoller;
+		 
+		 // if a title tag is not or doesnt contain the magic text count it as a connection failure
+		 var connectionFailed = true;
+		 var title = window.document.getElementsByTagName( "TITLE" );
+		 if( title && title.length == 1 ){
+		 connectionFailed = title[ 0 ].innerHTML().indexOf( "RocketCometServer" ) == -1;
+		 }
+		 callback( cometClient, connectionFailed );                
+		 }
+		 iframe.__cometSafariOnLoadPoller = poller;
+		 };     
+		 }-*/;
 
 	/**
 	 * Standards compliant browsers dont need to anything extra to stop a comet

@@ -26,6 +26,7 @@ public interface BeanReference extends Value {
 
 	/**
 	 * Returns the id of the referenced bean
+	 * 
 	 * @return The bean name.
 	 */
 	String getId();

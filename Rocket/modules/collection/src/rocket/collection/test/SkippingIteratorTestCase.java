@@ -185,7 +185,8 @@ public class SkippingIteratorTestCase extends TestCase {
 
 			iterator.remove();
 
-			assertFalse("The item " + visited + " was just removed and should not be present in the backing list.", list.contains(visited));
+			assertFalse("The item " + visited + " was just removed and should not be present in the backing list.", list
+					.contains(visited));
 		}
 
 		assertFalse(iterator.hasNext());

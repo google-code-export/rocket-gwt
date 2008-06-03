@@ -25,20 +25,20 @@ import com.google.gwt.user.client.Event;
  */
 public class BrowserSupport {
 	native public int getScrollX()/*-{
-	 return $wnd.scrollX;
-	 }-*/;
+		 return $wnd.scrollX;
+		 }-*/;
 
 	native public int getScrollY()/*-{
-	 return $wnd.scrollY;
-	 }-*/;
+		 return $wnd.scrollY;
+		 }-*/;
 
 	native public int getClientWidth()/*-{
-	 return $wnd.innerWidth;
-	 }-*/;
+		 return $wnd.innerWidth;
+		 }-*/;
 
 	native public int getClientHeight()/*-{
-	 return $wnd.innerHeight;
-	 }-*/;
+		 return $wnd.innerHeight;
+		 }-*/;
 
 	public int getMousePageX(final Event event) {
 		return this.getScrollX() + event.getClientX();

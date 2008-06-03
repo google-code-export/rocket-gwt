@@ -31,7 +31,7 @@ public class ReadTemplatedFile extends TemplatedFileCodeBlock {
 	public ReadTemplatedFile() {
 		super();
 	}
-	
+
 	/**
 	 * The type having its fields read
 	 */
@@ -45,15 +45,15 @@ public class ReadTemplatedFile extends TemplatedFileCodeBlock {
 	public void setType(final Type type) {
 		Checker.notNull("parameter:type", type);
 		this.type = type;
-	} 
+	}
 
 	@Override
 	protected String getResourceName() {
 		return Constants.READ_TEMPLATE;
 	}
-	
+
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 
@@ -64,7 +64,7 @@ public class ReadTemplatedFile extends TemplatedFileCodeBlock {
 		if (Constants.READ_TYPE.equals(name)) {
 			value = this.getType();
 		}
-		
-			return value;
+
+		return value;
 	}
 };

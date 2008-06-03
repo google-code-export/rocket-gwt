@@ -23,7 +23,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type double[]
+ * @serialization-type double[]
  */
 public class DoubleArrayWriter extends ObjectWriterImpl {
 

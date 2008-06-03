@@ -71,9 +71,9 @@ public class AddAdviceTemplatedFile extends TemplatedFileCodeBlock {
 	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
-	
-	public InputStream getInputStream(){
-		return super.getInputStream(); 
+
+	public InputStream getInputStream() {
+		return super.getInputStream();
 	}
 
 	public Object getValue0(final String name) {

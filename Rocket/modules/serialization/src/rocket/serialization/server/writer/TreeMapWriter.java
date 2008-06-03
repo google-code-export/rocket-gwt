@@ -41,13 +41,13 @@ public class TreeMapWriter extends rocket.serialization.client.writer.MapWriter 
 	protected void writeTypeName(final Object object, final ObjectOutputStream objectOutputStream) {
 		objectOutputStream.writeObject(TreeMap.class.getName());
 	}
-	
+
 	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
-		this.writeTreeMap( (TreeMap) object, objectOutputStream );
+		this.writeTreeMap((TreeMap) object, objectOutputStream);
 	}
-	
-	protected void writeTreeMap( final TreeMap treeMap, final ObjectOutputStream objectOutputStream ){
-		objectOutputStream.writeObject( treeMap.comparator() );
+
+	protected void writeTreeMap(final TreeMap treeMap, final ObjectOutputStream objectOutputStream) {
+		objectOutputStream.writeObject(treeMap.comparator());
 		this.writeMap(treeMap, objectOutputStream);
 	}
 }

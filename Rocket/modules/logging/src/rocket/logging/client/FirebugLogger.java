@@ -34,15 +34,15 @@ public class FirebugLogger extends LoggerImpl {
 	public void debug(final String message) {
 		this.debug0(message);
 	}
-	
+
 	@Override
 	public void debug(final String message, final Throwable throwable) {
 		this.debug0(message);
 	}
 
 	native private void debug0(final String message)/*-{
-	 $wnd.console.debug( message );
-	 }-*/;
+		 $wnd.console.debug( message );
+		 }-*/;
 
 	@Override
 	public void info(final String message) {
@@ -55,8 +55,8 @@ public class FirebugLogger extends LoggerImpl {
 	}
 
 	native private void info0(final String message)/*-{
-	 $wnd.console.info( message );
-	 }-*/;
+		 $wnd.console.info( message );
+		 }-*/;
 
 	@Override
 	public void warn(final String message) {
@@ -69,8 +69,8 @@ public class FirebugLogger extends LoggerImpl {
 	}
 
 	native private void warn0(final String message)/*-{
-	 $wnd.console.warn( message );
-	 }-*/;
+		 $wnd.console.warn( message );
+		 }-*/;
 
 	@Override
 	public void error(final String message) {
@@ -83,8 +83,8 @@ public class FirebugLogger extends LoggerImpl {
 	}
 
 	native private void error0(final String message)/*-{
-	 $wnd.console.error( message );
-	 }-*/;
+		 $wnd.console.error( message );
+		 }-*/;
 
 	@Override
 	public void fatal(final String message) {
@@ -102,8 +102,8 @@ public class FirebugLogger extends LoggerImpl {
 	 * @param message
 	 */
 	native private void fatal0(final String message)/*-{
-	 $wnd.console.error( message );
-	 }-*/;
+		 $wnd.console.error( message );
+		 }-*/;
 
 	protected void log(final LoggingLevel level, final String message) {
 		throw new UnsupportedOperationException();

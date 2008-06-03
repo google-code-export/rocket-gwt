@@ -73,9 +73,9 @@ public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 		Checker.notNull("parameter:value", value);
 		this.getArguments().add(value);
 	}
-	
+
 	@Override
-	protected String getResourceName(){
+	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
 

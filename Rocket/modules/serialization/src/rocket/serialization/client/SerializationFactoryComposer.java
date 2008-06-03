@@ -16,9 +16,12 @@
 package rocket.serialization.client;
 
 /**
- * This interface exists only as a base interface to pass a single annotation to the SerializationFactoryGenerator
- * which will in turn generate a SerializationFactory that can read and write
- * any of the reachable types found in the @serialization-types list.
+ * This interface exists only as a base interface to pass a single annotation to
+ * the SerializationFactoryGenerator which will in turn generate a
+ * SerializationFactory that can read and write any of the reachable types found
+ * in the
+ * 
+ * @serialization-types list.
  * 
  * @author Miroslav Pokorny
  */

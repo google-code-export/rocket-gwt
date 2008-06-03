@@ -28,7 +28,7 @@ import rocket.serialization.client.ObjectReader;
 public class AbstractMapReader extends MapReader implements ObjectReader {
 	static public final ObjectReader instance = new AbstractMapReader();
 
-	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream){
+	public Object newInstance(final String typeName, final ObjectInputStream objectInputStream) {
 		throw new UnsupportedOperationException();
 	}
 }

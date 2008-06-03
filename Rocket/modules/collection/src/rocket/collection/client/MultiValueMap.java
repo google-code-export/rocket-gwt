@@ -31,21 +31,21 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class MultiValueMap<K,V> implements IsSerializable {
+public class MultiValueMap<K, V> implements IsSerializable {
 
 	public MultiValueMap() {
-		this.setMap(new HashMap<K,List<V>>());
+		this.setMap(new HashMap<K, List<V>>());
 	}
 
-	private Map<K,List<V>> map;
+	private Map<K, List<V>> map;
 
-	protected Map<K,List<V>> getMap() {
+	protected Map<K, List<V>> getMap() {
 		Checker.notNull("field:map", map);
 
 		return map;
 	}
 
-	protected void setMap(final Map<K,List<V>> map) {
+	protected void setMap(final Map<K, List<V>> map) {
 		Checker.notNull("parameter:map", map);
 
 		this.map = map;
@@ -90,7 +90,7 @@ public class MultiValueMap<K,V> implements IsSerializable {
 	}
 
 	public void add(final K key, final V value) {
-		final Map<K,List<V>> map = this.getMap();
+		final Map<K, List<V>> map = this.getMap();
 		List<V> values = (List<V>) this.getValuesList(key);
 		if (values == null) {
 			values = new ArrayList<V>();

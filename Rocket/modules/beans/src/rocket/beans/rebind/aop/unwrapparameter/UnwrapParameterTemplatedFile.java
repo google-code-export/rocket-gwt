@@ -27,7 +27,7 @@ import rocket.util.client.Checker;
 
 /**
  * An abstraction for the unwrap parameter template
- *
+ * 
  * @author Miroslav Pokorny
  */
 public class UnwrapParameterTemplatedFile extends TemplatedFileCodeBlock {
@@ -61,7 +61,7 @@ public class UnwrapParameterTemplatedFile extends TemplatedFileCodeBlock {
 
 	/**
 	 * The actual template file is selected based on the parameter type.
-	 *
+	 * 
 	 * @return
 	 */
 	@Override
@@ -111,7 +111,7 @@ public class UnwrapParameterTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	public InputStream getInputStream(){
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 

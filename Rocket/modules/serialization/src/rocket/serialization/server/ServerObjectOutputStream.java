@@ -33,26 +33,25 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 		this.setValues(this.createValues());
 		this.setStringTable(this.createStringTable());
 		this.setObjectWriters(this.createObjectWriters());
-		this.setObjectTable( this.createObjectTable() );
+		this.setObjectTable(this.createObjectTable());
 	}
 
-	protected void addObject( Object object ){
+	protected void addObject(Object object) {
 		Checker.notNull("parameter:object", object);
 
-		final Map<Object,Integer> objects = this.getObjectTable();
+		final Map<Object, Integer> objects = this.getObjectTable();
 		final int reference = (-1 - objects.size());
-		objects.put(object, new Integer( reference));		
+		objects.put(object, new Integer(reference));
 	}
 
-		protected int findReference(final Object object){
-			final Integer integer = (Integer)this.getObjectTable().get( object );
-			return integer == null ? 0 : integer.intValue();			
-		}
-	
-	
+	protected int findReference(final Object object) {
+		final Integer integer = (Integer) this.getObjectTable().get(object);
+		return integer == null ? 0 : integer.intValue();
+	}
+
 	/**
-	 * A map that uses the identity of an object as the key and with the object as the value. 
-	 * key: Objects value2: reference
+	 * A map that uses the identity of an object as the key and with the object
+	 * as the value. key: Objects value2: reference
 	 */
 	private Map objectTable;
 
@@ -66,8 +65,8 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 		this.objectTable = objectTable;
 	}
 
-	protected Map<Object,Integer> createObjectTable() {
-		return new java.util.IdentityHashMap<Object,Integer>();
+	protected Map<Object, Integer> createObjectTable() {
+		return new java.util.IdentityHashMap<Object, Integer>();
 	}
 
 	public void writeBoolean(final boolean booleanValue) {
@@ -103,8 +102,8 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	}
 
 	public void writeLong(final long longValue) {
-		final int hi = (int)(longValue >> 32);
-		final int lo = (int)longValue;
+		final int hi = (int) (longValue >> 32);
+		final int lo = (int) longValue;
 		this.writeInt(hi);
 		this.writeInt(lo);
 	}
@@ -165,20 +164,19 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	protected int findStringReference(final String string) {
 		int reference = 0;
 		final Integer integer = (Integer) this.getStringTable().get(string);
-		if( null != integer ){
+		if (null != integer) {
 			reference = integer.intValue();
 		}
-		return reference; 
+		return reference;
 	}
 
 	protected int addString(final String string) {
 		final Map strings = this.getStringTable();
 		final int reference = strings.size() + Constants.STRING_BIAS;
-		strings.put(string, new Integer( reference));
+		strings.put(string, new Integer(reference));
 		return reference;
 	}
 
-	
 	/**
 	 * Accumulates any values including references that are written.
 	 */
@@ -203,8 +201,8 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 	public String getText() {
 		final StringBuffer text = new StringBuffer();
 
-		text.append( '[');
-		
+		text.append('[');
+
 		// size ... comma
 		text.append(this.getStringCount());
 		text.append(',');
@@ -222,15 +220,15 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 		// values (comma separated)
 		text.append(this.getValuesText());
 
-		text.append( ']');
-		
+		text.append(']');
+
 		return text.toString();
 	}
 
-	protected void writeString( final Object string ){
-		this.writeString((String) string );
+	protected void writeString(final Object string) {
+		this.writeString((String) string);
 	}
-	
+
 	protected String escape(final String string) {
 		Checker.notNull("parameter:string", string);
 
@@ -250,7 +248,7 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 				buf.append(c);
 				continue;
 			}
-			if (c == '\0' && c < 0x100 ) {
+			if (c == '\0' && c < 0x100) {
 				buf.append("\\\0");
 				continue;
 			}
@@ -277,7 +275,7 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 
 			final int j = c;
 
-			final String hex = Integer.toHexString((int) c);						
+			final String hex = Integer.toHexString((int) c);
 			if (j < 0x10) {
 				buf.append("\\x0");
 				buf.append(hex);
@@ -296,15 +294,15 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 				buf.append(';');
 				continue;
 			}
-			buf.append( "\\u");
+			buf.append("\\u");
 			buf.append(j);
 			buf.append(';');
 
 		}
 		return buf.toString();
 	}
-	
-	protected boolean isString(final Object object){
+
+	protected boolean isString(final Object object) {
 		return object instanceof String;
 	}
 
@@ -320,12 +318,12 @@ public class ServerObjectOutputStream extends ObjectOutputStreamImpl implements 
 			}
 		}
 		if (false == written) {
-			throwUnableToSerialize( object );
+			throwUnableToSerialize(object);
 		}
 	}
-	
-	protected void throwUnableToSerialize( final Object object ){
-		throw new SerializationException("Unable to serialize " + object.getClass().getName() );
+
+	protected void throwUnableToSerialize(final Object object) {
+		throw new SerializationException("Unable to serialize " + object.getClass().getName());
 	}
 
 	private List<ServerObjectWriter> objectWriters;

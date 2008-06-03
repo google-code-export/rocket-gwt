@@ -25,7 +25,7 @@ import rocket.serialization.client.ObjectWriter;
  * 
  * @author Miroslav Pokorny
  * 
-* @serialization-type java.util.TreeMap
+ * @serialization-type java.util.TreeMap
  */
 public class TreeMapWriter extends MapWriter implements ObjectWriter {
 
@@ -33,13 +33,13 @@ public class TreeMapWriter extends MapWriter implements ObjectWriter {
 
 	protected TreeMapWriter() {
 	}
-	
+
 	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
 		this.writeTreeMap((TreeMap) object, objectOutputStream);
 	}
-	
+
 	protected void writeTreeMap(final TreeMap treeMap, final ObjectOutputStream objectOutputStream) {
-		objectOutputStream.writeObject( treeMap.comparator() );
-		this.writeMap( treeMap, objectOutputStream);
+		objectOutputStream.writeObject(treeMap.comparator());
+		this.writeMap(treeMap, objectOutputStream);
 	}
 }

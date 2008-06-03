@@ -73,7 +73,7 @@ public class ClientObjectInputStreamGwtTestCase extends GWTTestCase {
 		assertEquals(stream, 2, reader.readShort());
 		assertEquals(stream, -3, reader.readShort());
 
-		this.checkFurtherReadsFail(reader);		
+		this.checkFurtherReadsFail(reader);
 	}
 
 	public void testReadInt() {
@@ -88,7 +88,7 @@ public class ClientObjectInputStreamGwtTestCase extends GWTTestCase {
 
 	public void testReadLong() {
 		final String stream = "[0,0,1,0,2,-1,-3]";
-		
+
 		final ObjectInputStream reader = this.createSerializationFactory().createObjectInputStream(stream);
 		assertEquals(stream, 1, reader.readLong());
 		assertEquals(stream, 2, reader.readLong());
@@ -237,24 +237,24 @@ public class ClientObjectInputStreamGwtTestCase extends GWTTestCase {
 				throw new UnsupportedOperationException();
 			}
 
-			public ObjectReader getObjectReader( final String typeName ){
+			public ObjectReader getObjectReader(final String typeName) {
 				ObjectReader objectReader = null;
-				
-				while( true ){
-					if( CONCRETE_CLASS.equals( typeName )){
+
+				while (true) {
+					if (CONCRETE_CLASS.equals(typeName)) {
 						objectReader = new ConcreteClassObjectReader();
 						break;
 					}
-					if( CONCRETE_SUBCLASS.equals( typeName )){
+					if (CONCRETE_SUBCLASS.equals(typeName)) {
 						objectReader = new ConcreteSubClassObjectReader();
 						break;
 					}
 				}
-				
+
 				return objectReader;
 			}
 
-			public ObjectWriter getObjectWriter( final String typeName ){
+			public ObjectWriter getObjectWriter(final String typeName) {
 				return null;
 			}
 		};

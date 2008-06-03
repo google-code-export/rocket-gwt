@@ -17,39 +17,40 @@ package rocket.serialization.rebind.typematcher;
 
 import rocket.generator.rebind.type.Type;
 
-public class WildcardMatcher implements TypeMatcher{
-	
-	public WildcardMatcher(){
+public class WildcardMatcher implements TypeMatcher {
+
+	public WildcardMatcher() {
 		super();
 	}
-	
-	public WildcardMatcher( final String pattern ){
+
+	public WildcardMatcher(final String pattern) {
 		this();
-		
+
 		this.setPattern(pattern);
 	}
-	
-	public boolean matches( Type type ){
-		return type.getName().startsWith(this.getPattern() );
+
+	public boolean matches(Type type) {
+		return type.getName().startsWith(this.getPattern());
 	}
-	
+
 	private String pattern;
-	
-	protected String getPattern(){
+
+	protected String getPattern() {
 		return this.pattern;
 	}
-	
-	public void setPattern( final String pattern ){
-		final int wildcard = pattern.indexOf( '*'); 
-		if( wildcard != pattern.length() - 1 ){
-			throw new IllegalArgumentException("The pattern \"" + pattern + "\" is missing a wildcard or doesnt end with a wildcard '*'.");
+
+	public void setPattern(final String pattern) {
+		final int wildcard = pattern.indexOf('*');
+		if (wildcard != pattern.length() - 1) {
+			throw new IllegalArgumentException("The pattern \"" + pattern
+					+ "\" is missing a wildcard or doesnt end with a wildcard '*'.");
 		}
-		
-		this.pattern = pattern.substring( 0, pattern.length() - 1 );
+
+		this.pattern = pattern.substring(0, pattern.length() - 1);
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return super.toString() + ", pattern\"" + pattern + "*]";
 	}
 }

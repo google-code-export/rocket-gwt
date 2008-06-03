@@ -68,8 +68,8 @@ public class WriteFieldTemplatedFile extends TemplatedFileCodeBlock {
 		}
 		return fileName;
 	}
-	
-	public InputStream getInputStream(){
+
+	public InputStream getInputStream() {
 		return super.getInputStream();
 	}
 

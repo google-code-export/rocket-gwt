@@ -37,12 +37,11 @@ public class BeanFactoryGeneratorPlaceHolderGwtTestCase extends GeneratorGwtTest
 	public String getModuleName() {
 		return "rocket.beans.test.generator.placeholder.BeanFactoryGeneratorPlaceHolder";
 	}
-	
+
 	public void testPlaceHolders() {
 		final PlaceHolderBeanFactory factory = (PlaceHolderBeanFactory) GWT.create(PlaceHolderBeanFactory.class);
 		final PlaceHolderBean bean = (PlaceHolderBean) factory.getBean(BEAN);
 		assertEquals("orange yellow green green", bean.getStringProperty());
 	}
-
 
 }

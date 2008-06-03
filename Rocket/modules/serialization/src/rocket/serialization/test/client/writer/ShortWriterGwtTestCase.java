@@ -33,6 +33,6 @@ public class ShortWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2," + SHORT_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + SHORT + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + SHORT + "\"," + expectedValues + "]", text);
 	}
 }

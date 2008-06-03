@@ -88,13 +88,13 @@ public class ProxyFactoryBeanTestCase extends TestCase {
 		};
 		prototypeFactoryBean.setBeanName(BEAN);
 
-		final ProxyFactoryBean proxyFactoryBean = createProxyFactoryBean();		
+		final ProxyFactoryBean proxyFactoryBean = createProxyFactoryBean();
 		proxyFactoryBean.setBeanName(BEAN);
 
-		final BeanFactory beanFactory = this.createBeanFactory( false, proxyFactoryBean, prototypeFactoryBean );
+		final BeanFactory beanFactory = this.createBeanFactory(false, proxyFactoryBean, prototypeFactoryBean);
 		proxyFactoryBean.setBeanFactory(beanFactory);
 		prototypeFactoryBean.setBeanFactory(beanFactory);
-		
+
 		final ImplementsBeanFactoryAware bean = (ImplementsBeanFactoryAware) prototypeFactoryBean.getObject();
 		assertNotNull(bean.beanFactory);
 	}
@@ -117,15 +117,15 @@ public class ProxyFactoryBeanTestCase extends TestCase {
 			protected Object createInstance() throws Exception {
 				return new ImplementsBeanNameAware();
 			}
-		};		
+		};
 		targetFactoryBean.setBeanName('$' + BEAN);
 
 		final ProxyFactoryBean proxyFactoryBean = createProxyFactoryBean();
 
-		final BeanFactory beanFactory = this.createBeanFactory( false, proxyFactoryBean, targetFactoryBean );
+		final BeanFactory beanFactory = this.createBeanFactory(false, proxyFactoryBean, targetFactoryBean);
 		targetFactoryBean.setBeanFactory(beanFactory);
 		proxyFactoryBean.setBeanFactory(beanFactory);
-		
+
 		final ImplementsBeanNameAware bean = (ImplementsBeanNameAware) proxyFactoryBean.getObject();
 		assertEquals('$' + BEAN, bean.beanName);
 	}
@@ -144,30 +144,30 @@ public class ProxyFactoryBeanTestCase extends TestCase {
 	}
 
 	ProxyFactoryBean createSingletonProxyFactoryBean() {
-		final SingletonFactoryBean singletonFactoryBean = this.createSingletonFactoryBean();	
-		
+		final SingletonFactoryBean singletonFactoryBean = this.createSingletonFactoryBean();
+
 		final ProxyFactoryBean proxyFactoryBean = this.createProxyFactoryBean();
-		
-		final BeanFactory beanFactory = this.createBeanFactory( true, proxyFactoryBean, singletonFactoryBean);
-		
+
+		final BeanFactory beanFactory = this.createBeanFactory(true, proxyFactoryBean, singletonFactoryBean);
+
 		singletonFactoryBean.setBeanFactory(beanFactory);
-		proxyFactoryBean.setBeanFactory( beanFactory );
+		proxyFactoryBean.setBeanFactory(beanFactory);
 		return proxyFactoryBean;
 	}
 
 	ProxyFactoryBean createPrototypeProxyFactoryBean() {
-		final PrototypeFactoryBean prototypeFactoryBean = this.createPrototypeFactoryBean();				
+		final PrototypeFactoryBean prototypeFactoryBean = this.createPrototypeFactoryBean();
 		final ProxyFactoryBean proxyFactoryBean = this.createProxyFactoryBean();
-		
-		final BeanFactory beanFactory = this.createBeanFactory( false, proxyFactoryBean, prototypeFactoryBean);
+
+		final BeanFactory beanFactory = this.createBeanFactory(false, proxyFactoryBean, prototypeFactoryBean);
 		prototypeFactoryBean.setBeanFactory(beanFactory);
-		proxyFactoryBean.setBeanFactory( beanFactory );
+		proxyFactoryBean.setBeanFactory(beanFactory);
 		return proxyFactoryBean;
 	}
 
 	ProxyFactoryBean createProxyFactoryBean() {
-		final ProxyFactoryBean proxy = new ProxyFactoryBean(){
-			protected Object createProxy0(final Object target){
+		final ProxyFactoryBean proxy = new ProxyFactoryBean() {
+			protected Object createProxy0(final Object target) {
 				return target;
 			}
 		};
@@ -191,16 +191,16 @@ public class ProxyFactoryBeanTestCase extends TestCase {
 		};
 	}
 
-	BeanFactory createBeanFactory( final boolean singleton, final FactoryBean proxyFactoryBean, final FactoryBean factoryBean  ) {
+	BeanFactory createBeanFactory(final boolean singleton, final FactoryBean proxyFactoryBean, final FactoryBean factoryBean) {
 		return new BeanFactory() {
 			public Object getBean(final String name) {
-				if( name.equals( BEAN )){
+				if (name.equals(BEAN)) {
 					return proxyFactoryBean.getObject();
 				}
-				if( name.equals( '$' + BEAN )){
+				if (name.equals('$' + BEAN)) {
 					return factoryBean.getObject();
 				}
-				throw new UnableToFindBeanException( name );
+				throw new UnableToFindBeanException(name);
 			}
 
 			public boolean isSingleton(final String name) {

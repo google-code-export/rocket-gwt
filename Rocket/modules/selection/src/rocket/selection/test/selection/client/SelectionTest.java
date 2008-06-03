@@ -646,8 +646,8 @@ public class SelectionTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	native static Element getParent(final JavaScriptObject object)/*-{
-				 return object.parentNode || object.parentElement || null;
-				 }-*/;
+					 return object.parentNode || object.parentElement || null;
+					 }-*/;
 
 	public static Element findFirstChild(final Element parent, final String tagName) {
 		Checker.notNull("parameter:parent", parent);

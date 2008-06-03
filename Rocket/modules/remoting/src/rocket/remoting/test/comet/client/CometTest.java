@@ -42,16 +42,16 @@ public class CometTest implements EntryPoint {
 	 * This is the same url as the one used to map the test servlet in the
 	 * accompanying *.gwt.xml file.
 	 */
-	static final String COMET_SERVER_URL = "./server";	
+	static final String COMET_SERVER_URL = "./server";
 
 	static final String INVALID_COMET_SERVER_URL = "./invalid";
 
 	static final String SERVER_ACTION_URL = "./action";
-	
+
 	static final long TOO_MUCH_LAG = 1000;
 
 	static final int MAX_LOG_MESSAGES = 20;
-	
+
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void onUncaughtException(final Throwable caught) {
@@ -59,10 +59,10 @@ public class CometTest implements EntryPoint {
 				Window.alert(StackTrace.asString(caught));
 			}
 		});
-		
+
 		final Logger logger = new Logger();
-		
-		final CometClient cometClient = this.createComet( logger );
+
+		final CometClient cometClient = this.createComet(logger);
 
 		final Button start = new Button("Start");
 		start.addClickListener(new ClickListener() {
@@ -86,139 +86,149 @@ public class CometTest implements EntryPoint {
 				cometClient.stop();
 			}
 		});
-		
-		
+
 		final Button serverStopper = new Button("Server Terminate");
 		serverStopper.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync)GWT.create( CometServerActionService.class );
-				((ServiceDefTarget)terminator).setServiceEntryPoint( SERVER_ACTION_URL );
-				terminator.terminate( new AsyncCallback(){
-					public void onSuccess( final Object ignored ){
+				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync) GWT
+						.create(CometServerActionService.class);
+				((ServiceDefTarget) terminator).setServiceEntryPoint(SERVER_ACTION_URL);
+				terminator.terminate(new AsyncCallback() {
+					public void onSuccess(final Object ignored) {
 						logger.log("Client has completed request to server to terminate push terminate message.");
 					}
-					public void onFailure( final Throwable cause ){
-						logger.log( "Client failed to send request to terminate comet session, message: " + cause.getMessage() );
+
+					public void onFailure(final Throwable cause) {
+						logger.log("Client failed to send request to terminate comet session, message: " + cause.getMessage());
 						cause.printStackTrace();
 					}
 				});
 			}
 		});
-		
+
 		final Button serverPollFails = new Button("Fail next Server poll");
 		serverPollFails.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync)GWT.create( CometServerActionService.class );
-				((ServiceDefTarget)terminator).setServiceEntryPoint( SERVER_ACTION_URL );
-				terminator.failNextPoll( new AsyncCallback(){
-					public void onSuccess( final Object ignored ){
+				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync) GWT
+						.create(CometServerActionService.class);
+				((ServiceDefTarget) terminator).setServiceEntryPoint(SERVER_ACTION_URL);
+				terminator.failNextPoll(new AsyncCallback() {
+					public void onSuccess(final Object ignored) {
 						logger.log("Client has completed request to server to throw exception when next polled.");
 					}
-					public void onFailure( final Throwable cause ){
-						logger.log( "Client failed to send request to throw exception when next polled, message: " + cause.getMessage() );
+
+					public void onFailure(final Throwable cause) {
+						logger.log("Client failed to send request to throw exception when next polled, message: " + cause.getMessage());
 						cause.printStackTrace();
 					}
 				});
 			}
 		});
-		
 
 		final Button serverTimeout = new Button("Timeout next Server poll");
 		serverTimeout.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync)GWT.create( CometServerActionService.class );
-				((ServiceDefTarget)terminator).setServiceEntryPoint( SERVER_ACTION_URL );
-				terminator.timeoutNextPoll( new AsyncCallback(){
-					public void onSuccess( final Object ignored ){
+				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync) GWT
+						.create(CometServerActionService.class);
+				((ServiceDefTarget) terminator).setServiceEntryPoint(SERVER_ACTION_URL);
+				terminator.timeoutNextPoll(new AsyncCallback() {
+					public void onSuccess(final Object ignored) {
 						logger.log("Client has completed request to server to sleep and timeout when next polled.");
 					}
-					public void onFailure( final Throwable cause ){
-						logger.log( "Client failed to send request to timeout when next polled, message: " + cause.getMessage() );
+
+					public void onFailure(final Throwable cause) {
+						logger.log("Client failed to send request to timeout when next polled, message: " + cause.getMessage());
 						cause.printStackTrace();
 					}
 				});
 			}
 		});
-		
+
 		final Button failNextConnection = new Button("Fail next Server connection");
 		failNextConnection.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
-				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync)GWT.create( CometServerActionService.class );
-				((ServiceDefTarget)terminator).setServiceEntryPoint( SERVER_ACTION_URL );
-				terminator.failNextConnection( new AsyncCallback(){
-					public void onSuccess( final Object ignored ){
+				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync) GWT
+						.create(CometServerActionService.class);
+				((ServiceDefTarget) terminator).setServiceEntryPoint(SERVER_ACTION_URL);
+				terminator.failNextConnection(new AsyncCallback() {
+					public void onSuccess(final Object ignored) {
 						logger.log("Client has completed request to server to fail next connection attempt.");
 					}
-					public void onFailure( final Throwable cause ){
-						logger.log( "Client failed to send request to fail next connection attempt, message: " + cause.getMessage() );
+
+					public void onFailure(final Throwable cause) {
+						logger.log("Client failed to send request to fail next connection attempt, message: " + cause.getMessage());
 						cause.printStackTrace();
 					}
 				});
 			}
 		});
-		
+
 		final Button clearLogger = new Button("Clear log");
 		clearLogger.addClickListener(new ClickListener() {
 			public void onClick(final Widget sender) {
 				logger.clear();
 			}
 		});
-		
-		
+
 		final RootPanel rootPanel = RootPanel.get();
-		rootPanel.add( start );
-		rootPanel.add( startWithBadUrl );
-		rootPanel.add( clientStopper );
-		rootPanel.add( serverStopper );
-		rootPanel.add( serverPollFails );
-		rootPanel.add( serverTimeout );
-		rootPanel.add( failNextConnection );
-		rootPanel.add( clearLogger );
-		rootPanel.add( logger );
+		rootPanel.add(start);
+		rootPanel.add(startWithBadUrl);
+		rootPanel.add(clientStopper);
+		rootPanel.add(serverStopper);
+		rootPanel.add(serverPollFails);
+		rootPanel.add(serverTimeout);
+		rootPanel.add(failNextConnection);
+		rootPanel.add(clearLogger);
+		rootPanel.add(logger);
 	}
 
 	/**
-	 * Factory which creates a CometClient which logs each and every message to the given Logger sink.  
+	 * Factory which creates a CometClient which logs each and every message to
+	 * the given Logger sink.
+	 * 
 	 * @return
 	 */
-	protected CometClient createComet( final Logger logger ) {
-		final TestGwtSerializationCometClient cometClient = (TestGwtSerializationCometClient) GWT.create(TestGwtSerializationCometClient.class);
-		cometClient.setCallback( new CometCallback(){
-			public void onPayload( final Object object ){
-				logger.log( "Client received \"" + object + "\"...");
-				
+	protected CometClient createComet(final Logger logger) {
+		final TestGwtSerializationCometClient cometClient = (TestGwtSerializationCometClient) GWT
+				.create(TestGwtSerializationCometClient.class);
+		cometClient.setCallback(new CometCallback() {
+			public void onPayload(final Object object) {
+				logger.log("Client received \"" + object + "\"...");
+
 				final TestCometPayload payload = (TestCometPayload) object;
 				final long date = payload.getTimestamp() % 999999;
-				final long now = System.currentTimeMillis() % 999999;  
-				final long lag = Math.abs( now - date );
-				
-				logger.log( "Client latency " + lag + " milliseconds, now: " + now + ", payload timestamp: " + date);
-				
-				if( lag > TOO_MUCH_LAG ){
-					throw new AssertionError("Too much lag between push and object being received, lag: " + lag );
+				final long now = System.currentTimeMillis() % 999999;
+				final long lag = Math.abs(now - date);
+
+				logger.log("Client latency " + lag + " milliseconds, now: " + now + ", payload timestamp: " + date);
+
+				if (lag > TOO_MUCH_LAG) {
+					throw new AssertionError("Too much lag between push and object being received, lag: " + lag);
 				}
 			}
-			public void onTerminate(){
-				logger.log( "Client has had comet session terminated upon server request.");
+
+			public void onTerminate() {
+				logger.log("Client has had comet session terminated upon server request.");
 			}
-			
-			public void onFailure( final Throwable cause ){
-				logger.log( "Client comet session failure, cause: " + cause.getMessage() );
-				
+
+			public void onFailure(final Throwable cause) {
+				logger.log("Client comet session failure, cause: " + cause.getMessage());
+
 				cause.printStackTrace();
-			}			
+			}
 		});
-		cometClient.setLogger( logger );
+		cometClient.setLogger(logger);
 		return cometClient;
 	}
-	
+
 	/**
 	 * This test class sets the width/height of the hidden iframe so its
 	 * contents are visible. All other behaviour remains unchanged.
+	 * 
 	 * @comet-payloadType rocket.remoting.test.comet.client.TestCometPayload
 	 */
 	abstract static public class TestGwtSerializationCometClient extends GwtSerializationCometClient {
-		
+
 		protected Element createFrame() {
 			final Element frame = super.createFrame();
 
@@ -238,8 +248,8 @@ public class CometTest implements EntryPoint {
 			this.log("Client is stopping existing session...");
 			super.stop();
 		}
-			
-		public void dispatch(final String serializedForm){
+
+		public void dispatch(final String serializedForm) {
 			this.log("Client about to deserialize \"" + serializedForm + "\".");
 			super.dispatch(serializedForm);
 		}
@@ -248,17 +258,18 @@ public class CometTest implements EntryPoint {
 			this.log("Client is restarting new connection to server...");
 			super.restart();
 		}
-		 
-		void log( final String message ){
+
+		void log(final String message) {
 			this.getLogger().log(message);
 		}
-		
+
 		Logger logger;
-		
-		protected Logger getLogger(){
+
+		protected Logger getLogger() {
 			return this.logger;
 		}
-		public void setLogger( final Logger logger ){
+
+		public void setLogger(final Logger logger) {
 			this.logger = logger;
 		}
 	}
@@ -266,16 +277,16 @@ public class CometTest implements EntryPoint {
 	/**
 	 * A simple logger which uses an UnorderedListPanel to record log messages.
 	 */
-	
-	static class Logger extends UnorderedListPanel{
-		public void log( String message ){
+
+	static class Logger extends UnorderedListPanel {
+		public void log(String message) {
 			final int size = this.getWidgetCount();
-			if( size == MAX_LOG_MESSAGES ){
-				this.remove( 0 );
+			if (size == MAX_LOG_MESSAGES) {
+				this.remove(0);
 			}
-			this.add( new Label( message ));
-			
-			System.out.println( message );
+			this.add(new Label(message));
+
+			System.out.println(message);
 		}
 	}
 }

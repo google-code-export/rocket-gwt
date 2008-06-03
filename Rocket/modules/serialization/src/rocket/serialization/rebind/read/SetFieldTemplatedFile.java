@@ -21,13 +21,12 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 public class SetFieldTemplatedFile extends TemplatedFileCodeBlock {
- 
-	
+
 	@Override
-	final public boolean isNative(){
+	final public boolean isNative() {
 		return true;
 	}
-	
+
 	@Override
 	protected String getResourceName() {
 		return Constants.SET_FIELD_TEMPLATE;

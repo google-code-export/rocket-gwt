@@ -34,6 +34,6 @@ public class ByteArrayWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2,1," + BYTE_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + BYTE_ARRAY + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + BYTE_ARRAY + "\"," + expectedValues + "]", text);
 	}
 }

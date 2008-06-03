@@ -34,6 +34,6 @@ public class DoubleArrayWriterGwtTestCase extends ClientGwtTestCase {
 
 		final String expectedValues = "1,2,1," + DOUBLE_VALUE;
 		final String text = output.getText();
-		assertEquals("[1,\"" + DOUBLE_ARRAY + "\"," + expectedValues+"]", text);
+		assertEquals("[1,\"" + DOUBLE_ARRAY + "\"," + expectedValues + "]", text);
 	}
 }

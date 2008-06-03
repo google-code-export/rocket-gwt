@@ -21,8 +21,8 @@ import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
- * This template provides a code snippet to fetch an image from the image factory belonging to the bean factory
- * being generated.
+ * This template provides a code snippet to fetch an image from the image
+ * factory belonging to the bean factory being generated.
  * 
  * @author Miroslav Pokorny
  */
@@ -33,12 +33,12 @@ class ImageFactoryGetImageTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	@Override
-	public boolean isNative(){
+	public boolean isNative() {
 		return false;
 	}
-	
+
 	@Override
-	public void setNative( final boolean nativee ){
+	public void setNative(final boolean nativee) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -72,10 +72,10 @@ class ImageFactoryGetImageTemplatedFile extends TemplatedFileCodeBlock {
 		this.imageGetter = imageGetter;
 	}
 
-	protected Type getImageType(){
+	protected Type getImageType() {
 		return this.getImageGetter().getReturnType();
 	}
-	
+
 	@Override
 	protected String getResourceName() {
 		return Constants.TEMPLATE;

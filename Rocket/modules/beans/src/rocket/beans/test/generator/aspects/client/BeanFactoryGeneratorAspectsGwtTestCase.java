@@ -246,7 +246,8 @@ public class BeanFactoryGeneratorAspectsGwtTestCase extends GeneratorGwtTestCase
 		assertEquals("method", methodInvocation.getMethod());
 		assertEquals(false, methodInvocation.isNative());
 		assertEquals("java.lang.Object", methodInvocation.getReturnType());
-		assertEquals("rocket.beans.test.generator.aspects.client.methodinvocation.SuperClassOfMethodInvocationTestTarget", methodInvocation.getEnclosingType());
+		assertEquals("rocket.beans.test.generator.aspects.client.methodinvocation.SuperClassOfMethodInvocationTestTarget",
+				methodInvocation.getEnclosingType());
 
 		final String[] parameterTypes = methodInvocation.getParameterTypes();
 		assertEquals(9, parameterTypes.length);
@@ -426,18 +427,18 @@ public class BeanFactoryGeneratorAspectsGwtTestCase extends GeneratorGwtTestCase
 		assertEquals(expectedInterceptorExecutedCount, interceptor.executedCount);
 	}
 
-	public void testSingleton(){
+	public void testSingleton() {
 		final SingletonBeanFactory factory = (SingletonBeanFactory) GWT.create(SingletonBeanFactory.class);
-		final Singleton first = (Singleton) factory.getBean( BEAN );
-		final Singleton second = (Singleton) factory.getBean( BEAN );
-		assertSame( first, second ); 
-		
+		final Singleton first = (Singleton) factory.getBean(BEAN);
+		final Singleton second = (Singleton) factory.getBean(BEAN);
+		assertSame(first, second);
+
 		final InvokingCountingMethodInterceptor interceptor = (InvokingCountingMethodInterceptor) factory.getBean(ADVISOR);
 		final int firstNumber = first.getNumber();
 		final int secondNumber = second.getNumber();
-		assertEquals( firstNumber, secondNumber );
-		
-		assertEquals( 2, interceptor.executedCount );
-		
+		assertEquals(firstNumber, secondNumber);
+
+		assertEquals(2, interceptor.executedCount);
+
 	}
 }

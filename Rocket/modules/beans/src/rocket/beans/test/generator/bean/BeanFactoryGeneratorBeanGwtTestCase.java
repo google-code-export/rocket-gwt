@@ -59,7 +59,7 @@ public class BeanFactoryGeneratorBeanGwtTestCase extends GeneratorGwtTestCase {
 	public String getModuleName() {
 		return "rocket.beans.test.generator.bean.BeanFactoryGeneratorBean";
 	}
-	
+
 	public void testMissingBeanId() {
 		try {
 			assertBindingFailed(GWT.create(MissingIdBeanFactory.class));
@@ -95,23 +95,25 @@ public class BeanFactoryGeneratorBeanGwtTestCase extends GeneratorGwtTestCase {
 	}
 
 	public void testEscapeUnsafeIdIntoSafeFactoryBeanClassName() {
-		final EscapeUnsafeIdIntoSafeFactoryBeanClassName beanFactory = (EscapeUnsafeIdIntoSafeFactoryBeanClassName) GWT.create(EscapeUnsafeIdIntoSafeFactoryBeanClassName.class);
+		final EscapeUnsafeIdIntoSafeFactoryBeanClassName beanFactory = (EscapeUnsafeIdIntoSafeFactoryBeanClassName) GWT
+				.create(EscapeUnsafeIdIntoSafeFactoryBeanClassName.class);
 		assertNotNull(beanFactory);
 	}
-		
-	
+
 	public void testLazilyLoadedSingletonBean() {
-		final LazyLoadedSingletonBeanFactory beanFactory = (LazyLoadedSingletonBeanFactory)GWT.create(LazyLoadedSingletonBeanFactory.class);
-		assertFalse("singleton is not yet loaded", LazySingleton.loaded );
-		beanFactory.getBean( BEAN );
-		assertTrue("singleton is now loaded", LazySingleton.loaded );		
+		final LazyLoadedSingletonBeanFactory beanFactory = (LazyLoadedSingletonBeanFactory) GWT
+				.create(LazyLoadedSingletonBeanFactory.class);
+		assertFalse("singleton is not yet loaded", LazySingleton.loaded);
+		beanFactory.getBean(BEAN);
+		assertTrue("singleton is now loaded", LazySingleton.loaded);
 	}
 
 	public void testEagerlyLoadedSingletonBean() {
-		assertFalse("singleton should have not been have been loaded until factory is created.", EagerlyLoadedSingleton.loaded );
-		final EagerlyLoadedSingletonBeanFactory beanFactory = (EagerlyLoadedSingletonBeanFactory)GWT.create(EagerlyLoadedSingletonBeanFactory.class);
-		assertNotNull( beanFactory );
-		assertTrue("singleton should have been loaded", EagerlyLoadedSingleton.loaded );
+		assertFalse("singleton should have not been have been loaded until factory is created.", EagerlyLoadedSingleton.loaded);
+		final EagerlyLoadedSingletonBeanFactory beanFactory = (EagerlyLoadedSingletonBeanFactory) GWT
+				.create(EagerlyLoadedSingletonBeanFactory.class);
+		assertNotNull(beanFactory);
+		assertTrue("singleton should have been loaded", EagerlyLoadedSingleton.loaded);
 	}
 
 	public void testFactoryMethodNotFound() {
@@ -153,9 +155,9 @@ public class BeanFactoryGeneratorBeanGwtTestCase extends GeneratorGwtTestCase {
 
 	public void testPrototypeWithCustomDestroyMethod() {
 		try {
-			assertBindingFailed(GWT.create( PrototypeWithDestroyMethodBeanFactory.class));
+			assertBindingFailed(GWT.create(PrototypeWithDestroyMethodBeanFactory.class));
 		} catch (final FailedGenerateAttemptException failed) {
-			assertTrue("" + failed, failed.getCauseType().equals( BEAN_FACTORY_GENERATOR_EXCEPTION));
+			assertTrue("" + failed, failed.getCauseType().equals(BEAN_FACTORY_GENERATOR_EXCEPTION));
 		}
 	}
 
@@ -163,20 +165,20 @@ public class BeanFactoryGeneratorBeanGwtTestCase extends GeneratorGwtTestCase {
 		final DisposableBeanBeanFactory factory = (DisposableBeanBeanFactory) GWT.create(DisposableBeanBeanFactory.class);
 		final DisposableBeanImpl bean = (DisposableBeanImpl) factory.getBean(BEAN);
 		assertNotNull(bean);
-		
-		((BeanFactoryImpl)factory).shutdown();
-		
-		assertEquals( "bean should have been destroyed", 1, bean.destroyed );
+
+		((BeanFactoryImpl) factory).shutdown();
+
+		assertEquals("bean should have been destroyed", 1, bean.destroyed);
 	}
-	
+
 	public void testDestroyMethod() {
 		final DestroyMethodBeanFactory factory = (DestroyMethodBeanFactory) GWT.create(DestroyMethodBeanFactory.class);
 		final HasCustomDestroy bean = (HasCustomDestroy) factory.getBean(BEAN);
 		assertNotNull(bean);
-		
-		((BeanFactoryImpl)factory).shutdown();
-		
-		assertEquals( "bean should have been destroyed", 1, bean.destroyed );
+
+		((BeanFactoryImpl) factory).shutdown();
+
+		assertEquals("bean should have been destroyed", 1, bean.destroyed);
 	}
 
 }

@@ -41,13 +41,13 @@ public class TreeSetWriter extends rocket.serialization.client.writer.SetWriter 
 	protected void writeTypeName(final Object object, final ObjectOutputStream objectOutputStream) {
 		objectOutputStream.writeObject(TreeSet.class.getName());
 	}
-	
+
 	protected void write0(final Object object, final ObjectOutputStream objectOutputStream) {
-		this.writeTreeSet( (TreeSet) object, objectOutputStream );
+		this.writeTreeSet((TreeSet) object, objectOutputStream);
 	}
-	
-	protected void writeTreeSet( final TreeSet treeSet, final ObjectOutputStream objectOutputStream ){
-		objectOutputStream.writeObject( treeSet.comparator() );
+
+	protected void writeTreeSet(final TreeSet treeSet, final ObjectOutputStream objectOutputStream) {
+		objectOutputStream.writeObject(treeSet.comparator());
 		this.writeCollection(treeSet, objectOutputStream);
 	}
 }

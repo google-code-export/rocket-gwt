@@ -126,7 +126,7 @@ public class JavaRpcClientGenerator extends RpcClientGenerator {
 		}
 
 		final Method serviceMethod = serviceInterface.findMethod(method.getName(), parameterTypes);
-		final List serviceMethods = new ArrayList();
+		final List<Method> serviceMethods = new ArrayList<Method>();
 		serviceMethods.addAll(serviceInterface.getMethods());
 		final int methodNumber = serviceMethods.indexOf(serviceMethod);
 		final String newNestedName = Constants.NESTED_SERIALIZATION_FACTORY_COMPOSER + methodNumber;

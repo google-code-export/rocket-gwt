@@ -26,7 +26,7 @@ public class ShortReaderTestCase extends ServerTestCase {
 	final static short SHORT_VALUE = 1234;
 
 	public void testReadShort() {
-		final String stream = "[1,\"" + SHORT + "\",1,2," + SHORT_VALUE +"]";
+		final String stream = "[1,\"" + SHORT + "\",1,2," + SHORT_VALUE + "]";
 		final ObjectInputStream input = createObjectInputStream(stream, ShortReader.instance);
 
 		final Short object = (Short) input.readObject();

@@ -17,7 +17,7 @@ package rocket.remoting.client.support.rpc;
 
 /**
  * A collection of constants for this package.
- *
+ * 
  * @author Miroslav Pokorny
  */
 class Constants {

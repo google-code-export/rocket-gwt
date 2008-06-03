@@ -20,7 +20,7 @@ import com.google.gwt.http.client.RequestBuilder;
 /**
  * A convenient base class for any invoker that uses the GET method to send data
  * to the server.
- *
+ * 
  * @author Miroslav Pokorny
  */
 abstract public class GetJsonRpcServiceMethodInvoker<R> extends GetOrPostJsonServiceMethodInvoker<R> {

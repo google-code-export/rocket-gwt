@@ -36,20 +36,20 @@ public class SetWriterTestCase extends ServerTestCase {
 		final TestServerObjectOutputStream output = this.createObjectOutputStream(SetWriter.instance);
 		output.writeObject(set);
 
-		//final String values = output.getValuesText();
+		// final String values = output.getValuesText();
 		final String expectedValues = "1,2,1,0";
-//
-//		assertEquals("values", expectedValues, values);
-//
-//		final Map strings = output.getStringTable();
-//		assertEquals("" + strings, 1, strings.size());
-//		assertEquals("" + strings, 2, strings.get(HASHSET));
-//
-//		final Map objects = swapKeyWithValues(output.getObjectTable());
-//		assertEquals("processed objects: " + objects, 1, objects.size());
-//
-//		final Object first = objects.get("-1");
-//		assertTrue("" + objects, first instanceof HashSet);
+		//
+		// assertEquals("values", expectedValues, values);
+		//
+		// final Map strings = output.getStringTable();
+		// assertEquals("" + strings, 1, strings.size());
+		// assertEquals("" + strings, 2, strings.get(HASHSET));
+		//
+		// final Map objects = swapKeyWithValues(output.getObjectTable());
+		// assertEquals("processed objects: " + objects, 1, objects.size());
+		//
+		// final Object first = objects.get("-1");
+		// assertTrue("" + objects, first instanceof HashSet);
 
 		final String text = output.getText();
 		assertEquals("[1,\"" + HASHSET + "\"," + expectedValues + "]", text);
@@ -64,23 +64,23 @@ public class SetWriterTestCase extends ServerTestCase {
 
 		output.writeObject(set);
 
-//		final String values = output.getValuesText();
+		// final String values = output.getValuesText();
 		final String expectedValues = "1,2,1,1,3," + ConcreteClass.VALUE;
 
-	//	assertEquals("values", expectedValues, values);
+		// assertEquals("values", expectedValues, values);
 
-//		final Map strings = output.getStringTable();
-//		assertEquals("" + strings, 2, strings.size());
-//		assertEquals("" + strings, 2, strings.get(HASHSET));
-//		assertEquals("" + strings, 3, strings.get(CONCRETE_CLASS));
-//
-//		final Map objects = swapKeyWithValues(output.getObjectTable());
-//		assertEquals("processed objects: " + objects, 2, objects.size());
-//
-//		final Object first = objects.get("-1");
-//		assertTrue("" + objects, first instanceof HashSet);
-//		final Object second = objects.get("-2");
-//		assertTrue("" + objects, second instanceof ConcreteClass);
+		// final Map strings = output.getStringTable();
+		// assertEquals("" + strings, 2, strings.size());
+		// assertEquals("" + strings, 2, strings.get(HASHSET));
+		// assertEquals("" + strings, 3, strings.get(CONCRETE_CLASS));
+		//
+		// final Map objects = swapKeyWithValues(output.getObjectTable());
+		// assertEquals("processed objects: " + objects, 2, objects.size());
+		//
+		// final Object first = objects.get("-1");
+		// assertTrue("" + objects, first instanceof HashSet);
+		// final Object second = objects.get("-2");
+		// assertTrue("" + objects, second instanceof ConcreteClass);
 
 		final String text = output.getText();
 		assertEquals("[2,\"" + HASHSET + "\",\"" + CONCRETE_CLASS + "\"," + expectedValues + "]", text);
@@ -95,25 +95,25 @@ public class SetWriterTestCase extends ServerTestCase {
 
 		output.writeObject(set);
 
-//		final String values = output.getValuesText();
+		// final String values = output.getValuesText();
 		final String expectedValues = "1,2,2,1,3," + ConcreteClass.VALUE + ",1,3," + ConcreteClass.VALUE;
-//
-//		assertEquals("values", expectedValues, values);
-//
-//		final Map strings = output.getStringTable();
-//		assertEquals("" + strings, 2, strings.size());
-//		assertEquals("" + strings, 2, strings.get(HASHSET));
-//		assertEquals("" + strings, 3, strings.get(CONCRETE_CLASS));
-//
-//		final Map objects = swapKeyWithValues(output.getObjectTable());
-//		assertEquals("processed objects: " + objects, 3, objects.size());
-//
-//		final Object first = objects.get("-1");
-//		assertTrue("" + objects, first instanceof HashSet);
-//		final Object second = objects.get("-2");
-//		assertTrue("" + objects, second instanceof ConcreteClass);
-//		final Object third = objects.get("-3");
-//		assertTrue("" + objects, third instanceof ConcreteClass);
+		//
+		// assertEquals("values", expectedValues, values);
+		//
+		// final Map strings = output.getStringTable();
+		// assertEquals("" + strings, 2, strings.size());
+		// assertEquals("" + strings, 2, strings.get(HASHSET));
+		// assertEquals("" + strings, 3, strings.get(CONCRETE_CLASS));
+		//
+		// final Map objects = swapKeyWithValues(output.getObjectTable());
+		// assertEquals("processed objects: " + objects, 3, objects.size());
+		//
+		// final Object first = objects.get("-1");
+		// assertTrue("" + objects, first instanceof HashSet);
+		// final Object second = objects.get("-2");
+		// assertTrue("" + objects, second instanceof ConcreteClass);
+		// final Object third = objects.get("-3");
+		// assertTrue("" + objects, third instanceof ConcreteClass);
 
 		final String text = output.getText();
 		assertEquals("[2,\"" + HASHSET + "\",\"" + CONCRETE_CLASS + "\"," + expectedValues + "]", text);

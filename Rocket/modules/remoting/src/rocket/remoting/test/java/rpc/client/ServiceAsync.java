@@ -18,7 +18,9 @@ package rocket.remoting.test.java.rpc.client;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ServiceAsync {
-		void echo( Payload payload, AsyncCallback callback );
-		void throwsDeclaredException( AsyncCallback callback );
-		void throwsUndeclaredException( AsyncCallback callback );
+	void echo(Payload payload, AsyncCallback callback);
+
+	void throwsDeclaredException(AsyncCallback callback);
+
+	void throwsUndeclaredException(AsyncCallback callback);
 }

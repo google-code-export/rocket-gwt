@@ -18,11 +18,11 @@ package rocket.beans.rebind.alias;
 import rocket.util.client.Checker;
 
 /**
- * Holds an aliased bean reference value. 
+ * Holds an aliased bean reference value.
  * 
  * @author Miroslav Pokorny
  */
-public class Alias{
+public class Alias {
 
 	/**
 	 * The alias bean id
@@ -54,7 +54,7 @@ public class Alias{
 		this.bean = to;
 	}
 
-	public String toString(){
+	public String toString() {
 		return super.toString() + ", name\"" + name + "\", bean\"" + bean + "\".";
 	}
 }

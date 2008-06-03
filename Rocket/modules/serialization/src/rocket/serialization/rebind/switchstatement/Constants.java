@@ -22,7 +22,7 @@ package rocket.serialization.rebind.switchstatement;
  */
 class Constants {
 	final static String SWITCH_TEMPLATE = "switch.txt";
-	
+
 	final static String SWITCH_STATEMENTS = "caseStatements";
 
 	final static String CASE_TEMPLATE = "case.txt";

@@ -30,8 +30,8 @@ public class BeanReferenceTemplatedFile extends TemplatedFileCodeBlock {
 	public BeanReferenceTemplatedFile() {
 		super();
 	}
-	
-	public void setNative( final boolean ignored ){
+
+	public void setNative(final boolean ignored) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -64,9 +64,9 @@ public class BeanReferenceTemplatedFile extends TemplatedFileCodeBlock {
 		Checker.notNull("parameter:id", id);
 		this.id = id;
 	}
-	
+
 	@Override
-	protected String getResourceName(){
+	protected String getResourceName() {
 		return Constants.TEMPLATE;
 	}
 
