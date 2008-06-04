@@ -34,22 +34,6 @@ public class WidgetConstants {
 
 	final static String EVEN_ROW = "evenRow";
 
-	// AUTO COMPLETE TEXT BOX
-	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	/**
-	 * This style is applied to the container element of a AutoCompleteTextBox
-	 * {@link AutoCompleteTextBox}
-	 */
-	final static String AUTO_COMPLETE_TEXT_BOX_STYLE = ROCKET + "-autoCompleteTextBox";
-
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_STYLE = AUTO_COMPLETE_TEXT_BOX_STYLE + "-dropDownList";
-
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_ODD_ROW_STYLE = ODD_ROW;
-
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_EVEN_ROW_STYLE = EVEN_ROW;
-
-	final static String AUTO_COMPLETE_TEXT_BOX_DROP_DOWN_LIST_SELECTED_STYLE = SELECTED;
-
 	// SORTABLE TABLE
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	/**
@@ -82,17 +66,6 @@ public class WidgetConstants {
 	final static String ZEBRA_FLEX_TABLE_ODD_ROW_STYLE = ODD_ROW;
 
 	final static String ZEBRA_FLEX_TABLE_EVEN_ROW_STYLE = EVEN_ROW;
-
-	// SPINNER
-	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	/**
-	 * This style is applied to the container element of a SpinnerWidget
-	 */
-	final static String SPINNER_STYLE = ROCKET + "-spinner";
-
-	final static String SPINNER_UP_STYLE = "up";
-
-	final static String SPINNER_DOWN_STYLE = "down";
 
 	// SPAN PANEL
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

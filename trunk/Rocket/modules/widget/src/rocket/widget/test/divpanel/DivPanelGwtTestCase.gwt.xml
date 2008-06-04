@@ -1,4 +1,6 @@
 <module>
 	<inherits name="com.google.gwt.junit.JUnit"/>
-	<inherits name="rocket.widget.Widget"/>
+	<inherits name="rocket.widget.Widget" />	
+
+	<source path="" />
 </module>

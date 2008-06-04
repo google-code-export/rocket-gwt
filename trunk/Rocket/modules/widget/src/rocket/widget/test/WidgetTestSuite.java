@@ -17,7 +17,12 @@ package rocket.widget.test;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import rocket.widget.test.divpanel.DivPanelGwtTestCase;
 import rocket.widget.test.htmltemplatefactory.client.HtmlTemplateFactoryGwtTestCase;
+import rocket.widget.test.hyperlinkpanel.HyperlinkPanelGwtTestCase;
+import rocket.widget.test.orderedlistpanel.OrderedListPanelGwtTestCase;
+import rocket.widget.test.spanpanel.SpanPanelGwtTestCase;
+import rocket.widget.test.unorderedlistpanel.UnorderedListPanelGwtTestCase;
 
 /**
  * TestSuite that executes all unit tests relating to the Widget module
@@ -33,6 +38,13 @@ public class WidgetTestSuite {
 	}
 
 	public static void addTests(TestSuite suite) {
+		suite.addTestSuite(DivPanelGwtTestCase.class);
+		suite.addTestSuite(OrderedListPanelGwtTestCase.class);
+		suite.addTestSuite(SpanPanelGwtTestCase.class);
+		suite.addTestSuite(UnorderedListPanelGwtTestCase.class);
+
+		suite.addTestSuite(HyperlinkPanelGwtTestCase.class);
+
 		suite.addTestSuite(HtmlTemplateFactoryGwtTestCase.class);
 	}
 }

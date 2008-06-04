@@ -54,7 +54,7 @@ public class MenuTest implements EntryPoint {
 			}
 		});
 
-		final RootPanel rootPanel = RootPanel.get();
+		final RootPanel rootPanel = RootPanel.get( "main");
 
 		final Counter menuOpenedEvent = this.createMouseOpenEvent();
 		this.setMouseOpenEvent(menuOpenedEvent);
@@ -85,7 +85,7 @@ public class MenuTest implements EntryPoint {
 		panel.setSize("90%", "500px");
 		rootPanel.add(panel);
 
-		Widgets.forceDocumentContentsToScroll(500);
+		rootPanel.getElement().scrollIntoView();
 	}
 
 	protected Widget createDownOpeningMenu() {

@@ -52,14 +52,14 @@ public class SplitterPanelTest implements EntryPoint {
 			}
 		});
 
-		final RootPanel root = RootPanel.get();
-		root.add(this.createHorizontalSplitterPanelListView());
-		root.add(this.createHorizontalSplitterPanel());
+		final RootPanel rootPanel = RootPanel.get( "main");
+		rootPanel.add(this.createHorizontalSplitterPanelListView());
+		rootPanel.add(this.createHorizontalSplitterPanel());
 
-		root.add(this.createVerticalSplitterPanelListView());
-		root.add(this.createVerticalSplitterPanel());
+		rootPanel.add(this.createVerticalSplitterPanelListView());
+		rootPanel.add(this.createVerticalSplitterPanel());
 
-		Widgets.forceDocumentContentsToScroll(100);
+		rootPanel.getElement().scrollIntoView();
 	}
 
 	HorizontalSplitterPanel horizontalSplitterPanel;

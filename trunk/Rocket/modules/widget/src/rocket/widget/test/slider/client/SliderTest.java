@@ -56,7 +56,7 @@ public class SliderTest implements EntryPoint {
 			}
 		});
 
-		final RootPanel rootPanel = RootPanel.get();
+		final RootPanel rootPanel = RootPanel.get( "main");
 
 		final Grid grid = new Grid(4, 3);
 		grid.setCellPadding(2);
@@ -74,7 +74,7 @@ public class SliderTest implements EntryPoint {
 		this.buildVerticalSlider(grid);
 		this.buildFloatingSlider(grid);
 
-		Widgets.forceDocumentContentsToScroll(100);
+		rootPanel.getElement().scrollIntoView();
 	}
 
 	void buildFloatingSlider(final Grid grid) {
