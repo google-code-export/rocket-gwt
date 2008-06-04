@@ -15,7 +15,6 @@
  */
 package rocket.widget.client;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.impl.FocusImpl;
 
@@ -40,15 +39,15 @@ abstract class FocusWidget extends Widget {
 	}
 
 	public boolean isEnabled() {
-		return !DOM.getElementPropertyBoolean(getElement(), "disabled");
+		return !getElement().getPropertyBoolean( "disabled");
 	}
 
 	public void setEnabled(boolean enabled) {
-		DOM.setElementPropertyBoolean(getElement(), "disabled", !enabled);
+		getElement().setPropertyBoolean("disabled", !enabled);
 	}
 
 	public void setAccessKey(final char key) {
-		DOM.setElementProperty(getElement(), "accessKey", "" + key);
+		getElement().setPropertyString("accessKey", "" + key);
 	}
 
 	public void setFocus(final boolean focused) {
@@ -62,11 +61,11 @@ abstract class FocusWidget extends Widget {
 	}
 
 	public String getName() {
-		return DOM.getElementProperty(getElement(), "name");
+		return getElement().getPropertyString("name");
 	}
 
 	public void setName(String name) {
-		DOM.setElementProperty(getElement(), "name", name);
+		getElement().setPropertyString("name", name);
 	}
 
 	public int getTabIndex() {

@@ -173,7 +173,7 @@ abstract public class Widget extends com.google.gwt.user.client.ui.Widget implem
 		final Element original = this.getElement();
 		final Element target = this.getSunkEventsTarget();
 
-		if (false == DOM.compare(original, target)) {
+		if (original != target) {
 			DOM.sinkEvents(original, 0);
 		}
 		final int mask = this.getSunkEventsBitMask();
