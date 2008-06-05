@@ -458,7 +458,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 			return this.getImage().getHeight(null);
 		}
 
-		// FIXME Must find a better way to determine the mime type of an image.
+		// TODO Must find a better way to determine the mime type of an image.
 		public String getMimeType() {
 			String mimeType = null;
 
