@@ -21,7 +21,6 @@ import java.util.Iterator;
 import rocket.testing.client.InteractiveList;
 import rocket.util.client.Checker;
 import rocket.util.client.StackTrace;
-import rocket.widget.client.Widgets;
 import rocket.widget.client.splitter.HorizontalSplitterPanel;
 import rocket.widget.client.splitter.SplitterItem;
 import rocket.widget.client.splitter.VerticalSplitterPanel;

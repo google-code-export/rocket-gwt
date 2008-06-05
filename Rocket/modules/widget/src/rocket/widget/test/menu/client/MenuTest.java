@@ -18,7 +18,6 @@ package rocket.widget.test.menu.client;
 import rocket.util.client.Checker;
 import rocket.widget.client.Html;
 import rocket.widget.client.Label;
-import rocket.widget.client.Widgets;
 import rocket.widget.client.menu.ContextMenu;
 import rocket.widget.client.menu.ContextMenuOpenEvent;
 import rocket.widget.client.menu.HorizontalMenuBar;

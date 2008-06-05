@@ -21,7 +21,6 @@ import rocket.style.client.Css;
 import rocket.style.client.InlineStyle;
 import rocket.util.client.StackTrace;
 import rocket.widget.client.Image;
-import rocket.widget.client.Widgets;
 import rocket.widget.client.slider.FloatingSlider;
 import rocket.widget.client.slider.HorizontalSlider;
 import rocket.widget.client.slider.VerticalSlider;
