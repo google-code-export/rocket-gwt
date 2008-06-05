@@ -21,8 +21,8 @@ import rocket.beans.test.generator.beanreference.Bean;
 /**
  * @factoryBean-objectType rocket.beans.test.generator.beanreference.Bean
  */
-public class FactoryBeanImpl implements FactoryBean {
-	public Object getObject() {
+public class FactoryBeanImpl implements FactoryBean<Bean> {
+	public Bean getObject() {
 		return new Bean();
 	}
 

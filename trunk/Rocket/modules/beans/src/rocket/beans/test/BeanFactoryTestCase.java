@@ -410,13 +410,13 @@ public class BeanFactoryTestCase extends TestCase {
 		}
 	}
 
-	static FactoryBean createPrototypeFactoryBean() {
-		return new PrototypeFactoryBean() {
-			protected Object createInstance() {
+	static FactoryBean<Prototype> createPrototypeFactoryBean() {
+		return new PrototypeFactoryBean<Prototype>() {
+			protected Prototype createInstance() {
 				return new Prototype();
 			}
 
-			protected void satisfyProperties(Object instance) {
+			protected void satisfyProperties(Prototype instance) {
 			}
 		};
 	}

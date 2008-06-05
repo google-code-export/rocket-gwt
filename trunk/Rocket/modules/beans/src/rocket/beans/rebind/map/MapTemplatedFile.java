@@ -102,15 +102,16 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
+			@SuppressWarnings("unchecked")
 			protected Collection getCollection() {
 				return entries.entrySet();
 			}
 
 			@Override
 			protected void prepareToWrite(final Object element) {
-				final Map.Entry entry = (Map.Entry) element;
-				template.setKey((String) entry.getKey());
-				template.setValue((Value) entry.getValue());
+				final Map.Entry<String,Value> entry = (Map.Entry<String,Value>) element;
+				template.setKey(entry.getKey());
+				template.setValue(entry.getValue());
 			}
 
 			@Override

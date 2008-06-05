@@ -25,7 +25,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-public abstract class IteratorWrapper<E> implements Iterator {
+public abstract class IteratorWrapper<E> implements Iterator<E> {
 	/**
 	 * The iterator being wrapped.
 	 */

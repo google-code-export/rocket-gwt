@@ -35,6 +35,7 @@ public class JavaVoidClassTypeAdapter extends VoidPrimitiveType {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		return Void.TYPE;
 	}

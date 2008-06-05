@@ -163,6 +163,7 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		return this.createJavaClassTypeAdapter(name);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Type createJavaClassTypeAdapter(final String name) {
 		JavaClassTypeAdapter adapter = null;
 

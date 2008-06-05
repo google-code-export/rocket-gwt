@@ -30,7 +30,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		list.add("banana");
 		list.add(new Integer(2));
 
-		final TestSkippingIterator iterator = new TestSkippingIterator();
+		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
 		assertTrue(iterator.hasNext());
@@ -44,7 +44,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		list.add("banana");
 		list.add("carrot");
 
-		final TestSkippingIterator iterator = new TestSkippingIterator();
+		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
 		assertTrue(iterator.hasNext());
@@ -58,7 +58,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		list.add("banana");
 		list.add("carrot");
 
-		final TestSkippingIterator iterator = new TestSkippingIterator();
+		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
 		assertTrue(iterator.hasNext());
@@ -74,7 +74,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		list.add("banana");
 		list.add("carrot");
 
-		final TestSkippingIterator iterator = new TestSkippingIterator();
+		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
 		assertTrue(iterator.hasNext());
@@ -103,7 +103,7 @@ public class SkippingIteratorTestCase extends TestCase {
 
 		final Iterator expectedIterator = expected.iterator();
 
-		final TestSkippingIterator iterator = new TestSkippingIterator();
+		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
 		assertTrue(iterator.hasNext());
@@ -137,7 +137,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		list.add("zebra");
 		expected.add("zebra");
 
-		final TestSkippingIterator iterator = new TestSkippingIterator();
+		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
 		final Iterator expectedIterator = expected.iterator();
@@ -172,7 +172,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		list.add("zebra");
 		expected.add("zebra");
 
-		final TestSkippingIterator iterator = new TestSkippingIterator();
+		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
 		final Iterator expectedIterator = expected.iterator();
@@ -198,8 +198,8 @@ public class SkippingIteratorTestCase extends TestCase {
 	 * @author Miroslav Pokorny (mP)
 	 * 
 	 */
-	class TestSkippingIterator extends SkippingIterator {
-		public boolean skip(final Object visit) {
+	class TestSkippingIterator<E> extends SkippingIterator<E> {
+		public boolean skip(final E visit) {
 			return !(visit instanceof String);
 		}
 	}

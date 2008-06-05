@@ -35,6 +35,7 @@ public class JavaBooleanClassTypeAdapter extends BooleanPrimitiveType {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		return Boolean.TYPE;
 	}

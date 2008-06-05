@@ -22,10 +22,10 @@ package rocket.beans.client;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class PrototypeFactoryBean extends SingletonOrPrototypeFactoryBean implements FactoryBean {
+abstract public class PrototypeFactoryBean<T> extends SingletonOrPrototypeFactoryBean<T> implements FactoryBean<T> {
 
-	public Object getObject() {
-		Object object = null;
+	public T getObject() {
+		T object = null;
 		try {
 			object = this.createObject();
 			this.postCreate(object);
@@ -48,11 +48,11 @@ abstract public class PrototypeFactoryBean extends SingletonOrPrototypeFactoryBe
 	 * @return
 	 * @throws Exception
 	 */
-	protected Object getObject(final Object object) throws Exception {
-		Object returned = object;
+	protected T getObject(final T object) throws Exception {
+		T returned = object;
 
 		if (returned instanceof FactoryBean) {
-			final FactoryBean factoryBean = (FactoryBean) object;
+			final FactoryBean<T> factoryBean = (FactoryBean) object;
 			returned = factoryBean.getObject();
 		}
 

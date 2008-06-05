@@ -26,7 +26,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class VisitedRememberingIterator<E> extends IteratorWrapper<E> implements Iterator {
+public class VisitedRememberingIterator<E> extends IteratorWrapper<E> implements Iterator<E> {
 
 	// ITERATOR
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -57,6 +57,7 @@ public class VisitedRememberingIterator<E> extends IteratorWrapper<E> implements
 	 * The object that was last visited ie the object returned by the last call
 	 * to {@link #next}
 	 */
+	@SuppressWarnings(value={"unchecked"})
 	private E lastVisited = (E) LAST_VISITED_SET;
 
 	public E getLastVisited() {
@@ -72,6 +73,7 @@ public class VisitedRememberingIterator<E> extends IteratorWrapper<E> implements
 		this.lastVisited = lastVisited;
 	}
 
+	@SuppressWarnings(value={"unchecked"})
 	public void clearLastVisited() {
 		this.lastVisited = (E) LAST_VISITED_SET;
 	}

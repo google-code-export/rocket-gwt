@@ -51,6 +51,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * considered a very simple rough report. The layout isnt flash but the stats
  * are an interesting read.
  */
+@SuppressWarnings("unchecked")
 public class SerializationBenchmarker implements EntryPoint {
 
 	final int DELAY = 60 * 1000;

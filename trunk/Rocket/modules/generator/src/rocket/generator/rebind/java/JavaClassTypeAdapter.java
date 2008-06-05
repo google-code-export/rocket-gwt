@@ -43,6 +43,7 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return JavaAdapterHelper.getVisibility(this.getJavaClass().getModifiers());
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Set<Constructor> createConstructors() {
 		final GeneratorContext context = this.getGeneratorContext();
 
@@ -143,6 +144,7 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return this.getJavaClass().getSimpleName();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Type getSuperType() {
 		final Class superClass = this.getJavaClass().getSuperclass();
 		return null == superClass ? null : this.getType(superClass.getName());
@@ -156,6 +158,7 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return this.getJavaClass().isArray();
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean isAssignableFrom(final Type type) {
 		final JavaClassTypeAdapter adapter = (JavaClassTypeAdapter) type;
 		return this.getJavaClass().isAssignableFrom(adapter.getJavaClass());
@@ -188,13 +191,16 @@ public class JavaClassTypeAdapter extends AbstractType {
 	/**
 	 * The source java class
 	 */
+	@SuppressWarnings("unchecked")
 	protected Class javaClass;
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		Checker.notNull("field:type", javaClass);
 		return this.javaClass;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setJavaClass(final Class javaClass) {
 		Checker.notNull("parameter:type", javaClass);
 		this.javaClass = javaClass;

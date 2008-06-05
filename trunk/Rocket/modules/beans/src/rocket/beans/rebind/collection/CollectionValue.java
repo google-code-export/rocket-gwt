@@ -37,14 +37,14 @@ abstract public class CollectionValue extends AbstractValue implements Value {
 	/**
 	 * A elements that accumulates elements elements.
 	 */
-	private Collection elements;
+	private Collection<Value> elements;
 
-	public Collection getElements() {
+	public Collection<Value> getElements() {
 		Checker.notNull("field:elements", elements);
 		return this.elements;
 	}
 
-	public void setElements(final Collection elements) {
+	public void setElements(final Collection<Value> elements) {
 		Checker.notNull("parameter:elements", elements);
 		this.elements = elements;
 	}

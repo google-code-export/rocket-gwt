@@ -35,6 +35,7 @@ public class JavaCharClassTypeAdapter extends BytePrimitiveType {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		return Character.TYPE;
 	}

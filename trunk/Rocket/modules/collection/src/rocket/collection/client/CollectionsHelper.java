@@ -37,7 +37,7 @@ public class CollectionsHelper {
 	 * @param iterator
 	 *            The iterator being cleared
 	 */
-	public static void removeAll(final Iterator iterator) {
+	public static void removeAll(final Iterator<? extends Object> iterator) {
 		Checker.notNull("parameter:iterator", iterator);
 
 		while (iterator.hasNext()) {
@@ -53,7 +53,7 @@ public class CollectionsHelper {
 	 *            The source
 	 * @return The new array containing the values
 	 */
-	public static Object[] copyIntoArray(final Iterator iterator) {
+	public static <T> Object[] copyIntoArray(final Iterator<T> iterator) {
 		return CollectionsHelper.copyIntoList(iterator).toArray();
 	}
 
@@ -64,10 +64,10 @@ public class CollectionsHelper {
 	 *            The source
 	 * @return The filled List
 	 */
-	public static List copyIntoList(final Iterator iterator) {
+	public static <T> List<T> copyIntoList(final Iterator<T> iterator) {
 		Checker.notNull("parameter:iterator", iterator);
 
-		final List list = new ArrayList();
+		final List<T> list = new ArrayList<T>();
 		while (iterator.hasNext()) {
 			list.add(iterator.next());
 		}
@@ -83,14 +83,14 @@ public class CollectionsHelper {
 	 *            The value being searched for
 	 * @return The key or null if value is not present in the parameter:map
 	 */
-	public static Object getKey(final Map map, final Object value) {
+	public static <K,V> K getKey(final Map<K,V> map, final V value) {
 		Checker.notNull("parameter:map", map);
 		Checker.notNull("parameter:value", value);
 
-		Object key = null;
-		final Iterator entries = map.entrySet().iterator();
+		K key = null;
+		final Iterator<Map.Entry<K,V>> entries = map.entrySet().iterator();
 		while (entries.hasNext()) {
-			final Map.Entry entry = (Map.Entry) entries.next();
+			final Map.Entry<K,V> entry = entries.next();
 			if (value == entry.getValue()) {
 				key = entry.getKey();
 				break;

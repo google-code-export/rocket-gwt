@@ -74,15 +74,15 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * objects.
 	 */
 	protected void prepareFactoryBeans() {
-		final Iterator iterator = this.getFactoryBeans().entrySet().iterator();
+		final Iterator<Map.Entry<String,FactoryBean>> iterator = this.getFactoryBeans().entrySet().iterator();
 		while (iterator.hasNext()) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
+			final Map.Entry<String,FactoryBean> entry = iterator.next();
 
-			final Object factoryBean = entry.getValue();
+			final FactoryBean factoryBean = entry.getValue();
 
 			if (factoryBean instanceof BeanNameAware) {
 				final BeanNameAware beanNameAware = (BeanNameAware) factoryBean;
-				beanNameAware.setBeanName((String) entry.getKey());
+				beanNameAware.setBeanName(entry.getKey());
 			}
 
 			if (factoryBean instanceof BeanFactoryAware) {
@@ -101,7 +101,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	protected void registerAliases() {
 		final String aliasesToBeans = this.getAliasesToBeans();
 		final String[] tokens = Utilities.split(aliasesToBeans, ",", true);
-		final Map factoryBeans = this.getFactoryBeans();
+		final Map<String,FactoryBean> factoryBeans = this.getFactoryBeans();
 
 		for (int i = 0; i < tokens.length; i++) {
 			final String token = tokens[i];
@@ -151,20 +151,20 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * This map consists of all the bean factories that will return bean
 	 * instances.
 	 */
-	private Map factoryBeans;
+	private Map<String,FactoryBean> factoryBeans;
 
-	protected Map getFactoryBeans() {
+	protected Map<String,FactoryBean> getFactoryBeans() {
 		Checker.notNull("field:factoryBeans", factoryBeans);
 		return this.factoryBeans;
 	}
 
-	protected void setFactoryBeans(final Map factoryBeans) {
+	protected void setFactoryBeans(final Map<String,FactoryBean> factoryBeans) {
 		Checker.notNull("parameter:factoryBeans", factoryBeans);
 		this.factoryBeans = factoryBeans;
 	}
 
-	protected Map createFactoryBeans() {
-		return new HashMap();
+	protected Map<String,FactoryBean> createFactoryBeans() {
+		return new HashMap<String,FactoryBean>();
 	}
 
 	public Object getBean(final String name) {
@@ -224,11 +224,11 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * This method is only public for testing purposes.
 	 */
 	public void shutdown() {
-		final Iterator factoryBeans = this.getFactoryBeans().entrySet().iterator();
+		final Iterator<Map.Entry<String,FactoryBean>> factoryBeans = this.getFactoryBeans().entrySet().iterator();
 		while (factoryBeans.hasNext()) {
-			final Map.Entry entry = (Map.Entry) factoryBeans.next();
-			final String beanName = (String) entry.getKey();
-			final FactoryBean factoryBean = (FactoryBean) entry.getValue();
+			final Map.Entry<String,FactoryBean> entry = factoryBeans.next();
+			final String beanName = entry.getKey();
+			final FactoryBean factoryBean = entry.getValue();
 
 			if (factoryBean instanceof DisposableBean) {
 				this.shutdownSingleton(beanName, factoryBean);

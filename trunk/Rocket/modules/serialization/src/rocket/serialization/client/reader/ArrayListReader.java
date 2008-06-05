@@ -30,7 +30,8 @@ import rocket.serialization.client.ObjectReader;
 public class ArrayListReader extends AbstractCollectionReader {
 	static public final ObjectReader instance = new ArrayListReader();
 
+	@SuppressWarnings(value={"unchecked"})
 	public Object newInstance(String typeName, ObjectInputStream objectInputStream) {
-		return new ArrayList<Object>();
+		return new ArrayList();
 	}
 }

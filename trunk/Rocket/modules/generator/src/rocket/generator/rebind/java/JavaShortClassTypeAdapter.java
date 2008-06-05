@@ -35,6 +35,7 @@ public class JavaShortClassTypeAdapter extends ShortPrimitiveType {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		return Short.TYPE;
 	}

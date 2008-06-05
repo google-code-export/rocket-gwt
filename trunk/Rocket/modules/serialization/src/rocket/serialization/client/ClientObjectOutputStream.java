@@ -17,7 +17,6 @@ package rocket.serialization.client;
 
 import rocket.util.client.Checker;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**

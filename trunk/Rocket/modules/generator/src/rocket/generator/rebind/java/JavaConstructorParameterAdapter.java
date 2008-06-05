@@ -30,6 +30,7 @@ import rocket.util.client.Checker;
  */
 public class JavaConstructorParameterAdapter extends AbstractConstructorParameter implements ConstructorParameter {
 
+	@SuppressWarnings("unchecked")
 	protected Set<Type> createThrownTypes() {
 		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaConstructor().getExceptionTypes());
 	}

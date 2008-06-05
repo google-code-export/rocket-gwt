@@ -26,6 +26,7 @@ import rocket.beans.client.SingletonFactoryBean;
 import rocket.beans.client.UnableToFindBeanException;
 import rocket.beans.client.aop.ProxyFactoryBean;
 
+@SuppressWarnings("unchecked")
 public class ProxyFactoryBeanTestCase extends TestCase {
 
 	final static String BEAN = "bean";
@@ -176,16 +177,16 @@ public class ProxyFactoryBeanTestCase extends TestCase {
 	}
 
 	SingletonFactoryBean createSingletonFactoryBean() {
-		return new SingletonFactoryBean() {
-			protected Object createInstance() {
+		return new SingletonFactoryBean<Target>() {
+			protected Target createInstance() {
 				return new Target();
 			}
 		};
 	}
 
 	PrototypeFactoryBean createPrototypeFactoryBean() {
-		return new PrototypeFactoryBean() {
-			protected Object createInstance() {
+		return new PrototypeFactoryBean<Target>() {
+			protected Target createInstance() {
 				return new Target();
 			}
 		};

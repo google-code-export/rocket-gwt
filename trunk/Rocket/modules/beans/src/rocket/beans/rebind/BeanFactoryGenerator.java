@@ -395,16 +395,16 @@ public class BeanFactoryGenerator extends Generator {
 	 *            A list of bean tag elements straight from any included xml
 	 *            documents.
 	 */
-	protected void overrideAllFactoryBeanCreateInstances(final Set beans) {
+	protected void overrideAllFactoryBeanCreateInstances(final Set<Bean> beans) {
 		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		context.info("Overriding createInstance methods for all bean(s).");
 
-		final Iterator iterator = beans.iterator();
+		final Iterator<Bean> iterator = beans.iterator();
 		while (iterator.hasNext()) {
-			final Bean bean = (Bean) iterator.next();
+			final Bean bean = iterator.next();
 			context.branch();
 			context.debug(bean.getId());
 
@@ -581,7 +581,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param constructorValues
 	 *            A list containing the matching constructors.
 	 */
-	protected void throwTooManyConstructors(final Bean bean, final List constructorValues) {
+	protected void throwTooManyConstructors(final Bean bean, final List<Constructor> constructorValues) {
 		throw new BeanFactoryGeneratorException("Found more than one constructor that matches the specified constructor arguments: "
 				+ constructorValues + ", bean: " + bean);
 	}
@@ -650,16 +650,16 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param beans
 	 *            The beans
 	 */
-	protected void overrideAllFactoryBeanSatisfyInits(final Set beans) {
+	protected void overrideAllFactoryBeanSatisfyInits(final Set<Bean> beans) {
 		Checker.notNull("parameter:beans", beans);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.delayedBranch();
 		context.info("Overriding satisfyInit methods for beans with custom initMethods.");
 
-		final Iterator iterator = beans.iterator();
+		final Iterator<Bean> iterator = beans.iterator();
 		while (iterator.hasNext()) {
-			final Bean bean = (Bean) iterator.next();
+			final Bean bean = iterator.next();
 			final String initMethodName = bean.getInitMethod();
 
 			if (false == Tester.isNullOrEmpty(initMethodName)) {
@@ -985,7 +985,7 @@ public class BeanFactoryGenerator extends Generator {
 	}
 
 	protected void throwTooManySettersFound(final Bean bean, final Property property) {
-		final String name = property.getName();
+		//final String name = property.getName();
 		final Value value = property.getValue();
 		throw new BeanFactoryGeneratorException("The bean \"" + bean.getId() + "\" contains more than one setter for the property "
 				+ property + " with a value of " + value + " on type \"" + bean.getTypeName() + "\".");
@@ -993,7 +993,7 @@ public class BeanFactoryGenerator extends Generator {
 
 	protected void throwUnableToFindSetter(final Bean bean, final Property property) {
 		final String name = property.getName();
-		final Value value = property.getValue();
+		//final Value value = property.getValue();
 		throw new BeanFactoryGeneratorException("Unable to find a setter for the property \"" + name + "\" on the bean \""
 				+ bean.getId() + "\" which is a \"" + bean.getTypeName() + "\".");
 	}
@@ -1271,16 +1271,16 @@ public class BeanFactoryGenerator extends Generator {
 	 *            A set containing all the aliases encountered in all combined
 	 *            xml documents.
 	 */
-	protected void recordAliases(final Set aliases) {
+	protected void recordAliases(final Set<Alias> aliases) {
 		Checker.notNull("parameter:aliases", aliases);
 
 		final GeneratorContext context = this.getGeneratorContext();
 		context.branch();
 		context.info("Processing all alias (" + aliases.size() + ") tags.");
 
-		final Iterator iterator = aliases.iterator();
+		final Iterator<Alias> iterator = aliases.iterator();
 		while (iterator.hasNext()) {
-			final Alias alias = (Alias) iterator.next();
+			final Alias alias = iterator.next();
 			final String name = alias.getName();
 			final String bean = alias.getBean();
 
@@ -1512,12 +1512,12 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Set<Bean> advised = new HashSet<Bean>();
 
-		final Map beans = this.getBeans();
+		final Map<String,Bean> beans = this.getBeans();
 		final Iterator<Bean> beansIterator = beans.values().iterator();
 
 		while (beansIterator.hasNext()) {
 			final Bean bean = beansIterator.next();
-			final List aspectss = bean.getAspects();
+			final List<Aspect> aspectss = bean.getAspects();
 			if (aspectss.isEmpty()) {
 				context.debug(bean.getId());
 				continue;
@@ -1711,7 +1711,7 @@ public class BeanFactoryGenerator extends Generator {
 	 * @param aspects
 	 *            A list of aspects for this method
 	 */
-	protected void createProxyMethodWithInterceptors(final NewNestedType proxy, final Method method, final List aspects) {
+	protected void createProxyMethodWithInterceptors(final NewNestedType proxy, final Method method, final List<Aspect> aspects) {
 		Checker.notNull("parameter:proxy", proxy);
 		Checker.notNull("parameter:method", method);
 		Checker.notNull("parameter:advices", aspects);
@@ -1847,8 +1847,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 
 		final NewType beanFactory = this.getBeanFactory();
-		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.REGISTER_FACTORY_BEANS,
-				Collections.EMPTY_LIST);
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.REGISTER_FACTORY_BEANS, Collections.EMPTY_LIST);
 
 		final NewMethod newMethod = abstractMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
@@ -1887,8 +1886,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 
 		final NewType beanFactory = this.getBeanFactory();
-		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_ALIASES_TO_BEANS_METHOD,
-				Collections.EMPTY_LIST);
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_ALIASES_TO_BEANS_METHOD, Collections.EMPTY_LIST);
 
 		final NewMethod newMethod = abstractMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
@@ -1901,11 +1899,11 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 		context.info("Overriding " + newMethod + " to register all aliases.");
 
-		final Iterator beansIterator = this.getAliases().values().iterator();
+		final Iterator<Alias> beansIterator = this.getAliases().values().iterator();
 		int aliasCount = 0;
 
 		while (beansIterator.hasNext()) {
-			final Alias alias = (Alias) beansIterator.next();
+			final Alias alias = beansIterator.next();
 			final String from = alias.getName();
 			final String to = alias.getBean();
 			body.register(from, to);
@@ -1948,7 +1946,7 @@ public class BeanFactoryGenerator extends Generator {
 		int eagerSingletonBeanCount = 0;
 		int lazySingletonBeanCount = 0;
 
-		final Iterator beansIterator = beans.values().iterator();
+		final Iterator<Bean> beansIterator = beans.values().iterator();
 		while (beansIterator.hasNext()) {
 			final Bean bean = (Bean) beansIterator.next();
 
@@ -1996,14 +1994,14 @@ public class BeanFactoryGenerator extends Generator {
 	 * A map that contains all the NewType factory beans for each defined bean
 	 * keyed on the bean's id.
 	 */
-	private Map beans;
+	private Map<String,Bean> beans;
 
-	public Map getBeans() {
+	public Map<String,Bean> getBeans() {
 		Checker.notNull("field:beans", beans);
 		return this.beans;
 	}
 
-	protected void setBeans(final Map beans) {
+	protected void setBeans(final Map<String,Bean> beans) {
 		Checker.notNull("parameter:beans", beans);
 		this.beans = beans;
 	}
@@ -2014,8 +2012,8 @@ public class BeanFactoryGenerator extends Generator {
 	 * 
 	 * @return A map
 	 */
-	protected Map<String, Bean> createBeans() {
-		return new TreeMap<String, Bean>(String.CASE_INSENSITIVE_ORDER);
+	protected Map<String,Bean> createBeans() {
+		return new TreeMap<String,Bean>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	protected void checkIdIsUnique(final Bean bean) {
@@ -2113,20 +2111,20 @@ public class BeanFactoryGenerator extends Generator {
 	 * A map that contains all the NewType factory aliases for each defined
 	 * alias keyed on the alias's id.
 	 */
-	private Map aliases;
+	private Map<String,Alias> aliases;
 
-	public Map getAliases() {
+	public Map<String,Alias> getAliases() {
 		Checker.notNull("field:aliases", aliases);
 		return this.aliases;
 	}
 
-	protected void setAliases(final Map aliases) {
+	protected void setAliases(final Map<String,Alias> aliases) {
 		Checker.notNull("parameter:aliases", aliases);
 		this.aliases = aliases;
 	}
 
-	protected Map createAliases() {
-		return new HashMap();
+	protected Map<String,Alias> createAliases() {
+		return new HashMap<String,Alias>();
 	}
 
 	protected void checkAlias(final Alias alias) {

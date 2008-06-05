@@ -35,6 +35,7 @@ public class JavaLongClassTypeAdapter extends LongPrimitiveType {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		return Long.TYPE;
 	}

@@ -17,7 +17,6 @@ package rocket.remoting.test.webrequest.client;
 
 import java.util.List;
 
-import rocket.dom.client.Dom;
 import rocket.remoting.client.Headers;
 import rocket.remoting.client.RequestParameters;
 import rocket.remoting.client.WebRequest;

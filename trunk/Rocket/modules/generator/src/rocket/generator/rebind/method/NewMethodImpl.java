@@ -230,7 +230,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 
 		this.writeComments(writer);
 
-		// FIXME HACK HACK - get rid of this when everything hass been moved
+		// FIXME HACK HACK - get rid of this when proper annotations are supported via a fascade for the GWT classes
 		// over to proper annotations.
 		writer.println("@com.google.gwt.core.client.UnsafeNativeLong");
 

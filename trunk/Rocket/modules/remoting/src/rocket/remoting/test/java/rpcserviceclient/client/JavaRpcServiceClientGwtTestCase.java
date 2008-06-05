@@ -43,11 +43,11 @@ public class JavaRpcServiceClientGwtTestCase extends GWTTestCase {
 		final Payload payload = new Payload();
 		payload.value = 123;
 
-		client.echo(payload, new AsyncCallback() {
-			public void onSuccess(final Object result) {
+		client.echo(payload, new AsyncCallback<Payload>() {
+			public void onSuccess(final Payload result) {
 				assertTrue("" + result, result instanceof Payload);
 
-				final Payload payloadResult = (Payload) result;
+				final Payload payloadResult = result;
 				assertEquals("" + result, payload, payloadResult);
 				finishTest();
 			}
@@ -68,7 +68,7 @@ public class JavaRpcServiceClientGwtTestCase extends GWTTestCase {
 		final Payload payload = new Payload();
 		payload.value = 123;
 
-		client.echo(payload, new AsyncCallback() {
+		client.echo(payload, new AsyncCallback<Object>() {
 			public void onSuccess(final Object result) {
 				fail("This rpc should have failed because the service entry point is invalid, and not have returned: " + result);
 			}
@@ -85,7 +85,7 @@ public class JavaRpcServiceClientGwtTestCase extends GWTTestCase {
 		final ServiceAsync client = this.createClient();
 		((ServiceDefTarget) client).setServiceEntryPoint(SERVICE_ENTRY_POINT);
 
-		client.throwsDeclaredException(new AsyncCallback() {
+		client.throwsDeclaredException(new AsyncCallback<Object>() {
 			public void onSuccess(final Object result) {
 				fail("This rpc should have failed because the server service method threw an declared exception.");
 			}
@@ -103,7 +103,7 @@ public class JavaRpcServiceClientGwtTestCase extends GWTTestCase {
 		final ServiceAsync client = this.createClient();
 		((ServiceDefTarget) client).setServiceEntryPoint(SERVICE_ENTRY_POINT);
 
-		client.throwsUndeclaredException(new AsyncCallback() {
+		client.throwsUndeclaredException(new AsyncCallback<Object>() {
 			public void onSuccess(final Object result) {
 				fail("This rpc should have failed because the server service method threw an undeclared exception.");
 			}
@@ -121,7 +121,7 @@ public class JavaRpcServiceClientGwtTestCase extends GWTTestCase {
 		final ServiceAsync client = this.createClient();
 		((ServiceDefTarget) client).setServiceEntryPoint(SERVICE_ENTRY_POINT);
 
-		client.returnsUnserializableType(new AsyncCallback() {
+		client.returnsUnserializableType(new AsyncCallback<Object>() {
 			public void onSuccess(final Object result) {
 				fail("This rpc should have failed because the server returned an unserializable type.");
 			}

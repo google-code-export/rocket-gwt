@@ -26,6 +26,7 @@ import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.method.AbstractMethod;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
+import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
@@ -46,6 +47,7 @@ public class JavaMethodMethodAdapter extends AbstractMethod implements Method {
 		return JavaAdapterHelper.getVisibility(this.getJavaMethod().getModifiers());
 	}
 
+	@SuppressWarnings("unchecked")
 	protected List<MethodParameter> createParameters() {
 		final GeneratorContext context = this.getGeneratorContext();
 		final List<MethodParameter> parameters = new ArrayList<MethodParameter>();
@@ -66,7 +68,8 @@ public class JavaMethodMethodAdapter extends AbstractMethod implements Method {
 		return parameters;
 	}
 
-	protected Set createThrownTypes() {
+	@SuppressWarnings("unchecked")
+	protected Set<Type> createThrownTypes() {
 		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaMethod().getExceptionTypes());
 	}
 
@@ -90,7 +93,7 @@ public class JavaMethodMethodAdapter extends AbstractMethod implements Method {
 		return Modifier.isStatic(this.getJavaMethod().getModifiers());
 	}
 
-	public List getMetadataValues(final String name) {
+	public List<String> getMetadataValues(final String name) {
 		return Collections.EMPTY_LIST;
 	}
 
@@ -106,6 +109,7 @@ public class JavaMethodMethodAdapter extends AbstractMethod implements Method {
 		this.javaMethod = javaMethod;
 	}
 
+	@Override
 	public String toString() {
 		return "Method: " + this.javaMethod;
 	}

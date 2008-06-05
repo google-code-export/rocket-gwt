@@ -35,6 +35,7 @@ public class JavaIntClassTypeAdapter extends IntPrimitiveType {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		return Integer.TYPE;
 	}

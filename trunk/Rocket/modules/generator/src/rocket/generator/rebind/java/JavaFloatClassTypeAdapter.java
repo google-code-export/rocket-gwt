@@ -35,6 +35,7 @@ public class JavaFloatClassTypeAdapter extends FloatPrimitiveType {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		return Float.TYPE;
 	}

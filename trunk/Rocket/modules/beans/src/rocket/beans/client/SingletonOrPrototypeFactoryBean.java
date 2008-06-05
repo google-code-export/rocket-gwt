@@ -24,7 +24,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAware, BeanNameAware {
+abstract public class SingletonOrPrototypeFactoryBean<T> implements BeanFactoryAware, BeanNameAware {
 
 	/**
 	 * Creates a new bean instance.
@@ -33,11 +33,11 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	 * @throws Exception
 	 *             any exception thrown whilst creating a new instance.
 	 */
-	protected Object createObject() throws Exception {
+	protected T createObject() throws Exception {
 		return this.createInstance();
 	}
 
-	protected void postCreate(final Object instance) throws Exception {
+	protected void postCreate(final T instance) throws Exception {
 		this.satisfyBeanFactoryAwareIfNecessary(instance);
 		this.satisfyBeanNameAwareIfNecessary(instance);
 		this.satisfyProperties(instance);
@@ -55,7 +55,7 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	 * @throws Exception
 	 *             any exception thrown when creating a new instance.
 	 */
-	abstract protected Object createInstance() throws Exception;
+	abstract protected T createInstance() throws Exception;
 
 	/**
 	 * This method must be implemented by sub-classes if the bean has properties
@@ -72,7 +72,7 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	 * @throws Exception
 	 *             any exception thrown by a setter.
 	 */
-	protected void satisfyProperties(final Object instance) throws Exception {
+	protected void satisfyProperties(final T instance) throws Exception {
 	}
 
 	/**
@@ -97,7 +97,7 @@ abstract public class SingletonOrPrototypeFactoryBean implements BeanFactoryAwar
 	 * 
 	 * @param instance
 	 */
-	protected void satisfyBeanNameAwareIfNecessary(Object instance) {
+	protected void satisfyBeanNameAwareIfNecessary(T instance) {
 		Checker.notNull("parameter:instance", instance);
 
 		if (instance instanceof BeanNameAware) {
