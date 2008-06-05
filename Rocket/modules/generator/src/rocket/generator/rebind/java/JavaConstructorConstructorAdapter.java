@@ -62,17 +62,21 @@ public class JavaConstructorConstructorAdapter extends AbstractConstructor imple
 		return parameters;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Set<Type> createThrownTypes() {
 		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaConstructor().getExceptionTypes());
 	}
 
+	@SuppressWarnings("unchecked")
 	private java.lang.reflect.Constructor javaConstructor;
 
+	@SuppressWarnings("unchecked")
 	public java.lang.reflect.Constructor getJavaConstructor() {
 		Checker.notNull("field:javaConstructor", javaConstructor);
 		return this.javaConstructor;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setJavaConstructor(final java.lang.reflect.Constructor javaConstructor) {
 		Checker.notNull("parameter:javaConstructor", javaConstructor);
 		this.javaConstructor = javaConstructor;

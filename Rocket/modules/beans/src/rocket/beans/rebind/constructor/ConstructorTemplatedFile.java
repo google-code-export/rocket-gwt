@@ -97,7 +97,7 @@ public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	protected CodeBlock getArgumentsAsCodeBlock() {
-		final List parameters = this.getArguments();
+		final List<Value> parameters = this.getArguments();
 		return new CollectionTemplatedCodeBlock() {
 
 			@Override
@@ -111,6 +111,7 @@ public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
+			@SuppressWarnings("unchecked")
 			protected Collection getCollection() {
 				return parameters;
 			}

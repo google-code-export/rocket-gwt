@@ -37,6 +37,7 @@ public class JavaPackagePackageAdapter extends AbstractPackage implements Packag
 		this.javaPackage = javaPackage;
 	}
 
+	@Override
 	public String toString() {
 		return "Package: " + this.javaPackage;
 	}

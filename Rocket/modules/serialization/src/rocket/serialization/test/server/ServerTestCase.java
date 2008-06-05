@@ -24,7 +24,6 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import rocket.serialization.client.ObjectInputStream;
-import rocket.serialization.client.ObjectReader;
 import rocket.serialization.server.ServerObjectInputStream;
 import rocket.serialization.server.ServerObjectReader;
 import rocket.serialization.server.ServerObjectWriter;

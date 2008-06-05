@@ -63,7 +63,7 @@ abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 
 	protected CodeBlock getElementsCodeBlock() {
 		final CollectionElementAddTemplatedFile template = new CollectionElementAddTemplatedFile();
-		final List elements = this.getElements();
+		final List<Value> elements = this.getElements();
 
 		return new CollectionTemplatedCodeBlock() {
 
@@ -78,6 +78,7 @@ abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
+			@SuppressWarnings("unchecked")
 			protected Collection getCollection() {
 				return elements;
 			}

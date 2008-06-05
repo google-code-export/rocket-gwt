@@ -24,7 +24,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBean implements FactoryBean, DisposableBean {
+abstract public class SingletonFactoryBean<T> extends SingletonOrPrototypeFactoryBean<T> implements FactoryBean<T>, DisposableBean {
 
 	public SingletonFactoryBean() {
 		super();
@@ -33,19 +33,19 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 	/**
 	 * The singleton instance.
 	 */
-	private Object object;
+	private T object;
 
-	public Object getObject() {
+	public T getObject() {
 		if (false == this.hasObject()) {
 
 			try {
-				final Object object = this.createObject();
+				final T object = this.createObject();
 				// Kind of a hack to make cycles between singletons work,
 				// potentially fails when one singleton is the product of a
 				// FactoryBean
 				this.setObject(object);
 				this.postCreate(object);
-				final Object returned = this.getObject(object);
+				final T returned = this.getObject(object);
 
 				if (returned != object) {
 					this.setObject(returned);
@@ -74,12 +74,13 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 	 * @return The final bean
 	 * @throws Exception
 	 */
-	protected Object getObject(final Object object) throws Exception {
-		Object returned = object;
+	@SuppressWarnings("unchecked")
+	protected T getObject(final T object) throws Exception {
+		T returned = object;
 
 		if (returned instanceof FactoryBean) {
 			// temp will be overridden when the true bean comes back.
-			final FactoryBean factoryBean = (FactoryBean) object;
+			final FactoryBean<T> factoryBean = (FactoryBean<T>) object;
 			returned = factoryBean.getObject();
 		}
 
@@ -90,7 +91,7 @@ abstract public class SingletonFactoryBean extends SingletonOrPrototypeFactoryBe
 		return null != this.object;
 	}
 
-	protected void setObject(final Object object) {
+	protected void setObject(final T object) {
 		Checker.notNull("parameter:object", object);
 		this.object = object;
 	}

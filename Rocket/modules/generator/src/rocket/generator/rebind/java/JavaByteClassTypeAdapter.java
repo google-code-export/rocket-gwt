@@ -35,6 +35,7 @@ public class JavaByteClassTypeAdapter extends BytePrimitiveType {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		return Byte.TYPE;
 	}

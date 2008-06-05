@@ -26,7 +26,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, BeanFactoryAware {
+abstract public class ProxyFactoryBean<T> implements FactoryBean<T>, BeanNameAware, BeanFactoryAware {
 
 	/**
 	 * Creates a new ProxyFactoryBean
@@ -40,15 +40,15 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	 * 
 	 * @return A new proxy
 	 */
-	public Object getObject() {
+	public T getObject() {
 		return this.isSingleton() ? this.getSingleton() : this.getPrototype();
 	}
 
-	protected Object getSingleton() {
+	protected T getSingleton() {
 		return this.getProxy();
 	}
 
-	protected Object getPrototype() {
+	protected T getPrototype() {
 		return this.createProxy();
 	}
 
@@ -65,9 +65,9 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	 * A cache copy of the proxy. Generated proxies are stateless and may be
 	 * cached.
 	 */
-	private Object proxy;
+	private T proxy;
 
-	protected Object getProxy() {
+	protected T getProxy() {
 		if (false == this.hasProxy()) {
 			this.setProxy(this.createProxy());
 		}
@@ -79,7 +79,7 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 		return null != this.proxy;
 	}
 
-	protected void setProxy(final Object proxy) {
+	protected void setProxy(final T proxy) {
 		Checker.notNull("parameter:proxy", proxy);
 		this.proxy = proxy;
 	}
@@ -90,9 +90,9 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	 * 
 	 * @return
 	 */
-	protected Object createProxy() {
+	protected T createProxy() {
 		final String name = this.getTargetBeanName();
-		final Object target = this.getBeanFactory().getBean(name);
+		final T target = (T)this.getBeanFactory().getBean(name);
 		return this.createProxy0(target);
 	}
 
@@ -113,7 +113,7 @@ abstract public class ProxyFactoryBean implements FactoryBean, BeanNameAware, Be
 	 *            target.
 	 * @return A new Proxy
 	 */
-	abstract protected Object createProxy0(Object target);
+	abstract protected T createProxy0(T target);
 
 	private BeanFactory beanFactory;
 

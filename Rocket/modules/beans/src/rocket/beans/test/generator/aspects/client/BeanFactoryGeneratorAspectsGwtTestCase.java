@@ -219,8 +219,8 @@ public class BeanFactoryGeneratorAspectsGwtTestCase extends GeneratorGwtTestCase
 
 		final BeanFactory factory = (BeanFactory) GWT.create(AdvisedRpcBeanFactory.class);
 		final AdvisedGwtRpcAsync proxy = (AdvisedGwtRpcAsync) factory.getBean(BEAN);
-		proxy.addStar(string, new AsyncCallback() {
-			public void onSuccess(final Object result) {
+		proxy.addStar(string, new AsyncCallback<String>() {
+			public void onSuccess(final String result) {
 				assertEquals(string + "*", result);
 
 				final InvokingCountingMethodInterceptor interceptor = (InvokingCountingMethodInterceptor) factory.getBean(ADVISOR);

@@ -29,7 +29,7 @@ import rocket.util.client.Checker;
  * @author Miroslav Pokorny
  */
 public class JavaMethodParameterAdapter extends AbstractMethodParameter implements MethodParameter {
-	protected Set createThrownTypes() {
+	protected Set<Type> createThrownTypes() {
 		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaMethod().getExceptionTypes());
 	}
 

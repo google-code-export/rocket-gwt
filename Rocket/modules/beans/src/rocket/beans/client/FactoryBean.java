@@ -23,12 +23,12 @@ package rocket.beans.client;
  * 
  * @author Miroslav Pokorny
  */
-public interface FactoryBean {
+public interface FactoryBean<T> {
 	/**
 	 * Returns either the singleton instance of create a new instance if the
 	 * bean is a prototype.
 	 */
-	Object getObject();
+	T getObject();
 
 	/**
 	 * Tests if the contained bean is a singleton.

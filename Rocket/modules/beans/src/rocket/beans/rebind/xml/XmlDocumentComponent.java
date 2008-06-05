@@ -24,7 +24,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import rocket.beans.rebind.placeholder.PlaceHolderResolver;
-import rocket.beans.rebind.value.Value;
 import rocket.util.client.Checker;
 import rocket.util.client.Tester;
 

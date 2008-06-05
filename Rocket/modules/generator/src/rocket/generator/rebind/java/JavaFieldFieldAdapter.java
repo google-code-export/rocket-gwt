@@ -67,7 +67,7 @@ public class JavaFieldFieldAdapter extends AbstractField {
 		return Modifier.isTransient(this.getJavaField().getModifiers());
 	}
 
-	public List getMetadataValues(String name) {
+	public List<String> getMetadataValues(String name) {
 		return null;
 	}
 

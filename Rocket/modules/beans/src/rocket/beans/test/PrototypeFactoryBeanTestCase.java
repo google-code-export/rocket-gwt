@@ -45,14 +45,14 @@ public class PrototypeFactoryBeanTestCase extends TestCase {
 		assertNotSame(first, second);
 	}
 
-	static class ClassWithStringPropertyPrototypeFactoryBean extends PrototypeFactoryBean {
+	static class ClassWithStringPropertyPrototypeFactoryBean extends PrototypeFactoryBean<ClassWithStringProperty> {
 
-		protected Object createInstance() {
+		protected ClassWithStringProperty createInstance() {
 			return new ClassWithStringProperty();
 		}
 
-		protected void satisfyProperties(Object instance) {
-			this.satisfyProperties0((ClassWithStringProperty) instance);
+		protected void satisfyProperties(ClassWithStringProperty instance) {
+			this.satisfyProperties0( instance);
 		}
 
 		protected void satisfyProperties0(final ClassWithStringProperty instance) {
@@ -75,19 +75,23 @@ public class PrototypeFactoryBeanTestCase extends TestCase {
 		}
 	}
 
-	static class ClassWithAnotherBeanReferenceSingleFactoryBean extends PrototypeFactoryBean {
-		protected Object createInstance() {
+	static class ClassWithAnotherBeanReferenceSingleFactoryBean extends PrototypeFactoryBean<ClassWithAnotherBeanReference> {
+		@Override
+		protected ClassWithAnotherBeanReference createInstance() {
 			return new ClassWithAnotherBeanReference();
 		}
 
-		protected void satisfyProperties(Object instance) {
+		@Override
+		protected void satisfyProperties(ClassWithAnotherBeanReference instance) {
 			final ClassWithAnotherBeanReference instance0 = (ClassWithAnotherBeanReference) instance;
 			instance0.setClassWithStringProperty((ClassWithStringProperty) this.getBeanFactory().getBean("classWithStringProperty"));
 		}
 
+		@Override
 		protected void satisfyInit(final Object instance) {
 		}
 
+		@Override
 		protected BeanFactory getBeanFactory() {
 			return new BeanFactory() {
 				public Object getBean(String name) {
@@ -117,12 +121,12 @@ public class PrototypeFactoryBeanTestCase extends TestCase {
 	}
 
 	public void testInitializingBean() {
-		final PrototypeFactoryBean factoryBean = new PrototypeFactoryBean() {
-			protected Object createInstance() {
+		final PrototypeFactoryBean<ImplementsInitializingBean> factoryBean = new PrototypeFactoryBean<ImplementsInitializingBean>() {
+			protected ImplementsInitializingBean createInstance() {
 				return new ImplementsInitializingBean();
 			}
 		};
-		final ImplementsInitializingBean bean = (ImplementsInitializingBean) factoryBean.getObject();
+		final ImplementsInitializingBean bean = factoryBean.getObject();
 		assertEquals(1, bean.initialized);
 	}
 

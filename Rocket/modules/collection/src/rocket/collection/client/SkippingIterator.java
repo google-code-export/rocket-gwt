@@ -26,7 +26,7 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public abstract class SkippingIterator<E> extends IteratorWrapper<E> implements Iterator {
+public abstract class SkippingIterator<E> extends IteratorWrapper<E> implements Iterator<E> {
 
 	public SkippingIterator() {
 		super();
@@ -84,11 +84,11 @@ public abstract class SkippingIterator<E> extends IteratorWrapper<E> implements 
 
 	protected abstract boolean skip(E object);
 
-	public Object next() {
+	public E next() {
 		if (false == findNext()) {
 			throw new NoSuchElementException();
 		}
-		final Object next = this.getCache();
+		final E next = this.getCache();
 		this.clearCache();
 		return next;
 	}

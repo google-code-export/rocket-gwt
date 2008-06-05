@@ -21,6 +21,7 @@ import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.type.Type;
 import rocket.util.client.Checker;
 
 /**
@@ -37,11 +38,11 @@ class JavaAdapterHelper {
 	 * @param types
 	 * @return
 	 */
-	static public Set asSetOfTypes(final GeneratorContext generatorContext, final Class[] types) {
+	static public Set<Type> asSetOfTypes(final GeneratorContext generatorContext, final Class<? extends Object>[] types) {
 		Checker.notNull("parameter:generatorContext", generatorContext);
 		Checker.notNull("parameter:types", types);
 
-		final Set set = new HashSet();
+		final Set<Type> set = new HashSet<Type>();
 		for (int i = 0; i < types.length; i++) {
 			set.add(generatorContext.findType(types[i].getName()));
 		}

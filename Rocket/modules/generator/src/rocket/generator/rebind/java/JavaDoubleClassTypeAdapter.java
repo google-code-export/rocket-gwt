@@ -35,6 +35,7 @@ public class JavaDoubleClassTypeAdapter extends DoublePrimitiveType {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class getJavaClass() {
 		return Double.TYPE;
 	}
