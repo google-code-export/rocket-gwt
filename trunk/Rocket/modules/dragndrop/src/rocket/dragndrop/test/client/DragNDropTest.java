@@ -69,7 +69,7 @@ public class DragNDropTest implements EntryPoint {
 			}
 		});
 
-		final RootPanel rootPanel = RootPanel.get();
+		final RootPanel rootPanel = RootPanel.get( "main");
 
 		this.dragStarts = new Counter("Drag starts: ");
 		rootPanel.add(dragStarts);
@@ -104,7 +104,7 @@ public class DragNDropTest implements EntryPoint {
 		rootPanel.add(new Label("Bin"));
 		rootPanel.add(createBin());
 
-		Widgets.forceDocumentContentsToScroll(100);
+		rootPanel.getElement().scrollIntoView();
 	}
 
 	Widget createGrid() {
