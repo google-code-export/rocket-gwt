@@ -36,6 +36,8 @@ public class HyperlinkPanelGwtTestCase extends DivPanelGwtTestCase {
 	public void testAdd() {
 		final Panel panel = this.createPanel();
 
+		panel.add( new Label() );
+		
 		assertEquals(1, panel.getWidgetCount());
 		assertEquals(1, panel.getElement().getChildNodes().getLength());
 
@@ -47,7 +49,8 @@ public class HyperlinkPanelGwtTestCase extends DivPanelGwtTestCase {
 	@Override
 	public void testMultipleAdds() {
 		final Panel panel = this.createPanel();
-
+		panel.add( new Label() );
+		
 		try {
 			panel.add(new Label("banana"));
 			fail("Add should have failed because this panel only excepts one widget.");
