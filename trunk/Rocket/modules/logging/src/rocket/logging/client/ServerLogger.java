@@ -31,7 +31,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class ServerLogger extends LoggerImpl implements JavaRpcService {
+abstract public class ServerLogger<R> extends LoggerImpl implements JavaRpcService {
 
 	protected ServerLogger(final String name) {
 		super(name);
@@ -102,9 +102,9 @@ abstract public class ServerLogger extends LoggerImpl implements JavaRpcService 
 	/**
 	 * Caches the callback that will consume server responses.
 	 */
-	private AsyncCallback callback;
+	private AsyncCallback<R> callback;
 
-	protected AsyncCallback getCallback() {
+	protected AsyncCallback<R> getCallback() {
 		if (null == this.callback) {
 			this.setCallback(this.createCallback());
 		}
@@ -113,14 +113,14 @@ abstract public class ServerLogger extends LoggerImpl implements JavaRpcService 
 		return this.callback;
 	}
 
-	protected void setCallback(final AsyncCallback callback) {
+	protected void setCallback(final AsyncCallback<R> callback) {
 		Checker.notNull("parameter:callback", callback);
 		this.callback = callback;
 	}
 
-	protected AsyncCallback createCallback() {
-		return new AsyncCallback() {
-			public void onSuccess(final Object result) {
+	protected AsyncCallback<R> createCallback() {
+		return new AsyncCallback<R>() {
+			public void onSuccess(final R result) {
 				ServerLogger.this.handleServiceSuccess(result);
 			}
 
@@ -130,7 +130,7 @@ abstract public class ServerLogger extends LoggerImpl implements JavaRpcService 
 		};
 	}
 
-	protected void handleServiceSuccess(final Object result) {
+	protected void handleServiceSuccess(final R result) {
 		// do nothing...
 	}
 

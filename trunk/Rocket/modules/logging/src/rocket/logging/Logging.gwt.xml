@@ -7,6 +7,7 @@
 	<!--
 	This module is required by the ServerLogger logger as it serializes and then pushes logged events to the server.
 	-->
+	<inherits name="rocket.remoting.Remoting"/>
 	<inherits name="rocket.serialization.Serialization"/>
 		
 	<source path="client" />
