@@ -24,7 +24,6 @@ import rocket.logging.test.serverlogger.client.LoggedEventsService;
 import rocket.remoting.server.java.JavaRpcServiceMethodInvoker;
 import rocket.remoting.server.java.JavaRpcServiceServlet;
 import rocket.remoting.server.java.ServerSerializationFactory;
-import rocket.serialization.client.ObjectWriter;
 import rocket.serialization.server.ServerObjectWriter;
 
 public class LoggedEventsServiceImpl extends JavaRpcServiceServlet implements LoggedEventsService {

@@ -25,9 +25,6 @@ import rocket.widget.client.Html;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.BodyElement;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
