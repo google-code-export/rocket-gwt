@@ -18,14 +18,13 @@ package rocket.compiler.test;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-
 public class CompilerTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for rocket.compiler.test");
-		//$JUnit-BEGIN$
+		// $JUnit-BEGIN$
 		suite.addTestSuite(DelayedBranchLoggerTestCase.class);
-		//$JUnit-END$
+		// $JUnit-END$
 		return suite;
 	}
 
