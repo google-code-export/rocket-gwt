@@ -25,8 +25,6 @@ import rocket.widget.client.Button;
 import rocket.widget.client.tabpanel.BeforeTabCloseEvent;
 import rocket.widget.client.tabpanel.BeforeTabSelectEvent;
 import rocket.widget.client.tabpanel.BottomTabPanel;
-import rocket.widget.client.tabpanel.LeftTabPanel;
-import rocket.widget.client.tabpanel.RightTabPanel;
 import rocket.widget.client.tabpanel.TabCloseEvent;
 import rocket.widget.client.tabpanel.TabItem;
 import rocket.widget.client.tabpanel.TabListener;
@@ -65,19 +63,11 @@ public class TabPanelTest implements EntryPoint {
 		final TabPanel bottomTabPanel = new BottomTabPanel();
 		completeTabPanel(bottomTabPanel);
 
-		final TabPanel leftTabPanel = new LeftTabPanel();
-		completeTabPanel(leftTabPanel);
-
-		final TabPanel rightTabPanel = new RightTabPanel();
-		completeTabPanel(rightTabPanel);
-
 		TabPanelControl control = new TabPanelControl(topTabPanel);
 
 		final FlowPanel flowPanel = new FlowPanel();
 		flowPanel.add(this.createTabPanelButton("TopTabPanel", topTabPanel, control, dockPanel));
-		flowPanel.add(this.createTabPanelButton("RightTabPanel", rightTabPanel, control, dockPanel));
 		flowPanel.add(this.createTabPanelButton("BottomTabPanel", bottomTabPanel, control, dockPanel));
-		flowPanel.add(this.createTabPanelButton("LeftTabPanel", leftTabPanel, control, dockPanel));
 
 		dockPanel.add(flowPanel, DockPanel.NORTH);
 		dockPanel.add(control, DockPanel.NORTH);

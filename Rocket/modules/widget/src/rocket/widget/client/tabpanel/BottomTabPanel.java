@@ -30,46 +30,57 @@ public class BottomTabPanel extends HorizonalTabPanel {
 		super();
 	}
 
+	@Override
 	DockPanel.DockLayoutConstant getTabBarDockPanelConstants() {
 		return DockPanel.SOUTH;
 	}
 
+	@Override
 	protected TabPanel.TabBarPanel createTabBarPanel() {
 		return this.createTabBarPanel(HasVerticalAlignment.ALIGN_TOP);
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return Constants.BOTTOM_TAB_PANEL_STYLE;
 	}
 
+	@Override
 	protected String getTabBarStyleName() {
 		return Constants.TAB_BAR_STYLE;
 	}
 
+	@Override
 	protected String getTabBarBeforeSpacerStyleName() {
 		return Constants.BEFORE_SPACER_STYLE;
 	}
 
+	@Override
 	protected String getTabBarAfterSpacerStyleName() {
 		return Constants.AFTER_SPACER_STYLE;
 	}
 
+	@Override
 	protected String getTabBarItemStyleName() {
 		return Constants.ITEM_STYLE;
 	}
 
+	@Override
 	protected String getTabBarItemLabelStyleName() {
 		return Constants.ITEM_LABEL_STYLE;
 	}
 
+	@Override
 	protected String getTabBarItemWidgetStyleName() {
 		return Constants.ITEM_WIDGET_STYLE;
 	}
 
+	@Override
 	protected String getTabBarItemSelectedStyleName() {
 		return Constants.ITEM_SELECTED_STYLE;
 	}
 
+	@Override
 	protected String getContentPanelStyleName() {
 		return Constants.CONTENT_STYLE;
 	}
