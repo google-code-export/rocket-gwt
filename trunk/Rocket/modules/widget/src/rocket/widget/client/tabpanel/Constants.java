@@ -31,8 +31,6 @@ class Constants {
 
 	final static String TOP_TAB_PANEL_STYLE = WidgetConstants.ROCKET + "-topTabPanel";
 	final static String BOTTOM_TAB_PANEL_STYLE = WidgetConstants.ROCKET + "-bottomTabPanel";
-	final static String LEFT_TAB_PANEL_STYLE = WidgetConstants.ROCKET + "-leftTabPanel";
-	final static String RIGHT_TAB_PANEL_STYLE = WidgetConstants.ROCKET + "-rightTabPanel";
 	/*
 	 * TAB PANEL ITERATOR
 	 * ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
