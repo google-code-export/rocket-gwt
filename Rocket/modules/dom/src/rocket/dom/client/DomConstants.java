@@ -30,20 +30,6 @@ public class DomConstants {
 
 	public final static String LENGTH_PROPERTY = "length";
 
-	public final static String TYPE_ATTRIBUTE = "type";
-
-	public final static String HREF_ATTRIBUTE = "href";
-
-	public final static String TITLE_ATTRIBUTE = "title";
-
-	public final static String ID_ATTRIBUTE = "id";
-
-	public final static String DISABLED_ATTRIBUTE = "disabled";
-
-	public final static String STYLE_SHEET = "stylesheet";
-
-	public final static String NAME_ATTRIBUTE = "name";
-
 	public final static String OBJECT_TAG = "OBJECT";
 
 	public final static String ALIGN_ATTRIBUTE = "align";
