@@ -108,6 +108,7 @@ public abstract class SkippingIterator<E> extends IteratorWrapper<E> implements 
 	 * finding an element that should not be skipped and stores its value here
 	 * ready for {@link #next()}.
 	 */
+	@SuppressWarnings("unchecked")
 	private E cache = (E) CACHE_NOT_SET;
 
 	protected E getCache() {
@@ -123,6 +124,7 @@ public abstract class SkippingIterator<E> extends IteratorWrapper<E> implements 
 		this.cache = cache;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void clearCache() {
 		this.cache = (E) CACHE_NOT_SET;
 	}

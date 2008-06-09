@@ -43,7 +43,7 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 		return Constants.REGISTER_FACTORY_BEANS_TEMPLATE;
 	}
 
-	private List beans;
+	private List<Bean> beans;
 
 	protected List<Bean> getBeans() {
 		Checker.notNull("field:beans", beans);
@@ -85,7 +85,7 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
-			protected void prepareToWrite(Bean bean) {
+			protected void prepareToWrite(final Bean bean) {
 				registerBean.setBeanId(bean.getId());
 				registerBean.setFactoryBean(bean.hasProxy() ? bean.getProxyFactoryBean() : bean.getFactoryBean());
 			}

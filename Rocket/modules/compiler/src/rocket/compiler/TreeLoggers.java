@@ -176,7 +176,7 @@ public class TreeLoggers {
 	 * @param messages
 	 * @return
 	 */
-	static public TreeLogger pipeAndCapture(final TreeLogger logger, final Collection messages) {
+	static public TreeLogger pipeAndCapture(final TreeLogger logger, final Collection<String> messages) {
 		Checker.notNull("parameter:logger", logger);
 		Checker.notNull("parameter:messages", messages);
 

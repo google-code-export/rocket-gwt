@@ -17,6 +17,8 @@ package rocket.beans.rebind.xml;
 
 import java.util.List;
 
+import org.w3c.dom.Element;
+
 /**
  * Base class for list and set tags.
  * 
@@ -24,7 +26,7 @@ import java.util.List;
  */
 class CollectionValueTag extends ValueTag {
 
-	public List getValues() {
+	public List<Element> getValues() {
 		return this.getElements(this.getElement());
 	}
 }

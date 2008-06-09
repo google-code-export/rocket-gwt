@@ -92,7 +92,7 @@ public class AfterThrowingAdviceMethodInterceptorTestCase extends TestCase {
 
 		try {
 			final Object returned = chain.proceed();
-			fail("A exception should have been thrown by the Target");
+			fail("The chain returned an object when an exception should have been thrown by the target, returned object: " + returned );
 		} catch (final TestException caught) {
 			assertSame(throwingAdviceThrows, caught);
 		}

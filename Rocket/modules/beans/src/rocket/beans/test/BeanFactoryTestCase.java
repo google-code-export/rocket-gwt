@@ -39,14 +39,18 @@ public class BeanFactoryTestCase extends TestCase {
 
 	public void testGetSingletonBean() {
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
+			
+			@Override
 			protected void registerFactoryBeans() {
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -61,14 +65,18 @@ public class BeanFactoryTestCase extends TestCase {
 		final String ALIAS2 = "alias2";
 
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
+			
+			@Override
 			protected void registerFactoryBeans() {
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return ALIAS + "=" + SINGLETON_BEAN + "," + ALIAS2 + "=" + SINGLETON_BEAN;
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -88,14 +96,18 @@ public class BeanFactoryTestCase extends TestCase {
 		Singleton.loaded = false;
 
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
+			
+			@Override
 			protected void registerFactoryBeans() {
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -110,14 +122,18 @@ public class BeanFactoryTestCase extends TestCase {
 		Singleton.loaded = false;
 
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
+			
+			@Override
 			protected void registerFactoryBeans() {
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return SINGLETON_BEAN;
 			}
@@ -130,14 +146,18 @@ public class BeanFactoryTestCase extends TestCase {
 
 	public void testIfASingletonIsSingleton() {
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
+			
+			@Override
 			protected void registerFactoryBeans() {
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -147,14 +167,18 @@ public class BeanFactoryTestCase extends TestCase {
 
 	public void testIfAPrototypeIsSingleton() {
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
+			
+			@Override
 			protected void registerFactoryBeans() {
 				this.registerFactoryBean(PROTOTYPE_BEAN, createPrototypeFactoryBean());
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -164,14 +188,18 @@ public class BeanFactoryTestCase extends TestCase {
 
 	public void testRatherThanReturningAFactoryBeanCallItsGetObject() {
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
+			
+			@Override
 			protected void registerFactoryBeans() {
 				this.registerFactoryBean(PROTOTYPE_BEAN, createPrototypeFactoryBean());
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -186,20 +214,25 @@ public class BeanFactoryTestCase extends TestCase {
 
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
 			protected void registerFactoryBeans() {
-				this.registerFactoryBean(BEAN_FACTORY_AWARE, new SingletonFactoryBean() {
-					public Object createInstance() {
+				this.registerFactoryBean(BEAN_FACTORY_AWARE, new SingletonFactoryBean<ImplementsBeanFactoryAware>() {
+					
+					@Override
+					public ImplementsBeanFactoryAware createInstance() {
 						return new ImplementsBeanFactoryAware();
 					}
 
-					protected void satisfyProperties(Object instance) {
+					@Override
+					protected void satisfyProperties(final ImplementsBeanFactoryAware instance) {
 					}
 				});
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -226,12 +259,15 @@ public class BeanFactoryTestCase extends TestCase {
 
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
 			protected void registerFactoryBeans() {
-				this.registerFactoryBean(BEAN_NAME_AWARE_BEAN, new SingletonFactoryBean() {
-					public Object createInstance() {
+				this.registerFactoryBean(BEAN_NAME_AWARE_BEAN, new SingletonFactoryBean<ImplementsBeanNameAwareBean>() {
+					
+					@Override
+					public ImplementsBeanNameAwareBean createInstance() {
 						return new ImplementsBeanNameAwareBean();
 					}
 
-					protected void satisfyProperties(Object instance) {
+					@Override
+					protected void satisfyProperties(final ImplementsBeanNameAwareBean instance) {
 					}
 				});
 			}
@@ -265,29 +301,35 @@ public class BeanFactoryTestCase extends TestCase {
 				final BeanFactory that = this;
 
 				this.registerFactoryBean(INCLUDES_ANOTHER_BEAN, new SingletonFactoryBean() {
+
+					@Override
 					public Object createInstance() {
-						return new SingletonFactoryBean() {
-							protected Object createInstance() {
+						return new SingletonFactoryBean<IncludesAnotherBean>() {
+							@Override
+							protected IncludesAnotherBean createInstance() {
 								return new IncludesAnotherBean();
 							}
 
-							protected void satisfyProperties(final Object instance) {
-								final IncludesAnotherBean instance0 = (IncludesAnotherBean) instance;
-								instance0.anotherBean = (Singleton) that.getBean(SINGLETON_BEAN);
+							@Override
+							protected void satisfyProperties(final IncludesAnotherBean instance) {
+								instance.anotherBean = (Singleton) that.getBean(SINGLETON_BEAN);
 							}
 						};
 					}
 
+					@Override
 					protected void satisfyProperties(Object instance) {
 					}
 				});
 				this.registerFactoryBean(SINGLETON_BEAN, createSingletonFactoryBean());
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -306,20 +348,24 @@ public class BeanFactoryTestCase extends TestCase {
 
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
 			protected void registerFactoryBeans() {
-				this.registerFactoryBean(INITIALIZING_BEAN, new SingletonFactoryBean() {
-					public Object createInstance() {
+				this.registerFactoryBean(INITIALIZING_BEAN, new SingletonFactoryBean<ImplementsInitializingBean>() {
+					@Override
+					public ImplementsInitializingBean createInstance() {
 						return new ImplementsInitializingBean();
 					}
 
-					protected void satisfyProperties(Object instance) {
+					@Override
+					protected void satisfyProperties(final ImplementsInitializingBean instance) {
 					}
 				});
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -343,32 +389,38 @@ public class BeanFactoryTestCase extends TestCase {
 
 		final BeanFactory beanFactory = new TestBeanFactoryImpl() {
 			protected void registerFactoryBeans() {
-				this.registerFactoryBean(CYCLE1, new SingletonFactoryBean() {
-					public Object createInstance() {
+				this.registerFactoryBean(CYCLE1, new SingletonFactoryBean<CycleSingleton1>() {
+					
+					@Override
+					public CycleSingleton1 createInstance() {
 						return new CycleSingleton1();
 					}
 
-					protected void satisfyProperties(Object instance) {
-						final CycleSingleton1 instance0 = (CycleSingleton1) instance;
-						instance0.otherCycleSingleton2 = (CycleSingleton2) this.getBeanFactory().getBean(CYCLE2);
+					@Override
+					protected void satisfyProperties(final CycleSingleton1 instance) {
+						instance.otherCycleSingleton2 = (CycleSingleton2) this.getBeanFactory().getBean(CYCLE2);
 					}
 				});
-				this.registerFactoryBean(CYCLE2, new SingletonFactoryBean() {
-					public Object createInstance() {
+				this.registerFactoryBean(CYCLE2, new SingletonFactoryBean<CycleSingleton2>() {
+					
+					@Override
+					public CycleSingleton2 createInstance() {
 						return new CycleSingleton2();
 					}
 
-					protected void satisfyProperties(Object instance) {
-						final CycleSingleton2 instance0 = (CycleSingleton2) instance;
-						instance0.otherCycleSingleton1 = (CycleSingleton1) this.getBeanFactory().getBean(CYCLE1);
+					@Override
+					protected void satisfyProperties(final CycleSingleton2 instance) {
+						instance.otherCycleSingleton1 = (CycleSingleton1) this.getBeanFactory().getBean(CYCLE1);
 					}
 				});
 			}
 
+			@Override
 			protected String getAliasesToBeans() {
 				return "";
 			}
 
+			@Override
 			protected String getEagerSingletonBeanNames() {
 				return "";
 			}
@@ -389,13 +441,16 @@ public class BeanFactoryTestCase extends TestCase {
 		public CycleSingleton1 otherCycleSingleton1;
 	}
 
-	static FactoryBean createSingletonFactoryBean() {
-		return new SingletonFactoryBean() {
-			protected Object createInstance() {
+	static FactoryBean<Singleton> createSingletonFactoryBean() {
+		return new SingletonFactoryBean<Singleton>() {
+			
+			@Override
+			protected Singleton createInstance() {
 				return new Singleton();
 			}
 
-			protected void satisfyProperties(Object instance) {
+			@Override
+			protected void satisfyProperties(final Singleton instance) {
 			}
 		};
 	}
@@ -412,10 +467,13 @@ public class BeanFactoryTestCase extends TestCase {
 
 	static FactoryBean<Prototype> createPrototypeFactoryBean() {
 		return new PrototypeFactoryBean<Prototype>() {
+			
+			@Override
 			protected Prototype createInstance() {
 				return new Prototype();
 			}
 
+			@Override
 			protected void satisfyProperties(Prototype instance) {
 			}
 		};
@@ -428,6 +486,7 @@ public class BeanFactoryTestCase extends TestCase {
 		/**
 		 * Overrides the real method which has dependencies on GWT.
 		 */
+		@Override
 		protected void registerShutdownHook() {
 		}
 	}

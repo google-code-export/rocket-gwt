@@ -145,16 +145,15 @@ public class IteratorViewTestCase extends TestCase {
 			this.getList().add(element);
 		}
 
-		Iterator iterator() {
-			final Container that = this;
+		Iterator<String> iterator() {
 			final Iterator<String> wrapped = this.getList().iterator();
 
-			final IteratorView iterator = new IteratorView() {
+			final IteratorView<String> iterator = new IteratorView<String>() {
 				protected boolean hasNext0() {
 					return wrapped.hasNext();
 				}
 
-				protected Object next0() {
+				protected String next0() {
 					return wrapped.next();
 				}
 
@@ -166,7 +165,7 @@ public class IteratorViewTestCase extends TestCase {
 				}
 
 				protected int getModificationCounter() {
-					return that.getModificationCounter();
+					return Container.this.getModificationCounter();
 				}
 			};
 			iterator.syncModificationCounters();
