@@ -38,7 +38,7 @@ public class ConstructorPlaceHolderGenerator extends AbstractTemplatedFileCodeBl
 
 	protected void addNewConstructor() {
 		final Type type = this.getType();
-		final Constructor constructor = type.getConstructor(Collections.EMPTY_LIST);
+		final Constructor constructor = type.getConstructor(Collections.<Type>emptyList());
 
 		final NewConstructor newConstructor = constructor.copy(this.getNewType());
 		newConstructor.setBody(EmptyCodeBlock.INSTANCE);
@@ -46,7 +46,7 @@ public class ConstructorPlaceHolderGenerator extends AbstractTemplatedFileCodeBl
 
 	protected void visitTemplate(final Template template) {
 		final Type type = this.getNewType();
-		final Constructor constructor = type.getConstructor(Collections.EMPTY_LIST);
+		final Constructor constructor = type.getConstructor(Collections.<Type>emptyList());
 
 		template.set("constructor", constructor);
 	}

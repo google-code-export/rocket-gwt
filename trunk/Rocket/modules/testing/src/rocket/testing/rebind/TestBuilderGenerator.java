@@ -26,6 +26,7 @@ import rocket.generator.rebind.GeneratorContext;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
+import rocket.generator.rebind.methodparameter.MethodParameter;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.visitor.VirtualMethodVisitor;
@@ -112,7 +113,7 @@ public class TestBuilderGenerator extends Generator {
 
 		final Type voidType = this.getGeneratorContext().getVoid();
 
-		final List methods = new ArrayList();
+		final List<Method> methods = new ArrayList<Method>();
 
 		// find and add public methods that start with test
 		final VirtualMethodVisitor testMethodFinder = new VirtualMethodVisitor() {
@@ -135,7 +136,7 @@ public class TestBuilderGenerator extends Generator {
 					}
 
 					// test method must have no parameters.
-					final List parameters = method.getParameters();
+					final List<MethodParameter> parameters = method.getParameters();
 					if (false == parameters.isEmpty()) {
 						throwTestMethodHasParameters(method);
 					}
@@ -154,15 +155,15 @@ public class TestBuilderGenerator extends Generator {
 		};
 		testMethodFinder.start(webPageTestRunner);
 
-		Collections.sort(methods, new Comparator() {
-			public int compare(final Object method, final Object otherMethod) {
-				return TestBuilderGenerator.this.getOrder((Method) method) - TestBuilderGenerator.this.getOrder((Method) otherMethod);
+		Collections.sort(methods, new Comparator<Method>() {
+			public int compare(final Method method, final Method otherMethod) {
+				return TestBuilderGenerator.this.getOrder( method) - TestBuilderGenerator.this.getOrder(otherMethod);
 			}
 		});
 
-		final Iterator iterator = methods.iterator();
+		final Iterator<Method> iterator = methods.iterator();
 		while (iterator.hasNext()) {
-			final Method testMethod = (Method) iterator.next();
+			final Method testMethod = iterator.next();
 			body.addTestMethod(testMethod);
 			context.debug("Adding test method " + testMethod);
 		}
@@ -178,7 +179,7 @@ public class TestBuilderGenerator extends Generator {
 	}
 
 	protected int getOrder(final Method method) {
-		final List orderAnnotation = method.getMetadataValues(Constants.ORDER_ANNOTATION);
+		final List<String> orderAnnotation = method.getMetadataValues(Constants.ORDER_ANNOTATION);
 		if (orderAnnotation.size() != 1) {
 			throwUnableToFindOrderAnnotation(method);
 		}

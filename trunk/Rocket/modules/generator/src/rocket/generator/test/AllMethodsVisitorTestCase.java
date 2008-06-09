@@ -48,7 +48,7 @@ public class AllMethodsVisitorTestCase extends TestCase {
 		final Type object = context.getObject();
 		visitor.start(object);
 
-		final List noArguments = Collections.EMPTY_LIST;
+		final List<Type> noArguments = Collections.<Type>emptyList();
 		assertTrue(methodsVisited.contains(object.getMethod("clone", noArguments)));
 
 		assertTrue(methodsVisited.contains(object.getMethod("equals", Arrays.asList(new Type[] { object }))));
@@ -86,7 +86,7 @@ public class AllMethodsVisitorTestCase extends TestCase {
 		visitor.start(test);
 
 		final Type object = context.getObject();
-		final List noArguments = Arrays.asList(new Type[0]);
+		final List<Type> noArguments = Collections.<Type>emptyList();
 
 		assertTrue(methodsVisited.contains(test.getMethod("dummy", noArguments)));
 		assertTrue(methodsVisited.contains(object.getMethod("clone", noArguments)));
@@ -126,7 +126,7 @@ public class AllMethodsVisitorTestCase extends TestCase {
 		visitor.start(test);
 
 		assertEquals(1, methodsVisited.size());
-		assertTrue(methodsVisited.contains(test.getMethod("dummy", Collections.EMPTY_LIST)));
+		assertTrue(methodsVisited.contains(test.getMethod("dummy", Collections.<Type>emptyList())));
 	}
 
 	public void testSkipRemainingMethods() {
@@ -149,7 +149,7 @@ public class AllMethodsVisitorTestCase extends TestCase {
 		visitor.start(test);
 
 		assertEquals(1, methodsVisited.size());
-		assertTrue(methodsVisited.contains(test.getMethod("dummy", Collections.EMPTY_LIST)));
+		assertTrue(methodsVisited.contains(test.getMethod("dummy", Collections.<Type>emptyList())));
 	}
 
 	static class Test extends Object {

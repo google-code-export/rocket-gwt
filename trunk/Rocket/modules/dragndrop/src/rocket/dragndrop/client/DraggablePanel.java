@@ -189,10 +189,10 @@ public class DraggablePanel extends SimplePanel {
 			final int newX = mousePageX + xOffset - elementPageX;
 			final int newY = mousePageY + yOffset - elementPageY;
 
-			final Element draggedElement = dragged.getElement();
-			InlineStyle.setString(draggedElement, Css.POSITION, "absolute");
-			InlineStyle.setInteger(draggedElement, Css.LEFT, newX, CssUnit.PX);
-			InlineStyle.setInteger(draggedElement, Css.TOP, newY, CssUnit.PX);
+			final InlineStyle draggedInlineStyle = InlineStyle.getInlineStyle( dragged.getElement());
+			draggedInlineStyle.setString(Css.POSITION, "absolute");
+			draggedInlineStyle.setInteger(Css.LEFT, newX, CssUnit.PX);
+			draggedInlineStyle.setInteger(Css.TOP, newY, CssUnit.PX);
 			break;
 		}
 	}
@@ -236,10 +236,10 @@ public class DraggablePanel extends SimplePanel {
 			final int newX = mousePageX + xOffset - elementPageX;
 			final int newY = mousePageY + yOffset - elementPageY;
 
-			final Element draggedElement = draggedWidget.getElement();
-			InlineStyle.setString(draggedElement, Css.POSITION, "absolute");
-			InlineStyle.setInteger(draggedElement, Css.LEFT, newX, CssUnit.PX);
-			InlineStyle.setInteger(draggedElement, Css.TOP, newY, CssUnit.PX);
+			final InlineStyle draggedInlineStyle = InlineStyle.getInlineStyle(draggedWidget.getElement());
+			draggedInlineStyle.setString( Css.POSITION, "absolute");
+			draggedInlineStyle.setInteger(Css.LEFT, newX, CssUnit.PX);
+			draggedInlineStyle.setInteger(Css.TOP, newY, CssUnit.PX);
 
 			draggedPanel.setWidget(draggedWidget);
 			break;
@@ -352,13 +352,14 @@ public class DraggablePanel extends SimplePanel {
 			// insert the root elementof this panel in the same spot were widget
 			// was.
 			final Element element = this.getElement();
-			InlineStyle.setString(element, Css.POSITION, "relative");
-			InlineStyle.setInteger(element, Css.LEFT, 0, CssUnit.PX);
-			InlineStyle.setInteger(element, Css.TOP, 0, CssUnit.PX);
+			final InlineStyle elementInlineStyle = InlineStyle.getInlineStyle(element);
+			elementInlineStyle.setString(Css.POSITION, "relative");
+			elementInlineStyle.setInteger(Css.LEFT, 0, CssUnit.PX);
+			elementInlineStyle.setInteger(Css.TOP, 0, CssUnit.PX);
 
 			hijacker.replace(element);
 
-			DOM.appendChild(element, widgetElement);
+			element.appendChild(widgetElement);
 		}
 
 		/**

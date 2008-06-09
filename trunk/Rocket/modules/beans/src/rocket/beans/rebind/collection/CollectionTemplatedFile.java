@@ -65,7 +65,7 @@ abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 		final CollectionElementAddTemplatedFile template = new CollectionElementAddTemplatedFile();
 		final List<Value> elements = this.getElements();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Value>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -79,17 +79,17 @@ abstract public class CollectionTemplatedFile extends TemplatedFileCodeBlock {
 
 			@Override
 			@SuppressWarnings("unchecked")
-			protected Collection getCollection() {
+			protected Collection<Value> getCollection() {
 				return elements;
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
+			protected void prepareToWrite(final Value ignored ) {
 				template.setValue((Value) elements.get(this.getIndex()));
 			}
 
 			@Override
-			protected void writeBetweenElements(SourceWriter writer) {
+			protected void writeBetweenElements(final SourceWriter writer) {
 			}
 		};
 	}

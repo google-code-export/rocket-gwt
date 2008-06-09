@@ -278,7 +278,7 @@ public class DragNDropTest implements EntryPoint {
 				System.out.println("Swapping: ");
 			}
 			final double opacity = 1.0f * (this.swapTimeout - now) / SWAP_TIMEOUT;
-			InlineStyle.setDouble(event.getDragged().getElement(), Css.OPACITY, opacity, CssUnit.NONE);
+			InlineStyle.getInlineStyle( event.getDragged().getElement() ).setDouble( Css.OPACITY, opacity, CssUnit.NONE);
 
 			if (this.otherWidget == event.getDragged()) {
 				event.stop();

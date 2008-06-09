@@ -29,7 +29,7 @@ public class MethodTestCase extends TestCase {
 		final GeneratorContext context = this.createGeneratorContext();
 		final Type subClass = context.getType(SubClassWithDummyMethodThatOverridesNothing.class.getName());
 
-		final Method method = subClass.getMethod("doesntOverrideAnything", Collections.EMPTY_LIST);
+		final Method method = subClass.getMethod("doesntOverrideAnything", Collections.<Type>emptyList());
 		assertNull(method.findOverriddenMethod());
 	}
 
@@ -45,7 +45,7 @@ public class MethodTestCase extends TestCase {
 		final GeneratorContext context = this.createGeneratorContext();
 		final Type subClass = context.getType(SubClassWithOverridingDummyMethod.class.getName());
 
-		final Method method = subClass.getMethod("dummy", Collections.EMPTY_LIST);
+		final Method method = subClass.getMethod("dummy", Collections.<Type>emptyList());
 		assertNotNull(method.getOverriddenMethod());
 	}
 
@@ -63,7 +63,7 @@ public class MethodTestCase extends TestCase {
 		final GeneratorContext context = this.createGeneratorContext();
 		final Type subClass = context.getType(SubClassWithOverridingAbstractDummyMethod.class.getName());
 
-		final Method method = subClass.getMethod("dummy", Collections.EMPTY_LIST);
+		final Method method = subClass.getMethod("dummy", Collections.<Type>emptyList());
 		assertNotNull(method.getOverriddenMethod());
 	}
 
@@ -80,7 +80,7 @@ public class MethodTestCase extends TestCase {
 		final GeneratorContext context = this.createGeneratorContext();
 		final Type subClass = context.getType(SubClassWithNonOverridingDummyMethod.class.getName());
 
-		final Method method = subClass.getMethod("dummy", Collections.EMPTY_LIST);
+		final Method method = subClass.getMethod("dummy", Collections.<Type>emptyList());
 		assertNull(method.findOverriddenMethod());
 	}
 

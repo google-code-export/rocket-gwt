@@ -34,7 +34,7 @@ public class SubClassVisitorTestCase extends TestCase {
 		final TestSubTypesVisitor finder = new TestSubTypesVisitor();
 		finder.start(context.getType(ClassWithSubClasses.class.getName()));
 
-		final Set types = finder.getTypes();
+		final Set<Type> types = finder.getTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 1, types.size());
@@ -47,7 +47,7 @@ public class SubClassVisitorTestCase extends TestCase {
 		final TestSubTypesVisitor finder = new TestSubTypesVisitor();
 		finder.start(context.getType(ConcreteClass.class.getName()));
 
-		final Set types = finder.getTypes();
+		final Set<Type> types = finder.getTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 3, types.size());
@@ -62,7 +62,7 @@ public class SubClassVisitorTestCase extends TestCase {
 		final TestSubTypesVisitor finder = new TestSubTypesVisitor();
 		finder.start(context.getType(Interface.class.getName()));
 
-		final Set types = finder.getTypes();
+		final Set<Type> types = finder.getTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 2, types.size());
@@ -71,18 +71,20 @@ public class SubClassVisitorTestCase extends TestCase {
 	}
 
 	class TestSubTypesVisitor extends SubTypesVisitor {
+		@Override
 		protected boolean visit(final Type type) {
 			this.types.add(type);
 			return false;
 		}
 
+		@Override
 		protected boolean skipInitialType() {
 			return false;
 		}
 
-		Set types = new HashSet();
+		Set<Type> types = new HashSet<Type>();
 
-		Set getTypes() {
+		Set<Type> getTypes() {
 			return this.types;
 		}
 	}
@@ -123,7 +125,8 @@ public class SubClassVisitorTestCase extends TestCase {
 			super.setJavaClass(javaClass);
 		}
 
-		protected Set createSubTypes() {
+		@Override
+		protected Set<Type> createSubTypes() {
 			throw new UnsupportedOperationException(this.getName() + ".createSubTypes() , adapter: " + this.getClass());
 		}
 	}
@@ -132,8 +135,9 @@ public class SubClassVisitorTestCase extends TestCase {
 	}
 
 	static class InterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return new HashSet(Collections.nCopies(1, this.getType(SubInterface.class.getName())));
+		@Override
+		public Set<Type> getSubTypes() {
+			return new HashSet<Type>(Collections.<Type>nCopies(1, this.getType(SubInterface.class.getName())));
 		}
 	}
 
@@ -141,8 +145,9 @@ public class SubClassVisitorTestCase extends TestCase {
 	}
 
 	static class SubInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -150,8 +155,9 @@ public class SubClassVisitorTestCase extends TestCase {
 	}
 
 	static class ConcreteClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return new HashSet(Collections.nCopies(1, this.getType(SubClass.class.getName())));
+		@Override
+		public Set<Type> getSubTypes() {
+			return new HashSet<Type>(Collections.<Type>nCopies(1, this.getType(SubClass.class.getName())));
 		}
 	}
 
@@ -159,8 +165,9 @@ public class SubClassVisitorTestCase extends TestCase {
 	}
 
 	static class SubClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return new HashSet(Collections.nCopies(1, this.getType(SubSubClass.class.getName())));
+		@Override
+		public Set<Type> getSubTypes() {
+			return new HashSet<Type>(Collections.<Type>nCopies(1, this.getType(SubSubClass.class.getName())));
 		}
 	}
 
@@ -168,8 +175,9 @@ public class SubClassVisitorTestCase extends TestCase {
 	}
 
 	static class SubSubClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -177,8 +185,9 @@ public class SubClassVisitorTestCase extends TestCase {
 	}
 
 	static class ClassWithSubClassesJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 

@@ -179,11 +179,12 @@ public abstract class CometClient {
 
 	protected Element createFrame() {
 		final Element frame = DOM.createIFrame();
-		InlineStyle.setInteger(frame, Css.WIDTH, 0, CssUnit.PX);
-		InlineStyle.setInteger(frame, Css.HEIGHT, 0, CssUnit.PX);
-		InlineStyle.setInteger(frame, Css.BORDER, 0, CssUnit.PX);
-		InlineStyle.setInteger(frame, Css.PADDING, 0, CssUnit.PX);
-		InlineStyle.setInteger(frame, Css.MARGIN, 0, CssUnit.PX);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(frame);
+		inlineStyle.setInteger(Css.WIDTH, 0, CssUnit.PX);
+		inlineStyle.setInteger(Css.HEIGHT, 0, CssUnit.PX);
+		inlineStyle.setInteger(Css.BORDER, 0, CssUnit.PX);
+		inlineStyle.setInteger( Css.PADDING, 0, CssUnit.PX);
+		inlineStyle.setInteger(Css.MARGIN, 0, CssUnit.PX);
 		return frame;
 	}
 

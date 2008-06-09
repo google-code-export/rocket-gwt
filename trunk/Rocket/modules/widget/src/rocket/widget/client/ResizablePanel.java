@@ -231,11 +231,12 @@ public class ResizablePanel extends CompositePanel {
 			widget.addStyleName(ResizablePanel.this.getDraggedWidgetStyle());
 
 			final Element element = widget.getElement();
-
-			final int width = ComputedStyle.getInteger(element, Css.WIDTH, CssUnit.PX, 0);
+			final ComputedStyle elementComputedStyle = ComputedStyle.getComputedStyle(element);
+			
+			final int width = elementComputedStyle.getInteger( Css.WIDTH, CssUnit.PX, 0);
 			this.setInitialWidgetWidth(width);
 
-			final int height = ComputedStyle.getInteger(element, Css.HEIGHT, CssUnit.PX, 0);
+			final int height = elementComputedStyle.getInteger(Css.HEIGHT, CssUnit.PX, 0);
 			this.setInitialWidgetHeight(height);
 
 			// record the initial mouse position
@@ -469,7 +470,7 @@ public class ResizablePanel extends CompositePanel {
 	 */
 	@Override
 	public Iterator iterator() {
-		return new Iterator() {
+		return new Iterator<Widget>() {
 
 			int state = 0;
 
@@ -477,7 +478,7 @@ public class ResizablePanel extends CompositePanel {
 				return this.state == 0 && ResizablePanel.this.getWidget() != null;
 			}
 
-			public Object next() {
+			public Widget next() {
 				if (false == this.hasNext()) {
 					throw new NoSuchElementException();
 				}
@@ -592,7 +593,7 @@ public class ResizablePanel extends CompositePanel {
 	 */
 	protected void setCornerHandleVisibility(final boolean visible) {
 		final Element element = this.getGrid().getCellFormatter().getElement(1, 1);
-		InlineStyle.setString(element, Css.VISIBILITY, visible ? "visible" : "hidden");
+		InlineStyle.getInlineStyle( element ).setString(Css.VISIBILITY, visible ? "visible" : "hidden");
 	}
 
 	public void addChangeEventListener(final ChangeEventListener changeEventListener) {

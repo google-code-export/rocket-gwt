@@ -42,21 +42,23 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 	protected Element createPanelElement() {
 		final Element panel = DOM.createDiv();
 
-		InlineStyle.setString(panel, Css.POSITION, "relative");
-		InlineStyle.setInteger(panel, Css.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(panel, Css.TOP, 0, CssUnit.PX);
+		final InlineStyle panelInlineStyle = InlineStyle.getInlineStyle( panel );
+		panelInlineStyle.setString(Css.POSITION, "relative");
+		panelInlineStyle.setInteger(Css.LEFT, 0, CssUnit.PX);
+		panelInlineStyle.setInteger(Css.TOP, 0, CssUnit.PX);
 
 		final Element background = DOM.createSpan();
 		background.setClassName(this.getBackgroundStyleName());
 		panel.appendChild(background);
 
 		final Element handle = DOM.createDiv();
-		background.setClassName(this.getHandleStyleName());
-		InlineStyle.setString(background, Css.Z_INDEX, "1");
+		handle.setClassName(this.getHandleStyleName());
+		
+		final InlineStyle handleInlineStyle = InlineStyle.getInlineStyle( handle );
+		handleInlineStyle.setString( Css.Z_INDEX, "1");
+		handleInlineStyle.setString( Css.OVERFLOW_X, "hidden");
+		handleInlineStyle.setString(Css.OVERFLOW_Y, "hidden");
 		panel.appendChild(handle);
-
-		InlineStyle.setString(panel, Css.OVERFLOW_X, "hidden");
-		InlineStyle.setString(panel, Css.OVERFLOW_Y, "hidden");
 
 		return panel;
 	}
@@ -98,18 +100,19 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 
 	protected void updateBackgroundDimensions() {
 		final Element element = this.getBackgroundWidgetElement();
-
-		final String originalWidth = InlineStyle.getString(element, Css.WIDTH);
-		final String originalHeight = InlineStyle.getString(element, Css.HEIGHT);
+		final InlineStyle backgroundInlineStyle = InlineStyle.getInlineStyle(element);
+		final String originalWidth = backgroundInlineStyle.getString(Css.WIDTH);
+		final String originalHeight = backgroundInlineStyle.getString(Css.HEIGHT);
 
 		JavaScript.setString(element, "_" + Css.WIDTH, originalWidth);
 		JavaScript.setString(element, "_" + Css.HEIGHT, originalHeight);
 
-		final int widthInPixels = ComputedStyle.getInteger(this.getElement(), Css.WIDTH, CssUnit.PX, 0);
-		InlineStyle.setInteger(element, Css.WIDTH, widthInPixels, CssUnit.PX);
+		final ComputedStyle elementComputedStyle = ComputedStyle.getComputedStyle( this.getElement() );
+		final int widthInPixels = elementComputedStyle.getInteger(Css.WIDTH, CssUnit.PX, 0);
+		backgroundInlineStyle.setInteger(Css.WIDTH, widthInPixels, CssUnit.PX);
 
-		final int heightInPixels = ComputedStyle.getInteger(this.getElement(), Css.HEIGHT, CssUnit.PX, 0);
-		InlineStyle.setInteger(element, Css.HEIGHT, heightInPixels, CssUnit.PX);
+		final int heightInPixels = elementComputedStyle.getInteger(Css.HEIGHT, CssUnit.PX, 0);
+		backgroundInlineStyle.setInteger(Css.HEIGHT, heightInPixels, CssUnit.PX);
 	}
 
 	protected void remove0(final Element element, final int index) {
@@ -124,8 +127,9 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		final String width = JavaScript.getString(element, "_" + Css.WIDTH);
 		final String height = JavaScript.getString(element, "_" + Css.HEIGHT);
 
-		InlineStyle.setString(element, Css.WIDTH, width);
-		InlineStyle.setString(element, Css.HEIGHT, height);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
+		inlineStyle.setString(Css.WIDTH, width);
+		inlineStyle.setString(Css.HEIGHT, height);
 	}
 
 	protected Element getBackgroundWidgetElement() {
@@ -133,6 +137,7 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		return DOM.getChild(parent, 0);
 	}
 
+	@Override
 	public void onAttach() {
 		super.onAttach();
 

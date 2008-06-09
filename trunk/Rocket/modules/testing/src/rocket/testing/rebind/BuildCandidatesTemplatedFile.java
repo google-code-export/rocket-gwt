@@ -74,7 +74,7 @@ public class BuildCandidatesTemplatedFile extends TemplatedFileCodeBlock {
 	protected CodeBlock getAddTestsCodeBlock() {
 		final AddTestTemplatedFile template = new AddTestTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Method>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -87,19 +87,17 @@ public class BuildCandidatesTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<Method> getCollection() {
 				return BuildCandidatesTemplatedFile.this.getTestMethods();
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
-				final Method testMethod = (Method) element;
-
-				template.setMethod(testMethod);
+			protected void prepareToWrite( final Method method ) {
+				template.setMethod(method);
 			}
 
 			@Override
-			protected void writeBetweenElements(SourceWriter writer) {
+			protected void writeBetweenElements(final SourceWriter writer) {
 				writer.println("");
 			}
 		};

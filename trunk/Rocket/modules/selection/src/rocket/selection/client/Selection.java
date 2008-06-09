@@ -69,7 +69,7 @@ public class Selection extends JavaScriptObject {
 	 * @param element
 	 */
 	public static void disableTextSelection(final Element element) {
-		InlineStyle.setString(element, Css.USER_SELECT, Css.USER_SELECT_DISABLED);
+		InlineStyle.getInlineStyle( element ).setString(Css.USER_SELECT, Css.USER_SELECT_DISABLED);
 	}
 
 	public static void disableTextSelection() {
@@ -86,7 +86,7 @@ public class Selection extends JavaScriptObject {
 	 * @param element
 	 */
 	public static void enableTextSelection(final Element element) {
-		InlineStyle.setString(element, Css.USER_SELECT, Css.USER_SELECT_ENABLED);
+		InlineStyle.getInlineStyle( element ).setString(Css.USER_SELECT, Css.USER_SELECT_ENABLED);
 	}
 
 	public static void enableTextSelection() {

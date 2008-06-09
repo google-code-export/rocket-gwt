@@ -94,7 +94,7 @@ public class JavaMethodMethodAdapter extends AbstractMethod implements Method {
 	}
 
 	public List<String> getMetadataValues(final String name) {
-		return Collections.EMPTY_LIST;
+		return Collections.<String>emptyList();
 	}
 
 	private java.lang.reflect.Method javaMethod;

@@ -101,11 +101,11 @@ abstract public class ObjectReaderOrWriterFinder {
 		while (true) {
 			final Type type = this.getTypeFromAnnotation(readerOrWriter);
 			if (null == type) {
-				matches = Collections.EMPTY_MAP;
+				matches = Collections.<Type,Match>emptyMap();
 				break;
 			}
 			if (false == this.shouldBeSerialized(type)) {
-				matches = Collections.EMPTY_MAP;
+				matches = Collections.<Type,Match>emptyMap();
 				break;
 			}
 
@@ -181,7 +181,7 @@ abstract public class ObjectReaderOrWriterFinder {
 		Type typeFromAnnotation = null;
 		while (true) {
 			// annotation not found...
-			final List values = type.getMetadataValues(SerializationConstants.SERIALIZABLE_TYPE);
+			final List<String> values = type.getMetadataValues(SerializationConstants.SERIALIZABLE_TYPE);
 			if (values.size() == 0) {
 				break;
 			}
@@ -210,12 +210,12 @@ abstract public class ObjectReaderOrWriterFinder {
 	 * @param serializableTypes
 	 * @return
 	 */
-	protected boolean findSingleMatch(final Map matches, final Set<Type> serializableTypes) {
+	protected boolean findSingleMatch(final Map<Type,Match> matches, final Set<Type> serializableTypes) {
 		boolean found = false;
 
 		final Iterator<Type> iterator = matches.keySet().iterator();
 		while (iterator.hasNext()) {
-			final Type type = (Type) iterator.next();
+			final Type type = iterator.next();
 			if (serializableTypes.contains(type)) {
 				found = true;
 				break;

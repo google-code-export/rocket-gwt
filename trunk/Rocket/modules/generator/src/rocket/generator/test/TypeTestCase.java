@@ -30,12 +30,13 @@ public class TypeTestCase extends TestCase {
 		final GeneratorContext context = this.createGeneratorContext();
 
 		final Type type = context.getType(SuperClass.class.getName());
-		final Method method = type.getMethod("dummy", Collections.EMPTY_LIST);
-		final Method mostDerived = type.findMostDerivedMethod("dummy", Collections.EMPTY_LIST);
+		final Method method = type.getMethod("dummy", Collections.<Type>emptyList());
+		final Method mostDerived = type.findMostDerivedMethod("dummy", Collections.<Type>emptyList());
 		assertSame(method, mostDerived);
 	}
 
 	static class MostDerived extends SuperClass {
+		@Override
 		public void dummy() {
 		}
 	}
@@ -50,8 +51,8 @@ public class TypeTestCase extends TestCase {
 
 		final Type subType = context.getType(SubClassOfSuperClass.class.getName());
 		final Type superType = context.getType(SuperClass.class.getName());
-		final Method method = superType.getMethod("dummy", Collections.EMPTY_LIST);
-		final Method mostDerived = subType.findMostDerivedMethod("dummy", Collections.EMPTY_LIST);
+		final Method method = superType.getMethod("dummy", Collections.<Type>emptyList());
+		final Method mostDerived = subType.findMostDerivedMethod("dummy", Collections.<Type>emptyList());
 		assertSame(method, mostDerived);
 	}
 
@@ -62,7 +63,7 @@ public class TypeTestCase extends TestCase {
 		final GeneratorContext context = this.createGeneratorContext();
 
 		final Type type = context.getType(ClassWithNoMethods.class.getName());
-		final Method mostDerived = type.findMostDerivedMethod("dummy", Collections.EMPTY_LIST);
+		final Method mostDerived = type.findMostDerivedMethod("dummy", Collections.<Type>emptyList());
 		assertNull(mostDerived);
 	}
 
@@ -71,7 +72,7 @@ public class TypeTestCase extends TestCase {
 
 		final Type type = context.getType(ClassWithNoMethods.class.getName());
 		try {
-			final Method mostDerived = type.getMostDerivedMethod("dummy", Collections.EMPTY_LIST);
+			final Method mostDerived = type.getMostDerivedMethod("dummy", Collections.<Type>emptyList());
 			fail("An MethodNotFoundException should have been thrown and not Method: " + mostDerived);
 		} catch (final MethodNotFoundException expected) {
 		}

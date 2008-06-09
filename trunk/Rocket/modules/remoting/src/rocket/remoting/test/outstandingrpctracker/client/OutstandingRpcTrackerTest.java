@@ -47,11 +47,12 @@ public class OutstandingRpcTrackerTest implements EntryPoint {
 
 		final HTML loading = new HTML("LOADING...");
 		final Element loadingElement = loading.getElement();
-		InlineStyle.setString(loadingElement, Css.BACKGROUND_COLOR, "red");
-		InlineStyle.setString(loadingElement, Css.COLOR, "white");
-		InlineStyle.setString(loadingElement, Css.POSITION, "absolute");
-		InlineStyle.setInteger(loadingElement, Css.RIGHT, 0, CssUnit.PX);
-		InlineStyle.setInteger(loadingElement, Css.TOP, 0, CssUnit.PX);
+		final InlineStyle loadingInlineStyle = InlineStyle.getInlineStyle(loadingElement);
+		loadingInlineStyle.setString( Css.BACKGROUND_COLOR, "red");
+		loadingInlineStyle.setString( Css.COLOR, "white");
+		loadingInlineStyle.setString( Css.POSITION, "absolute");
+		loadingInlineStyle.setInteger( Css.RIGHT, 0, CssUnit.PX);
+		loadingInlineStyle.setInteger( Css.TOP, 0, CssUnit.PX);
 
 		root.add(loading);
 

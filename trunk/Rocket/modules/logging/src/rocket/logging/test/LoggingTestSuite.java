@@ -33,8 +33,7 @@ public class LoggingTestSuite {
 		suite.addTestSuite(LoggingLevelTestCase.class);
 		suite.addTestSuite(PropertiesFileLoggingFactoryConfigTestCase.class);
 
-		// FIXME unsure why doenst work within TestSuite but works as a
-		// standalone.
+		// FIXME unsure why doenst work within TestSuite but works as a standalone.
 		suite.addTestSuite(LoggerFactoryGeneratorGwtTestCase.class);
 		suite.addTestSuite(ServerLoggerGwtTestCase.class);
 	}

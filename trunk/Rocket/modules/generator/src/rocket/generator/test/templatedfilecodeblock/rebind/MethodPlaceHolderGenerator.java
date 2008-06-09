@@ -36,7 +36,7 @@ public class MethodPlaceHolderGenerator extends AbstractTemplatedFileCodeBlockGe
 
 	protected void visitTemplate(final Template template) {
 		final Type type = this.getType();
-		final Method method = type.getMethod("method0", Collections.EMPTY_LIST);
+		final Method method = type.getMethod("method0", Collections.<Type>emptyList());
 		template.set("method", method);
 	}
 

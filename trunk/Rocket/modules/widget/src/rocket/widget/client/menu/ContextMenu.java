@@ -176,9 +176,10 @@ public class ContextMenu extends Menu {
 		// element accurately IE6 bug
 		final Element menuListElement = menuList.getElement();
 
-		InlineStyle.setString(menuListElement, Css.POSITION, "absolute");
-		InlineStyle.setInteger(menuListElement, Css.LEFT, 0, CssUnit.PX);
-		InlineStyle.setInteger(menuListElement, Css.TOP, 0, CssUnit.PX);
+		final InlineStyle menuListElementInlineStyle = InlineStyle.getInlineStyle(menuListElement);
+		menuListElementInlineStyle.setString(Css.POSITION, "absolute");
+		menuListElementInlineStyle.setInteger(Css.LEFT, 0, CssUnit.PX);
+		menuListElementInlineStyle.setInteger(Css.TOP, 0, CssUnit.PX);
 
 		// final Widget widget = event.getWidget();
 		final Element widgetElement = event.getTarget();
@@ -188,9 +189,9 @@ public class ContextMenu extends Menu {
 		x = x + event.getTargetElementX();
 		y = y + event.getTargetElementY();
 
-		InlineStyle.setInteger(menuListElement, Css.LEFT, x, CssUnit.PX);
-		InlineStyle.setInteger(menuListElement, Css.TOP, y, CssUnit.PX);
-		InlineStyle.setInteger(menuListElement, Css.Z_INDEX, 1, CssUnit.NONE);
+		menuListElementInlineStyle.setInteger(Css.LEFT, x, CssUnit.PX);
+		menuListElementInlineStyle.setInteger(Css.TOP, y, CssUnit.PX);
+		menuListElementInlineStyle.setInteger(Css.Z_INDEX, 1, CssUnit.NONE);
 
 		this.fireMenuOpened(event, this);
 	}

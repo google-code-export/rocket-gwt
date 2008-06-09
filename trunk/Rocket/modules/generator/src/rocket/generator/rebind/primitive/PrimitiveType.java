@@ -39,7 +39,7 @@ abstract public class PrimitiveType extends AbstractType {
 	}
 
 	public Set<Type> getInterfaces() {
-		return Collections.EMPTY_SET;
+		return Collections.<Type>emptySet();
 	}
 
 	protected Set<Type> createInterfaces() {
@@ -47,7 +47,7 @@ abstract public class PrimitiveType extends AbstractType {
 	}
 
 	public Set<Type> getSubTypes() {
-		return Collections.EMPTY_SET;
+		return Collections.<Type>emptySet();
 	}
 
 	protected Set<Type> createSubTypes() {
@@ -63,19 +63,19 @@ abstract public class PrimitiveType extends AbstractType {
 	}
 
 	public Set<Constructor> getConstructors() {
-		return Collections.EMPTY_SET;
+		return Collections.<Constructor>emptySet();
 	}
 
 	protected Set<Constructor> createConstructors() {
 		throw new UnsupportedOperationException();
 	}
 
-	public Constructor findConstructor(final List parameterTypes) {
+	public Constructor findConstructor(final List<Type> parameterTypes) {
 		return null;
 	}
 
 	public Set<Field> getFields() {
-		return Collections.EMPTY_SET;
+		return Collections.<Field>emptySet();
 	}
 
 	protected Set<Field> createFields() {
@@ -87,7 +87,7 @@ abstract public class PrimitiveType extends AbstractType {
 	}
 
 	public Set<Method> getMethods() {
-		return Collections.EMPTY_SET;
+		return Collections.<Method>emptySet();
 	}
 
 	protected Set<Method> createMethods() {
@@ -127,11 +127,11 @@ abstract public class PrimitiveType extends AbstractType {
 	}
 
 	public List<String> getMetadataValues(final String name) {
-		return Collections.EMPTY_LIST;
+		return Collections.<String>emptyList();
 	}
 
 	public Set<Type> getNestedTypes() {
-		return Collections.EMPTY_SET;
+		return Collections.<Type>emptySet();
 	}
 
 	protected Set<Type> createNestedTypes() {

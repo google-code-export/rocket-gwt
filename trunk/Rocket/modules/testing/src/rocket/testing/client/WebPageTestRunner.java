@@ -92,12 +92,12 @@ public class WebPageTestRunner extends TestRunner {
 	 */
 	protected void addTestNameDivider() {
 		final HTML html = new HTML();
-		final Element element = html.getElement();
-		InlineStyle.setInteger(element, Css.WIDTH, 100, CssUnit.PERCENTAGE);
-		InlineStyle.setInteger(element, Css.HEIGHT, 1, CssUnit.EM);
-		InlineStyle.setInteger(element, Css.MARGIN, 4, CssUnit.PX);
-		InlineStyle.setString(element, Css.COLOR, "black");
-		InlineStyle.setString(element, Css.BACKGROUND_COLOR, "skyBlue");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle( html.getElement() );
+		inlineStyle.setInteger(Css.WIDTH, 100, CssUnit.PERCENTAGE);
+		inlineStyle.setInteger(Css.HEIGHT, 1, CssUnit.EM);
+		inlineStyle.setInteger(Css.MARGIN, 4, CssUnit.PX);
+		inlineStyle.setString(Css.COLOR, "black");
+		inlineStyle.setString(Css.BACKGROUND_COLOR, "skyBlue");
 		html.setText(this.getCurrentTestName());
 		this.addWidget(html);
 	}
@@ -183,12 +183,7 @@ public class WebPageTestRunner extends TestRunner {
 		final int childCount = DOM.getChildCount(body);
 		final Element element = DOM.getChild(body, childCount - 1);
 		DOM.scrollIntoView(element);
-		this.invokeSetFocus(element);
 	}
-
-	native protected void invokeSetFocus(final Element element)/*-{
-				element.focus();
-			}-*/;
 
 	protected String buildFailedTestSummary(final Test test) {
 		Checker.notNull("parameter:test", test);
@@ -199,12 +194,12 @@ public class WebPageTestRunner extends TestRunner {
 		buf.append(test.getName());
 		buf.append("\n");
 
-		final List messages = test.getMessages();
+		final List<String> messages = test.getMessages();
 		if (false == messages.isEmpty()) {
 			buf.append("\nMESSAGES LOGGED BEFORE FAILURE\n");
-			final Iterator messagesIterator = test.getMessages().iterator();
+			final Iterator<String> messagesIterator = messages.iterator();
 			while (messagesIterator.hasNext()) {
-				final String message = (String) messagesIterator.next();
+				final String message = messagesIterator.next();
 				buf.append(message);
 				buf.append("\n");
 			}

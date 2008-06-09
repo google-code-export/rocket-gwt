@@ -127,24 +127,24 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 
 		Constructor found = null;
 
-		final Iterator constructors = this.getConstructors().iterator();
+		final Iterator<Constructor> constructors = this.getConstructors().iterator();
 
 		while (constructors.hasNext()) {
-			final Constructor constructor = (Constructor) constructors.next();
+			final Constructor constructor = constructors.next();
 
-			final List constructorParameterTypes = constructor.getParameters();
-			if (constructorParameterTypes.size() != parameterTypes.size()) {
+			final List<ConstructorParameter> constructorParameters = constructor.getParameters();
+			if (constructorParameters.size() != parameterTypes.size()) {
 				continue;
 			}
 
 			found = constructor;
 
-			final Iterator constructorParameterTypesIterator = constructorParameterTypes.iterator();
-			final Iterator parameterTypesIterator = parameterTypes.iterator();
+			final Iterator<ConstructorParameter> constructorParametersIterator = constructorParameters.iterator();
+			final Iterator<Type> parameterTypesIterator = parameterTypes.iterator();
 
 			while (parameterTypesIterator.hasNext()) {
-				final ConstructorParameter constructorParameter = (ConstructorParameter) constructorParameterTypesIterator.next();
-				final Type parameterType = (Type) parameterTypesIterator.next();
+				final ConstructorParameter constructorParameter = constructorParametersIterator.next();
+				final Type parameterType = parameterTypesIterator.next();
 				if (false == constructorParameter.getType().equals(parameterType)) {
 					found = null;
 				}
@@ -171,7 +171,7 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	}
 
 	public boolean hasNoArgumentsConstructor() {
-		return null != this.findConstructor(Collections.EMPTY_LIST);
+		return null != this.findConstructor(Collections.<Type>emptyList());
 	}
 
 	/**
@@ -209,10 +209,10 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 
 		Field found = null;
 
-		final Iterator iterator = this.getFields().iterator();
+		final Iterator<Field> iterator = this.getFields().iterator();
 
 		while (iterator.hasNext()) {
-			final Field field = (Field) iterator.next();
+			final Field field = iterator.next();
 			if (field.getName().equals(name)) {
 				found = field;
 				break;

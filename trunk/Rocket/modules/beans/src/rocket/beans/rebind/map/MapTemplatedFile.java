@@ -90,7 +90,7 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 		final MapAddEntryTemplatedFile template = new MapAddEntryTemplatedFile();
 		final Map<String, Value> entries = this.getEntries();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Map.Entry<String, Value>>() {
 			@Override
 			public InputStream getInputStream() {
 				return template.getInputStream();
@@ -103,13 +103,12 @@ public class MapTemplatedFile extends TemplatedFileCodeBlock {
 
 			@Override
 			@SuppressWarnings("unchecked")
-			protected Collection getCollection() {
+			protected Collection<Map.Entry<String, Value>> getCollection() {
 				return entries.entrySet();
 			}
 
 			@Override
-			protected void prepareToWrite(final Object element) {
-				final Map.Entry<String,Value> entry = (Map.Entry<String,Value>) element;
+			protected void prepareToWrite(final Map.Entry<String, Value> entry ) {
 				template.setKey(entry.getKey());
 				template.setValue(entry.getValue());
 			}

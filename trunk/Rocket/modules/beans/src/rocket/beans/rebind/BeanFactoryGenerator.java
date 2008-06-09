@@ -610,7 +610,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Type beanType = bean.getType();
 		final String factoryMethodName = bean.getFactoryMethod();
-		final Method factoryMethod = beanType.findMethod(factoryMethodName, Collections.EMPTY_LIST);
+		final Method factoryMethod = beanType.findMethod(factoryMethodName, Collections.<Type>emptyList() );
 		if (null == factoryMethod || false == factoryMethod.isStatic() || factoryMethod.getVisibility() != Visibility.PUBLIC) {
 			this.throwFactoryMethodNotFound(bean, factoryMethodName);
 		}
@@ -633,7 +633,7 @@ public class BeanFactoryGenerator extends Generator {
 	protected NewMethod createCreateInstanceMethod(final NewType factoryBean) {
 		Checker.notNull("parameter:factoryBean", factoryBean);
 
-		final Method method = factoryBean.getMostDerivedMethod(Constants.CREATE_INSTANCE, Collections.EMPTY_LIST);
+		final Method method = factoryBean.getMostDerivedMethod(Constants.CREATE_INSTANCE, Collections.<Type>emptyList());
 
 		final NewMethod newMethod = method.copy(factoryBean);
 		newMethod.setAbstract(false);
@@ -687,7 +687,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Type beanType = bean.getType();
 		final String initMethodName = bean.getInitMethod();
-		final Method initMethod = beanType.findMethod(initMethodName, Collections.EMPTY_LIST);
+		final Method initMethod = beanType.findMethod(initMethodName, Collections.<Type>emptyList());
 		if (null == initMethod || initMethod.isStatic() || initMethod.getVisibility() != Visibility.PUBLIC) {
 			throwInitMethodNotFound(bean, initMethodName);
 		}
@@ -1226,7 +1226,7 @@ public class BeanFactoryGenerator extends Generator {
 
 		final Type beanType = bean.getType();
 		final String destroyMethodName = bean.getDestroyMethod();
-		final Method destroyMethod = beanType.findMethod(destroyMethodName, Collections.EMPTY_LIST);
+		final Method destroyMethod = beanType.findMethod(destroyMethodName, Collections.<Type>emptyList());
 		if (null == destroyMethod || destroyMethod.isStatic() || destroyMethod.getVisibility() != Visibility.PUBLIC) {
 			throwCustomMethodNotFound(bean, destroyMethodName);
 		}
@@ -1761,7 +1761,7 @@ public class BeanFactoryGenerator extends Generator {
 		final MethodParameter targetBeanParameter = (MethodParameter) newMethod.getParameters().get(0);
 
 		final Type proxy = bean.getProxy();
-		final Constructor constructor = proxy.getConstructor(Collections.EMPTY_LIST);
+		final Constructor constructor = proxy.getConstructor(Collections.<Type>emptyList());
 
 		final CreateProxyTemplatedFile body = new CreateProxyTemplatedFile();
 		body.setProxyConstructor(constructor);
@@ -1847,7 +1847,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 
 		final NewType beanFactory = this.getBeanFactory();
-		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.REGISTER_FACTORY_BEANS, Collections.EMPTY_LIST);
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.REGISTER_FACTORY_BEANS, Collections.<Type>emptyList());
 
 		final NewMethod newMethod = abstractMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
@@ -1886,7 +1886,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 
 		final NewType beanFactory = this.getBeanFactory();
-		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_ALIASES_TO_BEANS_METHOD, Collections.EMPTY_LIST);
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_ALIASES_TO_BEANS_METHOD, Collections.<Type>emptyList());
 
 		final NewMethod newMethod = abstractMethod.copy(beanFactory);
 		newMethod.setAbstract(false);
@@ -1932,8 +1932,7 @@ public class BeanFactoryGenerator extends Generator {
 		context.branch();
 
 		final NewType beanFactory = this.getBeanFactory();
-		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD,
-				Collections.EMPTY_LIST);
+		final Method abstractMethod = beanFactory.getSuperType().getMostDerivedMethod(Constants.GET_EAGER_SINGELTON_BEAN_NAMES_METHOD,Collections.<Type>emptyList());
 
 		final NewMethod newMethod = abstractMethod.copy(beanFactory);
 		newMethod.setAbstract(false);

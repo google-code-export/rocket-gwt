@@ -25,11 +25,13 @@ import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.codeblock.CodeBlock;
 import rocket.generator.rebind.codeblock.CollectionTemplatedCodeBlock;
 import rocket.generator.rebind.codeblock.EmptyCodeBlock;
+import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.util.StringBufferSourceWriter;
 
 public class CollectionTemplatedCodeBlockTestCase extends TestCase {
+	
 	public void testEmptyCollection() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.EMPTY_LIST);
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.<Type>emptyList());
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
 
@@ -39,8 +41,7 @@ public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	}
 
 	public void testCollectionWithOneElement() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections
-				.nCopies(1, EmptyCodeBlock.INSTANCE));
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.<CodeBlock>nCopies(1, EmptyCodeBlock.INSTANCE));
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
 
@@ -50,8 +51,7 @@ public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	}
 
 	public void testCollectionWithTwoElements() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections
-				.nCopies(2, EmptyCodeBlock.INSTANCE));
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.<CodeBlock>nCopies(2, EmptyCodeBlock.INSTANCE));
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
 
@@ -61,8 +61,7 @@ public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 	}
 
 	public void testCollectionWithThreeElements() {
-		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections
-				.nCopies(3, EmptyCodeBlock.INSTANCE));
+		final CollectionTemplatedCodeBlock test = this.createCollectionTemplatedCodeBlock(Collections.<CodeBlock>nCopies(3, EmptyCodeBlock.INSTANCE));
 		final StringBufferSourceWriter writer = new StringBufferSourceWriter();
 		test.write(writer);
 
@@ -77,30 +76,33 @@ public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 		return test;
 	}
 
-	public class TestCollectionTemplatedCodeBlock extends CollectionTemplatedCodeBlock {
+	public class TestCollectionTemplatedCodeBlock extends CollectionTemplatedCodeBlock<Object> {
 
-		private Collection collection;
+		private Collection<Object> collection;
 
-		protected Collection getCollection() {
+		protected Collection<Object> getCollection() {
 			return this.collection;
 		}
 
-		public void setCollection(final Collection collection) {
+		public void setCollection(final Collection<Object> collection) {
 			this.collection = collection;
 		}
 
-		protected void prepareToWrite(Object element) {
+		@Override
+		protected void prepareToWrite(final Object element) {
 		}
 
-		protected void writeBetweenElements(SourceWriter writer) {
+		@Override
+		protected void writeBetweenElements(final SourceWriter writer) {
 			writer.print(",");
-
 		}
 
+		@Override
 		protected InputStream getInputStream() {
 			return new StringBufferInputStream("${value}");
 		}
 
+		@Override
 		protected Object getValue0(final String name) {
 			final int index = this.getIndex();
 			return new CodeBlock() {
@@ -113,7 +115,6 @@ public class CollectionTemplatedCodeBlockTestCase extends TestCase {
 				}
 			};
 		}
-
 	}
 
 }
