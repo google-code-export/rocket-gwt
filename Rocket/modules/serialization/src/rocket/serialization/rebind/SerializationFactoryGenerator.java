@@ -1508,7 +1508,7 @@ public class SerializationFactoryGenerator extends Generator {
 		final NewField singleton = type.newField();
 
 		final NewInstanceTemplatedFile body = new NewInstanceTemplatedFile();
-		final Constructor constructor = type.getConstructor(Collections.EMPTY_LIST);
+		final Constructor constructor = type.getConstructor(Collections.<Type>emptyList());
 		body.setConstructor(constructor);
 
 		singleton.setValue(body);

@@ -41,12 +41,16 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 		super();
 	}
 
+	@Override
 	protected void afterCreateWidget() {
 		this.setItems(createItems());
-		InlineStyle.setString(DOM.getChild(this.getElement(), 0), Css.OVERFLOW_X, "hidden");
-		InlineStyle.setString(DOM.getChild(this.getElement(), 0), Css.OVERFLOW_Y, "hidden");
+
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle( DOM.getChild(this.getElement(), 0) ); 
+		inlineStyle.setString(Css.OVERFLOW_X, "hidden");
+		inlineStyle.setString(Css.OVERFLOW_Y, "hidden");
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return Constants.HORIZONTAL_SPLITTER_PANEL_STYLE;
 	}
@@ -66,6 +70,7 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 			super();
 		}
 
+		@Override
 		protected void afterCreateElement() {
 			super.afterCreateElement();
 
@@ -73,10 +78,12 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 			this.setHeight("100%");
 		}
 
+		@Override
 		protected String getInitialStyleName() {
 			return HorizontalSplitterPanel.this.getSplitterStyle();
 		}
 
+		@Override
 		protected String getDraggingStyleName() {
 			return HorizontalSplitterPanel.this.getDraggingStyle();
 		}
@@ -104,7 +111,7 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 
 			// need to figure out if mouse has moved to the right or left...
 			final int mouseX = event.getPageX();
-			final int splitterX = DOM.getAbsoluteLeft(splitter.getElement());
+			final int splitterX = splitter.getElement().getAbsoluteLeft();
 
 			// if the mouse has not moved horizontally but vertically so exit...
 			int delta = mouseX - splitterX;
@@ -123,12 +130,12 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 
 			final int widthSum = beforeWidgetWidth + afterWidgetWidth;
 
-			final List items = this.getItems();
+			final List<SplitterItem> items = this.getItems();
 
 			// if the mouse moved left make sure the beforeWidget width is not
 			// less than its minimumWidth.
 			if (delta < 0) {
-				final SplitterItem beforeWidgetItem = (SplitterItem) items.get(panelIndex / 2);
+				final SplitterItem beforeWidgetItem = items.get(panelIndex / 2);
 				final int minimumWidth = beforeWidgetItem.getMinimumSize();
 
 				if (beforeWidgetWidth < minimumWidth) {
@@ -141,7 +148,7 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 			// since the mouse moved right make sure the afterWidget width is
 			// not less than its minimumWidth
 			if (delta > 0) {
-				final SplitterItem afterWidgetItem = (SplitterItem) items.get(panelIndex / 2 + 1);
+				final SplitterItem afterWidgetItem = items.get(panelIndex / 2 + 1);
 				final int minimumWidth = afterWidgetItem.getMinimumSize();
 				if (afterWidgetWidth < minimumWidth) {
 					delta = afterWidgetWidth + delta - minimumWidth;
@@ -170,12 +177,12 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 	}
 
 	protected void adjustXCoordinate(final Widget widget, final int delta) {
-		final Element element = widget.getElement();
-		final int x = InlineStyle.getInteger(element, Css.LEFT, CssUnit.PX, 0);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle( widget.getElement() );
+		final int x = inlineStyle.getInteger(Css.LEFT, CssUnit.PX, 0);
 
-		InlineStyle.setString(element, Css.POSITION, "absolute");
-		InlineStyle.setInteger(element, Css.LEFT, x + delta, CssUnit.PX);
-		InlineStyle.setInteger(element, Css.TOP, 0, CssUnit.PX);
+		inlineStyle.setString(Css.POSITION, "absolute");
+		inlineStyle.setInteger(Css.LEFT, x + delta, CssUnit.PX);
+		inlineStyle.setInteger(Css.TOP, 0, CssUnit.PX);
 	}
 
 	/**
@@ -185,7 +192,7 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 	protected void redraw0() {
 		final int weightSum = this.sumWeights();
 		final InternalPanel panel = this.getPanel();
-		final int availableWidth = DOM.getElementPropertyInt(panel.getParentElement(), "offsetWidth");
+		final int availableWidth = panel.getParentElement().getOffsetWidth();
 
 		final int splitterCount = (panel.getWidgetCount() - 1) / 2;
 		final int splitterWidth = this.getSplitterSize();
@@ -193,24 +200,22 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 		final float ratio = (float) allocatedWidgetWidth / weightSum;
 
 		int left = 0;
-		final Iterator items = this.getItems().iterator();
-		final Iterator widgets = panel.iterator();
+		final Iterator<SplitterItem> items = this.getItems().iterator();
+		final Iterator<Widget> widgets = panel.iterator();
 
 		boolean more = widgets.hasNext();
 
 		while (more) {
-			final Widget widget = (Widget) widgets.next();
-			final SplitterItem item = (SplitterItem) items.next();
+			final Widget widget = widgets.next();
+			final SplitterItem item = items.next();
 
 			// set the widget position...
 			final Element widgetElement = widget.getElement();
-
-			InlineStyle.setString(widgetElement, Css.POSITION, "absolute");
-			InlineStyle.setInteger(widgetElement, Css.LEFT, left, CssUnit.PX);
-			InlineStyle.setInteger(widgetElement, Css.TOP, 0, CssUnit.PX);
-
-			// overflow...
-			InlineStyle.setString(widgetElement, Css.OVERFLOW, "hidden");
+			final InlineStyle widgetInlineStyle = InlineStyle.getInlineStyle(widgetElement);
+			widgetInlineStyle.setString(Css.POSITION, "absolute");
+			widgetInlineStyle.setInteger(Css.LEFT, left, CssUnit.PX);
+			widgetInlineStyle.setInteger(Css.TOP, 0, CssUnit.PX);
+			widgetInlineStyle.setString(Css.OVERFLOW, "hidden");
 
 			// set the size(width/height)...
 			widget.setHeight("100%");
@@ -231,13 +236,11 @@ public class HorizontalSplitterPanel extends SplitterPanel {
 			final Widget splitter = (Widget) widgets.next();
 
 			// set the splitter position...
-			final Element splitterElement = splitter.getElement();
-			InlineStyle.setString(splitterElement, Css.POSITION, "absolute");
-			InlineStyle.setInteger(splitterElement, Css.LEFT, left, CssUnit.PX);
-			InlineStyle.setInteger(splitterElement, Css.TOP, 0, CssUnit.PX);
-
-			// overflow...
-			InlineStyle.setString(widgetElement, Css.OVERFLOW, "hidden");
+			final InlineStyle splitterInlineStyle = InlineStyle.getInlineStyle( splitter.getElement() );
+			splitterInlineStyle.setString(Css.POSITION, "absolute");
+			splitterInlineStyle.setInteger(Css.LEFT, left, CssUnit.PX);
+			splitterInlineStyle.setInteger(Css.TOP, 0, CssUnit.PX);
+			splitterInlineStyle.setString(Css.OVERFLOW, "hidden");
 
 			// set the splitters size...
 			splitter.setWidth(splitterWidth + "px");

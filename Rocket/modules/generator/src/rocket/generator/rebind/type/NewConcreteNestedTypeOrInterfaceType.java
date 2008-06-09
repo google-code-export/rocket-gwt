@@ -103,14 +103,14 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	 * A set which contains all the initializers that have been built and added
 	 * to this type.
 	 */
-	private Set initializers;
+	private Set<Initializer> initializers;
 
-	protected Set getInitializers() {
+	protected Set<Initializer> getInitializers() {
 		Checker.notNull("field:initializers", initializers);
 		return this.initializers;
 	}
 
-	protected void setInitializers(final Set initializers) {
+	protected void setInitializers(final Set<Initializer> initializers) {
 		Checker.notNull("parameter:initializers", initializers);
 		this.initializers = initializers;
 	}
@@ -121,8 +121,8 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 		this.getInitializers().add(initializer);
 	}
 
-	protected Set createInitializers() {
-		return new HashSet();
+	protected Set<Initializer> createInitializers() {
+		return new HashSet<Initializer>();
 	}
 
 	public NewConstructor newConstructor() {
@@ -141,13 +141,13 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	}
 
 	public boolean hasNoArgumentsConstructor() {
-		return this.getConstructors().isEmpty() ? true : null != this.findConstructor(Collections.EMPTY_LIST);
+		return this.getConstructors().isEmpty() ? true : null != this.findConstructor(Collections.<Type>emptyList());
 	}
 
 	protected void writeInitializers(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
-		final Set initializers = this.getInitializers();
+		final Set<Initializer> initializers = this.getInitializers();
 		if (false == initializers.isEmpty()) {
 
 			final GeneratorContext context = this.getGeneratorContext();

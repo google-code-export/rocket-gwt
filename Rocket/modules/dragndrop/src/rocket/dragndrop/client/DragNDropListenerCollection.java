@@ -65,10 +65,10 @@ class DragNDropListenerCollection {
 	public void fireDragStarted(final DragStartEvent event) {
 		Checker.notNull("parameter:event", event);
 
-		final Iterator listeners = this.getListeners().iterator();
+		final Iterator<DragNDropListener> listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
-			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			final DragNDropListener listener = listeners.next();
 			listener.onDragStart(event);
 		}
 	}
@@ -76,10 +76,10 @@ class DragNDropListenerCollection {
 	public void fireDragMoveStarted(final DragMoveEvent event) {
 		Checker.notNull("parameter:event", event);
 
-		final Iterator listeners = this.getListeners().iterator();
+		final Iterator<DragNDropListener> listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
-			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			final DragNDropListener listener = listeners.next();
 			listener.onDragMove(event);
 		}
 	}
@@ -87,12 +87,11 @@ class DragNDropListenerCollection {
 	public void fireDropped(final DropEvent event) {
 		Checker.notNull("parameter:event", event);
 
-		final Iterator listeners = this.getListeners().iterator();
+		final Iterator<DragNDropListener> listeners = this.getListeners().iterator();
 
 		while (listeners.hasNext()) {
-			final DragNDropListener listener = (DragNDropListener) listeners.next();
+			final DragNDropListener listener = listeners.next();
 			listener.onDrop(event);
 		}
 	}
-
 }

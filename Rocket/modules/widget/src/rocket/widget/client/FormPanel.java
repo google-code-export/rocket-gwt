@@ -45,7 +45,7 @@ import com.google.gwt.user.client.ui.impl.FormPanelImplHost;
  * Most of the internals have been ripped and reworked from the original GWT
  * FormPanel.
  * 
- * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
+ * ROCKET When upgrading from GWT 1.5 RC1 reapply changes
  * 
  * @author Miroslav Pokorny
  */

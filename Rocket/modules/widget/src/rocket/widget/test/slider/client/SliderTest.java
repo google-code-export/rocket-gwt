@@ -28,7 +28,6 @@ import rocket.widget.client.slider.VerticalSlider;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Grid;
@@ -194,21 +193,22 @@ public class SliderTest implements EntryPoint {
 
 		final Grid grid = new Grid(rows, columns);
 
-		final Element gridElement = grid.getElement();
-		InlineStyle.setString(gridElement, Css.BORDER_COLLAPSE, "collapse");
-		InlineStyle.setString(gridElement, Css.BORDER_SPACING, "0");
+		final InlineStyle gridElementInlineStyle = InlineStyle.getInlineStyle( grid.getElement() );
+		gridElementInlineStyle.setString(Css.BORDER_COLLAPSE, "collapse");
+		gridElementInlineStyle.setString(Css.BORDER_SPACING, "0");
 
 		final CellFormatter cellFormatter = grid.getCellFormatter();
 
 		for (int r = 0; r < rows; r++) {
 			for (int c = 0; c < columns; c++) {
 				final Element element = cellFormatter.getElement(r, c);
-				DOM.setInnerHTML(element, "");
+				element.setInnerHTML( "");
+				
 				final int red = 224 - r * 4;
 				final int green = 224 - c * 4;
 				final int blue = 224 ^ r ^ c;
 				final int rgb = red * 256 * 256 + green * 256 + blue;
-				InlineStyle.setString(element, Css.BACKGROUND_COLOR, "#" + Integer.toHexString(rgb));
+				InlineStyle.getInlineStyle( element ).setString(Css.BACKGROUND_COLOR, "#" + Integer.toHexString(rgb));
 			}
 		}
 		return grid;

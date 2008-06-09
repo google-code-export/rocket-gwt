@@ -44,22 +44,27 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 		super();
 	}
 
+	@Override
 	protected void checkPanel(final Panel panel) {
 		throw new UnsupportedOperationException("checkPanel");
 	}
 
 	abstract protected Panel createPanel();
 
+	@Override
 	protected void afterCreatePanel() {
 		this.getEventListenerDispatcher().addMouseEventListener(new MouseEventAdapter() {
+			@Override
 			public void onClick(final MouseClickEvent event) {
 				MenuList.this.handleMouseClick(event);
 			}
 
+			@Override
 			public void onMouseOut(final MouseOutEvent event) {
 				MenuList.this.handleMouseOut(event);
 			}
 
+			@Override
 			public void onMouseOver(final MouseOverEvent event) {
 				MenuList.this.handleMouseOver(event);
 			}
@@ -101,9 +106,9 @@ abstract class MenuList extends CompositePanel implements HasWidgets {
 
 	protected void hide() {
 		if (this.isHideable()) {
-			final Element element = this.getElement();
-			InlineStyle.setString(element, Css.VISIBILITY, "hidden");
-			InlineStyle.setString(element, Css.DISPLAY, "none");
+			final InlineStyle inlineStyle = InlineStyle.getInlineStyle( this.getElement() );
+			inlineStyle.setString(Css.VISIBILITY, "hidden");
+			inlineStyle.setString(Css.DISPLAY, "none");
 		}
 
 		if (this.hasOpened()) {

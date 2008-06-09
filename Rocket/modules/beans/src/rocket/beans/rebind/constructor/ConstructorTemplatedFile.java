@@ -97,8 +97,8 @@ public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 	}
 
 	protected CodeBlock getArgumentsAsCodeBlock() {
-		final List<Value> parameters = this.getArguments();
-		return new CollectionTemplatedCodeBlock() {
+		final List<Value> values = this.getArguments();
+		return new CollectionTemplatedCodeBlock<Value>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -107,21 +107,21 @@ public class ConstructorTemplatedFile extends TemplatedFileCodeBlock {
 
 			@Override
 			protected Object getValue0(final String name) {
-				return parameters.get(this.getIndex());
+				return values.get(this.getIndex());
 			}
 
 			@Override
 			@SuppressWarnings("unchecked")
-			protected Collection getCollection() {
-				return parameters;
+			protected Collection<Value> getCollection() {
+				return values;
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
+			protected void prepareToWrite(final Value value) {
 			}
 
 			@Override
-			protected void writeBetweenElements(SourceWriter writer) {
+			protected void writeBetweenElements(final SourceWriter writer) {
 				writer.print(",");
 			}
 		};

@@ -19,8 +19,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import rocket.beans.test.BeanTestSuite;
 import rocket.collection.test.CollectionTestSuite;
-import rocket.cookie.test.CookieTestSuite;
 import rocket.generator.test.GeneratorTestSuite;
+import rocket.json.test.JsonTestSuite;
 import rocket.logging.test.LoggingTestSuite;
 import rocket.remoting.test.RemotingTestSuite;
 import rocket.serialization.test.SerializationTestSuite;
@@ -35,15 +35,14 @@ import rocket.widget.test.WidgetTestSuite;
  * @author Miroslav Pokorny
  */
 public class RocketProjectTestSuite {
-	
 
 	public static Test suite() {
 		final TestSuite suite = new TestSuite("TestSuite for rocket");
-		
+
 		BeanTestSuite.addTests(suite);
 		CollectionTestSuite.addTests(suite);
-		CookieTestSuite.addTests(suite);
 		GeneratorTestSuite.addTests(suite);
+		JsonTestSuite.addTests(suite);
 		LoggingTestSuite.addTests(suite);
 		RemotingTestSuite.addTests(suite);
 		SerializationTestSuite.addTests(suite);
@@ -51,7 +50,7 @@ public class RocketProjectTestSuite {
 		TextTestSuite.addTests(suite);
 		UtilTestSuite.addTests(suite);
 		WidgetTestSuite.addTests(suite);
-		
+
 		return suite;
 	}
 }

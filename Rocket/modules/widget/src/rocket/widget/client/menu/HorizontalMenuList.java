@@ -24,7 +24,6 @@ import rocket.style.client.InlineStyle;
 import rocket.util.client.Checker;
 import rocket.widget.client.Html;
 
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
@@ -51,10 +50,10 @@ public class HorizontalMenuList extends MenuList {
 
 	protected void open() {
 		if (this.isHideable()) {
-			final Element element = this.getElement();
-			InlineStyle.setInteger(element, Css.Z_INDEX, 1, CssUnit.NONE);
-			InlineStyle.setString(element, Css.DISPLAY, "block");
-			InlineStyle.setString(element, Css.VISIBILITY, "visible");
+			final InlineStyle inlineStyle = InlineStyle.getInlineStyle( this.getElement() );
+			inlineStyle.setInteger(Css.Z_INDEX, 1, CssUnit.NONE);
+			inlineStyle.setString(Css.DISPLAY, "block");
+			inlineStyle.setString(Css.VISIBILITY, "visible");
 		}
 	}
 

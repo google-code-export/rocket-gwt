@@ -49,7 +49,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays dont have constructors.
 	 */
 	public Set<Constructor> getConstructors() {
-		return Collections.EMPTY_SET;
+		return Collections.<Constructor>emptySet();
 	}
 
 	protected Set<Constructor> createConstructors() {
@@ -61,7 +61,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 */
 
 	public Set<Field> getFields() {
-		return Collections.EMPTY_SET;
+		return Collections.<Field>emptySet();
 	}
 
 	protected Set<Field> createFields() {
@@ -72,7 +72,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays dont implement interfaces
 	 */
 	public Set<Type> getInterfaces() {
-		return Collections.EMPTY_SET;
+		return Collections.<Type>emptySet();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays dont have methods
 	 */
 	public Set<Method> getMethods() {
-		return Collections.EMPTY_SET;
+		return Collections.<Method>emptySet();
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays cant have nested types.
 	 */
 	public Set<Type> getNestedTypes() {
-		return Collections.EMPTY_SET;
+		return Collections.<Type>emptySet();
 	}
 
 	protected Set<Type> createNestedTypes() {
@@ -107,7 +107,7 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 	 * Arrays cant be sub classed
 	 */
 	public Set<Type> getSubTypes() {
-		return Collections.EMPTY_SET;
+		return Collections.<Type>emptySet();
 	}
 
 	protected Set<Type> createSubTypes() {

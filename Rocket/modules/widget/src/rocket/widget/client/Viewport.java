@@ -104,10 +104,11 @@ abstract public class Viewport extends CompositeWidget {
 		simplePanel.setWidget(widget);
 
 		final Element element = simplePanel.getElement();
-		InlineStyle.setString(element, Css.OVERFLOW, "hidden");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle( element );
+		inlineStyle.setString(Css.OVERFLOW, "hidden");
 
 		// required to make the inner div not overflow.
-		InlineStyle.setString(element, Css.POSITION, "relative");
+		inlineStyle.setString(Css.POSITION, "relative");
 		return simplePanel;
 	}
 
@@ -514,7 +515,7 @@ abstract public class Viewport extends CompositeWidget {
 
 		tile.addStyleName(this.getTileStyle());
 
-		InlineStyle.setString(tile.getElement(), Css.POSITION, "absolute");
+		InlineStyle.getInlineStyle( tile.getElement() ).setString(Css.POSITION, "absolute");
 		this.setTileLeft(tile, column * this.getTileWidth());
 		this.setTileTop(tile, row * this.getTileHeight());
 
@@ -539,8 +540,9 @@ abstract public class Viewport extends CompositeWidget {
 
 	protected void updateInnerPanelOffset() {
 		final Element element = this.getInnerPanel().getElement();
-		InlineStyle.setInteger(element, Css.LEFT, -WidgetConstants.VIEWPORT_X_OFFSET - this.getOriginX(), CssUnit.PX);
-		InlineStyle.setInteger(element, Css.TOP, -WidgetConstants.VIEWPORT_Y_OFFSET - this.getOriginY(), CssUnit.PX);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle( element );
+		inlineStyle.setInteger(Css.LEFT, -WidgetConstants.VIEWPORT_X_OFFSET - this.getOriginX(), CssUnit.PX);
+		inlineStyle.setInteger(Css.TOP, -WidgetConstants.VIEWPORT_Y_OFFSET - this.getOriginY(), CssUnit.PX);
 	}
 
 	protected int getTileLeft(final Widget tile) {
@@ -553,13 +555,13 @@ abstract public class Viewport extends CompositeWidget {
 
 	protected void setTileLeft(final Widget tile, final int x) {
 		final Element element = tile.getElement();
-		InlineStyle.setInteger(element, Css.LEFT, WidgetConstants.VIEWPORT_X_OFFSET + x, CssUnit.PX);
+		InlineStyle.getInlineStyle( element ).setInteger(Css.LEFT, WidgetConstants.VIEWPORT_X_OFFSET + x, CssUnit.PX);
 		JavaScript.setInteger(element, WidgetConstants.VIEWPORT_TILE_LEFT_ATTRIBUTE, x);
 	}
 
 	protected void setTileTop(final Widget tile, final int y) {
 		final Element element = tile.getElement();
-		InlineStyle.setInteger(element, Css.TOP, WidgetConstants.VIEWPORT_Y_OFFSET + y, CssUnit.PX);
+		InlineStyle.getInlineStyle( element ).setInteger( Css.TOP, WidgetConstants.VIEWPORT_Y_OFFSET + y, CssUnit.PX);
 		JavaScript.setInteger(element, WidgetConstants.VIEWPORT_TILE_TOP_ATTRIBUTE, y);
 	}
 
@@ -582,14 +584,15 @@ abstract public class Viewport extends CompositeWidget {
 		final TileDivPanel panel = new TileDivPanel();
 		final Element element = panel.getElement();
 
-		InlineStyle.setString(element, Css.OVERFLOW, "hidden");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle( element );
+		inlineStyle.setString(Css.OVERFLOW, "hidden");
 
-		InlineStyle.setString(element, Css.POSITION, "relative");
-		InlineStyle.setInteger(element, Css.TOP, 0, CssUnit.PX);
-		InlineStyle.setInteger(element, Css.LEFT, 0, CssUnit.PX);
+		inlineStyle.setString(Css.POSITION, "relative");
+		inlineStyle.setInteger(Css.TOP, 0, CssUnit.PX);
+		inlineStyle.setInteger(Css.LEFT, 0, CssUnit.PX);
 
-		InlineStyle.setInteger(element, Css.WIDTH, Short.MAX_VALUE, CssUnit.PX);
-		InlineStyle.setInteger(element, Css.HEIGHT, Short.MAX_VALUE, CssUnit.PX);
+		inlineStyle.setInteger(Css.WIDTH, Short.MAX_VALUE, CssUnit.PX);
+		inlineStyle.setInteger(Css.HEIGHT, Short.MAX_VALUE, CssUnit.PX);
 		return panel;
 	}
 

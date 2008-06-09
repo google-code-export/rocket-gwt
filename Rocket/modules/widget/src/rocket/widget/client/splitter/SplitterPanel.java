@@ -52,16 +52,19 @@ abstract public class SplitterPanel extends CompositeWidget {
 		super();
 	}
 
+	@Override
 	protected Widget createWidget() {
 		final InternalPanel panel = createPanel();
 		this.setPanel(panel);
 		return panel;
 	}
 
+	@Override
 	protected int getSunkEventsBitMask() {
 		return 0;
 	}
 
+	@Override
 	public void onAttach() {
 		super.onAttach();
 		this.redraw();
@@ -118,7 +121,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 		Checker.notNull("parameter:item", item);
 
 		while (true) {
-			final List items = this.getItems();
+			final List<SplitterItem> items = this.getItems();
 			items.add(beforeIndex, item);
 
 			final Panel panel = this.getPanel();
@@ -184,7 +187,7 @@ abstract public class SplitterPanel extends CompositeWidget {
 	 * @param index
 	 */
 	public void remove(final int index) {
-		final List items = this.getItems();
+		final List<SplitterItem> items = this.getItems();
 
 		// remove the item from list...
 		items.remove(index);
@@ -226,9 +229,9 @@ abstract public class SplitterPanel extends CompositeWidget {
 	 */
 	protected int sumWeights() {
 		int weightSum = 0;
-		final Iterator items = this.getItems().iterator();
+		final Iterator<SplitterItem> items = this.getItems().iterator();
 		while (items.hasNext()) {
-			final SplitterItem item = (SplitterItem) items.next();
+			final SplitterItem item = items.next();
 			weightSum = weightSum + item.getSizeShare();
 		}
 		return weightSum;
@@ -237,20 +240,20 @@ abstract public class SplitterPanel extends CompositeWidget {
 	/**
 	 * This list contains the individual items
 	 */
-	private List items;
+	private List<SplitterItem> items;
 
-	protected List getItems() {
+	protected List<SplitterItem> getItems() {
 		Checker.notNull("field:items", this.items);
 		return this.items;
 	}
 
-	protected void setItems(final List items) {
+	protected void setItems(final List<SplitterItem> items) {
 		Checker.notNull("parameter:items", items);
 		this.items = items;
 	}
 
-	protected List createItems() {
-		return new ArrayList();
+	protected List<SplitterItem> createItems() {
+		return new ArrayList<SplitterItem>();
 	}
 
 	/**
@@ -284,30 +287,36 @@ abstract public class SplitterPanel extends CompositeWidget {
 		 * 
 		 * @return The new Panel element.
 		 */
+		@Override
 		protected Element createPanelElement() {
 			final Element parent = DOM.createDiv();
 
 			// the enclosing div - with no border or margins...this makes it
 			// easy to calculate the available width for widgets.
 			final Element child = DOM.createDiv();
-			InlineStyle.setInteger(child, Css.MARGIN, 0, CssUnit.PX);
-			InlineStyle.setInteger(child, Css.BORDER, 0, CssUnit.PX);
-			InlineStyle.setInteger(child, Css.WIDTH, 100, CssUnit.PERCENTAGE);
-			InlineStyle.setInteger(child, Css.HEIGHT, 100, CssUnit.PERCENTAGE);
-			InlineStyle.setString(child, Css.POSITION, "relative");
 
-			DOM.appendChild(parent, child);
+			final InlineStyle childInlineStyle = InlineStyle.getInlineStyle(child);
+			childInlineStyle.setInteger(Css.MARGIN, 0, CssUnit.PX);
+			childInlineStyle.setInteger(Css.BORDER, 0, CssUnit.PX);
+			childInlineStyle.setInteger(Css.WIDTH, 100, CssUnit.PERCENTAGE);
+			childInlineStyle.setInteger(Css.HEIGHT, 100, CssUnit.PERCENTAGE);
+			childInlineStyle.setString(Css.POSITION, "relative");
+
+			parent.appendChild(child);
 
 			return parent;
 		}
 
+	@Override
 		protected void applyStyleName() {
 		}
 
+	@Override
 		protected String getInitialStyleName() {
 			throw new UnsupportedOperationException("getWidgetStyleName");
 		}
 
+	@Override
 		protected int getSunkEventsBitMask() {
 			return 0;
 		}
@@ -325,11 +334,11 @@ abstract public class SplitterPanel extends CompositeWidget {
 		/**
 		 * Add the given element to the parent DIV element
 		 */
+		@Override
 		protected void insert0(final Element element, final int indexBefore) {
 			Checker.notNull("parameter:element", element);
 
-			final Element parent = this.getParentElement();
-			DOM.appendChild(parent, element);
+			this.getParentElement().appendChild(element);
 		}
 
 		/**
@@ -338,12 +347,13 @@ abstract public class SplitterPanel extends CompositeWidget {
 		 * This method does nothing letting the disown() method remove the
 		 * widget's element
 		 */
+		@Override
 		protected void remove0(final Element element, final int index) {
 			Dom.removeFromParent(element);
 		}
 	};
 
-	public Iterator iterator() {
+	public Iterator<SplitterItem> iterator() {
 		return this.getItems().iterator();
 	}
 
@@ -364,13 +374,15 @@ abstract public class SplitterPanel extends CompositeWidget {
 			super();
 		}
 
+		@Override
 		protected Element createElement() {
 			final Element div = DOM.createDiv();
-			DOM.setInnerHTML(div, "&nbsp;");
-			InlineStyle.setString(div, Css.OVERFLOW, "hidden");
+			div.setInnerHTML("&nbsp;");
+			InlineStyle.getInlineStyle( div ).setString(Css.OVERFLOW, "hidden");
 			return div;
 		}
 
+		@Override
 		protected void afterCreateElement() {
 			final EventListenerDispatcher dispatcher = this.getEventListenerDispatcher();
 			dispatcher.addMouseEventListener(new MouseEventAdapter() {
@@ -380,10 +392,12 @@ abstract public class SplitterPanel extends CompositeWidget {
 			});
 		}
 
+		@Override
 		protected void checkElement(Element element) {
 			throw new UnsupportedOperationException("checkElement");
 		}
 
+		@Override
 		protected int getSunkEventsBitMask() {
 			return EventBitMaskConstants.MOUSE_DOWN;
 		}

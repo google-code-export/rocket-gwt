@@ -230,13 +230,14 @@ public class CometTest implements EntryPoint {
 	abstract static public class TestGwtSerializationCometClient extends GwtSerializationCometClient {
 
 		protected Element createFrame() {
-			final Element frame = super.createFrame();
+			final Element frameElement = super.createFrame();
+			
+			final InlineStyle frameInlineStyle = InlineStyle.getInlineStyle( frameElement);
+			frameInlineStyle.setInteger(Css.WIDTH, 99, CssUnit.PERCENTAGE);
+			frameInlineStyle.setInteger(Css.HEIGHT, 200, CssUnit.PX);
+			frameInlineStyle.setInteger(Css.BORDER, 1, CssUnit.PX);
 
-			InlineStyle.setInteger(frame, Css.WIDTH, 99, CssUnit.PERCENTAGE);
-			InlineStyle.setInteger(frame, Css.HEIGHT, 200, CssUnit.PX);
-			InlineStyle.setInteger(frame, Css.BORDER, 1, CssUnit.PX);
-
-			return frame;
+			return frameElement;
 		}
 
 		public void start() {

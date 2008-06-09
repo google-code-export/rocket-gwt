@@ -108,17 +108,15 @@ public class RequestParametersInvokerTemplatedFile extends TemplatedFileCodeBloc
 		final AddParameterTemplatedFile repeated = new AddParameterTemplatedFile();
 		final List<String> httpRequestParameterNames = this.getHttpRequestParameterNames();
 
-		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock() {
+		final CollectionTemplatedCodeBlock template = new CollectionTemplatedCodeBlock<MethodParameter>() {
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<MethodParameter> getCollection() {
 				return parameters;
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
-				final MethodParameter methodParameter = (MethodParameter) element;
-
+			protected void prepareToWrite(final MethodParameter methodParameter) {
 				final String name = httpRequestParameterNames.get(this.getIndex());
 				repeated.setHttpRequestParameterName(name);
 				repeated.setParameter(methodParameter);

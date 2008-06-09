@@ -91,7 +91,7 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	protected CodeBlock getFieldsCodeBlock() {
 		final WriteFieldTemplatedFile template = new WriteFieldTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Holder>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -104,13 +104,12 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<Holder> getCollection() {
 				return WriteFieldsTemplatedFile.this.getFields();
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
-				final Holder holder = (Holder) element;
+			protected void prepareToWrite(final Holder holder ) {
 				template.setJavascriptPropertyName(holder.getJavascriptPropertyName());
 				template.setFieldGetter(holder.getFieldGetter());
 				template.setSerializer(holder.getSerializer());

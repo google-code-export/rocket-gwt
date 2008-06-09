@@ -33,7 +33,7 @@ import com.google.gwt.user.client.Element;
  * Most of the internals have been ripped and reworked from the original GWT
  * Label widget.
  * 
- * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
+ * ROCKET When upgrading from GWT 1.5 RC1 reapply changes
  * 
  * @author Miroslav Pokorny
  */
@@ -77,18 +77,18 @@ abstract class HtmlOrLabel extends FocusWidget {
 	}
 
 	public boolean getWordWrap() {
-		return !ComputedStyle.getString(getElement(), "whiteSpace").equals("nowrap");
+		return !ComputedStyle.getComputedStyle( this.getElement() ).getString( "whiteSpace").equals("nowrap");
 	}
 
 	public void setWordWrap(boolean wrap) {
-		InlineStyle.setString(getElement(), Css.WHITE_SPACE, wrap ? "normal" : "nowrap");
+		InlineStyle.getInlineStyle( this.getElement() ).setString( Css.WHITE_SPACE, wrap ? "normal" : "nowrap");
 	}
 
 	public HorizontalAlignment getHorizontalAligment() {
 		HorizontalAlignment textAlignment = HorizontalAlignment.LEFT;
 
 		while (true) {
-			final String property = ComputedStyle.getString(getElement(), Css.TEXT_ALIGN);
+			final String property = ComputedStyle.getComputedStyle( this.getElement() ).getString(Css.TEXT_ALIGN);
 			if (HorizontalAlignment.CENTER.getValue().equals(property)) {
 				textAlignment = HorizontalAlignment.CENTER;
 				break;
@@ -110,7 +110,7 @@ abstract class HtmlOrLabel extends FocusWidget {
 	}
 
 	public void setHorizontalAlignment(final HorizontalAlignment textAligment) {
-		InlineStyle.setString(getElement(), Css.TEXT_ALIGN, textAligment.getValue());
+		InlineStyle.getInlineStyle( this.getElement() ).setString(Css.TEXT_ALIGN, textAligment.getValue());
 	}
 
 	public void addFocusEventListener(final FocusEventListener focusEventListener) {

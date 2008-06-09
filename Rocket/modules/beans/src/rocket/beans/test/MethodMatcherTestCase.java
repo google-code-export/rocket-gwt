@@ -31,7 +31,7 @@ public class MethodMatcherTestCase extends TestCase {
 		final String expression = "abc";
 		final MethodMatcher matcher = this.createMethodMatcher(expression);
 
-		final Method method = this.createContext().getType(Test.class.getName()).getMethod("abc", Collections.EMPTY_LIST);
+		final Method method = this.createContext().getType(Test.class.getName()).getMethod("abc", Collections.<Type>emptyList());
 		final boolean actual = matcher.matches(method);
 		assertTrue(actual);
 	}
@@ -45,7 +45,7 @@ public class MethodMatcherTestCase extends TestCase {
 		final String expression = "foo.*";
 		final MethodMatcher matcher = this.createMethodMatcher(expression);
 
-		final Method method = this.createContext().getType(Test2.class.getName()).getMethod("foo", Collections.EMPTY_LIST);
+		final Method method = this.createContext().getType(Test2.class.getName()).getMethod("foo", Collections.<Type>emptyList());
 		assertTrue(expression, matcher.matches(method));
 	}
 
@@ -53,7 +53,7 @@ public class MethodMatcherTestCase extends TestCase {
 		final String expression = "foo.*xxx";
 		final MethodMatcher matcher = this.createMethodMatcher(expression);
 
-		final Method method = this.createContext().getType(Test2.class.getName()).getMethod("foo", Collections.EMPTY_LIST);
+		final Method method = this.createContext().getType(Test2.class.getName()).getMethod("foo", Collections.<Type>emptyList());
 		assertFalse(expression, matcher.matches(method));
 	}
 
@@ -69,13 +69,13 @@ public class MethodMatcherTestCase extends TestCase {
 		final GeneratorContext context = this.createContext();
 		final Type type = context.getType(Test3.class.getName());
 
-		final Method foo = type.getMethod("foo", Collections.EMPTY_LIST);
+		final Method foo = type.getMethod("foo", Collections.<Type>emptyList());
 		assertTrue(expression, matcher.matches(foo));
 
-		final Method bar = type.getMethod("bar", Collections.EMPTY_LIST);
+		final Method bar = type.getMethod("bar", Collections.<Type>emptyList());
 		assertTrue(expression, matcher.matches(bar));
 
-		final Method baz = type.getMethod("baz", Collections.EMPTY_LIST);
+		final Method baz = type.getMethod("baz", Collections.<Type>emptyList());
 		assertFalse(expression, matcher.matches(baz));
 	}
 
@@ -97,13 +97,13 @@ public class MethodMatcherTestCase extends TestCase {
 		final GeneratorContext context = this.createContext();
 		final Type type = context.getType(Test4.class.getName());
 
-		final Method foo = type.getMethod("foo", Collections.EMPTY_LIST);
+		final Method foo = type.getMethod("foo", Collections.<Type>emptyList());
 		assertFalse(expression, matcher.matches(foo));
 
-		final Method bar = type.getMethod("bar", Collections.EMPTY_LIST);
+		final Method bar = type.getMethod("bar", Collections.<Type>emptyList());
 		assertFalse(expression, matcher.matches(bar));
 
-		final Method baz = type.getMethod("baz", Collections.EMPTY_LIST);
+		final Method baz = type.getMethod("baz", Collections.<Type>emptyList());
 		assertFalse(expression, matcher.matches(baz));
 	}
 

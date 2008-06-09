@@ -52,7 +52,7 @@ abstract public class PrototypeFactoryBean<T> extends SingletonOrPrototypeFactor
 		T returned = object;
 
 		if (returned instanceof FactoryBean) {
-			final FactoryBean<T> factoryBean = (FactoryBean) object;
+			final FactoryBean<T> factoryBean = (FactoryBean<T>) object;
 			returned = factoryBean.getObject();
 		}
 

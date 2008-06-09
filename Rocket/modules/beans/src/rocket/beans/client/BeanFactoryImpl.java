@@ -73,6 +73,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * Visits all factory beans setting the bean factory for BeanFactoryAware
 	 * objects.
 	 */
+	@SuppressWarnings("unchecked")
 	protected void prepareFactoryBeans() {
 		final Iterator<Map.Entry<String,FactoryBean>> iterator = this.getFactoryBeans().entrySet().iterator();
 		while (iterator.hasNext()) {
@@ -167,6 +168,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 		return new HashMap<String,FactoryBean>();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getBean(final String name) {
 		FactoryBean factoryBean = this.getFactoryBean(name);
 		Object bean = null;

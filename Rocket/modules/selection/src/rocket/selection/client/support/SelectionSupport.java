@@ -44,9 +44,9 @@ abstract public class SelectionSupport {
 	 */
 	public void setEnabled(final Element element, final boolean enable) {
 		if (enable) {
-			InlineStyle.remove(element, Css.USER_SELECT);
+			InlineStyle.getInlineStyle( element ).remove(Css.USER_SELECT);
 		} else {
-			InlineStyle.setString(element, Css.USER_SELECT, "none");
+			InlineStyle.getInlineStyle( element ).setString(Css.USER_SELECT, "none");
 		}
 	}
 
@@ -57,7 +57,7 @@ abstract public class SelectionSupport {
 	 * @return
 	 */
 	public boolean isEnabled(final Element element) {
-		return false == Css.USER_SELECT_DISABLED.equals(ComputedStyle.getString(element, Css.USER_SELECT));
+		return false == Css.USER_SELECT_DISABLED.equals(ComputedStyle.getComputedStyle( element ).getString(Css.USER_SELECT));
 	}
 
 	public SelectionEndPoint getStart(final Selection selection) {

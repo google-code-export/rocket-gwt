@@ -69,14 +69,14 @@ import rocket.util.client.Checker;
  * 
  * @author Miroslav Pokorny
  */
-abstract public class CollectionTemplatedCodeBlock extends TemplatedCodeBlock {
+abstract public class CollectionTemplatedCodeBlock<E> extends TemplatedCodeBlock {
 
 	/**
 	 * Returns the collection whose elements will be iterated over
 	 * 
 	 * @return
 	 */
-	abstract protected Collection getCollection();
+	abstract protected Collection<E> getCollection();
 
 	public boolean isEmpty() {
 		return this.getCollection().isEmpty();
@@ -89,9 +89,9 @@ abstract public class CollectionTemplatedCodeBlock extends TemplatedCodeBlock {
 	protected void writeCollection(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
-		final Iterator iterator = this.getCollection().iterator();
+		final Iterator<E> iterator = this.getCollection().iterator();
 		while (iterator.hasNext()) {
-			final Object element = iterator.next();
+			final E element = iterator.next();
 
 			this.prepareToWrite(element);
 			this.write0(writer);
@@ -111,7 +111,7 @@ abstract public class CollectionTemplatedCodeBlock extends TemplatedCodeBlock {
 	 * 
 	 * @param element
 	 */
-	abstract protected void prepareToWrite(Object element);
+	abstract protected void prepareToWrite(E element);
 
 	/**
 	 * This method is invoked after an element has been written providing that

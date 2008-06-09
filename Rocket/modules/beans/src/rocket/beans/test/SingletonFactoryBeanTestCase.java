@@ -48,21 +48,21 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		assertSame(first, second);
 	}
 
-	static class ClassWithStringPropertySingletonFactoryBean extends SingletonFactoryBean {
+	static class ClassWithStringPropertySingletonFactoryBean extends SingletonFactoryBean<ClassWithStringProperty> {
 
-		protected Object createInstance() {
+		protected ClassWithStringProperty createInstance() {
 			return new ClassWithStringProperty();
 		}
 
-		protected void satisfyProperties(Object instance) {
-			this.satisfyProperties0((ClassWithStringProperty) instance);
+		protected void satisfyProperties(ClassWithStringProperty instance) {
+			this.satisfyProperties0( instance);
 		}
 
 		protected void satisfyProperties0(final ClassWithStringProperty instance) {
 			instance.setStringProperty(STRING_VALUE);
 		}
 
-		protected void satisfyInit(final Object instance) {
+		protected void satisfyInit(final ClassWithStringProperty instance) {
 		}
 	}
 

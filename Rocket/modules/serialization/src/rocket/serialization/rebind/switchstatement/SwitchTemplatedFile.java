@@ -78,7 +78,7 @@ public class SwitchTemplatedFile extends TemplatedFileCodeBlock {
 	protected CodeBlock getCaseStatementsAsCodeBlock() {
 		final CaseStatementTemplatedFile template = new CaseStatementTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Map.Entry<Type, Field>>() {
 
 			@Override
 			public boolean isNative() {
@@ -96,16 +96,14 @@ public class SwitchTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<Map.Entry<Type, Field>> getCollection() {
 				return SwitchTemplatedFile.this.getRegistered().entrySet();
 			}
 
 			@Override
-			protected void prepareToWrite(final Object element) {
-				final Map.Entry entry = (Map.Entry) element;
-
-				template.setSerializedType((Type) entry.getKey());
-				template.setObjectWriterSingleton((Field) entry.getValue());
+			protected void prepareToWrite(final Map.Entry<Type, Field> entry ) {
+				template.setSerializedType(entry.getKey());
+				template.setObjectWriterSingleton(entry.getValue());
 			}
 
 			@Override

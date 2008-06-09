@@ -15,7 +15,6 @@
  */
 package com.google.gwt.user.client.rpc.impl;
 
-import com.google.gwt.user.client.rpc.impl.Serializer;
 
 /**
  * THis interface is implemented by the customized ProxyCreator and is added to

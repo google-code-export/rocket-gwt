@@ -38,7 +38,7 @@ public class MapValue extends AbstractValue implements Value {
 	}
 
 	public void addEntry(final String key, final Value value) {
-		final Map entries = this.getEntries();
+		final Map<String,Value> entries = this.getEntries();
 		if (entries.containsKey(key)) {
 			this.throwKeyAlreadyUsed(key);
 		}
@@ -85,12 +85,12 @@ public class MapValue extends AbstractValue implements Value {
 		Checker.notNull("parameter:writer", writer);
 
 		final MapTemplatedFile template = new MapTemplatedFile();
-		final Iterator entries = this.getEntries().entrySet().iterator();
+		final Iterator<Map.Entry<String, Value>> entries = this.getEntries().entrySet().iterator();
 
 		while (entries.hasNext()) {
-			final Map.Entry entry = (Map.Entry) entries.next();
-			final String key = (String) entry.getKey();
-			final Value value = (Value) entry.getValue();
+			final Map.Entry<String,Value> entry = entries.next();
+			final String key = entry.getKey();
+			final Value value = entry.getValue();
 
 			template.add(key, value);
 		}

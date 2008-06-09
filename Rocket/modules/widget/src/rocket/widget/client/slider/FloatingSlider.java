@@ -64,10 +64,12 @@ public class FloatingSlider extends CompositeWidget {
 
 	protected Panel createPanel() {
 		return new InternalSliderPanel() {
+			@Override
 			protected String getBackgroundStyleName() {
 				return FloatingSlider.this.getBackgroundStyleName();
 			}
 
+			@Override
 			protected String getHandleStyleName() {
 				return FloatingSlider.this.getHandleStyleName();
 			}
@@ -270,10 +272,13 @@ public class FloatingSlider extends CompositeWidget {
 
 	protected void onBackgroundMouseDown(final int mouseX, final int mouseY) {
 		final Element handle = this.getHandle().getElement();
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(handle);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(handle);
+		
 		boolean killTimer = false;
 
 		final int x = this.getXValue();
-		final int handleX = ComputedStyle.getInteger(handle, Css.LEFT, CssUnit.PX, 0);
+		final int handleX = computedStyle.getInteger(Css.LEFT, CssUnit.PX, 0);
 		int deltaX = mouseX - handleX;
 		if (0 != deltaX) {
 			if (deltaX < 0) {
@@ -281,18 +286,18 @@ public class FloatingSlider extends CompositeWidget {
 			} else {
 				this.onAfterHandleXMouseDown();
 			}
-			final int handleXAfter = ComputedStyle.getInteger(handle, Css.LEFT, CssUnit.PX, 0);
+			final int handleXAfter = computedStyle.getInteger(Css.LEFT, CssUnit.PX, 0);
 			final int deltaXAfter = mouseX - handleXAfter;
 
 			if (deltaX < 0 ^ deltaXAfter < 0) {
 				this.setXValue(x);
-				InlineStyle.setInteger(handle, Css.LEFT, mouseX, CssUnit.PX);
+				inlineStyle.setInteger(Css.LEFT, mouseX, CssUnit.PX);
 				deltaX = 0;
 			}
 		}
 
 		final int y = this.getYValue();
-		final int handleY = ComputedStyle.getInteger(handle, Css.TOP, CssUnit.PX, 0);
+		final int handleY = computedStyle.getInteger( Css.TOP, CssUnit.PX, 0);
 		int deltaY = mouseY - handleY;
 		if (0 != deltaY) {
 			if (deltaY < 0) {
@@ -300,12 +305,12 @@ public class FloatingSlider extends CompositeWidget {
 			} else {
 				this.onAfterHandleYMouseDown();
 			}
-			final int handleYAfter = ComputedStyle.getInteger(handle, Css.TOP, CssUnit.PX, 0);
+			final int handleYAfter = computedStyle.getInteger(Css.TOP, CssUnit.PX, 0);
 			final int deltaYAfter = mouseY - handleYAfter;
 
 			if (deltaY < 0 ^ deltaYAfter < 0) {
 				this.setYValue(y);
-				InlineStyle.setInteger(handle, Css.TOP, mouseY, CssUnit.PX);
+				inlineStyle.setInteger(Css.TOP, mouseY, CssUnit.PX);
 				deltaY = 0;
 			}
 		}
@@ -322,9 +327,10 @@ public class FloatingSlider extends CompositeWidget {
 		final int newValue = Math.max(0, this.getXValue() - this.getDeltaX());
 
 		final Element handle = this.getHandle().getElement();
-		final int left = InlineStyle.getInteger(handle, Css.LEFT, CssUnit.PX, 0);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(handle);
+		final int left = inlineStyle.getInteger(Css.LEFT, CssUnit.PX, 0);
 		this.setXValue(newValue);
-		InlineStyle.setInteger(handle, Css.LEFT, left - 1, CssUnit.PX);
+		inlineStyle.setInteger(Css.LEFT, left - 1, CssUnit.PX);
 	}
 
 	/**
@@ -333,10 +339,11 @@ public class FloatingSlider extends CompositeWidget {
 	 */
 	protected void onAfterHandleXMouseDown() {
 		final int newValue = Math.min(this.getXValue() + this.getDeltaX(), this.getMaximumXValue());
-		final Element handle = this.getHandle().getElement();
-		final int left = InlineStyle.getInteger(handle, Css.LEFT, CssUnit.PX, 0);
+		
+		final InlineStyle handle = InlineStyle.getInlineStyle(this.getHandle().getElement() );
+		final int left = handle.getInteger(Css.LEFT, CssUnit.PX, 0);
 		this.setXValue(newValue);
-		InlineStyle.setInteger(handle, Css.LEFT, left + 1, CssUnit.PX);
+		handle.setInteger(Css.LEFT, left + 1, CssUnit.PX);
 	}
 
 	/**
@@ -346,10 +353,10 @@ public class FloatingSlider extends CompositeWidget {
 	protected void onBeforeHandleYMouseDown() {
 		final int newValue = Math.max(0, this.getYValue() - this.getDeltaY());
 
-		final Element handle = this.getHandle().getElement();
-		final int top = InlineStyle.getInteger(handle, Css.TOP, CssUnit.PX, 0);
+		final InlineStyle handle = InlineStyle.getInlineStyle(this.getHandle().getElement() );
+		final int top = handle.getInteger(Css.TOP, CssUnit.PX, 0);
 		this.setYValue(newValue);
-		InlineStyle.setInteger(handle, Css.TOP, top - 1, CssUnit.PX);
+		handle.setInteger(Css.TOP, top - 1, CssUnit.PX);
 	}
 
 	/**
@@ -359,16 +366,17 @@ public class FloatingSlider extends CompositeWidget {
 	protected void onAfterHandleYMouseDown() {
 		final int newValue = Math.min(this.getYValue() + this.getDeltaY(), this.getMaximumYValue());
 
-		final Element handle = this.getHandle().getElement();
-		final int top = InlineStyle.getInteger(handle, Css.TOP, CssUnit.PX, 0);
+		final InlineStyle handle = InlineStyle.getInlineStyle(this.getHandle().getElement() );
+		final int top = handle.getInteger(Css.TOP, CssUnit.PX, 0);
 		this.setYValue(newValue);
-		InlineStyle.setInteger(handle, Css.TOP, top + 1, CssUnit.PX);
+		handle.setInteger(Css.TOP, top + 1, CssUnit.PX);
 	}
 
 	protected void onHandleMouseMove(final MouseMoveEvent event) {
 		Checker.notNull("parameter:event", event);
 
 		final Element sliderElement = this.getElement();
+		
 		final int widgetX = sliderElement.getAbsoluteLeft();
 		final int widgetY = sliderElement.getAbsoluteTop();
 		final int sliderWidth = this.getOffsetWidth();
@@ -376,6 +384,8 @@ public class FloatingSlider extends CompositeWidget {
 
 		final Widget handle = this.getHandle();
 		final Element handleElement = handle.getElement();
+		final InlineStyle handleInlineStyle = InlineStyle.getInlineStyle(handleElement );
+		
 		final int handleWidth = handle.getOffsetWidth();
 		final int handleHeight = handle.getOffsetHeight();
 
@@ -387,7 +397,7 @@ public class FloatingSlider extends CompositeWidget {
 		this.setXValue(newX);
 
 		int left = mouseX - handleWidth / 2;
-		InlineStyle.setInteger(handleElement, Css.LEFT, left, CssUnit.PX);
+		handleInlineStyle.setInteger(Css.LEFT, left, CssUnit.PX);
 
 		int mouseY = event.getPageY() - widgetY;
 		mouseY = Math.max(0, Math.min(mouseY, sliderHeight - handleHeight / 2));
@@ -396,7 +406,7 @@ public class FloatingSlider extends CompositeWidget {
 		this.setYValue(newY);
 
 		final int top = mouseY - handleHeight / 2;
-		InlineStyle.setInteger(handleElement, Css.TOP, top, CssUnit.PX);
+		handleInlineStyle.setInteger(Css.TOP, top, CssUnit.PX);
 
 		event.cancelBubble(true);
 		event.stop();// stops text selection in Opera
@@ -536,9 +546,9 @@ public class FloatingSlider extends CompositeWidget {
 		final int sliderLength = this.getOffsetWidth() - handle.getOffsetWidth();
 		final int newLeft = Math.round(1.0f * this.getXValue() * sliderLength / this.getMaximumXValue());
 
-		final Element element = handle.getElement();
-		InlineStyle.setString(element, Css.POSITION, "absolute");
-		InlineStyle.setInteger(element, Css.LEFT, newLeft, CssUnit.PX);
+		final InlineStyle handleInlineStyle = InlineStyle.getInlineStyle( handle.getElement() );
+		handleInlineStyle.setString(Css.POSITION, "absolute");
+		handleInlineStyle.setInteger(Css.LEFT, newLeft, CssUnit.PX);
 
 		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}
@@ -594,9 +604,9 @@ public class FloatingSlider extends CompositeWidget {
 		final int sliderLength = this.getOffsetHeight() - handle.getOffsetHeight();
 		final int newTop = Math.round(1.0f * this.getYValue() * sliderLength / this.getMaximumYValue());
 
-		final Element element = handle.getElement();
-		InlineStyle.setString(element, Css.POSITION, "absolute");
-		InlineStyle.setInteger(element, Css.TOP, newTop, CssUnit.PX);
+		final InlineStyle handleInlineStyle = InlineStyle.getInlineStyle( handle.getElement() );
+		handleInlineStyle.setString(Css.POSITION, "absolute");
+		handleInlineStyle.setInteger(Css.TOP, newTop, CssUnit.PX);
 
 		this.getEventListenerDispatcher().getChangeEventListeners().fireChange(this);
 	}

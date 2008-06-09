@@ -83,7 +83,7 @@ public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	protected CodeBlock getReadAndSetIndividualFields() {
 		final ReadFieldTemplatedFile template = new ReadFieldTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Method>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -96,13 +96,13 @@ public class ReadFieldsTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<Method> getCollection() {
 				return ReadFieldsTemplatedFile.this.getFieldSetters();
 			}
 
 			@Override
-			protected void prepareToWrite(final Object element) {
-				template.setSetter((Method) element);
+			protected void prepareToWrite(final Method method ) {
+				template.setSetter( method );
 			}
 
 			@Override

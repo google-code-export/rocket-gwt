@@ -67,7 +67,7 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 	protected CodeBlock getBeansCodeBlock() {
 		final RegisterBeanTemplatedFile registerBean = new RegisterBeanTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Bean>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -80,13 +80,12 @@ public class RegisterFactoryBeansTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<Bean> getCollection() {
 				return RegisterFactoryBeansTemplatedFile.this.getBeans();
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
-				final Bean bean = (Bean) element;
+			protected void prepareToWrite(Bean bean) {
 				registerBean.setBeanId(bean.getId());
 				registerBean.setFactoryBean(bean.hasProxy() ? bean.getProxyFactoryBean() : bean.getFactoryBean());
 			}

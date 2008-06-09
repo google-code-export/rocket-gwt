@@ -391,7 +391,7 @@ public class JProgram extends JNode {
 			x.setBody(new JMethodBody(this, info));
 		}
 
-		// TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
+		// ROCKET When upgrading from GWT 1.5 RC1 reapply changes
 		if (isStatic && sname.equals(GET_LOGGER_METHOD) && enclosingType.getName().equals(LOGGER_FACTORY_CLASS)) {
 			this.setLoggerFactoryGetLogger(x);
 		}

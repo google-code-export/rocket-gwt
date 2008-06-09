@@ -83,7 +83,7 @@ public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 	protected CodeBlock getPropertiesCodeBlock() {
 		final SetPropertyTemplatedFile template = new SetPropertyTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Map.Entry<Method, Value>>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -96,16 +96,14 @@ public class SetPropertiesTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<Map.Entry<Method, Value>> getCollection() {
 				return SetPropertiesTemplatedFile.this.getProperties().entrySet();
 			}
 
 			@Override
-			protected void prepareToWrite(final Object element) {
-				final Map.Entry entry = (Map.Entry) element;
-
-				template.setSetter((Method) entry.getKey());
-				template.setValue((Value) entry.getValue());
+			protected void prepareToWrite(final Map.Entry<Method, Value> entry ) {
+				template.setSetter(entry.getKey());
+				template.setValue(entry.getValue());
 			}
 
 			@Override

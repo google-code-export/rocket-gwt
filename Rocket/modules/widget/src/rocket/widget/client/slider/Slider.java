@@ -511,16 +511,15 @@ public abstract class Slider extends CompositeWidget {
 	}
 
 	protected int getRelativeHandleCoordinate() {
-		final Element element = this.getHandle().getElement();
-		return InlineStyle.getInteger(element, this.getHandleCoordinateStylePropertyName(), CssUnit.PX, 0);
+		return InlineStyle.getInlineStyle(this.getHandle().getElement() ).getInteger( this.getHandleCoordinateStylePropertyName(), CssUnit.PX, 0);
 	}
 
 	protected void setRelativeHandleCoordinate(final int coordinate) {
-		final Element element = this.getHandle().getElement();
-		InlineStyle.setString(element, Css.POSITION, "absolute");
-		InlineStyle.setString(element, Css.LEFT, "0px");
-		InlineStyle.setString(element, Css.TOP, "0px");
-		InlineStyle.setInteger(element, this.getHandleCoordinateStylePropertyName(), coordinate, CssUnit.PX);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(this.getHandle().getElement());
+		inlineStyle.setString(Css.POSITION, "absolute");
+		inlineStyle.setString(Css.LEFT, "0px");
+		inlineStyle.setString(Css.TOP, "0px");
+		inlineStyle.setInteger(this.getHandleCoordinateStylePropertyName(), coordinate, CssUnit.PX);
 	}
 
 	public String toString() {

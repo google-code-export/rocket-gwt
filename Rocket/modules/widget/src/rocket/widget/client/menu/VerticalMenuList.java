@@ -22,7 +22,6 @@ import rocket.style.client.CssUnit;
 import rocket.style.client.InlineStyle;
 import rocket.widget.client.DivPanel;
 
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -38,20 +37,23 @@ public class VerticalMenuList extends MenuList {
 		super();
 	}
 
+	@Override
 	protected Panel createPanel() {
 		return this.createDivPanel();
 	}
 
+	@Override
 	protected String getInitialStyleName() {
 		return Constants.VERTICAL_MENU_LIST_STYLE;
 	}
 
+	@Override
 	protected void open() {
-		final Element element = this.getElement();
 		if (this.isHideable()) {
-			InlineStyle.setInteger(element, Css.Z_INDEX, 1, CssUnit.NONE);
-			InlineStyle.setString(element, Css.DISPLAY, "block");
-			InlineStyle.setString(element, Css.VISIBILITY, "visible");
+			final InlineStyle inlineStyle = InlineStyle.getInlineStyle( this.getElement() );
+			inlineStyle.setInteger(Css.Z_INDEX, 1, CssUnit.NONE);
+			inlineStyle.setString(Css.DISPLAY, "block");
+			inlineStyle.setString(Css.VISIBILITY, "visible");
 		}
 	}
 

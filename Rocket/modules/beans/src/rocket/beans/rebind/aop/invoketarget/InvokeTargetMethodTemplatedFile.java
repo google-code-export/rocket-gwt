@@ -105,7 +105,7 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 	protected CodeBlock getUnwrapParameters() {
 		final UnwrapParameterTemplatedFile unwrap = new UnwrapParameterTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<MethodParameter>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -118,13 +118,13 @@ public class InvokeTargetMethodTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<MethodParameter> getCollection() {
 				return InvokeTargetMethodTemplatedFile.this.getMethod().getParameters();
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
-				unwrap.setParameter((MethodParameter) element);
+			protected void prepareToWrite(MethodParameter methodParameter) {
+				unwrap.setParameter( methodParameter );
 			}
 
 			@Override

@@ -118,32 +118,36 @@ public class FindLoggerTemplatedFile extends TemplatedFileCodeBlock {
 	protected CodeBlock getCaseStatementsAsCodeBlock() {
 		final IfThenCreateLoggerTemplatedFile template = new IfThenCreateLoggerTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Logger>() {
 
+			@Override
 			public boolean isNative() {
 				return template.isNative();
 			}
 
+			@Override
 			public InputStream getInputStream() {
 				return template.getInputStream();
 			}
 
+			@Override
 			protected Object getValue0(final String name) {
 				return template.getValue0(name);
 			}
 
-			protected Collection getCollection() {
+			@Override
+			protected Collection<Logger> getCollection() {
 				return FindLoggerTemplatedFile.this.getLoggers();
 			}
 
-			protected void prepareToWrite(final Object element) {
-				final Logger logger = (Logger) element;
-
+			@Override
+			protected void prepareToWrite(final Logger logger ) {
 				template.setName(logger.getCategory());
 				template.setLogger(logger.getLogger());
 				template.setLoggingLevelLogger(logger.getLoggingLevelLogger());
 			}
 
+			@Override
 			protected void writeBetweenElements(final SourceWriter writer) {
 				writer.println("");
 			}

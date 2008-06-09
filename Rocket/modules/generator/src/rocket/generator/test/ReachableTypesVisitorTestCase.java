@@ -44,7 +44,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		final ReachableTypesVisitor visitor = createReachableTypesVisitor();
 		visitor.start(context.getType(FINAL_CLASS));
 
-		final Set types = visitor.getConcreteTypes();
+		final Set<Type> types = visitor.getConcreteTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 2, types.size());
@@ -59,8 +59,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class FinalClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -70,7 +71,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		final ReachableTypesVisitor visitor = createReachableTypesVisitor();
 		visitor.start(context.getType(CONCRETE_CLASS));
 
-		final Set types = visitor.getConcreteTypes();
+		final Set<Type> types = visitor.getConcreteTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 3, types.size());
@@ -87,8 +88,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class ConcreteClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return new HashSet(Collections.nCopies(1, this.getType(CONCRETE_SUB_CLASS)));
+		@Override
+		public Set<Type> createSubTypes() {
+			return new HashSet<Type>(Collections.<Type>nCopies(1, this.getType(CONCRETE_SUB_CLASS)));
 		}
 	}
 
@@ -97,8 +99,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class ConcreteClassSubClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -108,7 +111,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		final ReachableTypesVisitor visitor = createReachableTypesVisitor();
 		visitor.start(context.getType(CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE));
 
-		final Set types = visitor.getConcreteTypes();
+		final Set<Type> types = visitor.getConcreteTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 3, types.size());
@@ -123,7 +126,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		final ReachableTypesVisitor visitor = createReachableTypesVisitor();
 		visitor.start(context.getType(CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE));
 
-		final Set types = visitor.getConcreteTypes();
+		final Set<Type> types = visitor.getConcreteTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 3, types.size());
@@ -139,8 +142,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class ClassWithInterfaceFieldJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return Collections.EMPTY_SET; // no sub classes.
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet(); // no sub classes.
 		}
 	}
 
@@ -150,7 +154,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		final ReachableTypesVisitor visitor = createReachableTypesVisitor();
 		visitor.start(context.getType(CLASS_WITH_SUB_CLASS_WITH_INTERFACE_FIELD));
 
-		final Set types = visitor.getConcreteTypes();
+		final Set<Type> types = visitor.getConcreteTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 5, types.size());
@@ -167,7 +171,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 		final ReachableTypesVisitor visitor = createReachableTypesVisitor();
 		visitor.start(context.getType(CLASS_WITH_FINAL_CLASS_ARRAY));
 
-		final Set types = visitor.getConcreteTypes();
+		final Set<Type> types = visitor.getConcreteTypes();
 		assertNotNull("types", types);
 
 		assertEquals("" + types, 4, types.size());
@@ -185,8 +189,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class ClassThatHasSubClassWithInterfaceFieldJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return new HashSet(Collections.nCopies(1, this.getType(SUB_CLASS_WITH_INTERFACE_FIELD)));
+		@Override
+		public Set<Type> createSubTypes() {
+			return new HashSet<Type>(Collections.<Type>nCopies(1, this.getType(SUB_CLASS_WITH_INTERFACE_FIELD)));
 		}
 	}
 
@@ -195,8 +200,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class SubClassWithInterfaceFieldJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -205,8 +211,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	final static String CONCRETE_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE = ConcreteClassSubClassThatImplementsInterface.class.getName();
 
 	static class ObjectJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			final Set subTypes = new HashSet();
+		@Override
+		public Set<Type> createSubTypes() {
+			final Set<Type> subTypes = new HashSet<Type>();
 			subTypes.add(getType(INTERFACE));
 			subTypes.add(getType(CONCRETE_CLASS_THAT_IMPLEMENTS_INTERFACE));
 			subTypes.add(getType(CLASS_WITH_SUB_CLASS_WITH_INTERFACE_FIELD));
@@ -221,8 +228,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class InterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -231,8 +239,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class ConcreteClassThatImplementsInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return new HashSet(Collections.nCopies(1, this.getType(CONCRETE_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE)));
+		@Override
+		public Set<Type> createSubTypes() {
+			return new HashSet<Type>(Collections.<Type>nCopies(1, this.getType(CONCRETE_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE)));
 		}
 	}
 
@@ -241,8 +250,9 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class ConcreteClassSubClassThatImplementsInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -253,16 +263,18 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	}
 
 	static class ClassWithFinalClassArrayJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
 	final static String FINAL_CLASS_ARRAY = "[L" + FinalClass.class.getName() + ";";
 
 	static class FinalClassArrayJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set createSubTypes() {
-			return Collections.EMPTY_SET;
+		@Override
+		public Set<Type> createSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -285,7 +297,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 				return false;
 			}
 
-			final Set alreadyVisitedTypes = new HashSet();
+			final Set<Type> alreadyVisitedTypes = new HashSet<Type>();
 
 			protected boolean skipSuperType(final Type superType) {
 				return false;
@@ -301,7 +313,7 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 				return false;
 			}
 
-			final Set alreadyVisitedFields = new HashSet();
+			final Set<Field> alreadyVisitedFields = new HashSet<Field>();
 
 			protected boolean skipTypeThatImplementsInterface(final Type type, final Type interfacee) {
 				return false;

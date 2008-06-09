@@ -83,7 +83,7 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 	protected CodeBlock getWriteIndividualFields() {
 		final WriteFieldTemplatedFile template = new WriteFieldTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Method>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -96,13 +96,13 @@ public class WriteFieldsTemplatedFile extends TemplatedFileCodeBlock {
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<Method> getCollection() {
 				return WriteFieldsTemplatedFile.this.getFieldGetters();
 			}
 
 			@Override
-			protected void prepareToWrite(final Object element) {
-				template.setGetter((Method) element);
+			protected void prepareToWrite(final Method method ) {
+				template.setGetter( method );
 			}
 
 			@Override

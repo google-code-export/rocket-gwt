@@ -28,7 +28,6 @@ import rocket.util.client.Utilities;
 import rocket.widget.client.Viewport;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.Label;
@@ -84,10 +83,10 @@ public class ViewportTest implements EntryPoint {
 		viewport.setOriginY(IMAGE_HEIGHT / 4);
 		viewport.setZoom(ZOOM);
 
-		final Element element = viewport.getElement();
-		InlineStyle.setInteger(element, Css.BORDER_WIDTH, 2, CssUnit.PX);
-		InlineStyle.setColour(element, Css.BORDER_COLOR, Colour.getColour("orange"));
-		InlineStyle.setString(element, Css.BORDER_STYLE, "solid");
+		final InlineStyle viewportElementInlineStyle = InlineStyle.getInlineStyle( viewport.getElement() );
+		viewportElementInlineStyle.setInteger(Css.BORDER_WIDTH, 2, CssUnit.PX);
+		viewportElementInlineStyle.setColour(Css.BORDER_COLOR, Colour.getColour("orange"));
+		viewportElementInlineStyle.setString(Css.BORDER_STYLE, "solid");
 
 		rootPanel.add(viewport);
 
@@ -135,6 +134,7 @@ public class ViewportTest implements EntryPoint {
 
 	class ZoomingViewport extends Viewport {
 
+		@Override
 		protected Widget createTile0(final int column, final int row) {
 			final Image image = new Image();
 			final int x = column * TILE_WIDTH;

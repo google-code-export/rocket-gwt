@@ -39,8 +39,8 @@ public class Bean {
 		super();
 
 		this.setAspects(this.createAspects());
-		this.setConstructorValues(Collections.EMPTY_LIST);
-		this.setProperties(Collections.EMPTY_SET);
+		this.setConstructorValues( Collections.<Value>emptyList());
+		this.setProperties(Collections.<Property>emptySet());
 	}
 
 	/**

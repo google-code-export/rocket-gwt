@@ -34,7 +34,7 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 		final TestConcreteTypesImplementingInterfaceFinder finder = new TestConcreteTypesImplementingInterfaceFinder();
 		finder.start(context.getType(Interface.class.getName()));
 
-		final Set types = finder.getTypes();
+		final Set<Type> types = finder.getTypes();
 		assertNotNull("types", types);
 
 		assertEquals(2, types.size());
@@ -54,9 +54,9 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 			return true;
 		}
 
-		Set types = new HashSet();
+		Set<Type> types = new HashSet<Type>();
 
-		Set getTypes() {
+		Set<Type> getTypes() {
 			return this.types;
 		}
 	}
@@ -106,7 +106,7 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 			super.setJavaClass(javaClass);
 		}
 
-		protected Set createSubTypes() {
+		protected Set<Type> createSubTypes() {
 			throw new UnsupportedOperationException(this.getName() + ".createSubTypes() , adapter: " + this.getClass());
 		}
 	}
@@ -116,8 +116,8 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 			super.setJavaClass(javaClass);
 		}
 
-		protected Set createSubTypes() {
-			final Set subTypes = new HashSet();
+		protected Set<Type> createSubTypes() {
+			final Set<Type> subTypes = new HashSet<Type>();
 			subTypes.add(getType(INTERFACE));
 			subTypes.add(getType(CONCRETE_CLASS));
 			subTypes.add(getType(ANOTHER_CONCRETE_CLASS));
@@ -129,8 +129,8 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	}
 
 	static class InterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return new HashSet(Collections.nCopies(1, getType(SUB_INTERFACE)));
+		public Set<Type> getSubTypes() {
+			return new HashSet<Type>(Collections.<Type>nCopies(1, getType(SUB_INTERFACE)));
 		}
 	}
 
@@ -138,8 +138,8 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	}
 
 	static class SubInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return Collections.EMPTY_SET;
+		public Set<Type> getSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -147,8 +147,8 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	}
 
 	static class ConcreteClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return new HashSet(Collections.nCopies(1, getType(SUB_CLASS_THAT_IMPLEMENTS_INTERFACE)));
+		public Set<Type> getSubTypes() {
+			return new HashSet<Type>(Collections.<Type>nCopies(1, getType(SUB_CLASS_THAT_IMPLEMENTS_INTERFACE)));
 		}
 	}
 
@@ -156,8 +156,8 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	}
 
 	static class SubClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return Collections.EMPTY_SET;
+		public Set<Type> getSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -165,8 +165,8 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	}
 
 	static class SubClassThatImplementsInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return new HashSet(Collections.nCopies(1, getType(SUB_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE)));
+		public Set<Type> getSubTypes() {
+			return new HashSet<Type>(Collections.<Type>nCopies(1, getType(SUB_SUB_CLASS_THAT_IMPLEMENTS_INTERFACE)));
 		}
 	}
 
@@ -174,8 +174,8 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	}
 
 	static class SubSubClassThatImplementsInterfaceJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return Collections.EMPTY_SET;
+		public Set<Type> getSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 
@@ -183,8 +183,8 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	}
 
 	static class AnotherConcreteClassJavaClassTypeAdapter extends TestJavaClassTypeAdapter {
-		public Set getSubTypes() {
-			return Collections.EMPTY_SET;
+		public Set<Type> getSubTypes() {
+			return Collections.<Type>emptySet();
 		}
 	}
 }

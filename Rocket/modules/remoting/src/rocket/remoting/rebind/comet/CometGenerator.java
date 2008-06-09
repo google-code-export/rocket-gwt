@@ -241,7 +241,7 @@ public class CometGenerator extends Generator {
 	 *            create a deserializer.
 	 */
 	protected void implementCreateGwtRpcProxy(final NewConcreteType newType, final Type serviceInterface) {
-		final Method method = newType.getMostDerivedMethod(Constants.CREATE_GWT_RPC_PROXY_METHOD, Collections.EMPTY_LIST);
+		final Method method = newType.getMostDerivedMethod(Constants.CREATE_GWT_RPC_PROXY_METHOD, Collections.<Type>emptyList());
 		final NewMethod newMethod = method.copy(newType);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);

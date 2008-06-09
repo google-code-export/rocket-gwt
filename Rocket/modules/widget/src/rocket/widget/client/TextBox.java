@@ -32,7 +32,7 @@ import com.google.gwt.user.client.Element;
  * Most of the internals have been ripped and reworked from the original GWT
  * TextBox widget.
  * 
- * TODO ROCKET When upgrading from GWT 1.4.6x reapply changes
+ * ROCKET When upgrading from GWT 1.5 RC1 reapply changes
  * 
  * @author Miroslav Pokorny
  */
@@ -122,7 +122,7 @@ public class TextBox extends TextEntryWidget {
 		TextAlignment textAlignment = TextAlignment.LEFT;
 
 		while (true) {
-			final String property = ComputedStyle.getString(getElement(), Css.TEXT_ALIGN);
+			final String property = ComputedStyle.getComputedStyle( this.getElement() ).getString(Css.TEXT_ALIGN);
 			if (TextAlignment.CENTER.getValue().equals(property)) {
 				textAlignment = TextAlignment.CENTER;
 				break;
@@ -144,7 +144,7 @@ public class TextBox extends TextEntryWidget {
 	}
 
 	public void setTextAlignment(final TextAlignment textAligment) {
-		InlineStyle.setString(getElement(), Css.TEXT_ALIGN, textAligment.getValue());
+		InlineStyle.getInlineStyle( this.getElement() ).setString(Css.TEXT_ALIGN, textAligment.getValue());
 	}
 
 	/**
