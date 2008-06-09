@@ -25,7 +25,8 @@ import rocket.collection.client.IteratorView;
 import rocket.util.client.Checker;
 
 public class IteratorViewTestCase extends TestCase {
-	public void testIterator0WithNoModifications() {
+	
+	public void testIterator() {
 		final List<String> list = new ArrayList<String>();
 		final Container container = new Container();
 
@@ -55,7 +56,7 @@ public class IteratorViewTestCase extends TestCase {
 		assertFalse(iterator.hasNext());
 	}
 
-	public void testIterator1WithRemoves() {
+	public void testIteratorWithRemoves() {
 		final List<String> list = new ArrayList<String>();
 		final Container container = new Container();
 
@@ -88,7 +89,7 @@ public class IteratorViewTestCase extends TestCase {
 		assertFalse(iterator.hasNext());
 	}
 
-	public void testIterator2WithNextThrowingConcurrentModification() {
+	public void testIteratorWithConcurrentModification() {
 		final Container container = new Container();
 
 		final String first = "1";
@@ -111,7 +112,7 @@ public class IteratorViewTestCase extends TestCase {
 		}
 	}
 
-	public void testIterator3WithNextFollowedByModificationThenRemoveThrowingConcurrentModification() {
+	public void testIteratorWithNextFollowedByModificationThenRemoveThrowingConcurrentModification() {
 		final Container container = new Container();
 
 		final String first = "1";
@@ -135,7 +136,7 @@ public class IteratorViewTestCase extends TestCase {
 		}
 	}
 
-	class Container {
+	static class Container {
 
 		public Container() {
 			this.setList(new ArrayList<String>());

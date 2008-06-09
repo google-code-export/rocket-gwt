@@ -60,7 +60,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * @param factoryBean
 	 *            The matching factory bean
 	 */
-	public void registerFactoryBean(final String name, final FactoryBean factoryBean) {
+	public void registerFactoryBean(final String name, final FactoryBean<? extends Object> factoryBean) {
 		if (factoryBean instanceof BeanNameAware) {
 			final BeanNameAware beanNameAware = (BeanNameAware) factoryBean;
 			beanNameAware.setBeanName(name);
@@ -75,9 +75,9 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void prepareFactoryBeans() {
-		final Iterator<Map.Entry<String,FactoryBean>> iterator = this.getFactoryBeans().entrySet().iterator();
+		final Iterator<Map.Entry<String,FactoryBean<? extends Object>>> iterator = this.getFactoryBeans().entrySet().iterator();
 		while (iterator.hasNext()) {
-			final Map.Entry<String,FactoryBean> entry = iterator.next();
+			final Map.Entry<String,FactoryBean<? extends Object>> entry = iterator.next();
 
 			final FactoryBean factoryBean = entry.getValue();
 
@@ -102,7 +102,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	protected void registerAliases() {
 		final String aliasesToBeans = this.getAliasesToBeans();
 		final String[] tokens = Utilities.split(aliasesToBeans, ",", true);
-		final Map<String,FactoryBean> factoryBeans = this.getFactoryBeans();
+		final Map<String,FactoryBean<? extends Object>> factoryBeans = this.getFactoryBeans();
 
 		for (int i = 0; i < tokens.length; i++) {
 			final String token = tokens[i];
@@ -110,7 +110,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 			final String alias = token.substring(0, equals);
 			final String bean = token.substring(equals + 1);
 
-			final FactoryBean factoryBean = this.getFactoryBean(bean);
+			final FactoryBean<? extends Object> factoryBean = this.getFactoryBean(bean);
 			factoryBeans.put(alias, factoryBean);
 		}
 	}
@@ -130,7 +130,7 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 		final String[] beanNames = Utilities.split(commaSeparatedList, ",", true);
 		for (int i = 0; i < beanNames.length; i++) {
 			final String beanName = beanNames[i];
-			Object ignored = this.getBean(beanName);
+			this.getBean(beanName);
 
 			if (false == GWT.isScript()) {
 				Checker.trueValue("The bean \"" + beanName + "\" must be a singleton.", this.isSingleton(beanName));
@@ -152,20 +152,20 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * This map consists of all the bean factories that will return bean
 	 * instances.
 	 */
-	private Map<String,FactoryBean> factoryBeans;
+	private Map<String,FactoryBean<? extends Object>> factoryBeans;
 
-	protected Map<String,FactoryBean> getFactoryBeans() {
+	protected Map<String,FactoryBean<? extends Object>> getFactoryBeans() {
 		Checker.notNull("field:factoryBeans", factoryBeans);
 		return this.factoryBeans;
 	}
 
-	protected void setFactoryBeans(final Map<String,FactoryBean> factoryBeans) {
+	protected void setFactoryBeans(final Map<String,FactoryBean<? extends Object>> factoryBeans) {
 		Checker.notNull("parameter:factoryBeans", factoryBeans);
 		this.factoryBeans = factoryBeans;
 	}
 
-	protected Map<String,FactoryBean> createFactoryBeans() {
-		return new HashMap<String,FactoryBean>();
+	protected Map<String,FactoryBean<? extends Object>> createFactoryBeans() {
+		return new HashMap<String,FactoryBean<? extends Object>>();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -195,8 +195,8 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * @throws UnableToFindBeanException
 	 *             if the bean doesnt exist.
 	 */
-	protected FactoryBean getFactoryBean(final String name) throws UnableToFindBeanException {
-		final FactoryBean factory = (FactoryBean) this.getFactoryBeans().get(name);
+	protected FactoryBean<? extends Object> getFactoryBean(final String name) throws UnableToFindBeanException {
+		final FactoryBean<? extends Object> factory = this.getFactoryBeans().get(name);
 		if (null == factory) {
 			throwUnableToFindBean("Unable to find bean \"" + name + "\".");
 		}
@@ -226,11 +226,11 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * This method is only public for testing purposes.
 	 */
 	public void shutdown() {
-		final Iterator<Map.Entry<String,FactoryBean>> factoryBeans = this.getFactoryBeans().entrySet().iterator();
+		final Iterator<Map.Entry<String,FactoryBean<? extends Object>>> factoryBeans = this.getFactoryBeans().entrySet().iterator();
 		while (factoryBeans.hasNext()) {
-			final Map.Entry<String,FactoryBean> entry = factoryBeans.next();
+			final Map.Entry<String,FactoryBean<? extends Object>> entry = factoryBeans.next();
 			final String beanName = entry.getKey();
-			final FactoryBean factoryBean = entry.getValue();
+			final FactoryBean<? extends Object> factoryBean = entry.getValue();
 
 			if (factoryBean instanceof DisposableBean) {
 				this.shutdownSingleton(beanName, factoryBean);
@@ -249,13 +249,12 @@ abstract public class BeanFactoryImpl implements BeanFactory {
 	 * @param factoryBean
 	 *            The singleton's factory bean.
 	 */
-	protected void shutdownSingleton(final String beanName, final FactoryBean factoryBean) {
+	protected void shutdownSingleton(final String beanName, final FactoryBean<? extends Object> factoryBean) {
 		final DisposableBean disposableBean = (DisposableBean) factoryBean;
 		try {
 			disposableBean.destroy();
 		} catch (final Throwable caught) {
-			GWT.log("When attempting to destroy the singleton \"" + beanName + "\" an exception was thrown, message: "
-					+ caught.getMessage(), caught);
+			GWT.log("When attempting to destroy the singleton \"" + beanName + "\" an exception was thrown, message: " + caught.getMessage(), caught);
 			caught.printStackTrace();
 		}
 

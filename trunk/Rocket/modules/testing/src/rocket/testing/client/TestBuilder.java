@@ -53,5 +53,5 @@ public interface TestBuilder {
 	 * 
 	 * @return
 	 */
-	abstract List buildCandidates();
+	abstract List<Test> buildCandidates();
 }

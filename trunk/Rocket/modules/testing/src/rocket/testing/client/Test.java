@@ -51,6 +51,8 @@ abstract public class Test {
 
 	public static void fail(final String message, final Throwable cause) {
 		throw new AssertionError(cause) {
+			
+			@Override
 			public String getMessage() {
 				return message;
 			}

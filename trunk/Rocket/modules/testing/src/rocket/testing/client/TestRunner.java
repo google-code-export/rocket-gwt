@@ -116,7 +116,7 @@ abstract public class TestRunner {
 	public void executeTests(final TestBuilder testBuilder) {
 		Checker.notNull("parameter:testBuilder", testBuilder);
 
-		final List tests = testBuilder.buildCandidates();
+		final List<Test> tests = testBuilder.buildCandidates();
 		if (tests.size() == 0) {
 			this.handleNoTestsToExecute();
 		}
@@ -131,13 +131,13 @@ abstract public class TestRunner {
 	 * A list returned by the test builder containing all the lists that will be
 	 * executed.
 	 */
-	private List tests;
+	private List<Test> tests;
 
-	private List getTests() {
+	private List<Test> getTests() {
 		return this.tests;
 	}
 
-	private void setTests(final List tests) {
+	private void setTests(final List<Test> tests) {
 		this.tests = tests;
 		this.setTestIndex(0);
 	}
@@ -148,8 +148,8 @@ abstract public class TestRunner {
 		return this.testIndex;
 	}
 
-	private void setTestIndex(final int testCursor) {
-		this.testIndex = testCursor;
+	private void setTestIndex(final int testIndex) {
+		this.testIndex = testIndex;
 	}
 
 	protected void executeNextTest() {
@@ -157,11 +157,11 @@ abstract public class TestRunner {
 
 		if (false == this.isSkipRemaining()) {
 			final int testIndex = this.getTestIndex();
-			final List tests = this.getTests();
+			final List<Test> tests = this.getTests();
 
 			completed = testIndex == tests.size();
 			if (false == completed) {
-				this.execute((Test) tests.get(testIndex));
+				this.execute(tests.get(testIndex));
 			}
 		}
 
@@ -258,9 +258,9 @@ abstract public class TestRunner {
 		int failed = 0;
 		int aborted = 0;
 
-		final Iterator tests = this.getTests().iterator();
+		final Iterator<Test> tests = this.getTests().iterator();
 		while (tests.hasNext()) {
-			final Test test = (Test) tests.next();
+			final Test test = tests.next();
 			started++;
 			if (test.hasPassed()) {
 				passed++;
@@ -318,12 +318,12 @@ abstract public class TestRunner {
 	Test getCurrentTest() {
 		Test test = null;
 		while (true) {
-			final List tests = this.getTests();
+			final List<Test> tests = this.getTests();
 			final int cursor = this.getTestIndex();
 			if (cursor >= tests.size()) {
 				break;
 			}
-			test = (Test) tests.get(cursor);
+			test = tests.get(cursor);
 			if (test.hasCompleted()) {
 				test = null;
 			}
