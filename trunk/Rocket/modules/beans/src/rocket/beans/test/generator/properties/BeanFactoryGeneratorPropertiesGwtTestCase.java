@@ -156,7 +156,7 @@ public class BeanFactoryGeneratorPropertiesGwtTestCase extends GeneratorGwtTestC
 	public void testSetProperty() {
 		final BeanFactory factory = (BeanFactory) GWT.create(SetPropertyBeanFactory.class);
 		final HasSetProperty bean = (HasSetProperty) factory.getBean(BEAN);
-		final Set set = bean.getSetProperty();
+		final Set<String> set = bean.getSetProperty();
 		assertNotNull(set);
 		assertEquals(3, set.size());
 		assertTrue("apple", set.contains("apple"));

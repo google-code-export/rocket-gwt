@@ -26,7 +26,6 @@ import rocket.beans.client.SingletonFactoryBean;
  * A set of unit tests for a SingleFactoryBean.
  * 
  * @author Miroslav Pokorny
- * 
  */
 public class SingletonFactoryBeanTestCase extends TestCase {
 
@@ -41,7 +40,7 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		assertEquals("stringProperty", STRING_VALUE, bean0.getStringProperty());
 	}
 
-	public void testGetBeanAlwaysReturnsSameInstance() {
+	public void testGetSingletonBeanAlwaysReturnsSameInstance() {
 		final ClassWithStringPropertySingletonFactoryBean factoryBean = new ClassWithStringPropertySingletonFactoryBean();
 		final Object first = factoryBean.getObject();
 		final Object second = factoryBean.getObject();
@@ -78,17 +77,16 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 		}
 	}
 
-	static class ClassWithAnotherBeanReferenceSingleFactoryBean extends SingletonFactoryBean {
-		protected Object createInstance() {
+	static class ClassWithAnotherBeanReferenceSingleFactoryBean extends SingletonFactoryBean<ClassWithAnotherBeanReference> {
+		protected ClassWithAnotherBeanReference createInstance() {
 			return new ClassWithAnotherBeanReference();
 		}
 
-		protected void satisfyProperties(Object instance) {
-			final ClassWithAnotherBeanReference instance0 = (ClassWithAnotherBeanReference) instance;
-			instance0.setClassWithStringProperty((ClassWithStringProperty) this.getBeanFactory().getBean("classWithStringProperty"));
+		protected void satisfyProperties(ClassWithAnotherBeanReference instance) {
+			instance.setClassWithStringProperty((ClassWithStringProperty) this.getBeanFactory().getBean("classWithStringProperty"));
 		}
 
-		protected void satisfyInit(final Object instance) {
+		protected void satisfyInit(final ClassWithAnotherBeanReference instance) {
 		}
 
 		protected BeanFactory getBeanFactory() {
@@ -120,10 +118,11 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 	}
 
 	public void testSingletonFactoryBeanHoldingAnotherSingletonFactoryBean() {
-		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
+		final SingletonFactoryBean<Bean> factoryBean = new SingletonFactoryBean() {
+			@Override
 			protected Object createInstance() {
-				return new SingletonFactoryBean() {
-					protected Object createInstance() {
+				return new SingletonFactoryBean<Bean>() {
+					protected Bean createInstance() {
 						return new Bean();
 					}
 				};
@@ -142,9 +141,12 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 
 	public void testSingletonFactoryBeanHoldingAnotherPrototypeFactoryBean() {
 		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
+			@Override
 			protected Object createInstance() {
-				return new PrototypeFactoryBean() {
-					protected Object createInstance() {
+				return new PrototypeFactoryBean<Bean>() {
+					
+					@Override
+					protected Bean createInstance() {
 						return new Bean();
 					}
 				};
@@ -162,8 +164,10 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 	}
 
 	public void testInitializingBean() {
-		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
-			protected Object createInstance() {
+		final SingletonFactoryBean<ImplementsInitializingBean> factoryBean = new SingletonFactoryBean<ImplementsInitializingBean>() {
+			
+			@Override
+			protected ImplementsInitializingBean createInstance() {
 				return new ImplementsInitializingBean();
 			}
 		};
@@ -183,8 +187,8 @@ public class SingletonFactoryBeanTestCase extends TestCase {
 	}
 
 	public void testDisposableBean() {
-		final SingletonFactoryBean factoryBean = new SingletonFactoryBean() {
-			protected Object createInstance() {
+		final SingletonFactoryBean<ImplementsDisposableBean> factoryBean = new SingletonFactoryBean<ImplementsDisposableBean>() {
+			protected ImplementsDisposableBean createInstance() {
 				return new ImplementsDisposableBean();
 			}
 		};

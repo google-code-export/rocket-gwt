@@ -29,8 +29,8 @@ import org.w3c.dom.NodeList;
  */
 class MapTag extends ValueTag {
 
-	public Map getValues() {
-		final Map entries = new TreeMap();
+	public Map<String,Element> getValues() {
+		final Map<String,Element> entries = new TreeMap<String,Element>();
 
 		final NodeList nodeList = this.getElement().getElementsByTagName(Constants.MAP_ENTRY_TAG);
 		final int count = nodeList.getLength();

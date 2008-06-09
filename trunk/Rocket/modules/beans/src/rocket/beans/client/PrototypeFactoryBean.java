@@ -48,6 +48,7 @@ abstract public class PrototypeFactoryBean<T> extends SingletonOrPrototypeFactor
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	protected T getObject(final T object) throws Exception {
 		T returned = object;
 

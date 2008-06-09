@@ -138,7 +138,7 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 		final Type beanFactory = this.getBeanFactory();
 		final AddAdviceTemplatedFile addAdvice = new AddAdviceTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Aspect>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -151,14 +151,13 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<Aspect> getCollection() {
 				return ProxyInterceptedMethodTemplatedFile.this.getAspects();
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
-				final Aspect advice = (Aspect) element;
-				addAdvice.setBeanId(advice.getAdvisor());
+			protected void prepareToWrite(Aspect aspect) {
+				addAdvice.setBeanId(aspect.getAdvisor());
 				addAdvice.setBeanFactory(beanFactory);
 			}
 
@@ -179,7 +178,7 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 	protected CodeBlock getWrapParameters() {
 		final WrapParameterTemplatedFile wrap = new WrapParameterTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<MethodParameter>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -192,17 +191,17 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<MethodParameter> getCollection() {
 				return ProxyInterceptedMethodTemplatedFile.this.getMethod().getParameters();
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
-				wrap.setParameter((MethodParameter) element);
+			protected void prepareToWrite(final MethodParameter methodParameter) {
+				wrap.setParameter(methodParameter);
 			}
 
 			@Override
-			protected void writeBetweenElements(SourceWriter writer) {
+			protected void writeBetweenElements(final SourceWriter writer) {
 				writer.print(",");
 			}
 		};
@@ -253,7 +252,7 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 		// return the code block.
 		final RethrowDeclaredExceptionTemplatedFile rethrow = new RethrowDeclaredExceptionTemplatedFile();
 
-		return new CollectionTemplatedCodeBlock() {
+		return new CollectionTemplatedCodeBlock<Type>() {
 
 			@Override
 			public InputStream getInputStream() {
@@ -266,17 +265,17 @@ public class ProxyInterceptedMethodTemplatedFile extends TemplatedFileCodeBlock 
 			}
 
 			@Override
-			protected Collection getCollection() {
+			protected Collection<Type> getCollection() {
 				return catchAndRethrow;
 			}
 
 			@Override
-			protected void prepareToWrite(Object element) {
-				rethrow.setException((Type) element);
+			protected void prepareToWrite(final Type type ) {
+				rethrow.setException( type );
 			}
 
 			@Override
-			protected void writeBetweenElements(SourceWriter writer) {
+			protected void writeBetweenElements(final SourceWriter writer) {
 				writer.println();
 			}
 		};

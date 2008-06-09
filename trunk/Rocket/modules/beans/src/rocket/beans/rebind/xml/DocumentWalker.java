@@ -142,7 +142,7 @@ public class DocumentWalker {
 
 	protected void processDocument0() throws SAXException, IOException {
 		final String fileName = this.getFilename();
-		final Set includedFiles = this.getIncludedFiles();
+		final Set<String> includedFiles = this.getIncludedFiles();
 		if (includedFiles.contains(fileName)) {
 			throwIncludedFileCycle(fileName);
 		}
@@ -159,7 +159,7 @@ public class DocumentWalker {
 		// process the local tags within this document
 		final PlaceHolderResolver placeHolderResolver = this.loadPlaceholderFiles(document);
 		this.setPlaceHolderResolver(placeHolderResolver);
-		final List included = this.visitIncludedFiles(document, fileName, placeHolderResolver);
+		final List<IncludeTag> included = this.visitIncludedFiles(document, fileName, placeHolderResolver);
 
 		this.visitBeans();
 		this.visitRpcs();
@@ -168,9 +168,9 @@ public class DocumentWalker {
 		this.visitAspects();
 
 		// now include the included files...
-		final Iterator includedFilesIterator = included.iterator();
+		final Iterator<IncludeTag> includedFilesIterator = included.iterator();
 		while (includedFilesIterator.hasNext()) {
-			final IncludeTag includeFile = (IncludeTag) includedFilesIterator.next();
+			final IncludeTag includeFile = includedFilesIterator.next();
 			final String includedFileFileName = includeFile.getFile();
 			this.setFilename(includedFileFileName);
 			this.processDocument();
@@ -277,9 +277,9 @@ public class DocumentWalker {
 	/**
 	 * this stack holds a tree of nested beans.
 	 */
-	private Stack beanStack = new Stack();
+	private Stack<EnclosingBean> beanStack = new Stack<EnclosingBean>();
 
-	protected Stack getBeanStack() {
+	protected Stack<EnclosingBean> getBeanStack() {
 		return this.beanStack;
 	}
 
@@ -298,7 +298,7 @@ public class DocumentWalker {
 	}
 
 	protected void addNestedBean() {
-		final EnclosingBean parent = (EnclosingBean) this.getBeanStack().peek();
+		final EnclosingBean parent = this.getBeanStack().peek();
 		parent.setNestedBeanCount(parent.getNestedBeanCount() + 1);
 	}
 
@@ -390,12 +390,8 @@ public class DocumentWalker {
 	/**
 	 * This comparator may be used to produce a TreeSet sorted by bean id.
 	 */
-	static Comparator BEAN_ID_SORTER = new Comparator() {
-		public int compare(final Object bean, final Object otherBean) {
-			return compare((Bean) bean, (Bean) otherBean);
-		}
-
-		int compare(final Bean bean, final Bean otherBean) {
+	static Comparator<Bean> BEAN_ID_SORTER = new Comparator<Bean>() {
+		public int compare(final Bean bean, final Bean otherBean) {
 			return bean.getId().compareTo(otherBean.getId());
 		}
 	};
@@ -406,18 +402,18 @@ public class DocumentWalker {
 		this.getBeans().add(bean);
 	}
 
-	protected List visitConstructorValues(final List values) {
+	protected List<Value> visitConstructorValues(final List<Element> values) {
 		return this.visitValues(values);
 	}
 
-	protected Set<Property> visitProperties(final List propertys) {
+	protected Set<Property> visitProperties(final List<Element> propertys) {
 		final Set<Property> properties = new TreeSet<Property>(PROPERTY_NAME_SORTER);
 
 		final PlaceHolderResolver placeHolderResolver = this.getPlaceHolderResolver();
 
-		final Iterator iterator = propertys.iterator();
+		final Iterator<Element> iterator = propertys.iterator();
 		while (iterator.hasNext()) {
-			final Element element = (Element) iterator.next();
+			final Element element = iterator.next();
 
 			final PropertyTag tag = new PropertyTag();
 			tag.setElement(element);
@@ -435,12 +431,8 @@ public class DocumentWalker {
 		return properties;
 	}
 
-	static Comparator PROPERTY_NAME_SORTER = new Comparator() {
-		public int compare(final Object property, final Object otherProperty) {
-			return this.compare((Property) property, (Property) otherProperty);
-		}
-
-		int compare(final Property property, final Property otherProperty) {
+	static Comparator<Property> PROPERTY_NAME_SORTER = new Comparator<Property>() {
+		public int compare(final Property property, final Property otherProperty) {
 			return property.getName().compareTo(otherProperty.getName());
 		}
 	};
@@ -607,7 +599,7 @@ public class DocumentWalker {
 		tag.setPlaceHolderResolver(this.getPlaceHolderResolver());
 
 		final ListValue list = new ListValue();
-		final List elements = this.visitValues(tag.getValues());
+		final List<Value> elements = this.visitValues(tag.getValues());
 		list.setElements(elements);
 		list.setFilename(this.getFilename());
 		list.setGeneratorContext(this.getGenerator().getGeneratorContext());
@@ -627,7 +619,7 @@ public class DocumentWalker {
 		tag.setPlaceHolderResolver(placeHolderResolver);
 
 		final SetValue set = new SetValue();
-		final List elements = this.visitValues(tag.getValues());
+		final List<Value> elements = this.visitValues(tag.getValues());
 		set.setElements(elements);
 		set.setFilename(this.getFilename());
 		set.setGeneratorContext(this.getGenerator().getGeneratorContext());
@@ -877,20 +869,20 @@ public class DocumentWalker {
 	 * This set is used to maintain a list of included files in order to detect
 	 * and complain about cycles.
 	 */
-	private Set includedFiles;
+	private Set<String> includedFiles;
 
-	protected Set getIncludedFiles() {
+	protected Set<String> getIncludedFiles() {
 		Checker.notNull("field:includedFiles", includedFiles);
 		return this.includedFiles;
 	}
 
-	protected void setIncludedFiles(final Set includedFiles) {
+	protected void setIncludedFiles(final Set<String> includedFiles) {
 		Checker.notNull("parameter:includedFiles", includedFiles);
 		this.includedFiles = includedFiles;
 	}
 
-	protected Set createIncludedFiles() {
-		return new HashSet();
+	protected Set<String> createIncludedFiles() {
+		return new HashSet<String>();
 	}
 
 	/**

@@ -29,7 +29,7 @@ import rocket.generator.rebind.methodparameter.MethodParameter;
  */
 public class MethodComparator implements Comparator<Method> {
 
-	public final static Comparator INSTANCE = new MethodComparator();
+	public final static Comparator<Method> INSTANCE = new MethodComparator();
 
 	private MethodComparator() {
 		super();
