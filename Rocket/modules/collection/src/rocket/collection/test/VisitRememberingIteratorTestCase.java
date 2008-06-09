@@ -29,11 +29,12 @@ import rocket.collection.client.VisitedRememberingIterator;
  * 
  */
 public class VisitRememberingIteratorTestCase extends TestCase {
-	public void test0() {
-		final List list = Arrays.asList(new Object[] { "first", "second", "third", "fourth" });
-		final Iterator controlIterator = list.iterator();
+	
+	public void testIterator() {
+		final List<Object> list = Arrays.asList(new Object[] { "first", "second", "third", "fourth" });
+		final Iterator<Object> controlIterator = list.iterator();
 
-		final VisitedRememberingIterator iterator = new VisitedRememberingIterator();
+		final VisitedRememberingIterator<Object> iterator = new VisitedRememberingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
 		while (controlIterator.hasNext()) {

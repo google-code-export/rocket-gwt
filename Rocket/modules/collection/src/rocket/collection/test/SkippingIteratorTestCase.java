@@ -23,7 +23,8 @@ import junit.framework.TestCase;
 import rocket.collection.client.SkippingIterator;
 
 public class SkippingIteratorTestCase extends TestCase {
-	public void testHasNext0RepeatedWithoutNextAlwaysReturnsSameResult() {
+	
+	public void testRepeatedHasNext() {
 
 		final List<Object> list = new ArrayList<Object>();
 		list.add("apple");
@@ -38,7 +39,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		assertTrue(iterator.hasNext());
 	}
 
-	public void testHasNext1AlwaysReturnsSameResult() {
+	public void testRepeatedHasNextAgain() {
 		final List<Object> list = new ArrayList<Object>();
 		list.add("apple");
 		list.add("banana");
@@ -52,7 +53,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		assertTrue(iterator.hasNext());
 	}
 
-	public void testHasNext2SkipsElementAndRepeatedNextsAlwaysReturnSameResult() {
+	public void testNextNextRepeatedHasNext() {
 		final List<Object> list = new ArrayList<Object>();
 		list.add(new Integer(0));
 		list.add("banana");
@@ -68,7 +69,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		assertTrue(iterator.hasNext());
 	}
 
-	public void testNext0NextConsumesIterator() {
+	public void testIterator() {
 		final List<Object> list = new ArrayList<Object>();
 		list.add("apple");
 		list.add("banana");
@@ -89,7 +90,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		assertFalse(iterator.hasNext());
 	}
 
-	public void testNext1NextConsumesIteratorSkippingElement() {
+	public void testIteratorSkips() {
 		final List<Object> list = new ArrayList<Object>();
 		final List<Object> expected = new ArrayList<Object>();
 
@@ -101,7 +102,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		list.add("carrot");
 		expected.add("carrot");
 
-		final Iterator expectedIterator = expected.iterator();
+		final Iterator<Object> expectedIterator = expected.iterator();
 
 		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
@@ -115,7 +116,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		assertFalse(iterator.hasNext());
 	}
 
-	public void testNext2NextConsumesIteratorSkippingElement() {
+	public void testNextNextSkipsElement() {
 		final List<Object> list = new ArrayList<Object>();
 		final List<Object> expected = new ArrayList<Object>();
 
@@ -150,7 +151,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		assertFalse(iterator.hasNext());
 	}
 
-	public void testRemove0() {
+	public void testRemove() {
 		final List<Object> list = new ArrayList<Object>();
 		final List<Object> expected = new ArrayList<Object>();
 
@@ -175,7 +176,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
-		final Iterator expectedIterator = expected.iterator();
+		final Iterator<Object> expectedIterator = expected.iterator();
 
 		while (expectedIterator.hasNext()) {
 			assertTrue(iterator.hasNext());
