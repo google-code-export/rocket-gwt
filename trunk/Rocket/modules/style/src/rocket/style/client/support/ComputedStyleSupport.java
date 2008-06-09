@@ -15,10 +15,10 @@
  */
 package rocket.style.client.support;
 
-
 /**
- * Tag used by the deferred binding system and passed as a class literal to GWT.create 
- * This type is not actually referenced in actual code.
+ * Tag used by the deferred binding system and passed as a class literal to
+ * GWT.create This type is not actually referenced in actual code.
+ * 
  * @author Miroslav Pokorny
  */
 public class ComputedStyleSupport {

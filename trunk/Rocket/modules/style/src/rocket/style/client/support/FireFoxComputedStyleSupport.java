@@ -21,7 +21,8 @@ import rocket.util.client.JavaScript;
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class FireFoxComputedStyleSupport extends FireFoxStyleSupport {
-	
+
+	@Override
 	public String get(final JavaScriptObject element, final String name) {
 		String value = null;
 		while (true) {
@@ -29,8 +30,8 @@ public class FireFoxComputedStyleSupport extends FireFoxStyleSupport {
 				value = this.getBackgroundPosition(element);
 				break;
 			}
-			if (Css.FONT_WEIGHT.equals( name)) {
-				value = "" + this.getComputedFontWeight( JavaScript.castToElement( element));
+			if (Css.FONT_WEIGHT.equals(name)) {
+				value = "" + this.getComputedFontWeight(JavaScript.castToElement(element));
 				break;
 			}
 			value = super.get(element, name);
@@ -43,7 +44,7 @@ public class FireFoxComputedStyleSupport extends FireFoxStyleSupport {
 	/**
 	 * This hack attempts to read the background position from the inline style.
 	 * If it is not found then this method gives up and thrown an exception.
-	 *
+	 * 
 	 * @param element
 	 * @return
 	 */
@@ -54,28 +55,34 @@ public class FireFoxComputedStyleSupport extends FireFoxStyleSupport {
 		}
 		return value;
 	}
-	
-	protected String getUserSelect( final JavaScriptObject element ){
+
+	@Override
+	protected String getUserSelect(final JavaScriptObject element) {
 		return this.getUserSelectProperty(element);
 	}
-	
-	protected String getString( final JavaScriptObject element, final String name ){
-		return this.getComputed( element, name);
+
+	@Override
+	protected String getString(final JavaScriptObject element, final String name) {
+		return this.getComputed(element, name);
 	}
-	
-	protected void setUserSelect( final JavaScriptObject source, final String value ){
-		this.setString( source, this.getUserSelectPropertyName(), value);
+
+	@Override
+	protected void setUserSelect(final JavaScriptObject source, final String value) {
+		this.setString(source, this.getUserSelectPropertyName(), value);
 	}
-	
-	protected void setString( final JavaScriptObject element, final String name, final String value ){
-		throw new UnsupportedOperationException( "setString");
+
+	@Override
+	protected void setString(final JavaScriptObject element, final String name, final String value) {
+		throw new UnsupportedOperationException("setString");
 	}
-	
-	protected void remove0( final JavaScriptObject element, final String name ){
+
+	@Override
+	protected void remove0(final JavaScriptObject element, final String name) {
 		throw new UnsupportedOperationException("remove0");
 	}
-	
-	public String[] getPropertyNames( final JavaScriptObject element ){
-		return this.getPropertyNamesFromCssText( element );
+
+	@Override
+	public String[] getPropertyNames(final JavaScriptObject element) {
+		return this.getPropertyNamesFromCssText(element);
 	}
 }

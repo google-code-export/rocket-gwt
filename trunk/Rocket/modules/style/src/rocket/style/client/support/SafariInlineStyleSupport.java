@@ -21,28 +21,33 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public class SafariInlineStyleSupport extends SafariStyleSupport {
 
-	protected String getUserSelect( final JavaScriptObject element ){
+	@Override
+	protected String getUserSelect(final JavaScriptObject element) {
 		return this.getUserSelectProperty(element);
 	}
-	
-	
-	protected String getString( final JavaScriptObject element, final String name ){
-		return getProperty( element, name );
+
+	@Override
+	protected String getString(final JavaScriptObject element, final String name) {
+		return getProperty(element, name);
 	}
 
-	protected void setUserSelect( final JavaScriptObject element, final String value ){
-		this.setString( element, this.getUserSelectPropertyName(), value);
+	@Override
+	protected void setUserSelect(final JavaScriptObject element, final String value) {
+		this.setString(element, this.getUserSelectPropertyName(), value);
 	}
-	
-	protected void setString( final JavaScriptObject source, final String name, final String value ){
-		this.setProperty( source, name, value);
+
+	@Override
+	protected void setString(final JavaScriptObject source, final String name, final String value) {
+		this.setProperty(source, name, value);
 	}
-	
-	protected void remove0( final JavaScriptObject element, final String name ){
-		this.removeProperty( element, name );
+
+	@Override
+	protected void remove0(final JavaScriptObject element, final String name) {
+		this.removeProperty(element, name);
 	}
-	
-	public String[] getPropertyNames( final JavaScriptObject element ){
-		return JavaScript.getPropertyNames( JavaScript.getObject( element, "style" ));
+
+	@Override
+	public String[] getPropertyNames(final JavaScriptObject element) {
+		return JavaScript.getPropertyNames(JavaScript.getObject(element, "style"));
 	}
 }

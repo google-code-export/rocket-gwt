@@ -17,82 +17,80 @@ package rocket.style.client;
 
 import rocket.style.client.support.RuleStyleSupport;
 import rocket.style.client.support.StyleSupport;
-import rocket.util.client.Checker;
-import rocket.util.client.JavaScript;
+import rocket.util.client.Colour;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * A style that belongs to a rule which in turn belongs to a StyleSheet.
  * 
  * @author Miroslav Pokorny (mP)
  */
-class RuleStyle extends Style {
+public class RuleStyle extends Style {
 
-	static private final StyleSupport support = (StyleSupport) GWT.create( RuleStyleSupport.class);
+	static private final StyleSupport support = (StyleSupport) GWT.create(RuleStyleSupport.class);
 
 	static protected StyleSupport getSupport() {
 		return RuleStyle.support;
 	}
+
+	static RuleStyle getRule( final Rule rule ){
+		return rule.cast();
+	}
 	
+	protected RuleStyle() {
+		super();
+	}
+
+	final public String getString(final String name) {
+		return RuleStyle.getSupport().get(this, name);
+	}
+
+	final public void setString(final String name, final String value) {
+		RuleStyle.getSupport().set(this, name, value);
+	}
+
 	final public String getCssText() {
-		return JavaScript.getString(this.getStyle(), Css.CSS_STYLE_TEXT_PROPERTY_NAME);
+		return this.getString(Css.CSS_STYLE_TEXT_PROPERTY_NAME);
 	}
 
-	final public void setCssText(final String cssText) {
-		JavaScript.setString(this.getStyle(), Css.CSS_STYLE_TEXT_PROPERTY_NAME, cssText);
+	final public Colour getColour(final String name) {
+		return Style.getColour0(this.getString(name));
 	}
 
-	public int size() {
-		return JavaScript.getPropertyCount(this.getStyle());
+	final public void setColour(final String name, final Colour colour) {
+		this.setString(name, colour.toCssColour());
 	}
 
-	/**
-	 * Helper which retrieves the native style object
-	 * 
-	 * @return
-	 */
-	protected JavaScriptObject getStyle() {
-		return JavaScript.getObject(this.getRule().getNativeRule(), "style");
+	final public double getDouble(final String name, final CssUnit unit, final double defaultValue) {
+		return Style.getDouble0(this.getString(name), unit, defaultValue);
 	}
 
-	public String getValue(final String propertyName) {
-		return RuleStyle.getSupport().get(this.getRule().getNativeRule(), propertyName);
+	final public void setDouble(final String name, final double value, final CssUnit unit) {
+		this.setString(name, value + unit.getSuffix());
 	}
 
-	protected void putValue(final String propertyName, final String propertyValue) {
-		RuleStyle.getSupport().set(this.getRule().getNativeRule(), propertyName, propertyValue);
+	final public int getInteger(final String name, final CssUnit unit, final int defaultValue) {
+		return Style.getInteger0(this.getString(name), unit, defaultValue);
 	}
 
-	protected void removeValue(final String propertyName) {
-		RuleStyle.getSupport().remove(this.getRule().getNativeRule(), propertyName);
+	final public void setInteger(final String name, final int value, final CssUnit unit) {
+		this.setString(name, value + unit.getSuffix());
 	}
 
-	protected String[] getPropertyNames() {
-		return StyleSheet.getRuleStylePropertyNames(this.getRule().getNativeRule());
+	final public String getUrl(final String name) {
+		return Style.getUrl0(this.getString(name));
 	}
 
-	/**
-	 * A copy of the parent rule that this RuleStyle belongs too.
-	 */
-	private Rule rule;
-
-	protected Rule getRule() {
-		Checker.notNull("field:rule", rule);
-		return this.rule;
+	final public void setUrl(final String name, final String url) {
+		this.setString(name, Style.buildUrl(url));
 	}
 
-	protected boolean hasRule() {
-		return null != rule;
+	final public void remove(final String name) {
+		RuleStyle.getSupport().remove(this, name);
 	}
 
-	protected void setRule(final Rule rule) {
-		Checker.notNull("parameter:rule", rule);
-		this.rule = rule;
-	}
-
-	protected void clearRule() {
-		this.rule = null;
+	final public String[] getNames() {
+		return RuleStyle.getSupport().getPropertyNames(this);
 	}
 }

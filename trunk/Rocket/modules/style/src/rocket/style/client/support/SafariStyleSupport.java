@@ -15,8 +15,10 @@
  */
 package rocket.style.client.support;
 
-abstract public class SafariStyleSupport extends StyleSupport{
-	protected String getUserSelectPropertyName(){
+abstract public class SafariStyleSupport extends StyleSupport {
+
+	@Override
+	protected String getUserSelectPropertyName() {
 		return StyleSupportConstants.SAFARI_USER_TEXT_SELECT;
 	}
 }

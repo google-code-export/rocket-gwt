@@ -24,26 +24,27 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
-abstract public class InternetExplorerStyleSupport extends StyleSupport{
+abstract public class InternetExplorerStyleSupport extends StyleSupport {
 
-	public String get( final JavaScriptObject source, final String name ){
+	@Override
+	public String get(final JavaScriptObject source, final String name) {
 		String value = null;
-		
-		while( true ){
-			if( Css.OPACITY.equals( name )){
+
+		while (true) {
+			if (Css.OPACITY.equals(name)) {
 				value = this.getOpacity(source);
 				break;
-			}			
-			value = super.get(source, name);			
+			}
+			value = super.get(source, name);
 			break;
 		}
-		
+
 		return value;
 	}
-	
-	protected String getOpacity( final JavaScriptObject source ){
-		final String value = this.getString( source, StyleSupportConstants.FILTER );
-		
+
+	protected String getOpacity(final JavaScriptObject source) {
+		final String value = this.getString(source, StyleSupportConstants.FILTER);
+
 		String opacity = null;
 		if (false == Tester.isNullOrEmpty(value)) {
 			opacity = value.substring("alpha(opacity=".length(), value.length() - 1);
@@ -55,24 +56,26 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 		}
 		return opacity;
 	}
-	
+
+	@Override
 	protected int getBorderWidthThin() {
 		return StyleSupportConstants.BORDER_WIDTH_THIN_PX_IE6;
 	}
 
+	@Override
 	protected int getBorderWidthMedium() {
 		return StyleSupportConstants.BORDER_WIDTH_MEDIUM_PX_IE6;
 	}
 
+	@Override
 	protected int getBorderWidthThick() {
 		return StyleSupportConstants.BORDER_WIDTH_THICK_PX_IE6;
 	}
-	
 
 	/**
 	 * Retrieves the computed font size for the given element taking care of
 	 * absolute and relative sizes.
-	 *
+	 * 
 	 * @param element
 	 * @return
 	 */
@@ -120,7 +123,7 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 				break;
 			}
 
-			size = (int) CssUnit.convertValue(propertyValue, CssUnit.PX);
+			size = (int) CssUnit.PX.convert(propertyValue);
 			break;
 		}
 		return size;
@@ -128,14 +131,13 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 
 	/**
 	 * Retrieves the computed font size for the parent of the given element.
-	 *
-	 * This method should only be called by
-	 * {@link #getFontSize(Element)} when it encounters a font-size of
-	 * larger or smaller. This method will then attempt to locate a pixel value
-	 * for the font-size property of a parent(ancestor if recursive). This
-	 * parent value is then multiplied against the scalingFactor to give the
-	 * final value.
-	 *
+	 * 
+	 * This method should only be called by {@link #getFontSize(Element)} when
+	 * it encounters a font-size of larger or smaller. This method will then
+	 * attempt to locate a pixel value for the font-size property of a
+	 * parent(ancestor if recursive). This parent value is then multiplied
+	 * against the scalingFactor to give the final value.
+	 * 
 	 * @param element
 	 * @param scalingFactor
 	 * @return
@@ -152,23 +154,23 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 
 		return Math.round(parentSize * scalingFactor);
 	}
-	
-	
-	public void set( final JavaScriptObject source, final String name, final String value ){
-		while( true ){
-			if( Css.OPACITY.equals( name )){
-				this.setOpacity( source, value);
+
+	@Override
+	public void set(final JavaScriptObject source, final String name, final String value) {
+		while (true) {
+			if (Css.OPACITY.equals(name)) {
+				this.setOpacity(source, value);
 				break;
 			}
-			if( Css.BACKGROUND_IMAGE.equals( name )){
-				this.setBackgroundImage( source, value );
+			if (Css.BACKGROUND_IMAGE.equals(name)) {
+				this.setBackgroundImage(source, value);
 			}
 			super.set(source, name, value);
 			break;
 		}
 	}
-	
-	protected void setBackgroundImage( final JavaScriptObject ruleOrElement, final String url ){
+
+	protected void setBackgroundImage(final JavaScriptObject ruleOrElement, final String url) {
 		Checker.notNull("parameter:ruleOrElement", ruleOrElement);
 		Checker.notEmpty("parameter:url", url);
 
@@ -195,33 +197,35 @@ abstract public class InternetExplorerStyleSupport extends StyleSupport{
 			this.setString(ruleOrElement, Css.BACKGROUND_REPEAT, repeat);
 		}
 	}
-	
-	protected void setOpacity( final JavaScriptObject elementOrRule, final String value ){
+
+	protected void setOpacity(final JavaScriptObject elementOrRule, final String value) {
 		final double doubleValue = Double.parseDouble(value);
 		final int percentageValue = (int) (doubleValue * 100);
 
 		final String translated = "alpha(opacity=" + percentageValue + ")";
-		
-		this.setString(elementOrRule, StyleSupportConstants.FILTER, translated );
+
+		this.setString(elementOrRule, StyleSupportConstants.FILTER, translated);
 	}
-	
-	public void remove( final JavaScriptObject source, final String name ){
-		while( true ){
-			if( Css.OPACITY.equals( name ) ){
-				this.removeUserSelect( source);
+
+	@Override
+	public void remove(final JavaScriptObject source, final String name) {
+		while (true) {
+			if (Css.OPACITY.equals(name)) {
+				this.removeUserSelect(source);
 			}
-			super.remove( source, name );
+			super.remove(source, name);
 			break;
 		}
-		this.remove0( source, name);
+		this.remove0(source, name);
 	}
-	
-	protected String getUserSelectPropertyName(){
+
+	@Override
+	protected String getUserSelectPropertyName() {
 		throw new UnsupportedOperationException("getUserSelectPropertyName");
 	}
-	
 
-	protected void removeUserSelect( final JavaScriptObject source ){
+	@Override
+	protected void removeUserSelect(final JavaScriptObject source) {
 		this.setUserSelect(source, "none");
-	}	
+	}
 }

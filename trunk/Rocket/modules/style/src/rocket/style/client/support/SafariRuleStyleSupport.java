@@ -20,29 +20,34 @@ import rocket.util.client.JavaScript;
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class SafariRuleStyleSupport extends SafariStyleSupport {
-	
 
-	protected String getUserSelect( final JavaScriptObject rule ){
+	@Override
+	protected String getUserSelect(final JavaScriptObject rule) {
 		return this.getUserSelectProperty(rule);
 	}
-	
-	protected String getString( final JavaScriptObject rule, final String name ){
-		return getProperty( rule, name );
+
+	@Override
+	protected String getString(final JavaScriptObject rule, final String name) {
+		return getProperty(rule, name);
 	}
-	
-	protected void setUserSelect( final JavaScriptObject element, final String value ){
-		this.setString( element, this.getUserSelectPropertyName(), value);
+
+	@Override
+	protected void setUserSelect(final JavaScriptObject element, final String value) {
+		this.setString(element, this.getUserSelectPropertyName(), value);
 	}
-	
-	protected void setString( final JavaScriptObject rule, final String name, final String value ){
-		this.setProperty( rule, name, value);
+
+	@Override
+	protected void setString(final JavaScriptObject rule, final String name, final String value) {
+		this.setProperty(rule, name, value);
 	}
-	
-	protected void remove0( final JavaScriptObject rule, final String name ){
-		this.removeProperty( rule, name );
+
+	@Override
+	protected void remove0(final JavaScriptObject rule, final String name) {
+		this.removeProperty(rule, name);
 	}
-	
-	public String[] getPropertyNames( final JavaScriptObject rule ){
-		return JavaScript.getPropertyNames( JavaScript.getObject( rule, "style" ));
+
+	@Override
+	public String[] getPropertyNames(final JavaScriptObject rule) {
+		return JavaScript.getPropertyNames(JavaScript.getObject(rule, "style"));
 	}
 }

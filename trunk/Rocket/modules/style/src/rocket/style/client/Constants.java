@@ -23,4 +23,14 @@ class Constants {
 	final static String SELECTOR_TEXT_PROPERTY_NAME = "selectorText";
 
 	final static String SELECTOR_SEPARATOR = ",";
+	
+	final static String TYPE_ATTRIBUTE = "type";
+
+	final static String HREF_ATTRIBUTE = "href";
+
+	final static String TITLE_ATTRIBUTE = "title";
+
+	final static String ID_ATTRIBUTE = "id";
+
+	final static String NAME_ATTRIBUTE = "name";
 }

@@ -5,7 +5,6 @@ import rocket.style.client.support.DynamicExpression;
 
 public class DynamicExpressionTestCase extends TestCase {
 
-
 	public void testIsEqual0() {
 		final String text = "apple";
 		final DynamicExpression expression = new DynamicExpression("banana");
@@ -125,6 +124,7 @@ public class DynamicExpressionTestCase extends TestCase {
 
 		assertEquals("123px", expression.getValue(textWithValue));
 	}
+
 	public void testGetValue8() {
 		final String textWithValue = "123-apple";
 		final DynamicExpression expression = new DynamicExpression("#apple");

@@ -22,11 +22,12 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public class SafariComputedStyleSupport extends SafariStyleSupport {
 
+	@Override
 	public String get(final JavaScriptObject element, final String name) {
 		String value = null;
-		while (true) {	
-			if (Css.FONT_WEIGHT.equals( name)) {
-				value = "" + this.getComputedFontWeight( JavaScript.castToElement( element));
+		while (true) {
+			if (Css.FONT_WEIGHT.equals(name)) {
+				value = "" + this.getComputedFontWeight(JavaScript.castToElement(element));
 				break;
 			}
 			value = super.get(element, name);
@@ -35,29 +36,34 @@ public class SafariComputedStyleSupport extends SafariStyleSupport {
 
 		return value;
 	}
-	
-	protected String getUserSelect( final JavaScriptObject element ){
+
+	@Override
+	protected String getUserSelect(final JavaScriptObject element) {
 		return this.getUserSelectProperty(element);
 	}
-	
-	protected String getString( final JavaScriptObject element, final String name ){
+
+	@Override
+	protected String getString(final JavaScriptObject element, final String name) {
 		return this.getComputed(element, name);
 	}
-	
 
-	protected void setUserSelect( final JavaScriptObject source, final String value ){
+	@Override
+	protected void setUserSelect(final JavaScriptObject source, final String value) {
 		throw new UnsupportedOperationException("setUserSelect");
 	}
-	
-	protected void setString( JavaScriptObject element, final String name, final String value ){
-		throw new UnsupportedOperationException( "setString");
+
+	@Override
+	protected void setString(JavaScriptObject element, final String name, final String value) {
+		throw new UnsupportedOperationException("setString");
 	}
-	
-	protected void remove0( JavaScriptObject element, final String name ){
+
+	@Override
+	protected void remove0(JavaScriptObject element, final String name) {
 		throw new UnsupportedOperationException("remove0");
 	}
-	
-	public String[] getPropertyNames( final JavaScriptObject element ){
+
+	@Override
+	public String[] getPropertyNames(final JavaScriptObject element) {
 		return this.getPropertyNamesFromCssText(element);
 	}
 }

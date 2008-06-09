@@ -24,27 +24,19 @@ import rocket.util.client.Tester;
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class CssUnit {
-	public final static CssUnit NONE = new CssUnit("", Float.NaN);
+public enum CssUnit {
 
-	public final static CssUnit PERCENTAGE = new CssUnit("%", Float.NaN);
-
-	public final static CssUnit PX = new CssUnit("px", 1);
-
-	public final static CssUnit EM = new CssUnit("em", Float.NaN);
-
-	public final static CssUnit EX = new CssUnit("ex", Float.NaN);
-
-	public final static CssUnit IN = new CssUnit("in", Css.IN_TO_PX);
-
-	public final static CssUnit CM = new CssUnit("cm", Css.CM_TO_PX);
-
-	public final static CssUnit MM = new CssUnit("mm", Css.MM_TO_PX);
-
-	public final static CssUnit PT = new CssUnit("pt", Css.PT_TO_PX);
-
-	public final static CssUnit PC = new CssUnit("pc", Css.PC_TO_PX);
-
+	NONE( "", Float.NaN ),
+	PERCENTAGE( "%", Float.NaN ),
+	PX( "px", 1.0f ),
+	EM( "em", Float.NaN ),
+	EX( "ex", Float.NaN ),
+	IN( "in", Css.IN_TO_PX ),
+	CM( "cm", Css.CM_TO_PX ),
+	MM( "mm", Css.MM_TO_PX ),
+	PT( "pt", Css.PT_TO_PX ),
+	PC( "pc", Css.PC_TO_PX );
+	
 	/**
 	 * Takes a css position value and returns the enum.
 	 * 
@@ -55,43 +47,39 @@ public class CssUnit {
 		CssUnit unit = null;
 
 		while (true) {
-			if (NONE.equals(propertyValue)) {
-				unit = NONE;
-				break;
-			}
-			if (PERCENTAGE.equals(propertyValue)) {
-				unit = PERCENTAGE;
-				break;
-			}
-			if (PX.equals(propertyValue)) {
+			if (propertyValue.endsWith(PX.getSuffix())) {
 				unit = PX;
 				break;
 			}
-			if (EM.equals(propertyValue)) {
+			if (propertyValue.endsWith(PERCENTAGE.getSuffix())) {
+				unit = PERCENTAGE;
+				break;
+			}
+			if (propertyValue.endsWith(EM.getSuffix())) {
 				unit = EM;
 				break;
 			}
-			if (EX.equals(propertyValue)) {
+			if (propertyValue.endsWith(EX.getSuffix())) {
 				unit = EX;
 				break;
 			}
-			if (IN.equals(propertyValue)) {
+			if (propertyValue.endsWith(IN.getSuffix())) {
 				unit = IN;
 				break;
 			}
-			if (CM.equals(propertyValue)) {
+			if (propertyValue.endsWith(CM.getSuffix())) {
 				unit = CM;
 				break;
 			}
-			if (MM.equals(propertyValue)) {
+			if (propertyValue.endsWith(MM.getSuffix())) {
 				unit = MM;
 				break;
 			}
-			if (PT.equals(propertyValue)) {
+			if (propertyValue.endsWith(PT.getSuffix())) {
 				unit = PT;
 				break;
 			}
-			if (PC.equals(propertyValue)) {
+			if (propertyValue.endsWith(PC.getSuffix())) {
 				unit = PC;
 				break;
 			}
@@ -102,9 +90,47 @@ public class CssUnit {
 		return unit;
 	}
 
-	protected CssUnit(final String suffix, final float pixels) {
-		super();
 
+	/**
+	 * Extracts the unit portion as a CssUnit instance given a length.
+	 * 
+	 * @param value
+	 *            If value is empty or null null will be returned.
+	 * @return The CssUnit within the string value
+	 */
+	static public CssUnit getUnit(final String value) {
+		CssUnit unit = NONE;
+		while (true) {
+			// defensive test.
+			if (Tester.isNullOrEmpty(value)) {
+				break;
+			}
+
+			if (value.endsWith("%")) {
+				unit = PERCENTAGE;
+				break;
+			}
+
+			final int valueLength = value.length();
+			if (valueLength < 3) {
+				unit = NONE;
+				break;
+			}
+			// if the third last char is not a number then value isnt
+			// number-unit.
+			final char thirdLastChar = value.charAt(valueLength - 3);
+			if (false == Character.isDigit(thirdLastChar)) {
+				unit = NONE;
+				break;
+			}
+
+			unit = toCssUnit(value.substring(valueLength - 2));
+			break;
+		}
+		return unit;
+	}
+	
+	CssUnit(final String suffix, final float pixels) {
 		this.setSuffix(suffix);
 		this.setPixels(pixels);
 	}
@@ -130,10 +156,6 @@ public class CssUnit {
 		return pixelLength / this.getPixels();
 	}
 
-	protected boolean equals(final String string) {
-		return this.getSuffix().equalsIgnoreCase(string);
-	}
-
 	/**
 	 * The string abbreviation for this unit
 	 */
@@ -155,7 +177,7 @@ public class CssUnit {
 
 	float getPixels() {
 		if (Float.isNaN(this.pixels)) {
-			throw new UnsupportedOperationException("Unable to convert to/from this unit suffix\"" + this.suffix + "\".");
+			throw new UnsupportedOperationException("Unable to convert to/from \"" + this.suffix + "\".");
 		}
 		return pixels;
 	}
@@ -164,85 +186,41 @@ public class CssUnit {
 		this.pixels = pixels;
 	}
 
-	public String toString() {
-		return this.suffix;
-	}
-
-	/**
-	 * Extracts the unit portion as a CssUnit instance given a length.
-	 * 
-	 * @param value
-	 *            If value is empty or null null will be returned.
-	 * @return The CssUnit within the string value
-	 */
-	static public CssUnit getUnit(final String value) {
-		CssUnit unit = NONE;
-		while (true) {
-			// defensive test.
-			if (Tester.isNullOrEmpty(value)) {
-				break;
-			}
-	
-			if (value.endsWith("%")) {
-				unit = PERCENTAGE;
-				break;
-			}
-	
-			final int valueLength = value.length();
-			if (valueLength < 3) {
-				unit = NONE;
-				break;
-			}
-			// if the third last char is not a number then value isnt
-			// number-unit.
-			final char thirdLastChar = value.charAt(valueLength - 3);
-			if (false == Character.isDigit(thirdLastChar)) {
-				unit = NONE;
-				break;
-			}
-	
-			unit = toCssUnit(value.substring(valueLength - 2));
-			break;
-		}
-		return unit;
-	}
-
-	/**
-	 * Attempts to translate a length with units into another unit.
-	 * 
-	 * Relative units such as em/ex and percentage will fail and result in a
-	 * {@link java.lang.UnsupportedOperationException} being thrown.
-	 * 
-	 * @param value
-	 * @param targetUnit
-	 * @return The converted value.
-	 */
-	static public float convertValue(final String value, final CssUnit targetUnit) {
+	public float convert(final String value ) {
 		Checker.notEmpty("parameter:value", value);
-		Checker.notNull("parameter:targetUnit", targetUnit);
-	
+
 		float length = 0;
 		while (true) {
 			if (value.equals("0") || value.equals("auto")) {
 				break;
 			}
-	
-			final CssUnit unit = CssUnit.getUnit(value);
-			final String numberString = value.substring(0, value.length() - unit.getSuffix().length());
-	
+
+			CssUnit unit = CssUnit.getUnit(value);
+		
+			String numberString = null;
+			if( this == CssUnit.NONE  ){
+				numberString = value.endsWith("px") ? value.substring( 0, value.length() - 2 ) : value; 
+			} else {
+				numberString = value.substring(0, value.length() - unit.getSuffix().length());
+			}
+
 			// convert value into a number
 			length = Float.parseFloat(numberString);
-	
+
 			// if the unit and target unit are the same do nothing...
-			if (unit == targetUnit) {
+			if (this == unit ) {
 				break;
 			}
-	
+
 			length = unit.toPixels(length);
-			length = targetUnit.fromPixels(length);
+			length = this.fromPixels(length);
 			break;
 		}
-	
+
 		return length;
+	}
+	
+	public String toString() {
+		return this.suffix;
 	}
 }

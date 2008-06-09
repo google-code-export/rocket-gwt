@@ -58,10 +58,10 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	 * @return
 	 */
 	native private boolean testIfFixedPositionIsSupported()/*-{
-	 var span = $doc.createElement( "SPAN" );
-	 span.style.position="fixed";
-	 return span.style.position=="fixed";
-	 }-*/;
+		 var span = $doc.createElement( "SPAN" );
+		 span.style.position="fixed";
+		 return span.style.position=="fixed";
+		 }-*/;
 
 	/**
 	 * A flag which is set at construction time which records whether or not
@@ -91,13 +91,13 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 		this.setFixedPositionBottom(new DynamicExpression(quirksMode ? StyleSupportConstants.FIXED_POSITION_BOTTOM_QUIRKSMODE_EXPRESSION
 				: StyleSupportConstants.FIXED_POSITION_BOTTOM_EXPRESSION));
 
-		// FIXME should probably read the constant from a meta property.
+		// FIXME should probably read the constant from a meta property to allow tuning.
 		this.installDynamicExpressionRecalc(StyleSupportConstants.RECALC_REFRESH_IN_MILLIS);
 	}
 
 	native private void installDynamicExpressionRecalc(final int refresh)/*-{
-	 $wnd.setInterval( function(){ $doc.recalc( true);}, refresh );
-	 }-*/;
+		 $wnd.setInterval( function(){ $doc.recalc( true);}, refresh );
+		 }-*/;
 
 	protected String getPosition(final JavaScriptObject element) {
 		return this.isFixedPosition(element) ? "fixed" : this.getString(element, Css.POSITION);
@@ -140,8 +140,8 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	native private String getDynamicExpressionValue0(final JavaScriptObject element, final String name)/*-{
-	 return element.style.getExpression( name ) || null;
-	 }-*/;
+		 return element.style.getExpression( name ) || null;
+		 }-*/;
 
 	protected void setPosition(final JavaScriptObject element, final String position) {
 		while (true) {
@@ -185,11 +185,11 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	native private void removeDynamicExpression(final JavaScriptObject element)/*-{
-	 element.style.removeExpression( "left" );
-	 element.style.removeExpression( "top" );
-	 element.style.removeExpression( "right" );
-	 element.style.removeExpression( "bottom" );
-	 }-*/;
+		 element.style.removeExpression( "left" );
+		 element.style.removeExpression( "top" );
+		 element.style.removeExpression( "right" );
+		 element.style.removeExpression( "bottom" );
+		 }-*/;
 
 	protected void setLeft(final JavaScriptObject element, final String value) {
 		this.setDynamicExpressionIfFixedPosition(element, Css.LEFT, value, this.getFixedPositionLeft());
@@ -353,7 +353,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 
 	protected String getWidth(final JavaScriptObject element) {
 		String width = this.getString(element, "pixelWidth");
-		if( null != width ){
+		if (null != width) {
 			width = width + "px";
 		}
 		return width;
@@ -361,7 +361,7 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 
 	protected String getHeight(final JavaScriptObject element) {
 		String height = this.getString(element, "pixelHeight");
-		if( null != height ){
+		if (null != height) {
 			height = height + "px";
 		}
 		return height;
@@ -372,21 +372,21 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	private native String getString0(final JavaScriptObject element, final String name)/*-{
-	 var value = null;
-	 var element0 = element;
+		 var value = null;
+		 var element0 = element;
 
-	 while( element0 && element0.style ){
-	 value = element0.style[ name ];
+		 while( element0 && element0.style ){
+		 value = element0.style[ name ];
 
-	 // continue looping until a concrete value is found.
-	 if( value && value != "inherit" && value != "transparent" ){
-	 break;
-	 }
-	 element0 = element0.parentNode;
-	 }
+		 // continue looping until a concrete value is found.
+		 if( value && value != "inherit" && value != "transparent" ){
+		 break;
+		 }
+		 element0 = element0.parentNode;
+		 }
 
-	 return value ? "" + value : null;
-	 }-*/;
+		 return value ? "" + value : null;
+		 }-*/;
 
 	public void set(final JavaScriptObject element, final String name, final String value) {
 		while (true) {
@@ -437,10 +437,10 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 		this.setString(element, Css.HEIGHT, value0);
 	}
 
-	protected void setUserSelect( final JavaScriptObject element, final String value ){
+	protected void setUserSelect(final JavaScriptObject element, final String value) {
 		this.setUserSelectFunction(element, value);
 	}
-	
+
 	protected void setString(final JavaScriptObject element, final String name, final String value) {
 		if (value != null) {
 			this.setString0(element, name, value);
@@ -456,9 +456,9 @@ public class InternetExplorerInlineStyleSupport extends InternetExplorerStyleSup
 	}
 
 	native protected void removeUserSelect0(final JavaScriptObject element)/*-{
-	 element.ondrag=null;
-	 element.onselectstart=null;
-	 }-*/;
+		 element.ondrag=null;
+		 element.onselectstart=null;
+		 }-*/;
 
 	protected void remove0(final JavaScriptObject element, final String name) {
 		this.remove1(element, name);

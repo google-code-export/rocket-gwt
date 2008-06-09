@@ -24,10 +24,6 @@ package rocket.style.client;
 public class Css {
 	public final static String CLASS_NAME = "className";
 
-	public final static String RULES_LIST_PROPERTY = "cssRules";
-
-	public final static String RULES_LIST_PROPERTY_IE6 = "rules";
-
 	/**
 	 * A psuedo css property that is translated into browser specific properties
 	 * and may be used to control whether text selection for this element is

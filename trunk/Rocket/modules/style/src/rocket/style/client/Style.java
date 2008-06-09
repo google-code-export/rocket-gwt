@@ -15,217 +15,76 @@
  */
 package rocket.style.client;
 
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
-
+import rocket.util.client.Colour;
 import rocket.util.client.Tester;
 
+import com.google.gwt.core.client.JavaScriptObject;
+
+
 /**
- * A common base class for any map view of a set of styles.
+ * A private base class for the various style flavours inline, computed and rule.
  * 
  * @author Miroslav Pokorny (mP)
  */
-abstract public class Style extends AbstractMap {
+abstract class Style extends JavaScriptObject{
 
-	abstract public String getCssText();
-
-	abstract public void setCssText(String cssText);
-
-	public abstract int size();
-
-	public Object get(final Object key) {
-		return this.getStylePropertyValue((String) key);
+	protected Style(){
+		super();
 	}
-
-	public boolean containsKey(final Object key) {
-		return null != this.get(key);
-	}
-
-	/**
-	 * Factory method which creates a new StylePropertyValue and populates it
-	 * with a string value if the inline style property is available.
-	 * 
-	 * @param propertyName
-	 * @return
-	 */
-	protected StylePropertyValue getStylePropertyValue(final String propertyName) {
-		StylePropertyValue value = null;
-		String stringValue = this.getValue(propertyName);
-		if (false == Tester.isNullOrEmpty(stringValue)) {
-			value = new StylePropertyValue();
-			value.setString(stringValue);
+	
+	static Colour getColour0( final String string ){
+		Colour colour = null;
+		
+		if (false == Tester.isNullOrEmpty(string)) {
+			colour = Colour.parse(string);
 		}
+		
+		return colour;
+	}
+		
+	static int getInteger0( final String string, final CssUnit unit, final int defaultValue ){
+		int value = defaultValue;
+		
+		if (false == Tester.isNullOrEmpty(string)) {
+			value = (int) unit.convert(string);
+		}
+		
 		return value;
 	}
-
-	abstract String getValue(String propertyName);
-
-	public Object put(final Object key, final Object value) {
-		return this.putStyle((String) key, (StylePropertyValue) value);
-	}
-
-	protected StylePropertyValue putStyle(final String propertyName, final StylePropertyValue newValue) {
-		final StylePropertyValue replaced = this.getStylePropertyValue(propertyName);
-
-		final String propertyValue = newValue.getString();
-		this.putValue(propertyName, propertyValue);
-
-		return replaced;
-	}
-
-	abstract protected void putValue(String propertyName, String propertyValue);
-
-	public Object remove(final Object key) {
-		return this.removeStyle((String) key);
-	}
-
-	protected StylePropertyValue removeStyle(final String propertyName) {
-		final StylePropertyValue removed = this.getStylePropertyValue(propertyName);
-		this.removeValue(propertyName);
-		return removed;
-	}
-
-	abstract protected void removeValue(final String propertyName);
-
-	public Set entrySet() {
-		return new StyleEntrySet();
-	}
-
-	/**
-	 * Implements a Set view of all the inline styles belonging to an Element.
-	 */
-	class StyleEntrySet extends AbstractSet {
-		public int size() {
-			return Style.this.size();
+		
+	static double getDouble0( final String string, final CssUnit unit, final double defaultValue ){
+		double value = defaultValue;
+		
+		if (false == Tester.isNullOrEmpty(string)) {
+			value = unit.convert(string);
 		}
-
-		public Iterator iterator() {
-			return new StyleEntrySetIterator();
-		}
+		
+		return value;
 	}
-
-	/**
-	 * This iterator may be used to visit all inline style entries.
-	 */
-	class StyleEntrySetIterator implements Iterator {
-
-		public boolean hasNext() {
-			return this.getCursor() < this.getPropertyNames().length;
-		}
-
-		public Object next() {
-			final int cursor = this.getCursor();
-			final String[] propertyNames = this.getPropertyNames();
-			if (cursor >= propertyNames.length) {
-				throw new NoSuchElementException();
-			}
-			final String key = propertyNames[cursor];
-			final Object value = Style.this.get(key);
-			this.setCursor(cursor + 1);
-			return new Map.Entry() {
-				public Object getKey() {
-					return key;
+		
+	static String getUrl0( final String string ){
+		String url = string;
+		if (false == Tester.isNullOrEmpty(url)) {
+				int first = "url(".length();
+				int last = url.length() - 1 - 1;
+				if (url.charAt(first) == '\'') {
+					first++;
 				}
-
-				public Object getValue() {
-					return value;
+				if (url.charAt(first) == '"') {
+					first++;
 				}
-
-				public Object setValue(final Object newValue) {
-					return Style.this.put(key, newValue);
+				if (url.charAt(last) == '\'') {
+					last--;
 				}
-			};
+				if (url.charAt(last) == '"') {
+					last--;
+				}
+				url = url.substring(first, last + 1);
 		}
-
-		public void remove() {
-			final int cursor = this.getCursor() - 1;
-			final String[] propertyNames = this.getPropertyNames();
-			final String propertyName = propertyNames[cursor];
-			if (null == propertyName) {
-				throw new IllegalStateException();
-			}
-
-			Style.this.remove(propertyName);
-			propertyNames[cursor] = null;// mark that its already been
-			// deleted.
-		}
-
-		/**
-		 * An array containing all the property names for the native object.
-		 */
-		String[] propertyNames;
-
-		String[] getPropertyNames() {
-			if (false == this.hasPropertyNames()) {
-				this.setPropertyNames(Style.this.getPropertyNames());
-			}
-			return this.propertyNames;
-		}
-
-		boolean hasPropertyNames() {
-			return null != this.propertyNames;
-		}
-
-		void setPropertyNames(final String[] propertyNames) {
-			this.propertyNames = propertyNames;
-		}
-
-		/**
-		 * This cursor points to the next visitable element.
-		 */
-		int cursor = 0;
-
-		int getCursor() {
-			return this.cursor;
-		}
-
-		void setCursor(final int cursor) {
-			this.cursor = cursor;
-		}
+		return url;		
 	}
-
-	/**
-	 * Sub classes implement this method to return all the style property names.
-	 * This method is required by the Style iterator.
-	 * 
-	 * @return
-	 */
-	abstract String[] getPropertyNames();
-
-	public String toString() {
-		return this.getCssText();
-	}
-
-	/**
-	 * Helper which removes the decorating url, brackets and quotes from a
-	 * string returning just the url.
-	 * 
-	 * @param value
-	 * @return
-	 */
-	static String getUrl(final String value) {
-		String url = value;
-		if (null != url) {
-			int first = "url(".length();
-			int last = url.length() - 1 - 1;
-			if (url.charAt(first) == '\'') {
-				first++;
-			}
-			if (url.charAt(first) == '"') {
-				first++;
-			}
-			if (url.charAt(last) == '\'') {
-				last--;
-			}
-			if (url.charAt(last) == '"') {
-				last--;
-			}
-			url = url.substring(first, last + 1);
-		}
-		return url;
+	
+	static String buildUrl( final String url ){
+		return "url(\"" + url + "\")";
 	}
 }

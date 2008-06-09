@@ -15,11 +15,11 @@
  */
 package rocket.style.client.support;
 
+abstract public class FireFoxStyleSupport extends StyleSupport {
 
-abstract public class FireFoxStyleSupport extends StyleSupport{
-	
-	protected String getUserSelectPropertyName(){
+	@Override
+	protected String getUserSelectPropertyName() {
 		return StyleSupportConstants.FIREFOX_USER_TEXT_SELECT;
 	}
-	
+
 }

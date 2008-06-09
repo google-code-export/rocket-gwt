@@ -15,174 +15,59 @@
  */
 package rocket.style.client;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import rocket.style.client.support.ComputedStyleSupport;
 import rocket.style.client.support.StyleSupport;
-import rocket.util.client.Checker;
 import rocket.util.client.Colour;
-import rocket.util.client.Destroyable;
-import rocket.util.client.JavaScript;
-import rocket.util.client.Tester;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 
 /**
- * Presents a Map view of all the computed styles that apply to an element.
- * 
- * Using keys is always safe whilst searching for a value is not recommended.
- * <ul>
- * <li>entrySet</li>
- * <li>keySet</li>
- * <li>containsValue</li>
- * </ul>
+ * Provides a browser independent means to retrieve the current or applicable types upon an element.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class ComputedStyle extends Style implements Destroyable {
+public class ComputedStyle extends Style {
 
-	static private final StyleSupport support = (StyleSupport) GWT.create( ComputedStyleSupport.class);
+	static private final StyleSupport support = (StyleSupport) GWT.create(ComputedStyleSupport.class);
 
 	static protected StyleSupport getSupport() {
 		return ComputedStyle.support;
 	}
 
-	
-	/**
-	 * This method retrieves a concrete value(it ignores inherited, transparent
-	 * etc) given a propertyName for any element.
-	 * 
-	 * @param element
-	 * @param propertyName
-	 *            The javascript form of the css property (ie backgroundColor
-	 *            NOT background-color).
-	 * @return The String value of the property or null if it wasnt found.
-	 *         Unless the propertyName is not a valid style some default will
-	 *         always be returned.
-	 */
-	public static String getString(final Element element, final String propertyName) {
-		return ComputedStyle.getSupport().get(element, propertyName);
+	static public ComputedStyle getComputedStyle(final Element element) {
+		return element.cast();
 	}
 
-	public static Colour getColour(final Element element, final String propertyName) {
-		Colour value = null;
-		final String string = ComputedStyle.getString(element, propertyName);
-		if (false == Tester.isNullOrEmpty(string)) {
-			value = Colour.parse(string);
-		}
-		return value;
-	}
-
-	public static double getDouble(final Element element, final String propertyName, final CssUnit unit, final double defaultValue) {
-		double value = defaultValue;
-		final String string = ComputedStyle.getString(element, propertyName);
-		if (false == Tester.isNullOrEmpty(string)) {
-			value = CssUnit.convertValue(string, unit);
-		}
-		return value;
-	}
-
-	public static int getInteger(final Element element, final String propertyName, final CssUnit unit, final int defaultValue) {
-		int value = defaultValue;
-		final String string = ComputedStyle.getString(element, propertyName);
-		if (false == Tester.isNullOrEmpty(string)) {
-			value = (int) CssUnit.convertValue(string, unit);
-		}
-		return value;
-	}
-
-	public static String getUrl(final Element element, final String propertyName) {
-		String string = ComputedStyle.getString(element, propertyName);
-		if (false == Tester.isNullOrEmpty(string)) {
-			string = Style.getUrl(string);
-		}
-		return string;
-	}
-
-	/**
-	 * Factory method which returns a view of all current Styles for the given
-	 * element. The Style object returned must be destroyed when no longer
-	 * needed.
-	 * 
-	 * @param element
-	 * @return
-	 */
-	static public Map get(final Element element) {
-		final ComputedStyle style = new ComputedStyle();
-		style.setElement(element);
-		return style;
-	}
-
-	protected ComputedStyle(){
+	protected ComputedStyle() {
 		super();
 	}
-	
-	protected ComputedStyle( final Element element ){
-		super();
-		
-		this.setElement(element );
+
+	final public String getString(final String name) {
+		return ComputedStyle.getSupport().get(this, name);
 	}
-	
+
 	final public String getCssText() {
-		return JavaScript.getString(this.getElement(), Css.CSS_STYLE_TEXT_PROPERTY_NAME);
+		return this.getString(Css.CSS_STYLE_TEXT_PROPERTY_NAME);
 	}
 
-	final public void setCssText(final String cssText) {
-		throw new UnsupportedOperationException("setCssText");
+	final public Colour getColour(final String name) {
+		return Style.getColour0(this.getString(name));
 	}
 
-	public int size() {
-		int counter = 0;
-		final Iterator iterator = this.entrySet().iterator();
-		while (iterator.hasNext()) {
-			iterator.next();
-			counter++;
-		}
-		return counter;
+	final public double getDouble(final String name, final CssUnit unit, final double defaultValue) {
+		return Style.getDouble0(this.getString(name), unit, defaultValue);
 	}
 
-	protected void putValue(String propertyName, String propertyValue) {
-		throw new UnsupportedOperationException("putValue");
+	final public int getInteger(final String name, final CssUnit unit, final int defaultValue) {
+		return Style.getInteger0(this.getString(name), unit, defaultValue);
 	}
 
-	protected void removeValue(final String propertyName) {
-		throw new UnsupportedOperationException("removeValue");
+	final public String getUrl(final String name) {
+		return Style.getUrl0(this.getString(name));
 	}
 
-	public Object get(final Object key) {
-		return this.getStylePropertyValue((String) key);
-	}
-
-	protected String getValue(String propertyName) {
-		return ComputedStyle.getString(this.getElement(), propertyName);
-	}
-
-	protected String[] getPropertyNames() {
-		return ComputedStyle.getSupport().getPropertyNames(this.getElement());
-	}
-
-	public void destroy() {
-		this.clearElement();
-	}
-
-	/**
-	 * The native element being viewed as a Map
-	 */
-	private Element element;
-
-	public Element getElement() {
-		Checker.notNull("field:element", element);
-		return element;
-	}
-
-	public void setElement(final Element element) {
-		Checker.notNull("parameter:element", element);
-		this.element = element;
-	}
-
-	public void clearElement() {
-		this.element = null;
+	final public String[] getNames() {
+		return ComputedStyle.getSupport().getPropertyNames(this);
 	}
 }

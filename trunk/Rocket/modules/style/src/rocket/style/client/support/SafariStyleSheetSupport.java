@@ -15,6 +15,6 @@
  */
 package rocket.style.client.support;
 
-public class SafariStyleSheetSupport extends StyleSheetSupport{
+public class SafariStyleSheetSupport extends StyleSheetSupport {
 
 }
