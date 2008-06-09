@@ -17,10 +17,7 @@ package rocket.style.test;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import rocket.style.test.computedstyle.ComputedStyleGwtTestCase;
 import rocket.style.test.dynamicexpression.DynamicExpressionTestCase;
-import rocket.style.test.inlinestyle.InlineStyleGwtTestCase;
-import rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase;
 
 /**
  * TestSuite that executes all unit tests relating to the rocket.Style module
@@ -31,14 +28,12 @@ public class StyleTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("TestSuite for rocket.Style");
-		addTests( suite );
+		addTests(suite);
 		return suite;
 	}
 
 	public static void addTests(TestSuite suite) {
-		suite.addTestSuite(ComputedStyleGwtTestCase.class);
+		suite.addTestSuite(CssUnitTestCase.class);
 		suite.addTestSuite(DynamicExpressionTestCase.class);
-		suite.addTestSuite(InlineStyleGwtTestCase.class);
-		suite.addTestSuite(StylePropertyValueGwtTestCase.class);
 	}
 }

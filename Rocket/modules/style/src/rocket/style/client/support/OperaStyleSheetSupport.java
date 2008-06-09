@@ -15,56 +15,60 @@
  */
 package rocket.style.client.support;
 
+import rocket.style.client.Rule;
+import rocket.style.client.StyleSheet;
 import rocket.util.client.Checker;
 
-import com.google.gwt.core.client.JavaScriptObject;
-
 public class OperaStyleSheetSupport extends StyleSheetSupport {
-	public void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText) {
+	
+	@Override
+	public Rule insertRule(final StyleSheet styleSheet, final int index, final String selectorText, final String styleText) {
 		Checker.notNull("parameter:styleSheet", styleSheet);
 		Checker.notNull("parameter:selectorText", selectorText);
 		Checker.notNull("parameter:styleText", styleText);
 
-		this.insertRule0(styleSheet, index, selectorText, styleText);
+		return this.insertRule0(styleSheet, index, selectorText, styleText);
 	}
 
 	/**
 	 * This method takes care of appending the new rule and appending the rules
 	 * that have an index greater than the given index.
 	 */
-	native private void insertRule0(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText)/*-{
-	 var cssText = selectorText + "{" + styleText + "}";
-	 
-	 var rules = styleSheet.cssRules;
+	native private Rule insertRule0(final StyleSheet styleSheet, final int index, final String selectorText, final String styleText)/*-{
+		 var cssText = selectorText + "{" + styleText + "}";
+		 
+		 var rules = styleSheet.cssRules;
 
-	 // inserting a rule into an Opera9 styleSheet really appends it...
-	 styleSheet.insertRule( cssText, rules.length );   
-	 
-	 // need to delete all the rules with a higher index and append them so eventually the new "inserted" rule will be in the correct slot...         
-	 var lastIndex = rules.length - 1;
-	 
-	 for( var j = index; j < lastIndex; j++ ){
-	 // remember the original selector/style 
-	 var rule = rules[ index ];
-	 var selector = rule.selectorText;
-	 var styleText = rule.style.cssText;
-	 
-	 styleSheet.deleteRule( index );
-	 
-	 // append the rule...
-	 var ruleText = selector + "{" + styleText + "}";
-	 styleSheet.insertRule( ruleText, rules.length );
-	 }
-	 
-	 // when this stage is reached the rules order should be correct.
-	 }-*/;
+		 // inserting a rule into an Opera9 styleSheet really appends it...
+		 styleSheet.insertRule( cssText, rules.length );   
+		 
+		 // need to delete all the rules with a higher index and append them so eventually the new "inserted" rule will be in the correct slot...         
+		 var lastIndex = rules.length - 1;
+		 
+		 for( var j = index; j < lastIndex; j++ ){
+		 // remember the original selector/style 
+		 var rule = rules[ index ];
+		 var selector = rule.selectorText;
+		 var styleText = rule.style.cssText;
+		 
+		 styleSheet.deleteRule( index );
+		 
+		 // append the rule...
+		 var ruleText = selector + "{" + styleText + "}";
+		 styleSheet.insertRule( ruleText, rules.length );
+		 }
+		 
+		 // when this stage is reached the rules order should be correct.
+		 return styleSheet.rules[ index ];
+		 }-*/;
 
-	public void normalize(final JavaScriptObject styleSheet) {
+	@Override
+	public void normalize(final StyleSheet styleSheet) {
 		Checker.notNull("parameter:styleSheet", styleSheet);
 		this.normalize0(styleSheet);
 	}
 
-	native private void normalize0(final JavaScriptObject styleSheet) /*-{
+	native private void normalize0(final StyleSheet styleSheet) /*-{
 	 var rules = styleSheet.cssRules;
 	 var i = 0;
 	 

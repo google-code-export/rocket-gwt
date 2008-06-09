@@ -15,126 +15,26 @@
  */
 package rocket.style.client;
 
-import java.util.Map;
-
-import rocket.util.client.Checker;
 import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * Each instance of this class represents a single Rule belonging to a
- * StyleSheet
+ * Each instance of this class represents a single Rule belonging to a StyleSheet
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class Rule {
+public class Rule extends JavaScriptObject{
 
-	/**
-	 * A cached copy of the selector belonging to this rule.
-	 */
-	private String selector = "";
-
-	public String getSelector() {
-		String selector = this.selector;
-		if (this.hasRuleList()) {
-			final JavaScriptObject rule = this.getNativeRule();
-			selector = JavaScript.getString(rule, Constants.SELECTOR_TEXT_PROPERTY_NAME);
-		}
-		return selector;
+	protected Rule(){
+		super();
 	}
-
-	public void setSelector(final String selector) {
-		Checker.notEmpty("parameter:selector", selector);
-
-		if (this.hasRuleList()) {
-			// remove this rule from its parent and reinsert it at the same
-			// spot.
-			final RuleList ruleList = this.getRuleList();
-			final JavaScriptObject styleSheet = ruleList.getStyleSheet().getNativeStyleSheet();
-			final int index = this.getIndex();
-
-			final RuleStyle style = (RuleStyle) this.getStyle();
-			final JavaScriptObject nativeStyle = style.getStyle();
-			final String styleText = JavaScript.getString(nativeStyle, Css.CSS_STYLE_TEXT_PROPERTY_NAME);
-
-			// remove and reinser the rule...
-			StyleSheet.removeRule(styleSheet, index);
-			StyleSheet.insertRule(styleSheet, index, selector, styleText);
-		}
-		this.selector = selector;
+	
+	final public String getSelector(){
+		return JavaScript.getString(this, Constants.SELECTOR_TEXT_PROPERTY_NAME);
+	}	
+	
+	final public RuleStyle getRuleStyle(){
+		return RuleStyle.getRule( this );
 	}
-
-	/**
-	 * A cached copy of the map view of the style object belonging to this Rule
-	 */
-	private Map style;
-
-	public Map getStyle() {
-		if (false == this.hasStyle()) {
-			this.setStyle(this.createStyle());
-		}
-		return this.style;
-	}
-
-	protected boolean hasStyle() {
-		return null != this.style;
-	}
-
-	protected void setStyle(final Map style) {
-		Checker.notNull("parameter:style", style);
-		this.style = style;
-	}
-
-	protected Map createStyle() {
-		final RuleStyle style = new RuleStyle();
-		style.setRule(this);
-		return style;
-	}
-
-	/**
-	 * Helper that gets the native rule object.
-	 * 
-	 * @return
-	 */
-	protected JavaScriptObject getNativeRule() {
-		return JavaScript.getObject(this.getRuleList().getRulesCollection(), this.getIndex());
-	}
-
-	/**
-	 * A copy of the parent ruleList that this rule belongs too.
-	 */
-	private RuleList ruleList;
-
-	protected RuleList getRuleList() {
-		Checker.notNull("field:ruleList", ruleList);
-		return this.ruleList;
-	}
-
-	protected boolean hasRuleList() {
-		return null != ruleList;
-	}
-
-	protected void setRuleList(final RuleList ruleList) {
-		Checker.notNull("parameter:ruleList", ruleList);
-		this.ruleList = ruleList;
-	}
-
-	protected void clearRule() {
-		this.ruleList = null;
-	}
-
-	/**
-	 * The index of the native StyleSheet within the StyleSheet collection.
-	 */
-	private int index;
-
-	protected int getIndex() {
-		return index;
-	}
-
-	protected void setIndex(final int index) {
-		this.index = index;
-	}
-
 }

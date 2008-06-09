@@ -19,29 +19,35 @@ import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-public class OperaRuleStyleSupport extends OperaStyleSupport{
-	protected String getString( final JavaScriptObject rule, final String name ){
-		return getProperty( rule, name );
-	}
+public class OperaRuleStyleSupport extends OperaStyleSupport {
 	
-	protected String getUserSelect( final JavaScriptObject rule ){
-		throw new UnsupportedOperationException("getUserSelect");
-	}
-	
-	protected void setUserSelect( final JavaScriptObject element, final String value ){
-		throw new UnsupportedOperationException("setUserSelect");
-	}
-	
-	protected void setString( final JavaScriptObject rule, final String name, final String value ){
-		this.setProperty( rule, name, value);
-	}
-	
-	protected void remove0( final JavaScriptObject rule, final String name ){
-		this.removeProperty( rule, name );
-	}
-	
-	public String[] getPropertyNames( final JavaScriptObject rule ){
-		return JavaScript.getPropertyNames( JavaScript.getObject( rule, "style" ));
+	@Override
+	protected String getString(final JavaScriptObject rule, final String name) {
+		return getProperty(rule, name);
 	}
 
+	@Override
+	protected String getUserSelect(final JavaScriptObject rule) {
+		throw new UnsupportedOperationException("getUserSelect");
+	}
+
+	@Override
+	protected void setUserSelect(final JavaScriptObject element, final String value) {
+		throw new UnsupportedOperationException("setUserSelect");
+	}
+
+	@Override
+	protected void setString(final JavaScriptObject rule, final String name, final String value) {
+		this.setProperty(rule, name, value);
+	}
+
+	@Override
+	protected void remove0(final JavaScriptObject rule, final String name) {
+		this.removeProperty(rule, name);
+	}
+
+	@Override
+	public String[] getPropertyNames(final JavaScriptObject rule) {
+		return JavaScript.getPropertyNames(JavaScript.getObject(rule, "style"));
+	}
 }

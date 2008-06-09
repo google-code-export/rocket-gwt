@@ -15,61 +15,79 @@
  */
 package rocket.style.client.support;
 
-import rocket.style.client.Css;
+import rocket.style.client.Rule;
+import rocket.style.client.StyleSheet;
 import rocket.util.client.Checker;
-import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Document;
 
 public class StyleSheetSupport {
+
 	/**
 	 * Retrieves the style sheet collection attached to this document
 	 * 
+	 * @param document
 	 * @return
 	 */
-	native public JavaScriptObject getStyleSheetCollection()/*-{
-	 var styleSheet = $doc.styleSheets;
-	 return styleSheet ? styleSheet : null;
-	 }-*/;
-	
-	/**
-	 * Helper which retrieves the native rules collection that this instance is
-	 * presenting as a List
-	 * 
-	 * @return
-	 */
-	public JavaScriptObject getRulesCollection(final JavaScriptObject styleSheet) {
-		return JavaScript.getObject(styleSheet, Css.RULES_LIST_PROPERTY);
+	native public JavaScriptObject getStyleSheetCollection(final Document document)/*-{
+			 return document.styleSheets || null;
+		}-*/;
+
+	public int getRuleCount(final StyleSheet styleSheet) {
+		Checker.notNull("parameter:styleSheet", styleSheet);
+
+		return this.getRuleCount0(styleSheet);
+	};
+
+	native private int getRuleCount0(final StyleSheet styleSheet)/*-{
+			return styleSheet.cssRules.length;
+		}-*/;
+
+	public Rule getRule(final StyleSheet styleSheet, final int index) {
+		Checker.notNull("parameter:styleSheet", styleSheet);
+		
+		final Rule rule = this.getRule0(styleSheet, index);
+		if (null == rule) {
+			throw new IllegalArgumentException("The parameter:index is outside the range of actual stylesheets, index: " + index);
+		}
+		return rule;
 	}
 
-	public void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText) {
+	native private Rule getRule0(final StyleSheet styleSheet, final int index)/*-{
+			return styleSheet.cssRules[ index ];
+		}-*/;
+
+	public Rule addRule(final StyleSheet styleSheet, final String selectorText, final String styleText) {
 		Checker.notNull("parameter:styleSheet", styleSheet);
 		Checker.notNull("parameter:selectorText", selectorText);
 		Checker.notNull("parameter:styleText", styleText);
 
-		this.addRule0(styleSheet, selectorText, styleText);
+		return this.addRule0(styleSheet, selectorText, styleText);
 	}
 
-	native private void addRule0(final JavaScriptObject styleSheet, final String selectorText, final String styleText)/*-{
-	 var cssText = selectorText + "{" + styleText + "}";    
-	 var index = styleSheet.cssRules.length;
-	 styleSheet.insertRule( cssText, index );
-	 }-*/;
+	native private Rule addRule0(final StyleSheet styleSheet, final String selectorText, final String styleText)/*-{
+			 var cssText = selectorText + "{" + styleText + "}";    
+			 var index = styleSheet.cssRules.length;
+			 styleSheet.insertRule( cssText, index );
+			 return styleSheet.cssRules[ index ]; 
+			 }-*/;
 
-	public void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText) {
+	public Rule insertRule(final StyleSheet styleSheet, final int index, final String selectorText, final String styleText) {
 		Checker.notNull("parameter:styleSheet", styleSheet);
 		Checker.notNull("parameter:selectorText", selectorText);
 		Checker.notNull("parameter:styleText", styleText);
 
-		this.insertRule0(styleSheet, index, selectorText, styleText);
+		return this.insertRule0(styleSheet, index, selectorText, styleText);
 	}
 
-	native private void insertRule0(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText)/*-{
-	 var cssText = selectorText + "{" + styleText + "}";
-	 styleSheet.insertRule( cssText, index );   
-	 }-*/;
+	native private Rule insertRule0(final StyleSheet styleSheet, final int index, final String selectorText, final String styleText)/*-{
+			 var cssText = selectorText + "{" + styleText + "}";
+			 styleSheet.insertRule( cssText, index );
+			 return styleSheet.cssRules[ index ];   
+			 }-*/;
 
-	public void removeRule(final JavaScriptObject styleSheet, final int index) {
+	public void removeRule(final StyleSheet styleSheet, final int index) {
 		Checker.notNull("parameter:styleSheet", styleSheet);
 
 		this.removeRule0(styleSheet, index);
@@ -78,16 +96,16 @@ public class StyleSheetSupport {
 	/**
 	 * Escapes to javascript to delete the requested rule.
 	 */
-	native private void removeRule0(final JavaScriptObject styleSheet, final int index) /*-{
+	native private void removeRule0(final StyleSheet styleSheet, final int index) /*-{
 	 styleSheet.deleteRule( index );
 	 }-*/;
 
-	public void normalize(final JavaScriptObject styleSheet) {
+	public void normalize(final StyleSheet styleSheet) {
 		Checker.notNull("parameter:styleSheet", styleSheet);
 		this.normalize0(styleSheet);
 	}
 
-	native private void normalize0(final JavaScriptObject styleSheet) /*-{
+	native private void normalize0(final StyleSheet styleSheet) /*-{
 	 var rules = styleSheet.cssRules;
 	 var i = 0;
 

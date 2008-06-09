@@ -15,10 +15,10 @@
  */
 package rocket.style.client.support;
 
+abstract public class OperaStyleSupport extends StyleSupport {
 
-abstract public class OperaStyleSupport extends StyleSupport{
-	
-	protected String getUserSelectPropertyName(){
+	@Override
+	protected String getUserSelectPropertyName() {
 		throw new UnsupportedOperationException("getUserSelectPropertyName");
 	}
 }

@@ -15,212 +15,83 @@
  */
 package rocket.style.client;
 
-import java.util.Map;
-
 import rocket.style.client.support.InlineStyleSupport;
 import rocket.style.client.support.StyleSupport;
-import rocket.util.client.Checker;
 import rocket.util.client.Colour;
-import rocket.util.client.Destroyable;
-import rocket.util.client.JavaScript;
-import rocket.util.client.Tester;
-import rocket.util.client.Utilities;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
 
 /**
- * Presents a Map view of all the inline styles that apply to an element.
+ * Instances of this class represent a browser platform mechanism to read or write inline styles for an element.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class InlineStyle extends Style implements Destroyable {
+public class InlineStyle extends Style {
 
-	static private final StyleSupport support = (StyleSupport) GWT.create( InlineStyleSupport.class);
+	static private final StyleSupport support = (StyleSupport) GWT.create(InlineStyleSupport.class);
 
 	static protected StyleSupport getSupport() {
 		return InlineStyle.support;
 	}
-	
-	/**
-	 * Factory method which returns a view of all the inline style object for
-	 * the given element. The Style object returned must be destroyed when no
-	 * longer needed.
-	 * 
-	 * @param element
-	 * @return
-	 */
-	static public Map get(final Element element) {
-		final InlineStyle style = new InlineStyle();
-		style.setElement(element);
-		return style;
+
+	static public InlineStyle getInlineStyle(final Element element) {
+		return element.cast();
 	}
 
-	/**
-	 * Retrieves an inline style property by name.
-	 * 
-	 * @param element
-	 * @param name
-	 * @return
-	 */
-	static public String getString(final Element element, final String name) {
-		return InlineStyle.getSupport().get(element, name);
+	protected InlineStyle() {
+		super();
 	}
 
-	public static Colour getColour(final Element element, final String propertyName) {
-		Colour value = null;
-		final String string = InlineStyle.getString(element, propertyName);
-		if (false == Tester.isNullOrEmpty(string)) {
-			value = Colour.parse(string);
-		}
-		return value;
+	final public String getString(final String name) {
+		return InlineStyle.getSupport().get(this, name);
 	}
 
-	public static double getDouble(final Element element, final String propertyName, final CssUnit unit, final double defaultValue) {
-		double value = defaultValue;
-		final String string = InlineStyle.getString(element, propertyName);
-		if (false == Tester.isNullOrEmpty(string)) {
-			value = CssUnit.convertValue(string, unit);
-		}
-		return value;
-	}
-
-	public static int getInteger(final Element element, final String propertyName, final CssUnit unit, final int defaultValue) {
-		int value = defaultValue;
-		final String string = InlineStyle.getString(element, propertyName);
-		if (false == Tester.isNullOrEmpty(string)) {
-			value = (int) CssUnit.convertValue(string, unit);
-		}
-		return value;
-	}
-
-	public static String getUrl(final Element element, final String propertyName) {
-		String string = InlineStyle.getString(element, propertyName);
-		if (false == Tester.isNullOrEmpty(string)) {
-			string = Style.getUrl(string);
-		}
-		return string;
-	}
-
-	/**
-	 * Sets an inline style property name with a new value.
-	 * 
-	 * @param element
-	 * @param propertyName
-	 * @param propertyValue
-	 */
-	static public void setString(final Element element, final String propertyName, final String propertyValue) {
-		if( null != propertyValue ){
-			InlineStyle.getSupport().set(element, propertyName, propertyValue);
-		}
-	}
-
-	static public void setColour(final Element element, final String propertyName, final Colour colour) {
-		if( null != colour ){
-			InlineStyle.setString(element, propertyName, colour.toCssColour());
-		}
-	}
-
-	static public void setDouble(final Element element, final String propertyName, final double value, final CssUnit unit) {
-		// drop any trailing decimal 0's.
-		final String valueAsAString = Math.round(value) == value ? String.valueOf((int) value) : String.valueOf(value);
-
-		InlineStyle.setString(element, propertyName, valueAsAString);
-	}
-
-	static public void setInteger(final Element element, final String propertyName, final int value, final CssUnit unit) {
-		InlineStyle.setString(element, propertyName, "" + value + unit.getSuffix());
-	}
-
-	static public void setUrl(final Element element, final String propertyName, final String url) {
-		if( null != url ){
-		InlineStyle.setString(element, propertyName, "url('" + url + "')");
-		}
-	}
-
-	/**
-	 * This helper may be used to remove an existing Style's property. If the
-	 * property does not exist nothing happens.
-	 * 
-	 * @param element
-	 * @param propertyName
-	 */
-	static public void remove(final Element element, final String propertyName) {
-		InlineStyle.getSupport().remove(element, propertyName);
+	final public void setString(final String name, final String value) {
+		InlineStyle.getSupport().set(this, name, value);
 	}
 
 	final public String getCssText() {
-		return InlineStyle.getSupport().get( this.getElement(), Css.CSS_STYLE_TEXT_PROPERTY_NAME );
+		return this.getString(Css.CSS_STYLE_TEXT_PROPERTY_NAME);
+	}
+	
+	final public Colour getColour(final String name) {
+		return Style.getColour0(this.getString(name));
 	}
 
-	final public void setCssText(final String cssText) {
-		InlineStyle.getSupport().set( this.getElement(), Css.CSS_STYLE_TEXT_PROPERTY_NAME, cssText );
+	final public void setColour(final String name, final Colour colour) {
+		this.setString(name, colour.toCssColour());
 	}
 
-	/**
-	 * Helper which retrieves the native style object
-	 * 
-	 * @return
-	 */
-	protected JavaScriptObject getStyle() {
-		return JavaScript.getObject(this.getElement(), "style");
+	final public double getDouble(final String name, final CssUnit unit, final double defaultValue) {
+		return Style.getDouble0(this.getString(name), unit, defaultValue);
 	}
 
-	public int size() {
-		return JavaScript.getPropertyCount( this.getStyle() );
+	final public void setDouble(final String name, final double value, final CssUnit unit) {
+		this.setString(name, value + unit.getSuffix());
 	}
 
-	public String getValue(String propertyName) {
-		return InlineStyle.getString(this.getElement(), propertyName);
+	final public int getInteger(final String name, final CssUnit unit, final int defaultValue) {
+		return Style.getInteger0(this.getString(name), unit, defaultValue);
 	}
 
-	protected void putValue(final String propertyName, final String propertyValue) {
-		InlineStyle.setString(this.getElement(), propertyName, propertyValue);
+	final public void setInteger(final String name, final int value, final CssUnit unit) {
+		this.setString(name, value + unit.getSuffix());
 	}
 
-	protected void removeValue(final String propertyName) {
-		InlineStyle.remove(this.getElement(), propertyName);
+	final public String getUrl(final String name) {
+		return Style.getUrl0(this.getString(name));
 	}
 
-	public void destroy() {
-		this.clearElement();
+	final public void setUrl(final String name, final String url) {
+		this.setString(name, Style.buildUrl(url));
 	}
 
-	protected String[] getPropertyNames() {
-		final String list = this.getPropertyNames(this.getElement());
-		return Utilities.split(list, ",", true);
+	final public void remove(final String name) {
+		InlineStyle.getSupport().remove(this, name);
 	}
 
-	native private String getPropertyNames(final Element element)/*-{
-	 var style = element.style;
-	 var names = "";
-	 for( n in style ){
-	 names = names + n + ",";
-	 }
-	 return names;
-	 }-*/;
-
-	/**
-	 * The native element whose styles are being viewed as a Map
-	 */
-	private Element element;
-
-	public Element getElement() {
-		Checker.notNull("field:element", element);
-		return element;
-	}
-
-	public boolean hasElement() {
-		return null != this.element;
-	}
-
-	public void setElement(final Element element) {
-		Checker.notNull("parameter:element", element);
-		this.element = element;
-	}
-
-	public void clearElement() {
-		this.element = null;
+	final public String[] getNames() {
+		return InlineStyle.getSupport().getPropertyNames(this);
 	}
 }

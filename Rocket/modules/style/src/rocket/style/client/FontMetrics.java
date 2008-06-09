@@ -24,16 +24,20 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * Instances of this class may be used to calculate the width of any font. This class works best with fixed fonts, where
- * each character shares a common width/height. 
+ * Instances of this class may be used to calculate the width of any font. This
+ * class works best with fixed fonts, where each character shares a common
+ * width/height.
  * 
- * This class uses a hidden div along with the various font details set upon this instance. Unfortunately not all
- * browsers make the offsetWidth/offsetHeight immediately available requiring the user of a deferred command, after
- * setting properties and calling {@link #calculate()}. 
+ * This class uses a hidden div along with the various font details set upon
+ * this instance. Unfortunately not all browsers make the
+ * offsetWidth/offsetHeight immediately available requiring the user of a
+ * deferred command, after setting properties and calling {@link #calculate()}.
  * 
- * In cases when {@link #isReady()} returns false after setting the other properties use a deferred command.
+ * In cases when {@link #isReady()} returns false after setting the other
+ * properties use a deferred command.
  * 
  * @author Miroslav Pokorny
  */
@@ -72,24 +76,25 @@ public class FontMetrics {
 		// create a span set its width /height to 1...
 		final Element element = DOM.createSpan();
 
-		InlineStyle.setString(element, Css.DISPLAY, "inline");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
+		inlineStyle.setString(Css.DISPLAY, "inline");
 
-		InlineStyle.setInteger(element, Css.MARGIN, 0, CssUnit.PX);
-		InlineStyle.setInteger(element, Css.BORDER_WIDTH, 0, CssUnit.PX);
-		InlineStyle.setInteger(element, Css.PADDING, 0, CssUnit.PX);
+		inlineStyle.setInteger(Css.MARGIN, 0, CssUnit.PX);
+		inlineStyle.setInteger(Css.BORDER_WIDTH, 0, CssUnit.PX);
+		inlineStyle.setInteger(Css.PADDING, 0, CssUnit.PX);
 
-		InlineStyle.setString(element, Css.VISIBILITY, "hidden");
-		InlineStyle.setString(element, Css.POSITION, "absolute");
+		inlineStyle.setString(Css.VISIBILITY, "hidden");
+		inlineStyle.setString(Css.POSITION, "absolute");
 
-		InlineStyle.setString(element, Css.FONT_FAMILY, this.getFontFamily());
-		InlineStyle.setInteger(element, Css.FONT_SIZE, this.getFontSize(), CssUnit.PX);
+		inlineStyle.setString(Css.FONT_FAMILY, this.getFontFamily());
+		inlineStyle.setInteger(Css.FONT_SIZE, this.getFontSize(), CssUnit.PX);
 
-		InlineStyle.setString(element, Css.WHITE_SPACE, "pre");
+		inlineStyle.setString(Css.WHITE_SPACE, "pre");
 
 		final String text = this.getText();
 		DOM.setInnerText(element, text);
 
-		final Element body = Dom.getBody();
+		final Element body = RootPanel.getBodyElement();
 		DOM.appendChild(body, element);
 
 		DeferredCommand.addCommand(new Command() {
@@ -211,8 +216,10 @@ public class FontMetrics {
 	}
 
 	/**
-	 * If the status of this FontMetrics instance is waiting and not ready and the calculate method has not been called returns false.
-	 * This enables the calculate method to guard against double invocations.
+	 * If the status of this FontMetrics instance is waiting and not ready and
+	 * the calculate method has not been called returns false. This enables the
+	 * calculate method to guard against double invocations.
+	 * 
 	 * @return
 	 */
 	protected boolean needsCalculating() {
@@ -225,7 +232,8 @@ public class FontMetrics {
 
 	protected void checkReady(final String property) {
 		if (false == this.isReady()) {
-			throw new IllegalStateException("The " + property + " cannot be immediately queried after updating any property, use a DeferredCommand to read, this: " + this);
+			throw new IllegalStateException("The " + property
+					+ " cannot be immediately queried after updating any property, use a DeferredCommand to read, this: " + this);
 		}
 	}
 

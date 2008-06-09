@@ -1,6 +1,0 @@
-<module>
-	<inherits name="com.google.gwt.junit.JUnit"/>
-	<inherits name="rocket.dom.Dom"/>
-	<inherits name="rocket.style.Style"/>
-	<source path="" />
-</module>

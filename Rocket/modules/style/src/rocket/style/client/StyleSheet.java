@@ -1,6 +1,5 @@
 /*
  * Copyright Miroslav Pokorny
- *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -15,27 +14,24 @@
  */
 package rocket.style.client;
 
-import java.util.List;
-
-import rocket.dom.client.DomConstants;
 import rocket.style.client.support.StyleSheetSupport;
-import rocket.util.client.Checker;
 import rocket.util.client.JavaScript;
 import rocket.util.client.Tester;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Document;
 
 /**
  * Each instance represents a single stylesheet attached to the document.
  * 
  * @author Miroslav Pokorny (mP)
  */
-public class StyleSheet {
+public class StyleSheet extends JavaScriptObject {
 
 	/**
-	 * An StyleSheetSupport instance is used to provide support of Browser specific
-	 * features.
+	 * An StyleSheetSupport instance is used to provide support of Browser
+	 * specific features.
 	 */
 	private static final StyleSheetSupport support = (StyleSheetSupport) GWT.create(StyleSheetSupport.class);
 
@@ -43,293 +39,114 @@ public class StyleSheet {
 		return StyleSheet.support;
 	}
 	
-	static JavaScriptObject getStyleSheetCollection() {
-		return StyleSheet.getSupport().getStyleSheetCollection();
-	}	
+	static public int getStyleSheetCount( final Document document ){
+		return JavaScript.getPropertyCount(StyleSheet.getSupport().getStyleSheetCollection( document ) );
+	}
 	
+	static public StyleSheet getStyleSheet( final Document document, final int index ){
+		final JavaScriptObject styleSheets = StyleSheet.getSupport().getStyleSheetCollection( document );
+		return JavaScript.getObject( styleSheets, index ).cast();
+	}
 
-	/**
-	 * A cached copy of the StyleSheetList.
-	 */
-	private static StyleSheetList styleSheets;
-
-	/**
-	 * Factory method which creates a StyleSheetCollection.
-	 * 
-	 * @return
-	 */
-	public static List getStyleSheets() {
-		StyleSheetList styleSheets = null;
-		if (StyleSheet.hasStyleSheets()) {
-			styleSheets = StyleSheet.styleSheets;
-		} else {
-			styleSheets = new StyleSheetList();
-			StyleSheet.setStyleSheets(styleSheets);
+	protected StyleSheet(){
+		super();
+	}
+	
+	final public void prepare(){
+		StyleSheet.getSupport().normalize(this);
+	}
+	
+	final public int getRuleCount(){
+		return StyleSheet.getSupport().getRuleCount(this);
+	}
+	
+	final public Rule getRule( final int index ){
+		return StyleSheet.getSupport().getRule( this, index );
+	}
+	
+	final public Rule addRule( final String selector, final String cssText ){
+		return StyleSheet.getSupport().addRule( this, selector, cssText );
+	}
+	
+	final public Rule insertRule( final String selector, final String cssText, final int index ){
+		return StyleSheet.getSupport().insertRule( this, index, selector, cssText );
+	}
+	
+	final public void removeRule( final Rule rule ){
+		StyleSheet.getSupport().removeRule( this, this.getRuleIndex( rule ));
+	}
+	
+	final public int getRuleIndex( final Rule rule ){
+		int index = -1;
+		
+		final int ruleCount = this.getRuleCount();		
+		for( int i = 0; i < ruleCount; i++ ){
+			final Rule otherRule = this.getRule(i);
+			if( rule == otherRule ){
+				index = i;
+				break;
+			}
 		}
-		return styleSheets;
-	}
-
-	protected static boolean hasStyleSheets() {
-		return null != styleSheets;
-	}
-
-	protected static void setStyleSheets(final StyleSheetList styleSheets) {
-		Checker.notNull("parameter:styleSheets", styleSheets);
-		StyleSheet.styleSheets = styleSheets;
-	}
-	
-	/**
-	 * A cache of the parent StyleSheetList that this list belongs too.
-	 */
-	private StyleSheetList styleSheetList;
-
-	public StyleSheetList getStyleSheetsList() {
-		Checker.notNull("field:styleSheetList", styleSheetList);
-		return this.styleSheetList;
-	}
-
-	protected void setStyleSheetList(final StyleSheetList styleSheetList) {
-		Checker.notNull("parameter:styleSheetList", styleSheetList);
-		this.styleSheetList = styleSheetList;
-	}	
-	
-	/**
-	 * Adds a new rule to the given stylesheet.
-	 * 
-	 * @param styleSheet
-	 * @param selectorText
-	 * @param styleText
-	 */
-	static void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText) {
-		StyleSheet.getSupport().addRule(styleSheet, selectorText, styleText);
-	}
-
-	/**
-	 * Inserts a new rule at the given slot in the given stylesheet
-	 * 
-	 * @param styleSheet
-	 * @param index
-	 * @param selectorText
-	 * @param styleText
-	 */
-	static void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText) {
-		StyleSheet.getSupport().insertRule(styleSheet, index, selectorText, styleText);
-	}
-
-	/**
-	 * Removes an existing rule from the given stylesheet
-	 * 
-	 * @param styleSheet
-	 * @param index
-	 */
-	static void removeRule(final JavaScriptObject styleSheet, final int index) {
-		StyleSheet.getSupport().removeRule(styleSheet, index);
-	}
-
-	/**
-	 * Normalizes all the rules belonging to the given stylesheet. Normalizing
-	 * is the process whereby any rules with more than one selector are
-	 * duplicated so that each rule has only one selector.
-	 * 
-	 * @param styleSheet
-	 */
-	static void normalize(final JavaScriptObject styleSheet) {
-		StyleSheet.getSupport().normalize(styleSheet);
-	}
-
-	/**
-	 * Retrieves the collection of rules belonging to a stylesheet.
-	 * 
-	 * @param styleSheet
-	 * @return
-	 */
-	static JavaScriptObject getRules(final JavaScriptObject styleSheet) {
-		return StyleSheet.getSupport().getRulesCollection(styleSheet);
-	}
-
-	/**
-	 * Retrieves the individual names of all the css styles for the given rule.
-	 * 
-	 * @param rule
-	 * @return
-	 */
-	static String[] getRuleStylePropertyNames(final JavaScriptObject rule) {
-		return RuleStyle.getSupport().getPropertyNames(rule);
-	}
-
-
-	/**
-	 * Helper which retrieves the native stylesheet object
-	 * 
-	 * @return
-	 */
-	protected JavaScriptObject getNativeStyleSheet() {
-		return this.getStyleSheetsList().getNativeStyleSheet( this.getIndex() );
-	}
-	
-	/**
-	 * The index of the native StyleSheet within the StyleSheet collection.
-	 */
-	private int index;
-
-	protected int getIndex() {
+		
 		return index;
 	}
+	
 
-	protected void setIndex(final int index) {
-		this.index = index;
-	}
-
-	/**
-	 * A copy of the rules list belonging to this stylesheet
-	 */
-	private RuleList ruleList;
-
-	protected RuleList getRuleList() {
-		if (false == this.hasRuleList()) {
-			this.setRuleList(this.createRuleList());
-		}
-		Checker.notNull("field:ruleList", ruleList);
-		return this.ruleList;
-	}
-
-	protected boolean hasRuleList() {
-		return null != this.ruleList;
-	}
-
-	protected void setRuleList(final RuleList ruleList) {
-		Checker.notNull("parameter:ruleList", ruleList);
-		this.ruleList = ruleList;
-	}
-
-	protected RuleList createRuleList() {
-		final RuleList list = new RuleList();
-		list.setStyleSheet(this);
-		return list;
-	}
-
-	public List getRules() {
-		return this.getRuleList();
-	}
-
-	// STYLESHEET ELEMENT :::::::::::::::::::::::::::::::::
+	 // STYLESHEET ELEMENT :::::::::::::::::::::::::::::::::
 	/**
 	 * Tests if this style sheet was loaded from an external file.
 	 * 
 	 * @return
 	 */
-	public boolean isExternalFile() {
-		boolean external = false;
-		while (true) {
-			if (!this.hasTitle()) {
-				break;
-			}
-
-			if (Tester.isNullOrEmpty(this.getTitle())) {
-				break;
-			}
-			external = true;
-			break;
-		}
-
-		return external;
+	final public boolean isExternalFile() {
+		return false == Tester.isNullOrEmpty( this.getTitle() );
 	}
 
-	public String getUrl() {
-		return (String) this.getString(DomConstants.HREF_ATTRIBUTE);
+	final public String getUrl() {
+		return (String) JavaScript.getString( this, Constants.HREF_ATTRIBUTE);
 	}
 
-	public boolean hasUrl() {
-		return this.hasProperty(DomConstants.HREF_ATTRIBUTE);
+	final public void setUrl(final String href) {
+		JavaScript.setString( this, Constants.HREF_ATTRIBUTE, href);
 	}
 
-	public void setUrl(final String href) {
-		this.setString(DomConstants.HREF_ATTRIBUTE, href);
+	final public String getType() {
+		return (String) JavaScript.getString( this, Constants.TYPE_ATTRIBUTE);
 	}
 
-	public String getType() {
-		return (String) this.getString(DomConstants.TYPE_ATTRIBUTE);
+	final public void setType(final String type) {
+		JavaScript.setString( this, Constants.TYPE_ATTRIBUTE, type);
 	}
 
-	public boolean hasType() {
-		return this.hasProperty(DomConstants.TYPE_ATTRIBUTE);
+	final public boolean isDisabled() {
+		return JavaScript.hasProperty(this, Constants.DISABLED_ATTRIBUTE) ? JavaScript.getBoolean(this, Constants.DISABLED_ATTRIBUTE) : false;
 	}
 
-	public void setType(final String type) {
-		this.setString(DomConstants.TYPE_ATTRIBUTE, type);
+	final public void setDisabled(final boolean disabled) {
+		JavaScript.setBoolean( this, Constants.DISABLED_ATTRIBUTE, disabled);
 	}
 
-	public boolean isDisabled() {
-		return this.hasProperty(Constants.DISABLED_ATTRIBUTE) ? this.getBoolean(Constants.DISABLED_ATTRIBUTE) : false;
+	final public String getId() {
+		return JavaScript.getString( this, Constants.ID_ATTRIBUTE);
 	}
 
-	public void setDisabled(final boolean disabled) {
-		this.setBoolean(Constants.DISABLED_ATTRIBUTE, disabled);
+	final public void setId(final String id) {
+		JavaScript.setString( this, Constants.ID_ATTRIBUTE, id);
 	}
 
-	public String getId() {
-		return this.getString(DomConstants.ID_ATTRIBUTE);
+	final public String getName() {
+		return JavaScript.getString( this, Constants.NAME_ATTRIBUTE);
 	}
 
-	public boolean hasId() {
-		return this.hasProperty(DomConstants.ID_ATTRIBUTE);
+	final public void setName(final String name) {
+		JavaScript.setString( this, Constants.NAME_ATTRIBUTE, name);
 	}
 
-	public void setId(final String id) {
-		this.setString(DomConstants.ID_ATTRIBUTE, id);
+	final public String getTitle() {
+		return JavaScript.getString( this, Constants.TITLE_ATTRIBUTE);
 	}
 
-	public String getName() {
-		return this.getString(DomConstants.NAME_ATTRIBUTE);
-	}
-
-	public boolean hasName() {
-		return this.hasProperty(DomConstants.NAME_ATTRIBUTE);
-	}
-
-	public void setName(final String name) {
-		this.setString(DomConstants.NAME_ATTRIBUTE, name);
-	}
-
-	public String getTitle() {
-		return this.getString(DomConstants.TITLE_ATTRIBUTE);
-	}
-
-	public boolean hasTitle() {
-		return this.hasProperty(DomConstants.TITLE_ATTRIBUTE);
-	}
-
-	public void setTitle(final String title) {
-		this.setString(DomConstants.TITLE_ATTRIBUTE, title);
-	}
-
-	// A VARIETY OF CONVENIENT TYPED PROPERTY METHODS.
-
-	protected boolean hasProperty(final String propertyName) {
-		return JavaScript.hasProperty(this.getNativeStyleSheet(), propertyName);
-	}
-
-	// BOOLEAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-	protected boolean getBoolean(final String propertyName) {
-		return JavaScript.getBoolean(this.getNativeStyleSheet(), propertyName);
-	}
-
-	protected void setBoolean(final String propertyName, final boolean value) {
-		JavaScript.setBoolean(this.getNativeStyleSheet(), propertyName, value);
-	}
-
-	// STRING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-	protected String getString(final String propertyName) {
-		return JavaScript.getString(this.getNativeStyleSheet(), propertyName);
-	}
-
-	protected void setString(final String propertyName, final String value) {
-		JavaScript.setString(this.getNativeStyleSheet(), propertyName, value);
-	}
-
-	protected void removeProperty(final String propertyName) {
-		JavaScript.removeProperty(this.getNativeStyleSheet(), propertyName);
+	final public void setTitle(final String title) {
+		JavaScript.setString( this, Constants.TITLE_ATTRIBUTE, title);
 	}
 }

@@ -19,37 +19,45 @@ import rocket.util.client.JavaScript;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-public class InternetExplorerRuleStyleSupport extends StyleSupport{
+public class InternetExplorerRuleStyleSupport extends StyleSupport {
 
-	protected String getString(final JavaScriptObject rule, String name){
-		return this.getProperty( rule, name);
+	@Override
+	protected String getString(final JavaScriptObject rule, String name) {
+		return this.getProperty(rule, name);
 	}
-	
-	protected String getCssText( final JavaScriptObject rule ){
-		return this.buildCssText( rule );
+
+	@Override
+	protected String getCssText(final JavaScriptObject rule) {
+		return this.buildCssText(rule);
 	}
-	
-	protected String getUserSelect( final JavaScriptObject rule ){
+
+	@Override
+	protected String getUserSelect(final JavaScriptObject rule) {
 		throw new UnsupportedOperationException("getUserSelect");
 	}
-	
-	protected String getUserSelectPropertyName(){
+
+	@Override
+	protected String getUserSelectPropertyName() {
 		throw new UnsupportedOperationException("getUserSelectPropertyName");
 	}
-	
-	protected void setUserSelect( final JavaScriptObject rule, final String value ){
+
+	@Override
+	protected void setUserSelect(final JavaScriptObject rule, final String value) {
 		throw new UnsupportedOperationException("setUserSelect");
 	}
-	
-	protected void setString( final JavaScriptObject rule, final String name, final String value) {
-		this.setProperty( rule, name, value);
+
+	@Override
+	protected void setString(final JavaScriptObject rule, final String name, final String value) {
+		this.setProperty(rule, name, value);
 	}
-	
-	protected void remove0( final JavaScriptObject rule, final String name ){
-		this.setProperty( rule, name, "");
+
+	@Override
+	protected void remove0(final JavaScriptObject rule, final String name) {
+		this.setProperty(rule, name, "");
 	}
-	
-	public String[] getPropertyNames( final JavaScriptObject element ){
-		return JavaScript.getPropertyNames( JavaScript.getObject( element, "style" ));
+
+	@Override
+	public String[] getPropertyNames(final JavaScriptObject element) {
+		return JavaScript.getPropertyNames(JavaScript.getObject(element, "style"));
 	}
 }

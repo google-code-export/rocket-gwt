@@ -23,22 +23,21 @@ import rocket.util.client.JavaScript;
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class OperaComputedStyleSupport extends OperaStyleSupport {
-	
+
 	/**
 	 * Retrieves the computed style property value.
-	 *
+	 * 
 	 * <h6>Special cases</h6>
 	 * <ul>
 	 * <li>width</li>
 	 * <li>height</li>
 	 * </ul>
-	 *
+	 * 
 	 * @param element
 	 * @param name
 	 * @return
-	 *
-	 * @override
 	 */
+	@Override
 	public String get(final JavaScriptObject element, final String name) {
 		String value = null;
 		while (true) {
@@ -50,8 +49,8 @@ public class OperaComputedStyleSupport extends OperaStyleSupport {
 				value = this.getHeight(element) + "px";
 				break;
 			}
-			if (Css.FONT_WEIGHT.equals( name)) {
-				value = "" + this.getComputedFontWeight( JavaScript.castToElement( element));
+			if (Css.FONT_WEIGHT.equals(name)) {
+				value = "" + this.getComputedFontWeight(JavaScript.castToElement(element));
 				break;
 			}
 
@@ -60,19 +59,20 @@ public class OperaComputedStyleSupport extends OperaStyleSupport {
 		}
 		return value;
 	}
-	
-	protected String getUserSelect( final JavaScriptObject element ){
-		return this.getUserSelectFunction(element, true );
+
+	@Override
+	protected String getUserSelect(final JavaScriptObject element) {
+		return this.getUserSelectFunction(element, true);
 	}
-	
+
 	/**
 	 * Retrieves the content width of the given element
-	 *
+	 * 
 	 * The content width may be calculated using the following formula:
-	 *
+	 * 
 	 * contentWidth = offsetWidth - paddingLeft - paddingRight - borderLeftWidth -
 	 * borderRightWidth
-	 *
+	 * 
 	 * @param element
 	 * @return
 	 */
@@ -92,7 +92,7 @@ public class OperaComputedStyleSupport extends OperaStyleSupport {
 
 	/**
 	 * Retrieves the content height of the given element
-	 *
+	 * 
 	 * @param element
 	 * @return
 	 */
@@ -115,25 +115,31 @@ public class OperaComputedStyleSupport extends OperaStyleSupport {
 		this.checkPropertyName("parameter:name", name);
 
 		final String value = this.get(element, name);
-		return (int) CssUnit.convertValue(value, CssUnit.PX);
+		return (int) CssUnit.PX.convert(value);
 	}
-	
-	protected String getString( final JavaScriptObject element, final String name ){
-		return this.getComputed( element, name);
+
+	@Override
+	protected String getString(final JavaScriptObject element, final String name) {
+		return this.getComputed(element, name);
 	}
-	
-	protected void setUserSelect( final JavaScriptObject element, final String value ){
+
+	@Override
+	protected void setUserSelect(final JavaScriptObject element, final String value) {
 		throw new UnsupportedOperationException("setString");
 	}
-	
-	protected void setString( JavaScriptObject element, final String name, final String value ){
-		throw new UnsupportedOperationException( "setString");
+
+	@Override
+	protected void setString(JavaScriptObject element, final String name, final String value) {
+		throw new UnsupportedOperationException("setString");
 	}
-	
-	protected void remove0( JavaScriptObject element, final String name ){
+
+	@Override
+	protected void remove0(JavaScriptObject element, final String name) {
 		throw new UnsupportedOperationException("remove0");
 	}
-	public String[] getPropertyNames( final JavaScriptObject element ){
+
+	@Override
+	public String[] getPropertyNames(final JavaScriptObject element) {
 		return this.getPropertyNamesFromCssText(element);
 	}
 }

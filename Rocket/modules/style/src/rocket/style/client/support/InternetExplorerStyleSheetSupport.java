@@ -15,7 +15,8 @@
  */
 package rocket.style.client.support;
 
-import rocket.style.client.Css;
+import rocket.style.client.Rule;
+import rocket.style.client.StyleSheet;
 import rocket.util.client.Checker;
 import rocket.util.client.JavaScript;
 import rocket.util.client.Utilities;
@@ -23,44 +24,66 @@ import rocket.util.client.Utilities;
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class InternetExplorerStyleSheetSupport extends StyleSheetSupport {
-	/**
-	 * Helper which retrieves the native rules collection that this instance is
-	 * presenting as a List
-	 * 
-	 * @return
-	 */
-	public JavaScriptObject getRulesCollection(final JavaScriptObject styleSheet) {
-		return JavaScript.getObject(styleSheet, Css.RULES_LIST_PROPERTY_IE6);
-	}
 
-	public void addRule(final JavaScriptObject styleSheet, final String selectorText, final String styleText) {
+	@Override
+	public int getRuleCount( final StyleSheet styleSheet ){
+		Checker.notNull("parameter:styleSheet", styleSheet);
+		
+		return this.getRuleCount0(styleSheet);
+	};
+	
+	native private int getRuleCount0( final StyleSheet styleSheet )/*-{
+		return styleSheet.rules.length;
+	}-*/;
+	
+	@Override
+	public Rule getRule( final StyleSheet styleSheet, final int index ){
+		Checker.notNull("parameter:styleSheet", styleSheet);
+		final Rule rule = this.getRule0(styleSheet, index);
+		if( null == rule ){
+			throw new IllegalArgumentException("The parameter:index is outside the range of actual stylesheets, index: " + index );
+		}
+		return rule;
+	}
+	
+	native private Rule getRule0( final StyleSheet styleSheet, final int index )/*-{
+		return styleSheet.rules[ index ];
+	}-*/;
+
+	
+	@Override
+	public Rule addRule(final StyleSheet styleSheet, final String selectorText, final String styleText) {
 		Checker.notNull("parameter:styleSheet", styleSheet);
 		Checker.notNull("parameter:selectorText", selectorText);
 		Checker.notNull("parameter:styleText", styleText);
 
-		this.addRule0(styleSheet, selectorText, styleText);
+		return this.addRule0(styleSheet, selectorText, styleText);
 	}
 
-	private native void addRule0(final JavaScriptObject styleSheet, final String selectorText, final String styleText)/*-{        
-	 var index = styleSheet.rules.length;
-	 var safeStyleText = styleText.length == 0 ? ";" : styleText;
+	private native Rule addRule0(final StyleSheet styleSheet, final String selectorText, final String styleText)/*-{        
+		 var index = styleSheet.rules.length;
+		 var safeStyleText = styleText.length == 0 ? ";" : styleText;
 
-	 styleSheet.addRule( selectorText, safeStyleText, index );         
-	 }-*/;
+		 styleSheet.addRule( selectorText, safeStyleText, index );
+		 return styleSheet.rules[ index ];         
+		 }-*/;
 
-	public void insertRule(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText) {
+	@Override
+	public Rule insertRule(final StyleSheet styleSheet, final int index, final String selectorText, final String styleText) {
 		Checker.notNull("parameter:styleSheet", styleSheet);
 		Checker.notNull("parameter:selectorText", selectorText);
 		Checker.notNull("parameter:styleText", styleText);
 
-		this.insertRule0(styleSheet, index, selectorText, styleText);
+		return this.insertRule0(styleSheet, index, selectorText, styleText);
 	}
 
-	private native void insertRule0(final JavaScriptObject styleSheet, final int index, final String selectorText, final String styleText)/*-{
-	 styleSheet.addRule( selectorText, styleText.length == 0 ? ";" : styleText, index );         
-	 }-*/;
+	private native Rule insertRule0(final StyleSheet styleSheet, final int index, final String selectorText, final String styleText)/*-{
+		 styleSheet.addRule( selectorText, styleText.length == 0 ? ";" : styleText, index );
+		 return styleSheet.rules[ index ];         
+		 }-*/;
 
-	public void removeRule(final JavaScriptObject styleSheet, final int index) {
+	@Override
+	public void removeRule(final StyleSheet styleSheet, final int index) {
 		Checker.notNull("parameter:styleSheet", styleSheet);
 
 		this.removeRule0(styleSheet, index);
@@ -69,31 +92,31 @@ public class InternetExplorerStyleSheetSupport extends StyleSheetSupport {
 	/**
 	 * Escapes to javascript to delete the requested rule.
 	 */
-	native private void removeRule0(final JavaScriptObject styleSheet, final int index) /*-{            
+	native private void removeRule0(final StyleSheet styleSheet, final int index) /*-{            
 	 styleSheet.removeRule( index );
 	 }-*/;
 
-	public String[] getRuleStylePropertyNames(final JavaScriptObject rule) {
+	public String[] getRuleStylePropertyNames(final Rule rule) {
 		Checker.notNull("parameter:rule", rule);
-		
-		final JavaScriptObject style = JavaScript.getObject(rule, "style"); 
+
+		final JavaScriptObject style = JavaScript.getObject(rule, "style");
 		return Utilities.split(getStylePropertyNames0(style), ",", true);
 	}
 
 	native private String getStylePropertyNames0(final JavaScriptObject style)/*-{
-	 var names = new Array();
-	 
-	 for( n in style ){
-	 names.push( n );
-	 }
-	 return names.join( "," );
-	 
-	 }-*/;
-	
+		 var names = new Array();
+		 
+		 for( n in style ){
+		 names.push( n );
+		 }
+		 return names.join( "," );		 
+		 }-*/;
+
 	/**
 	 * There is no need to normalize rules as Internet Explorer already does
 	 * this when it loads stylesheets.
 	 */
-	public void normalize(final JavaScriptObject styleSheet) {
+	@Override
+	public void normalize(final StyleSheet styleSheet) {
 	}
 }

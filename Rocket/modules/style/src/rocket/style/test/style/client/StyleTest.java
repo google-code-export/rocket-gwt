@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import rocket.dom.client.Dom;
 import rocket.style.client.ComputedStyle;
 import rocket.style.client.Css;
 import rocket.style.client.CssUnit;
@@ -46,8 +45,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A series of automated tests that occasionally prompts the user to confirm
- * some visual changes.
+ * A series of automated tests that changes the styling of an element and occasionally prompts the user to confirm visual changes.
  * 
  * @author Miroslav Pokorny (mP)
  */
@@ -87,19 +85,21 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		 */
 		abstract public List buildCandidates();
 	}
-	
+
 	/**
 	 * @testing-testMethodOrder 0
 	 */
-	protected void testInlineGetStylePropertyValue() {
+	protected void testInlineGetString() {
 		final Element element = this.createDivAndAddToDocument();
 		final String propertyName = Css.BACKGROUND_COLOR;
 		final String propertyValue = Colour.getColour("yellow").toCssColour();
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
-		InlineStyle.setString(element, Css.WIDTH, WIDTH + "px");
-		InlineStyle.setString(element, Css.HEIGHT, HEIGHT + "px");
+		
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
+		inlineStyle.setString(Css.WIDTH, WIDTH + "px");
+		inlineStyle.setString(Css.HEIGHT, HEIGHT + "px");
 
-		String actualPropertyValue = InlineStyle.getString(element, propertyName);
+		String actualPropertyValue = DOM.getStyleAttribute(element, propertyName);
 		actualPropertyValue = Colour.parse(actualPropertyValue).toCssColour();
 		final String expectedPropertyValue = propertyValue;
 		Test.assertEquals(expectedPropertyValue, actualPropertyValue);
@@ -108,13 +108,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	/**
 	 * @testing-testMethodOrder 1
 	 */
-	protected void testInlineSetStylePropertyValue() {
+	protected void testInlineSetString() {
 		final Element element = this.createDivAndAddToDocument();
 		final String propertyValue = Colour.getColour("aquamarine").toCssColour();
 
-		InlineStyle.setString(element, Css.BACKGROUND_COLOR, propertyValue);
-		InlineStyle.setString(element, Css.WIDTH, WIDTH + "px");
-		InlineStyle.setString(element, Css.HEIGHT, HEIGHT + "px");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
+		inlineStyle.setString(Css.BACKGROUND_COLOR, propertyValue);
+		inlineStyle.setString(Css.WIDTH, WIDTH + "px");
+		inlineStyle.setString(Css.HEIGHT, HEIGHT + "px");
 
 		this.scrollIntoView(element);
 		TestRunner.postponeCurrentTest(POSTPONE_DELAY);
@@ -132,13 +133,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	/**
 	 * @testing-testMethodOrder 2
 	 */
-	protected void testComputedGetPropertyValue() {
+	protected void testComputedGetString() {
 		final Element element = this.createDivAndAddToDocument();
 		final String propertyName = Css.BACKGROUND_COLOR;
 		final String propertyValue = Colour.getColour("yellow").toCssColour();
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-		String actualPropertyValue = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		String actualPropertyValue = computedStyle.getString(propertyName);
 		actualPropertyValue = Colour.parse(actualPropertyValue).toCssColour();
 		final String expectedPropertyValue = propertyValue;
 		Test.assertEquals(expectedPropertyValue, actualPropertyValue);
@@ -166,10 +168,11 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(childElement, FILTER, "alpha(opacity=" + (int) (opacity * 100) + ")");
 		DOM.setStyleAttribute(childElement, Css.OPACITY, "" + opacity);
 
-		final String actualOpacity = InlineStyle.getString(childElement, Css.OPACITY);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(childElement);
+		final String actualOpacity = inlineStyle.getString(Css.OPACITY);
 		final String expectedOpacity = "" + opacity;
-		Test.assertEquals("actualOpacity: " + actualOpacity + ", expectedOpacity: " + expectedOpacity, Double.parseDouble(expectedOpacity),
-				Double.parseDouble(actualOpacity), 0.5);
+		Test.assertEquals("actualOpacity: " + actualOpacity + ", expectedOpacity: " + expectedOpacity, Double
+				.parseDouble(expectedOpacity), Double.parseDouble(actualOpacity), 0.5);
 	}
 
 	/**
@@ -194,10 +197,11 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(childElement, FILTER, "alpha(opacity=" + (int) (opacity * 100) + ")");
 		DOM.setStyleAttribute(childElement, Css.OPACITY, "" + opacity);
 
-		final String actualOpacity = ComputedStyle.getString(childElement, Css.OPACITY);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(childElement);
+		final String actualOpacity = computedStyle.getString(Css.OPACITY);
 		final String expectedOpacity = "" + opacity;
-		Test.assertEquals("actualOpacity: " + actualOpacity + ", expectedOpacity: " + expectedOpacity, Double.parseDouble(expectedOpacity),
-				Double.parseDouble(actualOpacity), 0.5);
+		Test.assertEquals("actualOpacity: " + actualOpacity + ", expectedOpacity: " + expectedOpacity, Double
+				.parseDouble(expectedOpacity), Double.parseDouble(actualOpacity), 0.5);
 	}
 
 	/**
@@ -230,7 +234,9 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 				final float opacity = 0.5f;
 				final String propertyName = Css.OPACITY;
 				final String propertyValue = "" + opacity;
-				InlineStyle.setString(childElement, propertyName, propertyValue);
+				
+				final InlineStyle inlineStyle = InlineStyle.getInlineStyle(childElement);
+				inlineStyle.setString(propertyName, propertyValue);
 
 				if (false == Window.confirm("Is the rectangle that was blue now green where it overlaps the yellow background ?")) {
 					Test.fail("The rectangle overlaying the yellow rectangle is not green.");
@@ -263,7 +269,8 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.PADDING_RIGHT, paddingRight + "px");
 		DOM.setStyleAttribute(element, Css.MARGIN, "0px");
 
-		final String actualContentWidth = ComputedStyle.getString(element, Css.WIDTH);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actualContentWidth = computedStyle.getString(Css.WIDTH);
 		final String expectedContentWidth = (WIDTH - borderLeftWidth - borderRightWidth - paddingLeft - paddingRight) + "px";
 		Test.assertEquals(expectedContentWidth, actualContentWidth);
 	}
@@ -290,9 +297,10 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 
 		final Element child = DOM.createDiv();
 		DOM.setStyleAttribute(child, Css.BACKGROUND_COLOR, "lightGreen");
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		final String actualContentWidth = ComputedStyle.getString(child, Css.WIDTH);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actualContentWidth = computedStyle.getString(Css.WIDTH);
 		final String expectedContentWidth = WIDTH + "px";
 		Test.assertEquals(expectedContentWidth, actualContentWidth);
 	}
@@ -323,10 +331,11 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 
 		final Element child = DOM.createDiv();
 		DOM.setStyleAttribute(child, Css.BACKGROUND_COLOR, "lightGreen");
-		DOM.appendChild(parent, child);
-		DOM.setInnerHTML(child, "&nbsp;");
+		parent.appendChild(child);
+		child.setInnerHTML("&nbsp;");
 
-		final String actualContentWidth = ComputedStyle.getString(child, Css.WIDTH);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actualContentWidth = computedStyle.getString(Css.WIDTH);
 		final String expectedContentWidth = WIDTH + "px";
 		Test.assertEquals(expectedContentWidth, actualContentWidth);
 	}
@@ -357,10 +366,11 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 
 		final Element child = DOM.createDiv();
 		DOM.setStyleAttribute(child, Css.BACKGROUND_COLOR, "lightGreen");
-		DOM.appendChild(parent, child);
-		DOM.setInnerHTML(child, "CHILDtestComputedGetWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent");
+		parent.appendChild(child);
+		child.setInnerHTML("CHILDtestComputedGetWidthWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent");
 
-		final String actualContentWidth = ComputedStyle.getString(child, Css.WIDTH);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actualContentWidth = computedStyle.getString(Css.WIDTH);
 		final String expectedContentWidth = WIDTH + "px";
 		Test.assertEquals(expectedContentWidth, actualContentWidth);
 	}
@@ -385,7 +395,8 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.PADDING_RIGHT, paddingBottom + "px");
 		DOM.setStyleAttribute(element, Css.MARGIN_BOTTOM, 25 + "px");
 
-		final String actualContentHeight = ComputedStyle.getString(element, Css.HEIGHT);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actualContentHeight = computedStyle.getString(Css.HEIGHT);
 		final String expectedContentHeight = (HEIGHT - borderTopWidth - borderBottomWidth - paddingTop - paddingBottom) + "px";
 		Test.assertEquals(expectedContentHeight, actualContentHeight);
 	}
@@ -417,10 +428,11 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(child, Css.BORDER_WIDTH, "0px");
 		DOM.setStyleAttribute(child, Css.PADDING, "0px");
 		DOM.setStyleAttribute(child, Css.HEIGHT, "100%");
-		DOM.appendChild(parent, child);
-		DOM.setInnerHTML(child, "CHILD");
+		parent.appendChild(child);
+		child.setInnerHTML("CHILD");
 
-		final String actualContentHeight = ComputedStyle.getString(child, Css.HEIGHT);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actualContentHeight = computedStyle.getString(Css.HEIGHT);
 		final String expectedContentHeight = height + "px";
 		Test.assertEquals(expectedContentHeight, actualContentHeight);
 	}
@@ -455,10 +467,11 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(child, Css.BORDER_WIDTH, "0px");
 		DOM.setStyleAttribute(child, Css.PADDING, "0px");
 		DOM.setStyleAttribute(child, Css.HEIGHT, "100%");
-		DOM.appendChild(parent, child);
-		DOM.setInnerHTML(child, "CHILD");
+		parent.appendChild(child);
+		child.setInnerHTML("CHILD");
 
-		final String actualContentHeight = ComputedStyle.getString(child, Css.HEIGHT);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actualContentHeight = computedStyle.getString(Css.HEIGHT);
 		final String expectedContentHeight = height + "px";
 		Test.assertEquals(expectedContentHeight, actualContentHeight);
 	}
@@ -489,10 +502,11 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 
 		final Element child = DOM.createDiv();
 		DOM.setStyleAttribute(child, Css.BACKGROUND_COLOR, "lightGreen");
-		DOM.appendChild(parent, child);
-		DOM.setInnerHTML(child, "CHILDtestComputedGetHeightWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent");
+		parent.appendChild(child);
+		child.setInnerHTML("CHILDtestComputedGetHeightWhereDivHasScrollBarsAndInheritsBorderPaddingWidthFromParent");
 
-		final String actualContentHeight = ComputedStyle.getString(child, Css.HEIGHT);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actualContentHeight = computedStyle.getString(Css.HEIGHT);
 		final String expectedContentHeight = HEIGHT + "px";
 		Test.assertEquals(expectedContentHeight, actualContentHeight);
 	}
@@ -500,123 +514,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	/**
 	 * @testing-testMethodOrder 14
 	 */
-	protected void testConvertPixelsToPixels() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "px", CssUnit.PX);
-		final float expected = input;
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 15
-	 */
-	protected void testConvertInchesToPixels() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "in", CssUnit.PX);
-		final float expected = Math.round(input / 96f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 16
-	 */
-	protected void testConvertPixelsToInches() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "px", CssUnit.IN);
-		final float expected = Math.round(input * 96f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 17
-	 */
-	protected void testConvertCentimetersToPixels() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "cm", CssUnit.PX);
-		final float expected = Math.round(input / 96f * 2.54f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 18
-	 */
-	protected void testConvertPixelsToCentimeters() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "px", CssUnit.CM);
-		final float expected = Math.round(input * 96f / 2.54f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 19
-	 */
-	protected void testConvertMillimetersToPixels() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "mm", CssUnit.PX);
-		final float expected = Math.round(input / 96f * 25.4f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 20
-	 */
-	protected void testConvertPixelsToMillimeters() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "px", CssUnit.MM);
-		final float expected = Math.round(input * 96f / 25.4f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 21
-	 */
-	protected void testConvertPointsToPixels() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "pt", CssUnit.PX);
-		final float expected = Math.round(input * 96f / 72f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 22
-	 */
-	protected void testConvertPixelsToPoints() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "px", CssUnit.PT);
-		final float expected = Math.round(input / 96f * 72f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 23
-	 */
-	protected void testConvertPicasToPixels() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "pc", CssUnit.PX);
-		final float expected = Math.round(input * 96f / 72f * 12f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 24
-	 */
-	protected void testConvertPixelsToPicas() {
-		final float input = 1234;
-		final float actual = CssUnit.convertValue(input + "px", CssUnit.PC);
-		final float expected = Math.round(input / 96f * 72f / 12f);
-		Test.assertEquals(expected, actual, 0.75f);
-	}
-
-	/**
-	 * @testing-testMethodOrder 25
-	 */
 	public void testInlineSetBackgroundImage() {
 		final String propertyName = Css.BACKGROUND_IMAGE;
 		final String propertyValue = "image.gif";
 
 		final Element element = this.createDivAndAddToDocument();
 
-		InlineStyle.setString(element, propertyName, "url('" + propertyValue + "')");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
+		inlineStyle.setString(propertyName, "url('" + propertyValue + "')");
 
 		final String expected = propertyValue;
 		final String actual = DOM.getStyleAttribute(element, propertyName);
@@ -624,7 +529,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 26
+	 * @testing-testMethodOrder 15
 	 */
 	public void testInlineSetBackgroundImageWithElementAlsoContainingABackgroundColour() {
 		final String propertyName = Css.BACKGROUND_IMAGE;
@@ -634,13 +539,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		final Element element = this.createDivAndAddToDocument();
 		DOM.setStyleAttribute(element, Css.BACKGROUND_COLOR, colour.toCssColour());
 
-		InlineStyle.setString(element, propertyName, "url('" + propertyValue + "')");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
+		inlineStyle.setString(propertyName, "url('" + propertyValue + "')");
 
 		final String expected = propertyValue;
 		final String actual = DOM.getStyleAttribute(element, propertyName);
 		Test.assertTrue("actual \"" + actual + "\" expected\"" + expected + "\".", actual.indexOf(expected) != -1);
 
-		final String backgroundColour = InlineStyle.getString(element, Css.BACKGROUND_COLOR);
+		final String backgroundColour = inlineStyle.getString(Css.BACKGROUND_COLOR);
 		final String expectedBackgroundColour = colour.toCssColour();
 		Test.assertEquals("backgroundColor", Colour.parse(expectedBackgroundColour), Colour.parse(backgroundColour));
 
@@ -650,20 +556,21 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 27
+	 * @testing-testMethodOrder 16
 	 */
 	public void testComputedGetBackgroundPositionWhenNoValueIsSet() {
 		final String propertyName = Css.BACKGROUND_POSITION;
 
 		final Element element = this.createDivAndAddToDocument();
 
-		final String actual = ComputedStyle.getString(element, propertyName);
-		Test.assertTrue("" + element + ", actual\"" + actual + "\".", actual == null || actual.equals("0% 0%") || actual.equals("left left")
-				|| actual.equals("0px 0px"));
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
+		Test.assertTrue("" + element + ", actual\"" + actual + "\".", actual == null || actual.equals("0% 0%")
+				|| actual.equals("left left") || actual.equals("0px 0px"));
 	}
 
 	/**
-	 * @testing-testMethodOrder 28
+	 * @testing-testMethodOrder 17
 	 */
 	public void testComputedGetBackgroundPosition() {
 		final String propertyName = Css.BACKGROUND_POSITION;
@@ -674,13 +581,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.BACKGROUND_IMAGE, "url('image.gif')");
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		final String expected = propertyValue;
 		Test.assertEquals(expected, actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 29
+	 * @testing-testMethodOrder 18
 	 */
 	public void testComputedGetBackgroundPositionWithElementThatIncludesAllTheOtherBackgroundProperties() {
 		final String propertyName = Css.BACKGROUND_POSITION;
@@ -690,13 +598,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		final String backgroundProperty = "url('image.gif') no-repeat fixed #123456 " + propertyValue;
 		DOM.setStyleAttribute(element, Css.BACKGROUND, backgroundProperty);
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		final String expected = propertyValue;
 		Test.assertEquals(backgroundProperty, expected, actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 30
+	 * @testing-testMethodOrder 19
 	 */
 	public void testComputedGetFontSizeSetToXSmallValue() {
 		final String propertyName = Css.FONT_SIZE;
@@ -706,13 +615,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		final String expected = "10px";
 		Test.assertEquals(expected, actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 31
+	 * @testing-testMethodOrder 20
 	 */
 	public void testComputedGetFontSizeSetToSmallValue() {
 		final String propertyName = Css.FONT_SIZE;
@@ -722,13 +632,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		final String expected = "13px";
 		Test.assertEquals(expected, actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 32
+	 * @testing-testMethodOrder 21
 	 */
 	public void testComputedGetFontSizeSetToMediumValue() {
 		final String propertyName = Css.FONT_SIZE;
@@ -738,13 +649,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		final String expected = "16px";
 		Test.assertEquals(expected, actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 33
+	 * @testing-testMethodOrder 22
 	 */
 	public void testComputedGetFontSizeSetToLargeValue() {
 		final String propertyName = Css.FONT_SIZE;
@@ -754,13 +666,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		final String expected = "18px";
 		Test.assertEquals(expected, actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 34
+	 * @testing-testMethodOrder 23
 	 */
 	public void testComputedGetFontSizeSetToXLargeValue() {
 		final String propertyName = Css.FONT_SIZE;
@@ -770,13 +683,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		final String expected = "24px";
 		Test.assertEquals(expected, actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 35
+	 * @testing-testMethodOrder 24
 	 */
 	public void testComputedGetFontSizeSetToXXLargeValue() {
 		final String propertyName = Css.FONT_SIZE;
@@ -786,13 +700,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		final String expected = "32px";
 		Test.assertEquals(expected, actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 36
+	 * @testing-testMethodOrder 25
 	 */
 	public void testComputedGetFontSizeSetToSmaller() {
 		final String propertyName = Css.FONT_SIZE;
@@ -806,9 +721,10 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		final Element child = DOM.createSpan();
 		DOM.setStyleAttribute(child, Css.FONT_FAMILY, "Times");
 		DOM.setStyleAttribute(child, propertyName, propertyValue);
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		final String actualString = ComputedStyle.getString(child, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actualString = computedStyle.getString(propertyName);
 		Test.assertNotNull(actualString);
 
 		final float expected = Math.round(parentFontSize * StyleSupportConstants.SMALLER_SCALING_FACTOR);
@@ -820,7 +736,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 37
+	 * @testing-testMethodOrder 26
 	 */
 	public void testComputedGetFontSizeSetToLarger() {
 		final String propertyName = Css.FONT_SIZE;
@@ -834,9 +750,10 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		final Element child = DOM.createSpan();
 		DOM.setStyleAttribute(child, Css.FONT_FAMILY, "Times");
 		DOM.setStyleAttribute(child, propertyName, propertyValue);
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		final String actualString = ComputedStyle.getString(child, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actualString = computedStyle.getString(propertyName);
 		Test.assertNotNull(actualString);
 
 		final float expected = Math.round(parentFontSize * StyleSupportConstants.LARGER_SCALING_FACTOR);
@@ -848,7 +765,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 38
+	 * @testing-testMethodOrder 27
 	 */
 	public void testComputedGetFontWeightWithMissingPropertyValue() {
 		final String propertyName = Css.FONT_WEIGHT;
@@ -856,12 +773,13 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		final Element element = this.createDivAndAddToDocument();
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		Test.assertEquals("" + element, "400", actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 39
+	 * @testing-testMethodOrder 28
 	 */
 	public void testComputedGetFontWeightWithNumberPropertyValue() {
 		final String propertyName = Css.FONT_WEIGHT;
@@ -870,12 +788,13 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 		DOM.setIntStyleAttribute(element, propertyName, 700);
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		Test.assertEquals("" + element, "700", actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 40
+	 * @testing-testMethodOrder 29
 	 */
 	public void testComputedGetFontWeightSetToNormal() {
 		final String propertyName = Css.FONT_WEIGHT;
@@ -884,12 +803,13 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 		DOM.setStyleAttribute(element, propertyName, "normal");
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		Test.assertEquals("" + element, "400", actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 41
+	 * @testing-testMethodOrder 30
 	 */
 	public void testComputedGetFontWeightSetToBold() {
 		final String propertyName = Css.FONT_WEIGHT;
@@ -898,12 +818,13 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.FONT_FAMILY, "Verdana");
 		DOM.setStyleAttribute(element, propertyName, "bold");
 
-		final String actual = ComputedStyle.getString(element, propertyName);
-		Test.assertTrue("fontWeight should be greater than 400 for " + element + " and not " + actual, Integer.parseInt( actual) > 400 );
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
+		Test.assertTrue("fontWeight should be greater than 400 for " + element + " and not " + actual, Integer.parseInt(actual) > 400);
 	}
 
 	/**
-	 * @testing-testMethodOrder 42
+	 * @testing-testMethodOrder 31
 	 */
 	public void testComputedGetFontWeightSetToLighter() {
 		final String propertyName = Css.FONT_WEIGHT;
@@ -914,18 +835,19 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(parent, propertyName, "bold");
 
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "CHILD");
+		child.setInnerHTML("CHILD");
 		DOM.setStyleAttribute(child, Css.FONT_FAMILY, "Times");
 		DOM.setStyleAttribute(child, Css.FONT_SIZE, "20pt");
 		DOM.setStyleAttribute(child, propertyName, "lighter");
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		final String actual = ComputedStyle.getString(child, propertyName);
-		Test.assertTrue("fontWeight should be less or equal to 400 for " + child + " and not " + actual, Integer.parseInt( actual) <= 400 );
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actual = computedStyle.getString(propertyName);
+		Test.assertTrue("fontWeight should be less or equal to 400 for " + child + " and not " + actual, Integer.parseInt(actual) <= 400);
 	}
 
 	/**
-	 * @testing-testMethodOrder 43
+	 * @testing-testMethodOrder 32
 	 */
 	public void testComputedGetFontWeightSetToBolder() {
 		final String propertyName = Css.FONT_WEIGHT;
@@ -936,21 +858,22 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(parent, propertyName, "normal");
 
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "CHILD");
+		child.setInnerHTML("CHILD");
 		DOM.setStyleAttribute(child, Css.FONT_FAMILY, "Times");
 		DOM.setStyleAttribute(child, Css.FONT_SIZE, "20pt");
 		DOM.setStyleAttribute(child, propertyName, "bolder");
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		final String actualString = ComputedStyle.getString(child, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(child);
+		final String actualString = computedStyle.getString(propertyName);
 		Test.assertNotNull(actualString);
 
-		final String actual = ComputedStyle.getString(child, propertyName);
+		final String actual = computedStyle.getString( propertyName);
 		Test.assertEquals("" + child, "700", actual);
 	}
 
 	/**
-	 * @testing-testMethodOrder 44
+	 * @testing-testMethodOrder 33
 	 */
 	public void testComputedGetBorderWidthThin() {
 		final String propertyName = Css.BORDER_LEFT_WIDTH;
@@ -961,7 +884,8 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.BORDER_LEFT_COLOR, "black");
 		DOM.setStyleAttribute(element, Css.BORDER_LEFT_STYLE, "solid");
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		Test.assertNotNull(actual);
 		TestRunner.log(actual);
 		final int number = Integer.parseInt(actual.substring(0, actual.length() - 2));
@@ -970,7 +894,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 45
+	 * @testing-testMethodOrder 34
 	 */
 	public void testComputedGetBorderWidthMedium() {
 		final String propertyName = Css.BORDER_LEFT_WIDTH;
@@ -981,7 +905,8 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, Css.BORDER_LEFT_COLOR, "black");
 		DOM.setStyleAttribute(element, Css.BORDER_LEFT_STYLE, "solid");
 
-		final String actual = ComputedStyle.getString(element, propertyName);
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		Test.assertNotNull(actual);
 		final int number = Integer.parseInt(actual.substring(0, actual.length() - 2));
 		Test.assertTrue("actual\"" + actual + "\".", number == StyleSupportConstants.BORDER_WIDTH_MEDIUM_PX
@@ -989,7 +914,7 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 46
+	 * @testing-testMethodOrder 35
 	 */
 	public void testComputedGetBorderWidthThick() {
 		final String propertyName = Css.BORDER_LEFT_WIDTH;
@@ -999,8 +924,9 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		DOM.setStyleAttribute(element, propertyName, propertyValue);
 		DOM.setStyleAttribute(element, Css.BORDER_LEFT_COLOR, "black");
 		DOM.setStyleAttribute(element, Css.BORDER_LEFT_STYLE, "solid");
-
-		final String actual = ComputedStyle.getString(element, propertyName);
+		
+		final ComputedStyle computedStyle = ComputedStyle.getComputedStyle(element);
+		final String actual = computedStyle.getString(propertyName);
 		Test.assertNotNull(actual);
 		final int number = Integer.parseInt(actual.substring(0, actual.length() - 2));
 		Test.assertTrue("actual\"" + actual + "\".", number == StyleSupportConstants.BORDER_WIDTH_THICK_PX
@@ -1008,20 +934,20 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 47
+	 * @testing-testMethodOrder 36
 	 */
 	public void testComputedGetStylePropertyNames() {
 		final Element element = this.createDivAndAddToDocument();
 		DOM.setStyleAttribute(element, Css.CURSOR, "move");
 		DOM.setStyleAttribute(element, Utilities.toCamelCase(Css.BACKGROUND_COLOR), "aquamarine");
 
-		final String[] propertyNames = new TestComputedStyle( element ).getPropertyNames();
+		final String[] propertyNames = ComputedStyle.getComputedStyle(element).getNames();
 		Test.assertNotNull(propertyNames);
 
 		final int length = propertyNames.length;
 		Test.assertTrue("length: " + length, length >= 2);
 
-		final List list = new ArrayList();
+		final List<String> list = new ArrayList<String>();
 		list.addAll(Arrays.asList(propertyNames));
 
 		Test.assertTrue(Css.CURSOR + ", list: " + list, list.contains(Css.CURSOR));
@@ -1029,13 +955,14 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 48
+	 * @testing-testMethodOrder 37
 	 */
 	public void testInlineSetUserSelectionTextSelectionDisabled() {
-		final Element element = Dom.getBody();
-		InlineStyle.setString(element, Css.USER_SELECT, Css.USER_SELECT_DISABLED);
+		final Element element = RootPanel.getBodyElement();
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
+		inlineStyle.setString(Css.USER_SELECT, Css.USER_SELECT_DISABLED);
 
-		 // ask the user to attempt to select some text ?
+		// ask the user to attempt to select some text ?
 		final Button button = new Button("Continue");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignored) {
@@ -1057,11 +984,12 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 49
+	 * @testing-testMethodOrder 38
 	 */
 	public void testInlineSetUserSelectionTextSelectionEnabled() {
-		final Element element = Dom.getBody();
-		InlineStyle.setString(element, Css.USER_SELECT, Css.USER_SELECT_ENABLED);
+		final Element element = RootPanel.getBodyElement();
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
+		inlineStyle.setString(Css.USER_SELECT, Css.USER_SELECT_ENABLED);
 
 		// ask the user to attempt to select some text ?
 		final Button button = new Button("Continue");
@@ -1084,206 +1012,212 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 50
+	 * @testing-testMethodOrder 39
 	 */
 	public void testInlineGetUserSelection() {
-		final Element element = Dom.getBody();
+		final Element element = RootPanel.getBodyElement();
 		final String propertyName = Css.USER_SELECT;
 
-		InlineStyle.setString(element, propertyName, ""); // enable
-		final String value0 = InlineStyle.getString(element, propertyName);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
+		inlineStyle.setString(propertyName, ""); // enable
+		final String value0 = inlineStyle.getString(propertyName);
 		Test.assertFalse("selection should be enabled. \"" + value0 + "\".", "none".equals(value0));
 
-		InlineStyle.setString(element, propertyName, "none");  // disable
-		final String value1 = InlineStyle.getString(element, propertyName);
+		inlineStyle.setString(propertyName, "none"); // disable
+		final String value1 = inlineStyle.getString(propertyName);
 		Test.assertEquals("selection should be disabled. \"" + value1 + "\".", "none", value1);
 
-		InlineStyle.setString(element, propertyName, "");  // enable
-		final String value2 = InlineStyle.getString(element, propertyName);
+		inlineStyle.setString(propertyName, ""); // enable
+		final String value2 = inlineStyle.getString(propertyName);
 		Test.assertFalse("selection should be enabled. \"" + value2 + "\".", "none".equals(value2));
 
-		InlineStyle.setString(element, propertyName, "none");  // disable
-		final String value3 = InlineStyle.getString(element, propertyName);
+		inlineStyle.setString(propertyName, "none"); // disable
+		final String value3 = inlineStyle.getString( propertyName);
 		Test.assertEquals("selection should be disabled. \"" + value3 + "\".", "none", value3);
 	}
 
 	/**
-	 * @testing-testMethodOrder 51
+	 * @testing-testMethodOrder 40
 	 */
 	public void testComputedGetUserSelection() {
-		final Element parent = Dom.getBody();
-		final Element child = DOM.getChild(Dom.getBody(), 0);
+		final Element parent = RootPanel.getBodyElement();
+		final Element child = DOM.getChild(RootPanel.getBodyElement(), 0);
 		final String propertyName = Css.USER_SELECT;
 
-		InlineStyle.setString(parent, propertyName, "");  //enable
-		final String value0 = ComputedStyle.getString(child, propertyName);
+		final InlineStyle parentInlineStyle = InlineStyle.getInlineStyle(parent);
+		final ComputedStyle childComputedStyle = ComputedStyle.getComputedStyle(child);
+		
+		parentInlineStyle.setString(propertyName, ""); // enable
+		final String value0 = childComputedStyle.getString(propertyName);
 		Test.assertNull("selection should be enabled. \"" + value0 + "\".", value0);
 
-		InlineStyle.setString(parent, propertyName, "none");  //disable
-		final String value1 = ComputedStyle.getString(child, propertyName);
+		parentInlineStyle.setString(propertyName, "none"); // disable
+		final String value1 = childComputedStyle.getString(propertyName);
 		Test.assertNotNull("selection should be disabled. \"" + value1 + "\".", value1);
 
-		InlineStyle.setString(parent, propertyName, "");  //enable
-		final String value2 = ComputedStyle.getString(child, propertyName);
+		parentInlineStyle.setString(propertyName, ""); // enable
+		final String value2 = childComputedStyle.getString(propertyName);
 		Test.assertNull("selection should be enabled. \"" + value2 + "\".", value2);
 
-		InlineStyle.setString(parent, propertyName, "none");  //disable
-		final String value3 = ComputedStyle.getString(child, propertyName);
+		parentInlineStyle.setString(propertyName, "none"); // disable
+		final String value3 = childComputedStyle.getString(propertyName);
 		Test.assertNotNull("selection should be disabled. \"" + value3 + "\".", value3);
 	}
 
 	/**
-	 * @testing-testMethodOrder 52
+	 * @testing-testMethodOrder 41
 	 */
 	public void testSetAbsolutePositionLeftTop() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testSetAbsolutePositionLeftTop");
+		child.setInnerHTML("testSetAbsolutePositionLeftTop");
 
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "orange");
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
-		InlineStyle.setString(child, Css.LEFT, "12px");
-		InlineStyle.setString(child, Css.TOP, "34px");
-		InlineStyle.setString(child, Css.POSITION, "absolute");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(child);
+		inlineStyle.setString( Css.BACKGROUND_COLOR, "orange");
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		inlineStyle.setString( Css.LEFT, "12px");
+		inlineStyle.setString( Css.TOP, "34px");
+		inlineStyle.setString( Css.POSITION, "absolute");
 
-		DOM.appendChild(parent, child);
-		DOM.scrollIntoView(child);
+		parent.appendChild(child);
+		child.scrollIntoView();
 
-		//ask the user to scroll and verify child is always correctly positioned...
+		// ask the user to scroll and verify child is always correctly
+		// positioned...
 		final Button button = new Button("Continue");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignored) {
 				button.removeFromParent();
 
-				final boolean passed = Window
-						.confirm("Did the absolute positioned orange element remain stuck to the top/left corner of the client window when scrolled ?");
+				final boolean passed = Window.confirm("Did the absolute positioned orange element remain stuck to the top/left corner of the client window when scrolled ?");
 				if (false == passed) {
-					Test
-							.fail("User confirmed that absolute position element was not stuck to the top/left corner of the client window when it was scrolled.");
+					Test.fail("User confirmed that absolute position element was not stuck to the top/left corner of the client window when it was scrolled.");
 				}
 				StyleTest.finishTest();
 			}
 		});
 		RootPanel.get().add(button);
 
-		Window
-				.alert("An element with a orange background has been absolutely positioned to the top/left, try scrolling and then click on CONTINUE...");
+		Window.alert("An element with a orange background has been absolutely positioned to the top/left, try scrolling and then click on CONTINUE...");
 		StyleTest.postponeCurrentTest(POSTPONE_DELAY);
 	}
 
 	/**
-	 * @testing-testMethodOrder 53
+	 * @testing-testMethodOrder 42
 	 */
 	public void testGetAbsolutePositionLeftTop() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testGetAbsolutePositionLeftTop");
+		child.setInnerHTML("testGetAbsolutePositionLeftTop");
 
-		InlineStyle.setString(child, Css.LEFT, "123px");
-		InlineStyle.setString(child, Css.TOP, "45px");
-		InlineStyle.setString(child, Css.POSITION, "absolute");
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "red");
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(child);
+		inlineStyle.setString(Css.LEFT, "123px");
+		inlineStyle.setString(Css.TOP, "45px");
+		inlineStyle.setString(Css.POSITION, "absolute");
+		inlineStyle.setString(Css.BACKGROUND_COLOR, "red");
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		final int left = InlineStyle.getInteger(child, Css.LEFT, CssUnit.PX, 0);
+		final int left = inlineStyle.getInteger(Css.LEFT, CssUnit.PX, 0);
 		Test.assertEquals("" + child, 123, left);
 
-		final int top = InlineStyle.getInteger(child, Css.TOP, CssUnit.PX, 0);
+		final int top = inlineStyle.getInteger(Css.TOP, CssUnit.PX, 0);
 		Test.assertEquals("" + child, 45, top);
 
-		final String position = InlineStyle.getString(child, Css.POSITION);
+		final String position = inlineStyle.getString(Css.POSITION);
 		Test.assertEquals("" + child, "absolute", position);
 	}
 
 	/**
-	 * @testing-testMethodOrder 54
+	 * @testing-testMethodOrder 43
 	 */
 	public void testSetAbsolutePositionRightBottom() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testSetAbsolutePositionRightBottom");
+		child.setInnerHTML("testSetAbsolutePositionRightBottom");
 
-		InlineStyle.setString(child, Css.RIGHT, "123px");
-		InlineStyle.setString(child, Css.BOTTOM, "56px");
-		InlineStyle.setString(child, Css.POSITION, "absolute");
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "green");
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle( child );
+		inlineStyle.setString( Css.RIGHT, "123px");
+		inlineStyle.setString( Css.BOTTOM, "56px");
+		inlineStyle.setString( Css.POSITION, "absolute");
+		inlineStyle.setString( Css.BACKGROUND_COLOR, "green");
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		DOM.scrollIntoView(child);
+		child.scrollIntoView();
 
-		// ask the user to scroll and verify child is always correctly positioned...
+		// ask the user to scroll and verify child is always correctly
+		// positioned...
 		final Button button = new Button("Continue");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignoyellow) {
 				button.removeFromParent();
 
-				final boolean passed = Window
-						.confirm("Did the absolute positioned green element remain stuck to the bottom/right corner of the client window when scrolled ?");
+				final boolean passed = Window.confirm("Did the absolute positioned green element remain stuck to the bottom/right corner of the client window when scrolled ?");
 				if (false == passed) {
-					Test
-							.fail("User confirmed that absolute position element was not stuck to the bottom/right corner of the client window when it was scrolled.");
+					Test.fail("User confirmed that absolute position element was not stuck to the bottom/right corner of the client window when it was scrolled.");
 				}
 				StyleTest.finishTest();
 			}
 		});
 		RootPanel.get().add(button);
 
-		Window
-				.alert("An element with a green background has been absolutely positioned to the bottom/right, try scrolling and then click on CONTINUE...");
+		Window.alert("An element with a green background has been absolutely positioned to the bottom/right, try scrolling and then click on CONTINUE...");
 		StyleTest.postponeCurrentTest(POSTPONE_DELAY);
 	}
 
 	/**
-	 * @testing-testMethodOrder 55
+	 * @testing-testMethodOrder 44
 	 */
 	public void testGetAbsolutePositionRightBottom() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testGetAbsolutePositionRightBottom");
+		child.setInnerHTML("testGetAbsolutePositionRightBottom");
 
-		InlineStyle.setString(child, Css.RIGHT, "123px");
-		InlineStyle.setString(child, Css.BOTTOM, "56px");
-		InlineStyle.setString(child, Css.POSITION, "absolute");
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "yellow");
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle( child );
+		inlineStyle.setString(Css.RIGHT, "123px");
+		inlineStyle.setString(Css.BOTTOM, "56px");
+		inlineStyle.setString(Css.POSITION, "absolute");
+		inlineStyle.setString(Css.BACKGROUND_COLOR, "yellow");
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		final int right = InlineStyle.getInteger(child, Css.RIGHT, CssUnit.PX, 0);
+		final int right = inlineStyle.getInteger(Css.RIGHT, CssUnit.PX, 0);
 		Test.assertEquals("" + child, 123, right);
 
-		final int bottom = InlineStyle.getInteger(child, Css.BOTTOM, CssUnit.PX, 0);
+		final int bottom = inlineStyle.getInteger(Css.BOTTOM, CssUnit.PX, 0);
 		Test.assertEquals("" + child, 56, bottom);
 
-		final String position = InlineStyle.getString(child, Css.POSITION);
+		final String position = inlineStyle.getString(Css.POSITION);
 		Test.assertEquals("" + child, "absolute", position);
 	}
 
 	/**
-	 * @testing-testMethodOrder 56
+	 * @testing-testMethodOrder 45
 	 */
 	public void testSetFixedPositionLeftTop() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testSetFixedPositionLeftTop");
+		child.setInnerHTML("testSetFixedPositionLeftTop");
 
-		InlineStyle.setString(child, Css.COLOR, "blue");
-		InlineStyle.setString(child, Css.LEFT, "12px");
-		InlineStyle.setString(child, Css.TOP, "34px");
-		InlineStyle.setString(child, Css.POSITION, "fixed");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(child);
+		inlineStyle.setString( Css.COLOR, "blue");
+		inlineStyle.setString( Css.LEFT, "12px");
+		inlineStyle.setString( Css.TOP, "34px");
+		inlineStyle.setString( Css.POSITION, "fixed");
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "red");
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		inlineStyle.setString( Css.BACKGROUND_COLOR, "red");
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
 
-		DOM.scrollIntoView(child);
+		child.scrollIntoView();
 
-		 //ask the user to scroll and verify child is always correctly positioned...
+		// ask the user to scroll and verify child is always correctly
+		// positioned...
 		final Button button = new Button("Continue");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignored) {
@@ -1305,50 +1239,53 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 57
+	 * @testing-testMethodOrder 46
 	 */
 	public void testGetFixedPositionLeftTop() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testGetFixedPositionLeftTop");
+		child.setInnerHTML("testGetFixedPositionLeftTop");
 
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
-		InlineStyle.setString(child, Css.LEFT, "123px");
-		InlineStyle.setString(child, Css.TOP, "45px");
-		InlineStyle.setString(child, Css.POSITION, "fixed");
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "red");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(child);
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		inlineStyle.setString( Css.LEFT, "123px");
+		inlineStyle.setString( Css.TOP, "45px");
+		inlineStyle.setString( Css.POSITION, "fixed");
+		inlineStyle.setString( Css.BACKGROUND_COLOR, "red");
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		final int left = InlineStyle.getInteger(child, Css.LEFT, CssUnit.PX, 0);
+		final int left = inlineStyle.getInteger(Css.LEFT, CssUnit.PX, 0);
 		Test.assertEquals("" + child, 123, left);
 
-		final int top = InlineStyle.getInteger(child, Css.TOP, CssUnit.PX, 0);
+		final int top = inlineStyle.getInteger(Css.TOP, CssUnit.PX, 0);
 		Test.assertEquals("" + child, 45, top);
 
-		final String position = InlineStyle.getString(child, Css.POSITION);
+		final String position = inlineStyle.getString(Css.POSITION);
 		Test.assertEquals("" + child, "fixed", position);
 	}
 
 	/**
-	 * @testing-testMethodOrder 58
+	 * @testing-testMethodOrder 47
 	 */
 	public void testSetFixedPositionRightBottom() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testSetFixedPositionRightBottom");
+		child.setInnerHTML("testSetFixedPositionRightBottom");
 
-		InlineStyle.setString(child, Css.RIGHT, "12px");
-		InlineStyle.setString(child, Css.BOTTOM, "34px");
-		InlineStyle.setString(child, Css.POSITION, "fixed");
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "yellow");
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(child);
+		inlineStyle.setString( Css.RIGHT, "12px");
+		inlineStyle.setString( Css.BOTTOM, "34px");
+		inlineStyle.setString( Css.POSITION, "fixed");
+		inlineStyle.setString( Css.BACKGROUND_COLOR, "yellow");
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		DOM.scrollIntoView(child);
+		child.scrollIntoView();
 
-		// ask the user to scroll and verify child is always correctly positioned...
+		// ask the user to scroll and verify child is always correctly
+		// positioned...
 		final Button button = new Button("Continue");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignoyellow) {
@@ -1365,61 +1302,65 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 		});
 		RootPanel.get().add(button);
 
-		Window.alert("An element with a yellow background has been fixed to the bottom/right, try scrolling and then click on CONTINUE...");
+		Window
+				.alert("An element with a yellow background has been fixed to the bottom/right, try scrolling and then click on CONTINUE...");
 		StyleTest.postponeCurrentTest(POSTPONE_DELAY);
 	}
 
 	/**
-	 * @testing-testMethodOrder 59
+	 * @testing-testMethodOrder 48
 	 */
 	public void testGetFixedPositionRightBottom() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testGetFixedPositionRightBottom");
+		child.setInnerHTML("testGetFixedPositionRightBottom");
 
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
-		InlineStyle.setString(child, Css.RIGHT, "123px");
-		InlineStyle.setString(child, Css.BOTTOM, "45px");
-		InlineStyle.setString(child, Css.POSITION, "fixed");
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "yellow");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(child);
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		inlineStyle.setString( Css.RIGHT, "123px");
+		inlineStyle.setString( Css.BOTTOM, "45px");
+		inlineStyle.setString( Css.POSITION, "fixed");
+		inlineStyle.setString( Css.BACKGROUND_COLOR, "yellow");
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		final int right = InlineStyle.getInteger(child, Css.RIGHT, CssUnit.PX, 0);
+		final int right = inlineStyle.getInteger(Css.RIGHT, CssUnit.PX, 0);
 		Test.assertEquals("" + child, 123, right);
 
-		final int bottom = InlineStyle.getInteger(child, Css.BOTTOM, CssUnit.PX, 0);
+		final int bottom = inlineStyle.getInteger(Css.BOTTOM, CssUnit.PX, 0);
 		Test.assertEquals("" + child, 45, bottom);
 
-		final String position = InlineStyle.getString(child, Css.POSITION);
+		final String position = inlineStyle.getString(Css.POSITION);
 		Test.assertEquals("" + child, "fixed", position);
 	}
 
 	/**
-	 * @testing-testMethodOrder 60
+	 * @testing-testMethodOrder 49
 	 */
 	public void testSetFixedPositionRightBottomThenSetAbsolutePosition() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testSetFixedPositionRightBottomThenSetAbsolutePosition - bottom right fixed positioned");
+		child.setInnerHTML("testSetFixedPositionRightBottomThenSetAbsolutePosition - bottom right fixed positioned");
 
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
-		InlineStyle.setString(child, Css.RIGHT, "234px");
-		InlineStyle.setString(child, Css.BOTTOM, "56px");
-		InlineStyle.setString(child, Css.POSITION, "fixed");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(child);
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		inlineStyle.setString( Css.RIGHT, "234px");
+		inlineStyle.setString( Css.BOTTOM, "56px");
+		inlineStyle.setString( Css.POSITION, "fixed");
 
 		DeferredCommand.addCommand(new Command() {
 			public void execute() {
-				InlineStyle.setString(child, Css.POSITION, "absolute");
-				DOM.setInnerHTML(child, "testSetFixedPositionRightBottomThenSetAbsolutePosition - bottom right absolute positioned");
+				inlineStyle.setString( Css.POSITION, "absolute");
+				child.setInnerHTML("testSetFixedPositionRightBottomThenSetAbsolutePosition - bottom right absolute positioned");
 			}
 		});
 
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "lightBlue");
+		inlineStyle.setString( Css.BACKGROUND_COLOR, "lightBlue");
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		 //ask the user to scroll and verify child is always correctlypositioned...
+		// ask the user to scroll and verify child is always
+		// correctlypositioned...
 		final Button button = new Button("Continue");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignore) {
@@ -1442,23 +1383,25 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 61
+	 * @testing-testMethodOrder 50
 	 */
 	public void testSetFixedPositionThenSetCoordinates() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testSetFixedPositionThenSetCoordinates");
+		child.setInnerHTML("testSetFixedPositionThenSetCoordinates");
 
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
-		InlineStyle.setString(child, Css.POSITION, "fixed");
-		InlineStyle.setString(child, Css.LEFT, "345px");
-		InlineStyle.setString(child, Css.TOP, "67px");
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(child);
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		inlineStyle.setString( Css.POSITION, "fixed");
+		inlineStyle.setString( Css.LEFT, "345px");
+		inlineStyle.setString( Css.TOP, "67px");
 
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "olive");
+		inlineStyle.setString( Css.BACKGROUND_COLOR, "olive");
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		 //ask the user to scroll and verify child is always correctlypositioned...
+		// ask the user to scroll and verify child is always
+		// correctlypositioned...
 		final Button button = new Button("Continue");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignore) {
@@ -1480,28 +1423,30 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	}
 
 	/**
-	 * @testing-testMethodOrder 62
+	 * @testing-testMethodOrder 51
 	 */
 	public void testSetFixedPositionAndChangeCoordinatesTwice() {
-		final Element parent = Dom.getBody();
+		final Element parent = RootPanel.getBodyElement();
 		final Element child = DOM.createSpan();
-		DOM.setInnerHTML(child, "testSetFixedPositionAndChangeCoordinatesTwice");
+		child.setInnerHTML("testSetFixedPositionAndChangeCoordinatesTwice");
 
-		InlineStyle.setInteger(child, Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
-		InlineStyle.setString(child, Css.POSITION, "fixed");
-		InlineStyle.setString(child, Css.LEFT, "34px");
-		InlineStyle.setString(child, Css.BOTTOM, "89px");
-		InlineStyle.remove(child, Css.LEFT);
-		InlineStyle.remove(child, Css.BOTTOM);
+		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(child);
+		inlineStyle.setInteger(Css.Z_INDEX, this.nextZIndex(), CssUnit.NONE);
+		inlineStyle.setString( Css.POSITION, "fixed");
+		inlineStyle.setString( Css.LEFT, "34px");
+		inlineStyle.setString( Css.BOTTOM, "89px");
+		inlineStyle.remove(Css.LEFT);
+		inlineStyle.remove(Css.BOTTOM);
 
-		InlineStyle.setString(child, Css.RIGHT, "34px");
-		InlineStyle.setString(child, Css.TOP, "89px");
+		inlineStyle.setString( Css.RIGHT, "34px");
+		inlineStyle.setString( Css.TOP, "89px");
 
-		InlineStyle.setString(child, Css.BACKGROUND_COLOR, "wheat");
+		inlineStyle.setString( Css.BACKGROUND_COLOR, "wheat");
 
-		DOM.appendChild(parent, child);
+		parent.appendChild(child);
 
-		//ask the user to scroll and verify child is always correctlypositioned...
+		// ask the user to scroll and verify child is always
+		// correctlypositioned...
 		final Button button = new Button("Continue");
 		button.addClickListener(new ClickListener() {
 			public void onClick(final Widget ignore) {
@@ -1530,16 +1475,20 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	 */
 	protected Element createDivAndAddToDocument() {
 		final Element div = DOM.createDiv();
-		DOM.setInnerHTML(div, this.getCurrentTestName());
+		div.setInnerHTML(this.getCurrentTestName());
 		DOM.setStyleAttribute(div, Css.BACKGROUND_COLOR, "lime");
 		this.addElement(div);
 		return div;
 	}
 
 	protected void scrollIntoView(final Element element) {
-		DOM.scrollIntoView(element);
-		Dom.setFocus(element);
+		element.scrollIntoView();
+		this.invokeSetFocus(element);
 	}
+
+	native protected void invokeSetFocus(final Element element)/*-{
+			element.setFocus( true );
+		}-*/;
 
 	protected void onTestStarted(final Test test) {
 		super.onTestStarted(test);
@@ -1558,15 +1507,5 @@ public class StyleTest extends WebPageTestRunner implements EntryPoint {
 	int nextZIndex() {
 		this.zIndex++;
 		return this.zIndex;
-	}
-	
-	class TestComputedStyle extends ComputedStyle{
-		TestComputedStyle( final Element element ){
-			super( element );
-		}
-		
-		public String[] getPropertyNames(){
-			return super.getPropertyNames();
-		}
 	}
 }

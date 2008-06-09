@@ -16,11 +16,12 @@
 package rocket.style.client.support;
 
 /**
- * This class exists primarily to assist the InternetExplorer6StyleSupport
- * class with building and extracting expressions to simulate fixed positioning
- * for IE.
+ * This class exists primarily to assist the InternetExplorer6StyleSupport class
+ * with building and extracting expressions to simulate fixed positioning for
+ * IE.
  * 
- * This class is only public to enable it to be tested by {@link rocket.style.test.dynamicexpression.DynamicExpressionTestCase}
+ * This class is only public to enable it to be tested by
+ * {@link rocket.style.test.dynamicexpression.DynamicExpressionTestCase}
  * 
  * @author Miroslav Pokorny
  */
@@ -82,18 +83,19 @@ public class DynamicExpression {
 	 * @return
 	 */
 	public String getValue(final String expressionWithValue) {
-//		String value = null;
-//		
-//		if( expressionWithValue.startsWith("/*") && expressionWithValue.length() > 4 ){
-//			final int starSlash = expressionWithValue.indexOf( "*/", 2 );
-//			if( -1 != starSlash ){
-//				value = expressionWithValue.substring( 2, starSlash );
-//			}			
-//		}
-//		
-//		
-//		return value;
-//		
+		// String value = null;
+		//		
+		// if( expressionWithValue.startsWith("/*") &&
+		// expressionWithValue.length() > 4 ){
+		// final int starSlash = expressionWithValue.indexOf( "*/", 2 );
+		// if( -1 != starSlash ){
+		// value = expressionWithValue.substring( 2, starSlash );
+		// }
+		// }
+		//		
+		//		
+		// return value;
+		//		
 		final String expression = this.getExpression();
 		String value = null;
 
@@ -136,18 +138,18 @@ public class DynamicExpression {
 			int expressionIndex = 0;
 			int expressionWithValueIndex = 0;
 
-			while ( true ) {
+			while (true) {
 				boolean endOfExpressionReached = expressionIndex == expressionLength;
 				boolean endOfExpressionWithValueReached = expressionWithValueIndex == expressionWithValueLength;
-				if( endOfExpressionReached || endOfExpressionWithValueReached ){
+				if (endOfExpressionReached || endOfExpressionWithValueReached) {
 					equal = endOfExpressionReached == endOfExpressionWithValueReached;
 					break;
 				}
-				
+
 				while (expressionIndex < expressionLength && expressionWithValueIndex < expressionWithValueLength) {
 					final char c = expression.charAt(expressionIndex);
 					expressionIndex++;
-					
+
 					if (c == StyleSupportConstants.DYNAMIC_EXPRESSION_PLACEHOLDER) {
 						break;
 					}
@@ -158,24 +160,24 @@ public class DynamicExpression {
 						equal = false;
 						break;
 					}
-					expressionWithValueIndex++;				
-				}				
+					expressionWithValueIndex++;
+				}
 
 				boolean skipMinus = true;
 				while (expressionWithValueIndex < expressionWithValueLength) {
 					char d = expressionWithValue.charAt(expressionWithValueIndex);
 					// skip along until a + or - is hit...
-					if (d == '+'){
+					if (d == '+') {
 						break;
 					}
-					if( skipMinus == false && d == '-'){
+					if (skipMinus == false && d == '-') {
 						break;
 					}
-						
+
 					skipMinus = false;
 					expressionWithValueIndex++;
 				}
-			}			
+			}
 		}
 
 		return equal;

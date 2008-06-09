@@ -146,7 +146,7 @@ public class StyleSupportConstants {
 	final static String CLIENT_WIDTH = "clientWidth";
 
 	final static String CLIENT_HEIGHT = "clientHeight";
-	
+
 	// 0 - browser user agent.
 	final static String DYNAMIC_EXPRESSIONS_USED_TO_EMULATE_FIXED_POSITIONING = "This version of IE ${0} does not support position[fixed], therefore fixed positioning will be emulated via dynamic expressions";
 }
