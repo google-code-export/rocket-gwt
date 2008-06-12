@@ -46,7 +46,7 @@ import com.google.gwt.user.client.ui.Widget;
  * the widget automatically updating itself creating tiles using the
  * {@link #createTile0(int, int)} method.
  * </p>
- * 
+ *
  * <p>
  * Usage and performance tips.
  * <ul>
@@ -58,7 +58,7 @@ import com.google.gwt.user.client.ui.Widget;
  * <li>The {@link #createTile0(int, int)} does not need to attempt to cache it
  * is only called when required.</li>
  * </p>
- * 
+ *
  * <h3>More about Tile caching</h3>
  * <p>
  * A cache is kept of all tiles that are within the viewable viewport as well as
@@ -73,7 +73,7 @@ import com.google.gwt.user.client.ui.Widget;
  * <li>{@link #getBottomGutter()}</li>
  * </li>
  * </p>
- * 
+ *
  * @author Miroslav Pokorny
  */
 abstract public class Viewport extends CompositeWidget {
@@ -138,7 +138,7 @@ abstract public class Viewport extends CompositeWidget {
 
 	/**
 	 * This method is fired whenever a mouse down occurs.
-	 * 
+	 *
 	 * @param event
 	 */
 	protected void onMouseDown(final MouseDownEvent event) {
@@ -269,7 +269,7 @@ abstract public class Viewport extends CompositeWidget {
 	/**
 	 * This method is called when mouse dragging is active and the user lets go
 	 * of the mouse.
-	 * 
+	 *
 	 * @param event
 	 *            The event
 	 */
@@ -285,10 +285,10 @@ abstract public class Viewport extends CompositeWidget {
 	/**
 	 * This method is called when mouse dragging is active and the mouse moves
 	 * outside the viewport area.
-	 * 
+	 *
 	 * Currently this action does nothing, the viewport is not moved nor is
 	 * dragging cancelled.
-	 * 
+	 *
 	 * @param event
 	 *            The event
 	 */
@@ -306,7 +306,7 @@ abstract public class Viewport extends CompositeWidget {
 
 	/**
 	 * This method is called when a dragging mouse moves back over the viewport
-	 * 
+	 *
 	 * @param event
 	 *            The event
 	 */
@@ -395,7 +395,7 @@ abstract public class Viewport extends CompositeWidget {
 	 * <li>{@link #getTopBoundary()}></li>
 	 * <li>{@link #getBottomBoundary()}></li>
 	 * </ul>
-	 * 
+	 *
 	 * @param tile
 	 *            The tile being tested.
 	 * @return True if the tile should be removed and lost
@@ -407,7 +407,7 @@ abstract public class Viewport extends CompositeWidget {
 
 		while (true) {
 			final int x = this.getTileLeft(tile);
-			if (x < this.getLeftBoundary()) {
+			if (x + this.getTileWidth() < this.getLeftBoundary()) {
 				remove = true;
 				break;
 			}
@@ -417,7 +417,7 @@ abstract public class Viewport extends CompositeWidget {
 			}
 
 			final int y = this.getTileTop(tile);
-			if (y < this.getTopBoundary()) {
+			if (y + this.getTileHeight() < this.getTopBoundary()) {
 				remove = true;
 				break;
 			}
@@ -500,10 +500,10 @@ abstract public class Viewport extends CompositeWidget {
 
 	/**
 	 * This factory method is called each tile a tile needs to be created.
-	 * 
+	 *
 	 * Note that the location of the tile is passed as a column row coordinate
 	 * and not actual pixels coordinates.
-	 * 
+	 *
 	 * @param column
 	 *            The column that the tile appears in.
 	 * @param row
@@ -529,7 +529,7 @@ abstract public class Viewport extends CompositeWidget {
 	/**
 	 * Sub classes must override this method to return the appropriate widget
 	 * for the given tile coordinates
-	 * 
+	 *
 	 * @param column
 	 *            The column
 	 * @param row
