@@ -596,6 +596,11 @@ abstract public class Viewport extends CompositeWidget {
 		return panel;
 	}
 
+	protected Widget getTile(final int column, final int row) {
+		final TileDivPanel innerPanel = this.getInnerPanel();
+	    return innerPanel.getTile(column, row);
+	}
+
 	/**
 	 * This DivPanel includes a helper method that adds the ability to retrieve
 	 * a tile given its column and row coordinates.
