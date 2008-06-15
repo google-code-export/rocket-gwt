@@ -51,7 +51,7 @@ public class TypeMatcherTestCase extends TestCase {
 	Type createType(final String name) {
 
 		return new Type() {
-			public Constructor findConstructor(List parameterTypes) {
+			public Constructor findConstructor(List<Type> parameterTypes) {
 				throw new UnsupportedOperationException();
 			}
 
@@ -59,11 +59,11 @@ public class TypeMatcherTestCase extends TestCase {
 				throw new UnsupportedOperationException();
 			}
 
-			public Method findMethod(String methodName, List parameterTypes) {
+			public Method findMethod(String methodName, List<Type> parameterTypes) {
 				throw new UnsupportedOperationException();
 			}
 
-			public Method findMostDerivedMethod(String methodName, List parameterTypes) {
+			public Method findMostDerivedMethod(String methodName, List<Type> parameterTypes) {
 				throw new UnsupportedOperationException();
 			}
 
@@ -71,11 +71,11 @@ public class TypeMatcherTestCase extends TestCase {
 				throw new UnsupportedOperationException();
 			}
 
-			public Constructor getConstructor(List parameterTypes) {
+			public Constructor getConstructor(List<Type> parameterTypes) {
 				throw new UnsupportedOperationException();
 			}
 
-			public Set getConstructors() {
+			public Set<Constructor> getConstructors() {
 				throw new UnsupportedOperationException();
 			}
 
@@ -83,11 +83,11 @@ public class TypeMatcherTestCase extends TestCase {
 				throw new UnsupportedOperationException();
 			}
 
-			public Set getFields() {
+			public Set<Field> getFields() {
 				throw new UnsupportedOperationException();
 			}
 
-			public Set getInterfaces() {
+			public Set<Type> getInterfaces() {
 				throw new UnsupportedOperationException();
 			}
 
@@ -95,23 +95,19 @@ public class TypeMatcherTestCase extends TestCase {
 				throw new UnsupportedOperationException();
 			}
 
-			public Method getMethod(String methodName, List parameterTypes) {
+			public Method getMethod(String methodName, List<Type> parameterTypes) {
 				throw new UnsupportedOperationException();
 			}
 
-			public Set getMethods() {
+			public Set<Method> getMethods() {
 				throw new UnsupportedOperationException();
 			}
 
-			public Method getMostDerivedMethod(String methodName, List parameterTypes) {
+			public Method getMostDerivedMethod(String methodName, List<Type> parameterTypes) {
 				throw new UnsupportedOperationException();
 			}
 
-			public String getName() {
-				return name;
-			}
-
-			public Set getNestedTypes() {
+			public Set<Type> getNestedTypes() {
 				throw new UnsupportedOperationException();
 			}
 
@@ -119,6 +115,14 @@ public class TypeMatcherTestCase extends TestCase {
 				throw new UnsupportedOperationException();
 			}
 
+			public String getName() {
+				return name;
+			}
+			
+			public Type getRawType(){
+				return this;
+			}
+			
 			public String getRuntimeName() {
 				throw new UnsupportedOperationException();
 			}
@@ -127,7 +131,7 @@ public class TypeMatcherTestCase extends TestCase {
 				throw new UnsupportedOperationException();
 			}
 
-			public Set getSubTypes() {
+			public Set<Type> getSubTypes() {
 				throw new UnsupportedOperationException();
 			}
 
@@ -175,7 +179,7 @@ public class TypeMatcherTestCase extends TestCase {
 				throw new UnsupportedOperationException();
 			}
 
-			public List getMetadataValues(String name) {
+			public List<String> getMetadataValues(String name) {
 				throw new UnsupportedOperationException();
 			}
 

@@ -53,7 +53,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 		};
 
 		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
-		final Set serializableTypes = context.getSerializableTypes();
+		final Set<Type> serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
 
@@ -84,7 +84,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 		};
 
 		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
-		final Set serializableTypes = context.getSerializableTypes();
+		final Set<Type> serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
 
@@ -115,7 +115,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 		};
 
 		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
-		final Set serializableTypes = context.getSerializableTypes();
+		final Set<Type> serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
 
@@ -149,7 +149,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 		};
 
 		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
-		final Set serializableTypes = context.getSerializableTypes();
+		final Set<Type> serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
 
@@ -184,7 +184,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 		};
 
 		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
-		final Set serializableTypes = context.getSerializableTypes();
+		final Set<Type> serializableTypes = context.getSerializableTypes();
 
 		try {
 			final Map readersWriters = finder.build(serializableTypes);
@@ -214,7 +214,7 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 		};
 
 		final ObjectReaderOrWriterFinder finder = this.createFinder(context.getObjectReaderWriter());
-		final Set serializableTypes = context.getSerializableTypes();
+		final Set<Type> serializableTypes = context.getSerializableTypes();
 		final Map readersWriters = finder.build(serializableTypes);
 		assertNotNull(readersWriters);
 
@@ -244,7 +244,9 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 	static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 	static abstract class TestGeneratorContext extends JavaGeneratorContext {
-		protected Type createClassType(final String name) {
+		
+		@Override
+		protected Type createType(final String name) {
 			JavaClassTypeAdapter type = null;
 
 			while (true) {
@@ -383,8 +385,8 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 
 		}
 
-		Set getSerializableTypes() {
-			final Set types = new HashSet();
+		Set<Type> getSerializableTypes() {
+			final Set<Type> types = new HashSet<Type>();
 			types.add(this.getType(CONCRETE_CLASS));
 			types.add(this.getType(CONCRETE_SUB_CLASS_1));
 			types.add(this.getType(CONCRETE_SUB_CLASS_2));
@@ -441,8 +443,8 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 	static String OBJECT = Object.class.getName();
 
 	static abstract class TestJavaClassTypeAdapter extends JavaClassTypeAdapter {
-		protected Set createSubTypes() {
-			final Set subTypes = new HashSet();
+		protected Set<Type> createSubTypes() {
+			final Set<Type> subTypes = new HashSet<Type>();
 			final String[] subTypeNames = this.getSubTypeNames();
 			for (int i = 0; i < subTypeNames.length; i++) {
 				final String subTypeName = subTypeNames[i];
@@ -454,8 +456,8 @@ public class ObjectReaderOrWriterFinderTestCase extends TestCase {
 
 		abstract String[] getSubTypeNames();
 
-		public List getMetadataValues(final String annotation) {
-			List values = null;
+		public List<String> getMetadataValues(final String annotation) {
+			List<String> values = null;
 			while (true) {
 				if (SerializationConstants.SERIALIZABLE_TYPE.equals(annotation)) {
 					values = Collections.nCopies(1, this.getSerializableTypeName());
