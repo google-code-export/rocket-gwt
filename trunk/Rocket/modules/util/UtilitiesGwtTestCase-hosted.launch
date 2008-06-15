@@ -29,7 +29,7 @@
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Rocket"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-style DETAILED"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www-test -style DETAILED&quot;&#13;&#10;-Xmx256M&#13;&#10;-Dgwt.hybrid"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-out www -style DETAILED&quot;&#13;&#10;-Xmx256M&#13;&#10;-Dgwt.hybrid"/>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
 <booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit3"/>
