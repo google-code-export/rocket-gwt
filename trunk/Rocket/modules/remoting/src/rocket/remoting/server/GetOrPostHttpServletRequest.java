@@ -71,39 +71,6 @@ abstract class GetOrPostHttpServletRequest extends HttpServletRequestWrapper imp
 		this.headers = headers;
 	}
 
-	// public String getQueryString() {
-	// final String url = this.getUrl();
-	// final int queryStringIndex = url.indexOf('?');
-	//
-	// return queryStringIndex == -1 ? url : url.substring(queryStringIndex +
-	// 1);
-	// }
-	//
-	// public String getRequestURI() {
-	// return this.getUrl();
-	// }
-	//
-	// public StringBuffer getRequestURL() {
-	// return new StringBuffer(this.getUrl());
-	// }
-	//
-	// public String getPathInfo() {
-	// String pathInfo = null;
-	// if (this.hasServletPath()) {
-	// pathInfo = this.getUrl().substring(this.getServletPath().length());
-	// }
-	// return pathInfo;
-	// }
-	//
-	// public String getPathTranslated() {
-	// return this.hasServletPath() ? super.getRealPath(this.getServletPath()) :
-	// null;
-	// }
-	//
-	// protected boolean hasServletPath() {
-	// return false;
-	// }
-
 	private String characterEncoding;
 
 	public String getCharacterEncoding() {
@@ -165,7 +132,7 @@ abstract class GetOrPostHttpServletRequest extends HttpServletRequestWrapper imp
 	 * 
 	 * @return
 	 */
-	public Map getParameterMap() {
+	public Map<String,String[]> getParameterMap() {
 		if (false == this.hasParameterMap()) {
 			this.createParameterMap();
 		}
@@ -178,18 +145,18 @@ abstract class GetOrPostHttpServletRequest extends HttpServletRequestWrapper imp
 		return this.parameterMap != null;
 	}
 
-	protected void setParameterMap(final Map parameterMap) {
+	protected void setParameterMap(final Map<String,String[]> parameterMap) {
 		Checker.notNull("parameter:parameterMap", parameterMap);
 		this.parameterMap = parameterMap;
 	}
 
 	protected void createParameterMap() {
-		final Map view = new HashMap();
+		final Map<String,String[]> view = new HashMap<String,String[]>();
 		final RequestParameters parameters = this.getRequestParameters();
-		final Iterator keys = parameters.names();
+		final Iterator<String> keys = parameters.names();
 
 		while (keys.hasNext()) {
-			final String key = (String) keys.next();
+			final String key = keys.next();
 			final String[] value = parameters.getValues(key);
 			view.put(key, value);
 		}

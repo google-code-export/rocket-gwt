@@ -34,22 +34,22 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class RequestParameters implements IsSerializable, Serializable {
 
 	public RequestParameters() {
-		this.setMultiValueMap(new MultiValueMap());
+		this.setMultiValueMap(new MultiValueMap<String,String>());
 	}
 
 	/**
 	 * A MultiValueMap is used to hold parameter names and their associated list
 	 * of values.
 	 */
-	private MultiValueMap multiValueMap;
+	private MultiValueMap<String,String> multiValueMap;
 
-	protected MultiValueMap getMultiValueMap() {
+	protected MultiValueMap<String,String> getMultiValueMap() {
 		Checker.notNull("field:map", multiValueMap);
 
 		return multiValueMap;
 	}
 
-	protected void setMultiValueMap(final MultiValueMap multiValueMap) {
+	protected void setMultiValueMap(final MultiValueMap<String,String> multiValueMap) {
 		Checker.notNull("parameter:multiValueMap", multiValueMap);
 
 		this.multiValueMap = multiValueMap;
@@ -66,12 +66,12 @@ public class RequestParameters implements IsSerializable, Serializable {
 	}
 
 	public String getValue(final String name) {
-		return (String) this.getMultiValueMap().getFirstValue(name);
+		return (String)this.getMultiValueMap().getFirstValue(name);
 	}
 
-	protected List getValueAsList(final String name) {
+	protected List<String> getValueAsList(final String name) {
 		Checker.notEmpty("parameter:name", name);
-		return (List) this.getMultiValueMap().getValuesList(name);
+		return this.getMultiValueMap().getValuesList(name);
 	}
 
 	public String[] getValues(final String name) {
@@ -116,7 +116,7 @@ public class RequestParameters implements IsSerializable, Serializable {
 		this.getMultiValueMap().add(name, value);
 	}
 
-	public Iterator names() {
+	public Iterator<String> names() {
 		return this.getMultiValueMap().keys();
 	}
 
@@ -133,17 +133,17 @@ public class RequestParameters implements IsSerializable, Serializable {
 	public String asString() {
 		final StringBuffer data = new StringBuffer();
 
-		final Iterator names = this.names();
+		final Iterator<String> names = this.names();
 		boolean addSeparator = false;
 
 		while (names.hasNext()) {
 			final String name = (String) names.next();
-			final List valuesList = this.getValueAsList(name);
+			final List<String> valuesList = this.getValueAsList(name);
 			if (null == valuesList) {
 				continue;
 			}
 
-			final Iterator values = valuesList.iterator();
+			final Iterator<String> values = valuesList.iterator();
 			while (values.hasNext()) {
 				if (addSeparator) {
 					data.append("&");
@@ -152,7 +152,7 @@ public class RequestParameters implements IsSerializable, Serializable {
 
 				data.append(name);
 				data.append('=');
-				data.append(URL.encodeComponent((String) values.next()));
+				data.append(URL.encodeComponent(values.next()));
 			}
 		}
 
