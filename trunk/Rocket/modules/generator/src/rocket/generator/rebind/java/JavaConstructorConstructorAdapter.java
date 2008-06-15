@@ -42,7 +42,7 @@ public class JavaConstructorConstructorAdapter extends AbstractConstructor imple
 	}
 
 	protected Visibility createVisibility() {
-		return JavaAdapterHelper.getVisibility(this.getJavaConstructor().getModifiers());
+		return JavaGeneratorContext.getVisibility(this.getJavaConstructor().getModifiers());
 	}
 
 	protected List<ConstructorParameter> createParameters() {
@@ -64,7 +64,8 @@ public class JavaConstructorConstructorAdapter extends AbstractConstructor imple
 
 	@SuppressWarnings("unchecked")
 	protected Set<Type> createThrownTypes() {
-		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaConstructor().getExceptionTypes());
+		final JavaGeneratorContext context = (JavaGeneratorContext) this.getGeneratorContext();
+		return context.asTypes(this.getJavaConstructor().getExceptionTypes());
 	}
 
 	@SuppressWarnings("unchecked")

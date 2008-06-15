@@ -151,9 +151,9 @@ abstract class NewConcreteOrInterfaceType extends NewConcreteNestedTypeOrInterfa
 	protected void addImplementedInterfacesToClassSourceFileComposerFactory(final ClassSourceFileComposerFactory composerFactory) {
 		Checker.notNull("parameter:composerFactory", composerFactory);
 
-		final Iterator interfaces = this.getInterfaces().iterator();
+		final Iterator<Type> interfaces = this.getInterfaces().iterator();
 		while (interfaces.hasNext()) {
-			final Type interfacee = (Type) interfaces.next();
+			final Type interfacee = interfaces.next();
 			composerFactory.addImplementedInterface(interfacee.getName());
 		}
 	}

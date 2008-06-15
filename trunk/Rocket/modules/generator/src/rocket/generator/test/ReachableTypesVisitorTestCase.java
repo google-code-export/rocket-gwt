@@ -331,7 +331,8 @@ public class ReachableTypesVisitorTestCase extends TestCase {
 	GeneratorContext createGeneratorContext() {
 		return new JavaGeneratorContext() {
 
-			protected Type createClassType(final String name) {
+			@Override
+			protected Type createType(final String name) {
 				TestJavaClassTypeAdapter adapter = null;
 
 				Class javaClass = null;

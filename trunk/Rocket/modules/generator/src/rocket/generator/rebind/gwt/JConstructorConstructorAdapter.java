@@ -96,7 +96,8 @@ public class JConstructorConstructorAdapter extends AbstractConstructor {
 	}
 
 	protected Set<Type> createThrownTypes() {
-		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJConstructor().getThrows());
+		final TypeOracleGeneratorContext typeOracleGeneratorContext = (TypeOracleGeneratorContext) this.getGeneratorContext(); 
+		return typeOracleGeneratorContext.asTypes(this.getJConstructor().getThrows());
 	}
 
 	private JConstructor jConstructor;

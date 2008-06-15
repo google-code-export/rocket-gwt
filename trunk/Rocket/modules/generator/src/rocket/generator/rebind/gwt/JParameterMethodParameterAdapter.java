@@ -48,7 +48,8 @@ public class JParameterMethodParameterAdapter extends AbstractMethodParameter {
 	}
 
 	protected Type createType() {
-		return this.getGeneratorContext().getType(this.getJParameter().getType().getErasedType().getQualifiedSourceName());
+		final TypeOracleGeneratorContext context = (TypeOracleGeneratorContext) this.getGeneratorContext();
+		return context.getType(this.getJParameter().getType());
 	}
 
 	@Override

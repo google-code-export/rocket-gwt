@@ -44,7 +44,7 @@ public class JavaMethodMethodAdapter extends AbstractMethod implements Method {
 	}
 
 	public Visibility createVisibility() {
-		return JavaAdapterHelper.getVisibility(this.getJavaMethod().getModifiers());
+		return JavaGeneratorContext.getVisibility(this.getJavaMethod().getModifiers());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -70,7 +70,8 @@ public class JavaMethodMethodAdapter extends AbstractMethod implements Method {
 
 	@SuppressWarnings("unchecked")
 	protected Set<Type> createThrownTypes() {
-		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaMethod().getExceptionTypes());
+		final JavaGeneratorContext context = (JavaGeneratorContext) this.getGeneratorContext();
+		return context.asTypes(this.getJavaMethod().getExceptionTypes());
 	}
 
 	public String getName() {

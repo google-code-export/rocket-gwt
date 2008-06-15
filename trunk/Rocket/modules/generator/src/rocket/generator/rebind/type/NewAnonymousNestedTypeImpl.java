@@ -19,6 +19,7 @@ import java.util.Set;
 
 import rocket.generator.rebind.SourceWriter;
 import rocket.generator.rebind.Visibility;
+import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.util.client.Checker;
@@ -35,10 +36,67 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 		super();
 	}
 
+	@Override
+	public String getComments() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setComments(final String comments) {
+		throw new UnsupportedOperationException();
+	}
+	
 	public Visibility getVisibility() {
 		return Visibility.PRIVATE;
 	}
 
+	/**
+	 * Anonymous inner classes cannot be abstract
+	 */
+	public boolean isAbstract() {
+		return false;
+	}
+
+	/**
+	 * Anonymous inner classes cant be sub-classed.
+	 */
+	public boolean isFinal() {
+		return true;
+	}
+
+	public void setAbstract(final boolean abstractt) {
+		throw new UnsupportedOperationException();
+	}
+
+	public void setFinal(final boolean finall) {
+		throw new UnsupportedOperationException();
+	}
+
+	public void setStatic(final boolean staticc) {
+		throw new UnsupportedOperationException();
+	}
+
+	
+	public String getName() {
+		throw new UnsupportedOperationException("getName()");
+	}
+
+	public boolean hasName() {
+		return false;
+	}
+
+	public void setName(final String name) {
+		throw new UnsupportedOperationException("setName()");
+	}
+
+	public String getJsniNotation() {
+		throw new UnsupportedOperationException("getJsniNotation()");
+	}
+	
+	public void addInitializer(final Initializer initializer) {
+		throw new UnsupportedOperationException("Initializers cannot be added to AnonymousNestedTypes");
+	}
+	
 	private Type interfacee;
 
 	protected Type getInterface() {
@@ -75,11 +133,7 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 	protected void throwAnonymousNestedTypeException(final String message) {
 		throw new AnonymousNestedTypeException(message);
 	}
-
-	public void addInitializer(final Initializer initializer) {
-		throw new UnsupportedOperationException("Initializers cannot be added to AnonymousNestedTypes");
-	}
-
+	
 	public void addConstructor(final NewConstructor constructor) {
 		throw new UnsupportedOperationException("Constructors cannot be added to AnonymousNestedTypes");
 	}
@@ -92,7 +146,7 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 	 * Even though anonymous inner classes cant have constructors this method
 	 * must be implemented to satisfy {@link AbstractType}
 	 */
-	protected Set createConstructors() {
+	protected Set<Constructor> createConstructors() {
 		throw new UnsupportedOperationException("createConstructors");
 	}
 
@@ -104,47 +158,6 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 		throw new UnsupportedOperationException("hasNoArgumentsConstructor");
 	}
 
-	public String getName() {
-		throw new UnsupportedOperationException("getName()");
-	}
-
-	public boolean hasName() {
-		return false;
-	}
-
-	public void setName(final String name) {
-		throw new UnsupportedOperationException("setName()");
-	}
-
-	public String getJsniNotation() {
-		throw new UnsupportedOperationException("getJsniNotation()");
-	}
-
-	/**
-	 * Anonymous inner classes cannot be abstract
-	 */
-	public boolean isAbstract() {
-		return false;
-	}
-
-	/**
-	 * Anonymous inner classes cant be sub-classed.
-	 */
-	public boolean isFinal() {
-		return true;
-	}
-
-	public void setAbstract(final boolean abstractt) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setFinal(final boolean finall) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setStatic(final boolean staticc) {
-		throw new UnsupportedOperationException();
-	}
 
 	private Type enclosingType;
 
@@ -168,6 +181,7 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 		final Type type = this.hasInterface() ? this.getInterface() : this.getSuperType();
 		final String name = type.getName();
 		writer.print(name);
+		this.writeParameterisedTypes( writer );
 		writer.println("(){");
 		writer.indent();
 
@@ -181,16 +195,6 @@ public class NewAnonymousNestedTypeImpl extends NewTypeImpl implements NewAnonym
 
 	@Override
 	public void addMetaData(final String name, final String value) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public String getComments() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void setComments(final String comments) {
 		throw new UnsupportedOperationException();
 	}
 }

@@ -92,7 +92,8 @@ public class SubClassVisitorTestCase extends TestCase {
 	GeneratorContext createGeneratorContext() {
 		return new JavaGeneratorContext() {
 
-			protected Type createClassType(final String name) {
+			@Override
+			protected Type createType(final String name) {
 				TestJavaClassTypeAdapter adapter = null;
 
 				try {
@@ -190,5 +191,4 @@ public class SubClassVisitorTestCase extends TestCase {
 			return Collections.<Type>emptySet();
 		}
 	}
-
 }

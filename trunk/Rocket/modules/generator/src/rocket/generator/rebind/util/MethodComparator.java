@@ -21,6 +21,7 @@ import java.util.List;
 
 import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.methodparameter.MethodParameter;
+import rocket.generator.rebind.type.Type;
 
 /**
  * This comparator is used to sort method based on name and staticness
@@ -73,7 +74,7 @@ public class MethodComparator implements Comparator<Method> {
 			// compare argument types one by one...
 			final Iterator<MethodParameter> parameters = arguments.iterator();
 			final Iterator<MethodParameter> otherParameters = otherArguments.iterator();
-			final Comparator typeComparator = TypeComparator.INSTANCE;
+			final Comparator<Type> typeComparator = TypeComparator.INSTANCE;
 
 			while (parameters.hasNext()) {
 				final MethodParameter parameter = parameters.next();

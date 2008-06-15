@@ -32,7 +32,8 @@ public class JavaConstructorParameterAdapter extends AbstractConstructorParamete
 
 	@SuppressWarnings("unchecked")
 	protected Set<Type> createThrownTypes() {
-		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaConstructor().getExceptionTypes());
+		final JavaGeneratorContext context = (JavaGeneratorContext) this.getGeneratorContext();
+		return context.asTypes(this.getJavaConstructor().getExceptionTypes());
 	}
 
 	@Override

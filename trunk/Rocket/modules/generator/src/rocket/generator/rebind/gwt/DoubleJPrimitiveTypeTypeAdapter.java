@@ -26,6 +26,12 @@ import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
  */
 public class DoubleJPrimitiveTypeTypeAdapter extends DoublePrimitiveType {
 
+	public DoubleJPrimitiveTypeTypeAdapter( final TypeOracleGeneratorContext context ){
+		super();
+		
+		this.setGeneratorContext(context);
+	}
+	
 	public String getName() {
 		return this.getJPrimitiveType().getQualifiedSourceName();
 	}

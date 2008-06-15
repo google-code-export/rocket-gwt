@@ -21,6 +21,7 @@ import rocket.generator.rebind.field.NewField;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.metadata.HasMetadata;
 import rocket.generator.rebind.method.NewMethod;
+import rocket.generator.rebind.type.generics.GenericType;
 
 /**
  * A NewType represents a mutable Type that is also able to generate code to
@@ -38,14 +39,6 @@ public interface NewType extends Type, CodeGenerator, HasComments, HasMetadata {
 
 	boolean hasName();
 
-	NewField newField();
-
-	void addField(NewField field);
-
-	NewMethod newMethod();
-
-	void addMethod(NewMethod method);
-
 	void setSuperType(Type superType);
 
 	NewNestedType newNestedType();
@@ -58,5 +51,17 @@ public interface NewType extends Type, CodeGenerator, HasComments, HasMetadata {
 
 	NewNestedInterfaceType newNestedInterfaceType();
 
+	void addParameterisedType( GenericType genericType );
+	
+	//TODO DELETE Set getParameterisedTypes();
+	
+	NewField newField();
+
+	void addField(NewField field);
+
+	NewMethod newMethod();
+
+	void addMethod(NewMethod method);
+	
 	public void addMetaData(String name, String value);
 }

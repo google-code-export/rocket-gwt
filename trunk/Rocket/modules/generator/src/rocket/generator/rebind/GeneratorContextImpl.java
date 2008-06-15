@@ -29,6 +29,7 @@ import rocket.generator.rebind.packagee.PackageNotFoundException;
 import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
+import rocket.generator.rebind.type.generics.GenericType;
 import rocket.util.client.Checker;
 import rocket.util.server.InputOutput;
 
@@ -213,6 +214,9 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 			if (null == type) {
 				break;
 			}
+			if( type instanceof GenericType ){
+				break;
+			}
 
 			this.addType(type);
 			break;
@@ -224,9 +228,9 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	protected Type getNewType(final String name) {
 		Type type = null;
 
-		final Iterator newTypes = this.getNewTypes().iterator();
+		final Iterator<NewType> newTypes = this.getNewTypes().iterator();
 		while (newTypes.hasNext()) {
-			final NewType newType = (NewType) newTypes.next();
+			final NewType newType = newTypes.next();
 			if (false == newType.hasName()) {
 				continue;
 			}
@@ -254,9 +258,7 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	 * @param name
 	 * @return The new type.
 	 */
-	protected Type createType(final String name) {
-		return name.endsWith("[]") ? this.createArrayType(name) : this.createClassType(name);
-	}
+	abstract protected Type createType( String name ); 
 
 	/**
 	 * Registers each of the primitive types
@@ -308,35 +310,21 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	}
 
 	/**
-	 * Factory method which creates an adapter for any array type. This method
-	 * should only ever be called once for each array type after which all
-	 * references are cached.
-	 * 
-	 * @param name
-	 * @return A Type
-	 */
-	abstract protected Type createArrayType(final String name);
-
-	/**
-	 * Factory method which creates an adapter for any type. This method should
-	 * only ever be called once for each array type after which all references
-	 * are cached.
-	 * 
-	 * @param name
-	 * @return a new JClassTypeTypeAdapter
-	 */
-	abstract protected Type createClassType(final String name);
-
-	/**
 	 * Adds a new type to the cache of known types.
 	 * 
 	 * @param type
 	 */
 	public void addType(final Type type) {
-		if (type instanceof NewType) {
-			this.addNewType((NewType) type);
-		} else {
+		Checker.notNull("parameter:type", type );
+		
+		while( true ){			
+			if (type instanceof NewType) {
+				this.addNewType((NewType) type);
+				break;
+			}
+			
 			this.getTypes().put(type.getName(), type);
+			break;
 		}
 	}
 
@@ -362,20 +350,20 @@ abstract public class GeneratorContextImpl implements GeneratorContext {
 	/**
 	 * A cache of all NewTypes.
 	 */
-	private Set<Type> newTypes;
+	private Set<NewType> newTypes;
 
-	public Set<Type> getNewTypes() {
+	public Set<NewType> getNewTypes() {
 		Checker.notNull("field:newTypes", newTypes);
 		return this.newTypes;
 	}
 
-	protected void setNewTypes(final Set<Type> newTypes) {
+	protected void setNewTypes(final Set<NewType> newTypes) {
 		Checker.notNull("parameter:newTypes", newTypes);
 		this.newTypes = newTypes;
 	}
 
-	protected Set<Type> createNewTypes() {
-		return new HashSet<Type>();
+	protected Set<NewType> createNewTypes() {
+		return new HashSet<NewType>();
 	}
 
 	protected void addNewType(final NewType type) {

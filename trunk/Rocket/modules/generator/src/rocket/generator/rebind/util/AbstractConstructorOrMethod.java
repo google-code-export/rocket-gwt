@@ -36,5 +36,5 @@ abstract public class AbstractConstructorOrMethod extends AbstractConstructorMet
 		this.thrownTypes = thrownTypes;
 	}
 
-	abstract protected Set createThrownTypes();
+	abstract protected Set<Type> createThrownTypes();
 }

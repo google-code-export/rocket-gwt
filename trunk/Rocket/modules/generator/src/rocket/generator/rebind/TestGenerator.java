@@ -56,6 +56,7 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
  */
 abstract public class TestGenerator extends Generator {
 
+	@Override
 	final public String generate(final TreeLogger logger, final com.google.gwt.core.ext.GeneratorContext generatorContext,
 			final String typeName) throws UnableToCompleteException {
 
@@ -82,26 +83,22 @@ abstract public class TestGenerator extends Generator {
 
 		final TypeOracleGeneratorContext context = new TypeOracleGeneratorContext() {
 
+			@Override
 			public NewConcreteType newConcreteType(final String name) {
 				throw new UnsupportedOperationException();
 			}
 
+			@Override
 			public NewInterfaceType newInterfaceType(final String name) {
 				throw new UnsupportedOperationException();
 			}
 
-			protected Type createArrayType(String name) {
-				throw new UnsupportedOperationException();
-			}
-
-			protected Type createClassType(String name) {
-				throw new UnsupportedOperationException();
-			}
-
+			@Override
 			protected Package createPackage(String name) {
 				throw new UnsupportedOperationException();
 			}
 
+			@Override
 			protected void preloadTypes() {
 			}
 		};

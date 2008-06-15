@@ -17,6 +17,7 @@ package rocket.generator.rebind.gwt;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,8 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JConstructor;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.JRawType;
+import com.google.gwt.core.ext.typeinfo.JRealClassType;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
@@ -41,8 +44,30 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * 
  * @author Miroslav Pokorny
  */
-public class JClassTypeTypeAdapter extends AbstractType {
+public class JRealClassOrJRawClassTypeTypeAdapter extends AbstractType {
 
+	public JRealClassOrJRawClassTypeTypeAdapter( final JRealClassType jRealClassType, final TypeOracleGeneratorContext context ){
+		super();
+		
+		this.setGeneratorContext(context);
+		this.setJClassType(jRealClassType);
+	}
+	
+	public JRealClassOrJRawClassTypeTypeAdapter( final JRawType jRawType, final TypeOracleGeneratorContext context ){
+		super();
+		
+		this.setGeneratorContext(context);
+		this.setJClassType(jRawType);
+	}
+	
+	public Package getPackage() {
+		return this.findPackage(this.getJClassType().getPackage().getName());
+	}
+
+	final protected Package findPackage(final String packageName) {
+		return this.getTypeOracleGeneratorContext().findPackage(packageName);
+	}
+	
 	public Visibility getVisibility() {
 		Visibility visibility = null;
 
@@ -86,7 +111,7 @@ public class JClassTypeTypeAdapter extends AbstractType {
 
 	@Override
 	protected Set<Type> createInterfaces() {
-		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJClassType().getImplementedInterfaces());
+		return this.getTypeOracleGeneratorContext().asTypes(this.getJClassType().getImplementedInterfaces());
 	}
 
 	public Set<Type> getSubType() {
@@ -99,31 +124,23 @@ public class JClassTypeTypeAdapter extends AbstractType {
 
 	@Override
 	protected Set<Type> createSubTypes() {
-		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJClassType().getSubtypes());
+		return this.getTypeOracleGeneratorContext().asTypes(this.getJClassType().getSubtypes());
 	}
-
-	public Package getPackage() {
-		return this.findPackage(this.getJClassType().getPackage().getName());
-	}
-
-	final protected Package findPackage(final String packageName) {
-		return this.getGeneratorContextImpl().findPackage(packageName);
-	}
-
-	protected GeneratorContextImpl getGeneratorContextImpl() {
-		return (GeneratorContextImpl) this.getGeneratorContext();
+	
+	protected TypeOracleGeneratorContext getTypeOracleGeneratorContext(){
+		return (TypeOracleGeneratorContext) this.getGeneratorContext();
 	}
 
 	public Type getSuperType() {
 		Type superType = null;
 		final JType superJType = this.getJClassType().getSuperclass();
 		if (null != superJType) {
-			superType = this.getType(superJType.getErasedType().getQualifiedSourceName());
+			superType = this.getTypeOracleGeneratorContext().getType( superJType ); 
 		}
 
 		return superType;
 	}
-
+	
 	/**
 	 * Factory method which creates a set of constructors.
 	 */
@@ -191,7 +208,7 @@ public class JClassTypeTypeAdapter extends AbstractType {
 	}
 
 	protected Set<Method> createMethods() {
-		final Set<Method> methods = new HashSet<Method>();
+		final Set<Method> methods = new LinkedHashSet<Method>();
 
 		final JMethod[] jMethods = this.getJClassType().getMethods();
 		for (int i = 0; i < jMethods.length; i++) {
@@ -218,7 +235,7 @@ public class JClassTypeTypeAdapter extends AbstractType {
 	}
 
 	protected Set<Type> createNestedTypes() {
-		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJClassType().getNestedTypes());
+		return this.getTypeOracleGeneratorContext().asTypes(this.getJClassType().getNestedTypes());
 	}
 
 	public boolean isArray() {
@@ -254,9 +271,9 @@ public class JClassTypeTypeAdapter extends AbstractType {
 	public boolean isAssignableFrom(final Type otherType) {
 		boolean assignable = false;
 
-		if (otherType instanceof JClassTypeTypeAdapter) {
-			final JClassTypeTypeAdapter otherJClassTypeTypeAdapter = (JClassTypeTypeAdapter) otherType;
-			assignable = this.getJClassType().isAssignableFrom(otherJClassTypeTypeAdapter.getJClassType());
+		if (otherType instanceof JRealClassOrJRawClassTypeTypeAdapter) {
+			final JRealClassOrJRawClassTypeTypeAdapter otherJClassTypeAdapter = (JRealClassOrJRawClassTypeTypeAdapter) otherType;
+			assignable = this.getJClassType().isAssignableFrom(otherJClassTypeAdapter.getJClassType());
 		} else {
 			assignable = otherType.isAssignableTo(this);
 		}
@@ -266,16 +283,16 @@ public class JClassTypeTypeAdapter extends AbstractType {
 	public boolean isAssignableTo(final Type otherType) {
 		boolean assignable = false;
 
-		if (otherType instanceof JClassTypeTypeAdapter) {
-			final JClassTypeTypeAdapter otherJClassTypeTypeAdapter = (JClassTypeTypeAdapter) otherType;
-			assignable = this.getJClassType().isAssignableTo(otherJClassTypeTypeAdapter.getJClassType());
+		if (otherType instanceof JRealClassOrJRawClassTypeTypeAdapter) {
+			final JRealClassOrJRawClassTypeTypeAdapter otherJClassTypeAdapter = (JRealClassOrJRawClassTypeTypeAdapter) otherType;
+			assignable = this.getJClassType().isAssignableTo(otherJClassTypeAdapter.getJClassType());
 		} else {
 			assignable = otherType.isAssignableFrom(this);
 		}
 		return assignable;
 	}
 
-	public List getMetadataValues(final String name) {
+	public List<String> getMetadataValues(final String name) {
 		return this.getAnnotationValues(this.getJClassType(), name);
 	}
 
@@ -293,7 +310,7 @@ public class JClassTypeTypeAdapter extends AbstractType {
 		return jClassType;
 	}
 
-	public void setJClassType(final JClassType jClassType) {
+	protected void setJClassType(final JClassType jClassType) {
 		Checker.notNull("parameter:jClassType", jClassType);
 		this.jClassType = jClassType;
 	}

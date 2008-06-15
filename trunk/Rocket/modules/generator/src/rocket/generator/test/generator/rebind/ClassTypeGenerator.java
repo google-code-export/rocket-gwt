@@ -38,10 +38,10 @@ public class ClassTypeGenerator extends TestGenerator {
 		Checker.falseValue("TestType type is not an array", type.isArray());
 		Checker.falseValue("TestType type is not a primitive", type.isPrimitive());
 
-		final Set inner = type.getNestedTypes();
+		final Set<Type> inner = type.getNestedTypes();
 		Checker.equals("nested inner types", 1, inner.size());
 
-		final Type nestedType = (Type) inner.iterator().next();
+		final Type nestedType = inner.iterator().next();
 		Checker.notNull("nested type", nestedType);
 
 		return null;

@@ -47,6 +47,8 @@ public interface Type extends HasMetadata, ClassComponent {
 
 	Set<Type> getInterfaces();
 
+	Type getRawType();
+	
 	Type getSuperType();
 
 	Set<Type> getSubTypes();

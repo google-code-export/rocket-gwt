@@ -17,6 +17,7 @@ package rocket.generator.rebind.type;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import rocket.generator.rebind.GeneratorContext;
@@ -27,6 +28,7 @@ import rocket.generator.rebind.constructor.NewConstructor;
 import rocket.generator.rebind.constructor.NewConstructorImpl;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.initializer.InitializerImpl;
+import rocket.generator.rebind.type.generics.GenericType;
 import rocket.util.client.Checker;
 
 /**
@@ -40,8 +42,9 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 	public NewConcreteNestedTypeOrInterfaceType() {
 		super();
 
-		this.setInitializers(this.createInitializers());
 		this.setComments("");
+		this.setInitializers(this.createInitializers());
+		this.setParameterisedTypes( this.createParameterisedTypes() );
 		this.setMetaData(this.createMetaData());
 	}
 
@@ -53,6 +56,56 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 		return initializer;
 	}
 
+	/**
+	 * A set which contains all the initializers that have been built and added
+	 * to this type.
+	 */
+	private Set<Initializer> initializers;
+
+	protected Set<Initializer> getInitializers() {
+		Checker.notNull("field:initializers", initializers);
+		return this.initializers;
+	}
+
+	protected void setInitializers(final Set<Initializer> initializers) {
+		Checker.notNull("parameter:initializers", initializers);
+		this.initializers = initializers;
+	}
+
+	public void addInitializer(final Initializer initializer) {
+		Checker.notNull("parameter:initializer", initializer);
+
+		this.getInitializers().add(initializer);
+	}
+
+	protected Set<Initializer> createInitializers() {
+		return new HashSet<Initializer>();
+	}
+
+	protected void writeInitializers(final SourceWriter writer) {
+		Checker.notNull("parameter:writer", writer);
+
+		final Set<Initializer> initializers = this.getInitializers();
+		if (false == initializers.isEmpty()) {
+
+			final GeneratorContext context = this.getGeneratorContext();
+			context.branch();
+
+			final String message = "Initializers";
+			context.debug(message);
+
+			writer.beginJavaDocComment();
+			writer.print(message);
+			writer.endJavaDocComment();
+
+			writer.println();
+			GeneratorHelper.writeClassComponents(initializers, writer, false, true);
+			writer.println();
+
+			context.unbranch();
+		}
+	}
+	
 	private Visibility visibility;
 
 	public Visibility getVisibility() {
@@ -99,32 +152,22 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 		this.getInterfaces().add(interfacee);
 	}
 
-	/**
-	 * A set which contains all the initializers that have been built and added
-	 * to this type.
-	 */
-	private Set<Initializer> initializers;
-
-	protected Set<Initializer> getInitializers() {
-		Checker.notNull("field:initializers", initializers);
-		return this.initializers;
+	private List<GenericType> parameterisedTypes;
+	
+	public List<GenericType> getParameterisedTypes(){
+		Checker.notNull("field:parameterisedTypes", parameterisedTypes );
+		return this.parameterisedTypes;
 	}
-
-	protected void setInitializers(final Set<Initializer> initializers) {
-		Checker.notNull("parameter:initializers", initializers);
-		this.initializers = initializers;
+	
+	protected void setParameterisedTypes(final List<GenericType> parameterisedTypes ){
+		Checker.notNull("parameter:parameterisedTypes", parameterisedTypes );
+		this.parameterisedTypes = parameterisedTypes;
 	}
-
-	public void addInitializer(final Initializer initializer) {
-		Checker.notNull("parameter:initializer", initializer);
-
-		this.getInitializers().add(initializer);
+	
+	protected List<GenericType> createParameterisedTypes(){
+		return Collections.<GenericType>emptyList();
 	}
-
-	protected Set<Initializer> createInitializers() {
-		return new HashSet<Initializer>();
-	}
-
+	
 	public NewConstructor newConstructor() {
 		final NewConstructorImpl constructor = new NewConstructorImpl();
 		constructor.setGeneratorContext(this.getGeneratorContext());
@@ -142,29 +185,5 @@ abstract class NewConcreteNestedTypeOrInterfaceType extends NewTypeImpl implemen
 
 	public boolean hasNoArgumentsConstructor() {
 		return this.getConstructors().isEmpty() ? true : null != this.findConstructor(Collections.<Type>emptyList());
-	}
-
-	protected void writeInitializers(final SourceWriter writer) {
-		Checker.notNull("parameter:writer", writer);
-
-		final Set<Initializer> initializers = this.getInitializers();
-		if (false == initializers.isEmpty()) {
-
-			final GeneratorContext context = this.getGeneratorContext();
-			context.branch();
-
-			final String message = "Initializers";
-			context.debug(message);
-
-			writer.beginJavaDocComment();
-			writer.print(message);
-			writer.endJavaDocComment();
-
-			writer.println();
-			GeneratorHelper.writeClassComponents(initializers, writer, false, true);
-			writer.println();
-
-			context.unbranch();
-		}
 	}
 }

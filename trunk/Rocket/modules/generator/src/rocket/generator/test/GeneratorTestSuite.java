@@ -39,13 +39,14 @@ public class GeneratorTestSuite {
 		suite.addTestSuite(MethodTestCase.class);
 		suite.addTestSuite(GeneratorHelperTestCase.class);
 		suite.addTestSuite(StringBufferSourceWriterTestCase.class);
-		suite.addTestSuite(GeneratorGwtTestCase.class);
 		suite.addTestSuite(TypeTestCase.class);
-		suite.addTestSuite(TemplatedFileCodeBlockGwtTestCase.class);
 		suite.addTestSuite(VirtualMethodTestCase.class);
 		suite.addTestSuite(CollectionTemplatedCodeBlockTestCase.class);
 		suite.addTestSuite(SubClassVisitorTestCase.class);
 		suite.addTestSuite(ConcreteTypesImplementingInterfaceVisitorTestCase.class);
 		suite.addTestSuite(ReachableTypesVisitorTestCase.class);
+		
+		suite.addTestSuite(GeneratorGwtTestCase.class);
+		suite.addTestSuite(TemplatedFileCodeBlockGwtTestCase.class);
 	}
 }

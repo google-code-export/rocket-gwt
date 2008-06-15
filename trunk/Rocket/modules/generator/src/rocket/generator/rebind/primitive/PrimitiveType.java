@@ -34,10 +34,34 @@ import rocket.generator.rebind.type.Type;
  */
 abstract public class PrimitiveType extends AbstractType {
 
+	public Package getPackage() {
+		return null;
+	}
+
 	public Visibility getVisibility() {
 		throw new UnsupportedOperationException();
 	}
 
+	public boolean isAbstract() {
+		return false;
+	}
+
+	public boolean isArray() {
+		return false;
+	}
+
+	public boolean isFinal() {
+		return true;
+	}
+
+	public boolean isInterface() {
+		return false;
+	}
+
+	public boolean isPrimitive() {
+		return true;
+	}
+	
 	public Set<Type> getInterfaces() {
 		return Collections.<Type>emptySet();
 	}
@@ -53,15 +77,19 @@ abstract public class PrimitiveType extends AbstractType {
 	protected Set<Type> createSubTypes() {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Type getSuperType() {
 		return null;
 	}
 
-	public Package getPackage() {
-		return null;
+	public Set<Type> getNestedTypes() {
+		return Collections.<Type>emptySet();
 	}
 
+	protected Set<Type> createNestedTypes() {
+		throw new UnsupportedOperationException();
+	}
+	
 	public Set<Constructor> getConstructors() {
 		return Collections.<Constructor>emptySet();
 	}
@@ -102,39 +130,11 @@ abstract public class PrimitiveType extends AbstractType {
 		return null;
 	}
 
-	public boolean isAbstract() {
-		return false;
-	}
-
-	public boolean isArray() {
-		return false;
-	}
-
 	public Type getComponentType() {
 		return null;
 	}
 
-	public boolean isFinal() {
-		return true;
-	}
-
-	public boolean isInterface() {
-		return false;
-	}
-
-	public boolean isPrimitive() {
-		return true;
-	}
-
 	public List<String> getMetadataValues(final String name) {
 		return Collections.<String>emptyList();
-	}
-
-	public Set<Type> getNestedTypes() {
-		return Collections.<Type>emptySet();
-	}
-
-	protected Set<Type> createNestedTypes() {
-		throw new UnsupportedOperationException();
 	}
 }

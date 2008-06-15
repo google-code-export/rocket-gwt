@@ -58,7 +58,7 @@ public class InitializerImpl implements Initializer {
 		this.getMetaData().add(name, value);
 	}
 
-	public List getMetadataValues(final String name) {
+	public List<String> getMetadataValues(final String name) {
 		return this.getMetaData().getMetadataValues(name);
 	}
 
