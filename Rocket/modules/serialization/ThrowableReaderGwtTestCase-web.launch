@@ -37,5 +37,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rocket.serialization.test.client.reader.ThrowableReaderGwtTestCase"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Rocket"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-web -out www-test&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-web -out www&quot;"/>
 </launchConfiguration>
