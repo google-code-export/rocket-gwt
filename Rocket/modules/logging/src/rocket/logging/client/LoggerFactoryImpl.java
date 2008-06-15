@@ -35,8 +35,8 @@ abstract public class LoggerFactoryImpl {
 	}
 
 	public Logger getLogger(final String name) {
-		final Map loggers = this.getLoggers();
-		Logger logger = (Logger) loggers.get(name);
+		final Map<String,Logger> loggers = this.getLoggers();
+		Logger logger = loggers.get(name);
 
 		// not found in cache try and find...
 		if (null == logger) {
@@ -66,18 +66,18 @@ abstract public class LoggerFactoryImpl {
 	/**
 	 * A map containing cached answers for a category to Logger singleton.
 	 */
-	private Map loggers;
+	private Map<String,Logger> loggers;
 
-	protected Map getLoggers() {
+	protected Map<String,Logger> getLoggers() {
 		return this.loggers;
 	}
 
-	protected void setLoggers(final Map loggers) {
+	protected void setLoggers(final Map<String,Logger> loggers) {
 		this.loggers = loggers;
 	}
 
-	protected Map createLoggers() {
-		return new HashMap();
+	protected Map<String,Logger> createLoggers() {
+		return new HashMap<String,Logger>();
 	}
 
 	/**
