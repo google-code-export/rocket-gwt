@@ -86,7 +86,7 @@ public class AfterFinallyAdviceMethodInterceptorTestCase extends TestCase {
 
 		try {
 			final Object returned = chain.proceed();
-			fail("A exception should have been thrown by the FinallyAdvice");
+			fail("The chain should have thrown an Exception and not returned: " + returned );
 		} catch (final RuntimeException caught) {
 			assertSame(finallyAdviceThrows, caught);
 		}

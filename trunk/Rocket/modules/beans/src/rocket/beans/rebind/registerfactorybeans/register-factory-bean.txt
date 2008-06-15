@@ -7,3 +7,4 @@ this.registerFactoryBean(
 	
 		// the factory bean which will create the bean.
 		new ${factoryBeanType}() );
+
