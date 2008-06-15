@@ -47,7 +47,7 @@ public class AfterThrowingAdviceMethodInterceptorTestCase extends TestCase {
 
 		try {
 			final Object returned = chain.proceed();
-			fail("A TestException should have been thrown by the target.");
+			fail("The chain should have thrown an TestException and not returned: " + returned );
 		} catch (final TestException expected) {
 
 		}

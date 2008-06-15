@@ -113,7 +113,7 @@ public class AfterReturningAdviceMethodInterceptorTestCase extends TestCase {
 
 		try {
 			final Object returned = chain.proceed();
-			fail("A exception should have been thrown by the afterAdvice");
+			fail("The after advice should have thrown an exception and not returned " + returned );
 		} catch (final RuntimeException caught) {
 			assertSame(afterAdviceThrows, caught);
 		}
