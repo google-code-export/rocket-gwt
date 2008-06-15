@@ -146,6 +146,7 @@ public class IteratorViewTestCase extends TestCase {
 			this.getList().add(element);
 		}
 
+		@SuppressWarnings("unchecked")
 		Iterator<String> iterator() {
 			final Iterator<String> wrapped = this.getList().iterator();
 
