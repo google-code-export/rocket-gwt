@@ -656,3 +656,126 @@ Utilities
 
 Widgets
 * Removed deprecated SuperSpinner widget.
+
+
+0.51 16 June 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.51.zip
+
+Beans
+* Fixed interceptor chain to correctly handle acceptance of BeforeAdvice implementations.
+* Updated BeanFactoryGenerator to not proxy getClass()
+* Added annotations and generics to many internal structures.
+
+Browser
+* Removed a number of Browser methods which are now found on various GWT com.google.gwt.dom.* classes.
+	* getDocument(), setTitle() - Document
+	* prompt(),set/getStatus() - Window
+	* set/getLocation() - Window.Location
+	* buildImageUrl - deprecated/removed
+* Removed Location functionality replaced identical methods located on com.google.gwt.user.client.Window.Location
+	
+Collection
+* Removed unmodifiedXXX where XXX is List/Set/Map from CollectionHelper use recently emulated java.util.Collection methods.
+* Generified all iterator types.
+
+Compiler
+* Removed all optimisations as they have been rendered unnecessary following GWT 1.5 compiler updates.
+
+Cookies
+* Deprecated and removed as all functionality is available less the map views via the GWT.
+
+Dom
+* Deprecated and removed several Dom methods which are now present on GWT classes.
+	* removed getBody() use RootPanel.getBodyElement()
+	* removed getTagName() use Element.getTagName()
+	* removed isAttached() use Document.get().getBody().isOrHasChild(Element)
+	* removed cloneElement() use com.google.gwt.dom.client.Element.cloneNode
+	* removed getOffsetXXX() use com.google.gwt.dom.client.Element.getXXX where XXX is Left/Top
+	* removed setFocus(Element)
+	* removed getFormElements() use FormElement.childNodes()
+	* removed getFormElement(String) use FormElement.getNamedItem()
+	* removed findFirstChildOfType() and findAllChildrenOfType() use com.google.gwt.dom.clent.Element.getElementByTag()
+
+DragNDrop
+* Added generics, annotations to various classes.
+
+Event
+* Updated classes to use event instance methods rather than pre existing static DOM.eventXXX methods.
+
+Generator
+* Removed patched JClassType as isFinal method has been added as part of GWT 1.5.
+* Removed some hacked support for jre types that should have been but were not marked as serializable.
+* Added generics, annotations to various classes.
+
+Gwt
+* Removed hacked/fixed Cast class (provides runtime support for casting JSOs to java and viceversa.
+* This module (was previously Remoting)now contains the hacked ProxyCreator and accompanying introduced HasSerializer interface which provides a means to access a normally private serializer from a rpc proxy.
+
+Logging
+* Removed implements Serializable marker from LoggingLevel and created custom LoggingEvent field serializer. This should avoid problems with GWT 
+  the serialization generator complaining when one leaves out the gwt.typeArgs annotation.
+
+Remoting
+
+Selection
+* Refactored the Selection object so that it is now a true JavaScriptObject rather than a delegator. It should be possible to
+  get selection objects from iframes and so on.
+
+Serialization
+* To match the changes with GWT's long emulation and maintain accuracy for large longs, the serialization format now writes each long as two ints.
+* Added Readrer/Writers to handle TreeSet and TreeMap(specifically to serialize the comparator).
+
+Style
+* Promoted ComputedStyle, InlineStyle, StyleSheet, Rule and RuleStyle to now extend JavaScriptObject rather than be wrappers.
+* Because Rule is no longer a state and because of JSO rules forbidding fields being added to a JSO, Rule.setSelector() must be simulated by 
+  1. retrieve the rule's index StyleSheet.getRuleIndex()
+  2. grabbing its style via Rule.getRuleStyle().getCssText()
+  3. removing the rule StyleSheet.removeRule()
+  4. and reinserting at the same position StyleSheet.insertRule().
+
+Testing
+* Deprecated and Removed InteractivePanel.
+
+Utilities
+* Moved all static ThrowableHelper methods to StackTrace, and deleted ThrowableHelper.
+* Improved construction of error messages when an assertion failed.
+* Deleted server Utilities class which is no longer required because of new GWT support for Object.getClass().getName() support.  
+  
+Widget
+* Fixed a bug which resulted in CompositeWidget leaking memory for elements with no explicit bits sunk.
+* Removed a number of useless/outdated widgets.
+	* Accordion
+	* AutoCompleteTextBox use SuggestBox
+	* BreadcrumbPanel
+	* Gridview
+	* Pager
+	* Spinner
+	* StyleSheetPicker
+	* left and right TabPanel
+* Corrected bug where Viewport was incorrectly removing tiles on the left and top edges and then re-requesting the very same tiles.
+
+TODO/FIXME
+Bean
+* Make rpc proxies forward the setServiceEntryPoint() to the real rpc.
+* Update to read annotations when determining types present in collection/set/map. 
+* Update generator to generisize FactoryBean being generated this helps result not use casts from factorybean. 
+
+Generator
+* Update to support reading of true annotations.
+* Real support for generic types in type abstractions and associated helper methods.
+
+Json
+* Update to support reading of true annotations.
+* Make result of Generator make generated types implement objectInputStream/objectOutputStream
+
+Remoting
+* Add support for relaying annotations to generated classes.
+
+Selection
+* Broken in Opera 9.27 disabling selections, get/set selection end points doesnt work.
+
+Serialization
+* Need to add support for enums, arrays of any type.
+* Need to rework code to use annotataions for fields that are List/Set/Map.
+* Try and make a fascade for gwt serialization - via a factory

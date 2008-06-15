@@ -1,4 +1,4 @@
-GWT 1.4.60
+GWT 1.5 RC1
 http://code.google.com/webtoolkit/
 
 JUnit 3.8
