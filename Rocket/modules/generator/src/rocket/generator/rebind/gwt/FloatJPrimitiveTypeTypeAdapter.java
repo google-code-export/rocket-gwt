@@ -26,6 +26,12 @@ import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
  */
 public class FloatJPrimitiveTypeTypeAdapter extends FloatPrimitiveType {
 
+	public FloatJPrimitiveTypeTypeAdapter( final TypeOracleGeneratorContext context ){
+		super();
+		
+		this.setGeneratorContext(context);
+	}
+	
 	public String getName() {
 		return this.getJPrimitiveType().getQualifiedSourceName();
 	}

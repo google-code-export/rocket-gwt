@@ -142,8 +142,8 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		parameter.setEnclosingMethod(this);
 	}
 
-	protected Set createThrownTypes() {
-		return new HashSet();
+	protected Set<Type> createThrownTypes() {
+		return new HashSet<Type>();
 	}
 
 	public void addThrownTypes(final Type thrownTypes) {
@@ -166,7 +166,7 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 		return this.body;
 	}
 
-	public boolean hasBody() {
+	protected boolean hasBody() {
 		return null != this.body;
 	}
 
@@ -438,9 +438,9 @@ public class NewMethodImpl extends AbstractMethod implements NewMethod {
 
 		builder.append('(');
 		if (this.hasParameters()) {
-			final Iterator parameters = this.getParameters().iterator();
+			final Iterator<MethodParameter> parameters = this.getParameters().iterator();
 			while (parameters.hasNext()) {
-				final NewMethodParameter parameter = (NewMethodParameter) parameters.next();
+				final NewMethodParameter parameter = (NewMethodParameter)parameters.next();
 				builder.append(parameter.getType());
 
 				if (parameters.hasNext()) {

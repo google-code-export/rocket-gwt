@@ -98,9 +98,9 @@ public class JMethodMethodAdapter extends AbstractMethod {
 		jsni.append(this.getName());
 		jsni.append('(');
 
-		final Iterator parameters = this.getParameters().iterator();
+		final Iterator<MethodParameter> parameters = this.getParameters().iterator();
 		while (parameters.hasNext()) {
-			final Parameter parameter = (Parameter) parameters.next();
+			final Parameter parameter = parameters.next();
 			jsni.append(parameter.getJsniNotation());
 		}
 
@@ -153,14 +153,14 @@ public class JMethodMethodAdapter extends AbstractMethod {
 
 	public Type createReturnType() {
 		final JType returnType = this.getJMethod().getReturnType();
-		return this.getGeneratorContext().getType(returnType.getErasedType().getQualifiedSourceName());
+		return this.getTypeOracleGeneratorContext().getType( returnType );
 	}
 
-	protected Set<Type> createThrownTypes() {
-		return TypeOracleAdaptersHelper.asSetOfTypes(this.getGeneratorContext(), this.getJMethod().getThrows());
+	protected Set<Type> createThrownTypes() { 
+		return this.getTypeOracleGeneratorContext().asTypes(this.getJMethod().getThrows());
 	}
 
-	public List getMetadataValues(String name) {
+	public List<String> getMetadataValues(final String name) {
 		return this.getAnnotationValues(this.getJMethod(), name);
 	}
 
@@ -177,6 +177,10 @@ public class JMethodMethodAdapter extends AbstractMethod {
 	public void setJMethod(final JMethod jMethod) {
 		Checker.notNull("parameter:jMethod", jMethod);
 		this.jMethod = jMethod;
+	}
+	
+	protected TypeOracleGeneratorContext getTypeOracleGeneratorContext(){
+		return (TypeOracleGeneratorContext) this.getGeneratorContext();
 	}
 
 	@Override

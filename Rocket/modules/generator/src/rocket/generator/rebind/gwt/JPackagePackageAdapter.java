@@ -27,6 +27,13 @@ import com.google.gwt.core.ext.typeinfo.JPackage;
  */
 public class JPackagePackageAdapter extends AbstractPackage {
 
+	public JPackagePackageAdapter( final JPackage jPackage, final TypeOracleGeneratorContext context ){
+		super();
+		
+		this.setGeneratorContext(context);
+		this.setJPackage(jPackage);
+	}
+	
 	public String getName() {
 		return this.getJPackage().getName();
 	}

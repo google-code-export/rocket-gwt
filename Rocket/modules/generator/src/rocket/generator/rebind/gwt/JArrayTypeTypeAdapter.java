@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import rocket.generator.rebind.GeneratorContextImpl;
 import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.constructor.Constructor;
 import rocket.generator.rebind.field.Field;
@@ -45,110 +44,36 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class JArrayTypeTypeAdapter extends AbstractType {
 
-	/**
-	 * Arrays dont have constructors.
-	 */
-	public Set<Constructor> getConstructors() {
-		return Collections.<Constructor>emptySet();
+	public JArrayTypeTypeAdapter( final JArrayType jArrayType, final TypeOracleGeneratorContext context ){
+		super();
+		
+		this.setGeneratorContext(context);
+		this.setJArrayType(jArrayType);
 	}
-
-	protected Set<Constructor> createConstructors() {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Arrays dont have fields, dont worry about length its a special case
-	 */
-
-	public Set<Field> getFields() {
-		return Collections.<Field>emptySet();
-	}
-
-	protected Set<Field> createFields() {
-		throw new UnsupportedOperationException();
+	
+	public Visibility getVisibility() {
+		return Visibility.PUBLIC;
 	}
 
 	/**
-	 * Arrays dont implement interfaces
+	 * Array types are never abstract
 	 */
-	public Set<Type> getInterfaces() {
-		return Collections.<Type>emptySet();
+	public boolean isAbstract() {
+		return false;
 	}
 
-	@Override
-	protected Set<Type> createInterfaces() {
-		throw new UnsupportedOperationException();
+	public boolean isFinal() {
+		return false;
 	}
 
-	/**
-	 * Arrays dont have methods
-	 */
-	public Set<Method> getMethods() {
-		return Collections.<Method>emptySet();
+	public boolean isInterface() {
+		return false;
 	}
 
-	@Override
-	protected Set<Method> createMethods() {
-		throw new UnsupportedOperationException();
+	public boolean isPrimitive() {
+		return false;
 	}
-
-	/**
-	 * Arrays cant have nested types.
-	 */
-	public Set<Type> getNestedTypes() {
-		return Collections.<Type>emptySet();
-	}
-
-	protected Set<Type> createNestedTypes() {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Arrays cant be sub classed
-	 */
-	public Set<Type> getSubTypes() {
-		return Collections.<Type>emptySet();
-	}
-
-	protected Set<Type> createSubTypes() {
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean isArray() {
-		return true;
-	}
-
-	/**
-	 * All array types have a component type.
-	 */
-	private Type componentType;
-
-	public Type getComponentType() {
-		if (false == hasComponentType()) {
-			this.setComponentType(this.createComponentType());
-		}
-		Checker.notNull("field:componentType", componentType);
-		return componentType;
-	}
-
-	protected boolean hasComponentType() {
-		return null != this.componentType;
-	}
-
-	protected void setComponentType(final Type componentType) {
-		Checker.notNull("parameter:componentType", componentType);
-		this.componentType = componentType;
-	}
-
-	protected Type createComponentType() {
-		final JArrayType array = this.getJArrayType().isArray();
-		Checker.notNull("The " + this.getName() + " is an array.", array);
-
-		final JType componentType = array.getComponentType();
-
-		return this.getGeneratorContext().getType(componentType.getErasedType().getQualifiedSourceName());
-	}
-
+	
 	public String getJsniNotation() {
 		return this.getJArrayType().getJNISignature();
 	}
@@ -157,13 +82,6 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 		return this.getJArrayType().getQualifiedSourceName();
 	}
 
-	public Package getPackage() {
-		return this.getComponentType().getPackage();
-	}
-
-	final protected Package findPackage(final String packageName) {
-		return this.getGeneratorContextImpl().findPackage(packageName);
-	}
 
 	public String getSimpleName() {
 		return this.getJArrayType().getSimpleSourceName();
@@ -225,22 +143,122 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 		return this.getObject();
 	}
 
-	public Visibility getVisibility() {
-		return Visibility.PUBLIC;
+	/**
+	 * Arrays cant be sub classed
+	 */
+	public Set<Type> getSubTypes() {
+		return Collections.<Type>emptySet();
 	}
 
+	protected Set<Type> createSubTypes() {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * Arrays dont implement interfaces
+	 */
+	public Set<Type> getInterfaces() {
+		return Collections.<Type>emptySet();
+	}
+
+	@Override
+	protected Set<Type> createInterfaces() {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * Arrays dont have constructors.
+	 */
+	public Set<Constructor> getConstructors() {
+		return Collections.<Constructor>emptySet();
+	}
+
+	protected Set<Constructor> createConstructors() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Arrays dont have fields, dont worry about length its a special case
+	 */
+
+	public Set<Field> getFields() {
+		return Collections.<Field>emptySet();
+	}
+
+	protected Set<Field> createFields() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Arrays dont have methods
+	 */
+	public Set<Method> getMethods() {
+		return Collections.<Method>emptySet();
+	}
+
+	@Override
+	protected Set<Method> createMethods() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Arrays cant have nested types.
+	 */
+	public Set<Type> getNestedTypes() {
+		return Collections.<Type>emptySet();
+	}
+
+	protected Set<Type> createNestedTypes() {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean isArray() {
+		return true;
+	}
+
+	/**
+	 * All array types have a component type.
+	 */
+	private Type componentType;
+
+	public Type getComponentType() {
+		if (false == hasComponentType()) {
+			this.setComponentType(this.createComponentType());
+		}
+		Checker.notNull("field:componentType", componentType);
+		return componentType;
+	}
+
+	protected boolean hasComponentType() {
+		return null != this.componentType;
+	}
+
+	protected void setComponentType(final Type componentType) {
+		Checker.notNull("parameter:componentType", componentType);
+		this.componentType = componentType;
+	}
+
+	protected Type createComponentType() {
+		final JArrayType array = this.getJArrayType().isArray();
+		Checker.notNull("The " + this.getName() + " is an array.", array);
+
+		final JType componentType = array.getComponentType();
+		return this.getTypeOracleGeneratorContext().getType( componentType );
+	}
+
+	public Package getPackage() {
+		return this.getComponentType().getPackage();
+	}
+
+	final protected Package findPackage(final String packageName) {
+		return this.getTypeOracleGeneratorContext().findPackage(packageName);
+	}
+	
 	/**
 	 * Array types dont have a wrapper type
 	 */
 	public Type getWrapper() {
 		return null;
-	}
-
-	/**
-	 * Array types are never abstract
-	 */
-	public boolean isAbstract() {
-		return false;
 	}
 
 	/**
@@ -257,23 +275,11 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 		return this.equals(type) || type.equals(this.getObject());
 	}
 
-	public boolean isFinal() {
-		return false;
-	}
-
-	public boolean isInterface() {
-		return false;
-	}
-
-	public boolean isPrimitive() {
-		return false;
-	}
-
 	/**
 	 * Array types never have annotations as they are actually created at
 	 * runtime by the runtime and not taken from source.
 	 */
-	public List getMetadataValues(String name) {
+	public List<String> getMetadataValues(String name) {
 		return null;
 	}
 
@@ -287,13 +293,13 @@ public class JArrayTypeTypeAdapter extends AbstractType {
 		return jArrayType;
 	}
 
-	public void setJArrayType(final JArrayType jArrayType) {
+	protected void setJArrayType(final JArrayType jArrayType) {
 		Checker.notNull("parameter:jArrayType", jArrayType);
 		this.jArrayType = jArrayType;
 	}
 
-	protected GeneratorContextImpl getGeneratorContextImpl() {
-		return (GeneratorContextImpl) this.getGeneratorContext();
+	protected TypeOracleGeneratorContext getTypeOracleGeneratorContext() {
+		return (TypeOracleGeneratorContext) this.getGeneratorContext();
 	}
 
 	@Override

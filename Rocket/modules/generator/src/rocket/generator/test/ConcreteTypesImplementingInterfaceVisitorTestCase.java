@@ -45,11 +45,13 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	}
 
 	class TestConcreteTypesImplementingInterfaceFinder extends ConcreteTypesImplementingInterfaceVisitor {
+		@Override
 		protected boolean visit(final Type type) {
 			this.types.add(type);
 			return false;
 		}
 
+		@Override
 		protected boolean skipAbstractTypes() {
 			return true;
 		}
@@ -62,9 +64,11 @@ public class ConcreteTypesImplementingInterfaceVisitorTestCase extends TestCase 
 	}
 
 	GeneratorContext createGeneratorContext() {
+
 		return new JavaGeneratorContext() {
 
-			protected Type createClassType(final String name) {
+			@Override
+			protected Type createType(final String name) {
 				TestJavaClassTypeAdapter adapter = null;
 
 				try {

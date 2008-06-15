@@ -26,7 +26,7 @@ import rocket.generator.rebind.field.Field;
  */
 public class FieldComparator implements Comparator<Field> {
 
-	public final static Comparator INSTANCE = new FieldComparator();
+	public final static Comparator<Field> INSTANCE = new FieldComparator();
 
 	private FieldComparator() {
 		super();

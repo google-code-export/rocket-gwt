@@ -39,7 +39,7 @@ public class JavaFieldFieldAdapter extends AbstractField {
 	}
 
 	protected Visibility createVisibility() {
-		return JavaAdapterHelper.getVisibility(this.getJavaField().getModifiers());
+		return JavaGeneratorContext.getVisibility(this.getJavaField().getModifiers());
 	}
 
 	public String getJsniNotation() {

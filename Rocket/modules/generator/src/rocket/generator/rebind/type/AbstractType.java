@@ -67,6 +67,10 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 
 		return runtimeName.toString();
 	}
+	
+	public Type getRawType(){
+		return this;
+	}
 
 	/**
 	 * A lazy loaded set containing all the interfaces implemented by this type
@@ -444,15 +448,14 @@ abstract public class AbstractType extends AbstractClassComponent implements Typ
 	 * 
 	 * @return a Set of NewType sub types
 	 */
-	protected Set<Type> getNewSubTypes() {
-		final Set<Type> subTypes = new HashSet<Type>();
+	protected Set<NewType> getNewSubTypes() {
+		final Set<NewType> subTypes = new HashSet<NewType>();
 
 		final GeneratorContext context = this.getGeneratorContext();
-		final Set<Type> newTypes = context.getNewTypes();
-		final Iterator<Type> newTypesIterator = newTypes.iterator();
+		final Iterator<NewType> newTypesIterator = context.getNewTypes().iterator();
 
 		while (newTypesIterator.hasNext()) {
-			final Type newType = newTypesIterator.next();
+			final NewType newType = newTypesIterator.next();
 			if (newType.getSuperType() == this) {
 				subTypes.add(newType);
 			}

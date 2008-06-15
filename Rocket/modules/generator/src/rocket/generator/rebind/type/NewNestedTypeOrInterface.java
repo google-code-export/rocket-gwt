@@ -148,6 +148,8 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		writer.print(" ");
 		writer.print(this.getNestedName());
 
+		this.writeParameterisedTypes(writer);
+		
 		if (this.hasSuperType()) {
 			final Type superType = this.getSuperType();
 			if (false == superType.equals(superType.getGeneratorContext().getObject())) {
@@ -157,13 +159,13 @@ abstract class NewNestedTypeOrInterface extends NewConcreteNestedTypeOrInterface
 		}
 
 		int i = 0;
-		final Iterator interfaces = this.getInterfaces().iterator();
+		final Iterator<Type> interfaces = this.getInterfaces().iterator();
 		while (interfaces.hasNext()) {
 			if (0 == i) {
 				writer.print(" implements ");
 			}
 			i++;
-			final Type interfacee = (Type) interfaces.next();
+			final Type interfacee = interfaces.next();
 			writer.print(interfacee.getName());
 
 			if (interfaces.hasNext()) {

@@ -17,6 +17,7 @@ package rocket.generator.rebind.gwt;
 
 import rocket.generator.rebind.primitive.BooleanPrimitiveType;
 
+import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 
 /**
@@ -26,6 +27,12 @@ import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
  */
 public class BooleanJPrimitiveTypeTypeAdapter extends BooleanPrimitiveType {
 
+	public BooleanJPrimitiveTypeTypeAdapter( final TypeOracleGeneratorContext context ){
+		super();
+		
+		this.setGeneratorContext(context);
+	}
+	
 	public String getName() {
 		return this.getJPrimitiveType().getQualifiedSourceName();
 	}

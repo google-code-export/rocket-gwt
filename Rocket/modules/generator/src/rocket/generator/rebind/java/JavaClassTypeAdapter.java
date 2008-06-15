@@ -40,7 +40,65 @@ import rocket.util.client.Checker;
 public class JavaClassTypeAdapter extends AbstractType {
 
 	public Visibility getVisibility() {
-		return JavaAdapterHelper.getVisibility(this.getJavaClass().getModifiers());
+		return JavaGeneratorContext.getVisibility(this.getJavaClass().getModifiers());
+	}
+
+	public Package getPackage() {
+		return this.getPackage(this.getJavaClass().getPackage().getName());
+	}
+
+	final protected Package getPackage(final String packageName) {
+		return this.getJavaGeneratorContext().getPackage(packageName);
+	}
+
+	public String getName() {
+		return this.getJavaClass().getName();
+	}
+	public String getSimpleName() {
+		return this.getJavaClass().getSimpleName();
+	}
+
+	public String getJsniNotation() {
+		throw new UnsupportedOperationException();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Type getSuperType() {
+		final Class superClass = this.getJavaClass().getSuperclass();
+		return null == superClass ? null : this.getType(superClass.getName());
+	}
+
+	protected Set<Type> createSubTypes() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public Type getComponentType() {
+		final Class componentType = this.getJavaClass().getComponentType();
+		return null == componentType ? null : this.getType(componentType.getName());
+	}
+
+	public boolean isAbstract() {
+		return Modifier.isAbstract(this.getJavaClass().getModifiers());
+	}
+
+	public boolean isArray() {
+		return this.getJavaClass().isArray();
+	}
+
+	public boolean isFinal() {
+		return Modifier.isFinal(this.getJavaClass().getModifiers());
+	}
+
+	public boolean isInterface() {
+		return this.getJavaClass().isInterface();
+	}
+
+	public boolean isPrimitive() {
+		return this.getJavaClass().isPrimitive();
+	}
+
+	protected Set<Type> createNestedTypes() {
+		throw new UnsupportedOperationException();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -84,10 +142,12 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return Collections.unmodifiableSet(fields);
 	}
 
+	@Override
 	protected Set<Type> createInterfaces() {
-		return JavaAdapterHelper.asSetOfTypes(this.getGeneratorContext(), this.getJavaClass().getInterfaces());
+		return this.getJavaGeneratorContext().asTypes(this.getJavaClass().getInterfaces());
 	}
 
+	@Override
 	protected Set<Method> createMethods() {
 		final GeneratorContext context = this.getGeneratorContext();
 
@@ -107,55 +167,8 @@ public class JavaClassTypeAdapter extends AbstractType {
 		return Collections.unmodifiableSet(methods);
 	}
 
-	protected Set<Type> createNestedTypes() {
-		throw new UnsupportedOperationException();
-	}
-
-	protected Set<Type> createSubTypes() {
-		throw new UnsupportedOperationException();
-	}
-
-	public Type getComponentType() {
-		final Class componentType = this.getJavaClass().getComponentType();
-		return null == componentType ? null : this.getType(componentType.getName());
-	}
-
-	public String getJsniNotation() {
-		throw new UnsupportedOperationException();
-	}
-
-	public String getName() {
-		return this.getJavaClass().getName();
-	}
-
-	public Package getPackage() {
-		return this.getPackage(this.getJavaClass().getPackage().getName());
-	}
-
-	final protected Package getPackage(final String packageName) {
-		return this.getGeneratorContextImpl().getPackage(packageName);
-	}
-
-	protected GeneratorContextImpl getGeneratorContextImpl() {
-		return (GeneratorContextImpl) this.getGeneratorContext();
-	}
-
-	public String getSimpleName() {
-		return this.getJavaClass().getSimpleName();
-	}
-
-	@SuppressWarnings("unchecked")
-	public Type getSuperType() {
-		final Class superClass = this.getJavaClass().getSuperclass();
-		return null == superClass ? null : this.getType(superClass.getName());
-	}
-
-	public boolean isAbstract() {
-		return Modifier.isAbstract(this.getJavaClass().getModifiers());
-	}
-
-	public boolean isArray() {
-		return this.getJavaClass().isArray();
+	protected JavaGeneratorContext getJavaGeneratorContext() {
+		return (JavaGeneratorContext) this.getGeneratorContext();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -167,20 +180,8 @@ public class JavaClassTypeAdapter extends AbstractType {
 	public boolean isAssignableTo(Type type) {
 		return type.isAssignableFrom(this);
 	}
-
-	public boolean isFinal() {
-		return Modifier.isFinal(this.getJavaClass().getModifiers());
-	}
-
-	public boolean isInterface() {
-		return this.getJavaClass().isInterface();
-	}
-
-	public boolean isPrimitive() {
-		return this.getJavaClass().isPrimitive();
-	}
-
-	public List getMetadataValues(String name) {
+	
+	public List<String> getMetadataValues(String name) {
 		throw new UnsupportedOperationException();
 	}
 

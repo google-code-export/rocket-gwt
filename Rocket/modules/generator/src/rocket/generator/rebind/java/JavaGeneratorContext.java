@@ -15,12 +15,18 @@
  */
 package rocket.generator.rebind.java;
 
+import java.lang.reflect.Modifier;
+import java.util.HashSet;
+import java.util.Set;
+
 import rocket.generator.rebind.GeneratorContextImpl;
+import rocket.generator.rebind.Visibility;
 import rocket.generator.rebind.packagee.Package;
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewInterfaceType;
 import rocket.generator.rebind.type.Type;
 import rocket.generator.rebind.type.TypeNotFoundException;
+import rocket.util.client.Checker;
 
 /**
  * A context that should be used when using the jdk/jre as the source of all
@@ -39,29 +45,13 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 	@Override
 	protected void preloadTypes() {
 		this.addType(this.createBooleanType());
-		this.addType(this.createBooleanArrayType());
-
 		this.addType(this.createByteType());
-		this.addType(this.createByteArrayType());
-
 		this.addType(this.createShortType());
-		this.addType(this.createShortArrayType());
-
 		this.addType(this.createIntType());
-		this.addType(this.createIntArrayType());
-
 		this.addType(this.createLongType());
-		this.addType(this.createLongArrayType());
-
 		this.addType(this.createFloatType());
-		this.addType(this.createFloatArrayType());
-
 		this.addType(this.createDoubleType());
-		this.addType(this.createDoubleArrayType());
-
 		this.addType(this.createCharType());
-		this.addType(this.createCharArrayType());
-
 		this.addType(this.createVoidType());
 	}
 
@@ -71,18 +61,10 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		return type;
 	}
 
-	protected Type createBooleanArrayType() {
-		return this.createArrayType(new boolean[0].getClass().getName());
-	}
-
 	protected Type createByteType() {
 		final JavaByteClassTypeAdapter type = new JavaByteClassTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
-	}
-
-	protected Type createByteArrayType() {
-		return this.createArrayType(new byte[0].getClass().getName());
 	}
 
 	protected Type createShortType() {
@@ -91,18 +73,10 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		return type;
 	}
 
-	protected Type createShortArrayType() {
-		return this.createArrayType(new short[0].getClass().getName());
-	}
-
 	protected Type createIntType() {
 		final JavaIntClassTypeAdapter type = new JavaIntClassTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
-	}
-
-	protected Type createIntArrayType() {
-		return this.createArrayType(new int[0].getClass().getName());
 	}
 
 	protected Type createLongType() {
@@ -111,18 +85,10 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		return type;
 	}
 
-	protected Type createLongArrayType() {
-		return this.createArrayType(new long[0].getClass().getName());
-	}
-
 	protected Type createFloatType() {
 		final JavaFloatClassTypeAdapter type = new JavaFloatClassTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
-	}
-
-	protected Type createFloatArrayType() {
-		return this.createArrayType(new float[0].getClass().getName());
 	}
 
 	protected Type createDoubleType() {
@@ -131,18 +97,10 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		return type;
 	}
 
-	protected Type createDoubleArrayType() {
-		return this.createArrayType(new double[0].getClass().getName());
-	}
-
 	protected Type createCharType() {
 		final JavaCharClassTypeAdapter type = new JavaCharClassTypeAdapter();
 		type.setGeneratorContext(this);
 		return type;
-	}
-
-	protected Type createCharArrayType() {
-		return this.createArrayType(new char[0].getClass().getName());
 	}
 
 	protected Type createVoidType() {
@@ -151,15 +109,8 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		return type;
 	}
 
-	protected Type createClassType(final String name) {
-		return this.createJavaClassTypeAdapter(name);
-	}
-
-	protected void throwTypeNotFoundException(final String name, final Throwable cause) {
-		throw new TypeNotFoundException("Unable to find the type \"" + name + "\".", cause);
-	}
-
-	protected Type createArrayType(final String name) {
+	@Override
+	protected Type createType(final String name) {
 		return this.createJavaClassTypeAdapter(name);
 	}
 
@@ -184,6 +135,10 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 		return adapter;
 	}
 
+	protected void throwTypeNotFoundException(final String name, final Throwable cause) {
+		throw new TypeNotFoundException("Unable to find the type \"" + name + "\".", cause);
+	}
+	
 	/**
 	 * Factory method which creates a package instance the first time a request
 	 * is made.
@@ -209,5 +164,44 @@ public class JavaGeneratorContext extends GeneratorContextImpl {
 
 	public NewInterfaceType newInterfaceType(final String name) {
 		throw new UnsupportedOperationException();
+	}
+	
+	public Set<Type> asTypes(final Class<? extends Object>[] types) {
+		Checker.notNull("parameter:types", types);
+
+		final Set<Type> set = new HashSet<Type>();
+		for (int i = 0; i < types.length; i++) {
+			set.add( this.findType(types[i].getName()));
+		}
+
+		return set;
+	}
+	
+	/**
+	 * Helper which takes modifier bits from a constructor, field or method and returns the appropriate Visibility
+	 * @param modifiers
+	 * @return
+	 */
+	static public Visibility getVisibility(final int modifiers) {
+		Visibility visibility = null;
+	
+		while (true) {
+			if (Modifier.isPublic(modifiers)) {
+				visibility = Visibility.PUBLIC;
+				break;
+			}
+			if (Modifier.isProtected(modifiers)) {
+				visibility = Visibility.PROTECTED;
+				break;
+			}
+			if (Modifier.isPrivate(modifiers)) {
+				visibility = Visibility.PRIVATE;
+				break;
+			}
+			visibility = Visibility.PACKAGE_PRIVATE;
+			break;
+		}
+
+		return visibility;
 	}
 }

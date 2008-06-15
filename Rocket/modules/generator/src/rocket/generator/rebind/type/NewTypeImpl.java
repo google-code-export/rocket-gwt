@@ -33,9 +33,11 @@ import rocket.generator.rebind.field.NewFieldImpl;
 import rocket.generator.rebind.initializer.Initializer;
 import rocket.generator.rebind.initializer.InitializerImpl;
 import rocket.generator.rebind.metadata.MetaData;
+import rocket.generator.rebind.method.Method;
 import rocket.generator.rebind.method.NewMethod;
 import rocket.generator.rebind.method.NewMethodImpl;
 import rocket.generator.rebind.packagee.Package;
+import rocket.generator.rebind.type.generics.GenericType;
 import rocket.generator.rebind.util.ConstructorComparator;
 import rocket.generator.rebind.util.FieldComparator;
 import rocket.generator.rebind.util.MethodComparator;
@@ -51,14 +53,8 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 
 	public NewTypeImpl() {
 		super();
-	}
-
-	public Initializer newInitializer() {
-		final InitializerImpl initializer = new InitializerImpl();
-		initializer.setEnclosingType(this);
-		initializer.setGeneratorContext(this.getGeneratorContext());
-		this.addInitializer(initializer);
-		return initializer;
+		
+		this.setParameterisedTypes( this.createParameterisedTypes() );
 	}
 
 	public Package getPackage() {
@@ -84,8 +80,31 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		return this.getGeneratorContextImpl().findPackage(packageName);
 	}
 
-	protected GeneratorContextImpl getGeneratorContextImpl() {
-		return (GeneratorContextImpl) this.getGeneratorContext();
+	protected void writeComments(final SourceWriter writer) {
+		GeneratorHelper.writeComments(this.getComments(), this.getMetaData(), writer);
+	}
+
+	/**
+	 * Any text which will appear within javadoc comments for this field.
+	 */
+	private String comments;
+
+	public String getComments() {
+		Checker.notNull("field:comments", comments);
+		return comments;
+	}
+
+	public void setComments(final String comments) {
+		Checker.notNull("parameter:comments", comments);
+		this.comments = comments;
+	}
+	
+	public Initializer newInitializer() {
+		final InitializerImpl initializer = new InitializerImpl();
+		initializer.setEnclosingType(this);
+		initializer.setGeneratorContext(this.getGeneratorContext());
+		this.addInitializer(initializer);
+		return initializer;
 	}
 
 	public String getSimpleName() {
@@ -118,6 +137,26 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	protected void throwNotAnInterfaceException(final Type interfacee) {
 		throw new NotAnInterfaceException(interfacee.getName() + " is not an interface.");
 	}
+	
+	private List<GenericType> parameterisedTypes;
+	
+	public List<GenericType> getParameterisedTypes(){
+		Checker.notNull("field:parameterisedTypes", parameterisedTypes );
+		return this.parameterisedTypes;
+	}
+	
+	protected void setParameterisedTypes(final List<GenericType> parameterisedTypes ){
+		Checker.notNull("parameter:parameterisedTypes", parameterisedTypes );
+		this.parameterisedTypes = parameterisedTypes;
+	}
+	
+	protected List<GenericType> createParameterisedTypes(){
+		return Collections.<GenericType>emptyList();
+	}
+
+	public void addParameterisedType( final GenericType parameterisedType ){
+		this.getParameterisedTypes().add( parameterisedType );
+	}
 
 	protected Set<Constructor> createConstructors() {
 		return new HashSet<Constructor>();
@@ -143,8 +182,8 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		return field;
 	}
 
-	protected Set createMethods() {
-		return new HashSet();
+	protected Set<Method> createMethods() {
+		return new HashSet<Method>();
 	}
 
 	public void addMethod(final NewMethod method) {
@@ -171,7 +210,7 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	 * Generated types never have sub types.
 	 */
 	protected Set<Type> createSubTypes() {
-		return Collections.EMPTY_SET;
+		return Collections.<Type>emptySet();
 	}
 
 	/**
@@ -344,14 +383,14 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		final GeneratorContext context = this.getGeneratorContext();
 		if (context.isDebugEnabled()) {
 
-			final Set interfaces = this.getInterfaces();
+			final Set<Type> interfaces = this.getInterfaces();
 			if (false == interfaces.isEmpty()) {
 				context.branch();
 				context.debug("implements");
 
-				final Iterator interfacesIterator = interfaces.iterator();
+				final Iterator<Type> interfacesIterator = interfaces.iterator();
 				while (interfacesIterator.hasNext()) {
-					final Type interfacee = (Type) interfacesIterator.next();
+					final Type interfacee = interfacesIterator.next();
 					context.debug(interfacee.getName());
 				}
 
@@ -360,13 +399,30 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 		}
 	}
 
+	protected void writeParameterisedTypes( final SourceWriter writer ){
+		Checker.notNull("parameter:writer", writer);
+		
+		final Iterator<GenericType> parameterisedTypes = this.getParameterisedTypes().iterator();
+		if( parameterisedTypes.hasNext() ){
+			writer.print("<");
+			
+			while( parameterisedTypes.hasNext() ){
+				final GenericType genericType = parameterisedTypes.next();
+				genericType.write(writer);
+			}
+			
+			writer.print(">");
+		}
+		
+	}
+	
 	protected void writeConstructors(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
-		final Set constructors = this.getConstructors();
+		final Set<Constructor> constructors = this.getConstructors();
 		if (false == constructors.isEmpty()) {
 
-			final Set sorted = new TreeSet(ConstructorComparator.INSTANCE);
+			final Set<Constructor> sorted = new TreeSet<Constructor>(ConstructorComparator.INSTANCE);
 			sorted.addAll(constructors);
 
 			final GeneratorContext context = this.getGeneratorContext();
@@ -390,9 +446,9 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	protected void writeFields(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
-		final Set fields = this.getFields();
+		final Set<Field> fields = this.getFields();
 		if (false == fields.isEmpty()) {
-			final Set sorted = new TreeSet(FieldComparator.INSTANCE);
+			final Set<Field> sorted = new TreeSet<Field>(FieldComparator.INSTANCE);
 			sorted.addAll(fields);
 
 			final GeneratorContext context = this.getGeneratorContext();
@@ -416,10 +472,10 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	protected void writeMethods(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
-		final Set methods = this.getMethods();
+		final Set<Method> methods = this.getMethods();
 		if (false == methods.isEmpty()) {
 
-			final Set sorted = new TreeSet(MethodComparator.INSTANCE);
+			final Set<Method> sorted = new TreeSet<Method>(MethodComparator.INSTANCE);
 			sorted.addAll(methods);
 
 			final GeneratorContext context = this.getGeneratorContext();
@@ -443,10 +499,10 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	protected void writeNestedTypes(final SourceWriter writer) {
 		Checker.notNull("parameter:writer", writer);
 
-		final Set types = this.getNestedTypes();
+		final Set<Type> types = this.getNestedTypes();
 		if (false == types.isEmpty()) {
 
-			final Set sorted = new TreeSet(TypeComparator.INSTANCE);
+			final Set<Type> sorted = new TreeSet<Type>(TypeComparator.INSTANCE);
 			sorted.addAll(types);
 
 			final GeneratorContext context = this.getGeneratorContext();
@@ -469,25 +525,6 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 
 	protected void throwTypeAlreadyExistsException() {
 		throw new TypeAlreadyExistsException("A type with the name \"" + this.getName() + "\" already exists, code generation failed.");
-	}
-
-	protected void writeComments(final SourceWriter writer) {
-		GeneratorHelper.writeComments(this.getComments(), this.getMetaData(), writer);
-	}
-
-	/**
-	 * Any text which will appear within javadoc comments for this field.
-	 */
-	private String comments;
-
-	public String getComments() {
-		Checker.notNull("field:comments", comments);
-		return comments;
-	}
-
-	public void setComments(final String comments) {
-		Checker.notNull("parameter:comments", comments);
-		this.comments = comments;
 	}
 
 	public void addMetaData(final String name, final String value) {
@@ -517,4 +554,9 @@ abstract public class NewTypeImpl extends AbstractType implements NewType {
 	protected MetaData createMetaData() {
 		return new MetaData();
 	}
+	
+	protected GeneratorContextImpl getGeneratorContextImpl() {
+		return (GeneratorContextImpl) this.getGeneratorContext();
+	}
+
 }

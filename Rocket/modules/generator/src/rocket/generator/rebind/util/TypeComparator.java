@@ -26,7 +26,7 @@ import rocket.generator.rebind.type.Type;
  */
 public class TypeComparator implements Comparator<Type> {
 
-	public final static Comparator INSTANCE = new TypeComparator();
+	public final static Comparator<Type> INSTANCE = new TypeComparator();
 
 	private TypeComparator() {
 		super();

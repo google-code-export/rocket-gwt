@@ -18,6 +18,8 @@ package rocket.generator.rebind.gwt;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 import rocket.generator.rebind.GeneratorConstants;
 import rocket.generator.rebind.GeneratorContextImpl;
@@ -38,8 +40,14 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
+import com.google.gwt.core.ext.typeinfo.JRawType;
+import com.google.gwt.core.ext.typeinfo.JRealClassType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.JTypeParameter;
+import com.google.gwt.core.ext.typeinfo.JWildcardType;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
 /**
@@ -48,7 +56,281 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
  * @author Miroslav Pokorny
  */
 public class TypeOracleGeneratorContext extends GeneratorContextImpl {
+	
+	@Override
+	protected void preloadTypes() {
+		this.addType(this.createBooleanType());
+		this.addType(this.createBooleanArrayType());
 
+		this.addType(this.createByteType());
+		this.addType(this.createByteArrayType());
+
+		this.addType(this.createShortType());
+		this.addType(this.createShortArrayType());
+
+		this.addType(this.createIntType());
+		this.addType(this.createIntArrayType());
+
+		this.addType(this.createLongType());
+		this.addType(this.createLongArrayType());
+
+		this.addType(this.createFloatType());
+		this.addType(this.createFloatArrayType());
+
+		this.addType(this.createDoubleType());
+		this.addType(this.createDoubleArrayType());
+
+		this.addType(this.createCharType());
+		this.addType(this.createCharArrayType());
+
+		this.addType(this.createVoidType());
+	}
+
+	protected Type createBooleanType() {
+		return new BooleanJPrimitiveTypeTypeAdapter( this );
+	}
+
+	protected Type createBooleanArrayType() {
+		return this.createArrayType(JPrimitiveType.BOOLEAN);
+	}
+
+	@Override
+	public Type getBoolean() {
+		return this.getType(GeneratorConstants.BOOLEAN);
+	}
+
+	protected Type createByteType() {
+		return new ByteJPrimitiveTypeTypeAdapter( this );
+	}
+
+	protected Type createByteArrayType() {
+		return this.createArrayType(JPrimitiveType.BYTE);
+	}
+
+	@Override
+	public Type getByte() {
+		return this.getType(GeneratorConstants.BYTE);
+	}
+
+	protected Type createShortType() {
+		return new ShortJPrimitiveTypeTypeAdapter( this );
+	}
+
+	protected Type createShortArrayType() {
+		return this.createArrayType(JPrimitiveType.SHORT);
+	}
+
+	@Override
+	public Type getShort() {
+		return this.getType(GeneratorConstants.SHORT);
+	}
+
+	protected Type createIntType() {
+		return new IntJPrimitiveTypeTypeAdapter( this );
+	}
+
+	protected Type createIntArrayType() {
+		return this.createArrayType(JPrimitiveType.INT);
+	}
+
+	@Override
+	public Type getInt() {
+		return this.getType(GeneratorConstants.INT);
+	}
+
+	protected Type createLongType() {
+		return new LongJPrimitiveTypeTypeAdapter( this );
+	}
+
+	protected Type createLongArrayType() {
+		return this.createArrayType(JPrimitiveType.LONG);
+	}
+
+	@Override
+	public Type getLong() {
+		return this.getType(GeneratorConstants.LONG);
+	}
+
+	protected Type createFloatType() {
+		return new FloatJPrimitiveTypeTypeAdapter( this);
+	}
+
+	protected Type createFloatArrayType() {
+		return this.createArrayType(JPrimitiveType.FLOAT);
+	}
+
+	@Override
+	public Type getFloat() {
+		return this.getType(GeneratorConstants.FLOAT);
+	}
+
+	protected Type createDoubleType() {
+		return new DoubleJPrimitiveTypeTypeAdapter( this );
+	}
+
+	protected Type createDoubleArrayType() {
+		return this.createArrayType(JPrimitiveType.DOUBLE);
+	}
+
+	@Override
+	public Type getDouble() {
+		return this.getType(GeneratorConstants.DOUBLE);
+	}
+
+	protected Type createCharType() {
+		return new CharJPrimitiveTypeTypeAdapter( this );
+	}
+
+	protected Type createCharArrayType() {
+		return this.createArrayType(JPrimitiveType.CHAR);
+	}
+
+	protected Type createVoidType() {
+		return new VoidJPrimitiveTypeTypeAdapter( this );
+	}
+
+	/**
+	 * Factory method which creates a package instance the first time a request
+	 * is made.
+	 * 
+	 * @param name
+	 *            The name of the package
+	 * @return The package
+	 */
+	@Override
+	protected Package createPackage(final String name) {
+		JPackagePackageAdapter packagee = null;
+		final JPackage jPackage = this.findJPackage(name);
+		if (null != jPackage) {
+			packagee = new JPackagePackageAdapter( jPackage, this );
+
+		}
+		return packagee;
+	}
+
+	protected JPackage findJPackage(final String name) {
+		return this.getTypeOracle().findPackage(name);
+	}
+
+	@Override
+	protected Type createType(final String name) {
+		Type type = null;
+
+		while( true ){
+			final TypeOracle typeOracle = this.getTypeOracle();
+			if( name.endsWith("[]")){
+				final String componentTypeName = name.substring(0, name.length() - 2);
+				final JClassType componentType = typeOracle.findType(componentTypeName);
+				Checker.notNull("Unable to find array component type \"" + componentTypeName + "\".", componentType);
+		
+				type = this.createArrayType(componentType);
+				break;
+			}
+
+			final JClassType jClassType = typeOracle.findType( name );
+			if( null != jClassType ){
+				type = this.createClassType( (JRealClassType )jClassType);
+				break;
+			}
+			break;
+		}
+		return type;
+	}
+
+	public Type getType( final JType jType ){
+		Checker.notNull("parameter:jType", jType );
+		
+		Type type = null;
+		
+		while( true ){
+			if( jType instanceof JPrimitiveType ){
+				type = this.getType( jType.getQualifiedSourceName() );
+				break;
+			}
+//			if( jType instanceof JRawType ){
+//				final JRawType jRawType = (JRawType) jType;
+//				type = this.getType( jRawType.getErasedType() );
+//				break;//TODO IMPL
+//			}	
+			
+			if( jType instanceof JArrayType ){				
+				final String name = jType.getQualifiedSourceName();
+				type = this.getType(name);
+				if( null == type ){
+					type = this.createArrayType( (JArrayType) jType );
+					this.addType(type);
+				}
+				break;
+			}
+			
+			if( jType instanceof JTypeParameter ){
+				//type = this.createTypeParameter( (JTypeParameter) jType );
+				type = this.getType( jType.getErasedType());
+				//throw new UnsupportedOperationException();
+				break;
+			}
+
+			if( jType instanceof JParameterizedType ){
+				//type = this.createParameterizedType( (JParameterizedType) jType );
+				type = this.getType( jType.getErasedType());
+				break;
+//				throw new UnsupportedOperationException();
+			}
+			if( jType instanceof JWildcardType ){
+				type = this.getType( jType.getErasedType());
+				//type = this.createWildcardType( (JWildcardType) jType );//
+				//throw new UnsupportedOperationException();
+				break;
+			}
+			
+			if( jType instanceof JRealClassType || jType instanceof JRawType){				
+				final String name = jType.getQualifiedSourceName();
+				type = this.getType(name);
+				if( null == type ){
+					type = jType instanceof JRealClassType ? this.createClassType( (JRealClassType)jType ) : this.createClassType( (JRawType)jType );
+					this.addType(type);
+				}
+				break;
+			}
+			
+			throw new UnsupportedOperationException("Unsupported JType sub class \"" + jType.getClass().getName() + "\", jType: " + jType.toString() );
+		}
+		
+		return type;
+	}
+	
+	// TODO createParameterType NYI
+	protected Type createTypeParameter( final JTypeParameter jTypeParameter ){
+		throw new UnsupportedOperationException();
+	}
+	
+	protected Type createParameterizedType( final JParameterizedType jParameterizedType ){
+		return new JParameterizedTypeParameterTypeAdapter( jParameterizedType, this );
+	}
+	
+	protected Type createWildcardType( final JWildcardType jWildcardType ){
+		return new JWildcardTypeWildcardTypeAdapter( jWildcardType, this );
+	}
+	
+	protected Type createClassType(final JRealClassType jRealClassType ) {
+		return new JRealClassOrJRawClassTypeTypeAdapter( jRealClassType, this );
+	}
+
+	protected Type createClassType(final JRawType jRawType ) {
+		return new JRealClassOrJRawClassTypeTypeAdapter( jRawType, this );
+	}
+	
+	protected Type createArrayType(final JType componentType) {
+		Checker.notNull("parameter:componentType", componentType);
+
+		final JArrayType jArrayType = (JArrayType) this.getTypeOracle().getArrayType(componentType);
+		return this.createArrayType(jArrayType);
+	}
+	
+	protected Type createArrayType(final JArrayType jArrayType ) {
+		return new JArrayTypeTypeAdapter( jArrayType, this );
+	}
+	
 	/**
 	 * Factory method which creates a new concrete type.
 	 * 
@@ -57,6 +339,8 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	 * @return The new concrete type.
 	 */
 	public NewConcreteType newConcreteType(final String name) {
+		Checker.notEmpty("parameter:name", name );
+		
 		NewConcreteTypeImpl type = null;
 
 		final PrintWriter printWriter = this.tryCreateTypePrintWriter(name);
@@ -175,231 +459,6 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 	}
 
 	/**
-	 * Factory method which creates an adapter for any array type. This method
-	 * should only ever be called once for each array type after which all
-	 * references are cached.
-	 * 
-	 * @param name
-	 *            The array type name
-	 * @return A new JArrayTypeTypeAdapter
-	 */
-	protected Type createArrayType(final String name) {
-		final String componentTypeName = name.substring(0, name.length() - 2);
-		final JClassType componentType = this.getTypeOracle().findType(componentTypeName);
-		Checker.notNull("Unable to find array component type \"" + componentTypeName + "\".", componentType);
-
-		return this.createArrayType(componentType);
-	}
-
-	protected Type createArrayType(final JType componentType) {
-		Checker.notNull("parameter:componentType", componentType);
-
-		// FIX RAW HERE
-
-		final JArrayType jArrayType = (JArrayType) this.getTypeOracle().getArrayType(componentType);
-		JArrayTypeTypeAdapter adapter = new JArrayTypeTypeAdapter();
-		adapter.setGeneratorContext(this);
-		adapter.setJArrayType(jArrayType);
-		return adapter;
-	}
-
-	/**
-	 * Factory method which creates an adapter for any type. This method should
-	 * only ever be called once for each array type after which all references
-	 * are cached.
-	 * 
-	 * @param name
-	 * @return a new JClassTypeTypeAdapter
-	 */
-	protected Type createClassType(final String name) {
-		Checker.notEmpty("parameter:name", name);
-
-		final JClassType jClassType = (JClassType) this.getTypeOracle().findType(name);
-		JClassTypeTypeAdapter adapter = null;
-		if (null != jClassType) {
-			adapter = new JClassTypeTypeAdapter();
-			adapter.setGeneratorContext(this);
-			adapter.setJClassType(jClassType);
-		}
-		return adapter;
-	}
-
-	/**
-	 * Factory method which creates a package instance the first time a request
-	 * is made.
-	 * 
-	 * @param name
-	 *            The name of the package
-	 * @return The package
-	 */
-	@Override
-	protected Package createPackage(final String name) {
-		JPackagePackageAdapter packagee = null;
-		final JPackage jPackage = this.findJPackage(name);
-		if (null != jPackage) {
-			packagee = new JPackagePackageAdapter();
-			packagee.setJPackage(jPackage);
-			packagee.setGeneratorContext(this);
-
-		}
-		return packagee;
-	}
-
-	protected JPackage findJPackage(final String name) {
-		return this.getTypeOracle().findPackage(name);
-	}
-
-	@Override
-	protected void preloadTypes() {
-		this.addType(this.createBooleanType());
-		this.addType(this.createBooleanArrayType());
-
-		this.addType(this.createByteType());
-		this.addType(this.createByteArrayType());
-
-		this.addType(this.createShortType());
-		this.addType(this.createShortArrayType());
-
-		this.addType(this.createIntType());
-		this.addType(this.createIntArrayType());
-
-		this.addType(this.createLongType());
-		this.addType(this.createLongArrayType());
-
-		this.addType(this.createFloatType());
-		this.addType(this.createFloatArrayType());
-
-		this.addType(this.createDoubleType());
-		this.addType(this.createDoubleArrayType());
-
-		this.addType(this.createCharType());
-		this.addType(this.createCharArrayType());
-
-		this.addType(this.createVoidType());
-	}
-
-	protected Type createBooleanType() {
-		final BooleanJPrimitiveTypeTypeAdapter type = new BooleanJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
-	protected Type createBooleanArrayType() {
-		return this.createArrayType(JPrimitiveType.BOOLEAN);
-	}
-
-	@Override
-	public Type getBoolean() {
-		return this.getType(GeneratorConstants.BOOLEAN);
-	}
-
-	protected Type createByteType() {
-		final ByteJPrimitiveTypeTypeAdapter type = new ByteJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
-	protected Type createByteArrayType() {
-		return this.createArrayType(JPrimitiveType.BYTE);
-	}
-
-	@Override
-	public Type getByte() {
-		return this.getType(GeneratorConstants.BYTE);
-	}
-
-	protected Type createShortType() {
-		final ShortJPrimitiveTypeTypeAdapter type = new ShortJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
-	protected Type createShortArrayType() {
-		return this.createArrayType(JPrimitiveType.SHORT);
-	}
-
-	@Override
-	public Type getShort() {
-		return this.getType(GeneratorConstants.SHORT);
-	}
-
-	protected Type createIntType() {
-		final IntJPrimitiveTypeTypeAdapter type = new IntJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
-	protected Type createIntArrayType() {
-		return this.createArrayType(JPrimitiveType.INT);
-	}
-
-	@Override
-	public Type getInt() {
-		return this.getType(GeneratorConstants.INT);
-	}
-
-	protected Type createLongType() {
-		final LongJPrimitiveTypeTypeAdapter type = new LongJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
-	protected Type createLongArrayType() {
-		return this.createArrayType(JPrimitiveType.LONG);
-	}
-
-	@Override
-	public Type getLong() {
-		return this.getType(GeneratorConstants.LONG);
-	}
-
-	protected Type createFloatType() {
-		final FloatJPrimitiveTypeTypeAdapter type = new FloatJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
-	protected Type createFloatArrayType() {
-		return this.createArrayType(JPrimitiveType.FLOAT);
-	}
-
-	@Override
-	public Type getFloat() {
-		return this.getType(GeneratorConstants.FLOAT);
-	}
-
-	protected Type createDoubleType() {
-		final DoubleJPrimitiveTypeTypeAdapter type = new DoubleJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
-	protected Type createDoubleArrayType() {
-		return this.createArrayType(JPrimitiveType.DOUBLE);
-	}
-
-	@Override
-	public Type getDouble() {
-		return this.getType(GeneratorConstants.DOUBLE);
-	}
-
-	protected Type createCharType() {
-		final CharJPrimitiveTypeTypeAdapter type = new CharJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
-	protected Type createCharArrayType() {
-		return this.createArrayType(JPrimitiveType.CHAR);
-	}
-
-	protected Type createVoidType() {
-		final VoidJPrimitiveTypeTypeAdapter type = new VoidJPrimitiveTypeTypeAdapter();
-		type.setGeneratorContext(this);
-		return type;
-	}
-
-	/**
 	 * This method maybe used to create a resource or file that will be
 	 * available to the public path of an application or compilation.
 	 * 
@@ -412,12 +471,13 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 		try {
 			return this.createResource0(filename);
 		} catch (final UnableToCompleteException caught) {
-			throw new GeneratorException("Something went wrong whilst attempting to retrieve an OutputStream for the resource \""
-					+ filename + "\".");
+			throw new GeneratorException("Unable to retrieve an OutputStream for the resource \"" + filename + "\".");
 		}
 	}
 
 	protected OutputStream createResource0(final String filename) throws UnableToCompleteException {
+		Checker.notEmpty( "parameter:filename", filename );
+		
 		OutputStream outputStream = null;
 		while (true) {
 			final TreeLogger logger = this.getTreeLogger();
@@ -484,9 +544,28 @@ public class TypeOracleGeneratorContext extends GeneratorContextImpl {
 				final TreeLogger logger = TypeOracleGeneratorContext.this.getTreeLogger();
 				TypeOracleGeneratorContext.this.getGeneratorContext().commitResource(logger, outputStream);
 			} catch (final UnableToCompleteException caught) {
-				throw new IOException("Something went wrong whilst attempting to commit resource, reason: \"" + caught.getMessage()
-						+ "\"");
+				throw new IOException("Unable to commit resource, reason: \"" + caught.getMessage() + "\"");
 			}
 		}
 	}
+	
+	/**
+	 * helper which creates a set of Types from the given JTypes
+	 * 
+	 * @param generatorContext
+	 * @param types
+	 * @return
+	 */
+	Set<Type> asTypes(final JType[] types) {
+		Checker.notNull("parameter:types", types);
+
+		final Set<Type> set = new HashSet<Type>();
+		for (int i = 0; i < types.length; i++) {
+			final JType jType = types[i];
+			set.add( this.getType(jType));
+		}
+
+		return set;
+	}
+	
 }

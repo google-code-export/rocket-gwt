@@ -20,6 +20,7 @@ import java.util.Set;
 
 import rocket.generator.rebind.type.NewConcreteType;
 import rocket.generator.rebind.type.NewInterfaceType;
+import rocket.generator.rebind.type.NewType;
 import rocket.generator.rebind.type.Type;
 
 /**
@@ -59,7 +60,7 @@ public interface GeneratorContext {
 
 	void addType(final Type type);
 
-	Set getNewTypes();
+	Set<NewType> getNewTypes();
 
 	NewConcreteType newConcreteType(String name);
 
