@@ -58,7 +58,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 	protected NewConcreteType assembleNewType(final Type type, final String newTypeName) {
 		final Set<Method> methods = this.findMethods(type);
 		final NewConcreteType generatedType = this.createType(type, newTypeName);
-		final Set prefetchUrls = this.implementMethods(generatedType, methods);
+		final Set<String> prefetchUrls = this.implementMethods(generatedType, methods);
 		this.overloadGetPreloadUrls(generatedType, prefetchUrls);
 		return generatedType;
 	}
@@ -86,7 +86,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		context.branch();
 		context.info("Finding abstract methods which need be implemented");
 
-		final Set<Method> methods = new TreeSet(MethodComparator.INSTANCE); // sort
+		final Set<Method> methods = new TreeSet<Method>(MethodComparator.INSTANCE); // sort
 		// methods
 		// in
 		// alphabetical
@@ -339,7 +339,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 	 * @return
 	 */
 	protected String getImageName(final Method method) {
-		final List filenames = method.getMetadataValues(ImageFactoryConstants.IMAGE_FILE);
+		final List<String> filenames = method.getMetadataValues(ImageFactoryConstants.IMAGE_FILE);
 		if (null == filenames || filenames.size() != 1) {
 			throwExpectedOneImageFilename(method);
 		}
@@ -445,9 +445,9 @@ abstract public class ImageFactoryGenerator extends Generator {
 			return "data:" + mimeType + ";base64," + encoded;
 		}
 
+		@SuppressWarnings("unchecked")
 		protected String base64Encode(final byte[] bytes) {
-			final Base64Encoder encoder = new Base64Encoder();
-			return encoder.encode(bytes);
+			return Base64Encoder.encode(bytes);
 		}
 
 		public int getWidth() {
@@ -540,7 +540,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		boolean server = false;
 
 		while (true) {
-			final List values = method.getMetadataValues(ImageFactoryConstants.LOCATION);
+			final List<String> values = method.getMetadataValues(ImageFactoryConstants.LOCATION);
 			if (null == values || values.size() == 0) {
 				this.throwLocationAnnotationMissing(method);
 			}
@@ -569,7 +569,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 				+ "\" annotation is missing from the method: \"" + this.toString(method) + "\"."));
 	}
 
-	protected void throwLocationAnnotationFoundMoreThanOnce(final Method method, final List values) {
+	protected void throwLocationAnnotationFoundMoreThanOnce(final Method method, final List<String> values) {
 		this.throwException(new ImageFactoryGeneratorException("The \"" + ImageFactoryConstants.LOCATION
 				+ "\" annotation contains more than one value (" + values + ") on the method: \"" + this.toString(method) + "\"."));
 	}
@@ -590,7 +590,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		boolean eager = false;
 
 		while (true) {
-			final List values = method.getMetadataValues(ImageFactoryConstants.SERVER_REQUEST);
+			final List<String> values = method.getMetadataValues(ImageFactoryConstants.SERVER_REQUEST);
 			if (null == values || values.size() == 0) {
 				this.throwServerRequestAnnotationMissing(method);
 			}
@@ -620,7 +620,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 				+ "\" annotation is missing from the method: \"" + this.toString(method) + "\"."));
 	}
 
-	protected void throwServerRequestAnnotationFoundMoreThanOnce(final Method method, final List values) {
+	protected void throwServerRequestAnnotationFoundMoreThanOnce(final Method method, final List<String> values) {
 		this.throwException(new ImageFactoryGeneratorException("The \"" + ImageFactoryConstants.SERVER_REQUEST
 				+ "\" annotation contains more than one value (" + values + ") on the method: \"" + this.toString(method) + "\"."));
 	}
@@ -637,7 +637,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 	 * @param newType
 	 * @param methods
 	 */
-	protected void overloadGetPreloadUrls(final NewConcreteType newType, final Set preFetchUrls) {
+	protected void overloadGetPreloadUrls(final NewConcreteType newType, final Set<String> preFetchUrls) {
 		Checker.notNull("parameter:newType", newType);
 		Checker.notNull("parameter:preFetchUrls", preFetchUrls);
 
@@ -646,7 +646,7 @@ abstract public class ImageFactoryGenerator extends Generator {
 		context.branch();
 		context.info("Overriding " + methodName + " to preload.");
 
-		final Method method = newType.findMostDerivedMethod(methodName, Collections.EMPTY_LIST);
+		final Method method = newType.findMostDerivedMethod(methodName, Collections.<Type>emptyList());
 		final NewMethod newMethod = method.copy(newType);
 		newMethod.setAbstract(false);
 		newMethod.setFinal(true);
@@ -661,9 +661,9 @@ abstract public class ImageFactoryGenerator extends Generator {
 
 				final StringBuffer commaSeparated = new StringBuffer();
 
-				final Iterator i = preFetchUrls.iterator();
+				final Iterator<String> i = preFetchUrls.iterator();
 				while (i.hasNext()) {
-					final String url = (String) i.next();
+					final String url = i.next();
 					commaSeparated.append(url);
 					if (i.hasNext()) {
 						commaSeparated.append(',');
@@ -676,9 +676,9 @@ abstract public class ImageFactoryGenerator extends Generator {
 		};
 		newMethod.setBody(commaSeparatedList);
 
-		final Iterator i = preFetchUrls.iterator();
+		final Iterator<String> i = preFetchUrls.iterator();
 		while (i.hasNext()) {
-			final String url = (String) i.next();
+			final String url = i.next();
 			context.debug(url);
 		}
 

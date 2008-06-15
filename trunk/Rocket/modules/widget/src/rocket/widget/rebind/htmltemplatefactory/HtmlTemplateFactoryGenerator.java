@@ -540,7 +540,7 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 	protected String getFile(final Method method) {
 		Checker.notNull("parameter:method", method);
 
-		final List values = method.getMetadataValues(Constants.FILE_ANNOTATION);
+		final List<String> values = method.getMetadataValues(Constants.FILE_ANNOTATION);
 		if (null == values || values.size() == 0) {
 			throwUnableToFindFileAnnotation(method);
 		}
@@ -555,7 +555,7 @@ public class HtmlTemplateFactoryGenerator extends Generator {
 				+ "\" annotation upon the method \"" + this.toString(method) + "\"."));
 	}
 
-	protected void throwFileAnnotationHasMoreThanOneValue(final Method method, final List values) {
+	protected void throwFileAnnotationHasMoreThanOneValue(final Method method, final List<String> values) {
 		throwException(new HtmlTemplateFactoryGeneratorException("The \"" + Constants.FILE_ANNOTATION
 				+ "\" annotation has more than one value \"" + values + "\" upon the method \"" + this.toString(method) + "\"."));
 	}
