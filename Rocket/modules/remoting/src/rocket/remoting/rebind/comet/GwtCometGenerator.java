@@ -195,7 +195,7 @@ public class GwtCometGenerator extends Generator {
 		final GeneratorContext context = this.getGeneratorContext();
 		context.info("Retrieving incoming payload type.");
 
-		final List values = type.getMetadataValues(Constants.COMET_PAYLOAD_TYPE_ANNOTATION);
+		final List<String> values = type.getMetadataValues(Constants.COMET_PAYLOAD_TYPE_ANNOTATION);
 		if (values.size() != 1) {
 			throwUnableToFindCometPayloadTypeAnnotation(type);
 		}

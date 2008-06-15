@@ -60,10 +60,7 @@ public class CometGenerator extends Generator {
 		try {
 			final Class proxyCreator = Class.forName(Constants.PROXY_CREATOR);
 			proxyCreator.getField(Constants.CUSTOMISED_PROXY_CREATOR_MARKER_FIELD);
-			this
-					.getGeneratorContext()
-					.warn(
-							"Rocket.jar appears in front of gwt*.jar files! Classpath related problems should not happen (Comet deserialization of incoming payload should work).");
+			this.getGeneratorContext().warn("Rocket.jar appears in front of gwt*.jar files! Classpath related problems should not happen (Comet deserialization of incoming payload should work).");
 
 		} catch (final NoSuchFieldException fieldMissing) {
 			fieldMissing.printStackTrace();
