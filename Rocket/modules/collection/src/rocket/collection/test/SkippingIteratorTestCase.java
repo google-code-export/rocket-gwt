@@ -141,7 +141,7 @@ public class SkippingIteratorTestCase extends TestCase {
 		final TestSkippingIterator<Object> iterator = new TestSkippingIterator<Object>();
 		iterator.setIterator(list.iterator());
 
-		final Iterator expectedIterator = expected.iterator();
+		final Iterator<Object> expectedIterator = expected.iterator();
 
 		while (expectedIterator.hasNext()) {
 			assertTrue(iterator.hasNext());
