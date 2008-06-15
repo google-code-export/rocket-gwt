@@ -39,5 +39,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rocket.json.test.jsonserializer.JsonSerializerGwtTestCase"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-style DETAILED"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Rocket"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-web -out www-test -style DETAILED&quot;&#13;&#10;-Xmx256M&#13;&#10;-Dgwt.hybrid"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dgwt.args=&quot;-web -out www -style DETAILED&quot;&#13;&#10;-Xmx256M&#13;&#10;-Dgwt.hybrid"/>
 </launchConfiguration>
