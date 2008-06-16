@@ -1,0 +1,4 @@
+// /rocket/beans/rebind/aop/proxymethod/proxy-method.txt
+
+return this.target.${method}( ${parameters} );
+

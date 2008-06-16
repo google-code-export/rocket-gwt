@@ -1,0 +1,8 @@
+<module>
+	<inherits name="rocket.User" />	
+	<inherits name="rocket.serialization.Serialization" />		
+	<entry-point class="rocket.serialization.benchmark.client.SerializationBenchmarker" />
+
+	<source path="client" />
+	<servlet path="/service" class="rocket.serialization.benchmark.server.EchoRemoteServiceServlet"/>	
+</module>

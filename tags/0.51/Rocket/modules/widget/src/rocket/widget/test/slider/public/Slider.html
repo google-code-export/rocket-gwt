@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Slider</title>
+<meta name='gwt:module' content='rocket.widget.test.slider.Slider'>
+<script language="javascript" src="rocket.widget.test.slider.Slider.nocache.js"></script>
+<style>
+BODY{
+	margin-left: 20px;	
+	width: 90%;
+}
+
+BODY, TABLE, DIV{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	width: 100%;
+}
+
+/* HORIZONTAL SLIDER ::::::::::::::::::::::::::::::::::::::::*/
+.rocket-horizontalSlider {
+	background-color: #ccc;
+	border-top-color: #444;
+	border-bottom-color: #888;
+	border-left-color: #444;
+	border-right-color: #888;
+	border-width: 2px;
+	border-style: solid;
+	
+	cursor: pointer;
+	
+	border-collapse: collapse; 
+	border-spacing: 0
+	
+	width: 200px;
+	height: 20px;
+}
+
+.rocket-horizontalSlider .handle{
+	z-index: 1;
+	width: 16px;
+	height: 16px;
+}
+
+.rocket-horizontalSlider .background{
+	width: 200px;
+	height: 16px;
+}
+
+.rocket-horizontalSlider .dragging{
+}
+
+/* VERTICAL SLIDER ::::::::::::::::::::::::::::::::::::::::*/
+.rocket-verticalSlider{
+	background-color: #ccc;
+	border-top-color: #444;
+	border-bottom-color: #888;
+	border-left-color: #444;
+	border-right-color: #888;
+	border-width: 2px;
+	border-style: solid;
+	
+	cursor: pointer;
+
+	width: 20px;
+	height: 200px;
+}
+
+.rocket-verticalSlider .handle{
+	z-index: 1;
+	
+	width: 16px;
+	height: 16px;
+}
+
+.rocket-verticalSlider .background{
+	width: 16px;
+	height: 200px;		
+}
+
+.rocket-verticalSlider .dragging{
+}
+
+/* FLOATING SLIDER :::::::::::::::::::::::::::::::::::::::::::*/
+.rocket-floatingSlider{
+	background-color: #ccc;
+	border-top-color: #444;
+	border-bottom-color: #888;
+	border-left-color: #444;
+	border-right-color: #888;
+	border-width: 2px;
+	border-style: solid;
+	
+	width: 204px;
+	height: 204px;
+	
+	cursor: pointer;
+}
+
+.rocket-floatingSlider .handle{
+	z-index: 1;
+	width: 16px;
+	height: 16px;
+}
+
+.rocket-floatingSlider .background{
+	width: 200px;
+	height: 200px;
+}
+
+TABLE.rocket-floatingSlider .background{
+	width: 200px;
+	height: 200px;
+}
+
+
+.rocket-floatingSlider .dragging{
+}
+</style>
+</head>
+
+	<body style="margin-left: 50px; margin-top: 50px; background-color: #eee;">
+	<button style="position: absolute; top; 10px; right: 10px; width: 50px; height: 1em; " onclick="prompt('document.body.innerHTML', document.body.innerHTML )">document.body.innerHTML</button>
+	
+		<div id="main" style="background-color: #fff; border-style: solid; border-color: #888; border-width: 1px; padding: 10px;" >
+			A Slider is a widget which uses a sliding handle to set a value. 
+			Three slider flavours are available.
+			<h6>Things to test</h6>
+			<ul>
+			<li>Entering number values in the <b>Value</b> TextBox updates the values of all sliders</li>
+			<li>After letting go of the handle it should still be possible to drag/select text through out the page - When dragging begins the selection behaviour of the browser is disabled. It should be reenabled when the drag cancelled is let go.</li>
+			<li>It is not necessary to drag the handle along the slider. It is possible to drag outside this area and the handle will continue to move accordingly along the slider's axis.</li>
+			<li>Each slider widget has an accompanying Label which is updated using a ChangeEventListener.</li>
+			<li>Dont forget to resize the window so that scrollbars appear and scroll the viewport and run tests again.</li>
+			</ul>
+		</div>
+	</body>
+</html>

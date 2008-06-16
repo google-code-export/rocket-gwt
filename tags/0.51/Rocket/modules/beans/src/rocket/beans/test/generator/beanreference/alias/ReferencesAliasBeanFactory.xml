@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bean-factory PUBLIC "-//rocket-gwt//Beans 0.48//EN" "http://code.google.com/p/rocket-gwt">
+<bean-factory>
+	<bean 
+		id="bean" 
+		class="rocket.beans.test.generator.beanreference.alias.ReferencesAlias" 
+		scope="singleton">
+		<properties>
+			<property name="aliasedBean">
+				<bean-reference reference-id="aliasedBean" />
+			</property>			
+		</properties>
+	</bean>
+	
+	<alias name="aliasedBean" bean="secondBean" />
+
+	<bean 
+		id="secondBean" 
+		class="rocket.beans.test.generator.beanreference.Bean" 
+		scope="singleton">
+	</bean>
+
+</bean-factory>

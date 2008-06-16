@@ -1,0 +1,11 @@
+<module>
+	<inherits name="com.google.gwt.junit.JUnit"/>
+	<inherits name="rocket.json.Json"/>
+	<inherits name="rocket.generator.Generator"/>
+	
+	<source path="" />	
+
+	<generate-with class="rocket.json.test.rebind.TestJsonSerializerGenerator">
+		<when-type-assignable class="rocket.json.client.JsonSerializable" />
+	</generate-with>	
+</module>

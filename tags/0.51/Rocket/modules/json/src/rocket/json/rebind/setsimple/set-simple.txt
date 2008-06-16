@@ -1,0 +1,15 @@
+// /rocket/json/rebind/setsimple/set-simple.txt
+
+// invoke the setter
+this.${setter}(
+
+ 	instance, 
+ 
+	 	// unwrap the json value into a java primitive...
+	 	${serializer}.serializer.read( 
+ 
+			 // get the json object by its javascript name
+			 jsonObject.get( ${javascriptPropertyName} )
+		) 
+ );
+ 
