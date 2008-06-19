@@ -56,7 +56,8 @@ Two examples below are given that show something that would require quite a bit 
 The motivation section discussed the need for a special case to set a new opacity upon an element. The example shows how this would be achieved using the InlineStyle.
 {{{
 	Element element = ... // get Element from somewhere
-	InlineStyle.setDouble( element, Css.OPACITY, 0.5, CssUnit.PERCENTAGE );
+	InlineStyle inlineStyle = InlineStyle.getInlineStyle( element );
+	inlineStyle.setString( Css.OPACITY, 0.5, CssUnit.PERCENTAGE );
 }}}
 
 ===Computed colour values==
@@ -69,7 +70,8 @@ Working with colour values is another problematic concern for any developer. Int
 Reading a colour value thus becomes quite troublesome, however doing so with ComputedStyle is quite simple as the example below shows.
 {{{
 	Element element = ...// get Element from somewhere
-	Colour shouldBeRed = ComputedStyle.getColour( element, Css.BACKGROUND_COLOR );
+	ComputedStyle computedStyle = ComputedStyle.getComputedStyle( element );
+	Colour shouldBeRed = computedStyle.getColour( Css.BACKGROUND_COLOR );
 }}}
 
 There are many other attributes that are special cases. So far quite a few are taken care of by the rocket classes, however if you find one thats handled wrong or not yet supported feel free to post a message or send an email.
@@ -97,8 +99,5 @@ After downloading and unzipping the download archive the last step required is t
 
 For further examples refer to the unit and functional tests that accompany the distribution.
 
-  * `rocket.style.test.computedstyle.ComputedStyleGwtTestCase`
-  * `rocket.style.test.inlinestyle.InlineStyleGwtTestCase`
   * `rocket.style.test.style.client.StyleTest`
-  * `rocket.style.test.stylepropertyvalue.StylePropertyValueGwtTestCase`
   * `rocket.style.test.stylesheet.client.StyleSheetTest`
