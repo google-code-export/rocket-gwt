@@ -17,7 +17,6 @@ package rocket.widget.test.viewport.client;
 
 import java.util.Date;
 
-import rocket.browser.client.Browser;
 import rocket.event.client.ChangeEvent;
 import rocket.event.client.ChangeEventListener;
 import rocket.style.client.Css;
@@ -28,6 +27,7 @@ import rocket.util.client.Utilities;
 import rocket.widget.client.Viewport;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.Label;
@@ -140,7 +140,7 @@ public class ViewportTest implements EntryPoint {
 			final int x = column * TILE_WIDTH;
 			final int y = row * TILE_HEIGHT;
 
-			image.setUrl(Browser.getContextPath() + "/tiles?" + ViewportTestConstants.X + '=' + x + '&' + ViewportTestConstants.Y + '='
+			image.setUrl(GWT.getModuleBaseURL() + "tiles?" + ViewportTestConstants.X + '=' + x + '&' + ViewportTestConstants.Y + '='
 					+ y + '&' + ViewportTestConstants.WIDTH + '=' + TILE_WIDTH + '&' + ViewportTestConstants.HEIGHT + '=' + TILE_HEIGHT
 					+ '&' + ViewportTestConstants.ZOOM + '=' + 100);
 
