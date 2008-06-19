@@ -128,8 +128,12 @@ abstract class InternalSliderPanel extends rocket.widget.client.Panel {
 		final String height = JavaScript.getString(element, "_" + Css.HEIGHT);
 
 		final InlineStyle inlineStyle = InlineStyle.getInlineStyle(element);
-		inlineStyle.setString(Css.WIDTH, width);
-		inlineStyle.setString(Css.HEIGHT, height);
+		if( null != width ){
+			inlineStyle.setString(Css.WIDTH, width);
+		}
+		if( null != height ){
+			inlineStyle.setString(Css.HEIGHT, height);
+		}
 	}
 
 	protected Element getBackgroundWidgetElement() {
