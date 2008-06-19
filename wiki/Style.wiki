@@ -37,14 +37,14 @@ The rocket.style.Style module attempts to address many of the points pointed out
   * `rocket.style.client.Css` - Includes constants for all styles.
 
 The methods below list the common methods available in all Style classes.
-  * getDouble(Element element,String attribute, CssUnit unit, double defaultValue);
-  * setDouble(Element element,String attribute, double value, CssUnit unit);
-  * getInteger(Element element,String attribute, CssUnit unit, int defaultValue);
-  * setInteger(Element element,String attribute, int value, CssUnit unit);
-  * getString(Element element,String attribute);
-  * setString(Element element,String attribute, String value);
-  * getUrl(Element,String attribute)
-  * setUrl(Element,String attribute,String url)
+  * getDouble(String attribute, CssUnit unit, double defaultValue);
+  * setDouble(String attribute, double value, CssUnit unit);
+  * getInteger(String attribute, CssUnit unit, int defaultValue);
+  * setInteger(String attribute, int value, CssUnit unit);
+  * getString(String attribute);
+  * setString(String attribute, String value);
+  * getUrl(String attribute)
+  * setUrl(String attribute,String url)
   * remove(String) - removes a style from an element.
 
 Additional methods are present that provide a Map view of all the style attributes for an element. For more details refer to the javadoc.
