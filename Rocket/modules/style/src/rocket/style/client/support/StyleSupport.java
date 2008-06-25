@@ -152,6 +152,7 @@ abstract public class StyleSupport {
 		 var value = null;
 		 var element0 = element;
 		 var doc = element.ownerDocument;
+		 var stop = doc.body;
 
 		 // loop until a concrete value is found.
 		 while( element0 != stop ){		 	
