@@ -779,3 +779,18 @@ Serialization
 * Need to add support for enums, arrays of any type.
 * Need to rework code to use annotataions for fields that are List/Set/Map.
 * Try and make a fascade for gwt serialization - via a factory
+
+0.52 19 June 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.52.zip
+
+Widget
+* Fixed a bug with Slider widget code falling over during initializaton.
+* Improvement to Viewport demo.
+
+0.53 26 June 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.53.zip
+
+Style
+* Fixed ComputedStyle class to stop falling over.

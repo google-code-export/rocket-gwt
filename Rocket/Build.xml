@@ -2,7 +2,7 @@
 <project name="Rocket" default="dist" basedir="c:/workspace.rocket/Rocket/">
 	<description>Ant build for the rocket framework.</description>
 
-	<property name="version" 				value="0.51"/>
+	<property name="version" 				value="0.53"/>
 	<property name="modules-dir"			location="${basedir}/modules/"/>			
 	<property name="libs-dir" 				location="${basedir}/libs/"/>
 	<property name="build-dir" 				location="${basedir}/build"/>
@@ -386,7 +386,15 @@
 
 	<target name="dist"	depends="clean,compile,test,gwt-compile-all,javadoc,package" description="Package a release including compiled classes, source files, javadoc and generated html.">
 		<property name="release-archive-name" value="Rocket-${version}.zip"/>
-		<delete failonerror="no" file="${build-dir}/${release-archive-name}" />
+		<delete failonerror="no" file="" />
+		<delete failonerror="false">
+				<fileset dir="${build-dir}">
+					<include name="${release-archive-name}"/>
+				</fileset>
+				<fileset dir="${www-dir}">
+					<include name=".gwt-tmp/*"/>
+				</fileset>
+		</delete>
 		<zip 	whenempty="create"	destfile="${build-dir}/${release-archive-name}" duplicate="preserve">
 			<fileset dir="${build-dir}">
 				<include name="*.jar"/>						
