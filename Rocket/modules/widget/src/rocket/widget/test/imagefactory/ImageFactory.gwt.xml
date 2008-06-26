@@ -1,5 +1,4 @@
 <module>
-	<inherits name="rocket.testing.Testing" />	
 	<inherits name="rocket.widget.Widget" />	
 
 	<source path="client" />
