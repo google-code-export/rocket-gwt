@@ -18,52 +18,9 @@ package rocket.serialization.client;
 abstract public class ObjectInputStreamImpl implements ObjectInputStream {
 
 	public ObjectInputStreamImpl() {
-		// this.setObjects(this.createObjects());
 	}
 
 	abstract protected void prepare(String stream);
-
-	//
-	// /**
-	// * key: Objects value2: reference
-	// */
-	// private Map objects;
-	//
-	// protected Map getObjects() {
-	// return this.objects;
-	// }
-	//
-	// protected void setObjects(final Map objects) {
-	// this.objects = objects;
-	// }
-	//
-	// protected Map createObjects() {
-	// return new HashMap();
-	// }
-	//
-	// protected String addObject(final Object object) {
-	// final Map objects = this.getObjects();
-	// final String reference = "-" + (objects.size() + 1);
-	// objects.put(reference, object);
-	//
-	// return reference;
-	// }
-	//
-	// protected void replaceObject(final String reference, final Object object)
-	// {
-	// final Map objects = this.getObjects();
-	// objects.put(reference, object);
-	// }
-	//
-	// protected Object getObject(final String reference) {
-	// final Map objects = this.getObjects();
-	// Object object = objects.get(reference);
-	// if (null == object) {
-	// throw new SerializationException("Object reference does not exist \"" +
-	// reference + "\".");
-	// }
-	// return object;
-	// }
 
 	abstract protected int addObject(Object object);
 
@@ -86,10 +43,6 @@ abstract public class ObjectInputStreamImpl implements ObjectInputStream {
 	abstract public double readDouble();
 
 	abstract public char readChar();
-
-	// protected int readReference() {
-	// return this.readInt();
-	// }
 
 	abstract protected String getString(int reference);
 

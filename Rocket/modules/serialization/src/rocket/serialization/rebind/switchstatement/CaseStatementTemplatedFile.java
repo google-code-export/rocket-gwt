@@ -62,16 +62,16 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 	/**
 	 * The singleton field holding the object writer
 	 */
-	private Field objectWriterSingleton;
+	private Field singleton;
 
-	protected Field getObjectWriterSingleton() {
-		Checker.notNull("field:objectWriter", objectWriterSingleton);
-		return this.objectWriterSingleton;
+	protected Field getSingleton() {
+		Checker.notNull("field:singleton", singleton);
+		return this.singleton;
 	}
 
-	public void setObjectWriterSingleton(final Field objectWriterSingleton) {
-		Checker.notNull("parameter:objectWriterSingleton", objectWriterSingleton);
-		this.objectWriterSingleton = objectWriterSingleton;
+	public void setSingleton(final Field singleton) {
+		Checker.notNull("parameter:singleton", singleton);
+		this.singleton = singleton;
 	}
 
 	@Override
@@ -93,7 +93,7 @@ class CaseStatementTemplatedFile extends TemplatedFileCodeBlock {
 				break;
 			}
 			if (Constants.CASE_STATEMENT_SINGLETON.equals(name)) {
-				value = this.getObjectWriterSingleton();
+				value = this.getSingleton();
 				break;
 			}
 			break;

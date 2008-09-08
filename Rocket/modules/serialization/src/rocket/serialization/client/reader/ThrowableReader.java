@@ -99,11 +99,11 @@ public class ThrowableReader extends ObjectReaderImpl implements ObjectReader {
 	}
 
 	native private void setMessage(final Throwable throwable, final String message)/*-{
-		 throwable.@java.lang.Throwable::fMessage=message;
+		 throwable.@java.lang.Throwable::detailMessage=message;
 		 }-*/;
 
 	native private void setCause(final Throwable throwable, final Throwable cause)/*-{
-		 throwable.@java.lang.Throwable::fCause=cause;
+		 throwable.@java.lang.Throwable::cause=cause;
 		 }-*/;
 
 	native private void setStackTraceElements(final Throwable throwable, final StackTraceElement[] elements)/*-{

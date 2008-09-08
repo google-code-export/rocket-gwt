@@ -27,7 +27,7 @@
 	<classpathentry kind="lib" path="libs/apache/commons-logging/1.1.1/commons-logging.jar"/>
 	<classpathentry kind="lib" path="libs/junit/3.8/junit.jar"/>
 	<classpathentry kind="lib" path="libs/apache/log4j/1.2.15/log4j.jar"/>
-	<classpathentry kind="lib" path="libs/google/gwt/1.5.0.rc1/gwt-dev-windows.jar"/>
-	<classpathentry kind="lib" path="libs/google/gwt/1.5.0.rc1/gwt-user.jar"/>
+	<classpathentry kind="lib" path="libs/google/gwt/1.5.2/gwt-dev-windows.jar"/>
+	<classpathentry kind="lib" path="libs/google/gwt/1.5.2/gwt-user.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

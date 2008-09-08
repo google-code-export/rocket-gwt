@@ -794,3 +794,16 @@ Download from http://rocket-gwt.googlecode.com/files/Rocket-0.53.zip
 
 Style
 * Fixed ComputedStyle class to stop falling over.
+
+0.54 26 June 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.54.zip
+
+Style
+* Fixed ComputedStyle class to stop falling over for Firefox, Opera and Safari.
+
+0.55 8 September 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.55.zip
+
+Made changes and updated patched classes to be compatible/work with GWT 1.5.2

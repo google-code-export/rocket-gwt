@@ -100,11 +100,11 @@ public class ThrowableWriter extends ObjectWriterImpl {
 	}
 
 	native private String getMessage(final Throwable throwable)/*-{
-			return throwable.@java.lang.Throwable::fMessage || null;
+			return throwable.@java.lang.Throwable::detailMessage || null;
 		}-*/;
 
 	native private Throwable getCause(final Throwable throwable)/*-{
-			return throwable.@java.lang.Throwable::fCause || null;
+			return throwable.@java.lang.Throwable::cause || null;
 		}-*/;
 
 	native private StackTraceElement[] getStackTraceElements(final Throwable throwable)/*-{

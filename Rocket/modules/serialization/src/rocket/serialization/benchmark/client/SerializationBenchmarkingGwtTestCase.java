@@ -153,7 +153,7 @@ public class SerializationBenchmarkingGwtTestCase extends GWTTestCase {
 
 		for (int i = 0; i < iterations; i++) {
 			// write
-			final ClientSerializationStreamWriter writer = new ClientSerializationStreamWriter(serializer);
+			final ClientSerializationStreamWriter writer = new ClientSerializationStreamWriter(serializer, "", null );
 			writer.prepareToWrite();
 			writer.writeObject(tree);
 			clientSerializedForm = writer.toString();

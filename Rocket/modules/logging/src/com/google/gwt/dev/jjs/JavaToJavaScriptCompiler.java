@@ -15,21 +15,6 @@
  */
 package com.google.gwt.dev.jjs;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.eclipse.jdt.core.compiler.IProblem;
-import org.eclipse.jdt.internal.compiler.CompilationResult;
-import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
-import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
-
-import rocket.logging.compiler.LoggerOptimiser;
-import rocket.logging.compiler.LoggingLevelByNameAssigner;
-import rocket.logging.compiler.NoneLoggingFactoryGetLoggerOptimiser;
-import rocket.logging.util.LoggingPropertyReader;
-
 import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
@@ -55,10 +40,10 @@ import com.google.gwt.dev.jjs.impl.AssertionRemover;
 import com.google.gwt.dev.jjs.impl.BuildTypeMap;
 import com.google.gwt.dev.jjs.impl.CastNormalizer;
 import com.google.gwt.dev.jjs.impl.CatchBlockNormalizer;
-import com.google.gwt.dev.jjs.impl.CompoundAssignmentNormalizer;
 import com.google.gwt.dev.jjs.impl.DeadCodeElimination;
 import com.google.gwt.dev.jjs.impl.EqualityNormalizer;
 import com.google.gwt.dev.jjs.impl.Finalizer;
+import com.google.gwt.dev.jjs.impl.FixAssignmentToUnbox;
 import com.google.gwt.dev.jjs.impl.GenerateJavaAST;
 import com.google.gwt.dev.jjs.impl.GenerateJavaScriptAST;
 import com.google.gwt.dev.jjs.impl.JavaScriptObjectNormalizer;
@@ -68,6 +53,7 @@ import com.google.gwt.dev.jjs.impl.LongEmulationNormalizer;
 import com.google.gwt.dev.jjs.impl.MakeCallsStatic;
 import com.google.gwt.dev.jjs.impl.MethodCallTightener;
 import com.google.gwt.dev.jjs.impl.MethodInliner;
+import com.google.gwt.dev.jjs.impl.PostOptimizationCompoundAssignmentNormalizer;
 import com.google.gwt.dev.jjs.impl.Pruner;
 import com.google.gwt.dev.jjs.impl.ReplaceRebinds;
 import com.google.gwt.dev.jjs.impl.TypeMap;
@@ -86,6 +72,21 @@ import com.google.gwt.dev.js.JsVerboseNamer;
 import com.google.gwt.dev.js.ast.JsProgram;
 import com.google.gwt.dev.util.DefaultTextOutput;
 import com.google.gwt.dev.util.Util;
+
+import org.eclipse.jdt.core.compiler.IProblem;
+import org.eclipse.jdt.internal.compiler.CompilationResult;
+import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
+import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
+
+import rocket.logging.compiler.LoggerOptimiser;
+import rocket.logging.compiler.LoggingLevelByNameAssigner;
+import rocket.logging.compiler.NoneLoggingFactoryGetLoggerOptimiser;
+import rocket.logging.util.LoggingPropertyReader;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Compiles the Java <code>JProgram</code> representation into its
@@ -219,40 +220,23 @@ public class JavaToJavaScriptCompiler {
    * 
    * <pre>
    * Stats.isStatsAvailable() &&
-   *   Stats.stats(GWT.getModuleName(), "startup",
-   *     "onModuleLoadStart:<className>", Stats.makeTimeStat());
+   *   Stats.onModuleStart("mainClassName");
    * </pre>
    */
   private static JStatement makeStatsCalls(JProgram program,
       String mainClassName) {
-
-    // Trim to the unqualified name for brevity
-    if (mainClassName.contains(".")) {
-      mainClassName = mainClassName.substring(mainClassName.lastIndexOf('.') + 1);
-    }
-
     JMethod isStatsAvailableMethod = program.getIndexedMethod("Stats.isStatsAvailable");
-    JMethod makeTimeStatMethod = program.getIndexedMethod("Stats.makeTimeStat");
-    JMethod moduleNameMethod = program.getIndexedMethod("Stats.getModuleName");
-    JMethod statsMethod = program.getIndexedMethod("Stats.stats");
+    JMethod onModuleStartMethod = program.getIndexedMethod("Stats.onModuleStart");
 
     JMethodCall availableCall = new JMethodCall(program, null, null,
         isStatsAvailableMethod);
-    JMethodCall makeTimeStatCall = new JMethodCall(program, null, null,
-        makeTimeStatMethod);
-    JMethodCall moduleNameCall = new JMethodCall(program, null, null,
-        moduleNameMethod);
-    JMethodCall statsCall = new JMethodCall(program, null, null, statsMethod);
-
-    statsCall.getArgs().add(moduleNameCall);
-    statsCall.getArgs().add(program.getLiteralString("startup"));
-    statsCall.getArgs().add(
-        program.getLiteralString("onModuleLoadStart:" + mainClassName));
-    statsCall.getArgs().add(makeTimeStatCall);
+    JMethodCall onModuleStartCall = new JMethodCall(program, null, null,
+        onModuleStartMethod);
+    onModuleStartCall.getArgs().add(program.getLiteralString(mainClassName));
 
     JBinaryOperation amp = new JBinaryOperation(program, null,
         program.getTypePrimitiveBoolean(), JBinaryOperator.AND, availableCall,
-        statsCall);
+        onModuleStartCall);
 
     return amp.makeStatement();
   }
@@ -291,10 +275,7 @@ public class JavaToJavaScriptCompiler {
         Util.addAll(allEntryPoints, all);
       }
       allEntryPoints.addAll(JProgram.CODEGEN_TYPES_SET);
-      allEntryPoints.add("com.google.gwt.lang.Stats");
-      allEntryPoints.add("java.lang.Object");
-      allEntryPoints.add("java.lang.String");
-      allEntryPoints.add("java.lang.Iterable");
+      allEntryPoints.addAll(JProgram.INDEX_TYPES_SET);
       declEntryPts = allEntryPoints.toArray(new String[0]);
     }
 
@@ -312,8 +293,7 @@ public class JavaToJavaScriptCompiler {
    * Creates finished JavaScript source code from the specified Java compilation
    * units.
    */
-  public String compile(TreeLogger logger, RebindOracle rebindOracle, final PropertyOracle propertyOracle )
-      throws UnableToCompleteException {
+  public String compile(TreeLogger logger, RebindOracle rebindOracle, final PropertyOracle propertyOracle ) throws UnableToCompleteException {
 
     try {
 
@@ -355,6 +335,8 @@ public class JavaToJavaScriptCompiler {
       }
 
       // (3) Perform Java AST normalizations.
+ 
+      FixAssignmentToUnbox.exec(jprogram);
 
       /*
        * TODO: If we defer this until later, we could maybe use the results of
@@ -368,6 +350,10 @@ public class JavaToJavaScriptCompiler {
         AssertionRemover.exec(jprogram);
       }
 
+      // ROCKET reapply changes when upgrading
+		final LoggerOptimiser loggerOptimiser = this.getLoggerOptimiser(jprogram, propertyOracle, logger);
+		loggerOptimiser.execute();      
+      
       // Resolve all rebinds through GWT.create().
       ReplaceRebinds.exec(jprogram);
 
@@ -381,6 +367,13 @@ public class JavaToJavaScriptCompiler {
 
       // Replace references to JSO subtypes with JSO itself.
       JavaScriptObjectNormalizer.exec(jprogram);
+
+      /*
+       * Record the beginning of optimations; this turns on certain checks that
+       * guard against problematic late construction of things like class
+       * literals.
+       */
+      jprogram.beginOptimizations();
 
       // (4) Optimize the normalized Java AST
       boolean didChange;
@@ -424,7 +417,7 @@ public class JavaToJavaScriptCompiler {
       LongCastNormalizer.exec(jprogram);
       JsoDevirtualizer.exec(jprogram);
       CatchBlockNormalizer.exec(jprogram);
-      CompoundAssignmentNormalizer.exec(jprogram);
+      PostOptimizationCompoundAssignmentNormalizer.exec(jprogram);
       LongEmulationNormalizer.exec(jprogram);
       CastNormalizer.exec(jprogram);
       ArrayNormalizer.exec(jprogram);
@@ -629,5 +622,5 @@ public class JavaToJavaScriptCompiler {
 		return (LoggerOptimiser) reader.readProperty();
 	}
 
-  
+
 }
