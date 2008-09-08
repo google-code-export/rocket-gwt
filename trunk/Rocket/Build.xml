@@ -2,7 +2,7 @@
 <project name="Rocket" default="dist" basedir="c:/workspace.rocket/Rocket/">
 	<description>Ant build for the rocket framework.</description>
 
-	<property name="version" 				value="0.53"/>
+	<property name="version" 				value="0.55"/>
 	<property name="modules-dir"			location="${basedir}/modules/"/>			
 	<property name="libs-dir" 				location="${basedir}/libs/"/>
 	<property name="build-dir" 				location="${basedir}/build"/>
@@ -20,7 +20,7 @@
 	<property name="log4j-dir" 				location="${libs-dir}/apache/log4j/1.2.15/"/>	
 	<property name="commons-logging-dir"	location="${libs-dir}/apache/commons-logging/1.1.1/"/>		
 	<property name="flexjson-dir" 			location="${libs-dir}/flexjson/1.2"/>
-	<property name="gwt-dir"		 		location="${libs-dir}/google/gwt/1.5.0.rc1"/>
+	<property name="gwt-dir"		 		location="${libs-dir}/google/gwt/1.5.2"/>
 	<property name="junit-dir" 				location="${libs-dir}/junit/3.8"/>
 	<property name="cglib-dir" 				location="${libs-dir}/sourceforge.net/cglib/2.0.2"/>	
 
@@ -184,8 +184,9 @@
 				<exclude name="**/test/**/*.*"/>
 				<include name="**/*.dtd"/>
 				<include name="**/*.java"/>
+				<include name="**/*.properties"/>				
 				<include name="**/*.txt"/>				
-				<include name="**/*.xml"/>					
+				<include name="**/*.xml"/>
 			</fileset>	
 			<fileset dir="${txt-dir}">
 				<include name="release-notes.txt"/>

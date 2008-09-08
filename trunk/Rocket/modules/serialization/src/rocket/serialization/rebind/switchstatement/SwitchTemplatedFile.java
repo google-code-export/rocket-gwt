@@ -103,7 +103,7 @@ public class SwitchTemplatedFile extends TemplatedFileCodeBlock {
 			@Override
 			protected void prepareToWrite(final Map.Entry<Type, Field> entry ) {
 				template.setSerializedType(entry.getKey());
-				template.setObjectWriterSingleton(entry.getValue());
+				template.setSingleton(entry.getValue());
 			}
 
 			@Override

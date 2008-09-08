@@ -257,7 +257,7 @@ public class SerializationBenchmarker implements EntryPoint {
 		final long start = System.currentTimeMillis();
 
 		for (int i = 0; i < iterations; i++) {
-			final ClientSerializationStreamWriter writer = new ClientSerializationStreamWriter(serializer);
+			final ClientSerializationStreamWriter writer = new ClientSerializationStreamWriter(serializer, "", null );
 			writer.prepareToWrite();
 			writer.writeObject(instance);
 			clientSerializedForm = writer.toString();

@@ -156,7 +156,7 @@ abstract public class StyleSupport {
 
 		 // loop until a concrete value is found.
 		 while( element0 != stop ){		 	
-		 	value = document.defaultView.getComputedStyle(element0,null).getPropertyValue( name );
+		 	value = doc.defaultView.getComputedStyle(element0,null).getPropertyValue( name );
 
 		 	// continue looping until a concrete value is found.
 		 	if( value && value != "inherit" && value != "transparent" && value != "auto" ){
