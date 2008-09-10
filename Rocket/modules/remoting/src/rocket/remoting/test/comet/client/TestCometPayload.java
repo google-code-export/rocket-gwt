@@ -13,6 +13,14 @@ public class TestCometPayload implements IsSerializable {
 		this.timestamp = timestamp;
 	}
 
+	static long sequenceSource = 0;
+	
+	private long sequence = TestCometPayload.sequenceSource++;
+	
+	public long getSequence(){
+		return this.sequence;
+	}
+	
 	public String toString() {
 		return super.toString() + ", timestamp: " + timestamp;
 	}

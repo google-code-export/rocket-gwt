@@ -56,9 +56,9 @@ public class NoneLoggingFactoryGetLoggerOptimiser extends LoggerOptimiser {
 
 		JMethod constructor = null;
 		final String constructorName = type.getShortName();
-		final Iterator methods = type.methods.iterator();
+		final Iterator<JMethod> methods = type.methods.iterator();
 		while (methods.hasNext()) {
-			final JMethod method = (JMethod) methods.next();
+			final JMethod method = methods.next();
 			log("" + method);
 
 			if (false == constructorName.equals(method.getName())) {

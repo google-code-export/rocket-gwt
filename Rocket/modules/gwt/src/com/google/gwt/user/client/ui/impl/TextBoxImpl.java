@@ -49,7 +49,7 @@ public class TextBoxImpl {
 	 }-*/;
 
 	// ROCKET The fields/methods below were added to assist the Rocket
-	// framework. When upgrading from GWT 1.5 RC1 reapply changes
+	// framework. When upgrading from GWT 1.5.2 reapply changes
 
 	/**
 	 * Delegates to {@link #getSelectionLength(Element)}. The TextBox widget

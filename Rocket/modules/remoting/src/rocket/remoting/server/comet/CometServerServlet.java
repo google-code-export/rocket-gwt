@@ -204,9 +204,9 @@ public abstract class CometServerServlet extends HttpServlet {
 				this.poll(cometConnection);
 
 				// write out any new messages.
-				final Iterator messages = cometConnection.getMessages().iterator();
+				final Iterator<Message> messages = cometConnection.getMessages().iterator();
 				while (messages.hasNext()) {
-					final Message message = (Message) messages.next();
+					final Message message = messages.next();
 
 					final int command = message.getCommand();
 					final Object object = message.getObject();
@@ -218,6 +218,9 @@ public abstract class CometServerServlet extends HttpServlet {
 
 					// guess that 2 bytes were written for every char...
 					bytesWritten = bytesWritten + escaped.length() * 2;
+					
+					// remove the processed message.
+					messages.remove();
 				}
 
 				this.flush(response);
@@ -274,19 +277,19 @@ public abstract class CometServerServlet extends HttpServlet {
 	 */
 	protected SerializationPolicy createSerializationPolicy() {
 		return new SerializationPolicy() {
-			public boolean shouldDeserializeFields(final Class clazz) {
+			public boolean shouldDeserializeFields(final Class<?> clazz) {
 				throw new UnsupportedOperationException("shouldDeserializeFields");
 			}
 
-			public boolean shouldSerializeFields(final Class clazz) {
+			public boolean shouldSerializeFields(final Class<?> clazz) {
 				return Object.class != clazz;
 			}
 
-			public void validateDeserialize(final Class clazz) {
+			public void validateDeserialize(final Class<?> clazz) {
 				throw new UnsupportedOperationException("validateDeserialize");
 			}
 
-			public void validateSerialize(final Class clazz) {
+			public void validateSerialize(final Class<?> clazz) {
 			}
 		};
 	}

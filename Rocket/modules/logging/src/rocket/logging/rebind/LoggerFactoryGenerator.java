@@ -55,7 +55,6 @@ public class LoggerFactoryGenerator extends Generator {
 
 	@Override
 	protected String getGeneratedTypeNameSuffix() {
-		// return Constants.GENERATED_TYPE_SUFFIX;
 		return "_" + this.getGeneratorContext().getProperty("rocket.logging.Logging.enable");
 	}
 
@@ -101,7 +100,7 @@ public class LoggerFactoryGenerator extends Generator {
 		context.branch();
 		context.info("Overriding " + Constants.FIND_LOGGER_METHOD);
 
-		final List findLoggerMethodArguments = Collections.nCopies(1, context.getString());
+		final List<Type> findLoggerMethodArguments = Collections.nCopies(1, context.getString());
 		final Method method = loggerFactory.findMostDerivedMethod(Constants.FIND_LOGGER_METHOD, findLoggerMethodArguments);
 
 		final NewMethod newMethod = method.copy(loggerFactory);
@@ -115,9 +114,9 @@ public class LoggerFactoryGenerator extends Generator {
 		final LoggingFactoryConfig config = this.getLoggingFactoryConfig();
 		context.debug("Config: " + config);
 
-		final Iterator names = config.getNames();
+		final Iterator<String> names = config.getNames();
 		while (names.hasNext()) {
-			final String name = (String) names.next();
+			final String name = names.next();
 			final String loggerTypeName = config.getTypeName(name);
 			final LoggingLevel loggingLevel = config.getLoggingLevel(name);
 

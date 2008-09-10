@@ -807,3 +807,17 @@ Style
 Download from http://rocket-gwt.googlecode.com/files/Rocket-0.55.zip
 
 Made changes and updated patched classes to be compatible/work with GWT 1.5.2
+
+0.56 10 September 2008
+----------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.56.zip
+
+Build
+* Incorrectly bundled a logging properties file which caused the compiler to fall over.
+
+Logging
+* 
+Compilation no longer barfs if a logging properties is not found.
+
+Remoting
+* Fixed bug where messages aggregated during a poll where never deleted after sending.
