@@ -1,0 +1,4 @@
+// /rocket/json/rebind/getfield/get-field.txt
+
+return instance.${field};
+

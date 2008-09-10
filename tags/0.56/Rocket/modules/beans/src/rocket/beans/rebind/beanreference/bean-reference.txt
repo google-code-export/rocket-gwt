@@ -1,0 +1,5 @@
+// /rocket/beans/rebind/beanreference/bean-reference.txt
+
+// fetch the bean and cast
+(${type}) getBeanFactory().getBean( ${id} )
+

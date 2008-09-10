@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="modules/beans/src"/>
+	<classpathentry kind="src" path="modules/browser/src"/>
+	<classpathentry kind="src" path="modules/collection/src"/>
+	<classpathentry kind="src" path="modules/compiler/src"/>
+	<classpathentry kind="src" path="modules/dom/src"/>
+	<classpathentry kind="src" path="modules/dragndrop/src"/>
+	<classpathentry kind="src" path="modules/event/src"/>
+	<classpathentry kind="src" path="modules/generator/src"/>
+	<classpathentry kind="src" path="modules/gwt/src"/>
+	<classpathentry kind="src" path="modules/json/src"/>
+	<classpathentry kind="src" path="modules/logging/src"/>
+	<classpathentry kind="src" path="modules/messaging/src"/>
+	<classpathentry kind="src" path="modules/project/src"/>
+	<classpathentry kind="src" path="modules/remoting/src"/>
+	<classpathentry kind="src" path="modules/selection/src"/>
+	<classpathentry kind="src" path="modules/serialization/src"/>
+	<classpathentry kind="src" path="modules/style/src"/>
+	<classpathentry kind="src" path="modules/testing/src"/>
+	<classpathentry kind="src" path="modules/text/src"/>
+	<classpathentry kind="src" path="modules/util/src"/>
+	<classpathentry kind="src" path="modules/widget/src"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="libs/sourceforge.net/cglib/2.0.2/cglib-full.jar"/>
+	<classpathentry kind="lib" path="libs/flexjson/1.2/flexjson.jar"/>
+	<classpathentry kind="lib" path="libs/apache/commons-logging/1.1.1/commons-logging.jar"/>
+	<classpathentry kind="lib" path="libs/junit/3.8/junit.jar"/>
+	<classpathentry kind="lib" path="libs/apache/log4j/1.2.15/log4j.jar"/>
+	<classpathentry kind="lib" path="libs/google/gwt/1.5.2/gwt-dev-windows.jar"/>
+	<classpathentry kind="lib" path="libs/google/gwt/1.5.2/gwt-user.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

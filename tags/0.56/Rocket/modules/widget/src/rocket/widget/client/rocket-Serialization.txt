@@ -1,0 +1,10 @@
+# rocket.widget
+rocket.widget.client.*
+rocket.widget.client.accordion.*
+rocket.widget.client.menu.*
+rocket.widget.client.slider.*
+rocket.widget.client.splitter.*
+rocket.widget.client.tabpanel.*
+rocket.widget.client.tree.*
+#
+rocket.widget.client.support.*

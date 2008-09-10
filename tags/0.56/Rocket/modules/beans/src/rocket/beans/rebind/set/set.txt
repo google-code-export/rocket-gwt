@@ -1,0 +1,11 @@
+// /rocket/beans/rebind/set/set.txt
+
+// create a new SetBuilder which will help accumulate values
+new rocket.beans.client.SetBuilder()
+
+	// add *ALL* elements to the Set
+	${addElements}
+
+		// get the Set
+		.getSet()
+

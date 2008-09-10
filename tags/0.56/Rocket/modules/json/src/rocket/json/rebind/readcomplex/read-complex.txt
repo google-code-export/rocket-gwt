@@ -1,0 +1,19 @@
+// /rocket/json/rebind/readcomplex/read-complex.txt
+
+// Declare a reference to the instance being deserialized.
+${type} instance = null;
+
+// cast from JSONValue to jsonObject
+final com.google.gwt.json.client.JSONObject jsonObject = jsonValue == null ? null : jsonValue.isObject();
+
+if ( null != jsonObject ){
+
+  // create a new instance and set its fields.
+  instance = new ${type}();
+  
+  this.readFields( jsonObject, instance );
+  super.readFields( jsonObject, instance );
+} // if
+
+return instance;
+

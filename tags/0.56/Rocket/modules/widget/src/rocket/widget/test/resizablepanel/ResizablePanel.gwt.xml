@@ -1,0 +1,5 @@
+<module>
+	<inherits name="rocket.widget.Widget" />	
+
+	<entry-point class="rocket.widget.test.resizablepanel.client.ResizablePanelTest" />
+</module>

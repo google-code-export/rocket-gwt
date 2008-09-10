@@ -1,0 +1,6 @@
+// /rocket/json/rebind/writefields/write-fields.txt
+
+final ${instanceType} instance0 = ( ${instanceType} ) instance;
+
+// read each field from instance0 and put its value onto the jsonObject being assembled.
+${writeFields}

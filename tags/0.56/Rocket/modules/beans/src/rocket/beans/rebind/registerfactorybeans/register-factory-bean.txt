@@ -1,0 +1,10 @@
+// register-bean.txt
+
+this.registerFactoryBean( 
+
+	// the id of the bean being registered
+	${beanId}, 
+	
+		// the factory bean which will create the bean.
+		new ${factoryBeanType}() );
+

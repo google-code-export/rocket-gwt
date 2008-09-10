@@ -1,0 +1,5 @@
+<module>
+	<inherits name="rocket.widget.test.divpanel.DivPanelGwtTestCase" />	
+
+	<source path="" />
+</module>

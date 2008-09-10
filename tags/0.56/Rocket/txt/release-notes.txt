@@ -1,0 +1,809 @@
+ROCKET GWT FRAMEWORK
+--------------------
+
+The ROCKET GWT library contains a number of widgets, GWT core library fixes as well other useful stuff extract from another project for an inhouse application at work. 
+respository: http://code.google.com/p/rocket-gwt/
+blog: http://rocket-gwt.blogspot.com/index.html
+forum: http://groups.google.com/group/rocket-gwt?lnk=li
+email: miroslav <dot> pokorny <at> gmail <dot> com
+
+0.24 17 January 2007
+--------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.24.zip
+
+* Added ant build.xml to take care of everything related to building a new release & also removed *.cmd files.
+* Refactored Cookies and support classes to cookies module.
+* Introduced a testing package which mimics JUNIT TestCase and TestRunner. 
+  Unlike the GWT supported GwtTestCase which uses a hidden browser the tests are actually a regular module
+  with the browser visible at all times.
+* Made just about all jsni methods private except for those that typically have no arguments which are usually 
+  tested within their wrapper method.
+* Renamed accompanying impl subpackages and classes to support. These classes should not be used directly in user code.
+* Moved stacktrace support classes into its own jar file (Rocket-stacktrace.jar).
+* Added two new Map views of the inline style object and the computed(current) style for an element.
+* Refactored BrowserHelper browser specific jsni methods to support classes (rocket.browser.client.support.*)
+* Refactored StyleHelper browser specific jsni methods to support classes (rocket.style.client.support.*)
+* Fixed coordinates of element being dragged when the viewport was scrolled.(DraggablePanel$DragHandle)
+* Added more special cases to StyleHelper.getComputedStyle(), getInlineStyle() and setInlineStyle() enabling easy 
+  non browser access of various more properties. Eventually hopefully all properties can be accessed without worrying 
+  about browser differences.
+* StylePropertyValue objects are now disconnected. To update the backing style property the appropriate Map must be put again.
+* Renamed CometServerConnectionFailure exception to CometServerConnectionFailureException.
+* Renamed Slider.handleMouseDown() to handleHandleMouseDown()
+* Fixed several widgets (Composite widgets) which were sinking their interested event bits and setting their EventListener outside of onAttach. 
+* Renamed WidgetConstants.BREADCRUMB_* to BREADCRUMB_PANEL_*, classname also renamed from rocket-breadcrumbs- to rocket-breadcrumbPanel
+* Deleted DialogBox which was previously the GWT DialogBox class with a few fixes.
+* Fixed FormHelper.getFormElements() iterator to be destroyable allow breakage of cyclic references.
+
+GWT
+FIX com/google/gwt/emul/java/lang/Character.digit(char,index) was failing when converting A-F and a-f from hex to decimal.
+    (http://code.google.com/p/google-web-toolkit/issues/detail?id=302)
+
+0.25 22 January 2007
+--------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.25.zip
+
+* Added ResizablePanel widget which accepts a child widget and adds handles so that the user may resize the child. It is possible to
+  set the min/max width and height. Events are also fired whenever the size of the panel changes due to handle dragging.
+* Also fixed outstanding AutoCompleteTextBox issue
+
+0.26 22 February 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.26.zip
+* Added add/has/removeClass names from an Element
+* Improved, fixed a number of inline,computed style properties.
+* Fixed building of rocket.jar and rocket-stacktrace.jar to avoid reported jdk class version problems.
+
+0.27 8 June 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.27.zip
+This release requires JDK 1.4 and any GWT 1.4 RC.
+* Updated a few customized gwt classes (com.google.*) to continue with functionality.
+* Fixed BrowserHelper.getContextPath() to never return with a trailing slash "/" mimicing HttpServletRequest.getContextPath().
+* Removed try/catch which showed exception inside an alert within MessageBroker.publishMessages( List )
+* Move enableTextSelection(), disableTextSelection, clearTextSelection from DragNDropHelper to SelectionHelper.
+* Fixed handling of text selection enabling/disabling.
+* Added ability to add widgets to a TabItem in two forms before and after the caption. This allows easy addition of spinners etc.
+* Renamed (corrected) package name rocket.widget.client.tab to rocket.widget.client.tabpanel
+* Added opposites for all the assertEquals() methods for the Test class.
+* Added getters to retrieve Element's from a JavaScriptObject using an index or propertyname (String).
+* Added ability to query for user selected and programmatically create or change selection end points.
+* Added ability to test if browser is in quirks mode BrowserHelper.isQuirksMode()
+
+0.28 11 June 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.28.zip
+
+* Added OutstandingRpcTracker which provides an easy mechanism to add spinners(like firefox) and loading messages(like gmail) whenever one or
+  more rpcs are underway and automatically hidden when all outstanding rpcs finish.
+* Added seemless support for fixed positioning via StyleHelper - this achieved by using dynamic expressions. Refer to javadocs for more details.
+* Fixed a bug within StringHelper.split() which was not ignoring sequences of more one delimiters.
+* Separated jar files that support web mode stack traces into a separate package. To use stacktraces simply include rocket-stacktrace.jar.
+
+0.29 25 June 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.29.zip
+
+* Added ability to escape placeholders within StringHelper.format() messages.
+* Fixed HttpHelper.isXXX methods not to fail if parameter is null. When null the test simply fails.
+* Deprecated HttpHelper.urlEncode() replacing all uses with GWT's URL.encodeComponent(). Also removed tests
+* Added rocket.generator package which basically to assist with building GWT Generator code generators.
+* Added generator to generate stubs that automatically map json encoded responses to a java graph using annotations.
+* Added generator that allows java client code to invoke remote json services in a fashion that closely mimics GWT rpc's, eg
+  java type parameters, calls AsyncCallback with a deserialized result or exception.
+* Removed most gwt stylenames when using GWT widgets to assemble rocket widgets.
+
+
+0.30 3 July 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.30.zip
+
+* Fixed GeneratorContext.getPackageName() to not get stuck in an endless loop for classes in unnamed package.
+* Added facility to test generators by using TestGenerator and accompanying support classes. 
+* Fixed Remote.gwt.xml module by adding generator mapping for RemoteJsonService
+* Added dependency injection support via the rocket.beans package. Most of the spring concepts except for interceptors and destroy method are supported.
+* Added a number of wikis for various modules within the library.
+
+0.31 31 July 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.31.zip
+
+* Added ability to pass arguments to a constructor when creating a bean.
+* Fixed a silly DTD cardinality bug only allowing one value for properties etc(rocket.beans)
+* Changed StringHelper.format() placeholders syntax from just "{xxx}" to "${xxx}".
+* Added a new StringHelper.format() which accepts a Map of placeholders <-> values.
+* Added new classes to help with realizing placeholders with values (rocket.text.client.*)
+* Added ability to provide a replace placeholders with values from a properties file by including a <placeholder file="..." /> tag.
+* Fixed numerous factory bean template methods to throw Exception, which should let constructors and setters which throw checked exceptions to compile.
+* Added ability to specify advices (Before, AfterReturning, AfterThrowing and MethodInterceptors) to any public bean method.
+* Fixed selection support for Safari (issue=32)
+* Added template factory method to DraggablePanel.createDragHandle0 providing the opportunity to create handles for widgets when they are dragged.
+* Fixed Horizontal/VerticalSliders which were broken when the window was scrolled.
+* Restored lost tree.launch file to project.
+* Added tests for Spinner and SuperSpinner widgets.
+* Change all protected widget factory methods (create* belonging to rocket.widget.** ) to only create and not set their own property. Subclasses 
+  that override these methods no longer need to also set the corresponding property.  
+* Abstracted class components, classes, constructors, methods and fields (rocket.generator.rebind.*) so classes may be built by assembling objects rather 
+  than SourceWriter.print'ing. The com.google.gwt.core.ext.typeinfo.J* and java runtime classes have both been abstracted to help with creating generators 
+  for the former and testing for the later.  
+* Also included ability to build code blocks (eg method body's) from text file templates (rocket.generator.rebind.codeblock.*).
+* Also added a number of template visitor classes to help with visiting various class components, finding overridden methods etc.
+  AllMethodsVisitor, ConstructorParameterVisitor, MethodParameterVisitor, ReverseSuperTypeVisitor, SubTypesVisitor,
+  SuperTypesVisitor, TypeConstructorsVisitor, VirtualMethodVisitor.(rocket.generator.rebind.util.*).
+* Fixed RemoteJsonService to set the correct content-types (GETs and POSTs), and content-length for POSTS.
+* Rewrote all code generation classes to use new generator abstraction aka beans, json, remote json service.
+* CometClient now logs a message if it detects that the serializer about to be used to deserialize the incoming payload was not generated using the modified
+  ProxyCreator.
+* The customised ProxyCreator (the generator that creates classes to handle serializing of rpc objects) now logs a message, this should help make it easier to 
+  spot classpath problems.
+  
+0.32 3 August 2007
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.32.zip
+  
+* Fixed a silly bug which occured when reapplying changes to ProxyCreator (The GWT class that creates rpc clients and (de)serializers) when upgrading from 1.4.3 to 1.4.10.
+
+0.33 13 August 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.33.zip
+
+* Fixed Json serializer (JsonSerializerGenerator) to skip transient and final fields and report problems if a final instance field is encountered.
+* Fixed DomHelper.checkInputTag previously assertion logic failed if the element passed the test. This has been corrected.
+* Deleted DomHelper.toString( Element ). Refactored references to use GWT's DOM.toString( Element )
+* Added HtmlTemplateFactoryGenerator which takes a HtmlTemplateFactory interface and implements any defined getters, binding elements from the dom to GWT widgets using an id.
+* Fixed a few ObjectHelper.setters which all return the previous value which failed when the previous value was undefined.
+* Added a new viewport widget which may be used to create a viewport of tiles similar to that found in Google Map's. The user may drag tiles about, with tiles are only 
+  fetched for new tiles that appear due to scrolling.
+* Fixed proxying (aop) of non final public methods (eg wait() ) belonging to java.lang.Object.
+
+0.34 4 September 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.34.zip
+
+* Added a new DatePicker widget.
+* Added new method to test float/doubles for equality including a epsilon value.
+* Added range checking to Colour red, green and blue setters.
+* Added new HueSaturationValue class which can be used to manipulate a colour expressed as hue/saturation/value. 
+  Methods are available that allow conversion to and from Colour.
+* Improved SortableTable performance so that it doesnt request widgets for each cell each time it redraws itself. Widgets are still detached and 
+  reattached during a redraw. The sorted list of rows is now read/writable.
+* The ascending / descending url which is added to sortable columns is now an abstract method rather than two properties.
+* Introduced a new Composite which adds many new features to make it easier to start authoring a new composite widget. All the basic event Listeners 
+  collections are already included. The new composite widget provides some template methods.
+* Refactored existing widgets to use new Composite/Panel classes. Most widgets now receive all/most of the basic events.
+* Fixed bug with SuperSpinner where the wrong factory was being called and presented as the down value widget.
+* Fixed a few broken demos.
+* Made a few public widget helper classes package private.
+* Dropped Helper from a helper class names, BrowserHelper > Browser, DomHelper > Dom, DragNDropHelper > DragNDrop, StackTraceHelper > StackTrace
+* Also several methods to Browser isSafari, isOpera and getMousePageX/Y within an event.
+* Deleted CookieHelper and moved static methods to Cookies.
+* Renamed DragNDropListenerImpl to DragNDropListenerAdapter
+* Big reorganisation of methods belonging to StyleHelper. xxxComputedXXX methods have been moved to ComputedStyle, xxxInlineXXX methods have been moved to 
+  InlineStyle.
+* Deleted SelectionHelper and moved static methods to Selection (singleton getter etc).
+* Fixed Selection.delete() for Safari.
+* Fixed Slider widgets background click behaviour so the handle smoothly glides towards the mouse cursor.
+* Renamed StackTrace.getStackTraceAsString to asString
+* Added new HorizontalVerticalSlider.
+* Deprecated Life widget which was more of a demo rather than a reusable Widget
+* Verified to work with GWT 1.4.60 release.
+
+0.35 5 September 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.35.zip
+
+* Fixed and reapplied customisations to ProxyCreator which was updated again in GWT 1.4.60.
+* Added a new Generator which builds a TestBuilder from a TestBuilder.class literal. WebPageTestRunners.getTestBuilder() can have its test methods automatically
+  discovered via deferred binding of a TestBuilder subclass. The buildCandidates method must include a @testing-testRunner which points to the test class being run.
+  Each test method must have an additional annotation @testing-testMethodOrder XXX where XXX is a number. This value is used to order the execution of each test method.
+* Changed json serialization annotations, added @jsonSerialization to existing annotations @javascriptPropertyName becomes @jsonSerialization-javascriptPropertyName, 
+  @listElementType becomes @jsonSerialization-listElementType, @setElementType becomes @jsonSerialization-setElementType, @mapElementType becomes @jsonSerialization-mapElementType, 
+* Changed json rpc annotations, @httpRequestMethod becomes @jsonRpc-httpMethod, @httpRequestParameterName becomes @jsonRpc-parameterName
+* Fixed a bug relating to testing if user mouse selection is enabled for an element.
+* Fixed a bug relating to attempts to set css properties (zIndex) which actually returned integer values rather than String values. ObjectHelper.setString() returns the previous 
+  value as a String.
+  
+0.36 10 September 2007
+----------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.36.zip
+  
+* Added support to serialize from java objects to json.
+* Added ability to create interfaces (both standalone and nested) using rocket's generator and type system.
+* Streamlined development effort required to use comet client. Developers no longer need to create the two dummy GWT RPC service and async interfaces. These are automatically generated 
+  by a new comet client generator.
+* Added support for json rpc POSTS. A new annotation @jsonRpc-inputArguments selects whether input parameters are sent as request parameters or json rpc encoded.
+* Improved accuracy of NewMethodImpl which now checks its abstract flag before writing its body. If the method is abstract the body is skipped.
+
+0.37 XXXXX 2007
+----------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.37.zip
+
+* Fixed Dom.isInput() which was using the wrong method to retrieve the given elements "type" attribute. Should be DOM.getElementAttribute() not DOM.getElementProperty()
+* Added Dom.isAttached( Element ) which tests if the given element is attached to the DOM.
+* Added Dom.removeFromParent( Element )
+* Improved the CometGenerator so that it fails if it detects that the customised ProxyCreator is not being loaded. This has been the source of most comet related problems. This 
+  activate attempt at reporting classpath issues should help everyone.
+* Added abstract void buildDropDownList method to AutoCompleteTextBox (previously drop down lists had to be built during a keyUp event).
+* Fixed AutoCompleteTextBox to rebuild drop down list when user hits backspace. Previously rebuilding the list was delayed until the user typed in another "non editing" key.
+* Added new primitive widgets which contain all the functionality of the GWT equivalent with additional constructors to accept elements from the dom.
+  Note that no separate PasswordTextBox class exists, with password input fields created via new TextBox( true ). Try BasicWidget's demo.
+* New FormPanel widget contains all the functionality of the GWT FormPanel with the additional ability to convert form elements into widgets which may be fetched via get() or iterator().
+* Removed rocket.widget.client.form.* package (functionality has been superceeded by new FormPanel widget) and moved helper methods from FormHelper to 
+  WidgetHelper less List createFormElements().
+* Renamed Grid widget to GridView. Also renamed accompanying artefacts including styles, demo etc.
+* Removed WidgetProvider class and move methods to GridView as abstract methods.
+* Updated HtmlTemplateFactory (including generator) to now use introduced primitive widgets rather than the corresponding GWT primitive widgets.
+* Fixed bug with XXXSplitterPanel.remove which was failing to delete the removed widget.
+* Removed StyleHelper.buildCompound. Widget styles must not be built using String concatentation with the minus sign between components.
+* Reworked get computed width and height for IE so the value is computed rather than trying to use currentStyle.
+* Fixed bug with drag n drop when window was scrolled.
+* Introduced new event system which includes different classes with appropriate events for each basic event type. This removes the need to use
+  the DOM.eventXXX methods.
+* Reworked all widgets to use new typed event objects.
+* Reworked and significantly improved base classes for creating widgets and panels (refer to Widget,CompositeWidget, Panel and CompositePanel). Each
+  includes support for hijacking elements from the DOM. All widgets now use the new object oriented typed event system.
+* All ObjectHelper setters now return void instead of the previous value.
+* Fixed ObjectHelper methods which return String's to coerse ints to Strings. This prevents problems in hosted mode.
+* Added new method to Event to disable browser context menus. Once disabled they may not be reenabled.
+* Moved Dom.changeNonBreakingSpaceToSpace to StringHelper. Also added StringHelper.changeSpaceToNonBreakingSpace().
+* Smartened up look, feel and features demonstrated of various demos.
+* Updated all widgets to retrieve the styles they add to individual assembled components from appropriately named getters. This allows sub classes to change styles by overriding the 
+  appropriate method.
+* Renamed TreeItem.setWidget/getWidget to setMainWidget/getMainWidget (this overcomes clash with set/getWidget from CompositeWidget)
+* Removed CollapsablePanel use GWT's DisclosurePanel.
+* Fixed a bug where json deserializing was falling over when encountering null values.
+* Reworked TabPanel events to have their own types. TabListener updated to match new event types.
+* Renamed TabPanel.getIndex() to indexOf().
+* The onTabClosingEvent is now only fired when a tab is closed by a user rather than whenever a tabItem is removed.
+* Reworked AccordionPanel events to have their own types. AccordionListener updated to match new event types.
+* Replaced InteractiveList and InteractivePanel and logging to a VerticalPanel of messages with Window.alerts
+* Deleted MenuListenerImpl (aka MenuListenerAdapter).
+* Simplified Menu events into a single event MenuOpenEvent. MenuListener is also updated to match new event types.
+* Removed PixelGrid(interface) and BlockyPixel(implementation).
+* Made Colour serializable (now implements java.io.Serializable).
+* Reworked Viewport to only fire ChangeEvents when it is scrolled or moved. Also moved Viewport class to rocket.widget.client.
+* WidgetHelper.findWidget - Swapped test of element with widget element.
+* Reworked and significantly improved Drag n drop, try demo.
+* Drag n Drop events are now fully fledged objects.
+* The dragged widget may be changed by dnd listeners by ( setDraggedWidget() ).
+* Refactored all *Helper.check* methods so the format is consistent, message, expected value and test value.
+* Fixed Opera selection support code which was querying the wrong method/property to get the native selection object.
+* Fixed Slider and SplitterPanels widgets so they dont select text as they are dragged in Opera.
+* Added a new page that provides links to all runnable demos.
+
+0.38 6 November 2007
+--------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.38.zip
+* Changed InlineStyle.setString/setColour/setUrl to do nothing if the property value is null.
+* Renamed HorizontalVerticalSlider to FloatingSlider.
+* Added ability to set a background widget to all Slider widgets.
+* Fixed issue common to all Slider widgets where clicking on the slider background didnt stop the handle once it had reached the clicked spot.
+* Sliders also now also update the width and height of any given background widget so that its dimensions match the content of the slider.
+* Changed the method signatures for both Panel.insert0(Widget,int) and Panel.insert0(Element,int) to void as the Panel.insert ignored the Element returned by Panel.insert0(Widget,int).
+* Modified bean-factory.dtd to allow mixing of bean, remote-json-service, remote-rpc-service, advice elements in order.
+* Corrected a number of element types, made all id attributes a "ID" and bean-reference a CDATA rather than IDREF.
+* Improved error messages within BeanFactoryGenerator to also include whereever possible line/column number of xml parsing problem.
+* Improved BeanFactoryGenerator to escape unsafe characters for generated types (bean id's are used to name generated factory beans type namesetc).
+* Minor fix, generated BeanFactory's actually implement the passed in interface, previously one could only cast to BeanFactory and not the class literal passed to GWT.create().
+* Fixed bean references bug where bean references failed if bean type was a subclass or implementing interface of property type.
+* Fixed bug where beans couldnt include a reference (using bean-reference) to a remote-rpc-service or json-rpc-service tag declared bean.
+* Fixed StringHelper.split behaviour which was not returning empty tokens.
+* Renamed getter to fetch the suffix of a CssUnit from getValue() to getSuffix().
+* Fixed ZebraFlexTable which was inserting cells via prepareCell when it shouldnt have.
+* Dropped "6" from Browser.isInternetExplorer6 method.
+* Fixed StringHelper.htmlEncode/Decode to not handle apostrophes and apostrophe entities.
+* Fixed Pager widget to show pages along in between next/previous button rather than links to items.
+* Renamed the Pager currentPage property to currentItem
+* Changed Pager to automatically redraw when currentItem is updated.
+* Modified default values for Pager previous and next link/buttons.
+* Added method to fetch the names of all properties from a JavaScriptObject - ObjectHelper.getPropertyNames()
+* Reworked style support classes from 4 monolithic classes into separate classes for type of style(Inline,Computed,Rule) and browser (InternetExplorer,FireFox,Opera,Safari). 
+  Public interface of InlineStyle, ComputedStyle, RuleStyle, StyleSheet remain constant, only implementation has changed.
+* Renamed StyleConstants to Css.
+* Renamed DatePicker to Calendar (includes styles).
+* Changed the return type of KeyEvent.getKey() from char to int.
+* Added a number of methods to KeyEvent to help test the key code or type of key for the event, eg getFunctionKey(), isBackspace(), isCursorXXX, isEditing, isNavigation etc, 
+* Updated Safari DOM support class to translate key codes for special keys like BACKSPACE to standard values.
+* Added method to retrieve char from KeyEvent
+* Standardized protected event handling method names, renaming any handleXXX to onXXX for all Widgets (includes DnD).
+* Fixed SubClassVisitor which was getting stuck in an endless loop (useful when writing generators).
+* Added a new ConcreteTypesImplementingInterfaceVisitor which may be used to visit all concrete types for a given interface.
+* Added a new ReachableTypesVisitor which provides all concrete types that are reachable from a given concrete type.
+* Fixed CheckBox style name (was missing "-" due to a typo in WidgetConstants).
+* Reworked GeneratorContext from being an abstract class into an interface.
+* Introduced a new SourceWriter which contains identical methods as those found in com.google.gwt.user.rebind.SourceWriter with new commit() 
+  and rollback() methods. The rollback method is currently unsupported until the GWT adds the ability to cancel or rollback a newly generated type.
+
+0.39 16 December 2007
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.39.zip
+* Updated NewFieldImpl to not automatically add a semi colon ";" to all field values. Semi colons are now only added to literals.
+* Added guard to NewMethodImpl so when writing it complains if an attempt is made to write an abstract method that contains a body.  
+* Added method to Type to retrieve the runtime name of a type. This is mostly due to inner classes using a dollar sign '$' as a separator rather than dot '.'.
+* Reworked the setting of nested type names, using setNestedName() rather than setName() which now results in an UnsupportedOperationException being thrown.
+* Added ability for one BeanFactory xml file to include other files via the new include tag. Cycles are detected with an exception being thrown in such cases.
+* Added factory method to NewType to create new initializers.
+* Added support to add comments and metaData to all new class component types. These are automatically written to the generated class source.
+* Minor fix, corrected "generated at" message included in javadoc to include the generator name.
+* Added several skipXXX and visitXXX methods to ReachableTypesVisitor that are called for each type that implements an interface, is a super type or sub type of another type.
+* Added extra visit methods to ReachableTypesVisitor to differentiate between a super, type, and sub type being visited.
+* Added support to generator package for array types represented by the GWT TypeOracle.
+* Refactored GeneratorContextImpl into a true abstract class without any reference to any GWT TypeOracle class, these have been moved to the newly introduced TypeOracleGeneratorContext.
+* Hacked TypeOracleGeneratorContext to mark all jdk concrete collection types (ArrayList,Vector,HashSet,HashMap,Stack) to be serializable.
+* Added ability to test logging level via GeneratorContext, isTraceEnabled(), isDebugEnabled(), isInfoEnabled()
+* Fixed Type.getSubTypes() to only return immediate sub types and not all sub types.
+* Reworked NewType and related sub interfaces removing all mention of GWT GeneratorContext.tryCreate() and then holding onto the PrintWriter to emit source.
+* Changed strings which were previously surrounded by brackets to double quotes.
+* Improved javadoc and reworked implementation of one or two methods. 
+* Renamed methods which take an iterator and return either a Object[] or List.
+* Improved SubClassVisitor so that it doesnt visit any sub type more than once.
+* Fixed a bug with BeanFactoryGenerator where it was previously failing to find a setter for a referenced bean was actually a FactoryBean. An annotation must now exist on the 
+  FactoryBean to declare the type of beans it produces (analogous to Springs's Class FactoryBean.getType().  
+* PrimitiveTypes now return an EmptySet for getSubTypes(), getInterfaces(), getMethods(), getFields(), getConstructors(), getNestedTypes() rather than throwing UnsupportedOperationExceptions.
+* Added support for specifying if singleton beans are lazy loaded or eager via a new attribute "lazyInit" added to the bean tag (initialized on bean factory startup).
+* Improved generators so that new fields, methods and nested types are sorted before writing. Sorting is typically by staticness and name.
+* Added support to bind Json number values to and from java.util.Date instances.
+* Fixed writing of javadoc annotations by any class component (previously all values were comma separated when they should have been separate entries with the same name).
+* Fixed TypeOracleGeneratorContext to make all types serializable if their jdk counterpart is also serializable, aka java.lang.String now implements Serializable.
+  This change only exists within a rocket GeneratorContext, nb that the original JClassType's are not modified in anyway.
+* Created TestSuites for each and every module, placing them in rocket.<moduleName>.test package
+* Improved toString of various rocket generation classes.
+* Introduced SerializationFactory which accepts annotations of readable/writable types which mark which types and their reachable types will be supported by the provided factory
+* Introduced a new java rpc module which provides much of the facilities provided by the Gwt RPC system but uses the new serialization module.
+
+0.40 3 January 2008
+-------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.40.zip
+
+Browser
+* Added a Location class which returns all the portions of the window.location object as well as read only map values of query string parameters.
+
+Bean
+* If a bean implements BeanFactoryAware this is satisfied prior to invoking the setting of other properties.
+* Refactored bean factory generator support classes(mostly moved templated files into their own subpackages).
+* Significantly improved logging produced by BeanFactoryGenerator to be more readable into a formatted tree structure(was previously very flat).
+* Added ability to specify aliases for beans via the alias element which has two attributes name (the alias name) and bean(the bean that is the target of alias).
+* Added BeanNameAware interface which when implemented provides a mechanism for a bean and its factory beans to learn of their name.
+* Extracted an invoke method from JavaRpcServiceMethodInvoker which takes the service provider, method and parameters for purposes of overridding 
+  from the unmarshalled incoming request.
+* Added support for disposing singleton (prototypes are not supported, holding any prototype reference would prevent garbage collection) 
+  beans that implement DisposableBean or define a custom destroy method with their bean tag.
+* Added support for nested(anonymous) beans within constructor and properties.
+* Added support for setting null values via the null element.
+* Merged bean factory, remote-json-rpc and remote-java-rpc tags into a single rpc tag. Changed address to service-entry-point and interface to service-interface.
+* Simplified rpc element attributes from advisorBeanId to advisor, targetBeanId to target and methodExpression to methods.
+* Modified bean-factory.dtd public id to match rocket version.
+* Enhanced MethodInvocation to include new properties about the proxy target method, name, enclosing type name, parameter type names,  is it native ? and return type name.
+
+Collections
+* Added unmodifiableSet and unmodifiableMap methods in addition to unmodifiableList to CollectionHelper
+
+Dom
+* Deprecated Dom.getAbsoluteXXX where XXX is Left or Top in favour of the equivalent Gwt DOM methods.
+
+Event
+* Added to MouseEvent ( and due to inheritence and all sub classes for the click, double click, down, up, move, out, over and wheel events ) methods to retrieve the mouse coordinates relative
+  to the target element.
+
+Generator
+* Modified StringLiteral to accept empty Strings literals, previously it would throw an exception.
+* Updated new class components new Types, Initializer, Constructor, Methods and Fields to create a tree like log when emitting their source code representation.
+* Reworked TemplateCodeBlock subclasses that should really extend TemplateFileCodeBlock
+
+Project
+* Cleaned up sub modules.gwt.xml files to only include modules they actually require.
+* Deprecated ElementWrapper, ObjectWrapperImpl, ObjectWrapper, EmbeddedObject
+
+Remoting
+* Fixed deferred binding rules for Comet (Remoting.gwt.xml), previously broken rules meant that the comet client was not detecting server connection failures in IE.
+
+Util
+* Fixed StringComparator.COMPARATOR to be an exact and not case insensitive comparator.
+* Moved all ObjectHelper methods JavaScriptObject getter/setter methods to JavaScript
+* Moved ObjectHelper,StringHelper,HttpHelper check methods ( generally those that start with "check" )to Checker.
+* Moved ObjectHelper,StringHelper,HttpHelper test methods ( generally those that start with "is") to Tester.
+* Remainng ObjectHelper,StringHelper,HttpHelper methods have been moved to Utilities
+* Renamed IoHelper to InputOutput.
+* Simplied check methods (most removed common check prefix) in Checker.
+* HttpHelper.encodeForm deprecated (duplicate of Widgets.encodeForm )
+
+Widget
+* Removed tree widget as functionality has been superceeded by GWT's own Tree widget.
+* Removed SplitterItem.remove() which was just calling the parent SplitterPanel.remove( this );
+* Made HyperlinkPanel a simple panel ie it can only have one child.
+* The initial menu list that opens when clicking on a widget with a ContextMenu (actually embedded within a ContextMenu panel) now opens at the location of the click.
+* ContextMenu now fires a new MenuOpenEvent subclass called ContextMenuOpenEvent ( a sub class of MenuOpenEvent) has been created and includes getters to retrieve the initially clicked upon 
+  Element/Widget and mouse position details.
+* Renamed WidgetsHelper to Widgets, as well moving various form related helper methods to Dom.
+
+0.41 27 January 2008
+--------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.41.zip
+
+Beans
+* Fixed aspects so they can be used in conjunction with any declared rpc (via the rpc tag).
+* Fixed/enhanced InterceptorChain to support invoking MethodInvocation.proceed() more than once (Issue#41)
+* Regression that caused failures (BeanFactoryGenerator complains that it cant find a setter) when setting properties with a bean produced by a FactoryBean.
+* Referenced beans within List, Set or Map properties were broken resulting in NPE during the step where generated factory beans were emitting their source.
+* All beans are processed in alphabetical order with nested beans always appearing last after all properly named beans. Functionally this change in semantics is
+  unimportant.
+
+Browser
+* Added Location.setHref method - equvialent to location.replace(URL) and Location.reload()
+
+Generator
+* Enhanced GeneratorContext to include a method getPropertyValue() to retrieve a module property value.
+* Fixed Generator to cleanup any reference to its GeneratorContext, this helps prevent a memory leak because generator instances are cached by GWT.
+
+Json
+* Merged former @jsonSerialization-listElementType, @jsonSerialization-setElementType, @jsonSerialization-mapKeyType, @jsonSerialization-mapValueType into a single annotation @jsonSerialization-type
+* Fixed serializers which handle wrapper types to return JSONNull if the incoming instance was null, previously resulted in a NPE (Thanx Vincente Ferrer)
+
+Logging
+* Added new module which includes a LoggerFactory which accepts categories which can resolve to different loggers with individual levels. Logging statements which are
+  below their threashhold for their parent logger are optimised and removed from source. All category, level and logger class names are taken from rocket.logging.Logging.properties
+* The query string is parsed for a "logging" parameter which may be used to select one of two compilation packages, one with and the other without logging statements.
+  are optimised and removed
+* Several client side loggers are present, as well as a logger that sends all messages to the server. Server logger components are available that support commons logging, log4j or jdk logging.
+
+Remoting
+* Fixed Rpc.setServiceDefTarget(Object,String url) where ServiceDefTarget test was the wrong way around.
+* Made rocket.remoting.server.java.JavaRpcServiceMethodInvoker.createSerializationFactory protected rather than private allowing serialization factory to be customised via overriding this method.\
+* Corrected JavaRpcClientGenerator which was ignoring annotations for collection types, List, Set and Map.
+
+Serialization
+* Updated blacklist (rocket-Serialization) to include extra GWT packages that should never be serialized (http+json).
+* Updated blacklist (rocket-Serialization) to include junit framework classes.
+* Fixed a bug which was causing ThrowableReader to attempt to deserialize non sub classes of Throwable.
+* Merged former @serialization-listElementType, @serialization-setElementType, @serialization-mapKeyType, @serialization-mapValueType into a single annotation @serialization-type
+* Fixed JavaRpcServiceServlet to actually call factory method createRpcServiceMethodInvoker, previously code was erroneously doing a new RpcServiceMethodInvoker.
+
+0.42 4 February 2008
+--------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.42.zip
+
+Beans
+* Fixed a bug relating to advised singleton beans, singletoness was not being honoured.
+
+0.43 13 February 2008
+---------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.43.zip
+
+Generator
+* Added a factory method GeneratorContext.createResource( String ) which attempts to provide an OutputStream to create a resource.
+* Added a helper to GeneratorContext.createResource( byte[],String) which computes the hash of the bytes content and writes the resource if it doesnt already exist.
+
+Widget
+* Improved TextArea.getCursorPos for IE6 when the cursor was at the beginning of any line except when it at the start of a text area. Previously the value
+  for the cursor when it was positioned at the start of a line was actually that of the NL or CR from the previous line. EOL and its accompanying 
+  SOL cursor position remain equal as there is no way to determine which is which. (GWT issue #919/1800)
+* Added ImageFactory a factory which may be used to provide new Images on request. Whereever possible data urls (providing the data url is within browser limits) 
+  are used to cut down on server requests.
+* Improved HtmlTemplateFactory adding the ability to execute a template containing a mixture of html and javascript(similar to jsp) as the content of a new Html widget.
+  All parameters to the method are available and may be referrenced by their name.
+  
+0.44 3 March 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.44.zip
+
+GWT
+* Small fix to rectify inability to prevent the default action for function keys in IE.
+
+Compiler
+A variety of improvements that help reduce generated javascript size. To use them the rocket-compiler.jar must be placed before any gwt-*.jar files.
+* Added toString method to SourceInfo to make it easier to build messages.
+* Improved JsObfuscateNamer to generate shorter variables/function names.
+
+0.45 10 March 2008
+------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.45.zip
+
+Compiler
+* Added JBinaryOperator.equals() to make it easier to test for equality.
+* Added JNode.getJProgram() to help make it easier to figure out which program a node belongs too.
+* Added getAllSubTypes() and getSuperType() methods to JClassType
+* Added numerous methods to JMethod to help make it easier to test if a method is a constructor, virtual, static dispatcher and more.
+* Created AlternateValuesAssignmentOptimiser which converts if/then/else to update the same variable into tenary statement equivalent.
+* Created AlternateValuesReturnOptimiser which converts if/then/else to return alternate values depending on the condition into tenary statement equivalent.
+* Created ConditionalAssignmentAssignmentOptimiser which converts if then var = xxx into tenary statement equivalent.
+* Created TrailingReturnRemover which removes unnecessary return statements from methods.
+* Created VariableAssignedToSelfRemover which removes unnecessary variables being assigned to self statements.
+* Created LongNotifier which logs each and every long reference used within a program, be it field,method,parameter, local variable or literal. To enable it set the system property
+  rocket.compiler.LongNotifier.enabled=true.
+
+Generator
+* Improved logging whilst constructors and methods are emitting source code.
+  
+Project
+* Created a modules directory and broke up src and accompanying launch files into individual module directories.
+* Refactored hacked GWTCompiler and JavaToJavaScriptCompiler from logging to project module
+
+Remoting
+* Changed comet interfaces on both the client and server to faciliate the server sending terminate session requests.
+  The client now uses CometClient which contains 3 methods onPayload(), onTerminate(), onFailure(). CometServerSerlvet has been reworked, the poll() method must be overridden - queryObjectSource
+  has been deprecated. The push() and terminate() method must be used to push objects to the client or terminate a comet session from the server.
+  
+0.46 19 March 2008
+------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.46.zip
+
+Compiler
+To enable any of the optimisers add a system property with the fully qualified name of the feature=enabled eg <rocket.compiler.JsObfuscateNamer=enabled> or rocket.compiler=enabled to enable all.
+* Added protected JVariable.setFinal() and public JLocal.setFinal().
+* Created LocalVariableFinalMaker, an optimiser that updates the AST so that all local variables that are only set once are made final. This has two advantages,
+  CompoundAssignmentNormalizer may inline any references to recently made final variables and these same variables may then be removed in a later pass by UnusedLocalVariableRemover.
+* Modified GenerateJavaScriptAST to optimise tests reference == null, reference != null, number == 0, number != 0 into simpler javascript forms. The reference / null tests are aborted if a reference
+  is an Object or String to avoid problems arising from empty string evaluating to false which is incorrect for a null test.
+* Created VariableUpdaterOptimiser which attempts to transform statements like this i=i+j to the shorter equivalent i=+j.  
+* Created IncrementOrDecrementByOneOptimiser which attempts to transform expressions like i=i+1 to i++.
+* Updated JsToStringGeneratorVisitor (the GWT class responsible for converting the JS tree to the javascript source) to not surround negative literal numbers with parenthesis.
+* Moved hacked GenerateJavaScriptAST, JsObfuscateNamer and JsSourceGenerationVisitor to package.
+* All optimisers and enhancements are disabled by default and must be enabled by setting one or more system properties, refer to README.TXT.
+* Merged RocketCompiler project into Rocket project, moving all code and other artefacts under modules/compiler.
+* Merged test version of JavaToJavaScriptCompiler (from RocketCompiler) with the Rocket project version.
+
+0.47 3 April 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.47.zip
+
+Compiler
+* Added isStaticInitializer method to JMethod.
+* Added numerous helper methods to Compiler, including some to assist clinit removal.
+* Added StaticFieldClinitRemover which removes unnecessary clinits after statically proving the enclosing class has already had its clinit invoked.
+* Added StaticMethodClinitRemover which removes unnecessary clinits after statically proving the enclosing class has already had its clinit invoked.
+* Added getPackageName() and hasStaticInitializer() to JReferenceType.
+* Added methods to Compiler to help testing, including counting of clinit methods within a javascript function. 		
+* Added a method to Compiler.delayedBranch() to create a TreeLogger which doesnt log any branch until an actual leaf log is made, then parent branches are 
+  commited followed by the actual log message.
+* Added a factory method to TreeLogger to create a logger which pipes messages to the given logger as well as capturing and adding each loggable message into a collection    
+* Deleted ClassMethodVisitor and reworked all dependencies too use LoggingJModVisitor.
+* Updated all optimisers to use LoggingJModVisitor so that all work includes some context, primarily the lazy creation of logging statements containing the enclosing type/method/field.
+* Introduced a new LoggingJsModVisitor which lazily outputs the enclosing function etc.
+* Deleted CompareAgainstZero as its functionality has been superceeded by functionality added to GenerateJavaScriptAST.
+
+Remoting
+* Enriched Comet test allow for better simulation of various server conditions, including throwing of exceptions, failed connection attempts and more.
+
+0.48 24 April 2008
+------------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.48.zip
+
+Beans
+* Fixed a bug whereby prototypes referenced by a singletons sometimes failed with an exception complaining that prototypes cant be marked as eager.
+* Significantly improved the names allocated to nested / anonymous beans. The old naming scheme of "nestedBean" + sequence number has been replaced with nested beans being built from the parent id
+  parentBeanId + dash + nestedBeanIndexForParent eg the 2nd nested bean of parent would be called "parent-nestedBean1".
+* Improved exception messages when unable to find a property or there are too many properties due to overloaded methods.
+* Added detection of cycles between singletons one of which is the product of an incomplete FactoryBean.`
+* Improved logging messages. All properties are now processed in alphabetical order.
+* Added an image element to bean factory xml file to set image properties. This feature indirectly uses a image factory as the image provider facilitating data urls whereever possible etc.
+* Updated doctype version number from 0.40 to 0.48 to accomodate new image element.
+
+Compiler
+* Fixed a bug relating to always inserting clinits in front of a field after proving that its not necessary within jsni methods.
+
+Generator
+* Added an additional delayedBranch() method to GeneratorContext and GeneratorContextImpl to support delayed creation of any branch.
+* Fixed Generator.getResource() methods to handle absolute paths, previously only relative paths were correctly resolved.
+
+Event
+* Increased visibility of Event.isCancelled from package private(default) to public.
+ 
+Serialization
+* Improved messages logged by SerializationFactoryGenerator.
+* Improved filtering code to blacklist types that are a sub class of an already blacklisted type.
+
+Style
+* Fixed handling get inline width/height for IE. Previously attempts always failed returning null etc.
+* Improved caching of StyleSheet proxies.
+* Added FontMetrics a useful class to help determine the average width / height of any given font. Works best with fixed fonts.
+
+Utilities
+* Added helper methods to escape strings into their java string form.
+ 
+Widgets
+* Significantly improved ResizablePanel so that it works in a much more intuitive way. The panel now matches the size of the child widget.
+* Fixed text selection disabling whilst a ResizablePanel resize is in progress.
+* ResizablePanel now fires a change event each time it changes size.
+* Added support to ImageFactory to return com.google.gwt.user.client.ui.Image as well as rocket.widget.client.Image.
+
+0.49 11 May 2008
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.49.zip
+
+Updated from GWT 1.4.60 to GWT 1.4.62. None of the modified GWT classes included in this library have changed so conflicts should be minimal if any.
+
+Beans
+* Fixed a bug which resulted in failures when attempting to create beans with constructors with primitive values from value tags.  
+* Added launch file for BeanFactoryGeneratorConstructorGwtTestCase.
+
+Generator
+* When emitting code within an outter type, the simple name of nested types is logged rather than the fully qualified form. 
+* When generating types javadoc comments are no longer emitted when initializers, constructors ,fields, methods ,nested types exist for the type being processed.
+* When generating types logging statements are no longer emitted when initializers, constructors ,fields, methods ,nested types exist for the type being processed. 
+
+Remoting
+* CometServlet has been reworked to pass a CometConnection instance to the poll() method. This call can be delegated to
+another class removing any dependency on the servlet sub class. Thanx John Chinton
+
+Utilities
+* Added trimLeft() and trimRight() methods to Utilities
+* Fully qualiied StackElement references removing one problem which was appearing in Eclipse.
+
+Widgets
+* Reworked styling of widgets to match the strategy used by GWT. Only the parent element has a fully qualified name, child
+  elements use short names.
+* For Accordion Panels renamed getItemSelectedStyle() to getCaptionSelectedStyle()
+* DivPanel no longer wraps each widget added to it within a DIV element.
+* SpanPanel no longer wraps each widget added to it within a SPAN element.
+
+
+0.50 26 May 2008
+----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.50.zip
+
+Collections
+* Changed SkippingIterator to throw NoSuchElementException without any message. Previously message fetched type using GWT.getTypeName(); 
+* Added constructor to SkippingIterator which accepts an iterator.
+
+GWT
+* Incorporated issue 1390 which addresses an IE problem with Window.enableScrolling
+
+Remoting
+* Re-added static getters to CometServerServlet to fetching the current HttpServletRequest and HttpServletResponse.
+
+Utilities
+* Fixed Utilities.trimLeft/Right to correctly trim strings filled with only whitespace
+
+Widgets
+* Removed deprecated SuperSpinner widget.
+
+
+0.51 16 June 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.51.zip
+
+Beans
+* Fixed interceptor chain to correctly handle acceptance of BeforeAdvice implementations.
+* Updated BeanFactoryGenerator to not proxy getClass()
+* Added annotations and generics to many internal structures.
+
+Browser
+* Removed a number of Browser methods which are now found on various GWT com.google.gwt.dom.* classes.
+	* getDocument(), setTitle() - Document
+	* prompt(),set/getStatus() - Window
+	* set/getLocation() - Window.Location
+	* buildImageUrl - deprecated/removed
+* Removed Location functionality replaced identical methods located on com.google.gwt.user.client.Window.Location
+	
+Collection
+* Removed unmodifiedXXX where XXX is List/Set/Map from CollectionHelper use recently emulated java.util.Collection methods.
+* Generified all iterator types.
+
+Compiler
+* Removed all optimisations as they have been rendered unnecessary following GWT 1.5 compiler updates.
+
+Cookies
+* Deprecated and removed as all functionality is available less the map views via the GWT.
+
+Dom
+* Deprecated and removed several Dom methods which are now present on GWT classes.
+	* removed getBody() use RootPanel.getBodyElement()
+	* removed getTagName() use Element.getTagName()
+	* removed isAttached() use Document.get().getBody().isOrHasChild(Element)
+	* removed cloneElement() use com.google.gwt.dom.client.Element.cloneNode
+	* removed getOffsetXXX() use com.google.gwt.dom.client.Element.getXXX where XXX is Left/Top
+	* removed setFocus(Element)
+	* removed getFormElements() use FormElement.childNodes()
+	* removed getFormElement(String) use FormElement.getNamedItem()
+	* removed findFirstChildOfType() and findAllChildrenOfType() use com.google.gwt.dom.clent.Element.getElementByTag()
+
+DragNDrop
+* Added generics, annotations to various classes.
+
+Event
+* Updated classes to use event instance methods rather than pre existing static DOM.eventXXX methods.
+
+Generator
+* Removed patched JClassType as isFinal method has been added as part of GWT 1.5.
+* Removed some hacked support for jre types that should have been but were not marked as serializable.
+* Added generics, annotations to various classes.
+
+Gwt
+* Removed hacked/fixed Cast class (provides runtime support for casting JSOs to java and viceversa.
+* This module (was previously Remoting)now contains the hacked ProxyCreator and accompanying introduced HasSerializer interface which provides a means to access a normally private serializer from a rpc proxy.
+
+Logging
+* Removed implements Serializable marker from LoggingLevel and created custom LoggingEvent field serializer. This should avoid problems with GWT 
+  the serialization generator complaining when one leaves out the gwt.typeArgs annotation.
+
+Remoting
+
+Selection
+* Refactored the Selection object so that it is now a true JavaScriptObject rather than a delegator. It should be possible to
+  get selection objects from iframes and so on.
+
+Serialization
+* To match the changes with GWT's long emulation and maintain accuracy for large longs, the serialization format now writes each long as two ints.
+* Added Readrer/Writers to handle TreeSet and TreeMap(specifically to serialize the comparator).
+
+Style
+* Promoted ComputedStyle, InlineStyle, StyleSheet, Rule and RuleStyle to now extend JavaScriptObject rather than be wrappers.
+* Because Rule is no longer a state and because of JSO rules forbidding fields being added to a JSO, Rule.setSelector() must be simulated by 
+  1. retrieve the rule's index StyleSheet.getRuleIndex()
+  2. grabbing its style via Rule.getRuleStyle().getCssText()
+  3. removing the rule StyleSheet.removeRule()
+  4. and reinserting at the same position StyleSheet.insertRule().
+
+Testing
+* Deprecated and Removed InteractivePanel.
+
+Utilities
+* Moved all static ThrowableHelper methods to StackTrace, and deleted ThrowableHelper.
+* Improved construction of error messages when an assertion failed.
+* Deleted server Utilities class which is no longer required because of new GWT support for Object.getClass().getName() support.  
+  
+Widget
+* Fixed a bug which resulted in CompositeWidget leaking memory for elements with no explicit bits sunk.
+* Removed a number of useless/outdated widgets.
+	* Accordion
+	* AutoCompleteTextBox use SuggestBox
+	* BreadcrumbPanel
+	* Gridview
+	* Pager
+	* Spinner
+	* StyleSheetPicker
+	* left and right TabPanel
+* Corrected bug where Viewport was incorrectly removing tiles on the left and top edges and then re-requesting the very same tiles.
+
+TODO/FIXME
+Bean
+* Make rpc proxies forward the setServiceEntryPoint() to the real rpc.
+* Update to read annotations when determining types present in collection/set/map. 
+* Update generator to generisize FactoryBean being generated this helps result not use casts from factorybean. 
+
+Generator
+* Update to support reading of true annotations.
+* Real support for generic types in type abstractions and associated helper methods.
+
+Json
+* Update to support reading of true annotations.
+* Make result of Generator make generated types implement objectInputStream/objectOutputStream
+
+Remoting
+* Add support for relaying annotations to generated classes.
+
+Selection
+* Broken in Opera 9.27 disabling selections, get/set selection end points doesnt work.
+
+Serialization
+* Need to add support for enums, arrays of any type.
+* Need to rework code to use annotataions for fields that are List/Set/Map.
+* Try and make a fascade for gwt serialization - via a factory
+
+0.52 19 June 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.52.zip
+
+Widget
+* Fixed a bug with Slider widget code falling over during initializaton.
+* Improvement to Viewport demo.
+
+0.53 26 June 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.53.zip
+
+Style
+* Fixed ComputedStyle class to stop falling over.
+
+0.54 26 June 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.54.zip
+
+Style
+* Fixed ComputedStyle class to stop falling over for Firefox, Opera and Safari.
+
+0.55 8 September 2008
+-----------------
+Download from http://rocket-gwt.googlecode.com/files/Rocket-0.55.zip
+
+Made changes and updated patched classes to be compatible/work with GWT 1.5.2
