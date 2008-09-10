@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.Widget;
  * Most of the internals have been ripped and reworked from the original GWT
  * ListBox.
  * 
- * ROCKET When upgrading from GWT 1.5 RC1 reapply changes
+ * ROCKET When upgrading from GWT 1.5.2 reapply changes
  * 
  * @author Miroslav Pokorny
  */

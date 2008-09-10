@@ -29,4 +29,14 @@ public class ExceptionPayload implements Message {
 	void setThrowable(final Throwable throwable) {
 		this.throwable = throwable;
 	}
+	
+	private long sequence;
+	
+	public long getSequence(){
+		return this.sequence;
+	}
+	
+	void setSequence( final long sequence ){
+		this.sequence = sequence;
+	}
 }

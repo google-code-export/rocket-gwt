@@ -93,7 +93,7 @@ public class CometTest implements EntryPoint {
 				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync) GWT
 						.create(CometServerActionService.class);
 				((ServiceDefTarget) terminator).setServiceEntryPoint(SERVER_ACTION_URL);
-				terminator.terminate(new AsyncCallback() {
+				terminator.terminate(new AsyncCallback<Object>() {
 					public void onSuccess(final Object ignored) {
 						logger.log("Client has completed request to server to terminate push terminate message.");
 					}
@@ -112,7 +112,7 @@ public class CometTest implements EntryPoint {
 				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync) GWT
 						.create(CometServerActionService.class);
 				((ServiceDefTarget) terminator).setServiceEntryPoint(SERVER_ACTION_URL);
-				terminator.failNextPoll(new AsyncCallback() {
+				terminator.failNextPoll(new AsyncCallback<Object>() {
 					public void onSuccess(final Object ignored) {
 						logger.log("Client has completed request to server to throw exception when next polled.");
 					}
@@ -131,7 +131,7 @@ public class CometTest implements EntryPoint {
 				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync) GWT
 						.create(CometServerActionService.class);
 				((ServiceDefTarget) terminator).setServiceEntryPoint(SERVER_ACTION_URL);
-				terminator.timeoutNextPoll(new AsyncCallback() {
+				terminator.timeoutNextPoll(new AsyncCallback<Object>() {
 					public void onSuccess(final Object ignored) {
 						logger.log("Client has completed request to server to sleep and timeout when next polled.");
 					}
@@ -150,7 +150,7 @@ public class CometTest implements EntryPoint {
 				final CometServerActionServiceAsync terminator = (CometServerActionServiceAsync) GWT
 						.create(CometServerActionService.class);
 				((ServiceDefTarget) terminator).setServiceEntryPoint(SERVER_ACTION_URL);
-				terminator.failNextConnection(new AsyncCallback() {
+				terminator.failNextConnection(new AsyncCallback<Object>() {
 					public void onSuccess(final Object ignored) {
 						logger.log("Client has completed request to server to fail next connection attempt.");
 					}
@@ -189,8 +189,7 @@ public class CometTest implements EntryPoint {
 	 * @return
 	 */
 	protected CometClient createComet(final Logger logger) {
-		final TestGwtSerializationCometClient cometClient = (TestGwtSerializationCometClient) GWT
-				.create(TestGwtSerializationCometClient.class);
+		final TestGwtSerializationCometClient cometClient = (TestGwtSerializationCometClient) GWT.create(TestGwtSerializationCometClient.class);
 		cometClient.setCallback(new CometCallback() {
 			public void onPayload(final Object object) {
 				logger.log("Client received \"" + object + "\"...");
@@ -200,10 +199,20 @@ public class CometTest implements EntryPoint {
 				final long now = System.currentTimeMillis() % 999999;
 				final long lag = Math.abs(now - date);
 
-				logger.log("Client latency " + lag + " milliseconds, now: " + now + ", payload timestamp: " + date);
+				final long payloadSequence = payload.getSequence();
+				logger.log("Client sequence: " + payloadSequence + ", latency " + lag + " milliseconds, now: " + now + ", payload timestamp: " + date);
 
 				if (lag > TOO_MUCH_LAG) {
 					throw new AssertionError("Too much lag between push and object being received, lag: " + lag);
+				}
+				
+				final long expectedSequence = CometTest.this.sequence;
+				if( payloadSequence < expectedSequence ){
+					throw new AssertionError("It appears a payload has been delivered twice");
+				}
+				final long missed = payloadSequence - expectedSequence ; 
+				if( missed > 0 ){
+					throw new AssertionError("It appears " + missed + " payloads didnt arrive.");
 				}
 			}
 
@@ -220,6 +229,8 @@ public class CometTest implements EntryPoint {
 		cometClient.setLogger(logger);
 		return cometClient;
 	}
+	
+	private long sequence = 0;
 
 	/**
 	 * This test class sets the width/height of the hidden iframe so its

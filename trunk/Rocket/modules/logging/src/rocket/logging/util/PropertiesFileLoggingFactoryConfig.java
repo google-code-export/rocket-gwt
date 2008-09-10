@@ -17,6 +17,7 @@ package rocket.logging.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -46,18 +47,28 @@ public class PropertiesFileLoggingFactoryConfig implements LoggingFactoryConfig 
 
 	protected void load0() throws IOException {
 		final InputStream inputStream = this.getInputStream();
-		this.setEntries(this.loadFromInputStream(inputStream));
+		// null indicatest that no properties file was specified so use an empty entries map.
+		Map entries = Collections.emptyMap();
+		if( null != inputStream ){
+			entries = this.loadFromInputStream(inputStream);
+		} 
+		this.setEntries( entries);
 	}
 
 	protected InputStream getInputStream() throws IOException {
+		boolean defaulting = false;
 		String resourceName = System.getProperty(Constants.CONFIG_SYSTEM_PROPERTY);
 		if (null == resourceName) {
+			// system property not found use default...
 			resourceName = Constants.PROPERTIES_FILENAME;
+			defaulting = true;
 		}
 
 		final InputStream inputStream = this.getClass().getResourceAsStream(resourceName);
-		if (null == inputStream) {
-			throw new RuntimeException("Unable to locate \"" + resourceName + "\".");
+		if ( null == inputStream) {			
+			if( false == defaulting ){
+				throw new RuntimeException("Unable to locate \"" + resourceName + "\".");
+			} 
 		}
 		return inputStream;
 	}
@@ -70,13 +81,13 @@ public class PropertiesFileLoggingFactoryConfig implements LoggingFactoryConfig 
 	 * @return
 	 * @throws IOException
 	 */
-	protected Map loadFromInputStream(final InputStream inputStream) throws IOException {
+	protected Map<String,ConfigEntry> loadFromInputStream(final InputStream inputStream) throws IOException {
 		Checker.notNull("parameter:inputStream", inputStream);
 
 		final Properties properties = new Properties();
 		properties.load(inputStream);
 
-		final Map entries = new TreeMap();
+		final Map<String,ConfigEntry> entries = new TreeMap<String,ConfigEntry>();
 
 		final Iterator propertiesFileEntries = properties.entrySet().iterator();
 		while (propertiesFileEntries.hasNext()) {
@@ -105,7 +116,7 @@ public class PropertiesFileLoggingFactoryConfig implements LoggingFactoryConfig 
 		throw new RuntimeException(line);
 	}
 
-	public Iterator getNames() {
+	public Iterator<String> getNames() {
 		return Collections.unmodifiableSet(this.getEntries().keySet()).iterator();
 	}
 
@@ -124,9 +135,9 @@ public class PropertiesFileLoggingFactoryConfig implements LoggingFactoryConfig 
 		ConfigEntry entry = null;
 
 		String key = name;
-		final Map entries = this.getEntries();
+		final Map<String,ConfigEntry> entries = this.getEntries();
 		while (true) {
-			entry = (ConfigEntry) entries.get(key);
+			entry = entries.get(key);
 			if (null != entry) {
 				break;
 			}
@@ -139,7 +150,7 @@ public class PropertiesFileLoggingFactoryConfig implements LoggingFactoryConfig 
 		}
 
 		if (null == entry) {
-			entry = (ConfigEntry) entries.get(LoggingConstants.ROOT_LOGGER_NAME);
+			entry = entries.get(LoggingConstants.ROOT_LOGGER_NAME);
 			if (entry == null) {
 				entry = this.createDefault(name);
 			}
@@ -161,14 +172,14 @@ public class PropertiesFileLoggingFactoryConfig implements LoggingFactoryConfig 
 	/**
 	 * This map aggregates all entries found within the properties file.
 	 */
-	private Map entries;
+	private Map<String,ConfigEntry> entries;
 
-	protected Map getEntries() {
+	protected Map<String,ConfigEntry> getEntries() {
 		Checker.notNull("field:entries", entries);
 		return this.entries;
 	}
 
-	public void setEntries(final Map entries) {
+	public void setEntries(final Map<String,ConfigEntry> entries) {
 		Checker.notNull("parameter:entries", entries);
 		this.entries = entries;
 	}
@@ -214,6 +225,7 @@ public class PropertiesFileLoggingFactoryConfig implements LoggingFactoryConfig 
 			this.typeName = typeName;
 		}
 
+		@Override
 		public String toString() {
 			return name + "=" + loggingLevel + "," + typeName;
 		}

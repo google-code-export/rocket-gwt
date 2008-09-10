@@ -586,7 +586,7 @@ class ProxyCreator {
   }
 
 	// ROCKET The fields/methods below were added to assist the Rocket
-	// framework. When upgrading from GWT 1.5 RC1 reapply changes
+	// framework. When upgrading from GWT 1.5.2 reapply changes
 
 	/**
 	 * This is a hack and used by the CometGenerator to verify that the

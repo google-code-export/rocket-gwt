@@ -26,7 +26,7 @@ import com.google.gwt.user.client.Element;
  * Most of the internals have been ripped and reworked from the original GWT
  * HTML widget.
  * 
- * ROCKET When upgrading from GWT 1.5 RC1 reapply changes
+ * ROCKET When upgrading from GWT 1.5.2 reapply changes
  * 
  * @author Miroslav Pokorny
  */

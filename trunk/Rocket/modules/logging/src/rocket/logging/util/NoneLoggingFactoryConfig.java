@@ -31,14 +31,14 @@ import rocket.logging.client.NoneLevelLogger;
  */
 public class NoneLoggingFactoryConfig implements LoggingFactoryConfig {
 
-	public Iterator getNames() {
-		return new Iterator() {
+	public Iterator<String> getNames() {
+		return new Iterator<String>() {
 
 			public boolean hasNext() {
 				return false;
 			}
 
-			public Object next() {
+			public String next() {
 				throw new UnsupportedOperationException();
 			}
 

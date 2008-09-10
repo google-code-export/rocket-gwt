@@ -2,7 +2,7 @@
 <project name="Rocket" default="dist" basedir="c:/workspace.rocket/Rocket/">
 	<description>Ant build for the rocket framework.</description>
 
-	<property name="version" 				value="0.55"/>
+	<property name="version" 				value="0.56"/>
 	<property name="modules-dir"			location="${basedir}/modules/"/>			
 	<property name="libs-dir" 				location="${basedir}/libs/"/>
 	<property name="build-dir" 				location="${basedir}/build"/>
@@ -183,8 +183,7 @@
 				<exclude name="java/**/*.*"/>				
 				<exclude name="**/test/**/*.*"/>
 				<include name="**/*.dtd"/>
-				<include name="**/*.java"/>
-				<include name="**/*.properties"/>				
+				<include name="**/*.java"/>				
 				<include name="**/*.txt"/>				
 				<include name="**/*.xml"/>
 			</fileset>	

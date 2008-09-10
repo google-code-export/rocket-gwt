@@ -25,8 +25,9 @@ import rocket.remoting.client.CometConstants;
  */
 public class ObjectPayload implements Message {
 
-	public ObjectPayload(final Object object) {
+	public ObjectPayload(final Object object, final long sequence ) {
 		this.setObject(object);
+		this.setSequence( sequence );
 	}
 
 	public int getCommand() {
@@ -41,5 +42,15 @@ public class ObjectPayload implements Message {
 
 	void setObject(final Object object) {
 		this.object = object;
+	}
+
+	private long sequence;
+	
+	public long getSequence(){
+		return this.sequence;
+	}
+	
+	void setSequence( final long sequence ){
+		this.sequence = sequence;
 	}
 }

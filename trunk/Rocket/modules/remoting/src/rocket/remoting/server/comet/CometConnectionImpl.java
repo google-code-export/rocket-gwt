@@ -34,6 +34,7 @@ public class CometConnectionImpl implements CometConnection {
 		super();
 
 		this.setMessages(this.createMessages());
+		this.setSequence(0);
 	}
 
 	/**
@@ -44,8 +45,10 @@ public class CometConnectionImpl implements CometConnection {
 	 * @throws IOException
 	 */
 	public void push(final Object object) {
-		final ObjectPayload objectPayload = new ObjectPayload(object);
+		final long sequence = this.getSequence();
+		final ObjectPayload objectPayload = new ObjectPayload(object, sequence);
 		this.pushMessage(objectPayload);
+		this.incrementSequence();
 	}
 
 	/**
@@ -53,8 +56,10 @@ public class CometConnectionImpl implements CometConnection {
 	 * and this session will be terminated.
 	 */
 	public void terminate() {
-		this.pushMessage(new Terminate());
+		final long sequence = this.getSequence();
+		this.pushMessage(new Terminate(sequence));
 		this.setTerminated(true);
+		this.incrementSequence();
 	}
 
 	protected void terminatedGuard() {
@@ -100,5 +105,22 @@ public class CometConnectionImpl implements CometConnection {
 
 	protected List<Message> createMessages() {
 		return new ArrayList<Message>();
+	}
+
+	/**
+	 * A sequence number is included in all payloads as a means to ensure payloads arent lost or delivered twice.
+	 */
+	private long sequence;
+
+	public long getSequence() {
+		return this.sequence;
+	}
+
+	void setSequence(final long sequence) {
+		this.sequence = sequence;
+	}
+	
+	void incrementSequence(){
+		this.setSequence( this.getSequence() + 1 );
 	}
 }

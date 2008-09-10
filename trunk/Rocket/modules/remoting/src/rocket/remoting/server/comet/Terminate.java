@@ -25,11 +25,26 @@ import rocket.remoting.client.CometConstants;
  */
 public class Terminate implements Message {
 
+	public Terminate( final long sequence ){
+		super();
+		this.setSequence(sequence);
+	}
+	
 	public int getCommand() {
 		return CometConstants.TERMINATE_COMET_SESSION;
 	}
 
 	public Object getObject() {
 		return null;
+	}
+
+private long sequence;
+	
+	public long getSequence(){
+		return this.sequence;
+	}
+	
+	void setSequence( final long sequence ){
+		this.sequence = sequence;
 	}
 }
